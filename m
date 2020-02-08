@@ -2,31 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 683741567E9
-	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Feb 2020 22:55:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6FC31567F2
+	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Feb 2020 23:07:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727527AbgBHVze (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 8 Feb 2020 16:55:34 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:49815 "EHLO
+        id S1727499AbgBHWHf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 8 Feb 2020 17:07:35 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:49875 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727473AbgBHVze (ORCPT
+        with ESMTP id S1727073AbgBHWHf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 8 Feb 2020 16:55:34 -0500
+        Sat, 8 Feb 2020 17:07:35 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1j0Y4R-0007ms-BU; Sat, 08 Feb 2020 21:55:23 +0000
+        id 1j0YG1-0008Qa-6Q; Sat, 08 Feb 2020 22:07:21 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
+To:     Cezary Rojewski <cezary.rojewski@intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Jie Yang <yang.jie@linux.intel.com>,
         Mark Brown <broonie@kernel.org>,
         Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org
+        Takashi Iwai <tiwai@suse.com>, Vinod Koul <vkoul@kernel.org>,
+        "Subhransu S . Prusty" <subhransu.s.prusty@intel.com>,
+        alsa-devel@alsa-project.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: ti: davinci-mcasp: remove redundant assignment to variable ret
-Date:   Sat,  8 Feb 2020 21:55:23 +0000
-Message-Id: <20200208215523.36094-1-colin.king@canonical.com>
+Subject: [PATCH] ASoC: Intel: mrfld: return error codes when an error occurs
+Date:   Sat,  8 Feb 2020 22:07:20 +0000
+Message-Id: <20200208220720.36657-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -38,31 +42,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The assignment to ret is redundant as it is not used in the error
-return path and hence can be removed.
+Currently function sst_platform_get_resources always returns zero and
+error return codes set by the function are never returned. Fix this
+by returning the error return code in variable ret rather than the
+hard coded zero.
 
 Addresses-Coverity: ("Unused value")
+Fixes: f533a035e4da ("ASoC: Intel: mrfld - create separate module for pci part")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- sound/soc/ti/davinci-mcasp.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ sound/soc/intel/atom/sst/sst_pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
-index e1e937eb1dc1..450c394b2882 100644
---- a/sound/soc/ti/davinci-mcasp.c
-+++ b/sound/soc/ti/davinci-mcasp.c
-@@ -1764,10 +1764,8 @@ static struct davinci_mcasp_pdata *davinci_mcasp_set_pdata_from_of(
- 	} else if (match) {
- 		pdata = devm_kmemdup(&pdev->dev, match->data, sizeof(*pdata),
- 				     GFP_KERNEL);
--		if (!pdata) {
--			ret = -ENOMEM;
-+		if (!pdata)
- 			return pdata;
--		}
- 	} else {
- 		/* control shouldn't reach here. something is wrong */
- 		ret = -EINVAL;
+diff --git a/sound/soc/intel/atom/sst/sst_pci.c b/sound/soc/intel/atom/sst/sst_pci.c
+index d952719bc098..5862fe968083 100644
+--- a/sound/soc/intel/atom/sst/sst_pci.c
++++ b/sound/soc/intel/atom/sst/sst_pci.c
+@@ -99,7 +99,7 @@ static int sst_platform_get_resources(struct intel_sst_drv *ctx)
+ 	dev_dbg(ctx->dev, "DRAM Ptr %p\n", ctx->dram);
+ do_release_regions:
+ 	pci_release_regions(pci);
+-	return 0;
++	return ret;
+ }
+ 
+ /*
 -- 
 2.25.0
 

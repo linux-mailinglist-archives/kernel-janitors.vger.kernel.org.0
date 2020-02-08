@@ -2,87 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A29E1561D2
-	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Feb 2020 01:12:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46C15156204
+	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Feb 2020 01:47:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727065AbgBHAMi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 7 Feb 2020 19:12:38 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:59431 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726995AbgBHAMi (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 7 Feb 2020 19:12:38 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1j0Dj4-0003zz-4A; Sat, 08 Feb 2020 00:11:58 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        alsa-devel@alsa-project.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ASoC: wcd934x: remove redundant null checks on rx_chs and tx_chs
-Date:   Sat,  8 Feb 2020 00:11:57 +0000
-Message-Id: <20200208001157.787675-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
+        id S1727118AbgBHArY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 7 Feb 2020 19:47:24 -0500
+Received: from mga01.intel.com ([192.55.52.88]:41715 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727048AbgBHArX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 7 Feb 2020 19:47:23 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Feb 2020 16:47:23 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,415,1574150400"; 
+   d="scan'208";a="226648860"
+Received: from sjchrist-coffee.jf.intel.com (HELO linux.intel.com) ([10.54.74.202])
+  by fmsmga008.fm.intel.com with ESMTP; 07 Feb 2020 16:47:22 -0800
+Date:   Fri, 7 Feb 2020 16:47:22 -0800
+From:   Sean Christopherson <sean.j.christopherson@intel.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        kvm@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] KVM: x86: remove redundant WARN_ON check of an
+ unsigned less than zero
+Message-ID: <20200208004722.GB15581@linux.intel.com>
+References: <20200207231813.786224-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200207231813.786224-1-colin.king@canonical.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Fri, Feb 07, 2020 at 11:18:13PM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The check cpu->hv_clock.system_time < 0 is redundant since system_time
+> is a u64 and hence can never be less than zero. Remove it.
+> 
+> Addresses-Coverity: ("Macro compares unsigned to 0")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  arch/x86/kvm/x86.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index fbabb2f06273..d4967ac47e68 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -2448,7 +2448,6 @@ static int kvm_guest_time_update(struct kvm_vcpu *v)
+>  	vcpu->hv_clock.tsc_timestamp = tsc_timestamp;
+>  	vcpu->hv_clock.system_time = kernel_ns + v->kvm->arch.kvmclock_offset;
+>  	vcpu->last_guest_tsc = tsc_timestamp;
+> -	WARN_ON(vcpu->hv_clock.system_time < 0);
 
-The null checks on wcd->rx_chs and wcd->tx_chs are redundant as
-these objects are arrays and not pointers and hence can never be
-null. Remove the redundant null checks.
+Don't know this code well, but @kernel_ns and @v->kvm->arch.kvmclock_offset
+are both s64, so maybe this was intended and/or desirable?
 
-Addresses-Coverity: ("Array compared against 0")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- sound/soc/codecs/wcd934x.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+	WARN_ON((s64)vcpu->hv_clock.system_time < 0);
+	
 
-diff --git a/sound/soc/codecs/wcd934x.c b/sound/soc/codecs/wcd934x.c
-index 158e878abd6c..e780ecd554d2 100644
---- a/sound/soc/codecs/wcd934x.c
-+++ b/sound/soc/codecs/wcd934x.c
-@@ -1883,20 +1883,16 @@ static int wcd934x_set_channel_map(struct snd_soc_dai *dai,
- 		return -EINVAL;
- 	}
- 
--	if (wcd->rx_chs) {
--		wcd->num_rx_port = rx_num;
--		for (i = 0; i < rx_num; i++) {
--			wcd->rx_chs[i].ch_num = rx_slot[i];
--			INIT_LIST_HEAD(&wcd->rx_chs[i].list);
--		}
-+	wcd->num_rx_port = rx_num;
-+	for (i = 0; i < rx_num; i++) {
-+		wcd->rx_chs[i].ch_num = rx_slot[i];
-+		INIT_LIST_HEAD(&wcd->rx_chs[i].list);
- 	}
- 
--	if (wcd->tx_chs) {
--		wcd->num_tx_port = tx_num;
--		for (i = 0; i < tx_num; i++) {
--			wcd->tx_chs[i].ch_num = tx_slot[i];
--			INIT_LIST_HEAD(&wcd->tx_chs[i].list);
--		}
-+	wcd->num_tx_port = tx_num;
-+	for (i = 0; i < tx_num; i++) {
-+		wcd->tx_chs[i].ch_num = tx_slot[i];
-+		INIT_LIST_HEAD(&wcd->tx_chs[i].list);
- 	}
- 
- 	return 0;
--- 
-2.24.0
-
+>  	/* If the host uses TSC clocksource, then it is stable */
+>  	pvclock_flags = 0;
+> -- 
+> 2.24.0
+> 

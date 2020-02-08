@@ -2,75 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ADCB1564B0
-	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Feb 2020 15:09:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82503156568
+	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Feb 2020 17:18:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727379AbgBHOJ2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 8 Feb 2020 09:09:28 -0500
-Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:55560 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727175AbgBHOJ1 (ORCPT
+        id S1727381AbgBHQSF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 8 Feb 2020 11:18:05 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:46432 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727340AbgBHQSF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 8 Feb 2020 09:09:27 -0500
-Received: from localhost.localdomain ([93.22.133.23])
-        by mwinf5d31 with ME
-        id 0E9R220070WSqZ103E9RbC; Sat, 08 Feb 2020 15:09:26 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 08 Feb 2020 15:09:26 +0100
-X-ME-IP: 93.22.133.23
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     oss@buserror.net, galak@kernel.crashing.org,
-        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au
-Cc:     linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH 2/2] powerpc/83xx: Add some error handling in 'quirk_mpc8360e_qe_enet10()'
-Date:   Sat,  8 Feb 2020 15:09:20 +0100
-Message-Id: <20200208140920.7652-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        Sat, 8 Feb 2020 11:18:05 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1j0Sny-0003kh-T3; Sat, 08 Feb 2020 16:18:03 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] usb: cdns3: remove redundant assignment to pointer trb
+Date:   Sat,  8 Feb 2020 16:18:02 +0000
+Message-Id: <20200208161802.28846-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In some error handling path, we should call "of_node_put(np_par)" or
-some resource may be leaking in case of error.
+From: Colin Ian King <colin.king@canonical.com>
 
-Fixes: 8159df72d43e ("83xx: add support for the kmeter1 board.")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Pointer trb being assigned with a value that is never read, it is
+assigned a new value later on. The assignment is redundant and
+can be removed.
+
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- arch/powerpc/platforms/83xx/km83xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/cdns3/gadget.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/83xx/km83xx.c b/arch/powerpc/platforms/83xx/km83xx.c
-index 306be75faec7..bcdc2c203ec9 100644
---- a/arch/powerpc/platforms/83xx/km83xx.c
-+++ b/arch/powerpc/platforms/83xx/km83xx.c
-@@ -60,10 +60,12 @@ static void quirk_mpc8360e_qe_enet10(void)
- 	ret = of_address_to_resource(np_par, 0, &res);
- 	if (ret) {
- 		pr_warn("%s couldn't map par_io registers\n", __func__);
--		return;
-+		goto out;
- 	}
- 
- 	base = ioremap(res.start, resource_size(&res));
-+	if (!base)
-+		goto out;
- 
- 	/*
- 	 * set output delay adjustments to default values according
-@@ -111,6 +113,7 @@ static void quirk_mpc8360e_qe_enet10(void)
- 		setbits32((base + 0xac), 0x0000c000);
- 	}
- 	iounmap(base);
-+out:
- 	of_node_put(np_par);
- }
- 
+diff --git a/drivers/usb/cdns3/gadget.c b/drivers/usb/cdns3/gadget.c
+index 736b0c6e27fe..3c05080a9ad5 100644
+--- a/drivers/usb/cdns3/gadget.c
++++ b/drivers/usb/cdns3/gadget.c
+@@ -1380,7 +1380,7 @@ static bool cdns3_request_handled(struct cdns3_endpoint *priv_ep,
+ 				  struct cdns3_request *priv_req)
+ {
+ 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
+-	struct cdns3_trb *trb = priv_req->trb;
++	struct cdns3_trb *trb;
+ 	int current_index = 0;
+ 	int handled = 0;
+ 	int doorbell;
 -- 
-2.20.1
+2.25.0
 

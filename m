@@ -2,151 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA6CE156BE2
-	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Feb 2020 18:54:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCC46156C77
+	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Feb 2020 21:56:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727416AbgBIRyW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 9 Feb 2020 12:54:22 -0500
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:33841 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727388AbgBIRyW (ORCPT
+        id S1727723AbgBIU4A (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 9 Feb 2020 15:56:00 -0500
+Received: from mail-pj1-f67.google.com ([209.85.216.67]:54286 "EHLO
+        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727409AbgBIU4A (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 9 Feb 2020 12:54:22 -0500
-Received: by mail-lj1-f193.google.com with SMTP id x7so4553074ljc.1;
-        Sun, 09 Feb 2020 09:54:19 -0800 (PST)
+        Sun, 9 Feb 2020 15:56:00 -0500
+Received: by mail-pj1-f67.google.com with SMTP id dw13so3274569pjb.4;
+        Sun, 09 Feb 2020 12:55:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=yToOlkZkYj/FbYOyMzXTxghkKi256mVsYV3YgS6NprE=;
-        b=ijqw+WcIVuTiOWt3tpA2WyIhu0PxKSAV85NLz26ZxYTy4zGEasvgkOT3tuXnPMDDaU
-         PQmCF3vKbilx9KJUlVgz7eX/hkEkGbDs06yFqUmO47ClNs4YIEZw8Cv6QjrTnr2y/+hj
-         NUHnz3Qo020Zp7/jFPGWtQ0rmAelxJ8tCBYK9ZORNEtq1oIh/U4KtI32CsIxIPwq2Lpm
-         kMyB1YUNZdXp7zf6dnaxpON9G5+WPRHKNyK8Pcd+9J7RxVL3M1Mo7AOBbGMtJHg1AFop
-         ydyGoI++DKBkDsg2HxgijNXJ0r1Z3ZL0hZGCII+CMXa4TiyMA7VjNunOjOJb1S2riwVi
-         KyRQ==
+        h=from:to:cc:subject:date:message-id;
+        bh=+26FYn1Jtrvl0Tdo43WhoX99YiKtnwNRDS1kjmkTi2M=;
+        b=t0Vul+D0Xjo3QkfANq67nPW+JcvR+fnNlBs1wiGKUKYAQez/rJl2QQT89j3MTOg6fo
+         0ephBTYaZSHyYKWdDq/1wKMVXPpYA8IHTaS94oFhe6WfUGdtzsGqoHHb8k2fUPVzCQzb
+         BI0JcrZ8oak/B0fwFWNep5p7PTyTbH7smS569iHlZF4w2usJ6KYvchcRFcQviLZbUAlk
+         6wGy4PVuoNehHJEG/bI6oQ45+1qOWCtddYO0u+rVSKI1XqZ+Utcg68a2HmPsmsEqeA3E
+         QqFF1cOh/Z8DSxOS5YN+PIlrpKJSTdHieCWG181R5pMl+fInqag4d5qOoJGC7Yg6HkfL
+         DZDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:in-reply-to:references
-         :date:message-id:mime-version;
-        bh=yToOlkZkYj/FbYOyMzXTxghkKi256mVsYV3YgS6NprE=;
-        b=Yd4O3htEQQSvsKxhA24YeKga19jLosCpJZ0JWz22gJgW7BTeyLs+EtmJJf4YyPR6y3
-         +VlelDkVu+oyZdMoBTb+x2yOBvyZsS8ovKtbEbqaxm52WOlD3Lo5kF7/xM8xLP0UPNVz
-         clDq+VLnhGHMfk9tfzvLTIAi31n0g0ZOJswezac8WWL9SBcPuwIOA/X7dMnJRbR427nQ
-         MUcXqDj8+F9+OducezMgK8eS9Xz9YgkcOHBqduLR5Gs8LAuvyhlMa1fFUnJq7qOfUhqx
-         OY3x5Y/f0+66FiLVbkOnSq1GFUUZ2SxcwmL+M2hR13k9nlJ8sN5BDX0AqENsJPZ/6AXq
-         koZA==
-X-Gm-Message-State: APjAAAV64I5WbtNIs+JkdFK4t9iHhYvykUsx1VQjN79XGlL7E00emHzQ
-        Dq23yGOblNBlc8RJIGpzTeLl61Ch
-X-Google-Smtp-Source: APXvYqw5NI+FMkHyKc4kTF5PcdKAPLhphct1UVPB2w4jvPmzySeoYkZU6s7XS6VWh/DrVgpTd5KxfQ==
-X-Received: by 2002:a2e:7609:: with SMTP id r9mr5674576ljc.238.1581270858904;
-        Sun, 09 Feb 2020 09:54:18 -0800 (PST)
-Received: from saruman (88-113-215-33.elisa-laajakaista.fi. [88.113.215.33])
-        by smtp.gmail.com with ESMTPSA id r23sm5003241ljk.35.2020.02.09.09.54.17
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 09 Feb 2020 09:54:17 -0800 (PST)
-From:   Felipe Balbi <balbi@kernel.org>
-To:     Colin King <colin.king@canonical.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] usb: dwc3: debug: remove redundant call to strlen
-In-Reply-To: <20200208162508.29336-1-colin.king@canonical.com>
-References: <20200208162508.29336-1-colin.king@canonical.com>
-Date:   Sun, 09 Feb 2020 19:54:03 +0200
-Message-ID: <87pnen3av8.fsf@kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=+26FYn1Jtrvl0Tdo43WhoX99YiKtnwNRDS1kjmkTi2M=;
+        b=DVIVs7/vT5GOg87UER7pXC6kt3CBqluGQaNeyeTfwwr3KGjNCqm0jX1lOcRUqEY5s7
+         lhzFpZCauaiIhv2Owj1OtjV3TkYa5Rkc02bIjyvIk1h+vVk/idbngsCgfcYZk/4ykR7A
+         Uq3KGQqRLUPus5Y7WEeIzk3vcKuauj72t/+aRICDr3I3u39zoCrqXfA8jpt0XdVLELIo
+         C8EohrBSm6nPp+wflBPYcOWzXOY8qErxOOQiu8teC31WXA/rwWNPo+z5yCDEh6cRTLBW
+         MVdZI2Ms77Mxl90kMsJfG3nAmttVjLY/qrMDqtAScZXI3hVo2GS+pkW/itUTAgmNd6AV
+         tTxQ==
+X-Gm-Message-State: APjAAAWkuj7tEynLkY2n31XCMftCrMmQr0reaDTeVzfgTIzaW3lyBvIc
+        F9xtog/qZa6GszxgH4ZI/ZE=
+X-Google-Smtp-Source: APXvYqw8VhcIRxAHx/n78QIiNmOW7ezsRzYLfnmLCgZ6CnDw7qDMRc+fLNCB0O0iNgPsRs/m2r95rw==
+X-Received: by 2002:a17:902:b617:: with SMTP id b23mr9796027pls.285.1581281759041;
+        Sun, 09 Feb 2020 12:55:59 -0800 (PST)
+Received: from localhost.localdomain ([116.126.226.81])
+        by smtp.googlemail.com with ESMTPSA id k123sm7075722pgk.48.2020.02.09.12.55.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Feb 2020 12:55:58 -0800 (PST)
+From:   JieunKim <jieun.kim4758@gmail.com>
+To:     valdis.kletnieks@vt.edu
+Cc:     gregkh@linuxfoundation.org, linux-fsdevel@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, JieunKim <jieun.kim4758@gmail.com>
+Subject: [PATCH] staging: exfat: Replace printk with pr_info
+Date:   Mon, 10 Feb 2020 05:48:10 +0900
+Message-Id: <20200209204810.9899-1-jieun.kim4758@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+pr_info is preferred to use than printk.
+pr_info calls printk with KERN_INFO macros by itself.
+---
+ drivers/staging/exfat/exfat_super.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Colin King <colin.king@canonical.com> writes:
+diff --git a/drivers/staging/exfat/exfat_super.c b/drivers/staging/exfat/exfat_super.c
+index b81d2a87b82e..3806036c0ef6 100644
+--- a/drivers/staging/exfat/exfat_super.c
++++ b/drivers/staging/exfat/exfat_super.c
+@@ -364,7 +364,7 @@ static int ffsMountVol(struct super_block *sb)
+ 	exfat_bdev_open(sb);
+ 
+ 	if (p_bd->sector_size < sb->s_blocksize) {
+-		printk(KERN_INFO "EXFAT: mount failed - sector size %d less than blocksize %ld\n",
++		pr_info("EXFAT: mount failed - sector size %d less than blocksize %ld\n",
+ 		       p_bd->sector_size,  sb->s_blocksize);
+ 		ret = -EINVAL;
+ 		goto out;
+-- 
+2.17.1
 
-> From: Colin Ian King <colin.king@canonical.com>
->
-> The call to strlen is redundant since the return value is assigned
-> to variable len but not subsequently used. Remove the redundant
-> call.
->
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/usb/dwc3/debug.h | 2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/drivers/usb/dwc3/debug.h b/drivers/usb/dwc3/debug.h
-> index e56beb9d1e36..ee964352c8e2 100644
-> --- a/drivers/usb/dwc3/debug.h
-> +++ b/drivers/usb/dwc3/debug.h
-> @@ -296,8 +296,6 @@ static inline const char *dwc3_ep_event_string(char *=
-str, size_t size,
->  				status & DEPEVT_STATUS_TRANSFER_ACTIVE ?
->  				" (Active)" : " (Not Active)");
->=20=20
-> -		len =3D strlen(str);
-> -
-
-looking at the code here. The problem is elsewhere:
-
-| case DWC3_DEPEVT_XFERNOTREADY:
-| 	len =3D strlen(str);
-| 	snprintf(str + len, size - len, "Transfer Not Ready [%d]%s",
-| 			event->parameters,
-| 			status & DEPEVT_STATUS_TRANSFER_ACTIVE ?
-| 			" (Active)" : " (Not Active)");
-|
-| 	len =3D strlen(str);
-|
-| 	/* Control Endpoints */
-| 	if (epnum <=3D 1) {
-| 		int phase =3D DEPEVT_STATUS_CONTROL_PHASE(event->status);
-| 		switch (phase) {
-| 		case DEPEVT_STATUS_CONTROL_DATA:
-| 			snprintf(str + ret, size - ret,
-| 					" [Data Phase]");
-| 			break;
-| 		case DEPEVT_STATUS_CONTROL_STATUS:
-| 			snprintf(str + ret, size - ret,
-| 					" [Status Phase]");
-
-these two should use str + len and size - len. However, a better fix
-would be drop the usage of strlen() and just use the return value from
-snprintf().
-
-Do you want to produce that patch, instead? It could be two patches:
-
-	1. replace ret with len in these two cases (a bug fix, possibly
-	        Cc stable)
-        2. drop usage of strlen() in the entire function (a new feature,
-	        for v5.7
-
-=2D-=20
-balbi
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEElLzh7wn96CXwjh2IzL64meEamQYFAl5ARz0ACgkQzL64meEa
-mQYgmw/9EE5pVmtUrQ8lNzsRD1D74sigwdOsgAiv2KzGlsAo6V//uG7pj7HDevKs
-PbGaHd1Z4wChEWK4SeNiGpt/Ti6i0jWJjm444SfOAzTaf9l+PChxW779Sevtpamh
-kmapC8Kcu6+hDdudSXAahPvDy7cImv9ZRZwUvZCspIQgVz21+5MqZSGFv1Uzkp5M
-0T/mGQcFRtdBDJzZvZxV/7Fk/pwAEtFGga324kvqJVu/156U9vgQOF4mhdxFFXrD
-wcwIRQRr8oEHf+h/e/m1XI6GLlXsiCGWtPwd1C93GyS5GkTi7pcovxwXmhIbwwap
-TzpsRWt+iFldtzrBgpEGrBtnLf+4T8jLGa3x6CWWmLe7f5jIdznd0DUkPn3ykSjR
-LKVJ0vw1iASh16E4ayD7mtwk6ocxSSkq4mxmSebJH5xDzKlfPC0Igtd/gfmKDyku
-/PRzMXi4HkkVO6Q6P8B1f7dKX2Oj2r6z7+Rgb5smb/Hh6E5TSFnf20SgdEYCdz22
-VYzM6hR6Z39MQW+Vi2Ag72PYN0azhgXvqahRvf72Rov1cbtlT5fsUYJPN3W+S1MJ
-CUA7/Y2vPulVTCYSUsq4MG+mK2d9fEgQ1U66Ysk6Q3FSJoRgAHSoSmaVp5V4GuX+
-IRhwRji+3TaLqQo65jdhuvCxMXTjQ/sldiEws5trBCGwHC2I92U=
-=AtVg
------END PGP SIGNATURE-----
---=-=-=--

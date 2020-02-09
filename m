@@ -2,82 +2,151 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C970156B04
-	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Feb 2020 16:35:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA6CE156BE2
+	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Feb 2020 18:54:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727722AbgBIPe6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 9 Feb 2020 10:34:58 -0500
-Received: from mga09.intel.com ([134.134.136.24]:17402 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727661AbgBIPe6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 9 Feb 2020 10:34:58 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Feb 2020 07:34:57 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,421,1574150400"; 
-   d="scan'208";a="226964306"
-Received: from crojewsk-mobl1.ger.corp.intel.com (HELO [10.251.86.168]) ([10.251.86.168])
-  by fmsmga008.fm.intel.com with ESMTP; 09 Feb 2020 07:34:52 -0800
-Subject: Re: [PATCH] ASoC: Intel: mrfld: return error codes when an error
- occurs
-To:     Colin King <colin.king@canonical.com>
-Cc:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Jie Yang <yang.jie@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, Vinod Koul <vkoul@kernel.org>,
-        "Subhransu S . Prusty" <subhransu.s.prusty@intel.com>,
-        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20200208220720.36657-1-colin.king@canonical.com>
-From:   Cezary Rojewski <cezary.rojewski@intel.com>
-Message-ID: <5622cdca-c17b-c0d8-8dbc-4616449877d2@intel.com>
-Date:   Sun, 9 Feb 2020 16:34:50 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+        id S1727416AbgBIRyW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 9 Feb 2020 12:54:22 -0500
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:33841 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727388AbgBIRyW (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 9 Feb 2020 12:54:22 -0500
+Received: by mail-lj1-f193.google.com with SMTP id x7so4553074ljc.1;
+        Sun, 09 Feb 2020 09:54:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:in-reply-to:references:date:message-id
+         :mime-version;
+        bh=yToOlkZkYj/FbYOyMzXTxghkKi256mVsYV3YgS6NprE=;
+        b=ijqw+WcIVuTiOWt3tpA2WyIhu0PxKSAV85NLz26ZxYTy4zGEasvgkOT3tuXnPMDDaU
+         PQmCF3vKbilx9KJUlVgz7eX/hkEkGbDs06yFqUmO47ClNs4YIEZw8Cv6QjrTnr2y/+hj
+         NUHnz3Qo020Zp7/jFPGWtQ0rmAelxJ8tCBYK9ZORNEtq1oIh/U4KtI32CsIxIPwq2Lpm
+         kMyB1YUNZdXp7zf6dnaxpON9G5+WPRHKNyK8Pcd+9J7RxVL3M1Mo7AOBbGMtJHg1AFop
+         ydyGoI++DKBkDsg2HxgijNXJ0r1Z3ZL0hZGCII+CMXa4TiyMA7VjNunOjOJb1S2riwVi
+         KyRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:in-reply-to:references
+         :date:message-id:mime-version;
+        bh=yToOlkZkYj/FbYOyMzXTxghkKi256mVsYV3YgS6NprE=;
+        b=Yd4O3htEQQSvsKxhA24YeKga19jLosCpJZ0JWz22gJgW7BTeyLs+EtmJJf4YyPR6y3
+         +VlelDkVu+oyZdMoBTb+x2yOBvyZsS8ovKtbEbqaxm52WOlD3Lo5kF7/xM8xLP0UPNVz
+         clDq+VLnhGHMfk9tfzvLTIAi31n0g0ZOJswezac8WWL9SBcPuwIOA/X7dMnJRbR427nQ
+         MUcXqDj8+F9+OducezMgK8eS9Xz9YgkcOHBqduLR5Gs8LAuvyhlMa1fFUnJq7qOfUhqx
+         OY3x5Y/f0+66FiLVbkOnSq1GFUUZ2SxcwmL+M2hR13k9nlJ8sN5BDX0AqENsJPZ/6AXq
+         koZA==
+X-Gm-Message-State: APjAAAV64I5WbtNIs+JkdFK4t9iHhYvykUsx1VQjN79XGlL7E00emHzQ
+        Dq23yGOblNBlc8RJIGpzTeLl61Ch
+X-Google-Smtp-Source: APXvYqw5NI+FMkHyKc4kTF5PcdKAPLhphct1UVPB2w4jvPmzySeoYkZU6s7XS6VWh/DrVgpTd5KxfQ==
+X-Received: by 2002:a2e:7609:: with SMTP id r9mr5674576ljc.238.1581270858904;
+        Sun, 09 Feb 2020 09:54:18 -0800 (PST)
+Received: from saruman (88-113-215-33.elisa-laajakaista.fi. [88.113.215.33])
+        by smtp.gmail.com with ESMTPSA id r23sm5003241ljk.35.2020.02.09.09.54.17
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 09 Feb 2020 09:54:17 -0800 (PST)
+From:   Felipe Balbi <balbi@kernel.org>
+To:     Colin King <colin.king@canonical.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] usb: dwc3: debug: remove redundant call to strlen
+In-Reply-To: <20200208162508.29336-1-colin.king@canonical.com>
+References: <20200208162508.29336-1-colin.king@canonical.com>
+Date:   Sun, 09 Feb 2020 19:54:03 +0200
+Message-ID: <87pnen3av8.fsf@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20200208220720.36657-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="=-=-=";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020-02-08 23:07, Colin King wrote:
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+
+Colin King <colin.king@canonical.com> writes:
+
 > From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently function sst_platform_get_resources always returns zero and
-> error return codes set by the function are never returned. Fix this
-> by returning the error return code in variable ret rather than the
-> hard coded zero.
-> 
+>
+> The call to strlen is redundant since the return value is assigned
+> to variable len but not subsequently used. Remove the redundant
+> call.
+>
 > Addresses-Coverity: ("Unused value")
-> Fixes: f533a035e4da ("ASoC: Intel: mrfld - create separate module for pci part")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->   sound/soc/intel/atom/sst/sst_pci.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/sound/soc/intel/atom/sst/sst_pci.c b/sound/soc/intel/atom/sst/sst_pci.c
-> index d952719bc098..5862fe968083 100644
-> --- a/sound/soc/intel/atom/sst/sst_pci.c
-> +++ b/sound/soc/intel/atom/sst/sst_pci.c
-> @@ -99,7 +99,7 @@ static int sst_platform_get_resources(struct intel_sst_drv *ctx)
->   	dev_dbg(ctx->dev, "DRAM Ptr %p\n", ctx->dram);
->   do_release_regions:
->   	pci_release_regions(pci);
-> -	return 0;
-> +	return ret;
->   }
->   
->   /*
-> 
+>  drivers/usb/dwc3/debug.h | 2 --
+>  1 file changed, 2 deletions(-)
+>
+> diff --git a/drivers/usb/dwc3/debug.h b/drivers/usb/dwc3/debug.h
+> index e56beb9d1e36..ee964352c8e2 100644
+> --- a/drivers/usb/dwc3/debug.h
+> +++ b/drivers/usb/dwc3/debug.h
+> @@ -296,8 +296,6 @@ static inline const char *dwc3_ep_event_string(char *=
+str, size_t size,
+>  				status & DEPEVT_STATUS_TRANSFER_ACTIVE ?
+>  				" (Active)" : " (Not Active)");
+>=20=20
+> -		len =3D strlen(str);
+> -
 
-Thank you for the fix.
+looking at the code here. The problem is elsewhere:
 
-Acked-by: Cezary Rojewski <cezary.rojewski@intel.com>
+| case DWC3_DEPEVT_XFERNOTREADY:
+| 	len =3D strlen(str);
+| 	snprintf(str + len, size - len, "Transfer Not Ready [%d]%s",
+| 			event->parameters,
+| 			status & DEPEVT_STATUS_TRANSFER_ACTIVE ?
+| 			" (Active)" : " (Not Active)");
+|
+| 	len =3D strlen(str);
+|
+| 	/* Control Endpoints */
+| 	if (epnum <=3D 1) {
+| 		int phase =3D DEPEVT_STATUS_CONTROL_PHASE(event->status);
+| 		switch (phase) {
+| 		case DEPEVT_STATUS_CONTROL_DATA:
+| 			snprintf(str + ret, size - ret,
+| 					" [Data Phase]");
+| 			break;
+| 		case DEPEVT_STATUS_CONTROL_STATUS:
+| 			snprintf(str + ret, size - ret,
+| 					" [Status Phase]");
+
+these two should use str + len and size - len. However, a better fix
+would be drop the usage of strlen() and just use the return value from
+snprintf().
+
+Do you want to produce that patch, instead? It could be two patches:
+
+	1. replace ret with len in these two cases (a bug fix, possibly
+	        Cc stable)
+        2. drop usage of strlen() in the entire function (a new feature,
+	        for v5.7
+
+=2D-=20
+balbi
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEElLzh7wn96CXwjh2IzL64meEamQYFAl5ARz0ACgkQzL64meEa
+mQYgmw/9EE5pVmtUrQ8lNzsRD1D74sigwdOsgAiv2KzGlsAo6V//uG7pj7HDevKs
+PbGaHd1Z4wChEWK4SeNiGpt/Ti6i0jWJjm444SfOAzTaf9l+PChxW779Sevtpamh
+kmapC8Kcu6+hDdudSXAahPvDy7cImv9ZRZwUvZCspIQgVz21+5MqZSGFv1Uzkp5M
+0T/mGQcFRtdBDJzZvZxV/7Fk/pwAEtFGga324kvqJVu/156U9vgQOF4mhdxFFXrD
+wcwIRQRr8oEHf+h/e/m1XI6GLlXsiCGWtPwd1C93GyS5GkTi7pcovxwXmhIbwwap
+TzpsRWt+iFldtzrBgpEGrBtnLf+4T8jLGa3x6CWWmLe7f5jIdznd0DUkPn3ykSjR
+LKVJ0vw1iASh16E4ayD7mtwk6ocxSSkq4mxmSebJH5xDzKlfPC0Igtd/gfmKDyku
+/PRzMXi4HkkVO6Q6P8B1f7dKX2Oj2r6z7+Rgb5smb/Hh6E5TSFnf20SgdEYCdz22
+VYzM6hR6Z39MQW+Vi2Ag72PYN0azhgXvqahRvf72Rov1cbtlT5fsUYJPN3W+S1MJ
+CUA7/Y2vPulVTCYSUsq4MG+mK2d9fEgQ1U66Ysk6Q3FSJoRgAHSoSmaVp5V4GuX+
+IRhwRji+3TaLqQo65jdhuvCxMXTjQ/sldiEws5trBCGwHC2I92U=
+=AtVg
+-----END PGP SIGNATURE-----
+--=-=-=--

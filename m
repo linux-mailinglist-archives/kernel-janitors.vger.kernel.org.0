@@ -2,69 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E2AD1570DB
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Feb 2020 09:35:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50CED1570E6
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Feb 2020 09:36:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727522AbgBJIe7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Feb 2020 03:34:59 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:38654 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727452AbgBJIe6 (ORCPT
+        id S1727452AbgBJIgU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Feb 2020 03:36:20 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:51604 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727121AbgBJIgU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Feb 2020 03:34:58 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01A8Wx33161934;
-        Mon, 10 Feb 2020 08:34:53 GMT
+        Mon, 10 Feb 2020 03:36:20 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01A8YGnZ142881;
+        Mon, 10 Feb 2020 08:35:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : references : mime-version : content-type :
  in-reply-to; s=corp-2020-01-29;
- bh=jUUFk4pjb4VR5au3cMOhGdF3aMvNDZPsdfMNEMcE88Y=;
- b=TtfwFmaCYZ7mxxJyy/NgvB5hNwBeHzKKrJHA82hz4I5KiQk+l6BBp7Qjuc8d/zS+kffz
- 1I5KRbVp8u/mPsKh1eIQfPxD3v+mN2nuiAEmHt/QtE2J4qQHY2QjYdD5eof45FAZuqQv
- ze5eygr9Pld5+VMbG0chzaJtOM7XteryWECz+U67qJSbNb3lhZXzSkqJrK6jSgTkGv1l
- 3os1ruWNTWfsjLghuW461Fc3SH5/KuViEPuupuDutjjWWmU0e5/YTXJXR281kAUaxGJz
- zFYTMFhGjklMG9vBu8OTPpSm/LWGdHof7oJVFzojkPzY1EClwiOQ7DKt+oan/RWyjOji cA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 2y2p3s24gk-1
+ bh=BzJOwVoSVSbqmZIowabb92HL+/K1HTWJattJHrcbaPg=;
+ b=COg2K37pX1O6datKCOcl6f/EX5FHVZqbGC9kq0+I088NunsQnq18biM2a1CBeYVPW4O3
+ dEYPx90qxMyhGsBbBgANXV4+g+QmvtRfCTNxaOX1i5a9hHHjHcTlyaN+XC5ZU1hSe6wg
+ gTeVTCojfIEP7ExQwwpbqX+NrDReTkfY2mJwCfTd69XilplIyvAIAyszPRJTJW1xrwv0
+ eqg2nhdsLNCtk+MH3orZtQdxDBP4yC9G9/kWUGNzs7UW1xqDTNSvsFdzFAdZ5qLo4Lya
+ V6vrx2NLXHgq686BkgMluN/UeorFDmJNz6bwTlnp1Q/rOO3B2Z36i7Mfiq9998OExrKz Wg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 2y2jx5tfp7-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 10 Feb 2020 08:34:53 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01A8WXsp168413;
-        Mon, 10 Feb 2020 08:32:52 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 2y26pxshhy-1
+        Mon, 10 Feb 2020 08:35:27 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01A8W7GW065509;
+        Mon, 10 Feb 2020 08:35:27 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2y26hshc0a-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 10 Feb 2020 08:32:52 +0000
-Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 01A8Wp4w001439;
-        Mon, 10 Feb 2020 08:32:51 GMT
+        Mon, 10 Feb 2020 08:35:27 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 01A8ZLCd002344;
+        Mon, 10 Feb 2020 08:35:21 GMT
 Received: from kadam (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 10 Feb 2020 00:32:51 -0800
-Date:   Mon, 10 Feb 2020 11:32:43 +0300
+        with ESMTP ; Mon, 10 Feb 2020 00:35:20 -0800
+Date:   Mon, 10 Feb 2020 11:35:13 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
 To:     Colin King <colin.king@canonical.com>
-Cc:     Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] usb: dwc3: debug: remove redundant call to strlen
-Message-ID: <20200210083243.GW1778@kadam>
-References: <20200208162508.29336-1-colin.king@canonical.com>
+Cc:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ASoC: ti: davinci-mcasp: remove redundant assignment to
+ variable ret
+Message-ID: <20200210083513.GX1778@kadam>
+References: <20200208215523.36094-1-colin.king@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200208162508.29336-1-colin.king@canonical.com>
+In-Reply-To: <20200208215523.36094-1-colin.king@canonical.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9526 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0 spamscore=0
- mlxscore=0 adultscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002100071
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 suspectscore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002100071
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9526 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 malwarescore=0
- suspectscore=0 mlxlogscore=999 priorityscore=1501 clxscore=1015
- impostorscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
+ priorityscore=1501 adultscore=0 phishscore=0 impostorscore=0 spamscore=0
+ bulkscore=0 lowpriorityscore=0 mlxscore=0 suspectscore=0 clxscore=1011
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
  definitions=main-2002100071
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -72,44 +75,32 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Feb 08, 2020 at 04:25:08PM +0000, Colin King wrote:
+On Sat, Feb 08, 2020 at 09:55:23PM +0000, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> The call to strlen is redundant since the return value is assigned
-> to variable len but not subsequently used. Remove the redundant
-> call.
+> The assignment to ret is redundant as it is not used in the error
+> return path and hence can be removed.
 > 
 > Addresses-Coverity: ("Unused value")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/usb/dwc3/debug.h | 2 --
->  1 file changed, 2 deletions(-)
+>  sound/soc/ti/davinci-mcasp.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 > 
-> diff --git a/drivers/usb/dwc3/debug.h b/drivers/usb/dwc3/debug.h
-> index e56beb9d1e36..ee964352c8e2 100644
-> --- a/drivers/usb/dwc3/debug.h
-> +++ b/drivers/usb/dwc3/debug.h
-> @@ -296,8 +296,6 @@ static inline const char *dwc3_ep_event_string(char *str, size_t size,
->  				status & DEPEVT_STATUS_TRANSFER_ACTIVE ?
->  				" (Active)" : " (Not Active)");
->  
-> -		len = strlen(str);
+> diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
+> index e1e937eb1dc1..450c394b2882 100644
+> --- a/sound/soc/ti/davinci-mcasp.c
+> +++ b/sound/soc/ti/davinci-mcasp.c
+> @@ -1764,10 +1764,8 @@ static struct davinci_mcasp_pdata *davinci_mcasp_set_pdata_from_of(
+>  	} else if (match) {
+>  		pdata = devm_kmemdup(&pdev->dev, match->data, sizeof(*pdata),
+>  				     GFP_KERNEL);
+> -		if (!pdata) {
+> -			ret = -ENOMEM;
+> +		if (!pdata)
+>  			return pdata;
 
-This code is buggy.  It's a mixup between ret and len.  Get rid of "ret"
-and use "len" throughout.
-
-Unlike userspace snprintf() the kernel version always returns a positive
-value.  It returns the number of bytes that would have been copied if
-there were enough space.  This code should probably be changed to use
-scnprintf() which returns the number of bytes which were copied
-successfully.
-
-The remove all the strlen() calls.  It should just be += the return.
-
-	len += scnprintf(str + len, size - len, "Transfer Not Ready [%d] %s",
-			 event->parameters,
-			 status & DEPEVT_STATUS_TRANSFER_ACTIVE ?
-				"(Active)" : "(Not Active)");
+Use a literal NULL for readability.  "return NULL;".
 
 regards,
 dan carpenter

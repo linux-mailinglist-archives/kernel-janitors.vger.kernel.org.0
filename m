@@ -2,88 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3898A157D91
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Feb 2020 15:42:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A343B157D74
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Feb 2020 15:32:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727490AbgBJOmE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Feb 2020 09:42:04 -0500
-Received: from mga03.intel.com ([134.134.136.65]:18244 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726961AbgBJOmE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Feb 2020 09:42:04 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 Feb 2020 06:42:03 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,425,1574150400"; 
-   d="scan'208";a="226213708"
-Received: from ykatsuma-mobl1.gar.corp.intel.com (HELO [10.251.140.95]) ([10.251.140.95])
-  by fmsmga007.fm.intel.com with ESMTP; 10 Feb 2020 06:42:02 -0800
-Subject: Re: [alsa-devel] [PATCH] ASoC: Intel: mrfld: return error codes when
- an error occurs
-To:     Colin King <colin.king@canonical.com>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Jie Yang <yang.jie@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, Vinod Koul <vkoul@kernel.org>,
-        "Subhransu S . Prusty" <subhransu.s.prusty@intel.com>,
-        alsa-devel@alsa-project.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200208220720.36657-1-colin.king@canonical.com>
-From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Message-ID: <96b4d153-2ee5-ea88-7176-a2d9ebf19982@linux.intel.com>
-Date:   Mon, 10 Feb 2020 08:09:26 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1727939AbgBJOcP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Feb 2020 09:32:15 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:50888 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727120AbgBJOcO (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 10 Feb 2020 09:32:14 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01AESGpc183425;
+        Mon, 10 Feb 2020 14:32:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=3cp63tY8iZSYGBKxAQ5xSKVEuTJ/BD1ppkEWdOFbtG0=;
+ b=cpKhW6hh6xfyuwSEJ/yNvn9ry5dXnr/dfhWNS610+DKEId9trZdU/KKv18T/k4rbgk8s
+ an8PD2cF1IyrHl0ADeYA7aXOb0DMvaaMqDR/93PoibutK1dfND2wIyA8LH96WFA85owy
+ 7agvuhNE2RbjnagjXd4l7LGNoUXfsAT2HFrNaP9cB6bE3tUje/PH1sOtBULQZS+9nXPv
+ kagDn7DXa05ytz0poGr+nFc9iM2J/Fr+a4BDKeB3VDXyl0S+HVbEyjl6YuVlLbYejD9G
+ MLIifgRQpCzfogiSW0AD2MbnVGXTpwEQaW0qe0cIPVSHE1mIbpELluksoEuNEAKdjFL6 oA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2y2k87vsw8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 10 Feb 2020 14:32:09 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01AESPW0135646;
+        Mon, 10 Feb 2020 14:32:09 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2y26sjavam-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 10 Feb 2020 14:32:09 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 01AEW7jf031613;
+        Mon, 10 Feb 2020 14:32:07 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 10 Feb 2020 06:32:03 -0800
+Date:   Mon, 10 Feb 2020 17:31:52 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Felipe Balbi <felipe.balbi@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] usb: dwc3: debug: fix string position formatting mixup
+ with ret and len
+Message-ID: <20200210143151.GZ1778@kadam>
+References: <20200210095139.328711-1-colin.king@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <20200208220720.36657-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200210095139.328711-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9526 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 mlxscore=0
+ malwarescore=0 bulkscore=0 spamscore=0 suspectscore=0 mlxlogscore=766
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2002100112
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9526 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 lowpriorityscore=0
+ suspectscore=0 bulkscore=0 phishscore=0 mlxlogscore=836 mlxscore=0
+ malwarescore=0 impostorscore=0 clxscore=1015 spamscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002100112
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Looks good!
 
+Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-On 2/8/20 4:07 PM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently function sst_platform_get_resources always returns zero and
-> error return codes set by the function are never returned. Fix this
-> by returning the error return code in variable ret rather than the
-> hard coded zero.
-> 
-> Addresses-Coverity: ("Unused value")
-> Fixes: f533a035e4da ("ASoC: Intel: mrfld - create separate module for pci part")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+regards,
+dan carpenter
 
-Yes, it's clearly bad.
-
-Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-
-I don't think this impacts anyone though, the code can only be used for 
-Merrifield/Tangier.
-
-> ---
->   sound/soc/intel/atom/sst/sst_pci.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/sound/soc/intel/atom/sst/sst_pci.c b/sound/soc/intel/atom/sst/sst_pci.c
-> index d952719bc098..5862fe968083 100644
-> --- a/sound/soc/intel/atom/sst/sst_pci.c
-> +++ b/sound/soc/intel/atom/sst/sst_pci.c
-> @@ -99,7 +99,7 @@ static int sst_platform_get_resources(struct intel_sst_drv *ctx)
->   	dev_dbg(ctx->dev, "DRAM Ptr %p\n", ctx->dram);
->   do_release_regions:
->   	pci_release_regions(pci);
-> -	return 0;
-> +	return ret;
->   }
->   
->   /*
-> 

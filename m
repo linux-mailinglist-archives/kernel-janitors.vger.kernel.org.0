@@ -2,103 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4575F157D40
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Feb 2020 15:17:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9C9D157D5B
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Feb 2020 15:26:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727658AbgBJORc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Feb 2020 09:17:32 -0500
-Received: from ivanoab7.miniserver.com ([37.128.132.42]:41484 "EHLO
-        www.kot-begemot.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727434AbgBJORc (ORCPT
+        id S1728118AbgBJO0v (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Feb 2020 09:26:51 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:40670 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727429AbgBJO0u (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Feb 2020 09:17:32 -0500
-Received: from tun252.jain.kot-begemot.co.uk ([192.168.18.6] helo=jain.kot-begemot.co.uk)
-        by www.kot-begemot.co.uk with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <anton.ivanov@cambridgegreys.com>)
-        id 1j19sL-0004Uz-9I; Mon, 10 Feb 2020 14:17:25 +0000
-Received: from jain.kot-begemot.co.uk ([192.168.3.3])
-        by jain.kot-begemot.co.uk with esmtp (Exim 4.92)
-        (envelope-from <anton.ivanov@cambridgegreys.com>)
-        id 1j19sI-0000TK-TU; Mon, 10 Feb 2020 14:17:25 +0000
-Subject: Re: [PATCH v3] um: Fix some error handling in uml_vector_user_bpf()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Jeff Dike <jdike@addtoit.com>
-Cc:     Richard Weinberger <richard@nod.at>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>,
-        Alex Dewar <alex.dewar@gmx.co.uk>,
-        linux-um@lists.infradead.org, bpf@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20200128151000.kx2bwayuuxpuqn6t@kili.mountain>
-From:   Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Message-ID: <cd66b933-c433-3d8a-8457-1de6c0716f49@cambridgegreys.com>
-Date:   Mon, 10 Feb 2020 14:17:22 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        Mon, 10 Feb 2020 09:26:50 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1j1A1P-0008CF-1L; Mon, 10 Feb 2020 14:26:47 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Antti Palosaari <crope@iki.fi>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] media: tda10071: fix unsigned sign extension overflow
+Date:   Mon, 10 Feb 2020 14:26:46 +0000
+Message-Id: <20200210142646.431957-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-In-Reply-To: <20200128151000.kx2bwayuuxpuqn6t@kili.mountain>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0
-X-Spam-Score: -1.0
-X-Clacks-Overhead: GNU Terry Pratchett
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
+The shifting of buf[3] by 24 bits to the left will be promoted to
+a 32 bit signed int and then sign-extended to an unsigned long. In
+the unlikely event that the the top bit of buf[3] is set then all
+then all the upper bits end up as also being set because of
+the sign-extension and this affect the ev->post_bit_error sum.
+Fix this by using the temporary u32 variable bit_error to avoid
+the sign-extension promotion. This also removes the need to do the
+computation twice.
 
-On 28/01/2020 15:27, Dan Carpenter wrote:
-> 1) The uml_vector_user_bpf() returns pointers so it should return NULL
->     instead of false.
-> 2) If the "bpf_prog" allocation failed, it would have eventually lead to
->     a crash.  We can't succeed after the error happens so it should just
->     return.
-> 
-> Fixes: 9807019a62dc ("um: Loadable BPF "Firmware" for vector drivers")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> v3: Fix screwed up subject.  Sorry.  Not my most shining hour.
-> v2: The first version broke the build.  Shame upon me.
-> 
->   arch/um/drivers/vector_user.c | 11 ++++++-----
->   1 file changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/um/drivers/vector_user.c b/arch/um/drivers/vector_user.c
-> index ddcd917be0af..1403cbadf92b 100644
-> --- a/arch/um/drivers/vector_user.c
-> +++ b/arch/um/drivers/vector_user.c
-> @@ -732,13 +732,14 @@ void *uml_vector_user_bpf(char *filename)
->   
->   	if (stat(filename, &statbuf) < 0) {
->   		printk(KERN_ERR "Error %d reading bpf file", -errno);
-> -		return false;
-> +		return NULL;
->   	}
->   	bpf_prog = uml_kmalloc(sizeof(struct sock_fprog), UM_GFP_KERNEL);
-> -	if (bpf_prog != NULL) {
-> -		bpf_prog->len = statbuf.st_size / sizeof(struct sock_filter);
-> -		bpf_prog->filter = NULL;
-> -	}
-> +	if (bpf_prog == NULL)
-> +		return NULL;
-> +	bpf_prog->len = statbuf.st_size / sizeof(struct sock_filter);
-> +	bpf_prog->filter = NULL;
-> +
->   	ffd = os_open_file(filename, of_read(OPENFLAGS()), 0);
->   	if (ffd < 0) {
->   		printk(KERN_ERR "Error %d opening bpf file", -errno);
-> 
+Addresses-Coverity: ("Unintended sign extension")
+Fixes: 267897a4708f ("[media] tda10071: implement DVBv5 statistics")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/media/dvb-frontends/tda10071.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-Acked-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-
+diff --git a/drivers/media/dvb-frontends/tda10071.c b/drivers/media/dvb-frontends/tda10071.c
+index 1953b00b3e48..685c0ac71819 100644
+--- a/drivers/media/dvb-frontends/tda10071.c
++++ b/drivers/media/dvb-frontends/tda10071.c
+@@ -470,10 +470,11 @@ static int tda10071_read_status(struct dvb_frontend *fe, enum fe_status *status)
+ 			goto error;
+ 
+ 		if (dev->delivery_system == SYS_DVBS) {
+-			dev->dvbv3_ber = buf[0] << 24 | buf[1] << 16 |
+-					 buf[2] << 8 | buf[3] << 0;
+-			dev->post_bit_error += buf[0] << 24 | buf[1] << 16 |
+-					       buf[2] << 8 | buf[3] << 0;
++			u32 bit_error = buf[0] << 24 | buf[1] << 16 |
++					buf[2] << 8 | buf[3] << 0;
++
++			dev->dvbv3_ber = bit_error;
++			dev->post_bit_error += bit_error;
+ 			c->post_bit_error.stat[0].scale = FE_SCALE_COUNTER;
+ 			c->post_bit_error.stat[0].uvalue = dev->post_bit_error;
+ 			dev->block_error += buf[4] << 8 | buf[5] << 0;
 -- 
-Anton R. Ivanov
-Cambridgegreys Limited. Registered in England. Company Number 10273661
-https://www.cambridgegreys.com/
+2.25.0
+

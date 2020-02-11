@@ -2,181 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 21DDB15913F
-	for <lists+kernel-janitors@lfdr.de>; Tue, 11 Feb 2020 14:59:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1BD8159391
+	for <lists+kernel-janitors@lfdr.de>; Tue, 11 Feb 2020 16:49:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729381AbgBKN7s (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 11 Feb 2020 08:59:48 -0500
-Received: from antares.kleine-koenig.org ([94.130.110.236]:45946 "EHLO
-        antares.kleine-koenig.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729031AbgBKN7s (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 11 Feb 2020 08:59:48 -0500
-X-Greylist: delayed 500 seconds by postgrey-1.27 at vger.kernel.org; Tue, 11 Feb 2020 08:59:47 EST
-Received: by antares.kleine-koenig.org (Postfix, from userid 1000)
-        id 9A890905F35; Tue, 11 Feb 2020 14:51:25 +0100 (CET)
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
-To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Thorsten Scherer <t.scherer@eckelmann.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        kernel-janitors@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: [PATCH] gpio: siox: use raw spinlock for irq related locking
-Date:   Tue, 11 Feb 2020 14:51:21 +0100
-Message-Id: <20200211135121.15752-1-uwe@kleine-koenig.org>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <87d0al4600.fsf@nanos.tec.linutronix.de>
-References: <87d0al4600.fsf@nanos.tec.linutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        id S1728427AbgBKPtE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 11 Feb 2020 10:49:04 -0500
+Received: from foss.arm.com ([217.140.110.172]:48340 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728348AbgBKPtE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 11 Feb 2020 10:49:04 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7EB5030E;
+        Tue, 11 Feb 2020 07:49:03 -0800 (PST)
+Received: from localhost (unknown [10.37.6.21])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 02D3A3F68E;
+        Tue, 11 Feb 2020 07:49:02 -0800 (PST)
+Date:   Tue, 11 Feb 2020 15:49:01 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     alsa-devel@alsa-project.org, Jaroslav Kysela <perex@perex.cz>,
+        kernel-janitors@vger.kernel.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Takashi Iwai <tiwai@suse.com>
+Subject: Applied "ASoC: ti: davinci-mcasp: remove redundant assignment to variable ret" to the asoc tree
+In-Reply-To: <20200210092423.327499-1-colin.king@canonical.com>
+Message-Id: <applied-20200210092423.327499-1-colin.king@canonical.com>
+X-Patchwork-Hint: ignore
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-All the irq related callbacks are called with the (raw) spinlock
-desc->lock being held. So the lock here must be raw as well. Also irqs
-were already disabled by the caller for the irq chip callbacks, so the
-non-irq variants of spin_lock must be used there.
+The patch
 
-Fixes: be8c8facc707 ("gpio: new driver to work with a 8x12 siox")
-Signed-off-by: Uwe Kleine-König <uwe@kleine-koenig.org>
+   ASoC: ti: davinci-mcasp: remove redundant assignment to variable ret
+
+has been applied to the asoc tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.7
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From f4d95de415b286090c1bf739c20a5ea2aefda834 Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Mon, 10 Feb 2020 09:24:22 +0000
+Subject: [PATCH] ASoC: ti: davinci-mcasp: remove redundant assignment to
+ variable ret
+
+The assignment to ret is redundant as it is not used in the error
+return path and hence can be removed.
+
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Link: https://lore.kernel.org/r/20200210092423.327499-1-colin.king@canonical.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
-Hello,
+ sound/soc/ti/davinci-mcasp.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-On Tue, Feb 11, 2020 at 02:18:23PM +0100, Thomas Gleixner wrote:
-> Uwe Kleine-König <u.kleine-koenig@pengutronix.de> writes:
-> > On Tue, Feb 11, 2020 at 09:59:30AM +0100, Thomas Gleixner wrote:
-> >> Uwe Kleine-König <u.kleine-koenig@pengutronix.de> writes:
-> >> Indeed. Looking at the driver, all of the spin_lock_irq() usage in the
-> >> irqchip callbacks is broken.
-> >> 
-> >> So this needs two changes:
-> >> 
-> >>    1) Convert to raw spin lock, as this won't work on RT otherwise
-> >> 
-> >>    2) s/lock_irq/lock/ for all irqchip callbacks.
-> >
-> > Are you sure about the calls in gpio_siox_get_data()? This is only
-> > called by siox_poll() which doesn't disable irqs.
-> 
-> I explicitely said: "for all irqchip callbacks".
-> 
-> gpio_siox_get_data() is not a irq chip callback, right? So obviously it
-> has to stay there.
-
-Ah, I read "irqchip callbacks" as "spinlock calls". Thanks to restate
-this for me.
-
-Thanks
-Uwe
-
- drivers/gpio/gpio-siox.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/gpio/gpio-siox.c b/drivers/gpio/gpio-siox.c
-index 311f66757b92..26e1fe092304 100644
---- a/drivers/gpio/gpio-siox.c
-+++ b/drivers/gpio/gpio-siox.c
-@@ -15,7 +15,7 @@ struct gpio_siox_ddata {
- 	u8 setdata[1];
- 	u8 getdata[3];
- 
--	spinlock_t irqlock;
-+	raw_spinlock_t irqlock;
- 	u32 irq_enable;
- 	u32 irq_status;
- 	u32 irq_type[20];
-@@ -44,7 +44,7 @@ static int gpio_siox_get_data(struct siox_device *sdevice, const u8 buf[])
- 
- 	mutex_lock(&ddata->lock);
- 
--	spin_lock_irq(&ddata->irqlock);
-+	raw_spin_lock_irq(&ddata->irqlock);
- 
- 	for (offset = 0; offset < 12; ++offset) {
- 		unsigned int bitpos = 11 - offset;
-@@ -66,7 +66,7 @@ static int gpio_siox_get_data(struct siox_device *sdevice, const u8 buf[])
- 
- 	trigger = ddata->irq_status & ddata->irq_enable;
- 
--	spin_unlock_irq(&ddata->irqlock);
-+	raw_spin_unlock_irq(&ddata->irqlock);
- 
- 	ddata->getdata[0] = buf[0];
- 	ddata->getdata[1] = buf[1];
-@@ -84,9 +84,9 @@ static int gpio_siox_get_data(struct siox_device *sdevice, const u8 buf[])
- 			 * handler of the irq chip. But it doesn't, so we have
- 			 * to clean the irq_status here.
- 			 */
--			spin_lock_irq(&ddata->irqlock);
-+			raw_spin_lock_irq(&ddata->irqlock);
- 			ddata->irq_status &= ~(1 << offset);
--			spin_unlock_irq(&ddata->irqlock);
-+			raw_spin_unlock_irq(&ddata->irqlock);
- 
- 			handle_nested_irq(irq);
- 		}
-@@ -101,9 +101,9 @@ static void gpio_siox_irq_ack(struct irq_data *d)
- 	struct gpio_siox_ddata *ddata =
- 		container_of(ic, struct gpio_siox_ddata, ichip);
- 
--	spin_lock_irq(&ddata->irqlock);
-+	raw_spin_lock(&ddata->irqlock);
- 	ddata->irq_status &= ~(1 << d->hwirq);
--	spin_unlock_irq(&ddata->irqlock);
-+	raw_spin_unlock(&ddata->irqlock);
- }
- 
- static void gpio_siox_irq_mask(struct irq_data *d)
-@@ -112,9 +112,9 @@ static void gpio_siox_irq_mask(struct irq_data *d)
- 	struct gpio_siox_ddata *ddata =
- 		container_of(ic, struct gpio_siox_ddata, ichip);
- 
--	spin_lock_irq(&ddata->irqlock);
-+	raw_spin_lock(&ddata->irqlock);
- 	ddata->irq_enable &= ~(1 << d->hwirq);
--	spin_unlock_irq(&ddata->irqlock);
-+	raw_spin_unlock(&ddata->irqlock);
- }
- 
- static void gpio_siox_irq_unmask(struct irq_data *d)
-@@ -123,9 +123,9 @@ static void gpio_siox_irq_unmask(struct irq_data *d)
- 	struct gpio_siox_ddata *ddata =
- 		container_of(ic, struct gpio_siox_ddata, ichip);
- 
--	spin_lock_irq(&ddata->irqlock);
-+	raw_spin_lock(&ddata->irqlock);
- 	ddata->irq_enable |= 1 << d->hwirq;
--	spin_unlock_irq(&ddata->irqlock);
-+	raw_spin_unlock(&ddata->irqlock);
- }
- 
- static int gpio_siox_irq_set_type(struct irq_data *d, u32 type)
-@@ -134,9 +134,9 @@ static int gpio_siox_irq_set_type(struct irq_data *d, u32 type)
- 	struct gpio_siox_ddata *ddata =
- 		container_of(ic, struct gpio_siox_ddata, ichip);
- 
--	spin_lock_irq(&ddata->irqlock);
-+	raw_spin_lock(&ddata->irqlock);
- 	ddata->irq_type[d->hwirq] = type;
--	spin_unlock_irq(&ddata->irqlock);
-+	raw_spin_unlock(&ddata->irqlock);
- 
- 	return 0;
- }
-@@ -222,7 +222,7 @@ static int gpio_siox_probe(struct siox_device *sdevice)
- 	dev_set_drvdata(dev, ddata);
- 
- 	mutex_init(&ddata->lock);
--	spin_lock_init(&ddata->irqlock);
-+	raw_spin_lock_init(&ddata->irqlock);
- 
- 	ddata->gchip.base = -1;
- 	ddata->gchip.can_sleep = 1;
+diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
+index d9c3a3210a24..734ffe925c4d 100644
+--- a/sound/soc/ti/davinci-mcasp.c
++++ b/sound/soc/ti/davinci-mcasp.c
+@@ -1765,10 +1765,8 @@ static struct davinci_mcasp_pdata *davinci_mcasp_set_pdata_from_of(
+ 	} else if (match) {
+ 		pdata = devm_kmemdup(&pdev->dev, match->data, sizeof(*pdata),
+ 				     GFP_KERNEL);
+-		if (!pdata) {
+-			ret = -ENOMEM;
+-			return pdata;
+-		}
++		if (!pdata)
++			return NULL;
+ 	} else {
+ 		/* control shouldn't reach here. something is wrong */
+ 		ret = -EINVAL;
 -- 
-2.24.0
+2.20.1
 

@@ -2,96 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A0C41593B4
-	for <lists+kernel-janitors@lfdr.de>; Tue, 11 Feb 2020 16:50:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83A2315942E
+	for <lists+kernel-janitors@lfdr.de>; Tue, 11 Feb 2020 17:03:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730425AbgBKPt2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 11 Feb 2020 10:49:28 -0500
-Received: from foss.arm.com ([217.140.110.172]:48510 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730401AbgBKPt1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 11 Feb 2020 10:49:27 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0BFCD1063;
-        Tue, 11 Feb 2020 07:49:27 -0800 (PST)
-Received: from localhost (unknown [10.37.6.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 85EC33F68E;
-        Tue, 11 Feb 2020 07:49:26 -0800 (PST)
-Date:   Tue, 11 Feb 2020 15:49:25 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     alsa-devel@alsa-project.org, Jaroslav Kysela <perex@perex.cz>,
-        kernel-janitors@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Oder Chiou <oder_chiou@realtek.com>,
-        Takashi Iwai <tiwai@suse.com>
-Subject: Applied "ASoC: rt5659: remove redundant assignment to variable idx" to the asoc tree
-In-Reply-To: <20200208221529.37105-1-colin.king@canonical.com>
-Message-Id: <applied-20200208221529.37105-1-colin.king@canonical.com>
-X-Patchwork-Hint: ignore
+        id S1729679AbgBKQDC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 11 Feb 2020 11:03:02 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:51222 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728389AbgBKQDC (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 11 Feb 2020 11:03:02 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1j1Y03-0005vu-A1; Tue, 11 Feb 2020 16:02:59 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jens Axboe <axboe@kernel.dk>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        io-uring@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] io_uring: fix return of an uninitialized variable ret
+Date:   Tue, 11 Feb 2020 16:02:59 +0000
+Message-Id: <20200211160259.90660-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
-
-   ASoC: rt5659: remove redundant assignment to variable idx
-
-has been applied to the asoc tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.7
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From 1646484ed2430e37f00945db4755449d54354b57 Mon Sep 17 00:00:00 2001
 From: Colin Ian King <colin.king@canonical.com>
-Date: Sat, 8 Feb 2020 22:15:29 +0000
-Subject: [PATCH] ASoC: rt5659: remove redundant assignment to variable idx
 
-Variable idx is being assigned with a value that is never idx, it is
-assigned a new value a couple of statements later. The assignment is
-redundant and can be removed.
+Currently variable ret is not initialized and this value is being
+returned at the end of the function io_poll_double_wake.  Since
+ret is not being used anywhere else remove it and just return 0.
 
-Addresses-Coverity: ("Unused value")
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: f6e84af0767f ("io_uring: allow POLL_ADD with double poll_wait() users")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Link: https://lore.kernel.org/r/20200208221529.37105-1-colin.king@canonical.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/soc/codecs/rt5659.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/io_uring.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/rt5659.c b/sound/soc/codecs/rt5659.c
-index e66d08398f74..89e0f58512fa 100644
---- a/sound/soc/codecs/rt5659.c
-+++ b/sound/soc/codecs/rt5659.c
-@@ -1604,7 +1604,7 @@ static int set_dmic_clk(struct snd_soc_dapm_widget *w,
- {
- 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
- 	struct rt5659_priv *rt5659 = snd_soc_component_get_drvdata(component);
--	int pd, idx = -EINVAL;
-+	int pd, idx;
+diff --git a/fs/io_uring.c b/fs/io_uring.c
+index 72bc378edebc..5c6a899b51d8 100644
+--- a/fs/io_uring.c
++++ b/fs/io_uring.c
+@@ -3707,7 +3707,6 @@ static int io_poll_double_wake(struct wait_queue_entry *wait, unsigned mode,
+ 	struct io_poll_iocb *poll = (void *) req->io;
+ 	__poll_t mask = key_to_poll(key);
+ 	bool done = true;
+-	int ret;
  
- 	pd = rl6231_get_pre_div(rt5659->regmap,
- 		RT5659_ADDA_CLK_1, RT5659_I2S_PD1_SFT);
+ 	/* for instances that support it check for an event match first: */
+ 	if (mask && !(mask & poll->events))
+@@ -3725,7 +3724,7 @@ static int io_poll_double_wake(struct wait_queue_entry *wait, unsigned mode,
+ 	if (!done)
+ 		__io_poll_wake(req, poll, mask);
+ 	refcount_dec(&req->refs);
+-	return ret;
++	return 0;
+ }
+ 
+ struct io_poll_table {
 -- 
-2.20.1
+2.25.0
 

@@ -2,128 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79FB9159534
-	for <lists+kernel-janitors@lfdr.de>; Tue, 11 Feb 2020 17:41:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B0D11597D4
+	for <lists+kernel-janitors@lfdr.de>; Tue, 11 Feb 2020 19:12:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729586AbgBKQlf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 11 Feb 2020 11:41:35 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:52626 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728049AbgBKQlf (ORCPT
+        id S1731056AbgBKSLA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 11 Feb 2020 13:11:00 -0500
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:34454 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727764AbgBKSLA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 11 Feb 2020 11:41:35 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1j1YbM-0008Q1-EW; Tue, 11 Feb 2020 16:41:32 +0000
-Subject: Re: [PATCH][next] hwmon: axi-fan-control: fix uninitialized
- dereference of pointer res
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
-        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200211162059.94233-1-colin.king@canonical.com>
- <20200211163910.GA2975@roeck-us.net>
-From:   Colin Ian King <colin.king@canonical.com>
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <c4dfa7e1-a833-7bfd-2d5b-800892fb5fe4@canonical.com>
-Date:   Tue, 11 Feb 2020 16:41:31 +0000
+        Tue, 11 Feb 2020 13:11:00 -0500
+Received: by mail-pl1-f196.google.com with SMTP id j7so4586965plt.1;
+        Tue, 11 Feb 2020 10:11:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=JMpOqqpilZ7AQlf3RCvgNhVJfJ1KLbsRxFC/cI9QVQo=;
+        b=eGwF4julFDD+DYw/RF7rnhjymOoer+FSJpGyFtgigiiFJ1tGi2GVfVNfoSS+gcQb98
+         Lhk6pI0lrWpY/poSOAOuYAgO339V2jjet3ajtIWb3U49Fp9+i0kj+BggHOciWfxq+pX9
+         ulrxKssn031YIZMxRLHFoej/vc/Yu5phM41a1e6ICqZjbpktO/dE4uSfs7jMVpmSBGXZ
+         Lqz7gJtDYYg10xUoqz6toQSxjMSvHhwTGJpSJpOJUBFJvBFpVd/+m9KT94hJlqQHDVUv
+         3C7B1LLuGLxjdcfpszIyD2wtn16gbSWpnLingdQdkaGAEjwIgCh5hgBa7qZQNbDjwuiT
+         rHzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=JMpOqqpilZ7AQlf3RCvgNhVJfJ1KLbsRxFC/cI9QVQo=;
+        b=LA4jknZ330cn/E5OGMK5TC+e47bgHNbuYhYBGVzRW3OAWESHRQzPrr3z6M0/rg7/+5
+         D7x2jiXWZ6NAAulemFaG0orEIfYCwLtxkyGm0eGqFC4Mh2svF6u51z7sSWOFr2lrzO1v
+         x8BoN/9au1MWSyeBD+d+NBZuqhiZyIGXZg9QDR2AH6WV9u2CeIZcDAaly3EIpXRVQvfR
+         Pa3Sr1BklhfeNCng3wZK207WJ6CxylkSDz1ZQlZ9ggPT7kfebcEHMKqIdPAgP5T7EpIT
+         aSXYnrRGdGMK2XeTPFaLdYV4PyTbAPvIMPGmJhcs/VE/6+rY+0qneHvUV7Bo5+r/y+K4
+         AiXQ==
+X-Gm-Message-State: APjAAAXxkkZolQF0LS75+0WHs0VNpDpD5uH51a3+njl5FkeQxvGLECXM
+        NOIk8Ox8rvL91VkGV0StD6fPDGGm
+X-Google-Smtp-Source: APXvYqxY6c5GKr16qPJ8oLu++FgKXWeGitNZXYf0AeRBxYHPZ8pefxxfDnAdeBzg/ti9Ih6DIzzxIg==
+X-Received: by 2002:a17:90a:bf0c:: with SMTP id c12mr4764969pjs.112.1581444659229;
+        Tue, 11 Feb 2020 10:10:59 -0800 (PST)
+Received: from [172.30.88.83] (sjewanfw1-nat.mentorg.com. [139.181.7.34])
+        by smtp.gmail.com with ESMTPSA id l21sm4840995pgo.33.2020.02.11.10.10.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Feb 2020 10:10:58 -0800 (PST)
+Subject: Re: [PATCH] media: staging/imx: Missing assignment in
+ imx_media_capture_device_register()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Hans Verkuil <hans.verkuil@cisco.com>,
+        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20200211073522.jobdu256d22c3y32@kili.mountain>
+From:   Steve Longerbeam <slongerbeam@gmail.com>
+Message-ID: <8cafab51-93d9-9596-bf4d-d8990df7ccda@gmail.com>
+Date:   Tue, 11 Feb 2020 10:10:57 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <20200211163910.GA2975@roeck-us.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <20200211073522.jobdu256d22c3y32@kili.mountain>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 11/02/2020 16:39, Guenter Roeck wrote:
-> On Tue, Feb 11, 2020 at 04:20:59PM +0000, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> Currently the resource pointer ret is uninitialized and it is
->> being dereferenced when printing out a debug message. Fix this
->> by fetching the resource and assigning pointer res.  It is
->> a moot point that we sanity check for a null res since a successful
->> call to devm_platform_ioremap_resource has already occurred so
->> in theory it should never be non-null.
->>
->> Addresses-Coverity: ("Uninitialized pointer read")
->> Fixes: 690dd9ce04f6 ("hwmon: Support ADI Fan Control IP")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> 
-> This has already been fixed by removing the message (and the
-> then unused variable). The message was useless anyway since
-> it printed the remapped address with %p.
-> 
-> Guenter
+Thanks for catching. Tested on a imx6 sabreauto and it's fine.
 
-OK, thanks. My static anaylsis can't keep up!
-> 
->> ---
->>  drivers/hwmon/axi-fan-control.c | 3 +++
->>  1 file changed, 3 insertions(+)
->>
->> diff --git a/drivers/hwmon/axi-fan-control.c b/drivers/hwmon/axi-fan-control.c
->> index 8041ba7cc152..36e0d060510a 100644
->> --- a/drivers/hwmon/axi-fan-control.c
->> +++ b/drivers/hwmon/axi-fan-control.c
->> @@ -415,6 +415,9 @@ static int axi_fan_control_probe(struct platform_device *pdev)
->>  	if (!ctl->clk_rate)
->>  		return -EINVAL;
->>  
->> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->> +	if (!res)
->> +		return -EINVAL;
->>  	dev_dbg(&pdev->dev, "Re-mapped from 0x%08llX to %p\n",
->>  		(unsigned long long)res->start, ctl->base);
->>  
->> -- 
->> 2.25.0
->>
+On 2/10/20 11:35 PM, Dan Carpenter wrote:
+> There was supposed to be a "ret = " assignment here, otherwise the
+> error handling on the next line won't work.
+>
+> Fixes: 64b5a49df486 ("[media] media: imx: Add Capture Device Interface")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+Reviewed-by: Steve Longerbeam <slongerbeam@gmail.com>
+
+> ---
+> Not tested.  Sometimes in these situations the function could be
+> returning something bogus but no one knew because the assignment wasn't
+> there.  So it's best to test these.
+>
+>   drivers/staging/media/imx/imx-media-capture.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/staging/media/imx/imx-media-capture.c b/drivers/staging/media/imx/imx-media-capture.c
+> index 7712e7be8625..df0bf680721b 100644
+> --- a/drivers/staging/media/imx/imx-media-capture.c
+> +++ b/drivers/staging/media/imx/imx-media-capture.c
+> @@ -778,7 +778,7 @@ int imx_media_capture_device_register(struct imx_media_video_dev *vdev)
+>   	/* setup default format */
+>   	fmt_src.pad = priv->src_sd_pad;
+>   	fmt_src.which = V4L2_SUBDEV_FORMAT_ACTIVE;
+> -	v4l2_subdev_call(sd, pad, get_fmt, NULL, &fmt_src);
+> +	ret = v4l2_subdev_call(sd, pad, get_fmt, NULL, &fmt_src);
+>   	if (ret) {
+>   		v4l2_err(sd, "failed to get src_sd format\n");
+>   		goto unreg;
 

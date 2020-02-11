@@ -2,86 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CFCC1585AA
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Feb 2020 23:39:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ECE13158A81
+	for <lists+kernel-janitors@lfdr.de>; Tue, 11 Feb 2020 08:36:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727505AbgBJWjZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Feb 2020 17:39:25 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42972 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727422AbgBJWjZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Feb 2020 17:39:25 -0500
-Received: from localhost (mobile-166-175-186-165.mycingular.net [166.175.186.165])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 883AF2072C;
-        Mon, 10 Feb 2020 22:39:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581374364;
-        bh=JUkyaQjA/BJjwBpBpWFAZlCXBfcqPB4tTAAioPPYrmU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=n3zrepfgdmzp5p1lgmrmlstOCndXQgy7eXKhyp58H4eZbM1cEDfQeiSuGp0xeznbZ
-         rz0XtPZOjvN7z62T3nbAr8ONWiV9W2UTJ0CXxOJjE4QhcpD127xooJ934sVZQCcBu6
-         eYdB2QoWPzJFv0Bhv87ZDz+CNLqbDq7cZRCi7t6A=
-Date:   Mon, 10 Feb 2020 16:39:22 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Krzysztof Wilczynski <kw@linux.com>
-Subject: Re: [PATCH] PCI/ACPI: make array pcie_to_hpx3_type static const,
- makes object smaller
-Message-ID: <20200210223922.GA76091@google.com>
+        id S1727692AbgBKHgp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 11 Feb 2020 02:36:45 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:40634 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726170AbgBKHgo (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 11 Feb 2020 02:36:44 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01B7WUVK132531;
+        Tue, 11 Feb 2020 07:35:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=TyxNlR/PF6Q3VREoLHEFpP0iJEP9FxqYi4/FcLRChLk=;
+ b=DaoHi7JUfgTFUgIoSRSZwsJ74lW8Cd3JoW9r2xkfylwh+LXS9g2VqGY4pKGNW4ucS4PR
+ SzPIsslGcWTBywmNJrpeXgf0lFRaY5vYyIEmyNeAmlfqO+QCb50opqQCDO/QV+DhEkcE
+ i39JXL34Tdy6wwpotGrCS9I7AulSwiRJEHgIwx1uQPs29qS/3h1rYjkGltQPAdUoSTOh
+ k/nPmUTWjAvoMGTRV8l3Cp2xHd+gR3QnKmVyVk8q1jQIMLLGl4NMsYP5Sd13r+Hd1oGp
+ ELIE2wytTzFuKxaqMgyk0z/WfxfYWKjeeZ3b0KnZaCU56aA4MdCCILtsqpkZraoSWDCi pg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2y2k881f5e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 11 Feb 2020 07:35:55 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01B7WAkR138379;
+        Tue, 11 Feb 2020 07:35:55 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2y26huend5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 11 Feb 2020 07:35:54 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 01B7ZqMq009230;
+        Tue, 11 Feb 2020 07:35:52 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 10 Feb 2020 23:35:52 -0800
+Date:   Tue, 11 Feb 2020 10:35:44 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Thorsten Scherer <t.scherer@eckelmann.de>
+Cc:     Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Gavin Schenk <g.schenk@eckelmann.de>,
+        linux-gpio@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] gpio: siox: potentially enabling IRQs too early
+Message-ID: <20200211073511.r24n3bygyjxrsuez@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200210085256.319424-1-colin.king@canonical.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9527 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 suspectscore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002110054
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9527 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 lowpriorityscore=0
+ suspectscore=0 bulkscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
+ malwarescore=0 impostorscore=0 clxscore=1011 spamscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002110053
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-[+cc Krzysztof]
+Smatch thinks that gpio_siox_irq_set_type() can be called from
+probe_irq_on().  In that case the call to spin_unlock_irq() would
+renable IRQs too early.
 
-On Mon, Feb 10, 2020 at 08:52:56AM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Don't populate the array pcie_to_hpx3_type on the stack but instead
-> make it static const. Makes the object code smaller by 6 bytes:
-> 
-> Before:
->    text	   data	    bss	    dec	    hex	filename
->   19247	   3048	     64	  22359	   5757	drivers/pci/pci-acpi.o
-> 
-> After:
->    text	   data	    bss	    dec	    hex	filename
->   19177	   3112	     64	  22353	   5751	drivers/pci/pci-acpi.o
-> 
-> (gcc version 9.2.1, amd64)
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Fixes: be8c8facc707 ("gpio: new driver to work with a 8x12 siox")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/gpio/gpio-siox.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Nice cleanup, thanks!  Applied to pci/misc for v5.7.
+diff --git a/drivers/gpio/gpio-siox.c b/drivers/gpio/gpio-siox.c
+index 311f66757b92..578b71760939 100644
+--- a/drivers/gpio/gpio-siox.c
++++ b/drivers/gpio/gpio-siox.c
+@@ -133,10 +133,11 @@ static int gpio_siox_irq_set_type(struct irq_data *d, u32 type)
+ 	struct irq_chip *ic = irq_data_get_irq_chip(d);
+ 	struct gpio_siox_ddata *ddata =
+ 		container_of(ic, struct gpio_siox_ddata, ichip);
++	unsigned long flags;
+ 
+-	spin_lock_irq(&ddata->irqlock);
++	spin_lock_irqsave(&ddata->irqlock, flags);
+ 	ddata->irq_type[d->hwirq] = type;
+-	spin_unlock_irq(&ddata->irqlock);
++	spin_unlock_irqrestore(&ddata->irqlock, flags);
+ 
+ 	return 0;
+ }
+-- 
+2.11.0
 
-> ---
->  drivers/pci/pci-acpi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index 0c02d500158f..d914f8bc31ea 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -439,7 +439,7 @@ enum hpx_type3_dev_type {
->  static u16 hpx3_device_type(struct pci_dev *dev)
->  {
->  	u16 pcie_type = pci_pcie_type(dev);
-> -	const int pcie_to_hpx3_type[] = {
-> +	static const int pcie_to_hpx3_type[] = {
->  		[PCI_EXP_TYPE_ENDPOINT]    = HPX_TYPE_ENDPOINT,
->  		[PCI_EXP_TYPE_LEG_END]     = HPX_TYPE_LEG_END,
->  		[PCI_EXP_TYPE_RC_END]      = HPX_TYPE_RC_END,
-> -- 
-> 2.25.0
-> 

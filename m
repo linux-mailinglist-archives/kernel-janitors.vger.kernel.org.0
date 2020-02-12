@@ -2,69 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0579C15A698
-	for <lists+kernel-janitors@lfdr.de>; Wed, 12 Feb 2020 11:38:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9079415A8CA
+	for <lists+kernel-janitors@lfdr.de>; Wed, 12 Feb 2020 13:08:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727535AbgBLKif (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 12 Feb 2020 05:38:35 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:52406 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725887AbgBLKie (ORCPT
+        id S1727041AbgBLMIl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 12 Feb 2020 07:08:41 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:41598 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727604AbgBLMIl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 12 Feb 2020 05:38:34 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1j1pPZ-0005KI-QO; Wed, 12 Feb 2020 10:38:29 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Fenghua Yu <fenghua.yu@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] selftests/resctrl: fix spelling mistake "Errror" -> "Error"
-Date:   Wed, 12 Feb 2020 10:38:29 +0000
-Message-Id: <20200212103829.41424-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.0
+        Wed, 12 Feb 2020 07:08:41 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01CC8Xer092653;
+        Wed, 12 Feb 2020 12:08:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=W+DOho/MABWVqGK9BDP4xPQcabcLOJ4yUEcH/wfOcmA=;
+ b=w2Sz0DWS40Ei4OeZfWbmV5EGsKSiqyiRDugBV6eAMydVjok7xahDZRvJtvMfkK35eqsF
+ PeiKqG6XUiGFXCQBuR3+fGE+LThBcgeAhmCWcffO+pvzGndgOh5AfegAn555jaom07RW
+ cEsqgcGgR9zZtoaB2Mycj8hpS57ypLV5sZS61cJL0osxZKEWwSnUh0E99B/YvnDgWcR2
+ mCsu7lzAsFb6ZYvqBMiNwBVlrIypbVO+d36lz08tN60Y6aSJcDcNFTkaTE+5UnoLiM05
+ VO0YFPvMgfM1rcthY7Hjb1LcNiIu40/jA2PytlL2KeMHTd00qqoZqYV8/p34c9KIAUZr Tg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2y2k889vv3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 12 Feb 2020 12:08:33 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01CC6WCM146291;
+        Wed, 12 Feb 2020 12:08:33 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 2y26swkqbm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 12 Feb 2020 12:08:32 +0000
+Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 01CC8TIY026352;
+        Wed, 12 Feb 2020 12:08:29 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 12 Feb 2020 04:08:28 -0800
+Date:   Wed, 12 Feb 2020 15:07:59 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+Cc:     "David (ChunMing) Zhou" <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Felix Kuehling <Felix.Kuehling@amd.com>,
+        Jonathan Kim <Jonathan.Kim@amd.com>,
+        Philip Yang <Philip.Yang@amd.com>,
+        "Tianci.Yin" <tianci.yin@amd.com>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] drm/amdgpu: return -EFAULT if copy_to_user() fails
+Message-ID: <20200212120759.dokjxbk4cqln55sc@kili.mountain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9528 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 mlxscore=0
+ malwarescore=0 bulkscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2002120099
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9528 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 lowpriorityscore=0
+ suspectscore=0 bulkscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
+ malwarescore=0 impostorscore=0 clxscore=1011 spamscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002120099
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+The copy_to_user() function returns the number of bytes remaining to be
+copied, but we want to return a negative error code to the user.
 
-There are two spelling mistakes in error messages. Fix these.
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Fixes: 030d5b97a54b ("drm/amdgpu: use amdgpu_device_vram_access in amdgpu_ttm_vram_read")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- tools/testing/selftests/resctrl/fill_buf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/resctrl/fill_buf.c b/tools/testing/selftests/resctrl/fill_buf.c
-index 84d2a8b9657a..79c611c99a3d 100644
---- a/tools/testing/selftests/resctrl/fill_buf.c
-+++ b/tools/testing/selftests/resctrl/fill_buf.c
-@@ -181,7 +181,7 @@ fill_cache(unsigned long long buf_size, int malloc_and_init, int memflush,
- 		ret = fill_cache_write(start_ptr, end_ptr, resctrl_val);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+index 15f5451d312d..660867cf2597 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -2280,7 +2280,6 @@ static ssize_t amdgpu_ttm_vram_read(struct file *f, char __user *buf,
+ {
+ 	struct amdgpu_device *adev = file_inode(f)->i_private;
+ 	ssize_t result = 0;
+-	int r;
  
- 	if (ret) {
--		printf("\n Errror in fill cache read/write...\n");
-+		printf("\n Error in fill cache read/write...\n");
- 		return -1;
- 	}
+ 	if (size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
+@@ -2294,9 +2293,8 @@ static ssize_t amdgpu_ttm_vram_read(struct file *f, char __user *buf,
+ 		uint32_t value[AMDGPU_TTM_VRAM_MAX_DW_READ];
  
-@@ -205,7 +205,7 @@ int run_fill_buf(unsigned long span, int malloc_and_init_memory,
- 	ret = fill_cache(cache_size, malloc_and_init_memory, memflush, op,
- 			 resctrl_val);
- 	if (ret) {
--		printf("\n Errror in fill cache\n");
-+		printf("\n Error in fill cache\n");
- 		return -1;
- 	}
+ 		amdgpu_device_vram_access(adev, *pos, value, bytes, false);
+-		r = copy_to_user(buf, value, bytes);
+-		if (r)
+-			return r;
++		if (copy_to_user(buf, value, bytes))
++			return -EFAULT;
  
+ 		result += bytes;
+ 		buf += bytes;
 -- 
-2.25.0
+2.11.0
 

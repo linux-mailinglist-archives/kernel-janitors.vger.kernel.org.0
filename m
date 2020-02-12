@@ -2,137 +2,116 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F16215A8DD
-	for <lists+kernel-janitors@lfdr.de>; Wed, 12 Feb 2020 13:12:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8499E15A937
+	for <lists+kernel-janitors@lfdr.de>; Wed, 12 Feb 2020 13:32:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727582AbgBLMM5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 12 Feb 2020 07:12:57 -0500
-Received: from mail-dm6nam12on2081.outbound.protection.outlook.com ([40.107.243.81]:18892
-        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727535AbgBLMM5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 12 Feb 2020 07:12:57 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cx9mDLsAsgYYXIcPOJNERvc7QKvm0OQ/A5bhPGJbZLYUrnDHhwCAzYHmDu9WHtIti70Cik8DNDVVPvljrVdCayfoQ2iV1MaVarA2xO9uSrUUqWsZOF3klZwkHhjVqPe+7xmIPrFdURA1sXmM5RMNqTwa4105hLAbdZ4/gjHwrNO0UNy/WyvDuacF5+b0UHFXbN0EaBbW7c3jm1DgSjPrZafHnri1tKwWItd0I0cUXe0/LOfvX594BPTXm49Ef193sC19laDDtdR8zikiUzSeoaJW6K5Q6cojA0Q3Vw/2w5HrnwlIuTcEIHPcba4qDVSAb7En36qM7CDdMVU4y10x5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3f7ppoqe2PTs7uz+8tx2oOXv7ne69gyeVjOuNrw6I8U=;
- b=Mldb6Loh6ILOhfETiq8/05cy7tB59+NohHkFiy48XwJed9GytYed773RTkAkeRhz9TNIBmE6D6Jpd6Vf3HO7DsGSzDQJ2YJ7hB7F2yxpwPzkxAC/fUXLuYd1zzM5MoNs73CHcnAqpsMSim9QbSLr7JndqUD/MyKJ+zjogk98pHjU6o94su/bSz6uBUQTKwtsCs0oHSns9NVUdyZm1w6IXaTdVOPNPcZzKeNLN2E08csMlMLPwRPH2r0Gqol/meLyWUXW6PIvkFj+bY/2r/qIDUvKqsC1HhZRi4Lw3U+wWGYnz5U1EsrISwmcMN6+uH1TQhpSawpKr44WBAtrW4Uc9A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3f7ppoqe2PTs7uz+8tx2oOXv7ne69gyeVjOuNrw6I8U=;
- b=pbgjuALzn9G54c4DLDt//hHZnUhgJ2A4KGZEzvQkAykYH5/0PryTmjNN+O80UohQ/74UMzR/4y3wLo842vtyJj+dgPJdR40yx6R7GdADWrnss2yW2f+/nL6lPj0Dh4XuzlvkxNrPtnb0KPGwfciXGFtDS8CzWBPccEwA5TDkWKg=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Christian.Koenig@amd.com; 
-Received: from DM5PR12MB1705.namprd12.prod.outlook.com (10.175.88.22) by
- DM5PR12MB2360.namprd12.prod.outlook.com (52.132.208.149) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2707.23; Wed, 12 Feb 2020 12:12:25 +0000
-Received: from DM5PR12MB1705.namprd12.prod.outlook.com
- ([fe80::d40e:7339:8605:bc92]) by DM5PR12MB1705.namprd12.prod.outlook.com
- ([fe80::d40e:7339:8605:bc92%11]) with mapi id 15.20.2729.021; Wed, 12 Feb
- 2020 12:12:24 +0000
-Subject: Re: [PATCH] drm/amdgpu: return -EFAULT if copy_to_user() fails
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Cc:     "David (ChunMing) Zhou" <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Felix Kuehling <Felix.Kuehling@amd.com>,
-        Jonathan Kim <Jonathan.Kim@amd.com>,
-        Philip Yang <Philip.Yang@amd.com>,
-        "Tianci.Yin" <tianci.yin@amd.com>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-References: <20200212120759.dokjxbk4cqln55sc@kili.mountain>
-From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
-Message-ID: <577d76db-3c2d-545d-6237-1c66f17ec178@amd.com>
-Date:   Wed, 12 Feb 2020 13:12:17 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-In-Reply-To: <20200212120759.dokjxbk4cqln55sc@kili.mountain>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-ClientProxiedBy: ZR0P278CA0051.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:1d::20) To DM5PR12MB1705.namprd12.prod.outlook.com
- (2603:10b6:3:10c::22)
+        id S1727827AbgBLMcH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 12 Feb 2020 07:32:07 -0500
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:46874 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725887AbgBLMcG (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 12 Feb 2020 07:32:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1581510725;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=jFhBtgSX0/7uUXEHu3xDi09Duj0eAVawgfKR4aU8SAY=;
+        b=fGuHm0I/3TF2njitMa76wN27CuXNV4/uXq3oLtwW75lNibyCAd6qWxlHocSBCdkbUOgeXb
+        cr7u6a9l2q3QGpt8zDpB3+845Ns/bA+auY+6y34KKmk/Ty2KNq6ZLxnHTYP8Rz4fdoUkbk
+        MnKiuhlwIBRWNL9ZXzWOgI9hZjlQRb8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-21-Aj8T5HaNOIyX0J5_6nrmyQ-1; Wed, 12 Feb 2020 07:32:03 -0500
+X-MC-Unique: Aj8T5HaNOIyX0J5_6nrmyQ-1
+Received: by mail-wm1-f69.google.com with SMTP id o24so671915wmh.0
+        for <kernel-janitors@vger.kernel.org>; Wed, 12 Feb 2020 04:32:02 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=jFhBtgSX0/7uUXEHu3xDi09Duj0eAVawgfKR4aU8SAY=;
+        b=hAIyxOLzwqFZ4RsJtsc/qRsFYFhQMcA5NkmrQbiO+6mqoaApMOp3Kwboz6+I5ejONU
+         Zmd5jRykuY3rJ7LYAjeyscG/T3kNIJ9wXwGy5OmBFyEpKK2QZzvoP5POAhvZsfpx/Wm/
+         zoQyPX1OXAKEeqy+MiFt1BOunslqK+/AgXcZiDPmP2lH8LtQEmiCK7JbI4lCAMV6nzxi
+         rX34S/Q3uyLNPhYDr4TvtITJwQJwWT9N+CPvTW2gZYE5qzJQKDcJsIskjHl5rOTpJ1Rx
+         SX/NZs9krDtrNSJac5fNoLzrr8OnjbpKp/xMt0GISwWzDJ8r5eqzqmHyvfK8dW3iNxwm
+         yRQg==
+X-Gm-Message-State: APjAAAVtk0c00RxWaHp/Xud6ruzHKmKcGZ5qFEJqvhyfZAHdI4L75Vm5
+        ZKX4kfMzEGZmSp2duPThEt5b1xgB4MF/UTnsx/wX2kJeNu1sz8VK95oViyD9dGvgIe4G4DzUxOW
+        Qm53N76zwXu9G+Spv55+tYcSnVjcU
+X-Received: by 2002:a5d:6886:: with SMTP id h6mr15144932wru.154.1581510721845;
+        Wed, 12 Feb 2020 04:32:01 -0800 (PST)
+X-Google-Smtp-Source: APXvYqybL8KNyituH0wLu6xowOVQevPeXsPTUSxO/YMHGX038NBFDetmNWKvBDmZgdVL2znEi+z6BQ==
+X-Received: by 2002:a5d:6886:: with SMTP id h6mr15144913wru.154.1581510721587;
+        Wed, 12 Feb 2020 04:32:01 -0800 (PST)
+Received: from ?IPv6:2001:b07:6468:f312:652c:29a6:517b:66d9? ([2001:b07:6468:f312:652c:29a6:517b:66d9])
+        by smtp.gmail.com with ESMTPSA id l15sm453755wrv.39.2020.02.12.04.32.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Feb 2020 04:32:01 -0800 (PST)
+Subject: Re: [PATCH][next] KVM: x86: remove redundant WARN_ON check of an
+ unsigned less than zero
+To:     Sean Christopherson <sean.j.christopherson@intel.com>,
+        Colin King <colin.king@canonical.com>
+Cc:     Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        kvm@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20200207231813.786224-1-colin.king@canonical.com>
+ <20200208004722.GB15581@linux.intel.com>
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <21975038-ae1a-50a1-7fa0-38a1445abe8d@redhat.com>
+Date:   Wed, 12 Feb 2020 13:32:06 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Received: from [IPv6:2a02:908:1252:fb60:be8a:bd56:1f94:86e7] (2a02:908:1252:fb60:be8a:bd56:1f94:86e7) by ZR0P278CA0051.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:1d::20) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2707.21 via Frontend Transport; Wed, 12 Feb 2020 12:12:22 +0000
-X-Originating-IP: [2a02:908:1252:fb60:be8a:bd56:1f94:86e7]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: e4c546c6-21fd-4362-2216-08d7afb4d1b1
-X-MS-TrafficTypeDiagnostic: DM5PR12MB2360:|DM5PR12MB2360:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DM5PR12MB23604604FE04503CF797D25A831B0@DM5PR12MB2360.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
-X-Forefront-PRVS: 0311124FA9
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4636009)(376002)(39860400002)(396003)(346002)(136003)(366004)(189003)(199004)(2616005)(86362001)(316002)(5660300002)(6636002)(8936002)(66574012)(52116002)(8676002)(66946007)(66476007)(2906002)(66556008)(478600001)(4326008)(31686004)(31696002)(81166006)(81156014)(6486002)(110136005)(54906003)(6666004)(16526019)(186003)(36756003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR12MB2360;H:DM5PR12MB1705.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-Received-SPF: None (protection.outlook.com: amd.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +x1HZ1k8Fj4zfnTrfC9ODqqzR63moetRlW6wyCWEsQaKQpHcF1NLR/jiiwJ/X/MFAAGFnYD5kwt3OHJQBi4eebOHQYdrJBdGzbhHq64+ZESXRZcnkG7AwuUqJgi2vhEolsVx1eiBzOexzZEIvlltypwpIALw+GhDRF0lY60qjRWCS4SAGigk2dmXtSfvapk8kVdjb9nKfgnTnv70LmDSh9IfolIsazsvPvH62xi7kTuEQgaEEKh4bJD5bSiMjLigTKEHUeScL0OHjdPSZZjoFSgAIfx6js7rULLByU4qWqlCoNH/naUfoClPLjzNJJRyposUG/2qQLznjNY4XCxhFP3kPkDNsDqGvEk2fMWV20JO+SRteP42JWXWWKC2nU2ZlcCeSwVYY+cA64qYAoVihSjXUe8TyF25eeApmkKtAhYkdjYQd6amryKxmRrZCNWK
-X-MS-Exchange-AntiSpam-MessageData: 5fBUy1TVT22lxZW/nAMlj4PyHHdiWWxb1DWLYHPILWDv5QSDLadkgt/jeKFmpG/lEKqMvc/S84d0E8V6UvWiPtR5tTMritiWEXLBqUiZC0MfoRR6SfpUiZx4MzByF4dr42s+VLkZpvnmGpZNrzAOkGr+ISjkfQ1vJRptaM2zZoFOgv1f9Rm1h1awjU9Pm+k/5AKptNHsdUas4mY4mgB/nw==
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4c546c6-21fd-4362-2216-08d7afb4d1b1
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2020 12:12:24.8563
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AkrzvCzYUo37GhD9UBVAvo+hDgZ/kvFdtsBe9qTVa4j/BZu0txvblvgEKNssahtf
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB2360
+In-Reply-To: <20200208004722.GB15581@linux.intel.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Am 12.02.20 um 13:07 schrieb Dan Carpenter:
-> The copy_to_user() function returns the number of bytes remaining to be
-> copied, but we want to return a negative error code to the user.
->
-> Fixes: 030d5b97a54b ("drm/amdgpu: use amdgpu_device_vram_access in amdgpu_ttm_vram_read")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+On 08/02/20 01:47, Sean Christopherson wrote:
+> On Fri, Feb 07, 2020 at 11:18:13PM +0000, Colin King wrote:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> The check cpu->hv_clock.system_time < 0 is redundant since system_time
+>> is a u64 and hence can never be less than zero. Remove it.
+>>
+>> Addresses-Coverity: ("Macro compares unsigned to 0")
+>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>> ---
+>>  arch/x86/kvm/x86.c | 1 -
+>>  1 file changed, 1 deletion(-)
+>>
+>> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+>> index fbabb2f06273..d4967ac47e68 100644
+>> --- a/arch/x86/kvm/x86.c
+>> +++ b/arch/x86/kvm/x86.c
+>> @@ -2448,7 +2448,6 @@ static int kvm_guest_time_update(struct kvm_vcpu *v)
+>>  	vcpu->hv_clock.tsc_timestamp = tsc_timestamp;
+>>  	vcpu->hv_clock.system_time = kernel_ns + v->kvm->arch.kvmclock_offset;
+>>  	vcpu->last_guest_tsc = tsc_timestamp;
+>> -	WARN_ON(vcpu->hv_clock.system_time < 0);
+> 
+> Don't know this code well, but @kernel_ns and @v->kvm->arch.kvmclock_offset
+> are both s64, so maybe this was intended and/or desirable?
+> 
+> 	WARN_ON((s64)vcpu->hv_clock.system_time < 0);
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Yes, that's related to the bugfix where kvmclock would get negative.  I
+queued the patch with the (s64) cast added.  Thanks to both of you!
 
-Alex do you want to pick that up or should I do this?
-
-Thanks,
-Christian.
-
-> ---
->   drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 6 ++----
->   1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-> index 15f5451d312d..660867cf2597 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-> @@ -2280,7 +2280,6 @@ static ssize_t amdgpu_ttm_vram_read(struct file *f, char __user *buf,
->   {
->   	struct amdgpu_device *adev = file_inode(f)->i_private;
->   	ssize_t result = 0;
-> -	int r;
->   
->   	if (size & 0x3 || *pos & 0x3)
->   		return -EINVAL;
-> @@ -2294,9 +2293,8 @@ static ssize_t amdgpu_ttm_vram_read(struct file *f, char __user *buf,
->   		uint32_t value[AMDGPU_TTM_VRAM_MAX_DW_READ];
->   
->   		amdgpu_device_vram_access(adev, *pos, value, bytes, false);
-> -		r = copy_to_user(buf, value, bytes);
-> -		if (r)
-> -			return r;
-> +		if (copy_to_user(buf, value, bytes))
-> +			return -EFAULT;
->   
->   		result += bytes;
->   		buf += bytes;
+Paolo
 

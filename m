@@ -2,62 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 485E115BB92
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Feb 2020 10:23:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AC6F15BDAD
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Feb 2020 12:34:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729662AbgBMJXC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 Feb 2020 04:23:02 -0500
-Received: from helcar.hmeau.com ([216.24.177.18]:42430 "EHLO deadmen.hmeau.com"
+        id S1729761AbgBMLe2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 Feb 2020 06:34:28 -0500
+Received: from mga09.intel.com ([134.134.136.24]:12562 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726545AbgBMJXC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 13 Feb 2020 04:23:02 -0500
-Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
-        by deadmen.hmeau.com with esmtps (Exim 4.89 #2 (Debian))
-        id 1j2Ahy-00048Z-9P; Thu, 13 Feb 2020 17:22:54 +0800
-Received: from herbert by gondobar with local (Exim 4.89)
-        (envelope-from <herbert@gondor.apana.org.au>)
-        id 1j2Ahu-0006pe-Sr; Thu, 13 Feb 2020 17:22:50 +0800
-Date:   Thu, 13 Feb 2020 17:22:50 +0800
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Ofir Drang <ofir.drang@arm.com>,
-        Gilad Ben-Yossef <gilad@benyossef.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        linux-crypto@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH -next] crypto: ccree - remove set but not used variable
- 'du_size'
-Message-ID: <20200213092250.qsvhnv6g55lnvw23@gondor.apana.org.au>
-References: <20200203153921.45273-1-yuehaibing@huawei.com>
+        id S1726232AbgBMLe2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 13 Feb 2020 06:34:28 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Feb 2020 03:34:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,436,1574150400"; 
+   d="scan'208";a="347712799"
+Received: from kuha.fi.intel.com ([10.237.72.53])
+  by fmsmga001.fm.intel.com with SMTP; 13 Feb 2020 03:34:24 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 13 Feb 2020 13:34:23 +0200
+Date:   Thu, 13 Feb 2020 13:34:23 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Colin King <colin.king@canonical.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] usb: typec: ucsi: remove redundant assignment to
+ variable num
+Message-ID: <20200213113423.GK1498@kuha.fi.intel.com>
+References: <20200208165022.30429-1-colin.king@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200203153921.45273-1-yuehaibing@huawei.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20200208165022.30429-1-colin.king@canonical.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Feb 03, 2020 at 03:39:21PM +0000, YueHaibing wrote:
-> Fixes gcc '-Wunused-but-set-variable' warning:
+On Sat, Feb 08, 2020 at 04:50:22PM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> drivers/crypto/ccree/cc_cipher.c: In function 'cc_setup_state_desc':
-> drivers/crypto/ccree/cc_cipher.c:536:15: warning:
->  variable 'du_size' set but not used [-Wunused-but-set-variable]
+> Variable num is being assigned with a value that is never read, it is
+> assigned a new value later in a for-loop. The assignment is redundant
+> and can be removed.
 > 
-> commit 5c83e8ec4d51 ("crypto: ccree - fix FDE descriptor sequence")
-> involved this unused variable, so remove it.
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/crypto/ccree/cc_cipher.c | 8 --------
->  1 file changed, 8 deletions(-)
+>  drivers/usb/typec/ucsi/ucsi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+> index d5a6aac86327..b1b72cb7af10 100644
+> --- a/drivers/usb/typec/ucsi/ucsi.c
+> +++ b/drivers/usb/typec/ucsi/ucsi.c
+> @@ -400,7 +400,7 @@ static int ucsi_register_altmodes(struct ucsi_connector *con, u8 recipient)
+>  	struct typec_altmode_desc desc;
+>  	struct ucsi_altmode alt[2];
+>  	u64 command;
+> -	int num = 1;
+> +	int num;
+>  	int ret;
+>  	int len;
+>  	int j;
 
-Patch applied.  Thanks.
+Greg! I'll pick this, and to you with a few other patches that I have
+in my queue for the ucsi driver. I hope that's OK.
+
+thanks,
+
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+heikki

@@ -2,77 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FE2015B1E7
-	for <lists+kernel-janitors@lfdr.de>; Wed, 12 Feb 2020 21:33:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EA3515BB75
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Feb 2020 10:18:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728447AbgBLUdU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 12 Feb 2020 15:33:20 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55280 "EHLO mail.kernel.org"
+        id S1729672AbgBMJSI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 Feb 2020 04:18:08 -0500
+Received: from helcar.hmeau.com ([216.24.177.18]:42192 "EHLO deadmen.hmeau.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727947AbgBLUdT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 12 Feb 2020 15:33:19 -0500
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D5F5624676;
-        Wed, 12 Feb 2020 20:33:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581539599;
-        bh=Bo+9/jUSa0NpQtciq7tNRztsfaEVnk+kdyhA8MoMgss=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ONC/jXagdwupezmQbJaHWSwDzDb2gj9Z0Q8pBqC4i/ggqDi7q0WADqDLcHeLL9qDL
-         uYdr8h+1UZaJzn/dSCA/tU8ZXXvc+Pl4/ZFHpk5e6GhS85o2L/dAo9zcf1eUXc6PuT
-         DBYPhvIoaSqddAlnrzgwZyymZdy5rcYy3bQAxVy0=
-Received: by mail-qv1-f41.google.com with SMTP id y8so1569814qvk.6;
-        Wed, 12 Feb 2020 12:33:18 -0800 (PST)
-X-Gm-Message-State: APjAAAWmSN9Hk++F2Imt9v+xjWch4hY5nZNrpw7/sqKtvca71ZfaIATE
-        XTLeENpTSRcZ04lSKiyU4p9p6mvNgYPJRclssA==
-X-Google-Smtp-Source: APXvYqzre1CEhmCZxdnqAWYpg8FbsvimAbvrSYpW/TM7sS3n6YPLS4HOei7P5FSDxFM49Mt4fmLX+ckAuwTDSPKYjl4=
-X-Received: by 2002:a0c:f6cd:: with SMTP id d13mr20705135qvo.20.1581539597924;
- Wed, 12 Feb 2020 12:33:17 -0800 (PST)
+        id S1729526AbgBMJSI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 13 Feb 2020 04:18:08 -0500
+Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
+        by deadmen.hmeau.com with esmtps (Exim 4.89 #2 (Debian))
+        id 1j2Ad9-00047U-KJ; Thu, 13 Feb 2020 17:17:55 +0800
+Received: from herbert by gondobar with local (Exim 4.89)
+        (envelope-from <herbert@gondor.apana.org.au>)
+        id 1j2Ad5-0006kr-2n; Thu, 13 Feb 2020 17:17:51 +0800
+Date:   Thu, 13 Feb 2020 17:17:51 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Neil Horman <nhorman@tuxdriver.com>,
+        Corentin Labbe <clabbe@baylibre.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] crypto: rng - Fix a refcounting bug in crypto_rng_reset()
+Message-ID: <20200213091750.x7fke4xva3rtkcap@gondor.apana.org.au>
+References: <20200120143804.pbmnrh72v2gogx43@kili.mountain>
 MIME-Version: 1.0
-References: <20200203152724.42611-1-yuehaibing@huawei.com>
-In-Reply-To: <20200203152724.42611-1-yuehaibing@huawei.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Wed, 12 Feb 2020 14:33:07 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+BFrJ-bdDuKxCJ0OX=rLGsoHVf6u55irCA7duCJBB7sA@mail.gmail.com>
-Message-ID: <CAL_Jsq+BFrJ-bdDuKxCJ0OX=rLGsoHVf6u55irCA7duCJBB7sA@mail.gmail.com>
-Subject: Re: [PATCH -next] drm/panfrost: Remove set but not used variable 'bo'
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Boris Brezillon <boris.brezillon@collabora.com>,
-        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        Steven Price <steven.price@arm.com>,
-        Alyssa Rosenzweig <alyssa.rosenzweig@collabora.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linaro-mm-sig@lists.linaro.org, kernel-janitors@vger.kernel.org,
-        Hulk Robot <hulkci@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200120143804.pbmnrh72v2gogx43@kili.mountain>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Feb 3, 2020 at 9:33 AM YueHaibing <yuehaibing@huawei.com> wrote:
->
-> Fixes gcc '-Wunused-but-set-variable' warning:
->
-> drivers/gpu/drm/panfrost/panfrost_job.c: In function 'panfrost_job_cleanup':
-> drivers/gpu/drm/panfrost/panfrost_job.c:278:31: warning:
->  variable 'bo' set but not used [-Wunused-but-set-variable]
->
-> commit bdefca2d8dc0 ("drm/panfrost: Add the panfrost_gem_mapping concept")
-> involved this unused variable.
->
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+On Mon, Jan 20, 2020 at 05:38:04PM +0300, Dan Carpenter wrote:
+> We need to decrement this refcounter on these error paths.
+> 
+> Fixes: f7d76e05d058 ("crypto: user - fix use_after_free of struct xxx_request")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  drivers/gpu/drm/panfrost/panfrost_job.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
+>  crypto/rng.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 
-Applied to drm-misc-fixes.
-
-Rob
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

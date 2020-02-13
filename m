@@ -2,76 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AC6F15BDAD
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Feb 2020 12:34:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 826DF15BEE7
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Feb 2020 14:04:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729761AbgBMLe2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 Feb 2020 06:34:28 -0500
-Received: from mga09.intel.com ([134.134.136.24]:12562 "EHLO mga09.intel.com"
+        id S1729978AbgBMNEG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 Feb 2020 08:04:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49778 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726232AbgBMLe2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 13 Feb 2020 06:34:28 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Feb 2020 03:34:27 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,436,1574150400"; 
-   d="scan'208";a="347712799"
-Received: from kuha.fi.intel.com ([10.237.72.53])
-  by fmsmga001.fm.intel.com with SMTP; 13 Feb 2020 03:34:24 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 13 Feb 2020 13:34:23 +0200
-Date:   Thu, 13 Feb 2020 13:34:23 +0200
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Colin King <colin.king@canonical.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        id S1729801AbgBMNEG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 13 Feb 2020 08:04:06 -0500
+Received: from localhost (unknown [209.37.97.194])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9F6DB2168B;
+        Thu, 13 Feb 2020 13:04:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1581599044;
+        bh=JzuXVZMjhJuQSJ5hGh5JfZlVw6AYi3gKS44RcKZi8yI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=rKcZlkdb1MfHMvC/XJXfgmNFUkssnjWs2ADRkmHXZ9mvIr//KwkdCC50/Ltj/M0PG
+         I0m89eojS5KcAIjAWPsFPJfX/rRcXDDOHLTe7buofpKbFgASMcaiXNIkdsCwflkNtZ
+         VEBeoqqUxZD/8RNhH9Bp8nCx7FJv1ZIdiVzuNRLU=
+Date:   Thu, 13 Feb 2020 05:04:04 -0800
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     Colin King <colin.king@canonical.com>, linux-usb@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] usb: typec: ucsi: remove redundant assignment to
  variable num
-Message-ID: <20200213113423.GK1498@kuha.fi.intel.com>
+Message-ID: <20200213130404.GA3369961@kroah.com>
 References: <20200208165022.30429-1-colin.king@canonical.com>
+ <20200213113423.GK1498@kuha.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200208165022.30429-1-colin.king@canonical.com>
+In-Reply-To: <20200213113423.GK1498@kuha.fi.intel.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Feb 08, 2020 at 04:50:22PM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Thu, Feb 13, 2020 at 01:34:23PM +0200, Heikki Krogerus wrote:
+> On Sat, Feb 08, 2020 at 04:50:22PM +0000, Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > Variable num is being assigned with a value that is never read, it is
+> > assigned a new value later in a for-loop. The assignment is redundant
+> > and can be removed.
+> > 
+> > Addresses-Coverity: ("Unused value")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > ---
+> >  drivers/usb/typec/ucsi/ucsi.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+> > index d5a6aac86327..b1b72cb7af10 100644
+> > --- a/drivers/usb/typec/ucsi/ucsi.c
+> > +++ b/drivers/usb/typec/ucsi/ucsi.c
+> > @@ -400,7 +400,7 @@ static int ucsi_register_altmodes(struct ucsi_connector *con, u8 recipient)
+> >  	struct typec_altmode_desc desc;
+> >  	struct ucsi_altmode alt[2];
+> >  	u64 command;
+> > -	int num = 1;
+> > +	int num;
+> >  	int ret;
+> >  	int len;
+> >  	int j;
 > 
-> Variable num is being assigned with a value that is never read, it is
-> assigned a new value later in a for-loop. The assignment is redundant
-> and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/usb/typec/ucsi/ucsi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-> index d5a6aac86327..b1b72cb7af10 100644
-> --- a/drivers/usb/typec/ucsi/ucsi.c
-> +++ b/drivers/usb/typec/ucsi/ucsi.c
-> @@ -400,7 +400,7 @@ static int ucsi_register_altmodes(struct ucsi_connector *con, u8 recipient)
->  	struct typec_altmode_desc desc;
->  	struct ucsi_altmode alt[2];
->  	u64 command;
-> -	int num = 1;
-> +	int num;
->  	int ret;
->  	int len;
->  	int j;
+> Greg! I'll pick this, and to you with a few other patches that I have
+> in my queue for the ucsi driver. I hope that's OK.
 
-Greg! I'll pick this, and to you with a few other patches that I have
-in my queue for the ucsi driver. I hope that's OK.
-
-thanks,
-
--- 
-heikki
+Thats fine.

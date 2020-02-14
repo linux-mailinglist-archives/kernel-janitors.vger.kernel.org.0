@@ -2,198 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7079215D64E
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Feb 2020 12:10:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 261FC15D743
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Feb 2020 13:20:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729074AbgBNLKe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Feb 2020 06:10:34 -0500
-Received: from mx-relay53-hz1.antispameurope.com ([94.100.132.227]:39408 "EHLO
-        mx-relay53-hz1.antispameurope.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728522AbgBNLKd (ORCPT
+        id S1729089AbgBNMUl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Feb 2020 07:20:41 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:49559 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728582AbgBNMUl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Feb 2020 06:10:33 -0500
-X-Greylist: delayed 465 seconds by postgrey-1.27 at vger.kernel.org; Fri, 14 Feb 2020 06:10:33 EST
-Received: from smtp.eckelmann.de ([217.19.183.80]) by mx-relay53-hz1.antispameurope.com;
- Fri, 14 Feb 2020 12:02:43 +0100
-Received: from ws067.eckelmann.group (2a00:1f08:4007:5c00:1a60:24ff:fe97:84c9)
- by EX-SRV2.eckelmann.group (2a00:1f08:4007:e035:172:18:35:5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1591.10; Fri, 14 Feb 2020 12:02:39 +0100
-Date:   Fri, 14 Feb 2020 12:02:38 +0100
-From:   Thorsten Scherer <thorsten.scherer@eckelmann.de>
-To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
-CC:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Fri, 14 Feb 2020 07:20:41 -0500
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1j2ZxW-00022B-N5; Fri, 14 Feb 2020 13:20:38 +0100
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1j2ZxU-0008Eb-NV; Fri, 14 Feb 2020 13:20:36 +0100
+Date:   Fri, 14 Feb 2020 13:20:36 +0100
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Thorsten Scherer <thorsten.scherer@eckelmann.de>
+Cc:     linux-gpio@vger.kernel.org,
         Linus Walleij <linus.walleij@linaro.org>,
+        kernel-janitors@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        <kernel-janitors@vger.kernel.org>, <linux-gpio@vger.kernel.org>
+        Dan Carpenter <dan.carpenter@oracle.com>
 Subject: Re: [PATCH] gpio: siox: use raw spinlock for irq related locking
-Message-ID: <20200214110238.zkbfyzfjvkzipgjr@ws067.eckelmann.group>
+Message-ID: <20200214122036.n3zjx25b7kxqlr4o@pengutronix.de>
 References: <87d0al4600.fsf@nanos.tec.linutronix.de>
  <20200211135121.15752-1-uwe@kleine-koenig.org>
+ <20200214110238.zkbfyzfjvkzipgjr@ws067.eckelmann.group>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200211135121.15752-1-uwe@kleine-koenig.org>
-X-Originating-IP: [2a00:1f08:4007:5c00:1a60:24ff:fe97:84c9]
-X-ClientProxiedBy: EX-SRV1.eckelmann.group (2a00:1f08:4007:e035:172:18:35:4)
- To EX-SRV2.eckelmann.group (2a00:1f08:4007:e035:172:18:35:5)
-X-cloud-security-sender: t.scherer@eckelmann.de
-X-cloud-security-recipient: kernel-janitors@vger.kernel.org
-X-cloud-security-Virusscan: CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay53-hz1.antispameurope.com with 7B5302600C9
-X-cloud-security-connect: smtp.eckelmann.de[217.19.183.80], TLS=1, IP=217.19.183.80
-X-cloud-security: scantime:.9918
+In-Reply-To: <20200214110238.zkbfyzfjvkzipgjr@ws067.eckelmann.group>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
+Hello Thorsten,
 
-AFAICT this is all good.
-
-Unfortunately i don't have any idea on how to test out the difference
-this patch makes on a real SIOX.
-
-Any hints? Is it necessary at all?
-
-Thank you.
-
-Kind regards
-Thorsten
-
-Acked-by: Thorsten Scherer <t.scherer@eckelmann.de>
-
-On Tue, Feb 11, 2020 at 02:51:21PM +0100, Uwe Kleine-König wrote:
-> All the irq related callbacks are called with the (raw) spinlock
-> desc->lock being held. So the lock here must be raw as well. Also irqs
-> were already disabled by the caller for the irq chip callbacks, so the
-> non-irq variants of spin_lock must be used there.
+On Fri, Feb 14, 2020 at 12:02:38PM +0100, Thorsten Scherer wrote:
+> AFAICT this is all good.
 > 
-> Fixes: be8c8facc707 ("gpio: new driver to work with a 8x12 siox")
-> Signed-off-by: Uwe Kleine-König <uwe@kleine-koenig.org>
-> ---
-> > 
-> > I explicitely said: "for all irqchip callbacks".
-> > 
-> > gpio_siox_get_data() is not a irq chip callback, right? So obviously it
-> > has to stay there.
-> 
-> Ah, I read "irqchip callbacks" as "spinlock calls". Thanks to restate
-> this for me.
-> 
-> Thanks
-> Uwe
-> 
->  drivers/gpio/gpio-siox.c | 28 ++++++++++++++--------------
->  1 file changed, 14 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/gpio/gpio-siox.c b/drivers/gpio/gpio-siox.c
-> index 311f66757b92..26e1fe092304 100644
-> --- a/drivers/gpio/gpio-siox.c
-> +++ b/drivers/gpio/gpio-siox.c
-> @@ -15,7 +15,7 @@ struct gpio_siox_ddata {
->  	u8 setdata[1];
->  	u8 getdata[3];
->  
-> -	spinlock_t irqlock;
-> +	raw_spinlock_t irqlock;
->  	u32 irq_enable;
->  	u32 irq_status;
->  	u32 irq_type[20];
-> @@ -44,7 +44,7 @@ static int gpio_siox_get_data(struct siox_device *sdevice, const u8 buf[])
->  
->  	mutex_lock(&ddata->lock);
->  
-> -	spin_lock_irq(&ddata->irqlock);
-> +	raw_spin_lock_irq(&ddata->irqlock);
->  
->  	for (offset = 0; offset < 12; ++offset) {
->  		unsigned int bitpos = 11 - offset;
-> @@ -66,7 +66,7 @@ static int gpio_siox_get_data(struct siox_device *sdevice, const u8 buf[])
->  
->  	trigger = ddata->irq_status & ddata->irq_enable;
->  
-> -	spin_unlock_irq(&ddata->irqlock);
-> +	raw_spin_unlock_irq(&ddata->irqlock);
->  
->  	ddata->getdata[0] = buf[0];
->  	ddata->getdata[1] = buf[1];
-> @@ -84,9 +84,9 @@ static int gpio_siox_get_data(struct siox_device *sdevice, const u8 buf[])
->  			 * handler of the irq chip. But it doesn't, so we have
->  			 * to clean the irq_status here.
->  			 */
-> -			spin_lock_irq(&ddata->irqlock);
-> +			raw_spin_lock_irq(&ddata->irqlock);
->  			ddata->irq_status &= ~(1 << offset);
-> -			spin_unlock_irq(&ddata->irqlock);
-> +			raw_spin_unlock_irq(&ddata->irqlock);
->  
->  			handle_nested_irq(irq);
->  		}
-> @@ -101,9 +101,9 @@ static void gpio_siox_irq_ack(struct irq_data *d)
->  	struct gpio_siox_ddata *ddata =
->  		container_of(ic, struct gpio_siox_ddata, ichip);
->  
-> -	spin_lock_irq(&ddata->irqlock);
-> +	raw_spin_lock(&ddata->irqlock);
->  	ddata->irq_status &= ~(1 << d->hwirq);
-> -	spin_unlock_irq(&ddata->irqlock);
-> +	raw_spin_unlock(&ddata->irqlock);
->  }
->  
->  static void gpio_siox_irq_mask(struct irq_data *d)
-> @@ -112,9 +112,9 @@ static void gpio_siox_irq_mask(struct irq_data *d)
->  	struct gpio_siox_ddata *ddata =
->  		container_of(ic, struct gpio_siox_ddata, ichip);
->  
-> -	spin_lock_irq(&ddata->irqlock);
-> +	raw_spin_lock(&ddata->irqlock);
->  	ddata->irq_enable &= ~(1 << d->hwirq);
-> -	spin_unlock_irq(&ddata->irqlock);
-> +	raw_spin_unlock(&ddata->irqlock);
->  }
->  
->  static void gpio_siox_irq_unmask(struct irq_data *d)
-> @@ -123,9 +123,9 @@ static void gpio_siox_irq_unmask(struct irq_data *d)
->  	struct gpio_siox_ddata *ddata =
->  		container_of(ic, struct gpio_siox_ddata, ichip);
->  
-> -	spin_lock_irq(&ddata->irqlock);
-> +	raw_spin_lock(&ddata->irqlock);
->  	ddata->irq_enable |= 1 << d->hwirq;
-> -	spin_unlock_irq(&ddata->irqlock);
-> +	raw_spin_unlock(&ddata->irqlock);
->  }
->  
->  static int gpio_siox_irq_set_type(struct irq_data *d, u32 type)
-> @@ -134,9 +134,9 @@ static int gpio_siox_irq_set_type(struct irq_data *d, u32 type)
->  	struct gpio_siox_ddata *ddata =
->  		container_of(ic, struct gpio_siox_ddata, ichip);
->  
-> -	spin_lock_irq(&ddata->irqlock);
-> +	raw_spin_lock(&ddata->irqlock);
->  	ddata->irq_type[d->hwirq] = type;
-> -	spin_unlock_irq(&ddata->irqlock);
-> +	raw_spin_unlock(&ddata->irqlock);
->  
->  	return 0;
->  }
-> @@ -222,7 +222,7 @@ static int gpio_siox_probe(struct siox_device *sdevice)
->  	dev_set_drvdata(dev, ddata);
->  
->  	mutex_init(&ddata->lock);
-> -	spin_lock_init(&ddata->irqlock);
-> +	raw_spin_lock_init(&ddata->irqlock);
->  
->  	ddata->gchip.base = -1;
->  	ddata->gchip.can_sleep = 1;
-> -- 
-> 2.24.0
-> 
+> Unfortunately i don't have any idea on how to test out the difference
+> this patch makes on a real SIOX.
 
---
-Thorsten Scherer | Eckelmann AG | www.eckelmann.de |
+When I started looking into the problem I expected that the lock
+debugging would catch these problems. But either I did something wrong
+or there is no mechanism that catches
+
+ - a spinlock is taken when there is already a raw spinlock taken
+ - spin_lock_irq is used with irqs already off
+
+And I wonder if there are reasons I don't see that make these two tests
+a bad idea.
+
+> Any hints? Is it necessary at all?
+
+Apart from "normal" testing that SIOX still works I have no good
+suggestion. Having said that I would be surprised if my patch breaked
+something. (But it wouldn't be the first time such a surprise happens
+:-)
+
+Best regards
+Uwe
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |

@@ -2,32 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E3A815D1DD
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Feb 2020 07:05:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B91115D222
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Feb 2020 07:30:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728239AbgBNGFT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Feb 2020 01:05:19 -0500
-Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:39239 "EHLO
+        id S1728778AbgBNGaP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Feb 2020 01:30:15 -0500
+Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:29509 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726092AbgBNGFS (ORCPT
+        with ESMTP id S1728691AbgBNGaP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Feb 2020 01:05:18 -0500
+        Fri, 14 Feb 2020 01:30:15 -0500
 Received: from localhost.localdomain ([93.22.37.15])
         by mwinf5d17 with ME
-        id 2W5E220080KcLDH03W5ETK; Fri, 14 Feb 2020 07:05:15 +0100
+        id 2WWB220080KcLDH03WWBpd; Fri, 14 Feb 2020 07:30:13 +0100
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 14 Feb 2020 07:05:15 +0100
+X-ME-Date: Fri, 14 Feb 2020 07:30:13 +0100
 X-ME-IP: 93.22.37.15
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     myungjoo.ham@samsung.com, kyungmin.park@samsung.com,
-        cw00.choi@samsung.com
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
+To:     rjw@rjwysocki.net, lenb@kernel.org, robert.moore@intel.com,
+        erik.kaneda@intel.com
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] PM / devfreq: Fix a typo in a comment
-Date:   Fri, 14 Feb 2020 07:05:06 +0100
-Message-Id: <20200214060506.29500-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ACPICA: Fix a typo in acuuid.h
+Date:   Fri, 14 Feb 2020 07:30:03 +0100
+Message-Id: <20200214063003.29741-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -36,26 +36,24 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'govenror' was used in place of 'governor'
+The comment related to the ending of the include guard should be related to
+__ACUUID_H__, not __AUUID_H__ (i.e. 'C' is missing).
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/devfreq/governor.h | 2 +-
+ include/acpi/acuuid.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/devfreq/governor.h b/drivers/devfreq/governor.h
-index c07ce77c253d..ae4d0cc18359 100644
---- a/drivers/devfreq/governor.h
-+++ b/drivers/devfreq/governor.h
-@@ -30,7 +30,7 @@
-  * @node:		list node - contains registered devfreq governors
-  * @name:		Governor's name
-  * @immutable:		Immutable flag for governor. If the value is 1,
-- *			this govenror is never changeable to other governor.
-+ *			this governor is never changeable to other governor.
-  * @interrupt_driven:	Devfreq core won't schedule polling work for this
-  *			governor if value is set to 1.
-  * @get_target_freq:	Returns desired operating frequency for the device.
+diff --git a/include/acpi/acuuid.h b/include/acpi/acuuid.h
+index 9dd4689a39cf..9e1367b19069 100644
+--- a/include/acpi/acuuid.h
++++ b/include/acpi/acuuid.h
+@@ -57,4 +57,4 @@
+ #define UUID_THERMAL_EXTENSIONS         "14d399cd-7a27-4b18-8fb4-7cb7b9f4e500"
+ #define UUID_DEVICE_PROPERTIES          "daffd814-6eba-4d8c-8a91-bc9bbf4aa301"
+ 
+-#endif				/* __AUUID_H__ */
++#endif				/* __ACUUID_H__ */
 -- 
 2.20.1
 

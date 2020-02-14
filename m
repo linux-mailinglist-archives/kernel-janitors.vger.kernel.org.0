@@ -2,64 +2,198 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B947E15D520
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Feb 2020 11:02:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7079215D64E
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Feb 2020 12:10:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729155AbgBNKCK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Feb 2020 05:02:10 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:47224 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727965AbgBNKCK (ORCPT
+        id S1729074AbgBNLKe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Feb 2020 06:10:34 -0500
+Received: from mx-relay53-hz1.antispameurope.com ([94.100.132.227]:39408 "EHLO
+        mx-relay53-hz1.antispameurope.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728522AbgBNLKd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Feb 2020 05:02:10 -0500
-Received: from 79.184.254.199.ipv4.supernova.orange.pl (79.184.254.199) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.341)
- id 9072457127e571a4; Fri, 14 Feb 2020 11:02:07 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        erik.kaneda@intel.com
-Cc:     lenb@kernel.org, robert.moore@intel.com,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] ACPICA: Fix a typo in acuuid.h
-Date:   Fri, 14 Feb 2020 11:02:07 +0100
-Message-ID: <2712088.SaWAGPlJqS@kreacher>
-In-Reply-To: <20200214063003.29741-1-christophe.jaillet@wanadoo.fr>
-References: <20200214063003.29741-1-christophe.jaillet@wanadoo.fr>
+        Fri, 14 Feb 2020 06:10:33 -0500
+X-Greylist: delayed 465 seconds by postgrey-1.27 at vger.kernel.org; Fri, 14 Feb 2020 06:10:33 EST
+Received: from smtp.eckelmann.de ([217.19.183.80]) by mx-relay53-hz1.antispameurope.com;
+ Fri, 14 Feb 2020 12:02:43 +0100
+Received: from ws067.eckelmann.group (2a00:1f08:4007:5c00:1a60:24ff:fe97:84c9)
+ by EX-SRV2.eckelmann.group (2a00:1f08:4007:e035:172:18:35:5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1591.10; Fri, 14 Feb 2020 12:02:39 +0100
+Date:   Fri, 14 Feb 2020 12:02:38 +0100
+From:   Thorsten Scherer <thorsten.scherer@eckelmann.de>
+To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
+CC:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        <kernel-janitors@vger.kernel.org>, <linux-gpio@vger.kernel.org>
+Subject: Re: [PATCH] gpio: siox: use raw spinlock for irq related locking
+Message-ID: <20200214110238.zkbfyzfjvkzipgjr@ws067.eckelmann.group>
+References: <87d0al4600.fsf@nanos.tec.linutronix.de>
+ <20200211135121.15752-1-uwe@kleine-koenig.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200211135121.15752-1-uwe@kleine-koenig.org>
+X-Originating-IP: [2a00:1f08:4007:5c00:1a60:24ff:fe97:84c9]
+X-ClientProxiedBy: EX-SRV1.eckelmann.group (2a00:1f08:4007:e035:172:18:35:4)
+ To EX-SRV2.eckelmann.group (2a00:1f08:4007:e035:172:18:35:5)
+X-cloud-security-sender: t.scherer@eckelmann.de
+X-cloud-security-recipient: kernel-janitors@vger.kernel.org
+X-cloud-security-Virusscan: CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay53-hz1.antispameurope.com with 7B5302600C9
+X-cloud-security-connect: smtp.eckelmann.de[217.19.183.80], TLS=1, IP=217.19.183.80
+X-cloud-security: scantime:.9918
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Friday, February 14, 2020 7:30:03 AM CET Christophe JAILLET wrote:
-> The comment related to the ending of the include guard should be related to
-> __ACUUID_H__, not __AUUID_H__ (i.e. 'C' is missing).
+Hello,
+
+AFAICT this is all good.
+
+Unfortunately i don't have any idea on how to test out the difference
+this patch makes on a real SIOX.
+
+Any hints? Is it necessary at all?
+
+Thank you.
+
+Kind regards
+Thorsten
+
+Acked-by: Thorsten Scherer <t.scherer@eckelmann.de>
+
+On Tue, Feb 11, 2020 at 02:51:21PM +0100, Uwe Kleine-König wrote:
+> All the irq related callbacks are called with the (raw) spinlock
+> desc->lock being held. So the lock here must be raw as well. Also irqs
+> were already disabled by the caller for the irq chip callbacks, so the
+> non-irq variants of spin_lock must be used there.
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-
-Erik, please route this through the upstream.
-
-Thanks!
-
+> Fixes: be8c8facc707 ("gpio: new driver to work with a 8x12 siox")
+> Signed-off-by: Uwe Kleine-König <uwe@kleine-koenig.org>
 > ---
->  include/acpi/acuuid.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > I explicitely said: "for all irqchip callbacks".
+> > 
+> > gpio_siox_get_data() is not a irq chip callback, right? So obviously it
+> > has to stay there.
 > 
-> diff --git a/include/acpi/acuuid.h b/include/acpi/acuuid.h
-> index 9dd4689a39cf..9e1367b19069 100644
-> --- a/include/acpi/acuuid.h
-> +++ b/include/acpi/acuuid.h
-> @@ -57,4 +57,4 @@
->  #define UUID_THERMAL_EXTENSIONS         "14d399cd-7a27-4b18-8fb4-7cb7b9f4e500"
->  #define UUID_DEVICE_PROPERTIES          "daffd814-6eba-4d8c-8a91-bc9bbf4aa301"
+> Ah, I read "irqchip callbacks" as "spinlock calls". Thanks to restate
+> this for me.
+> 
+> Thanks
+> Uwe
+> 
+>  drivers/gpio/gpio-siox.c | 28 ++++++++++++++--------------
+>  1 file changed, 14 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/gpio/gpio-siox.c b/drivers/gpio/gpio-siox.c
+> index 311f66757b92..26e1fe092304 100644
+> --- a/drivers/gpio/gpio-siox.c
+> +++ b/drivers/gpio/gpio-siox.c
+> @@ -15,7 +15,7 @@ struct gpio_siox_ddata {
+>  	u8 setdata[1];
+>  	u8 getdata[3];
 >  
-> -#endif				/* __AUUID_H__ */
-> +#endif				/* __ACUUID_H__ */
+> -	spinlock_t irqlock;
+> +	raw_spinlock_t irqlock;
+>  	u32 irq_enable;
+>  	u32 irq_status;
+>  	u32 irq_type[20];
+> @@ -44,7 +44,7 @@ static int gpio_siox_get_data(struct siox_device *sdevice, const u8 buf[])
+>  
+>  	mutex_lock(&ddata->lock);
+>  
+> -	spin_lock_irq(&ddata->irqlock);
+> +	raw_spin_lock_irq(&ddata->irqlock);
+>  
+>  	for (offset = 0; offset < 12; ++offset) {
+>  		unsigned int bitpos = 11 - offset;
+> @@ -66,7 +66,7 @@ static int gpio_siox_get_data(struct siox_device *sdevice, const u8 buf[])
+>  
+>  	trigger = ddata->irq_status & ddata->irq_enable;
+>  
+> -	spin_unlock_irq(&ddata->irqlock);
+> +	raw_spin_unlock_irq(&ddata->irqlock);
+>  
+>  	ddata->getdata[0] = buf[0];
+>  	ddata->getdata[1] = buf[1];
+> @@ -84,9 +84,9 @@ static int gpio_siox_get_data(struct siox_device *sdevice, const u8 buf[])
+>  			 * handler of the irq chip. But it doesn't, so we have
+>  			 * to clean the irq_status here.
+>  			 */
+> -			spin_lock_irq(&ddata->irqlock);
+> +			raw_spin_lock_irq(&ddata->irqlock);
+>  			ddata->irq_status &= ~(1 << offset);
+> -			spin_unlock_irq(&ddata->irqlock);
+> +			raw_spin_unlock_irq(&ddata->irqlock);
+>  
+>  			handle_nested_irq(irq);
+>  		}
+> @@ -101,9 +101,9 @@ static void gpio_siox_irq_ack(struct irq_data *d)
+>  	struct gpio_siox_ddata *ddata =
+>  		container_of(ic, struct gpio_siox_ddata, ichip);
+>  
+> -	spin_lock_irq(&ddata->irqlock);
+> +	raw_spin_lock(&ddata->irqlock);
+>  	ddata->irq_status &= ~(1 << d->hwirq);
+> -	spin_unlock_irq(&ddata->irqlock);
+> +	raw_spin_unlock(&ddata->irqlock);
+>  }
+>  
+>  static void gpio_siox_irq_mask(struct irq_data *d)
+> @@ -112,9 +112,9 @@ static void gpio_siox_irq_mask(struct irq_data *d)
+>  	struct gpio_siox_ddata *ddata =
+>  		container_of(ic, struct gpio_siox_ddata, ichip);
+>  
+> -	spin_lock_irq(&ddata->irqlock);
+> +	raw_spin_lock(&ddata->irqlock);
+>  	ddata->irq_enable &= ~(1 << d->hwirq);
+> -	spin_unlock_irq(&ddata->irqlock);
+> +	raw_spin_unlock(&ddata->irqlock);
+>  }
+>  
+>  static void gpio_siox_irq_unmask(struct irq_data *d)
+> @@ -123,9 +123,9 @@ static void gpio_siox_irq_unmask(struct irq_data *d)
+>  	struct gpio_siox_ddata *ddata =
+>  		container_of(ic, struct gpio_siox_ddata, ichip);
+>  
+> -	spin_lock_irq(&ddata->irqlock);
+> +	raw_spin_lock(&ddata->irqlock);
+>  	ddata->irq_enable |= 1 << d->hwirq;
+> -	spin_unlock_irq(&ddata->irqlock);
+> +	raw_spin_unlock(&ddata->irqlock);
+>  }
+>  
+>  static int gpio_siox_irq_set_type(struct irq_data *d, u32 type)
+> @@ -134,9 +134,9 @@ static int gpio_siox_irq_set_type(struct irq_data *d, u32 type)
+>  	struct gpio_siox_ddata *ddata =
+>  		container_of(ic, struct gpio_siox_ddata, ichip);
+>  
+> -	spin_lock_irq(&ddata->irqlock);
+> +	raw_spin_lock(&ddata->irqlock);
+>  	ddata->irq_type[d->hwirq] = type;
+> -	spin_unlock_irq(&ddata->irqlock);
+> +	raw_spin_unlock(&ddata->irqlock);
+>  
+>  	return 0;
+>  }
+> @@ -222,7 +222,7 @@ static int gpio_siox_probe(struct siox_device *sdevice)
+>  	dev_set_drvdata(dev, ddata);
+>  
+>  	mutex_init(&ddata->lock);
+> -	spin_lock_init(&ddata->irqlock);
+> +	raw_spin_lock_init(&ddata->irqlock);
+>  
+>  	ddata->gchip.base = -1;
+>  	ddata->gchip.can_sleep = 1;
+> -- 
+> 2.24.0
 > 
 
-
-
-
+--
+Thorsten Scherer | Eckelmann AG | www.eckelmann.de |

@@ -2,78 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 256BE1600FB
-	for <lists+kernel-janitors@lfdr.de>; Sat, 15 Feb 2020 23:56:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA4E2160375
+	for <lists+kernel-janitors@lfdr.de>; Sun, 16 Feb 2020 11:27:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726616AbgBOW4C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 15 Feb 2020 17:56:02 -0500
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:34142 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726275AbgBOW4C (ORCPT
+        id S1726498AbgBPK1x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 16 Feb 2020 05:27:53 -0500
+Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:42563 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726116AbgBPK1x (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 15 Feb 2020 17:56:02 -0500
-Received: by mail-pg1-f195.google.com with SMTP id j4so7057327pgi.1;
-        Sat, 15 Feb 2020 14:56:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:date:from:to:cc:cc:cc:subject
-         :references:in-reply-to;
-        bh=4P+HZFnryW1ceNCZu3gsGIqLfCyZejArwm8tNC7DVtI=;
-        b=KOU8QSC5/IgZBgU3hw7iWSCy2BMRQRa322xhpjk3xFhBdzxwwdHfaZ9BWqqt3ThEt7
-         lTW+9nZcnizorgt9yuv59sK0OM/EA59B4t3FCFF5y5P+brHyuemXgXBZlERprBwj9E6A
-         wDBbux+HorF38/jEfgBR+0pnXs8id5boalLsjD4gTYOY+ENzmc+EZEaItAyZTs90SlRj
-         cQgBwCuOUt45yCXQxhb0T5KzmJNccWuDowIp8UVxH9UqVEzQm8D4SQbndXP+pmfcoIPe
-         spGq4gqIsNwXTQjRd6+e2gQTbPfE2sMMKB9FdcjmFpjmco1GqJvaHtas4/8p5g2sh+sg
-         9cUQ==
-X-Gm-Message-State: APjAAAUXpvZOxp+ov+iSKW2is8WLy2X+QAs6ttgK/hLgGGDNNyq5gdtA
-        8ajIdAelVoIz299Ayt4l9f1A5mgTsEomoQ==
-X-Google-Smtp-Source: APXvYqzZjNqkLYoW+J833Ezg6lYMbZGMNlRQrTNw3aiF7PIoiKNVxFFQH7ukzembxR30AwmB334ukw==
-X-Received: by 2002:a65:68ce:: with SMTP id k14mr10111977pgt.336.1581807361654;
-        Sat, 15 Feb 2020 14:56:01 -0800 (PST)
-Received: from localhost ([2601:646:8a00:9810:5af3:56d9:f882:39d4])
-        by smtp.gmail.com with ESMTPSA id a10sm4762684pgk.71.2020.02.15.14.56.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Feb 2020 14:56:01 -0800 (PST)
-Message-ID: <5e487701.1c69fb81.107e8.b7f9@mx.google.com>
-Date:   Sat, 15 Feb 2020 14:56:00 -0800
-From:   Paul Burton <paulburton@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-CC:     ralf@linux-mips.org, paulburton@kernel.org
-CC:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Sun, 16 Feb 2020 05:27:53 -0500
+Received: from localhost.localdomain ([93.22.36.246])
+        by mwinf5d13 with ME
+        id 3NTo2200F5JeL2d03NTpE1; Sun, 16 Feb 2020 11:27:50 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 16 Feb 2020 11:27:50 +0100
+X-ME-IP: 93.22.36.246
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     gregkh@linuxfoundation.org, jslaby@suse.com
+Cc:     linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-CC:     linux-mips@vger.kernel.org
-Subject: Re: [PATCH] MIPS: VPE: Fix a double free and a memory leak in  'release_vpe()'
-References:  <20200202201922.22852-1-christophe.jaillet@wanadoo.fr>
-In-Reply-To:  <20200202201922.22852-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] tty: serial: Kconfig: Fix a typo
+Date:   Sun, 16 Feb 2020 11:27:42 +0100
+Message-Id: <20200216102742.19298-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
+'exsisting' has an extra 's'
 
-Christophe JAILLET wrote:
-> Pointer on the memory allocated by 'alloc_progmem()' is stored in
-> 'v->load_addr'. So this is this memory that should be freed by
-> 'release_progmem()'.
-> 
-> 'release_progmem()' is only a call to 'kfree()'.
-> 
-> With the current code, there is both a double free and a memory leak.
-> Fix it by passing the correct pointer to 'release_progmem()'.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/tty/serial/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied to mips-fixes.
+diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
+index 52eaac21ff9f..7172f1c5fa6d 100644
+--- a/drivers/tty/serial/Kconfig
++++ b/drivers/tty/serial/Kconfig
+@@ -1111,7 +1111,7 @@ config SERIAL_SC16IS7XX_SPI
+ 	help
+ 	  Enable SC16IS7xx driver on SPI bus,
+ 	  If required say y, and say n to spi if not required,
+-	  This is additional support to exsisting driver.
++	  This is additional support to existing driver.
+ 	  You must select at least one bus for the driver to be built.
+ 
+ config SERIAL_TIMBERDALE
+-- 
+2.20.1
 
-> commit bef8e2dfceed
-> https://git.kernel.org/mips/c/bef8e2dfceed
-> 
-> Fixes: e01402b115ccc ("More AP / SP bits for the 34K, the Malta bits and things. Still wants")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> Signed-off-by: Paul Burton <paulburton@kernel.org>
-
-Thanks,
-    Paul
-
-[ This message was auto-generated; if you believe anything is incorrect
-  then please email paulburton@kernel.org to report it. ]

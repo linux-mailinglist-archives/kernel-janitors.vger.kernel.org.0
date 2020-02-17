@@ -2,58 +2,50 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF3311604C9
-	for <lists+kernel-janitors@lfdr.de>; Sun, 16 Feb 2020 17:20:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 514581608F4
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Feb 2020 04:30:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728441AbgBPQUJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 16 Feb 2020 11:20:09 -0500
-Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:49475 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728367AbgBPQUJ (ORCPT
+        id S1726939AbgBQDau (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 16 Feb 2020 22:30:50 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:48290 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726498AbgBQDau (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 16 Feb 2020 11:20:09 -0500
-Received: from localhost.localdomain ([92.148.185.249])
-        by mwinf5d27 with ME
-        id 3UL7220025PGiUk03UL7C0; Sun, 16 Feb 2020 17:20:07 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 16 Feb 2020 17:20:07 +0100
-X-ME-IP: 92.148.185.249
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     jassisinghbrar@gmail.com
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] mailbox: Fix a typo in Kconfig
-Date:   Sun, 16 Feb 2020 17:20:05 +0100
-Message-Id: <20200216162005.22015-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Sun, 16 Feb 2020 22:30:50 -0500
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 606A31574C430;
+        Sun, 16 Feb 2020 19:30:49 -0800 (PST)
+Date:   Sun, 16 Feb 2020 19:30:48 -0800 (PST)
+Message-Id: <20200216.193048.970019609345533158.davem@davemloft.net>
+To:     christophe.jaillet@wanadoo.fr
+Cc:     sameo@linux.intel.com, joe@perches.com, gregkh@linuxfoundation.org,
+        allison@lohutok.net, tglx@linutronix.de,
+        kstewart@linuxfoundation.org, natechancellor@gmail.com,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] NFC: pn544: Fix a typo in a debug message
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200215071728.302-1-christophe.jaillet@wanadoo.fr>
+References: <20200215071728.302-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 16 Feb 2020 19:30:49 -0800 (PST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is an extra 'r' in 'Intergrated'
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Sat, 15 Feb 2020 08:17:28 +0100
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/mailbox/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> The ending character of the string shoulb be \n, not \b.
+> 
+> Fixes: 17936b43f0fd ("NFC: Standardize logging style")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-diff --git a/drivers/mailbox/Kconfig b/drivers/mailbox/Kconfig
-index ab4eb750bbdd..af42fd0c9e0a 100644
---- a/drivers/mailbox/Kconfig
-+++ b/drivers/mailbox/Kconfig
-@@ -71,7 +71,7 @@ config OMAP_MBOX_KFIFO_SIZE
- 	  module parameter).
- 
- config ROCKCHIP_MBOX
--	bool "Rockchip Soc Intergrated Mailbox Support"
-+	bool "Rockchip Soc Integrated Mailbox Support"
- 	depends on ARCH_ROCKCHIP || COMPILE_TEST
- 	help
- 	  This driver provides support for inter-processor communication
--- 
-2.20.1
-
+Applied.

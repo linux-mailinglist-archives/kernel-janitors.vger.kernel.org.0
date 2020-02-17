@@ -2,128 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 38616160E13
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Feb 2020 10:10:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21270160E6C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Feb 2020 10:24:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728668AbgBQJJ4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Feb 2020 04:09:56 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:41273 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728272AbgBQJJ4 (ORCPT
+        id S1728852AbgBQJYb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 Feb 2020 04:24:31 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:36193 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728650AbgBQJYa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Feb 2020 04:09:56 -0500
-Received: by mail-wr1-f65.google.com with SMTP id c9so18687448wrw.8;
-        Mon, 17 Feb 2020 01:09:54 -0800 (PST)
+        Mon, 17 Feb 2020 04:24:30 -0500
+Received: by mail-wr1-f68.google.com with SMTP id z3so18777053wru.3;
+        Mon, 17 Feb 2020 01:24:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=gC9lstFoxEbX/zQZl/VGhuG//7pDVMBu6cMv3ckvkAU=;
-        b=baE06W5yq08EjZh19JkBU/yIxabzuvcrk/fS7nJ2NCYTeBK/X4EGFMJV63kxKi7jTJ
-         PZrVmMnxEAme/EWJ7BDAsut41LJWRVYRubKAduXkegmWLDydGVwCnMyDbPIM6TtWf5H2
-         8M/fcF1DRAotpclQ+BARtqmv2DXgCUgmX9zFbOoFA8qAgV5uqCIvct2b4+PVPvICSJca
-         pJMldZE/U/e7zpkkGbqQWZ0bRcEM8bZp+TjnHQLJ2rTL+i/4VglTEbcNd7yhWvIUIgax
-         JiH94SZL+m+Xp/Mt3GU8JQwrlH/1WRgnKZ4u2VPUQalUl7kF5x+Sbf1a7JTxjgyuoO3K
-         GEMg==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=1jbU4TlJlEpdoMWmG20EO03uGvQBbQQBpmr5/axN8pQ=;
+        b=Eyw7R/ZtTaHAGBZNWK6oJ6nShrV/sKIR9KMGv/dAVs5q0yZKK0aYAWB/T5qD5TW7Ve
+         3U5wx7yZpAVFh1WhsqvCkyuzVrIMGcITnjwmtE490kLnQEegzc2z4fBn+U/Nivhy1KnF
+         LnhVlvgtrfzvTdEn9P2v3+3oaIs2iTbBOGFzV4/ZoYJTjRFTTpOmUm3L6126ZLXuwOXC
+         Nw1KgN+HD/MCl7uriKDiZGVlDujku7S6JgTOtDBzwMRdiU4f1tswxWNobLoA32O44J/8
+         /p3/ZvmiW0kyztyIbXQktjhV+4hnPPk1sNuumOCjrj+qEEXvoLoWbr6e5yJDOKwC5+L2
+         ee+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=gC9lstFoxEbX/zQZl/VGhuG//7pDVMBu6cMv3ckvkAU=;
-        b=MiUy6yZfYlYtlcuhdKt6MqEbIZvKB0GcCLPtqfDheHLku7GvBJK7QqOxaNxdG5/olX
-         MKF8SXVhKe+SSk/KQfrTGn4/ZpmcySVa20YPfhxz/Rvy8GngWNcWb19pOF4P804DjK67
-         d7mQDCvjxLVOof65PgreS2xBf0mDRsXSIB6ubz+PYVwtOUkw87oH4yYUuT/7WimfwsIb
-         5MJvVmbvQB09E9O2t9fZeu9ORnpZ5AW+Pvdr0s922rXNta5sUSSn+5c5YT77MCNoK5ee
-         yRykt3moNwxU3wu0JIPkvEEuREX7agioYJ2deRUAcqCaX9ky3UUhzJY2YB3rQ+qqdbif
-         MaZQ==
-X-Gm-Message-State: APjAAAWKj+p/NIwSX4/jZQekBMldBGTMUqsVhJfR4vdDyWR/CmHfFUR1
-        VG76BJkLmsxSioNsdekB6+8=
-X-Google-Smtp-Source: APXvYqz4xI89JvqJoHrYysoNhU4UT5wcGoXD2k5XjMzR8Zm4M/6JUP2fvA3Un3j/9tUBTSy7QLesBw==
-X-Received: by 2002:adf:f9d0:: with SMTP id w16mr21184055wrr.83.1581930593493;
-        Mon, 17 Feb 2020 01:09:53 -0800 (PST)
-Received: from felia ([2001:16b8:3888:da00:b474:2167:8661:27cf])
-        by smtp.gmail.com with ESMTPSA id q1sm38417wrw.5.2020.02.17.01.09.52
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=1jbU4TlJlEpdoMWmG20EO03uGvQBbQQBpmr5/axN8pQ=;
+        b=lyOCGID5i2balkIQy3j27qBekLlvHFc8kdImqgRxsbUSj+S97QLbx1Y+Kfyw+0vsMu
+         2YnhY8Zgc4/0YWHC34gIsE7W3MJEz1tTlstfsOhrORAj1kLKPIIgwmgVaYzoxjOn7nyZ
+         b5xJ3Z0Z9b3fP1X1qtNCQlxv87XGu3/00iOoUPh6GJ27QjGHvjPoe+9g9Qg0LHleUXdB
+         HRZp94Goxll+OAmZDB+OFo2kZrjVKNbnUKvFacPhSpu7gQAGsq83lY4bFXI6DjqOyH76
+         ppiIWYGYyV4m4ZJe+R5ePAVKNNo1wsNaU4ETvxjV16ri1io1uGPE5Vs0lb3nIfmvGc4l
+         CBnA==
+X-Gm-Message-State: APjAAAUs9y4nUZeyYaEF+cNqgDebUz8e4bRYw+0g7uBCe65R/+NgfCcr
+        7CrYBCQPAHrgh5hkbYrVSTA=
+X-Google-Smtp-Source: APXvYqxHC3wzpIrAycvagZ9MJQLXYisuao7zJ2nHWSOBrxr7L5QWx319+nibcU2MpAGz6ijfEZv2kA==
+X-Received: by 2002:adf:fa43:: with SMTP id y3mr20785507wrr.65.1581931466884;
+        Mon, 17 Feb 2020 01:24:26 -0800 (PST)
+Received: from localhost (p2E5BEF3F.dip0.t-ipconnect.de. [46.91.239.63])
+        by smtp.gmail.com with ESMTPSA id y7sm53442wrr.56.2020.02.17.01.24.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Feb 2020 01:09:52 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Mon, 17 Feb 2020 10:09:45 +0100 (CET)
-X-X-Sender: lukas@felia
-To:     Anatoly Pugachev <matorola@gmail.com>
-cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>, Pat Gefre <pfg@sgi.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        linux-doc@vger.kernel.org, Joe Perches <joe@perches.com>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] tty/serial: cleanup after ioc*_serial driver removal
-In-Reply-To: <CADxRZqwGBi=4A224mG0cPgONdNitnvi3LFD_KQckxdYSXzgBGg@mail.gmail.com>
-Message-ID: <alpine.DEB.2.21.2002170950390.11007@felia>
-References: <20200217081558.10266-1-lukas.bulwahn@gmail.com> <CADxRZqwGBi=4A224mG0cPgONdNitnvi3LFD_KQckxdYSXzgBGg@mail.gmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        Mon, 17 Feb 2020 01:24:25 -0800 (PST)
+Date:   Mon, 17 Feb 2020 10:24:25 +0100
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     jonathanh@nvidia.com, tglx@linutronix.de,
+        gregkh@linuxfoundation.org, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] firmware: tegra: Fix a typo in Kconfig
+Message-ID: <20200217092425.GK1339021@ulmo>
+References: <20200216161748.21894-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Cy+5HEalSgyXkpVS"
+Content-Disposition: inline
+In-Reply-To: <20200216161748.21894-1-christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.13.1 (2019-12-14)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
+--Cy+5HEalSgyXkpVS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 17 Feb 2020, Anatoly Pugachev wrote:
+On Sun, Feb 16, 2020 at 05:17:48PM +0100, Christophe JAILLET wrote:
+> A 'n' is mising in 'commuication'
+>=20
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  drivers/firmware/tegra/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-> On Mon, Feb 17, 2020 at 11:16 AM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
-> >
-> > Commit 9c860e4cf708 ("tty/serial: remove the ioc3_serial driver") and
-> > commit a017ef17cfd8 ("tty/serial: remove the ioc4_serial driver") removed
-> > the ioc{3,4}_serial driver, but missed some files.
-> >
-> > Fortunately, ./scripts/get_maintainer.pl --self-test complains:
-> >
-> >   warning: no file matches F: drivers/tty/serial/ioc?_serial.c
-> >
-> > The driver is gone, so remove the other obsolete files and maintainer
-> > entry as well.
-> >
-> > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> > ---
-> > Christoph, please ack. Tony, please pick this patch.
-> > applies cleanly on 5.6-rc2 and next-20200217
-> > only sanity-grep for filenames and make htmldocs, no compile testing
-> >
-> >  Documentation/ia64/index.rst  |   1 -
-> >  Documentation/ia64/serial.rst | 165 ----------------------------------
-> >  MAINTAINERS                   |   8 --
-> >  include/linux/ioc3.h          |  93 -------------------
-> >  4 files changed, 267 deletions(-)
-> >  delete mode 100644 Documentation/ia64/serial.rst
-> 
-> Can you please at leat leave in tree serial.rst since it has generic
-> nature and not describing only ioc3_serial driver? Does ioc3_serial
-> the only serial driver available under ia64 ? Or can we please not to
-> loose some docs? Or do we have a more common serial driver description
-> somewhere which has info on ia64 serial driver/ports ?
-> 
+Applied to for-5.7/firmware, thanks.
 
-The description is about situations on very outdated kernel versions, so 
-the whole page needs a general update.
+Thierry
 
-I see there is some general troubleshooting hints which might fit into:
+--Cy+5HEalSgyXkpVS
+Content-Type: application/pgp-signature; name="signature.asc"
 
-https://www.kernel.org/doc/html/latest/admin-guide/serial-console.html
+-----BEGIN PGP SIGNATURE-----
 
-Feel free to include what you think is worthwhile to keep long-term as a 
-patch to Documention/admin-guide/serial-console.rst.
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl5KW8UACgkQ3SOs138+
+s6FbnhAAmQgt8qy8o0BICDHNatpwIIywn9ZdnXsUKIgec9XPCnPCZ1LUEkDKm6ks
+ooXRmYaYTkLDZ4KeRsrBYgD9ngK+hcEcnTOsHywrI3GiiV2m7/nnyA6ASgOd9QEH
+Pn7xrftP5U9b8FqUYxt9t6WYw6BWOaOe6Hpq6Cau6y7Msr5OCO0/SxYrfd5deWHy
+gFAQfIBYy8xmjkwUf77ghSs56jiSrsCajH2ltrSwQZjLSEstSfLlomVugrc4Vsf8
+qTeGGXGQE8ApG6NcuqnLcpYCtP5pvLgQ7R2xaOKtmDXedau8V4BPXQQKvXTCJfcc
+Ly/yvseuCMfH42Q/S2PI6iaVyf0U1gGNix/HkCO/N0RD6Jve4gDs1+qR5LfDKEII
+u8GjZPb8AlgpKR+tXIaPViM7TPYXPLpHamSERsgA0KOMj4mineT+Eji0/e/cWc2o
+pXF10HzD/as6r9MxOnqgr3dZhxlACu6ZRklmzkQvbQ3GDdTvR2EIXxWeosXJZRHo
+9VdHFcjUdhGf1EDekc/0FTOYBNzxh5h+O3ceQZF6BdlM1IEiK1UeV7kYAjGDpEEL
+aFrKSCkcEpdOEYXy/kNhQyrKTFHOGtIKQf8wSyXoqm+tRCagNRu7hqIc8CGOBh+z
+IyDtGKn1Rhb/SD3mmz9EmTL+mtWniOw6Ukq97v/UxGpCY8zUdNs=
+=fk0G
+-----END PGP SIGNATURE-----
 
-I am happy to support with that, but I am not the serial console expert.
-
-The documentation is not lost, it is just not in the documentation of the 
-latest kernel version, when we do not include the driver anymore.
-The documentation is still in old versions, which you would need to use 
-anyway for that driver support.
-
-I do not know if there are more ia64 serial drivers, but the MAINTAINERS 
-entry and commit message suggested there is not another serial driver.
-
-Lukas
+--Cy+5HEalSgyXkpVS--

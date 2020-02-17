@@ -2,388 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C52CA160CB5
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Feb 2020 09:16:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB828160CEF
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Feb 2020 09:21:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727939AbgBQIQQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Feb 2020 03:16:16 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:40853 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726932AbgBQIQP (ORCPT
+        id S1727976AbgBQIVe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 Feb 2020 03:21:34 -0500
+Received: from mx07-00178001.pphosted.com ([62.209.51.94]:24128 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726026AbgBQIVd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Feb 2020 03:16:15 -0500
-Received: by mail-wm1-f67.google.com with SMTP id t14so17312437wmi.5;
-        Mon, 17 Feb 2020 00:16:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=9uLUugWy0nGXkKP5RPbYs3NqKOIPMtzei6MBCm1JqIQ=;
-        b=BWGzk/4pZB79fWtZ1VZDVDgV7HCqyjQ0X6+Fh/sIYpGEJrYGQ6SgkHuyptGK31QOGK
-         1r/uUWIrWFBlZXgS39XK7zaOmhN46d5J3OCiIBj5BTAf6SnbO3w5O9GyU2MR3yayzl4l
-         GM0g6LoR/ykQ6YobfZTGE2IXnrYiou/bkaqUBlT/62dNUP/o2TGzYxY96P/zwZdJCqxl
-         S9mmFogqoK5o0DzEXzTL+1gaugbtMWCs+aM8WunxVe2uv3wmb9O5c8kyLyzIqcyrPuUK
-         5XVqGWkMSuGiOx3V921aBywpPe7YzXNptFeQB/XTxWvkeAXX2A6g6Hj5mRUg2V/62e9O
-         qcWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=9uLUugWy0nGXkKP5RPbYs3NqKOIPMtzei6MBCm1JqIQ=;
-        b=UrUfLvmPAyfIizbkMRk5ZawTc1x2YYkLbIT9XnlEr1u1GjBS4jNSd8zIQi3Jc0V/ZC
-         A6aRa7iV9V+oGpU1+WcJ2AwAbjIFksItEqVejb5IN/x8vlvoMOOiGGJQXOVCiLH8FvO7
-         YcmK1nXO5N3k1WMEf9QugCyt/KNyYPrTd6tChJgIIPy4yBpzLh7VvNTDJe4E3WSN6Nan
-         jjYJGa7D4JcRtVUR0hMPchjweOkk4wb33ibbmP7aq5WPMcaRYN4UM3gOsEvwFIE8lw8x
-         4YNkjqzO2VdrOtpJmEbQdsb7sbnURhPOdzFAIpAk0lPvIol+hEj2ForgycPuyVjM3UKm
-         uYWw==
-X-Gm-Message-State: APjAAAW/agfzSf4gYXPK070c2h912FTyCzxCGS+R/80LaCtdzt1iOnZV
-        pZ1bPClFJ1c2d22ghSBAxcw=
-X-Google-Smtp-Source: APXvYqzjCb4cE/OO6MkYUgMpwVYulYTKv4oChd0SeZsBJoeey/wkAq1qMTxsaEAU5xFs6vSSOG7/LA==
-X-Received: by 2002:a7b:c147:: with SMTP id z7mr20630621wmi.168.1581927372401;
-        Mon, 17 Feb 2020 00:16:12 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:3888:da00:b474:2167:8661:27cf])
-        by smtp.gmail.com with ESMTPSA id u4sm19453348wrt.37.2020.02.17.00.16.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Feb 2020 00:16:11 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Pat Gefre <pfg@sgi.com>, Christoph Hellwig <hch@lst.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>
-Cc:     linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] tty/serial: cleanup after ioc*_serial driver removal
-Date:   Mon, 17 Feb 2020 09:15:58 +0100
-Message-Id: <20200217081558.10266-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 17 Feb 2020 03:21:33 -0500
+Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01H8DR2s003204;
+        Mon, 17 Feb 2020 09:21:15 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=eeYePah8N20Fhz2BV0G/EU8+d/RYrV5o3pvxjTnWhtQ=;
+ b=tYjvTXZR/+yVgJq4Q7/Q8BVNR4fg57US+2Lz2Rv12fLlnKMRkjd+xOhyAsK4CKhqyC9P
+ ajb7XMJ/ERa17xR/QCtYS79B13JLRda0+BjSC1sCDOTeHO4++yTgshQ4zwKEUwaz2Pl+
+ 4o5moP2QRz+TXJNj01NOq2gBvNwim0410gQZjGsiWu+KiMZSeV5fWF3FHdu8Z8N78vKU
+ jxPpUZ89F4XVR2XxVoSWYO9Kdxsl/JQHBPgdUWEhVuYi2JiUBb0HBfKWnrKO6vH+TC6J
+ t/28ljTKWtjt73PMR+QJwTqcOLqsHr68cyFRWddll0XOHFcmbcKk5QRHyUyUb/bWPgxo Bg== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2y6705hmd4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 17 Feb 2020 09:21:15 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 839C7100038;
+        Mon, 17 Feb 2020 09:21:10 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 74E0B221612;
+        Mon, 17 Feb 2020 09:21:10 +0100 (CET)
+Received: from [10.48.0.71] (10.75.127.47) by SFHDAG5NODE3.st.com
+ (10.75.127.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 17 Feb
+ 2020 09:21:09 +0100
+Subject: Re: [PATCH] MAINTAINERS: adjust to stm32 timer dt-bindings conversion
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Benjamin Gaignard <benjamin.gaignard@st.com>,
+        Rob Herring <robh@kernel.org>
+CC:     Alexandre Torgue <alexandre.torgue@st.com>,
+        Joe Perches <joe@perches.com>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20200216130841.4187-1-lukas.bulwahn@gmail.com>
+From:   Fabrice Gasnier <fabrice.gasnier@st.com>
+Message-ID: <d24f8983-1d68-11d3-280e-a632ba618460@st.com>
+Date:   Mon, 17 Feb 2020 09:21:09 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <20200216130841.4187-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.47]
+X-ClientProxiedBy: SFHDAG5NODE3.st.com (10.75.127.15) To SFHDAG5NODE3.st.com
+ (10.75.127.15)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-02-17_04:2020-02-14,2020-02-17 signatures=0
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 9c860e4cf708 ("tty/serial: remove the ioc3_serial driver") and
-commit a017ef17cfd8 ("tty/serial: remove the ioc4_serial driver") removed
-the ioc{3,4}_serial driver, but missed some files.
+On 2/16/20 2:08 PM, Lukas Bulwahn wrote:
+> The commit 56fb34d86e87 ("dt-bindings: mfd: Convert stm32 timers bindings
+> to json-schema") and commit b88091f5d84a ("dt-bindings: mfd: Convert stm32
+> low power timers bindings to json-schema") converted some files from txt to
+> yaml format in ./Documentation/devicetree/bindings/, but they missed to
+> adjust MAINTAINERS.
+> 
+> Since then, ./scripts/get_maintainer.pl --self-test complains:
+> 
+>   no file matches F: Documentation/devicetree/bindings/*/stm32-*timer*
+>   no file matches F: Documentation/devicetree/bindings/pwm/pwm-stm32*
+> 
+> So, repair the MAINTAINERS entry now.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Hi Lukas,
 
-Fortunately, ./scripts/get_maintainer.pl --self-test complains:
+Acked-by: Fabrice Gasnier <fabrice.gasnier@st.com>
 
-  warning: no file matches F: drivers/tty/serial/ioc?_serial.c
-
-The driver is gone, so remove the other obsolete files and maintainer
-entry as well.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-Christoph, please ack. Tony, please pick this patch.
-applies cleanly on 5.6-rc2 and next-20200217
-only sanity-grep for filenames and make htmldocs, no compile testing
-
- Documentation/ia64/index.rst  |   1 -
- Documentation/ia64/serial.rst | 165 ----------------------------------
- MAINTAINERS                   |   8 --
- include/linux/ioc3.h          |  93 -------------------
- 4 files changed, 267 deletions(-)
- delete mode 100644 Documentation/ia64/serial.rst
- delete mode 100644 include/linux/ioc3.h
-
-diff --git a/Documentation/ia64/index.rst b/Documentation/ia64/index.rst
-index 0436e1034115..171e68725eea 100644
---- a/Documentation/ia64/index.rst
-+++ b/Documentation/ia64/index.rst
-@@ -14,5 +14,4 @@ IA-64 Architecture
-    fsys
-    irq-redir
-    mca
--   serial
-    xen
-diff --git a/Documentation/ia64/serial.rst b/Documentation/ia64/serial.rst
-deleted file mode 100644
-index 1de70c305a79..000000000000
---- a/Documentation/ia64/serial.rst
-+++ /dev/null
-@@ -1,165 +0,0 @@
--==============
--Serial Devices
--==============
--
--Serial Device Naming
--====================
--
--    As of 2.6.10, serial devices on ia64 are named based on the
--    order of ACPI and PCI enumeration.  The first device in the
--    ACPI namespace (if any) becomes /dev/ttyS0, the second becomes
--    /dev/ttyS1, etc., and PCI devices are named sequentially
--    starting after the ACPI devices.
--
--    Prior to 2.6.10, there were confusing exceptions to this:
--
--	- Firmware on some machines (mostly from HP) provides an HCDP
--	  table[1] that tells the kernel about devices that can be used
--	  as a serial console.  If the user specified "console=ttyS0"
--	  or the EFI ConOut path contained only UART devices, the
--	  kernel registered the device described by the HCDP as
--	  /dev/ttyS0.
--
--	- If there was no HCDP, we assumed there were UARTs at the
--	  legacy COM port addresses (I/O ports 0x3f8 and 0x2f8), so
--	  the kernel registered those as /dev/ttyS0 and /dev/ttyS1.
--
--    Any additional ACPI or PCI devices were registered sequentially
--    after /dev/ttyS0 as they were discovered.
--
--    With an HCDP, device names changed depending on EFI configuration
--    and "console=" arguments.  Without an HCDP, device names didn't
--    change, but we registered devices that might not really exist.
--
--    For example, an HP rx1600 with a single built-in serial port
--    (described in the ACPI namespace) plus an MP[2] (a PCI device) has
--    these ports:
--
--      ==========  ==========     ============    ============   =======
--      Type        MMIO           pre-2.6.10      pre-2.6.10     2.6.10+
--		  address
--				 (EFI console    (EFI console
--                                 on builtin)     on MP port)
--      ==========  ==========     ============    ============   =======
--      builtin     0xff5e0000        ttyS0           ttyS1         ttyS0
--      MP UPS      0xf8031000        ttyS1           ttyS2         ttyS1
--      MP Console  0xf8030000        ttyS2           ttyS0         ttyS2
--      MP 2        0xf8030010        ttyS3           ttyS3         ttyS3
--      MP 3        0xf8030038        ttyS4           ttyS4         ttyS4
--      ==========  ==========     ============    ============   =======
--
--Console Selection
--=================
--
--    EFI knows what your console devices are, but it doesn't tell the
--    kernel quite enough to actually locate them.  The DIG64 HCDP
--    table[1] does tell the kernel where potential serial console
--    devices are, but not all firmware supplies it.  Also, EFI supports
--    multiple simultaneous consoles and doesn't tell the kernel which
--    should be the "primary" one.
--
--    So how do you tell Linux which console device to use?
--
--	- If your firmware supplies the HCDP, it is simplest to
--	  configure EFI with a single device (either a UART or a VGA
--	  card) as the console.  Then you don't need to tell Linux
--	  anything; the kernel will automatically use the EFI console.
--
--	  (This works only in 2.6.6 or later; prior to that you had
--	  to specify "console=ttyS0" to get a serial console.)
--
--	- Without an HCDP, Linux defaults to a VGA console unless you
--	  specify a "console=" argument.
--
--    NOTE: Don't assume that a serial console device will be /dev/ttyS0.
--    It might be ttyS1, ttyS2, etc.  Make sure you have the appropriate
--    entries in /etc/inittab (for getty) and /etc/securetty (to allow
--    root login).
--
--Early Serial Console
--====================
--
--    The kernel can't start using a serial console until it knows where
--    the device lives.  Normally this happens when the driver enumerates
--    all the serial devices, which can happen a minute or more after the
--    kernel starts booting.
--
--    2.6.10 and later kernels have an "early uart" driver that works
--    very early in the boot process.  The kernel will automatically use
--    this if the user supplies an argument like "console=uart,io,0x3f8",
--    or if the EFI console path contains only a UART device and the
--    firmware supplies an HCDP.
--
--Troubleshooting Serial Console Problems
--=======================================
--
--    No kernel output after elilo prints "Uncompressing Linux... done":
--
--	- You specified "console=ttyS0" but Linux changed the device
--	  to which ttyS0 refers.  Configure exactly one EFI console
--	  device[3] and remove the "console=" option.
--
--	- The EFI console path contains both a VGA device and a UART.
--	  EFI and elilo use both, but Linux defaults to VGA.  Remove
--	  the VGA device from the EFI console path[3].
--
--	- Multiple UARTs selected as EFI console devices.  EFI and
--	  elilo use all selected devices, but Linux uses only one.
--	  Make sure only one UART is selected in the EFI console
--	  path[3].
--
--	- You're connected to an HP MP port[2] but have a non-MP UART
--	  selected as EFI console device.  EFI uses the MP as a
--	  console device even when it isn't explicitly selected.
--	  Either move the console cable to the non-MP UART, or change
--	  the EFI console path[3] to the MP UART.
--
--    Long pause (60+ seconds) between "Uncompressing Linux... done" and
--    start of kernel output:
--
--	- No early console because you used "console=ttyS<n>".  Remove
--	  the "console=" option if your firmware supplies an HCDP.
--
--	- If you don't have an HCDP, the kernel doesn't know where
--	  your console lives until the driver discovers serial
--	  devices.  Use "console=uart,io,0x3f8" (or appropriate
--	  address for your machine).
--
--    Kernel and init script output works fine, but no "login:" prompt:
--
--	- Add getty entry to /etc/inittab for console tty.  Look for
--	  the "Adding console on ttyS<n>" message that tells you which
--	  device is the console.
--
--    "login:" prompt, but can't login as root:
--
--	- Add entry to /etc/securetty for console tty.
--
--    No ACPI serial devices found in 2.6.17 or later:
--
--	- Turn on CONFIG_PNP and CONFIG_PNPACPI.  Prior to 2.6.17, ACPI
--	  serial devices were discovered by 8250_acpi.  In 2.6.17,
--	  8250_acpi was replaced by the combination of 8250_pnp and
--	  CONFIG_PNPACPI.
--
--
--
--[1]
--    http://www.dig64.org/specifications/agreement
--    The table was originally defined as the "HCDP" for "Headless
--    Console/Debug Port."  The current version is the "PCDP" for
--    "Primary Console and Debug Port Devices."
--
--[2]
--    The HP MP (management processor) is a PCI device that provides
--    several UARTs.  One of the UARTs is often used as a console; the
--    EFI Boot Manager identifies it as "Acpi(HWP0002,700)/Pci(...)/Uart".
--    The external connection is usually a 25-pin connector, and a
--    special dongle converts that to three 9-pin connectors, one of
--    which is labelled "Console."
--
--[3]
--    EFI console devices are configured using the EFI Boot Manager
--    "Boot option maintenance" menu.  You may have to interrupt the
--    boot sequence to use this menu, and you will have to reset the
--    box after changing console configuration.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a0d86490c2c6..10463c6a9de6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15043,14 +15043,6 @@ M:	Dimitri Sivanich <sivanich@sgi.com>
- S:	Maintained
- F:	drivers/misc/sgi-gru/
- 
--SGI SN-IA64 (Altix) SERIAL CONSOLE DRIVER
--M:	Pat Gefre <pfg@sgi.com>
--L:	linux-ia64@vger.kernel.org
--S:	Supported
--F:	Documentation/ia64/serial.rst
--F:	drivers/tty/serial/ioc?_serial.c
--F:	include/linux/ioc?.h
--
- SGI XP/XPC/XPNET DRIVER
- M:	Cliff Whickman <cpw@sgi.com>
- M:	Robin Holt <robinmholt@gmail.com>
-diff --git a/include/linux/ioc3.h b/include/linux/ioc3.h
-deleted file mode 100644
-index 38b286e9a46c..000000000000
---- a/include/linux/ioc3.h
-+++ /dev/null
-@@ -1,93 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (c) 2005 Stanislaw Skowronek <skylark@linux-mips.org>
-- */
--
--#ifndef _LINUX_IOC3_H
--#define _LINUX_IOC3_H
--
--#include <asm/sn/ioc3.h>
--
--#define IOC3_MAX_SUBMODULES	32
--
--#define IOC3_CLASS_NONE		0
--#define IOC3_CLASS_BASE_IP27	1
--#define IOC3_CLASS_BASE_IP30	2
--#define IOC3_CLASS_MENET_123	3
--#define IOC3_CLASS_MENET_4	4
--#define IOC3_CLASS_CADDUO	5
--#define IOC3_CLASS_SERIAL	6
--
--/* One of these per IOC3 */
--struct ioc3_driver_data {
--	struct list_head list;
--	int id;				/* IOC3 sequence number */
--	/* PCI mapping */
--	unsigned long pma;		/* physical address */
--	struct ioc3 __iomem *vma;	/* pointer to registers */
--	struct pci_dev *pdev;		/* PCI device */
--	/* IRQ stuff */
--	int dual_irq;			/* set if separate IRQs are used */
--	int irq_io, irq_eth;		/* IRQ numbers */
--	/* GPIO magic */
--	spinlock_t gpio_lock;
--	unsigned int gpdr_shadow;
--	/* NIC identifiers */
--	char nic_part[32];
--	char nic_serial[16];
--	char nic_mac[6];
--	/* submodule set */
--	int class;
--	void *data[IOC3_MAX_SUBMODULES];	/* for submodule use */
--	int active[IOC3_MAX_SUBMODULES];	/* set if probe succeeds */
--	/* is_ir_lock must be held while
--	 * modifying sio_ie values, so
--	 * we can be sure that sio_ie is
--	 * not changing when we read it
--	 * along with sio_ir.
--	 */
--	spinlock_t ir_lock;	/* SIO_IE[SC] mod lock */
--};
--
--/* One per submodule */
--struct ioc3_submodule {
--	char *name;		/* descriptive submodule name */
--	struct module *owner;	/* owning kernel module */
--	int ethernet;		/* set for ethernet drivers */
--	int (*probe) (struct ioc3_submodule *, struct ioc3_driver_data *);
--	int (*remove) (struct ioc3_submodule *, struct ioc3_driver_data *);
--	int id;			/* assigned by IOC3, index for the "data" array */
--	/* IRQ stuff */
--	unsigned int irq_mask;	/* IOC3 IRQ mask, leave clear for Ethernet */
--	int reset_mask;		/* non-zero if you want the ioc3.c module to reset interrupts */
--	int (*intr) (struct ioc3_submodule *, struct ioc3_driver_data *, unsigned int);
--	/* private submodule data */
--	void *data;		/* assigned by submodule */
--};
--
--/**********************************
-- * Functions needed by submodules *
-- **********************************/
--
--#define IOC3_W_IES		0
--#define IOC3_W_IEC		1
--
--/* registers a submodule for all existing and future IOC3 chips */
--extern int ioc3_register_submodule(struct ioc3_submodule *);
--/* unregisters a submodule */
--extern void ioc3_unregister_submodule(struct ioc3_submodule *);
--/* enables IRQs indicated by irq_mask for a specified IOC3 chip */
--extern void ioc3_enable(struct ioc3_submodule *, struct ioc3_driver_data *, unsigned int);
--/* ackowledges specified IRQs */
--extern void ioc3_ack(struct ioc3_submodule *, struct ioc3_driver_data *, unsigned int);
--/* disables IRQs indicated by irq_mask for a specified IOC3 chip */
--extern void ioc3_disable(struct ioc3_submodule *, struct ioc3_driver_data *, unsigned int);
--/* atomically sets GPCR bits */
--extern void ioc3_gpcr_set(struct ioc3_driver_data *, unsigned int);
--/* general ireg writer */
--extern void ioc3_write_ireg(struct ioc3_driver_data *idd, uint32_t value, int reg);
--
--#endif
--- 
-2.17.1
-
+Thanks,
+Fabrice
+> ---
+> Benjamin, Fabrice, please ack.
+> Rob, please pick this patch.
+> applies cleanly on current master and on next-20200214
+> 
+>  MAINTAINERS | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index a0d86490c2c6..9175b59e2b4c 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -15923,8 +15923,7 @@ F:	drivers/*/stm32-*timer*
+>  F:	drivers/pwm/pwm-stm32*
+>  F:	include/linux/*/stm32-*tim*
+>  F:	Documentation/ABI/testing/*timer-stm32
+> -F:	Documentation/devicetree/bindings/*/stm32-*timer*
+> -F:	Documentation/devicetree/bindings/pwm/pwm-stm32*
+> +F:	Documentation/devicetree/bindings/mfd/st,stm32-*timer*.yaml
+>  
+>  STMMAC ETHERNET DRIVER
+>  M:	Giuseppe Cavallaro <peppe.cavallaro@st.com>
+> 

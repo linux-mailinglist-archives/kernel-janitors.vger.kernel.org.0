@@ -2,81 +2,151 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 28F46161D49
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Feb 2020 23:24:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE09B162091
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Feb 2020 06:55:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726069AbgBQWYW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Feb 2020 17:24:22 -0500
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:36204 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725829AbgBQWYW (ORCPT
+        id S1726023AbgBRFzM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Feb 2020 00:55:12 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:48036 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725954AbgBRFzL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Feb 2020 17:24:22 -0500
-Received: by mail-oi1-f195.google.com with SMTP id c16so18208822oic.3;
-        Mon, 17 Feb 2020 14:24:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=PbYZrxbxhBBKk5C91qZpoXk9cEvY6aisFfocm2j3KvA=;
-        b=DigCYk7AL10R2xyGSD56LmG9N8s2UW5xKw+F5q0AM1/5as56CSwFP+X1LI2ptbmogS
-         o78N9DjE2IzbZx57qharu+EdTI9jYnNGD7lO4bNMZr05CTVz3atkS0dm91UatMIVsK1n
-         bbTRw78KiETgV6B4ZqDI8ImZc2JDV8YfXLmnCIZdrI7u6WF1HQBozZuO0jECKoc9B5dQ
-         /G7vEV26sbkdww5D8tPPPUsUJoLG4e7cfVq8/o54Z/KBLVM2PwkCiMkEn5KLkOSxew/+
-         ARTXz3itkeTwyupcv8AFJ0hMEROQH9JEWK7AosTQvSSrRP94mEjnx4vQRLSkVYjDg10H
-         RAbg==
-X-Gm-Message-State: APjAAAU3Z0nbcVMb5IZrd27tFBB822aL/ezEnTxYbi4V7lNsUMAZ6DQp
-        KUJCV5OUga6NFsVQLhsPFriq501VtE8cSRDb5ePULJjs
-X-Google-Smtp-Source: APXvYqz3Xxu6MK5IoxY+z+kFQJuuEELpdbhj84fkAG33NBqiXYnC9I/rrXr/6fP1+IugvUqR7fDBJ8pHyvEZfsIXAtc=
-X-Received: by 2002:aca:c4d2:: with SMTP id u201mr802861oif.54.1581978262056;
- Mon, 17 Feb 2020 14:24:22 -0800 (PST)
+        Tue, 18 Feb 2020 00:55:11 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01I5qpDZ105153;
+        Tue, 18 Feb 2020 05:54:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=IUr6jZsezb+fPkgPfiPdUUYiWsKMcfm6EbBIGof+6oA=;
+ b=PK39BrMLc6gyWoGe93OJAJ5/c7rEItWyQbLmye6KgruMmJzCHHizXRiG+q9gIweRk1Yd
+ IBDpuAyDcOP0sai4qz6CY4GEXf1Xyrf6376tM89FQBEWiOF0GemdAwR4DbXOBt6Sg9rM
+ cH+GFfKdJS1CZxJ7ttZQqgrs0YrSOqVvpHTzqyetabGvYT0ZtP6mfLWNh0MRybpEni5J
+ YWvd2b+G3HQ7tRI1bp7J9Hf7VQJkaVYVQOJtdpascU+phVDNZkH3CYaTNE0qI49WO53D
+ C4a3/+P9VmD6OD+AuAefjk7oC8ejTUSEz6z7CNKLDBUtE3z45XKhYmoy7uzz8oYAocY+ LA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2y7aq5pegg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 18 Feb 2020 05:54:58 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01I5qj0F168146;
+        Tue, 18 Feb 2020 05:52:57 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 2y82c0sry3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 18 Feb 2020 05:52:57 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 01I5qumb020042;
+        Tue, 18 Feb 2020 05:52:56 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 17 Feb 2020 21:52:55 -0800
+Date:   Tue, 18 Feb 2020 08:52:47 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Sean Wang <sean.wang@kernel.org>,
+        Light Hsieh <light.hsieh@mediatek.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-mediatek@lists.infradead.org, linux-gpio@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] pinctrl: mediatek: Fix some off by one bugs
+Message-ID: <20200218055247.74s2xa7veqx2do34@kili.mountain>
 MIME-Version: 1.0
-References: <20200217144050.3i4ymbytogod4ijn@kili.mountain>
-In-Reply-To: <20200217144050.3i4ymbytogod4ijn@kili.mountain>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 17 Feb 2020 23:24:10 +0100
-Message-ID: <CAMuHMdWaCqZ_zcHuBetAQu4kmoffNw5jvHM5ciTi29MAxL70bg@mail.gmail.com>
-Subject: Re: [PATCH] dmaengine: coh901318: Fix a double lock bug in dma_tc_handle()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Linus Walleij <linus.walleij@stericsson.com>,
-        kernel-janitors@vger.kernel.org, Vinod Koul <vkoul@kernel.org>,
-        Jia-Ju Bai <baijiaju1990@gmail.com>,
-        dmaengine <dmaengine@vger.kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9534 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0
+ phishscore=0 spamscore=0 suspectscore=0 mlxscore=0 mlxlogscore=978
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002180047
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9534 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 impostorscore=0 adultscore=0
+ spamscore=0 priorityscore=1501 suspectscore=0 clxscore=1011 bulkscore=0
+ phishscore=0 mlxlogscore=999 lowpriorityscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2002180047
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
+These comparisons should be >= instead of > to prevent accessing one
+element beyond the end of the hw->soc->pins[] array.
 
-On Mon, Feb 17, 2020 at 3:41 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> The caller is already holding the lock so this will deadlock.
->
-> Fixes: 0b58828c923e ("DMAENGINE: COH 901 318 remove irq counting")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> This is the second double lock bug found using static analysis.  The
-> previous one was commit 627469e4445b ("dmaengine: coh901318: Fix a
-> double-lock bug").
->
-> The fact that this has been broken for ten years suggests that no one
-> has the hardware.
+Fixes: 3de7deefce69 ("pinctrl: mediatek: Check gpio pin number and use binary search in mtk_hw_pin_field_lookup()")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/pinctrl/mediatek/pinctrl-paris.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-Or this only runs CONFIG_SMP=n kernels?
-This seems to be used in arch/arm/boot/dts/ste-u300.dts only, and
-CONFIG_ARCH_U300 is a ARCH_MULTI_V5 platform, which looks like
-it doesn't support SMP?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/drivers/pinctrl/mediatek/pinctrl-paris.c b/drivers/pinctrl/mediatek/pinctrl-paris.c
+index 83bf29c7ce7e..53f8a14fe542 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-paris.c
++++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
+@@ -544,7 +544,7 @@ static int mtk_hw_get_value_wrap(struct mtk_pinctrl *hw, unsigned int gpio, int
+ 	const struct mtk_pin_desc *desc;
+ 	int value, err;
+ 
+-	if (gpio > hw->soc->npins)
++	if (gpio >= hw->soc->npins)
+ 		return -EINVAL;
+ 
+ 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[gpio];
+@@ -583,7 +583,7 @@ ssize_t mtk_pctrl_show_one_pin(struct mtk_pinctrl *hw,
+ 	int pinmux, pullup, pullen, len = 0, r1 = -1, r0 = -1;
+ 	const struct mtk_pin_desc *desc;
+ 
+-	if (gpio > hw->soc->npins)
++	if (gpio >= hw->soc->npins)
+ 		return -EINVAL;
+ 
+ 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[gpio];
+@@ -766,7 +766,7 @@ static int mtk_gpio_get_direction(struct gpio_chip *chip, unsigned int gpio)
+ 	const struct mtk_pin_desc *desc;
+ 	int value, err;
+ 
+-	if (gpio > hw->soc->npins)
++	if (gpio >= hw->soc->npins)
+ 		return -EINVAL;
+ 
+ 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[gpio];
+@@ -784,7 +784,7 @@ static int mtk_gpio_get(struct gpio_chip *chip, unsigned int gpio)
+ 	const struct mtk_pin_desc *desc;
+ 	int value, err;
+ 
+-	if (gpio > hw->soc->npins)
++	if (gpio >= hw->soc->npins)
+ 		return -EINVAL;
+ 
+ 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[gpio];
+@@ -801,7 +801,7 @@ static void mtk_gpio_set(struct gpio_chip *chip, unsigned int gpio, int value)
+ 	struct mtk_pinctrl *hw = gpiochip_get_data(chip);
+ 	const struct mtk_pin_desc *desc;
+ 
+-	if (gpio > hw->soc->npins)
++	if (gpio >= hw->soc->npins)
+ 		return;
+ 
+ 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[gpio];
+@@ -813,7 +813,7 @@ static int mtk_gpio_direction_input(struct gpio_chip *chip, unsigned int gpio)
+ {
+ 	struct mtk_pinctrl *hw = gpiochip_get_data(chip);
+ 
+-	if (gpio > hw->soc->npins)
++	if (gpio >= hw->soc->npins)
+ 		return -EINVAL;
+ 
+ 	return pinctrl_gpio_direction_input(chip->base + gpio);
+@@ -824,7 +824,7 @@ static int mtk_gpio_direction_output(struct gpio_chip *chip, unsigned int gpio,
+ {
+ 	struct mtk_pinctrl *hw = gpiochip_get_data(chip);
+ 
+-	if (gpio > hw->soc->npins)
++	if (gpio >= hw->soc->npins)
+ 		return -EINVAL;
+ 
+ 	mtk_gpio_set(chip, gpio, value);
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.11.0
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

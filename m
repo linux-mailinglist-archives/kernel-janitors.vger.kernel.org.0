@@ -2,60 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A545162ADB
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Feb 2020 17:41:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1811162D97
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Feb 2020 18:59:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726521AbgBRQl2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Feb 2020 11:41:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59696 "EHLO mail.kernel.org"
+        id S1726663AbgBRR7O convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Feb 2020 12:59:14 -0500
+Received: from mga07.intel.com ([134.134.136.100]:58793 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726360AbgBRQl2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Feb 2020 11:41:28 -0500
-Received: from localhost (unknown [213.57.247.131])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8F23021D56;
-        Tue, 18 Feb 2020 16:41:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582044088;
-        bh=dD5KRg2uLdDE3+hMdalgNdDA0xhlDBXqzKR2/8ImprI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rz55yuz9WDKOFO181jLC9yfs45zXzmH2ii41PAz04D4upVxBWTT4gFlyzJKp1LGrF
-         VMmX81iAzPCQJ0ILqdgNULZD9qbUqEFY8qJ/LKq6WMpAiLqUTPDGgSSLRz2n7hdbpC
-         2DnLSMAM28+UhcOFd7hYzsoEDEXUw15/DXr7IFVg=
-Date:   Tue, 18 Feb 2020 18:41:24 +0200
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Erez Alfasi <ereza@mellanox.com>,
-        Maor Gottlieb <maorg@mellanox.com>,
-        Mohamad Heib <mohamadh@mellanox.com>,
-        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] IB/core: Fix a bitwise vs logical OR typo
-Message-ID: <20200218164124.GA14557@unreal>
-References: <20200218055801.cosg4fylgfxhk67s@kili.mountain>
+        id S1726415AbgBRR7O (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 18 Feb 2020 12:59:14 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Feb 2020 09:59:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,456,1574150400"; 
+   d="scan'208";a="348734560"
+Received: from orsmsx102.amr.corp.intel.com ([10.22.225.129])
+  by fmsmga001.fm.intel.com with ESMTP; 18 Feb 2020 09:59:12 -0800
+Received: from orsmsx115.amr.corp.intel.com ([169.254.4.100]) by
+ ORSMSX102.amr.corp.intel.com ([169.254.3.242]) with mapi id 14.03.0439.000;
+ Tue, 18 Feb 2020 09:59:12 -0800
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Anatoly Pugachev <matorola@gmail.com>
+CC:     Pat Gefre <pfg@sgi.com>, Christoph Hellwig <hch@lst.de>,
+        "Yu, Fenghua" <fenghua.yu@intel.com>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        Joe Perches <joe@perches.com>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "Linux Kernel list" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] tty/serial: cleanup after ioc*_serial driver removal
+Thread-Topic: [PATCH] tty/serial: cleanup after ioc*_serial driver removal
+Thread-Index: AQHV5WqYv292SGF57kuz1XDJAAGim6gfmG+AgAAG1oCAAZ8dMA==
+Date:   Tue, 18 Feb 2020 17:59:11 +0000
+Message-ID: <3908561D78D1C84285E8C5FCA982C28F7F57B7D6@ORSMSX115.amr.corp.intel.com>
+References: <20200217081558.10266-1-lukas.bulwahn@gmail.com>
+ <CADxRZqwGBi=4A224mG0cPgONdNitnvi3LFD_KQckxdYSXzgBGg@mail.gmail.com>
+ <alpine.DEB.2.21.2002170950390.11007@felia>
+In-Reply-To: <alpine.DEB.2.21.2002170950390.11007@felia>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.139]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200218055801.cosg4fylgfxhk67s@kili.mountain>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Feb 18, 2020 at 08:58:01AM +0300, Dan Carpenter wrote:
-> This was supposed to be a bitwise | instead of a logical ||.
->
-> Fixes: 1dd017882e01 ("RDMA/core: Fix protection fault in get_pkey_idx_qp_list")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/infiniband/core/security.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
+> I do not know if there are more ia64 serial drivers, but the MAINTAINERS 
+> entry and commit message suggested there is not another serial driver.
 
-Thanks,
+Lukas,
 
-There is an extra patch for that.
-https://lore.kernel.org/lkml/20200217204318.13609-1-natechancellor@gmail.com
+There aren't any other ia64 specific serial drivers. But ia64 does use generic
+serial drivers (e.g. my test machine has a couple of serial ports attached to 16550A
+devices)
 
-Reviewed-by: Leon Romanovsky <leonro@mellanox.com>
+I think some notes in that documentation file still apply. Please don't delete.
+
+-Tony

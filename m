@@ -2,94 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A4391632B9
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Feb 2020 21:15:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F363516401F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Feb 2020 10:18:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726477AbgBRUPI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Feb 2020 15:15:08 -0500
-Received: from mail-wm1-f49.google.com ([209.85.128.49]:51971 "EHLO
-        mail-wm1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726403AbgBRUPH (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Feb 2020 15:15:07 -0500
-Received: by mail-wm1-f49.google.com with SMTP id t23so4096632wmi.1;
-        Tue, 18 Feb 2020 12:15:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=0x0/HJiEHIniNToQWMEKzmP1pNeyrj9mArFmMB3/6oE=;
-        b=cQ/FPSt5OIRzl1p9b3GlWHZLZF3ES6cfsrm+xOf8SoJjHGH4TWiN/h6mdpR+y492h0
-         f/MUwDUSpVtDzXeZwwMOEKO8UrrR0pTIY1CHnL6j20GNRsM2JvOF3371F/OmXNrIptn3
-         CiHlLJUYwuCpSwyJq/jSi499b4/V37S1I5ydkRiLEUWQSbU5Z68aCcD4+9nDTCVxBxKJ
-         UOcTxcejqStBTxt+Lwze3KmqkYGmpOilVJP4OuozkAvgSgCRhplfwQcyf4/oiw1ZxLOu
-         zCBYeE5HNED5Nenn0EL8S6YrJ54SKUjtozg12xrLhgdfaI5kWDiw0tVWH1niZ9jk0SHC
-         Jx/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=0x0/HJiEHIniNToQWMEKzmP1pNeyrj9mArFmMB3/6oE=;
-        b=PNauAWQbaxcGp7slQseJDSuC0DZphSTlIERXD5sPI+05NBzQmPRslsBWbtEjCBt1Ao
-         Oa2UzXHOcVcXY8FfymB+j+4e6PUemaQ9I2kNr4NstIayLzpT5gDUzLGqogDrHOThJE5V
-         TGCk/kbNBgvCs669aq1qcood3nhehjSHvgUP7DzWFZjxel+BGCOqzT7OyCOkPzIdRlOc
-         m8kwMAzd4CIFdlImb6Gnqkd37I4FoaIdlG/e3dA4dcwpSL6EEoDKgNBeVjX30onauIuF
-         R28Rw9Fsrd8VY6hXd4orMacr2QlB3gp+60SOA38hvNl18d0TtCLEL4oQXM68LrPn1ald
-         9Okw==
-X-Gm-Message-State: APjAAAWNUlLZMJtL7DlJkJrDxcErqF0FyYbzd9wIRCDjawPbNppVccnz
-        Yng8KbAr+wB+Ar/KRBmVVNk=
-X-Google-Smtp-Source: APXvYqxaKM2I2yMNbfTnkgC7Ma2W+KQe6RNJr+dtwL3UO48sj8LWbrvhSS1fDhoq9yK7xMRlItjpyA==
-X-Received: by 2002:a1c:66d6:: with SMTP id a205mr4898203wmc.10.1582056905203;
-        Tue, 18 Feb 2020 12:15:05 -0800 (PST)
-Received: from felia ([2001:16b8:38a9:1a00:819d:444c:ffbc:5dca])
-        by smtp.gmail.com with ESMTPSA id v5sm8114572wrv.86.2020.02.18.12.15.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Feb 2020 12:15:04 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Tue, 18 Feb 2020 21:14:53 +0100 (CET)
-X-X-Sender: lukas@felia
-To:     "Luck, Tony" <tony.luck@intel.com>
-cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Anatoly Pugachev <matorola@gmail.com>, Pat Gefre <pfg@sgi.com>,
-        Christoph Hellwig <hch@lst.de>,
-        "Yu, Fenghua" <fenghua.yu@intel.com>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        Joe Perches <joe@perches.com>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        Linux Kernel list <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] tty/serial: cleanup after ioc*_serial driver removal
-In-Reply-To: <3908561D78D1C84285E8C5FCA982C28F7F57B7D6@ORSMSX115.amr.corp.intel.com>
-Message-ID: <alpine.DEB.2.21.2002182112520.3368@felia>
-References: <20200217081558.10266-1-lukas.bulwahn@gmail.com> <CADxRZqwGBi=4A224mG0cPgONdNitnvi3LFD_KQckxdYSXzgBGg@mail.gmail.com> <alpine.DEB.2.21.2002170950390.11007@felia> <3908561D78D1C84285E8C5FCA982C28F7F57B7D6@ORSMSX115.amr.corp.intel.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        id S1726645AbgBSJR7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 Feb 2020 04:17:59 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50850 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726480AbgBSJR7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 19 Feb 2020 04:17:59 -0500
+Received: from localhost (unknown [106.201.32.165])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D4DE721D56;
+        Wed, 19 Feb 2020 09:17:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582103878;
+        bh=ryVYryIobjSVx+pW5LLK3jBFpRtMoBclGB/Qtjpwt50=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=CIXfl5SDg41ZN+XnQWii24UwvPYahnAiB2YtjcP82LkH/oPN2mGKXD7mWbshweBCg
+         RxrkqewZvqYYpeDWTrIUMCL+ogeyBS7gPSwdzvlikwGXX/X+Z8C6yOcCf6x8ON0uXU
+         7r507UQVbro9oQ/Gykr82vkDdUBycSuBbXEncAY8=
+Date:   Wed, 19 Feb 2020 14:47:54 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        kernel-janitors@vger.kernel.org,
+        Jia-Ju Bai <baijiaju1990@gmail.com>,
+        dmaengine <dmaengine@vger.kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH] dmaengine: coh901318: Fix a double lock bug in
+ dma_tc_handle()
+Message-ID: <20200219091754.GE2618@vkoul-mobl>
+References: <20200217144050.3i4ymbytogod4ijn@kili.mountain>
+ <CAMuHMdWaCqZ_zcHuBetAQu4kmoffNw5jvHM5ciTi29MAxL70bg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdWaCqZ_zcHuBetAQu4kmoffNw5jvHM5ciTi29MAxL70bg@mail.gmail.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On Tue, 18 Feb 2020, Luck, Tony wrote:
-
-> > I do not know if there are more ia64 serial drivers, but the MAINTAINERS 
-> > entry and commit message suggested there is not another serial driver.
+On 17-02-20, 23:24, Geert Uytterhoeven wrote:
+> Hi Dan,
 > 
-> Lukas,
+> On Mon, Feb 17, 2020 at 3:41 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> > The caller is already holding the lock so this will deadlock.
+> >
+> > Fixes: 0b58828c923e ("DMAENGINE: COH 901 318 remove irq counting")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> > This is the second double lock bug found using static analysis.  The
+> > previous one was commit 627469e4445b ("dmaengine: coh901318: Fix a
+> > double-lock bug").
+> >
+> > The fact that this has been broken for ten years suggests that no one
+> > has the hardware.
 > 
-> There aren't any other ia64 specific serial drivers. But ia64 does use generic
-> serial drivers (e.g. my test machine has a couple of serial ports attached to 16550A
-> devices)
-> 
-> I think some notes in that documentation file still apply. Please don't delete.
-> 
+> Or this only runs CONFIG_SMP=n kernels?
+> This seems to be used in arch/arm/boot/dts/ste-u300.dts only, and
+> CONFIG_ARCH_U300 is a ARCH_MULTI_V5 platform, which looks like
+> it doesn't support SMP?
 
-I provided a PATCH v2 that does not delete the documentation, which 
-already was reviewed by Christoph Hellwig.
+Should we drop the driver then..?
 
-Please pick and apply that PATCH v2.
-
-Lukas 
+-- 
+~Vinod

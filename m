@@ -2,43 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8812164027
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Feb 2020 10:20:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30E1E164058
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Feb 2020 10:27:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726491AbgBSJUo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 Feb 2020 04:20:44 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:35233 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726210AbgBSJUo (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 Feb 2020 04:20:44 -0500
-Received: by mail-oi1-f193.google.com with SMTP id b18so23160469oie.2;
-        Wed, 19 Feb 2020 01:20:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dhXLvpZBSYA8Zj0oUPmUXLIuO8kszqVuuW2fgCmPK/A=;
-        b=nLHPQ5w4zoZw5p5KK1WNmIN6KMYcjWOS+5sBJNy9rXXdvJa2Pm/oTp19dZJcM2u260
-         r5d+npp0BCvslWORtgPWTqtDU6gr20jFtc8go+karTJ6c50bYB9lj7RTrk6KlEnUzh9I
-         cybaUZ7H43sZIf8a4eiIysxhZ/fopCeKVF6xjp7kwyfJSn7M+hjSt5uBpThTxTdpub8E
-         UCHiGZcTyJ8sElgoSvM0lV3ijCRyMFIRBK0KdKMKYlAOrHqWzdx0j4boiWP5lr4wyJ4d
-         oN9Q4hljyntdtrlLh36r3ZkkbhPWKszBbLkv7BabSgNVmgYKTjnWVmvhzsxmT07hTD0a
-         YNjg==
-X-Gm-Message-State: APjAAAVGA96W9uDUenn40H/IWhGnK0uQt4+ar98u39XDeyUc6+zbHiVS
-        YyjylXuarmAx/NK+blWziu63C+qVgl8rbq24abY=
-X-Google-Smtp-Source: APXvYqyKBBPkhMO1S5ZQuoDusKNb5/RLLdPSI8J1vi9UYoroAgoP/6a3l+iAOfRhw8mhL5C3qfBiINLoVXMMGWov78Y=
-X-Received: by 2002:aca:b4c3:: with SMTP id d186mr3878584oif.131.1582104043587;
- Wed, 19 Feb 2020 01:20:43 -0800 (PST)
-MIME-Version: 1.0
-References: <20200217144050.3i4ymbytogod4ijn@kili.mountain>
- <CAMuHMdWaCqZ_zcHuBetAQu4kmoffNw5jvHM5ciTi29MAxL70bg@mail.gmail.com> <20200219091754.GE2618@vkoul-mobl>
-In-Reply-To: <20200219091754.GE2618@vkoul-mobl>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 19 Feb 2020 10:20:22 +0100
-Message-ID: <CAMuHMdVC_=V6z+8GubgDvWR37zZdr8f3Fqs-KYUYdZ+e=wYCyg@mail.gmail.com>
-Subject: Re: [PATCH] dmaengine: coh901318: Fix a double lock bug in dma_tc_handle()
-To:     Vinod Koul <vkoul@kernel.org>
+        id S1726495AbgBSJ14 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 Feb 2020 04:27:56 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52758 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726195AbgBSJ1z (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 19 Feb 2020 04:27:55 -0500
+Received: from localhost (unknown [106.201.32.165])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 849AA2064C;
+        Wed, 19 Feb 2020 09:27:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582104475;
+        bh=9kyEssX5GEbwlVExA9JUPsMK72bF0lQACS2bjDvlqvE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Ps8pNHJpu5H+1dtWXtP1nZ/vMn+PISHycpZFQKHsacq25au3EysOMbcLKDHH3BAd2
+         y73T6NuhAIbWZ8PVVOg4Zm8zeE8VZvgaMlmRXAXSZpaYiONEGAhq11oUnKgpObKaGa
+         nfYJZdekeW4qPjWgALR9BhLDf5iJ6mdLxnWo5SC4=
+Date:   Wed, 19 Feb 2020 14:57:51 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Dan Carpenter <dan.carpenter@oracle.com>,
         kernel-janitors@vger.kernel.org,
@@ -46,46 +33,55 @@ Cc:     Linus Walleij <linus.walleij@linaro.org>,
         dmaengine <dmaengine@vger.kernel.org>,
         Dan Williams <dan.j.williams@intel.com>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH] dmaengine: coh901318: Fix a double lock bug in
+ dma_tc_handle()
+Message-ID: <20200219092751.GH2618@vkoul-mobl>
+References: <20200217144050.3i4ymbytogod4ijn@kili.mountain>
+ <CAMuHMdWaCqZ_zcHuBetAQu4kmoffNw5jvHM5ciTi29MAxL70bg@mail.gmail.com>
+ <20200219091754.GE2618@vkoul-mobl>
+ <CAMuHMdVC_=V6z+8GubgDvWR37zZdr8f3Fqs-KYUYdZ+e=wYCyg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdVC_=V6z+8GubgDvWR37zZdr8f3Fqs-KYUYdZ+e=wYCyg@mail.gmail.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Vinod,
-
-On Wed, Feb 19, 2020 at 10:18 AM Vinod Koul <vkoul@kernel.org> wrote:
-> On 17-02-20, 23:24, Geert Uytterhoeven wrote:
-> > On Mon, Feb 17, 2020 at 3:41 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> > > The caller is already holding the lock so this will deadlock.
+On 19-02-20, 10:20, Geert Uytterhoeven wrote:
+> Hi Vinod,
+> 
+> On Wed, Feb 19, 2020 at 10:18 AM Vinod Koul <vkoul@kernel.org> wrote:
+> > On 17-02-20, 23:24, Geert Uytterhoeven wrote:
+> > > On Mon, Feb 17, 2020 at 3:41 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> > > > The caller is already holding the lock so this will deadlock.
+> > > >
+> > > > Fixes: 0b58828c923e ("DMAENGINE: COH 901 318 remove irq counting")
+> > > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > > > ---
+> > > > This is the second double lock bug found using static analysis.  The
+> > > > previous one was commit 627469e4445b ("dmaengine: coh901318: Fix a
+> > > > double-lock bug").
+> > > >
+> > > > The fact that this has been broken for ten years suggests that no one
+> > > > has the hardware.
 > > >
-> > > Fixes: 0b58828c923e ("DMAENGINE: COH 901 318 remove irq counting")
-> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > > ---
-> > > This is the second double lock bug found using static analysis.  The
-> > > previous one was commit 627469e4445b ("dmaengine: coh901318: Fix a
-> > > double-lock bug").
-> > >
-> > > The fact that this has been broken for ten years suggests that no one
-> > > has the hardware.
+> > > Or this only runs CONFIG_SMP=n kernels?
+> > > This seems to be used in arch/arm/boot/dts/ste-u300.dts only, and
+> > > CONFIG_ARCH_U300 is a ARCH_MULTI_V5 platform, which looks like
+> > > it doesn't support SMP?
 > >
-> > Or this only runs CONFIG_SMP=n kernels?
-> > This seems to be used in arch/arm/boot/dts/ste-u300.dts only, and
-> > CONFIG_ARCH_U300 is a ARCH_MULTI_V5 platform, which looks like
-> > it doesn't support SMP?
->
-> Should we drop the driver then..?
+> > Should we drop the driver then..?
+> 
+> Why? Because spinlocks are no-ops on SMP=n, and spinlock bugs thus don't
+> affect the single platform using the driver?
 
-Why? Because spinlocks are no-ops on SMP=n, and spinlock bugs thus don't
-affect the single platform using the driver?
+That doesn't answer the question if anyone has a hardware and we have
+users :)
 
-Gr{oetje,eeting}s,
-
-                        Geert
+Sorry I should have written better about hardware and testing
+rather than cryptic reply which may have suggested about SMP :)
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+~Vinod

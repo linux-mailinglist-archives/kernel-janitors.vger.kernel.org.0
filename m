@@ -2,163 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68E6A16605C
-	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Feb 2020 16:01:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AAD91660B6
+	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Feb 2020 16:14:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728512AbgBTPBY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 Feb 2020 10:01:24 -0500
-Received: from mout.web.de ([212.227.15.3]:45187 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728133AbgBTPBY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 Feb 2020 10:01:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1582210826;
-        bh=n11cANuCYcYzok7hdryvNdn5gFdTh5KMCQi2bv2OokY=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=TFl3cW21AuBB2Qb7a2xXjgsFzeuKfJAPhJme42dPyN0TWt11/1MA/8M2432dO11RC
-         eWVNFHPGJnArke4ZKvtVWa1tk7bpfq/VX9Sui8JsFB2AYu3EdQgBPoJUC/O3STCJSp
-         lTBPV0d/gRNT7YaFgb0mpjVtZDC3xpEyr1zm4Ymc=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.175.64]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LtXDY-1jU3TS2CaC-010shM; Thu, 20
- Feb 2020 16:00:26 +0100
-Subject: Re: [for-next][PATCH 12/26] Documentation: bootconfig: Add a doc for
- extended boot config
-To:     Masami Hiramatsu <mhiramat@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tim Bird <Tim.Bird@sony.com>,
-        Tom Zanussi <tom.zanussi@linux.intel.com>
-References: <23e371ca-5df8-3ae3-c685-b01c07b55540@web.de>
- <20200220221340.2b66fd2051a5da74775c474b@kernel.org>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <5ed96b7b-7485-1ea0-16e2-d39c14ae266d@web.de>
-Date:   Thu, 20 Feb 2020 16:00:23 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S1728616AbgBTPOv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 20 Feb 2020 10:14:51 -0500
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:40547 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728480AbgBTPOv (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 20 Feb 2020 10:14:51 -0500
+Received: by mail-lj1-f193.google.com with SMTP id n18so4592946ljo.7
+        for <kernel-janitors@vger.kernel.org>; Thu, 20 Feb 2020 07:14:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=2HGcoFXbyVbTV3eg7hismyxhu6dj14paC3J0LZjVjv8=;
+        b=JppMnoQE1IcDd7cMooO8wrTS949VE3Rf9AEiBdqR3i0G7zQTgWdaA9zCNpK2nYMEWw
+         kdLYxDmax/UsnA0Cv+uY3LrBW6q18f4OfUyT5xq1zbK6HzFfybo1dk17VlgKGLI+U4z3
+         7lNET/xn2+cEztXYx4WWqal15IyBWAzi+wWObB8DD2FK3IMs2ZV8crf3Cvxebps+zChJ
+         Yu24UACGUX/UpQ7uJA7aKSiEzzROngph4UQXkds9qL8NNSbETmh3kGHjYfYYJwv6wUnG
+         /fVwZM6feFreuwPXNsvHpdAdR+XqOxqlmz7h6Rc/bayCu/YyImcXg+LrdYaExGefUNeI
+         JqnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2HGcoFXbyVbTV3eg7hismyxhu6dj14paC3J0LZjVjv8=;
+        b=K7OnhRyZSH/QySY9B7Hhqrf60Ehd33Roe24QhvkU4mL+fQwaCAGYarcfkSCsWj26aW
+         ARtzDIgijoofVH+enkVMQyBHuAidoQoSbBnUYxpiRos058dLaXHklli1fB5G+Ov37i1K
+         WZWu+bcdDbFwdl6WlujUgbeh+GZ4YAH79X+5CaoWD778ETMdxq7mLEGxPM/8iFfShJY+
+         asWBaQ+BCt1/4zxeyuvq2FejUkcU5hy6J3GGlhb/wxZMLTsnTXsHqx5EkV6E1vQqSba4
+         bdIw6cyq0wH0dzGWuuv/KFmRja3TeSzqPQfEa+Vy3spBeLKo1AoMLBQTvvJ8UtKOFY20
+         +YBg==
+X-Gm-Message-State: APjAAAU/ieLpyLALABXOt8GSDuSxDTSPzpAMN7mpJb2DnmEBgpcKwUPm
+        IHMqdTFd7BRfeP6oZ25Ahicgjj3pFHN23/b2yIbrOA==
+X-Google-Smtp-Source: APXvYqximU2hF5YQAA6qDC6WVIbiCSJIlm99ooaxT3H0C5jTGqzKFkBU+ytUiMHpo+Q/TVwdXj+JqE+CEg5n3KPW7DA=
+X-Received: by 2002:a2e:9013:: with SMTP id h19mr19780468ljg.223.1582211689431;
+ Thu, 20 Feb 2020 07:14:49 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20200220221340.2b66fd2051a5da74775c474b@kernel.org>
-Content-Type: text/plain; charset=iso-2022-jp
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Uzw/wNVQzv5DyR9QsuqeuvLwmDEkJ6oQn7Ts9yNKnpZpUepc/zr
- hhYU0w8ZE0MUw5TcKrCUgL1vimqkMoFYSu9itN2ekJWpWGsJUvMhzmedtzzYPYjVGeegm/G
- ga4Tobs3N/5P6hD8gq+2COTpMmsICWpXlPTuGp3k8Idfx4X+bBXX8Gvaijp3rAS5HDdkFDe
- +/Hkmk3cTkWQsGmUCO4yw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:wfeZLuJjyg0=:X10QpggogGWCsvM5cRIPXL
- Y3d+109y2KmfhbY/c3VcC9Pe/6CbsFmE4edaqmzFidMLe13nJs3sZga48rhgSMSfYkuPYvG1N
- skRaqExZEDdeMUl2385rRPKNn5HYQaaa8GVLQqjhshoKtktHhtCPltvMaHP+r9uVo+bCTgetX
- SzUBYbx8lXeCvh5mAYtLqRoRM0ZnUGKMigK4mJ8Q5jk8y1bZr46rfJ3dI2t58NaFA/DI0xkV7
- pvhGLtzHNh14ZvT3GG+OO/gBEwFACSdmQLibK6IYFTuTSH2kj5HTTAdNxWSqn7bVif4TGNtxV
- wH1s5X9yYS3vB/cE+7lZxTz6RjLT8mXLn8oJFYGG4gFrJ28QmzpqS4uPTNIRzv/804H61S2P6
- rfz6YpqHakUR8vPGfNRQUKkx+SEdTNO2eU6GOZ5VXh1j6IwJ6zrgED4w4A06jEyBQ8z5E961z
- PeB8W20qqs89qSkCaVd+GcZg7JCrZvzD2kfKlnX5cnWbNG4kFrUI/U2t6oEhrFUzUE7wMiAXv
- MZ40rIBPinqgAdQ9KTN5fEkIWpLVuj+HlJoCkfYDHv7aewnYLABgqEhD1TVGIjq1bONNzxyCT
- pXzYTlqmpu0qEXmm2tAnIAvNH5G9xWbcH2PiC0dm2MPxwURvPuFwVV13xwDc6RBbzaxyu/DWq
- UD5qMpNGCim64BeBBBJdTI6TT7oVcQFGdFOyy4WN3gR5Vj9uNL1HA6MKSREwxHF/ejtZulb+p
- j2Ym9RInQr0sx1XlUCgFcGsbYUSgwiq/yPuzxH/yhaPJjzuWmg/EXKVBgFK6JPY6SsbywV2W/
- UmDkZh0nSFgf5s8/F3r/A8ZO4dMo0mTrMMWbuu2aDYXavdzdS2WKcgyRPJR/uKs/kWUWLPwi5
- IGxTBkIbV/0iz1aYNbUqAY0555hDUBVdBmUoGhMoDEJcseGFDlm2nOVLQnEpVJFSYnOtWplQZ
- 2FpmWsmIjONJZM6dOR9J9lPKcTAS0pOdygD+hoW59BM7BeSF8UJwvVq0tQStEoR040ESDP4Px
- E7uip761QuInqSzaHoc4NjxIz+blx2cIQdgTIsBIqQs/Tmdjdj9USZ6XHBVY47BeAvYcmVwwf
- 3uQRXlgzt4HUImUuplF410M7zNl3OaVbw+cTnQzvqRGyFvM3ZHmNzkSJZUkxOn6TtoNq6r4S0
- NhCEaLL8O3tGM4beEMbel99OMAa3Ela/64nllaPuYbayHUON7s2KXUS0Stqd3HPPJVPY4ZZvb
- l6QlDkfms/KL1PAS1
+References: <20200218055247.74s2xa7veqx2do34@kili.mountain>
+In-Reply-To: <20200218055247.74s2xa7veqx2do34@kili.mountain>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 20 Feb 2020 16:14:38 +0100
+Message-ID: <CACRpkdYWsWNg9oetuHPt0VEz+WKKiqfbfuCu503tpRyZ=7nV=A@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: mediatek: Fix some off by one bugs
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>
+Cc:     Sean Wang <sean.wang@kernel.org>,
+        Light Hsieh <light.hsieh@mediatek.com>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->>> +Currently the maximum config size size is 32KB =1B$B!D=1B(B
->>
->> Would you like to avoid a word duplication here?
+On Tue, Feb 18, 2020 at 6:55 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+
+> These comparisons should be >= instead of > to prevent accessing one
+> element beyond the end of the hw->soc->pins[] array.
 >
-> Oops, still exist.
+> Fixes: 3de7deefce69 ("pinctrl: mediatek: Check gpio pin number and use binary search in mtk_hw_pin_field_lookup()")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Is there a need to separate the number from the following unit?
+Matthias could you have a look at this patch?
 
-
-> Indeed, "node" is not well defined. What about this?
-> ---
-> Each key consists of words separated by dot, and value also consists of
-> values separated by comma. Here, each word and each value is generally
-> called a "node".
-
-I have got still understanding difficulties with such an interpretation.
-
-* Do other contributors find an other word also more appropriate for this =
-use case?
-
-* How will the influence evolve for naming these items?
-
-* Is each element just a string (according to specific rules)?
-
-
->> Could an other wording be nicer than the abbreviation =1B$B!H=1B(Ba doc=
- for =1B$B!D=1B(B config=1B$B!I=1B(B
->> in the commit subject?
->
-> OK, I'll try next time.
-
-Will words like =1B$B!H=1B(Bdescriptions=1B$B!I=1B(Band =1B$B!H=1B(Bconfig=
-uration=1B$B!I=1B(Bbe helpful?
-
-Regards,
-Markus
+Yours,
+Linus Walleij

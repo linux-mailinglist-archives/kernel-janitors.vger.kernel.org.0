@@ -2,81 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 026C7165B37
-	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Feb 2020 11:11:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78595165E6B
+	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Feb 2020 14:13:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726952AbgBTKLf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 Feb 2020 05:11:35 -0500
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:35157 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726829AbgBTKLf (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 Feb 2020 05:11:35 -0500
-Received: by mail-pg1-f196.google.com with SMTP id v23so1709001pgk.2
-        for <kernel-janitors@vger.kernel.org>; Thu, 20 Feb 2020 02:11:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=xsUbPWAhYtsZRE8nHbpZ90/dMr+6ACJOvf/o3gzcGwM=;
-        b=PJCKAi8I41I+5Tb4Mnflsd2jQsw3U4EsBKdHiq4ekjydb9zjbl/xBpYM6a8vjGrE+W
-         bq9MwZiaMiUj0KV0zpatU51OPnhvMCCSqw888gpP5zovCU/409yjTgfOgUg5PB8q2K3E
-         AHTdthzn31VEJcGx7Z1tBUpIJcKiH12kEnHjHYt7G/oqoP++Fptu78jpxqkic0773bQd
-         ZayVUruIfEjkelzoyKRCI3KHlz6Z/Dnw7ydFm76qzLLquytCz1iwfwxFLraFMHZVSvsv
-         yQuWTO5xdfcNjv2B3P6bJDVCP8BJhXXiQQ9Tuh0WlvdeGaPVI6+IBe1h84RdzkS9fKDa
-         U9fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=xsUbPWAhYtsZRE8nHbpZ90/dMr+6ACJOvf/o3gzcGwM=;
-        b=XFIeFZ5SmT05o35boKEvbWJmrQipOXHNa8Up4l2gQmcZzUtW4zI1Rk1+O7cj3CHedW
-         Op5QzLI+nwAMdYHU1ITMaBjQerFiuqZWuKUYMiSYjxAINWqSA6ByzNR5aOl6l9g7gxm9
-         7/FgpKG9PQIFnArAvPITSL8Iyg5w2go89B76bNTSQ+zkqNIV4HtYo53fInRfoOREm3Dd
-         UQpqFqDnzeK150g7gy3axSH9sLRYfu2oFhpXyNq/rnsYCq3hNc2NaPvW+Zua8xTLAcZR
-         5Xyur82nBIcUHTWmxgHfX2snLHSnFgOVaebENMGRWYHLm58F7wcAiFfmaBNLrgyw09jP
-         qIlw==
-X-Gm-Message-State: APjAAAXIGe7VuBttkoF3PTREvq4lAlISQi9tJJoXkyF5Dnx6HcgNsUVJ
-        WAFPSimX9UA9Gjo1TMdbisnT4C3cqKiSlVtUY8g=
-X-Google-Smtp-Source: APXvYqxHE+Jpv7TnlDVGcX3UL6Uyz2XLxptGN1jGFOlv4qxAJR9PZ93vxohGaYe++PJvLL2K5NjMeaR+jKpZPkDFcUI=
-X-Received: by 2002:a63:5220:: with SMTP id g32mr31926103pgb.116.1582193493229;
- Thu, 20 Feb 2020 02:11:33 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a17:90a:90f:0:0:0:0 with HTTP; Thu, 20 Feb 2020 02:11:32
- -0800 (PST)
-Reply-To: cagesusan199@gmail.com
-From:   "Mrs. Susan S. Cage" <drgoodluckebelejonathan061@gmail.com>
-Date:   Thu, 20 Feb 2020 02:11:32 -0800
-Message-ID: <CALjo5=877S8-Ry+A=9FH6dxjXo5H81+Sa3p18iiZLBS7eO_8bA@mail.gmail.com>
-Subject: Attention:Beneficiary
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        id S1728132AbgBTNNs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 20 Feb 2020 08:13:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52252 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728051AbgBTNNr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 20 Feb 2020 08:13:47 -0500
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 45113206ED;
+        Thu, 20 Feb 2020 13:13:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582204427;
+        bh=IHgFRQu6vtgSjRH+EdzEs0RBHd01e1qO18Td6UiCAis=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=zhcN+w8O8nH3zuu0JNaiOHi/9YXh2rFG2X4sP3cBanfCx49cKOikccbhsyKoVDdaw
+         ymKYIvDS2oPQxbvGrvR35XhpKxnZoCPM1IUIMA6tvCSK6+LNx0n4gKgl0aMzl0HXqf
+         SdEoonAg7P9pbbhRflCgl5Jp9DT5E3btGkd2Ux9g=
+Date:   Thu, 20 Feb 2020 22:13:40 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Steven Rostedt <rostedt@goodmis.org>, linux-doc@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Alexey Dobriyan <adobriyan@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tim Bird <Tim.Bird@sony.com>,
+        Tom Zanussi <tom.zanussi@linux.intel.com>
+Subject: Re: [for-next][PATCH 12/26] Documentation: bootconfig: Add a doc
+ for extended boot config
+Message-Id: <20200220221340.2b66fd2051a5da74775c474b@kernel.org>
+In-Reply-To: <23e371ca-5df8-3ae3-c685-b01c07b55540@web.de>
+References: <23e371ca-5df8-3ae3-c685-b01c07b55540@web.de>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-2022-JP
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hi,
+
+On Thu, 20 Feb 2020 10:10:20 +0100
+Markus Elfring <Markus.Elfring@web.de> wrote:
+
+> I wonder about a few details in the added text.
+> 
+> 
+> …
+> > +++ b/Documentation/admin-guide/bootconfig.rst
+> …
+> > +C onfig File Limitation
+> 
+> How do you think about to omit a space character at the beginning
+> of this line?
+
+That was my mistake. I used restructured text extension for vim
+which collapsed all sections and use "space" key to expand.
+Accidentally, I run into edit mode and hit "space" to expand it.
+(it actually expanded but also put a space there and I missed it...)
+
+Anyway, it has been fixed (pointed by Rundy)
+
+> > +Currently the maximum config size size is 32KB …
+> 
+> Would you like to avoid a word duplication here?
+
+Oops, still exist. Thanks!
+
+
+> > +Note: this is not the number of entries but nodes, an entry must consume
+> > +more than 2 nodes (a key-word and a value). …
+> 
+> I find the relevance of the term “nodes” unclear at the moment.
+
+Indeed, "node" is not well defined. What about this?
+---
+Each key consists of words separated by dot, and value also consists of
+values separated by comma. Here, each word and each value is generally
+called a "node".
+---
+
+> 
+> Could an other wording be nicer than the abbreviation “a doc for … config”
+> in the commit subject?
+
+OK, I'll try next time. 
+
+Thank you,
+
 -- 
-Dearest Friend,
-
-Sorry for invading your privacy, my name is Susan S. Cage I am 81
-years, citizen of United States and presently in hospital undergoing
-chromatography for bronchogenic carcinomas (Lung cancer) which
-affected both Lungs. The doctors said I have few days to live because
-the cancer has now affected my brain.
-
-My late husband left Fifteen Million, Five Hundred British Pounds
-Sterling in my account, I want to transfer the money to you and I want
-you to use it as a donate for charitable and help the needy,
-motherless, less privileged and widows within your location.
-
-I need your assurance that you will use the fund for charity, once I a
-favorable reply from you, will inform my Bank through my lawyer to
-transfer the fund to you as my Next of Kin and Sole Beneficiary. Once
-I receive your response, I will inform my bank in writing through my
-lawyer.
-
-
-
-Thank you and God bless you.
-
-Mrs. Susan S. Cage
+Masami Hiramatsu <mhiramat@kernel.org>

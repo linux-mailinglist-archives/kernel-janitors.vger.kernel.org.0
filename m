@@ -2,94 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06F56168708
-	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Feb 2020 19:54:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51237168A46
+	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Feb 2020 00:11:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729503AbgBUSyN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 21 Feb 2020 13:54:13 -0500
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:42243 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726150AbgBUSyN (ORCPT
+        id S1729530AbgBUXLy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 21 Feb 2020 18:11:54 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:39317 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726830AbgBUXLy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 21 Feb 2020 13:54:13 -0500
-Received: by mail-ed1-f65.google.com with SMTP id e10so3588703edv.9;
-        Fri, 21 Feb 2020 10:54:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=6H7czC/EWWOLG+c9dDSZL0yrJluOEN5LNYAxJRlBPZQ=;
-        b=Nj1J0Jd4bERbsqqC2RdvzymFWFfEKiqalI2qOX8Sjgq5gmNzefkKgNuBCDGQMxTqfL
-         sxVlAk4X06dQpEngnbk3tRqzaiAZJIZp6bzcOm1ft2qMYaL/Mf+95n3Q+mk6aQBcG2c4
-         D/Pn+vstVBh076/KljES7r5GvWzMPS3x2lHc5AY93eaZTg/5W/LfsAUodTTk7DAbHZHy
-         gd2nbpjSFHjWvWmVfQPWiYG5lyjGWVVP5VJrFNUMBzr+7ud2hCak1kznKB+WIGmxOjTU
-         rjngGRSkpqVXjTSQ21868E17hoWwDrY3/1nSSyNx/uPwNYs/AV8LJjiEw3NcREqL9Q/1
-         93vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=6H7czC/EWWOLG+c9dDSZL0yrJluOEN5LNYAxJRlBPZQ=;
-        b=qEt7e1VSsO6AdMfjpnAGX8p79mBb8PvdolHJ+Z7rpwfstK041RAOLzrVtIWChq02O0
-         aILJrRDVJTmUiS3PSVCCe8eGPUU99WwfxQO2H8f+ZrSLp9NXq8XvnVZlhHb+3vfbYfNj
-         DId91pk8VtYJppfNBKQhCuKZIk/4s/xcDaPiI2bpb9ki/JLWcznwC1JRImFwAULDmIJS
-         xC2Z+Q2SLUul5oxpbSbNIByM6/hFW6KPGdPAU56ltL0Y7Ym/qibrZuH66grU3+oDvspk
-         m6D1FBlu8bXh9V57PmIC6B5Z82219EgoO/YHWV69hYd3CdPMHSIHUmICWhjdix+NIrfP
-         3NSw==
-X-Gm-Message-State: APjAAAVlAMwKg+YNG3ajk4/R/O6jVjhHklc3Pgppz4Vz3Yn6XFV/MQli
-        FC1Qs+OwlR9m5Rlv05Qhma2iDez0iIM=
-X-Google-Smtp-Source: APXvYqw4D+LbiKAlW0MqDTX69Z2BKZfFCJPr23ydy58+Tn3OdmEKcevzhzN9ulkIeQBfs59EFEdPig==
-X-Received: by 2002:aa7:d9c6:: with SMTP id v6mr35455979eds.107.1582311251283;
-        Fri, 21 Feb 2020 10:54:11 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d0c:d000:34f3:c27:3def:c058])
-        by smtp.gmail.com with ESMTPSA id v2sm307158ejj.44.2020.02.21.10.54.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Feb 2020 10:54:10 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Tom Joseph <tjoseph@cadence.com>,
-        Andrew Murray <andrew.murray@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     linux-pci@vger.kernel.org, Joe Perches <joe@perches.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: adjust entry to moving cadence drivers
-Date:   Fri, 21 Feb 2020 19:54:02 +0100
-Message-Id: <20200221185402.4703-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Fri, 21 Feb 2020 18:11:54 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1j5HSR-0004zi-UK; Fri, 21 Feb 2020 23:11:44 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Roy Pledge <Roy.Pledge@nxp.com>, Li Yang <leoyang.li@nxp.com>,
+        Youri Querry <youri.querry_1@nxp.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] soc: fsl: dpio: fix dereference of pointer p before null check
+Date:   Fri, 21 Feb 2020 23:11:43 +0000
+Message-Id: <20200221231143.30131-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit de80f95ccb9c ("PCI: cadence: Move all files to per-device cadence
-directory") moved files of the pci cadence drivers, but did not adjust
-the entry in MAINTAINERS.
+From: Colin Ian King <colin.king@canonical.com>
 
-Since then, ./scripts/get_maintainer.pl --self-test complains:
+Pointer p is currently being dereferenced before it is null
+checked on a memory allocation failure check. Fix this by
+checking if p is null before dereferencing it.
 
-  warning: no file matches F: drivers/pci/controller/pcie-cadence*
-
-So, repair the MAINTAINERS entry now.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Addresses-Coverity: ("Dereference before null check")
+Fixes: 3b2abda7d28c ("soc: fsl: dpio: Replace QMAN array mode with ring mode enqueue")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
-Tom, Andrew, please ack. Lorenzo, please pick this patch.
-applies cleanly on current master and next-20200221
+ drivers/soc/fsl/dpio/qbman-portal.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 4beb8dc4c7eb..d8f690f0e838 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12740,7 +12740,7 @@ M:	Tom Joseph <tjoseph@cadence.com>
- L:	linux-pci@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/pci/cdns,*.txt
--F:	drivers/pci/controller/pcie-cadence*
-+F:	drivers/pci/controller/cadence/
+diff --git a/drivers/soc/fsl/dpio/qbman-portal.c b/drivers/soc/fsl/dpio/qbman-portal.c
+index 740ee0d19582..d1f49caa5b13 100644
+--- a/drivers/soc/fsl/dpio/qbman-portal.c
++++ b/drivers/soc/fsl/dpio/qbman-portal.c
+@@ -249,10 +249,11 @@ struct qbman_swp *qbman_swp_init(const struct qbman_swp_desc *d)
+ 	u32 mask_size;
+ 	u32 eqcr_pi;
  
- PCI DRIVER FOR FREESCALE LAYERSCAPE
- M:	Minghuan Lian <minghuan.Lian@nxp.com>
+-	spin_lock_init(&p->access_spinlock);
+-
+ 	if (!p)
+ 		return NULL;
++
++	spin_lock_init(&p->access_spinlock);
++
+ 	p->desc = d;
+ 	p->mc.valid_bit = QB_VALID_BIT;
+ 	p->sdq = 0;
 -- 
-2.17.1
+2.25.0
 

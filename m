@@ -2,80 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31566167F4D
-	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Feb 2020 14:53:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D8161680C4
+	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Feb 2020 15:51:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728777AbgBUNxI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 21 Feb 2020 08:53:08 -0500
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:42152 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728255AbgBUNxI (ORCPT
+        id S1728798AbgBUOvF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 21 Feb 2020 09:51:05 -0500
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:38153 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728712AbgBUOvF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 21 Feb 2020 08:53:08 -0500
-Received: by mail-lj1-f194.google.com with SMTP id d10so2247540ljl.9
-        for <kernel-janitors@vger.kernel.org>; Fri, 21 Feb 2020 05:53:06 -0800 (PST)
+        Fri, 21 Feb 2020 09:51:05 -0500
+Received: by mail-lf1-f67.google.com with SMTP id r14so1685514lfm.5
+        for <kernel-janitors@vger.kernel.org>; Fri, 21 Feb 2020 06:51:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=bocRSQzLDaTwv7v9OxUFP+rBJyC1D4NMJ64qgWlEHDs=;
-        b=HbD7uMVDU9BN4HHpP/Uq9PzzrHWBEf/ld2so6FHZGkyjty2Ds5TT66WplexiMNFV/V
-         9BAGOsZKgAB2Uk3uCSAoOeXULLAYwVBR4sbFOMA9OnAOcCyIRLdoxWC/4ZsUBIVOlFlL
-         D3+Vh4xEeUytjeXgQFZI2PT3lPUmf/y0IaxladyFfEwwzEoKub6rzBqVQTz1iogq0A6p
-         9b67/TRxuaRtkR/QFR4XxQ5JiowDDtMDdC5EJQx4/Vdfw0xh++DD91AfDnr3/7dTYK08
-         CEovteO5uxclBRpFVcsRiqkK3N7pw3/ofJZSElFqMyy5WYRoYilb93NU0U/c0NqAfr4m
-         w9FA==
+         :cc;
+        bh=yKqmcZOBwxiEAbBJOHWncpbYAIXiIAogkuJKwmYUhEY=;
+        b=tCMstupyfCqlZhYVCygX4hPFog/myrUm3gRLohSV71o7UYXSx/R3guaTKMrl4p+JID
+         ngi05ngbeIbeW3O+dOx6JMMjEynwS9v9/HlUZTf8qmGuHkUyIAQLNuceAW7wZlvnPGce
+         gA+iQPAMEbAeddw3aC6Qb+jJ+uLLdi7gvRSJ7hqI/VhLqnceykQv2vRMilxL4yuXEjl3
+         bpXPYoGeZo2MMMnnFdBMorCyJXJ6X4SLuCkDoDGD8tMAnQa5en3FAeYyfhNVUC/7GdQS
+         5wAr+Azwq5ryL3FG+Oo6c8J1OSQxJ/5M7bRRFAn6+ztMpvBW4cPVbabzH2bw//HtYIwM
+         ++7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=bocRSQzLDaTwv7v9OxUFP+rBJyC1D4NMJ64qgWlEHDs=;
-        b=Lrm0ZxhLqhBCM3sQj6lwqYJfhM0DsVqr9+azHzMCTAHfkMyLQs7HUIfmLdBWRv3sie
-         ShMfjVsUyi6Lb0b3YuOH1vA+vkYFXNkHqNq1KMzGz0DSKGYvzKBlfhWltsz+BsDqTtSy
-         BRNmmL08D2rrtr9U3Gz93xwN/w0lhTpFRCjKJWgMgfz+SXLjx+PnkV2hmDwyIvZluzwD
-         MZVa+yNeSnsQNr5JjGWOyOyIC6XNKMcLyL+st5N3hAwhATv7cXAozzVbE5DLBZdzVhGo
-         3S02LQ2kD883Fff0wwDi3VQrmRVHgM4rASU/GHd4rWk4QcOAW1zrsNCHYlvEOfOOKcNo
-         t5gg==
-X-Gm-Message-State: APjAAAXVaW4fQr5PjfvjvQ6W4cd5rgWi//Qh4TIv5bpgcNqn8xFFieWV
-        hj7oIJbJDlC4DJ50RLH4IVU14j7s60m68c5WvQ/zrA==
-X-Google-Smtp-Source: APXvYqy3Tud5fSZk+NS99V4j+h1pHwX6bNMG7bt5PEc4SKLazBwRPCyljUVZpWJMKR9U3zeZeBsru4Y1mTtAVVCTsBo=
-X-Received: by 2002:a2e:2a84:: with SMTP id q126mr21388876ljq.258.1582293185570;
- Fri, 21 Feb 2020 05:53:05 -0800 (PST)
+         :message-id:subject:to:cc;
+        bh=yKqmcZOBwxiEAbBJOHWncpbYAIXiIAogkuJKwmYUhEY=;
+        b=tNFpw/pb4mzDoR+gePsmTWYDNum7SA3b0RutvUORrUTOmwiYEwSkHMtnlBasw0bB7Y
+         YR/VK3Jsh4k7IkQekjMq6uwwPymGM9OQVwGlrFLhXcwZZiysNSTMG18XUegfgJ7FvjBJ
+         bQprBTLBh4Rw1KGR8qtzy7f5850ij4A9gM/KhI1qdexZ0zEP41LXRBnH/JotzpYLPM11
+         HlWufxSwM3X+DXOZ8kJudQXr2tnvZlfxVJBgAgT67Mud5SNz9GXW2xkg7KXyZcuRnbiF
+         tKfnNhn7N5jEAx8oQyAHrJ6HXp2QutGvfSlqKaMrNa2QF/GONum++qLb5y9eZHgrnD/h
+         1bZA==
+X-Gm-Message-State: APjAAAWjpuVRYEdH4maNk2CaR/Yfrwjca82xMmui9BdRSuR2uQO7EnN+
+        OMFrvov8X29O04rBB8YM23DBh9LxLUrlWdFALNtcsQ==
+X-Google-Smtp-Source: APXvYqzWFuIhBhU7rksYnB4UoqU/fxy/g8S3+M1vXFr85vf43QcoeKUFnva1cAl5yphXzmBkSOGnUkKRz3OG0X6DpQA=
+X-Received: by 2002:ac2:44a5:: with SMTP id c5mr8193005lfm.4.1582296662570;
+ Fri, 21 Feb 2020 06:51:02 -0800 (PST)
 MIME-Version: 1.0
-References: <87d0al4600.fsf@nanos.tec.linutronix.de> <20200211135121.15752-1-uwe@kleine-koenig.org>
-In-Reply-To: <20200211135121.15752-1-uwe@kleine-koenig.org>
+References: <20200217144050.3i4ymbytogod4ijn@kili.mountain>
+ <CAMuHMdWaCqZ_zcHuBetAQu4kmoffNw5jvHM5ciTi29MAxL70bg@mail.gmail.com> <20200219091754.GE2618@vkoul-mobl>
+In-Reply-To: <20200219091754.GE2618@vkoul-mobl>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 21 Feb 2020 14:52:54 +0100
-Message-ID: <CACRpkdYXBn+30HJWU7rbvfkgmwxxiRs7k3H9KWNb-X1WLEgt4w@mail.gmail.com>
-Subject: Re: [PATCH] gpio: siox: use raw spinlock for irq related locking
-To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <uwe@kleine-koenig.org>
-Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Thorsten Scherer <t.scherer@eckelmann.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Date:   Fri, 21 Feb 2020 15:50:51 +0100
+Message-ID: <CACRpkdZ94VYtADCP9VXbNPsRkCacGFOYedd9dwXQw0Jve1HRjw@mail.gmail.com>
+Subject: Re: [PATCH] dmaengine: coh901318: Fix a double lock bug in dma_tc_handle()
+To:     Vinod Koul <vkoul@kernel.org>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         Dan Carpenter <dan.carpenter@oracle.com>,
         kernel-janitors@vger.kernel.org,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
+        Jia-Ju Bai <baijiaju1990@gmail.com>,
+        dmaengine <dmaengine@vger.kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Feb 11, 2020 at 2:59 PM Uwe Kleine-K=C3=B6nig <uwe@kleine-koenig.or=
-g> wrote:
-
-> All the irq related callbacks are called with the (raw) spinlock
-> desc->lock being held. So the lock here must be raw as well. Also irqs
-> were already disabled by the caller for the irq chip callbacks, so the
-> non-irq variants of spin_lock must be used there.
+On Wed, Feb 19, 2020 at 10:17 AM Vinod Koul <vkoul@kernel.org> wrote:
+> On 17-02-20, 23:24, Geert Uytterhoeven wrote:
+> > On Mon, Feb 17, 2020 at 3:41 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> > > The caller is already holding the lock so this will deadlock.
+> > >
+> > > Fixes: 0b58828c923e ("DMAENGINE: COH 901 318 remove irq counting")
+> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > > ---
+> > > This is the second double lock bug found using static analysis.  The
+> > > previous one was commit 627469e4445b ("dmaengine: coh901318: Fix a
+> > > double-lock bug").
+> > >
+> > > The fact that this has been broken for ten years suggests that no one
+> > > has the hardware.
+> >
+> > Or this only runs CONFIG_SMP=n kernels?
+> > This seems to be used in arch/arm/boot/dts/ste-u300.dts only, and
+> > CONFIG_ARCH_U300 is a ARCH_MULTI_V5 platform, which looks like
+> > it doesn't support SMP?
 >
-> Fixes: be8c8facc707 ("gpio: new driver to work with a 8x12 siox")
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <uwe@kleine-koenig.org>
+> Should we drop the driver then..?
 
-Patch applied. Is this a regression so I should put it in fixes?
-I put it for v5.7 for now but I can easily change that.
+I still have the hardware and it still works if that is the question :D
+
+And yeah it only has one CPU, but still has a DMA engine.
+
+The patch is fine to apply because it fixes a bug, should the same
+hardware block be used on SMP.
 
 Yours,
 Linus Walleij

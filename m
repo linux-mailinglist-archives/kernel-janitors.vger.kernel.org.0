@@ -2,100 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BE59168535
-	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Feb 2020 18:42:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06F56168708
+	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Feb 2020 19:54:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726550AbgBURmG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 21 Feb 2020 12:42:06 -0500
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:44239 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726032AbgBURmG (ORCPT
+        id S1729503AbgBUSyN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 21 Feb 2020 13:54:13 -0500
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:42243 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726150AbgBUSyN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 21 Feb 2020 12:42:06 -0500
-Received: by mail-pf1-f195.google.com with SMTP id y5so1580104pfb.11
-        for <kernel-janitors@vger.kernel.org>; Fri, 21 Feb 2020 09:42:05 -0800 (PST)
+        Fri, 21 Feb 2020 13:54:13 -0500
+Received: by mail-ed1-f65.google.com with SMTP id e10so3588703edv.9;
+        Fri, 21 Feb 2020 10:54:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=Z0ajQmgxeuIEJg1R79ODn1BBQ+XGOzhA6+1MZaQFdLw=;
-        b=CVafjZJfMia4GiT4T6spBIy59aFiEKScjaEtP6tGUJV1gDCFZIHOSr51ooSw/97kKO
-         U0wG6HHfV8eOvk0pU0xXMJ/3G8nlCZo//f7fNeXsQTcM9tDuFLvLNXqg3QrVFCNefbyE
-         Xr329kobXBeK751Lg7pSt0z+p4yq6/BfxPnmU=
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=6H7czC/EWWOLG+c9dDSZL0yrJluOEN5LNYAxJRlBPZQ=;
+        b=Nj1J0Jd4bERbsqqC2RdvzymFWFfEKiqalI2qOX8Sjgq5gmNzefkKgNuBCDGQMxTqfL
+         sxVlAk4X06dQpEngnbk3tRqzaiAZJIZp6bzcOm1ft2qMYaL/Mf+95n3Q+mk6aQBcG2c4
+         D/Pn+vstVBh076/KljES7r5GvWzMPS3x2lHc5AY93eaZTg/5W/LfsAUodTTk7DAbHZHy
+         gd2nbpjSFHjWvWmVfQPWiYG5lyjGWVVP5VJrFNUMBzr+7ud2hCak1kznKB+WIGmxOjTU
+         rjngGRSkpqVXjTSQ21868E17hoWwDrY3/1nSSyNx/uPwNYs/AV8LJjiEw3NcREqL9Q/1
+         93vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=Z0ajQmgxeuIEJg1R79ODn1BBQ+XGOzhA6+1MZaQFdLw=;
-        b=mEDjkNDkWbR2rKV5n1P+ELJz8BMH1kkxxvhcpW8nWFC+N8d9zOzxAtgCA4B17sedMC
-         cSMx/l1s6BZ716jJ6RYSefz8+p2/78ObS3VvOJPNk2Rk1RmfpOcoQ0Y/iAq4yDDmfSy9
-         LXuCWsgx5D/7hFZX8t45gKw0ZS0TpT37oaOM7RaOY/6AzAnY5kI39CwA4wSco+50FuHM
-         FNJFHnXqzR/qsTRRYP8bEXasj5NgAXOPyMtsgGbJnxEU0+7F64xXVEWyeMIVb0czZn5K
-         lZ0GqZGsrxoGKlAJIME4Qf1GMQqVzNGjRjuGWfRfMsTqPfSvPPmOVlZAK8+tg4YVvEe2
-         31Wg==
-X-Gm-Message-State: APjAAAXGGsSdlUK4Q3v1/eKn8FqWNi1eP/++m8YYTHl/5caoLd3G6BXP
-        PWZCiRg/Z+P/8MBr2Fr8LazK3w==
-X-Google-Smtp-Source: APXvYqyHZu3+WU9AU2VLD7KGoNayml0yrujlDGRLPLRP/66aarTY8M79Q50NfYcg+rGmy4Qq53ke3Q==
-X-Received: by 2002:a62:f842:: with SMTP id c2mr38901891pfm.104.1582306925501;
-        Fri, 21 Feb 2020 09:42:05 -0800 (PST)
-Received: from [10.69.45.46] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 13sm3400667pfj.68.2020.02.21.09.42.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Feb 2020 09:42:04 -0800 (PST)
-Subject: Re: [PATCH][next] scsi: lpfc: fix spelling mistake "Notication" ->
- "Notification"
-To:     Colin King <colin.king@canonical.com>,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200221154841.77791-1-colin.king@canonical.com>
-From:   James Smart <james.smart@broadcom.com>
-Message-ID: <db8a57f5-53e3-08ea-048f-8b5dca08b16e@broadcom.com>
-Date:   Fri, 21 Feb 2020 09:42:03 -0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-MIME-Version: 1.0
-In-Reply-To: <20200221154841.77791-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=6H7czC/EWWOLG+c9dDSZL0yrJluOEN5LNYAxJRlBPZQ=;
+        b=qEt7e1VSsO6AdMfjpnAGX8p79mBb8PvdolHJ+Z7rpwfstK041RAOLzrVtIWChq02O0
+         aILJrRDVJTmUiS3PSVCCe8eGPUU99WwfxQO2H8f+ZrSLp9NXq8XvnVZlhHb+3vfbYfNj
+         DId91pk8VtYJppfNBKQhCuKZIk/4s/xcDaPiI2bpb9ki/JLWcznwC1JRImFwAULDmIJS
+         xC2Z+Q2SLUul5oxpbSbNIByM6/hFW6KPGdPAU56ltL0Y7Ym/qibrZuH66grU3+oDvspk
+         m6D1FBlu8bXh9V57PmIC6B5Z82219EgoO/YHWV69hYd3CdPMHSIHUmICWhjdix+NIrfP
+         3NSw==
+X-Gm-Message-State: APjAAAVlAMwKg+YNG3ajk4/R/O6jVjhHklc3Pgppz4Vz3Yn6XFV/MQli
+        FC1Qs+OwlR9m5Rlv05Qhma2iDez0iIM=
+X-Google-Smtp-Source: APXvYqw4D+LbiKAlW0MqDTX69Z2BKZfFCJPr23ydy58+Tn3OdmEKcevzhzN9ulkIeQBfs59EFEdPig==
+X-Received: by 2002:aa7:d9c6:: with SMTP id v6mr35455979eds.107.1582311251283;
+        Fri, 21 Feb 2020 10:54:11 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d0c:d000:34f3:c27:3def:c058])
+        by smtp.gmail.com with ESMTPSA id v2sm307158ejj.44.2020.02.21.10.54.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Feb 2020 10:54:10 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Tom Joseph <tjoseph@cadence.com>,
+        Andrew Murray <andrew.murray@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc:     linux-pci@vger.kernel.org, Joe Perches <joe@perches.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: adjust entry to moving cadence drivers
+Date:   Fri, 21 Feb 2020 19:54:02 +0100
+Message-Id: <20200221185402.4703-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Commit de80f95ccb9c ("PCI: cadence: Move all files to per-device cadence
+directory") moved files of the pci cadence drivers, but did not adjust
+the entry in MAINTAINERS.
 
+Since then, ./scripts/get_maintainer.pl --self-test complains:
 
-On 2/21/2020 7:48 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->
-> There is a spelling mistake in a lpfc_printf_vlog info messgae. Fix it.
->
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->   drivers/scsi/lpfc/lpfc_els.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
-> index a712f15bc88c..80d1e661b0d4 100644
-> --- a/drivers/scsi/lpfc/lpfc_els.c
-> +++ b/drivers/scsi/lpfc/lpfc_els.c
-> @@ -3128,7 +3128,7 @@ lpfc_cmpl_els_disc_cmd(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
->   		for (i = 0; i < ELS_RDF_REG_TAG_CNT &&
->   			    i < be32_to_cpu(prdf->reg_d1.reg_desc.count); i++)
->   			lpfc_printf_vlog(vport, KERN_INFO, LOG_ELS,
-> -				 "4677 Fabric RDF Notication Grant Data: "
-> +				 "4677 Fabric RDF Notification Grant Data: "
->   				 "0x%08x\n",
->   				 be32_to_cpu(
->   					prdf->reg_d1.desc_tags[i]));
+  warning: no file matches F: drivers/pci/controller/pcie-cadence*
 
-Reviewed-by: James Smart <james.smart@broadcom.com>
+So, repair the MAINTAINERS entry now.
 
-Thanks!
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+Tom, Andrew, please ack. Lorenzo, please pick this patch.
+applies cleanly on current master and next-20200221
 
--- james
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 4beb8dc4c7eb..d8f690f0e838 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12740,7 +12740,7 @@ M:	Tom Joseph <tjoseph@cadence.com>
+ L:	linux-pci@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/pci/cdns,*.txt
+-F:	drivers/pci/controller/pcie-cadence*
++F:	drivers/pci/controller/cadence/
+ 
+ PCI DRIVER FOR FREESCALE LAYERSCAPE
+ M:	Minghuan Lian <minghuan.Lian@nxp.com>
+-- 
+2.17.1
 

@@ -2,116 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AB1AD167A67
-	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Feb 2020 11:16:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31566167F4D
+	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Feb 2020 14:53:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728438AbgBUKQp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 21 Feb 2020 05:16:45 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50670 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727150AbgBUKQo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 21 Feb 2020 05:16:44 -0500
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CEA8520722;
-        Fri, 21 Feb 2020 10:16:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582280204;
-        bh=ii1y1YjqosHxxt4ATYrhgawzseb5pMwWOhVXA3CV6yA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=fFhtobFbUN6Q/eAsQjW/YIdITh7NFpLSu50CqJ2f/4jKlQ/YQsRLxUX729qW3/p/d
-         oNoq21X0hggp3NP1bRA+5ED1VArkYxT4WH4oelD6IVzaUYsKwh0kFoSxIMJ/jDZp75
-         gfrxAjlJL3JhkWCa2gznXWWvnYe4UXUQUcN6gZy0=
-Date:   Fri, 21 Feb 2020 19:16:37 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Steven Rostedt <rostedt@goodmis.org>, linux-doc@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        id S1728777AbgBUNxI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 21 Feb 2020 08:53:08 -0500
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:42152 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728255AbgBUNxI (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 21 Feb 2020 08:53:08 -0500
+Received: by mail-lj1-f194.google.com with SMTP id d10so2247540ljl.9
+        for <kernel-janitors@vger.kernel.org>; Fri, 21 Feb 2020 05:53:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=bocRSQzLDaTwv7v9OxUFP+rBJyC1D4NMJ64qgWlEHDs=;
+        b=HbD7uMVDU9BN4HHpP/Uq9PzzrHWBEf/ld2so6FHZGkyjty2Ds5TT66WplexiMNFV/V
+         9BAGOsZKgAB2Uk3uCSAoOeXULLAYwVBR4sbFOMA9OnAOcCyIRLdoxWC/4ZsUBIVOlFlL
+         D3+Vh4xEeUytjeXgQFZI2PT3lPUmf/y0IaxladyFfEwwzEoKub6rzBqVQTz1iogq0A6p
+         9b67/TRxuaRtkR/QFR4XxQ5JiowDDtMDdC5EJQx4/Vdfw0xh++DD91AfDnr3/7dTYK08
+         CEovteO5uxclBRpFVcsRiqkK3N7pw3/ofJZSElFqMyy5WYRoYilb93NU0U/c0NqAfr4m
+         w9FA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=bocRSQzLDaTwv7v9OxUFP+rBJyC1D4NMJ64qgWlEHDs=;
+        b=Lrm0ZxhLqhBCM3sQj6lwqYJfhM0DsVqr9+azHzMCTAHfkMyLQs7HUIfmLdBWRv3sie
+         ShMfjVsUyi6Lb0b3YuOH1vA+vkYFXNkHqNq1KMzGz0DSKGYvzKBlfhWltsz+BsDqTtSy
+         BRNmmL08D2rrtr9U3Gz93xwN/w0lhTpFRCjKJWgMgfz+SXLjx+PnkV2hmDwyIvZluzwD
+         MZVa+yNeSnsQNr5JjGWOyOyIC6XNKMcLyL+st5N3hAwhATv7cXAozzVbE5DLBZdzVhGo
+         3S02LQ2kD883Fff0wwDi3VQrmRVHgM4rASU/GHd4rWk4QcOAW1zrsNCHYlvEOfOOKcNo
+         t5gg==
+X-Gm-Message-State: APjAAAXVaW4fQr5PjfvjvQ6W4cd5rgWi//Qh4TIv5bpgcNqn8xFFieWV
+        hj7oIJbJDlC4DJ50RLH4IVU14j7s60m68c5WvQ/zrA==
+X-Google-Smtp-Source: APXvYqy3Tud5fSZk+NS99V4j+h1pHwX6bNMG7bt5PEc4SKLazBwRPCyljUVZpWJMKR9U3zeZeBsru4Y1mTtAVVCTsBo=
+X-Received: by 2002:a2e:2a84:: with SMTP id q126mr21388876ljq.258.1582293185570;
+ Fri, 21 Feb 2020 05:53:05 -0800 (PST)
+MIME-Version: 1.0
+References: <87d0al4600.fsf@nanos.tec.linutronix.de> <20200211135121.15752-1-uwe@kleine-koenig.org>
+In-Reply-To: <20200211135121.15752-1-uwe@kleine-koenig.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 21 Feb 2020 14:52:54 +0100
+Message-ID: <CACRpkdYXBn+30HJWU7rbvfkgmwxxiRs7k3H9KWNb-X1WLEgt4w@mail.gmail.com>
+Subject: Re: [PATCH] gpio: siox: use raw spinlock for irq related locking
+To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <uwe@kleine-koenig.org>
+Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Thorsten Scherer <t.scherer@eckelmann.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Tim Bird <Tim.Bird@sony.com>,
-        Tom Zanussi <tom.zanussi@linux.intel.com>
-Subject: Re: [for-next][PATCH 12/26] Documentation: bootconfig: Add a doc
- for extended boot config
-Message-Id: <20200221191637.e9eed4268ff607a98200628c@kernel.org>
-In-Reply-To: <5ed96b7b-7485-1ea0-16e2-d39c14ae266d@web.de>
-References: <23e371ca-5df8-3ae3-c685-b01c07b55540@web.de>
-        <20200220221340.2b66fd2051a5da74775c474b@kernel.org>
-        <5ed96b7b-7485-1ea0-16e2-d39c14ae266d@web.de>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-2022-JP
-Content-Transfer-Encoding: 7bit
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        kernel-janitors@vger.kernel.org,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 20 Feb 2020 16:00:23 +0100
-Markus Elfring <Markus.Elfring@web.de> wrote:
+On Tue, Feb 11, 2020 at 2:59 PM Uwe Kleine-K=C3=B6nig <uwe@kleine-koenig.or=
+g> wrote:
 
-> >>> +Currently the maximum config size size is 32KB …
-> >>
-> >> Would you like to avoid a word duplication here?
-> >
-> > Oops, still exist.
-> 
-> Is there a need to separate the number from the following unit?
+> All the irq related callbacks are called with the (raw) spinlock
+> desc->lock being held. So the lock here must be raw as well. Also irqs
+> were already disabled by the caller for the irq chip callbacks, so the
+> non-irq variants of spin_lock must be used there.
+>
+> Fixes: be8c8facc707 ("gpio: new driver to work with a 8x12 siox")
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <uwe@kleine-koenig.org>
 
-Sorry, I couldn't understand what you pointed here. Would you mean the
-number of file size and nodes?
+Patch applied. Is this a regression so I should put it in fixes?
+I put it for v5.7 for now but I can easily change that.
 
-> > Indeed, "node" is not well defined. What about this?
-> > ---
-> > Each key consists of words separated by dot, and value also consists of
-> > values separated by comma. Here, each word and each value is generally
-> > called a "node".
-> 
-> I have got still understanding difficulties with such an interpretation.
-> 
-> * Do other contributors find an other word also more appropriate for this use case?
-
-No.
-
-> * How will the influence evolve for naming these items?
-
-Node is used in its API, but from the user's point of view, I think it
-is OK to use "key-word" and "value".
-Also, since it is hard to count those numbers by manual, I think user
-can depend on tools/bootconfig which shows the number of node in the
-configuration file now.
-
-> * Is each element just a string (according to specific rules)?
-
-Yes.
-
-> >> Could an other wording be nicer than the abbreviation “a doc for … config”
-> >> in the commit subject?
-> >
-> > OK, I'll try next time.
-> 
-> Will words like “descriptions”and “configuration”be helpful?
-
-Like "descriptions of ..." ?
-
-Thank you,
-
-> 
-> Regards,
-> Markus
-
-
--- 
-Masami Hiramatsu <mhiramat@kernel.org>
+Yours,
+Linus Walleij

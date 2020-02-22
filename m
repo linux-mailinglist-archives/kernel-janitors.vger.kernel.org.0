@@ -2,33 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E600168A5E
-	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Feb 2020 00:27:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CB88168AD6
+	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Feb 2020 01:15:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729599AbgBUX07 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 21 Feb 2020 18:26:59 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:39496 "EHLO
+        id S1727268AbgBVAP1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 21 Feb 2020 19:15:27 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:40488 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729312AbgBUX06 (ORCPT
+        with ESMTP id S1726045AbgBVAP0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 21 Feb 2020 18:26:58 -0500
+        Fri, 21 Feb 2020 19:15:26 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1j5Hh8-0007An-H5; Fri, 21 Feb 2020 23:26:54 +0000
+        id 1j5IRu-0006DV-LS; Sat, 22 Feb 2020 00:15:14 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Netanel Belgazal <netanel@amazon.com>,
-        Arthur Kiyanovski <akiyano@amazon.com>,
-        Guy Tzalik <gtzalik@amazon.com>,
-        Saeed Bishara <saeedb@amazon.com>,
-        Zorik Machulsky <zorik@amazon.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Sameeh Jubran <sameehj@amazon.com>, netdev@vger.kernel.org
+To:     Christian Brauner <christian@brauner.io>,
+        Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tejun Heo <tj@kernel.org>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] net: ena: ethtool: remove redundant non-zero check on rc
-Date:   Fri, 21 Feb 2020 23:26:53 +0000
-Message-Id: <20200221232653.33134-1-colin.king@canonical.com>
+Subject: [PATCH][next] clone3: fix an unsigned args.cgroup comparison to less than zero
+Date:   Sat, 22 Feb 2020 00:15:13 +0000
+Message-Id: <20200222001513.43099-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -40,39 +39,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The non-zero check on rc is redundant as a previous non-zero
-check on rc will always return and the second check is never
-reached, hence it is redundant and can be removed.  Also
-remove a blank line.
+The less than zero comparison of args.cgroup is aways false because
+args.cgroup is a u64 and can never be less than zero.  I believe the
+correct check is to cast args.cgroup to a s64 first to ensure an
+invalid value is not copied to kargs->cgroup.
 
-Addresses-Coverity: ("Logically dead code")
+Addresses-Coverity: ("Unsigned compared against 0")
+Fixes: ef2c41cf38a7 ("clone3: allow spawning processes into cgroups")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/ethernet/amazon/ena/ena_ethtool.c | 4 ----
- 1 file changed, 4 deletions(-)
+ kernel/fork.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_ethtool.c b/drivers/net/ethernet/amazon/ena/ena_ethtool.c
-index ced1d577b62a..1e38930353f2 100644
---- a/drivers/net/ethernet/amazon/ena/ena_ethtool.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_ethtool.c
-@@ -674,7 +674,6 @@ static int ena_get_rxfh(struct net_device *netdev, u32 *indir, u8 *key,
- 	 * supports getting/setting the hash function.
- 	 */
- 	rc = ena_com_get_hash_function(adapter->ena_dev, &ena_func, key);
--
- 	if (rc) {
- 		if (rc == -EOPNOTSUPP) {
- 			key = NULL;
-@@ -685,9 +684,6 @@ static int ena_get_rxfh(struct net_device *netdev, u32 *indir, u8 *key,
- 		return rc;
- 	}
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 67a5d691ffa8..98513a122dd1 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -2635,7 +2635,7 @@ noinline static int copy_clone_args_from_user(struct kernel_clone_args *kargs,
+ 		     !valid_signal(args.exit_signal)))
+ 		return -EINVAL;
  
--	if (rc)
--		return rc;
--
- 	switch (ena_func) {
- 	case ENA_ADMIN_TOEPLITZ:
- 		func = ETH_RSS_HASH_TOP;
+-	if ((args.flags & CLONE_INTO_CGROUP) && args.cgroup < 0)
++	if ((args.flags & CLONE_INTO_CGROUP) && (s64)args.cgroup < 0)
+ 		return -EINVAL;
+ 
+ 	*kargs = (struct kernel_clone_args){
 -- 
 2.25.0
 

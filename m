@@ -2,68 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CB88168AD6
-	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Feb 2020 01:15:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E49D5168C4A
+	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Feb 2020 05:18:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727268AbgBVAP1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 21 Feb 2020 19:15:27 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:40488 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726045AbgBVAP0 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 21 Feb 2020 19:15:26 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1j5IRu-0006DV-LS; Sat, 22 Feb 2020 00:15:14 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Christian Brauner <christian@brauner.io>,
-        Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        id S1727867AbgBVESk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 21 Feb 2020 23:18:40 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57590 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726472AbgBVESk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 21 Feb 2020 23:18:40 -0500
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 049CC208C3;
+        Sat, 22 Feb 2020 04:18:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582345119;
+        bh=K2HDrAKj7hj+2CKvJF8xxV8d26LJI0EnDte3e8IkOao=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=LRiRzVbcteB3Volmi03sResRMRYDN3BmjYwifXRV+ywPsz2VCrpiWQYzhrC0TxyJE
+         HWwyt8ag1ZbHA1snRpeiV2DSGzb7cyPoUDyMLBFAOWqa3n487khYqgleadwySGSWCf
+         5LTvKRf9sy8RH0X0nc/BWvG4Hs4RNC89AwvKePmU=
+Date:   Sat, 22 Feb 2020 13:18:33 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Steven Rostedt <rostedt@goodmis.org>, linux-doc@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Alexey Dobriyan <adobriyan@gmail.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Tejun Heo <tj@kernel.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] clone3: fix an unsigned args.cgroup comparison to less than zero
-Date:   Sat, 22 Feb 2020 00:15:13 +0000
-Message-Id: <20200222001513.43099-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tim Bird <Tim.Bird@sony.com>,
+        Tom Zanussi <tom.zanussi@linux.intel.com>
+Subject: Re: [for-next][12/26] Documentation: bootconfig: Add a doc for
+ extended boot config
+Message-Id: <20200222131833.56a5be2d36033dc5a77a9f0b@kernel.org>
+In-Reply-To: <5ade73b0-a3e8-e71a-3685-6485f37ac8b7@web.de>
+References: <23e371ca-5df8-3ae3-c685-b01c07b55540@web.de>
+        <20200220221340.2b66fd2051a5da74775c474b@kernel.org>
+        <5ed96b7b-7485-1ea0-16e2-d39c14ae266d@web.de>
+        <20200221191637.e9eed4268ff607a98200628c@kernel.org>
+        <5ade73b0-a3e8-e71a-3685-6485f37ac8b7@web.de>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Fri, 21 Feb 2020 17:43:32 +0100
+Markus Elfring <Markus.Elfring@web.de> wrote:
 
-The less than zero comparison of args.cgroup is aways false because
-args.cgroup is a u64 and can never be less than zero.  I believe the
-correct check is to cast args.cgroup to a s64 first to ensure an
-invalid value is not copied to kargs->cgroup.
+> >> Is there a need to separate the number from the following unit?
+> >
+> > Sorry, I couldn't understand what you pointed here.
+> 
+> Can the specification “… size is 32 KiB …”be more appropriate
+> (besides a small wording adjustment)?
 
-Addresses-Coverity: ("Unsigned compared against 0")
-Fixes: ef2c41cf38a7 ("clone3: allow spawning processes into cgroups")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- kernel/fork.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+OK, I'll update as so :)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 67a5d691ffa8..98513a122dd1 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2635,7 +2635,7 @@ noinline static int copy_clone_args_from_user(struct kernel_clone_args *kargs,
- 		     !valid_signal(args.exit_signal)))
- 		return -EINVAL;
- 
--	if ((args.flags & CLONE_INTO_CGROUP) && args.cgroup < 0)
-+	if ((args.flags & CLONE_INTO_CGROUP) && (s64)args.cgroup < 0)
- 		return -EINVAL;
- 
- 	*kargs = (struct kernel_clone_args){
+> > Like "descriptions of ..." ?
+> 
+> I got another idea also for the provided documentation format.
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/admin-guide/bootconfig.rst?id=bee46b309a13ca158c99c325d0408fb2f0db207f#n18
+> 
+> * Will a file format description become helpful in the way of
+>   an extended Backus–Naur form?
+
+Good suggestion! Let me try to write an EBNF section.
+I think EBNF can logically explain the format, but not intuitive
+- we need some examples.
+
+> * How will data processing evolve around the added structures?
+
+OK, I'll add some more API (and usage) differences from the legacy
+command line.
+
+Thank you,
+
 -- 
-2.25.0
-
+Masami Hiramatsu <mhiramat@kernel.org>

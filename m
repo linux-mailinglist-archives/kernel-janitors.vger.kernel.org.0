@@ -2,110 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 81D04168EC7
-	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Feb 2020 13:18:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 532C1168F32
+	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Feb 2020 14:48:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727278AbgBVMSK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 22 Feb 2020 07:18:10 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:53229 "EHLO
+        id S1727259AbgBVNsF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 22 Feb 2020 08:48:05 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:54157 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726763AbgBVMSK (ORCPT
+        with ESMTP id S1727115AbgBVNsF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 22 Feb 2020 07:18:10 -0500
-Received: from ip5f5bf7ec.dynamic.kabel-deutschland.de ([95.91.247.236] helo=wittgenstein)
+        Sat, 22 Feb 2020 08:48:05 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
-        (envelope-from <christian.brauner@ubuntu.com>)
-        id 1j5TjN-0004Bh-RQ; Sat, 22 Feb 2020 12:18:01 +0000
-Date:   Sat, 22 Feb 2020 13:18:01 +0100
-From:   Christian Brauner <christian.brauner@ubuntu.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Christian Brauner <christian@brauner.io>,
-        Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Tejun Heo <tj@kernel.org>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        linux-kernel-mentees@lists.linuxfoundation.org
-Subject: Re: [PATCH][next] clone3: fix an unsigned args.cgroup comparison to
- less than zero
-Message-ID: <20200222121801.cu4dfnk4z5xd5uc2@wittgenstein>
-References: <20200222001513.43099-1-colin.king@canonical.com>
+        (envelope-from <colin.king@canonical.com>)
+        id 1j5V8N-0000sM-Kt; Sat, 22 Feb 2020 13:47:55 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/i915/gt: remove redundant assignment to variable dw
+Date:   Sat, 22 Feb 2020 13:47:55 +0000
+Message-Id: <20200222134755.134209-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200222001513.43099-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Feb 22, 2020 at 12:15:13AM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The less than zero comparison of args.cgroup is aways false because
-> args.cgroup is a u64 and can never be less than zero.  I believe the
-> correct check is to cast args.cgroup to a s64 first to ensure an
-> invalid value is not copied to kargs->cgroup.
-> 
-> Addresses-Coverity: ("Unsigned compared against 0")
-> Fixes: ef2c41cf38a7 ("clone3: allow spawning processes into cgroups")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Thanks, Colin.
-Dan has reported this issue a few days prior on the janitors list so he
-likely should get a 
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-too. I've been sending Dan's bug report to the kernel-mentee list too in
-case someone wanted to fix it there. So I'm Ccing them again here so
-they know someone's working on this!
+Variable dw is being initialized with a value that is never read,
+it is assigned a new value later on. The assignment is redundant
+and can be removed.
 
-> ---
->  kernel/fork.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 67a5d691ffa8..98513a122dd1 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -2635,7 +2635,7 @@ noinline static int copy_clone_args_from_user(struct kernel_clone_args *kargs,
->  		     !valid_signal(args.exit_signal)))
->  		return -EINVAL;
->  
-> -	if ((args.flags & CLONE_INTO_CGROUP) && args.cgroup < 0)
-> +	if ((args.flags & CLONE_INTO_CGROUP) && (s64)args.cgroup < 0)
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/i915/gt/intel_engine_cs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I think my code here needs a little more fixing. I'm doing
+diff --git a/drivers/gpu/drm/i915/gt/intel_engine_cs.c b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
+index e46e55354e95..119c9cb24fd4 100644
+--- a/drivers/gpu/drm/i915/gt/intel_engine_cs.c
++++ b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
+@@ -639,7 +639,7 @@ static int measure_breadcrumb_dw(struct intel_context *ce)
+ {
+ 	struct intel_engine_cs *engine = ce->engine;
+ 	struct measure_breadcrumb *frame;
+-	int dw = -ENOMEM;
++	int dw;
+ 
+ 	GEM_BUG_ON(!engine->gt->scratch);
+ 
+-- 
+2.25.0
 
-	if ((args.flags & CLONE_INTO_CGROUP) && args.cgroup < 0)
-		return -EINVAL;
-
-and then later
-
-	*kargs = (struct kernel_clone_args){
-		.cgroup		= args.cgroup,
-	};
-
-blindly casting from a u64 in struct clone_args to an int in struct
-kernel_clone_args. I think we want to check that we're within a sane
-range. Maybe something like:
-
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 2diff --git a/kernel/fork.c b/kernel/fork.c
-index 2853e258fe1f..dca4dde3b5b2 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2618,7 +2618,8 @@ noinline static int copy_clone_args_from_user(struct kernel_clone_args *kargs,
-                     !valid_signal(args.exit_signal)))
-                return -EINVAL;
-
--       if ((args.flags & CLONE_INTO_CGROUP) && args.cgroup < 0)
-+       if ((args.flags & CLONE_INTO_CGROUP) &&
-+           (args.cgroup > INT_MAX || (s64)args.cgroup < 0))
-                return -EINVAL;
-
-        *kargs = (struct kernel_clone_args){
-
-Christian

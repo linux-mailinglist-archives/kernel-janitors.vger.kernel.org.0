@@ -2,63 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFCAD168F4F
-	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Feb 2020 15:24:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDBD3168F6F
+	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Feb 2020 15:59:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727715AbgBVOYW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 22 Feb 2020 09:24:22 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:54623 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727584AbgBVOYW (ORCPT
+        id S1727584AbgBVO7F convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 22 Feb 2020 09:59:05 -0500
+Received: from mail.fireflyinternet.com ([77.68.26.236]:56382 "EHLO
+        fireflyinternet.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727266AbgBVO7F (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 22 Feb 2020 09:24:22 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1j5VhS-0002wG-2x; Sat, 22 Feb 2020 14:24:10 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Zaibo Xu <xuzaibo@huawei.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-crypto@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] crypto: hisilicon: remove redundant assignment of pointer ctx
-Date:   Sat, 22 Feb 2020 14:24:09 +0000
-Message-Id: <20200222142409.141057-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.0
-MIME-Version: 1.0
+        Sat, 22 Feb 2020 09:59:05 -0500
+X-Greylist: delayed 1000 seconds by postgrey-1.27 at vger.kernel.org; Sat, 22 Feb 2020 09:59:04 EST
+X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
+Received: from localhost (unverified [78.156.65.138]) 
+        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 20314159-1500050 
+        for multiple; Sat, 22 Feb 2020 14:42:21 +0000
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+To:     Colin King <colin.king@canonical.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+From:   Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20200222134755.134209-1-colin.king@canonical.com>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200222134755.134209-1-colin.king@canonical.com>
+Message-ID: <158238253958.7320.701595965210976453@skylake-alporthouse-com>
+User-Agent: alot/0.6
+Subject: Re: [PATCH] drm/i915/gt: remove redundant assignment to variable dw
+Date:   Sat, 22 Feb 2020 14:42:19 +0000
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
-
-Pointer ctx is being re-assigned with the same value as it
-was initialized with. The second assignment is redundant and
-can be removed.
-
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/crypto/hisilicon/sec2/sec_crypto.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-index a2cfcc9ccd94..acd15507eb8a 100644
---- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
-+++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-@@ -447,7 +447,6 @@ static int sec_skcipher_init(struct crypto_skcipher *tfm)
- 	struct sec_ctx *ctx = crypto_skcipher_ctx(tfm);
- 	int ret;
- 
--	ctx = crypto_skcipher_ctx(tfm);
- 	ctx->alg_type = SEC_SKCIPHER;
- 	crypto_skcipher_set_reqsize(tfm, sizeof(struct sec_req));
- 	ctx->c_ctx.ivsize = crypto_skcipher_ivsize(tfm);
--- 
-2.25.0
-
+Quoting Colin King (2020-02-22 13:47:55)
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Variable dw is being initialized with a value that is never read,
+> it is assigned a new value later on. The assignment is redundant
+> and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+-Chris

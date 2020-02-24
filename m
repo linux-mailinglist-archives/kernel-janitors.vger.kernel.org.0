@@ -2,85 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8B5216B0DE
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Feb 2020 21:19:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ED2816B1DC
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Feb 2020 22:12:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727576AbgBXUTE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Feb 2020 15:19:04 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:50350 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727168AbgBXUTE (ORCPT
+        id S1727741AbgBXVMa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Feb 2020 16:12:30 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:40938 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726722AbgBXVMa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Feb 2020 15:19:04 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01OKIdUv158233;
-        Mon, 24 Feb 2020 20:18:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2020-01-29;
- bh=YRkTyTcpB59ayjpCKj2YJ4h1NWPe56zkyceo0/ici9o=;
- b=mG1jQVrzRk4thjWIj+AR9v8CpvLK3Ruop41ZHHKQjBiYYDMPXXqualByhdPhIGHxhTho
- 96px7DVqzlE2/1frTKliS352Fn3Z5NZCyYhEIsYLg/BUFL/SyG37SueAjcDXvQsri69q
- tAwuSlSSDNejuI0T+lSQrib8LIOXOK7SZDUUDGjbweVPWNF0MTpdBsuvO88WzpfRL81p
- usKkvC0jGc4eo0+NybySXZTEgZLMoT6JMiMpm0UoZZfWGTOMrJRKi5lu9CwQjVf0JuZo
- nATk46z2tGONw/4FvUry4M9WrsB/dActgjiSQqcnwU9T52liIHNwF2SSWmkdxvTeuHH2 CA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 2yavxrhs9t-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 24 Feb 2020 20:18:58 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01OKHvsA141276;
-        Mon, 24 Feb 2020 20:18:58 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 2ybe1219d5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 24 Feb 2020 20:18:58 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 01OKIurE015838;
-        Mon, 24 Feb 2020 20:18:57 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 24 Feb 2020 12:18:56 -0800
+        Mon, 24 Feb 2020 16:12:30 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01OLCGe0072295;
+        Mon, 24 Feb 2020 15:12:16 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1582578736;
+        bh=7fKOJ3M2UjkXuGhNEojycNJyumHodeR9QVJFJrr3Hhw=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=mW/HohppwCft3VZJXOWyOaQKpqKSoin2c5Bdp4N4i7k4URIS/NwQ047QwNt1+Lxrz
+         yJSlNdpP6BrFR2ekj+0kmLt9URmj/Hg6wSN25YwrPvQbtIfiUTojajLuAkBn8/Vfqc
+         51Y84n/oe49QWrgYRa3CX4p6I8jp0TlymqAbfXd4=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 01OLCGki037258
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 24 Feb 2020 15:12:16 -0600
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 24
+ Feb 2020 15:12:15 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Mon, 24 Feb 2020 15:12:15 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01OLCG63022267;
+        Mon, 24 Feb 2020 15:12:16 -0600
+Date:   Mon, 24 Feb 2020 15:12:15 -0600
+From:   Bin Liu <b-liu@ti.com>
 To:     Colin King <colin.king@canonical.com>
-Cc:     James Smart <james.smart@broadcom.com>,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        <linux-usb@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] usb: musb: remove redundant assignment to variable ret
+Message-ID: <20200224211215.GA28269@iaqt7>
+Mail-Followup-To: Bin Liu <b-liu@ti.com>,
+        Colin King <colin.king@canonical.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-usb@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] scsi: lpfc: fix spelling mistake "Notication" -> "Notification"
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20200221154841.77791-1-colin.king@canonical.com>
-Date:   Mon, 24 Feb 2020 15:18:53 -0500
-In-Reply-To: <20200221154841.77791-1-colin.king@canonical.com> (Colin King's
-        message of "Fri, 21 Feb 2020 15:48:41 +0000")
-Message-ID: <yq1sgizbuxe.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+References: <20200222135420.135692-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9541 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0
- suspectscore=0 malwarescore=0 phishscore=0 bulkscore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002240148
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9541 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 lowpriorityscore=0
- spamscore=0 clxscore=1011 suspectscore=0 bulkscore=0 mlxlogscore=999
- malwarescore=0 phishscore=0 adultscore=0 priorityscore=1501 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002240148
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20200222135420.135692-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hi,
 
-Colin,
+On Sat, Feb 22, 2020 at 01:54:20PM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Variable ret is being initialized with a value that is never read,
+> it is assigned a new value later on. The assignment is redundant
+> and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-> There is a spelling mistake in a lpfc_printf_vlog info messgae. Fix it.
+Queued for v5.7-rc1. Thanks.
 
-Applied to 5.6/scsi-fixes with fixed commit message typo.
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+-Bin.

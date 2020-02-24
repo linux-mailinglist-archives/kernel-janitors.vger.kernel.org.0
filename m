@@ -2,86 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EABF16AB80
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Feb 2020 17:30:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ADBB16AC5F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Feb 2020 17:57:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728012AbgBXQad (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Feb 2020 11:30:33 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39152 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727177AbgBXQac (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Feb 2020 11:30:32 -0500
-Received: from localhost (unknown [122.182.199.233])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3A71C2080D;
-        Mon, 24 Feb 2020 16:30:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582561832;
-        bh=bWGcTJqlEjn5g6u4zNf52Tgw+7hzPPuuxO1718WofvA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WOuUHmVuhUlHGACL8h761/MJUQrCsP7cItrYsH/EPFN5/CWTX/WD7k/gQIcfsYprC
-         THqF5EMHw5Z/GPl8lOWySVsfqFUx1EDyJ8ughC2WyxFvU0X8Q70HSqqBtxGuaUOMGD
-         LqdhIX6GEGVPCDYY4X0NXiFUHLN8GllBbgKZTpDA=
-Date:   Mon, 24 Feb 2020 22:00:25 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        kernel-janitors@vger.kernel.org,
-        Jia-Ju Bai <baijiaju1990@gmail.com>,
-        dmaengine <dmaengine@vger.kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH] dmaengine: coh901318: Fix a double lock bug in
- dma_tc_handle()
-Message-ID: <20200224163025.GX2618@vkoul-mobl>
-References: <20200217144050.3i4ymbytogod4ijn@kili.mountain>
- <CAMuHMdWaCqZ_zcHuBetAQu4kmoffNw5jvHM5ciTi29MAxL70bg@mail.gmail.com>
- <20200219091754.GE2618@vkoul-mobl>
- <CACRpkdZ94VYtADCP9VXbNPsRkCacGFOYedd9dwXQw0Jve1HRjw@mail.gmail.com>
+        id S1727976AbgBXQ53 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Feb 2020 11:57:29 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:38685 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727874AbgBXQ53 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 24 Feb 2020 11:57:29 -0500
+Received: by mail-ot1-f67.google.com with SMTP id z9so9327833oth.5;
+        Mon, 24 Feb 2020 08:57:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=6g/0/6uHeJ9SHvtHOygjn4v068gQNv45K/NSYSZDP4E=;
+        b=U4bVxMHNwJ6W7JIAPFLUPteLmJJA0QGPR31VfFdSP8+ZGFAdgDOYzlj0ym5qD1aIJM
+         Bmib+pRnAW4kq0/k8psdKx5rpJLLXoV8zu5Qv6C5XJPUuHov3HldBPDZwnhZVekqAkfy
+         aQymTIFOScZk02GEXFHyuE75t4Zhw0GfDZCgFqSD+Z//bMVDFVmUS5Hyc4GPJkISlo2u
+         VTf962Unq7aK78r8TtxckMzbAf7f0I4aJKmv4nco3IKg8Y8POpM5s+xspmcX5WZII3q9
+         CkHNZBug1qUSRBzuSut9u2erF2aRNolrksI7E4U6j7w9nf8Mp1s/CF5ZSwK4kaOP5hIL
+         Sq/g==
+X-Gm-Message-State: APjAAAXpeCOe1ykqxhRx9rHz7u29dcVf1xT9Zuap25zZ3IkYOHbr/NW7
+        /jPesK7HPXFUGqWp4eDsgg==
+X-Google-Smtp-Source: APXvYqzBSMqtk4LzoxQnFIH5IwbuCE4Q4g+OfNbeilXK0aQ5gXGWn1SAYGX3ICKI7wCB5mXfcqXu7A==
+X-Received: by 2002:a05:6830:1d8b:: with SMTP id y11mr42737812oti.4.1582563448155;
+        Mon, 24 Feb 2020 08:57:28 -0800 (PST)
+Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id a1sm4610066oti.2.2020.02.24.08.57.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Feb 2020 08:57:27 -0800 (PST)
+Received: (nullmailer pid 27821 invoked by uid 1000);
+        Mon, 24 Feb 2020 16:57:26 -0000
+Date:   Mon, 24 Feb 2020 10:57:26 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     David Daney <david.daney@cavium.com>,
+        Robert Richter <rrichter@marvell.com>,
+        Will Deacon <will@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Andrew Murray <andrew.murray@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        devicetree@vger.kernel.org, Joe Perches <joe@perches.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: clean up PCIE DRIVER FOR CAVIUM THUNDERX
+Message-ID: <20200224165726.GA27161@bogus>
+References: <20200223090950.5259-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CACRpkdZ94VYtADCP9VXbNPsRkCacGFOYedd9dwXQw0Jve1HRjw@mail.gmail.com>
+In-Reply-To: <20200223090950.5259-1-lukas.bulwahn@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 21-02-20, 15:50, Linus Walleij wrote:
-> On Wed, Feb 19, 2020 at 10:17 AM Vinod Koul <vkoul@kernel.org> wrote:
-> > On 17-02-20, 23:24, Geert Uytterhoeven wrote:
-> > > On Mon, Feb 17, 2020 at 3:41 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> > > > The caller is already holding the lock so this will deadlock.
-> > > >
-> > > > Fixes: 0b58828c923e ("DMAENGINE: COH 901 318 remove irq counting")
-> > > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > > > ---
-> > > > This is the second double lock bug found using static analysis.  The
-> > > > previous one was commit 627469e4445b ("dmaengine: coh901318: Fix a
-> > > > double-lock bug").
-> > > >
-> > > > The fact that this has been broken for ten years suggests that no one
-> > > > has the hardware.
-> > >
-> > > Or this only runs CONFIG_SMP=n kernels?
-> > > This seems to be used in arch/arm/boot/dts/ste-u300.dts only, and
-> > > CONFIG_ARCH_U300 is a ARCH_MULTI_V5 platform, which looks like
-> > > it doesn't support SMP?
-> >
-> > Should we drop the driver then..?
+On Sun, Feb 23, 2020 at 10:09:50AM +0100, Lukas Bulwahn wrote:
+> Commit e1ac611f57c9 ("dt-bindings: PCI: Convert generic host binding to
+> DT schema") combines all information from pci-thunder-{pem,ecam}.txt
+> into host-generic-pci.yaml, and deleted the two files in
+> Documentation/devicetree/bindings/pci/.
 > 
-> I still have the hardware and it still works if that is the question :D
-
-Thanks for confirming :)
+> Since then, ./scripts/get_maintainer.pl --self-test complains:
 > 
-> And yeah it only has one CPU, but still has a DMA engine.
+>   no file matches F: Documentation/devicetree/bindings/pci/pci-thunder-*
 > 
-> The patch is fine to apply because it fixes a bug, should the same
-> hardware block be used on SMP.
+> As the PCIE DRIVER FOR CAVIUM THUNDERX-relevant information is only a
+> small part of the host-generic-pci.yaml, do not add this file to the
+> PCIE DRIVER FOR CAVIUM THUNDERX entry, and only drop the reference to
+> the removed files.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+> Robert, are you still the maintainer of this driver?
+> Rob Herring, please pick this patch.
+> applies cleanly on current master and next-20200221
 
-Applied now.
+Applied, thanks.
 
--- 
-~Vinod
+Rob

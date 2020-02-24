@@ -2,56 +2,139 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8583F16A45E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Feb 2020 11:52:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3877916A4AF
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Feb 2020 12:15:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727229AbgBXKwh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Feb 2020 05:52:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41288 "EHLO mail.kernel.org"
+        id S1727252AbgBXLPV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Feb 2020 06:15:21 -0500
+Received: from mx01-muc.bfs.de ([193.174.230.67]:9507 "EHLO mx01-muc.bfs.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726765AbgBXKwg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Feb 2020 05:52:36 -0500
-Received: from localhost (unknown [213.57.247.131])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B584B2080D;
-        Mon, 24 Feb 2020 10:52:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582541556;
-        bh=pRbIAs5C//mo9jzQh7oINEMAkmc7NcM4HYwn4lFZ03Q=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=w5djC6IpGiXEDU+/rrZLeL8VSFFZ7ZV67y6j2TAGhG0fOzNMcCRZC2PrGf816761s
-         phE+DT9ZjU5BSiqHo0DTpl0SShDWadkbAic3qrtX5+d9LJYFqNqYz8ZraDCVEbxrqg
-         tA24caTLG9AThDJcjzJD5heE4q+xLqoDdeVlS99A=
-Date:   Mon, 24 Feb 2020 12:52:33 +0200
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Saeed Mahameed <saeedm@mellanox.com>,
-        Aya Levin <ayal@mellanox.com>,
-        Eran Ben Elisha <eranbe@mellanox.com>,
-        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] net/mlx5e: Fix error code in mlx5e_fec_in_caps()
-Message-ID: <20200224105233.GB468372@unreal>
-References: <20200224065557.d23b4yd46kjnzfya@kili.mountain>
+        id S1726778AbgBXLPV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 24 Feb 2020 06:15:21 -0500
+X-Greylist: delayed 437 seconds by postgrey-1.27 at vger.kernel.org; Mon, 24 Feb 2020 06:15:19 EST
+Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
+        by mx01-muc.bfs.de (Postfix) with ESMTPS id 2D1DF2030F;
+        Mon, 24 Feb 2020 12:07:59 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1582542479; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=JCtrqclveZMR9bnvI+c35GZ68+SSPkioSoUcgAu7HVQ=;
+        b=y+zc+9PnKoovr5BCvCo7GA9XEMgHyanYcREL45gWStYT8FIVh0tkI2IGR2q9b6ou4y5pGB
+        KXxEKJRqUWb4K8ChNHjFfVSIsUG3Jm8zHEIb4hkFMnjnYecVWizeskB/g8JecJXwtAzlql
+        86muZe7+JOTHRRWLcXJ5j43HYRv0kLkyk1KeCxeAQITpysgfjL2cl1MxfQYwo8Gr/h4a0i
+        +UVP98BmP73xXpaZ36gQEkEvBo83YSsbc6X2kh2Y99VbHfOQWQZPSg04IrZZWx7uX3RyFZ
+        Xb3IVS98u8Z42h5jgh8qYVrA0Kmng8xE+lNLp+pO7usS65/ms61XDIvawoF4ww==
+Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
+ (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.1913.5; Mon, 24 Feb
+ 2020 12:07:55 +0100
+Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
+ SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%6]) with mapi id
+ 15.01.1913.005; Mon, 24 Feb 2020 12:07:55 +0100
+From:   Walter Harms <wharms@bfs.de>
+To:     Colin King <colin.king@canonical.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: AW: [PATCH] staging: rtl8723bs: core: remove redundant zero'ing of
+ counter variable k
+Thread-Topic: [PATCH] staging: rtl8723bs: core: remove redundant zero'ing of
+ counter variable k
+Thread-Index: AQHV6l3vorwXgv50W0ysut7cburs2qgqLndI
+Date:   Mon, 24 Feb 2020 11:07:55 +0000
+Message-ID: <5f875f84e6014d2bb5b78f71dc2831a2@bfs.de>
+References: <20200223152840.418439-1-colin.king@canonical.com>
+In-Reply-To: <20200223152840.418439-1-colin.king@canonical.com>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.137.16.39]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200224065557.d23b4yd46kjnzfya@kili.mountain>
+X-Spam-Status: No, score=-3.00
+Authentication-Results: mx01-muc.bfs.de
+X-Spamd-Result: default: False [-3.00 / 7.00];
+         ARC_NA(0.00)[];
+         TO_DN_EQ_ADDR_SOME(0.00)[];
+         HAS_XOIP(0.00)[];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         MIME_GOOD(-0.10)[text/plain];
+         RCPT_COUNT_FIVE(0.00)[5];
+         DKIM_SIGNED(0.00)[];
+         NEURAL_HAM(-0.00)[-0.989,0];
+         RCVD_NO_TLS_LAST(0.10)[];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         RCVD_COUNT_TWO(0.00)[2];
+         MID_RHS_MATCH_FROM(0.00)[];
+         BAYES_HAM(-3.00)[99.99%]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Feb 24, 2020 at 09:55:57AM +0300, Dan Carpenter wrote:
-> The mlx5e_fec_in_caps() function is type bool so these negative returns
-> become "return true;" when they should be "return false;"
->
-> Fixes: 2132b71f78d2 ("net/mlx5e: Advertise globaly supported FEC modes")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/net/ethernet/mellanox/mlx5/core/en/port.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
 
-Thanks,
-Acked-by: Leon Romanovsky <leonro@mellanox.com>
+________________________________________
+Von: kernel-janitors-owner@vger.kernel.org <kernel-janitors-owner@vger.kern=
+el.org> im Auftrag von Colin King <colin.king@canonical.com>
+Gesendet: Sonntag, 23. Februar 2020 16:28
+An: Greg Kroah-Hartman; devel@driverdev.osuosl.org
+Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+Betreff: [PATCH] staging: rtl8723bs: core: remove redundant zero'ing of cou=
+nter variable k
+
+From: Colin Ian King <colin.king@canonical.com>
+
+The zero'ing of counter variable k is redundant as it is never read
+after breaking out of the while loop. Remove it.
+
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/staging/rtl8723bs/core/rtw_efuse.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/staging/rtl8723bs/core/rtw_efuse.c b/drivers/staging/r=
+tl8723bs/core/rtw_efuse.c
+index 3b8848182221..bdb6ff8aab7d 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_efuse.c
++++ b/drivers/staging/rtl8723bs/core/rtw_efuse.c
+@@ -244,10 +244,8 @@ u16        Address)
+                while (!(Bytetemp & 0x80)) {
+                        Bytetemp =3D rtw_read8(Adapter, EFUSE_CTRL+3);
+                        k++;
+-                       if (k =3D=3D 1000) {
+-                               k =3D 0;
++                       if (k =3D=3D 1000)
+                                break;
+-                       }
+
+IMHO this is confusing to read, i suggest:
+
+ for(k=3D0;k<1000;k++) {
+      Bytetemp =3D rtw_read8(Adapter, EFUSE_CTRL+3);
+      if ( Bytetemp & 0x80 )
+               break;
+      }
+
+ NTL is am wondering what will happen if k=3D=3D1000
+ and Bytetemp is still invalid. Will rtw_read8() fail or
+ simply return invalid data ?
+
+ ym2c,
+ re,
+ wh
+                }
+                return rtw_read8(Adapter, EFUSE_CTRL);
+        } else
+--
+2.25.0
+

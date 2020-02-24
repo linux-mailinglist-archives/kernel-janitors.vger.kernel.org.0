@@ -2,99 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6ADF8169890
-	for <lists+kernel-janitors@lfdr.de>; Sun, 23 Feb 2020 17:06:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D83DA169B46
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Feb 2020 01:42:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726748AbgBWQGd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 23 Feb 2020 11:06:33 -0500
-Received: from hera.aquilenet.fr ([185.233.100.1]:45546 "EHLO
-        hera.aquilenet.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726534AbgBWQGc (ORCPT
+        id S1727177AbgBXAlz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 23 Feb 2020 19:41:55 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:58066 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727151AbgBXAlz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 23 Feb 2020 11:06:32 -0500
-X-Greylist: delayed 354 seconds by postgrey-1.27 at vger.kernel.org; Sun, 23 Feb 2020 11:06:32 EST
-Received: from localhost (localhost [127.0.0.1])
-        by hera.aquilenet.fr (Postfix) with ESMTP id 7BAAE1B46;
-        Sun, 23 Feb 2020 17:00:36 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at aquilenet.fr
-Received: from hera.aquilenet.fr ([127.0.0.1])
-        by localhost (hera.aquilenet.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id pIxNazIaEtLK; Sun, 23 Feb 2020 17:00:35 +0100 (CET)
-Received: from function (lfbn-bor-1-797-11.w86-234.abo.wanadoo.fr [86.234.239.11])
-        by hera.aquilenet.fr (Postfix) with ESMTPSA id 397E69C3;
-        Sun, 23 Feb 2020 17:00:35 +0100 (CET)
-Received: from samy by function with local (Exim 4.93)
-        (envelope-from <samuel.thibault@ens-lyon.org>)
-        id 1j5te7-005TFX-Gy; Sun, 23 Feb 2020 16:58:19 +0100
-Date:   Sun, 23 Feb 2020 16:58:19 +0100
-From:   Samuel Thibault <samuel.thibault@ens-lyon.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     William Hubbs <w.d.hubbs@gmail.com>,
-        Chris Brannon <chris@the-brannons.com>,
-        Kirk Reiser <kirk@reisers.ca>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        speakup@linux-speakup.org, devel@driverdev.osuosl.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: speakup: remove redundant initialization of
- pointer p_key
-Message-ID: <20200223155819.hycmdvrsiid27jeg@function>
-Mail-Followup-To: Samuel Thibault <samuel.thibault@ens-lyon.org>,
-        Colin King <colin.king@canonical.com>,
-        William Hubbs <w.d.hubbs@gmail.com>,
-        Chris Brannon <chris@the-brannons.com>,
-        Kirk Reiser <kirk@reisers.ca>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        speakup@linux-speakup.org, devel@driverdev.osuosl.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200223153954.420731-1-colin.king@canonical.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200223153954.420731-1-colin.king@canonical.com>
-Organization: I am not organized
-User-Agent: NeoMutt/20170609 (1.8.3)
+        Sun, 23 Feb 2020 19:41:55 -0500
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::f0c])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id F1465158E0671;
+        Sun, 23 Feb 2020 16:41:54 -0800 (PST)
+Date:   Sun, 23 Feb 2020 16:41:54 -0800 (PST)
+Message-Id: <20200223.164154.1411149705613568241.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     netanel@amazon.com, akiyano@amazon.com, gtzalik@amazon.com,
+        saeedb@amazon.com, zorik@amazon.com, sameehj@amazon.com,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: ena: ethtool: remove redundant non-zero check on
+ rc
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200221232653.33134-1-colin.king@canonical.com>
+References: <20200221232653.33134-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 23 Feb 2020 16:41:55 -0800 (PST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King, le dim. 23 févr. 2020 15:39:54 +0000, a ecrit:
+From: Colin King <colin.king@canonical.com>
+Date: Fri, 21 Feb 2020 23:26:53 +0000
+
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> Pointer p_key is being initialized with a value that is never read,
-> it is assigned a new value later on. The initialization is redundant
-> and can be removed.
+> The non-zero check on rc is redundant as a previous non-zero
+> check on rc will always return and the second check is never
+> reached, hence it is redundant and can be removed.  Also
+> remove a blank line.
 > 
-> Addresses-Coverity: ("Unused value")
+> Addresses-Coverity: ("Logically dead code")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Indeed, thanks!
-
-Reviewed-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
-
-> ---
->  drivers/staging/speakup/keyhelp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/speakup/keyhelp.c b/drivers/staging/speakup/keyhelp.c
-> index 5f1bda37f86d..822ceac83068 100644
-> --- a/drivers/staging/speakup/keyhelp.c
-> +++ b/drivers/staging/speakup/keyhelp.c
-> @@ -49,7 +49,7 @@ static int cur_item, nstates;
->  static void build_key_data(void)
->  {
->  	u_char *kp, counters[MAXFUNCS], ch, ch1;
-> -	u_short *p_key = key_data, key;
-> +	u_short *p_key, key;
->  	int i, offset = 1;
->  
->  	nstates = (int)(state_tbl[-1]);
-> -- 
-> 2.25.0
-> 
-
--- 
-Samuel
-j'etais en train de nettoyer ma souris et le coup est parti...
- -+- s sur #ens-mim - et en plus c vrai... -+-
+Applied to net-next.

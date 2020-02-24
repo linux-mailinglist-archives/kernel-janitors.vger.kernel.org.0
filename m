@@ -2,139 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3877916A4AF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Feb 2020 12:15:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C91D16A4E1
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Feb 2020 12:28:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727252AbgBXLPV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Feb 2020 06:15:21 -0500
-Received: from mx01-muc.bfs.de ([193.174.230.67]:9507 "EHLO mx01-muc.bfs.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726778AbgBXLPV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Feb 2020 06:15:21 -0500
-X-Greylist: delayed 437 seconds by postgrey-1.27 at vger.kernel.org; Mon, 24 Feb 2020 06:15:19 EST
-Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
-        by mx01-muc.bfs.de (Postfix) with ESMTPS id 2D1DF2030F;
-        Mon, 24 Feb 2020 12:07:59 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1582542479; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=JCtrqclveZMR9bnvI+c35GZ68+SSPkioSoUcgAu7HVQ=;
-        b=y+zc+9PnKoovr5BCvCo7GA9XEMgHyanYcREL45gWStYT8FIVh0tkI2IGR2q9b6ou4y5pGB
-        KXxEKJRqUWb4K8ChNHjFfVSIsUG3Jm8zHEIb4hkFMnjnYecVWizeskB/g8JecJXwtAzlql
-        86muZe7+JOTHRRWLcXJ5j43HYRv0kLkyk1KeCxeAQITpysgfjL2cl1MxfQYwo8Gr/h4a0i
-        +UVP98BmP73xXpaZ36gQEkEvBo83YSsbc6X2kh2Y99VbHfOQWQZPSg04IrZZWx7uX3RyFZ
-        Xb3IVS98u8Z42h5jgh8qYVrA0Kmng8xE+lNLp+pO7usS65/ms61XDIvawoF4ww==
-Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
- (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.1913.5; Mon, 24 Feb
- 2020 12:07:55 +0100
-Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
- SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%6]) with mapi id
- 15.01.1913.005; Mon, 24 Feb 2020 12:07:55 +0100
-From:   Walter Harms <wharms@bfs.de>
-To:     Colin King <colin.king@canonical.com>,
+        id S1727339AbgBXL15 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Feb 2020 06:27:57 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:41024 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726509AbgBXL15 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 24 Feb 2020 06:27:57 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01OBRZBm049053;
+        Mon, 24 Feb 2020 11:27:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=qaLjDAIw6mSX2sA4FzFmvfhX3ybm6asvNIXeCFRRclQ=;
+ b=IURSZ7DxCuLj7ateYVeAPowimphunG2NcuDv8JhvS9K+KT4VIjSQqihH2SuWtlumEA67
+ OdGrFPFn72SUR1XpqaRQNlfpmf1oJUeQ3TLAlFGahGZ9ZBaCmaj69rHRKp2SwwnsFF3d
+ 0q0B4tvXZ2a7bkrh3h6M0Ue6Iu1iie5SAZAl+PSccntosGx0FYK8KBy9rv0gv1PaCznL
+ 5KMcpPtzT7APSVdgExiAvBkopTRbPw6j+a03uIARSGwoaJPev0wiUUQXycJBsQ3yErqI
+ 12SSKIs9BRxUO2AERQLrJIgYnpAnGzOmg4+q4Qw73kZpzNHc61AVvi1Mly9XH98o9KQm aA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 2ybvr4k0ey-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 24 Feb 2020 11:27:47 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01OBLsUx066158;
+        Mon, 24 Feb 2020 11:27:46 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 2ybe111758-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 24 Feb 2020 11:27:46 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 01OBRimX031221;
+        Mon, 24 Feb 2020 11:27:44 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 24 Feb 2020 03:27:43 -0800
+Date:   Mon, 24 Feb 2020 14:27:35 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Walter Harms <wharms@bfs.de>
+Cc:     Colin King <colin.king@canonical.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: AW: [PATCH] staging: rtl8723bs: core: remove redundant zero'ing of
+Subject: Re: [PATCH] staging: rtl8723bs: core: remove redundant zero'ing of
  counter variable k
-Thread-Topic: [PATCH] staging: rtl8723bs: core: remove redundant zero'ing of
- counter variable k
-Thread-Index: AQHV6l3vorwXgv50W0ysut7cburs2qgqLndI
-Date:   Mon, 24 Feb 2020 11:07:55 +0000
-Message-ID: <5f875f84e6014d2bb5b78f71dc2831a2@bfs.de>
+Message-ID: <20200224112735.GC3286@kadam>
 References: <20200223152840.418439-1-colin.king@canonical.com>
-In-Reply-To: <20200223152840.418439-1-colin.king@canonical.com>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.137.16.39]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ <5f875f84e6014d2bb5b78f71dc2831a2@bfs.de>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-3.00
-Authentication-Results: mx01-muc.bfs.de
-X-Spamd-Result: default: False [-3.00 / 7.00];
-         ARC_NA(0.00)[];
-         TO_DN_EQ_ADDR_SOME(0.00)[];
-         HAS_XOIP(0.00)[];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         RCPT_COUNT_FIVE(0.00)[5];
-         DKIM_SIGNED(0.00)[];
-         NEURAL_HAM(-0.00)[-0.989,0];
-         RCVD_NO_TLS_LAST(0.10)[];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         MID_RHS_MATCH_FROM(0.00)[];
-         BAYES_HAM(-3.00)[99.99%]
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5f875f84e6014d2bb5b78f71dc2831a2@bfs.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9540 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0
+ suspectscore=0 malwarescore=0 phishscore=0 bulkscore=0 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002240096
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9540 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0
+ clxscore=1011 adultscore=0 lowpriorityscore=0 malwarescore=0
+ priorityscore=1501 mlxscore=0 impostorscore=0 suspectscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002240097
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Mon, Feb 24, 2020 at 11:07:55AM +0000, Walter Harms wrote:
+> diff --git a/drivers/staging/rtl8723bs/core/rtw_efuse.c b/drivers/staging/rtl8723bs/core/rtw_efuse.c
+> index 3b8848182221..bdb6ff8aab7d 100644
+> --- a/drivers/staging/rtl8723bs/core/rtw_efuse.c
+> +++ b/drivers/staging/rtl8723bs/core/rtw_efuse.c
+> @@ -244,10 +244,8 @@ u16        Address)
+>                 while (!(Bytetemp & 0x80)) {
+>                         Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
+>                         k++;
+> -                       if (k == 1000) {
+> -                               k = 0;
+> +                       if (k == 1000)
+>                                 break;
+> -                       }
+> 
+> IMHO this is confusing to read, i suggest:
+> 
+>  for(k=0;k<1000;k++) {
+>       Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
+>       if ( Bytetemp & 0x80 )
+>                break;
+>       }
+> 
 
-________________________________________
-Von: kernel-janitors-owner@vger.kernel.org <kernel-janitors-owner@vger.kern=
-el.org> im Auftrag von Colin King <colin.king@canonical.com>
-Gesendet: Sonntag, 23. Februar 2020 16:28
-An: Greg Kroah-Hartman; devel@driverdev.osuosl.org
-Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
-Betreff: [PATCH] staging: rtl8723bs: core: remove redundant zero'ing of cou=
-nter variable k
+The problem with the original code is that the variable is named "k"
+instead of "retry".  It should be:
 
-From: Colin Ian King <colin.king@canonical.com>
+	do {
+		Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
+	} while (!(Bytetemp & 0x80)) && ++retry < 1000);
 
-The zero'ing of counter variable k is redundant as it is never read
-after breaking out of the while loop. Remove it.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/staging/rtl8723bs/core/rtw_efuse.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+>  NTL is am wondering what will happen if k==1000
+>  and Bytetemp is still invalid. Will rtw_read8() fail or
+>  simply return invalid data ?
 
-diff --git a/drivers/staging/rtl8723bs/core/rtw_efuse.c b/drivers/staging/r=
-tl8723bs/core/rtw_efuse.c
-index 3b8848182221..bdb6ff8aab7d 100644
---- a/drivers/staging/rtl8723bs/core/rtw_efuse.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_efuse.c
-@@ -244,10 +244,8 @@ u16        Address)
-                while (!(Bytetemp & 0x80)) {
-                        Bytetemp =3D rtw_read8(Adapter, EFUSE_CTRL+3);
-                        k++;
--                       if (k =3D=3D 1000) {
--                               k =3D 0;
-+                       if (k =3D=3D 1000)
-                                break;
--                       }
+Yeah.  That was my thought reviewing this patch as well.
 
-IMHO this is confusing to read, i suggest:
+It should probably return 0xff on failure.
 
- for(k=3D0;k<1000;k++) {
-      Bytetemp =3D rtw_read8(Adapter, EFUSE_CTRL+3);
-      if ( Bytetemp & 0x80 )
-               break;
-      }
+	if (retry >= 1000)
+		return 0xff;
 
- NTL is am wondering what will happen if k=3D=3D1000
- and Bytetemp is still invalid. Will rtw_read8() fail or
- simply return invalid data ?
-
- ym2c,
- re,
- wh
-                }
-                return rtw_read8(Adapter, EFUSE_CTRL);
-        } else
---
-2.25.0
+regards,
+dan carpenter
 

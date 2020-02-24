@@ -2,73 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C9C8F169BAF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Feb 2020 02:14:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C8A0169BC1
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Feb 2020 02:27:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727252AbgBXBOe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 23 Feb 2020 20:14:34 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:11100 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727167AbgBXBOd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 23 Feb 2020 20:14:33 -0500
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id B8FFD31DE262BD82582E;
-        Mon, 24 Feb 2020 09:14:31 +0800 (CST)
-Received: from [127.0.0.1] (10.67.101.242) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Mon, 24 Feb 2020
- 09:14:27 +0800
-Subject: Re: [PATCH] crypto: hisilicon: remove redundant assignment of pointer
- ctx
-To:     Colin King <colin.king@canonical.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        <linux-crypto@vger.kernel.org>
-References: <20200222142409.141057-1-colin.king@canonical.com>
-CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-From:   Xu Zaibo <xuzaibo@huawei.com>
-Message-ID: <e0133b58-5acc-5706-c369-6eeacf1c67a6@huawei.com>
-Date:   Mon, 24 Feb 2020 09:14:30 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
-MIME-Version: 1.0
-In-Reply-To: <20200222142409.141057-1-colin.king@canonical.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+        id S1727169AbgBXB1M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 23 Feb 2020 20:27:12 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:58294 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727151AbgBXB1M (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 23 Feb 2020 20:27:12 -0500
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::f0c])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id E400C13411C32;
+        Sun, 23 Feb 2020 17:27:11 -0800 (PST)
+Date:   Sun, 23 Feb 2020 17:27:11 -0800 (PST)
+Message-Id: <20200223.172711.2214140372026747021.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     yisen.zhuang@huawei.com, salil.mehta@huawei.com,
+        tanhuazhong@huawei.com, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: hns3: remove redundant initialization of pointer
+ 'client'
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200222195231.200089-1-colin.king@canonical.com>
+References: <20200222195231.200089-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.101.242]
-X-CFilter-Loop: Reflected
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 23 Feb 2020 17:27:12 -0800 (PST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin King <colin.king@canonical.com>
+Date: Sat, 22 Feb 2020 19:52:31 +0000
 
-Yes, thank you!
+> @@ -9076,7 +9076,7 @@ static int hclge_init_nic_client_instance(struct hnae3_ae_dev *ae_dev,
+>  static int hclge_init_roce_client_instance(struct hnae3_ae_dev *ae_dev,
+>  					   struct hclge_vport *vport)
+>  {
+> -	struct hnae3_client *client = vport->roce.client;
+> +	struct hnae3_client *client;
+>  	struct hclge_dev *hdev = ae_dev->priv;
+>  	int rst_cnt;
+>  	int ret;
 
-
-On 2020/2/22 22:24, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Pointer ctx is being re-assigned with the same value as it
-> was initialized with. The second assignment is redundant and
-> can be removed.
->
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->   drivers/crypto/hisilicon/sec2/sec_crypto.c | 1 -
->   1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-> index a2cfcc9ccd94..acd15507eb8a 100644
-> --- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
-> +++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-> @@ -447,7 +447,6 @@ static int sec_skcipher_init(struct crypto_skcipher *tfm)
->   	struct sec_ctx *ctx = crypto_skcipher_ctx(tfm);
->   	int ret;
->   
-> -	ctx = crypto_skcipher_ctx(tfm);
->   	ctx->alg_type = SEC_SKCIPHER;
->   	crypto_skcipher_set_reqsize(tfm, sizeof(struct sec_req));
->   	ctx->c_ctx.ivsize = crypto_skcipher_ivsize(tfm);
-
-
+Please preserve the reverse christmas tree ordering of local variables when
+you make changes like this.

@@ -2,100 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F267616A3F3
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Feb 2020 11:33:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDC7616A451
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Feb 2020 11:51:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726778AbgBXKds (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Feb 2020 05:33:48 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:39790 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726216AbgBXKds (ORCPT
+        id S1727281AbgBXKvH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Feb 2020 05:51:07 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:33566 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726673AbgBXKvG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Feb 2020 05:33:48 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01OAVLNB169371;
-        Mon, 24 Feb 2020 10:33:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=33/Y6rLPLGiMZCFX0tg30kYzGV0vSPS54BmuQAnCqwY=;
- b=uTiODDcxuVxGjO/jsogB8zGuKqt84QceJ7o9NC5CRLBySUQa0MOHi/NfAFYSrk2b4unx
- yfFQxJHcpDtws9qHbmfGH0FnEiroXJnoQc5RVVOpQ7UKQATO5LmSNDcjmifBAFsu1lh1
- EPHMj3xRCGiiGTK/yrCaDpd0bbG7CG8yW7uL778mjJQmJqXVvZTlMoU7+kGLUveNehVT
- qH0gemTqcksK/zjYSy2rKINIXnmpKAMCQGHPZdKKpE4OtmRWdpNmAKrR9FbqasWBX7Ne
- Tu7NVK29zLzCQiD0d7kUHGrAG+mqPmAUMvfghXmCViz+052yyUTHEsxXvMB60JgXm6vL SA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 2yauqu6fse-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 24 Feb 2020 10:33:37 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01OAWYi7146550;
-        Mon, 24 Feb 2020 10:33:36 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 2yby5bdd44-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 24 Feb 2020 10:33:36 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 01OAXXDu000879;
-        Mon, 24 Feb 2020 10:33:33 GMT
-Received: from kili.mountain (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 24 Feb 2020 02:33:32 -0800
-Date:   Mon, 24 Feb 2020 13:33:25 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Simon =?iso-8859-1?Q?Sandstr=F6m?= <simon@nikanor.nu>,
-        Jeremy Sowden <jeremy@azazel.net>, devel@driverdev.osuosl.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] staging: kpc2000: prevent underflow in cpld_reconfigure()
-Message-ID: <20200224103325.hrxdnaeqsthplu42@kili.mountain>
+        Mon, 24 Feb 2020 05:51:06 -0500
+Received: by mail-wr1-f65.google.com with SMTP id u6so9834953wrt.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 24 Feb 2020 02:51:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=kRZXlrxsXiUp76pJUg1A1idTwmDFL/za+p20Iqq28LA=;
+        b=aWpye4I3V+5CEJjrj2uJR2xdbJS/+LF+RYdn4SVnfHM9zW4soJtQ4DDCMlq2w8ovK0
+         Ne7XZTqiG87ZTLAd16bMV86ij+XfEGZ9bdyoAhvgJQmUWZONyDwo+FuC6jAI0Ev9yd3w
+         iLQJ+n9OeXvD6/P3xfk9GVRurzCDqhcs62ad6RhI2qMZJPfjl7S5ZRZwSgDk/E1Xp5GG
+         P03a78iPpoFRBGzbWcA/a+oiLtSnw7+gJtTsRPT9MU8MxiMQR4i1kXwBgIz3piUYxLR8
+         zpA90VETnE0sbGG7q1y46Xa6FF20y4h8NEvoWw5EruFK+LE9cXNWHD9EjMBkecD4FZFm
+         MpVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=kRZXlrxsXiUp76pJUg1A1idTwmDFL/za+p20Iqq28LA=;
+        b=SH66tJ0epcrnpgqi/Ctdcg6icYMcHvrEOZMkjeV6P/BqgrluS+Ixwygxc+KPcajbRI
+         leh1yGJS6aIkeFA+O2bfiIqC4UxFvrpUbkUa0tNyqcRLr+7c+UJMSvZGH35HD5uktFJu
+         NjxYteuR08wDu6lgm2Y3jLcwAdhcyWygum4q+jMkQC2Wvlv089DweYzCgRQmB6YT1o8S
+         1xYyaTKmVYToGoJMOrankjWR/AVyXSLJp22FZ+EI/8gOq+6Jx3Z3rNPgAp/y1B9RCdRH
+         5AX29tU1PnupTqe8aZMf2itU9Sthe/ORyl6RhIpRaWdWh+MEPWfa2ONBsAGkV63NcZMk
+         6YJQ==
+X-Gm-Message-State: APjAAAX3TTl+G9Oy3Uw2k2IcdJvlRHnIi31vTRMPBzVpfCD+rf058c7A
+        El1YKW3WfGmcd3Q+8JnqEaOjHA==
+X-Google-Smtp-Source: APXvYqxrdCUTNHecQ/lWt1/A5Ue3ifumWztPy7Ua4Idfks8Z+yOSveQHA4M4xhgaYqjMo1tm6Jnzig==
+X-Received: by 2002:adf:a19c:: with SMTP id u28mr65545868wru.221.1582541464079;
+        Mon, 24 Feb 2020 02:51:04 -0800 (PST)
+Received: from dell ([2.31.163.122])
+        by smtp.gmail.com with ESMTPSA id w19sm16854001wmc.22.2020.02.24.02.51.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Feb 2020 02:51:03 -0800 (PST)
+Date:   Mon, 24 Feb 2020 10:51:34 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] mfd: Kconfig: Fix some typo
+Message-ID: <20200224105134.GQ3494@dell>
+References: <20200216113242.20268-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9540 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 bulkscore=0
- suspectscore=0 mlxlogscore=999 phishscore=0 adultscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002240090
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9540 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 bulkscore=0
- clxscore=1011 malwarescore=0 impostorscore=0 adultscore=0 phishscore=0
- priorityscore=1501 mlxlogscore=999 spamscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002240090
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200216113242.20268-1-christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This function should not allow negative values of "wr_val".  If
-negatives are allowed then capping the upper bound at 7 is
-meaningless.  Let's make it unsigned.
+On Sun, 16 Feb 2020, Christophe JAILLET wrote:
 
-Fixes: 7dc7967fc39a ("staging: kpc2000: add initial set of Daktronics drivers")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/staging/kpc2000/kpc2000/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> Fix several variations of typo around functionality.ies
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  drivers/mfd/Kconfig | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/staging/kpc2000/kpc2000/core.c b/drivers/staging/kpc2000/kpc2000/core.c
-index 93cf28febdf6..7b00d7069e21 100644
---- a/drivers/staging/kpc2000/kpc2000/core.c
-+++ b/drivers/staging/kpc2000/kpc2000/core.c
-@@ -110,10 +110,10 @@ static ssize_t cpld_reconfigure(struct device *dev,
- 				const char *buf, size_t count)
- {
- 	struct kp2000_device *pcard = dev_get_drvdata(dev);
--	long wr_val;
-+	unsigned long wr_val;
- 	int rv;
- 
--	rv = kstrtol(buf, 0, &wr_val);
-+	rv = kstrtoul(buf, 0, &wr_val);
- 	if (rv < 0)
- 		return rv;
- 	if (wr_val > 7)
+Applied, thanks.
+
 -- 
-2.11.0
-
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

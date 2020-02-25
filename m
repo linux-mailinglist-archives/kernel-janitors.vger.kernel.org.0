@@ -2,93 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A2D216BB80
-	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Feb 2020 09:07:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 582BE16BEC5
+	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Feb 2020 11:30:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729649AbgBYIHk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 25 Feb 2020 03:07:40 -0500
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:38551 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729646AbgBYIHk (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 25 Feb 2020 03:07:40 -0500
-Received: by mail-ed1-f67.google.com with SMTP id p23so15202015edr.5;
-        Tue, 25 Feb 2020 00:07:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=hpxymrnMFLY6A9AjiKv5IjjdyYwWAfmtWtkwbGf9b7c=;
-        b=LtAbwH3NCYO0hWAIqgRNZKiofeQ4oKb/QJbzNpSuP2noOsBHx/TBWPmdeiNrmL4I3O
-         D57p+otGx35oQdxExJ4wHGkLurcdMy8rq0M4oxSCSlF+DYYJXWfeFzK0+QoIN+geQi6g
-         L27sIFmSQjWxZiAezZxWpOJ+b3o06ajFUIrEieVsw9IBTV3fHUdQQDIQE+VVXULpo+EL
-         DemhoGAjEuLXv1kMk20msEPMVL+YDL6ObdkNepzCgvIOcV+E/aFwDcZpMMjLa0XPI/ft
-         op+3kVP0ALKp38eMJVFkotxxAR2SbGbcue+nll17Cu36osstHt0DFjVH8lbh6Zckv4T2
-         +GMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=hpxymrnMFLY6A9AjiKv5IjjdyYwWAfmtWtkwbGf9b7c=;
-        b=eI1wORLNT3zaLO8+XJfAP8jSP7BclYW1AUsZSaHaEJOCz/eS7OEqEt6nT0lf5DSwr3
-         7LPquq5RrvxoVUt79IegX4PzSIcYkxiBAu9I7d3fkqbgh96h1wjY/SVHjy0WCULDfXHM
-         N9Uh/epMmFvFBXggEpjtdIIgO53/d/44G+UkmXLxZVRxwzuOm+DDHHJ7GPfmefkVfajD
-         1v2Z9G/BVnlorA7f0rToqJCMy//zRCasC1ppOx7o6B5SoWtkwbaSnhAl8pYWUGGY2drD
-         Z0nnV+iDbwruaC+cfUy49Ag8N79XO+LZPXSuaa5IQrqr3MGHm69qi6KFiR/jfNjUYMlh
-         Ihxw==
-X-Gm-Message-State: APjAAAXRWgsytHgsfI5pKVf8iyuf/W2dFOJahL7xS2u/0CstFnKWE2OT
-        Jev4zFPvBveJ6d1TILMdGvUScXgvuRg=
-X-Google-Smtp-Source: APXvYqyz1rM9kGZ2yKQKtBdZegqxArEcIfrkYZ1vi8wcL7rT+x4CQ95yAutuOXs0cIHPPNLUbA1SEw==
-X-Received: by 2002:aa7:df09:: with SMTP id c9mr50386890edy.133.1582618058417;
-        Tue, 25 Feb 2020 00:07:38 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d75:fc00:5586:e036:dd7a:89bd])
-        by smtp.gmail.com with ESMTPSA id u9sm1188510edt.91.2020.02.25.00.07.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2020 00:07:37 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Lubomir Rintel <lkundrak@v3.sk>, Olof Johansson <olof@lixom.net>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        id S1730207AbgBYK37 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 25 Feb 2020 05:29:59 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37876 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729698AbgBYK37 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 25 Feb 2020 05:29:59 -0500
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BDC1A20714;
+        Tue, 25 Feb 2020 10:29:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582626598;
+        bh=UH7mnXQX8TGZmYFmHR4KakrBGZds/E7LEwiWffJij6k=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=qkv3SvT8Prc7UvYr6MT7wTG9G8meGk6KuBuhQ1BP74jz/+JsREiCcJehdnV3FTKfQ
+         JskiNxhN4naOKqd0eyc2s8rvO9UOVn8MurcmfBQSg2uFu9+kMPoWR59xbjbC7Tjfqc
+         JaWWBGGjgHU4tXzbANp3HSw5qyNictjtRJM92A90=
+Date:   Tue, 25 Feb 2020 19:29:51 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Steven Rostedt <rostedt@goodmis.org>, linux-doc@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: rectify MMP SUPPORT after moving cputype.h
-Date:   Tue, 25 Feb 2020 09:07:27 +0100
-Message-Id: <20200225080727.5687-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Alexey Dobriyan <adobriyan@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tim Bird <Tim.Bird@sony.com>,
+        Tom Zanussi <tom.zanussi@linux.intel.com>
+Subject: Re: [for-next][12/26] Documentation: bootconfig: Add a doc for
+ extended boot config
+Message-Id: <20200225192951.b7753d3cf31fda2dcaa12fdb@kernel.org>
+In-Reply-To: <8c99a63b-b1b9-a1ba-fa2a-38d1573f18b1@web.de>
+References: <23e371ca-5df8-3ae3-c685-b01c07b55540@web.de>
+        <20200220221340.2b66fd2051a5da74775c474b@kernel.org>
+        <5ed96b7b-7485-1ea0-16e2-d39c14ae266d@web.de>
+        <20200221191637.e9eed4268ff607a98200628c@kernel.org>
+        <5ade73b0-a3e8-e71a-3685-6485f37ac8b7@web.de>
+        <20200222131833.56a5be2d36033dc5a77a9f0b@kernel.org>
+        <370e675a-598e-71db-8213-f5494b852a71@web.de>
+        <20200223005615.79f308e2ca0717132bb2887b@kernel.org>
+        <8cc7e621-c5e3-28fa-c789-0bb7c55d77d6@web.de>
+        <20200224121302.5b730b519d550eb34da720a5@kernel.org>
+        <25dd284f-6122-c01b-ef22-901c3e0bdf37@web.de>
+        <20200225154903.f636acde809a304bfccf4995@kernel.org>
+        <8c99a63b-b1b9-a1ba-fa2a-38d1573f18b1@web.de>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 32adcaa010fa ("ARM: mmp: move cputype.h to include/linux/soc/")
-added a file entry that does not point to the intended file location.
+On Tue, 25 Feb 2020 08:56:41 +0100
+Markus Elfring <Markus.Elfring@web.de> wrote:
 
-Since then, ./scripts/get_maintainer.pl --self-test complains:
+> >> How do you think about to clarify any additional software design options
+> >> around involved data structures?
+> >
+> > Sorry, what would you mean the "involved data structures" here?
+> > Would you mean the usage of APIs or when to use bootconfig or command line?
+> 
+> Additional system boot parameters can be managed also by a single file.
+> The file format will trigger specific parsing efforts.
 
-  warning: no file matches F: linux/soc/mmp/
+Maybe. If someone is interested in expanding their command, (e.g. vim)
+they can use EBNF to understand syntax, or directly reuse lib/bootconfig.c
+which provides a compact parser. :)
 
-Rectify the MAINTAINERS entry now.
+Thank you,
 
-Fixes: 32adcaa010fa ("ARM: mmp: move cputype.h to include/linux/soc/")
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-Lubomir, please pick this patch.
-applies cleanly on current master and next-20200225
-
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fcd79fc38928..ed62b3eba75c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11197,7 +11197,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/lkundrak/linux-mmp.git
- S:	Odd Fixes
- F:	arch/arm/boot/dts/mmp*
- F:	arch/arm/mach-mmp/
--F:	linux/soc/mmp/
-+F:	include/linux/soc/mmp/
- 
- MMP USB PHY DRIVERS
- R:	Lubomir Rintel <lkundrak@v3.sk>
 -- 
-2.17.1
-
+Masami Hiramatsu <mhiramat@kernel.org>

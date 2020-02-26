@@ -2,34 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA77E170025
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Feb 2020 14:35:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D29B7170068
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Feb 2020 14:48:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726822AbgBZNfo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Feb 2020 08:35:44 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:38126 "EHLO
+        id S1727255AbgBZNsn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Feb 2020 08:48:43 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:39574 "EHLO
         jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726673AbgBZNfo (ORCPT
+        with ESMTP id S1726988AbgBZNsn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Feb 2020 08:35:44 -0500
+        Wed, 26 Feb 2020 08:48:43 -0500
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 857751C2228; Wed, 26 Feb 2020 14:35:42 +0100 (CET)
-Date:   Wed, 26 Feb 2020 14:35:42 +0100
+        id 68F881C0411; Wed, 26 Feb 2020 14:48:41 +0100 (CET)
+Date:   Wed, 26 Feb 2020 14:48:41 +0100
 From:   Pavel Machek <pavel@ucw.cz>
-To:     YueHaibing <yuehaibing@huawei.com>
+To:     Colin King <colin.king@canonical.com>
 Cc:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
         Dan Murphy <dmurphy@ti.com>, linux-leds@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] leds: leds-bd2802: remove set but not used
- variable 'pdata'
-Message-ID: <20200226133542.GC4080@duo.ucw.cz>
-References: <20200108015322.51103-1-yuehaibing@huawei.com>
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] leds: lm3697: fix spelling mistake "To" -> "Too"
+Message-ID: <20200226134840.GE4080@duo.ucw.cz>
+References: <20200122233749.2829246-1-colin.king@canonical.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="QRj9sO5tAVLaXnSD"
+        protocol="application/pgp-signature"; boundary="ffoCPvUAPMgSXi6H"
 Content-Disposition: inline
-In-Reply-To: <20200108015322.51103-1-yuehaibing@huawei.com>
+In-Reply-To: <20200122233749.2829246-1-colin.king@canonical.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
@@ -37,39 +35,34 @@ List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
---QRj9sO5tAVLaXnSD
+--ffoCPvUAPMgSXi6H
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed 2020-01-08 01:53:22, YueHaibing wrote:
-> Fixes gcc '-Wunused-but-set-variable' warning:
+On Wed 2020-01-22 23:37:49, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 >=20
-> drivers/leds/leds-bd2802.c: In function 'bd2802_probe':
-> drivers/leds/leds-bd2802.c:663:35: warning:
->  variable 'pdata' set but not used [-Wunused-but-set-variable]
+> There is a spelling mistake in a dev_err message. Fix it.
 >=20
-> commit 4c3718f9d6a6 ("leds: bd2802: Convert to use GPIO descriptors")
-> left behind this unused variable.
->=20
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
 Thanks, applied.
-								Pavel
+									Pavel
 
 --=20
 (english) http://www.livejournal.com/~pavelmachek
 (cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
 g.html
 
---QRj9sO5tAVLaXnSD
+--ffoCPvUAPMgSXi6H
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCXlZ0LgAKCRAw5/Bqldv6
-8pH4AJ9xvxAZkpy6T7XHvo8qDEytYkQFMQCgsyB2TzRbBnybDx7t/BwUvk621bg=
-=WhOt
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCXlZ3OAAKCRAw5/Bqldv6
+8uGrAJ45ARIKfSQPYi/LrqCFYxiNr4SgoACcCmJgukixOzQX2U524fIsjBAxtzo=
+=pjb0
 -----END PGP SIGNATURE-----
 
---QRj9sO5tAVLaXnSD--
+--ffoCPvUAPMgSXi6H--

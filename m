@@ -2,72 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DA77170923
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Feb 2020 20:58:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D688170B2E
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Feb 2020 23:06:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727308AbgBZT6c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Feb 2020 14:58:32 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:59020 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727253AbgBZT6c (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Feb 2020 14:58:32 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1j72p8-0000Jj-K4; Wed, 26 Feb 2020 19:58:26 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Gyungoh Yoo <jack.yoo@skyworksinc.com>,
-        Bryan Wu <cooloney@gmail.com>, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][V2] backlight: sky81452: insure while loop does not allow negative array indexing
-Date:   Wed, 26 Feb 2020 19:58:26 +0000
-Message-Id: <20200226195826.6567-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.0
+        id S1727815AbgBZWGc convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Feb 2020 17:06:32 -0500
+Received: from mga17.intel.com ([192.55.52.151]:32209 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727670AbgBZWGc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 26 Feb 2020 17:06:32 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Feb 2020 14:06:31 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,489,1574150400"; 
+   d="scan'208";a="436794819"
+Received: from fmsmsx107.amr.corp.intel.com ([10.18.124.205])
+  by fmsmga005.fm.intel.com with ESMTP; 26 Feb 2020 14:06:31 -0800
+Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
+ fmsmsx107.amr.corp.intel.com (10.18.124.205) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Wed, 26 Feb 2020 14:06:17 -0800
+Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Wed, 26 Feb 2020 14:06:17 -0800
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82]) by
+ fmsmsx602.amr.corp.intel.com ([10.18.126.82]) with mapi id 15.01.1713.004;
+ Wed, 26 Feb 2020 14:06:17 -0800
+From:   "Bowers, AndrewX" <andrewx.bowers@intel.com>
+To:     "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [Intel-wired-lan] [PATCH][next] ice: remove redundant assignment
+ to pointer vsi
+Thread-Topic: [Intel-wired-lan] [PATCH][next] ice: remove redundant assignment
+ to pointer vsi
+Thread-Index: AQHV6aMY1jaenWjfj0myCVBAZWCnQaguDnhw
+Date:   Wed, 26 Feb 2020 22:06:17 +0000
+Message-ID: <86c1fa9338da4e35a977773832a1188c@intel.com>
+References: <20200222171054.171505-1-colin.king@canonical.com>
+In-Reply-To: <20200222171054.171505-1-colin.king@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+x-ctpclassification: CTP_NT
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMmM1NzRmZWMtMjEyOC00OTRlLWEzNTMtZmZhMmRmYTFhMzk3IiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiN1wvXC9aQm55NkRWR1FQNjA3c1wva2pGSldXT1FqUnlGN0RGakZ5dk05UnA0dURiQVwveHJoQkYrOVg1UWc1WU5EZmMifQ==
+dlp-reaction: no-action
+dlp-version: 11.0.400.15
+x-originating-ip: [10.22.254.132]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+> -----Original Message-----
+> From: Intel-wired-lan [mailto:intel-wired-lan-bounces@osuosl.org] On
+> Behalf Of Colin King
+> Sent: Saturday, February 22, 2020 9:11 AM
+> To: Kirsher, Jeffrey T <jeffrey.t.kirsher@intel.com>; David S . Miller
+> <davem@davemloft.net>; intel-wired-lan@lists.osuosl.org;
+> netdev@vger.kernel.org
+> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: [Intel-wired-lan] [PATCH][next] ice: remove redundant assignment
+> to pointer vsi
+> 
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Pointer vsi is being re-assigned a value that is never read, the assignment is
+> redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/net/ethernet/intel/ice/ice_virtchnl_pf.c | 1 -
+>  1 file changed, 1 deletion(-)
 
-In the unlikely event that num_entry is zero, the while loop
-pre-decrements num_entry to cause negative array indexing into the
-array sources. Fix this by iterating only if num_entry >= 0.
-
-Addresses-Coverity: ("Out-of-bounds read")
-Fixes: f705806c9f35 ("backlight: Add support Skyworks SKY81452 backlight driver")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
-
-V2: fix typo in commit subject line
-
----
- drivers/video/backlight/sky81452-backlight.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/video/backlight/sky81452-backlight.c b/drivers/video/backlight/sky81452-backlight.c
-index 2355f00f5773..f456930ce78e 100644
---- a/drivers/video/backlight/sky81452-backlight.c
-+++ b/drivers/video/backlight/sky81452-backlight.c
-@@ -200,7 +200,7 @@ static struct sky81452_bl_platform_data *sky81452_bl_parse_dt(
- 		}
- 
- 		pdata->enable = 0;
--		while (--num_entry)
-+		while (--num_entry >= 0)
- 			pdata->enable |= (1 << sources[num_entry]);
- 	}
- 
--- 
-2.25.0
+Tested-by: Andrew Bowers <andrewx.bowers@intel.com>
 

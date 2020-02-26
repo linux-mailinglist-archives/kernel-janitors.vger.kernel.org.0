@@ -2,109 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7323A16EEDA
-	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Feb 2020 20:16:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2C3216FA3B
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Feb 2020 10:07:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731330AbgBYTQj convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 25 Feb 2020 14:16:39 -0500
-Received: from mga18.intel.com ([134.134.136.126]:36580 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728756AbgBYTQj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 25 Feb 2020 14:16:39 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Feb 2020 11:16:38 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,485,1574150400"; 
-   d="scan'208";a="260805520"
-Received: from orsmsx108.amr.corp.intel.com ([10.22.240.6])
-  by fmsmga004.fm.intel.com with ESMTP; 25 Feb 2020 11:16:37 -0800
-Received: from orsmsx125.amr.corp.intel.com (10.22.240.125) by
- ORSMSX108.amr.corp.intel.com (10.22.240.6) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Tue, 25 Feb 2020 11:16:37 -0800
-Received: from orsmsx113.amr.corp.intel.com ([169.254.9.183]) by
- ORSMSX125.amr.corp.intel.com ([169.254.3.208]) with mapi id 14.03.0439.000;
- Tue, 25 Feb 2020 11:16:37 -0800
-From:   "Allan, Bruce W" <bruce.w.allan@intel.com>
-To:     Colin King <colin.king@canonical.com>,
-        "Kirsher, Jeffrey T" <jeffrey.t.kirsher@intel.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [Intel-wired-lan] [PATCH][next] ice: remove redundant
- assignment to pointer vsi
-Thread-Topic: [Intel-wired-lan] [PATCH][next] ice: remove redundant
- assignment to pointer vsi
-Thread-Index: AQHV6aMWiEGBawp1sE64DZXz6vfzxKgsR9Og
-Date:   Tue, 25 Feb 2020 19:16:36 +0000
-Message-ID: <804857E1F29AAC47BF68C404FC60A184010B0500CE@ORSMSX113.amr.corp.intel.com>
-References: <20200222171054.171505-1-colin.king@canonical.com>
-In-Reply-To: <20200222171054.171505-1-colin.king@canonical.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiYmZhOTY1YmUtOWQ5ZC00MDcyLTg5ZTMtYzQ2YzJhNDQwNDJmIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiNENUaUxac2FRUkYyVTBoNytRMFlaRmM0NjAweDUwb1RQc2sySGNLQzBrM1VlVjUxU1Z3QW94bk12VFRWcFN1MyJ9
-x-ctpclassification: CTP_NT
-dlp-product: dlpe-windows
-dlp-version: 11.2.0.6
-dlp-reaction: no-action
-x-originating-ip: [10.22.254.138]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1726936AbgBZJHN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Feb 2020 04:07:13 -0500
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:37190 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726132AbgBZJHN (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 26 Feb 2020 04:07:13 -0500
+Received: from localhost.localdomain ([77.204.247.159])
+        by mwinf5d57 with ME
+        id 7M782200F3T54jx03M783H; Wed, 26 Feb 2020 10:07:10 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 26 Feb 2020 10:07:10 +0100
+X-ME-IP: 77.204.247.159
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     dan.j.williams@intel.com, vkoul@kernel.org, dave.jiang@intel.com
+Cc:     dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] dmaengine: Simplify error handling path in '__dma_async_device_channel_register()'
+Date:   Wed, 26 Feb 2020 10:07:07 +0100
+Message-Id: <20200226090707.12285-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
-> Colin King
-> Sent: Saturday, February 22, 2020 9:11 AM
-> To: Kirsher, Jeffrey T <jeffrey.t.kirsher@intel.com>; David S . Miller
-> <davem@davemloft.net>; intel-wired-lan@lists.osuosl.org;
-> netdev@vger.kernel.org
-> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
-> Subject: [Intel-wired-lan] [PATCH][next] ice: remove redundant assignment to
-> pointer vsi
-> 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Pointer vsi is being re-assigned a value that is never read,
-> the assignment is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
+If 'chan->dev = kzalloc()' fails, there is no need to explicitly call
+'free_percpu()'. It is already called in the error handling path.
+So it can be removed.
 
-What version of coverity and what options were used?
+While at it, add a 'chan->local = NULL;' in the error handling path after
+the 'free_percpu()' call. It is maybe useless, but can not hurt.
 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/net/ethernet/intel/ice/ice_virtchnl_pf.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl_pf.c
-> b/drivers/net/ethernet/intel/ice/ice_virtchnl_pf.c
-> index 169b72a94b9d..2c8e334c47a0 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_virtchnl_pf.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_pf.c
-> @@ -2191,7 +2191,6 @@ static int ice_vc_ena_qs_msg(struct ice_vf *vf, u8
-> *msg)
->  		set_bit(vf_q_id, vf->rxq_ena);
->  	}
-> 
-> -	vsi = pf->vsi[vf->lan_vsi_idx];
->  	q_map = vqs->tx_queues;
->  	for_each_set_bit(vf_q_id, &q_map, ICE_MAX_BASE_QS_PER_VF) {
->  		if (!ice_vc_isvalid_q_id(vf, vqs->vsi_id, vf_q_id)) {
-> --
-> 2.25.0
-> 
-> _______________________________________________
-> Intel-wired-lan mailing list
-> Intel-wired-lan@osuosl.org
-> https://lists.osuosl.org/mailman/listinfo/intel-wired-lan
+Fixes: d2fb0a043838 ("dmaengine: break out channel registration")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Not sure a Fixes tag is required for just a clean-up. I added it if the
+move of the 'chan->local = NULL;' makes a real sense.
+---
+ drivers/dma/dmaengine.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+index c3b1283b6d31..6bb6e88c6019 100644
+--- a/drivers/dma/dmaengine.c
++++ b/drivers/dma/dmaengine.c
+@@ -978,11 +978,8 @@ static int __dma_async_device_channel_register(struct dma_device *device,
+ 	if (!chan->local)
+ 		goto err_out;
+ 	chan->dev = kzalloc(sizeof(*chan->dev), GFP_KERNEL);
+-	if (!chan->dev) {
+-		free_percpu(chan->local);
+-		chan->local = NULL;
++	if (!chan->dev)
+ 		goto err_out;
+-	}
+ 
+ 	/*
+ 	 * When the chan_id is a negative value, we are dynamically adding
+@@ -1008,6 +1005,7 @@ static int __dma_async_device_channel_register(struct dma_device *device,
+ 
+  err_out:
+ 	free_percpu(chan->local);
++	chan->local = NULL;
+ 	kfree(chan->dev);
+ 	if (atomic_dec_return(idr_ref) == 0)
+ 		kfree(idr_ref);
+-- 
+2.20.1
+

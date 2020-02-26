@@ -2,30 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EEAA0170826
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Feb 2020 19:59:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DF2D17091D
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Feb 2020 20:57:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727250AbgBZS71 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Feb 2020 13:59:27 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:57732 "EHLO
+        id S1727341AbgBZT5q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Feb 2020 14:57:46 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:59007 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727189AbgBZS71 (ORCPT
+        with ESMTP id S1727244AbgBZT5q (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Feb 2020 13:59:27 -0500
+        Wed, 26 Feb 2020 14:57:46 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1j71tx-0005OH-Rj; Wed, 26 Feb 2020 18:59:21 +0000
+        id 1j72oN-0000Ge-8y; Wed, 26 Feb 2020 19:57:39 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Dan Williams <dan.j.williams@intel.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        dmaengine@vger.kernel.org
+To:     Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Gyungoh Yoo <jack.yoo@skyworksinc.com>,
+        Bryan Wu <cooloney@gmail.com>, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] dmaengine: ti: edma: fix null dereference because of a typo in pointer name
-Date:   Wed, 26 Feb 2020 18:59:21 +0000
-Message-Id: <20200226185921.351693-1-colin.king@canonical.com>
+Subject: [PATCH] backlight: sky81452: unsure while loop does not allow negative array indexing
+Date:   Wed, 26 Feb 2020 19:57:39 +0000
+Message-Id: <20200226195739.6462-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,30 +40,30 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently there is a dereference of the null pointer m_ddev.  This appears
-to be a typo on the pointer, I believe s_ddev should be used instead.
-Fix this by using the correct pointer.
+In the unlikely event that num_entry is zero, the while loop
+pre-decrements num_entry to cause negative array indexing into the
+array sources. Fix this by iterating only if num_entry >= 0.
 
-Addresses-Coverity: ("Explicit null dereferenced")
-Fixes: eb0249d50153 ("dmaengine: ti: edma: Support for interleaved mem to mem transfer")
+Addresses-Coverity: ("Out-of-bounds read")
+Fixes: f705806c9f35 ("backlight: Add support Skyworks SKY81452 backlight driver")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/dma/ti/edma.c | 2 +-
+ drivers/video/backlight/sky81452-backlight.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
-index 2b1fdd438e7f..c4a5c170c1f9 100644
---- a/drivers/dma/ti/edma.c
-+++ b/drivers/dma/ti/edma.c
-@@ -1992,7 +1992,7 @@ static void edma_dma_init(struct edma_cc *ecc, bool legacy_mode)
- 			 "Legacy memcpy is enabled, things might not work\n");
+diff --git a/drivers/video/backlight/sky81452-backlight.c b/drivers/video/backlight/sky81452-backlight.c
+index 2355f00f5773..f456930ce78e 100644
+--- a/drivers/video/backlight/sky81452-backlight.c
++++ b/drivers/video/backlight/sky81452-backlight.c
+@@ -200,7 +200,7 @@ static struct sky81452_bl_platform_data *sky81452_bl_parse_dt(
+ 		}
  
- 		dma_cap_set(DMA_MEMCPY, s_ddev->cap_mask);
--		dma_cap_set(DMA_INTERLEAVE, m_ddev->cap_mask);
-+		dma_cap_set(DMA_INTERLEAVE, s_ddev->cap_mask);
- 		s_ddev->device_prep_dma_memcpy = edma_prep_dma_memcpy;
- 		s_ddev->device_prep_interleaved_dma = edma_prep_dma_interleaved;
- 		s_ddev->directions = BIT(DMA_MEM_TO_MEM);
+ 		pdata->enable = 0;
+-		while (--num_entry)
++		while (--num_entry >= 0)
+ 			pdata->enable |= (1 << sources[num_entry]);
+ 	}
+ 
 -- 
 2.25.0
 

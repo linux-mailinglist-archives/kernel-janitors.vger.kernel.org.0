@@ -2,30 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8031317112B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Feb 2020 07:57:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0E03171147
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Feb 2020 08:12:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727383AbgB0G5y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Feb 2020 01:57:54 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:58754 "EHLO huawei.com"
+        id S1727514AbgB0HMC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Feb 2020 02:12:02 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:11116 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726575AbgB0G5x (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Feb 2020 01:57:53 -0500
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id D6409B76283187EEF587;
-        Thu, 27 Feb 2020 14:57:47 +0800 (CST)
+        id S1727336AbgB0HMC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Feb 2020 02:12:02 -0500
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 9B7E8BFD2EB74ED299E8;
+        Thu, 27 Feb 2020 15:11:55 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 27 Feb 2020 14:57:39 +0800
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 27 Feb 2020 15:11:44 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     Jyri Sarha <jsarha@ti.com>, Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        "David Airlie" <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>
-CC:     YueHaibing <yuehaibing@huawei.com>,
-        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] drm/tidss: Drop pointless static qualifier in dispc_find_csc()
-Date:   Thu, 27 Feb 2020 06:50:57 +0000
-Message-ID: <20200227065057.92766-1-yuehaibing@huawei.com>
+To:     <ralf@linux-mips.org>, <paulburton@kernel.org>,
+        <tglx@linutronix.de>, <sboyd@kernel.org>,
+        <geert+renesas@glider.be>, <f4bug@amsat.org>,
+        "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-mips@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] MIPS: pic32mzda: Drop pointless static qualifier
+Date:   Thu, 27 Feb 2020 07:05:02 +0000
+Message-ID: <20200227070502.106762-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -37,29 +38,27 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is no need to have the 'const struct dispc_csc_coef *coef'
-variable static since new value always be assigned before use it.
+There is no need to have the 'struct device_node *node' variable static
+since new value always be assigned before use it.
 
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c | 2 +-
+ arch/mips/pic32/pic32mzda/time.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index eeb160dc047b..e6cb176484a9 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -1510,7 +1510,7 @@ struct dispc_csc_coef *dispc_find_csc(enum drm_color_encoding encoding,
- static void dispc_vid_csc_setup(struct dispc_device *dispc, u32 hw_plane,
- 				const struct drm_plane_state *state)
- {
--	static const struct dispc_csc_coef *coef;
-+	const struct dispc_csc_coef *coef;
+diff --git a/arch/mips/pic32/pic32mzda/time.c b/arch/mips/pic32/pic32mzda/time.c
+index 754924f26089..7174e9abbb1b 100644
+--- a/arch/mips/pic32/pic32mzda/time.c
++++ b/arch/mips/pic32/pic32mzda/time.c
+@@ -23,7 +23,7 @@ static const struct of_device_id pic32_infra_match[] = {
  
- 	coef = dispc_find_csc(state->color_encoding, state->color_range);
- 	if (!coef) {
-
-
+ static unsigned int pic32_xlate_core_timer_irq(void)
+ {
+-	static struct device_node *node;
++	struct device_node *node;
+ 	unsigned int irq;
+ 
+ 	node = of_find_matching_node(NULL, pic32_infra_match);
 
 
 

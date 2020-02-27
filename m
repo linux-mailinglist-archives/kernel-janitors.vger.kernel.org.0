@@ -2,35 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5936A172861
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Feb 2020 20:13:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C68651728FD
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Feb 2020 20:54:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729785AbgB0TNJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Feb 2020 14:13:09 -0500
-Received: from mout.web.de ([212.227.17.12]:53073 "EHLO mout.web.de"
+        id S1730626AbgB0Txs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Feb 2020 14:53:48 -0500
+Received: from mout.web.de ([217.72.192.78]:52747 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729327AbgB0TNJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Feb 2020 14:13:09 -0500
+        id S1729594AbgB0Txs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Feb 2020 14:53:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1582830745;
-        bh=3VhfE2m/HmFqn1/f3sCi994dDBd0QMvEqD10y48dthY=;
+        s=dbaedf251592; t=1582833185;
+        bh=GTWOM0bV7TRUSz0scwnhYb8uZ6O9r+S0tRM+9qBpAe8=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=EHTtVoKsVd5Bsfix7zO+KbH33BaS3Ss+2+0Yg1p/0Tke4AuuBNFrVKcuMlpLfzfKu
-         JM6SUfHwkUaHjWcb7wy8ISgZIn1MG7eTEXWDqilkCEg7H0wC5bNr9E2n1GBb+Hbrsq
-         kc7Z13fuwQKJeMiJn8FFeWFpbLKOyeAM7Jr6MNgg=
+        b=BjipnL+UydZwrecdvV5tHW6fdyNlKU3DlNkVCtNx2XJHagWu/rBm5sT8xrxLGa9KY
+         yt9gnkqbeDmIN3UkJdWbpM3OQqyI0R6E39GSNeokhp61OuMZqlLSML2Y6IqNsOHo8A
+         06Kf6wa4VTFlyYMXiczYrazpatXSvELESgZv8wAE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.69.92]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MFL6u-1jCuMf1npU-00ER3m; Thu, 27
- Feb 2020 20:12:25 +0100
-Subject: Re: [PATCH 1/2] Documentation: bootconfig: Update boot configuration
- documentation
+Received: from [192.168.1.2] ([2.243.69.92]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MGzba-1jCN1f1MzS-00DpKt; Thu, 27
+ Feb 2020 20:53:05 +0100
+Subject: Re: [PATCH 2/2] Documentation: bootconfig: Add EBNF syntax file
 To:     Masami Hiramatsu <mhiramat@kernel.org>, linux-doc@vger.kernel.org
 Cc:     Jonathan Corbet <corbet@lwn.net>,
         Steven Rostedt <rostedt@goodmis.org>,
         Randy Dunlap <rdunlap@infradead.org>,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 References: <158278834245.14966.6179457011671073018.stgit@devnote2>
- <158278835238.14966.16157216423901327777.stgit@devnote2>
+ <158278836196.14966.3881489301852781521.stgit@devnote2>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,97 +74,83 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <8514c830-319b-33e9-025a-79d399674fb3@web.de>
-Date:   Thu, 27 Feb 2020 20:12:17 +0100
+Message-ID: <2390b729-1b0b-26b5-66bc-92e40e3467b1@web.de>
+Date:   Thu, 27 Feb 2020 20:53:03 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <158278835238.14966.16157216423901327777.stgit@devnote2>
+In-Reply-To: <158278836196.14966.3881489301852781521.stgit@devnote2>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Lj0zQWZSdVycjZgIT4JsaCfNVof0yXYLVv0g+ZfuoVke48Ud2j0
- dgkLLVQUgt0MDsK0xIC9q/076QqbQdY0K6IZCczTDTEx+tjwJg3jHd4oR/8Am46iHGfHMCH
- L4/W8K9Ev7czsqB+BT0gZ6Jvaes8W31Et1TpENa1fPLQMwV8mvWqlf+mabFU++41IkN8XdL
- UHIgojhiwf4cB+TWSO/hw==
+X-Provags-ID: V03:K1:F86AyWFfpD7vkcfFinXfHYJF2uI8Lj7AnM7Kw8gJQnQxkjk4hzB
+ Rvmi0skVRgP6YRHJOFgpPUdYtBesd2qAIzUVOtwMI6JWQBA4mig67ADGrP2vK6W1ae1HAHq
+ w22lvxXWGRyte/YiKUPC4fIfLyI6L32iCuChtGUywR3suAmDBZujGlAAHpU0357/pMzPgTJ
+ Kt4uXuciJqGR/g0QdmxfA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:/vrFqpjliZc=:T5W0gLco26Q6PKXndeY3rE
- Ma2bYyR66PZG0okFuOyQ4QPHUg2ncmsRoZCpuPJ1ebKHitDFsM9Wye/81nO8DvO1IOj43QEAQ
- fcEWRRTOV812gcQIYkVYw7TdoyWI2qMCSHpZcBZjPQoKdbXRs0iwWK6n6mcD5fksBBwT4Ajjo
- lYYdORbKQla1G2ZywP3nHCI+a9Y/fYvJX8ujYozZVE6gcsJKeuQfyiZd2ByOaLTBNmlsrJ6QM
- W5Z0L17KoBppj4f/+mGZ79eeH+WRgpZkWfV4+d0w9iiQXgUnXji3RQPCvpURvql/JQfsfmi34
- A+bWX28v1Yumx4Vaa1GoZia/y5UIN+HGbs/MnQ6hJugfTfa+UxRnV6/UHoRcxVE4tvaUlsvDa
- ueHnt+7SFxg8UTEGQbMiIcJgVGTDyqzDQsU/27HZCO9nlsujxsqHNbM3r31KSwnbCzhUqroCe
- fGY66a7yog7BuOzTO1EBs9OYuwmGbjgw7BW4DO1y1+nxHn6bzeLceIFM1Gbwjl13LxH3dZIJT
- 5euF9G/edwpERSrgX1It5dpKCDffKqK6qBdpisaOPyyNZ474ZICLcpiNvqzgVbs+RjVXLe9aS
- dG6i7W2R7LVPqi5ijGWMuIr32L63S4VWVBYchNJH6EsVi9ugoReVih6yBj0ZOtgI5M+Ce/sTO
- 28FniKwXbIM1dQlMYoxh5SIBaeEbot4h55rdsbwFNNpdVLWaGSA6d7SI58JqmjnzqAr6V4kat
- hneoIV2UQj0JxPiIoD+Jue1JBBsAaQ1hpBcTuG2VpUrv93gU1ut7Wz9SghkzzjhXyAhyhoh46
- Ase5Scuy/km6VjBIjclS3NZgIpqNmUBiVHZy8+dPDN7wNvpipoOifJzn1PGxB1LPc2H3cOADK
- Aeq8MnL7jKPpJjnpm0ZkdonR098jDRWGI9/AJAMW56KWwlImjkncODKCPRHjdATL6O3ZSdeQi
- 0LUac6CG1mX+bk7p4ZbONXxCu3LLex0WezxkyQvYTmAlrgGbmbJNC5x2NTNRhCXDdATOBariV
- BiOusSBM7yoE5MIl+BXDvogRPdT9q7PnnkNpgD3lxWAxeu2DZJB2r2NR1Z3knv2gcJLrVcrR8
- ZWOwP7aqDhEpwv3hioglh65UIf/2l5YfFNZX6ngMr0o/kFTbFYFX7oFYaslSI5H1xwgcLWK1m
- QR3fGa5DOFejvnqUU7bWe2zw5hDHYS7PboQVgff2xedpxg3poTueko0l9MrdL0/gIoFES6YqP
- uFHiwAMOE/OSv7q0r
+X-UI-Out-Filterresults: notjunk:1;V03:K0:CHlzRp0PJD4=:HQrlLCfOaFdllsR8/xXY82
+ YX9iz0PBp7UggFBcThAaZyUV0aVe+CRvXMoLsIiDNIh70rQC2hJB0Lun+lsI4Zr53t9HSoVKx
+ 8ncO01c35vqwf78PBQqiaI0ouXOz8rtYMY/4XbAEatzvd06ACeHjSaunmvF3SjJ8V8By/ey3F
+ vz25k+p7CRL7HSPZOwRMVL0LwhGxDD1FDyGWfa5vGaDYUNVyh5U3qxQG78y/Zexs6h743OxE6
+ X0vEEFnUGOiKLuV1YX21AMcSLPvLKPzQJV5yEaxZH/O2ahetyMQd2acN3ndkRvumou/ZYDgKm
+ Kkmp+EEUwifefd22ETmMteJmpOTFi8gLP7uFUZM5oquLB+d9UGJfG2tEJQwNi5ajUZVJLUFrl
+ s/vc4BpMMD8C7V8Ik5oT8W+wObA03iNJSRsayCMyZrrzam/74C/+DxOz8wcpbNtC79/lYknQQ
+ /YVsXiNbnh68hfqIYqn0ZZYUnDx0Z01yTrtJVS+nmxLG2aUZ+hHWivncfjCRC9krMJlmEZrmi
+ U9WMncO17sB7WoxUFnTJjikkmwEWGW37zh3sB+yfsaJA2SPNdxrPsdBkjPKLraiC5FtZ16Izu
+ FCwkDRB12hBCyI3oaI0jMHxPBj+yRjt4bbl3pwljxZZQhUbbzeXIyDXtOFfdKik9HRlbewGoJ
+ XB3+ne4MBnyCI6n6znRz+Y5w3QVIiXvFuMPACyuQo7RsqbWcq0eotiGkjghRc/hFRgBXS983o
+ PXAUQ3BIM4RCLnQrbGflvNtucpaOyZBWYsiNCPL6GrWeuiOZS3rdo22tGxajuv/U90/nA3O1n
+ BNIEV/uGbqktNtCSFhN3uUZtoUAZ6uBV2TNzsmFQtqIkcfyIRCoWWLWEVmNqMEeb04V9la9dm
+ gqtL4SCWNqQ2XevHOGZxgYGfdC1rQhnHNix5mrvCGXUyxTpKEbcLC6+MZQhx7iPmKkTeQzvse
+ oajYIeeShipwMOSFPxZMfaiyVfiv9qxh2psjTorfj15JyfZNOZuxqG8g1UMlsJxmFaONqyMuD
+ tkXmpNI/jeslMtW6bV5hYvviwOyXsFutzNNtHHuEeWSoSkzk/dK0lcf0jV5KiTmiaAquhuSGe
+ iyGJl7hWDr/bBR1PnX/Vld36vDqMo1dVUA2WvpBgOtaxKCApk5sn9w6YyHPBCLYz/qD/Wjfu3
+ wusm3bO6ePp6m6YU1Q1idQNatfSqEWj/PwInF+jaZU4KgkFKRJxOwpn01zN6Amf+tV85gf0qr
+ hSit0FstuvX7ItRgr
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> +This allows administrators to pass a structured-Key configuration file
-
-Does capitalisation matter here for the word =E2=80=9CKey=E2=80=9D?
+Thanks for such a contribution.
 
 
-> +If you think that kernel/init options becomes too long to write in boot=
--loader
-> +configuration file or want to comment on each options, you can use this
+> Add an extended Backus=E2=80=93Naur form (EBNF) syntax file for
 
-Can the following wording variant be a bit nicer?
+Can it matter to mention the specific file format specification version
+which should be applied finally?
 
-+=E2=80=A6 or you want to comment on each option, =E2=80=A6
-
-
-> +Also, some subsystem may depend on the boot configuration, and it has o=
-wn
-> +root key.
-
-Would you like to explain the influence of a key hierarchy any further?
+Would you like to refer to any standard variant?
 
 
-> +The boot configuration syntax allows user to merge partially same word =
-keys
->  by brace. For example::
+> bootconfig so that user can logically understand how they
 
-=E2=80=9Cby braces.
-For example::=E2=80=9D?
+Wording alternative =E2=80=9C=E2=80=A6 that users can =E2=80=A6=E2=80=9D?
 
 
-> +The file /proc/bootconfig is a user-space interface to the configuratio=
-n
+> can write correct boot configuration file.
 
-=E2=80=9C=E2=80=A6 is an user-=E2=80=A6=E2=80=9D?
-
-
-> +Currently the maximum configuration size is 32 KiB and the total number
-> +of key-words and values must be under 1024 nodes.
-
-* How were these constraints chosen?
-
-* Can such system limits become more configurable?
+Related development tools provide some benefits then, don't they?
 
 
-> +(Note: Each key consists of words separated by dot, and value also cons=
-ists
-> +of values separated by comma. Here, each word and each value is general=
-ly
-> +called a "node".)
 
-I would prefer the interpretation that nodes contain corresponding attribu=
-tes.
+=E2=80=A6
+> +++ b/Documentation/admin-guide/bootconfig.ebnf
+=E2=80=A6
+> +digit =3D "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
 
-How do you think about to add a link to a formal file format description?
+Can the specification of such alternatives (or value ranges) become
+more compact (depending on a selected standard)?
+
+
+=E2=80=A6
+> +++ b/Documentation/admin-guide/bootconfig.rst
+=E2=80=A6
+> +Here is the boot configuration file syntax written in EBNF.
+
+I suggest to replace the abbreviation =E2=80=9CEBNF=E2=80=9D by the term =
+=E2=80=9Cextended Backus=E2=80=93Naur form=E2=80=9D
+in such a sentence.
 
 Regards,
 Markus

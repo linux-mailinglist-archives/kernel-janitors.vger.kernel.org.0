@@ -2,155 +2,169 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C68651728FD
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Feb 2020 20:54:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90BBC172A23
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Feb 2020 22:29:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730626AbgB0Txs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Feb 2020 14:53:48 -0500
-Received: from mout.web.de ([217.72.192.78]:52747 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729594AbgB0Txs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Feb 2020 14:53:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1582833185;
-        bh=GTWOM0bV7TRUSz0scwnhYb8uZ6O9r+S0tRM+9qBpAe8=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=BjipnL+UydZwrecdvV5tHW6fdyNlKU3DlNkVCtNx2XJHagWu/rBm5sT8xrxLGa9KY
-         yt9gnkqbeDmIN3UkJdWbpM3OQqyI0R6E39GSNeokhp61OuMZqlLSML2Y6IqNsOHo8A
-         06Kf6wa4VTFlyYMXiczYrazpatXSvELESgZv8wAE=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.69.92]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MGzba-1jCN1f1MzS-00DpKt; Thu, 27
- Feb 2020 20:53:05 +0100
-Subject: Re: [PATCH 2/2] Documentation: bootconfig: Add EBNF syntax file
-To:     Masami Hiramatsu <mhiramat@kernel.org>, linux-doc@vger.kernel.org
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <158278834245.14966.6179457011671073018.stgit@devnote2>
- <158278836196.14966.3881489301852781521.stgit@devnote2>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <2390b729-1b0b-26b5-66bc-92e40e3467b1@web.de>
-Date:   Thu, 27 Feb 2020 20:53:03 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+        id S1729534AbgB0V3n (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Feb 2020 16:29:43 -0500
+Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:21429 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729649AbgB0V3m (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Feb 2020 16:29:42 -0500
+Received: from [192.168.1.41] ([92.140.213.100])
+        by mwinf5d87 with ME
+        id 7xVW220022AY1JL03xVdgM; Thu, 27 Feb 2020 22:29:38 +0100
+X-ME-Helo: [192.168.1.41]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 27 Feb 2020 22:29:38 +0100
+X-ME-IP: 92.140.213.100
+Subject: Re: [PATCH] dmaengine: Simplify error handling path in
+ '__dma_async_device_channel_register()'
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     dan.j.williams@intel.com, vkoul@kernel.org, dave.jiang@intel.com,
+        dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200226090707.12285-1-christophe.jaillet@wanadoo.fr>
+ <20200226100112.GD3286@kadam>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <3483bb10-a7f7-2bc0-b1e8-e79e84db54ab@wanadoo.fr>
+Date:   Thu, 27 Feb 2020 22:29:28 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <158278836196.14966.3881489301852781521.stgit@devnote2>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20200226100112.GD3286@kadam>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:F86AyWFfpD7vkcfFinXfHYJF2uI8Lj7AnM7Kw8gJQnQxkjk4hzB
- Rvmi0skVRgP6YRHJOFgpPUdYtBesd2qAIzUVOtwMI6JWQBA4mig67ADGrP2vK6W1ae1HAHq
- w22lvxXWGRyte/YiKUPC4fIfLyI6L32iCuChtGUywR3suAmDBZujGlAAHpU0357/pMzPgTJ
- Kt4uXuciJqGR/g0QdmxfA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:CHlzRp0PJD4=:HQrlLCfOaFdllsR8/xXY82
- YX9iz0PBp7UggFBcThAaZyUV0aVe+CRvXMoLsIiDNIh70rQC2hJB0Lun+lsI4Zr53t9HSoVKx
- 8ncO01c35vqwf78PBQqiaI0ouXOz8rtYMY/4XbAEatzvd06ACeHjSaunmvF3SjJ8V8By/ey3F
- vz25k+p7CRL7HSPZOwRMVL0LwhGxDD1FDyGWfa5vGaDYUNVyh5U3qxQG78y/Zexs6h743OxE6
- X0vEEFnUGOiKLuV1YX21AMcSLPvLKPzQJV5yEaxZH/O2ahetyMQd2acN3ndkRvumou/ZYDgKm
- Kkmp+EEUwifefd22ETmMteJmpOTFi8gLP7uFUZM5oquLB+d9UGJfG2tEJQwNi5ajUZVJLUFrl
- s/vc4BpMMD8C7V8Ik5oT8W+wObA03iNJSRsayCMyZrrzam/74C/+DxOz8wcpbNtC79/lYknQQ
- /YVsXiNbnh68hfqIYqn0ZZYUnDx0Z01yTrtJVS+nmxLG2aUZ+hHWivncfjCRC9krMJlmEZrmi
- U9WMncO17sB7WoxUFnTJjikkmwEWGW37zh3sB+yfsaJA2SPNdxrPsdBkjPKLraiC5FtZ16Izu
- FCwkDRB12hBCyI3oaI0jMHxPBj+yRjt4bbl3pwljxZZQhUbbzeXIyDXtOFfdKik9HRlbewGoJ
- XB3+ne4MBnyCI6n6znRz+Y5w3QVIiXvFuMPACyuQo7RsqbWcq0eotiGkjghRc/hFRgBXS983o
- PXAUQ3BIM4RCLnQrbGflvNtucpaOyZBWYsiNCPL6GrWeuiOZS3rdo22tGxajuv/U90/nA3O1n
- BNIEV/uGbqktNtCSFhN3uUZtoUAZ6uBV2TNzsmFQtqIkcfyIRCoWWLWEVmNqMEeb04V9la9dm
- gqtL4SCWNqQ2XevHOGZxgYGfdC1rQhnHNix5mrvCGXUyxTpKEbcLC6+MZQhx7iPmKkTeQzvse
- oajYIeeShipwMOSFPxZMfaiyVfiv9qxh2psjTorfj15JyfZNOZuxqG8g1UMlsJxmFaONqyMuD
- tkXmpNI/jeslMtW6bV5hYvviwOyXsFutzNNtHHuEeWSoSkzk/dK0lcf0jV5KiTmiaAquhuSGe
- iyGJl7hWDr/bBR1PnX/Vld36vDqMo1dVUA2WvpBgOtaxKCApk5sn9w6YyHPBCLYz/qD/Wjfu3
- wusm3bO6ePp6m6YU1Q1idQNatfSqEWj/PwInF+jaZU4KgkFKRJxOwpn01zN6Amf+tV85gf0qr
- hSit0FstuvX7ItRgr
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Thanks for such a contribution.
+Hi,
+
+Thanks Dan for the additional comments.
+However, their are to much things that I won't be able to test my self.
+
+So unfortunately, I won't feel comfortable enough for a V2 with all your 
+suggestions.
+Please, you, or anybody else, go ahead and propose the corresponding fixes.
+
+CJ
 
 
-> Add an extended Backus=E2=80=93Naur form (EBNF) syntax file for
+Le 26/02/2020 à 11:01, Dan Carpenter a écrit :
+> On Wed, Feb 26, 2020 at 10:07:07AM +0100, Christophe JAILLET wrote:
+>> diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+>> index c3b1283b6d31..6bb6e88c6019 100644
+>> --- a/drivers/dma/dmaengine.c
+>> +++ b/drivers/dma/dmaengine.c
+>> @@ -978,11 +978,8 @@ static int __dma_async_device_channel_register(struct dma_device *device,
+>>   	if (!chan->local)
+>>   		goto err_out;
+>>   	chan->dev = kzalloc(sizeof(*chan->dev), GFP_KERNEL);
+>> -	if (!chan->dev) {
+>> -		free_percpu(chan->local);
+>> -		chan->local = NULL;
+>> +	if (!chan->dev)
+>>   		goto err_out;
+>> -	}
+>>   
+>>   	/*
+>>   	 * When the chan_id is a negative value, we are dynamically adding
+>> @@ -1008,6 +1005,7 @@ static int __dma_async_device_channel_register(struct dma_device *device,
+>>   
+>>    err_out:
+> Rule of thumb:  If the error label is "err" or "out" it's probably
+> going to be buggy.  This code is free everything style error handling.
+> We hit an error so something were allocated and some were not.  It's
+> always complicated to undo things which we didn't do.
+>
+>>   	free_percpu(chan->local);
+>> +	chan->local = NULL;
+>>   	kfree(chan->dev);
+>>   	if (atomic_dec_return(idr_ref) == 0)
+>>   		kfree(idr_ref);
+> The ref counting on "idr_ref" is also wrong.
+>
+>     967
+>     968          if (tchan->dev) {
+>     969                  idr_ref = tchan->dev->idr_ref;
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> This is 1+ references.  We don't increment it.
+>
+>     970          } else {
+>     971                  idr_ref = kmalloc(sizeof(*idr_ref), GFP_KERNEL);
+>     972                  if (!idr_ref)
+>     973                          return -ENOMEM;
+>     974                  atomic_set(idr_ref, 0);
+>                          ^^^^^^^^^^^^^^^^^^^^^^
+> This is 0 references (Wrong.  Everything starts with 1 reference).
+>
+>     975          }
+>     976
+>     977          chan->local = alloc_percpu(typeof(*chan->local));
+>     978          if (!chan->local)
+>     979                  goto err_out;
+>     980          chan->dev = kzalloc(sizeof(*chan->dev), GFP_KERNEL);
+>     981          if (!chan->dev) {
+>     982                  free_percpu(chan->local);
+>     983                  chan->local = NULL;
+>     984                  goto err_out;
+>     985          }
+>     986
+>     987          /*
+>     988           * When the chan_id is a negative value, we are dynamically adding
+>     989           * the channel. Otherwise we are static enumerating.
+>     990           */
+>     991          chan->chan_id = chan_id < 0 ? chancnt : chan_id;
+>     992          chan->dev->device.class = &dma_devclass;
+>     993          chan->dev->device.parent = device->dev;
+>     994          chan->dev->chan = chan;
+>     995          chan->dev->idr_ref = idr_ref;
+>     996          chan->dev->dev_id = device->dev_id;
+>     997          atomic_inc(idr_ref);
+>                  ^^^^^^^^^^^^^^^^^^^
+> Probably if device_register() fails we don't want to free idr_ref, it
+> should instead be handled by device_put().
+>
+>     998          dev_set_name(&chan->dev->device, "dma%dchan%d",
+>     999                       device->dev_id, chan->chan_id);
+>    1000
+>    1001          rc = device_register(&chan->dev->device);
+>    1002          if (rc)
+>    1003                  goto err_out;
+>    1004          chan->client_count = 0;
+>    1005          device->chancnt = chan->chan_id + 1;
+>    1006
+>    1007          return 0;
+>    1008
+>    1009   err_out:
+>    1010          free_percpu(chan->local);
+>    1011          kfree(chan->dev);
+>    1012          if (atomic_dec_return(idr_ref) == 0)
+>    1013                  kfree(idr_ref);
+>
+> If alloc_percpu() fails this is decrementing something which was never
+> incremented.  That's the classic error of trying to undo things which we
+> didnt do.
+>
+> Presumably here we only want to free if we allocated the "idr_ref"
+> ourselves.  atomic_dec_return() returns the new reference count after
+> the decrement so on most paths it's going to be -1 which is a leak and
+> on the other paths there is a chance that it's going to lead to a use
+> after free.  There is no situation where this will do the correct thing.
+>
+> Probably the cleanest fix it to just move the idr_ref allocation after
+> the other allocations so that we always rely on device_register() to
+> handle the clean ups.
+>
+>    1014          return rc;
+>    1015  }
+>
+> regards,
+> dan carpenter
+>
+>
 
-Can it matter to mention the specific file format specification version
-which should be applied finally?
-
-Would you like to refer to any standard variant?
-
-
-> bootconfig so that user can logically understand how they
-
-Wording alternative =E2=80=9C=E2=80=A6 that users can =E2=80=A6=E2=80=9D?
-
-
-> can write correct boot configuration file.
-
-Related development tools provide some benefits then, don't they?
-
-
-
-=E2=80=A6
-> +++ b/Documentation/admin-guide/bootconfig.ebnf
-=E2=80=A6
-> +digit =3D "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
-
-Can the specification of such alternatives (or value ranges) become
-more compact (depending on a selected standard)?
-
-
-=E2=80=A6
-> +++ b/Documentation/admin-guide/bootconfig.rst
-=E2=80=A6
-> +Here is the boot configuration file syntax written in EBNF.
-
-I suggest to replace the abbreviation =E2=80=9CEBNF=E2=80=9D by the term =
-=E2=80=9Cextended Backus=E2=80=93Naur form=E2=80=9D
-in such a sentence.
-
-Regards,
-Markus

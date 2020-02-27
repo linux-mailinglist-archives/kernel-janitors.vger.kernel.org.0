@@ -2,133 +2,48 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BAF9E170CD8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Feb 2020 00:56:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45462170FD2
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Feb 2020 05:52:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727987AbgBZX4O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Feb 2020 18:56:14 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:36162 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726413AbgBZX4O (ORCPT
+        id S1728357AbgB0Ewv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Feb 2020 23:52:51 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:37138 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728273AbgB0Ewv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Feb 2020 18:56:14 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1j76XE-0007RA-AR; Wed, 26 Feb 2020 23:56:12 +0000
-Subject: Re: [PATCH] NFS: check for allocation failure from mempool_alloc
-To:     Trond Myklebust <trondmy@hammerspace.com>,
-        "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
-        "anna.schumaker@netapp.com" <anna.schumaker@netapp.com>
-Cc:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20200226234320.7722-1-colin.king@canonical.com>
- <12d1e7a2ce5b0c64dfd81aeda75879c460e59fcb.camel@hammerspace.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <ff2605b3-aefd-04c5-7d50-dc73091cb34e@canonical.com>
-Date:   Wed, 26 Feb 2020 23:56:10 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-MIME-Version: 1.0
-In-Reply-To: <12d1e7a2ce5b0c64dfd81aeda75879c460e59fcb.camel@hammerspace.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+        Wed, 26 Feb 2020 23:52:51 -0500
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id AB20915B47CA6;
+        Wed, 26 Feb 2020 20:52:50 -0800 (PST)
+Date:   Wed, 26 Feb 2020 20:52:50 -0800 (PST)
+Message-Id: <20200226.205250.1647452826316197149.davem@davemloft.net>
+To:     dan.carpenter@oracle.com
+Cc:     manivannan.sadhasivam@linaro.org, kuba@kernel.org,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net-next] net: qrtr: Fix error pointer vs NULL bugs
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200226145153.a7u2jzhseaipas54@kili.mountain>
+References: <20200226145153.a7u2jzhseaipas54@kili.mountain>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 26 Feb 2020 20:52:50 -0800 (PST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 26/02/2020 23:48, Trond Myklebust wrote:
-> On Wed, 2020-02-26 at 23:43 +0000, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> It is possible for mempool_alloc to return null when using
->> the GFP_KERNEL flag, so return NULL and avoid a null pointer
->> dereference on the following memset of the null pointer.
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Date: Wed, 26 Feb 2020 17:51:53 +0300
+
+> The callers only expect NULL pointers, so returning an error pointer
+> will lead to an Oops.
 > 
-> Umm, no. That would be a false positive by coverity.
+> Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Ah, sorry for the noise then.
-
-> 
-> If you look at the history of that function, you'll note that we
-> originally had those checks, but that Neil Brown removed them after
-> analysis of the mempool_alloc() function. He determined (correctly, I
-> believe) that any value that includes GFP_WAIT cannot fail to return a
-> valid pointer.
-
-OK - that's very helpful to know. That allows me to mark a shed load of
-false positives on mempool_alloc false positives.
-
-Colin
-
-> 
->>
->> Addresses-Coverity: ("Dereference null return")
->> Fixes: 2b17d725f9be ("NFS: Clean up writeback code")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>  fs/nfs/write.c | 3 +++
->>  1 file changed, 3 insertions(+)
->>
->> diff --git a/fs/nfs/write.c b/fs/nfs/write.c
->> index c478b772cc49..7ca036660dd1 100644
->> --- a/fs/nfs/write.c
->> +++ b/fs/nfs/write.c
->> @@ -106,6 +106,9 @@ static struct nfs_pgio_header
->> *nfs_writehdr_alloc(void)
->>  {
->>  	struct nfs_pgio_header *p = mempool_alloc(nfs_wdata_mempool,
->> GFP_KERNEL);
->>  
->> +	if (!p)
->> +		return NULL;
->> +
->>  	memset(p, 0, sizeof(*p));
->>  	p->rw_mode = FMODE_WRITE;
->>  	return p;
-
+Applied, thanks Dan.

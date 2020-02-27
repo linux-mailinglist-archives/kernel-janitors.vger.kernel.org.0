@@ -2,147 +2,147 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 082D217149D
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Feb 2020 11:01:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3542A1715CF
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Feb 2020 12:16:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728659AbgB0KBp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Feb 2020 05:01:45 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:35442 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728630AbgB0KBp (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Feb 2020 05:01:45 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01RA1VnX024013;
-        Thu, 27 Feb 2020 04:01:31 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1582797691;
-        bh=h/h2pZI6iB1U7Ieb3b2HEqM1PJKH8Ueb8aWvXTCFBPg=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=bnoYAbcsjOmPtj9LyhWW+Tfn7ijw9DWRN7jbp4CnQ4Vd9aNQ5MDIPNYin1jcG+6ta
-         YMCKnuemw/qrYZZA2txK17k0vzmcF5FKdCTeGHYgY38r9hYBO4a0NBCxiozGuKJ2u2
-         sRzGWj/WWuGStLVxkItWPWKWpsE+Ioo8aN+EQjfA=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 01RA1UDR032013
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 27 Feb 2020 04:01:31 -0600
-Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 27
- Feb 2020 04:01:30 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Thu, 27 Feb 2020 04:01:30 -0600
-Received: from [10.1.3.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01RA1Q68092396;
-        Thu, 27 Feb 2020 04:01:27 -0600
-Subject: Re: [PATCH -next] drm/tidss: Drop pointless static qualifier in
- dispc_find_csc()
-To:     YueHaibing <yuehaibing@huawei.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>
-CC:     <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <20200227065057.92766-1-yuehaibing@huawei.com>
-From:   Jyri Sarha <jsarha@ti.com>
-Autocrypt: addr=jsarha@ti.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <06fb1070-9c4c-c776-6379-fe27b0a7b220@ti.com>
-Date:   Thu, 27 Feb 2020 12:01:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1728860AbgB0LP7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Feb 2020 06:15:59 -0500
+Received: from mx01-muc.bfs.de ([193.174.230.67]:37607 "EHLO mx01-muc.bfs.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728759AbgB0LP7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Feb 2020 06:15:59 -0500
+Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
+        by mx01-muc.bfs.de (Postfix) with ESMTPS id E1BCE20342;
+        Thu, 27 Feb 2020 12:15:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1582802155; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=PSPfkAcD4QDEe9iSfKSFzw4oTZNpL0r5C0vE0nEBfi8=;
+        b=hZTek6b2Y4HMl5mxHAmJ4zxsXbSz4FzU8KeGrX18+sHYSvU2k5tt2oM0qYHB6psoEXGHFq
+        Uho6MeghLCDarNitxYByWjE2JP2spLWNKY0P6iWggFJHne8qpiCnbqoZuxx8sJvyUTRsUV
+        p0Syd7KVDaU3JtvOgkHmu1xUd8mrvTt6c67MW7fXuwtKRtXS/Ssk2ZVbY9BhmrnvcQAvFh
+        LYSSifQCD2THJP5f4u+Rn2Vwo5g4uv9EkTRAKlNWpFuwzWwCxc1sjscHUiwQ9Hixv0Ab5t
+        wic11wWremaDuctMTYuKnhuouxIcK/5FO69d6XQ18rHZbFwDbQFxjUqwJiodow==
+Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
+ (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.1913.5; Thu, 27 Feb
+ 2020 12:15:55 +0100
+Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
+ SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%6]) with mapi id
+ 15.01.1913.005; Thu, 27 Feb 2020 12:15:55 +0100
+From:   Walter Harms <wharms@bfs.de>
+To:     Colin King <colin.king@canonical.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Gyungoh Yoo <jack.yoo@skyworksinc.com>,
+        Bryan Wu <cooloney@gmail.com>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: AW: [PATCH][V2] backlight: sky81452: insure while loop does not allow
+ negative array indexing
+Thread-Topic: [PATCH][V2] backlight: sky81452: insure while loop does not
+ allow negative array indexing
+Thread-Index: AQHV7N8n5fHjoG7xokCkDx0n/hJSlagu4ztb
+Date:   Thu, 27 Feb 2020 11:15:55 +0000
+Message-ID: <cb14e57edc1c4f3a81b0aef6f1099b9c@bfs.de>
+References: <20200226195826.6567-1-colin.king@canonical.com>
+In-Reply-To: <20200226195826.6567-1-colin.king@canonical.com>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.137.16.39]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-In-Reply-To: <20200227065057.92766-1-yuehaibing@huawei.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-2.99
+Authentication-Results: mx01-muc.bfs.de
+X-Spamd-Result: default: False [-2.99 / 7.00];
+         ARC_NA(0.00)[];
+         TO_DN_EQ_ADDR_SOME(0.00)[];
+         HAS_XOIP(0.00)[];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         FREEMAIL_ENVRCPT(0.00)[gmail.com];
+         MIME_GOOD(-0.10)[text/plain];
+         DKIM_SIGNED(0.00)[];
+         RCPT_COUNT_SEVEN(0.00)[11];
+         NEURAL_HAM(-0.00)[-0.990,0];
+         RCVD_NO_TLS_LAST(0.10)[];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         RCVD_COUNT_TWO(0.00)[2];
+         MID_RHS_MATCH_FROM(0.00)[];
+         BAYES_HAM(-2.99)[99.98%]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 27/02/2020 08:50, YueHaibing wrote:
-> There is no need to have the 'const struct dispc_csc_coef *coef'
-> variable static since new value always be assigned before use it.
-> 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+hi all,
+i would suggest converting this in to a more common for() loop.
+Programmers are bad in counting backwards. that kind of bug is=20
+common.
 
-Reviewed-by: Jyri Sarha <jsarha@ti.com>
-Tested-by: Jyri Sarha <jsarha@ti.com>
+re,
+ wh
+________________________________________
+Von: kernel-janitors-owner@vger.kernel.org <kernel-janitors-owner@vger.kern=
+el.org> im Auftrag von Colin King <colin.king@canonical.com>
+Gesendet: Mittwoch, 26. Februar 2020 20:58
+An: Lee Jones; Daniel Thompson; Jingoo Han; Bartlomiej Zolnierkiewicz; Gyun=
+goh Yoo; Bryan Wu; dri-devel@lists.freedesktop.org; linux-fbdev@vger.kernel=
+.org
+Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+Betreff: [PATCH][V2] backlight: sky81452: insure while loop does not allow =
+negative array indexing
 
-I'll merge this to drm-misc-next tomorrow.
+From: Colin Ian King <colin.king@canonical.com>
 
-Thank you for the patch,
-Jyri
+In the unlikely event that num_entry is zero, the while loop
+pre-decrements num_entry to cause negative array indexing into the
+array sources. Fix this by iterating only if num_entry >=3D 0.
 
+Addresses-Coverity: ("Out-of-bounds read")
+Fixes: f705806c9f35 ("backlight: Add support Skyworks SKY81452 backlight dr=
+iver")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
 
-> ---
->  drivers/gpu/drm/tidss/tidss_dispc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-> index eeb160dc047b..e6cb176484a9 100644
-> --- a/drivers/gpu/drm/tidss/tidss_dispc.c
-> +++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-> @@ -1510,7 +1510,7 @@ struct dispc_csc_coef *dispc_find_csc(enum drm_color_encoding encoding,
->  static void dispc_vid_csc_setup(struct dispc_device *dispc, u32 hw_plane,
->  				const struct drm_plane_state *state)
->  {
-> -	static const struct dispc_csc_coef *coef;
-> +	const struct dispc_csc_coef *coef;
->  
->  	coef = dispc_find_csc(state->color_encoding, state->color_range);
->  	if (!coef) {
-> 
-> 
-> 
-> 
-> 
+V2: fix typo in commit subject line
 
+---
+ drivers/video/backlight/sky81452-backlight.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+diff --git a/drivers/video/backlight/sky81452-backlight.c b/drivers/video/b=
+acklight/sky81452-backlight.c
+index 2355f00f5773..f456930ce78e 100644
+--- a/drivers/video/backlight/sky81452-backlight.c
++++ b/drivers/video/backlight/sky81452-backlight.c
+@@ -200,7 +200,7 @@ static struct sky81452_bl_platform_data *sky81452_bl_pa=
+rse_dt(
+                }
+
+                pdata->enable =3D 0;
+-               while (--num_entry)
++               while (--num_entry >=3D 0)
+                        pdata->enable |=3D (1 << sources[num_entry]);
+=20
+              int i;
+                for(i=3D0;i<num_entry;i++)
+                         pdata->enable |=3D (1 << sources[i]);
+
+        }
+
+--
+2.25.0
+

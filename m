@@ -2,39 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE4A6173872
-	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 14:35:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A231173974
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 15:07:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726917AbgB1Nfs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 28 Feb 2020 08:35:48 -0500
-Received: from mout.web.de ([212.227.15.4]:53391 "EHLO mout.web.de"
+        id S1727003AbgB1OGY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 28 Feb 2020 09:06:24 -0500
+Received: from mout.web.de ([212.227.15.14]:60457 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726674AbgB1Nfs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 28 Feb 2020 08:35:48 -0500
+        id S1726805AbgB1OGX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 28 Feb 2020 09:06:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1582896907;
-        bh=faoq4Jj6DfiLVYuKBB4k7ujCuN9UWBOr721NLdYkMWQ=;
+        s=dbaedf251592; t=1582898745;
+        bh=j728qNIkf72eDn5YJVGrPL3fCyE3kE7g4ikIilAgwO4=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=Ibs1HTe3Xfefvu/8z8C4rvtf7x3BIRZ0tkr4LXkfLPzecYfQOEvlNJrHQdPq1ZR7Y
-         jj7x/sH4Fy3AkI4098gD+MKN4wrGndmatul2zWg3U+Y+2A8zzfjULs0/TRA6X/Qmze
-         O0v+9yvjRk7ZdtqFhfQyNUW1rT4Dt82/ilRm9xzw=
+        b=QVDTioGg/JmxsnUWc/M3ew1s3PIPOJfPBjIBu6czXXZ91JJyDxoJpmbEhQ+ej7Sn9
+         aMBAz0bhA6WkDUvKeyBLkZ/qhHScFttWgtFC+nCsP18hYUvPfsFWS7kWw2Z8Czas2E
+         CKWEPK3/v+d8oFOrp6QZULIkUB8qZDzJH0W4sBb0=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.179.252]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LjJK3-1jgBWu2vVv-00dSZ4; Fri, 28
- Feb 2020 14:35:07 +0100
-Subject: Re: [1/2] Documentation: bootconfig: Update boot configuration
- documentation
+Received: from [192.168.1.2] ([93.133.179.252]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LlsUC-1jh15d0q2q-00ZPID; Fri, 28
+ Feb 2020 15:05:45 +0100
+Subject: Re: [v2 0/1] Documentation: bootconfig: Documentation updates
 To:     Masami Hiramatsu <mhiramat@kernel.org>, linux-doc@vger.kernel.org
 Cc:     Jonathan Corbet <corbet@lwn.net>,
         Steven Rostedt <rostedt@goodmis.org>,
         Randy Dunlap <rdunlap@infradead.org>,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <158278834245.14966.6179457011671073018.stgit@devnote2>
- <158278835238.14966.16157216423901327777.stgit@devnote2>
- <8514c830-319b-33e9-025a-79d399674fb3@web.de>
- <20200228143528.209db45e5f0f78474ef83387@kernel.org>
- <efe38d09-e73d-97b3-d4be-79194ab2685f@web.de>
- <20200228221108.ff392be76fee6925f27103e6@kernel.org>
+References: <158287861133.18632.12035327305997207220.stgit@devnote2>
+ <957cef56-04b0-3889-6c95-a8ed7606b68d@web.de>
+ <20200228222311.f5b9448027031b16a3be372a@kernel.org>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -79,76 +75,87 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <44efe433-c1f5-9131-4b0e-50cc5897a4f3@web.de>
-Date:   Fri, 28 Feb 2020 14:35:05 +0100
+Message-ID: <0d7d201c-e313-6129-7cfa-4e61eb31342d@web.de>
+Date:   Fri, 28 Feb 2020 15:05:42 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20200228221108.ff392be76fee6925f27103e6@kernel.org>
+In-Reply-To: <20200228222311.f5b9448027031b16a3be372a@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:dqpsRqqCKnVUub1yb/AoghSQVq8RMw5zD7fXvfLA8TnxkoYlhxM
- /JIP1TzlacgNjMavnyxO3+azetNIkE7br+YkYCCcxHV9In9hKbUYc5PRVvvH8uAZnbwWbTN
- aLNA4Thyn3HEou6tygF68H54kXuxss8isiTgdbLH50V1Hz6JPKjbW/zOKxz6QG8EuCppfe1
- HNfkE12ZIhTYG/io6Ri6A==
+X-Provags-ID: V03:K1:091ao2xyKuX6PdBu5cGt+RgRe/eso75BmIWyHLuZtnjXzczpa0b
+ KvBgP0KFuNj2duZp6lEuvkLDPXZx/1qDP8K/GRhn+Q29AsG6m+4DQfbenxabIjRYPf4AwjI
+ I3Pp6Wfm0SQqc89YdH7FiLFJQISwHgvAu+oZAkC6fSRxJIhlA8KloN52ZxNjgOZ+MZSGUER
+ 4xS66md2GZsPkjw+ekHJQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:LrsoVTPbFYU=:bIBKSAQ8IrrjHdEAdWR0jJ
- pjlIbFfUJ6Cbgk2imaXxPB26JpMYZftwwvFqXp9YA5tCzZrRkrnd9esu4bT/E09K/aYo9niHH
- a/Lt4Msj8iQm3+cxTbjZmpEJYDPYMg23iWnNPyIQxd8DIm/AZV/NyMBIVt9maygFT2OZ7mP/B
- ua+WYTMA8hhTf6q6e9ApeQqoT2aEvhZQUl1vv3CTWlYaj+wgfT/m3VvgIE39RuKCYK9RcGAIy
- 2454fch9X8cB3HupDC4E2bcxkCaIWMbyEH1TeRfbJKi4KzePbCinRyLEOfi37W56BfA8XccEx
- I9yNSJvA+gABbNFz95stTmZjCLkSb8JfE9cczGx6PQiIUtU84swQeuP7fBORncCJe0UVrcZfl
- Fajiue+1RqctNJCrLBqZHD9+ofE0pcLPUMTFSddzUCIFQq3WnoTlU4y2bZcXEfUm/KQp4kJ9U
- WWKgW5pTMhTtfioBa3Evqsad0LzPLRMLOvApKfF35CAltnhTlh4wZR2qA+pBlxkYiwH2LbdTj
- 1IU17roRSbn8jmp26dWrjxu0eIycIkyWUTY8AFL7+LWjnDZB8Htr4E+7pZXmHveGZTt/HFqFf
- iARYdadXVMlgNHCTjdBaL5LwHARUqNjLWzXQUszBhxF5UuG1WzSXF2og3gTuq0g6AXdMDh+1E
- FDhLjzEdBJ08UqBf1QFfTnBHum6q7MnLlgl+nwR+n1OYOs0BYA7x873EMTufeKWR96w5B+DGm
- 0Y4459y7u8L2AARPmi9IosUev5MCiwyznH83TFLbMJj/693w8kc1iFcy8OhH1fj/gFogUMTHF
- VhmiQmRniGDhNlCc/4q11P3CK9HOARyj5Sq3USzjAyvFEegGolM7zkIrVWwZnLLmIY3/R90Kj
- PmdK/2ZpO2+SnkmEgFCVZLewsI7GUoXVowCf2I1oEzXwhTMnciW4wwX8yat75zBM06Br6EcJV
- twkAgSQ03xClU59hbiLXdg6Ik9uSq9sTeag3asSd9I3PcDrpJWA45x2QuqFYtErz74TatrHpD
- dmjsx4QD5cSPoaEfyh0Xr/cvTJ0Dqp3rFpMwAH97gAJkTIf9iOm5lg82/ASP5fAtBMjt+88NN
- PDvteSNc9W9CTlDFI/DoHTKJfWCHzNIEjPb/8wA1qfLPDGDd05Eh0K3pkQtSAmYXr86gbFXwq
- hZ/eP2BwD65EVx2KtTM85Cf4bN0NFDqAa6w+DwFKWAD8tdQBwkP2IQ2/ZvhV4n7fyKvAQLwPC
- 0k8NPVI47izS9sdUJ
+X-UI-Out-Filterresults: notjunk:1;V03:K0:jhEvhAGuUtA=:LNdEN/WMAzh4bxx6xncF4k
+ p2BC3LR4jwYhF/h315C59SxT/Ghvz7zvX8kuGC4daVSEtQ7pV/DR2+l96o4jg10oFmYOzyFbk
+ mbiiv6AXutwyfcezEzWCdCk+gN5CGTAow6aDOEoTPhyttDJ2bcVTYI1SVmqaPHDMytOdsBtny
+ h2Qj24tw+PJrazOwM6huolajwKOQtNymtSajmDKvuo27PUCiBFv0DIaQvA1Actn9aD3614N9E
+ DX+bN6NC8n2t+2iMf6MzVwkXd52Ajjr42a/sjVoFmQKE+WM0MyFtJJ6aUwr0JA2MRJwRGl2dM
+ MKIlp3JTiM9DfGoIfR9/S//HvtAFks3Wf59geIgw1/xANoRuz6DjPIBZb+ci7r9YqEk08TPxS
+ TwkwBEUO4JPk01d+LMrUICtmtWJguxJHziPQLwqlmYZOfxDF9DLLAzEMw9u3utIHEwUxSYEPA
+ HB7GI12fGVCwAZ2Sh8mTaOCM08B9Dc8DQR7f/+j5ZOwj+dfzqolryyImg5UZKJDDlhqFWs3Jn
+ 2XMcHkXFMi+SAnMLMOt7A5nIPO8EkKp4Fo5EbJ707Psa5mddLFh8Leh3Ac+MtyYBnnxzBRGLA
+ JEzk65qXlX5Z1PnIMJSlgkQJcIbTiADtSj5+e98jd0zF6bsY+5UROww6MArSXzXqTwStMYMkf
+ Cp/tr+eW7CUSs5MTcGiMDOXzOo01KtgkoHtj+XMgthL73tjCUmueI1MT4V2m0XTOmStoGIyEP
+ 2UTpsp52d5eYzbzfEoHxb1hRQpJh+nwkVHtjFfchd2Tn3vNvQD7fJM0OGw+8fC7XMQUd3Dnjq
+ HJEFkAAtECPpBZwLXXNML7CkFB1gx/7m0kL5WPWDDOqD3xWBTU8p205sl8lxsoLAI661joNi/
+ 7dmW6IztRigmNzVRMLGJdJXUWKPRHfOOg2lWVTXtVRp6cSS49NlTOQiGcC5zD+xlpA6CwFT7H
+ 7fT/qHoJ9JcAIQUJTrgooxgmX6WMeNf82Njcvo9BSxCr+2Cz8eeycf1T3my33QSiQy4V6+dVN
+ sMkGFIG91w+YkRJ1bC9QKQN1nPk7CKhVl+twR1+/C18gMyEsRin+HM13032GvVkdlssoi1BjS
+ LG00MLI/WXJKmvO5LcCsBJdOXl0dUtCW0O/8torxmcFSe9M42f4cuB2RuYrXWFrf2oGPPhwlp
+ pbMYoeZ9cjj6ecUeS5Bxm10dh2tIchgl3emaO3xamlxuvlRqdcY5P+YQkaCRzFBrvAgoFbfev
+ t+S9xQd4+2OtRiP65
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->>>> How do you think about to add a link to a formal file format descript=
-ion?
->>>
->>> Oh, nice idea. Please contribute it :)
->>
->> Did you provide it (according to a RST include directive in the subsequ=
-ent
->> update step)?
->
-> No I didn't.
+> Didn't you read the article I shared?
 
-I hope that more progress can be achieved around the published suggestion
-=E2=80=9Cbootconfig: Add EBNF syntax file=E2=80=9D.
+I read also the article =E2=80=9CDon=E2=80=99t Use ISO/IEC 14977 Extended =
+Backus-Naur Form (EBNF)=E2=80=9D
+by David A. Wheeler.
+Some possibilities were pointed out as desirable improvements.
+
+
+> I actually wrote up the EBNF (ISO/IEC 14977) that was a good pazzle,
+> but just a toy.
+
+I hope that this contribution can help to become more productive
+in the discussed application domain.
+https://lkml.org/lkml/2020/2/27/72
+https://lore.kernel.org/patchwork/patch/1200987/
 https://lore.kernel.org/linux-doc/158278836196.14966.3881489301852781521.s=
 tgit@devnote2/
-https://lore.kernel.org/patchwork/patch/1200987/
-https://lkml.org/lkml/2020/2/27/72
 
 
-> I you think that is important, feel free to write up.
+> I found no one use it to define their data format, according to the arti=
+cle,
+> including ISO itself (lol!) and there are many local extension,
+> including W3C EBNF, and those say "I'm EBNF".
 
-I am curious how the software development attention will evolve further.
-
-
-> You have a parser code in the kernel already.
-
-This software component is useful there.
+I suggest to reconsider the current situation.
 
 
-> It might be not hard for you. :)
+> Well, to say the least, I feel it is quite confused.
 
-Some challenges are waiting on corresponding solutions.
+Such a view is reasonable.
+
+
+> So, if you are interested in it, I don't stop you to write it up.
+
+Will the collaboration continue anyhow?
+
+
+> I just keep away from it.
+
+This is a pity.
+
+
+Will the clarification become more constructive for remaining challenges?
 
 Regards,
 Markus

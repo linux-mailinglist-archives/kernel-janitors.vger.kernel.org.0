@@ -2,65 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A01A173A67
-	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 15:55:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4ACE173C99
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 17:12:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726980AbgB1Ozc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 28 Feb 2020 09:55:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42556 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726682AbgB1Ozc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 28 Feb 2020 09:55:32 -0500
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 52107246A0;
-        Fri, 28 Feb 2020 14:55:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582901731;
-        bh=uzF6Z9bvJm0pdIJlxAl+oKX05ewzkC/oD3pRBGnDBvw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=M+RDVR5DhyOio5Z4jZFVwnnai4AGoFwBAYNiL93GnNbvELW/wTC+W32G3kBNsWlrm
-         tPqtiw6UrVbJqhd+CzDozkerEsOn5ivs2mfn5S8XzbjL6puAyHna6hk4Fx/XEAunuM
-         xOi+v1aDVYFJK1FrxbSXRGOPHPkD3sAZGwNXWpzA=
-Date:   Fri, 28 Feb 2020 23:55:28 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [v2 0/1] Documentation: bootconfig: Documentation updates
-Message-Id: <20200228235528.acfc091ee58d4d685a119f4f@kernel.org>
-In-Reply-To: <0d7d201c-e313-6129-7cfa-4e61eb31342d@web.de>
-References: <158287861133.18632.12035327305997207220.stgit@devnote2>
-        <957cef56-04b0-3889-6c95-a8ed7606b68d@web.de>
-        <20200228222311.f5b9448027031b16a3be372a@kernel.org>
-        <0d7d201c-e313-6129-7cfa-4e61eb31342d@web.de>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S1726167AbgB1QMV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 28 Feb 2020 11:12:21 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:56392 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725769AbgB1QMV (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 28 Feb 2020 11:12:21 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01SG8rIV177523;
+        Fri, 28 Feb 2020 16:12:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=GQ+GrrZZEREBJ6pZFtKFK5HH2nQizyRqJ6jwWaZJ0mw=;
+ b=WhuZQwKfpJtcGOrJZy9N6Fy2Q4eiwf0Sg0H08ce6knPITTwm2FfcxLK8KH52S++tB0A1
+ RoJm+ToeRMSrARomC+8G1gSJS1aGNOOuTIh14G24ER44WhQEkkfViOLv2LIC8WnHobkg
+ Ui7Crgt3NfFQ6HndrIegiCd3b7dhuDkCADcG/MUYwbZ12wChhNqDgG7Tuc9fShlbwci7
+ SR5Gk9cxXOrmmXvCLd984a2y1JY9tDpJyWozkRf5cqAnn5CjXERPgBetgGeONpzL90dm
+ HqgAaWcIn4V2GLikzg+uYlDAeDE0Iep0TEApbkmWz6/8iZrDa39Q9BEclkyxrYWTUxtn bA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2ydct3ksbx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 28 Feb 2020 16:12:08 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01SG8E6d063741;
+        Fri, 28 Feb 2020 16:12:08 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 2ydj4r5gvy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 28 Feb 2020 16:12:07 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 01SGC66t022907;
+        Fri, 28 Feb 2020 16:12:07 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 28 Feb 2020 08:12:06 -0800
+Date:   Fri, 28 Feb 2020 19:11:58 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Dan Schatzberg <schatzberg.dan@gmail.com>,
+        linux-block@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] loop: Fix IS_ERR() vs NULL bugs in loop_prepare_queue()
+Message-ID: <20200228161158.GC4118@kadam>
+References: <20200228141350.iaviwnry3z4ipjqe@kili.mountain>
+ <c106c6ec-7171-3586-d5c5-5c14e386b3d5@kernel.dk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c106c6ec-7171-3586-d5c5-5c14e386b3d5@kernel.dk>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9545 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 suspectscore=0
+ spamscore=0 adultscore=0 malwarescore=0 mlxlogscore=894 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2002280128
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9545 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 bulkscore=0
+ impostorscore=0 spamscore=0 priorityscore=1501 malwarescore=0 adultscore=0
+ phishscore=0 mlxlogscore=973 mlxscore=0 suspectscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2002280128
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 28 Feb 2020 15:05:42 +0100
-Markus Elfring <Markus.Elfring@web.de> wrote:
-
-> > So, if you are interested in it, I don't stop you to write it up.
+On Fri, Feb 28, 2020 at 07:25:58AM -0700, Jens Axboe wrote:
+> On 2/28/20 7:13 AM, Dan Carpenter wrote:
+> > The alloc_workqueue() function returns NULL on error, it never returns
+> > error pointers.
+> > 
+> > Fixes: 29dab2122492 ("loop: use worker per cgroup instead of kworker")
 > 
-> Will the collaboration continue anyhow?
+> I can't seem to find this commit?
 
-It's your turn. "ask not what your community can do for you - ask what you can do for your community." :)
-Collaboration is not just talking, but move things step forward.
+I guess this went through Andrew Morton's tree.  I'll resend to him.
 
-> Will the clarification become more constructive for remaining challenges?
+regards,
+dan carpenter
 
-If you think so, you can send a patch for it.
-
-Thank you,
-
--- 
-Masami Hiramatsu <mhiramat@kernel.org>

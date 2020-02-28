@@ -2,37 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C36D21732EF
-	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 09:31:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DDFF173373
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 10:01:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726538AbgB1Ibd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 28 Feb 2020 03:31:33 -0500
-Received: from mout.web.de ([212.227.15.14]:53395 "EHLO mout.web.de"
+        id S1726642AbgB1JBi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 28 Feb 2020 04:01:38 -0500
+Received: from mout.web.de ([212.227.15.4]:47843 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726287AbgB1Ibc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 28 Feb 2020 03:31:32 -0500
+        id S1726476AbgB1JBh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 28 Feb 2020 04:01:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1582878651;
-        bh=nPnhFRvMYmTPH5FtdmNDtug3zupDprrOQTlVNSDpcWo=;
+        s=dbaedf251592; t=1582880456;
+        bh=OLX6B01E7giakeT8iy+FXoMCj714HHMGd/9fp4qWhZk=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=ZDvbRvKDfFFLV7Lz5KKozb9PSrEbJ/rrrnW4u0eqkk+0YPJLgMNeNsIOe6Bz35tEn
-         GWNK8b0VD3rESwIi9O64y6h5mCk8M740Hw4y83NuILVPua06+qAXf9hXAtL88svqdB
-         93xdkbU+GhaJ1TBR82EYqXGCBAAiK7aqw7jjZ1+Q=
+        b=fueQFsa4XuMf/QcAw0HSEo5Hm+fYqiS8wngBRfASHuYlYwEu6KDT/qoAXVU1ojjFg
+         7bQYvAHbtJ3fiKqZ5rLKRAsr73eNPyVXvYBmMvvedLSUKcMUN23IslV+Lh3HhGz4EZ
+         N7qbnjIGdwazLhxMwLIOaKbE9Bce2u9NNzbxafIc=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.179.252]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Md16Y-1iqTdI3J4M-00I9hp; Fri, 28
- Feb 2020 09:30:50 +0100
-Subject: Re: [1/2] Documentation: bootconfig: Update boot configuration
- documentation
+Received: from [192.168.1.2] ([93.133.179.252]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lhedd-1jlMC11Gxl-00mpHu; Fri, 28
+ Feb 2020 10:00:56 +0100
+Subject: Re: [v2 0/1] Documentation: bootconfig: Documentation updates
 To:     Masami Hiramatsu <mhiramat@kernel.org>, linux-doc@vger.kernel.org
 Cc:     Jonathan Corbet <corbet@lwn.net>,
         Steven Rostedt <rostedt@goodmis.org>,
         Randy Dunlap <rdunlap@infradead.org>,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <158278834245.14966.6179457011671073018.stgit@devnote2>
- <158278835238.14966.16157216423901327777.stgit@devnote2>
- <8514c830-319b-33e9-025a-79d399674fb3@web.de>
- <20200228143528.209db45e5f0f78474ef83387@kernel.org>
+References: <158287861133.18632.12035327305997207220.stgit@devnote2>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -77,85 +73,59 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <efe38d09-e73d-97b3-d4be-79194ab2685f@web.de>
-Date:   Fri, 28 Feb 2020 09:30:27 +0100
+Message-ID: <957cef56-04b0-3889-6c95-a8ed7606b68d@web.de>
+Date:   Fri, 28 Feb 2020 10:00:55 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20200228143528.209db45e5f0f78474ef83387@kernel.org>
+In-Reply-To: <158287861133.18632.12035327305997207220.stgit@devnote2>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:KgQ3vYV9ysegr9mt3KbORuXozfS41mY2NV0+S4K8PRmn24jCgm8
- WfFnbz2ikQncOtVTLJRwvEEm1nDmyevgo9aZ9UOIFlRrNdgDynTHwIn4U7uxsFN9B4/5MEI
- yOSiAXsKnSz3oG+lLZaH65jzvXvDsX/LsFCnM7HsF/B120cJ0cbJB2pRzq5xN0omhQUnonm
- /lZzjJPiO15lAUCjREOYg==
+X-Provags-ID: V03:K1:knO5+5TOAyNYw/bpcty1OC/fCQ6yx0zJfXG6n5L//YJoRBRu+fI
+ E3P7UVpJGkwu6G3puQCSliOXqYHVD17SxzbrLZWzSrrj5aOnS87/m68hXRpZGc2ms2pjnuN
+ vpkFdB6QTlmcWYOaV32HHKFA8NKkJkSrUIRA2LsB2pNgqH2/A6TBwPweJR+CLEfgKfpt+4C
+ tJECRDPcHIfQUVGJpjNyw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:r9Lj2hY9OGI=:QWbBOLSB8tVj2xRXuj+3vx
- CKq9Rr1Tlt44EYS68bBhc4vKVkPhYGicIJ6qdHaq1oJK4Bq99iUNKWrq1f4glMX5RYOET97xo
- qBDIL5myQf6InBY7sXCvmL/fXED3NTnJdtJTGEdLsidCpvrIWblbN4gJLenr6dOzno1zpcsn5
- LCCmjdxS7H53MEjZ+6u6XPASwt0yb75d3UXgGay2PBtOg5m8jixS7RANHy2QAPHaCmDrhX0V/
- M9DZwvlEdhenWt+eyTjZ/tYkAb5CKWxcaFyEVtNLXLRBQD8beVY7DqYRVYGH2i2E0fEM2XRw/
- 9qIoolfV3lpRRF7Ol34SS3t/4EJ6FP93THbKxiKRmIKoo2yyej0bLkSu7oK6/vVf2fbn+2lnP
- MH3uUFJdCEc5oXf0nFCXlhBAs4KDj1qztu4q3Ap3UllCNfaB5RIdQi4VX+OwCG5SzPN9m5UsD
- hpMmN5/mjeFAXeudWNxms3TKpS38VJ0RZwA9OpQkuB6cS0fAIPiinWQoBGLCc9LHeYrd9Gix1
- 9WV6G2TSijc8cYnFTlAz1G78QDR/h7WDIgKS01osGZsetJKCJOYNIiuRXj5eO0sXC9I0DUs12
- StTYSp/5KefWZhf7Pjw4P6Kn7jTPJxSASodXqQSugKmINyWZu8CRfxqV5C+TlyBWUSoZNOWE3
- 90Q4ecfTfV1MPM2QFyQ9TqrctXGUvwy/+0EGWUqpVfelqF1irKiugUQu1B7m0eiX0o8cGdaWE
- wViH0cRqIgH8FPPxxR51Xwqu1l1LqgO0nnQ5mABudvKUyoA8CLXWgPL3JgiFDjPan8EJEQE40
- 6X9avLMl4+mrQqjwgjEvi9xeEElWMQsDk5zFPS0Bi0Nlnh9Q4lBLb8XdQZpNf0YcAzTEZdCqK
- NInfEekgjJawBI9WCzpjzF8q/BduYLYZUdU9zzPKlm7llx8miTbS4pr6KNaH6PSaG24Et2yoV
- SW5CZ9SfIu+iljzkX4l1gQyjQq3gO/AgQuc5eCz/ykd9Lb0Cu0FbgPq1GEF6LdUgLSqFI5geX
- bpK4nV58rk160UAhpm7mDLA87Ndg0dX238Q7MmcLSOmSL3DOsPK9/pwkKyZoQqbcoO9gnX02V
- lXqLdQtZWTKitgC+u7L/AO243+8Nj4b49/bvHy31Y4SGLSXpBdgMrsuNYZ4e/dDtH/JF0RZ8l
- JJcgA5xvKYSnTSbCVqhtYh8LgXuTnBFIJ05qdc2WWvUdflkzAiPMS15BuNALMr+jl0K2/+w8f
- bV7W6VwRH6gIs6dnw
+X-UI-Out-Filterresults: notjunk:1;V03:K0:npS9/4x9CMI=:t56PeqSY1T3yjJqSAQ6u6i
+ Ds45u23XQWBeyJndKIZYHt4wz9BypJ6VJ2XF4aMaBstVsuLxurRH9oyE03FXvzLzSNjzLEKAX
+ WSv9IapoE78BNtc0Yi5y9u8PH2qk4RwJ+CeWRmNgQji/lkZOAwupBrA5fx0fFZUeC3KeSO06z
+ 29eWQUE81Ir5XsJeoIsy4lpLDEOWbGEe6xPoQK26MYaEKCKSL/Jcu7aMZI1Cap2N38yAWKgdo
+ GzuDRWk46JvD1HE/p3FrLZTY8W96aobGuCjgINPnjCMXM9oRgBzd/0tD/RFK2KHj2PtNnZP/r
+ /ma2tVg8ZQklCZZg0lx7BK5c7Fxd0VxoWRRi3+npZf/mGNvrbTvFSAxTXQ7FGNJVsn7N6MwJq
+ QmR4UhrctDPHE8ohBujhx7qBm+p6+VU/S/YG+FYjBUww8SmUP/dNPjOy9QwvPn7U3nAmXIxrK
+ mqBN3xqABGIGCLufL15F3R2rJhumKBqMK+M6ByZU1s7rt6orP9S8Z6cTf8sz/BrrEfvKltWVP
+ qRomU6V6LgxoIlAQ965VOruxrTulltbNvR1giepvoYmXU4DzkZ3m3dON7P/5lJaS76L1sHfnS
+ S4M3y0Bwatf4Cl8ac81gjc5JBVtdhCY53AQ2j/Hu4QgQh+GnfqQsOBZAZF5yNiYrUYp+Wa6DS
+ OqUa7rXv18ow6RVz1NKJLS6kkHEz1AxylggoeEB9dfgXmv5U4E8XO9jt2D1ulyjd3f8vsiYwx
+ zYWVjz61BhizYkXBTLjjvS1edqdAaigt3i47xi3568eqM9PjIPNvgKXiBRwnylrqrNLRKU07Q
+ Qa4tyAtWbBVSZ0Hf3k//YD2hyxR3FXOa08Ct3ypyDKX7eNQ6Vj2EKQJTd1VaxpoZG8vpJI7/v
+ TyV1Mq/7uPIvD6tMVraryd1NmV9SnQgx4HOWD155e6YxX361DtBAEreqAv+qyyquILKlKW2Vp
+ 5ChNAnANPU7pUtb/7K81za+hk3N2rIOgbnvz9zhdV3cQquIYe6uJRBzIAIF6MPm5m3NxyQEqh
+ hmgVGb9q9MvGAiHammGES111vjXaeNSVv7NltqHlgfV+wIL1Grd0rFY8E4JPTJDhrR3pitqbb
+ h07h1HmArT+gTdxRInnodzQwigY9oRzlwoVnaSPirNACEBqpDH8VNS8u1dgWkfPuO1khndmWh
+ s5ghF2ItAhiUNJjT1wyLzYQ3t7xyFQI8x6ADkkBY6a7S9TRO0Ccy2UjijNXiy3hso2OiQZUeB
+ 8j6KiGSpZc8KPYG/L
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->>> +Also, some subsystem may depend on the boot configuration, and it has=
- own
->>> +root key.
->>
->> Would you like to explain the influence of a key hierarchy any further?
->
-> Please read the example (boot time tracer) carefully :)
+> I decided to drop EBNF (extended Backus=E2=80=93Naur form) patch
+> since the ISO/IEC 14977 EBNF seems not carefully defined
 
-I find the descriptions still too terse for corresponding relationships.
+Significant efforts happened also for this standard.
+Does its revision refer still to the year 1996?
 
 
->> * Can such system limits become more configurable?
->
-> No.
+> and there are many variants which named EBNF.
+> I'll postpone it until finding better solution.
 
-The possibility remains to adjust the source code also for special needs.
-
-
->>> +(Note: Each key consists of words separated by dot, and value also co=
-nsists
->>> +of values separated by comma. Here, each word and each value is gener=
-ally
->>> +called a "node".)
->>
->> I would prefer the interpretation that nodes contain corresponding attr=
-ibutes.
->
-> No. Node is a node. It is merely generic.
-
-I hope that the applied ontology will be clarified a bit more.
+How will the corresponding clarification evolve?
 
 
->> How do you think about to add a link to a formal file format descriptio=
-n?
->
-> Oh, nice idea. Please contribute it :)
-
-Did you provide it (according to a RST include directive in the subsequent
-update step)?
-
-Can it be helpful to reorder any changes for the discussed patch series?
+I hope that typos will be avoided also in subjects of subsequent cover let=
+ters.
 
 Regards,
 Markus

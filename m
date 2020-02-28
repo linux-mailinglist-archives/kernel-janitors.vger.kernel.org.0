@@ -2,83 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89F08173DE9
-	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 18:05:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9459B173E4E
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 18:22:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726561AbgB1RFl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 28 Feb 2020 12:05:41 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:39572 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725827AbgB1RFk (ORCPT
+        id S1726077AbgB1RWH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 28 Feb 2020 12:22:07 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:44234 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725827AbgB1RWH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 28 Feb 2020 12:05:40 -0500
-Received: by mail-lj1-f196.google.com with SMTP id o15so4104666ljg.6
-        for <kernel-janitors@vger.kernel.org>; Fri, 28 Feb 2020 09:05:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=UBP7QsMdsRzii497sQdvXMivqxHUi8KnMTi6DqPb4vI=;
-        b=ac7tlk8Cze2jl3gZVHvkWEQ+IDeanfETwQry/6b+4HJyNtzQI4p6CcR3GQlgXi4t6x
-         Rg9mhL4QPsYU2oVXZNwbLx51ZQjNza8AK3S/wS3bOTdoOjoXhdA+ou5H5ld+BAaa/g5h
-         pK39NtvbrvXOQ9faTLoFO6V73vTxG7t4cRK1LuBmRNeOvROWzeg3piJtXOyRLqpsIjP5
-         CSXHYLC82a3qe81vsAFGjbPYLLtXr18QliXwVCVW8dqOtXn7sRfek8UXC3zt/1vHN8dw
-         XslVappftofRLHztKIhpGGLIUU6spBf00Hcv/oyZMBykifmTfd3rkCd9izBGI5TpwJFX
-         0qlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UBP7QsMdsRzii497sQdvXMivqxHUi8KnMTi6DqPb4vI=;
-        b=oQzB10wjvv6tFGjOGOIegPHaVVIu84v7UDchvHzdxxDTsSX0Tn1a/9zjZVOVdFYYXF
-         DTwegwvhXoJzH2onWieOhkGIleCzIy5eC1jdxAFEy9ffHBWAzSU4oDK5YM+JughoJE+o
-         4C36mFyqoDxyHTLrq5YjFN8KQDthlTxEvxuOWLFMBYPesmZauwaS/szut71QCAPlHb9V
-         pwxwVq2ZCmFptafKiaXnGPlNLuTEV/v+p5kTavJET2BhUdRLEcHDiXhr8PuTu2O7gHWv
-         OzzU5LCnJcnTtZzV5ooERUtql7iWxIujrwUUDRENb0UGTe6zXyCvmxRN+sz66M4AnMw0
-         zvVQ==
-X-Gm-Message-State: ANhLgQ2qMNpbAlnp1k+1r+boMJ3vGnjyAuATJrnykmlC+rFRFrqJbuje
-        N6QP7VXDWeKiwolmWBuOSZSpr6PC9cGz9sTx0bG/Rw==
-X-Google-Smtp-Source: ADFU+vtSr6VQwF7m2+8Lo3WnbSGTzU2AUlIfQZYijuxBt0BqYCrk6rzyB34udEirfvaR+UlGIovaqzwfjvJEyyD0Mtg=
-X-Received: by 2002:a2e:8754:: with SMTP id q20mr3417402ljj.258.1582909537024;
- Fri, 28 Feb 2020 09:05:37 -0800 (PST)
+        Fri, 28 Feb 2020 12:22:07 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01SGwhdf096694;
+        Fri, 28 Feb 2020 17:21:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2020-01-29; bh=vKPu2mMAjTiqlFxO4uxuAPCi1fYk+P4CN6J0gVfkdpY=;
+ b=jXVT0aQROfFszL0/BeTk6T9LK8hYmrYE0EUfnEwqMExYtEpk3VI9wOg5GFilBEoHFJCK
+ VJf/gS2Jp0SZ8G8gnDVthFiNoHNUb5K4NuUZfFmg06q3+rklhKXByqRLJ4Gx+VVTxwcU
+ GtooBoWvePDeklqconkjQJvrPLiJzY5byvQ0B7LKMpS3N6nyodNpWAQeZB+0Y3TagfWI
+ KOOR2YHJD/M9swWdhfi1ch65Di2Q66KGWYhTXQyRvF67KDmize0QRF+jq8/YzUxJoAU6
+ bCjvjyi9qtDZp5teOvK2mZVWwqR8cEM0d0/jNIas1+xiGbdUrXD5ZBSnJrkO4ZpG0EeC sQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 2ydct3m73t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 28 Feb 2020 17:21:55 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01SHEr9N156479;
+        Fri, 28 Feb 2020 17:21:54 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 2ydcsf1pms-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 28 Feb 2020 17:21:54 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 01SHLm1Z005721;
+        Fri, 28 Feb 2020 17:21:51 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 28 Feb 2020 09:21:47 -0800
+Date:   Fri, 28 Feb 2020 20:21:36 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jens Axboe <axboe@kernel.dk>,
+        Dan Schatzberg <schatzberg.dan@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-block@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>, linux-mm@kvack.org
+Subject: [PATCH resend] loop: Fix IS_ERR() vs NULL bugs in
+ loop_prepare_queue()
+Message-ID: <20200228172136.h5dvwvrg5yfywxss@kili.mountain>
 MIME-Version: 1.0
-References: <20200228063338.4099-1-lukas.bulwahn@gmail.com>
-In-Reply-To: <20200228063338.4099-1-lukas.bulwahn@gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 28 Feb 2020 18:05:25 +0100
-Message-ID: <CACRpkdabUZYhr7S8fcOX-dOgUEfDTnhUZjqsadyghpuTDCoqpw@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: adjust to renaming physmap_of_versatile.c
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Boris Brezillon <boris.brezillon@bootlin.com>,
-        Sebastian Duda <sebastian.duda@fau.de>,
-        Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c106c6ec-7171-3586-d5c5-5c14e386b3d5@kernel.dk>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9545 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 phishscore=0
+ mlxlogscore=999 spamscore=0 suspectscore=0 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2002280133
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9545 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 bulkscore=0
+ impostorscore=0 spamscore=0 priorityscore=1501 malwarescore=0 adultscore=0
+ phishscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2002280133
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Feb 28, 2020 at 7:33 AM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+The alloc_workqueue() function returns NULL on error, it never returns
+error pointers.
 
-> Commit 6ca15cfa0788 ("mtd: maps: Rename physmap_of_{versatile, gemini}
-> into physmap-{versatile, gemini}") renamed physmap_of_versatile.c to
-> physmap-versatile.c, but did not adjust the MAINTAINERS entry.
->
-> Since then, ./scripts/get_maintainer.pl --self-test complains:
->
->   warning: no file matches F: drivers/mtd/maps/physmap_of_versatile.c
->
-> Rectify the ARM INTEGRATOR, VERSATILE AND REALVIEW SUPPORT entry and now
-> also cover drivers/mtd/maps/physmap-versatile.h while at it.
->
-> Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
-> Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Fixes: 29dab2122492 ("loop: use worker per cgroup instead of kworker")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Acked-by: Dan Schatzberg <schatzberg.dan@gmail.com>
+---
+Resending because this goes through your -mm tree, Andrew.  The
+get_maintainer.pl script lead me astray.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+ drivers/block/loop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yours,
-Linus Walleij
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index da8ec0b9d909..a31ca5e04fae 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -897,7 +897,7 @@ static int loop_prepare_queue(struct loop_device *lo)
+ 					WQ_UNBOUND | WQ_FREEZABLE |
+ 					WQ_MEM_RECLAIM,
+ 					lo->lo_number);
+-	if (IS_ERR(lo->workqueue))
++	if (!lo->workqueue)
+ 		return -ENOMEM;
+ 
+ 	return 0;
+-- 
+2.11.0
+

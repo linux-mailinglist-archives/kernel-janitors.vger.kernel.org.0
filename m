@@ -2,67 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D2381733C7
-	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 10:23:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 985A11733CA
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 10:23:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726563AbgB1JXi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 28 Feb 2020 04:23:38 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:37160 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726063AbgB1JXi (ORCPT
+        id S1726661AbgB1JXj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 28 Feb 2020 04:23:39 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:57700 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726400AbgB1JXj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 28 Feb 2020 04:23:38 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01S9HVPT161260;
-        Fri, 28 Feb 2020 09:23:09 GMT
+        Fri, 28 Feb 2020 04:23:39 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01S9HpmW025441;
+        Fri, 28 Feb 2020 09:23:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=Md77iGEJECs0uv7NwYHGnJZebiY3k62ZD2KtUhej4C4=;
- b=ELt4awYNLre8W+7v4E1Uxfn6T23ghRJzUuj/zerKe0DpoZzI14XcheQSs0GTdvj/PJJ5
- FUyDQtwAc1dALrjdqGz7XaQPZ/boD6x+szGTFZ+LrHbTjFUK/nfl+U/ggX3er+XxrxPM
- ZE01NPCB8dAAAe4NkdpmGoHVT20dTst8p1yw6/oSxqnNvtGUgoPjAEGVIcWtBIcSs2Up
- UjK+UWqdcvmKMiUUySf3tck9CEr09KIG3WBWvVIo8I8crLHO8e446+cbJRMiHWxoZPVt
- 1zUPcU3PbCno4xM8WS21jJmFVjCq9sx4t/R/i0tGDJDXVwiqEoBgKRW8WzR9GL0mSqgE QQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 2ydcsnsn4x-1
+ bh=nZWlIAb25RKmpdimMBAR/YlDxxn7XYHb1GVQxtT07sg=;
+ b=VA8FU8oSws/28udQzHALpUPBiYzyBnUjB5OAFd2W3yXTsz118oZnNZsuTwpOwKb89XWf
+ SHT4LG5++yWxPCqsw9eyKPCdwbNKCITTl9uHyAD3wLfBvLdanup70G6ZqjedO/6xKlhO
+ 780qHl4zrIskSfsbZCJ7y1Zxepjr/VSj8AzpeXjiM/9yYyRZzOdtbBSyhM/gtcuIlPZq
+ zbEoDDF4uJVM4PqF5RNirWICCyzW3L/89CVq6cb98ckizL0IVpSqp1xV2P/2dSU+pdcb
+ FkvjYhqpdnkp4be+kZlhBRVfSJQ53WFW+uzH6h7528ncGWzaD8uyN4Q9FC+HYVQmZPYf 1w== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2yehxrw3sb-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 28 Feb 2020 09:23:09 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01S9MD1n038422;
-        Fri, 28 Feb 2020 09:23:09 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 2ydj4q8bwg-1
+        Fri, 28 Feb 2020 09:23:31 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01S9MMeF121341;
+        Fri, 28 Feb 2020 09:23:30 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 2ydcsdfhr6-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 28 Feb 2020 09:23:09 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 01S9N61s015008;
-        Fri, 28 Feb 2020 09:23:06 GMT
+        Fri, 28 Feb 2020 09:23:30 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 01S9NS4V026416;
+        Fri, 28 Feb 2020 09:23:28 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 28 Feb 2020 01:23:05 -0800
-Date:   Fri, 28 Feb 2020 12:22:59 +0300
+        with ESMTP ; Fri, 28 Feb 2020 01:23:27 -0800
+Date:   Fri, 28 Feb 2020 12:23:21 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Steve French <sfrench@samba.org>
-Cc:     Aurelien Aptel <aaptel@suse.com>,
-        Ronnie Sahlberg <lsahlber@redhat.com>,
-        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc:     Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] cifs: potential unintitliazed error code in cifs_getattr()
-Message-ID: <20200228092043.xoqau6ez7qxnpwc4@kili.mountain>
+Subject: [PATCH] drm: prevent a harmless integer overflow in
+ drm_legacy_sg_alloc()
+Message-ID: <20200228092321.axulddmkxrujkmas@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 User-Agent: NeoMutt/20170113 (1.7.2)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9544 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 suspectscore=0
- spamscore=0 adultscore=0 malwarescore=0 mlxlogscore=788 mlxscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 phishscore=0
+ mlxlogscore=999 spamscore=0 suspectscore=0 mlxscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
  definitions=main-2002280078
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9544 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 bulkscore=0
- lowpriorityscore=0 mlxlogscore=837 phishscore=0 spamscore=0 adultscore=0
- suspectscore=0 impostorscore=0 clxscore=1011 priorityscore=1501
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 priorityscore=1501
+ bulkscore=0 phishscore=0 spamscore=0 clxscore=1011 lowpriorityscore=0
+ adultscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0 impostorscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
  definitions=main-2002280077
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -70,31 +73,30 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Smatch complains that "rc" could be uninitialized.
+There is an integer overflow when we round up to PAGE_SIZE, but it's
+harmless because we never re-use "request->size" for anything meaningful.
 
-    fs/cifs/inode.c:2206 cifs_getattr() error: uninitialized symbol 'rc'.
-
-Changing it to "return 0;" improves readability as well.
-
-Fixes: cc1baf98c8f6 ("cifs: do not ignore the SYNC flags in getattr")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- fs/cifs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This code predates git.
 
-diff --git a/fs/cifs/inode.c b/fs/cifs/inode.c
-index 6543465595f6..e6d66977a81d 100644
---- a/fs/cifs/inode.c
-+++ b/fs/cifs/inode.c
-@@ -2203,7 +2203,7 @@ int cifs_getattr(const struct path *path, struct kstat *stat,
- 		if (!(cifs_sb->mnt_cifs_flags & CIFS_MOUNT_OVERR_GID))
- 			stat->gid = current_fsgid();
- 	}
--	return rc;
-+	return 0;
- }
+ drivers/gpu/drm/drm_scatter.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/gpu/drm/drm_scatter.c b/drivers/gpu/drm/drm_scatter.c
+index d5c386154246..ca520028b2cb 100644
+--- a/drivers/gpu/drm/drm_scatter.c
++++ b/drivers/gpu/drm/drm_scatter.c
+@@ -99,6 +99,9 @@ int drm_legacy_sg_alloc(struct drm_device *dev, void *data,
+ 	if (!drm_core_check_feature(dev, DRIVER_SG))
+ 		return -EOPNOTSUPP;
  
- int cifs_fiemap(struct inode *inode, struct fiemap_extent_info *fei, u64 start,
++	if (request->size > SIZE_MAX - PAGE_SIZE)
++		return -EINVAL;
++
+ 	if (dev->sg)
+ 		return -EINVAL;
+ 
 -- 
 2.11.0
 

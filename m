@@ -2,164 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41D4A173600
-	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 12:27:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB6C71736A9
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 12:56:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725805AbgB1L1Z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 28 Feb 2020 06:27:25 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:35290 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725536AbgB1L1Z (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 28 Feb 2020 06:27:25 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01SBN0QS161068;
-        Fri, 28 Feb 2020 11:27:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=iWquBMixnct7EFJGF5lepliEFniGoLrKh3Bytkxqn0k=;
- b=IoooCwill+D8Jp9J9Rto9NnSLOGsjYs/3p+j2Fv89E188MHINZ2hPVL/F3uB4ccvRNJ/
- fn5N5uHo4/ajFeC5as2q5cZ6M4e1fqwXkwXP+RHq6f1kpoL/qFcC7HPRqqGmwDKC8E2x
- cLF/mKzIglI0GEKEbZafkN3+lJh+JyuUQ+A6Wv/jZmRdjpeiJSllWfOKCVnW8FcDpswd
- kWFbU07UH/Kdq/bdbqj6knOaOLGZ+WrNSxsJNUFbPUbwmu54Rrx+ont+6hMiPhka0hzJ
- hKbFKTFcVjtX16zcT+PPJamhjS2byCwWvZnhKHfGOCKK7JVqobmwc8BbNNGU8LAq2VDA PQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 2ydct3j8b8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 28 Feb 2020 11:27:20 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01SBIBcU192982;
-        Fri, 28 Feb 2020 11:27:19 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 2ydj4qgv5q-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 28 Feb 2020 11:27:19 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 01SBRI1g012575;
-        Fri, 28 Feb 2020 11:27:18 GMT
-Received: from kili.mountain (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 28 Feb 2020 03:27:17 -0800
-Date:   Fri, 28 Feb 2020 14:27:09 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     yanivr@broadcom.com, Ariel Elior <aelior@marvell.com>
-Cc:     Sudarsana Kalluru <skalluru@marvell.com>,
-        GR-everest-linux-l2@marvell.com, kernel-janitors@vger.kernel.org
-Subject: [bug report] bnx2x: Add Warpcore support for 578xx
-Message-ID: <20200228112709.6ailvgxaq7nymz4m@kili.mountain>
+        id S1725933AbgB1Lz6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 28 Feb 2020 06:55:58 -0500
+Received: from mout.web.de ([212.227.15.14]:56199 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725536AbgB1Lz6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 28 Feb 2020 06:55:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1582890919;
+        bh=S3FRLFwZQiSYQmQLSBvn6YhuQwVmVHUOUm4e3DlWNN0=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=sr7kNImybirc9XM4CL0HMQKgvh9DS/7Vb3td+oHdHnOUA81y1nYk7hseq31oWcugd
+         k6/jLecLFAdu8/qw+lhzXK3obpSRUCdRLUChsMoo+2GPqfMJK+uXFEa0a9epO0XZcz
+         uge4OtkvTEhKHeCEAurbFYdq1ZCA+vPSJsuktysI=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.133.179.252]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LtXDY-1jYtut26Fw-010sOe; Fri, 28
+ Feb 2020 12:55:19 +0100
+Subject: Re: [v2] Documentation: bootconfig: Update boot configuration
+ documentation
+To:     Masami Hiramatsu <mhiramat@kernel.org>, linux-doc@vger.kernel.org
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <158287861133.18632.12035327305997207220.stgit@devnote2>
+ <158287862131.18632.11822701514141299400.stgit@devnote2>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <c4a0bc10-a38b-6ea9-e125-7a37f667e61a@web.de>
+Date:   Fri, 28 Feb 2020 12:55:17 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9544 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 suspectscore=0
- spamscore=0 adultscore=0 malwarescore=0 mlxlogscore=836 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002280095
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9544 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 bulkscore=0
- impostorscore=0 spamscore=0 priorityscore=1501 malwarescore=0 adultscore=0
- phishscore=0 mlxlogscore=878 mlxscore=0 suspectscore=0 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002280095
+In-Reply-To: <158287862131.18632.11822701514141299400.stgit@devnote2>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:8bcj8FIIWYnmth/ewzToS9eQe+rOqY3e7XQPfBkEWH4WzKH8x6A
+ bq4OCb0Jty52ssGO0SKkDQnJyHKggEkfxB9w8YNYMtRHHDavLq1F4iQK2Wm5JSeZm3GZxia
+ rdBszLtgFzBhnE8vIFVUmLUdf1BRqX+d1l4QxUr7VkY9rGxEU+CrtcJ7+Q1i9+rg1dzGaTq
+ ZPTrvvtxFVBVS/4Q0xr6A==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:VMqqKu6hcRQ=:jYGdj2Xcu9AIAprHlSba1G
+ W6rt/zX3xgukxyrNkHrft5wKFsX3YZAqiM5TSFCn4BLLnRbjYdaY0eHrLPeoe+4SEIbLLesgH
+ TzA0pbjc5DsZalg4rDmRS1FzqjPX2pToDFiBcunc1I8cuE+dfdHFGYT2kAl6svQZRkaJk/pP5
+ eNBz6anAZ0YNDmzuGcoo/KrRA97t3SdTI+uDhyrx6RMweXsYuJA1qV3bW8mBNnJBmbgNt/7dh
+ yfRI5CD8rrk337n3d8PLqCoA30D8oOefEXFDQQAESwAMikuKA4iQZm6JLWWOSgXp7mw6+g95/
+ XbfyM8cu4MBGoTalfTyMOqnXZVIno5vy1iwC44bm2y72kxU/CQTW1VDALXWG6+NGNX9DOuIEh
+ 3JaTIgOyX5Ya/3pnRTJkZmxBr/3RDtZqfNX2Bpn+eXVDsplR2Q+E6pc/1Kx/TZJ7lVHjZHGTn
+ maaryzn2MpnT0ycpE4ClAZkqk+qbL1qVAlyWVOK8opDaPx97NRj0TrNXOCRQFypBDO4d0tt1T
+ nkxo/eApRLvvm6uO5Dgb+npMCQUdiLHW1FdnCXxFSzSsk2HfTd4vm7sH9H4hzmPb5rWHHT8SR
+ 0ZOcwuxnWDHuC/JH6XJFpTHykSRnJyZ0QgV/ACS/5FpkRqXY5Hdgl423R6NLGocEqCrMqrxCx
+ 6gRPnKyL4Ot2A9kyl7wHJ0ZTyowYel3q8nB89Mw7yj//ky1iOrYClNXqi7O7Zgk53+vF4O3WO
+ A/NLylDQNoRsM4am1npqBHxjaGDhyu3We6Bi4IPpYRV1ugZgh6NCZTyrL+34WCtuJduEphMlm
+ N+POdiXSDStLnOwFWtYph4xAFZsqDCex6rmQ35tl01sSALMnLFIEF1aLgLpVwTuoscoiUKKcP
+ CdLGlTT9fG22j7hv7yNV35k2SGzs0e2lIRHXmk3isOpnavgKeyCWpFWUgIsvcorZeaVO78jfA
+ IIckgotm6R3eoFQaQB+30SW7AGnb0pEMOHIwjzriWLfimG3r9Dw5jDm58gOhA1FPkEY4UoGgF
+ QO99dG61BBUSekZ1UnpTVvLwCv+Iyy7ZZFfDElWQuwVhmA+/Dh/pOLk5FXQsZ0bQUc36Whbwd
+ WF9T5FiRO7GQkvDLJlym/jmG/BL+d37XfdfL7hKvcQQQ8NOesThqhAzQb04PjUt3vu84nwnRe
+ 2QAnLosw2q7yG14V589IzunwL0qJflOAAM/12En6G1MN1omiz4dlgtunyQuMulJLdEXD3ZibJ
+ FK5JWVSWYiWEebtDP
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello Yaniv Rosner,
+>  However, a sub-key and a value can not co-exist under a parent key.
 
-The patch 3c9ada227c56: "bnx2x: Add Warpcore support for 578xx" from
-Jun 14, 2011, leads to the following static checker warning:
+How does this description fit to the key context =E2=80=9Ckernel.ftrace=E2=
+=80=9D?
 
-	drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c:5638 bnx2x_link_settings_status()
-	warn: assigning (-22) to unsigned variable
-
-drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c
-  5614  static u8 bnx2x_link_settings_status(struct bnx2x_phy *phy,
-               ^^
-This is a u8.  My understanding is that the function returns 1 on
-success and 0 on failure?
-
-  5615                                       struct link_params *params,
-  5616                                       struct link_vars *vars)
-  5617  {
-  5618          struct bnx2x *bp = params->bp;
-  5619  
-  5620          u16 gp_status, duplex = DUPLEX_HALF, link_up = 0, speed_mask;
-  5621          int rc = 0;
-  5622  
-  5623          /* Read gp_status */
-  5624          CL22_RD_OVER_CL45(bp, phy,
-  5625                            MDIO_REG_BANK_GP_STATUS,
-  5626                            MDIO_GP_STATUS_TOP_AN_STATUS1,
-  5627                            &gp_status);
-  5628          if (gp_status & MDIO_GP_STATUS_TOP_AN_STATUS1_DUPLEX_STATUS)
-  5629                  duplex = DUPLEX_FULL;
-  5630          if (gp_status & MDIO_GP_STATUS_TOP_AN_STATUS1_LINK_STATUS)
-  5631                  link_up = 1;
-  5632          speed_mask = gp_status & GP_STATUS_SPEED_MASK;
-  5633          DP(NETIF_MSG_LINK, "gp_status 0x%x, is_link_up %d, speed_mask 0x%x\n",
-  5634                         gp_status, link_up, speed_mask);
-  5635          rc = bnx2x_get_link_speed_duplex(phy, params, vars, link_up, speed_mask,
-  5636                                           duplex);
-  5637          if (rc == -EINVAL)
-  5638                  return rc;
-                        ^^^^^^^^^
-This is -22 cast to u8 (success?).  The problem is that the
-bnx2x_get_link_speed_duplex() function only return -EINVAL and zero.
-
-  5639  
-  5640          if (gp_status & MDIO_GP_STATUS_TOP_AN_STATUS1_LINK_STATUS) {
-  5641                  if (SINGLE_MEDIA_DIRECT(params)) {
-  5642                          vars->duplex = duplex;
-  5643                          bnx2x_flow_ctrl_resolve(phy, params, vars, gp_status);
-  5644                          if (phy->req_line_speed == SPEED_AUTO_NEG)
-  5645                                  bnx2x_xgxs_an_resolve(phy, params, vars,
-  5646                                                        gp_status);
-  5647                  }
-  5648          } else { /* Link_down */
-  5649                  if ((phy->req_line_speed == SPEED_AUTO_NEG) &&
-  5650                      SINGLE_MEDIA_DIRECT(params)) {
-  5651                          /* Check signal is detected */
-  5652                          bnx2x_check_fallback_to_cl37(phy, params);
-  5653                  }
-  5654          }
-  5655  
-  5656          /* Read LP advertised speeds*/
-  5657          if (SINGLE_MEDIA_DIRECT(params) &&
-  5658              (vars->link_status & LINK_STATUS_AUTO_NEGOTIATE_COMPLETE)) {
-  5659                  u16 val;
-  5660  
-  5661                  CL22_RD_OVER_CL45(bp, phy, MDIO_REG_BANK_CL73_IEEEB1,
-  5662                                    MDIO_CL73_IEEEB1_AN_LP_ADV2, &val);
-  5663  
-  5664                  if (val & MDIO_CL73_IEEEB1_AN_ADV2_ADVR_1000M_KX)
-  5665                          vars->link_status |=
-  5666                                  LINK_STATUS_LINK_PARTNER_1000TFD_CAPABLE;
-  5667                  if (val & (MDIO_CL73_IEEEB1_AN_ADV2_ADVR_10G_KX4 |
-  5668                             MDIO_CL73_IEEEB1_AN_ADV2_ADVR_10G_KR))
-  5669                          vars->link_status |=
-  5670                                  LINK_STATUS_LINK_PARTNER_10GXFD_CAPABLE;
-  5671  
-  5672                  CL22_RD_OVER_CL45(bp, phy, MDIO_REG_BANK_OVER_1G,
-  5673                                    MDIO_OVER_1G_LP_UP1, &val);
-  5674  
-  5675                  if (val & MDIO_OVER_1G_UP1_2_5G)
-  5676                          vars->link_status |=
-  5677                                  LINK_STATUS_LINK_PARTNER_2500XFD_CAPABLE;
-  5678                  if (val & (MDIO_OVER_1G_UP1_10G | MDIO_OVER_1G_UP1_10GH))
-  5679                          vars->link_status |=
-  5680                                  LINK_STATUS_LINK_PARTNER_10GXFD_CAPABLE;
-  5681          }
-  5682  
-  5683          DP(NETIF_MSG_LINK, "duplex %x  flow_ctrl 0x%x link_status 0x%x\n",
-  5684                     vars->duplex, vars->flow_ctrl, vars->link_status);
-  5685          return rc;
-                       ^^
-This rc is always zero (failure/link down?).
-
-  5686  }
-
-regards,
-dan carpenter
+Regards,
+Markus

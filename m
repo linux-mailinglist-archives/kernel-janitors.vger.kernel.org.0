@@ -2,32 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76D07174199
-	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 22:46:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C3B051741C3
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 23:00:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726733AbgB1VqR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 28 Feb 2020 16:46:17 -0500
-Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:46035 "EHLO
+        id S1726682AbgB1V7y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 28 Feb 2020 16:59:54 -0500
+Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:34971 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726695AbgB1VqR (ORCPT
+        with ESMTP id S1726642AbgB1V7x (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 28 Feb 2020 16:46:17 -0500
+        Fri, 28 Feb 2020 16:59:53 -0500
 Received: from localhost.localdomain ([92.140.213.100])
         by mwinf5d18 with ME
-        id 8Mee220022AY1JL03MefEb; Fri, 28 Feb 2020 22:38:44 +0100
+        id 8Mzp2200A2AY1JL03Mzq0s; Fri, 28 Feb 2020 22:59:51 +0100
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 28 Feb 2020 22:38:44 +0100
+X-ME-Date: Fri, 28 Feb 2020 22:59:51 +0100
 X-ME-IP: 92.140.213.100
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     broonie@kernel.org, f.fainelli@gmail.com,
-        bcm-kernel-feedback-list@broadcom.com, jonas.gorski@gmail.com
-Cc:     linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+To:     jejb@linux.ibm.com, martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] spi: bcm63xx-hsspi: Really keep pll clk enabled
-Date:   Fri, 28 Feb 2020 22:38:38 +0100
-Message-Id: <20200228213838.7124-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] scsi: aha1740: Fix an errro handling path in 'aha1740_probe()'
+Date:   Fri, 28 Feb 2020 22:59:48 +0100
+Message-Id: <20200228215948.7473-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -36,48 +35,30 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The purpose of commit 0fd85869c2a9 ("spi/bcm63xx-hsspi: keep pll clk enabled")
-was to keep the pll clk enabled through the lifetime of the device.
+If 'dma_map_single()' fails, the ref counted 'shpnt' will be decremented
+twice because 'scsi_host_put()' is called in the if block, and in the
+error handling path.
 
-In order to do that, some 'clk_prepare_enable()'/'clk_disable_unprepare()'
-calls have been added in the error handling path of the probe function, in
-the remove function and in the suspend and resume functions.
+Axe one of these calls.
 
-However, a 'clk_disable_unprepare()' call has been unfortunately left in
-the probe function. So the commit seems to be more or less a no-op.
-
-Axe it now, so that the pll clk is left enabled through the lifetime of
-the device, as described in the commit.
-
-Fixes: 0fd85869c2a9 ("spi/bcm63xx-hsspi: keep pll clk enabled")
+Fixes: 1dc09e120c83 ("scsi: aha1740: stop using scsi_unregister")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
-To be honest, I don't see why we need to keep pll clk, or hsspi clk
-enabled during the lifetime of the driver. My understanding of the code is
-that it is only used to get the 'speed_hz' value in the probe function.
-This value is never refreshed afterwards.
-I don't see the point in enabling/disabling the clks. I think that they
-both could be disabled in the probe function, without the need to keep
-track in the bcm63xx_hsspi structure, neither during pm cycles or the
-remove fucntion.
-
-However, my knowledge on drivers is limited and I may be completly wrong :)
----
- drivers/spi/spi-bcm63xx-hsspi.c | 1 -
+ drivers/scsi/aha1740.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 7327309ea3d5..6c235306c0e4 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -366,7 +366,6 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
- 			goto out_disable_clk;
- 
- 		rate = clk_get_rate(pll_clk);
--		clk_disable_unprepare(pll_clk);
- 		if (!rate) {
- 			ret = -EINVAL;
- 			goto out_disable_pll_clk;
+diff --git a/drivers/scsi/aha1740.c b/drivers/scsi/aha1740.c
+index da4150c17781..5a227c03895f 100644
+--- a/drivers/scsi/aha1740.c
++++ b/drivers/scsi/aha1740.c
+@@ -592,7 +592,6 @@ static int aha1740_probe (struct device *dev)
+ 					     DMA_BIDIRECTIONAL);
+ 	if (!host->ecb_dma_addr) {
+ 		printk (KERN_ERR "aha1740_probe: Couldn't map ECB, giving up\n");
+-		scsi_host_put (shpnt);
+ 		goto err_host_put;
+ 	}
+ 	
 -- 
 2.20.1
 

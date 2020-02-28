@@ -2,105 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BCE1172F3B
-	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 04:15:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58447172FD2
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 05:36:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730624AbgB1DPk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Feb 2020 22:15:40 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60178 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730569AbgB1DPj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Feb 2020 22:15:39 -0500
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3C7E52469D;
-        Fri, 28 Feb 2020 03:15:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582859739;
-        bh=bP/pt7lgm/aRI4m8r78wN75tpYTiIei79Uime6uh70Q=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=R8h1iJXoXJzzYQPKRQPg2tgrYijzLEN/Q7nRgjAc/RI8B9FdpQlisXVFiRaUgZ+nM
-         8qyfN6/OKg63TVM0mleW97377oPKSaK5isyb0YAk38WBctUV0V5scNwqAP7nImNUzg
-         FE41onIuxYk/obHWO6seNPuqvyK2/IGg+Rrncxt8=
-Date:   Fri, 28 Feb 2020 12:15:35 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        id S1730923AbgB1EgV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Feb 2020 23:36:21 -0500
+Received: from bombadil.infradead.org ([198.137.202.133]:47786 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730800AbgB1EgV (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Feb 2020 23:36:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description;
+        bh=lTW94UBCUPJRu/vgnaOKmsgRovgXjQnsj+f3JMzvz1c=; b=IfcRCBLIneNu+5UXCSEUAv3LJW
+        pVzVIiYsNQ9tvEhVY/XWyzm7EUzAJuy5FUvfEDbE1yY1tBcwrfSerN80p82gTFBLm5yv5FoIHveVU
+        mdUXVyMOiVIavG0A/r2XN+BeRwY3POU2KmLP4niUcDhkGap1WrPpT8TUwoigO/zb2BYkgajKeLX+n
+        Em9Lm6k9r5mySOlgTu64n2fbH4iyzgf8YlHOXhRET/OTHecmQnByFgtWe0+TJxwCeFTVv0LLdmrBt
+        bmkgbeVh/nrvgJq80kf7eguuvTzwsSoD1AH2O3Y0bVP2Y+0aVQRyfBLN01feScl52e0LqGeyuc9Vc
+        2KSGrHlQ==;
+Received: from [2601:1c0:6280:3f0::19c2]
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1j7XNr-0008GL-6V; Fri, 28 Feb 2020 04:36:20 +0000
+Subject: Re: [PATCH 1/2] Documentation: bootconfig: Update boot configuration
+ documentation
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        linux-doc@vger.kernel.org
+Cc:     Jonathan Corbet <corbet@lwn.net>,
         Steven Rostedt <rostedt@goodmis.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 2/2] Documentation: bootconfig: Add EBNF syntax file
-Message-Id: <20200228121535.0c0e0e67fb11f1e07ea18e4c@kernel.org>
-In-Reply-To: <2390b729-1b0b-26b5-66bc-92e40e3467b1@web.de>
 References: <158278834245.14966.6179457011671073018.stgit@devnote2>
-        <158278836196.14966.3881489301852781521.stgit@devnote2>
-        <2390b729-1b0b-26b5-66bc-92e40e3467b1@web.de>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ <158278835238.14966.16157216423901327777.stgit@devnote2>
+ <8514c830-319b-33e9-025a-79d399674fb3@web.de>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <130b7415-28b9-b95f-b0a4-3991b530571d@infradead.org>
+Date:   Thu, 27 Feb 2020 20:36:18 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
+MIME-Version: 1.0
+In-Reply-To: <8514c830-319b-33e9-025a-79d399674fb3@web.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 27 Feb 2020 20:53:03 +0100
-Markus Elfring <Markus.Elfring@web.de> wrote:
+On 2/27/20 11:12 AM, Markus Elfring wrote:
+> 
+>> +The boot configuration syntax allows user to merge partially same word keys
+>>  by brace. For example::
+> 
+> “by braces.
+> For example::”?
 
-> Thanks for such a contribution.
-> 
-> 
-> > Add an extended Backus–Naur form (EBNF) syntax file for
-> 
-> Can it matter to mention the specific file format specification version
-> which should be applied finally?
-> 
-> Would you like to refer to any standard variant?
+It is fine as Masami has it IMO.
 
-I choose ISO/IEC 14977 : 1996(E), but it seems no good.
+> 
+> 
+>> +The file /proc/bootconfig is a user-space interface to the configuration
+> 
+> “… is an user-…”?
 
-Don’t Use ISO/IEC 14977 Extended Backus-Naur Form (EBNF)
-https://dwheeler.com/essays/dont-use-iso-14977-ebnf.html
+No, "is a user-space" or "is a userspace" is good.
 
-I agree with this article. the ISO 14977 is halfway...
-Not easy for human, but not good for machine too.
-(at least it should support #xN as same as W3C BNF.
-
-I'll drop it until rewriten by other standerd.
-
-> > bootconfig so that user can logically understand how they
-> 
-> Wording alternative “… that users can …”?
-> 
-> 
-> > can write correct boot configuration file.
-> 
-> Related development tools provide some benefits then, don't they?
-> 
-> 
-> 
-> …
-> > +++ b/Documentation/admin-guide/bootconfig.ebnf
-> …
-> > +digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
-> 
-> Can the specification of such alternatives (or value ranges) become
-> more compact (depending on a selected standard)?
-
-W3C EBNF support it, ISO14977 doesn't.
-
-> …
-> > +++ b/Documentation/admin-guide/bootconfig.rst
-> …
-> > +Here is the boot configuration file syntax written in EBNF.
-> 
-> I suggest to replace the abbreviation “EBNF” by the term “extended Backus–Naur form”
-> in such a sentence.
-
-I think EBNF is enough.
-
-Thank you,
 
 -- 
-Masami Hiramatsu <mhiramat@kernel.org>
+~Randy
+

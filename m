@@ -2,82 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4991172A74
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Feb 2020 22:52:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D498C172DBA
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 01:54:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729679AbgB0VwJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Feb 2020 16:52:09 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35166 "EHLO mail.kernel.org"
+        id S1730345AbgB1Ax7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Feb 2020 19:53:59 -0500
+Received: from helcar.hmeau.com ([216.24.177.18]:55702 "EHLO fornost.hmeau.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726791AbgB0VwJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Feb 2020 16:52:09 -0500
-Received: from localhost (mobile-166-175-186-165.mycingular.net [166.175.186.165])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9FA222469F;
-        Thu, 27 Feb 2020 21:52:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582840329;
-        bh=YLXCleFm1NkklXXaZAYKs9oeGWD4D6WAcvWOVfS/Yds=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=KUpG0iuBefzm2uAQI7WMmOBdna/ED1rYoPmTnh50Hmf0hYfPmfxDqnNcvK8XIZKnZ
-         h8ynJuHrNhfDB8Jxz7TebXoXKykU5LX04SjWPVns2lWXZCOLcbPe4w9bQQxyEg/s5v
-         y/FLYa40/vS/VpnAdE/1JM/temjC7d3e+wylbJ2c=
-Date:   Thu, 27 Feb 2020 15:52:06 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Tom Joseph <tjoseph@cadence.com>,
-        Andrew Murray <andrew.murray@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        linux-pci@vger.kernel.org, Joe Perches <joe@perches.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: adjust entry to moving cadence drivers
-Message-ID: <20200227215206.GA146772@google.com>
+        id S1729984AbgB1Ax7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Feb 2020 19:53:59 -0500
+Received: from gwarestrin.me.apana.org.au ([192.168.0.7] helo=gwarestrin.arnor.me.apana.org.au)
+        by fornost.hmeau.com with smtp (Exim 4.89 #2 (Debian))
+        id 1j7TuX-0000P4-WD; Fri, 28 Feb 2020 11:53:51 +1100
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 28 Feb 2020 11:53:49 +1100
+Date:   Fri, 28 Feb 2020 11:53:49 +1100
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Zaibo Xu <xuzaibo@huawei.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] crypto: hisilicon: remove redundant assignment of
+ pointer ctx
+Message-ID: <20200228005349.GE9506@gondor.apana.org.au>
+References: <20200222142409.141057-1-colin.king@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200221185402.4703-1-lukas.bulwahn@gmail.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+In-Reply-To: <20200222142409.141057-1-colin.king@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Feb 21, 2020 at 07:54:02PM +0100, Lukas Bulwahn wrote:
-> Commit de80f95ccb9c ("PCI: cadence: Move all files to per-device cadence
-> directory") moved files of the pci cadence drivers, but did not adjust
-> the entry in MAINTAINERS.
+On Sat, Feb 22, 2020 at 02:24:09PM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Since then, ./scripts/get_maintainer.pl --self-test complains:
+> Pointer ctx is being re-assigned with the same value as it
+> was initialized with. The second assignment is redundant and
+> can be removed.
 > 
->   warning: no file matches F: drivers/pci/controller/pcie-cadence*
-> 
-> So, repair the MAINTAINERS entry now.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-
-Applied to for-linus for v5.6, thanks!
-
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
-> Tom, Andrew, please ack. Lorenzo, please pick this patch.
-> applies cleanly on current master and next-20200221
-> 
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 4beb8dc4c7eb..d8f690f0e838 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -12740,7 +12740,7 @@ M:	Tom Joseph <tjoseph@cadence.com>
->  L:	linux-pci@vger.kernel.org
->  S:	Maintained
->  F:	Documentation/devicetree/bindings/pci/cdns,*.txt
-> -F:	drivers/pci/controller/pcie-cadence*
-> +F:	drivers/pci/controller/cadence/
->  
->  PCI DRIVER FOR FREESCALE LAYERSCAPE
->  M:	Minghuan Lian <minghuan.Lian@nxp.com>
-> -- 
-> 2.17.1
-> 
+>  drivers/crypto/hisilicon/sec2/sec_crypto.c | 1 -
+>  1 file changed, 1 deletion(-)
+
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

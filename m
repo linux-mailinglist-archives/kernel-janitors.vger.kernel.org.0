@@ -2,92 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B22A173D52
-	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 17:44:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71018173D5F
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 17:45:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726695AbgB1QoH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 28 Feb 2020 11:44:07 -0500
-Received: from mail-qk1-f171.google.com ([209.85.222.171]:45208 "EHLO
-        mail-qk1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726536AbgB1QoH (ORCPT
+        id S1726077AbgB1Qp7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 28 Feb 2020 11:45:59 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:35348 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725730AbgB1Qp6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 28 Feb 2020 11:44:07 -0500
-Received: by mail-qk1-f171.google.com with SMTP id z12so3499891qkg.12
-        for <kernel-janitors@vger.kernel.org>; Fri, 28 Feb 2020 08:44:06 -0800 (PST)
+        Fri, 28 Feb 2020 11:45:58 -0500
+Received: by mail-wr1-f65.google.com with SMTP id r7so3725786wro.2
+        for <kernel-janitors@vger.kernel.org>; Fri, 28 Feb 2020 08:45:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
+        d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=CCtY0Qacs9wOnWXud8i9ge7LpLEsLeAVVMXg1sWOnyw=;
-        b=D2rlkH59BNrsno4OCSGNHcrjEAEc9dr5OL5Qxmrk0mGVZ34lYCzS5cZTjosC6ZnVAT
-         3BFQdQ19TdF4h2LaE8zjalI05AhcG72NHec77qPlHBWRH//SFAx+6Y/5MFykyexwMyTo
-         5ehmgBUpXVcOXVyQgB5zYxYRnNPB6qnk1vakhcOAqTDTvuXJORKyj4s7iPsaF7Z9mVvs
-         OaLgkjs4jNzhJFyKOy3/54RTg4d+xhP9DVLc9uuRZTvbJuwUXwufSD53LmnE6z252pdA
-         kwSOVwoTuMXfzH/TqkKMKz3g/PF439oIoM+KPEmqOG89ccSKJctElfIZLiEFLhjwSLFB
-         V6KA==
+         :content-disposition:in-reply-to;
+        bh=dnB3YbRslroktKcVWBmtkOUB1kEjE4Aqzh9tCjoW9sA=;
+        b=iJrIjG+IiWYGIuv4aS0pjFrtNOSHON/kkOz+fiN9gPNqV/5tmaqI5quNYhYtXpecqj
+         h0lPxpt0G2l3YPQbieYSSvsK9K1gO4106/0u8OWo7DnozluA3vQdUjQ7TMiPNXIbXNBF
+         iTpUnf84x/8gy3ffZuQouprp9+Aa16QxOw013HNiv2Zr2ZTU0WKzVuFvxSZsDw9qO1y8
+         xDkWfOJbsUAe51FkbTGW4vTOwIubvGsJlqATWH9CkYAyBK55vv7ZwHj5hwgWdd2WGvwG
+         Ubm3hqu/llx165YndZ4ECuFC8ejjAW0G3p9AbLSNA4r51+wOvxBKRkmnrwIUTYAyqbAY
+         gGGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=CCtY0Qacs9wOnWXud8i9ge7LpLEsLeAVVMXg1sWOnyw=;
-        b=dSTnrDzezk5zvWG7j1kGZ9bOMsLvJzX86uN3x6oaQuWttQ4zvHXEZslkNmWZwRvm25
-         iElB9WSbXT10iB1LygTyWZCroe9O2WleABMUvgAbm9xhBKDpi8jhvsut9o9MwmDXnuw9
-         5iXRaUYNfsoOhSWf7x0pon+/Q5T/P2EVhUkOD4/vmrpEyi5kQZepfxC2mCq+F0lJ4UPD
-         SRfjabAeTg8hQkdUE7BV0xjiidFWygfzUDAQOY2FeEa3c22Dxn+bgeCQkHaccSTk0iGC
-         7mpaMyqZDqOgDCKP4A49149ITjXBTi2eRG019aDcF7L0RoVEqqBuCkIPnZmvqWC4G2b3
-         pBlQ==
-X-Gm-Message-State: APjAAAVvJxuzOn9fU0xJboG1r2bogb3/052b9yLI1MU3xZKirF8lRn42
-        48UHqRgpPy4htcxL9gZ5n1n2xg==
-X-Google-Smtp-Source: APXvYqxfCTu7tTgRtENnzEaKttDXe85vEF0rcY8Ey+zJZn71YPOTRBCqwgqrX+uZgpau/Nsyi1/g3A==
-X-Received: by 2002:a37:4d10:: with SMTP id a16mr5155052qkb.325.1582908246112;
-        Fri, 28 Feb 2020 08:44:06 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.57.212])
-        by smtp.gmail.com with ESMTPSA id r10sm5110838qkm.23.2020.02.28.08.44.05
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 28 Feb 2020 08:44:05 -0800 (PST)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1j7ik9-0001sw-BL; Fri, 28 Feb 2020 12:44:05 -0400
-Date:   Fri, 28 Feb 2020 12:44:05 -0400
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Selvin Xavier <selvin.xavier@broadcom.com>,
-        Devesh Sharma <devesh.sharma@broadcom.com>,
-        Somnath Kotur <somnath.kotur@broadcom.com>,
-        Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>,
-        Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] RDMA/bnxt_re: Remove set but not used variables
- 'pg' and 'idx'
-Message-ID: <20200228164405.GC7181@ziepe.ca>
-References: <20200227064900.92255-1-yuehaibing@huawei.com>
+         :mime-version:content-disposition:in-reply-to;
+        bh=dnB3YbRslroktKcVWBmtkOUB1kEjE4Aqzh9tCjoW9sA=;
+        b=RW3fvr4eZlmYZnTjBkFBC9uqdphU457vBWyGy+Ztn7b6X7JT24637qeDdU/mpsQKtB
+         SSHZe1n4Ua4s7IbL55QrqotOmYVeoowG21+9pAHbJEWX045uiQHnAeZyN8ZU4FGmBg4z
+         l9KAXYUxZv6F/1EEmsMcDikikOyKxsZcxa2IlZ3lnOjW9EeoK7BHDQ7ve2ulef+BMPvz
+         LsXR0jPPUuAMEhbhbsBEGmY3MvFzV2vZRMi3D2sBf2bYHBtSy1x1UZq/ECcqmrDWAj5h
+         dnLnQum43jdWLjRgL3YvbwJZQArMiriMEOmZt43fhTV4Fcui63PPXhgn8fnw2BuSGVWg
+         cBEw==
+X-Gm-Message-State: APjAAAXtFUblrEdj6jLEtz7foUiX18x1gP/a28V677bxiKYlbAunnwsf
+        jo2vYO8UBULCk94rGjIhnUYFJA==
+X-Google-Smtp-Source: APXvYqxeVMWKAvVvcMF6nm972He/fdlmMo/3+VBeCasLPa2AoHRCa64fawVhVSsW5qeL9ISZwA3mwQ==
+X-Received: by 2002:adf:cd88:: with SMTP id q8mr5442082wrj.286.1582908355553;
+        Fri, 28 Feb 2020 08:45:55 -0800 (PST)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id j5sm13406763wrw.24.2020.02.28.08.45.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Feb 2020 08:45:54 -0800 (PST)
+Date:   Fri, 28 Feb 2020 16:45:53 +0000
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Gyungoh Yoo <jack.yoo@skyworksinc.com>,
+        Bryan Wu <cooloney@gmail.com>, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][V2] backlight: sky81452: insure while loop does not
+ allow negative array indexing
+Message-ID: <20200228164553.eojh3hbrymq3tw2d@holly.lan>
+References: <20200226195826.6567-1-colin.king@canonical.com>
+ <20200227114623.vaevrdwiduxa2mqs@holly.lan>
+ <b0e21719-3a7c-099a-292d-c3fa65a84fe8@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200227064900.92255-1-yuehaibing@huawei.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <b0e21719-3a7c-099a-292d-c3fa65a84fe8@canonical.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Feb 27, 2020 at 06:49:00AM +0000, YueHaibing wrote:
-> Fixes gcc '-Wunused-but-set-variable' warning:
+On Thu, Feb 27, 2020 at 03:10:43PM +0000, Colin Ian King wrote:
+> On 27/02/2020 11:46, Daniel Thompson wrote:
+> > On Wed, Feb 26, 2020 at 07:58:26PM +0000, Colin King wrote:
+> >> From: Colin Ian King <colin.king@canonical.com>
+> >>
+> >> In the unlikely event that num_entry is zero, the while loop
+> >> pre-decrements num_entry to cause negative array indexing into the
+> >> array sources. Fix this by iterating only if num_entry >= 0.
+> >>
+> >> Addresses-Coverity: ("Out-of-bounds read")
+> >> Fixes: f705806c9f35 ("backlight: Add support Skyworks SKY81452 backlight driver")
+> >> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> >> ---
+> >>
+> >> V2: fix typo in commit subject line
+> > 
+> > Isn't the correct spelling "ensure"?
 > 
-> drivers/infiniband/hw/bnxt_re/qplib_rcfw.c: In function '__send_message':
-> drivers/infiniband/hw/bnxt_re/qplib_rcfw.c:101:10: warning:
->  variable 'idx' set but not used [-Wunused-but-set-variable]
-> drivers/infiniband/hw/bnxt_re/qplib_rcfw.c:101:6: warning:
->  variable 'pg' set but not used [-Wunused-but-set-variable]
-> 
-> commit cee0c7bba486 ("RDMA/bnxt_re: Refactor command queue management code")
-> involved this, but not used.
-> 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> ---
->  drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 4 ----
->  1 file changed, 4 deletions(-)
+> It is. V1 is correct after all. Doh.
 
-Applied to for-next, thanks
+It wasn't spelt "ensure" in v1... 
 
-Jason
+
+Daniel.

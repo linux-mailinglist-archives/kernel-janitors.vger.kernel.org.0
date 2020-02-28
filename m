@@ -2,114 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2886B17380F
-	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 14:16:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E012F173837
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 14:23:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726167AbgB1NQM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 28 Feb 2020 08:16:12 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:46872 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725796AbgB1NQL (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 28 Feb 2020 08:16:11 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1j7fUs-0000UF-L0; Fri, 28 Feb 2020 13:16:06 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/amd/display: fix indentation issue on a hunk of code
-Date:   Fri, 28 Feb 2020 13:16:06 +0000
-Message-Id: <20200228131606.65041-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+        id S1726118AbgB1NXP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 28 Feb 2020 08:23:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40520 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725892AbgB1NXP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 28 Feb 2020 08:23:15 -0500
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 552DC2469D;
+        Fri, 28 Feb 2020 13:23:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582896195;
+        bh=/xfaJMoeMDPFtvDaD6zvshgBCk2MToM3z6YB0J1XM6I=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=wUVgji7WOyczOtZlOltRQm/c7ah9cFPS6gN9u6p9VC9BlGbdKhavlPFqh9Ia8D2Ux
+         1PMqjFTDjibH5oakjj6y+2efFfr+n2pWS8KH9W5mHqUwg+OMQeUre1/Hz1E3bGUy1I
+         08CJRfcTDdkPP9gTBWOsUDfqRq/ymtjtVuAdO9OY=
+Date:   Fri, 28 Feb 2020 22:23:11 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [v2 0/1] Documentation: bootconfig: Documentation updates
+Message-Id: <20200228222311.f5b9448027031b16a3be372a@kernel.org>
+In-Reply-To: <957cef56-04b0-3889-6c95-a8ed7606b68d@web.de>
+References: <158287861133.18632.12035327305997207220.stgit@devnote2>
+        <957cef56-04b0-3889-6c95-a8ed7606b68d@web.de>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Fri, 28 Feb 2020 10:00:55 +0100
+Markus Elfring <Markus.Elfring@web.de> wrote:
 
-There are multiple statements that are indented incorrectly. Add
-in the missing tabs.
+> > I decided to drop EBNF (extended Backus–Naur form) patch
+> > since the ISO/IEC 14977 EBNF seems not carefully defined
+> 
+> Significant efforts happened also for this standard.
+> Does its revision refer still to the year 1996?
+> 
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- .../gpu/drm/amd/display/dc/calcs/dce_calcs.c  | 46 +++++++++----------
- 1 file changed, 23 insertions(+), 23 deletions(-)
+Didn't you read the article I shared? I actually wrote up the EBNF
+(ISO/IEC 14977) that was a good pazzle, but just a toy. I found
+no one use it to define their data format, according to the
+article, including ISO itself (lol!) and there are many local
+extension, including W3C EBNF, and those say "I'm EBNF".
+Well, to say the least, I feel it is quite confused.
 
-diff --git a/drivers/gpu/drm/amd/display/dc/calcs/dce_calcs.c b/drivers/gpu/drm/amd/display/dc/calcs/dce_calcs.c
-index 5d081c42e81b..2c6db379afae 100644
---- a/drivers/gpu/drm/amd/display/dc/calcs/dce_calcs.c
-+++ b/drivers/gpu/drm/amd/display/dc/calcs/dce_calcs.c
-@@ -3265,33 +3265,33 @@ bool bw_calcs(struct dc_context *ctx,
- 				bw_fixed_to_int(bw_mul(data->
- 					stutter_exit_watermark[9], bw_int_to_fixed(1000)));
- 
--		calcs_output->stutter_entry_wm_ns[0].b_mark =
--			bw_fixed_to_int(bw_mul(data->
--				stutter_entry_watermark[4], bw_int_to_fixed(1000)));
--		calcs_output->stutter_entry_wm_ns[1].b_mark =
--			bw_fixed_to_int(bw_mul(data->
--				stutter_entry_watermark[5], bw_int_to_fixed(1000)));
--		calcs_output->stutter_entry_wm_ns[2].b_mark =
--			bw_fixed_to_int(bw_mul(data->
--				stutter_entry_watermark[6], bw_int_to_fixed(1000)));
--		if (ctx->dc->caps.max_slave_planes) {
--			calcs_output->stutter_entry_wm_ns[3].b_mark =
-+			calcs_output->stutter_entry_wm_ns[0].b_mark =
- 				bw_fixed_to_int(bw_mul(data->
--					stutter_entry_watermark[0], bw_int_to_fixed(1000)));
--			calcs_output->stutter_entry_wm_ns[4].b_mark =
-+					stutter_entry_watermark[4], bw_int_to_fixed(1000)));
-+			calcs_output->stutter_entry_wm_ns[1].b_mark =
- 				bw_fixed_to_int(bw_mul(data->
--					stutter_entry_watermark[1], bw_int_to_fixed(1000)));
--		} else {
--			calcs_output->stutter_entry_wm_ns[3].b_mark =
-+					stutter_entry_watermark[5], bw_int_to_fixed(1000)));
-+			calcs_output->stutter_entry_wm_ns[2].b_mark =
- 				bw_fixed_to_int(bw_mul(data->
--					stutter_entry_watermark[7], bw_int_to_fixed(1000)));
--			calcs_output->stutter_entry_wm_ns[4].b_mark =
-+					stutter_entry_watermark[6], bw_int_to_fixed(1000)));
-+			if (ctx->dc->caps.max_slave_planes) {
-+				calcs_output->stutter_entry_wm_ns[3].b_mark =
-+					bw_fixed_to_int(bw_mul(data->
-+						stutter_entry_watermark[0], bw_int_to_fixed(1000)));
-+				calcs_output->stutter_entry_wm_ns[4].b_mark =
-+					bw_fixed_to_int(bw_mul(data->
-+						stutter_entry_watermark[1], bw_int_to_fixed(1000)));
-+			} else {
-+				calcs_output->stutter_entry_wm_ns[3].b_mark =
-+					bw_fixed_to_int(bw_mul(data->
-+						stutter_entry_watermark[7], bw_int_to_fixed(1000)));
-+				calcs_output->stutter_entry_wm_ns[4].b_mark =
-+					bw_fixed_to_int(bw_mul(data->
-+						stutter_entry_watermark[8], bw_int_to_fixed(1000)));
-+			}
-+			calcs_output->stutter_entry_wm_ns[5].b_mark =
- 				bw_fixed_to_int(bw_mul(data->
--					stutter_entry_watermark[8], bw_int_to_fixed(1000)));
--		}
--		calcs_output->stutter_entry_wm_ns[5].b_mark =
--			bw_fixed_to_int(bw_mul(data->
--				stutter_entry_watermark[9], bw_int_to_fixed(1000)));
-+					stutter_entry_watermark[9], bw_int_to_fixed(1000)));
- 
- 			calcs_output->urgent_wm_ns[0].b_mark =
- 				bw_fixed_to_int(bw_mul(data->
+So, if you are interested in it, I don't stop you to write it up.
+I just keep away from it.
+
+Thank you,
+
 -- 
-2.25.0
+Masami Hiramatsu <mhiramat@kernel.org>
 

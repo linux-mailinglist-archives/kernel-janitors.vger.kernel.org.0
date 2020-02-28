@@ -2,54 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 173FC1741D5
-	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 23:13:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 521541741F2
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Feb 2020 23:23:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726287AbgB1WNB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 28 Feb 2020 17:13:01 -0500
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:51143 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726151AbgB1WNA (ORCPT
+        id S1726589AbgB1WXc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 28 Feb 2020 17:23:32 -0500
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:37121 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725957AbgB1WXc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 28 Feb 2020 17:13:00 -0500
-Received: by mail-wm1-f65.google.com with SMTP id a5so4998807wmb.0;
-        Fri, 28 Feb 2020 14:12:58 -0800 (PST)
+        Fri, 28 Feb 2020 17:23:32 -0500
+Received: by mail-wm1-f68.google.com with SMTP id a141so5011842wme.2;
+        Fri, 28 Feb 2020 14:23:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=4vEgSlwH75ppaka6b+eKVprx44dYfhzjy3hFcJ1TMew=;
-        b=Pgn/BGOmhwNTEW9jt9xY95LAAaP/UusK+8Su8i9f6r3ojI8KeWFQuDqpmJ1FzAhokR
-         tT8tcCFvUGmp/p70sk2gIiHpRUeylLGWL0bpUAO6Kdp85WvIFX6wGSHzmFI8l2B2gSvu
-         Qih+FYevFdaaedcaR0c6dFEw1RyExACbuXfv2iztndTNz8vDErMsRdzdevj4nTsTGOJ6
-         NTOLrb6stEwM/3MZb6szs7jgOysv2cZhuMjBdrdu1GiSbYicm/kFRAECfyHxazTcRyzX
-         785Z5a5QtAxxXzKU7+F7y4UVszryTRBQEdSvu2ZvpQmESl7UJRqRq5NbryYs4ZUr0G46
-         PJOw==
+        bh=l0tnqF1kF4eV88+pytdt7G0UCu2eYAnWTlo0vU6Ilok=;
+        b=rx2MB5km/YacdI2Ik586qXT79BmH9inBN4Wr/FzXSkLEdCiD2qvcO0iAKj9tpQ+b9o
+         eOeaFT6z59c5C0MsNLQwZ4xpyNKXhwR0lmawmtkSmRVSMz8Eid82tOPKKAPIXsWSEmPO
+         Ep/yg49pHIyYKQxIIiLHvDXaUEXUnNW+U3feVaDyfzT23aHcA8UhPV6aT0NAAh/89pqB
+         eB2nOJ1Tvki+g1Ln2H2lw0bGMtIO7tCudthpjoOXIjruVzC5tRzp02rzEMxz6zvu2n4A
+         FBY4s5HMJuKX9X5EozOrjx4WHKC5nIP+3kvr7DTnr//RJjzch83DK72/3FTplxOQCMzA
+         taXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=4vEgSlwH75ppaka6b+eKVprx44dYfhzjy3hFcJ1TMew=;
-        b=ohLTXiU4QI8eWvtuOjgrzO3ckH0Hctwc6AteKzs2XD2uR2OkspLo2c5oHT/a3Xp3M+
-         mpeW8oWAUqzWQfO8H7bnjsyeTcm5KnObF3CwgUBZENHf0HWUJLZ3l3FLIKvmdRxvVClz
-         t+7bUwMDUpMjvGEGR/rCiXcviYII+Lb+tbwfkIkO5TTiHmpwvHOoXw6UFWJYFaNZqe7r
-         F4Pa45KfZkEaEyA4OcPa1QvZUHk8f3eWhtkmd/Ac0oaFZjg4WoW8jlYwn3ofDrGAeAmK
-         Mz3lM4bdpdsSr35PC7afCBpNB+KJbza8GjcFN/AHjo9N/LeoxX1ljVLxLzcbqBpcBhIJ
-         NL2w==
-X-Gm-Message-State: APjAAAWdsvXRtaVrW/0LL/e8+Q6G/CeCCTplUbgm6tzF2PM0cpmTsvYD
-        8r1orSzHNXyurzFQbuWlfLDPHcJ+f5mz6/mqPXQ=
-X-Google-Smtp-Source: APXvYqyg3Su2Vwre81Y3TJjLjQDh/KfhxYi5ii+aVVnW0os7zljNoaDM0iXi4ScsRG1uz0qAapyLHxVvt9Xn+3EXPl0=
-X-Received: by 2002:a7b:c257:: with SMTP id b23mr6528043wmj.70.1582927977310;
- Fri, 28 Feb 2020 14:12:57 -0800 (PST)
+        bh=l0tnqF1kF4eV88+pytdt7G0UCu2eYAnWTlo0vU6Ilok=;
+        b=oie5acBEl8HjdsKKy5ndtePzXRb+OLnRrCY+4T2KU/3cAb6n+8/UAFCMUTzqeCKbSv
+         hRo7WKs2YLortD1xwWTK/7g307TeMvZpHO5F5txXXpi1r3OXa6fcWKfFHUwZgdJ9+mVr
+         Tq6cAww7kywCANdU0juFIwiIeftzkzyfUSuBxlEfj3FV+Ph8aFrLINVY8naAJg7W/f4d
+         jQ5EXVJhklxFMJWPQl7TnLJaZ6bcepr3fH0SUxCOoHJVS3Zx51W1u1GZ84atA30DQ2b8
+         GIFq6Q56PMLUWdLRTA1uRTklPDYxxTLwQRespNECQq9h4WtDsVzj7SzeMVGzHbCjfdQQ
+         cn1g==
+X-Gm-Message-State: APjAAAWHSsQ+8OoPciXU8Dq9VxT9e3+8cZnRnPtLAtHwmqYqOkTmOY7w
+        Dg871s1X4qS5w7GGwumtz6xtZEuIFDwYDiNk39I=
+X-Google-Smtp-Source: APXvYqxGoW/yNi+W5fE8+pSSWwKJBYHjV6hCLJqWEKQbGLWYXEA4cWY6XIX6tGqrsg90SouTwiQNSl6JXdhDeNKvtZ8=
+X-Received: by 2002:a05:600c:218b:: with SMTP id e11mr6822036wme.56.1582928609436;
+ Fri, 28 Feb 2020 14:23:29 -0800 (PST)
 MIME-Version: 1.0
-References: <20200228130821.64695-1-colin.king@canonical.com>
-In-Reply-To: <20200228130821.64695-1-colin.king@canonical.com>
+References: <20200228131606.65041-1-colin.king@canonical.com>
+In-Reply-To: <20200228131606.65041-1-colin.king@canonical.com>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Fri, 28 Feb 2020 17:12:45 -0500
-Message-ID: <CADnq5_NU-GFbj0pTkzjGeMh_J5KM_mNV_NJ_gMFsjt0-Xi=vZw@mail.gmail.com>
-Subject: Re: [PATCH][next] drm/amdkfd: fix indentation issue
+Date:   Fri, 28 Feb 2020 17:23:17 -0500
+Message-ID: <CADnq5_M17_MMfy8YqK-wn_aew1ZG2zZtsj7kaK5eM3=Em2zzzA@mail.gmail.com>
+Subject: Re: [PATCH][next] drm/amd/display: fix indentation issue on a hunk of code
 To:     Colin King <colin.king@canonical.com>
-Cc:     Felix Kuehling <Felix.Kuehling@amd.com>,
+Cc:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
         Alex Deucher <alexander.deucher@amd.com>,
         =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
         David Zhou <David1.Zhou@amd.com>,
@@ -65,33 +66,84 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Applied.  Thanks!
-
-On Fri, Feb 28, 2020 at 8:08 AM Colin King <colin.king@canonical.com> wrote:
+On Fri, Feb 28, 2020 at 8:16 AM Colin King <colin.king@canonical.com> wrote:
 >
 > From: Colin Ian King <colin.king@canonical.com>
 >
-> There is a statement that is indented with spaces instead of a tab.
-> Replace spaces with a tab.
+> There are multiple statements that are indented incorrectly. Add
+> in the missing tabs.
 >
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
+Applied.  Thanks!
+
+Alex
+
 > ---
->  drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  .../gpu/drm/amd/display/dc/calcs/dce_calcs.c  | 46 +++++++++----------
+>  1 file changed, 23 insertions(+), 23 deletions(-)
 >
-> diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-> index f547e4769831..5db42814dd51 100644
-> --- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-> +++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-> @@ -490,7 +490,7 @@ static ssize_t node_show(struct kobject *kobj, struct attribute *attr,
->                         dev->node_props.num_sdma_queues_per_engine);
->         sysfs_show_32bit_prop(buffer, "num_cp_queues",
->                         dev->node_props.num_cp_queues);
-> -    sysfs_show_64bit_prop(buffer, "unique_id",
-> +       sysfs_show_64bit_prop(buffer, "unique_id",
->                         dev->node_props.unique_id);
+> diff --git a/drivers/gpu/drm/amd/display/dc/calcs/dce_calcs.c b/drivers/gpu/drm/amd/display/dc/calcs/dce_calcs.c
+> index 5d081c42e81b..2c6db379afae 100644
+> --- a/drivers/gpu/drm/amd/display/dc/calcs/dce_calcs.c
+> +++ b/drivers/gpu/drm/amd/display/dc/calcs/dce_calcs.c
+> @@ -3265,33 +3265,33 @@ bool bw_calcs(struct dc_context *ctx,
+>                                 bw_fixed_to_int(bw_mul(data->
+>                                         stutter_exit_watermark[9], bw_int_to_fixed(1000)));
 >
->         if (dev->gpu) {
+> -               calcs_output->stutter_entry_wm_ns[0].b_mark =
+> -                       bw_fixed_to_int(bw_mul(data->
+> -                               stutter_entry_watermark[4], bw_int_to_fixed(1000)));
+> -               calcs_output->stutter_entry_wm_ns[1].b_mark =
+> -                       bw_fixed_to_int(bw_mul(data->
+> -                               stutter_entry_watermark[5], bw_int_to_fixed(1000)));
+> -               calcs_output->stutter_entry_wm_ns[2].b_mark =
+> -                       bw_fixed_to_int(bw_mul(data->
+> -                               stutter_entry_watermark[6], bw_int_to_fixed(1000)));
+> -               if (ctx->dc->caps.max_slave_planes) {
+> -                       calcs_output->stutter_entry_wm_ns[3].b_mark =
+> +                       calcs_output->stutter_entry_wm_ns[0].b_mark =
+>                                 bw_fixed_to_int(bw_mul(data->
+> -                                       stutter_entry_watermark[0], bw_int_to_fixed(1000)));
+> -                       calcs_output->stutter_entry_wm_ns[4].b_mark =
+> +                                       stutter_entry_watermark[4], bw_int_to_fixed(1000)));
+> +                       calcs_output->stutter_entry_wm_ns[1].b_mark =
+>                                 bw_fixed_to_int(bw_mul(data->
+> -                                       stutter_entry_watermark[1], bw_int_to_fixed(1000)));
+> -               } else {
+> -                       calcs_output->stutter_entry_wm_ns[3].b_mark =
+> +                                       stutter_entry_watermark[5], bw_int_to_fixed(1000)));
+> +                       calcs_output->stutter_entry_wm_ns[2].b_mark =
+>                                 bw_fixed_to_int(bw_mul(data->
+> -                                       stutter_entry_watermark[7], bw_int_to_fixed(1000)));
+> -                       calcs_output->stutter_entry_wm_ns[4].b_mark =
+> +                                       stutter_entry_watermark[6], bw_int_to_fixed(1000)));
+> +                       if (ctx->dc->caps.max_slave_planes) {
+> +                               calcs_output->stutter_entry_wm_ns[3].b_mark =
+> +                                       bw_fixed_to_int(bw_mul(data->
+> +                                               stutter_entry_watermark[0], bw_int_to_fixed(1000)));
+> +                               calcs_output->stutter_entry_wm_ns[4].b_mark =
+> +                                       bw_fixed_to_int(bw_mul(data->
+> +                                               stutter_entry_watermark[1], bw_int_to_fixed(1000)));
+> +                       } else {
+> +                               calcs_output->stutter_entry_wm_ns[3].b_mark =
+> +                                       bw_fixed_to_int(bw_mul(data->
+> +                                               stutter_entry_watermark[7], bw_int_to_fixed(1000)));
+> +                               calcs_output->stutter_entry_wm_ns[4].b_mark =
+> +                                       bw_fixed_to_int(bw_mul(data->
+> +                                               stutter_entry_watermark[8], bw_int_to_fixed(1000)));
+> +                       }
+> +                       calcs_output->stutter_entry_wm_ns[5].b_mark =
+>                                 bw_fixed_to_int(bw_mul(data->
+> -                                       stutter_entry_watermark[8], bw_int_to_fixed(1000)));
+> -               }
+> -               calcs_output->stutter_entry_wm_ns[5].b_mark =
+> -                       bw_fixed_to_int(bw_mul(data->
+> -                               stutter_entry_watermark[9], bw_int_to_fixed(1000)));
+> +                                       stutter_entry_watermark[9], bw_int_to_fixed(1000)));
+>
+>                         calcs_output->urgent_wm_ns[0].b_mark =
+>                                 bw_fixed_to_int(bw_mul(data->
 > --
 > 2.25.0
 >

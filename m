@@ -2,104 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B1A64174922
-	for <lists+kernel-janitors@lfdr.de>; Sat, 29 Feb 2020 21:15:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5116C174A4F
+	for <lists+kernel-janitors@lfdr.de>; Sun,  1 Mar 2020 00:59:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727490AbgB2UPt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 29 Feb 2020 15:15:49 -0500
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:36740 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727194AbgB2UPs (ORCPT
+        id S1727229AbgB2X7F (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 29 Feb 2020 18:59:05 -0500
+Received: from baldur.buserror.net ([165.227.176.147]:54392 "EHLO
+        baldur.buserror.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727120AbgB2X7F (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 29 Feb 2020 15:15:48 -0500
-Received: by mail-ed1-f66.google.com with SMTP id j17so7992897edp.3;
-        Sat, 29 Feb 2020 12:15:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=83XtZRDQEhO36ly5ioPaY5jSK1t+1NHljrwvavBmBqk=;
-        b=knGE8OUZrqbIrAlsvseI4k0JeRr28D7mmyGHwcyFZzDltOtCXXFxTfAweyG9NsW65X
-         8pZ6hC1+B13MUGVuP4L5lAfFb/TK1ZONQdWyY0l9xeVKCUbPwPshJET2ajfXhEtng3C3
-         gE0SH98RQJZVnfEe0Ev7YCr3ctlf5PMQOuetBixYP51XAlhC0oSVVZyd+IpnlsjtP0d1
-         bJLnIzCRhx2VSbdgVIMjkE2EgpiaAEM0D0tgc72pjQ5e3Bw2nW3mcKwqTCxaJHwjgdq9
-         k570l1V5Tu3L/fCKau/yJPc+Skld3ukzrLQxE53vt74mexx/oF3E/WJlzEhdA1WEkOUx
-         tAWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=83XtZRDQEhO36ly5ioPaY5jSK1t+1NHljrwvavBmBqk=;
-        b=o3LWsJZ0PkioYoy3aNB8ay8xrR6jSDXhkvIs0oXcDDGywtmQoiDggPTHDg3LiXkob3
-         6NAIf4gw4AZbu7VNPAxsNx0+lNhRMsoVwDN1AW3E419G7BNZnpEdAKoV6mkKrGwARGTz
-         ADhWs6xn+Yabr/aPYcuPKRMNu4WbEIo7D2KhmN/xLxax5AYgskskWWXlw56b1aBhDqcS
-         yBsEyihU9EhIANSNLZmb932dVcpFXBoQVAoeqGdmi/6KFrF7sf/kaVO8P3bGs9SWc8kF
-         gP0rM64aCKR78sfRac8mwO7Jnxu3ns8hRidD9RowVm4F/lL8qe5qLMuDRUl3lmTWUTgM
-         O0Sg==
-X-Gm-Message-State: APjAAAU3+/rVEPnwDOZmCoIBYwPoQBy1w15FLboAg1/ZtWzC0+JP1ql9
-        QrQ3Y8IdauOA2Do7IXmaIoHD9dUJ
-X-Google-Smtp-Source: APXvYqz4yLC+5Ur+o/5CkW8wsb2ZlX9ZntbPvBZjbeSmbeHoBSDcRQpX/pk56dgeahMl290dTlFD9A==
-X-Received: by 2002:aa7:d1d8:: with SMTP id g24mr10282059edp.39.1583007346914;
-        Sat, 29 Feb 2020 12:15:46 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2db9:dd00:6db6:cde:1055:4fb5])
-        by smtp.gmail.com with ESMTPSA id d2sm531156edr.97.2020.02.29.12.15.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Feb 2020 12:15:46 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Cc:     linux-media@vger.kernel.org, Joe Perches <joe@perches.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: adjust entry to refactoring smiapp.h
-Date:   Sat, 29 Feb 2020 21:15:31 +0100
-Message-Id: <20200229201531.6004-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Sat, 29 Feb 2020 18:59:05 -0500
+X-Greylist: delayed 2474 seconds by postgrey-1.27 at vger.kernel.org; Sat, 29 Feb 2020 18:59:04 EST
+Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
+        by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <oss@buserror.net>)
+        id 1j8BMa-0002MK-90; Sat, 29 Feb 2020 17:17:40 -0600
+Message-ID: <4b8581f5fd497b3fb1e5232510cd57c1e7ccb92d.camel@buserror.net>
+From:   Scott Wood <oss@buserror.net>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        galak@kernel.crashing.org, benh@kernel.crashing.org,
+        paulus@samba.org, mpe@ellerman.id.au
+Cc:     linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Date:   Sat, 29 Feb 2020 17:17:39 -0600
+In-Reply-To: <20200208140920.7652-1-christophe.jaillet@wanadoo.fr>
+References: <20200208140920.7652-1-christophe.jaillet@wanadoo.fr>
+Organization: Red Hat
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
+X-SA-Exim-Rcpt-To: christophe.jaillet@wanadoo.fr, galak@kernel.crashing.org, benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+X-SA-Exim-Mail-From: oss@buserror.net
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
+X-Spam-Level: 
+X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+        *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+        *      [score: 0.0000]
+        * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
+        *      this recipient and sender
+Subject: Re: [PATCH 2/2] powerpc/83xx: Add some error handling in
+ 'quirk_mpc8360e_qe_enet10()'
+X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 7cbeb2e1bf0c ("media: smiapp: Move definitions under driver
-directory") moved the definitions in include/media/i2c/smiapp.h into other
-files and removed include/media/i2c/smiapp.h.
+On Sat, 2020-02-08 at 15:09 +0100, Christophe JAILLET wrote:
+> In some error handling path, we should call "of_node_put(np_par)" or
+> some resource may be leaking in case of error.
+> 
+> Fixes: 8159df72d43e ("83xx: add support for the kmeter1 board.")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  arch/powerpc/platforms/83xx/km83xx.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
 
-Since then, ./scripts/get_maintainer.pl --self-test complains:
+Both patches:
+Acked-by: Scott Wood <oss@buserror.net>
 
-  warning: no file matches F: include/media/i2c/smiapp.h
 
-Remove MAINTAINER file entry to this removed file and while at it, update
-Sakari's email address in this section.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-Sakari, please ack this patch.
-Mauro, please pick this patch on your branch for linux-next.
-applies cleanly on next-20200228
-
-Sakari, I did not find an entry in mailmap to map your iki.fi mail address
-to your latest mail address. There are also three further entries with
-your iki.fi mail address in MAINTAINERS, that you could change to your
-intel address.
-
- MAINTAINERS | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 09b04505e7c3..33c8932a6756 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15392,11 +15392,10 @@ S:	Odd Fixes
- F:	drivers/net/ethernet/smsc/smc91x.*
- 
- SMIA AND SMIA++ IMAGE SENSOR DRIVER
--M:	Sakari Ailus <sakari.ailus@iki.fi>
-+M:	Sakari Ailus <sakari.ailus@linux.intel.com>
- L:	linux-media@vger.kernel.org
- S:	Maintained
- F:	drivers/media/i2c/smiapp/
--F:	include/media/i2c/smiapp.h
- F:	drivers/media/i2c/smiapp-pll.c
- F:	drivers/media/i2c/smiapp-pll.h
- F:	include/uapi/linux/smiapp.h
--- 
-2.17.1
+> diff --git a/arch/powerpc/platforms/83xx/km83xx.c
+> b/arch/powerpc/platforms/83xx/km83xx.c
+> index 306be75faec7..bcdc2c203ec9 100644
+> --- a/arch/powerpc/platforms/83xx/km83xx.c
+> +++ b/arch/powerpc/platforms/83xx/km83xx.c
+> @@ -60,10 +60,12 @@ static void quirk_mpc8360e_qe_enet10(void)
+>  	ret = of_address_to_resource(np_par, 0, &res);
+>  	if (ret) {
+>  		pr_warn("%s couldn't map par_io registers\n", __func__);
+> -		return;
+> +		goto out;
+>  	}
+>  
+>  	base = ioremap(res.start, resource_size(&res));
+> +	if (!base)
+> +		goto out;
+>  
+>  	/*
+>  	 * set output delay adjustments to default values according
+> @@ -111,6 +113,7 @@ static void quirk_mpc8360e_qe_enet10(void)
+>  		setbits32((base + 0xac), 0x0000c000);
+>  	}
+>  	iounmap(base);
+> +out:
+>  	of_node_put(np_par);
+>  }
+>  
 

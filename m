@@ -2,92 +2,133 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EEBF917458D
-	for <lists+kernel-janitors@lfdr.de>; Sat, 29 Feb 2020 08:47:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E84651745AB
+	for <lists+kernel-janitors@lfdr.de>; Sat, 29 Feb 2020 10:01:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726880AbgB2Hra (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 29 Feb 2020 02:47:30 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:47017 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726671AbgB2Hra (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 29 Feb 2020 02:47:30 -0500
-Received: by mail-wr1-f65.google.com with SMTP id j7so5848955wrp.13;
-        Fri, 28 Feb 2020 23:47:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=7/LUz+UTHLwwlROXmy/x3cftQqidhD9BYUn0xrwvLmc=;
-        b=txSyWcKjgszAoID7iV7ciBLMEePBbqWlV/a2pJmnCgmB36H9o462dkAlmtyqqeHiGr
-         JAw5f/AjqKB5I7pyB6AYmZaFP9cFW33rqE/C7s9a4TQ4HApO8sASGkDYEqBylspTOOTF
-         7uqLJNfhg8uuzGIPaQmHqIk1MxbAx9hbOtYxIHG+u+oqgDBvDLF6TRYb4Hr+Ok49gx4J
-         BrhEgEphb2w1ZG+abujhP64sCubiBqhjwyVDfbdPAJQjIaV+gr2TRHey05OcBc+GUisE
-         MRYUoUxYq27cdXV+l5r5LaVwslM/zCpsswJKB0FKeLvfBqzSvTl7SoFgwzKR1jRTG+rc
-         mjnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7/LUz+UTHLwwlROXmy/x3cftQqidhD9BYUn0xrwvLmc=;
-        b=rPoOLxZXIgeUv+j8ckRe73mmK+E68Nz2oc8+f5GVchJOiUtBgWnHIthGgIVvgnDuvb
-         a2p63oKlBKXnkCy79WRGuxeD67ZY70lh6okUgtauDmcPn8ptEL2E0Yw2VNpjrQUnjdYh
-         fh9qU5EGowP7Pxxy7cW3O+RPnSRdNC1dF5TNnuHU3UPTp6ay1uAXiq+8kj6ZbfMFtomN
-         B2gkvDfTOk2Ew6/6H2rsoVyA503VcrQBX/TZILPGmVb6iFJbXfoRfteOI4goi3WtI4Lp
-         9l8Uaxb5T7EHydWx+y+6Qx4GZk2C8WfpvPmLMHFBv3fPB6yEWx8DfJfRz87FsH1Nh0sW
-         EYAg==
-X-Gm-Message-State: APjAAAWdYlCEi4rU1yuK603XDP146//RyoePqtW5bzXoLuXBzxE/w0Uz
-        StTYl+Fp9E5Em+ux/2e+aotMfCtf87GpPw7gczg=
-X-Google-Smtp-Source: APXvYqxQFrUYzLR51muw6xWoYS1TtAN4x8hADnWygx76GqczT7kBq4N2F5PQMlWmipUpFCiARR144YhMae4ozdtNIBM=
-X-Received: by 2002:adf:cc85:: with SMTP id p5mr9242071wrj.196.1582962448152;
- Fri, 28 Feb 2020 23:47:28 -0800 (PST)
+        id S1726910AbgB2JBJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 29 Feb 2020 04:01:09 -0500
+Received: from mout.web.de ([212.227.15.14]:38683 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725747AbgB2JBJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 29 Feb 2020 04:01:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1582966824;
+        bh=bPWE0ezg0cWx6lsgw9ojhULt1+4nlJRreHsEyTPw1dM=;
+        h=X-UI-Sender-Class:From:Subject:To:Cc:References:Date:In-Reply-To;
+        b=qIf790cuY+Aly+XEFnn0Cp+xeXAwmLVO4NU8QHeyhS5AHuE8nbkRF2sCTzyTZ6G2Y
+         LDYlIm+XA3QFeKzsuxsAHKZTOrACxahoaefLDzdzTa/7vj0+T+UWiaaksjdHNcnAjR
+         oANDPfX2bmjNv9JL+63D3DU5FYXSI9zPUeAOmTqE=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.133.172.177]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MOlTq-1j48li1XyI-0068e8; Sat, 29
+ Feb 2020 10:00:24 +0100
+From:   Markus Elfring <Markus.Elfring@web.de>
+Subject: Re: [PATCH 2/2] Documentation: bootconfig: Add EBNF syntax file
+To:     Masami Hiramatsu <mhiramat@kernel.org>, linux-doc@vger.kernel.org
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <158278834245.14966.6179457011671073018.stgit@devnote2>
+ <158278836196.14966.3881489301852781521.stgit@devnote2>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <c3ea656f-7520-2cb4-7f39-92612343d7bf@web.de>
+Date:   Sat, 29 Feb 2020 10:00:22 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-References: <20200228235003.112718-1-colin.king@canonical.com>
-In-Reply-To: <20200228235003.112718-1-colin.king@canonical.com>
-From:   Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Date:   Sat, 29 Feb 2020 08:47:16 +0100
-Message-ID: <CAM9Jb+jrC0C0RGV+uM_bs5QMSFaYPHjqzOo8vQZ+y-WghQtVvg@mail.gmail.com>
-Subject: Re: [PATCH] mm/memblock: remove redundant assignment to variable max_addr
-To:     Colin King <colin.king@canonical.com>
-Cc:     Mike Rapoport <rppt@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <158278836196.14966.3881489301852781521.stgit@devnote2>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:aqAiZM/TUMuLvCzo0rRbEBXzeZIQOCBm6VAzx4tAe6/7/ZwKk9a
+ zWdgH/ajI0topB4kEW37k+ujB9oRSIHTWVBDIQkO0TLa99sq+IErTtb2tYn1j9MQfmeqFUW
+ 7/pVN8BspUOWg9T1MLRmtnEa76imJSDsBOriKLyrKsPkx7mTvZ0J5Pvg3aQgh82sGD9+4vz
+ TYX5npke24ox/ZhPJXUpQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0V/2tfrsDRA=:b9ZNN3/C/jUkVx6BIV8bpN
+ LsUhz9a2kkD+C5iiguFhMC95cxDQ5pHutHYX/eXWDqycSe6tcFlrkWSwh/L18FNVjh1DwomNV
+ 7x+Wp4lVrjfpdwYaEWLEzRP1GfJ/kHe6sFLSY0+aq9rHw1mDm9p6fgYr17grkiGNGwPFTgB0X
+ ezArbvc52awJ9AGeZQ19dHAxS3bzDmdUaKPJtvi4RwFXhKu28d+qIMfs/bSr6aAPErid3AwQQ
+ v2dZA8AR2Kja49p+qQePNW+4F/1Y25QN6heLi3Xk/osvHPvMznQOCeSgnyn9JHYpDG5upzjaT
+ 9oi8vekLRWwigZhzCOhYb+m2nu+Eh8hvcdtr9svp1ow90H5YRIHfkYSyHARlwtMUwFAFnjI7c
+ ljRPpc93pUGcV5CPg/FYV6uIgSh/6vOeSmSvd2RQjGtmgCupajm2cgVUaT/K1l5A4kX4vnRWU
+ Lrp+g2ytTK/JKvvgodt0RIC44C2uUPFwG4BhhmXjz3NS4Sp+WGmPGnQU8NiXqf2vxTvXuWqQU
+ 4JhWi9+msv49GkRqEkWO2Ce4Bl+RIXaCCZOV1NTohYwldkHbfROFLW7xRIIBQ2+n3QYzauXJs
+ 7vlnpESET4nLsewmZ8jkFJX7Md9geRElR1SBEGEKxe9eEzlmWBE0Qdvi3MY24hxacgJKXqnBM
+ gN81XRiNXfcm4S5t/zzTY2Gv7HegAH5rbeM5Ryc/0Yv3A2s9zzXYAT3llRKzz6PZEBSXkiQ5X
+ 8tQazOHO5mElnc1nid+y5k+pbZSGKm5uzw+DEDLL6+a4Pgsn09mVO3SuPGx5lAippvZuZGW16
+ L39hyqHAw4x6t/ndoF3R0WUhvmUHZlLddxG1F7Hs7s9Y4Y09ZB3KJQhtb55LFqJMsv5l9mHuL
+ Hge8kk87D5DTUTSTRSX33ggrGZQ1TEZuMLNXDKF+I0I2aGcaj9oq9QX5H2YdZS7Lcn7dPPNRH
+ TxBLZfj4R4lkSDHytzTluRPd7UMpWP656iXom/g0unPlcE/VYe6jckiwewshzcX6SnbKX83Bd
+ 64i7VA+4nccGUg6rA9mBbhdazrFjMGJI8Rns6TI1lZJxbvzs044po55qQHNwrX1xyeDKqiezZ
+ RUrkUq+MiXvf/McSMnkNiXrWnTk+I8drMD0e/EGrZI265a2oTcXq3qMShr8/N7hlZevpERCFN
+ EDFxjKXoZRJH0dExsh7j3OeT3PWgOwU9OWTG2sNZOB2Rj8ZnD8xUEs0Wso3Zu/bMYLmaTd1s2
+ Uwx5rpyxGkmOARwqt
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> The variable max_addr is being initialized with a value that is never
-> read and it is being updated later with a new value.  The initialization
-> is redundant and can be removed.
->
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  mm/memblock.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index eba94ee3de0b..4d06bbaded0f 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -1698,7 +1698,7 @@ static phys_addr_t __init_memblock __find_max_addr(phys_addr_t limit)
->
->  void __init memblock_enforce_memory_limit(phys_addr_t limit)
->  {
-> -       phys_addr_t max_addr = PHYS_ADDR_MAX;
-> +       phys_addr_t max_addr;
->
->         if (!limit)
->                 return;
-> --
-> 2.25.0
+=E2=80=A6
+> +++ b/Documentation/admin-guide/bootconfig.rst
+=E2=80=A6
+> +Syntax in EBNF
+> +--------------
+> +
+> +Here is the boot configuration file syntax written in EBNF.
+> +
+> +.. include:: bootconfig.ebnf
+> +   :literal:
 
-Reviewed-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+How do you think about to move the content for this section into another R=
+ST file
+so that it can be used as a text module?
 
->
->
+Would you like to improve the outline and corresponding reuse
+for such information any further?
+
+Regards,
+Markus

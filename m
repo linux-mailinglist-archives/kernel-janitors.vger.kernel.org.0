@@ -2,107 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD46B174C15
-	for <lists+kernel-janitors@lfdr.de>; Sun,  1 Mar 2020 07:33:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30B6D174E2A
+	for <lists+kernel-janitors@lfdr.de>; Sun,  1 Mar 2020 16:58:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725887AbgCAGdZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 1 Mar 2020 01:33:25 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:61920 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725787AbgCAGdZ (ORCPT
+        id S1726579AbgCAP6B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 1 Mar 2020 10:58:01 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:42146 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725945AbgCAP6B (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 1 Mar 2020 01:33:25 -0500
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0216K8tO077758
-        for <kernel-janitors@vger.kernel.org>; Sun, 1 Mar 2020 01:33:23 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2yfmfxqrww-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <kernel-janitors@vger.kernel.org>; Sun, 01 Mar 2020 01:33:23 -0500
-Received: from localhost
-        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <kernel-janitors@vger.kernel.org> from <rppt@linux.ibm.com>;
-        Sun, 1 Mar 2020 06:33:21 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
-        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Sun, 1 Mar 2020 06:33:17 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0216WJJ246334418
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sun, 1 Mar 2020 06:32:19 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C5277AE051;
-        Sun,  1 Mar 2020 06:33:16 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 523D5AE04D;
-        Sun,  1 Mar 2020 06:33:16 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.148.8.81])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Sun,  1 Mar 2020 06:33:16 +0000 (GMT)
-Date:   Sun, 1 Mar 2020 08:33:14 +0200
-From:   Mike Rapoport <rppt@linux.ibm.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/memblock: remove redundant assignment to variable
- max_addr
-References: <20200228235003.112718-1-colin.king@canonical.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200228235003.112718-1-colin.king@canonical.com>
-X-TM-AS-GCONF: 00
-x-cbid: 20030106-0016-0000-0000-000002EBA91F
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030106-0017-0000-0000-0000334EE6AB
-Message-Id: <20200301063314.GA6636@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-03-01_01:2020-02-28,2020-03-01 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1011
- lowpriorityscore=0 malwarescore=0 adultscore=0 suspectscore=1
- priorityscore=1501 spamscore=0 mlxscore=0 bulkscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003010050
+        Sun, 1 Mar 2020 10:58:01 -0500
+Received: by mail-wr1-f66.google.com with SMTP id z11so610372wro.9;
+        Sun, 01 Mar 2020 07:57:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=iroZ9Pow8ipGPXa1xqXyS4xbrWQ/m46THJdhapkwZPs=;
+        b=HCQhYVjzECHNBFYfaOYgrLshl4w/1m8c+dZQ364hYNxIVguVcKk2RtlliqFNwRXzWT
+         p8MBfqTtJNQDFQ0hfOI0e7uyIrJEC63D+Ji79SwTPHdtEcPjeOjJRFjEEUhmUn/KphLr
+         69VOo4fbqmOBvLgRdk5Qj2pVEbqksJjjKS9gGSqjbq7I515MMDdRI/zFjH3k5xWBqVBj
+         IPV38+4wCNvyPy5JLMxxO1eDp0KOfSSVERK6fSrvltLmh07BaNI2Ro6VcycIQgMgk/Yl
+         BYvHztsSDd6Is6Ovao1Zv19TpF8Uo8GYsvyBup1TF+GHRofb+yLmU3f/Z+2vewQvR0IY
+         zqbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=iroZ9Pow8ipGPXa1xqXyS4xbrWQ/m46THJdhapkwZPs=;
+        b=Ypbn2i+6ZwPYego/VorX+fkfKos80PsSpKbi0Oxic50y1ngIUExWWGx3CrGTFYjz0S
+         fBaEQ16y8Uj3hDMIdwcJoWuoKYfwSjyICTazzinfH+Jt2srISsD3gat0Lh73PceiK/zz
+         9AunSxvnEeezpiG7X5mR/Sy9Yu+rhi/wH5Iaeq3DoOfUgZpTHV86hF4Zoo5q5QcmFjYC
+         6c2zqKvj99oe3w5tKzJcGa9tnqN+s1jWEQCykkdKHZN7o18oK9akY5nzh672t/2+4Eyl
+         mHgeeHMmwo3Ag4LUBAWCVvoNAavJv3nAi353eftOuRjPCwm0x97AOVm6fpwOhItTdawA
+         7Kzg==
+X-Gm-Message-State: APjAAAWRnQCk4jFVQEuggW77vTrjHrgYrUnBx0sdp1Mm9Qip1q+mvsX9
+        URQPnL/3a+3G8N1cWA/gN6Kz9MQL
+X-Google-Smtp-Source: APXvYqzf2dAKXnrWa85zHdtNOtLGTd2I3HDiJGeZMCNQtLRqVoSE/QuTdyn8SPzHqmG3yu64it04jw==
+X-Received: by 2002:a05:6000:1147:: with SMTP id d7mr17088478wrx.142.1583078277700;
+        Sun, 01 Mar 2020 07:57:57 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d89:1500:857:2082:e9c3:b57])
+        by smtp.gmail.com with ESMTPSA id b16sm18257181wrq.14.2020.03.01.07.57.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Mar 2020 07:57:57 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, Joe Perches <joe@perches.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: adjust EFI entry to removing eboot.c
+Date:   Sun,  1 Mar 2020 16:57:48 +0100
+Message-Id: <20200301155748.4788-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Feb 28, 2020 at 11:50:03PM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable max_addr is being initialized with a value that is never
-> read and it is being updated later with a new value.  The initialization
-> is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Commit c2d0b470154c ("efi/libstub/x86: Incorporate eboot.c into libstub")
+removed arch/x86/boot/compressed/eboot.[ch], but missed to adjust the
+MAINTAINERS entry.
 
-Reviewed-by: Mike Rapoport <rppt@linux.ibm.com>
+Since then, ./scripts/get_maintainer.pl --self-test complains:
 
-> ---
->  mm/memblock.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index eba94ee3de0b..4d06bbaded0f 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -1698,7 +1698,7 @@ static phys_addr_t __init_memblock __find_max_addr(phys_addr_t limit)
->  
->  void __init memblock_enforce_memory_limit(phys_addr_t limit)
->  {
-> -	phys_addr_t max_addr = PHYS_ADDR_MAX;
-> +	phys_addr_t max_addr;
->  
->  	if (!limit)
->  		return;
-> -- 
-> 2.25.0
-> 
+  warning: no file matches F: arch/x86/boot/compressed/eboot.[ch]
 
+Rectify EXTENSIBLE FIRMWARE INTERFACE (EFI) entry in MAINTAINERS.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+Ard, please pick this patch for your linux-next branch.
+applies cleanly on next-20200228, do not apply on current master
+
+ MAINTAINERS | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 09b04505e7c3..4ce510b8467a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6383,7 +6383,6 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git
+ S:	Maintained
+ F:	Documentation/admin-guide/efi-stub.rst
+ F:	arch/*/kernel/efi.c
+-F:	arch/x86/boot/compressed/eboot.[ch]
+ F:	arch/*/include/asm/efi.h
+ F:	arch/x86/platform/efi/
+ F:	drivers/firmware/efi/
 -- 
-Sincerely yours,
-Mike.
+2.17.1
 

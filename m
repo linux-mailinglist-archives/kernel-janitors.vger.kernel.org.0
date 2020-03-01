@@ -2,110 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CCC4174A9E
-	for <lists+kernel-janitors@lfdr.de>; Sun,  1 Mar 2020 02:02:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD46B174C15
+	for <lists+kernel-janitors@lfdr.de>; Sun,  1 Mar 2020 07:33:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727170AbgCABCY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 29 Feb 2020 20:02:24 -0500
-Received: from bilbo.ozlabs.org ([203.11.71.1]:44253 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726786AbgCABCY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 29 Feb 2020 20:02:24 -0500
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 48VQ3d0nRPz9sPk;
-        Sun,  1 Mar 2020 12:02:20 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1583024542;
-        bh=xX60jEJHQ8TOGfr7Bks8ppZYAvilikoA7iG7IgOAA/0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=lG7S6XXeWk9UcFIVfgK5YOIKonm6UnYNpoSOItxvNM470yA8PYTrcMrkx+EBv0iqT
-         zT1z8cl3lCahvltsxOlY+xWZxhGhfZIr1SlVQotk0+zL0l6l8+0xIUfh2PlqDLovxc
-         00QsBDrF/PdFu3/DdPuXsn0HgJ1VuUS9+Db0Pj9GQYbylasVe+AJnvfkIYZdW1hSVC
-         b2Zt2wdF1rWMwg9XvO5l2VIvzWmtxZDL8YIkGu3QmSq/o4SMwfDDyXb91X8Lis4TkS
-         3blCBmCczfceShTQlzCBenuWE13PqYdGN0rF0u9smEroL+r6c4Qb7rElyDfpQTJ85a
-         T9b0yNd3JfxQg==
-Date:   Sun, 1 Mar 2020 12:02:19 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jens Axboe <axboe@kernel.dk>,
-        Dan Schatzberg <schatzberg.dan@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-block@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: Re: [PATCH resend] loop: Fix IS_ERR() vs NULL bugs in
- loop_prepare_queue()
-Message-ID: <20200301120219.22d92d73@canb.auug.org.au>
-In-Reply-To: <20200228172136.h5dvwvrg5yfywxss@kili.mountain>
-References: <c106c6ec-7171-3586-d5c5-5c14e386b3d5@kernel.dk>
-        <20200228172136.h5dvwvrg5yfywxss@kili.mountain>
+        id S1725887AbgCAGdZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 1 Mar 2020 01:33:25 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:61920 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725787AbgCAGdZ (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 1 Mar 2020 01:33:25 -0500
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0216K8tO077758
+        for <kernel-janitors@vger.kernel.org>; Sun, 1 Mar 2020 01:33:23 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2yfmfxqrww-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <kernel-janitors@vger.kernel.org>; Sun, 01 Mar 2020 01:33:23 -0500
+Received: from localhost
+        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <kernel-janitors@vger.kernel.org> from <rppt@linux.ibm.com>;
+        Sun, 1 Mar 2020 06:33:21 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Sun, 1 Mar 2020 06:33:17 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0216WJJ246334418
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 1 Mar 2020 06:32:19 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C5277AE051;
+        Sun,  1 Mar 2020 06:33:16 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 523D5AE04D;
+        Sun,  1 Mar 2020 06:33:16 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.148.8.81])
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Sun,  1 Mar 2020 06:33:16 +0000 (GMT)
+Date:   Sun, 1 Mar 2020 08:33:14 +0200
+From:   Mike Rapoport <rppt@linux.ibm.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/memblock: remove redundant assignment to variable
+ max_addr
+References: <20200228235003.112718-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/i6Tur=gNYxaKV0D4z4Cotes";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200228235003.112718-1-colin.king@canonical.com>
+X-TM-AS-GCONF: 00
+x-cbid: 20030106-0016-0000-0000-000002EBA91F
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20030106-0017-0000-0000-0000334EE6AB
+Message-Id: <20200301063314.GA6636@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-03-01_01:2020-02-28,2020-03-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1011
+ lowpriorityscore=0 malwarescore=0 adultscore=0 suspectscore=1
+ priorityscore=1501 spamscore=0 mlxscore=0 bulkscore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003010050
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
---Sig_/i6Tur=gNYxaKV0D4z4Cotes
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Fri, Feb 28, 2020 at 11:50:03PM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable max_addr is being initialized with a value that is never
+> read and it is being updated later with a new value.  The initialization
+> is redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Hi all,
+Reviewed-by: Mike Rapoport <rppt@linux.ibm.com>
 
-On Fri, 28 Feb 2020 20:21:36 +0300 Dan Carpenter <dan.carpenter@oracle.com>=
- wrote:
->
-> The alloc_workqueue() function returns NULL on error, it never returns
-> error pointers.
->=20
-> Fixes: 29dab2122492 ("loop: use worker per cgroup instead of kworker")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Acked-by: Dan Schatzberg <schatzberg.dan@gmail.com>
 > ---
-> Resending because this goes through your -mm tree, Andrew.  The
-> get_maintainer.pl script lead me astray.
->=20
->  drivers/block/loop.c | 2 +-
+>  mm/memblock.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-> index da8ec0b9d909..a31ca5e04fae 100644
-> --- a/drivers/block/loop.c
-> +++ b/drivers/block/loop.c
-> @@ -897,7 +897,7 @@ static int loop_prepare_queue(struct loop_device *lo)
->  					WQ_UNBOUND | WQ_FREEZABLE |
->  					WQ_MEM_RECLAIM,
->  					lo->lo_number);
-> -	if (IS_ERR(lo->workqueue))
-> +	if (!lo->workqueue)
->  		return -ENOMEM;
-> =20
->  	return 0;
+> 
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index eba94ee3de0b..4d06bbaded0f 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -1698,7 +1698,7 @@ static phys_addr_t __init_memblock __find_max_addr(phys_addr_t limit)
+>  
+>  void __init memblock_enforce_memory_limit(phys_addr_t limit)
+>  {
+> -	phys_addr_t max_addr = PHYS_ADDR_MAX;
+> +	phys_addr_t max_addr;
+>  
+>  	if (!limit)
+>  		return;
+> -- 
+> 2.25.0
+> 
 
-Added to linux-next from tomorrow (in case Andrew has better things to
-do with his weekend :-)).
+-- 
+Sincerely yours,
+Mike.
 
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/i6Tur=gNYxaKV0D4z4Cotes
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl5bCZsACgkQAVBC80lX
-0GxlMgf/bCW6+K3FJmw7izRTxCApIyjOzBT5pvkC9bnCD7ymNZlTRsRjBrK4rXQP
-/Dt8hXSox5yW3SFkh6TuMkxLVk4NMPWSCg1HH9zHANLbcwA6/ZJTg0VzrywxCP71
-2A0d7r3MFuK92+NLb84yvz5+q3RfIi1x0+1KvDmtO/9aWbt2yWdicfJu2ZAPUqvY
-pCYJZ1g3Y5u7O9cfpazteWKCpn2k0uEtAkosPUx6YkZmQnVvf9w8oMisU3Ke7oVz
-VbkkIKJ1+2m/4YgwfFtRZpozWUY8YHvmReaEKNkJ1ZBhY6hiQ+dA075sgWDbket0
-pv1Ou9g7BZhzNGTrihXkopxI/f5pAw==
-=NCTl
------END PGP SIGNATURE-----
-
---Sig_/i6Tur=gNYxaKV0D4z4Cotes--

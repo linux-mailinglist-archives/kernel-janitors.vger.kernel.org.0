@@ -2,109 +2,127 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A7F4175477
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Mar 2020 08:31:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B5631755F1
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Mar 2020 09:24:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726545AbgCBHbG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 2 Mar 2020 02:31:06 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:49078 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726300AbgCBHbF (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 2 Mar 2020 02:31:05 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0227Rhvh106798;
-        Mon, 2 Mar 2020 07:30:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=Ri8h7A40DW+uVbQeQtC6y9Sx1MYlmgBF2ya0vuR0GRE=;
- b=Tupk1l8V/EgapKFZinI18DFI9MRmBo31jh3y2yVF0mfSb8ANaS8pMP2lHndS3drl0HPR
- ZZbEpeC9vavzkhEqU0Q+ozE72C4gF1T+P/fHsEsmZwepIgBojvueY+OzJjui9nywyVyl
- vsVr4LHP2nbImKcuKaU2n4e/CMsyyluXzrQHKHz5vFVRP0FRt10Yk8lBgOJXU6R75Har
- DHEiLZhszxcJvXOwYaBc9mRI3gKAuOpLwOju7BzkAbZgYy+CZnR8PMb/3Hoegt0cwVP3
- uW75/NHCNuslaUPY22xGCIPpiFIqzsEA+AWV0rCuB1CMgypR2EtiGHwtImaSxGnOy+hK 4Q== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 2yffcu5vfn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 02 Mar 2020 07:30:57 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0227QZFw178044;
-        Mon, 2 Mar 2020 07:30:57 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 2yg1re6ghn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 02 Mar 2020 07:30:56 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0227UrOl018351;
-        Mon, 2 Mar 2020 07:30:53 GMT
-Received: from kadam (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sun, 01 Mar 2020 23:30:51 -0800
-Date:   Mon, 2 Mar 2020 10:30:43 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Anna Schumaker <anna.schumaker@netapp.com>,
-        linux-nfs@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] NFS: check for allocation failure from mempool_alloc
-Message-ID: <20200302073043.GA4140@kadam>
-References: <20200226234320.7722-1-colin.king@canonical.com>
+        id S1727060AbgCBIYZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Mar 2020 03:24:25 -0500
+Received: from mout.web.de ([212.227.17.12]:41785 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726887AbgCBIYZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 2 Mar 2020 03:24:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1583137418;
+        bh=oOwZ5yNHNAxH4ADQa6ZEfz/xm5NK1m0TwLEgpPwX9jM=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=SnZZ+hJq+gJJIbCTFQUopz2NfIETURMzSRHoTC8Uf2hyv2TJIJnTB0iGjFoXEDBLD
+         3UQlx8lP//seFRTl0oBx8LfEJ+OQzsi8IIzjbWuIKW7JeRlQ8RBXEan3aOazV9o0Ls
+         Bws75PCh2MvS2HbIsCDcm9j1bUwp9ip2tqwjYg9E=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.133.91.182]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MAvCS-1jGQ8c1ugW-00A1pt; Mon, 02
+ Mar 2020 09:23:38 +0100
+Subject: Re: [v2] Documentation: bootconfig: Update boot configuration
+ documentation
+To:     Masami Hiramatsu <mhiramat@kernel.org>, linux-doc@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <158287861133.18632.12035327305997207220.stgit@devnote2>
+ <158287862131.18632.11822701514141299400.stgit@devnote2>
+ <972ba3a8-9dd7-e043-d2f0-8fa8620686f7@infradead.org>
+ <20200302155247.93558d4865a8bcd160ef39e5@kernel.org>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
+ +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
+ mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
+ lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
+ YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
+ GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
+ rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
+ 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
+ jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
+ BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
+ cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
+ Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
+ g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
+ OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
+ CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
+ LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
+ sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
+ kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
+ i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
+ g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
+ q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
+ NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
+ nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
+ 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
+ 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
+ wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
+ riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
+ DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
+ fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
+ 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
+ xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
+ qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
+ Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
+ Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
+ +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
+ hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
+ /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
+ tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
+ qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
+ Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
+ x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
+ pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
+Message-ID: <5db1431a-7854-6837-4922-214c094e03aa@web.de>
+Date:   Mon, 2 Mar 2020 09:23:29 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200226234320.7722-1-colin.king@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9547 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
- suspectscore=0 malwarescore=0 adultscore=0 spamscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003020057
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9547 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 bulkscore=0
- adultscore=0 suspectscore=0 spamscore=0 malwarescore=0 impostorscore=0
- priorityscore=1501 mlxlogscore=999 lowpriorityscore=0 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2003020057
+In-Reply-To: <20200302155247.93558d4865a8bcd160ef39e5@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:N4P7BCyjZtkHyOWM5mUveUfESBrn1sDMVnXFHjwwTnUZ7qhJ9a3
+ VNUA+B5BcnzxCFUu4U8Dv7b3BGr+rkiizJD2aI9OwJp3IhWQb3f9mk+MTYhAFahThYmN8PZ
+ UjWFN6iEg9yHY71p8GDKABv0mNvBCnekWbJbiLfJtDjYhM/V5B4pCsHLmwJxWrGj+i6Xl8J
+ A1ApD4/8tcESmq546ujyw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Sg/GReKFBAU=:KKlUE3s3Tzk5zNbPTzRpyh
+ +N+E8YRwKtyDmJGyDjpKnn3GaRv/lQ+HyLy0pPqwAqMDUolkq9vXZpsdOMpz2zzO5s/rh+UmY
+ Oh5iTsq2Z+ICjwAzMj4MlGjPB2XrNLbNO3NvVGqQhVVdcy7zEAXEATZAa70Rku1REge26S8mn
+ +0mHdo5ZT8N1paZbVlOJ1z2qJcBOvx76vnPCXbdbfolFcynytSWdCqtR3TjDtKBwB5wKvZq+G
+ Fuc3WhWsbDtA557A/EHL1MJEIuR9dTJ13Gg2OjVZr/l96aR/DJ1BbgDmLKEBDJKOfM7mtuhQ/
+ bVNMj+4C828UbZjrZxSl5CW6P/s2ynqZLuc8H7mHTx+riQK1hmE9a98UBtvDYp0ySP5t7KKav
+ 7dDjchnvmcw+GnkpxayM3mz6smyORPyAgyapDqSs5yAbVpcXCev251DRlyVtoUktbUNGpUJGd
+ xfht2D/xvkTpxEwMctjQUYuWRSRkZ2v7WkjZLmB6GfdLF8hLWv/cWax7/mF9GOnQ7YXSX8LEX
+ RFF41NIJbYXz8Z1EImbDiXVMR725XloFLPu9J78GuElWmd6P5XddWzuQc2olPWGLvIoq9a7II
+ gzn3JZ9eRtcSSKIm0vJGNmtaNvHZcVUpWclGtxTkkJ0vTyC9dmTULesYv146vEx2rccnihCVd
+ zs7xQFbtQlUuGabzfO3AgSpF+o9RYm0/sFYsYUJuHO7Xka4PEkfGXoLeTV7CBYfEPJ0ne2QAj
+ lHOBT+JCxTa9QxSWdCIV4rEMcEfasCgRY3ZS7WSaeuv6vjnQaPzvVCumNv57mxWhN3N1y2hZp
+ 0JPdzXaeHOEYd0sy1DYwRQJYuFft9hczLJkRbr2fDuo8+63EjuvvoQG2lIi9n5dPkJV2pEo1E
+ xVZGesfla5GCpf5W/zqIsdoIJ3NPTfAk66YUZr6bTPr12ry1bTy4zbhTB7SmPI7PT3kUobw20
+ gQUWxcR1oEVlvqEhglyRAvpdsWnJisqm+Zt2w1KINqxDAiCcPKWiX4jqqtJ/qx3pPHAWkJs9w
+ Yg4WLTAOZUbyVK16eVTIFNIZ9pTTC9+g6VRBZTKi52twhss1vusuEehN427z7AoGCnO0ws6Ol
+ FO/wDTFtt0CHX32GUsEfWKm2eitsoVQgSpHSrHRQuzQD+rOOQGWYF6dASqKvATl/xqk7GpC+s
+ 2SW0zzbQpL2weV+vIE58euTU6oVtGWcu8ceYTf+xKUxbREv7SyKMV9cgpIxobJINNIiuh1QU9
+ uoqSuc+n7z5zm/KCz
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Feb 26, 2020 at 11:43:20PM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> It is possible for mempool_alloc to return null when using
-> the GFP_KERNEL flag, so return NULL and avoid a null pointer
-> dereference on the following memset of the null pointer.
-> 
-> Addresses-Coverity: ("Dereference null return")
-> Fixes: 2b17d725f9be ("NFS: Clean up writeback code")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  fs/nfs/write.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/fs/nfs/write.c b/fs/nfs/write.c
-> index c478b772cc49..7ca036660dd1 100644
-> --- a/fs/nfs/write.c
-> +++ b/fs/nfs/write.c
-> @@ -106,6 +106,9 @@ static struct nfs_pgio_header *nfs_writehdr_alloc(void)
->  {
->  	struct nfs_pgio_header *p = mempool_alloc(nfs_wdata_mempool, GFP_KERNEL);
->  
-> +	if (!p)
+> Ah, I got it. The last sentence is confusing. How about below?
+>
+> "If you want to use the boot-time tracer, you need to use the boot confi=
+guration."
 
-The fixes tag was wrong.  When I searched for the correct fixes tag,
-it turned out this was intentional.  See commit 237f8306c302
-("NFS: don't expect errors from mempool_alloc().") and commit 518662e0fcb9
-("NFS: fix usage of mempools.").
+Can any tracing parameters be specified in the boot command line already?
 
-    When passed GFP flags that allow sleeping (such as
-    GFP_NOIO), mempool_alloc() will never return NULL, it will
-    wait until memory is available.
+How many settings will fit into the discussed places?
 
-regards,
-dan carpenter
-
+Regards,
+Markus

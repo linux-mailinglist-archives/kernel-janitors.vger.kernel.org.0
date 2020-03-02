@@ -2,66 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 355DC175A6B
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Mar 2020 13:24:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD6E3175AAC
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Mar 2020 13:39:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727784AbgCBMYP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 2 Mar 2020 07:24:15 -0500
-Received: from correo.us.es ([193.147.175.20]:57306 "EHLO mail.us.es"
+        id S1727762AbgCBMjC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Mar 2020 07:39:02 -0500
+Received: from foss.arm.com ([217.140.110.172]:60334 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727644AbgCBMYO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 2 Mar 2020 07:24:14 -0500
-Received: from antivirus1-rhel7.int (unknown [192.168.2.11])
-        by mail.us.es (Postfix) with ESMTP id A07E581409
-        for <kernel-janitors@vger.kernel.org>; Mon,  2 Mar 2020 13:24:00 +0100 (CET)
-Received: from antivirus1-rhel7.int (localhost [127.0.0.1])
-        by antivirus1-rhel7.int (Postfix) with ESMTP id 82C0DDA3B6
-        for <kernel-janitors@vger.kernel.org>; Mon,  2 Mar 2020 13:24:00 +0100 (CET)
-Received: by antivirus1-rhel7.int (Postfix, from userid 99)
-        id 6E2D2DA3AC; Mon,  2 Mar 2020 13:24:00 +0100 (CET)
-X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on antivirus1-rhel7.int
-X-Spam-Level: 
-X-Spam-Status: No, score=-108.2 required=7.5 tests=ALL_TRUSTED,BAYES_50,
-        SMTPAUTH_US2,USER_IN_WHITELIST autolearn=disabled version=3.4.1
-Received: from antivirus1-rhel7.int (localhost [127.0.0.1])
-        by antivirus1-rhel7.int (Postfix) with ESMTP id 6CAC1DA8E6;
-        Mon,  2 Mar 2020 13:23:58 +0100 (CET)
-Received: from 192.168.1.97 (192.168.1.97)
- by antivirus1-rhel7.int (F-Secure/fsigk_smtp/550/antivirus1-rhel7.int);
- Mon, 02 Mar 2020 13:23:58 +0100 (CET)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/antivirus1-rhel7.int)
-Received: from us.es (unknown [90.77.255.23])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: 1984lsi)
-        by entrada.int (Postfix) with ESMTPSA id 464184251481;
-        Mon,  2 Mar 2020 13:23:58 +0100 (CET)
-Date:   Mon, 2 Mar 2020 13:24:10 +0100
-X-SMTPAUTHUS: auth mail.us.es
-From:   Pablo Neira Ayuso <pablo@netfilter.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Manoj Basapathi <manojbm@codeaurora.org>,
-        Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        Jakub Kicinski <kuba@kernel.org>,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        id S1727361AbgCBMjC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 2 Mar 2020 07:39:02 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C0F172F;
+        Mon,  2 Mar 2020 04:39:01 -0800 (PST)
+Received: from localhost (unknown [10.37.6.21])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 444823F534;
+        Mon,  2 Mar 2020 04:39:01 -0800 (PST)
+Date:   Mon, 2 Mar 2020 12:38:59 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
+        jonas.gorski@gmail.com, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] netfilter: clean up some indenting
-Message-ID: <20200302122410.5vncrjcjjchkjcsw@salvia>
-References: <20200225064150.hwewi26uc2yfwh2u@kili.mountain>
+Subject: Re: [PATCH] spi: bcm63xx-hsspi: Really keep pll clk enabled
+Message-ID: <20200302123859.GC4166@sirena.org.uk>
+References: <20200228213838.7124-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ZmUaFz6apKcXQszQ"
 Content-Disposition: inline
-In-Reply-To: <20200225064150.hwewi26uc2yfwh2u@kili.mountain>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Virus-Scanned: ClamAV using ClamSMTP
+In-Reply-To: <20200228213838.7124-1-christophe.jaillet@wanadoo.fr>
+X-Cookie: Whistler's mother is off her rocker.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Feb 25, 2020 at 09:42:22AM +0300, Dan Carpenter wrote:
-> These lines were indented wrong so Smatch complained.
-> net/netfilter/xt_IDLETIMER.c:81 idletimer_tg_show() warn: inconsistent indenting
 
-Applied, thanks.
+--ZmUaFz6apKcXQszQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Feb 28, 2020 at 10:38:38PM +0100, Christophe JAILLET wrote:
+
+> To be honest, I don't see why we need to keep pll clk, or hsspi clk
+> enabled during the lifetime of the driver. My understanding of the code is
+> that it is only used to get the 'speed_hz' value in the probe function.
+> This value is never refreshed afterwards.
+> I don't see the point in enabling/disabling the clks. I think that they
+> both could be disabled in the probe function, without the need to keep
+> track in the bcm63xx_hsspi structure, neither during pm cycles or the
+> remove fucntion.
+
+If the device has a clock there's a good chance it's needed for the
+device to operate and that disabling it will save a little power when
+the device isn't doing anything.
+
+--ZmUaFz6apKcXQszQ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5c/mMACgkQJNaLcl1U
+h9Cwewf+LaiDuAFWakLpTKZ/xUwqWqdMeVhPJMgEYCToIfMYYsMsBLLvE57s71+Z
+Se4OYGwCbmz75sJq7KZTHEt7TStQ0Wfwtb2VTQ6e1nhoT0q6Vh/p0Xos0dapsFkw
+sERlnAbZzf0t9rrXQB6yLjBPnU9X8iS/tatAOYylTZb3g2KO31ZxT1/jg6op1+us
+bK4fcoLF+8W2G5leWAr9rn0YOTycey9CtBLnsyB6YUWGkUBx7rGhdW6sO2VWFcpy
+WkrryYV+AudPf1OU0PEtdS8acdzB6QCxIzTjyXwZXDyDlcYF9VVMrAuvMZy/XoPn
+rb3dzStyqbqmU+y0ZF4jWo+HDIeKig==
+=mNDy
+-----END PGP SIGNATURE-----
+
+--ZmUaFz6apKcXQszQ--

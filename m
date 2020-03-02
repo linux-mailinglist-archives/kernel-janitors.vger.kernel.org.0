@@ -2,91 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30B6D174E2A
-	for <lists+kernel-janitors@lfdr.de>; Sun,  1 Mar 2020 16:58:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A7F4175477
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Mar 2020 08:31:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726579AbgCAP6B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 1 Mar 2020 10:58:01 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:42146 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725945AbgCAP6B (ORCPT
+        id S1726545AbgCBHbG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Mar 2020 02:31:06 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:49078 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726300AbgCBHbF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 1 Mar 2020 10:58:01 -0500
-Received: by mail-wr1-f66.google.com with SMTP id z11so610372wro.9;
-        Sun, 01 Mar 2020 07:57:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=iroZ9Pow8ipGPXa1xqXyS4xbrWQ/m46THJdhapkwZPs=;
-        b=HCQhYVjzECHNBFYfaOYgrLshl4w/1m8c+dZQ364hYNxIVguVcKk2RtlliqFNwRXzWT
-         p8MBfqTtJNQDFQ0hfOI0e7uyIrJEC63D+Ji79SwTPHdtEcPjeOjJRFjEEUhmUn/KphLr
-         69VOo4fbqmOBvLgRdk5Qj2pVEbqksJjjKS9gGSqjbq7I515MMDdRI/zFjH3k5xWBqVBj
-         IPV38+4wCNvyPy5JLMxxO1eDp0KOfSSVERK6fSrvltLmh07BaNI2Ro6VcycIQgMgk/Yl
-         BYvHztsSDd6Is6Ovao1Zv19TpF8Uo8GYsvyBup1TF+GHRofb+yLmU3f/Z+2vewQvR0IY
-         zqbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=iroZ9Pow8ipGPXa1xqXyS4xbrWQ/m46THJdhapkwZPs=;
-        b=Ypbn2i+6ZwPYego/VorX+fkfKos80PsSpKbi0Oxic50y1ngIUExWWGx3CrGTFYjz0S
-         fBaEQ16y8Uj3hDMIdwcJoWuoKYfwSjyICTazzinfH+Jt2srISsD3gat0Lh73PceiK/zz
-         9AunSxvnEeezpiG7X5mR/Sy9Yu+rhi/wH5Iaeq3DoOfUgZpTHV86hF4Zoo5q5QcmFjYC
-         6c2zqKvj99oe3w5tKzJcGa9tnqN+s1jWEQCykkdKHZN7o18oK9akY5nzh672t/2+4Eyl
-         mHgeeHMmwo3Ag4LUBAWCVvoNAavJv3nAi353eftOuRjPCwm0x97AOVm6fpwOhItTdawA
-         7Kzg==
-X-Gm-Message-State: APjAAAWRnQCk4jFVQEuggW77vTrjHrgYrUnBx0sdp1Mm9Qip1q+mvsX9
-        URQPnL/3a+3G8N1cWA/gN6Kz9MQL
-X-Google-Smtp-Source: APXvYqzf2dAKXnrWa85zHdtNOtLGTd2I3HDiJGeZMCNQtLRqVoSE/QuTdyn8SPzHqmG3yu64it04jw==
-X-Received: by 2002:a05:6000:1147:: with SMTP id d7mr17088478wrx.142.1583078277700;
-        Sun, 01 Mar 2020 07:57:57 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d89:1500:857:2082:e9c3:b57])
-        by smtp.gmail.com with ESMTPSA id b16sm18257181wrq.14.2020.03.01.07.57.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Mar 2020 07:57:57 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, Joe Perches <joe@perches.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: adjust EFI entry to removing eboot.c
-Date:   Sun,  1 Mar 2020 16:57:48 +0100
-Message-Id: <20200301155748.4788-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 2 Mar 2020 02:31:05 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0227Rhvh106798;
+        Mon, 2 Mar 2020 07:30:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=Ri8h7A40DW+uVbQeQtC6y9Sx1MYlmgBF2ya0vuR0GRE=;
+ b=Tupk1l8V/EgapKFZinI18DFI9MRmBo31jh3y2yVF0mfSb8ANaS8pMP2lHndS3drl0HPR
+ ZZbEpeC9vavzkhEqU0Q+ozE72C4gF1T+P/fHsEsmZwepIgBojvueY+OzJjui9nywyVyl
+ vsVr4LHP2nbImKcuKaU2n4e/CMsyyluXzrQHKHz5vFVRP0FRt10Yk8lBgOJXU6R75Har
+ DHEiLZhszxcJvXOwYaBc9mRI3gKAuOpLwOju7BzkAbZgYy+CZnR8PMb/3Hoegt0cwVP3
+ uW75/NHCNuslaUPY22xGCIPpiFIqzsEA+AWV0rCuB1CMgypR2EtiGHwtImaSxGnOy+hK 4Q== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2yffcu5vfn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 02 Mar 2020 07:30:57 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0227QZFw178044;
+        Mon, 2 Mar 2020 07:30:57 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2yg1re6ghn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 02 Mar 2020 07:30:56 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0227UrOl018351;
+        Mon, 2 Mar 2020 07:30:53 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sun, 01 Mar 2020 23:30:51 -0800
+Date:   Mon, 2 Mar 2020 10:30:43 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <anna.schumaker@netapp.com>,
+        linux-nfs@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] NFS: check for allocation failure from mempool_alloc
+Message-ID: <20200302073043.GA4140@kadam>
+References: <20200226234320.7722-1-colin.king@canonical.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200226234320.7722-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9547 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
+ suspectscore=0 malwarescore=0 adultscore=0 spamscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003020057
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9547 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 bulkscore=0
+ adultscore=0 suspectscore=0 spamscore=0 malwarescore=0 impostorscore=0
+ priorityscore=1501 mlxlogscore=999 lowpriorityscore=0 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2003020057
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit c2d0b470154c ("efi/libstub/x86: Incorporate eboot.c into libstub")
-removed arch/x86/boot/compressed/eboot.[ch], but missed to adjust the
-MAINTAINERS entry.
+On Wed, Feb 26, 2020 at 11:43:20PM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> It is possible for mempool_alloc to return null when using
+> the GFP_KERNEL flag, so return NULL and avoid a null pointer
+> dereference on the following memset of the null pointer.
+> 
+> Addresses-Coverity: ("Dereference null return")
+> Fixes: 2b17d725f9be ("NFS: Clean up writeback code")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  fs/nfs/write.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+> index c478b772cc49..7ca036660dd1 100644
+> --- a/fs/nfs/write.c
+> +++ b/fs/nfs/write.c
+> @@ -106,6 +106,9 @@ static struct nfs_pgio_header *nfs_writehdr_alloc(void)
+>  {
+>  	struct nfs_pgio_header *p = mempool_alloc(nfs_wdata_mempool, GFP_KERNEL);
+>  
+> +	if (!p)
 
-Since then, ./scripts/get_maintainer.pl --self-test complains:
+The fixes tag was wrong.  When I searched for the correct fixes tag,
+it turned out this was intentional.  See commit 237f8306c302
+("NFS: don't expect errors from mempool_alloc().") and commit 518662e0fcb9
+("NFS: fix usage of mempools.").
 
-  warning: no file matches F: arch/x86/boot/compressed/eboot.[ch]
+    When passed GFP flags that allow sleeping (such as
+    GFP_NOIO), mempool_alloc() will never return NULL, it will
+    wait until memory is available.
 
-Rectify EXTENSIBLE FIRMWARE INTERFACE (EFI) entry in MAINTAINERS.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-Ard, please pick this patch for your linux-next branch.
-applies cleanly on next-20200228, do not apply on current master
-
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 09b04505e7c3..4ce510b8467a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6383,7 +6383,6 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git
- S:	Maintained
- F:	Documentation/admin-guide/efi-stub.rst
- F:	arch/*/kernel/efi.c
--F:	arch/x86/boot/compressed/eboot.[ch]
- F:	arch/*/include/asm/efi.h
- F:	arch/x86/platform/efi/
- F:	drivers/firmware/efi/
--- 
-2.17.1
+regards,
+dan carpenter
 

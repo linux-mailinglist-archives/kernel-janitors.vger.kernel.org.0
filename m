@@ -2,55 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 115DF175802
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Mar 2020 11:09:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 355DC175A6B
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Mar 2020 13:24:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727115AbgCBKJv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 2 Mar 2020 05:09:51 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58874 "EHLO mail.kernel.org"
+        id S1727784AbgCBMYP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Mar 2020 07:24:15 -0500
+Received: from correo.us.es ([193.147.175.20]:57306 "EHLO mail.us.es"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726874AbgCBKJu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 2 Mar 2020 05:09:50 -0500
-Received: from localhost (unknown [171.76.77.132])
+        id S1727644AbgCBMYO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 2 Mar 2020 07:24:14 -0500
+Received: from antivirus1-rhel7.int (unknown [192.168.2.11])
+        by mail.us.es (Postfix) with ESMTP id A07E581409
+        for <kernel-janitors@vger.kernel.org>; Mon,  2 Mar 2020 13:24:00 +0100 (CET)
+Received: from antivirus1-rhel7.int (localhost [127.0.0.1])
+        by antivirus1-rhel7.int (Postfix) with ESMTP id 82C0DDA3B6
+        for <kernel-janitors@vger.kernel.org>; Mon,  2 Mar 2020 13:24:00 +0100 (CET)
+Received: by antivirus1-rhel7.int (Postfix, from userid 99)
+        id 6E2D2DA3AC; Mon,  2 Mar 2020 13:24:00 +0100 (CET)
+X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on antivirus1-rhel7.int
+X-Spam-Level: 
+X-Spam-Status: No, score=-108.2 required=7.5 tests=ALL_TRUSTED,BAYES_50,
+        SMTPAUTH_US2,USER_IN_WHITELIST autolearn=disabled version=3.4.1
+Received: from antivirus1-rhel7.int (localhost [127.0.0.1])
+        by antivirus1-rhel7.int (Postfix) with ESMTP id 6CAC1DA8E6;
+        Mon,  2 Mar 2020 13:23:58 +0100 (CET)
+Received: from 192.168.1.97 (192.168.1.97)
+ by antivirus1-rhel7.int (F-Secure/fsigk_smtp/550/antivirus1-rhel7.int);
+ Mon, 02 Mar 2020 13:23:58 +0100 (CET)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/antivirus1-rhel7.int)
+Received: from us.es (unknown [90.77.255.23])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8D3342086A;
-        Mon,  2 Mar 2020 10:09:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583143790;
-        bh=yDmug3kuIpXcihPyjyqqSEeMsAB5Qx8R9yAcgkDcOWE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=T0QsVZJhGM4BHpctjqiPa0dNm1DAt1mLTA4XtE+PHNXDLJ1YI7Fgm+Pia43B7bf1E
-         1yHM0ecldCdivrRm5KxHTAu/SYMrZvumkB4avNOta9ZOFi8Xo40RPbeWm21kM1DttR
-         125QXREx+EZiDFgwTiG4RUVje329+ANLbioBV/Co=
-Date:   Mon, 2 Mar 2020 15:39:45 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        dmaengine@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] dmaengine: ti: edma: fix null dereference because
- of a typo in pointer name
-Message-ID: <20200302100945.GL4148@vkoul-mobl>
-References: <20200226185921.351693-1-colin.king@canonical.com>
+        (Authenticated sender: 1984lsi)
+        by entrada.int (Postfix) with ESMTPSA id 464184251481;
+        Mon,  2 Mar 2020 13:23:58 +0100 (CET)
+Date:   Mon, 2 Mar 2020 13:24:10 +0100
+X-SMTPAUTHUS: auth mail.us.es
+From:   Pablo Neira Ayuso <pablo@netfilter.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Manoj Basapathi <manojbm@codeaurora.org>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        Jakub Kicinski <kuba@kernel.org>,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] netfilter: clean up some indenting
+Message-ID: <20200302122410.5vncrjcjjchkjcsw@salvia>
+References: <20200225064150.hwewi26uc2yfwh2u@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200226185921.351693-1-colin.king@canonical.com>
+In-Reply-To: <20200225064150.hwewi26uc2yfwh2u@kili.mountain>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Virus-Scanned: ClamAV using ClamSMTP
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 26-02-20, 18:59, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently there is a dereference of the null pointer m_ddev.  This appears
-> to be a typo on the pointer, I believe s_ddev should be used instead.
-> Fix this by using the correct pointer.
+On Tue, Feb 25, 2020 at 09:42:22AM +0300, Dan Carpenter wrote:
+> These lines were indented wrong so Smatch complained.
+> net/netfilter/xt_IDLETIMER.c:81 idletimer_tg_show() warn: inconsistent indenting
 
-Applied, thanks
-
--- 
-~Vinod
+Applied, thanks.

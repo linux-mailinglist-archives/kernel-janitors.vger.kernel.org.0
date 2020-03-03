@@ -2,85 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40F94178128
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Mar 2020 20:01:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EF87178198
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Mar 2020 20:02:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387583AbgCCSA5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Mar 2020 13:00:57 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44816 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387861AbgCCSAx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Mar 2020 13:00:53 -0500
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 60AFF20656;
-        Tue,  3 Mar 2020 18:00:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583258452;
-        bh=rMQn7kjsa7T0S3IBhZrsTg2HDBVaXevtNP7v9XkF4Dg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mijGe8m1m8P3anIBopwTfzLRv00gHoazw4qF+j/Pt9hX7Mkue7/j+TVzVsrCeJ+5H
-         MQmWUqig7A/cGz8jLhksqR8ERvtfcbw1Mu0Xsly1gJxKHwnulL19GE+IAm74CJcVx5
-         +NicDymf0rQOJFMvHk9t0PVcT6ziO7hzhFo+M6E8=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Paul Burton <paulburton@kernel.org>, ralf@linux-mips.org,
-        linux-mips@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH 4.19 54/87] MIPS: VPE: Fix a double free and a memory leak in release_vpe()
-Date:   Tue,  3 Mar 2020 18:43:45 +0100
-Message-Id: <20200303174355.218566706@linuxfoundation.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200303174349.075101355@linuxfoundation.org>
-References: <20200303174349.075101355@linuxfoundation.org>
-User-Agent: quilt/0.66
+        id S2388290AbgCCSDw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Mar 2020 13:03:52 -0500
+Received: from mail-il1-f195.google.com ([209.85.166.195]:34778 "EHLO
+        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387970AbgCCSDw (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 3 Mar 2020 13:03:52 -0500
+Received: by mail-il1-f195.google.com with SMTP id n11so3617528ild.1
+        for <kernel-janitors@vger.kernel.org>; Tue, 03 Mar 2020 10:03:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
+        b=RWZQeIL0G4T29AMwn81/jYklvI6cY3yAxn8RcOSfyHi66WVG1FrxiIYe6/N3tGrujT
+         L16ZuvBVe5nJgPZc/M6p7ETio8YLmxM5elTnmveqLus9xEeEW3PrtwnYQzXrej2LPOqS
+         ePTSSUdbBIm1PTkIuxJ23icCchfYgHoFVZnGxEwBDDbn5CiMYC5g0nuT+6YUHOTcICQn
+         MCu3svyVajBya/Ly+HeQpDAY+/Kt/om9XuOE60zvc+62Yc/sRiP9UGAKdhEXqmdXnYj3
+         hh9LmjmCUop5tSVO6wo/sWyW6vDXiEeRbS08tse4l9F+B4CRPpuwMAIuoCBkDAXjLi61
+         cJnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
+        b=gPmIyQfFPzp57JcR7FEYYn4YWG0WjSN5wUDg/XyP/F3ZQywEnF+106j0EzOht3tA0X
+         vEOMlabtUSsLtUoy8L+Bjb6B9wNwc0WWFhtZeq9MReum7H8mlsGQd7kIWgTSodpAOsEh
+         DpDeRF6EW1utMFr91Jr3y85LkMQy21oF8nGtfd0c64WR3LETF24BRsFkmBGCtHEZUum+
+         7//UI7VNwOONkYtGDYaBXqphUi83HD61m3ZTAdUhPiebZ6KAHEOYmw06E+vjwpmc6/iN
+         bz6oNmb3dUbjHab6/vvh3gMiSs/W22lHWM3Qwa/beTuY1y9xcQ3UAeUKNBN5cA4x3BgG
+         Vp4g==
+X-Gm-Message-State: ANhLgQ0vPYks3EoQNH5kxiP5DNfL6cZ/PpbJcMnoF+80bEZAfyl3EjgO
+        i+dq3RdXS9/r3SiC02bxZrPpg37oMr85K3IED+8=
+X-Google-Smtp-Source: ADFU+vtxCaxhzOdKDfyUMsukNtF9i7FsxURwvPDfAGfWZHOsYBIIDNeFLrWifUx6i3WVVTUJTC+kfBCnu5tKsYwnsOU=
+X-Received: by 2002:a92:9c57:: with SMTP id h84mr5678517ili.94.1583258631938;
+ Tue, 03 Mar 2020 10:03:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a02:9f04:0:0:0:0:0 with HTTP; Tue, 3 Mar 2020 10:03:51 -0800 (PST)
+Reply-To: dr.challynoah@gmail.com
+From:   DR CHALLY NOAH <mayorabrahamedge404@gmail.com>
+Date:   Tue, 3 Mar 2020 19:03:51 +0100
+Message-ID: <CALqVJWei9Umiw3V9aBt=DD1yV36_Nnu3F8RkmHvA_o5pvKCc1A@mail.gmail.com>
+Subject: Hello Dear
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-
-commit bef8e2dfceed6daeb6ca3e8d33f9c9d43b926580 upstream.
-
-Pointer on the memory allocated by 'alloc_progmem()' is stored in
-'v->load_addr'. So this is this memory that should be freed by
-'release_progmem()'.
-
-'release_progmem()' is only a call to 'kfree()'.
-
-With the current code, there is both a double free and a memory leak.
-Fix it by passing the correct pointer to 'release_progmem()'.
-
-Fixes: e01402b115ccc ("More AP / SP bits for the 34K, the Malta bits and things. Still wants")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Paul Burton <paulburton@kernel.org>
-Cc: ralf@linux-mips.org
-Cc: linux-mips@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/kernel/vpe.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/mips/kernel/vpe.c
-+++ b/arch/mips/kernel/vpe.c
-@@ -134,7 +134,7 @@ void release_vpe(struct vpe *v)
- {
- 	list_del(&v->list);
- 	if (v->load_addr)
--		release_progmem(v);
-+		release_progmem(v->load_addr);
- 	kfree(v);
- }
- 
-
-
+Hello Dear,
+What Have Kept You Waiting To Claim Your $600,000.00 USD Compensation Award?
+This said fund was issued out by the UNITED NATIONS To compensate
+you.Please If You Have Not Claim Your Fund (Award),Kindly contact me
+at   DR.CHALLYNOAH@GMAIL.COM   for further details on how to proceed your
+fund (award)release to you or better still reply back Immediately You
+Receive This Information For An Urgent Confirmation And Release Of Your
+Fund To You Without Delays, as your email was listed among those to be
+compensated this year.Congratulations..
+Best Regards,
+Dr Chally Noah.
+Minister Of Finance On Foreign Remittance:

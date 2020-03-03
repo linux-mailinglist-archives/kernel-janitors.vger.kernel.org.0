@@ -2,76 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E5F6177563
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Mar 2020 12:39:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9F2A1775F4
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Mar 2020 13:33:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728350AbgCCLju (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Mar 2020 06:39:50 -0500
-Received: from mga14.intel.com ([192.55.52.115]:26584 "EHLO mga14.intel.com"
+        id S1728361AbgCCMdY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Mar 2020 07:33:24 -0500
+Received: from foss.arm.com ([217.140.110.172]:46406 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728018AbgCCLju (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Mar 2020 06:39:50 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Mar 2020 03:39:49 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,511,1574150400"; 
-   d="scan'208";a="240044033"
-Received: from eliteleevi.tm.intel.com ([10.237.54.20])
-  by orsmga003.jf.intel.com with ESMTP; 03 Mar 2020 03:39:46 -0800
-Date:   Tue, 3 Mar 2020 13:39:45 +0200 (EET)
-From:   Kai Vehmanen <kai.vehmanen@linux.intel.com>
-X-X-Sender: kvehmane@eliteleevi.tm.intel.com
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        id S1727121AbgCCMdY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 3 Mar 2020 07:33:24 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C8B93FEC;
+        Tue,  3 Mar 2020 04:33:23 -0800 (PST)
+Received: from localhost (unknown [10.37.6.21])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4A66D3F534;
+        Tue,  3 Mar 2020 04:33:23 -0800 (PST)
+Date:   Tue, 3 Mar 2020 12:33:21 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
         Jaroslav Kysela <perex@perex.cz>,
         Takashi Iwai <tiwai@suse.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Keyon Jie <yang.jie@linux.intel.com>,
-        Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>,
-        Slawomir Blauciak <slawomir.blauciak@linux.intel.com>,
-        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] ASoC: SOF: Fix snd_sof_ipc_stream_posn()
-In-Reply-To: <20200303101858.ytehbrivocyp3cnf@kili.mountain>
-Message-ID: <alpine.DEB.2.21.2003031321410.2957@eliteleevi.tm.intel.com>
-References: <20200303101858.ytehbrivocyp3cnf@kili.mountain>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7 02160 Espoo
+        Akshu Agrawal <akshu.agrawal@amd.com>,
+        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] ASoc: amd: use correct format specifier for a long
+ int
+Message-ID: <20200303123321.GC3866@sirena.org.uk>
+References: <20200303103903.9259-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="JgQwtEuHJzHdouWu"
+Content-Disposition: inline
+In-Reply-To: <20200303103903.9259-1-colin.king@canonical.com>
+X-Cookie: Drilling for oil is boring.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi, 
 
-On Tue, 3 Mar 2020, Dan Carpenter wrote:
+--JgQwtEuHJzHdouWu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> We're passing "&posn" instead of "posn" so it ends up corrupting
-> memory instead of doing something useful.
-[...]
->  	/* send IPC to the DSP */
->  	err = sof_ipc_tx_message(sdev->ipc,
-> -				 stream.hdr.cmd, &stream, sizeof(stream), &posn,
-> +				 stream.hdr.cmd, &stream, sizeof(stream), posn,
->  				 sizeof(*posn));
+On Tue, Mar 03, 2020 at 10:39:03AM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> Currently the format specifier %d is being used for a long int. Fix
+> the by using %ld instead.
 
-ack, thanks, this is clearly wrong. This function is not used by current 
-platforms, so the bug has gone unnnoticed. Most platforms either rely on 
-direct MMIO queries of the DSP position, or the periodic position updates 
-DSPs send after each ALSA period. This function for host to query DSP 
-position via IPC is thus not used, although it's part of the generic audio
-DSP IPC interface.
+Someone already sent a fix for this.
 
-For the SOF folks in CC, I wonder should we keep this function at all? 
+--JgQwtEuHJzHdouWu
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Anyways, that's probably a longer discussion, so while it's there, 
-the code should be correct, so for the patch:
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+-----BEGIN PGP SIGNATURE-----
 
-Br, Kai
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5eTpEACgkQJNaLcl1U
+h9AKuQf/U01aci745PIHD/iQ86xIE2c0Ph5wIDFYgVS45kaTlPwBGX6iX72t/5tT
+/BesrakIoU6wHxO5wNQst+QuxCauSfQTqwuqtA4k4P/sizM7M5NPcoxeM/uECmGf
+Z91qqtfZq492X6yWceLwhCt9SA+5xzJ1bKdeETaOGaiJ594qhD/4+22WjhuibSF5
+FHcllXvFPVKZCVGB0QOAVtUpBK0NQfRBsjshPlNLwMsop+dXJSfI3YhrhiIq5+sS
+41UM1RDsJu3jGE6Lld3dBl5BgUdxR5yxudSuCqPtliEYnKyINev6qqWrrGoiwZ4B
+SbuwgxiOqB11TS0lW97afaTVtdAETQ==
+=tEk3
+-----END PGP SIGNATURE-----
+
+--JgQwtEuHJzHdouWu--

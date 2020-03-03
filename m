@@ -2,62 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96F6E177089
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Mar 2020 08:54:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1074717738F
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Mar 2020 11:12:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727656AbgCCHym (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Mar 2020 02:54:42 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:33258 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727531AbgCCHym (ORCPT
+        id S1728323AbgCCKLz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Mar 2020 05:11:55 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:35278 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728085AbgCCKLz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Mar 2020 02:54:42 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1j92Nx-0000Eq-QV; Tue, 03 Mar 2020 07:54:37 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Sunil Goutham <sgoutham@marvell.com>,
-        Linu Cherian <lcherian@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Jerin Jacob <jerinj@marvell.com>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] octeontx2-af: fix spelling mistake "backpessure" -> "backpressure"
-Date:   Tue,  3 Mar 2020 07:54:37 +0000
-Message-Id: <20200303075437.6704-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.0
+        Tue, 3 Mar 2020 05:11:55 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 023ABhL8160075;
+        Tue, 3 Mar 2020 10:11:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=I7lQUOIBl7w23iq71Y854jGz1gvnq8xxPdpo02mIV4o=;
+ b=Bp/x1W24h0306Cs9S9LPLIq2/CBQzgNWI9QFVJE5R0l4ygrnp4hmuUCHonvnYka3sqp4
+ PNh0V2si6IehwWcBqRl0T9CbDlYmWYmFwoaYJmR/1q7py7/HkqS5BDPG7Or23+UpEztD
+ eu16owp7izA39Yk+E7TEj4lJoJBV8HVYiHMc52FlmtLKgWX+MS5XmqrSia6z/z4bHz46
+ 3jfQlNcNUTYSheevZjV+QnDKQbbwNl/zLNXi0EHYMUS08XtOd9zicF62HprlyDlieaXz
+ 4mn4cNcUXX5BSL9oerSL7nFUp6S6sAD7/1y0uGfuY4F9LWl+gcJ6VrECEYLEJxmJOV2t 1g== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2yghn31vs1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 03 Mar 2020 10:11:50 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 023A2SCW151356;
+        Tue, 3 Mar 2020 10:11:49 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 2yg1p41dp1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 03 Mar 2020 10:11:49 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 023ABmIt016225;
+        Tue, 3 Mar 2020 10:11:48 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 03 Mar 2020 02:11:47 -0800
+Date:   Tue, 3 Mar 2020 13:11:40 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     David Herrmann <dh.herrmann@googlemail.com>
+Cc:     Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] HID: clean up wiimote_cmd_map_mp() return type
+Message-ID: <20200303101140.gmx5u4limxsfvard@kili.mountain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9548 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
+ mlxlogscore=859 mlxscore=0 spamscore=0 adultscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003030076
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9548 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0 spamscore=0
+ impostorscore=0 mlxscore=0 adultscore=0 mlxlogscore=912 lowpriorityscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1011 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2003030076
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+No one checks the error code, but the static checkers complain:
 
-There is a spelling mistake in a dev_warn message. Fix it.
+    drivers/hid/hid-wiimote-core.c:506 wiimote_cmd_map_mp()
+    warn: signedness bug returning '(-512)'
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+We're returning negative error codes or zero on success so the type
+should be int.
+
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 2 +-
+ drivers/hid/hid-wiimote-core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 80b1e39b0768..36953d4f51c7 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -393,7 +393,7 @@ int rvu_mbox_handler_nix_bp_enable(struct rvu *rvu,
+diff --git a/drivers/hid/hid-wiimote-core.c b/drivers/hid/hid-wiimote-core.c
+index 92874dbe4d4a..eaa2fa565047 100644
+--- a/drivers/hid/hid-wiimote-core.c
++++ b/drivers/hid/hid-wiimote-core.c
+@@ -484,7 +484,7 @@ static int wiimote_cmd_init_mp(struct wiimote_data *wdata)
+ }
  
- 	for (chan = chan_base; chan < (chan_base + req->chan_cnt); chan++) {
- 		if (bpid < 0) {
--			dev_warn(rvu->dev, "Fail to enable backpessure\n");
-+			dev_warn(rvu->dev, "Fail to enable backpressure\n");
- 			return -EINVAL;
- 		}
+ /* requires the cmd-mutex to be held */
+-static bool wiimote_cmd_map_mp(struct wiimote_data *wdata, __u8 exttype)
++static int wiimote_cmd_map_mp(struct wiimote_data *wdata, __u8 exttype)
+ {
+ 	__u8 wmem;
  
 -- 
-2.25.0
+2.11.0
 

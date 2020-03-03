@@ -2,101 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41EBC177CD1
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Mar 2020 18:08:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8427D177F27
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Mar 2020 19:57:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730586AbgCCRH7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Mar 2020 12:07:59 -0500
-Received: from foss.arm.com ([217.140.110.172]:49960 "EHLO foss.arm.com"
+        id S1731711AbgCCRtA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Mar 2020 12:49:00 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56166 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730582AbgCCRH7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Mar 2020 12:07:59 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 59366101E;
-        Tue,  3 Mar 2020 09:07:58 -0800 (PST)
-Received: from localhost (unknown [10.37.6.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D18823F534;
-        Tue,  3 Mar 2020 09:07:57 -0800 (PST)
-Date:   Tue, 03 Mar 2020 17:07:56 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     alsa-devel@alsa-project.org,
-        Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        kernel-janitors@vger.kernel.org,
-        Keyon Jie <yang.jie@linux.intel.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Slawomir Blauciak <slawomir.blauciak@linux.intel.com>,
-        Takashi Iwai <tiwai@suse.com>
-Subject: Applied "ASoC: SOF: Fix snd_sof_ipc_stream_posn()" to the asoc tree
-In-Reply-To:  <20200303101858.ytehbrivocyp3cnf@kili.mountain>
-Message-Id:  <applied-20200303101858.ytehbrivocyp3cnf@kili.mountain>
-X-Patchwork-Hint: ignore
+        id S1731702AbgCCRs7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 3 Mar 2020 12:48:59 -0500
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id F106F20870;
+        Tue,  3 Mar 2020 17:48:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583257737;
+        bh=rMQn7kjsa7T0S3IBhZrsTg2HDBVaXevtNP7v9XkF4Dg=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=l08/7ShVYV1H1oGMAuCJdOEHAou/6kB0A3IU+bhwrKxxHvQOpP/uIXwxQxbba70ZM
+         22OogBjUKIDB5DoU2M6xHfCLNaXCm2VUJNJ6wajMigX/IKYqw04eEfD9g6LNVAiSCC
+         TitTdc3V69YxdA51c8oEXB3y94RY6u8vPW+THoGQ=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Paul Burton <paulburton@kernel.org>, ralf@linux-mips.org,
+        linux-mips@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH 5.5 110/176] MIPS: VPE: Fix a double free and a memory leak in release_vpe()
+Date:   Tue,  3 Mar 2020 18:42:54 +0100
+Message-Id: <20200303174317.555620066@linuxfoundation.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200303174304.593872177@linuxfoundation.org>
+References: <20200303174304.593872177@linuxfoundation.org>
+User-Agent: quilt/0.66
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-   ASoC: SOF: Fix snd_sof_ipc_stream_posn()
+commit bef8e2dfceed6daeb6ca3e8d33f9c9d43b926580 upstream.
 
-has been applied to the asoc tree at
+Pointer on the memory allocated by 'alloc_progmem()' is stored in
+'v->load_addr'. So this is this memory that should be freed by
+'release_progmem()'.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git 
+'release_progmem()' is only a call to 'kfree()'.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+With the current code, there is both a double free and a memory leak.
+Fix it by passing the correct pointer to 'release_progmem()'.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Fixes: e01402b115ccc ("More AP / SP bits for the 34K, the Malta bits and things. Still wants")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Paul Burton <paulburton@kernel.org>
+Cc: ralf@linux-mips.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From 613cea5935e83cb5a7d182ee3f98d54620e102e2 Mon Sep 17 00:00:00 2001
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Tue, 3 Mar 2020 13:18:58 +0300
-Subject: [PATCH] ASoC: SOF: Fix snd_sof_ipc_stream_posn()
-
-We're passing "&posn" instead of "posn" so it ends up corrupting
-memory instead of doing something useful.
-
-Fixes: 53e0c72d98ba ("ASoC: SOF: Add support for IPC IO between DSP and Host")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Link: https://lore.kernel.org/r/20200303101858.ytehbrivocyp3cnf@kili.mountain
-Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/soc/sof/ipc.c | 2 +-
+ arch/mips/kernel/vpe.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/ipc.c b/sound/soc/sof/ipc.c
-index b63fc529b456..78aa1da7c7a9 100644
---- a/sound/soc/sof/ipc.c
-+++ b/sound/soc/sof/ipc.c
-@@ -499,7 +499,7 @@ int snd_sof_ipc_stream_posn(struct snd_soc_component *scomp,
+--- a/arch/mips/kernel/vpe.c
++++ b/arch/mips/kernel/vpe.c
+@@ -134,7 +134,7 @@ void release_vpe(struct vpe *v)
+ {
+ 	list_del(&v->list);
+ 	if (v->load_addr)
+-		release_progmem(v);
++		release_progmem(v->load_addr);
+ 	kfree(v);
+ }
  
- 	/* send IPC to the DSP */
- 	err = sof_ipc_tx_message(sdev->ipc,
--				 stream.hdr.cmd, &stream, sizeof(stream), &posn,
-+				 stream.hdr.cmd, &stream, sizeof(stream), posn,
- 				 sizeof(*posn));
- 	if (err < 0) {
- 		dev_err(sdev->dev, "error: failed to get stream %d position\n",
--- 
-2.20.1
+
 

@@ -2,122 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3716E177398
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Mar 2020 11:13:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C28ED1773B9
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Mar 2020 11:16:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728443AbgCCKNv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Mar 2020 05:13:51 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:43940 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728102AbgCCKNv (ORCPT
+        id S1728409AbgCCKQi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Mar 2020 05:16:38 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:40006 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728242AbgCCKQi (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Mar 2020 05:13:51 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 023ABO34161083;
-        Tue, 3 Mar 2020 10:13:29 GMT
+        Tue, 3 Mar 2020 05:16:38 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 023ADGfn161650;
+        Tue, 3 Mar 2020 10:16:18 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=SNtx5x9UTo/Iqcf7bRT0aGIJmdR+igsP0f+WLb4scqI=;
- b=mCf+XLDRMUfazPBdwCS3vNK100T/pZshuqE7xdzkgzVcLQ+J+SLCPN/mm/9XNARnwkge
- 4SPm3sH3g0KZ8Fuqa/zaUJrwYDTurN4oo/Q0I6eCSAz0zDix3BZAx3vg+VX/bxfBHRwN
- VI/iJKI8dwkg93fEtsI3IC20jkBdeJJZWjMLWu12fpu0AwQYBGYw9MTYBe1OZi9F9x3k
- iC4kU2yjVQHn+FHARk1skgrixJJIIEB5Q4uAeAeIEU0vkITWmb+rAlS8yASWAef428Qa
- YEDepyuHrhSJGjQknwnCqcLoPXt57wTDdWn9f1P9SVNBChDNrSDWgF0AjM/hINqFWBtI 4A== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 2yffwqp1v0-1
+ bh=KNNkC4SB32z5Gd7xmQWZNd6PuADfU9CPDCFk2PdjZeY=;
+ b=a9632GbCLuhMHSn1Hl+kJ/Wfhq+tsR6R05qjQX7g06YiH5jn5yZEtPvkuokF9uHAjKBZ
+ dZtEv2pIzZeA0WVPWwLsBRTZPVpc1mDQcu2y7eyjY+SokC7/Nx5okujlAW+wmDU7Ly6I
+ +02bVMCzMFBT3yg/VTffeIEeTjIS7Fk7NW1oocTT0u7pnyP9iAN2Eb0Sx/H2W1IHslnS
+ g4ofHFxL6T3TQaZLOfLZjlC0k4Q4cbm3o+feZUDzEIdYbL3sG8LE3yHLM+x6Q4/dNcSI
+ 4oD4bt3FB9JHzWqI45Htwzuh7NcNAGPa+eiriH+IMshUhPxJIraFg/J88SOtDBxmIBu3 qA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2yghn31wfb-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 03 Mar 2020 10:13:29 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 023ACZtM054824;
-        Tue, 3 Mar 2020 10:13:28 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 2yg1ekc4a0-1
+        Tue, 03 Mar 2020 10:16:18 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 023ADB32105969;
+        Tue, 3 Mar 2020 10:16:17 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2yg1gx44tk-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 03 Mar 2020 10:13:28 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 023ADK5J000766;
-        Tue, 3 Mar 2020 10:13:20 GMT
+        Tue, 03 Mar 2020 10:16:17 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 023AGFnD018623;
+        Tue, 3 Mar 2020 10:16:16 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 03 Mar 2020 02:13:19 -0800
-Date:   Tue, 3 Mar 2020 13:13:06 +0300
+        with ESMTP ; Tue, 03 Mar 2020 02:16:15 -0800
+Date:   Tue, 3 Mar 2020 13:16:08 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jeffrey Lin <jeffrey.lin@rad-ic.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     Alexios Zavras <alexios.zavras@intel.com>,
-        Allison Randal <allison@lohutok.net>,
-        Rob Herring <robh@kernel.org>, linux-input@vger.kernel.org,
+To:     Jean Delvare <jdelvare@suse.com>,
+        "Darrick J. Wong" <darrick.wong@oracle.com>
+Cc:     Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] Input: raydium_i2c_ts - fix error codes in
- raydium_i2c_boot_trigger()
-Message-ID: <20200303101306.4potflz7na2nn3od@kili.mountain>
+Subject: [PATCH] hwmon: (adt7462) Fix an error return in ADT7462_REG_VOLT()
+Message-ID: <20200303101608.kqjwfcazu2ylhi2a@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 User-Agent: NeoMutt/20170113 (1.7.2)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9548 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0 spamscore=0
- mlxlogscore=999 malwarescore=0 bulkscore=0 mlxscore=0 phishscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0
+ suspectscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003030077
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9548 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0 spamscore=0
+ impostorscore=0 mlxscore=0 adultscore=0 mlxlogscore=999 lowpriorityscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1011 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
  definitions=main-2003030077
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9548 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 spamscore=0
- impostorscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
- phishscore=0 clxscore=1011 bulkscore=0 adultscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2003030076
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-These functions are supposed to return negative error codes but instead
-it returns true on failure and false on success.  The error codes are
-eventually propogated back to user space.
+This is only called from adt7462_update_device().  The caller expects it
+to return zero on error.  I fixed a similar issue earlier in commit
+a4bf06d58f21 ("hwmon: (adt7462) ADT7462_REG_VOLT_MAX() should return 0")
+but I missed this one.
 
-Fixes: 48a2b783483b ("Input: add Raydium I2C touchscreen driver")
+Fixes: c0b4e3ab0c76 ("adt7462: new hwmon driver")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/input/touchscreen/raydium_i2c_ts.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/hwmon/adt7462.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/touchscreen/raydium_i2c_ts.c b/drivers/input/touchscreen/raydium_i2c_ts.c
-index 6ed9f22e6401..fe245439adee 100644
---- a/drivers/input/touchscreen/raydium_i2c_ts.c
-+++ b/drivers/input/touchscreen/raydium_i2c_ts.c
-@@ -432,7 +432,7 @@ static int raydium_i2c_write_object(struct i2c_client *client,
- 	return 0;
- }
- 
--static bool raydium_i2c_boot_trigger(struct i2c_client *client)
-+static int raydium_i2c_boot_trigger(struct i2c_client *client)
- {
- 	static const u8 cmd[7][6] = {
- 		{ 0x08, 0x0C, 0x09, 0x00, 0x50, 0xD7 },
-@@ -457,10 +457,10 @@ static bool raydium_i2c_boot_trigger(struct i2c_client *client)
- 		}
+diff --git a/drivers/hwmon/adt7462.c b/drivers/hwmon/adt7462.c
+index 9632e2e3c4bb..319a0519ebdb 100644
+--- a/drivers/hwmon/adt7462.c
++++ b/drivers/hwmon/adt7462.c
+@@ -413,7 +413,7 @@ static int ADT7462_REG_VOLT(struct adt7462_data *data, int which)
+ 			return 0x95;
+ 		break;
  	}
- 
--	return false;
+-	return -ENODEV;
 +	return 0;
  }
  
--static bool raydium_i2c_fw_trigger(struct i2c_client *client)
-+static int raydium_i2c_fw_trigger(struct i2c_client *client)
- {
- 	static const u8 cmd[5][11] = {
- 		{ 0, 0x09, 0x71, 0x0C, 0x09, 0x00, 0x50, 0xD7, 0, 0, 0 },
-@@ -483,7 +483,7 @@ static bool raydium_i2c_fw_trigger(struct i2c_client *client)
- 		}
- 	}
- 
--	return false;
-+	return 0;
- }
- 
- static int raydium_i2c_check_path(struct i2c_client *client)
+ /* Provide labels for sysfs */
 -- 
 2.11.0
 

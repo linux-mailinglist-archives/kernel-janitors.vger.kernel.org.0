@@ -2,96 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C3406179285
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Mar 2020 15:41:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB578179459
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Mar 2020 17:04:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388081AbgCDOlN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Mar 2020 09:41:13 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:33255 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388023AbgCDOlM (ORCPT
+        id S1729720AbgCDQEP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Mar 2020 11:04:15 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:38096 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726275AbgCDQEO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Mar 2020 09:41:12 -0500
-Received: by mail-wr1-f66.google.com with SMTP id x7so2727484wrr.0;
-        Wed, 04 Mar 2020 06:41:10 -0800 (PST)
+        Wed, 4 Mar 2020 11:04:14 -0500
+Received: by mail-wr1-f67.google.com with SMTP id t11so3062827wrw.5;
+        Wed, 04 Mar 2020 08:04:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
-        bh=tCtKJyb0/NtRc1ah/YeyZWRmrmSc960u9t/iq++pctQ=;
-        b=R4bWqPW02fm4nkxV0Ak9O8GdBoEajmQ37qYu+0EweklUM9nyjVIUHvh8+6oCSiZqni
-         /UI75iYEW/gPNcnB403xDMsMsPyQ0Z0XUbtWyAIuxxEF8Xl4LPj47io6o9wQbCAgtNo6
-         3e/5spSmMM50Tam8A794PbBptTnR9RaDVS5b0f56GKR9mJTV3LCr1BoSgYt9X8d0L4Gl
-         x8VZqquFLgKio7ch59MeSiqjH2tfw86Q+QCnaos0CxQaRwV+HhGkKYENhyOZEEF3hiLO
-         LQUetKEibArZLltveclWLmI2vcYFuWZNUEREFkJRnpz7XAjGeC4nU2HoAaDfY9BuCNuc
-         Xj7A==
+        bh=U/EkvVl7FAi6+YEFd5JxFzG6+4DfZZOGAx7Rl8CToMk=;
+        b=E1JN1GbGM8dgvnEHDscwegwpfaMaQ7uNI35EyIvMcMf2sw+8icQudqTE5OJkyH//m4
+         sxWXzYGXuxf17vSkNtS6vwLBXIQN1WthG6PDuKUeppzQI0CbXr+99sBifnfdr0DVC4Q3
+         8bE9hDL/ExIVkl9SoyKHBUo6CqfBn1IS0o5oFHlidXR2mK4ZKIEIz++HhIJhkna/UIl5
+         DllgjA+teBq5a1OTvkme+RyeCZYdxgzYOG1sQhCRvEyEsa7KcgBiJCTz1VksSuA5zDxf
+         cUOwDWP2NiFZOJdu+ynWXIQaT2sOkz1YxEo3zJlhg9h+2kDeAC6hwj0992FeW9pGF4hf
+         sp7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=tCtKJyb0/NtRc1ah/YeyZWRmrmSc960u9t/iq++pctQ=;
-        b=UTqEm47uNhSYNhXLKW2QNpSThNbfNciqyVSqns78RtEn+5J3wi1njOOEw+eLfCRLaE
-         2S4UacYuzsSkccQ/tk5IIapgprdbqJFsosjyREoACFEsyK+bc65d0rbw+z8SopzeD8Jj
-         Mae3gGBd768JOT/6LYRHK78rAHroEFHMMQrXNO0loMipZcN/Zp0vYkFbKXnolfKXNBcN
-         E3BxjpzBQx4pBFZodlAzDhMa3fIMC0Dc6IGnMwAvzDP7eHwjzDz2q0kTq661nxihwV25
-         Y/8dTQEwA3v0ACJGMHgiEYfVuXiE+W9zo+kaR4Tln82i87niORW3iz3Brgk/hYksRZoO
-         s3qw==
-X-Gm-Message-State: ANhLgQ2qJHd+yZpYlW+pbNakjtVonULw4ZAsG0nwzW+5R0mm7pCJKdvB
-        6wcRDYXyPPHic3GzPLr0Kmk=
-X-Google-Smtp-Source: ADFU+vsV2rXo6R7E8LyFSyxoB2/CQNHH4LKEdBCKcqgGzs6DkRDeFKR72TjfYg/ctlXmu8Su0JfJQA==
-X-Received: by 2002:adf:cd0a:: with SMTP id w10mr4331698wrm.171.1583332869611;
-        Wed, 04 Mar 2020 06:41:09 -0800 (PST)
+        bh=U/EkvVl7FAi6+YEFd5JxFzG6+4DfZZOGAx7Rl8CToMk=;
+        b=QXAWdMWEjunXo0OTwno+wW0dkJLOuonfEvdyC3R6YTyBbZrlyS3Mk1rpKMP+UUJGcR
+         cb9URABGVluJ7ntxmbseWfXrZHZiM+UEKvKKgpy46e1rXTTu6ifVUuXX0GYb8FBSJevd
+         wYHhLgIOEX6Xf5pNSr2t/gZspCjZlasaRRGYfMG3Lh6daTK4t7j2a83bG9q5nWv0Khc0
+         WWyfMnibqMi/xIlqwW/hDKk1r8Ry0pF91bCNBglsriXvoq/y9OGlSO29FEXkTpDS8fhr
+         znnqEhsb9jNNirhR+nnZw5Kk12nXd+0uSA4GUEYjQWC/goUDnhF0ObLdDtZkmZCTFZxL
+         rxyA==
+X-Gm-Message-State: ANhLgQ3malTn5gsTac5/EsWKGOSC/ttE5KiXstuD6oqLQp33e5ii3/K3
+        KMb+iHRJvJZ0RvnZYYuHD7k=
+X-Google-Smtp-Source: ADFU+vu6NnUvsLhagcO8Q4poilEAI652nzvJveCmlcKlhnSPTvayuVO6DjHuiAqzqYSqFm2261DWgw==
+X-Received: by 2002:a5d:4b51:: with SMTP id w17mr4544176wrs.231.1583337852868;
+        Wed, 04 Mar 2020 08:04:12 -0800 (PST)
 Received: from felia.fritz.box ([2001:16b8:2d16:4100:3093:39f0:d3ca:23c6])
-        by smtp.gmail.com with ESMTPSA id u20sm4195561wmj.14.2020.03.04.06.41.08
+        by smtp.gmail.com with ESMTPSA id y1sm3699219wrh.65.2020.03.04.08.04.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2020 06:41:08 -0800 (PST)
+        Wed, 04 Mar 2020 08:04:12 -0800 (PST)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Paul Walmsley <paul.walmsley@sifive.com>
-Cc:     Christoph Hellwig <hch@lst.de>, Borislav Petkov <bp@suse.de>,
-        Yash Shah <yash.shah@sifive.com>, linux-edac@vger.kernel.org,
+To:     Sumit Garg <sumit.garg@linaro.org>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>
+Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
         Sebastian Duda <sebastian.duda@fau.de>,
         Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: rectify EDAC-SIFIVE entry
-Date:   Wed,  4 Mar 2020 15:40:45 +0100
-Message-Id: <20200304144045.15060-1-lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: adjust to trusted keys subsystem creation
+Date:   Wed,  4 Mar 2020 17:03:59 +0100
+Message-Id: <20200304160359.16809-1-lukas.bulwahn@gmail.com>
 X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 9209fb51896f ("riscv: move sifive_l2_cache.c to drivers/soc") moved
-arch/riscv/mm/sifive_l2_cache.c to drivers/soc/sifive/sifive_l2_cache.c
-and adjusted the MAINTAINERS EDAC-SIFIVE entry but slipped in a mistake.
+Commit 47f9c2796891 ("KEYS: trusted: Create trusted keys subsystem")
+renamed trusted.h to trusted_tpm.h in include/keys/, and moved trusted.c
+to trusted-keys/trusted_tpm1.c in security/keys/.
 
 Since then, ./scripts/get_maintainer.pl --self-test complains:
 
-  warning: no file matches F: drivers/soc/sifive_l2_cache.c
+  warning: no file matches F: security/keys/trusted.c
+  warning: no file matches F: include/keys/trusted.h
 
-Rectify the EDAC-SIFIVE entry in MAINTAINERS now.
+Rectify the KEYS-TRUSTED entry in MAINTAINERS now.
 
 Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
 Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
 Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
-Paul, please pick this patch.
+Sumit, please ack.
+Jarkko, please pick this patch.
 
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ MAINTAINERS | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 6158a143a13e..5c755e03ddee 100644
+index 5c755e03ddee..cf389058ca76 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -6110,7 +6110,7 @@ M:	Yash Shah <yash.shah@sifive.com>
- L:	linux-edac@vger.kernel.org
+@@ -9276,8 +9276,8 @@ L:	keyrings@vger.kernel.org
  S:	Supported
- F:	drivers/edac/sifive_edac.c
--F:	drivers/soc/sifive_l2_cache.c
-+F:	drivers/soc/sifive/sifive_l2_cache.c
+ F:	Documentation/security/keys/trusted-encrypted.rst
+ F:	include/keys/trusted-type.h
+-F:	security/keys/trusted.c
+-F:	include/keys/trusted.h
++F:	include/keys/trusted_tpm.h
++F:	security/keys/trusted-keys/trusted_tpm1.c
  
- EDAC-SKYLAKE
- M:	Tony Luck <tony.luck@intel.com>
+ KEYS/KEYRINGS
+ M:	David Howells <dhowells@redhat.com>
 -- 
 2.17.1
 

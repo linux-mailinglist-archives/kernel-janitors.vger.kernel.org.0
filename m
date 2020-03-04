@@ -2,67 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4CD0178F31
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Mar 2020 12:02:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2BBD178F5C
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Mar 2020 12:08:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387805AbgCDLCm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Mar 2020 06:02:42 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:44526 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729118AbgCDLCm (ORCPT
+        id S1729483AbgCDLIb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Mar 2020 06:08:31 -0500
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:33910 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729283AbgCDLIb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Mar 2020 06:02:42 -0500
-Received: from 79.184.237.41.ipv4.supernova.orange.pl (79.184.237.41) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.341)
- id 9e78e012dbbd93a1; Wed, 4 Mar 2020 12:02:39 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ACPI: video: remove redundant assignments to variable result
-Date:   Wed, 04 Mar 2020 12:02:39 +0100
-Message-ID: <1811882.qudN6vFfLL@kreacher>
-In-Reply-To: <20200229001243.113176-1-colin.king@canonical.com>
-References: <20200229001243.113176-1-colin.king@canonical.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+        Wed, 4 Mar 2020 06:08:31 -0500
+Received: by mail-ed1-f68.google.com with SMTP id c21so325639edt.1;
+        Wed, 04 Mar 2020 03:08:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=3yy/OH+uOLzdanIeOX7H2H64xTV/u4qsSGbI1/KJzyQ=;
+        b=LCcft+2QE7nFkT9X5HUWblXU5lWrxdJypIWyYJo3inXIcHdt0vKgmcK+IrS9h2dwro
+         qa7BWl8WjLE+T1r4EH2PRleIDulCN2puooKxfs9ZtRPiobwqs0Rb14VwbEkOfZTQwgn3
+         Ym2McuhANF2g8pWsych3r5aHBj0SN82uOP+vIjjbbxaGd2vuRnflMoCii7XWmOL8Pntg
+         0kyjp8rMjMYu2VnATJ+qoj1OpV3MibWfyDVuzupFeE6OTslpD0bWvABzyXRWRPpBKdDf
+         9s5HmswIkdR9d95fiOLl6UW6VAB91iHxRMXHr9NKD7UEr7PPjl7YdfdDHHjf4YTIRtXy
+         Hn5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=3yy/OH+uOLzdanIeOX7H2H64xTV/u4qsSGbI1/KJzyQ=;
+        b=WPuwKFF1v1IoXaBQrqvhCH1PyZel58q6BG4jIJuhGLI2wavTk1WW3HtCpHMxfA4CSk
+         wmlWoZeZMVGQbtMdwa8AzRw6p6DKT1Owmsj96ZW2WmAUwS64EHogGlbiI2Y9Aoesl1Be
+         xFedDvlkxvcBB6zGFciWpkdRBSYs4+13Xbobmo91jTxfHlymsouxIzMqO2QwNmIUIfCb
+         G8P0fsFst1TmRwP51YBxqMd2XfusEWX8m9ArwJwHytNvV9zZLwFgtul/ky2NnBM1QKnc
+         pD50iLJuLpC/hiotHvl+v4wXF63NkHEKe12tjBnQ80LwLv3Z1X4kK6KpdZkbDn52hdk4
+         +ZbA==
+X-Gm-Message-State: ANhLgQ1E0H9zZpthsw2WlHpJd8k2Gfnr31VToiLyHGBeEaly6/P/tgwz
+        u3mhS9EXhDvZelgf++RATzYHEbm8qL8=
+X-Google-Smtp-Source: ADFU+vt49WpWk/Ua0NarpmOvy2WnwfqwmQwVx6samXjJI6itrKgzgZfzc16xKdY/y/XcYduymMXYBw==
+X-Received: by 2002:a50:fc85:: with SMTP id f5mr2142948edq.294.1583320109377;
+        Wed, 04 Mar 2020 03:08:29 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d16:4100:3093:39f0:d3ca:23c6])
+        by smtp.gmail.com with ESMTPSA id d1sm425796edc.71.2020.03.04.03.08.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Mar 2020 03:08:28 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Jonathan Corbet <corbet@lwn.net>, Sameer Rahmani <lxsameer@gnu.org>
+Cc:     linux-doc@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: adjust to kobject doc ReST conversion
+Date:   Wed,  4 Mar 2020 12:08:21 +0100
+Message-Id: <20200304110821.7243-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Saturday, February 29, 2020 1:12:43 AM CET Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable result is being initialized with a value that is never
-> read and it is being updated later with a new value. The initialization
-> is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/acpi/acpi_video.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-> index 15c5b272e698..bc96457c9e25 100644
-> --- a/drivers/acpi/acpi_video.c
-> +++ b/drivers/acpi/acpi_video.c
-> @@ -943,7 +943,7 @@ acpi_video_init_brightness(struct acpi_video_device *device)
->  	int i, max_level = 0;
->  	unsigned long long level, level_old;
->  	struct acpi_video_device_brightness *br = NULL;
-> -	int result = -EINVAL;
-> +	int result;
->  
->  	result = acpi_video_get_levels(device->dev, &br, &max_level);
->  	if (result)
-> 
+Commit 5fed00dcaca8 ("Documentation: kobject.txt has been moved to
+core-api/kobject.rst") missed to adjust the entry in MAINTAINERS.
 
-Applied as 5.7 material, thanks!
+Since then, ./scripts/get_maintainer.pl --self-test complains:
 
+  warning: no file matches F: Documentation/kobject.txt
 
+Adjust DRIVER CORE, KOBJECTS, DEBUGFS AND SYSFS entry in MAINTAINERS.
 
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+Sameer, please ack.
+Jonathan, pick pick this patch for doc-next.
+
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d064049aad1b..998d56e61a41 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5213,7 +5213,7 @@ M:	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ R:	"Rafael J. Wysocki" <rafael@kernel.org>
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git
+ S:	Supported
+-F:	Documentation/kobject.txt
++F:	Documentation/core-api/kobject.rst
+ F:	drivers/base/
+ F:	fs/debugfs/
+ F:	fs/sysfs/
+-- 
+2.17.1
 

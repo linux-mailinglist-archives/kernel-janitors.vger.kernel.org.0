@@ -2,119 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F4A71794A9
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Mar 2020 17:13:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 783D4179806
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Mar 2020 19:36:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729813AbgCDQNQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Mar 2020 11:13:16 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:61568 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726275AbgCDQNQ (ORCPT
+        id S1730059AbgCDSgj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Mar 2020 13:36:39 -0500
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:45018 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725795AbgCDSgi (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Mar 2020 11:13:16 -0500
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 024G6ZlZ027482;
-        Wed, 4 Mar 2020 11:13:03 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2yhsv400ch-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 04 Mar 2020 11:13:03 -0500
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 024G7JRM030205;
-        Wed, 4 Mar 2020 11:13:02 -0500
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2yhsv400br-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 04 Mar 2020 11:13:02 -0500
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-        by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 024GAWVA028410;
-        Wed, 4 Mar 2020 16:13:02 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
-        by ppma02dal.us.ibm.com with ESMTP id 2yffk754fd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 04 Mar 2020 16:13:01 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-        by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 024GD1wr50069790
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 4 Mar 2020 16:13:01 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 070C7112064;
-        Wed,  4 Mar 2020 16:13:01 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 318EE112061;
-        Wed,  4 Mar 2020 16:12:59 +0000 (GMT)
-Received: from jarvis.ext.hansenpartnership.com (unknown [9.80.217.149])
-        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-        Wed,  4 Mar 2020 16:12:58 +0000 (GMT)
-Message-ID: <1583338378.3284.7.camel@linux.ibm.com>
-Subject: Re: [PATCH] MAINTAINERS: adjust to trusted keys subsystem creation
-From:   James Bottomley <jejb@linux.ibm.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Mimi Zohar <zohar@linux.ibm.com>
-Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        Sebastian Duda <sebastian.duda@fau.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Wed, 04 Mar 2020 08:12:58 -0800
-In-Reply-To: <20200304160359.16809-1-lukas.bulwahn@gmail.com>
-References: <20200304160359.16809-1-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-03-04_05:2020-03-04,2020-03-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
- clxscore=1011 mlxlogscore=999 impostorscore=0 malwarescore=0 adultscore=0
- phishscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003040118
+        Wed, 4 Mar 2020 13:36:38 -0500
+Received: by mail-qk1-f193.google.com with SMTP id f198so2636011qke.11
+        for <kernel-janitors@vger.kernel.org>; Wed, 04 Mar 2020 10:36:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=BTZGkR5oJbEVIGvYgx8yo/76DyQUafIlIN4hqBpP97M=;
+        b=OjnU5uVrfIPDZs47K0nAL/eBE/nD5yfzsJrdujAUAEZcfHOxLjR2q5tjKvwGOuyzhL
+         rATMCnRPtkUfYzns52w36tXGs6cNTeA1FUh/ZONJjzjtZ+j+VHppGG7UtNyPnksZ2ELF
+         gYlNGHqJRU038L7+GoUXabYJbp71QMwWFYjAbDvn9nVuzPWDKp1N4Uc24GYh122RkZEJ
+         aoP8icI/jaIPPbHA46okbonqnhBt5f6BkswyYCY6EDpcp6C1Iah2bk0degti+sWoU4Ah
+         ut4X96UCj3ZocInP2p11AK+YF9jnpKNeTX1pVnmY/Qw1lXmMYHk4qnaKeAlmhmltptX7
+         1+7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=BTZGkR5oJbEVIGvYgx8yo/76DyQUafIlIN4hqBpP97M=;
+        b=U5Ew06GRqqMrtOo9+J25ozuxNrf+ZMhuZCo0mcmXYyoFSl99uMmWQvPxV+rlYIhEL0
+         zDX9rIY8o9JdscC7xQN/CoN4IFs1+ZW4sB4PdyWA7VrigawzgQVY9zovVZsEpw+BcmM+
+         Edwr4nuFWNhbrckzUQeh5becEuFAbQp5e/CCQtClKto9W3TPAisyqCJKWbhDErt3xoan
+         ApGOLVhGZ6WoZY6ltabG9fjb32fwBFuWVEHRXiflUhF1+op9spRFRacYscflTVh6yf0k
+         G93BMQzSqf+P0nL58vlyR/GBErBnScvCRnBiuJfu8aHN5HzU1mnWJRNQ6eSLIWInZZ3r
+         nh3A==
+X-Gm-Message-State: ANhLgQ1+WTYyvaZyP3D+mCHHdXcwX48NRvu0vjmwTP3XZ8e7Xd7bVsRG
+        TpLCfNZR6YCERztS2fIcYB0IXS6ox/G9wA==
+X-Google-Smtp-Source: ADFU+vv3IY/dEewbZ3PVzTR22dzcBCye571kokXxK2nB/kL3DOI7LkFGdmEpCqtLU9gFGOacLPQ1ng==
+X-Received: by 2002:a05:620a:13a9:: with SMTP id m9mr4368318qki.359.1583346997748;
+        Wed, 04 Mar 2020 10:36:37 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.57.212])
+        by smtp.gmail.com with ESMTPSA id w13sm7822900qtn.83.2020.03.04.10.36.37
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 04 Mar 2020 10:36:37 -0800 (PST)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1j9Ysm-0003Tw-QC; Wed, 04 Mar 2020 14:36:36 -0400
+Date:   Wed, 4 Mar 2020 14:36:36 -0400
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Lijun Ou <oulijun@huawei.com>, Wei Hu <xavier.huwei@huawei.com>,
+        Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] RDMA/hns: fix spelling mistake "attatch" ->
+ "attach"
+Message-ID: <20200304183636.GA13359@ziepe.ca>
+References: <20200304081045.81164-1-colin.king@canonical.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200304081045.81164-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 2020-03-04 at 17:03 +0100, Lukas Bulwahn wrote:
-> Commit 47f9c2796891 ("KEYS: trusted: Create trusted keys subsystem")
-> renamed trusted.h to trusted_tpm.h in include/keys/, and moved
-> trusted.c
-> to trusted-keys/trusted_tpm1.c in security/keys/.
+On Wed, Mar 04, 2020 at 09:10:45AM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Since then, ./scripts/get_maintainer.pl --self-test complains:
+> There is a spelling mistake in an error message. Fix it.
 > 
->   warning: no file matches F: security/keys/trusted.c
->   warning: no file matches F: include/keys/trusted.h
-> 
-> Rectify the KEYS-TRUSTED entry in MAINTAINERS now.
-> 
-> Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
-> Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
-> Sumit, please ack.
-> Jarkko, please pick this patch.
-> 
->  MAINTAINERS | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 5c755e03ddee..cf389058ca76 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -9276,8 +9276,8 @@ L:	keyrings@vger.kernel.org
->  S:	Supported
->  F:	Documentation/security/keys/trusted-encrypted.rst
->  F:	include/keys/trusted-type.h
-> -F:	security/keys/trusted.c
-> -F:	include/keys/trusted.h
-> +F:	include/keys/trusted_tpm.h
-> +F:	security/keys/trusted-keys/trusted_tpm1.c
+>  drivers/infiniband/hw/hns/hns_roce_qp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Everything under trusted-keys is part of the subsystem, so this should
-be a glob not a single file.
+Applied to for-next, thanks
 
-James
-
+Jason

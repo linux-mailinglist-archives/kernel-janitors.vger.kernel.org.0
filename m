@@ -2,114 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B624179B97
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Mar 2020 23:14:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 494C7179BAC
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Mar 2020 23:20:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388542AbgCDWOi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Mar 2020 17:14:38 -0500
-Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:18731 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388527AbgCDWOi (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Mar 2020 17:14:38 -0500
-Received: from [192.168.42.210] ([93.22.132.175])
-        by mwinf5d06 with ME
-        id ANEZ2200C3nCjhH03NEZnp; Wed, 04 Mar 2020 23:14:34 +0100
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 04 Mar 2020 23:14:34 +0100
-X-ME-IP: 93.22.132.175
-Subject: Re: AW: [PATCH 5.5 110/176] MIPS: VPE: Fix a double free and a memory
- leak in release_vpe()
-To:     Walter Harms <wharms@bfs.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Paul Burton <paulburton@kernel.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-References: <20200303174304.593872177@linuxfoundation.org>
- <20200303174317.555620066@linuxfoundation.org>
- <adf1859b4dcc497285ebbda017ece22d@bfs.de>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <33446ca8-0ace-e081-47fa-ceddf7fe80df@wanadoo.fr>
-Date:   Wed, 4 Mar 2020 23:14:30 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S2388464AbgCDWUs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Mar 2020 17:20:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41504 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388026AbgCDWUs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 4 Mar 2020 17:20:48 -0500
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 61945214D8;
+        Wed,  4 Mar 2020 22:20:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583360447;
+        bh=35qO3hdBPY9XEjY8+pJst4gIXbSd1Nc+th/XaxS/Oa4=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=WSA0tBMIOTRH8hEsIX+MJ/yoUaOno2LswbdSzPiPUjbnb3vGFwfHvM0OXOYKD+K5Q
+         /ukqU/vslEKim/Gj6dkjpQpE7zhJ8ZNfUXqfSKdmxMj6QtB0VoaRlUBFdn/lOGSFP3
+         N4u8K76HycFJRpPNivBb0Jzz/wuAWFe78eJPa6rc=
+Received: by mail-qk1-f176.google.com with SMTP id m9so3356189qke.4;
+        Wed, 04 Mar 2020 14:20:47 -0800 (PST)
+X-Gm-Message-State: ANhLgQ1NKnh+4N+8wb4vc3X1CzvX9lEG2/CA+n04HeU/8dTuF/gsD+UE
+        mkcNhlU3R2kDRDpNkUi+WTH0S7nz2Dv0X/5a0g==
+X-Google-Smtp-Source: ADFU+vvr04r+5wCdzyL6uorYqvlzIlyYxQ3F6iY/L1Osbi5Ca+523kWnCA03Oki4mxIGr2E8cLcEd0RstjX7DQE2aa4=
+X-Received: by 2002:a37:2cc6:: with SMTP id s189mr3610073qkh.223.1583360446462;
+ Wed, 04 Mar 2020 14:20:46 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <adf1859b4dcc497285ebbda017ece22d@bfs.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+References: <20200304212600.6172-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <20200304212600.6172-1-lukas.bulwahn@gmail.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Wed, 4 Mar 2020 16:20:35 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKGhpdvrNGbq+yYeM=goOwNUewHYStT8b2PNiBVz+4JPw@mail.gmail.com>
+Message-ID: <CAL_JsqKGhpdvrNGbq+yYeM=goOwNUewHYStT8b2PNiBVz+4JPw@mail.gmail.com>
+Subject: Re: [PATCH v2] MAINTAINERS: update ALLWINNER CPUFREQ DRIVER entry
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Chen-Yu Tsai <wens@csie.org>, Yangtao Li <tiny.windzz@gmail.com>,
+        Maxime Ripard <maxime@cerno.tech>,
+        "open list:THERMAL" <linux-pm@vger.kernel.org>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 04/03/2020 à 22:28, Walter Harms a écrit :
-> ________________________________________
-> Von: kernel-janitors-owner@vger.kernel.org <kernel-janitors-owner@vger.kernel.org> im Auftrag von Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Gesendet: Dienstag, 3. März 2020 18:42
-> An: linux-kernel@vger.kernel.org
-> Cc: Greg Kroah-Hartman; stable@vger.kernel.org; Christophe JAILLET; Paul Burton; ralf@linux-mips.org; linux-mips@vger.kernel.org; kernel-janitors@vger.kernel.org
-> Betreff: [PATCH 5.5 110/176] MIPS: VPE: Fix a double free and a memory leak in release_vpe()
+On Wed, Mar 4, 2020 at 3:26 PM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
 >
-> From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Commit b30d8cf5e171 ("dt-bindings: opp: Convert Allwinner H6 OPP to a
+> schema") converted in Documentation/devicetree/bindings/opp/ the file
+> sun50i-nvmem-cpufreq.txt to allwinner,sun50i-h6-operating-points.yaml.
 >
-> commit bef8e2dfceed6daeb6ca3e8d33f9c9d43b926580 upstream.
+> Since then, ./scripts/get_maintainer.pl --self-test complains:
 >
-> Pointer on the memory allocated by 'alloc_progmem()' is stored in
-> 'v->load_addr'. So this is this memory that should be freed by
-> 'release_progmem()'.
+>   warning: no file matches \
+>   F: Documentation/devicetree/bindings/opp/sun50i-nvmem-cpufreq.txt
 >
-> 'release_progmem()' is only a call to 'kfree()'.
+> Adjust the file pattern in the ALLWINNER CPUFREQ DRIVER entry.
 >
-> With the current code, there is both a double free and a memory leak.
-> Fix it by passing the correct pointer to 'release_progmem()'.
->
-> Fixes: e01402b115ccc ("More AP / SP bits for the 34K, the Malta bits and things. Still wants")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> Signed-off-by: Paul Burton <paulburton@kernel.org>
-> Cc: ralf@linux-mips.org
-> Cc: linux-mips@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: kernel-janitors@vger.kernel.org
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 > ---
->   arch/mips/kernel/vpe.c |    2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> Changes to v1:
+>   - do not include new maintainers because it is not needed.
 >
-> --- a/arch/mips/kernel/vpe.c
-> +++ b/arch/mips/kernel/vpe.c
-> @@ -134,7 +134,7 @@ void release_vpe(struct vpe *v)
->   {
->          list_del(&v->list);
->          if (v->load_addr)
-> -               release_progmem(v);
-> +               release_progmem(v->load_addr);
->          kfree(v);
->   }
->
->
-> since release_progmem() is kfree() it is also possible to drop "if (v->load_addr)"
->
-> jm2c
->
-> re,
->   wh
+> Maxime, Chen-Yu, Yangtao, please ack.
+> Rob, please pick this patch.
 
-Agreed.
+Applied.
 
-My patch had the following comment after the patch description:
----
-The 'if (v->load_addr)' looks also redundant, but, well, the code is old
-and I feel lazy tonight to send another patch for only that.
----
-
-git log shows nearly no update since end of 2015, so I kept my proposal 
-as minimal :)
-
-CJ
-
+Rob

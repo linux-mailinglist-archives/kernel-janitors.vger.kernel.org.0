@@ -2,107 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CB2C179A98
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Mar 2020 22:02:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B293B179AB2
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Mar 2020 22:13:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388026AbgCDVCl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Mar 2020 16:02:41 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:46294 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727528AbgCDVCk (ORCPT
+        id S2388026AbgCDVNJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Mar 2020 16:13:09 -0500
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:33366 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726440AbgCDVNI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Mar 2020 16:02:40 -0500
-Received: by mail-wr1-f68.google.com with SMTP id j7so4213947wrp.13;
-        Wed, 04 Mar 2020 13:02:38 -0800 (PST)
+        Wed, 4 Mar 2020 16:13:08 -0500
+Received: by mail-ed1-f67.google.com with SMTP id c62so4042696edf.0;
+        Wed, 04 Mar 2020 13:13:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=NEFs2MX2HBD3Da9qWclQMksmz31HvstBlw6pDvT6iSQ=;
-        b=N03l14QpofeCXOwJXLkIy6ov4cbP2By/AZf3fm3ywZ6osNrkAw/edkSKoGg26BFgIy
-         emyg2CUWOcV8Y7R+NMmBc2dM92cup7X7A0jZynmJmdo+u0RWfWAXNo7z5edQhFisQU4v
-         ppzjdSYyO4ShpZ0h9ZwzGI/QnG8d9JX6+8mtdW+TQpzlVDcMrCZ4OEo/+fGrcmWWNj56
-         2hx4NJH1gFXQjDMPmpXuSk3uS/1gxHlm+m/GIWVVQ6KY/vgJ6faOvbFMKfDSaGvxF41b
-         7fzisDinYlS33G15O+ocNM4RnWnq5E0m8vpdw1OdDMXV1f1v/Bs2N/Y8fmu78/wuxZaB
-         ynxg==
+        h=from:to:cc:subject:date:message-id;
+        bh=dCW1rcJ9YTWBdWzukHsXIprcdho8wqp30teVzoaXut8=;
+        b=hhaZOm6Es2C55CAvBU+VYbagW2+NeHvOsx/3IIP2rRB+gbhRF98csxzI4b8Kf/imnN
+         nbNQYRgyqg19wKk6Djpd1Sr1gHKz093YwwYsfUKZl4TNHgfapKvszqKKtJ9IbSqmzSV9
+         M6EDOL3PO4dm+2Qi5uo6c7qhvu9bQLPQ5NI/N8ZvERWU61nxOLrtN4dlXuXt825WyqJh
+         +BHzU/SLm1PfSH8RYqmudG78JksBElE316aVzGBm+uBT4UaEb6CIVtbChFUmRs2J+aMs
+         m3H+UV4rnJdNdtrlaN6BRDWmeGBeBf7vQ3rEcKKZDS21xu3gK5BAvoDvtKDVsze15BwE
+         K9dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=NEFs2MX2HBD3Da9qWclQMksmz31HvstBlw6pDvT6iSQ=;
-        b=Ib8IrDBoEKJ0gJrDVjKaCklvQCZ+9Yn5YJzpU6LjQYE7FQvPUXmt0qxVMZr2t9m275
-         ZeDw1KVg6x6+zHGyhjcqvoJQSh3YysSabliIyyUZL6TF9FKmaTt+kKMmeN9upeclC/UV
-         0GV5tw7ixMK3gDIW7N8+iSHf0d3mNrxMHMnFscmfaiEXY4lg1kzNxVLNtueZ8GZje1Kh
-         7KQyPlc42y+HH2obtUSgcSyr7s5VmvGEr7qfA8SuAz6csnqvL5RwRiAosMzMte/eMofu
-         Y7UmtL4peJv1ThS2Hfcyd7r9wqAn3c0xuXWqiM39+YwEH4KD41IeD4GXfMElYDqRtYnf
-         i2VQ==
-X-Gm-Message-State: ANhLgQ0XU2v06G0LklOwZatXG/GB4HKB12CBAZapt0SPsOxMBy8UnhBV
-        j9RFSwKi2Igp+NOLcJNMHKg=
-X-Google-Smtp-Source: ADFU+vt7GyKW2cIsrJdFhVMvmrn9ud46HhYHOhye8TeFKkHP5sDs31FglV7g0UQQ0Uj6nor53IgKaw==
-X-Received: by 2002:adf:de12:: with SMTP id b18mr5776099wrm.268.1583355757945;
-        Wed, 04 Mar 2020 13:02:37 -0800 (PST)
-Received: from felia ([2001:16b8:2d16:4100:5c62:5f:595c:f76d])
-        by smtp.gmail.com with ESMTPSA id j20sm6100249wmj.46.2020.03.04.13.02.37
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=dCW1rcJ9YTWBdWzukHsXIprcdho8wqp30teVzoaXut8=;
+        b=jHo+WLd6FR41v8h4FSYXvfr5tjYos+8Rz0e7UNOfti/1vYMmaVs5rk2DFbZ1HvqzYJ
+         06XkvGSo/qr2xDRnMmB39lWH2ESWvvOuINO90mTVv5XEgHaampkWIdFwma80fCRjdevD
+         GPElCdN82VOvHi5aUBObvwOHxpuusurgqMH6ELYtKC794QmScjXEwpzqEtK4CRhOB4wq
+         OD4rE+ueqzsELcS+QkhiNXgDmdnOP1mx46qcBRDdEPhX7w3FmObFIzc7IjmyaBmNCP8U
+         1sl4owj1kLirHK4lANuVlaqEZWLYrU+6/gpDnvnHtzS/mK3hEI+EjFMXp+P5HZx218Y9
+         IWUg==
+X-Gm-Message-State: ANhLgQ2tw1W1JJ0MhsJtatnmsER4dLFOfeLQNYf50L9rqgigv76bfbEi
+        nDHf5zhiIrSr0RWKpkyRyJo=
+X-Google-Smtp-Source: ADFU+vtmldY3b7mOyJ02OLZ/ej4YOW/EaU4qKPRgCjxwGYhH2vdgob5TcGv3OcYMps2GuAzzT9Ambw==
+X-Received: by 2002:aa7:df94:: with SMTP id b20mr1744181edy.84.1583356386605;
+        Wed, 04 Mar 2020 13:13:06 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d16:4100:5c62:5f:595c:f76d])
+        by smtp.gmail.com with ESMTPSA id j21sm1005332edt.32.2020.03.04.13.13.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2020 13:02:37 -0800 (PST)
+        Wed, 04 Mar 2020 13:13:06 -0800 (PST)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Wed, 4 Mar 2020 22:02:35 +0100 (CET)
-X-X-Sender: lukas@felia
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-cc:     Jonathan Corbet <corbet@lwn.net>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+To:     Sumit Garg <sumit.garg@linaro.org>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>
+Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        Sebastian Duda <sebastian.duda@fau.de>,
         Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: adjust to filesystem doc ReST conversion
-In-Reply-To: <20200304212846.0c79c6da@coco.lan>
-Message-ID: <alpine.DEB.2.21.2003042151430.2698@felia>
-References: <20200304072950.10532-1-lukas.bulwahn@gmail.com> <20200304131035.731a3947@lwn.net> <20200304212846.0c79c6da@coco.lan>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH v2] MAINTAINERS: adjust to trusted keys subsystem creation
+Date:   Wed,  4 Mar 2020 22:12:54 +0100
+Message-Id: <20200304211254.5127-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Commit 47f9c2796891 ("KEYS: trusted: Create trusted keys subsystem")
+renamed trusted.h to trusted_tpm.h in include/keys/, and moved trusted.c
+to trusted-keys/trusted_tpm1.c in security/keys/.
 
+Since then, ./scripts/get_maintainer.pl --self-test complains:
 
-On Wed, 4 Mar 2020, Mauro Carvalho Chehab wrote:
+  warning: no file matches F: security/keys/trusted.c
+  warning: no file matches F: include/keys/trusted.h
 
-> Em Wed, 4 Mar 2020 13:10:35 -0700
-> Jonathan Corbet <corbet@lwn.net> escreveu:
-> 
-> > 
-> > Sigh, I need to work a MAINTAINERS check into my workflow...
-> > 
-> > Thanks for fixing these, but ... what tree did you generate the patch
-> > against?  I doesn't come close to applying to docs-next.
-> 
-> I'm starting to suspect that maybe the best workflow would be to just 
-> apply the patches at docs-next keeping links broken, and then run
-> ./scripts/documentation-file-ref-check --fix by the end of a merge
-> window, addressing such breakages.
-> 
-> There are usually lots of churn outside the merge window.
->
+Rectify the KEYS-TRUSTED entry in MAINTAINERS now and ensure that all
+files in security/keys/ are identified as part of KEYS-TRUSTED.
 
-Agree, it is probably the simplest solution to get such things fixed at 
-the end of the merge window; there are many of such 'automatic' fixes (and 
-scripts that generate them). It just needs somebody to convince Linus to
-have a trusted end-of-merge-window clean-up team to provide a final pull 
-request on Sunday afternoon to fix all those minor points.
+Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
+Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+Changes to v1:
+- use a global pattern for matching the whole security/keys/ directory.
+Sumit, please ack.
+James or Jarkko, please pick this patch v2.
+
+ MAINTAINERS | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5c755e03ddee..7f11ac752b91 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9276,8 +9276,8 @@ L:	keyrings@vger.kernel.org
+ S:	Supported
+ F:	Documentation/security/keys/trusted-encrypted.rst
+ F:	include/keys/trusted-type.h
+-F:	security/keys/trusted.c
+-F:	include/keys/trusted.h
++F:	include/keys/trusted_tpm.h
++F:	security/keys/trusted-keys/
  
-> Another alternative would be to split the MAINTAINERS file on a
-> per-subsystem basis. If I remember well, someone proposed this once at
-> LKML. I vaguely remember that there were even a patch (or RFC)
-> adding support for such thing for get_maintainers.pl.
-> 
+ KEYS/KEYRINGS
+ M:	David Howells <dhowells@redhat.com>
+-- 
+2.17.1
 
-I would also support that idea. In the meantime, I am looking into the 
-effort to identify and fix these issues when they are submitted to the 
-mailing list. It is not the simplest solution, but at least a solution 
-that I can try to work on individually at first.
-
-Lukas

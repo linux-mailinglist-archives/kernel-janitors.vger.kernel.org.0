@@ -2,67 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8492117909A
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Mar 2020 13:47:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAC66179237
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Mar 2020 15:22:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387992AbgCDMrq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Mar 2020 07:47:46 -0500
-Received: from coyote.holtmann.net ([212.227.132.17]:56073 "EHLO
-        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729175AbgCDMrp (ORCPT
+        id S2387776AbgCDOWl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Mar 2020 09:22:41 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:35704 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728432AbgCDOWl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Mar 2020 07:47:45 -0500
-Received: from marcel-macbook.fritz.box (p4FEFC5A7.dip0.t-ipconnect.de [79.239.197.167])
-        by mail.holtmann.org (Postfix) with ESMTPSA id D47C7CECDC;
-        Wed,  4 Mar 2020 13:57:10 +0100 (CET)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.0 \(3608.60.0.2.5\))
-Subject: Re: [PATCH] MAINTAINERS: adjust to 6lowpan doc ReST conversion
-From:   Marcel Holtmann <marcel@holtmann.org>
-In-Reply-To: <20200304104717.5841-1-lukas.bulwahn@gmail.com>
-Date:   Wed, 4 Mar 2020 13:47:43 +0100
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        Bluez mailing list <linux-bluetooth@vger.kernel.org>,
-        Alexander Aring <alex.aring@gmail.com>,
-        Jukka Rissanen <jukka.rissanen@linux.intel.com>,
-        linux-wpan@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <D2D045E0-180D-4F76-93D5-735A5600E62B@holtmann.org>
-References: <20200304104717.5841-1-lukas.bulwahn@gmail.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Mailer: Apple Mail (2.3608.60.0.2.5)
+        Wed, 4 Mar 2020 09:22:41 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 024ED3cl147695;
+        Wed, 4 Mar 2020 14:22:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=bE7sC7nJ7rSQT8HCdLruNQybs2hy567yeiO0aK5lroI=;
+ b=uftF55W0p1TXun2B11WMya0bEYxXWmxgb1xg4z2W4OMiZuTFjhXVw4flPTil3SWgOtNM
+ vhQ4jk19zHabcyCEPuk2G5Wx6a2i+Ane47/s0Nh5n7nwr/yJ6jSzQpOx5LpfBRCKsDHo
+ nQDBoVxWtqNtk3tJmbp9SKD6+OoDEShREbrVb2JufsqDhmHSQdUaun11ODlH1S9ZcO0S
+ 0JOa/hooJwIpslamPsyEa7P8AucojZqeaLe3fMsWC4wW/OnpMWjgGpf5uHH9ukd8/vN0
+ qeAIeX9Ql7s3/N1R2ccU6vXlwC172ZoozxNm09pp/ew1NSgFIqA7PvHUoD//TnvYLh7S Hw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2yghn3abde-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 04 Mar 2020 14:22:35 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 024EEhOP120584;
+        Wed, 4 Mar 2020 14:22:35 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 2yg1p7k61h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 04 Mar 2020 14:22:35 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 024EMYMm001776;
+        Wed, 4 Mar 2020 14:22:34 GMT
+Received: from kili.mountain (/41.210.146.162)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 04 Mar 2020 06:22:33 -0800
+Date:   Wed, 4 Mar 2020 17:22:24 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Saeed Mahameed <saeedm@mellanox.com>, Eli Cohen <eli@mellanox.com>
+Cc:     Leon Romanovsky <leon@kernel.org>, Mark Bloch <markb@mellanox.com>,
+        Paul Blakey <paulb@mellanox.com>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] net/mlx5e: Fix an IS_ERR() vs NULL check
+Message-ID: <20200304142151.qivcobp6ngrynb2p@kili.mountain>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9549 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
+ mlxlogscore=999 mlxscore=0 spamscore=0 adultscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003040109
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9549 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0 spamscore=0
+ impostorscore=0 mlxscore=0 adultscore=0 mlxlogscore=999 lowpriorityscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1011 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2003040109
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Lukas,
+The esw_vport_tbl_get() function returns error pointers on error.
 
-> Commit 107db7ec7838 ("docs: networking: convert 6lowpan.txt to ReST")
-> renamed 6lowpan.txt to 6lowpan.rst for the ReST conversion.
-> 
-> Since then, ./scripts/get_maintainer.pl --self-test complains:
-> 
->  warning: no file matches F: Documentation/networking/6lowpan.txt
-> 
-> Adjust 6LOWPAN GENERIC (BTLE/IEEE 802.15.4) entry in MAINTAINERS.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
-> Mauro, please ack.
-> Marcel, please pick for bluetooth-next.
-> 
-> MAINTAINERS | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
+Fixes: 96e326878fa5 ("net/mlx5e: Eswitch, Use per vport tables for mirroring")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-patch has been applied to bluetooth-next tree.
-
-Regards
-
-Marcel
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+index 4b5b6618dff4..692fe9e6a08f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -198,7 +198,7 @@ int mlx5_esw_vport_tbl_get(struct mlx5_eswitch *esw)
+ 	mlx5_esw_for_all_vports(esw, i, vport) {
+ 		attr.in_rep->vport = vport->vport;
+ 		fdb = esw_vport_tbl_get(esw, &attr);
+-		if (!fdb)
++		if (IS_ERR(fdb))
+ 			goto out;
+ 	}
+ 	return 0;
+-- 
+2.11.0
 

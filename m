@@ -2,81 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24648178FF3
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Mar 2020 12:57:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD71A179009
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Mar 2020 13:07:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387938AbgCDL5l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Mar 2020 06:57:41 -0500
-Received: from eggs.gnu.org ([209.51.188.92]:50885 "EHLO eggs.gnu.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387929AbgCDL5l (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Mar 2020 06:57:41 -0500
-Received: from fencepost.gnu.org ([2001:470:142:3::e]:49702)
-        by eggs.gnu.org with esmtp (Exim 4.71)
-        (envelope-from <lxsameer@gnu.org>)
-        id 1j9Seg-0001ih-T4; Wed, 04 Mar 2020 06:57:38 -0500
-Received: from [159.253.226.146] (port=45496 helo=[10.4.0.51])
-        by fencepost.gnu.org with esmtpsa (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.82)
-        (envelope-from <lxsameer@gnu.org>)
-        id 1j9Sed-0005Ci-Dr; Wed, 04 Mar 2020 06:57:36 -0500
-Subject: Re: [PATCH] MAINTAINERS: adjust to kobject doc ReST conversion
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>
-Cc:     linux-doc@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+        id S1729302AbgCDMHY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Mar 2020 07:07:24 -0500
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:53668 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726502AbgCDMHX (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 4 Mar 2020 07:07:23 -0500
+Received: by mail-wm1-f66.google.com with SMTP id g134so1776003wme.3;
+        Wed, 04 Mar 2020 04:07:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=myVXMYFX2X/qFZZm2xeEMnLsYe1/6jCcOyrKkOqzPDw=;
+        b=RoFgc9EYaJKBf1aB1IsygPxKb4ptdXvkuI/fe+HFyJ+YGDbsS/jbGRIbMzy+YfoeW9
+         KmZNAFgtTleKiIUhlmvPABHtFX3g/a0/m0h665SvZ51d7YDI5Lw/uT9SoStPXkEGSK4q
+         V0PhnnTM1Cmg3OoQb0XbUYCL3GknBMajIslcuCTPsO1TJBlnkLUgc79gmDnzQ83rwJF6
+         Sb7UVMkoy7VsTNXHM39B/Rr5ygFKPmobnLVyTHAB8LmOS3YOVWWTMw8eaGyEB6J1Ilxp
+         E3VKN5Olxi20GUwgBtoKfgGgDfpPZd4baDEp6repdRw2GCkAzUT/2H8U2lOC8MIj83qQ
+         ePAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=myVXMYFX2X/qFZZm2xeEMnLsYe1/6jCcOyrKkOqzPDw=;
+        b=o8ng05lbi4jbLWWp87d3vcIr2DBhw5/MUH3l3Zv11mOAuaW4i9YzLgfpTJj6XSTHJE
+         QguAXdIvMYSfbaVoi6+g1BeH2JwtR9X8/MISwXEKYlKvkSH3cYblzuas0rkWDfOrpueB
+         sUcoCPHaYziqEYSZJJmeyEu20xst70B53o7+LZzHwV3inIrlIUzQPlqSGm347W3TvPKq
+         ofzYDmF+oRqmUgsyDUoXIxI8zCf1Hj1nEG6a35FgWcfd+GYxW6P9ylq1Fw/07GJIx+2e
+         wQWKWBfZIIOx2PIXWanqo8Z2nCO0Wf4KqOX7jWcdnyOXvS3YdcCBWcjyfc49jKSmABGq
+         UvzQ==
+X-Gm-Message-State: ANhLgQ22XRqRDmLNKvMSpKvyf0M7yJ5jeJbvu4Xi80vkzvC93QlVSAHy
+        rK7MWu1CknxO/dOWz2IiyiY=
+X-Google-Smtp-Source: ADFU+vsLvouiMTzcVlXfgCXVqwVxFQI+p2PE0dPIx/YTYl4CzKad7DsO4l3zlagL0leqIqigsIv9Ew==
+X-Received: by 2002:a05:600c:2281:: with SMTP id 1mr3362110wmf.120.1583323641513;
+        Wed, 04 Mar 2020 04:07:21 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d16:4100:3093:39f0:d3ca:23c6])
+        by smtp.gmail.com with ESMTPSA id c26sm3811993wmb.8.2020.03.04.04.07.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Mar 2020 04:07:20 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Cc:     Chris Wilson <chris@chris-wilson.co.uk>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org,
+        Sebastian Duda <sebastian.duda@fau.de>,
         Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20200304110821.7243-1-lukas.bulwahn@gmail.com>
-From:   Sameer Rahmani <lxsameer@gnu.org>
-Message-ID: <959e8f4c-9ff6-4388-9b6f-23f6e548e9e5@gnu.org>
-Date:   Wed, 4 Mar 2020 11:57:33 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-MIME-Version: 1.0
-In-Reply-To: <20200304110821.7243-1-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: adjust to reservation.h renaming
+Date:   Wed,  4 Mar 2020 13:07:11 +0100
+Message-Id: <20200304120711.12117-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Commit 52791eeec1d9 ("dma-buf: rename reservation_object to dma_resv")
+renamed include/linux/reservation.h to include/linux/dma-resv.h, but
+missed the reference in the MAINTAINERS entry.
 
-On 04/03/2020 11:08, Lukas Bulwahn wrote:
-> Commit 5fed00dcaca8 ("Documentation: kobject.txt has been moved to
-> core-api/kobject.rst") missed to adjust the entry in MAINTAINERS.
->
-> Since then, ./scripts/get_maintainer.pl --self-test complains:
->
->    warning: no file matches F: Documentation/kobject.txt
->
-> Adjust DRIVER CORE, KOBJECTS, DEBUGFS AND SYSFS entry in MAINTAINERS.
->
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
-> Sameer, please ack.
-> Jonathan, pick pick this patch for doc-next.
->
->   MAINTAINERS | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index d064049aad1b..998d56e61a41 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -5213,7 +5213,7 @@ M:	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->   R:	"Rafael J. Wysocki" <rafael@kernel.org>
->   T:	git git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git
->   S:	Supported
-> -F:	Documentation/kobject.txt
-> +F:	Documentation/core-api/kobject.rst
->   F:	drivers/base/
->   F:	fs/debugfs/
->   F:	fs/sysfs/
+Since then, ./scripts/get_maintainer.pl --self-test complains:
 
-Hi Lukas,
+  warning: no file matches F: include/linux/reservation.h
 
-Thanks for the fix. It looks good to me
+Adjust the DMA BUFFER SHARING FRAMEWORK entry in MAINTAINERS.
+
+Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
+Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+Christian, please pick this patch.
+applies cleanly on current master and next-20200303
+
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6158a143a13e..3d6cb2789c9e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5022,7 +5022,7 @@ L:	dri-devel@lists.freedesktop.org
+ L:	linaro-mm-sig@lists.linaro.org (moderated for non-subscribers)
+ F:	drivers/dma-buf/
+ F:	include/linux/dma-buf*
+-F:	include/linux/reservation.h
++F:	include/linux/dma-resv.h
+ F:	include/linux/*fence.h
+ F:	Documentation/driver-api/dma-buf.rst
+ K:	dma_(buf|fence|resv)
+-- 
+2.17.1
 

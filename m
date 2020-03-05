@@ -2,108 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B59917AF61
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Mar 2020 21:06:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1BC817AFB7
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Mar 2020 21:30:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726209AbgCEUF7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Mar 2020 15:05:59 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:55160 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725977AbgCEUF7 (ORCPT
+        id S1726128AbgCEUa0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Mar 2020 15:30:26 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:43541 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726009AbgCEUa0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Mar 2020 15:05:59 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 025K3Dvk022598;
-        Thu, 5 Mar 2020 20:05:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=t8CAWsgw/ELAbr5QnCrpPBQ505nk1Vu1ytI4BAQPrjk=;
- b=qw5KAu+5x/mirpb96LhLseOQBeoE1g3KqE56X2xHk0uyspvS/7d79kx9XbhpTUcU7uj3
- dvVo/KBxCSR/2onyknlNQJSLw325k5akEGJ/QT2uC9/SkdupNuXCdQwRCpVEkizLrZF9
- 6ewlsMmbqeNpMWBFXrIpQA3d1cjozQq6CFYv0+NVRD5HPArWkNpPxmURjVvgxOXZxEWN
- e/H4O4ZZp9I/kabwHM/XtyLc2NPfxv63pFsl13+SjpeA5JUGyhoI/bGsWHfw9sWnMsQq
- Ky358/r857GJoJ90QY0CwjiuGBf3vNOzjIiROeHrsuO/CxErp6Ce4w8po/6ZjBGator+ Yw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 2yghn3k7ck-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 05 Mar 2020 20:05:55 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 025K3BNE121033;
-        Thu, 5 Mar 2020 20:05:55 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 2yg1h48kdp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 05 Mar 2020 20:05:54 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 025K5sBK007254;
-        Thu, 5 Mar 2020 20:05:54 GMT
-Received: from kili.mountain (/41.210.146.162)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 05 Mar 2020 12:05:53 -0800
-Date:   Thu, 5 Mar 2020 23:05:44 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Alexander Viro <viro@zeniv.linux.org.uk>, io-uring@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] io_uring: Fix error handling in
- __io_compat_recvmsg_copy_hdr()
-Message-ID: <20200305200544.5wmrfo7hbfybp3w5@kili.mountain>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9551 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0
- suspectscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003050116
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9551 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0 spamscore=0
- impostorscore=0 mlxscore=0 adultscore=0 mlxlogscore=999 lowpriorityscore=0
- priorityscore=1501 bulkscore=0 clxscore=1015 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2003050116
+        Thu, 5 Mar 2020 15:30:26 -0500
+Received: by mail-wr1-f65.google.com with SMTP id v9so2030269wrf.10;
+        Thu, 05 Mar 2020 12:30:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=juYwq62t6R4eHfh+DtghPbycszS3hALzIrDdl9KbM1c=;
+        b=JggJGJZ74CId5O5W+ekRHBGRii5hGwwlVujhFs+0LWqATqCFf49ZWMlfjE7Fey199u
+         gbHwtr1I22EQ6hiNPyW5wjGztf6TdkwL1eSWjYbf6VfdYFFUU4wtaGKp/mX4X0hSuW/z
+         uH6UEnVsYpAtMZDoHL2NJVypq3/KYW2OlTifk5/woCgCWvo41+V6qeC6VV8RcsiXRaGm
+         EL4H9y5t2NRseP/T/dFdb3U+bQuD13EQtYu8G+an8LOvWem1Pwtx/3ms0q86TaSQ8w/n
+         QVdkdabYX71ROFgWS9afD4L4UxIFQlCbjmM8+FrA1XvVkO81g3AvkMeKC5jah7Ja/e1k
+         ogIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=juYwq62t6R4eHfh+DtghPbycszS3hALzIrDdl9KbM1c=;
+        b=h5Yay2XQ5bflVGjiqkIBbPbSmefIz/32hUUPnCd3LDD/0BpZzEmKW8bHnAyN051J9E
+         fVtnRzTcLv1U0vd1Zz2zlyFR9l2k9u3HWgwWM5FCeRa3c+UMSjvN6Pk4D81EAkNsvJOw
+         MsiUqcTut9N9usRbDb1sJCBkOBngjt1gfCsiQb9VrOfmXBWH/60ed7UlQML3Ym7c4xYy
+         Pnhh+G0Ojn/49CLPAqoObxpySQY8ykpyu/hbb5smo3RSCHm7yKFR1DMCnYHA42dXNzdm
+         7xGiENOxe6I7dtBeqqDJltsYql+RIeXxO2ECNXcAcwmRRis2LI2OlVMdFZJybpjZh+SS
+         SbRg==
+X-Gm-Message-State: ANhLgQ00mkAiSC1dmJvnr7DnrDWhaTWymvyALF3N1bqYF0VLhzq6ZoJc
+        FoO7/VfQhm/CFxZ0BtcwG6c=
+X-Google-Smtp-Source: ADFU+vuPdn1HOnk75j4r99XPjPJh1599lKBBZ32CYxv+g/Sq9+FHWjKwmdgjb/JXnVfAnHyEpemCVg==
+X-Received: by 2002:adf:fdc3:: with SMTP id i3mr707308wrs.142.1583440224101;
+        Thu, 05 Mar 2020 12:30:24 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d7c:7000:ec58:d834:7ed:456a])
+        by smtp.gmail.com with ESMTPSA id k66sm8000310wmf.0.2020.03.05.12.30.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2020 12:30:23 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Sumit Garg <sumit.garg@linaro.org>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>
+Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        Sebastian Duda <sebastian.duda@fau.de>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH v3] MAINTAINERS: adjust to trusted keys subsystem creation
+Date:   Thu,  5 Mar 2020 21:30:13 +0100
+Message-Id: <20200305203013.6189-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We need to check if __get_compat_msghdr() fails and return immediately
-on error.  Also if compat_import_iovec() fails then we should return a
-negative error code, but the current behavior is to just return
-success.
+Commit 47f9c2796891 ("KEYS: trusted: Create trusted keys subsystem")
+renamed trusted.h to trusted_tpm.h in include/keys/, and moved trusted.c
+to trusted-keys/trusted_tpm1.c in security/keys/.
 
-Fixes: ede6c476b57d ("io_uring: add IOSQE_BUFFER_SELECT support for IORING_OP_RECVMSG")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Since then, ./scripts/get_maintainer.pl --self-test complains:
+
+  warning: no file matches F: security/keys/trusted.c
+  warning: no file matches F: include/keys/trusted.h
+
+Rectify the KEYS-TRUSTED entry in MAINTAINERS now and ensure that all
+files in security/keys/trusted-keys/ are identified as part of
+KEYS-TRUSTED.
+
+Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
+Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
- fs/io_uring.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Changes to v1:
+  - use a global pattern for matching the whole security/keys/trusted-keys/
+    directory.
+Changes to v2:
+  - name the correct directory in the commit message
 
-diff --git a/fs/io_uring.c b/fs/io_uring.c
-index d7c42bd04c78..c1a59cde2d88 100644
---- a/fs/io_uring.c
-+++ b/fs/io_uring.c
-@@ -3684,6 +3684,8 @@ static int __io_compat_recvmsg_copy_hdr(struct io_kiocb *req,
- 	msg_compat = (struct compat_msghdr __user *) sr->msg;
- 	ret = __get_compat_msghdr(&io->msg.msg, msg_compat, &io->msg.uaddr,
- 					&ptr, &len);
-+	if (ret)
-+		return ret;
+Sumit, please ack.
+Jarkko, please pick this patch v3.
+
+ MAINTAINERS | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5c755e03ddee..7f11ac752b91 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9276,8 +9276,8 @@ L:	keyrings@vger.kernel.org
+ S:	Supported
+ F:	Documentation/security/keys/trusted-encrypted.rst
+ F:	include/keys/trusted-type.h
+-F:	security/keys/trusted.c
+-F:	include/keys/trusted.h
++F:	include/keys/trusted_tpm.h
++F:	security/keys/trusted-keys/
  
- 	uiov = compat_ptr(ptr);
- 	if (req->flags & REQ_F_BUFFER_SELECT) {
-@@ -3703,8 +3705,8 @@ static int __io_compat_recvmsg_copy_hdr(struct io_kiocb *req,
- 		ret = compat_import_iovec(READ, uiov, len, UIO_FASTIOV,
- 						&io->msg.iov,
- 						&io->msg.msg.msg_iter);
--		if (ret > 0)
--			ret = 0;
-+		if (ret < 0)
-+			return ret;
- 	}
- 
- 	return 0;
+ KEYS/KEYRINGS
+ M:	David Howells <dhowells@redhat.com>
 -- 
-2.11.0
+2.17.1
 

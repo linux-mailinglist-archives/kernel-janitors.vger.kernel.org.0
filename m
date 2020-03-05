@@ -2,149 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04DFE179FD7
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Mar 2020 07:15:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97BBB17A0C5
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Mar 2020 09:00:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725877AbgCEGOj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Mar 2020 01:14:39 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38560 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725818AbgCEGOi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Mar 2020 01:14:38 -0500
-Received: from coco.lan (ip5f5ad4e9.dynamic.kabel-deutschland.de [95.90.212.233])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 18AB82073D;
-        Thu,  5 Mar 2020 06:14:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583388877;
-        bh=+FpE/LMdtG5BhsGwvEKqTJMLpXq5lLNK2BRtoZJXypY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HXXu8yPyVZYJa0yyyg+lJOIoxLTTughoUgC4k7QnWRZBwSzNMw1DS7kTqKqnZe6hv
-         WxxD5eV6NZpJk9ckOzWL6vCUwIwkf31t9il/hx8YDxhpWEo4VVqG9x1PPqD996SJZl
-         vbJd7CIlOn6GESTas7M/VBoZAnU0RZKsW/ouPjpk=
-Date:   Thu, 5 Mar 2020 07:14:31 +0100
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Joe Perches <joe@perches.com>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: adjust to filesystem doc ReST conversion
-Message-ID: <20200305071431.66362e3c@coco.lan>
-In-Reply-To: <ed040dd417d578e1ab4491d116c6ac1431142385.camel@perches.com>
-References: <20200304072950.10532-1-lukas.bulwahn@gmail.com>
-        <20200304131035.731a3947@lwn.net>
-        <20200304212846.0c79c6da@coco.lan>
-        <ed040dd417d578e1ab4491d116c6ac1431142385.camel@perches.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        id S1726048AbgCEIA3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Mar 2020 03:00:29 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:43290 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725897AbgCEIA3 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 5 Mar 2020 03:00:29 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0257w7Li123308;
+        Thu, 5 Mar 2020 08:00:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=tGxrfxnsYHWmjW6L+VGIvzPWMrDbApWGxS/7d/RBRbg=;
+ b=IJfOiyXmVGsbERPj4dCy+ZqeA6zC4posUFIz8gxZb1qdNKJkKd42YSfE8DcM3hAjiRGB
+ +yiXfzBArDIy5HnvqUYlKgxEI19xX3smlY7dVq0XXbjZ9RW/7u5xy4dwTyA4ekG2hKQ/
+ IMgCdEvTu14u0MgO88OBS8AErs49iZY8rmbHajo70c+wjmY1GFxp+H/yx115y0/IQuoC
+ jSddqA8sCaweyTSA4B0me719CamDJCHXz/Bg0i4T/dKkIgHwpZRkSrcuR8zHK6NXw3ao
+ 2Cd0sw0M73Oha4RviLxcYfA/GJ/R+MQgB5yrtTiChntJoI4W18vjM+ubljS7Mxhz7ZD3 1g== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 2yffwr3e9w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 05 Mar 2020 08:00:17 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0257uZJp194450;
+        Thu, 5 Mar 2020 08:00:16 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 2yg1p9ungw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 05 Mar 2020 08:00:16 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 02580F9D016770;
+        Thu, 5 Mar 2020 08:00:15 GMT
+Received: from kadam (/41.210.146.162)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 05 Mar 2020 00:00:14 -0800
+Date:   Thu, 5 Mar 2020 11:00:04 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Saeed Mahameed <saeedm@mellanox.com>
+Cc:     Eli Cohen <eli@mellanox.com>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        Mark Bloch <markb@mellanox.com>,
+        Paul Blakey <paulb@mellanox.com>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "leon@kernel.org" <leon@kernel.org>
+Subject: Re: [PATCH] net/mlx5e: Fix an IS_ERR() vs NULL check
+Message-ID: <20200305080004.GA19839@kadam>
+References: <20200304142151.qivcobp6ngrynb2p@kili.mountain>
+ <10527910074442142431505e9d424af9128e8c5c.camel@mellanox.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <10527910074442142431505e9d424af9128e8c5c.camel@mellanox.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9550 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
+ mlxlogscore=999 mlxscore=0 spamscore=0 adultscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003050050
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9550 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 spamscore=0
+ impostorscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
+ phishscore=0 clxscore=1015 bulkscore=0 adultscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2003050050
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Em Wed, 04 Mar 2020 13:24:48 -0800
-Joe Perches <joe@perches.com> escreveu:
-
-> On Wed, 2020-03-04 at 21:28 +0100, Mauro Carvalho Chehab wrote:
-> > Em Wed, 4 Mar 2020 13:10:35 -0700
-> > Jonathan Corbet <corbet@lwn.net> escreveu:
-> >   
-> > > On Wed,  4 Mar 2020 08:29:50 +0100
-> > > Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
-> > >   
-> > > > Mauro's patch series <cover.1581955849.git.mchehab+huawei@kernel.org>
-> > > > ("[PATCH 00/44] Manually convert filesystem FS documents to ReST")
-> > > > converts many Documentation/filesystems/ files to ReST.
-> > > > 
-> > > > Since then, ./scripts/get_maintainer.pl --self-test complains with 27
-> > > > warnings on Documentation/filesystems/ of this kind:
-> > > > 
-> > > >   warning: no file matches F: Documentation/filesystems/...
-> > > > 
-> > > > Adjust MAINTAINERS entries to all files converted from .txt to .rst in the
-> > > > patch series and address the 27 warnings.
-> > > > 
-> > > > Link: https://lore.kernel.org/linux-erofs/cover.1581955849.git.mchehab+huawei@kernel.org
-> > > > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> > > > ---
-> > > > Mauro, please ack.
-> > > > Jonathan, pick pick this patch for doc-next.    
-> > > 
-> > > Sigh, I need to work a MAINTAINERS check into my workflow...
-> > > 
-> > > Thanks for fixing these, but ... what tree did you generate the patch
-> > > against?  I doesn't come close to applying to docs-next.  
+On Wed, Mar 04, 2020 at 08:31:13PM +0000, Saeed Mahameed wrote:
+> On Wed, 2020-03-04 at 17:22 +0300, Dan Carpenter wrote:
+> > The esw_vport_tbl_get() function returns error pointers on error.
 > > 
-> > I'm starting to suspect that maybe the best workflow would be to just 
-> > apply the patches at docs-next keeping links broken, and then run
-> > ./scripts/documentation-file-ref-check --fix by the end of a merge
-> > window, addressing such breakages.  
+> > Fixes: 96e326878fa5 ("net/mlx5e: Eswitch, Use per vport tables for
+> > mirroring")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > 
-> I'm not sure at all that that script will always do the
-> right thing with MAINTAINERS,
-
-As it is based on some heuristics, whomever runs it should
-double-check the results.
-
-> but it seems to work OK
-> except for some renames where a .txt file was directly
-> renamed to a .rst file in the same directory where there
-> was a similarly named file in a different directory.
-
-Yeah, the script could be smarter to catch this case.
-
-> Likely the direct rename of a filename extension from
-> .txt to .rst should always be applied by the script.
-
-Yeah, makes sense to me. Yet, I got one exception for this:
-I found somewhere a case were there are both foo.txt and foo.rst,
-both with different contents.
-
-The solution I took were to rename foo.txt to bar.txt,
-adjusting the cross-references, then convert bar.txt to
-bar.rst.
-
-In any case, we're close to finish the conversion. I have
-already patches that convert everything to .rst (with a couple of
-exceptions), and I took the care of doing the cross-reference fixes 
-there. I'm still adjusting some things on this tree. My current plans
-are to have them all applied up to Kernel 5.8, and then start looking
-on better organizing the docs (I'm already doing that for media docs).
-
-Once all of those patches get merged, .txt -> .rst will
-be an exception.
-
+> Hi Dan the patch looks fine, but you didn't cc netdev mailing list
+> Two options:
 > 
-> Anyway, for -next as of today:
-> 
-> $ git diff --shortstat
->  64 files changed, 116 insertions(+), 116 deletions(-)
-> 
-> > There are usually lots of churn outside the merge window.
-> > 
-> > Another alternative would be to split the MAINTAINERS file on a
-> > per-subsystem basis. If I remember well, someone proposed this once at
-> > LKML. I vaguely remember that there were even a patch (or RFC)
-> > adding support for such thing for get_maintainers.pl.  
-> 
-> Yeah.  get_maintainer.pl does work if the MAINTAINERS
-> file is split up a few different ways.
-> 
-> There was also a tool to do the MAINTAINERS split.
-> https://lore.kernel.org/patchwork/patch/817857/
-> 
-> I doubt that would matter at all given today's tools and
-> the general mechanisms of maintainers renaming files and
-> not running checkpatch in the first place.
+> 1) I can pick this patch up and repost it myself in a future pull
+> request
 
-Yeah, it may not produce any concrete results on some parts.
-It may help to reduce the conflicts there, though. Also, I guess
-some maintainers will take more care, if they start to have
-their own */MAINTAINERS files.
+I assumed we would do this, because the original patch didn't have
+Dave's signed-off-by.
 
-Thanks,
-Mauro
+> 2) you can re-post it and cc netdev also mark it for net [PATCH net]
+
+If we were going to go that route then it would have to [PATCH net-next]
+because it doesn't apply to the net tree.
+
+regards,
+dan carpenter
+
+

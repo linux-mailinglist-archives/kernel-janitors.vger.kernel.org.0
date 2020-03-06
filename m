@@ -2,151 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0CE117C592
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Mar 2020 19:41:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7552417C655
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Mar 2020 20:31:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726781AbgCFSlG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Mar 2020 13:41:06 -0500
-Received: from mout.web.de ([212.227.17.12]:38271 "EHLO mout.web.de"
+        id S1726307AbgCFTbc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Mar 2020 14:31:32 -0500
+Received: from mga03.intel.com ([134.134.136.65]:18455 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726194AbgCFSlG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Mar 2020 13:41:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1583520029;
-        bh=VpQKds6DmBjxYxMo4bRHAneIntTDz8NFcYECzbjnX3U=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=myKIqTxvAquDWNPfVWg1Z+IkBKGTQ3yt3au4m7aA+IvjQJIOG2nTlsXJrOi/7cUoo
-         NZkStRFc3UMv3xyTU9vdpjle22YAapu301rMQcPj6vqfeilVD3OW/QyQPYKu07qpAL
-         GKlXppDUeLKVEwkJk0GwdPcQdOhcnCOfzLimnhR0=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.156.79]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M8zSL-1j55lo1Hav-00CRFS; Fri, 06
- Mar 2020 19:40:29 +0100
-Subject: Re: [v5.1] Documentation: bootconfig: Update boot configuration
- documentation
-To:     Masami Hiramatsu <mhiramat@kernel.org>, linux-doc@vger.kernel.org
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <ef820445-25c5-a312-57d4-25ff3b4d08cf@infradead.org>
- <158341540688.4236.11231142256496896074.stgit@devnote2>
- <f3c51b0a-2a55-6523-96e2-4f9ef0635d9f@web.de>
- <20200306105107.afba066a97db1eb12f290aff@kernel.org>
- <58f4d6b3-ce3d-d1a5-aa0f-c31c1bbec091@web.de>
- <20200306230406.dd9c7358f00f47ff5760c899@kernel.org>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <7a518d51-db04-ac56-fab8-5bc6be8f5b1c@web.de>
-Date:   Fri, 6 Mar 2020 19:40:28 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S1725922AbgCFTbc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 6 Mar 2020 14:31:32 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Mar 2020 11:31:30 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,523,1574150400"; 
+   d="scan'208";a="275654131"
+Received: from sineadfi-mobl.ger.corp.intel.com (HELO localhost) ([10.252.15.28])
+  by fmsmga002.fm.intel.com with ESMTP; 06 Mar 2020 11:31:27 -0800
+Date:   Fri, 6 Mar 2020 21:31:27 +0200
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Sumit Garg <sumit.garg@linaro.org>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        Sebastian Duda <sebastian.duda@fau.de>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] MAINTAINERS: adjust to trusted keys subsystem creation
+Message-ID: <20200306193127.GJ7472@linux.intel.com>
+References: <20200305203013.6189-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200306230406.dd9c7358f00f47ff5760c899@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:8r4yBHVUsRNrpnFVx2TQdhqPZ2AbqA6iWe7oNyKM7pRszuOJsQ2
- 9IOBinuYEBSY4lCTUCZgt5HcpoFFC1BS02g7r2E5Web+j4dfbib7EnZZAIAXGdVm8DoCx47
- nynbhWHf2Nc2W/Xe7GgRvMVdmVqlXnturX62Aw/H9iGAy0FrHxc9Vy5KzQKvJ0A2WFC1M4z
- JxeJyuifYvR74v3bWZjEA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:5ZaFRmdW/WM=:DRfa/M33hHJFSzlR8x4iTP
- 1RtcIzcY/vJZIyYaeOQpyY8O9MtABnMpnDPMqmqPmJNaC6s971ab6Y9Jpofsgy9ge4nMj+3eI
- Dps7dTNUxaZdtXtY9N6ixFiPFky0i98Tdhugec0AZRJmcPC4JfQEl7Tk2cyWZPg5QO9jwZLIE
- n3vt/5xScdv3H4VQKRrhiUUjSk6osjDnFB2p3zwyAnepXc098kNxUkBEaEIa5vxImYEOy2UFX
- k91N0++IabfywDon3PFfme89RV7GBJ6vaQXa2CPlgsk7MJ4XE0fq9q/lM8sUHv+eaZ83AFbdm
- Y2JEvQGjXgFTX4fl9O6wXJbpJQho5TfypwlvwWsxExyxGihNylK5wEefO+RaiRl1OXpzv63CX
- E/13WZvjmvMqAWooT24BY5aLkfdxwfrI+lRfppMYGhKis5ukLGTeoCAXlNN0RTxFc0LPRHS2G
- cxn3nL4bY3ayjxDu7QNkcYGtsJyjd85+y+IAEyfkA2QZZ3HbBnmRZKIVSdo28qOX86DdQuR/1
- H5l1sgeM9jTHkq0QK7QwkRZEV82xaZaEzKRA7eVP+ZqfGzDt8kcq9TlA4FuryQ9RB+m5Hm3IN
- PRAQ+lpZl5u+/2ZHXMEC/GmuLsecPRnJ1VT3p/FLjqHHWeTwQD6tJFJuX+CMqLJ7ZKOtprx4r
- gK94rAAlbVCIHNUvEAk6iaijPcwwJfZRU/yR85lRTaa8stlzDJIk141/65I65cKAD3Qw9UrOU
- B0tWi5kE0BqPhOguTfT9m4A7ubG9nuheJV9KQ2ayJiaydSNkzHHfYj6bXaKV1ugRg0IEp9M5p
- GdvYPUVPD/g+9wWrw9IB7AExsse1ngydLnJiRWYRgl4Zc1lD59c3HQI3YlSdlQAueM/wx0p1P
- 9UY+RGSrWqxcW23jI0loaetCcNhiSNys5WHCQlNTdycuApPcdG0gk0wB5oT02dWrbvXlNxgPn
- M3iZRFKLkjv9WWGy0PG8sG8JFnjvpkRHV8DX/N7vj7UNOG9sTTOumMc2InCjje3iWOHM3Wi0U
- 5Iz06c/kfHTQiWhKpSc6oAu8lEKa0X3Tw4LMG7DrDzyAu1IzzunMp1iDNNGCoKL+s1Oe94WLD
- kLtP8YUgV+wwFTIhayws/nbt4gooE7/Cf8x+b1HLrrlppLMgd6CaN/DDbb/jTFGi8Ab7Uq8bo
- MSlXasinW+jxwKZMYXz3A7sumRfoi9SGz+R53b/y/jTVYv8V1lEwBDTIl9/dRiAMpH6vUfTRV
- ryW0VVx7MXdpGlE86
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200305203013.6189-1-lukas.bulwahn@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->>>> =E2=80=A6
->>>>> +++ b/Documentation/admin-guide/bootconfig.rst
->>>> =E2=80=A6
->>>>> +If you think that kernel/init options become too long to write in b=
-oot-loader
->>>>> +configuration file or you want to comment on each option, the boot
->>>>> +configuration may be suitable. =E2=80=A6
->>>>
->>>> Would you like to specify any settings in the boot configuration file
->>>> because the provided storage capacity would be too limited by the ker=
-nel command line?
->>>
->>> Yes.
->>
->> How will affected places be improved after such an agreement?
->
-> Would you please make a patch of new sentence?
+On Thu, Mar 05, 2020 at 09:30:13PM +0100, Lukas Bulwahn wrote:
+> Commit 47f9c2796891 ("KEYS: trusted: Create trusted keys subsystem")
+> renamed trusted.h to trusted_tpm.h in include/keys/, and moved trusted.c
+> to trusted-keys/trusted_tpm1.c in security/keys/.
+> 
+> Since then, ./scripts/get_maintainer.pl --self-test complains:
+> 
+>   warning: no file matches F: security/keys/trusted.c
+>   warning: no file matches F: include/keys/trusted.h
+> 
+> Rectify the KEYS-TRUSTED entry in MAINTAINERS now and ensure that all
+> files in security/keys/trusted-keys/ are identified as part of
+> KEYS-TRUSTED.
+> 
+> Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
+> Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
 
-Not directly.
+Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 
-* If I would need to provide another wording alternative as a concrete pat=
-ch,
-  I would have to wait until previously accepted changes would become avai=
-lable
-  in a Linux development repository.
+> Changes to v1:
+>   - use a global pattern for matching the whole security/keys/trusted-keys/
+>     directory.
+> Changes to v2:
+>   - name the correct directory in the commit message
+> 
+> Sumit, please ack.
+> Jarkko, please pick this patch v3.
 
-* So I would find it easier to agree on wording variants during our curren=
-t
-  development discussion from which you would present results as a subsequ=
-ent patch.
+Please tell me why you emphasize the moment when a patch that does not
+fix a critical bug is picked?
 
-Regards,
-Markus
+Do you have systems that break because the MAINTAINERS file is not
+updated?
+
+It will end up in v5.7 PR for sure but saying things like that is same
+as saying that there would be some catastrophically urgent need to still
+squeeze the patch into v5.6. Unless you actually have something critical
+in your hand, please stop doing that.
+
+/Jarkko

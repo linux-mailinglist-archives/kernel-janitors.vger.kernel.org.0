@@ -2,67 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C330C17C74F
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Mar 2020 21:50:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A57B17C7BC
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Mar 2020 22:18:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726462AbgCFUu5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Mar 2020 15:50:57 -0500
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:41309 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725873AbgCFUu5 (ORCPT
+        id S1726314AbgCFVSC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Mar 2020 16:18:02 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:36063 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726185AbgCFVSC (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Mar 2020 15:50:57 -0500
-Received: by mail-ed1-f67.google.com with SMTP id m25so4039403edq.8;
-        Fri, 06 Mar 2020 12:50:55 -0800 (PST)
+        Fri, 6 Mar 2020 16:18:02 -0500
+Received: by mail-wr1-f66.google.com with SMTP id s5so77046wrg.3;
+        Fri, 06 Mar 2020 13:17:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:date:to:cc:subject:in-reply-to:message-id:references
          :user-agent:mime-version;
-        bh=VdqUnRTWp10pjgFX5EvP6C5xXn2Jmo+eBLSoySWldqs=;
-        b=hRXsBV3GZGSJ2YmU0tyU/P3Ckp0n1Ke0qs57bW80TW6GStW1yVT8bz+MK7Z+c/NrNv
-         lOklGzmD7TG1rPBwMkkY2azr3tphv8GjcbwdI0ccxfmUrMa+2iK89/wAVwnq3MxbPZCg
-         5bPxhQ+SrxATXfH2vX7Ku1JEXPQ3vr5XN+zSY5ZmlRvGoyYQ9GDb/oa76jL/hxctgqsD
-         DKi3TflY1iO7+iPY3/PSmwN2DFs3jox5UCMzAPN7MpH8dFkcmqw32kCKoAwgg12RtjOe
-         w5+jerXZzIBSp64mzI+QG2NyuI/GcV5vM3J4VV3LxpKEXP/jDSy9VttVGmT/NDW7UATc
-         vwOQ==
+        bh=p6Org6UXIrzDwowUXc2sjZeWM3eA1JdxHEoOPSQKwXg=;
+        b=cvgNX6L3bTfW2fGWA9k22gcf/KhCHZ9ExnPWWJEErpHTmKDq30VAynAmceOCadITbe
+         I/ExetjXaPI4YG2nj4ajs3z2T/iWQdO0nqn9HkOH1c2CdJV9fm3SzNsq7Qhu68hKffLl
+         NljWlntUtHdt1GtrTEZTM1Rm6MI9ZOF2QPeT8xowEvR8nw1iLmBEx05LLIhIKCYcfqKX
+         LoZHsHk2poTWDEIpxVJOcxD5qIbNak2Gx6Sgu572c6FB6fDQ2scdhTU8RIgH7bn39sqL
+         +3KC0mmOfZlhbTPKYfy6n5vQxf5h4CaG7Ze3L36TSdJJ+ffROSEHbxGwELOvRHynl0N5
+         Kpyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
          :references:user-agent:mime-version;
-        bh=VdqUnRTWp10pjgFX5EvP6C5xXn2Jmo+eBLSoySWldqs=;
-        b=UnHUdwUY20dhGw+hoL9PCO66IQih6dtjkSRhWkdlX/rgR+0SBdBWLOQgNWVJ9WLyZY
-         y5Lhz2vF6nzaVLq9lT42zdXwjcTj/HheMvbE0FkEgsX10FwDnoR23rJyEWx2dy3fozmK
-         ZjyaA641pd/xKNILMVc6nFLJT0lQnfWKtXdmOARXA97ojZKIKW1qmkI+oG3ao5BCwzTa
-         gP/CHOEkmUsY+Sy+VdZyASFgPsPnJS83qdBuwINWjopJ0//2FsMg/YiXfcegNt14vqMG
-         YYm8biOTi66Yb/rWyFzsGJQDNFFhdMW8qT/HSsAQC6vHXVhuMm9hzL2sR5SuTDvg576J
-         7bwg==
-X-Gm-Message-State: ANhLgQ3sp/pISbeDsnpUQxNxkvQGaI9eqSQj7DfG764t22RzTND+DJx1
-        Qs24iKXiMEIw+GkAYRz9VIg=
-X-Google-Smtp-Source: ADFU+vt2dJD/PPlFZud7douKhwIZ+dTq7co7j3G37z0Dc1lWVvfrT/Ni4yD+IsB0sjh2s8hGZD3/qg==
-X-Received: by 2002:a05:6402:cac:: with SMTP id cn12mr5044832edb.280.1583527854576;
-        Fri, 06 Mar 2020 12:50:54 -0800 (PST)
+        bh=p6Org6UXIrzDwowUXc2sjZeWM3eA1JdxHEoOPSQKwXg=;
+        b=ZMpA0na8SjSEHE4we5WBwOM+eU6q+vNgC9vfySzZzpqxcbhJ6dCp0iyiYNasuZK8V4
+         12FSHzuTH02eTIyR5jPbx/yIdwIyyV2rnq/4ohRyKIQTtkLSc62NjUWSVRX1IxN+9EBP
+         qOE4aaHRVED9rjvqnG1WSHcyuwvMJVvSQKMH2ShTkQHGWsaknvkv7HO6WNKxYUAHaJvJ
+         j1c0F4bp2h3VtHrwS8PFFddg7G4oIGh0jhgXW7Zub8VXsMFgWHixsbnVk17BE8GGDw5l
+         wNapD2dQkboaOZCqUxms0E03/d1I7sMzxg4pZJj1oNk7Tljq5irK7Hwej/Tb6c6cf0nR
+         hdAA==
+X-Gm-Message-State: ANhLgQ0x2Sm80BEAn4AzX4QK2KeUudkCHvuF6/MrneqMWmVd6z1DueYd
+        c6mpFE0YGM9FaV5yHRNiHCY=
+X-Google-Smtp-Source: ADFU+vsVLlePqEyfb4RvbS3zrbvkxMTYwO8c1UN9KLRwWFNh+J1N+jIVCdVfuDojuHpXx4saKzQBdg==
+X-Received: by 2002:a5d:66cc:: with SMTP id k12mr661050wrw.157.1583529479110;
+        Fri, 06 Mar 2020 13:17:59 -0800 (PST)
 Received: from felia ([2001:16b8:2d12:b200:a423:5ade:d131:da88])
-        by smtp.gmail.com with ESMTPSA id f20sm1471839edm.38.2020.03.06.12.50.53
+        by smtp.gmail.com with ESMTPSA id q16sm35313652wrj.73.2020.03.06.13.17.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2020 12:50:53 -0800 (PST)
+        Fri, 06 Mar 2020 13:17:58 -0800 (PST)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
 X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Fri, 6 Mar 2020 21:50:44 +0100 (CET)
+Date:   Fri, 6 Mar 2020 22:17:49 +0100 (CET)
 X-X-Sender: lukas@felia
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Joe Perches <joe@perches.com>
 cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        Sebastian Duda <sebastian.duda@fau.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] MAINTAINERS: adjust to trusted keys subsystem
- creation
-In-Reply-To: <20200306193127.GJ7472@linux.intel.com>
-Message-ID: <alpine.DEB.2.21.2003062148050.2990@felia>
-References: <20200305203013.6189-1-lukas.bulwahn@gmail.com> <20200306193127.GJ7472@linux.intel.com>
+        Jonathan Corbet <corbet@lwn.net>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: adjust to filesystem doc ReST conversion
+In-Reply-To: <e43f0cf0117fbfa8fe8c7e62538fd47a24b4657a.camel@perches.com>
+Message-ID: <alpine.DEB.2.21.2003062214500.5521@felia>
+References: <20200304072950.10532-1-lukas.bulwahn@gmail.com> <20200304131035.731a3947@lwn.net> <alpine.DEB.2.21.2003042145340.2698@felia> <e43f0cf0117fbfa8fe8c7e62538fd47a24b4657a.camel@perches.com>
 User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -73,51 +69,46 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
 
-On Fri, 6 Mar 2020, Jarkko Sakkinen wrote:
+On Wed, 4 Mar 2020, Joe Perches wrote:
 
-> On Thu, Mar 05, 2020 at 09:30:13PM +0100, Lukas Bulwahn wrote:
-> > Commit 47f9c2796891 ("KEYS: trusted: Create trusted keys subsystem")
-> > renamed trusted.h to trusted_tpm.h in include/keys/, and moved trusted.c
-> > to trusted-keys/trusted_tpm1.c in security/keys/.
+> On Wed, 2020-03-04 at 21:50 +0100, Lukas Bulwahn wrote:
 > > 
-> > Since then, ./scripts/get_maintainer.pl --self-test complains:
+> > On Wed, 4 Mar 2020, Jonathan Corbet wrote:
 > > 
-> >   warning: no file matches F: security/keys/trusted.c
-> >   warning: no file matches F: include/keys/trusted.h
+> > > On Wed,  4 Mar 2020 08:29:50 +0100
+> > > Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+> > > > Jonathan, pick pick this patch for doc-next.
+> > > 
+> > > Sigh, I need to work a MAINTAINERS check into my workflow...
+> > > 
 > > 
-> > Rectify the KEYS-TRUSTED entry in MAINTAINERS now and ensure that all
-> > files in security/keys/trusted-keys/ are identified as part of
-> > KEYS-TRUSTED.
-> > 
-> > Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
-> > Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
-> > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> > ---
+> > I getting closer to have zero warnings on the MAINTAINER file matches and 
+> > then, I would set up a bot following the mailing lists to warn when anyone
+> > sends a patch that potentially introduces such warning.
 > 
-> Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> Hey Lukas.
 > 
-> > Changes to v1:
-> >   - use a global pattern for matching the whole security/keys/trusted-keys/
-> >     directory.
-> > Changes to v2:
-> >   - name the correct directory in the commit message
-> > 
-> > Sumit, please ack.
-> > Jarkko, please pick this patch v3.
+> I wrote a hacky script that sent emails
+> for invalid MAINTAINER F: and X: patterns
+> a couple years back.
 > 
-> Please tell me why you emphasize the moment when a patch that does not
-> fix a critical bug is picked?
+> I ran it in September 2018 and March 2019.
 > 
-> Do you have systems that break because the MAINTAINERS file is not
-> updated?
+> It's attached if you want to play with it.
+> The email sending bit is commented out.
 > 
-> It will end up in v5.7 PR for sure but saying things like that is same
-> as saying that there would be some catastrophically urgent need to still
-> squeeze the patch into v5.6. Unless you actually have something critical
-> in your hand, please stop doing that.
+> The script is used like:
+> 
+> $ perl ./scripts/get_maintainer.pl --self-test=patterns | \
+>   cut -f2 -d: | \
+>   while read line ; do \
+>     perl ./dump_section.perl $line \
+>   done
 > 
 
-Got it. I did not intend to emphasize any urgency; I will not continue 
-to do that for patches of this clean-up type.
+Thanks, Joe. That is certainly helpful, I will try to make use of it in 
+the future; fortunately, there really not too many invalid F: patterns 
+left, and I can send the last few patches out myself.
 
 Lukas
+ 

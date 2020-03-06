@@ -2,107 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B0E417BAE4
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Mar 2020 11:57:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4094117BFD5
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Mar 2020 15:04:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726185AbgCFK5o (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Mar 2020 05:57:44 -0500
-Received: from smtprelay0100.hostedemail.com ([216.40.44.100]:49539 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726054AbgCFK5o (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Mar 2020 05:57:44 -0500
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 9675D837F27E;
-        Fri,  6 Mar 2020 10:57:42 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:966:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2196:2199:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3353:3622:3865:3866:3867:3868:3870:3873:4321:4385:5007:6119:7514:7809:7974:10004:10400:10848:11232:11473:11658:11914:12043:12296:12297:12555:12679:12740:12895:12986:13069:13161:13229:13311:13357:13439:13894:14181:14659:14721:21080:21325:21451:21627:21740:30054:30064:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: mom04_25fb8bd6a1122
-X-Filterd-Recvd-Size: 3105
-Received: from XPS-9350.home (unknown [47.151.143.254])
-        (Authenticated sender: joe@perches.com)
-        by omf01.hostedemail.com (Postfix) with ESMTPA;
-        Fri,  6 Mar 2020 10:57:40 +0000 (UTC)
-Message-ID: <155f99baffe11836fc9d794ff297bdcee7831050.camel@perches.com>
-Subject: Re: [Intel-gfx] [PATCH] MAINTAINERS: adjust to reservation.h
- renaming
-From:   Joe Perches <joe@perches.com>
-To:     Daniel Vetter <daniel@ffwll.ch>,
-        Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sebastian Duda <sebastian.duda@fau.de>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        linux-media@vger.kernel.org
-Date:   Fri, 06 Mar 2020 02:56:06 -0800
-In-Reply-To: <20200306103946.GT2363188@phenom.ffwll.local>
-References: <20200304120711.12117-1-lukas.bulwahn@gmail.com>
-         <b0296e3a-31f8-635a-f26d-8b0bc490aae3@amd.com>
-         <20200306103946.GT2363188@phenom.ffwll.local>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
-MIME-Version: 1.0
+        id S1726958AbgCFOEM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Mar 2020 09:04:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38388 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726251AbgCFOEM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 6 Mar 2020 09:04:12 -0500
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9312F20866;
+        Fri,  6 Mar 2020 14:04:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583503451;
+        bh=Nq9KmkAUq5F9r3sx/yxBgy6aw7mRvtKy8xoVi/1LUaU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=1VmdVldybeLhw8UkDSUvunsqGSnJj3olRcE2BPDvB6NY6YKLfpOZJ3HNCdILvE1OE
+         552ncCbIyD6AoID2TsIZ/lrANy9t+Zcf7UxSG3gJHff3FhlaslGL+tHNTdr/yYGA6v
+         qOFPJUC7HazIsfQ6YlNCnrz6L7+jkSTtHrZD3UZ0=
+Date:   Fri, 6 Mar 2020 23:04:06 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-doc@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v5.1] Documentation: bootconfig: Update boot
+ configuration documentation
+Message-Id: <20200306230406.dd9c7358f00f47ff5760c899@kernel.org>
+In-Reply-To: <58f4d6b3-ce3d-d1a5-aa0f-c31c1bbec091@web.de>
+References: <ef820445-25c5-a312-57d4-25ff3b4d08cf@infradead.org>
+        <158341540688.4236.11231142256496896074.stgit@devnote2>
+        <f3c51b0a-2a55-6523-96e2-4f9ef0635d9f@web.de>
+        <20200306105107.afba066a97db1eb12f290aff@kernel.org>
+        <58f4d6b3-ce3d-d1a5-aa0f-c31c1bbec091@web.de>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 2020-03-06 at 11:39 +0100, Daniel Vetter wrote:
-> On Wed, Mar 04, 2020 at 01:08:32PM +0100, Christian König wrote:
-> > Am 04.03.20 um 13:07 schrieb Lukas Bulwahn:
-> > > Commit 52791eeec1d9 ("dma-buf: rename reservation_object to dma_resv")
-> > > renamed include/linux/reservation.h to include/linux/dma-resv.h, but
-> > > missed the reference in the MAINTAINERS entry.
-> > > 
-> > > Since then, ./scripts/get_maintainer.pl --self-test complains:
-> > > 
-> > >    warning: no file matches F: include/linux/reservation.h
-> > > 
-> > > Adjust the DMA BUFFER SHARING FRAMEWORK entry in MAINTAINERS.
-> > > 
-> > > Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
-> > > Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
-> > > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> > 
-> > Reviewed-by: Christian König <christian.koenig@amd.com>
+On Fri, 6 Mar 2020 10:34:30 +0100
+Markus Elfring <Markus.Elfring@web.de> wrote:
+
+> > If you think you have "any more" update candidates, feel free to make
+> > an update "patch" and send to us.
 > 
-> You'll push this too?
-> -Daniel
+> I pointed a few change possibilities out already.
+
+I can not respond to requests only for possibility.
+
+> > That will be the next step.
 > 
-> > > ---
-> > > Christian, please pick this patch.
-> > > applies cleanly on current master and next-20200303
-> > > 
-> > >   MAINTAINERS | 2 +-
-> > >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > index 6158a143a13e..3d6cb2789c9e 100644
-> > > --- a/MAINTAINERS
-> > > +++ b/MAINTAINERS
-> > > @@ -5022,7 +5022,7 @@ L:	dri-devel@lists.freedesktop.org
-> > >   L:	linaro-mm-sig@lists.linaro.org (moderated for non-subscribers)
-> > >   F:	drivers/dma-buf/
-> > >   F:	include/linux/dma-buf*
-> > > -F:	include/linux/reservation.h
-> > > +F:	include/linux/dma-resv.h
-> > >   F:	include/linux/*fence.h
-> > >   F:	Documentation/driver-api/dma-buf.rst
-> > >   K:	dma_(buf|fence|resv)
+> I got the impression that we are in the process of constructing another patch together
+> which will fix known wording weaknesses.
 
-Slightly unrelated:
+Would you mean the broken EBNF part? Yeah, maybe, but it is another story.
+I decided to drop it this time.
+You can refine it but please use better format instead of such incomplete one.
 
-The K: entry matches a lot of other things
-and may have a lot of false positive matches
-like any variable named dma_buffer
+> By the way:
+> I wonder about the shown version identifier.
+> Will the patch numbering need also further considerations?
 
-This should also use (?:...) to avoid a perl
-capture group.
+No.
 
-Perhaps:
+> >> â€¦
+> >>> +++ b/Documentation/admin-guide/bootconfig.rst
+> >> â€¦
+> >>> +If you think that kernel/init options become too long to write in boot-loader
+> >>> +configuration file or you want to comment on each option, the boot
+> >>> +configuration may be suitable. â€¦
+> >>
+> >> Would you like to specify any settings in the boot configuration file
+> >> because the provided storage capacity would be too limited by the kernel command line?
+> >
+> > Yes.
+> 
+> How will affected places be improved after such an agreement?
 
-K:	'\bdma_(?:buf|fence|resv)\b'
+Would you please make a patch of new sentence?
 
+Thank you,
 
+-- 
+Masami Hiramatsu <mhiramat@kernel.org>

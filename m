@@ -2,26 +2,26 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2960317C536
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Mar 2020 19:15:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0CE117C592
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Mar 2020 19:41:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727073AbgCFSPo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Mar 2020 13:15:44 -0500
-Received: from mout.web.de ([212.227.17.12]:53021 "EHLO mout.web.de"
+        id S1726781AbgCFSlG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Mar 2020 13:41:06 -0500
+Received: from mout.web.de ([212.227.17.12]:38271 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726788AbgCFSPm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Mar 2020 13:15:42 -0500
+        id S1726194AbgCFSlG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 6 Mar 2020 13:41:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1583518497;
-        bh=arTwW/yzMdP6EGktVinihPskdpxfqPE2AVoTTm23dSA=;
+        s=dbaedf251592; t=1583520029;
+        bh=VpQKds6DmBjxYxMo4bRHAneIntTDz8NFcYECzbjnX3U=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=XD8325B8EY0gb5r4qnsUxQ75L/FTDBjHjUerYaBb0NBrOhvrffi3SBW2M78Qg+2pv
-         ejtR0NoCKpz8yMf7e8add5Yagx5bia1nF+iHO+HmPFQMrUhrHO4uaSY4DABvTpDaAr
-         taUNiSsY+SbtNnnzswNoV/s0JDixkmxomcwAcwT4=
+        b=myKIqTxvAquDWNPfVWg1Z+IkBKGTQ3yt3au4m7aA+IvjQJIOG2nTlsXJrOi/7cUoo
+         NZkStRFc3UMv3xyTU9vdpjle22YAapu301rMQcPj6vqfeilVD3OW/QyQPYKu07qpAL
+         GKlXppDUeLKVEwkJk0GwdPcQdOhcnCOfzLimnhR0=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.131.156.79]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M0yiR-1jUqYZ3IVT-00v9r9; Fri, 06
- Mar 2020 19:14:56 +0100
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M8zSL-1j55lo1Hav-00CRFS; Fri, 06
+ Mar 2020 19:40:29 +0100
 Subject: Re: [v5.1] Documentation: bootconfig: Update boot configuration
  documentation
 To:     Masami Hiramatsu <mhiramat@kernel.org>, linux-doc@vger.kernel.org
@@ -79,8 +79,8 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <8870b794-4ca2-9dc4-e45e-66de2ff64e4b@web.de>
-Date:   Fri, 6 Mar 2020 19:14:55 +0100
+Message-ID: <7a518d51-db04-ac56-fab8-5bc6be8f5b1c@web.de>
+Date:   Fri, 6 Mar 2020 19:40:28 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
@@ -88,48 +88,65 @@ In-Reply-To: <20200306230406.dd9c7358f00f47ff5760c899@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:0nG73Pu6y38inQIKocuNjboD/6r6Ts7jA7mUVdnGKTTWWV3B4uN
- 1PNM5zUNSTi+ssvO8/xHrsrO90VFD0RIwKNk4o+mruAgiqylfG5M25zJDkirs4Fd77dgtPo
- NTVikYHxl/E1eBlbYYvbXnhZntaorJgxzHSUhFsYvlESAJj1v4CbgxEwyHn9a71VYWMeI9c
- rnPt4FVoo+WFoFTf+vrbQ==
+X-Provags-ID: V03:K1:8r4yBHVUsRNrpnFVx2TQdhqPZ2AbqA6iWe7oNyKM7pRszuOJsQ2
+ 9IOBinuYEBSY4lCTUCZgt5HcpoFFC1BS02g7r2E5Web+j4dfbib7EnZZAIAXGdVm8DoCx47
+ nynbhWHf2Nc2W/Xe7GgRvMVdmVqlXnturX62Aw/H9iGAy0FrHxc9Vy5KzQKvJ0A2WFC1M4z
+ JxeJyuifYvR74v3bWZjEA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:bw41LnNJy4w=:nLVQ/mRfeH5LwMDHWRk7Sa
- OYOABOwcnLJmCnkf8QDfGj+h2OqiW5p0gCXYPyrvsK3z2ZgzIORpMBdmrmq4hfWKipuPdsw1a
- ykPpvIXh9FGnNmTB5Gya+dbaSH1ZRIcJcux0YNW+0pLiUHQZWV36U4WUVA8R67cOEQNNwQKIv
- u0ZM6/3fyR/y3PVYhxGKypqUsZ94NIDTeKMPUVLRMrb43y/1W08c6dLyNCoMmd6sFcgK1nMLX
- LuGS3ZiyNBqNwcfrioxgWCYm8IuinBMq0ynMUQY1MGNk0AhG6wYJiUzBVIhZX22qOAyA36XcA
- /a9v830XCYGnXmoxaYXwxMYPJnC6WkV3JwbQxWFVuKiRapdVOr2Z6Ik+y3BufSyquoli5mgkE
- TBqX4hLCvR9VhsiytoK3lbvBG9Q/q8vYzalp+fMalGxFXVz34gp3WIW4xkJjFMd1mtDHLkKQk
- PihwsArc56O/hM9E58FJtvJud45l6s/F2m347F5wTaIlXsQEj3VKgk4MaHfPgmTRdapmj1gq8
- VWXRkXRsjSh+d2A3fffLPp7zlFsHyypaE/eXyvOwA/GvsoGmS9kdty4xDbiSAeZ17QgTKCPpL
- RKFAViUfXg8PNglgrIeCj81eLcNIhD9RKKdR+Htiod7XEqnDg0/ModwGyaL+wU7GXGHh6q2ep
- hS15Pzr+vy9CQTBVv+nqkjQmFv/yt6Izh8VFR+K1ebBgCoAlV6O429HYLMc1QSfxlOycIYeva
- 3Sgi3fAv/kRqBZDIyM3W9tHEmnQ9UHApC/NR5lMuB4DVn7uXW8ZsXwfXldBszXKmAns1hhWJt
- hQZ2W4+ZAHaY4kuzHVc2CrJMB7899M/aAhRIuvT2tLgaPzVBJKti5CWzUtK/uM+EGxrQ0Uokk
- bjFJE91fYIArFzQ9+ucabEB7zW5x3gxMdQH+zlGVEDe/Uzp0B8/z3uk7Gla9cOTPt8+Hh+twq
- uE8X19wBy9cPJ/VwdKNwIsJygRzMrHeavbyJ2n3Zdrsub7xd6B69lbbQ7jjYH19iv7oUGDjgo
- I7q5w+SP0WTxEdBSuiOsItOTdP9lZE203QEGzoEnsngYhX4UeZAyAX/bdU4muB2OXrlDiMwBd
- OfSksXt2TzmwxYRANtHjgXX38s//4HPH6t17aizjHf3IYfheF0+BffRSQxcbxJ8WdMY9vTGWY
- 5bFmjqQKg9e7DcTUMR/MK7mhLeLmfYq3uSoCslL6hX41czibLboENanvIbyhEuiTS+rynqMZV
- 76KBvoFT9rurpB7cX
+X-UI-Out-Filterresults: notjunk:1;V03:K0:5ZaFRmdW/WM=:DRfa/M33hHJFSzlR8x4iTP
+ 1RtcIzcY/vJZIyYaeOQpyY8O9MtABnMpnDPMqmqPmJNaC6s971ab6Y9Jpofsgy9ge4nMj+3eI
+ Dps7dTNUxaZdtXtY9N6ixFiPFky0i98Tdhugec0AZRJmcPC4JfQEl7Tk2cyWZPg5QO9jwZLIE
+ n3vt/5xScdv3H4VQKRrhiUUjSk6osjDnFB2p3zwyAnepXc098kNxUkBEaEIa5vxImYEOy2UFX
+ k91N0++IabfywDon3PFfme89RV7GBJ6vaQXa2CPlgsk7MJ4XE0fq9q/lM8sUHv+eaZ83AFbdm
+ Y2JEvQGjXgFTX4fl9O6wXJbpJQho5TfypwlvwWsxExyxGihNylK5wEefO+RaiRl1OXpzv63CX
+ E/13WZvjmvMqAWooT24BY5aLkfdxwfrI+lRfppMYGhKis5ukLGTeoCAXlNN0RTxFc0LPRHS2G
+ cxn3nL4bY3ayjxDu7QNkcYGtsJyjd85+y+IAEyfkA2QZZ3HbBnmRZKIVSdo28qOX86DdQuR/1
+ H5l1sgeM9jTHkq0QK7QwkRZEV82xaZaEzKRA7eVP+ZqfGzDt8kcq9TlA4FuryQ9RB+m5Hm3IN
+ PRAQ+lpZl5u+/2ZHXMEC/GmuLsecPRnJ1VT3p/FLjqHHWeTwQD6tJFJuX+CMqLJ7ZKOtprx4r
+ gK94rAAlbVCIHNUvEAk6iaijPcwwJfZRU/yR85lRTaa8stlzDJIk141/65I65cKAD3Qw9UrOU
+ B0tWi5kE0BqPhOguTfT9m4A7ubG9nuheJV9KQ2ayJiaydSNkzHHfYj6bXaKV1ugRg0IEp9M5p
+ GdvYPUVPD/g+9wWrw9IB7AExsse1ngydLnJiRWYRgl4Zc1lD59c3HQI3YlSdlQAueM/wx0p1P
+ 9UY+RGSrWqxcW23jI0loaetCcNhiSNys5WHCQlNTdycuApPcdG0gk0wB5oT02dWrbvXlNxgPn
+ M3iZRFKLkjv9WWGy0PG8sG8JFnjvpkRHV8DX/N7vj7UNOG9sTTOumMc2InCjje3iWOHM3Wi0U
+ 5Iz06c/kfHTQiWhKpSc6oAu8lEKa0X3Tw4LMG7DrDzyAu1IzzunMp1iDNNGCoKL+s1Oe94WLD
+ kLtP8YUgV+wwFTIhayws/nbt4gooE7/Cf8x+b1HLrrlppLMgd6CaN/DDbb/jTFGi8Ab7Uq8bo
+ MSlXasinW+jxwKZMYXz3A7sumRfoi9SGz+R53b/y/jTVYv8V1lEwBDTIl9/dRiAMpH6vUfTRV
+ ryW0VVx7MXdpGlE86
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> I got the impression that we are in the process of constructing another=
- patch together
->> which will fix known wording weaknesses.
+>>>> =E2=80=A6
+>>>>> +++ b/Documentation/admin-guide/bootconfig.rst
+>>>> =E2=80=A6
+>>>>> +If you think that kernel/init options become too long to write in b=
+oot-loader
+>>>>> +configuration file or you want to comment on each option, the boot
+>>>>> +configuration may be suitable. =E2=80=A6
+>>>>
+>>>> Would you like to specify any settings in the boot configuration file
+>>>> because the provided storage capacity would be too limited by the ker=
+nel command line?
+>>>
+>>> Yes.
+>>
+>> How will affected places be improved after such an agreement?
 >
-> Would you mean the broken EBNF part?
+> Would you please make a patch of new sentence?
 
-I hope that such software design approaches can also be reconsidered.
+Not directly.
 
+* If I would need to provide another wording alternative as a concrete pat=
+ch,
+  I would have to wait until previously accepted changes would become avai=
+lable
+  in a Linux development repository.
 
-> Yeah, maybe, but it is another story.
-
-Other concrete update suggestions are probably easier to integrate before.
-Which change opportunities will be picked up next?
+* So I would find it easier to agree on wording variants during our curren=
+t
+  development discussion from which you would present results as a subsequ=
+ent patch.
 
 Regards,
 Markus

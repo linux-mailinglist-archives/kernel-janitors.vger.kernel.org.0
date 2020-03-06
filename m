@@ -2,116 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 21B2E17B5F3
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Mar 2020 06:03:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77AC717B665
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Mar 2020 06:33:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725951AbgCFFDk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Mar 2020 00:03:40 -0500
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:43003 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725853AbgCFFDj (ORCPT
+        id S1726097AbgCFFdZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Mar 2020 00:33:25 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:59662 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726034AbgCFFdZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Mar 2020 00:03:39 -0500
-Received: by mail-lj1-f194.google.com with SMTP id q19so800458ljp.9
-        for <kernel-janitors@vger.kernel.org>; Thu, 05 Mar 2020 21:03:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RgxoDxn7isDbqiNeMSbGlbVvXyla56aJBv3ggEco/PY=;
-        b=E8lu+LYma2rUzzVLjzv803SdKxb/mmqJINwt+kVzCr50akNjAHIqfLHEHSq3AK1s0d
-         LAeVE4fGwQilvoc6vLqK838TwlJt/87H8RzRJ944G1/fmdefzX5Bx9azRIREdMugAOag
-         kjCTPr1fgB2tUoJ0L8gVAkYCrwQl/aePJLY/NsPQCuujnSbIfSXUXqZ5e3hTOUaDWYBK
-         lNYiInm4uQH092xZHtXJ7YzVpqp4raUa6GMT+lPC7c23ucBCxjqje/4KrDK6dzYOfZb8
-         ZuUswKlrv5Fm9ZKOTVijKvnboDaKsCIVP3r93Bv7/OKFjjlQge9aBkyldBOQPusQ+cp7
-         jfcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RgxoDxn7isDbqiNeMSbGlbVvXyla56aJBv3ggEco/PY=;
-        b=tUGMhgc2UeSWCgt0e2njMnT8xmzloVBPJlr7/2b4E1n54y/tYLo3L48UqcCc6OGTXQ
-         lltwAco2B60xXrjEhJNS6/GCmdLX3pE9YC+Nm5nbMatcL/1cZ8SIy3gzPswo7l2yqqTK
-         JydxhsyedD02zyFR6TOv7FVV2Qd2zMJTIckLhn6vHlVn6DNfdxLjkRM4Inq4zT4e7no0
-         8xRTVufMB+zZBJGgBVy9/CjWdBkEt61epQIAesXuusfmxJcC+82GFyBgbPGHun4xIGo+
-         rz2IGULQxdFNYb6vndJR2f01ixZ5HOoQG51NAtfJLNkH54mF8UUuxLUu3c7jym5vWW0O
-         jabg==
-X-Gm-Message-State: ANhLgQ0dfl8iuLF7X99nzfv3Dd3PdjrQMXWPgdXiSPpI884ynetPoTVK
-        voVrhtUTDMjEATS54AlWrAmTk9ishCbqjnKQwaXgbg==
-X-Google-Smtp-Source: ADFU+vvo+v3/q5o96URjltWMa+waAoKpdkS+W4orQ4VsY+8ZNMYwVfoC3c1NvIDuXdbsm+Ka3CE7nGsanb6MvI++Jng=
-X-Received: by 2002:a2e:9910:: with SMTP id v16mr878221lji.281.1583471015683;
- Thu, 05 Mar 2020 21:03:35 -0800 (PST)
-MIME-Version: 1.0
-References: <20200305203013.6189-1-lukas.bulwahn@gmail.com>
-In-Reply-To: <20200305203013.6189-1-lukas.bulwahn@gmail.com>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Fri, 6 Mar 2020 10:33:24 +0530
-Message-ID: <CAFA6WYOUbacZtMEUuhhTwsVJ7RbQu08a2=-LJfczzbZsyxuOBQ@mail.gmail.com>
-Subject: Re: [PATCH v3] MAINTAINERS: adjust to trusted keys subsystem creation
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     James Bottomley <jejb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        linux-integrity@vger.kernel.org,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        Sebastian Duda <sebastian.duda@fau.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Fri, 6 Mar 2020 00:33:25 -0500
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 8AB7215ADABCB;
+        Thu,  5 Mar 2020 21:33:24 -0800 (PST)
+Date:   Thu, 05 Mar 2020 21:33:21 -0800 (PST)
+Message-Id: <20200305.213321.1243150631582322410.davem@davemloft.net>
+To:     dan.carpenter@oracle.com
+Cc:     christophe.ricard@gmail.com, kuba@kernel.org,
+        gregkh@linuxfoundation.org, kstewart@linuxfoundation.org,
+        allison@lohutok.net, netdev@vger.kernel.org, surenb@google.com,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net] net: nfc: fix bounds checking bugs on "pipe"
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200304142429.2734khtbfyyoxmwc@kili.mountain>
+References: <20200304142429.2734khtbfyyoxmwc@kili.mountain>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 05 Mar 2020 21:33:24 -0800 (PST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 6 Mar 2020 at 02:00, Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
->
-> Commit 47f9c2796891 ("KEYS: trusted: Create trusted keys subsystem")
-> renamed trusted.h to trusted_tpm.h in include/keys/, and moved trusted.c
-> to trusted-keys/trusted_tpm1.c in security/keys/.
->
-> Since then, ./scripts/get_maintainer.pl --self-test complains:
->
->   warning: no file matches F: security/keys/trusted.c
->   warning: no file matches F: include/keys/trusted.h
->
-> Rectify the KEYS-TRUSTED entry in MAINTAINERS now and ensure that all
-> files in security/keys/trusted-keys/ are identified as part of
-> KEYS-TRUSTED.
->
-> Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
-> Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Date: Wed, 4 Mar 2020 17:24:31 +0300
 
-Acked-by: Sumit Garg <sumit.garg@linaro.org>
+> This is similar to commit 674d9de02aa7 ("NFC: Fix possible memory
+> corruption when handling SHDLC I-Frame commands") and commit d7ee81ad09f0
+> ("NFC: nci: Add some bounds checking in nci_hci_cmd_received()") which
+> added range checks on "pipe".
+> 
+> The "pipe" variable comes skb->data[0] in nfc_hci_msg_rx_work().
+> It's in the 0-255 range.  We're using it as the array index into the
+> hdev->pipes[] array which has NFC_HCI_MAX_PIPES (128) members.
+> 
+> Fixes: 118278f20aa8 ("NFC: hci: Add pipes table to reference them with a tuple {gate, host}")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-> ---
-> Changes to v1:
->   - use a global pattern for matching the whole security/keys/trusted-keys/
->     directory.
-> Changes to v2:
->   - name the correct directory in the commit message
->
-> Sumit, please ack.
-> Jarkko, please pick this patch v3.
->
->  MAINTAINERS | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 5c755e03ddee..7f11ac752b91 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -9276,8 +9276,8 @@ L:        keyrings@vger.kernel.org
->  S:     Supported
->  F:     Documentation/security/keys/trusted-encrypted.rst
->  F:     include/keys/trusted-type.h
-> -F:     security/keys/trusted.c
-> -F:     include/keys/trusted.h
-> +F:     include/keys/trusted_tpm.h
-> +F:     security/keys/trusted-keys/
->
->  KEYS/KEYRINGS
->  M:     David Howells <dhowells@redhat.com>
-> --
-> 2.17.1
->
+Applied and queued up for -stable, thanks Dan.

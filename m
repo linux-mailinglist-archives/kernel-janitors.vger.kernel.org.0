@@ -2,96 +2,162 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B1D517CC6A
-	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Mar 2020 07:08:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86CFE17CD67
+	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Mar 2020 11:02:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726281AbgCGGIS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 7 Mar 2020 01:08:18 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:36572 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725815AbgCGGIS (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 7 Mar 2020 01:08:18 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0276358C089498;
-        Sat, 7 Mar 2020 06:08:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=VckGqFLyDLDkJpl9TRtd9e+eKXWj/DJN3P6dOtzp2hA=;
- b=k1jxv+Yx8NNLKrr61B0nYGu2PBA0KGXnHUAJ6hY6rllQDUR2qKQaAlBMVybH5+9VVEHC
- IExbZVc86IpLa6vRCxZsX1CaHoOdq3JG4IBpK+WQ769Lu08RokxVyWWTiXO857hnhLXu
- WqkGney9hFZ1+sCw5+DJH0LWdbji2V8+De1zT2yu7emulwLNSkrYYxH+kSOU7wJrWQJO
- 4U2WHNeMvBPGVDKwTWoUtoqDaJDlchxwUlYrN/ZdqtMsx1Vt8trbmBh/Z4buaCsBGaci
- 8FnKHEbOZhlZkhQb9+r0wQi+bpzE4IogTyRDImbgmCFG748gt/2hgq/LH+5lAsLOb4Nm hw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 2ym48sg5kq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 07 Mar 2020 06:08:16 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02762qDc128971;
-        Sat, 7 Mar 2020 06:08:15 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 2ym3e652uk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 07 Mar 2020 06:08:15 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 02768DuG024639;
-        Sat, 7 Mar 2020 06:08:13 GMT
-Received: from kili.mountain (/41.210.146.162)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 06 Mar 2020 22:08:13 -0800
-Date:   Sat, 7 Mar 2020 09:08:08 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "Tigran A. Aivazian" <aivazian.tigran@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] bfs: prevent underflow in bfs_find_entry()
-Message-ID: <20200307060808.6nfyqnp2woq7d3cv@kili.mountain>
+        id S1726239AbgCGKCA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 7 Mar 2020 05:02:00 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57656 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725878AbgCGKB7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 7 Mar 2020 05:01:59 -0500
+Received: from onda.lan (ip5f5ad4e9.dynamic.kabel-deutschland.de [95.90.212.233])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3DEB4206D5;
+        Sat,  7 Mar 2020 10:01:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583575318;
+        bh=K57qheI3BUpEK74C2M8dStCHv7ATP2ASTLRAtzGxQpE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ucBz2YSHIN/jLFT1Th7tmwlEMgYBachNyqUpxAr3o8UYYjXUF0ZxCqSWqwyvRPyge
+         RDbJFh1lkxwghJX9TvLBD37F1kfD6g9JTLON/X6d5H+Z/G/iTKg0cRlHsaAX76Mpoe
+         3V8RCtWDkNx5m/OlnSPoVSu1kgrGR4qnj5TmKZDY=
+Date:   Sat, 7 Mar 2020 11:01:54 +0100
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Joe Perches <joe@perches.com>, Jonathan Corbet <corbet@lwn.net>,
+        linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: adjust to filesystem doc ReST conversion
+Message-ID: <20200307110154.719572e4@onda.lan>
+In-Reply-To: <alpine.DEB.2.21.2003062214500.5521@felia>
+References: <20200304072950.10532-1-lukas.bulwahn@gmail.com>
+        <20200304131035.731a3947@lwn.net>
+        <alpine.DEB.2.21.2003042145340.2698@felia>
+        <e43f0cf0117fbfa8fe8c7e62538fd47a24b4657a.camel@perches.com>
+        <alpine.DEB.2.21.2003062214500.5521@felia>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9552 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 malwarescore=0
- suspectscore=0 mlxscore=0 mlxlogscore=940 phishscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2003070044
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9552 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 impostorscore=0
- mlxlogscore=999 suspectscore=0 priorityscore=1501 lowpriorityscore=0
- phishscore=0 adultscore=0 spamscore=0 mlxscore=0 clxscore=1011
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003070044
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We check if "namelen" is larger than BFS_NAMELEN but we don't check
-if it's less than zero so it causes a static checker.
+Em Fri, 6 Mar 2020 22:17:49 +0100 (CET)
+Lukas Bulwahn <lukas.bulwahn@gmail.com> escreveu:
 
-    fs/bfs/dir.c:346 bfs_find_entry() warn: no lower bound on 'namelen'
+> On Wed, 4 Mar 2020, Joe Perches wrote:
+> 
+> > On Wed, 2020-03-04 at 21:50 +0100, Lukas Bulwahn wrote:  
+> > > 
+> > > On Wed, 4 Mar 2020, Jonathan Corbet wrote:
+> > >   
+> > > > On Wed,  4 Mar 2020 08:29:50 +0100
+> > > > Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:  
+> > > > > Jonathan, pick pick this patch for doc-next.  
+> > > > 
+> > > > Sigh, I need to work a MAINTAINERS check into my workflow...
+> > > >   
+> > > 
+> > > I getting closer to have zero warnings on the MAINTAINER file matches and 
+> > > then, I would set up a bot following the mailing lists to warn when anyone
+> > > sends a patch that potentially introduces such warning.  
+> > 
+> > Hey Lukas.
+> > 
+> > I wrote a hacky script that sent emails
+> > for invalid MAINTAINER F: and X: patterns
+> > a couple years back.
+> > 
+> > I ran it in September 2018 and March 2019.
+> > 
+> > It's attached if you want to play with it.
+> > The email sending bit is commented out.
+> > 
+> > The script is used like:
+> > 
+> > $ perl ./scripts/get_maintainer.pl --self-test=patterns | \
+> >   cut -f2 -d: | \
+> >   while read line ; do \
+> >     perl ./dump_section.perl $line \
+> >   done
+> >   
+> 
+> Thanks, Joe. That is certainly helpful, I will try to make use of it in 
+> the future; fortunately, there really not too many invalid F: patterns 
+> left, and I can send the last few patches out myself.
 
-It's nicer to make it unsigned anyway.
+Talking about problems at MAINTAINERS file, while the entries are
+supposed to be in alphabetical order, there are some things at the
+wrong place there.
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- fs/bfs/dir.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This can easily seen with:
 
-diff --git a/fs/bfs/dir.c b/fs/bfs/dir.c
-index d8dfe3a0cb39..46a2663e5eb2 100644
---- a/fs/bfs/dir.c
-+++ b/fs/bfs/dir.c
-@@ -326,7 +326,7 @@ static struct buffer_head *bfs_find_entry(struct inode *dir,
- 	struct buffer_head *bh = NULL;
- 	struct bfs_dirent *de;
- 	const unsigned char *name = child->name;
--	int namelen = child->len;
-+	unsigned int namelen = child->len;
- 
- 	*res_dir = NULL;
- 	if (namelen > BFS_NAMELEN)
--- 
-2.11.0
+	$ cat MAINTAINERS |grep -E '^[A-Z][A-Z]' >a;sort -f a >b;diff -U1 a b|less
 
+See for example the first hunk:
+
+@@ -54,3 +54,2 @@
+ ALACRITECH GIGABIT ETHERNET DRIVER
+-FORCEDETH GIGABIT ETHERNET DRIVER
+ ALCATEL SPEEDTOUCH USB DRIVER
+
+The FORCEDETH entry is completely misplaced.
+
+Same happens here:
+
+@@ -529,4 +529,2 @@
+ DIOLAN U2C-12 I2C DRIVER
+-FILESYSTEM DIRECT ACCESS (DAX)
+-DEVICE DIRECT ACCESS (DAX)
+ DIRECTORY NOTIFICATION (DNOTIFY)
+
+With this name, the FILESYSTEM DIRECT ACCESS (DAX) is also misplaced.
+Maybe it was called something else starting with DEVICE in the past?
+
+In any case, I wonder if it would make sense to re-order at least those 
+completely out order entries. On a quick check,  there are only 16 entries
+that seem to be really wrong, if we compare just the first two
+characters of the entries names.
+
+I'm using this small perl script to check:
+
+	open IN, "MAINTAINERS";
+	my $prev = "00";
+	while (<IN>) {
+		next if (m/THE REST/);
+		if (m/^([A-Z\d][A-Z\d])/) {
+			$cur = $1;
+			$entry = $_;
+			$entry =~ s/\s+$//;
+			print "$entry < $full_prev\n" if ($cur lt $prev);
+			$prev = $cur;
+			$full_prev = $entry;
+		}
+	}
+
+It got those results:
+
+	ALCATEL SPEEDTOUCH USB DRIVER < FORCEDETH GIGABIT ETHERNET DRIVER
+	AMAZON ANNAPURNA LABS FIC DRIVER < ARM PRIMECELL VIC PL190/PL192 DRIVER
+	802.11 (including CFG80211/NL80211) < CFAG12864BFB LCD FRAMEBUFFER DRIVER
+	DEVICE DIRECT ACCESS (DAX) < FILESYSTEM DIRECT ACCESS (DAX)
+	GASKET DRIVER FRAMEWORK < GCC PLUGINS
+	NXP FSPI DRIVER < OBJAGG
+	OMFS FILESYSTEM < ONION OMEGA2+ BOARD
+	FLYSKY FSIA6B RC RECEIVER < PHOENIX RC FLIGHT CONTROLLER ADAPTER
+	HANTRO VPU CODEC DRIVER < ROCKCHIP RASTER 2D GRAPHIC ACCELERATION UNIT DRIVER
+	REALTEK WIRELESS DRIVER (rtlwifi family) < RTL8187 WIRELESS DRIVER
+	EMMC CMDQ HOST CONTROLLER INTERFACE (CQHCI) DRIVER < SECURE DIGITAL HOST CONTROLLER INTERFACE (SDHCI) DRIVER
+	SECURE DIGITAL HOST CONTROLLER INTERFACE (SDHCI) MICROCHIP DRIVER < SYNOPSYS SDHCI COMPLIANT DWC MSHC DRIVER
+	SERIAL LOW-POWER INTER-CHIP MEDIA BUS (SLIMbus) < SLEEPABLE READ-COPY UPDATE (SRCU)
+	EXTRA BOOT CONFIG < STMMAC ETHERNET DRIVER
+	TEMPO SEMICONDUCTOR DRIVERS < TRIVIAL PATCHES
+	RCMM REMOTE CONTROLS DECODER < WINBOND CIR DRIVER
+
+	
+Regards,
+Mauro

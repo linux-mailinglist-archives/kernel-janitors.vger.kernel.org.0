@@ -2,101 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD3A217C874
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Mar 2020 23:40:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B1D517CC6A
+	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Mar 2020 07:08:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726397AbgCFWke (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Mar 2020 17:40:34 -0500
-Received: from mga03.intel.com ([134.134.136.65]:31326 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726237AbgCFWke (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Mar 2020 17:40:34 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Mar 2020 14:40:33 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,523,1574150400"; 
-   d="scan'208";a="234943569"
-Received: from shenkel-mobl.ger.corp.intel.com (HELO localhost) ([10.252.23.162])
-  by orsmga008.jf.intel.com with ESMTP; 06 Mar 2020 14:40:27 -0800
-Date:   Sat, 7 Mar 2020 00:40:26 +0200
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Sumit Garg <sumit.garg@linaro.org>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        Sebastian Duda <sebastian.duda@fau.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] MAINTAINERS: adjust to trusted keys subsystem creation
-Message-ID: <20200306224026.GA4095@linux.intel.com>
-References: <20200305203013.6189-1-lukas.bulwahn@gmail.com>
- <20200306193127.GJ7472@linux.intel.com>
- <alpine.DEB.2.21.2003062148050.2990@felia>
+        id S1726281AbgCGGIS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 7 Mar 2020 01:08:18 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:36572 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725815AbgCGGIS (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 7 Mar 2020 01:08:18 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0276358C089498;
+        Sat, 7 Mar 2020 06:08:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=VckGqFLyDLDkJpl9TRtd9e+eKXWj/DJN3P6dOtzp2hA=;
+ b=k1jxv+Yx8NNLKrr61B0nYGu2PBA0KGXnHUAJ6hY6rllQDUR2qKQaAlBMVybH5+9VVEHC
+ IExbZVc86IpLa6vRCxZsX1CaHoOdq3JG4IBpK+WQ769Lu08RokxVyWWTiXO857hnhLXu
+ WqkGney9hFZ1+sCw5+DJH0LWdbji2V8+De1zT2yu7emulwLNSkrYYxH+kSOU7wJrWQJO
+ 4U2WHNeMvBPGVDKwTWoUtoqDaJDlchxwUlYrN/ZdqtMsx1Vt8trbmBh/Z4buaCsBGaci
+ 8FnKHEbOZhlZkhQb9+r0wQi+bpzE4IogTyRDImbgmCFG748gt/2hgq/LH+5lAsLOb4Nm hw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 2ym48sg5kq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 07 Mar 2020 06:08:16 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02762qDc128971;
+        Sat, 7 Mar 2020 06:08:15 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2ym3e652uk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 07 Mar 2020 06:08:15 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 02768DuG024639;
+        Sat, 7 Mar 2020 06:08:13 GMT
+Received: from kili.mountain (/41.210.146.162)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 06 Mar 2020 22:08:13 -0800
+Date:   Sat, 7 Mar 2020 09:08:08 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     "Tigran A. Aivazian" <aivazian.tigran@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] bfs: prevent underflow in bfs_find_entry()
+Message-ID: <20200307060808.6nfyqnp2woq7d3cv@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.21.2003062148050.2990@felia>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9552 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 malwarescore=0
+ suspectscore=0 mlxscore=0 mlxlogscore=940 phishscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2003070044
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9552 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 impostorscore=0
+ mlxlogscore=999 suspectscore=0 priorityscore=1501 lowpriorityscore=0
+ phishscore=0 adultscore=0 spamscore=0 mlxscore=0 clxscore=1011
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003070044
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Mar 06, 2020 at 09:50:44PM +0100, Lukas Bulwahn wrote:
-> 
-> 
-> On Fri, 6 Mar 2020, Jarkko Sakkinen wrote:
-> 
-> > On Thu, Mar 05, 2020 at 09:30:13PM +0100, Lukas Bulwahn wrote:
-> > > Commit 47f9c2796891 ("KEYS: trusted: Create trusted keys subsystem")
-> > > renamed trusted.h to trusted_tpm.h in include/keys/, and moved trusted.c
-> > > to trusted-keys/trusted_tpm1.c in security/keys/.
-> > > 
-> > > Since then, ./scripts/get_maintainer.pl --self-test complains:
-> > > 
-> > >   warning: no file matches F: security/keys/trusted.c
-> > >   warning: no file matches F: include/keys/trusted.h
-> > > 
-> > > Rectify the KEYS-TRUSTED entry in MAINTAINERS now and ensure that all
-> > > files in security/keys/trusted-keys/ are identified as part of
-> > > KEYS-TRUSTED.
-> > > 
-> > > Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
-> > > Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
-> > > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> > > ---
-> > 
-> > Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> > 
-> > > Changes to v1:
-> > >   - use a global pattern for matching the whole security/keys/trusted-keys/
-> > >     directory.
-> > > Changes to v2:
-> > >   - name the correct directory in the commit message
-> > > 
-> > > Sumit, please ack.
-> > > Jarkko, please pick this patch v3.
-> > 
-> > Please tell me why you emphasize the moment when a patch that does not
-> > fix a critical bug is picked?
-> > 
-> > Do you have systems that break because the MAINTAINERS file is not
-> > updated?
-> > 
-> > It will end up in v5.7 PR for sure but saying things like that is same
-> > as saying that there would be some catastrophically urgent need to still
-> > squeeze the patch into v5.6. Unless you actually have something critical
-> > in your hand, please stop doing that.
-> > 
-> 
-> Got it. I did not intend to emphasize any urgency; I will not continue 
-> to do that for patches of this clean-up type.
+We check if "namelen" is larger than BFS_NAMELEN but we don't check
+if it's less than zero so it causes a static checker.
 
-Anyway, thank you and I've applied your patch and will include it to my
-v5.7 PR.
+    fs/bfs/dir.c:346 bfs_find_entry() warn: no lower bound on 'namelen'
 
-/Jarkko
+It's nicer to make it unsigned anyway.
+
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ fs/bfs/dir.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/bfs/dir.c b/fs/bfs/dir.c
+index d8dfe3a0cb39..46a2663e5eb2 100644
+--- a/fs/bfs/dir.c
++++ b/fs/bfs/dir.c
+@@ -326,7 +326,7 @@ static struct buffer_head *bfs_find_entry(struct inode *dir,
+ 	struct buffer_head *bh = NULL;
+ 	struct bfs_dirent *de;
+ 	const unsigned char *name = child->name;
+-	int namelen = child->len;
++	unsigned int namelen = child->len;
+ 
+ 	*res_dir = NULL;
+ 	if (namelen > BFS_NAMELEN)
+-- 
+2.11.0
+

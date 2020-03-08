@@ -2,108 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70BC917D5F0
-	for <lists+kernel-janitors@lfdr.de>; Sun,  8 Mar 2020 20:51:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F19317D5FB
+	for <lists+kernel-janitors@lfdr.de>; Sun,  8 Mar 2020 20:57:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726336AbgCHTvo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 8 Mar 2020 15:51:44 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:35771 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726322AbgCHTvo (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 8 Mar 2020 15:51:44 -0400
-Received: by mail-wr1-f65.google.com with SMTP id r7so8501472wro.2;
-        Sun, 08 Mar 2020 12:51:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=va/5kDgzicKNJcf6deuBNFPfL5yL1B6zjk8vK2SAYqg=;
-        b=jN+evST5603L9i65VpeFvYKdZt9X6LM0Mrk7Qop1teEOFvO9SEQM/C1arNnknX2+UK
-         yW6qN4GsUpN3Oh9PUa0V0RTB2Hb4CsRpdAdnrBgcLtuqAUZrpAGlLRnza7hbZ3AphT5k
-         /U2QfyVeikM8HHTP5lqDQ6cjci3HDNubFhruBkMdnsbbmQNbgcDVeACHzFOSWcC5zPJJ
-         mbp0G9PGfV/S7gdOFgWHZJ8vZLxh1flxv9Qv0yJEXbTANoVfpm9fCY4UgHQqBvFYKJBE
-         c4NIhv1H1GPU3Az56s76QxRJb5m8x2aISQm9q5TUZotdf4yEzTIcneq8+4oNnvVQ9gT/
-         keHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=va/5kDgzicKNJcf6deuBNFPfL5yL1B6zjk8vK2SAYqg=;
-        b=HjwIcAidOUbXQzAZgzFEbDFYd8NUHsQE/fxs+4I3oSLY61JzTBKp1mjTIx4eLsFIMx
-         La240Ks/V2GbmV8AwXs7BiqnDtokBm+c5lv9R084yqAx6L4Z5/ONe33UJz4ujrh9Rblg
-         hRxCzd3wrJ6xvk0baiogmS5XYZHcT2rULv6a7ZsYN3QITvkhLTAoUqxp6WUSUYfLjCum
-         dPeNK3wiir9+YqF6Wez8Iin3jr3ajGeMKF0tDmrsG2WMbH5ErjrE7tl8z8iJnMFcjnK6
-         i4jWvdwcKooWzgEETcpPXkLW/UZK4mQ9Xxhm0pRvIMlROxNqjSrpcyO7AdJi4dLFBwOD
-         a4xg==
-X-Gm-Message-State: ANhLgQ3PlBsqRrBp7FcfiHha5aEiMJAaWeLpt4k6cwiOSuxw//bpOYj4
-        N6B5KBSMvNCzCsNqGlkkZBpptWN0YWw=
-X-Google-Smtp-Source: ADFU+vuDwnAe/gtet0wO/NzJ8JcVQtvvKkVPjNdRolC/fbRnkpkzDlD1jgg5ocL531JJHTQa2VDDAQ==
-X-Received: by 2002:adf:f087:: with SMTP id n7mr15782115wro.328.1583697101955;
-        Sun, 08 Mar 2020 12:51:41 -0700 (PDT)
-Received: from felia.fritz.box ([2001:16b8:2dce:4a00:35ca:ddfb:aba3:f544])
-        by smtp.gmail.com with ESMTPSA id f207sm26095392wme.9.2020.03.08.12.51.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Mar 2020 12:51:41 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Stephen Boyd <swboyd@chromium.org>,
+        id S1726383AbgCHT5k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 8 Mar 2020 15:57:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43580 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726332AbgCHT5j (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 8 Mar 2020 15:57:39 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DAB6B20848;
+        Sun,  8 Mar 2020 19:57:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583697459;
+        bh=gSf8v0EKhZ8Lf+hGO7tIZ+99EssllmxOy1l9Lll5u5A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=KzzetlXqNlTtgLfmE1ROVd6MhxOTesXbfzNQOKcYJQwAR1YSaszsG2tcwm8e36FSP
+         cfXFXiBuec3YQV9jFsWXEhwzXzUYzlHwKAp1b7lSkYU+u6P140c2H+/TdQB3bRHw0I
+         CyHiqCf0iBLl2RGzaWDrdH4HUJ4Il3eyeJpCSFaA=
+Date:   Sun, 8 Mar 2020 20:57:34 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Stephen Boyd <swboyd@chromium.org>,
         Guenter Roeck <groeck@chromium.org>,
-        Julius Werner <jwerner@chromium.org>
-Cc:     Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH RFC] MAINTAINERS: include GOOGLE FIRMWARE entry
-Date:   Sun,  8 Mar 2020 20:51:16 +0100
-Message-Id: <20200308195116.12836-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Julius Werner <jwerner@chromium.org>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC] MAINTAINERS: include GOOGLE FIRMWARE entry
+Message-ID: <20200308195734.GA4070981@kroah.com>
+References: <20200308195116.12836-1-lukas.bulwahn@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200308195116.12836-1-lukas.bulwahn@gmail.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-All files in drivers/firmware/google/ are identified as part of THE REST
-according to MAINTAINERS, but they are really maintained by others.
+On Sun, Mar 08, 2020 at 08:51:16PM +0100, Lukas Bulwahn wrote:
+> All files in drivers/firmware/google/ are identified as part of THE REST
+> according to MAINTAINERS, but they are really maintained by others.
+> 
+> Add a basic entry for drivers/firmware/google/ based on a simple statistics
+> on tags of commits in that directory:
+> 
+>   $ git log drivers/firmware/google/ | grep '\-by:' \
+>       | sort | uniq -c | sort -nr
+>      62     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>      13     Reviewed-by: Guenter Roeck <groeck@chromium.org>
+>      12     Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+>      11     Reviewed-by: Julius Werner <jwerner@chromium.org>
+> 
+> There is no specific mailing list for this driver, based on observations
+> on the patch emails, and the git history suggests the driver is maintained.
+> 
+> This was identified with a small script that finds all files belonging to
+> THE REST according to the current MAINTAINERS file, and I investigated
+> upon its output.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+>  MAINTAINERS | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 3a0f8115c92c..ed788804daab 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -7111,6 +7111,14 @@ S:	Supported
+>  F:	Documentation/networking/device_drivers/google/gve.rst
+>  F:	drivers/net/ethernet/google
+>  
+> +GOOGLE FIRMWARE
+> +M:	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Add a basic entry for drivers/firmware/google/ based on a simple statistics
-on tags of commits in that directory:
+No, sorry, I am not the maintainer of this.  I'll be glad to be the
+person the maintainers send patches to to get into Linus's tree, but I
+am not going to be responsible for stuff I know nothing about :)
 
-  $ git log drivers/firmware/google/ | grep '\-by:' \
-      | sort | uniq -c | sort -nr
-     62     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-     13     Reviewed-by: Guenter Roeck <groeck@chromium.org>
-     12     Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-     11     Reviewed-by: Julius Werner <jwerner@chromium.org>
+thanks,
 
-There is no specific mailing list for this driver, based on observations
-on the patch emails, and the git history suggests the driver is maintained.
-
-This was identified with a small script that finds all files belonging to
-THE REST according to the current MAINTAINERS file, and I investigated
-upon its output.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3a0f8115c92c..ed788804daab 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7111,6 +7111,14 @@ S:	Supported
- F:	Documentation/networking/device_drivers/google/gve.rst
- F:	drivers/net/ethernet/google
- 
-+GOOGLE FIRMWARE
-+M:	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-+M:	Stephen Boyd <swboyd@chromium.org>
-+R:	Guenter Roeck <groeck@chromium.org>
-+R:	Julius Werner <jwerner@chromium.org>
-+S:	Maintained
-+F:	drivers/firmware/google/
-+
- GPD POCKET FAN DRIVER
- M:	Hans de Goede <hdegoede@redhat.com>
- L:	platform-driver-x86@vger.kernel.org
--- 
-2.17.1
-
+greg k-h

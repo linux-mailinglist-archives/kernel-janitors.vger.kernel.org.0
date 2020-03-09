@@ -2,95 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9889F17DAC7
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Mar 2020 09:24:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEA3117DB43
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Mar 2020 09:40:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726530AbgCIIYh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Mar 2020 04:24:37 -0400
-Received: from mx01-sz.bfs.de ([194.94.69.67]:20956 "EHLO mx02-sz.bfs.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726384AbgCIIYg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Mar 2020 04:24:36 -0400
+        id S1726487AbgCIIkn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Mar 2020 04:40:43 -0400
+Received: from mx01-muc.bfs.de ([193.174.230.67]:36452 "EHLO mx01-muc.bfs.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726450AbgCIIkn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 9 Mar 2020 04:40:43 -0400
 Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
-        by mx02-sz.bfs.de (Postfix) with ESMTPS id 67CA12034C;
-        Mon,  9 Mar 2020 09:24:33 +0100 (CET)
+        by mx01-muc.bfs.de (Postfix) with ESMTPS id 459D7203DF;
+        Mon,  9 Mar 2020 09:40:40 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1583742273;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        t=1583743240; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=kaIxDNUTjnov42I+Fqezs7SqV36FPgBJnmtmK2sN1WY=;
-        b=0JpQY9ir9n/8J66CFLcQZ8BXSKDe93gMgEzEPknfOyXaJbubGwafmD+04QOQF9/jbM/mj/
-        cOAvWou0719msxjBPi8mQ89zDzcTEdmGfVucApOhHi/ROByjo9R93APyJ46U4721aB8GjV
-        IoV8xLlzkUdYoRl9q1Q6+2gCMwxkJYiFjOxrBHB1Q3QtxdNL3unL8aUrztQG9Eso+8CqnM
-        SDKqffRBgIdRy2cJLCYVFBM2taEe1lrJ0Pf1P8wQ9Jp7DAd5gmVGHvOtivamDJkaS2+71A
-        vQdwgF5qpg2o/PepMgXAkPy6On6l7lYgeEyiegs9hcVCwLGGqlBylWL+kVevbA==
+        bh=FodbOqKeyeMyCZ4IQTFd+GWKlGWuxwo5OizxmI3M9Pc=;
+        b=tm6FrPTIru2zahVatlu6aWk9FdbiSp3wHuaNMrF/4sVbF1v4B15GAn3A51KMycIGGDNHDx
+        oHeqT8sLJizvZxG6zbFXLVMYGC1HTrf0s0Z3MpHWEHo3EtGs2KtYilE9M0Z5XZDPTP7UPo
+        7NnLf9i+0bzhvKuLWvqiNKXDU3dY/7JEMJ7V+JaTYYocdRO4L4MCqQFVUkpYsHdgtq/aDC
+        Sl4Irvkdz0421p9dKgminVuqsYlNvOe/S6h3+M56hWlao+UWtVO/SVLrbps09G7KGmT6XW
+        n75TFZK2cPT8nXw7XVM/Jtp/uPywvzeVYQ0EX/O8p3Lg1co3cdEipcFkF8Yxow==
 Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
  (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.1913.5; Mon, 9 Mar 2020
- 09:24:04 +0100
+ 09:40:28 +0100
 Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
  SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%6]) with mapi id
- 15.01.1913.005; Mon, 9 Mar 2020 09:24:04 +0100
+ 15.01.1913.005; Mon, 9 Mar 2020 09:40:28 +0100
 From:   Walter Harms <wharms@bfs.de>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        "harry.wentland@amd.com" <harry.wentland@amd.com>,
-        "sunpeng.li@amd.com" <sunpeng.li@amd.com>,
-        "alexander.deucher@amd.com" <alexander.deucher@amd.com>,
-        "christian.koenig@amd.com" <christian.koenig@amd.com>,
-        "David1.Zhou@amd.com" <David1.Zhou@amd.com>,
-        "airlied@linux.ie" <airlied@linux.ie>,
-        "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "nicholas.kazlauskas@amd.com" <nicholas.kazlauskas@amd.com>,
-        "Bhawanpreet.Lakha@amd.com" <Bhawanpreet.Lakha@amd.com>,
-        "mario.kleiner.de@gmail.com" <mario.kleiner.de@gmail.com>,
-        "David.Francis@amd.com" <David.Francis@amd.com>
-CC:     "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "Tigran A. Aivazian" <aivazian.tigran@gmail.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: AW: [PATCH] drm/amdgpu/display: Fix an error handling path in
- 'dm_update_crtc_state()'
-Thread-Topic: [PATCH] drm/amdgpu/display: Fix an error handling path in
- 'dm_update_crtc_state()'
-Thread-Index: AQHV9SuzYuuVSz+HgUqDARTjMCrA+ag/7Vf/
-Date:   Mon, 9 Mar 2020 08:24:04 +0000
-Message-ID: <97d88948e2ab4ec19c5a0c6d064df08b@bfs.de>
-References: <20200308092637.8194-1-christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20200308092637.8194-1-christophe.jaillet@wanadoo.fr>
+Subject: AW: [PATCH] bfs: prevent underflow in bfs_find_entry()
+Thread-Topic: [PATCH] bfs: prevent underflow in bfs_find_entry()
+Thread-Index: AQHV9EblEVE9iA1yzEeR1GKKiiXYdag/8Iot
+Date:   Mon, 9 Mar 2020 08:40:28 +0000
+Message-ID: <ba294b1d861142ca8f7b204356009dd0@bfs.de>
+References: <20200307060808.6nfyqnp2woq7d3cv@kili.mountain>
+In-Reply-To: <20200307060808.6nfyqnp2woq7d3cv@kili.mountain>
 Accept-Language: de-DE, en-US
 Content-Language: de-DE
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-originating-ip: [10.137.16.39]
+x-originating-ip: [10.137.16.40]
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.15
-Authentication-Results: mx02-sz.bfs.de;
-        none
-X-Spamd-Result: default: False [-1.15 / 7.00];
+X-Spam-Status: No, score=-3.00
+Authentication-Results: mx01-muc.bfs.de
+X-Spamd-Result: default: False [-3.00 / 7.00];
          ARC_NA(0.00)[];
          TO_DN_EQ_ADDR_SOME(0.00)[];
          HAS_XOIP(0.00)[];
          FROM_HAS_DN(0.00)[];
+         RCPT_COUNT_THREE(0.00)[4];
          TO_DN_SOME(0.00)[];
          TO_MATCH_ENVRCPT_ALL(0.00)[];
-         FREEMAIL_ENVRCPT(0.00)[wanadoo.fr,gmail.com];
          TAGGED_RCPT(0.00)[];
          MIME_GOOD(-0.10)[text/plain];
-         BAYES_HAM(-2.65)[98.46%];
+         FREEMAIL_ENVRCPT(0.00)[gmail.com];
          DKIM_SIGNED(0.00)[];
-         RCPT_COUNT_TWELVE(0.00)[16];
-         NEURAL_HAM(-0.00)[-0.574,0];
-         FREEMAIL_TO(0.00)[wanadoo.fr];
+         NEURAL_HAM(-0.00)[-0.991,0];
          RCVD_NO_TLS_LAST(0.10)[];
          FROM_EQ_ENVFROM(0.00)[];
          MIME_TRACE(0.00)[0:+];
          RCVD_COUNT_TWO(0.00)[2];
          MID_RHS_MATCH_FROM(0.00)[];
-         SUSPICIOUS_RECIPS(1.50)[]
+         BAYES_HAM(-3.00)[99.99%]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -99,59 +82,55 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 ________________________________________
 Von: kernel-janitors-owner@vger.kernel.org <kernel-janitors-owner@vger.kern=
-el.org> im Auftrag von Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Gesendet: Sonntag, 8. M=E4rz 2020 10:26
-An: harry.wentland@amd.com; sunpeng.li@amd.com; alexander.deucher@amd.com; =
-christian.koenig@amd.com; David1.Zhou@amd.com; airlied@linux.ie; daniel@ffw=
-ll.ch; nicholas.kazlauskas@amd.com; Bhawanpreet.Lakha@amd.com; mario.kleine=
-r.de@gmail.com; David.Francis@amd.com
-Cc: amd-gfx@lists.freedesktop.org; dri-devel@lists.freedesktop.org; linux-k=
-ernel@vger.kernel.org; kernel-janitors@vger.kernel.org; Christophe JAILLET
-Betreff: [PATCH] drm/amdgpu/display: Fix an error handling path in 'dm_upda=
-te_crtc_state()'
+el.org> im Auftrag von Dan Carpenter <dan.carpenter@oracle.com>
+Gesendet: Samstag, 7. M=E4rz 2020 07:08
+An: Tigran A. Aivazian
+Cc: linux-kernel@vger.kernel.org; kernel-janitors@vger.kernel.org
+Betreff: [PATCH] bfs: prevent underflow in bfs_find_entry()
 
-'dc_stream_release()' may be called twice. Once here, and once below in the
-error handling path if we branch to the 'fail' label.
+We check if "namelen" is larger than BFS_NAMELEN but we don't check
+if it's less than zero so it causes a static checker.
 
-Set 'new_stream' to NULL, once released to avoid the duplicated release
-function call.
+    fs/bfs/dir.c:346 bfs_find_entry() warn: no lower bound on 'namelen'
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+It's nicer to make it unsigned anyway.
+
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-Maybe the 'goto fail' at line 7745 should be turned into a 'return ret'
-instead. Could be clearer.
+ fs/bfs/dir.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-No Fixes tag provided because I've not been able to dig deep enough in the
-git history.
----
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+diff --git a/fs/bfs/dir.c b/fs/bfs/dir.c
+index d8dfe3a0cb39..46a2663e5eb2 100644
+--- a/fs/bfs/dir.c
++++ b/fs/bfs/dir.c
+@@ -326,7 +326,7 @@ static struct buffer_head *bfs_find_entry(struct inode =
+*dir,
+        struct buffer_head *bh =3D NULL;
+        struct bfs_dirent *de;
+        const unsigned char *name =3D child->name;
+-       int namelen =3D child->len;
++       unsigned int namelen =3D child->len;
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gp=
-u/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 97c1b01c0fc1..9d7773a77c4f 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -7704,8 +7704,10 @@ static int dm_update_crtc_state(struct amdgpu_displa=
-y_manager *dm,
+        *res_dir =3D NULL;
+        if (namelen > BFS_NAMELEN)
 
- skip_modeset:
-        /* Release extra reference */
--       if (new_stream)
--                dc_stream_release(new_stream);
-+       if (new_stream) {
-+               dc_stream_release(new_stream);
-+               new_stream =3D NULL;
-+       }
+hi Dan,
+the namelen usage is fishy. It goes into bfs_namecmp()
+where it is checked for namelen < BFS_NAMELEN, leaving
+only the case =3D=3D.
+bfs_namecmp() expects an int, so i would expect a warning.
+Perhaps in this case it is better to change the if() into
 
+if ( namelen <=3D 0 ||  namelen >=3D BFS_NAMELEN)
+ return NULL;
 
-dc_stream_release() is NULL-checked, so the if can be dropped.
+note:  bfs_add_entry has the same "issue"
 
+jm2c,
 re,
  wh
 
-        /*
-         * We want to do dc stream updates that do not require a
 --
-2.20.1
+2.11.0
 

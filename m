@@ -2,110 +2,184 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EBDB17D6EA
-	for <lists+kernel-janitors@lfdr.de>; Sun,  8 Mar 2020 23:56:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80A7717D953
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Mar 2020 07:32:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726403AbgCHW43 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 8 Mar 2020 18:56:29 -0400
-Received: from smtprelay0176.hostedemail.com ([216.40.44.176]:40520 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726352AbgCHW43 (ORCPT
+        id S1726368AbgCIGc2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Mar 2020 02:32:28 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:44507 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725822AbgCIGc2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 8 Mar 2020 18:56:29 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay01.hostedemail.com (Postfix) with ESMTP id 9795F101D66B3;
-        Sun,  8 Mar 2020 22:56:28 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:69:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2540:2553:2559:2562:2828:3138:3139:3140:3141:3142:3353:3622:3865:3866:3867:3868:3870:3871:3872:3874:4250:4321:4605:5007:6119:6691:7264:7514:7903:10004:10400:10848:11232:11658:11914:12043:12295:12297:12683:12740:12760:12895:13069:13184:13229:13311:13357:13439:14096:14097:14180:14181:14659:14721:21080:21433:21627:21740:21819:21939:30046:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: art56_1b3ccfb8be443
-X-Filterd-Recvd-Size: 3075
-Received: from XPS-9350.home (unknown [47.151.143.254])
-        (Authenticated sender: joe@perches.com)
-        by omf20.hostedemail.com (Postfix) with ESMTPA;
-        Sun,  8 Mar 2020 22:56:27 +0000 (UTC)
-Message-ID: <5129f7dbd8506cc9fd5a8f76dc993d789566af6c.camel@perches.com>
-Subject: Re: [PATCH RFC] MAINTAINERS: include GOOGLE FIRMWARE entry
-From:   Joe Perches <joe@perches.com>
-To:     Guenter Roeck <groeck@google.com>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mon, 9 Mar 2020 02:32:28 -0400
+Received: by mail-ed1-f68.google.com with SMTP id g19so10671831eds.11;
+        Sun, 08 Mar 2020 23:32:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:in-reply-to:message-id:references
+         :user-agent:mime-version;
+        bh=Rrh4xCN93yxbiysM7hoI7Kgy/YimZpuBsdoKrd3usOU=;
+        b=StnKe5DiDViKVTU5ESIRLLy9/7LegDlur4llvA5MAnCpOuvCk4Enm2+nHJ08bb91gS
+         pLMS01RGNRfB1ISYDKlXrY273BlHMPQlMVVGx9kJoiEA8DcOeTv+qSUsDAphv+3ZQ78P
+         bRp/z3Fhea/5/shGRSw1/MntmdHyQLKD9iaAqpxRkfm1xrZzfEeaVGhZ/6mDhBtBHEkP
+         IAbSMe8NQX1pt1dL6whTbV5/gykzdtLLeT7lU7n9QqPYe9eUEfIG5Ad92gWwijYmlSSz
+         7SEnZQUmwU/Bt7qhL8pS1qYkdYE9XSWumWWrCPNm9Vzlgt+rdWFq/O7rN1vKIx6gFshU
+         mLNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version;
+        bh=Rrh4xCN93yxbiysM7hoI7Kgy/YimZpuBsdoKrd3usOU=;
+        b=sBCPdU39seZVWpy8G2ZaJZUbBI+dRy4Y6m6n/5ewYhqZ4m2OuruUmmwHKcgBfZO3D/
+         iWwOB5IwcthG1xuVrAYYk9AqnhiZzyNkttvYPkiBVF9CrS5mL4oQRGyn+wJLp4k4AhBa
+         9UQCUTF1JvzYfV8FlPBr/yATCGoNKpXpXcDrNxzSiMHNR3JaQIl1iFjF2np0Q0R+Kt3+
+         LbBP+gy/ZY/fu7PmEI+7iNf/PGGjTOahHan0upGXXsEg7TYQ/Vp/Oj3ThWfY6StuzCCm
+         jBKXtkcyYtpEVBjH2NLeRSIjxnlECYhv6rBCyYsIISKMUpHXoO9nV0gISEy+rU825RKG
+         Ap8A==
+X-Gm-Message-State: ANhLgQ3m2KA4jCC2TYT0axz4xXrefNritlxBYRJ/9E/NklH4f5wvfzns
+        Gr/HqPkgRR30PdF6vKz4U9T1u3jG
+X-Google-Smtp-Source: ADFU+vvupTomHBM1nfQRacQtbkCNZUpJi5figDBPnt0zQEe7VWQbyhnDdwOrbA6Qu+yioWKJcwNoRg==
+X-Received: by 2002:a17:906:c82c:: with SMTP id dd12mr13118915ejb.241.1583735545631;
+        Sun, 08 Mar 2020 23:32:25 -0700 (PDT)
+Received: from felia ([2001:16b8:2d7b:9300:78ce:ab50:7651:7014])
+        by smtp.gmail.com with ESMTPSA id o9sm1265981ejg.12.2020.03.08.23.32.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Mar 2020 23:32:25 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
+Date:   Mon, 9 Mar 2020 07:32:10 +0100 (CET)
+X-X-Sender: lukas@felia
+To:     Joe Perches <joe@perches.com>
+cc:     Guenter Roeck <groeck@google.com>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Stephen Boyd <swboyd@chromium.org>,
         Guenter Roeck <groeck@chromium.org>,
         Julius Werner <jwerner@chromium.org>,
         kernel-janitors@vger.kernel.org,
         linux-kernel <linux-kernel@vger.kernel.org>
-Date:   Sun, 08 Mar 2020 15:54:47 -0700
-In-Reply-To: <CABXOdTcrxoBCz24Ap=YJYZnr+oLAmaR10xZ9ar2mYbE1=RAoug@mail.gmail.com>
-References: <20200308195116.12836-1-lukas.bulwahn@gmail.com>
-         <CABXOdTcrxoBCz24Ap=YJYZnr+oLAmaR10xZ9ar2mYbE1=RAoug@mail.gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+Subject: Re: [PATCH RFC] MAINTAINERS: include GOOGLE FIRMWARE entry
+In-Reply-To: <5129f7dbd8506cc9fd5a8f76dc993d789566af6c.camel@perches.com>
+Message-ID: <alpine.DEB.2.21.2003090702440.3325@felia>
+References: <20200308195116.12836-1-lukas.bulwahn@gmail.com> <CABXOdTcrxoBCz24Ap=YJYZnr+oLAmaR10xZ9ar2mYbE1=RAoug@mail.gmail.com> <5129f7dbd8506cc9fd5a8f76dc993d789566af6c.camel@perches.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 2020-03-08 at 15:32 -0700, Guenter Roeck wrote:
-> On Sun, Mar 8, 2020 at 12:51 PM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
-> > All files in drivers/firmware/google/ are identified as part of THE REST
-> > according to MAINTAINERS, but they are really maintained by others.
-[]
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-[]
-> > @@ -7111,6 +7111,14 @@ S:       Supported
-> >  F:     Documentation/networking/device_drivers/google/gve.rst
-> >  F:     drivers/net/ethernet/google
+
+
+On Sun, 8 Mar 2020, Joe Perches wrote:
+
+> On Sun, 2020-03-08 at 15:32 -0700, Guenter Roeck wrote:
+> > On Sun, Mar 8, 2020 at 12:51 PM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+> > > All files in drivers/firmware/google/ are identified as part of THE REST
+> > > according to MAINTAINERS, but they are really maintained by others.
+> []
+> > > diff --git a/MAINTAINERS b/MAINTAINERS
+> []
+> > > @@ -7111,6 +7111,14 @@ S:       Supported
+> > >  F:     Documentation/networking/device_drivers/google/gve.rst
+> > >  F:     drivers/net/ethernet/google
+> > > 
+> > > +GOOGLE FIRMWARE
+> > > +M:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > +M:     Stephen Boyd <swboyd@chromium.org>
+> > > +R:     Guenter Roeck <groeck@chromium.org>
+> > > +R:     Julius Werner <jwerner@chromium.org>
+> > > +S:     Maintained
+> > > +F:     drivers/firmware/google/
+> > > +
 > > 
-> > +GOOGLE FIRMWARE
-> > +M:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > +M:     Stephen Boyd <swboyd@chromium.org>
-> > +R:     Guenter Roeck <groeck@chromium.org>
-> > +R:     Julius Werner <jwerner@chromium.org>
-> > +S:     Maintained
-> > +F:     drivers/firmware/google/
-> > +
+> > FWIW, I would not mind stepping up as maintainer if needed, but I
+> > think we should strongly discourage this kind of auto-assignment of
+> > maintainers and/or reviewers.
 > 
-> FWIW, I would not mind stepping up as maintainer if needed, but I
-> think we should strongly discourage this kind of auto-assignment of
-> maintainers and/or reviewers.
+> Auto assignment should definitely _not_ be done.
+> 
+> This is an RFC proposal though.
+> 
+> Sometimes it's better to not produce an RFC as
+> a patch, but maybe just show a proposed section
+> and ask if is appropriate may be a better style
+> going forward.
+>
 
-Auto assignment should definitely _not_ be done.
+Please interpret the RFC patch similar to an email as Joe wrote below, 
+simply reaching out to you.
 
-This is an RFC proposal though.
+There is no auto-assignment intended, nor did I expect the patch to be 
+picked up on the first attempt of uneducated guessing.
 
-Sometimes it's better to not produce an RFC as
-a patch, but maybe just show a proposed section
-and ask if is appropriate may be a better style
-going forward.
+There are currently around 3,000 files identified being part of THE REST;
+so they are all assigned to Linus and LKML.
 
-Maybe just emailing Greg, Stephen, Guenter and
-Julius (cc'ing LKML) asking something like the
-below would be better:
+To confirm that they actually are maintained by someone else and reflect 
+that in MAINTAINERS, a bit of educated guessing who to contact and to 
+which entry to add the files to is required.
 
-----------------------------------------------------
+I am starting with the "bigger" clustered files in drivers, and then try 
+to look at files in include and Documentation/ABI/.
 
-Hey all.
+Here is a rough statistics on how many files from each directory are in
+THE REST:
 
-Files in drivers/firmware/google/ do not seem to
-have a listed MAINTAINER.
+   1368 include
+    566 tools
+    327 lib
+    321 Documentation
+    100 drivers
+     91 kernel
+     84 scripts
+     75 samples
+     13 ipc
+     13 init
+      8 usr
+      2 arch
+      1 virt
 
-Would a section entry in MAINTAINERS like this be
-appropriate?
+ 
+> Maybe just emailing Greg, Stephen, Guenter and
+> Julius (cc'ing LKML) asking something like the
+> below would be better:
+> 
+> ----------------------------------------------------
+> 
+> Hey all.
+> 
+> Files in drivers/firmware/google/ do not seem to
+> have a listed MAINTAINER.
+> 
+> Would a section entry in MAINTAINERS like this be
+> appropriate?
+> 
+> GOOGLE FIRMWARE
+> M:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> M:     Stephen Boyd <swboyd@chromium.org>
+> R:     Guenter Roeck <groeck@chromium.org>
+> R:     Julius Werner <jwerner@chromium.org>
+> S:     Maintained
+> F:     drivers/firmware/google/
+> 
+> Is there a git tree somewhere that should be added?
+> What would be the
+> status of this proposed section?
+> Does someone really look after it at
+> all?
+> 
 
-GOOGLE FIRMWARE
-M:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-M:     Stephen Boyd <swboyd@chromium.org>
-R:     Guenter Roeck <groeck@chromium.org>
-R:     Julius Werner <jwerner@chromium.org>
-S:     Maintained
-F:     drivers/firmware/google/
+Thanks for the proposal; I was not sure about the best way to reach out to 
+others on suggesting to add new entries.
 
-Is there a git tree somewhere that should be added?
-What would be the
-status of this proposed section?
-Does someone really look after it at
-all?
+In the future, I will simply send out emails, as those above, when 
+suggesting to add new entries.
 
+Thanks for the feedback and sorry for the churn. Once most files are 
+assigned, it is much easier to follow when someone missed to adjust the 
+MAINTAINERS file and send out a friendly hint. I hope that is worth the 
+initial churn for some people at the beginning of this clean-up.
 
+Lukas

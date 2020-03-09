@@ -2,55 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8529D17E220
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Mar 2020 15:03:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 343BA17E44D
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Mar 2020 17:09:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726841AbgCIODq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Mar 2020 10:03:46 -0400
-Received: from relay5-d.mail.gandi.net ([217.70.183.197]:57629 "EHLO
-        relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726275AbgCIODq (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Mar 2020 10:03:46 -0400
-X-Originating-IP: 90.89.41.158
-Received: from localhost.localdomain (lfbn-tou-1-1473-158.w90-89.abo.wanadoo.fr [90.89.41.158])
-        (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 921251C000C;
-        Mon,  9 Mar 2020 14:03:41 +0000 (UTC)
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Alexey Korolev <akorolev@infradead.org>
-Cc:     Kate Stewart <kstewart@linuxfoundation.org>,
-        David Woodhouse <David.Woodhouse@intel.com>,
-        Richard Weinberger <richard@nod.at>,
-        kernel-janitors@vger.kernel.org, linux-mtd@lists.infradead.org,
-        Steve Winslow <swinslow@gmail.com>,
-        Allison Randal <allison@lohutok.net>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH] mtd: lpddr: Fix a double free in probe()
-Date:   Mon,  9 Mar 2020 15:03:41 +0100
-Message-Id: <20200309140341.22314-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200228092554.o57igp3nqhyvf66t@kili.mountain>
-References: 
+        id S1727054AbgCIQI7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Mar 2020 12:08:59 -0400
+Received: from mga06.intel.com ([134.134.136.31]:46874 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726990AbgCIQI7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 9 Mar 2020 12:08:59 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Mar 2020 09:08:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,533,1574150400"; 
+   d="scan'208";a="288726374"
+Received: from djiang5-desk3.ch.intel.com ([143.182.136.137])
+  by FMSMGA003.fm.intel.com with ESMTP; 09 Mar 2020 09:08:57 -0700
+Subject: Re: [PATCH] MAINTAINERS: rectify the INTEL IADX DRIVER entry
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Vinod Koul <vkoul@kernel.org>
+Cc:     dmaengine@vger.kernel.org, Joe Perches <joe@perches.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200307205737.5829-1-lukas.bulwahn@gmail.com>
+From:   Dave Jiang <dave.jiang@intel.com>
+Message-ID: <26c4fdca-4a36-d710-0504-569adf5ec079@intel.com>
+Date:   Mon, 9 Mar 2020 09:08:57 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: 315d2e0cdfe0e15585d2244c6986008c78cc330d
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200307205737.5829-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 2020-02-28 at 09:25:54 UTC, Dan Carpenter wrote:
-> This function is only called from lpddr_probe().  We free "lpddr" both
-> here and in the caller, so it's a double free.  The best place to free
-> "lpddr" is in lpddr_probe() so let's delete this one.
+
+
+On 3/7/20 1:57 PM, Lukas Bulwahn wrote:
+> Commit bfe1d56091c1 ("dmaengine: idxd: Init and probe for Intel data
+> accelerators") added the INTEL IADX DRIVER entry in MAINTAINERS, which
+> mentions include/linux/idxd.h as file entry. However, this header file was
+> not added in this commit, nor in any later one.
 > 
-> Fixes: 8dc004395d5e ("[MTD] LPDDR qinfo probing.")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Hence, since then, ./scripts/get_maintainer.pl --self-test complains:
+> 
+>    warning: no file matches F: include/linux/idxd.h
+> 
+> Drop the file entry to the non-existing file in INTEL IADX DRIVER now.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git mtd/next, thanks.
+Thanks. That was a mistake.
 
-Miquel
+Acked-by: Dave Jiang <dave.jiang@intel.com>
+
+
+
+> ---
+> applies cleanly on current master and next-20200306
+> 
+>   MAINTAINERS | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index c93e4937164c..303e1ea83484 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -8478,7 +8478,6 @@ L:	dmaengine@vger.kernel.org
+>   S:	Supported
+>   F:	drivers/dma/idxd/*
+>   F:	include/uapi/linux/idxd.h
+> -F:	include/linux/idxd.h
+>   
+>   INTEL IDLE DRIVER
+>   M:	Jacob Pan <jacob.jun.pan@linux.intel.com>
+> 

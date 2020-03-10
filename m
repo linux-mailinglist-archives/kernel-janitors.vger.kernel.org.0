@@ -2,85 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA17C17FC56
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Mar 2020 14:20:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F7651804CC
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Mar 2020 18:30:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729971AbgCJNUX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 10 Mar 2020 09:20:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53068 "EHLO mail.kernel.org"
+        id S1726395AbgCJRaF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 Mar 2020 13:30:05 -0400
+Received: from ms.lwn.net ([45.79.88.28]:44156 "EHLO ms.lwn.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730951AbgCJNHT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 10 Mar 2020 09:07:19 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        id S1726269AbgCJRaF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 10 Mar 2020 13:30:05 -0400
+Received: from lwn.net (localhost [127.0.0.1])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1C68620409;
-        Tue, 10 Mar 2020 13:07:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583845638;
-        bh=rMQn7kjsa7T0S3IBhZrsTg2HDBVaXevtNP7v9XkF4Dg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e20auHCVYrL6VsKvlvwHe75hIYKfpXsbj2Sq6mzUoSKgdfJrvmMOvRmGEBNsXcttS
-         q0CXG5oDedBCh+PtQWI58iNmyFtMbooLq/eiDtTNW6YKH4Ctrucih2YcTVmsYpxqoo
-         KgPvwlZmzFc/nh1fdfnrCkscQoEc8HpuK9tkL4W8=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Paul Burton <paulburton@kernel.org>, ralf@linux-mips.org,
-        linux-mips@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH 4.14 045/126] MIPS: VPE: Fix a double free and a memory leak in release_vpe()
-Date:   Tue, 10 Mar 2020 13:41:06 +0100
-Message-Id: <20200310124207.176316001@linuxfoundation.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200310124203.704193207@linuxfoundation.org>
-References: <20200310124203.704193207@linuxfoundation.org>
-User-Agent: quilt/0.66
+        by ms.lwn.net (Postfix) with ESMTPSA id BBDBA823;
+        Tue, 10 Mar 2020 17:30:04 +0000 (UTC)
+Date:   Tue, 10 Mar 2020 11:30:03 -0600
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Sameer Rahmani <lxsameer@gnu.org>, linux-doc@vger.kernel.org,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: adjust to kobject doc ReST conversion
+Message-ID: <20200310113003.0d6d301d@lwn.net>
+In-Reply-To: <20200304110821.7243-1-lukas.bulwahn@gmail.com>
+References: <20200304110821.7243-1-lukas.bulwahn@gmail.com>
+Organization: LWN.net
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+On Wed,  4 Mar 2020 12:08:21 +0100
+Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
 
-commit bef8e2dfceed6daeb6ca3e8d33f9c9d43b926580 upstream.
+> Commit 5fed00dcaca8 ("Documentation: kobject.txt has been moved to
+> core-api/kobject.rst") missed to adjust the entry in MAINTAINERS.
+> 
+> Since then, ./scripts/get_maintainer.pl --self-test complains:
+> 
+>   warning: no file matches F: Documentation/kobject.txt
+> 
+> Adjust DRIVER CORE, KOBJECTS, DEBUGFS AND SYSFS entry in MAINTAINERS.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+> Sameer, please ack.
+> Jonathan, pick pick this patch for doc-next.
 
-Pointer on the memory allocated by 'alloc_progmem()' is stored in
-'v->load_addr'. So this is this memory that should be freed by
-'release_progmem()'.
+Applied, thanks.
 
-'release_progmem()' is only a call to 'kfree()'.
-
-With the current code, there is both a double free and a memory leak.
-Fix it by passing the correct pointer to 'release_progmem()'.
-
-Fixes: e01402b115ccc ("More AP / SP bits for the 34K, the Malta bits and things. Still wants")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Paul Burton <paulburton@kernel.org>
-Cc: ralf@linux-mips.org
-Cc: linux-mips@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/kernel/vpe.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/mips/kernel/vpe.c
-+++ b/arch/mips/kernel/vpe.c
-@@ -134,7 +134,7 @@ void release_vpe(struct vpe *v)
- {
- 	list_del(&v->list);
- 	if (v->load_addr)
--		release_progmem(v);
-+		release_progmem(v->load_addr);
- 	kfree(v);
- }
- 
-
-
+jon

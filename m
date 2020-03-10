@@ -2,85 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F26F17F2B9
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Mar 2020 10:07:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A3C617F72C
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Mar 2020 13:13:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726463AbgCJJG7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 10 Mar 2020 05:06:59 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:60664 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726199AbgCJJG7 (ORCPT
+        id S1726271AbgCJMNG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 Mar 2020 08:13:06 -0400
+Received: from mail.11d01.mspz7.gob.ec ([190.152.145.91]:46932 "EHLO
+        mail.11d01.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726224AbgCJMNG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 10 Mar 2020 05:06:59 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02A8ww95158497;
-        Tue, 10 Mar 2020 09:06:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=CkKkorWH0ym37kCwUHtkNg4nbHsOSLF362VSkXjqG6A=;
- b=N1dCEwQRh8tkvI4zhrJZxQSJjR+3/1GPSyVa3dc0lKZtKojg/C/tHDY/VQIxuJYB7IMk
- SKFYKCkjzwp12rmfUMU5Sln+caPXtsmv79p5T251Lrc3xiAQqgLCQQ7jfRTdW8vEwzeF
- UFNOhscRz9ujLpTP64NaFlsj5+Y0oBbe7BVVpfmJTvqb0YGhFpyJETpTXk11VddYcgD6
- JNp2beTqdJikMycsq9C6BdP2FaZiUbK81o6DLWsrBQnTwvtrfkKY/G6eJt0XithZO+5I
- WbeLITQ+CaVXQn1tGUpz0VXRBRwO+1J+nWET197QFmEbI9ZQT106bEM+gWwJDF+knhej Og== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 2ym31ubvvb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 10 Mar 2020 09:06:53 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02A914ix147236;
-        Tue, 10 Mar 2020 09:06:53 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 2ymnb3hbst-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 10 Mar 2020 09:06:53 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02A96pCY011064;
-        Tue, 10 Mar 2020 09:06:52 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 10 Mar 2020 02:06:51 -0700
-Date:   Tue, 10 Mar 2020 12:06:44 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Walter Harms <wharms@bfs.de>
-Cc:     "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH] bfs: prevent underflow in bfs_find_entry()
-Message-ID: <20200310090644.GA11583@kadam>
-References: <20200307060808.6nfyqnp2woq7d3cv@kili.mountain>
- <ba294b1d861142ca8f7b204356009dd0@bfs.de>
+        Tue, 10 Mar 2020 08:13:06 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTP id 428392F71F24;
+        Tue, 10 Mar 2020 04:39:20 -0500 (-05)
+Received: from mail.11d01.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d01.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 3AvMT9DmdiIu; Tue, 10 Mar 2020 04:39:19 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTP id 974272F6A268;
+        Tue, 10 Mar 2020 03:45:10 -0500 (-05)
+DKIM-Filter: OpenDKIM Filter v2.9.2 mail.11d01.mspz7.gob.ec 974272F6A268
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=11d01.mspz7.gob.ec;
+        s=50CBC7E4-8BED-11E9-AF6C-F1A741A224D3; t=1583829910;
+        bh=o+H3O7n1+zJcXo0FhJs7spyf8HmE4ClnBa/Y2Gk0DL0=;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
+         From:Date:Reply-To:Message-Id;
+        b=HibLvhavKKBHHluhqzeUdghsWmz3LcxWYPidJGc8jqlK/DymaSzwMrw3YGwXbSZPF
+         LDcJGKDzP6uqxwKDuOHHcha4f7JpzgItIaSD80ONPqCnBkzDdSR7twzHkN5mTIo9JE
+         /oa0DJsUrXSKfmqdPYk7cR6yladlFzbfuJ8lLtZs=
+X-Virus-Scanned: amavisd-new at 11d01.mspz7.gob.ec
+Received: from mail.11d01.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d01.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 9XKXt9P84U8W; Tue, 10 Mar 2020 03:45:10 -0500 (-05)
+Received: from [10.19.167.32] (unknown [105.0.4.171])
+        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTPSA id 2E5BF2F6326C;
+        Tue, 10 Mar 2020 03:21:19 -0500 (-05)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ba294b1d861142ca8f7b204356009dd0@bfs.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9555 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 mlxlogscore=935
- spamscore=0 suspectscore=0 adultscore=0 malwarescore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2003100061
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9555 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 lowpriorityscore=0
- spamscore=0 priorityscore=1501 impostorscore=0 bulkscore=0 suspectscore=0
- phishscore=0 mlxlogscore=999 mlxscore=0 malwarescore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2003100061
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
+To:     Recipients <ronald.pena@11d01.mspz7.gob.ec>
+From:   ''Michael weirsky'' <ronald.pena@11d01.mspz7.gob.ec>
+Date:   Tue, 10 Mar 2020 10:50:48 +0200
+Reply-To: mikeweirskyspende@gmail.com
+Message-Id: <20200310082121.2E5BF2F6326C@mail.11d01.mspz7.gob.ec>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Mar 09, 2020 at 08:40:28AM +0000, Walter Harms wrote:
-> hi Dan,
-> the namelen usage is fishy. It goes into bfs_namecmp()
-> where it is checked for namelen < BFS_NAMELEN, leaving
-> only the case ==.
+Lieber Freund,
 
-The rule in bfs_namecmp() is that the name has to be NUL terminated if
-there is enough space.
+Ich bin Herr Mike Weirsky, New Jersey, Vereinigte Staaten von Amerika, der =
+Mega-Gewinner von $ 273million In Mega Millions Jackpot, spende ich an 5 zu=
+f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
+il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
+meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
+und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
+Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
+ spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen.
+Das ist dein Spendencode: [MW530342019]
+www.youtube.com/watch?v=3Dun8yRTmrYMY
 
-regards,
-dan carpenter
+Antworten Sie mit dem SPENDE-CODE an diese =
 
+
+E-Mail:mikeweirskyspende@gmail.com
+
+Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
+
+Gr=C3=BC=C3=9Fe
+Herr Mike Weirsky

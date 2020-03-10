@@ -2,82 +2,125 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 983C017EC82
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Mar 2020 00:14:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E911117F074
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Mar 2020 07:22:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727408AbgCIXOH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Mar 2020 19:14:07 -0400
-Received: from smtprelay0151.hostedemail.com ([216.40.44.151]:38113 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726698AbgCIXOH (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Mar 2020 19:14:07 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 2F0F96125;
-        Mon,  9 Mar 2020 23:14:06 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1539:1593:1594:1711:1730:1747:1777:1792:2194:2199:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:3872:3873:3874:4321:5007:6119:7903:9108:10004:10400:10848:11232:11658:11914:12297:12663:12740:12760:12895:13069:13161:13229:13311:13357:13439:14096:14097:14659:21080:21627:21939:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: vest79_5dc54df15e11b
-X-Filterd-Recvd-Size: 2015
-Received: from XPS-9350.home (unknown [47.151.143.254])
-        (Authenticated sender: joe@perches.com)
-        by omf11.hostedemail.com (Postfix) with ESMTPA;
-        Mon,  9 Mar 2020 23:14:04 +0000 (UTC)
-Message-ID: <69ed8a468b3e4776d277292a2e4b2f9b3c266f23.camel@perches.com>
-Subject: Re: [PATCH RFC] MAINTAINERS: include GOOGLE FIRMWARE entry
-From:   Joe Perches <joe@perches.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Guenter Roeck <groeck@google.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Julius Werner <jwerner@chromium.org>,
-        kernel-janitors@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Date:   Mon, 09 Mar 2020 16:12:24 -0700
-In-Reply-To: <alpine.DEB.2.21.2003092035300.2953@felia>
-References: <20200308195116.12836-1-lukas.bulwahn@gmail.com>
-         <CABXOdTcrxoBCz24Ap=YJYZnr+oLAmaR10xZ9ar2mYbE1=RAoug@mail.gmail.com>
-         <5129f7dbd8506cc9fd5a8f76dc993d789566af6c.camel@perches.com>
-         <alpine.DEB.2.21.2003090702440.3325@felia>
-         <20200309070534.GA4093795@kroah.com>
-         <alpine.DEB.2.21.2003092035300.2953@felia>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
-MIME-Version: 1.0
+        id S1726395AbgCJGWQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 Mar 2020 02:22:16 -0400
+Received: from mail-eopbgr760040.outbound.protection.outlook.com ([40.107.76.40]:21949
+        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726252AbgCJGWQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 10 Mar 2020 02:22:16 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nekpuUfqisksp2Vu8x6Erk8IgWIi942plJsIlgtXzIePHMLN+cGg6ti0oROpQI+zOkw3v8jb3CkjRBLoX8Cp/C3Fh8BLPM9dBBRQsxVy23Amtxw56YCAF4/S0J3/Z1nUCS6w3fE1OZanawn25mRs9juv2b+uqgahL9SXDMg24V5l1p9Is61TB6V6tn9Q2dfKI6aBs8N/sirGUZgpyoPJoxQ0GoZNGzKy22xBN+gsoc11BL1PdT6PprTv16k5OQxyPolKhp/SQyj5VDVsV1T7hubPrXP6kmN9cO5tXKx/iNNZASDVqWPQHBqkY9UhAr6jNGDLRyM/1/7f16e/pNy/3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HT13jeaCEWBW0udbzXSdtBT1dGkZwcuskeb8J3nR3vc=;
+ b=GyblzebvPXlGQ7lZa9Vt7e64jZpD+E2oapAuqOrpGNRpajH1JWXSfE7ymigUyJvkSwswmCalewp9C5r7EyjUX9KH0e9FjNaFO53rkdYKttPFi+kovnb/8hyn874Ny2sTmFiaM3BbhXxj7pvsT1u/84wjlCzqMC6VL8NFacKEXwFBcngkIxbN7uoilwytboKwpOWRWYbx9MegUFZ/GEDsJYmP62Fei7q85MpJMMjr1yJimJZ2c6xQMkObueMUwzcnKeEj/aJwqYUFxdfpyhVgyjRnVUPlpXH38yCW6dwpJmsK+7bU51zI3VvGd9nrkzzmfCxGuDal0mDsGnR3D60ENQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HT13jeaCEWBW0udbzXSdtBT1dGkZwcuskeb8J3nR3vc=;
+ b=ZiSo9QH6stB8V8hRI+nB34LIj4mGmYWi5x+b9dBLEGHch9/PP1c/O8acqfj3WuzWzx+hGBvt1x5zJP9dKFOp2/MJyaQ8sdGorEw+o24Iv8ruiXv836cQ3Pr68rg7JHjc1Kl4gXF/uNyxjeu5P6EUtBC3Ue/NWtzuZWEYMXASWs0=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=Rijo-john.Thomas@amd.com; 
+Received: from CY4PR12MB1925.namprd12.prod.outlook.com (2603:10b6:903:120::7)
+ by CY4PR12MB1590.namprd12.prod.outlook.com (2603:10b6:910:a::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2793.17; Tue, 10 Mar
+ 2020 06:22:12 +0000
+Received: from CY4PR12MB1925.namprd12.prod.outlook.com
+ ([fe80::ccd2:2608:7a9:6ae7]) by CY4PR12MB1925.namprd12.prod.outlook.com
+ ([fe80::ccd2:2608:7a9:6ae7%10]) with mapi id 15.20.2793.013; Tue, 10 Mar 2020
+ 06:22:12 +0000
+Subject: Re: [PATCH] tee: amdtee: out of bounds read in find_session()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Jens Wiklander <jens.wiklander@linaro.org>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>,
+        tee-dev@lists.linaro.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200227161954.fo7pbbgomdjkraxq@kili.mountain>
+From:   Rijo Thomas <Rijo-john.Thomas@amd.com>
+Message-ID: <0840f77c-6ebd-eafd-6fa5-bc1c2b90f580@amd.com>
+Date:   Tue, 10 Mar 2020 11:52:01 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
+In-Reply-To: <20200227161954.fo7pbbgomdjkraxq@kili.mountain>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA1PR0101CA0020.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:21::30) To CY4PR12MB1925.namprd12.prod.outlook.com
+ (2603:10b6:903:120::7)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.138.129.230] (165.204.156.251) by MA1PR0101CA0020.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00:21::30) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2793.15 via Frontend Transport; Tue, 10 Mar 2020 06:22:09 +0000
+X-Originating-IP: [165.204.156.251]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 5eb2f6bd-51ef-4fa7-2e49-08d7c4bb5e6d
+X-MS-TrafficTypeDiagnostic: CY4PR12MB1590:|CY4PR12MB1590:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <CY4PR12MB1590E43304C77D267FB1C2BECFFF0@CY4PR12MB1590.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3826;
+X-Forefront-PRVS: 033857D0BD
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4636009)(136003)(366004)(396003)(346002)(39860400002)(376002)(199004)(189003)(110136005)(6486002)(16576012)(8936002)(52116002)(66556008)(66476007)(2906002)(478600001)(66946007)(53546011)(26005)(54906003)(81166006)(5660300002)(186003)(81156014)(8676002)(16526019)(956004)(31686004)(86362001)(31696002)(316002)(2616005)(6666004)(36756003)(4326008);DIR:OUT;SFP:1101;SCL:1;SRVR:CY4PR12MB1590;H:CY4PR12MB1925.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+Received-SPF: None (protection.outlook.com: amd.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 69D2CV0q7VtxymaDvw9klmSVx9wch+ExAKX1AriXWypI6CTMouKXv0xeOAPc7Sw7yhPswmkYDm2L36FvARRXocODQj8LW487Ogk0moNQE+LSTfghrvX0rOAK/6xyS9ajuyFpNWE/tXjJ5lW3Z0K2/zIRkdTpVtJdZvT98/AocQdVqMmASaXgHI+S+1MewWxf4UazM1ONTsk2/NepNxXQvdlVeplWGKfgRAn1gPBsSRpn+8qWTaHxIA3hTMUiF1lYGFcpeX3BoIjLvZWowXYghsdYbUVXtfBZ9Q0BFdeXEfF8a1Db9MbTFCz3+qkXqqqcCTLX/GdzKA/XrHbI4Zb2qLWxwmb2EvGcClBd1wjw66s/YatJRbM2l3v67iWB3eShEbjl7W4Wva7k+jQV4sHWriDAjTLms8JOY9DNnazxIQAHgjUtHdmbwWsHHZeaD8DH
+X-MS-Exchange-AntiSpam-MessageData: FaiqGbCKcqwls5v8GMDdsKeRjo+6Lm6ooNtpA6kquur1vVWTGtEykqCxwG7Jc3gIW3oUj90ohMYWLxpalW+SGzALXVsmjeal31AsSzbsaMeMqz1hQd/eDL7Y07O0Ua8lGXnFx60/MUnlZ6UFkQI3cw==
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5eb2f6bd-51ef-4fa7-2e49-08d7c4bb5e6d
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2020 06:22:12.0265
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: t5SpG4YCjx7hPnhjbPFE8pT2Ej70i2I5oPvQUncu9GD4CbMGeymZES0qCAsYswznN0GAsdRNf0CU8U7K/Gieyw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR12MB1590
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 2020-03-09 at 22:03 +0100, Lukas Bulwahn wrote:
-> I am starting with the "bigger" clustered files in drivers, and then try 
-> > > to look at files in include and Documentation/ABI/.
 
-If you want to spend the time tracking stuff down,
-it may be best to to
-start with include/
+On 27/02/20 9:49 pm, Dan Carpenter wrote:
+> The "index" is a user provided value from 0-USHRT_MAX.  If it's over
+> TEE_NUM_SESSIONS (31) then it results in an out of bounds read when we
+> call test_bit(index, sess->sess_mask).
+> 
+> Fixes: 757cc3e9ff1d ("tee: add AMD-TEE driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-> > > Here is a rough statistics on how many files from each directory are in
-> > > THE REST:
-> > > 
-> > >    1368 include
+Acked-by: Rijo Thomas <Rijo-john.Thomas@amd.com>
 
-There are very likely some files there that should
-actually be listed as part of a subsystem.
+Thanks,
+Rijo
 
-> > >     327 lib
-
-Not many that aren't trivial or ancient.
-
-> > >     321 Documentation
-
-Probably a few
-
-> > >     100 drivers
-
-What's not already maintained is probably ancient.
-
-Everything else may not matter much.
-
+> ---
+>  drivers/tee/amdtee/core.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/tee/amdtee/core.c b/drivers/tee/amdtee/core.c
+> index 6370bb55f512..dbc238c7c263 100644
+> --- a/drivers/tee/amdtee/core.c
+> +++ b/drivers/tee/amdtee/core.c
+> @@ -139,6 +139,9 @@ static struct amdtee_session *find_session(struct amdtee_context_data *ctxdata,
+>  	u32 index = get_session_index(session);
+>  	struct amdtee_session *sess;
+>  
+> +	if (index >= TEE_NUM_SESSIONS)
+> +		return NULL;
+> +
+>  	list_for_each_entry(sess, &ctxdata->sess_list, list_node)
+>  		if (ta_handle == sess->ta_handle &&
+>  		    test_bit(index, sess->sess_mask))
+> 

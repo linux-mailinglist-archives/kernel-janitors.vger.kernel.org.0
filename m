@@ -2,90 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6476917F0BF
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Mar 2020 07:48:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 05C7C17F211
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Mar 2020 09:38:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726220AbgCJGsv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 10 Mar 2020 02:48:51 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:37252 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725919AbgCJGsu (ORCPT
+        id S1726510AbgCJIi1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 Mar 2020 04:38:27 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:58472 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726389AbgCJIi0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 10 Mar 2020 02:48:50 -0400
-Received: by mail-ed1-f65.google.com with SMTP id b23so6931866edx.4;
-        Mon, 09 Mar 2020 23:48:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=0u5iRMi6e4nX2w7kF0dC+JMM932v3kVJ1e2J7tVdKIQ=;
-        b=gtiotwLoSufBZBUWX2dcLwMbsjpmDgqr3iHtOqNUF4aai33R6GNPvaRKcSi3eE/rov
-         rTKZYFnBPF/+rWZdA1/PNXHOBWLS/NlKjrRWDlRw9F2TNzJ0JoceoMOM89vpib6AgZ60
-         QRBYsxrcO2ZO6aAcv64h4IQpI4r5BhqO/LSzEkB7SyrtiDp7RaJ5oWaxN/gzmddjqCzq
-         llsCD/9qTzQ2rGSf2iq43yxZWRiyebjJ/tz0RMyIZEIzQqlnxaBNQXkp++Aa0+dZjStd
-         zac2rIKHswbbrIpPYxnVPgp8Lv0SRjmeHVdnvdkG/rAkJTxu+i1V1Rpi9H8i5+YcSG6Q
-         3Ygw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=0u5iRMi6e4nX2w7kF0dC+JMM932v3kVJ1e2J7tVdKIQ=;
-        b=UbXQjHsNK/D5tCbr4inuaipc4MtEDXMo2hoC3gi8BMpMTCNa33rqloFs9MvFbgExik
-         h31F2Ut8zeCAVu/SzvdkZnQ6WFFJkm48afnHXENCFNmXQIIAtQDBd8WboZz8RmdCwGmT
-         CX8YYiDhgpYr2OFepHtJKCg2u43HXQ37aqKpu4lXYX6BPDEQlFws2Qj7kMb4PVBlezVu
-         yBJuk0hm9I+scmwql/RFG7v7A+esFdUVSiDru1g53BBGw0DLFDx26TmwUa2Jqlnymern
-         Apz1eIxSAULD1tafMeWP8AUAjslP+CUkJHxY7jzfMYtdbTkRS1A4//B3WeC5ok97R6yZ
-         mbVw==
-X-Gm-Message-State: ANhLgQ3tSBOd1KNYKZ1GfQzPIEDwDP2sHfWlfae3FB7AXOnCJ0GL3gzo
-        elVqt3ii3e2X49rcq2Yb2nc=
-X-Google-Smtp-Source: ADFU+vuE6XSn9RDSDLCaLJELrTnGl6XaoofUPaXqsbj93WYS5wEyiNUMzfn1/zrYbyrCxRJDYY8swg==
-X-Received: by 2002:a17:906:680c:: with SMTP id k12mr6610870ejr.237.1583822928797;
-        Mon, 09 Mar 2020 23:48:48 -0700 (PDT)
-Received: from felia ([2001:16b8:2d3d:f300:b903:a662:c2f7:f5c9])
-        by smtp.gmail.com with ESMTPSA id o88sm3991240eda.41.2020.03.09.23.48.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2020 23:48:47 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Tue, 10 Mar 2020 07:48:40 +0100 (CET)
-X-X-Sender: lukas@felia
-To:     Joe Perches <joe@perches.com>
-cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guenter Roeck <groeck@google.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Julius Werner <jwerner@chromium.org>,
-        kernel-janitors@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH RFC] MAINTAINERS: include GOOGLE FIRMWARE entry
-In-Reply-To: <69ed8a468b3e4776d277292a2e4b2f9b3c266f23.camel@perches.com>
-Message-ID: <alpine.DEB.2.21.2003100745590.2788@felia>
-References: <20200308195116.12836-1-lukas.bulwahn@gmail.com> <CABXOdTcrxoBCz24Ap=YJYZnr+oLAmaR10xZ9ar2mYbE1=RAoug@mail.gmail.com> <5129f7dbd8506cc9fd5a8f76dc993d789566af6c.camel@perches.com> <alpine.DEB.2.21.2003090702440.3325@felia> <20200309070534.GA4093795@kroah.com>
- <alpine.DEB.2.21.2003092035300.2953@felia> <69ed8a468b3e4776d277292a2e4b2f9b3c266f23.camel@perches.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        Tue, 10 Mar 2020 04:38:26 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02A8cKVK195066;
+        Tue, 10 Mar 2020 08:38:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=tUJKrsF3vbWXgwegWn6VLziFB7f7GcF7ssYLeZGED4g=;
+ b=Fud0k6fTZuengJXrgQ3QV5RCMTCwwKbug5Wu4CuSpUZJbWo3UlDsJnBxWSVgGWVO0FSY
+ 0B7DBoSU9aIuJDviGMsnqAqxSTN4rrwJEXYdW8OOMFXo4OqzFoUJHSkEAWr2lER+EJNq
+ umTgcYTSqtz7mnT24tzNjqF6gHp3D7zzXmhUkYoXFUaXyDpNhfkUWROBABUdOqvWjIHL
+ wL+c4Ki9FXAcm7/NUBizicb0eut7f5GzjnMlKeeNQ8hpA7FCNKxyjmod9Qg4x2Gn3oXc
+ n1inrCBb+0ZHaK4TVUC/n/c/WIlIFIWM33GXRmqdxSGm9r8rCrz28/AjHz/QmAqqFQgZ gA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 2ym3jqkmh5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 10 Mar 2020 08:38:24 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02A8avKa030700;
+        Tue, 10 Mar 2020 08:38:23 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 2ymnb3d8q5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 10 Mar 2020 08:38:23 +0000
+Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02A8cMr6027094;
+        Tue, 10 Mar 2020 08:38:22 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 10 Mar 2020 01:38:21 -0700
+Date:   Tue, 10 Mar 2020 11:38:16 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Tigran Aivazian <aivazian.tigran@gmail.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] bfs: prevent underflow in bfs_find_entry()
+Message-ID: <20200310083816.GA11561@kadam>
+References: <20200307060808.6nfyqnp2woq7d3cv@kili.mountain>
+ <CAK+_RLm9=DER3fM-HwvM14CEzq8eZCwcTZyoA6tsYdhe1J03sA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK+_RLm9=DER3fM-HwvM14CEzq8eZCwcTZyoA6tsYdhe1J03sA@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9555 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 mlxlogscore=999
+ spamscore=0 suspectscore=0 adultscore=0 malwarescore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2003100058
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9555 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 clxscore=1015
+ priorityscore=1501 mlxscore=0 phishscore=0 mlxlogscore=999 impostorscore=0
+ bulkscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2003100059
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On Mon, 9 Mar 2020, Joe Perches wrote:
-
-> On Mon, 2020-03-09 at 22:03 +0100, Lukas Bulwahn wrote:
-> > I am starting with the "bigger" clustered files in drivers, and then try 
-> > > > to look at files in include and Documentation/ABI/.
+On Mon, Mar 09, 2020 at 09:14:27AM +0000, Tigran Aivazian wrote:
+> Hello Dan,
 > 
-> If you want to spend the time tracking stuff down,
-> it may be best to to
-> start with include/
->
+> On Sat, 7 Mar 2020 at 06:08, Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> > -       int namelen = child->len;
+> > +       unsigned int namelen = child->len;
+> 
+> Thank you, that is sensible, but have you actually verified that
+> attempting a lookup of a filename longer than 2.2 billion bytes causes
+> a problem? If that's the case, then your patch should be considered.
+> If not, it would seem to be a waste of time to worry about something
+> that cannot ever happen.
 
-Thanks for the guidance. I will do that, and we will see if others 
-appreciate that or not.
+As the commit message says, this is just to silence a static checker
+warning about checking for upper bounds but ignoring negatives.  The
+check has found a number of problems in the past but it becomes less
+useful if security reviewers have to sort through a bunch of false
+positives.
 
+regards,
+dan carpenter
 
-Lukas

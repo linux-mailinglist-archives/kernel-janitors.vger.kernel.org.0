@@ -2,117 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 91620182F61
-	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Mar 2020 12:38:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E668182FB5
+	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Mar 2020 12:58:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726921AbgCLLi5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 12 Mar 2020 07:38:57 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:60740 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725978AbgCLLi5 (ORCPT
+        id S1727112AbgCLL6x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 12 Mar 2020 07:58:53 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:46334 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727007AbgCLL6x (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 12 Mar 2020 07:38:57 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02CBWddV162866;
-        Thu, 12 Mar 2020 11:37:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=iGXT7eu1hSl8BMZGeJVU++wfkK6X8r1GtDze0h7kfsw=;
- b=DDAvu0Y01jqlT9TTqzlLwPQW2mRJgw+/cZcBMqBEltRl8YAPhOdatmfQVAZUChDu9EUr
- MIZdGYmw3uWJexp0GwCes45p4yHqZxD7mtCYlGf2Z3LFEXlZ076X+iyXqNAtrcmNwfqG
- Ar/WPapFj8+fybSu49OUo+qhFR0/yEdxK+9+XTcCssKy5wOr0OEvvcksHghg3oZ1pY+2
- dr2Ftr1/Jy/FCtlTbv6KVOzWIvloWEw4gh1sO5pAqW2hYgyFR+/5uJeHPTFeUgDHl1jm
- mFLjDFCP6kwy2qZnW3C2sOGPg+QwUJHNhyD58Ew4CDFcLCBvB+vdzNOZTBwKTl2eEK54 1g== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 2ym31us2n7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 12 Mar 2020 11:37:44 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02CBbDZq138691;
-        Thu, 12 Mar 2020 11:37:43 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 2yp8p72epn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 12 Mar 2020 11:37:43 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02CBbeAg008328;
-        Thu, 12 Mar 2020 11:37:40 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 12 Mar 2020 04:37:39 -0700
-Date:   Thu, 12 Mar 2020 14:37:30 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     David Woodhouse <dwmw2@infradead.org>,
-        Megha Dey <megha.dey@linux.intel.com>
-Cc:     Lu Baolu <baolu.lu@linux.intel.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        iommu@lists.linux-foundation.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] iommu/vt-d: Unlock on error paths
-Message-ID: <20200312113730.GF20562@mwanda>
+        Thu, 12 Mar 2020 07:58:53 -0400
+Received: by mail-io1-f66.google.com with SMTP id v3so5327057iom.13;
+        Thu, 12 Mar 2020 04:58:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=rPc++VDXh8pTtJPadUpADozZEFlA9OiPEeVtI98+2V0=;
+        b=eyg/wYE1qqMif80Ei6JWFUB7+exwdL5wQwEaAuk6ovH0TfGmz9aFTj1jbHB700ZhBD
+         16qksPZCpsWnx/o7u063JgGYhwktoCCvuifWUdm9leIkVlL6hWeQveGVOyuZIEiO3CV8
+         jU1PCQ+m9rB8+Wz3trB/8G5YJbiAnWOE5zXj3NcPLJPLeC6u5ox9HjHN4aJzz4VkMB+f
+         53Z0u1KlgzaPq8q1kWg/k6VP7qrzemfgHXTLTvE+CRxQx1t0W0Q50C1HDuhvnc85OBdT
+         2ggDRANMwETmt6bZVDcRHkLdDdJRq4728+exbpAHGFrk6emoFnfbHVwNChTHhsvpU3vf
+         1aXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=rPc++VDXh8pTtJPadUpADozZEFlA9OiPEeVtI98+2V0=;
+        b=UsXpnqNkJPI9QKAjYSe+2vMGGmNIgVvYk/jSOxLKn3MwoMLc/tS/R1b2Jw4XcRX3Or
+         7fmuagp5b0qIaYYVgRz4uJDeJ6iO2l2bb5EbDa2n+IwZigymT2378YJqbDHqDtsA5o6I
+         ONfznVX1xQFBewZPZx5hs0caYkh6mbCUsO4oXLhHlbvkGXwg5iElu8kLiVvKzzexjaDt
+         52B8BWgFHMaf503Jceeb53twClo+B4vee1KN+pyyVSfjygPXCDaLF21VorloWM9OY0BS
+         o2NXquobxihkxI8xv/mmK+sopPkab4mUUdmflS9DEj90zpZRSOWdFdPkkN+AIe9TPJKv
+         8dEg==
+X-Gm-Message-State: ANhLgQ1JgGpeoVgs0GVvjRCgSP7pYC+G8YtY2qsE36ETKRNokLQHS/kQ
+        c7efOfhxJLR0SeyUWNvacO+L2mkTGV8VbOKHfeI=
+X-Google-Smtp-Source: ADFU+vs5s7ScOpNx7hc8xTMV8CjJaZqVFEqIBlNwkoPbuxbjRMc1H3X1CBBKkPsnLLDEx6buNYObDrAAQO10zWdHCpA=
+X-Received: by 2002:a6b:ef0f:: with SMTP id k15mr7177031ioh.43.1584014331993;
+ Thu, 12 Mar 2020 04:58:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9557 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 phishscore=0
- spamscore=0 malwarescore=0 adultscore=0 suspectscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2003120064
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9557 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 lowpriorityscore=0
- spamscore=0 priorityscore=1501 impostorscore=0 bulkscore=0 suspectscore=0
- phishscore=0 mlxlogscore=999 mlxscore=0 malwarescore=0 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2003120063
+References: <20200312113154.GC20562@mwanda>
+In-Reply-To: <20200312113154.GC20562@mwanda>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Thu, 12 Mar 2020 06:58:31 -0500
+Message-ID: <CAHCN7xKSc7spZyq=mySWHDmSrGMkQo8FYRbn-NzYRa7iB-0BoQ@mail.gmail.com>
+Subject: Re: [PATCH] spi: spi-nxp-fspi: Fix a NULL vs IS_ERR() check in probe
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Yogesh Gaur <yogeshgaur.83@gmail.com>, Han Xu <han.xu@nxp.com>,
+        Ashish Kumar <ashish.kumar@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There were a couple places where we need to unlock before returning.
+On Thu, Mar 12, 2020 at 6:32 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> The platform_get_resource_byname() function returns NULL on error, it
+> doesn't return error pointers.
+>
+> Fixes: d166a73503ef ("spi: fspi: dynamically alloc AHB memory")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> The commit message for commit d166a73503ef ("spi: fspi: dynamically
+> alloc AHB memory") is not very good.  Why is it necessary to allocate
+> the AHB memory dynamically instead of during probe?  Also I suspect that
+> Adam should have recieved authorship credit for that patch.
 
-Fixes: 91391b919e19 ("iommu/vt-d: Populate debugfs if IOMMUs are detected")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/iommu/intel-iommu-debugfs.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+It wasn't my patch, I just pulled it in from NXP's repo.  The true
+author is Han Xu.  When I pulled in the series from NXP, I found the
+flexSPI on the i.MX8MM to become functional, and my company has a
+board with a qspi flash on it.
 
-diff --git a/drivers/iommu/intel-iommu-debugfs.c b/drivers/iommu/intel-iommu-debugfs.c
-index 8d24c4d85cc2..6a495b103972 100644
---- a/drivers/iommu/intel-iommu-debugfs.c
-+++ b/drivers/iommu/intel-iommu-debugfs.c
-@@ -289,11 +289,12 @@ static int dmar_translation_struct_show(struct seq_file *m, void *unused)
- 		sts = dmar_readl(iommu->reg + DMAR_GSTS_REG);
- 		if (!(sts & DMA_GSTS_TES)) {
- 			seq_puts(m, "DMA Remapping is not enabled\n");
--			return 0;
-+			goto unlock;
- 		}
- 		root_tbl_walk(m, iommu);
- 		seq_putc(m, '\n');
- 	}
-+unlock:
- 	rcu_read_unlock();
- 
- 	return 0;
-@@ -444,7 +445,7 @@ static int ir_translation_struct_show(struct seq_file *m, void *unused)
- 		sts = dmar_readl(iommu->reg + DMAR_GSTS_REG);
- 		if (!(sts & DMA_GSTS_IRES)) {
- 			seq_puts(m, "Interrupt Remapping is not enabled\n");
--			return 0;
-+			goto unlock;
- 		}
- 
- 		if (iommu->ir_table) {
-@@ -475,6 +476,7 @@ static int ir_translation_struct_show(struct seq_file *m, void *unused)
- 		}
- 		seq_putc(m, '\n');
- 	}
-+unlock:
- 	rcu_read_unlock();
- 
- 	return 0;
--- 
-2.20.1
+adam
 
+>
+>  drivers/spi/spi-nxp-fspi.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+> index 019f40e2917c..1ccda82da206 100644
+> --- a/drivers/spi/spi-nxp-fspi.c
+> +++ b/drivers/spi/spi-nxp-fspi.c
+> @@ -1019,8 +1019,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+>
+>         /* find the resources - controller memory mapped space */
+>         res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "fspi_mmap");
+> -       if (IS_ERR(res)) {
+> -               ret = PTR_ERR(res);
+> +       if (!res) {
+> +               ret = -ENODEV;
+>                 goto err_put_ctrl;
+>         }
+>
+> --
+> 2.20.1
+>

@@ -2,64 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD0271832BD
-	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Mar 2020 15:21:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC83F1832D4
+	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Mar 2020 15:23:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727493AbgCLOVn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 12 Mar 2020 10:21:43 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:42992 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727340AbgCLOVn (ORCPT
+        id S1727585AbgCLOXR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 12 Mar 2020 10:23:17 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:52929 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727467AbgCLOXR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 12 Mar 2020 10:21:43 -0400
-Received: by mail-wr1-f65.google.com with SMTP id v11so7709763wrm.9
-        for <kernel-janitors@vger.kernel.org>; Thu, 12 Mar 2020 07:21:41 -0700 (PDT)
+        Thu, 12 Mar 2020 10:23:17 -0400
+Received: by mail-wm1-f68.google.com with SMTP id 11so6302204wmo.2;
+        Thu, 12 Mar 2020 07:23:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=XJG/XwUiq1n4axSZ1ZF7zkNZoQCEEbC5EZjNTBUv+jc=;
-        b=k1GGPGY5/DNbDGMl3hFlWPe536Ta4D+hqwRNWxaKIWqzDzVKI9Suk16VDOLFcYBUqu
-         +w3LNEq2zhvvVT3jhVYgu2mi3tAH9iSjkrGdAd7ecJjhN1e01/JEsBz2z48JSiB2j2Yr
-         SiZq3QxR4qlcW3PaZktP0rqxWF8uzVCmH9dedAqYXJBmEf/BaV5BrwOCUIoD/HTZW9YX
-         8hmpwDf8BRy1TKGaYOfcWBERQxdIgwmT050Qfdt6PnZRDhYUmGJ/t794trjGuwXmLrPC
-         pSexWoRk0+M8OIsvuuxUkEVBha8EYQAX7Ytq9Y/to/kfoNU3ZKGnNccHjACgFDwkGtgi
-         0J8g==
+        bh=dA44/I1QbEkp26HsS2gxH3ezQBrq3Jv9y5bBZu912Y0=;
+        b=HFuW7YyPKrK83ubj5R7+KkP1itV8Df1zykmwz5swPLhELoHn3gdPaqfkU0zhBK2Grs
+         baRnK1c4/CWO57wcF2HFDKEXS2vKZFS3ilfvJ2ngnsB/T7CDbQk3ZxOhPVOxD8fh18tS
+         m1ZofGxh6WKrMMp4UCV8D1uuDHzL0X/181D7pRITK692vzLratBNkHkZJg99a0dobw83
+         mx3Ydg3vsvOyAekpj31LRYLMOSeM5/3GU7QQhtI+ycBhiZLdsqdqNxEscvRWBrnHkxaC
+         T31mSzwl+c7YjpyKD662mB+KfCY3SEgzMkVCE6DTIky4WGChdyESILEu+0hDBb4uKl+r
+         BRTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=XJG/XwUiq1n4axSZ1ZF7zkNZoQCEEbC5EZjNTBUv+jc=;
-        b=rYAFPPr8tL6d8BCjSFOKc0KO4tbH4uT/TgttuDhSN2qkN01O6kbDA89b4cPyO6QiiJ
-         +fxb07MDXzwakUCsT4kYWB/n2k6sOiXLoAStoyaGPH2dheFcaS4s48uqkM9GkveqgdKb
-         l3SiSsUD65B58DBAq61elzonQZjxdT0bm+8uiZMq6p//l6z5K+eApmy9TXOK1smaX/lT
-         KC7xxNFY2OwYlf6dNiXP0OWyg9ZjZS1OtIvI4Yazz7JmM6rMO/xNHasmIo9cn+LK+RTC
-         FxH166y9tq2Hh4IYUIUI8ADYDwEeYU9SNg0RhlPs+o9MxaVfO9556o97g2mM2kTjcHY5
-         LcSQ==
-X-Gm-Message-State: ANhLgQ3qaw6DbGT181uUpWm3VpmVCyzBZdbfRbwNgifTFwLlqHXhYi9I
-        GwvGu/DTVK0lrsv+XVj/wHL6MYj4mhD9Sv3WOho=
-X-Google-Smtp-Source: ADFU+vs4nsgFtOGVuH12c8H+kSgKm+ZH6oPkKk7v/hngJMd62YHERJwnmbDbSOhCtMIS4LfxCObxTPc6wxOB84rkztQ=
-X-Received: by 2002:a5d:5446:: with SMTP id w6mr11767349wrv.419.1584022900733;
- Thu, 12 Mar 2020 07:21:40 -0700 (PDT)
+        bh=dA44/I1QbEkp26HsS2gxH3ezQBrq3Jv9y5bBZu912Y0=;
+        b=YEXCAqBXO8FLfWB8OK2EAQymyhE4w9v5JuSpd5Czqw+yyJ0Jq90BtxP+b81gZi2Bwv
+         BZALrA/5A/esWpzn9pCLHyJdDsEfQOLDHEMDQfR/RYPUC3Ntgz8/acxnhg4v65ZYvxxR
+         fnc2DpE6qBYbKCO1BJ1K2YEgtFlJffvKuKA1Ff0aLmN+gqPcuz/vW7O2wGU6+fkrwWY8
+         8EL9OyC9fb9J19KkRKg6hwKcJ2uuhsGzAmAmjeR8mgG42pWDaa+de14C8nxM+zmdOanm
+         uCZX2hs5C5lY0V12MqsVEFrH1UkCtG+3SelUjlcEqY05lsBSb+ZvLJnIl5dyyYxBZVrT
+         XRfg==
+X-Gm-Message-State: ANhLgQ2Bnkijj/FnpU3ECqWOqlbPRXEbYfcx2NDts1e9s2AHKPdfIHNF
+        YjIS+S98AztqWjuSsVvrjynWAfe0CYDboEh2jlM=
+X-Google-Smtp-Source: ADFU+vsi+U4lSevQi2U0MZAwb5EtFRnXvKFJCMWeT+WV57OOOomrWmd04fBStp0WtmBv9CGj8sCSva8PdiK3VstXdcY=
+X-Received: by 2002:a1c:f009:: with SMTP id a9mr5164075wmb.73.1584022993776;
+ Thu, 12 Mar 2020 07:23:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200312113231.GD20562@mwanda>
-In-Reply-To: <20200312113231.GD20562@mwanda>
+References: <20200224103120.zrvgqaokmoehs5y7@kili.mountain>
+In-Reply-To: <20200224103120.zrvgqaokmoehs5y7@kili.mountain>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Thu, 12 Mar 2020 10:21:29 -0400
-Message-ID: <CADnq5_O8CCdXR0LRfe5_Y_asydv0zDetWdYAteLt9=jw6DuVTg@mail.gmail.com>
-Subject: Re: [PATCH] drm/amd/display: clean up a condition in dmub_psr_copy_settings()
+Date:   Thu, 12 Mar 2020 10:23:02 -0400
+Message-ID: <CADnq5_Or06=BeVmnx35vSqvK1vUxx+Vvzq9h=UY7OkRU+SK+4Q@mail.gmail.com>
+Subject: Re: [PATCH] drm/amdgpu/display: clean up some indenting
 To:     Dan Carpenter <dan.carpenter@oracle.com>
 Cc:     Harry Wentland <harry.wentland@amd.com>,
-        "David (ChunMing) Zhou" <David1.Zhou@amd.com>,
-        Leo Li <sunpeng.li@amd.com>, kernel-janitors@vger.kernel.org,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        David Francis <David.Francis@amd.com>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
         amd-gfx list <amd-gfx@lists.freedesktop.org>,
         Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
         David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Wyatt Wood <wyatt.wood@amd.com>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>,
         Alex Deucher <alexander.deucher@amd.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
+        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
         =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -67,16 +68,10 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Mar 12, 2020 at 7:32 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+On Mon, Feb 24, 2020 at 5:31 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
 >
-> We can remove the NULL check for "res_ctx" and
-> "res_ctx->pipe_ctx[i].stream->link".  Also it's nicer to align the
-> conditions using spaces so I re-indented a bit.
->
-> Longer explanation: The "res_ctx" pointer points to an address in the
-> middle of a struct so it can't be NULL.  For
-> "res_ctx->pipe_ctx[i].stream->link" we know that it is equal to "link"
-> and "link" is non-NULL.
+> These lines were accidentally indented 4 spaces more than they should
+> be.
 >
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
@@ -85,32 +80,32 @@ Applied.  thanks!
 Alex
 
 > ---
->  drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
+>  drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 >
-> diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
-> index 9c88a92bd96a..bc109d4fc6e6 100644
-> --- a/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
-> +++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
-> @@ -134,11 +134,9 @@ static bool dmub_psr_copy_settings(struct dmub_psr *dmub,
->         int i = 0;
->
->         for (i = 0; i < MAX_PIPES; i++) {
-> -               if (res_ctx &&
-> -                       res_ctx->pipe_ctx[i].stream &&
-> -                       res_ctx->pipe_ctx[i].stream->link &&
-> -                       res_ctx->pipe_ctx[i].stream->link == link &&
-> -                       res_ctx->pipe_ctx[i].stream->link->connector_signal == SIGNAL_TYPE_EDP) {
-> +               if (res_ctx->pipe_ctx[i].stream &&
-> +                   res_ctx->pipe_ctx[i].stream->link == link &&
-> +                   res_ctx->pipe_ctx[i].stream->link->connector_signal == SIGNAL_TYPE_EDP) {
->                         pipe_ctx = &res_ctx->pipe_ctx[i];
->                         break;
+> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> index 4cb3eb7c6745..408405d9f30c 100644
+> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> @@ -2138,10 +2138,10 @@ static void handle_hpd_rx_irq(void *param)
 >                 }
+>         }
+>  #ifdef CONFIG_DRM_AMD_DC_HDCP
+> -           if (hpd_irq_data.bytes.device_service_irq.bits.CP_IRQ) {
+> -                   if (adev->dm.hdcp_workqueue)
+> -                           hdcp_handle_cpirq(adev->dm.hdcp_workqueue,  aconnector->base.index);
+> -           }
+> +       if (hpd_irq_data.bytes.device_service_irq.bits.CP_IRQ) {
+> +               if (adev->dm.hdcp_workqueue)
+> +                       hdcp_handle_cpirq(adev->dm.hdcp_workqueue,  aconnector->base.index);
+> +       }
+>  #endif
+>         if ((dc_link->cur_link_settings.lane_count != LANE_COUNT_UNKNOWN) ||
+>             (dc_link->type == dc_connection_mst_branch))
 > --
-> 2.20.1
+> 2.11.0
 >
 > _______________________________________________
-> amd-gfx mailing list
-> amd-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/amd-gfx
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

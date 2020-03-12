@@ -2,63 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E7C218340B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Mar 2020 16:04:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E80C218369D
+	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Mar 2020 17:52:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727715AbgCLPEd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 12 Mar 2020 11:04:33 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42642 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727196AbgCLPEd (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 12 Mar 2020 11:04:33 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jCPNv-0001KW-1H; Thu, 12 Mar 2020 15:04:31 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] net: systemport: fix index check to avoid an array out of bounds access
-Date:   Thu, 12 Mar 2020 15:04:30 +0000
-Message-Id: <20200312150430.1136618-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        id S1726299AbgCLQwk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 12 Mar 2020 12:52:40 -0400
+Received: from foss.arm.com ([217.140.110.172]:38062 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725268AbgCLQwk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 12 Mar 2020 12:52:40 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B66D330E;
+        Thu, 12 Mar 2020 09:52:39 -0700 (PDT)
+Received: from localhost (unknown [10.37.6.21])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 39AF83F6CF;
+        Thu, 12 Mar 2020 09:52:39 -0700 (PDT)
+Date:   Thu, 12 Mar 2020 16:52:37 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Adam Ford <aford173@gmail.com>,
+        Ashish Kumar <ashish.kumar@nxp.com>, Han Xu <han.xu@nxp.com>,
+        kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Yogesh Gaur <yogeshgaur.83@gmail.com>
+Subject: Applied "spi: spi-nxp-fspi: Fix a NULL vs IS_ERR() check in probe" to the spi tree
+In-Reply-To:  <20200312113154.GC20562@mwanda>
+Message-Id:  <applied-20200312113154.GC20562@mwanda>
+X-Patchwork-Hint: ignore
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+The patch
 
-Currently the bounds check on index is off by one and can lead to
-an out of bounds access on array priv->filters_loc when index is
-RXCHK_BRCM_TAG_MAX.
+   spi: spi-nxp-fspi: Fix a NULL vs IS_ERR() check in probe
 
-Fixes: bb9051a2b230 ("net: systemport: Add support for WAKE_FILTER")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+has been applied to the spi tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From 1a421ebab6bb5bf65001743ba9fef48e94fb345a Mon Sep 17 00:00:00 2001
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Date: Thu, 12 Mar 2020 14:31:54 +0300
+Subject: [PATCH] spi: spi-nxp-fspi: Fix a NULL vs IS_ERR() check in probe
+
+The platform_get_resource_byname() function returns NULL on error, it
+doesn't return error pointers.
+
+Fixes: d166a73503ef ("spi: fspi: dynamically alloc AHB memory")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Link: https://lore.kernel.org/r/20200312113154.GC20562@mwanda
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bcmsysport.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-nxp-fspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-index bea2dbc0e469..af7ce5c5488c 100644
---- a/drivers/net/ethernet/broadcom/bcmsysport.c
-+++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-@@ -2133,7 +2133,7 @@ static int bcm_sysport_rule_set(struct bcm_sysport_priv *priv,
- 		return -ENOSPC;
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 019f40e2917c..1ccda82da206 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -1019,8 +1019,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
  
- 	index = find_first_zero_bit(priv->filters, RXCHK_BRCM_TAG_MAX);
--	if (index > RXCHK_BRCM_TAG_MAX)
-+	if (index >= RXCHK_BRCM_TAG_MAX)
- 		return -ENOSPC;
+ 	/* find the resources - controller memory mapped space */
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "fspi_mmap");
+-	if (IS_ERR(res)) {
+-		ret = PTR_ERR(res);
++	if (!res) {
++		ret = -ENODEV;
+ 		goto err_put_ctrl;
+ 	}
  
- 	/* Location is the classification ID, and index is the position
 -- 
-2.25.1
+2.20.1
 

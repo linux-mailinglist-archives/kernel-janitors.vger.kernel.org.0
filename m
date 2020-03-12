@@ -2,127 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D7B45182FDE
-	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Mar 2020 13:06:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9320182FFF
+	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Mar 2020 13:12:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726932AbgCLMGg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 12 Mar 2020 08:06:36 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:45812 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726044AbgCLMGg (ORCPT
+        id S1726669AbgCLML7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 12 Mar 2020 08:11:59 -0400
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:36852 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725268AbgCLML7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 12 Mar 2020 08:06:36 -0400
-Received: by mail-wr1-f67.google.com with SMTP id m9so7081436wro.12
-        for <kernel-janitors@vger.kernel.org>; Thu, 12 Mar 2020 05:06:35 -0700 (PDT)
+        Thu, 12 Mar 2020 08:11:59 -0400
+Received: by mail-lf1-f66.google.com with SMTP id s1so4604219lfd.3;
+        Thu, 12 Mar 2020 05:11:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=WpIF59sushRUzQN6JFPoJ2ob7mS8MGSjQgRAtDMNHBs=;
-        b=IP3ABaitp1o1i8i4tS3GZkiE1lze4gcNrgfGixIs7X3iDBfMmRoX/QUCwfKK7Pubt3
-         WJaqkGTvHbPJ2dZW3uq0Z6X7ryK1WqR33Nif/+lQatPxW9IsShhy+1yFhCCNChpDYWAq
-         lecZu/uTsgJ7MIAF1utJOaOP9y9rggX0E47GI4019g6VNBxeKB56MhFtQb7GJRrresdF
-         Xe7XEsR59mrvqopwsswO3pSiaKe+svMQ0B8GKFICSceRWiDXnt+9Vbvq9eBsatrtOkFT
-         lHL8Qm0x/C7DNVKolSUtm5K7MTa0X0N/nXw52GHc4PHBrxxSyaykpCie5jqGmVqCl8Iw
-         QyYg==
+         :cc;
+        bh=bhPuS2kHLGbKBKVVwz2ohfgffpqHWog6BAcU5D3FSBE=;
+        b=l5d2Kt8D9rVBConO0hJsQfXbHz5ahmwaLbLGDdsUHuKeYlfAKOonlz5/pyu4KsWiAU
+         Edz+T8DmoWjOzy7JVyOH7t65Z6nhA4PdGGEUrXIDBPEE9PG0+ht7rXbNOjY3/XxoHPEo
+         16uxDrS06mLHiiAMDwvTocwdQbczU+EtAAemu25GeFZWFLYfgLPxxgaQp2/pEAv7aYOq
+         CZ9++NtuxXYU9IoYo76er/KJAFrF0EX6z0kYusW8L5k9TYNUwDY+mcKpBZK1nx7bPL38
+         j1R506wpFxZu7cS5/KV+OMHxPJd9BSa6kTTRz6cmBkZEAXeftYrgfynGmL79ZDi9VLD1
+         hXyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=WpIF59sushRUzQN6JFPoJ2ob7mS8MGSjQgRAtDMNHBs=;
-        b=J5xL+lK8eTlZ+CEctsVpoQvJZqg0vHrUoYWkqKLqSzo09BHgeS2R+pEAE+RxrO+QC/
-         dnvlGVzCXXfZL8ISrLRwhzvUKBu9ws4NMr5y6vxpapkmpJSAMQo2GjF2AHpkwlq/vk7t
-         5NkZR3M+U0jMkBJX8h04ZVyMeJX7p+hfHMmMrgJ0l80b6izrLXy/xQdwJR4v5TVq+oPe
-         C5DdiJQYSGgm404ytF+9xPltJnuANChzrM6LMlgaRgN0yR4mSjFVHXLCknX3Jz6FA7DF
-         /OnMW3+VEoE1lydalrapmlZX09VUdke5z8e5W0N2JYuVfMBht2aFahqSFLNm/dtzfcto
-         kGFg==
-X-Gm-Message-State: ANhLgQ2FQC+patXKejLse8M4rybOHqkgk2KQfbbPgy4eEBXqfTMia4Ef
-        YGaWlA5uUIbxpSfJccOqdLiWaWr0unvnanByid6pLQ==
-X-Google-Smtp-Source: ADFU+vuG4nmHESpyz83ycBTMualHGTG00Wir4cgLn4BKFEmt3VQqAC1YdhwQi5UUXGr4YGTw3WJ7f7+rh1jsecG7oNs=
-X-Received: by 2002:adf:e98c:: with SMTP id h12mr10978634wrm.345.1584014794085;
- Thu, 12 Mar 2020 05:06:34 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=bhPuS2kHLGbKBKVVwz2ohfgffpqHWog6BAcU5D3FSBE=;
+        b=jJ7pHbm+bcnYq7Fs/aWQMAOS+adcbfELCuKMvfDbUJuE8X7CrOeNIK4LTgg21naPq9
+         DZtK/vHJCCX2pMNj+KXLtXGrX0CGu3qCA12cD/qcqKryZ8LUrVuRDSdbSpHxDbdmn9Ms
+         AzWJMOL3pIvvbG+3cEz2BddnaArqNVQJoE5eJ5A1GEEycekV5WmiqgjejW/qhlLjo6bN
+         eWqvAijNBrij1tKEMhS9HvAOfLOLXi2FnF4ZDDl2R02XgUg6v+e1PuGoytTZnxLVQHGt
+         +eBaYx8c5+ON4qey+EpAud4qklVNx7ljPA0iodBvcEO4lCI3fDe5qalv+5nczr/TTPFk
+         /zCA==
+X-Gm-Message-State: ANhLgQ17RAa3giWqj60aKA68aZiOjEIijV1ZI1yr7VpiKKR8102wGz/5
+        1w60MXWRWD9pOkxhD30beWZanAYQNTJ7ifwiBpo=
+X-Google-Smtp-Source: ADFU+vt+smGa5nmX26aTHJS4CvOUbbW1B0u85c531RF3WHPuD82m2io3CGiJr/IWQLQ5O69ZiTCpC6d4x2B89Zutzl8=
+X-Received: by 2002:ac2:5929:: with SMTP id v9mr5073525lfi.66.1584015115914;
+ Thu, 12 Mar 2020 05:11:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200312113006.GA20562@mwanda>
-In-Reply-To: <20200312113006.GA20562@mwanda>
-From:   Alexander Potapenko <glider@google.com>
-Date:   Thu, 12 Mar 2020 13:06:23 +0100
-Message-ID: <CAG_fn=WP0xeCaWpWzhzvT-uxW4w1dvVvxZ=yBGKGTNFwjD=gJw@mail.gmail.com>
-Subject: Re: [PATCH] lib/stackdepot.c: fix a condition in stack_depot_fetch()
+References: <20200312113154.GC20562@mwanda>
+In-Reply-To: <20200312113154.GC20562@mwanda>
+From:   Fabio Estevam <festevam@gmail.com>
+Date:   Thu, 12 Mar 2020 09:11:44 -0300
+Message-ID: <CAOMZO5CJ7G7yJZEEPfsm1P2SnrJ7kmOPmZCWiKwrvDZjPNOnWw@mail.gmail.com>
+Subject: Re: [PATCH] spi: spi-nxp-fspi: Fix a NULL vs IS_ERR() check in probe
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Miles Chen <miles.chen@mediatek.com>,
-        LKML <linux-kernel@vger.kernel.org>,
+Cc:     Yogesh Gaur <yogeshgaur.83@gmail.com>, Han Xu <han.xu@nxp.com>,
+        Adam Ford <aford173@gmail.com>,
+        Ashish Kumar <ashish.kumar@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Mar 12, 2020 at 12:30 PM Dan Carpenter <dan.carpenter@oracle.com> w=
-rote:
+Hi Dan,
+
+On Thu, Mar 12, 2020 at 8:33 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
 >
-> We should check for a NULL pointer first before adding the offset.
-> Otherwise if the pointer is NULL and the offset is non-zero, it will
-> lead to an Oops.
-
- Thanks!
-
-> Fixes: d45048e65a59 ("lib/stackdepot.c: check depot_index before accessin=
-g the stack slab")
+> The platform_get_resource_byname() function returns NULL on error, it
+> doesn't return error pointers.
+>
+> Fixes: d166a73503ef ("spi: fspi: dynamically alloc AHB memory")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-Acked-by: Alexander Potapenko <glider@google.com>
-
 > ---
->  lib/stackdepot.c | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
->
-> diff --git a/lib/stackdepot.c b/lib/stackdepot.c
-> index da5d1880bf34..2caffc64e4c8 100644
-> --- a/lib/stackdepot.c
-> +++ b/lib/stackdepot.c
-> @@ -207,18 +207,16 @@ unsigned int stack_depot_fetch(depot_stack_handle_t=
- handle,
->         size_t offset =3D parts.offset << STACK_ALLOC_ALIGN;
->         struct stack_record *stack;
->
-> +       *entries =3D NULL;
->         if (parts.slabindex > depot_index) {
->                 WARN(1, "slab index %d out of bounds (%d) for stack id %0=
-8x\n",
->                         parts.slabindex, depot_index, handle);
-> -               *entries =3D NULL;
->                 return 0;
->         }
->         slab =3D stack_slabs[parts.slabindex];
-> -       stack =3D slab + offset;
-> -       if (!stack) {
-> -               *entries =3D NULL;
-> +       if (!slab)
->                 return 0;
-> -       }
-> +       stack =3D slab + offset;
->
->         *entries =3D stack->entries;
->         return stack->size;
-> --
-> 2.20.1
->
+> The commit message for commit d166a73503ef ("spi: fspi: dynamically
+> alloc AHB memory") is not very good.  Why is it necessary to allocate
+> the AHB memory dynamically instead of during probe?  Also I suspect that
 
+Agreed and I made the same comment during review:
+https://patchwork.kernel.org/patch/11361581/
 
---=20
-Alexander Potapenko
-Software Engineer
-
-Google Germany GmbH
-Erika-Mann-Stra=C3=9Fe, 33
-80636 M=C3=BCnchen
-
-Gesch=C3=A4ftsf=C3=BChrer: Paul Manicle, Halimah DeLaine Prado
-Registergericht und -nummer: Hamburg, HRB 86891
-Sitz der Gesellschaft: Hamburg
+Thanks

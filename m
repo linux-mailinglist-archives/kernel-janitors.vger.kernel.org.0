@@ -2,96 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E80C218369D
-	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Mar 2020 17:52:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 610AC1837F5
+	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Mar 2020 18:47:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726299AbgCLQwk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 12 Mar 2020 12:52:40 -0400
-Received: from foss.arm.com ([217.140.110.172]:38062 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725268AbgCLQwk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 12 Mar 2020 12:52:40 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B66D330E;
-        Thu, 12 Mar 2020 09:52:39 -0700 (PDT)
-Received: from localhost (unknown [10.37.6.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 39AF83F6CF;
-        Thu, 12 Mar 2020 09:52:39 -0700 (PDT)
-Date:   Thu, 12 Mar 2020 16:52:37 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Adam Ford <aford173@gmail.com>,
-        Ashish Kumar <ashish.kumar@nxp.com>, Han Xu <han.xu@nxp.com>,
-        kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org,
+        id S1726420AbgCLRr4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 12 Mar 2020 13:47:56 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:34888 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726385AbgCLRrz (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 12 Mar 2020 13:47:55 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02CHdR0T092778;
+        Thu, 12 Mar 2020 17:47:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=UES/joqIX5zBij1J5FtiE8fN/xECEN4Pix1GU2cbIAg=;
+ b=TkYprmm9T3gmff9ZhMmP6V9w9fFeGx8sJStTMGaSgaPKfHaCfFUJCIUT1W/kWJ6u68lO
+ i9gX3G8bLy8vkVQFeyBrUeVkmDL7hEnoYtJwXAHYBS/wpUAG9UwSBalxPGKYipDDrSIx
+ NAcar9+9SGwN49aO56daaYBOnGEtA7AeQ8i+Ywo19zHkWkwHk57t0dNHkpEjXFJoTgw+
+ i97EGSDrF0U8mlMeOwWaeK1F0GxI4nGCOuGTZzHTRHlfAwUOL/Amtz1qMzq60pTALJuD
+ W65//Oy69LkCzaXxLc+ybh0jMdcnaVjRiOjcEWI5ARw91UezbemtlkFnwNmn7qtFoCGa kA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2yqkg8a8x5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 12 Mar 2020 17:47:49 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02CHcR6o138571;
+        Thu, 12 Mar 2020 17:47:49 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 2yqkvn308f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 12 Mar 2020 17:47:49 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02CHlmEb012199;
+        Thu, 12 Mar 2020 17:47:48 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 12 Mar 2020 10:47:47 -0700
+Date:   Thu, 12 Mar 2020 20:47:41 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Adam Ford <aford173@gmail.com>
+Cc:     Yogesh Gaur <yogeshgaur.83@gmail.com>, Han Xu <han.xu@nxp.com>,
+        Ashish Kumar <ashish.kumar@nxp.com>,
         Mark Brown <broonie@kernel.org>,
-        Yogesh Gaur <yogeshgaur.83@gmail.com>
-Subject: Applied "spi: spi-nxp-fspi: Fix a NULL vs IS_ERR() check in probe" to the spi tree
-In-Reply-To:  <20200312113154.GC20562@mwanda>
-Message-Id:  <applied-20200312113154.GC20562@mwanda>
-X-Patchwork-Hint: ignore
+        linux-spi <linux-spi@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] spi: spi-nxp-fspi: Fix a NULL vs IS_ERR() check in probe
+Message-ID: <20200312125016.GF11583@kadam>
+References: <20200312113154.GC20562@mwanda>
+ <CAHCN7xKSc7spZyq=mySWHDmSrGMkQo8FYRbn-NzYRa7iB-0BoQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHCN7xKSc7spZyq=mySWHDmSrGMkQo8FYRbn-NzYRa7iB-0BoQ@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9558 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
+ mlxlogscore=999 malwarescore=0 adultscore=0 bulkscore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003120090
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9558 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 lowpriorityscore=0
+ mlxlogscore=999 spamscore=0 phishscore=0 adultscore=0 impostorscore=0
+ malwarescore=0 priorityscore=1501 suspectscore=0 bulkscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2003120090
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
+On Thu, Mar 12, 2020 at 06:58:31AM -0500, Adam Ford wrote:
+> On Thu, Mar 12, 2020 at 6:32 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> >
+> > The platform_get_resource_byname() function returns NULL on error, it
+> > doesn't return error pointers.
+> >
+> > Fixes: d166a73503ef ("spi: fspi: dynamically alloc AHB memory")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> > The commit message for commit d166a73503ef ("spi: fspi: dynamically
+> > alloc AHB memory") is not very good.  Why is it necessary to allocate
+> > the AHB memory dynamically instead of during probe?  Also I suspect that
+> > Adam should have recieved authorship credit for that patch.
+> 
+> It wasn't my patch, I just pulled it in from NXP's repo.  The true
+> author is Han Xu.  When I pulled in the series from NXP, I found the
+> flexSPI on the i.MX8MM to become functional, and my company has a
+> board with a qspi flash on it.
 
-   spi: spi-nxp-fspi: Fix a NULL vs IS_ERR() check in probe
+You should have put your Signed-off-by after Han Xu's.  They should be
+in chronological order so whoever handles a patch adds their S-o-b to
+the end.
 
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From 1a421ebab6bb5bf65001743ba9fef48e94fb345a Mon Sep 17 00:00:00 2001
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Thu, 12 Mar 2020 14:31:54 +0300
-Subject: [PATCH] spi: spi-nxp-fspi: Fix a NULL vs IS_ERR() check in probe
-
-The platform_get_resource_byname() function returns NULL on error, it
-doesn't return error pointers.
-
-Fixes: d166a73503ef ("spi: fspi: dynamically alloc AHB memory")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Link: https://lore.kernel.org/r/20200312113154.GC20562@mwanda
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-nxp-fspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 019f40e2917c..1ccda82da206 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -1019,8 +1019,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 
- 	/* find the resources - controller memory mapped space */
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "fspi_mmap");
--	if (IS_ERR(res)) {
--		ret = PTR_ERR(res);
-+	if (!res) {
-+		ret = -ENODEV;
- 		goto err_put_ctrl;
- 	}
- 
--- 
-2.20.1
+regards,
+dan carpenter
 

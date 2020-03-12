@@ -2,103 +2,136 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E668182FB5
-	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Mar 2020 12:58:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A3F2182FC0
+	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Mar 2020 13:02:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727112AbgCLL6x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 12 Mar 2020 07:58:53 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:46334 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727007AbgCLL6x (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 12 Mar 2020 07:58:53 -0400
-Received: by mail-io1-f66.google.com with SMTP id v3so5327057iom.13;
-        Thu, 12 Mar 2020 04:58:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rPc++VDXh8pTtJPadUpADozZEFlA9OiPEeVtI98+2V0=;
-        b=eyg/wYE1qqMif80Ei6JWFUB7+exwdL5wQwEaAuk6ovH0TfGmz9aFTj1jbHB700ZhBD
-         16qksPZCpsWnx/o7u063JgGYhwktoCCvuifWUdm9leIkVlL6hWeQveGVOyuZIEiO3CV8
-         jU1PCQ+m9rB8+Wz3trB/8G5YJbiAnWOE5zXj3NcPLJPLeC6u5ox9HjHN4aJzz4VkMB+f
-         53Z0u1KlgzaPq8q1kWg/k6VP7qrzemfgHXTLTvE+CRxQx1t0W0Q50C1HDuhvnc85OBdT
-         2ggDRANMwETmt6bZVDcRHkLdDdJRq4728+exbpAHGFrk6emoFnfbHVwNChTHhsvpU3vf
-         1aXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rPc++VDXh8pTtJPadUpADozZEFlA9OiPEeVtI98+2V0=;
-        b=UsXpnqNkJPI9QKAjYSe+2vMGGmNIgVvYk/jSOxLKn3MwoMLc/tS/R1b2Jw4XcRX3Or
-         7fmuagp5b0qIaYYVgRz4uJDeJ6iO2l2bb5EbDa2n+IwZigymT2378YJqbDHqDtsA5o6I
-         ONfznVX1xQFBewZPZx5hs0caYkh6mbCUsO4oXLhHlbvkGXwg5iElu8kLiVvKzzexjaDt
-         52B8BWgFHMaf503Jceeb53twClo+B4vee1KN+pyyVSfjygPXCDaLF21VorloWM9OY0BS
-         o2NXquobxihkxI8xv/mmK+sopPkab4mUUdmflS9DEj90zpZRSOWdFdPkkN+AIe9TPJKv
-         8dEg==
-X-Gm-Message-State: ANhLgQ1JgGpeoVgs0GVvjRCgSP7pYC+G8YtY2qsE36ETKRNokLQHS/kQ
-        c7efOfhxJLR0SeyUWNvacO+L2mkTGV8VbOKHfeI=
-X-Google-Smtp-Source: ADFU+vs5s7ScOpNx7hc8xTMV8CjJaZqVFEqIBlNwkoPbuxbjRMc1H3X1CBBKkPsnLLDEx6buNYObDrAAQO10zWdHCpA=
-X-Received: by 2002:a6b:ef0f:: with SMTP id k15mr7177031ioh.43.1584014331993;
- Thu, 12 Mar 2020 04:58:51 -0700 (PDT)
+        id S1726395AbgCLMCp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 12 Mar 2020 08:02:45 -0400
+Received: from mga07.intel.com ([134.134.136.100]:26531 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726302AbgCLMCp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 12 Mar 2020 08:02:45 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Mar 2020 05:02:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,544,1574150400"; 
+   d="scan'208";a="442027339"
+Received: from unknown (HELO [10.254.208.137]) ([10.254.208.137])
+  by fmsmga005.fm.intel.com with ESMTP; 12 Mar 2020 05:02:42 -0700
+Cc:     baolu.lu@linux.intel.com, Joerg Roedel <joro@8bytes.org>,
+        iommu@lists.linux-foundation.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iommu/vt-d: Unlock on error paths
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Megha Dey <megha.dey@linux.intel.com>
+References: <20200312113730.GF20562@mwanda>
+From:   Lu Baolu <baolu.lu@linux.intel.com>
+Message-ID: <0f0dcaca-5c33-c78c-6d38-2bbae26cbff2@linux.intel.com>
+Date:   Thu, 12 Mar 2020 20:02:41 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-References: <20200312113154.GC20562@mwanda>
-In-Reply-To: <20200312113154.GC20562@mwanda>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Thu, 12 Mar 2020 06:58:31 -0500
-Message-ID: <CAHCN7xKSc7spZyq=mySWHDmSrGMkQo8FYRbn-NzYRa7iB-0BoQ@mail.gmail.com>
-Subject: Re: [PATCH] spi: spi-nxp-fspi: Fix a NULL vs IS_ERR() check in probe
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Yogesh Gaur <yogeshgaur.83@gmail.com>, Han Xu <han.xu@nxp.com>,
-        Ashish Kumar <ashish.kumar@nxp.com>,
-        Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200312113730.GF20562@mwanda>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Mar 12, 2020 at 6:32 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> The platform_get_resource_byname() function returns NULL on error, it
-> doesn't return error pointers.
->
-> Fixes: d166a73503ef ("spi: fspi: dynamically alloc AHB memory")
+On 2020/3/12 19:37, Dan Carpenter wrote:
+> There were a couple places where we need to unlock before returning.
+> 
+> Fixes: 91391b919e19 ("iommu/vt-d: Populate debugfs if IOMMUs are detected")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
-> The commit message for commit d166a73503ef ("spi: fspi: dynamically
-> alloc AHB memory") is not very good.  Why is it necessary to allocate
-> the AHB memory dynamically instead of during probe?  Also I suspect that
-> Adam should have recieved authorship credit for that patch.
+>   drivers/iommu/intel-iommu-debugfs.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iommu/intel-iommu-debugfs.c b/drivers/iommu/intel-iommu-debugfs.c
+> index 8d24c4d85cc2..6a495b103972 100644
+> --- a/drivers/iommu/intel-iommu-debugfs.c
+> +++ b/drivers/iommu/intel-iommu-debugfs.c
+> @@ -289,11 +289,12 @@ static int dmar_translation_struct_show(struct seq_file *m, void *unused)
+>   		sts = dmar_readl(iommu->reg + DMAR_GSTS_REG);
+>   		if (!(sts & DMA_GSTS_TES)) {
+>   			seq_puts(m, "DMA Remapping is not enabled\n");
+> -			return 0;
+> +			goto unlock;
+>   		}
+>   		root_tbl_walk(m, iommu);
+>   		seq_putc(m, '\n');
+>   	}
+> +unlock:
+>   	rcu_read_unlock();
+>   
+>   	return 0;
+> @@ -444,7 +445,7 @@ static int ir_translation_struct_show(struct seq_file *m, void *unused)
+>   		sts = dmar_readl(iommu->reg + DMAR_GSTS_REG);
+>   		if (!(sts & DMA_GSTS_IRES)) {
+>   			seq_puts(m, "Interrupt Remapping is not enabled\n");
+> -			return 0;
+> +			goto unlock;
+>   		}
+>   
+>   		if (iommu->ir_table) {
+> @@ -475,6 +476,7 @@ static int ir_translation_struct_show(struct seq_file *m, void *unused)
+>   		}
+>   		seq_putc(m, '\n');
+>   	}
+> +unlock:
+>   	rcu_read_unlock();
+>   
+>   	return 0;
+> 
 
-It wasn't my patch, I just pulled it in from NXP's repo.  The true
-author is Han Xu.  When I pulled in the series from NXP, I found the
-flexSPI on the i.MX8MM to become functional, and my company has a
-board with a qspi flash on it.
+Thanks a lot for the catch. I think it could be further cleanup. How
+about below changes?
 
-adam
+index 8d24c4d85cc2..2583a6743dd0 100644
+--- a/drivers/iommu/intel-iommu-debugfs.c
++++ b/drivers/iommu/intel-iommu-debugfs.c
+@@ -288,8 +288,9 @@ static int dmar_translation_struct_show(struct 
+seq_file *m, void *unused)
+         for_each_active_iommu(iommu, drhd) {
+                 sts = dmar_readl(iommu->reg + DMAR_GSTS_REG);
+                 if (!(sts & DMA_GSTS_TES)) {
+-                       seq_puts(m, "DMA Remapping is not enabled\n");
+-                       return 0;
++                       seq_printf(m, "DMA Remapping is not enabled on 
+%s\n",
++                                  iommu->name);
++                       continue;
+                 }
+                 root_tbl_walk(m, iommu);
+                 seq_putc(m, '\n');
+@@ -431,7 +432,6 @@ static int ir_translation_struct_show(struct 
+seq_file *m, void *unused)
+         struct dmar_drhd_unit *drhd;
+         struct intel_iommu *iommu;
+         u64 irta;
+-       u32 sts;
 
->
->  drivers/spi/spi-nxp-fspi.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-> index 019f40e2917c..1ccda82da206 100644
-> --- a/drivers/spi/spi-nxp-fspi.c
-> +++ b/drivers/spi/spi-nxp-fspi.c
-> @@ -1019,8 +1019,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
->
->         /* find the resources - controller memory mapped space */
->         res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "fspi_mmap");
-> -       if (IS_ERR(res)) {
-> -               ret = PTR_ERR(res);
-> +       if (!res) {
-> +               ret = -ENODEV;
->                 goto err_put_ctrl;
->         }
->
-> --
-> 2.20.1
->
+         rcu_read_lock();
+         for_each_active_iommu(iommu, drhd) {
+@@ -441,12 +441,6 @@ static int ir_translation_struct_show(struct 
+seq_file *m, void *unused)
+                 seq_printf(m, "Remapped Interrupt supported on IOMMU: 
+%s\n",
+                            iommu->name);
+
+-               sts = dmar_readl(iommu->reg + DMAR_GSTS_REG);
+-               if (!(sts & DMA_GSTS_IRES)) {
+-                       seq_puts(m, "Interrupt Remapping is not enabled\n");
+-                       return 0;
+-               }
+-
+                 if (iommu->ir_table) {
+                         irta = virt_to_phys(iommu->ir_table->base);
+                         seq_printf(m, " IR table address:%llx\n", irta);
+
+Best regards,
+baolu

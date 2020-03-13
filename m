@@ -2,29 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9E49184D70
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Mar 2020 18:19:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 244C1184DEF
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Mar 2020 18:49:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726812AbgCMRTl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Mar 2020 13:19:41 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:38589 "EHLO
+        id S1726676AbgCMRtt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Mar 2020 13:49:49 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:39241 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726706AbgCMRTl (ORCPT
+        with ESMTP id S1726528AbgCMRtt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Mar 2020 13:19:41 -0400
+        Fri, 13 Mar 2020 13:49:49 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jCnyD-00007Y-Ot; Fri, 13 Mar 2020 17:19:37 +0000
+        id 1jCoRO-00020u-Lp; Fri, 13 Mar 2020 17:49:46 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        linux-leds@vger.kernel.org
+To:     Andrew Morton <akpm@linux-foundation.org>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] leds: lm3532: make bitfield 'enabled' unsigned
-Date:   Fri, 13 Mar 2020 17:19:37 +0000
-Message-Id: <20200313171937.220884-1-colin.king@canonical.com>
+Subject: [PATCH] scripts/spelling.txt: add more spellings to spelling.txt
+Date:   Fri, 13 Mar 2020 17:49:46 +0000
+Message-Id: <20200313174946.228216-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,26 +34,160 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The bitfield 'enabled' should bit unsigned, so make it unsigned.
+Here are some of the more common spelling mistakes and typos that I've
+found while fixing up spelling mistakes in the kernel since November 2019
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/leds/leds-lm3532.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/spelling.txt | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/leds/leds-lm3532.c b/drivers/leds/leds-lm3532.c
-index 188a57da981a..aa9bf8cda673 100644
---- a/drivers/leds/leds-lm3532.c
-+++ b/drivers/leds/leds-lm3532.c
-@@ -140,7 +140,7 @@ struct lm3532_led {
- 	int ctrl_brt_pointer;
- 	int num_leds;
- 	int full_scale_current;
--	int enabled:1;
-+	unsigned int enabled:1;
- 	u32 led_strings[LM3532_MAX_CONTROL_BANKS];
- 	char label[LED_MAX_NAME_SIZE];
- };
+diff --git a/scripts/spelling.txt b/scripts/spelling.txt
+index 6d5243904e76..d9cd24cf0d40 100644
+--- a/scripts/spelling.txt
++++ b/scripts/spelling.txt
+@@ -177,7 +177,9 @@ atomatically||automatically
+ atomicly||atomically
+ atempt||attempt
+ attachement||attachment
++attatch||attach
+ attched||attached
++attemp||attempt
+ attemps||attempts
+ attemping||attempting
+ attepmpt||attempt
+@@ -235,11 +237,13 @@ brievely||briefly
+ brigde||bridge
+ broadcase||broadcast
+ broadcat||broadcast
++bufer||buffer
+ bufufer||buffer
+ cacluated||calculated
+ caculate||calculate
+ caculation||calculation
+ cadidate||candidate
++cahces||caches
+ calender||calendar
+ calescing||coalescing
+ calle||called
+@@ -338,7 +342,6 @@ conditon||condition
+ condtion||condition
+ conected||connected
+ conector||connector
+-connecetd||connected
+ configration||configuration
+ configuartion||configuration
+ configuation||configuration
+@@ -349,7 +352,9 @@ configuretion||configuration
+ configutation||configuration
+ conider||consider
+ conjuction||conjunction
++connecetd||connected
+ connectinos||connections
++connetor||connector
+ connnection||connection
+ connnections||connections
+ consistancy||consistency
+@@ -469,6 +474,7 @@ difinition||definition
+ digial||digital
+ dimention||dimension
+ dimesions||dimensions
++disgest||digest
+ dispalying||displaying
+ diplay||display
+ directon||direction
+@@ -553,6 +559,7 @@ etsablishment||establishment
+ etsbalishment||establishment
+ excecutable||executable
+ exceded||exceeded
++exceeed||exceed
+ excellant||excellent
+ execeeded||exceeded
+ execeeds||exceeds
+@@ -742,6 +749,7 @@ initialzing||initializing
+ initilization||initialization
+ initilize||initialize
+ initliaze||initialize
++initilized||initialized
+ inofficial||unofficial
+ inrerface||interface
+ insititute||institute
+@@ -802,6 +810,7 @@ irrelevent||irrelevant
+ isnt||isn't
+ isssue||issue
+ issus||issues
++iteraions||iterations
+ iternations||iterations
+ itertation||iteration
+ itslef||itself
+@@ -828,6 +837,7 @@ libary||library
+ librairies||libraries
+ libraris||libraries
+ licenceing||licencing
++limted||limited
+ logaritmic||logarithmic
+ loggging||logging
+ loggin||login
+@@ -924,6 +934,7 @@ nerver||never
+ nescessary||necessary
+ nessessary||necessary
+ noticable||noticeable
++notication||notification
+ notications||notifications
+ notifcations||notifications
+ notifed||notified
+@@ -1007,6 +1018,7 @@ pendantic||pedantic
+ peprocessor||preprocessor
+ perfoming||performing
+ perfomring||performing
++periperal||peripheral
+ peripherial||peripheral
+ permissons||permissions
+ peroid||period
+@@ -1043,6 +1055,7 @@ prefferably||preferably
+ premption||preemption
+ prepaired||prepared
+ preperation||preparation
++preprare||prepare
+ pressre||pressure
+ primative||primitive
+ princliple||principle
+@@ -1064,6 +1077,7 @@ processsed||processed
+ processsing||processing
+ procteted||protected
+ prodecure||procedure
++progamming||programming
+ progams||programs
+ progess||progress
+ programers||programmers
+@@ -1151,12 +1165,14 @@ replys||replies
+ reponse||response
+ representaion||representation
+ reqeust||request
++reqister||register
+ requestied||requested
+ requiere||require
+ requirment||requirement
+ requred||required
+ requried||required
+ requst||request
++requsted||requested
+ reregisteration||reregistration
+ reseting||resetting
+ reseved||reserved
+@@ -1227,10 +1243,12 @@ seqeuncer||sequencer
+ seqeuencer||sequencer
+ sequece||sequence
+ sequencial||sequential
++serivce||service
+ serveral||several
+ servive||service
+ setts||sets
+ settting||setting
++shapshot||snapshot
+ shotdown||shutdown
+ shoud||should
+ shouldnt||shouldn't
 -- 
 2.25.1
 

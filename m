@@ -2,33 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ECC5185F9C
-	for <lists+kernel-janitors@lfdr.de>; Sun, 15 Mar 2020 20:42:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15DF3185FB2
+	for <lists+kernel-janitors@lfdr.de>; Sun, 15 Mar 2020 21:13:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729037AbgCOTmt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 15 Mar 2020 15:42:49 -0400
-Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:18267 "EHLO
+        id S1729110AbgCOUNO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 15 Mar 2020 16:13:14 -0400
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:24939 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727653AbgCOTmt (ORCPT
+        with ESMTP id S1729081AbgCOUNO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 15 Mar 2020 15:42:49 -0400
+        Sun, 15 Mar 2020 16:13:14 -0400
 Received: from localhost.localdomain ([93.22.37.174])
         by mwinf5d57 with ME
-        id Ejij2200K3lSDvh03jijNx; Sun, 15 Mar 2020 20:42:47 +0100
+        id EkD2220093lSDvh03kD3A1; Sun, 15 Mar 2020 21:13:12 +0100
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 15 Mar 2020 20:42:47 +0100
+X-ME-Date: Sun, 15 Mar 2020 21:13:12 +0100
 X-ME-IP: 93.22.37.174
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     robdclark@gmail.com, sean@poorly.run, airlied@linux.ie,
-        daniel@ffwll.ch, dianders@chromium.org
-Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
+To:     peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
+        mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
+        jolsa@redhat.com, namhyung@kernel.org, mhiramat@kernel.org,
+        allison@lohutok.net, rostedt@goodmis.org, tglx@linutronix.de
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] drm/msm: Fix an error handling path 'msm_drm_init()'
-Date:   Sun, 15 Mar 2020 20:42:39 +0100
-Message-Id: <20200315194239.28785-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] perf probe: Fix an error handling path in 'parse_perf_probe_command()'
+Date:   Sun, 15 Mar 2020 21:12:59 +0100
+Message-Id: <20200315201259.29190-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -37,33 +37,32 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If this memory allocation fails, we have to go through the error handling
-path to perform some clean-up, as already done in other other paths of
-this function.
+If a memory allocation fail, we should branch to the error handling path in
+order to free some resources allocated a few lines above.
 
-Fixes: db735fc4036b ("drm/msm: Set dma maximum segment size for mdss")
+Fixes: 15354d546986 ("perf probe: Generate event name with line number")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/gpu/drm/msm/msm_drv.c | 6 ++++--
+ tools/perf/util/probe-event.c | 6 ++++--
  1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_drv.c b/drivers/gpu/drm/msm/msm_drv.c
-index 2a82c23a6e4d..29295dee2a2e 100644
---- a/drivers/gpu/drm/msm/msm_drv.c
-+++ b/drivers/gpu/drm/msm/msm_drv.c
-@@ -444,8 +444,10 @@ static int msm_drm_init(struct device *dev, struct drm_driver *drv)
- 	if (!dev->dma_parms) {
- 		dev->dma_parms = devm_kzalloc(dev, sizeof(*dev->dma_parms),
- 					      GFP_KERNEL);
--		if (!dev->dma_parms)
+diff --git a/tools/perf/util/probe-event.c b/tools/perf/util/probe-event.c
+index eea132f512b0..65a615ee4b4c 100644
+--- a/tools/perf/util/probe-event.c
++++ b/tools/perf/util/probe-event.c
+@@ -1683,8 +1683,10 @@ int parse_perf_probe_command(const char *cmd, struct perf_probe_event *pev)
+ 	if (!pev->event && pev->point.function && pev->point.line
+ 			&& !pev->point.lazy_line && !pev->point.offset) {
+ 		if (asprintf(&pev->event, "%s_L%d", pev->point.function,
+-			pev->point.line) < 0)
 -			return -ENOMEM;
-+		if (!dev->dma_parms) {
++			pev->point.line) < 0) {
 +			ret = -ENOMEM;
-+			goto err_msm_uninit;
++			goto out;
 +		}
  	}
- 	dma_set_max_seg_size(dev, DMA_BIT_MASK(32));
  
+ 	/* Copy arguments and ensure return probe has no C argument */
 -- 
 2.20.1
 

@@ -2,148 +2,148 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC9821867FE
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Mar 2020 10:39:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74F5518682B
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Mar 2020 10:50:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730368AbgCPJjE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 16 Mar 2020 05:39:04 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56919 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730231AbgCPJjE (ORCPT
+        id S1730473AbgCPJuO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Mar 2020 05:50:14 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:40788 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730426AbgCPJuO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 16 Mar 2020 05:39:04 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jDmCz-0008DD-9K; Mon, 16 Mar 2020 09:38:53 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] perf vendor events: fix spelling mistakes: "occurences" -> "occurrences"
-Date:   Mon, 16 Mar 2020 09:38:53 +0000
-Message-Id: <20200316093853.117752-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        Mon, 16 Mar 2020 05:50:14 -0400
+Received: by mail-wr1-f68.google.com with SMTP id f3so13313431wrw.7
+        for <kernel-janitors@vger.kernel.org>; Mon, 16 Mar 2020 02:50:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=ERTY/dO2K1SPKjMbktdMeysHG0XO9+huCKvmnpNOLJI=;
+        b=ibTHYW+ifSOK/LTwiOq9PvvBipE99KOth2lQwB2NBbuHnYCQ/NlKS7NdOgfiitP9Tq
+         woUhVB3QTfB09JULKmuFEYCYBDCGqSp1vXFLBUFiLq7vXw0x41Q53oQG0oOLLcEwBghC
+         iPXOUGNazW7XgLId9HV2Cylcj4oKabBf930Vs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to;
+        bh=ERTY/dO2K1SPKjMbktdMeysHG0XO9+huCKvmnpNOLJI=;
+        b=lQ5bGaH0HjuXbIMXkyipUzhzwj7DNP72+nytL/zMuNDBhTiQwKkzv7k80YSoMmlHEY
+         qdhtXrjSB3VKUO3KZUEyiZwExaVFo35J112FapMZFpUHFx9ez25I/QOL4/C0GuBv4fcY
+         6iruwPaHc6f6jFVRH0iw5eN99nyEpQn0E+PFxfS3l0h0aLhEuXUBgPkBas+33DJ86scI
+         7nlMfQfNfsOKFPx7c7KaHqelf2jHozT0Fso0VW2e+E3fvQsBs8KCDTGqrqwA1zkRg4mG
+         unONcUgEJ9uUc5jUom3kLyu/sYMeov/0zRT5IODB6XKcwVVo8/8LA84kuMNNWf9rZwli
+         WJVw==
+X-Gm-Message-State: ANhLgQ2xU1R2HsuuC8qKIpV9w1+GB2j6w64ZjwbapicEbhJMYDicgqNB
+        LMWtPYJ+ze1zfvzmcoNcuYy/Ilecupxk9Wg8
+X-Google-Smtp-Source: ADFU+vtGDKyYyg/j1KSDufUqygL0smsKl8gN9P6w7ZHoyArqQzjHnMTkautF3tAyQ2ZQ3DB2aaFDeg==
+X-Received: by 2002:a5d:6ca7:: with SMTP id a7mr17894725wra.157.1584352210573;
+        Mon, 16 Mar 2020 02:50:10 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id x6sm6531641wrm.29.2020.03.16.02.50.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2020 02:50:09 -0700 (PDT)
+Date:   Mon, 16 Mar 2020 10:50:07 +0100
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Joe Perches <joe@perches.com>
+Cc:     Daniel Vetter <daniel@ffwll.ch>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Sebastian Duda <sebastian.duda@fau.de>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        linux-media@vger.kernel.org
+Subject: Re: [Intel-gfx] [PATCH] MAINTAINERS: adjust to reservation.h renaming
+Message-ID: <20200316095007.GI2363188@phenom.ffwll.local>
+Mail-Followup-To: Joe Perches <joe@perches.com>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Sebastian Duda <sebastian.duda@fau.de>,
+        Sumit Semwal <sumit.semwal@linaro.org>, linux-media@vger.kernel.org
+References: <20200304120711.12117-1-lukas.bulwahn@gmail.com>
+ <b0296e3a-31f8-635a-f26d-8b0bc490aae3@amd.com>
+ <20200306103946.GT2363188@phenom.ffwll.local>
+ <155f99baffe11836fc9d794ff297bdcee7831050.camel@perches.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <155f99baffe11836fc9d794ff297bdcee7831050.camel@perches.com>
+X-Operating-System: Linux phenom 5.3.0-3-amd64 
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Fri, Mar 06, 2020 at 02:56:06AM -0800, Joe Perches wrote:
+> On Fri, 2020-03-06 at 11:39 +0100, Daniel Vetter wrote:
+> > On Wed, Mar 04, 2020 at 01:08:32PM +0100, Christian König wrote:
+> > > Am 04.03.20 um 13:07 schrieb Lukas Bulwahn:
+> > > > Commit 52791eeec1d9 ("dma-buf: rename reservation_object to dma_resv")
+> > > > renamed include/linux/reservation.h to include/linux/dma-resv.h, but
+> > > > missed the reference in the MAINTAINERS entry.
+> > > > 
+> > > > Since then, ./scripts/get_maintainer.pl --self-test complains:
+> > > > 
+> > > >    warning: no file matches F: include/linux/reservation.h
+> > > > 
+> > > > Adjust the DMA BUFFER SHARING FRAMEWORK entry in MAINTAINERS.
+> > > > 
+> > > > Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
+> > > > Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
+> > > > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> > > 
+> > > Reviewed-by: Christian König <christian.koenig@amd.com>
+> > 
+> > You'll push this too?
+> > -Daniel
+> > 
+> > > > ---
+> > > > Christian, please pick this patch.
+> > > > applies cleanly on current master and next-20200303
+> > > > 
+> > > >   MAINTAINERS | 2 +-
+> > > >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > > index 6158a143a13e..3d6cb2789c9e 100644
+> > > > --- a/MAINTAINERS
+> > > > +++ b/MAINTAINERS
+> > > > @@ -5022,7 +5022,7 @@ L:	dri-devel@lists.freedesktop.org
+> > > >   L:	linaro-mm-sig@lists.linaro.org (moderated for non-subscribers)
+> > > >   F:	drivers/dma-buf/
+> > > >   F:	include/linux/dma-buf*
+> > > > -F:	include/linux/reservation.h
+> > > > +F:	include/linux/dma-resv.h
+> > > >   F:	include/linux/*fence.h
+> > > >   F:	Documentation/driver-api/dma-buf.rst
+> > > >   K:	dma_(buf|fence|resv)
+> 
+> Slightly unrelated:
+> 
+> The K: entry matches a lot of other things
+> and may have a lot of false positive matches
+> like any variable named dma_buffer
+> 
+> This should also use (?:...) to avoid a perl
+> capture group.
+> 
+> Perhaps:
+> 
+> K:	'\bdma_(?:buf|fence|resv)\b'
 
-Fix spelling mistake of "occurrences"
+Hm either people aren't using get_maintainers.pl consistently, or it
+doesn't seem to be a real world problem. I'm not seeing any unrelated
+patches on dri-devel at least.
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- tools/perf/pmu-events/arch/x86/ivybridge/pipeline.json    | 2 +-
- tools/perf/pmu-events/arch/x86/ivytown/pipeline.json      | 2 +-
- tools/perf/pmu-events/arch/x86/jaketown/pipeline.json     | 2 +-
- .../perf/pmu-events/arch/x86/knightslanding/pipeline.json | 8 ++++----
- tools/perf/pmu-events/arch/x86/sandybridge/pipeline.json  | 2 +-
- 5 files changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/tools/perf/pmu-events/arch/x86/ivybridge/pipeline.json b/tools/perf/pmu-events/arch/x86/ivybridge/pipeline.json
-index 2a0aad91d83d..e5ca2d85e84d 100644
---- a/tools/perf/pmu-events/arch/x86/ivybridge/pipeline.json
-+++ b/tools/perf/pmu-events/arch/x86/ivybridge/pipeline.json
-@@ -80,7 +80,7 @@
-         "EdgeDetect": "1",
-         "EventName": "INT_MISC.RECOVERY_STALLS_COUNT",
-         "SampleAfterValue": "2000003",
--        "BriefDescription": "Number of occurences waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc.)",
-+        "BriefDescription": "Number of occurrences waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc.)",
-         "CounterMask": "1",
-         "CounterHTOff": "0,1,2,3,4,5,6,7"
-     },
-diff --git a/tools/perf/pmu-events/arch/x86/ivytown/pipeline.json b/tools/perf/pmu-events/arch/x86/ivytown/pipeline.json
-index 2a0aad91d83d..e5ca2d85e84d 100644
---- a/tools/perf/pmu-events/arch/x86/ivytown/pipeline.json
-+++ b/tools/perf/pmu-events/arch/x86/ivytown/pipeline.json
-@@ -80,7 +80,7 @@
-         "EdgeDetect": "1",
-         "EventName": "INT_MISC.RECOVERY_STALLS_COUNT",
-         "SampleAfterValue": "2000003",
--        "BriefDescription": "Number of occurences waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc.)",
-+        "BriefDescription": "Number of occurrences waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc.)",
-         "CounterMask": "1",
-         "CounterHTOff": "0,1,2,3,4,5,6,7"
-     },
-diff --git a/tools/perf/pmu-events/arch/x86/jaketown/pipeline.json b/tools/perf/pmu-events/arch/x86/jaketown/pipeline.json
-index 783a5b4a67b1..f32fd4aea6b1 100644
---- a/tools/perf/pmu-events/arch/x86/jaketown/pipeline.json
-+++ b/tools/perf/pmu-events/arch/x86/jaketown/pipeline.json
-@@ -1019,7 +1019,7 @@
-         "EdgeDetect": "1",
-         "EventName": "INT_MISC.RECOVERY_STALLS_COUNT",
-         "SampleAfterValue": "2000003",
--        "BriefDescription": "Number of occurences waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc...).",
-+        "BriefDescription": "Number of occurrences waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc...).",
-         "CounterMask": "1",
-         "CounterHTOff": "0,1,2,3,4,5,6,7"
-     },
-diff --git a/tools/perf/pmu-events/arch/x86/knightslanding/pipeline.json b/tools/perf/pmu-events/arch/x86/knightslanding/pipeline.json
-index 92e4ef2e22c6..17c92cdedde0 100644
---- a/tools/perf/pmu-events/arch/x86/knightslanding/pipeline.json
-+++ b/tools/perf/pmu-events/arch/x86/knightslanding/pipeline.json
-@@ -340,7 +340,7 @@
-         "UMask": "0x1",
-         "EventName": "RECYCLEQ.LD_BLOCK_ST_FORWARD",
-         "SampleAfterValue": "200003",
--        "BriefDescription": "Counts the number of occurences a retired load gets blocked because its address partially overlaps with a store",
-+        "BriefDescription": "Counts the number of occurrences a retired load gets blocked because its address partially overlaps with a store",
-         "Data_LA": "1"
-     },
-     {
-@@ -349,7 +349,7 @@
-         "UMask": "0x2",
-         "EventName": "RECYCLEQ.LD_BLOCK_STD_NOTREADY",
-         "SampleAfterValue": "200003",
--        "BriefDescription": "Counts the number of occurences a retired load gets blocked because its address overlaps with a store whose data is not ready"
-+        "BriefDescription": "Counts the number of occurrences a retired load gets blocked because its address overlaps with a store whose data is not ready"
-     },
-     {
-         "PublicDescription": "This event counts the number of retired store that experienced a cache line boundary split(Precise Event). Note that each spilt should be counted only once.",
-@@ -358,7 +358,7 @@
-         "UMask": "0x4",
-         "EventName": "RECYCLEQ.ST_SPLITS",
-         "SampleAfterValue": "200003",
--        "BriefDescription": "Counts the number of occurences a retired store that is a cache line split. Each split should be counted only once."
-+        "BriefDescription": "Counts the number of occurrences a retired store that is a cache line split. Each split should be counted only once."
-     },
-     {
-         "PEBS": "1",
-@@ -367,7 +367,7 @@
-         "UMask": "0x8",
-         "EventName": "RECYCLEQ.LD_SPLITS",
-         "SampleAfterValue": "200003",
--        "BriefDescription": "Counts the number of occurences a retired load that is a cache line split. Each split should be counted only once.",
-+        "BriefDescription": "Counts the number of occurrences a retired load that is a cache line split. Each split should be counted only once.",
-         "Data_LA": "1"
-     },
-     {
-diff --git a/tools/perf/pmu-events/arch/x86/sandybridge/pipeline.json b/tools/perf/pmu-events/arch/x86/sandybridge/pipeline.json
-index b7150f65f16d..d69db55f33e7 100644
---- a/tools/perf/pmu-events/arch/x86/sandybridge/pipeline.json
-+++ b/tools/perf/pmu-events/arch/x86/sandybridge/pipeline.json
-@@ -108,7 +108,7 @@
-         "EdgeDetect": "1",
-         "EventName": "INT_MISC.RECOVERY_STALLS_COUNT",
-         "SampleAfterValue": "2000003",
--        "BriefDescription": "Number of occurences waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc...).",
-+        "BriefDescription": "Number of occurrences waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc...).",
-         "CounterMask": "1",
-         "CounterHTOff": "0,1,2,3,4,5,6,7"
-     },
+But happy to merge such a patch if it shows up ofc, it's definitely the
+more correct thing :-)
+-Daniel
 -- 
-2.25.1
-
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch

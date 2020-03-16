@@ -2,155 +2,124 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B13D18684E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Mar 2020 10:56:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9A83186C56
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Mar 2020 14:41:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730459AbgCPJ4x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 16 Mar 2020 05:56:53 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:36725 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730025AbgCPJ4x (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 16 Mar 2020 05:56:53 -0400
-Received: by mail-wr1-f68.google.com with SMTP id s5so20380806wrg.3
-        for <kernel-janitors@vger.kernel.org>; Mon, 16 Mar 2020 02:56:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=4uFjuIar5NrPLcBZJPObOsb7IgzEi+xWM2W1XFlAhG0=;
-        b=MKnh4eqiajGVxiWBSEZMhJK78EufIWCaAajO2U8EZBruc02ewFnzmSll3FPGSyz4Hk
-         xPq8uLRmHc0q0D4U9xamBCevqwUDOHipFL6D5kF9zcnF8d7pv6w3+C3wGNepqSZVK7sA
-         1GiLkSHxkP0/BmZATcbxmT7B1ucb7SosFQg/0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:mail-followup-to
-         :references:mime-version:content-disposition
-         :content-transfer-encoding:in-reply-to;
-        bh=4uFjuIar5NrPLcBZJPObOsb7IgzEi+xWM2W1XFlAhG0=;
-        b=MaqTUOqMHDIRf3oBTuf2bZBul08FoXpuyISnDWDHrzy30eEhIhRF4XoKmLZfs0V1E2
-         DFxyNqLjCdaQDqiJiBvghuTHY9urBXGdW3Wkyrq9o5g9OTTphwekPyB/Cud7yKZ41yOh
-         FR1+PZ3u4lh+7I5SfjmZvBhPkcbHef1MNYz7bQCrQIH6/yjDwIf+3J1gX7PK+wgnalzs
-         cFgSb1KeOSMXjNOh7aSUVqvKrFN5wj2gu8NwILql47qD2/nUk/5LsSM0HTAWPm6ZybEB
-         kTT3PCq6GD7pxj819pqGtaSpan6n64hgsDP93Q7cD8qwKBo8Ki8/JxfWy0fezNIUp8KT
-         ot0A==
-X-Gm-Message-State: ANhLgQ1mImxi1N5o9lHaQ6nFS/VA+9WzybOzgn8vykt0y8SeNnjX9aEa
-        ak4pRePo6lhw3CamyFOiup403A==
-X-Google-Smtp-Source: ADFU+vtMt31tP7+bdrL8Xnvjkbvor50IyCbDn+WnCnsbJXMAyj9Melvbj6Mpc4exxa3r1An2EKb0dg==
-X-Received: by 2002:a5d:6150:: with SMTP id y16mr35501106wrt.352.1584352611440;
-        Mon, 16 Mar 2020 02:56:51 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id i6sm29154761wru.40.2020.03.16.02.56.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2020 02:56:50 -0700 (PDT)
-Date:   Mon, 16 Mar 2020 10:56:49 +0100
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Joe Perches <joe@perches.com>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sebastian Duda <sebastian.duda@fau.de>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        linux-media@vger.kernel.org
-Subject: Re: [Intel-gfx] [PATCH] MAINTAINERS: adjust to reservation.h renaming
-Message-ID: <20200316095649.GK2363188@phenom.ffwll.local>
-Mail-Followup-To: Joe Perches <joe@perches.com>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sebastian Duda <sebastian.duda@fau.de>,
-        Sumit Semwal <sumit.semwal@linaro.org>, linux-media@vger.kernel.org
-References: <20200304120711.12117-1-lukas.bulwahn@gmail.com>
- <b0296e3a-31f8-635a-f26d-8b0bc490aae3@amd.com>
- <20200306103946.GT2363188@phenom.ffwll.local>
- <155f99baffe11836fc9d794ff297bdcee7831050.camel@perches.com>
- <20200316095007.GI2363188@phenom.ffwll.local>
+        id S1731393AbgCPNlu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Mar 2020 09:41:50 -0400
+Received: from mail-am6eur05on2044.outbound.protection.outlook.com ([40.107.22.44]:18017
+        "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730970AbgCPNlu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 16 Mar 2020 09:41:50 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=c3oD7wqXWfQQLDX+fVDLuHxfrqrn0mqkgAHSfbiGTyyqf2fSBYXBV668aDlNOUwu8TskCfrjkPFLJX8bD7tk7U7QuDZ4t3u7TZe1EA2Vl9wpXL0hsHb7F/UZRkaxmQ2FagJp4UorWi5jkDpFPCemjHovp8PXwsWUB385mWgdEzf7SnLSisLIyQwQx+lgtG8W3kHo8McDvEIxPXQvhP2kFW2IuIgyTp01snPZ6GYCnql3xQPv6E7q4RFc33ooOxSxVaVlWC9je4dCqrM6pEFn+ZEFpr5U+6pIN0sVI9UIAOUoMp650KaVn9pXwolGcb1RXtS2jRsoiR253SylGktv1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QCYqdhKEA4z+tUCXCQP2txJovL/BbC1aGBqu9lyC+WQ=;
+ b=PfVtpx9AR8ejGsQ5rOtadN538DGJerkqR7VPg7TMQeBbzy10cgcqzMkkO6yhkvBVrizKE76ZUXZqQ4QPlb5YUpK24k2N9pFOnP8AtjzPW7BTFQ1vYhv+l7fxasMO6sfRtR3Dv+8y0mHj81o3y4/E+y/9BGXgNLr92Yl3mEgr5ZaHBf+aPhOk3GVZ+Y2uqlRnrXiKKvsIO69px8Cei7bYrGJsYAokemg7Qzj1mgcQ6/uTjDNHpV5+HgzT0z1d0ETjeyRhMYyC9+mFAbeb8Xt950YZbXtLabxZ2XgvjgHdMd3/mczeadd6H2KeVyoaErUmRuv7+D9tDj+GaWa1/9IV7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QCYqdhKEA4z+tUCXCQP2txJovL/BbC1aGBqu9lyC+WQ=;
+ b=mVEsSUph+V7YaIykHDJkR2U6HdUy3mEnDSerHh3SAhvbgBRuttEp/MOwSLG86Tq5cXxgHdJwE+iBcZ51n8KJf+w/cDF5Hz3wsWzyLGEwRGVF+95Q23mUj5npR9dPwjN1H8j7KDDfn+7R+C3+VG/2Dr+DdfdqmLnt5tG+8npGyGk=
+Received: from DB8PR04MB6747.eurprd04.prod.outlook.com (20.179.250.159) by
+ DB8PR04MB7050.eurprd04.prod.outlook.com (52.135.62.24) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2814.18; Mon, 16 Mar 2020 13:41:34 +0000
+Received: from DB8PR04MB6747.eurprd04.prod.outlook.com
+ ([fe80::4528:6120:94a4:ce1e]) by DB8PR04MB6747.eurprd04.prod.outlook.com
+ ([fe80::4528:6120:94a4:ce1e%5]) with mapi id 15.20.2814.016; Mon, 16 Mar 2020
+ 13:41:34 +0000
+From:   "Z.q. Hou" <zhiqiang.hou@nxp.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>
+CC:     "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Joe Perches <joe@perches.com>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] MAINTAINERS: correct typo in new NXP LAYERSCAPE GEN4
+Thread-Topic: [PATCH] MAINTAINERS: correct typo in new NXP LAYERSCAPE GEN4
+Thread-Index: AQHV+gyIX68iXFnIKEaIIhxR91lGSKhLPECg
+Date:   Mon, 16 Mar 2020 13:41:34 +0000
+Message-ID: <DB8PR04MB6747C64A930F240215A3FA8784F90@DB8PR04MB6747.eurprd04.prod.outlook.com>
+References: <20200314142559.13505-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <20200314142559.13505-1-lukas.bulwahn@gmail.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=zhiqiang.hou@nxp.com; 
+x-originating-ip: [223.72.48.36]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 7c99bfe5-df19-4eea-faf8-08d7c9afbe12
+x-ms-traffictypediagnostic: DB8PR04MB7050:
+x-microsoft-antispam-prvs: <DB8PR04MB7050CF1E56E39EBDCC3271AC84F90@DB8PR04MB7050.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4941;
+x-forefront-prvs: 03449D5DD1
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(346002)(396003)(39860400002)(366004)(376002)(136003)(199004)(76116006)(66556008)(66476007)(71200400001)(8676002)(2906002)(64756008)(66446008)(81166006)(81156014)(66946007)(53546011)(6506007)(55016002)(9686003)(54906003)(5660300002)(110136005)(478600001)(316002)(33656002)(8936002)(4326008)(86362001)(26005)(186003)(52536014)(7696005);DIR:OUT;SFP:1101;SCL:1;SRVR:DB8PR04MB7050;H:DB8PR04MB6747.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: sJl50Ebo2w/lQAEobCfUrRFVmuD3AhnC93TXmEbizpzG0Tn1ulIKxKMjtyE6nu/D12Wd8Iim5ooPXFx0WAQcRawTocN6YGVVhlInuW08UlPFcATukT8Yui1Tw1dAr4/9AMQEa9t7C40QtgfAQ+xQVVC6uS1syye1w6trzJxPJfB5R/8Sh6hhOpMNtFluPn8lbZq7JHv97I3eZQD/672Nhp1sYb10/K+OHuegSvj3KC1wxqVtem82u2lJbxrnjblbUOQjFNBVpvtxS4Mn2Yvu2ijx448Hv5UNKIGSPmhoLip0C0myrPa+KXb8upQKeeAvIanMM+7O70JZLM2iV7XILX4taWu7/gaKNCN93gLN4QAYGVQX7xIxS9ntWW/v8Iz3gu61iW4kUfxAOhmbu9VE/UC9ai+cJSp5oOwxmMYczyUa3VMVj+h+p1nK6SeZcq0j
+x-ms-exchange-antispam-messagedata: bEpwUAUVZ6aaSN807ij42hGeLXI+8aERrivE8ZazGS7LizKPYnh2v1YehCLtB3RCtKco+KhmfdV0z4Ll3ZxQjR//GAlFfpYQNqacrLeflz138QV3LwqcPqXNoUZ6ewWh+Ol934IV7OqPemG+gj1pcQ==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200316095007.GI2363188@phenom.ffwll.local>
-X-Operating-System: Linux phenom 5.3.0-3-amd64 
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c99bfe5-df19-4eea-faf8-08d7c9afbe12
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Mar 2020 13:41:34.0699
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: tz4HA3Zhbkwb5ov/0WoBtcaPAT2l32qJApvH0WAniY9wKVqrmn0NYj8FP8eDMCx5ZIV8qinhUOim8/J3lwZSHw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7050
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Mar 16, 2020 at 10:50:07AM +0100, Daniel Vetter wrote:
-> On Fri, Mar 06, 2020 at 02:56:06AM -0800, Joe Perches wrote:
-> > On Fri, 2020-03-06 at 11:39 +0100, Daniel Vetter wrote:
-> > > On Wed, Mar 04, 2020 at 01:08:32PM +0100, Christian König wrote:
-> > > > Am 04.03.20 um 13:07 schrieb Lukas Bulwahn:
-> > > > > Commit 52791eeec1d9 ("dma-buf: rename reservation_object to dma_resv")
-> > > > > renamed include/linux/reservation.h to include/linux/dma-resv.h, but
-> > > > > missed the reference in the MAINTAINERS entry.
-> > > > > 
-> > > > > Since then, ./scripts/get_maintainer.pl --self-test complains:
-> > > > > 
-> > > > >    warning: no file matches F: include/linux/reservation.h
-> > > > > 
-> > > > > Adjust the DMA BUFFER SHARING FRAMEWORK entry in MAINTAINERS.
-> > > > > 
-> > > > > Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
-> > > > > Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
-> > > > > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> > > > 
-> > > > Reviewed-by: Christian König <christian.koenig@amd.com>
-> > > 
-> > > You'll push this too?
-> > > -Daniel
-> > > 
-> > > > > ---
-> > > > > Christian, please pick this patch.
-> > > > > applies cleanly on current master and next-20200303
-> > > > > 
-> > > > >   MAINTAINERS | 2 +-
-> > > > >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > 
-> > > > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > > > index 6158a143a13e..3d6cb2789c9e 100644
-> > > > > --- a/MAINTAINERS
-> > > > > +++ b/MAINTAINERS
-> > > > > @@ -5022,7 +5022,7 @@ L:	dri-devel@lists.freedesktop.org
-> > > > >   L:	linaro-mm-sig@lists.linaro.org (moderated for non-subscribers)
-> > > > >   F:	drivers/dma-buf/
-> > > > >   F:	include/linux/dma-buf*
-> > > > > -F:	include/linux/reservation.h
-> > > > > +F:	include/linux/dma-resv.h
-> > > > >   F:	include/linux/*fence.h
-> > > > >   F:	Documentation/driver-api/dma-buf.rst
-> > > > >   K:	dma_(buf|fence|resv)
-> > 
-> > Slightly unrelated:
-> > 
-> > The K: entry matches a lot of other things
-> > and may have a lot of false positive matches
-> > like any variable named dma_buffer
-> > 
-> > This should also use (?:...) to avoid a perl
-> > capture group.
-> > 
-> > Perhaps:
-> > 
-> > K:	'\bdma_(?:buf|fence|resv)\b'
-> 
-> Hm either people aren't using get_maintainers.pl consistently, or it
-> doesn't seem to be a real world problem. I'm not seeing any unrelated
-> patches on dri-devel at least.
-> 
-> But happy to merge such a patch if it shows up ofc, it's definitely the
-> more correct thing :-)
-
-Ofc as usual if you lean out the window you immediately get to eat your
-hat, right after sending this I got a mail from syzbot about some random
-stuff because of this :-)
-
-I'm gonna do the patch now ...
--Daniel
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEx1a2FzIEJ1bHdhaG4gPGx1
+a2FzLmJ1bHdhaG5AZ21haWwuY29tPg0KPiBTZW50OiAyMDIwxOoz1MIxNMjVIDIyOjI2DQo+IFRv
+OiBaLnEuIEhvdSA8emhpcWlhbmcuaG91QG54cC5jb20+OyBMb3JlbnpvIFBpZXJhbGlzaQ0KPiA8
+bG9yZW56by5waWVyYWxpc2lAYXJtLmNvbT47IFJvYiBIZXJyaW5nIDxyb2JoQGtlcm5lbC5vcmc+
+DQo+IENjOiBsaW51eC1wY2lAdmdlci5rZXJuZWwub3JnOyBsaW51eC1hcm0ta2VybmVsQGxpc3Rz
+LmluZnJhZGVhZC5vcmc7IEpvZQ0KPiBQZXJjaGVzIDxqb2VAcGVyY2hlcy5jb20+OyBrZXJuZWwt
+amFuaXRvcnNAdmdlci5rZXJuZWwub3JnOw0KPiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3Jn
+OyBMdWthcyBCdWx3YWhuIDxsdWthcy5idWx3YWhuQGdtYWlsLmNvbT4NCj4gU3ViamVjdDogW1BB
+VENIXSBNQUlOVEFJTkVSUzogY29ycmVjdCB0eXBvIGluIG5ldyBOWFAgTEFZRVJTQ0FQRSBHRU40
+DQo+IA0KPiBDb21taXQgM2VkZWI0OTUyNWJiICgiZHQtYmluZGluZ3M6IFBDSTogQWRkIE5YUCBM
+YXllcnNjYXBlIFNvQ3MgUENJZQ0KPiBHZW40DQo+IGNvbnRyb2xsZXIiKSBpbmNsdWRlcyBhIG5l
+dyBlbnRyeSBpbiBNQUlOVEFJTkVSUywgYnV0IHNsaXBwZWQgaW4gYSB0eXBvIGluIG9uZQ0KPiBv
+ZiB0aGUgZmlsZSBlbnRyaWVzLg0KPiANCj4gSGVuY2UsIHNpbmNlIHRoZW4sIC4vc2NyaXB0cy9n
+ZXRfbWFpbnRhaW5lci5wbCAtLXNlbGYtdGVzdCBjb21wbGFpbnM6DQo+IA0KPiAgIHdhcm5pbmc6
+IG5vIGZpbGUgbWF0Y2hlcyBGOiBcDQo+ICAgICBkcml2ZXJzL3BjaS9jb250cm9sbGVyL21vYmli
+ZWlsL3BjaWUtbGF5ZXJzY2FwZS1nZW40LmMNCj4gDQo+IENvcnJlY3QgdGhlIHR5cG8gaW4gUENJ
+IERSSVZFUiBGT1IgTlhQIExBWUVSU0NBUEUgR0VONCBDT05UUk9MTEVSLg0KPiANCj4gU2lnbmVk
+LW9mZi1ieTogTHVrYXMgQnVsd2FobiA8bHVrYXMuYnVsd2FobkBnbWFpbC5jb20+DQo+IC0tLQ0K
+PiBhcHBsaWVzIGNsZWFubHkgb24gbmV4dC0yMDIwMDMxMw0KPiANCj4gSG91LCBwbGVhc2UgYWNr
+Lg0KPiBSb2IsIHBsZWFzZSBwaWNrIHRoaXMgcGF0Y2ggKGl0IGlzIG5vdCB1cmdlbnQsIHRob3Vn
+aCkuDQo+IA0KPiAgTUFJTlRBSU5FUlMgfCAyICstDQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNl
+cnRpb24oKyksIDEgZGVsZXRpb24oLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9NQUlOVEFJTkVSUyBi
+L01BSU5UQUlORVJTDQo+IGluZGV4IDMyYTk1ZDE2MmYwNi4uNzdlZWRlOTc2ZDBmIDEwMDY0NA0K
+PiAtLS0gYS9NQUlOVEFJTkVSUw0KPiArKysgYi9NQUlOVEFJTkVSUw0KPiBAQCAtMTI4NTgsNyAr
+MTI4NTgsNyBAQCBMOglsaW51eC1wY2lAdmdlci5rZXJuZWwub3JnDQo+ICBMOglsaW51eC1hcm0t
+a2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcNCj4gIFM6CU1haW50YWluZWQNCj4gIEY6CURvY3Vt
+ZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9wY2kvbGF5ZXJzY2FwZS1wY2llLWdlbjQudHh0
+DQo+IC1GOglkcml2ZXJzL3BjaS9jb250cm9sbGVyL21vYmliZWlsL3BjaWUtbGF5ZXJzY2FwZS1n
+ZW40LmMNCj4gK0Y6CWRyaXZlcnMvcGNpL2NvbnRyb2xsZXIvbW9iaXZlaWwvcGNpZS1sYXllcnNj
+YXBlLWdlbjQuYw0KPiANCj4gIFBDSSBEUklWRVIgRk9SIEdFTkVSSUMgT0YgSE9TVFMNCj4gIE06
+CVdpbGwgRGVhY29uIDx3aWxsQGtlcm5lbC5vcmc+DQo+IA0KPiBiYXNlLWNvbW1pdDogMmU2MDJk
+YjcyOTk0OGNlNTc3YmYwN2UyYjExM2YyYWE4MDZiNjJjNw0KPiAtLQ0KPiAyLjE3LjENCg0KUmV2
+aWV3ZWQtYnk6IEhvdSBaaGlxaWFuZyA8WmhpcWlhbmcuSG91QG54cC5jb20+DQoNCg==

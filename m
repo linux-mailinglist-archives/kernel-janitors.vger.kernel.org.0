@@ -2,28 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8E361867A5
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Mar 2020 10:17:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6D961867C8
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Mar 2020 10:23:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730378AbgCPJQ6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 16 Mar 2020 05:16:58 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56309 "EHLO
+        id S1730317AbgCPJXn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Mar 2020 05:23:43 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:56556 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730025AbgCPJQ5 (ORCPT
+        with ESMTP id S1730152AbgCPJXn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 16 Mar 2020 05:16:57 -0400
+        Mon, 16 Mar 2020 05:23:43 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jDlrh-0006T8-Od; Mon, 16 Mar 2020 09:16:53 +0000
+        id 1jDlyH-0006zW-4M; Mon, 16 Mar 2020 09:23:41 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Dan Williams <dan.j.williams@intel.com>,
-        Vinod Koul <vkoul@kernel.org>, dmaengine@vger.kernel.org
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        linux-gpio@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] dmaengine: fix spelling mistake "exceds" -> "exceeds"
-Date:   Mon, 16 Mar 2020 09:16:53 +0000
-Message-Id: <20200316091653.110984-1-colin.king@canonical.com>
+Subject: [PATCH][next] tools: gpio-hammer: fix spelling mistake: "occurences" -> "occurrences"
+Date:   Mon, 16 Mar 2020 09:23:40 +0000
+Message-Id: <20200316092340.114125-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,40 +36,25 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There are a couple of spelling mistakes in dev_err error messages.
-Fix them.
+There is a spelling mistake in an error message. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/dma/sh/rcar-dmac.c  | 2 +-
- drivers/dma/sh/shdma-base.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tools/gpio/gpio-hammer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/sh/rcar-dmac.c b/drivers/dma/sh/rcar-dmac.c
-index f06016d38a05..59b36ab5d684 100644
---- a/drivers/dma/sh/rcar-dmac.c
-+++ b/drivers/dma/sh/rcar-dmac.c
-@@ -1219,7 +1219,7 @@ rcar_dmac_prep_dma_cyclic(struct dma_chan *chan, dma_addr_t buf_addr,
- 	sg_len = buf_len / period_len;
- 	if (sg_len > RCAR_DMAC_MAX_SG_LEN) {
- 		dev_err(chan->device->dev,
--			"chan%u: sg length %d exceds limit %d",
-+			"chan%u: sg length %d exceeds limit %d",
- 			rchan->index, sg_len, RCAR_DMAC_MAX_SG_LEN);
- 		return NULL;
- 	}
-diff --git a/drivers/dma/sh/shdma-base.c b/drivers/dma/sh/shdma-base.c
-index c51de498b5b4..2deeaab078a4 100644
---- a/drivers/dma/sh/shdma-base.c
-+++ b/drivers/dma/sh/shdma-base.c
-@@ -709,7 +709,7 @@ static struct dma_async_tx_descriptor *shdma_prep_dma_cyclic(
- 	BUG_ON(!schan->desc_num);
+diff --git a/tools/gpio/gpio-hammer.c b/tools/gpio/gpio-hammer.c
+index 083399d276e4..28d2329e83d2 100644
+--- a/tools/gpio/gpio-hammer.c
++++ b/tools/gpio/gpio-hammer.c
+@@ -153,7 +153,7 @@ int main(int argc, char **argv)
  
- 	if (sg_len > SHDMA_MAX_SG_LEN) {
--		dev_err(schan->dev, "sg length %d exceds limit %d",
-+		dev_err(schan->dev, "sg length %d exceeds limit %d",
- 				sg_len, SHDMA_MAX_SG_LEN);
- 		return NULL;
+ 	if (i >= GPIOHANDLES_MAX) {
+ 		fprintf(stderr,
+-			"Only %d occurences of '-o' are allowed, %d were found\n",
++			"Only %d occurrences of '-o' are allowed, %d were found\n",
+ 			GPIOHANDLES_MAX, i + 1);
+ 		return -1;
  	}
 -- 
 2.25.1

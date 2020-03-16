@@ -2,60 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6D961867C8
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Mar 2020 10:23:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 406441867DF
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Mar 2020 10:28:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730317AbgCPJXn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 16 Mar 2020 05:23:43 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56556 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730152AbgCPJXn (ORCPT
+        id S1730454AbgCPJ2v (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Mar 2020 05:28:51 -0400
+Received: from mail-qv1-f52.google.com ([209.85.219.52]:35480 "EHLO
+        mail-qv1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730431AbgCPJ2u (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 16 Mar 2020 05:23:43 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jDlyH-0006zW-4M; Mon, 16 Mar 2020 09:23:41 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        linux-gpio@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] tools: gpio-hammer: fix spelling mistake: "occurences" -> "occurrences"
-Date:   Mon, 16 Mar 2020 09:23:40 +0000
-Message-Id: <20200316092340.114125-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        Mon, 16 Mar 2020 05:28:50 -0400
+Received: by mail-qv1-f52.google.com with SMTP id u10so8409530qvi.2
+        for <kernel-janitors@vger.kernel.org>; Mon, 16 Mar 2020 02:28:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=SlnHcEUyAXhhBJTuxvcx5n9cVWT6MWBEtfmnj6NVAkw=;
+        b=xCBTTjg7+2+l/sXdvcUuVTjFgeY15EPF67ZSsmNlr0RbLQ6WG2awltClbyDNN9qsWc
+         LJIZ9jy8TF6sDix0G3908K3ARc/4Zgc+HprhfUnODXb8Ca89J/I4OiHyc9kJ7jHy4fxk
+         LNJokixn3Cp1xu27cWtiOURlz8CG7UEkcnACaW1xl0DSids4SVm8AMlACzlS5qNtSTu4
+         dFd/aANQ/b9daRAajrSwTv2R786pJwT0sStgYdWbC4bZqSOCePowSnIgFy8d93Twst8g
+         DWja+bf9MDG/MCKQT+3X21tuMC37OUZ/cDuU7q/O0E+praW5C1xSCBJB1+nLBURttyym
+         mElA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=SlnHcEUyAXhhBJTuxvcx5n9cVWT6MWBEtfmnj6NVAkw=;
+        b=elkwHzuGnYzzRXu2pAeyyeORDVoZUj4e1vctLVVi7nzBqV9TCGMXFDUlzqPs4+WhaL
+         ib3zGx1qeYUyXaYgtIQcJembIOPfard9SnAw1uX1SpLYk6vJ3ovUzxVHw4EG/l0mq3ZL
+         6w1626RxQ8bdjMynbwKcylU6vJBaWtAGAgljE31N+PHvPDXGYzbFAliWCFaEKW5pxGNW
+         gkZMSMYLOb8pc6waGF4LZPsmjYrZyTIFOrEnIg9ZjpIHJcS3OL1IE4KpyueyyitWjPZy
+         ylBa8RpjQEKljND7tg7yl/QrglsilG0PzNhKmzjIHAAQDA9IedFOhzuMXaHCMIdVNfN9
+         76qw==
+X-Gm-Message-State: ANhLgQ2TRpPUQ8K5bT0f76rDK+sRPzyDA/lYvbNRXEYSKn1DHOrGwt7P
+        9Lnji08PDGjlRiEMveEMbu8Dw8Pdd63ojhibYr9eEsnf
+X-Google-Smtp-Source: ADFU+vv9/MKP80W+Vi0dxJrqEXaWFhKiMZB6p3ZHnw6LAmw7NOyop46daJwcHltOfC98RD2Mcmpi+oZ9pXy6EOej54A=
+X-Received: by 2002:ad4:4a6c:: with SMTP id cn12mr21012782qvb.148.1584350929335;
+ Mon, 16 Mar 2020 02:28:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20200316092340.114125-1-colin.king@canonical.com>
+In-Reply-To: <20200316092340.114125-1-colin.king@canonical.com>
+From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Date:   Mon, 16 Mar 2020 10:28:38 +0100
+Message-ID: <CAMpxmJVxPzH1rhfKrGMHWAyKiPAy3CSx9xJqjw-2nKzy=-8ccg@mail.gmail.com>
+Subject: Re: [PATCH][next] tools: gpio-hammer: fix spelling mistake:
+ "occurences" -> "occurrences"
+To:     Colin King <colin.king@canonical.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio <linux-gpio@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+pon., 16 mar 2020 o 10:23 Colin King <colin.king@canonical.com> napisa=C5=
+=82(a):
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There is a spelling mistake in an error message. Fix it.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  tools/gpio/gpio-hammer.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tools/gpio/gpio-hammer.c b/tools/gpio/gpio-hammer.c
+> index 083399d276e4..28d2329e83d2 100644
+> --- a/tools/gpio/gpio-hammer.c
+> +++ b/tools/gpio/gpio-hammer.c
+> @@ -153,7 +153,7 @@ int main(int argc, char **argv)
+>
+>         if (i >=3D GPIOHANDLES_MAX) {
+>                 fprintf(stderr,
+> -                       "Only %d occurences of '-o' are allowed, %d were =
+found\n",
+> +                       "Only %d occurrences of '-o' are allowed, %d were=
+ found\n",
+>                         GPIOHANDLES_MAX, i + 1);
+>                 return -1;
+>         }
+> --
+> 2.25.1
+>
 
-There is a spelling mistake in an error message. Fix it.
+Patch applied, thanks!
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- tools/gpio/gpio-hammer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/gpio/gpio-hammer.c b/tools/gpio/gpio-hammer.c
-index 083399d276e4..28d2329e83d2 100644
---- a/tools/gpio/gpio-hammer.c
-+++ b/tools/gpio/gpio-hammer.c
-@@ -153,7 +153,7 @@ int main(int argc, char **argv)
- 
- 	if (i >= GPIOHANDLES_MAX) {
- 		fprintf(stderr,
--			"Only %d occurences of '-o' are allowed, %d were found\n",
-+			"Only %d occurrences of '-o' are allowed, %d were found\n",
- 			GPIOHANDLES_MAX, i + 1);
- 		return -1;
- 	}
--- 
-2.25.1
-
+Bartosz

@@ -2,201 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D591186586
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Mar 2020 08:20:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F23B9186611
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Mar 2020 09:05:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729722AbgCPHUr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 16 Mar 2020 03:20:47 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:33044 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728120AbgCPHUr (ORCPT
+        id S1729973AbgCPIFa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Mar 2020 04:05:30 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:29648 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729745AbgCPIFa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 16 Mar 2020 03:20:47 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02G7KhLg012845;
-        Mon, 16 Mar 2020 02:20:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1584343243;
-        bh=Yisa4qZBXogsjsu0UBUCrwgSHPoybqOn38y9aI+oMAQ=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=cThaAheyHJ+EAotUZu9KeHnIO+DWyRdUTC6rVjqSrE+ScMlFRGn3F4x2XRkXJQABq
-         EdHCiLd6GigEA84MMDEwswrCIaWRitdgsaOB6XsqE7qmDBa/ImOgzwqQvR06O8HnwY
-         SR65BEC+q7sTETLFTR+Q66jbuoYtIDZed9oT9RE0=
-Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 02G7KhTi112724
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 16 Mar 2020 02:20:43 -0500
-Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 16
- Mar 2020 02:20:42 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Mon, 16 Mar 2020 02:20:42 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02G7KepR117384;
-        Mon, 16 Mar 2020 02:20:41 -0500
-Subject: Re: [PATCH] dmaengine: ti: k3-udma: Fix an error handling path in
- 'k3_udma_glue_cfg_rx_flow()'
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        <vkoul@kernel.org>, <dan.j.williams@intel.com>,
-        <grygorii.strashko@ti.com>
-CC:     <dmaengine@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <20200315155015.27303-1-christophe.jaillet@wanadoo.fr>
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-Message-ID: <49a35126-3cc6-0cbb-e632-42a237ef353e@ti.com>
-Date:   Mon, 16 Mar 2020 09:20:50 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <20200315155015.27303-1-christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset="utf-8"
+        Mon, 16 Mar 2020 04:05:30 -0400
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02G7x3fB004532;
+        Mon, 16 Mar 2020 09:05:15 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type : content-id
+ : content-transfer-encoding : mime-version; s=STMicroelectronics;
+ bh=aAX015zEGt1iDYd9fLCWz8ZRf1VeNZVoWYmUVUrHks0=;
+ b=f2vC4EaeDXBjoM0/YX0nT/EhpV5U2WjmtwN+wNbFsRnKDCeUC4oxyYFOqzbtdOIaNKB3
+ 38gSfGtLXWQ9j/VNRqXm9g4HxG5gPGd3pSc0uVeQdAWo5tG0OWarn6hQsVEYu3WFrVSI
+ 6pAG1WgNVMvdwub+41DryELM43TBY/RZUaYgUTD3ducrNqLOanuXoBS/wTJNiePSlZ6x
+ tFPbnlKLUznJv6yWirKahnHEcKlnEHU0uU7Zq060Q5dkRjHac2XKCATtEdA/q2vtWMuJ
+ IzHKMbTxYIOnts2a5c08j76MjtmAh3ZFAK2xI8q5wj2TMwktQGrVN0u1j/FRkq2Jj9Y7 FA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2yrqa9e9hg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 16 Mar 2020 09:05:15 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id B18E410003B;
+        Mon, 16 Mar 2020 09:05:07 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag3node3.st.com [10.75.127.9])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id A1DF221E687;
+        Mon, 16 Mar 2020 09:05:07 +0100 (CET)
+Received: from SFHDAG3NODE3.st.com (10.75.127.9) by SFHDAG3NODE3.st.com
+ (10.75.127.9) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Mon, 16 Mar
+ 2020 09:05:07 +0100
+Received: from SFHDAG3NODE3.st.com ([fe80::3507:b372:7648:476]) by
+ SFHDAG3NODE3.st.com ([fe80::3507:b372:7648:476%20]) with mapi id
+ 15.00.1347.000; Mon, 16 Mar 2020 09:05:07 +0100
+From:   Benjamin GAIGNARD <benjamin.gaignard@st.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Rob Herring <robh@kernel.org>
+CC:     Lucas Stach <l.stach@pengutronix.de>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        Joe Perches <joe@perches.com>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] MAINTAINERS: adjust to VIVANTE GPU schema conversion
+Thread-Topic: [PATCH] MAINTAINERS: adjust to VIVANTE GPU schema conversion
+Thread-Index: AQHV+ppWk7Ve7/6Ys0G/uL6TUzmfJKhKzTwA
+Date:   Mon, 16 Mar 2020 08:05:07 +0000
+Message-ID: <18450dfa-a150-45df-5b9c-c543c110c478@st.com>
+References: <20200315072109.6815-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <20200315072109.6815-1-lukas.bulwahn@gmail.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.75.127.47]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <6D3788AD8A1BE941B64C12E7789BE437@st.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-03-16_02:2020-03-12,2020-03-16 signatures=0
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Christophe,
-
-On 15/03/2020 17.50, Christophe JAILLET wrote:
-> All but one error handling paths in the 'k3_udma_glue_cfg_rx_flow()'
-> function 'goto err' and call 'k3_udma_glue_release_rx_flow()'.
-> 
-> This not correct because this function has a 'channel->flows_ready--;' at
-> the end, but 'flows_ready' has not been incremented here, when we branch to
-> the error handling path.
-> 
-> In order to keep a correct value in 'flows_ready', un-roll
-> 'k3_udma_glue_release_rx_flow()', simplify it, add some labels and branch
-> at the correct places when an error is detected.
-
-Good catch!
-
-> Doing so, we also NULLify 'flow->udma_rflow' in a path that was lacking it.
-
-Even better catch ;)
-
-> Fixes: d70241913413 ("dmaengine: ti: k3-udma: Add glue layer for non DMAengine user")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> Not sure that the last point of the description is correct. Maybe, the
-> 'xudma_rflow_put / return -ENODEV;' should be kept in order not to
-> override 'flow->udma_rflow'.
-> ---
->  drivers/dma/ti/k3-udma-glue.c | 30 ++++++++++++++++++++----------
->  1 file changed, 20 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/dma/ti/k3-udma-glue.c b/drivers/dma/ti/k3-udma-glue.c
-> index dbccdc7c0ed5..890573eb1625 100644
-> --- a/drivers/dma/ti/k3-udma-glue.c
-> +++ b/drivers/dma/ti/k3-udma-glue.c
-> @@ -578,12 +578,12 @@ static int k3_udma_glue_cfg_rx_flow(struct k3_udma_glue_rx_channel *rx_chn,
->  	if (IS_ERR(flow->udma_rflow)) {
->  		ret = PTR_ERR(flow->udma_rflow);
->  		dev_err(dev, "UDMAX rflow get err %d\n", ret);
-> -		goto err;
-> +		goto err_return;
-
-return err; ?
-
->  	}
-
-Optionally you could have moved the
-	rx_chn->flows_ready++;
-here and
-
->  
->  	if (flow->udma_rflow_id != xudma_rflow_get_id(flow->udma_rflow)) {
-> -		xudma_rflow_put(rx_chn->common.udmax, flow->udma_rflow);
-> -		return -ENODEV;
-> +		ret = -ENODEV;
-> +		goto err_rflow_put;
-
-goto err;
-
->  	}
->  
->  	/* request and cfg rings */
-> @@ -592,7 +592,7 @@ static int k3_udma_glue_cfg_rx_flow(struct k3_udma_glue_rx_channel *rx_chn,
->  	if (!flow->ringrx) {
->  		ret = -ENODEV;
->  		dev_err(dev, "Failed to get RX ring\n");
-> -		goto err;
-> +		goto err_rflow_put;
->  	}
->  
->  	flow->ringrxfdq = k3_ringacc_request_ring(rx_chn->common.ringacc,
-> @@ -600,19 +600,19 @@ static int k3_udma_glue_cfg_rx_flow(struct k3_udma_glue_rx_channel *rx_chn,
->  	if (!flow->ringrxfdq) {
->  		ret = -ENODEV;
->  		dev_err(dev, "Failed to get RXFDQ ring\n");
-> -		goto err;
-> +		goto err_ringrx_free;
->  	}
->  
->  	ret = k3_ringacc_ring_cfg(flow->ringrx, &flow_cfg->rx_cfg);
->  	if (ret) {
->  		dev_err(dev, "Failed to cfg ringrx %d\n", ret);
-> -		goto err;
-> +		goto err_ringrxfdq_free;
->  	}
->  
->  	ret = k3_ringacc_ring_cfg(flow->ringrxfdq, &flow_cfg->rxfdq_cfg);
->  	if (ret) {
->  		dev_err(dev, "Failed to cfg ringrxfdq %d\n", ret);
-> -		goto err;
-> +		goto err_ringrxfdq_free;
->  	}
->  
->  	if (rx_chn->remote) {
-> @@ -662,7 +662,7 @@ static int k3_udma_glue_cfg_rx_flow(struct k3_udma_glue_rx_channel *rx_chn,
->  	if (ret) {
->  		dev_err(dev, "flow%d config failed: %d\n", flow->udma_rflow_id,
->  			ret);
-> -		goto err;
-> +		goto err_ringrxfdq_free;
->  	}
->  
->  	rx_chn->flows_ready++;
-> @@ -670,8 +670,18 @@ static int k3_udma_glue_cfg_rx_flow(struct k3_udma_glue_rx_channel *rx_chn,
->  		flow->udma_rflow_id, rx_chn->flows_ready);
->  
->  	return 0;
-> -err:
-> -	k3_udma_glue_release_rx_flow(rx_chn, flow_idx);
-> +
-> +err_ringrxfdq_free:
-> +	k3_ringacc_ring_free(flow->ringrxfdq);
-> +
-> +err_ringrx_free:
-> +	k3_ringacc_ring_free(flow->ringrx);
-> +
-> +err_rflow_put:
-> +	xudma_rflow_put(rx_chn->common.udmax, flow->udma_rflow);
-> +	flow->udma_rflow = NULL;
-> +
-> +err_return:
-
-You could have kept the single err label and just copy the
-release_rx_flow() without the rx_chn->flows_ready--;
-
-I don't have anything against multiple labels as such, but a single one
-might be easier to follow?
-
-and you don't need the err_return, just return in place when you would
-jump to it.
-
->  	return ret;
->  }
->  
-> 
-
-- Péter
-
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+DQoNCk9uIDMvMTUvMjAgODoyMSBBTSwgTHVrYXMgQnVsd2FobiB3cm90ZToNCj4gQ29tbWl0IDkw
+YWVjYTg3NWY4YSAoImR0LWJpbmRpbmdzOiBkaXNwbGF5OiBDb252ZXJ0IGV0bmF2aXYgdG8NCj4g
+anNvbi1zY2hlbWEiKSBtaXNzZWQgdG8gYWRqdXN0IHRoZSBEUk0gRFJJVkVSUyBGT1IgVklWQU5U
+RSBHUFUgSVAgZW50cnkNCj4gaW4gTUFJTlRBSU5FUlMuDQo+DQo+IFNpbmNlIHRoZW4sIC4vc2Ny
+aXB0cy9nZXRfbWFpbnRhaW5lci5wbCAtLXNlbGYtdGVzdCBjb21wbGFpbnM6DQo+DQo+ICAgIHdh
+cm5pbmc6IG5vIGZpbGUgbWF0Y2hlcyBcDQo+ICAgIEY6IERvY3VtZW50YXRpb24vZGV2aWNldHJl
+ZS9iaW5kaW5ncy9kaXNwbGF5L2V0bmF2aXYvDQo+DQo+IFVwZGF0ZSBNQUlOVEFJTkVSUyBlbnRy
+eSB0byBsb2NhdGlvbiBvZiBjb252ZXJ0ZWQgc2NoZW1hLg0KPg0KPiBTaWduZWQtb2ZmLWJ5OiBM
+dWthcyBCdWx3YWhuIDxsdWthcy5idWx3YWhuQGdtYWlsLmNvbT4NClJldmlld2VkLWJ5OiBCZW5q
+YW1pbiBHYWlnbmFyZCA8YmVuamFtaW4uZ2FpZ25hcmRAc3QuY29tPg0KDQpUaGFua3MNCj4gLS0t
+DQo+IGFwcGxpZXMgY2xlYW5seSBvbiBuZXh0LTIwMjAwMzEzDQo+DQo+IEJlbmphbWluLCBwbGVh
+c2UgYWNrLg0KPiBSb2IsIHBsZWFzZSBwaWNrIHRoaXMgcGF0Y2ggKGl0IGlzIG5vdCB1cmdlbnQs
+IHRob3VnaCkNCj4NCj4NCj4gICBNQUlOVEFJTkVSUyB8IDIgKy0NCj4gICAxIGZpbGUgY2hhbmdl
+ZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkNCj4NCj4gZGlmZiAtLWdpdCBhL01BSU5U
+QUlORVJTIGIvTUFJTlRBSU5FUlMNCj4gaW5kZXggNzdlZWRlOTc2ZDBmLi41MGE3YTZkNjJlMDYg
+MTAwNjQ0DQo+IC0tLSBhL01BSU5UQUlORVJTDQo+ICsrKyBiL01BSU5UQUlORVJTDQo+IEBAIC01
+NzY2LDcgKzU3NjYsNyBAQCBMOglkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+ICAg
+UzoJTWFpbnRhaW5lZA0KPiAgIEY6CWRyaXZlcnMvZ3B1L2RybS9ldG5hdml2Lw0KPiAgIEY6CWlu
+Y2x1ZGUvdWFwaS9kcm0vZXRuYXZpdl9kcm0uaA0KPiAtRjoJRG9jdW1lbnRhdGlvbi9kZXZpY2V0
+cmVlL2JpbmRpbmdzL2Rpc3BsYXkvZXRuYXZpdi8NCj4gK0Y6CURvY3VtZW50YXRpb24vZGV2aWNl
+dHJlZS9iaW5kaW5ncy9ncHUvdml2YW50ZSxnYy55YW1sDQo+ICAgDQo+ICAgRFJNIERSSVZFUlMg
+Rk9SIFpURSBaWA0KPiAgIE06CVNoYXduIEd1byA8c2hhd25ndW9Aa2VybmVsLm9yZz4NCg==

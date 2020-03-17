@@ -2,227 +2,342 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 222FA188C82
-	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Mar 2020 18:50:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A7C4188D30
+	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Mar 2020 19:29:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726664AbgCQRug convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 17 Mar 2020 13:50:36 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:45762 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726616AbgCQRug (ORCPT
+        id S1726775AbgCQS32 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 17 Mar 2020 14:29:28 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:35029 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726278AbgCQS32 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 17 Mar 2020 13:50:36 -0400
-Received: by mail-oi1-f196.google.com with SMTP id 9so4657121oiq.12;
-        Tue, 17 Mar 2020 10:50:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=YBf9/qey5iqEbmm9p/6OTY8XBEI4m1MbGytjCsa8g54=;
-        b=GWeGTkOkaLk4mPV/FBK80s2mOZSxS7t9w11EdDAk4q3DRPqHmmL4Zkdsbq7XA5DZoq
-         RqE45qMRVV6lDdR2jxl9inZMo3fkRk4lbDlR04zpg0fUfaQ+mZLLgKbAuQpEsnYH4R5r
-         LuqkY4zMhv7kWxMVTUi4vvH71usBy0ghZ9bCGOvWfUR4H0hKlQu4e/7xOL+d8KeGTEHF
-         AVQIORtkECAt+hFnCp3m3yp0ahSfuNdp4XqbbaNBYHrlc3166yQmfasjUBSXVSzSfGVc
-         +s1m08/HQti/tD7XlhbPRx+kDAcep9knfBJBaPkHMhGssyD6KFLEew6c+WGNumNo+BFO
-         ZKbw==
-X-Gm-Message-State: ANhLgQ3MB6gGNzwww82bBX6LRAIJzyem7Pmr7LOCdcW6rrjMNYqPYoej
-        2HDxbCIyU699PPCHyjrupUUz8vPsLq9womvsRvk=
-X-Google-Smtp-Source: ADFU+vs2cxM4lGwiSbL1iii+WsYaWyj8rtiB51rufEEEyznyD7jc5/W/K7D+qefrbuUeEO6XE3EAYugehiJZf02ngNc=
-X-Received: by 2002:aca:ef08:: with SMTP id n8mr11049oih.115.1584467434960;
- Tue, 17 Mar 2020 10:50:34 -0700 (PDT)
+        Tue, 17 Mar 2020 14:29:28 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jEGxu-0006vX-1V; Tue, 17 Mar 2020 18:29:22 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Ariel Elior <aelior@marvell.com>,
+        Sudarsana Kalluru <skalluru@marvell.com>,
+        GR-everest-linux-l2@marvell.com,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] bnx2x: fix spelling mistake "pauseable" -> "pausable"
+Date:   Tue, 17 Mar 2020 18:29:21 +0000
+Message-Id: <20200317182921.482606-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20200317165409.469013-1-colin.king@canonical.com>
-In-Reply-To: <20200317165409.469013-1-colin.king@canonical.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 17 Mar 2020 18:50:23 +0100
-Message-ID: <CAJZ5v0gB_KUxZYd_OaM0anX=60Q8wf9FmFeCLV2T57=utuostA@mail.gmail.com>
-Subject: Re: [PATCH][V2] ACPI: sysfs: copy ACPI data using io memory copying
-To:     Colin King <colin.king@canonical.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Mar 17, 2020 at 5:54 PM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Reading ACPI data on ARM64 at a non-aligned offset from
-> /sys/firmware/acpi/tables/data/BERT will cause a splat because
-> the data is I/O memory mapped and being read with just a memcpy.
-> Fix this by introducing an I/O variant of memory_read_from_buffer
-> and using I/O memory mapped copies instead.
->
-> Fixes the following splat:
->
-> [  439.789355] Unable to handle kernel paging request at virtual address ffff800041ac0007
-> [  439.797275] Mem abort info:
-> [  439.800078]   ESR = 0x96000021
-> [  439.803131]   EC = 0x25: DABT (current EL), IL = 32 bits
-> [  439.808437]   SET = 0, FnV = 0
-> [  439.811486]   EA = 0, S1PTW = 0
-> [  439.814621] Data abort info:
-> [  439.817489]   ISV = 0, ISS = 0x00000021
-> [  439.821319]   CM = 0, WnR = 0
-> [  439.824282] swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000000817fc000
-> [  439.830979] [ffff800041ac0007] pgd=000000bffcfff003, pud=0000009f27cee003, pmd=000000bf4b993003, pte=0068000080280703
-> [  439.841584] Internal error: Oops: 96000021 [#1] SMP
-> [  439.846449] Modules linked in: nls_iso8859_1 dm_multipath scsi_dh_rdac scsi_dh_emc scsi_dh_alua ipmi_ssif input_leds joydev ipmi_devintf ipmi_msghandler thunderx2_pmu sch_fq_codel ip_tables x_tables autofs4 btrfs zstd_compress raid10 raid456 async_raid6_recov async_memcpy async_pq async_xor async_tx xor xor_neon raid6_pq libcrc32c raid1 raid0 multipath linear i2c_smbus ast i2c_algo_bit crct10dif_ce drm_vram_helper uas ttm ghash_ce drm_kms_helper sha2_ce syscopyarea sha256_arm64 qede sysfillrect mpt3sas sha1_ce sysimgblt fb_sys_fops raid_class qed drm scsi_transport_sas usb_storage ahci crc8 gpio_xlp i2c_xlp9xx hid_generic usbhid hid aes_neon_bs aes_neon_blk aes_ce_blk crypto_simd cryptd aes_ce_cipher
-> [  439.908474] CPU: 2 PID: 3926 Comm: a.out Not tainted 5.4.0-14-generic #17-Ubuntu
-> [  439.915855] Hardware name: To be filled by O.E.M. Saber/Saber, BIOS 0ACKL027 07/01/2019
-> [  439.923844] pstate: 80400009 (Nzcv daif +PAN -UAO)
-> [  439.928625] pc : __memcpy+0x90/0x180
-> [  439.932192] lr : memory_read_from_buffer+0x64/0x88
-> [  439.936968] sp : ffff8000350dbc70
-> [  439.940270] x29: ffff8000350dbc70 x28: ffff009e9c444b00
-> [  439.945568] x27: 0000000000000000 x26: 0000000000000000
-> [  439.950866] x25: 0000000056000000 x24: ffff800041ac0000
-> [  439.956164] x23: ffff009ea163f980 x22: 0000000000000007
-> [  439.961462] x21: ffff8000350dbce8 x20: 000000000000000e
-> [  439.966760] x19: 0000000000000007 x18: ffff8000112f64a8
-> [  439.972058] x17: 0000000000000000 x16: 0000000000000000
-> [  439.977355] x15: 0000000080280000 x14: ffff800041aed000
-> [  439.982653] x13: ffff009ee9fa2840 x12: ffff800041ad1000
-> [  439.987951] x11: ffff8000115e1360 x10: ffff8000115e1360
-> [  439.993248] x9 : 0000000000010000 x8 : ffff800011ad2658
-> [  439.998546] x7 : ffff800041ac0000 x6 : ffff009ea163f980
-> [  440.003844] x5 : 0140000000000000 x4 : 0000000000010000
-> [  440.009141] x3 : ffff800041ac0000 x2 : 0000000000000007
-> [  440.014439] x1 : ffff800041ac0007 x0 : ffff009ea163f980
-> [  440.019737] Call trace:
-> [  440.022173]  __memcpy+0x90/0x180
-> [  440.025392]  acpi_data_show+0x54/0x80
-> [  440.029044]  sysfs_kf_bin_read+0x6c/0xa8
-> [  440.032954]  kernfs_file_direct_read+0x90/0x2d0
-> [  440.037470]  kernfs_fop_read+0x68/0x78
-> [  440.041210]  __vfs_read+0x48/0x90
-> [  440.044511]  vfs_read+0xd0/0x1a0
-> [  440.047726]  ksys_read+0x78/0x100
-> [  440.051028]  __arm64_sys_read+0x24/0x30
-> [  440.054852]  el0_svc_common.constprop.0+0xdc/0x1d8
-> [  440.059629]  el0_svc_handler+0x34/0xa0
-> [  440.063366]  el0_svc+0x10/0x14
-> [  440.066411] Code: 36180062 f8408423 f80084c3 36100062 (b8404423)
-> [  440.072492] ---[ end trace 45fb374e8d2d800e ]---
->
-> A simple reproducer is as follows:
->
-> int main(void)
-> {
->         int fd;
->         char buffer[7];
->         ssize_t n;
->
->         fd = open("/sys/firmware/acpi/tables/data/BERT", O_RDONLY);
->         if (fd < 0) {
->                 perror("open failed");
->                 return -1;
->         }
->         do {
->                 n = read(fd, buffer, sizeof(buffer));
->         } while (n > 0);
->
->         return 0;
-> }
->
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
-> V2: Add missing #include <linux/io.h> without which we get
->     a build failure when building with allnoconfig
-> ---
->  drivers/acpi/sysfs.c   |  2 +-
->  fs/libfs.c             | 34 ++++++++++++++++++++++++++++++++++
->  include/linux/string.h |  2 ++
->  3 files changed, 37 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-> index c60d2c6..fb9e216 100644
-> --- a/drivers/acpi/sysfs.c
-> +++ b/drivers/acpi/sysfs.c
-> @@ -446,7 +446,7 @@ static ssize_t acpi_data_show(struct file *filp, struct kobject *kobj,
->         base = acpi_os_map_memory(data_attr->addr, data_attr->attr.size);
->         if (!base)
->                 return -ENOMEM;
-> -       rc = memory_read_from_buffer(buf, count, &offset, base,
-> +       rc = memory_read_from_io_buffer(buf, count, &offset, base,
->                                      data_attr->attr.size);
->         acpi_os_unmap_memory(base, data_attr->attr.size);
->
-> diff --git a/fs/libfs.c b/fs/libfs.c
-> index c686bd9..1a49da1 100644
-> --- a/fs/libfs.c
-> +++ b/fs/libfs.c
-> @@ -20,6 +20,7 @@
->  #include <linux/fs_context.h>
->  #include <linux/pseudo_fs.h>
->  #include <linux/fsnotify.h>
-> +#include <linux/io.h>
->
->  #include <linux/uaccess.h>
->
-> @@ -800,6 +801,39 @@ ssize_t memory_read_from_buffer(void *to, size_t count, loff_t *ppos,
->  }
->  EXPORT_SYMBOL(memory_read_from_buffer);
->
-> +/**
-> + * memory_read_from_io_buffer - copy data from a io memory mapped buffer
-> + * @to: the kernel space buffer to read to
-> + * @count: the maximum number of bytes to read
-> + * @ppos: the current position in the buffer
-> + * @from: the buffer to read from
-> + * @available: the size of the buffer
-> + *
-> + * The memory_read_from_buffer() function reads up to @count bytes from the
-> + * io memory mappy buffer @from at offset @ppos into the kernel space address
-> + * starting at @to.
-> + *
-> + * On success, the number of bytes read is returned and the offset @ppos is
-> + * advanced by this number, or negative value is returned on error.
-> + **/
-> +ssize_t memory_read_from_io_buffer(void *to, size_t count, loff_t *ppos,
-> +                                  const void *from, size_t available)
-> +{
-> +       loff_t pos = *ppos;
-> +
-> +       if (pos < 0)
-> +               return -EINVAL;
-> +       if (pos >= available)
-> +               return 0;
-> +       if (count > available - pos)
-> +               count = available - pos;
-> +       memcpy_fromio(to, from + pos, count);
-> +       *ppos = pos + count;
-> +
-> +       return count;
-> +}
-> +EXPORT_SYMBOL(memory_read_from_io_buffer);
-> +
->  /*
->   * Transaction based IO.
->   * The file expects a single write which triggers the transaction, and then
-> diff --git a/include/linux/string.h b/include/linux/string.h
-> index 6dfbb2e..0c6ec2a 100644
-> --- a/include/linux/string.h
-> +++ b/include/linux/string.h
-> @@ -216,6 +216,8 @@ int bprintf(u32 *bin_buf, size_t size, const char *fmt, ...) __printf(3, 4);
->
->  extern ssize_t memory_read_from_buffer(void *to, size_t count, loff_t *ppos,
->                                        const void *from, size_t available);
-> +extern ssize_t memory_read_from_io_buffer(void *to, size_t count, loff_t *ppos,
-> +                                         const void *from, size_t available);
->
->  int ptr_to_hashval(const void *ptr, unsigned long *hashval_out);
->
-> --
+From: Colin Ian King <colin.king@canonical.com>
 
-I've replaced the v1 with this one, thanks!
+Bulk rename of variables and literal strings. No functional
+changes.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ .../net/ethernet/broadcom/bnx2x/bnx2x_dcb.c   | 84 +++++++++----------
+ .../net/ethernet/broadcom/bnx2x/bnx2x_dcb.h   |  6 +-
+ 2 files changed, 45 insertions(+), 45 deletions(-)
+
+diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_dcb.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_dcb.c
+index 2c6ba046d2a8..fc15a4864077 100644
+--- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_dcb.c
++++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_dcb.c
+@@ -44,7 +44,7 @@ static void bnx2x_dcbx_fill_cos_params(struct bnx2x *bp,
+ 				       struct pg_help_data *help_data,
+ 				       struct dcbx_ets_feature *ets,
+ 				       u32 *pg_pri_orginal_spread);
+-static void bnx2x_dcbx_separate_pauseable_from_non(struct bnx2x *bp,
++static void bnx2x_dcbx_separate_pausable_from_non(struct bnx2x *bp,
+ 				struct cos_help_data *cos_data,
+ 				u32 *pg_pri_orginal_spread,
+ 				struct dcbx_ets_feature *ets);
+@@ -80,7 +80,7 @@ static void bnx2x_pfc_set(struct bnx2x *bp)
+ 	/* Tx COS configuration */
+ 	for (i = 0; i < bp->dcbx_port_params.ets.num_of_cos; i++)
+ 		/*
+-		 * We configure only the pauseable bits (non pauseable aren't
++		 * We configure only the pausable bits (non pausable aren't
+ 		 * configured at all) it's done to avoid false pauses from
+ 		 * network
+ 		 */
+@@ -290,7 +290,7 @@ static void bnx2x_dcbx_get_ets_feature(struct bnx2x *bp,
+ 
+ 	/* Clean up old settings of ets on COS */
+ 	for (i = 0; i < ARRAY_SIZE(bp->dcbx_port_params.ets.cos_params) ; i++) {
+-		cos_params[i].pauseable = false;
++		cos_params[i].pausable = false;
+ 		cos_params[i].strict = BNX2X_DCBX_STRICT_INVALID;
+ 		cos_params[i].bw_tbl = DCBX_INVALID_COS_BW;
+ 		cos_params[i].pri_bitmask = 0;
+@@ -335,12 +335,12 @@ static void  bnx2x_dcbx_get_pfc_feature(struct bnx2x *bp,
+ 	   !GET_FLAGS(error, DCBX_LOCAL_PFC_ERROR | DCBX_LOCAL_PFC_MISMATCH |
+ 			     DCBX_REMOTE_PFC_TLV_NOT_FOUND)) {
+ 		bp->dcbx_port_params.pfc.enabled = true;
+-		bp->dcbx_port_params.pfc.priority_non_pauseable_mask =
++		bp->dcbx_port_params.pfc.priority_non_pausable_mask =
+ 			~(pfc->pri_en_bitmap);
+ 	} else {
+ 		DP(BNX2X_MSG_DCB, "DCBX_LOCAL_PFC_DISABLED\n");
+ 		bp->dcbx_port_params.pfc.enabled = false;
+-		bp->dcbx_port_params.pfc.priority_non_pauseable_mask = 0;
++		bp->dcbx_port_params.pfc.priority_non_pausable_mask = 0;
+ 	}
+ }
+ 
+@@ -1080,8 +1080,8 @@ bnx2x_dcbx_print_cos_params(struct bnx2x *bp,
+ 	DP(BNX2X_MSG_DCB,
+ 	   "pfc_fw_cfg->dcb_version %x\n", pfc_fw_cfg->dcb_version);
+ 	DP(BNX2X_MSG_DCB,
+-	   "pdev->params.dcbx_port_params.pfc.priority_non_pauseable_mask %x\n",
+-	   bp->dcbx_port_params.pfc.priority_non_pauseable_mask);
++	   "pdev->params.dcbx_port_params.pfc.priority_non_pausable_mask %x\n",
++	   bp->dcbx_port_params.pfc.priority_non_pausable_mask);
+ 
+ 	for (cos = 0 ; cos < bp->dcbx_port_params.ets.num_of_cos ; cos++) {
+ 		DP(BNX2X_MSG_DCB,
+@@ -1097,8 +1097,8 @@ bnx2x_dcbx_print_cos_params(struct bnx2x *bp,
+ 		   cos, bp->dcbx_port_params.ets.cos_params[cos].strict);
+ 
+ 		DP(BNX2X_MSG_DCB,
+-		   "pdev->params.dcbx_port_params.ets.cos_params[%d].pauseable %x\n",
+-		   cos, bp->dcbx_port_params.ets.cos_params[cos].pauseable);
++		   "pdev->params.dcbx_port_params.ets.cos_params[%d].pausable %x\n",
++		   cos, bp->dcbx_port_params.ets.cos_params[cos].pausable);
+ 	}
+ 
+ 	for (pri = 0; pri < LLFC_DRIVER_TRAFFIC_TYPE_MAX; pri++) {
+@@ -1182,7 +1182,7 @@ static inline void bnx2x_dcbx_add_to_cos_bw(struct bnx2x *bp,
+ 		data->cos_bw += pg_bw;
+ }
+ 
+-static void bnx2x_dcbx_separate_pauseable_from_non(struct bnx2x *bp,
++static void bnx2x_dcbx_separate_pausable_from_non(struct bnx2x *bp,
+ 			struct cos_help_data *cos_data,
+ 			u32 *pg_pri_orginal_spread,
+ 			struct dcbx_ets_feature *ets)
+@@ -1247,14 +1247,14 @@ static void bnx2x_dcbx_2cos_limit_cee_single_pg_to_cos_params(struct bnx2x *bp,
+ 	}
+ 	/* single priority group */
+ 	if (pg_help_data->data[0].pg < DCBX_MAX_NUM_PG_BW_ENTRIES) {
+-		/* If there are both pauseable and non-pauseable priorities,
+-		 * the pauseable priorities go to the first queue and
+-		 * the non-pauseable priorities go to the second queue.
++		/* If there are both pausable and non-pausable priorities,
++		 * the pausable priorities go to the first queue and
++		 * the non-pausable priorities go to the second queue.
+ 		 */
+ 		if (IS_DCBX_PFC_PRI_MIX_PAUSE(bp, pri_join_mask)) {
+ 			/* Pauseable */
+ 			cos_data->data[0].pausable = true;
+-			/* Non pauseable.*/
++			/* Non pausable.*/
+ 			cos_data->data[1].pausable = false;
+ 
+ 			if (2 == num_of_dif_pri) {
+@@ -1274,7 +1274,7 @@ static void bnx2x_dcbx_2cos_limit_cee_single_pg_to_cos_params(struct bnx2x *bp,
+ 			}
+ 
+ 		} else if (IS_DCBX_PFC_PRI_ONLY_PAUSE(bp, pri_join_mask)) {
+-			/* If there are only pauseable priorities,
++			/* If there are only pausable priorities,
+ 			 * then one/two priorities go to the first queue
+ 			 * and one priority goes to the second queue.
+ 			 */
+@@ -1294,7 +1294,7 @@ static void bnx2x_dcbx_2cos_limit_cee_single_pg_to_cos_params(struct bnx2x *bp,
+ 			cos_data->data[1].pri_join_mask =
+ 				(1 << ttp[LLFC_TRAFFIC_TYPE_FCOE]);
+ 		} else
+-			/* If there are only non-pauseable priorities,
++			/* If there are only non-pausable priorities,
+ 			 * they will all go to the same queue.
+ 			 */
+ 			bnx2x_dcbx_ets_disabled_entry_data(bp,
+@@ -1302,9 +1302,9 @@ static void bnx2x_dcbx_2cos_limit_cee_single_pg_to_cos_params(struct bnx2x *bp,
+ 	} else {
+ 		/* priority group which is not BW limited (PG#15):*/
+ 		if (IS_DCBX_PFC_PRI_MIX_PAUSE(bp, pri_join_mask)) {
+-			/* If there are both pauseable and non-pauseable
+-			 * priorities, the pauseable priorities go to the first
+-			 * queue and the non-pauseable priorities
++			/* If there are both pausable and non-pausable
++			 * priorities, the pausable priorities go to the first
++			 * queue and the non-pausable priorities
+ 			 * go to the second queue.
+ 			 */
+ 			if (DCBX_PFC_PRI_GET_PAUSE(bp, pri_join_mask) >
+@@ -1326,8 +1326,8 @@ static void bnx2x_dcbx_2cos_limit_cee_single_pg_to_cos_params(struct bnx2x *bp,
+ 			/* Non pause-able.*/
+ 			cos_data->data[1].pausable = false;
+ 		} else {
+-			/* If there are only pauseable priorities or
+-			 * only non-pauseable,* the lower priorities go
++			/* If there are only pausable priorities or
++			 * only non-pausable,* the lower priorities go
+ 			 * to the first queue and the higher priorities go
+ 			 * to the second queue.
+ 			 */
+@@ -1375,19 +1375,19 @@ static void bnx2x_dcbx_2cos_limit_cee_two_pg_to_cos_params(
+ 	u8 i = 0;
+ 	u8 pg[DCBX_COS_MAX_NUM_E2] = { 0 };
+ 
+-	/* If there are both pauseable and non-pauseable priorities,
+-	 * the pauseable priorities go to the first queue and
+-	 * the non-pauseable priorities go to the second queue.
++	/* If there are both pausable and non-pausable priorities,
++	 * the pausable priorities go to the first queue and
++	 * the non-pausable priorities go to the second queue.
+ 	 */
+ 	if (IS_DCBX_PFC_PRI_MIX_PAUSE(bp, pri_join_mask)) {
+ 		if (IS_DCBX_PFC_PRI_MIX_PAUSE(bp,
+ 					 pg_help_data->data[0].pg_priority) ||
+ 		    IS_DCBX_PFC_PRI_MIX_PAUSE(bp,
+ 					 pg_help_data->data[1].pg_priority)) {
+-			/* If one PG contains both pauseable and
+-			 * non-pauseable priorities then ETS is disabled.
++			/* If one PG contains both pausable and
++			 * non-pausable priorities then ETS is disabled.
+ 			 */
+-			bnx2x_dcbx_separate_pauseable_from_non(bp, cos_data,
++			bnx2x_dcbx_separate_pausable_from_non(bp, cos_data,
+ 					pg_pri_orginal_spread, ets);
+ 			bp->dcbx_port_params.ets.enabled = false;
+ 			return;
+@@ -1395,18 +1395,18 @@ static void bnx2x_dcbx_2cos_limit_cee_two_pg_to_cos_params(
+ 
+ 		/* Pauseable */
+ 		cos_data->data[0].pausable = true;
+-		/* Non pauseable. */
++		/* Non pausable. */
+ 		cos_data->data[1].pausable = false;
+ 		if (IS_DCBX_PFC_PRI_ONLY_PAUSE(bp,
+ 				pg_help_data->data[0].pg_priority)) {
+-			/* 0 is pauseable */
++			/* 0 is pausable */
+ 			cos_data->data[0].pri_join_mask =
+ 				pg_help_data->data[0].pg_priority;
+ 			pg[0] = pg_help_data->data[0].pg;
+ 			cos_data->data[1].pri_join_mask =
+ 				pg_help_data->data[1].pg_priority;
+ 			pg[1] = pg_help_data->data[1].pg;
+-		} else {/* 1 is pauseable */
++		} else {/* 1 is pausable */
+ 			cos_data->data[0].pri_join_mask =
+ 				pg_help_data->data[1].pg_priority;
+ 			pg[0] = pg_help_data->data[1].pg;
+@@ -1415,8 +1415,8 @@ static void bnx2x_dcbx_2cos_limit_cee_two_pg_to_cos_params(
+ 			pg[1] = pg_help_data->data[0].pg;
+ 		}
+ 	} else {
+-		/* If there are only pauseable priorities or
+-		 * only non-pauseable, each PG goes to a queue.
++		/* If there are only pausable priorities or
++		 * only non-pausable, each PG goes to a queue.
+ 		 */
+ 		cos_data->data[0].pausable = cos_data->data[1].pausable =
+ 			IS_DCBX_PFC_PRI_ONLY_PAUSE(bp, pri_join_mask);
+@@ -1507,23 +1507,23 @@ static void bnx2x_dcbx_2cos_limit_cee_three_pg_to_cos_params(
+ 	u8 num_of_pri = LLFC_DRIVER_TRAFFIC_TYPE_MAX;
+ 
+ 	cos_data->data[0].pri_join_mask = cos_data->data[1].pri_join_mask = 0;
+-	/* If there are both pauseable and non-pauseable priorities,
+-	 * the pauseable priorities go to the first queue and the
+-	 * non-pauseable priorities go to the second queue.
++	/* If there are both pausable and non-pausable priorities,
++	 * the pausable priorities go to the first queue and the
++	 * non-pausable priorities go to the second queue.
+ 	 */
+ 	if (IS_DCBX_PFC_PRI_MIX_PAUSE(bp, pri_join_mask))
+-		bnx2x_dcbx_separate_pauseable_from_non(bp,
++		bnx2x_dcbx_separate_pausable_from_non(bp,
+ 				cos_data, pg_pri_orginal_spread, ets);
+ 	else {
+ 		/* If two BW-limited PG-s were combined to one queue,
+ 		 * the BW is their sum.
+ 		 *
+-		 * If there are only pauseable priorities or only non-pauseable,
++		 * If there are only pausable priorities or only non-pausable,
+ 		 * and there are both BW-limited and non-BW-limited PG-s,
+ 		 * the BW-limited PG/s go to one queue and the non-BW-limited
+ 		 * PG/s go to the second queue.
+ 		 *
+-		 * If there are only pauseable priorities or only non-pauseable
++		 * If there are only pausable priorities or only non-pausable
+ 		 * and all are BW limited, then	two priorities go to the first
+ 		 * queue and one priority goes to the second queue.
+ 		 *
+@@ -1796,7 +1796,7 @@ static void bnx2x_dcbx_fill_cos_params(struct bnx2x *bp,
+ 		p->strict = cos_data.data[i].strict;
+ 		p->bw_tbl = cos_data.data[i].cos_bw;
+ 		p->pri_bitmask = cos_data.data[i].pri_join_mask;
+-		p->pauseable = cos_data.data[i].pausable;
++		p->pausable = cos_data.data[i].pausable;
+ 
+ 		/* sanity */
+ 		if (p->bw_tbl != DCBX_INVALID_COS_BW ||
+@@ -1806,13 +1806,13 @@ static void bnx2x_dcbx_fill_cos_params(struct bnx2x *bp,
+ 
+ 			if (CHIP_IS_E2(bp) || CHIP_IS_E3A0(bp)) {
+ 
+-				if (p->pauseable &&
++				if (p->pausable &&
+ 				    DCBX_PFC_PRI_GET_NON_PAUSE(bp,
+ 						p->pri_bitmask) != 0)
+ 					BNX2X_ERR("Inconsistent config for pausable COS %d\n",
+ 						  i);
+ 
+-				if (!p->pauseable &&
++				if (!p->pausable &&
+ 				    DCBX_PFC_PRI_GET_PAUSE(bp,
+ 						p->pri_bitmask) != 0)
+ 					BNX2X_ERR("Inconsistent config for nonpausable COS %d\n",
+@@ -1820,7 +1820,7 @@ static void bnx2x_dcbx_fill_cos_params(struct bnx2x *bp,
+ 			}
+ 		}
+ 
+-		if (p->pauseable)
++		if (p->pausable)
+ 			DP(BNX2X_MSG_DCB, "COS %d PAUSABLE prijoinmask 0x%x\n",
+ 				  i, cos_data.data[i].pri_join_mask);
+ 		else
+diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_dcb.h b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_dcb.h
+index 9a9517c0f703..6cfe0d50bcd0 100644
+--- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_dcb.h
++++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_dcb.h
+@@ -46,7 +46,7 @@ struct bnx2x_dcbx_cos_params {
+ #define BNX2X_DCBX_STRICT_INVALID			DCBX_COS_MAX_NUM
+ #define BNX2X_DCBX_STRICT_COS_HIGHEST			0
+ #define BNX2X_DCBX_STRICT_COS_NEXT_LOWER_PRI(sp)	((sp) + 1)
+-	u8	pauseable;
++	u8	pausable;
+ };
+ 
+ struct bnx2x_dcbx_pg_params {
+@@ -57,7 +57,7 @@ struct bnx2x_dcbx_pg_params {
+ 
+ struct bnx2x_dcbx_pfc_params {
+ 	u32 enabled;
+-	u32 priority_non_pauseable_mask;
++	u32 priority_non_pausable_mask;
+ };
+ 
+ struct bnx2x_dcbx_port_params {
+@@ -153,7 +153,7 @@ struct cos_help_data {
+ #define DCBX_STRICT_PRIORITY			(15)
+ #define DCBX_INVALID_COS_BW			(0xFFFFFFFF)
+ #define DCBX_PFC_PRI_NON_PAUSE_MASK(bp)		\
+-			((bp)->dcbx_port_params.pfc.priority_non_pauseable_mask)
++			((bp)->dcbx_port_params.pfc.priority_non_pausable_mask)
+ #define DCBX_PFC_PRI_PAUSE_MASK(bp)		\
+ 					((u8)~DCBX_PFC_PRI_NON_PAUSE_MASK(bp))
+ #define DCBX_PFC_PRI_GET_PAUSE(bp, pg_pri)	\
+-- 
+2.25.1
+

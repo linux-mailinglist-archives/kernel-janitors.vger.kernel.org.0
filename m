@@ -2,194 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C509E186CB8
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Mar 2020 14:58:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D14D8187685
+	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Mar 2020 01:09:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731458AbgCPN6R (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 16 Mar 2020 09:58:17 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:44456 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731392AbgCPN6Q (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 16 Mar 2020 09:58:16 -0400
-Received: by mail-qt1-f194.google.com with SMTP id h16so14162752qtr.11;
-        Mon, 16 Mar 2020 06:58:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=3qtCtnALikW4YRd7lmEcJiEiNtsvnAppAgjxyAmiqH4=;
-        b=ERsmc/Qibw62KbwGpwOOfWIZ6CBFiFkO67cMiCszwdoC1DcIaQu8Hw2zScckRBFb44
-         k6GGHr1CPptG34oTO/ZnP+9Va99g5f7NypepdLh5NycRp3Osd96XGvWA4c68o3XvDYP/
-         C71MoeHY59is5S69ymeDdD7pK2hzT7yvHs4mF1UVVEae44I7wUBwlUmKJ//z581FAYGb
-         Gl7jgCbMqBDRIApWcMaBUFRcrUYOfpEc7/pgaj1AKUjzlnCiERfrzVCP8+lyl5mRppQA
-         Gw+H0kLNsLXhnkQ0mQ2+CEttrfnsikLOSSCgc373TnuPJroYc/pFHduTIYS7SjyiiKzP
-         7d9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=3qtCtnALikW4YRd7lmEcJiEiNtsvnAppAgjxyAmiqH4=;
-        b=a8FpaQr7wnrvr3JSd5x8BOc/TRwCd8tFGnZFx6w9dKMc/QDlfhwNpb9vzthAx1bt8T
-         ohUEXyiUsbA7tIgFz8pG8SDRD4BNG3JqG/MVE5AHIPyY/Glu3Kqx8WcbQdjBZk7e8i8J
-         0jS0cYZpIJ8NoeysdlArzuOVfYBO+VTbzSXd6ibXaImYeoc4ZXexYRuTBwtphet1zyT5
-         HIscXaBMB59H9SiyglrDQPyoIX6g3zG2UrtlzFIHFJLvdNSd7tYclIvJ2vdHsQBrvg5x
-         iWUPHtx7K/n7fSTcGNtFDQvmfgAO+WX2w9OmqCDIlDSBkw/tf/zUGmpENYs77+cvbLPc
-         fBdg==
-X-Gm-Message-State: ANhLgQ1P+0Mx/rm/8wDKvWj5HLN9ZiBTxFKrkzUj1C1N3Bos1yO+IfL6
-        7rfKoOBy/90qiGBm3/II5zA=
-X-Google-Smtp-Source: ADFU+vsUgruPzO2nVj4karDuY2h5qc4Sh89hdsjxItBLh5zrjqCxWPDo0lF9ZHSswXcgZF3BH84LQw==
-X-Received: by 2002:ac8:e45:: with SMTP id j5mr101097qti.215.1584367095370;
-        Mon, 16 Mar 2020 06:58:15 -0700 (PDT)
-Received: from quaco.ghostprotocols.net ([179.97.37.151])
-        by smtp.gmail.com with ESMTPSA id i4sm17930568qtr.41.2020.03.16.06.58.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2020 06:58:14 -0700 (PDT)
-From:   Arnaldo Carvalho de Melo <arnaldo.melo@gmail.com>
-X-Google-Original-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
-        id 7C23F40009; Mon, 16 Mar 2020 10:58:12 -0300 (-03)
-Date:   Mon, 16 Mar 2020 10:58:12 -0300
-To:     Colin King <colin.king@canonical.com>,
-        Andi Kleen <andi@firstfloor.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] perf vendor events: fix spelling mistakes: "occurences"
- -> "occurrences"
-Message-ID: <20200316135812.GA28064@kernel.org>
-References: <20200316093853.117752-1-colin.king@canonical.com>
+        id S1733029AbgCQAJq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Mar 2020 20:09:46 -0400
+Received: from mail.uic.edu.hk ([61.143.62.86]:44089 "EHLO umgp.uic.edu.hk"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1733023AbgCQAJq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 16 Mar 2020 20:09:46 -0400
+X-IronPort-AV: E=Sophos;i="5.43,368,1503331200"; 
+   d="scan'208";a="17241123"
+Received: from unknown (HELO zpmail.uic.edu.hk) ([192.168.111.249])
+  by umgp.uic.edu.hk with ESMTP; 17 Mar 2020 08:09:44 +0800
+Received: from zpmail.uic.edu.hk (localhost [127.0.0.1])
+        by zpmail.uic.edu.hk (Postfix) with ESMTPS id 1485C41C0624;
+        Tue, 17 Mar 2020 08:09:43 +0800 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by zpmail.uic.edu.hk (Postfix) with ESMTP id 6882841C058E;
+        Tue, 17 Mar 2020 08:09:42 +0800 (CST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zpmail.uic.edu.hk 6882841C058E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uic.edu.hk;
+        s=6465647E-9D7B-11E8-B17B-42130C7FA3B9; t=1584403782;
+        bh=Wn2BcVyAdGxyDvB/5AnVfCr/iJTzisyuX4dwKssec6E=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=Z/NVeIAgC7fYoelDb+EahBpNHEoi9XL6wmNYdKmaJxMV+WglJG3VLiNeRNhnsI/hG
+         7fj97HJW89Zri4NOxGqg4D2riZYf5wiIzSFzrlCF77Dp/Ad39r4xJWopvAn/N4yj91
+         m7iryjyOYvYzaqrRqvHJjOVR1/L1OtlvR/xQwwd/ylE5pweMVA/2NAlX/2O5XfKiOj
+         axuGH2l0aCJhaaL19GlyWjYmSs5ooWCuZvz1OPCFDx/pQ0U6yGfhBqL4qurgsPCVFU
+         XMwsfVVoEF57K0BxGmOj5lEm+gqBFSDNmkBVGHVY6mi3Bj02iXm+A6d8OcruTHSRP1
+         xZ/55nr5aTLdQ==
+Received: from zpmail.uic.edu.hk ([127.0.0.1])
+        by localhost (zpmail.uic.edu.hk [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 9h2cxdWXFDAC; Tue, 17 Mar 2020 08:09:42 +0800 (CST)
+Received: from zpmail.uic.edu.hk (zpmail.uic.edu.hk [192.168.111.249])
+        by zpmail.uic.edu.hk (Postfix) with ESMTP id E3B8341C0549;
+        Tue, 17 Mar 2020 08:09:35 +0800 (CST)
+Date:   Tue, 17 Mar 2020 08:09:35 +0800 (CST)
+From:   David Ibe <ylawrence@uic.edu.hk>
+Reply-To: David Ibe <davidibe718@gmail.com>
+Message-ID: <658893193.63690258.1584403775841.JavaMail.zimbra@uic.edu.hk>
+Subject: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200316093853.117752-1-colin.king@canonical.com>
-X-Url:  http://acmel.wordpress.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.111.160]
+X-Mailer: Zimbra 8.8.15_GA_3829 (ZimbraWebClient - GC80 (Win)/8.8.15_GA_3829)
+Thread-Index: sdM+WJjAvDsJeOQhjqWy3yNABRDYvg==
+Thread-Topic: 
+To:     unlisted-recipients:; (no To-header on input)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Em Mon, Mar 16, 2020 at 09:38:53AM +0000, Colin King escreveu:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Fix spelling mistake of "occurrences"
 
-This has to be done on the master doc at Intel from where these json
-files are generated, otherwise in the next update this will get
-overwritten.
 
-- Arnaldo
- 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  tools/perf/pmu-events/arch/x86/ivybridge/pipeline.json    | 2 +-
->  tools/perf/pmu-events/arch/x86/ivytown/pipeline.json      | 2 +-
->  tools/perf/pmu-events/arch/x86/jaketown/pipeline.json     | 2 +-
->  .../perf/pmu-events/arch/x86/knightslanding/pipeline.json | 8 ++++----
->  tools/perf/pmu-events/arch/x86/sandybridge/pipeline.json  | 2 +-
->  5 files changed, 8 insertions(+), 8 deletions(-)
-> 
-> diff --git a/tools/perf/pmu-events/arch/x86/ivybridge/pipeline.json b/tools/perf/pmu-events/arch/x86/ivybridge/pipeline.json
-> index 2a0aad91d83d..e5ca2d85e84d 100644
-> --- a/tools/perf/pmu-events/arch/x86/ivybridge/pipeline.json
-> +++ b/tools/perf/pmu-events/arch/x86/ivybridge/pipeline.json
-> @@ -80,7 +80,7 @@
->          "EdgeDetect": "1",
->          "EventName": "INT_MISC.RECOVERY_STALLS_COUNT",
->          "SampleAfterValue": "2000003",
-> -        "BriefDescription": "Number of occurences waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc.)",
-> +        "BriefDescription": "Number of occurrences waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc.)",
->          "CounterMask": "1",
->          "CounterHTOff": "0,1,2,3,4,5,6,7"
->      },
-> diff --git a/tools/perf/pmu-events/arch/x86/ivytown/pipeline.json b/tools/perf/pmu-events/arch/x86/ivytown/pipeline.json
-> index 2a0aad91d83d..e5ca2d85e84d 100644
-> --- a/tools/perf/pmu-events/arch/x86/ivytown/pipeline.json
-> +++ b/tools/perf/pmu-events/arch/x86/ivytown/pipeline.json
-> @@ -80,7 +80,7 @@
->          "EdgeDetect": "1",
->          "EventName": "INT_MISC.RECOVERY_STALLS_COUNT",
->          "SampleAfterValue": "2000003",
-> -        "BriefDescription": "Number of occurences waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc.)",
-> +        "BriefDescription": "Number of occurrences waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc.)",
->          "CounterMask": "1",
->          "CounterHTOff": "0,1,2,3,4,5,6,7"
->      },
-> diff --git a/tools/perf/pmu-events/arch/x86/jaketown/pipeline.json b/tools/perf/pmu-events/arch/x86/jaketown/pipeline.json
-> index 783a5b4a67b1..f32fd4aea6b1 100644
-> --- a/tools/perf/pmu-events/arch/x86/jaketown/pipeline.json
-> +++ b/tools/perf/pmu-events/arch/x86/jaketown/pipeline.json
-> @@ -1019,7 +1019,7 @@
->          "EdgeDetect": "1",
->          "EventName": "INT_MISC.RECOVERY_STALLS_COUNT",
->          "SampleAfterValue": "2000003",
-> -        "BriefDescription": "Number of occurences waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc...).",
-> +        "BriefDescription": "Number of occurrences waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc...).",
->          "CounterMask": "1",
->          "CounterHTOff": "0,1,2,3,4,5,6,7"
->      },
-> diff --git a/tools/perf/pmu-events/arch/x86/knightslanding/pipeline.json b/tools/perf/pmu-events/arch/x86/knightslanding/pipeline.json
-> index 92e4ef2e22c6..17c92cdedde0 100644
-> --- a/tools/perf/pmu-events/arch/x86/knightslanding/pipeline.json
-> +++ b/tools/perf/pmu-events/arch/x86/knightslanding/pipeline.json
-> @@ -340,7 +340,7 @@
->          "UMask": "0x1",
->          "EventName": "RECYCLEQ.LD_BLOCK_ST_FORWARD",
->          "SampleAfterValue": "200003",
-> -        "BriefDescription": "Counts the number of occurences a retired load gets blocked because its address partially overlaps with a store",
-> +        "BriefDescription": "Counts the number of occurrences a retired load gets blocked because its address partially overlaps with a store",
->          "Data_LA": "1"
->      },
->      {
-> @@ -349,7 +349,7 @@
->          "UMask": "0x2",
->          "EventName": "RECYCLEQ.LD_BLOCK_STD_NOTREADY",
->          "SampleAfterValue": "200003",
-> -        "BriefDescription": "Counts the number of occurences a retired load gets blocked because its address overlaps with a store whose data is not ready"
-> +        "BriefDescription": "Counts the number of occurrences a retired load gets blocked because its address overlaps with a store whose data is not ready"
->      },
->      {
->          "PublicDescription": "This event counts the number of retired store that experienced a cache line boundary split(Precise Event). Note that each spilt should be counted only once.",
-> @@ -358,7 +358,7 @@
->          "UMask": "0x4",
->          "EventName": "RECYCLEQ.ST_SPLITS",
->          "SampleAfterValue": "200003",
-> -        "BriefDescription": "Counts the number of occurences a retired store that is a cache line split. Each split should be counted only once."
-> +        "BriefDescription": "Counts the number of occurrences a retired store that is a cache line split. Each split should be counted only once."
->      },
->      {
->          "PEBS": "1",
-> @@ -367,7 +367,7 @@
->          "UMask": "0x8",
->          "EventName": "RECYCLEQ.LD_SPLITS",
->          "SampleAfterValue": "200003",
-> -        "BriefDescription": "Counts the number of occurences a retired load that is a cache line split. Each split should be counted only once.",
-> +        "BriefDescription": "Counts the number of occurrences a retired load that is a cache line split. Each split should be counted only once.",
->          "Data_LA": "1"
->      },
->      {
-> diff --git a/tools/perf/pmu-events/arch/x86/sandybridge/pipeline.json b/tools/perf/pmu-events/arch/x86/sandybridge/pipeline.json
-> index b7150f65f16d..d69db55f33e7 100644
-> --- a/tools/perf/pmu-events/arch/x86/sandybridge/pipeline.json
-> +++ b/tools/perf/pmu-events/arch/x86/sandybridge/pipeline.json
-> @@ -108,7 +108,7 @@
->          "EdgeDetect": "1",
->          "EventName": "INT_MISC.RECOVERY_STALLS_COUNT",
->          "SampleAfterValue": "2000003",
-> -        "BriefDescription": "Number of occurences waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc...).",
-> +        "BriefDescription": "Number of occurrences waiting for the checkpoints in Resource Allocation Table (RAT) to be recovered after Nuke due to all other cases except JEClear (e.g. whenever a ucode assist is needed like SSE exception, memory disambiguation, etc...).",
->          "CounterMask": "1",
->          "CounterHTOff": "0,1,2,3,4,5,6,7"
->      },
-> -- 
-> 2.25.1
-> 
+Good Day,                
 
--- 
+I am Mr. David Ibe, I work with the International Standards on Auditing, I have seen on records, that several times people has divert your funds into their own personal accounts.
 
-- Arnaldo
+Now I am writing to you in respect of the amount which I have been able to send to you through our International United Nations accredited and approved Diplomat, who has arrived Africa, I want you to know that the diplomat would deliver the funds which I have packaged as a diplomatic compensation to you and the amount in the consignment is  $10,000,000.00 United State Dollars.
+
+I did not disclose the contents to the diplomat, but I told him that it is your compensation from the Auditing Corporate Governance and Stewardship, Auditing and Assurance Standards Board. I want you to know that these funds would help with your financial status as I have seen in records that you have spent a lot trying to receive these funds and I am not demanding so much from you but only 30% for my stress and logistics.
+
+I would like you to get back to me with your personal contact details, so that I can give you the contact information's of the diplomat who has arrived Africa and has been waiting to get your details so that he can proceed with the delivery to you.
+
+Yours Sincerely,
+Kindly forward your details to: mrdavidibe966@gmail.com
+Mr. David Ibe
+International Auditor,
+Corporate Governance and Stewardship

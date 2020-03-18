@@ -2,90 +2,143 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D305018A29D
-	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Mar 2020 19:49:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54AB818A300
+	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Mar 2020 20:13:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726866AbgCRStm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Mar 2020 14:49:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38852 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726619AbgCRStm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Mar 2020 14:49:42 -0400
-Received: from localhost (mobile-166-175-186-165.mycingular.net [166.175.186.165])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 66AC020724;
-        Wed, 18 Mar 2020 18:49:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584557381;
-        bh=m4cbPVk0gn7Y6oT8HwTSVAuobPlopKWPy7rT39Co20w=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=PkApTePJZik35M+XbXXxSMGMQsmJfHgLTzOWT94R0zCsUHXCHOnRwbCtdgwOCQZDC
-         gGkjkz1pp+VAKTPRN5WmwHlyybtimFIDOE51JoFUHbiRr2b0Z6T6Jp6E/TBG4EOssZ
-         GBK4OUNkaChrKGS70Vi7a/wvbIWILG8EI+Id9pVY=
-Date:   Wed, 18 Mar 2020 13:49:39 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     Hou Zhiqiang <Zhiqiang.Hou@nxp.com>, Rob Herring <robh@kernel.org>,
-        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: correct typo in new NXP LAYERSCAPE GEN4
-Message-ID: <20200318184939.GA209856@google.com>
+        id S1726810AbgCRTNE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Mar 2020 15:13:04 -0400
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:58616 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726638AbgCRTNE (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 18 Mar 2020 15:13:04 -0400
+Received: from localhost.localdomain ([93.22.36.95])
+        by mwinf5d72 with ME
+        id FvCu22009239p2M03vCuqv; Wed, 18 Mar 2020 20:12:57 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 18 Mar 2020 20:12:57 +0100
+X-ME-IP: 93.22.36.95
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     vkoul@kernel.org, dan.j.williams@intel.com, peter.ujfalusi@ti.com,
+        grygorii.strashko@ti.com
+Cc:     dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH V2] dmaengine: ti: k3-udma-glue: Fix an error handling path in 'k3_udma_glue_cfg_rx_flow()'
+Date:   Wed, 18 Mar 2020 20:12:09 +0100
+Message-Id: <20200318191209.1267-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200314142559.13505-1-lukas.bulwahn@gmail.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Mar 14, 2020 at 03:25:59PM +0100, Lukas Bulwahn wrote:
-> Commit 3edeb49525bb ("dt-bindings: PCI: Add NXP Layerscape SoCs PCIe Gen4
-> controller") includes a new entry in MAINTAINERS, but slipped in a typo in
-> one of the file entries.
-> 
-> Hence, since then, ./scripts/get_maintainer.pl --self-test complains:
-> 
->   warning: no file matches F: \
->     drivers/pci/controller/mobibeil/pcie-layerscape-gen4.c
-> 
-> Correct the typo in PCI DRIVER FOR NXP LAYERSCAPE GEN4 CONTROLLER.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
-> applies cleanly on next-20200313
-> 
-> Hou, please ack.
-> Rob, please pick this patch (it is not urgent, though).
+All but one error handling paths in the 'k3_udma_glue_cfg_rx_flow()'
+function 'goto err' and call 'k3_udma_glue_release_rx_flow()'.
 
-3edeb49525bb ("dt-bindings: PCI: Add NXP Layerscape SoCs PCIe Gen4
-controller") is on Lorenzo's pci/mobiveil branch and queued for v5.7.
+This not correct because this function has a 'channel->flows_ready--;' at
+the end, but 'flows_ready' has not been incremented here, when we branch to
+the error handling path.
 
-But it hasn't been merged upstream yet, so we should squash this fix
-into Lorenzo's branch so we don't need a fixup commit.
+In order to keep a correct value in 'flows_ready', un-roll
+'k3_udma_glue_release_rx_flow()', simplify it, add some labels and branch
+at the correct places when an error is detected.
 
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 32a95d162f06..77eede976d0f 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -12858,7 +12858,7 @@ L:	linux-pci@vger.kernel.org
->  L:	linux-arm-kernel@lists.infradead.org
->  S:	Maintained
->  F:	Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt
-> -F:	drivers/pci/controller/mobibeil/pcie-layerscape-gen4.c
-> +F:	drivers/pci/controller/mobiveil/pcie-layerscape-gen4.c
->  
->  PCI DRIVER FOR GENERIC OF HOSTS
->  M:	Will Deacon <will@kernel.org>
-> 
-> base-commit: 2e602db729948ce577bf07e2b113f2aa806b62c7
-> -- 
-> 2.17.1
-> 
+Doing so, we also NULLify 'flow->udma_rflow' in a path that was lacking it.
+
+Fixes: d70241913413 ("dmaengine: ti: k3-udma: Add glue layer for non DMAengine user")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+V2: adjust subject
+    direct return in the first error handling path
+---
+ drivers/dma/ti/k3-udma-glue.c | 30 ++++++++++++++++++++----------
+ 1 file changed, 20 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/dma/ti/k3-udma-glue.c b/drivers/dma/ti/k3-udma-glue.c
+index dbccdc7c0ed5..890573eb1625 100644
+--- a/drivers/dma/ti/k3-udma-glue.c
++++ b/drivers/dma/ti/k3-udma-glue.c
+@@ -578,12 +578,12 @@ static int k3_udma_glue_cfg_rx_flow(struct k3_udma_glue_rx_channel *rx_chn,
+ 	if (IS_ERR(flow->udma_rflow)) {
+ 		ret = PTR_ERR(flow->udma_rflow);
+ 		dev_err(dev, "UDMAX rflow get err %d\n", ret);
+-		goto err;
++		return ret;
+ 	}
+ 
+ 	if (flow->udma_rflow_id != xudma_rflow_get_id(flow->udma_rflow)) {
+-		xudma_rflow_put(rx_chn->common.udmax, flow->udma_rflow);
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto err_rflow_put;
+ 	}
+ 
+ 	/* request and cfg rings */
+@@ -592,7 +592,7 @@ static int k3_udma_glue_cfg_rx_flow(struct k3_udma_glue_rx_channel *rx_chn,
+ 	if (!flow->ringrx) {
+ 		ret = -ENODEV;
+ 		dev_err(dev, "Failed to get RX ring\n");
+-		goto err;
++		goto err_rflow_put;
+ 	}
+ 
+ 	flow->ringrxfdq = k3_ringacc_request_ring(rx_chn->common.ringacc,
+@@ -600,19 +600,19 @@ static int k3_udma_glue_cfg_rx_flow(struct k3_udma_glue_rx_channel *rx_chn,
+ 	if (!flow->ringrxfdq) {
+ 		ret = -ENODEV;
+ 		dev_err(dev, "Failed to get RXFDQ ring\n");
+-		goto err;
++		goto err_ringrx_free;
+ 	}
+ 
+ 	ret = k3_ringacc_ring_cfg(flow->ringrx, &flow_cfg->rx_cfg);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to cfg ringrx %d\n", ret);
+-		goto err;
++		goto err_ringrxfdq_free;
+ 	}
+ 
+ 	ret = k3_ringacc_ring_cfg(flow->ringrxfdq, &flow_cfg->rxfdq_cfg);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to cfg ringrxfdq %d\n", ret);
+-		goto err;
++		goto err_ringrxfdq_free;
+ 	}
+ 
+ 	if (rx_chn->remote) {
+@@ -662,7 +662,7 @@ static int k3_udma_glue_cfg_rx_flow(struct k3_udma_glue_rx_channel *rx_chn,
+ 	if (ret) {
+ 		dev_err(dev, "flow%d config failed: %d\n", flow->udma_rflow_id,
+ 			ret);
+-		goto err;
++		goto err_ringrxfdq_free;
+ 	}
+ 
+ 	rx_chn->flows_ready++;
+@@ -670,8 +670,17 @@ static int k3_udma_glue_cfg_rx_flow(struct k3_udma_glue_rx_channel *rx_chn,
+ 		flow->udma_rflow_id, rx_chn->flows_ready);
+ 
+ 	return 0;
+-err:
+-	k3_udma_glue_release_rx_flow(rx_chn, flow_idx);
++
++err_ringrxfdq_free:
++	k3_ringacc_ring_free(flow->ringrxfdq);
++
++err_ringrx_free:
++	k3_ringacc_ring_free(flow->ringrx);
++
++err_rflow_put:
++	xudma_rflow_put(rx_chn->common.udmax, flow->udma_rflow);
++	flow->udma_rflow = NULL;
++
+ 	return ret;
+ }
+ 
+-- 
+2.20.1
+

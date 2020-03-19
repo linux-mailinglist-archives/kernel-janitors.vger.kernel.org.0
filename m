@@ -2,94 +2,179 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A241D18B3C0
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Mar 2020 13:50:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C703618C09F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Mar 2020 20:43:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727228AbgCSMuS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Mar 2020 08:50:18 -0400
-Received: from mail-il1-f196.google.com ([209.85.166.196]:46200 "EHLO
-        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727027AbgCSMuS (ORCPT
+        id S1727434AbgCSTnC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Mar 2020 15:43:02 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:46902 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725817AbgCSTnB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Mar 2020 08:50:18 -0400
-Received: by mail-il1-f196.google.com with SMTP id e8so2029587ilc.13
-        for <kernel-janitors@vger.kernel.org>; Thu, 19 Mar 2020 05:50:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=e2kRurvNRM6yJzR/tywfoZ+TsjmSQexwGw7pldqtlqk=;
-        b=dwGyMTV+lnE39ADUBbCiSV54RllY6/ZrunDbBcmCIqYLE7xf1n6YCb+gx24/cvPT8f
-         9DtLO0kdvWE61ngyTg54esmsjShJ5Kj6AMVNhMoFPqsw5m2jBcsAPti/ezD4xt4FTiuF
-         JAX7/45IJvFEQ40iFyGkBe70H1NkCJ0d5I6Po=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=e2kRurvNRM6yJzR/tywfoZ+TsjmSQexwGw7pldqtlqk=;
-        b=VPFp9RZ4sGlsp+yUOua9gFNkai6XnN3jxh2IwC23k+ACC74HzX/36xeLNjBdMrLOrd
-         vydBupctOfB3+uHiUnFWMoHmAHoUfjzalO+Etv3XrYyE9rGXygeqquOn6+cew2rca5iP
-         gwA4cm1dlkRimMlHKe5pyY/i6EO+YyccU7eeqC2fHExZAV0VG/Du3s84uTfhxFp3p/yV
-         O70wTAtZyeXb3ino8f/wKU3rGS/6Qz6LA4v4tqbdF7/9MQ/1G1nC8NLr/CtAGsD8P05D
-         5FGsH0BlstzyQxn33t4Rh3yQLIX4n/jslMzkC0RsrEVvFUslhsZYmyk7IAfY+7ximlvT
-         6OYA==
-X-Gm-Message-State: ANhLgQ1Tj3I4BrzZNK+tYRVTfJDDLj/LRSvI+lou+XM0EZy7LbOpvnf0
-        F9myH4jfQLhbNo+PoFYimCNrkLPFfj8=
-X-Google-Smtp-Source: ADFU+vtW4tOKwBSP7HLQaofhdLlA0VZBLwtDh8p7i6jklH5PQzpCLqXseqN+0EB8U4rzGzpSruKZWQ==
-X-Received: by 2002:a05:6e02:1090:: with SMTP id r16mr3092532ilj.198.1584622216888;
-        Thu, 19 Mar 2020 05:50:16 -0700 (PDT)
-Received: from [172.22.22.26] (c-73-185-129-58.hsd1.mn.comcast.net. [73.185.129.58])
-        by smtp.googlemail.com with ESMTPSA id i189sm817601ild.0.2020.03.19.05.50.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Mar 2020 05:50:16 -0700 (PDT)
-Subject: Re: [PATCH net-next] net: ipa: Remove unused including
- <linux/version.h>
-To:     YueHaibing <yuehaibing@huawei.com>, Alex Elder <elder@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>
-Cc:     netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200319121200.31214-1-yuehaibing@huawei.com>
-From:   Alex Elder <elder@ieee.org>
-Message-ID: <d47072c5-3d10-7097-1e01-5c814bb5c919@ieee.org>
-Date:   Thu, 19 Mar 2020 07:50:11 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        Thu, 19 Mar 2020 15:43:01 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02JJgs3x071693;
+        Thu, 19 Mar 2020 14:42:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1584646974;
+        bh=wB4aZvW9cG3UKECKMl7jglc4EJ+CkeQjjqMGcNaKs8E=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=cYgYsAEXcTynDy2ctOINxf0KdzYzEfwRGOOSiUAROBymEjlk0s9lI6Kroqhuo3wRY
+         mInuJnT9RUzUImvo0wDsBIHbm/m0Rc74C5iDzNQmcx3lXZ7mWJRst3h0vFPTL5CqN+
+         q/j7vkvBB0JJnZDizwxYYKJFE7cyBhm1CQR/im/s=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 02JJgsoh124146
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 19 Mar 2020 14:42:54 -0500
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 19
+ Mar 2020 14:42:54 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Thu, 19 Mar 2020 14:42:53 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02JJgpIs004780;
+        Thu, 19 Mar 2020 14:42:52 -0500
+Subject: Re: [PATCH V2] dmaengine: ti: k3-udma-glue: Fix an error handling
+ path in 'k3_udma_glue_cfg_rx_flow()'
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        <vkoul@kernel.org>, <dan.j.williams@intel.com>,
+        <grygorii.strashko@ti.com>
+CC:     <dmaengine@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <20200318191209.1267-1-christophe.jaillet@wanadoo.fr>
+From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
+Message-ID: <6dbe8b04-a64b-f9c7-e620-a6002045ccb6@ti.com>
+Date:   Thu, 19 Mar 2020 21:43:01 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200319121200.31214-1-yuehaibing@huawei.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20200318191209.1267-1-christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 3/19/20 7:12 AM, YueHaibing wrote:
-> Remove including <linux/version.h> that don't need it.
+Hi Christophe,
+
+On 18/03/2020 21.12, Christophe JAILLET wrote:
+> All but one error handling paths in the 'k3_udma_glue_cfg_rx_flow()'
+> function 'goto err' and call 'k3_udma_glue_release_rx_flow()'.
 > 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> This not correct because this function has a 'channel->flows_ready--;' at
+> the end, but 'flows_ready' has not been incremented here, when we branch to
+> the error handling path.
+> 
+> In order to keep a correct value in 'flows_ready', un-roll
+> 'k3_udma_glue_release_rx_flow()', simplify it, add some labels and branch
+> at the correct places when an error is detected.
+> 
+> Doing so, we also NULLify 'flow->udma_rflow' in a path that was lacking it.
+> 
+> Fixes: d70241913413 ("dmaengine: ti: k3-udma: Add glue layer for non DMAengine user")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> V2: adjust subject
+>     direct return in the first error handling path
 
-Looks good.  Thanks for the patches.
+Thank you!
 
-Reviewed-by: Alex Elder <elder@linaro.org>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
 
 > ---
->  drivers/net/ipa/ipa_endpoint.c | 1 -
->  1 file changed, 1 deletion(-)
+>  drivers/dma/ti/k3-udma-glue.c | 30 ++++++++++++++++++++----------
+>  1 file changed, 20 insertions(+), 10 deletions(-)
 > 
-> diff --git a/drivers/net/ipa/ipa_endpoint.c b/drivers/net/ipa/ipa_endpoint.c
-> index 915b4cd05dd2..217cbf337ad7 100644
-> --- a/drivers/net/ipa/ipa_endpoint.c
-> +++ b/drivers/net/ipa/ipa_endpoint.c
-> @@ -9,7 +9,6 @@
->  #include <linux/slab.h>
->  #include <linux/bitfield.h>
->  #include <linux/if_rmnet.h>
-> -#include <linux/version.h>
->  #include <linux/dma-direction.h>
+> diff --git a/drivers/dma/ti/k3-udma-glue.c b/drivers/dma/ti/k3-udma-glue.c
+> index dbccdc7c0ed5..890573eb1625 100644
+> --- a/drivers/dma/ti/k3-udma-glue.c
+> +++ b/drivers/dma/ti/k3-udma-glue.c
+> @@ -578,12 +578,12 @@ static int k3_udma_glue_cfg_rx_flow(struct k3_udma_glue_rx_channel *rx_chn,
+>  	if (IS_ERR(flow->udma_rflow)) {
+>  		ret = PTR_ERR(flow->udma_rflow);
+>  		dev_err(dev, "UDMAX rflow get err %d\n", ret);
+> -		goto err;
+> +		return ret;
+>  	}
 >  
->  #include "gsi.h"
-> 
-> 
+>  	if (flow->udma_rflow_id != xudma_rflow_get_id(flow->udma_rflow)) {
+> -		xudma_rflow_put(rx_chn->common.udmax, flow->udma_rflow);
+> -		return -ENODEV;
+> +		ret = -ENODEV;
+> +		goto err_rflow_put;
+>  	}
+>  
+>  	/* request and cfg rings */
+> @@ -592,7 +592,7 @@ static int k3_udma_glue_cfg_rx_flow(struct k3_udma_glue_rx_channel *rx_chn,
+>  	if (!flow->ringrx) {
+>  		ret = -ENODEV;
+>  		dev_err(dev, "Failed to get RX ring\n");
+> -		goto err;
+> +		goto err_rflow_put;
+>  	}
+>  
+>  	flow->ringrxfdq = k3_ringacc_request_ring(rx_chn->common.ringacc,
+> @@ -600,19 +600,19 @@ static int k3_udma_glue_cfg_rx_flow(struct k3_udma_glue_rx_channel *rx_chn,
+>  	if (!flow->ringrxfdq) {
+>  		ret = -ENODEV;
+>  		dev_err(dev, "Failed to get RXFDQ ring\n");
+> -		goto err;
+> +		goto err_ringrx_free;
+>  	}
+>  
+>  	ret = k3_ringacc_ring_cfg(flow->ringrx, &flow_cfg->rx_cfg);
+>  	if (ret) {
+>  		dev_err(dev, "Failed to cfg ringrx %d\n", ret);
+> -		goto err;
+> +		goto err_ringrxfdq_free;
+>  	}
+>  
+>  	ret = k3_ringacc_ring_cfg(flow->ringrxfdq, &flow_cfg->rxfdq_cfg);
+>  	if (ret) {
+>  		dev_err(dev, "Failed to cfg ringrxfdq %d\n", ret);
+> -		goto err;
+> +		goto err_ringrxfdq_free;
+>  	}
+>  
+>  	if (rx_chn->remote) {
+> @@ -662,7 +662,7 @@ static int k3_udma_glue_cfg_rx_flow(struct k3_udma_glue_rx_channel *rx_chn,
+>  	if (ret) {
+>  		dev_err(dev, "flow%d config failed: %d\n", flow->udma_rflow_id,
+>  			ret);
+> -		goto err;
+> +		goto err_ringrxfdq_free;
+>  	}
+>  
+>  	rx_chn->flows_ready++;
+> @@ -670,8 +670,17 @@ static int k3_udma_glue_cfg_rx_flow(struct k3_udma_glue_rx_channel *rx_chn,
+>  		flow->udma_rflow_id, rx_chn->flows_ready);
+>  
+>  	return 0;
+> -err:
+> -	k3_udma_glue_release_rx_flow(rx_chn, flow_idx);
+> +
+> +err_ringrxfdq_free:
+> +	k3_ringacc_ring_free(flow->ringrxfdq);
+> +
+> +err_ringrx_free:
+> +	k3_ringacc_ring_free(flow->ringrx);
+> +
+> +err_rflow_put:
+> +	xudma_rflow_put(rx_chn->common.udmax, flow->udma_rflow);
+> +	flow->udma_rflow = NULL;
+> +
+>  	return ret;
+>  }
+>  
 > 
 
+- Péter
+
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki

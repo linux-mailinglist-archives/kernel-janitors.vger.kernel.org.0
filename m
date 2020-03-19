@@ -2,59 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6C3D18B2F9
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Mar 2020 13:08:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BA2B18B3B9
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Mar 2020 13:50:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726892AbgCSMIx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Mar 2020 08:08:53 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:12101 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726793AbgCSMIx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Mar 2020 08:08:53 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 5ECF6AE42FC31106F69E;
-        Thu, 19 Mar 2020 20:08:45 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 19 Mar 2020 20:08:36 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Alex Elder <elder@kernel.org>,
+        id S1727091AbgCSMuB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Mar 2020 08:50:01 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:37708 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725787AbgCSMuB (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 19 Mar 2020 08:50:01 -0400
+Received: by mail-io1-f65.google.com with SMTP id q9so2097631iod.4
+        for <kernel-janitors@vger.kernel.org>; Thu, 19 Mar 2020 05:50:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ieee.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=yv6EoSuXYnVOLdAQdlrLMbtnaCiE6QeodA9eh5mGaTA=;
+        b=KBV3imAmNiL4Lf4kM4aoaLuaVP04YtlSQQFaOM6WZHr0q3Prk5aka6QpDcxJO8XaFh
+         vvg19a6WGHsXDNtiWnJqR1s8jwxw15NvlE5otGtqPhkcOV0KoJV77tEoOzoj6aaKRc68
+         aqq3xz5JEcAPq/uUJ8YX0yF59HLVPPuOBkYn8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=yv6EoSuXYnVOLdAQdlrLMbtnaCiE6QeodA9eh5mGaTA=;
+        b=OAwGaFns1FdQ/BvzVEGAGcHJMyIDcX1TGPmCfKtPzPZsxcXhm/pMetOxCjnRXSlpk5
+         E3OhBl637BqdTCLwJ8h7TeN7USdAD+5gUIOwfEmZuuvDSsK+MjF7kayHMiFTs7t6Spyi
+         +q1g3oQpC0EwoEqeiqPcgcpSEWalDF5N2fe+v4IK2yK1yd/4Z3bqEHzFzF611AqRkVaR
+         7nBCrqQr0aoUMjnjUurJQoBsvyxsumJTPcg2M0kuLnZ4rEP+VVdddvt2IRF0hTP6kbco
+         Epaq0TNfWFIVahmfrJtlnYuyoDMwFdJmEYtF9m6omiDfRAHRR8bh/QMgiSECn36ut0is
+         yZkQ==
+X-Gm-Message-State: ANhLgQ1cWgsfOb158T+0cXeZy4vvE/Oz2lJSPn3EF8xSiFCnki0N9oja
+        mD0CaVHl4A4x67TS69Y+V79HIFhZZmY=
+X-Google-Smtp-Source: ADFU+vv5H5lV25zssFZ6PnK55QvOQtjicferw1xpNJM6wlTKLRYAbO5cojAJ8vw88jdLbKkluUjuqw==
+X-Received: by 2002:a02:9183:: with SMTP id p3mr2886997jag.55.1584622200077;
+        Thu, 19 Mar 2020 05:50:00 -0700 (PDT)
+Received: from [172.22.22.26] (c-73-185-129-58.hsd1.mn.comcast.net. [73.185.129.58])
+        by smtp.googlemail.com with ESMTPSA id p68sm820388ilb.80.2020.03.19.05.49.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Mar 2020 05:49:59 -0700 (PDT)
+Subject: Re: [PATCH net-next] net: ipa: fix platform_no_drv_owner.cocci
+ warnings
+To:     YueHaibing <yuehaibing@huawei.com>, Alex Elder <elder@kernel.org>,
         "David S . Miller" <davem@davemloft.net>
-CC:     YueHaibing <yuehaibing@huawei.com>, <netdev@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net-next] net: ipa: Remove unused including <linux/version.h>
-Date:   Thu, 19 Mar 2020 12:12:00 +0000
-Message-ID: <20200319121200.31214-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+Cc:     netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20200319121127.30944-1-yuehaibing@huawei.com>
+From:   Alex Elder <elder@ieee.org>
+Message-ID: <5a19f5b3-5d11-2f63-89f9-b64ec6404278@ieee.org>
+Date:   Thu, 19 Mar 2020 07:49:55 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20200319121127.30944-1-yuehaibing@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove including <linux/version.h> that don't need it.
+On 3/19/20 7:11 AM, YueHaibing wrote:
+> Remove .owner field if calls are used which set it automatically
+> Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
+> 
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/net/ipa/ipa_endpoint.c | 1 -
- 1 file changed, 1 deletion(-)
+Looks good.
 
-diff --git a/drivers/net/ipa/ipa_endpoint.c b/drivers/net/ipa/ipa_endpoint.c
-index 915b4cd05dd2..217cbf337ad7 100644
---- a/drivers/net/ipa/ipa_endpoint.c
-+++ b/drivers/net/ipa/ipa_endpoint.c
-@@ -9,7 +9,6 @@
- #include <linux/slab.h>
- #include <linux/bitfield.h>
- #include <linux/if_rmnet.h>
--#include <linux/version.h>
- #include <linux/dma-direction.h>
- 
- #include "gsi.h"
+Reviewed-by: Alex Elder <elder@linaro.org>
 
-
+> ---
+>  drivers/net/ipa/ipa_main.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
+> index d6e7f257e99d..28998dcce3d2 100644
+> --- a/drivers/net/ipa/ipa_main.c
+> +++ b/drivers/net/ipa/ipa_main.c
+> @@ -942,7 +942,6 @@ static struct platform_driver ipa_driver = {
+>  	.remove	= ipa_remove,
+>  	.driver	= {
+>  		.name		= "ipa",
+> -		.owner		= THIS_MODULE,
+>  		.pm		= &ipa_pm_ops,
+>  		.of_match_table	= ipa_match,
+>  	},
+> 
+> 
+> 
 

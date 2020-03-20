@@ -2,59 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 75A7418D0EC
-	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Mar 2020 15:33:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB8F218DC06
+	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Mar 2020 00:32:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727352AbgCTOdE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 20 Mar 2020 10:33:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56696 "EHLO mail.kernel.org"
+        id S1727501AbgCTXcQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 20 Mar 2020 19:32:16 -0400
+Received: from ms.lwn.net ([45.79.88.28]:44196 "EHLO ms.lwn.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726896AbgCTOdE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 20 Mar 2020 10:33:04 -0400
-Received: from localhost (unknown [213.57.247.131])
+        id S1726738AbgCTXcQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 20 Mar 2020 19:32:16 -0400
+Received: from lwn.net (localhost [127.0.0.1])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4821D20709;
-        Fri, 20 Mar 2020 14:33:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584714784;
-        bh=IlCuNHnE7yuBxsCSBh8bB/nS31hgXyIDFlpv2wLzFWM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=U5nlFmyl4cfweFbWdqh4wK8Pk/n7xf7Xddc8UGZsqhiFRuCMqxeD/j26J9BeBj/PF
-         C1d+50+1B5MyjBrK8FJ2W7l9yREcIPFovt7AMxBjqcpYtvgGnj+4DWmyT65BUQ7wlF
-         2Dbx9q7TYMh4cF3dQd3cGHWxpEqL2D46LYj1joB0=
-Date:   Fri, 20 Mar 2020 16:33:00 +0200
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Saeed Mahameed <saeedm@mellanox.com>,
-        Paul Blakey <paulb@mellanox.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Roi Dayan <roid@mellanox.com>, Oz Shlomo <ozsh@mellanox.com>,
-        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next] net/mlx5e: Fix actions_match_supported() return
-Message-ID: <20200320143300.GH514123@unreal>
-References: <20200320132305.GB95012@mwanda>
+        by ms.lwn.net (Postfix) with ESMTPSA id D79E02D6;
+        Fri, 20 Mar 2020 23:32:15 +0000 (UTC)
+Date:   Fri, 20 Mar 2020 17:32:14 -0600
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] MAINTAINERS: adjust to filesystem doc ReST
+ conversion
+Message-ID: <20200320173214.1cca3738@lwn.net>
+In-Reply-To: <20200314175030.10436-1-lukas.bulwahn@gmail.com>
+References: <20200314175030.10436-1-lukas.bulwahn@gmail.com>
+Organization: LWN.net
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200320132305.GB95012@mwanda>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Mar 20, 2020 at 04:23:05PM +0300, Dan Carpenter wrote:
-> The actions_match_supported() function returns a bool, true for success
-> and false for failure.  This error path is returning a negative which
-> is cast to true but it should return false.
->
-> Fixes: 4c3844d9e97e ("net/mlx5e: CT: Introduce connection tracking")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
+On Sat, 14 Mar 2020 18:50:30 +0100
+Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
 
-Thanks,
-Reviewed-by: Leon Romanovsky <leonro@mellanox.com>
+> Mauro's patch series <cover.1581955849.git.mchehab+huawei@kernel.org>
+> ("[PATCH 00/44] Manually convert filesystem FS documents to ReST")
+> converts many Documentation/filesystems/ files to ReST.
+> 
+> Since then, ./scripts/get_maintainer.pl --self-test complains with 27
+> warnings on Documentation/filesystems/ of this kind:
+> 
+>   warning: no file matches F: Documentation/filesystems/...
+> 
+> Adjust MAINTAINERS entries to all files converted from .txt to .rst in the
+> patch series and address the 27 warnings.
+> 
+> Link: https://lore.kernel.org/linux-erofs/cover.1581955849.git.mchehab+huawei@kernel.org
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+> v1 -> v2:
+> Patch v2 is now based on today's docs-next (now with base-commit below)
+> 
+> Jonathan, pick pick this patch v2 for docs-next.
+
+I've done that, thanks.
+
+jon

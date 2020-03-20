@@ -2,95 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0E1618CECC
-	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Mar 2020 14:26:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A000218D0CE
+	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Mar 2020 15:29:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727120AbgCTN05 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 20 Mar 2020 09:26:57 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:42178 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726814AbgCTN05 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 20 Mar 2020 09:26:57 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02KDEgYC107227;
-        Fri, 20 Mar 2020 13:26:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=DlTqZ5VPFMu8PptUe+6BymhQykmmJXV/MZhQepjEmZw=;
- b=e7wSiYRsTWTzQKaPON+TeIzdIBPOccESo4AFPAfSx5FUMpHUHU7Sc7BhtDtMB4qQqs0n
- BOZXXAXXGEa3xp8VLAtTpzHaskl9XZCEXdncJs02hYlVvVDu6oF0y0SOtgZJ98X8PRfS
- b+KcKkYuJUL3h5a0MHZZUiCQn0QfSyZvca1nepxkj0Fl6btAc4TzVeSpeTTUTL3mDry3
- VwWGO3aUnu6Qe5fH+1Beg9tKSoMxjXb8VwHEAav9OgJEhf/IPCBAJEAfGp+DUtrscb5y
- 8FbhE0GUBtvMZFgsp3lq9Po+FY37AkW4TOkp7n9yWC1GDBfPlxRQEchj59zHyKjCDiHm LA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 2yub27dgvc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 20 Mar 2020 13:26:50 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02KDKlYZ080606;
-        Fri, 20 Mar 2020 13:26:50 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 2ys906sk64-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 20 Mar 2020 13:26:50 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02KDQnJP011929;
-        Fri, 20 Mar 2020 13:26:49 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 20 Mar 2020 06:26:48 -0700
-Date:   Fri, 20 Mar 2020 16:26:41 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Leon Romanovsky <leon@kernel.org>,
-        Yishai Hadas <yishaih@mellanox.com>
-Cc:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] IB/mlx5: Fix a NULL vs IS_ERR() check
-Message-ID: <20200320132641.GF95012@mwanda>
+        id S1727330AbgCTO3m (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 20 Mar 2020 10:29:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53506 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727152AbgCTO3m (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 20 Mar 2020 10:29:42 -0400
+Received: from localhost (unknown [213.57.247.131])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C76F920709;
+        Fri, 20 Mar 2020 14:29:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1584714581;
+        bh=iO6PRguOPpdhSYfKfnRIXG/xdZNHL9pJgUVBEC5X2QU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=fq8vVPPByb8BGeX77YGZoVhjCrMm1QMv+o0votFlm1aF/5TW/1PkZWItcpF8/K8gp
+         /f2xIajzPJSVD7DpoECohlot2BE6yqlR8UfgBu9FYpcLJxlqE7FwTBTvJKwjr6MMym
+         RAFOA/2qqfu/HOqTwNk9Ws956y04iw15/wH1jYlQ=
+Date:   Fri, 20 Mar 2020 16:29:31 +0200
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Yishai Hadas <yishaih@mellanox.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] IB/mlx5: Fix a NULL vs IS_ERR() check
+Message-ID: <20200320142931.GF514123@unreal>
+References: <20200320132641.GF95012@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9565 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=999 mlxscore=0
- adultscore=0 bulkscore=0 malwarescore=0 spamscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2003200057
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9565 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 impostorscore=0
- mlxlogscore=999 mlxscore=0 phishscore=0 adultscore=0 suspectscore=0
- clxscore=1011 priorityscore=1501 lowpriorityscore=0 bulkscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003200057
+In-Reply-To: <20200320132641.GF95012@mwanda>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The kzalloc() function returns NULL, not error pointers.
+On Fri, Mar 20, 2020 at 04:26:41PM +0300, Dan Carpenter wrote:
+> The kzalloc() function returns NULL, not error pointers.
+>
+> Fixes: 30f2fe40c72b ("IB/mlx5: Introduce UAPIs to manage packet pacing")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/infiniband/hw/mlx5/qos.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
 
-Fixes: 30f2fe40c72b ("IB/mlx5: Introduce UAPIs to manage packet pacing")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/infiniband/hw/mlx5/qos.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Of course, thanks a lot.
 
-diff --git a/drivers/infiniband/hw/mlx5/qos.c b/drivers/infiniband/hw/mlx5/qos.c
-index f822b06e7c9e..cac878a70edb 100644
---- a/drivers/infiniband/hw/mlx5/qos.c
-+++ b/drivers/infiniband/hw/mlx5/qos.c
-@@ -46,8 +46,8 @@ static int UVERBS_HANDLER(MLX5_IB_METHOD_PP_OBJ_ALLOC)(
- 
- 	dev = to_mdev(c->ibucontext.device);
- 	pp_entry = kzalloc(sizeof(*pp_entry), GFP_KERNEL);
--	if (IS_ERR(pp_entry))
--		return PTR_ERR(pp_entry);
-+	if (!pp_entry)
-+		return -ENOMEM;
- 
- 	in_ctx = uverbs_attr_get_alloced_ptr(attrs,
- 					     MLX5_IB_ATTR_PP_OBJ_ALLOC_CTX);
--- 
-2.25.1
-
+Acked-by: Leon Romanovsky <leonro@mellanox.com>

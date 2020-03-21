@@ -2,64 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AB8F218DC06
-	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Mar 2020 00:32:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 185F418DD99
+	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Mar 2020 03:24:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727501AbgCTXcQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 20 Mar 2020 19:32:16 -0400
-Received: from ms.lwn.net ([45.79.88.28]:44196 "EHLO ms.lwn.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726738AbgCTXcQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 20 Mar 2020 19:32:16 -0400
-Received: from lwn.net (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id D79E02D6;
-        Fri, 20 Mar 2020 23:32:15 +0000 (UTC)
-Date:   Fri, 20 Mar 2020 17:32:14 -0600
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] MAINTAINERS: adjust to filesystem doc ReST
- conversion
-Message-ID: <20200320173214.1cca3738@lwn.net>
-In-Reply-To: <20200314175030.10436-1-lukas.bulwahn@gmail.com>
-References: <20200314175030.10436-1-lukas.bulwahn@gmail.com>
-Organization: LWN.net
+        id S1726980AbgCUCYy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 20 Mar 2020 22:24:54 -0400
+Received: from mail-yb1-f196.google.com ([209.85.219.196]:42294 "EHLO
+        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726851AbgCUCYy (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 20 Mar 2020 22:24:54 -0400
+Received: by mail-yb1-f196.google.com with SMTP id s17so3566179ybk.9
+        for <kernel-janitors@vger.kernel.org>; Fri, 20 Mar 2020 19:24:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+sWKQj4Uyupgpe20upDE1CDsAGcVde2eq3FfcxBSqtw=;
+        b=hhhGA9UWT/3U3ety3Si0Pz+2VxrteiTL1w2fW4bALSSesaU013GbJx65VYFnvA9xJi
+         PHkjaaMIK1gC+VuQmx5FfVzqBzHHafuApDFLj/NgqQB+EoNfoNIzUgxtIkO1Mg1mloJ2
+         D/prA/1Ki/1Rb2avhc0bglsFnNcxG3gyjTL19zKhKI1/QZ8+Lqt6LoCMRNj4lhDXsSiC
+         V72m7zm3JPzTDQ8cdjCEHc3Dac7+ANXd0DVY10LnduPwCBMiq7A6XWBA5DIn9ikouIdA
+         jiKsmCS3x81Y8qJhMF2qdqc0zhxLcOZqh7IjVEorKM9fMXARKBDU1KGmMfiCmSJJzyDF
+         eu2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+sWKQj4Uyupgpe20upDE1CDsAGcVde2eq3FfcxBSqtw=;
+        b=kl5rlolusgTBMzqhNIHnmQf+y2zDIeRDFjrFr5CinWX9hFYLx1/4Th8nAhvbD/814T
+         fEyANXXZAXs41XRIu6O2mwi+ECcxRUqwSMNfsHWC3qvRHcIlhIBmVsFKJ5YCACmshtgU
+         1B5ZEFJeFSKlvcmLzkMkQjh29MbehiJzItIgGzYks7akGnMyU+grTf49CchnBs8pP2Z5
+         up74YIAxeGHUoCcILG2OXfAsenL934E9CNprAo/KSxK5hzsW4s/7IElqjqqs1p7q91Ne
+         MBUnS3aF7EmV4QHV2mmahowILw7ebGksWwYraiql1fU7BKPoEpAHPR8Qlif55eVgo6kw
+         zaNA==
+X-Gm-Message-State: ANhLgQ1Qi3s45SIo4B7oDiW3wkjKyDHmvRR8Yj8vAUhzsqAHwYrXo0Ol
+        YlOwRsnXPqh1FgiggssF8fNicE2WuoS5IcZCwMsGtQ==
+X-Google-Smtp-Source: ADFU+vvpQCpgtKO5Wxl1XzXEkIWs1WgNh8zCu/SCP6QXwgMX5OdlFp1qeFH3leT5seMN72TsRh1BZFIidMBUuBQIMgA=
+X-Received: by 2002:a25:9787:: with SMTP id i7mr17042865ybo.383.1584757492441;
+ Fri, 20 Mar 2020 19:24:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
+References: <20200312105637.GA8960@mwanda> <20200313122725.GZ12561@hirez.programming.kicks-ass.net>
+In-Reply-To: <20200313122725.GZ12561@hirez.programming.kicks-ass.net>
+From:   Ian Rogers <irogers@google.com>
+Date:   Fri, 20 Mar 2020 19:24:41 -0700
+Message-ID: <CAP-5=fU060AZxi6gC7Z4exUqy8VBT08AuE1AZV6F2qDmTKLPwg@mail.gmail.com>
+Subject: Re: [PATCH] perf/core: Fix reversed NULL check in perf_event_groups_less()
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 14 Mar 2020 18:50:30 +0100
-Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+On Fri, Mar 13, 2020 at 5:27 AM Peter Zijlstra <peterz@infradead.org> wrote:
+>
+> On Thu, Mar 12, 2020 at 01:56:37PM +0300, Dan Carpenter wrote:
+> > This NULL check is reversed so it leads to a Smatch warning and
+> > presumably a NULL dereference.
+> >
+> >     kernel/events/core.c:1598 perf_event_groups_less()
+> >     error: we previously assumed 'right->cgrp->css.cgroup' could be null
+> >       (see line 1590)
+> >
+> > Fixes: 95ed6c707f26 ("perf/cgroup: Order events in RB tree by cgroup id")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> >  kernel/events/core.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/kernel/events/core.c b/kernel/events/core.c
+> > index 6a47c3e54fe9..607c04ec7cfa 100644
+> > --- a/kernel/events/core.c
+> > +++ b/kernel/events/core.c
+> > @@ -1587,7 +1587,7 @@ perf_event_groups_less(struct perf_event *left, struct perf_event *right)
+> >                        */
+> >                       return true;
+> >               }
+> > -             if (!right->cgrp || right->cgrp->css.cgroup) {
+> > +             if (!right->cgrp || !right->cgrp->css.cgroup) {
+> >                       /*
+> >                        * Right has no cgroup but left does, no cgroups come
+> >                        * first.
+>
+> Thanks!
 
-> Mauro's patch series <cover.1581955849.git.mchehab+huawei@kernel.org>
-> ("[PATCH 00/44] Manually convert filesystem FS documents to ReST")
-> converts many Documentation/filesystems/ files to ReST.
-> 
-> Since then, ./scripts/get_maintainer.pl --self-test complains with 27
-> warnings on Documentation/filesystems/ of this kind:
-> 
->   warning: no file matches F: Documentation/filesystems/...
-> 
-> Adjust MAINTAINERS entries to all files converted from .txt to .rst in the
-> patch series and address the 27 warnings.
-> 
-> Link: https://lore.kernel.org/linux-erofs/cover.1581955849.git.mchehab+huawei@kernel.org
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
-> v1 -> v2:
-> Patch v2 is now based on today's docs-next (now with base-commit below)
-> 
-> Jonathan, pick pick this patch v2 for docs-next.
+Also much thanks!
 
-I've done that, thanks.
-
-jon
+Ian

@@ -2,74 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A06518E26C
-	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Mar 2020 16:29:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33F4218E2A8
+	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Mar 2020 16:46:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727314AbgCUP3m (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 21 Mar 2020 11:29:42 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:24951 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727069AbgCUP3m (ORCPT
+        id S1727232AbgCUPqY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 21 Mar 2020 11:46:24 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:56340 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726652AbgCUPqY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 21 Mar 2020 11:29:42 -0400
-Received: from localhost.localdomain ([93.22.37.29])
-        by mwinf5d09 with ME
-        id H3Ve2200H0djkx1033VeBP; Sat, 21 Mar 2020 16:29:39 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 21 Mar 2020 16:29:39 +0100
-X-ME-IP: 93.22.37.29
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     valentina.manea.m@gmail.com, shuah@kernel.org,
-        gregkh@linuxfoundation.org
-Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] usbip: vhci_hcd: slighly simplify code in 'vhci_urb_dequeue()'
-Date:   Sat, 21 Mar 2020 16:29:38 +0100
-Message-Id: <20200321152938.19580-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        Sat, 21 Mar 2020 11:46:24 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 134041C032C; Sat, 21 Mar 2020 16:46:22 +0100 (CET)
+Date:   Sat, 21 Mar 2020 16:46:21 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Dan Murphy <dmurphy@ti.com>, linux-leds@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] leds: lm3532: make bitfield 'enabled' unsigned
+Message-ID: <20200321154621.GG8386@duo.ucw.cz>
+References: <20200313171937.220884-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="GUPx2O/K0ibUojHx"
+Content-Disposition: inline
+In-Reply-To: <20200313171937.220884-1-colin.king@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The allocation of 'unlink' can be moved before a spin_lock.
-This slighly simplifies the error handling if the memory allocation fails,
-aligns the code structure with what is done in 'vhci_tx_urb()' and reduces
-potential lock contention.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/usb/usbip/vhci_hcd.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+--GUPx2O/K0ibUojHx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/usb/usbip/vhci_hcd.c b/drivers/usb/usbip/vhci_hcd.c
-index 65850e9c7190..b909a634260c 100644
---- a/drivers/usb/usbip/vhci_hcd.c
-+++ b/drivers/usb/usbip/vhci_hcd.c
-@@ -905,17 +905,16 @@ static int vhci_urb_dequeue(struct usb_hcd *hcd, struct urb *urb, int status)
- 		/* tcp connection is alive */
- 		struct vhci_unlink *unlink;
- 
--		spin_lock(&vdev->priv_lock);
--
- 		/* setup CMD_UNLINK pdu */
- 		unlink = kzalloc(sizeof(struct vhci_unlink), GFP_ATOMIC);
- 		if (!unlink) {
--			spin_unlock(&vdev->priv_lock);
- 			spin_unlock_irqrestore(&vhci->lock, flags);
- 			usbip_event_add(&vdev->ud, VDEV_EVENT_ERROR_MALLOC);
- 			return -ENOMEM;
- 		}
- 
-+		spin_lock(&vdev->priv_lock);
-+
- 		unlink->seqnum = atomic_inc_return(&vhci_hcd->seqnum);
- 		if (unlink->seqnum == 0xffff)
- 			pr_info("seqnum max\n");
--- 
-2.20.1
+On Fri 2020-03-13 17:19:37, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> The bitfield 'enabled' should bit unsigned, so make it unsigned.
+>=20
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
+Thanks, applied.
+									Pavel
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--GUPx2O/K0ibUojHx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCXnY2zQAKCRAw5/Bqldv6
+8mk4AJ9gp0fhjV3eJslDQl+7vsTyWVpkFACgttrxg5o1SM8dFpFCBKlNFhfbsLY=
+=kzCS
+-----END PGP SIGNATURE-----
+
+--GUPx2O/K0ibUojHx--

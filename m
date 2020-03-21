@@ -2,97 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A65F18DE4B
-	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Mar 2020 07:42:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06C8418DEE6
+	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Mar 2020 09:59:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728052AbgCUGmc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 21 Mar 2020 02:42:32 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:47098 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727824AbgCUGmc (ORCPT
+        id S1728221AbgCUI7O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 21 Mar 2020 04:59:14 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:19306 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728008AbgCUI7O (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 21 Mar 2020 02:42:32 -0400
-Received: by mail-wr1-f68.google.com with SMTP id j17so6600899wru.13;
-        Fri, 20 Mar 2020 23:42:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=6jwYi+4smvXpVmrJrlCNrUCQ6TbLycTN4aAVHLYtEcY=;
-        b=qLbxc/xyJkaMd31ImtrVXGmY8aoSdkbThQE6UnMCnH7JaMVwcP4cYHI8+c7QPkkvYO
-         zPjpG6Vg+gwbiRi3kvYGCHE8s6aTgILjcx74heIq7gHhAu6Ji/71vD+USpqEPHOrhBVB
-         2X+S/YOiYfCmore9+jCcd0yhfl7VlNhpVMsuOGBDaZV/GtyJTlbyDe5zC9imvitplxaJ
-         YRCNRXXKhnyD6Wa4Pt+p67YknAmbAOih+TyIhyMNbWe0W4bseHXmGNNzfBgVOUE58cKW
-         tZjJdJ1eKq0QGABwVMGbeVqJ0P0TtQ1uXGkTqsopkMTUuWED6CZL9WV3u10dJE7W4W6V
-         ZWNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=6jwYi+4smvXpVmrJrlCNrUCQ6TbLycTN4aAVHLYtEcY=;
-        b=fK8R2qb/Uv6NpSvOOMfTMgPjF9xWK2Ug4kAw0nBCZAyunChySKNzTxygbeBqcoq8D8
-         4hLQEQtyCObRxNjDyiiUZ0ksGCZEPecmias84oRqpprF0TzVAbCTBxg+al8y4uonoJmc
-         Cpm/0g5IvppR9R8LiL20zY3N/jqlt6YAPB6NR6SyBTrePtu62igUQhJfYlqiFC1hVT+t
-         MmCCISMNW/UPuDJY5bC0i103bzaOgiGa9sJcEg97jGBjrtqIGCWAHM0l1YvGCaDluvdr
-         I8nGfIuye88m+P59EEw+1melRQcmrkVCB44MyjN6pZiIvjvPjPFwR/JsDnT4qdn5OuI6
-         B1HQ==
-X-Gm-Message-State: ANhLgQ0bCzx1L7nYSTcmZJpPU5LIXY8aJzzqr/4ZG5BozmehXJW8Ddgn
-        RBAoHAKVw5o8cQrLBcT1oMA=
-X-Google-Smtp-Source: ADFU+vuR82I6jdQEXvp8/i3BFcsKQ5kIC/3RfxJfhRkmcC28/6Y1EcInIoAYgazpWuhDC8DKZ9sGfA==
-X-Received: by 2002:a05:6000:d1:: with SMTP id q17mr15985822wrx.409.1584772948918;
-        Fri, 20 Mar 2020 23:42:28 -0700 (PDT)
-Received: from felia.fritz.box ([2001:16b8:2d49:b100:ccc3:14ec:86ef:bd24])
-        by smtp.gmail.com with ESMTPSA id k126sm11356619wme.4.2020.03.20.23.42.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2020 23:42:28 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Boris Brezillon <bbrezillon@kernel.org>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Cc:     Vladimir Zapolskiy <vz@mleia.com>, linux-mtd@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: update entry after SPI NOR controller move
-Date:   Sat, 21 Mar 2020 07:42:17 +0100
-Message-Id: <20200321064217.6179-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Sat, 21 Mar 2020 04:59:14 -0400
+Received: from localhost.localdomain ([90.126.162.40])
+        by mwinf5d62 with ME
+        id Gwyl220070scBcy03wytzK; Sat, 21 Mar 2020 09:59:12 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 21 Mar 2020 09:59:12 +0100
+X-ME-IP: 90.126.162.40
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     nsekhar@ti.com, bgolaszewski@baylibre.com, linux@armlinux.org.uk
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ARM: davinci: dm646x-evm: Simplify error handling in 'evm_sw_setup()'
+Date:   Sat, 21 Mar 2020 09:58:36 +0100
+Message-Id: <20200321085836.16493-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit a0900d0195d2 ("mtd: spi-nor: Prepare core / manufacturer code
-split") moved all SPI NOR controller drivers to a controllers/
-sub-directory. However, the moved nxp-spifi.c file was referenced in the
-ARM/LPC18XX ARCHITECTURE entry in MAINTAINERS.
+There is no need to call 'gpio_free(evm_sw_gpio[i])' for these error
+handling cases, it is already done in the error handling path at label
+'out_free'.
 
-Hence, since then, ./scripts/get_maintainer.pl --self-test complains:
+Simplify the code and axe a few LoC.
 
-  warning: no file matches F: drivers/mtd/spi-nor/nxp-spifi.c
+While at it, also explicitly return 0 in the normal path.
 
-Update the file entry in MAINTAINERS to its new location.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
-applies cleanly on next-20200320
-Boris, Tudor, please pick this trivial patch. Not urgent.
+The code after 'out_free' could also be replace by a single
+'evm_sw_teardown()' call, but I'm not a big fan of such construction.
 
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+In 'evm_sw_teardown()', the 'gpio_unexport()' call could also be removed
+because it is implied by 'gpio_free()'.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 50e8b900c0ae..3822efce14bc 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1948,7 +1948,7 @@ F:	Documentation/devicetree/bindings/i2c/i2c-lpc2k.txt
- F:	arch/arm/boot/dts/lpc43*
- F:	drivers/i2c/busses/i2c-lpc2k.c
- F:	drivers/memory/pl172.c
--F:	drivers/mtd/spi-nor/nxp-spifi.c
-+F:	drivers/mtd/spi-nor/controllers/nxp-spifi.c
- F:	drivers/rtc/rtc-lpc24xx.c
- N:	lpc18xx
+Let me now if interested for one or both of these additional clean-up.
+---
+ arch/arm/mach-davinci/board-dm646x-evm.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
+
+diff --git a/arch/arm/mach-davinci/board-dm646x-evm.c b/arch/arm/mach-davinci/board-dm646x-evm.c
+index 4600b617f9b4..dd7d60f4139a 100644
+--- a/arch/arm/mach-davinci/board-dm646x-evm.c
++++ b/arch/arm/mach-davinci/board-dm646x-evm.c
+@@ -267,20 +267,15 @@ static int evm_sw_setup(struct i2c_client *client, int gpio,
+ 		evm_sw_gpio[i] = gpio++;
  
+ 		status = gpio_direction_input(evm_sw_gpio[i]);
+-		if (status) {
+-			gpio_free(evm_sw_gpio[i]);
+-			evm_sw_gpio[i] = -EINVAL;
++		if (status)
+ 			goto out_free;
+-		}
+ 
+ 		status = gpio_export(evm_sw_gpio[i], 0);
+-		if (status) {
+-			gpio_free(evm_sw_gpio[i]);
+-			evm_sw_gpio[i] = -EINVAL;
++		if (status)
+ 			goto out_free;
+-		}
+ 	}
+-	return status;
++	return 0;
++
+ out_free:
+ 	for (i = 0; i < 4; ++i) {
+ 		if (evm_sw_gpio[i] != -EINVAL) {
 -- 
-2.17.1
+2.20.1
 

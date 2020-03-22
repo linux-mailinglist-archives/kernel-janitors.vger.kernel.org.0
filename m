@@ -2,66 +2,125 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 33F4218E2A8
-	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Mar 2020 16:46:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40A9F18E954
+	for <lists+kernel-janitors@lfdr.de>; Sun, 22 Mar 2020 15:09:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727232AbgCUPqY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 21 Mar 2020 11:46:24 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:56340 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726652AbgCUPqY (ORCPT
+        id S1726872AbgCVOJQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 22 Mar 2020 10:09:16 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:42539 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725785AbgCVOJP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 21 Mar 2020 11:46:24 -0400
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 134041C032C; Sat, 21 Mar 2020 16:46:22 +0100 (CET)
-Date:   Sat, 21 Mar 2020 16:46:21 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Dan Murphy <dmurphy@ti.com>, linux-leds@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] leds: lm3532: make bitfield 'enabled' unsigned
-Message-ID: <20200321154621.GG8386@duo.ucw.cz>
-References: <20200313171937.220884-1-colin.king@canonical.com>
+        Sun, 22 Mar 2020 10:09:15 -0400
+Received: by mail-ed1-f67.google.com with SMTP id b21so13201824edy.9;
+        Sun, 22 Mar 2020 07:09:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pBi9Z1+WU4iatz2iMB4jF1UwMBCBTv6eef7cooUFzms=;
+        b=TJIxq9L5ba4cEhBvxABO8RbqK99o+J/uKW5K1NX4zXF9+ccmgGCPN9xMUi3ODDtmLB
+         PBcy2vAXjGmcFRLGDazaFjQZvbJh+C9y+uSB775OZQa/Bt5Ggi0yydC2VFFqBXH7gj52
+         LqUsLpN7NtK+REuoB0Nv2mBg0qVXg+k4aMoRmFVo+m6xiMAgWrlFo8W/hI4JadSMvf7J
+         bhqnmhjnGg9m1dsznfGJ6HxlhaTKBtn0UWLHwW+Ec8zCodR4zlWgkqxU1ENYrBPSsQ9d
+         UHQONLyRmz2kJCTh6MrOG+d2qEE7dNmpMg8y2pJLEqAK5KvYotdGwiZn02+j2embB16p
+         W3UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pBi9Z1+WU4iatz2iMB4jF1UwMBCBTv6eef7cooUFzms=;
+        b=J1DcsnXm0zWPVxh2lHFMBcVbWxxwbsnarohsNTjO6RrtJGuYFTwtJGs/2OhcfrXOzS
+         RlBS/Omeza/s6TmtostNIrP4t8e4q39hZlIu8FqEhfA4Wq7VyIEw+kr5JUZlK2eCb2mq
+         SG0EDCTNrQ8BteQJK99BuqMQY4d6k24rJlTYSXPi7UeB0GEWifl8NOMDTu1n3JHXKEJG
+         dm8ZVyS3G7q2cszI2bhGCtIv8lN9JNFwrbBXZyaVBAEjNi0mvQl8rVwy2z3tb8nMvKjg
+         VocdeRbzbMI+JFHC5A7yxaeYsN5z2+aIIZPtnFgadOazp0T1XWQKx/QrCRCaK7TaXHwl
+         eWjQ==
+X-Gm-Message-State: ANhLgQ3D/unUw2dHkkCNc5RqTAWsiaaVgPNebeYhYgcNOu1H/e8JtZ6M
+        DOI7I/rhScA+JTHebTqELMV66jGgG14=
+X-Google-Smtp-Source: ADFU+vuhSK4TFcDIFhTkZwOxUmu0pr1ErNd/GgOB/C6SQTrQ+k1F8Ju8FjeneoUiS7JIUf/BaHIP1g==
+X-Received: by 2002:a17:906:34db:: with SMTP id h27mr15609447ejb.111.1584886152225;
+        Sun, 22 Mar 2020 07:09:12 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:21b0:9002:6131:e6f7:db0e:d6e9:e56e])
+        by smtp.googlemail.com with ESMTPSA id q21sm223858ejb.47.2020.03.22.07.09.11
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 22 Mar 2020 07:09:11 -0700 (PDT)
+From:   Jean-Philippe Menil <jpmenil@gmail.com>
+To:     netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, jpmenil@gmail.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>, bpf@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] bpf: fix build warning - missing prototype
+Date:   Sun, 22 Mar 2020 15:08:44 +0100
+Message-Id: <20200322140844.4674-1-jpmenil@gmail.com>
+X-Mailer: git-send-email 2.25.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="GUPx2O/K0ibUojHx"
-Content-Disposition: inline
-In-Reply-To: <20200313171937.220884-1-colin.king@canonical.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Fix build warning when building net/bpf/test_run.o with W=1 due
+to missing prototype for bpf_fentry_test{1..6}.
 
---GUPx2O/K0ibUojHx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+These functions are only used in test_run.c so just make them static.
+Therefore inline keyword should sit between storage class and type.
 
-On Fri 2020-03-13 17:19:37, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> The bitfield 'enabled' should bit unsigned, so make it unsigned.
->=20
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Jean-Philippe Menil <jpmenil@gmail.com>
+---
+ net/bpf/test_run.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Thanks, applied.
-									Pavel
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index d555c0d8657d..c0dcd29f682c 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -113,32 +113,32 @@ static int bpf_test_finish(const union bpf_attr *kattr,
+  * architecture dependent calling conventions. 7+ can be supported in the
+  * future.
+  */
+-int noinline bpf_fentry_test1(int a)
++static noinline int bpf_fentry_test1(int a)
+ {
+ 	return a + 1;
+ }
+ 
+-int noinline bpf_fentry_test2(int a, u64 b)
++static noinline int bpf_fentry_test2(int a, u64 b)
+ {
+ 	return a + b;
+ }
+ 
+-int noinline bpf_fentry_test3(char a, int b, u64 c)
++static noinline int bpf_fentry_test3(char a, int b, u64 c)
+ {
+ 	return a + b + c;
+ }
+ 
+-int noinline bpf_fentry_test4(void *a, char b, int c, u64 d)
++static noinline int bpf_fentry_test4(void *a, char b, int c, u64 d)
+ {
+ 	return (long)a + b + c + d;
+ }
+ 
+-int noinline bpf_fentry_test5(u64 a, void *b, short c, int d, u64 e)
++static noinline int bpf_fentry_test5(u64 a, void *b, short c, int d, u64 e)
+ {
+ 	return a + (long)b + c + d + e;
+ }
+ 
+-int noinline bpf_fentry_test6(u64 a, void *b, short c, int d, void *e, u64 f)
++static noinline int bpf_fentry_test6(u64 a, void *b, short c, int d, void *e, u64 f)
+ {
+ 	return a + (long)b + c + d + (long)e + f;
+ }
+-- 
+2.25.2
 
---GUPx2O/K0ibUojHx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCXnY2zQAKCRAw5/Bqldv6
-8mk4AJ9gp0fhjV3eJslDQl+7vsTyWVpkFACgttrxg5o1SM8dFpFCBKlNFhfbsLY=
-=kzCS
------END PGP SIGNATURE-----
-
---GUPx2O/K0ibUojHx--

@@ -2,125 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40A9F18E954
-	for <lists+kernel-janitors@lfdr.de>; Sun, 22 Mar 2020 15:09:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3365B18EA9C
+	for <lists+kernel-janitors@lfdr.de>; Sun, 22 Mar 2020 17:57:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726872AbgCVOJQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 22 Mar 2020 10:09:16 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:42539 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725785AbgCVOJP (ORCPT
+        id S1726756AbgCVQ5O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 22 Mar 2020 12:57:14 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:35697 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725785AbgCVQ5O (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 22 Mar 2020 10:09:15 -0400
-Received: by mail-ed1-f67.google.com with SMTP id b21so13201824edy.9;
-        Sun, 22 Mar 2020 07:09:13 -0700 (PDT)
+        Sun, 22 Mar 2020 12:57:14 -0400
+Received: by mail-wr1-f67.google.com with SMTP id d5so1378007wrn.2;
+        Sun, 22 Mar 2020 09:57:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=pBi9Z1+WU4iatz2iMB4jF1UwMBCBTv6eef7cooUFzms=;
-        b=TJIxq9L5ba4cEhBvxABO8RbqK99o+J/uKW5K1NX4zXF9+ccmgGCPN9xMUi3ODDtmLB
-         PBcy2vAXjGmcFRLGDazaFjQZvbJh+C9y+uSB775OZQa/Bt5Ggi0yydC2VFFqBXH7gj52
-         LqUsLpN7NtK+REuoB0Nv2mBg0qVXg+k4aMoRmFVo+m6xiMAgWrlFo8W/hI4JadSMvf7J
-         bhqnmhjnGg9m1dsznfGJ6HxlhaTKBtn0UWLHwW+Ec8zCodR4zlWgkqxU1ENYrBPSsQ9d
-         UHQONLyRmz2kJCTh6MrOG+d2qEE7dNmpMg8y2pJLEqAK5KvYotdGwiZn02+j2embB16p
-         W3UA==
+        bh=wUQo9FObQ1FgjFAGXhInSZHPZVn6g0FEvK2Y0V4ii4s=;
+        b=cm3Y5RK61DgWTyAjUEHbhN4kf16h0FsjsXqX5Wi4X5whIT2SP4SdktnwB1jesX8aKQ
+         tzqzci22S8NX105QyHJSiJLu+FRV5Ba4SfX5yFnz6ccIyIDW1PWvsMLg9r8xrhMqFK6o
+         P/mPFg7lfPr+20+Hvo4DGbSaVc4l4bJe6PGv3bPESHghmSt2Yh92ha2kxNsRMlcCSMue
+         +Y3zrB2Xi60lRou1SzOm+pU+qpq1VP5FPjer+W9z3WwbCpysaj5W6e6XOsI6DSpEBNHq
+         DvUE4cMFexRKyp5N50ZLLKReIo6qW2vO1clbvnLuwO3q1BgwEN6cuH1Jbni9vIjnq3cv
+         xQQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=pBi9Z1+WU4iatz2iMB4jF1UwMBCBTv6eef7cooUFzms=;
-        b=J1DcsnXm0zWPVxh2lHFMBcVbWxxwbsnarohsNTjO6RrtJGuYFTwtJGs/2OhcfrXOzS
-         RlBS/Omeza/s6TmtostNIrP4t8e4q39hZlIu8FqEhfA4Wq7VyIEw+kr5JUZlK2eCb2mq
-         SG0EDCTNrQ8BteQJK99BuqMQY4d6k24rJlTYSXPi7UeB0GEWifl8NOMDTu1n3JHXKEJG
-         dm8ZVyS3G7q2cszI2bhGCtIv8lN9JNFwrbBXZyaVBAEjNi0mvQl8rVwy2z3tb8nMvKjg
-         VocdeRbzbMI+JFHC5A7yxaeYsN5z2+aIIZPtnFgadOazp0T1XWQKx/QrCRCaK7TaXHwl
-         eWjQ==
-X-Gm-Message-State: ANhLgQ3D/unUw2dHkkCNc5RqTAWsiaaVgPNebeYhYgcNOu1H/e8JtZ6M
-        DOI7I/rhScA+JTHebTqELMV66jGgG14=
-X-Google-Smtp-Source: ADFU+vuhSK4TFcDIFhTkZwOxUmu0pr1ErNd/GgOB/C6SQTrQ+k1F8Ju8FjeneoUiS7JIUf/BaHIP1g==
-X-Received: by 2002:a17:906:34db:: with SMTP id h27mr15609447ejb.111.1584886152225;
-        Sun, 22 Mar 2020 07:09:12 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:21b0:9002:6131:e6f7:db0e:d6e9:e56e])
-        by smtp.googlemail.com with ESMTPSA id q21sm223858ejb.47.2020.03.22.07.09.11
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 22 Mar 2020 07:09:11 -0700 (PDT)
-From:   Jean-Philippe Menil <jpmenil@gmail.com>
-To:     netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, jpmenil@gmail.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>, bpf@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] bpf: fix build warning - missing prototype
-Date:   Sun, 22 Mar 2020 15:08:44 +0100
-Message-Id: <20200322140844.4674-1-jpmenil@gmail.com>
-X-Mailer: git-send-email 2.25.2
+        bh=wUQo9FObQ1FgjFAGXhInSZHPZVn6g0FEvK2Y0V4ii4s=;
+        b=iW85Pm/taJ1PPEDcsJQS7sGlCUOPxqZg+Yoi4U3MHpd6cYcm8Ryw9XRlH1m/8ktDtf
+         GJ5+cIzrbUsXDV2G32ioOr4mJ8aTmMuf96TQVWhuTmjtbX5yPjEHNQf78tkUc9MWcB0E
+         2QMdW1Y4PZ5Dlt7FUUIFSTGjlYC0zJB9LrGmg5/WVne7cZLFeyyYReAiMuwHQrWogT09
+         W+MsZeLK3IiA2oUfh4hFhS+maIeeULpGicSNvgX2Sg6qiPeXd7cnQrIKmaLZ5ON4HINs
+         W9Cc/4OF3z2VZOqyy2v2mQTIT0gZFoAGeHJtL/StvHz6ZqRdAEOPFa37if4UPzrxkrhF
+         /BLQ==
+X-Gm-Message-State: ANhLgQ2ndDq1p1KEfxI30QwjpsvvxMnvDXXuI20U0Rr0J3XdYfscF7Hz
+        htAOQKBvzpwUH7onswdDlRU=
+X-Google-Smtp-Source: ADFU+vv0O1PRSJTkoWSbd2kn8eMmyO5OQPBalAxMSJYJK6yNWO8ywwkAx6pb4+XopsfmHHm9FENUxQ==
+X-Received: by 2002:a5d:498b:: with SMTP id r11mr24635645wrq.368.1584896231295;
+        Sun, 22 Mar 2020 09:57:11 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2d25:ed00:30d0:a825:e837:3a59])
+        by smtp.gmail.com with ESMTPSA id t126sm18806162wmb.27.2020.03.22.09.57.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Mar 2020 09:57:10 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Jiri Kosina <trivial@kernel.org>,
+        Rusty Russell <rusty@rustcorp.com.au>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     "Gustavo A . R . Silva" <gustavo@embeddedor.com>,
+        Nicholas Krause <xerofoify@gmail.com>,
+        Duan Jiong <duanj.fnst@cn.fujitsu.com>,
+        Sachin Kamat <sachin.kamat@linaro.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] err.h: remove deprecated PTR_RET for good
+Date:   Sun, 22 Mar 2020 17:57:02 +0100
+Message-Id: <20200322165702.6712-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix build warning when building net/bpf/test_run.o with W=1 due
-to missing prototype for bpf_fentry_test{1..6}.
+Initially, commit fa9ee9c4b988 ("include/linux/err.h: add a function to
+cast error-pointers to a return value") from Uwe Kleine-König introduced
+PTR_RET in 03/2011. Then, in 07/2013, commit 6e8b8726ad50 ("PTR_RET is
+now PTR_ERR_OR_ZERO") from Rusty Russell renamed PTR_RET to
+PTR_ERR_OR_ZERO, and left PTR_RET as deprecated-marked alias.
 
-These functions are only used in test_run.c so just make them static.
-Therefore inline keyword should sit between storage class and type.
+After six years since the renaming and various repeated cleanups in the
+meantime, it is time to finally remove the deprecated PTR_RET for good.
 
-Signed-off-by: Jean-Philippe Menil <jpmenil@gmail.com>
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
- net/bpf/test_run.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Rusty, if you are still around, Acked-by is appreciated.
+Uwe, Acked-by is appreciated.
+Kudos to Gustavo, Nicholas, Duan & Sachin for previous cleanups.
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index d555c0d8657d..c0dcd29f682c 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -113,32 +113,32 @@ static int bpf_test_finish(const union bpf_attr *kattr,
-  * architecture dependent calling conventions. 7+ can be supported in the
-  * future.
-  */
--int noinline bpf_fentry_test1(int a)
-+static noinline int bpf_fentry_test1(int a)
- {
- 	return a + 1;
+applies cleanly on current master and on next-20200320
+Jiri, please pick this trival patch for the next merge window. Thanks.
+
+ include/linux/err.h | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/include/linux/err.h b/include/linux/err.h
+index 87be24350e91..a139c64aef2a 100644
+--- a/include/linux/err.h
++++ b/include/linux/err.h
+@@ -62,9 +62,6 @@ static inline int __must_check PTR_ERR_OR_ZERO(__force const void *ptr)
+ 		return 0;
  }
  
--int noinline bpf_fentry_test2(int a, u64 b)
-+static noinline int bpf_fentry_test2(int a, u64 b)
- {
- 	return a + b;
- }
+-/* Deprecated */
+-#define PTR_RET(p) PTR_ERR_OR_ZERO(p)
+-
+ #endif
  
--int noinline bpf_fentry_test3(char a, int b, u64 c)
-+static noinline int bpf_fentry_test3(char a, int b, u64 c)
- {
- 	return a + b + c;
- }
- 
--int noinline bpf_fentry_test4(void *a, char b, int c, u64 d)
-+static noinline int bpf_fentry_test4(void *a, char b, int c, u64 d)
- {
- 	return (long)a + b + c + d;
- }
- 
--int noinline bpf_fentry_test5(u64 a, void *b, short c, int d, u64 e)
-+static noinline int bpf_fentry_test5(u64 a, void *b, short c, int d, u64 e)
- {
- 	return a + (long)b + c + d + e;
- }
- 
--int noinline bpf_fentry_test6(u64 a, void *b, short c, int d, void *e, u64 f)
-+static noinline int bpf_fentry_test6(u64 a, void *b, short c, int d, void *e, u64 f)
- {
- 	return a + (long)b + c + d + (long)e + f;
- }
+ #endif /* _LINUX_ERR_H */
 -- 
-2.25.2
+2.17.1
 

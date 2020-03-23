@@ -2,115 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CAE7C18F255
-	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Mar 2020 11:02:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 917C818F360
+	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Mar 2020 12:06:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727850AbgCWKCf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 23 Mar 2020 06:02:35 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:51942 "EHLO
+        id S1728095AbgCWLGI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 Mar 2020 07:06:08 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:37414 "EHLO
         userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727809AbgCWKCf (ORCPT
+        with ESMTP id S1727987AbgCWLGI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 23 Mar 2020 06:02:35 -0400
+        Mon, 23 Mar 2020 07:06:08 -0400
 Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02N9tfgU009650;
-        Mon, 23 Mar 2020 10:02:26 GMT
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02NB349S019401;
+        Mon, 23 Mar 2020 11:05:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : references : mime-version : content-type :
  in-reply-to; s=corp-2020-01-29;
- bh=mMG7dvfUB+0AmeYy+0Q1hFybzDI3+DQAX7xSQz0D3zc=;
- b=VCB/lLjYyK8y7TE7SsuQ/NDDW1xWI5mqzqE7Q8oI0yspCLaayurNU8YfgM2VcraEh6jg
- lT/we+UI4VN7fsbGzFCf62rv8KU8RQWi9xTr+y0OijSh55CtzF6hSEzaiJYutz6fM80m
- rgj/t1FXqS2R4nlFtU0QljZ4MQhWq5eeZZ0ZKstNzF7vp9Y5xsQPIFx/StIb1okS0twq
- AChygfUI9kFeutE7uN3Qr8263/2HO+Kxs1e470hEsfupd14jqugoR7DeEZggbHcel1Sm
- YM5XAzLtcvjdGUC6hvuYw/TrG0rCOg2OTfCEWl0btBl17XZf1hNc02jMp3vDajNssn36 xA== 
+ bh=w5K+Q/84iqNbz33/6C2NZu0Q3vAYsOs50DjnxAcgG1Y=;
+ b=Mn7R6b0l8wez1yAcZLSfpc2wrIhMuzIwnTi0DtAnf8n+KJJWKQeqrHu46og+68aFWP5o
+ UlNfC2u8vRgCUcQw+sT5NelWNsoTB2CtwLH/MVe1bQdl0y32RZY72hNojPZEPiYBrrc8
+ S3dxgQ50L9JIoialZaoweLgtoj/hidwCVju76UtCSHbvBwYILrom3gW9x0IAjqwGKhOS
+ 2cMWUfxtvB9b5Dq7Iv2zuxqOxLj/Cqi1oM4mR+hSuH1E2GlY8o97hOltmHXLS+GxIvlN
+ S1TSKze+GqbnJSzp7SDqIeegRc6yWOkw2+PIeEaCTE5uZNmUKaWfkqd509W0XibbdIdx Jg== 
 Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 2ywabqwp4s-1
+        by userp2130.oracle.com with ESMTP id 2ywabqwx7c-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 23 Mar 2020 10:02:26 +0000
+        Mon, 23 Mar 2020 11:05:48 +0000
 Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02N9quXq024518;
-        Mon, 23 Mar 2020 10:02:25 GMT
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02NAvRWn067564;
+        Mon, 23 Mar 2020 11:03:47 GMT
 Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2ywwuhqayr-1
+        by aserp3030.oracle.com with ESMTP id 2ywwuht83f-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 23 Mar 2020 10:02:25 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02NA2Onl013398;
-        Mon, 23 Mar 2020 10:02:24 GMT
+        Mon, 23 Mar 2020 11:03:47 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02NB3igg014374;
+        Mon, 23 Mar 2020 11:03:45 GMT
 Received: from kadam (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 23 Mar 2020 03:02:23 -0700
-Date:   Mon, 23 Mar 2020 13:02:16 +0300
+        with ESMTP ; Mon, 23 Mar 2020 04:03:44 -0700
+Date:   Mon, 23 Mar 2020 14:03:34 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Saeed Mahameed <saeedm@mellanox.com>
-Cc:     Paul Blakey <paulb@mellanox.com>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        Roi Dayan <roid@mellanox.com>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        Oz Shlomo <ozsh@mellanox.com>,
-        "leon@kernel.org" <leon@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH net-next] net/mlx5e: Fix actions_match_supported() return
-Message-ID: <20200323100215.GB26299@kadam>
-References: <20200320132305.GB95012@mwanda>
- <35fcb57643c0522b051318e75b106100422fb1dc.camel@mellanox.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
+        mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
+        jolsa@redhat.com, namhyung@kernel.org, kan.liang@linux.intel.com,
+        zhe.he@windriver.com, dzickus@redhat.com, jstancek@redhat.com,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] perf cpumap: Use scnprintf instead of snprintf
+Message-ID: <20200323110334.GC26299@kadam>
+References: <20200322172523.2677-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <35fcb57643c0522b051318e75b106100422fb1dc.camel@mellanox.com>
+In-Reply-To: <20200322172523.2677-1-christophe.jaillet@wanadoo.fr>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9568 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0 spamscore=0
  mlxlogscore=999 malwarescore=0 mlxscore=0 bulkscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2003230058
+ definitions=main-2003230065
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9568 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
  lowpriorityscore=0 malwarescore=0 phishscore=0 priorityscore=1501
- clxscore=1015 adultscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
+ clxscore=1011 adultscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
  impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003230058
+ engine=8.12.0-2003020000 definitions=main-2003230065
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Mar 21, 2020 at 02:43:08AM +0000, Saeed Mahameed wrote:
-> On Fri, 2020-03-20 at 16:23 +0300, Dan Carpenter wrote:
-> > The actions_match_supported() function returns a bool, true for
-> > success
-> > and false for failure.  This error path is returning a negative which
-> > is cast to true but it should return false.
-> > 
-> > Fixes: 4c3844d9e97e ("net/mlx5e: CT: Introduce connection tracking")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> >  drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-> > b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-> > index 044891a03be3..e5de7d2bac2b 100644
-> > --- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-> > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-> > @@ -3058,7 +3058,7 @@ static bool actions_match_supported(struct
-> > mlx5e_priv *priv,
-> >  			 */
-> >  			NL_SET_ERR_MSG_MOD(extack,
-> >  					   "Can't offload mirroring
-> > with action ct");
-> > -			return -EOPNOTSUPP;
-> > +			return false;
-> >  		}
-> >  	} else {
-> >  		actions = flow->nic_attr->action;
+On Sun, Mar 22, 2020 at 06:25:23PM +0100, Christophe JAILLET wrote:
+> 'scnprintf' returns the number of characters written in the output buffer
+> excluding the trailing '\0', instead of the number of characters which
+> would be generated for the given input.
 > 
-> applied to net-next-mlx5 
+> Both function return a number of characters, excluding the trailing '\0'.
+> So comparaison to check if it overflows, should be done against max_size-1.
+> Comparaison against max_size can never match.
+> 
+> Fixes: 7780c25bae59f ("perf tools: Allow ability to map cpus to nodes easily")
+> Fixes: a24020e6b7cf6 ("perf tools: Change cpu_map__fprintf output")
+> Fixes: 92a7e1278005b ("perf cpumap: Add cpu__max_present_cpu()")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  tools/perf/util/cpumap.c | 39 ++++++++++++++++++++-------------------
+>  1 file changed, 20 insertions(+), 19 deletions(-)
+> 
+> diff --git a/tools/perf/util/cpumap.c b/tools/perf/util/cpumap.c
+> index 983b7388f22b..b87e7ef4d130 100644
+> --- a/tools/perf/util/cpumap.c
+> +++ b/tools/perf/util/cpumap.c
+> @@ -316,8 +316,8 @@ static void set_max_cpu_num(void)
+>  		goto out;
+>  
+>  	/* get the highest possible cpu number for a sparse allocation */
+> -	ret = snprintf(path, PATH_MAX, "%s/devices/system/cpu/possible", mnt);
+> -	if (ret == PATH_MAX) {
+> +	ret = scnprintf(path, PATH_MAX, "%s/devices/system/cpu/possible", mnt);
+> +	if (ret == PATH_MAX-1) {
 
-I can never figure out which tree these are supposed to be applied to.
-:(  Is there a trick to it?
+This should be a static analysis warning.
+
+But isn't this stuff userspace?  I can't figure out how to compile it on
+Debian so I'm not sure.  There is no scnprintf() in user space.
 
 regards,
 dan carpenter

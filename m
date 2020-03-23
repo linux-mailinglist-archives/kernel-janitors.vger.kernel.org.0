@@ -2,29 +2,25 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0601F18F84D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Mar 2020 16:11:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B752B18F863
+	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Mar 2020 16:20:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727272AbgCWPLs convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 23 Mar 2020 11:11:48 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([146.101.78.151]:20483 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727100AbgCWPLp (ORCPT
+        id S1727156AbgCWPUM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 Mar 2020 11:20:12 -0400
+Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:32829 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727105AbgCWPUM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 23 Mar 2020 11:11:45 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-117-FP7y-fD7Or6NzgHxkL5fNw-1; Mon, 23 Mar 2020 15:11:41 +0000
-X-MC-Unique: FP7y-fD7Or6NzgHxkL5fNw-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Mon, 23 Mar 2020 15:11:40 +0000
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Mon, 23 Mar 2020 15:11:40 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Christophe JAILLET' <christophe.jaillet@wanadoo.fr>,
+        Mon, 23 Mar 2020 11:20:12 -0400
+Received: from [192.168.42.210] ([93.22.39.252])
+        by mwinf5d27 with ME
+        id HrL62200S5SRGh103rL7CS; Mon, 23 Mar 2020 16:20:10 +0100
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 23 Mar 2020 16:20:10 +0100
+X-ME-IP: 93.22.39.252
+Subject: Re: [PATCH] perf cpumap: Use scnprintf instead of snprintf
+To:     David Laight <David.Laight@ACULAB.COM>,
         "peterz@infradead.org" <peterz@infradead.org>,
         "mingo@redhat.com" <mingo@redhat.com>,
         "acme@kernel.org" <acme@kernel.org>,
@@ -37,50 +33,51 @@ To:     'Christophe JAILLET' <christophe.jaillet@wanadoo.fr>,
         "zhe.he@windriver.com" <zhe.he@windriver.com>,
         "dzickus@redhat.com" <dzickus@redhat.com>,
         "jstancek@redhat.com" <jstancek@redhat.com>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: RE: [PATCH] perf cpumap: Use scnprintf instead of snprintf
-Thread-Topic: [PATCH] perf cpumap: Use scnprintf instead of snprintf
-Thread-Index: AQHWAG7rOhePTwQGyk2fyROkdMOaUqhWSN8A
-Date:   Mon, 23 Mar 2020 15:11:40 +0000
-Message-ID: <c0441e54a07e424f9646ca232d44e9d8@AcuMS.aculab.com>
+Newsgroups: gmane.linux.kernel,gmane.linux.kernel.janitors
 References: <20200322172523.2677-1-christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20200322172523.2677-1-christophe.jaillet@wanadoo.fr>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ <c0441e54a07e424f9646ca232d44e9d8@AcuMS.aculab.com>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <8bb4696a-3470-6613-50ce-a002fbce6b23@wanadoo.fr>
+Date:   Mon, 23 Mar 2020 16:20:06 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+In-Reply-To: <c0441e54a07e424f9646ca232d44e9d8@AcuMS.aculab.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Christophe JAILLET
-> Sent: 22 March 2020 17:25
-> 'scnprintf' returns the number of characters written in the output buffer
-> excluding the trailing '\0', instead of the number of characters which
-> would be generated for the given input.
-> 
-> Both function return a number of characters, excluding the trailing '\0'.
-> So comparaison to check if it overflows, should be done against max_size-1.
-> Comparaison against max_size can never match.
+Le 23/03/2020 à 16:11, David Laight a écrit :
+> From: Christophe JAILLET
+>> Sent: 22 March 2020 17:25
+>> 'scnprintf' returns the number of characters written in the output buffer
+>> excluding the trailing '\0', instead of the number of characters which
+>> would be generated for the given input.
+>>
+>> Both function return a number of characters, excluding the trailing '\0'.
+>> So comparaison to check if it overflows, should be done against max_size-1.
+>> Comparaison against max_size can never match.
+> NACK.
+> Since snprintf() returns the number of characters it would have
+> written to an infinite buffer the comparison can 'match'.
+>
+> However it should test for (ret >= PATH_MAX).
 
-NACK.
-Since snprintf() returns the number of characters it would have
-written to an infinite buffer the comparison can 'match'.
+Agreed. I'll send a V2.
 
-However it should test for (ret >= PATH_MAX).
+CJ
 
-	David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
+> 	David
+>
+> -
+> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+> Registration No: 1397386 (Wales)
+>
+>
 

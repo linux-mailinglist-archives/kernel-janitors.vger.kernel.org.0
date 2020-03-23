@@ -2,111 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA5F218FA8D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Mar 2020 17:56:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5328818FAB5
+	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Mar 2020 18:01:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727688AbgCWQ4w (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 23 Mar 2020 12:56:52 -0400
-Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:29473 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727479AbgCWQ4w (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 23 Mar 2020 12:56:52 -0400
-Received: from [192.168.42.210] ([93.22.39.252])
-        by mwinf5d85 with ME
-        id Hswm2200j5SRGh103swn5w; Mon, 23 Mar 2020 17:56:49 +0100
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 23 Mar 2020 17:56:49 +0100
-X-ME-IP: 93.22.39.252
-Subject: Re: [PATCH] usbip: vhci_hcd: slighly simplify code in
- 'vhci_urb_dequeue()'
-To:     shuah <shuah@kernel.org>, valentina.manea.m@gmail.com,
-        gregkh@linuxfoundation.org
-Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Newsgroups: gmane.linux.kernel,gmane.linux.usb.general,gmane.linux.kernel.janitors
-References: <20200321152938.19580-1-christophe.jaillet@wanadoo.fr>
- <c8e319c8-cd65-2c2c-df5d-e75908ca63b7@kernel.org>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <2fb983be-2a42-1b89-447a-a7415ffc7335@wanadoo.fr>
-Date:   Mon, 23 Mar 2020 17:56:46 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1727678AbgCWRB2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 Mar 2020 13:01:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41918 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727333AbgCWRB2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 23 Mar 2020 13:01:28 -0400
+Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A941720735;
+        Mon, 23 Mar 2020 17:01:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1584982887;
+        bh=7tmCZHVG0haQMMfQaXKGfvCkeQtsMbpAmACMnqoUcJM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=kGiiBBvcbC+wBP57HVIVlQn9O8FxUIf5wwRNqVgJmBatptsJfWcctZJTbUOnoJzs/
+         30xLVvPzDTYS29PuhSU35RxrN1QDFgsGAiKRUssZEPJaz/nbtei6rtRWEor++WXomF
+         ESTgXW1dasRoQG2/yFbz6U70cjvZ+s9QS1E6aRSY=
+Date:   Mon, 23 Mar 2020 10:01:24 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "davem@davemloft.net" <davem@davemloft.net>
+Cc:     Saeed Mahameed <saeedm@mellanox.com>,
+        Paul Blakey <paulb@mellanox.com>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        Roi Dayan <roid@mellanox.com>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        Oz Shlomo <ozsh@mellanox.com>,
+        "leon@kernel.org" <leon@kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH net-next] net/mlx5e: Fix actions_match_supported()
+ return
+Message-ID: <20200323100124.0a07236f@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20200323100215.GB26299@kadam>
+References: <20200320132305.GB95012@mwanda>
+        <35fcb57643c0522b051318e75b106100422fb1dc.camel@mellanox.com>
+        <20200323100215.GB26299@kadam>
 MIME-Version: 1.0
-In-Reply-To: <c8e319c8-cd65-2c2c-df5d-e75908ca63b7@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 23/03/2020 à 17:48, shuah a écrit :
-> On 3/21/20 9:29 AM, Christophe JAILLET wrote:
->> The allocation of 'unlink' can be moved before a spin_lock.
->> This slighly simplifies the error handling if the memory allocation 
->> fails,
->
-> slightly (spelling nit)
->
->> aligns the code structure with what is done in 'vhci_tx_urb()' and 
->> reduces
->> potential lock contention.
->>
->
-> Are you seeing any problems or is this a potential lock contention?
-> If you are seeing issues, please share the problem seen.
->
-No, the issue is just theoretical.
+On Mon, 23 Mar 2020 13:02:16 +0300 Dan Carpenter wrote:
+> On Sat, Mar 21, 2020 at 02:43:08AM +0000, Saeed Mahameed wrote:
+> > On Fri, 2020-03-20 at 16:23 +0300, Dan Carpenter wrote:  
+> > > The actions_match_supported() function returns a bool, true for
+> > > success
+> > > and false for failure.  This error path is returning a negative which
+> > > is cast to true but it should return false.
+> > > 
+> > > Fixes: 4c3844d9e97e ("net/mlx5e: CT: Introduce connection tracking")
+> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > > ---
+> > >  drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+> > > b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+> > > index 044891a03be3..e5de7d2bac2b 100644
+> > > --- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+> > > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+> > > @@ -3058,7 +3058,7 @@ static bool actions_match_supported(struct
+> > > mlx5e_priv *priv,
+> > >  			 */
+> > >  			NL_SET_ERR_MSG_MOD(extack,
+> > >  					   "Can't offload mirroring
+> > > with action ct");
+> > > -			return -EOPNOTSUPP;
+> > > +			return false;
+> > >  		}
+> > >  	} else {
+> > >  		actions = flow->nic_attr->action;  
+> > 
+> > applied to net-next-mlx5   
+> 
+> I can never figure out which tree these are supposed to be applied to.
+> :(  Is there a trick to it?
 
+Not as far as I know :/ Upstream maintainers usually know which
+sub-maintainers like to take patches into their own tree first.
 
->
->> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->> ---
->>   drivers/usb/usbip/vhci_hcd.c | 5 ++---
->>   1 file changed, 2 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/usb/usbip/vhci_hcd.c b/drivers/usb/usbip/vhci_hcd.c
->> index 65850e9c7190..b909a634260c 100644
->> --- a/drivers/usb/usbip/vhci_hcd.c
->> +++ b/drivers/usb/usbip/vhci_hcd.c
->> @@ -905,17 +905,16 @@ static int vhci_urb_dequeue(struct usb_hcd 
->> *hcd, struct urb *urb, int status)
->>           /* tcp connection is alive */
->>           struct vhci_unlink *unlink;
->>   -        spin_lock(&vdev->priv_lock);
->> -
->
-> This change might simplify the error path, however it could
-> open a race window with the unlink activity during 
-> vhci_shutdown_connection() when the connection is being taken
-> down. It would be safer to hold both locks as soon as the
-> connection check is done.
+Tagging things as "net-next" is perfectly fine in this case.
 
-My proposal was just a small clean-up (from my point of view at least).
-If it can have some side effects, please, just consider it as a NACK.
-
-CJ
-
->
->>           /* setup CMD_UNLINK pdu */
->>           unlink = kzalloc(sizeof(struct vhci_unlink), GFP_ATOMIC);
->>           if (!unlink) {
->> -            spin_unlock(&vdev->priv_lock);
->>               spin_unlock_irqrestore(&vhci->lock, flags);
->>               usbip_event_add(&vdev->ud, VDEV_EVENT_ERROR_MALLOC);
->>               return -ENOMEM;
->>           }
->>   +        spin_lock(&vdev->priv_lock);
->> +
->>           unlink->seqnum = atomic_inc_return(&vhci_hcd->seqnum);
->>           if (unlink->seqnum == 0xffff)
->>               pr_info("seqnum max\n");
->>
->
-> thanks,
-> -- Shuah
->
-
+We could ask all maintainers who want to funnel patches via their own
+trees to add T: entries in MAINTAINERS, but I'm not sure how practical
+that is.

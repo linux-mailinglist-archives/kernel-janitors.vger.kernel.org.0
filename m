@@ -2,143 +2,116 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65C9F18F065
-	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Mar 2020 08:42:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CAE7C18F255
+	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Mar 2020 11:02:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727442AbgCWHmv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 23 Mar 2020 03:42:51 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:38619 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727430AbgCWHmv (ORCPT
+        id S1727850AbgCWKCf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 Mar 2020 06:02:35 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:51942 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727809AbgCWKCf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 23 Mar 2020 03:42:51 -0400
-Received: by mail-wr1-f65.google.com with SMTP id s1so15619593wrv.5;
-        Mon, 23 Mar 2020 00:42:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=UZh37ycoXEQPJvIa8TQQD4wS32qVanpxbiaipTPYPv4=;
-        b=VVQvLgWT8eeBqcR18iurqJfr5XafnB3FvZhL24uObshAdADJo6ReTy467QzsXVgXJi
-         uyg/c7WimX6uOBVdq3J79hkpu4KM84XT1MLjiUhTCggHFO5cjZZX7WVjXAaGq/IOcRgH
-         lQL6tH4h6mItv8MJ5O/5cOeBjbNaZ+xAPQ81qpIG0p7GPBXbQJ9PuIK3X2KFykT96N4c
-         9wblwjAzlTysTBvlUo7yrkpOK+ofL9/sCglExcYwgdoFQr1rtX0O7DOsK9VHyYygN9dV
-         lRVKnItn8J3EIEvGoA85GpVVeXxLZct4suN75z8zbXbZFOj/0xlH8QJJj8AKrihMZocA
-         EM2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=UZh37ycoXEQPJvIa8TQQD4wS32qVanpxbiaipTPYPv4=;
-        b=HwOHjaNrLUQRt6B6m4gQyiUa29F4+Fg32+Zybx/LZ4i5Bk7obxyogo0/GBP1qNsXcf
-         465Rj+02CnGkwJOLngvQrPd9YnFR0HDZAZ+62bmr7N1xav4pZWGUDGKixMf/ryvYPAgu
-         BlOvKoVKMz5SxBgyG20dTKlHVG9k9JBBaQEoLQVOdBK899HhuzF2XRlGbh2ps0Xy/qnu
-         f9vpJFxNggQAg2hXwJWxccxQKgEVhrz3Oqqu6NKXc12jmeza2guoxNyE3UyfzjMQ0CYI
-         6UsxsMnk2niYzVPs+Q50M0oWMkSy53OVtvIwnPlck4BaRIOmp0wk6Xr9QRsnoUVyJAvK
-         zhzQ==
-X-Gm-Message-State: ANhLgQ1YsZQKhnwXvuToIWXbQlaTMOj+5SiE9vpsqs2v1KY0F+LNuLNS
-        FwOYXE9SDxHzB4YcnzyQOjg=
-X-Google-Smtp-Source: ADFU+vvFxqhBpEkdLzntmJHaBKuQ5PAxGVV3+E6+Y/U7zr7en2fbwBanlcdD4rH097js1JSaE/37og==
-X-Received: by 2002:a5d:63d2:: with SMTP id c18mr6797923wrw.385.1584949368405;
-        Mon, 23 Mar 2020 00:42:48 -0700 (PDT)
-Received: from localhost ([2a02:21b0:9002:6131:e6f7:db0e:d6e9:e56e])
-        by smtp.gmail.com with ESMTPSA id b7sm1569052wrn.67.2020.03.23.00.42.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2020 00:42:47 -0700 (PDT)
-Date:   Mon, 23 Mar 2020 08:42:47 +0100
-From:   Jean-Philippe Menil <jpmenil@gmail.com>
-To:     Yonghong Song <yhs@fb.com>
-Cc:     netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>, bpf@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] bpf: fix build warning - missing prototype
-Message-ID: <20200323074247.wdkfualyvf3n6vlo@macbook>
-References: <20200322140844.4674-1-jpmenil@gmail.com>
- <b08375c6-81ce-b96d-0b87-299f966f4d84@fb.com>
+        Mon, 23 Mar 2020 06:02:35 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02N9tfgU009650;
+        Mon, 23 Mar 2020 10:02:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=mMG7dvfUB+0AmeYy+0Q1hFybzDI3+DQAX7xSQz0D3zc=;
+ b=VCB/lLjYyK8y7TE7SsuQ/NDDW1xWI5mqzqE7Q8oI0yspCLaayurNU8YfgM2VcraEh6jg
+ lT/we+UI4VN7fsbGzFCf62rv8KU8RQWi9xTr+y0OijSh55CtzF6hSEzaiJYutz6fM80m
+ rgj/t1FXqS2R4nlFtU0QljZ4MQhWq5eeZZ0ZKstNzF7vp9Y5xsQPIFx/StIb1okS0twq
+ AChygfUI9kFeutE7uN3Qr8263/2HO+Kxs1e470hEsfupd14jqugoR7DeEZggbHcel1Sm
+ YM5XAzLtcvjdGUC6hvuYw/TrG0rCOg2OTfCEWl0btBl17XZf1hNc02jMp3vDajNssn36 xA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2ywabqwp4s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 23 Mar 2020 10:02:26 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02N9quXq024518;
+        Mon, 23 Mar 2020 10:02:25 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 2ywwuhqayr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 23 Mar 2020 10:02:25 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02NA2Onl013398;
+        Mon, 23 Mar 2020 10:02:24 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 23 Mar 2020 03:02:23 -0700
+Date:   Mon, 23 Mar 2020 13:02:16 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Saeed Mahameed <saeedm@mellanox.com>
+Cc:     Paul Blakey <paulb@mellanox.com>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        Roi Dayan <roid@mellanox.com>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        Oz Shlomo <ozsh@mellanox.com>,
+        "leon@kernel.org" <leon@kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH net-next] net/mlx5e: Fix actions_match_supported() return
+Message-ID: <20200323100215.GB26299@kadam>
+References: <20200320132305.GB95012@mwanda>
+ <35fcb57643c0522b051318e75b106100422fb1dc.camel@mellanox.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b08375c6-81ce-b96d-0b87-299f966f4d84@fb.com>
+In-Reply-To: <35fcb57643c0522b051318e75b106100422fb1dc.camel@mellanox.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9568 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0 spamscore=0
+ mlxlogscore=999 malwarescore=0 mlxscore=0 bulkscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2003230058
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9568 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
+ lowpriorityscore=0 malwarescore=0 phishscore=0 priorityscore=1501
+ clxscore=1015 adultscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003230058
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 22/03/20 at 10:32pm, Yonghong Song wrote:
->
->
->On 3/22/20 7:08 AM, Jean-Philippe Menil wrote:
->>Fix build warning when building net/bpf/test_run.o with W=1 due
->>to missing prototype for bpf_fentry_test{1..6}.
->>
->>These functions are only used in test_run.c so just make them static.
->>Therefore inline keyword should sit between storage class and type.
->
->This won't work. These functions are intentionally global functions
->so that their definitions will be in vmlinux BTF and fentry/fexit kernel
->selftests can run against them.
->
->See file 
->linux/tools/testing/selftests/bpf/progs/{fentry_test.c,fexit_test.c}.
->
+On Sat, Mar 21, 2020 at 02:43:08AM +0000, Saeed Mahameed wrote:
+> On Fri, 2020-03-20 at 16:23 +0300, Dan Carpenter wrote:
+> > The actions_match_supported() function returns a bool, true for
+> > success
+> > and false for failure.  This error path is returning a negative which
+> > is cast to true but it should return false.
+> > 
+> > Fixes: 4c3844d9e97e ("net/mlx5e: CT: Introduce connection tracking")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> >  drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+> > b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+> > index 044891a03be3..e5de7d2bac2b 100644
+> > --- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+> > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+> > @@ -3058,7 +3058,7 @@ static bool actions_match_supported(struct
+> > mlx5e_priv *priv,
+> >  			 */
+> >  			NL_SET_ERR_MSG_MOD(extack,
+> >  					   "Can't offload mirroring
+> > with action ct");
+> > -			return -EOPNOTSUPP;
+> > +			return false;
+> >  		}
+> >  	} else {
+> >  		actions = flow->nic_attr->action;
+> 
+> applied to net-next-mlx5 
 
-I can see now, thanks for the pointer.
-I totally missed that.
+I can never figure out which tree these are supposed to be applied to.
+:(  Is there a trick to it?
 
-So, in order to fix the warnings, better to declare the prototypes?
-(compiling with W=1 may be a bit unusual).
+regards,
+dan carpenter
 
->>
->>Signed-off-by: Jean-Philippe Menil <jpmenil@gmail.com>
->>---
->>  net/bpf/test_run.c | 12 ++++++------
->>  1 file changed, 6 insertions(+), 6 deletions(-)
->>
->>diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
->>index d555c0d8657d..c0dcd29f682c 100644
->>--- a/net/bpf/test_run.c
->>+++ b/net/bpf/test_run.c
->>@@ -113,32 +113,32 @@ static int bpf_test_finish(const union bpf_attr *kattr,
->>   * architecture dependent calling conventions. 7+ can be supported in the
->>   * future.
->>   */
->>-int noinline bpf_fentry_test1(int a)
->>+static noinline int bpf_fentry_test1(int a)
->>  {
->>  	return a + 1;
->>  }
->>-int noinline bpf_fentry_test2(int a, u64 b)
->>+static noinline int bpf_fentry_test2(int a, u64 b)
->>  {
->>  	return a + b;
->>  }
->>-int noinline bpf_fentry_test3(char a, int b, u64 c)
->>+static noinline int bpf_fentry_test3(char a, int b, u64 c)
->>  {
->>  	return a + b + c;
->>  }
->>-int noinline bpf_fentry_test4(void *a, char b, int c, u64 d)
->>+static noinline int bpf_fentry_test4(void *a, char b, int c, u64 d)
->>  {
->>  	return (long)a + b + c + d;
->>  }
->>-int noinline bpf_fentry_test5(u64 a, void *b, short c, int d, u64 e)
->>+static noinline int bpf_fentry_test5(u64 a, void *b, short c, int d, u64 e)
->>  {
->>  	return a + (long)b + c + d + e;
->>  }
->>-int noinline bpf_fentry_test6(u64 a, void *b, short c, int d, void *e, u64 f)
->>+static noinline int bpf_fentry_test6(u64 a, void *b, short c, int d, void *e, u64 f)
->>  {
->>  	return a + (long)b + c + d + (long)e + f;
->>  }
->>
-
--- 
-Jean-Philippe Menil

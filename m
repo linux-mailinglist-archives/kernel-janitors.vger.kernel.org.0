@@ -2,112 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 917C818F360
-	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Mar 2020 12:06:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D380518F388
+	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Mar 2020 12:14:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728095AbgCWLGI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 23 Mar 2020 07:06:08 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:37414 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727987AbgCWLGI (ORCPT
+        id S1728123AbgCWLOf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 Mar 2020 07:14:35 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:36431 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728051AbgCWLOe (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 23 Mar 2020 07:06:08 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02NB349S019401;
-        Mon, 23 Mar 2020 11:05:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=w5K+Q/84iqNbz33/6C2NZu0Q3vAYsOs50DjnxAcgG1Y=;
- b=Mn7R6b0l8wez1yAcZLSfpc2wrIhMuzIwnTi0DtAnf8n+KJJWKQeqrHu46og+68aFWP5o
- UlNfC2u8vRgCUcQw+sT5NelWNsoTB2CtwLH/MVe1bQdl0y32RZY72hNojPZEPiYBrrc8
- S3dxgQ50L9JIoialZaoweLgtoj/hidwCVju76UtCSHbvBwYILrom3gW9x0IAjqwGKhOS
- 2cMWUfxtvB9b5Dq7Iv2zuxqOxLj/Cqi1oM4mR+hSuH1E2GlY8o97hOltmHXLS+GxIvlN
- S1TSKze+GqbnJSzp7SDqIeegRc6yWOkw2+PIeEaCTE5uZNmUKaWfkqd509W0XibbdIdx Jg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 2ywabqwx7c-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 23 Mar 2020 11:05:48 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02NAvRWn067564;
-        Mon, 23 Mar 2020 11:03:47 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2ywwuht83f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 23 Mar 2020 11:03:47 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02NB3igg014374;
-        Mon, 23 Mar 2020 11:03:45 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 23 Mar 2020 04:03:44 -0700
-Date:   Mon, 23 Mar 2020 14:03:34 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
-        mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
-        jolsa@redhat.com, namhyung@kernel.org, kan.liang@linux.intel.com,
-        zhe.he@windriver.com, dzickus@redhat.com, jstancek@redhat.com,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] perf cpumap: Use scnprintf instead of snprintf
-Message-ID: <20200323110334.GC26299@kadam>
-References: <20200322172523.2677-1-christophe.jaillet@wanadoo.fr>
+        Mon, 23 Mar 2020 07:14:34 -0400
+Received: by mail-vs1-f68.google.com with SMTP id n6so8468797vsc.3
+        for <kernel-janitors@vger.kernel.org>; Mon, 23 Mar 2020 04:14:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MAiWRKEXAyRQFJfsxR6WCAQNazeZOJnLHhtRsQi0so0=;
+        b=XLTlSXcnZvLStMq6xWIjt7gUqpgyShU3l1jhj7uyo4W/EBeJptZafYXL+55Ot1jRh6
+         2raRYIB+jzyrYe5pT7oN6pOz+yfE7FB8nevJc5VpN+GIQQu0mVAVyGmrsICGFv7fNmlZ
+         TMxQVO3sBKSZqit2wKMSpTkwKqM+3fZlfiAkWmRrXIrnjfY7E76JYZG3kqRjmKagOjl6
+         mwh2OY9B+RSMvmCFW5RbcGiK4Si6k6Uy3EGiWf8VtcrrcCG0vs0iiqkLPJRHdwYJ29vF
+         yhHUkIk6KZTnOJM0iPBQMVpQD6Qyf2mSEUP4HaQjQnnE6G9WxgbYDxiu2UxNUgB8s2Nh
+         g9RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MAiWRKEXAyRQFJfsxR6WCAQNazeZOJnLHhtRsQi0so0=;
+        b=pk616JDTktRNoX1ug5mp50FadAhTH+2KSO3pFNWynwY23kxEWdz2bm1tdueOk3g9m1
+         Dln1ELN+2SA2ujxolNLRtcEL4CXtPxWLlON0kJicFKGPy0Ft/4R+678MTKWGWUskNZf8
+         ULlh3+ypiSVV9HdU/u54MR31IT3CdrsdIKSRQBCEEpLUJQIM403fxrgFsv6n1oVTzexI
+         gR+hUS38IJey3hgnApqSsP++vsxxrgDP2CUy0qiquYMIrnwCpjz7I4z5+2nOpjG4Z4E6
+         RBrhpZrEH+FN7wrlSW5gTg9JuOvGWCVTrZFYkNZ2AnY7PkMhfNt4OqQxJ827/jBVwazZ
+         QqDA==
+X-Gm-Message-State: ANhLgQ29hAq1BuBCupYq9VQ9qGEjkB4kv/8i++zvr5OCu7U5JbW0iITi
+        7PgL+PAU/WnAoyA0VzM0SgEMK5XFA5afO2yql2M=
+X-Google-Smtp-Source: ADFU+vutlzdjUedg8us2quK3xm80fTCg+xe4TNgGIZ30332v3xwKq5807/piYycyJZIc7WTTFhQjRRsNJzmeghhbo9g=
+X-Received: by 2002:a67:c592:: with SMTP id h18mr5351236vsk.118.1584962073626;
+ Mon, 23 Mar 2020 04:14:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200322172523.2677-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9568 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0 spamscore=0
- mlxlogscore=999 malwarescore=0 mlxscore=0 bulkscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2003230065
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9568 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
- lowpriorityscore=0 malwarescore=0 phishscore=0 priorityscore=1501
- clxscore=1011 adultscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003230065
+References: <20200320132334.GC95012@mwanda>
+In-Reply-To: <20200320132334.GC95012@mwanda>
+From:   Emil Velikov <emil.l.velikov@gmail.com>
+Date:   Mon, 23 Mar 2020 11:13:22 +0000
+Message-ID: <CACvgo51xwgF2hJPOESWGpJ16WittQSVixdd+62KwFsZaHO-Dpg@mail.gmail.com>
+Subject: Re: [PATCH] drm/gem: Fix a leak in drm_gem_objects_lookup()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Rob Herring <robh@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@linux.ie>,
+        kernel-janitors@vger.kernel.org,
+        ML dri-devel <dri-devel@lists.freedesktop.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Mar 22, 2020 at 06:25:23PM +0100, Christophe JAILLET wrote:
-> 'scnprintf' returns the number of characters written in the output buffer
-> excluding the trailing '\0', instead of the number of characters which
-> would be generated for the given input.
-> 
-> Both function return a number of characters, excluding the trailing '\0'.
-> So comparaison to check if it overflows, should be done against max_size-1.
-> Comparaison against max_size can never match.
-> 
-> Fixes: 7780c25bae59f ("perf tools: Allow ability to map cpus to nodes easily")
-> Fixes: a24020e6b7cf6 ("perf tools: Change cpu_map__fprintf output")
-> Fixes: 92a7e1278005b ("perf cpumap: Add cpu__max_present_cpu()")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Hi Dan,
+
+On Fri, 20 Mar 2020 at 13:23, Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> If the "handles" allocation or the copy_from_user() fails then we leak
+> "objs".  It's supposed to be freed in panfrost_job_cleanup().
+>
+> Fixes: c117aa4d8701 ("drm: Add a drm_gem_objects_lookup helper")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  tools/perf/util/cpumap.c | 39 ++++++++++++++++++++-------------------
->  1 file changed, 20 insertions(+), 19 deletions(-)
-> 
-> diff --git a/tools/perf/util/cpumap.c b/tools/perf/util/cpumap.c
-> index 983b7388f22b..b87e7ef4d130 100644
-> --- a/tools/perf/util/cpumap.c
-> +++ b/tools/perf/util/cpumap.c
-> @@ -316,8 +316,8 @@ static void set_max_cpu_num(void)
->  		goto out;
->  
->  	/* get the highest possible cpu number for a sparse allocation */
-> -	ret = snprintf(path, PATH_MAX, "%s/devices/system/cpu/possible", mnt);
-> -	if (ret == PATH_MAX) {
-> +	ret = scnprintf(path, PATH_MAX, "%s/devices/system/cpu/possible", mnt);
-> +	if (ret == PATH_MAX-1) {
+>  drivers/gpu/drm/drm_gem.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+> index a9e4a610445a..f28724f2eb69 100644
+> --- a/drivers/gpu/drm/drm_gem.c
+> +++ b/drivers/gpu/drm/drm_gem.c
+> @@ -710,6 +710,8 @@ int drm_gem_objects_lookup(struct drm_file *filp, void __user *bo_handles,
+>         if (!objs)
+>                 return -ENOMEM;
+>
+> +       *objs_out = objs;
+> +
+>         handles = kvmalloc_array(count, sizeof(u32), GFP_KERNEL);
+>         if (!handles) {
+>                 ret = -ENOMEM;
+> @@ -723,8 +725,6 @@ int drm_gem_objects_lookup(struct drm_file *filp, void __user *bo_handles,
+>         }
+>
+>         ret = objects_lookup(filp, handles, count, objs);
+> -       *objs_out = objs;
+> -
+>  out:
+>         kvfree(handles);
+>         return ret;
 
-This should be a static analysis warning.
+It seems that this will return error to the caller, mangle the output
+pointer and effectively still leak the objs.
 
-But isn't this stuff userspace?  I can't figure out how to compile it on
-Debian so I'm not sure.  There is no scnprintf() in user space.
+Better option IMHO is to:
+- move the __user/copy_from_user into the caller
+Removes a silly kvmalloc_array(1,...) in ~90+ users and drops the "out" label.
+Extra bonus, this is the only instance in drm_gem with __user -
+consistency is nice.
+- add "err" or similar label, where the objs is freed before returning an error.
 
-regards,
-dan carpenter
-
+-Emil

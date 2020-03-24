@@ -2,125 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC133190631
-	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Mar 2020 08:23:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88B72190873
+	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Mar 2020 10:06:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727430AbgCXHW6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 24 Mar 2020 03:22:58 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:46608 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727304AbgCXHW6 (ORCPT
+        id S1726697AbgCXJGY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 24 Mar 2020 05:06:24 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:43290 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726524AbgCXJGY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 24 Mar 2020 03:22:58 -0400
-Received: by mail-ed1-f68.google.com with SMTP id cf14so10381409edb.13;
-        Tue, 24 Mar 2020 00:22:56 -0700 (PDT)
+        Tue, 24 Mar 2020 05:06:24 -0400
+Received: by mail-lj1-f195.google.com with SMTP id g27so8900855ljn.10
+        for <kernel-janitors@vger.kernel.org>; Tue, 24 Mar 2020 02:06:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=xbAGFRUEc8WSi1m7tXd4QfoMkZSNw03YADtsowLEzJc=;
-        b=QyOmm5ahPvMwOgaXbRvjRYuAGztnFHABZ1ay5NdVP4sQfwveT2bJtwcHD/pdhafXym
-         U3nmrRDDkm5CH57XGUjkFfhcFTqtJ75wBKA3D/xK7YIDkeLMc+peRX1DdELLta4aIJYW
-         PFvq29PXNTvktpqhI6OftKvvikVNkcVqeCnHmKBAmUndElIMXBm0eo+GM/ZOdieYzlY6
-         25Bz8T61jhZNAQv0c3H5ISif/2X9CWiVJKD38SFMLDkdG+a0Zw7ZjFJf9y7h1xWkdq6C
-         oJbZGXWj7p7T3mP82mNa9QxOQMm4/t33FJyobBTT2RRm+liOgYAGhAMxZ3DlNvxHm0Rm
-         MntA==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=uXJW3NYqkzBJPg9G4K5LGYBd3XGQpGvoVNtbcm5Oumc=;
+        b=LbrZCbzmZx+Kfb1Pm57HvFHXuRgH444WCs3KnlNJ9YLTcdWzcACe0XYOMLFNxSnkVH
+         wN88biDhrK+6HtUJj35VD4dFzg9cGhbGQzAhpXmOrRsqZITX0hTej20qj+VRoR4uNBfZ
+         3tUJpYkAFikVpIS6Bp8KePAb0Bq5MOTC1YBDjTrdFWYIi4okAdmrkjf7eH+cDjfvswnY
+         eNJfCdKTpTYuGH9iE99z6qcWe86ldjM8DxZknJTAJcGlNvFpAvX0Pfg/dQO7bRVTt3WB
+         AbQPQpSOS9CCHsoTsEYTkgwyICLIzP9k6ivxee5YATXOa10Axoo/TbZqZvmtGqKAQxpo
+         32Jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=xbAGFRUEc8WSi1m7tXd4QfoMkZSNw03YADtsowLEzJc=;
-        b=giSg/4H0Rp8ieq2yvdC558N9SSIXkeI8LZVDf77iP5YbeYQhFiK45//aAH6kbLdcIA
-         SNhpKf63DONfi99DwPaktb6ctIgJ9M3OwVvirm0GrEY2HG2tGPzftIZxrh9sysyzKKOx
-         /uEYe6vNjLypDnDAqUImBju05c5zpbxQTw3qZR8ig81cXrm/fJfHwyQrQV0jXXa/RA60
-         vlDAqFkNhJNaJKD1Lfp29kAZN3jAg9vI8yy1Tuhj1VBOye2QEYTiobiX5WIaVwvJYcjF
-         7i5NoTFJbVeR5L7xbkVtvHV8BH7BwA8OVVSrufTaaxuJMDaGY4jkCq6kcndsmNzUz9jr
-         yW8g==
-X-Gm-Message-State: ANhLgQ26HIFIEtH1tRKcgivVNOeaNFSDPJsLo24FUnlUIVjdvY9vbgZo
-        u2tD+TadmdYrHvaBax0NKMg=
-X-Google-Smtp-Source: ADFU+vvv3nq9kXL78yrg4zvv6t3eZQV3/PwSXUQ6OlTRVy235ugMyeReRt5WE1ttXU1U9XZsmbHKeA==
-X-Received: by 2002:a17:906:5c43:: with SMTP id c3mr21253612ejr.3.1585034576216;
-        Tue, 24 Mar 2020 00:22:56 -0700 (PDT)
-Received: from localhost.localdomain (45.239.197.178.dynamic.wless.lssmb00p-cgnat.res.cust.swisscom.ch. [178.197.239.45])
-        by smtp.googlemail.com with ESMTPSA id bc11sm12420edb.34.2020.03.24.00.22.55
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 24 Mar 2020 00:22:55 -0700 (PDT)
-From:   Jean-Philippe Menil <jpmenil@gmail.com>
-To:     yhs@fb.com
-Cc:     kernel-janitors@vger.kernel.org, jpmenil@gmail.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>, netdev@vger.kernel.org,
-        bpf@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] bpf: fix build warning - missing prototype
-Date:   Tue, 24 Mar 2020 08:22:31 +0100
-Message-Id: <20200324072231.5780-1-jpmenil@gmail.com>
-X-Mailer: git-send-email 2.25.2
-In-Reply-To: <7c27e51f-6a64-7374-b705-450cad42146c@fb.com>
-References: <7c27e51f-6a64-7374-b705-450cad42146c@fb.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=uXJW3NYqkzBJPg9G4K5LGYBd3XGQpGvoVNtbcm5Oumc=;
+        b=ZP6wpJU1QaLZl2mGI30V7JSUVia6wh2PVVV6JE2i03i/MQWeH5frYPYc7Ooifd/jJv
+         gHk8lzrWGl377zTlmPJhSHiQCwHoIn91Ef0+LcmpgHiucRFYiNeW+13jwEBTXjzdO3ni
+         YpHm5AtimHQ53iCSnCsIgQ2P52Jr5C02RCq4y5uRHJn/FQrCeIzZ4CbAWgCq21l9LoHP
+         jlxvFCEpSvrZr65+P2084iFQ1sdJQK/45l6mtmaulbYKN/cCQsCK+P9pUY1VH7yN7IC/
+         h5GFml2W0y2ihlVcXk43HlR49djxIkV28cSBr5sAd0mP1oG0zEhC5mY5sMntSRZoru/l
+         Fr+A==
+X-Gm-Message-State: ANhLgQ3o9ha76oo5/x3LBbQZrFAohXjXe2LNeT524c6JcN+z66uj9194
+        oXP83Z/xR8VoqtTgNToZMlmiqkLk5T87iBH8vLepwg==
+X-Google-Smtp-Source: ADFU+vsS0Vgh95i3gLQkXN72OAT1r7M91nH8bLgfI97o39Kb3z7Gj4YEOvUgl0V1KX45mkYxQ/82vB1+XBwxrugyzW4=
+X-Received: by 2002:a2e:8ecf:: with SMTP id e15mr17140251ljl.223.1585040782184;
+ Tue, 24 Mar 2020 02:06:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200323184501.5756-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <20200323184501.5756-1-lukas.bulwahn@gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 24 Mar 2020 10:06:10 +0100
+Message-ID: <CACRpkdYUURewhao=uDbKOmn2OnhBN6G6qnjUXgN2OBH_w_u2Qw@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: adjust entry to ICST clocks YAML schema creation
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Rob Herring <robh@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix build warnings when building net/bpf/test_run.o with W=1 due
-to missing prototype for bpf_fentry_test{1..6}.
+On Mon, Mar 23, 2020 at 7:45 PM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
 
-Declare prototypes in order to silence warnings.
+> Commit 78c7d8f96b6f ("dt-bindings: clock: Create YAML schema for ICST
+> clocks") transformed arm-integrator.txt into arm,syscon-icst.yaml, but did
+> not adjust the reference to that file in the ARM INTEGRATOR, VERSATILE AND
+> REALVIEW SUPPORT entry in MAINTAINERS.
+>
+> Hence, since then, ./scripts/get_maintainer.pl --self-test complains:
+>
+>   warning: no file matches \
+>   F: Documentation/devicetree/bindings/clock/arm-integrator.txt
+>
+> Update the file entry in MAINTAINERS to the new transformed yaml file.
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-Signed-off-by: Jean-Philippe Menil <jpmenil@gmail.com>
----
- net/bpf/test_run.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Thanks!
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index d555c0d8657d..cdf87fb0b6eb 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -113,31 +113,37 @@ static int bpf_test_finish(const union bpf_attr *kattr,
-  * architecture dependent calling conventions. 7+ can be supported in the
-  * future.
-  */
-+int noinline bpf_fentry_test1(int a);
- int noinline bpf_fentry_test1(int a)
- {
- 	return a + 1;
- }
- 
-+int noinline bpf_fentry_test2(int a, u64 b);
- int noinline bpf_fentry_test2(int a, u64 b)
- {
- 	return a + b;
- }
- 
-+int noinline bpf_fentry_test3(char a, int b, u64 c);
- int noinline bpf_fentry_test3(char a, int b, u64 c)
- {
- 	return a + b + c;
- }
- 
-+int noinline bpf_fentry_test4(void *a, char b, int c, u64 d);
- int noinline bpf_fentry_test4(void *a, char b, int c, u64 d)
- {
- 	return (long)a + b + c + d;
- }
- 
-+int noinline bpf_fentry_test5(u64 a, void *b, short c, int d, u64 e);
- int noinline bpf_fentry_test5(u64 a, void *b, short c, int d, u64 e)
- {
- 	return a + (long)b + c + d + e;
- }
- 
-+int noinline bpf_fentry_test6(u64 a, void *b, short c, int d, void *e, u64 f);
- int noinline bpf_fentry_test6(u64 a, void *b, short c, int d, void *e, u64 f)
- {
- 	return a + (long)b + c + d + (long)e + f;
--- 
-2.25.2
-
+Yours,
+Linus Walleij

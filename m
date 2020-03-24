@@ -2,52 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4078119041D
-	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Mar 2020 05:06:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 050D31905FE
+	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Mar 2020 08:03:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726171AbgCXEGA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 24 Mar 2020 00:06:00 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:55918 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725798AbgCXEGA (ORCPT
+        id S1727367AbgCXHDj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 24 Mar 2020 03:03:39 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:48715 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725923AbgCXHDj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 24 Mar 2020 00:06:00 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id D8C77155371C6;
-        Mon, 23 Mar 2020 21:05:59 -0700 (PDT)
-Date:   Mon, 23 Mar 2020 21:05:58 -0700 (PDT)
-Message-Id: <20200323.210558.579490999359919534.davem@davemloft.net>
-To:     dan.carpenter@oracle.com
-Cc:     kstewart@linuxfoundation.org, robert.dolca@intel.com,
-        gregkh@linuxfoundation.org, gustavo@embeddedor.com,
-        sameo@linux.intel.com, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] NFC: fdp: Fix a signedness bug in
- fdp_nci_send_patch()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200320132117.GA95012@mwanda>
-References: <20200320132117.GA95012@mwanda>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 23 Mar 2020 21:06:00 -0700 (PDT)
+        Tue, 24 Mar 2020 03:03:39 -0400
+Received: from localhost.localdomain ([93.22.39.100])
+        by mwinf5d55 with ME
+        id J73L2200129f5LV0373Llo; Tue, 24 Mar 2020 08:03:35 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 24 Mar 2020 08:03:35 +0100
+X-ME-IP: 93.22.39.100
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
+        mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
+        jolsa@redhat.com, namhyung@kernel.org, kan.liang@linux.intel.com,
+        zhe.he@windriver.com, dzickus@redhat.com, jstancek@redhat.com
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH V2] perf cpumap: Fix snprintf overflow check
+Date:   Tue, 24 Mar 2020 08:03:19 +0100
+Message-Id: <20200324070319.10901-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Fri, 20 Mar 2020 16:21:17 +0300
+'snprintf' returns the number of characters which would be generated for
+the given input.
 
-> The nci_conn_max_data_pkt_payload_size() function sometimes returns
-> -EPROTO so "max_size" needs to be signed for the error handling to
-> work.  We can make "payload_size" an int as well.
-> 
-> Fixes: a06347c04c13 ("NFC: Add Intel Fields Peak NFC solution driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+If the returned value is *greater than* or equal to the buffer size, it
+means that the output has been truncated.
 
-Applied and queued up for -stable, thanks Dan.
+Fix the overflow test accordingling.
+
+Fixes: 7780c25bae59f ("perf tools: Allow ability to map cpus to nodes easily")
+Fixes: 92a7e1278005b ("perf cpumap: Add cpu__max_present_cpu()")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+V2: keep snprintf
+    modifiy the tests for truncated output
+    Update subject and description
+---
+ tools/perf/util/cpumap.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/tools/perf/util/cpumap.c b/tools/perf/util/cpumap.c
+index 983b7388f22b..dc5c5e6fc502 100644
+--- a/tools/perf/util/cpumap.c
++++ b/tools/perf/util/cpumap.c
+@@ -317,7 +317,7 @@ static void set_max_cpu_num(void)
+ 
+ 	/* get the highest possible cpu number for a sparse allocation */
+ 	ret = snprintf(path, PATH_MAX, "%s/devices/system/cpu/possible", mnt);
+-	if (ret == PATH_MAX) {
++	if (ret >= PATH_MAX) {
+ 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
+ 		goto out;
+ 	}
+@@ -328,7 +328,7 @@ static void set_max_cpu_num(void)
+ 
+ 	/* get the highest present cpu number for a sparse allocation */
+ 	ret = snprintf(path, PATH_MAX, "%s/devices/system/cpu/present", mnt);
+-	if (ret == PATH_MAX) {
++	if (ret >= PATH_MAX) {
+ 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
+ 		goto out;
+ 	}
+@@ -356,7 +356,7 @@ static void set_max_node_num(void)
+ 
+ 	/* get the highest possible cpu number for a sparse allocation */
+ 	ret = snprintf(path, PATH_MAX, "%s/devices/system/node/possible", mnt);
+-	if (ret == PATH_MAX) {
++	if (ret >= PATH_MAX) {
+ 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
+ 		goto out;
+ 	}
+@@ -441,7 +441,7 @@ int cpu__setup_cpunode_map(void)
+ 		return 0;
+ 
+ 	n = snprintf(path, PATH_MAX, "%s/devices/system/node", mnt);
+-	if (n == PATH_MAX) {
++	if (n >= PATH_MAX) {
+ 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
+ 		return -1;
+ 	}
+@@ -456,7 +456,7 @@ int cpu__setup_cpunode_map(void)
+ 			continue;
+ 
+ 		n = snprintf(buf, PATH_MAX, "%s/%s", path, dent1->d_name);
+-		if (n == PATH_MAX) {
++		if (n >= PATH_MAX) {
+ 			pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
+ 			continue;
+ 		}
+-- 
+2.20.1
+

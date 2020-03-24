@@ -2,34 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 050D31905FE
-	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Mar 2020 08:03:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC133190631
+	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Mar 2020 08:23:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727367AbgCXHDj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 24 Mar 2020 03:03:39 -0400
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:48715 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725923AbgCXHDj (ORCPT
+        id S1727430AbgCXHW6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 24 Mar 2020 03:22:58 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:46608 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727304AbgCXHW6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 24 Mar 2020 03:03:39 -0400
-Received: from localhost.localdomain ([93.22.39.100])
-        by mwinf5d55 with ME
-        id J73L2200129f5LV0373Llo; Tue, 24 Mar 2020 08:03:35 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 24 Mar 2020 08:03:35 +0100
-X-ME-IP: 93.22.39.100
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
-        mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
-        jolsa@redhat.com, namhyung@kernel.org, kan.liang@linux.intel.com,
-        zhe.he@windriver.com, dzickus@redhat.com, jstancek@redhat.com
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH V2] perf cpumap: Fix snprintf overflow check
-Date:   Tue, 24 Mar 2020 08:03:19 +0100
-Message-Id: <20200324070319.10901-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        Tue, 24 Mar 2020 03:22:58 -0400
+Received: by mail-ed1-f68.google.com with SMTP id cf14so10381409edb.13;
+        Tue, 24 Mar 2020 00:22:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=xbAGFRUEc8WSi1m7tXd4QfoMkZSNw03YADtsowLEzJc=;
+        b=QyOmm5ahPvMwOgaXbRvjRYuAGztnFHABZ1ay5NdVP4sQfwveT2bJtwcHD/pdhafXym
+         U3nmrRDDkm5CH57XGUjkFfhcFTqtJ75wBKA3D/xK7YIDkeLMc+peRX1DdELLta4aIJYW
+         PFvq29PXNTvktpqhI6OftKvvikVNkcVqeCnHmKBAmUndElIMXBm0eo+GM/ZOdieYzlY6
+         25Bz8T61jhZNAQv0c3H5ISif/2X9CWiVJKD38SFMLDkdG+a0Zw7ZjFJf9y7h1xWkdq6C
+         oJbZGXWj7p7T3mP82mNa9QxOQMm4/t33FJyobBTT2RRm+liOgYAGhAMxZ3DlNvxHm0Rm
+         MntA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=xbAGFRUEc8WSi1m7tXd4QfoMkZSNw03YADtsowLEzJc=;
+        b=giSg/4H0Rp8ieq2yvdC558N9SSIXkeI8LZVDf77iP5YbeYQhFiK45//aAH6kbLdcIA
+         SNhpKf63DONfi99DwPaktb6ctIgJ9M3OwVvirm0GrEY2HG2tGPzftIZxrh9sysyzKKOx
+         /uEYe6vNjLypDnDAqUImBju05c5zpbxQTw3qZR8ig81cXrm/fJfHwyQrQV0jXXa/RA60
+         vlDAqFkNhJNaJKD1Lfp29kAZN3jAg9vI8yy1Tuhj1VBOye2QEYTiobiX5WIaVwvJYcjF
+         7i5NoTFJbVeR5L7xbkVtvHV8BH7BwA8OVVSrufTaaxuJMDaGY4jkCq6kcndsmNzUz9jr
+         yW8g==
+X-Gm-Message-State: ANhLgQ26HIFIEtH1tRKcgivVNOeaNFSDPJsLo24FUnlUIVjdvY9vbgZo
+        u2tD+TadmdYrHvaBax0NKMg=
+X-Google-Smtp-Source: ADFU+vvv3nq9kXL78yrg4zvv6t3eZQV3/PwSXUQ6OlTRVy235ugMyeReRt5WE1ttXU1U9XZsmbHKeA==
+X-Received: by 2002:a17:906:5c43:: with SMTP id c3mr21253612ejr.3.1585034576216;
+        Tue, 24 Mar 2020 00:22:56 -0700 (PDT)
+Received: from localhost.localdomain (45.239.197.178.dynamic.wless.lssmb00p-cgnat.res.cust.swisscom.ch. [178.197.239.45])
+        by smtp.googlemail.com with ESMTPSA id bc11sm12420edb.34.2020.03.24.00.22.55
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 24 Mar 2020 00:22:55 -0700 (PDT)
+From:   Jean-Philippe Menil <jpmenil@gmail.com>
+To:     yhs@fb.com
+Cc:     kernel-janitors@vger.kernel.org, jpmenil@gmail.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>, netdev@vger.kernel.org,
+        bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] bpf: fix build warning - missing prototype
+Date:   Tue, 24 Mar 2020 08:22:31 +0100
+Message-Id: <20200324072231.5780-1-jpmenil@gmail.com>
+X-Mailer: git-send-email 2.25.2
+In-Reply-To: <7c27e51f-6a64-7374-b705-450cad42146c@fb.com>
+References: <7c27e51f-6a64-7374-b705-450cad42146c@fb.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -37,74 +69,58 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'snprintf' returns the number of characters which would be generated for
-the given input.
+Fix build warnings when building net/bpf/test_run.o with W=1 due
+to missing prototype for bpf_fentry_test{1..6}.
 
-If the returned value is *greater than* or equal to the buffer size, it
-means that the output has been truncated.
+Declare prototypes in order to silence warnings.
 
-Fix the overflow test accordingling.
-
-Fixes: 7780c25bae59f ("perf tools: Allow ability to map cpus to nodes easily")
-Fixes: 92a7e1278005b ("perf cpumap: Add cpu__max_present_cpu()")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Jean-Philippe Menil <jpmenil@gmail.com>
 ---
-V2: keep snprintf
-    modifiy the tests for truncated output
-    Update subject and description
----
- tools/perf/util/cpumap.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/bpf/test_run.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/perf/util/cpumap.c b/tools/perf/util/cpumap.c
-index 983b7388f22b..dc5c5e6fc502 100644
---- a/tools/perf/util/cpumap.c
-+++ b/tools/perf/util/cpumap.c
-@@ -317,7 +317,7 @@ static void set_max_cpu_num(void)
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index d555c0d8657d..cdf87fb0b6eb 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -113,31 +113,37 @@ static int bpf_test_finish(const union bpf_attr *kattr,
+  * architecture dependent calling conventions. 7+ can be supported in the
+  * future.
+  */
++int noinline bpf_fentry_test1(int a);
+ int noinline bpf_fentry_test1(int a)
+ {
+ 	return a + 1;
+ }
  
- 	/* get the highest possible cpu number for a sparse allocation */
- 	ret = snprintf(path, PATH_MAX, "%s/devices/system/cpu/possible", mnt);
--	if (ret == PATH_MAX) {
-+	if (ret >= PATH_MAX) {
- 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
- 		goto out;
- 	}
-@@ -328,7 +328,7 @@ static void set_max_cpu_num(void)
++int noinline bpf_fentry_test2(int a, u64 b);
+ int noinline bpf_fentry_test2(int a, u64 b)
+ {
+ 	return a + b;
+ }
  
- 	/* get the highest present cpu number for a sparse allocation */
- 	ret = snprintf(path, PATH_MAX, "%s/devices/system/cpu/present", mnt);
--	if (ret == PATH_MAX) {
-+	if (ret >= PATH_MAX) {
- 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
- 		goto out;
- 	}
-@@ -356,7 +356,7 @@ static void set_max_node_num(void)
++int noinline bpf_fentry_test3(char a, int b, u64 c);
+ int noinline bpf_fentry_test3(char a, int b, u64 c)
+ {
+ 	return a + b + c;
+ }
  
- 	/* get the highest possible cpu number for a sparse allocation */
- 	ret = snprintf(path, PATH_MAX, "%s/devices/system/node/possible", mnt);
--	if (ret == PATH_MAX) {
-+	if (ret >= PATH_MAX) {
- 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
- 		goto out;
- 	}
-@@ -441,7 +441,7 @@ int cpu__setup_cpunode_map(void)
- 		return 0;
++int noinline bpf_fentry_test4(void *a, char b, int c, u64 d);
+ int noinline bpf_fentry_test4(void *a, char b, int c, u64 d)
+ {
+ 	return (long)a + b + c + d;
+ }
  
- 	n = snprintf(path, PATH_MAX, "%s/devices/system/node", mnt);
--	if (n == PATH_MAX) {
-+	if (n >= PATH_MAX) {
- 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
- 		return -1;
- 	}
-@@ -456,7 +456,7 @@ int cpu__setup_cpunode_map(void)
- 			continue;
++int noinline bpf_fentry_test5(u64 a, void *b, short c, int d, u64 e);
+ int noinline bpf_fentry_test5(u64 a, void *b, short c, int d, u64 e)
+ {
+ 	return a + (long)b + c + d + e;
+ }
  
- 		n = snprintf(buf, PATH_MAX, "%s/%s", path, dent1->d_name);
--		if (n == PATH_MAX) {
-+		if (n >= PATH_MAX) {
- 			pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
- 			continue;
- 		}
++int noinline bpf_fentry_test6(u64 a, void *b, short c, int d, void *e, u64 f);
+ int noinline bpf_fentry_test6(u64 a, void *b, short c, int d, void *e, u64 f)
+ {
+ 	return a + (long)b + c + d + (long)e + f;
 -- 
-2.20.1
+2.25.2
 

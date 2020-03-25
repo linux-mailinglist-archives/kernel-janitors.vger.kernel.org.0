@@ -2,65 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ABF3191F49
-	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Mar 2020 03:37:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49E6719218D
+	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Mar 2020 08:05:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727277AbgCYChA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 24 Mar 2020 22:37:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43156 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727262AbgCYChA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 24 Mar 2020 22:37:00 -0400
-Received: from kernel.org (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C6A6620714;
-        Wed, 25 Mar 2020 02:36:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585103819;
-        bh=InTvH1FD+myof5xLImIsEz4YlekXxKWk3kYrJWkbr0Y=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=1e3i8/DIhGo0HLqrkskon5km384KJf9SoZP1feyeC+ZJmg1QQcczK8/AqfuJsP2tk
-         EBYKSQk298Cdgnw0WujZwTJNmtd/ibRkzqKFcdewrIjgTCDu512l/adogDsTsumzBU
-         kX8saiVwdrg/QT/7rPNSFCpDDf1uue1ZDcdu182A=
-Content-Type: text/plain; charset="utf-8"
+        id S1726116AbgCYHE7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Mar 2020 03:04:59 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:54918 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725911AbgCYHE7 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 25 Mar 2020 03:04:59 -0400
+Received: from localhost.localdomain ([93.22.148.147])
+        by mwinf5d03 with ME
+        id JX4r2200J3B2lW503X4s9d; Wed, 25 Mar 2020 08:04:56 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 25 Mar 2020 08:04:56 +0100
+X-ME-IP: 93.22.148.147
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     trond.myklebust@hammerspace.com, anna.schumaker@netapp.com,
+        bfields@fieldses.org, chuck.lever@oracle.com, davem@davemloft.net,
+        kuba@kernel.org, gnb@sgi.com, neilb@suse.de,
+        tom@opengridcomputing.com
+Cc:     linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH 1/2] SUNRPC: Fix a potential buffer overflow in 'svc_print_xprts()'
+Date:   Wed, 25 Mar 2020 08:04:40 +0100
+Message-Id: <20200325070440.21988-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20200323184501.5756-1-lukas.bulwahn@gmail.com>
-References: <20200323184501.5756-1-lukas.bulwahn@gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: adjust entry to ICST clocks YAML schema creation
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     Rob Herring <robh@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Date:   Tue, 24 Mar 2020 19:36:58 -0700
-Message-ID: <158510381898.125146.5862992017032580482@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Lukas Bulwahn (2020-03-23 11:45:01)
-> Commit 78c7d8f96b6f ("dt-bindings: clock: Create YAML schema for ICST
-> clocks") transformed arm-integrator.txt into arm,syscon-icst.yaml, but did
-> not adjust the reference to that file in the ARM INTEGRATOR, VERSATILE AND
-> REALVIEW SUPPORT entry in MAINTAINERS.
->=20
-> Hence, since then, ./scripts/get_maintainer.pl --self-test complains:
->=20
->   warning: no file matches \
->   F: Documentation/devicetree/bindings/clock/arm-integrator.txt
->=20
-> Update the file entry in MAINTAINERS to the new transformed yaml file.
->=20
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+'maxlen' is the total size of the destination buffer. There is only one
+caller and this value is 256.
 
-Mauro got here already
+When we compute the size already used and what we would like to add in
+the buffer, the trailling NULL character is not taken into account.
+However, this trailling character will be added by the 'strcat' once we
+have checked that we have enough place.
 
- https://lkml.kernel.org/r/491d2928a47f59da3636bc63103a5f63fec72b1a.1584966=
-325.git.mchehab+huawei@kernel.org
+So, there is a off-by-one issue and 1 byte of the stack could be
+erroneously overwridden.
+
+Take into account the trailling NULL, when checking if there is enough
+place in the destination buffer.
+
+Fixes: dc9a16e49dbba ("svc: Add /proc/sys/sunrpc/transport files")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ net/sunrpc/svc_xprt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
+index d53259346235..df39e7b8b06c 100644
+--- a/net/sunrpc/svc_xprt.c
++++ b/net/sunrpc/svc_xprt.c
+@@ -120,7 +120,7 @@ int svc_print_xprts(char *buf, int maxlen)
+ 
+ 		sprintf(tmpstr, "%s %d\n", xcl->xcl_name, xcl->xcl_max_payload);
+ 		slen = strlen(tmpstr);
+-		if (len + slen > maxlen)
++		if (len + slen >= maxlen)
+ 			break;
+ 		len += slen;
+ 		strcat(buf, tmpstr);
+-- 
+2.20.1
+

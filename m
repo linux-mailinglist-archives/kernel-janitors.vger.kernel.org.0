@@ -2,131 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FCA6193171
-	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Mar 2020 20:55:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA83019330C
+	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Mar 2020 22:51:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727402AbgCYTzG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 25 Mar 2020 15:55:06 -0400
-Received: from ciao.gmane.io ([159.69.161.202]:47972 "EHLO ciao.gmane.io"
+        id S1727451AbgCYVvn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Mar 2020 17:51:43 -0400
+Received: from foss.arm.com ([217.140.110.172]:53526 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727355AbgCYTzF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 25 Mar 2020 15:55:05 -0400
-X-Greylist: delayed 301 seconds by postgrey-1.27 at vger.kernel.org; Wed, 25 Mar 2020 15:55:05 EDT
-Received: from list by ciao.gmane.io with local (Exim 4.92)
-        (envelope-from <glkj-kernel-janitors-2@m.gmane-mx.org>)
-        id 1jHC2M-000IzY-4s
-        for kernel-janitors@vger.kernel.org; Wed, 25 Mar 2020 20:50:02 +0100
-X-Injected-Via-Gmane: http://gmane.org/
-To:     kernel-janitors@vger.kernel.org
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH 2/2] SUNRPC: Optimize 'svc_print_xprts()'
-Date:   Wed, 25 Mar 2020 20:46:36 +0100
-Message-ID: <42afbf1f-19e1-a05c-e70c-1d46eaba3a71@wanadoo.fr>
-References: <20200325070452.22043-1-christophe.jaillet@wanadoo.fr>
- <EA5BCDB2-DB05-4B26-8635-E6F5C231DDC6@oracle.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
-Cc:     linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <EA5BCDB2-DB05-4B26-8635-E6F5C231DDC6@oracle.com>
-Content-Language: en-US
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+        id S1726081AbgCYVvn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 25 Mar 2020 17:51:43 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 47C281FB;
+        Wed, 25 Mar 2020 14:51:38 -0700 (PDT)
+Received: from localhost (unknown [10.37.6.21])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BD9993F71E;
+        Wed, 25 Mar 2020 14:51:37 -0700 (PDT)
+Date:   Wed, 25 Mar 2020 21:51:36 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        alsa-devel@alsa-project.org,
+        Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        kernel-janitors@vger.kernel.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Mark Brown <broonie@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Takashi Iwai <tiwai@suse.com>
+Subject: Applied "ASoC: mchp-i2s-mcc: make signed 1 bit bitfields unsigned" to the asoc tree
+In-Reply-To:  <20200325132913.110115-1-colin.king@canonical.com>
+Message-Id:  <applied-20200325132913.110115-1-colin.king@canonical.com>
+X-Patchwork-Hint: ignore
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 25/03/2020 à 15:52, Chuck Lever a écrit :
-> Hi Christophe,
->
->
->> On Mar 25, 2020, at 3:04 AM, Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
->>
->> Using 'snprintf' is safer than 'sprintf' because it can avoid a buffer
->> overflow.
-> That's true as a general statement, but how likely is such an
-> overflow to occur here?
->
-I guess, that it us unlikely and that the 80 chars buffer is big enough.
-That is the exact reason of why I've proposed 2 patches. The first one 
-could happen in RL. The 2nd is more like a clean-up and is less 
-relevant, IMHO.
->
->> The return value can also be used to avoid a strlen a call.
-> That's also true of sprintf, isn't it?
+The patch
 
-Sure.
+   ASoC: mchp-i2s-mcc: make signed 1 bit bitfields unsigned
 
+has been applied to the asoc tree at
 
->
->> Finally, we know where we need to copy and the length to copy, so, we
->> can save a few cycles by rearraging the code and using a memcpy instead of
->> a strcat.
-> I would be OK with squashing these two patches together. I don't
-> see the need to keep the two changes separated.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git 
 
-NP, I can resend as a V2 with your comments.
-As said above, the first fixes something that could, IMHO, happen and 
-the 2nd is more a matter of taste and a clean-up.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
->
->> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->> ---
->> This patch should have no functionnal change.
->> We could go further, use scnprintf and write directly in the destination
->> buffer. However, this could lead to a truncated last line.
-> That's exactly what this function is trying to avoid. As part of any
-> change in this area, it would be good to replace the current block
-> comment before this function with a Doxygen-format comment that
-> documents that goal.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-I'll take care of it.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
+Thanks,
+Mark
 
->> ---
->> net/sunrpc/svc_xprt.c | 8 ++++----
->> 1 file changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
->> index df39e7b8b06c..6df861650040 100644
->> --- a/net/sunrpc/svc_xprt.c
->> +++ b/net/sunrpc/svc_xprt.c
->> @@ -118,12 +118,12 @@ int svc_print_xprts(char *buf, int maxlen)
->> 	list_for_each_entry(xcl, &svc_xprt_class_list, xcl_list) {
->> 		int slen;
->>
->> -		sprintf(tmpstr, "%s %d\n", xcl->xcl_name, xcl->xcl_max_payload);
->> -		slen = strlen(tmpstr);
->> -		if (len + slen >= maxlen)
->> +		slen = snprintf(tmpstr, sizeof(tmpstr), "%s %d\n",
->> +				xcl->xcl_name, xcl->xcl_max_payload);
->> +		if (slen >= sizeof(tmpstr) || len + slen >= maxlen)
->> 			break;
->> +		memcpy(buf + len, tmpstr, slen + 1);
->> 		len += slen;
->> -		strcat(buf, tmpstr);
-> IMO replacing the strcat makes the code harder to read, and this
-> is certainly not a performance path. Can you drop that part of the
-> patch?
+From 633fddee7355e46a5b5ec471abb58d65e1e41012 Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Wed, 25 Mar 2020 13:29:13 +0000
+Subject: [PATCH] ASoC: mchp-i2s-mcc: make signed 1 bit bitfields unsigned
 
-Ok
+The signed 1 bit bitfields should be unsigned, so make them unsigned.
 
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Reviewed-by: Codrin Ciubotariu <codrin.ciubotariu@microchip.com>
+Link: https://lore.kernel.org/r/20200325132913.110115-1-colin.king@canonical.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/atmel/mchp-i2s-mcc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
->
->> 	}
->> 	spin_unlock(&svc_xprt_class_lock);
->>
->> -- 
->> 2.20.1
->>
-> --
-> Chuck Lever
->
->
->
->
-
+diff --git a/sound/soc/atmel/mchp-i2s-mcc.c b/sound/soc/atmel/mchp-i2s-mcc.c
+index befc2a3a05b0..3cb63886195f 100644
+--- a/sound/soc/atmel/mchp-i2s-mcc.c
++++ b/sound/soc/atmel/mchp-i2s-mcc.c
+@@ -239,10 +239,10 @@ struct mchp_i2s_mcc_dev {
+ 	unsigned int				frame_length;
+ 	int					tdm_slots;
+ 	int					channels;
+-	int					gclk_use:1;
+-	int					gclk_running:1;
+-	int					tx_rdy:1;
+-	int					rx_rdy:1;
++	unsigned int				gclk_use:1;
++	unsigned int				gclk_running:1;
++	unsigned int				tx_rdy:1;
++	unsigned int				rx_rdy:1;
+ };
+ 
+ static irqreturn_t mchp_i2s_mcc_interrupt(int irq, void *dev_id)
+-- 
+2.20.1
 

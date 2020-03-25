@@ -2,82 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F6E4191D1A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Mar 2020 23:49:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ABF3191F49
+	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Mar 2020 03:37:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727324AbgCXWte (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 24 Mar 2020 18:49:34 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:39823 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727132AbgCXWte (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 24 Mar 2020 18:49:34 -0400
-Received: by mail-qt1-f195.google.com with SMTP id f20so517459qtq.6
-        for <kernel-janitors@vger.kernel.org>; Tue, 24 Mar 2020 15:49:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=wyre3unUyh1VElX8qQhfnuJe+QdabugraqvEEHKN5YY=;
-        b=JHxWKsrHre+Ce4pqLceZTwJslN4U/dAs+9ebExo+k14lMpfIb+6utSRVDoFt3DfKB6
-         gmgtze8t9WvmSoxBdR4uF+gQQcAqqQgaNzZRNa2Qkvq3FxtuiL1+oEBVzipVmSLeZH1u
-         AkPQnXx4ZR2YjQfROHmvO8kUd48krZ++1H5PMkkewe9zzLOMy3si5FWidbfOEzzRxIYw
-         lVsP2uXCaktz7Jag9+j2HvUJFu9wpvD2gdwIKbS6oRPDgPA2lm62qgL5ZdJrrzaZMUqf
-         1edRMPYdNHRPxhXrONQsHyyJ+ynwEZINfJRyaPSk7m5QPXMhpHbbk7IlW/HFkz3A8M3k
-         klkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=wyre3unUyh1VElX8qQhfnuJe+QdabugraqvEEHKN5YY=;
-        b=ne58JZSpX3nHoDoQagL4W9buuvHU8DQgm8MCr6AvpNXtvgvFeQGTEJzP8l+azlXOM/
-         FN7PQKOGv4I7+Ds9aQ/Fx7hdsVdvL7tO8zto1vLft0zQX5uEjTgLsKAETQ2M9/oDYDnb
-         8gJXKlpWFvXWJilEZGbMrnyF+1l3bGm55HisJ/hdeK3f4l3cM4Lo52n3d4VfWaoWuGAr
-         SKOW/eY3CTpYnMxmUUYz+xUyMCdBpykNB7lex5+sTSCaJWj0U7upF7q8ShxqB8BjGs6r
-         ycg3xF2Fm8d2R9aRl1Q0DTn2209z7wumOYZklGyDph2t4F5in78/Awq2TdW5dMUcibq+
-         hQsA==
-X-Gm-Message-State: ANhLgQ0Aox6eR+2mVAtzxRF5vu64ADvZII8vdsLJovrUV8l86LHCsNUm
-        RikGJUBHOSUr8Cr/XC0hXIqNGA==
-X-Google-Smtp-Source: ADFU+vt9bpUw3FK771MMLlRTjLi7t80bcVF9NWM8TbZifYI3XyUssP/a/KNH8DQ1koq0V4GiQsASMw==
-X-Received: by 2002:aed:2a55:: with SMTP id k21mr185313qtf.159.1585090173412;
-        Tue, 24 Mar 2020 15:49:33 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.57.212])
-        by smtp.gmail.com with ESMTPSA id v126sm14541082qkb.107.2020.03.24.15.49.32
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 24 Mar 2020 15:49:32 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1jGsMW-0007PL-37; Tue, 24 Mar 2020 19:49:32 -0300
-Date:   Tue, 24 Mar 2020 19:49:32 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Leon Romanovsky <leon@kernel.org>,
-        Yishai Hadas <yishaih@mellanox.com>,
-        Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] IB/mlx5: Fix a NULL vs IS_ERR() check
-Message-ID: <20200324224932.GA28435@ziepe.ca>
-References: <20200320132641.GF95012@mwanda>
+        id S1727277AbgCYChA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 24 Mar 2020 22:37:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43156 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727262AbgCYChA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 24 Mar 2020 22:37:00 -0400
+Received: from kernel.org (unknown [104.132.0.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C6A6620714;
+        Wed, 25 Mar 2020 02:36:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1585103819;
+        bh=InTvH1FD+myof5xLImIsEz4YlekXxKWk3kYrJWkbr0Y=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=1e3i8/DIhGo0HLqrkskon5km384KJf9SoZP1feyeC+ZJmg1QQcczK8/AqfuJsP2tk
+         EBYKSQk298Cdgnw0WujZwTJNmtd/ibRkzqKFcdewrIjgTCDu512l/adogDsTsumzBU
+         kX8saiVwdrg/QT/7rPNSFCpDDf1uue1ZDcdu182A=
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200320132641.GF95012@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200323184501.5756-1-lukas.bulwahn@gmail.com>
+References: <20200323184501.5756-1-lukas.bulwahn@gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: adjust entry to ICST clocks YAML schema creation
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     Rob Herring <robh@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Date:   Tue, 24 Mar 2020 19:36:58 -0700
+Message-ID: <158510381898.125146.5862992017032580482@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Mar 20, 2020 at 04:26:41PM +0300, Dan Carpenter wrote:
-> The kzalloc() function returns NULL, not error pointers.
-> 
-> Fixes: 30f2fe40c72b ("IB/mlx5: Introduce UAPIs to manage packet pacing")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Acked-by: Leon Romanovsky <leonro@mellanox.com>
-> ---
->  drivers/infiniband/hw/mlx5/qos.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+Quoting Lukas Bulwahn (2020-03-23 11:45:01)
+> Commit 78c7d8f96b6f ("dt-bindings: clock: Create YAML schema for ICST
+> clocks") transformed arm-integrator.txt into arm,syscon-icst.yaml, but did
+> not adjust the reference to that file in the ARM INTEGRATOR, VERSATILE AND
+> REALVIEW SUPPORT entry in MAINTAINERS.
+>=20
+> Hence, since then, ./scripts/get_maintainer.pl --self-test complains:
+>=20
+>   warning: no file matches \
+>   F: Documentation/devicetree/bindings/clock/arm-integrator.txt
+>=20
+> Update the file entry in MAINTAINERS to the new transformed yaml file.
+>=20
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-Applied to for-next, thanks
+Mauro got here already
 
-Jason
+ https://lkml.kernel.org/r/491d2928a47f59da3636bc63103a5f63fec72b1a.1584966=
+325.git.mchehab+huawei@kernel.org

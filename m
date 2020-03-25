@@ -2,136 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AB6B11928BA
-	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Mar 2020 13:43:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37DB91928DD
+	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Mar 2020 13:50:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727803AbgCYMnL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 25 Mar 2020 08:43:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60268 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727795AbgCYMnK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 25 Mar 2020 08:43:10 -0400
-Received: from quaco.ghostprotocols.net (unknown [179.97.37.151])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 72AE02077D;
-        Wed, 25 Mar 2020 12:43:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585140189;
-        bh=3Z/cfF42ZEAVj6GwgPuOMa72XBxzcKlUhXUtG/XsyjQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JIzlYqoVuX0f31pmWLSGwA2d2LZdfNdCSg4ntCDt4w9gaiWk5kCtgQn2p1YFVNzGp
-         pcj2NSoedRzBw0bD9GBCAdAgMBHNCAyocaaxSqfJaeqgMpmYkgQDHaCKPD4KIHG+GI
-         OmDGTfKT12E8GRAa1MfRHrEf+8cb48aKu2ybcfmk=
-From:   Arnaldo Carvalho de Melo <acme@kernel.org>
-To:     Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
-        Clark Williams <williams@redhat.com>,
-        linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Don Zickus <dzickus@redhat.com>, He Zhe <zhe.he@windriver.com>,
-        Jan Stancek <jstancek@redhat.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        kernel-janitors@vger.kernel.org,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 23/24] perf cpumap: Fix snprintf overflow check
-Date:   Wed, 25 Mar 2020 09:41:23 -0300
-Message-Id: <20200325124124.32648-24-acme@kernel.org>
-X-Mailer: git-send-email 2.21.1
-In-Reply-To: <20200325124124.32648-1-acme@kernel.org>
-References: <20200325124124.32648-1-acme@kernel.org>
+        id S1727358AbgCYMur (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Mar 2020 08:50:47 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53355 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726998AbgCYMur (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 25 Mar 2020 08:50:47 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jH5UX-0005f3-9Y; Wed, 25 Mar 2020 12:50:41 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sekhar Nori <nsekhar@ti.com>, Roger Quadros <rogerq@ti.com>,
+        Felipe Balbi <felipe.balbi@linux.intel.com>,
+        Pawel Laszczak <pawell@cadence.com>, linux-usb@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] usb: cdns3: make signed 1 bit bitfields unsigned
+Date:   Wed, 25 Mar 2020 12:50:41 +0000
+Message-Id: <20200325125041.94769-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Colin Ian King <colin.king@canonical.com>
 
-'snprintf' returns the number of characters which would be generated for
-the given input.
+The signed 1 bit bitfields should be unsigned, so make them unsigned.
 
-If the returned value is *greater than* or equal to the buffer size, it
-means that the output has been truncated.
-
-Fix the overflow test accordingly.
-
-Fixes: 7780c25bae59f ("perf tools: Allow ability to map cpus to nodes easily")
-Fixes: 92a7e1278005b ("perf cpumap: Add cpu__max_present_cpu()")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Suggested-by: David Laight <David.Laight@ACULAB.COM>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Don Zickus <dzickus@redhat.com>
-Cc: He Zhe <zhe.he@windriver.com>
-Cc: Jan Stancek <jstancek@redhat.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: kernel-janitors@vger.kernel.org
-Link: http://lore.kernel.org/lkml/20200324070319.10901-1-christophe.jaillet@wanadoo.fr
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- tools/perf/util/cpumap.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/usb/cdns3/cdns3-ti.c | 4 ++--
+ drivers/usb/cdns3/gadget.h   | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/util/cpumap.c b/tools/perf/util/cpumap.c
-index 983b7388f22b..dc5c5e6fc502 100644
---- a/tools/perf/util/cpumap.c
-+++ b/tools/perf/util/cpumap.c
-@@ -317,7 +317,7 @@ static void set_max_cpu_num(void)
+diff --git a/drivers/usb/cdns3/cdns3-ti.c b/drivers/usb/cdns3/cdns3-ti.c
+index c6a79ca15858..5685ba11480b 100644
+--- a/drivers/usb/cdns3/cdns3-ti.c
++++ b/drivers/usb/cdns3/cdns3-ti.c
+@@ -52,8 +52,8 @@ enum modestrap_mode { USBSS_MODESTRAP_MODE_NONE,
+ struct cdns_ti {
+ 	struct device *dev;
+ 	void __iomem *usbss;
+-	int usb2_only:1;
+-	int vbus_divider:1;
++	unsigned usb2_only:1;
++	unsigned vbus_divider:1;
+ 	struct clk *usb2_refclk;
+ 	struct clk *lpm_clk;
+ };
+diff --git a/drivers/usb/cdns3/gadget.h b/drivers/usb/cdns3/gadget.h
+index f003a7801872..bf2828e4df2c 100644
+--- a/drivers/usb/cdns3/gadget.h
++++ b/drivers/usb/cdns3/gadget.h
+@@ -1199,7 +1199,7 @@ struct cdns3_aligned_buf {
+ 	void			*buf;
+ 	dma_addr_t		dma;
+ 	u32			size;
+-	int			in_use:1;
++	unsigned		in_use:1;
+ 	struct list_head	list;
+ };
  
- 	/* get the highest possible cpu number for a sparse allocation */
- 	ret = snprintf(path, PATH_MAX, "%s/devices/system/cpu/possible", mnt);
--	if (ret == PATH_MAX) {
-+	if (ret >= PATH_MAX) {
- 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
- 		goto out;
- 	}
-@@ -328,7 +328,7 @@ static void set_max_cpu_num(void)
- 
- 	/* get the highest present cpu number for a sparse allocation */
- 	ret = snprintf(path, PATH_MAX, "%s/devices/system/cpu/present", mnt);
--	if (ret == PATH_MAX) {
-+	if (ret >= PATH_MAX) {
- 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
- 		goto out;
- 	}
-@@ -356,7 +356,7 @@ static void set_max_node_num(void)
- 
- 	/* get the highest possible cpu number for a sparse allocation */
- 	ret = snprintf(path, PATH_MAX, "%s/devices/system/node/possible", mnt);
--	if (ret == PATH_MAX) {
-+	if (ret >= PATH_MAX) {
- 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
- 		goto out;
- 	}
-@@ -441,7 +441,7 @@ int cpu__setup_cpunode_map(void)
- 		return 0;
- 
- 	n = snprintf(path, PATH_MAX, "%s/devices/system/node", mnt);
--	if (n == PATH_MAX) {
-+	if (n >= PATH_MAX) {
- 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
- 		return -1;
- 	}
-@@ -456,7 +456,7 @@ int cpu__setup_cpunode_map(void)
- 			continue;
- 
- 		n = snprintf(buf, PATH_MAX, "%s/%s", path, dent1->d_name);
--		if (n == PATH_MAX) {
-+		if (n >= PATH_MAX) {
- 			pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
- 			continue;
- 		}
+@@ -1308,8 +1308,8 @@ struct cdns3_device {
+ 	unsigned			u2_allowed:1;
+ 	unsigned			is_selfpowered:1;
+ 	unsigned			setup_pending:1;
+-	int				hw_configured_flag:1;
+-	int				wake_up_flag:1;
++	unsigned			hw_configured_flag:1;
++	unsigned			wake_up_flag:1;
+ 	unsigned			status_completion_no_call:1;
+ 	unsigned			using_streams:1;
+ 	int				out_mem_is_allocated;
 -- 
-2.21.1
+2.25.1
 

@@ -2,164 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B7DD1193EDB
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Mar 2020 13:30:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C9AC193F6B
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Mar 2020 14:04:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728130AbgCZM3c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Mar 2020 08:29:32 -0400
-Received: from mga05.intel.com ([192.55.52.43]:12370 "EHLO mga05.intel.com"
+        id S1726401AbgCZNEV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Mar 2020 09:04:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55976 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727781AbgCZM3c (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Mar 2020 08:29:32 -0400
-IronPort-SDR: dN5uaA0nrIGKSKfked7lua6qHE4Kr7b9A6cqGM0Xcmv/4vPPcjMcZgp1F123mSE2IwqYcftlIZ
- tvwKhwN4McnQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2020 05:29:31 -0700
-IronPort-SDR: dXPNEOPC5+kdmw+CvdnwzeOi9ptIUMJEKuzfPDCIKxbLhXIeXygIF/ttMOk3pFtj0IjKLzQ62q
- KGoPFyrQUwNw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,308,1580803200"; 
-   d="scan'208";a="282481672"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 26 Mar 2020 05:29:29 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jHRdY-0006mo-JG; Thu, 26 Mar 2020 20:29:28 +0800
-Date:   Thu, 26 Mar 2020 20:28:58 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     kbuild-all@lists.01.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S1725994AbgCZNEV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 26 Mar 2020 09:04:21 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A392D20737;
+        Thu, 26 Mar 2020 13:04:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1585227861;
+        bh=8CBek8byWQq1OiX3MTE8S+FkLHPI+O3ZHdR3hz3MjKc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=K3z6UEDoX7ulcbGrLEmk3yLFGNAMZW4LFFP3vCjJdr5Lc6GCF73JzccD5TwIYIu8K
+         8jAt/RB/IMr9gYYSOY9nVARjAk2kbSfx3MBZT0wVKpgKFQ5EbDOVp1yHnqWXv+wjYK
+         eLrWbpWHT9mmbDqcmt01+0JE1Elq7/qYVKmj0neY=
+Date:   Thu, 26 Mar 2020 14:04:18 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     kbuild test robot <lkp@intel.com>
+Cc:     Colin King <colin.king@canonical.com>, kbuild-all@lists.01.org,
         Sekhar Nori <nsekhar@ti.com>, Roger Quadros <rogerq@ti.com>,
         Felipe Balbi <felipe.balbi@linux.intel.com>,
         Pawel Laszczak <pawell@cadence.com>, linux-usb@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [RFC PATCH] usb: cdns3: cdns3_clear_register_bit() can be static
-Message-ID: <20200326122858.GA50118@cde5a4ed3207>
+Subject: Re: [RFC PATCH] usb: cdns3: cdns3_clear_register_bit() can be static
+Message-ID: <20200326130418.GA1295433@kroah.com>
 References: <20200325125041.94769-1-colin.king@canonical.com>
+ <20200326122858.GA50118@cde5a4ed3207>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200325125041.94769-1-colin.king@canonical.com>
-X-Patchwork-Hint: ignore
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200326122858.GA50118@cde5a4ed3207>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Thu, Mar 26, 2020 at 08:28:58PM +0800, kbuild test robot wrote:
+> 
+> Fixes: 87db1192dc33 ("usb: cdns3: make signed 1 bit bitfields unsigned")
 
-Fixes: 87db1192dc33 ("usb: cdns3: make signed 1 bit bitfields unsigned")
-Signed-off-by: kbuild test robot <lkp@intel.com>
----
- gadget.c |   32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+This original patch did not "cause" this problem, it's just that you for
+some reason ran sparse for the first time on the file.
 
-diff --git a/drivers/usb/cdns3/gadget.c b/drivers/usb/cdns3/gadget.c
-index 372460ea4df9a..54a04614d336f 100644
---- a/drivers/usb/cdns3/gadget.c
-+++ b/drivers/usb/cdns3/gadget.c
-@@ -82,7 +82,7 @@ static int cdns3_ep_run_stream_transfer(struct cdns3_endpoint *priv_ep,
-  * @ptr: address of device controller register to be read and changed
-  * @mask: bits requested to clar
-  */
--void cdns3_clear_register_bit(void __iomem *ptr, u32 mask)
-+static void cdns3_clear_register_bit(void __iomem *ptr, u32 mask)
- {
- 	mask = readl(ptr) & ~mask;
- 	writel(mask, ptr);
-@@ -137,7 +137,7 @@ struct usb_request *cdns3_next_request(struct list_head *list)
-  *
-  * Returns buffer or NULL if no buffers in list
-  */
--struct cdns3_aligned_buf *cdns3_next_align_buf(struct list_head *list)
-+static struct cdns3_aligned_buf *cdns3_next_align_buf(struct list_head *list)
- {
- 	return list_first_entry_or_null(list, struct cdns3_aligned_buf, list);
- }
-@@ -148,7 +148,7 @@ struct cdns3_aligned_buf *cdns3_next_align_buf(struct list_head *list)
-  *
-  * Returns request or NULL if no requests in list
-  */
--struct cdns3_request *cdns3_next_priv_request(struct list_head *list)
-+static struct cdns3_request *cdns3_next_priv_request(struct list_head *list)
- {
- 	return list_first_entry_or_null(list, struct cdns3_request, list);
- }
-@@ -190,7 +190,7 @@ dma_addr_t cdns3_trb_virt_to_dma(struct cdns3_endpoint *priv_ep,
- 	return priv_ep->trb_pool_dma + offset;
- }
- 
--int cdns3_ring_size(struct cdns3_endpoint *priv_ep)
-+static int cdns3_ring_size(struct cdns3_endpoint *priv_ep)
- {
- 	switch (priv_ep->type) {
- 	case USB_ENDPOINT_XFER_ISOC:
-@@ -345,7 +345,7 @@ static void cdns3_ep_inc_deq(struct cdns3_endpoint *priv_ep)
- 	cdns3_ep_inc_trb(&priv_ep->dequeue, &priv_ep->ccs, priv_ep->num_trbs);
- }
- 
--void cdns3_move_deq_to_next_trb(struct cdns3_request *priv_req)
-+static void cdns3_move_deq_to_next_trb(struct cdns3_request *priv_req)
- {
- 	struct cdns3_endpoint *priv_ep = priv_req->priv_ep;
- 	int current_trb = priv_req->start_trb;
-@@ -511,9 +511,9 @@ static void cdns3_wa2_descmiss_copy_data(struct cdns3_endpoint *priv_ep,
- 	}
- }
- 
--struct usb_request *cdns3_wa2_gadget_giveback(struct cdns3_device *priv_dev,
--					      struct cdns3_endpoint *priv_ep,
--					      struct cdns3_request *priv_req)
-+static struct usb_request *cdns3_wa2_gadget_giveback(struct cdns3_device *priv_dev,
-+						     struct cdns3_endpoint *priv_ep,
-+						     struct cdns3_request *priv_req)
- {
- 	if (priv_ep->flags & EP_QUIRK_EXTRA_BUF_EN &&
- 	    priv_req->flags & REQUEST_INTERNAL) {
-@@ -551,9 +551,9 @@ struct usb_request *cdns3_wa2_gadget_giveback(struct cdns3_device *priv_dev,
- 	return &priv_req->request;
- }
- 
--int cdns3_wa2_gadget_ep_queue(struct cdns3_device *priv_dev,
--			      struct cdns3_endpoint *priv_ep,
--			      struct cdns3_request *priv_req)
-+static int cdns3_wa2_gadget_ep_queue(struct cdns3_device *priv_dev,
-+				     struct cdns3_endpoint *priv_ep,
-+				     struct cdns3_request *priv_req)
- {
- 	int deferred = 0;
- 
-@@ -836,7 +836,7 @@ void cdns3_gadget_giveback(struct cdns3_endpoint *priv_ep,
- 		cdns3_gadget_ep_free_request(&priv_ep->endpoint, request);
- }
- 
--void cdns3_wa1_restore_cycle_bit(struct cdns3_endpoint *priv_ep)
-+static void cdns3_wa1_restore_cycle_bit(struct cdns3_endpoint *priv_ep)
- {
- 	/* Work around for stale data address in TRB*/
- 	if (priv_ep->wa1_set) {
-@@ -1904,8 +1904,8 @@ static int cdns3_ep_onchip_buffer_reserve(struct cdns3_device *priv_dev,
- 	return 0;
- }
- 
--void cdns3_stream_ep_reconfig(struct cdns3_device *priv_dev,
--			      struct cdns3_endpoint *priv_ep)
-+static void cdns3_stream_ep_reconfig(struct cdns3_device *priv_dev,
-+				     struct cdns3_endpoint *priv_ep)
- {
- 	if (!priv_ep->use_streams || priv_dev->gadget.speed < USB_SPEED_SUPER)
- 		return;
-@@ -1925,8 +1925,8 @@ void cdns3_stream_ep_reconfig(struct cdns3_device *priv_dev,
- 			       EP_CFG_TDL_CHK | EP_CFG_SID_CHK);
- }
- 
--void cdns3_configure_dmult(struct cdns3_device *priv_dev,
--			   struct cdns3_endpoint *priv_ep)
-+static void cdns3_configure_dmult(struct cdns3_device *priv_dev,
-+				  struct cdns3_endpoint *priv_ep)
- {
- 	struct cdns3_usb_regs __iomem *regs = priv_dev->regs;
- 
+So I can't take this as-is, can you remove this line and resend?
+
+thanks,
+
+greg k-h

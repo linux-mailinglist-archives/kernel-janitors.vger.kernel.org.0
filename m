@@ -2,145 +2,137 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CAA94194AD4
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Mar 2020 22:44:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89946194B6D
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Mar 2020 23:18:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727439AbgCZVo0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Mar 2020 17:44:26 -0400
-Received: from mx2.suse.de ([195.135.220.15]:49692 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726270AbgCZVo0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Mar 2020 17:44:26 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 12261AA7C;
-        Thu, 26 Mar 2020 21:44:24 +0000 (UTC)
-From:   NeilBrown <neilb@suse.de>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-kernel@vger.kernel.org
-Date:   Fri, 27 Mar 2020 08:44:17 +1100
-Cc:     linux-nfs@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 2/2] SUNRPC: Optimize 'svc_print_xprts()'
-In-Reply-To: <2e2d1293-c978-3f1d-5a1e-dc43dc2ad06b@wanadoo.fr>
-References: <20200325070452.22043-1-christophe.jaillet@wanadoo.fr> <EA5BCDB2-DB05-4B26-8635-E6F5C231DDC6@oracle.com> <42afbf1f-19e1-a05c-e70c-1d46eaba3a71@wanadoo.fr> <87wo786o80.fsf@notabene.neil.brown.name> <2e2d1293-c978-3f1d-5a1e-dc43dc2ad06b@wanadoo.fr>
-Message-ID: <87r1xe7pvy.fsf@notabene.neil.brown.name>
+        id S1726363AbgCZWSH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Mar 2020 18:18:07 -0400
+Received: from mail-yb1-f194.google.com ([209.85.219.194]:34734 "EHLO
+        mail-yb1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726296AbgCZWSH (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 26 Mar 2020 18:18:07 -0400
+Received: by mail-yb1-f194.google.com with SMTP id l84so3518668ybb.1
+        for <kernel-janitors@vger.kernel.org>; Thu, 26 Mar 2020 15:18:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=rMAug3DWz0TSaHlbxKB6CB5hPFQDwkF0k5KEtu7t628=;
+        b=av4d1pkU3ehBAUGMaoWdCB5066rUk1GBdi/rocNTl+Zl+FcgXm75+D+6TqXVaoDuZj
+         bIH2vlCo7H74Z5EZfhnpMUu9lDny8U/LHfMdT9ZpD/7L2FA+rD/KMixlMm9uihpK8XoT
+         3OLM4mPYYNA/aKN9XEXdcPZSJOpBs3UyZDLQbfRR+rkm9nfMSXdmnI+J383qnatlaELW
+         4X2oIEptirmf9nYH3SGA0bnIX8Ujdr1z605X04LMgWHVHDQyRDmH1v6AA6Z+GML1LHwv
+         UfZvinjhLqhUbzvfQKonk90I9bYy3uyF5QNiFahwpp5IN7XlaKclXUDkLo76/gUzzaz3
+         p5zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=rMAug3DWz0TSaHlbxKB6CB5hPFQDwkF0k5KEtu7t628=;
+        b=bMX3po/Q/i1jmxhJSTapDbpybKAqH9XHbL6St47WRkN9tkDhvm8CBUVSvIlrSiC+g8
+         1w4zzXAjAIOt79BmP3xkR+4Z0pMwRnbaDq7cSrdLyaNP2zbHIkJat2Z8q5x9hSoVyfCK
+         iENJNlGEuK/FK0IVNs+P6RYSDIcsicPJJUkwQiJTGuU8WugCfmi79BA5vsFLfH4+LdK0
+         UwfbSLZ//iCZb4ZjISyS62r0av9IQnsXQ573jfsSdbHxgz8j02cXJW290+QOpkCJZEvp
+         T+qSECu7yPHCkWkMNtcauOtVkU2wKJT1zspM8/+dUYhlTxmz5GDpKo76kyt+yfmWGOMn
+         Y9Cw==
+X-Gm-Message-State: ANhLgQ1EwMZqApB1JvtZnxIzoqjvAKTnb2G3xTOJn+1A92ZVW/B2XI20
+        ujprdzvPFR9W725OAPRI+HedSzjKjbYnwMYYa2m5zw==
+X-Google-Smtp-Source: ADFU+vvnApwiZsKP73hw6IWcwuZ+GZ8XTLu5Ux02Lu70iJ3p+hyi5HVvjnfNkq1llKklVkZgmeV0E8jRVxaZmUJ4JAA=
+X-Received: by 2002:a25:4e02:: with SMTP id c2mr398067ybb.504.1585261084799;
+ Thu, 26 Mar 2020 15:18:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
+References: <b1c878c0-878a-6684-7cac-d1f4409295f6@web.de>
+In-Reply-To: <b1c878c0-878a-6684-7cac-d1f4409295f6@web.de>
+From:   Michel Lespinasse <walken@google.com>
+Date:   Thu, 26 Mar 2020 15:17:52 -0700
+Message-ID: <CANN689FtZ3VRzAJdHuSP2k=5r9p9QUe08caJpkuRjeLV=hQ9Kg@mail.gmail.com>
+Subject: Re: [PATCH 3/8] mmap locking API: use coccinelle to convert mmap_sem
+ rwsem call sites
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-mm <linux-mm@kvack.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Rientjes <rientjes@google.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Hugh Dickins <hughd@google.com>,
+        Jerome Glisse <jglisse@redhat.com>,
+        Laurent Dufour <ldufour@linux.ibm.com>,
+        Liam Howlett <Liam.Howlett@oracle.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Ying Han <yinghan@google.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
---=-=-=
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+That seems to work too. I'm quite noobish in using coccinelle, so I
+wouldn't have been able to come up with that version on my own.
 
-On Thu, Mar 26 2020, Christophe JAILLET wrote:
-
-> Le 25/03/2020 =C3=A0 23:53, NeilBrown a =C3=A9crit=C2=A0:
->> Can I suggest something more like this:
->> diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
->> index de3c077733a7..0292f45b70f6 100644
->> --- a/net/sunrpc/svc_xprt.c
->> +++ b/net/sunrpc/svc_xprt.c
->> @@ -115,16 +115,9 @@ int svc_print_xprts(char *buf, int maxlen)
->>   	buf[0] =3D '\0';
->>=20=20=20
->>   	spin_lock(&svc_xprt_class_lock);
->> -	list_for_each_entry(xcl, &svc_xprt_class_list, xcl_list) {
->> -		int slen;
->> -
->> -		sprintf(tmpstr, "%s %d\n", xcl->xcl_name, xcl->xcl_max_payload);
->> -		slen =3D strlen(tmpstr);
->> -		if (len + slen > maxlen)
->> -			break;
->> -		len +=3D slen;
->> -		strcat(buf, tmpstr);
->> -	}
->> +	list_for_each_entry(xcl, &svc_xprt_class_list, xcl_list)
->> +		len +=3D scnprintf(buf + len, maxlen - len, "%s %d\n",
->> +				 xcl->xcl_name, xcl->xcl_max_payload);
->>   	spin_unlock(&svc_xprt_class_lock);
->>=20=20=20
->>   	return len;
->>
->> NeilBrown
+On Thu, Mar 26, 2020 at 6:30 AM Markus Elfring <Markus.Elfring@web.de> wrote:
 >
-> Hi,
+> > This change converts the existing mmap_sem rwsem calls to use the new
+> > mmap locking API instead.
+> >
+> > The change is generated using coccinelle with the following rules:
 >
-> this was what I suggested in the patch:
->  =C2=A0=C2=A0=C2=A0 ---
->  =C2=A0=C2=A0=C2=A0 This patch should have no functional change.
->  =C2=A0=C2=A0=C2=A0 We could go further, use scnprintf and write directly=
- in the=20
-> destination
->  =C2=A0=C2=A0=C2=A0 buffer. However, this could lead to a truncated last =
-line.
->  =C2=A0=C2=A0=C2=A0 ---
-
-Sorry - I missed that.
-So add
-
- end =3D strrchr(tmpstr, '\n');
- if (end)
-    end[1] =3D 0;
- else
-    tmpstr[0] =3D 0;
-
-or maybe something like
-	list_for_each_entry(xcl, &svc_xprt_class_list, xcl_list) {
-		int l =3D snprintf(buf + len, maxlen - len, "%s %d\n",
-				 xcl->xcl_name, xcl->xcl_max_payload);
-                if (l < maxlen - len)
-                	len +=3D l;
-        }
-        buf[len] =3D 0;
-
-There really is no need to have the secondary buffer, and I think doing
-so just complicates the code.
-That last version is a change of behaviour in that it will skip over
-lines that are too long, rather than aborting on the first one.
-I don't know which is preferred.
-
-Thanks,
-NeilBrown
-=20
-
+> Do you find the following script variant more succinct together
+> with the usage of a disjunction in a single SmPL rule?
 >
-> And Chuck Lever confirmed that:
->  =C2=A0=C2=A0=C2=A0 That's exactly what this function is trying to avoid.=
- As part of any
->  =C2=A0=C2=A0=C2=A0 change in this area, it would be good to replace the =
-current block
->  =C2=A0=C2=A0=C2=A0 comment before this function with a Doxygen-format co=
-mment that
->  =C2=A0=C2=A0=C2=A0 documents that goal.
 >
-> So, I will only send a V2 based on comments already received.
+> @replacement@
+> expression x;
+> @@
+> (
+> -init_rwsem
+> +mmap_init_lock
+> |
+> -down_write
+> +mmap_write_lock
+> |
+> -down_write_killable
+> +mmap_write_lock_killable
+> |
+> -down_write_trylock
+> +mmap_write_trylock
+> |
+> -up_write
+> +mmap_write_unlock
+> |
+> -downgrade_write
+> +mmap_downgrade_write_lock
+> |
+> -down_read
+> +mmap_read_lock
+> |
+> -down_read_killable
+> +mmap_read_lock_killable
+> |
+> -down_read_trylock
+> +mmap_read_trylock
+> |
+> -up_read
+> +mmap_read_unlock
+> |
+> -rwsem_is_locked
+> +mmap_is_locked
+> )
+>  (
+> - &
+>   x
+> - ->mmap_sem
+>  )
 >
-> CJ
+>
+> Regards,
+> Markus
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAl59IjEACgkQOeye3VZi
-gbmUPg/9EV6cZxRae5hgXZCWW9ODQKt1pH+ZIMVmP2UWNb+3mv6hPhNsGY1ED3xE
-4Ktqrz/6hiP8WHvNjZfmy1dAU7pqBnBJbZyfpfe2bBcvYZW7YI3oH/aliB+3KoLa
-qJ3FljZh9XnnaJ3f8qv77+G3+6vnrFioJhw1dFjn8WQZMY5FLPEUdLMu92GrKvQl
-I5DKtHTubYZ2OAT5n+D1duYfmiUBy9zV39ed1poMhfhAWuyYtprUGXiWw16DiDfH
-dbD5chlzkKL0HQwKclWTBpoxXoYn2NiUSNOiLmLRKZKBCHC1ry5+awc6nIy2xISI
-SuwRZfnCTuUYxFKjHO42ZqWgt0rX9xL+31mCbZt5jSV4ODo5jHSmAkSEwzcYNzwr
-GSe9o2T/Km6p0eWROf+mrxSy+NGmZqMpKqCkldWcu+dMA9o9UWk0AIfuU4vJTfkK
-LFxj86WFiL+r369g3XWPcyYh41v8iZmz48I1JV92IZ2xxCS+eI0KeoCw9cMA31IR
-S7BCSI5KazLdA8QVoVyTZX44SSvq9tiHTTrmrsIWtCU6k777o72o5E+bccyubCMb
-Wo6kFjlkahhCjF5UzY8HhnFofK218VGrhOIXqZ+X6nctA2KRDHPaSEQ1rXq509sO
-aWXiq5sSoIrwStrkyIk/6R1O/zGZDmgRJ0AvlUjxRjdio4wsyII=
-=oJ/H
------END PGP SIGNATURE-----
---=-=-=--
+-- 
+Michel "Walken" Lespinasse
+A program is never fully debugged until the last user dies.

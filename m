@@ -2,98 +2,152 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C46FB1943F2
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Mar 2020 17:03:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E150A194493
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Mar 2020 17:47:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727939AbgCZQDV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Mar 2020 12:03:21 -0400
-Received: from mail-wr1-f46.google.com ([209.85.221.46]:46183 "EHLO
-        mail-wr1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727670AbgCZQDU (ORCPT
+        id S1727560AbgCZQrv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Mar 2020 12:47:51 -0400
+Received: from smtprelay0003.hostedemail.com ([216.40.44.3]:41814 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726267AbgCZQru (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Mar 2020 12:03:20 -0400
-Received: by mail-wr1-f46.google.com with SMTP id j17so8397152wru.13;
-        Thu, 26 Mar 2020 09:03:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=PuNByyv3siGkvbhEPycVCa/IKpHpjzZf/6rC1PXvGxA=;
-        b=Zl5mMF/H1oqVlonG48JjLmrvN45dZOEwKZ01kOHvwsp/yg33B0FUmVnoNLfJXM25qJ
-         wld3dnY6W3aTGLDFJl5pixXabyDddwsdLYl+jGK41vBDqdK0CVpocHANQJYtfeNMjn/c
-         bKwt54lFgo7UuXf1TeFA0HC139CArdNXqlLd/gY+j724Bal5tBefdTFZ8lzAhJb+2Kkp
-         Ox0KU2Z4CeFjzVcKvWTpub89N7gsZ4TGGeZbBZDZVvLDf0g0UBOJauNuKxtSBfHe43/L
-         EW+2AIYeFrBzQnoLgo5rwOCXknuTPtDGI2Mss0q9HQlNra1VdgWlb5GcEwQh7abd9Lkb
-         3wkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=PuNByyv3siGkvbhEPycVCa/IKpHpjzZf/6rC1PXvGxA=;
-        b=IrnoVfXd59+CJnOnrYkD7nDICRLkUCcaCDSsszdUolzE1sYDYgbRx7dxu/HK3ESEFL
-         o+nXRiQ+f3XcE+I7mHHBU4CA+LWOyxL3/hPRTJXFinBpTl9rzvO1OypBFA0kTdOnNtCL
-         rXbgbErm1duelmWjUv4ZKUL34XjysqDtKOxf3AJFg811s1uvxSZwQtk3POZu4JjJ+z7M
-         qUKhn5yxfctpG6t+7m9vzt4dXCFhs8tu34bRKVqG8OC/zwEKaDwl2v7tjH5hWkXTGwmb
-         DiSzsYyFIanzsywx8TmAPF2HqialUbeEBPlTEYHNArnTVnTRDIVR02f2s0gI3pRwtj1j
-         2WxQ==
-X-Gm-Message-State: ANhLgQ3Es1vooS9JEgt5WtdRGqVB+csBDl1UBJkepokT3F+TnhWS9wXx
-        UriO4V1rLILQAf7Hg4xK/biupCoc
-X-Google-Smtp-Source: ADFU+vst6w9oQGmN5Epfx6vNxd+NzIylAwdJtZNvAk9/eq53r+Xok4rbrZH9juCGZr/2xuU+dI09Lg==
-X-Received: by 2002:adf:b3d4:: with SMTP id x20mr9851913wrd.269.1585238598438;
-        Thu, 26 Mar 2020 09:03:18 -0700 (PDT)
-Received: from [192.168.1.125] (46-126-183-173.dynamic.hispeed.ch. [46.126.183.173])
-        by smtp.gmail.com with ESMTPSA id h5sm4116253wro.83.2020.03.26.09.03.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Mar 2020 09:03:17 -0700 (PDT)
-Subject: Re: [PATCH][next] drm/vmwgfx: fix spelling mistake "Cound" -> "Could"
-To:     Colin King <colin.king@canonical.com>,
-        VMware Graphics <linux-graphics-maintainer@vmware.com>,
-        Thomas Hellstrom <thellstrom@vmware.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200326101911.241233-1-colin.king@canonical.com>
-From:   Roland Scheidegger <rscheidegger.oss@gmail.com>
-Message-ID: <d9ee5ec4-7341-decd-a382-3004fd367beb@gmail.com>
-Date:   Thu, 26 Mar 2020 17:03:15 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Firefox/68.0 Thunderbird/68.2.1
+        Thu, 26 Mar 2020 12:47:50 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 1BFC818029121;
+        Thu, 26 Mar 2020 16:47:48 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:982:983:988:989:1208:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1543:1593:1594:1605:1711:1730:1747:1777:1792:2197:2198:2199:2200:2393:2559:2562:2731:2828:2892:3138:3139:3140:3141:3142:3622:3653:3865:3866:3867:3868:3871:3874:4321:4605:5007:6119:6299:7875:7901:7903:8957:9010:9040:9405:10004:10226:10400:10848:11232:11658:11914:12043:12291:12296:12297:12555:12683:12740:12760:12895:13439:14181:14659:14721:21080:21221:21433:21451:21627:21740:21820:21939:30025:30046:30054:30060:30062:30070:30075:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: moon13_26d3129e62d05
+X-Filterd-Recvd-Size: 4910
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf08.hostedemail.com (Postfix) with ESMTPA;
+        Thu, 26 Mar 2020 16:47:46 +0000 (UTC)
+Message-ID: <00d11cf766237d9c12c2a06458962c4bae84fa78.camel@perches.com>
+Subject: Re: [PATCH] parse-maintainers: Do not sort section content by
+ default
+From:   Joe Perches <joe@perches.com>
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Thu, 26 Mar 2020 09:45:55 -0700
+In-Reply-To: <4d5291fa3fb4962b1fa55e8fd9ef421ef0c1b1e5.camel@perches.com>
+References: <20200304072950.10532-1-lukas.bulwahn@gmail.com>
+         <20200304131035.731a3947@lwn.net>
+         <alpine.DEB.2.21.2003042145340.2698@felia>
+         <e43f0cf0117fbfa8fe8c7e62538fd47a24b4657a.camel@perches.com>
+         <alpine.DEB.2.21.2003062214500.5521@felia>
+         <20200307110154.719572e4@onda.lan>
+         <0d5503e1d864f2588e756ae590ff8935e11bf9d6.camel@perches.com>
+         <4d5291fa3fb4962b1fa55e8fd9ef421ef0c1b1e5.camel@perches.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-In-Reply-To: <20200326101911.241233-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: de-DE
 Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Sat, 2020-03-07 at 18:59 -0800, Joe Perches wrote:
+> Add an --order switch to control section reordering.
+> Default for --order is off.
 
-Am 26.03.20 um 11:19 schrieb Colin King:
-> From: Colin Ian King <colin.king@canonical.com>
+> Change the default ordering to a slightly more sensible:
 > 
-> There is a spelling mistake in a DRM_ERROR error message. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> M:  Person acting as a maintainer
+> R:  Person acting as a patch reviewer
+> L:  Mailing list where patches should be sent
+> S:  Maintenance status
+> W:  URI for general information
+> Q:  URI for patchwork tracking
+> B:  URI for bug tracking/submission
+> C:  URI for chat
+> P:  URI or file for subsystem specific coding styles
+> T:  SCM tree type and location
+> F:  File and directory pattern
+> X:  File and directory exclusion pattern
+> N:  File glob
+> K:  Keyword - patch content regex
+
+Linus? ping?
+
+> Signed-off-by: Joe Perches <joe@perches.com>
 > ---
->  drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  scripts/parse-maintainers.pl | 31 +++++++++++++++++++++++++++----
+>  1 file changed, 27 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-> index 367d5b87ee6a..2e61a4ecd8ef 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-> @@ -3037,7 +3037,7 @@ static int vmw_cmd_dx_bind_streamoutput(struct vmw_private *dev_priv,
->  	res = vmw_dx_streamoutput_lookup(vmw_context_res_man(ctx_node->ctx),
->  					 cmd->body.soid);
->  	if (IS_ERR(res)) {
-> -		DRM_ERROR("Cound not find streamoutput to bind.\n");
-> +		DRM_ERROR("Could not find streamoutput to bind.\n");
->  		return PTR_ERR(res);
->  	}
+> diff --git a/scripts/parse-maintainers.pl b/scripts/parse-maintainers.pl
+> index 255cef1..2ca4eb3 100644
+> --- a/scripts/parse-maintainers.pl
+> +++ b/scripts/parse-maintainers.pl
+> @@ -8,13 +8,14 @@ my $input_file = "MAINTAINERS";
+>  my $output_file = "MAINTAINERS.new";
+>  my $output_section = "SECTION.new";
+>  my $help = 0;
+> -
+> +my $order = 0;
+>  my $P = $0;
 >  
+>  if (!GetOptions(
+>  		'input=s' => \$input_file,
+>  		'output=s' => \$output_file,
+>  		'section=s' => \$output_section,
+> +		'order!' => \$order,
+>  		'h|help|usage' => \$help,
+>  	    )) {
+>      die "$P: invalid argument - use --help if necessary\n";
+> @@ -32,6 +33,22 @@ usage: $P [options] <pattern matching regexes>
+>    --input => MAINTAINERS file to read (default: MAINTAINERS)
+>    --output => sorted MAINTAINERS file to write (default: MAINTAINERS.new)
+>    --section => new sorted MAINTAINERS file to write to (default: SECTION.new)
+> +  --order => Use the preferred section content output ordering (default: 0)
+> +    Preferred ordering of section output is:
+> +      M:  Person acting as a maintainer
+> +      R:  Person acting as a patch reviewer
+> +      L:  Mailing list where patches should be sent
+> +      S:  Maintenance status
+> +      W:  URI for general information
+> +      Q:  URI for patchwork tracking
+> +      B:  URI for bug tracking/submission
+> +      C:  URI for chat
+> +      P:  URI or file for subsystem specific coding styles
+> +      T:  SCM tree type and location
+> +      F:  File and directory pattern
+> +      X:  File and directory exclusion pattern
+> +      N:  File glob
+> +      K:  Keyword - patch content regex
+>  
+>  If <pattern match regexes> exist, then the sections that match the
+>  regexes are not written to the output file but are written to the
+> @@ -56,7 +73,7 @@ sub by_category($$) {
+>  
+>  sub by_pattern($$) {
+>      my ($a, $b) = @_;
+> -    my $preferred_order = 'MRPLSWTQBCFXNK';
+> +    my $preferred_order = 'MRLSWQBCPTFXNK';
+>  
+>      my $a1 = uc(substr($a, 0, 1));
+>      my $b1 = uc(substr($b, 0, 1));
+> @@ -105,8 +122,14 @@ sub alpha_output {
+>  		print $file $separator;
+>  	    }
+>  	    print $file $key . "\n";
+> -	    foreach my $pattern (sort by_pattern split('\n', %$hashref{$key})) {
+> -		print $file ($pattern . "\n");
+> +	    if ($order) {
+> +		foreach my $pattern (sort by_pattern split('\n', %$hashref{$key})) {
+> +		    print $file ($pattern . "\n");
+> +		}
+> +	    } else {
+> +		foreach my $pattern (split('\n', %$hashref{$key})) {
+> +		    print $file ($pattern . "\n");
+> +		}
+>  	    }
+>  	}
+>      }
 > 
 
-Reviewed-by: Roland Scheidegger <sroland@vmware.com>

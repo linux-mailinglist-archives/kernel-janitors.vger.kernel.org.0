@@ -2,82 +2,130 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D626194BCC
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Mar 2020 23:54:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8D40194D94
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Mar 2020 00:54:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727352AbgCZWy3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Mar 2020 18:54:29 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:38357 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726363AbgCZWy2 (ORCPT
+        id S1727685AbgCZXyc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Mar 2020 19:54:32 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:38488 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726067AbgCZXyc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Mar 2020 18:54:28 -0400
-Received: by mail-lf1-f65.google.com with SMTP id c5so6314295lfp.5
-        for <kernel-janitors@vger.kernel.org>; Thu, 26 Mar 2020 15:54:27 -0700 (PDT)
+        Thu, 26 Mar 2020 19:54:32 -0400
+Received: by mail-pg1-f196.google.com with SMTP id x7so3705602pgh.5;
+        Thu, 26 Mar 2020 16:54:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dketg2xmeCHjMWwyChFsYCLkTQHS2H7rmpcy40U5XQk=;
-        b=Mz5JJuHy+EHtTW2ruQf6KS8rf1FyuAKeuMpuRqgexQnmQQXt6lXbg+bouBcIe/NI2b
-         R1cEuYVS8YOPkYGJL/h8vPIKKTpgjeVLMEQKoTdrlx6KjEjvXsSQtn4JutgSGcLNu7FE
-         HzaHp6I8DeDQygWQA5Xz+Ha5vDztHbTw+RVIQ=
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=7CVUJ19v0pY389uYsPOimGpmTd+8zgk3ZoECLlak5lM=;
+        b=INFMJGFcMVQGmxapcKuRntC2Hu7Scihi/K2WIqPinYkE7x1TAkiXXc/d9BNnWaPns4
+         L5Yjl1/AowBiF15atWfviywBhgO0UTCApRKD1MEGRqOaNjJrO5D5tVfDDz4cE2trvw7l
+         bVlE0Rmf+Rh4whilo56Bl9iTZHvA/Je7qZtsq+R12rNvESruWl2DpeWOyGkOP8bTUtJl
+         /o2zXLz1MMGyJ7Kxl3bLSSodp3GyaoJKNprYHm99xSQEbaB3llKIkqNDETYReSsVx9nE
+         FnvPXwu9d7nsGvcDwKRbA8+6i5NN5ibUQbL2vPleW6nU335BCJvH52SJ0grrfZk7KwSi
+         8EvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dketg2xmeCHjMWwyChFsYCLkTQHS2H7rmpcy40U5XQk=;
-        b=bll47nJLhoduAee7rFbaFRk0uJRdZJ3nTr9ENJoRJ8Sd6RRNwrgK7OUTsJm1aIrm+h
-         Am5+Fav7CrMNq0RGGnEkJGD2DI9rWS5EFleaQYasLH8eiWcSipoD5BbNhhxne0NkIxfT
-         5rtdWq96j08w/0NhWYHTNBNO/acoZkOebIlOGwxH1m/eBbsQTLEJeHo46h4xzROYUqhQ
-         1d04P2cN3Qyz7S4XbTDNcrH9qIEhv5PQC05UzuNolSlwojOVaCgAvKDwDRTHbyCdHzan
-         ZiL5qbn72WC0kgCIG9BW0et5pGg7JzAqj7EjIpQdnE7hXdplCUvi6EOP42SGGybJkIU4
-         jcZw==
-X-Gm-Message-State: ANhLgQ3/shtpCT8+USU6MGS7yu1hpYipFgV/8iBJjzzjmpt6qmx0fIpj
-        NXr+J/Tg1meExeHYlKRPHgp1D1O5UIU=
-X-Google-Smtp-Source: ADFU+vsBOa9ozPBDiXYSnhe7UzFwz9iIsBYAR1j7anYaSU2lLfxDs7VaWExps84BWAeHcDaN4avMnw==
-X-Received: by 2002:a05:6512:1042:: with SMTP id c2mr6912704lfb.6.1585263265792;
-        Thu, 26 Mar 2020 15:54:25 -0700 (PDT)
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com. [209.85.167.46])
-        by smtp.gmail.com with ESMTPSA id x2sm2086578ljx.3.2020.03.26.15.54.23
-        for <kernel-janitors@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Mar 2020 15:54:24 -0700 (PDT)
-Received: by mail-lf1-f46.google.com with SMTP id n20so6281066lfl.10
-        for <kernel-janitors@vger.kernel.org>; Thu, 26 Mar 2020 15:54:23 -0700 (PDT)
-X-Received: by 2002:ac2:5e70:: with SMTP id a16mr3366363lfr.152.1585263263622;
- Thu, 26 Mar 2020 15:54:23 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=7CVUJ19v0pY389uYsPOimGpmTd+8zgk3ZoECLlak5lM=;
+        b=WODTFPEOQnnMYBo9VCxkSA5i0evU3VthziUjDUZg9HUk6iR90FQZScpW/IQHZg/z6p
+         Pr+D5TiiAZGmq4ptlNOjqwfDdh5iUHFowZumTujom0Z15ApS+6iqYrg9CuLa7I+KIS9o
+         wnl1SzQOmmmK/jKI/AjZBKhNC7uL7BJJm+G4e2oe1uaGpRaU/8zGJM/cKRiB0WcXvn2M
+         NB0+m//El3bn13q+8lnbdSmGXB6ZVqHNtec2HhrZmRH0sGL/YoNh40THmareWlau5xUB
+         yIKGCD6Gv/MwyQxM5HbMNs3iX3exjExLe4wMya74QdS2YmT3DNTTxo5tVtJAyGjvshGq
+         8bkg==
+X-Gm-Message-State: ANhLgQ15N5sneQW/xMREsldks7Ms6CIYwaNux0ZMcDi5czpyLJ3LUibf
+        frirDRhqZOvZR3fBpx5MXok=
+X-Google-Smtp-Source: ADFU+vtHItp+nWzngvwdD8m8gR416+z5AIiqRHKH0JSJZuOyBE5OslhJKwILx7T9X+o7ZOXp/Dq6XA==
+X-Received: by 2002:a63:1517:: with SMTP id v23mr10800809pgl.89.1585266871010;
+        Thu, 26 Mar 2020 16:54:31 -0700 (PDT)
+Received: from ast-mbp ([2620:10d:c090:400::5:c7d9])
+        by smtp.gmail.com with ESMTPSA id p70sm2417463pjp.47.2020.03.26.16.54.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2020 16:54:30 -0700 (PDT)
+Date:   Thu, 26 Mar 2020 16:54:26 -0700
+From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
+To:     Jean-Philippe Menil <jpmenil@gmail.com>
+Cc:     yhs@fb.com, kernel-janitors@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>, netdev@vger.kernel.org,
+        bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] bpf: fix build warning - missing prototype
+Message-ID: <20200326235426.ei6ae2z5ek6uq3tt@ast-mbp>
+References: <7c27e51f-6a64-7374-b705-450cad42146c@fb.com>
+ <20200324072231.5780-1-jpmenil@gmail.com>
 MIME-Version: 1.0
-References: <20200304072950.10532-1-lukas.bulwahn@gmail.com>
- <20200304131035.731a3947@lwn.net> <alpine.DEB.2.21.2003042145340.2698@felia>
- <e43f0cf0117fbfa8fe8c7e62538fd47a24b4657a.camel@perches.com>
- <alpine.DEB.2.21.2003062214500.5521@felia> <20200307110154.719572e4@onda.lan>
- <0d5503e1d864f2588e756ae590ff8935e11bf9d6.camel@perches.com>
- <4d5291fa3fb4962b1fa55e8fd9ef421ef0c1b1e5.camel@perches.com> <00d11cf766237d9c12c2a06458962c4bae84fa78.camel@perches.com>
-In-Reply-To: <00d11cf766237d9c12c2a06458962c4bae84fa78.camel@perches.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Thu, 26 Mar 2020 15:54:07 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wg3=D0uFHXFsEz2CAvFGTb8RV1KJH-eOCqR5JUQGvOqeA@mail.gmail.com>
-Message-ID: <CAHk-=wg3=D0uFHXFsEz2CAvFGTb8RV1KJH-eOCqR5JUQGvOqeA@mail.gmail.com>
-Subject: Re: [PATCH] parse-maintainers: Do not sort section content by default
-To:     Joe Perches <joe@perches.com>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200324072231.5780-1-jpmenil@gmail.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Mar 26, 2020 at 9:47 AM Joe Perches <joe@perches.com> wrote:
->
-> Linus? ping?
+On Tue, Mar 24, 2020 at 08:22:31AM +0100, Jean-Philippe Menil wrote:
+> Fix build warnings when building net/bpf/test_run.o with W=1 due
+> to missing prototype for bpf_fentry_test{1..6}.
+> 
+> Declare prototypes in order to silence warnings.
+> 
+> Signed-off-by: Jean-Philippe Menil <jpmenil@gmail.com>
+> ---
+>  net/bpf/test_run.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+> index d555c0d8657d..cdf87fb0b6eb 100644
+> --- a/net/bpf/test_run.c
+> +++ b/net/bpf/test_run.c
+> @@ -113,31 +113,37 @@ static int bpf_test_finish(const union bpf_attr *kattr,
+>   * architecture dependent calling conventions. 7+ can be supported in the
+>   * future.
+>   */
+> +int noinline bpf_fentry_test1(int a);
+>  int noinline bpf_fentry_test1(int a)
+>  {
+>  	return a + 1;
+>  }
+>  
+> +int noinline bpf_fentry_test2(int a, u64 b);
+>  int noinline bpf_fentry_test2(int a, u64 b)
+>  {
+>  	return a + b;
+>  }
+>  
+> +int noinline bpf_fentry_test3(char a, int b, u64 c);
+>  int noinline bpf_fentry_test3(char a, int b, u64 c)
+>  {
+>  	return a + b + c;
+>  }
+>  
+> +int noinline bpf_fentry_test4(void *a, char b, int c, u64 d);
+>  int noinline bpf_fentry_test4(void *a, char b, int c, u64 d)
+>  {
+>  	return (long)a + b + c + d;
+>  }
+>  
+> +int noinline bpf_fentry_test5(u64 a, void *b, short c, int d, u64 e);
+>  int noinline bpf_fentry_test5(u64 a, void *b, short c, int d, u64 e)
+>  {
+>  	return a + (long)b + c + d + e;
+>  }
+>  
+> +int noinline bpf_fentry_test6(u64 a, void *b, short c, int d, void *e, u64 f);
+>  int noinline bpf_fentry_test6(u64 a, void *b, short c, int d, void *e, u64 f)
 
-Applied and pushed out.
-
-            Linus
+That's a bit too much of "watery water".
+Have you considered
+__diag_push();
+__diag_ignore(GCC, "-Wwhatever specific flag will shut up this warn")
+__diag_pop();
+approach ?
+It will be self documenting as well.

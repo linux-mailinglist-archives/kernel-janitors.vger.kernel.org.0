@@ -2,32 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59A711958B9
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Mar 2020 15:14:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C3FA195AC9
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Mar 2020 17:14:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727345AbgC0OOk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Mar 2020 10:14:40 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56675 "EHLO
+        id S1727549AbgC0QOA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Mar 2020 12:14:00 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:33824 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727242AbgC0OOk (ORCPT
+        with ESMTP id S1727173AbgC0QOA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Mar 2020 10:14:40 -0400
+        Fri, 27 Mar 2020 12:14:00 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jHpkk-000887-46; Fri, 27 Mar 2020 14:14:30 +0000
+        id 1jHrcE-0002xS-0M; Fri, 27 Mar 2020 16:13:50 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Ravulapati Vishnu vardhan rao 
-        <Vishnuvardhanrao.Ravulapati@amd.com>, alsa-devel@alsa-project.org
+To:     Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: amd: acp3x-pcm-dma: clean up two indentation issues
-Date:   Fri, 27 Mar 2020 14:14:29 +0000
-Message-Id: <20200327141429.269191-1-colin.king@canonical.com>
+Subject: [PATCH] soc: fsl: qe: clean up an indentation issue
+Date:   Fri, 27 Mar 2020 16:13:49 +0000
+Message-Id: <20200327161349.284679-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,39 +35,27 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There are a couple of statements that are not indented correctly,
-add in the missing tab and break the lines to address a checkpatch
-warning.
+There is a statement that not indented correctly, remove the
+extraneous space.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- sound/soc/amd/raven/acp3x-pcm-dma.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/soc/fsl/qe/ucc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/raven/acp3x-pcm-dma.c b/sound/soc/amd/raven/acp3x-pcm-dma.c
-index d62c0d90c41e..e362f0bc9e46 100644
---- a/sound/soc/amd/raven/acp3x-pcm-dma.c
-+++ b/sound/soc/amd/raven/acp3x-pcm-dma.c
-@@ -458,7 +458,8 @@ static int acp3x_resume(struct device *dev)
- 			reg_val = mmACP_I2STDM_ITER;
- 			frmt_val = mmACP_I2STDM_TXFRMT;
- 		}
--	rv_writel((rtd->xfer_resolution  << 3), rtd->acp3x_base + reg_val);
-+		rv_writel((rtd->xfer_resolution  << 3),
-+			  rtd->acp3x_base + reg_val);
- 	}
- 	if (adata->capture_stream && adata->capture_stream->runtime) {
- 		struct i2s_stream_instance *rtd =
-@@ -474,7 +475,8 @@ static int acp3x_resume(struct device *dev)
- 			reg_val = mmACP_I2STDM_IRER;
- 			frmt_val = mmACP_I2STDM_RXFRMT;
- 		}
--	rv_writel((rtd->xfer_resolution  << 3), rtd->acp3x_base + reg_val);
-+		rv_writel((rtd->xfer_resolution  << 3),
-+			  rtd->acp3x_base + reg_val);
- 	}
- 	if (adata->tdm_mode == TDM_ENABLE) {
- 		rv_writel(adata->tdm_fmt, adata->acp3x_base + frmt_val);
+diff --git a/drivers/soc/fsl/qe/ucc.c b/drivers/soc/fsl/qe/ucc.c
+index d6c93970df4d..cac0fb7693a0 100644
+--- a/drivers/soc/fsl/qe/ucc.c
++++ b/drivers/soc/fsl/qe/ucc.c
+@@ -519,7 +519,7 @@ int ucc_set_tdm_rxtx_clk(u32 tdm_num, enum qe_clock clock,
+ 	int clock_bits;
+ 	u32 shift;
+ 	struct qe_mux __iomem *qe_mux_reg;
+-	 __be32 __iomem *cmxs1cr;
++	__be32 __iomem *cmxs1cr;
+ 
+ 	qe_mux_reg = &qe_immr->qmx;
+ 
 -- 
 2.25.1
 

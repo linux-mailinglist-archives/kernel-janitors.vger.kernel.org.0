@@ -2,88 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC4ED19519B
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Mar 2020 07:54:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A88E195266
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Mar 2020 08:56:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726133AbgC0GyR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Mar 2020 02:54:17 -0400
-Received: from mga09.intel.com ([134.134.136.24]:17781 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725936AbgC0GyR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Mar 2020 02:54:17 -0400
-IronPort-SDR: 9+EgdqXUXlvv3tIj9mMarWoYBhyWOlTRYXsWsMzADhoNKh+0+tMyDvnum4sVCaVTvqo+dioamj
- oRAy9L5LZJMA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2020 23:54:16 -0700
-IronPort-SDR: 6bjzR2sXKAnepQ89U1HncOHnqs4hNhvTPD3uMtPZ43EdX2/pZUYRAHuXvlhJlRbU6VmHVdi4GD
- v0Oq/jf9gYvQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,311,1580803200"; 
-   d="scan'208";a="251052466"
-Received: from shao2-debian.sh.intel.com (HELO [10.239.13.3]) ([10.239.13.3])
-  by orsmga006.jf.intel.com with ESMTP; 26 Mar 2020 23:54:10 -0700
-Subject: Re: [kbuild-all] Re: [RFC PATCH] usb: cdns3:
- cdns3_clear_register_bit() can be static
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     kbuild test robot <lkp@intel.com>,
-        Colin King <colin.king@canonical.com>, kbuild-all@lists.01.org,
-        Sekhar Nori <nsekhar@ti.com>, Roger Quadros <rogerq@ti.com>,
-        Felipe Balbi <felipe.balbi@linux.intel.com>,
-        Pawel Laszczak <pawell@cadence.com>, linux-usb@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200325125041.94769-1-colin.king@canonical.com>
- <20200326122858.GA50118@cde5a4ed3207> <20200326130418.GA1295433@kroah.com>
- <571960b6-5ed7-2106-7091-3ea83c31051a@intel.com>
- <20200327064255.GA1603489@kroah.com>
-From:   Rong Chen <rong.a.chen@intel.com>
-Message-ID: <372f30ad-fbea-d411-c58f-2d4692509a60@intel.com>
-Date:   Fri, 27 Mar 2020 14:53:51 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726118AbgC0H4E (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Mar 2020 03:56:04 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:33524 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725946AbgC0H4E (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 27 Mar 2020 03:56:04 -0400
+Received: by mail-ed1-f68.google.com with SMTP id z65so10039687ede.0;
+        Fri, 27 Mar 2020 00:56:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=DOngrTjBMh1Wy5Q62zykbp/GEp/RVLEjSOAHb9wDE0c=;
+        b=ryfx4Hftnscsun3x0YRsp74LdqQiGv/vq2nUpom1Hz3IuxiKxC61rgDIm13OxGkthi
+         y1mIStVSphXp5/D8Dsk9k2T0tHZLc374B8qvpNTwvxhpmieYSLwjv1P7wD4iDN126CAj
+         KIXpaTHgVAq/+9kLhFyYBYMBpq1oEOClAiZERxUYwhfipTk0XlFHnOjj+CWczNIA8JQf
+         BOwWhdjL+Gjm6ScPcPyL2HjiL93loKaKQX8ZlQf8lgFXMxXpTFRDEAxd82euJGCEw3lY
+         xARqvWx2jaQ6hZiLQvkQoei6YvSBLT6kjGl1xX1ugQixeCZ8oGJb5J51IZenKRukYsrb
+         nt5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=DOngrTjBMh1Wy5Q62zykbp/GEp/RVLEjSOAHb9wDE0c=;
+        b=Ltg3u/CBwMhn8tsAqThcenad04eYruJtGRzow3Cb/hfQUrjfvATvcCG7R3LfXhc+QS
+         edULvuRsgXoo7xsb6zq9401Gd3ORdsnJGBV6L/Nn4oZ5n2VU45uZ3M4DQkLE4QKX/hXO
+         wCcRo2kyMKSqF16m6Bwczq1rkkqhQ1tP5xrC+8hYMgOtWjb+f5afe2fBoQ0nRMM/0KHE
+         XU8e1Mv7A0BsjNx00nD55Tzb3lTbGTII30NaBA58+KXSvWLlrsWISKTvP0oAFJO1kFB5
+         2PO+vKDRzlkxxQ+VulsEFhiEfRwqWBfrhU0jfnE0rssZmT2JpQ4hzB6sWtXG5Eo8omO3
+         32LQ==
+X-Gm-Message-State: ANhLgQ10r9f7vuaSuR6U/YylTf0sRL4rnmjUldUkWgA+pAeLphYBiGHL
+        cOebi/Z71kd1tcwB5oG8e38=
+X-Google-Smtp-Source: ADFU+vstx/W2tBPN+4MRXuf6ruZaoVkf6YjvrW6OBAO9GSINxibsBVs6wEpuM49d+z3UubAGouAUTA==
+X-Received: by 2002:a50:bb47:: with SMTP id y65mr9666906ede.204.1585295761754;
+        Fri, 27 Mar 2020 00:56:01 -0700 (PDT)
+Received: from localhost.localdomain (163.239.197.178.dynamic.wless.lssmb00p-cgnat.res.cust.swisscom.ch. [178.197.239.163])
+        by smtp.googlemail.com with ESMTPSA id b11sm718149edj.20.2020.03.27.00.56.00
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 27 Mar 2020 00:56:01 -0700 (PDT)
+From:   Jean-Philippe Menil <jpmenil@gmail.com>
+To:     alexei.starovoitov@gmail.com
+Cc:     kernel-janitors@vger.kernel.org, jpmenil@gmail.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>, netdev@vger.kernel.org,
+        bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3] bpf: fix build warning - missing prototype
+Date:   Fri, 27 Mar 2020 08:55:44 +0100
+Message-Id: <20200327075544.22814-1-jpmenil@gmail.com>
+X-Mailer: git-send-email 2.26.0
+In-Reply-To: <20200326235426.ei6ae2z5ek6uq3tt@ast-mbp>
+References: <20200326235426.ei6ae2z5ek6uq3tt@ast-mbp>
 MIME-Version: 1.0
-In-Reply-To: <20200327064255.GA1603489@kroah.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Fix build warnings when building net/bpf/test_run.o with W=1 due
+to missing prototype for bpf_fentry_test{1..6}.
 
+Instead of declaring prototypes, turn off warnings with
+__diag_{push,ignore,pop} as pointed by Alexei.
 
-On 3/27/20 2:42 PM, Greg Kroah-Hartman wrote:
-> On Fri, Mar 27, 2020 at 08:34:52AM +0800, Rong Chen wrote:
->>
->> On 3/26/20 9:04 PM, Greg Kroah-Hartman wrote:
->>> On Thu, Mar 26, 2020 at 08:28:58PM +0800, kbuild test robot wrote:
->>>> Fixes: 87db1192dc33 ("usb: cdns3: make signed 1 bit bitfields unsigned")
->>> This original patch did not "cause" this problem, it's just that you for
->>> some reason ran sparse for the first time on the file.
->>>
->>> So I can't take this as-is, can you remove this line and resend?
->> Hi Greg,
->>
->> Sorry for the inconvenience, the patch was generated by the bot,
->> we'll check and resend it.
-> It's fine that it was generated, it's a bug somewhere that thinks this
-> specific patch was a problem so that this generated patch fixed it.
-Yes, you are right, we'll fix the bug asap.
+Signed-off-by: Jean-Philippe Menil <jpmenil@gmail.com>
+---
+ net/bpf/test_run.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
->
-> Did you all just start running sparse on things again?
-Sparse has been running for a long time in our system.
-
-Best Regards,
-Rong Chen
-
->
-> thanks,
->
-> greg k-h
-> _______________________________________________
-> kbuild-all mailing list -- kbuild-all@lists.01.org
-> To unsubscribe send an email to kbuild-all-leave@lists.01.org
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index d555c0d8657d..cc1592413fc3 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -113,6 +113,9 @@ static int bpf_test_finish(const union bpf_attr *kattr,
+  * architecture dependent calling conventions. 7+ can be supported in the
+  * future.
+  */
++__diag_push();
++__diag_ignore(GCC, 8, "-Wmissing-prototypes",
++	      "Global functions as their definitions will be in vmlinux BTF);
+ int noinline bpf_fentry_test1(int a)
+ {
+ 	return a + 1;
+@@ -143,6 +146,8 @@ int noinline bpf_fentry_test6(u64 a, void *b, short c, int d, void *e, u64 f)
+ 	return a + (long)b + c + d + (long)e + f;
+ }
+ 
++__diag_pop();
++
+ static void *bpf_test_init(const union bpf_attr *kattr, u32 size,
+ 			   u32 headroom, u32 tailroom)
+ {
+-- 
+2.26.0
 

@@ -2,130 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8D40194D94
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Mar 2020 00:54:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C2B8194E1D
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Mar 2020 01:35:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727685AbgCZXyc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Mar 2020 19:54:32 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:38488 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726067AbgCZXyc (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Mar 2020 19:54:32 -0400
-Received: by mail-pg1-f196.google.com with SMTP id x7so3705602pgh.5;
-        Thu, 26 Mar 2020 16:54:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=7CVUJ19v0pY389uYsPOimGpmTd+8zgk3ZoECLlak5lM=;
-        b=INFMJGFcMVQGmxapcKuRntC2Hu7Scihi/K2WIqPinYkE7x1TAkiXXc/d9BNnWaPns4
-         L5Yjl1/AowBiF15atWfviywBhgO0UTCApRKD1MEGRqOaNjJrO5D5tVfDDz4cE2trvw7l
-         bVlE0Rmf+Rh4whilo56Bl9iTZHvA/Je7qZtsq+R12rNvESruWl2DpeWOyGkOP8bTUtJl
-         /o2zXLz1MMGyJ7Kxl3bLSSodp3GyaoJKNprYHm99xSQEbaB3llKIkqNDETYReSsVx9nE
-         FnvPXwu9d7nsGvcDwKRbA8+6i5NN5ibUQbL2vPleW6nU335BCJvH52SJ0grrfZk7KwSi
-         8EvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=7CVUJ19v0pY389uYsPOimGpmTd+8zgk3ZoECLlak5lM=;
-        b=WODTFPEOQnnMYBo9VCxkSA5i0evU3VthziUjDUZg9HUk6iR90FQZScpW/IQHZg/z6p
-         Pr+D5TiiAZGmq4ptlNOjqwfDdh5iUHFowZumTujom0Z15ApS+6iqYrg9CuLa7I+KIS9o
-         wnl1SzQOmmmK/jKI/AjZBKhNC7uL7BJJm+G4e2oe1uaGpRaU/8zGJM/cKRiB0WcXvn2M
-         NB0+m//El3bn13q+8lnbdSmGXB6ZVqHNtec2HhrZmRH0sGL/YoNh40THmareWlau5xUB
-         yIKGCD6Gv/MwyQxM5HbMNs3iX3exjExLe4wMya74QdS2YmT3DNTTxo5tVtJAyGjvshGq
-         8bkg==
-X-Gm-Message-State: ANhLgQ15N5sneQW/xMREsldks7Ms6CIYwaNux0ZMcDi5czpyLJ3LUibf
-        frirDRhqZOvZR3fBpx5MXok=
-X-Google-Smtp-Source: ADFU+vtHItp+nWzngvwdD8m8gR416+z5AIiqRHKH0JSJZuOyBE5OslhJKwILx7T9X+o7ZOXp/Dq6XA==
-X-Received: by 2002:a63:1517:: with SMTP id v23mr10800809pgl.89.1585266871010;
-        Thu, 26 Mar 2020 16:54:31 -0700 (PDT)
-Received: from ast-mbp ([2620:10d:c090:400::5:c7d9])
-        by smtp.gmail.com with ESMTPSA id p70sm2417463pjp.47.2020.03.26.16.54.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2020 16:54:30 -0700 (PDT)
-Date:   Thu, 26 Mar 2020 16:54:26 -0700
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-To:     Jean-Philippe Menil <jpmenil@gmail.com>
-Cc:     yhs@fb.com, kernel-janitors@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>, netdev@vger.kernel.org,
-        bpf@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] bpf: fix build warning - missing prototype
-Message-ID: <20200326235426.ei6ae2z5ek6uq3tt@ast-mbp>
-References: <7c27e51f-6a64-7374-b705-450cad42146c@fb.com>
- <20200324072231.5780-1-jpmenil@gmail.com>
+        id S1727750AbgC0AfR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Mar 2020 20:35:17 -0400
+Received: from mga12.intel.com ([192.55.52.136]:44340 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726359AbgC0AfR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 26 Mar 2020 20:35:17 -0400
+IronPort-SDR: sK+/uC2zPYzaUNZTSerJFe63ma0XYcLCEmuusGv6FgejRMIBCv2QhmtHPjcUc3EdGfjBmUxWKW
+ kDiB3yhQx+NQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2020 17:35:16 -0700
+IronPort-SDR: e22T3VdHduyjz5bDy4OZa210k9WTO1218bTaoPEseA5BLErTX2QCPDoJWKDZia+MKeWxQXCcma
+ BQIJKtcvrU0g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,310,1580803200"; 
+   d="scan'208";a="250972692"
+Received: from shao2-debian.sh.intel.com (HELO [10.239.13.3]) ([10.239.13.3])
+  by orsmga006.jf.intel.com with ESMTP; 26 Mar 2020 17:35:10 -0700
+Subject: Re: [kbuild-all] Re: [RFC PATCH] usb: cdns3:
+ cdns3_clear_register_bit() can be static
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        kbuild test robot <lkp@intel.com>
+Cc:     Colin King <colin.king@canonical.com>, kbuild-all@lists.01.org,
+        Sekhar Nori <nsekhar@ti.com>, Roger Quadros <rogerq@ti.com>,
+        Felipe Balbi <felipe.balbi@linux.intel.com>,
+        Pawel Laszczak <pawell@cadence.com>, linux-usb@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200325125041.94769-1-colin.king@canonical.com>
+ <20200326122858.GA50118@cde5a4ed3207> <20200326130418.GA1295433@kroah.com>
+From:   Rong Chen <rong.a.chen@intel.com>
+Message-ID: <571960b6-5ed7-2106-7091-3ea83c31051a@intel.com>
+Date:   Fri, 27 Mar 2020 08:34:52 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200324072231.5780-1-jpmenil@gmail.com>
+In-Reply-To: <20200326130418.GA1295433@kroah.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Mar 24, 2020 at 08:22:31AM +0100, Jean-Philippe Menil wrote:
-> Fix build warnings when building net/bpf/test_run.o with W=1 due
-> to missing prototype for bpf_fentry_test{1..6}.
-> 
-> Declare prototypes in order to silence warnings.
-> 
-> Signed-off-by: Jean-Philippe Menil <jpmenil@gmail.com>
-> ---
->  net/bpf/test_run.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-> index d555c0d8657d..cdf87fb0b6eb 100644
-> --- a/net/bpf/test_run.c
-> +++ b/net/bpf/test_run.c
-> @@ -113,31 +113,37 @@ static int bpf_test_finish(const union bpf_attr *kattr,
->   * architecture dependent calling conventions. 7+ can be supported in the
->   * future.
->   */
-> +int noinline bpf_fentry_test1(int a);
->  int noinline bpf_fentry_test1(int a)
->  {
->  	return a + 1;
->  }
->  
-> +int noinline bpf_fentry_test2(int a, u64 b);
->  int noinline bpf_fentry_test2(int a, u64 b)
->  {
->  	return a + b;
->  }
->  
-> +int noinline bpf_fentry_test3(char a, int b, u64 c);
->  int noinline bpf_fentry_test3(char a, int b, u64 c)
->  {
->  	return a + b + c;
->  }
->  
-> +int noinline bpf_fentry_test4(void *a, char b, int c, u64 d);
->  int noinline bpf_fentry_test4(void *a, char b, int c, u64 d)
->  {
->  	return (long)a + b + c + d;
->  }
->  
-> +int noinline bpf_fentry_test5(u64 a, void *b, short c, int d, u64 e);
->  int noinline bpf_fentry_test5(u64 a, void *b, short c, int d, u64 e)
->  {
->  	return a + (long)b + c + d + e;
->  }
->  
-> +int noinline bpf_fentry_test6(u64 a, void *b, short c, int d, void *e, u64 f);
->  int noinline bpf_fentry_test6(u64 a, void *b, short c, int d, void *e, u64 f)
 
-That's a bit too much of "watery water".
-Have you considered
-__diag_push();
-__diag_ignore(GCC, "-Wwhatever specific flag will shut up this warn")
-__diag_pop();
-approach ?
-It will be self documenting as well.
+
+On 3/26/20 9:04 PM, Greg Kroah-Hartman wrote:
+> On Thu, Mar 26, 2020 at 08:28:58PM +0800, kbuild test robot wrote:
+>> Fixes: 87db1192dc33 ("usb: cdns3: make signed 1 bit bitfields unsigned")
+> This original patch did not "cause" this problem, it's just that you for
+> some reason ran sparse for the first time on the file.
+>
+> So I can't take this as-is, can you remove this line and resend?
+
+Hi Greg,
+
+Sorry for the inconvenience, the patch was generated by the bot,
+we'll check and resend it.
+
+Best Regards,
+Rong Chen
+
+>
+> thanks,
+>
+> greg k-h
+> _______________________________________________
+> kbuild-all mailing list -- kbuild-all@lists.01.org
+> To unsubscribe send an email to kbuild-all-leave@lists.01.org
+

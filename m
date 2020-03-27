@@ -2,30 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5540D19538A
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Mar 2020 10:06:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44200195853
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Mar 2020 14:48:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726133AbgC0JGv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Mar 2020 05:06:51 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:47514 "EHLO
+        id S1727606AbgC0NsR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Mar 2020 09:48:17 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:55185 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725946AbgC0JGv (ORCPT
+        with ESMTP id S1726275AbgC0NsR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Mar 2020 05:06:51 -0400
+        Fri, 27 Mar 2020 09:48:17 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jHkwy-00065Y-HX; Fri, 27 Mar 2020 09:06:48 +0000
+        id 1jHpJ6-0004sp-Mo; Fri, 27 Mar 2020 13:45:56 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Kees Cook <keescook@chromium.org>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Will Drewry <wad@chromium.org>, Shuah Khan <shuah@kernel.org>,
-        linux-kselftest@vger.kernel.org
+To:     Ley Foon Tan <ley.foon.tan@intel.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Andrew Murray <amurray@thegoodpenguin.co.uk>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        rfi@lists.rocketboards.org, linux-pci@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] selftests/harness: fix spelling mistake "SIGARLM" -> "SIGALRM"
-Date:   Fri, 27 Mar 2020 09:06:48 +0000
-Message-Id: <20200327090648.13387-1-colin.king@canonical.com>
+Subject: [PATCH] PCI: altera: clean up indentation issue on a return statement
+Date:   Fri, 27 Mar 2020 13:45:56 +0000
+Message-Id: <20200327134556.265411-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,44 +38,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There a few identical spelling mistakes, fix these.
+A return statment is indented incorrectly, remove extraneous space.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- tools/testing/selftests/kselftest_harness.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pci/controller/pcie-altera.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
-index 2902f6a78f8a..2bb8c81fc0b4 100644
---- a/tools/testing/selftests/kselftest_harness.h
-+++ b/tools/testing/selftests/kselftest_harness.h
-@@ -705,7 +705,7 @@ static void __timeout_handler(int sig, siginfo_t *info, void *ucontext)
- 	/* Sanity check handler execution environment. */
- 	if (!t) {
- 		fprintf(TH_LOG_STREAM,
--			"no active test in SIGARLM handler!?\n");
-+			"no active test in SIGALRM handler!?\n");
- 		abort();
- 	}
- 	if (sig != SIGALRM || sig != info->si_signo) {
-@@ -731,7 +731,7 @@ void __wait_for_test(struct __test_metadata *t)
- 	if (sigaction(SIGALRM, &action, &saved_action)) {
- 		t->passed = 0;
- 		fprintf(TH_LOG_STREAM,
--			"%s: unable to install SIGARLM handler\n",
-+			"%s: unable to install SIGALRM handler\n",
- 			t->name);
- 		return;
- 	}
-@@ -743,7 +743,7 @@ void __wait_for_test(struct __test_metadata *t)
- 	if (sigaction(SIGALRM, &saved_action, NULL)) {
- 		t->passed = 0;
- 		fprintf(TH_LOG_STREAM,
--			"%s: unable to uninstall SIGARLM handler\n",
-+			"%s: unable to uninstall SIGALRM handler\n",
- 			t->name);
- 		return;
- 	}
+diff --git a/drivers/pci/controller/pcie-altera.c b/drivers/pci/controller/pcie-altera.c
+index b447c3e4abad..24cb1c331058 100644
+--- a/drivers/pci/controller/pcie-altera.c
++++ b/drivers/pci/controller/pcie-altera.c
+@@ -193,7 +193,7 @@ static bool altera_pcie_valid_device(struct altera_pcie *pcie,
+ 	if (bus->number == pcie->root_bus_nr && dev > 0)
+ 		return false;
+ 
+-	 return true;
++	return true;
+ }
+ 
+ static int tlp_read_packet(struct altera_pcie *pcie, u32 *value)
 -- 
 2.25.1
 

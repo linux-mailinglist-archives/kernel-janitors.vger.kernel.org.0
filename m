@@ -2,107 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 520FD195CB8
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Mar 2020 18:28:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3109D195D15
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Mar 2020 18:44:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727287AbgC0R2r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Mar 2020 13:28:47 -0400
-Received: from foss.arm.com ([217.140.110.172]:49730 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726698AbgC0R2r (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Mar 2020 13:28:47 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0497E1FB;
-        Fri, 27 Mar 2020 10:28:47 -0700 (PDT)
-Received: from localhost (unknown [10.37.6.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7C1983F71E;
-        Fri, 27 Mar 2020 10:28:46 -0700 (PDT)
-Date:   Fri, 27 Mar 2020 17:28:45 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     alsa-devel@alsa-project.org, Jaroslav Kysela <perex@perex.cz>,
-        kernel-janitors@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Ravulapati Vishnu vardhan rao 
-        <Vishnuvardhanrao.Ravulapati@amd.com>,
-        Takashi Iwai <tiwai@suse.com>
-Subject: Applied "ASoC: amd: acp3x-pcm-dma: clean up two indentation issues" to the asoc tree
-In-Reply-To:  <20200327141429.269191-1-colin.king@canonical.com>
-Message-Id:  <applied-20200327141429.269191-1-colin.king@canonical.com>
-X-Patchwork-Hint: ignore
+        id S1727620AbgC0RoH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Mar 2020 13:44:07 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:36383 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726275AbgC0RoG (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 27 Mar 2020 13:44:06 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jHt1X-0001ZM-8m; Fri, 27 Mar 2020 17:44:03 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Paul Moore <paul@paul-moore.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>,
+        Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] selinux: clean up indentation issue with assignment statement
+Date:   Fri, 27 Mar 2020 17:44:02 +0000
+Message-Id: <20200327174402.351334-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
-
-   ASoC: amd: acp3x-pcm-dma: clean up two indentation issues
-
-has been applied to the asoc tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From acd4946f5bf031fa38e64bfe2467be94a1b8c25d Mon Sep 17 00:00:00 2001
 From: Colin Ian King <colin.king@canonical.com>
-Date: Fri, 27 Mar 2020 14:14:29 +0000
-Subject: [PATCH] ASoC: amd: acp3x-pcm-dma: clean up two indentation issues
 
-There are a couple of statements that are not indented correctly,
-add in the missing tab and break the lines to address a checkpatch
-warning.
+The assignment of e->type_names is indented one level too deep,
+clean this up by removing the extraneous tab.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Link: https://lore.kernel.org/r/20200327141429.269191-1-colin.king@canonical.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/soc/amd/raven/acp3x-pcm-dma.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ security/selinux/ss/policydb.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/amd/raven/acp3x-pcm-dma.c b/sound/soc/amd/raven/acp3x-pcm-dma.c
-index d62c0d90c41e..e362f0bc9e46 100644
---- a/sound/soc/amd/raven/acp3x-pcm-dma.c
-+++ b/sound/soc/amd/raven/acp3x-pcm-dma.c
-@@ -458,7 +458,8 @@ static int acp3x_resume(struct device *dev)
- 			reg_val = mmACP_I2STDM_ITER;
- 			frmt_val = mmACP_I2STDM_TXFRMT;
- 		}
--	rv_writel((rtd->xfer_resolution  << 3), rtd->acp3x_base + reg_val);
-+		rv_writel((rtd->xfer_resolution  << 3),
-+			  rtd->acp3x_base + reg_val);
- 	}
- 	if (adata->capture_stream && adata->capture_stream->runtime) {
- 		struct i2s_stream_instance *rtd =
-@@ -474,7 +475,8 @@ static int acp3x_resume(struct device *dev)
- 			reg_val = mmACP_I2STDM_IRER;
- 			frmt_val = mmACP_I2STDM_RXFRMT;
- 		}
--	rv_writel((rtd->xfer_resolution  << 3), rtd->acp3x_base + reg_val);
-+		rv_writel((rtd->xfer_resolution  << 3),
-+			  rtd->acp3x_base + reg_val);
- 	}
- 	if (adata->tdm_mode == TDM_ENABLE) {
- 		rv_writel(adata->tdm_fmt, adata->acp3x_base + frmt_val);
+diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
+index 932b2b9bcdb2..70ecdc78efbd 100644
+--- a/security/selinux/ss/policydb.c
++++ b/security/selinux/ss/policydb.c
+@@ -1219,10 +1219,9 @@ static int read_cons_helper(struct policydb *p,
+ 				if (rc)
+ 					return rc;
+ 				if (p->policyvers >=
+-					POLICYDB_VERSION_CONSTRAINT_NAMES) {
+-						e->type_names = kzalloc(sizeof
+-						(*e->type_names),
+-						GFP_KERNEL);
++				    POLICYDB_VERSION_CONSTRAINT_NAMES) {
++					e->type_names = kzalloc(sizeof
++						(*e->type_names), GFP_KERNEL);
+ 					if (!e->type_names)
+ 						return -ENOMEM;
+ 					type_set_init(e->type_names);
 -- 
-2.20.1
+2.25.1
 

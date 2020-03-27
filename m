@@ -2,106 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58619195FFD
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Mar 2020 21:47:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5B1B19616F
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Mar 2020 23:45:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727495AbgC0Ur1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Mar 2020 16:47:27 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:34341 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727322AbgC0Ur1 (ORCPT
+        id S1727770AbgC0WpE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Mar 2020 18:45:04 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:40057 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727655AbgC0WpD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Mar 2020 16:47:27 -0400
-Received: by mail-ed1-f65.google.com with SMTP id i24so12946142eds.1;
-        Fri, 27 Mar 2020 13:47:26 -0700 (PDT)
+        Fri, 27 Mar 2020 18:45:03 -0400
+Received: by mail-ed1-f68.google.com with SMTP id w26so13248387edu.7
+        for <kernel-janitors@vger.kernel.org>; Fri, 27 Mar 2020 15:45:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=KrwX+7IzzOcdtmf9GL8aP68WQccVqVWSmtAG1GU9fKQ=;
-        b=ZHJZ1sVao15S3PsXnhgLvQKmGh+O3Mrw5UAt6NlaAgQyn2ZmDn/JZuh0bJ5DcWpSmt
-         Pb8woPwR21dktkpk17yEH74bwFfUaqlH15wb0TupQEUwbiH95dVBaN0L0S8urJytHLM3
-         YnOgNEVJJcct8WA5h+ZjlYw7V/HoJ1P1h56E4g5/bOyXy15gq4P2hQ0Q8b51BoE0ChGD
-         st/R7hd71pURtL2VPnBDAtacN7kPswlcWf+kzA+OO1vmbgcZFh0hC12JJsgixnuxMhvv
-         A7IOrkb7zT1aZtU2fLMPD/BOjdz8kpURUT8qwMvIIwltjjtzks76Rry0+bwm/XbjJh4I
-         JljA==
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/LGuc0QqW9HR71Y1NNbAkC8Bf5W/OzoGDIgpyPzWX5k=;
+        b=xSOnox+1TN9e9prVqWp62ZCF3N/UkOZnjrZvSo7uZZHGBIs480j52MjNHh+TbQoueQ
+         DVqn7TmWHGc3Nu/z7VBqVnEHJ53ndRea5gywFzuSDnMCz3fQdoR25ZMt2x7hb1P8V25W
+         IfO+S+4V7ixws6ZtcIaQArFxwnKE75D9vC1Pv246btnV03YxkXfMiIXaju+QBWEbPVsB
+         DiIOkT2ejeaX5DcN93WU5FVtzcD10HpTGZkIvQAEFX7710KHXupTRPnHnxtWOzTNw49a
+         aqS9exTHbBGD6cEnFFiMc2s1GchbIdLRf9tY1V4ACtXUnNZgNF5orFPB9hF8mjOeTCJC
+         Wkvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=KrwX+7IzzOcdtmf9GL8aP68WQccVqVWSmtAG1GU9fKQ=;
-        b=S7duBvmKwYwJecfq5KIF2v6YyQW0U0dAB+FAzT+DbF5+Y12aoySAE/et3xA2pTtUfA
-         9H7GZbBTNoitlHaZBQRIO0whrOKBKnhbn4nh+/xl7PP9oPVmx5E3pfGfeVgwEzI0Omq4
-         q9Aexyo+deEjgMY7jCz82fWVilr9zBMweIv5iwC+48zCuHTQV78QfQfzM9TNLefo6O9U
-         yySsNAXxgx1j7J0eV9W/JZHQp0wIpPJXM26w+1Jwj+eihT8eRX5kDL3qEovKPF4hHpQ3
-         u/UwWDeGAqNIGx5Rkas4wsGbq1kdNV3FTzcfnKi8YJkovah0O0314bYbU48LhyPiONsS
-         WaMw==
-X-Gm-Message-State: ANhLgQ0dZsM+jajyALC9p1E9HCTxrOiXdwwzd7t3irzgnL56AyBYQDe3
-        yv1P011pRSX1EfA2CvS2UAM=
-X-Google-Smtp-Source: ADFU+vu2kBpouAt4iFovayfU8Nv6v1u2o+RYuTZtb4ny6MP0OKtvpfFVrmCI9cxb/fF2Qok5vQ/H4w==
-X-Received: by 2002:a17:906:4e12:: with SMTP id z18mr868375eju.49.1585342045395;
-        Fri, 27 Mar 2020 13:47:25 -0700 (PDT)
-Received: from localhost.localdomain (bbcs-97-49.pub.wingo.ch. [144.2.97.49])
-        by smtp.googlemail.com with ESMTPSA id p17sm1048552edq.57.2020.03.27.13.47.24
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 27 Mar 2020 13:47:24 -0700 (PDT)
-From:   Jean-Philippe Menil <jpmenil@gmail.com>
-To:     daniel@iogearbox.net
-Cc:     kernel-janitors@vger.kernel.org, jpmenil@gmail.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>, netdev@vger.kernel.org,
-        bpf@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v4] bpf: fix build warning - missing prototype
-Date:   Fri, 27 Mar 2020 21:47:13 +0100
-Message-Id: <20200327204713.28050-1-jpmenil@gmail.com>
-X-Mailer: git-send-email 2.26.0
-In-Reply-To: <3164e566-d54e-2254-32c4-d7fee47c37ea@iogearbox.net>
-References: <3164e566-d54e-2254-32c4-d7fee47c37ea@iogearbox.net>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/LGuc0QqW9HR71Y1NNbAkC8Bf5W/OzoGDIgpyPzWX5k=;
+        b=j8a5gSwZ6Bq+XvmFxj2WGOmh89366gy+seqhMIaoAzTtX76+P2nA/QjKO0yP/BdC6c
+         SuWoUXBI59QgrYds32/KrNjTFGauqm9i9KtbIjkuw6HH0Ok5+JMyBumPC4AFUsvSKRB6
+         QNWpXGOCYWV1VuZiXxE3I58krVX4hjGfA21OZwh5FFUJK7CHCgZ1E0ZGywVnj/NNTtzV
+         Uy2W0RjG+fN8pcw2qk22G1wm4oz7GS8YIwREX905mbHvjVD1hTyx+/gZnPx/Rf1Phded
+         uSb1xFQDxJ9B2+AzNnQ+lFi+fR2IBoJM3QH1mlfiwio+q8UEPGvyTLYtINNn4waAxGbx
+         /iyw==
+X-Gm-Message-State: ANhLgQ25qtL5YPYE3WIJNLlWoHCiTV8NNxLMIHeUtEE2ihIOMIB7KiXF
+        U1SSSiE9hKiwNomIEcarockmE1uzgwHDxxjfMkCQ
+X-Google-Smtp-Source: ADFU+vtPz2f20HeMrGRumvzvtd33Lj903GfTooGJ3K0DV5XYxoq4cFDiri2nBc6zrER/kask/V6CYP3kgc4C49YuTBQ=
+X-Received: by 2002:aa7:dd01:: with SMTP id i1mr1459195edv.164.1585349100363;
+ Fri, 27 Mar 2020 15:45:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200327174402.351334-1-colin.king@canonical.com>
+In-Reply-To: <20200327174402.351334-1-colin.king@canonical.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Fri, 27 Mar 2020 18:44:49 -0400
+Message-ID: <CAHC9VhQOdoNXHjymbMCh1p0Bun5+bzxykhWzPNtjcwoEJ0cAjA@mail.gmail.com>
+Subject: Re: [PATCH] selinux: clean up indentation issue with assignment statement
+To:     Colin King <colin.king@canonical.com>
+Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>,
+        Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix build warnings when building net/bpf/test_run.o with W=1 due
-to missing prototype for bpf_fentry_test{1..6}.
+On Fri, Mar 27, 2020 at 1:44 PM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The assignment of e->type_names is indented one level too deep,
+> clean this up by removing the extraneous tab.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  security/selinux/ss/policydb.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 
-Instead of declaring prototypes, turn off warnings with
-__diag_{push,ignore,pop} as pointed by Alexei.
+I generally dislike style/formatting only changes, but one could argue
+that this is just plain wrong regardless of how you like your code to
+look.
 
-Signed-off-by: Jean-Philippe Menil <jpmenil@gmail.com>
----
- net/bpf/test_run.c | 5 +++++
- 1 file changed, 5 insertions(+)
+I also dislike merging changes into selinux/next when we are at -rc7,
+but this is trivial and obviously correct.
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 4c921f5154e0..73e703895343 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -114,6 +114,9 @@ static int bpf_test_finish(const union bpf_attr *kattr,
-  * architecture dependent calling conventions. 7+ can be supported in the
-  * future.
-  */
-+__diag_push();
-+__diag_ignore(GCC, 8, "-Wmissing-prototypes",
-+	      "Global functions as their definitions will be in vmlinux BTF");
- int noinline bpf_fentry_test1(int a)
- {
- 	return a + 1;
-@@ -150,6 +153,8 @@ int noinline bpf_modify_return_test(int a, int *b)
- 	return a + *b;
- }
- 
-+__diag_pop();
-+
- ALLOW_ERROR_INJECTION(bpf_modify_return_test, ERRNO);
- 
- static void *bpf_test_init(const union bpf_attr *kattr, u32 size,
+However, despite not wanting to merge this into selinux/next I decided
+to do just that - thanks for the fix. :)
+
+> diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
+> index 932b2b9bcdb2..70ecdc78efbd 100644
+> --- a/security/selinux/ss/policydb.c
+> +++ b/security/selinux/ss/policydb.c
+> @@ -1219,10 +1219,9 @@ static int read_cons_helper(struct policydb *p,
+>                                 if (rc)
+>                                         return rc;
+>                                 if (p->policyvers >=
+> -                                       POLICYDB_VERSION_CONSTRAINT_NAMES) {
+> -                                               e->type_names = kzalloc(sizeof
+> -                                               (*e->type_names),
+> -                                               GFP_KERNEL);
+> +                                   POLICYDB_VERSION_CONSTRAINT_NAMES) {
+> +                                       e->type_names = kzalloc(sizeof
+> +                                               (*e->type_names), GFP_KERNEL);
+>                                         if (!e->type_names)
+>                                                 return -ENOMEM;
+>                                         type_set_init(e->type_names);
+> --
+> 2.25.1
+
 -- 
-2.26.0
-
+paul moore
+www.paul-moore.com

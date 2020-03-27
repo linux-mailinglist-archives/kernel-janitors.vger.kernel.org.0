@@ -2,64 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C671195E99
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Mar 2020 20:26:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ED33195FDD
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Mar 2020 21:34:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727655AbgC0T0t (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Mar 2020 15:26:49 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:39296 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727349AbgC0T0t (ORCPT
+        id S1727795AbgC0UeL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Mar 2020 16:34:11 -0400
+Received: from www62.your-server.de ([213.133.104.62]:39836 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727393AbgC0UeL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Mar 2020 15:26:49 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jHucp-0001vg-Tu; Fri, 27 Mar 2020 19:26:40 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        John Crispin <john@phrozen.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ath11k: fix error message to correctly report the command that failed
-Date:   Fri, 27 Mar 2020 19:26:39 +0000
-Message-Id: <20200327192639.363354-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 27 Mar 2020 16:34:11 -0400
+Received: from sslproxy05.your-server.de ([78.46.172.2])
+        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1jHvg6-00089O-S4; Fri, 27 Mar 2020 21:34:06 +0100
+Received: from [178.195.186.98] (helo=pc-9.home)
+        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1jHvg6-000Lpp-Dh; Fri, 27 Mar 2020 21:34:06 +0100
+Subject: Re: [PATCH v3] bpf: fix build warning - missing prototype
+To:     Jean-Philippe Menil <jpmenil@gmail.com>,
+        alexei.starovoitov@gmail.com
+Cc:     kernel-janitors@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>, netdev@vger.kernel.org,
+        bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200326235426.ei6ae2z5ek6uq3tt@ast-mbp>
+ <20200327075544.22814-1-jpmenil@gmail.com>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <3164e566-d54e-2254-32c4-d7fee47c37ea@iogearbox.net>
+Date:   Fri, 27 Mar 2020 21:34:05 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200327075544.22814-1-jpmenil@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.102.2/25764/Fri Mar 27 14:11:26 2020)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 3/27/20 8:55 AM, Jean-Philippe Menil wrote:
+> Fix build warnings when building net/bpf/test_run.o with W=1 due
+> to missing prototype for bpf_fentry_test{1..6}.
+> 
+> Instead of declaring prototypes, turn off warnings with
+> __diag_{push,ignore,pop} as pointed by Alexei.
+> 
+> Signed-off-by: Jean-Philippe Menil <jpmenil@gmail.com>
 
-Currently the error message refers to the command WMI_TWT_DIeABLE_CMDID
-which looks like a cut-n-paste mangled typo. Fix the message to match
-the command WMI_BSS_COLOR_CHANGE_ENABLE_CMDID that failed.
+Looks better, but this doesn't apply cleanly. Please respin to latest bpf-next tree, thanks.
 
-Fixes: 5a032c8d1953 ("ath11k: add WMI calls required for handling BSS color")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/ath/ath11k/wmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index e7ce36966d6a..6fec62846279 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -2779,7 +2779,7 @@ int ath11k_wmi_send_bss_color_change_enable_cmd(struct ath11k *ar, u32 vdev_id,
- 	ret = ath11k_wmi_cmd_send(wmi, skb,
- 				  WMI_BSS_COLOR_CHANGE_ENABLE_CMDID);
- 	if (ret) {
--		ath11k_warn(ab, "Failed to send WMI_TWT_DIeABLE_CMDID");
-+		ath11k_warn(ab, "Failed to send WMI_BSS_COLOR_CHANGE_ENABLE_CMDID");
- 		dev_kfree_skb(skb);
- 	}
- 	return ret;
--- 
-2.25.1
+> ---
+>   net/bpf/test_run.c | 5 +++++
+>   1 file changed, 5 insertions(+)
+> 
+> diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+> index d555c0d8657d..cc1592413fc3 100644
+> --- a/net/bpf/test_run.c
+> +++ b/net/bpf/test_run.c
+> @@ -113,6 +113,9 @@ static int bpf_test_finish(const union bpf_attr *kattr,
+>    * architecture dependent calling conventions. 7+ can be supported in the
+>    * future.
+>    */
+> +__diag_push();
+> +__diag_ignore(GCC, 8, "-Wmissing-prototypes",
+> +	      "Global functions as their definitions will be in vmlinux BTF);
+>   int noinline bpf_fentry_test1(int a)
+>   {
+>   	return a + 1;
+> @@ -143,6 +146,8 @@ int noinline bpf_fentry_test6(u64 a, void *b, short c, int d, void *e, u64 f)
+>   	return a + (long)b + c + d + (long)e + f;
+>   }
+>   
+> +__diag_pop();
+> +
+>   static void *bpf_test_init(const union bpf_attr *kattr, u32 size,
+>   			   u32 headroom, u32 tailroom)
+>   {
+> 
 

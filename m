@@ -2,108 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3126E196664
-	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Mar 2020 14:43:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6C081966CA
+	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Mar 2020 15:43:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726449AbgC1NnS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 28 Mar 2020 09:43:18 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:45539 "EHLO
+        id S1727009AbgC1On0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 28 Mar 2020 10:43:26 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:44680 "EHLO
         mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726290AbgC1NnR (ORCPT
+        with ESMTP id S1725807AbgC1On0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 28 Mar 2020 09:43:17 -0400
-Received: by mail-wr1-f68.google.com with SMTP id t7so15101165wrw.12;
-        Sat, 28 Mar 2020 06:43:15 -0700 (PDT)
+        Sat, 28 Mar 2020 10:43:26 -0400
+Received: by mail-wr1-f68.google.com with SMTP id m17so15214549wrw.11;
+        Sat, 28 Mar 2020 07:43:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
-        bh=UskpCEE5TUQheW2HfAHjtymRH8q/A2y17+Pe+kWt7r8=;
-        b=I6vPkonjI1vmCLWrBbdBoShliZoMh2Q0CP1gRdVhAMsW1q/U5UeFVxKasJ6haMM8vg
-         MmHM+eFI0T9PqRASKHYBxuCRzcVTnPEjn5ehRY09aiuBMv0Z5a2YF/HdeSeMYaAq7w4C
-         fs6HKV8UGQ/oWYUMdz9ErBoML7qBrhSoXEL2gG8uWkxf6gcHBPcv7nQjq28bzOGNrTg6
-         hpo2BRgAFChXpRjKqFfi6809WhdkanGteLp6KPH/K6+sr7juGPENz4KJHfDsJR8zyYC+
-         ZVQCJMnhTgkPi/8G5U22gJyJFmpsoNbAwzWb4R05Ou4ipJE9YZ6GxMaTujlI8kS6+WbF
-         NqKg==
+        bh=/2SFge/OdI1F8toHlmSSduR6vURBBGjynFQSbrlzXYo=;
+        b=BSsqhZeIQw2hreUjt12CyIbXJE5/JfOfn8ZMxQUXwOmt4N60nxhcd2zUF8lNYol44g
+         JifG2Qcu4wCFExZTmmBap7gF05fngPYfrC/TXWgD5bbu3jnqu96YX0g95Q8sAMuzMumD
+         qaZL610CZYSq4JeYF+ZIvr7dZoWD2ojEmNcgQRgy+Ed0OleVQLxupORQaEMzmkKUUov/
+         3nYXOHsizmdWW2R0i8grGzxoJlAFFRr4IpuhValols/me2eANB7vayKX29m2BSLqO9eL
+         57Q6S1xNETxYO1O+dnVN/ggyyekxoMoffqEigQV03JLpXVGXfLIp4S458CfV1U9fUDZ6
+         zMrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=UskpCEE5TUQheW2HfAHjtymRH8q/A2y17+Pe+kWt7r8=;
-        b=h5Nnb8nmI7cXR6nJ8A5oeK6dmL6HVLmpxjSTNTw2IxLFp+DaWUHbku3dbGTZRd496R
-         t5nKzCNJ+l++02WZXOi/tDkYELQ2wyM9N76Qqovm9D1d9ZA5cjyQp2OZmulJ6u1QQVGz
-         7orZ3NCIaVVx7EABZBCIw2ijJH1wdabbAsMpKK6tYQ6+XxC8VSwddXd5HEqWjeveBNFG
-         A1TS3wktzOUAQg7e2s0MvgDXQfisn0J5mtR5O3GD0zST+5j9jFo4VpFYPTZDdRCrvxaL
-         Cisu9x7dsxMRdnCALVCvVzCnZs95dxXeFLcvYxCB6KMkvhY+SIJbEEYYBEKuHHE1OJNm
-         aSUA==
-X-Gm-Message-State: ANhLgQ3CT5Ji7qs1SePNXkTUdW4NmkJ8CByzeY7aCcOZDnRQhRmk0ps9
-        zIk/kOnkXC/nexgw1hz091I=
-X-Google-Smtp-Source: ADFU+vu2jQ5CPsH2nB+2wu8Fp2D/gjd/7NJkKh2i8aKtFr+9rflUKnTWCv7i56dVnn7DBT/CUl6oRw==
-X-Received: by 2002:adf:cd12:: with SMTP id w18mr4841366wrm.311.1585402994449;
-        Sat, 28 Mar 2020 06:43:14 -0700 (PDT)
+        bh=/2SFge/OdI1F8toHlmSSduR6vURBBGjynFQSbrlzXYo=;
+        b=TDzFVgCsPq8PQ8NfO9hd0p+kfOyoBvUJhtUe9K50EvlILqCTly+GnX9DDblNfDXyZk
+         0bYTaq13/Hov3fvNga0orOG0vIyF0f24ys3dX5szPqHOZoLpS6FkQlmVgIkbNh6wiesD
+         4XocpJ3qrE1lS7JDpm7m8EpF1aybpYpOsqcIrGTnxcE7E6Sg/KGM1F33cg6SKTwe3J45
+         ZqjYXD99XON4xD/BlDwBWoRc/+sNAKsq+rRZnxu9IJq/HUsH1dnzsPwyVSgjxOGlgr9e
+         qNckr2jfcLIalK0s/6jLKzHE8ZidZ5GKdnPQfN9gTWAkxcUqNyfzPbIlNxVIyhIT/uq2
+         MVMg==
+X-Gm-Message-State: ANhLgQ3i/pWUu1sQfOsIXIxnvuFyjY2VBs0vIIcxmHoNF//qphMJTUS+
+        zXxfvDj0FvlTU+a3ZJALDus=
+X-Google-Smtp-Source: ADFU+vv2yZhWereLXqJ6pe5il7BA2inBYqd9HZht8WcTZT+wAFgTcNGXBqPQwf7j2EAnolzDiXl6UA==
+X-Received: by 2002:adf:8182:: with SMTP id 2mr4913477wra.37.1585406601132;
+        Sat, 28 Mar 2020 07:43:21 -0700 (PDT)
 Received: from felia.fritz.box ([2001:16b8:2dbb:cb00:7d36:e5ed:6ff6:44e4])
-        by smtp.gmail.com with ESMTPSA id 23sm11515974wmj.34.2020.03.28.06.43.12
+        by smtp.gmail.com with ESMTPSA id k133sm12661570wma.11.2020.03.28.07.43.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2020 06:43:13 -0700 (PDT)
+        Sat, 28 Mar 2020 07:43:20 -0700 (PDT)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Russell King <rmk+kernel@arm.linux.org.uk>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>
+To:     Hans Ulli Kroll <ulli.kroll@googlemail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>
 Cc:     linux-arm-kernel@lists.infradead.org,
         Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: clarify maintenance of ARM Dove drivers
-Date:   Sat, 28 Mar 2020 14:43:04 +0100
-Message-Id: <20200328134304.7317-1-lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: clarify maintenance of Gemini SoC driver
+Date:   Sat, 28 Mar 2020 15:43:06 +0100
+Message-Id: <20200328144306.574-1-lukas.bulwahn@gmail.com>
 X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 44e259ac909f ("ARM: dove: create a proper PMU driver for power
-domains, PMU IRQs and resets") introduced new drivers for the ARM Dove SOC,
-but did not add those drivers to the existing entry ARM/Marvell
-Dove/MV78xx0/Orion SOC support in MAINTAINERS. Hence, these drivers were
-considered to be part of "THE REST".
+Commit 68198dca4569 ("soc: Add SoC driver for Gemini") introduced a Gemini
+SoC driver, but did not add the driver to the existing ARM/CORTINA SYSTEMS
+GEMINI ARM ARCHITECTURE entry in MAINTAINERS.
 
-Clarify now that these drivers are maintained by the ARM/Marvell
-Dove/MV78xx0/Orion SOC support maintainers. Also order the T: entry to the
-place it belongs to, while at it.
+Hence, this driver was considered to be part of "THE REST".
 
-This was identified with a small script that finds all files only belonging
-to "THE REST" according to the current MAINTAINERS file, and I acted upon
-its output.
+Clarify now that this driver is maintained by the ARM/CORTINA SYSTEMS
+GEMINI ARM ARCHITECTURE maintainers.
+
+This was identified with a small script that finds all files only
+belonging to "THE REST" according to the current MAINTAINERS file, and I
+acted upon its output.
 
 Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
-applies cleanly on current master and on next-20200327
+applies cleanly on current master and next-20200327
 
- MAINTAINERS | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 8b8abe756ae0..38fff0374082 100644
+index 8b8abe756ae0..ae02568afa25 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1979,6 +1979,7 @@ M:	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
- M:	Gregory Clement <gregory.clement@bootlin.com>
- L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
- S:	Maintained
-+T:	git git://git.infradead.org/linux-mvebu.git
- F:	Documentation/devicetree/bindings/soc/dove/
- F:	arch/arm/mach-dove/
- F:	arch/arm/mach-mv78xx0/
-@@ -1986,7 +1987,7 @@ F:	arch/arm/mach-orion5x/
- F:	arch/arm/plat-orion/
- F:	arch/arm/boot/dts/dove*
- F:	arch/arm/boot/dts/orion5x*
--T:	git git://git.infradead.org/linux-mvebu.git
-+F:	drivers/soc/dove/
+@@ -1729,6 +1729,7 @@ F:	arch/arm/mach-gemini/
+ F:	drivers/net/ethernet/cortina/
+ F:	drivers/pinctrl/pinctrl-gemini.c
+ F:	drivers/rtc/rtc-ftrtc010.c
++F:	drivers/soc/gemini/
  
- ARM/Marvell Kirkwood and Armada 370, 375, 38x, 39x, XP, 3700, 7K/8K, CN9130 SOC support
- M:	Jason Cooper <jason@lakedaemon.net>
+ ARM/CSR SIRFPRIMA2 MACHINE SUPPORT
+ M:	Barry Song <baohua@kernel.org>
 -- 
 2.17.1
 

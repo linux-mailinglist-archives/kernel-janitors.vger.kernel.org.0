@@ -2,33 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFD5219642C
-	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Mar 2020 08:30:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE7C81964E2
+	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Mar 2020 10:53:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726197AbgC1Has (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 28 Mar 2020 03:30:48 -0400
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:43804 "EHLO
+        id S1726258AbgC1JxS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 28 Mar 2020 05:53:18 -0400
+Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:49225 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725919AbgC1Has (ORCPT
+        with ESMTP id S1726087AbgC1JxR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 28 Mar 2020 03:30:48 -0400
+        Sat, 28 Mar 2020 05:53:17 -0400
 Received: from localhost.localdomain ([90.126.162.40])
-        by mwinf5d37 with ME
-        id KjWj2200B0scBcy03jWj1E; Sat, 28 Mar 2020 08:30:46 +0100
+        by mwinf5d59 with ME
+        id KltC2200B0scBcy03ltC7b; Sat, 28 Mar 2020 10:53:15 +0100
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 28 Mar 2020 08:30:46 +0100
+X-ME-Date: Sat, 28 Mar 2020 10:53:15 +0100
 X-ME-IP: 90.126.162.40
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     selvin.xavier@broadcom.com, devesh.sharma@broadcom.com,
-        dledford@redhat.com, jgg@ziepe.ca, leon@kernel.org,
-        colin.king@canonical.com, roland@purestorage.com
-Cc:     linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     andrew@lunn.ch, vivien.didelot@gmail.com, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] RDMA/ocrdma: Fix an off-by-one issue in 'ocrdma_add_stat'
-Date:   Sat, 28 Mar 2020 08:30:40 +0100
-Message-Id: <20200328073040.24429-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] net: dsa: Simplify 'dsa_tag_protocol_to_str()'
+Date:   Sat, 28 Mar 2020 10:53:09 +0100
+Message-Id: <20200328095309.27389-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -37,46 +36,41 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is an off-by-one issue when checking if there is enough space in the
-output buffer, because we must keep some place for a final '\0'.
+There is no point in preparing the module name in a buffer. The format
+string can be passed diectly to 'request_module()'.
 
-While at it:
-   - Use 'scnprintf' instead of 'snprintf' in order to avoid a superfluous
-    'strlen'
-   - avoid some useless initializations
-   - avoida hard coded buffer size that can be computed at built time.
+This axes a few lines of code and cleans a few things:
+   - max len for a driver name is MODULE_NAME_LEN wich is ~ 60 chars,
+     not 128. It would be down-sized in 'request_module()'
+   - we should pass the total size of the buffer to 'snprintf()', not the
+     size minus 1
 
-Fixes: a51f06e1679e ("RDMA/ocrdma: Query controller information")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
-The '\0' comes from memset(..., 0, ...) in all callers.
-This could be also avoided if needed.
+This was introduced in 367561753144 ("dsa: Make use of the list of tag drivers")
 ---
- drivers/infiniband/hw/ocrdma/ocrdma_stats.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/dsa/dsa.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/infiniband/hw/ocrdma/ocrdma_stats.c b/drivers/infiniband/hw/ocrdma/ocrdma_stats.c
-index 5f831e3bdbad..614a449e6b87 100644
---- a/drivers/infiniband/hw/ocrdma/ocrdma_stats.c
-+++ b/drivers/infiniband/hw/ocrdma/ocrdma_stats.c
-@@ -49,13 +49,12 @@ static struct dentry *ocrdma_dbgfs_dir;
- static int ocrdma_add_stat(char *start, char *pcur,
- 				char *name, u64 count)
+diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
+index 17281fec710c..ee2610c4d46a 100644
+--- a/net/dsa/dsa.c
++++ b/net/dsa/dsa.c
+@@ -88,13 +88,9 @@ const struct dsa_device_ops *dsa_tag_driver_get(int tag_protocol)
  {
--	char buff[128] = {0};
--	int cpy_len = 0;
-+	char buff[128];
-+	int cpy_len;
+ 	struct dsa_tag_driver *dsa_tag_driver;
+ 	const struct dsa_device_ops *ops;
+-	char module_name[128];
+ 	bool found = false;
  
--	snprintf(buff, 128, "%s: %llu\n", name, count);
--	cpy_len = strlen(buff);
-+	cpy_len = scnprintf(buff, sizeof(buff), "%s: %llu\n", name, count);
+-	snprintf(module_name, 127, "%s%d", DSA_TAG_DRIVER_ALIAS,
+-		 tag_protocol);
+-
+-	request_module(module_name);
++	request_module("%s%d", DSA_TAG_DRIVER_ALIAS, tag_protocol);
  
--	if (pcur + cpy_len > start + OCRDMA_MAX_DBGFS_MEM) {
-+	if (pcur + cpy_len >= start + OCRDMA_MAX_DBGFS_MEM) {
- 		pr_err("%s: No space in stats buff\n", __func__);
- 		return 0;
- 	}
+ 	mutex_lock(&dsa_tag_drivers_lock);
+ 	list_for_each_entry(dsa_tag_driver, &dsa_tag_drivers_list, list) {
 -- 
 2.20.1
 

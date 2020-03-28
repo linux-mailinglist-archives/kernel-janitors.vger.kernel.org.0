@@ -2,106 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5B1B19616F
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Mar 2020 23:45:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFD5219642C
+	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Mar 2020 08:30:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727770AbgC0WpE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Mar 2020 18:45:04 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:40057 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727655AbgC0WpD (ORCPT
+        id S1726197AbgC1Has (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 28 Mar 2020 03:30:48 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:43804 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725919AbgC1Has (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Mar 2020 18:45:03 -0400
-Received: by mail-ed1-f68.google.com with SMTP id w26so13248387edu.7
-        for <kernel-janitors@vger.kernel.org>; Fri, 27 Mar 2020 15:45:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/LGuc0QqW9HR71Y1NNbAkC8Bf5W/OzoGDIgpyPzWX5k=;
-        b=xSOnox+1TN9e9prVqWp62ZCF3N/UkOZnjrZvSo7uZZHGBIs480j52MjNHh+TbQoueQ
-         DVqn7TmWHGc3Nu/z7VBqVnEHJ53ndRea5gywFzuSDnMCz3fQdoR25ZMt2x7hb1P8V25W
-         IfO+S+4V7ixws6ZtcIaQArFxwnKE75D9vC1Pv246btnV03YxkXfMiIXaju+QBWEbPVsB
-         DiIOkT2ejeaX5DcN93WU5FVtzcD10HpTGZkIvQAEFX7710KHXupTRPnHnxtWOzTNw49a
-         aqS9exTHbBGD6cEnFFiMc2s1GchbIdLRf9tY1V4ACtXUnNZgNF5orFPB9hF8mjOeTCJC
-         Wkvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/LGuc0QqW9HR71Y1NNbAkC8Bf5W/OzoGDIgpyPzWX5k=;
-        b=j8a5gSwZ6Bq+XvmFxj2WGOmh89366gy+seqhMIaoAzTtX76+P2nA/QjKO0yP/BdC6c
-         SuWoUXBI59QgrYds32/KrNjTFGauqm9i9KtbIjkuw6HH0Ok5+JMyBumPC4AFUsvSKRB6
-         QNWpXGOCYWV1VuZiXxE3I58krVX4hjGfA21OZwh5FFUJK7CHCgZ1E0ZGywVnj/NNTtzV
-         Uy2W0RjG+fN8pcw2qk22G1wm4oz7GS8YIwREX905mbHvjVD1hTyx+/gZnPx/Rf1Phded
-         uSb1xFQDxJ9B2+AzNnQ+lFi+fR2IBoJM3QH1mlfiwio+q8UEPGvyTLYtINNn4waAxGbx
-         /iyw==
-X-Gm-Message-State: ANhLgQ25qtL5YPYE3WIJNLlWoHCiTV8NNxLMIHeUtEE2ihIOMIB7KiXF
-        U1SSSiE9hKiwNomIEcarockmE1uzgwHDxxjfMkCQ
-X-Google-Smtp-Source: ADFU+vtPz2f20HeMrGRumvzvtd33Lj903GfTooGJ3K0DV5XYxoq4cFDiri2nBc6zrER/kask/V6CYP3kgc4C49YuTBQ=
-X-Received: by 2002:aa7:dd01:: with SMTP id i1mr1459195edv.164.1585349100363;
- Fri, 27 Mar 2020 15:45:00 -0700 (PDT)
+        Sat, 28 Mar 2020 03:30:48 -0400
+Received: from localhost.localdomain ([90.126.162.40])
+        by mwinf5d37 with ME
+        id KjWj2200B0scBcy03jWj1E; Sat, 28 Mar 2020 08:30:46 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 28 Mar 2020 08:30:46 +0100
+X-ME-IP: 90.126.162.40
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     selvin.xavier@broadcom.com, devesh.sharma@broadcom.com,
+        dledford@redhat.com, jgg@ziepe.ca, leon@kernel.org,
+        colin.king@canonical.com, roland@purestorage.com
+Cc:     linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] RDMA/ocrdma: Fix an off-by-one issue in 'ocrdma_add_stat'
+Date:   Sat, 28 Mar 2020 08:30:40 +0100
+Message-Id: <20200328073040.24429-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20200327174402.351334-1-colin.king@canonical.com>
-In-Reply-To: <20200327174402.351334-1-colin.king@canonical.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Fri, 27 Mar 2020 18:44:49 -0400
-Message-ID: <CAHC9VhQOdoNXHjymbMCh1p0Bun5+bzxykhWzPNtjcwoEJ0cAjA@mail.gmail.com>
-Subject: Re: [PATCH] selinux: clean up indentation issue with assignment statement
-To:     Colin King <colin.king@canonical.com>
-Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Mar 27, 2020 at 1:44 PM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> The assignment of e->type_names is indented one level too deep,
-> clean this up by removing the extraneous tab.
->
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  security/selinux/ss/policydb.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
+There is an off-by-one issue when checking if there is enough space in the
+output buffer, because we must keep some place for a final '\0'.
 
-I generally dislike style/formatting only changes, but one could argue
-that this is just plain wrong regardless of how you like your code to
-look.
+While at it:
+   - Use 'scnprintf' instead of 'snprintf' in order to avoid a superfluous
+    'strlen'
+   - avoid some useless initializations
+   - avoida hard coded buffer size that can be computed at built time.
 
-I also dislike merging changes into selinux/next when we are at -rc7,
-but this is trivial and obviously correct.
+Fixes: a51f06e1679e ("RDMA/ocrdma: Query controller information")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+The '\0' comes from memset(..., 0, ...) in all callers.
+This could be also avoided if needed.
+---
+ drivers/infiniband/hw/ocrdma/ocrdma_stats.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-However, despite not wanting to merge this into selinux/next I decided
-to do just that - thanks for the fix. :)
-
-> diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
-> index 932b2b9bcdb2..70ecdc78efbd 100644
-> --- a/security/selinux/ss/policydb.c
-> +++ b/security/selinux/ss/policydb.c
-> @@ -1219,10 +1219,9 @@ static int read_cons_helper(struct policydb *p,
->                                 if (rc)
->                                         return rc;
->                                 if (p->policyvers >=
-> -                                       POLICYDB_VERSION_CONSTRAINT_NAMES) {
-> -                                               e->type_names = kzalloc(sizeof
-> -                                               (*e->type_names),
-> -                                               GFP_KERNEL);
-> +                                   POLICYDB_VERSION_CONSTRAINT_NAMES) {
-> +                                       e->type_names = kzalloc(sizeof
-> +                                               (*e->type_names), GFP_KERNEL);
->                                         if (!e->type_names)
->                                                 return -ENOMEM;
->                                         type_set_init(e->type_names);
-> --
-> 2.25.1
-
+diff --git a/drivers/infiniband/hw/ocrdma/ocrdma_stats.c b/drivers/infiniband/hw/ocrdma/ocrdma_stats.c
+index 5f831e3bdbad..614a449e6b87 100644
+--- a/drivers/infiniband/hw/ocrdma/ocrdma_stats.c
++++ b/drivers/infiniband/hw/ocrdma/ocrdma_stats.c
+@@ -49,13 +49,12 @@ static struct dentry *ocrdma_dbgfs_dir;
+ static int ocrdma_add_stat(char *start, char *pcur,
+ 				char *name, u64 count)
+ {
+-	char buff[128] = {0};
+-	int cpy_len = 0;
++	char buff[128];
++	int cpy_len;
+ 
+-	snprintf(buff, 128, "%s: %llu\n", name, count);
+-	cpy_len = strlen(buff);
++	cpy_len = scnprintf(buff, sizeof(buff), "%s: %llu\n", name, count);
+ 
+-	if (pcur + cpy_len > start + OCRDMA_MAX_DBGFS_MEM) {
++	if (pcur + cpy_len >= start + OCRDMA_MAX_DBGFS_MEM) {
+ 		pr_err("%s: No space in stats buff\n", __func__);
+ 		return 0;
+ 	}
 -- 
-paul moore
-www.paul-moore.com
+2.20.1
+

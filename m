@@ -2,66 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E2A8F196728
-	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Mar 2020 16:46:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A3A4196802
+	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Mar 2020 18:15:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726976AbgC1Pqe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 28 Mar 2020 11:46:34 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:36214 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726482AbgC1Pqd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 28 Mar 2020 11:46:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=wlJqkxRRXoHkvfGNC7ThSX8ifdNIpM+JFBZbKfXI4dc=; b=sfXpORxAfmX78jNpi5qBk5S0Jz
-        xc+gnQyt0s1wSjsLKR06suBxTLvyFJI2ANEwdfB52etPYA4I6ccydXukQcQvBosKCDvkXDsec0s9a
-        HdkC98I28duE+pXTu5tN3jtUTrBYfTWHDZYyLCVS0+KaRPJUuLZ1vZ7YGGkA8Yt1A7V8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.93)
-        (envelope-from <andrew@lunn.ch>)
-        id 1jIDf7-0003ty-Lk; Sat, 28 Mar 2020 16:46:17 +0100
-Date:   Sat, 28 Mar 2020 16:46:17 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Russell King <rmk+kernel@arm.linux.org.uk>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: clarify maintenance of ARM Dove drivers
-Message-ID: <20200328154617.GX3819@lunn.ch>
-References: <20200328134304.7317-1-lukas.bulwahn@gmail.com>
+        id S1726976AbgC1RPs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 28 Mar 2020 13:15:48 -0400
+Received: from www62.your-server.de ([213.133.104.62]:59240 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725807AbgC1RPs (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 28 Mar 2020 13:15:48 -0400
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1jIF3a-0001t9-Dm; Sat, 28 Mar 2020 18:15:38 +0100
+Received: from [178.195.186.98] (helo=pc-9.home)
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1jIF3a-00053Z-0U; Sat, 28 Mar 2020 18:15:38 +0100
+Subject: Re: [PATCH v4] bpf: fix build warning - missing prototype
+To:     Jean-Philippe Menil <jpmenil@gmail.com>
+Cc:     kernel-janitors@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>, netdev@vger.kernel.org,
+        bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <3164e566-d54e-2254-32c4-d7fee47c37ea@iogearbox.net>
+ <20200327204713.28050-1-jpmenil@gmail.com>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <8ec5aa95-4a3c-b2e1-7af2-6a4a2a6c0a5e@iogearbox.net>
+Date:   Sat, 28 Mar 2020 18:15:37 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200328134304.7317-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <20200327204713.28050-1-jpmenil@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.102.2/25765/Sat Mar 28 14:16:42 2020)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Mar 28, 2020 at 02:43:04PM +0100, Lukas Bulwahn wrote:
-> Commit 44e259ac909f ("ARM: dove: create a proper PMU driver for power
-> domains, PMU IRQs and resets") introduced new drivers for the ARM Dove SOC,
-> but did not add those drivers to the existing entry ARM/Marvell
-> Dove/MV78xx0/Orion SOC support in MAINTAINERS. Hence, these drivers were
-> considered to be part of "THE REST".
+On 3/27/20 9:47 PM, Jean-Philippe Menil wrote:
+> Fix build warnings when building net/bpf/test_run.o with W=1 due
+> to missing prototype for bpf_fentry_test{1..6}.
 > 
-> Clarify now that these drivers are maintained by the ARM/Marvell
-> Dove/MV78xx0/Orion SOC support maintainers. Also order the T: entry to the
-> place it belongs to, while at it.
+> Instead of declaring prototypes, turn off warnings with
+> __diag_{push,ignore,pop} as pointed by Alexei.
 > 
-> This was identified with a small script that finds all files only belonging
-> to "THE REST" according to the current MAINTAINERS file, and I acted upon
-> its output.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> Signed-off-by: Jean-Philippe Menil <jpmenil@gmail.com>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-
-    Andrew
+Applied, thanks!

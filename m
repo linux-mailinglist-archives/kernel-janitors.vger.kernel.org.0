@@ -2,98 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 08E591965E3
-	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Mar 2020 12:57:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3126E196664
+	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Mar 2020 14:43:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726273AbgC1L5F (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 28 Mar 2020 07:57:05 -0400
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:38867 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726045AbgC1L5F (ORCPT
+        id S1726449AbgC1NnS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 28 Mar 2020 09:43:18 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:45539 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726290AbgC1NnR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 28 Mar 2020 07:57:05 -0400
-Received: by mail-lf1-f67.google.com with SMTP id c5so10048030lfp.5;
-        Sat, 28 Mar 2020 04:57:03 -0700 (PDT)
+        Sat, 28 Mar 2020 09:43:17 -0400
+Received: by mail-wr1-f68.google.com with SMTP id t7so15101165wrw.12;
+        Sat, 28 Mar 2020 06:43:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=vohZ7RYylce7oG+qd7nKsIkPDOq6dSZqCFLWe4oqhRw=;
-        b=Fx7tQ6Zx/Nr3LIGzvw0af6WO8UdeI9QkitOU1hB16V+V2SzaIGLvx6tTDUmrhBiB+D
-         9nv/xcrIVkyNjaDWhL1IAyA6lyZP5vj/R7W9za40FiwFK5CB/lVUQcoyPLh9eOKNu9Zf
-         6Sinv8vNfrvvDVDVpw/HFLap893Nmag8KmDF6MteX1L+SWSoFEDB8rY0B0m5grsCppZy
-         qUFDFsQRqQczoishI/4T29L8Mll8dm4lC+a2v0lBdTDVhLFKgYpIUPqyntkgV0GhXQX6
-         Y4azQoxaxeDUPxOO2rZZqwRUfXZbBoJx1/9OoZnSIhWLzEXbAKe46885zIg7RI9tkC7+
-         cayg==
+        h=from:to:cc:subject:date:message-id;
+        bh=UskpCEE5TUQheW2HfAHjtymRH8q/A2y17+Pe+kWt7r8=;
+        b=I6vPkonjI1vmCLWrBbdBoShliZoMh2Q0CP1gRdVhAMsW1q/U5UeFVxKasJ6haMM8vg
+         MmHM+eFI0T9PqRASKHYBxuCRzcVTnPEjn5ehRY09aiuBMv0Z5a2YF/HdeSeMYaAq7w4C
+         fs6HKV8UGQ/oWYUMdz9ErBoML7qBrhSoXEL2gG8uWkxf6gcHBPcv7nQjq28bzOGNrTg6
+         hpo2BRgAFChXpRjKqFfi6809WhdkanGteLp6KPH/K6+sr7juGPENz4KJHfDsJR8zyYC+
+         ZVQCJMnhTgkPi/8G5U22gJyJFmpsoNbAwzWb4R05Ou4ipJE9YZ6GxMaTujlI8kS6+WbF
+         NqKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=vohZ7RYylce7oG+qd7nKsIkPDOq6dSZqCFLWe4oqhRw=;
-        b=Zv3GYj/7lIgJH0YHWQAwUejjHyAa+ZvFGtZi6mmWF6wEF8gQG4F0vjqnWKrKoij6ct
-         rKbGihBaacFfbvCm9/+UKtGHCDeTYPzDoAk8KF8VE0+FO2rI5/X7gF5bFxDpbFrdyl5u
-         jR57ZovZ2rFjnNtEhL79iIRmnjS6SQJfv6MvBDq/bcJuIib1S3Ed743+xf2n8wxxax1i
-         aKY3Ief0BEzZgM5mFPhfxYz3miuVM0Ku9Ry0awU26qRRxczZN+eQBm/unLcRYXiUPAzb
-         RHCCe4yNLJdhda+5wL/v7HzOMV4aPRvxXd1qc36FZjcJHgfrKYqdEdQmrh1rqlog7VfH
-         fKMg==
-X-Gm-Message-State: AGi0PubUsD82PZ/Fzd+mF7WvQkMKflbdtpkCY4rk7FR2WCQ9Wof/ShVk
-        G8wePtTHSXE4sN7/FOGDZD8=
-X-Google-Smtp-Source: APiQypLZYuYBOJKIzNJJMdP/KVOg5d8z8nE1cQlOOst4rOmQHNithBgqa92wV4ZbvMgbxZGfEF6YLA==
-X-Received: by 2002:ac2:4858:: with SMTP id 24mr2465051lfy.135.1585396622422;
-        Sat, 28 Mar 2020 04:57:02 -0700 (PDT)
-Received: from laptop ([178.209.50.173])
-        by smtp.gmail.com with ESMTPSA id q1sm1247898lfc.92.2020.03.28.04.56.59
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 28 Mar 2020 04:57:01 -0700 (PDT)
-Date:   Sat, 28 Mar 2020 14:56:55 +0300
-From:   Fedor Tokarev <ftokarev@gmail.com>
-To:     bfields@fieldses.org, chuck.lever@oracle.com,
-        anna.schumaker@netapp.com, trond.myklebust@hammerspace.com,
-        davem@davemloft.net, kuba@kernel.org
-Cc:     linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] net: sunrpc: Fix off-by-one issues in 'rpc_ntop6'
-Message-ID: <20200328115650.GA27729@laptop>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.24 (2015-08-30)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=UskpCEE5TUQheW2HfAHjtymRH8q/A2y17+Pe+kWt7r8=;
+        b=h5Nnb8nmI7cXR6nJ8A5oeK6dmL6HVLmpxjSTNTw2IxLFp+DaWUHbku3dbGTZRd496R
+         t5nKzCNJ+l++02WZXOi/tDkYELQ2wyM9N76Qqovm9D1d9ZA5cjyQp2OZmulJ6u1QQVGz
+         7orZ3NCIaVVx7EABZBCIw2ijJH1wdabbAsMpKK6tYQ6+XxC8VSwddXd5HEqWjeveBNFG
+         A1TS3wktzOUAQg7e2s0MvgDXQfisn0J5mtR5O3GD0zST+5j9jFo4VpFYPTZDdRCrvxaL
+         Cisu9x7dsxMRdnCALVCvVzCnZs95dxXeFLcvYxCB6KMkvhY+SIJbEEYYBEKuHHE1OJNm
+         aSUA==
+X-Gm-Message-State: ANhLgQ3CT5Ji7qs1SePNXkTUdW4NmkJ8CByzeY7aCcOZDnRQhRmk0ps9
+        zIk/kOnkXC/nexgw1hz091I=
+X-Google-Smtp-Source: ADFU+vu2jQ5CPsH2nB+2wu8Fp2D/gjd/7NJkKh2i8aKtFr+9rflUKnTWCv7i56dVnn7DBT/CUl6oRw==
+X-Received: by 2002:adf:cd12:: with SMTP id w18mr4841366wrm.311.1585402994449;
+        Sat, 28 Mar 2020 06:43:14 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2dbb:cb00:7d36:e5ed:6ff6:44e4])
+        by smtp.gmail.com with ESMTPSA id 23sm11515974wmj.34.2020.03.28.06.43.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Mar 2020 06:43:13 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Russell King <rmk+kernel@arm.linux.org.uk>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: clarify maintenance of ARM Dove drivers
+Date:   Sat, 28 Mar 2020 14:43:04 +0100
+Message-Id: <20200328134304.7317-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix off-by-one issues in 'rpc_ntop6':
- - 'snprintf' returns the number of characters which would have been
-   written if enough space had been available, excluding the terminating
-   null byte. Thus, a return value of 'sizeof(scopebuf)' means that the
-   last character was dropped.
- - 'strcat' adds a terminating null byte to the string, thus if len ==
-   buflen, the null byte is written past the end of the buffer.
+Commit 44e259ac909f ("ARM: dove: create a proper PMU driver for power
+domains, PMU IRQs and resets") introduced new drivers for the ARM Dove SOC,
+but did not add those drivers to the existing entry ARM/Marvell
+Dove/MV78xx0/Orion SOC support in MAINTAINERS. Hence, these drivers were
+considered to be part of "THE REST".
 
-Signed-off-by: Fedor Tokarev <ftokarev@gmail.com>
+Clarify now that these drivers are maintained by the ARM/Marvell
+Dove/MV78xx0/Orion SOC support maintainers. Also order the T: entry to the
+place it belongs to, while at it.
+
+This was identified with a small script that finds all files only belonging
+to "THE REST" according to the current MAINTAINERS file, and I acted upon
+its output.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
- net/sunrpc/addr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+applies cleanly on current master and on next-20200327
 
-diff --git a/net/sunrpc/addr.c b/net/sunrpc/addr.c
-index 8b4d72b..010dcb8 100644
---- a/net/sunrpc/addr.c
-+++ b/net/sunrpc/addr.c
-@@ -82,11 +82,11 @@ static size_t rpc_ntop6(const struct sockaddr *sap,
+ MAINTAINERS | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8b8abe756ae0..38fff0374082 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1979,6 +1979,7 @@ M:	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+ M:	Gregory Clement <gregory.clement@bootlin.com>
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+ S:	Maintained
++T:	git git://git.infradead.org/linux-mvebu.git
+ F:	Documentation/devicetree/bindings/soc/dove/
+ F:	arch/arm/mach-dove/
+ F:	arch/arm/mach-mv78xx0/
+@@ -1986,7 +1987,7 @@ F:	arch/arm/mach-orion5x/
+ F:	arch/arm/plat-orion/
+ F:	arch/arm/boot/dts/dove*
+ F:	arch/arm/boot/dts/orion5x*
+-T:	git git://git.infradead.org/linux-mvebu.git
++F:	drivers/soc/dove/
  
- 	rc = snprintf(scopebuf, sizeof(scopebuf), "%c%u",
- 			IPV6_SCOPE_DELIMITER, sin6->sin6_scope_id);
--	if (unlikely((size_t)rc > sizeof(scopebuf)))
-+	if (unlikely((size_t)rc >= sizeof(scopebuf)))
- 		return 0;
- 
- 	len += rc;
--	if (unlikely(len > buflen))
-+	if (unlikely(len >= buflen))
- 		return 0;
- 
- 	strcat(buf, scopebuf);
+ ARM/Marvell Kirkwood and Armada 370, 375, 38x, 39x, XP, 3700, 7K/8K, CN9130 SOC support
+ M:	Jason Cooper <jason@lakedaemon.net>
 -- 
-2.7.4
+2.17.1
 

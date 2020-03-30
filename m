@@ -2,44 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF1A0197072
-	for <lists+kernel-janitors@lfdr.de>; Sun, 29 Mar 2020 23:12:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EB841978A9
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Mar 2020 12:16:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728763AbgC2VMz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 29 Mar 2020 17:12:55 -0400
-Received: from host201-96-61-217.static.arubacloud.com ([217.61.96.201]:34504
-        "EHLO mail.undorthemoure.gq" rhost-flags-OK-FAIL-OK-OK)
-        by vger.kernel.org with ESMTP id S1727370AbgC2VMy (ORCPT
+        id S1728967AbgC3KQo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 30 Mar 2020 06:16:44 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53612 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728257AbgC3KQn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 29 Mar 2020 17:12:54 -0400
-X-Greylist: delayed 14285 seconds by postgrey-1.27 at vger.kernel.org; Sun, 29 Mar 2020 17:12:54 EDT
-Received: by mail.undorthemoure.gq (Postfix, from userid 48)
-        id 5EC73124D6; Sun, 29 Mar 2020 12:53:29 -0400 (EDT)
-To:     kernel-janitors@vger.kernel.org
-Subject: Request for catalog and price list
-X-PHP-Originating-Script: 0:dageds.php
-From:   Julian Smith <juliansmith2015@mail.ru>
-Reply-To: juliansmith2015@hotmail.com
+        Mon, 30 Mar 2020 06:16:43 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jIrTD-00028t-B3; Mon, 30 Mar 2020 10:16:39 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     "David S . Miller" <davem@davemloft.net>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] net: ethernet: ti: fix spelling mistake "rundom" -> "random"
+Date:   Mon, 30 Mar 2020 11:16:39 +0100
+Message-Id: <20200330101639.161268-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-Message-Id: <20200329165616.5EC73124D6@mail.undorthemoure.gq>
-Date:   Sun, 29 Mar 2020 12:53:29 -0400 (EDT)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello friend,
+From: Colin Ian King <colin.king@canonical.com>
 
-This is Julian Smith and i am purchasing manager from Sinara Group Co.,LTD in Russia.
-We are glad to know about your company from the web and we are interested in your products.
-Could you kindly send us your Latest catalog and price list for our trial order.
+There is a spelling mistake in a dev_err error message. Fix it.
 
-Thanks and Best Regards,
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Ms. Julian Smith
-Purchasing Manager
-Sinara Group Co.,LTD
-
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 97f7385c6741..f71c15c39492 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -1627,7 +1627,7 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
+ 							   port->slave.mac_addr) ||
+ 			   !is_valid_ether_addr(port->slave.mac_addr)) {
+ 			random_ether_addr(port->slave.mac_addr);
+-			dev_err(dev, "Use rundom MAC address\n");
++			dev_err(dev, "Use random MAC address\n");
+ 		}
+ 	}
+ 	of_node_put(node);
+-- 
+2.25.1
 

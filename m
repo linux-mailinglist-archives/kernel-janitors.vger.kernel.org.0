@@ -2,68 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E09551979A1
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Mar 2020 12:51:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8044D197AD9
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Mar 2020 13:35:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729254AbgC3Kvi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 30 Mar 2020 06:51:38 -0400
-Received: from mail-vs1-f68.google.com ([209.85.217.68]:45315 "EHLO
-        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729219AbgC3Kvh (ORCPT
+        id S1729921AbgC3LfI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 30 Mar 2020 07:35:08 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:28667 "EHLO
+        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729873AbgC3LfD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 30 Mar 2020 06:51:37 -0400
-Received: by mail-vs1-f68.google.com with SMTP id x82so10621605vsc.12
-        for <kernel-janitors@vger.kernel.org>; Mon, 30 Mar 2020 03:51:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=82B0OONv9gwbZlPp43NzThDz2fRV+KRFwafOQ16joDw=;
-        b=pmfufcukdjtwJGNtxCWB6abIy5GQkydOhglTt3lU2SNSHQkXjHvYVAYU30qpH0ROcn
-         6AR81pKR9LU8L5YeZnaBH9MvN/REWH5yRTWPgLFGTHBrQIMlYTgg1KzSS2HURZNZm8OD
-         SUHydw70bw0Q0cdHd4uf2iXTPiDhTTTwYAdjzmZQ2jSivGRsQ2XoJx9BB/FYlSUeb5oy
-         5awE4LGroq+bJGyUftKKYOLINHvkpei9FuchjXvbX7X9WnD9VXRR0fk+ICDWYXcZidms
-         B2Tcxn0d5gO0STEGqpugUjsy6/FY3i0rb+Q9Aubo2nnGcM5Z3hnCHy9hm0pGt54tKkMk
-         0diQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=82B0OONv9gwbZlPp43NzThDz2fRV+KRFwafOQ16joDw=;
-        b=AzhbuiUQEVGpmj8nSqPbKgB5hTGzLysa5G97LbVFHDIOaI3agMq1qrnsxtXcc7a51m
-         OhjcTUHuaGSFNwKYFvxQA24M6b0aHkF7FtM01h9Pd/jMXOgcbkEJLsWHQjR50otRMSEm
-         Ic71mx52gl+zD122WOPpQYSkCB2muTeKyNNjlrYfh4n5KGbWG504Q8OfI0H5S7gokb29
-         gfFMeYDlDLHhLwiADHWteEuiz3H8Ur11W7x/bHSB1Rgp0VgK8AWqam8OZvvEde3MdgcT
-         kLAJ/EVyMcXOMlhtHTMxtDxUG5IuLhYgU5zPr45usyK5e5bw/JwCMqDsdsCd/6PkGQ/x
-         +DRQ==
-X-Gm-Message-State: AGi0PuYgL6HNtlZjE4z/g4VsI4DqYu7zPitlmHKoKP3f5+NRaJn61I3Z
-        GAGQbiAY4nYV7TUZ4Uk5Q4XGqS8efNYnKX3M1Wc=
-X-Google-Smtp-Source: APiQypJa1PceJQJ4Uifc/OqOMsrqmrQouzmU8Q8RDUvIDEAu0nQ7VLXoyo7OeaG8ZGcz9++WgUurorK4eBNnHWQDQ14=
-X-Received: by 2002:a67:e24c:: with SMTP id w12mr8440041vse.153.1585565496489;
- Mon, 30 Mar 2020 03:51:36 -0700 (PDT)
+        Mon, 30 Mar 2020 07:35:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1585568102;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=/yKFIjqFad0brG+IqtxaXWXaU5bUtQPPGHJ+K52Qhck=;
+        b=HowYcfq/dkDcdTcuiriO5m4mcOPyXGxmUotU84SAethaJYG3T2m9Qt1S4BvswPmmglicIY
+        DCL307YwQB9gEXLtvDZoufid0bNwEct2/MrxCn4IvIurI491CYhImNL+Nd6A+gFDwt/PQ+
+        bpuvfFu3yh7yqe85SdAYcIBnu4SzMus=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-241-qZAMEnE7NK6C_EuYeAOraQ-1; Mon, 30 Mar 2020 07:34:56 -0400
+X-MC-Unique: qZAMEnE7NK6C_EuYeAOraQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 711B7107ACC7;
+        Mon, 30 Mar 2020 11:34:53 +0000 (UTC)
+Received: from carbon (unknown [10.40.208.16])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 41E9B100EBAD;
+        Mon, 30 Mar 2020 11:34:46 +0000 (UTC)
+Date:   Mon, 30 Mar 2020 13:34:42 +0200
+From:   Jesper Dangaard Brouer <jbrouer@redhat.com>
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     <davem@davemloft.net>, <ast@kernel.org>, <daniel@iogearbox.net>,
+        <kuba@kernel.org>, <hawk@kernel.org>, <john.fastabend@gmail.com>,
+        <kafai@fb.com>, <songliubraving@fb.com>, <yhs@fb.com>,
+        <andriin@fb.com>, <jwi@linux.ibm.com>,
+        <toshiaki.makita1@gmail.com>, <jianglidong3@jd.com>,
+        <edumazet@google.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH net] veth: xdp: use head instead of hard_start
+Message-ID: <20200330133442.132bde0c@carbon>
+In-Reply-To: <20200330102631.31286-1-maowenan@huawei.com>
+References: <20200330102631.31286-1-maowenan@huawei.com>
+Organization: Red Hat Inc.
 MIME-Version: 1.0
-Received: by 2002:a67:c005:0:0:0:0:0 with HTTP; Mon, 30 Mar 2020 03:51:35
- -0700 (PDT)
-Reply-To: maryalice00.12@postribe.com
-From:   Maryalice Williams <maryalicewilliams730@gmail.com>
-Date:   Mon, 30 Mar 2020 08:51:35 -0200
-Message-ID: <CAKwdjspC3teZc3g9Bg3_Wsc-61AL3_=GrmVKBnDw_HTZuBNk5w@mail.gmail.com>
-Subject: Reply For More Details.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Mon, 30 Mar 2020 18:26:31 +0800
+Mao Wenan <maowenan@huawei.com> wrote:
+
+> xdp.data_hard_start is mapped to the first
+> address of xdp_frame, but the pointer hard_start
+> is the offset(sizeof(struct xdp_frame)) of xdp_frame,
+> it should use head instead of hard_start to
+> set xdp.data_hard_start. Otherwise, if BPF program
+> calls helper_function such as bpf_xdp_adjust_head, it
+> will be confused for xdp_frame_end.
+
+I have noticed this[1] and have a patch in my current patchset for
+fixing this.  IMHO is is not so important fix right now, as the effect
+is that you currently only lose 32 bytes of headroom.
+
+[1] https://lore.kernel.org/netdev/158446621887.702578.17234304084556809684.stgit@firesoul/
+
+Fixing this now is going to be annoying and cause merge conflicts for
+my patchset.  If you insist on fixing this now, you need to improve
+commit message and also fix patch, see below.
+
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> ---
+>  drivers/net/veth.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+> index d4cbb9e8c63f..5ea550884bf8 100644
+> --- a/drivers/net/veth.c
+> +++ b/drivers/net/veth.c
+> @@ -506,7 +506,7 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
+>  		struct xdp_buff xdp;
+>  		u32 act;
+>  
+> -		xdp.data_hard_start = hard_start;
+> +		xdp.data_hard_start = head;
+
+You also need update/remove the other lines doing this.
+
+>  		xdp.data = frame->data;
+>  		xdp.data_end = frame->data + frame->len;
+>  		xdp.data_meta = frame->data - frame->metasize;
+
+
+
 -- 
-My dear,
+Best regards,
+  Jesper Dangaard Brouer
+  MSc.CS, Principal Kernel Engineer at Red Hat
+  LinkedIn: http://www.linkedin.com/in/brouer
 
-I am Mrs Maryalice Williams, I want to send you donation of two
-million seven hundred thousand Dollars ($2.7M) for volunteer projects
-in your country due to my ill health that could not permit me. Kindly
-reply for more details, and also send me the following details, as per
-below, your full Name ..........,  Address...........,
-Age...............,  Occupation ...............
-
-Remain blessed,
-Mrs. Maryalice Williams.

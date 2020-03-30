@@ -2,70 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30EEF19793E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Mar 2020 12:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 121501979F7
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Mar 2020 12:57:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729074AbgC3KYA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 30 Mar 2020 06:24:00 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:12650 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729125AbgC3KYA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 30 Mar 2020 06:24:00 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id C4000249121698C47994;
-        Mon, 30 Mar 2020 18:23:48 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.487.0; Mon, 30 Mar 2020 18:23:46 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <davem@davemloft.net>, <ast@kernel.org>, <daniel@iogearbox.net>,
-        <kuba@kernel.org>, <hawk@kernel.org>, <john.fastabend@gmail.com>,
-        <kafai@fb.com>, <songliubraving@fb.com>, <yhs@fb.com>,
-        <andriin@fb.com>, <jwi@linux.ibm.com>,
-        <toshiaki.makita1@gmail.com>, <jianglidong3@jd.com>,
-        <edumazet@google.com>
-CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <bpf@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net] veth: xdp: use head instead of hard_start
-Date:   Mon, 30 Mar 2020 18:26:31 +0800
-Message-ID: <20200330102631.31286-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1729553AbgC3K55 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 30 Mar 2020 06:57:57 -0400
+Received: from mail.11d01.mspz7.gob.ec ([190.152.145.91]:46380 "EHLO
+        mail.11d01.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729374AbgC3K54 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 30 Mar 2020 06:57:56 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTP id 81D2E2F66E0D;
+        Mon, 30 Mar 2020 04:14:17 -0500 (-05)
+Received: from mail.11d01.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d01.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id PtOrK0rXM10I; Mon, 30 Mar 2020 04:14:16 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTP id B05E72F6ACAD;
+        Mon, 30 Mar 2020 04:14:16 -0500 (-05)
+DKIM-Filter: OpenDKIM Filter v2.9.2 mail.11d01.mspz7.gob.ec B05E72F6ACAD
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=11d01.mspz7.gob.ec;
+        s=50CBC7E4-8BED-11E9-AF6C-F1A741A224D3; t=1585559656;
+        bh=cLQbOHa1aY+/FyDjaDQOZOnnnlZDxMu+rBX/cg5yps8=;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
+         From:Date:Reply-To:Message-Id;
+        b=qzsculf5Vv7X1kWmHSdDe1rsQCohMlSbxumGQiVjXl7ukPB+Q41pUl7WgMX29Bvwn
+         7OpaSPyvN5r/Y9lCeENZLfGQcqDn6T9JZzVRlEZnw30PwIbbKMQM+eim2aAymWu/7H
+         L7c83pYZcvE0/83GHGeZ1lNII9jOy8XpaVj3Z67k=
+X-Virus-Scanned: amavisd-new at 11d01.mspz7.gob.ec
+Received: from mail.11d01.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d01.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id eIHz-iVED9rj; Mon, 30 Mar 2020 04:14:16 -0500 (-05)
+Received: from [10.121.152.251] (unknown [105.12.0.10])
+        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTPSA id 24BFD2F6AA5A;
+        Mon, 30 Mar 2020 04:14:04 -0500 (-05)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: spende von 2.000.000,00 Euro
+To:     Recipients <luis.sanchez@11d01.mspz7.gob.ec>
+From:   "Manuel Franco" <luis.sanchez@11d01.mspz7.gob.ec>
+Date:   Mon, 30 Mar 2020 11:45:17 +0200
+Reply-To: manuelfrancospende11@gmail.com
+Message-Id: <20200330091405.24BFD2F6AA5A@mail.11d01.mspz7.gob.ec>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-xdp.data_hard_start is mapped to the first
-address of xdp_frame, but the pointer hard_start
-is the offset(sizeof(struct xdp_frame)) of xdp_frame,
-it should use head instead of hard_start to
-set xdp.data_hard_start. Otherwise, if BPF program
-calls helper_function such as bpf_xdp_adjust_head, it
-will be confused for xdp_frame_end.
+Ich bin Manuel Franco, ich spende Ihnen 2.000.000,00 Euro. Kontaktieren Sie=
+ mich jetzt, damit wir fortfahren k=F6nnen.
 
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
----
- drivers/net/veth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index d4cbb9e8c63f..5ea550884bf8 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -506,7 +506,7 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
- 		struct xdp_buff xdp;
- 		u32 act;
- 
--		xdp.data_hard_start = hard_start;
-+		xdp.data_hard_start = head;
- 		xdp.data = frame->data;
- 		xdp.data_end = frame->data + frame->len;
- 		xdp.data_meta = frame->data - frame->metasize;
--- 
-2.20.1
-
+I am Manuel Franco, I donate to you 2,000,000.00 euros. Contact me now so w=
+e can proceed.

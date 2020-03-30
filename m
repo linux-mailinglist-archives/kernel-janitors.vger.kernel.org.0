@@ -2,29 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EB841978A9
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Mar 2020 12:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AA691978B3
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Mar 2020 12:19:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728967AbgC3KQo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 30 Mar 2020 06:16:44 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:53612 "EHLO
+        id S1728933AbgC3KTG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 30 Mar 2020 06:19:06 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53642 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728257AbgC3KQn (ORCPT
+        with ESMTP id S1728746AbgC3KTF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 30 Mar 2020 06:16:43 -0400
+        Mon, 30 Mar 2020 06:19:05 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jIrTD-00028t-B3; Mon, 30 Mar 2020 10:16:39 +0000
+        id 1jIrVV-0002HO-Dx; Mon, 30 Mar 2020 10:19:01 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     "David S . Miller" <davem@davemloft.net>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        netdev@vger.kernel.org
+To:     "Michael S . Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Zhu Lingshan <lingshan.zhu@intel.com>, tiwei.bie@intel.com,
+        Wang Xiao <xiao.w.wang@intel.com>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] net: ethernet: ti: fix spelling mistake "rundom" -> "random"
-Date:   Mon, 30 Mar 2020 11:16:39 +0100
-Message-Id: <20200330101639.161268-1-colin.king@canonical.com>
+Subject: [PATCH][next] virtio: fix spelling mistake "confiugration" -> "configuration"
+Date:   Mon, 30 Mar 2020 11:19:01 +0100
+Message-Id: <20200330101901.162407-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,26 +37,35 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in a dev_err error message. Fix it.
+There are two spelling mistakes of configuration in IFCVF_ERR error
+messages. Fix them.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/virtio/vdpa/ifcvf/ifcvf_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 97f7385c6741..f71c15c39492 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -1627,7 +1627,7 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
- 							   port->slave.mac_addr) ||
- 			   !is_valid_ether_addr(port->slave.mac_addr)) {
- 			random_ether_addr(port->slave.mac_addr);
--			dev_err(dev, "Use rundom MAC address\n");
-+			dev_err(dev, "Use random MAC address\n");
- 		}
+diff --git a/drivers/virtio/vdpa/ifcvf/ifcvf_main.c b/drivers/virtio/vdpa/ifcvf/ifcvf_main.c
+index 8d54dc5b08d2..111ac12f6c8e 100644
+--- a/drivers/virtio/vdpa/ifcvf/ifcvf_main.c
++++ b/drivers/virtio/vdpa/ifcvf/ifcvf_main.c
+@@ -340,14 +340,14 @@ static int ifcvf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 
+ 	ret = pci_set_dma_mask(pdev, DMA_BIT_MASK(64));
+ 	if (ret) {
+-		IFCVF_ERR(pdev, "No usable DMA confiugration\n");
++		IFCVF_ERR(pdev, "No usable DMA configuration\n");
+ 		return ret;
  	}
- 	of_node_put(node);
+ 
+ 	ret = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(64));
+ 	if (ret) {
+ 		IFCVF_ERR(pdev,
+-			  "No usable coherent DMA confiugration\n");
++			  "No usable coherent DMA configuration\n");
+ 		return ret;
+ 	}
+ 
 -- 
 2.25.1
 

@@ -2,70 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AA691978B3
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Mar 2020 12:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30EEF19793E
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Mar 2020 12:24:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728933AbgC3KTG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 30 Mar 2020 06:19:06 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:53642 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728746AbgC3KTF (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 30 Mar 2020 06:19:05 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jIrVV-0002HO-Dx; Mon, 30 Mar 2020 10:19:01 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     "Michael S . Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Zhu Lingshan <lingshan.zhu@intel.com>, tiwei.bie@intel.com,
-        Wang Xiao <xiao.w.wang@intel.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] virtio: fix spelling mistake "confiugration" -> "configuration"
-Date:   Mon, 30 Mar 2020 11:19:01 +0100
-Message-Id: <20200330101901.162407-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        id S1729074AbgC3KYA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 30 Mar 2020 06:24:00 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:12650 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729125AbgC3KYA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 30 Mar 2020 06:24:00 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id C4000249121698C47994;
+        Mon, 30 Mar 2020 18:23:48 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
+ 14.3.487.0; Mon, 30 Mar 2020 18:23:46 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <davem@davemloft.net>, <ast@kernel.org>, <daniel@iogearbox.net>,
+        <kuba@kernel.org>, <hawk@kernel.org>, <john.fastabend@gmail.com>,
+        <kafai@fb.com>, <songliubraving@fb.com>, <yhs@fb.com>,
+        <andriin@fb.com>, <jwi@linux.ibm.com>,
+        <toshiaki.makita1@gmail.com>, <jianglidong3@jd.com>,
+        <edumazet@google.com>
+CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <bpf@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net] veth: xdp: use head instead of hard_start
+Date:   Mon, 30 Mar 2020 18:26:31 +0800
+Message-ID: <20200330102631.31286-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+xdp.data_hard_start is mapped to the first
+address of xdp_frame, but the pointer hard_start
+is the offset(sizeof(struct xdp_frame)) of xdp_frame,
+it should use head instead of hard_start to
+set xdp.data_hard_start. Otherwise, if BPF program
+calls helper_function such as bpf_xdp_adjust_head, it
+will be confused for xdp_frame_end.
 
-There are two spelling mistakes of configuration in IFCVF_ERR error
-messages. Fix them.
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
 ---
- drivers/virtio/vdpa/ifcvf/ifcvf_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/veth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/virtio/vdpa/ifcvf/ifcvf_main.c b/drivers/virtio/vdpa/ifcvf/ifcvf_main.c
-index 8d54dc5b08d2..111ac12f6c8e 100644
---- a/drivers/virtio/vdpa/ifcvf/ifcvf_main.c
-+++ b/drivers/virtio/vdpa/ifcvf/ifcvf_main.c
-@@ -340,14 +340,14 @@ static int ifcvf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index d4cbb9e8c63f..5ea550884bf8 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -506,7 +506,7 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
+ 		struct xdp_buff xdp;
+ 		u32 act;
  
- 	ret = pci_set_dma_mask(pdev, DMA_BIT_MASK(64));
- 	if (ret) {
--		IFCVF_ERR(pdev, "No usable DMA confiugration\n");
-+		IFCVF_ERR(pdev, "No usable DMA configuration\n");
- 		return ret;
- 	}
- 
- 	ret = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(64));
- 	if (ret) {
- 		IFCVF_ERR(pdev,
--			  "No usable coherent DMA confiugration\n");
-+			  "No usable coherent DMA configuration\n");
- 		return ret;
- 	}
- 
+-		xdp.data_hard_start = hard_start;
++		xdp.data_hard_start = head;
+ 		xdp.data = frame->data;
+ 		xdp.data_end = frame->data + frame->len;
+ 		xdp.data_meta = frame->data - frame->metasize;
 -- 
-2.25.1
+2.20.1
 

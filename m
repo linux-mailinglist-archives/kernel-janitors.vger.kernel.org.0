@@ -2,98 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EDA6F19885C
-	for <lists+kernel-janitors@lfdr.de>; Tue, 31 Mar 2020 01:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 402161989FD
+	for <lists+kernel-janitors@lfdr.de>; Tue, 31 Mar 2020 04:30:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729240AbgC3Xft (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 30 Mar 2020 19:35:49 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:33979 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729196AbgC3Xft (ORCPT
+        id S1729651AbgCaCab (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 30 Mar 2020 22:30:31 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:38898 "EHLO
+        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727358AbgCaCab (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 30 Mar 2020 19:35:49 -0400
-Received: by mail-pg1-f196.google.com with SMTP id l14so2322941pgb.1;
-        Mon, 30 Mar 2020 16:35:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Ihsd+LIKK09BkgBU5lK2nHCqw9TRvnbaMLRrOxk0h2k=;
-        b=p87pYBLC3MmWCxVZxPixFPk6zecH/3RVA/V+yOI0oeJczOLk1ARxjJOILz3yRWLgh9
-         dpo1UMPXP/oOHEay3q8cjdIUnznd/37ul1yDXPofgGVctfE8neuhZsP+WzjN+aCDj9iS
-         OOVobG4/HmQYZ3jG3i5O2CY7/cD7iiCetln5QPTQzyZNe6LCaSzMOGp8oNBwoOJZmZUi
-         1mk4RYiUQmiklpe5P+EkU8LTxHdr3j9OES2HMhberyOXNwUdxAD09N+2uIXtlAuopr+a
-         6rXTfjJ5hdjpi+0PTRpBFFl3mlzNJdwLw97inGC1pSO6SmPHu9yfL7IyaaPp/OebOubK
-         whxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Ihsd+LIKK09BkgBU5lK2nHCqw9TRvnbaMLRrOxk0h2k=;
-        b=Av06UhtnAYjYYBnrdqKiUk/3VzsD9LCzAsEjr7cVLnPEaBJ+J2CEFOFHpc/WCIR6DR
-         phOSLtsLG0z+1lVg4tnUAMbD0gf/U1/hEgK5R0G6pUo9w5izOkdVCT0mqeyZcJ7EnF8B
-         Wx6yebGY0ymV8Cp5tsMyfdJUU1Cp3+STgMt65KZ3idLNuQbyGzQBC9YjbuIlJOS5WCGg
-         4PAc0puzhFsp3Pg4l+dSx+K9BN1DB1i21cOIIOuZtnheFJEPVAX//o+P0J9rM88A6Ibj
-         RzPtpwME/C555NcYLW2V/hHjmqe5xQPNkaJFPM58Oogep9QNfWQo1s9UuNILsf4r23iL
-         Sh8A==
-X-Gm-Message-State: ANhLgQ3vHlN1xIpbK/DBcEz+KaBp/RioVsp3mPzgsro636/qSjWxTNHo
-        Y6J0HEVX0OuZX2A1sW+9UPfdrKqG
-X-Google-Smtp-Source: ADFU+vu3oMl5981LfcveEQsB0jz8wUh2Fvws/6FzXOCgNF7QgTXM4QbqbUJrfuD3cK8bW+/d58RzFw==
-X-Received: by 2002:a63:1003:: with SMTP id f3mr15181161pgl.450.1585611345613;
-        Mon, 30 Mar 2020 16:35:45 -0700 (PDT)
-Received: from [192.168.1.18] (i223-218-245-204.s42.a013.ap.plala.or.jp. [223.218.245.204])
-        by smtp.googlemail.com with ESMTPSA id gi2sm521816pjb.30.2020.03.30.16.35.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Mar 2020 16:35:44 -0700 (PDT)
-Subject: Re: [PATCH net] veth: xdp: use head instead of hard_start
-To:     Jesper Dangaard Brouer <jbrouer@redhat.com>,
-        Mao Wenan <maowenan@huawei.com>
-Cc:     davem@davemloft.net, ast@kernel.org, daniel@iogearbox.net,
-        kuba@kernel.org, hawk@kernel.org, john.fastabend@gmail.com,
-        kafai@fb.com, songliubraving@fb.com, yhs@fb.com, andriin@fb.com,
-        jwi@linux.ibm.com, jianglidong3@jd.com, edumazet@google.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200330102631.31286-1-maowenan@huawei.com>
- <20200330133442.132bde0c@carbon>
-From:   Toshiaki Makita <toshiaki.makita1@gmail.com>
-Message-ID: <3053de4c-cee6-f6fc-efc2-09c6250f3ef2@gmail.com>
-Date:   Tue, 31 Mar 2020 08:35:39 +0900
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        Mon, 30 Mar 2020 22:30:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1585621829;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=nsl49OvShhmWZCf+bSTPRyE+QTl5dWx0SrA+7/pmPto=;
+        b=Qmb0KyScJkBjQzRIdqSF353j5T9uMKM2WXaDC9cawSBmk2g78QszWSfNxaRLF7D0xJued9
+        KSXUMmcos9OW1w6UWlw9KajMtMAolYGpnAiMuut3ILHd5XwhHXnpQJqQOtRyPNViT+mazw
+        pCGmi7kQLlFGt+ml+cVAU790JcPNDzY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-417-y--Ksd8yOb2LclOISZ3Log-1; Mon, 30 Mar 2020 22:30:27 -0400
+X-MC-Unique: y--Ksd8yOb2LclOISZ3Log-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 85EB518C8C01;
+        Tue, 31 Mar 2020 02:30:26 +0000 (UTC)
+Received: from [10.72.12.115] (ovpn-12-115.pek2.redhat.com [10.72.12.115])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 426F460BE2;
+        Tue, 31 Mar 2020 02:30:20 +0000 (UTC)
+Subject: Re: [PATCH][next] virtio: fix spelling mistake "confiugration" ->
+ "configuration"
+To:     Colin King <colin.king@canonical.com>,
+        "Michael S . Tsirkin" <mst@redhat.com>,
+        Zhu Lingshan <lingshan.zhu@intel.com>, tiwei.bie@intel.com,
+        Wang Xiao <xiao.w.wang@intel.com>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200330101901.162407-1-colin.king@canonical.com>
+From:   Jason Wang <jasowang@redhat.com>
+Message-ID: <cb50bee4-5051-945b-cb62-87708f5d4083@redhat.com>
+Date:   Tue, 31 Mar 2020 10:30:19 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200330133442.132bde0c@carbon>
+In-Reply-To: <20200330101901.162407-1-colin.king@canonical.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Mao & Jesper
-(Resending with plain text...)
 
-On 2020/03/30 20:34, Jesper Dangaard Brouer wrote:
-> On Mon, 30 Mar 2020 18:26:31 +0800
-> Mao Wenan <maowenan@huawei.com> wrote:
-> 
->> xdp.data_hard_start is mapped to the first
->> address of xdp_frame, but the pointer hard_start
->> is the offset(sizeof(struct xdp_frame)) of xdp_frame,
->> it should use head instead of hard_start to
->> set xdp.data_hard_start. Otherwise, if BPF program
->> calls helper_function such as bpf_xdp_adjust_head, it
->> will be confused for xdp_frame_end.
-> 
-> I have noticed this[1] and have a patch in my current patchset for
-> fixing this.  IMHO is is not so important fix right now, as the effect
-> is that you currently only lose 32 bytes of headroom.
-> 
-> [1] https://lore.kernel.org/netdev/158446621887.702578.17234304084556809684.stgit@firesoul/
+On 2020/3/30 =E4=B8=8B=E5=8D=886:19, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There are two spelling mistakes of configuration in IFCVF_ERR error
+> messages. Fix them.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>   drivers/virtio/vdpa/ifcvf/ifcvf_main.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/virtio/vdpa/ifcvf/ifcvf_main.c b/drivers/virtio/vd=
+pa/ifcvf/ifcvf_main.c
+> index 8d54dc5b08d2..111ac12f6c8e 100644
+> --- a/drivers/virtio/vdpa/ifcvf/ifcvf_main.c
+> +++ b/drivers/virtio/vdpa/ifcvf/ifcvf_main.c
+> @@ -340,14 +340,14 @@ static int ifcvf_probe(struct pci_dev *pdev, cons=
+t struct pci_device_id *id)
+>  =20
+>   	ret =3D pci_set_dma_mask(pdev, DMA_BIT_MASK(64));
+>   	if (ret) {
+> -		IFCVF_ERR(pdev, "No usable DMA confiugration\n");
+> +		IFCVF_ERR(pdev, "No usable DMA configuration\n");
+>   		return ret;
+>   	}
+>  =20
+>   	ret =3D pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(64));
+>   	if (ret) {
+>   		IFCVF_ERR(pdev,
+> -			  "No usable coherent DMA confiugration\n");
+> +			  "No usable coherent DMA configuration\n");
+>   		return ret;
+>   	}
+>  =20
 
-You are right, the subtraction is not necessary here.
-Thank you for working on this.
 
-Toshiaki Makita
+Acked-by: Jason Wang <jasowang@redhat.com>
+
+Thanks
+

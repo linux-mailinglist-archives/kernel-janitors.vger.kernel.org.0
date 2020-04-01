@@ -2,29 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D95A019B888
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 00:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12D8D19B8A8
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 00:49:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387427AbgDAWfp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Apr 2020 18:35:45 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:47635 "EHLO
+        id S2388979AbgDAWt2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Apr 2020 18:49:28 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:47837 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732669AbgDAWfp (ORCPT
+        with ESMTP id S2388966AbgDAWt2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Apr 2020 18:35:45 -0400
+        Wed, 1 Apr 2020 18:49:28 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jJlxV-00030u-HX; Wed, 01 Apr 2020 22:35:41 +0000
+        id 1jJmAj-0004nz-QG; Wed, 01 Apr 2020 22:49:21 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org
+To:     Faisal Latif <faisal.latif@intel.com>,
+        Shiraz Saleem <shiraz.saleem@intel.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, sindhu.devale@intel.com,
+        linux-rdma@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] PCI: endpoint: functions/pci-epf-test: fix memory leak of buf
-Date:   Wed,  1 Apr 2020 23:35:41 +0100
-Message-Id: <20200401223541.403438-1-colin.king@canonical.com>
+Subject: [PATCH][next] i40iw: fix null pointer dereference on a null wqe pointer
+Date:   Wed,  1 Apr 2020 23:49:21 +0100
+Message-Id: <20200401224921.405279-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,30 +38,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-In the case where data cannot be transferred using DMA the allocation
-of buf leaked on the error return path. Fix this by jumping to the
-label err_dma_map that kfree's buf before the return.
+Currently the null check for wqe is incorrect and lets a null wqe
+be passed to set_64bit_val and this indexes into the null pointer
+causing a null pointer dereference.  Fix this by fixing the null
+pointer check to return an error if wqe is null.
 
-Addresses-Coverity: ("Resource leak")
-Fixes: a558357b1b34 ("PCI: endpoint: functions/pci-epf-test: Add DMA support to transfer data")
+Addresses-Coverity: ("dereference after a null check")
+Fixes: 4b34e23f4eaa ("i40iw: Report correct firmware version")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/pci/endpoint/functions/pci-epf-test.c | 2 +-
+ drivers/infiniband/hw/i40iw/i40iw_ctrl.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-index 3b4cf7e2bc60..60330f3e3751 100644
---- a/drivers/pci/endpoint/functions/pci-epf-test.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-@@ -347,7 +347,7 @@ static int pci_epf_test_read(struct pci_epf_test *epf_test)
- 		if (!epf_test->dma_supported) {
- 			dev_err(dev, "Cannot transfer data using DMA\n");
- 			ret = -EINVAL;
--			goto err_map_addr;
-+			goto err_dma_map;
- 		}
+diff --git a/drivers/infiniband/hw/i40iw/i40iw_ctrl.c b/drivers/infiniband/hw/i40iw/i40iw_ctrl.c
+index e8b4b3743661..688f19667221 100644
+--- a/drivers/infiniband/hw/i40iw/i40iw_ctrl.c
++++ b/drivers/infiniband/hw/i40iw/i40iw_ctrl.c
+@@ -1046,7 +1046,7 @@ i40iw_sc_query_rdma_features(struct i40iw_sc_cqp *cqp,
+ 	u64 header;
  
- 		dst_phys_addr = dma_map_single(dma_dev, buf, reg->size,
+ 	wqe = i40iw_sc_cqp_get_next_send_wqe(cqp, scratch);
+-	if (wqe)
++	if (!wqe)
+ 		return I40IW_ERR_RING_FULL;
+ 
+ 	set_64bit_val(wqe, 32, feat_mem->pa);
 -- 
 2.25.1
 

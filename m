@@ -2,66 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B73C919B8ED
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 01:27:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E64DC19B90B
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 01:40:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733193AbgDAX1k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Apr 2020 19:27:40 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:48608 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732503AbgDAX1k (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Apr 2020 19:27:40 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jJmlk-0007s0-IS; Wed, 01 Apr 2020 23:27:36 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Igor Russkikh <irusskikh@marvell.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Mark Starovoytov <mstarovoitov@marvell.com>,
-        Dmitry Bogdanov <dbogdanov@marvell.com>, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] net: atlantic: fix missing | operator when assigning rec->llc
-Date:   Thu,  2 Apr 2020 00:27:36 +0100
-Message-Id: <20200401232736.410028-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
+        id S2387508AbgDAXkk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Apr 2020 19:40:40 -0400
+Received: from mga02.intel.com ([134.134.136.20]:57101 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387484AbgDAXkj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 1 Apr 2020 19:40:39 -0400
+IronPort-SDR: UMiRyoKdndtuB5afZFlySOtycAUznqAxfvaIXU8DXZEYWCNpOICvGY8Gio0dU5lQB51W70X0Gt
+ ZjLqMzNsWrDQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2020 16:40:38 -0700
+IronPort-SDR: RlGonMBaS2L5DDZVJmlMOjYTm6IrWey3LLJVqzCi5feW9yRwImY9YJy/Qw7iYwGvhwNePw3rEX
+ LtmlI1c653AA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,333,1580803200"; 
+   d="scan'208";a="252811963"
+Received: from fmsmsx107.amr.corp.intel.com ([10.18.124.205])
+  by orsmga006.jf.intel.com with ESMTP; 01 Apr 2020 16:40:38 -0700
+Received: from fmsmsx126.amr.corp.intel.com (10.18.125.43) by
+ fmsmsx107.amr.corp.intel.com (10.18.124.205) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Wed, 1 Apr 2020 16:40:38 -0700
+Received: from fmsmsx124.amr.corp.intel.com ([169.254.8.220]) by
+ FMSMSX126.amr.corp.intel.com ([169.254.1.221]) with mapi id 14.03.0439.000;
+ Wed, 1 Apr 2020 16:40:38 -0700
+From:   "Saleem, Shiraz" <shiraz.saleem@intel.com>
+To:     Colin King <colin.king@canonical.com>,
+        "Latif, Faisal" <faisal.latif@intel.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        "Devale, Sindhu" <sindhu.devale@intel.com>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH][next] i40iw: fix null pointer dereference on a null wqe
+ pointer
+Thread-Topic: [PATCH][next] i40iw: fix null pointer dereference on a null
+ wqe pointer
+Thread-Index: AQHWCHfMm+gLXhUTAU2UIQaZoCR1S6hk7B9Q
+Date:   Wed, 1 Apr 2020 23:40:37 +0000
+Message-ID: <9DD61F30A802C4429A01CA4200E302A7C611609E@fmsmsx124.amr.corp.intel.com>
+References: <20200401224921.405279-1-colin.king@canonical.com>
+In-Reply-To: <20200401224921.405279-1-colin.king@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [10.1.200.108]
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
-
-rec->llc is currently being assigned twice, once with the lower 8 bits
-from packed_record[8] and then re-assigned afterwards with data from
-packed_record[9].  This looks like a type, I believe the second assignment
-should be using the |= operator rather than a direct assignment.
-
-Addresses-Coverity: ("Unused value")
-Fixes: b8f8a0b7b5cb ("net: atlantic: MACSec ingress offload HW bindings")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/ethernet/aquantia/atlantic/macsec/macsec_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/aquantia/atlantic/macsec/macsec_api.c b/drivers/net/ethernet/aquantia/atlantic/macsec/macsec_api.c
-index 97901c114bfa..fbe9d88b13c7 100644
---- a/drivers/net/ethernet/aquantia/atlantic/macsec/macsec_api.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/macsec/macsec_api.c
-@@ -491,7 +491,7 @@ get_ingress_preclass_record(struct aq_hw_s *hw,
- 	rec->snap[1] = packed_record[8] & 0xFF;
- 
- 	rec->llc = (packed_record[8] >> 8) & 0xFF;
--	rec->llc = packed_record[9] << 8;
-+	rec->llc |= packed_record[9] << 8;
- 
- 	rec->mac_sa[0] = packed_record[10];
- 	rec->mac_sa[0] |= packed_record[11] << 16;
--- 
-2.25.1
-
+PiBTdWJqZWN0OiBbUEFUQ0hdW25leHRdIGk0MGl3OiBmaXggbnVsbCBwb2ludGVyIGRlcmVmZXJl
+bmNlIG9uIGEgbnVsbCB3cWUgcG9pbnRlcg0KPiANCj4gRnJvbTogQ29saW4gSWFuIEtpbmcgPGNv
+bGluLmtpbmdAY2Fub25pY2FsLmNvbT4NCj4gDQo+IEN1cnJlbnRseSB0aGUgbnVsbCBjaGVjayBm
+b3Igd3FlIGlzIGluY29ycmVjdCBhbmQgbGV0cyBhIG51bGwgd3FlIGJlIHBhc3NlZCB0bw0KPiBz
+ZXRfNjRiaXRfdmFsIGFuZCB0aGlzIGluZGV4ZXMgaW50byB0aGUgbnVsbCBwb2ludGVyIGNhdXNp
+bmcgYSBudWxsIHBvaW50ZXINCj4gZGVyZWZlcmVuY2UuICBGaXggdGhpcyBieSBmaXhpbmcgdGhl
+IG51bGwgcG9pbnRlciBjaGVjayB0byByZXR1cm4gYW4gZXJyb3IgaWYgd3FlIGlzDQo+IG51bGwu
+DQo+IA0KPiBBZGRyZXNzZXMtQ292ZXJpdHk6ICgiZGVyZWZlcmVuY2UgYWZ0ZXIgYSBudWxsIGNo
+ZWNrIikNCj4gRml4ZXM6IDRiMzRlMjNmNGVhYSAoImk0MGl3OiBSZXBvcnQgY29ycmVjdCBmaXJt
+d2FyZSB2ZXJzaW9uIikNCj4gU2lnbmVkLW9mZi1ieTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtp
+bmdAY2Fub25pY2FsLmNvbT4NCg0KVWdoISBZZXMuIFRoYXTigJlzIGEgYmFkIG9uZS4gVGhhbmtz
+IGZvciB0aGUgZml4Lg0KDQpBY2tlZC1ieTogU2hpcmF6IFNhbGVlbSA8c2hpcmF6LnNhbGVlbUBp
+bnRlbC5jb20+DQo=

@@ -2,188 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E72019AF84
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Apr 2020 18:15:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EBAC19B18A
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Apr 2020 18:36:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732205AbgDAQPl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Apr 2020 12:15:41 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:22643 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728242AbgDAQPi (ORCPT
+        id S2387556AbgDAQfy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Apr 2020 12:35:54 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:37407 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388782AbgDAQfu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Apr 2020 12:15:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1585757736;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=C95Q5R2yoRf7nJ/OPhhJaaYPqUp7q75QDzRjhHMzg08=;
-        b=UNdmJIbf8cmKVSeDg4DqyIBPd8SiWXdH/Wp5IooXRMAhAV4M8JnUHRcPYFIoMKAUKmpLvm
-        EZ1dr9YwL+0jexLY/z2tFGYXKugLYsMDYt12gGJW271YoHS1/HvNubFvw9SQdMKnJ748FB
-        UpfDteRughNfvFNkaNmHme1Bbd8REV0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-344-fyKOq8M0PoeYyQlzPZwq1w-1; Wed, 01 Apr 2020 12:15:32 -0400
-X-MC-Unique: fyKOq8M0PoeYyQlzPZwq1w-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 906F8477;
-        Wed,  1 Apr 2020 16:15:28 +0000 (UTC)
-Received: from carbon (unknown [10.40.208.16])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6086110002AE;
-        Wed,  1 Apr 2020 16:15:19 +0000 (UTC)
-Date:   Wed, 1 Apr 2020 18:15:17 +0200
-From:   Jesper Dangaard Brouer <brouer@redhat.com>
-To:     Toshiaki Makita <toshiaki.makita1@gmail.com>
-Cc:     brouer@redhat.com, Mao Wenan <maowenan@huawei.com>,
-        davem@davemloft.net, ast@kernel.org, daniel@iogearbox.net,
-        kuba@kernel.org, hawk@kernel.org, john.fastabend@gmail.com,
-        kafai@fb.com, songliubraving@fb.com, yhs@fb.com, andriin@fb.com,
-        jwi@linux.ibm.com, jianglidong3@jd.com, edumazet@google.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net v2] veth: xdp: use head instead of hard_start
-Message-ID: <20200401181419.7acd2aa6@carbon>
-In-Reply-To: <7a1d55ad-1427-67fe-f204-4d4a0ab2c4b1@gmail.com>
-References: <fb5ab568-9bc8-3145-a8db-3e975ccdf846@gmail.com>
-        <20200331060641.79999-1-maowenan@huawei.com>
-        <7a1d55ad-1427-67fe-f204-4d4a0ab2c4b1@gmail.com>
+        Wed, 1 Apr 2020 12:35:50 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jJgLB-0004e6-Uh; Wed, 01 Apr 2020 16:35:46 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, Leo Liu <leo.liu@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/amdgpu/vcn: fix spelling mistake "fimware" -> "firmware"
+Date:   Wed,  1 Apr 2020 17:35:45 +0100
+Message-Id: <20200401163545.263372-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 31 Mar 2020 15:16:22 +0900
-Toshiaki Makita <toshiaki.makita1@gmail.com> wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> On 2020/03/31 15:06, Mao Wenan wrote:
-> > xdp.data_hard_start is equal to first address of
-> > struct xdp_frame, which is mentioned in
-> > convert_to_xdp_frame(). But the pointer hard_start
-> > in veth_xdp_rcv_one() is 32 bytes offset of frame,
-> > so it should use head instead of hard_start to
-> > set xdp.data_hard_start. Otherwise, if BPF program
-> > calls helper_function such as bpf_xdp_adjust_head, it
-> > will be confused for xdp_frame_end.  
-> 
-> I think you should discuss this more with Jesper before
-> submitting v2.
-> He does not like this to be included now due to merge conflict risk.
-> Basically I agree with him that we don't need to hurry with this fix.
-> 
-> Toshiaki Makita
-> 
-> > 
-> > Fixes: 9fc8d518d9d5 ("veth: Handle xdp_frames in xdp napi ring")
-> > Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> > ---
-> >   v2: add fixes tag, as well as commit log.
-> >   drivers/net/veth.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-> > index d4cbb9e8c63f..5ea550884bf8 100644
-> > --- a/drivers/net/veth.c
-> > +++ b/drivers/net/veth.c
-> > @@ -506,7 +506,7 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
-> >   		struct xdp_buff xdp;
-> >   		u32 act;
-> >   
-> > -		xdp.data_hard_start = hard_start;
-> > +		xdp.data_hard_start = head;
-> >   		xdp.data = frame->data;
-> >   		xdp.data_end = frame->data + frame->len;
-> >   		xdp.data_meta = frame->data - frame->metasize;
-> >   
+There is a spelling mistake in a dev_err error message. Fix it.
 
-Below is the patch that I have in my queue.  I've added a Reported-by
-tag to give you some credit, even-though I already had plans to fix
-this, as part of my XDP frame_sz work.
-
-
-[PATCH RFC net-next] veth: adjust hard_start offset on redirect XDP frames
-
-When native XDP redirect into a veth device, the frame arrives in the
-xdp_frame structure. It is then processed in veth_xdp_rcv_one(),
-which can run a new XDP bpf_prog on the packet. Doing so requires
-converting xdp_frame to xdp_buff, but the tricky part is that
-xdp_frame memory area is located in the top (data_hard_start) memory
-area that xdp_buff will point into.
-
-The current code tried to protect the xdp_frame area, by assigning
-xdp_buff.data_hard_start past this memory. This results in 32 bytes
-less headroom to expand into via BPF-helper bpf_xdp_adjust_head().
-
-This protect step is actually not needed, because BPF-helper
-bpf_xdp_adjust_head() already reserve this area, and don't allow
-BPF-prog to expand into it. Thus, it is safe to point data_hard_start
-directly at xdp_frame memory area.
-
-Cc: Toshiaki Makita <makita.toshiaki@lab.ntt.co.jp>
-Fixes: 9fc8d518d9d5 ("veth: Handle xdp_frames in xdp napi ring")
-Reported-by: Mao Wenan <maowenan@huawei.com>
-Signed-off-by: Jesper Dangaard Brouer <brouer@redhat.com>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/veth.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 8cdc4415fa70..2edc04a8ab8e 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -493,13 +493,15 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
- 					struct veth_xdp_tx_bq *bq)
- {
- 	void *hard_start = frame->data - frame->headroom;
--	void *head = hard_start - sizeof(struct xdp_frame);
- 	int len = frame->len, delta = 0;
- 	struct xdp_frame orig_frame;
- 	struct bpf_prog *xdp_prog;
- 	unsigned int headroom;
- 	struct sk_buff *skb;
- 
-+	/* bpf_xdp_adjust_head() assures BPF cannot access xdp_frame area */
-+	hard_start -= sizeof(struct xdp_frame);
-+
- 	rcu_read_lock();
- 	xdp_prog = rcu_dereference(rq->xdp_prog);
- 	if (likely(xdp_prog)) {
-@@ -521,7 +523,6 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
- 			break;
- 		case XDP_TX:
- 			orig_frame = *frame;
--			xdp.data_hard_start = head;
- 			xdp.rxq->mem = frame->mem;
- 			if (unlikely(veth_xdp_tx(rq->dev, &xdp, bq) < 0)) {
- 				trace_xdp_exception(rq->dev, xdp_prog, act);
-@@ -533,7 +534,6 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
- 			goto xdp_xmit;
- 		case XDP_REDIRECT:
- 			orig_frame = *frame;
--			xdp.data_hard_start = head;
- 			xdp.rxq->mem = frame->mem;
- 			if (xdp_do_redirect(rq->dev, &xdp, xdp_prog)) {
- 				frame = &orig_frame;
-@@ -555,7 +555,7 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
- 	rcu_read_unlock();
- 
- 	headroom = sizeof(struct xdp_frame) + frame->headroom - delta;
--	skb = veth_build_skb(head, headroom, len, 0);
-+	skb = veth_build_skb(hard_start, headroom, len, 0);
- 	if (!skb) {
- 		xdp_return_frame(frame);
- 		goto err;
-
-
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
+index 328b6ceb80de..d653a18dcbc3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
+@@ -187,7 +187,7 @@ int amdgpu_vcn_sw_init(struct amdgpu_device *adev)
+ 				PAGE_SIZE, AMDGPU_GEM_DOMAIN_VRAM, &adev->vcn.inst[i].fw_shared_bo,
+ 				&adev->vcn.inst[i].fw_shared_gpu_addr, &adev->vcn.inst[i].fw_shared_cpu_addr);
+ 		if (r) {
+-			dev_err(adev->dev, "VCN %d (%d) failed to allocate fimware shared bo\n", i, r);
++			dev_err(adev->dev, "VCN %d (%d) failed to allocate firmware shared bo\n", i, r);
+ 			return r;
+ 		}
+ 	}
 -- 
-Best regards,
-  Jesper Dangaard Brouer
-  MSc.CS, Principal Kernel Engineer at Red Hat
-  LinkedIn: http://www.linkedin.com/in/brouer
+2.25.1
 

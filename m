@@ -2,75 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F85B199303
-	for <lists+kernel-janitors@lfdr.de>; Tue, 31 Mar 2020 12:00:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54EB619ABF3
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Apr 2020 14:44:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730380AbgCaKAi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 31 Mar 2020 06:00:38 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:38742 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730153AbgCaKAi (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 31 Mar 2020 06:00:38 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jJDh8-0002Tv-TZ; Tue, 31 Mar 2020 10:00:31 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Shuah Khan <shuah@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>,
-        linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
-        bpf@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] bpf: Test_verifier: fix spelling mistake "arithmatic" -> "arithmetic"
-Date:   Tue, 31 Mar 2020 11:00:30 +0100
-Message-Id: <20200331100030.41372-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        id S1732507AbgDAMoi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Apr 2020 08:44:38 -0400
+Received: from foss.arm.com ([217.140.110.172]:50902 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732396AbgDAMoi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 1 Apr 2020 08:44:38 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 908AC30E;
+        Wed,  1 Apr 2020 05:44:37 -0700 (PDT)
+Received: from [172.16.1.108] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1B43B3F68F;
+        Wed,  1 Apr 2020 05:44:35 -0700 (PDT)
+Subject: Re: [PATCH][V2] ACPI: sysfs: copy ACPI data using io memory copying
+To:     Mark Rutland <mark.rutland@arm.com>,
+        Colin King <colin.king@canonical.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, lorenzo.pieralisi@arm.com
+References: <20200317165409.469013-1-colin.king@canonical.com>
+ <20200320131951.GA6555@lakrids.cambridge.arm.com>
+From:   James Morse <james.morse@arm.com>
+Openpgp: preference=signencrypt
+Message-ID: <698da6fc-3334-5420-5c97-4406914e4599@arm.com>
+Date:   Wed, 1 Apr 2020 13:44:34 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200320131951.GA6555@lakrids.cambridge.arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hello!
 
-There are a couple of spelling mistakes in two literal strings, fix them.
+On 3/20/20 1:19 PM, Mark Rutland wrote:
+> [adding James and Lorenzo]
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- tools/testing/selftests/bpf/verifier/bounds.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+(but not actually...)
 
-diff --git a/tools/testing/selftests/bpf/verifier/bounds.c b/tools/testing/selftests/bpf/verifier/bounds.c
-index 4d0d09574bf4..a253a064e6e0 100644
---- a/tools/testing/selftests/bpf/verifier/bounds.c
-+++ b/tools/testing/selftests/bpf/verifier/bounds.c
-@@ -501,7 +501,7 @@
- 	.result = REJECT
- },
- {
--	"bounds check mixed 32bit and 64bit arithmatic. test1",
-+	"bounds check mixed 32bit and 64bit arithmetic. test1",
- 	.insns = {
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_MOV64_IMM(BPF_REG_1, -1),
-@@ -520,7 +520,7 @@
- 	.result = ACCEPT
- },
- {
--	"bounds check mixed 32bit and 64bit arithmatic. test2",
-+	"bounds check mixed 32bit and 64bit arithmetic. test2",
- 	.insns = {
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_MOV64_IMM(BPF_REG_1, -1),
--- 
-2.25.1
 
+> On Tue, Mar 17, 2020 at 04:54:09PM +0000, Colin King wrote:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> Reading ACPI data on ARM64 at a non-aligned offset from
+>> /sys/firmware/acpi/tables/data/BERT will cause a splat because
+>> the data is I/O memory mapped
+
+On your platform, on someone else's it may be in memory.
+
+Which platform is this on?
+(I've never seen one generate a BERT!)
+
+
+>> and being read with just a memcpy.
+>> Fix this by introducing an I/O variant of memory_read_from_buffer
+>> and using I/O memory mapped copies instead.
+
+> Just to check, is that correct is it correct to map those tables with
+> Device attributes in the first place, or should we be mapping the tables
+> with Normal Cacheable attributes with memremap()?
+> 
+> If the FW placed those into memory using cacheavble attributes, reading
+> them using Device attributes could result in stale values, which could
+> be garbage.
+
+Yes. The BERT code should be using arch_apei_get_mem_attribute() to use the
+correct attributes. See ghes_map() for an example. bert_init() will need to use
+a version of ioremap() that takes the pgprot_t.
+
+Always using ioremap_cache() means you get a cacheable mapping, regardless of
+how firmware described this region in the UEFI memory map. This doesn't explain
+why you got an alignment fault.
+
+Otherwise, looks fine to me.
+
+
+(N.B. I ignored this patch as it wasn't copied to linux-arm-kernel and the
+subject says its about sysfs<->ACPI, nothing to do with APEI!)
+
+
+Thanks,
+
+James

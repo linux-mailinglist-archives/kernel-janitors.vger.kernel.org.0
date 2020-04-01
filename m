@@ -2,96 +2,188 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54EB619ABF3
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Apr 2020 14:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E72019AF84
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Apr 2020 18:15:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732507AbgDAMoi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Apr 2020 08:44:38 -0400
-Received: from foss.arm.com ([217.140.110.172]:50902 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732396AbgDAMoi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Apr 2020 08:44:38 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 908AC30E;
-        Wed,  1 Apr 2020 05:44:37 -0700 (PDT)
-Received: from [172.16.1.108] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1B43B3F68F;
-        Wed,  1 Apr 2020 05:44:35 -0700 (PDT)
-Subject: Re: [PATCH][V2] ACPI: sysfs: copy ACPI data using io memory copying
-To:     Mark Rutland <mark.rutland@arm.com>,
-        Colin King <colin.king@canonical.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, lorenzo.pieralisi@arm.com
-References: <20200317165409.469013-1-colin.king@canonical.com>
- <20200320131951.GA6555@lakrids.cambridge.arm.com>
-From:   James Morse <james.morse@arm.com>
-Openpgp: preference=signencrypt
-Message-ID: <698da6fc-3334-5420-5c97-4406914e4599@arm.com>
-Date:   Wed, 1 Apr 2020 13:44:34 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1732205AbgDAQPl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Apr 2020 12:15:41 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:22643 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728242AbgDAQPi (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 1 Apr 2020 12:15:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1585757736;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=C95Q5R2yoRf7nJ/OPhhJaaYPqUp7q75QDzRjhHMzg08=;
+        b=UNdmJIbf8cmKVSeDg4DqyIBPd8SiWXdH/Wp5IooXRMAhAV4M8JnUHRcPYFIoMKAUKmpLvm
+        EZ1dr9YwL+0jexLY/z2tFGYXKugLYsMDYt12gGJW271YoHS1/HvNubFvw9SQdMKnJ748FB
+        UpfDteRughNfvFNkaNmHme1Bbd8REV0=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-344-fyKOq8M0PoeYyQlzPZwq1w-1; Wed, 01 Apr 2020 12:15:32 -0400
+X-MC-Unique: fyKOq8M0PoeYyQlzPZwq1w-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 906F8477;
+        Wed,  1 Apr 2020 16:15:28 +0000 (UTC)
+Received: from carbon (unknown [10.40.208.16])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6086110002AE;
+        Wed,  1 Apr 2020 16:15:19 +0000 (UTC)
+Date:   Wed, 1 Apr 2020 18:15:17 +0200
+From:   Jesper Dangaard Brouer <brouer@redhat.com>
+To:     Toshiaki Makita <toshiaki.makita1@gmail.com>
+Cc:     brouer@redhat.com, Mao Wenan <maowenan@huawei.com>,
+        davem@davemloft.net, ast@kernel.org, daniel@iogearbox.net,
+        kuba@kernel.org, hawk@kernel.org, john.fastabend@gmail.com,
+        kafai@fb.com, songliubraving@fb.com, yhs@fb.com, andriin@fb.com,
+        jwi@linux.ibm.com, jianglidong3@jd.com, edumazet@google.com,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net v2] veth: xdp: use head instead of hard_start
+Message-ID: <20200401181419.7acd2aa6@carbon>
+In-Reply-To: <7a1d55ad-1427-67fe-f204-4d4a0ab2c4b1@gmail.com>
+References: <fb5ab568-9bc8-3145-a8db-3e975ccdf846@gmail.com>
+        <20200331060641.79999-1-maowenan@huawei.com>
+        <7a1d55ad-1427-67fe-f204-4d4a0ab2c4b1@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200320131951.GA6555@lakrids.cambridge.arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello!
+On Tue, 31 Mar 2020 15:16:22 +0900
+Toshiaki Makita <toshiaki.makita1@gmail.com> wrote:
 
-On 3/20/20 1:19 PM, Mark Rutland wrote:
-> [adding James and Lorenzo]
-
-(but not actually...)
-
-
-> On Tue, Mar 17, 2020 at 04:54:09PM +0000, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> Reading ACPI data on ARM64 at a non-aligned offset from
->> /sys/firmware/acpi/tables/data/BERT will cause a splat because
->> the data is I/O memory mapped
-
-On your platform, on someone else's it may be in memory.
-
-Which platform is this on?
-(I've never seen one generate a BERT!)
-
-
->> and being read with just a memcpy.
->> Fix this by introducing an I/O variant of memory_read_from_buffer
->> and using I/O memory mapped copies instead.
-
-> Just to check, is that correct is it correct to map those tables with
-> Device attributes in the first place, or should we be mapping the tables
-> with Normal Cacheable attributes with memremap()?
+> On 2020/03/31 15:06, Mao Wenan wrote:
+> > xdp.data_hard_start is equal to first address of
+> > struct xdp_frame, which is mentioned in
+> > convert_to_xdp_frame(). But the pointer hard_start
+> > in veth_xdp_rcv_one() is 32 bytes offset of frame,
+> > so it should use head instead of hard_start to
+> > set xdp.data_hard_start. Otherwise, if BPF program
+> > calls helper_function such as bpf_xdp_adjust_head, it
+> > will be confused for xdp_frame_end.  
 > 
-> If the FW placed those into memory using cacheavble attributes, reading
-> them using Device attributes could result in stale values, which could
-> be garbage.
+> I think you should discuss this more with Jesper before
+> submitting v2.
+> He does not like this to be included now due to merge conflict risk.
+> Basically I agree with him that we don't need to hurry with this fix.
+> 
+> Toshiaki Makita
+> 
+> > 
+> > Fixes: 9fc8d518d9d5 ("veth: Handle xdp_frames in xdp napi ring")
+> > Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> > ---
+> >   v2: add fixes tag, as well as commit log.
+> >   drivers/net/veth.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+> > index d4cbb9e8c63f..5ea550884bf8 100644
+> > --- a/drivers/net/veth.c
+> > +++ b/drivers/net/veth.c
+> > @@ -506,7 +506,7 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
+> >   		struct xdp_buff xdp;
+> >   		u32 act;
+> >   
+> > -		xdp.data_hard_start = hard_start;
+> > +		xdp.data_hard_start = head;
+> >   		xdp.data = frame->data;
+> >   		xdp.data_end = frame->data + frame->len;
+> >   		xdp.data_meta = frame->data - frame->metasize;
+> >   
 
-Yes. The BERT code should be using arch_apei_get_mem_attribute() to use the
-correct attributes. See ghes_map() for an example. bert_init() will need to use
-a version of ioremap() that takes the pgprot_t.
-
-Always using ioremap_cache() means you get a cacheable mapping, regardless of
-how firmware described this region in the UEFI memory map. This doesn't explain
-why you got an alignment fault.
-
-Otherwise, looks fine to me.
+Below is the patch that I have in my queue.  I've added a Reported-by
+tag to give you some credit, even-though I already had plans to fix
+this, as part of my XDP frame_sz work.
 
 
-(N.B. I ignored this patch as it wasn't copied to linux-arm-kernel and the
-subject says its about sysfs<->ACPI, nothing to do with APEI!)
+[PATCH RFC net-next] veth: adjust hard_start offset on redirect XDP frames
+
+When native XDP redirect into a veth device, the frame arrives in the
+xdp_frame structure. It is then processed in veth_xdp_rcv_one(),
+which can run a new XDP bpf_prog on the packet. Doing so requires
+converting xdp_frame to xdp_buff, but the tricky part is that
+xdp_frame memory area is located in the top (data_hard_start) memory
+area that xdp_buff will point into.
+
+The current code tried to protect the xdp_frame area, by assigning
+xdp_buff.data_hard_start past this memory. This results in 32 bytes
+less headroom to expand into via BPF-helper bpf_xdp_adjust_head().
+
+This protect step is actually not needed, because BPF-helper
+bpf_xdp_adjust_head() already reserve this area, and don't allow
+BPF-prog to expand into it. Thus, it is safe to point data_hard_start
+directly at xdp_frame memory area.
+
+Cc: Toshiaki Makita <makita.toshiaki@lab.ntt.co.jp>
+Fixes: 9fc8d518d9d5 ("veth: Handle xdp_frames in xdp napi ring")
+Reported-by: Mao Wenan <maowenan@huawei.com>
+Signed-off-by: Jesper Dangaard Brouer <brouer@redhat.com>
+---
+ drivers/net/veth.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 8cdc4415fa70..2edc04a8ab8e 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -493,13 +493,15 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
+ 					struct veth_xdp_tx_bq *bq)
+ {
+ 	void *hard_start = frame->data - frame->headroom;
+-	void *head = hard_start - sizeof(struct xdp_frame);
+ 	int len = frame->len, delta = 0;
+ 	struct xdp_frame orig_frame;
+ 	struct bpf_prog *xdp_prog;
+ 	unsigned int headroom;
+ 	struct sk_buff *skb;
+ 
++	/* bpf_xdp_adjust_head() assures BPF cannot access xdp_frame area */
++	hard_start -= sizeof(struct xdp_frame);
++
+ 	rcu_read_lock();
+ 	xdp_prog = rcu_dereference(rq->xdp_prog);
+ 	if (likely(xdp_prog)) {
+@@ -521,7 +523,6 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
+ 			break;
+ 		case XDP_TX:
+ 			orig_frame = *frame;
+-			xdp.data_hard_start = head;
+ 			xdp.rxq->mem = frame->mem;
+ 			if (unlikely(veth_xdp_tx(rq->dev, &xdp, bq) < 0)) {
+ 				trace_xdp_exception(rq->dev, xdp_prog, act);
+@@ -533,7 +534,6 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
+ 			goto xdp_xmit;
+ 		case XDP_REDIRECT:
+ 			orig_frame = *frame;
+-			xdp.data_hard_start = head;
+ 			xdp.rxq->mem = frame->mem;
+ 			if (xdp_do_redirect(rq->dev, &xdp, xdp_prog)) {
+ 				frame = &orig_frame;
+@@ -555,7 +555,7 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
+ 	rcu_read_unlock();
+ 
+ 	headroom = sizeof(struct xdp_frame) + frame->headroom - delta;
+-	skb = veth_build_skb(head, headroom, len, 0);
++	skb = veth_build_skb(hard_start, headroom, len, 0);
+ 	if (!skb) {
+ 		xdp_return_frame(frame);
+ 		goto err;
 
 
-Thanks,
+-- 
+Best regards,
+  Jesper Dangaard Brouer
+  MSc.CS, Principal Kernel Engineer at Red Hat
+  LinkedIn: http://www.linkedin.com/in/brouer
 
-James

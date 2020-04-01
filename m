@@ -2,33 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B07619B8D6
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 01:10:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B73C919B8ED
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 01:27:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387501AbgDAXKW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Apr 2020 19:10:22 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:48304 "EHLO
+        id S1733193AbgDAX1k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Apr 2020 19:27:40 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:48608 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732537AbgDAXKW (ORCPT
+        with ESMTP id S1732503AbgDAX1k (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Apr 2020 19:10:22 -0400
+        Wed, 1 Apr 2020 19:27:40 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jJmUu-0006TV-Ta; Wed, 01 Apr 2020 23:10:13 +0000
+        id 1jJmlk-0007s0-IS; Wed, 01 Apr 2020 23:27:36 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Boris Brezillon <bbrezillon@kernel.org>,
-        Arnaud Ebalard <arno@natisbad.org>,
-        Srujana Challa <schalla@marvell.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+To:     Igor Russkikh <irusskikh@marvell.com>,
         "David S . Miller" <davem@davemloft.net>,
-        Lukasz Bartosik <lbartosik@marvell.com>,
-        linux-crypto@vger.kernel.org
+        Mark Starovoytov <mstarovoitov@marvell.com>,
+        Dmitry Bogdanov <dbogdanov@marvell.com>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] crypto: marvell: fix double free of ptr
-Date:   Thu,  2 Apr 2020 00:10:12 +0100
-Message-Id: <20200401231012.407946-1-colin.king@canonical.com>
+Subject: [PATCH][next] net: atlantic: fix missing | operator when assigning rec->llc
+Date:   Thu,  2 Apr 2020 00:27:36 +0100
+Message-Id: <20200401232736.410028-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -40,54 +37,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently in the case where eq->src != req->ds, the allocation of
-ptr is kfree'd at the end of the code block. However later on in
-the case where enc is not null any of the error return paths that
-return via the error handling return path end up performing an
-erroneous second kfree of ptr.
+rec->llc is currently being assigned twice, once with the lower 8 bits
+from packed_record[8] and then re-assigned afterwards with data from
+packed_record[9].  This looks like a type, I believe the second assignment
+should be using the |= operator rather than a direct assignment.
 
-Fix this by adding an error exit label error_free and only jump to
-this when ptr needs kfree'ing thus avoiding the double free issue.
-
-Addresses-Coverity: ("Double free")
-Fixes: 10b4f09491bf ("crypto: marvell - add the Virtual Function driver for CPT")
+Addresses-Coverity: ("Unused value")
+Fixes: b8f8a0b7b5cb ("net: atlantic: MACSec ingress offload HW bindings")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/crypto/marvell/octeontx/otx_cptvf_algs.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/aquantia/atlantic/macsec/macsec_api.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/marvell/octeontx/otx_cptvf_algs.c b/drivers/crypto/marvell/octeontx/otx_cptvf_algs.c
-index 946fb62949b2..06202bcffb33 100644
---- a/drivers/crypto/marvell/octeontx/otx_cptvf_algs.c
-+++ b/drivers/crypto/marvell/octeontx/otx_cptvf_algs.c
-@@ -1161,13 +1161,13 @@ static inline u32 create_aead_null_output_list(struct aead_request *req,
- 					   inputlen);
- 		if (status != inputlen) {
- 			status = -EINVAL;
--			goto error;
-+			goto error_free;
- 		}
- 		status = sg_copy_from_buffer(req->dst, sg_nents(req->dst), ptr,
- 					     inputlen);
- 		if (status != inputlen) {
- 			status = -EINVAL;
--			goto error;
-+			goto error_free;
- 		}
- 		kfree(ptr);
- 	}
-@@ -1209,8 +1209,10 @@ static inline u32 create_aead_null_output_list(struct aead_request *req,
+diff --git a/drivers/net/ethernet/aquantia/atlantic/macsec/macsec_api.c b/drivers/net/ethernet/aquantia/atlantic/macsec/macsec_api.c
+index 97901c114bfa..fbe9d88b13c7 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/macsec/macsec_api.c
++++ b/drivers/net/ethernet/aquantia/atlantic/macsec/macsec_api.c
+@@ -491,7 +491,7 @@ get_ingress_preclass_record(struct aq_hw_s *hw,
+ 	rec->snap[1] = packed_record[8] & 0xFF;
  
- 	req_info->outcnt = argcnt;
- 	return 0;
--error:
-+
-+error_free:
- 	kfree(ptr);
-+error:
- 	return status;
- }
+ 	rec->llc = (packed_record[8] >> 8) & 0xFF;
+-	rec->llc = packed_record[9] << 8;
++	rec->llc |= packed_record[9] << 8;
  
+ 	rec->mac_sa[0] = packed_record[10];
+ 	rec->mac_sa[0] |= packed_record[11] << 16;
 -- 
 2.25.1
 

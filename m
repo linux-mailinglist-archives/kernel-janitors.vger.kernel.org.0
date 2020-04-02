@@ -2,93 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8927D19C2E5
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 15:45:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A6E119C317
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 15:51:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727412AbgDBNoz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 2 Apr 2020 09:44:55 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:44721 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726425AbgDBNoz (ORCPT
+        id S1732492AbgDBNv2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 Apr 2020 09:51:28 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:46892 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731579AbgDBNv2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 2 Apr 2020 09:44:55 -0400
-Received: by mail-wr1-f66.google.com with SMTP id m17so4225719wrw.11;
-        Thu, 02 Apr 2020 06:44:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=Wp4L7uJK5SurqL9J1O4zZL/b4dks4+Z+A5rqEGo9+BU=;
-        b=HjHIpmnrao09l+sfHu46xNdLDNeGracVhuSu3Bxb2smX2xFpT68A2qYf+WYwCZZqIr
-         6AaTP3S4uTaqxaRrjP5kFgUISkWBXx7TIOX9Y3U8QYk2bReuI+pDMjyz6gMj17o61TQp
-         AGJOel4TRgYeZnfsGUMEYFlhuWJ2H63sE48ENdbJS8pBOA3hdXkLmB6NuYOQSKICxCFp
-         /WiVmEykh3+imqDewXa2uWG+kAON7bUjCdYvEs4YjbWEov+cWJChs/GenaMb0i6SQn4X
-         D/2s7JAfYc7jCJv1HEFaxnu4uoUSqEgaZwgob0gjLpro6J3+Rxh+dlJENgdq/OzAhQq9
-         RHvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Wp4L7uJK5SurqL9J1O4zZL/b4dks4+Z+A5rqEGo9+BU=;
-        b=OQT2LGxK/RNBCcempZKhpAMRBFQK3dZn+8H0JgvTK8aOtBL0SGK9HG6QPaVnwbebzk
-         41HIqtud0ytCLuVyRcscYVPWY8wBkoCQSvdPdw9WTWJ5shNeqXIOmKDXlKYOTho8ZrKr
-         CGFWgjg0sLDN8nbYnmu1YQQVONRClZmQOL5uyjv2qC+zMhubig0jxqtynZmTuxMEK2+f
-         GV78rP7QUIiWTUVuSX9ofPoBqAHNJ7780P0YUOomBg5DMtuTQVestipFFqCz5T+CtHln
-         0ywxQR9Pp76krUP/opwMnlAVi4g46qDIodFsYIpmNwOvuAswmAkp47VFnjFC8opwGXir
-         n4WQ==
-X-Gm-Message-State: AGi0PubeDImueOc994xT6Z81d8awPT4AQ/QIGNzxkr/+0uf99OzaJRgx
-        N8KZhsy13b74XMD2zt2ca6lQmsU/
-X-Google-Smtp-Source: APiQypJAkXoXv8XH9rRAeegKGeeGARwZr8RvuFQd+0dRo6g6SDHMo65n53RH/d6DZXqkxEwurO4jiw==
-X-Received: by 2002:a05:6000:10c8:: with SMTP id b8mr3446059wrx.138.1585835093520;
-        Thu, 02 Apr 2020 06:44:53 -0700 (PDT)
-Received: from felia.fritz.box ([2001:16b8:2db9:4c00:958a:939d:c15f:43cb])
-        by smtp.gmail.com with ESMTPSA id j11sm7568469wrt.14.2020.04.02.06.44.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2020 06:44:53 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     devel@driverdev.osuosl.org, Joe Perches <joe@perches.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: remove entry after hp100 driver removal
-Date:   Thu,  2 Apr 2020 15:44:42 +0200
-Message-Id: <20200402134442.4709-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Thu, 2 Apr 2020 09:51:28 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 854E9128A0360;
+        Thu,  2 Apr 2020 06:51:27 -0700 (PDT)
+Date:   Thu, 02 Apr 2020 06:51:26 -0700 (PDT)
+Message-Id: <20200402.065126.1342599499039366040.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     irusskikh@marvell.com, mstarovoitov@marvell.com,
+        dbogdanov@marvell.com, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] net: atlantic: fix missing | operator when
+ assigning rec->llc
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200401232736.410028-1-colin.king@canonical.com>
+References: <20200401232736.410028-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 02 Apr 2020 06:51:27 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit a10079c66290 ("staging: remove hp100 driver") removed all files
-from ./drivers/staging/hp/, but missed to adjust MAINTAINERS.
+From: Colin King <colin.king@canonical.com>
+Date: Thu,  2 Apr 2020 00:27:36 +0100
 
-Since then, ./scripts/get_maintainer.pl --self-test=patterns complains:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> rec->llc is currently being assigned twice, once with the lower 8 bits
+> from packed_record[8] and then re-assigned afterwards with data from
+> packed_record[9].  This looks like a type, I believe the second assignment
+> should be using the |= operator rather than a direct assignment.
+> 
+> Addresses-Coverity: ("Unused value")
+> Fixes: b8f8a0b7b5cb ("net: atlantic: MACSec ingress offload HW bindings")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-  warning: no file matches F: drivers/staging/hp/hp100.*
-
-So, drop HP100 Driver entry in MAINTAINERS now.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-Greg, here is a minor non-urgent patch for staging.
-
- MAINTAINERS | 5 -----
- 1 file changed, 5 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index be43f1e37902..1c1abe8229af 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7721,11 +7721,6 @@ L:	platform-driver-x86@vger.kernel.org
- S:	Orphan
- F:	drivers/platform/x86/tc1100-wmi.c
- 
--HP100:	Driver for HP 10/100 Mbit/s Voice Grade Network Adapter Series
--M:	Jaroslav Kysela <perex@perex.cz>
--S:	Obsolete
--F:	drivers/staging/hp/hp100.*
--
- HPET:	High Precision Event Timers driver
- M:	Clemens Ladisch <clemens@ladisch.de>
- S:	Maintained
--- 
-2.17.1
-
+Applied, thanks.

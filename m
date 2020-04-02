@@ -2,179 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93E9819B9D8
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 03:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AD2619B9F3
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 03:34:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733094AbgDBBXY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Apr 2020 21:23:24 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:49440 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732462AbgDBBXX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Apr 2020 21:23:23 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 4C5354C9FB92A9B66279;
-        Thu,  2 Apr 2020 09:23:17 +0800 (CST)
-Received: from [127.0.0.1] (10.173.223.60) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.487.0; Thu, 2 Apr 2020
- 09:23:12 +0800
-Subject: Re: [PATCH net v2] veth: xdp: use head instead of hard_start
-To:     Jesper Dangaard Brouer <brouer@redhat.com>,
-        Toshiaki Makita <toshiaki.makita1@gmail.com>
-CC:     <davem@davemloft.net>, <ast@kernel.org>, <daniel@iogearbox.net>,
-        <kuba@kernel.org>, <hawk@kernel.org>, <john.fastabend@gmail.com>,
-        <kafai@fb.com>, <songliubraving@fb.com>, <yhs@fb.com>,
-        <andriin@fb.com>, <jwi@linux.ibm.com>, <jianglidong3@jd.com>,
-        <edumazet@google.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <fb5ab568-9bc8-3145-a8db-3e975ccdf846@gmail.com>
- <20200331060641.79999-1-maowenan@huawei.com>
- <7a1d55ad-1427-67fe-f204-4d4a0ab2c4b1@gmail.com>
- <20200401181419.7acd2aa6@carbon>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <348d193e-cc68-3be4-ae39-dd73dbba635c@huawei.com>
-Date:   Thu, 2 Apr 2020 09:23:11 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+        id S1733029AbgDBBeL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Apr 2020 21:34:11 -0400
+Received: from mga07.intel.com ([134.134.136.100]:50388 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732435AbgDBBeL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 1 Apr 2020 21:34:11 -0400
+IronPort-SDR: ra9YLEl274kI59wj+a5RbZeX7jKAITXRVUj+ykR7Wp8jiR8Id2rs07wBcOxd+YoKogGPieVmww
+ JVBEyNDdaLWA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2020 18:34:09 -0700
+IronPort-SDR: DLqdeTOYf1qgCyqWcABZ76eQylWBG4nUtfyaR4TwN5AwSYlI27YVFKD+fyy3yED2/41SExpUBb
+ OXBET1F/8Aow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,333,1580803200"; 
+   d="scan'208";a="422942571"
+Received: from shao2-debian.sh.intel.com (HELO [10.239.13.3]) ([10.239.13.3])
+  by orsmga005.jf.intel.com with ESMTP; 01 Apr 2020 18:34:07 -0700
+Subject: Re: [kbuild-all] Re: [RFC PATCH] usb: cdns3:
+ cdns3_clear_register_bit() can be static
+From:   Rong Chen <rong.a.chen@intel.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     kbuild test robot <lkp@intel.com>,
+        Colin King <colin.king@canonical.com>, kbuild-all@lists.01.org,
+        Sekhar Nori <nsekhar@ti.com>, Roger Quadros <rogerq@ti.com>,
+        Felipe Balbi <felipe.balbi@linux.intel.com>,
+        Pawel Laszczak <pawell@cadence.com>, linux-usb@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200325125041.94769-1-colin.king@canonical.com>
+ <20200326122858.GA50118@cde5a4ed3207> <20200326130418.GA1295433@kroah.com>
+ <571960b6-5ed7-2106-7091-3ea83c31051a@intel.com>
+ <20200327064255.GA1603489@kroah.com>
+ <372f30ad-fbea-d411-c58f-2d4692509a60@intel.com>
+Message-ID: <556997e2-1921-e3dd-c103-d6e3c8f91888@intel.com>
+Date:   Thu, 2 Apr 2020 09:33:46 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20200401181419.7acd2aa6@carbon>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+In-Reply-To: <372f30ad-fbea-d411-c58f-2d4692509a60@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.223.60]
-X-CFilter-Loop: Reflected
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020/4/2 0:15, Jesper Dangaard Brouer wrote:
-> On Tue, 31 Mar 2020 15:16:22 +0900
-> Toshiaki Makita <toshiaki.makita1@gmail.com> wrote:
-> 
->> On 2020/03/31 15:06, Mao Wenan wrote:
->>> xdp.data_hard_start is equal to first address of
->>> struct xdp_frame, which is mentioned in
->>> convert_to_xdp_frame(). But the pointer hard_start
->>> in veth_xdp_rcv_one() is 32 bytes offset of frame,
->>> so it should use head instead of hard_start to
->>> set xdp.data_hard_start. Otherwise, if BPF program
->>> calls helper_function such as bpf_xdp_adjust_head, it
->>> will be confused for xdp_frame_end.  
->>
->> I think you should discuss this more with Jesper before
->> submitting v2.
->> He does not like this to be included now due to merge conflict risk.
->> Basically I agree with him that we don't need to hurry with this fix.
->>
->> Toshiaki Makita
->>
+
+
+On 3/27/20 2:53 PM, Rong Chen wrote:
+>
+>
+> On 3/27/20 2:42 PM, Greg Kroah-Hartman wrote:
+>> On Fri, Mar 27, 2020 at 08:34:52AM +0800, Rong Chen wrote:
 >>>
->>> Fixes: 9fc8d518d9d5 ("veth: Handle xdp_frames in xdp napi ring")
->>> Signed-off-by: Mao Wenan <maowenan@huawei.com>
->>> ---
->>>   v2: add fixes tag, as well as commit log.
->>>   drivers/net/veth.c | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>> On 3/26/20 9:04 PM, Greg Kroah-Hartman wrote:
+>>>> On Thu, Mar 26, 2020 at 08:28:58PM +0800, kbuild test robot wrote:
+>>>>> Fixes: 87db1192dc33 ("usb: cdns3: make signed 1 bit bitfields 
+>>>>> unsigned")
+>>>> This original patch did not "cause" this problem, it's just that 
+>>>> you for
+>>>> some reason ran sparse for the first time on the file.
+>>>>
+>>>> So I can't take this as-is, can you remove this line and resend?
+>>> Hi Greg,
 >>>
->>> diff --git a/drivers/net/veth.c b/drivers/net/veth.c
->>> index d4cbb9e8c63f..5ea550884bf8 100644
->>> --- a/drivers/net/veth.c
->>> +++ b/drivers/net/veth.c
->>> @@ -506,7 +506,7 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
->>>   		struct xdp_buff xdp;
->>>   		u32 act;
->>>   
->>> -		xdp.data_hard_start = hard_start;
->>> +		xdp.data_hard_start = head;
->>>   		xdp.data = frame->data;
->>>   		xdp.data_end = frame->data + frame->len;
->>>   		xdp.data_meta = frame->data - frame->metasize;
->>>   
-> 
-> Below is the patch that I have in my queue.  I've added a Reported-by
-> tag to give you some credit, even-though I already had plans to fix
-> this, as part of my XDP frame_sz work.
-thanks for reported-by.
-Actually the fault is found by reviewing veth code two weeks ago,
-when I debugged another warning bpf_warn_invalid_xdp_action associated veth
-module, and there is no chance to send such fix patch as quick.
+>>> Sorry for the inconvenience, the patch was generated by the bot,
+>>> we'll check and resend it.
+>> It's fine that it was generated, it's a bug somewhere that thinks this
+>> specific patch was a problem so that this generated patch fixed it.
+> Yes, you are right, we'll fix the bug asap.
+>
 
-> 
-> 
-> [PATCH RFC net-next] veth: adjust hard_start offset on redirect XDP frames
-> 
-> When native XDP redirect into a veth device, the frame arrives in the
-> xdp_frame structure. It is then processed in veth_xdp_rcv_one(),
-> which can run a new XDP bpf_prog on the packet. Doing so requires
-> converting xdp_frame to xdp_buff, but the tricky part is that
-> xdp_frame memory area is located in the top (data_hard_start) memory
-> area that xdp_buff will point into.
-> 
-> The current code tried to protect the xdp_frame area, by assigning
-> xdp_buff.data_hard_start past this memory. This results in 32 bytes
-> less headroom to expand into via BPF-helper bpf_xdp_adjust_head().
-> 
-> This protect step is actually not needed, because BPF-helper
-> bpf_xdp_adjust_head() already reserve this area, and don't allow
-> BPF-prog to expand into it. Thus, it is safe to point data_hard_start
-> directly at xdp_frame memory area.
-> 
-> Cc: Toshiaki Makita <makita.toshiaki@lab.ntt.co.jp>
-> Fixes: 9fc8d518d9d5 ("veth: Handle xdp_frames in xdp napi ring")
-> Reported-by: Mao Wenan <maowenan@huawei.com>
-> Signed-off-by: Jesper Dangaard Brouer <brouer@redhat.com>
-> ---
->  drivers/net/veth.c |    8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-> index 8cdc4415fa70..2edc04a8ab8e 100644
-> --- a/drivers/net/veth.c
-> +++ b/drivers/net/veth.c
-> @@ -493,13 +493,15 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
->  					struct veth_xdp_tx_bq *bq)
->  {
->  	void *hard_start = frame->data - frame->headroom;
-> -	void *head = hard_start - sizeof(struct xdp_frame);
->  	int len = frame->len, delta = 0;
->  	struct xdp_frame orig_frame;
->  	struct bpf_prog *xdp_prog;
->  	unsigned int headroom;
->  	struct sk_buff *skb;
->  
-> +	/* bpf_xdp_adjust_head() assures BPF cannot access xdp_frame area */
-> +	hard_start -= sizeof(struct xdp_frame);
-> +
->  	rcu_read_lock();
->  	xdp_prog = rcu_dereference(rq->xdp_prog);
->  	if (likely(xdp_prog)) {
-> @@ -521,7 +523,6 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
->  			break;
->  		case XDP_TX:
->  			orig_frame = *frame;
-> -			xdp.data_hard_start = head;
->  			xdp.rxq->mem = frame->mem;
->  			if (unlikely(veth_xdp_tx(rq->dev, &xdp, bq) < 0)) {
->  				trace_xdp_exception(rq->dev, xdp_prog, act);
-> @@ -533,7 +534,6 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
->  			goto xdp_xmit;
->  		case XDP_REDIRECT:
->  			orig_frame = *frame;
-> -			xdp.data_hard_start = head;
->  			xdp.rxq->mem = frame->mem;
->  			if (xdp_do_redirect(rq->dev, &xdp, xdp_prog)) {
->  				frame = &orig_frame;
-> @@ -555,7 +555,7 @@ static struct sk_buff *veth_xdp_rcv_one(struct veth_rq *rq,
->  	rcu_read_unlock();
->  
->  	headroom = sizeof(struct xdp_frame) + frame->headroom - delta;
-> -	skb = veth_build_skb(head, headroom, len, 0);
-> +	skb = veth_build_skb(hard_start, headroom, len, 0);
->  	if (!skb) {
->  		xdp_return_frame(frame);
->  		goto err;
-> 
-> 
+Hi Greg,
 
+The commit 87db1192dc33 ("usb: cdns3: make signed 1 bit bitfields 
+unsigned") fixed a sparse error
+which causes many sparse warnings exposed, we'll remove the wrong 
+"Fixes" in our patch in future.
 
+Best Regards,
+Rong Chen

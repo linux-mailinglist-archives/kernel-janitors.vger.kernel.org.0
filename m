@@ -2,89 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AD2619B9F3
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 03:34:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 264BC19BE5B
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 11:06:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733029AbgDBBeL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Apr 2020 21:34:11 -0400
-Received: from mga07.intel.com ([134.134.136.100]:50388 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732435AbgDBBeL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Apr 2020 21:34:11 -0400
-IronPort-SDR: ra9YLEl274kI59wj+a5RbZeX7jKAITXRVUj+ykR7Wp8jiR8Id2rs07wBcOxd+YoKogGPieVmww
- JVBEyNDdaLWA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2020 18:34:09 -0700
-IronPort-SDR: DLqdeTOYf1qgCyqWcABZ76eQylWBG4nUtfyaR4TwN5AwSYlI27YVFKD+fyy3yED2/41SExpUBb
- OXBET1F/8Aow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,333,1580803200"; 
-   d="scan'208";a="422942571"
-Received: from shao2-debian.sh.intel.com (HELO [10.239.13.3]) ([10.239.13.3])
-  by orsmga005.jf.intel.com with ESMTP; 01 Apr 2020 18:34:07 -0700
-Subject: Re: [kbuild-all] Re: [RFC PATCH] usb: cdns3:
- cdns3_clear_register_bit() can be static
-From:   Rong Chen <rong.a.chen@intel.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     kbuild test robot <lkp@intel.com>,
-        Colin King <colin.king@canonical.com>, kbuild-all@lists.01.org,
-        Sekhar Nori <nsekhar@ti.com>, Roger Quadros <rogerq@ti.com>,
-        Felipe Balbi <felipe.balbi@linux.intel.com>,
-        Pawel Laszczak <pawell@cadence.com>, linux-usb@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200325125041.94769-1-colin.king@canonical.com>
- <20200326122858.GA50118@cde5a4ed3207> <20200326130418.GA1295433@kroah.com>
- <571960b6-5ed7-2106-7091-3ea83c31051a@intel.com>
- <20200327064255.GA1603489@kroah.com>
- <372f30ad-fbea-d411-c58f-2d4692509a60@intel.com>
-Message-ID: <556997e2-1921-e3dd-c103-d6e3c8f91888@intel.com>
-Date:   Thu, 2 Apr 2020 09:33:46 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S2387797AbgDBJGi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 Apr 2020 05:06:38 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:21011 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728612AbgDBJGi (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 2 Apr 2020 05:06:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1585818397;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=65cLaBQBBxQNS4tib9PUIecsC4BcpagR0uIUdTj5N9c=;
+        b=N5KoIne36YXUT9uW4cRYgza9cWPTR4Grwx3HX8V86nGXgHVYm2u8C+YJ7b+4PIYpp4tHC6
+        19vOvYqBLJQ5CvsT2ZKbcJg6+g18j6kQTZDxXFTnl6/TegVyqLd2uzdHDdRDCZek/du3/b
+        +ZDepoSXTdsky9RpYxBZME57qmo26F0=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-175-xaPBBNPnMLaUxkTVbBxdmA-1; Thu, 02 Apr 2020 05:06:33 -0400
+X-MC-Unique: xaPBBNPnMLaUxkTVbBxdmA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id EAE4F1083E8A;
+        Thu,  2 Apr 2020 09:06:29 +0000 (UTC)
+Received: from carbon (unknown [10.40.208.16])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 5033526DC3;
+        Thu,  2 Apr 2020 09:06:21 +0000 (UTC)
+Date:   Thu, 2 Apr 2020 11:06:19 +0200
+From:   Jesper Dangaard Brouer <brouer@redhat.com>
+To:     Toshiaki Makita <toshiaki.makita1@gmail.com>
+Cc:     Mao Wenan <maowenan@huawei.com>, davem@davemloft.net,
+        ast@kernel.org, daniel@iogearbox.net, kuba@kernel.org,
+        hawk@kernel.org, john.fastabend@gmail.com, kafai@fb.com,
+        songliubraving@fb.com, yhs@fb.com, andriin@fb.com,
+        jwi@linux.ibm.com, jianglidong3@jd.com, edumazet@google.com,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        brouer@redhat.com
+Subject: Re: [PATCH net v2] veth: xdp: use head instead of hard_start
+Message-ID: <20200402110619.48f31a63@carbon>
+In-Reply-To: <ede2f407-839e-d29e-0ebe-aa39dd461bfd@gmail.com>
+References: <fb5ab568-9bc8-3145-a8db-3e975ccdf846@gmail.com>
+        <20200331060641.79999-1-maowenan@huawei.com>
+        <7a1d55ad-1427-67fe-f204-4d4a0ab2c4b1@gmail.com>
+        <20200401181419.7acd2aa6@carbon>
+        <ede2f407-839e-d29e-0ebe-aa39dd461bfd@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <372f30ad-fbea-d411-c58f-2d4692509a60@intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Thu, 2 Apr 2020 09:47:03 +0900
+Toshiaki Makita <toshiaki.makita1@gmail.com> wrote:
 
+> On 2020/04/02 1:15, Jesper Dangaard Brouer wrote:
+> ...
+> > [PATCH RFC net-next] veth: adjust hard_start offset on redirect XDP frames
+> > 
+> > When native XDP redirect into a veth device, the frame arrives in the
+> > xdp_frame structure. It is then processed in veth_xdp_rcv_one(),
+> > which can run a new XDP bpf_prog on the packet. Doing so requires
+> > converting xdp_frame to xdp_buff, but the tricky part is that
+> > xdp_frame memory area is located in the top (data_hard_start) memory
+> > area that xdp_buff will point into.
+> > 
+> > The current code tried to protect the xdp_frame area, by assigning
+> > xdp_buff.data_hard_start past this memory. This results in 32 bytes
+> > less headroom to expand into via BPF-helper bpf_xdp_adjust_head().
+> > 
+> > This protect step is actually not needed, because BPF-helper
+> > bpf_xdp_adjust_head() already reserve this area, and don't allow
+> > BPF-prog to expand into it. Thus, it is safe to point data_hard_start
+> > directly at xdp_frame memory area.
+> > 
+> > Cc: Toshiaki Makita <makita.toshiaki@lab.ntt.co.jp>  
+> 
+> FYI: This mail address is deprecated.
+> 
+> > Fixes: 9fc8d518d9d5 ("veth: Handle xdp_frames in xdp napi ring")
+> > Reported-by: Mao Wenan <maowenan@huawei.com>
+> > Signed-off-by: Jesper Dangaard Brouer <brouer@redhat.com>  
+> 
+> FWIW,
+> 
+> Acked-by: Toshiaki Makita <toshiaki.makita1@gmail.com>
 
-On 3/27/20 2:53 PM, Rong Chen wrote:
->
->
-> On 3/27/20 2:42 PM, Greg Kroah-Hartman wrote:
->> On Fri, Mar 27, 2020 at 08:34:52AM +0800, Rong Chen wrote:
->>>
->>> On 3/26/20 9:04 PM, Greg Kroah-Hartman wrote:
->>>> On Thu, Mar 26, 2020 at 08:28:58PM +0800, kbuild test robot wrote:
->>>>> Fixes: 87db1192dc33 ("usb: cdns3: make signed 1 bit bitfields 
->>>>> unsigned")
->>>> This original patch did not "cause" this problem, it's just that 
->>>> you for
->>>> some reason ran sparse for the first time on the file.
->>>>
->>>> So I can't take this as-is, can you remove this line and resend?
->>> Hi Greg,
->>>
->>> Sorry for the inconvenience, the patch was generated by the bot,
->>> we'll check and resend it.
->> It's fine that it was generated, it's a bug somewhere that thinks this
->> specific patch was a problem so that this generated patch fixed it.
-> Yes, you are right, we'll fix the bug asap.
->
+Thanks.
 
-Hi Greg,
+I have updated your email and added your ack in my patchset.  I will
+submit this officially once net-next opens up again[1], as part my
+larger patchset for introducing XDP frame_sz.
 
-The commit 87db1192dc33 ("usb: cdns3: make signed 1 bit bitfields 
-unsigned") fixed a sparse error
-which causes many sparse warnings exposed, we'll remove the wrong 
-"Fixes" in our patch in future.
+[1] http://vger.kernel.org/~davem/net-next.html
+-- 
+Best regards,
+  Jesper Dangaard Brouer
+  MSc.CS, Principal Kernel Engineer at Red Hat
+  LinkedIn: http://www.linkedin.com/in/brouer
 
-Best Regards,
-Rong Chen

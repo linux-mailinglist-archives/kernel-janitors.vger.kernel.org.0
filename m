@@ -2,28 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 547C319BFF5
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 13:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11FE219C009
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 13:19:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388012AbgDBLNo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 2 Apr 2020 07:13:44 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:37992 "EHLO
+        id S2388039AbgDBLTG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 Apr 2020 07:19:06 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:38068 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728803AbgDBLNo (ORCPT
+        with ESMTP id S1728803AbgDBLTG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 2 Apr 2020 07:13:44 -0400
+        Thu, 2 Apr 2020 07:19:06 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jJxn4-0004jB-2I; Thu, 02 Apr 2020 11:13:42 +0000
+        id 1jJxsF-0004zU-Tt; Thu, 02 Apr 2020 11:19:04 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>
+To:     Coly Li <colyli@suse.de>,
+        Kent Overstreet <kent.overstreet@gmail.com>,
+        linux-bcache@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] driver core: platform: remove redundant assignment to variable ret
-Date:   Thu,  2 Apr 2020 12:13:41 +0100
-Message-Id: <20200402111341.511801-1-colin.king@canonical.com>
+Subject: [PATCH] bcache: remove redundant variables i and n
+Date:   Thu,  2 Apr 2020 12:19:03 +0100
+Message-Id: <20200402111903.514146-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,29 +36,30 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable ret is being initialized with a value that is never read
-and it is being updated later with a new value. The initialization is
+Variables i and n are being assigned but are never used. They are
 redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/base/platform.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/bcache/btree.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index 5255550b7c34..2e454c18b3a9 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -668,7 +668,7 @@ EXPORT_SYMBOL_GPL(platform_device_unregister);
- struct platform_device *platform_device_register_full(
- 		const struct platform_device_info *pdevinfo)
- {
--	int ret = -ENOMEM;
-+	int ret;
- 	struct platform_device *pdev;
+diff --git a/drivers/md/bcache/btree.c b/drivers/md/bcache/btree.c
+index 72856e5f23a3..114d0d73d909 100644
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -1907,10 +1907,8 @@ static int bch_btree_check_thread(void *arg)
+ 	struct btree_iter iter;
+ 	struct bkey *k, *p;
+ 	int cur_idx, prev_idx, skip_nr;
+-	int i, n;
  
- 	pdev = platform_device_alloc(pdevinfo->name, pdevinfo->id);
+ 	k = p = NULL;
+-	i = n = 0;
+ 	cur_idx = prev_idx = 0;
+ 	ret = 0;
+ 
 -- 
 2.25.1
 

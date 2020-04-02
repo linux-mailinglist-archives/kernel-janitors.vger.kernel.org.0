@@ -2,28 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA7E819BF4C
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 12:25:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8268E19BFA3
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 12:50:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387610AbgDBKZj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 2 Apr 2020 06:25:39 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:36937 "EHLO
+        id S2387984AbgDBKuF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 Apr 2020 06:50:05 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:37351 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728803AbgDBKZj (ORCPT
+        with ESMTP id S1728612AbgDBKuE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 2 Apr 2020 06:25:39 -0400
+        Thu, 2 Apr 2020 06:50:04 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jJx2X-0001du-Gt; Thu, 02 Apr 2020 10:25:37 +0000
+        id 1jJxQ8-0003JL-GG; Thu, 02 Apr 2020 10:50:00 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        linux-efi@vger.kernel.org
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+        Todd Kjos <tkjos@android.com>,
+        Martijn Coenen <maco@android.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Christian Brauner <christian@brauner.io>,
+        devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] efi/libstub/x86: remove redundant assignment to pointer hdr
-Date:   Thu,  2 Apr 2020 11:25:37 +0100
-Message-Id: <20200402102537.503103-1-colin.king@canonical.com>
+Subject: [PATCH] binderfs: remove redundant assignment to pointer ctx
+Date:   Thu,  2 Apr 2020 11:50:00 +0100
+Message-Id: <20200402105000.506296-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,29 +40,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The pointer hdr is being assigned a value that is never read and
-it is being updated later with a new value. The assignment is
-redundant and can be removed.
+The pointer ctx is being initialized with a value that is never read
+and it is being updated later with a new value. The initialization
+is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/firmware/efi/libstub/x86-stub.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/android/binderfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 8d3a707789de..e02ea51273ff 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -392,8 +392,6 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	image_base = efi_table_attr(image, image_base);
- 	image_offset = (void *)startup_32 - image_base;
+diff --git a/drivers/android/binderfs.c b/drivers/android/binderfs.c
+index 9ecad74183a3..8352a3d160bf 100644
+--- a/drivers/android/binderfs.c
++++ b/drivers/android/binderfs.c
+@@ -747,7 +747,7 @@ static const struct fs_context_operations binderfs_fs_context_ops = {
  
--	hdr = &((struct boot_params *)image_base)->hdr;
--
- 	status = efi_allocate_pages(0x4000, (unsigned long *)&boot_params, ULONG_MAX);
- 	if (status != EFI_SUCCESS) {
- 		efi_printk("Failed to allocate lowmem for boot params\n");
+ static int binderfs_init_fs_context(struct fs_context *fc)
+ {
+-	struct binderfs_mount_opts *ctx = fc->fs_private;
++	struct binderfs_mount_opts *ctx;
+ 
+ 	ctx = kzalloc(sizeof(struct binderfs_mount_opts), GFP_KERNEL);
+ 	if (!ctx)
 -- 
 2.25.1
 

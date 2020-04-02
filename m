@@ -2,168 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA28819C2D2
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 15:41:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8927D19C2E5
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 15:45:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388710AbgDBNkw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 2 Apr 2020 09:40:52 -0400
-Received: from mx01-sz.bfs.de ([194.94.69.67]:42177 "EHLO mx02-sz.bfs.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2388704AbgDBNkw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 2 Apr 2020 09:40:52 -0400
-Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
-        by mx02-sz.bfs.de (Postfix) with ESMTPS id AAA892032C;
-        Thu,  2 Apr 2020 15:40:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1585834849;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QlZyfiAFQ9KUa3zeoxNhARJVXQImLekdjEDxCvhasc4=;
-        b=Cf0jEKAhDqDvM0dE4hGtZNgiNPz0F5tb7EOeCsUjkVtXHNdEkLFL+jGKFnNWKxlr33DHoj
-        e+VswiL+MGUfg8WYDJtT68M6zMZanhUoY0rkvX5BhPkEVKpJnUzLhq2kFJoX0dKF5sGTh1
-        EMRZ5T74SEJcPLtq12cztffp5llGp09lbhh3YYFAzG3HR51Pux/8n6/+ch6hRhYvWvEehl
-        j3+j6UU9iZ/ef3g5kCo/dIt8voc50K2cIgRe+9q4nmVDM+q1wg4su9Rmo4ewBFl76OETQn
-        hwpFZB/dGdD7ym6b41E1OPbhzV1wHj7OXKwIuH4fJZxaRpd9Af1MKQ4FSKCKeg==
-Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
- (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.1913.5; Thu, 2 Apr 2020
- 15:40:49 +0200
-Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
- SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%6]) with mapi id
- 15.01.1913.005; Thu, 2 Apr 2020 15:40:49 +0200
-From:   Walter Harms <wharms@bfs.de>
-To:     Colin King <colin.king@canonical.com>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: AW: [PATCH][next] rtc: ds1307: check for failed memory allocation on
- wdt
-Thread-Topic: [PATCH][next] rtc: ds1307: check for failed memory allocation on
- wdt
-Thread-Index: AQHWCPC8EF0a6BxpC06p5UODJlWRsahl1nQZ
-Date:   Thu, 2 Apr 2020 13:40:49 +0000
-Message-ID: <54a09b5502ee45e9a926a025ae576498@bfs.de>
-References: <20200402131441.539088-1-colin.king@canonical.com>
-In-Reply-To: <20200402131441.539088-1-colin.king@canonical.com>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.137.16.39]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-Spam-Status: No, score=-2.87
-Authentication-Results: mx02-sz.bfs.de;
-        none
-X-Spamd-Result: default: False [-2.87 / 7.00];
-         ARC_NA(0.00)[];
-         TO_DN_EQ_ADDR_SOME(0.00)[];
-         HAS_XOIP(0.00)[];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         DKIM_SIGNED(0.00)[];
-         RCPT_COUNT_SEVEN(0.00)[8];
-         RCVD_NO_TLS_LAST(0.10)[];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         MID_RHS_MATCH_FROM(0.00)[];
-         BAYES_HAM(-2.87)[99.44%]
+        id S1727412AbgDBNoz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 Apr 2020 09:44:55 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:44721 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726425AbgDBNoz (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 2 Apr 2020 09:44:55 -0400
+Received: by mail-wr1-f66.google.com with SMTP id m17so4225719wrw.11;
+        Thu, 02 Apr 2020 06:44:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=Wp4L7uJK5SurqL9J1O4zZL/b4dks4+Z+A5rqEGo9+BU=;
+        b=HjHIpmnrao09l+sfHu46xNdLDNeGracVhuSu3Bxb2smX2xFpT68A2qYf+WYwCZZqIr
+         6AaTP3S4uTaqxaRrjP5kFgUISkWBXx7TIOX9Y3U8QYk2bReuI+pDMjyz6gMj17o61TQp
+         AGJOel4TRgYeZnfsGUMEYFlhuWJ2H63sE48ENdbJS8pBOA3hdXkLmB6NuYOQSKICxCFp
+         /WiVmEykh3+imqDewXa2uWG+kAON7bUjCdYvEs4YjbWEov+cWJChs/GenaMb0i6SQn4X
+         D/2s7JAfYc7jCJv1HEFaxnu4uoUSqEgaZwgob0gjLpro6J3+Rxh+dlJENgdq/OzAhQq9
+         RHvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=Wp4L7uJK5SurqL9J1O4zZL/b4dks4+Z+A5rqEGo9+BU=;
+        b=OQT2LGxK/RNBCcempZKhpAMRBFQK3dZn+8H0JgvTK8aOtBL0SGK9HG6QPaVnwbebzk
+         41HIqtud0ytCLuVyRcscYVPWY8wBkoCQSvdPdw9WTWJ5shNeqXIOmKDXlKYOTho8ZrKr
+         CGFWgjg0sLDN8nbYnmu1YQQVONRClZmQOL5uyjv2qC+zMhubig0jxqtynZmTuxMEK2+f
+         GV78rP7QUIiWTUVuSX9ofPoBqAHNJ7780P0YUOomBg5DMtuTQVestipFFqCz5T+CtHln
+         0ywxQR9Pp76krUP/opwMnlAVi4g46qDIodFsYIpmNwOvuAswmAkp47VFnjFC8opwGXir
+         n4WQ==
+X-Gm-Message-State: AGi0PubeDImueOc994xT6Z81d8awPT4AQ/QIGNzxkr/+0uf99OzaJRgx
+        N8KZhsy13b74XMD2zt2ca6lQmsU/
+X-Google-Smtp-Source: APiQypJAkXoXv8XH9rRAeegKGeeGARwZr8RvuFQd+0dRo6g6SDHMo65n53RH/d6DZXqkxEwurO4jiw==
+X-Received: by 2002:a05:6000:10c8:: with SMTP id b8mr3446059wrx.138.1585835093520;
+        Thu, 02 Apr 2020 06:44:53 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2db9:4c00:958a:939d:c15f:43cb])
+        by smtp.gmail.com with ESMTPSA id j11sm7568469wrt.14.2020.04.02.06.44.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Apr 2020 06:44:53 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     devel@driverdev.osuosl.org, Joe Perches <joe@perches.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: remove entry after hp100 driver removal
+Date:   Thu,  2 Apr 2020 15:44:42 +0200
+Message-Id: <20200402134442.4709-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Commit a10079c66290 ("staging: remove hp100 driver") removed all files
+from ./drivers/staging/hp/, but missed to adjust MAINTAINERS.
 
-________________________________________
-Von: kernel-janitors-owner@vger.kernel.org <kernel-janitors-owner@vger.kern=
-el.org> im Auftrag von Colin King <colin.king@canonical.com>
-Gesendet: Donnerstag, 2. April 2020 15:14
-An: Alessandro Zummo; Alexandre Belloni; Guenter Roeck; Chris Packham; linu=
-x-rtc@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
-Betreff: [PATCH][next] rtc: ds1307: check for failed memory allocation on w=
-dt
+Since then, ./scripts/get_maintainer.pl --self-test=patterns complains:
 
-From: Colin Ian King <colin.king@canonical.com>
+  warning: no file matches F: drivers/staging/hp/hp100.*
 
-Currently a failed memory allocation will lead to a null pointer
-dereference on point wdt.  Fix this by checking for a failed allocation
-and adding error return handling to function ds1307_wdt_register.
+So, drop HP100 Driver entry in MAINTAINERS now.
 
-Addresses-Coverity: ("Dereference null return")
-Fixes: fd90d48db037 ("rtc: ds1307: add support for watchdog timer on ds1388=
-")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
- drivers/rtc/rtc-ds1307.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+Greg, here is a minor non-urgent patch for staging.
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index fad042118862..95c5b6facc59 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -1665,14 +1665,16 @@ static const struct watchdog_ops ds1388_wdt_ops =3D=
- {
+ MAINTAINERS | 5 -----
+ 1 file changed, 5 deletions(-)
 
- };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index be43f1e37902..1c1abe8229af 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7721,11 +7721,6 @@ L:	platform-driver-x86@vger.kernel.org
+ S:	Orphan
+ F:	drivers/platform/x86/tc1100-wmi.c
+ 
+-HP100:	Driver for HP 10/100 Mbit/s Voice Grade Network Adapter Series
+-M:	Jaroslav Kysela <perex@perex.cz>
+-S:	Obsolete
+-F:	drivers/staging/hp/hp100.*
+-
+ HPET:	High Precision Event Timers driver
+ M:	Clemens Ladisch <clemens@ladisch.de>
+ S:	Maintained
+-- 
+2.17.1
 
--static void ds1307_wdt_register(struct ds1307 *ds1307)
-+static int ds1307_wdt_register(struct ds1307 *ds1307)
- {
-        struct watchdog_device  *wdt;
-
-        if (ds1307->type !=3D ds_1388)
--               return;
-+               return 0;
-
-        wdt =3D devm_kzalloc(ds1307->dev, sizeof(*wdt), GFP_KERNEL);
-+       if (!wdt)
-+               return -ENOMEM;
-
-        wdt->info =3D &ds1388_wdt_info;
-        wdt->ops =3D &ds1388_wdt_ops;
-@@ -1683,10 +1685,13 @@ static void ds1307_wdt_register(struct ds1307 *ds13=
-07)
-        watchdog_init_timeout(wdt, 0, ds1307->dev);
-        watchdog_set_drvdata(wdt, ds1307);
-        devm_watchdog_register_device(ds1307->dev, wdt);
-+
-+       return 0;
- }
- #else
--static void ds1307_wdt_register(struct ds1307 *ds1307)
-+static int ds1307_wdt_register(struct ds1307 *ds1307)
- {
-+       return 0;
- }
- #endif /* CONFIG_WATCHDOG_CORE */
-
-@@ -1979,9 +1984,9 @@ static int ds1307_probe(struct i2c_client *client,
-
-        ds1307_hwmon_register(ds1307);
-        ds1307_clks_register(ds1307);
--       ds1307_wdt_register(ds1307);
-+       err =3D ds1307_wdt_register(ds1307);
-
--       return 0;
-+       return err;
-
- exit:
-        return err;
---
-2.25.1
-
-IMHO, one "return err;" is sufficient.
-
-re,
- wh

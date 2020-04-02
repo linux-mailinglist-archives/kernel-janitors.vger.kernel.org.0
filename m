@@ -2,121 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2808819C5C2
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 17:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 828EA19C61F
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 17:41:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389162AbgDBPYa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 2 Apr 2020 11:24:30 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:44406 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388740AbgDBPYa (ORCPT
+        id S2389423AbgDBPkh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 Apr 2020 11:40:37 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:34162 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388972AbgDBPkh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 2 Apr 2020 11:24:30 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 032F9dqH135553;
-        Thu, 2 Apr 2020 15:24:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : in-reply-to : message-id : references : mime-version :
- content-type; s=corp-2020-01-29;
- bh=YGiAhHtA16Q4tYk3m8cxFMkmHJt5fwf0CJBlxo32jHs=;
- b=ASIJARDm1PIk4kwOZIQ/G2LV3UUzl+F21EoYeQOkgwMYJ4ZIRGUPGWN4oPVyuvJ3VMxB
- HUCzIOI1gvCHxqUIx8A3AOYC7qzcXB1yKbwMrGmY+6okK0DL5Rw28qfSsK7QA5bo8ORw
- 85aBsx/SkdgrQ+huiQZJrFvrhIi8qF+jFVX2UjlHVUOet632/R8PNQqQ1YFl8WgzclbU
- LXvizAMtZ2ZmeUJbZAcLbgoq2+vjs4TXd34QJCNuGgrtcX0ergwmzix2saYUV5jPNFsY
- VjdhuUO/6rgD7XTNu1rcwUsNogrsQI+ot7hpqJKdHpAcbzoTJDRGBiydKGOcnAEeMtWl hw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 303cevc52w-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 02 Apr 2020 15:24:20 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 032F8U37188492;
-        Thu, 2 Apr 2020 15:24:20 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 302g4vq7td-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 02 Apr 2020 15:24:20 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 032FOHRv019903;
-        Thu, 2 Apr 2020 15:24:17 GMT
-Received: from localhost.localdomain (/95.45.14.174)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 02 Apr 2020 08:24:17 -0700
-Date:   Thu, 2 Apr 2020 16:24:10 +0100 (BST)
-From:   Alan Maguire <alan.maguire@oracle.com>
-X-X-Sender: alan@localhost
-To:     Colin King <colin.king@canonical.com>
-cc:     Brendan Higgins <brendanhiggins@google.com>,
-        Frank Rowand <frank.rowand@sony.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Alan Maguire <alan.maguire@oracle.com>,
-        linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] kunit: fix dereference of suite before it has been
- null checked
-In-Reply-To: <20200402150314.568044-1-colin.king@canonical.com>
-Message-ID: <alpine.LRH.2.21.2004021623270.21551@localhost>
-References: <20200402150314.568044-1-colin.king@canonical.com>
-User-Agent: Alpine 2.21 (LRH 202 2017-01-01)
+        Thu, 2 Apr 2020 11:40:37 -0400
+Received: by mail-lf1-f65.google.com with SMTP id e7so3144533lfq.1;
+        Thu, 02 Apr 2020 08:40:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1+2erfkkbu3TLnQgP4FNOMyrP6eIdZu6/WJPUCTbdAA=;
+        b=QiJY6vAFVaADxgmOmeE784cvy5UzSNFL7qXv9U7OiG/ZMEuwa2vEwY6vVWcaccQ7na
+         GbAEDP+GKI/k7Z4eVfyfmSz10A/spb4g63pOAA3oq6T/nxAAd3YUVZOuzoqxoF3wW+PZ
+         qFpyF74CkGNiCdMXkCbmmeBtF20TG/+rjyFJSvz4kQY/Euvsp7hRzDziIIm0nnx9VHw/
+         j37WbJT9HhQEk3LDifhUHXz33V1hGVfNvTalDT9wQtshYzrIjXb72WeZPCKw2+9LATR4
+         8/6cxXD8+ZnYsyxq2OTIkr6OKTFV3DJOYwoLKFDF0/QHs1li4pbHyfpO2TP66E/0SDuZ
+         hxeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1+2erfkkbu3TLnQgP4FNOMyrP6eIdZu6/WJPUCTbdAA=;
+        b=UWKsQ/EjjHANV9fLPgBni5oyPbDuTlHhQ7B8wH9bW+p1Q45etwe9a2FOLVkUNUMVwG
+         W30k76KOx3JjcoffDPv7ki0pITqam0iQPabpmw5peoFqbgZoKsc2e3zLIOmWvnvVMcHj
+         fLKazb0hpYPmrsuvJA7R5nWhb9trTj1ptwUGsZXSuU71n5GN2eZDT+XG0UvRgKyVYLxT
+         Qtl4PH9QudOew7it/NY9BgHM0q1pSuFj/mJP7dlq7psaU5SRp3jhALwjwMbET3Z4ftGk
+         7TCNx26wLUSlpC9QPJJECnhhTt/6WaMDTB8RisjQLyr9h0lQw+6sPwHtinIjqy15PN4Y
+         5g0w==
+X-Gm-Message-State: AGi0PuaaMPw8GauXvn0zkVSKsxgM5ie5/7v0dnmfT58q5A6gOTCERg1I
+        US9GSYayGON622+QjrYpVqotdirxuNQmKxKsZ88=
+X-Google-Smtp-Source: APiQypIdvYJc6O/exwVrWe6ToU6iOSXmBNO1FTBzi81ghhxfIzKlP+jfokCDAjIOMT0OgNS+I5in+pfDYpMcW1SGxZc=
+X-Received: by 2002:a19:40ca:: with SMTP id n193mr2503030lfa.196.1585842035185;
+ Thu, 02 Apr 2020 08:40:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9579 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 suspectscore=0
- mlxscore=0 spamscore=0 malwarescore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004020131
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9579 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 adultscore=0
- clxscore=1011 phishscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0
- suspectscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004020131
+References: <fb5ab568-9bc8-3145-a8db-3e975ccdf846@gmail.com>
+ <20200331060641.79999-1-maowenan@huawei.com> <7a1d55ad-1427-67fe-f204-4d4a0ab2c4b1@gmail.com>
+ <20200401181419.7acd2aa6@carbon> <ede2f407-839e-d29e-0ebe-aa39dd461bfd@gmail.com>
+ <20200402110619.48f31a63@carbon>
+In-Reply-To: <20200402110619.48f31a63@carbon>
+From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date:   Thu, 2 Apr 2020 08:40:23 -0700
+Message-ID: <CAADnVQKEyv_bRhEfu1Jp=DSggj_O2xjJyd_QZ7a4LJY+dUO2rg@mail.gmail.com>
+Subject: Re: [PATCH net v2] veth: xdp: use head instead of hard_start
+To:     Jesper Dangaard Brouer <brouer@redhat.com>
+Cc:     Toshiaki Makita <toshiaki.makita1@gmail.com>,
+        Mao Wenan <maowenan@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>, jwi@linux.ibm.com,
+        jianglidong3@jd.com, Eric Dumazet <edumazet@google.com>,
+        Network Development <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 2 Apr 2020, Colin King wrote:
+On Thu, Apr 2, 2020 at 2:06 AM Jesper Dangaard Brouer <brouer@redhat.com> wrote:
+>
+> On Thu, 2 Apr 2020 09:47:03 +0900
+> Toshiaki Makita <toshiaki.makita1@gmail.com> wrote:
+>
+> > On 2020/04/02 1:15, Jesper Dangaard Brouer wrote:
+> > ...
+> > > [PATCH RFC net-next] veth: adjust hard_start offset on redirect XDP frames
+> > >
+> > > When native XDP redirect into a veth device, the frame arrives in the
+> > > xdp_frame structure. It is then processed in veth_xdp_rcv_one(),
+> > > which can run a new XDP bpf_prog on the packet. Doing so requires
+> > > converting xdp_frame to xdp_buff, but the tricky part is that
+> > > xdp_frame memory area is located in the top (data_hard_start) memory
+> > > area that xdp_buff will point into.
+> > >
+> > > The current code tried to protect the xdp_frame area, by assigning
+> > > xdp_buff.data_hard_start past this memory. This results in 32 bytes
+> > > less headroom to expand into via BPF-helper bpf_xdp_adjust_head().
+> > >
+> > > This protect step is actually not needed, because BPF-helper
+> > > bpf_xdp_adjust_head() already reserve this area, and don't allow
+> > > BPF-prog to expand into it. Thus, it is safe to point data_hard_start
+> > > directly at xdp_frame memory area.
+> > >
+> > > Cc: Toshiaki Makita <makita.toshiaki@lab.ntt.co.jp>
+> >
+> > FYI: This mail address is deprecated.
+> >
+> > > Fixes: 9fc8d518d9d5 ("veth: Handle xdp_frames in xdp napi ring")
+> > > Reported-by: Mao Wenan <maowenan@huawei.com>
+> > > Signed-off-by: Jesper Dangaard Brouer <brouer@redhat.com>
+> >
+> > FWIW,
+> >
+> > Acked-by: Toshiaki Makita <toshiaki.makita1@gmail.com>
+>
+> Thanks.
+>
+> I have updated your email and added your ack in my patchset.  I will
+> submit this officially once net-next opens up again[1], as part my
+> larger patchset for introducing XDP frame_sz.
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently pointer 'suite' is dereferenced when variable success
-> is being initialized before the pointer is null checked. Fix this
-> by only dereferencing suite after is has been null checked.
-> 
-> Addresses-Coverity: ("Dereference before null check")
-> Fixes: e2219db280e3 ("kunit: add debugfs /sys/kernel/debug/kunit/<suite>/results display")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Reviewed-by: Alan Maguire <alan.maguire@oracle.com>
-
-Thanks for spotting this!
-
-Alan
-
-> ---
->  lib/kunit/debugfs.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/kunit/debugfs.c b/lib/kunit/debugfs.c
-> index 9214c493d8b7..05547642f37c 100644
-> --- a/lib/kunit/debugfs.c
-> +++ b/lib/kunit/debugfs.c
-> @@ -52,12 +52,13 @@ static void debugfs_print_result(struct seq_file *seq,
->  static int debugfs_print_results(struct seq_file *seq, void *v)
->  {
->  	struct kunit_suite *suite = (struct kunit_suite *)seq->private;
-> -	bool success = kunit_suite_has_succeeded(suite);
-> +	bool success;
->  	struct kunit_case *test_case;
->  
->  	if (!suite || !suite->log)
->  		return 0;
->  
-> +	success = kunit_suite_has_succeeded(suite);
->  	seq_printf(seq, "%s", suite->log);
->  
->  	kunit_suite_for_each_test_case(suite, test_case)
-> -- 
-> 2.25.1
-> 
-> 
+It looks like bug fix to me.
+The way I read it that behavior of bpf_xdp_adjust_head() is a bit
+buggy with veth netdev,
+so why wait ?

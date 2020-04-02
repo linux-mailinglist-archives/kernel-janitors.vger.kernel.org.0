@@ -2,55 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A6E119C317
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 15:51:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38F0A19C342
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 15:54:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732492AbgDBNv2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 2 Apr 2020 09:51:28 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:46892 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731579AbgDBNv2 (ORCPT
+        id S1731842AbgDBNy3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 Apr 2020 09:54:29 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:41788 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726425AbgDBNy3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 2 Apr 2020 09:51:28 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 854E9128A0360;
-        Thu,  2 Apr 2020 06:51:27 -0700 (PDT)
-Date:   Thu, 02 Apr 2020 06:51:26 -0700 (PDT)
-Message-Id: <20200402.065126.1342599499039366040.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     irusskikh@marvell.com, mstarovoitov@marvell.com,
-        dbogdanov@marvell.com, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] net: atlantic: fix missing | operator when
- assigning rec->llc
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200401232736.410028-1-colin.king@canonical.com>
-References: <20200401232736.410028-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 02 Apr 2020 06:51:27 -0700 (PDT)
+        Thu, 2 Apr 2020 09:54:29 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jK0GI-0003LD-1Y; Thu, 02 Apr 2020 13:52:02 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>,
+        linux-rtc@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][V2][next] rtc: ds1307: check for failed memory allocation on wdt
+Date:   Thu,  2 Apr 2020 14:52:01 +0100
+Message-Id: <20200402135201.548313-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Thu,  2 Apr 2020 00:27:36 +0100
+From: Colin Ian King <colin.king@canonical.com>
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> rec->llc is currently being assigned twice, once with the lower 8 bits
-> from packed_record[8] and then re-assigned afterwards with data from
-> packed_record[9].  This looks like a type, I believe the second assignment
-> should be using the |= operator rather than a direct assignment.
-> 
-> Addresses-Coverity: ("Unused value")
-> Fixes: b8f8a0b7b5cb ("net: atlantic: MACSec ingress offload HW bindings")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Currently a failed memory allocation will lead to a null pointer
+dereference on point wdt.  Fix this by checking for a failed allocation
+and adding error return handling to function ds1307_wdt_register.
+Also move the error exit label "exit" to allow a return statement to
+be removed.
 
-Applied, thanks.
+Addresses-Coverity: ("Dereference null return")
+Fixes: fd90d48db037 ("rtc: ds1307: add support for watchdog timer on ds1388")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+V2: move error exit label and remove a return statement, thanks to 
+    Walter Harms for spotting this clean up.
+---
+ drivers/rtc/rtc-ds1307.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index fad042118862..c058b02efb4d 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -1665,14 +1665,16 @@ static const struct watchdog_ops ds1388_wdt_ops = {
+ 
+ };
+ 
+-static void ds1307_wdt_register(struct ds1307 *ds1307)
++static int ds1307_wdt_register(struct ds1307 *ds1307)
+ {
+ 	struct watchdog_device	*wdt;
+ 
+ 	if (ds1307->type != ds_1388)
+-		return;
++		return 0;
+ 
+ 	wdt = devm_kzalloc(ds1307->dev, sizeof(*wdt), GFP_KERNEL);
++	if (!wdt)
++		return -ENOMEM;
+ 
+ 	wdt->info = &ds1388_wdt_info;
+ 	wdt->ops = &ds1388_wdt_ops;
+@@ -1683,10 +1685,13 @@ static void ds1307_wdt_register(struct ds1307 *ds1307)
+ 	watchdog_init_timeout(wdt, 0, ds1307->dev);
+ 	watchdog_set_drvdata(wdt, ds1307);
+ 	devm_watchdog_register_device(ds1307->dev, wdt);
++
++	return 0;
+ }
+ #else
+-static void ds1307_wdt_register(struct ds1307 *ds1307)
++static int ds1307_wdt_register(struct ds1307 *ds1307)
+ {
++	return 0;
+ }
+ #endif /* CONFIG_WATCHDOG_CORE */
+ 
+@@ -1979,10 +1984,7 @@ static int ds1307_probe(struct i2c_client *client,
+ 
+ 	ds1307_hwmon_register(ds1307);
+ 	ds1307_clks_register(ds1307);
+-	ds1307_wdt_register(ds1307);
+-
+-	return 0;
+-
++	err = ds1307_wdt_register(ds1307);
+ exit:
+ 	return err;
+ }
+-- 
+2.25.1
+

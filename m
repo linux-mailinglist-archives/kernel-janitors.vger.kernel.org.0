@@ -2,121 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 828EA19C61F
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 17:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 713CE19C656
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Apr 2020 17:49:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389423AbgDBPkh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 2 Apr 2020 11:40:37 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:34162 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388972AbgDBPkh (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 2 Apr 2020 11:40:37 -0400
-Received: by mail-lf1-f65.google.com with SMTP id e7so3144533lfq.1;
-        Thu, 02 Apr 2020 08:40:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=1+2erfkkbu3TLnQgP4FNOMyrP6eIdZu6/WJPUCTbdAA=;
-        b=QiJY6vAFVaADxgmOmeE784cvy5UzSNFL7qXv9U7OiG/ZMEuwa2vEwY6vVWcaccQ7na
-         GbAEDP+GKI/k7Z4eVfyfmSz10A/spb4g63pOAA3oq6T/nxAAd3YUVZOuzoqxoF3wW+PZ
-         qFpyF74CkGNiCdMXkCbmmeBtF20TG/+rjyFJSvz4kQY/Euvsp7hRzDziIIm0nnx9VHw/
-         j37WbJT9HhQEk3LDifhUHXz33V1hGVfNvTalDT9wQtshYzrIjXb72WeZPCKw2+9LATR4
-         8/6cxXD8+ZnYsyxq2OTIkr6OKTFV3DJOYwoLKFDF0/QHs1li4pbHyfpO2TP66E/0SDuZ
-         hxeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1+2erfkkbu3TLnQgP4FNOMyrP6eIdZu6/WJPUCTbdAA=;
-        b=UWKsQ/EjjHANV9fLPgBni5oyPbDuTlHhQ7B8wH9bW+p1Q45etwe9a2FOLVkUNUMVwG
-         W30k76KOx3JjcoffDPv7ki0pITqam0iQPabpmw5peoFqbgZoKsc2e3zLIOmWvnvVMcHj
-         fLKazb0hpYPmrsuvJA7R5nWhb9trTj1ptwUGsZXSuU71n5GN2eZDT+XG0UvRgKyVYLxT
-         Qtl4PH9QudOew7it/NY9BgHM0q1pSuFj/mJP7dlq7psaU5SRp3jhALwjwMbET3Z4ftGk
-         7TCNx26wLUSlpC9QPJJECnhhTt/6WaMDTB8RisjQLyr9h0lQw+6sPwHtinIjqy15PN4Y
-         5g0w==
-X-Gm-Message-State: AGi0PuaaMPw8GauXvn0zkVSKsxgM5ie5/7v0dnmfT58q5A6gOTCERg1I
-        US9GSYayGON622+QjrYpVqotdirxuNQmKxKsZ88=
-X-Google-Smtp-Source: APiQypIdvYJc6O/exwVrWe6ToU6iOSXmBNO1FTBzi81ghhxfIzKlP+jfokCDAjIOMT0OgNS+I5in+pfDYpMcW1SGxZc=
-X-Received: by 2002:a19:40ca:: with SMTP id n193mr2503030lfa.196.1585842035185;
- Thu, 02 Apr 2020 08:40:35 -0700 (PDT)
+        id S2389531AbgDBPtG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 Apr 2020 11:49:06 -0400
+Received: from mail-db8eur05on2068.outbound.protection.outlook.com ([40.107.20.68]:6113
+        "EHLO EUR05-DB8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2388677AbgDBPtG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 2 Apr 2020 11:49:06 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=b8JlcvwPLXZPF6nkm6aJgtLSTFLb4Dc4AhXplWRt9frSMwg3dXaVWeL5tU1rYIqB2YtlNq/2a7VaTj/LRP+yeKkh/R5RXDHZfxFdswmSz4Q0jQXVyy2655fib11IisFurWN9QtQLuv8Dk1pwsslQy2pY0ssrZx5DgpW6feh2zLGkhkx4c+ZhZD/Fw/lBNk5f1Z5LVFolQWl1dxD8pRnXZ8uv2Bf0tcYYzvanlCMji4f+n8cSfxjfoMaCcR9bq153TvyRnDBuv0gt3s8TXNAeG9DObyJ44WGlRnz9tDmCfQILqDcIgEeXlf+GEL9wrQKm8ED38mtaMpui7Jhh4MA24g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dM1njvNuj5MYoQN/7crNJrmQMm0TVzz6JbiASOUJ2ms=;
+ b=FynMCkMcVyz4t8ifyWbsfpMTMxqx2RacSD5pueyxuwsybAmAYQpvhGknByEM8jRs5BQLm/93+dkdOPhmRMvOBIHA5ucCrx7xBx1f9VhttgiibmD68/XGAn5LkoC3W6cmHuOxbaw0D64Gae8KOoNV2ojiIZfR5pkRm7KIOqIZrAF8glOdx9kBjbyu1lCt0OtFAs8fOhOzHsa1OE12mBcQzZZkPAA5RdV3eZEmVTQebP0I6TqauFip4C7MMc5fSEwm/a5IEa59/fYAKKLrIOx+is4QABsgUHsw/YqRqfvHVYI9mqMfnwaDfp9DLIlaLH1iF7XYC1GbPJ1KMeJcQ2kOXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
+ dkim=pass header.d=mellanox.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dM1njvNuj5MYoQN/7crNJrmQMm0TVzz6JbiASOUJ2ms=;
+ b=RQ23Q4apLoi8FyOxsWd4sbyd6hoz0Bb1J1UErL9fXsqTMxpb80ML0bmSEXjaMgW7bJGkf36VglWkfdUFtPMqB9C2L/HyV+iChDFclivjAQAz2OUt5ET/h3UuhTO/jAlHgvqxnkpN1ovwdsoqV0pT09NzL+mtHXQAFZCSQe/FqHo=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=idosch@mellanox.com; 
+Received: from AM0PR05MB6754.eurprd05.prod.outlook.com (10.186.174.71) by
+ AM0PR05MB5105.eurprd05.prod.outlook.com (20.178.19.89) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2856.18; Thu, 2 Apr 2020 15:49:02 +0000
+Received: from AM0PR05MB6754.eurprd05.prod.outlook.com
+ ([fe80::6923:aafd:c994:bfa5]) by AM0PR05MB6754.eurprd05.prod.outlook.com
+ ([fe80::6923:aafd:c994:bfa5%7]) with mapi id 15.20.2835.025; Thu, 2 Apr 2020
+ 15:49:02 +0000
+Date:   Thu, 2 Apr 2020 18:48:59 +0300
+From:   Ido Schimmel <idosch@mellanox.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Jiri Pirko <jiri@mellanox.com>,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] mlxsw: spectrum_trap: fix unintention integer
+ overflow on left shift
+Message-ID: <20200402154859.GA2453139@splinter>
+References: <20200402144851.565983-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200402144851.565983-1-colin.king@canonical.com>
+X-ClientProxiedBy: AM0PR02CA0041.eurprd02.prod.outlook.com
+ (2603:10a6:208:d2::18) To AM0PR05MB6754.eurprd05.prod.outlook.com
+ (2603:10a6:20b:15a::7)
 MIME-Version: 1.0
-References: <fb5ab568-9bc8-3145-a8db-3e975ccdf846@gmail.com>
- <20200331060641.79999-1-maowenan@huawei.com> <7a1d55ad-1427-67fe-f204-4d4a0ab2c4b1@gmail.com>
- <20200401181419.7acd2aa6@carbon> <ede2f407-839e-d29e-0ebe-aa39dd461bfd@gmail.com>
- <20200402110619.48f31a63@carbon>
-In-Reply-To: <20200402110619.48f31a63@carbon>
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date:   Thu, 2 Apr 2020 08:40:23 -0700
-Message-ID: <CAADnVQKEyv_bRhEfu1Jp=DSggj_O2xjJyd_QZ7a4LJY+dUO2rg@mail.gmail.com>
-Subject: Re: [PATCH net v2] veth: xdp: use head instead of hard_start
-To:     Jesper Dangaard Brouer <brouer@redhat.com>
-Cc:     Toshiaki Makita <toshiaki.makita1@gmail.com>,
-        Mao Wenan <maowenan@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>, jwi@linux.ibm.com,
-        jianglidong3@jd.com, Eric Dumazet <edumazet@google.com>,
-        Network Development <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from localhost (79.181.132.191) by AM0PR02CA0041.eurprd02.prod.outlook.com (2603:10a6:208:d2::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2878.15 via Frontend Transport; Thu, 2 Apr 2020 15:49:02 +0000
+X-Originating-IP: [79.181.132.191]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: c26e05d9-1dd7-4e0e-ab95-08d7d71d5db5
+X-MS-TrafficTypeDiagnostic: AM0PR05MB5105:|AM0PR05MB5105:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0PR05MB51051753337067C649D2872BBFC60@AM0PR05MB5105.eurprd05.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
+X-Forefront-PRVS: 0361212EA8
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR05MB6754.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(7916004)(4636009)(366004)(346002)(376002)(396003)(39860400002)(136003)(2906002)(81166006)(33716001)(33656002)(52116002)(316002)(81156014)(1076003)(6666004)(478600001)(8936002)(6496006)(8676002)(4326008)(4744005)(54906003)(5660300002)(186003)(86362001)(66476007)(956004)(6486002)(6916009)(66946007)(26005)(16526019)(9686003)(66556008);DIR:OUT;SFP:1101;
+Received-SPF: None (protection.outlook.com: mellanox.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: TBc2Hj25d5QQzyXaFcuPR47MoAojWiY5FkelZgy+aeTuxvMYPJU/4muC/d5MPB9FZLwIXWwiF0esBeC0KxWF2qqjSj5CrIxqtcvGVgQ99g6cA0rZbxmmPHmoq12ED/CIIo+9bFW4Z+GEBoCY/5BEtDp419mQg/SbO7dGpKky0NlSjWWJl13b532Cw9BhBBiM1WUYuXsfNpNNhB5rCAFuvkczvKAt+CyQDcsmTK/NvJ2nK4575RL2aw/9LbcWoeSHT5XwABZj60ROP3MoQ7tgs31zk29ouPG/8rZnPFJrEZPAZpWfuHfGW7Lz+BCdy6mk+bAouueI6fJ5AUlKXdKybJKeByqk9U5i19lUvBrZEnVf1gLQxY2slhmt6gyjkHPVce6Qa3V4LtHbMvknA5GqwQeG7orn50Mg0dyoG78R4WE73YpiAGbtKItS1qqT8XKo
+X-MS-Exchange-AntiSpam-MessageData: Of4PgLZZDO3+aVY4NZGgPSvE96Q+iRLXhhXaT2ijJ7NuofafcnUYKVVmgzsgc4VUcOIr10h0B3ejQBknYFDTxe3pbyAB2p0jXjEv5ik4R+5V6MoB+qf6hFk5xLLIdFAvWJMsXWd8toMIMrA6zyD4PA==
+X-OriginatorOrg: Mellanox.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c26e05d9-1dd7-4e0e-ab95-08d7d71d5db5
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2020 15:49:02.4296
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: a652971c-7d2e-4d9b-a6a4-d149256f461b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZMBHS1xsAz+vmvUox2UDthpBrgDL2/RwznwkfJlv5WmB+gX7MUTyA06m17pqankXkuBipl7roAD8R1XQeWm7sQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR05MB5105
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Apr 2, 2020 at 2:06 AM Jesper Dangaard Brouer <brouer@redhat.com> wrote:
->
-> On Thu, 2 Apr 2020 09:47:03 +0900
-> Toshiaki Makita <toshiaki.makita1@gmail.com> wrote:
->
-> > On 2020/04/02 1:15, Jesper Dangaard Brouer wrote:
-> > ...
-> > > [PATCH RFC net-next] veth: adjust hard_start offset on redirect XDP frames
-> > >
-> > > When native XDP redirect into a veth device, the frame arrives in the
-> > > xdp_frame structure. It is then processed in veth_xdp_rcv_one(),
-> > > which can run a new XDP bpf_prog on the packet. Doing so requires
-> > > converting xdp_frame to xdp_buff, but the tricky part is that
-> > > xdp_frame memory area is located in the top (data_hard_start) memory
-> > > area that xdp_buff will point into.
-> > >
-> > > The current code tried to protect the xdp_frame area, by assigning
-> > > xdp_buff.data_hard_start past this memory. This results in 32 bytes
-> > > less headroom to expand into via BPF-helper bpf_xdp_adjust_head().
-> > >
-> > > This protect step is actually not needed, because BPF-helper
-> > > bpf_xdp_adjust_head() already reserve this area, and don't allow
-> > > BPF-prog to expand into it. Thus, it is safe to point data_hard_start
-> > > directly at xdp_frame memory area.
-> > >
-> > > Cc: Toshiaki Makita <makita.toshiaki@lab.ntt.co.jp>
-> >
-> > FYI: This mail address is deprecated.
-> >
-> > > Fixes: 9fc8d518d9d5 ("veth: Handle xdp_frames in xdp napi ring")
-> > > Reported-by: Mao Wenan <maowenan@huawei.com>
-> > > Signed-off-by: Jesper Dangaard Brouer <brouer@redhat.com>
-> >
-> > FWIW,
-> >
-> > Acked-by: Toshiaki Makita <toshiaki.makita1@gmail.com>
->
-> Thanks.
->
-> I have updated your email and added your ack in my patchset.  I will
-> submit this officially once net-next opens up again[1], as part my
-> larger patchset for introducing XDP frame_sz.
+On Thu, Apr 02, 2020 at 03:48:51PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Shifting the integer value 1 is evaluated using 32-bit
+> arithmetic and then used in an expression that expects a 64-bit
+> value, so there is potentially an integer overflow. Fix this
+> by using the BIT_ULL macro to perform the shift and avoid the
+> overflow.
+> 
+> Addresses-Coverity: ("Unintentional integer overflow")
+> Fixes: 13f2e64b94ea ("mlxsw: spectrum_trap: Add devlink-trap policer support")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-It looks like bug fix to me.
-The way I read it that behavior of bpf_xdp_adjust_head() is a bit
-buggy with veth netdev,
-so why wait ?
+For net:
+
+Reviewed-by: Ido Schimmel <idosch@mellanox.com>
+Tested-by: Ido Schimmel <idosch@mellanox.com>
+
+Thanks

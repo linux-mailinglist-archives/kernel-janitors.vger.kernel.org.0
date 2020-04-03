@@ -2,33 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6896219DACB
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Apr 2020 18:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E399819DC9D
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Apr 2020 19:21:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403778AbgDCQFm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 Apr 2020 12:05:42 -0400
-Received: from mout.web.de ([212.227.15.14]:39801 "EHLO mout.web.de"
+        id S2404327AbgDCRVG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 Apr 2020 13:21:06 -0400
+Received: from mout.web.de ([212.227.15.4]:60643 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728126AbgDCQFl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 Apr 2020 12:05:41 -0400
+        id S1728066AbgDCRVG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 3 Apr 2020 13:21:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1585929929;
-        bh=HDcc6kP1+3OFn6wTlRUtQm5jM1TzwiTZN51hQpv/OZo=;
-        h=X-UI-Sender-Class:Cc:Subject:To:From:Date;
-        b=JTxepLq+bBfqp21IjMFac1+WDmlXgs9ByRPpf5HKu9uB7VeT3++7gYl8/3RdeHJnf
-         Fi0wWrZmOeX2vsKao/ee6nt0pMvRHGxR9ndHfFM3ZfLRRVJdRFKyy6nNVNUBN7NCT+
-         GmwbWHTyhFA8SPrKTi6CwI+5Gyqi5bdMLkGJ3ZIw=
+        s=dbaedf251592; t=1585934437;
+        bh=F9+0iNVN/a+RVMnBnJdNBU74AYqMy21kwnfqkkiNbBE=;
+        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
+        b=VOphlUdXZfNgudGMpAMjysIP8EgolgN1sg8RY2Yt4FE1d7YfWPhIQJRIDoXRxorkw
+         QUrjRJGLSdxT0dbOJXIvHY077oMlas9lpIS/15JxDqgamHaBg2K4K0xeXOuSi0vRup
+         siaXuqXNWGZC5DRA2YVsB8eQVa7wh19HU1XSGSjQ=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([93.135.25.116]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LilMD-1im9Su22Af-00cuT4; Fri, 03
- Apr 2020 18:05:29 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] mlxsw: spectrum_trap: Fix unintentional integer
- overflow on left shift
-To:     Colin Ian King <colin.king@canonical.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Jiri Pirko <jiri@mellanox.com>, netdev@vger.kernel.org
+Received: from [192.168.1.3] ([93.135.25.116]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MOlTq-1jN9ox2PNm-0068Li; Fri, 03
+ Apr 2020 19:20:37 +0200
+To:     Tang Bin <tangbin@cmss.chinamobile.com>,
+        iommu@lists.linux-foundation.org, linux-arm-msm@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
+        Rob Clark <robdclark@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2] iommu/qcom: Fix local_base status check
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -73,46 +74,69 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <6de034cd-d7c3-9352-5b87-27284eea8e34@web.de>
-Date:   Fri, 3 Apr 2020 18:05:28 +0200
+Message-ID: <084eb9b2-3f5f-4e87-08aa-fe57ed3f5d35@web.de>
+Date:   Fri, 3 Apr 2020 19:20:35 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:Tiv4hNxLqfkWXFCnn3StHc/M7Bbt1lElOS3M1aHemzU3aeW6fvY
- xdiyL64krOS2s97zBqUEM4xt0hko2kx5MGLQBnZ3U8XuRYFQh4QuXLcBDaywVSmDj8Lwik5
- gA0gwPh7K7RH9aZagPhcFHfJODOp8g69m+kB5pImucN3wzCtMretL+NXRcTSCmmJiMf9g75
- gYLH/Vi8DirF1tAeSxrew==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:hpy7tG+6LUJMeU5uQuElQKaca1QpFU1e+UTi5sL2zkkRxn6H59o
+ vs1+rlUxOwVshOR1yyH7Ko1uo+NzsIMD0Srv1fshtmBzLDzFAalzDuzrtzWrR7vd/BzEeWd
+ lqPu6oQ0ba8zhHtHocaWc/7MsnkuNp/Iddr5lf1wyO+6+E96x9oVWxCDcdPjV0A0bxxkJ93
+ TH3nbYk7kl9UaB/ZSS1VQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:jD+ma8nvR1c=:5eUWnKnajMXpeKqPhWxXWA
- 2h11Xhgw1WMzvoqdY7fD+8nn6ZfrCLnV0kZ5JZJoKazJ27sSW/7wqaB+xNIYVBwVzBOwH+z71
- l5EdIk7rj9Gh0p4+lHXVzNJneMp+vqK0S3Q1GVlJHVQGlv0uXczVDqHx/0UI13JY5kDRWDGVj
- qxBiqhxJ9/tQSWT4FdamR3vwrWNEZqYi8pFVKz3ucxtZiGSusyc5iBgknC3hPkJ5iWZyBQKro
- nVr6bebCPhtYvzvqx/E98i4uwE33+n/HJIqMHuG2MoiYuf78MOA7rMO7mHiZwY+oEJpy/kGY/
- DV5jKI7ikbm5+oe7NIwWLMifUZJoSJiGWfnLG1MR8y9io7BgmNwZstX4ASMXHSZE/RRJRBp67
- 98MdxmoCpPmFdpiURg2Dojv2iA8nJ3zAeh1sSv5Az7oJqP4sHHMC3s0NF8v0917MFhCym6Xcx
- El2CivEjkZnuUbYoh9OJu6hJqVpzIBzrmv/gK79H4CwjH+14gBN34m3PnuCu68Xy5FBHCkAYT
- 04OaI/HYpnIJBdt+KfIXClANpy12zgNw3Tv6ASDlSFIkUqJ8bCO4z+JX3xNMGWdtMUGHZ3yel
- 6vQSIEK7ED/LkKG2Gka5Ay5PMVxYX02He7JJn0+XwoNOI8h4vGytKGYBdm0AX2SBCFEHcAzSS
- lp4anL97YBp8yP0LEGaKeHGHa1y4196rekhGlgtz4SLk4d4wPdHXuLum3BNRtUuYuNSz3I0VG
- oXYYcMH+Bf/YtvjP1qUQ3ShOl+iIspDxN9Qhr6l76JXz0UKuXDfPfrHik6c3g3amOK/8Tmwej
- oFSawkGT3RW0b/r4Nh1hxzkFycrOnRegraUCNRBNmHJTwmFLCMMLx8qAe2NzMtgdhyXRJuoXi
- M1eDmCNSv/kS2jyI6W0YnBDFKdrQhwhcfV0FS7PfIrE69JhPYYQdc06Uo99tET2Ym0TUBoI8Z
- eq2mx/85S6GHaAMQ0pyV2JxRvCUcFcx4g+eYdJUptzHN0aa+OtgE4PRt6zq04vBw28+niGLEf
- MoyMBZOsT/L256ERYQMCOij7vMjW6N87hq4EzFg/E0Uz55AUegRmc45D7X+30br06jX0dK/cb
- wS45+aSLUKNwkJ4Zl5gZzbEEYDB2LLBeeM6Oupqz/dqyupHfIz26j8f06hF/98buU8CeNwX32
- +lISYAU9ahWhtjAKygLRIqKn4eKz0Z0gQLPgqemjYdOCdJAUa7F03iDRlmmBPfoESfXmvBvv5
- xGvx3O3wB4XILtH6n
+X-UI-Out-Filterresults: notjunk:1;V03:K0:snu08ePOQ4Y=:RERL+WTQn6HpQ6VfYEVlHO
+ UXU85GqBFMvttK96XRK6n8M1VBFCKIF016QJ8DKvfQLNy5uEBxcRnXQ3O7AhYHxXS5aBwyymi
+ WGqDg5cVVolvhYPG7Of1lEhHvrxozWagv6ElJGNMqb0Q63k2aByZCBBuuS3f4grF2aChqCXSr
+ CvunvGRzG8kKN6jFafdW4cP1RrwmSwc70z8QjgmcQa0jRUJ4DbsjEgTS+pcp9I4HeP3dUYy53
+ ZVx/gNeVPntplWct/B+SZUWHlpshNGSJrZo1YW9bMLKez/SNd6q0YOTa0Wy+4PPr1RCkLere8
+ cqMcMJ9EU8lsUJOGLDWgvlVd4TPG9HKLT86bJtR87Ygl0cLr80R6ck7wsb8Qr+Nmd1uGuBf44
+ YLPpNmRPUQsTb2itsRjGtBc/oAtexHl2CI8Oelvj/hT2xVxAdqZjEl7Gpx+L/3LZlywb2/6ar
+ j+YHP+YMoZoZGuX95M+FTVJVd+NFljOPUffS6qzTdtqZH9vK0TaBlXQHoYzr4LNE2pKuftF6e
+ txYuTXQTwUEqM0Ai6mZu4LiMrDXIjdCIdSNXoZtfiKI0xGzVfeeqIeIYn6Ij+u5lv3Yieipdm
+ 259NgBXXMtpEsz0SDT2e/aQs2S2PMJ6kkI9RFCiPUTeyiYK43FT4QmtaTVOHeXXjm9ICB8Jjq
+ decirzYn+Fk4bj+ePMTP9iVEvPAfqmhBglHPM3gX+9U5trOLVxsqq8Fa++1rzOG7mj8eYN5iV
+ 85m1M1dm1vY5zx2e8fCcmoUtrsPJUc3PH+mfSWksHjjH+vuMyqc47tQFlydyR6j61MTMKbIE5
+ HVqmEkGvgnP+zoiNMDp5OEf2c+JQXdft55QDi2hAI4/yNDlcwub2q7gG3d8oa5zo2VfWNQSNr
+ 5crK6iUAPmTx3oxUA0EVmVoh4gfDjnWER9hOj99efi5FPBvSoU77IdqL68xvrDcSV7ICo20Gl
+ OaXO9q+/Jqg5DRAxhgdxhBGpWrqkqPElcc+b/RAjfRvZVebtsnZGbCtN+TJuMtm7e2B3dAkqO
+ sm27odlHxgwxpVg0GHtKgcLs+MMZyohkP8fIEWWpvyif+QFlbqyb35hpvdTFuzHmlfIwOPKJN
+ fQo9CEiMI36fdhUFlc/qDZUYBcwD6mO55QhUfLW0aitRUjiehkiTafBoZSeAWUY4J5eXFqBMc
+ tcNwHy8M3jdCZTnrq5DwSmytiWNRQ62M4Lvn1wRTvPBIcGQB00q3R+AMSQLCwefWQNxt+vjXk
+ vgx5hjJkW3mCFeQOM
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Addresses-Coverity: ("Unintentional integer overflow")
+> Release resources when exiting on error.
 
-Will a slightly different commit subject be more appropriate
-according to such information?
+I have got doubts that such a change description fits to
+the proposed source code adjustment.
+
+
+=E2=80=A6
+> +++ b/drivers/iommu/qcom_iommu.c
+> @@ -813,8 +813,11 @@ static int qcom_iommu_device_probe(struct platform_=
+device *pdev)
+>  	qcom_iommu->dev =3D dev;
+>
+>  	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	if (res)
+> +	if (res) {
+>  		qcom_iommu->local_base =3D devm_ioremap_resource(dev, res);
+> +		if (IS_ERR(qcom_iommu->local_base))
+> +			return PTR_ERR(qcom_iommu->local_base);
+> +	}
+>
+>  	qcom_iommu->iface_clk =3D devm_clk_get(dev, "iface");
+=E2=80=A6
+
+Will the commit message be improved any further?
+
+Would you like to add the tag =E2=80=9CFixes=E2=80=9D?
 
 Regards,
 Markus

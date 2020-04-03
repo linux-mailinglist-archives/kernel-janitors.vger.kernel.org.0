@@ -2,55 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 21FFC19CE05
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Apr 2020 03:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53EC019CF7C
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Apr 2020 06:43:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390189AbgDCBAW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 2 Apr 2020 21:00:22 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:53748 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388961AbgDCBAW (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 2 Apr 2020 21:00:22 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 617C012757482;
-        Thu,  2 Apr 2020 18:00:21 -0700 (PDT)
-Date:   Thu, 02 Apr 2020 18:00:20 -0700 (PDT)
-Message-Id: <20200402.180020.506846856059927664.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     jiri@mellanox.com, idosch@mellanox.com, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] mlxsw: spectrum_trap: fix unintention integer
- overflow on left shift
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200402144851.565983-1-colin.king@canonical.com>
-References: <20200402144851.565983-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 02 Apr 2020 18:00:21 -0700 (PDT)
+        id S2387945AbgDCEmm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 Apr 2020 00:42:42 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:51582 "EHLO fornost.hmeau.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725851AbgDCEmR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 3 Apr 2020 00:42:17 -0400
+Received: from gwarestrin.me.apana.org.au ([192.168.0.7] helo=gwarestrin.arnor.me.apana.org.au)
+        by fornost.hmeau.com with smtp (Exim 4.89 #2 (Debian))
+        id 1jKE9U-00076f-JE; Fri, 03 Apr 2020 15:41:57 +1100
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 03 Apr 2020 15:41:56 +1100
+Date:   Fri, 3 Apr 2020 15:41:56 +1100
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Boris Brezillon <bbrezillon@kernel.org>,
+        Arnaud Ebalard <arno@natisbad.org>,
+        Srujana Challa <schalla@marvell.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Lukasz Bartosik <lbartosik@marvell.com>,
+        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] crypto: marvell: fix double free of ptr
+Message-ID: <20200403044156.GB26315@gondor.apana.org.au>
+References: <20200401231012.407946-1-colin.king@canonical.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200401231012.407946-1-colin.king@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Thu,  2 Apr 2020 15:48:51 +0100
-
+On Thu, Apr 02, 2020 at 12:10:12AM +0100, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> Shifting the integer value 1 is evaluated using 32-bit
-> arithmetic and then used in an expression that expects a 64-bit
-> value, so there is potentially an integer overflow. Fix this
-> by using the BIT_ULL macro to perform the shift and avoid the
-> overflow.
+> Currently in the case where eq->src != req->ds, the allocation of
+> ptr is kfree'd at the end of the code block. However later on in
+> the case where enc is not null any of the error return paths that
+> return via the error handling return path end up performing an
+> erroneous second kfree of ptr.
 > 
-> Addresses-Coverity: ("Unintentional integer overflow")
-> Fixes: 13f2e64b94ea ("mlxsw: spectrum_trap: Add devlink-trap policer support")
+> Fix this by adding an error exit label error_free and only jump to
+> this when ptr needs kfree'ing thus avoiding the double free issue.
+> 
+> Addresses-Coverity: ("Double free")
+> Fixes: 10b4f09491bf ("crypto: marvell - add the Virtual Function driver for CPT")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/crypto/marvell/octeontx/otx_cptvf_algs.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
 
-Applied, thanks.
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

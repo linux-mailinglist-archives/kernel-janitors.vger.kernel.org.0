@@ -2,68 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C84119D5EE
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Apr 2020 13:40:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4669D19D706
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Apr 2020 14:58:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728158AbgDCLkZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 Apr 2020 07:40:25 -0400
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:21365 "EHLO
-        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728066AbgDCLkY (ORCPT
+        id S2390774AbgDCM6r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 Apr 2020 08:58:47 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53307 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728001AbgDCM6q (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 Apr 2020 07:40:24 -0400
-X-Originating-IP: 86.202.105.35
-Received: from localhost (lfbn-lyo-1-9-35.w86-202.abo.wanadoo.fr [86.202.105.35])
-        (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 88080240015;
-        Fri,  3 Apr 2020 11:40:21 +0000 (UTC)
-Date:   Fri, 3 Apr 2020 13:40:21 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Alessandro Zummo <a.zummo@towertech.it>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        linux-rtc@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next][V3] rtc: ds1307: check for failed memory
- allocation on wdt
-Message-ID: <20200403114021.GS3683@piout.net>
-References: <20200403110437.57420-1-colin.king@canonical.com>
+        Fri, 3 Apr 2020 08:58:46 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jKLuA-00045U-PA; Fri, 03 Apr 2020 12:58:38 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Mircea Caprioru <mircea.caprioru@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        linux-iio@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] iio: dac: ad5770r: fix off-by-one check on maximum number of channels
+Date:   Fri,  3 Apr 2020 13:58:38 +0100
+Message-Id: <20200403125838.71271-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200403110437.57420-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 03/04/2020 12:04:37+0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently a failed memory allocation will lead to a null pointer
-> dereference on point wdt.  Fix this by checking for a failed
-> allocation and just returning.
-> 
-> Addresses-Coverity: ("Dereference null return")
-> Fixes: fd90d48db037 ("rtc: ds1307: add support for watchdog timer on ds1388")
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
-> 
-> V2: move error exit label and remove a return statement, thanks to 
->     Walter Harms for spotting this clean up.
-> V3: simplify, just bail out and return on detecting the out of memory
->     condition
-> 
-> ---
-> 
->  drivers/rtc/rtc-ds1307.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-Applied, thanks.
+From: Colin Ian King <colin.king@canonical.com>
 
+Currently there is an off-by-one check on the number of channels that
+will cause an arry overrun in array st->output_mode when calling the
+function d5770r_store_output_range. Fix this by using >= rather than >
+to check for maximum number of channels.
+
+Addresses-Coverity: ("Out-of-bounds access")
+Fixes: cbbb819837f6 ("iio: dac: ad5770r: Add AD5770R support")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/iio/dac/ad5770r.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/dac/ad5770r.c b/drivers/iio/dac/ad5770r.c
+index a98ea76732e7..2d7623b9b2c0 100644
+--- a/drivers/iio/dac/ad5770r.c
++++ b/drivers/iio/dac/ad5770r.c
+@@ -525,7 +525,7 @@ static int ad5770r_channel_config(struct ad5770r_state *st)
+ 		ret = fwnode_property_read_u32(child, "num", &num);
+ 		if (ret)
+ 			return ret;
+-		if (num > AD5770R_MAX_CHANNELS)
++		if (num >= AD5770R_MAX_CHANNELS)
+ 			return -EINVAL;
+ 
+ 		ret = fwnode_property_read_u32_array(child,
 -- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
+

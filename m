@@ -2,33 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E399819DC9D
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Apr 2020 19:21:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F37D19DD01
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Apr 2020 19:45:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404327AbgDCRVG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 Apr 2020 13:21:06 -0400
-Received: from mout.web.de ([212.227.15.4]:60643 "EHLO mout.web.de"
+        id S2404221AbgDCRpr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 Apr 2020 13:45:47 -0400
+Received: from mout.web.de ([212.227.15.14]:47105 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728066AbgDCRVG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 Apr 2020 13:21:06 -0400
+        id S1728296AbgDCRpq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 3 Apr 2020 13:45:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1585934437;
-        bh=F9+0iNVN/a+RVMnBnJdNBU74AYqMy21kwnfqkkiNbBE=;
+        s=dbaedf251592; t=1585935919;
+        bh=LvQFEUP2P8FDxYUu5yT7cRrTHnGhQPCprZqje+0q9aE=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=VOphlUdXZfNgudGMpAMjysIP8EgolgN1sg8RY2Yt4FE1d7YfWPhIQJRIDoXRxorkw
-         QUrjRJGLSdxT0dbOJXIvHY077oMlas9lpIS/15JxDqgamHaBg2K4K0xeXOuSi0vRup
-         siaXuqXNWGZC5DRA2YVsB8eQVa7wh19HU1XSGSjQ=
+        b=iNICajo+41gSXPFlOmtZUr+pnTJa60jZFuAgSrrTCvaxRJUKytJkR8a9C+00Xp7Fu
+         CgUHMcio0m8ugruNJh6COq2cR03hZO/03zhOEE35R9RIcW0QHfhHojQYvN1tlI3g9Z
+         MQdEAflFrYgXoLoTQjjKS2wUYbrU/e+PENBd+b48=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([93.135.25.116]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MOlTq-1jN9ox2PNm-0068Li; Fri, 03
- Apr 2020 19:20:37 +0200
-To:     Tang Bin <tangbin@cmss.chinamobile.com>,
-        iommu@lists.linux-foundation.org, linux-arm-msm@vger.kernel.org,
+Received: from [192.168.1.3] ([93.135.25.116]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lk8Ow-1in1Mr0wNG-00cAWp; Fri, 03
+ Apr 2020 19:45:19 +0200
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-arm-msm@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
         =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
-        Rob Clark <robdclark@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+        Rob Clark <robdclark@gmail.com>,
+        Tang Bin <tangbin@cmss.chinamobile.com>
 Subject: Re: [PATCH v2] iommu/qcom: Fix local_base status check
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
@@ -74,69 +74,56 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <084eb9b2-3f5f-4e87-08aa-fe57ed3f5d35@web.de>
-Date:   Fri, 3 Apr 2020 19:20:35 +0200
+Message-ID: <7ab96d6a-93ee-4d22-7e51-6a9ad4268d5d@web.de>
+Date:   Fri, 3 Apr 2020 19:45:17 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:hpy7tG+6LUJMeU5uQuElQKaca1QpFU1e+UTi5sL2zkkRxn6H59o
- vs1+rlUxOwVshOR1yyH7Ko1uo+NzsIMD0Srv1fshtmBzLDzFAalzDuzrtzWrR7vd/BzEeWd
- lqPu6oQ0ba8zhHtHocaWc/7MsnkuNp/Iddr5lf1wyO+6+E96x9oVWxCDcdPjV0A0bxxkJ93
- TH3nbYk7kl9UaB/ZSS1VQ==
+X-Provags-ID: V03:K1:RDsIcVUj3rnoAk6AtOinl6//UfKFbvoCj+ZACu7/BztMlrGKqn0
+ 8ttuvGTyF5B7/WOyEyGecLZAKq1gRbFRCKbp4mtt01e2/nKyt+x5/oGxUwwklTBQYBLc1o7
+ eQuLfmkdttlgdJkE8moMVKrWB5vrZOo45ioNQCEm0psnaNP8kvU14ZdI4fkVO8xuZfXNQux
+ mfgeKatpx29JVxdXCTeVA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:snu08ePOQ4Y=:RERL+WTQn6HpQ6VfYEVlHO
- UXU85GqBFMvttK96XRK6n8M1VBFCKIF016QJ8DKvfQLNy5uEBxcRnXQ3O7AhYHxXS5aBwyymi
- WGqDg5cVVolvhYPG7Of1lEhHvrxozWagv6ElJGNMqb0Q63k2aByZCBBuuS3f4grF2aChqCXSr
- CvunvGRzG8kKN6jFafdW4cP1RrwmSwc70z8QjgmcQa0jRUJ4DbsjEgTS+pcp9I4HeP3dUYy53
- ZVx/gNeVPntplWct/B+SZUWHlpshNGSJrZo1YW9bMLKez/SNd6q0YOTa0Wy+4PPr1RCkLere8
- cqMcMJ9EU8lsUJOGLDWgvlVd4TPG9HKLT86bJtR87Ygl0cLr80R6ck7wsb8Qr+Nmd1uGuBf44
- YLPpNmRPUQsTb2itsRjGtBc/oAtexHl2CI8Oelvj/hT2xVxAdqZjEl7Gpx+L/3LZlywb2/6ar
- j+YHP+YMoZoZGuX95M+FTVJVd+NFljOPUffS6qzTdtqZH9vK0TaBlXQHoYzr4LNE2pKuftF6e
- txYuTXQTwUEqM0Ai6mZu4LiMrDXIjdCIdSNXoZtfiKI0xGzVfeeqIeIYn6Ij+u5lv3Yieipdm
- 259NgBXXMtpEsz0SDT2e/aQs2S2PMJ6kkI9RFCiPUTeyiYK43FT4QmtaTVOHeXXjm9ICB8Jjq
- decirzYn+Fk4bj+ePMTP9iVEvPAfqmhBglHPM3gX+9U5trOLVxsqq8Fa++1rzOG7mj8eYN5iV
- 85m1M1dm1vY5zx2e8fCcmoUtrsPJUc3PH+mfSWksHjjH+vuMyqc47tQFlydyR6j61MTMKbIE5
- HVqmEkGvgnP+zoiNMDp5OEf2c+JQXdft55QDi2hAI4/yNDlcwub2q7gG3d8oa5zo2VfWNQSNr
- 5crK6iUAPmTx3oxUA0EVmVoh4gfDjnWER9hOj99efi5FPBvSoU77IdqL68xvrDcSV7ICo20Gl
- OaXO9q+/Jqg5DRAxhgdxhBGpWrqkqPElcc+b/RAjfRvZVebtsnZGbCtN+TJuMtm7e2B3dAkqO
- sm27odlHxgwxpVg0GHtKgcLs+MMZyohkP8fIEWWpvyif+QFlbqyb35hpvdTFuzHmlfIwOPKJN
- fQo9CEiMI36fdhUFlc/qDZUYBcwD6mO55QhUfLW0aitRUjiehkiTafBoZSeAWUY4J5eXFqBMc
- tcNwHy8M3jdCZTnrq5DwSmytiWNRQ62M4Lvn1wRTvPBIcGQB00q3R+AMSQLCwefWQNxt+vjXk
- vgx5hjJkW3mCFeQOM
+X-UI-Out-Filterresults: notjunk:1;V03:K0:i7ko+qJWk98=:p3g17sJW+Gr6sPAuEa425y
+ BlsjenyHgPEjhbr0bOjswM2KxAuTIlE6+5bft0VGdQ7mYgCanq74afo8p7AwKnc/I9zoNc+mH
+ ADukExNVzjjVxPrBw5iqZJ/22Cmr7wAuUm3fThudNp+NbVyuTtMGN7c276TqLmv/NTB6t+6Gt
+ RLbmXfM7yj94ebzPPG0gtST1kIksqGcMeYlepJdq4XkfoaJqqrxkCisqKS+d6o1xhGjtDpanH
+ CZkJzIRCJHBHMV20CyWPS0MAN07Rb0ZNC57n5A1cKiQzcutu08jcv2435BQ81SsYQr8Hs8Z/Z
+ bR4NuoTV2q0NQndkqgnKJlQpXsj6UdirSKO+4ElBykxTYXbjRQpXbyj+oC9xVwE4Hs2IMkwS7
+ MCDALA1NdWB1Phzx7iQxQsFep4pob/JBJiXQzXlflJaQdwZ/WhIODl91yxOIg2iMeIt7yVwRw
+ gMIqqN5h571yVAzV2Y0UBaD4id9lwKnv70LXHEtHBnhYqbS8uRL/o8N/FSy4kwBwmLoV6zyK9
+ dgT3rotahCj/dSubymjhYDPgBX3lNoOXQCmNlPsEqM/IDf/KTUzmerAFtZ6vXzNYzD/vicnTK
+ 8n62LFArYDkMBf6ldJGgau/UKxnPDZ0Z6mLLJ5RSy/Jq/83T1eMYtyhaYr+gdwK1Z18rxtIT8
+ E7qeUTOy/WgQB2pxg6p5elYK2DoqH6OsmYGXNdq3qN+YU/7C1LdGbAxQ9vEN3oVHCeepo4myj
+ 9zSxrgpKxg1o8xxFggjo7RPvTPAVV3GOQt14I8eUiqL3ELuXw4v6WZS+xAdP9FXAIlA6EFCC3
+ 8QB1dynJ4DcOF8ELdAb+MfeY9Y/M49H/JJoImZbrUpRiuR1EnuM8JiKsViRYOg6pKIc4M7fXm
+ kXV7fwQKP/oOMVa2DTeJTerZnqt4yYgnHZS44YPCRocRA0MwajRsdziT2OaZvEoKcEXCw3YOH
+ x+JYitEPP6WEqVpuSdwZ8w8JPsxyszOQPapoQ8dXF6qkRXwXCSzb52dnQjdT4e30StSGC67j+
+ UOqhz0YpUdCRVHlcRjpiVrBcOAp+TKvz0UEE+G9rHKX59Hv7vEajM6oD+J/DCR0op9fiqddgq
+ /MlMAu8IR0VhUFy+FGEl2k23NwfBbzmAuPvUK/OCaD2cNXYbEs0jWQrrr0sPjPV2YdiCWafkq
+ RhjugkT/vNjMhVN8z11vtttOBfNiKv2PPyKGciumVAQz6vOa75vBmIVInxyrMNqB7BUPPkuIG
+ nZNYT0qBj75taaPA7
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Release resources when exiting on error.
-
-I have got doubts that such a change description fits to
-the proposed source code adjustment.
-
-
-=E2=80=A6
-> +++ b/drivers/iommu/qcom_iommu.c
-> @@ -813,8 +813,11 @@ static int qcom_iommu_device_probe(struct platform_=
-device *pdev)
->  	qcom_iommu->dev =3D dev;
+> > ------v2-----------------
+> > As requested, add some {} around this chunk.
+> >
+> > ------v1-----------------
 >
->  	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	if (res)
-> +	if (res) {
->  		qcom_iommu->local_base =3D devm_ioremap_resource(dev, res);
-> +		if (IS_ERR(qcom_iommu->local_base))
-> +			return PTR_ERR(qcom_iommu->local_base);
-> +	}
+> The changelog typically goes after the ---, as it doesn't add value to
+> the resulting git log. So please drop the above 4 lines from the commit
+> message. And please use ./scripts/get_maintainer.pl to find your
+> recipient list.
 >
->  	qcom_iommu->iface_clk =3D devm_clk_get(dev, "iface");
-=E2=80=A6
+> Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
 
-Will the commit message be improved any further?
-
-Would you like to add the tag =E2=80=9CFixes=E2=80=9D?
+How does this tag fit to the requested changes?
 
 Regards,
 Markus

@@ -2,114 +2,116 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1594F19DEA6
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Apr 2020 21:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B602119DEBB
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Apr 2020 21:45:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728079AbgDCToA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 Apr 2020 15:44:00 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:37171 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728001AbgDCToA (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 Apr 2020 15:44:00 -0400
-Received: by mail-wr1-f66.google.com with SMTP id w10so9951159wrm.4;
-        Fri, 03 Apr 2020 12:43:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=VhUPoyVgqk+qZ+YSwj2U46k0fdPCJ/w50hKlV2MbuGw=;
-        b=hhCWiye00MTANqJ6nW6EucLK2InoA2Rw9jqmk6Eomp3msE5cBzOiPJKNPNgkakOWcO
-         Z6f/R3hrlu1FnKAFAWctSyIbwGP/3UY2S49ylYYbhpawrvKdhWo7A5MKz5NSDJw7S7qx
-         CvPcHUyXe5CGhNL6Klqth1Tvr/rSCXvxtdP7V8gs18cWzJUKxRqFZgsTcvUrGa101MiX
-         Wh/UZWF6d/nAp2SOQSZZiXMcOVCQyJpPeDD61ciT/5NG19tOnB3ON2F9gMaPDbK2SPfj
-         r06WUI39IRPKPVu8DC2ulgBfZK+ZYwNVO48k0dwWfxg30DTmdiGgO7reYnaTf/8iCo5g
-         AwDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=VhUPoyVgqk+qZ+YSwj2U46k0fdPCJ/w50hKlV2MbuGw=;
-        b=n2d5PhflCTksauG6UPC6/b907XfEypSCwq5bBM19oiuj0SYNsnBfft7Bk1OKAy3NYP
-         AKt8zjpmaPaWDAcaM9MPcNxBJF8IZLMAoHtaTqDIjW+JDkFfmDGTmLmLqay1FKsNmeFs
-         TUr8v5ra3+fxLjZsuRxNpP0m8tRG4x/JkM6gneeveLhX6aggNtOkGLj8xmHqC08bqeZl
-         vV53bo/OURJHpMGfIccG/4Y3YWFD+DmiX2UbN+xA7oWuMD67aK2iXlVvNMIFwaWW91h7
-         SjVFwqGRE0qiNXQYETvXIqXm1hFPz1n4RyTReocYlXSNk7gnbRe6CKMHOmVga4FAH2AP
-         4NKQ==
-X-Gm-Message-State: AGi0PuaLWJmPoa2tyogIYecn65zSdO/yiMgI9IZp/hb+XDa2UbIPTN9k
-        oAtOy+y2PJ6zC3Wbo5NxDYU=
-X-Google-Smtp-Source: APiQypKVRLjP5+xoPXsNXQUo2denoGstY9cptKeS0GbRKSrXlZZWW7kTNIWA3fDVCRT683g5iO2nZg==
-X-Received: by 2002:adf:fe87:: with SMTP id l7mr10231570wrr.377.1585943037972;
-        Fri, 03 Apr 2020 12:43:57 -0700 (PDT)
-Received: from localhost (pD9E51CDC.dip0.t-ipconnect.de. [217.229.28.220])
-        by smtp.gmail.com with ESMTPSA id a13sm13077687wrh.80.2020.04.03.12.43.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2020 12:43:56 -0700 (PDT)
-Date:   Fri, 3 Apr 2020 21:43:55 +0200
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Kevin Hilman <khilman@baylibre.com>, linux-pwm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] pwm: meson: remove redundant assignment to variable
- fin_freq
-Message-ID: <20200403194355.GB201060@ulmo>
-References: <20200402110857.509844-1-colin.king@canonical.com>
+        id S1727911AbgDCTpq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 Apr 2020 15:45:46 -0400
+Received: from mout.web.de ([212.227.15.4]:53685 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727809AbgDCTpp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 3 Apr 2020 15:45:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1585943122;
+        bh=2wiZ4lVoxw2YhxjCeGelueT0FHG1EuPNuwT+OrG1VuE=;
+        h=X-UI-Sender-Class:Cc:Subject:To:From:Date;
+        b=JiJCxQcxSpvQPGJ/h/EQaU4UwjwLaPM85xAdBNtRRhHr3AUHgoReSMf52haeEYczA
+         EBePvQS49lhYV30kk7wgtirI8vK+anFp7EF5TDy1dqwHRhzTmRu1c2G5xnpgBwwwWx
+         0Ioq2fB7eOeppw6AFgEiEsfW6GNSx0Y0QCrTmwbY=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.3] ([93.135.25.116]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MMWA2-1jPOjU06fO-008FXz; Fri, 03
+ Apr 2020 21:45:22 +0200
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] mailbox: armada-37xx-rwtm: Remove duplicate error
+ messages in armada_37xx_mbox_probe()
+To:     Tang Bin <tangbin@cmss.chinamobile.com>,
+        Jassi Brar <jassisinghbrar@gmail.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <2f136a63-72d5-43ef-2a73-67d6984b848d@web.de>
+Date:   Fri, 3 Apr 2020 21:45:21 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="tjCHc7DPkfUGtrlw"
-Content-Disposition: inline
-In-Reply-To: <20200402110857.509844-1-colin.king@canonical.com>
-User-Agent: Mutt/1.13.1 (2019-12-14)
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+X-Provags-ID: V03:K1:M8gCHDrL+Xfttf6SVR6+2/6PcwK8pdosInIdsoG8PzBegbhr6pd
+ FipkvbRprHcA2UwzvB+d3SUbH+lHzH9Z3kb0AAWf8GFffUu2xAPlN/fWfF6+zaos3nU6JHO
+ FBXIB7bI5qf4Bjuz7HBEUHQAEarNVd3/V1vqgyvhntcEmt3qsbtXuYV67N0Z784ovsX5Qk1
+ 6rloNWdL/lIismXcQh7Lg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:bYPNv362bp8=:SfSkLnZTpuehoi0syk8PGx
+ 1Z+fMMk5FtWC53pq1QC+UobgCJbAO7SSu2z3a/SOYeTOP60scDomIRPIJ4q6WqNXT2nTwg9xZ
+ iZE5lnBvbGGKb0EOfEGO/uKgxwx8U2hHHbjlx6obsSQ8lMY0ZbzkLl5sw9j6QNJL25gMcoDHi
+ oa2x3XpPBJTlekT4BSj9412JzzYUbv7NLEc5zRIUUTaE2VxuVTqFQxGJ0Pn+oUNvZnB/m5QsU
+ EVHZw8o9RGO7ux3jdA+tDPsWso781GBz+av/B8XLAy+kZBz1EHk4BxxgQVYmDw4YFWUeRg52z
+ pq748ViH1LtHP+Jy4Zip36Pz7WRq06LRsOjf/4LABkrfhf4zI53ZdIWbwHr/xZ2ArOkKrhZB3
+ wMXwmV3qDoni+VLxcGuIIuzPaweAKV+lzL6oXK6r5N5Bh99PTQ1S9KJUa7XLng4INfcWYJ7u/
+ AFlED+mTspiV0yvGSu3OAOXvXbkJWAjzdKlIKyEYygeGju8kNpOvQ+MAc8s/DiWoQvQtjYfIa
+ o7/dJFS+dslNLegbzPllClTUQBCJ4Hx/EpPuZl0cGGWEgxwBSYETifkXYIBT5U+D+WzFX3Wr3
+ 1XfwxiHDkBVEmGUKe+4BeOSlaMMEbl/mm0mIbqNK8gluX+J7peZNlEH25NFbc48SsSx/6kVQF
+ 2CdGRm+nBWJPu+/mil2nFj5UQtA8B7PMZOigKvRpYn+Tpr7/KW7RUrvZwioeZp5cLKK15tfI/
+ Pdm/Xflqudyx/ye0HxbQ7Qztgk/cGMU2ZtLjd9jQe/dg48ylBBuYJ9/LMq9mWtfxqxHIr6WvZ
+ 8RYUtSfxXK494m5js2D9OfFowBSidBpCl2hNh3YOyoVLJHDY/D4shNmF+f0DSFvoZq/vOH609
+ tF7ff+cPQQYr3ILnlULvZr+WcKfAA3VTqpnS6156uEC/Zwqymx5q96vO60Itx4kPNoaro2QZ9
+ ajz2C9DkIcOezQYxzifr7+GeAq/35pZnPfvECVLU2xONuKEZKkJwxBgoP6PMKRqKiWj7Og2xp
+ pKTEguUbaGQlKpKQW0E0PhT33x5WqiwFD3DEH+CYYZtNT0KV7ecm01NFIB5ESvxwQi7WLYYbZ
+ rYoARYb5DiHV30THSsIPdyR2KjJnsVOT92YmAIhYyEW1Z1V4uiYxD962WvUF4QccMQYCRdkVA
+ KWhY83AlY+n26n86eBD+PScATX/fQBDJqpjDnjgPSARreQ0dnN1PceFTMCw4yiaRkJHVASU9u
+ vY6b3b56NveKeMTdk
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+> In this function,we don't need dev_err() message because when something
+> goes wrong,platform_get_irq() and devm_platform_ioremap_resource() have
+> print an error message itself, so we should remove duplicate dev_err().
 
---tjCHc7DPkfUGtrlw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I suggest further fine-tuning also for this commit message.
 
-On Thu, Apr 02, 2020 at 12:08:57PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> The variable fin_freq is being initialized with a value that is never
-> read and it is being updated later with a new value. The initialization
-> is redundant and can be removed.
->=20
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/pwm/pwm-meson.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Applied, thanks.
-
-Thierry
-
---tjCHc7DPkfUGtrlw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl6HkfsACgkQ3SOs138+
-s6HHhg//ZVsyNF1NKEv48QDcFr5adCAieVaCKk7J+kqjK7w2X2fnDrjuWXbmtlpb
-drMho5uh8b597B5cDcFoprjQSeHl0D56JKiLgBYsBuBxeRsFcVUVS5zXxt8mlvFc
-AIGKEPSSZsg+LFqlR5Msxf58M4YGYvG3lbFFQUOEN0I5K6W3wvfRY0+xGUvL0TC+
-1kOy5HmhM8lFPv5h/zgs0biiFg32D5ghmaLduZN9VjUJLgPmnlR3nESaWbjiFdZv
-XjGDkXPwx9+tJML2TzROxMWcBFFx7zBDfxHBvRfovv272QzMtpb7eT73Fh/cZSKQ
-hMCslpZy5Vj/2HcHkRY/w1MN/NZAdX/mNhQaIw1gz2P30mJxvUUDOoOaAGk3k8p6
-K2fUxY6YMthq7T731bAhROz1gxt4Ra0IMVksfAUSjBvHduIvOjikBJqTu+5TKIe3
-FnXfzaOODWL9+DQwHZtYJIRv4z21DfPFJunzohcsHKptPf1AqMW1BJX+4XX5rIbn
-dl0WS2h5BZ3lf/OU4FqXE6c9rKEj8NIZAYoYHTX1yDdQSI2G5GtFO811eGsN7h2C
-uVtwi5Jj2Js8rSxFQDj4d/jIKpxppzOvTGEXl1/Xz5XzMwD4TBl7ILKFryCnYCN5
-L6Y59GbxDRXjBGJuVj3HhV1bFnBcVqSFz5swfsnvXCMTNKp0wlk=
-=9i9z
------END PGP SIGNATURE-----
-
---tjCHc7DPkfUGtrlw--
+Regards,
+Markus

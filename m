@@ -2,136 +2,126 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 90C0419D18F
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Apr 2020 09:59:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4BA819D1DD
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Apr 2020 10:11:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388608AbgDCH7F (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 Apr 2020 03:59:05 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:34040 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727792AbgDCH7F (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 Apr 2020 03:59:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1585900743;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=mniN1sVbAvx++omfkPGQNGeast1vWCfMpGJZoMvG5sg=;
-        b=M/MDROMGtsaglVkPnIh7r2SzPIonn7Ff4IWw7Rlwugz/o4ODaBB/oT2oaMqYOxNHQCdr2p
-        p6WAqB/rF/odYzsYLK0WsoznSTAX10xrB3KYuWFxNTcNWNZbemsH2tCTgItM/a6IdTQAUY
-        UtQ/imawP6csgP9qMBRREOIlj36rcUI=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-258-q4cbpdrYOIeVl-OSojS6fA-1; Fri, 03 Apr 2020 03:59:01 -0400
-X-MC-Unique: q4cbpdrYOIeVl-OSojS6fA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2ED85800D5C;
-        Fri,  3 Apr 2020 07:58:59 +0000 (UTC)
-Received: from carbon (unknown [10.40.208.16])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6C5A85C1D6;
-        Fri,  3 Apr 2020 07:58:49 +0000 (UTC)
-Date:   Fri, 3 Apr 2020 09:58:47 +0200
-From:   Jesper Dangaard Brouer <brouer@redhat.com>
-To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc:     Toshiaki Makita <toshiaki.makita1@gmail.com>,
-        Mao Wenan <maowenan@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>, jwi@linux.ibm.com,
-        jianglidong3@jd.com, Eric Dumazet <edumazet@google.com>,
-        Network Development <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, brouer@redhat.com
-Subject: Re: [PATCH net v2] veth: xdp: use head instead of hard_start
-Message-ID: <20200403095847.21e1e5ea@carbon>
-In-Reply-To: <CAADnVQKEyv_bRhEfu1Jp=DSggj_O2xjJyd_QZ7a4LJY+dUO2rg@mail.gmail.com>
-References: <fb5ab568-9bc8-3145-a8db-3e975ccdf846@gmail.com>
-        <20200331060641.79999-1-maowenan@huawei.com>
-        <7a1d55ad-1427-67fe-f204-4d4a0ab2c4b1@gmail.com>
-        <20200401181419.7acd2aa6@carbon>
-        <ede2f407-839e-d29e-0ebe-aa39dd461bfd@gmail.com>
-        <20200402110619.48f31a63@carbon>
-        <CAADnVQKEyv_bRhEfu1Jp=DSggj_O2xjJyd_QZ7a4LJY+dUO2rg@mail.gmail.com>
+        id S2390182AbgDCILa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 Apr 2020 04:11:30 -0400
+Received: from mout.web.de ([212.227.17.12]:35511 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727431AbgDCILa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 3 Apr 2020 04:11:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1585901466;
+        bh=k6J2jEGKoisrXybcQoX9kDnWMjeMUacwmJqi0bycATI=;
+        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
+        b=bmOCDRLg2dxEYtzaE0yeKdKSFCiCBNWffMnsNwDWWcpDpxpp49lQjmWm6r6NmERTo
+         ukO0C/GNQV1KBLyzFzbyhyItu4l/BNNVpJBc38Be2UhT4KD7BTndlpWDXez5DcnFdU
+         /dqrZ5fL4J7qqBuIi7yEu35GhNZHZ2CphjeDZT7o=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.3] ([93.135.25.116]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LZvUH-1iv4Q03MxZ-00ljvM; Fri, 03
+ Apr 2020 10:11:05 +0200
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] mfd: asic3: Delete redundant variable definition
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+To:     Tang Bin <tangbin@cmss.chinamobile.com>,
+        Lee Jones <lee.jones@linaro.org>
+Message-ID: <b2a0e5f6-1f07-a7bd-2f3c-c95119efe635@web.de>
+Date:   Fri, 3 Apr 2020 10:11:04 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+X-Provags-ID: V03:K1:Mtwl+Pl+WeuFWGJMDcCAs1lUj5kQL/N5XRsr6LymSl5ZML1qLsj
+ sUk9jjWp9l95Q3Miq4OapRNQMyjuzc3/oWsTim682Y8ZTxJG7P2TRzdfS2y9p00ujR4Lrhp
+ yz9NJ2UaoNIKgDhGMOQsQ9K/JN6omSJPRojqPRvWlRYFIbUKL/nM7KLE5oMcPVA4ecTiTY9
+ UBmQ1gAyRqJA3Ho5fm8rQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:CIEcgQUqkn8=:igVXpffXKsM6wKJeYaw3e7
+ u0pospGCGdGDF+ZZL6mmYN1Uw9jIGKcNbpup5pXZYsWpDnpvCD9jyaloBsBMF85pzklFBzj8h
+ wYmtP7/hqgVXe7WokZ24g0M37pq0HeeggdaxUOTRokphh1BKZ4C6X46Ys02IJQLJsghsEVuKF
+ y/JDlO5gi2KUG2wh+ttrhXIkNR8iliFqvHIfvaI3XZBJ/hICfI8Ww68RYtsGNfywAoDmUnzre
+ dK2Xj9LFpHfoXPQPRY5b0oE2eSxSEKqX0VATFO4S2092FMLQGW6XLuudwgJz0fjD3yeTh+Z27
+ b+KQXdkWKq7m07BRtt52oQBqR/zEzvjUYWqfdt8O7GQL+hU9Ob1OfxPMHj/ePQXnz5fCkp14q
+ SyRmThkYihOTyTh+Z0jRYIObcchBCZA4hLzsJDkBZ+qVxw626cZnCDDUsnMuyvbKVNUC1F89K
+ eupwpo35y0bDpiinGfGkTcuU9WsJNDlzEEEGecvVsoMexQJQASE6xJEJw4H0tMcF60eQqqIoy
+ IybbrC5xoXs/wNQs/x4kO310R1O/XCQyLuy+BkFW+l3DFrSlrs25k9GyBuxkc7o0/rHzYJkAF
+ junCHF4pcYnYf1nlZMJKh5kJ0G3DYHGLpSUvte6LhZykAzZNd59BXopMIVG/8rSCognVkqQ4m
+ Pcwo8op0K1lxIs8AMv5ewmAckHe1XNfq2RYLUAPjNPeo1rN8RlbY4K9cCs1iIBJioU8tOI5u8
+ 5r+sXFz74oA22SeuQpy6cPcYe8lYHcQFfDr4hvdWO6l5c7cY0SC9HTAKH2SC5Ue0RJLfite3j
+ byV4z6e3yTFUmj14afZncjtf9SjE/4U35Im4HFu8Hu+NGy5FCdQ5s94Yt3+v/MfKcT4iMcWmP
+ yNvJSzqkQ4J9SYZgCns4apuHsFUw4lo1vAUfpJSJbFGuiZvqCO0CMvD3cyHbF6Ma7YGez3/Mi
+ P8z2BDLpplyiiFi/wCXeR0vFJ+CWD2CXvMl0BKmOE11n9gFs9Vdany53Im8hZoJRRdXsq5Wjw
+ 6mzFPhn47OzqDgJwcO17f5sg+5UJzSm0x6+mu17BsUEv/h60PN24gKTH218mGsTbVE9+MvX9t
+ hTcQGPBoMSxx1or/eCOFI/du3uMxPoIbTeBz9KWUZZCzaHOOh8P3N+mpr+QwIbHAQ1ulYdhS8
+ QjpQs9yVzerTSFWS3vjjCVN2SRlmqhRjKCINDY+P2Zg4OPwj7Kni8Aqc0iFK04RZU89eFN4Rw
+ xY2xssix49xjECP8d
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 2 Apr 2020 08:40:23 -0700
-Alexei Starovoitov <alexei.starovoitov@gmail.com> wrote:
+> In this function, 'ret' is always assigned, even if 'pdata->leds'
+> don't carry out,
 
-> On Thu, Apr 2, 2020 at 2:06 AM Jesper Dangaard Brouer <brouer@redhat.com> wrote:
-> >
-> > On Thu, 2 Apr 2020 09:47:03 +0900
-> > Toshiaki Makita <toshiaki.makita1@gmail.com> wrote:
-> >  
-> > > On 2020/04/02 1:15, Jesper Dangaard Brouer wrote:
-> > > ...  
-> > > > [PATCH RFC net-next] veth: adjust hard_start offset on redirect XDP frames
-> > > >
-> > > > When native XDP redirect into a veth device, the frame arrives in the
-> > > > xdp_frame structure. It is then processed in veth_xdp_rcv_one(),
-> > > > which can run a new XDP bpf_prog on the packet. Doing so requires
-> > > > converting xdp_frame to xdp_buff, but the tricky part is that
-> > > > xdp_frame memory area is located in the top (data_hard_start) memory
-> > > > area that xdp_buff will point into.
-> > > >
-> > > > The current code tried to protect the xdp_frame area, by assigning
-> > > > xdp_buff.data_hard_start past this memory. This results in 32 bytes
-> > > > less headroom to expand into via BPF-helper bpf_xdp_adjust_head().
-> > > >
-> > > > This protect step is actually not needed, because BPF-helper
-> > > > bpf_xdp_adjust_head() already reserve this area, and don't allow
-> > > > BPF-prog to expand into it. Thus, it is safe to point data_hard_start
-> > > > directly at xdp_frame memory area.
-> > > >
-> > > > Cc: Toshiaki Makita <makita.toshiaki@lab.ntt.co.jp>  
-> > >
-> > > FYI: This mail address is deprecated.
-> > >  
-> > > > Fixes: 9fc8d518d9d5 ("veth: Handle xdp_frames in xdp napi ring")
-> > > > Reported-by: Mao Wenan <maowenan@huawei.com>
-> > > > Signed-off-by: Jesper Dangaard Brouer <brouer@redhat.com>  
-> > >
-> > > FWIW,
-> > >
-> > > Acked-by: Toshiaki Makita <toshiaki.makita1@gmail.com>  
-> >
-> > Thanks.
-> >
-> > I have updated your email and added your ack in my patchset.  I will
-> > submit this officially once net-next opens up again[1], as part my
-> > larger patchset for introducing XDP frame_sz.  
-> 
-> It looks like bug fix to me.
-> The way I read it that behavior of bpf_xdp_adjust_head() is a bit
-> buggy with veth netdev,
-> so why wait ?
+I notice possibilities again to improve such a commit message.
 
-I want to wait to ease your life as maintainer. This is part of a
-larger patchset (for XDP frame_sz) and the next patch touch same code
-path and thus depend on these code adjustments.  If we apply them in
-bpf vs bpf-next then you/we will have to handle merge conflicts.  The
-severity of the "fix" is really low, it only means 32 bytes less
-headroom (which I doubt anyone is using).
 
--- 
-Best regards,
-  Jesper Dangaard Brouer
-  MSc.CS, Principal Kernel Engineer at Red Hat
-  LinkedIn: http://www.linkedin.com/in/brouer
+> it has already been assigned a value in the above code, including '0',
 
+The variable assignment will eventually be performed only in if branches.
+
+
+> so it's redundant.
+
+I suggest to reconsider this interpretation of the source code here.
+Would you like to move the mentioned statement into an else branch
+at the end?
+
+Regards,
+Markus

@@ -2,62 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 678C919CD15
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Apr 2020 00:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21FFC19CE05
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Apr 2020 03:00:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389951AbgDBWvA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 2 Apr 2020 18:51:00 -0400
-Received: from www62.your-server.de ([213.133.104.62]:35008 "EHLO
-        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387919AbgDBWvA (ORCPT
+        id S2390189AbgDCBAW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 Apr 2020 21:00:22 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:53748 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388961AbgDCBAW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 2 Apr 2020 18:51:00 -0400
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1jK8fm-0004Lw-A4; Fri, 03 Apr 2020 00:50:54 +0200
-Received: from [178.195.186.98] (helo=pc-9.home)
-        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1jK8fl-000Viz-Qm; Fri, 03 Apr 2020 00:50:53 +0200
-Subject: Re: [PATCH][next] bpf: Test_verifier: fix spelling mistake
- "arithmatic" -> "arithmetic"
-To:     Colin King <colin.king@canonical.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>,
-        linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
-        bpf@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200331100030.41372-1-colin.king@canonical.com>
-From:   Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <512f5aad-1031-0477-31cc-6e8342396bf5@iogearbox.net>
-Date:   Fri, 3 Apr 2020 00:50:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
-MIME-Version: 1.0
-In-Reply-To: <20200331100030.41372-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+        Thu, 2 Apr 2020 21:00:22 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 617C012757482;
+        Thu,  2 Apr 2020 18:00:21 -0700 (PDT)
+Date:   Thu, 02 Apr 2020 18:00:20 -0700 (PDT)
+Message-Id: <20200402.180020.506846856059927664.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     jiri@mellanox.com, idosch@mellanox.com, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] mlxsw: spectrum_trap: fix unintention integer
+ overflow on left shift
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200402144851.565983-1-colin.king@canonical.com>
+References: <20200402144851.565983-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.102.2/25770/Thu Apr  2 14:58:54 2020)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 02 Apr 2020 18:00:21 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 3/31/20 12:00 PM, Colin King wrote:
+From: Colin King <colin.king@canonical.com>
+Date: Thu,  2 Apr 2020 15:48:51 +0100
+
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> There are a couple of spelling mistakes in two literal strings, fix them.
+> Shifting the integer value 1 is evaluated using 32-bit
+> arithmetic and then used in an expression that expects a 64-bit
+> value, so there is potentially an integer overflow. Fix this
+> by using the BIT_ULL macro to perform the shift and avoid the
+> overflow.
 > 
+> Addresses-Coverity: ("Unintentional integer overflow")
+> Fixes: 13f2e64b94ea ("mlxsw: spectrum_trap: Add devlink-trap policer support")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Applied, thanks!
+Applied, thanks.

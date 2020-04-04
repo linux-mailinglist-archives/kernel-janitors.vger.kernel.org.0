@@ -2,42 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FEA219E652
-	for <lists+kernel-janitors@lfdr.de>; Sat,  4 Apr 2020 18:03:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CB4619E682
+	for <lists+kernel-janitors@lfdr.de>; Sat,  4 Apr 2020 18:49:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726371AbgDDQDD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 4 Apr 2020 12:03:03 -0400
-Received: from mout.web.de ([212.227.17.12]:39407 "EHLO mout.web.de"
+        id S1726278AbgDDQts (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 4 Apr 2020 12:49:48 -0400
+Received: from mout.web.de ([212.227.17.11]:52471 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726302AbgDDQDD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 4 Apr 2020 12:03:03 -0400
+        id S1726066AbgDDQts (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 4 Apr 2020 12:49:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1586016122;
-        bh=r4X94eSPqDz4zaqk6WfhY0MROH0tbEXYtTY3cehrUb0=;
+        s=dbaedf251592; t=1586018963;
+        bh=J0oWo+Q4hnyC2+1o/98GJnXQvZ4I23dI0QM2+3KpwEE=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=XBlp8Wm7HzMIEgPRdp/ZyJlb1ovXkKiNz/AxJuxnaf1r7OwRKQNy0Zi+ur451KN4+
-         j1k/n9YHdOORXER/E14KGLcpymuwO08qHwAH1NGP6TIegAQCwK36++mhZ++F2T2sfV
-         Uaayr/GTCrilNgwjSXLrAzRz3vnWda9KRCUuTKr4=
+        b=UPocKbv+Lxgw6ChSKAPmghjzfBVA0mlpSsjPnzEH7BiL8AIYtLBWn0rzeqb67EchV
+         lexvFqG7jz+Yzk3VGR2FkCvuYX1O73jNVbte4qoqjemWUCJY4BL6JgTIIQU1ybEcsV
+         /ZWlul09YUOxGOjzlgk0fsTN/9umxtn2A/YQKisA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([93.132.181.229]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LcPSk-1ivpoS2PLy-00jnBT; Sat, 04
- Apr 2020 18:02:02 +0200
-Subject: Re: [PATCH] ARM: pxa: ssp: Delete an error message in pxa_ssp_probe()
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-arm-kernel@lists.infradead.org
-Cc:     Allison Randal <allison@lohutok.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Enrico Weigelt <lkml@metux.net>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Russell King <linux@armlinux.org.uk>,
-        Tang Bin <tangbin@cmss.chinamobile.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        YueHaibing <yuehaibing@huawei.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-References: <524ae90a-a7cb-feee-6107-743c52c2b1e4@web.de>
- <CAHp75VcBKEJtEZg9wUVdqnSHWb3gaOx493GGWMtisdTAwxmGkA@mail.gmail.com>
+Received: from [192.168.1.3] ([93.132.181.229]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0ML8Kj-1jL36A283t-000KVW; Sat, 04
+ Apr 2020 18:49:23 +0200
+Subject: Re: hwrng: omap - Delete an error message in
+ of_get_omap_rng_device_details()
+To:     =?UTF-8?B?5ZSQ5b2s?= <tangbin@cmss.chinamobile.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <eae7170c-4371-4865-7b85-589c0ed2b5b6@web.de>
+ <2020040423261552036811@cmss.chinamobile.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -82,56 +72,94 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <c6790c2f-7b10-8d7f-5bc7-84d07fd96632@web.de>
-Date:   Sat, 4 Apr 2020 18:01:57 +0200
+Message-ID: <e71d56f1-6fce-5e2d-9719-1385ef3b0811@web.de>
+Date:   Sat, 4 Apr 2020 18:49:22 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VcBKEJtEZg9wUVdqnSHWb3gaOx493GGWMtisdTAwxmGkA@mail.gmail.com>
+In-Reply-To: <2020040423261552036811@cmss.chinamobile.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:nJpCQSibrNMzwJMfL0Mcjcap0SbMujcWNieUcIIY1/yTFpR/JRR
- LHVb5DrIfT33MFR6haOgsnmdrWZ0CfVkLY3zBBmZ2sW6B2V3n2susoEcU3TmbvAzJQJT46o
- kVJdcdh8u3ouKs0tSyTzgHxge3a+ymV7XKm/lGSRp7WLK1qy5DEkmIbn/Y0ccAcvV9pmHzp
- TmDTTrEJUFsSows/xASAg==
+X-Provags-ID: V03:K1:x1TzdgK/cyAcROSlikObSpiEQzArUYfMSnn3HAWpnSQfh8wFUTb
+ qTCDXFxm4ODwTJeopG2Kely/aqb/FrBke9PyYzZDxYX3uUyxMyRvv2NSJ6gociIkfso5Hky
+ 6cxlPGKiuQuDS5b2rfQ6YgsmXaQlBOXBDrTc8ZN31qoWxbJUypBd9nu5QYGgxwsZ5ra9Kru
+ WUEqigKOFix5co4CkfPyQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:wJAWe4TCpPg=:gKLgI7b/v/bLgW0ongDDKr
- 4/WBAmPzeykbZzX5na/kQtoBY6wmstIDSRRyPfAZA88JSQCW9RNcgSebRl454eiNBhJQWvVqV
- DVB3izin4NEDSYSvfe9bFk8uQB4xpnnXiQnzeP2Eou1/r8XBJee4Q6iLMl4tZeXC6eamT0IUZ
- tWzENiTaiMyaBolHU7WpaT/e024j9Ia1KA9gWcoolDj7CqtdaBN6tc6uwVnQTO/X2y0r65Lob
- wPE+XmTzShW3V0pbm4pdQGYzcx3PaHwHV4BBt6qugWcCsq/kGpSJHPrZ1gIDdCNQeEOR6b2zt
- 2ddFAWEK+E6tBXTvrcxJ4WIgDfbZ+AO9tUA5Bw6pKm8w7fPkKV7NaV6z/+9Bh0HOysTMOVibe
- mc6TNTq7qoxyYS0it4muHo9xSKpPWr9Cta94QHTJEex/crCIgpx9v4gNB4fZOQwcloXhhvcdw
- f3/gOxkEwlHbsQzY9AmagC1vhuiXo1LMsEQWcTR84i5Kh4kC/J6YTqzVMarmpov5eGaaCCbel
- qL0Lo8EI+hyNMkY/dcNp2vP/0o5RFbJYu51tiuJsr0GYMVTDjVfm64dtQAIT1xZtj9U45hZyX
- qvIzwO0fZeJymGpEwLlxppDJNQ4ESuHjlmhWDxn0OTdDt8tRtQB+TvtGPvrMb7dQpzA70GD5K
- cvxrNAV9Uf6M4gGNGA+NLD0M1cuPvWqdsUk2ldHB5e0pY4vbZE5cBVWHxOIq6qvQhtNzvt+ez
- HddMfEL1LR7FUWinD1XmaU7MlLwTeZNkWSs6Heax2K4AP0hUSrKf5Yex5831UxSSpc4wu7LMD
- jI8i5kNGtjpiCBhdJMIbB6QL8lAzuTUcSHprYxeZlFKDqwgyEzFSkiA8aKvElYIMdGwRN5czl
- BQIBfTWOjmWrqRDTIuKG0yf+5cz5PwwH9b5uASbS99TJMe0kKUIy0QHRXICk/OnaIwMWVjZ+v
- GE7fhaDZaIwenES98Z/LWoDFi4AmkbLQJ6ev6fcSL7uLzoParGGYqy11DBbrWt3JIH4rwMD8K
- OLtiVOLddc2oB7FxIXzodd5jl1ZiLier0DE7IzB+rQcsistBHcGJHS0fTgWAmF0G9STxErZSY
- PyrWqHnKhwTROrSKXYveG/AHJ60LkFnjWmfEjZE+d4GtLAiXtQYtunUEbltD1J0CXjq7BOioT
- qO7fQyo3u4tF24AdC1thplAgkCCKvMpCWNVrzRQG+w9+wwfbXiVYcUnSIEufVgwQ6sGUFHskb
- ZlZa9GVkVIWqqyxxI
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Q0hY97yl25E=:Z0Daf9YNi8FN9c2Eea1njT
+ vR/WO1cXM3lYKtU2pxkSytPq21lHgMfrPVVFJMIN91dE29tJ5KNNDB07JurKb/BVZ/7lhdwE7
+ 2bxWi9XYp8wWR1c5yP+0SQvXk8/wIbZ0ujPv+fs5O9wCqozD7cP1+CpuTB9mbqNt7G66QNdp5
+ Upp3ZD8BnWGWkdDFooRaVxCYaHFdJpKJGtS7srs5VUugIXoUuvJNyBMe53/oUrIpdXb1jJ0pU
+ J+0qIHsAWvVR2zSG7m9y2a/TwxBM8wnfuN+D13yxAVUAnbxdddj55Os5X18jPwP+LAAM5INfl
+ MYetH/zLfPqBJwa57OUYetXNSmYHgasYUaNUZa37B/Mn6b7qQeV8Y9EV6k2IHMIT7vAV8A9jX
+ /5sFCw7VC/BVO4TKYc5Tk3SVck5qxPTSUQvxERr8OT7EIrz8zZhwuaD0LfaKhslO1AQxVMBup
+ MkMUgkd1vZbQwPB8yPvQ4EHOFAAoDFgSFfPoCSv/qwYGVI8jtufnaxBADVlAtBfWVPZVFv+9t
+ fj0V0rCamfyGe5JSbXEPegt9S5RtM+8UVlcDCH5hcR2rhAhlBMiqZeIEATok4OGmtabcdYceD
+ CU9Y8eqquMTn4C/g6RcI70dusCdnVzQm8qY9FLhDbbprbDObS6DNM48xxpk37L8sd8eE0vE2p
+ LJy2yEjShs/p0JvVs5vqbDG86ScWdqzmq0Tur9V2Sw1QJB5kDN8nYClgoyas9yY9fIeINiBdc
+ TzXz5CjsFNsNly+csafyC5u7VNY+ppGYCeIShcsTYhbTJUMkLRY4gltb/gbxvY3gzgoeBp2bi
+ eTf8rk3gx0aPULd+OtdnbrtY/bJ5XolV2VtJ95dMlorq4tylG4BjrJv1GxVbNbImFlaZKNMA/
+ M6bqAojxEIZiyf4NFEcVawuQ4gAOu4PmxC9m3TXhmzRkghcg/nCDL5POAh0wxooMaEDz9V1JS
+ tI5Xe//fSoJmSi6ohJPuGUBt1W26tIcEVIDq6dkHt4Jr/wTLbHp2Pf0oUNAoqO46bnOFKL0oE
+ 2Nw2QXjc2Ck72pI+GwkblnOVAyNgBReRwPvXuv96sYY9ly2osVJ5nvyQCDuwnJ1qoPu0P4PfR
+ O4r2tB3UYQ4JwXIijsacGS26n46pEGq+lliZSEJCl/cRR2JZ4IDa9XurkmJFkPenlk6E9JFQ0
+ ky6NCCH70mn6Si0PhtLzdrwDjPMlPGjAdGmEziK8rJXG31FqIKLjocZNxqDYaCylJIUTkQCfF
+ b/gEe/bOUm4i89OjM
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->>         ssp->irq =3D platform_get_irq(pdev, 0);
->> -       if (ssp->irq < 0) {
->> -               dev_err(dev, "no IRQ resource defined\n");
->> +       if (ssp->irq < 0)
->>                 return -ENODEV;
->> -       }
->
-> At the same time we can unshadow the error code, i.e.
->   return ssp->irq;
+> I don't know why you always cc me in your patch
+> which is similar type  I have submitted=E3=80=82
 
-Have you got any preferences for the order of possible change combinations=
-?
+I noticed your selection of possible changes (and corresponding patch revi=
+ews).
+
+* Thus I assumed that you are interested in further software evolution
+  to some degree in such a design direction.
+  Do you want that I omit your mail address from my patches?
+
+* I picked also a few of your change ideas up for their application
+  together with development tools I am familiar with.
+
+
+> Let me study
+
+I hope so.
+
+
+> to thank you ?
+
+This possibility can also be occasionally nice.
+
+
+> You are a senior,
+
+Such a view might be appropriate.
+
+
+> I have thanked you for your instruction,
+
+I hope that our collaboration will evolve further in constructive ways.
+
+
+> and I have understand what your question:
+
+Would we like to achieve a better common understanding?
+
+
+> How do you think about to change any more source files in a systematic w=
+ay?
+
+Advanced source code analysis can point several update candidates out.
+An execution of a script for the semantic patch language (Coccinelle softw=
+are)
+indicates change possibilities around calls of the function =E2=80=9Cplatf=
+orm_get_irq=E2=80=9D
+in 74 source files of the software =E2=80=9CLinux next-20200402=E2=80=9D a=
+t the moment.
+Source code search patterns can be extended after some clarification.
 
 Regards,
 Markus

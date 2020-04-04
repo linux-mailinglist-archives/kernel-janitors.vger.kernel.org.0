@@ -2,87 +2,135 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D7C819E033
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Apr 2020 23:13:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D11B19E32D
+	for <lists+kernel-janitors@lfdr.de>; Sat,  4 Apr 2020 09:07:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728288AbgDCVNM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 Apr 2020 17:13:12 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:36373 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728264AbgDCVNJ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 Apr 2020 17:13:09 -0400
-Received: by mail-lj1-f195.google.com with SMTP id b1so8439371ljp.3;
-        Fri, 03 Apr 2020 14:13:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=XmiJ8r8In7YZhRpgdLSggbFpjzBQN570VmkdZRjoKl0=;
-        b=M6ntENSWQevfVE4wJYGpCvuhiRBs/UguboAiKuhbN1k8eoUdPpvVhUv1xnF8VXgwRA
-         MdLwa/cOtEg+kyIANAYshaShDUIy364a8Qo+R2UAu/P1S+ulxY0kFyk+cOqsHi+T3UFp
-         g2LxoYzZgTThz6Oy4rK7gU2WNK3GzOtrqQzmeQOwI6MlscPkO2M6rdL00gjYrK8igEyZ
-         w5SN4N/51Ggyw+VN7sRiouv16fwKQmHEjKcDJW5oAysHPfz/jbDfsiAK5JZqbT+Yt1Rd
-         2RdZsW5WGf/hx2pwMsgqOhucC8mAjPqiSPy8ltpa3QVsgaRKLVWedu342pVtPwBbnBYf
-         wxIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=XmiJ8r8In7YZhRpgdLSggbFpjzBQN570VmkdZRjoKl0=;
-        b=azRK44efIQRVkP9oWe75wP8STYF6/bdc6aMngSiRglurMbz5n1HTSZu7Y4QXdGUOR+
-         P4kFFa5nBpUtnz4TboY7bIVoAadsFor6l20ir9SGpNokh2xufrhkHMidelEmwCKuaXnM
-         68JREb+mKLeU3sKj21LBAyKJ+ENHEPydV48HivhRPie3cU8IKQKm8xmR70MfWJK3vvZE
-         H7KNCKq+z29tmTrAb43gdECrAu+RbFFDvmTc6kwjBNYYNq8Xt8RZCvoTrN2+EMdf9XLe
-         sBaNGG5WkiOLK9cK8B15LaOYIoHcftZeg1grm3lDUkXrQsbsLIe/SxUVZP9mbAJQVwMY
-         ZyIA==
-X-Gm-Message-State: AGi0PuZKcVuijDqwn1vAxHAWm74zmeA1ghVjFDY8MSaGnd4+V5Jt6Vqe
-        /STXadkWxrXEgu2eupuW8I38Gk/cztfUimAZi0s=
-X-Google-Smtp-Source: APiQypLrAAv0TjbwUikI1rOrsahsFIicv7pVJUqr/CcJxejGQmURK1Ta5WDW3qardZaSCQVr8cXCTMZJZgEGyc+DR3M=
-X-Received: by 2002:a2e:b24c:: with SMTP id n12mr6345776ljm.7.1585948385607;
- Fri, 03 Apr 2020 14:13:05 -0700 (PDT)
+        id S1725933AbgDDHHT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 4 Apr 2020 03:07:19 -0400
+Received: from mout.web.de ([212.227.17.11]:50253 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725730AbgDDHHT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 4 Apr 2020 03:07:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1585984014;
+        bh=2tSpyqkIAi6Vl5POxGjPdb9m1FKqxSwXN8y4zrvlfKA=;
+        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
+        b=BaEvlITXflCFEzCQFUJf7oCKiwmRKgTseJLqTqHDVN9x7q8J4mwh86o5hV7G0cyuW
+         b1pFqlPTh3Styl3qCy+2iv0cgc0IymsIKKkmyB+abFEw3M370miYyS3O0cpuCstjAL
+         8udbYDghQx6pR1VwQ03VnGYkwjemi9wO90C0FKBI=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.3] ([93.132.181.229]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M0Qkb-1j2QJX2ko9-00uc9y; Sat, 04
+ Apr 2020 09:06:54 +0200
+To:     Alex Dewar <alex.dewar@gmx.co.uk>, cocci@systeme.lip6.fr,
+        kernel-janitors@vger.kernel.org,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>
+Cc:     Allison Randal <allison@lohutok.net>,
+        Christoph Hellwig <hch@lst.de>,
+        Enrico Weigelt <lkml@metux.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Coccinelle: zalloc-simple: Fix patch mode for
+ dma_alloc_coherent()
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <beeed2c8-1b5a-66a8-ec41-f5770c04bae9@web.de>
+Date:   Sat, 4 Apr 2020 09:06:46 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-References: <fb5ab568-9bc8-3145-a8db-3e975ccdf846@gmail.com>
- <20200331060641.79999-1-maowenan@huawei.com> <7a1d55ad-1427-67fe-f204-4d4a0ab2c4b1@gmail.com>
- <20200401181419.7acd2aa6@carbon> <ede2f407-839e-d29e-0ebe-aa39dd461bfd@gmail.com>
- <20200402110619.48f31a63@carbon> <CAADnVQKEyv_bRhEfu1Jp=DSggj_O2xjJyd_QZ7a4LJY+dUO2rg@mail.gmail.com>
- <20200403095847.21e1e5ea@carbon>
-In-Reply-To: <20200403095847.21e1e5ea@carbon>
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date:   Fri, 3 Apr 2020 14:12:54 -0700
-Message-ID: <CAADnVQKs9hLUPB6vW+sC3pe1ivXKU3woJFvT=X2hCqT=NnZF7Q@mail.gmail.com>
-Subject: Re: [PATCH net v2] veth: xdp: use head instead of hard_start
-To:     Jesper Dangaard Brouer <brouer@redhat.com>
-Cc:     Toshiaki Makita <toshiaki.makita1@gmail.com>,
-        Mao Wenan <maowenan@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>, jwi@linux.ibm.com,
-        jianglidong3@jd.com, Eric Dumazet <edumazet@google.com>,
-        Network Development <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:7OHJcK2La0x95XAv8vLqoLm63g9GVp4E3Ue/YEbEavYakDQKRx1
+ CmkmPFN4nc+KpzFIjFZF1US6qmwwU5W00YEMpTL5EsP2Z4YNMRH2v73Ks7iV1xmjbTDftH4
+ eAcrviGky/7VOFcz87PuT5dEmXGJagWZNWjj3YrzTJQrCOLE5I0LAP09o/1nmyvR2cK3KnS
+ KVO4IDVNW8GTQvCCiG/Mg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Y8W0j8UHkBU=:19fw/P6cH5S92MsBvIUxX2
+ BWJJxvxWcQzIaK22yjBlKnte7aP5I3dq1xiXnZ5zKmWN35VozD/WZ1sMxQf89OC2XmkeC6mLu
+ fTUHMA7dAXvRJD8rHd+BetlOq1JKpwr34Y9lYO9QClCs5utHvEEbJQU8p4BdFJj9c7gNhm41p
+ UAAC16yZ4KekP6IL/If25PMFvYDASUjvLoePGptSc87c2s7zEByaHXYa6vdMKWc4TYy1vcaeg
+ 2mRkB/4mfgaiae1sC44INWgbUaCgfXmSP0sWQkRvntpT7N/b1iPOx7kUQypQOSh2c5No2InU3
+ bSfmeGDju/bBTOvF6RsMU/OV3hHTeykPXgc6SLqet0LCLDn9BhQzY/fsn8OjlwMrofjf1O1w4
+ CTAh9MT4AbKf8Yn5ftMdCAg3oYl3pSP8HgQVxyiJ98icG4zD+UXuCTjeh+LS6Bavi8jaZxofh
+ hORavBUU4vSTV95evPItEUt+04Hrz8XJw/O6jL+UZwYP1cfJKDN9ePLgWxh0ZETxU2ikoltB/
+ 5quzw1znnnNGJjLe4czCJIcCRtzVtixMRsjHer4500oSqWx4VCTOOix1W9xZXQvTVJr59Y5oe
+ V0bnGuAmavr/kE9vYC0/rr+XD6J1C6n6frgrAjhpj7tleSeuPTNvCHnbQiAfPvQjjkiZYi3yx
+ jXXWtW0Q9UlUzfBaFSZYcn3DE6yHYVhYDywmqNCLLmaWP68yUwDN7JSx9FEFO8ZItwNbsFAIi
+ ngiRzYIUYwtRwySvux7Lrm0efRTnAtlS2s3Wq/SiHckAxnA7xQIZRHxqGq93GUkOe7J+8SPZw
+ iePUr3YjHVPs5L9mONFIM2QtNxNFwVkmMX5MnoKNSVDRGXw0MbyLP8cFWaG/AEEIqzHcv+3Bv
+ PdLE3MpaB8VHof/nx5fyiqYyXR1F0r+2d5tJp94qVWjZ/HD0ZcczQikQmMsmvCCnpsv16kf5X
+ KsqdmCVd+a/qPyZWgrZCGUPo4LW9gExLBYevITMbDmbUbh0xGAcA+48LNxKa2lL3cNAtQdjZE
+ Y7ITtAmL2x6URjTDHF9r6Lk+Hl+eUFlmYjJ9ySyjysdodNyof/bM36ZAO7Ceh0P16rmx7fnYS
+ xJNZ2HEL02MCX7eAjEQ1MiwFxruR2RSqP+WI4+fnJ/BjUu0Ss9dr3P86axVH/zNMPA4t8t2VM
+ pUF0Xp+C7sdH4TemXzfjMcyxAbxwaMmahOmTTVO5fe460vSel2kpItl80b76DgPXu5FbXoglE
+ zX8hdiCvQuQC3dtrF
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Apr 3, 2020 at 12:59 AM Jesper Dangaard Brouer
-<brouer@redhat.com> wrote:
->
-> I want to wait to ease your life as maintainer. This is part of a
-> larger patchset (for XDP frame_sz) and the next patch touch same code
-> path and thus depend on these code adjustments.  If we apply them in
-> bpf vs bpf-next then you/we will have to handle merge conflicts.  The
-> severity of the "fix" is really low, it only means 32 bytes less
-> headroom (which I doubt anyone is using).
+> Commit dfd32cad146e ("dma-mapping: remove dma_zalloc_coherent()"), in
+> removing dma_zalloc_coherent() treewide, inadvertently removed the patch
+> rule for dma_alloc_coherent(), leaving Coccinelle unable to auto-generat=
+e
+> patches for this case. Fix this.
 
-Ahh. Make sense. That type of fix can wait.
-Thanks!
+I suggest to reconsider also the distribution of recipients for your patch
+according to the fields =E2=80=9CCc=E2=80=9D and =E2=80=9CTo=E2=80=9D.
+
+Will the software development attention grow in a way so that further
+implementation details can be adjusted also for the mentioned SmPL script?
+
+Regards,
+Markus

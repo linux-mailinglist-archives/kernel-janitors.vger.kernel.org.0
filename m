@@ -2,36 +2,43 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EDF6D19E632
-	for <lists+kernel-janitors@lfdr.de>; Sat,  4 Apr 2020 17:46:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FEA219E652
+	for <lists+kernel-janitors@lfdr.de>; Sat,  4 Apr 2020 18:03:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726314AbgDDPqd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 4 Apr 2020 11:46:33 -0400
-Received: from mout.web.de ([212.227.17.12]:59571 "EHLO mout.web.de"
+        id S1726371AbgDDQDD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 4 Apr 2020 12:03:03 -0400
+Received: from mout.web.de ([212.227.17.12]:39407 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726039AbgDDPqd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 4 Apr 2020 11:46:33 -0400
+        id S1726302AbgDDQDD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 4 Apr 2020 12:03:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1586015133;
-        bh=KyZgrczXO1krNBmQKvyLbqtYplTFmZVQJf5tbfA9XAQ=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=rv/r05mv0bWQEBoppGvuBm7ghbmsMeciPx+aPne91DIO611O1oUD/TG8D0vALtTKw
-         2ns84eIp+dhVzT4zAF/bXkG+dWN+F57/KIrjIWLWLZlfiysHZpN8VVM+WpQmI6o+ts
-         XPPhd6BgiMz8EzCq+QV8MsjN7zFu6+YLZeQSLBnw=
+        s=dbaedf251592; t=1586016122;
+        bh=r4X94eSPqDz4zaqk6WfhY0MROH0tbEXYtTY3cehrUb0=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=XBlp8Wm7HzMIEgPRdp/ZyJlb1ovXkKiNz/AxJuxnaf1r7OwRKQNy0Zi+ur451KN4+
+         j1k/n9YHdOORXER/E14KGLcpymuwO08qHwAH1NGP6TIegAQCwK36++mhZ++F2T2sfV
+         Uaayr/GTCrilNgwjSXLrAzRz3vnWda9KRCUuTKr4=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([93.132.181.229]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LvjrE-1jFAOn0ImK-017RWz; Sat, 04
- Apr 2020 17:45:33 +0200
-To:     linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Chen-Yu Tsai <wens@csie.org>,
-        Colin Ian King <colin.king@canonical.com>,
-        Corentin Labbe <clabbe.montjoie@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Maxime Ripard <mripard@kernel.org>
+Received: from [192.168.1.3] ([93.132.181.229]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LcPSk-1ivpoS2PLy-00jnBT; Sat, 04
+ Apr 2020 18:02:02 +0200
+Subject: Re: [PATCH] ARM: pxa: ssp: Delete an error message in pxa_ssp_probe()
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-arm-kernel@lists.infradead.org
+Cc:     Allison Randal <allison@lohutok.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Enrico Weigelt <lkml@metux.net>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Russell King <linux@armlinux.org.uk>,
+        Tang Bin <tangbin@cmss.chinamobile.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        YueHaibing <yuehaibing@huawei.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+References: <524ae90a-a7cb-feee-6107-743c52c2b1e4@web.de>
+ <CAHp75VcBKEJtEZg9wUVdqnSHWb3gaOx493GGWMtisdTAwxmGkA@mail.gmail.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] crypto: sun8i-ss - Delete an error message in
- sun8i_ss_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -75,78 +82,56 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Tang Bin <tangbin@cmss.chinamobile.com>
-Message-ID: <c7e1193f-7d8b-7da3-a2a8-e92ca0fd83b2@web.de>
-Date:   Sat, 4 Apr 2020 17:45:26 +0200
+Message-ID: <c6790c2f-7b10-8d7f-5bc7-84d07fd96632@web.de>
+Date:   Sat, 4 Apr 2020 18:01:57 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
+In-Reply-To: <CAHp75VcBKEJtEZg9wUVdqnSHWb3gaOx493GGWMtisdTAwxmGkA@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:5FpBcij+BqOT5cKfMWMBchVp2+6GIQ1CHyZL6N5QI8MkwA+O2Y/
- p+TJVNMRqZYn1e7bnPMHnFMzKgN39KQhIJiEq7PKeT1pKnlSy/EX8Iddy9Didxe39peh21j
- s/J4i9Uxd91JkSaS4pAM7JrhRUndYCix3Mn0PsQKzujGxemw0gtFswfvFa93GQsOUorpFsU
- 7Ia7W6sahLiDignwC8gjQ==
+X-Provags-ID: V03:K1:nJpCQSibrNMzwJMfL0Mcjcap0SbMujcWNieUcIIY1/yTFpR/JRR
+ LHVb5DrIfT33MFR6haOgsnmdrWZ0CfVkLY3zBBmZ2sW6B2V3n2susoEcU3TmbvAzJQJT46o
+ kVJdcdh8u3ouKs0tSyTzgHxge3a+ymV7XKm/lGSRp7WLK1qy5DEkmIbn/Y0ccAcvV9pmHzp
+ TmDTTrEJUFsSows/xASAg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:zQK96incmDI=:eomnBbkuIuiqgCU+A935Is
- YmUsLZRJlPk7iguUUreebPM92qLvn/xDTrRj5V4L2c7ADdAY6KqATOyTgAxWxBrhjboWo+ur/
- ejH60oYqgME00FUUqetvAxM3y8MDL0epgVcZDIFKxju0NxW07gOWFOhMkFFJibOghuM1FQKCD
- y3fxDI2cO2EiXEbSWfE2HpjZ/UH/5CKPXj5yNNBGvm1YBKl/xtBD4+Kc9GEL5sb06gq4O8wGO
- 2qvYGtbpzIfaUlXAYul4ugxrm28TtOx5spmbOhY5hUN3jwWMEFn8uCgoYy8xkN00l1UZzxMPa
- wRKQkLe9607pG9nZ1mOjBJ/LxLy/1L2PZWWidYV3MlCHl/Tv9fzZJIYlqNdRB0vibxLf6+OdV
- qk9BQOPjD/O7SScwCY+weXd/fxpLc9hcY9MQzqJj5JRxHkgWdFJpB5BjQd6Si/uHAquCn+cAB
- Jrgw15d6egWJ/W8iSykIa+eZ67vt4PvoulS1TeGI0YBAs8GSfuG2L6JFkn1De9b0eFNphMzEF
- 4JUXNZlTo26pDycPV2u6UmOUca1K70BUJwejRexC2YJHwlCLoNq94NlmE5zmtJRyd7qvPnvNa
- EP1xiQtXkEe0YHY2uHDRtH9aBlRmgSAHLSGGkiW9GHtk3sH+ZUJK9HFwmqxIlG53JkHApH9Bj
- vwXRoo2KBy0336qnKeTPdOqj+T7x7+dD/AgGEgA65XXB/Nz/Iq3aOOIHZCkMj/wmPylFmiScX
- NeTzdZ919cMEWQpBjmMCirqr9HgtNg2snF3XSgxFC750qiSQeVLwqPKFXZRko5hOcukwzAISD
- q75Fjg806E2uo+KF4Fo6uARGG5hxbQoMWV2by9F168i47PexgEmlitC+x64rVSU05qr3E2f1V
- qAgSkfKBe89l4JEDVUI4IMBsQJM+4GAs9I/0JGPg3u758Jek7w3AkMBhrHtXm80wJbllvUuqq
- FbOG4sKsCXZ9lYIH8+Kqw4sh+7Q7Qrj5mcLcpQkSoMfVw2IG7tT5It5YPLmJU97j7gNKHfm4I
- MZx7cnVl03QqSxuBLCsRvbjrgYnLyW98UHkBZyymPx+Vj6yPfeIzG84x3oS4z35VKbeo69cgQ
- JcXsgFmIEZtKnA3YnqtXkOCAX1GifcGJDKLHsaA77P4Fzonp4EETMciiFTPIney0En+FZdFTX
- FiLSc4ygy5gJQZNP/QjCpQ7W5qgJwCxc4gZDdfrSSIqfC5Z2JatjN2b2DtQNCJDRK4Ldvkj55
- C9cuyhZFlMQppOhXF
+X-UI-Out-Filterresults: notjunk:1;V03:K0:wJAWe4TCpPg=:gKLgI7b/v/bLgW0ongDDKr
+ 4/WBAmPzeykbZzX5na/kQtoBY6wmstIDSRRyPfAZA88JSQCW9RNcgSebRl454eiNBhJQWvVqV
+ DVB3izin4NEDSYSvfe9bFk8uQB4xpnnXiQnzeP2Eou1/r8XBJee4Q6iLMl4tZeXC6eamT0IUZ
+ tWzENiTaiMyaBolHU7WpaT/e024j9Ia1KA9gWcoolDj7CqtdaBN6tc6uwVnQTO/X2y0r65Lob
+ wPE+XmTzShW3V0pbm4pdQGYzcx3PaHwHV4BBt6qugWcCsq/kGpSJHPrZ1gIDdCNQeEOR6b2zt
+ 2ddFAWEK+E6tBXTvrcxJ4WIgDfbZ+AO9tUA5Bw6pKm8w7fPkKV7NaV6z/+9Bh0HOysTMOVibe
+ mc6TNTq7qoxyYS0it4muHo9xSKpPWr9Cta94QHTJEex/crCIgpx9v4gNB4fZOQwcloXhhvcdw
+ f3/gOxkEwlHbsQzY9AmagC1vhuiXo1LMsEQWcTR84i5Kh4kC/J6YTqzVMarmpov5eGaaCCbel
+ qL0Lo8EI+hyNMkY/dcNp2vP/0o5RFbJYu51tiuJsr0GYMVTDjVfm64dtQAIT1xZtj9U45hZyX
+ qvIzwO0fZeJymGpEwLlxppDJNQ4ESuHjlmhWDxn0OTdDt8tRtQB+TvtGPvrMb7dQpzA70GD5K
+ cvxrNAV9Uf6M4gGNGA+NLD0M1cuPvWqdsUk2ldHB5e0pY4vbZE5cBVWHxOIq6qvQhtNzvt+ez
+ HddMfEL1LR7FUWinD1XmaU7MlLwTeZNkWSs6Heax2K4AP0hUSrKf5Yex5831UxSSpc4wu7LMD
+ jI8i5kNGtjpiCBhdJMIbB6QL8lAzuTUcSHprYxeZlFKDqwgyEzFSkiA8aKvElYIMdGwRN5czl
+ BQIBfTWOjmWrqRDTIuKG0yf+5cz5PwwH9b5uASbS99TJMe0kKUIy0QHRXICk/OnaIwMWVjZ+v
+ GE7fhaDZaIwenES98Z/LWoDFi4AmkbLQJ6ev6fcSL7uLzoParGGYqy11DBbrWt3JIH4rwMD8K
+ OLtiVOLddc2oB7FxIXzodd5jl1ZiLier0DE7IzB+rQcsistBHcGJHS0fTgWAmF0G9STxErZSY
+ PyrWqHnKhwTROrSKXYveG/AHJ60LkFnjWmfEjZE+d4GtLAiXtQYtunUEbltD1J0CXjq7BOioT
+ qO7fQyo3u4tF24AdC1thplAgkCCKvMpCWNVrzRQG+w9+wwfbXiVYcUnSIEufVgwQ6sGUFHskb
+ ZlZa9GVkVIWqqyxxI
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 4 Apr 2020 17:34:53 +0200
+>>         ssp->irq =3D platform_get_irq(pdev, 0);
+>> -       if (ssp->irq < 0) {
+>> -               dev_err(dev, "no IRQ resource defined\n");
+>> +       if (ssp->irq < 0)
+>>                 return -ENODEV;
+>> -       }
+>
+> At the same time we can unshadow the error code, i.e.
+>   return ssp->irq;
 
-The function =E2=80=9Cplatform_get_irq=E2=80=9D can log an error already.
-Thus omit a redundant message for the exception handling in the
-calling function.
+Have you got any preferences for the order of possible change combinations=
+?
 
-This issue was detected by using the Coccinelle software.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c b/drivers/c=
-rypto/allwinner/sun8i-ss/sun8i-ss-core.c
-index 6b301afffd11..a1fb2fbdbe7b 100644
-=2D-- a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c
-+++ b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c
-@@ -537,10 +537,8 @@ static int sun8i_ss_probe(struct platform_device *pde=
-v)
- 		return err;
-
- 	irq =3D platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		dev_err(ss->dev, "Cannot get SecuritySystem IRQ\n");
-+	if (irq < 0)
- 		return irq;
--	}
-
- 	ss->reset =3D devm_reset_control_get(&pdev->dev, NULL);
- 	if (IS_ERR(ss->reset)) {
-=2D-
-2.26.0
-
+Regards,
+Markus

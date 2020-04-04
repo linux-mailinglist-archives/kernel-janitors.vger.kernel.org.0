@@ -2,35 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3139C19E769
-	for <lists+kernel-janitors@lfdr.de>; Sat,  4 Apr 2020 21:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F1C319E773
+	for <lists+kernel-janitors@lfdr.de>; Sat,  4 Apr 2020 22:00:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726283AbgDDTfg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 4 Apr 2020 15:35:36 -0400
-Received: from mout.web.de ([212.227.17.12]:56787 "EHLO mout.web.de"
+        id S1726302AbgDDUA0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 4 Apr 2020 16:00:26 -0400
+Received: from mout.web.de ([217.72.192.78]:54033 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726057AbgDDTfg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 4 Apr 2020 15:35:36 -0400
+        id S1726297AbgDDUA0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 4 Apr 2020 16:00:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1586028926;
-        bh=Fqu0GnCxUAj/kwvd+H7kXoW8uDipWf8I1QG3WwKzqYk=;
+        s=dbaedf251592; t=1586030414;
+        bh=u0HX4xbmqfEdTZ1hP/+DNk9j+UG65ePaIyUcT+Ekhz4=;
         h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=mdJc26xHz8/tvX1f/ijEi794H1Tne6TRmA8KxCwGd3zdtlBQfn11euRQVOKiW5tVR
-         lQ3xrER74Tc5YRiF3nodRIUg6bRR3FdJ/gxFsSI4Oaudq/FBk+kWDAR+l9mT1P3Uom
-         K/a4MEngSwbJtwicLp0gPyNwiCN/RPTN6C3Fm8GA=
+        b=KK/i8MyPSVL+/WwkAEE/iAWcahkt8i9Qbk+uzNZmxn4kNpi9aO5fFsWRvGc0H9hXz
+         pJ8/EEC+PNSEsIc8gQWrSZF/pL5UnYjQr6miEGTzuan/cbM17ouKcL0oOfoEFvJsDB
+         AL+aGBKcNuiIE4YGoOpJ+ZxAypR12Z36CGq8SNW0=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([93.132.181.229]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MS290-1jjTDr3TKs-00TDot; Sat, 04
- Apr 2020 21:35:25 +0200
-To:     linux-gpio@vger.kernel.org, Andy Shevchenko <andy@kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Linus Walleij <linus.walleij@linaro.org>
+Received: from [192.168.1.3] ([93.132.181.229]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LfAoO-1iwTe20d4a-00ok4i; Sat, 04
+ Apr 2020 22:00:14 +0200
+To:     dri-devel@lists.freedesktop.org, Alison Wang <alison.wang@nxp.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>, Stefan Agner <stefan@agner.ch>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org,
         Tang Bin <tangbin@cmss.chinamobile.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] gpio: msic: Delete an error message in
- platform_msic_gpio_probe()
+Subject: [PATCH] drm/fsl-dcu: Delete an error message in fsl_dcu_drm_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -74,45 +73,45 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <bb60007c-585f-052d-2f86-5598ff7619cd@web.de>
-Date:   Sat, 4 Apr 2020 21:35:24 +0200
+Message-ID: <1c108582-ba46-153e-7975-f6cfd82d57c6@web.de>
+Date:   Sat, 4 Apr 2020 22:00:11 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:4yPAqaDZbHw3KMZr+wtSDyC6rKWHz/W243akICqewMHlrs+rpgk
- PtpSQvtD92UTEq5zv1TsTSaLoTxvCI1embyg2es3iM/ySSVdliq0R4miesBXmohTEAj2XEP
- tMJpUWwAui/clQP1FzN5ZNb4+tci3s49y0SN3i43rFb75hRuNhPF7jSaHDwMtYrnAPUg2BC
- LoZOQ/ZH1Z+r91VgcGHUg==
+X-Provags-ID: V03:K1:GTi0Cb4NKnPjWt6umO7/+f6Fxu3Hs4u1rbtisl4UQ4p52MEsq6G
+ VQ4Z25lUXH3LrjEwSww08x3TMYpPPY9oCyeoQqsm+oSEnrxo8o+eC7Z4Y43CHqReCyi7M05
+ AbLsxh69FQ9WCCkPO5veanBCSsfpesnRqtrpiFES8uXVjDJpaiVgxP+nHoBeCsw8dkCq4kM
+ lm+biDdb/1U3r+9OTlo+Q==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:3j0IsG37LYc=:R7tFoXejYc0+ADQFsANNHX
- FYfiJtw3oqxu+hKRi4i9R5bX6P3LCB7EMZHALSgJY53zEdRh9SrNKxmb++dnvBmoW4fgLkci4
- kBLQYka7tOrN3t1onke3JH8DpJ3yR7rC3tGPqKLJz9ynlGMpCs4sdNQw7VT54990xctm4Q32y
- 5Ms/UPaG1Qqud1xp17AbbTk08q3DDYkpFlsWJGsRbLY8k0cs0+AvxwxplPiDIm00BiHR6vA64
- /YLy8vvetd6uEjRUCDGtlCSTTJQ/k2zspwZ7M5mtpBrUGoZOz/HvgzjhPobYvcf+gkgyVgCjF
- 6rypiP6aAEqb4R2t9YWLPqD9D9b1ALs6FgPY0joW8NzhgG8T/xzzfBhsx2ri4lD4jtRxIUurV
- CXjYZLYQMlRV/urtmN5QXIt5hpGoCBa4bdMw9Nms1jOofyMj8HhwVZ6woptT6WuIBz9E3Upjy
- HthL4kKs+PTACN0GB2Vw20AzhisBgcW7h8qIOmk1KszZshZeFfL6QhUNPjOcJtwj4PEJjqyZx
- bf8WrpJp6k/sbRomNWW1JoyHF4t9RVyZmcHCX5Wlh1Dc1mOobOPi0NS9B/NHu6H8odbRGMsPg
- Y9riFbkcdNz6KKzBxasbyy+JwoLxSy/BXl1dnBIw7cm5UDFZIif4VGiqtlQiRpIH2xOJG9Pxk
- ggz0GpooGryw+J3Ww5BNYcVm+xRttktX1fKj6DbaZzOxLIdxIZq2TSQ2SouXiKdJetWcusdNh
- HSkUCiN06NdN9BZA7gsBon7h8Kf9DYJxQcovoR4crmnAKX8vF5NlGdAunURkaxXDoz84yhyZR
- MSMHNKqHzIMwMOsSoIGCTafNASL4F73lBDX8ygQ35rgg94JTeB+MK8wsuWwkqJfloUP+zk8Sx
- mwcZ+4G3zBNpuT5TNi1nByW5yVlHqPNtFFrAUG5GpyrgXleAQJ01qS2kaVh5dwYnqMWCVq+/G
- POq379qMLFMfMdjSAj/SD3292TUDzgb8yIIKfSdofaaalTBBuzMkKSa1q+AZIZFLOiIfoIT+c
- XrBXHD7gSAE+15kYghnUhdi6TSIwZyWJifx0BYZYJy3bDJxocCkix1XlLcB3KL1Av8SNnD3J6
- fNYW3u62uhmzXBC+LkBJxAXmKlJWlvFNqdRzrPVkIJCUICqdrwlptB9PW2Uus1al+QzOADRA0
- 4Y+JLfuXSqc4Pln35JFM6C8iXVDW5JZDd19glgVWU7cLZPT26io3RSgAhD+hRZ3D6ei2kycOm
- e615q+50hAue9yxT6
+X-UI-Out-Filterresults: notjunk:1;V03:K0:a2gP+i9kuIw=:oXTIMPz7gpdWOnMc7ChYEV
+ vMAzEsz0h9VKK1d0l+Kc4DV4lzFTIohPqINNWcKA7vHCZCoRDY/vHG/L9imBsCiqghESrinnJ
+ nvZ5SWWxhHneyD32UN0641MhEdoJSJC6QkdK4LYuplLZ1cdVhulVgd8S+gLqxQi5FwlARlDg7
+ SlQF/BrpI4PUxTE/id6VhmFr8mgpsw6B0DQh1ioU/bAGZc7RwsuJW6jVsU4gHoAq3pghTAnfu
+ jsUeB+qvh8lmeBZh+B7EbSY9XsKRTESBMHeDX9AW9I6I5n/ryM4p2ypciYaddQCA9gUjFE1T8
+ 3+Eaj9tWS/qCPGClLh5n/WgqKDqlw5WA+iI0t2PkbYh/335ouLcJIYBEArfCKR7Q6q6bjQXg/
+ 7aQVnOzEmru+Vh7ZJxDGfbrCcGPm6NZEK/z5o0nlckxdIoNxrTPaPqJDpjTpHQohv9FOtbAhc
+ eF4afbshZY/T0RX8suRXKpM1uWjt0EOzo1AJHMcUcCb1CYLOEIyvLYqKBUl2zaQZjpqZ8KQ9Q
+ 4dsY4gcGfPJ11fjq1AkdmNkjgI7Qg/xWNMvuEz7DcW7qbIHKQ0/Uy6dt9HU318R7w63fV8rgC
+ wB068ooFZcRVGyhFoNmPrDSrVySc4HYkIAo3xXV2XkJxyAay6qSn6/bykozwnBuTj1SroIG+n
+ sIPkVmpZ7ZrWe/7mMtItO9dx+zRx1seccjQsURUvdHKnjepvpro2Rp42ExaVUhrHuOSN7yhW1
+ 4U35HohsC54T2lJ2MIfbanmX/XfVJ7eazQj0zixr/WXss3UIVrobm6lnzlG4xh+hUkW14zYLR
+ rmC+A4ueEPmZ9luXCB4IQm2+uGLWylm5EYMeQCzygWierqnm8txYlik+z1YJAVvV7secmJUDE
+ I/jlP02EFIF2WQx+ctQJvLGD9fWZtVNrjZP1fxXs17Hkr1TUR1W88o7FEIFmNDHSVVj/W1mxN
+ uibOdFh+0VlBm+dFKCy6hOvs7cmTmi7OnWQvaVxmdAzzlO/PP4vrBT7Ydt39U1RpvJnZ8gTnF
+ xJnG1HP1U0p3ScNIydQ6WJs0+l5mEB2glpH9bixn/HYeYdUYbgbua0Nx7ypqAUEFa5B1XGWEN
+ sgFd45wNcPftNJJ/CMga9Sn1PPBCxhkVtUxgL9bvA5cW8ptHFdDT3zxs0Nx8XMfFDhQf/efRg
+ cWw3OWU1MwUe1VnucqCAMp+jN6dWmKI8Tj+W/5p2sbCi23TKCOE3hlumz4onqM9PI/KNPd9BQ
+ WIPs8tJG72RjUJYwb
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 4 Apr 2020 21:30:12 +0200
+Date: Sat, 4 Apr 2020 21:54:31 +0200
 
 The function =E2=80=9Cplatform_get_irq=E2=80=9D can log an error already.
 Thus omit a redundant message for the exception handling in the
@@ -122,26 +121,27 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/gpio/gpio-msic.c | 4 +---
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpio-msic.c b/drivers/gpio/gpio-msic.c
-index 7e3c96e4ab2c..5548b7be36b3 100644
-=2D-- a/drivers/gpio/gpio-msic.c
-+++ b/drivers/gpio/gpio-msic.c
-@@ -248,10 +248,8 @@ static int platform_msic_gpio_probe(struct platform_d=
-evice *pdev)
- 	int retval;
- 	int i;
+diff --git a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c b/drivers/gpu/drm/f=
+sl-dcu/fsl_dcu_drm_drv.c
+index f15d2e7967a3..9e8ce0774db9 100644
+=2D-- a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
++++ b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
+@@ -268,10 +268,8 @@ static int fsl_dcu_drm_probe(struct platform_device *=
+pdev)
+ 	}
 
--	if (irq < 0) {
--		dev_err(dev, "no IRQ line: %d\n", irq);
-+	if (irq < 0)
- 		return irq;
+ 	fsl_dev->irq =3D platform_get_irq(pdev, 0);
+-	if (fsl_dev->irq < 0) {
+-		dev_err(dev, "failed to get irq\n");
++	if (fsl_dev->irq < 0)
+ 		return fsl_dev->irq;
 -	}
 
- 	if (!pdata || !pdata->gpio_base) {
- 		dev_err(dev, "incorrect or missing platform data\n");
+ 	fsl_dev->regmap =3D devm_regmap_init_mmio(dev, base,
+ 			&fsl_dcu_regmap_config);
 =2D-
 2.26.0
 

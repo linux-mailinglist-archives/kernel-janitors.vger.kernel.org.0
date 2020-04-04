@@ -2,36 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14DE519E72A
-	for <lists+kernel-janitors@lfdr.de>; Sat,  4 Apr 2020 20:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3139C19E769
+	for <lists+kernel-janitors@lfdr.de>; Sat,  4 Apr 2020 21:35:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726300AbgDDSp4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 4 Apr 2020 14:45:56 -0400
-Received: from mout.web.de ([212.227.17.11]:42253 "EHLO mout.web.de"
+        id S1726283AbgDDTfg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 4 Apr 2020 15:35:36 -0400
+Received: from mout.web.de ([212.227.17.12]:56787 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726258AbgDDSpz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 4 Apr 2020 14:45:55 -0400
+        id S1726057AbgDDTfg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 4 Apr 2020 15:35:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1586025938;
-        bh=1cv7GZMRsxz/iQJWYDwvY7I9F4CuXN5gGyZqWSBpVTo=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=OyhynnDm+sI4j59e+C8JOGchNBvbqGkTf4/AneKjrcbcoxRlFRCt5BXGR+XoFM38c
-         qU3NJrVRhnlXJuDwtYoTlJS1cy9txsdzvzhsLgFRkB8ksK71trhktqRra01AT9yYRv
-         Nkq6fC8p8VqsJ+iN8XNl0IcY9AnEop0laYXPsACI=
+        s=dbaedf251592; t=1586028926;
+        bh=Fqu0GnCxUAj/kwvd+H7kXoW8uDipWf8I1QG3WwKzqYk=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=mdJc26xHz8/tvX1f/ijEi794H1Tne6TRmA8KxCwGd3zdtlBQfn11euRQVOKiW5tVR
+         lQ3xrER74Tc5YRiF3nodRIUg6bRR3FdJ/gxFsSI4Oaudq/FBk+kWDAR+l9mT1P3Uom
+         K/a4MEngSwbJtwicLp0gPyNwiCN/RPTN6C3Fm8GA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([93.132.181.229]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M9ojk-1jRRe61hQu-00B1ph; Sat, 04
- Apr 2020 20:45:38 +0200
-To:     linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Thierry Reding <thierry.reding@gmail.com>
+Received: from [192.168.1.3] ([93.132.181.229]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MS290-1jjTDr3TKs-00TDot; Sat, 04
+ Apr 2020 21:35:25 +0200
+To:     linux-gpio@vger.kernel.org, Andy Shevchenko <andy@kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Tang Bin <tangbin@cmss.chinamobile.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] PM / devfreq: tegra30: Delete an error message in
- tegra_devfreq_probe()
+Subject: [PATCH] gpio: msic: Delete an error message in
+ platform_msic_gpio_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -75,48 +74,45 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Tang Bin <tangbin@cmss.chinamobile.com>
-Message-ID: <ba67e238-43a7-6c53-363e-7a2c12f09949@web.de>
-Date:   Sat, 4 Apr 2020 20:45:36 +0200
+Message-ID: <bb60007c-585f-052d-2f86-5598ff7619cd@web.de>
+Date:   Sat, 4 Apr 2020 21:35:24 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:+RzL0jC8GHo98AKqDvL7PkpfFDCleYAHzx3/9kMfe8iXhd+Dq9c
- 1jrSN0wymTqkp+U7ay+GeW+UBWOAzkOtCeJdAyzmt6JaZ1rAxqLA8fZreqp2XjZfXixhD61
- PZ28nYrrUxbB5suzB2Uf3pAg5YMFnCjNovnQLc6WAqK2VsaH609A9MhkFlZdotUnGwV2H7U
- 5nmOasHNlos2kkED1jpkg==
+X-Provags-ID: V03:K1:4yPAqaDZbHw3KMZr+wtSDyC6rKWHz/W243akICqewMHlrs+rpgk
+ PtpSQvtD92UTEq5zv1TsTSaLoTxvCI1embyg2es3iM/ySSVdliq0R4miesBXmohTEAj2XEP
+ tMJpUWwAui/clQP1FzN5ZNb4+tci3s49y0SN3i43rFb75hRuNhPF7jSaHDwMtYrnAPUg2BC
+ LoZOQ/ZH1Z+r91VgcGHUg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:VGiNLo6JLfU=:rTb6F7LBf8Nc5+Hnx1hWbq
- uKB35VAJVPLB8nNBtBvngglmi17zfB+34jQHvSUdFDF7vM0wxoBr9ES7OFzapj27ytJwnhC/o
- 1rmfFBkv87swXajajsEW26uCrrkNd2L3+yJrF2IwFrwhoa224qsSXeOJI/HqBS+Y0BkMlpJP5
- wFgOiuGhAWHCHkp2f6fg8F6DxoL0b/dDHhJED7m86YidWK86EZJ0MwHpqaix/+MGFZr8nC27X
- 0rp93sKFjfTQ9NDizL1SFXYaaHonoCZcpckxwBVmiTdko2u2RaTuxBMLUd4OTwPzeh92ZuKNc
- +h3/y3B6q27TbtSMASGnK0yM/jI3YBubjQYuonysXk7KB6Xv6wWJC2GindWCcyVB6U/KBqobL
- t1Pvh0C9sfmSM78yonru5tmWH80t6SOwer8PK0kJaTZvGuydRmhbInRpfZArO7b2Io7LUJUYn
- rpkFO319g0MndzlhXBao/dwLEO9WLvrwUnr2ognuDWxnyCDR90mrSWje90EWWD7D24L2yoFlk
- Eh4z4f9yhXS9a/KIBSAajjyv+ytlSkZOFddwFGGqTu+blWj62lYddqMr+QkksnEyee89kYNTJ
- d3UNo9glb0M57SUCrzbzW65gjF380Wl71n54Iu+Q/EpKomjuDiuv6U5lVB07KOAgotaAPVKRC
- EvgRzEZH88+6przX1Gq/6aSPp3UUH4Kfol1jDIQDv81cDc+APGuwSANXgE70RaEwWamVQe6Wd
- 4Z7nNfWAlIGPvxrNPUGDzBvykiW6bsEFia0MAGZk1blrAhvDedU5DQRdsMVqrDG8Dt343ZN9n
- LaZiO2/CV2U7lNMgHRZxm5o2PRjnO6taeQzB1sRvV/HZtSXtuV6QYXCCKy1PZcnh7M7/x8AGh
- hMhzaYSYY4/nn2GaB4R26xF7azWhpgreqM8rgq8UDioW61aYKoPgXTHZQf/8tBUyjLEyVQtUb
- ghPSkEsEATtkEZsFkM0RI9P3jDnqRwBzeUrn8vYA49ekP6lpfpTwri6SqOOHPcX7/GIB/aqcJ
- /ww7HmZr+NxxmOARh/a69QKgTiHCGVF/LAnojGiy23DzP8b/HKgaP7sry5xlmEwwuZbvTLgV9
- RgaadQZUx0q0HRWjhCJEDzvMqJcHt2k3/EjmMSkqXFWNW4Bl7JfpsEVszlUco06NT2uOMqc3m
- vUU7ExyCvdLmlBripTvJoC+l6Q4LGoW/WLk1xCR+Lyx/wiC+KHgPyKkDSRLHiLhRGrPms6TP/
- 4857SU6KWQG+s3YYv
+X-UI-Out-Filterresults: notjunk:1;V03:K0:3j0IsG37LYc=:R7tFoXejYc0+ADQFsANNHX
+ FYfiJtw3oqxu+hKRi4i9R5bX6P3LCB7EMZHALSgJY53zEdRh9SrNKxmb++dnvBmoW4fgLkci4
+ kBLQYka7tOrN3t1onke3JH8DpJ3yR7rC3tGPqKLJz9ynlGMpCs4sdNQw7VT54990xctm4Q32y
+ 5Ms/UPaG1Qqud1xp17AbbTk08q3DDYkpFlsWJGsRbLY8k0cs0+AvxwxplPiDIm00BiHR6vA64
+ /YLy8vvetd6uEjRUCDGtlCSTTJQ/k2zspwZ7M5mtpBrUGoZOz/HvgzjhPobYvcf+gkgyVgCjF
+ 6rypiP6aAEqb4R2t9YWLPqD9D9b1ALs6FgPY0joW8NzhgG8T/xzzfBhsx2ri4lD4jtRxIUurV
+ CXjYZLYQMlRV/urtmN5QXIt5hpGoCBa4bdMw9Nms1jOofyMj8HhwVZ6woptT6WuIBz9E3Upjy
+ HthL4kKs+PTACN0GB2Vw20AzhisBgcW7h8qIOmk1KszZshZeFfL6QhUNPjOcJtwj4PEJjqyZx
+ bf8WrpJp6k/sbRomNWW1JoyHF4t9RVyZmcHCX5Wlh1Dc1mOobOPi0NS9B/NHu6H8odbRGMsPg
+ Y9riFbkcdNz6KKzBxasbyy+JwoLxSy/BXl1dnBIw7cm5UDFZIif4VGiqtlQiRpIH2xOJG9Pxk
+ ggz0GpooGryw+J3Ww5BNYcVm+xRttktX1fKj6DbaZzOxLIdxIZq2TSQ2SouXiKdJetWcusdNh
+ HSkUCiN06NdN9BZA7gsBon7h8Kf9DYJxQcovoR4crmnAKX8vF5NlGdAunURkaxXDoz84yhyZR
+ MSMHNKqHzIMwMOsSoIGCTafNASL4F73lBDX8ygQ35rgg94JTeB+MK8wsuWwkqJfloUP+zk8Sx
+ mwcZ+4G3zBNpuT5TNi1nByW5yVlHqPNtFFrAUG5GpyrgXleAQJ01qS2kaVh5dwYnqMWCVq+/G
+ POq379qMLFMfMdjSAj/SD3292TUDzgb8yIIKfSdofaaalTBBuzMkKSa1q+AZIZFLOiIfoIT+c
+ XrBXHD7gSAE+15kYghnUhdi6TSIwZyWJifx0BYZYJy3bDJxocCkix1XlLcB3KL1Av8SNnD3J6
+ fNYW3u62uhmzXBC+LkBJxAXmKlJWlvFNqdRzrPVkIJCUICqdrwlptB9PW2Uus1al+QzOADRA0
+ 4Y+JLfuXSqc4Pln35JFM6C8iXVDW5JZDd19glgVWU7cLZPT26io3RSgAhD+hRZ3D6ei2kycOm
+ e615q+50hAue9yxT6
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 4 Apr 2020 20:34:02 +0200
+Date: Sat, 4 Apr 2020 21:30:12 +0200
 
 The function =E2=80=9Cplatform_get_irq=E2=80=9D can log an error already.
 Thus omit a redundant message for the exception handling in the
@@ -126,28 +122,26 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/devfreq/tegra30-devfreq.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpio/gpio-msic.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/devfreq/tegra30-devfreq.c b/drivers/devfreq/tegra30-d=
-evfreq.c
-index 28b2c7ca416e..93e6f4b25b04 100644
-=2D-- a/drivers/devfreq/tegra30-devfreq.c
-+++ b/drivers/devfreq/tegra30-devfreq.c
-@@ -807,10 +807,9 @@ static int tegra_devfreq_probe(struct platform_device=
- *pdev)
- 	}
+diff --git a/drivers/gpio/gpio-msic.c b/drivers/gpio/gpio-msic.c
+index 7e3c96e4ab2c..5548b7be36b3 100644
+=2D-- a/drivers/gpio/gpio-msic.c
++++ b/drivers/gpio/gpio-msic.c
+@@ -248,10 +248,8 @@ static int platform_msic_gpio_probe(struct platform_d=
+evice *pdev)
+ 	int retval;
+ 	int i;
 
- 	err =3D platform_get_irq(pdev, 0);
--	if (err < 0) {
--		dev_err(&pdev->dev, "Failed to get IRQ: %d\n", err);
-+	if (err < 0)
- 		return err;
+-	if (irq < 0) {
+-		dev_err(dev, "no IRQ line: %d\n", irq);
++	if (irq < 0)
+ 		return irq;
 -	}
-+
- 	tegra->irq =3D err;
 
- 	irq_set_status_flags(tegra->irq, IRQ_NOAUTOEN);
+ 	if (!pdata || !pdata->gpio_base) {
+ 		dev_err(dev, "incorrect or missing platform data\n");
 =2D-
 2.26.0
 

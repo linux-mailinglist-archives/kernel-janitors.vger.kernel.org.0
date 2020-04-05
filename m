@@ -2,114 +2,163 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA40A19E7C8
-	for <lists+kernel-janitors@lfdr.de>; Sat,  4 Apr 2020 23:40:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8335119E981
+	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Apr 2020 07:44:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726443AbgDDVkv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 4 Apr 2020 17:40:51 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:46480 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726057AbgDDVkv (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 4 Apr 2020 17:40:51 -0400
-Received: by mail-lj1-f193.google.com with SMTP id r7so10565496ljg.13;
-        Sat, 04 Apr 2020 14:40:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=JMPqtLiyle3hnA0yz5/rma3PZC3NUiCA2HOMNpCxoFQ=;
-        b=rrBwp7SCLJer6Iw0pYwVspuK7bro/VSRwtB8zM5qgwbyvzzKRUJbGV9N+budcgTwNr
-         OFekZzJDxmBdIeE12U2VWCwh8ZvfcjZKiVdzeZiupLBiWUdUoTYqpIKF4NpjpWU61cao
-         yrP8Do5Vpmo+F+1qYoNqpTkyv+fpVpFBcSmyYx+uRukNgR5WMwPWxEKmdhCZ0mnwwce6
-         P7Gze7I7oyv9PDPGkPDVuORJxgcZWhRGaq47fMbN9Ug2Uoitw9AASDjXlKlBVLho/6tt
-         mM3mgQTp+eRNIwUPzVYibKJl5dq5kVFwovcwwxGno0wowr338SuMm8ZkdR0J2LSX0ZBD
-         wLYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=JMPqtLiyle3hnA0yz5/rma3PZC3NUiCA2HOMNpCxoFQ=;
-        b=Qexh1hh3RneyWfBuLcl95l6eeI0K6oa4mUuzr1N1P4j26rU4fv+VN2EIBXB2Ti1jXp
-         Y4zSLZSqdz9VoaUTZSm1YCo9xNDTmCmq3toT3BvWPJWuH8xn6QeKOJA402h/no1HHDDp
-         mJ5ft6vz/lmNE9MU9KMpcyjz+o9qQWQoAQvSiZKRcDrsJE0apuHQ4o4MJc9oD552Kp2P
-         Y0vWuZ1Muod+2scvVZLVVDgdnZHIYE9EhoiT8wuo40LVNHN1q0kvHdlF09fa4gnv4SUo
-         BsttPy3Bht5kOzJUp0CC9QrKu2fy5rtEoi6rXtw3ohM5FqoZPTd8aLf8xdaiuBFFQCKi
-         pXoQ==
-X-Gm-Message-State: AGi0PubDgto/YJEQciNW/Qs4dkL55wqWBSerwelvEEf9nU9p2MEDZD+M
-        hz8Aq4X5Z/GCuPb/XcUdVj4=
-X-Google-Smtp-Source: APiQypIfdQmzxGJNdWVHAB8GwLoAsSFoHOImV2N3Dvsfbby+B0RiPRPlfuolT2+enPk6TRO8Q0P9xQ==
-X-Received: by 2002:a2e:b4d1:: with SMTP id r17mr8227053ljm.117.1586036447002;
-        Sat, 04 Apr 2020 14:40:47 -0700 (PDT)
-Received: from [192.168.2.145] (ppp91-78-208-152.pppoe.mtu-net.ru. [91.78.208.152])
-        by smtp.googlemail.com with ESMTPSA id a6sm8730966lfl.5.2020.04.04.14.40.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 04 Apr 2020 14:40:46 -0700 (PDT)
-Subject: Re: [PATCH] PM / devfreq: tegra30: Delete an error message in
- tegra_devfreq_probe()
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Thierry Reding <thierry.reding@gmail.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Tang Bin <tangbin@cmss.chinamobile.com>
-References: <ba67e238-43a7-6c53-363e-7a2c12f09949@web.de>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <27bdd09b-0b8d-a6ef-2ffd-53421277fcca@gmail.com>
-Date:   Sun, 5 Apr 2020 00:40:42 +0300
+        id S1726388AbgDEFod (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 5 Apr 2020 01:44:33 -0400
+Received: from mout.web.de ([212.227.17.11]:44841 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726219AbgDEFod (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 5 Apr 2020 01:44:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1586065449;
+        bh=brGusnsgJLeBeqMMHWxkDmr89vsvsG1dzfk1f6jqn7E=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=oBtnQfSriGbO4tpig0PxuFfkwQX4+jB83mAfzfqg9DUrIV0Jw4aIkzcc5fWg5c/qX
+         uJyKfWEwMEz9kJB6KtWvEIcgYe8pXkA4YCbXd/dsqBihb2pXnkHzElErk5CNeJb7jH
+         Mh5zVeYuO5LQ/2HkmQ4Hj6QcmnXvbBbEKGDDb/G4=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.3] ([93.131.99.70]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MQ6LH-1jPd2x3fpj-005I10; Sun, 05
+ Apr 2020 07:44:08 +0200
+Subject: Re: Clarification for software development opportunities
+To:     =?UTF-8?B?5ZSQ5b2s?= <tangbin@cmss.chinamobile.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <eae7170c-4371-4865-7b85-589c0ed2b5b6@web.de>
+ <2020040423261552036811@cmss.chinamobile.com>
+ <e71d56f1-6fce-5e2d-9719-1385ef3b0811@web.de>
+ <2020040505380926003012@cmss.chinamobile.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <95c5e77d-e993-f12e-11d6-9a43b9afc230@web.de>
+Date:   Sun, 5 Apr 2020 07:44:01 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <ba67e238-43a7-6c53-363e-7a2c12f09949@web.de>
+In-Reply-To: <2020040505380926003012@cmss.chinamobile.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:Lxum9BaajizllUR9MH4Li7ED624dMohLC7xKtZilz/FWbnVcrns
+ FHlEuN8u2vU3nV4cyzyW9b8yzxxO01VWuJgc+sNVGxj602r8/ZErp12kpjYdVHJ6Ph9XpDx
+ lsCivJrY5uH4ScznCM5HzTunNnSqIvlp/8b8Sa2v9TUWlaJNnny074r3dF3vrykBnOtIwj+
+ O5Cq6wKyT4FUzKG6wvRxg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:PtAnAY5OrtA=:VliNn5RqwiUycVLmp1zlCl
+ NoAuoGS8OFPQFZknpjearInsiQp509HlcAKtccKPDMtMLvHT32SBQ9E5v97fhnNp1/2y/ZcsZ
+ wjR7uZ9Ntj/KSCrOYEyAlvz8olIovypHhEA2UNbPy/cIOSfzo792a59S/s7lMLWCNZxWzoaLW
+ 1VU02+dR1e9paoQwiH0gPTh7CoqQ9FFA1iOxCaiTticqrLRZBEr4RJApyOHW3cG9NeNWGYzXe
+ a7IxyrzEvmI1LArY86E7kPzsuTd3s6L3DA/C9C/1HfRzN6n2dbviFslRPw/R9hbZOPoottYIF
+ bNYjBlW8mE+/mteGk4PTfUrNyeB1U5313gSU38OCC4Ay2sAA5IMqZDxyYCeX5c7qgQYEQbca6
+ zinogHkeEKGE0QGCoi9evhowV1GSzFY/5RnWlnYCpOp8lDW0RSZZgjlt8+GkphsnrT/tKG7c4
+ dKs7FDlTG6CI3IgvLKE6vC2FBKjUrCfigqUuwplQpCaHnaVnOqixlY2VWOGtNDKDoyMlCRmoT
+ 9ZaJhb10a+Ea9GgZ3mw2VJcIDRwn6XrZ1FFOtyZpo7pae2d1kK/rpO/2PGRiQi1RaeitLv5Pk
+ IStgasrgPaEQrev966UdGpYq/Nf8JlgB1hOkOuLNSk39lbjOxs65tI4bGtYjdWmKRaZD1V/iL
+ Q5c/eNlW4OeknX23i3uWcRBcr3fL92cd2kFsOUicTL3umOAE3QCvWDxhCZeIl4gosCVjqnJto
+ uinmTRcLEhpCtvzQfP3J1WNeBUDjYU4z6KPxe3xpUJwi8ZsaNl2Mjx/P/G8aqkNiV6md82967
+ f8W1FwPc6FmYFESV2NUnCPcvVRMhfNVuuPgHinqHddbqX1pqVOQgP/5VlSbmhJPhN2aJwTGew
+ zbLELI6o26XBSQW9PbDVKrM55X/k8Lk4EFHuFlaB2rs1J5pHjaPHNj5agEpjWB2bjzWMSz9Za
+ fyxVm/iGErYnxP3BUAUrHeoZFaUvVm2lD11GGSW2rGsCjDrA8iq1Jt4hRAkRYYA56yiy5Sann
+ OXI0bDHDYOkkW3P4IpmFnSOKwDidj0pzaVNWyi7qsFwoHt9mJku6ZR6up3OBF6aO/7Zdu1tP0
+ 7x8k2Nw1mjAIW3096ydJc268SWf2lgbnpMC7wpVqpBignOwitN9PQzjrFSIFtUGNodhmwPM9p
+ MOYg7giczIpaTL711v9doVwViUZJwQttGpEqiO3gynZ6afuXyKcodMOQH8fg1jRZLlAuO8IVX
+ 4TqpI6BTIU4NPFKad
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-04.04.2020 21:45, Markus Elfring пишет:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Sat, 4 Apr 2020 20:34:02 +0200
-> 
-> The function “platform_get_irq” can log an error already.
-> Thus omit a redundant message for the exception handling in the
-> calling function.
-> 
-> This issue was detected by using the Coccinelle software.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
->  drivers/devfreq/tegra30-devfreq.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/devfreq/tegra30-devfreq.c b/drivers/devfreq/tegra30-devfreq.c
-> index 28b2c7ca416e..93e6f4b25b04 100644
-> --- a/drivers/devfreq/tegra30-devfreq.c
-> +++ b/drivers/devfreq/tegra30-devfreq.c
-> @@ -807,10 +807,9 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
->  	}
-> 
->  	err = platform_get_irq(pdev, 0);
-> -	if (err < 0) {
-> -		dev_err(&pdev->dev, "Failed to get IRQ: %d\n", err);
-> +	if (err < 0)
->  		return err;
-> -	}
-> +
->  	tegra->irq = err;
-> 
->  	irq_set_status_flags(tegra->irq, IRQ_NOAUTOEN);
-> --
-> 2.26.0
-> 
+> I don't know what is Coccinelle software, I will check it out.
 
-Thanks,
+I am curious under which circumstances the development tool box will be adjusted.
+http://coccinelle.lip6.fr/
 
-Reviewed-by: Dmitry Osipenko <digetx@gmail.com>
+
+> When I receive critical emails from others, I am happy that this is my study plan.
+
+This view sounds positive.
+
+
+> Previously, I was happy and looking forward to providing patches to the community.
+
+Such feedback is nice.
+
+
+> But when I noticed that you were sending similar patches over and over again,
+
+This can be an usual effect from the application of known source code
+analysis approaches.
+
+
+> I realized that if I want to increase my patch count,
+
+I suggest to reconsider corresponding development goals.
+
+
+> I would not be able to reuse some files I had already found,
+
+This can occasionally happen when some contributors try to achieve something
+in similar areas.
+
+* Would you like to clarify opportunities for further contributions?
+
+* Do you find globally distributed collaboration interesting?
+
+
+> which made me sad.
+
+* I find your feeling unfortunate.
+
+* I hope that your view can become more positive again.
+
+
+> So,thank you for giving me a lesson.
+
+This was eventually my intention partly.
+
+I imagine that possibilities can be improved also for teaching and education.
+
+Regards,
+Markus

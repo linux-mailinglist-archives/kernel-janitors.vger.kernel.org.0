@@ -2,37 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FCDA19EAB1
-	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Apr 2020 13:23:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2722419EAE8
+	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Apr 2020 13:35:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726578AbgDELX0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 5 Apr 2020 07:23:26 -0400
-Received: from mout.web.de ([212.227.17.12]:54247 "EHLO mout.web.de"
+        id S1726521AbgDELfK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 5 Apr 2020 07:35:10 -0400
+Received: from mout.web.de ([212.227.17.12]:44429 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726388AbgDELXZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 5 Apr 2020 07:23:25 -0400
+        id S1726491AbgDELfJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 5 Apr 2020 07:35:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1586085787;
-        bh=bgK3xwLWxipoZhNigNcDnx54QrzQkey9ZhjORtkbjjg=;
+        s=dbaedf251592; t=1586086496;
+        bh=xwgpbDc2i7sOHvO6OXNvOwVtlSJZvaKRRVhhOgOw6e4=;
         h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=TJrUOVGFnJnDWw5QZ0Vmt3bld9nMEWR7VBpaCiQAQPn/W6XF2R4Yw8YI6a+mWnWoj
-         7wX+X+oqNrsL8wFKGi8vxKub5/2NGkHtkg0qse7vyg45/t1DZRzPJv9vGHZk089Khi
-         0BjaBXNg40qkgb3LOy3wJIMNb9P6+OQZnETi7iew=
+        b=EnNmHyxAEpM+FltqdN+dEx3CYjKYdQI/XfUr7DdDPS3W5gV6p418tEzg19KZzf6/0
+         N84JFVTs59iJ7+OKjS3dc2ZqiihhSygUs5NduqafQVAP4ER+N+vuspljX5iIKACvPR
+         4FXbrx9qfTwtdftEYHt+ZE4/I3ADJBSm8w+R49Uo=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([93.131.99.70]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MIvPJ-1jIZKE2XAf-002XIo; Sun, 05
- Apr 2020 13:23:07 +0200
-To:     dri-devel@lists.freedesktop.org, linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        Daniel Vetter <daniel@ffwll.ch>,
+Received: from [192.168.1.3] ([93.131.99.70]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MCImL-1jTcH03eIz-009AQY; Sun, 05
+ Apr 2020 13:34:55 +0200
+To:     dri-devel@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
         David Airlie <airlied@linux.ie>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Neil Armstrong <narmstrong@baylibre.com>
+        Tomi Valkeinen <tomi.valkeinen@ti.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org,
         Tang Bin <tangbin@cmss.chinamobile.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] drm/meson: Delete an error message in meson_dw_hdmi_bind()
+Subject: [PATCH] drm/omap: dmm_tiler: Delete an error message in
+ omap_dmm_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -76,45 +74,45 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <76f24122-4d3f-7670-9f06-edb4731a0661@web.de>
-Date:   Sun, 5 Apr 2020 13:23:04 +0200
+Message-ID: <89420027-bf29-3322-9d1d-f77cf4a8c35d@web.de>
+Date:   Sun, 5 Apr 2020 13:34:54 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:jIH44cL5ff/53XO6FY9rhkiaPwSihkaHpVJXF9fblVIPyKl4nQc
- x6S1oCrQA/3nGj8URCr/aMXDXsPukBZP4UlgtBGpU9uNHtkGEIr+T2isVdSjYo/pwGt0WpK
- 3nZ9xsPoErd91by17YD+wnwyQCIDH9Bz3J9ta17KopXSx8agKBJxBw/7dVwIunWGLfD1719
- daMeVctCru9sbm7t2EoCg==
+X-Provags-ID: V03:K1:4CxUfNqhpzmv6gG2pCqJJGZvLUsPyzJ+y+jwgT4J8iz8av8uz/o
+ XVjwm/dVXfSKKSe81t3Tb0UXHI1lcp302eB8/TLVdk5KcZrY1LV0sSNSWXSeWjq6/ws7ju/
+ SzEgIjAJX8UVDoxFFXqikqvGhVwBcRrRgf176hqSn+N9EOq38M5YCFn6a5knRsCCZSjnGmA
+ P9bZqiMNb7ykiiYb+Godg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:4HRCdynSaAk=:Q/tIEajrmy/O/1iFN2xcAR
- 0YXl+pGmfqrDXeCctVU4GITDp9Wdmc4tbh3JWTXzy9BPEY7M8xRdREH665Vq53tB7RDv4GSKe
- SD3cqyyUjXryiAu9DzAQIHtDKmA0TRhEIm5Ek9dHntH5H7ievZ1YPHtG+VyF5wHvCExHLZIXl
- MlnoBH0/wjUuoOkxhIpbS6IQP+06wwn72yIIubdk/zy2nFsKUu5VE9prKgSUY/FeqxpUp1Q8H
- rwlHEnI6kSrGd/ZDD1YhQ2LTLL0KL/5cJQzlM700P7oMMWVlqzSsY/48A94XMoBBGmJtTnthJ
- NeZSTpTUcriGoLhkqFOHjxXu0IZKyO00g5ZlEGo6XpQdb4rFSyFxTXoENzOyw47d0Uwe9V0yp
- QJ0Wss05HEXmTPKntOqaU0C2bHmU6Dll1ZCczdazdYbMmykNJ7m82daCZ898TlrGXkUXABnla
- hcG+a/Ku3RSrpOR+8DiH4yOQHkGVz17DOp+8I7fbpWfbnguXamhtE7vWzszVEHJp18eecyt0x
- 4U46F9AW0eVkZs3dGHZhjO0H7wB0YqFO18gGgumWqE5vUCqtklCfqqvn6DqnR7A4XU2a0lyS+
- 8/Jcb3fAr6t/M0N/CeCdFlnrpNH/VQvm9N/zcMcgKW3ZVjO+3XE6iEBECzNrGSNckCR4xYuKt
- J/WJ85/rLxO6AR2DwmlyTmocY2u7Od/dGiJCQtpEbL9pe7KBG29wyo0CPDvHnof8VBn9jvFMr
- yVDI9aeVr16KyjDR7Yu+nlW+Pog7MQLrBb5fcAt7ksjClFmjz9od0X479/ZEJfGJMCviGrsn0
- EXLwMGHZBbfPWOcQUhoTPi6RDgOdVzqqbgGzouc38Okx8tXQs5MX7+F2ie9SsmtnLQgbWHhMs
- /BPn5N1qaP7wnYTfMSZ9K/VM06in1VQG6c4/qsEJ1VKayw7Guma329HoODqMziK0chawTMVlf
- rXfuW3iUsCluUibtkS1typOXeRNnPvueJY6/Ybjy+Pbr5zb883teoX/wuid6lLh2o6/R2j9ck
- D2ysLV6IV3FJoA3Kwj4pEhm6VguSKZbvJPhbnBEhh5LNu6wBNT/3+MtWRDRuNSk8WPi7wRMDj
- 0lKajTGSfuSenekl3HNCOT3MfAWcyygw4FU344hotes9UPY1/p1vtz1afWZPNFUXAewGUWNGD
- PgnsXnjBDNg4bW1vaT4yVUy8MvvANL+dE6BR2ZRPUDOsMIZ9P5YDgOQGGOZZUPIt9GVGGkID1
- plaBipocdjPhxmnJ4
+X-UI-Out-Filterresults: notjunk:1;V03:K0:2anMHRmEp2Q=:aT8BVr5L/ylamjccJEABly
+ 19Xhu65Kz3873BkXCHtFiBN8yxvE4qbdNEFHCEDUs9AEq9mVe7hmK40VsSVBqoa8l9Br1IDAH
+ nTrdwfxI9zdE30mf+NhN5sQm6rdtXTl6bO7v3n5/DANJ/BlpAbgMo2XSBuk6bMsV3EusDjmIW
+ oGtAsITu08TugULpj0Ai2axb0yuhG6bO6Dj0OvimVOCQjdiMuw+FoFNpUrK7jt79CoX9oZgRP
+ ootr1IBzcpe2VuBxWVfNNxnuppRjh1n158epDmqwQeZI0Do3cAXsLtaCRPf7ianIjimkbaMEl
+ p15p5yh61rlpGUDFHhrr34WAWTtTJvRXKWsuTNY61/Yw5p8008gWmRGE67juzXQa1Uqhqre2E
+ +rwHObP8Zak+GhRRmciOuYn+oEtgWwJZh0kxai63d6Z/hQUm0gFua+i8rA0axlEA+DniMRpy6
+ Xz/HDNiOt94TvWHflk65ylFsQ5Fy9UmXdJgUhJyRCrdasi4J1n+rFnq5NxgHrmAv3NPu7Pp4K
+ cgym5T4dO2ksJYISVfUXJW/KLuw7PSSah/llFsbL6mzKkIpyAqzVB+oIpgU6aAvsFbM1QJ/PA
+ xA6io68ZZr0FMMA4FC86HEKwcvVWQd3saPapDWrEP92YGB2eHGKi1ligpnWMeJ4ipl1nHTQ03
+ PgJgVMcoZsh4lba6sjpL30ajPaheYxA5wjCP52iGYeP4nnTKRty/kLizaDJsCLttlAsQtfSlu
+ eFlA2yR3gqHUZtehJDYSefymluG/RMu3iUyW7kl3ldh2yC13RdkP5ehMr2kF+WjAbD5fG3ENG
+ n1PfbuEkcA95lD2k3u9B/94JXEdrQO4VNu2FgrloPBn7efJlMoAATzJWN9PyQ6fY42Udy2RFE
+ GsOT7uTuv/RR9m1aDGbleJcpcl9lVnl/w2D+nZkrZ+6FKXE+zO/se4Dvp/kThfNqushu84tGD
+ OiS9F9ka8eu/vokXiy0Ucnrjp7sOcy6jBpNJXYWPvGySoeCxW6MOaZM5chE9SbG5VLxGy51Nk
+ evUOFW5Zb2zj0lcqMptBF4aXbVPjmrU+xbQg3pIBYrk387qOAAZrOldBLw4rah16ixEIcsM9F
+ 3cOSir8rHrZ+SqBtjpuhweAFi5KbJ0ZXLOJsaRAjRUSlm81wVCORWBWa6LKFiOkHeMvSnDQIp
+ zRqStZC5lm7gPmSs7/3jQPNEEt/0OK/UNfLJ6ZKocB2tD82R+VdPkT8kr2rfYJt8EMH1rWgIG
+ y8bKnczwzBer6CAvy
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sun, 5 Apr 2020 13:13:03 +0200
+Date: Sun, 5 Apr 2020 13:31:16 +0200
 
 The function =E2=80=9Cplatform_get_irq=E2=80=9D can log an error already.
 Thus omit a redundant message for the exception handling in the
@@ -124,27 +122,27 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/gpu/drm/meson/meson_dw_hdmi.c | 4 +---
+ drivers/gpu/drm/omapdrm/omap_dmm_tiler.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/meson/meson_dw_hdmi.c b/drivers/gpu/drm/meson=
-/meson_dw_hdmi.c
-index e8c94915a4fc..64cb6ba4bc42 100644
-=2D-- a/drivers/gpu/drm/meson/meson_dw_hdmi.c
-+++ b/drivers/gpu/drm/meson/meson_dw_hdmi.c
-@@ -1034,10 +1034,8 @@ static int meson_dw_hdmi_bind(struct device *dev, s=
-truct device *master,
- 		return PTR_ERR(dw_plat_data->regm);
+diff --git a/drivers/gpu/drm/omapdrm/omap_dmm_tiler.c b/drivers/gpu/drm/om=
+apdrm/omap_dmm_tiler.c
+index 42ec51bb7b1b..63553e97207e 100644
+=2D-- a/drivers/gpu/drm/omapdrm/omap_dmm_tiler.c
++++ b/drivers/gpu/drm/omapdrm/omap_dmm_tiler.c
+@@ -820,10 +820,8 @@ static int omap_dmm_probe(struct platform_device *dev=
+)
+ 	}
 
- 	irq =3D platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		dev_err(dev, "Failed to get hdmi top irq\n");
-+	if (irq < 0)
- 		return irq;
+ 	omap_dmm->irq =3D platform_get_irq(dev, 0);
+-	if (omap_dmm->irq < 0) {
+-		dev_err(&dev->dev, "failed to get IRQ resource\n");
++	if (omap_dmm->irq < 0)
+ 		goto fail;
 -	}
 
- 	ret =3D devm_request_threaded_irq(dev, irq, dw_hdmi_top_irq,
- 					dw_hdmi_top_thread_irq, IRQF_SHARED,
+ 	omap_dmm->dev =3D &dev->dev;
+
 =2D-
 2.26.0
 

@@ -2,36 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6FEA19EA27
-	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Apr 2020 11:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D10E19EA35
+	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Apr 2020 11:30:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726492AbgDEJRL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 5 Apr 2020 05:17:11 -0400
-Received: from mout.web.de ([212.227.17.12]:51553 "EHLO mout.web.de"
+        id S1726543AbgDEJae (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 5 Apr 2020 05:30:34 -0400
+Received: from mout.web.de ([212.227.17.12]:52295 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726399AbgDEJRL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 5 Apr 2020 05:17:11 -0400
+        id S1726534AbgDEJae (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 5 Apr 2020 05:30:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1586078205;
-        bh=LPWQ7SziA4eoJv2nsD+mwWWiIDzRTTmjMOUxFZ2RzRI=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=HKNN8jBajUi7CcIdLKHHnb42YGFZXPg8DK39V6xUsJ2VlKQrMCAUaRmuTqO/45mwj
-         QL0UF6N66Bvix78CBFDsMBFr+2JbquSBsC7vH8H9HthPW/lwOMK7PLRfXgldQ1OoZo
-         /G/d3iP6J/ITxtVVVW4O+SyQq7BFEIeFY6tpb+dY=
+        s=dbaedf251592; t=1586079021;
+        bh=wPquJ+Whli71qk48bH13/+zmxMWVmiS56DJQmU6p9eg=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=cGwimnwtgDIvSW4ZPakBUeBVWNlrCvvZGH2aj6fLGlHhOFmqyMuPbSjqzMpXxOjM/
+         ajLy5CUT8vUZRKtYIIGLdMLlp1Zi1R2AgWF2tmVT9zVwHrdx9n5qA0UpMIMFuoSXtt
+         Zn9u+M3ZVDRSLfajQlxtQB49RYEOnb3QGEpgfNY8=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.3] ([93.131.99.70]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lheqz-1iyajM38m9-00msy1; Sun, 05
- Apr 2020 11:16:45 +0200
-To:     dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
-        kernel@pengutronix.de, Fabio Estevam <festevam@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MN4Oy-1jNFbB0TZg-006iVt; Sun, 05
+ Apr 2020 11:30:21 +0200
+To:     dri-devel@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
         David Airlie <airlied@linux.ie>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>
+        Paul Cercueil <paul@crapouillou.net>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Tang Bin <tangbin@cmss.chinamobile.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] drm/imx: imx-tve: Delete an error message in imx_tve_bind()
+Subject: [PATCH] gpu/drm: ingenic: Delete an error message in
+ ingenic_drm_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -75,48 +74,45 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Tang Bin <tangbin@cmss.chinamobile.com>
-Message-ID: <eb87043b-1881-da68-ba28-35406b6594ed@web.de>
-Date:   Sun, 5 Apr 2020 11:16:42 +0200
+Message-ID: <e03e7106-0f22-99c4-ad21-b288e8990b5a@web.de>
+Date:   Sun, 5 Apr 2020 11:30:19 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6qsXH7NcfUP3dj9efSiFBR4IvcL7RBxJ4jGCoOyyG98pKa+sZK2
- VDjdSbAjhvo+fzFl1CSrzhEJC55RX//yxW/Km3ZOMKjU2fZyg7b7eM4cmDpjeGZAiHKobZf
- qS/2pHly1EUkiR/8GDog3ZzDLm5jDjRfGTf3LFu320T5lE44ii//3tfkxHR/S8hjRSBGZff
- KrrH5OKrRP8xZE58awTpA==
+X-Provags-ID: V03:K1:5yOIP5Rvh1kgAtf7eNwS8Y+DOex4AWFztEYVJqkfiK2SyjcEdBI
+ OBaVIKeI/S4Xw/9wwr5tjTAH8HqB+3ib/KgIzWmTc9244xZFncc/qd9sRoR3mMzkmfYbww6
+ 6tPDNtzVdeWYKFO06OKYolOC0o6vN77crSxgkfdgBsktKp2/DU9+OlHcTc8VRVDe2F6H1Jx
+ RTLQ0wJhExX86LwiUuNQA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:6K9WHWRD+zY=:2/i1n7SGJLbhB0q883kLpt
- GsEBu6V+WrX75p/bVrtUBIbfAylC+hsTGGDV6nyC31p4J2OnUOUaqkVrPu9MGNdd33sgF3tTk
- 0Ay+cNGyiORlgF17+V/eRmW8kpf5zFw7rBFRn4hKEsCqzMOmYL7GuL06SGIipS/s2vIUYXlRd
- 3AdHaDv5erh8SY8Of3E1mkHrGO1p0Ekj/l8kmskCRSPi7v8621uDPi0nMoEKgGalPL1smeiPj
- J7UltiU4CTLbHz7455q5shHpQyi4a9/w+x+PRyL5LL6/Oub5oxuHul1mwtkMWGAXRhiDzBeuD
- C8kFKe58ux59cuasy/Dv3SiBZoaqcOV3gLgOVpJ3/CgcHaRqRrgtTODvwsKiUQeIBsczzOpo9
- r3RjmwQL8VLDP+Pmtu3FXKAgHuK+q751oYEUu7DnuSwEEB+V45svZmQ3DUfav/eoDM18Rhhe/
- GDohrhTAhcE+YZBHHOMRsd27WA0kEnJfIFQUZ4qlzmteY428pQkvTcxO5yQzj8nhu962cqKue
- XpmZ56wYn//YjAAjoxs0V2bmM502pIPTW0YOhqPcAeKAVxhiChqi9bySMJN70YJ76yXyZSvyc
- Jn0+fQ08gfwyxg7003zq0iR5uSPyWg78E35v13Oe0q0eEPETbTGL708RE/8ht1iFI8374i515
- zEPI45/1+ygPA10MUTLQZXRIhjYdJy2h9VSrl6Uf8z/mJN22+/Zjv9q8AMMiPMO4OWXbzHFUZ
- rwGWIAFcjroxk3vtoLhHUQpBtYqAx/NujEb1imgkxByXBlke+t6cnCoS1Eba/qXWuxUSTqZKq
- uwO2QW9mFYSBEMzU1gsla8g1akFQy5wQvmGfPKmy56yxC45vLufCAUxaGIRmioRYHub4PyiXW
- sKAqnuXdWKc6DCCoBSCFgefEylZ0jYQiQec6ghzOXhFEycoFuNluN+UTvmphZC21+AjGh9U+u
- Q420sU/sgn+gdd6mFg4PU82H/7uqfNnL//npSrKCsUBJLGREKwThjJ1Hy70ErHRpqwbm3oBFQ
- okTGmdnOPgjxtaYdbU+JLjgAl4h7r78HzJ74cqCVXSa/AB7JhbfG7w5RW2C5JJQcc+KaW++y8
- awiuMtBNbBX3AJJj37lATqAOjyqPI2ix4UxpVeRjvddlerBh6sufWH4qb4fsKFqO2/QGbbBcy
- ZQtMfmlsAd+26rmiH6fDGtONePqZ0UMF4kXrahpFth4vAUSgnaSOK9z0sNhWCRJJ5qNU6cdQ1
- bsOKyp2DcC/FWIzNW
+X-UI-Out-Filterresults: notjunk:1;V03:K0:5OdgCFZiayg=:erT7PYhr3DlWipG60BVFyG
+ wWWAD8baapzFz7rXXxZ5iouKwEUsCqPI2qHCsqS4TP0jbbyOpZQztC615uqosUnGSmMiQCfbe
+ r1D12lNssUbccC1CQQg4MhJ70tSJ0XgD4KbuCRzECk0vNDswucX0KdMQ7oDdPVaC/zczms5Z9
+ gV+U6sWJp7Rl4LnsP6nB9YN92gr1h338A4ukQ1PrvmJNgve+68hpxVvb0IE9y+5dWhdzS5t0L
+ le+XGxag8oAc7ep2UsPYKftSXDY3vAgeTTpwGgb3Egrr6LS9UnpKQpWCNuDABJjTYdGQ7h6Px
+ /XsxiCPJ8CKbUY+q4Fk3FUqitlPgYbrHi/ULMm9ncnDE/fl2MYUQcnlyx6ynYQdtR22o49506
+ /qdOyMZbQq6coXcYfMSbvf2RftMgITsoUWAG+nEYRZ0S4lvZsT0ovJBsNbZlILN1T337FHHk+
+ V3Vun7DhB+icBP+8wRzYRIKtg1deOeIYNO+nISr/Biq8+F8bzc1cEbkWLNo137HFqX33mZ+Il
+ pA6XyGzDxd28STJVBEbunXVvvdlWgupaGSLfDIuOAZsilkeV5yTV+eUD/FxnBCtd/YxmoaV91
+ txPcNvj2nh6U9HTVxT0iIPDiUNvGv9M19imA2GFcxVinwUrmyg0yCU6CBIdBoLxcFdj5qP+gT
+ G4XMgKjLegbzQOhjEwIJUXEzANlry667iO06RuEZ+XWrS3lF4BpaPkv7szTh4Ngjffk1EnMGS
+ nC496zF3yKnveGqNs/z9E6rijmaRmW4vvQtIaj7X9POolUwGAqLttcl4RT/N3tftTwiRHsBXj
+ z9k38kvv1SWqDgd/+mEluJDTIC3K12Ogf6qnaaPDhL7htw0u8o11+j1AZWlclSE168dbHzS/S
+ 7z4G2sV/duTG9vYXCkQXVtKQuauF1Z9B8LBnUw3NRv1SNrGpTr0CRxuy0/+UugbngwnL1TwAF
+ llpzk3hOrtNy0bPB1TN1dg5Y4aCEmoAlqNkZ2rfpK1P2ohiZmlXOcAaqYfchHuIEVTeOq7Y7d
+ 4Gh5ZxctPgV8quYwjpn7sZoqHpBoM+lzYoq9Urue5fSo61629CjB0yiQ4r+NAjiFlR26wRl0u
+ ZERTo2ED7HEdVA4+aIbCEQcMEXBPttmYsXRD31nO081AYeJTppm6FQL1xeUa3I0unV+qcIA+A
+ oBMvtKEIJqr87PGWGJJZjRWe3onmxpOFNTC38Kr+ww/ebQDKzfee91HzdUw5zXXMYgBFvVf9X
+ Mg0nmtBiUNsyQTR4g
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sun, 5 Apr 2020 11:01:49 +0200
+Date: Sun, 5 Apr 2020 11:25:30 +0200
 
 The function =E2=80=9Cplatform_get_irq=E2=80=9D can log an error already.
 Thus omit a redundant message for the exception handling in the
@@ -126,26 +122,27 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/gpu/drm/imx/imx-tve.c | 4 +---
+ drivers/gpu/drm/ingenic/ingenic-drm.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/imx/imx-tve.c b/drivers/gpu/drm/imx/imx-tve.c
-index 5bbfaa2cd0f4..23adbb818d92 100644
-=2D-- a/drivers/gpu/drm/imx/imx-tve.c
-+++ b/drivers/gpu/drm/imx/imx-tve.c
-@@ -598,10 +598,8 @@ static int imx_tve_bind(struct device *dev, struct de=
-vice *master, void *data)
+diff --git a/drivers/gpu/drm/ingenic/ingenic-drm.c b/drivers/gpu/drm/ingen=
+ic/ingenic-drm.c
+index 9dfe7cb530e1..06ca752b76ee 100644
+=2D-- a/drivers/gpu/drm/ingenic/ingenic-drm.c
++++ b/drivers/gpu/drm/ingenic/ingenic-drm.c
+@@ -661,10 +661,8 @@ static int ingenic_drm_probe(struct platform_device *=
+pdev)
  	}
 
  	irq =3D platform_get_irq(pdev, 0);
 -	if (irq < 0) {
--		dev_err(dev, "failed to get irq\n");
+-		dev_err(dev, "Failed to get platform irq");
 +	if (irq < 0)
  		return irq;
 -	}
 
- 	ret =3D devm_request_threaded_irq(dev, irq, NULL,
- 					imx_tve_irq_handler, IRQF_ONESHOT,
+ 	if (soc_info->needs_dev_clk) {
+ 		priv->lcd_clk =3D devm_clk_get(dev, "lcd");
 =2D-
 2.26.0
 

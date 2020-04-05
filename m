@@ -2,47 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C07A419ECBE
-	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Apr 2020 18:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1029419ECD9
+	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Apr 2020 19:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727611AbgDEQvj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 5 Apr 2020 12:51:39 -0400
-Received: from mout.web.de ([212.227.17.12]:47043 "EHLO mout.web.de"
+        id S1727126AbgDERTr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 5 Apr 2020 13:19:47 -0400
+Received: from mout.web.de ([212.227.17.12]:42195 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726669AbgDEQvj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 5 Apr 2020 12:51:39 -0400
+        id S1726696AbgDERTr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 5 Apr 2020 13:19:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1586105441;
-        bh=0YkSt5BcPX9ZJY8/TNdXEE7Js5ClyUIYnLeTWxyJu/Y=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=H6dpbL4NJlpbw1+XZb+6L/eGOman52ihDO/AIarLK0MtETnB8q5WFWzHHImwj0WSk
-         Ih26agawpGTRQFDoKCZ14NYfjK4xK31f+jaGdkWOuettOhLJYYi7gA2eRt1EfHaKqU
-         pNeq29ypL2mvTSX/Jbtos5WFq/+ela1HeknA6nbA=
+        s=dbaedf251592; t=1586107175;
+        bh=I1mJGt7tqZdsCK7Z/QAnN6a7dQhCfJ2cUtUPPTk6VFk=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=MEoDcvQNZ8Tyj3edJr9fXmoVS/kU2oIralvVuoOCJbE3K+l+iJvAAS1KP3nZdXyAU
+         jziOywFhqfxf1UxexlTfKV7uv/2j1uMF8zYPsIuon7oAMqi3pfHem9SPuz80TAENeS
+         m9nNkKf3zlj4iQCsTtHOGcOLdI9UtocSECYij7co=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([93.131.99.70]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MPHKO-1jPYKf28rg-004Vck; Sun, 05
- Apr 2020 18:50:41 +0200
-To:     linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-omap@vger.kernel.org,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Allison Randal <allison@lohutok.net>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Clark Williams <williams@redhat.com>,
-        Colin Ian King <colin.king@canonical.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?Q?Heiko_St=c3=bcbner?= <heiko@sntech.de>,
-        Keerthy <j-keerthy@ti.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Pascal Paillet <p.paillet@st.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Zhang Rui <rui.zhang@intel.com>
+Received: from [192.168.1.3] ([93.131.99.70]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M4qOX-1j7Jwg2s0L-00z1hx; Sun, 05
+ Apr 2020 19:19:35 +0200
+To:     virtualization@lists.linux-foundation.org,
+        Jason Wang <jasowang@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Tang Bin <tangbin@cmss.chinamobile.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] thermal: Delete an error message in four functions
+Subject: [PATCH] virtio-mmio: Delete an error message in vm_find_vqs()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -86,137 +73,74 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Tang Bin <tangbin@cmss.chinamobile.com>
-Message-ID: <05f49ae7-5cc7-d6a0-fc3d-abaf2a0b373c@web.de>
-Date:   Sun, 5 Apr 2020 18:50:38 +0200
+Message-ID: <9e27bc4a-cfa1-7818-dc25-8ad308816b30@web.de>
+Date:   Sun, 5 Apr 2020 19:19:34 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:9ZhlZktT91pfbtbXRm+mTr0dzyW0rFCf8ipUz74Hg6LrC70wyT3
- lgjget/+5B+v9e+XtCQhsiEWa3oYKGUxLwy/+16UFw9QBT7VDwPxyM6dCiB1jioWi3d4Dun
- ML0SUPIN7MIt4nv1gt3EZ8XCxPkEg46lkgVeLOb6MWzJTeAhBrn8nYSpEZW5GnakmEhF5Yp
- huyo983s7iSI3UbIrdpJw==
+X-Provags-ID: V03:K1:/DGBrfjxUKMqQQRcsq/TOjGSOdf77WQbv+I0rGwC2OMIkB3+ODg
+ rdSvEx0ElTgpXpjwuuuJXx1bYOcSrsQqeAUQspAKMh2YgjcrWItrENgz69/VcaM53P4c4kE
+ oqrILcAvcXHMj8+Ci9E3ainJR+5JDNcvDSeMyDMKkH6S4X6P7u76KqV87cpvnhOf5UbyD2y
+ FXSmDtS3tTjZXgpetcehg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:m0U7kNMqr14=:dv3CgYtVpGQVFYuC0r/Vx5
- YNeBV5WDA756pnx2kjt5nIWU8boJcoOjypBLmzLgJTpy9mXm4PEJRAG4QN6/pxXQyRnTbZSbI
- A0NSZmwTFCfOnYC5iYQSnZWrbaEpzfjZhgUf/SZ0mDMXS4ftkKTTuatf2RSzQCZFoejdz9Hw8
- cm6OaB28hgMvLG4tUDaMEMutfixS6P/ohSg7ugLasRdUx8kzm/Qrg3soCoPVwSTIXgo2iKwHi
- F8VRVy11ZkhsPDlAjl0ERPVu/YuAcvrs3kT9PbnJ7lyeHyuc9vOwXoEbAR0fgA429xEpM7pT3
- oTRQbKPsbkhQzwj0k7dsk9Wz16j4qoG9QbkEiMg/h9WuP16Nm4j852KFaCSCKia4GdEbwVbeE
- 7N6ZUupaAuDHaFevdBcdsg8tJviighjDxUA96PREW8pypalaTO1nUACHvnnpDdHH1W6POTp+o
- r6Cjyqc9Twwm58iRfnlhU366rzje1enGS4siPXJszpwIlNry/qatNplAW+2evmNgtQBSIOT9B
- B4uqQ11pfJMX/1ROnA93I247aT/Kdktt9Vc2DJG3CK9yGV0kfvkeDCKjfdmR7cfpglWmysTKv
- xeIaEVjFjvXRdVtRRkEl4Riqh24X01nSyLTFfmklc6e6JeE0qAe9wzNHxZbFKG8UJk9wLDc0R
- dMO/hDizFjqHSLvI19DJhyuxEpP83mXnL78A92I26CE4vNimkhLgN+8tfJUyGpYA8TPxU08bH
- bHlenCrSNcdXdsKJxb/stLj7AX5SW17uIGmUY3ItFgPtX/2STeKclMhWil+oPbWNVQqtJPpwJ
- guIxLqK89gBeAOme1CdIksGr5p96h8EBBJh0KKLhfu7MhwRaodqgMW3hluCGas/J+aTEE3ktM
- G1acyNfb7eYn7tA6M56GOEVNqLaelktdgauk+cioS9P84pnjpI1YvktbcWUk9h8ke6izj+3RU
- SmAc4OCmJXgIy0fLtxrJQ2Nr/TTJnV2sTWTLV6XJwpxtpbKGwmP2I+65/T+OLVteWFzOqFTaP
- JnrI6EoSiuyIQvefCzps9lmScsgMoYBfJ/S206lHv+yGItg20lsqCBlN1h+neJANSlWNdlwug
- ALnBiWq29KkDZZkosMSV2GIdN/k45SSWZ96K7cj+JNsF0+WJHI1nVzHAKHdkL3TSPejo6s9Ig
- RdWFZvEaXDMhGoiYr9Xt7O0bDcrkWglBcPV/Em/29BmGbYm+uRs25qy3T7eW1nZQfz3lUYmMg
- EuHOTflLBO5PdtXHm
+X-UI-Out-Filterresults: notjunk:1;V03:K0:m3cp4YkNUQM=:Uhh69XQhDSROm6KaHDeuwF
+ 8TAdzgf1frcBirzHsYelP0ozD3nkUGrbKSZkIV69Pn3kU3aMbtG8VwGLgz9/F/7ILNwSqVuBK
+ yJahGOgQb5JmmjwnR3hXl5BYsKvrYUkgM4gnhdqKwWsn3+oJJx2VP6K/nDLHJeE7G3UqDvZHV
+ jp1qKe09imneuT8p9pP74NDqa+ltVyo7KvF5oUhSHUFS0y5S+rlfKIeDHEUuDLyHX2r/BrJ0b
+ psTjBmtlYS03ZnKGWX+vY3QJx46BFgvM8nmQJk7T6O3UR8pijIQifV+hIp1t/KwE69kxJjz1O
+ BRvoS9g+ramXSD4YAnPkeYmIK5wJU6ZSqYalRZ48ffco5oaIpVJWOzcfP+iNLspYSXP8D3DjV
+ xEmvDUSmTfOB6xWhJcUf/vPLXvDkFJz0Ava/UF8DBorl4yAdSRT+ZrYIBmOIMZViYKIS0Df/G
+ 03okHi7gauOwR+xyWpz6i08+zWZIUO9XXraNtdZuLjsq3DXfFxvqrxLQG2pRU/DCeEmXEI+oV
+ bEtXwr39vwC8W9dmArnLTFB+3A3QjhY2yUHn/sMr84TIxoVt0PZB2jBrBX8sx2ILd4HW61B+E
+ FiyRUlemW0cCc16xhYCGbfNTeaUCq6hympRyuxbvZhEFzPWdG3rLK26sBjeqCIRreN7BHkK5/
+ scnNb1m6bx1Aop+mCH82JIH4YxY/z8GaD5zoq5IN/3SyemIs2iIKa+1InIoC7lpLCoChlA3Dv
+ c3MPf/xWCDSuMsqarQOi0UWLD5lpHixlCubtAGP8WMeuAdCvqBjH2quwBA6bcarREgSTcTltK
+ QonqWCD6Lybx859nqJyNH5uOlkYgRL52hsTPIMHGYUqC3pzDnwhugWWS4Nk0xKpmy7Jp4xmZF
+ dQZFJfqtzBAOfYe5l57JRHzY6pAXAbCQM2XGwL+zGICkXnkHYDFRTD/l9KDReIMx2t9w0Rc+j
+ FSUmeX/1WPBxWVkh4Wt/5lliEGF91uP0OXrG84NcehzFHEg7wYUd7nXITb1l+p95QC436s1P/
+ Rhb9A4Cc1EpSUmULP9zq2+qlF/JCQyzkQ6O49eTE066zHbNPZ4/qbTUc4LulZUDnjxY4qNLl7
+ uDJxiiJjF4mACGQpC/PhdJOV3iBu+ENzoaIbyGSkF6jgpvGCR1Um+9l4XLcKuL5j1jMrE7Zqh
+ gYR/ArafmB7gkIb5koZBBGzgyz1I5e+DOe12ZXpmovZbZDvad8UQy01LO1fulayccInmoYFYi
+ WlCYjPUyrANmtNTzx
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sun, 5 Apr 2020 18:35:16 +0200
+Date: Sun, 5 Apr 2020 19:14:10 +0200
 
 The function =E2=80=9Cplatform_get_irq=E2=80=9D can log an error already.
-Thus omit redundant messages for the exception handling in the
-calling functions.
+Thus omit a redundant message for the exception handling in the
+calling function.
 
 This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/thermal/rockchip_thermal.c          | 4 +---
- drivers/thermal/st/st_thermal_memmap.c      | 4 +---
- drivers/thermal/st/stm_thermal.c            | 4 +---
- drivers/thermal/ti-soc-thermal/ti-bandgap.c | 5 ++---
- 4 files changed, 5 insertions(+), 12 deletions(-)
+ drivers/virtio/virtio_mmio.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/thermal/rockchip_thermal.c b/drivers/thermal/rockchip=
-_thermal.c
-index 7c1a8bccdcba..15a71ecc916c 100644
-=2D-- a/drivers/thermal/rockchip_thermal.c
-+++ b/drivers/thermal/rockchip_thermal.c
-@@ -1241,10 +1241,8 @@ static int rockchip_thermal_probe(struct platform_d=
-evice *pdev)
- 		return -ENXIO;
+diff --git a/drivers/virtio/virtio_mmio.c b/drivers/virtio/virtio_mmio.c
+index 97d5725fd9a2..9d16aaffca9d 100644
+=2D-- a/drivers/virtio/virtio_mmio.c
++++ b/drivers/virtio/virtio_mmio.c
+@@ -466,10 +466,8 @@ static int vm_find_vqs(struct virtio_device *vdev, un=
+signed nvqs,
+ 	int irq =3D platform_get_irq(vm_dev->pdev, 0);
+ 	int i, err, queue_idx =3D 0;
 
- 	irq =3D platform_get_irq(pdev, 0);
 -	if (irq < 0) {
--		dev_err(&pdev->dev, "no irq resource?\n");
+-		dev_err(&vdev->dev, "Cannot get IRQ resource\n");
 +	if (irq < 0)
- 		return -EINVAL;
+ 		return irq;
 -	}
 
- 	thermal =3D devm_kzalloc(&pdev->dev, sizeof(struct rockchip_thermal_data=
-),
- 			       GFP_KERNEL);
-diff --git a/drivers/thermal/st/st_thermal_memmap.c b/drivers/thermal/st/s=
-t_thermal_memmap.c
-index a824b78dabf8..a0114452d11f 100644
-=2D-- a/drivers/thermal/st/st_thermal_memmap.c
-+++ b/drivers/thermal/st/st_thermal_memmap.c
-@@ -94,10 +94,8 @@ static int st_mmap_register_enable_irq(struct st_therma=
-l_sensor *sensor)
- 	int ret;
-
- 	sensor->irq =3D platform_get_irq(pdev, 0);
--	if (sensor->irq < 0) {
--		dev_err(dev, "failed to register IRQ\n");
-+	if (sensor->irq < 0)
- 		return sensor->irq;
--	}
-
- 	ret =3D devm_request_threaded_irq(dev, sensor->irq,
- 					NULL, st_mmap_thermal_trip_handler,
-diff --git a/drivers/thermal/st/stm_thermal.c b/drivers/thermal/st/stm_the=
-rmal.c
-index 9314e3df6a42..331e2b768df5 100644
-=2D-- a/drivers/thermal/st/stm_thermal.c
-+++ b/drivers/thermal/st/stm_thermal.c
-@@ -385,10 +385,8 @@ static int stm_register_irq(struct stm_thermal_sensor=
- *sensor)
- 	int ret;
-
- 	sensor->irq =3D platform_get_irq(pdev, 0);
--	if (sensor->irq < 0) {
--		dev_err(dev, "%s: Unable to find IRQ\n", __func__);
-+	if (sensor->irq < 0)
- 		return sensor->irq;
--	}
-
- 	ret =3D devm_request_threaded_irq(dev, sensor->irq,
- 					NULL,
-diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.c b/drivers/thermal=
-/ti-soc-thermal/ti-bandgap.c
-index 263b0420fbe4..ab19ceff6e2a 100644
-=2D-- a/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-+++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-@@ -772,10 +772,9 @@ static int ti_bandgap_talert_init(struct ti_bandgap *=
-bgp,
- 	int ret;
-
- 	bgp->irq =3D platform_get_irq(pdev, 0);
--	if (bgp->irq < 0) {
--		dev_err(&pdev->dev, "get_irq failed\n");
-+	if (bgp->irq < 0)
- 		return bgp->irq;
--	}
-+
- 	ret =3D request_threaded_irq(bgp->irq, NULL,
- 				   ti_bandgap_talert_irq_handler,
- 				   IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
+ 	err =3D request_irq(irq, vm_interrupt, IRQF_SHARED,
+ 			dev_name(&vdev->dev), vm_dev);
 =2D-
 2.26.0
 

@@ -2,40 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B309519E988
-	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Apr 2020 08:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6FEA19EA27
+	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Apr 2020 11:17:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726352AbgDEGAu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 5 Apr 2020 02:00:50 -0400
-Received: from mout.web.de ([212.227.17.11]:55735 "EHLO mout.web.de"
+        id S1726492AbgDEJRL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 5 Apr 2020 05:17:11 -0400
+Received: from mout.web.de ([212.227.17.12]:51553 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726227AbgDEGAu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 5 Apr 2020 02:00:50 -0400
+        id S1726399AbgDEJRL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 5 Apr 2020 05:17:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1586066434;
-        bh=8Hjb/6oy+4z9cq4CzHtB5MD1bqymNKeupf5xSTpBius=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=KXlNwFk7zbAjktFkCOELyQ2T/yHyDxCkwXr7yR/pYHtQ6OTV7PTo7pbH2MQK+HbLt
-         g+40T6XVQSEWvncfA3cqvwXMWgIY8voZm4Cnb7diYfrxyIJOvO7flz1EDP8xQdvTmR
-         bxb8siqKrrihX1sttbpK+EraJWNhvtzIG2D+o4ts=
+        s=dbaedf251592; t=1586078205;
+        bh=LPWQ7SziA4eoJv2nsD+mwWWiIDzRTTmjMOUxFZ2RzRI=;
+        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+        b=HKNN8jBajUi7CcIdLKHHnb42YGFZXPg8DK39V6xUsJ2VlKQrMCAUaRmuTqO/45mwj
+         QL0UF6N66Bvix78CBFDsMBFr+2JbquSBsC7vH8H9HthPW/lwOMK7PLRfXgldQ1OoZo
+         /G/d3iP6J/ITxtVVVW4O+SyQq7BFEIeFY6tpb+dY=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([93.131.99.70]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LsyZi-1jAZKa073K-012ZvH; Sun, 05
- Apr 2020 08:00:34 +0200
-Subject: Re: PM / devfreq: tegra30: Delete an error message in
- tegra_devfreq_probe()
-To:     Dmitry Osipenko <digetx@gmail.com>, linux-tegra@vger.kernel.org,
-        linux-pm@vger.kernel.org, Chanwoo Choi <cw00.choi@samsung.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Thierry Reding <thierry.reding@gmail.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Tang Bin <tangbin@cmss.chinamobile.com>
-References: <ba67e238-43a7-6c53-363e-7a2c12f09949@web.de>
- <27bdd09b-0b8d-a6ef-2ffd-53421277fcca@gmail.com>
+Received: from [192.168.1.3] ([93.131.99.70]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lheqz-1iyajM38m9-00msy1; Sun, 05
+ Apr 2020 11:16:45 +0200
+To:     dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        kernel@pengutronix.de, Fabio Estevam <festevam@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>
 From:   Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] drm/imx: imx-tve: Delete an error message in imx_tve_bind()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -79,49 +75,77 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <72e2319e-9b9b-9045-c007-320b2be1e886@web.de>
-Date:   Sun, 5 Apr 2020 08:00:31 +0200
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Tang Bin <tangbin@cmss.chinamobile.com>
+Message-ID: <eb87043b-1881-da68-ba28-35406b6594ed@web.de>
+Date:   Sun, 5 Apr 2020 11:16:42 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <27bdd09b-0b8d-a6ef-2ffd-53421277fcca@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:aFlkjLi4mBvfQuNv48u/JJ40lgXxpTtqmsEX+cE6vMZcrV0tLWK
- IiEyQtZ44pBy6Zd8QpquUSYzJf52nFSp61DmIFeZGJv2E6C/AetVMaJuNb1PCxqGbUy57qr
- 6tJN1sHouUR+HH34J8U5pySvx8e44r0rVWC4GuGlqiqQk7gVQtSPZa6XkzN/wNNUXKUc7Hp
- rd1Bg+5MK9nR/hzwkXNKQ==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:6qsXH7NcfUP3dj9efSiFBR4IvcL7RBxJ4jGCoOyyG98pKa+sZK2
+ VDjdSbAjhvo+fzFl1CSrzhEJC55RX//yxW/Km3ZOMKjU2fZyg7b7eM4cmDpjeGZAiHKobZf
+ qS/2pHly1EUkiR/8GDog3ZzDLm5jDjRfGTf3LFu320T5lE44ii//3tfkxHR/S8hjRSBGZff
+ KrrH5OKrRP8xZE58awTpA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:1sckxbfIqCw=:TbU7xGYCA4JwKEnuVGz8lH
- PR5CNSI2GrazXLBkygAsrxhgiROT0y23PgdLyH+3ZB/VZV6z6v2z5MOjoUfgfpNcxNTHCFjVJ
- GvQWftybrYL9rK6dA+IlB+vvPyZo1KVsKVxnDQyRaTcuwA9EP5vhzjed5SQ+tQkrwGfNzvzoK
- EL1uWHZqLvPuku97N/T6NyiAyTwXV2RMcNw9kZi9F5aaZb4fVLbIftc3quq3PvIKKCeCrI6f+
- Q0nnUEF02xoQ8W1ywuxPnH8N3bIs9W2ttBsVKCWVaSUv6ExPHReizFiClcLu+ABZd7d/isc2Z
- Adw3JBSwMxtfR4PJKukPvFWMjOv/B09oWKLfxUeCj4ks84WWuhGuoHfMj3rz0PX5jvWkOlJoc
- PIo4E53dUm2b3v1Ec54IVRXr25uCrh4mguqVrv9mJkDgdu10TqlQ/tklbMGEHEem9JWT+9m+9
- 3Z+LkpDGt3hSE626TgyQzp1DdrK+1IPhpcINNG+ZKC3dDp1ccxeB29eEbBC1KzBItmRKkxj8i
- SXbYCwFXSetyw2qnbQy3E3NzRzjGbQYvtl9y+VOLnUpG4jrKcNOt4zNcvjbsal+BrDqhDd5RK
- qP+Dvkx+GDjctGpNmXeD5aoHQeept18TZTm0KIJiJgi5XKqpYOj9DWzyFAzZHk9/OlHL7F9Yh
- /4uuZ0/mHGao7Pknrv2kVEEFgICY5KSUOPojvPnH1Owh6vm6l5aUYQbWJqGxi8ZTagsEehTru
- jW86VMFfznF+DZ1urJUAKz88iSQmmLmVVaO2byzA56OGjlbeA7FZFK9Sgd6lrUPUMMHrHExj7
- sDKLCc2Pmllh9PCTwhIpz6hlncmQ4/YNwa1utBPKSsccgmKjMzx3/zKWSe1WeG0mo6YPSPZIl
- YXuUabKIZ02Sb1QpdJ1xIYnB5pYtYNJiZiDrtjdnj/T4C+1rPALTH4YW73gtfZOutFodyJSL/
- CpzzxDUlQ3hcHdozx5FR4WlJ0doUqDvFMqhf6VmFM4HqpeP3XyseTy3od8px3aGq4NNOPCGKd
- ukm7i9qN63Eba8MIiKihJBDh2gYeYQQ9fYmTiIyZqZXjxr3htR9Cm6Xy5xfKVq8Axq9UUdhPI
- Mmc84r3DDOwTkb0pMz8EDN2JsMxYZOl0gPnRtmq10ozxQhgSYozS+9tR1KAWSk2+AlGp6HUA2
- PAmMEo/gXii01/AxC3k2FKPv3sOjr9nuLD9ByTwAPdRyWUfGaIZCH+gMj7nTiQGtk7uko5yLh
- PXH7q1k4hjrS28Ye/
+X-UI-Out-Filterresults: notjunk:1;V03:K0:6K9WHWRD+zY=:2/i1n7SGJLbhB0q883kLpt
+ GsEBu6V+WrX75p/bVrtUBIbfAylC+hsTGGDV6nyC31p4J2OnUOUaqkVrPu9MGNdd33sgF3tTk
+ 0Ay+cNGyiORlgF17+V/eRmW8kpf5zFw7rBFRn4hKEsCqzMOmYL7GuL06SGIipS/s2vIUYXlRd
+ 3AdHaDv5erh8SY8Of3E1mkHrGO1p0Ekj/l8kmskCRSPi7v8621uDPi0nMoEKgGalPL1smeiPj
+ J7UltiU4CTLbHz7455q5shHpQyi4a9/w+x+PRyL5LL6/Oub5oxuHul1mwtkMWGAXRhiDzBeuD
+ C8kFKe58ux59cuasy/Dv3SiBZoaqcOV3gLgOVpJ3/CgcHaRqRrgtTODvwsKiUQeIBsczzOpo9
+ r3RjmwQL8VLDP+Pmtu3FXKAgHuK+q751oYEUu7DnuSwEEB+V45svZmQ3DUfav/eoDM18Rhhe/
+ GDohrhTAhcE+YZBHHOMRsd27WA0kEnJfIFQUZ4qlzmteY428pQkvTcxO5yQzj8nhu962cqKue
+ XpmZ56wYn//YjAAjoxs0V2bmM502pIPTW0YOhqPcAeKAVxhiChqi9bySMJN70YJ76yXyZSvyc
+ Jn0+fQ08gfwyxg7003zq0iR5uSPyWg78E35v13Oe0q0eEPETbTGL708RE/8ht1iFI8374i515
+ zEPI45/1+ygPA10MUTLQZXRIhjYdJy2h9VSrl6Uf8z/mJN22+/Zjv9q8AMMiPMO4OWXbzHFUZ
+ rwGWIAFcjroxk3vtoLhHUQpBtYqAx/NujEb1imgkxByXBlke+t6cnCoS1Eba/qXWuxUSTqZKq
+ uwO2QW9mFYSBEMzU1gsla8g1akFQy5wQvmGfPKmy56yxC45vLufCAUxaGIRmioRYHub4PyiXW
+ sKAqnuXdWKc6DCCoBSCFgefEylZ0jYQiQec6ghzOXhFEycoFuNluN+UTvmphZC21+AjGh9U+u
+ Q420sU/sgn+gdd6mFg4PU82H/7uqfNnL//npSrKCsUBJLGREKwThjJ1Hy70ErHRpqwbm3oBFQ
+ okTGmdnOPgjxtaYdbU+JLjgAl4h7r78HzJ74cqCVXSa/AB7JhbfG7w5RW2C5JJQcc+KaW++y8
+ awiuMtBNbBX3AJJj37lATqAOjyqPI2ix4UxpVeRjvddlerBh6sufWH4qb4fsKFqO2/QGbbBcy
+ ZQtMfmlsAd+26rmiH6fDGtONePqZ0UMF4kXrahpFth4vAUSgnaSOK9z0sNhWCRJJ5qNU6cdQ1
+ bsOKyp2DcC/FWIzNW
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Reviewed-by: Dmitry Osipenko <digetx@gmail.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Sun, 5 Apr 2020 11:01:49 +0200
 
-Thanks for your positive feedback.
+The function =E2=80=9Cplatform_get_irq=E2=80=9D can log an error already.
+Thus omit a redundant message for the exception handling in the
+calling function.
 
-Will the logging of error codes need any more clarification
-around such function calls?
+This issue was detected by using the Coccinelle software.
 
-Regards,
-Markus
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ drivers/gpu/drm/imx/imx-tve.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/imx/imx-tve.c b/drivers/gpu/drm/imx/imx-tve.c
+index 5bbfaa2cd0f4..23adbb818d92 100644
+=2D-- a/drivers/gpu/drm/imx/imx-tve.c
++++ b/drivers/gpu/drm/imx/imx-tve.c
+@@ -598,10 +598,8 @@ static int imx_tve_bind(struct device *dev, struct de=
+vice *master, void *data)
+ 	}
+
+ 	irq =3D platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		dev_err(dev, "failed to get irq\n");
++	if (irq < 0)
+ 		return irq;
+-	}
+
+ 	ret =3D devm_request_threaded_irq(dev, irq, NULL,
+ 					imx_tve_irq_handler, IRQF_ONESHOT,
+=2D-
+2.26.0
+

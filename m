@@ -2,113 +2,137 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A42DF19ED2E
-	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Apr 2020 19:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5286519ED73
+	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Apr 2020 20:52:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727109AbgDER43 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 5 Apr 2020 13:56:29 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:44202 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727048AbgDER43 (ORCPT
+        id S1727076AbgDESwY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 5 Apr 2020 14:52:24 -0400
+Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:48122 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726771AbgDESwY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 5 Apr 2020 13:56:29 -0400
-Received: by mail-wr1-f68.google.com with SMTP id m17so14615388wrw.11;
-        Sun, 05 Apr 2020 10:56:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=baFiJWDIXcDbqRxwMJ7sjjGENTtWwfmj+QDEOMNAPIY=;
-        b=Ew9379n9xMZ0UhuAE44iezfeOMtFHGExzsbghmN1UPDmTEl1Jj4YPaBdyHT5H6dUPc
-         eEZRPy0AEPX0lV6IM8Q5ezPof/RucQeZcv3vG2+wsGI+vGGS9Z7kiRR5evCGLOrklapM
-         9XjMQn1dT+x3bRi4EWpwAXN9e3E275r/6d0BrxbO8jXFapcprOpsc1hrYwBDFKUX9q1/
-         Z2Lkcdt2nfRmPi2ZSl0Zs8p/kKfrGpXydSIlbItSID91AX/poOE4i2Qzi8ZUq6gFAYXf
-         57Pnf8j9KBduFhulx9aOm3MTA2swsxT9jVELk6LkTpgnM+Z18p+UbT3TZAqeLvZJC/DT
-         hF5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=baFiJWDIXcDbqRxwMJ7sjjGENTtWwfmj+QDEOMNAPIY=;
-        b=dUkFuyzFcSZfOhAupvDVQWwh6JOXMnnUrE3dHeqTEWBP7lI6S6+g/LaD6JJ4ISpd9v
-         rM1ZD4vdcctXFasppDoy1/ffcc5J4GqrR8LBe/MZZZHkgn38oSF7Zxkn8xdCrmZf4nXK
-         VMckqJHjc5fCmDoKLJSzDzmSewER2jcGC50KIPk+gBkxQ9msCgC4qZLb89SRHkIfy+9j
-         LEign8eu2ZwEddHXAafNT1rpWRpWXVqonQExfXXAP/pA8oU+Lf+W+xRjBcaxxD6eRj5R
-         GK+/5I3/pvD7pPmPMWooxIBwZgoBBaSjSjd23J4/NpqEyiUOuGhLxTzvTQOcL3fqwEsv
-         bGXw==
-X-Gm-Message-State: AGi0PuYEqzsSz2I78fB+4B+pyjUATWwhm9YigrNy+McZiwt8zc3qQOg6
-        Gjj5neD7QgFOc+IojrTF6s0=
-X-Google-Smtp-Source: APiQypJpoHPcVkTc7Sbv9+VocdPMbPRFiuZ9btg2WSmTqQlCTwA2Qnv4W2UYnjlw4Hcm90XWc/aQkA==
-X-Received: by 2002:adf:fdd2:: with SMTP id i18mr19348989wrs.165.1586109386897;
-        Sun, 05 Apr 2020 10:56:26 -0700 (PDT)
-Received: from Red ([2a01:cb1d:3d5:a100:2e56:dcff:fed2:c6d6])
-        by smtp.googlemail.com with ESMTPSA id r5sm21037015wmr.15.2020.04.05.10.56.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Apr 2020 10:56:26 -0700 (PDT)
-Date:   Sun, 5 Apr 2020 19:56:24 +0200
-From:   Corentin Labbe <clabbe.montjoie@gmail.com>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Chen-Yu Tsai <wens@csie.org>,
-        Colin Ian King <colin.king@canonical.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Maxime Ripard <mripard@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Tang Bin <tangbin@cmss.chinamobile.com>
-Subject: Re: [PATCH] crypto: sun8i-ss - Delete an error message in
- sun8i_ss_probe()
-Message-ID: <20200405175624.GA24925@Red>
-References: <c7e1193f-7d8b-7da3-a2a8-e92ca0fd83b2@web.de>
+        Sun, 5 Apr 2020 14:52:24 -0400
+Received: from [192.168.42.210] ([93.22.135.177])
+        by mwinf5d21 with ME
+        id P6sM2200R3poyyd036sMVn; Sun, 05 Apr 2020 20:52:22 +0200
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 05 Apr 2020 20:52:22 +0200
+X-ME-IP: 93.22.135.177
+Subject: Re: [PATCH] gpu/drm: ingenic: Delete an error message in
+ ingenic_drm_probe()
+To:     Julia Lawall <julia.lawall@inria.fr>
+Cc:     kernel-janitors@vger.kernel.org
+References: <e03e7106-0f22-99c4-ad21-b288e8990b5a@web.de>
+ <a0a0c054-f71e-a23e-ba47-c1f6554b79e6@wanadoo.fr>
+ <alpine.DEB.2.21.2004051948120.3208@hadrien>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <178751cb-10db-2f1b-3eca-6c0e6fb0fb17@wanadoo.fr>
+Date:   Sun, 5 Apr 2020 20:52:23 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.21.2004051948120.3208@hadrien>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c7e1193f-7d8b-7da3-a2a8-e92ca0fd83b2@web.de>
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Apr 04, 2020 at 05:45:26PM +0200, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Sat, 4 Apr 2020 17:34:53 +0200
-> 
-> The function “platform_get_irq” can log an error already.
-> Thus omit a redundant message for the exception handling in the
-> calling function.
-> 
-> This issue was detected by using the Coccinelle software.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
->  drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c
-> index 6b301afffd11..a1fb2fbdbe7b 100644
-> --- a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c
-> +++ b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c
-> @@ -537,10 +537,8 @@ static int sun8i_ss_probe(struct platform_device *pdev)
->  		return err;
-> 
->  	irq = platform_get_irq(pdev, 0);
-> -	if (irq < 0) {
-> -		dev_err(ss->dev, "Cannot get SecuritySystem IRQ\n");
-> +	if (irq < 0)
->  		return irq;
-> -	}
-> 
->  	ss->reset = devm_reset_control_get(&pdev->dev, NULL);
->  	if (IS_ERR(ss->reset)) {
-> --
-> 2.26.0
-> 
+Le 05/04/2020 à 19:54, Julia Lawall a écrit :
+>
+> On Sun, 5 Apr 2020, Christophe JAILLET wrote:
+>
+>> Le 05/04/2020 à 11:30, Markus Elfring a écrit :
+>>> From: Markus Elfring <elfring@users.sourceforge.net>
+>>> Date: Sun, 5 Apr 2020 11:25:30 +0200
+>>>
+>>> The function “platform_get_irq” can log an error already.
+>>> Thus omit a redundant message for the exception handling in the
+>>> calling function.
+>>>
+>>> This issue was detected by using the Coccinelle software.
+>>>
+>>> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+>>> ---
+>>>    drivers/gpu/drm/ingenic/ingenic-drm.c | 4 +---
+>>>    1 file changed, 1 insertion(+), 3 deletions(-)
+>>>
+>>> diff --git a/drivers/gpu/drm/ingenic/ingenic-drm.c
+>>> b/drivers/gpu/drm/ingenic/ingenic-drm.c
+>>> index 9dfe7cb530e1..06ca752b76ee 100644
+>>> --- a/drivers/gpu/drm/ingenic/ingenic-drm.c
+>>> +++ b/drivers/gpu/drm/ingenic/ingenic-drm.c
+>>> @@ -661,10 +661,8 @@ static int ingenic_drm_probe(struct platform_device
+>>> *pdev)
+>>>    	}
+>>>
+>>>    	irq = platform_get_irq(pdev, 0);
+>>> -	if (irq < 0) {
+>>> -		dev_err(dev, "Failed to get platform irq");
+>> Some 'dev_err' or equivalent functions sometimes don't have a trailing '\n'.
+>> (just like here)
+>> Do you think that it worth fixing? Or is it to low level value?
+>>
+>> According to a few grep, there seems to be quite a lot of them to fix.
+>>
+>> Julia, can 'coccinelle' be used for that?
+> Yes, it should be possible by writing some script code.
+>
+> Something like
+>
+> @initialize:python@
+> @@
+> ... // define check_for_missing_nl (returning a boolean) and add_newline
+>
+> @r@
+> constant str : script:python() { check_for_missing_nl str };
+> expression e;
+> @@
+>
+> dev_err(e,str,...)
+>
+> @script:python s@
+> str << r.str;
+> strnl;
+> @@
+>
+> coccinelle.strnl = add_newline str
+>
+> @@
+> constant r.str;
+> identifier s.strnl;
+> @@
+>
+> dev_err(e,
+> - str
+> + strnl
+>    ,...)
+>
+> One would have to be a bit careful in add_newline to keep the "s even
+> though the code pretends that strnl is an identifier.
+>
+> julia
 
-Hello
+Hi Julia,
+thx for the sample, I'll give it a try.
 
-Acked-by: Corentin Labbe <clabbe.montjoie@gmail.com>
+CJ
 
-Thanks
+>> CJ
+>>
+>>> +	if (irq < 0)
+>>>    		return irq;
+>>> -	}
+>>>
+>>>    	if (soc_info->needs_dev_clk) {
+>>>    		priv->lcd_clk = devm_clk_get(dev, "lcd");
+>>> --
+>>> 2.26.0
+>>>
+>>>
+> >
+
+

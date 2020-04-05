@@ -2,38 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55CDF19EC61
-	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Apr 2020 17:36:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C82019EC81
+	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Apr 2020 18:12:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726717AbgDEPgs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 5 Apr 2020 11:36:48 -0400
-Received: from mout.web.de ([212.227.17.11]:59255 "EHLO mout.web.de"
+        id S1727300AbgDEQMd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 5 Apr 2020 12:12:33 -0400
+Received: from mout.web.de ([212.227.17.11]:51917 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726452AbgDEPgs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 5 Apr 2020 11:36:48 -0400
+        id S1726909AbgDEQMc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 5 Apr 2020 12:12:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1586100978;
-        bh=tnYDeiuDrcRk0nlPNPGkbd2yv/Uu1XjW1jGNeoaglWg=;
+        s=dbaedf251592; t=1586103135;
+        bh=vSeyjKaG/fKVCjCROHOr96NvZleJyDqBvTnh2s4chtc=;
         h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=sJHbBQmslULtjvmcd7PHQdC2tBb0NYq7WQjJH9N9pOqVcoLPp+AX/c85elklTWPEG
-         aItGPWfGemVpvXJ1/qPY+BRmVh4LgwuxAFTcMKS/aU7Z44wa401mBsYtFT33s7p/0n
-         k4hOjIuy6rLmYWLsDPJASng8JgOL8k/81R3rkE4E=
+        b=dN9ttVVahdLRvOb5gsJhEykEvX4Pq+Vscua7qWoZ2FiVZWyNuib6FvQBktGzJzesM
+         KpSi2CY5lpCoNdXsgHB79NXRvofzLGF7XnbR9meW0YAoo7yPnbxiU4CZUaUGTbJExl
+         fC/uw5Qn7oS3NhM8eO2JL0mdmdDfceQDO1t6xPpg=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.3] ([93.131.99.70]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LkPjj-1ijqYr2hzf-00cU19; Sun, 05
- Apr 2020 17:36:18 +0200
-To:     linux-rtc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Eddie Huang <eddie.huang@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Vladimir Zapolskiy <vz@mleia.com>
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LbrZ2-1iw0LL2mf6-00jK6l; Sun, 05
+ Apr 2020 18:12:15 +0200
+To:     linux-arm-msm@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org,
         Tang Bin <tangbin@cmss.chinamobile.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] rtc: Delete an error message in three functions
+Subject: [PATCH] soc: qcom: smp2p: Delete an error message in
+ qcom_smp2p_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -77,111 +73,74 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <04116352-b464-041c-1939-96440133aa6f@web.de>
-Date:   Sun, 5 Apr 2020 17:36:15 +0200
+Message-ID: <eb92fcfb-6181-1f9d-2601-61e5231bd892@web.de>
+Date:   Sun, 5 Apr 2020 18:12:13 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:8+/Dc59/ZQ9+ftEfpC3i/0o/mPSYrEeU22u2c6J0lKMOGgj7M27
- xGQQMzqGeVrc7EFFUgwLSLjJZiyGFZ1ONGhSzOSNqClTcF/6Ka5qQyBp4vDtj9xoyM9/W4C
- 5N8LN+TKjhgKzvLi5AR/m3uPV4eqI1AEmzq3W9Y7J7iplIsSb41ZO04Tinu1vwu8Wa1fXOj
- euXLTnhOf446ZHlS/lLrQ==
+X-Provags-ID: V03:K1:gI8Ey2IDq140zqcfjpYaX4b1omLSKuRKfL/uzZTEKRW4wn+FnwO
+ GQfg3NS8HVhmVIc7KL2DoI7jyR9D7SFXL2SWr3S9apPujA8eYhAI2MGZ5gBHyyjzfR0esk3
+ 6zyPOHhyNZDAss6IvSe/XH48h0FPMgJQPp3JHmjhPCzLptVUMrEH8jIKWGAMR0VXlV0WqM7
+ OsZ0mk6ksuaPZO0L/Yx2w==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:5BtEuP3ErMc=:Fh4okuSnNC5D+zfo6Znivn
- 3TLmQdF8XJzaa1V6MArixv9kPF2bf1E9JGcJt9sxPaPX4KoVU18S9Q76t4sOHp4v0eUK5767S
- b5KA+QSsz7QNprTJmHTRBX4F6LKx+nEDwjPP6NmAqPGSgmUjNAJedy5wE+Fp08MR85VpjaaYL
- kIW1IbsnEee6kFDpDrCEls4gxLVMZy0YiKTDf7rRWlpYMWWhx/W+f8rQzV4voDn3eWxqfAjEk
- Ko3mbHs+iPtxaNJpQbXdaD9ymY4c5yR7ZAj1lnZMaR423E/pNok4POesKdF25xI5MyveHLhi3
- PRpfhLysiH7W10EcHGuF0nf0uOlqzjZW24aeNRmkyrllreNBBIuDJ6yX/zdSUWY2EC2nbuj/6
- ClcvRqxeCZ9ThC5REh4CMzQ75YKLcHzh1CMLSLTim+TyOUUMU8MiNOJ5xj6D7MMIhGVvx790a
- TxApeRk10UoxFlXJvNA2UHf3SP+a8S1CYi1ooLvNROm3+CYqqeJm/q12bB/lTnhmX3wsk+1DM
- AuVhcHwgKBCNTwfZ1p/7SBeHf4+1yZqnX1pn7InzvxsM9NPCErXZhehH6x5P0dG7aQ7pyieQx
- 30vNUjnxPabHCLGoOEEBwIvsH4KaxAPIdbAbG2z3UJbgzz4vvanwZ+hhcuACfriATMOjFuW5Y
- rgtNfj4BHYNMv2kYRLyDE2XyzDh5vlq1exCIzHCAZRZPnRB9QQAhIcBXqRqohbV4LE9qzdiOR
- j1IprXh6+lNiRvCjVc3KejkWXsZe75ljjj6dVXLkVEOxC9iwxgUggQMzLiZeX9BZIxl061lnC
- /TjTXhfu6TMk3hFyhcAh+kV/Gbh1RXi4z224ueq5hZyBuFKMXkxDp2L4sFBImRSGTtqp4OHqn
- 4R43dy1rwxeM96rBPZ+IzLYLrm0GG1yK3eV1OCPvA88WviOAueyKbEK4XqVBfHqH1Pixwhs36
- U1sK74WbEOTpEVzgvBdcWjRPXBmZD0GidH0iD3Mxc45YGc/vtqLCsAWaz6zTV8jY7dF2FZ+Uc
- jmf9sT4Yy/2zszLKhMEyPz7U4pLJl3MN3cavs3kerN1xUKheqx8NjgmuDX0bLkccyPmvyu8Jf
- XOySu9rXtxrBtKqid/mn6snxZwdtQyHESzUYcQ2hdj3oNly+r0kUVjV5hRP+FIzbYruzVKmIf
- oyBeAgLodBqcslOWVF1tZ98IvGa4hPhzXW9VvYdifbWkMnlmJ629y6VejpnT19PMbpKQEi3FQ
- WisU3HbEfVjK+e+8c
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ysiE22kY/Yk=:+KRZtLFnD2IGbqaQthXkOP
+ texO0GfHHp4VpDb8ygBuRO+7l8bFcoXNZbcULfnDerki21voxeb+PAwI8650Q3uel3Ql7VpPe
+ f8UPKxvmEcYICorSejCp4tiiPmwc/E5rsO/7AadmsMot5uRxmlVq2thqI8qGl+K09fFCsBK/K
+ Sh6QFCtG8pJcwxbpBuuf7X8pntkkc+DHb+Vakf1MBjeC+FmXQPgG1WiI8CJ29DUyENZzCQJUr
+ l3+PI+BJSl3HOrkFuYTPkgAcBkq6+PLJH7Qvq3Anw6NhULTso3QHRDRq5OmxrVz42OYNEtaN/
+ AhswGq9Koef5lZaQq6TC9xC9qlgie3c2jc7n8OVhTNxsH6bSYHOxZW9Y0CttRYmTO5CyWjLfL
+ SlWOooyX0YX6iexRzOngukqCPhC6Qk9EqVH2cSBhLTE939WHH39PBeYK1vA3mOcr9xoH+KQ0x
+ Cndv6vOHlDTocl60YZLNbN6XsOUj6hOR9NF+0LiUEQSwG+xsAwNkU+qRg9hO/ghg8HqEGnfZW
+ zHaCZLzm527khzb48so6/TZufv58lH/EndMKMYfvVfPBzfhluU+BYlwlLw61PqCvuoiKSyxJr
+ pXhqUbyOyhNuSVt1VwMMVMuxBGXVNUiZ0kwV28JU9BXXN2k+/rIzbun65sJfqTvCiUcI/eYng
+ +gybAGMJTgV3Dga6pukkmNdHQnztCCFFakR7tb6GmHZmBE6VGE87wXvRxHV7aq4sQh8sH/0Fw
+ uWHQpfGqOPbuSabe89pCCqkOZxugtaAxWSKEzdlWDBwvEYJ5JTnh+vB1yI39gSHrAGR6CkjP3
+ Iln5Q56OXk5gHas+frAQo8M90BLI527iwx5fvxDcxhNZvClGXg+4XqctLAkC4IZipKMNmzA11
+ f8PcYmFZb7dzNa55yt4tmp47FfV4XLsRbxPd7+ZfW1nQabdJ4ysiwdxdgcN9WUt99fDR2qbxA
+ jxPHZdh+U/QBU20cH8YN00U3+8sPYfBwjOCfjdfXFkTkCOG3NwpDepy/n+pFNt8qsa1ee4U+g
+ qCxJwtG4+OA5zzeTEYXe2Xq/1A4R+DEmVLMYYDOUvPkpH9FFapd5keJ8yEnDYFOUVQzYcSPB5
+ 0oSvWlnYxZhHc77cnbGHh4Zo23Mehrc55G36YZEaOMJ3CJi/Jz51rwA7PzFMOanv+sztOOZo6
+ mb+JJzaRjTAQ1KnUKzPL+NoGLQxAmCyd8Bwfc9vN+r0j8TNNnQfW8pBZYcHmXLVJD5XEhaqk4
+ qIixYKXLD3ov/P/Id
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sun, 5 Apr 2020 17:30:15 +0200
+Date: Sun, 5 Apr 2020 18:08:13 +0200
 
 The function =E2=80=9Cplatform_get_irq=E2=80=9D can log an error already.
-Thus omit redundant messages for the exception handling in the
-calling functions.
+Thus omit a redundant message for the exception handling in the
+calling function.
 
 This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/rtc/rtc-fsl-ftm-alarm.c | 4 +---
- drivers/rtc/rtc-lpc24xx.c       | 4 +---
- drivers/rtc/rtc-mt2712.c        | 4 +---
- 3 files changed, 3 insertions(+), 9 deletions(-)
+ drivers/soc/qcom/smp2p.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/rtc/rtc-fsl-ftm-alarm.c b/drivers/rtc/rtc-fsl-ftm-ala=
-rm.c
-index 756af62b0486..23c811da4801 100644
-=2D-- a/drivers/rtc/rtc-fsl-ftm-alarm.c
-+++ b/drivers/rtc/rtc-fsl-ftm-alarm.c
-@@ -268,10 +268,8 @@ static int ftm_rtc_probe(struct platform_device *pdev=
-)
- 	}
-
- 	irq =3D platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		dev_err(&pdev->dev, "can't get irq number\n");
-+	if (irq < 0)
- 		return irq;
--	}
-
- 	ret =3D devm_request_irq(&pdev->dev, irq, ftm_rtc_alarm_interrupt,
- 			       IRQF_NO_SUSPEND, dev_name(&pdev->dev), rtc);
-diff --git a/drivers/rtc/rtc-lpc24xx.c b/drivers/rtc/rtc-lpc24xx.c
-index 00ef16ba9480..eec881a81067 100644
-=2D-- a/drivers/rtc/rtc-lpc24xx.c
-+++ b/drivers/rtc/rtc-lpc24xx.c
-@@ -205,10 +205,8 @@ static int lpc24xx_rtc_probe(struct platform_device *=
-pdev)
- 		return PTR_ERR(rtc->rtc_base);
-
- 	irq =3D platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		dev_warn(&pdev->dev, "can't get interrupt resource\n");
-+	if (irq < 0)
- 		return irq;
--	}
-
- 	rtc->clk_rtc =3D devm_clk_get(&pdev->dev, "rtc");
- 	if (IS_ERR(rtc->clk_rtc)) {
-diff --git a/drivers/rtc/rtc-mt2712.c b/drivers/rtc/rtc-mt2712.c
-index 581b8731fb8a..f6bdbabd7202 100644
-=2D-- a/drivers/rtc/rtc-mt2712.c
-+++ b/drivers/rtc/rtc-mt2712.c
-@@ -328,10 +328,8 @@ static int mt2712_rtc_probe(struct platform_device *p=
+diff --git a/drivers/soc/qcom/smp2p.c b/drivers/soc/qcom/smp2p.c
+index c7300d54e444..07183d731d74 100644
+=2D-- a/drivers/soc/qcom/smp2p.c
++++ b/drivers/soc/qcom/smp2p.c
+@@ -474,10 +474,8 @@ static int qcom_smp2p_probe(struct platform_device *p=
 dev)
- 	mt2712_rtc_hw_init(mt2712_rtc);
+ 		goto report_read_failure;
 
- 	mt2712_rtc->irq =3D platform_get_irq(pdev, 0);
--	if (mt2712_rtc->irq < 0) {
--		dev_err(&pdev->dev, "No IRQ resource\n");
-+	if (mt2712_rtc->irq < 0)
- 		return mt2712_rtc->irq;
+ 	irq =3D platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		dev_err(&pdev->dev, "unable to acquire smp2p interrupt\n");
++	if (irq < 0)
+ 		return irq;
 -	}
 
- 	platform_set_drvdata(pdev, mt2712_rtc);
-
+ 	smp2p->mbox_client.dev =3D &pdev->dev;
+ 	smp2p->mbox_client.knows_txdone =3D true;
 =2D-
 2.26.0
 

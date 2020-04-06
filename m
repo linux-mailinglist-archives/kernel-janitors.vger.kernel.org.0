@@ -2,98 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F94619F82E
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Apr 2020 16:46:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAEC819F83E
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Apr 2020 16:51:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728739AbgDFOqG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Apr 2020 10:46:06 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:44204 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728697AbgDFOqF (ORCPT
+        id S1728773AbgDFOvM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Apr 2020 10:51:12 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:38508 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728768AbgDFOvL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Apr 2020 10:46:05 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 036EhjjD194145;
-        Mon, 6 Apr 2020 14:46:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=0/urMzieYB6xVEPP1/9NjMfGVTonzhWmU8N4mTK8r4E=;
- b=VsuJ/BerEoRejeWFtQrlmKFmvF/CUI1hoaqaitzBPxD6RHwLF7FBBc370Qrdqtg3VPHZ
- y6nt+BhDo7WwVFdU8SPHnZpdqoLm09QBg3UZ9AhMM5sEvJ2wBbom4TUI5zkzWTHeV60n
- 3JKOKZE6teIsK4rAeJINKi9Z1JzY8u6PZCqbh6RwFNbO6oQs0JRAXDZHU9Fos67m5RG2
- kfA2AQrcDMf6NEcnKUB20tLBXPY2X1CuQHxnFN7GD15wBu0kZOhnv/nlMLw4HV5zAPIr
- DuGpfLTwvobodCUA7gvSEVkCQWa9nH48d8eMXYmalb1FXh4duXGWn00sy+ncMIDbbh7S Dg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 306j6m79bk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 06 Apr 2020 14:46:01 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 036EfO0B035064;
-        Mon, 6 Apr 2020 14:46:01 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 30741arpw0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 06 Apr 2020 14:46:01 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 036Ejx2S028916;
-        Mon, 6 Apr 2020 14:45:59 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 06 Apr 2020 07:45:59 -0700
-Date:   Mon, 6 Apr 2020 17:45:52 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>
-Cc:     virtualization@lists.linux-foundation.org,
+        Mon, 6 Apr 2020 10:51:11 -0400
+Received: by mail-qk1-f194.google.com with SMTP id h14so16398665qke.5
+        for <kernel-janitors@vger.kernel.org>; Mon, 06 Apr 2020 07:51:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=QLcJLS6gh3Pyw1Kb8Qcjn7YnCly0p8aglXTQ552vZuY=;
+        b=fp1TsRVJUgrD0C5YqaopF+9Lazs5FzJC/aUPVwr2KhStCASxgpleYVJGoYD3aluwj5
+         KfOVAnuDgo8BK7Dd06ievhU1TIr4+L77KQ3IbF66ACNcGxRhTvwu26A+Nj9MBh4RGpr/
+         6P6oT4zivnfu6E97Yb1mm836i1ipVG+65bxxVXeZ0SQ2lMFrK1qD1hp+2bbUvXQ9p2Y8
+         OC/xWSMDpM1pOWP1AwqTSME0bAEtvz8XpwBatlv9Gs6AXGamACzXh6sX9JleQrNz32Ak
+         Gk+t0DQ7qPAHiqr4WBQa4Ta7k5Ke7focVwgutedc9SMAebxJFVrsN8QU/gwMSemZnv2X
+         H21g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=QLcJLS6gh3Pyw1Kb8Qcjn7YnCly0p8aglXTQ552vZuY=;
+        b=dopv2akPbu1s0uCAgHA4Xf/pubjx49sGI1Dy27tBiiy6Bm60IeXz6tZRNwl/k6/r7u
+         90vI/2tmU2XKw4Haa1dvPhgtYqz79DVjL6ES7QlN9APuSZmp/qDIa7P1U3hfY2DN0Q5s
+         8EyVu7X6r3zLyCKelnMm7jXo2KJVrCETMoAQNQmGEuXIzaJEQcYgnndg9fsoTrue/ja1
+         uxnhwLEJ9gKwmipLuiOBBWMNdiYhwE54jNDg0ATGN0BUcnJcx74767qIE/JLKgrNRSmk
+         AbkHZLZu5U4cHy3JuEalQI8uc21yCboe5a5L3m2oSUGDVkmnuFjSzv102UhO0Djpfs9X
+         GFxQ==
+X-Gm-Message-State: AGi0PubVi0yzIVcLYmaN8ccVTH2X9FaOeMVOAoQz5Ky6zn+ZvYuM1Pnm
+        naLDBdC7CwVtuhXw3PXbJmCIzw==
+X-Google-Smtp-Source: APiQypIjI6lG1ooeDObkWABulcNgWH7LhaRsQCl2qp2qdvNjPo6uYknax/IMVDXJg1lKOfXm5V6K3w==
+X-Received: by 2002:a37:7605:: with SMTP id r5mr19728783qkc.345.1586184670672;
+        Mon, 06 Apr 2020 07:51:10 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.57.212])
+        by smtp.gmail.com with ESMTPSA id f127sm14675009qkd.74.2020.04.06.07.51.09
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 06 Apr 2020 07:51:10 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1jLT5h-0005YO-Da; Mon, 06 Apr 2020 11:51:09 -0300
+Date:   Mon, 6 Apr 2020 11:51:09 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Doug Ledford <dledford@redhat.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Danit Goldberg <danitg@mellanox.com>,
+        Parav Pandit <parav@mellanox.com>, linux-rdma@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH 2/2] vdpa: Fix pointer math bug in vdpasim_get_config()
-Message-ID: <20200406144552.GF68494@mwanda>
+Subject: Re: [PATCH] RDMA/cm: Fix an error check in cm_alloc_id_priv()
+Message-ID: <20200406145109.GQ20941@ziepe.ca>
+References: <20200406144335.GD68494@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200406144509.GE68494@mwanda>
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9582 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 phishscore=0
- malwarescore=0 bulkscore=0 spamscore=0 adultscore=0 mlxlogscore=999
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004060122
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9582 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999 spamscore=0
- priorityscore=1501 suspectscore=0 lowpriorityscore=0 malwarescore=0
- impostorscore=0 mlxscore=0 phishscore=0 adultscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004060122
+In-Reply-To: <20200406144335.GD68494@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If "offset" is non-zero then we end up copying from beyond the end of
-the config because of pointer math.  We can fix this by casting the
-struct to a u8 pointer.
+On Mon, Apr 06, 2020 at 05:43:35PM +0300, Dan Carpenter wrote:
+> The xa_alloc_cyclic_irq() function returns either 0 or 1 on success and
+> negatives on error.  This code treats 1 as an error and returns
+> ERR_PTR(1) which will cause an Oops in the caller.
+> 
+> Fixes: e8dc4e885c45 ("RDMA/cm: Fix ordering of xa_alloc_cyclic() in ib_create_cm_id()")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> The Fixes tag may not be correct.  That's the patch which introduces an
+> Oops but we may want to backport this further back.
 
-Fixes: 2c53d0f64c06 ("vdpasim: vDPA device simulator")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-Is it really worth letting people specify the offset?
+Right it should be
 
- drivers/vdpa/vdpa_sim/vdpa_sim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Fixes: ae78ff3a0f0c ("RDMA/cm: Convert local_id_table to XArray")
 
-diff --git a/drivers/vdpa/vdpa_sim/vdpa_sim.c b/drivers/vdpa/vdpa_sim/vdpa_sim.c
-index b3c800653056..e03c25765513 100644
---- a/drivers/vdpa/vdpa_sim/vdpa_sim.c
-+++ b/drivers/vdpa/vdpa_sim/vdpa_sim.c
-@@ -509,7 +509,7 @@ static void vdpasim_get_config(struct vdpa_device *vdpa, unsigned int offset,
- 	struct vdpasim *vdpasim = vdpa_to_sim(vdpa);
- 
- 	if (offset + len < sizeof(struct virtio_net_config))
--		memcpy(buf, &vdpasim->config + offset, len);
-+		memcpy(buf, (u8 *)&vdpasim->config + offset, len);
- }
- 
- static void vdpasim_set_config(struct vdpa_device *vdpa, unsigned int offset,
--- 
-2.25.1
-
+Thanks,
+Jason

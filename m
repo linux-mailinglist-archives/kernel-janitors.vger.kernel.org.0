@@ -2,55 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C885B19FB48
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Apr 2020 19:20:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7EDC19FB5A
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Apr 2020 19:22:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729464AbgDFRU3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Apr 2020 13:20:29 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:57354 "EHLO
+        id S1729892AbgDFRWh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Apr 2020 13:22:37 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:57366 "EHLO
         shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729366AbgDFRU3 (ORCPT
+        with ESMTP id S1728945AbgDFRWh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Apr 2020 13:20:29 -0400
+        Mon, 6 Apr 2020 13:22:37 -0400
 Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id B7BAD15DA6701;
-        Mon,  6 Apr 2020 10:20:28 -0700 (PDT)
-Date:   Mon, 06 Apr 2020 10:20:27 -0700 (PDT)
-Message-Id: <20200406.102027.658947559034471738.davem@davemloft.net>
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id BB85315DA6711;
+        Mon,  6 Apr 2020 10:22:36 -0700 (PDT)
+Date:   Mon, 06 Apr 2020 10:22:35 -0700 (PDT)
+Message-Id: <20200406.102235.1829438991568501793.davem@davemloft.net>
 To:     colin.king@canonical.com
-Cc:     inaky.perez-gonzalez@intel.com, linux-wimax@intel.com,
+Cc:     aelior@marvell.com, GR-everest-linux-l2@marvell.com,
         netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wimax: remove some redundant assignments to variable
- result
+Subject: Re: [PATCH] qed: remove redundant assignment to variable 'rc'
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200405120603.369405-1-colin.king@canonical.com>
-References: <20200405120603.369405-1-colin.king@canonical.com>
+In-Reply-To: <20200405134914.382716-1-colin.king@canonical.com>
+References: <20200405134914.382716-1-colin.king@canonical.com>
 X-Mailer: Mew version 6.8 on Emacs 26.1
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 06 Apr 2020 10:20:29 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 06 Apr 2020 10:22:37 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin King <colin.king@canonical.com>
-Date: Sun,  5 Apr 2020 13:06:02 +0100
+Date: Sun,  5 Apr 2020 14:49:14 +0100
 
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> In function i2400m_bm_buf_alloc there is no need to use a variable
-> 'result' to return -ENOMEM, just return the literal value. In the
-> function i2400m_setup the variable 'result' is initialized with a
-> value that is never read, it is a redundant assignment that can
-> be removed.
+> The variable 'rc' is being assigned a value that is never read
+> and it is being updated later with a new value. The assignment
+> is redundant and can be removed.
 > 
 > Addresses-Coverity: ("Unused value")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Applied, thanks.
+Applied.

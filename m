@@ -2,118 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 077A919F256
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Apr 2020 11:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8546419F2D9
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Apr 2020 11:45:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726787AbgDFJTm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Apr 2020 05:19:42 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:38564 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726723AbgDFJTm (ORCPT
+        id S1726776AbgDFJpP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Apr 2020 05:45:15 -0400
+Received: from mx07-00178001.pphosted.com ([62.209.51.94]:44623 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726722AbgDFJpP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Apr 2020 05:19:42 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0369Hv3Y026949;
-        Mon, 6 Apr 2020 09:19:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=tJLkLbkX3XejL8jAx8gN3emhNfQRl/ysMNjDxqG7obQ=;
- b=0P3ufm3uCb790cFvDuHUpbMdazUaeh+9RWCjGqh8CHiFZT9ounOUqiRTHpGyf8lrSBcI
- 4mqQoNhLbYevMUlFapxUmh5MjtaxIKFMU4iOhd4hcpYVeozZ30xAQj/pCz7zNvwHVh4g
- J5JcxANV6iUh23SI8RR0bIyj8G4ij88F4O/dwtfiDwGnC34ELNVPMaSJySHqcCod+TLY
- Tye4rdnyOdNfPABNzO/oJUCfdpvXQND++esOk6hqcBsoG3fJSoMWzId9ubAZi1+YV9RB
- D85lOza9XVQsm0URY96a6Ty9KM0G3PhO8Jn7t4RgS9SyrpuO9VLU7Vyg39tGUoKg9A+y cw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 306j6m5qa9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 06 Apr 2020 09:19:33 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0369HDul001582;
-        Mon, 6 Apr 2020 09:19:32 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 3073qcmed2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 06 Apr 2020 09:19:32 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0369JLNB021307;
-        Mon, 6 Apr 2020 09:19:22 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 06 Apr 2020 02:19:21 -0700
-Date:   Mon, 6 Apr 2020 12:19:10 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Harry Wentland <harry.wentland@amd.com>,
-        Melissa Wen <melissa.srw@gmail.com>
-Cc:     Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        "David (ChunMing) Zhou" <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Wenjing Liu <Wenjing.Liu@amd.com>,
-        Nikola Cornij <nikola.cornij@amd.com>,
-        Anthony Koo <Anthony.Koo@amd.com>, Zhan Liu <Zhan.Liu@amd.com>,
-        Chris Park <Chris.Park@amd.com>, Roman Li <Roman.Li@amd.com>,
-        David Galiffi <David.Galiffi@amd.com>,
-        Lucy Li <lucy.li@amd.com>, amd-gfx@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH net-next] drm/amd/display: Fix link_detect_sink()
-Message-ID: <20200406091910.GA5405@mwanda>
+        Mon, 6 Apr 2020 05:45:15 -0400
+Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0369gowF031596;
+        Mon, 6 Apr 2020 11:44:18 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type : content-id
+ : content-transfer-encoding : mime-version; s=STMicroelectronics;
+ bh=2a3UrR0vvKbfCVyVukYQyK/7BqGP/1N0NHAtHA/piFE=;
+ b=PUSP/zZS8e/q90fhP5DzpLOfRx8kh8mju3tyakiTGOgw4uFUJtWZJBdjVLPSKMIcZTdV
+ KHjZEbpwdD96F3obw1oICbJgV+PkGT7HkP5iTSZbdNoZEUJDSjZnfYd7veE+D+iNZRR8
+ uKuwFooa+ZRuhf57Co/midAgESknOjMaiX2zCcxrzKR4k45ngo+CR24gn3T6KIQHcCJq
+ tXfsrjdFWnZc+Oq4lqZjAGUe3qtOYCuW7vWyE4uY/1i4uy2pJ+XA69nkbMdN0nYE8+6B
+ N7K0bSlzNNYr/ATG5C1mrs84dKRgHb+en12wupcx6D9KOZ163GrHTSjTQ8xAsvs/gYcy qg== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 306g0w13j5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 06 Apr 2020 11:44:18 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id B83CC100034;
+        Mon,  6 Apr 2020 11:44:13 +0200 (CEST)
+Received: from Webmail-eu.st.com (sfhdag3node2.st.com [10.75.127.8])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 7DDD92B1868;
+        Mon,  6 Apr 2020 11:44:13 +0200 (CEST)
+Received: from SFHDAG6NODE2.st.com (10.75.127.17) by SFHDAG3NODE2.st.com
+ (10.75.127.8) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Mon, 6 Apr
+ 2020 11:44:12 +0200
+Received: from SFHDAG6NODE2.st.com ([fe80::a56f:c186:bab7:13d6]) by
+ SFHDAG6NODE2.st.com ([fe80::a56f:c186:bab7:13d6%20]) with mapi id
+ 15.00.1347.000; Mon, 6 Apr 2020 11:44:13 +0200
+From:   Olivier MOYSAN <olivier.moysan@st.com>
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        Arnaud POULIQUEN <arnaud.pouliquen@st.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre TORGUE <alexandre.torgue@st.com>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        "linux-stm32@st-md-mailman.stormreply.com" 
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ASoC: stm32: sai: Add missing cleanup
+Thread-Topic: [PATCH] ASoC: stm32: sai: Add missing cleanup
+Thread-Index: AQHWC2DSIRg6JhgxIEC65JTRjgXANKhrt4mA
+Date:   Mon, 6 Apr 2020 09:44:13 +0000
+Message-ID: <1df96e7b-89fa-7822-1a57-b9a87e8388c0@st.com>
+References: <1586099028-5104-1-git-send-email-Julia.Lawall@inria.fr>
+In-Reply-To: <1586099028-5104-1-git-send-email-Julia.Lawall@inria.fr>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.75.127.51]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A296B775786CD642978E621365BD0C9A@st.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9582 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 mlxlogscore=999
- spamscore=0 bulkscore=0 adultscore=0 malwarescore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004060080
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9582 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999 spamscore=0
- priorityscore=1501 suspectscore=0 lowpriorityscore=0 malwarescore=0
- impostorscore=0 mlxscore=0 phishscore=0 adultscore=0 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004060080
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-04-06_05:2020-04-03,2020-04-06 signatures=0
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This TODO stub originally had curly braces but we deleted them as part
-of a clean up.  Unfortunately that changes the behavior of the code
-because now the switch statement is part of the if statement.  Smatch
-complains that the indenting doesn't make sense.
-
-    drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_link.c:425
-    link_detect_sink() warn: if statement not indented
-
-Also I changed "ZAZTODO" to just "TODO".  The ZAZ isn't used anywhere
-else.
-
-Fixes: 621514aa4140 ("drm/amd/display: codestyle cleanup on dc_link file until detect_dp func")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-Another idea is we should just delete this stub.  Stub code is generally
-against kernel style.  I can send a V2 if people want.
-
- drivers/gpu/drm/amd/display/dc/core/dc_link.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_link.c b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
-index a93997ff0419..188670d374a3 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_link.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
-@@ -423,7 +423,7 @@ static enum signal_type link_detect_sink(struct dc_link *link,
- 
- 	/* PCIE detects the actual connector on add-on board */
- 	if (link->link_id.id == CONNECTOR_ID_PCIE)
--		/* ZAZTODO implement PCIE add-on card detection */
-+		; /* TODO implement PCIE add-on card detection */
- 
- 	switch (link->link_id.id) {
- 	case CONNECTOR_ID_HDMI_TYPE_A: {
--- 
-2.25.1
-
+DQpPbiA0LzUvMjAgNTowMyBQTSwgSnVsaWEgTGF3YWxsIHdyb3RlOg0KPiBUaGUgY29tbWl0IDBk
+NmRlZmM3ZTBlNCAoIkFTb0M6IHN0bTMyOiBzYWk6IG1hbmFnZSByZWJpbmQgaXNzdWUiKQ0KPiBj
+b252ZXJ0cyBzb21lIGZ1bmN0aW9uIGNhbGxzIHRvIHRoZWlyIG5vbi1kZXZtIGVxdWl2YWxlbnRz
+LiAgVGhlDQo+IGFwcHJvcHJpYXRlIGNsZWFudXAgY29kZSB3YXMgYWRkZWQgdG8gdGhlIHJlbW92
+ZSBmdW5jdGlvbiwgYnV0IG5vdA0KPiB0byB0aGUgcHJvYmUgZnVuY3Rpb24uICBBZGQgYSBjYWxs
+IHRvIHNuZF9kbWFlbmdpbmVfcGNtX3VucmVnaXN0ZXINCj4gdG8gY29tcGVuc2F0ZSBmb3IgdGhl
+IGNhbGwgdG8gc25kX2RtYWVuZ2luZV9wY21fcmVnaXN0ZXIgaW4gY2FzZQ0KPiBvZiBzdWJzZXF1
+ZW50IGZhaWx1cmUuDQo+DQo+IEZpeGVzOiBjb21taXQgMGQ2ZGVmYzdlMGU0ICgiQVNvQzogc3Rt
+MzI6IHNhaTogbWFuYWdlIHJlYmluZCBpc3N1ZSIpDQo+IFNpZ25lZC1vZmYtYnk6IEp1bGlhIExh
+d2FsbCA8SnVsaWEuTGF3YWxsQGlucmlhLmZyPg0KPg0KPiAtLS0NCj4NCj4gTm90IHRlc3RlZC4N
+Cj4NCj4gICBzb3VuZC9zb2Mvc3RtL3N0bTMyX3NhaV9zdWIuYyB8ICAgIDQgKysrLQ0KPiAgIDEg
+ZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCkhpIEp1bGlhLA0K
+VGhhbmtzIGZvciB0aGUgcGF0Y2guDQoNCkFja2VkLWJ5OiBPbGl2aWVyIE1veXNhbiA8b2xpdmll
+ci5tb3lzYW5Ac3QuY29tPg0KPg0KPiBkaWZmIC0tZ2l0IGEvc291bmQvc29jL3N0bS9zdG0zMl9z
+YWlfc3ViLmMgYi9zb3VuZC9zb2Mvc3RtL3N0bTMyX3NhaV9zdWIuYw0KPiBpbmRleCAyYmQyODBj
+Li4wZDBjOWFmIDEwMDY0NA0KPiAtLS0gYS9zb3VuZC9zb2Mvc3RtL3N0bTMyX3NhaV9zdWIuYw0K
+PiArKysgYi9zb3VuZC9zb2Mvc3RtL3N0bTMyX3NhaV9zdWIuYw0KPiBAQCAtMTU1Niw4ICsxNTU2
+LDEwIEBAIHN0YXRpYyBpbnQgc3RtMzJfc2FpX3N1Yl9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2
+aWNlICpwZGV2KQ0KPiAgIA0KPiAgIAlyZXQgPSBzbmRfc29jX3JlZ2lzdGVyX2NvbXBvbmVudCgm
+cGRldi0+ZGV2LCAmc3RtMzJfY29tcG9uZW50LA0KPiAgIAkJCQkJICZzYWktPmNwdV9kYWlfZHJ2
+LCAxKTsNCj4gLQlpZiAocmV0KQ0KPiArCWlmIChyZXQpIHsNCj4gKwkJc25kX2RtYWVuZ2luZV9w
+Y21fdW5yZWdpc3RlcigmcGRldi0+ZGV2KTsNCj4gICAJCXJldHVybiByZXQ7DQo+ICsJfQ0KPiAg
+IA0KPiAgIAlpZiAoU1RNX1NBSV9QUk9UT0NPTF9JU19TUERJRihzYWkpKQ0KPiAgIAkJY29uZiA9
+ICZzdG0zMl9zYWlfcGNtX2NvbmZpZ19zcGRpZjsNCj4NCg==

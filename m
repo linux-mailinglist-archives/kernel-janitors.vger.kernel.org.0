@@ -2,108 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8546419F2D9
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Apr 2020 11:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46C2519F77D
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Apr 2020 16:03:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726776AbgDFJpP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Apr 2020 05:45:15 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:44623 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726722AbgDFJpP (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Apr 2020 05:45:15 -0400
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0369gowF031596;
-        Mon, 6 Apr 2020 11:44:18 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : references : in-reply-to : content-type : content-id
- : content-transfer-encoding : mime-version; s=STMicroelectronics;
- bh=2a3UrR0vvKbfCVyVukYQyK/7BqGP/1N0NHAtHA/piFE=;
- b=PUSP/zZS8e/q90fhP5DzpLOfRx8kh8mju3tyakiTGOgw4uFUJtWZJBdjVLPSKMIcZTdV
- KHjZEbpwdD96F3obw1oICbJgV+PkGT7HkP5iTSZbdNoZEUJDSjZnfYd7veE+D+iNZRR8
- uKuwFooa+ZRuhf57Co/midAgESknOjMaiX2zCcxrzKR4k45ngo+CR24gn3T6KIQHcCJq
- tXfsrjdFWnZc+Oq4lqZjAGUe3qtOYCuW7vWyE4uY/1i4uy2pJ+XA69nkbMdN0nYE8+6B
- N7K0bSlzNNYr/ATG5C1mrs84dKRgHb+en12wupcx6D9KOZ163GrHTSjTQ8xAsvs/gYcy qg== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 306g0w13j5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Apr 2020 11:44:18 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id B83CC100034;
-        Mon,  6 Apr 2020 11:44:13 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag3node2.st.com [10.75.127.8])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 7DDD92B1868;
-        Mon,  6 Apr 2020 11:44:13 +0200 (CEST)
-Received: from SFHDAG6NODE2.st.com (10.75.127.17) by SFHDAG3NODE2.st.com
- (10.75.127.8) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Mon, 6 Apr
- 2020 11:44:12 +0200
-Received: from SFHDAG6NODE2.st.com ([fe80::a56f:c186:bab7:13d6]) by
- SFHDAG6NODE2.st.com ([fe80::a56f:c186:bab7:13d6%20]) with mapi id
- 15.00.1347.000; Mon, 6 Apr 2020 11:44:13 +0200
-From:   Olivier MOYSAN <olivier.moysan@st.com>
+        id S1728588AbgDFODu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Apr 2020 10:03:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60610 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728512AbgDFODu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 6 Apr 2020 10:03:50 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id F061C23433;
+        Mon,  6 Apr 2020 14:03:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586181829;
+        bh=UbkFYXsatuzQbUdxGVDQAxnHxupZla2aqzUmbNgnnGI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=F8Wsfrq0K11uyIa+GRybKbyBxjyoiQ72PIhjJXXAD60jFxbbOrC4Q4w3iv3l/BCOg
+         lJlT3GYD87feNnOAUIEaPoSpOJQBWeGU4GmwpJPLNmpRQZAqKLlBlFIku2Bnqr6+Je
+         TKQsB7z6IBrmoerd2HKKbinAfmIEktdHGKNMqioo=
+Date:   Mon, 06 Apr 2020 15:03:46 +0100
+From:   Mark Brown <broonie@kernel.org>
 To:     Julia Lawall <Julia.Lawall@inria.fr>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        Arnaud POULIQUEN <arnaud.pouliquen@st.com>,
+Cc:     Alexandre Torgue <alexandre.torgue@st.com>,
+        alsa-devel@alsa-project.org,
+        Arnaud Pouliquen <arnaud.pouliquen@st.com>,
+        kernel-janitors@vger.kernel.org,
         Liam Girdwood <lgirdwood@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
         Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
         Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre TORGUE <alexandre.torgue@st.com>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        "linux-stm32@st-md-mailman.stormreply.com" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ASoC: stm32: sai: Add missing cleanup
-Thread-Topic: [PATCH] ASoC: stm32: sai: Add missing cleanup
-Thread-Index: AQHWC2DSIRg6JhgxIEC65JTRjgXANKhrt4mA
-Date:   Mon, 6 Apr 2020 09:44:13 +0000
-Message-ID: <1df96e7b-89fa-7822-1a57-b9a87e8388c0@st.com>
-References: <1586099028-5104-1-git-send-email-Julia.Lawall@inria.fr>
-In-Reply-To: <1586099028-5104-1-git-send-email-Julia.Lawall@inria.fr>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.75.127.51]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A296B775786CD642978E621365BD0C9A@st.com>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-04-06_05:2020-04-03,2020-04-06 signatures=0
+        Olivier Moysan <olivier.moysan@st.com>,
+        Takashi Iwai <tiwai@suse.com>
+Subject: Applied "ASoC: stm32: sai: Add missing cleanup" to the asoc tree
+In-Reply-To:  <1586099028-5104-1-git-send-email-Julia.Lawall@inria.fr>
+Message-Id:  <applied-1586099028-5104-1-git-send-email-Julia.Lawall@inria.fr>
+X-Patchwork-Hint: ignore
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-DQpPbiA0LzUvMjAgNTowMyBQTSwgSnVsaWEgTGF3YWxsIHdyb3RlOg0KPiBUaGUgY29tbWl0IDBk
-NmRlZmM3ZTBlNCAoIkFTb0M6IHN0bTMyOiBzYWk6IG1hbmFnZSByZWJpbmQgaXNzdWUiKQ0KPiBj
-b252ZXJ0cyBzb21lIGZ1bmN0aW9uIGNhbGxzIHRvIHRoZWlyIG5vbi1kZXZtIGVxdWl2YWxlbnRz
-LiAgVGhlDQo+IGFwcHJvcHJpYXRlIGNsZWFudXAgY29kZSB3YXMgYWRkZWQgdG8gdGhlIHJlbW92
-ZSBmdW5jdGlvbiwgYnV0IG5vdA0KPiB0byB0aGUgcHJvYmUgZnVuY3Rpb24uICBBZGQgYSBjYWxs
-IHRvIHNuZF9kbWFlbmdpbmVfcGNtX3VucmVnaXN0ZXINCj4gdG8gY29tcGVuc2F0ZSBmb3IgdGhl
-IGNhbGwgdG8gc25kX2RtYWVuZ2luZV9wY21fcmVnaXN0ZXIgaW4gY2FzZQ0KPiBvZiBzdWJzZXF1
-ZW50IGZhaWx1cmUuDQo+DQo+IEZpeGVzOiBjb21taXQgMGQ2ZGVmYzdlMGU0ICgiQVNvQzogc3Rt
-MzI6IHNhaTogbWFuYWdlIHJlYmluZCBpc3N1ZSIpDQo+IFNpZ25lZC1vZmYtYnk6IEp1bGlhIExh
-d2FsbCA8SnVsaWEuTGF3YWxsQGlucmlhLmZyPg0KPg0KPiAtLS0NCj4NCj4gTm90IHRlc3RlZC4N
-Cj4NCj4gICBzb3VuZC9zb2Mvc3RtL3N0bTMyX3NhaV9zdWIuYyB8ICAgIDQgKysrLQ0KPiAgIDEg
-ZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCkhpIEp1bGlhLA0K
-VGhhbmtzIGZvciB0aGUgcGF0Y2guDQoNCkFja2VkLWJ5OiBPbGl2aWVyIE1veXNhbiA8b2xpdmll
-ci5tb3lzYW5Ac3QuY29tPg0KPg0KPiBkaWZmIC0tZ2l0IGEvc291bmQvc29jL3N0bS9zdG0zMl9z
-YWlfc3ViLmMgYi9zb3VuZC9zb2Mvc3RtL3N0bTMyX3NhaV9zdWIuYw0KPiBpbmRleCAyYmQyODBj
-Li4wZDBjOWFmIDEwMDY0NA0KPiAtLS0gYS9zb3VuZC9zb2Mvc3RtL3N0bTMyX3NhaV9zdWIuYw0K
-PiArKysgYi9zb3VuZC9zb2Mvc3RtL3N0bTMyX3NhaV9zdWIuYw0KPiBAQCAtMTU1Niw4ICsxNTU2
-LDEwIEBAIHN0YXRpYyBpbnQgc3RtMzJfc2FpX3N1Yl9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2
-aWNlICpwZGV2KQ0KPiAgIA0KPiAgIAlyZXQgPSBzbmRfc29jX3JlZ2lzdGVyX2NvbXBvbmVudCgm
-cGRldi0+ZGV2LCAmc3RtMzJfY29tcG9uZW50LA0KPiAgIAkJCQkJICZzYWktPmNwdV9kYWlfZHJ2
-LCAxKTsNCj4gLQlpZiAocmV0KQ0KPiArCWlmIChyZXQpIHsNCj4gKwkJc25kX2RtYWVuZ2luZV9w
-Y21fdW5yZWdpc3RlcigmcGRldi0+ZGV2KTsNCj4gICAJCXJldHVybiByZXQ7DQo+ICsJfQ0KPiAg
-IA0KPiAgIAlpZiAoU1RNX1NBSV9QUk9UT0NPTF9JU19TUERJRihzYWkpKQ0KPiAgIAkJY29uZiA9
-ICZzdG0zMl9zYWlfcGNtX2NvbmZpZ19zcGRpZjsNCj4NCg==
+The patch
+
+   ASoC: stm32: sai: Add missing cleanup
+
+has been applied to the asoc tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From 7506baeed8d05fc164254c64af14cfed2ac14446 Mon Sep 17 00:00:00 2001
+From: Julia Lawall <Julia.Lawall@inria.fr>
+Date: Sun, 5 Apr 2020 17:03:48 +0200
+Subject: [PATCH] ASoC: stm32: sai: Add missing cleanup
+
+The commit 0d6defc7e0e4 ("ASoC: stm32: sai: manage rebind issue")
+converts some function calls to their non-devm equivalents.  The
+appropriate cleanup code was added to the remove function, but not
+to the probe function.  Add a call to snd_dmaengine_pcm_unregister
+to compensate for the call to snd_dmaengine_pcm_register in case
+of subsequent failure.
+
+Fixes: commit 0d6defc7e0e4 ("ASoC: stm32: sai: manage rebind issue")
+Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+
+Acked-by: Olivier Moysan <olivier.moysan@st.com>
+Link: https://lore.kernel.org/r/1586099028-5104-1-git-send-email-Julia.Lawall@inria.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/stm/stm32_sai_sub.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
+index 2bd280c01c33..0d0c9afd8791 100644
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -1556,8 +1556,10 @@ static int stm32_sai_sub_probe(struct platform_device *pdev)
+ 
+ 	ret = snd_soc_register_component(&pdev->dev, &stm32_component,
+ 					 &sai->cpu_dai_drv, 1);
+-	if (ret)
++	if (ret) {
++		snd_dmaengine_pcm_unregister(&pdev->dev);
+ 		return ret;
++	}
+ 
+ 	if (STM_SAI_PROTOCOL_IS_SPDIF(sai))
+ 		conf = &stm32_sai_pcm_config_spdif;
+-- 
+2.20.1
+

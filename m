@@ -2,137 +2,159 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5286519ED73
-	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Apr 2020 20:52:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30B8719EEAE
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Apr 2020 01:51:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727076AbgDESwY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 5 Apr 2020 14:52:24 -0400
-Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:48122 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726771AbgDESwY (ORCPT
+        id S1727889AbgDEXv2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 5 Apr 2020 19:51:28 -0400
+Received: from mailout1.samsung.com ([203.254.224.24]:34888 "EHLO
+        mailout1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727509AbgDEXv1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 5 Apr 2020 14:52:24 -0400
-Received: from [192.168.42.210] ([93.22.135.177])
-        by mwinf5d21 with ME
-        id P6sM2200R3poyyd036sMVn; Sun, 05 Apr 2020 20:52:22 +0200
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 05 Apr 2020 20:52:22 +0200
-X-ME-IP: 93.22.135.177
-Subject: Re: [PATCH] gpu/drm: ingenic: Delete an error message in
- ingenic_drm_probe()
-To:     Julia Lawall <julia.lawall@inria.fr>
-Cc:     kernel-janitors@vger.kernel.org
-References: <e03e7106-0f22-99c4-ad21-b288e8990b5a@web.de>
- <a0a0c054-f71e-a23e-ba47-c1f6554b79e6@wanadoo.fr>
- <alpine.DEB.2.21.2004051948120.3208@hadrien>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <178751cb-10db-2f1b-3eca-6c0e6fb0fb17@wanadoo.fr>
-Date:   Sun, 5 Apr 2020 20:52:23 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        Sun, 5 Apr 2020 19:51:27 -0400
+Received: from epcas1p2.samsung.com (unknown [182.195.41.46])
+        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20200405235124epoutp01229d048775c876bb038f989b3dcbdc32~DEXQg6L6C0656406564epoutp01T
+        for <kernel-janitors@vger.kernel.org>; Sun,  5 Apr 2020 23:51:24 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20200405235124epoutp01229d048775c876bb038f989b3dcbdc32~DEXQg6L6C0656406564epoutp01T
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1586130684;
+        bh=lSt8LdJPpXoJoLD3otlucHeQK0lf6r+8c36+IMGqGZQ=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=LUxeaH3f7tTFyDgfKW9t7wHpCSoM88qzVutRnG5xjFo1B+05WakEEGMHT+IxVdRtF
+         RGnxp7JeeFCn+84E+LSxtru8lI4+OMex7aEbTsat6IeURJxCSSQECpez6TpLeMsJvn
+         1r7IBfg+8KmL6ExuOURwoFmfJUmblUQWED+nB9eI=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+        epcas1p4.samsung.com (KnoxPortal) with ESMTP id
+        20200405235123epcas1p47fa7ff1050cd380e55ddbd9c0794e0b4~DEXQDdyg01541915419epcas1p4r;
+        Sun,  5 Apr 2020 23:51:23 +0000 (GMT)
+Received: from epsmges1p1.samsung.com (unknown [182.195.40.153]) by
+        epsnrtp1.localdomain (Postfix) with ESMTP id 48wVn46KL9zMqYls; Sun,  5 Apr
+        2020 23:51:20 +0000 (GMT)
+Received: from epcas1p4.samsung.com ( [182.195.41.48]) by
+        epsmges1p1.samsung.com (Symantec Messaging Gateway) with SMTP id
+        90.87.04402.8FE6A8E5; Mon,  6 Apr 2020 08:51:20 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas1p4.samsung.com (KnoxPortal) with ESMTPA id
+        20200405235120epcas1p45e7a155cbceaeb44f40f60c14c1c7cba~DEXMsm99c1826218262epcas1p4c;
+        Sun,  5 Apr 2020 23:51:20 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200405235120epsmtrp1744663a0431b92a131236908e0f9896b~DEXMrzAYn2195221952epsmtrp1B;
+        Sun,  5 Apr 2020 23:51:20 +0000 (GMT)
+X-AuditID: b6c32a35-753ff70000001132-d9-5e8a6ef88e3d
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        1A.58.04024.7FE6A8E5; Mon,  6 Apr 2020 08:51:19 +0900 (KST)
+Received: from [10.113.221.102] (unknown [10.113.221.102]) by
+        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200405235119epsmtip141572a1a03ca2dd0e1a8e20cdb8c43ea~DEXMT-pOM1472414724epsmtip10;
+        Sun,  5 Apr 2020 23:51:19 +0000 (GMT)
+Subject: Re: [PATCH] PM / devfreq: tegra30: Delete an error message in
+ tegra_devfreq_probe()
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Thierry Reding <thierry.reding@gmail.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Tang Bin <tangbin@cmss.chinamobile.com>
+From:   Chanwoo Choi <cw00.choi@samsung.com>
+Organization: Samsung Electronics
+Message-ID: <924a6012-985e-b22d-6f85-e9eb3f03e88b@samsung.com>
+Date:   Mon, 6 Apr 2020 09:00:20 +0900
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:59.0) Gecko/20100101
+        Thunderbird/59.0
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.21.2004051948120.3208@hadrien>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <ba67e238-43a7-6c53-363e-7a2c12f09949@web.de>
 Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrLJsWRmVeSWpSXmKPExsWy7bCmge6PvK44gyeLjSxWf3zMaNEyaxGL
+        xdZb0hZnm96wW1zeNYfN4nPvEUaLzi+z2Cz+z3rOanG7cQWbxcf/zcwWP3fNY3Hg9jg/vZfN
+        Y+esu+wevc3v2Dz6tqxi9Pi8Sc7j9rNtLAFsUdk2GamJKalFCql5yfkpmXnptkrewfHO8aZm
+        Boa6hpYW5koKeYm5qbZKLj4Bum6ZOUDnKSmUJeaUAoUCEouLlfTtbIryS0tSFTLyi0tslVIL
+        UnIKLAv0ihNzi0vz0vWS83OtDA0MjEyBChOyM04syyvYwlnx5cQExgbGE+xdjJwcEgImEmuf
+        bmXtYuTiEBLYwSjRs3QfG4TziVHi3OeNUM43Ronvn84zwrQ8nbecBSKxl1Gi+/0cqKr3jBIf
+        H70Bcjg4hAXiJGY+lgOJiwhsYZLYu38DE0g3s0CxRO/RJawgNpuAlsT+FzfYQGx+AUWJqz8e
+        g23gFbCTePm5EcxmEVCRuDb1DJgtKhAmcXJbC1SNoMTJmU9YQGxOASuJJ6v+skDMF5e49WQ+
+        1C55ieats5lBjpAQ6GeXmLCyiRniBReJza2/WSFsYYlXx7dAQ0NK4mV/G5RdLbHy5BE2iOYO
+        Rokt+y9ANRhL7F86mQnkS2YBTYn1u/QhwooSO3/PZYRYzCfx7msPK0iJhACvREebEESJssTl
+        B3eZIGxJicXtnWwTGJVmIXlnFpIXZiF5YRbCsgWMLKsYxVILinPTU4sNCwyRY3sTIzjpapnu
+        YJxyzucQowAHoxIPL8Ptzjgh1sSy4srcQ4wSHMxKIrxSvUAh3pTEyqrUovz4otKc1OJDjKbA
+        0J7ILCWanA/MCHkl8YamRsbGxhYmhmamhoZK4rxTr+fECQmkJ5akZqemFqQWwfQxcXBKNTBK
+        n3sn+jbOrfLw6gaOdOPbc66sFJe9LTXLb0PPvzLVBRfjJPqaL7itOKQs4ep7N2ix2O3y67e8
+        WYIXHrjYM4vb8gD7+RX3pj9+mLso9MLPpZPdHcwmPeQ57Xp5q06O3p3mggfSjrOeRD5le6Tv
+        sePi1fVanvt7diVxtr4s/LQh/MPt662ZH2MMlFiKMxINtZiLihMBj+AQxtADAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrGIsWRmVeSWpSXmKPExsWy7bCSnO73vK44g62TzSxWf3zMaNEyaxGL
+        xdZb0hZnm96wW1zeNYfN4nPvEUaLzi+z2Cz+z3rOanG7cQWbxcf/zcwWP3fNY3Hg9jg/vZfN
+        Y+esu+wevc3v2Dz6tqxi9Pi8Sc7j9rNtLAFsUVw2Kak5mWWpRfp2CVwZJ5blFWzhrPhyYgJj
+        A+MJ9i5GTg4JAROJp/OWs3QxcnEICexmlHh6ei0zREJSYtrFo0A2B5AtLHH4cDFEzVtGiSXz
+        P7CDxIUF4iRmPpYDKRcR2MYkcbg5D8RmFiiW2PZhDTtEfS+jxPvb+8CWsQloSex/cYMNxOYX
+        UJS4+uMxI4jNK2An8fJzI5jNIqAicW3qGTBbVCBMYueSx0wQNYISJ2c+YQGxOQWsJJ6s+ssC
+        sUxd4s+8S8wQtrjErSfzmSBseYnmrbOZJzAKz0LSPgtJyywkLbOQtCxgZFnFKJlaUJybnlts
+        WGCYl1quV5yYW1yal66XnJ+7iREce1qaOxgvL4k/xCjAwajEw8twuzNOiDWxrLgy9xCjBAez
+        kgivVC9QiDclsbIqtSg/vqg0J7X4EKM0B4uSOO/TvGORQgLpiSWp2ampBalFMFkmDk6pBkbe
+        aYsCnbPDxQ9+4PjPe108nDO1/2uOQPPul6aTQ43/W30vnL1Nc3MDa4i/Wdx/s8d3j95K39Fv
+        6nJzCuez3k/z3xzMKLrjUmVek2K5/t//xx3Om3/UWf8/8SZ+4xaWk8UPPC/fC5r169eS9XKz
+        31Uuq5O6Kr5EIsFYo8pYVv9bmt7/jlOHYyyVWIozEg21mIuKEwFq319kuQIAAA==
+X-CMS-MailID: 20200405235120epcas1p45e7a155cbceaeb44f40f60c14c1c7cba
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20200404184602epcas1p1e0188779ade7c393f9e37a4757e1b6cc
+References: <CGME20200404184602epcas1p1e0188779ade7c393f9e37a4757e1b6cc@epcas1p1.samsung.com>
+        <ba67e238-43a7-6c53-363e-7a2c12f09949@web.de>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 05/04/2020 à 19:54, Julia Lawall a écrit :
->
-> On Sun, 5 Apr 2020, Christophe JAILLET wrote:
->
->> Le 05/04/2020 à 11:30, Markus Elfring a écrit :
->>> From: Markus Elfring <elfring@users.sourceforge.net>
->>> Date: Sun, 5 Apr 2020 11:25:30 +0200
->>>
->>> The function “platform_get_irq” can log an error already.
->>> Thus omit a redundant message for the exception handling in the
->>> calling function.
->>>
->>> This issue was detected by using the Coccinelle software.
->>>
->>> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
->>> ---
->>>    drivers/gpu/drm/ingenic/ingenic-drm.c | 4 +---
->>>    1 file changed, 1 insertion(+), 3 deletions(-)
->>>
->>> diff --git a/drivers/gpu/drm/ingenic/ingenic-drm.c
->>> b/drivers/gpu/drm/ingenic/ingenic-drm.c
->>> index 9dfe7cb530e1..06ca752b76ee 100644
->>> --- a/drivers/gpu/drm/ingenic/ingenic-drm.c
->>> +++ b/drivers/gpu/drm/ingenic/ingenic-drm.c
->>> @@ -661,10 +661,8 @@ static int ingenic_drm_probe(struct platform_device
->>> *pdev)
->>>    	}
->>>
->>>    	irq = platform_get_irq(pdev, 0);
->>> -	if (irq < 0) {
->>> -		dev_err(dev, "Failed to get platform irq");
->> Some 'dev_err' or equivalent functions sometimes don't have a trailing '\n'.
->> (just like here)
->> Do you think that it worth fixing? Or is it to low level value?
->>
->> According to a few grep, there seems to be quite a lot of them to fix.
->>
->> Julia, can 'coccinelle' be used for that?
-> Yes, it should be possible by writing some script code.
->
-> Something like
->
-> @initialize:python@
-> @@
-> ... // define check_for_missing_nl (returning a boolean) and add_newline
->
-> @r@
-> constant str : script:python() { check_for_missing_nl str };
-> expression e;
-> @@
->
-> dev_err(e,str,...)
->
-> @script:python s@
-> str << r.str;
-> strnl;
-> @@
->
-> coccinelle.strnl = add_newline str
->
-> @@
-> constant r.str;
-> identifier s.strnl;
-> @@
->
-> dev_err(e,
-> - str
-> + strnl
->    ,...)
->
-> One would have to be a bit careful in add_newline to keep the "s even
-> though the code pretends that strnl is an identifier.
->
-> julia
+On 4/5/20 3:45 AM, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Sat, 4 Apr 2020 20:34:02 +0200
+> 
+> The function “platform_get_irq” can log an error already.
+> Thus omit a redundant message for the exception handling in the
+> calling function.
+> 
+> This issue was detected by using the Coccinelle software.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> ---
+>  drivers/devfreq/tegra30-devfreq.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/devfreq/tegra30-devfreq.c b/drivers/devfreq/tegra30-devfreq.c
+> index 28b2c7ca416e..93e6f4b25b04 100644
+> --- a/drivers/devfreq/tegra30-devfreq.c
+> +++ b/drivers/devfreq/tegra30-devfreq.c
+> @@ -807,10 +807,9 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
+>  	}
+> 
+>  	err = platform_get_irq(pdev, 0);
+> -	if (err < 0) {
+> -		dev_err(&pdev->dev, "Failed to get IRQ: %d\n", err);
+> +	if (err < 0)
+>  		return err;
+> -	}
+> +
+>  	tegra->irq = err;
+> 
+>  	irq_set_status_flags(tegra->irq, IRQ_NOAUTOEN);
+> --
+> 2.26.0
+> 
+> 
+> 
 
-Hi Julia,
-thx for the sample, I'll give it a try.
+Applied it. Thanks.
 
-CJ
-
->> CJ
->>
->>> +	if (irq < 0)
->>>    		return irq;
->>> -	}
->>>
->>>    	if (soc_info->needs_dev_clk) {
->>>    		priv->lcd_clk = devm_clk_get(dev, "lcd");
->>> --
->>> 2.26.0
->>>
->>>
-> >
-
-
+-- 
+Best Regards,
+Chanwoo Choi
+Samsung Electronics

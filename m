@@ -2,111 +2,160 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E1C519F175
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Apr 2020 10:19:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B65719F203
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Apr 2020 11:04:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726591AbgDFITt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Apr 2020 04:19:49 -0400
-Received: from out4-smtp.messagingengine.com ([66.111.4.28]:46945 "EHLO
-        out4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726514AbgDFITt (ORCPT
+        id S1726856AbgDFJED (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Apr 2020 05:04:03 -0400
+Received: from mail-wr1-f50.google.com ([209.85.221.50]:46954 "EHLO
+        mail-wr1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726680AbgDFJEC (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Apr 2020 04:19:49 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 216F65C0185;
-        Mon,  6 Apr 2020 04:19:48 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Mon, 06 Apr 2020 04:19:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm2; bh=wvTAY1mSJtdwdZNb7GGd9/3Iuv4
-        S6eSRHy8ZndtxRXA=; b=DCBWd0G3K+Posw3LBukUYObJE+20LKVDGdpU1Lx0f3Z
-        dcRwVFJKO+/ePpuSzgdG7qFDwddkwtK9MUKFXjd1ZONrZRqEGlC7ewjOMEOW2XRE
-        ASxRjLE6ORNXqtobo6VAS68z1C4Ym0urqTeuPpcMMizINRg6K7uTsi9Syx1BmFVM
-        /CpWpv0nEwxEJCGB5M5PynFBK49My2n0jNyhCclbfv/pn83pripeX7u0hmruL9sC
-        0WqX6MiZS6/H4WTv+tafQn1vs7PCE46+JLmbgyPBL3FuelOYMcme8IkOhrScR+12
-        rS+3qUx7gUysFluSxWGDLEObCARfUfUOi7JWKjRz3Sw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=wvTAY1
-        mSJtdwdZNb7GGd9/3Iuv4S6eSRHy8ZndtxRXA=; b=U2MrMu41nXxJKr6X9/ftsp
-        5ZQTwpAdqdiGlXMa0oCHJ3nKYrk5H/L3qXzFSP9t7cSgzZXN42XTryqXUga1dLeD
-        BSAYZoEKjLc1loes0xXM7+maWw2fz0g5QqP6S/3cgc7OZNw0JPm5EKYvgt+fE1Ro
-        bx3Ko9d+EV/g+hW1Y2U5o3f6tGwVIpNWI0SS4ZS0l6yBrbGfsJprXlvha4/Mg+R1
-        mO+BPEZXU3CQFcMV/b+fI71a6BbNmbsXXEJBMlh6xpQnsSeuVzGLlnelpASz39eg
-        jcVQ9hRQZoROO3VFReeEOY4Ox4//1QKlD0vSmKwnauY7BnHzqxl5PFWBZcZtMFSA
-        ==
-X-ME-Sender: <xms:IOaKXp2uhVufQ5k3U3wmYk0QyRKlxDo1ziCj1Y-fQOlFIfOeHabZmA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrudefgddtgecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrgihimhgv
-    ucftihhprghrugcuoehmrgigihhmvgestggvrhhnohdrthgvtghhqeenucfkphepledtrd
-    ekledrieekrdejieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhl
-    fhhrohhmpehmrgigihhmvgestggvrhhnohdrthgvtghh
-X-ME-Proxy: <xmx:IOaKXkUDg_9Kr4O6EwIHAtnWo1D_BU6a5RVJQrydnx1YNFkN4m1SDg>
-    <xmx:IOaKXtdVpVvGkRyGh1MvZq3-fCNY986eC6nN_bqkMysdmUn5UYrsKg>
-    <xmx:IOaKXl_H5HxRW_4cxBsYz2SA0L8jmObuU-X33Cg5hxe3F0xCsudGlg>
-    <xmx:JOaKXlnlmyLso9lN1qP0VCETdRXBw9ChJaAT-ySNOaX5gIMpcEY5eg>
-Received: from localhost (lfbn-tou-1-1502-76.w90-89.abo.wanadoo.fr [90.89.68.76])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 0BE41328006A;
-        Mon,  6 Apr 2020 04:19:43 -0400 (EDT)
-Date:   Mon, 6 Apr 2020 10:19:43 +0200
-From:   Maxime Ripard <maxime@cerno.tech>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, Chen-Yu Tsai <wens@csie.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        LKML <linux-kernel@vger.kernel.org>,
+        Mon, 6 Apr 2020 05:04:02 -0400
+Received: by mail-wr1-f50.google.com with SMTP id j17so16368849wru.13
+        for <kernel-janitors@vger.kernel.org>; Mon, 06 Apr 2020 02:04:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=YLwFlDwptAxco9S4J40pLK2Bx4bbqrFhln5XG1Ujhm4=;
+        b=ZPpoEff994XPEy9HE0G47MuclEvDyDsykOJsqTt0TLCdghh5JRtzq8aco7QBUb3XZV
+         cpIpXZCIe/XzKVRq/CWTHeih6C2aj+f0q/bcKvL4nWhRENo/P/slH3/T5DB21v8Xh/5G
+         htZjRk+Ko883KBBZuteWNDnTocNAE/5Mpo9FijPa0K6GkIS8cyTc4kKMRp/KvRfoH8d7
+         FkYm7gq5Je0NxSD+PhRo03SL5O/50sBifOG7aiAaAxe/q4L0byl+5ZyV1skI1JdTSULk
+         ew7mery9Fw03VpBebBPBvcg/4/hTZ4BLgXd8NvYNzFS3F21O6QCzTetenXlokw/kzBOM
+         FB6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=YLwFlDwptAxco9S4J40pLK2Bx4bbqrFhln5XG1Ujhm4=;
+        b=MWYPeVjwGeqBL+cUZX4gWE543pxRPo8HgzPjmuAY/vBYZ3SHArKCg4viR3j9UevD2/
+         PGAi6u10puNtKeoRZ1laHkN81wohlJg9HlfrgEJqiTEP8IA/JSDYdgd/T7uc8lqVMA3K
+         MIPsxwE3QFmvjbRqvsiepYEmEmtLpM/g129yF5dKc4gPfArVkRzmPr7dYLqV7K9OOh11
+         1auR6LSXR0bkFDIAYns/cLHycpBm2V5uSlar6bibe8nl+RHEaIqiDPDii8M4ne+Dk2Xu
+         dWwADR4ttF9BIuH4pt+22E0ZT6LySLds34ffNC3y6yc140NvCjfTBrNUebFJJPZXql3w
+         fs9w==
+X-Gm-Message-State: AGi0PuZSUFcZA88A3aKArmcMXIkRv+vEy6J1AxsANY2ViMW1S4P88n+j
+        XOyim5zAvhYs+vzTUgEGE9HthA==
+X-Google-Smtp-Source: APiQypKNk5ipqlTXXq2xJ/WLRpU4i8NciraPpFc5MsPFTNZ0+TQ7O4BqYQxV7B+6k/Swhxv5i+EkQg==
+X-Received: by 2002:a5d:4705:: with SMTP id y5mr23757496wrq.288.1586163840168;
+        Mon, 06 Apr 2020 02:04:00 -0700 (PDT)
+Received: from ?IPv6:2a01:e34:ed2f:f020:b51c:42dc:1499:2880? ([2a01:e34:ed2f:f020:b51c:42dc:1499:2880])
+        by smtp.googlemail.com with ESMTPSA id r3sm26064196wrm.35.2020.04.06.02.03.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Apr 2020 02:03:59 -0700 (PDT)
+Subject: Re: [PATCH] thermal: Delete an error message in four functions
+To:     Markus Elfring <Markus.Elfring@web.de>, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-omap@vger.kernel.org,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Allison Randal <allison@lohutok.net>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Clark Williams <williams@redhat.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?Q?Heiko_St=c3=bcbner?= <heiko@sntech.de>,
+        Keerthy <j-keerthy@ti.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Pascal Paillet <p.paillet@st.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Zhang Rui <rui.zhang@intel.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org,
         Tang Bin <tangbin@cmss.chinamobile.com>
-Subject: Re: [PATCH] drm/sun4i: tcon: Delete an error message in
- sun4i_tcon_init_irq()
-Message-ID: <20200406081943.hwjohk63lfpgrdvf@gilmour.lan>
-References: <5a6cf5a7-3f27-5425-4d6a-550a17bc51e3@web.de>
+References: <05f49ae7-5cc7-d6a0-fc3d-abaf2a0b373c@web.de>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Autocrypt: addr=daniel.lezcano@linaro.org; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <89b0acdd-de88-bafb-0a2c-74aaf2fe0496@linaro.org>
+Date:   Mon, 6 Apr 2020 11:03:57 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="2o2zzt4r53mxdgxh"
-Content-Disposition: inline
-In-Reply-To: <5a6cf5a7-3f27-5425-4d6a-550a17bc51e3@web.de>
+In-Reply-To: <05f49ae7-5cc7-d6a0-fc3d-abaf2a0b373c@web.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
---2o2zzt4r53mxdgxh
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sun, Apr 05, 2020 at 01:53:05PM +0200, Markus Elfring wrote:
+On 05/04/2020 18:50, Markus Elfring wrote:
 > From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Sun, 5 Apr 2020 13:45:53 +0200
->
-> The function =E2=80=9Cplatform_get_irq=E2=80=9D can log an error already.
-> Thus omit a redundant message for the exception handling in the
-> calling function.
->
+> Date: Sun, 5 Apr 2020 18:35:16 +0200
+> 
+> The function “platform_get_irq” can log an error already.
+> Thus omit redundant messages for the exception handling in the
+> calling functions.
+> 
 > This issue was detected by using the Coccinelle software.
->
+> 
 > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
 Applied, thanks
 
-Maxime
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
---2o2zzt4r53mxdgxh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXormHgAKCRDj7w1vZxhR
-xcHuAP0WjOHzG00wGwXrC/L73opxmCYhJn2ZOmAfjN2ZfVnbHQEArryLB/dfTFEh
-yOQICYvOYcUiHRoH6LIRW07gu19BxQU=
-=YqNo
------END PGP SIGNATURE-----
-
---2o2zzt4r53mxdgxh--
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog

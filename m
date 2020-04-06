@@ -2,115 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46C2519F77D
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Apr 2020 16:03:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B9DB19F82D
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Apr 2020 16:45:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728588AbgDFODu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Apr 2020 10:03:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60610 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728512AbgDFODu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Apr 2020 10:03:50 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F061C23433;
-        Mon,  6 Apr 2020 14:03:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586181829;
-        bh=UbkFYXsatuzQbUdxGVDQAxnHxupZla2aqzUmbNgnnGI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=F8Wsfrq0K11uyIa+GRybKbyBxjyoiQ72PIhjJXXAD60jFxbbOrC4Q4w3iv3l/BCOg
-         lJlT3GYD87feNnOAUIEaPoSpOJQBWeGU4GmwpJPLNmpRQZAqKLlBlFIku2Bnqr6+Je
-         TKQsB7z6IBrmoerd2HKKbinAfmIEktdHGKNMqioo=
-Date:   Mon, 06 Apr 2020 15:03:46 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     Alexandre Torgue <alexandre.torgue@st.com>,
-        alsa-devel@alsa-project.org,
-        Arnaud Pouliquen <arnaud.pouliquen@st.com>,
-        kernel-janitors@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Mark Brown <broonie@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Olivier Moysan <olivier.moysan@st.com>,
-        Takashi Iwai <tiwai@suse.com>
-Subject: Applied "ASoC: stm32: sai: Add missing cleanup" to the asoc tree
-In-Reply-To:  <1586099028-5104-1-git-send-email-Julia.Lawall@inria.fr>
-Message-Id:  <applied-1586099028-5104-1-git-send-email-Julia.Lawall@inria.fr>
-X-Patchwork-Hint: ignore
+        id S1728731AbgDFOpx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Apr 2020 10:45:53 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:36414 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728697AbgDFOpx (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 6 Apr 2020 10:45:53 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 036Ei0lI191916;
+        Mon, 6 Apr 2020 14:45:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=ab8FOoGvscaNUTYvuGpjgKfb/QVDTTSXEum2QrPCJOo=;
+ b=zQPtherjzDTAHx6jrK422oZNX+ADlxhn7uIGGYxSLELnPnEaM4njd61ZSOhg1tbau6v5
+ jom8GMyJI0zvWL4EKurD0Rtx4Gth2Xv/b0a2aX6klgkqUQQIB/FcTMhJXP8H49Sjf2V8
+ FbyRBexg1ysHvnNIMbxujwcnRIG2cmt1qi7VlKxKpkgHs6JuLvF+5QXVWbCP9Kl4G/yz
+ 2uKi7rDKcPYJpjhYDcokFQvxqSNx0E4cgkhdZaBUKarStjLHCplEb8AfFAtvATdo5bNC
+ kDFUAKN3Ac2tMFGE17zRB2igpRAv2GRckxp3Pn4IInx4jPWY3PNazMlRiafJRdcI4tHg 5w== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 306hnqyaet-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 06 Apr 2020 14:45:46 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 036EgP0h029960;
+        Mon, 6 Apr 2020 14:43:46 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 30839q6kfd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 06 Apr 2020 14:43:45 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 036Ehhej022159;
+        Mon, 6 Apr 2020 14:43:43 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 06 Apr 2020 07:43:43 -0700
+Date:   Mon, 6 Apr 2020 17:43:35 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc:     Leon Romanovsky <leon@kernel.org>,
+        Danit Goldberg <danitg@mellanox.com>,
+        Parav Pandit <parav@mellanox.com>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] RDMA/cm: Fix an error check in cm_alloc_id_priv()
+Message-ID: <20200406144335.GD68494@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9582 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 malwarescore=0
+ mlxscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004060122
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9582 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 adultscore=0
+ priorityscore=1501 mlxscore=0 malwarescore=0 mlxlogscore=999
+ lowpriorityscore=0 spamscore=0 impostorscore=0 suspectscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004060122
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
+The xa_alloc_cyclic_irq() function returns either 0 or 1 on success and
+negatives on error.  This code treats 1 as an error and returns
+ERR_PTR(1) which will cause an Oops in the caller.
 
-   ASoC: stm32: sai: Add missing cleanup
-
-has been applied to the asoc tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From 7506baeed8d05fc164254c64af14cfed2ac14446 Mon Sep 17 00:00:00 2001
-From: Julia Lawall <Julia.Lawall@inria.fr>
-Date: Sun, 5 Apr 2020 17:03:48 +0200
-Subject: [PATCH] ASoC: stm32: sai: Add missing cleanup
-
-The commit 0d6defc7e0e4 ("ASoC: stm32: sai: manage rebind issue")
-converts some function calls to their non-devm equivalents.  The
-appropriate cleanup code was added to the remove function, but not
-to the probe function.  Add a call to snd_dmaengine_pcm_unregister
-to compensate for the call to snd_dmaengine_pcm_register in case
-of subsequent failure.
-
-Fixes: commit 0d6defc7e0e4 ("ASoC: stm32: sai: manage rebind issue")
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-
-Acked-by: Olivier Moysan <olivier.moysan@st.com>
-Link: https://lore.kernel.org/r/1586099028-5104-1-git-send-email-Julia.Lawall@inria.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: e8dc4e885c45 ("RDMA/cm: Fix ordering of xa_alloc_cyclic() in ib_create_cm_id()")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- sound/soc/stm/stm32_sai_sub.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+The Fixes tag may not be correct.  That's the patch which introduces an
+Oops but we may want to backport this further back.
 
-diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
-index 2bd280c01c33..0d0c9afd8791 100644
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -1556,8 +1556,10 @@ static int stm32_sai_sub_probe(struct platform_device *pdev)
+ drivers/infiniband/core/cm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/infiniband/core/cm.c b/drivers/infiniband/core/cm.c
+index 4794113ecd59..f7ac5974176f 100644
+--- a/drivers/infiniband/core/cm.c
++++ b/drivers/infiniband/core/cm.c
+@@ -862,7 +862,7 @@ static struct cm_id_private *cm_alloc_id_priv(struct ib_device *device,
  
- 	ret = snd_soc_register_component(&pdev->dev, &stm32_component,
- 					 &sai->cpu_dai_drv, 1);
+ 	ret = xa_alloc_cyclic_irq(&cm.local_id_table, &id, NULL, xa_limit_32b,
+ 				  &cm.local_id_next, GFP_KERNEL);
 -	if (ret)
-+	if (ret) {
-+		snd_dmaengine_pcm_unregister(&pdev->dev);
- 		return ret;
-+	}
++	if (ret < 0)
+ 		goto error;
+ 	cm_id_priv->id.local_id = (__force __be32)id ^ cm.random_id_operand;
  
- 	if (STM_SAI_PROTOCOL_IS_SPDIF(sai))
- 		conf = &stm32_sai_pcm_config_spdif;
 -- 
-2.20.1
+2.25.1
 

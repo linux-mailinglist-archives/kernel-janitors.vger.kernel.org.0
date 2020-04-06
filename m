@@ -2,149 +2,179 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A61D719FA0C
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Apr 2020 18:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8582119FA54
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Apr 2020 18:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729239AbgDFQXF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Apr 2020 12:23:05 -0400
-Received: from mail-co1nam11on2043.outbound.protection.outlook.com ([40.107.220.43]:44000
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728921AbgDFQXE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Apr 2020 12:23:04 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fPltItHwHEM1RQhzDgZpuZpXNzMfUoNeuEOeA0CKGmAfs5cRzCylBrUNbf2S+IQS4wFLzpnNc7ON3OJa4RlPM39PrBvjFtLUx+h1Z1rDyUY2cOjZTcNK5YXdKyL1WJLz1SxgOVJ3P5gSYS4R9CzfiMhHoAFEfr0qs43i4xuHhQoNQvnwxBipwHJ00tYXE9Q3BXtwmLtLPiPeFUNTIjyZtq2UrJMjRWeEDHJ0dRiClJVwIl7Dwvz15XjQIwBCOT7YVt5NDzW3mgMMtnUWIPZhCk0N+NXRWBN8bEmp0ZT7U7PDMxko/AlMk3k+KfvcJzjq+9QV5W5WwN3IJx9BYf37aQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f+b4xn3UnB1cRcN5bHicB/Rr+KIfYutiUnamdhvAlj0=;
- b=cPYQ6d4H8lPpDKtdsfH0DgrbYTWsZd2OAIP83Esa5lRDvS10s8Ok2mjJk19/6Xh41qFtIklE4bEjnzsGX5lRl2dmfIaaQRRi0ScAqQDYn3lmSrQREDTfTmSd9ojeq7MvNqJuxeV7PCZin6BKA87aWyWaL7LdHi6tXNQQc6G/pGs7bZXPPV7uujW40fUyApdM14Kj5hYHGodv18FUHivQgYZmsOGPo91K7HH+Wuyvs6oQrfe5HB3w0Erge6p9ORoGmb+qj7ZH1FWxBvNQBlPSiEl/d/wUkPqRwN+ObqGzWfRGiE8qADt9RN79ZWRD5k2KXd6KL9iPo+Y35/Hf7n3L1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+        id S1729565AbgDFQkR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Apr 2020 12:40:17 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:47063 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729485AbgDFQkR (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 6 Apr 2020 12:40:17 -0400
+Received: by mail-pf1-f196.google.com with SMTP id q3so7776117pff.13
+        for <kernel-janitors@vger.kernel.org>; Mon, 06 Apr 2020 09:40:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f+b4xn3UnB1cRcN5bHicB/Rr+KIfYutiUnamdhvAlj0=;
- b=Tf68/t5cJKBD0TqJc/etzucvKTxFCRpgq3kxMl9/0+1RBEzRtlxwlMOWIoIk/UOYOCCCkE/AiaHDIqhDCsPf5Q3zn4D+syzNcUQj+9S1vNQYX10aPfMxATSYvk5dXRO23R8U/fBI2aMzmVu9v1kAhLXC7m2icN0GQcFkkzq0+ZY=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Nicholas.Kazlauskas@amd.com; 
-Received: from BYAPR12MB3560.namprd12.prod.outlook.com (2603:10b6:a03:ae::10)
- by BYAPR12MB3382.namprd12.prod.outlook.com (2603:10b6:a03:a9::31) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2878.20; Mon, 6 Apr
- 2020 16:22:58 +0000
-Received: from BYAPR12MB3560.namprd12.prod.outlook.com
- ([fe80::e8:c007:9a5:da4d]) by BYAPR12MB3560.namprd12.prod.outlook.com
- ([fe80::e8:c007:9a5:da4d%5]) with mapi id 15.20.2835.023; Mon, 6 Apr 2020
- 16:22:58 +0000
-Subject: Re: [PATCH net-next] drm/amd/display: Fix link_detect_sink()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Harry Wentland <harry.wentland@amd.com>,
-        Melissa Wen <melissa.srw@gmail.com>
-Cc:     "David (ChunMing) Zhou" <David1.Zhou@amd.com>,
-        kernel-janitors@vger.kernel.org, Chris Park <Chris.Park@amd.com>,
-        Zhan Liu <Zhan.Liu@amd.com>, Leo Li <sunpeng.li@amd.com>,
-        Wenjing Liu <Wenjing.Liu@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Roman Li <Roman.Li@amd.com>, amd-gfx@lists.freedesktop.org,
-        Nikola Cornij <nikola.cornij@amd.com>,
-        David Airlie <airlied@linux.ie>, Lucy Li <lucy.li@amd.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        David Galiffi <David.Galiffi@amd.com>,
-        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Anthony Koo <Anthony.Koo@amd.com>
-References: <20200406091910.GA5405@mwanda>
-From:   "Kazlauskas, Nicholas" <nicholas.kazlauskas@amd.com>
-Message-ID: <7ab9e9de-8d78-7f63-f2b3-c1e9669faa6d@amd.com>
-Date:   Mon, 6 Apr 2020 12:22:51 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
-In-Reply-To: <20200406091910.GA5405@mwanda>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YTXPR0101CA0027.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b00::40) To BYAPR12MB3560.namprd12.prod.outlook.com
- (2603:10b6:a03:ae::10)
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bgJwQUGkrHo8WkFM5XYCRlm849reBV1dmYwhsL9EaXs=;
+        b=HCUrow3q7UgODsxRB0qSihFqHuRuzt3M6E4Kxz5xOJ9qqF1pkSvp+mE/Witb9jovZp
+         cGmmsIQDmCMMOoXBR3dY3XHt9BR6HGTL5/2VGBd8qrh6EfGLUEB/Dx3T67H8ExUl1m+I
+         3bN7V9UneTlIIhv/oWzyOdegFj42tv1PDlkSh8xPmKxgdWkREmUoiUO64hMDuKfXjegX
+         inl96YiXdJ0l9ywc1oe3Mr/+NHEWvpAFEXQuV3FYzT4gDPQQ58n3tZo8oVAsfGRr02/u
+         nznhJDQHv5BacI9OgvDpzinZidKTjVKypNl1QUTDl4yoYZUIi1tDuW8sUu/ZqZd2cHHs
+         szVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bgJwQUGkrHo8WkFM5XYCRlm849reBV1dmYwhsL9EaXs=;
+        b=V2/eQ8loBo71sycg7MXrXLCCM0s3KladoTfFmxHnYh5C2cHzyTnjQ6wQpIjdfKpRwY
+         BERLIYaKGUrjaZ7eVSFHdOlar/DJC07lu15kjnGifgM5zzEa3L64D8hjLjN3umvMvLJb
+         CKPclr0c2aJlIaeLx7xlOTuT8Xy4MJYiJWlWR+GNgM4LZAF3/BpMpgIhlnvE8Ctp9xND
+         KcRt6pRm47lsmCd0KmQIOw9bWHrg3pZp+u2I1YNCvVG2PKDsuGMkJMbitw7T5oGfG0nD
+         kNHDfEybwgI/ijq6xkiLR+x6pJDCvRarLuT38O7CjW2zxNpoENrOAkqfQAQzjZjO8DDy
+         GLLw==
+X-Gm-Message-State: AGi0PuZp50Bnau/tyripoqIb2z8u5dumw4xYQiydhOrOx5+xHedJdvZT
+        wVO2/JS3sP3mM93v2nOfXEecWEdFxY36Mt7C+21sUA==
+X-Google-Smtp-Source: APiQypK98FYUDlxduCAIqeqe6mfPxyN+ysiZdRjv50nVGM3GR53p48azaK4GXQ2CuQVcCBhE+2BGGq6x3i8ekqht2EE=
+X-Received: by 2002:a62:ce48:: with SMTP id y69mr323937pfg.178.1586191215396;
+ Mon, 06 Apr 2020 09:40:15 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [172.31.148.234] (165.204.55.211) by YTXPR0101CA0027.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b00::40) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2878.15 via Frontend Transport; Mon, 6 Apr 2020 16:22:54 +0000
-X-Originating-IP: [165.204.55.211]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 27456643-5e0b-408d-449d-08d7da46c491
-X-MS-TrafficTypeDiagnostic: BYAPR12MB3382:|BYAPR12MB3382:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BYAPR12MB3382BDBE55F2B174282620FCECC20@BYAPR12MB3382.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
-X-Forefront-PRVS: 0365C0E14B
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3560.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(4636009)(396003)(366004)(346002)(376002)(136003)(39860400002)(956004)(52116002)(6666004)(316002)(66946007)(2616005)(8676002)(31686004)(26005)(66556008)(66476007)(54906003)(16576012)(110136005)(16526019)(186003)(53546011)(81156014)(8936002)(4326008)(478600001)(31696002)(81166006)(86362001)(2906002)(5660300002)(36756003)(6486002);DIR:OUT;SFP:1101;
-Received-SPF: None (protection.outlook.com: amd.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ubq8aqPFJASppfpTnjch3zYP37biumgi3e7mYpYEhxU5GV2UpE2BxOd20OKhdVxG3WZYnCYh23nAC/R3jmW32Csn0JFo/d9Q4lqIM23clwMPmDkP8DAecAKjMm633lEY9ps3LRFjUi3UNDRhCbC6Kp9IEJjHr8zlBIGP7lasfzCgjtwDGijbJN1QZhfsC37aVKu4QTII40fdU6tTsCK/mTh9zhHOPW90HLlzw4g2AGanPdmy84IvkjWKwVKRUWcvasqBTHSKsXsY/dDhApDEKOYcOV9LO3BhDuFJFz7zikS5xgzuHR+26QBXXkT2rPtdBGm+Sh1wJKZJUweb7TWWnp/tbDzsy3kBFnuVeTB61WNM65+JNNNsgbMz3MpXy+8HM28CbAL0aa3ymBVZJnBpEesIPQuyqtUY/5G0WQj7wzSQktcfBYvq35Abp5vzSsT+
-X-MS-Exchange-AntiSpam-MessageData: nYSFGdDcuJSkMNAVXyMwlazyWHs4GVk+SMwGXIvG5yAVn1QhLZZhf3juqID+9MPnYAoLmemm7JPFPgvINqRTOuF92tlsCAjTSSN/ADmInrENldAtSuRgcjlgqFIt9qN0q8/fI46o1QiT4oGTtQyl7w==
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 27456643-5e0b-408d-449d-08d7da46c491
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2020 16:22:58.2151
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WtofpBfBJ31OrsRzboNu2WouXSu6LmX8+rjrw01hXnGRfskseEF/xRZS+sIjyuCM0vdBM61BHnp2fBQjKshlcQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB3382
+References: <20200406145119.GG68494@mwanda>
+In-Reply-To: <20200406145119.GG68494@mwanda>
+From:   Andrey Konovalov <andreyknvl@google.com>
+Date:   Mon, 6 Apr 2020 18:40:04 +0200
+Message-ID: <CAAeHK+zX-RG5=6pP=k9ofc_1bY1pK+SXrGjAsHmMbc+nVimGxA@mail.gmail.com>
+Subject: Re: [PATCH] usb: raw-gadget: Fix copy_to/from_user() checks
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        USB list <linux-usb@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020-04-06 5:19 a.m., Dan Carpenter wrote:
-> This TODO stub originally had curly braces but we deleted them as part
-> of a clean up.  Unfortunately that changes the behavior of the code
-> because now the switch statement is part of the if statement.  Smatch
-> complains that the indenting doesn't make sense.
-> 
->      drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_link.c:425
->      link_detect_sink() warn: if statement not indented
-> 
-> Also I changed "ZAZTODO" to just "TODO".  The ZAZ isn't used anywhere
-> else.
-> 
-> Fixes: 621514aa4140 ("drm/amd/display: codestyle cleanup on dc_link file until detect_dp func")
+On Mon, Apr 6, 2020 at 4:53 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> The copy_to/from_user() functions return the number of bytes remaining
+> but we want to return negative error codes.  I changed a couple checks
+> in raw_ioctl_ep_read() and raw_ioctl_ep0_read() to show that we still
+> we returning zero on error.
+>
+> Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-I'd prefer just dropping the block, but either method is:
+Thanks, Dan!
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@google.com>
+Tested-by: Andrey Konovalov <andreyknvl@google.com>
 
-Since that previous patch broke most sink detection...
-
-Regards,
-Nicholas Kazlauskas
 
 > ---
-> Another idea is we should just delete this stub.  Stub code is generally
-> against kernel style.  I can send a V2 if people want.
-> 
->   drivers/gpu/drm/amd/display/dc/core/dc_link.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_link.c b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
-> index a93997ff0419..188670d374a3 100644
-> --- a/drivers/gpu/drm/amd/display/dc/core/dc_link.c
-> +++ b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
-> @@ -423,7 +423,7 @@ static enum signal_type link_detect_sink(struct dc_link *link,
->   
->   	/* PCIE detects the actual connector on add-on board */
->   	if (link->link_id.id == CONNECTOR_ID_PCIE)
-> -		/* ZAZTODO implement PCIE add-on card detection */
-> +		; /* TODO implement PCIE add-on card detection */
->   
->   	switch (link->link_id.id) {
->   	case CONNECTOR_ID_HDMI_TYPE_A: {
-> 
-
+>  drivers/usb/gadget/legacy/raw_gadget.c | 46 ++++++++++++++++++++++------------------------
+>  1 file changed, 22 insertions(+), 24 deletions(-)
+>
+> diff --git a/drivers/usb/gadget/legacy/raw_gadget.c b/drivers/usb/gadget/legacy/raw_gadget.c
+> index 76406343fbe5..e490ffa1f58b 100644
+> --- a/drivers/usb/gadget/legacy/raw_gadget.c
+> +++ b/drivers/usb/gadget/legacy/raw_gadget.c
+> @@ -392,9 +392,8 @@ static int raw_ioctl_init(struct raw_dev *dev, unsigned long value)
+>         char *udc_device_name;
+>         unsigned long flags;
+>
+> -       ret = copy_from_user(&arg, (void __user *)value, sizeof(arg));
+> -       if (ret)
+> -               return ret;
+> +       if (copy_from_user(&arg, (void __user *)value, sizeof(arg)))
+> +               return -EFAULT;
+>
+>         switch (arg.speed) {
+>         case USB_SPEED_UNKNOWN:
+> @@ -501,15 +500,13 @@ static int raw_ioctl_run(struct raw_dev *dev, unsigned long value)
+>
+>  static int raw_ioctl_event_fetch(struct raw_dev *dev, unsigned long value)
+>  {
+> -       int ret = 0;
+>         struct usb_raw_event arg;
+>         unsigned long flags;
+>         struct usb_raw_event *event;
+>         uint32_t length;
+>
+> -       ret = copy_from_user(&arg, (void __user *)value, sizeof(arg));
+> -       if (ret)
+> -               return ret;
+> +       if (copy_from_user(&arg, (void __user *)value, sizeof(arg)))
+> +               return -EFAULT;
+>
+>         spin_lock_irqsave(&dev->lock, flags);
+>         if (dev->state != STATE_DEV_RUNNING) {
+> @@ -530,20 +527,19 @@ static int raw_ioctl_event_fetch(struct raw_dev *dev, unsigned long value)
+>                 return -EINTR;
+>         }
+>         length = min(arg.length, event->length);
+> -       ret = copy_to_user((void __user *)value, event,
+> -                               sizeof(*event) + length);
+> -       return ret;
+> +       if (copy_to_user((void __user *)value, event, sizeof(*event) + length))
+> +               return -EFAULT;
+> +
+> +       return 0;
+>  }
+>
+>  static void *raw_alloc_io_data(struct usb_raw_ep_io *io, void __user *ptr,
+>                                 bool get_from_user)
+>  {
+> -       int ret;
+>         void *data;
+>
+> -       ret = copy_from_user(io, ptr, sizeof(*io));
+> -       if (ret)
+> -               return ERR_PTR(ret);
+> +       if (copy_from_user(io, ptr, sizeof(*io)))
+> +               return ERR_PTR(-EFAULT);
+>         if (io->ep >= USB_RAW_MAX_ENDPOINTS)
+>                 return ERR_PTR(-EINVAL);
+>         if (!usb_raw_io_flags_valid(io->flags))
+> @@ -658,12 +654,13 @@ static int raw_ioctl_ep0_read(struct raw_dev *dev, unsigned long value)
+>         if (IS_ERR(data))
+>                 return PTR_ERR(data);
+>         ret = raw_process_ep0_io(dev, &io, data, false);
+> -       if (ret < 0) {
+> -               kfree(data);
+> -               return ret;
+> -       }
+> +       if (ret)
+> +               goto free;
+> +
+>         length = min(io.length, (unsigned int)ret);
+> -       ret = copy_to_user((void __user *)(value + sizeof(io)), data, length);
+> +       if (copy_to_user((void __user *)(value + sizeof(io)), data, length))
+> +               ret = -EFAULT;
+> +free:
+>         kfree(data);
+>         return ret;
+>  }
+> @@ -952,12 +949,13 @@ static int raw_ioctl_ep_read(struct raw_dev *dev, unsigned long value)
+>         if (IS_ERR(data))
+>                 return PTR_ERR(data);
+>         ret = raw_process_ep_io(dev, &io, data, false);
+> -       if (ret < 0) {
+> -               kfree(data);
+> -               return ret;
+> -       }
+> +       if (ret)
+> +               goto free;
+> +
+>         length = min(io.length, (unsigned int)ret);
+> -       ret = copy_to_user((void __user *)(value + sizeof(io)), data, length);
+> +       if (copy_to_user((void __user *)(value + sizeof(io)), data, length))
+> +               ret = -EFAULT;
+> +free:
+>         kfree(data);
+>         return ret;
+>  }

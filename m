@@ -2,91 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D008D1A16E9
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 22:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 965521A16FD
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 22:49:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726428AbgDGUmo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Apr 2020 16:42:44 -0400
-Received: from outils.crapouillou.net ([89.234.176.41]:42870 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726365AbgDGUmo (ORCPT
+        id S1726484AbgDGUtN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Apr 2020 16:49:13 -0400
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:25602 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726437AbgDGUtN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Apr 2020 16:42:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1586292160; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=q+FvC4XrLYIWwIznQtEtJGiSIyNwCJPa2O+6Y13/D1Y=;
-        b=XybXO52Bb73UeY0k0PUQZJ/7CBWIlD7SV5NlZYvlki77j/NDjXjVwlh+VITccU6RFW0lnf
-        8MDVY0ltU8aUJmuFboD6n2wHHxS6IMvzWX2HqtdXhbV+K8q8TWErm+272Snz3zkr7O9S9d
-        XnL1eM1/weVj7em5PTi9oZEWBC2htKY=
-Date:   Tue, 07 Apr 2020 22:42:29 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH] gpu/drm: ingenic: Delete an error message in
- ingenic_drm_probe()
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     dri-devel@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Tang Bin <tangbin@cmss.chinamobile.com>
-Message-Id: <TUQF8Q.MM4L7PYRPUYD@crapouillou.net>
-In-Reply-To: <e03e7106-0f22-99c4-ad21-b288e8990b5a@web.de>
-References: <e03e7106-0f22-99c4-ad21-b288e8990b5a@web.de>
+        Tue, 7 Apr 2020 16:49:13 -0400
+Received: from localhost.localdomain ([93.22.37.82])
+        by mwinf5d58 with ME
+        id PwpA220021mLNr903wpAaH; Tue, 07 Apr 2020 22:49:11 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 07 Apr 2020 22:49:11 +0200
+X-ME-IP: 93.22.37.82
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     apw@canonical.com, joe@perches.com
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] checkpatch: check for missing \n at the end of logging message
+Date:   Tue,  7 Apr 2020 22:49:08 +0200
+Message-Id: <20200407204908.10420-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Markus,
+Strings logged with pr_xxx and dev_xxx often lack a trailing '\n'.
+Introduce new tests to try to catch them early.
 
-Le dim. 5 avril 2020 =C3=A0 11:30, Markus Elfring <Markus.Elfring@web.de> a=
-=20
-=C3=A9crit :
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Sun, 5 Apr 2020 11:25:30 +0200
->=20
-> The function =E2=80=9Cplatform_get_irq=E2=80=9D can log an error already.
-> Thus omit a redundant message for the exception handling in the
-> calling function.
->=20
-> This issue was detected by using the Coccinelle software.
->=20
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+This is more a PoC for now.
 
-Applied to drm-misc-next, thanks.
+Regex could be improved, merged, ...
+We could also check for surrounding pr_cont...
 
--Paul
+This patch is based on idea from [1]. coccinelle spots too many places
+where \n are missing (~ 2800 with the heuristic I've used).
+Fixing them would be painful.
+I instead propose to teach checkpatch.pl about it to try to spot cases
+early and avoid introducing new cases.
 
-> ---
->  drivers/gpu/drm/ingenic/ingenic-drm.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/ingenic/ingenic-drm.c=20
-> b/drivers/gpu/drm/ingenic/ingenic-drm.c
-> index 9dfe7cb530e1..06ca752b76ee 100644
-> --- a/drivers/gpu/drm/ingenic/ingenic-drm.c
-> +++ b/drivers/gpu/drm/ingenic/ingenic-drm.c
-> @@ -661,10 +661,8 @@ static int ingenic_drm_probe(struct=20
-> platform_device *pdev)
->  	}
->=20
->  	irq =3D platform_get_irq(pdev, 0);
-> -	if (irq < 0) {
-> -		dev_err(dev, "Failed to get platform irq");
-> +	if (irq < 0)
->  		return irq;
-> -	}
->=20
->  	if (soc_info->needs_dev_clk) {
->  		priv->lcd_clk =3D devm_clk_get(dev, "lcd");
-> --
-> 2.26.0
->=20
+[1]: https://marc.info/?l=kernel-janitors&m=158619533629657&w=4
+---
+ scripts/checkpatch.pl | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index c392ab8ea12e..792804bd6ad9 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -5676,6 +5676,16 @@ sub process {
+ 			}
+ 		}
+ 
++# check for missing \n at the end of logging function
++		if ($line =~ /\bpr_(emerg|alert|crit|err|warning|warn|notice|info|debug|dbg)\s*\("([^"]*(?<!\\n))"/) {
++			WARN("MISSING NL",
++			     "Possible missing '\\n' at the end of a log message\n" . $hereprev);
++		}
++		if ($line =~ /\bdev_(emerg|alert|crit|err|warning|warn|notice|info|debug|dbg)\s*\([^,]*,\s*"([^"]*(?<!\\n))"/) {
++			WARN("MISSING NL",
++			     "Possible missing '\\n' at the end of a log message\n" . $hereprev);
++		}
++
+ # check for logging functions with KERN_<LEVEL>
+ 		if ($line !~ /printk(?:_ratelimited|_once)?\s*\(/ &&
+ 		    $line =~ /\b$logFunctions\s*\(.*\b(KERN_[A-Z]+)\b/) {
+-- 
+2.20.1
 

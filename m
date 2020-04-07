@@ -2,60 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF6761A0A27
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 11:31:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FE8C1A0A29
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 11:31:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728023AbgDGJb2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Apr 2020 05:31:28 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:51544 "EHLO
+        id S1728023AbgDGJbv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Apr 2020 05:31:51 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:51906 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725883AbgDGJb2 (ORCPT
+        with ESMTP id S1725883AbgDGJbv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Apr 2020 05:31:28 -0400
+        Tue, 7 Apr 2020 05:31:51 -0400
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0379RkfL037022;
-        Tue, 7 Apr 2020 09:31:03 GMT
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0379RjTd036982;
+        Tue, 7 Apr 2020 09:31:46 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=absFtblFlPxOF3hmormLh9Zp7rTAbuEhM/1Okv4DNkc=;
- b=B4AHxfdB4XCwggGOwicCWkDRSpQ/eJmZNEUDVnvi7StE4ML+S9DCig55Hb/DlYHYgNQ4
- KcEe8BDeRFL5z1zX8wp5ki9zujmPhuoGbpI+qcnkiEAfZt5Hfr7jUcnrALrI1U2NuTq+
- wkIOkVdAbNuJxdZDWyZnEkyFQcghyXqyHP0HYDu/IKDBajL2AWFqhIh/mnccNQJPhI0z
- LYqoLf14WM3aPVO8yr1Sey7Mg5rlUpSIExaKT0AXGSuZvpdeb4IZuiU0sHPBrYhVwfXs
- DSZHG71TEY7EaFOGzTy3Y02eK+7+Ak7qZOyv018dklwbMCls9ybtARQEViripbfY2+8C oA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 306j6mbr52-1
+ bh=mFJKZdvG9tvfo3wI4BHRhumZXMJkbQEYiBmgzAAOxys=;
+ b=e0ZtK8ijTfcK04bM5+gMRSGNgR1I71ZRPxCPgEvX79NumFBk5ot/FgrOXu3gCc96+6uM
+ sO3p6GgSCztN//JzDY+f/hM4MctQhQ1KLSN4o1vu1BXuvTmvy0DOgrk2niFaRhTb73B5
+ 5GKRMYTbMIuJDanfdOykZFCf2pXu+IDFA2Gnq+6stvOBON6V52gIZnud3dwdaoE15RUn
+ Uh8VUxw6+C7ebOfVUxh4rI1PV0QRp64xMN3PJ+JDn2pHm9UIWVX0RQlQYY0I/Y/nMuXD
+ YmqCjzsr9fQke2thnPnuRhQ+UaWvnwhoFAt+X76FQ8XCX2yvHVtptgY5upGQwbeP4fqy ZQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 306j6mbr85-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 07 Apr 2020 09:31:03 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0379Qdqi144575;
-        Tue, 7 Apr 2020 09:29:03 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 3073srqu15-1
+        Tue, 07 Apr 2020 09:31:46 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0379RGcO041436;
+        Tue, 7 Apr 2020 09:29:45 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 3073qfg9gc-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 07 Apr 2020 09:29:03 +0000
-Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0379SxpX027473;
-        Tue, 7 Apr 2020 09:29:00 GMT
+        Tue, 07 Apr 2020 09:29:45 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0379ThcJ005216;
+        Tue, 7 Apr 2020 09:29:43 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 07 Apr 2020 02:28:59 -0700
-Date:   Tue, 7 Apr 2020 12:28:52 +0300
+        with ESMTP ; Tue, 07 Apr 2020 02:29:43 -0700
+Date:   Tue, 7 Apr 2020 12:29:35 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Alessandro Zummo <a.zummo@towertech.it>,
-        Andreas Kemnade <andreas@kemnade.info>
-Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Lee Jones <lee.jones@linaro.org>, linux-rtc@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] rtc: rc5t619: Fix an ERR_PTR vs NULL check
-Message-ID: <20200407092852.GI68494@mwanda>
+To:     Benson Leung <bleung@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>
+Cc:     Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] platform/chrome: cros_ec_sensorhub: Off by one in
+ cros_sensorhub_send_sample()
+Message-ID: <20200407092935.GJ68494@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9583 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 spamscore=0
- malwarescore=0 suspectscore=0 adultscore=0 bulkscore=0 mlxlogscore=999
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 mlxlogscore=999
+ spamscore=0 bulkscore=0 adultscore=0 malwarescore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
  definitions=main-2004070080
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9583 signatures=668685
@@ -69,31 +70,29 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The devm_kzalloc() function returns NULL on error, it doesn't return
-error pointers so this check doesn't work.
+The sensorhub->push_data[] array has sensorhub->sensor_num elements.
+It's allocated in cros_ec_sensorhub_ring_add().  So the > should be >=
+to prevent a read one element beyond the end of the array.
 
-Fixes: 540d1e15393d ("rtc: rc5t619: Add Ricoh RC5T619 RTC driver")
+Fixes: 145d59baff59 ("platform/chrome: cros_ec_sensorhub: Add FIFO support")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/rtc/rtc-rc5t619.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/platform/chrome/cros_ec_sensorhub_ring.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-rc5t619.c b/drivers/rtc/rtc-rc5t619.c
-index 24e386ecbc7e..dd1a20977478 100644
---- a/drivers/rtc/rtc-rc5t619.c
-+++ b/drivers/rtc/rtc-rc5t619.c
-@@ -356,10 +356,8 @@ static int rc5t619_rtc_probe(struct platform_device *pdev)
- 	int err;
+diff --git a/drivers/platform/chrome/cros_ec_sensorhub_ring.c b/drivers/platform/chrome/cros_ec_sensorhub_ring.c
+index 230e6cf3da2f..85e8ba782f0c 100644
+--- a/drivers/platform/chrome/cros_ec_sensorhub_ring.c
++++ b/drivers/platform/chrome/cros_ec_sensorhub_ring.c
+@@ -40,7 +40,7 @@ cros_sensorhub_send_sample(struct cros_ec_sensorhub *sensorhub,
+ 	int id = sample->sensor_id;
+ 	struct iio_dev *indio_dev;
  
- 	rtc = devm_kzalloc(dev, sizeof(*rtc), GFP_KERNEL);
--	if (IS_ERR(rtc)) {
--		err = PTR_ERR(rtc);
-+	if (!rtc)
- 		return -ENOMEM;
--	}
+-	if (id > sensorhub->sensor_num)
++	if (id >= sensorhub->sensor_num)
+ 		return -EINVAL;
  
- 	rtc->rn5t618 = rn5t618;
- 
+ 	cb = sensorhub->push_data[id].push_data_cb;
 -- 
 2.25.1
 

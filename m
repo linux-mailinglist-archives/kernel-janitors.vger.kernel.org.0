@@ -2,93 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FCC41A0ED7
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 16:04:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8F5A1A0F40
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 16:31:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728997AbgDGOE4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Apr 2020 10:04:56 -0400
-Received: from mail-yb1-f193.google.com ([209.85.219.193]:39322 "EHLO
-        mail-yb1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728482AbgDGOEz (ORCPT
+        id S1729256AbgDGObj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Apr 2020 10:31:39 -0400
+Received: from mail-pf1-f175.google.com ([209.85.210.175]:45002 "EHLO
+        mail-pf1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729177AbgDGOba (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Apr 2020 10:04:55 -0400
-Received: by mail-yb1-f193.google.com with SMTP id h205so1875837ybg.6
-        for <kernel-janitors@vger.kernel.org>; Tue, 07 Apr 2020 07:04:55 -0700 (PDT)
+        Tue, 7 Apr 2020 10:31:30 -0400
+Received: by mail-pf1-f175.google.com with SMTP id b72so874590pfb.11
+        for <kernel-janitors@vger.kernel.org>; Tue, 07 Apr 2020 07:31:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qFhf4b23hAhN9ntIc8HfeFUPJ0b/AfsKkLUD8hFqeP4=;
-        b=O0SSpYh51JmY8toQaX5SFfrB9lg0L8Y/2bhfTWnlOyUvQGGsFVdNSazHKHRnIWBEHp
-         r0WpvQGTNDxQIC2hmLcmXQJlovxhYOjwiQBMyurDgLQFLY1n1DVxXRfoxfiLJloFPygR
-         yeKJtr7VV5Z0dvbQMbt+4dAYSzumJR6NSOR0+Cde3BdisY97O7fu8cf7TyBIGbF2oj6F
-         O7gks8Y1PB+ugQX1FKTTJjVnzlNyPH88BcTODrgSROeZeckX9GmAE5OB/bbNiNG6Oczh
-         JZ20KkkyaDgSfphzljeaLQnfz1WkOtF1fMr9gCJag+yG9Ooha+/AV9h+QlzGgtp9hJph
-         8pgw==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=ObtKnGJjYoZHLBqwiwGrDa+oVtYXQeCpEq1Q63Vw3uI=;
+        b=J61iobuOT3KxSXf2lVDP59Whdf2VZCzfFg8GzEownHBXohoUE8Oo3cCYXvvr+bpdCL
+         HXUWc63iVsnCoKYc2hnhQB5Tumay+hNyILNC1pwn++B95+4BUzShOUaMiuPBTVLOUiJg
+         RI6/OV1cfiQ/ZCR40IvBio1q8hJfE9/yc7wU/Iy36NjTDPSEII328RS7Eno4xCA9/bA/
+         Tu+VihTpEhBrOfkHSui2PQMSbYC1bIBfgD3rtBJuFCzvVFe6UlHWhl9t9yIwMKH6ECiH
+         c1k1bVjKvvkZ7W7TljaFEM7/7+EUL3oXM038R4gMsJAxSLeqiKaiuse6UHTr+OODHkk9
+         FjKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qFhf4b23hAhN9ntIc8HfeFUPJ0b/AfsKkLUD8hFqeP4=;
-        b=kIrru9hblEwH0uBAbJYl0V18llmLWzazrlvJm0qKRz8UBNdLrNj1QOMnpN97QtvJCD
-         Jfd0X7gS/Z0SSFp8FPBK1kMs+6ZJJmI0VPoY64IpHPyMR1S+rwGrv4r33UgLTHlKQsRX
-         Y8NHmoOYjZ45uPdLN+O9xFJXkauEm89D+CTTUV2z2Io5/hmmeKKUA9LN9H1P/q7qTGyk
-         vdIt5dxnvf+Uit/CFg4ATUHGCTMhHgIGr4J79QZ3TXfMPDk6R5/NkmMinF7vNdpG48Ov
-         4ymt8KxK1lPykWtWuZ+Cc+s2hSXCIX9+6CvhHdSIbr4mwsncgc1AoQIBXEIq7ugDnm/8
-         47ng==
-X-Gm-Message-State: AGi0PuYdU5TPU7nFGYjJfcwWou2xTRioEeTB+i12KF2npeDKhuLOgf9l
-        dhSxUnE7IZ34SLj68HFcdvBYS+yAiFW1TJveKjQOCw==
-X-Google-Smtp-Source: APiQypIHI2YRX4VIUgbLu1rl+8KAxWSFLNj+kRo/9Tfaswt2LYjhOw7LFCwSekaiRTTUVNNFcnkPwhxribJJePrDC14=
-X-Received: by 2002:a25:740d:: with SMTP id p13mr4241220ybc.277.1586268294458;
- Tue, 07 Apr 2020 07:04:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200407092935.GJ68494@mwanda>
-In-Reply-To: <20200407092935.GJ68494@mwanda>
-From:   Guenter Roeck <groeck@google.com>
-Date:   Tue, 7 Apr 2020 07:04:43 -0700
-Message-ID: <CABXOdTehw76P0aTZ5CuT0E0S8qSzNbCrt5neLYM=WFE3Kxwdng@mail.gmail.com>
-Subject: Re: [PATCH] platform/chrome: cros_ec_sensorhub: Off by one in cros_sensorhub_send_sample()
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=ObtKnGJjYoZHLBqwiwGrDa+oVtYXQeCpEq1Q63Vw3uI=;
+        b=uXbZqnvGulsxg2ESm1ssFiFLpflfVMslB78w4Hp0ebfq3S4ofLXS7Ndtk2VqVIN75z
+         RU8awgBgCY58g192+Dd/OY94+Zyrl02hTz2Mi1G1OJiDef9qRmGwlLR5/99Sh3kbrYsd
+         TNh0q1cvzy+P0w/k4iXMAa/iCuJZZKZseBda5oYTplZAh3rfhNL0dIFhlZcHtYmeliBt
+         rsbw9oxOkfuI4j8dV0fL1CYje9Z0rWe4meeQvziplDTqkOA9wGMEQ62oL5NyBHyL3wF1
+         zpc/1GPWmQjjWDlD+SoP9ES/Mx+e9c9A2U8D95PAQJP5RVmLQiyymArUnTM0kYj93M0e
+         ECWg==
+X-Gm-Message-State: AGi0PuZHN7/2n1bynWhQb+Mp4TpOByYajmhWEgNMS/gHeRckY7Udmk3f
+        ftX6ga9OVhVWgVBkKFbzZqMw
+X-Google-Smtp-Source: APiQypId3Wv91Ue+ozaCDAqGgsYFNYotdlxOgISEAQAtSlE6CH4Md140oM0mnUS+KUDyLL56nKxaaQ==
+X-Received: by 2002:aa7:9a8e:: with SMTP id w14mr2848652pfi.113.1586269889523;
+        Tue, 07 Apr 2020 07:31:29 -0700 (PDT)
+Received: from Mani-XPS-13-9360 ([2409:4072:6e86:d03b:65ee:cb40:6d79:8376])
+        by smtp.gmail.com with ESMTPSA id c4sm5506754pgg.17.2020.04.07.07.31.26
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 07 Apr 2020 07:31:28 -0700 (PDT)
+Date:   Tue, 7 Apr 2020 20:01:23 +0530
+From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Benson Leung <bleung@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Cc:     linux-arm-msm@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [bug report] bus: mhi: core: Add support for data transfer
+Message-ID: <20200407143123.GG2442@Mani-XPS-13-9360>
+References: <20200407135608.GA109647@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200407135608.GA109647@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Apr 7, 2020 at 2:31 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> The sensorhub->push_data[] array has sensorhub->sensor_num elements.
-> It's allocated in cros_ec_sensorhub_ring_add().  So the > should be >=
-> to prevent a read one element beyond the end of the array.
->
-> Fixes: 145d59baff59 ("platform/chrome: cros_ec_sensorhub: Add FIFO support")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Hi Dan,
 
-Reviewed-by: Guenter Roeck <groeck@chromium.org>
+On Tue, Apr 07, 2020 at 04:56:08PM +0300, Dan Carpenter wrote:
+> Hello Manivannan Sadhasivam,
+> 
+> The patch 189ff97cca53: "bus: mhi: core: Add support for data
+> transfer" from Feb 20, 2020, leads to the following static checker
+> warning:
+> 
+> 	drivers/bus/mhi/core/main.c:1093 mhi_gen_tre()
+> 	warn: bitwise AND condition is false here
+> 
+> drivers/bus/mhi/core/main.c
+>   1088  
+>   1089          ret = mhi_cntrl->map_single(mhi_cntrl, buf_info);
+>   1090          if (ret)
+>   1091                  return ret;
+>   1092  
+>   1093          eob = !!(flags & MHI_EOB);
+>                                  ^^^^^^^
+> This is zero.  Was BIT(0) intended?
+>
 
-> ---
->  drivers/platform/chrome/cros_ec_sensorhub_ring.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/platform/chrome/cros_ec_sensorhub_ring.c b/drivers/platform/chrome/cros_ec_sensorhub_ring.c
-> index 230e6cf3da2f..85e8ba782f0c 100644
-> --- a/drivers/platform/chrome/cros_ec_sensorhub_ring.c
-> +++ b/drivers/platform/chrome/cros_ec_sensorhub_ring.c
-> @@ -40,7 +40,7 @@ cros_sensorhub_send_sample(struct cros_ec_sensorhub *sensorhub,
->         int id = sample->sensor_id;
->         struct iio_dev *indio_dev;
->
-> -       if (id > sensorhub->sensor_num)
-> +       if (id >= sensorhub->sensor_num)
->                 return -EINVAL;
->
->         cb = sensorhub->push_data[id].push_data_cb;
-> --
-> 2.25.1
->
+Darn. The `enum mhi_flags` is supposed to start with 1. I'll fix it
+with your Reported-by tag.
+
+Btw, which static checker you are using? I did try sparse and W=2.
+
+Thanks,
+Mani
+ 
+>   1094          eot = !!(flags & MHI_EOT);
+>   1095          chain = !!(flags & MHI_CHAIN);
+>   1096          bei = !!(mhi_chan->intmod);
+>   1097  
+>   1098          mhi_tre = tre_ring->wp;
+>   1099          mhi_tre->ptr = MHI_TRE_DATA_PTR(buf_info->p_addr);
+> 
+> regards,
+> dan carpenter

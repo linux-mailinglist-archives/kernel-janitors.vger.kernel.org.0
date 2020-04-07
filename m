@@ -2,99 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C43B01A0A4B
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 11:39:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A96151A0C3C
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 12:47:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728083AbgDGJjy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Apr 2020 05:39:54 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:34312 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726562AbgDGJjy (ORCPT
+        id S1728264AbgDGKrB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Apr 2020 06:47:01 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:35991 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728143AbgDGKrA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Apr 2020 05:39:54 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0379btq5173072;
-        Tue, 7 Apr 2020 09:39:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=cYST/ZoiF0Dr/rfKoOwPAP097lohkPoNAscvUBJPy5A=;
- b=fOUJvOYEyZhF4fYVmjvwqkNZWBtbxg5V9pUOnPDU8yINM4oaaF1zrQvfnK4MCImsjjwl
- b+drRiW5BofybHNK9rd5ATpUkKbfC4QrfFUgeMUtYpOFH+82D+0aHzGDytAhzmzj2//r
- /jV5HWgfy0an9ebwYa7m7eJB92FgqI+Fxs6uyTdsF/fWaGmbFyS1bGeOaDG4cbw+CnVf
- VBQ3n405JmHvlTw4aCZf8w4eeiGTxlr5hA1pOAy8sUXcNv6BX17EluHfsuN4k+93vSaM
- r8ijvUp4hln9wCR0yiC2svGd0MmXRyuPpP7c0G3bFC/arGVPIqimett5wjnMDCzQOQb4 vQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 308ffd9t5s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 07 Apr 2020 09:39:41 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0379bbM7133800;
-        Tue, 7 Apr 2020 09:37:40 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 30741dn379-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 07 Apr 2020 09:37:40 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0379bNBi008412;
-        Tue, 7 Apr 2020 09:37:23 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 07 Apr 2020 02:37:22 -0700
-Date:   Tue, 7 Apr 2020 12:37:14 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Matthew Wilcox <willy@infradead.org>
-Cc:     Leon Romanovsky <leon@kernel.org>,
-        Danit Goldberg <danitg@mellanox.com>,
-        Parav Pandit <parav@mellanox.com>, linux-rdma@vger.kernel.org,
+        Tue, 7 Apr 2020 06:47:00 -0400
+Received: by mail-pg1-f193.google.com with SMTP id c23so1536490pgj.3
+        for <kernel-janitors@vger.kernel.org>; Tue, 07 Apr 2020 03:46:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=4YtfqkIGgXW1xusWEASGyU+2zFmL2OCHZ96I1LCBisM=;
+        b=jrywjZgHRoaeZuIgBosPgfb1HAm9Oz46S+PE45x5nVT0Exh7oWjltxfsQV1URfaL+M
+         e+2tSCbR3ygDI6yJb8Kg9CEAI67D/E4gbityQ7++hX2Qdo87mjWzX32bISfp5fudi3ed
+         BJj4TkA8EAxK0nD9SDpeAjJr+/81GEzVaqMqbHyAw9Xjh95gv5GvS2hKz/xPXhV+pxv1
+         w8aEvM4hd4aKFP/yXPK9HvYbXMl3ujdDK2Ea9D3yMqb3MfFfNNXHslIxNCnWmwjMuJgr
+         Kvzeb1XqwyUQChhL3NE8TbKJs60H51gbSmsSO9jU6LY3D7N/hoe88G0NKk8dj3e41a1j
+         w25A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=4YtfqkIGgXW1xusWEASGyU+2zFmL2OCHZ96I1LCBisM=;
+        b=P8Q7mHyGAAS96DpPhtYSghAQAlmILYF0l6+CjNQdhFVdjfcBjZG9tUOPdQfhszrvdZ
+         0B1TzZA48v7JcsWXbQW14k48xOVM8R+yZbxPhhNXIxD0DsrK6Bao9cGnPE8DaXyK930c
+         V/LBSoD7aOoxvYdHoOFfLv0kWnlsd5nxHl69jVXUUylV576CzWTb91XIZ3BlcrRG1lUo
+         rTQVEmk4efVjt73EGbskbsz0dKEarS+uHRcikEruztsJID/HxctP4/lwMBLs38WS2bOR
+         Gm6QlHhrw4TGiRsWzvezp8GOhayWrtpnpxVxShyViEUXHnpBKe5goKCyeNw48pcWtRgm
+         /o+Q==
+X-Gm-Message-State: AGi0PubKjG0tFnCLwvFsif4Kz5QOe265Hac5MhDFORZQ7ivJbxmX82A0
+        HEalBDCcisUX7Be+K0tqSOKj
+X-Google-Smtp-Source: APiQypKsO/kAkqhUjki9LOTVcMhhtoabGVkmmzOG391e8eHnzPHxXUkh2cilEXxWItXrajqpv3whvQ==
+X-Received: by 2002:a63:34c9:: with SMTP id b192mr101158pga.275.1586256419192;
+        Tue, 07 Apr 2020 03:46:59 -0700 (PDT)
+Received: from Mani-XPS-13-9360 ([2409:4072:6e86:d03b:4d11:a99a:dd42:277d])
+        by smtp.gmail.com with ESMTPSA id fa16sm1252642pjb.35.2020.04.07.03.46.54
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 07 Apr 2020 03:46:58 -0700 (PDT)
+Date:   Tue, 7 Apr 2020 16:16:51 +0530
+From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Hemant Kumar <hemantk@codeaurora.org>,
+        Jeffrey Hugo <jhugo@codeaurora.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Siddartha Mohanadoss <smohanad@codeaurora.org>,
+        Sujeev Dias <sdias@codeaurora.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] RDMA/cm: Fix an error check in cm_alloc_id_priv()
-Message-ID: <20200407093714.GA80285@mwanda>
+Subject: Re: [PATCH] bus: mhi: core: Fix a NULL vs IS_ERR check in
+ mhi_create_devices()
+Message-ID: <20200407104651.GE2442@Mani-XPS-13-9360>
+References: <20200407093133.GM68494@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200406145109.GQ20941@ziepe.ca>
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9583 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 phishscore=0
- malwarescore=0 bulkscore=0 spamscore=0 adultscore=0 mlxlogscore=999
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004070082
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9583 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 priorityscore=1501
- impostorscore=0 malwarescore=0 mlxlogscore=999 lowpriorityscore=0
- clxscore=1011 phishscore=0 mlxscore=0 bulkscore=0 adultscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004070082
+In-Reply-To: <20200407093133.GM68494@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The xa_alloc_cyclic_irq() function returns either 0 or 1 on success and
-negatives on error.  This code treats 1 as an error and returns
-ERR_PTR(1) which will cause an Oops in the caller.
+On Tue, Apr 07, 2020 at 12:31:33PM +0300, Dan Carpenter wrote:
+> The mhi_alloc_device() function never returns NULL, it returns error
+> pointers.
+> 
+> Fixes: da1c4f856924 ("bus: mhi: core: Add support for creating and destroying MHI devices")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Fixes: ae78ff3a0f0c ("RDMA/cm: Convert local_id_table to XArray")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-v2: Use the correct Fixes tag and add Matthew to the CC list.
+Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
- drivers/infiniband/core/cm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks Dan!
 
-diff --git a/drivers/infiniband/core/cm.c b/drivers/infiniband/core/cm.c
-index 4794113ecd59..f7ac5974176f 100644
---- a/drivers/infiniband/core/cm.c
-+++ b/drivers/infiniband/core/cm.c
-@@ -862,7 +862,7 @@ static struct cm_id_private *cm_alloc_id_priv(struct ib_device *device,
- 
- 	ret = xa_alloc_cyclic_irq(&cm.local_id_table, &id, NULL, xa_limit_32b,
- 				  &cm.local_id_next, GFP_KERNEL);
--	if (ret)
-+	if (ret < 0)
- 		goto error;
- 	cm_id_priv->id.local_id = (__force __be32)id ^ cm.random_id_operand;
- 
--- 
-2.25.1
+Regards,
+Mani
 
+> ---
+>  drivers/bus/mhi/core/main.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/bus/mhi/core/main.c b/drivers/bus/mhi/core/main.c
+> index eb4256b81406..55928feea0c9 100644
+> --- a/drivers/bus/mhi/core/main.c
+> +++ b/drivers/bus/mhi/core/main.c
+> @@ -294,7 +294,7 @@ void mhi_create_devices(struct mhi_controller *mhi_cntrl)
+>  		    !(mhi_chan->ee_mask & BIT(mhi_cntrl->ee)))
+>  			continue;
+>  		mhi_dev = mhi_alloc_device(mhi_cntrl);
+> -		if (!mhi_dev)
+> +		if (IS_ERR(mhi_dev))
+>  			return;
+>  
+>  		mhi_dev->dev_type = MHI_DEVICE_XFER;
+> -- 
+> 2.25.1
+> 

@@ -2,67 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FE8C1A0A29
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 11:31:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 319311A0A2A
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 11:32:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728023AbgDGJbv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Apr 2020 05:31:51 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:51906 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725883AbgDGJbv (ORCPT
+        id S1727994AbgDGJcl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Apr 2020 05:32:41 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:56102 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726720AbgDGJcl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Apr 2020 05:31:51 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0379RjTd036982;
-        Tue, 7 Apr 2020 09:31:46 GMT
+        Tue, 7 Apr 2020 05:32:41 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0379RpuX154402;
+        Tue, 7 Apr 2020 09:32:38 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=mFJKZdvG9tvfo3wI4BHRhumZXMJkbQEYiBmgzAAOxys=;
- b=e0ZtK8ijTfcK04bM5+gMRSGNgR1I71ZRPxCPgEvX79NumFBk5ot/FgrOXu3gCc96+6uM
- sO3p6GgSCztN//JzDY+f/hM4MctQhQ1KLSN4o1vu1BXuvTmvy0DOgrk2niFaRhTb73B5
- 5GKRMYTbMIuJDanfdOykZFCf2pXu+IDFA2Gnq+6stvOBON6V52gIZnud3dwdaoE15RUn
- Uh8VUxw6+C7ebOfVUxh4rI1PV0QRp64xMN3PJ+JDn2pHm9UIWVX0RQlQYY0I/Y/nMuXD
- YmqCjzsr9fQke2thnPnuRhQ+UaWvnwhoFAt+X76FQ8XCX2yvHVtptgY5upGQwbeP4fqy ZQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 306j6mbr85-1
+ bh=ofhnTbmFVZJydO8WmJVJgVAR1Yv/7jKFIzflzSYarR4=;
+ b=pyJA1/RWvBHPobpRzEK5I9s5sGcNij/nFRF2cM0mx5XU3Xd3uQ4P29BDCWWzYHzzqEt7
+ A1abN9AQurEPtY0t21RQj0a0cL5yY8EI5YDEQteT9zgQxsrmQ2HujIz6Ye3JHvT+TXpF
+ 3j6h8n2Th1lzuFHRh9v8PBByGAgAIBBCyNe7OK22CkjnANbdR7iosZ/4KNzxSc/3hAK1
+ P+uoSfyzIUU2vHqorxwtJLLbx4U+UJzG/XIFtF8SyZ0fLq0nSSl5/vgMMRJWxFYLaC9c
+ dNbNn5XcapQEH50wRZ6i1M7ekr+NGJL8PN5Cab4zi2jTdh5+iFXyK7HuALtW0kezhZM/ Ew== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 308ffd9s9a-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 07 Apr 2020 09:31:46 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0379RGcO041436;
-        Tue, 7 Apr 2020 09:29:45 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 3073qfg9gc-1
+        Tue, 07 Apr 2020 09:32:38 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0379RS3A102991;
+        Tue, 7 Apr 2020 09:30:37 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 30741dmmss-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 07 Apr 2020 09:29:45 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0379ThcJ005216;
-        Tue, 7 Apr 2020 09:29:43 GMT
+        Tue, 07 Apr 2020 09:30:37 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0379UYRd032022;
+        Tue, 7 Apr 2020 09:30:35 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 07 Apr 2020 02:29:43 -0700
-Date:   Tue, 7 Apr 2020 12:29:35 +0300
+        with ESMTP ; Tue, 07 Apr 2020 02:30:33 -0700
+Date:   Tue, 7 Apr 2020 12:30:28 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Benson Leung <bleung@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>
-Cc:     Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] platform/chrome: cros_ec_sensorhub: Off by one in
- cros_sensorhub_send_sample()
-Message-ID: <20200407092935.GJ68494@mwanda>
+To:     Jens Wiklander <jens.wiklander@linaro.org>
+Cc:     tee-dev@lists.linaro.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] tee:  remove unnecessary NULL check in tee_shm_alloc()
+Message-ID: <20200407093028.GK68494@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9583 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 mlxlogscore=999
- spamscore=0 bulkscore=0 adultscore=0 malwarescore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004070080
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 phishscore=0
+ malwarescore=0 bulkscore=0 spamscore=0 adultscore=0 mlxlogscore=999
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004070080
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9583 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999 spamscore=0
- priorityscore=1501 suspectscore=0 lowpriorityscore=0 malwarescore=0
- impostorscore=0 mlxscore=0 phishscore=0 adultscore=0 clxscore=1011
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 priorityscore=1501
+ impostorscore=0 malwarescore=0 mlxlogscore=999 lowpriorityscore=0
+ clxscore=1011 phishscore=0 mlxscore=0 bulkscore=0 adultscore=0 spamscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
  definitions=main-2004070080
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -70,29 +66,33 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The sensorhub->push_data[] array has sensorhub->sensor_num elements.
-It's allocated in cros_ec_sensorhub_ring_add().  So the > should be >=
-to prevent a read one element beyond the end of the array.
+Smatch complains that "ctx" isn't checked consistently:
 
-Fixes: 145d59baff59 ("platform/chrome: cros_ec_sensorhub: Add FIFO support")
+    drivers/tee/tee_shm.c:164 tee_shm_alloc()
+    warn: variable dereferenced before check 'ctx' (see line 95)
+
+I audited the callers and "ctx" can't be NULL so the check can be
+removed.
+
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/platform/chrome/cros_ec_sensorhub_ring.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tee/tee_shm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/platform/chrome/cros_ec_sensorhub_ring.c b/drivers/platform/chrome/cros_ec_sensorhub_ring.c
-index 230e6cf3da2f..85e8ba782f0c 100644
---- a/drivers/platform/chrome/cros_ec_sensorhub_ring.c
-+++ b/drivers/platform/chrome/cros_ec_sensorhub_ring.c
-@@ -40,7 +40,7 @@ cros_sensorhub_send_sample(struct cros_ec_sensorhub *sensorhub,
- 	int id = sample->sensor_id;
- 	struct iio_dev *indio_dev;
+diff --git a/drivers/tee/tee_shm.c b/drivers/tee/tee_shm.c
+index bd679b72bd05..8895cb910166 100644
+--- a/drivers/tee/tee_shm.c
++++ b/drivers/tee/tee_shm.c
+@@ -161,8 +161,7 @@ struct tee_shm *tee_shm_alloc(struct tee_context *ctx, size_t size, u32 flags)
+ 		}
+ 	}
  
--	if (id > sensorhub->sensor_num)
-+	if (id >= sensorhub->sensor_num)
- 		return -EINVAL;
+-	if (ctx)
+-		teedev_ctx_get(ctx);
++	teedev_ctx_get(ctx);
  
- 	cb = sensorhub->push_data[id].push_data_cb;
+ 	return shm;
+ err_rem:
 -- 
 2.25.1
 

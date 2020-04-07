@@ -2,112 +2,116 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F3D71A0F4D
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 16:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 400CD1A0F7E
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 16:46:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729205AbgDGOdM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Apr 2020 10:33:12 -0400
-Received: from mail-pf1-f170.google.com ([209.85.210.170]:40078 "EHLO
-        mail-pf1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729196AbgDGOdM (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Apr 2020 10:33:12 -0400
-Received: by mail-pf1-f170.google.com with SMTP id c20so884691pfi.7
-        for <kernel-janitors@vger.kernel.org>; Tue, 07 Apr 2020 07:33:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=k3mdrzv8ov6qNww8wQI2y8I8f4cWafSu+jyJH6lIzWQ=;
-        b=ucXpfMyZVUiIB1zisShFYsnfM1jJ70pSDdmoevo5IX4FPFuSCcy5szhQWtqbBylwDh
-         xWj/HM2Q7IKyNo0NtdsK8X2NZzal157uwdff6v22eLC3ZGM+NMcicvLVTx3kD8woc/EP
-         EXiFQAkVsYzUn7gVPJccda5ah5Q8vvtpWIIhq7oMSizR8N9QbQnIVmTnnoF7Zs/YelZd
-         CB4rIwo28flQpMysLQDWaLXcojbeWs1W356L+h1sRuAZyAQN7Tuzlr2MPVOT0Zmz+6EU
-         eiCOkRGSV8qGMiVyFuAjGP4VakWUTPXFGoGZg7PeTVfXh9bT0gqE0Zwokt3QIh2epeJh
-         44TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=k3mdrzv8ov6qNww8wQI2y8I8f4cWafSu+jyJH6lIzWQ=;
-        b=VfK22ngJeqhL1bTTxfqAA10dhQfJutXZJnD1bxp8oEQPMNh9ii938J36zojVj+OzqC
-         pcvjbTEiO9OMeOQmBGlbQL/hxdWEaSlLj2JlFgZtDN4pSP8mM2j2MBujPm2Wfu8KE7CE
-         vmF3Qg1dXXgq3h5XUQoHG1G2gdBktLowzToPI2BVy82ujATXMuFW1QLfWResMS3dy7uZ
-         0Z4do7zoeQrKd9CkHobXJg90F4AGRQ6mo45z1+RD2WPGDb0CRzpsSCYdpD5G3LgxVSTt
-         kR35HPO0e8RLqxZ57Bwn3+ycnlv8qJxnQi32zCz9deHSnVyXHEr5zHZSHwSBgaQsg3lJ
-         W8ug==
-X-Gm-Message-State: AGi0Pub2ZWAxh5J8zWkE3ThLQuAp0diKPihjPEfNGdGupJjCTlwS7jnq
-        iR3GEgA3jV3jBM4Mn94VJtFV
-X-Google-Smtp-Source: APiQypKxGfjAvQPF8Pqz6aw+byBjxReHnXAvelraYGqfRlAC5VmBFb5x+qvNFukCSMZm1NRD2mr1lQ==
-X-Received: by 2002:a62:7911:: with SMTP id u17mr2763619pfc.305.1586269989757;
-        Tue, 07 Apr 2020 07:33:09 -0700 (PDT)
-Received: from Mani-XPS-13-9360 ([2409:4072:6e86:d03b:65ee:cb40:6d79:8376])
-        by smtp.gmail.com with ESMTPSA id w63sm3922904pgb.5.2020.04.07.07.33.06
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 07 Apr 2020 07:33:08 -0700 (PDT)
-Date:   Tue, 7 Apr 2020 20:03:04 +0530
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     linux-arm-msm@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [bug report] bus: mhi: core: Add support for data transfer
-Message-ID: <20200407143304.GH2442@Mani-XPS-13-9360>
-References: <20200407135559.GA109574@mwanda>
+        id S1729094AbgDGOqF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Apr 2020 10:46:05 -0400
+Received: from mout.web.de ([212.227.17.11]:44643 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728855AbgDGOqF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 7 Apr 2020 10:46:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1586270757;
+        bh=7uRaTNjaNTCjl5oRskTOrfZRk0mccooHwevUdhC4xuU=;
+        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
+        b=qXtE/650galHSHyzwXipDc4R3xFwR2RHw+Cib5cRrHTZfFsclgnbawfmVzALen73k
+         PouLGj28IHjIhagwvDFF4j71IufLpCQbM6UXZhQExQtCfY5SjSXKlLVK8i1avaM+Nj
+         XYQaIn4TxigQYcwnBo897jjh4b0M7AtoEfXCNnz4=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.3] ([78.49.5.104]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MfYn9-1jgVqA0ge3-00P8a0; Tue, 07
+ Apr 2020 16:45:57 +0200
+To:     Matt Fleming <matt@codeblueprint.co.uk>, linux-rt@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Daniel Wagner <wagi@monom.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: Re: [PATCH RT] signal: Prevent double-free of user struct
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <7be9cee2-6db5-3724-c6e5-58ff51680e36@web.de>
+Date:   Tue, 7 Apr 2020 16:45:55 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200407135559.GA109574@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:0hTGba9trVQ+jekudyME/GTMBvq9fvrU0IWFIQUqED3rEGFrL34
+ /UosQChpK9RMiUfW/wDrVLBWey9kVVNWGBDYcsF3FkcWt2kUsk//nuQQzaEj+MabJdNPnU8
+ SlD/cSweUhyX66T/svHSgKsmN5Iub7jtNvib+SF5pAUBmAhFVhasshy75V1fJ04qDqBAxbA
+ SAVYqinV8xAtIDGxdSX/Q==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:OzvGyBFvI8s=:fv1t6AJuyXG4g5zqCy4Zs/
+ Lpy02EPQw8bULFrxwvhLlI2DkCXFrsMRz2CXJTw9Idbql/dtIOJ9LchlN0FIjwa2ziL9H8bMM
+ g6Wn4qmuPQhF0uR827TtuFUmoUrhoK2ENk9XOLgkTnQqghbfq+3WZGfm0nIyFHd4Tg2eq9x21
+ 2KzlMamgWrCMvOXnvLgShyr8OqMAG6E1nntpSTEvB36NmL55HtxzsAqwddirByKCHckliJOjb
+ btHNaIec3sjiVmfyXEeU6IeNdQu4cTXn3PFLzB1Tgyx3w9gyVlzpMT2mwbj4ixMuZW/oA4jNH
+ dCyD7lU6R5rmVNaJbajJLOF2MCyIjyCFPtAA7nuGzuL5zJbwCEIs0P+ARvM2SlJOHLJ94F7xc
+ ZAwHxboQlP7GZusF95R7rDxmJwF5NwVta9mBiZN/f1JO0oiV9K8qaII2aqbQ/E8yFxySMKkum
+ IEYRCWoLb7suJr9DLdi7MdPctOjrJBnTR8kq9ESi14PKpSM3Jt06/y00i+ZTt0YTwgXWgLuSb
+ KSLk0DyQ0sqzmwUSOMtdGk0NLM/gRLcYpo8YS8vHfs5nOrtJD7ba8AAbvqLqV5Hy9bCxKNdFG
+ dkCJ1wcrZkWhIYgB4Do+MiWDJO6dNsy/jK5YAntzbRIZbuY/Jc0bjdSuNd0cc2iBVaQNa1Gll
+ spl+C5Rw6oCxIcLmigy6LWBRQ4kO5QSCMhMKeyUiD8z3ogd8LgyRzw7vQcTwjzNXViOreweTm
+ 8ZYW/ljiqWYo6zPMoWQqnTABoRgRtOIW2CyMuvKAeHyR13pPnlyj/E2oDgwwSL3zUBNMjfLO4
+ rCGAWaXjkyWZIdcD1S0bVZ37gY6QgFfeDjFYczGGFjEIz0p8qdtncYQOHVC0yPQsKAnVuMPmQ
+ kguDMsS6b+MYSMk0UzxO899EuMD62IDLpSovJlxpMuQHBNCEqDhid6vuCGO2bqJVjPqh2HBMY
+ 6nZADSpCkFonaxj0K/2iawERXU8xLjCy382E1qn1pUIQlWmCxbYr0mrlAybruaplN946QJrPi
+ rRY0PqA4CVPuke5MxYc21LM0xemSwfxBcdNik4pjfR1mW66KiC5GlhqykFyEkA6t+m/tFrXKx
+ qw1bsUy5CtHlS/0BInWlJUvqTQZKSUrSQ0clcm2guCuFIpThKhvVow8G2nLhUu0o9pNwnKm2C
+ oEAkDsk+xquD0Wmku0p2vLscEJsETIvX/afFZRuuxukuY90iyc5NB9QcMCXI2ru/NNWkxMAs0
+ 9K7Ve1k9F5krkyBzx
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
+>  refcount_t: underflow; use-after-free.
 
-On Tue, Apr 07, 2020 at 04:55:59PM +0300, Dan Carpenter wrote:
-> Hello Manivannan Sadhasivam,
-> 
-> The patch 189ff97cca53: "bus: mhi: core: Add support for data
-> transfer" from Feb 20, 2020, leads to the following static checker
-> warning:
-> 
-> 	drivers/bus/mhi/core/main.c:1153 mhi_queue_buf()
-> 	error: double locked 'mhi_chan->lock' (orig line 1110)
-> 
-> drivers/bus/mhi/core/main.c
->   1142          }
->   1143  
->   1144          /* Toggle wake to exit out of M2 */
->   1145          mhi_cntrl->wake_toggle(mhi_cntrl);
->   1146  
->   1147          if (mhi_chan->dir == DMA_TO_DEVICE)
->   1148                  atomic_inc(&mhi_cntrl->pending_pkts);
->   1149  
->   1150          if (likely(MHI_DB_ACCESS_VALID(mhi_cntrl))) {
->   1151                  unsigned long flags;
->   1152  
->   1153                  read_lock_irqsave(&mhi_chan->lock, flags);
->                                           ^^^^^^^^^^^^^^^
-> The caller is already holding this lock.
-> 
-
-Hmm. We have one internal user of this function and that's where the locking
-has gone wrong. Will fix it.
-
-Thanks for reporting!
+I suggest to add the tag =E2=80=9CFixes=E2=80=9D to the final change descr=
+iption.
 
 Regards,
-Mani
-
->   1154                  mhi_ring_chan_db(mhi_cntrl, mhi_chan);
->   1155                  read_unlock_irqrestore(&mhi_chan->lock, flags);
->   1156          }
->   1157  
->   1158          read_unlock_irqrestore(&mhi_cntrl->pm_lock, flags);
->   1159  
->   1160          return 0;
->   1161  }
->   1162  EXPORT_SYMBOL_GPL(mhi_queue_buf);
-> 
-> regards,
-> dan carpenter
+Markus

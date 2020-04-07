@@ -2,116 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 400CD1A0F7E
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 16:46:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24EB11A10F0
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 18:04:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729094AbgDGOqF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Apr 2020 10:46:05 -0400
-Received: from mout.web.de ([212.227.17.11]:44643 "EHLO mout.web.de"
+        id S1728081AbgDGQD5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Apr 2020 12:03:57 -0400
+Received: from mout.gmx.net ([212.227.15.19]:40645 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728855AbgDGOqF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Apr 2020 10:46:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1586270757;
-        bh=7uRaTNjaNTCjl5oRskTOrfZRk0mccooHwevUdhC4xuU=;
-        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=qXtE/650galHSHyzwXipDc4R3xFwR2RHw+Cib5cRrHTZfFsclgnbawfmVzALen73k
-         PouLGj28IHjIhagwvDFF4j71IufLpCQbM6UXZhQExQtCfY5SjSXKlLVK8i1avaM+Nj
-         XYQaIn4TxigQYcwnBo897jjh4b0M7AtoEfXCNnz4=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([78.49.5.104]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MfYn9-1jgVqA0ge3-00P8a0; Tue, 07
- Apr 2020 16:45:57 +0200
-To:     Matt Fleming <matt@codeblueprint.co.uk>, linux-rt@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Daniel Wagner <wagi@monom.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: Re: [PATCH RT] signal: Prevent double-free of user struct
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <7be9cee2-6db5-3724-c6e5-58ff51680e36@web.de>
-Date:   Tue, 7 Apr 2020 16:45:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1728000AbgDGQD5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 7 Apr 2020 12:03:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1586275414;
+        bh=e3mRm5CWAZ94bLSIQgu24+nnAMT62ywXZ1pN+mDxiVA=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=jIN5hjrSASiCcNRUHqRZCzPOYwhWWdaVRg9MoG+Uq2mqNFDGhB0vSQK/n2MN3VmSy
+         h92TJRIfqf5DB+Z+GEjspLoee1s236JsuuNPn/DHrq71lNusQKjsPgaa99S4s1hy8y
+         QKZlRV+KDzvHwXUAI5SagxvyAhK7cwpy6HywOOaE=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from lenovo-laptop ([82.19.195.159]) by mail.gmx.com (mrgmx005
+ [212.227.17.184]) with ESMTPSA (Nemesis) id 1MvbFs-1j3d5f3HN8-00sfoC; Tue, 07
+ Apr 2020 18:03:33 +0200
+Date:   Tue, 7 Apr 2020 17:03:30 +0100
+From:   Alex Dewar <alex.dewar@gmx.co.uk>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     cocci@systeme.lip6.fr, kernel-janitors@vger.kernel.org,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Allison Randal <allison@lohutok.net>,
+        Christoph Hellwig <hch@lst.de>,
+        Enrico Weigelt <lkml@metux.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Coccinelle: zalloc-simple: Fix patch mode for
+ dma_alloc_coherent()
+Message-ID: <20200407160330.5m75sfkhrrx3wgrl@lenovo-laptop>
+References: <beeed2c8-1b5a-66a8-ec41-f5770c04bae9@web.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:0hTGba9trVQ+jekudyME/GTMBvq9fvrU0IWFIQUqED3rEGFrL34
- /UosQChpK9RMiUfW/wDrVLBWey9kVVNWGBDYcsF3FkcWt2kUsk//nuQQzaEj+MabJdNPnU8
- SlD/cSweUhyX66T/svHSgKsmN5Iub7jtNvib+SF5pAUBmAhFVhasshy75V1fJ04qDqBAxbA
- SAVYqinV8xAtIDGxdSX/Q==
+In-Reply-To: <beeed2c8-1b5a-66a8-ec41-f5770c04bae9@web.de>
+X-Provags-ID: V03:K1:VyTCQk3EiMwZojK0lcw8VVypr4boid8PMeIUQcoFh5hfKXppl56
+ f55N+K3JBSSRb1BRquGaiX4iXL3AXghXl6kjS9BQyMfsiE7wKmAzQjMA6az0OKeLnxKig21
+ 0jtHzgLZDn7oelFHXALFodCvR1ijjVom5BFJsf81wct7THQwETUEq5ke8Cip0Y+QW5kyvzn
+ tgfNXExVv5a25wkN2Eo4g==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:OzvGyBFvI8s=:fv1t6AJuyXG4g5zqCy4Zs/
- Lpy02EPQw8bULFrxwvhLlI2DkCXFrsMRz2CXJTw9Idbql/dtIOJ9LchlN0FIjwa2ziL9H8bMM
- g6Wn4qmuPQhF0uR827TtuFUmoUrhoK2ENk9XOLgkTnQqghbfq+3WZGfm0nIyFHd4Tg2eq9x21
- 2KzlMamgWrCMvOXnvLgShyr8OqMAG6E1nntpSTEvB36NmL55HtxzsAqwddirByKCHckliJOjb
- btHNaIec3sjiVmfyXEeU6IeNdQu4cTXn3PFLzB1Tgyx3w9gyVlzpMT2mwbj4ixMuZW/oA4jNH
- dCyD7lU6R5rmVNaJbajJLOF2MCyIjyCFPtAA7nuGzuL5zJbwCEIs0P+ARvM2SlJOHLJ94F7xc
- ZAwHxboQlP7GZusF95R7rDxmJwF5NwVta9mBiZN/f1JO0oiV9K8qaII2aqbQ/E8yFxySMKkum
- IEYRCWoLb7suJr9DLdi7MdPctOjrJBnTR8kq9ESi14PKpSM3Jt06/y00i+ZTt0YTwgXWgLuSb
- KSLk0DyQ0sqzmwUSOMtdGk0NLM/gRLcYpo8YS8vHfs5nOrtJD7ba8AAbvqLqV5Hy9bCxKNdFG
- dkCJ1wcrZkWhIYgB4Do+MiWDJO6dNsy/jK5YAntzbRIZbuY/Jc0bjdSuNd0cc2iBVaQNa1Gll
- spl+C5Rw6oCxIcLmigy6LWBRQ4kO5QSCMhMKeyUiD8z3ogd8LgyRzw7vQcTwjzNXViOreweTm
- 8ZYW/ljiqWYo6zPMoWQqnTABoRgRtOIW2CyMuvKAeHyR13pPnlyj/E2oDgwwSL3zUBNMjfLO4
- rCGAWaXjkyWZIdcD1S0bVZ37gY6QgFfeDjFYczGGFjEIz0p8qdtncYQOHVC0yPQsKAnVuMPmQ
- kguDMsS6b+MYSMk0UzxO899EuMD62IDLpSovJlxpMuQHBNCEqDhid6vuCGO2bqJVjPqh2HBMY
- 6nZADSpCkFonaxj0K/2iawERXU8xLjCy382E1qn1pUIQlWmCxbYr0mrlAybruaplN946QJrPi
- rRY0PqA4CVPuke5MxYc21LM0xemSwfxBcdNik4pjfR1mW66KiC5GlhqykFyEkA6t+m/tFrXKx
- qw1bsUy5CtHlS/0BInWlJUvqTQZKSUrSQ0clcm2guCuFIpThKhvVow8G2nLhUu0o9pNwnKm2C
- oEAkDsk+xquD0Wmku0p2vLscEJsETIvX/afFZRuuxukuY90iyc5NB9QcMCXI2ru/NNWkxMAs0
- 9K7Ve1k9F5krkyBzx
+X-UI-Out-Filterresults: notjunk:1;V03:K0:7YENew970fU=:3ut9H6t0BFdslC+tkJ3dnR
+ 4vEXMQannVKiiPvU4Ifp81a8B/GXumK0AUngL5R0LwXPAGET5HxyNp9IvUET//yuSKo1LgWJM
+ zC+s4sn+xZ4ESLWwFE0oJX42w94ZdqosLisZaQqpAlkAF6Rkj/EWXNkNZ1tkmmlJOl/uzPIny
+ 5TTUVZMDkN4kxA9iOUGfSf9ikSxrPITG3E+urpXnOCVWM5ZgYfslrxuvyL0At4dFTTfiaYBW0
+ FqxTgTSDTCUOu52A+JEfZa65NvVBB2ldi4sU/VhalGYYa6FJGp85NsHrhzj+49K1RRJaUqd5D
+ 2+6bT+IMpLL+uiol8SpyBVsottPF2KlkEFLAnNT9+RG4hpjq6YDfJ6pKD5mds1KoNhaLiJQiy
+ 6tOGt/XM+4bkUFaqXGGLqC3Je+zto3vqMW5lx1y+R60pC1oA2FEWKsPYGkjWKvVu527zi6zyj
+ WRa1UT97yPy9FuKTlYoiPJ6DxehYCZ4b4rI8mfbrpwZCGJ0nySBWcrQ5yxRP0YkmOD39NYLYP
+ 2clVJS4sDs+vUpZY5kp882AvQyStkPuJZ5gYgzAkBsjaZd3YaKN9FXOJxhkDhKRBKRqj6T2J3
+ WgmXLgxDl10l8OveZP5X7QBUBbCC3RSvfYHyPp+nCbzZPHT2IXXikUE56feY34aZkpgqI9TD4
+ 7gH/zKpSlp9avP9PSCfkzfsYe8JEI7SI+VOLHVRZBl9RfLoOGZghWWrha6kVKZ8gNhixV2Npz
+ QeHs6xVdAgbt3RMfz1QEHOdGpHxsRyFcw/bZ1Uoo4dE2JH91/WFVeLl84J6iM+F5oF/oSXC8S
+ Yn4EbLN6PzaiIt4Sf7OPCssoA0uNr41i4mlZJoKbpwA+8lw+XYzWZM5JN77FnhHQynKcllLmb
+ LtamXhONciuKcqE9P0lJfLtKGrIbLlEQJmsj8fkeJGMZ0HH0rLXkIfgLMhVf9/++xVcA4/e4l
+ 2ZWGFPlANUS1cX6bjWcWmTnF6Kj+JMrm1ccvgCRVPgL+/I9QgG4g4RYofMrca4tSnX4bTPOHp
+ qpnXzrPel7V2RzxAARtJ8zrbP42Z/br8iNMZqfVMYmGq1eprif+D5ixyt8GHCstUw8kxjpycJ
+ Y9QqL2IDdi/tOtD7PgCjvKs/+cLQuvgFwDa0Fb5btAQraaJ2Px1Qu2zMg1tm0RsIDr8n2to2t
+ Uzdjg7ZfJQtSQj9uhiJB3P9Ne7Gr6KVZWrFsYRlfcJohjVJOFUUaRSP4hrNoYfA6tdLPSxlNR
+ iEBlZEtOjOrF1ex8v
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->  refcount_t: underflow; use-after-free.
+On Sat, Apr 04, 2020 at 09:06:46AM +0200, Markus Elfring wrote:
+> > Commit dfd32cad146e ("dma-mapping: remove dma_zalloc_coherent()"), in
+> > removing dma_zalloc_coherent() treewide, inadvertently removed the pat=
+ch
+> > rule for dma_alloc_coherent(), leaving Coccinelle unable to auto-gener=
+ate
+> > patches for this case. Fix this.
+>
+> I suggest to reconsider also the distribution of recipients for your pat=
+ch
+> according to the fields =E2=80=9CCc=E2=80=9D and =E2=80=9CTo=E2=80=9D.
 
-I suggest to add the tag =E2=80=9CFixes=E2=80=9D to the final change descr=
-iption.
+Good point.
 
-Regards,
-Markus
+>
+> Will the software development attention grow in a way so that further
+> implementation details can be adjusted also for the mentioned SmPL scrip=
+t?
+
+I'm not sure I understand what you mean. Would you mind clarifying?
+
+Best,
+Alex
+
+>
+> Regards,
+> Markus

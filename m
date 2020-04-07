@@ -2,109 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 872A41A071C
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 08:15:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E2271A0A11
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 11:28:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727181AbgDGGPa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Apr 2020 02:15:30 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:41919 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727078AbgDGGPa (ORCPT
+        id S1728088AbgDGJ2S (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Apr 2020 05:28:18 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:48824 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726720AbgDGJ2S (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Apr 2020 02:15:30 -0400
-Received: by mail-pl1-f194.google.com with SMTP id d24so833196pll.8
-        for <kernel-janitors@vger.kernel.org>; Mon, 06 Apr 2020 23:15:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=fEIqeEmnHR4VL1Tnz06wxL1tDtYZh8O0YFMdittrvdc=;
-        b=y1pqSFEkmWsND2TA4O92usByCfgNi9LYD8b5RYzM2l4cL2WXaBRJQV/2+uhmDB8Aq6
-         yuEq/8npHPWpl5vGpknMxFP862x9r6JTehMqgpLw5iRpwi65aiU58j4a9pDG/WvhYPb7
-         bvcPFkeav++vUe9tGu9OJ0bHDyPwUYcxoZPi5rHq1V9nHvwVSl3SBaZe9w4oOj0qw9Jo
-         tZbK/kjQowFso4aSfNCfqNLRgmsAemcEiWrLNgCnNZCW6KCpj2M3Z6OEALkwO/9xEBLH
-         z/DMxC4Jej3xO6BMLJ7LzhKkdU2kR5z0UKbdX4PVFGkMWLdv61JFAiduFGrMwkNXEu7U
-         bazA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=fEIqeEmnHR4VL1Tnz06wxL1tDtYZh8O0YFMdittrvdc=;
-        b=EDCpYZAfbAHbA1SUySDzRDmqHGEUwtHRYkpFVv15wQdyB1Z0dVGej2gdjQMW0QF65z
-         SZ5iiDjWCBnd5FGda0M/pPGENzBz95VJDO0taSepHGvbYOaghKBwuXT3bSSebHdc5kqF
-         BHdywJhIKJDfaTNPIkF9dYsSaF6kYuC6PtJ2+AB+n7eoOjDzQOwuBGNO3sfF9p3lrqoD
-         T5ok0P8kJpeURr5YLDfxG4KtUHee/6svIr1ZQ3Y4E9J+Y2d2MA++XekDfJ82+mPkSBec
-         Wbtu/sTSYeuLl700k/WZhpPU8+gFwZhBEHU5LCy6h1BVMjiDayTyMkEg7UTGxCoJO+xd
-         Deyg==
-X-Gm-Message-State: AGi0PubEDwfzYqBGxhk2A/YjRHnwvqZgSII7ENpKQ3KJBRHQ2g/0Wo+v
-        JC7p1av2S7T23f5JFQfHTvBmFQ==
-X-Google-Smtp-Source: APiQypIku5Lm6YYYlW1dpEix4cJ2o/v/7l1PWYoX6qIkRNJjo8wpaP+/Kt4RgOl+bpzsQHMzs6HUVA==
-X-Received: by 2002:a17:902:7c93:: with SMTP id y19mr961074pll.155.1586240128918;
-        Mon, 06 Apr 2020 23:15:28 -0700 (PDT)
-Received: from builder.lan (104-188-17-28.lightspeed.sndgca.sbcglobal.net. [104.188.17.28])
-        by smtp.gmail.com with ESMTPSA id na18sm688432pjb.31.2020.04.06.23.15.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Apr 2020 23:15:28 -0700 (PDT)
-Date:   Mon, 6 Apr 2020 23:15:33 -0700
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-arm-msm@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Tang Bin <tangbin@cmss.chinamobile.com>
-Subject: Re: [PATCH] soc: qcom: smp2p: Delete an error message in
- qcom_smp2p_probe()
-Message-ID: <20200407061533.GA576963@builder.lan>
-References: <eb92fcfb-6181-1f9d-2601-61e5231bd892@web.de>
+        Tue, 7 Apr 2020 05:28:18 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0379Rqnr037094;
+        Tue, 7 Apr 2020 09:28:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=dRQy+OdGx7nKKkc6yusn2BSd2EMXtJbhYxjtPjQfAEE=;
+ b=giUkjfNvRCeBPt5O7emcsu+8JgcNJEjYBV8WaFEFezmymB9kHN25X5mp8FUVPN6cH/dW
+ WCfX5xNZeafVw8Z/tEWu6/PXRzXMzV6MGCL/8C/mY8u04jX/gP0Om/NUJE+mNIsoRvcC
+ fh0fTirRrwMs3ADrKzCLqmpcpl8rGAObm4JZm7zWzpgBYS8+5BKiz7jGbOwN04K8cKy/
+ l/beGDNbLjaUHPeXl31xxdbx9tDyoN1F//kBu1iUbqpIcUK6FxXTTMPj8a6wXoDhYF1D
+ CZPHxVSuFRiiOWqBxZ9emzzxqToeAqIyptTCnoG4Ite7C/UgdzOMhG3JlEwVaf6gk+eU WQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 306j6mbqrk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 07 Apr 2020 09:28:05 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0379RThg103029;
+        Tue, 7 Apr 2020 09:28:04 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 30741dmdcn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 07 Apr 2020 09:28:04 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0379S1QU030940;
+        Tue, 7 Apr 2020 09:28:02 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 07 Apr 2020 02:28:01 -0700
+Date:   Tue, 7 Apr 2020 12:27:53 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jassi Brar <jassisinghbrar@gmail.com>, Peng Fan <peng.fan@nxp.com>
+Cc:     Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] mailbox: imx: Fix return in imx_mu_scu_xlate()
+Message-ID: <20200407092753.GH68494@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <eb92fcfb-6181-1f9d-2601-61e5231bd892@web.de>
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9583 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 phishscore=0
+ malwarescore=0 bulkscore=0 spamscore=0 adultscore=0 mlxlogscore=926
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004070080
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9583 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=982 spamscore=0
+ priorityscore=1501 suspectscore=0 lowpriorityscore=0 malwarescore=0
+ impostorscore=0 mlxscore=0 phishscore=0 adultscore=0 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004070080
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun 05 Apr 09:12 PDT 2020, Markus Elfring wrote:
+This called from mbox_request_channel().  The caller is  expecting error
+pointers and not NULL so this "return NULL;" will lead to an Oops.
 
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Sun, 5 Apr 2020 18:08:13 +0200
-> 
-> The function “platform_get_irq” can log an error already.
-> Thus omit a redundant message for the exception handling in the
-> calling function.
-> 
-> This issue was detected by using the Coccinelle software.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Fixes: 0a67003b1985 ("mailbox: imx: add SCU MU support")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/mailbox/imx-mailbox.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks Markus, picked up for 5.8.
+diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
+index 7906624a731c..9d6f0217077b 100644
+--- a/drivers/mailbox/imx-mailbox.c
++++ b/drivers/mailbox/imx-mailbox.c
+@@ -374,7 +374,7 @@ static struct mbox_chan *imx_mu_scu_xlate(struct mbox_controller *mbox,
+ 		break;
+ 	default:
+ 		dev_err(mbox->dev, "Invalid chan type: %d\n", type);
+-		return NULL;
++		return ERR_PTR(-EINVAL);
+ 	}
+ 
+ 	if (chan >= mbox->num_chans) {
+-- 
+2.25.1
 
-Regards,
-Bjorn
-
-> ---
->  drivers/soc/qcom/smp2p.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/soc/qcom/smp2p.c b/drivers/soc/qcom/smp2p.c
-> index c7300d54e444..07183d731d74 100644
-> --- a/drivers/soc/qcom/smp2p.c
-> +++ b/drivers/soc/qcom/smp2p.c
-> @@ -474,10 +474,8 @@ static int qcom_smp2p_probe(struct platform_device *pdev)
->  		goto report_read_failure;
-> 
->  	irq = platform_get_irq(pdev, 0);
-> -	if (irq < 0) {
-> -		dev_err(&pdev->dev, "unable to acquire smp2p interrupt\n");
-> +	if (irq < 0)
->  		return irq;
-> -	}
-> 
->  	smp2p->mbox_client.dev = &pdev->dev;
->  	smp2p->mbox_client.knows_txdone = true;
-> --
-> 2.26.0
-> 

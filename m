@@ -2,105 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24EB11A10F0
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 18:04:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 888531A1253
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Apr 2020 18:59:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728081AbgDGQD5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Apr 2020 12:03:57 -0400
-Received: from mout.gmx.net ([212.227.15.19]:40645 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728000AbgDGQD5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Apr 2020 12:03:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1586275414;
-        bh=e3mRm5CWAZ94bLSIQgu24+nnAMT62ywXZ1pN+mDxiVA=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=jIN5hjrSASiCcNRUHqRZCzPOYwhWWdaVRg9MoG+Uq2mqNFDGhB0vSQK/n2MN3VmSy
-         h92TJRIfqf5DB+Z+GEjspLoee1s236JsuuNPn/DHrq71lNusQKjsPgaa99S4s1hy8y
-         QKZlRV+KDzvHwXUAI5SagxvyAhK7cwpy6HywOOaE=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from lenovo-laptop ([82.19.195.159]) by mail.gmx.com (mrgmx005
- [212.227.17.184]) with ESMTPSA (Nemesis) id 1MvbFs-1j3d5f3HN8-00sfoC; Tue, 07
- Apr 2020 18:03:33 +0200
-Date:   Tue, 7 Apr 2020 17:03:30 +0100
-From:   Alex Dewar <alex.dewar@gmx.co.uk>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     cocci@systeme.lip6.fr, kernel-janitors@vger.kernel.org,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Allison Randal <allison@lohutok.net>,
-        Christoph Hellwig <hch@lst.de>,
-        Enrico Weigelt <lkml@metux.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Coccinelle: zalloc-simple: Fix patch mode for
- dma_alloc_coherent()
-Message-ID: <20200407160330.5m75sfkhrrx3wgrl@lenovo-laptop>
-References: <beeed2c8-1b5a-66a8-ec41-f5770c04bae9@web.de>
+        id S1726536AbgDGQ7t (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Apr 2020 12:59:49 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:44356 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726453AbgDGQ7t (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 7 Apr 2020 12:59:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=tt8y8o6P3HWiSTvJT8G3s8QKGTM9yaoI1wGFzYbnFL4=; b=dQfJ/cp/4gOmhJjCnAwMfeGvxU
+        G/wjvspdGJ5Ozs9LQ6l2JpT5jUIJLrg0EVM+n3HwMbcLUCb+A4vdMElhDScVi2R4GSIv4Z+7hJmO0
+        CbYXsSG0Owl6wDBW/V5+tw0B3YaxcKtaD4YdQ2B98vDw3gY1qCPva5X8KJfhdtr8uwuJiFVTb/tMc
+        e6Mi+FSR72k+Tu2xSYlEEC5bT4GP21jKNIqw+5P/jlp8DYNi+mvU/kFUTD1RyROEDdjMduBQbEVFj
+        TBf6nxSI1km50g/fvjZFaQT86WfPKUwWzKy2t6RyqXnVVAVVLZvkPUnbjzXVY5ZauVIwmxFxSgiLR
+        KJEOdO9Q==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jLrZi-00036R-0S; Tue, 07 Apr 2020 16:59:46 +0000
+Date:   Tue, 7 Apr 2020 09:59:45 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>,
+        Danit Goldberg <danitg@mellanox.com>,
+        Parav Pandit <parav@mellanox.com>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2] RDMA/cm: Fix an error check in cm_alloc_id_priv()
+Message-ID: <20200407165945.GK21484@bombadil.infradead.org>
+References: <20200406145109.GQ20941@ziepe.ca>
+ <20200407093714.GA80285@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <beeed2c8-1b5a-66a8-ec41-f5770c04bae9@web.de>
-X-Provags-ID: V03:K1:VyTCQk3EiMwZojK0lcw8VVypr4boid8PMeIUQcoFh5hfKXppl56
- f55N+K3JBSSRb1BRquGaiX4iXL3AXghXl6kjS9BQyMfsiE7wKmAzQjMA6az0OKeLnxKig21
- 0jtHzgLZDn7oelFHXALFodCvR1ijjVom5BFJsf81wct7THQwETUEq5ke8Cip0Y+QW5kyvzn
- tgfNXExVv5a25wkN2Eo4g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:7YENew970fU=:3ut9H6t0BFdslC+tkJ3dnR
- 4vEXMQannVKiiPvU4Ifp81a8B/GXumK0AUngL5R0LwXPAGET5HxyNp9IvUET//yuSKo1LgWJM
- zC+s4sn+xZ4ESLWwFE0oJX42w94ZdqosLisZaQqpAlkAF6Rkj/EWXNkNZ1tkmmlJOl/uzPIny
- 5TTUVZMDkN4kxA9iOUGfSf9ikSxrPITG3E+urpXnOCVWM5ZgYfslrxuvyL0At4dFTTfiaYBW0
- FqxTgTSDTCUOu52A+JEfZa65NvVBB2ldi4sU/VhalGYYa6FJGp85NsHrhzj+49K1RRJaUqd5D
- 2+6bT+IMpLL+uiol8SpyBVsottPF2KlkEFLAnNT9+RG4hpjq6YDfJ6pKD5mds1KoNhaLiJQiy
- 6tOGt/XM+4bkUFaqXGGLqC3Je+zto3vqMW5lx1y+R60pC1oA2FEWKsPYGkjWKvVu527zi6zyj
- WRa1UT97yPy9FuKTlYoiPJ6DxehYCZ4b4rI8mfbrpwZCGJ0nySBWcrQ5yxRP0YkmOD39NYLYP
- 2clVJS4sDs+vUpZY5kp882AvQyStkPuJZ5gYgzAkBsjaZd3YaKN9FXOJxhkDhKRBKRqj6T2J3
- WgmXLgxDl10l8OveZP5X7QBUBbCC3RSvfYHyPp+nCbzZPHT2IXXikUE56feY34aZkpgqI9TD4
- 7gH/zKpSlp9avP9PSCfkzfsYe8JEI7SI+VOLHVRZBl9RfLoOGZghWWrha6kVKZ8gNhixV2Npz
- QeHs6xVdAgbt3RMfz1QEHOdGpHxsRyFcw/bZ1Uoo4dE2JH91/WFVeLl84J6iM+F5oF/oSXC8S
- Yn4EbLN6PzaiIt4Sf7OPCssoA0uNr41i4mlZJoKbpwA+8lw+XYzWZM5JN77FnhHQynKcllLmb
- LtamXhONciuKcqE9P0lJfLtKGrIbLlEQJmsj8fkeJGMZ0HH0rLXkIfgLMhVf9/++xVcA4/e4l
- 2ZWGFPlANUS1cX6bjWcWmTnF6Kj+JMrm1ccvgCRVPgL+/I9QgG4g4RYofMrca4tSnX4bTPOHp
- qpnXzrPel7V2RzxAARtJ8zrbP42Z/br8iNMZqfVMYmGq1eprif+D5ixyt8GHCstUw8kxjpycJ
- Y9QqL2IDdi/tOtD7PgCjvKs/+cLQuvgFwDa0Fb5btAQraaJ2Px1Qu2zMg1tm0RsIDr8n2to2t
- Uzdjg7ZfJQtSQj9uhiJB3P9Ne7Gr6KVZWrFsYRlfcJohjVJOFUUaRSP4hrNoYfA6tdLPSxlNR
- iEBlZEtOjOrF1ex8v
+In-Reply-To: <20200407093714.GA80285@mwanda>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Apr 04, 2020 at 09:06:46AM +0200, Markus Elfring wrote:
-> > Commit dfd32cad146e ("dma-mapping: remove dma_zalloc_coherent()"), in
-> > removing dma_zalloc_coherent() treewide, inadvertently removed the pat=
-ch
-> > rule for dma_alloc_coherent(), leaving Coccinelle unable to auto-gener=
-ate
-> > patches for this case. Fix this.
->
-> I suggest to reconsider also the distribution of recipients for your pat=
-ch
-> according to the fields =E2=80=9CCc=E2=80=9D and =E2=80=9CTo=E2=80=9D.
+On Tue, Apr 07, 2020 at 12:37:14PM +0300, Dan Carpenter wrote:
+> The xa_alloc_cyclic_irq() function returns either 0 or 1 on success and
+> negatives on error.  This code treats 1 as an error and returns
+> ERR_PTR(1) which will cause an Oops in the caller.
+> 
+> Fixes: ae78ff3a0f0c ("RDMA/cm: Convert local_id_table to XArray")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Good point.
-
->
-> Will the software development attention grow in a way so that further
-> implementation details can be adjusted also for the mentioned SmPL scrip=
-t?
-
-I'm not sure I understand what you mean. Would you mind clarifying?
-
-Best,
-Alex
-
->
-> Regards,
-> Markus
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>

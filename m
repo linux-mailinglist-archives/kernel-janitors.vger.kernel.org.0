@@ -2,102 +2,135 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 877271A18A1
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Apr 2020 01:36:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D50511A1944
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Apr 2020 02:35:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726416AbgDGXgK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Apr 2020 19:36:10 -0400
-Received: from wout4-smtp.messagingengine.com ([64.147.123.20]:48439 "EHLO
-        wout4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726393AbgDGXgK (ORCPT
+        id S1726438AbgDHAfX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Apr 2020 20:35:23 -0400
+Received: from smtprelay0130.hostedemail.com ([216.40.44.130]:41858 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726421AbgDHAfX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Apr 2020 19:36:10 -0400
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.west.internal (Postfix) with ESMTP id BB7B547D;
-        Tue,  7 Apr 2020 19:36:08 -0400 (EDT)
-Received: from imap2 ([10.202.2.52])
-  by compute3.internal (MEProxy); Tue, 07 Apr 2020 19:36:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=
-        mime-version:message-id:in-reply-to:references:date:from:to:cc
-        :subject:content-type; s=fm2; bh=Yxq9f81Pb+4HSFnXBgl2WjEh9AK9LTu
-        4Gf81A8IMWxE=; b=TIXwFNVFlZ3kL8pi50r2le0uO1YETHcXlswy1QwmNs24YpF
-        KQbtsW9+9epxZE66IpwEzt8ZwNSgBhss3bgalYPCoTeYKCvpWZqtul6HmErU7Nt7
-        IepBdc9biMzrJGoqSWTf1GHCw62F0Bh5B+Yw8D65AqRXRuoXiz2g+IOPUCt5ndhn
-        iujtCCStG1J/u8+awB6YT6Eo1gf1zGWPh4NRyVrmXiuo7Jjr1pGZNzqwsm0q3stB
-        SbouZRckibk1QW5GXPV2G6ViDQBr7oyuS5yBQOJuS1HW66l5f4csg1NSaqAoQG23
-        nf6CM9pH0qi5YI9xzZZ4FFXJ9524bjy6nEJt9iQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=Yxq9f8
-        1Pb+4HSFnXBgl2WjEh9AK9LTu4Gf81A8IMWxE=; b=t2FjNQ3G3K38P8X2V7r5bk
-        L8dXUojXrOqYdgVXVTGF8VG9lgmnoGV32LyrYloMQdKDnSMA230V0WGKDIurJRVT
-        vJ4v5ycqlnSbrD5SXw5Ksmx53YowPer0MN1VT6oELDfaD2tMWYwY/xAOlGuklE+E
-        clKW6ZMjNUlD/7jUqOsfyvVdP3/zsLUfF822WsXrPiN8S2/O+qUmjaQnnG/dXEfT
-        xp6kRgBa2W8fKJMOClbvSOuqC+4ddUsSoaLT+UkeMxk8eno4KXZtTOhTsfOG2g6f
-        tRKaKxX6SIrdwCqACIheRCHUS0bfu3WDWoDxgYUJxfiX+rP1wK0wJCcllWWvhkPA
-        ==
-X-ME-Sender: <xms:Zw6NXjQ_JQQP_tJnx9C8OVWapompPjtTeGZsSH2NCeae8Mv3xAr_xg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrudeigddvgecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvufgtsehttdertderredtnecuhfhrohhmpedftehnughr
-    vgifucflvghffhgvrhihfdcuoegrnhgurhgvfiesrghjrdhiugdrrghuqeenucevlhhush
-    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrnhgurhgvfiesrghj
-    rdhiugdrrghu
-X-ME-Proxy: <xmx:Zw6NXuYk4BJ1FabOniAJ6oCocEs42n88oz8jpuUHWlH9zkNGxH82lg>
-    <xmx:Zw6NXsTBAw9OOPuX9OtdNCDkoAtostsKtRpBGoWaE5xFpm35MK-jug>
-    <xmx:Zw6NXp54Z8u8PUbRBJxG1exOmQxk5xuSQv1o6GOWtfz8oXOFuHftww>
-    <xmx:aA6NXkxW94IAS2ehtk18Jsg0X0kWmccoBEpnsM0Jf9NG1rYvcNkUng>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id F38B6E00A6; Tue,  7 Apr 2020 19:36:06 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.1.7-1084-gdc5e709-fmstable-20200406v2
-Mime-Version: 1.0
-Message-Id: <0744752b-a48e-4edf-ba77-df605fd242a9@www.fastmail.com>
-In-Reply-To: <CACPK8XfA-4WvgVeEKi-hdC-LgEcicEhpV_0ivwymaEJKy15hGA@mail.gmail.com>
-References: <20200407122149.GA100026@mwanda>
- <CACPK8XfA-4WvgVeEKi-hdC-LgEcicEhpV_0ivwymaEJKy15hGA@mail.gmail.com>
-Date:   Wed, 08 Apr 2020 09:06:25 +0930
-From:   "Andrew Jeffery" <andrew@aj.id.au>
-To:     "Joel Stanley" <joel@jms.id.au>,
-        "Dan Carpenter" <dan.carpenter@oracle.com>
-Cc:     "Corey Minyard" <minyard@acm.org>, "Arnd Bergmann" <arnd@arndb.de>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "Haiyue Wang" <haiyue.wang@linux.intel.com>,
-        openipmi-developer@lists.sourceforge.net,
-        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] ipmi: kcs: Fix aspeed_kcs_probe_of_v1()
-Content-Type: text/plain
+        Tue, 7 Apr 2020 20:35:23 -0400
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave08.hostedemail.com (Postfix) with ESMTP id DB3DC182D5840;
+        Wed,  8 Apr 2020 00:35:21 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay02.hostedemail.com (Postfix) with ESMTP id EFBCD4995ED;
+        Wed,  8 Apr 2020 00:35:20 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 30,2,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:196:355:379:599:800:960:967:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1543:1593:1594:1622:1711:1730:1747:1777:1792:2197:2198:2199:2200:2393:2525:2560:2563:2682:2685:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3308:3354:3622:3653:3865:3866:3867:3868:3871:3872:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4250:4321:4605:5007:6119:6671:7903:8957:9025:10004:10400:10848:11026:11232:11473:11658:11914:12043:12291:12296:12297:12438:12555:12740:12760:12895:12986:13007:13095:13439:14093:14097:14181:14659:14721:21067:21080:21212:21221:21433:21451:21505:21627:21660:21740:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: woman93_117a4295ed250
+X-Filterd-Recvd-Size: 4179
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf19.hostedemail.com (Postfix) with ESMTPA;
+        Wed,  8 Apr 2020 00:35:19 +0000 (UTC)
+Message-ID: <437746b14735ecef311720ad41d5b237209e9674.camel@perches.com>
+Subject: Re: [PATCH] checkpatch: check for missing \n at the end of logging
+ message
+From:   Joe Perches <joe@perches.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        apw@canonical.com
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Date:   Tue, 07 Apr 2020 17:33:21 -0700
+In-Reply-To: <20200407204908.10420-1-christophe.jaillet@wanadoo.fr>
+References: <20200407204908.10420-1-christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On Wed, 8 Apr 2020, at 08:48, Joel Stanley wrote:
-> On Tue, 7 Apr 2020 at 12:22, Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> >
-> > This needs to return the newly allocated struct but instead it returns
-> > zero which leads to an immediate Oops in the caller.
-> >
-> > Fixes: 09f5f680707e ("ipmi: kcs: aspeed: Implement v2 bindings")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+On Tue, 2020-04-07 at 22:49 +0200, Christophe JAILLET wrote:
+> Strings logged with pr_xxx and dev_xxx often lack a trailing '\n'.
+> Introduce new tests to try to catch them early.
 > 
-> Thanks for the fix Dan.
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> This is more a PoC for now.
 > 
-> Andrew, I think this means no one has used the v1 bindings in
-> mainline, so could remove that code?
+> Regex could be improved, merged, ...
+> We could also check for surrounding pr_cont...
+> 
+> This patch is based on idea from [1]. coccinelle spots too many places
+> where \n are missing (~ 2800 with the heuristic I've used).
+> Fixing them would be painful.
+> I instead propose to teach checkpatch.pl about it to try to spot cases
+> early and avoid introducing new cases.
+> 
+> [1]: https://marc.info/?l=kernel-janitors&m=158619533629657&w=4
+> ---
+>  scripts/checkpatch.pl | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+> index c392ab8ea12e..792804bd6ad9 100755
+> --- a/scripts/checkpatch.pl
+> +++ b/scripts/checkpatch.pl
+> @@ -5676,6 +5676,16 @@ sub process {
+>  			}
+>  		}
+>  
+> +# check for missing \n at the end of logging function
+> +		if ($line =~ /\bpr_(emerg|alert|crit|err|warning|warn|notice|info|debug|dbg)\s*\("([^"]*(?<!\\n))"/) {
+> +			WARN("MISSING NL",
+> +			     "Possible missing '\\n' at the end of a log message\n" . $hereprev);
+> +		}
+> +		if ($line =~ /\bdev_(emerg|alert|crit|err|warning|warn|notice|info|debug|dbg)\s*\([^,]*,\s*"([^"]*(?<!\\n))"/) {
+> +			WARN("MISSING NL",
+> +			     "Possible missing '\\n' at the end of a log message\n" . $hereprev);
+> +		}
 
-No, rather Dan's on the ball and it seems I was a bit lax with my testing
-of the patch. I pinged Corey only the other day regarding the patches;
-he had been busy and as such hadn't merged them.
+This can't work as string is masked to "XXX"
 
-I have a series to convert our devicetrees over to v2. Now that Corey's
-taken the patches I can send that and we can get away from v1.
+This is probably better using $stat and checking if a "XX" format
+string exists as 1st or 2nd arg and adding an extraction
+from the $rawline equivalent and checking that.
 
-Thanks for the fix Dan.
+Also this test should probably using $logFunctions and check
+if the initial block is one of the known functions that
+use a newline termination (pr_|dev_|netdev_|wiphy_)
 
-Acked-by: Andrew Jeffery <andrew@aj.id.au>
+Something like:
+---
+ scripts/checkpatch.pl | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index d64c67..79eee2 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -5673,6 +5673,27 @@ sub process {
+ 			}
+ 		}
+ 
++# check for possible missing newlines at the end of common logging functions
++		if (defined($stat) &&
++		    $stat =~ /^\+\s*($logFunctions)\s*\((?:\s*$FuncArg\s*,\s*){0,3}\s*$String/ &&
++		    $1 =~ /^(?:pr|dev|netdev|netif|wiphy)_/) {
++			my $cnt = statement_rawlines($stat);
++			my $extracted_string = "";
++			for (my $i = 0; $i < $cnt; $i++) {
++				$extracted_string = get_quoted_string($lines[$linenr + $i - 1],
++								      $rawlines[$linenr + $i - 1]);
++				last if ($extracted_string ne "");
++			}
++			if ($extracted_string ne "" && $extracted_string !~ /\\n"$/) {
++				my $herectx = $here . "\n";
++				for (my $n = 0; $n < $cnt; $n++) {
++					$herectx .=  raw_line($linenr, $n) . "\n";
++				}
++				WARN("MISSING_FORMAT_NEWLINE",
++				     "Possible missing '\\n' at the end of a logging message format string\n" . $herectx);
++			}
++		}
++
+ # check for logging functions with KERN_<LEVEL>
+ 		if ($line !~ /printk(?:_ratelimited|_once)?\s*\(/ &&
+ 		    $line =~ /\b$logFunctions\s*\(.*\b(KERN_[A-Z]+)\b/) {
+
+

@@ -2,146 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D2B461A21AE
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Apr 2020 14:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2632F1A2256
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Apr 2020 14:50:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728620AbgDHMUw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Apr 2020 08:20:52 -0400
-Received: from mout.web.de ([212.227.15.3]:51573 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728562AbgDHMUu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Apr 2020 08:20:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1586348431;
-        bh=VNnQ6Zmj3bQlqQMA5yxB7qWSZuLfYMiaZZL53XywQbU=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=M6vaN3YcLlLdoMMhsHrF3vt0FqDIgaFoeMf4Jbo+wBlGg1VjFmmWJndwtz1N8zc8M
-         K+dtUrTSLn6E13NNOvnAjVyG/1fsjhwMJj40kBZhi0lX/+5WwUTUM7hvnUD6DFZDHo
-         ERQJXfphGZx0eMr9wfB1LmPYImYOrr6cDa2MMMeo=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([78.48.170.28]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MV4hR-1jnNEA0ytx-00YTk8; Wed, 08
- Apr 2020 14:20:31 +0200
-To:     dri-devel@lists.freedesktop.org,
-        Linus Walleij <linus.walleij@linaro.org>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: drm/mcde: Checking for a failed platform_get_irq() call in
- mcde_probe()
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Tang Bin <tangbin@cmss.chinamobile.com>
-Message-ID: <abd9674c-adf7-b040-814c-076e32a5a48e@web.de>
-Date:   Wed, 8 Apr 2020 14:20:28 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+        id S1728826AbgDHMut (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Apr 2020 08:50:49 -0400
+Received: from mail-eopbgr00057.outbound.protection.outlook.com ([40.107.0.57]:41346
+        "EHLO EUR02-AM5-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727077AbgDHMus (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 8 Apr 2020 08:50:48 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DYj19CoShzpduY7xd1845aqBF+vA10+5CaxaXxJQflCxlznO2X74WgtqFtnTOnW/ItggsdZ5Oqp0YmR2+/76iXbIPEBTO5avqKjfYl4uNCX5YO6lBgVwCTRvAWAkhGDDvpMtFWeKwhRX+IpRtMcwepH0MRc/JIyVIBLOU0u0ZDIHrJfMXfXdnqY5Kc8rKagwiIGUqwNzYLKWjsdjNRrANevQoaVAsknCWibjq1Y970Y8Hd8UyR1E6r3S3/3Tk/cRuFvPGKjTY17Sk1whpFogpzBgMIHAcYVqtwh1xhah6OC1MY5YyzvbTaPK2DJGXTxFFIouBmcR4mKNeyQv8CBR8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xtCNVqovgg5+cnHfv2nqrMzaK+dMZK3ddl21NW9CvKE=;
+ b=d6qdTg5a0JMTJ4bnw9Kkar0DNkSfKozS7F5ksmrqX2daaFXxC+C3OvUg2yg9SZlX/+0ICuYqXXAxHXJfgCsJ/KZYlOk90ND7ZhAOQQemiaeWEW0HkpEtQ+yGma9fh9Dc0xTRp3q2z+VC+rKWww9KTYpLWTh7+3oSgV29RgfFJ7rfiPsHV0oc8gPiEAtO2MRWh9y+kI630nHArbfj01oM4khsQ3kysknQJd+AB74x5NJ8+Gz9KnhF43jNyXDYKVVNoEhglY+zfXdP3qhQNxUjpE0n6jt2v53cVVRFyX2N9Rq3pL/0bHghs3eJavT/V1zSGurOvFjUG90BtJQnoHwUsQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
+ dkim=pass header.d=mellanox.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xtCNVqovgg5+cnHfv2nqrMzaK+dMZK3ddl21NW9CvKE=;
+ b=RhsuyEUbMG+HOemfA1fD0MAD7vrA4ZGcJJbRRxlw1zSePkWgKBYbv80U0rir61nqM476T8Mx0kMPagtWi00V8jF1PysTkPfSsjkIYXHjH5Vdg2pxWDJ/DTR3EIWuBMjp/3i8et94TCdhkV2xrr2QxYzmbBT61FI+K/03mn4Awng=
+Received: from AM4PR0501MB2705.eurprd05.prod.outlook.com
+ (2603:10a6:200:5a::14) by AM4PR0501MB2707.eurprd05.prod.outlook.com
+ (2603:10a6:200:5c::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2878.20; Wed, 8 Apr
+ 2020 12:50:45 +0000
+Received: from AM4PR0501MB2705.eurprd05.prod.outlook.com
+ ([fe80::1049:7e69:b177:10ff]) by AM4PR0501MB2705.eurprd05.prod.outlook.com
+ ([fe80::1049:7e69:b177:10ff%9]) with mapi id 15.20.2878.018; Wed, 8 Apr 2020
+ 12:50:44 +0000
+From:   Asmaa Mnebhi <Asmaa@mellanox.com>
+To:     YueHaibing <yuehaibing@huawei.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+CC:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: RE: [PATCH -next] gpio: remove unused including <linux/version.h>
+Thread-Topic: [PATCH -next] gpio: remove unused including <linux/version.h>
+Thread-Index: AQHWDXQ3/ucmFUSSak+g59WXZG2jHahvLaFw
+Date:   Wed, 8 Apr 2020 12:50:44 +0000
+Message-ID: <AM4PR0501MB2705406363FC5D9DBB60F517DAC00@AM4PR0501MB2705.eurprd05.prod.outlook.com>
+References: <20200408070832.137037-1-yuehaibing@huawei.com>
+In-Reply-To: <20200408070832.137037-1-yuehaibing@huawei.com>
+Accept-Language: en-US
 Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Asmaa@mellanox.com; 
+x-originating-ip: [65.96.160.128]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 56c65637-6d06-4984-a6d3-08d7dbbb741e
+x-ms-traffictypediagnostic: AM4PR0501MB2707:
+x-microsoft-antispam-prvs: <AM4PR0501MB2707FF2ADFFC8BF0B806E9F8DAC00@AM4PR0501MB2707.eurprd05.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:173;
+x-forefront-prvs: 0367A50BB1
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM4PR0501MB2705.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(4636009)(346002)(366004)(396003)(136003)(376002)(39860400002)(53546011)(81156014)(6506007)(7696005)(186003)(4744005)(52536014)(55016002)(26005)(5660300002)(9686003)(66476007)(8936002)(66446008)(64756008)(66946007)(8676002)(478600001)(33656002)(71200400001)(81166007)(4326008)(54906003)(86362001)(2906002)(316002)(66556008)(76116006)(110136005);DIR:OUT;SFP:1101;
+received-spf: None (protection.outlook.com: mellanox.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: SJQGw2FOHr4nG5g6hBzT2SUOMSQCu5ASj50PXDESAjU9A21M0YFRZ0VvPRJbmrNlSzMy5VaOnsahBqWVLVurELBkB55WSAt68jrojs0AY8ZCpmYOtjPXu2C/Kos5vTt/KbFQaRmsD5DR4WuG2dApp6AXJKdjXKlnjT9oE3BVX/wu7BT9WgwH7C21QC07AsiLm6UWvOT1DkNBUWj3RXm8cOb6ah6V6+QJ1k8DYJOO7GMn2PD5KHR8WRLqCtZelI3CNzALrCkkDGSy7/5Od48MZas1CcMprS05L6t8Vl6p5H9ztX/pmZJCzKfeS6d0ifqR/TdPL3zCezQ9JaYS+ybIJab3KQnRGs3a31tEYKq1ZeyvKAqALc8NA2hJXLqJv+UHe93IFUVfL+32wRXUvK3BPvVETRZ+Uzcqa12uwSHl3MI/ds/9ML13qGG2L67nndQK
+x-ms-exchange-antispam-messagedata: XYVH7i4MEGfK0g97AJypEQJOyCWKEPR6QgP7FgHfXd3Ba11ERylXkvEGm0dL/AXD0XQp/PzZm65jY3TP4plcQ9l07sBkOuM9GL2htF2dKur0PKDm4R1I8R6fcYPaF5pQU7UkjPzC3b/cILirBofDiQ==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:fJsj9EGtQRoIZSX4yIB+H9dYKQ11JanGW+a7+d0e0OVkqcsSRwR
- Q9SoK5nsw3jZOcPNpbB9t5YTqiHZvygGn9+Zbtlh7djw7YWLbY3Rgpnz0AbHgNBXoAcSxZC
- qyxRcihT9oSisP4I4/xQ9iXPU7mcBbMMwwfhCOK1fCT7gobUt3ftBy41dvYEuRGPgRgO8O4
- wwn3bherDf8Wq1qlZnqtQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:YitY0hQW7l4=:70MIBtTbWPQO+81QXSQuAH
- ZbqvU1rGIu1KvNxfSJst9uYiGsUWPGrvvE6I3UriCT/s4+pHK2Qmzb5ncFK7BfoaSyWfylLYU
- 3eUieZ7+yBB8aX86E8JrtBoSTYiRgme7HvCaTYMUYeWNjwrhCUJqNxtlhF8jKjDnXL4CY+aEm
- nFhEqnUgv1vXukuvclaSijQJ5sV1WbVxGXJJ2+ZLi8QCVTs8O5P9EtKDPd9QIWWqOZUIdjfeb
- G7IsIjJ54s5MtUNvSIE7FFNNvP/CVs94XBsEck3h5I0mZp1DRX8sUlGegznwwdAmsHwkumDse
- PGGNK6Kp15PDVM1fEpyQpPik8MCv5XBp04MyOXv00saJgk/2y38rXoHzrKp/fSgo6fBL/vVeb
- cgKbp0u8UK/FMha/MJ/Bqe/P+s5ZnOh7KucmJO3fUxrmWAhGrybAU0UI9pHU2plZj1DC8jC3O
- P6C4VWITadD39+1b/5sBD48NnQyFrCv2euWJdnRTCKMcpDopVMxVBYB9M6ULAP/TVdYOPT3M5
- ziLTLSCILwTHD/aXUgGDHnwD2RvjNwTVoT4SgWqQbSwZ1bxOLoo2itep2nJ/qVGSB+XbY/Z+t
- V5z4RwdebSDuiB80suraTjqPJAk+UiBUAxS2JZfRsq5Gue8NMVCTYFa0eHbXwJEt103pZTzJe
- hcL0uGv/J+4LdVdW6SkRGyIUSdrqSHSdaXcRfPnbP06dHh6Z/j4d2G9xOYYA89raxniGrjLwD
- kvdQT8WHc5JnCLXV3klFBXOIzkTtjJf9CssG9uPuxZ3FU+kYlngp1dREpxYZ0YJX+3SF90Dfo
- HJze7RGYHpQAHH7Sw/onXBIcftUfAKHsrnAmm0NViQwDs3f+DgeGUNwB7B6A+jShgkkb4lbw5
- Yab3c0XhKmOZzbjjmLU66+uD3h1nfTXe2q+qpCJHng3jQSU3TrXHibDEKIzQWH31grQgFMJ+K
- uvMpyZNiXLdQHvGIJNk2wEQ1qySl9Pqa7YPY3IukKMG5vgmC42PVs/07LsHyAwk1exrJkzI1P
- Yurdfs0glqpoG57uIAz2Dc8YnsRNuwH9aqrI6T2fF5ep1aH3B2FjL2FGltNsVWQv8c4eusVXV
- Dmzy5NnnZ53jXc1o9M/8+9lqPpq6Otb90BchvN+IFPTFO3aagBJrUNEpRzfzurbfv7SyV2mIj
- CKfjtEsRlMjpdUfHbzQoM8soaNkQnsQCCJqovo2BNankCMxrU7X3pOIAglBWSwEMFp/pXEtBr
- eJt7ZP31rNBTwJ5yL
+MIME-Version: 1.0
+X-OriginatorOrg: Mellanox.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56c65637-6d06-4984-a6d3-08d7dbbb741e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Apr 2020 12:50:44.8228
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a652971c-7d2e-4d9b-a6a4-d149256f461b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: gFn4PNJczbQImPOQjq8V2WB92qR2Dj7uxPB6ZgVGgfZ0gDWsdrWNwm9Yr+d3VwNxlhgv8zNal0ZYdWX0xbliEg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM4PR0501MB2707
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
+Acked-by: asmaa@mellanox.com
 
-I have taken another look at the implementation of the function =E2=80=9Cm=
-cde_probe=E2=80=9D.
-A software analysis approach points the following source code out for
-further development considerations.
-https://elixir.bootlin.com/linux/v5.6.2/source/drivers/gpu/drm/mcde/mcde_d=
-rv.c#L401
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
-ivers/gpu/drm/mcde/mcde_drv.c?id=3Df5e94d10e4c468357019e5c28d48499f677b284=
-f#n402
+-----Original Message-----
+From: YueHaibing <yuehaibing@huawei.com>=20
+Sent: Wednesday, April 8, 2020 3:09 AM
+To: Linus Walleij <linus.walleij@linaro.org>; Asmaa Mnebhi <Asmaa@mellanox.=
+com>; Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Cc: YueHaibing <yuehaibing@huawei.com>; linux-gpio@vger.kernel.org; kernel-=
+janitors@vger.kernel.org
+Subject: [PATCH -next] gpio: remove unused including <linux/version.h>
 
- 	irq =3D platform_get_irq(pdev, 0);
- 	if (!irq) {
- 		ret =3D -EINVAL;
- 		goto clk_disable;
- 	}
+Remove including <linux/version.h> that don't need it.
+
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/gpio/gpio-mlxbf2.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/gpio/gpio-mlxbf2.c b/drivers/gpio/gpio-mlxbf2.c index =
+7b7085050219..240b488609ac 100644
+--- a/drivers/gpio/gpio-mlxbf2.c
++++ b/drivers/gpio/gpio-mlxbf2.c
+@@ -14,7 +14,6 @@
+ #include <linux/resource.h>
+ #include <linux/spinlock.h>
+ #include <linux/types.h>
+-#include <linux/version.h>
+=20
+ /*
+  * There are 3 YU GPIO blocks:
 
 
-The software documentation is providing the following information
-for the used programming interface.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
-ivers/base/platform.c?id=3Df5e94d10e4c468357019e5c28d48499f677b284f#n221
-https://elixir.bootlin.com/linux/v5.6.2/source/drivers/base/platform.c#L20=
-2
 
-=E2=80=9C=E2=80=A6
- * Return: IRQ number on success, negative error number on failure.
-=E2=80=A6=E2=80=9D
-
-Would you like to reconsider the shown condition check?
-
-Regards,
-Markus

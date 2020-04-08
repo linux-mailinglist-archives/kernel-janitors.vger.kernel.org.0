@@ -2,30 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B3E51A23DB
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Apr 2020 16:16:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06C6C1A278A
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Apr 2020 18:53:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728281AbgDHOQB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Apr 2020 10:16:01 -0400
-Received: from mout.web.de ([212.227.15.3]:41699 "EHLO mout.web.de"
+        id S1728850AbgDHQw6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Apr 2020 12:52:58 -0400
+Received: from mout.web.de ([212.227.15.14]:37937 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728251AbgDHOQB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Apr 2020 10:16:01 -0400
+        id S1727187AbgDHQw6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 8 Apr 2020 12:52:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1586355341;
-        bh=85sfTPl91r42gPzKHwrYVTni8G8W4+JolWotW+5GcBw=;
+        s=dbaedf251592; t=1586364754;
+        bh=qJYnlXZVVFUtPwXcU+P6Py04mAQqsJ4+nGikGWgTZ+k=;
         h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=aAXfCd9MHdnjK+TFa7IiUFlywgg3EFwKRU6rY6XS7WJg8mz6tS9PNlBGlwpEhuZwf
-         zoLDCKAIXmjYb+6tx0FbhpMCAViKJrGqNqLBZ1fJbE9NnVZYA8ELF+1QplRlsox/Z6
-         kZ9Jlh9KXTfw7vqk5avIV2irYKfWrbdld/AXtvls=
+        b=CS1LstZk89SbHuYdStwWN3Rg7oB74VqAQrLN2w0wt3xtopvj6Pm71sjotdmX22AhP
+         cko/aSj9B0I+xLDbLcLHu9i3I5XQJWtzM/xuCmwsePmY8fci8yMuolU1TsUF5fKvFa
+         RN7zYRS1+XrEp8mps9sBlByQ+9cNjhGx1A7qt1Zk=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([78.48.170.28]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MDjw6-1jWdl520YI-00HABm; Wed, 08
- Apr 2020 16:15:41 +0200
-To:     linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Received: from [192.168.1.3] ([78.48.170.28]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MVcvn-1jna610FcF-00Z1nS; Wed, 08
+ Apr 2020 18:52:34 +0200
+To:     linux-input@vger.kernel.org, Allison Randal <allison@lohutok.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        H Hartley Sweeten <hsweeten@visionengravers.com>,
+        Olof Johansson <olof@lixom.net>,
+        Thomas Gleixner <tglx@linutronix.de>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: usb: gadget: fsl_udc_core: Checking for a failed platform_get_irq()
- call in fsl_udc_probe()
+Subject: Input: ep93xx_keypad: Checking for a failed platform_get_irq() call
+ in ep93xx_keypad_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -70,42 +75,40 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
 Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Li Yang <leoyang.li@nxp.com>,
+        kernel-janitors@vger.kernel.org,
         Tang Bin <tangbin@cmss.chinamobile.com>
-Message-ID: <36341bb1-1e00-5eb1-d032-60dcc614ddaf@web.de>
-Date:   Wed, 8 Apr 2020 16:15:38 +0200
+Message-ID: <11aecb68-d243-2eeb-0cc8-50e1ec22bd71@web.de>
+Date:   Wed, 8 Apr 2020 18:52:31 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:xMLNsMDMoExXtk8amTMSXj6iXJlTM2/l7c0JjHImfUB5Tv8qxJI
- gt7yljcivfjY6Rft8MkIsFGyPR52oX6eE4hjr020W46qjBXAuY5Bx0L6ynVeEetQDdJ6ieI
- Nlicjda5qjNSizJvf0ZF1ISlGIHw2MwGckWV1nArvBiZH5F9lNT27RudR5x2Bvvayb+5FBr
- 67AYCBZ51eHYtjG9T226w==
+X-Provags-ID: V03:K1:skPBZXgpslgIJa+q0JDAUv6Vwa6+tDwhjaMdKzEYORrvloMzVqK
+ KGkZt3sVAJpSEP9xuWl3AAO5lQ66SH+1ZZdmzcCpzNGPwwsxa9Mb4raln8F7+L1Vojipf0/
+ O70/9dvOujj0hAiG7CS15hj5HbsiU8RDwusqOlBJP4+HIY6nUod8AAmmkhE14E2JaLyi49d
+ yBv7UH4yP1zWvBuiVpvmA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:z4R07IFe6KU=:lG/PZ3d0D5fuq6qVUuouyQ
- KIuNlRzaPHNPSXthjxSGzkMyuB4CttKZ4cnESESigle8l/VAOYKNNX8S/qMN3b0CQvybknQAS
- vdhE3DvNhtfl3dIbZ5xUivz8bALNGdsLEtsCgqCkxb5VPr5uxRVXhEXrkrwf7WZN8KGRJCRTG
- MZf3MuUBIu6XRX8yls7rzE3VltjmJwxpvicEZZZEbcbTdlzKdJtsBH84n6SDVaKOEoJDtoLPE
- wn5KuLEOxq4D8eXngxuG35f9WnqVav0XlRgQN2VIAxEDTcCqGZDE+uLFOnlsim6sQlQirTlHQ
- NAwY8TszyzzuGGnPnU4V/3ewtNP9oKPtm6eZDDoLlhwBBYGTBD16MudXc6MzoQW1cFziiixAn
- usckauUWljv1qulmN8NxA8uXlmnjacJVyERUg0cJIwaoLrO8dMTtpy6yw0XMMXuoWxh6ciN6V
- sbOQhoUmllQTxMv6fIxSw376tUPjPuBm0LGsJ550UfuVZI83aCd9YZ5sMcYq7KXSyqjexMcty
- l0ctWGeIKmTzhz1W0XHMCeyTgDscQ6KOYSsC1Bl62/2bK4jRd6Ionb7eMlnmkRWD1FAY/A+hu
- +C4bN+4++gT/aZ3BC+FD5KfCGyq9xyeuzKRgESyCXQf2F82IJ2+HsaA8eDYaFKkADVebD/4Zv
- XeCEuc6+csuSMazCv5pO0FDBWdhpKawz40sL9X4japr9X8+cZhSFGsfdfuc4c6eNKYSS12MJm
- jl2XOpB+pnZjhELB5wwVPuZwnoZ1G/iXRJzfnaG6h56hnRlhEJt+ywwEmlLD+m2lGC/8ApV4A
- ZlT3ShSyw+roEsOlqxptnkrAzxIzyrqGtwqIOwT/KKGG7HSAlJtmgSYI6bszIoDCZ2UKDK+wp
- DZg9+pvX8sWRTHjCAf1OaIOaNNIh0BR/0VfHa1UngZoFB0uq+VVYmPt118jEek60S5Lpe8G/t
- yzgK6j3JhL6ttDDMGDMICWw0wdVrr4kWQoFXEzi2XRB2D9zWmIQlwOHhNTtL+/3cow4F9DAAn
- KGr2Gup6g1lW6Na88dqWrgU68hss4f+PcIfGD3Kji5mB14p5Ko+PmGTL/l5C8gMasbbJAb34n
- 0SlxOL/2nAFJ2i2T5lQLCa6fM90BJ6kFOyq0TUouu/LAKYEodyoVndALnsITbuZd+XYE9nCqB
- SonsifY+g8Gwv+etoJRfYtTkjJeRzUgvVMEd7UtWAhpqjccJwwlwOtM6tpOxIWVhcQnhMgYdu
- 0J6eITdNmhSpECsE0
+X-UI-Out-Filterresults: notjunk:1;V03:K0:umpvU+EbiNk=:ynaetqHtnBFH5IrHeABHAN
+ pWs2Z8F7VbWpTDfSdpure3IexqsqKH1vSAkr4zykF8YJdd5P2EHhpsPt1FyXn3t7AkJJwCv1d
+ 3uZkj6lkORV7qSnatCqTo6DFF9Hk3UQ81cbX/azdXIlJopSY4Hu5UTvcCayZxx7WCcQpW6mWQ
+ 6dci9ec5JooehyEV6BpVEh3FhIBjvotEyImUEWJ85pey7/io+LyMBjb8i3DBMxqGUW/G8dL9v
+ Q9SI6qwU4WqwA4eNCNjHkGQf54DOqe9qm8hvkLC/xMaNcSjBJyQJq6b3BGjQ4LtX2p6vXljdy
+ Y+bLMkEuI01D11vuSgbHVJupaZRl/Tk6TKirKylmruM3EGFeRr+HdjOPhQnwg+M+wM27KPGE7
+ +N3AfnjlicQnMYYP4oO0gkkCpaBXQ4UcCItq6rK2agzhsIzo5X+hSD2itnCOI2aT01CETWlnW
+ 3Nttt+lW2cszTs8OmxRCMoWel4QoMw97+bCw1obXUSzf5tiQUsgWyw/VxU+pxbIXkZjHZp323
+ kAlBNsl9jEOpC8acYxDv9jUTHGf0oEWxLc+y1M7bh5Fy8WHBJuE57jUV2SF/HZ3gIKtKyIWAH
+ l8eErLlg3L8nGeUm+z+DuEEJbQOZbelFPzNFpxfsszrf/LfDr/fKW+7OU7e3ctjwltYatzjNy
+ xxpeD1pFdzFSzeL0EPKj17WuKwSVvyqszuUO5vJfbgw/+6RuQ5Kg9prkbzBygBzMZkTOxIzqu
+ M62nM1xiOPMkrSCi9LcCQFMbzOV6QK5GrgH178QeQZR14W3/XFcpiJ5PSz9IDbM6bVUNNGt+R
+ u91lQK+jnkZaM5NXruphtdAAUE/QvOterGDYk62kfJEF5upj56s9a5XhKfqwm7j2Ca2iZDXK4
+ i2zLJe/4TReb57ySE4qJO9AMHE8c/YHK9SNv8mRkjx4urganMKB3Qfs9DgO0wL/UAIzju9QYR
+ Q5nimjcTQzEuHe3iEa6ZvC4+QfMRpUzOBvEHicxtSXCdgCJfbs98D4w0wZ4AHWL4sAokQn53j
+ 7uqOunDNg71WbCT9oAn3vc0nRisxZDASU+kYTADukwdLXmOfHmKpxsQ6LrK5xu72+STnTrUxK
+ +AqqJYroEbObBItiIXO5vCLlBzX7qBlrEjfFf805gyiSMByKfVPDit/PFsSuMEKgxmHISQ6Rs
+ 41b3Th4m4yX2gRhcv+e2dB3ZZO5puwmmhPKLUkrPTb6MlXf4gri4iHsZB2We0gBN3o/lVPScv
+ iZ708aOm79WJAwrd9
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -113,20 +116,20 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Hello,
 
-I have taken another look at the implementation of the function =E2=80=9Cf=
-sl_udc_probe=E2=80=9D.
+I have taken another look at the implementation of the function =E2=80=9Ce=
+p93xx_keypad_probe=E2=80=9D.
 A software analysis approach points the following source code out for
 further development considerations.
-https://elixir.bootlin.com/linux/v5.6.2/source/drivers/usb/gadget/udc/fsl_=
-udc_core.c#L2443
+https://elixir.bootlin.com/linux/v5.6.3/source/drivers/input/keyboard/ep93=
+xx_keypad.c#L252
 https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
-ivers/usb/gadget/udc/fsl_udc_core.c?id=3Df5e94d10e4c468357019e5c28d48499f6=
-77b284f#n2442
+ivers/input/keyboard/ep93xx_keypad.c?id=3Df5e94d10e4c468357019e5c28d48499f=
+677b284f#n252
 
- 	udc_controller->irq =3D platform_get_irq(pdev, 0);
- 	if (!udc_controller->irq) {
- 		ret =3D -ENODEV;
- 		goto err_iounmap;
+ 	keypad->irq =3D platform_get_irq(pdev, 0);
+ 	if (!keypad->irq) {
+ 		err =3D -ENXIO;
+ 		goto failed_free;
  	}
 
 
@@ -134,7 +137,7 @@ The software documentation is providing the following information
 for the used programming interface.
 https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
 ivers/base/platform.c?id=3Df5e94d10e4c468357019e5c28d48499f677b284f#n221
-https://elixir.bootlin.com/linux/v5.6.2/source/drivers/base/platform.c#L20=
+https://elixir.bootlin.com/linux/v5.6.3/source/drivers/base/platform.c#L20=
 2
 
 =E2=80=9C=E2=80=A6

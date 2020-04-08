@@ -2,36 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDCC91A2A3B
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Apr 2020 22:19:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E1B71A2A46
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Apr 2020 22:23:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728684AbgDHUTY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Apr 2020 16:19:24 -0400
-Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:54446 "EHLO
+        id S1729900AbgDHUXg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Apr 2020 16:23:36 -0400
+Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:53748 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727769AbgDHUTY (ORCPT
+        with ESMTP id S1729754AbgDHUXf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Apr 2020 16:19:24 -0400
+        Wed, 8 Apr 2020 16:23:35 -0400
 Received: from [192.168.42.210] ([93.22.134.86])
         by mwinf5d68 with ME
-        id QLKH220081s0W2503LKHT1; Wed, 08 Apr 2020 22:19:18 +0200
+        id QLPY2200S1s0W2503LPZiJ; Wed, 08 Apr 2020 22:23:33 +0200
 X-ME-Helo: [192.168.42.210]
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 08 Apr 2020 22:19:18 +0200
+X-ME-Date: Wed, 08 Apr 2020 22:23:33 +0200
 X-ME-IP: 93.22.134.86
 Subject: Re: [PATCH] checkpatch: check for missing \n at the end of logging
  message
-To:     Joe Perches <joe@perches.com>, apw@canonical.com
+To:     Joe Perches <joe@perches.com>, apw@canonical.com,
+        Andrew Morton <akpm@linux-foundation.org>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 References: <20200407204908.10420-1-christophe.jaillet@wanadoo.fr>
- <437746b14735ecef311720ad41d5b237209e9674.camel@perches.com>
+ <8617a6b94c0644bce1fd4ca77309d67a612e6300.camel@perches.com>
 From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <48f32229-068d-cc62-b6df-03cdc11b99a4@wanadoo.fr>
-Date:   Wed, 8 Apr 2020 22:19:17 +0200
+Message-ID: <4b7e1cf3-6fa7-60af-a1d3-2457339dbe8a@wanadoo.fr>
+Date:   Wed, 8 Apr 2020 22:23:32 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <437746b14735ecef311720ad41d5b237209e9674.camel@perches.com>
+In-Reply-To: <8617a6b94c0644bce1fd4ca77309d67a612e6300.camel@perches.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Content-Language: en-US
@@ -41,63 +42,64 @@ List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
-Le 08/04/2020 à 02:33, Joe Perches a écrit :
-> On Tue, 2020-04-07 at 22:49 +0200, Christophe JAILLET wrote:
->> Strings logged with pr_xxx and dev_xxx often lack a trailing '\n'.
->> Introduce new tests to try to catch them early.
->>
->> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->> ---
->> This is more a PoC for now.
->>
->> Regex could be improved, merged, ...
->> We could also check for surrounding pr_cont...
->>
->> This patch is based on idea from [1]. coccinelle spots too many places
->> where \n are missing (~ 2800 with the heuristic I've used).
->> Fixing them would be painful.
->> I instead propose to teach checkpatch.pl about it to try to spot cases
->> early and avoid introducing new cases.
->>
->> [1]: https://marc.info/?l=kernel-janitors&m=158619533629657&w=4
->> ---
->>   scripts/checkpatch.pl | 10 ++++++++++
->>   1 file changed, 10 insertions(+)
->>
->> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
->> index c392ab8ea12e..792804bd6ad9 100755
->> --- a/scripts/checkpatch.pl
->> +++ b/scripts/checkpatch.pl
->> @@ -5676,6 +5676,16 @@ sub process {
->>   			}
->>   		}
->>   
->> +# check for missing \n at the end of logging function
->> +		if ($line =~ /\bpr_(emerg|alert|crit|err|warning|warn|notice|info|debug|dbg)\s*\("([^"]*(?<!\\n))"/) {
->> +			WARN("MISSING NL",
->> +			     "Possible missing '\\n' at the end of a log message\n" . $hereprev);
->> +		}
->> +		if ($line =~ /\bdev_(emerg|alert|crit|err|warning|warn|notice|info|debug|dbg)\s*\([^,]*,\s*"([^"]*(?<!\\n))"/) {
->> +			WARN("MISSING NL",
->> +			     "Possible missing '\\n' at the end of a log message\n" . $hereprev);
->> +		}
-> This can't work as string is masked to "XXX"
-
-Ok. I wasn't aware of that.
-
-I tested the regex with regex101.org and only tested with patches that 
-trigger the checkpatch.pl test, and it worked fine for me.
-I didn't test with string with trailing \n, that should NOT trigger the 
-test. I should have! :(
-
-> This is probably better using $stat and checking if a "XX" format
-> string exists as 1st or 2nd arg and adding an extraction
-> from the $rawline equivalent and checking that.
+Le 08/04/2020 à 04:14, Joe Perches a écrit :
+> This works rather better:
 >
-> Also this test should probably using $logFunctions and check
-> if the initial block is one of the known functions that
-> use a newline termination (pr_|dev_|netdev_|wiphy_)
+> Perhaps you could test?
+> ---
+>
+> v2:
+>
+> o Avoid pr_cont
+> o Use only last format line if split across multiple lines
+>
+>   scripts/checkpatch.pl | 22 ++++++++++++++++++++++
+>   1 file changed, 22 insertions(+)
+>
+> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+> index d64c67..f00a6c8 100755
+> --- a/scripts/checkpatch.pl
+> +++ b/scripts/checkpatch.pl
+> @@ -5673,6 +5673,28 @@ sub process {
+>   			}
+>   		}
+>   
+> +# check for possible missing newlines at the end of common logging functions
+> +		if (defined($stat) &&
+> +		    $stat =~ /^\+\s*($logFunctions)\s*\((?:\s*$FuncArg\s*,\s*){0,3}\s*$String/ &&
+> +		    $1 !~ /_cont$/ && $1 =~ /^(?:pr|dev|netdev|netif|wiphy)_/) {
+> +			my $cnt = statement_rawlines($stat);
+> +			my $extracted_string = "";
+> +			for (my $i = 0; $i < $cnt; $i++) {
+> +				next if ($lines[$linenr + $i - 1] !~ /$String\s*[,\)]/);
+> +				$extracted_string = get_quoted_string($lines[$linenr + $i - 1],
+> +								      $rawlines[$linenr + $i - 1]);
+> +				last if ($extracted_string ne "");
+> +			}
+> +			if ($extracted_string ne "" && $extracted_string !~ /\\n"$/) {
+> +				my $herectx = $here . "\n";
+> +				for (my $n = 0; $n < $cnt; $n++) {
+> +					$herectx .=  raw_line($linenr, $n) . "\n";
+> +				}
+> +				WARN("MISSING_FORMAT_NEWLINE",
+> +				     "Possible missing '\\n' at the end of a logging message format string\n" . $herectx);
+> +			}
+> +		}
+> +
+>   # check for logging functions with KERN_<LEVEL>
+>   		if ($line !~ /printk(?:_ratelimited|_once)?\s*\(/ &&
+>   		    $line =~ /\b$logFunctions\s*\(.*\b(KERN_[A-Z]+)\b/) {
+>
+For what I wanted to check and according to the few tests I've made, it 
+looks fine.
 
-Agreed but your perl and regex is much more fluent than mine. ;-)
+Thank you very much for sharing this much more robust (and working) 
+alternative.
+
+For what it worth: (i.e. much more tests should be done)
+Tested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+
+Maybe, at least a Suggested-By: would be appreciated.
 
 CJ
+

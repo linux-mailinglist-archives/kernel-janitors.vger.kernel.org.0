@@ -2,104 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E1B71A2A46
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Apr 2020 22:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96F131A2C01
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 00:47:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729900AbgDHUXg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Apr 2020 16:23:36 -0400
-Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:53748 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729754AbgDHUXf (ORCPT
+        id S1726512AbgDHWrS convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Apr 2020 18:47:18 -0400
+Received: from mail-il1-f196.google.com ([209.85.166.196]:33593 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726469AbgDHWrR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Apr 2020 16:23:35 -0400
-Received: from [192.168.42.210] ([93.22.134.86])
-        by mwinf5d68 with ME
-        id QLPY2200S1s0W2503LPZiJ; Wed, 08 Apr 2020 22:23:33 +0200
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 08 Apr 2020 22:23:33 +0200
-X-ME-IP: 93.22.134.86
-Subject: Re: [PATCH] checkpatch: check for missing \n at the end of logging
- message
-To:     Joe Perches <joe@perches.com>, apw@canonical.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200407204908.10420-1-christophe.jaillet@wanadoo.fr>
- <8617a6b94c0644bce1fd4ca77309d67a612e6300.camel@perches.com>
-From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <4b7e1cf3-6fa7-60af-a1d3-2457339dbe8a@wanadoo.fr>
-Date:   Wed, 8 Apr 2020 22:23:32 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        Wed, 8 Apr 2020 18:47:17 -0400
+Received: by mail-il1-f196.google.com with SMTP id k29so8436725ilg.0;
+        Wed, 08 Apr 2020 15:47:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=fu64UL2/aZUHV4DT2tomeskLOh/+k23UcYzbE4vOhe4=;
+        b=GmD1N8zqZdEorCYyjLOEUWJ+xWOO1kNSmUb0NytBxE9J3s5dUCE7MdvkO7CFk+HzRP
+         +F6ljkeZe4Tcrv35qnkTlD1qy+WUE7Z2EHOqnekoGT1Pbh87GFpPKq4n2ZeQ28O6iegQ
+         TngMnoItqDgnJuDpskNGTNhgDd5K8h9AUf3mOY8c8JFyPdFcB9xR4hja/iTWK4CS4kn6
+         n3Qglx83JbWxETkkYo3w02PQfzOUgJ8PJ1xrFsvJgJ+edjW21/EV1EY52azCTFy/atKK
+         6CyR2yk2RwRabwIYxBuGgNeVdSgfAFih0cqjz3Ry/vALrAlJjkgKCYK5Fbvuj5Dz6PgH
+         xelw==
+X-Gm-Message-State: AGi0PuYBuC3EKQHfmVflW+XZxE7uckjZHXFiyr8zMtfbmDKAHh2upMwh
+        NoC6AaWuXc9QPQ3/r7Z9aFsEacl4lpY=
+X-Google-Smtp-Source: APiQypLUjGz27KNN63XlEdZMTx8EOenkma3QyyoO0RV6oEfkyq6nlOiY3ezwWvxa3PYNEOj2ilmrJQ==
+X-Received: by 2002:a92:4896:: with SMTP id j22mr9734688ilg.158.1586386035106;
+        Wed, 08 Apr 2020 15:47:15 -0700 (PDT)
+Received: from mail-io1-f44.google.com (mail-io1-f44.google.com. [209.85.166.44])
+        by smtp.gmail.com with ESMTPSA id s69sm8577714ill.73.2020.04.08.15.47.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Apr 2020 15:47:14 -0700 (PDT)
+Received: by mail-io1-f44.google.com with SMTP id n10so1907505iom.3;
+        Wed, 08 Apr 2020 15:47:14 -0700 (PDT)
+X-Received: by 2002:a5d:91cc:: with SMTP id k12mr9210587ior.198.1586386034462;
+ Wed, 08 Apr 2020 15:47:14 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <8617a6b94c0644bce1fd4ca77309d67a612e6300.camel@perches.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+References: <36341bb1-1e00-5eb1-d032-60dcc614ddaf@web.de>
+In-Reply-To: <36341bb1-1e00-5eb1-d032-60dcc614ddaf@web.de>
+From:   Li Yang <leoyang.li@nxp.com>
+Date:   Wed, 8 Apr 2020 17:47:03 -0500
+X-Gmail-Original-Message-ID: <CADRPPNRe=YxwjCOYbEjKg4LCOx2suK5WxZp17NJhTm76szdU0w@mail.gmail.com>
+Message-ID: <CADRPPNRe=YxwjCOYbEjKg4LCOx2suK5WxZp17NJhTm76szdU0w@mail.gmail.com>
+Subject: Re: usb: gadget: fsl_udc_core: Checking for a failed
+ platform_get_irq() call in fsl_udc_probe()
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-usb@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Felipe Balbi <balbi@kernel.org>,
+        Tang Bin <tangbin@cmss.chinamobile.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-Le 08/04/2020 à 04:14, Joe Perches a écrit :
-> This works rather better:
+On Wed, Apr 8, 2020 at 9:19 AM Markus Elfring <Markus.Elfring@web.de> wrote:
 >
-> Perhaps you could test?
-> ---
+> Hello,
 >
-> v2:
+> I have taken another look at the implementation of the function “fsl_udc_probe”.
+> A software analysis approach points the following source code out for
+> further development considerations.
+> https://elixir.bootlin.com/linux/v5.6.2/source/drivers/usb/gadget/udc/fsl_udc_core.c#L2443
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/usb/gadget/udc/fsl_udc_core.c?id=f5e94d10e4c468357019e5c28d48499f677b284f#n2442
 >
-> o Avoid pr_cont
-> o Use only last format line if split across multiple lines
+>         udc_controller->irq = platform_get_irq(pdev, 0);
+>         if (!udc_controller->irq) {
+>                 ret = -ENODEV;
+>                 goto err_iounmap;
+>         }
 >
->   scripts/checkpatch.pl | 22 ++++++++++++++++++++++
->   1 file changed, 22 insertions(+)
 >
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> index d64c67..f00a6c8 100755
-> --- a/scripts/checkpatch.pl
-> +++ b/scripts/checkpatch.pl
-> @@ -5673,6 +5673,28 @@ sub process {
->   			}
->   		}
->   
-> +# check for possible missing newlines at the end of common logging functions
-> +		if (defined($stat) &&
-> +		    $stat =~ /^\+\s*($logFunctions)\s*\((?:\s*$FuncArg\s*,\s*){0,3}\s*$String/ &&
-> +		    $1 !~ /_cont$/ && $1 =~ /^(?:pr|dev|netdev|netif|wiphy)_/) {
-> +			my $cnt = statement_rawlines($stat);
-> +			my $extracted_string = "";
-> +			for (my $i = 0; $i < $cnt; $i++) {
-> +				next if ($lines[$linenr + $i - 1] !~ /$String\s*[,\)]/);
-> +				$extracted_string = get_quoted_string($lines[$linenr + $i - 1],
-> +								      $rawlines[$linenr + $i - 1]);
-> +				last if ($extracted_string ne "");
-> +			}
-> +			if ($extracted_string ne "" && $extracted_string !~ /\\n"$/) {
-> +				my $herectx = $here . "\n";
-> +				for (my $n = 0; $n < $cnt; $n++) {
-> +					$herectx .=  raw_line($linenr, $n) . "\n";
-> +				}
-> +				WARN("MISSING_FORMAT_NEWLINE",
-> +				     "Possible missing '\\n' at the end of a logging message format string\n" . $herectx);
-> +			}
-> +		}
-> +
->   # check for logging functions with KERN_<LEVEL>
->   		if ($line !~ /printk(?:_ratelimited|_once)?\s*\(/ &&
->   		    $line =~ /\b$logFunctions\s*\(.*\b(KERN_[A-Z]+)\b/) {
+> The software documentation is providing the following information
+> for the used programming interface.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/platform.c?id=f5e94d10e4c468357019e5c28d48499f677b284f#n221
+> https://elixir.bootlin.com/linux/v5.6.2/source/drivers/base/platform.c#L202
 >
-For what I wanted to check and according to the few tests I've made, it 
-looks fine.
+> “…
+>  * Return: IRQ number on success, negative error number on failure.
+> …”
+>
+> Would you like to reconsider the shown condition check?
 
-Thank you very much for sharing this much more robust (and working) 
-alternative.
+Thanks for the finding.  This is truly a software issue that need to
+be fixed.  Would you submit a patch for it or you want us to fix it?
 
-For what it worth: (i.e. much more tests should be done)
-Tested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-
-Maybe, at least a Suggested-By: would be appreciated.
-
-CJ
-
+Regards,
+Leo

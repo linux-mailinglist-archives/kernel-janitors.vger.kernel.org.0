@@ -2,62 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DCB321A1E51
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Apr 2020 11:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71C991A1FAA
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Apr 2020 13:15:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727187AbgDHJvF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Apr 2020 05:51:05 -0400
-Received: from smtprelay0053.hostedemail.com ([216.40.44.53]:38766 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725932AbgDHJvF (ORCPT
+        id S1728129AbgDHLPJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Apr 2020 07:15:09 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:44240 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728062AbgDHLPJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Apr 2020 05:51:05 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 942F933C4;
-        Wed,  8 Apr 2020 09:51:04 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:967:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1538:1568:1593:1594:1711:1714:1730:1747:1777:1792:2393:2525:2553:2560:2563:2682:2685:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3622:3866:3868:3870:3873:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4250:4321:5007:6119:7903:9025:9040:10004:10400:11232:11658:11914:12043:12295:12296:12297:12438:12555:12740:12760:12895:13069:13311:13357:13439:13845:14181:14659:14721:21080:21212:21627:21660:21811:21939:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: dad70_437cbb6622e09
-X-Filterd-Recvd-Size: 1539
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf06.hostedemail.com (Postfix) with ESMTPA;
-        Wed,  8 Apr 2020 09:51:03 +0000 (UTC)
-Message-ID: <acc040a1c5bec74cb78e2ee7e859c6989647c343.camel@perches.com>
-Subject: Re: [PATCH] gpu/drm: ingenic: Delete an error message in
- ingenic_drm_probe()
-From:   Joe Perches <joe@perches.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Julia Lawall <julia.lawall@inria.fr>,
-        kernel-janitors@vger.kernel.org
-Date:   Wed, 08 Apr 2020 02:49:04 -0700
-In-Reply-To: <20200408094244.GM2001@kadam>
-References: <e03e7106-0f22-99c4-ad21-b288e8990b5a@web.de>
-         <a0a0c054-f71e-a23e-ba47-c1f6554b79e6@wanadoo.fr>
-         <alpine.DEB.2.21.2004051948120.3208@hadrien>
-         <9549b4a1-5874-5f00-6237-d5f5161e9852@wanadoo.fr>
-         <20200408094244.GM2001@kadam>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        Wed, 8 Apr 2020 07:15:09 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 038BD0rN189325;
+        Wed, 8 Apr 2020 11:15:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=fjhhviIGr/rXpBHAV0fq3rzPJmoQ9bnVe4b14251RXs=;
+ b=rNe1w2NJigpyMZTbSGqMh8pg2zaBFHyeP1t65yDXwTURh5wdavKzQvD2ki7mEgUk1oNp
+ J9JLbwMqUY0LvwEsQ02VyTbyKUYDaoAdvmkgNhRgCyTr8eB28TirorxSL08gDHPP9384
+ j/1ntHZBLW8ZbV0YTvhsB78xhsr4y4IA2VRuZi3VPXMK0i3mqqAeSgcZiAiHqlWlWdNp
+ 4cziBxnu+gh4lzkW3qaHvbkeaX+JClgxkDDwLBI6MTw8jmHVdbnMtl8LXmgBsieEc4Nf
+ +e4CcJMfxnQd0qubPicug+PNo6NX8BQuH6x+Nk8nCC2dT7jP5CxQS6PpJCC2vcQLaLHG Ig== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 309ag3983d-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 08 Apr 2020 11:15:05 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 038BCikr059163;
+        Wed, 8 Apr 2020 11:15:04 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 309ag1kdbw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 08 Apr 2020 11:15:04 +0000
+Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 038BF2AE025155;
+        Wed, 8 Apr 2020 11:15:02 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 08 Apr 2020 04:15:01 -0700
+Date:   Wed, 8 Apr 2020 14:14:56 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     dxu@dxuuu.xyz
+Cc:     kernel-janitors@vger.kernel.org
+Subject: [bug report] kernfs: Add option to enable user xattrs
+Message-ID: <20200408111456.GA250869@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9584 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 malwarescore=0
+ phishscore=0 mlxscore=0 bulkscore=0 mlxlogscore=657 suspectscore=3
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004080094
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9584 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=3 adultscore=0
+ malwarescore=0 impostorscore=0 spamscore=0 mlxlogscore=712 clxscore=1011
+ priorityscore=1501 phishscore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004080094
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 2020-04-08 at 12:42 +0300, Dan Carpenter wrote:
-> On Mon, Apr 06, 2020 at 07:48:52PM +0200, Christophe JAILLET wrote:
-> > Nevertheless, I wrote another script (see below), which triggers ~2800 times
-> > in ./drivers only.
-> > Some are false positives, but most look valid.
-> 
-> I did a quick grep and you're right there are a ton of these!
+Hello Daniel Xu,
 
-Quite a lot of them use pr_cont too.
+The patch 0c47383ba3bd: "kernfs: Add option to enable user xattrs"
+from Mar 12, 2020, leads to the following static checker warning:
 
-Anyway, try this:
-https://lore.kernel.org/lkml/8617a6b94c0644bce1fd4ca77309d67a612e6300.camel@perches.com/
+	fs/kernfs/inode.c:379 kernfs_vfs_user_xattr_rm()
+	error: uninitialized symbol 'removed_size'.
 
+fs/kernfs/inode.c
+   366  static int kernfs_vfs_user_xattr_rm(struct kernfs_node *kn,
+   367                                      const char *full_name,
+   368                                      struct simple_xattrs *xattrs,
+   369                                      const void *value, size_t size, int flags)
+   370  {
+   371          atomic_t *sz = &kn->iattr->user_xattr_size;
+   372          atomic_t *nr = &kn->iattr->nr_user_xattrs;
+   373          ssize_t removed_size;
+   374          int ret;
+   375  
+   376          ret = simple_xattr_set(xattrs, full_name, value, size, flags,
+   377                                 &removed_size);
+   378  
+   379          if (removed_size >= 0) {
+                    ^^^^^^^^^^^^^^^^^
+There are some path where simple_xattr_set() doesn't initialize
+"removed_size" on allocation failure.
 
+   380                  atomic_sub(removed_size, sz);
+   381                  atomic_dec(nr);
+   382          }
+   383  
+   384          return ret;
+   385  }
+
+regards,
+dan carpenter

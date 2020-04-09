@@ -2,76 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46E511A3736
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 17:31:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA6901A3814
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 18:32:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728177AbgDIPbw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Apr 2020 11:31:52 -0400
-Received: from smtprelay0184.hostedemail.com ([216.40.44.184]:44932 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727919AbgDIPbv (ORCPT
+        id S1727048AbgDIQck (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Apr 2020 12:32:40 -0400
+Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:52786 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726706AbgDIQcj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Apr 2020 11:31:51 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 564AD182CCCD3;
-        Thu,  9 Apr 2020 15:31:51 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:3874:4250:4321:4605:5007:6119:7903:9164:10004:10400:10848:11232:11658:11914:12043:12296:12297:12740:12760:12895:13019:13069:13311:13357:13439:14659:14721:21080:21212:21451:21627:21660:30034:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: join46_2d27205586809
-X-Filterd-Recvd-Size: 2325
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf05.hostedemail.com (Postfix) with ESMTPA;
-        Thu,  9 Apr 2020 15:31:50 +0000 (UTC)
-Message-ID: <bcdfa5ae68b8cb7d9324a89aedf452f6209b570c.camel@perches.com>
-Subject: Re: [PATCH] checkpatch: check for missing \n at the end of logging
- message
-From:   Joe Perches <joe@perches.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        apw@canonical.com, Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Date:   Thu, 09 Apr 2020 08:29:49 -0700
-In-Reply-To: <60c732a1-aa4e-afab-d223-894a67713003@wanadoo.fr>
-References: <20200407204908.10420-1-christophe.jaillet@wanadoo.fr>
-         <8617a6b94c0644bce1fd4ca77309d67a612e6300.camel@perches.com>
-         <4b7e1cf3-6fa7-60af-a1d3-2457339dbe8a@wanadoo.fr>
-         <efb5a518fdc47f0120b94a7e8a95d275c0f4ad43.camel@perches.com>
-         <60c732a1-aa4e-afab-d223-894a67713003@wanadoo.fr>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        Thu, 9 Apr 2020 12:32:39 -0400
+Received: from localhost.localdomain ([93.22.150.119])
+        by mwinf5d45 with ME
+        id QgYb2200C2aoYT903gYbdg; Thu, 09 Apr 2020 18:32:38 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 09 Apr 2020 18:32:38 +0200
+X-ME-IP: 93.22.150.119
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     mchehab+samsung@kernel.org, akpm@linux-foundation.org,
+        gregkh@linuxfoundation.org, andriy.shevchenko@linux.intel.com,
+        tglx@linutronix.de
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] lib/math: avoid trailing '\n' hidden in pr_fmt()
+Date:   Thu,  9 Apr 2020 18:32:34 +0200
+Message-Id: <20200409163234.22830-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 2020-04-09 at 09:24 +0200, Christophe JAILLET wrote:
-> I think that, at least printk(), WARN() and co, and panic() should also 
-> be handled the same way.
+pr_xxx() functions usually have '\n' at the end of the logging message.
+Here, this '\n' is added via the 'pr_fmt' macro.
 
-Maybe.
+In order to be more consistent with other files, use a more standard
+convention and put these '\n' back in the messages themselves and remove it
+from the pr_fmt macro.
 
-> A few files (5 according to my grep) also have something like:
->     #define pr_fmt(fmt) "bcache: %s()" fmt "\n", __func__
-> and then sometimes a mix of pr_xxx() with either trailing \n or not.
+While at it, use __func__ instead of hardcoding a function name in the
+last message.
 
-Didn't know about those.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ lib/math/prime_numbers.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-> Maybe those should be handled manually to be consistent and avoid a "\n" 
-> in pr_fmt which is not widely used in other files
-
-More likely the pr_fmt should have the \n removed and added
-to the uses.
-
-$ git grep -P 'define\s+pr_fmt.*\\n'
-drivers/clocksource/timer-davinci.c:#define pr_fmt(fmt) "%s: " fmt "\n", __func__
-drivers/md/bcache/bcache.h:#define pr_fmt(fmt) "bcache: %s() " fmt "\n", __func__
-drivers/md/bcache/bset.c:#define pr_fmt(fmt) "bcache: %s() " fmt "\n", __func__
-lib/math/prime_numbers.c:#define pr_fmt(fmt) "prime numbers: " fmt "\n"
-lib/percpu-refcount.c:#define pr_fmt(fmt) "%s: " fmt "\n", __func__
-lib/test_hash.c:#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt "\n"
-tools/usb/usbip/libsrc/usbip_common.h:#define pr_fmt(fmt)       "%s: %s: " fmt "\n", PROGNAME
-
-
+diff --git a/lib/math/prime_numbers.c b/lib/math/prime_numbers.c
+index 052f5b727be7..d42cebf7407f 100644
+--- a/lib/math/prime_numbers.c
++++ b/lib/math/prime_numbers.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-#define pr_fmt(fmt) "prime numbers: " fmt "\n"
++#define pr_fmt(fmt) "prime numbers: " fmt
+ 
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+@@ -253,7 +253,7 @@ static void dump_primes(void)
+ 
+ 	if (buf)
+ 		bitmap_print_to_pagebuf(true, buf, p->primes, p->sz);
+-	pr_info("primes.{last=%lu, .sz=%lu, .primes[]=...x%lx} = %s",
++	pr_info("primes.{last=%lu, .sz=%lu, .primes[]=...x%lx} = %s\n",
+ 		p->last, p->sz, p->primes[BITS_TO_LONGS(p->sz) - 1], buf);
+ 
+ 	rcu_read_unlock();
+@@ -273,7 +273,7 @@ static int selftest(unsigned long max)
+ 		bool fast = is_prime_number(x);
+ 
+ 		if (slow != fast) {
+-			pr_err("inconsistent result for is-prime(%lu): slow=%s, fast=%s!",
++			pr_err("inconsistent result for is-prime(%lu): slow=%s, fast=%s!\n",
+ 			       x, slow ? "yes" : "no", fast ? "yes" : "no");
+ 			goto err;
+ 		}
+@@ -282,14 +282,14 @@ static int selftest(unsigned long max)
+ 			continue;
+ 
+ 		if (next_prime_number(last) != x) {
+-			pr_err("incorrect result for next-prime(%lu): expected %lu, got %lu",
++			pr_err("incorrect result for next-prime(%lu): expected %lu, got %lu\n",
+ 			       last, x, next_prime_number(last));
+ 			goto err;
+ 		}
+ 		last = x;
+ 	}
+ 
+-	pr_info("selftest(%lu) passed, last prime was %lu", x, last);
++	pr_info("%s(%lu) passed, last prime was %lu\n", __func__, x, last);
+ 	return 0;
+ 
+ err:
+-- 
+2.20.1
 

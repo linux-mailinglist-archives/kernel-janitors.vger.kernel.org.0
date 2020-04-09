@@ -2,70 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C26FC1A3937
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 19:52:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E4981A3A09
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 20:52:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726626AbgDIRwu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Apr 2020 13:52:50 -0400
-Received: from smtprelay0088.hostedemail.com ([216.40.44.88]:33918 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726621AbgDIRwt (ORCPT
+        id S1726641AbgDISwl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Apr 2020 14:52:41 -0400
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:29055 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725987AbgDISwl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Apr 2020 13:52:49 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 316C7181D3976;
-        Thu,  9 Apr 2020 17:52:49 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1539:1593:1594:1711:1730:1747:1777:1792:2110:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3870:3872:3874:4250:4321:4605:5007:6119:7903:9040:10004:10400:10450:10455:10848:11232:11658:11914:12043:12296:12297:12740:12895:13069:13311:13357:13439:13894:14659:14721:19904:19999:21080:21212:21451:21627:21660:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: month72_6fc931f80ed3e
-X-Filterd-Recvd-Size: 2002
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf09.hostedemail.com (Postfix) with ESMTPA;
-        Thu,  9 Apr 2020 17:52:48 +0000 (UTC)
-Message-ID: <f212b3ad6c09e595cb91c2f7e8728d71e27f6833.camel@perches.com>
+        Thu, 9 Apr 2020 14:52:41 -0400
+Received: from [192.168.42.210] ([93.22.150.119])
+        by mwinf5d70 with ME
+        id Qise2200e2aoYT903isfJR; Thu, 09 Apr 2020 20:52:39 +0200
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 09 Apr 2020 20:52:39 +0200
+X-ME-IP: 93.22.150.119
 Subject: Re: [PATCH] checkpatch: check for missing \n at the end of logging
  message
-From:   Joe Perches <joe@perches.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        apw@canonical.com, Andrew Morton <akpm@linux-foundation.org>
+To:     Joe Perches <joe@perches.com>, apw@canonical.com,
+        Andrew Morton <akpm@linux-foundation.org>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Date:   Thu, 09 Apr 2020 10:50:47 -0700
-In-Reply-To: <05379b22-6755-368b-8127-8827fa020189@wanadoo.fr>
+Newsgroups: gmane.linux.kernel,gmane.linux.kernel.janitors
 References: <20200407204908.10420-1-christophe.jaillet@wanadoo.fr>
-         <8617a6b94c0644bce1fd4ca77309d67a612e6300.camel@perches.com>
-         <4b7e1cf3-6fa7-60af-a1d3-2457339dbe8a@wanadoo.fr>
-         <efb5a518fdc47f0120b94a7e8a95d275c0f4ad43.camel@perches.com>
-         <60c732a1-aa4e-afab-d223-894a67713003@wanadoo.fr>
-         <bcdfa5ae68b8cb7d9324a89aedf452f6209b570c.camel@perches.com>
-         <05379b22-6755-368b-8127-8827fa020189@wanadoo.fr>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+ <8617a6b94c0644bce1fd4ca77309d67a612e6300.camel@perches.com>
+ <4b7e1cf3-6fa7-60af-a1d3-2457339dbe8a@wanadoo.fr>
+ <efb5a518fdc47f0120b94a7e8a95d275c0f4ad43.camel@perches.com>
+ <60c732a1-aa4e-afab-d223-894a67713003@wanadoo.fr>
+ <bcdfa5ae68b8cb7d9324a89aedf452f6209b570c.camel@perches.com>
+ <05379b22-6755-368b-8127-8827fa020189@wanadoo.fr>
+ <f212b3ad6c09e595cb91c2f7e8728d71e27f6833.camel@perches.com>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <59d1ef8f-4fb0-9af2-f761-b52559c8a699@wanadoo.fr>
+Date:   Thu, 9 Apr 2020 20:52:38 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
+In-Reply-To: <f212b3ad6c09e595cb91c2f7e8728d71e27f6833.camel@perches.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 2020-04-09 at 19:34 +0200, Christophe JAILLET wrote:
-> Le 09/04/2020 � 17:29, Joe Perches a �crit :
-[]
-> > lib/percpu-refcount.c:#define pr_fmt(fmt) "%s: " fmt "\n", __func__
-> In this file, there are some WARN_ON.
-> Are these log functions also influenced by pr_fmt?
+Le 09/04/2020 à 19:50, Joe Perches a écrit :
+> On Thu, 2020-04-09 at 19:34 +0200, Christophe JAILLET wrote:
+>> Le 09/04/2020 à 17:29, Joe Perches a écrit :
+> []
+>>> lib/percpu-refcount.c:#define pr_fmt(fmt) "%s: " fmt "\n", __func__
+>> In this file, there are some WARN_ON.
+>> Are these log functions also influenced by pr_fmt?
+> No.
+Ok, thx.
+>
+>>> drivers/md/bcache/bcache.h:#define pr_fmt(fmt) "bcache: %s() " fmt "\n", __func__
+>>> drivers/md/bcache/bset.c:#define pr_fmt(fmt) "bcache: %s() " fmt "\n", __func__
+>>> tools/usb/usbip/libsrc/usbip_common.h:#define pr_fmt(fmt)       "%s: %s: " fmt "\n", PROGNAME
+>> Tricky because all files that include it have to be checked.
+>> I won't touch these ones.
+> What a pity I do not know the French equivalent
+> for the children's taunt of "chicken!"...
 
-No.
+I don't know why the french one is wet, but the translation would be 
+"poule mouillée".
 
-> > drivers/md/bcache/bcache.h:#define pr_fmt(fmt) "bcache: %s() " fmt "\n", __func__
-> > drivers/md/bcache/bset.c:#define pr_fmt(fmt) "bcache: %s() " fmt "\n", __func__
-> > tools/usb/usbip/libsrc/usbip_common.h:#define pr_fmt(fmt)       "%s: %s: " fmt "\n", PROGNAME
-> 
-> Tricky because all files that include it have to be checked.
-> I won't touch these ones.
+In fact, I don't really see the need to modify many files just for some 
+kind of style.
+(same reason why I think that checkpatch is a better place for a test 
+than submitting hundreds of patches based on coccinelle)
 
-What a pity I do not know the French equivalent
-for the children's taunt of "chicken!"...
 
-cheers, Joe
+ From your point of view, does auditing and fixing these missing \n make 
+sense?
+Wouldn't it just be a lot of noise for a small benefit?
+
+
+CJ
 

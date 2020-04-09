@@ -2,83 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 531F51A38F6
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 19:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DE6A1A3910
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 19:42:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726571AbgDIReT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Apr 2020 13:34:19 -0400
-Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:17877 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726502AbgDIReT (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Apr 2020 13:34:19 -0400
-Received: from [192.168.42.210] ([93.22.150.119])
-        by mwinf5d45 with ME
-        id QhaD2200X2aoYT903haGET; Thu, 09 Apr 2020 19:34:17 +0200
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 09 Apr 2020 19:34:17 +0200
-X-ME-IP: 93.22.150.119
-Subject: Re: [PATCH] checkpatch: check for missing \n at the end of logging
- message
-To:     Joe Perches <joe@perches.com>, apw@canonical.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Newsgroups: gmane.linux.kernel,gmane.linux.kernel.janitors
-References: <20200407204908.10420-1-christophe.jaillet@wanadoo.fr>
- <8617a6b94c0644bce1fd4ca77309d67a612e6300.camel@perches.com>
- <4b7e1cf3-6fa7-60af-a1d3-2457339dbe8a@wanadoo.fr>
- <efb5a518fdc47f0120b94a7e8a95d275c0f4ad43.camel@perches.com>
- <60c732a1-aa4e-afab-d223-894a67713003@wanadoo.fr>
- <bcdfa5ae68b8cb7d9324a89aedf452f6209b570c.camel@perches.com>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <05379b22-6755-368b-8127-8827fa020189@wanadoo.fr>
-Date:   Thu, 9 Apr 2020 19:34:12 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1726650AbgDIRmf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Apr 2020 13:42:35 -0400
+Received: from mga02.intel.com ([134.134.136.20]:37967 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725987AbgDIRmf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 9 Apr 2020 13:42:35 -0400
+IronPort-SDR: SylA84Z0KW8olGt8RouNqchdi3shocSTc2sdkPBF24ots+V2wcMkIu38l2iH6QNmmxTqpk1zya
+ OxIaZHnRT5Yg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2020 10:42:33 -0700
+IronPort-SDR: v8mMBOGSho6jXgQYVkBnhThOfiLso799i5EjEBsMSGg4MCflJUfL6nlKyvFiMSQHbwQzoU2K6B
+ 3xDMEqtquTDQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,363,1580803200"; 
+   d="scan'208";a="398649802"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga004.jf.intel.com with ESMTP; 09 Apr 2020 10:42:31 -0700
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1jMbCD-00H1dm-QZ; Thu, 09 Apr 2020 20:42:33 +0300
+Date:   Thu, 9 Apr 2020 20:42:33 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     mchehab+samsung@kernel.org, akpm@linux-foundation.org,
+        gregkh@linuxfoundation.org, tglx@linutronix.de,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] lib/math: avoid trailing '\n' hidden in pr_fmt()
+Message-ID: <20200409174233.GL3676135@smile.fi.intel.com>
+References: <20200409163234.22830-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-In-Reply-To: <bcdfa5ae68b8cb7d9324a89aedf452f6209b570c.camel@perches.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200409163234.22830-1-christophe.jaillet@wanadoo.fr>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 09/04/2020 à 17:29, Joe Perches a écrit :
-> On Thu, 2020-04-09 at 09:24 +0200, Christophe JAILLET wrote:
->> I think that, at least printk(), WARN() and co, and panic() should also
->> be handled the same way.
-> Maybe.
->
->> A few files (5 according to my grep) also have something like:
->>      #define pr_fmt(fmt) "bcache: %s()" fmt "\n", __func__
->> and then sometimes a mix of pr_xxx() with either trailing \n or not.
-> Didn't know about those.
->
->> Maybe those should be handled manually to be consistent and avoid a "\n"
->> in pr_fmt which is not widely used in other files
-> More likely the pr_fmt should have the \n removed and added
-> to the uses.
-Yes agreed.
-> $ git grep -P 'define\s+pr_fmt.*\\n'
-> drivers/clocksource/timer-davinci.c:#define pr_fmt(fmt) "%s: " fmt "\n", __func__
-https://marc.info/?l=linux-kernel&m=158642435216181&w=4 (which has been 
-acked)
+On Thu, Apr 09, 2020 at 06:32:34PM +0200, Christophe JAILLET wrote:
+> pr_xxx() functions usually have '\n' at the end of the logging message.
+> Here, this '\n' is added via the 'pr_fmt' macro.
+> 
+> In order to be more consistent with other files, use a more standard
+> convention and put these '\n' back in the messages themselves and remove it
+> from the pr_fmt macro.
+> 
+> While at it, use __func__ instead of hardcoding a function name in the
+> last message.
 
-> lib/math/prime_numbers.c:#define pr_fmt(fmt) "prime numbers: " fmt "\n"
-> lib/test_hash.c:#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt "\n"
-Patches proposed.
-> lib/percpu-refcount.c:#define pr_fmt(fmt) "%s: " fmt "\n", __func__
-In this file, there are some WARN_ON.
-Are these log functions also influenced by pr_fmt?
-> drivers/md/bcache/bcache.h:#define pr_fmt(fmt) "bcache: %s() " fmt "\n", __func__
-> drivers/md/bcache/bset.c:#define pr_fmt(fmt) "bcache: %s() " fmt "\n", __func__
-> tools/usb/usbip/libsrc/usbip_common.h:#define pr_fmt(fmt)       "%s: %s: " fmt "\n", PROGNAME
+FWIW,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Tricky because all files that include it have to be checked.
-I won't touch these ones.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  lib/math/prime_numbers.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/lib/math/prime_numbers.c b/lib/math/prime_numbers.c
+> index 052f5b727be7..d42cebf7407f 100644
+> --- a/lib/math/prime_numbers.c
+> +++ b/lib/math/prime_numbers.c
+> @@ -1,5 +1,5 @@
+>  // SPDX-License-Identifier: GPL-2.0-only
+> -#define pr_fmt(fmt) "prime numbers: " fmt "\n"
+> +#define pr_fmt(fmt) "prime numbers: " fmt
+>  
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+> @@ -253,7 +253,7 @@ static void dump_primes(void)
+>  
+>  	if (buf)
+>  		bitmap_print_to_pagebuf(true, buf, p->primes, p->sz);
+> -	pr_info("primes.{last=%lu, .sz=%lu, .primes[]=...x%lx} = %s",
+> +	pr_info("primes.{last=%lu, .sz=%lu, .primes[]=...x%lx} = %s\n",
+>  		p->last, p->sz, p->primes[BITS_TO_LONGS(p->sz) - 1], buf);
+>  
+>  	rcu_read_unlock();
+> @@ -273,7 +273,7 @@ static int selftest(unsigned long max)
+>  		bool fast = is_prime_number(x);
+>  
+>  		if (slow != fast) {
+> -			pr_err("inconsistent result for is-prime(%lu): slow=%s, fast=%s!",
+> +			pr_err("inconsistent result for is-prime(%lu): slow=%s, fast=%s!\n",
+>  			       x, slow ? "yes" : "no", fast ? "yes" : "no");
+>  			goto err;
+>  		}
+> @@ -282,14 +282,14 @@ static int selftest(unsigned long max)
+>  			continue;
+>  
+>  		if (next_prime_number(last) != x) {
+> -			pr_err("incorrect result for next-prime(%lu): expected %lu, got %lu",
+> +			pr_err("incorrect result for next-prime(%lu): expected %lu, got %lu\n",
+>  			       last, x, next_prime_number(last));
+>  			goto err;
+>  		}
+>  		last = x;
+>  	}
+>  
+> -	pr_info("selftest(%lu) passed, last prime was %lu", x, last);
+> +	pr_info("%s(%lu) passed, last prime was %lu\n", __func__, x, last);
+>  	return 0;
+>  
+>  err:
+> -- 
+> 2.20.1
+> 
 
-CJ
+-- 
+With Best Regards,
+Andy Shevchenko
+
 

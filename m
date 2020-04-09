@@ -2,97 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96F131A2C01
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 00:47:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F28A1A2D7F
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 04:05:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726512AbgDHWrS convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Apr 2020 18:47:18 -0400
-Received: from mail-il1-f196.google.com ([209.85.166.196]:33593 "EHLO
-        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726469AbgDHWrR (ORCPT
+        id S1726530AbgDICFX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Apr 2020 22:05:23 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:23943 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726510AbgDICFW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Apr 2020 18:47:17 -0400
-Received: by mail-il1-f196.google.com with SMTP id k29so8436725ilg.0;
-        Wed, 08 Apr 2020 15:47:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=fu64UL2/aZUHV4DT2tomeskLOh/+k23UcYzbE4vOhe4=;
-        b=GmD1N8zqZdEorCYyjLOEUWJ+xWOO1kNSmUb0NytBxE9J3s5dUCE7MdvkO7CFk+HzRP
-         +F6ljkeZe4Tcrv35qnkTlD1qy+WUE7Z2EHOqnekoGT1Pbh87GFpPKq4n2ZeQ28O6iegQ
-         TngMnoItqDgnJuDpskNGTNhgDd5K8h9AUf3mOY8c8JFyPdFcB9xR4hja/iTWK4CS4kn6
-         n3Qglx83JbWxETkkYo3w02PQfzOUgJ8PJ1xrFsvJgJ+edjW21/EV1EY52azCTFy/atKK
-         6CyR2yk2RwRabwIYxBuGgNeVdSgfAFih0cqjz3Ry/vALrAlJjkgKCYK5Fbvuj5Dz6PgH
-         xelw==
-X-Gm-Message-State: AGi0PuYBuC3EKQHfmVflW+XZxE7uckjZHXFiyr8zMtfbmDKAHh2upMwh
-        NoC6AaWuXc9QPQ3/r7Z9aFsEacl4lpY=
-X-Google-Smtp-Source: APiQypLUjGz27KNN63XlEdZMTx8EOenkma3QyyoO0RV6oEfkyq6nlOiY3ezwWvxa3PYNEOj2ilmrJQ==
-X-Received: by 2002:a92:4896:: with SMTP id j22mr9734688ilg.158.1586386035106;
-        Wed, 08 Apr 2020 15:47:15 -0700 (PDT)
-Received: from mail-io1-f44.google.com (mail-io1-f44.google.com. [209.85.166.44])
-        by smtp.gmail.com with ESMTPSA id s69sm8577714ill.73.2020.04.08.15.47.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Apr 2020 15:47:14 -0700 (PDT)
-Received: by mail-io1-f44.google.com with SMTP id n10so1907505iom.3;
-        Wed, 08 Apr 2020 15:47:14 -0700 (PDT)
-X-Received: by 2002:a5d:91cc:: with SMTP id k12mr9210587ior.198.1586386034462;
- Wed, 08 Apr 2020 15:47:14 -0700 (PDT)
+        Wed, 8 Apr 2020 22:05:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1586397921;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=JBPKhyG0v+2jRPxdQ/UjCeONAim5perez3xpMch6z0c=;
+        b=CWcOGg3/vbv8ewAf23dis5ifdef5mVEooKe+eMTFayRR5S6URIpmQzJiOqihnRHbsSaVDC
+        7YzpLlqIY4vIXn7X+JXN95NxRPSSeX9WQPZGXHmgOIQ91TV77j8KJF4/25QiTdJJ7DfNmz
+        ouiJZS4/OXq7r2QVnxxQcuRNHuFwjNA=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-502-wrVzGKVsN_yQvblvbPGyDg-1; Wed, 08 Apr 2020 22:05:20 -0400
+X-MC-Unique: wrVzGKVsN_yQvblvbPGyDg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0CBC41800D71;
+        Thu,  9 Apr 2020 02:05:19 +0000 (UTC)
+Received: from [10.72.13.188] (ovpn-13-188.pek2.redhat.com [10.72.13.188])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id C572860BFB;
+        Thu,  9 Apr 2020 02:05:14 +0000 (UTC)
+Subject: Re: [PATCH 1/2] vdpa: Signedness bugs in vdpasim_work()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     virtualization@lists.linux-foundation.org,
+        kernel-janitors@vger.kernel.org
+References: <20200406144509.GE68494@mwanda>
+From:   Jason Wang <jasowang@redhat.com>
+Message-ID: <6d817506-221a-7a50-540d-58ed34a18df3@redhat.com>
+Date:   Thu, 9 Apr 2020 10:05:12 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <36341bb1-1e00-5eb1-d032-60dcc614ddaf@web.de>
-In-Reply-To: <36341bb1-1e00-5eb1-d032-60dcc614ddaf@web.de>
-From:   Li Yang <leoyang.li@nxp.com>
-Date:   Wed, 8 Apr 2020 17:47:03 -0500
-X-Gmail-Original-Message-ID: <CADRPPNRe=YxwjCOYbEjKg4LCOx2suK5WxZp17NJhTm76szdU0w@mail.gmail.com>
-Message-ID: <CADRPPNRe=YxwjCOYbEjKg4LCOx2suK5WxZp17NJhTm76szdU0w@mail.gmail.com>
-Subject: Re: usb: gadget: fsl_udc_core: Checking for a failed
- platform_get_irq() call in fsl_udc_probe()
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-usb@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Felipe Balbi <balbi@kernel.org>,
-        Tang Bin <tangbin@cmss.chinamobile.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+In-Reply-To: <20200406144509.GE68494@mwanda>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Apr 8, 2020 at 9:19 AM Markus Elfring <Markus.Elfring@web.de> wrote:
->
-> Hello,
->
-> I have taken another look at the implementation of the function “fsl_udc_probe”.
-> A software analysis approach points the following source code out for
-> further development considerations.
-> https://elixir.bootlin.com/linux/v5.6.2/source/drivers/usb/gadget/udc/fsl_udc_core.c#L2443
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/usb/gadget/udc/fsl_udc_core.c?id=f5e94d10e4c468357019e5c28d48499f677b284f#n2442
->
->         udc_controller->irq = platform_get_irq(pdev, 0);
->         if (!udc_controller->irq) {
->                 ret = -ENODEV;
->                 goto err_iounmap;
->         }
->
->
-> The software documentation is providing the following information
-> for the used programming interface.
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/platform.c?id=f5e94d10e4c468357019e5c28d48499f677b284f#n221
-> https://elixir.bootlin.com/linux/v5.6.2/source/drivers/base/platform.c#L202
->
-> “…
->  * Return: IRQ number on success, negative error number on failure.
-> …”
->
-> Would you like to reconsider the shown condition check?
 
-Thanks for the finding.  This is truly a software issue that need to
-be fixed.  Would you submit a patch for it or you want us to fix it?
+On 2020/4/6 =E4=B8=8B=E5=8D=8810:45, Dan Carpenter wrote:
+> The "read" and "write" variables need to be signed for the error
+> handling to work.
+>
+> Fixes: 2c53d0f64c06 ("vdpasim: vDPA device simulator")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>   drivers/vdpa/vdpa_sim/vdpa_sim.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/vdpa/vdpa_sim/vdpa_sim.c b/drivers/vdpa/vdpa_sim/v=
+dpa_sim.c
+> index 6e8a0cf2fdeb..b3c800653056 100644
+> --- a/drivers/vdpa/vdpa_sim/vdpa_sim.c
+> +++ b/drivers/vdpa/vdpa_sim/vdpa_sim.c
+> @@ -132,7 +132,8 @@ static void vdpasim_work(struct work_struct *work)
+>   						 vdpasim, work);
+>   	struct vdpasim_virtqueue *txq =3D &vdpasim->vqs[1];
+>   	struct vdpasim_virtqueue *rxq =3D &vdpasim->vqs[0];
+> -	size_t read, write, total_write;
+> +	ssize_t read, write;
+> +	size_t total_write;
+>   	int err;
+>   	int pkts =3D 0;
+>  =20
 
-Regards,
-Leo
+
+Acked-by: Jason Wang <jasowang@redhat.com>
+
+

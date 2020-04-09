@@ -2,101 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA6901A3814
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 18:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 466DF1A38C2
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 19:15:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727048AbgDIQck (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Apr 2020 12:32:40 -0400
-Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:52786 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726706AbgDIQcj (ORCPT
+        id S1727028AbgDIRPa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Apr 2020 13:15:30 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:33284 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726832AbgDIRPa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Apr 2020 12:32:39 -0400
-Received: from localhost.localdomain ([93.22.150.119])
-        by mwinf5d45 with ME
-        id QgYb2200C2aoYT903gYbdg; Thu, 09 Apr 2020 18:32:38 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 09 Apr 2020 18:32:38 +0200
-X-ME-IP: 93.22.150.119
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     mchehab+samsung@kernel.org, akpm@linux-foundation.org,
-        gregkh@linuxfoundation.org, andriy.shevchenko@linux.intel.com,
-        tglx@linutronix.de
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] lib/math: avoid trailing '\n' hidden in pr_fmt()
-Date:   Thu,  9 Apr 2020 18:32:34 +0200
-Message-Id: <20200409163234.22830-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Thu, 9 Apr 2020 13:15:30 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 01B8F128C3243;
+        Thu,  9 Apr 2020 10:15:29 -0700 (PDT)
+Date:   Thu, 09 Apr 2020 10:15:29 -0700 (PDT)
+Message-Id: <20200409.101529.1142140564221269589.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     kuba@kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net-sysfs: remove redundant assignment to variable ret
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200409134126.417215-1-colin.king@canonical.com>
+References: <20200409134126.417215-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 09 Apr 2020 10:15:30 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-pr_xxx() functions usually have '\n' at the end of the logging message.
-Here, this '\n' is added via the 'pr_fmt' macro.
+From: Colin King <colin.king@canonical.com>
+Date: Thu,  9 Apr 2020 14:41:26 +0100
 
-In order to be more consistent with other files, use a more standard
-convention and put these '\n' back in the messages themselves and remove it
-from the pr_fmt macro.
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable ret is being initialized with a value that is never read
+> and it is being updated later with a new value.  The initialization is
+> redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-While at it, use __func__ instead of hardcoding a function name in the
-last message.
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- lib/math/prime_numbers.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/lib/math/prime_numbers.c b/lib/math/prime_numbers.c
-index 052f5b727be7..d42cebf7407f 100644
---- a/lib/math/prime_numbers.c
-+++ b/lib/math/prime_numbers.c
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0-only
--#define pr_fmt(fmt) "prime numbers: " fmt "\n"
-+#define pr_fmt(fmt) "prime numbers: " fmt
- 
- #include <linux/module.h>
- #include <linux/mutex.h>
-@@ -253,7 +253,7 @@ static void dump_primes(void)
- 
- 	if (buf)
- 		bitmap_print_to_pagebuf(true, buf, p->primes, p->sz);
--	pr_info("primes.{last=%lu, .sz=%lu, .primes[]=...x%lx} = %s",
-+	pr_info("primes.{last=%lu, .sz=%lu, .primes[]=...x%lx} = %s\n",
- 		p->last, p->sz, p->primes[BITS_TO_LONGS(p->sz) - 1], buf);
- 
- 	rcu_read_unlock();
-@@ -273,7 +273,7 @@ static int selftest(unsigned long max)
- 		bool fast = is_prime_number(x);
- 
- 		if (slow != fast) {
--			pr_err("inconsistent result for is-prime(%lu): slow=%s, fast=%s!",
-+			pr_err("inconsistent result for is-prime(%lu): slow=%s, fast=%s!\n",
- 			       x, slow ? "yes" : "no", fast ? "yes" : "no");
- 			goto err;
- 		}
-@@ -282,14 +282,14 @@ static int selftest(unsigned long max)
- 			continue;
- 
- 		if (next_prime_number(last) != x) {
--			pr_err("incorrect result for next-prime(%lu): expected %lu, got %lu",
-+			pr_err("incorrect result for next-prime(%lu): expected %lu, got %lu\n",
- 			       last, x, next_prime_number(last));
- 			goto err;
- 		}
- 		last = x;
- 	}
- 
--	pr_info("selftest(%lu) passed, last prime was %lu", x, last);
-+	pr_info("%s(%lu) passed, last prime was %lu\n", __func__, x, last);
- 	return 0;
- 
- err:
--- 
-2.20.1
-
+Applied, thank you.

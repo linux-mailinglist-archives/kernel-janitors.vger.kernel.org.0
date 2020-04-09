@@ -2,135 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 08A861A2DD4
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 05:12:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B1601A2DE5
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 05:19:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726595AbgDIDMZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Apr 2020 23:12:25 -0400
-Received: from smtprelay0078.hostedemail.com ([216.40.44.78]:45098 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726521AbgDIDMZ (ORCPT
+        id S1726651AbgDIDTg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Apr 2020 23:19:36 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:57015 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726534AbgDIDTf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Apr 2020 23:12:25 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 8D166181D396F;
-        Thu,  9 Apr 2020 03:12:24 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 93,11,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:966:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1543:1593:1594:1711:1730:1747:1777:1792:2110:2196:2197:2198:2199:2200:2201:2393:2559:2562:2828:3138:3139:3140:3141:3142:3353:3622:3653:3865:3866:3867:3868:3870:3871:3872:3873:3874:4250:4321:4385:4605:5007:6119:8957:10004:10400:10848:11026:11232:11473:11658:11914:12043:12257:12291:12295:12296:12297:12438:12555:12740:12895:13095:13161:13229:13439:13618:13894:14181:14659:14721:21080:21212:21221:21433:21451:21505:21627:21660:21740:21741:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: brick58_894f471779363
-X-Filterd-Recvd-Size: 4187
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf05.hostedemail.com (Postfix) with ESMTPA;
-        Thu,  9 Apr 2020 03:12:23 +0000 (UTC)
-Message-ID: <efb5a518fdc47f0120b94a7e8a95d275c0f4ad43.camel@perches.com>
-Subject: Re: [PATCH] checkpatch: check for missing \n at the end of logging
- message
-From:   Joe Perches <joe@perches.com>
-To:     Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        apw@canonical.com, Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Date:   Wed, 08 Apr 2020 20:10:23 -0700
-In-Reply-To: <4b7e1cf3-6fa7-60af-a1d3-2457339dbe8a@wanadoo.fr>
-References: <20200407204908.10420-1-christophe.jaillet@wanadoo.fr>
-         <8617a6b94c0644bce1fd4ca77309d67a612e6300.camel@perches.com>
-         <4b7e1cf3-6fa7-60af-a1d3-2457339dbe8a@wanadoo.fr>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        Wed, 8 Apr 2020 23:19:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1586402375;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7+SzqkDXl2Jmhsnr0y9L6At5X0+bUJC/xN2Tg8J4VyY=;
+        b=RHzU2qIAWu9rSJvP6+j1Yo570y0u9KYJQ9ywQPQkr9yiy7C3+4rTC+6Cnt49SufVqa2qr2
+        hxg1RJ+10ttIClVTMC+sBOKp6DgELoV0JGIf9ff/0FC924T0iK5QKvFeqS+5bOdPB0A2on
+        zKY3N8kXu+bvJGXnIb4fU0zixwfbBUc=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-443-z9lXOdvvODmFYx4fo57fBg-1; Wed, 08 Apr 2020 23:19:33 -0400
+X-MC-Unique: z9lXOdvvODmFYx4fo57fBg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id ED6EC1902EAE;
+        Thu,  9 Apr 2020 03:19:28 +0000 (UTC)
+Received: from [10.72.13.188] (ovpn-13-188.pek2.redhat.com [10.72.13.188])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 53354272CB;
+        Thu,  9 Apr 2020 03:19:21 +0000 (UTC)
+Subject: Re: [PATCH] virtio-mmio: Delete an error message in vm_find_vqs()
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        virtualization@lists.linux-foundation.org,
+        "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Tang Bin <tangbin@cmss.chinamobile.com>
+References: <9e27bc4a-cfa1-7818-dc25-8ad308816b30@web.de>
+From:   Jason Wang <jasowang@redhat.com>
+Message-ID: <03b19e72-0021-dc6b-77c4-ed3c4e13d526@redhat.com>
+Date:   Thu, 9 Apr 2020 11:19:20 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <9e27bc4a-cfa1-7818-dc25-8ad308816b30@web.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 2020-04-08 at 22:23 +0200, Marion & Christophe JAILLET wrote:
-> Le 08/04/2020 à 04:14, Joe Perches a écrit :
-> > This works rather better:
-> > 
-> > Perhaps you could test?
-> > ---
-> > 
-> > v2:
-> > 
-> > o Avoid pr_cont
-> > o Use only last format line if split across multiple lines
-> > 
-> >   scripts/checkpatch.pl | 22 ++++++++++++++++++++++
-> >   1 file changed, 22 insertions(+)
-> > 
-> > diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> > index d64c67..f00a6c8 100755
-> > --- a/scripts/checkpatch.pl
-> > +++ b/scripts/checkpatch.pl
-> > @@ -5673,6 +5673,28 @@ sub process {
-> >   			}
-> >   		}
-> >   
-> > +# check for possible missing newlines at the end of common logging functions
-> > +		if (defined($stat) &&
-> > +		    $stat =~ /^\+\s*($logFunctions)\s*\((?:\s*$FuncArg\s*,\s*){0,3}\s*$String/ &&
-> > +		    $1 !~ /_cont$/ && $1 =~ /^(?:pr|dev|netdev|netif|wiphy)_/) {
-> > +			my $cnt = statement_rawlines($stat);
-> > +			my $extracted_string = "";
-> > +			for (my $i = 0; $i < $cnt; $i++) {
-> > +				next if ($lines[$linenr + $i - 1] !~ /$String\s*[,\)]/);
-> > +				$extracted_string = get_quoted_string($lines[$linenr + $i - 1],
-> > +								      $rawlines[$linenr + $i - 1]);
-> > +				last if ($extracted_string ne "");
-> > +			}
-> > +			if ($extracted_string ne "" && $extracted_string !~ /\\n"$/) {
-> > +				my $herectx = $here . "\n";
-> > +				for (my $n = 0; $n < $cnt; $n++) {
-> > +					$herectx .=  raw_line($linenr, $n) . "\n";
-> > +				}
-> > +				WARN("MISSING_FORMAT_NEWLINE",
-> > +				     "Possible missing '\\n' at the end of a logging message format string\n" . $herectx);
-> > +			}
-> > +		}
-> > +
-> >   # check for logging functions with KERN_<LEVEL>
-> >   		if ($line !~ /printk(?:_ratelimited|_once)?\s*\(/ &&
-> >   		    $line =~ /\b$logFunctions\s*\(.*\b(KERN_[A-Z]+)\b/) {
-> > 
-> For what I wanted to check and according to the few tests I've made, it 
-> looks fine.
-> 
-> Thank you very much for sharing this much more robust (and working) 
-> alternative.
-> 
-> For what it worth: (i.e. much more tests should be done)
-> Tested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Then I think you really haven't tested it very thoroughly.
+On 2020/4/6 =E4=B8=8A=E5=8D=881:19, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Sun, 5 Apr 2020 19:14:10 +0200
+>
+> The function =E2=80=9Cplatform_get_irq=E2=80=9D can log an error alread=
+y.
+> Thus omit a redundant message for the exception handling in the
+> calling function.
 
-For instance:
 
-$ git ls-files -- 'drivers/*.[ch]' | \
-  xargs ./scripts/checkpatch.pl -f --quiet --no-summary --types=MISSING_FORMAT_NEWLINE
+It looks to me that not all error path of platform_get_irq() were loggd.
 
-emits many false positives.
+And git grep told me there're other users of platform_get_irq() that=20
+check and log by themselves.
 
-Some types of false positives:
+Thanks
 
-o Many of the formats seem to end in a ':' or a ' '
-  maybe those should be excluded
-   #86: FILE: drivers/android/binder_alloc_selftest.c:86:
-   +	pr_err("free seq: ");
 
-   o Split string formats should be excluded better
-     as only the first string fragment is checked:
-   #1001: FILE: drivers/ata/pata_octeon_cf.c:1001:
-   +	dev_info(&pdev->dev, "version " DRV_VERSION" %d bit%s.\n",
-   +		 is_16bit ? 16 : 8,
-   +		 cf_port->is_true_ide ? ", True IDE" : "");
-
-   probably a few others, including a desire to check
-   if a pr_cont is below the use within a few lines.
-
-   > Maybe, at least a Suggested-By: would be appreciated.
-
-No worries, when it's cooked, it'll have that.
-
-cheers, Joe
+>
+> This issue was detected by using the Coccinelle software.
+>
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> ---
+>   drivers/virtio/virtio_mmio.c | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/drivers/virtio/virtio_mmio.c b/drivers/virtio/virtio_mmio.=
+c
+> index 97d5725fd9a2..9d16aaffca9d 100644
+> --- a/drivers/virtio/virtio_mmio.c
+> +++ b/drivers/virtio/virtio_mmio.c
+> @@ -466,10 +466,8 @@ static int vm_find_vqs(struct virtio_device *vdev,=
+ unsigned nvqs,
+>   	int irq =3D platform_get_irq(vm_dev->pdev, 0);
+>   	int i, err, queue_idx =3D 0;
+>
+> -	if (irq < 0) {
+> -		dev_err(&vdev->dev, "Cannot get IRQ resource\n");
+> +	if (irq < 0)
+>   		return irq;
+> -	}
+>
+>   	err =3D request_irq(irq, vm_interrupt, IRQF_SHARED,
+>   			dev_name(&vdev->dev), vm_dev);
+> --
+> 2.26.0
+>
 

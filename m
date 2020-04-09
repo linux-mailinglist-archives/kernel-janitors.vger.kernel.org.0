@@ -2,33 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F11F1A34E4
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 15:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FF571A3506
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 15:41:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726723AbgDINbU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Apr 2020 09:31:20 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:53218 "EHLO
+        id S1726889AbgDINlb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Apr 2020 09:41:31 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53738 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726583AbgDINbT (ORCPT
+        with ESMTP id S1726881AbgDINla (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Apr 2020 09:31:19 -0400
+        Thu, 9 Apr 2020 09:41:30 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jMXGt-00057o-J0; Thu, 09 Apr 2020 13:31:07 +0000
+        id 1jMXQs-00060h-CM; Thu, 09 Apr 2020 13:41:26 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+To:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/i915: remove redundant assignment to variable err
-Date:   Thu,  9 Apr 2020 14:31:07 +0100
-Message-Id: <20200409133107.415812-1-colin.king@canonical.com>
+Subject: [PATCH] net-sysfs: remove redundant assignment to variable ret
+Date:   Thu,  9 Apr 2020 14:41:26 +0100
+Message-Id: <20200409134126.417215-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -40,29 +35,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable err is being initialized with a value that is never read
+The variable ret is being initialized with a value that is never read
 and it is being updated later with a new value.  The initialization is
 redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/i915/gem/selftests/i915_gem_object.c | 2 +-
+ net/core/net-sysfs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/gem/selftests/i915_gem_object.c b/drivers/gpu/drm/i915/gem/selftests/i915_gem_object.c
-index 2b6db6f799de..faa5b6d91795 100644
---- a/drivers/gpu/drm/i915/gem/selftests/i915_gem_object.c
-+++ b/drivers/gpu/drm/i915/gem/selftests/i915_gem_object.c
-@@ -14,7 +14,7 @@ static int igt_gem_object(void *arg)
- {
- 	struct drm_i915_private *i915 = arg;
- 	struct drm_i915_gem_object *obj;
--	int err = -ENOMEM;
-+	int err;
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index cf0215734ceb..4773ad6ec111 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -80,7 +80,7 @@ static ssize_t netdev_store(struct device *dev, struct device_attribute *attr,
+ 	struct net_device *netdev = to_net_dev(dev);
+ 	struct net *net = dev_net(netdev);
+ 	unsigned long new;
+-	int ret = -EINVAL;
++	int ret;
  
- 	/* Basic test to ensure we can create an object */
- 
+ 	if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
+ 		return -EPERM;
 -- 
 2.25.1
 

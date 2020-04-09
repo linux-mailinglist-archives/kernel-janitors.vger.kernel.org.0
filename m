@@ -2,118 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EF521A2F17
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 08:21:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C747F1A2F31
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 08:27:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726549AbgDIGVQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Apr 2020 02:21:16 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:60177 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725283AbgDIGVQ (ORCPT
+        id S1726137AbgDIG1u (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Apr 2020 02:27:50 -0400
+Received: from wout4-smtp.messagingengine.com ([64.147.123.20]:60979 "EHLO
+        wout4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725283AbgDIG1u (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Apr 2020 02:21:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586413275;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=5mB7SP/Y8MXrZQ6SPWB8nv21X1ADlrVhI+qwnI43BNs=;
-        b=KqxHoMXilldwjw/IdXZBQ+ZtHZk/FWbVsJa6TMPudOT4R3CXRlZMVf3SozDQQhNDM59HLN
-        qlsmZOgYI3q6TR8Lxznf6Gm5xwON56azVV5YB6IjMiKNP4ZKCL4Tr1/Wxw+6/4A+PCdo9H
-        pOkPKSq2qJIkdKPo1ihBm3XL/CKZOa4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-339-4PB6D7EUPkmm0VMYoI55sA-1; Thu, 09 Apr 2020 02:21:10 -0400
-X-MC-Unique: 4PB6D7EUPkmm0VMYoI55sA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7BA3A107B7D4;
-        Thu,  9 Apr 2020 06:21:08 +0000 (UTC)
-Received: from [10.72.13.188] (ovpn-13-188.pek2.redhat.com [10.72.13.188])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4B42960C18;
-        Thu,  9 Apr 2020 06:20:39 +0000 (UTC)
-Subject: Re: virtio-mmio: Delete an error message in vm_find_vqs()
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        virtualization@lists.linux-foundation.org
-Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Thu, 9 Apr 2020 02:27:50 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.west.internal (Postfix) with ESMTP id 3135E759;
+        Thu,  9 Apr 2020 02:27:49 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Thu, 09 Apr 2020 02:27:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dxuuu.xyz; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=fm3; bh=nbW/mYyxCyeed5rv4GZbVacG2k
+        0bT79z98b3D3IVtpE=; b=o3wnUT/NIdcXucDC+oPeVeHdDloFV2fLRhtZOfwxq3
+        BM/XZpC8i3dIfyQYmR2eXYvqPIMGNKVgJpd9svucsYjM8A62vxo7SJU/+XS7vV2W
+        4Chl5XxBg5E9cQMB8f+yYFn52A1bUYux7aTbSWJH2gFDKwcodZdaP2JWkfzGRKXg
+        U9jNjF+YCGU97UclZnkDvduezNGTqcwu4ujst9F6mbAXnO9iNJ8CEKIr1j96kNJO
+        qvPekNvUUj78bvSB8zdSVUU39MKht9a04Xz+sc14MU9Jfd9Ru/L6TUrIulUCZczS
+        VLGgD6jJv3k1s5f6yGJdoUKU9nb1emkYunjrDRcQ5LlQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:date:from
+        :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=nbW/mYyxCyeed5rv4
+        GZbVacG2k0bT79z98b3D3IVtpE=; b=JQyN2cNHj1D15pTE4hrx6GwNzAvFqsa12
+        aVoxUMs0idPFsqgqYDeQ57gyffMNIuB2MgvzYOG6D5WYyE7Fn0BYeciZG2PsjYLw
+        qwq27QQvY4pNT9PA39TYSzrt38pvJMBAFLimqT7t6r0LgmU9d2eNcS/NyxcyXFoU
+        iH4PZB4aF5ogRP9+nRAcSuv7J0YZw3gbyDHEPB3MO1Bm3suiO43UB6/2At4NOPA1
+        kPJyMgBdUs3L72LOMM0G6iOy/aFh3BQyomUnWjlQMt/LqBGIQ14Z0yNt4W1bzA0u
+        POu9lglI7eUi0d79BxDzldf2axc38K6RsbWxB2x+Mpjjw5d5x3+Aw==
+X-ME-Sender: <xms:ZMCOXqvNiA902XFN_iW8DW1fdYgPzf3POaehxUXZuTwTPox1VwKT6g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrudekgddutdehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    gfrhhlucfvnfffucdlfeehmdenucfjughrpefhvffufffkofgggfestdekredtredttden
+    ucfhrhhomhepffgrnhhivghlucgiuhcuoegugihusegugihuuhhurdighiiiqeenucfkph
+    epjeefrdelfedrvdegjedrudefgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgr
+    mhepmhgrihhlfhhrohhmpegugihusegugihuuhhurdighiii
+X-ME-Proxy: <xmx:ZMCOXgu1hAXxlHfUJwOerJXCRcfc1aNUYDyWumhqz4eAXkoLYJevuQ>
+    <xmx:ZMCOXrGy7FFVxgBMxSsNploYAQdT7tEifAO24TM951T8kgsntgw4Xg>
+    <xmx:ZMCOXjKtt5IrPMs0NRbC7YZ2C1jbk3beiuwQlZZrbMh2DzPhTMbqeQ>
+    <xmx:ZMCOXhgDFpk9arKvO71PfDmvikDIfYDrFHsnJZrQ27aegOKs9EKASQ>
+Received: from localhost.localdomain (c-73-93-247-134.hsd1.ca.comcast.net [73.93.247.134])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 8041C306005F;
+        Thu,  9 Apr 2020 02:27:47 -0400 (EDT)
+From:   Daniel Xu <dxu@dxuuu.xyz>
+To:     tj@kernel.org, viro@zeniv.linux.org.uk
+Cc:     Daniel Xu <dxu@dxuuu.xyz>, cgroups@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
-        Andrzej Hajda <a.hajda@samsung.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Mark Brown <broonie@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Rob Herring <robh@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Tang Bin <tangbin@cmss.chinamobile.com>
-References: <9e27bc4a-cfa1-7818-dc25-8ad308816b30@web.de>
- <03b19e72-0021-dc6b-77c4-ed3c4e13d526@redhat.com>
- <96031fc7-dced-95bd-fc57-a5fe890638f4@web.de>
-From:   Jason Wang <jasowang@redhat.com>
-Message-ID: <6c94db13-ae46-cf8e-f3c4-6f270112ad87@redhat.com>
-Date:   Thu, 9 Apr 2020 14:20:38 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: [PATCH] xattr: fix uninitialized out-param
+Date:   Wed,  8 Apr 2020 23:27:29 -0700
+Message-Id: <20200409062729.1658747-1-dxu@dxuuu.xyz>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-In-Reply-To: <96031fc7-dced-95bd-fc57-a5fe890638f4@web.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+`removed_sized` isn't correctly initialized (as the doc comment
+suggests) on memory allocation failures. Fix by moving initialization up
+a bit.
 
-On 2020/4/9 =E4=B8=8B=E5=8D=882:02, Markus Elfring wrote:
->>> The function =E2=80=9Cplatform_get_irq=E2=80=9D can log an error alre=
-ady.
->>> Thus omit a redundant message for the exception handling in the
->>> calling function.
->> It looks to me that not all error path of platform_get_irq() were logg=
-d.
-> How do you think about to clarify the handling of the error code =E2=80=
-=9C-EPROBE_DEFER=E2=80=9D any more?
-> https://elixir.bootlin.com/linux/v5.6.3/source/drivers/base/platform.c#=
-L202
+Fixes: 0c47383ba3bd ("kernfs: Add option to enable user xattrs")
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
+---
 
+I'm sending this through the cgroup tree b/c the original patchset went
+through it. I don't believe the patchset has made its way into mainline
+yet. Hopefully this is ok.
 
-Aha, it looks to me that I'm on the wrong branch. Sorry.
+ fs/xattr.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-
->
->
->> And git grep told me there're other users of platform_get_irq() that c=
-heck and log by themselves.
-> Source code analysis can point further update candidates out, can't it?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
-it/drivers/base/platform.c?id=3D7723f4c5ecdb8d832f049f8483beb0d1081cedf6
-
-
-Yes, it can.
-
-
->
-> Would you like to achieve collateral evolution?
-
-
-Yes and it's probably be better to put all the fixes in one series.
-
-For this patch.
-
-Acked-by: Jason Wang <jasowang@redhat.com>
-
-Thanks
-
-
->
-> Regards,
-> Markus
->
+diff --git a/fs/xattr.c b/fs/xattr.c
+index e13265e65871..91608d9bfc6a 100644
+--- a/fs/xattr.c
++++ b/fs/xattr.c
+@@ -876,6 +876,9 @@ int simple_xattr_set(struct simple_xattrs *xattrs, const char *name,
+ 	struct simple_xattr *new_xattr = NULL;
+ 	int err = 0;
+ 
++	if (removed_size)
++		*removed_size = -1;
++
+ 	/* value == NULL means remove */
+ 	if (value) {
+ 		new_xattr = simple_xattr_alloc(value, size);
+@@ -914,9 +917,6 @@ int simple_xattr_set(struct simple_xattrs *xattrs, const char *name,
+ 		list_add(&new_xattr->list, &xattrs->head);
+ 		xattr = NULL;
+ 	}
+-
+-	if (removed_size)
+-		*removed_size = -1;
+ out:
+ 	spin_unlock(&xattrs->lock);
+ 	if (xattr) {
+-- 
+2.26.0
 

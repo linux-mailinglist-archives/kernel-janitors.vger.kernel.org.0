@@ -2,105 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31D331A329A
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 12:40:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EADCA1A3352
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 13:41:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726648AbgDIKka (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Apr 2020 06:40:30 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:43136 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725828AbgDIKk3 (ORCPT
+        id S1726502AbgDILld (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Apr 2020 07:41:33 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:48265 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725971AbgDILld (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Apr 2020 06:40:29 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 039Ad80m013796;
-        Thu, 9 Apr 2020 10:40:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=fNK9gwoEb/fx991nZsqjXEhcrailCIwT8xqiE5HZJCU=;
- b=fH92QFgUwfUGwoa6GnbYplnHDJIy0blkH3i92TawijqEcl0fXYiwAjY4mKHdew1xJnhj
- T2Ld+EQpOXkeN2KVtEqgD0jmcz2rCMV6A0Br5XqWTKKXwjeuCcObd7gctdRg0ph27UrT
- Ats6HGa/CWKlBWKZnsnCDQYdw0oAFlP4tgLvWC/OcEQ1zkYrQTKfjmOjpF6Dqn2ZGFlr
- FpF7ZshVy0ihWjWlPr6c/K8QUdRvL9VjLuX8H2HvCF/PIoaz9zbi63gRUqIggA8OftM3
- v5RRzTt+8/SD5GgVXnlyK/xxitEtPQ4CJAAdRJ8P0K9NW1oXqPnlg/Gd/+P3NHR81VBg Yw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 309gw4cme7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 09 Apr 2020 10:40:24 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 039AasXS013589;
-        Thu, 9 Apr 2020 10:40:23 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 309ag48r4b-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 09 Apr 2020 10:40:23 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 039AeLFp019390;
-        Thu, 9 Apr 2020 10:40:21 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 09 Apr 2020 03:40:20 -0700
-Date:   Thu, 9 Apr 2020 13:40:13 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Joe Perches <joe@perches.com>
-Cc:     Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        apw@canonical.com, Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] checkpatch: check for missing \n at the end of logging
- message
-Message-ID: <20200409103049.GA14081@kadam>
-References: <20200407204908.10420-1-christophe.jaillet@wanadoo.fr>
- <8617a6b94c0644bce1fd4ca77309d67a612e6300.camel@perches.com>
- <4b7e1cf3-6fa7-60af-a1d3-2457339dbe8a@wanadoo.fr>
- <efb5a518fdc47f0120b94a7e8a95d275c0f4ad43.camel@perches.com>
+        Thu, 9 Apr 2020 07:41:33 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jMVYc-0004rk-7i; Thu, 09 Apr 2020 11:41:18 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        xen-devel@lists.xenproject.org, linux-pci@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] xen/pci: remove redundant assignment to variable irq
+Date:   Thu,  9 Apr 2020 12:41:18 +0100
+Message-Id: <20200409114118.249461-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <efb5a518fdc47f0120b94a7e8a95d275c0f4ad43.camel@perches.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9585 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 malwarescore=0
- phishscore=0 mlxscore=0 bulkscore=0 mlxlogscore=999 suspectscore=2
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004090081
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9585 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 bulkscore=0
- phishscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1011
- suspectscore=2 malwarescore=0 spamscore=0 mlxlogscore=999 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004090081
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Apr 08, 2020 at 08:10:23PM -0700, Joe Perches wrote:
-> Some types of false positives:
-> 
-> o Many of the formats seem to end in a ':' or a ' '
->   maybe those should be excluded
->    #86: FILE: drivers/android/binder_alloc_selftest.c:86:
->    +	pr_err("free seq: ");
-> 
+From: Colin Ian King <colin.king@canonical.com>
 
-Yeah.  I also ignored strings that end in a space in my version.
+The variable irq is being initialized with a value that is never read
+and it is being updated later with a new value.  The initialization is
+redundant and can be removed.
 
->    o Split string formats should be excluded better
->      as only the first string fragment is checked:
->    #1001: FILE: drivers/ata/pata_octeon_cf.c:1001:
->    +	dev_info(&pdev->dev, "version " DRV_VERSION" %d bit%s.\n",
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ arch/x86/pci/xen.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I ignored anything with a newline in it anywhere.
+diff --git a/arch/x86/pci/xen.c b/arch/x86/pci/xen.c
+index 91220cc25854..80272eb49230 100644
+--- a/arch/x86/pci/xen.c
++++ b/arch/x86/pci/xen.c
+@@ -63,7 +63,7 @@ static int xen_pcifront_enable_irq(struct pci_dev *dev)
+ static int xen_register_pirq(u32 gsi, int gsi_override, int triggering,
+ 			     bool set_pirq)
+ {
+-	int rc, pirq = -1, irq = -1;
++	int rc, pirq = -1, irq;
+ 	struct physdev_map_pirq map_irq;
+ 	int shareable = 0;
+ 	char *name;
+-- 
+2.25.1
 
->    +		 is_16bit ? 16 : 8,
->    +		 cf_port->is_true_ide ? ", True IDE" : "");
-> 
->    probably a few others, including a desire to check
->    if a pr_cont is below the use within a few lines.
-
-Seems tricky to implement...  I think if you can't make it work it's
-still usefull even with a some false positives.
-
-regards,
-dan carpenter

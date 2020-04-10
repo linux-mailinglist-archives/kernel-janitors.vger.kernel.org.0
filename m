@@ -2,80 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 945861A4458
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Apr 2020 11:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 991861A4513
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Apr 2020 12:18:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726092AbgDJJO0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Apr 2020 05:14:26 -0400
-Received: from cmccmta2.chinamobile.com ([221.176.66.80]:8825 "EHLO
-        cmccmta2.chinamobile.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725897AbgDJJO0 (ORCPT
+        id S1726009AbgDJKSh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Apr 2020 06:18:37 -0400
+Received: from asavdk3.altibox.net ([109.247.116.14]:38332 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725912AbgDJKSg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Apr 2020 05:14:26 -0400
-Received: from spf.mail.chinamobile.com (unknown[172.16.121.15]) by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee65e9038cea20-02a24; Fri, 10 Apr 2020 17:13:51 +0800 (CST)
-X-RM-TRANSID: 2ee65e9038cea20-02a24
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG: 00000000
-Received: from [172.20.21.224] (unknown[112.25.154.146])
-        by rmsmtp-syy-appsvr08-12008 (RichMail) with SMTP id 2ee85e9038ce8b0-29025;
-        Fri, 10 Apr 2020 17:13:51 +0800 (CST)
-X-RM-TRANSID: 2ee85e9038ce8b0-29025
-Subject: Re: usb: gadget: fsl: Fix a wrong judgment in fsl_udc_probe()
-To:     Markus Elfring <Markus.Elfring@web.de>, linux-usb@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Cc:     Li Yang <leoyang.li@nxp.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Felipe Balbi <balbi@kernel.org>,
-        Shengju Zhang <zhangshengju@cmss.chinamobile.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-References: <20200410015832.8012-1-tangbin@cmss.chinamobile.com>
- <be8cd229-884a-40e6-3363-7c4680a51b30@web.de>
- <0b718268-d330-dfc1-aca3-3dd3203363d7@cmss.chinamobile.com>
- <aa7006c9-8b83-5f30-86a6-8d60d290f824@web.de>
-From:   Tang Bin <tangbin@cmss.chinamobile.com>
-Message-ID: <a4738b42-b297-766c-56bf-94a91bc82767@cmss.chinamobile.com>
-Date:   Fri, 10 Apr 2020 17:15:39 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Fri, 10 Apr 2020 06:18:36 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk3.altibox.net (Postfix) with ESMTPS id D106720029;
+        Fri, 10 Apr 2020 12:18:32 +0200 (CEST)
+Date:   Fri, 10 Apr 2020 12:18:31 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        dri-devel@lists.freedesktop.org, David Airlie <airlied@linux.ie>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: drm/tve200: Checking for a failed platform_get_irq() call in
+ tve200_probe()
+Message-ID: <20200410101831.GA27723@ravnborg.org>
+References: <0263f4fb-c349-7651-b590-8722cdd30c85@web.de>
 MIME-Version: 1.0
-In-Reply-To: <aa7006c9-8b83-5f30-86a6-8d60d290f824@web.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+In-Reply-To: <0263f4fb-c349-7651-b590-8722cdd30c85@web.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=eMA9ckh1 c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=P-IC7800AAAA:8
+        a=VwQbUJbxAAAA:8 a=JCZqW-9RZpn1hzHRehAA:9 a=MPcP9uqrSlW2Lgt8:21
+        a=4ciHVacbEfDAk_G1:21 a=QEXdDO2ut3YA:10 a=d3PnA9EDa4IxuAV0gXij:22
+        a=AjGcO6oz07-iQ99wixmX:22
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Markus:
+Hi Markus.
 
-On 2020/4/10 16:30, Markus Elfring wrote:
->> Hardware experiments show that the negative return value is not just "-EPROBE_DEFER".
-> How much will this specific error code influence our understanding
-> of the discussed software situation?
->
- From my superficial knowledge, I think we should not  think about it 
-too complicated. The return value is just zero or negative, and for 
-these negative return value, such as 
-"-ENODEV"、"-ENXIO"、"-ENOENT"、“EPROBE_DEFER”，may be the same 
-effect。But“-EPROBE_DEFER”has another  importment function: Driver 
-requested deferred probing，which is used in cases where the dependency 
-resource is not ready during the driver initialization process.
->>>> +        ret = udc_controller->irq ? : -ENODEV;
->>> Will it be clearer to specify values for all cases in such a conditional operator
->>> (instead of leaving one case empty)?
->> I don't know what you mean of "instead of leaving one case empty".
-> I suggest to reconsider also the proposed specification “… ? : …”.
+On Thu, Apr 09, 2020 at 03:05:17PM +0200, Markus Elfring wrote:
+> Hello,
+> 
+> I have taken another look at the implementation of the function “tve200_probe”.
+> A software analysis approach points the following source code out for
+> further development considerations.
+> https://elixir.bootlin.com/linux/v5.6.3/source/drivers/gpu/drm/tve200/tve200_drv.c#L212
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/tve200/tve200_drv.c?id=5d30bcacd91af6874481129797af364a53cd9b46#n212
+> 
+> 	irq = platform_get_irq(pdev, 0);
+> 	if (!irq) {
+> 		ret = -EINVAL;
+> 		goto clk_disable;
+> 	}
+> 
+> 
+> The software documentation is providing the following information
+> for the used programming interface.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/platform.c?id=5d30bcacd91af6874481129797af364a53cd9b46#n221
+> https://elixir.bootlin.com/linux/v5.6.3/source/drivers/base/platform.c#L202
+> 
+> “…
+>  * Return: IRQ number on success, negative error number on failure.
+> …”
+> 
+> Would you like to reconsider the shown condition check?
+Thansk for spotting this.
 
-What you mean is the way I'm written？
+The right way to check for errors is to check if the return value is
+less than 0.
+Could you please audit all uses of platform_get_irq() in drivers/gpu/
+and send a series of patches, one for each driver.
 
-I have provided two ways of patching, both functional can be verified on 
-hardware.
+A quick "git grep -C 5 platform_get_irq" identified a few extra drivers
+that does not implement the recommend way to check for errors.
 
-Thanks for your patience.
+Try to be a bit more terse in the changelog - but refer to
+the documentation of platform_get_irq():
 
-Tang Bin
+ * Example:
+ *		int irq = platform_get_irq(pdev, 0);
+ *		if (irq < 0)
+ *			return irq;
 
+Easier to embed it - rather than to link it.
+Fine with links in the intro mail.
 
-
+ 	Sam

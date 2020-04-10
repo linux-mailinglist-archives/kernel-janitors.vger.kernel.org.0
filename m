@@ -2,61 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 032691A4748
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Apr 2020 16:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9CBE1A48CF
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Apr 2020 19:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726702AbgDJOSQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Apr 2020 10:18:16 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:37141 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726009AbgDJOSQ (ORCPT
+        id S1726657AbgDJRM3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Apr 2020 13:12:29 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:19730 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726638AbgDJRM3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Apr 2020 10:18:16 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jMuU1-0001Ci-F1; Fri, 10 Apr 2020 14:18:13 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Hans Verkuil <hverkuil@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] media: gspca: remove redundant assignment to variable status
-Date:   Fri, 10 Apr 2020 15:18:13 +0100
-Message-Id: <20200410141813.29497-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 10 Apr 2020 13:12:29 -0400
+Received: from localhost.localdomain ([93.22.39.186])
+        by mwinf5d10 with ME
+        id R5CQ2200L40yuPR035CRD2; Fri, 10 Apr 2020 19:12:26 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 10 Apr 2020 19:12:26 +0200
+X-ME-IP: 93.22.39.186
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     alexandru.ardelean@analog.com, lars@metafoo.de,
+        Michael.Hennerich@analog.com, stefan.popa@analog.com,
+        jic23@kernel.org, knaack.h@gmx.de, pmeerw@pmeerw.net
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] iio: imu: adis: Add a missing '\n' in a log message
+Date:   Fri, 10 Apr 2020 19:12:24 +0200
+Message-Id: <20200410171224.4633-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Message logged by 'dev_xxx()' or 'pr_xxx()' should end with a '\n'.
 
-The variable status is being assigned a value that is never read.
-The assignment is redundant and can be removed.
-
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Fixes: 1fd456702692 ("iio: imu: adis: add support product ID check in adis_initial_startup")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/media/usb/gspca/mr97310a.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/iio/imu/adis.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/gspca/mr97310a.c b/drivers/media/usb/gspca/mr97310a.c
-index 502fc2eaffe0..464aa61cd914 100644
---- a/drivers/media/usb/gspca/mr97310a.c
-+++ b/drivers/media/usb/gspca/mr97310a.c
-@@ -287,7 +287,6 @@ static int zero_the_pointer(struct gspca_dev *gspca_dev)
- 			return err_code;
+diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
+index a8afd01de4f3..2e7d0d337f8f 100644
+--- a/drivers/iio/imu/adis.c
++++ b/drivers/iio/imu/adis.c
+@@ -419,7 +419,7 @@ int __adis_initial_startup(struct adis *adis)
  
- 		err_code = cam_get_response16(gspca_dev, 0x21, 0);
--		status = data[0];
- 		tries++;
- 		if (err_code < 0)
- 			return err_code;
+ 	if (prod_id != adis->data->prod_id)
+ 		dev_warn(&adis->spi->dev,
+-			 "Device ID(%u) and product ID(%u) do not match.",
++			 "Device ID(%u) and product ID(%u) do not match.\n",
+ 			 adis->data->prod_id, prod_id);
+ 
+ 	return 0;
 -- 
-2.25.1
+2.20.1
 

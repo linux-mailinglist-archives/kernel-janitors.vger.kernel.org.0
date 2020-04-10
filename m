@@ -2,36 +2,41 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 29E671A48FE
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Apr 2020 19:35:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D19D11A4900
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Apr 2020 19:35:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726666AbgDJRfm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Apr 2020 13:35:42 -0400
-Received: from ciao.gmane.io ([159.69.161.202]:60868 "EHLO ciao.gmane.io"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726142AbgDJRfm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Apr 2020 13:35:42 -0400
-Received: from list by ciao.gmane.io with local (Exim 4.92)
-        (envelope-from <glkj-kernel-janitors-2@m.gmane-mx.org>)
-        id 1jMxZ7-00093j-W5
-        for kernel-janitors@vger.kernel.org; Fri, 10 Apr 2020 19:35:41 +0200
-X-Injected-Via-Gmane: http://gmane.org/
-To:     kernel-janitors@vger.kernel.org
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+        id S1726680AbgDJRfw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Apr 2020 13:35:52 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:23003 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726142AbgDJRfv (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 10 Apr 2020 13:35:51 -0400
+Received: from [192.168.42.210] ([93.22.39.186])
+        by mwinf5d10 with ME
+        id R5be2200p40yuPR035bi4L; Fri, 10 Apr 2020 19:35:45 +0200
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 10 Apr 2020 19:35:45 +0200
+X-ME-IP: 93.22.39.186
 Subject: Re: [PATCH] checkpatch: check for missing \n at the end of logging
  message
-Date:   Fri, 10 Apr 2020 19:35:37 +0200
-Message-ID: <6e52383e-100d-b016-32c2-6fb54938b6fe@wanadoo.fr>
+To:     Joe Perches <joe@perches.com>, apw@canonical.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Newsgroups: gmane.linux.kernel.janitors,gmane.linux.kernel
 References: <20200407204908.10420-1-christophe.jaillet@wanadoo.fr>
  <8617a6b94c0644bce1fd4ca77309d67a612e6300.camel@perches.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <6e52383e-100d-b016-32c2-6fb54938b6fe@wanadoo.fr>
+Date:   Fri, 10 Apr 2020 19:35:37 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
+MIME-Version: 1.0
 In-Reply-To: <8617a6b94c0644bce1fd4ca77309d67a612e6300.camel@perches.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-Cc:     linux-kernel@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -98,5 +103,4 @@ correctly spots the 3 first cases, but the 3 last (line 202, 210 and
 I don't understand why.
 
 CJ
-
 

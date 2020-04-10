@@ -2,29 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AE2D1A4713
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Apr 2020 15:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 032691A4748
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Apr 2020 16:18:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726663AbgDJNuR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Apr 2020 09:50:17 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:36437 "EHLO
+        id S1726702AbgDJOSQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Apr 2020 10:18:16 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:37141 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726181AbgDJNuR (ORCPT
+        with ESMTP id S1726009AbgDJOSQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Apr 2020 09:50:17 -0400
+        Fri, 10 Apr 2020 10:18:16 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jMu2x-00080m-2C; Fri, 10 Apr 2020 13:50:15 +0000
+        id 1jMuU1-0001Ci-F1; Fri, 10 Apr 2020 14:18:13 +0000
 From:   Colin King <colin.king@canonical.com>
 To:     Hans Verkuil <hverkuil@xs4all.nl>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         linux-media@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] media: pwc-ctl: remove redundant assignment to variable ret
-Date:   Fri, 10 Apr 2020 14:50:14 +0100
-Message-Id: <20200410135014.26396-1-colin.king@canonical.com>
+Subject: [PATCH] media: gspca: remove redundant assignment to variable status
+Date:   Fri, 10 Apr 2020 15:18:13 +0100
+Message-Id: <20200410141813.29497-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,29 +36,27 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable ret is being initialized with a value that is never read
-and it is being updated later with a new value.  The initialization is
-redundant and can be removed.
+The variable status is being assigned a value that is never read.
+The assignment is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/media/usb/pwc/pwc-ctrl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/gspca/mr97310a.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/media/usb/pwc/pwc-ctrl.c b/drivers/media/usb/pwc/pwc-ctrl.c
-index 315c55927f5c..cff64d872058 100644
---- a/drivers/media/usb/pwc/pwc-ctrl.c
-+++ b/drivers/media/usb/pwc/pwc-ctrl.c
-@@ -523,7 +523,7 @@ int pwc_set_leds(struct pwc_device *pdev, int on_value, int off_value)
- #ifdef CONFIG_USB_PWC_DEBUG
- int pwc_get_cmos_sensor(struct pwc_device *pdev, int *sensor)
- {
--	int ret = -1, request;
-+	int ret, request;
+diff --git a/drivers/media/usb/gspca/mr97310a.c b/drivers/media/usb/gspca/mr97310a.c
+index 502fc2eaffe0..464aa61cd914 100644
+--- a/drivers/media/usb/gspca/mr97310a.c
++++ b/drivers/media/usb/gspca/mr97310a.c
+@@ -287,7 +287,6 @@ static int zero_the_pointer(struct gspca_dev *gspca_dev)
+ 			return err_code;
  
- 	if (pdev->type < 675)
- 		request = SENSOR_TYPE_FORMATTER1;
+ 		err_code = cam_get_response16(gspca_dev, 0x21, 0);
+-		status = data[0];
+ 		tries++;
+ 		if (err_code < 0)
+ 			return err_code;
 -- 
 2.25.1
 

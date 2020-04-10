@@ -2,69 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4585F1A45D4
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Apr 2020 13:46:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EB2F1A462A
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Apr 2020 14:14:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726676AbgDJLqQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Apr 2020 07:46:16 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:33965 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726173AbgDJLqQ (ORCPT
+        id S1726234AbgDJMOM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Apr 2020 08:14:12 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:37402 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726145AbgDJMOM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Apr 2020 07:46:16 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jMs6v-0000cw-EV; Fri, 10 Apr 2020 11:46:13 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
+        Fri, 10 Apr 2020 08:14:12 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk4.altibox.net (Postfix) with ESMTPS id 6B5A080530;
+        Fri, 10 Apr 2020 14:14:08 +0200 (CEST)
+Date:   Fri, 10 Apr 2020 14:14:06 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
         Daniel Vetter <daniel@ffwll.ch>,
-        Eric Yang <Eric.Yang2@amd.com>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/amd/display: remove redundant assignment to variable dp_ref_clk_khz
-Date:   Fri, 10 Apr 2020 12:46:13 +0100
-Message-Id: <20200410114613.15271-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        David Airlie <airlied@linux.ie>,
+        Tang Bin <tangbin@cmss.chinamobile.com>
+Subject: Re: drm/tve200: Checking for a failed platform_get_irq() call in
+ tve200_probe()
+Message-ID: <20200410121406.GA31761@ravnborg.org>
+References: <0263f4fb-c349-7651-b590-8722cdd30c85@web.de>
+ <20200410101831.GA27723@ravnborg.org>
+ <235b500a-0e5e-9ca3-4be5-9026c7d9f87f@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <235b500a-0e5e-9ca3-4be5-9026c7d9f87f@web.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=XpTUx2N9 c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10
+        a=JsGlSLdvelpcWIy28Y0A:9 a=QEXdDO2ut3YA:10
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hi Markus.
 
-The variable dp_ref_clk_khz is being initialized with a value that is
-never read and it is being updated later with a new value.  The
-initialization is redundant and can be removed.
+On Fri, Apr 10, 2020 at 12:56:25PM +0200, Markus Elfring wrote:
+> > The right way to check for errors is to check if the return value is
+> > less than 0.
+> 
+> Thanks for your constructive feedback.
+> 
+> I was unsure if I noticed another programming mistake.
+> 
+> 
+> > Could you please audit all uses of platform_get_irq() in drivers/gpu/
+> 
+> I found 20 source files from the software “Linux next-20200408”
+> which seem to contain similar update candidates.
+> Would you like to clarify any extensions for improved applications
+> of scripts with the semantic patch language (Coccinelle software)
+> for corresponding analysis and transformation purposes?
+Please just send a series of patches, one for each driver.
+Each changelog needs to explain the rationale behind the change.
+Look at how this is often done.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+As for coccinelle - I cannot help you.
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
-index 26db1c5d4e4d..b210f8e9d592 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
-@@ -131,7 +131,7 @@ int dce_get_dp_ref_freq_khz(struct clk_mgr *clk_mgr_base)
- 	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
- 	int dprefclk_wdivider;
- 	int dprefclk_src_sel;
--	int dp_ref_clk_khz = 600000;
-+	int dp_ref_clk_khz;
- 	int target_div;
- 
- 	/* ASSERT DP Reference Clock source is from DFS*/
--- 
-2.25.1
-
+	Sam

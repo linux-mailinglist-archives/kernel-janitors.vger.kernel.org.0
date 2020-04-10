@@ -2,40 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 142921A4251
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Apr 2020 07:46:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 761AB1A4306
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Apr 2020 09:34:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726142AbgDJFqO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Apr 2020 01:46:14 -0400
-Received: from mout.web.de ([212.227.17.12]:58643 "EHLO mout.web.de"
+        id S1725913AbgDJHeL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Apr 2020 03:34:11 -0400
+Received: from mout.web.de ([217.72.192.78]:35085 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725818AbgDJFqO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Apr 2020 01:46:14 -0400
+        id S1725839AbgDJHeK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 10 Apr 2020 03:34:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1586497549;
-        bh=wQZi1jYN0PwblJDRsNWeVp5mEL4bCN76eORdDMpxpKU=;
+        s=dbaedf251592; t=1586504031;
+        bh=4UbSNm3NqEG/M2HD8kXXlAMA4WIoVBdI5iU+D/pkbKw=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=LO8g6kQAzRndI9NHzALC+pdY0tcKChLFkdo7l/Y7JZeKs3qFtzopg2i0edjgNl3pY
-         oi7AQgoY8tfyWD3800ngfjdQGiMRZK+4aLif6I8DiK0oNWn1foSFHrHh214PqYjZHL
-         /cpMtGy5ExkQc51S3d+rALZ2zlkxz6lZw4nNWXzI=
+        b=Nq504gM8/jN717WnOhTTfO5lmbukBN/JlttfaY+ziqhN1Ixf3UtmUOeIyfRcJfNiC
+         KSLqBAiQNKFmo7w3dIruqLIQvM/SV1ZrL6zgTWawhYEtZiGqNzqkDqC6Mhafgei3K+
+         DmgNFZSW7PLjZeR9jIh/bEShyhQQc7DwekQvzWpU=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([78.48.110.107]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MCqsR-1jWRXK18fT-009j5J; Fri, 10
- Apr 2020 07:45:49 +0200
-Subject: Re: Input: ep93xx_keypad: Checking for a failed platform_get_irq()
- call in ep93xx_keypad_probe()
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-input@vger.kernel.org
-Cc:     Allison Randal <allison@lohutok.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        H Hartley Sweeten <hsweeten@visionengravers.com>,
-        Olof Johansson <olof@lixom.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tang Bin <tangbin@cmss.chinamobile.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, linux-doc@vger.kernel.org
-References: <11aecb68-d243-2eeb-0cc8-50e1ec22bd71@web.de>
- <20200409204819.GR75430@dtor-ws>
+Received: from [192.168.1.3] ([78.48.110.107]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M6mPA-1j28aJ1pno-00wZ4J; Fri, 10
+ Apr 2020 09:33:51 +0200
+Subject: Re: [PATCH] usb: gadget: fsl: Fix a wrong judgment in fsl_udc_probe()
+To:     Tang Bin <tangbin@cmss.chinamobile.com>,
+        Li Yang <leoyang.li@nxp.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Felipe Balbi <balbi@kernel.org>, linux-usb@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Shengju Zhang <zhangshengju@cmss.chinamobile.com>
+References: <20200410015832.8012-1-tangbin@cmss.chinamobile.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -80,60 +75,103 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <279dd87a-bbc4-685d-b557-7914e4132b15@web.de>
-Date:   Fri, 10 Apr 2020 07:45:40 +0200
+Message-ID: <be8cd229-884a-40e6-3363-7c4680a51b30@web.de>
+Date:   Fri, 10 Apr 2020 09:33:49 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <20200409204819.GR75430@dtor-ws>
+In-Reply-To: <20200410015832.8012-1-tangbin@cmss.chinamobile.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:7tYjIm2pshBCa29VjlTdSvU5pYyQgsGM2gi6MjhAv42N0tkojqm
- BMYa/bdCW6UNxeqybZ9wz16HIhMyPWnA6X7e+6zMpF8OwTwWH27oyQvxRADCY2BXT3Xv8/v
- 9mS7l9ywnLCZ7gCUcswRszERXi1iuv9yU2T0ln9s75iNfkAU34x3ha42NPk3C8dBDxuBM2s
- 650hkKX4HKf69vd8W/pZw==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:WobjD/4/VWOND3YdlTzKuqMM/f57kq+92hWyObzXZk7c84tG9QK
+ ADaQCUdo2W8F2hYlFN61UXK2Zne3yR1PTENiBnuMTJ3xkBep4iOrA6JkynncBP7XOgGREpD
+ vbTL8wOFxEXp3rIUW6lLSl8rni6jGHKGGwizkq6Ou0TxIp7ex0tQ2cVHYfN9pGIhZqVQY6E
+ Ppz/TA5LSgX6eQs+Dxf4Q==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:KxkKTFxAaqQ=:gq0AzYy1p7GHhfFjV8fvVS
- KuoS3bhcCAgwCgnl7BZNFrHBiqPBiLqu8onxXpiDOQZA9gGEEE1AvGuAdyNuKR5j/hG0od+xw
- TgdbmyvQi4MET8T+/IiOAsH4C0qRzpNXAKMBsUyopc5MugXS904Hwsyt9CyRRvWRIagcw2g5Z
- RXfmqEvXfVpAJvq5tuK/bOUFUv91nskNSleGkg4gZDJqBXWQV8wlkaIbMou6bol+bo24lcOkg
- iJ6aU2yg0O73SHZiucgPxFt91l9lV9tYlYBOsOWixKjmrpxfDz0d/MsdgLBiqjx47uBTvPCBk
- sfjLTUhiJ7PsCLgV3twSgbZ1DE0EsRTE4mSHY2hQ5qSMKiZJBxLuf4iimkAthMYWcYPdFHQ8P
- NPmAdd+zDjQFKEsCIEzwpU5PwOoM1ods3Aypwj0Wca8dSeAgXstU4DPauZFsTRZ0EDlbvNdDT
- 0WvY00xTe3SnwBxrngl8h9kLFXFNSHiC6GWBc/an7vzU3TtYT2dbyyC4NIDiOFgLuRJw96rph
- 5y/bSwYw91cR0BfzFq/RqyOi8YYQXnKKJDTgoAVLHsGFM8SqytRF5qh5/9c694tYV6k2qUyCw
- BfsWs12t5QRaVn/mYVag8+0GZ29Al+b1JJPs/bGTfzSYS23vkYW7efymIdu4dsVWmxiholLIB
- WNdueioqveRIbAjAMI3H3c3Mljr1TaTJAWqb5FKwOp0TPMDDJXzDJYBndhMmSpRkPeYRO6XbC
- WvZAQImA9xs2lfI7CNgEhLVmrJqMbLs3MnSY/RSaRAaiL4v5u/OjBVgWJLHPFVbOZhpFLNQ3c
- Fh8iiYwITqvplM+rPDbk3Xv5XbpGxFNQBZ8IDEimiNTv+36irvL75OGa9FyLV6JOcpnFD2lcE
- LjfPTPBvLvYdyUT/1kQDrPrggLz0JUHnrtubgNiJdauzCsO2GOUzAQe/pDIbseBTWL3KxNFAG
- hKC5GvuUkrqUSTL8xX5EJoWdBRu/2nFoJIYwNlhji3bBr/j38zzAEHfvqLX91A92f9nAt0Xol
- tW6Rr1VXefQqaAijU7UkA+4TqUdXvqD06yq5knvSUu5JPgOjLZ2QGXiGvdjUf1MwKB2JOfp3p
- WqIFhW9TowY2Gff6+0U7LWOya/EZNjjO/DhGnRl8QXzfbZEf8a3F1vH/z8+VaQSfS9PSg9SIT
- 7ZuF9oBgPe3c2oPjTC2TU+c48Ky7oznKm7RfUOKVWNz9C83Dz85C91UVpv7caaMO3T4fflRja
- fgXcJeBSPxa+PkE6G
+X-UI-Out-Filterresults: notjunk:1;V03:K0:vSAUpJI3JPc=:oL0lG2cCZpQitfX6Z7pj5p
+ DeRMWlKu6UdoBK0giE7qmG/m/sQllTb7sLzmMlL4QKlyfGT1SU+MVp/WObrV8ZkzAT84+RNID
+ P27TjAyJmrw9ww5q9RgCIF6KzjeMKOrr5RH/nWgCWWqEGUS0GXBXz4VgLBNeo91zk6AxulfQx
+ EFJbTCnrn5vNh8k1DIu1PK90339E0b0VfR2BduA3gkeqZpqRFWbojsRJ4j3N8KhoYo1GzVBo7
+ CPc1K3BitpxvE102MXmifHwBddjpHBQx06rI8F9d776lC1aEvnjd/Gs4z3ZwmlyWYh6Av9vrw
+ DwNomouU8Hhu0l4J5KiEI9Zq69JnZPIJgLo4g9TNhNFXAMdb0S49wDN9OEYaVuEERvIA0andO
+ Py9C1FZG8Jsk6fQHHmkj2NgQArX4xjmsG5cwk0Mu0okAr6AJz88j9CujqSggr3X8cMl4ARWR/
+ TDAA7tGmr05dFtWXzI53MliGLlMalg5UCcZwvfYXZ/wZ2xXnaMyPjqfeb+o8EpjQhZcgv5PHp
+ vswG1ieyyAaPWP25rUBV04avko3IYQPCcMwlIWEhIO/KcY4bCZggzOjJWyJvAW6lYIsuDjuxl
+ /jQ65OtB4kK3ogqeHaHnDc0RsNKN/GGnt6TAM0SjNd6ltVYoMwXK78ALD9pgZVVusaZCEMPMq
+ pvnS8nKvptSr6QucbB0bBPX1Eew/vMXOMMl7B+jS/4h9imAhznnXldRBtnMWX3ImO7nL2OE2A
+ QyXAO+wx78jtt+AFVo++aDgZ93l079ZLifzaJOAghflQGll+ajkN9w7U0AHPZdPXRUmo7P9dc
+ glpnj2x27wlgDDEr8QBKV1Ey4tfyAb/Wi6oziJscMwZbbPpDl4i2SJ2BkphvPVSGcJYnlFDLA
+ 7n059D5k8QajewgpZvbZSsBCWW0YaDZJXRxmEif8YmmqAC4PV3pTGr7EHtx0hQhyYjPbp8o0f
+ +xm60TeTkWPTvjRZhrarIwHRJpulkjzbC2+Mm7Ddx3jmpxL0vmhjrNw8oP93xbf7HYxKo3D1J
+ B3moRhdBwgAwTiZK+hj1ooJFBs6LZ2LoCAk0KC2LYzcTNf+WxvCYPDovlaRcnL6+tbeTAHF6+
+ +q4FKaEnxkKjZU+xG7dvZfRROp6B745qvVwZkSUcMwp4ig4qJ3tNymoLAUxbR/iAmR8oLdtTR
+ /d/iKIG8IuMAby4Figj96w3LNa8tJyW+IRqaEZOkk/n831jAyLEYO0lAbLsZwBKfT9+3Wymk7
+ 9xQCVhsxoK6pcHAPa
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Platform code historically allowed creating IRQ resources with IRQ
-> number 0 to indicate "no interrupt assigned", so this driver tries to
-> filter out such conditions. The negative IRQs (errors) will be rejected
-> by request_irq() but I guess we can lose -EPROBE_DEFER.
+> If the function "platform_get_irq()" failed, the negative value
+> returned will not be detected here, including "-EPROBE_DEFER",
 
-Thanks for this explanation.
+I suggest to adjust this change description.
 
-* Should such information be better represented in the description for
-  these programming interfaces?
+Wording alternative:
+  The negative return value (which could eventually be =E2=80=9C-EPROBE_DE=
+FER=E2=80=9D)
+  will not be detected here from a failed call of the function =E2=80=9Cpl=
+atform_get_irq=E2=80=9D.
 
-* Can the software documentation become clearer anyhow?
+
+> which causes the application to fail to get the correct error message.
+
+Will another fine-tuning become relevant also for this wording?
 
 
-> or, maybe we should take a look at platform_get_irq() and see if we can
-> stop it returning 0 interrupt numbers and clean up the drivers.
+> Thus it must be fixed.
 
-Will further collateral evolution become interesting?
+Wording alternative:
+  Thus adjust the error detection and corresponding exception handling.
+
+
+> Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
+> Signed-off-by: Shengju Zhang <zhangshengju@cmss.chinamobile.com>
+
+How do you think about to add the tags =E2=80=9CFixes=E2=80=9D, =E2=80=9CL=
+ink=E2=80=9D and =E2=80=9CReported-by=E2=80=9D?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3Dc0cc271173b2e1c2d8d0ceaef1=
+4e4dfa79eefc0d#n584
+
+usb: gadget: fsl_udc_core: Checking for a failed platform_get_irq() call i=
+n fsl_udc_probe()
+https://lore.kernel.org/linux-usb/36341bb1-1e00-5eb1-d032-60dcc614ddaf@web=
+.de/
+https://lkml.org/lkml/2020/4/8/442
+
+=E2=80=A6
+> +++ b/drivers/usb/gadget/udc/fsl_udc_core.c
+> @@ -2441,8 +2441,8 @@ static int fsl_udc_probe(struct platform_device *p=
+dev)
+>  	udc_controller->max_ep =3D (dccparams & DCCPARAMS_DEN_MASK) * 2;
+>
+>  	udc_controller->irq =3D platform_get_irq(pdev, 0);
+> -	if (!udc_controller->irq) {
+> -		ret =3D -ENODEV;
+> +	if (udc_controller->irq <=3D 0) {
+
+Will such a failure predicate need any more clarification?
+
+How does this check fit to the current software documentation?
+
+
+> +		ret =3D udc_controller->irq ? : -ENODEV;
+
+Will it be clearer to specify values for all cases in such a conditional o=
+perator
+(instead of leaving one case empty)?
 
 Regards,
 Markus

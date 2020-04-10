@@ -2,82 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CF491A3C06
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Apr 2020 23:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 761011A3E76
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Apr 2020 04:51:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726945AbgDIVmn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Apr 2020 17:42:43 -0400
-Received: from smtprelay0228.hostedemail.com ([216.40.44.228]:47544 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726638AbgDIVmm (ORCPT
+        id S1726582AbgDJCvo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Apr 2020 22:51:44 -0400
+Received: from cmccmta2.chinamobile.com ([221.176.66.80]:39480 "EHLO
+        cmccmta2.chinamobile.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726538AbgDJCvo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Apr 2020 17:42:42 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 2E3DD182CCCD2;
-        Thu,  9 Apr 2020 21:42:42 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:960:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3743:3865:3866:3867:3868:3870:3871:3872:3874:4250:4321:5007:6119:7903:10004:10400:10848:11232:11658:11914:12297:12740:12760:12895:13019:13069:13095:13311:13357:13439:14040:14096:14097:14659:21080:21212:21433:21627:21660:21790:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:1:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: wax82_51ab01c676e4b
-X-Filterd-Recvd-Size: 2471
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf05.hostedemail.com (Postfix) with ESMTPA;
-        Thu,  9 Apr 2020 21:42:41 +0000 (UTC)
-Message-ID: <576a57b4c134903e9889cb670ccbb08a47230b6c.camel@perches.com>
-Subject: Re: [PATCH] checkpatch: check for missing \n at the end of logging
- message
-From:   Joe Perches <joe@perches.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        apw@canonical.com, Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Date:   Thu, 09 Apr 2020 14:40:40 -0700
-In-Reply-To: <59d1ef8f-4fb0-9af2-f761-b52559c8a699@wanadoo.fr>
-References: <20200407204908.10420-1-christophe.jaillet@wanadoo.fr>
-         <8617a6b94c0644bce1fd4ca77309d67a612e6300.camel@perches.com>
-         <4b7e1cf3-6fa7-60af-a1d3-2457339dbe8a@wanadoo.fr>
-         <efb5a518fdc47f0120b94a7e8a95d275c0f4ad43.camel@perches.com>
-         <60c732a1-aa4e-afab-d223-894a67713003@wanadoo.fr>
-         <bcdfa5ae68b8cb7d9324a89aedf452f6209b570c.camel@perches.com>
-         <05379b22-6755-368b-8127-8827fa020189@wanadoo.fr>
-         <f212b3ad6c09e595cb91c2f7e8728d71e27f6833.camel@perches.com>
-         <59d1ef8f-4fb0-9af2-f761-b52559c8a699@wanadoo.fr>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        Thu, 9 Apr 2020 22:51:44 -0400
+Received: from spf.mail.chinamobile.com (unknown[172.16.121.7]) by rmmx-syy-dmz-app07-12007 (RichMail) with SMTP id 2ee75e8fdf1e582-f778e; Fri, 10 Apr 2020 10:51:10 +0800 (CST)
+X-RM-TRANSID: 2ee75e8fdf1e582-f778e
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG: 00000000
+Received: from [172.20.21.224] (unknown[112.25.154.146])
+        by rmsmtp-syy-appsvr04-12004 (RichMail) with SMTP id 2ee45e8fdf142a7-a539c;
+        Fri, 10 Apr 2020 10:51:10 +0800 (CST)
+X-RM-TRANSID: 2ee45e8fdf142a7-a539c
+Subject: Re: Input: ep93xx_keypad: Checking for a failed
+ platform_get_irq()call in ep93xx_keypad_probe()
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-input@vger.kernel.org, Allison Randal <allison@lohutok.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        H Hartley Sweeten <hsweeten@visionengravers.com>,
+        Olof Johansson <olof@lixom.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+References: <11aecb68-d243-2eeb-0cc8-50e1ec22bd71@web.de>
+ <20200409204819.GR75430@dtor-ws>
+From:   Tang Bin <tangbin@cmss.chinamobile.com>
+Message-ID: <55fdfd83-dc4f-36e9-b8a7-96ad4881a2ce@cmss.chinamobile.com>
+Date:   Fri, 10 Apr 2020 10:52:50 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20200409204819.GR75430@dtor-ws>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 2020-04-09 at 20:52 +0200, Christophe JAILLET wrote:
-> In fact, I don't really see the need to modify many files just for some 
-> kind of style.
-> (same reason why I think that checkpatch is a better place for a test 
-> than submitting hundreds of patches based on coccinelle)
-> 
-> From your point of view, does auditing and fixing these missing \n make 
-> sense?
+Hi Dmitry:
 
-Not all that much no.  Even the existing conversions
-of formats missing newlines isn't all that important.
+On 2020/4/10 4:48, Dmitry Torokhov wrote:
+> Platform code historically allowed creating IRQ resources with IRQ
+> number 0 to indicate "no interrupt assigned", so this driver tries to
+> filter out such conditions. The negative IRQs (errors) will be rejected
+> by request_irq() but I guess we can lose -EPROBE_DEFER. We could do
+>
+> 	if (keypad->irq <= 0) {
+> 		err = keypad->irq ?: -ENXIO : keypad->irq;
+> 		goto failed_free;
+> 	}
+>
+>
+I have been aware of this problem for a few days, and by doing 
+experiments on the hardware, I have found the following ways that maybe 
+suitable：
 
-It's only a consideration for relatively unmaintained
-old drivers and arches that still use printk without a
-KERN_<LEVEL> where a message might either be interleaved
-with a pr_<level> style message without a terminating
-newline or by old style messages that should actually
-instead be coalesced because the printks don't have
-any KERN_<LEVEL>.
+     if (keypad->irq <= 0) {
+         err = keypad->irq ? : -ENXIO;
+         goto failed_free;
+     }
+     or
+     if (keypad->irq <= 0) {
+         err = keypad->irq < 0 ? keypad->irq : -ENXIO;
+         goto failed_free;
+     }
 
-> Wouldn't it just be a lot of noise for a small benefit?
+If you think it's usefull, I will send this patch to fix it.
 
-Much of the noise has already been filtered out by patches
-and the ambient noise is already at a relatively low
-level.
+Thanks
 
-Quiet is good though and I think the noise reduction
-is useful and quite painless.
+Tang Bin
 
+
+>
 
 

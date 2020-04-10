@@ -2,109 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DAC741A4ADC
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Apr 2020 21:55:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B75B1A4C5B
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Apr 2020 00:58:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726651AbgDJTzE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Apr 2020 15:55:04 -0400
-Received: from smtprelay0177.hostedemail.com ([216.40.44.177]:34314 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726203AbgDJTzD (ORCPT
+        id S1726650AbgDJW6C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Apr 2020 18:58:02 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:52679 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726582AbgDJW6B (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Apr 2020 15:55:03 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 09712182CCCD1;
-        Fri, 10 Apr 2020 19:55:03 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 93,11,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:960:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2197:2198:2199:2200:2393:2559:2562:2689:2692:2828:3138:3139:3140:3141:3142:3354:3622:3653:3865:3866:3867:3868:3870:3871:3872:3873:3874:4250:4321:4605:5007:6119:7903:8957:10004:10400:10848:11232:11658:11914:12043:12050:12297:12555:12663:12740:12895:13069:13311:13357:13439:13894:14181:14659:14721:21080:21212:21221:21324:21505:21611:21627:21660:21740:21741:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: rest74_490bbefb0e62d
-X-Filterd-Recvd-Size: 3039
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf12.hostedemail.com (Postfix) with ESMTPA;
-        Fri, 10 Apr 2020 19:55:01 +0000 (UTC)
-Message-ID: <db2730700ab3eb7008413a1e7bba94ca7c49a031.camel@perches.com>
-Subject: Re: [PATCH] checkpatch: check for missing \n at the end of logging
- message
-From:   Joe Perches <joe@perches.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        apw@canonical.com, Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Date:   Fri, 10 Apr 2020 12:53:00 -0700
-In-Reply-To: <c9fd4bc75812fed4799c2fb87b452b809a7e9a7a.camel@perches.com>
-References: <20200407204908.10420-1-christophe.jaillet@wanadoo.fr>
-         <8617a6b94c0644bce1fd4ca77309d67a612e6300.camel@perches.com>
-         <6e52383e-100d-b016-32c2-6fb54938b6fe@wanadoo.fr>
-         <c9fd4bc75812fed4799c2fb87b452b809a7e9a7a.camel@perches.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        Fri, 10 Apr 2020 18:58:01 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jN2az-00083H-Mj; Fri, 10 Apr 2020 22:57:57 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        John Clements <john.clements@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/amdgpu: ensure device_list is initialised before calling list_add_tail
+Date:   Fri, 10 Apr 2020 23:57:57 +0100
+Message-Id: <20200410225757.97473-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 2020-04-10 at 12:46 -0700, Joe Perches wrote:
-> On Fri, 2020-04-10 at 19:35 +0200, Christophe JAILLET wrote:
-> > Le 08/04/2020 à 04:14, Joe Perches a écrit :
-> > > This works rather better:
-> > > Perhaps you could test?
-> []
-> > I'm looking at some modification done in the last month that could have 
-> > been spotted by the above script.
-> > 
-> >      ./scripts/checkpatch.pl -f drivers/usb/phy/phy-jz4770.c
-> > 
-> > correctly spots the 3 first cases, but the 3 last (line 202, 210 and 
-> > 217) are missed.
-> > I don't understand why.
-> 
-> It has to do with checkpatch's single statement parsing.
-> 
-> This case:
-> 
-> 	if (foo)
-> 		dev_warn(...);
-> 
-> is parsed as a single statement but
-> 
-> 	if (foo) {
-> 		dev_warn(...);
-> 	};
-> 
-> is parsed as multiple statements so for the
-> second case
-> 
-> 		dev_warn(...);
-> 
-> is analyzed as a separate statement.
-> 
-> The regex match for this missing newline test expects
-> that each printk is a separate statement so the first
-> case doesn't match.
-> 
-> Clearly the regex can be improved here.
+From: Colin Ian King <colin.king@canonical.com>
 
-So on top of the original patch:
+Currently the call to list_add_tail will access an the uninitalised
+device_list.prev. Fix this by ensuring device_list is initialized before
+adding items to it.
+
+Addresses-Coverity: ("Uninitialized pointer read")
+Fixes: b3dbd6d3ec49 ("drm/amdgpu: resolve mGPU RAS query instability")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- scripts/checkpatch.pl | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index f00a6c8..54eaa7 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -5675,8 +5675,8 @@ sub process {
- 
- # check for possible missing newlines at the end of common logging functions
- 		if (defined($stat) &&
--		    $stat =~ /^\+\s*($logFunctions)\s*\((?:\s*$FuncArg\s*,\s*){0,3}\s*$String/ &&
--		    $1 !~ /_cont$/ && $1 =~ /^(?:pr|dev|netdev|netif|wiphy)_/) {
-+		    $stat =~ /^\+\s*(?:if\s*$balanced_parens\s*)?($logFunctions)\s*\((?:\s*$FuncArg\s*,\s*){0,3}\s*$String/ &&
-+		    $2 !~ /_cont$/ && $2 =~ /^(?:pr|dev|netdev|netif|wiphy)_/) {
- 			my $cnt = statement_rawlines($stat);
- 			my $extracted_string = "";
- 			for (my $i = 0; $i < $cnt; $i++) {
-
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+index b0aa4e1ed4df..caa4969bd46f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+@@ -1447,6 +1447,7 @@ static void amdgpu_ras_do_recovery(struct work_struct *work)
+ 	if  (hive && adev->gmc.xgmi.num_physical_nodes > 1) {
+ 		device_list_handle = &hive->device_list;
+ 	} else {
++		INIT_LIST_HEAD(&device_list);
+ 		list_add_tail(&adev->gmc.xgmi.head, &device_list);
+ 		device_list_handle = &device_list;
+ 	}
+-- 
+2.25.1
 

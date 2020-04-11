@@ -2,67 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B75B1A4C5B
-	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Apr 2020 00:58:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 106D61A4D4B
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Apr 2020 03:35:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726650AbgDJW6C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Apr 2020 18:58:02 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:52679 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726582AbgDJW6B (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Apr 2020 18:58:01 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jN2az-00083H-Mj; Fri, 10 Apr 2020 22:57:57 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        John Clements <john.clements@amd.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/amdgpu: ensure device_list is initialised before calling list_add_tail
-Date:   Fri, 10 Apr 2020 23:57:57 +0100
-Message-Id: <20200410225757.97473-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        id S1726884AbgDKBfl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Apr 2020 21:35:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42182 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726641AbgDKBfl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 10 Apr 2020 21:35:41 -0400
+Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 790C32082D;
+        Sat, 11 Apr 2020 01:35:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586568941;
+        bh=Sn4rPm/N5fREdC2yn4GE3gfAkpCPg1VdD3eTXAPq0EI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=zWxO2qM7NDTJM6/yFxushIq0FFD4EoAPZ8yWJSaq4mI1i50pa/ulqnfGFPeFi7sat
+         18tMXoJvk9C5eWWik6ioFZhxV7xiw3h4ql/2ruyrfCT+BpuBj/b+xUacRG6Uu8rBGi
+         AtpKghWa+H1Ny1nFuR5aLbyUlOG6umxnJtJvZabg=
+Date:   Fri, 10 Apr 2020 18:35:39 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Jon Mason <jdmason@kudzu.us>,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: neterion: remove redundant assignment to variable
+ tmp64
+Message-ID: <20200410183539.627ad5f2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20200410191150.75588-1-colin.king@canonical.com>
+References: <20200410191150.75588-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Fri, 10 Apr 2020 20:11:50 +0100 Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable tmp64 is being initialized with a value that is never read
+> and it is being updated later with a new value.  The initialization is
+> redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
 
-Currently the call to list_add_tail will access an the uninitalised
-device_list.prev. Fix this by ensuring device_list is initialized before
-adding items to it.
+Patch looks good, but what's the value of this tag?
 
-Addresses-Coverity: ("Uninitialized pointer read")
-Fixes: b3dbd6d3ec49 ("drm/amdgpu: resolve mGPU RAS query instability")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-index b0aa4e1ed4df..caa4969bd46f 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-@@ -1447,6 +1447,7 @@ static void amdgpu_ras_do_recovery(struct work_struct *work)
- 	if  (hive && adev->gmc.xgmi.num_physical_nodes > 1) {
- 		device_list_handle = &hive->device_list;
- 	} else {
-+		INIT_LIST_HEAD(&device_list);
- 		list_add_tail(&adev->gmc.xgmi.head, &device_list);
- 		device_list_handle = &device_list;
- 	}
--- 
-2.25.1
-
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>

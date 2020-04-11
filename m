@@ -2,32 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A54841A527E
-	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Apr 2020 16:27:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A92411A5289
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Apr 2020 16:58:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726107AbgDKO1j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 11 Apr 2020 10:27:39 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:42068 "EHLO
+        id S1726090AbgDKO6t (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 11 Apr 2020 10:58:49 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:17167 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726037AbgDKO1i (ORCPT
+        with ESMTP id S1726069AbgDKO6t (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 11 Apr 2020 10:27:38 -0400
+        Sat, 11 Apr 2020 10:58:49 -0400
 Received: from localhost.localdomain ([90.126.162.40])
         by mwinf5d41 with ME
-        id RSTW2200A0scBcy03STZ9s; Sat, 11 Apr 2020 16:27:37 +0200
+        id RSyl2200a0scBcy03SymvJ; Sat, 11 Apr 2020 16:58:48 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 11 Apr 2020 16:27:37 +0200
+X-ME-Date: Sat, 11 Apr 2020 16:58:48 +0200
 X-ME-IP: 90.126.162.40
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     crope@iki.fi, mchehab@kernel.org, sean@mess.org,
-        brad@nextdimension.cc
-Cc:     linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     bleung@chromium.org, enric.balletbo@collabora.com,
+        groeck@chromium.org, andy.shevchenko@gmail.com,
+        Jonathan.Cameron@huawei.com
+Cc:     gwendal@chromium.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] media: m88ds3103: Add missing '\n' in log messages
-Date:   Sat, 11 Apr 2020 16:27:29 +0200
-Message-Id: <20200411142729.28699-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] platform/chrome: cros_ec_sensorhub: Add missing '\n' in log messages
+Date:   Sat, 11 Apr 2020 16:58:44 +0200
+Message-Id: <20200411145844.29542-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -38,27 +39,42 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Message logged by 'dev_xxx()' or 'pr_xxx()' should end with a '\n'.
 
-While at it, change the log level from 'err' to 'debug'.
-
-Fixes: e6089feca460 ("media: m88ds3103: Add support for ds3103b demod")
+Fixes: 145d59baff59 ("platform/chrome: cros_ec_sensorhub: Add FIFO support")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/media/dvb-frontends/m88ds3103.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/chrome/cros_ec_sensorhub_ring.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/m88ds3103.c b/drivers/media/dvb-frontends/m88ds3103.c
-index d2c28dcf6b42..bc356ac4fe5e 100644
---- a/drivers/media/dvb-frontends/m88ds3103.c
-+++ b/drivers/media/dvb-frontends/m88ds3103.c
-@@ -1898,7 +1898,7 @@ static int m88ds3103_probe(struct i2c_client *client,
- 		if (ret)
- 			goto err_kfree;
- 		dev->dt_addr = ((utmp & 0x80) == 0) ? 0x42 >> 1 : 0x40 >> 1;
--		dev_err(&client->dev, "dt addr is 0x%02x", dev->dt_addr);
-+		dev_dbg(&client->dev, "dt addr is 0x%02x\n", dev->dt_addr);
- 
- 		dev->dt_client = i2c_new_dummy_device(client->adapter,
- 						      dev->dt_addr);
+diff --git a/drivers/platform/chrome/cros_ec_sensorhub_ring.c b/drivers/platform/chrome/cros_ec_sensorhub_ring.c
+index 230e6cf3da2f..c51af569708f 100644
+--- a/drivers/platform/chrome/cros_ec_sensorhub_ring.c
++++ b/drivers/platform/chrome/cros_ec_sensorhub_ring.c
+@@ -820,7 +820,7 @@ static void cros_ec_sensorhub_ring_handler(struct cros_ec_sensorhub *sensorhub)
+ 	if (fifo_info->count > sensorhub->fifo_size ||
+ 	    fifo_info->size != sensorhub->fifo_size) {
+ 		dev_warn(sensorhub->dev,
+-			 "Mismatch EC data: count %d, size %d - expected %d",
++			 "Mismatch EC data: count %d, size %d - expected %d\n",
+ 			 fifo_info->count, fifo_info->size,
+ 			 sensorhub->fifo_size);
+ 		goto error;
+@@ -851,14 +851,14 @@ static void cros_ec_sensorhub_ring_handler(struct cros_ec_sensorhub *sensorhub)
+ 		}
+ 		if (number_data > fifo_info->count - i) {
+ 			dev_warn(sensorhub->dev,
+-				 "Invalid EC data: too many entry received: %d, expected %d",
++				 "Invalid EC data: too many entry received: %d, expected %d\n",
+ 				 number_data, fifo_info->count - i);
+ 			break;
+ 		}
+ 		if (out + number_data >
+ 		    sensorhub->ring + fifo_info->count) {
+ 			dev_warn(sensorhub->dev,
+-				 "Too many samples: %d (%zd data) to %d entries for expected %d entries",
++				 "Too many samples: %d (%zd data) to %d entries for expected %d entries\n",
+ 				 i, out - sensorhub->ring, i + number_data,
+ 				 fifo_info->count);
+ 			break;
 -- 
 2.20.1
 

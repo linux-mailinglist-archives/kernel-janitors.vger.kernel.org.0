@@ -2,102 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 707B11A4E5B
-	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Apr 2020 08:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2016D1A4E65
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Apr 2020 08:48:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725922AbgDKGiQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 11 Apr 2020 02:38:16 -0400
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:47053 "EHLO
+        id S1725901AbgDKGsK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 11 Apr 2020 02:48:10 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:42327 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725869AbgDKGiQ (ORCPT
+        with ESMTP id S1725867AbgDKGsK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 11 Apr 2020 02:38:16 -0400
-Received: from localhost.localdomain ([93.22.135.18])
+        Sat, 11 Apr 2020 02:48:10 -0400
+Received: from [192.168.42.210] ([93.22.135.18])
         by mwinf5d37 with ME
-        id RJeD220060Pz5GD03JeDNh; Sat, 11 Apr 2020 08:38:14 +0200
-X-ME-Helo: localhost.localdomain
+        id RJo72200G0Pz5GD03Jo84W; Sat, 11 Apr 2020 08:48:09 +0200
+X-ME-Helo: [192.168.42.210]
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 11 Apr 2020 08:38:14 +0200
+X-ME-Date: Sat, 11 Apr 2020 08:48:09 +0200
 X-ME-IP: 93.22.135.18
+Subject: Re: [PATCH] checkpatch: check for missing \n at the end of logging
+ message
+To:     Joe Perches <joe@perches.com>, apw@canonical.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Newsgroups: gmane.linux.kernel,gmane.linux.kernel.janitors
+References: <20200407204908.10420-1-christophe.jaillet@wanadoo.fr>
+ <8617a6b94c0644bce1fd4ca77309d67a612e6300.camel@perches.com>
+ <6e52383e-100d-b016-32c2-6fb54938b6fe@wanadoo.fr>
+ <c9fd4bc75812fed4799c2fb87b452b809a7e9a7a.camel@perches.com>
+ <db2730700ab3eb7008413a1e7bba94ca7c49a031.camel@perches.com>
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     balbi@kernel.org, gregkh@linuxfoundation.org, paul@crapouillou.net
-Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] usb: phy: jz4770: Add a missing '\n' in a log message
-Date:   Sat, 11 Apr 2020 08:38:11 +0200
-Message-Id: <20200411063811.6767-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+Message-ID: <215f2a43-6677-04cd-f376-bd7cd051b626@wanadoo.fr>
+Date:   Sat, 11 Apr 2020 08:48:07 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <db2730700ab3eb7008413a1e7bba94ca7c49a031.camel@perches.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Message logged by 'dev_xxx()' or 'pr_xxx()' should end with a '\n'.
+Le 10/04/2020 à 21:53, Joe Perches a écrit :
+> On Fri, 2020-04-10 at 12:46 -0700, Joe Perches wrote:
+>> On Fri, 2020-04-10 at 19:35 +0200, Christophe JAILLET wrote:
+>>> Le 08/04/2020 à 04:14, Joe Perches a écrit :
+>>>> This works rather better:
+>>>> Perhaps you could test?
+>> []
+>>> I'm looking at some modification done in the last month that could have
+>>> been spotted by the above script.
+>>>
+>>>       ./scripts/checkpatch.pl -f drivers/usb/phy/phy-jz4770.c
+>>>
+>>> correctly spots the 3 first cases, but the 3 last (line 202, 210 and
+>>> 217) are missed.
+>>> I don't understand why.
+>> It has to do with checkpatch's single statement parsing.
+>>
+>> This case:
+>>
+>> 	if (foo)
+>> 		dev_warn(...);
+>>
+>> is parsed as a single statement but
+>>
+>> 	if (foo) {
+>> 		dev_warn(...);
+>> 	};
+>>
+>> is parsed as multiple statements so for the
+>> second case
+>>
+>> 		dev_warn(...);
+>>
+>> is analyzed as a separate statement.
+>>
+>> The regex match for this missing newline test expects
+>> that each printk is a separate statement so the first
+>> case doesn't match.
+>>
+>> Clearly the regex can be improved here.
+> So on top of the original patch:
+> ---
+>   scripts/checkpatch.pl | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+> index f00a6c8..54eaa7 100755
+> --- a/scripts/checkpatch.pl
+> +++ b/scripts/checkpatch.pl
+> @@ -5675,8 +5675,8 @@ sub process {
+>   
+>   # check for possible missing newlines at the end of common logging functions
+>   		if (defined($stat) &&
+> -		    $stat =~ /^\+\s*($logFunctions)\s*\((?:\s*$FuncArg\s*,\s*){0,3}\s*$String/ &&
+> -		    $1 !~ /_cont$/ && $1 =~ /^(?:pr|dev|netdev|netif|wiphy)_/) {
+> +		    $stat =~ /^\+\s*(?:if\s*$balanced_parens\s*)?($logFunctions)\s*\((?:\s*$FuncArg\s*,\s*){0,3}\s*$String/ &&
+> +		    $2 !~ /_cont$/ && $2 =~ /^(?:pr|dev|netdev|netif|wiphy)_/) {
+>   			my $cnt = statement_rawlines($stat);
+>   			my $extracted_string = "";
+>   			for (my $i = 0; $i < $cnt; $i++) {
 
-Fixes: 541368b46b82 ("usb: phy: Add driver for the Ingenic JZ4770 USB transceiver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/usb/phy/phy-jz4770.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Hi Joe,
 
-diff --git a/drivers/usb/phy/phy-jz4770.c b/drivers/usb/phy/phy-jz4770.c
-index 3ea1f5b9bcf8..8f62dc2a90ff 100644
---- a/drivers/usb/phy/phy-jz4770.c
-+++ b/drivers/usb/phy/phy-jz4770.c
-@@ -125,13 +125,13 @@ static int jz4770_phy_init(struct usb_phy *phy)
- 
- 	err = regulator_enable(priv->vcc_supply);
- 	if (err) {
--		dev_err(priv->dev, "Unable to enable VCC: %d", err);
-+		dev_err(priv->dev, "Unable to enable VCC: %d\n", err);
- 		return err;
- 	}
- 
- 	err = clk_prepare_enable(priv->clk);
- 	if (err) {
--		dev_err(priv->dev, "Unable to start clock: %d", err);
-+		dev_err(priv->dev, "Unable to start clock: %d\n", err);
- 		return err;
- 	}
- 
-@@ -191,7 +191,7 @@ static int jz4770_phy_probe(struct platform_device *pdev)
- 
- 	priv->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(priv->base)) {
--		dev_err(dev, "Failed to map registers");
-+		dev_err(dev, "Failed to map registers\n");
- 		return PTR_ERR(priv->base);
- 	}
- 
-@@ -199,7 +199,7 @@ static int jz4770_phy_probe(struct platform_device *pdev)
- 	if (IS_ERR(priv->clk)) {
- 		err = PTR_ERR(priv->clk);
- 		if (err != -EPROBE_DEFER)
--			dev_err(dev, "Failed to get clock");
-+			dev_err(dev, "Failed to get clock\n");
- 		return err;
- 	}
- 
-@@ -207,14 +207,14 @@ static int jz4770_phy_probe(struct platform_device *pdev)
- 	if (IS_ERR(priv->vcc_supply)) {
- 		err = PTR_ERR(priv->vcc_supply);
- 		if (err != -EPROBE_DEFER)
--			dev_err(dev, "failed to get regulator");
-+			dev_err(dev, "Failed to get regulator\n");
- 		return err;
- 	}
- 
- 	err = usb_add_phy(&priv->phy, USB_PHY_TYPE_USB2);
- 	if (err) {
- 		if (err != -EPROBE_DEFER)
--			dev_err(dev, "Unable to register PHY");
-+			dev_err(dev, "Unable to register PHY\n");
- 		return err;
- 	}
- 
--- 
-2.20.1
+This fixes the use case for  drivers/usb/phy/phy-jz4770.c
+
+     ./scripts/checkpatch.pl -f drivers/usb/gadget/udc/tegra-xudc.c
+
+is missing line 691.
+
+CJ
 

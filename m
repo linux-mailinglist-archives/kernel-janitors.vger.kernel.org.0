@@ -2,71 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93CA71A5D92
-	for <lists+kernel-janitors@lfdr.de>; Sun, 12 Apr 2020 10:48:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C6A21A5DA7
+	for <lists+kernel-janitors@lfdr.de>; Sun, 12 Apr 2020 11:07:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725909AbgDLIsj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 12 Apr 2020 04:48:39 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:45520 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725832AbgDLIsj (ORCPT
+        id S1726908AbgDLJHu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 12 Apr 2020 05:07:50 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:57183 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726880AbgDLJHu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 12 Apr 2020 04:48:39 -0400
-Received: by mail-ot1-f65.google.com with SMTP id 60so6169470otl.12;
-        Sun, 12 Apr 2020 01:48:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ryrnnmiWMOzX1gq6Vxt4jaTEpcF4x4xQMMv3P1wro3w=;
-        b=ap1+nQp4JovGSL47Qfgt0af2I3wW8FwjJosR61IAiZ24vFpJyPzEdcNgW4eUnw7SCm
-         nLlGknlNicfa7luVtRZtCrxBRamWdhpcwKUB0O1M5A1WwO2tVV7KFcnTv45yC3CGwg2g
-         2tZwyShL/IU+zlN1iM46HZXyM6D05Xneu9gza0xC6Km2VMGKMjqYzM4HfSakyksRYE0G
-         aaQNO3kr7l+WzILi2vhuiHidcx5bdIf2d5NA1SYCSkYU4RMspAwh1oYwj3gp9PTydgGO
-         JdtgJUipos5DGm8W61HINmXr8GmlNQlaIwLp97mPGhCljA8f4inwKjs/hoUdbt+2KSvf
-         NVXA==
-X-Gm-Message-State: AGi0PuZRTtiMuQKVXa1etbeYxgefFMxE31qvK5PGbqaLsv7/OCiXUsDt
-        zSb03SYWEj99Pnqq6DFQALJhQUi9i184Co3+SEa5iQ==
-X-Google-Smtp-Source: APiQypKUSpUCFnG9oCj6HKDhZzk/Ok0xScPFxCdPYcw8sr+YVgG8G9chaRdg2kv6rM3C9zCB+TMr5Bh/Z160sTLm4gA=
-X-Received: by 2002:a4a:95a9:: with SMTP id o38mr10287105ooi.76.1586681319036;
- Sun, 12 Apr 2020 01:48:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200410122315.17523-1-colin.king@canonical.com>
-In-Reply-To: <20200410122315.17523-1-colin.king@canonical.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Sun, 12 Apr 2020 10:48:27 +0200
-Message-ID: <CAMuHMdVCc34r0jHrn8GiJQCzvRSmUiZgN56D0c_KgSWN0e1W1g@mail.gmail.com>
-Subject: Re: [PATCH] spi: remove redundant assignment to variable ms
-To:     Colin King <colin.king@canonical.com>
-Cc:     Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
+        Sun, 12 Apr 2020 05:07:50 -0400
+Received: from localhost.localdomain ([90.126.162.40])
+        by mwinf5d55 with ME
+        id Rl7m2200n0scBcy03l7nwK; Sun, 12 Apr 2020 11:07:48 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 12 Apr 2020 11:07:48 +0200
+X-ME-IP: 90.126.162.40
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     jikos@kernel.org, benjamin.tissoires@redhat.com
+Cc:     linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] HID: fix typo in Kconfig
+Date:   Sun, 12 Apr 2020 11:07:43 +0200
+Message-Id: <20200412090743.8236-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Apr 10, 2020 at 2:23 PM Colin King <colin.king@canonical.com> wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->
-> The variable ms is being initialized with a value that is never read
-> and it is being updated later with a new value.  The initialization is
-> redundant and can be removed.
->
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Fix 2 typos:
+   s/Uninterruptable/Uninterruptible/
+   s/should't/shouldn't/
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/hid/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
+index c5b0bd5283fa..008bf44bc2c3 100644
+--- a/drivers/hid/Kconfig
++++ b/drivers/hid/Kconfig
+@@ -42,7 +42,7 @@ config HIDRAW
+ 	---help---
+ 	Say Y here if you want to support HID devices (from the USB
+ 	specification standpoint) that aren't strictly user interface
+-	devices, like monitor controls and Uninterruptable Power Supplies.
++	devices, like monitor controls and Uninterruptible Power Supplies.
+ 
+ 	This module supports these devices separately using a separate
+ 	event interface on /dev/hidraw.
+@@ -1140,7 +1140,7 @@ config HID_SENSOR_CUSTOM_SENSOR
+ 	  to decide how to interpret these special sensor ids and process in
+ 	  the user space. Currently some manufacturers are using these ids for
+ 	  sensor calibration and debugging other sensors. Manufacturers
+-	  should't use these special custom sensor ids to export any of the
++	  shouldn't use these special custom sensor ids to export any of the
+ 	  standard sensors.
+ 	  Select this config option for custom/generic sensor support.
+ 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.20.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

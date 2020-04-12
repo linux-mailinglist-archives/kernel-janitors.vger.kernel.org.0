@@ -2,31 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84B271A5E83
-	for <lists+kernel-janitors@lfdr.de>; Sun, 12 Apr 2020 14:07:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C471E1A5F0A
+	for <lists+kernel-janitors@lfdr.de>; Sun, 12 Apr 2020 16:35:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727023AbgDLMG5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 12 Apr 2020 08:06:57 -0400
-Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:26233 "EHLO
+        id S1726805AbgDLOfO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 12 Apr 2020 10:35:14 -0400
+Received: from smtp01.smtpout.orange.fr ([80.12.242.123]:32630 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726843AbgDLMG5 (ORCPT
+        with ESMTP id S1726818AbgDLOfO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 12 Apr 2020 08:06:57 -0400
+        Sun, 12 Apr 2020 10:35:14 -0400
 Received: from localhost.localdomain ([93.22.37.28])
-        by mwinf5d20 with ME
-        id Ro6u220020cS4cl03o6ulF; Sun, 12 Apr 2020 14:06:55 +0200
+        by mwinf5d36 with ME
+        id RqbA2200b0cS4cl03qbBFc; Sun, 12 Apr 2020 16:35:12 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 12 Apr 2020 14:06:55 +0200
+X-ME-Date: Sun, 12 Apr 2020 16:35:12 +0200
 X-ME-IP: 93.22.37.28
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     jikos@kernel.org, benjamin.tissoires@redhat.com, neko@nya.ai
-Cc:     linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     robdclark@gmail.com, sean@poorly.run, airlied@linux.ie,
+        daniel@ffwll.ch
+Cc:     dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] HID: elan: Do not explicitly free managed resource
-Date:   Sun, 12 Apr 2020 14:06:52 +0200
-Message-Id: <20200412120652.9969-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] drm/msm: Fix typo
+Date:   Sun, 12 Apr 2020 16:35:09 +0200
+Message-Id: <20200412143509.11353-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -35,27 +37,34 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'input' is allocated with 'devm_input_allocate_device()'. There is no need
-to free it explicitly. (add should it be 'devm_input_device_release()'
-should be used for that)
+Duplicated 'we'
 
-Fixes: 9a6a4193d65b ("HID: Add driver for USB ELAN Touchpad")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/hid/hid-elan.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_crtc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-elan.c b/drivers/hid/hid-elan.c
-index 45c4f888b7c4..26c294a7c9ff 100644
---- a/drivers/hid/hid-elan.c
-+++ b/drivers/hid/hid-elan.c
-@@ -198,7 +198,6 @@ static int elan_input_configured(struct hid_device *hdev, struct hid_input *hi)
- 	if (ret) {
- 		hid_err(hdev, "Failed to register elan input device: %d\n",
- 			ret);
--		input_free_device(input);
- 		return ret;
+diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_crtc.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_crtc.c
+index 998bef1190a3..b5fed67c4651 100644
+--- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_crtc.c
++++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_crtc.c
+@@ -959,7 +959,7 @@ static int mdp5_crtc_cursor_set(struct drm_crtc *crtc,
+ 	if (!ctl)
+ 		return -EINVAL;
+ 
+-	/* don't support LM cursors when we we have source split enabled */
++	/* don't support LM cursors when we have source split enabled */
+ 	if (mdp5_cstate->pipeline.r_mixer)
+ 		return -EINVAL;
+ 
+@@ -1030,7 +1030,7 @@ static int mdp5_crtc_cursor_move(struct drm_crtc *crtc, int x, int y)
+ 		return -EINVAL;
  	}
+ 
+-	/* don't support LM cursors when we we have source split enabled */
++	/* don't support LM cursors when we have source split enabled */
+ 	if (mdp5_cstate->pipeline.r_mixer)
+ 		return -EINVAL;
  
 -- 
 2.20.1

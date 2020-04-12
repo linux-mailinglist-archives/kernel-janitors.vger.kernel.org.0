@@ -1,71 +1,59 @@
 Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C471E1A5F0A
-	for <lists+kernel-janitors@lfdr.de>; Sun, 12 Apr 2020 16:35:18 +0200 (CEST)
+Received: from vger.kernel.org (unknown [209.132.180.67])
+	by mail.lfdr.de (Postfix) with ESMTP id DC66C1A5FEA
+	for <lists+kernel-janitors@lfdr.de>; Sun, 12 Apr 2020 20:47:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726805AbgDLOfO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 12 Apr 2020 10:35:14 -0400
-Received: from smtp01.smtpout.orange.fr ([80.12.242.123]:32630 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726818AbgDLOfO (ORCPT
+        id S1727459AbgDLSrN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 12 Apr 2020 14:47:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.18]:46774 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727329AbgDLSrM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 12 Apr 2020 10:35:14 -0400
-Received: from localhost.localdomain ([93.22.37.28])
-        by mwinf5d36 with ME
-        id RqbA2200b0cS4cl03qbBFc; Sun, 12 Apr 2020 16:35:12 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 12 Apr 2020 16:35:12 +0200
-X-ME-IP: 93.22.37.28
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     robdclark@gmail.com, sean@poorly.run, airlied@linux.ie,
-        daniel@ffwll.ch
-Cc:     dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] drm/msm: Fix typo
-Date:   Sun, 12 Apr 2020 16:35:09 +0200
-Message-Id: <20200412143509.11353-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        Sun, 12 Apr 2020 14:47:12 -0400
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B8E5C0A3BF0;
+        Sun, 12 Apr 2020 11:47:13 -0700 (PDT)
+Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (c-67-180-217-166.hsd1.ca.comcast.net [67.180.217.166])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B5DCD206DA;
+        Sun, 12 Apr 2020 18:47:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586717233;
+        bh=+9FXfKaVjMENl17bJC9ZRMemISlZT/4AT+8ce9SdLCg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=S/IwGsSJVCkmnJ7UN1vu2Z3MyPqtgd0sDwH7wRpwnDcq27/vryNIJTPmBqNBaI+zz
+         vnElP2Uo5LLdLpCElOFAw3X5n0i4bODviYbpWlxr/gUpRR0UUtUKDsPUNp+F3+0lHr
+         8nsnYDVBUE41bvV8BVNhipcTGCI+FT+yjbr+MZp0=
+Date:   Sun, 12 Apr 2020 11:47:11 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Jon Mason <jdmason@kudzu.us>,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: neterion: remove redundant assignment to variable
+ tmp64
+Message-ID: <20200412114711.2599fd9e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20200410191150.75588-1-colin.king@canonical.com>
+References: <20200410191150.75588-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Duplicated 'we'
+On Fri, 10 Apr 2020 20:11:50 +0100 Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable tmp64 is being initialized with a value that is never read
+> and it is being updated later with a new value.  The initialization is
+> redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/gpu/drm/msm/disp/mdp5/mdp5_crtc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_crtc.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_crtc.c
-index 998bef1190a3..b5fed67c4651 100644
---- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_crtc.c
-+++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_crtc.c
-@@ -959,7 +959,7 @@ static int mdp5_crtc_cursor_set(struct drm_crtc *crtc,
- 	if (!ctl)
- 		return -EINVAL;
- 
--	/* don't support LM cursors when we we have source split enabled */
-+	/* don't support LM cursors when we have source split enabled */
- 	if (mdp5_cstate->pipeline.r_mixer)
- 		return -EINVAL;
- 
-@@ -1030,7 +1030,7 @@ static int mdp5_crtc_cursor_move(struct drm_crtc *crtc, int x, int y)
- 		return -EINVAL;
- 	}
- 
--	/* don't support LM cursors when we we have source split enabled */
-+	/* don't support LM cursors when we have source split enabled */
- 	if (mdp5_cstate->pipeline.r_mixer)
- 		return -EINVAL;
- 
--- 
-2.20.1
-
+Applied.

@@ -2,98 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (unknown [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9608F1A6227
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Apr 2020 06:30:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93AE81A6366
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Apr 2020 09:04:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728690AbgDMEaU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Apr 2020 00:30:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.18]:60282 "EHLO
+        id S1729120AbgDMHEf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Apr 2020 03:04:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.18]:56562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725775AbgDMEaU (ORCPT
+        with ESMTP id S1729114AbgDMHEf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Apr 2020 00:30:20 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 154FBC0A3BE0;
-        Sun, 12 Apr 2020 21:30:19 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id o81so2745770wmo.2;
-        Sun, 12 Apr 2020 21:30:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=EbnZSiEMnHgTN/mDIIGBsmHUVd2FaPr3+pRi3ydpxdc=;
-        b=Cn5OcRmnV/FsOvZHrEClH/vFv+XEOER2nAVKrUXl5glM2qw6RE+Qimvigbr0HpL5PE
-         qW2u8NBJP2sTfEG0OOEVGdHU1bNJ5XdZ+ebOd2rMYFi+W3O2CpygbEoGuPTx7cVa6pjj
-         5TgG1I09ERhcmzIfUj7B4P0aQJK5DJTQmrO2ZHHcbD1mTOFZC9qHG44Kgxbfnh99qeGQ
-         A2R7xn7yy1gYCwHwHBpY25uKCIfYUv2deoLcjQkUMmq9s1uI+oysogt0rSqkip72k8Z5
-         0XEj2P1EOccs5zvL+u4A7eY/kJ/1flUR3w82q6XDEfriPdBEXPUYBHAglyZT4eyki1MG
-         R3Kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=EbnZSiEMnHgTN/mDIIGBsmHUVd2FaPr3+pRi3ydpxdc=;
-        b=CyikhUeedBX/ULxSrtjMC85hNbicqKKsdENt2LMhZ5flUtQqf1TbZETWoICPSl0kJ/
-         QcD9pOT8kMJqYSWpRoundQXaNdESmyvyaWW5Sw8euHuTpHAYYlLRqb3pO4YeWD0An7L5
-         yjTJm3UO/pNJ6E83bt0TNvZGgWdePcW3FxkbqaaKSpOtmVxOHhNbwvWhT43clpHFX/r+
-         jfJWBu3PylxoueLWcy60DaYWvKor+hwpY7QTNANpHeMBQ7fksiIy/Wh49Gdxoc1+RRet
-         Mh6z0162YI4BPtfLQO2RZcISMyivkfbIhUY5VDezgNmd+JlHO3TaGAD4iDOKI9L21L1V
-         +Jnw==
-X-Gm-Message-State: AGi0PuZ6p2ds1MSqFIbkWU5NjQ5ckEge+V4T4g/tJM+CODGNofsouNFl
-        6s8JAxt9+Q7z1xQoYDnxfKooILc090I=
-X-Google-Smtp-Source: APiQypJqzsG5xE7UIV/7jHME578hAykas9gVz9OtdHMsoHKH3Nw7qn3xHFVFEoe++RD96wFYJR3fag==
-X-Received: by 2002:a1c:7308:: with SMTP id d8mr17695093wmb.31.1586752217830;
-        Sun, 12 Apr 2020 21:30:17 -0700 (PDT)
-Received: from basti.fritz.box (p200300D1FF00AD00593005B1452DFD52.dip0.t-ipconnect.de. [2003:d1:ff00:ad00:5930:5b1:452d:fd52])
-        by smtp.gmail.com with ESMTPSA id b82sm13668229wmh.1.2020.04.12.21.30.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Apr 2020 21:30:17 -0700 (PDT)
-From:   Sebastian Fricke <sebastian.fricke.linux@gmail.com>
-To:     olivier.moysan@st.com
-Cc:     sebastian.fricke.linux@gmail.com, kernel-janitors@vger.kernel.org,
-        Arnaud Pouliquen <arnaud.pouliquen@st.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        alsa-devel@alsa-project.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] soc/stm/stm32_sub_sai: Add missing '\n' in log messages
-Date:   Mon, 13 Apr 2020 06:29:52 +0200
-Message-Id: <20200413042952.7675-1-sebastian.fricke.linux@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        Mon, 13 Apr 2020 03:04:35 -0400
+Received: from smtp.smtpout.orange.fr (smtp04.smtpout.orange.fr [80.12.242.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DEF66C008679
+        for <kernel-janitors@vger.kernel.org>; Mon, 13 Apr 2020 00:04:33 -0700 (PDT)
+Received: from [192.168.1.41] ([90.126.162.40])
+        by mwinf5d60 with ME
+        id S6wB220060scBcy036wEHe; Mon, 13 Apr 2020 08:57:01 +0200
+X-ME-Helo: [192.168.1.41]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 13 Apr 2020 08:57:01 +0200
+X-ME-IP: 90.126.162.40
+Subject: Re: [PATCH] net: mvneta: Fix a typo
+To:     Joe Perches <joe@perches.com>, thomas.petazzoni@bootlin.com,
+        davem@davemloft.net
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200412212034.4532-1-christophe.jaillet@wanadoo.fr>
+ <6ecfa6cb686af1452101c0b727c9eb34d5582610.camel@perches.com>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <eea1b700-4559-c8d1-1960-1858ed3d90ef@wanadoo.fr>
+Date:   Mon, 13 Apr 2020 08:56:10 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <6ecfa6cb686af1452101c0b727c9eb34d5582610.camel@perches.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Message logged by 'dev_xxx()' or 'pr_xxx()' should end with a '\n'.
+Le 12/04/2020 à 23:35, Joe Perches a écrit :
+> On Sun, 2020-04-12 at 23:20 +0200, Christophe JAILLET wrote:
+>> s/mvmeta/mvneta/
+> nice. how did you find this?
 
-Fixes: 3e086ed("ASoC: stm32: add SAI drivers")
 
-Signed-off-by: Sebastian Fricke <sebastian.fricke.linux@gmail.com>
----
- sound/soc/stm/stm32_sai_sub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi,
 
-diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
-index 0d0c9afd8791..34a7c3d6fb91 100644
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -837,7 +837,7 @@ static int stm32_sai_set_config(struct snd_soc_dai *cpu_dai,
- 		cr1 = SAI_XCR1_DS_SET(SAI_DATASIZE_32);
- 		break;
- 	default:
--		dev_err(cpu_dai->dev, "Data format not supported");
-+		dev_err(cpu_dai->dev, "Data format not supported\n");
- 		return -EINVAL;
- 	}
- 
--- 
-2.20.1
+This is based on a bash script I've made a while ago (see [1])
+I've slightly updated it, but the idea is still the same. I search 
+strings in a file with some variation on the file name (2 inverted 
+chars, 1 missing char or 1 modified char).
+
+The output is horrible, and a lot of filtering should be done.
+It is much like noise, with MANY false positives. But I manage to dig 
+some interesting stuff out of it.
+
+If interested in the updated script, just ask, but except the concept 
+itself, I'm not sure than anything else worth anything and is should be 
+rewritten from scratch.
+
+The update includes some tweaks in order to search into Kconfig files 
+instead.
+
+CJ
+
+[1]: https://marc.info/?l=kernel-janitors&m=156382201306781&w=4
 

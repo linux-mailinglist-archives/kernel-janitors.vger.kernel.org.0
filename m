@@ -2,104 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (unknown [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D57F61A6389
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Apr 2020 09:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20C381A63C8
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Apr 2020 09:35:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729220AbgDMHWf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Apr 2020 03:22:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.18]:59550 "EHLO
+        id S1729387AbgDMHfC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Apr 2020 03:35:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.18]:33664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729215AbgDMHWe (ORCPT
+        with ESMTP id S1727480AbgDMHfC (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Apr 2020 03:22:34 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E821C008679;
-        Mon, 13 Apr 2020 00:22:34 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id a43so10920110edf.6;
-        Mon, 13 Apr 2020 00:22:34 -0700 (PDT)
+        Mon, 13 Apr 2020 03:35:02 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA292C008651;
+        Mon, 13 Apr 2020 00:35:01 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id g12so1224173wmh.3;
+        Mon, 13 Apr 2020 00:35:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
-        bh=12YaGZ0Q7/4MTqyWRVrwSum2gRGtuip2cL2gQR6LOpQ=;
-        b=taWpI8IPNfim4/HRodFQtrondjFAQ2VuoNQg7pOnuAXZDi3xD7K+EQ3uMD/Kn6f6Rq
-         SdKPjxEt1/b/BvIfNTbbCmiPyXh/TWAXfOzVyjPfNGJbmxomObCZ/o7On9dSLREuAJI9
-         /Ynkd+r58eHZjv86GNoSMsJXr8D1zPLskgGDFnbFc4zoOBnXD0Jb5eD37dd5831KKYTA
-         0v8gCcElj7p7HYBeWkarS+z2o+dVej6NXQtHdnKFRO34+H3gnayY/sDt4AHrLQjiwyrE
-         RdGPwxzlNcGCT+NzoQWuk6TwZnEn29F06QkX/q3DyEXGXG69qA1BI8Lpf1PYe1S+HshR
-         JsCw==
+        bh=jNvpxtX/L+YMcC9uGmkISLCwGkRZNFiP+NPeaB0ugAk=;
+        b=CAaTOHhrXd2f0/o9O0vjmpdMKqGTeG7I5T0YM4fecMsoVwj6PytUIeE6mJKgmIcvH4
+         s9VlGD8cefVpVIb13UaC3kqH4HxbsszpnJ8WjpO1RmLigkzYCHO7nFfa6d9CvP5sycmi
+         dSQoAoCDstvKUbhs8WBEZ/eMLne8IBfZqya52u8s8u87RHIlxDbLYouseoUyDcuttzWu
+         gCz0iK54/pEvIUzzfe+U7iNls/UBZgI+3MQY/1KkY9R5c91WCq3DcPhctk1R1mPCYVMh
+         cht9VNr5zHT5y4Fr8ktYv22GjDg3dxkA4sAVzw44Cldi9zoHSplxggVqsiUid1phBPIX
+         u+8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=12YaGZ0Q7/4MTqyWRVrwSum2gRGtuip2cL2gQR6LOpQ=;
-        b=jBxzcwucRXWx7LxxzBtyHWpp4SovEgpe/81zNCK/EPwvp1RTTvqcXfiD9eV/svSXay
-         +NyCAym9nQbY+bZz06Zg1XAFx6gXQCPfnn8Y/Fd5ly6VW9bxTcX/g1F9Mx6BbQi2DIAY
-         /6EbXxWv5Wkqt4VcOxYC0x3vcmk5FYy0IfuCj77E8hCZU1kSiKMPzFX5EYJIRJQNOR22
-         8opKaYCXSmnCOZ5x+/Wj0rSLHO3su6ChHgHuKvN1Kjh+q/bAhXGSy5amjuxbQB7HDPDj
-         LFFgqyMZhi7HY9T5mwgnRp+uWYIFeRvT7iBJ1uJ7ZAZ5lqjCI3EozQop7imTHiUq2l6x
-         0+Cw==
-X-Gm-Message-State: AGi0PuZ6DIJOujPjvpMAvb67fC5aJ8r79rDZcI3V3R6To8JbgN+Bq32C
-        knB9d1YDIvP+4VKQNe72fjUYC7ql
-X-Google-Smtp-Source: APiQypLJzjmcJ07zIDZytFRftCleLq1hSx24Fc0wPZXV4mCSsFEwVqkdPm4G1r5miQPgefltc3Nv7Q==
-X-Received: by 2002:a17:906:2ccc:: with SMTP id r12mr14761123ejr.47.1586762553339;
-        Mon, 13 Apr 2020 00:22:33 -0700 (PDT)
+        bh=jNvpxtX/L+YMcC9uGmkISLCwGkRZNFiP+NPeaB0ugAk=;
+        b=ceAV+i6gNUOYEySt9MuG60h3xrtBGzE4rh2ZTloVaypUDlw5dJ5/rSiRlWxan5ItFN
+         KHmK5/Te9vhfCiBeUFGHoz7lMDA2SxxZMhMhnzx8lhSfiYvaaFTpCul8BG8ROnqBBEKJ
+         WZpZvaC3JP8x79hcdCZQFOGf6x0EVI60yenb0eGvBETXungpuCUETaUDSWgh3EclZMwg
+         933dYx8BRvkBXe8M54ZSw9U3+yYlblNcihCZeW0N3fMxJ3nasZCaupXLQKm/gF3wfLAz
+         zsuq7/YFPoUhN1tAbDtTNGMkZvbs8BTO4T7w0GAiUpwpwfe4PwLwp+iSGSu8kl5BIKRi
+         AGsg==
+X-Gm-Message-State: AGi0PuadQDqXpq8VkuFjWQAp5mJuIXNk5gCNLxFHVDvJ6TcMfWPIDnHo
+        WAYnnhKzM+zH2LY+jkQhs2M=
+X-Google-Smtp-Source: APiQypI/zPo1GszUY9LqyhxKcL6TzejRe+86z7SOxoStPUo7xJSmZS5DYRN/oVfDW9ELOOvAspC5tw==
+X-Received: by 2002:a1c:7416:: with SMTP id p22mr1053662wmc.80.1586763300441;
+        Mon, 13 Apr 2020 00:35:00 -0700 (PDT)
 Received: from felia.fritz.box ([2001:16b8:2da9:2f00:c0be:812e:7fb0:ebe0])
-        by smtp.gmail.com with ESMTPSA id 30sm1080047edw.70.2020.04.13.00.22.32
+        by smtp.gmail.com with ESMTPSA id q9sm13673845wrp.61.2020.04.13.00.34.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2020 00:22:32 -0700 (PDT)
+        Mon, 13 Apr 2020 00:34:59 -0700 (PDT)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Lubomir Rintel <lkundrak@v3.sk>, Olof Johansson <olof@lixom.net>
-Cc:     linux-arm-kernel@lists.infradead.org,
+To:     Paul Walmsley <paul.walmsley@sifive.com>
+Cc:     Christoph Hellwig <hch@lst.de>, Borislav Petkov <bp@suse.de>,
+        Yash Shah <yash.shah@sifive.com>, linux-edac@vger.kernel.org,
+        Sebastian Duda <sebastian.duda@fau.de>,
         Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH v2] MAINTAINERS: rectify MMP SUPPORT after moving cputype.h
-Date:   Mon, 13 Apr 2020 09:22:21 +0200
-Message-Id: <20200413072221.8061-1-lukas.bulwahn@gmail.com>
+Subject: [PATCH RESEND] MAINTAINERS: rectify EDAC-SIFIVE entry
+Date:   Mon, 13 Apr 2020 09:34:47 +0200
+Message-Id: <20200413073447.9284-1-lukas.bulwahn@gmail.com>
 X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 32adcaa010fa ("ARM: mmp: move cputype.h to include/linux/soc/")
-added a file entry that does not point to the intended file location.
+Commit 9209fb51896f ("riscv: move sifive_l2_cache.c to drivers/soc") moved
+arch/riscv/mm/sifive_l2_cache.c to drivers/soc/sifive/sifive_l2_cache.c
+and adjusted the MAINTAINERS EDAC-SIFIVE entry but slipped in a mistake.
 
 Since then, ./scripts/get_maintainer.pl --self-test complains:
 
-  warning: no file matches F: linux/soc/mmp/
+  warning: no file matches F: drivers/soc/sifive_l2_cache.c
 
-Rectify the MAINTAINERS entry now.
+Rectify the EDAC-SIFIVE entry in MAINTAINERS now.
 
-Fixes: 32adcaa010fa ("ARM: mmp: move cputype.h to include/linux/soc/")
+Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
+Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
 Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
-Lubomir, please pick this patch.
+Paul, please pick this patch.
 
-v1 & v1-RESEND: was ignored.
+v1: https://lore.kernel.org/lkml/20200304144045.15060-1-lukas.bulwahn@gmail.com/
+  - was not picked up.
 
-v1 -> v2:
-  - v1 does not apply after reordering MAINTAINERS, i.e., commit 4400b7d68f6e
-  ("MAINTAINERS: sort entries by entry name") and commit 3b50142d8528
-  ("MAINTAINERS: sort field names for all entries").
-  - PATCH v2 applies on v5.7-rc1 now. Please pick v2 instead of v1.
-
+v1-resend: applies on v5.7-rc1
 
  MAINTAINERS | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index e64e5db31497..a0fef0c33ba5 100644
+index e64e5db31497..e28676766b26 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -11327,7 +11327,7 @@ S:	Odd Fixes
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/lkundrak/linux-mmp.git
- F:	arch/arm/boot/dts/mmp*
- F:	arch/arm/mach-mmp/
--F:	linux/soc/mmp/
-+F:	include/linux/soc/mmp/
+@@ -6172,7 +6172,7 @@ M:	Yash Shah <yash.shah@sifive.com>
+ L:	linux-edac@vger.kernel.org
+ S:	Supported
+ F:	drivers/edac/sifive_edac.c
+-F:	drivers/soc/sifive_l2_cache.c
++F:	drivers/soc/sifive/sifive_l2_cache.c
  
- MMP USB PHY DRIVERS
- R:	Lubomir Rintel <lkundrak@v3.sk>
+ EDAC-SKYLAKE
+ M:	Tony Luck <tony.luck@intel.com>
 -- 
 2.17.1
 

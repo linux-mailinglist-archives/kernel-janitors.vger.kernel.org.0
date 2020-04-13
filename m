@@ -2,134 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 327F01A6621
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Apr 2020 14:02:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A9191A683A
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Apr 2020 16:35:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729327AbgDMMCa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Apr 2020 08:02:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48914 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728558AbgDMMC3 (ORCPT
+        id S1730827AbgDMOfD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Apr 2020 10:35:03 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:59712 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728713AbgDMOfA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Apr 2020 08:02:29 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22595C03BC81;
-        Mon, 13 Apr 2020 05:02:29 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id a201so9291538wme.1;
-        Mon, 13 Apr 2020 05:02:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=g/O468N0+e2tRsKFjrhvYQJivMOIkdyRPfvfIRlI7cs=;
-        b=ojwONc8Z7k2dO3NqAqtxYI/NeOkT4ewz0t86tv53y/pIujj+hieQ3KLNk9ftfb3jmg
-         XzOeklQQIeuJXOTvbulnoZcgspyaKep5/AGmp2QenkL3N07PZNCd1LJEbw3OM5SgktJK
-         YSv3aD3xXkxvtcKzJ6Tt5fXxxEuwFMaDn6E4hHXKuYHHJXyvNej9i/AW8GqX7Fyxswq4
-         U0QTwfSBeCgKBeiYOgx+SVuvitHnUPLDkzhF9rlr2BqY2b7qcXr/9j6UQrLGR9lQDAp4
-         /f7DMQ5OSvk1h864+BPE2VRDLK5/uvmdME9pLzezv42cx4UEFFaKMJCYhIQN0vdxhLan
-         QLVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=g/O468N0+e2tRsKFjrhvYQJivMOIkdyRPfvfIRlI7cs=;
-        b=mYUgWFs56lvKKQL8hpdEjtEO4vqrBZLy0GmbpNk8gD0YVWwvp91RHOlmGRB571PIXg
-         YaFFgHm4z/BY47L8vghLLV8xQhkETyN5NVZC3pGZ+CSltrFM1o2y/wJmyz70xLxobEZu
-         xojav1SIZC1DWEFlqTC6XMGGDiu77lpzNldjYGEmL8+MEg1pvlXFOCHZtNxjYkrQ+FWp
-         uwzGkTRRww0KHC6bl5VC7OA7Bj+1w0BbdIWp62UwQyc4iQHG1b5DWua9/kRAWIPLgCV5
-         SVZT1s8h0sTg9TWGYbau2lYZNrzV4ZwiQGujKw+JJkmCQCqKESqU97TX1wLFT+Nt8KwU
-         zmlQ==
-X-Gm-Message-State: AGi0PuaRpeiSrWPPCUGujRALR/xDwC0zQDaj0XJVTy3VbUguJbqXzm9A
-        30dfBVv4jBLXZUW7+KF6UELowEuRQ5A=
-X-Google-Smtp-Source: APiQypI/n5x0Dasbyjjtav2Kiy2dJHBsSLn588CFieJkVi6QTZqXPm+J/+su2U/4jAXj2iqawJdwFw==
-X-Received: by 2002:a1c:bc02:: with SMTP id m2mr18086398wmf.60.1586779347766;
-        Mon, 13 Apr 2020 05:02:27 -0700 (PDT)
-Received: from felia ([2001:16b8:2da9:2f00:3165:1687:284f:4993])
-        by smtp.gmail.com with ESMTPSA id a7sm14113305wmj.12.2020.04.13.05.02.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2020 05:02:27 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Mon, 13 Apr 2020 14:02:25 +0200 (CEST)
-X-X-Sender: lukas@felia
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-cc:     Paul Walmsley <paul.walmsley@sifive.com>,
-        Christoph Hellwig <hch@lst.de>, Borislav Petkov <bp@suse.de>,
-        Yash Shah <yash.shah@sifive.com>, linux-edac@vger.kernel.org,
-        Sebastian Duda <sebastian.duda@fau.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] MAINTAINERS: place sifive_l2_cache.c only in SIFIVE
- DRIVERS
-In-Reply-To: <20200413114702.6372-1-lukas.bulwahn@gmail.com>
-Message-ID: <alpine.DEB.2.21.2004131401190.7282@felia>
-References: <20200413114702.6372-1-lukas.bulwahn@gmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        Mon, 13 Apr 2020 10:35:00 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: eballetbo)
+        with ESMTPSA id 34C0D2A1043
+From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Subject: Re: [PATCH] platform/chrome: cros_ec_sensorhub: Off by one in
+ cros_sensorhub_send_sample()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Benson Leung <bleung@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>
+Cc:     Guenter Roeck <groeck@chromium.org>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200407092935.GJ68494@mwanda>
+Message-ID: <7731f717-805b-5698-d8d8-7446545813cb@collabora.com>
+Date:   Mon, 13 Apr 2020 16:34:53 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20200407092935.GJ68494@mwanda>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hi Dan,
 
+Thank you for your patch.
 
-On Mon, 13 Apr 2020, Lukas Bulwahn wrote:
-
-> Commit 9209fb51896f ("riscv: move sifive_l2_cache.c to drivers/soc") moved
-> arch/riscv/mm/sifive_l2_cache.c to drivers/soc/sifive/sifive_l2_cache.c
-> and adjusted the MAINTAINERS EDAC-SIFIVE entry but slipped in a mistake.
+On 7/4/20 11:29, Dan Carpenter wrote:
+> The sensorhub->push_data[] array has sensorhub->sensor_num elements.
+> It's allocated in cros_ec_sensorhub_ring_add().  So the > should be >=
+> to prevent a read one element beyond the end of the array.
 > 
-> Since then, ./scripts/get_maintainer.pl --self-test complains:
-> 
->   warning: no file matches F: drivers/soc/sifive_l2_cache.c
-> 
-> Boris suggested that sifive_l2_cache.c is considered part of the SIFIVE
-> DRIVERS, not part of EDAC-SIFIVE. So, we can simply drop this entry, and
-> by the sifive keyword pattern in SIFIVE PATTERNS, it is automatically part
-> of the SIFIVE DRIVERS.
-> 
-> Suggested-by: Borislav Petkov <bp@alien8.de>
-> Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
-> Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> Fixes: 145d59baff59 ("platform/chrome: cros_ec_sensorhub: Add FIFO support")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
-> Paul, please pick this patch.
-> 
-> v1: https://lore.kernel.org/lkml/20200304144045.15060-1-lukas.bulwahn@gmail.com/
->   - was not picked up.
-> 
-> v1-resend: https://lore.kernel.org/lkml/20200413073447.9284-1-lukas.bulwahn@gmail.com/
-> 
-> v2: reworked based on Boris comment; applies on v5.7-rc1
-> 
-> 
->  MAINTAINERS | 2 +-
+
+Applied as a fix for 5.7
+
+>  drivers/platform/chrome/cros_ec_sensorhub_ring.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e64e5db31497..e28676766b26 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -6172,7 +6172,7 @@ M:	Yash Shah <yash.shah@sifive.com>
->  L:	linux-edac@vger.kernel.org
->  S:	Supported
->  F:	drivers/edac/sifive_edac.c
-> -F:	drivers/soc/sifive_l2_cache.c
-> +F:	drivers/soc/sifive/sifive_l2_cache.c
+> diff --git a/drivers/platform/chrome/cros_ec_sensorhub_ring.c b/drivers/platform/chrome/cros_ec_sensorhub_ring.c
+> index 230e6cf3da2f..85e8ba782f0c 100644
+> --- a/drivers/platform/chrome/cros_ec_sensorhub_ring.c
+> +++ b/drivers/platform/chrome/cros_ec_sensorhub_ring.c
+> @@ -40,7 +40,7 @@ cros_sensorhub_send_sample(struct cros_ec_sensorhub *sensorhub,
+>  	int id = sample->sensor_id;
+>  	struct iio_dev *indio_dev;
 >  
->  EDAC-SKYLAKE
->  M:	Tony Luck <tony.luck@intel.com>
-> -- 
-> 2.17.1
+> -	if (id > sensorhub->sensor_num)
+> +	if (id >= sensorhub->sensor_num)
+>  		return -EINVAL;
+>  
+>  	cb = sensorhub->push_data[id].push_data_cb;
 > 
-> 
-
-Please ignore this patch. I accidently sent this patch out too quickly.
-
-Please consider and pick this PATCH v3 instead:
-
-https://lore.kernel.org/lkml/20200413115255.7100-1-lukas.bulwahn@gmail.com/
-
-
-Lukas

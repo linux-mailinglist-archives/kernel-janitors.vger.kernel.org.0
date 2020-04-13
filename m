@@ -2,101 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 947CB1A641B
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Apr 2020 10:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A66AD1A65A3
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Apr 2020 13:34:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728063AbgDMIQD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Apr 2020 04:16:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.18]:42056 "EHLO
+        id S1729023AbgDMLeo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Apr 2020 07:34:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727971AbgDMIQC (ORCPT
+        with ESMTP id S1728960AbgDMLeo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Apr 2020 04:16:02 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A318DC00860B;
-        Mon, 13 Apr 2020 01:16:02 -0700 (PDT)
-Received: from zn.tnic (p200300EC2F06C9001913BA8A68E69387.dip0.t-ipconnect.de [IPv6:2003:ec:2f06:c900:1913:ba8a:68e6:9387])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 411B71EC0C5C;
-        Mon, 13 Apr 2020 10:16:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1586765761;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=KlbV+TNCgKndNj8o0UcAUVp9m90/QKt8MAAbvtHhuoc=;
-        b=f5KgIIS5gCRWT2rm3scG1Zav/MPSSpkypBTOVMdiW2iVbxVva/ivl5cP6PtDuKnJsj9xM5
-        RIB5qvjg/RjXJKO7MiKaPcnEvOUsxG6Qbg5GGO0kZa5OoDJKJo4aPjV4fH0+yD49+A2U2b
-        lleMAaQeZrks/JZVICYmrImCK9p/U4Q=
-Date:   Mon, 13 Apr 2020 10:15:56 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Paul Walmsley <paul.walmsley@sifive.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Yash Shah <yash.shah@sifive.com>, linux-edac@vger.kernel.org,
-        Sebastian Duda <sebastian.duda@fau.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RESEND] MAINTAINERS: rectify EDAC-SIFIVE entry
-Message-ID: <20200413081556.GB3772@zn.tnic>
-References: <20200413073447.9284-1-lukas.bulwahn@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200413073447.9284-1-lukas.bulwahn@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        Mon, 13 Apr 2020 07:34:44 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6212C008769;
+        Mon, 13 Apr 2020 04:26:14 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id x4so9023104wmj.1;
+        Mon, 13 Apr 2020 04:26:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=E9gKS0aLx/dN6WOsH21xjxRHRrDTUSuyvEQfHIY2zUE=;
+        b=k8EnH2XlPIgFLTq8Kd1IeXoNfmLrb8FV90H0m3xvqZ3Qg4zgLhGDk/ldL+XaoAAaZE
+         bb8FROY9p3+PIVCAermxDm4ojx7VsP7qr60+hpLYO7FZJIqKIZuwZ7Px0Wj1SxzbVfAi
+         yvVwVy+9tOqBw1vItQU7ao62MGW9CXYef2ZIGsD7yL4csxTzNQu1JG7LMOydEJzyn4Fh
+         scZV+UV0hKF1OHjJx0C4fdWfWKxEx4UwUjEHcuYyDt+GXAT0YJKvH9JertNdyJTAVRdg
+         fOe4zQcOhKNXeG9m8VN8tTqXs6+T2xl9zObQYQ6LCzuMPdH7hv4XGn8w3a8e6wjtQjHs
+         7f9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=E9gKS0aLx/dN6WOsH21xjxRHRrDTUSuyvEQfHIY2zUE=;
+        b=RMutIYlWeHJQ2kXAGSsNRGeAUWTTpRteQ1rudn+fraLDJcwNyErQWb7Vxu9fHsnjS7
+         jynlQIaJTw86yuKYC011O9yJQNJ+C8LCm5roVyOlWmMe9QQrSSV5rik9faBnKUMrJpaE
+         Pp6Y1NYSn3mtnUVJPxCkmMhbt3LIdrtyCw/3D4J2oLd4h9mQF3OkCiT6z/B95NcEZsGG
+         QY8LgdfmmNTsyx0oQpBD8a6/wsgkmjzasgcJMeWkAMjL8Y3po/Fjotgoa15jzJ6PH3j3
+         g8pBZY1MFT5uPlPLjp+lGdjrtWE7G+pxLDQeh8kjEW+bfe167u6Nt4EZmEWgKjRwec3c
+         391g==
+X-Gm-Message-State: AGi0PubvV7k3WHEEl+WL9+exjOelLTIrxnQQrAoOeW7HAgztyn4DnYMg
+        CYEo0a1abn5XBhVEg17Wbio=
+X-Google-Smtp-Source: APiQypIMdVL3KR2SMkYkC4jJZSxngZnkiVynUBtLFJ/LfyzHcGY3cDM4BrItamm6lD6gS9WhQNvwMw==
+X-Received: by 2002:a1c:208c:: with SMTP id g134mr17236290wmg.96.1586777173455;
+        Mon, 13 Apr 2020 04:26:13 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2da9:2f00:3165:1687:284f:4993])
+        by smtp.gmail.com with ESMTPSA id k184sm14012725wmf.9.2020.04.13.04.26.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2020 04:26:12 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>
+Cc:     Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH RFC v2] MAINTAINERS: add headers and doc to SCHEDULER
+Date:   Mon, 13 Apr 2020 13:26:03 +0200
+Message-Id: <20200413112603.5257-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Apr 13, 2020 at 09:34:47AM +0200, Lukas Bulwahn wrote:
-> Commit 9209fb51896f ("riscv: move sifive_l2_cache.c to drivers/soc") moved
-> arch/riscv/mm/sifive_l2_cache.c to drivers/soc/sifive/sifive_l2_cache.c
-> and adjusted the MAINTAINERS EDAC-SIFIVE entry but slipped in a mistake.
-> 
-> Since then, ./scripts/get_maintainer.pl --self-test complains:
-> 
->   warning: no file matches F: drivers/soc/sifive_l2_cache.c
-> 
-> Rectify the EDAC-SIFIVE entry in MAINTAINERS now.
-> 
-> Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
-> Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
-> Paul, please pick this patch.
-> 
-> v1: https://lore.kernel.org/lkml/20200304144045.15060-1-lukas.bulwahn@gmail.com/
->   - was not picked up.
-> 
-> v1-resend: applies on v5.7-rc1
-> 
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e64e5db31497..e28676766b26 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -6172,7 +6172,7 @@ M:	Yash Shah <yash.shah@sifive.com>
->  L:	linux-edac@vger.kernel.org
->  S:	Supported
->  F:	drivers/edac/sifive_edac.c
-> -F:	drivers/soc/sifive_l2_cache.c
-> +F:	drivers/soc/sifive/sifive_l2_cache.c
+Various files in include/linux/sched/ and include/uapi/linux/sched/ are
+identified as part of THE REST according to MAINTAINERS, but they really
+belong to SCHEDULER.
 
-Looking at that a bit - I think the right thing to do is to remove that
-sifive_l2_cache.c file from the EDAC-SIFIVE file pattern because the
-edac driver is simply using the L2 thing to register on its notifier
-chain, i.e., using an external facility, like all the drivers do. And the
-l2_cache thing is not part of the edac driver.
+Add those headers and Documentation to the SCHEDULER entry.
 
-Thx.
+This was identified with a small script that finds all files belonging to
+THE REST according to the current MAINTAINERS file, and I investigated
+upon its output.
 
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+RFC v1: https://lore.kernel.org/lkml/20200308174931.9118-1-lukas.bulwahn@gmail.com/
+  - no feedback.
+
+RFC v2:
+  - v1 does not apply after reordering MAINTAINERS, i.e., commit 4400b7d68f6e
+    ("MAINTAINERS: sort entries by entry name") and commit 3b50142d8528
+    ("MAINTAINERS: sort field names for all entries").
+  - does not need to reorder entries anymore.
+  - applies cleanly on v5.7-rc1
+
+
+ MAINTAINERS | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e64e5db31497..8546910db0ba 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14905,10 +14905,13 @@ R:	Mel Gorman <mgorman@suse.de> (CONFIG_NUMA_BALANCING)
+ L:	linux-kernel@vger.kernel.org
+ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git sched/core
++F:	Documentation/scheduler/
+ F:	include/linux/preempt.h
+ F:	include/linux/sched.h
++F:	include/linux/sched/
+ F:	include/linux/wait.h
+ F:	include/uapi/linux/sched.h
++F:	include/uapi/linux/sched/
+ F:	kernel/sched/
+ 
+ SCR24X CHIP CARD INTERFACE DRIVER
 -- 
-Regards/Gruss,
-    Boris.
+2.17.1
 
-https://people.kernel.org/tglx/notes-about-netiquette

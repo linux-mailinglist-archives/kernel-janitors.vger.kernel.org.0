@@ -1,105 +1,91 @@
 Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from vger.kernel.org (unknown [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 20C381A63C8
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Apr 2020 09:35:09 +0200 (CEST)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.lfdr.de (Postfix) with ESMTP id 9F02C1A6417
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Apr 2020 10:35:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729387AbgDMHfC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Apr 2020 03:35:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.18]:33664 "EHLO
+        id S1728083AbgDMINY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Apr 2020 04:13:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.18]:40982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727480AbgDMHfC (ORCPT
+        with ESMTP id S1729285AbgDMILC (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Apr 2020 03:35:02 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA292C008651;
-        Mon, 13 Apr 2020 00:35:01 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id g12so1224173wmh.3;
-        Mon, 13 Apr 2020 00:35:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=jNvpxtX/L+YMcC9uGmkISLCwGkRZNFiP+NPeaB0ugAk=;
-        b=CAaTOHhrXd2f0/o9O0vjmpdMKqGTeG7I5T0YM4fecMsoVwj6PytUIeE6mJKgmIcvH4
-         s9VlGD8cefVpVIb13UaC3kqH4HxbsszpnJ8WjpO1RmLigkzYCHO7nFfa6d9CvP5sycmi
-         dSQoAoCDstvKUbhs8WBEZ/eMLne8IBfZqya52u8s8u87RHIlxDbLYouseoUyDcuttzWu
-         gCz0iK54/pEvIUzzfe+U7iNls/UBZgI+3MQY/1KkY9R5c91WCq3DcPhctk1R1mPCYVMh
-         cht9VNr5zHT5y4Fr8ktYv22GjDg3dxkA4sAVzw44Cldi9zoHSplxggVqsiUid1phBPIX
-         u+8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=jNvpxtX/L+YMcC9uGmkISLCwGkRZNFiP+NPeaB0ugAk=;
-        b=ceAV+i6gNUOYEySt9MuG60h3xrtBGzE4rh2ZTloVaypUDlw5dJ5/rSiRlWxan5ItFN
-         KHmK5/Te9vhfCiBeUFGHoz7lMDA2SxxZMhMhnzx8lhSfiYvaaFTpCul8BG8ROnqBBEKJ
-         WZpZvaC3JP8x79hcdCZQFOGf6x0EVI60yenb0eGvBETXungpuCUETaUDSWgh3EclZMwg
-         933dYx8BRvkBXe8M54ZSw9U3+yYlblNcihCZeW0N3fMxJ3nasZCaupXLQKm/gF3wfLAz
-         zsuq7/YFPoUhN1tAbDtTNGMkZvbs8BTO4T7w0GAiUpwpwfe4PwLwp+iSGSu8kl5BIKRi
-         AGsg==
-X-Gm-Message-State: AGi0PuadQDqXpq8VkuFjWQAp5mJuIXNk5gCNLxFHVDvJ6TcMfWPIDnHo
-        WAYnnhKzM+zH2LY+jkQhs2M=
-X-Google-Smtp-Source: APiQypI/zPo1GszUY9LqyhxKcL6TzejRe+86z7SOxoStPUo7xJSmZS5DYRN/oVfDW9ELOOvAspC5tw==
-X-Received: by 2002:a1c:7416:: with SMTP id p22mr1053662wmc.80.1586763300441;
-        Mon, 13 Apr 2020 00:35:00 -0700 (PDT)
-Received: from felia.fritz.box ([2001:16b8:2da9:2f00:c0be:812e:7fb0:ebe0])
-        by smtp.gmail.com with ESMTPSA id q9sm13673845wrp.61.2020.04.13.00.34.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2020 00:34:59 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Paul Walmsley <paul.walmsley@sifive.com>
-Cc:     Christoph Hellwig <hch@lst.de>, Borislav Petkov <bp@suse.de>,
-        Yash Shah <yash.shah@sifive.com>, linux-edac@vger.kernel.org,
-        Sebastian Duda <sebastian.duda@fau.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH RESEND] MAINTAINERS: rectify EDAC-SIFIVE entry
-Date:   Mon, 13 Apr 2020 09:34:47 +0200
-Message-Id: <20200413073447.9284-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 13 Apr 2020 04:11:02 -0400
+Received: from smtp.smtpout.orange.fr (smtp04.smtpout.orange.fr [80.12.242.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B5459C00860D
+        for <kernel-janitors@vger.kernel.org>; Mon, 13 Apr 2020 01:01:22 -0700 (PDT)
+Received: from [192.168.1.41] ([90.126.162.40])
+        by mwinf5d60 with ME
+        id S7t9220070scBcy037tHSA; Mon, 13 Apr 2020 09:53:51 +0200
+X-ME-Helo: [192.168.1.41]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 13 Apr 2020 09:53:51 +0200
+X-ME-IP: 90.126.162.40
+Subject: Re: [PATCH] net: mvneta: Fix a typo
+To:     Joe Perches <joe@perches.com>, thomas.petazzoni@bootlin.com,
+        davem@davemloft.net
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200412212034.4532-1-christophe.jaillet@wanadoo.fr>
+ <6ecfa6cb686af1452101c0b727c9eb34d5582610.camel@perches.com>
+ <eea1b700-4559-c8d1-1960-1858ed3d90ef@wanadoo.fr>
+ <f1033e80969fce39d9cc97fb924f7d68e5f96f74.camel@perches.com>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <4b5efa7f-6bd9-c64c-e42f-20e76df2c3f5@wanadoo.fr>
+Date:   Mon, 13 Apr 2020 09:53:00 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <f1033e80969fce39d9cc97fb924f7d68e5f96f74.camel@perches.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 9209fb51896f ("riscv: move sifive_l2_cache.c to drivers/soc") moved
-arch/riscv/mm/sifive_l2_cache.c to drivers/soc/sifive/sifive_l2_cache.c
-and adjusted the MAINTAINERS EDAC-SIFIVE entry but slipped in a mistake.
+Le 13/04/2020 à 09:15, Joe Perches a écrit :
+> On Mon, 2020-04-13 at 08:56 +0200, Christophe JAILLET wrote:
+>> Le 12/04/2020 à 23:35, Joe Perches a écrit :
+>>> On Sun, 2020-04-12 at 23:20 +0200, Christophe JAILLET wrote:
+>>>> s/mvmeta/mvneta/
+>>> nice. how did you find this?
+>> Hi,
+>>
+>> This is based on a bash script I've made a while ago (see [1])
+>> I've slightly updated it, but the idea is still the same. I search
+>> strings in a file with some variation on the file name (2 inverted
+>> chars, 1 missing char or 1 modified char).
+>>
+>> The output is horrible, and a lot of filtering should be done.
+>> It is much like noise, with MANY false positives. But I manage to dig
+>> some interesting stuff out of it.
+>>
+>> If interested in the updated script, just ask, but except the concept
+>> itself, I'm not sure than anything else worth anything and is should be
+>> rewritten from scratch.
+>>
+>> The update includes some tweaks in order to search into Kconfig files
+>> instead.
+>>
+>> CJ
+>>
+>> [1]: https://marc.info/?l=kernel-janitors&m=156382201306781&w=4
+> Nice.
+>
+> I was wondering if you used levenshtein distance or something else.
+>
+> https://en.wikipedia.org/wiki/Levenshtein_distance
+>
+>
+Well, kind of hand-written version :)
 
-Since then, ./scripts/get_maintainer.pl --self-test complains:
+If of any interest:
+https://marc.info/?l=linux-driver-devel&m=141798041130581&w=4
 
-  warning: no file matches F: drivers/soc/sifive_l2_cache.c
+I don't remember having played with it myself, but it looks interesting.
 
-Rectify the EDAC-SIFIVE entry in MAINTAINERS now.
-
-Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
-Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-Paul, please pick this patch.
-
-v1: https://lore.kernel.org/lkml/20200304144045.15060-1-lukas.bulwahn@gmail.com/
-  - was not picked up.
-
-v1-resend: applies on v5.7-rc1
-
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e64e5db31497..e28676766b26 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6172,7 +6172,7 @@ M:	Yash Shah <yash.shah@sifive.com>
- L:	linux-edac@vger.kernel.org
- S:	Supported
- F:	drivers/edac/sifive_edac.c
--F:	drivers/soc/sifive_l2_cache.c
-+F:	drivers/soc/sifive/sifive_l2_cache.c
- 
- EDAC-SKYLAKE
- M:	Tony Luck <tony.luck@intel.com>
--- 
-2.17.1
+CJ
 

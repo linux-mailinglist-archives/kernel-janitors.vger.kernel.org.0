@@ -2,58 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C032E1A6904
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Apr 2020 17:41:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BAF71A6AB7
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Apr 2020 18:58:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728093AbgDMPln (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Apr 2020 11:41:43 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:20575 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728107AbgDMPln (ORCPT
+        id S1732253AbgDMQ6l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Apr 2020 12:58:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48390 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1732238AbgDMQ6k (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Apr 2020 11:41:43 -0400
-Received: from localhost.localdomain ([93.22.151.169])
-        by mwinf5d63 with ME
-        id SFhg2200F3fYTYl03Fhgp5; Mon, 13 Apr 2020 17:41:41 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 13 Apr 2020 17:41:41 +0200
-X-ME-IP: 93.22.151.169
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     broonie@kernel.org
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] spi: sc18is602: Fix a typo in MODULE_DESCRIPTION
-Date:   Mon, 13 Apr 2020 17:40:43 +0200
-Message-Id: <20200413154043.23064-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        Mon, 13 Apr 2020 12:58:40 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44F18C0A3BDC;
+        Mon, 13 Apr 2020 09:58:40 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id u13so10377123wrp.3;
+        Mon, 13 Apr 2020 09:58:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=786Abko4OwymZpA7zq9NIU+Jcj7CJ578QomD1bj3ank=;
+        b=lGv7MGiYg7oEqYLypfycQaA6ew5I9aewcYJs9NmfJNETIijLfn1NwaDh8AFpk/A6aZ
+         x8K73t3qPZTrdm/iXN5neVTcVukcTESm6TxmmAltPPoRdM6w6ta1X8KMW0822rbr/7Pv
+         XZ8RzIk85b529lnkQYGf7UIlfSY9Fy/v+TZIajPYd8DS/FAbuuhObHapniZuosPkU3E+
+         IC0OxraDowSo5wtqeDC2BpBpqBmG1gD0BeTgjr9deMN83wt6ems1YRVHtG4hXsqPXAI+
+         gf6D4GmNPpWNdrAVePhYwlIlQTV0PmrhrzAU72QMkXUnW4uJV995oqf8IDEZ/8e8Pk1J
+         7Rqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=786Abko4OwymZpA7zq9NIU+Jcj7CJ578QomD1bj3ank=;
+        b=QVEAyVRhBKmkx59Dq1868tJIsLaAev3k7Hb2d297Ak/3yTTBD8ugEzL4bW2FqzJcTE
+         WoXHTgUQfNnZTqjJvo9E5IYdwopjUzQqQRGdxKIXNpji0V81EG/5/embIQms7AV6VnM0
+         8e2Q8ICVgA0ZhXj+zt8ZYhDDL3SJsnAx7SlJNcmk1Ry8rafkwFAFkCVoh2s78rpC7YeB
+         SXSN3Xegyf6MUxEbdYLkfRSGSib2xGYEMkrIKq8yODJdRzo64m7BBwpTGouy7zHAbrI4
+         yq+oBPcY7+qlrtAvSV71AZ3UqcHea1RK9AS5YZ9IAhQ436fn0f/pljJxuwdhjDsWfslA
+         GvHw==
+X-Gm-Message-State: AGi0PuYZ8idd3p/s8QI6DwFWeb1wqWmI72KiaRyNSH8d4rFZACRo953Y
+        B0vc0CA1TJlz9oI2iXCkhZOZEc0eKogyhd6O/E0=
+X-Google-Smtp-Source: APiQypLgM6ORe/fUey6PXuV88ju5z6/RrBDlwexv9u4wPO+3r3jSj9FiVWLMwss0rxgA7h39Knz1M70XeoItHyrc3oI=
+X-Received: by 2002:a5d:498d:: with SMTP id r13mr15152734wrq.374.1586797118982;
+ Mon, 13 Apr 2020 09:58:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200410114613.15271-1-colin.king@canonical.com>
+In-Reply-To: <20200410114613.15271-1-colin.king@canonical.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Mon, 13 Apr 2020 12:58:27 -0400
+Message-ID: <CADnq5_MBQyMaLdJE=WOz4pV7u5UZQy3Y_qjL5ZO=7Y=NHQor=w@mail.gmail.com>
+Subject: Re: [PATCH] drm/amd/display: remove redundant assignment to variable dp_ref_clk_khz
+To:     Colin King <colin.king@canonical.com>
+Cc:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Eric Yang <Eric.Yang2@amd.com>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This should be 'SC18IS602', not 'SC18IC602'
+Applied.  thanks!
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/spi/spi-sc18is602.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Alex
 
-diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
-index 5497eeb3bf3e..ee0f3edf49cd 100644
---- a/drivers/spi/spi-sc18is602.c
-+++ b/drivers/spi/spi-sc18is602.c
-@@ -345,6 +345,6 @@ static struct i2c_driver sc18is602_driver = {
- 
- module_i2c_driver(sc18is602_driver);
- 
--MODULE_DESCRIPTION("SC18IC602/603 SPI Master Driver");
-+MODULE_DESCRIPTION("SC18IS602/603 SPI Master Driver");
- MODULE_AUTHOR("Guenter Roeck");
- MODULE_LICENSE("GPL");
--- 
-2.20.1
-
+On Fri, Apr 10, 2020 at 7:46 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The variable dp_ref_clk_khz is being initialized with a value that is
+> never read and it is being updated later with a new value.  The
+> initialization is redundant and can be removed.
+>
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
+> index 26db1c5d4e4d..b210f8e9d592 100644
+> --- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
+> +++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
+> @@ -131,7 +131,7 @@ int dce_get_dp_ref_freq_khz(struct clk_mgr *clk_mgr_base)
+>         struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
+>         int dprefclk_wdivider;
+>         int dprefclk_src_sel;
+> -       int dp_ref_clk_khz = 600000;
+> +       int dp_ref_clk_khz;
+>         int target_div;
+>
+>         /* ASSERT DP Reference Clock source is from DFS*/
+> --
+> 2.25.1
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

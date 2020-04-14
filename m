@@ -2,74 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE8541A8396
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Apr 2020 17:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97DB51A83EF
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Apr 2020 17:58:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440793AbgDNPnD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Apr 2020 11:43:03 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:32052
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2407442AbgDNPm4 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Apr 2020 11:42:56 -0400
-X-IronPort-AV: E=Sophos;i="5.72,382,1580770800"; 
-   d="scan'208";a="345880051"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Apr 2020 17:42:50 +0200
-Date:   Tue, 14 Apr 2020 17:42:50 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Colin King <colin.king@canonical.com>
-cc:     "K . Y . Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>, linux-hyperv@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] drivers: hv: remove redundant assignment to pointer
- primary_channel
-In-Reply-To: <20200414152343.243166-1-colin.king@canonical.com>
-Message-ID: <alpine.DEB.2.21.2004141742360.3023@hadrien>
-References: <20200414152343.243166-1-colin.king@canonical.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        id S2391156AbgDNP6D (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Apr 2020 11:58:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57054 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2391153AbgDNP57 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 14 Apr 2020 11:57:59 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DBDE220732;
+        Tue, 14 Apr 2020 15:57:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586879878;
+        bh=Dmt9XIqHXIwK7FCqnKWFuDVuSaHFjjNXu0NxDDDyjl4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=vap1OGZI5eeW4rnAhQtfXX5BGbgz10G+Q8vt91Sk7QgEY0j9I8RK5CKR+yqJG08WD
+         Dr5AOVEMNRFJj/HP55Gg4ngvKJR/eAh0pQ4TI6bioLYcl0ZIN8ojP6F7Gs21nvb7yK
+         ECV3+6ht6qAfDnalMgELy7Ivp8Iy0zmHh3KyPgH0=
+Date:   Tue, 14 Apr 2020 16:57:55 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     kernel-janitors@vger.kernel.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Subject: Applied "regulator: tps80031: remove redundant assignment to variables ret and val" to the regulator tree
+In-Reply-To:  <20200410133406.24458-1-colin.king@canonical.com>
+Message-Id:  <applied-20200410133406.24458-1-colin.king@canonical.com>
+X-Patchwork-Hint: ignore
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+The patch
 
+   regulator: tps80031: remove redundant assignment to variables ret and val
 
-On Tue, 14 Apr 2020, Colin King wrote:
+has been applied to the regulator tree at
 
-> From: Colin Ian King <colin.king@canonical.com>
->
-> The pointer primary_channel is being assigned with a value that is never,
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git 
 
-never -> never used :)
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> The assignment is redundant and can be removed.
->
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/hv/channel_mgmt.c | 2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
-> index ffd7fffa5f83..f7bbb8dc4b0f 100644
-> --- a/drivers/hv/channel_mgmt.c
-> +++ b/drivers/hv/channel_mgmt.c
-> @@ -425,8 +425,6 @@ void hv_process_channel_removal(struct vmbus_channel *channel)
->
->  	if (channel->primary_channel == NULL) {
->  		list_del(&channel->listentry);
-> -
-> -		primary_channel = channel;
->  	} else {
->  		primary_channel = channel->primary_channel;
->  		spin_lock_irqsave(&primary_channel->lock, flags);
-> --
-> 2.25.1
->
->
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From 2ea8db7200d40f89ebfb97fc512ced5f792e0e1c Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Fri, 10 Apr 2020 14:34:06 +0100
+Subject: [PATCH] regulator: tps80031: remove redundant assignment to variables
+ ret and val
+
+The variables ret and val are being initialized with values that are
+never read and are being updated later with a new value.  The
+initializations are redundant and can be removed.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Addresses-Coverity: ("Unused value")
+Link: https://lore.kernel.org/r/20200410133406.24458-1-colin.king@canonical.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/regulator/tps80031-regulator.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/regulator/tps80031-regulator.c b/drivers/regulator/tps80031-regulator.c
+index 85a6a8ca8c1b..a29e65230132 100644
+--- a/drivers/regulator/tps80031-regulator.c
++++ b/drivers/regulator/tps80031-regulator.c
+@@ -271,7 +271,7 @@ static int tps80031_vbus_is_enabled(struct regulator_dev *rdev)
+ {
+ 	struct tps80031_regulator *ri = rdev_get_drvdata(rdev);
+ 	struct device *parent = to_tps80031_dev(rdev);
+-	int ret = -EIO;
++	int ret;
+ 	uint8_t ctrl1 = 0;
+ 	uint8_t ctrl3 = 0;
+ 
+@@ -322,7 +322,7 @@ static int tps80031_vbus_disable(struct regulator_dev *rdev)
+ {
+ 	struct tps80031_regulator *ri = rdev_get_drvdata(rdev);
+ 	struct device *parent = to_tps80031_dev(rdev);
+-	int ret = 0;
++	int ret;
+ 
+ 	if (ri->config_flags & TPS80031_VBUS_DISCHRG_EN_PDN) {
+ 		ret = tps80031_write(parent, TPS80031_SLAVE_ID2,
+@@ -530,7 +530,8 @@ static int tps80031_regulator_config(struct device *parent,
+ 	case TPS80031_REGULATOR_LDOUSB:
+ 		if (ri->config_flags & (TPS80031_USBLDO_INPUT_VSYS |
+ 			TPS80031_USBLDO_INPUT_PMID)) {
+-			unsigned val = 0;
++			unsigned val;
++
+ 			if (ri->config_flags & TPS80031_USBLDO_INPUT_VSYS)
+ 				val = MISC2_LDOUSB_IN_VSYS;
+ 			else
+-- 
+2.20.1
+

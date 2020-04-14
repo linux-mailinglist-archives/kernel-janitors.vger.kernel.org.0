@@ -2,74 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3495A1A7455
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Apr 2020 09:09:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F1C81A74AE
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Apr 2020 09:27:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406429AbgDNHJs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Apr 2020 03:09:48 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:42988 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728832AbgDNHJr (ORCPT
+        id S2406618AbgDNH1A (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Apr 2020 03:27:00 -0400
+Received: from wout3-smtp.messagingengine.com ([64.147.123.19]:46785 "EHLO
+        wout3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2406601AbgDNH07 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Apr 2020 03:09:47 -0400
-Received: by mail-oi1-f195.google.com with SMTP id d7so4558424oif.9;
-        Tue, 14 Apr 2020 00:09:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9Z5zt2CUahX5IsPzgShiRFj23zj/g56lthuN3s9ga2E=;
-        b=fsFjPs6Y14mHhPJvwHG2nVoLYDeiYpwPqBi643pwYF8SsT936r5ZjyTw0+nzLN8NBZ
-         bswe+kkXZn0SDEeHK/9XVIKGOBfwSLqfmYS1dj8PRhVEHMIwg/zKaAfuLZiFpW+5ZK/O
-         KN/7iWu3GIKwYlMTlkPKL/E+/90in7Sd3M89Vk80M3lzlHeNoq8n2ehSg321k79a2ryB
-         uv/88vIUAGMGWxkRZTWcbtZI0GEvxTlxAbnH5vvR9DkzUWxI5kPU3NEkmEB9b7B/Jnw4
-         ZqBZ3BWnlrJP5JK1U+4Dnmo9G1RyWDi6UXnZ41hPQu7CidyZPpU8ntDcuW1il1Es9QUp
-         zXLA==
-X-Gm-Message-State: AGi0PubIsK/GfVSGqwICoMA8o+/vfisRtQV4MnHM4RjGUpf/GrnRQUuX
-        HffUSV6qfJErxPRTp4ybrRnILZdG98eMRPf6EFA=
-X-Google-Smtp-Source: APiQypJPAEdSB0/mCpnigVvRvJ7XIRVHn8kPh4UNvKk3GhriQALdtPNdVHc6H4U6yfJQ1kTqUN+mE1pGe6RO8Ue6wUc=
-X-Received: by 2002:aca:f541:: with SMTP id t62mr257295oih.148.1586848186462;
- Tue, 14 Apr 2020 00:09:46 -0700 (PDT)
+        Tue, 14 Apr 2020 03:26:59 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.west.internal (Postfix) with ESMTP id 53153D5D;
+        Tue, 14 Apr 2020 03:26:57 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Tue, 14 Apr 2020 03:26:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm2; bh=z5MESemy4at/XiMeE9culKqPajy
+        dX3epVv5bu8NCS5w=; b=PXG4m4efaHFOdBKDqGRkoY2NYHF2ZZYCSBMozPP5yrd
+        nnkZAXOdrI7nGrf5+VAo/62LK2HK9ZW9wDsN575yJcSUBWn4xRvTxXBXkeNVPFes
+        du6tju/KHaxU5dAcJ1PBcqOjYsuarlTS+42JExPvkjv3aUUj1J3mDGOpgTnsltS0
+        FMdZDF0hJ7TMWq6el7FyAseVd5XTfqR3ZkDDftKudGzNYh7Rg2vAKaqcOUPUeD6I
+        /XRFIUq61uu+BdxQ81B5nqYNOamVQk/G6nSp2XjhtqBbid5/+2mvvuwKk8YKF9xT
+        SYTS11RzebGWUAC1IdM9AzZ4GEoh4EFvs5p+CR5YvEQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=z5MESe
+        my4at/XiMeE9culKqPajydX3epVv5bu8NCS5w=; b=3pGPxyk4nmhLT2XV141JuX
+        x2T8ZazVfOyohOVn0CIKFQyoY4b6Om3gMbnppgBRtp204W4UQDe8eM98AAtHNbot
+        Uy9/KP9dfxDVkL760mbxzrVuh+w1E3iKTQPxziukmm238VgmNrZwbITQNoKJWSNt
+        bEL0uJdMuklClnxU+qKCpSdQVovD1gsAER5LlQpeFZ+i5ckbbVDUMMW7hwblHVzA
+        FZ2AiOddZQZQ5JgYTGVOp2wYNaF/i0c7NDnvLM+XvsCckwQ4IZsQax9f4LWLX56i
+        RLEqS/XMEshBwCdO5ZWv/8K5pstBaTixJdWVnmx3fQ1sHJTyb/85C64u30TDj+pw
+        ==
+X-ME-Sender: <xms:wGWVXjaMgOfD0xad5bMbf6M25CsI48g4oQh7HcdxthdHjFvJC6DtzQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrfedtgdduudegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjsehgtderredttddvnecuhfhrohhmpeforgigihhm
+    vgcutfhiphgrrhguuceomhgrgihimhgvsegtvghrnhhordhtvggthheqnecukfhppeeltd
+    drkeelrdeikedrjeeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghi
+    lhhfrhhomhepmhgrgihimhgvsegtvghrnhhordhtvggthh
+X-ME-Proxy: <xmx:wGWVXmosoca5IhQD4qQOWu1xdUoFNPGEyHW8sYuDSINnKQhOfupgMw>
+    <xmx:wGWVXg8S6v-WWIYvAaRCWVx7H6CEidQ6W9pDJdAW3mW3LltU3x2qag>
+    <xmx:wGWVXt8ztvlroAi1N_2A33jFe05gAxvbdMKUJdFYYwHRcAnysWS0_w>
+    <xmx:wGWVXljUWYsWAlO-k7eSnaW4xx1k7xiMHBwrHOUzNYWP44J_F7bYcg>
+Received: from localhost (lfbn-tou-1-1502-76.w90-89.abo.wanadoo.fr [90.89.68.76])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 5C2C0328006A;
+        Tue, 14 Apr 2020 03:26:56 -0400 (EDT)
+Date:   Tue, 14 Apr 2020 09:26:53 +0200
+From:   Maxime Ripard <maxime@cerno.tech>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Rob Herring <robh+dt@kernel.org>, dri-devel@lists.freedesktop.org,
+        devicetree@vger.kernel.org, Joe Perches <joe@perches.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: point to display schemas in DRM DRIVERS FOR
+ ALLWINNER A10
+Message-ID: <20200414072653.x2mvytbsvnjiqiij@gilmour.lan>
+References: <20200413075329.10717-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-References: <20200413041709.3630-1-christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20200413041709.3630-1-christophe.jaillet@wanadoo.fr>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 14 Apr 2020 09:09:35 +0200
-Message-ID: <CAMuHMdXoVGkRh63=H6P29JSS6yNCyKZdsAX1_qUNC_mH=aymyw@mail.gmail.com>
-Subject: Re: [PATCH] clk: renesas: r9a06g032: Fix some typo in comments
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="kdkzdphvlzzoj572"
+Content-Disposition: inline
+In-Reply-To: <20200413075329.10717-1-lukas.bulwahn@gmail.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Apr 13, 2020 at 5:12 PM Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
-> This file seems to be for R9A06G032 only. So replace reference to
-> R9A09G032 by R9A06G032 to avoid confusion.
+
+--kdkzdphvlzzoj572
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Mon, Apr 13, 2020 at 09:53:29AM +0200, Lukas Bulwahn wrote:
+> Commit f5a98bfe7b37 ("dt-bindings: display: Convert Allwinner display
+> pipeline to schemas") replaced sunxi/sun4i-drm.txt with
+> allwinner,sun*.yaml files in Documentation/devicetree/bindings/display/,
+> but did not adjust DRM DRIVERS FOR ALLWINNER A10.
 >
-> AFAIK, R9A09G032 does'nt exist.
+> Since then, ./scripts/get_maintainer.pl --self-test complains:
 >
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>   warning: no file matches \
+>   F: Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt
+>
+> Point to allwinner display schemas in DRM DRIVERS FOR ALLWINNER A10.
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-i.e. will queue in clk-renesas-for-v5.8.
+Acked-by: Maxime Ripard <mripard@kernel.org>
 
-Gr{oetje,eeting}s,
+Thanks!
+Maxime
 
-                        Geert
+--kdkzdphvlzzoj572
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+-----BEGIN PGP SIGNATURE-----
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXpVlvQAKCRDj7w1vZxhR
+xVrnAPwPo+G3ObIsBJnK9D9AJ9dsl+LIKPP4Qz+TT7i4cgMDMAEAvnuVM7N5ZdVk
+yXUCRUxY6YQ5gMDbTD43X/MsWZqHmQ8=
+=gv8H
+-----END PGP SIGNATURE-----
+
+--kdkzdphvlzzoj572--

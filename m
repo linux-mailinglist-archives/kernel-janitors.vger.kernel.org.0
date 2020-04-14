@@ -2,106 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3E9F1A8030
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Apr 2020 16:46:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E20B41A8200
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Apr 2020 17:19:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404771AbgDNOqU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Apr 2020 10:46:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43898 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404752AbgDNOqP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Apr 2020 10:46:15 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        id S2407268AbgDNPQY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Apr 2020 11:16:24 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:18914 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2407026AbgDNPFv (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 14 Apr 2020 11:05:51 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1586876751; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=4IdPWOKkKu70gb9XZsmEuJuo7DR0jOPptRPhAGVcGa8=;
+ b=Jd7z282xV6z75F/QZaNHTX5RKpCWn+yDhTESYUEDZSph4FU7787HZNeLMlAOZfFKELba6v2w
+ 634rvyvDdMUUnVkKVQJEXsmlkuzv7WdSemameDTPryCzbo2kDEtqrAWMPKY/JWsBRFNTxWIn
+ gcCn1TpGecEGEsfjEh3C+xvrPxs=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e95d135.7f2672b35998-smtp-out-n05;
+ Tue, 14 Apr 2020 15:05:25 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 01C0AC44792; Tue, 14 Apr 2020 15:05:24 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E397120787;
-        Tue, 14 Apr 2020 14:46:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586875574;
-        bh=NF+ReJtRcTYkXwWbn0gQZMoewENSGMQLJ68bqwW6Mmo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=C/BTHfQDUOzrAqshiXGCZxUd05u6HaBj3kdNTyGK93zm96V/C6YRj9GuyfLwpYHcv
-         dDP9o79bwt+lLfi4bXk2Efv0bJ/OFYlMVVYA2XN5bZhQt7C0DK+iNSpnUcBnfCIxAT
-         OuSaau+3AnAquDPsh12gpkVSza7hSxUQm9smVQ3Q=
-Date:   Tue, 14 Apr 2020 15:46:11 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Sebastian Fricke <sebastian.fricke.linux@gmail.com>
-Cc:     Alexandre Torgue <alexandre.torgue@st.com>,
-        alsa-devel@alsa-project.org,
-        Arnaud Pouliquen <arnaud.pouliquen@st.com>,
-        kernel-janitors@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Mark Brown <broonie@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        olivier.moysan@st.com, sebastian.fricke.linux@gmail.com,
-        Takashi Iwai <tiwai@suse.com>
-Subject: Applied "soc/stm/stm32_sub_sai: Add missing '\n' in log messages" to the asoc tree
-In-Reply-To:  <20200413042952.7675-1-sebastian.fricke.linux@gmail.com>
-Message-Id:  <applied-20200413042952.7675-1-sebastian.fricke.linux@gmail.com>
-X-Patchwork-Hint: ignore
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A555DC433CB;
+        Tue, 14 Apr 2020 15:05:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A555DC433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] brcm80211: remove redundant pointer 'address'
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200405133906.381358-1-colin.king@canonical.com>
+References: <20200405133906.381358-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20200414150525.01C0AC44792@smtp.codeaurora.org>
+Date:   Tue, 14 Apr 2020 15:05:24 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
+Colin King <colin.king@canonical.com> wrote:
 
-   soc/stm/stm32_sub_sai: Add missing '\n' in log messages
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Pointer 'address' is being assigned and updated in a few places
+> by it is never read. Hence the assignments are redundant and can
+> be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-has been applied to the asoc tree at
+Patch applied to wireless-drivers-next.git, thanks.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git 
+09667ea7ce6d brcm80211: remove redundant pointer 'address'
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From 9de300abb71f24b190362ff53907ab90505517bc Mon Sep 17 00:00:00 2001
-From: Sebastian Fricke <sebastian.fricke.linux@gmail.com>
-Date: Mon, 13 Apr 2020 06:29:52 +0200
-Subject: [PATCH] soc/stm/stm32_sub_sai: Add missing '\n' in log messages
-
-Message logged by 'dev_xxx()' or 'pr_xxx()' should end with a '\n'.
-
-Fixes: 3e086ed("ASoC: stm32: add SAI drivers")
-
-Signed-off-by: Sebastian Fricke <sebastian.fricke.linux@gmail.com>
-Link: https://lore.kernel.org/r/20200413042952.7675-1-sebastian.fricke.linux@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- sound/soc/stm/stm32_sai_sub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
-index 0d0c9afd8791..34a7c3d6fb91 100644
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -837,7 +837,7 @@ static int stm32_sai_set_config(struct snd_soc_dai *cpu_dai,
- 		cr1 = SAI_XCR1_DS_SET(SAI_DATASIZE_32);
- 		break;
- 	default:
--		dev_err(cpu_dai->dev, "Data format not supported");
-+		dev_err(cpu_dai->dev, "Data format not supported\n");
- 		return -EINVAL;
- 	}
- 
 -- 
-2.20.1
+https://patchwork.kernel.org/patch/11474705/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

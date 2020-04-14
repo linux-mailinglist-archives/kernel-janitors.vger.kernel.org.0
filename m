@@ -2,92 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 068941A8A7B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Apr 2020 21:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 088EC1A8B4D
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Apr 2020 21:44:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504603AbgDNTCP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Apr 2020 15:02:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52994 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2504595AbgDNTCN (ORCPT
+        id S2440607AbgDNToB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Apr 2020 15:44:01 -0400
+Received: from smtprelay0090.hostedemail.com ([216.40.44.90]:45892 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728340AbgDNTn7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Apr 2020 15:02:13 -0400
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A507C061A0C
-        for <kernel-janitors@vger.kernel.org>; Tue, 14 Apr 2020 12:02:13 -0700 (PDT)
-Received: by mail-qt1-x844.google.com with SMTP id b10so11140139qtt.9
-        for <kernel-janitors@vger.kernel.org>; Tue, 14 Apr 2020 12:02:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=YzNurIVAkA4jvr9JwIfo85IEn9Zw+h56w3Sd2PzkLjs=;
-        b=kq8L7OtZXEWYxYz6h6w0mi8JQeSIMbo6QIlTDZ9JAHqkfX8Jty7Cn32BRwp1ePR0fB
-         2foBW+NRr7W/TzadyKNOOEHortpa1y8CZ7xtgKWuDjR3n3lhVUsM/4XXq2SJyg0FsLou
-         2ySz+HwaJ8tEfn8TTFiMU9i6LfD0u/u+ZcMA+xxmZZln0H3ZkgRUcllktsL528ZzXIqk
-         wGZl6RGjE+lq7jWGgfsdN2krB3Lnj0OXTropOnQyjWKEbDbPWkc6o7wuJTaWAV++ToGn
-         kJ1mHuqu7brf6zm8oHJcDtOprMUFecAvDo/zU67C/rUZN9W3a2EFUSmw1U7Om4VMbQUI
-         2Yog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=YzNurIVAkA4jvr9JwIfo85IEn9Zw+h56w3Sd2PzkLjs=;
-        b=rIx0zFYqGY7QzFHfWgIryCUk6JcfuO3NzrjgRGo8ihDyPqibG3PRN9QVbdiz1PZepU
-         Rx6gxTcyAyYFWj0MDlAc4jAVOYLZJCjo/cp3aT5GLPciK1MeR7b4wU0kEpY+quZi+ZdQ
-         xxTYBcrMjUHvtQ1qSqlnr01veKZfA6gOO6udjB4CYcpKabPs2WismoOwN0M/PyDbxp2x
-         h1ND1opr8Zu++r60XlU+uxwj6qJqFjoZFi6qOklhIICLsyVCIutxQcYYBQHeKWP+0wZp
-         6FuZ6elOsyF5h2+MzXz2iaUHa7q+ftf0z2WO/VeaPIYouXj1FAIDeitQhKZ4eY0/JwiG
-         f+gw==
-X-Gm-Message-State: AGi0PuaUBHy72ZDj8SHfr6x9RKoGWY7uTTS394nRqTrZysr16HfRioDY
-        bkv76tt6lgjmEWjQ+RVlh3714g==
-X-Google-Smtp-Source: APiQypLU4njxISewbeTdGwEAqrIizC/SwzWOGIcnAkggwhqcfrcb3NI5iAhyrMMYVqLYy9DENvOK6w==
-X-Received: by 2002:aed:2442:: with SMTP id s2mr17254378qtc.153.1586890932619;
-        Tue, 14 Apr 2020 12:02:12 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.57.212])
-        by smtp.gmail.com with ESMTPSA id n67sm10957048qke.88.2020.04.14.12.02.12
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 14 Apr 2020 12:02:12 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1jOQp1-0003Ad-Jy; Tue, 14 Apr 2020 16:02:11 -0300
-Date:   Tue, 14 Apr 2020 16:02:11 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Doug Ledford <dledford@redhat.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Leon Romanovsky <leon@kernel.org>,
-        Danit Goldberg <danitg@mellanox.com>,
-        Parav Pandit <parav@mellanox.com>, linux-rdma@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2] RDMA/cm: Fix an error check in cm_alloc_id_priv()
-Message-ID: <20200414190211.GA12156@ziepe.ca>
-References: <20200406145109.GQ20941@ziepe.ca>
- <20200407093714.GA80285@mwanda>
+        Tue, 14 Apr 2020 15:43:59 -0400
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave08.hostedemail.com (Postfix) with ESMTP id 2B6EF1802B57F;
+        Tue, 14 Apr 2020 19:06:44 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 00FE6181D341E;
+        Tue, 14 Apr 2020 19:06:44 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2553:2559:2562:2693:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:3872:3873:3874:4250:4321:4423:5007:6248:7903:10004:10400:10848:11232:11658:11914:12043:12048:12262:12296:12297:12438:12555:12679:12740:12760:12895:13018:13019:13069:13095:13141:13161:13181:13229:13230:13311:13357:13439:14096:14097:14181:14659:14721:14777:21080:21212:21365:21433:21451:21627:21660:30054:30070:30079:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:7,LUA_SUMMARY:none
+X-HE-Tag: sky28_1d7a3c1bf3225
+X-Filterd-Recvd-Size: 2209
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf16.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 14 Apr 2020 19:06:42 +0000 (UTC)
+Message-ID: <b867ee8a02043ec6b18c9330bfe3a091d66c816c.camel@perches.com>
+Subject: Re: [PATCH] pwm: Add missing '\n' in log messages
+From:   Joe Perches <joe@perches.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        paul@crapouillou.net, Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     u.kleine-koenig@pengutronix.de, linux-pwm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Date:   Tue, 14 Apr 2020 12:04:32 -0700
+In-Reply-To: <f13a8754-3866-d3d2-eaff-29cb6d14ff8d@wanadoo.fr>
+References: <20200411153528.30130-1-christophe.jaillet@wanadoo.fr>
+         <20200414135827.GB3593749@ulmo>
+         <f13a8754-3866-d3d2-eaff-29cb6d14ff8d@wanadoo.fr>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200407093714.GA80285@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Apr 07, 2020 at 12:37:14PM +0300, Dan Carpenter wrote:
-> The xa_alloc_cyclic_irq() function returns either 0 or 1 on success and
-> negatives on error.  This code treats 1 as an error and returns
-> ERR_PTR(1) which will cause an Oops in the caller.
+On Tue, 2020-04-14 at 20:30 +0200, Christophe JAILLET wrote:
+> Being able to detect early missing trailing '\n' would help maintainers 
+> and patch providers.
 > 
-> Fixes: ae78ff3a0f0c ("RDMA/cm: Convert local_id_table to XArray")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
-> v2: Use the correct Fixes tag and add Matthew to the CC list.
-> 
->  drivers/infiniband/core/cm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> You are the 2nd person (I've added Paul Cercueil in copy of my reply) 
+> who reports that he is thinking that it is no more required to add a '\n'.
 
-Applied to for-next, thanks
+The printk subsystem will, for every printk, check
+if the last printk has a newline termination and if
+it doesn't and the current printk does not start with
+KERN_CONT will insert a newline.
 
-Jason
+The negative to this approach is the last printk,
+if it does not have a newline, is buffered and not
+emitted until another printk occurs.
+
+There is also the (now small) possibility that
+multiple concurrent kernel threads or processes
+could interleave printks without a terminating
+newline and a different process could emit a
+printk that starts with KERN_CONT and the emitted
+message could be garbled.
+
+See:
+
+commit 4bcc595ccd80decb4245096e3d1258989c50ed41
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sat Oct 8 20:32:40 2016 -0700
+
+    printk: reinstate KERN_CONT for printing continuation lines
+
+
+
+

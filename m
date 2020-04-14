@@ -2,63 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CEFF31A7FE4
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Apr 2020 16:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3E9F1A8030
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Apr 2020 16:46:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390975AbgDNOfI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Apr 2020 10:35:08 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:51411 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390961AbgDNOfH (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Apr 2020 10:35:07 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jOMeU-0001ro-Q9; Tue, 14 Apr 2020 14:35:02 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Forest Bond <forest@alittletooquiet.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] staging: vt6656: remove redundant assignment to variable ed_inx
-Date:   Tue, 14 Apr 2020 15:35:02 +0100
-Message-Id: <20200414143502.237803-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        id S2404771AbgDNOqU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Apr 2020 10:46:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43898 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2404752AbgDNOqP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 14 Apr 2020 10:46:15 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E397120787;
+        Tue, 14 Apr 2020 14:46:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586875574;
+        bh=NF+ReJtRcTYkXwWbn0gQZMoewENSGMQLJ68bqwW6Mmo=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=C/BTHfQDUOzrAqshiXGCZxUd05u6HaBj3kdNTyGK93zm96V/C6YRj9GuyfLwpYHcv
+         dDP9o79bwt+lLfi4bXk2Efv0bJ/OFYlMVVYA2XN5bZhQt7C0DK+iNSpnUcBnfCIxAT
+         OuSaau+3AnAquDPsh12gpkVSza7hSxUQm9smVQ3Q=
+Date:   Tue, 14 Apr 2020 15:46:11 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Sebastian Fricke <sebastian.fricke.linux@gmail.com>
+Cc:     Alexandre Torgue <alexandre.torgue@st.com>,
+        alsa-devel@alsa-project.org,
+        Arnaud Pouliquen <arnaud.pouliquen@st.com>,
+        kernel-janitors@vger.kernel.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Mark Brown <broonie@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        olivier.moysan@st.com, sebastian.fricke.linux@gmail.com,
+        Takashi Iwai <tiwai@suse.com>
+Subject: Applied "soc/stm/stm32_sub_sai: Add missing '\n' in log messages" to the asoc tree
+In-Reply-To:  <20200413042952.7675-1-sebastian.fricke.linux@gmail.com>
+Message-Id:  <applied-20200413042952.7675-1-sebastian.fricke.linux@gmail.com>
+X-Patchwork-Hint: ignore
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+The patch
 
-The variable ed_inx is being initialized with a value that is never
-read and it is being updated later with a new value. The initialization
-is redundant and can be removed.
+   soc/stm/stm32_sub_sai: Add missing '\n' in log messages
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+has been applied to the asoc tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From 9de300abb71f24b190362ff53907ab90505517bc Mon Sep 17 00:00:00 2001
+From: Sebastian Fricke <sebastian.fricke.linux@gmail.com>
+Date: Mon, 13 Apr 2020 06:29:52 +0200
+Subject: [PATCH] soc/stm/stm32_sub_sai: Add missing '\n' in log messages
+
+Message logged by 'dev_xxx()' or 'pr_xxx()' should end with a '\n'.
+
+Fixes: 3e086ed("ASoC: stm32: add SAI drivers")
+
+Signed-off-by: Sebastian Fricke <sebastian.fricke.linux@gmail.com>
+Link: https://lore.kernel.org/r/20200413042952.7675-1-sebastian.fricke.linux@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/staging/vt6656/baseband.c | 2 +-
+ sound/soc/stm/stm32_sai_sub.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/vt6656/baseband.c b/drivers/staging/vt6656/baseband.c
-index 512d2a5b0b8e..a8bd7f9f8ada 100644
---- a/drivers/staging/vt6656/baseband.c
-+++ b/drivers/staging/vt6656/baseband.c
-@@ -655,7 +655,7 @@ void vnt_update_pre_ed_threshold(struct vnt_private *priv, int scanning)
- 	const struct vnt_threshold *threshold = NULL;
- 	u8 length;
- 	u8 cr_201, cr_206;
--	u8 ed_inx = priv->bb_pre_ed_index;
-+	u8 ed_inx;
+diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
+index 0d0c9afd8791..34a7c3d6fb91 100644
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -837,7 +837,7 @@ static int stm32_sai_set_config(struct snd_soc_dai *cpu_dai,
+ 		cr1 = SAI_XCR1_DS_SET(SAI_DATASIZE_32);
+ 		break;
+ 	default:
+-		dev_err(cpu_dai->dev, "Data format not supported");
++		dev_err(cpu_dai->dev, "Data format not supported\n");
+ 		return -EINVAL;
+ 	}
  
- 	switch (priv->rf_type) {
- 	case RF_AL2230:
 -- 
-2.25.1
+2.20.1
 

@@ -2,99 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E91C41A87A6
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Apr 2020 19:37:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 333AC1A8994
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Apr 2020 20:31:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440069AbgDNRhG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Apr 2020 13:37:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46594 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2437002AbgDNRhB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Apr 2020 13:37:01 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EBBA820737;
-        Tue, 14 Apr 2020 17:36:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586885820;
-        bh=72L8S1GjdTxgw7kJVxtKt/iggP0JTDEJsnMcmKTyy2Y=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=Vn5/Kk73w6DJbDFj71d1HJFHa+0CCRnATxdjwV9b/D1GbxFdGZ/FFZqolXVMfS8lL
-         PpIJceeEQnR7d7d2rmbVY6C28YQNCE+BHydf2j4LKt/ugFEDtfkXawGREii/Bvrbvp
-         8xqkbvmFmOVLcY6Az4jOvThQK2KIA14faPHlkWVo=
-Date:   Tue, 14 Apr 2020 18:36:57 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: remove redundant assignment to variable ms" to the spi tree
-In-Reply-To:  <20200410122315.17523-1-colin.king@canonical.com>
-Message-Id:  <applied-20200410122315.17523-1-colin.king@canonical.com>
-X-Patchwork-Hint: ignore
+        id S2504029AbgDNSaP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Apr 2020 14:30:15 -0400
+Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:29354 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2503996AbgDNSaK (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 14 Apr 2020 14:30:10 -0400
+Received: from [192.168.42.210] ([93.22.132.55])
+        by mwinf5d85 with ME
+        id SiW42200V1Bs39H03iW4Yb; Tue, 14 Apr 2020 20:30:06 +0200
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 14 Apr 2020 20:30:06 +0200
+X-ME-IP: 93.22.132.55
+Subject: Re: [PATCH] pwm: Add missing '\n' in log messages
+To:     Thierry Reding <thierry.reding@gmail.com>, paul@crapouillou.net,
+        Joe Perches <joe@perches.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     u.kleine-koenig@pengutronix.de, linux-pwm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20200411153528.30130-1-christophe.jaillet@wanadoo.fr>
+ <20200414135827.GB3593749@ulmo>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <f13a8754-3866-d3d2-eaff-29cb6d14ff8d@wanadoo.fr>
+Date:   Tue, 14 Apr 2020 20:30:04 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <20200414135827.GB3593749@ulmo>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
+Le 14/04/2020 à 15:58, Thierry Reding a écrit :
+> On Sat, Apr 11, 2020 at 05:35:28PM +0200, Christophe JAILLET wrote:
+>> Message logged by 'dev_xxx()' or 'pr_xxx()' should end with a '\n'.
+>>
+>> Fixes: 3ad1f3a33286 ("pwm: Implement some checks for lowlevel drivers")
+>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>> ---
+>>   drivers/pwm/core.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+>> index 9973c442b455..bca04965bfe6 100644
+>> --- a/drivers/pwm/core.c
+>> +++ b/drivers/pwm/core.c
+>> @@ -537,7 +537,7 @@ static void pwm_apply_state_debug(struct pwm_device *pwm,
+>>   
+>>   	if (!state->enabled && s2.enabled && s2.duty_cycle > 0)
+>>   		dev_warn(chip->dev,
+>> -			 "requested disabled, but yielded enabled with duty > 0");
+>> +			 "requested disabled, but yielded enabled with duty > 0\n");
+>>   
+>>   	/* reapply the state that the driver reported being configured. */
+>>   	err = chip->ops->apply(chip, pwm, &s1);
+> I don't think this is strictly necessary any longer since the logging
+> functions are supposed to add these themselves nowadays. But I like the
+> consistency of this, so I'll apply this anyway.
+>
+> Thanks,
+> Thierry
 
-   spi: remove redundant assignment to variable ms
+Hi Thierry,
 
-has been applied to the spi tree at
+I've sent more or less 10 similar patches against files updated 
+recently, that is to say against files which are actively maintained.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+I've done it to get feedback on the acceptances rate of such proposals.
+The goal is not to flood everyone with such patches, but rather to see 
+if adding a new kind of test to checkpatch.pl makes sense.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Being able to detect early missing trailing '\n' would help maintainers 
+and patch providers.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+You are the 2nd person (I've added Paul Cercueil in copy of my reply) 
+who reports that he is thinking that it is no more required to add a '\n'.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+If you have any pointer about it, it would be much appreciated.
 
-Thanks,
-Mark
+It would mean, that either this additional checkpatch test is useless, 
+or maybe that it should be reversed and spot *un*needed '\n'.
 
-From 49686df5b874e5ed6249bc622b73ad9a9e71cd99 Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king@canonical.com>
-Date: Fri, 10 Apr 2020 13:23:15 +0100
-Subject: [PATCH] spi: remove redundant assignment to variable ms
-
-The variable ms is being initialized with a value that is never read
-and it is being updated later with a new value.  The initialization is
-redundant and can be removed.
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Addresses-Coverity: ("Unused value")
-Link: https://lore.kernel.org/r/20200410122315.17523-1-colin.king@canonical.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index c92c89467e7e..5446b07dcd3a 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1075,7 +1075,7 @@ static int spi_transfer_wait(struct spi_controller *ctlr,
- {
- 	struct spi_statistics *statm = &ctlr->statistics;
- 	struct spi_statistics *stats = &msg->spi->statistics;
--	unsigned long long ms = 1;
-+	unsigned long long ms;
- 
- 	if (spi_controller_is_slave(ctlr)) {
- 		if (wait_for_completion_interruptible(&ctlr->xfer_completion)) {
--- 
-2.20.1
-
+CJ

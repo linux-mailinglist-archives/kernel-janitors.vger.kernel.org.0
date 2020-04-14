@@ -2,69 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18EB91A8ABC
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Apr 2020 21:30:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 634421A8C6A
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Apr 2020 22:27:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504760AbgDNT27 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Apr 2020 15:28:59 -0400
-Received: from smtprelay0211.hostedemail.com ([216.40.44.211]:41858 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2504730AbgDNT25 (ORCPT
+        id S2633066AbgDNUYS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Apr 2020 16:24:18 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:33793 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2633040AbgDNUYQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Apr 2020 15:28:57 -0400
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave05.hostedemail.com (Postfix) with ESMTP id 2B1CF18064C30;
-        Tue, 14 Apr 2020 19:12:00 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay01.hostedemail.com (Postfix) with ESMTP id 032BF100E7B45;
-        Tue, 14 Apr 2020 19:12:00 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:960:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1539:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2693:2828:3138:3139:3140:3141:3142:3352:3622:3867:3868:3871:3872:3873:3874:4321:5007:6691:10004:10400:11026:11232:11658:11914:12296:12297:12438:12740:12760:12895:13069:13161:13229:13311:13357:13439:14659:14721:21080:21212:21627:21660:21939:21990:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: rain29_4b79cd438ab50
-X-Filterd-Recvd-Size: 1707
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf20.hostedemail.com (Postfix) with ESMTPA;
-        Tue, 14 Apr 2020 19:11:58 +0000 (UTC)
-Message-ID: <19df87f5d093a6c2721316811aca1c90d287bf1d.camel@perches.com>
-Subject: Re: [PATCH] pwm: Add missing '\n' in log messages
-From:   Joe Perches <joe@perches.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Thierry Reding <thierry.reding@gmail.com>, paul@crapouillou.net,
-        u.kleine-koenig@pengutronix.de, linux-pwm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Date:   Tue, 14 Apr 2020 12:09:49 -0700
-In-Reply-To: <20200414184925.GA12862@kadam>
-References: <20200411153528.30130-1-christophe.jaillet@wanadoo.fr>
-         <20200414135827.GB3593749@ulmo>
-         <f13a8754-3866-d3d2-eaff-29cb6d14ff8d@wanadoo.fr>
-         <20200414184925.GA12862@kadam>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        Tue, 14 Apr 2020 16:24:16 -0400
+Received: by mail-wm1-f65.google.com with SMTP id c195so13324050wme.1;
+        Tue, 14 Apr 2020 13:24:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=8foj8DrysV33p4mme5GdEjxA5CWGWkeyAu6FZ3U4eS0=;
+        b=IF1f8RElmawcrPYoRSgrPir9kIXdHCdU6Meve1ekN4grhbEqXhRTNo9tpVhJQ5yueb
+         XABFBIRRjKMeqMinSFW5YIoDhFnVcCIir7KJIEzCC8mNOh+wIBA4WL+Kac6cJbaNRgiI
+         FPGosUoC2s90URZAgopAYV9/HTqoabvN9ioQEQKnwwf28LesrX8r21wc0l0Xi7Ma3itJ
+         SCoMUeO8Nu4SLgV/jAPwhDuoYyT7BFDnPoEj5FmbB4AyCzqT2bJb96tJcOUR3zx1Br1A
+         BVOrT7y7aF++KRbbTL1rihlwVkU850LUmc2mw3jfpKdBT5k8C3yFfmlvB7qsUWixzIjK
+         DofA==
+X-Gm-Message-State: AGi0PuZ0Ti9rD5vuV0jnGwlxVEsnYbjzKAkLIaEWss+4etQ00ZGTB+L2
+        Ox5Nhak3IzhraM+k0Qb5ErA=
+X-Google-Smtp-Source: APiQypKNDiBsb0VoeE7xhlyPlc3j5YSKwr2IMwWp7yUDNrjRzO29ekzSD3mV+sqz2oB1ca/p8BMjlA==
+X-Received: by 2002:a1c:9891:: with SMTP id a139mr1688487wme.129.1586895854749;
+        Tue, 14 Apr 2020 13:24:14 -0700 (PDT)
+Received: from debian (44.142.6.51.dyn.plus.net. [51.6.142.44])
+        by smtp.gmail.com with ESMTPSA id y5sm21213391wru.15.2020.04.14.13.24.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Apr 2020 13:24:14 -0700 (PDT)
+Date:   Tue, 14 Apr 2020 21:24:12 +0100
+From:   Wei Liu <wei.liu@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "K . Y . Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>, linux-hyperv@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] drivers: hv: remove redundant assignment to
+ pointer primary_channel
+Message-ID: <20200414202412.op5kxcqc7k4bce6z@debian>
+References: <20200414152343.243166-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200414152343.243166-1-colin.king@canonical.com>
+User-Agent: NeoMutt/20180716
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 2020-04-14 at 21:49 +0300, Dan Carpenter wrote:
-> Huh...
+On Tue, Apr 14, 2020 at 04:23:43PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> If you look at dev_vprintk_emit().  It looks like if
-> create_syslog_header() returns a string then vprintk_store() will add
-> a newline.
+> The pointer primary_channel is being assigned with a value that is never,
+> The assignment is redundant and can be removed.
 > 
-> I guess that means that dev_printk() can't be used to pr_cont().  And
-> probably that's deliberate because using pr_cont() after boot is racy
-> anyway.
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Perhaps that's true, it didn't used to be.
+Thanks.
 
-There are couple dozen or so KERN_CONT uses after a dev_<level>
-without a newline, so those _might_ be broken, but I don't thinks so.
+Now that the only user of primary_channel is within the else branch, we
+can go one step further to move the definition of primary_channel there.
 
-$ git grep -P -A10 '\bdev_\w+\s*\(' | \
-  grep -P -B10 "KERN_CONT|pr_cont"
+I can make the adjustment while committing this patch, as well as
+updating the commit message.
 
+Wei.
+
+> ---
+>  drivers/hv/channel_mgmt.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
+> index ffd7fffa5f83..f7bbb8dc4b0f 100644
+> --- a/drivers/hv/channel_mgmt.c
+> +++ b/drivers/hv/channel_mgmt.c
+> @@ -425,8 +425,6 @@ void hv_process_channel_removal(struct vmbus_channel *channel)
+>  
+>  	if (channel->primary_channel == NULL) {
+>  		list_del(&channel->listentry);
+> -
+> -		primary_channel = channel;
+>  	} else {
+>  		primary_channel = channel->primary_channel;
+>  		spin_lock_irqsave(&primary_channel->lock, flags);
+> -- 
+> 2.25.1
+> 

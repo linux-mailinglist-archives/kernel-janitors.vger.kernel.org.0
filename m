@@ -2,114 +2,137 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A95D1A9C2A
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Apr 2020 13:26:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53F5B1AAA34
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Apr 2020 16:40:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2896955AbgDOLZi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 Apr 2020 07:25:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38430 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2896947AbgDOLZ1 (ORCPT
+        id S2636653AbgDOOiC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 Apr 2020 10:38:02 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:42785 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2634473AbgDOOh6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 Apr 2020 07:25:27 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3322C061A0C
-        for <kernel-janitors@vger.kernel.org>; Wed, 15 Apr 2020 04:25:26 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id g12so10696126wmh.3
-        for <kernel-janitors@vger.kernel.org>; Wed, 15 Apr 2020 04:25:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=apXLkj8/Y6/Je/J3pw9VYIeGtZznbEDSTaodMw9SIP8=;
-        b=CtHkHYlCnlsa+tUc8/F7g7a0/P6u8ejT1ayfSACtu0kpWhs3EFaqXHsG66HdK2TqVO
-         1YepPve4g/tteoWGzn/BId3gVqa0gSrcAXKoX7yewG/1H0vQN4Qe2Pn7YxQ/IdDn6tw3
-         UgUpHRyZ0gelkfNm/V6/st91NhPu8ozpGjQpo=
+        Wed, 15 Apr 2020 10:37:58 -0400
+Received: by mail-wr1-f67.google.com with SMTP id j2so76318wrs.9;
+        Wed, 15 Apr 2020 07:37:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to;
-        bh=apXLkj8/Y6/Je/J3pw9VYIeGtZznbEDSTaodMw9SIP8=;
-        b=mbKR/unS/wpOCcRMuOkr9pjqQszP1D+DK22rjiTJpmphGBWymS+qbVTopDSkMp7jXM
-         JMkR6H/NNY1CgAc/+ey6MW/myd762LZtdU21Z3sAT5Vtu5qh59ZL4kWfSZ6X3gP8Sweb
-         G2Xyb+/BRHVMKMwKukr9gCybyoEMXkD8Ojfktf6GPPewwF4mxD9TA1M+netPp6qPYUGY
-         t8OjM4VINVXqJPUrEhJL4eF+EZRLIqTcPzVH8YrgVPXGKaAomqfX/r3I7vUhB3RFQbMv
-         rKJuyUbnYoxsbunh81vynIJejq7QQXnk1vHUe89wWi2XQA1mjdr1vH5xyQkSw3RGrfFd
-         EEIw==
-X-Gm-Message-State: AGi0PuaHO0VAVqphTNrMsOie24VxSOpJIDPTU/jg7Oj7GkbfxBQ3vwP0
-        oQYiujFag9LqO6wNul8gdYkNXWJp09c=
-X-Google-Smtp-Source: APiQypLPhakDBiE4HRC90MnW5/bRC2vpIu2AQD3Xvb6Y3wPK7412N1qq31ytrTaUWKirLB1NJ1AesQ==
-X-Received: by 2002:a1c:7c13:: with SMTP id x19mr4706062wmc.124.1586949925687;
-        Wed, 15 Apr 2020 04:25:25 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id w3sm4358429wrc.18.2020.04.15.04.25.24
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=JFQ6OPmr3bYT6YpSGJ9844rrkbuCT3rhKovZKEMdYh0=;
+        b=qiyQlCkYPCtZHfLm/XKHhyDVdnPhtNbb9u63GDkyLnVXVN+nM4VKCjMwJUz/HEOTvB
+         y3TGzt93sSujI093P5rQPzgCD50TClpTTLqeZQbODnMPas+p5PyMgNfbB5A2131KZ4X1
+         bImA9UUvW5tIf0JoeVq63aAyT8t4vj2Z56t0+zY3p4G4L2IBykwG+WWcoBzkNPpcHsiH
+         Kv4wWsMv6TMoEVpHGvCPpSncMQYEcGbbh6V6HaAM8DcUJxnBmHXAEfon2AD8bfZmQtLi
+         otGje7/IAzHXp0i04LuhZNNLA1WJZGuIBvSuceMprYTAFxwqFORCUgQ8eKlNRjaU6Rfg
+         Eg+Q==
+X-Gm-Message-State: AGi0PuZH7DHRAm5/KX8nu1z+mUTZ8wURAqgotg/b4fBOUVYL2Vb65PWs
+        fdTIO/6q1bWvz9ihhYdW0xk=
+X-Google-Smtp-Source: APiQypJMJJT5Xdg+uQJVYoi7gV4Bgvt7rTcXwzNbFzINw6ITI4fwZ4N2Aq2ucU2Xm7enL/b+GekA1A==
+X-Received: by 2002:a5d:4106:: with SMTP id l6mr1527916wrp.111.1586961474756;
+        Wed, 15 Apr 2020 07:37:54 -0700 (PDT)
+Received: from debian (44.142.6.51.dyn.plus.net. [51.6.142.44])
+        by smtp.gmail.com with ESMTPSA id u16sm23302758wro.23.2020.04.15.07.37.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2020 04:25:25 -0700 (PDT)
-Date:   Wed, 15 Apr 2020 13:25:23 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Sandy Huang <hjc@rock-chips.com>,
-        Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] drm/rockchip: fix spelling mistake "modifer" ->
- "modifier"
-Message-ID: <20200415112523.GA3456981@phenom.ffwll.local>
-Mail-Followup-To: Colin King <colin.king@canonical.com>,
-        Sandy Huang <hjc@rock-chips.com>,
-        Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>,
-        David Airlie <airlied@linux.ie>, dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20200415083420.366279-1-colin.king@canonical.com>
+        Wed, 15 Apr 2020 07:37:54 -0700 (PDT)
+Date:   Wed, 15 Apr 2020 15:37:52 +0100
+From:   Wei Liu <wei.liu@kernel.org>
+To:     Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc:     Colin Ian King <colin.king@canonical.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "K . Y . Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>, linux-hyperv@vger.kernel.org
+Subject: Re: [PATCH][next] drivers: hv: remove redundant assignment to
+ pointer primary_channel
+Message-ID: <20200415143752.cm3xbesiuksfdbzm@debian>
+References: <20200414152343.243166-1-colin.king@canonical.com>
+ <87d08axb7k.fsf@vitty.brq.redhat.com>
+ <606c442c-1923-77d4-c350-e06878172c44@canonical.com>
+ <87wo6hvxkz.fsf@vitty.brq.redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200415083420.366279-1-colin.king@canonical.com>
-X-Operating-System: Linux phenom 5.3.0-3-amd64 
+In-Reply-To: <87wo6hvxkz.fsf@vitty.brq.redhat.com>
+User-Agent: NeoMutt/20180716
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Apr 15, 2020 at 09:34:20AM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Wed, Apr 15, 2020 at 12:43:08PM +0200, Vitaly Kuznetsov wrote:
+> Colin Ian King <colin.king@canonical.com> writes:
 > 
-> There is a spelling mistake in a DRM_DEBUG_KMS debug message. Fix it.
+> > On 14/04/2020 17:51, Vitaly Kuznetsov wrote:
+> >> Colin King <colin.king@canonical.com> writes:
+> >> 
+> >>> From: Colin Ian King <colin.king@canonical.com>
+> >>>
+> >>> The pointer primary_channel is being assigned with a value that is never,
+> >>> The assignment is redundant and can be removed.
+> >>>
+> >>> Addresses-Coverity: ("Unused value")
+> >>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> >>> ---
+> >>>  drivers/hv/channel_mgmt.c | 2 --
+> >>>  1 file changed, 2 deletions(-)
+> >>>
+> >>> diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
+> >>> index ffd7fffa5f83..f7bbb8dc4b0f 100644
+> >>> --- a/drivers/hv/channel_mgmt.c
+> >>> +++ b/drivers/hv/channel_mgmt.c
+> >>> @@ -425,8 +425,6 @@ void hv_process_channel_removal(struct vmbus_channel *channel)
+> >>>  
+> >>>  	if (channel->primary_channel == NULL) {
+> >>>  		list_del(&channel->listentry);
+> >>> -
+> >>> -		primary_channel = channel;
+> >>>  	} else {
+> >>>  		primary_channel = channel->primary_channel;
+> >>>  		spin_lock_irqsave(&primary_channel->lock, flags);
+> >> 
+> >> If I'm looking at the right source (5.7-rc1) it *is* beeing used:
+> >> 
+> >> 	if (channel->primary_channel == NULL) {
+> >> 		list_del(&channel->listentry);
+> >> 
+> >> 		primary_channel = channel;
+> >> 	} else {
+> >> 		primary_channel = channel->primary_channel;
+> >> 		spin_lock_irqsave(&primary_channel->lock, flags);
+> >> 		list_del(&channel->sc_list);
+> >> 		spin_unlock_irqrestore(&primary_channel->lock, flags);
+> >> 	}
+> >> 
+> >> 	/*
+> >> 	 * We need to free the bit for init_vp_index() to work in the case
+> >> 	 * of sub-channel, when we reload drivers like hv_netvsc.
+> >> 	 */
+> >> 	if (channel->affinity_policy == HV_LOCALIZED)
+> >> 		cpumask_clear_cpu(channel->target_cpu,
+> >> 				  &primary_channel->alloced_cpus_in_node);
+> >>                                    ^^^^^ HERE ^^^^^
+> >> 
+> >
+> > I was basing my change on linux-next that has removed a hunk of code:
+> >
+> > commit bcefa400900739310e8ef0cb34cbe029c404455c
+> > Author: Andrea Parri (Microsoft) <parri.andrea@gmail.com>
+> > Date:   Mon Apr 6 02:15:11 2020 +0200
+> >
+> >     Drivers: hv: vmbus: Remove the unused HV_LOCALIZED channel affinity
+> > logic
+> >
 > 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Ah, please add the right 'Fixes:' tag then.
 
-Queued for 5.8, thanks for your patch.
--Daniel
+I don't think the Fixes tag is particularly useful in this instance.
+Andrea's commit is not yet in Linus' tree. If I rebase hyper-next over
+the next 2.5 months the tag is going to have a stale commit hash in it.
 
-> ---
->  drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Wei.
+
 > 
-> diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-> index b87d22eb6ae1..33463b79a37b 100644
-> --- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-> +++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-> @@ -769,7 +769,7 @@ static bool rockchip_mod_supported(struct drm_plane *plane,
->  		return true;
->  
->  	if (!rockchip_afbc(modifier)) {
-> -		DRM_DEBUG_KMS("Unsupported format modifer 0x%llx\n", modifier);
-> +		DRM_DEBUG_KMS("Unsupported format modifier 0x%llx\n", modifier);
->  
->  		return false;
->  	}
 > -- 
-> 2.25.1
+> Vitaly
 > 
-
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch

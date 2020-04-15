@@ -2,86 +2,169 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28EE41A952E
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Apr 2020 09:53:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F6D41A95C3
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Apr 2020 10:12:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2635353AbgDOHwi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 Apr 2020 03:52:38 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:2375 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2635311AbgDOHwT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 Apr 2020 03:52:19 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 9367E530937B7EC367CF;
-        Wed, 15 Apr 2020 15:52:13 +0800 (CST)
-Received: from [127.0.0.1] (10.173.223.60) by DGGEMS412-HUB.china.huawei.com
- (10.3.19.212) with Microsoft SMTP Server id 14.3.487.0; Wed, 15 Apr 2020
- 15:52:11 +0800
-Subject: Re: [PATCH -next] bpf: remove set but not used variable 'dst_known'
-To:     Song Liu <songliubraving@fb.com>
-CC:     Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin Lau <kafai@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>,
-        "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-        "kpsingh@chromium.org" <kpsingh@chromium.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-References: <20200413113703.194287-1-maowenan@huawei.com>
- <C75FACD4-8549-4AD1-BDE6-1F5B47095E4C@fb.com>
- <2b2e0060-ef9b-5541-1108-e28464b47f0a@huawei.com>
- <F68FB33A-1B98-45C1-8056-457EFA52F84F@fb.com>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <8855e82a-88d0-8d1e-e5e0-47e781f9653c@huawei.com>
-Date:   Wed, 15 Apr 2020 15:52:10 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+        id S2635526AbgDOIGj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 Apr 2020 04:06:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35378 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2635458AbgDOIEr (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 15 Apr 2020 04:04:47 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAEAFC061A0E
+        for <kernel-janitors@vger.kernel.org>; Wed, 15 Apr 2020 00:56:42 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id y24so17724141wma.4
+        for <kernel-janitors@vger.kernel.org>; Wed, 15 Apr 2020 00:56:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:autocrypt:organization:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=pSd8qbiYbAtfmst7OijulRMd3WJ5z01ypkQKLIZqZok=;
+        b=yK6dX17+cvwnbEKilDfvRJgPysqPQaOhqOcDFnUWTwNTUcNlmft+jOZNDi292ntJ2l
+         kj8MhwLARdLFZQKHh3vGVp8pk4X5eSRG7mpvhl9Gb1ncGcdh5wPScau0bBXWJRcizTkW
+         YioEbcc+FfUtG7ehev32FVJAwfe17MnWO6TJgD4LRwjj0ThJPgtxI9iHU5CcXmobSssd
+         j71TTX//G1saATx+Znj6E1Q5og5FR/Y6P6VELlqA1x8O4FO9kJlnZefTggiQsrpsNs6J
+         ZMoViK/0WPcIZDWIQLZRE+70NvkJdbfBxXS+4zXAvJu+2FUMgCrIeRK28CnH0BoFyirJ
+         kEjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+         :organization:message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=pSd8qbiYbAtfmst7OijulRMd3WJ5z01ypkQKLIZqZok=;
+        b=CuRbmh2DKY2Gwo6EOQ1BIV7CYWiEJSdSlwAsvtzSH/J/2vwKHELahMtnvc7r4D9TjN
+         kPpLMbz2eLKDCNhWM/GPKaRPxaO97q4ZBqQtVnJICUeiQ6ZXVgddYF0QifO3xtqSvF9x
+         5PR5HICeXid+EKtKxlsEg4f4qZSHK9mO9qJtTnlu+OuOdklxsNhsS8PxldkIlYB1zIFf
+         B0FQ6wJW8MyuHNEekRYYKBfdSi8tOZ0EU/P44EP4O+JwOX0N3Blo1/QE+aNdxBwsX1rk
+         t2gT8W/FW6WUPU5cHk9ZO4U10KuYjl5xP/Em0hYpBM2tGNxLCjubQZDr/kHxRzNTL8oJ
+         eECw==
+X-Gm-Message-State: AGi0PubksNc7W2Zm4++jKjab3trOYnmKJHA8CIzlSISPxdwEYiJj7uRu
+        zAKOM6bZLtR9qeX9aj2lTu32wA==
+X-Google-Smtp-Source: APiQypJKOCIwnWh8GtFBc++8oLUPehct2YypJMuYQcUh6XPplOHdyOE52LPU3ioZ9kxnxcghDzsaVg==
+X-Received: by 2002:a7b:cb17:: with SMTP id u23mr1910534wmj.130.1586937401352;
+        Wed, 15 Apr 2020 00:56:41 -0700 (PDT)
+Received: from ?IPv6:2a01:e35:2ec0:82b0:39cc:a07:8b48:cc56? ([2a01:e35:2ec0:82b0:39cc:a07:8b48:cc56])
+        by smtp.gmail.com with ESMTPSA id k14sm22764484wrp.53.2020.04.15.00.56.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Apr 2020 00:56:40 -0700 (PDT)
+Subject: Re: [PATCH] drm/meson: Delete an error message in
+ meson_dw_hdmi_bind()
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        dri-devel@lists.freedesktop.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Kevin Hilman <khilman@baylibre.com>
+Cc:     kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Tang Bin <tangbin@cmss.chinamobile.com>
+References: <76f24122-4d3f-7670-9f06-edb4731a0661@web.de>
+From:   Neil Armstrong <narmstrong@baylibre.com>
+Autocrypt: addr=narmstrong@baylibre.com; prefer-encrypt=mutual; keydata=
+ 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
+ BSwxi7g3Mu7u5kUByanqHyA=
+Organization: Baylibre
+Message-ID: <54e0b6e4-4a39-c567-7355-2b2330a95294@baylibre.com>
+Date:   Wed, 15 Apr 2020 09:56:38 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <F68FB33A-1B98-45C1-8056-457EFA52F84F@fb.com>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <76f24122-4d3f-7670-9f06-edb4731a0661@web.de>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.223.60]
-X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020/4/15 15:23, Song Liu wrote:
-> 
-> 
->> On Apr 14, 2020, at 6:37 PM, maowenan <maowenan@huawei.com> wrote:
->>
->> On 2020/4/15 6:05, Song Liu wrote:
->>>
->>>
->>>> On Apr 13, 2020, at 4:37 AM, Mao Wenan <maowenan@huawei.com> wrote:
->>>>
->>>> Fixes gcc '-Wunused-but-set-variable' warning:
->>>>
->>>> kernel/bpf/verifier.c:5603:18: warning: variable ‘dst_known’
->>>> set but not used [-Wunused-but-set-variable]
->>>>
->>>> It is not used since commit f1174f77b50c ("bpf/verifier:
->>>> rework value tracking")
->>>
->>> The fix makes sense. But I think f1174f77b50c introduced dst_known, 
->>> so this statement is not accurate. 
->>>
->> thanks for review, yes, f1174f77b50c introduced dst_known, and below commit
->> doesn't deference variable dst_known. So I send v2 later?
->> 3f50f132d840 ("bpf: Verifier, do explicit ALU32 bounds tracking")
-> 
-> I don't think we need to back port this to stable. So it is OK not to 
-> include Fixes tag. We can just remove this statement in the commit log.
-> 
-> bpf-next is not open yet. Please send v2 when bpf-next is open. 
-> 
-> Thanks,
-> Song
-> 
-OK, I will do that.
+Hi,
 
+On 05/04/2020 13:23, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Sun, 5 Apr 2020 13:13:03 +0200
+> 
+> The function “platform_get_irq” can log an error already.
+> Thus omit a redundant message for the exception handling in the
+> calling function.
+> 
+> This issue was detected by using the Coccinelle software.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> ---
+>  drivers/gpu/drm/meson/meson_dw_hdmi.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/meson/meson_dw_hdmi.c b/drivers/gpu/drm/meson/meson_dw_hdmi.c
+> index e8c94915a4fc..64cb6ba4bc42 100644
+> --- a/drivers/gpu/drm/meson/meson_dw_hdmi.c
+> +++ b/drivers/gpu/drm/meson/meson_dw_hdmi.c
+> @@ -1034,10 +1034,8 @@ static int meson_dw_hdmi_bind(struct device *dev, struct device *master,
+>  		return PTR_ERR(dw_plat_data->regm);
+> 
+>  	irq = platform_get_irq(pdev, 0);
+> -	if (irq < 0) {
+> -		dev_err(dev, "Failed to get hdmi top irq\n");
+> +	if (irq < 0)
+>  		return irq;
+> -	}
+> 
+>  	ret = devm_request_threaded_irq(dev, irq, dw_hdmi_top_irq,
+>  					dw_hdmi_top_thread_irq, IRQF_SHARED,
+> --
+> 2.26.0
+> 
+
+Missing Fixes tag, but I'll apply nevertheless:
+Fixes: 3f68be7d8e96 ("drm/meson: Add support for HDMI encoder and DW-HDMI bridge + PHY")
+
+Neil

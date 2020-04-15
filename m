@@ -2,31 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 147361AB3E1
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 00:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED3A41AB3EF
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 00:50:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732832AbgDOWk2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 Apr 2020 18:40:28 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:52698 "EHLO
+        id S1732318AbgDOWuD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 Apr 2020 18:50:03 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:52998 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726089AbgDOWkR (ORCPT
+        with ESMTP id S1725800AbgDOWuB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 Apr 2020 18:40:17 -0400
+        Wed, 15 Apr 2020 18:50:01 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jOqhW-0002Lc-ME; Wed, 15 Apr 2020 22:40:10 +0000
+        id 1jOqqp-0003Ne-TH; Wed, 15 Apr 2020 22:49:47 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        linux-pm@vger.kernel.org, linux-omap@vger.kernel.org
+To:     Ayush Sawal <ayush.sawal@chelsio.com>,
+        Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
+        Rohit Maheshwari <rohitm@chelsio.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-crypto@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] thermal: ti-soc-thermal: remove redundant assignment to variable i
-Date:   Wed, 15 Apr 2020 23:40:10 +0100
-Message-Id: <20200415224010.1564330-1-colin.king@canonical.com>
+Subject: [PATCH] crypto: chelsio: remove redundant assignment to variable error
+Date:   Wed, 15 Apr 2020 23:49:47 +0100
+Message-Id: <20200415224947.1565311-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -38,27 +39,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable i is being assigned with a value that is never read,
-the assignment is redundant and can be removed.
+The variable error is being initialized with a value that is never read
+and it is being updated later with a new value.  The initialization is
+redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/thermal/ti-soc-thermal/ti-bandgap.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/crypto/chelsio/chcr_algo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.c b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-index ab19ceff6e2a..abaf629038c3 100644
---- a/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-+++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-@@ -1003,7 +1003,6 @@ int ti_bandgap_probe(struct platform_device *pdev)
- 		ret = ti_bandgap_talert_init(bgp, pdev);
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to initialize Talert IRQ\n");
--			i = bgp->conf->sensor_count;
- 			goto disable_clk;
- 		}
- 	}
+diff --git a/drivers/crypto/chelsio/chcr_algo.c b/drivers/crypto/chelsio/chcr_algo.c
+index c29b80dd30d8..5d3000fdd5f4 100644
+--- a/drivers/crypto/chelsio/chcr_algo.c
++++ b/drivers/crypto/chelsio/chcr_algo.c
+@@ -1757,7 +1757,7 @@ static int chcr_ahash_final(struct ahash_request *req)
+ 	struct uld_ctx *u_ctx = ULD_CTX(h_ctx(rtfm));
+ 	struct chcr_context *ctx = h_ctx(rtfm);
+ 	u8 bs = crypto_tfm_alg_blocksize(crypto_ahash_tfm(rtfm));
+-	int error = -EINVAL;
++	int error;
+ 	unsigned int cpu;
+ 
+ 	cpu = get_cpu();
 -- 
 2.25.1
 

@@ -2,62 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 051001AB8C6
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 08:55:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FCC21ABB5F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 10:36:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437681AbgDPGyK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Apr 2020 02:54:10 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:41546 "EHLO fornost.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2437468AbgDPGyH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Apr 2020 02:54:07 -0400
-Received: from gwarestrin.me.apana.org.au ([192.168.0.7] helo=gwarestrin.arnor.me.apana.org.au)
-        by fornost.hmeau.com with smtp (Exim 4.89 #2 (Debian))
-        id 1jOyP5-0005SP-QY; Thu, 16 Apr 2020 16:53:40 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Thu, 16 Apr 2020 16:53:39 +1000
-Date:   Thu, 16 Apr 2020 16:53:39 +1000
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     bbrezillon@kernel.org, arno@natisbad.org, schalla@marvell.com,
-        davem@davemloft.net, lbartosik@marvell.com,
-        colin.king@canonical.com, linux-crypto@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH V2] crypto: marvell/octeontx - Add missing '\n' in log
- messages
-Message-ID: <20200416065339.GK7901@gondor.apana.org.au>
-References: <20200411120633.22150-1-christophe.jaillet@wanadoo.fr>
+        id S2441383AbgDPIgb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Apr 2020 04:36:31 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:38882 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2501887AbgDPIgE (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 16 Apr 2020 04:36:04 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03G8SBh4154558;
+        Thu, 16 Apr 2020 08:34:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=p+Dt8afETPBHGWQDAy3rSGf9i8tLMRVwu8kfmVUG6wo=;
+ b=HZg4J+j8vulLiiwBTFKGbIIM4hK6WjOL7JwEW1UmSHi3sNs6eJUdJ4iMDnvnlzccXpPp
+ OCqyCrIOrtc0/lpsB/0c7GAgZ7/8VU+lwaKjHlqxE3bja2bsxJdoYuTdB5eXUCSnudZM
+ zeJkS2FZbAisBDAS61/HFUp+FkbmSHFMC4ashOsMPE5gg6PJ50TwjZBiGcI5w12SmVTs
+ 8SHr6h2w2xtDDrsiZHv9rs8MsFjAcsYDOGL7+7MKUylK6ZYbqFckSxtbmuVwGx+pcmlE
+ vUPBUEuoA5yb0LBAEJd1c6+7ktCCBMZIKRoKsNOek/+6TFoU4EppC8xwYbbB21ADWBgA HA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 30dn95r09v-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 16 Apr 2020 08:34:43 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03G8S68c022555;
+        Thu, 16 Apr 2020 08:34:43 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 30dn9eq3rp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 16 Apr 2020 08:34:43 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03G8Yewx012445;
+        Thu, 16 Apr 2020 08:34:40 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 16 Apr 2020 01:34:39 -0700
+Date:   Thu, 16 Apr 2020 11:34:28 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jani Nikula <jani.nikula@linux.intel.com>
+Cc:     Colin Ian King <colin.king@canonical.com>, kbuild@lists.01.org,
+        lkp@intel.com, kbuild-all@lists.01.org,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm/i915/gt: remove redundant assignment to variable x
+Message-ID: <20200416083427.GK1163@kadam>
+References: <20200414092359.GC1163@kadam>
+ <43eb0cbb-9bf0-c99a-470d-8121c3108a5e@canonical.com>
+ <87blnt5d7j.fsf@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200411120633.22150-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <87blnt5d7j.fsf@intel.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9592 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 mlxscore=0 adultscore=0
+ spamscore=0 phishscore=0 bulkscore=0 suspectscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004160058
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9592 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 clxscore=1015
+ malwarescore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
+ mlxscore=0 phishscore=0 spamscore=0 impostorscore=0 suspectscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004160058
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Apr 11, 2020 at 02:06:33PM +0200, Christophe JAILLET wrote:
-> Message logged by 'dev_xxx()' or 'pr_xxx()' should end with a '\n'.
+On Wed, Apr 15, 2020 at 12:07:44PM +0300, Jani Nikula wrote:
+> On Tue, 14 Apr 2020, Colin Ian King <colin.king@canonical.com> wrote:
+> > Hi Dan,
+> >
+> > I'd post a revert, but I don't seem to see an upstream commit for this
+> > this to revert against. What's the revert policy in these cases? Or can
+> > the patch be just ignored by the maintainers so it's not applied?
 > 
-> While at it, I've introduced a few pr_cont that looked logical to me.
+> It has not been applied, and will be ignored, in part thanks to the
+> report.
 > 
-> Fixes: 10b4f09491bf ("crypto: marvell - add the Virtual Function driver for CPT")
-> Fixes: d9110b0b01ff ("crypto: marvell - add support for OCTEON TX CPT engine")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> V2: remove a pr_cont after a pr_debug
->     avoid repeating 'engine_group' in a message
-> ---
->  .../crypto/marvell/octeontx/otx_cptpf_main.c  |  4 +-
->  .../crypto/marvell/octeontx/otx_cptpf_mbox.c  | 12 +--
->  .../crypto/marvell/octeontx/otx_cptpf_ucode.c | 95 ++++++++++---------
->  .../crypto/marvell/octeontx/otx_cptvf_algs.c  |  6 +-
->  .../crypto/marvell/octeontx/otx_cptvf_main.c  | 12 +--
->  .../marvell/octeontx/otx_cptvf_reqmgr.c       | 10 +-
->  6 files changed, 70 insertions(+), 69 deletions(-)
+> However I think Dan's report is misleading in that it looks like it's
+> about a commit while I think it should emphasize that it's a pre-merge
+> report on the patch on the mailing list.
+> 
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+To be honest, these are auto-generated by the kbuild bot and I was a bit
+confused myself.
+
+regards,
+dan carpenter
+

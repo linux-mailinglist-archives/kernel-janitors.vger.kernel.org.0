@@ -2,52 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30BEE1AB426
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 01:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E98BB1AB8A4
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 08:52:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388796AbgDOXUs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 Apr 2020 19:20:48 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:47038 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388746AbgDOXUq (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 Apr 2020 19:20:46 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 0DD71120ED569;
-        Wed, 15 Apr 2020 16:20:41 -0700 (PDT)
-Date:   Wed, 15 Apr 2020 16:20:38 -0700 (PDT)
-Message-Id: <20200415.162038.1967911463518921168.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     kuznet@ms2.inr.ac.ru, yoshfuji@linux-ipv6.org, kuba@kernel.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ipv6: remove redundant assignment to variable err
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200415231630.1568296-1-colin.king@canonical.com>
-References: <20200415231630.1568296-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 15 Apr 2020 16:20:42 -0700 (PDT)
+        id S2437019AbgDPGwX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Apr 2020 02:52:23 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:41474 "EHLO fornost.hmeau.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2436923AbgDPGwQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 16 Apr 2020 02:52:16 -0400
+Received: from gwarestrin.me.apana.org.au ([192.168.0.7] helo=gwarestrin.arnor.me.apana.org.au)
+        by fornost.hmeau.com with smtp (Exim 4.89 #2 (Debian))
+        id 1jOyNK-0005Jq-CU; Thu, 16 Apr 2020 16:51:51 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Thu, 16 Apr 2020 16:51:50 +1000
+Date:   Thu, 16 Apr 2020 16:51:50 +1000
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-crypto@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Deepak Saxena <dsaxena@plexity.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Matt Mackall <mpm@selenic.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Tang Bin <tangbin@cmss.chinamobile.com>
+Subject: Re: [PATCH] hwrng: omap - Delete an error message in
+ of_get_omap_rng_device_details()
+Message-ID: <20200416065150.GG7901@gondor.apana.org.au>
+References: <eae7170c-4371-4865-7b85-589c0ed2b5b6@web.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <eae7170c-4371-4865-7b85-589c0ed2b5b6@web.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Thu, 16 Apr 2020 00:16:30 +0100
-
-> From: Colin Ian King <colin.king@canonical.com>
+On Sat, Apr 04, 2020 at 04:56:57PM +0200, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Sat, 4 Apr 2020 16:45:57 +0200
 > 
-> The variable err is being initialized with a value that is never read
-> and it is being updated later with a new value.  The initialization is
-> redundant and can be removed.
+> The function “platform_get_irq” can log an error already.
+> Thus omit a redundant message for the exception handling in the
+> calling function.
 > 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> This issue was detected by using the Coccinelle software.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> ---
+>  drivers/char/hw_random/omap-rng.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
 
-Applied, thanks.
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

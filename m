@@ -2,97 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6D111AC214
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 15:09:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B64BF1ACB3D
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 17:46:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2894799AbgDPNJW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Apr 2020 09:09:22 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:41712 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2894692AbgDPNJP (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Apr 2020 09:09:15 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03GD8Bhi030563;
-        Thu, 16 Apr 2020 13:09:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=JVRFfnFS+OgWj7u5UNa3ISrw5T9J6EGkJSXP5AV0oP4=;
- b=kKM3XCkJV1xc4zUZKFip7MGr/drhgl31vuH/o+h5t35tdgm/gCgIaCAWFMs2H5nJEfrf
- 5Eq+H9EQuNAVqB7LKcUcqK5e37QC/1iIiYGsKKDA4NBfOnhoO+116xwjwIHU9UEFbLTT
- zY0z8Y425XQ4cJC2CpzsLuzafOBa49ie4JVWzzxmUixlNFQUHy9Vp/vtsOxHpL43RTQ+
- 8Yz+lxUZ2q8bxADDxZslpeAsDjFJ8TrpKLcnlmOJry0MQZ2F8Gj9TI2E5l/Hc47IgJY/
- J3fKyBgIw7DoBWzJN2JMeO7gA3gI7v774Tp9xsqLVkToKEQoGIJsHsKf6S1IkS/o61iW xg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 30dn95s9mp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 16 Apr 2020 13:09:03 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03GD7F8s117906;
-        Thu, 16 Apr 2020 13:09:02 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 30emen0dbx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 16 Apr 2020 13:09:02 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03GD8wWc001606;
-        Thu, 16 Apr 2020 13:08:58 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 16 Apr 2020 06:08:58 -0700
-Date:   Thu, 16 Apr 2020 16:08:47 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        selvin.xavier@broadcom.com, devesh.sharma@broadcom.com,
-        dledford@redhat.com, leon@kernel.org, colin.king@canonical.com,
-        roland@purestorage.com, linux-rdma@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] RDMA/ocrdma: Fix an off-by-one issue in 'ocrdma_add_stat'
-Message-ID: <20200416130847.GP1163@kadam>
-References: <20200328073040.24429-1-christophe.jaillet@wanadoo.fr>
- <20200414183441.GA28870@ziepe.ca>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200414183441.GA28870@ziepe.ca>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9592 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 suspectscore=0
- mlxlogscore=999 phishscore=0 spamscore=0 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004160093
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9592 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 clxscore=1011
- malwarescore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
- mlxscore=0 phishscore=0 spamscore=0 impostorscore=0 suspectscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004160093
+        id S2442542AbgDPPpG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Apr 2020 11:45:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52430 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2395512AbgDPPpE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 16 Apr 2020 11:45:04 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9E06521D91;
+        Thu, 16 Apr 2020 15:45:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587051904;
+        bh=uEzT4afH5aAvqU9GRUEUOIDgK+mWSReRCNYeDa+GX54=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=pcpz6ct4+maiiBtZd9rtrSScBUwuNgkpbamj//4pqaThgCwa0dSZd/zmWQvxvCsfV
+         RUQLLXo3E1W4BwlUALnGCD0TatfyNXlKArys+HNonhkcuogXDJYnW32hGvnB1VRJei
+         17ozwOeaEnJrH+S9jb9dJ176cvZXOo5GU7EQOPbU=
+Date:   Thu, 16 Apr 2020 16:45:01 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Colin King <colin.king@canonical.com>, linux-spi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <20200410122315.17523-1-colin.king@canonical.com>
+References: <20200410122315.17523-1-colin.king@canonical.com>
+Subject: Re: [PATCH] spi: remove redundant assignment to variable ms
+Message-Id: <158705187474.53607.10568254080085770802.b4-ty@kernel.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Apr 14, 2020 at 03:34:41PM -0300, Jason Gunthorpe wrote:
-> The memcpy is still kind of silly right? What about this:
+On Fri, 10 Apr 2020 13:23:15 +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> static int ocrdma_add_stat(char *start, char *pcur, char *name, u64 count)
-> {
-> 	size_t len = (start + OCRDMA_MAX_DBGFS_MEM) - pcur;
-> 	int cpy_len;
+> The variable ms is being initialized with a value that is never read
+> and it is being updated later with a new value.  The initialization is
+> redundant and can be removed.
 > 
-> 	cpy_len = snprintf(pcur, len, "%s: %llu\n", name, count);
-> 	if (cpy_len >= len || cpy_len < 0) {
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Addresses-Coverity: ("Unused value")
+> 
+> [...]
 
-The kernel version of snprintf() doesn't and will never return
-negatives.  It would cause a huge security headache if it started
-returning negatives.
+Applied, thanks!
 
-> 		pr_err("%s: No space in stats buff\n", __func__);
-> 		return 0;
-> 	}
+[1/1] spi: remove redundant assignment to variable ms
+      commit: 49686df5b874e5ed6249bc622b73ad9a9e71cd99
 
-regards,
-dan carpenter
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

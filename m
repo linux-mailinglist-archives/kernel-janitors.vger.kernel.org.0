@@ -2,77 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EF191ABF3C
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 13:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6D111AC214
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 15:09:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2633329AbgDPLbp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Apr 2020 07:31:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34000 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2506135AbgDPLJH (ORCPT
+        id S2894799AbgDPNJW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Apr 2020 09:09:22 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:41712 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2894692AbgDPNJP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Apr 2020 07:09:07 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AA5FC061A0F
-        for <kernel-janitors@vger.kernel.org>; Thu, 16 Apr 2020 04:08:41 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id r24so7376867ljd.4
-        for <kernel-janitors@vger.kernel.org>; Thu, 16 Apr 2020 04:08:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=S7CeX1goNiTzCPux7yhtQx3G78bwWhEvP9iEt87hwXc=;
-        b=qKxcdlQR1dTo+AB/xd6XeJOvWM5JtcmUcG0asrp4xQZZTFGvsNcxlAo4cAiDq2Ihh8
-         X0k/1k/NuBHLCe/ZkTNPbWdmeukTv1kibYjJN12a4aQR7nf4rPHevnprS2CYjIysd2yo
-         h/Nzh0SpL2/5qH4YhnlN+pAOGyGcFEU3y9eoIF16fKUVyUlj6hUEGv2bfwhNF27GIN1k
-         4biIi3ltBB7CxbkwkPneMzkoo8jHswOZUvamC9jQ85kgGM5mEFb9dq5W08golrvXMVE3
-         nxdG6yZnLXvmAsKyDstuD1ut4kOem/KVVBF32bAgeUHs+3ZJ+NkQqpulz5RxcOf70vkY
-         54SA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=S7CeX1goNiTzCPux7yhtQx3G78bwWhEvP9iEt87hwXc=;
-        b=lAf5LixSbEPEX05vGGUbaawzy81bwVsCtCytZk5/aOd29LgwYUuuWXIXG3XJfwABpv
-         m8O9AJ3Oc+HZb/xigGTj1PaiYn0n2tLiOjNPA7uEVGJLFVcTJS3e2fGgQyNzR+6InA9r
-         nZ3K1ZDe+qoYgoS/B23QPSaoyCK3DtY7zhRWi0xIwp6p54jAfF3Y0osqbFbWOedcxyRV
-         2mRfudsgQSNByMx22r1chKcWozHwNxYxbhcM4KGaBLd/UERbTBnbD9JK8zieEg7VuxEu
-         TUK4sitL/1AAeItxDRMdYb2r4r00urLrSlNinBZr2LiKq2F+1Ma9fqVLb+9AkenV24/y
-         TVxw==
-X-Gm-Message-State: AGi0Pubg/WGRI3yoXuftvemeVuLhudiEb0Vvd3gkik/vlF6A+CNUTMTi
-        Teh0Zx3Kaiik/oDW9i+aJCnAJZ+VmUgOWdcb5c5Scg==
-X-Google-Smtp-Source: APiQypJCs3GDOnmZgOUbr1CKEadpgsOSo5WsfLaAn86lNQu9ACAgMT5KinznWfgnuk9HrE4sBT+105fBLfjw+mUzLmc=
-X-Received: by 2002:a2e:9ad9:: with SMTP id p25mr6268989ljj.39.1587035319801;
- Thu, 16 Apr 2020 04:08:39 -0700 (PDT)
+        Thu, 16 Apr 2020 09:09:15 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03GD8Bhi030563;
+        Thu, 16 Apr 2020 13:09:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=JVRFfnFS+OgWj7u5UNa3ISrw5T9J6EGkJSXP5AV0oP4=;
+ b=kKM3XCkJV1xc4zUZKFip7MGr/drhgl31vuH/o+h5t35tdgm/gCgIaCAWFMs2H5nJEfrf
+ 5Eq+H9EQuNAVqB7LKcUcqK5e37QC/1iIiYGsKKDA4NBfOnhoO+116xwjwIHU9UEFbLTT
+ zY0z8Y425XQ4cJC2CpzsLuzafOBa49ie4JVWzzxmUixlNFQUHy9Vp/vtsOxHpL43RTQ+
+ 8Yz+lxUZ2q8bxADDxZslpeAsDjFJ8TrpKLcnlmOJry0MQZ2F8Gj9TI2E5l/Hc47IgJY/
+ J3fKyBgIw7DoBWzJN2JMeO7gA3gI7v774Tp9xsqLVkToKEQoGIJsHsKf6S1IkS/o61iW xg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 30dn95s9mp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 16 Apr 2020 13:09:03 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03GD7F8s117906;
+        Thu, 16 Apr 2020 13:09:02 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 30emen0dbx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 16 Apr 2020 13:09:02 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03GD8wWc001606;
+        Thu, 16 Apr 2020 13:08:58 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 16 Apr 2020 06:08:58 -0700
+Date:   Thu, 16 Apr 2020 16:08:47 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jason Gunthorpe <jgg@ziepe.ca>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        selvin.xavier@broadcom.com, devesh.sharma@broadcom.com,
+        dledford@redhat.com, leon@kernel.org, colin.king@canonical.com,
+        roland@purestorage.com, linux-rdma@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] RDMA/ocrdma: Fix an off-by-one issue in 'ocrdma_add_stat'
+Message-ID: <20200416130847.GP1163@kadam>
+References: <20200328073040.24429-1-christophe.jaillet@wanadoo.fr>
+ <20200414183441.GA28870@ziepe.ca>
 MIME-Version: 1.0
-References: <20200412213937.5287-1-christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20200412213937.5287-1-christophe.jaillet@wanadoo.fr>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 16 Apr 2020 13:08:28 +0200
-Message-ID: <CACRpkdZMLec8gXSJo-SpNXa3bBne2gDCRT3M_BEz21EtMXUAMw@mail.gmail.com>
-Subject: Re: [PATCH] Input: dlink-dir685-touchkeys: Fix a typo in driver name
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh@kernel.org>,
-        Linux Input <linux-input@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200414183441.GA28870@ziepe.ca>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9592 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 suspectscore=0
+ mlxlogscore=999 phishscore=0 spamscore=0 bulkscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004160093
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9592 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 clxscore=1011
+ malwarescore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
+ mlxscore=0 phishscore=0 spamscore=0 impostorscore=0 suspectscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004160093
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Apr 12, 2020 at 11:39 PM Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
+On Tue, Apr 14, 2020 at 03:34:41PM -0300, Jason Gunthorpe wrote:
+> The memcpy is still kind of silly right? What about this:
+> 
+> static int ocrdma_add_stat(char *start, char *pcur, char *name, u64 count)
+> {
+> 	size_t len = (start + OCRDMA_MAX_DBGFS_MEM) - pcur;
+> 	int cpy_len;
+> 
+> 	cpy_len = snprintf(pcur, len, "%s: %llu\n", name, count);
+> 	if (cpy_len >= len || cpy_len < 0) {
 
-> According to the file name and Kconfig, a 'k' is missing in this driver
-> name. It should be "dlink-dir685-touchkeys".
->
-> Fixes: 131b3de7016b ("Input: add D-Link DIR-685 touchkeys driver")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+The kernel version of snprintf() doesn't and will never return
+negatives.  It would cause a huge security headache if it started
+returning negatives.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> 		pr_err("%s: No space in stats buff\n", __func__);
+> 		return 0;
+> 	}
 
-Yours,
-Linus Walleij
+regards,
+dan carpenter
+

@@ -2,190 +2,155 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 648A61ABCD2
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 11:33:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4076B1ABD35
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 11:47:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2503389AbgDPJdW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Apr 2020 05:33:22 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:48084 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2440173AbgDPJdT (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Apr 2020 05:33:19 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03G9McWf035260;
-        Thu, 16 Apr 2020 09:33:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=r9/Y7OZYuJr3hxhRbamTnKz46pCML+stvFIbGX2Fz5k=;
- b=DhTOlOYZTXWI16VmHoxh/we9dJYfwM/9pRAv2zrnzTXjDpMwEjoLKdooaSL5n+2fMnP/
- 9qL9fijdvJkLKtwaClMj8tNa+lcOeD7h29fVUi7fD+BCGU5hrzbs4DJcwgtUSWm8z9ov
- tOrECfo7rACNob91dIHW7j26C7bKnrtKP0lWJeT+bhTVIqi8ooD6x0o38yCCGIQy+tZ0
- QCdOSUcoyUP9LwJbqp+QQxtT1c1oI/79Xu4U03Q0QHlyOOoCDj0jjEG3C4meGoag121y
- whnHp/YjgWiMLB/8pGVnIaWwjEUUTTp44heFfrRbs/wpi7oeNKhhZzgNYBJG1ax3lTLz Vg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 30e0aa5ubx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 16 Apr 2020 09:33:10 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03G9W6sW117861;
-        Thu, 16 Apr 2020 09:33:09 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 30dn9ev1nv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 16 Apr 2020 09:33:09 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03G9X5nu032592;
-        Thu, 16 Apr 2020 09:33:06 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 16 Apr 2020 02:33:04 -0700
-Date:   Thu, 16 Apr 2020 12:32:54 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        linux-pm@vger.kernel.org, linux-omap@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] thermal: ti-soc-thermal: remove redundant assignment to
- variable i
-Message-ID: <20200416093254.GL1163@kadam>
-References: <20200415224010.1564330-1-colin.king@canonical.com>
+        id S2504076AbgDPJr2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Apr 2020 05:47:28 -0400
+Received: from mout.web.de ([212.227.17.11]:53001 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2503681AbgDPJrX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 16 Apr 2020 05:47:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1587030407;
+        bh=W6Q51/NlWIpeKBgEWUnDBil03bI8pW/k0GwiuNlbhNU=;
+        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
+        b=TUA+uAkn0e/+fOsgBqkkIXdT+rMNx8IN4SXpK7w3krrAgC28nsnZkPLPgJsjn3XIK
+         cx42ktABJjq7fDgRYaMBqPqj17SB8mObAZfP8LeTs7pbP5WCfobMx7CD5d0ibmLbkF
+         YsWc2NA6YSjuY8FyRRT10rWi/HFHWLoGRWrF71Ak=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.3] ([2.243.109.113]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MA5v3-1jVqbm1nIH-00BHVN; Thu, 16
+ Apr 2020 11:46:47 +0200
+Subject: Re: i2c: img-scb: remove duplicate dev_err()
+From:   Markus Elfring <Markus.Elfring@web.de>
+To:     Dejin Zheng <zhengdejin5@gmail.com>, linux-i2c@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Allison Randal <allison@lohutok.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Shah Nehal-Bakulchandra <Nehal-bakulchandra.Shah@amd.com>,
+        Tang Bin <tangbin@cmss.chinamobile.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Thor Thayer <thor.thayer@linux.intel.com>,
+        Robert Richter <rrichter@marvell.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Barry Song <baohua@kernel.org>, kernel-janitors@vger.kernel.org
+References: <08564c03-3bbd-5518-1a9d-a40b8ca09f48@web.de>
+ <20200415025426.GB14300@nuc8i5> <b5db65f5-f236-9e22-98df-07629a827738@web.de>
+ <20200415152115.GA17519@nuc8i5> <668fe4da-56f2-8abe-1113-fa180f307524@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <73cc5a7c-787c-b263-7679-0f1fa58a70f8@web.de>
+Date:   Thu, 16 Apr 2020 11:46:45 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200415224010.1564330-1-colin.king@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9592 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 mlxscore=0 adultscore=0
- spamscore=0 phishscore=0 bulkscore=0 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004160065
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9592 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 clxscore=1011
- impostorscore=0 mlxlogscore=999 mlxscore=0 lowpriorityscore=0
- suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004160064
+In-Reply-To: <668fe4da-56f2-8abe-1113-fa180f307524@web.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:AiYgFY9UTSVKOEH/5tKx1okowyBy10eZO96km7yW3j3VhiI7TBT
+ z2MpcOfq278PqIDVlV8nHwYEn1WkholtN/7lPl9jeOrshsqBjP+IsIE8SeG5uUZnaATD7BV
+ 5F03JJWZzHWJHK6/i0wb2F7NOA7t7RxUhg2OExSrSiT4G1w3DWl4V5y2cuwD7w96oz4ymx5
+ Kic5NB6DDd7miIsd84spA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:dUphwKjnKnc=:C3s07ABfGQ/id+upkfhxfG
+ fSuDnBJZoHpZbg3/s5PpN1NS7+G/uDzN7h1YZm1KcjYd5I0A/Vy/h4PDo+19eBNaHydABsx8o
+ qKFiTFScV7OhCErJ53zEd0F8ZW3i/C+IGSyI39HyakqlOZzwFUNRSKi9Pk9lnA7hKJ8Ei/h+L
+ r1wunarL0KiRKOLeYns75LDpOXc3SzT4Il0aaDrZBZikVT/U/q4l0BQvgTmqrY0K3WXdmzpz+
+ W9u0GEP8vXZd3Hv62PTBEOJ2L3du/YG+MMrhTIYsWLZ8xC8g43B2Etorz4SjczCGuw2TydKSJ
+ TEy4KJdGplxDtIC191d7zDiNz/Y+SJt4YfMHmUfBU5HrZFMf7TSbfEKZ4wcHhN2+3zN/1QhIF
+ oJepdF4Zkldkrs5Rjebi/zkrI2jMbH8CWqP4Qkzg5BFGQM28QRqlPRq+2vkPf9EmxT3oqdjJz
+ oAMYMTpSiDRFDJJtOoz8dMvVoqhc/AovrAvoKbhKf18o2VHQAMnudnb/x/4KL7dSJjSaG+ZqB
+ xBJHPKyBlqXMoecmN5pfYxF70gr/JuBTHi8o9938S0QPGcJJNGRNNX6b/g4n5uN4SoJQvJsxj
+ wIOXhg/VChjdnFGHn+4Pxnrgju1QuZu+r8Aq03YG49Yo8DzBD2JTDRiusGCdx5om9gDro80m0
+ zZxZU6BGlzXlATVcq6w0njxo0YBXiT0M5Fll6RqWOxRv2hOI0aVwsKkjmbJVfu1Toi7Zzj4Ws
+ iavUw4LNJzwcSls/QwyzgLfIy1dRIf6LdJJ+zrq0BLUlxgfVGCk/3hXLx/d87vtBJPGsr0/z7
+ Ov4schpOURWmTn+UTViC3JbyLcTdz9HL1CZJ6u93N+eYpZHAARdzz0IYtMDo58wjZsZvqohx2
+ sK8CbOk0+38RC9siiDQmPU/F2O9j0ecFLoic8L+FzrJRUabpSw07N9VE7yuiLzzW7h1y1qbdl
+ 8BDKnCLdCt5xnvC6U/4WQH3gD8OmJF1CUtq+TTldcOhSrXj2vnZzKuWHsToqAEFYdCZ+G1kJO
+ eJI+QvE+W/XqfwgluGmoOkhLGUX5ldmKgX6CLe5dbZ8IawJDff5pFl8WXkpxT/eZXkoGcu7Pc
+ DX0K2nek3ltsWSP9duQ3a4vbYFB6Vy/1K5FZXd9NLKDHUpyZxqAnHScrIUhhPLbR9qzqa3fP8
+ S9JHwgIyqL+J55/UfSI50l6JB8pE7cNqC8+mxFk3NnopJHiGHnFN35ebeS7rKgNp85lZ5jkmG
+ gtTF0wZ9Rlqj9Xn2L
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Apr 15, 2020 at 11:40:10PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable i is being assigned with a value that is never read,
-> the assignment is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/thermal/ti-soc-thermal/ti-bandgap.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.c b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-> index ab19ceff6e2a..abaf629038c3 100644
-> --- a/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-> +++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-> @@ -1003,7 +1003,6 @@ int ti_bandgap_probe(struct platform_device *pdev)
->  		ret = ti_bandgap_talert_init(bgp, pdev);
->  		if (ret) {
->  			dev_err(&pdev->dev, "failed to initialize Talert IRQ\n");
-> -			i = bgp->conf->sensor_count;
->  			goto disable_clk;
->  		}
->  	}
+>>> Would you like to take another look at corresponding change possibilit=
+ies?
+>>>
+>> yes, I want to do it and thanks for your info.
 
-This isn't the right fix.  The goto is wrong.
-
-The "i" variable comes from the iterator of the previous loop.  When
-you're unwinding inside a loop then first undo the partial iteration
-before doing a goto.
-
-   979          /* Every thing is good? Then expose the sensors */
-   980          for (i = 0; i < bgp->conf->sensor_count; i++) {
-   981                  char *domain;
-   982  
-   983                  if (bgp->conf->sensors[i].register_cooling) {
-   984                          ret = bgp->conf->sensors[i].register_cooling(bgp, i);
-   985                          if (ret)
-   986                                  goto remove_sensors;
-   987                  }
-   988  
-   989                  if (bgp->conf->expose_sensor) {
-   990                          domain = bgp->conf->sensors[i].domain;
-   991                          ret = bgp->conf->expose_sensor(bgp, i, domain);
-   992                          if (ret)
-   993                                  goto remove_last_cooling;
-
-So here we should do:
-
-				if (ret) {
-					if (bgp->conf->sensors[i].unregister_cooling)
-						bgp->conf->sensors[i].unregister_cooling(bgp, i);
-					goto remove_sensors;
-				}
-The line lengths are long so it would be cleaner to say:
+How do you think about to improve the clarification around potentially
+=E2=80=9Codd fixes=E2=80=9D (because of collateral evolution)?
 
 
-			struct ti_temp_sensor *sensor = &bgp->conf->sensors[i];
+I noticed your update suggestion =E2=80=9Ci2c: busses: convert to devm_pla=
+tform_ioremap_resource=E2=80=9D.
+https://lore.kernel.org/linux-i2c/20200409135224.7426-1-zhengdejin5@gmail.=
+com/
+https://lore.kernel.org/patchwork/patch/1222122/
+https://lkml.org/lkml/2020/4/9/431
 
-at the start of the loop.
+It seems that you got encouraged to contribute changes according to anothe=
+r
+transformation approach by a single patch for a directory hierarchy.
+How likely is it that such adjustments touch source code places
+where related error messages would be found for further software
+development considerations?
+Would you like to wait until the integration of this update succeeded?
 
-			if (ret) {
-				if (sensor->unregister_cooling)
-					sensor->unregister_cooling(bgp, i);
-				goto remove_sensors;
-			}
+Will it be interesting in the meantime to become more familiar with
+applications around scripts for the semantic patch language?
+Can the Coccinelle software make the discussed transformations more conven=
+ient
+also for your needs?
 
-
-   994                  }
-   995          }
-   996  
-   997          /*
-   998           * Enable the Interrupts once everything is set. Otherwise irq handler
-   999           * might be called as soon as it is enabled where as rest of framework
-  1000           * is still getting initialised.
-  1001           */
-  1002          if (TI_BANDGAP_HAS(bgp, TALERT)) {
-  1003                  ret = ti_bandgap_talert_init(bgp, pdev);
-  1004                  if (ret) {
-  1005                          dev_err(&pdev->dev, "failed to initialize Talert IRQ\n");
-  1006                          i = bgp->conf->sensor_count;
-  1007                          goto disable_clk;
-
-This should be "goto remove_sensors;" as well.  The i assignment can
-be deleted though because it already equals bgp->conf->sensor_count.
-
-  1008                  }
-  1009          }
-  1010  
-  1011          return 0;
-  1012  
-  1013  remove_last_cooling:
-  1014          if (bgp->conf->sensors[i].unregister_cooling)
-  1015                  bgp->conf->sensors[i].unregister_cooling(bgp, i);
-
-Delete this partial unwind because we moved it before the goto.  Say
-we add some more error conditions at the end of the function, then now
-we can add more labels and it's not complicated with this partial
-unwind.
-
-  1016  remove_sensors:
-  1017          for (i--; i >= 0; i--) {
-
-
-It's slightly nicer to write: "while (--i >= 0) {"
-
-  1018                  if (bgp->conf->sensors[i].unregister_cooling)
-  1019                          bgp->conf->sensors[i].unregister_cooling(bgp, i);
-  1020                  if (bgp->conf->remove_sensor)
-  1021                          bgp->conf->remove_sensor(bgp, i);
-  1022          }
-
-regards,
-dan carpenter
+Regards,
+Markus

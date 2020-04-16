@@ -2,58 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97B301ABE9E
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 12:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A29E1ABF64
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 13:35:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2505813AbgDPK6o (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Apr 2020 06:58:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59208 "EHLO
+        id S2506043AbgDPLes (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Apr 2020 07:34:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2505552AbgDPKtw (ORCPT
+        with ESMTP id S2506033AbgDPLEr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Apr 2020 06:49:52 -0400
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5706FC061BD3
-        for <kernel-janitors@vger.kernel.org>; Thu, 16 Apr 2020 03:42:47 -0700 (PDT)
-Received: by mail-lf1-x144.google.com with SMTP id k28so5193922lfe.10
-        for <kernel-janitors@vger.kernel.org>; Thu, 16 Apr 2020 03:42:47 -0700 (PDT)
+        Thu, 16 Apr 2020 07:04:47 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47A4CC03C1AE
+        for <kernel-janitors@vger.kernel.org>; Thu, 16 Apr 2020 03:53:50 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id q19so7264976ljp.9
+        for <kernel-janitors@vger.kernel.org>; Thu, 16 Apr 2020 03:53:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=5sBt7Y0J5CJLOpgj9W3lTxZluw2lpZwvRsvq3wJNOuc=;
-        b=IYkFzbchsaUv1RvEcax38OuhWWfAP14+YekZ3ZiXrKBrNiiDHhWq61k9RUpTO7Add0
-         XOD8SWeKL/BFKPnRpIsWwZLrwLiP9aEJzxQb161VEZZtIxZtGhV1FUUIaw9S6/ifI5DB
-         koWMjQ8jIlKvnKjjTKUQmy5Gk2nNESpoxNBLfDMf+oLC7yNzjg4OESiRanDIkQ7l7DpA
-         nRdwRBiKSciWG9shSzskFmTl/yxlJ5L/gCjnK7xdpDkGmVNQzOWzH5yT94z54Z+IfhaM
-         n+PC5dNL/EkM29CLXGGxiV2DQ9X0lUNWdNmQQqorqGhtdvQirkzH5PSC3Y7KO733kULB
-         anSA==
+        bh=QgaYHDB+V/P8sJggA7Iblc7jogxqawaSl+yzOQ0/Rn4=;
+        b=jU0ibB7dsoTTJYnbq7KJWD85iq65azWfsvxPzehE8nANACAg+Xlc06OrsGr3JWXvou
+         +BdxX7QH+4uNZZbRVtz1Sj5e+iyJNk2NR2lC4/RCe86BW3cGHIDvCNTX4J/dPtYe04lf
+         6G4J+hPkIZtAxrYdOwtV3czWB9x44QZehux9ei4JpD0kcovDb37m9XVWZZTzjLFfwNz1
+         pXypwEZ1sJqzrhLWKG+b6tys3DKV0kCeJ+YEnh9bqHbsd74k+JfGJVnkqjpGTBVdXuYF
+         n/RjND8rmIlYPVAQhR1gEvwX1ESXbgBH96blAk4ykcIl0nkMrwLci8W9mA/QX0ri65aj
+         hw8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=5sBt7Y0J5CJLOpgj9W3lTxZluw2lpZwvRsvq3wJNOuc=;
-        b=D6m0Oov1OlIVWPNhMiVsUUJYEYx9/V+XgE7kPt4gUKH/tkRLvH9uVg05GAhYCRp4FE
-         wiggO4lq8ye6mGovMFnmwdetAPIHIk9TTz7zTRaReWOFikJOB72MLUHq+R1r50m24Wyc
-         fYgN7ihaVLLfDwxlXu/sY1/7QosvtJjh/GQqJAFUAHydzV9C067FIVWp1mazeo1aPLdI
-         L8tYoRjQPTQ+vSecTi7p7OV0D7qkS4ypvcLM/3o+Tut7lS3dI7MiSeiXYqzRUS+kQRzi
-         s033OibklfhnDoVFt3KmSdhJEJ8zSNxidmGYo2NbWXRDt8q92nfVPMc3Klw/0lCe5zTY
-         UDNg==
-X-Gm-Message-State: AGi0PuaZPf0hROKCaE2Se1yuwo27sPNqbtPky9y6yza4fZF+Mh0778PG
-        XcAsNyofQqaEP/+fGDjlJ53xkgInQbD3QqTsIfmI2Q==
-X-Google-Smtp-Source: APiQypLr7z8VgK4rNGT1FQMVrt2BpOa71bVF8AIT2YamcngQbMd+JeeHa8MdEkh8jcjpi/+CBHMRZSb3e/miRYmZ6KU=
-X-Received: by 2002:a19:700b:: with SMTP id h11mr5802769lfc.89.1587033765824;
- Thu, 16 Apr 2020 03:42:45 -0700 (PDT)
+        bh=QgaYHDB+V/P8sJggA7Iblc7jogxqawaSl+yzOQ0/Rn4=;
+        b=G+K5L6UoGlNCc2BhHo5DDyiJdfhpKbpOTkXQDN7wpDAV3SU9VG59kD/Lc8GFAKPqHr
+         oIfcDOObbvFg2NdXcc8u+3B/S1F0iozl4sxKAZPmThUYVYvvjUkiOaYZyap0AeqEm7RZ
+         Y9l0YFiQyrbtY+nbBxJblQU9cGnzNVLT8i20vRJyq1sfJvFaT+lkiNbRN0p8bVt6PYUf
+         J1urvb3UwTECCo4tVti0AOwK9tP5g8Bia1yJ/ZpWBl6EvuciMYZAd62KhSppEPqLvNWW
+         jT2WTznl92KQSSTGeEDqVFVNKvIeyMsFgIzYFJz6bqJzsiYMzSoaRWLVjCrOEN6V4YSU
+         iueg==
+X-Gm-Message-State: AGi0PubqbxPcVeq2Li8YH7byxox86Yg7mlI1HWfzCla1m3ImRHGx3ZDP
+        Ilul36d6+1Cx9ZRf3WEgiQ35RcU7lH2TcZ1wdrV5V2Pn
+X-Google-Smtp-Source: APiQypK6nkSTANaZW+1a43XoogM3H6sNnq4kMI4xqLyVIWS/PF6q8zPv4riQVVKMftU1hlwobUdBnlrK6GlVZzGsIdU=
+X-Received: by 2002:a2e:5048:: with SMTP id v8mr5601989ljd.99.1587034428690;
+ Thu, 16 Apr 2020 03:53:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200408070832.137037-1-yuehaibing@huawei.com>
-In-Reply-To: <20200408070832.137037-1-yuehaibing@huawei.com>
+References: <20200408070504.134847-1-yuehaibing@huawei.com>
+In-Reply-To: <20200408070504.134847-1-yuehaibing@huawei.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 16 Apr 2020 12:42:34 +0200
-Message-ID: <CACRpkdYjpw47q2NDZH1XNibyad8qg1D8bSS-AHf4AJatYEQ8bw@mail.gmail.com>
-Subject: Re: [PATCH -next] gpio: remove unused including <linux/version.h>
+Date:   Thu, 16 Apr 2020 12:53:37 +0200
+Message-ID: <CACRpkdYUX5EuRQMj_c+0wJa2pP13MF1jd8T8AjpifeR22kc_pA@mail.gmail.com>
+Subject: Re: [PATCH -next] pinctrl: qcom: Remove duplicated include from pinctrl-msm.c
 To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Asmaa Mnebhi <Asmaa@mellanox.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Ajay Kishore <akisho@codeaurora.org>,
+        MSM <linux-arm-msm@vger.kernel.org>,
         "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
@@ -62,13 +64,13 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Apr 8, 2020 at 9:06 AM YueHaibing <yuehaibing@huawei.com> wrote:
+On Wed, Apr 8, 2020 at 9:02 AM YueHaibing <yuehaibing@huawei.com> wrote:
 
-> Remove including <linux/version.h> that don't need it.
+> Remove duplicated include.
 >
 > Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-Patch applied with subject change to indicate the driver.
+Patch applied.
 
 Yours,
 Linus Walleij

@@ -2,60 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76E0E1AB8AE
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 08:52:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 051001AB8C6
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 08:55:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437151AbgDPGwq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Apr 2020 02:52:46 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:41484 "EHLO fornost.hmeau.com"
+        id S2437681AbgDPGyK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Apr 2020 02:54:10 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:41546 "EHLO fornost.hmeau.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2436930AbgDPGwV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Apr 2020 02:52:21 -0400
+        id S2437468AbgDPGyH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 16 Apr 2020 02:54:07 -0400
 Received: from gwarestrin.me.apana.org.au ([192.168.0.7] helo=gwarestrin.arnor.me.apana.org.au)
         by fornost.hmeau.com with smtp (Exim 4.89 #2 (Debian))
-        id 1jOyNU-0005Ks-25; Thu, 16 Apr 2020 16:52:01 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Thu, 16 Apr 2020 16:51:59 +1000
-Date:   Thu, 16 Apr 2020 16:51:59 +1000
+        id 1jOyP5-0005SP-QY; Thu, 16 Apr 2020 16:53:40 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Thu, 16 Apr 2020 16:53:39 +1000
+Date:   Thu, 16 Apr 2020 16:53:39 +1000
 From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Chen-Yu Tsai <wens@csie.org>,
-        Colin Ian King <colin.king@canonical.com>,
-        Corentin Labbe <clabbe.montjoie@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Maxime Ripard <mripard@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Tang Bin <tangbin@cmss.chinamobile.com>
-Subject: Re: [PATCH] crypto: sun8i-ss - Delete an error message in
- sun8i_ss_probe()
-Message-ID: <20200416065159.GI7901@gondor.apana.org.au>
-References: <c7e1193f-7d8b-7da3-a2a8-e92ca0fd83b2@web.de>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     bbrezillon@kernel.org, arno@natisbad.org, schalla@marvell.com,
+        davem@davemloft.net, lbartosik@marvell.com,
+        colin.king@canonical.com, linux-crypto@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH V2] crypto: marvell/octeontx - Add missing '\n' in log
+ messages
+Message-ID: <20200416065339.GK7901@gondor.apana.org.au>
+References: <20200411120633.22150-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c7e1193f-7d8b-7da3-a2a8-e92ca0fd83b2@web.de>
+In-Reply-To: <20200411120633.22150-1-christophe.jaillet@wanadoo.fr>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Apr 04, 2020 at 05:45:26PM +0200, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Sat, 4 Apr 2020 17:34:53 +0200
+On Sat, Apr 11, 2020 at 02:06:33PM +0200, Christophe JAILLET wrote:
+> Message logged by 'dev_xxx()' or 'pr_xxx()' should end with a '\n'.
 > 
-> The function “platform_get_irq” can log an error already.
-> Thus omit a redundant message for the exception handling in the
-> calling function.
+> While at it, I've introduced a few pr_cont that looked logical to me.
 > 
-> This issue was detected by using the Coccinelle software.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> Fixes: 10b4f09491bf ("crypto: marvell - add the Virtual Function driver for CPT")
+> Fixes: d9110b0b01ff ("crypto: marvell - add support for OCTEON TX CPT engine")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > ---
->  drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+> V2: remove a pr_cont after a pr_debug
+>     avoid repeating 'engine_group' in a message
+> ---
+>  .../crypto/marvell/octeontx/otx_cptpf_main.c  |  4 +-
+>  .../crypto/marvell/octeontx/otx_cptpf_mbox.c  | 12 +--
+>  .../crypto/marvell/octeontx/otx_cptpf_ucode.c | 95 ++++++++++---------
+>  .../crypto/marvell/octeontx/otx_cptvf_algs.c  |  6 +-
+>  .../crypto/marvell/octeontx/otx_cptvf_main.c  | 12 +--
+>  .../marvell/octeontx/otx_cptvf_reqmgr.c       | 10 +-
+>  6 files changed, 70 insertions(+), 69 deletions(-)
 
 Patch applied.  Thanks.
 -- 

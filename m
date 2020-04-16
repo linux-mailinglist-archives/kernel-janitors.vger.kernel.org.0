@@ -2,95 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B54A51ACFEC
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 20:48:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB9E61AD06E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Apr 2020 21:37:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730098AbgDPSr6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Apr 2020 14:47:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49330 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728182AbgDPSr5 (ORCPT
+        id S1729832AbgDPTg1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Apr 2020 15:36:27 -0400
+Received: from smtprelay0152.hostedemail.com ([216.40.44.152]:39730 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725894AbgDPTg1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Apr 2020 14:47:57 -0400
-Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com [IPv6:2607:f8b0:4864:20::f43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18885C061A0C
-        for <kernel-janitors@vger.kernel.org>; Thu, 16 Apr 2020 11:47:56 -0700 (PDT)
-Received: by mail-qv1-xf43.google.com with SMTP id d6so1090749qvy.12
-        for <kernel-janitors@vger.kernel.org>; Thu, 16 Apr 2020 11:47:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=En8a9OfgFteW3m95ox2NXgQt0GaK2x1PYnYvAasaCWs=;
-        b=MuXkSZQiiVR1PEk7+YTmlEUZCK3yGEHFaQqPh4S5joJgqa3VjvuC0DWIz6x4Rt9Ypd
-         Cw4VLEhbCS4MbfQXPkvt0yAUibmK3z54SmoKM7bAR6xmm0Neyj6RvQTq3GqTrs6XRnXT
-         HE+Ffi67KVZExUAm2dZQJemGW2fdTd2kzl8vPSz7QRcnaowoj5XVYuUj2cKUZ3AyowPa
-         ie5A6Oksfy/1bByzcPxLjyDKCJHPOH6ihIPOsPN2ZNSJKvSRBgdv8SfjNXbGCPdk4pUB
-         k15sY3dgRtQw23US1RIFflpCYm2SGEEeQa4VPqzr6Yb+3sm73/hDUESLbX04TYC8tXI3
-         yK8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=En8a9OfgFteW3m95ox2NXgQt0GaK2x1PYnYvAasaCWs=;
-        b=aQyNuw1ILciddvCjMlI74MHpHxDxrOlkQjaagJBlULIuhNzy29zgFNVIwZgOB91sg8
-         nq7Q8cD4TWZgcJY78w1fvMxpy2uw7gOeCjGcDJFqd6q4c9VUBgIeuga66LR52C2LEcJn
-         ZHP39Q8S6S+zL4JPCcLrS0mu1KjE7++G/5AdTwMF+lkpouRDlUoiu/pj/ob6zTwKdevZ
-         2Yo5b4k3JW5tud0HaOnV37y5M+69DBcweaDVscyCscvaGJuZCCCKYU1zAmSh6AN/I8PZ
-         NBMqq5/oTm+KyouPRcKwx7noejNJUM4wKGmhGggSBTkqVDqlg3j9hO1nma1YF96OuVBo
-         LfBw==
-X-Gm-Message-State: AGi0PuYKuPBfMPkOUEuR9EYJG75AmImbNF2GrHsoQvUvxY4M3o6F453J
-        Iw9j1J6B8r/alZeGHfWWilgtRg==
-X-Google-Smtp-Source: APiQypLvuE2d6rubB0KnxOEgCaaDxfB/k5+UjRfHvtWXX0MOWfVSGEEw7sQa8qPkBXmtVzJHhKKb5g==
-X-Received: by 2002:a05:6214:17ce:: with SMTP id cu14mr11534107qvb.51.1587062875176;
-        Thu, 16 Apr 2020 11:47:55 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.57.212])
-        by smtp.gmail.com with ESMTPSA id h3sm1005577qkf.15.2020.04.16.11.47.54
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 16 Apr 2020 11:47:54 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1jP9YI-0006rv-2e; Thu, 16 Apr 2020 15:47:54 -0300
-Date:   Thu, 16 Apr 2020 15:47:54 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        selvin.xavier@broadcom.com, devesh.sharma@broadcom.com,
-        dledford@redhat.com, leon@kernel.org, colin.king@canonical.com,
-        roland@purestorage.com, linux-rdma@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] RDMA/ocrdma: Fix an off-by-one issue in 'ocrdma_add_stat'
-Message-ID: <20200416184754.GZ5100@ziepe.ca>
-References: <20200328073040.24429-1-christophe.jaillet@wanadoo.fr>
- <20200414183441.GA28870@ziepe.ca>
- <20200416130847.GP1163@kadam>
+        Thu, 16 Apr 2020 15:36:27 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay01.hostedemail.com (Postfix) with ESMTP id 18888100E7B47;
+        Thu, 16 Apr 2020 19:36:26 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1538:1568:1593:1594:1711:1714:1730:1747:1777:1792:2393:2559:2562:2691:2693:2828:3138:3139:3140:3141:3142:3622:3865:3867:3870:3871:3872:3873:4321:5007:6691:6742:7903:9545:10004:10400:10848:11026:11232:11658:11914:12297:12740:12760:12895:13069:13095:13161:13229:13311:13357:13439:14659:14721:21080:21433:21451:21627:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: dress88_71e6f49a6bc61
+X-Filterd-Recvd-Size: 2200
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf12.hostedemail.com (Postfix) with ESMTPA;
+        Thu, 16 Apr 2020 19:36:22 +0000 (UTC)
+Message-ID: <7713a931e4475294de85b74aca298dde8be4242d.camel@perches.com>
+Subject: Re: [PATCH v2] i2c: busses: remove duplicate dev_err()
+From:   Joe Perches <joe@perches.com>
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        Dejin Zheng <zhengdejin5@gmail.com>, linux-i2c@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Thor Thayer <thor.thayer@linux.intel.com>,
+        Tang Bin <tangbin@cmss.chinamobile.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Patrick Williams <alpawi@amazon.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Krzysztof Adamski <krzysztof.adamski@nokia.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Barry Song <baohua@kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Dong Aisheng <aisheng.dong@nxp.com>,
+        George Cherian <gcherian@marvell.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Neil Armstrong <narmstrong@baylibre.com>
+Date:   Thu, 16 Apr 2020 12:34:10 -0700
+In-Reply-To: <6ca3cd57-de73-5327-5773-e08bf12c4a85@web.de>
+References: <20200416152345.23077-1-zhengdejin5@gmail.com>
+         <6ca3cd57-de73-5327-5773-e08bf12c4a85@web.de>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200416130847.GP1163@kadam>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Apr 16, 2020 at 04:08:47PM +0300, Dan Carpenter wrote:
-> On Tue, Apr 14, 2020 at 03:34:41PM -0300, Jason Gunthorpe wrote:
-> > The memcpy is still kind of silly right? What about this:
-> > 
-> > static int ocrdma_add_stat(char *start, char *pcur, char *name, u64 count)
-> > {
-> > 	size_t len = (start + OCRDMA_MAX_DBGFS_MEM) - pcur;
-> > 	int cpy_len;
-> > 
-> > 	cpy_len = snprintf(pcur, len, "%s: %llu\n", name, count);
-> > 	if (cpy_len >= len || cpy_len < 0) {
+On Thu, 2020-04-16 at 20:22 +0200, Markus Elfring wrote:
+> > it will print an error message by itself when platform_get_irq()
+> > goes wrong. so don't need dev_err() in here again.
 > 
-> The kernel version of snprintf() doesn't and will never return
-> negatives.  It would cause a huge security headache if it started
-> returning negatives.
+> I suggest to improve the commit message considerably.
 
-Begs the question why it returns an int then :)
+I suggest you ignore Markus' suggestion.
 
-Thanks,
-Jason
+The commit message is OK.
+
+The subject _could_ have included "platform_get_irq" something like
+
+Subject: [PATCH v2] i2c: busses: Remove platform_get_irq()'s duplicated dev_err()
+
+but I believe it's not important enough to redo.
+
+

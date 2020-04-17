@@ -2,210 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C1A61ADACF
-	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Apr 2020 12:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FC321ADAF1
+	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Apr 2020 12:24:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728440AbgDQKOh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 17 Apr 2020 06:14:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52114 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728830AbgDQKOg (ORCPT
+        id S1729255AbgDQKYf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 17 Apr 2020 06:24:35 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:33730 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726207AbgDQKYf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 17 Apr 2020 06:14:36 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCBD7C061A0C
-        for <kernel-janitors@vger.kernel.org>; Fri, 17 Apr 2020 03:14:35 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id a23so819490plm.1
-        for <kernel-janitors@vger.kernel.org>; Fri, 17 Apr 2020 03:14:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=WrBQQciI2GN9qUSLUZEoGce/BUsxLeXSZswsBjv4T1g=;
-        b=Rm7icIFHoqGjB4IXzM1pxwGbDFFjJDSqhBG8eH9/ssfDvokGojLRoDGcLTE3BMIvBP
-         dtDYiLkzXMmR+TX9uIQMHDpso0SjLN/eUjFaiYt7ux2pKq7qCsbtsU1uyLTYFAgeoZii
-         nt8L19tHKp6XYZLlJIK7HTbmcTBvrSuQiE3HdtZTWbJ2NUa6oW9pXczwcmjGlleMdwn5
-         4GpnddbuTMwriD+a0d/A+II/1RTcRTm6t/W71+T18CMUjD8O4QbhcW2VX8QLvhPu+NSY
-         5pOh2kXTK6dK9JLiPaW8h2rJwfCwU9Ti9FglzXtSJzq7FP1lSxkR3kbnP3zUMP0wao0R
-         ZD3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=WrBQQciI2GN9qUSLUZEoGce/BUsxLeXSZswsBjv4T1g=;
-        b=cR4p/4PilJIz6Y/o6lq1UbvTTuUv2CIjbKJhIgj0s8Jut10KejvUS59H+HlquK1NfF
-         jQQ45XrOLoyl7CDGR84p2ZiDW54/O5ifC3dgTJCtF5wJ8Q+/MJuypiA3cht/4zyZ2fTO
-         eoelVAM5nX76uIcyVgPl8O78GsckHVVPyNkbqoJYSlhvF/93u8vDt2o4LBwWM6JGIo+5
-         ZPkwwTLaXamOxbZilrb95+uKboky5M2iWN4wsiQfKe6g+EYUCo59xkvyHgcMclSEkOHu
-         qXHRA6SWm4CJGZe6dDyhcGrf7XngJmhQbeJ2f2SGOdMoT95ymmyW/v/8EJEnUhvW3D5F
-         K+JA==
-X-Gm-Message-State: AGi0PuZdiiX9R7XUd0aaPfnOmJvdwCMhp2sJ7N/XT2+8+7vOBman58AW
-        EzUNEdwljWcLlTXMoY5QNdH4
-X-Google-Smtp-Source: APiQypIXsxMBqT2YvpBF1SnrSY9KhyVbOFf85vY5Io0iSiLghKlrHbByDEni7GDya5pYSS8WhE1fnQ==
-X-Received: by 2002:a17:90a:1503:: with SMTP id l3mr3394505pja.87.1587118475126;
-        Fri, 17 Apr 2020 03:14:35 -0700 (PDT)
-Received: from Mani-XPS-13-9360 ([2409:4072:630d:b86f:218c:c3f8:1490:7b19])
-        by smtp.gmail.com with ESMTPSA id d22sm17701543pgh.11.2020.04.17.03.14.31
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 17 Apr 2020 03:14:34 -0700 (PDT)
-Date:   Fri, 17 Apr 2020 15:44:28 +0530
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     Hemant Kumar <hemantk@codeaurora.org>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Fri, 17 Apr 2020 06:24:35 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03HAOIUK144895;
+        Fri, 17 Apr 2020 10:24:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=MLO25+uu0p1lJymH6NFPaGxDp70jIn+676ep69GijtY=;
+ b=ML+VRCiAPW6O4RJ9+mw3z4cV+yo+IkuCjjm2nmF7rW3uBvSDQFmzzAWhfCt0yrcgNHiR
+ xp/40Qa78iZECt3yOT/UYOxFzwOnfjXFv3lAjANPhZKGgyuEpeJ1hU18J4c5S7PSwq+Q
+ VggjoB1hfzqV8/8PnmzB85psTYVeshzsiFAqpDPlEnAzfRWfhDbOYCzzIWAJpyOzA+NO
+ JHzIiRvmaNXIbjISABgikDIcU9GgXc5p1QyOsuUaACf0FmaDX5tEuJVOGx2wpuwstjlP
+ ogvciNFi8xR78R+6uFecobRrAKI8S6e9xzeBxYu4AgHDCNpsUFmBQlIJ/90P86oPo2Ps kQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 30emejp5ex-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 17 Apr 2020 10:24:31 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03HAMBEi131502;
+        Fri, 17 Apr 2020 10:24:31 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 30dn9jjn8p-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 17 Apr 2020 10:24:30 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 03HAOT7W011924;
+        Fri, 17 Apr 2020 10:24:29 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 17 Apr 2020 03:24:28 -0700
+Date:   Fri, 17 Apr 2020 13:24:20 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc:     Hemant Kumar <hemantk@codeaurora.org>,
         linux-arm-msm@vger.kernel.org, kernel-janitors@vger.kernel.org
 Subject: Re: [bug report] bus: mhi: core: Add support for data transfer
-Message-ID: <20200417101428.GA10295@Mani-XPS-13-9360>
+Message-ID: <20200417102420.GR1163@kadam>
 References: <20200407135559.GA109574@mwanda>
  <20200407143304.GH2442@Mani-XPS-13-9360>
  <d30c7648-b657-d8b2-ba64-71f1178b4a68@codeaurora.org>
+ <20200417101428.GA10295@Mani-XPS-13-9360>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d30c7648-b657-d8b2-ba64-71f1178b4a68@codeaurora.org>
+In-Reply-To: <20200417101428.GA10295@Mani-XPS-13-9360>
 User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9593 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 mlxscore=0 adultscore=0
+ spamscore=0 phishscore=0 bulkscore=0 suspectscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004170082
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9593 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 impostorscore=0
+ mlxscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0 mlxlogscore=999
+ bulkscore=0 adultscore=0 phishscore=0 clxscore=1015 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004170082
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Hemant,
-
-On Thu, Apr 16, 2020 at 08:37:16PM -0700, Hemant Kumar wrote:
+On Fri, Apr 17, 2020 at 03:44:28PM +0530, Manivannan Sadhasivam wrote:
+> Hi Hemant,
 > 
-> On 4/7/20 7:33 AM, Manivannan Sadhasivam wrote:
-> > Hi Dan,
+> On Thu, Apr 16, 2020 at 08:37:16PM -0700, Hemant Kumar wrote:
 > > 
-> > On Tue, Apr 07, 2020 at 04:55:59PM +0300, Dan Carpenter wrote:
-> > > Hello Manivannan Sadhasivam,
+> > On 4/7/20 7:33 AM, Manivannan Sadhasivam wrote:
+> > > Hi Dan,
 > > > 
-> > > The patch 189ff97cca53: "bus: mhi: core: Add support for data
-> > > transfer" from Feb 20, 2020, leads to the following static checker
-> > > warning:
-> > > 
-> > > 	drivers/bus/mhi/core/main.c:1153 mhi_queue_buf()
-> > > 	error: double locked 'mhi_chan->lock' (orig line 1110)
-> > > 
-> > > drivers/bus/mhi/core/main.c
-> > >    1142          }
-> > >    1143
-> > >    1144          /* Toggle wake to exit out of M2 */
-> > >    1145          mhi_cntrl->wake_toggle(mhi_cntrl);
-> > >    1146
-> > >    1147          if (mhi_chan->dir == DMA_TO_DEVICE)
-> > >    1148                  atomic_inc(&mhi_cntrl->pending_pkts);
-> > >    1149
-> > >    1150          if (likely(MHI_DB_ACCESS_VALID(mhi_cntrl))) {
-> > >    1151                  unsigned long flags;
-> > >    1152
-> > >    1153                  read_lock_irqsave(&mhi_chan->lock, flags);
-> 
-> parse_xfer_event is taking read lock : read_lock_bh(&mhi_chan->lock); first
-> and later
-> 
-> mhi_queue_buf takes read lock: read_lock_irqsave(&mhi_chan->lock, flags);
-> 
-> Both are read locks which are recursive, is this problematic ?
-> 
-
-read_locks are recursive but I wanted to make the static checker happy. But
-looking into it further (and after having a chat with Arnd), we might need to
-refactor the locking here.
-
-Since 'chan->lock' only prevents 'mhi_chan->ch_state', how about doing something
-like below?
-
-diff --git a/drivers/bus/mhi/core/main.c b/drivers/bus/mhi/core/main.c
-index 3e9aa3b2da77..904f9be7a142 100644
---- a/drivers/bus/mhi/core/main.c
-+++ b/drivers/bus/mhi/core/main.c
-@@ -474,19 +474,12 @@ static int parse_xfer_event(struct mhi_controller *mhi_cntrl,
-        result.transaction_status = (ev_code == MHI_EV_CC_OVERFLOW) ?
-                -EOVERFLOW : 0;
- 
--       /*
--        * If it's a DB Event then we need to grab the lock
--        * with preemption disabled and as a write because we
--        * have to update db register and there are chances that
--        * another thread could be doing the same.
--        */
--       if (ev_code >= MHI_EV_CC_OOB)
--               write_lock_irqsave(&mhi_chan->lock, flags);
--       else
--               read_lock_bh(&mhi_chan->lock);
--
--       if (mhi_chan->ch_state != MHI_CH_STATE_ENABLED)
--               goto end_process_tx_event;
-+       read_lock_bh(&mhi_chan->lock);
-+       if (mhi_chan->ch_state != MHI_CH_STATE_ENABLED) {
-+               read_unlock_bh(&mhi_chan->lock);
-+               return 0;
-+       }
-+       read_unlock_bh(&mhi_chan->lock);
- 
-        switch (ev_code) {
-        case MHI_EV_CC_OVERFLOW:
-@@ -559,10 +552,12 @@ static int parse_xfer_event(struct mhi_controller *mhi_cntrl,
- 
-                mhi_chan->db_cfg.db_mode = 1;
-                read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
-+               write_lock_irqsave(&mhi_chan->lock, flags);
-                if (tre_ring->wp != tre_ring->rp &&
-                    MHI_DB_ACCESS_VALID(mhi_cntrl)) {
-                        mhi_ring_chan_db(mhi_cntrl, mhi_chan);
-                }
-+               write_unlock_irqrestore(&mhi_chan->lock, flags);
-                read_unlock_irqrestore(&mhi_cntrl->pm_lock, flags);
-                break;
-        }
-@@ -572,12 +567,6 @@ static int parse_xfer_event(struct mhi_controller *mhi_cntrl,
-                break;
-        } /* switch(MHI_EV_READ_CODE(EV_TRB_CODE,event)) */
- 
--end_process_tx_event:
--       if (ev_code >= MHI_EV_CC_OOB)
--               write_unlock_irqrestore(&mhi_chan->lock, flags);
--       else
--               read_unlock_bh(&mhi_chan->lock);
--
-        return 0;
- }
-
-Moreover, I do have couple of concerns:
-
-1. 'mhi_chan->db_cfg.db_mode = 1' needs to be added to the critical section
-above.
-
-2. Why we have {write/read}_lock_irq variants for chan->lock? I don't see where
-the db or ch_state got shared with hardirq handler. Maybe we should only have
-*_bh (softirq) variants all over the place?
-
-Thanks,
-Mani 
-
-> > >                                            ^^^^^^^^^^^^^^^
-> > > The caller is already holding this lock.
-> > > 
-> > Hmm. We have one internal user of this function and that's where the locking
-> > has gone wrong. Will fix it.
+> > > On Tue, Apr 07, 2020 at 04:55:59PM +0300, Dan Carpenter wrote:
+> > > > Hello Manivannan Sadhasivam,
+> > > > 
+> > > > The patch 189ff97cca53: "bus: mhi: core: Add support for data
+> > > > transfer" from Feb 20, 2020, leads to the following static checker
+> > > > warning:
+> > > > 
+> > > > 	drivers/bus/mhi/core/main.c:1153 mhi_queue_buf()
+> > > > 	error: double locked 'mhi_chan->lock' (orig line 1110)
+> > > > 
+> > > > drivers/bus/mhi/core/main.c
+> > > >    1142          }
+> > > >    1143
+> > > >    1144          /* Toggle wake to exit out of M2 */
+> > > >    1145          mhi_cntrl->wake_toggle(mhi_cntrl);
+> > > >    1146
+> > > >    1147          if (mhi_chan->dir == DMA_TO_DEVICE)
+> > > >    1148                  atomic_inc(&mhi_cntrl->pending_pkts);
+> > > >    1149
+> > > >    1150          if (likely(MHI_DB_ACCESS_VALID(mhi_cntrl))) {
+> > > >    1151                  unsigned long flags;
+> > > >    1152
+> > > >    1153                  read_lock_irqsave(&mhi_chan->lock, flags);
 > > 
-> > Thanks for reporting!
+> > parse_xfer_event is taking read lock : read_lock_bh(&mhi_chan->lock); first
+> > and later
 > > 
-> > Regards,
-> > Mani
+> > mhi_queue_buf takes read lock: read_lock_irqsave(&mhi_chan->lock, flags);
 > > 
-> > >    1154                  mhi_ring_chan_db(mhi_cntrl, mhi_chan);
-> > >    1155                  read_unlock_irqrestore(&mhi_chan->lock, flags);
-> > >    1156          }
-> > >    1157
-> > >    1158          read_unlock_irqrestore(&mhi_cntrl->pm_lock, flags);
-> > >    1159
-> > >    1160          return 0;
-> > >    1161  }
-> > >    1162  EXPORT_SYMBOL_GPL(mhi_queue_buf);
-> > > 
-> > > regards,
-> > > dan carpenter
+> > Both are read locks which are recursive, is this problematic ?
+> > 
 > 
-> -- 
-> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-> a Linux Foundation Collaborative Project
+> read_locks are recursive but I wanted to make the static checker happy.
+
+Don't do things just to make the static checker happy.
+
+regards,
+dan carpenter
+

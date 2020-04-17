@@ -2,37 +2,44 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99A141AE00C
-	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Apr 2020 16:39:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A24951AE009
+	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Apr 2020 16:39:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727821AbgDQOjm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 17 Apr 2020 10:39:42 -0400
-Received: from ciao.gmane.io ([159.69.161.202]:58672 "EHLO ciao.gmane.io"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726151AbgDQOjm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 17 Apr 2020 10:39:42 -0400
-Received: from list by ciao.gmane.io with local (Exim 4.92)
-        (envelope-from <glkj-kernel-janitors-2@m.gmane-mx.org>)
-        id 1jPS9a-000Lbn-9w
-        for kernel-janitors@vger.kernel.org; Fri, 17 Apr 2020 16:39:38 +0200
-X-Injected-Via-Gmane: http://gmane.org/
-To:     kernel-janitors@vger.kernel.org
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+        id S1727788AbgDQOjg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 17 Apr 2020 10:39:36 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:20648 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726707AbgDQOjf (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 17 Apr 2020 10:39:35 -0400
+Received: from [192.168.42.210] ([93.22.148.45])
+        by mwinf5d09 with ME
+        id TqfX2200G0z0B2t03qfXU1; Fri, 17 Apr 2020 16:39:33 +0200
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 17 Apr 2020 16:39:33 +0200
+X-ME-IP: 93.22.148.45
 Subject: Re: [PATCH] RDMA/ocrdma: Fix an off-by-one issue in 'ocrdma_add_stat'
-Date:   Fri, 17 Apr 2020 16:39:31 +0200
-Message-ID: <5c828086-e503-3f91-0589-9899c30c406e@wanadoo.fr>
+To:     Jason Gunthorpe <jgg@ziepe.ca>
+Cc:     selvin.xavier@broadcom.com, devesh.sharma@broadcom.com,
+        dledford@redhat.com, leon@kernel.org, colin.king@canonical.com,
+        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Newsgroups: gmane.linux.kernel.janitors,gmane.linux.drivers.rdma,gmane.linux.kernel
 References: <20200328073040.24429-1-christophe.jaillet@wanadoo.fr>
  <20200414183441.GA28870@ziepe.ca>
  <8c17ed4f-fb29-4ff8-35db-afab284c6e71@wanadoo.fr>
  <20200417135001.GE26002@ziepe.ca>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <5c828086-e503-3f91-0589-9899c30c406e@wanadoo.fr>
+Date:   Fri, 17 Apr 2020 16:39:31 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
+MIME-Version: 1.0
 In-Reply-To: <20200417135001.GE26002@ziepe.ca>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-Cc:     linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -108,5 +115,4 @@ Feel free to propose your version as a patch.
 Anyway, thanks for sharing alternative solutions.
 
 CJ
-
 

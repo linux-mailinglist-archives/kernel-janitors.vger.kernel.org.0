@@ -2,114 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A98AF1ADE4A
-	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Apr 2020 15:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 409A91ADE9B
+	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Apr 2020 15:42:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730627AbgDQN21 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 17 Apr 2020 09:28:27 -0400
-Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:51296 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730563AbgDQN21 (ORCPT
+        id S1730673AbgDQNk6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 17 Apr 2020 09:40:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55856 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1730597AbgDQNk5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 17 Apr 2020 09:28:27 -0400
-Received: from [192.168.42.210] ([93.22.148.45])
-        by mwinf5d47 with ME
-        id TpUM2200B0z0B2t03pUMXb; Fri, 17 Apr 2020 15:28:23 +0200
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 17 Apr 2020 15:28:23 +0200
-X-ME-IP: 93.22.148.45
-Subject: Re: [PATCH] RDMA/ocrdma: Fix an off-by-one issue in 'ocrdma_add_stat'
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     selvin.xavier@broadcom.com, devesh.sharma@broadcom.com,
-        dledford@redhat.com, leon@kernel.org, colin.king@canonical.com,
-        roland@purestorage.com, linux-rdma@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200328073040.24429-1-christophe.jaillet@wanadoo.fr>
- <20200414183441.GA28870@ziepe.ca>
-From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <8c17ed4f-fb29-4ff8-35db-afab284c6e71@wanadoo.fr>
-Date:   Fri, 17 Apr 2020 15:28:21 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Fri, 17 Apr 2020 09:40:57 -0400
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EE69C061A0C;
+        Fri, 17 Apr 2020 06:40:56 -0700 (PDT)
+Received: by mail-pl1-x644.google.com with SMTP id t4so970263plq.12;
+        Fri, 17 Apr 2020 06:40:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MAaMtEj3RgglAUis7HGTsnnOllj2iSHv3cdxkKdJDtY=;
+        b=cgOyn+qDm93DESRrCfdjaIr0cSlgIfsEQVZEKY7JsB5ZLCuP5WEUPJtY3Y8NcwmB7H
+         tIZ63sWcTBGC9H/Uc0rH7kjlDQbYw6mxLMxYFQkv9d7N1iUyw9GDFOGzoKbNxsjqb5X7
+         oBwuq1wsU9PbY1hAisdogOhwuRzjUs/yUdI78askgrHVEEsj+9s/CUQ8BrIwvcjiSSrh
+         8LmCuxEhBqvi+ok499CvbXNI2zd0QabZXNZTCY5uMHQpNp3KzB0YAdD+ptjH3qVLQPu0
+         LE91t7rONnHrqBczzDhamZ9COKnJu5kiTD6i+tRrxMvNqaHTPiYqsxouAVLiytpr97s0
+         uxjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MAaMtEj3RgglAUis7HGTsnnOllj2iSHv3cdxkKdJDtY=;
+        b=H7tOWqF4iOlhH5SGLdn6/oNSjxF30KERd5GsWf4CE6nelkINIrITI+QpUav/xBze/6
+         I/QWVWN6cWoHCjK9QFSzVRaWyf3TGoyNN4RtToQg0Pb153WFcpZrl2lcCK16/7Zob53d
+         ZMgi26v6Gds+Rl1VxsEtNLxpN8P/bzawmEOIXFhJPew7Pt4pbrQoBhenTWuihnHVKdUG
+         y/rqyC01nm3x3A09LjJ9lGrVClzXT9mk+Bz0h6ug4AQTNCcGkuO1c2fngM5QPpsTWtah
+         wkOODSZ8lLTczt/hwh9pEUHiNRkI7e4vdGv+UjhAxSO1jTc0EQ/CdrvC+Kj7O9+VQYQw
+         zAJg==
+X-Gm-Message-State: AGi0PuZFQ2QFT111sNDR0M5IpAjZL4wzdXyuenUQu+KNjrG+SAHMkJ57
+        lfa8SgeTnWXxOUeEFzlYFQ1BJ8cbYl5QCwu0NTs=
+X-Google-Smtp-Source: APiQypJ0lhyAYJrcp1wa0z7uP3Pl8oxq/0jiVDfw+NJj6E/X3rbJgkJWmqOJFpJMAvSgdVdJDLOZkNpfevzC78PmrjU=
+X-Received: by 2002:a17:902:aa09:: with SMTP id be9mr3605504plb.18.1587130855912;
+ Fri, 17 Apr 2020 06:40:55 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200414183441.GA28870@ziepe.ca>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+References: <20200407093052.GL68494@mwanda>
+In-Reply-To: <20200407093052.GL68494@mwanda>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 17 Apr 2020 16:40:49 +0300
+Message-ID: <CAHp75VdACZz2apwYT2LXxTsHwbzKo0eOLu0-Qts-4Um7jXynnw@mail.gmail.com>
+Subject: Re: [PATCH] platform/x86: surface3_power: Fix a NULL vs IS_ERR()
+ check in probe
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Darren Hart <dvhart@infradead.org>,
+        =?UTF-8?Q?Bla=C5=BE_Hrastnik?= <blaz@mxxn.io>,
+        Andy Shevchenko <andy@infradead.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Stephen Just <stephenjust@gmail.com>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-Le 14/04/2020 à 20:34, Jason Gunthorpe a écrit :
-> On Sat, Mar 28, 2020 at 08:30:40AM +0100, Christophe JAILLET wrote:
->> There is an off-by-one issue when checking if there is enough space in the
->> output buffer, because we must keep some place for a final '\0'.
->>
->> While at it:
->>     - Use 'scnprintf' instead of 'snprintf' in order to avoid a superfluous
->>      'strlen'
->>     - avoid some useless initializations
->>     - avoida hard coded buffer size that can be computed at built time.
->>
->> Fixes: a51f06e1679e ("RDMA/ocrdma: Query controller information")
->> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->> ---
->> The '\0' comes from memset(..., 0, ...) in all callers.
->> This could be also avoided if needed.
->> ---
->>   drivers/infiniband/hw/ocrdma/ocrdma_stats.c | 9 ++++-----
->>   1 file changed, 4 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/infiniband/hw/ocrdma/ocrdma_stats.c b/drivers/infiniband/hw/ocrdma/ocrdma_stats.c
->> index 5f831e3bdbad..614a449e6b87 100644
->> --- a/drivers/infiniband/hw/ocrdma/ocrdma_stats.c
->> +++ b/drivers/infiniband/hw/ocrdma/ocrdma_stats.c
->> @@ -49,13 +49,12 @@ static struct dentry *ocrdma_dbgfs_dir;
->>   static int ocrdma_add_stat(char *start, char *pcur,
->>   				char *name, u64 count)
->>   {
->> -	char buff[128] = {0};
->> -	int cpy_len = 0;
->> +	char buff[128];
->> +	int cpy_len;
->>   
->> -	snprintf(buff, 128, "%s: %llu\n", name, count);
->> -	cpy_len = strlen(buff);
->> +	cpy_len = scnprintf(buff, sizeof(buff), "%s: %llu\n", name, count);
->>   
->> -	if (pcur + cpy_len > start + OCRDMA_MAX_DBGFS_MEM) {
->> +	if (pcur + cpy_len >= start + OCRDMA_MAX_DBGFS_MEM) {
->>   		pr_err("%s: No space in stats buff\n", __func__);
->>   		return 0;
->>   	}
-> The memcpy is still kind of silly right? What about this:
+On Tue, Apr 7, 2020 at 12:33 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
 >
-> static int ocrdma_add_stat(char *start, char *pcur, char *name, u64 count)
-> {
-> 	size_t len = (start + OCRDMA_MAX_DBGFS_MEM) - pcur;
-> 	int cpy_len;
+> The i2c_acpi_new_device() function never returns NULL, it returns error
+> pointers.
 >
-> 	cpy_len = snprintf(pcur, len, "%s: %llu\n", name, count);
-> 	if (cpy_len >= len || cpy_len < 0) {
-> 		pr_err("%s: No space in stats buff\n", __func__);
-> 		return 0;
-> 	}
-> 	return cpy_len;
-> }
+
+Pushed to my review and testing queue, thanks!
+
+
+> Fixes: b1f81b496b0d ("platform/x86: surface3_power: MSHW0011 rev-eng implementation")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/platform/x86/surface3_power.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> Jason
+> diff --git a/drivers/platform/x86/surface3_power.c b/drivers/platform/x86/surface3_power.c
+> index 946ac2dc08ae..cc4f9cba6856 100644
+> --- a/drivers/platform/x86/surface3_power.c
+> +++ b/drivers/platform/x86/surface3_power.c
+> @@ -522,8 +522,8 @@ static int mshw0011_probe(struct i2c_client *client)
+>         strlcpy(board_info.type, "MSHW0011-bat0", I2C_NAME_SIZE);
+>
+>         bat0 = i2c_acpi_new_device(dev, 1, &board_info);
+> -       if (!bat0)
+> -               return -ENOMEM;
+> +       if (IS_ERR(bat0))
+> +               return PTR_ERR(bat0);
+>
+>         data->bat0 = bat0;
+>         i2c_set_clientdata(bat0, data);
+> --
+> 2.25.1
+>
 
-It can looks useless, but I think that the goal was to make sure that we 
-would not display truncated data. Each line is either complete or absent.
 
-I don't have any strong opinion of what is best, but I can understand 
-the current logic.
-
-This function is not a hot spot, so useless memcpy is not a big issue.
-
-CJ
-
-
+-- 
+With Best Regards,
+Andy Shevchenko

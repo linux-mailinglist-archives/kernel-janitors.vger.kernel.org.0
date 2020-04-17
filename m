@@ -2,117 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A24951AE009
-	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Apr 2020 16:39:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CE601AE06A
+	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Apr 2020 17:04:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727788AbgDQOjg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 17 Apr 2020 10:39:36 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:20648 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726707AbgDQOjf (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 17 Apr 2020 10:39:35 -0400
-Received: from [192.168.42.210] ([93.22.148.45])
-        by mwinf5d09 with ME
-        id TqfX2200G0z0B2t03qfXU1; Fri, 17 Apr 2020 16:39:33 +0200
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 17 Apr 2020 16:39:33 +0200
-X-ME-IP: 93.22.148.45
-Subject: Re: [PATCH] RDMA/ocrdma: Fix an off-by-one issue in 'ocrdma_add_stat'
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     selvin.xavier@broadcom.com, devesh.sharma@broadcom.com,
-        dledford@redhat.com, leon@kernel.org, colin.king@canonical.com,
-        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+        id S1728327AbgDQPDv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 17 Apr 2020 11:03:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33638 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728104AbgDQPDv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 17 Apr 2020 11:03:51 -0400
+Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net [50.39.105.78])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9E17820857;
+        Fri, 17 Apr 2020 15:03:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587135830;
+        bh=CR+V2g4RH1TCJK3+XSyZGECwl1xXbqgOfYq+cx3FodQ=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=m6Kd8/+97V/XdoSGVbAoZQwSvKyAlHkafA/dqrHzjp7ZedNq0kwcFoOxtScWFH7vL
+         Rq4fsQ1TU2niTL9oYJqsUrsMlpHUNoCMW1SSr5g0MwWtJs+E0aMJAx81e7LJ2lRuLk
+         2bZnZGdgC5qXQHiGNJXHe4+6L2C90I7qolArWZFs=
+Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
+        id 70D1E3523234; Fri, 17 Apr 2020 08:03:50 -0700 (PDT)
+Date:   Fri, 17 Apr 2020 08:03:50 -0700
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Marco Elver <elver@google.com>
+Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        kasan-dev <kasan-dev@googlegroups.com>,
+        LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
-Newsgroups: gmane.linux.kernel.janitors,gmane.linux.drivers.rdma,gmane.linux.kernel
-References: <20200328073040.24429-1-christophe.jaillet@wanadoo.fr>
- <20200414183441.GA28870@ziepe.ca>
- <8c17ed4f-fb29-4ff8-35db-afab284c6e71@wanadoo.fr>
- <20200417135001.GE26002@ziepe.ca>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <5c828086-e503-3f91-0589-9899c30c406e@wanadoo.fr>
-Date:   Fri, 17 Apr 2020 16:39:31 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+Subject: Re: [PATCH -next] kcsan: Use GFP_ATOMIC under spin lock
+Message-ID: <20200417150350.GI17661@paulmck-ThinkPad-P72>
+Reply-To: paulmck@kernel.org
+References: <20200417025837.49780-1-weiyongjun1@huawei.com>
+ <CANpmjNMzwqFaaA-zQh0Nv4SUdoJUFO_yTmTjfbMFqyxBea1U+Q@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200417135001.GE26002@ziepe.ca>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANpmjNMzwqFaaA-zQh0Nv4SUdoJUFO_yTmTjfbMFqyxBea1U+Q@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 17/04/2020 à 15:50, Jason Gunthorpe a écrit :
-> On Fri, Apr 17, 2020 at 03:28:21PM +0200, Marion & Christophe JAILLET wrote:
->> Le 14/04/2020 à 20:34, Jason Gunthorpe a écrit :
->>> On Sat, Mar 28, 2020 at 08:30:40AM +0100, Christophe JAILLET wrote:
->>>> There is an off-by-one issue when checking if there is enough space in the
->>>> output buffer, because we must keep some place for a final '\0'.
->>>>
->>>> While at it:
->>>>      - Use 'scnprintf' instead of 'snprintf' in order to avoid a superfluous
->>>>       'strlen'
->>>>      - avoid some useless initializations
->>>>      - avoida hard coded buffer size that can be computed at built time.
->>>>
->>>> Fixes: a51f06e1679e ("RDMA/ocrdma: Query controller information")
->>>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->>>> The '\0' comes from memset(..., 0, ...) in all callers.
->>>> This could be also avoided if needed.
->>>>    drivers/infiniband/hw/ocrdma/ocrdma_stats.c | 9 ++++-----
->>>>    1 file changed, 4 insertions(+), 5 deletions(-)
->>>>
->>>> diff --git a/drivers/infiniband/hw/ocrdma/ocrdma_stats.c b/drivers/infiniband/hw/ocrdma/ocrdma_stats.c
->>>> index 5f831e3bdbad..614a449e6b87 100644
->>>> +++ b/drivers/infiniband/hw/ocrdma/ocrdma_stats.c
->>>> @@ -49,13 +49,12 @@ static struct dentry *ocrdma_dbgfs_dir;
->>>>    static int ocrdma_add_stat(char *start, char *pcur,
->>>>    				char *name, u64 count)
->>>>    {
->>>> -	char buff[128] = {0};
->>>> -	int cpy_len = 0;
->>>> +	char buff[128];
->>>> +	int cpy_len;
->>>> -	snprintf(buff, 128, "%s: %llu\n", name, count);
->>>> -	cpy_len = strlen(buff);
->>>> +	cpy_len = scnprintf(buff, sizeof(buff), "%s: %llu\n", name, count);
->>>> -	if (pcur + cpy_len > start + OCRDMA_MAX_DBGFS_MEM) {
->>>> +	if (pcur + cpy_len >= start + OCRDMA_MAX_DBGFS_MEM) {
->>>>    		pr_err("%s: No space in stats buff\n", __func__);
->>>>    		return 0;
->>>>    	}
->>> The memcpy is still kind of silly right? What about this:
->>>
->>> static int ocrdma_add_stat(char *start, char *pcur, char *name, u64 count)
->>> {
->>> 	size_t len = (start + OCRDMA_MAX_DBGFS_MEM) - pcur;
->>> 	int cpy_len;
->>>
->>> 	cpy_len = snprintf(pcur, len, "%s: %llu\n", name, count);
->>> 	if (cpy_len >= len || cpy_len < 0) {
->>> 		pr_err("%s: No space in stats buff\n", __func__);
->>> 		return 0;
->>> 	}
->>> 	return cpy_len;
->>> }
->>>
->>> Jason
->> It can looks useless, but I think that the goal was to make sure that we
->> would not display truncated data. Each line is either complete or absent.
-> So it needsa *pcur = 0 in the error path?
->
-> Jason
->
-I guess it would keep the existing behavior, should it be needed.
+On Fri, Apr 17, 2020 at 11:23:05AM +0200, Marco Elver wrote:
+> On Fri, 17 Apr 2020 at 04:56, Wei Yongjun <weiyongjun1@huawei.com> wrote:
+> >
+> > A spin lock is taken here so we should use GFP_ATOMIC.
+> >
+> > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> 
+> Good catch, thank you!
+> 
+> Reviewed-by: Marco Elver <elver@google.com>
 
-I leave maintainers to choose what looks more readable to them, or just 
-to ignore the patch if they think it is useless.
-Feel free to propose your version as a patch.
+Queued and pushed, thank you both!
 
-Anyway, thanks for sharing alternative solutions.
+							Thanx, Paul
 
-CJ
-
+> > ---
+> >  kernel/kcsan/debugfs.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/kernel/kcsan/debugfs.c b/kernel/kcsan/debugfs.c
+> > index 1a08664a7fab..023e49c58d55 100644
+> > --- a/kernel/kcsan/debugfs.c
+> > +++ b/kernel/kcsan/debugfs.c
+> > @@ -230,7 +230,7 @@ static ssize_t insert_report_filterlist(const char *func)
+> >                 /* initial allocation */
+> >                 report_filterlist.addrs =
+> >                         kmalloc_array(report_filterlist.size,
+> > -                                     sizeof(unsigned long), GFP_KERNEL);
+> > +                                     sizeof(unsigned long), GFP_ATOMIC);
+> >                 if (report_filterlist.addrs == NULL) {
+> >                         ret = -ENOMEM;
+> >                         goto out;
+> > @@ -240,7 +240,7 @@ static ssize_t insert_report_filterlist(const char *func)
+> >                 size_t new_size = report_filterlist.size * 2;
+> >                 unsigned long *new_addrs =
+> >                         krealloc(report_filterlist.addrs,
+> > -                                new_size * sizeof(unsigned long), GFP_KERNEL);
+> > +                                new_size * sizeof(unsigned long), GFP_ATOMIC);
+> >
+> >                 if (new_addrs == NULL) {
+> >                         /* leave filterlist itself untouched */
+> >
+> >
+> >
+> >
+> >

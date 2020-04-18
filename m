@@ -2,78 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DDEE1AEA6C
-	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Apr 2020 09:09:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C40C91AEACC
+	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Apr 2020 10:16:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725949AbgDRHJW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 18 Apr 2020 03:09:22 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:49104 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725843AbgDRHJV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 18 Apr 2020 03:09:21 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 4C9D525A497137A7456F;
-        Sat, 18 Apr 2020 15:09:18 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.487.0; Sat, 18 Apr 2020 15:09:08 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Anil Gurumurthy <anil.gurumurthy@qlogic.com>,
-        Sudarsana Kalluru <sudarsana.kalluru@qlogic.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-CC:     YueHaibing <yuehaibing@huawei.com>, <linux-scsi@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] scsi: bfa: Remove set but not used variable 'fchs'
-Date:   Sat, 18 Apr 2020 07:10:57 +0000
-Message-ID: <20200418071057.96699-1-yuehaibing@huawei.com>
+        id S1726136AbgDRIQm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 18 Apr 2020 04:16:42 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:23314 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725914AbgDRIQm (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 18 Apr 2020 04:16:42 -0400
+Received: from localhost.localdomain ([90.126.162.40])
+        by mwinf5d64 with ME
+        id U8Gf220050scBcy038GfPu; Sat, 18 Apr 2020 10:16:40 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 18 Apr 2020 10:16:40 +0200
+X-ME-IP: 90.126.162.40
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     linus.walleij@linaro.org, lorenzo.pieralisi@arm.com,
+        amurray@thegoodpenguin.co.uk, bhelgaas@google.com
+Cc:     linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] PCI: v3-semi: Fix a memory leak in some error handling paths in 'v3_pci_probe()'
+Date:   Sat, 18 Apr 2020 10:16:37 +0200
+Message-Id: <20200418081637.1585-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+IF we fails somewhere in 'v3_pci_probe()', we need to free 'host'.
+Use the managed version of 'pci_alloc_host_bridge()' to do that easily.
+The use of managed resources is already widely used in this driver.
 
-drivers/scsi/bfa/bfa_svc.c: In function 'uf_recv':
-drivers/scsi/bfa/bfa_svc.c:5520:17: warning:
- variable 'fchs' set but not used [-Wunused-but-set-variable]
-  struct fchs_s *fchs;
-                 ^
-
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Fixes: 68a15eb7bd0c ("PCI: v3-semi: Add V3 Semiconductor PCI host driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/scsi/bfa/bfa_svc.c | 3 ---
- 1 file changed, 3 deletions(-)
+Fixes could be older than this commit, but this is as far as git can go.
 
-diff --git a/drivers/scsi/bfa/bfa_svc.c b/drivers/scsi/bfa/bfa_svc.c
-index d8a9e40fa257..0b7d2e8f4a66 100644
---- a/drivers/scsi/bfa/bfa_svc.c
-+++ b/drivers/scsi/bfa/bfa_svc.c
-@@ -5517,7 +5517,6 @@ uf_recv(struct bfa_s *bfa, struct bfi_uf_frm_rcvd_s *m)
- 	struct bfa_uf_s *uf = &ufm->uf_list[uf_tag];
- 	struct bfa_uf_buf_s *uf_buf;
- 	uint8_t *buf;
--	struct fchs_s *fchs;
+There is also a 'clk_prepare_enable()' which looks un-ballanced. I don't
+know if it can be an issue.
+
+Compile tested only.
+---
+ drivers/pci/controller/pci-v3-semi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pci/controller/pci-v3-semi.c b/drivers/pci/controller/pci-v3-semi.c
+index bd05221f5a22..ddcb4571a79b 100644
+--- a/drivers/pci/controller/pci-v3-semi.c
++++ b/drivers/pci/controller/pci-v3-semi.c
+@@ -720,7 +720,7 @@ static int v3_pci_probe(struct platform_device *pdev)
+ 	int irq;
+ 	int ret;
  
- 	uf_buf = (struct bfa_uf_buf_s *)
- 			bfa_mem_get_dmabuf_kva(ufm, uf_tag, uf->pb_len);
-@@ -5526,8 +5525,6 @@ uf_recv(struct bfa_s *bfa, struct bfi_uf_frm_rcvd_s *m)
- 	m->frm_len = be16_to_cpu(m->frm_len);
- 	m->xfr_len = be16_to_cpu(m->xfr_len);
+-	host = pci_alloc_host_bridge(sizeof(*v3));
++	host = devm_pci_alloc_host_bridge(dev, sizeof(*v3));
+ 	if (!host)
+ 		return -ENOMEM;
  
--	fchs = (struct fchs_s *)uf_buf;
--
- 	list_del(&uf->qe);	/* dequeue from posted queue */
- 
- 	uf->data_ptr = buf;
-
-
-
-
+-- 
+2.20.1
 

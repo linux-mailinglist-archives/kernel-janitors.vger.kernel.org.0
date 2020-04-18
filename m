@@ -2,104 +2,284 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ABAF1AEC54
-	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Apr 2020 14:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE8061AF435
+	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Apr 2020 21:19:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726011AbgDRMLF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 18 Apr 2020 08:11:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38210 "EHLO
+        id S1727927AbgDRTT2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 18 Apr 2020 15:19:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725873AbgDRMLE (ORCPT
+        by vger.kernel.org with ESMTP id S1726086AbgDRTT1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 18 Apr 2020 08:11:04 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDF30C061A0C;
-        Sat, 18 Apr 2020 05:11:04 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: bbrezillon)
-        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id F00092A0FCA;
-        Sat, 18 Apr 2020 13:11:01 +0100 (BST)
-Date:   Sat, 18 Apr 2020 14:10:58 +0200
-From:   Boris Brezillon <boris.brezillon@collabora.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Boris Brezillon <bbrezillon@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Sebastian Duda <sebastian.duda@fau.de>,
-        Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        Richard Weinberger <richard@nod.at>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH RESEND] MAINTAINERS: adjust to renaming
- physmap_of_versatile.c
-Message-ID: <20200418141058.567a80d7@collabora.com>
-In-Reply-To: <20200418100933.8012-1-lukas.bulwahn@gmail.com>
-References: <20200418100933.8012-1-lukas.bulwahn@gmail.com>
-Organization: Collabora
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        Sat, 18 Apr 2020 15:19:27 -0400
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23A4BC061A0C
+        for <kernel-janitors@vger.kernel.org>; Sat, 18 Apr 2020 12:19:26 -0700 (PDT)
+Received: by mail-pl1-x644.google.com with SMTP id n24so2327027plp.13
+        for <kernel-janitors@vger.kernel.org>; Sat, 18 Apr 2020 12:19:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:user-agent:in-reply-to:references:mime-version
+         :content-transfer-encoding:subject:to:cc:from:message-id;
+        bh=KlTC99ujFnUCeHtZdLYIaOl870NmL3q0aZeUEGh2NIg=;
+        b=L682/u5pn3gI5sugW9op2VHQx9zIE/DrD5NGT9A9Ews6UucCyOHsRNShS72H1D+1zB
+         fwm3lsKLsUaqNaeqH4R+lAhJGC1yhDE7ciSYKIApKxc2twyms4S64QDxQpd1MsIETtTU
+         2VYtzxAY/BW+39fEzsZYSFyavb/pMLcWU5Qu6fnSj0f/C7X38CAJnoUpBhD435D1YWNA
+         qW0HDId3ae6ABuiHsHHyLOzIMWHVu6BgDK/LbOhJ2DuOGbgebo9jfNgVLQYBztTyaAgi
+         jYFwwCOxHfGcAhAoMZ3mFt3sGBO1QkwU4m8S+l+PhONOMZzNjHouqPhO1c+0i3zkbTqk
+         z9uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:user-agent:in-reply-to:references
+         :mime-version:content-transfer-encoding:subject:to:cc:from
+         :message-id;
+        bh=KlTC99ujFnUCeHtZdLYIaOl870NmL3q0aZeUEGh2NIg=;
+        b=AAEnFPTQVkmzlFbi56zLliP+WMK94kW9/VrtHKqplHtbD7eJybzzZ0YRsnGdQEsHxl
+         +ZqAW6b7wkRFZ6by824dxK4V/TWb/u3mNO1TWoeFQRGmdSIL9mhS2tefrMJZiCUYXffw
+         8G+lQ7MJLfUbGVdGAe6y99x5mWXAJ1q41J9pB0zZwQtTSjqquAFJ/sU5U+F1ACwW4woA
+         KXoqACFx+3fDnzX+coaJmv33woIxRsbi0CGTdOR47Er2egT2hmGongzr06dwzLyoAz5s
+         57uh+Q9JdBocIfaPaFdMpfJmAtNRPPHm1en/N4maTcOWmmPnO24wE5e2rrC4BAOKEOlL
+         4NHw==
+X-Gm-Message-State: AGi0PuaWXdOlvV2SyM0VmjDuPKfRreWEyznpM+jINSjDsZelXEtzGARF
+        GYD7DSvhyL+KKr8erDJ4RrY9
+X-Google-Smtp-Source: APiQypKY3ztwLjB/VNZlPL/vbynxve151/FbWAjQ9uvsM/UutflnXQVSn6boJZYGgny7bJwzvlH25w==
+X-Received: by 2002:a17:902:968a:: with SMTP id n10mr8894110plp.96.1587237565377;
+        Sat, 18 Apr 2020 12:19:25 -0700 (PDT)
+Received: from ?IPv6:2409:4072:712:803a:cdd7:29cc:291b:9aa4? ([2409:4072:712:803a:cdd7:29cc:291b:9aa4])
+        by smtp.gmail.com with ESMTPSA id bo19sm4516473pjb.26.2020.04.18.12.19.21
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 18 Apr 2020 12:19:22 -0700 (PDT)
+Date:   Sun, 19 Apr 2020 00:49:12 +0530
+User-Agent: K-9 Mail for Android
+In-Reply-To: <184d0d8e-1d5f-c317-a40b-1b44e79ad293@codeaurora.org>
+References: <20200407135559.GA109574@mwanda> <20200407143304.GH2442@Mani-XPS-13-9360> <d30c7648-b657-d8b2-ba64-71f1178b4a68@codeaurora.org> <20200417101428.GA10295@Mani-XPS-13-9360> <184d0d8e-1d5f-c317-a40b-1b44e79ad293@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [bug report] bus: mhi: core: Add support for data transfer
+To:     Hemant Kumar <hemantk@codeaurora.org>
+CC:     Dan Carpenter <dan.carpenter@oracle.com>,
+        linux-arm-msm@vger.kernel.org, kernel-janitors@vger.kernel.org
+From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Message-ID: <19504ACB-4E2A-4883-92E2-7AAC056CE3B4@linaro.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-+ MTD maintainers and the MTD ML
+Hi Hemant,
 
-On Sat, 18 Apr 2020 12:09:33 +0200
-Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+Please try to use an email client supporting plain text mode like mutt=2E =
+Your reply looks mangled=2E=20
 
-> Commit 6ca15cfa0788 ("mtd: maps: Rename physmap_of_{versatile, gemini}
-> into physmap-{versatile, gemini}") renamed physmap_of_versatile.c to
-> physmap-versatile.c, but did not adjust the MAINTAINERS entry.
-> 
-> Since then, ./scripts/get_maintainer.pl --self-test complains:
-> 
->   warning: no file matches F: drivers/mtd/maps/physmap_of_versatile.c
-> 
-> Rectify the ARM INTEGRATOR, VERSATILE AND REALVIEW SUPPORT entry and now
-> also cover drivers/mtd/maps/physmap-versatile.h while at it.
-> 
-> Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
-> Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
-> Boris, please pick or ack this patch.
-> applies cleanly on current master and next-20200417
+On 18 April 2020 12:40:10 PM IST, Hemant Kumar <hemantk@codeaurora=2Eorg> =
+wrote:
+>Hi Mani,
+>
+>On 4/17/20 3:14 AM, Manivannan Sadhasivam wrote:
+>> Hi Hemant,
+>>
+>> On Thu, Apr 16, 2020 at 08:37:16PM -0700, Hemant Kumar wrote:
+>>> On 4/7/20 7:33 AM, Manivannan Sadhasivam wrote:
+>>>> Hi Dan,
+>>>>
+>>>> On Tue, Apr 07, 2020 at 04:55:59PM +0300, Dan Carpenter wrote:
+>>>>> Hello Manivannan Sadhasivam,
+>>>>>
+>>>>> The patch 189ff97cca53: "bus: mhi: core: Add support for data
+>>>>> transfer" from Feb 20, 2020, leads to the following static checker
+>>>>> warning:
+>>>>>
+>>>>> 	drivers/bus/mhi/core/main=2Ec:1153 mhi_queue_buf()
+>>>>> 	error: double locked 'mhi_chan->lock' (orig line 1110)
+>>>>>
+>>>>> drivers/bus/mhi/core/main=2Ec
+>>>>>     1142          }
+>>>>>     1143
+>>>>>     1144          /* Toggle wake to exit out of M2 */
+>>>>>     1145          mhi_cntrl->wake_toggle(mhi_cntrl);
+>>>>>     1146
+>>>>>     1147          if (mhi_chan->dir =3D=3D DMA_TO_DEVICE)
+>>>>>     1148                  atomic_inc(&mhi_cntrl->pending_pkts);
+>>>>>     1149
+>>>>>     1150          if (likely(MHI_DB_ACCESS_VALID(mhi_cntrl))) {
+>>>>>     1151                  unsigned long flags;
+>>>>>     1152
+>>>>>     1153                  read_lock_irqsave(&mhi_chan->lock,
+>flags);
+>>> parse_xfer_event is taking read lock :
+>read_lock_bh(&mhi_chan->lock); first
+>>> and later
+>>>
+>>> mhi_queue_buf takes read lock: read_lock_irqsave(&mhi_chan->lock,
+>flags);
+>>>
+>>> Both are read locks which are recursive, is this problematic ?
+>>>
+>> read_locks are recursive but I wanted to make the static checker
+>happy=2E But
+>> looking into it further (and after having a chat with Arnd), we might
+>need to
+>> refactor the locking here=2E
+>>
+>> Since 'chan->lock' only prevents 'mhi_chan->ch_state', how about
+>doing something
+>> like below?
+>
+>As comment mentioned for OOB (to enter=C2=A0 DB mode) write lock is acqui=
+red
+>
+>with preemption disabled (irqsave ver)=2E In case of OOB event control=20
+>does not go to mhi_queue_buf
+>
+>path=2E=20
 
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Again, why do we need irq version of write lock=2E It should only be used =
+if the data is shared with hardirq handlers which I don't see=2E Otherwise,=
+ write_lock_bh() looks sufficient to me as this itself is an exclusive lock=
+=2E=20
 
-> 
-> v1: https://lore.kernel.org/lkml/20200228063338.4099-1-lukas.bulwahn@gmail.com/
->   - was wrongly sent to old boris.brezillon@bootlin.com address
+>For transfer completion events >read_lock_bh is acquired and=20
+>channel state is checked=2E
+>
+>This lock is held for entire handling of the transfer completion so
+>that=20
+>in case
+>
+>__mhi_unprepare_channel() is called from power down context write lock=20
+>is acquired
+>
+>for channel lock to change channel state, which would wait until=20
+>parse_xfer_event for
+>
+>data transfer is done (reader is in critical section)=2E=C2=A0 In case if=
+=20
+>__mhi_unprepare_channel() wins then
+>
+>parse_xfer_event is skipped otherwise parse_xfer_event is done and then
+>
+>channel state is changed=2E
+>
 
-Please Cc the MTD ML and maintainers next time.
+So if we get unprepare_channel() after checking the channel state in parse=
+_xfer_event(), what could go wrong?
+Also, grabbing the lock for the entire function doesn't look good to me=2E=
+ The purpose of the chan->lock is just to protect 'chan_state'/DB and not t=
+he whole function=2E
 
->   - got Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Thanks,=20
+Mani
 
-Linus' reviewed is missing in this version.
+>>
+>> diff --git a/drivers/bus/mhi/core/main=2Ec
+>b/drivers/bus/mhi/core/main=2Ec
+>> index 3e9aa3b2da77=2E=2E904f9be7a142 100644
+>> --- a/drivers/bus/mhi/core/main=2Ec
+>> +++ b/drivers/bus/mhi/core/main=2Ec
+>> @@ -474,19 +474,12 @@ static int parse_xfer_event(struct
+>mhi_controller *mhi_cntrl,
+>>          result=2Etransaction_status =3D (ev_code =3D=3D MHI_EV_CC_OVER=
+FLOW)
+>?
+>>                  -EOVERFLOW : 0;
+>>  =20
+>> -       /*
+>> -        * If it's a DB Event then we need to grab the lock
+>> -        * with preemption disabled and as a write because we
+>> -        * have to update db register and there are chances that
+>> -        * another thread could be doing the same=2E
+>> -        */
+>> -       if (ev_code >=3D MHI_EV_CC_OOB)
+>> -               write_lock_irqsave(&mhi_chan->lock, flags);
+>> -       else
+>> -               read_lock_bh(&mhi_chan->lock);
+>> -
+>> -       if (mhi_chan->ch_state !=3D MHI_CH_STATE_ENABLED)
+>> -               goto end_process_tx_event;
+>> +       read_lock_bh(&mhi_chan->lock);
+>> +       if (mhi_chan->ch_state !=3D MHI_CH_STATE_ENABLED) {
+>> +               read_unlock_bh(&mhi_chan->lock);
+>> +               return 0;
+>> +       }
+>> +       read_unlock_bh(&mhi_chan->lock);
+>>  =20
+>>          switch (ev_code) {
+>>          case MHI_EV_CC_OVERFLOW:
+>> @@ -559,10 +552,12 @@ static int parse_xfer_event(struct
+>mhi_controller *mhi_cntrl,
+>>  =20
+>>                  mhi_chan->db_cfg=2Edb_mode =3D 1;
+>>                  read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
+>> +               write_lock_irqsave(&mhi_chan->lock, flags);
+>>                  if (tre_ring->wp !=3D tre_ring->rp &&
+>>                      MHI_DB_ACCESS_VALID(mhi_cntrl)) {
+>>                          mhi_ring_chan_db(mhi_cntrl, mhi_chan);
+>>                  }
+>> +               write_unlock_irqrestore(&mhi_chan->lock, flags);
+>>                  read_unlock_irqrestore(&mhi_cntrl->pm_lock, flags);
+>>                  break;
+>>          }
+>> @@ -572,12 +567,6 @@ static int parse_xfer_event(struct
+>mhi_controller *mhi_cntrl,
+>>                  break;
+>>          } /* switch(MHI_EV_READ_CODE(EV_TRB_CODE,event)) */
+>>  =20
+>> -end_process_tx_event:
+>> -       if (ev_code >=3D MHI_EV_CC_OOB)
+>> -               write_unlock_irqrestore(&mhi_chan->lock, flags);
+>> -       else
+>> -               read_unlock_bh(&mhi_chan->lock);
+>> -
+>>          return 0;
+>>   }
+>>
+>> Moreover, I do have couple of concerns:
+>>
+>> 1=2E 'mhi_chan->db_cfg=2Edb_mode =3D 1' needs to be added to the critic=
+al
+>section
+>> above=2E
+>>
+>> 2=2E Why we have {write/read}_lock_irq variants for chan->lock? I don't
+>see where
+>> the db or ch_state got shared with hardirq handler=2E Maybe we should
+>only have
+>> *_bh (softirq) variants all over the place?
+>>
+>> Thanks,
+>> Mani
+>>
+>>>>>                                             ^^^^^^^^^^^^^^^
+>>>>> The caller is already holding this lock=2E
+>>>>>
+>>>> Hmm=2E We have one internal user of this function and that's where
+>the locking
+>>>> has gone wrong=2E Will fix it=2E
+>>>>
+>>>> Thanks for reporting!
+>>>>
+>>>> Regards,
+>>>> Mani
+>>>>
+>>>>>     1154                  mhi_ring_chan_db(mhi_cntrl, mhi_chan);
+>>>>>     1155                  read_unlock_irqrestore(&mhi_chan->lock,
+>flags);
+>>>>>     1156          }
+>>>>>     1157
+>>>>>     1158          read_unlock_irqrestore(&mhi_cntrl->pm_lock,
+>flags);
+>>>>>     1159
+>>>>>     1160          return 0;
+>>>>>     1161  }
+>>>>>     1162  EXPORT_SYMBOL_GPL(mhi_queue_buf);
+>>>>>
+>>>>> regards,
+>>>>> dan carpenter
+>>> --=20
+>>> The Qualcomm Innovation Center, Inc=2E is a member of the Code Aurora
+>Forum,
+>>> a Linux Foundation Collaborative Project
 
-> 
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c77f02282044..52bb8819230a 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1342,7 +1342,7 @@ F:	arch/arm/plat-versatile/
->  F:	drivers/clk/versatile/
->  F:	drivers/i2c/busses/i2c-versatile.c
->  F:	drivers/irqchip/irq-versatile-fpga.c
-> -F:	drivers/mtd/maps/physmap_of_versatile.c
-> +F:	drivers/mtd/maps/physmap-versatile.*
->  F:	drivers/power/reset/arm-versatile-reboot.c
->  F:	drivers/soc/versatile/
->  
-
+--=20
+Sent from my Android device with K-9 Mail=2E Please excuse my brevity=2E

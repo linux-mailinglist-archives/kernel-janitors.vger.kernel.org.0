@@ -2,284 +2,136 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE8061AF435
-	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Apr 2020 21:19:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47EDC1AF475
+	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Apr 2020 22:00:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727927AbgDRTT2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 18 Apr 2020 15:19:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47066 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726086AbgDRTT1 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 18 Apr 2020 15:19:27 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23A4BC061A0C
-        for <kernel-janitors@vger.kernel.org>; Sat, 18 Apr 2020 12:19:26 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id n24so2327027plp.13
-        for <kernel-janitors@vger.kernel.org>; Sat, 18 Apr 2020 12:19:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:user-agent:in-reply-to:references:mime-version
-         :content-transfer-encoding:subject:to:cc:from:message-id;
-        bh=KlTC99ujFnUCeHtZdLYIaOl870NmL3q0aZeUEGh2NIg=;
-        b=L682/u5pn3gI5sugW9op2VHQx9zIE/DrD5NGT9A9Ews6UucCyOHsRNShS72H1D+1zB
-         fwm3lsKLsUaqNaeqH4R+lAhJGC1yhDE7ciSYKIApKxc2twyms4S64QDxQpd1MsIETtTU
-         2VYtzxAY/BW+39fEzsZYSFyavb/pMLcWU5Qu6fnSj0f/C7X38CAJnoUpBhD435D1YWNA
-         qW0HDId3ae6ABuiHsHHyLOzIMWHVu6BgDK/LbOhJ2DuOGbgebo9jfNgVLQYBztTyaAgi
-         jYFwwCOxHfGcAhAoMZ3mFt3sGBO1QkwU4m8S+l+PhONOMZzNjHouqPhO1c+0i3zkbTqk
-         z9uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:user-agent:in-reply-to:references
-         :mime-version:content-transfer-encoding:subject:to:cc:from
-         :message-id;
-        bh=KlTC99ujFnUCeHtZdLYIaOl870NmL3q0aZeUEGh2NIg=;
-        b=AAEnFPTQVkmzlFbi56zLliP+WMK94kW9/VrtHKqplHtbD7eJybzzZ0YRsnGdQEsHxl
-         +ZqAW6b7wkRFZ6by824dxK4V/TWb/u3mNO1TWoeFQRGmdSIL9mhS2tefrMJZiCUYXffw
-         8G+lQ7MJLfUbGVdGAe6y99x5mWXAJ1q41J9pB0zZwQtTSjqquAFJ/sU5U+F1ACwW4woA
-         KXoqACFx+3fDnzX+coaJmv33woIxRsbi0CGTdOR47Er2egT2hmGongzr06dwzLyoAz5s
-         57uh+Q9JdBocIfaPaFdMpfJmAtNRPPHm1en/N4maTcOWmmPnO24wE5e2rrC4BAOKEOlL
-         4NHw==
-X-Gm-Message-State: AGi0PuaWXdOlvV2SyM0VmjDuPKfRreWEyznpM+jINSjDsZelXEtzGARF
-        GYD7DSvhyL+KKr8erDJ4RrY9
-X-Google-Smtp-Source: APiQypKY3ztwLjB/VNZlPL/vbynxve151/FbWAjQ9uvsM/UutflnXQVSn6boJZYGgny7bJwzvlH25w==
-X-Received: by 2002:a17:902:968a:: with SMTP id n10mr8894110plp.96.1587237565377;
-        Sat, 18 Apr 2020 12:19:25 -0700 (PDT)
-Received: from ?IPv6:2409:4072:712:803a:cdd7:29cc:291b:9aa4? ([2409:4072:712:803a:cdd7:29cc:291b:9aa4])
-        by smtp.gmail.com with ESMTPSA id bo19sm4516473pjb.26.2020.04.18.12.19.21
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 18 Apr 2020 12:19:22 -0700 (PDT)
-Date:   Sun, 19 Apr 2020 00:49:12 +0530
-User-Agent: K-9 Mail for Android
-In-Reply-To: <184d0d8e-1d5f-c317-a40b-1b44e79ad293@codeaurora.org>
-References: <20200407135559.GA109574@mwanda> <20200407143304.GH2442@Mani-XPS-13-9360> <d30c7648-b657-d8b2-ba64-71f1178b4a68@codeaurora.org> <20200417101428.GA10295@Mani-XPS-13-9360> <184d0d8e-1d5f-c317-a40b-1b44e79ad293@codeaurora.org>
+        id S1728083AbgDRUAk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 18 Apr 2020 16:00:40 -0400
+Received: from mout.web.de ([212.227.15.3]:55851 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727927AbgDRUAk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 18 Apr 2020 16:00:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1587240021;
+        bh=b34gshVCmUqeLuteDgg5/sGl8QG/KrAMIesadNvuyHU=;
+        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
+        b=ABlpc9cJXnjEU3N95aUkacrTfrYqybMhFFK6KcHduAIgXxEQ6oo9Y67P8BSuo83Ib
+         JITyRP88768zPmTe9Z9TjXgA4tffufSE4yNt+kw0XD5+UMFhqNlDilwsyCUPVGx3ZA
+         ATjWPSOHoBQPgomVpcHV/QOz+rsKMS0VFIJkKRBM=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.133.116.87]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LwI74-1jB7gB2Kqc-0180XM; Sat, 18
+ Apr 2020 22:00:21 +0200
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Subject: Re: [PATCH] m68k/PCI: Fix a memory leak in an error handling path
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+To:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+        linux-m68k@lists.linux-m68k.org
+Message-ID: <2e00c1f1-8faa-5045-ddf5-2bf943f714f2@web.de>
+Date:   Sat, 18 Apr 2020 22:00:11 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [bug report] bus: mhi: core: Add support for data transfer
-To:     Hemant Kumar <hemantk@codeaurora.org>
-CC:     Dan Carpenter <dan.carpenter@oracle.com>,
-        linux-arm-msm@vger.kernel.org, kernel-janitors@vger.kernel.org
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Message-ID: <19504ACB-4E2A-4883-92E2-7AAC056CE3B4@linaro.org>
+X-Provags-ID: V03:K1:OelrizYe1o89n6DadaCsfn0GjAa9KxJ2BXPw7OZwI4VwwtjHU2w
+ aJFRVDxxDEyk/RswOVyBcemjcE0Y86+Ks8iO2ydqCA7xe4GjfS2riM/3r5wQBPasXRsy4hr
+ gSUm+aRBDvUCsV2QAaYnnPWNiHBgGDjEIqirrQR5ozbIOKoaiYSfHjBVeBegPyEi1WTw46y
+ mOvncCgfhpFVRmG+SuH7g==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:DCXTgqrRPO0=:3W5MzRrMOgJSwYmpyrI0uF
+ fj5vh8DZc+smnDzVDS78j654UvfH9VuaQIE0SWW5q+8Rm0ewHVeITg7a8H4EIHcOXElpZDGAC
+ WQaC9qNNm4n7fqcscmgM+KGXTA+sKFko08dCH+Al+tEGycwIoa5zYsjyJYWe0UfQfYWvCzF6C
+ ArOpE+wvBIiQ+M32HII6e28B9nijsUkMSwbLrIQjgFfxw+rLQI41868vy8i5OZsM1f1dsbyIY
+ KYfzW4Rb4Bb/pZrraQ0GiJtrh4cCKqn2ktBDuvS8oRU97uM0OZdCXqIVGjawTKv8371UZu6Kz
+ IIdCkTApZIot85tLtT6S8aExphMw2F/moSTGAIsJu/Gt2H4UTiZjUDvBh/bkZE8qNZQn3Ja3p
+ B7EzJi86ZypJhPca8bYEDC/vaSLQmVeSRsltogJO+n9gDZ0fGbA7FZj8AlDs2bxPKDlJi5NE7
+ Unnq2RjvI7F2OZeFL0+MEoK19y0gKQ3MxNuS1uxNt6rrXgugwTlkPjosLnljUvfQHdHR1F+jy
+ 8b7W116LsUkKTvu4cxKUZyRfObOcxCCGlm4z/XpyGC+rsHtzClJ590NMMzIfHqJdaJc845r0K
+ z3wAreVa+KQzyGAr261FOGbBQvFXDjB4xH14M6Bid1OQ0ssd8QVA2uBGrkiQnHm9Vsng5p2Mx
+ oP8Py9bUHE4pJGQb4i1yGPfTLLEgxo7cYsM3iLJE3lf8haDBvYI0rFLZlSYyGj8ItN6r5RqDJ
+ fp30O4/Y1kUuqXXjwi1eHsUS6pP01HE6hYUhhCNzx2EitUzLXcbcbhjNrNolnmAjxz1Wp+jQh
+ izs5VHh0FfOFlaAEBYQ6sS+JZH7qSUsg9Yq8JblT3uv5NDWi/1NRA4MMDkDZ2jGWjSAyxeHfJ
+ 0+dI4eaJRNZdHLNKTNtayvDLKWPjgRxssw8nPfoR6OGbHc4P9Awq5w8GqGTIw2DuqgxF0wfzJ
+ vkUGoH7klliv0+8BBY7WOG//SVM7tktnzkhJMVPsrHhopqq5AAF1hSMHjPsuJ7fwrpzqTkZym
+ uyOApagEJ8I7epYltitICbZ0p2wM8KYtWaaV0JeaooEBw0AwnkumhMleSDbsxrE3lrVNAd7ZF
+ fD/H0mET+/HJT14cSTC1g9dxe6ePTaHFcCZasZgL0BTRlaFz83U1mslzyA40qTc0Iuwy7abzW
+ CkzspEZyQwxPbDTAizt+RAHRltoOT27GOD9KuUcB8AkyBOD45hKi7Y7KQ/7cO/cQdHgR+rbqL
+ FHHay2LFqu4UO6BkA
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Hemant,
+> If 'ioremap' fails, we must free 'bridge', as done in other error handli=
+ng
+> path bellow.
 
-Please try to use an email client supporting plain text mode like mutt=2E =
-Your reply looks mangled=2E=20
+I suggest to improve this change description.
 
-On 18 April 2020 12:40:10 PM IST, Hemant Kumar <hemantk@codeaurora=2Eorg> =
-wrote:
->Hi Mani,
->
->On 4/17/20 3:14 AM, Manivannan Sadhasivam wrote:
->> Hi Hemant,
->>
->> On Thu, Apr 16, 2020 at 08:37:16PM -0700, Hemant Kumar wrote:
->>> On 4/7/20 7:33 AM, Manivannan Sadhasivam wrote:
->>>> Hi Dan,
->>>>
->>>> On Tue, Apr 07, 2020 at 04:55:59PM +0300, Dan Carpenter wrote:
->>>>> Hello Manivannan Sadhasivam,
->>>>>
->>>>> The patch 189ff97cca53: "bus: mhi: core: Add support for data
->>>>> transfer" from Feb 20, 2020, leads to the following static checker
->>>>> warning:
->>>>>
->>>>> 	drivers/bus/mhi/core/main=2Ec:1153 mhi_queue_buf()
->>>>> 	error: double locked 'mhi_chan->lock' (orig line 1110)
->>>>>
->>>>> drivers/bus/mhi/core/main=2Ec
->>>>>     1142          }
->>>>>     1143
->>>>>     1144          /* Toggle wake to exit out of M2 */
->>>>>     1145          mhi_cntrl->wake_toggle(mhi_cntrl);
->>>>>     1146
->>>>>     1147          if (mhi_chan->dir =3D=3D DMA_TO_DEVICE)
->>>>>     1148                  atomic_inc(&mhi_cntrl->pending_pkts);
->>>>>     1149
->>>>>     1150          if (likely(MHI_DB_ACCESS_VALID(mhi_cntrl))) {
->>>>>     1151                  unsigned long flags;
->>>>>     1152
->>>>>     1153                  read_lock_irqsave(&mhi_chan->lock,
->flags);
->>> parse_xfer_event is taking read lock :
->read_lock_bh(&mhi_chan->lock); first
->>> and later
->>>
->>> mhi_queue_buf takes read lock: read_lock_irqsave(&mhi_chan->lock,
->flags);
->>>
->>> Both are read locks which are recursive, is this problematic ?
->>>
->> read_locks are recursive but I wanted to make the static checker
->happy=2E But
->> looking into it further (and after having a chat with Arnd), we might
->need to
->> refactor the locking here=2E
->>
->> Since 'chan->lock' only prevents 'mhi_chan->ch_state', how about
->doing something
->> like below?
->
->As comment mentioned for OOB (to enter=C2=A0 DB mode) write lock is acqui=
-red
->
->with preemption disabled (irqsave ver)=2E In case of OOB event control=20
->does not go to mhi_queue_buf
->
->path=2E=20
+* Please avoid a typo.
 
-Again, why do we need irq version of write lock=2E It should only be used =
-if the data is shared with hardirq handlers which I don't see=2E Otherwise,=
- write_lock_bh() looks sufficient to me as this itself is an exclusive lock=
-=2E=20
+* Is an imperative wording preferred?
 
->For transfer completion events >read_lock_bh is acquired and=20
->channel state is checked=2E
->
->This lock is held for entire handling of the transfer completion so
->that=20
->in case
->
->__mhi_unprepare_channel() is called from power down context write lock=20
->is acquired
->
->for channel lock to change channel state, which would wait until=20
->parse_xfer_event for
->
->data transfer is done (reader is in critical section)=2E=C2=A0 In case if=
-=20
->__mhi_unprepare_channel() wins then
->
->parse_xfer_event is skipped otherwise parse_xfer_event is done and then
->
->channel state is changed=2E
->
 
-So if we get unprepare_channel() after checking the channel state in parse=
-_xfer_event(), what could go wrong?
-Also, grabbing the lock for the entire function doesn't look good to me=2E=
- The purpose of the chan->lock is just to protect 'chan_state'/DB and not t=
-he whole function=2E
+=E2=80=A6
+> +++ b/arch/m68k/coldfire/pci.c
+> @@ -216,8 +216,10 @@ static int __init mcf_pci_init(void)
+=E2=80=A6
 
-Thanks,=20
-Mani
+I propose to move the pci_free_host_bridge() call for the desired
+exception handling to the end of this function implementation.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/coding-style.rst?id=3Dc0d73a868d9b411bd2d0c8e5ff9d98bf=
+a8563cb1#n450
 
->>
->> diff --git a/drivers/bus/mhi/core/main=2Ec
->b/drivers/bus/mhi/core/main=2Ec
->> index 3e9aa3b2da77=2E=2E904f9be7a142 100644
->> --- a/drivers/bus/mhi/core/main=2Ec
->> +++ b/drivers/bus/mhi/core/main=2Ec
->> @@ -474,19 +474,12 @@ static int parse_xfer_event(struct
->mhi_controller *mhi_cntrl,
->>          result=2Etransaction_status =3D (ev_code =3D=3D MHI_EV_CC_OVER=
-FLOW)
->?
->>                  -EOVERFLOW : 0;
->>  =20
->> -       /*
->> -        * If it's a DB Event then we need to grab the lock
->> -        * with preemption disabled and as a write because we
->> -        * have to update db register and there are chances that
->> -        * another thread could be doing the same=2E
->> -        */
->> -       if (ev_code >=3D MHI_EV_CC_OOB)
->> -               write_lock_irqsave(&mhi_chan->lock, flags);
->> -       else
->> -               read_lock_bh(&mhi_chan->lock);
->> -
->> -       if (mhi_chan->ch_state !=3D MHI_CH_STATE_ENABLED)
->> -               goto end_process_tx_event;
->> +       read_lock_bh(&mhi_chan->lock);
->> +       if (mhi_chan->ch_state !=3D MHI_CH_STATE_ENABLED) {
->> +               read_unlock_bh(&mhi_chan->lock);
->> +               return 0;
->> +       }
->> +       read_unlock_bh(&mhi_chan->lock);
->>  =20
->>          switch (ev_code) {
->>          case MHI_EV_CC_OVERFLOW:
->> @@ -559,10 +552,12 @@ static int parse_xfer_event(struct
->mhi_controller *mhi_cntrl,
->>  =20
->>                  mhi_chan->db_cfg=2Edb_mode =3D 1;
->>                  read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
->> +               write_lock_irqsave(&mhi_chan->lock, flags);
->>                  if (tre_ring->wp !=3D tre_ring->rp &&
->>                      MHI_DB_ACCESS_VALID(mhi_cntrl)) {
->>                          mhi_ring_chan_db(mhi_cntrl, mhi_chan);
->>                  }
->> +               write_unlock_irqrestore(&mhi_chan->lock, flags);
->>                  read_unlock_irqrestore(&mhi_cntrl->pm_lock, flags);
->>                  break;
->>          }
->> @@ -572,12 +567,6 @@ static int parse_xfer_event(struct
->mhi_controller *mhi_cntrl,
->>                  break;
->>          } /* switch(MHI_EV_READ_CODE(EV_TRB_CODE,event)) */
->>  =20
->> -end_process_tx_event:
->> -       if (ev_code >=3D MHI_EV_CC_OOB)
->> -               write_unlock_irqrestore(&mhi_chan->lock, flags);
->> -       else
->> -               read_unlock_bh(&mhi_chan->lock);
->> -
->>          return 0;
->>   }
->>
->> Moreover, I do have couple of concerns:
->>
->> 1=2E 'mhi_chan->db_cfg=2Edb_mode =3D 1' needs to be added to the critic=
-al
->section
->> above=2E
->>
->> 2=2E Why we have {write/read}_lock_irq variants for chan->lock? I don't
->see where
->> the db or ch_state got shared with hardirq handler=2E Maybe we should
->only have
->> *_bh (softirq) variants all over the place?
->>
->> Thanks,
->> Mani
->>
->>>>>                                             ^^^^^^^^^^^^^^^
->>>>> The caller is already holding this lock=2E
->>>>>
->>>> Hmm=2E We have one internal user of this function and that's where
->the locking
->>>> has gone wrong=2E Will fix it=2E
->>>>
->>>> Thanks for reporting!
->>>>
->>>> Regards,
->>>> Mani
->>>>
->>>>>     1154                  mhi_ring_chan_db(mhi_cntrl, mhi_chan);
->>>>>     1155                  read_unlock_irqrestore(&mhi_chan->lock,
->flags);
->>>>>     1156          }
->>>>>     1157
->>>>>     1158          read_unlock_irqrestore(&mhi_cntrl->pm_lock,
->flags);
->>>>>     1159
->>>>>     1160          return 0;
->>>>>     1161  }
->>>>>     1162  EXPORT_SYMBOL_GPL(mhi_queue_buf);
->>>>>
->>>>> regards,
->>>>> dan carpenter
->>> --=20
->>> The Qualcomm Innovation Center, Inc=2E is a member of the Code Aurora
->Forum,
->>> a Linux Foundation Collaborative Project
-
---=20
-Sent from my Android device with K-9 Mail=2E Please excuse my brevity=2E
+Regards,
+Markus

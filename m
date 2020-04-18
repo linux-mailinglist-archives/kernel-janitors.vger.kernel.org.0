@@ -2,116 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8BDF1AEB79
-	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Apr 2020 11:46:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D36EE1AEB90
+	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Apr 2020 12:10:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725970AbgDRJp7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 18 Apr 2020 05:45:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44110 "EHLO
+        id S1725869AbgDRKKK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 18 Apr 2020 06:10:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725869AbgDRJp7 (ORCPT
+        by vger.kernel.org with ESMTP id S1725799AbgDRKKJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 18 Apr 2020 05:45:59 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A08EC061A0C;
-        Sat, 18 Apr 2020 02:45:59 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id y24so5463595wma.4;
-        Sat, 18 Apr 2020 02:45:59 -0700 (PDT)
+        Sat, 18 Apr 2020 06:10:09 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D87EAC061A0C;
+        Sat, 18 Apr 2020 03:10:07 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id a25so5846940wrd.0;
+        Sat, 18 Apr 2020 03:10:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
-        bh=0UEuFIPjoNbxDYPu32NzT8SOSNkovRtH6W5cOCdsS90=;
-        b=YtK4TUya4m/vtt85dkcu1lvnVB2s3OsUYcP6cX+GWKsuw2jUIBkPqolREhwLQ4za2K
-         rKioVN1zwUIT0dvmYhXY92Qcetc3U96S38I75jT0y9Re/ljjqMOev6er9P/uFwUsQ3t3
-         w47PTc0tZhT4GLFZJfIIZU23OhR3fvEWogygDBvQfFCv5gVWbbE/3Z9fC+RfvB+elGXO
-         MDpzX8ZP8vf3/cwpwdkbRL2FQ2AgQoHln3jm057pCkbqs+ojnOdwpnzk8EOKE9pwq+wb
-         SeP4+5DjeUk4x4c7tpXQq9oxmK2uvQhXiQVWb69H2uDvUrlQiayq1Y7GW5jCNZrdwcqz
-         AiMw==
+        bh=Qena3MtWCWW39FG/sL2IEnJF//vW5pRQm5AGBE6pZfs=;
+        b=K9fIql3mNM8DUze3LYpJq8hIxn2AbWQHpdVjOEFpNdg53lvoEz1UK9fBmuw3bINzDf
+         d+BKyBPyar9YdWtsiom/Mg4JBfehj8B3R1+7oH33sodNU67H74rbsulZEMbQHjr4YSub
+         +HTqKKFEojq8XJ+hC5IjCxeCMp366EjOllOO4YjpmxrGLFriF7VEa2A0lZGihbf+qtXf
+         gRE3UzCXoggGhRiOBDjeN/sL1qTj85olxCyG4RqsNtxkoz+hOe8W11IyWSgJw8Cl6lEH
+         qHjWnln/QBrY5jtSr+Tx+sx1ec5ysNiE3i/OLeKW+AcpjZ8l9NVz6kGlGExLiiyLlkGC
+         K2EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=0UEuFIPjoNbxDYPu32NzT8SOSNkovRtH6W5cOCdsS90=;
-        b=CcZZmI4bqrUXVt0tCJCUOa/yjR8Zm6IxM6BOzPkgePyGjKi7VFA7FwR29KucTUjRDk
-         kiH2+n0U1qHqYfVXQCRjVeY7L9EX8hKcL7064ADgHJLboL4yowZspUbdUjGyyz7CE4Du
-         HpFaU1jFRUCovPuZfl12L7ZfASMb/toM48kOWg/GH1ysyiqrYGM7Q+7e1YeAfjOF22lD
-         dPJuy0GWP9a2gj0vCxeTKOR7tBfMruSykS2Sj50p6ei30gy561InXvmuceLrCVHdnz0W
-         ScgOHskypWUAElxnsINuAOukJQBB4praaF85PqJ6ODTvUGLcdDwGrt1Y24Mya3f8pjxf
-         52Pw==
-X-Gm-Message-State: AGi0Pua8LJ7sHqYk3H0WWELn4I0kdw6ISbLMMpjr8lfKZrY3Zo1ji56d
-        d6BD4E72sAvjgNtcVFKGh6I=
-X-Google-Smtp-Source: APiQypIyMO+4/quEJujpMCvgvclxIYY0si540fnIpBwrnWIVcZg7e3h0SnEd7u0Z+EkdgrrFIVzQhw==
-X-Received: by 2002:a05:600c:21d6:: with SMTP id x22mr7837208wmj.95.1587203157912;
-        Sat, 18 Apr 2020 02:45:57 -0700 (PDT)
+        bh=Qena3MtWCWW39FG/sL2IEnJF//vW5pRQm5AGBE6pZfs=;
+        b=gVDQYrTHCNgvjh6kbMvhqyBA4rp90VtiMaW2A8gQHe7RqyyQGrxUCH8nO3dDvtgi2u
+         9Add2vwJQQqfOgtN9e4ZWtpZPhqUa0pc1aA90CV3OZcmWceKlQpoD6S74rfVudV3pj3Q
+         dIydF+uFiffRaDC42pXwncSY0L5LFgsB3JLsZgCtfOMg0HSJ92VaMOax9IGx2CGZEWgK
+         jHO0Gz1ldDq5iHXyhidgPfop5T2+1T1ryzh4IPm8m+JRfBBNrBGMdQOuCLEI/9EVyw0Z
+         +KsbKQCaSuUxqwr5K0gLNRuPbcyWgmqELO6VBsfSKdLM/+NzufHAcK20qqiXTPSqYEaA
+         3djA==
+X-Gm-Message-State: AGi0PubAG6waSvRSkeQMA+yQRc+Ngi75A77HnNnV6nfx3wWQhDPZQS2v
+        jyqFnAq+PbeKMN36WK7wTr8=
+X-Google-Smtp-Source: APiQypJsEnFS9Q8J+bi+lqjec6s/dgGbyTxoCgCAdexX5/q13TcVfDXVpTDBzDHeNL+J8l0zlty3vg==
+X-Received: by 2002:adf:b1d1:: with SMTP id r17mr6511809wra.85.1587204605462;
+        Sat, 18 Apr 2020 03:10:05 -0700 (PDT)
 Received: from felia.fritz.box ([2001:16b8:2d7a:4700:391d:588b:ee8c:e294])
-        by smtp.gmail.com with ESMTPSA id z18sm28917997wrw.41.2020.04.18.02.45.56
+        by smtp.gmail.com with ESMTPSA id h13sm23790689wrs.22.2020.04.18.03.10.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Apr 2020 02:45:57 -0700 (PDT)
+        Sat, 18 Apr 2020 03:10:04 -0700 (PDT)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Cc:     linux-media@vger.kernel.org, Joe Perches <joe@perches.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     Boris Brezillon <bbrezillon@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Sebastian Duda <sebastian.duda@fau.de>,
+        Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: adjust entries to moving CEC USB drivers
-Date:   Sat, 18 Apr 2020 11:45:46 +0200
-Message-Id: <20200418094546.6742-1-lukas.bulwahn@gmail.com>
+Subject: [PATCH RESEND] MAINTAINERS: adjust to renaming physmap_of_versatile.c
+Date:   Sat, 18 Apr 2020 12:09:33 +0200
+Message-Id: <20200418100933.8012-1-lukas.bulwahn@gmail.com>
 X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit a81068181aad ("media: move CEC USB drivers to a separate directory")
-moved drivers/media/usb/{pulse8,rainshadow}-cec to
-drivers/media/cec/usb/{rainshadow,pulse8}, but did not adjust the entries
-in MAINTAINERS.
+Commit 6ca15cfa0788 ("mtd: maps: Rename physmap_of_{versatile, gemini}
+into physmap-{versatile, gemini}") renamed physmap_of_versatile.c to
+physmap-versatile.c, but did not adjust the MAINTAINERS entry.
 
-Since then, ./scripts/get_maintainer.pl --self-test=patterns complains:
+Since then, ./scripts/get_maintainer.pl --self-test complains:
 
-  warning: no file matches F: drivers/media/usb/pulse8-cec/*
-  warning: no file matches F: drivers/media/usb/rainshadow-cec/*
+  warning: no file matches F: drivers/mtd/maps/physmap_of_versatile.c
 
-Update the MAINTAINERS entries to the new file locations.
+Rectify the ARM INTEGRATOR, VERSATILE AND REALVIEW SUPPORT entry and now
+also cover drivers/mtd/maps/physmap-versatile.h while at it.
 
+Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
+Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
 Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
-Hans, please ack.
-Mauro, please pick this non-urgent minor clean-up patch on top of the
-CEC USB driver moves.
+Boris, please pick or ack this patch.
+applies cleanly on current master and next-20200417
 
-applies cleanly on next-20200417
+v1: https://lore.kernel.org/lkml/20200228063338.4099-1-lukas.bulwahn@gmail.com/
+  - was wrongly sent to old boris.brezillon@bootlin.com address
+  - got Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-This is the 'minimal' patch to address the warning.
-
-Alternatively, we could simply merge the two entries into one entry
-CEC USB (RAINSHADOW/PULSE8) DRIVERS.
-
-
- MAINTAINERS | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index e965e5467a4d..3083282134de 100644
+index c77f02282044..52bb8819230a 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -13736,7 +13736,7 @@ L:	linux-media@vger.kernel.org
- S:	Maintained
- T:	git git://linuxtv.org/media_tree.git
- F:	Documentation/admin-guide/media/pulse8-cec.rst
--F:	drivers/media/usb/pulse8-cec/*
-+F:	drivers/media/cec/usb/pulse8/
+@@ -1342,7 +1342,7 @@ F:	arch/arm/plat-versatile/
+ F:	drivers/clk/versatile/
+ F:	drivers/i2c/busses/i2c-versatile.c
+ F:	drivers/irqchip/irq-versatile-fpga.c
+-F:	drivers/mtd/maps/physmap_of_versatile.c
++F:	drivers/mtd/maps/physmap-versatile.*
+ F:	drivers/power/reset/arm-versatile-reboot.c
+ F:	drivers/soc/versatile/
  
- PVRUSB2 VIDEO4LINUX DRIVER
- M:	Mike Isely <isely@pobox.com>
-@@ -14152,7 +14152,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
- L:	linux-media@vger.kernel.org
- S:	Maintained
- T:	git git://linuxtv.org/media_tree.git
--F:	drivers/media/usb/rainshadow-cec/*
-+F:	drivers/media/cec/usb/rainshadow/
- 
- RALINK MIPS ARCHITECTURE
- M:	John Crispin <john@phrozen.org>
 -- 
 2.17.1
 

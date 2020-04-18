@@ -2,70 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADF721AEA49
-	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Apr 2020 08:47:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 143C21AEA6A
+	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Apr 2020 09:07:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725849AbgDRGrf convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 18 Apr 2020 02:47:35 -0400
-Received: from mail.fireflyinternet.com ([109.228.58.192]:53233 "EHLO
-        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725782AbgDRGrf (ORCPT
+        id S1725891AbgDRHH5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 18 Apr 2020 03:07:57 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:59425 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725857AbgDRHH4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 18 Apr 2020 02:47:35 -0400
-X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
-Received: from localhost (unverified [78.156.65.138]) 
-        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 20940213-1500050 
-        for multiple; Sat, 18 Apr 2020 07:47:06 +0100
-Content-Type: text/plain; charset="utf-8"
+        Sat, 18 Apr 2020 03:07:56 -0400
+Received: from localhost.localdomain ([90.126.162.40])
+        by mwinf5d11 with ME
+        id U77s2200G0scBcy0377tWl; Sat, 18 Apr 2020 09:07:54 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 18 Apr 2020 09:07:54 +0200
+X-ME-IP: 90.126.162.40
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     gerg@linux-m68k.org, geert@linux-m68k.org, bhelgaas@google.com,
+        lorenzo.pieralisi@arm.com
+Cc:     linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] m68k/PCI: Fix a memory leak in an error handling path
+Date:   Sat, 18 Apr 2020 09:07:51 +0200
+Message-Id: <20200418070751.25420-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <20200417160829.112776-1-colin.king@canonical.com>
-References: <20200417160829.112776-1-colin.king@canonical.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-From:   Chris Wilson <chris@chris-wilson.co.uk>
-Subject: Re: [PATCH][next] drm/i915: remove redundant assignment to variable test_result
-To:     Colin King <colin.king@canonical.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
-Message-ID: <158719242529.2062.10865538071297156214@build.alporthouse.com>
-User-Agent: alot/0.8.1
-Date:   Sat, 18 Apr 2020 07:47:05 +0100
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Colin King (2020-04-17 17:08:29)
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable test_result is being initialized with a value that is
-> never read and it is being updated later with a new value.  The
-> initialization is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/gpu/drm/i915/display/intel_dp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-> index d4fcc9583869..55697c5e251a 100644
-> --- a/drivers/gpu/drm/i915/display/intel_dp.c
-> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
-> @@ -5567,7 +5567,7 @@ void intel_dp_process_phy_request(struct intel_dp *intel_dp)
->  
->  static u8 intel_dp_autotest_phy_pattern(struct intel_dp *intel_dp)
->  {
-> -       u8 test_result = DP_TEST_NAK;
-> +       u8 test_result;
->  
->         test_result = intel_dp_prepare_phytest(intel_dp);
+If 'ioremap' fails, we must free 'bridge', as done in other error handling
+path bellow.
 
-Yes, this is definitely being overwritten this time :)
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
--Chris
+Fixes: 19cc4c843f40 ("m68k/PCI: Replace pci_fixup_irqs() call with host bridge IRQ mapping hooks")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ arch/m68k/coldfire/pci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/arch/m68k/coldfire/pci.c b/arch/m68k/coldfire/pci.c
+index 62b0eb6cf69a..84eab0f5e00a 100644
+--- a/arch/m68k/coldfire/pci.c
++++ b/arch/m68k/coldfire/pci.c
+@@ -216,8 +216,10 @@ static int __init mcf_pci_init(void)
+ 
+ 	/* Keep a virtual mapping to IO/config space active */
+ 	iospace = (unsigned long) ioremap(PCI_IO_PA, PCI_IO_SIZE);
+-	if (iospace == 0)
++	if (iospace == 0) {
++		pci_free_host_bridge(bridge);
+ 		return -ENODEV;
++	}
+ 	pr_info("Coldfire: PCI IO/config window mapped to 0x%x\n",
+ 		(u32) iospace);
+ 
+-- 
+2.20.1
+

@@ -2,43 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2EC31AF503
-	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Apr 2020 22:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 199AD1AF501
+	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Apr 2020 22:55:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728213AbgDRUzK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 18 Apr 2020 16:55:10 -0400
-Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:45858 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727992AbgDRUzK (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 18 Apr 2020 16:55:10 -0400
-Received: from [192.168.1.41] ([90.126.162.40])
-        by mwinf5d33 with ME
-        id ULv22200V0scBcy03Lv3qd; Sat, 18 Apr 2020 22:55:06 +0200
-X-ME-Helo: [192.168.1.41]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 18 Apr 2020 22:55:06 +0200
-X-ME-IP: 90.126.162.40
-Subject: Re: [PATCH] m68k/PCI: Fix a memory leak in an error handling path
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        linux-m68k@lists.linux-m68k.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Newsgroups: gmane.linux.ports.m68k,gmane.linux.kernel.janitors,gmane.linux.kernel
-References: <2e00c1f1-8faa-5045-ddf5-2bf943f714f2@web.de>
+        id S1726734AbgDRUzJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 18 Apr 2020 16:55:09 -0400
+Received: from ciao.gmane.io ([159.69.161.202]:32974 "EHLO ciao.gmane.io"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726014AbgDRUzJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 18 Apr 2020 16:55:09 -0400
+Received: from list by ciao.gmane.io with local (Exim 4.92)
+        (envelope-from <glkj-kernel-janitors-2@m.gmane-mx.org>)
+        id 1jPuUV-000DRE-DM
+        for kernel-janitors@vger.kernel.org; Sat, 18 Apr 2020 22:55:07 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To:     kernel-janitors@vger.kernel.org
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <ea3d9b35-4409-fb86-8855-0ddb73989829@wanadoo.fr>
+Subject: Re: [PATCH] m68k/PCI: Fix a memory leak in an error handling path
 Date:   Sat, 18 Apr 2020 22:55:00 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <2e00c1f1-8faa-5045-ddf5-2bf943f714f2@web.de>
+Message-ID: <ea3d9b35-4409-fb86-8855-0ddb73989829@wanadoo.fr>
+References: <2e00c1f1-8faa-5045-ddf5-2bf943f714f2@web.de>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+Cc:     linux-m68k@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <2e00c1f1-8faa-5045-ddf5-2bf943f714f2@web.de>
 Content-Language: en-US
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -83,4 +75,5 @@ CJ
 > Regards,
 > Markus
 >
+
 

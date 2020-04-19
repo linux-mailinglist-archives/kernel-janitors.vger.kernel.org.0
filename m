@@ -2,92 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7F011AF691
-	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Apr 2020 06:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C795E1AF6CE
+	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Apr 2020 06:27:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725964AbgDSESe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 19 Apr 2020 00:18:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45170 "EHLO
+        id S1725927AbgDSE1l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 19 Apr 2020 00:27:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725769AbgDSESe (ORCPT
+        by vger.kernel.org with ESMTP id S1725769AbgDSE1l (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 19 Apr 2020 00:18:34 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D66AC061A0C;
-        Sat, 18 Apr 2020 21:18:34 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id h11so2634422plr.11;
-        Sat, 18 Apr 2020 21:18:34 -0700 (PDT)
+        Sun, 19 Apr 2020 00:27:41 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3B3FC061A0C;
+        Sat, 18 Apr 2020 21:27:39 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id ng8so3061895pjb.2;
+        Sat, 18 Apr 2020 21:27:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=rEiU8SaLExT2bwa3LkvDAdTz36OwDQsEFW3OIT7jvi0=;
-        b=fVZuUy1S+JXROMM7sw9oiIJI/EvhjSp461/28N+T3iKaix8cjxs8Sr6meMrGX4dJ8j
-         i1atIBEUxzKGnxQ6Vsi45qKZWt/1EJNfusQlqa7bKv5J5CPz96PVEMhMWVjfTuHN6JxK
-         OLCz/59yYNMSVjMiTSmtYCcIcnesPgj47TO4qYLUyZGPmuyNUw2ZWscxvATws6VG3KNu
-         95R6gWrSyhS8idKcqmrYVsiVDNiVZ9PZoAKsR5Ayo5r0F3ACMY98xk8Ow1YHuu6S9DEn
-         aLtTW9DO7hlgfN2Z7CJDSrrVm5bL1Kb4z6226aa1bW6VFoSsYaOo/ZO1nAAFaLxjt6xe
-         3yzQ==
+        bh=Fg1nBtscd0EnZj9z4stneXu5of0TAOGY9Mx+yinyRuE=;
+        b=So01w+pyjdVuDseUrJoqO/RyaAGna8aMbnWUPoms5gVndykw/c9fM9r1CuCNvNTqkm
+         vrEJXbyKIgKvjLCdfOWMYt/M0RdS43r7slg7gZbe+jEJaEXUgJ/4asHFmJ5BfLjCCJQA
+         8bfWx1oGF3aP8qaJiJDibREG9fJi5xIzifYvCaojDok874hovG1iaO0jSv5ak9CDtN5E
+         zHTJKYksKSmLA8jBgWFw6I/BAsdIStskSKQhcteeUQntpnrouvx8YPcM6t+3mRwz6RAU
+         PyITf2Pc9os/+rYCimh4Ha9JUr1dFVQ91RvzQ+BSGTc6Cph/GVR5VDOM0FSkKOjKJNCd
+         G5DQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=rEiU8SaLExT2bwa3LkvDAdTz36OwDQsEFW3OIT7jvi0=;
-        b=Y8gXqvt++T6tZkd1tNvZi0Vl4+dtCdNMbD5VBB0Qdg06phkEdNe6ZLsuii9PV7jz+R
-         ac3K7Pab5p4O35HGmW94+JN43J0MW10szOPElw6L/Sa+DpihJvyCSxUYDIyBJYWKUQtf
-         iTaEDGJX85BplW4RgrJypLQtbRLYxoVxN8ky2okdKU9YIjD7p7cxENEpeKMjYXTSyS2R
-         noXMClGZF1cFD7638JrVyAhkSWVi2ydkSITjqO2Xm+nVwNeR963eY7or79wuljOl8mlN
-         b3RIZ5OF3ex6giCL2spBvitem+qf2p02CrI8+chQokY4Nv4MHX4DC37nEKoGo0TQfLor
-         LHsA==
-X-Gm-Message-State: AGi0PubudydD32OhFDKqK7dxz73TC6+FWBnYkBkUCsxUvKmuGkNBWukf
-        WQYq9koyF1Vtj6VgB/CEzY0=
-X-Google-Smtp-Source: APiQypIfMLxz5SPVhlLgxcYESL8q/VZx5LsYXSiGsqQEEjh96OR3skPEcB1sVPwpyHqN7Yrnu+Ae+g==
-X-Received: by 2002:a17:90a:5d96:: with SMTP id t22mr14163074pji.132.1587269913536;
-        Sat, 18 Apr 2020 21:18:33 -0700 (PDT)
+        bh=Fg1nBtscd0EnZj9z4stneXu5of0TAOGY9Mx+yinyRuE=;
+        b=ALXXlCQJoH5VxPMT0MI5koLiW5/RLUWFB8Uq2A+f+oQhdukdhpemXakTpSSvJkrf6e
+         EJtVl+majF9XNSCKfIIUopwxBfq78gz8HgZTL4zR7X6wtOTDL2E3j0hxWd/3SjuIh4r3
+         7dQiGRIbOD7SzypzpM0RmJtF7msobtGqbz0X2iM2RF7cAsLbcJjAmtFvEDYRTeKIgRWN
+         GepypVqnFoEPZK+cgXKKtB8ygCt7wiGdlpBXmcBEigxvYV/T+9JOrIvAvOIRWif7FfPr
+         1N5pq7ODzpDBo2bRFgTkfaPW0rUfIX2S5x60MoAfgL23T5BJebOrU6hdkwcfOXxUb+uY
+         LEvA==
+X-Gm-Message-State: AGi0PuYWMXznGv55ZHIpz8Uw+YZeT/uryYp6I/uE3mM3+vo2d8+SD+bE
+        oNlDVQw7d7yGmSyeb2K9vzM=
+X-Google-Smtp-Source: APiQypJ9w3xNbZHSC3ODse153GoeR6LMQDsn7t07Y0RrPNaHqBp05xk71/n+yRhtIMaCPVvHNCBVOQ==
+X-Received: by 2002:a17:90a:a402:: with SMTP id y2mr1198940pjp.55.1587270459105;
+        Sat, 18 Apr 2020 21:27:39 -0700 (PDT)
 Received: from dtor-ws ([2620:15c:202:201:3c2a:73a9:c2cf:7f45])
-        by smtp.gmail.com with ESMTPSA id b189sm14982848pfb.163.2020.04.18.21.18.32
+        by smtp.gmail.com with ESMTPSA id y26sm5004925pfn.185.2020.04.18.21.27.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Apr 2020 21:18:32 -0700 (PDT)
-Date:   Sat, 18 Apr 2020 21:18:30 -0700
+        Sat, 18 Apr 2020 21:27:38 -0700 (PDT)
+Date:   Sat, 18 Apr 2020 21:27:36 -0700
 From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
 To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     tglx@linutronix.de, info@metux.net, gregkh@linuxfoundation.org,
-        gustavo@embeddedor.com, linux-input@vger.kernel.org,
+Cc:     tglx@linutronix.de, linux-input@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] Input: tca6416-keypad - Fix a typo in MODULE_DESCRIPTION
-Message-ID: <20200419041830.GF166864@dtor-ws>
-References: <20200413152329.4435-1-christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH] Input: Fix a typo in a module name in Kconfig
+Message-ID: <20200419042736.GI166864@dtor-ws>
+References: <20200412095711.9107-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200413152329.4435-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20200412095711.9107-1-christophe.jaillet@wanadoo.fr>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Apr 13, 2020 at 05:23:29PM +0200, Christophe JAILLET wrote:
-> This should be 'tca6416', not 'tca6146'
+On Sun, Apr 12, 2020 at 11:57:11AM +0200, Christophe JAILLET wrote:
+> A 'y' is missing in spear-keyboard.
 > 
 > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
 Applied, thank you.
 
 > ---
->  drivers/input/keyboard/tca6416-keypad.c | 2 +-
+>  drivers/input/keyboard/Kconfig | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/input/keyboard/tca6416-keypad.c b/drivers/input/keyboard/tca6416-keypad.c
-> index 21758767ccf0..9b0f9665dcb0 100644
-> --- a/drivers/input/keyboard/tca6416-keypad.c
-> +++ b/drivers/input/keyboard/tca6416-keypad.c
-> @@ -374,5 +374,5 @@ static void __exit tca6416_keypad_exit(void)
->  module_exit(tca6416_keypad_exit);
+> diff --git a/drivers/input/keyboard/Kconfig b/drivers/input/keyboard/Kconfig
+> index 28de965a08d5..793ecbbda32c 100644
+> --- a/drivers/input/keyboard/Kconfig
+> +++ b/drivers/input/keyboard/Kconfig
+> @@ -701,7 +701,7 @@ config KEYBOARD_SPEAR
+>  	  Say Y here if you want to use the SPEAR keyboard.
 >  
->  MODULE_AUTHOR("Sriramakrishnan <srk@ti.com>");
-> -MODULE_DESCRIPTION("Keypad driver over tca6146 IO expander");
-> +MODULE_DESCRIPTION("Keypad driver over tca6416 IO expander");
->  MODULE_LICENSE("GPL");
+>  	  To compile this driver as a module, choose M here: the
+> -	  module will be called spear-keboard.
+> +	  module will be called spear-keyboard.
+>  
+>  config KEYBOARD_TC3589X
+>  	tristate "TC3589X Keypad support"
 > -- 
 > 2.20.1
 > 

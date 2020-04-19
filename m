@@ -2,34 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A7471AFBE2
-	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Apr 2020 18:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D54371AFC75
+	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Apr 2020 19:09:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726337AbgDSQTe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 19 Apr 2020 12:19:34 -0400
-Received: from mout.web.de ([212.227.15.4]:40887 "EHLO mout.web.de"
+        id S1726522AbgDSRJU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 19 Apr 2020 13:09:20 -0400
+Received: from mout.web.de ([212.227.15.4]:34069 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726160AbgDSQTd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 19 Apr 2020 12:19:33 -0400
+        id S1726138AbgDSRJT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 19 Apr 2020 13:09:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1587313162;
-        bh=of2wU8RTRYMU0kaC7Ph3S3HMYNADQMI81zLrLNzHgpI=;
+        s=dbaedf251592; t=1587316155;
+        bh=x1gHgVLBr9MTx7hPtqahG8DOkzRn3pwA6OhyJkKQ8dE=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=K0gD1dUbJSeH83PRPy990QeZVdDtqyBAE+R1mrgOlGcdLMeYj/GmvuTJ2eUOWM6qG
-         qdGDiVMFsvd5jjlx4z4ch9BRV+2xtFSEoO53eQxwZnJGdwrzSyJB64f2eCyEF8Tm1e
-         WvdKhmlEtWN6mH3+/lpevit+PsZ5wrJGnEimfJA4=
+        b=WTwkUEi0qwJW4kZQ2SEEadv6DaF/ZQPB6z6er4pggMZen330JHih/J82eY9/JeCLL
+         hcWKIHwrvgVfWJNvBr2PZwM7Z5OCnndGXx0IgmqA+iDcP2U8mnD68qpe1T34lXV+j2
+         3U8B/hZBj/Nn0/pe7M7QFS1hR4hrk9O5gI/WVIVs=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.85.208]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LlJzS-1iqazs0si6-00b4Sc; Sun, 19
- Apr 2020 18:19:22 +0200
-To:     Dejin Zheng <zhengdejin5@gmail.com>, linux-can@vger.kernel.org,
-        netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        Wolfgang Grandegger <wg@grandegger.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Coccinelle <cocci@systeme.lip6.fr>
-Subject: Re: [PATCH net-next v1] can: ti_hecc: convert to
- devm_platform_ioremap_resource_byname()
+Received: from [192.168.1.2] ([2.243.85.208]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LnjAt-1ik1nI0r3H-00hrP4; Sun, 19
+ Apr 2020 19:09:15 +0200
+To:     Dejin Zheng <zhengdejin5@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] regmap: redefined regmap_read_poll_timeout to
+ simplify code
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -74,62 +71,77 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <08979629-d9b8-6656-222f-4e84667651a1@web.de>
-Date:   Sun, 19 Apr 2020 18:19:12 +0200
+Message-ID: <3376dcba-4285-c894-915e-2f41cbf23caa@web.de>
+Date:   Sun, 19 Apr 2020 19:09:14 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Keg/E4Y7RjiqLK1+kspg/czOnv06G10YWSta4VRSEwYUJnc1WKb
- xsvVCGKOJxOSxH8UTTm+FzwIoQeoHV6TXYSp3oh4TLfyLOLZ46Wvwt2DhfgCMj7zzmcndW6
- SpJza4bZ8+ygOqEPVMrqJpJxSYLre0KexLMQEtzR4F76S8KG9OERO/tJ34JQv3lDR5tPA5H
- LrE/lfp+lrBNwd0zVutfA==
+X-Provags-ID: V03:K1:GUiDQShDsKKuJVPMv4swtE3GElrKhTotPfuV7m6ASt0C6jMC32O
+ lIAOR/Ps7E5XLZBegFSFqZDBoRFTdOpYws4uaD9WlAy249KE6D2vF5lJvOW+UyXVpGXeYej
+ KdpZ5Zu14eK2QB5yCQe41MYBI1Uk4f2Jxfaij+g64KI41wkDfzvjel5/9tB2SbiqJO48Fz0
+ h3dvJR3yHegijqxAo6csw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:3ol83GrGi6k=:w/LZwwojFVtRTWMWqr+JVg
- 7EJwekt2kKO8yRCTNYQlfSnbwSHTn4wGH0tWacmthuvXRsiOOzfTsK3+lGHj8bLbhVibnbJZ0
- 3s2r3EN7qNHVgYvNliymfmd0OBx3C5F9tI/vrrdlGLQJ1eju6rHmV8FE5mheVvgcWYv9WLY6H
- poDu4TuVi8vKVAW8atIW76cF/2khFT9XtpsYYf2PyfQrqdbzjyvKMpbjB3eFw4SK482lud2IL
- 5Cj5PMcQ7VNhzfQP6RUEM8/r/7CjfJy/g7fvpr427xJpKQsjA4WqqDmDTsKj8QxwKkuceAnH2
- a11DILJppdsPCoMBlSiHVn9dlcG9YaAxrgP/QFxwZTX3hMX/QlBNK2e8OFeAnM+4ZCDXErZjD
- M/fa/XDQwsK6iVPE9/vMcEZVbNK/ckFj/SQWv6yAl41o/XcnYEunPXrTX3QcaiAmSMFPWBtr/
- 6VtvCJwpRCUMPIRnDehWDKPotC/FwZKG4wtVYcKLM3ybjzNY11phctBqELdlp647woJYLm3L3
- hOhfInDKa/sk8CdkdQ/TF18KLb9yGCEo4pa1/qeNwiAmqnYO2svbluTvvI8FFGzOVTQjRByP6
- txpZGVMB9q0khJrTmCm8n0B/r5TgD4CnvqOWD9z1odhC4+7H2cr7727jH0Kj1QSRXLOmJ4AxV
- SDyC55jI3jmQwvy7mLTZ5bCp7I0dnPnCzqJ1NgLNpYJh+ZXknoeyGzO2MoVqh5+lkWyDS+XTH
- dJfWkYV7mpTD56Ppsk0xTgXI2uvCZmrQ7IM9QSXHkaRzY1R0XSnaqAEE2Hcp5lP+8yAYb2V/1
- E/utfoR5PpKW8K2VQs5iESq3CfUfieTkLnSYtPntNI7E2gzsXco9cTIpPMaaPbNLhS5X7poW4
- 5REiPgkmUe1IKp0Xb/DB3caYpL1C5EeHHhuSGmq9plh0wC3pO/7Jbwe+S6bqj3bwXJpQF0D32
- wcnioumxdmB0XbDf7+jKyujxQ3308F2vHXW9whCj64lrAR68zYdErQVRcXkAsmmR0KwX4sTub
- Hck13c3pOh9gKMuXKsEjhLCbgWaDJo6+TGpsXGDkDTZR5HCjm0uaIL7oGji/puho5LnpioOod
- UH/SzWKJQhiF8oHRcau6yyzdSrvOQT/UXckLTfOrluVVUxFLHdul80zi9spP9ZRDXgClKjJ/i
- EMHW/M4Z/6tY2IAtPYrUS3ZsmnJPnUBXeO9UOIz98DMnTqFAuUfGFTJT6WcOkqCNo/JjN5hkR
- 1CyC/uEzS1eGamOt5
+X-UI-Out-Filterresults: notjunk:1;V03:K0:vORQKCk9158=:opqh37s3z9T1A67bJFRFoO
+ uWbK3HgLQv35+n1MAxyquTjFfG0ftg5lNJEjS5oZN1JGbVEXyKt2ijSlsJfh3JrViXdOqtTJs
+ t2SSkq3HtWt7CyZm18g0Z+KYksBnzjgAnNaBFJl0GvcgNLctclo1tMmYZMIx9lTcdKlS1AGc+
+ YaBjF4IZ+9JvXlMPVCjmGFsemeGFMOBAioHFm0sLYACmtPAtZK1GZoW3CN9e4ucrJaTHCWfvZ
+ Brk0vi5O2zSMDpdaf62v9pCqTGJaWnexkzD02FjCxvFtUM4HRFOq82RmVT19Q9WORf50f3qhS
+ gNzBV0qfYLh1Cd4RJH80m4MHcxJOkr9Z40knJQE/qaBI9jJkI6ygOgQWBVl72lmQFHboRIIWj
+ jbd5TCpuIV7pYYlZQRnp6p3QFoHCeZT6wlPRryQAkV1Me8B09W5MTb/J8dKC5ksETNpXPBjGG
+ 72dEmqlPGef3Dwwm1cHxtrTybtx+W1wtX8jkg5tRBTOQBZIDj4nqGFkHcrA6ukHk8UGEQ4Czx
+ KbSqE7XgV465oxErj75tZMYMhQiHPCIA3SOOcINwMNXRDedeEWNLmOFO6ItLl+JhNdMcEd826
+ 4C7q/H45pJr/NJZBhENvFKTmv2PX8H8lGAFeKBbRgGCyhN5YC195Q6heIELquKxsv3PeNhzH6
+ B9qaixXo4kYbRpJtnSnDOuOTAmZMirkjhhxDAYCeY8cDrs+uhyOuFVXOf4ObpLpORv/gbp+eD
+ AJnZa3ZdTv6enSb6cJWTXXz2iDMQLKas6WRbC+opJXUZcKSt4cV8AxryGjvUIdE1MGERjpAXo
+ IHMMw2WZUHWfaGukCmhrSiZlQKj1E5EEFnF+PW2VoPCDdv5aqIM+nDMYkb+eZtP1/vlWEb/UF
+ Oj6gzb0FlPosGdNcHu6b7izMRD6kyiSpiCKPex8XB8vDIEOhcIdv4m0wcmxlW4Lb0KUtP0sl/
+ lB7zmbWuI/jK3xwMAzOTEkw0kygsQ4fY7va96VYwUAx8oBTEaKBko13bW1TTF3jfbQcEoYm2g
+ 4GwqcVJ+PH/3vLU6yaWDkUQavediv6OPNzA0g6TjWSPEDd4LHT6gJo4tvTu1ysn+kHCg56jpb
+ IUVsUQvXqr2J9rr2ZsqW/yZ6GZ3JUw4HpWwKdkEEKNWivXet7rKO2qMRei1F6gJ+tFO2qOikS
+ KTTVlZYnYzFJkqi8SAJUbqjXmI/kf4J298im2Se4QQIZvonviLCiwH4XP4x9qxOl8ugxM5m5g
+ GoZcxU6Q/QyUzfn7+
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> use devm_platform_ioremap_resource_byname() to simplify code,
-> it contains platform_get_resource_byname() and
-> devm_ioremap_resource(), and also remove some duplicate error
-> message.
+> use read_poll_timeout macro to redefined regmap_read_poll_timeout
+> and also remove the duplicate code.
 
 How do you think about a wording variant like the following?
 
-   Use the function =E2=80=9Cdevm_platform_ioremap_resource_byname=E2=80=
-=9D to simplify
-   source code which calls the functions =E2=80=9Cplatform_get_resource_by=
-name=E2=80=9D
-   and =E2=80=9Cdevm_ioremap_resource=E2=80=9D.
-   Remove also a few error messages which became unnecessary with this
-   software refactoring.
+   Subject:
+   [PATCH 1/2] regmap: Simplify implementation of the regmap_read_poll_tim=
+eout() macro
+
+   Change description:
+   Simplify the implementation of the macro =E2=80=9Cregmap_read_poll_time=
+out=E2=80=9D
+   by using the macro =E2=80=9Cread_poll_timeout=E2=80=9D.
 
 
-Will any more contributors get into the development mood to achieve
-similar collateral evolution by the means of the semantic patch language?
-Would you like to increase applications of the Coccinelle software?
+=E2=80=A6
+> +++ b/include/linux/regmap.h
+=E2=80=A6
+> @@ -122,26 +123,10 @@ struct reg_sequence {
+>   */
+>  #define regmap_read_poll_timeout(map, addr, val, cond, sleep_us, timeou=
+t_us) \
+>  ({ \
+=E2=80=A6
+> +	int __ret, __tmp; \
+> +	__tmp =3D read_poll_timeout(regmap_read, __ret, __ret || (cond), \
+> +			sleep_us, timeout_us, false, (map), (addr), &(val)); \
+> +	__ret ?: __tmp; \
+>  })
+
+* Can this macro work also with variable names which do not contain
+  double underscores?
+
+* Can the tag =E2=80=9CFixes=E2=80=9D be relevant for such an adjustment?
 
 Regards,
 Markus

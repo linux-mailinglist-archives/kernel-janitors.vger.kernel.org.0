@@ -2,37 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63F351AFA67
-	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Apr 2020 15:10:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A7471AFBE2
+	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Apr 2020 18:19:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726050AbgDSNKt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 19 Apr 2020 09:10:49 -0400
-Received: from mout.web.de ([212.227.17.12]:60373 "EHLO mout.web.de"
+        id S1726337AbgDSQTe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 19 Apr 2020 12:19:34 -0400
+Received: from mout.web.de ([212.227.15.4]:40887 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725949AbgDSNKs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 19 Apr 2020 09:10:48 -0400
+        id S1726160AbgDSQTd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 19 Apr 2020 12:19:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1587301835;
-        bh=4oYS+cYKZQPqayi2RhTLLU5txfFXZV6+2Fd5/sGAsQU=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=Uu0sq4DtAPDVTCgJ9WqHiPgBHd2Oi/cHMeCerwQ/eeaE975R4sz5wZhTpnI8Uqy0Z
-         CAFAGJp1UTswDU6oDEzcfnruPCz5zCe9rrmbk8S6S1Plq7c6Qf/IuGCAr65PU/tZl3
-         WQmi0d75aBYmjpCJ7GBxqplFcGIE4t6enyS/Yzvg=
+        s=dbaedf251592; t=1587313162;
+        bh=of2wU8RTRYMU0kaC7Ph3S3HMYNADQMI81zLrLNzHgpI=;
+        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
+        b=K0gD1dUbJSeH83PRPy990QeZVdDtqyBAE+R1mrgOlGcdLMeYj/GmvuTJ2eUOWM6qG
+         qdGDiVMFsvd5jjlx4z4ch9BRV+2xtFSEoO53eQxwZnJGdwrzSyJB64f2eCyEF8Tm1e
+         WvdKhmlEtWN6mH3+/lpevit+PsZ5wrJGnEimfJA4=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.85.208]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MWAwH-1jkCcF42dV-00XH53; Sun, 19
- Apr 2020 15:10:35 +0200
-Subject: Re: [PATCH v2] iommu/qcom: Fix local_base status check
-From:   Markus Elfring <Markus.Elfring@web.de>
-To:     Tang Bin <tangbin@cmss.chinamobile.com>,
-        iommu@lists.linux-foundation.org, linux-arm-msm@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
-        Rob Clark <robdclark@gmail.com>
+Received: from [192.168.1.2] ([2.243.85.208]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LlJzS-1iqazs0si6-00b4Sc; Sun, 19
+ Apr 2020 18:19:22 +0200
+To:     Dejin Zheng <zhengdejin5@gmail.com>, linux-can@vger.kernel.org,
+        netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Wolfgang Grandegger <wg@grandegger.com>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Dejin Zheng <zhengdejin5@gmail.com>
-References: <73736017-cae3-1c2a-dcf4-d771d0f3bbbf@web.de>
+        Coccinelle <cocci@systeme.lip6.fr>
+Subject: Re: [PATCH net-next v1] can: ti_hecc: convert to
+ devm_platform_ioremap_resource_byname()
+From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -76,66 +74,62 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <b07d3b02-bf96-fd73-8333-a1104da9ae47@web.de>
-Date:   Sun, 19 Apr 2020 15:10:33 +0200
+Message-ID: <08979629-d9b8-6656-222f-4e84667651a1@web.de>
+Date:   Sun, 19 Apr 2020 18:19:12 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <73736017-cae3-1c2a-dcf4-d771d0f3bbbf@web.de>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
+Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:csvZDhaz4z/yZURfSdj4uatoN5JobxslgnDWP5IBxiUdVCF5P5L
- ErUP3aEhDKRvkvI0W5p/UlEAj0rYAkeYiydJVgRWD0r9G+hGdRnodq86bkiKFTGxzhD6gSj
- pHrmlB5ryh9ibKQN+RHlS++X/pcKSdWPZEhw7ilC6gFlwKXzdfiOJIc49wbhuJK2zspdIuZ
- qzQYBsqiGNlKkLgtxQRPQ==
+X-Provags-ID: V03:K1:Keg/E4Y7RjiqLK1+kspg/czOnv06G10YWSta4VRSEwYUJnc1WKb
+ xsvVCGKOJxOSxH8UTTm+FzwIoQeoHV6TXYSp3oh4TLfyLOLZ46Wvwt2DhfgCMj7zzmcndW6
+ SpJza4bZ8+ygOqEPVMrqJpJxSYLre0KexLMQEtzR4F76S8KG9OERO/tJ34JQv3lDR5tPA5H
+ LrE/lfp+lrBNwd0zVutfA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:YP5tX25VIBU=:MbOSbvZbuDSo89A1cbzHeO
- JWHwRkc3GSnQ8758M2xMrm2LEep79GLVIHpXGaHXPXMNw86ZQFNw7wMcCzJxhYffml32FcbhP
- CpqfPD0On3BApJ0Jf7SfHqJ+AVdbmGyEPZWZ0WJapSgpknXoh5o7k5zmSy3m2mO58Ic9u9y6D
- rmZQRsfP37ysXWjwBBBG0Dr4RB1NqZMoXCGVW0gIGgCYoUCZoSuy1/uaFfSluANXeGBl1Z3PG
- NvoeRrFcegkhCEOCKnU5l0N3B9QLfA4HoM/xA5qwykWqciRkd6RdAxiUYpnQU7/Ox1kl2jXcz
- Ur1WXBhvWPOBKXDdRKzMD2F0iCajnhPceE+P3OaVV1rJD7ujvwUqw4eJgtW/+BZPYAwycBVNJ
- OFDCo0G+NmIOqmgA1Rf7qo+PJCqdToud3tmqvemrjEE2hwZ/rIYG9n87/YxxvIDYH1JzViuaX
- DqJEt1oaDtAD0b8UUUM6AwVuERNGxOCBeQrR6uU8SfSph+3RKdvuLPnKxbgq3qz++WpfkCJI4
- qF9meDyaUIkNjTs7eZpjGJWoQNFNvMJ1pI/q5gduZKztXrXP+MGU4QCK4y/PgCsGiLcwSYkI4
- IP1hEg1RcrePU8eBmx6DF3RRwhW9Mlmw5qFCgpUbWKvEKjYjXAIgkvAzwf8jfS/wRsyvK6FQt
- TdnGD9sF3Dl6f4chUzf9i2d4CJswCXw2ISZWsVGKhHzt/zWGNqIhMTrVTn4eQSVlQqm2AErHK
- TWx7nV9o2Lprpc6vWDevZSrUjwYt5gHZJhd4jT0qnPFJuzaC5IEdFJJcXFE5QhBpuwzy1Z9mm
- KZtBcTlPDm2gpwuJLsTIRMKzpyv0QrZb1+3ZCYV4C215CBYI7X7dUN/JU9NhqdGi5YSDO50lA
- ZNAi7GXbxa5p2fIxGF69g50ISNK4718orUHdPl6a5yvTXjZGlRGZGDHHOGSr6L7kDS1ar1i8p
- iGlCcTMQOhYhS1L1rMG1Rx2yhnf7I/xGu3D60ONfNue+Pi47ETKscGZMSlvJjFaCisU9bFe4M
- SKPg5xJQSEGSEUpQv3cBeH7xv07y5AhiOxVyjBW7ZoGLII7n/cSoPiC2HHsY2SwE8sNBevymO
- dE5BtMe9vZU4w3QIti7qhbRxMinenU2sTbgPYpGPSithcHfKxwXtu68FINbxEdBHxrVWy/eO+
- HwKXDhOjAa8s+/QYHh0Mn9+rhcz0gp5p9hMNDdToKLkIm/jeiUZmDs8jwsAFyf3s3ON/0RW0y
- MyLPcV62MtucsrWHT
+X-UI-Out-Filterresults: notjunk:1;V03:K0:3ol83GrGi6k=:w/LZwwojFVtRTWMWqr+JVg
+ 7EJwekt2kKO8yRCTNYQlfSnbwSHTn4wGH0tWacmthuvXRsiOOzfTsK3+lGHj8bLbhVibnbJZ0
+ 3s2r3EN7qNHVgYvNliymfmd0OBx3C5F9tI/vrrdlGLQJ1eju6rHmV8FE5mheVvgcWYv9WLY6H
+ poDu4TuVi8vKVAW8atIW76cF/2khFT9XtpsYYf2PyfQrqdbzjyvKMpbjB3eFw4SK482lud2IL
+ 5Cj5PMcQ7VNhzfQP6RUEM8/r/7CjfJy/g7fvpr427xJpKQsjA4WqqDmDTsKj8QxwKkuceAnH2
+ a11DILJppdsPCoMBlSiHVn9dlcG9YaAxrgP/QFxwZTX3hMX/QlBNK2e8OFeAnM+4ZCDXErZjD
+ M/fa/XDQwsK6iVPE9/vMcEZVbNK/ckFj/SQWv6yAl41o/XcnYEunPXrTX3QcaiAmSMFPWBtr/
+ 6VtvCJwpRCUMPIRnDehWDKPotC/FwZKG4wtVYcKLM3ybjzNY11phctBqELdlp647woJYLm3L3
+ hOhfInDKa/sk8CdkdQ/TF18KLb9yGCEo4pa1/qeNwiAmqnYO2svbluTvvI8FFGzOVTQjRByP6
+ txpZGVMB9q0khJrTmCm8n0B/r5TgD4CnvqOWD9z1odhC4+7H2cr7727jH0Kj1QSRXLOmJ4AxV
+ SDyC55jI3jmQwvy7mLTZ5bCp7I0dnPnCzqJ1NgLNpYJh+ZXknoeyGzO2MoVqh5+lkWyDS+XTH
+ dJfWkYV7mpTD56Ppsk0xTgXI2uvCZmrQ7IM9QSXHkaRzY1R0XSnaqAEE2Hcp5lP+8yAYb2V/1
+ E/utfoR5PpKW8K2VQs5iESq3CfUfieTkLnSYtPntNI7E2gzsXco9cTIpPMaaPbNLhS5X7poW4
+ 5REiPgkmUe1IKp0Xb/DB3caYpL1C5EeHHhuSGmq9plh0wC3pO/7Jbwe+S6bqj3bwXJpQF0D32
+ wcnioumxdmB0XbDf7+jKyujxQ3308F2vHXW9whCj64lrAR68zYdErQVRcXkAsmmR0KwX4sTub
+ Hck13c3pOh9gKMuXKsEjhLCbgWaDJo6+TGpsXGDkDTZR5HCjm0uaIL7oGji/puho5LnpioOod
+ UH/SzWKJQhiF8oHRcau6yyzdSrvOQT/UXckLTfOrluVVUxFLHdul80zi9spP9ZRDXgClKjJ/i
+ EMHW/M4Z/6tY2IAtPYrUS3ZsmnJPnUBXeO9UOIz98DMnTqFAuUfGFTJT6WcOkqCNo/JjN5hkR
+ 1CyC/uEzS1eGamOt5
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> =E2=80=A6
->> +++ b/drivers/iommu/qcom_iommu.c
->> @@ -813,8 +813,11 @@ static int qcom_iommu_device_probe(struct platform=
-_device *pdev)
->>  	qcom_iommu->dev =3D dev;
->>
->>  	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-=E2=80=A6
->>  		qcom_iommu->local_base =3D devm_ioremap_resource(dev, res);
-=E2=80=A6
-> Please take another look at a corresponding usage example.
+> use devm_platform_ioremap_resource_byname() to simplify code,
+> it contains platform_get_resource_byname() and
+> devm_ioremap_resource(), and also remove some duplicate error
+> message.
 
-I would like to point another possibility out for desirable software evolu=
-tion.
-How do you think about to call a =E2=80=9Cknown=E2=80=9D wrapper function =
-instead?
+How do you think about a wording variant like the following?
 
-devm_platform_get_and_ioremap_resource
-https://elixir.bootlin.com/linux/v5.7-rc1/source/drivers/base/platform.c#L=
-66
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/dri=
-vers/base/platform.c
+   Use the function =E2=80=9Cdevm_platform_ioremap_resource_byname=E2=80=
+=9D to simplify
+   source code which calls the functions =E2=80=9Cplatform_get_resource_by=
+name=E2=80=9D
+   and =E2=80=9Cdevm_ioremap_resource=E2=80=9D.
+   Remove also a few error messages which became unnecessary with this
+   software refactoring.
+
+
+Will any more contributors get into the development mood to achieve
+similar collateral evolution by the means of the semantic patch language?
+Would you like to increase applications of the Coccinelle software?
 
 Regards,
 Markus

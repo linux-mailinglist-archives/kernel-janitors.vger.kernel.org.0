@@ -2,29 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55EF81B192B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Apr 2020 00:12:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 657E21B195E
+	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Apr 2020 00:25:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728492AbgDTWMi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 20 Apr 2020 18:12:38 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:57977 "EHLO
+        id S1726435AbgDTWY4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 20 Apr 2020 18:24:56 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:58282 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726746AbgDTWMe (ORCPT
+        with ESMTP id S1726224AbgDTWY4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 20 Apr 2020 18:12:34 -0400
+        Mon, 20 Apr 2020 18:24:56 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jQeeT-0000To-Bq; Mon, 20 Apr 2020 22:12:29 +0000
+        id 1jQeqP-0001Tw-E5; Mon, 20 Apr 2020 22:24:49 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        linux-leds@vger.kernel.org
+To:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] leds: trigger: remove redundant assignment to variable ret
-Date:   Mon, 20 Apr 2020 23:12:29 +0100
-Message-Id: <20200420221229.99150-1-colin.king@canonical.com>
+Subject: [PATCH] iwlwifi: mvm: remove redundant assignment to variable ret
+Date:   Mon, 20 Apr 2020 23:24:49 +0100
+Message-Id: <20200420222449.99481-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -43,31 +47,22 @@ redundant and can be removed.
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/leds/trigger/ledtrig-timer.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/leds/trigger/ledtrig-timer.c b/drivers/leds/trigger/ledtrig-timer.c
-index 34a68604c46c..b4688d1d9d2b 100644
---- a/drivers/leds/trigger/ledtrig-timer.c
-+++ b/drivers/leds/trigger/ledtrig-timer.c
-@@ -28,7 +28,7 @@ static ssize_t led_delay_on_store(struct device *dev,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
+index c1aba2bf73cf..852ccfc65378 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
+@@ -604,7 +604,7 @@ static int rs_tl_turn_on_agg_for_tid(struct iwl_mvm *mvm,
+ 				     struct iwl_lq_sta *lq_data, u8 tid,
+ 				     struct ieee80211_sta *sta)
  {
- 	struct led_classdev *led_cdev = led_trigger_get_led(dev);
- 	unsigned long state;
--	ssize_t ret = -EINVAL;
-+	ssize_t ret;
+-	int ret = -EAGAIN;
++	int ret;
  
- 	ret = kstrtoul(buf, 10, &state);
- 	if (ret)
-@@ -53,7 +53,7 @@ static ssize_t led_delay_off_store(struct device *dev,
- {
- 	struct led_classdev *led_cdev = led_trigger_get_led(dev);
- 	unsigned long state;
--	ssize_t ret = -EINVAL;
-+	ssize_t ret;
- 
- 	ret = kstrtoul(buf, 10, &state);
- 	if (ret)
+ 	IWL_DEBUG_HT(mvm, "Starting Tx agg: STA: %pM tid: %d\n",
+ 		     sta->addr, tid);
 -- 
 2.25.1
 

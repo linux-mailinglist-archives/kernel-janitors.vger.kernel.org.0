@@ -2,80 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B55451B0714
-	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Apr 2020 13:13:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34C041B0C4C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Apr 2020 15:13:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726067AbgDTLN0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 20 Apr 2020 07:13:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47248 "EHLO
+        id S1726373AbgDTNNc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 20 Apr 2020 09:13:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725775AbgDTLN0 (ORCPT
+        by vger.kernel.org with ESMTP id S1726050AbgDTNNc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 20 Apr 2020 07:13:26 -0400
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2736EC061A0C
-        for <kernel-janitors@vger.kernel.org>; Mon, 20 Apr 2020 04:13:25 -0700 (PDT)
-Received: by mail-oi1-x244.google.com with SMTP id k9so8365995oia.8
-        for <kernel-janitors@vger.kernel.org>; Mon, 20 Apr 2020 04:13:25 -0700 (PDT)
+        Mon, 20 Apr 2020 09:13:32 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFC50C061A0C;
+        Mon, 20 Apr 2020 06:13:30 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id ng8so4566134pjb.2;
+        Mon, 20 Apr 2020 06:13:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=LKDk9BXhmmw6UQhdLQhRwkwvw4jE2jlH8lx/DDgDCzo=;
-        b=kWy8oIXuHQNGrtCjK0rrKc2NvGIR5RPPcuxpJch5SNyUG8LaR8Agr6h4t/4eWOHQVW
-         j8K6qeOAa1tPjodzFGsJGizIm3ZAWoBaFIVvEosR/DcSqxCNKjpW7RGVpFH6l8wiU/ID
-         PqQsNdq3F2Szw+yXrj/0boev0L18oe4WvuWsc+BRubNcI7urzZi6VX4fjvqJib19Et5W
-         RLZrF3ZgeollvisHlmXatQXTQMztyNgsH28K9FV+mEbyNmaAG4Ur8mnn+a29emKjjrgT
-         VuIGJpchCrawppRfoDiXg/djtsRPBrZhwfWTpdpcMR7rD/tQp6mklgK4S+J7ibnwWEwM
-         1X5w==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=1TAgcxIt86/pBZoXVfOkKX7rv0NrEGvRTPnHP44Lt+w=;
+        b=WWDlb6SFnnPcrUNjIa1hQgMf2be2Ej55anqWOXEjcohow9GEJAFR8b2vFR/+Z6b3Ay
+         ES6An7SYMLfKug3SNa/XyetLtJEmclrWAMjyWRWOP6nkoPcnCBeBl18P8Akes2xDHlYf
+         y0vPqjQrRHxOBfxM9QeY5WcBYBnidKhOAlY2mo1DI64fwJK2LAEp9MgulN/oFINeDUTQ
+         5M2MmSFQWHC2GMkIBOyf0ULo0o/m9S9qmj+NKeugqEFi3T2nxXWnBsx4RPFCw20cKMaJ
+         FJ4Ks0a7HYY4CzGfhQjFwnSbKWA6c98nn0IjRp8aCRkzAlBLj1FH3WfKtL7YgSIwqjQZ
+         PBOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=LKDk9BXhmmw6UQhdLQhRwkwvw4jE2jlH8lx/DDgDCzo=;
-        b=MxSg4tBcimCIEw8y67jfinywXsv8BqH6/vgR9jjjxibyXtLan70B43R6cwqU0IV6Ne
-         GEVwirW6Zq81Dy+aqn37ZQw9qQxpL3OuNOupFR5zPouvAJSFiniyWNvRg6t18OkqxTkW
-         MdQYLljN2D+C/zsq35hpjZB1exZI2U5MMhK58PohmsmpPP0blpypfIaaepuK/AAjnTG9
-         5dtFxDibXpG3rYDGlPVSA1K7e7mVeCVOZ9oUg8RnEFdN8BABbQV2HWdRn4z9oh1x7jJI
-         3Kp7AbqBmgFmIBc5Pxnn5GGPLgjTUMBBO6dqEsODKiK7usdWEVuUe7MoO975jHRH2/Rd
-         OIPQ==
-X-Gm-Message-State: AGi0PuYUMpbvuDF024DZInK3T49A8phjvXU++dULd82FCYRuMBy3V2Pa
-        fgqBB2WYE+IFxGxeiykSNiwnWOtfe0XVRFDaNOJJuSBs
-X-Google-Smtp-Source: APiQypKqVZfNV+ZlKRuRRKGguogqgBgg8cleU6xdj4RriUBcB9dPP3Tp2N2CBRX+A2aa5RPo2PoCwbAuJp4BiK0nNd4=
-X-Received: by 2002:aca:d50c:: with SMTP id m12mr10490540oig.149.1587381204561;
- Mon, 20 Apr 2020 04:13:24 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=1TAgcxIt86/pBZoXVfOkKX7rv0NrEGvRTPnHP44Lt+w=;
+        b=V4mtj8XeFYNc/JADQ9zMYxVhz9YkS7S1ITt7YVMnAgDSLFKXA2ZfcLzSWt7dYugJfX
+         SETF7Ej9A2KqIfB6NiXxU5cvUuAZJO+DnQtbEhWRv4ekehjTIhmUzqCPPZbfV+fJYbG0
+         tYW+//ghQ4aK1DMC/8eEyPbC8TbR4Fifk/a0pqfnWezZhcZ46f0Zv17dCsgfpke0iQSX
+         pePEA+q4Bog86928zvxXPFHhJpm180BfTEdil9YLPiGmx7YVLsFIs6n3d8nmPs3mQGGL
+         plzDaGRDkXpp8JSBxLYWPtMWJ08w9AMwwtIF08TXH79Jsas3ePsLhq3NR7SNGxIOgGBX
+         CsBQ==
+X-Gm-Message-State: AGi0PuZeBysAtgM9bsapfVOoyO1Cx/ge4vqUxhbQGcRWW/AB5gxNDd2i
+        P/WFjFaBDicPi6Rl9S3tLN4=
+X-Google-Smtp-Source: APiQypJU5VK8wVTpvE19z47A8p3kMYjIqaAA/yNAWadv9cPJFQp+9mZYnwvBoQhFFvunoy0bECEV6w==
+X-Received: by 2002:a17:90a:32ea:: with SMTP id l97mr21405427pjb.50.1587388410421;
+        Mon, 20 Apr 2020 06:13:30 -0700 (PDT)
+Received: from localhost (89.208.244.140.16clouds.com. [89.208.244.140])
+        by smtp.gmail.com with ESMTPSA id o187sm1052194pfb.12.2020.04.20.06.13.29
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 20 Apr 2020 06:13:29 -0700 (PDT)
+Date:   Mon, 20 Apr 2020 21:13:27 +0800
+From:   Dejin Zheng <zhengdejin5@gmail.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-can@vger.kernel.org, netdev@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Coccinelle <cocci@systeme.lip6.fr>
+Subject: Re: [PATCH net-next v1] can: ti_hecc: convert to
+ devm_platform_ioremap_resource_byname()
+Message-ID: <20200420131327.GA8103@nuc8i5>
+References: <08979629-d9b8-6656-222f-4e84667651a1@web.de>
 MIME-Version: 1.0
-References: <20200407093028.GK68494@mwanda>
-In-Reply-To: <20200407093028.GK68494@mwanda>
-From:   Jens Wiklander <jens.wiklander@linaro.org>
-Date:   Mon, 20 Apr 2020 13:13:13 +0200
-Message-ID: <CAHUa44FJZtFpj2FcaYOBShMU5yjXfQmoVe3wJXemnTFDfRsD_Q@mail.gmail.com>
-Subject: Re: [PATCH] tee: remove unnecessary NULL check in tee_shm_alloc()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <08979629-d9b8-6656-222f-4e84667651a1@web.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Apr 7, 2020 at 11:32 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+On Sun, Apr 19, 2020 at 06:19:12PM +0200, Markus Elfring wrote:
+> > use devm_platform_ioremap_resource_byname() to simplify code,
+> > it contains platform_get_resource_byname() and
+> > devm_ioremap_resource(), and also remove some duplicate error
+> > message.
+> 
+> How do you think about a wording variant like the following?
+> 
+>    Use the function “devm_platform_ioremap_resource_byname” to simplify
+>    source code which calls the functions “platform_get_resource_byname”
+>    and “devm_ioremap_resource”.
+>    Remove also a few error messages which became unnecessary with this
+>    software refactoring.
 >
-> Smatch complains that "ctx" isn't checked consistently:
->
->     drivers/tee/tee_shm.c:164 tee_shm_alloc()
->     warn: variable dereferenced before check 'ctx' (see line 95)
->
-> I audited the callers and "ctx" can't be NULL so the check can be
-> removed.
->
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/tee/tee_shm.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+Markus, Thank you very much！yes, your comments is better. I will send
+the patch v2. Thanks again!
 
-Thanks, I'm picking this up.
+> 
+> Will any more contributors get into the development mood to achieve
+> similar collateral evolution by the means of the semantic patch language?
+> Would you like to increase applications of the Coccinelle software?
+>
+I want, but currently I don't have much free time, sorry！
 
-Cheers,
-Jens
+BR,
+Dejin
+> Regards,
+> Markus

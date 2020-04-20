@@ -2,114 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 810371B0C9F
-	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Apr 2020 15:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2D921B0DF7
+	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Apr 2020 16:08:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727920AbgDTNa2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 20 Apr 2020 09:30:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40116 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726389AbgDTNa1 (ORCPT
+        id S1728378AbgDTOIv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 20 Apr 2020 10:08:51 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:43464 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727872AbgDTOIv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 20 Apr 2020 09:30:27 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75979C061A0C;
-        Mon, 20 Apr 2020 06:30:27 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id o10so1814212pgb.6;
-        Mon, 20 Apr 2020 06:30:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=FFlSkMRcAhMtXPXTewG4f4dqL8kmUAL3zfykcT5xeQ8=;
-        b=mAWPWfc/EH0Ir9h7bVjFcY1nyyYrt11a7uayBmd57IfjS7ljeKqAdVOKnQ8DqLva//
-         7XxyiVEkovEyXPROCsKn2xjxV5v+HA6qmWZzp+eQDbEa977hKerQusxjfoxTYER6WXwk
-         fuzOHclRQQDo8yNKu0mcotCzCYMunDK9P3jYbXMQyfUd9Fh/xrjtVDtgLIWDR0BFU6Dd
-         grztPf8Qqt7k17SY/K9ywc8iArc7U475lLaO/AGf3xOj8RwIu6pTeY7whw9dlAoRcsfB
-         7BkHYkIfwLynhkxpp+771EdgOdDhASt3IZSRhnc64GWxQSEpwEWyyiaI1sKbkotzu5cb
-         CeBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=FFlSkMRcAhMtXPXTewG4f4dqL8kmUAL3zfykcT5xeQ8=;
-        b=FUp4yqT0v2oTcumsMM6GVHL31k8bOry8gJTgBIdebZKO4OEauueDhjGQQrkfifiwO6
-         dc2ov1DIIkS8Ip1P/MKj2uRF3bBGBksaJ7jBZnZ1GkNdIQAL2u0XR1GUSOZTy7UnXttj
-         +IuNILDh6QzeEkFQnjDQsd0tcZ4TyCaBWWv2/tTEXzlt0NInnIhnprNJiYWIj5JQD48E
-         QuiPKoRyz3aJ0hJmSO/0IDAovBrGEauoqZvIfVUjfAVmGaMS9uCuiYe8z7NRxCQteixX
-         cKn24r5I960avb6Zclrq05zvyEXgltWNHWfTSX1MhvFCT+TraJpTOksO7duYa0mPfyYF
-         poJA==
-X-Gm-Message-State: AGi0PuZPlGwyPCJAOs+3Kng0l7jjNBVL6rIK+PSVkwSdGpufEnvsmy8h
-        qe0TofLtkznGKvWj6hVQ9AmIlZZg
-X-Google-Smtp-Source: APiQypIg/amfby2BJcy5FXvej/+kmd6kuERwpw+wJiX8y3W5EVXrWsTGtCddEqUpRUVv+jOObaPcSA==
-X-Received: by 2002:a63:4c1:: with SMTP id 184mr16161358pge.156.1587389427069;
-        Mon, 20 Apr 2020 06:30:27 -0700 (PDT)
-Received: from localhost (89.208.244.140.16clouds.com. [89.208.244.140])
-        by smtp.gmail.com with ESMTPSA id y26sm1088884pfn.185.2020.04.20.06.30.25
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 20 Apr 2020 06:30:26 -0700 (PDT)
-Date:   Mon, 20 Apr 2020 21:30:23 +0800
-From:   Dejin Zheng <zhengdejin5@gmail.com>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] regmap: redefined regmap_read_poll_timeout to
- simplify code
-Message-ID: <20200420133023.GB8103@nuc8i5>
-References: <3376dcba-4285-c894-915e-2f41cbf23caa@web.de>
+        Mon, 20 Apr 2020 10:08:51 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jQX6N-0006NI-2h; Mon, 20 Apr 2020 14:08:47 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Felix Kuehling <Felix.Kuehling@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/amdgpu: fix a dereference on pointer hive before it is null checked
+Date:   Mon, 20 Apr 2020 15:08:46 +0100
+Message-Id: <20200420140846.78062-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <3376dcba-4285-c894-915e-2f41cbf23caa@web.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Apr 19, 2020 at 07:09:14PM +0200, Markus Elfring wrote:
-> > use read_poll_timeout macro to redefined regmap_read_poll_timeout
-> > and also remove the duplicate code.
-> 
-> How do you think about a wording variant like the following?
-> 
->    Subject:
->    [PATCH 1/2] regmap: Simplify implementation of the regmap_read_poll_timeout() macro
-> 
->    Change description:
->    Simplify the implementation of the macro “regmap_read_poll_timeout”
->    by using the macro “read_poll_timeout”.
->
-Good, I will send the patch v2.
-> 
-> …
-> > +++ b/include/linux/regmap.h
-> …
-> > @@ -122,26 +123,10 @@ struct reg_sequence {
-> >   */
-> >  #define regmap_read_poll_timeout(map, addr, val, cond, sleep_us, timeout_us) \
-> >  ({ \
-> …
-> > +	int __ret, __tmp; \
-> > +	__tmp = read_poll_timeout(regmap_read, __ret, __ret || (cond), \
-> > +			sleep_us, timeout_us, false, (map), (addr), &(val)); \
-> > +	__ret ?: __tmp; \
-> >  })
-> 
-> * Can this macro work also with variable names which do not contain
->   double underscores?
->
-Yes, this is to avoid using the same variable with its caller.
+From: Colin Ian King <colin.king@canonical.com>
 
-> * Can the tag “Fixes” be relevant for such an adjustment?
->
-I think It is not relevant and we don't need add it.
+Currently pointer hive is being dereferenced before it is being null
+checked and hence can lead to null pointer dereference issues. Fix this
+by only dereferencing pointer hive after it has been null checked.
 
-BR,
-Dejin
+Addresses-Coverity: ("Dereference before null check")
+Fixes: 25d4275e1931 ("drm/amdgpu: fix race between pstate and remote buffer map")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-> Regards,
-> Markus
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c
+index 54d8a3e7e75c..2c0a59ba2826 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c
+@@ -389,15 +389,17 @@ int amdgpu_xgmi_set_pstate(struct amdgpu_device *adev, int pstate)
+ {
+ 	int ret = 0;
+ 	struct amdgpu_hive_info *hive = amdgpu_get_xgmi_hive(adev, 0);
+-	struct amdgpu_device *request_adev = hive->hi_req_gpu ?
+-						hive->hi_req_gpu : adev;
++	struct amdgpu_device *request_adev;
+ 	bool is_hi_req = pstate == AMDGPU_XGMI_PSTATE_MAX_VEGA20;
+-	bool init_low = hive->pstate == AMDGPU_XGMI_PSTATE_UNKNOWN;
++	bool init_low;
+ 
+ 	/* fw bug so temporarily disable pstate switching */
+ 	if (!hive || adev->asic_type == CHIP_VEGA20)
+ 		return 0;
+ 
++	request_adev = hive->hi_req_gpu ? hive->hi_req_gpu : adev;
++	init_low = hive->pstate == AMDGPU_XGMI_PSTATE_UNKNOWN;
++
+ 	mutex_lock(&hive->hive_lock);
+ 
+ 	if (is_hi_req)
+-- 
+2.25.1
+

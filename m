@@ -2,118 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 375EA1B04A4
-	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Apr 2020 10:42:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DA491B05D4
+	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Apr 2020 11:40:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726050AbgDTIms (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 20 Apr 2020 04:42:48 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:60734 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725773AbgDTIms (ORCPT
+        id S1725971AbgDTJkM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 20 Apr 2020 05:40:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32910 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725886AbgDTJkL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 20 Apr 2020 04:42:48 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jQS0n-00069P-Op; Mon, 20 Apr 2020 08:42:41 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Zi Yan <ziy@nvidia.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        William Kucharski <william.kucharski@oracle.com>,
-        linux-kselftest@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][V2][next] selftests: khugepaged: fix several spelling mistakes
-Date:   Mon, 20 Apr 2020 09:42:41 +0100
-Message-Id: <20200420084241.65433-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        Mon, 20 Apr 2020 05:40:11 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ED45C061A0C;
+        Mon, 20 Apr 2020 02:40:11 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id j2so11233774wrs.9;
+        Mon, 20 Apr 2020 02:40:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:message-id:user-agent:mime-version;
+        bh=3GA3bluwRYjqG3fWE2X65VtHlib+JO5/bzStrmWlQNw=;
+        b=Yg3dU4wpaAO0TS2Ew2ddgljjfTP9Nf1COso2lOv9kE4hkbovKCjdtLEDRLjTU/IfN9
+         TkcY6tEV6SQPPl3z2lzpJNw5JVTA4iXhodte7lrtSeCcgxbrQDAkTe5CHO24FgasmG6o
+         LpXIDUgFCP46XuAK2EIS6HJUhBFCq3jiJvOEL1SKSyS1dhGZ3FbEtSwEYaf9VAGRAWzC
+         3cSn/2c2BnsI6Ui0grwJ/nHB82wzv90hZCG+GBOUPwlYxOwCkG/Up+1UYT9MaZHucJYx
+         tXmjg800ONpPFBmhgA+GrUdaXLholnKu5LP4F2tSteg1Qy1dogk4ZzTDhcvxVlXLRCof
+         iz1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:user-agent
+         :mime-version;
+        bh=3GA3bluwRYjqG3fWE2X65VtHlib+JO5/bzStrmWlQNw=;
+        b=D4lW/Du9Ge3QJj6uivJENpHzAbhX8lKpnDxjNpjR1Mp3W7zqTFu2Re0yooVTPHrZz5
+         wA1imXflae+41KsthSdvrgTA0fKDu2YOgHNFhrUtT0vI3O3tK6OZspWN1gmCEUTE5Gew
+         /207FCSFCEaaA1wNXdvQt/p5tns6jpQUuTjflSALtFtfUmofhyWGNZKl/P7dgJtcU101
+         PgquGBtLvmWwVLhnbM3utDbL2CrW2YuCVNEOQ779BL08kXsGMW5xjSxFdU3ELclFO7rk
+         GD+NIceffV8nBIiyhortJXgw4aJV1VXAVkNn2ArhJ8Zu+LRpyflwcQ210/aVOl15yxD4
+         Dk3A==
+X-Gm-Message-State: AGi0PuaXkgCqBDJrfojSKLbasdBfaagTTeBKic8uGouOGliRY/fAtOrG
+        zVs90RCAPocOmWPYlwiVPj8=
+X-Google-Smtp-Source: APiQypIeRYOd8lPA5ceHyWhzpqedImL7XDEnyevslbtKPv7LHPVjbIZ0m7HgNUVyB5ePXClUNydAYQ==
+X-Received: by 2002:adf:8441:: with SMTP id 59mr18623827wrf.237.1587375610140;
+        Mon, 20 Apr 2020 02:40:10 -0700 (PDT)
+Received: from felia ([2001:16b8:2d8c:a200:646f:8a6f:3448:4e5a])
+        by smtp.gmail.com with ESMTPSA id 5sm574347wmg.34.2020.04.20.02.40.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Apr 2020 02:40:09 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
+Date:   Mon, 20 Apr 2020 11:39:10 +0200 (CEST)
+X-X-Sender: lukas@felia
+To:     Hadar Gat <hadar.gat@arm.com>
+cc:     Joe Perches <joe@perches.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: MAINTAINERS: Wrong ordering in CCTRNG ARM TRUSTZONE CRYPTOCELL TRUE
+ RANDOM NUMBER GENERATOR (TRNG) DRIVER
+Message-ID: <alpine.DEB.2.21.2004201122490.9739@felia>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hi Hadar,
 
-There a are several spelling mistakes in various messages. Fix these.
 
-There are three spelling mistakes in various messages. Fix these.
+with your commit 3c8e0bd10503 ("MAINTAINERS: add HG as cctrng 
+maintainer"), now visible on next-20200420, ./scripts/checkpatch.pl -f 
+MAINTAINERS complains:
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- tools/testing/selftests/vm/khugepaged.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+#3908: FILE: MAINTAINERS:3908:
++F:	drivers/char/hw_random/cctrng.h
++F:	Documentation/devicetree/bindings/rng/arm-cctrng.txt
 
-diff --git a/tools/testing/selftests/vm/khugepaged.c b/tools/testing/selftests/vm/khugepaged.c
-index 490055290d7f..399a67d54e52 100644
---- a/tools/testing/selftests/vm/khugepaged.c
-+++ b/tools/testing/selftests/vm/khugepaged.c
-@@ -537,7 +537,7 @@ static void collapse_max_ptes_none(void)
- 	p = alloc_mapping();
- 
- 	fill_memory(p, 0, (hpage_pmd_nr - max_ptes_none - 1) * page_size);
--	if (wait_for_scan("Do not collapse with max_ptes_none exeeded", p))
-+	if (wait_for_scan("Do not collapse with max_ptes_none exceeded", p))
- 		fail("Timeout");
- 	else if (check_huge(p))
- 		fail("Fail");
-@@ -576,7 +576,7 @@ static void collapse_swapin_single_pte(void)
- 		goto out;
- 	}
- 
--	if (wait_for_scan("Collapse with swaping in single PTE entry", p))
-+	if (wait_for_scan("Collapse with swapping in single PTE entry", p))
- 		fail("Timeout");
- 	else if (check_huge(p))
- 		success("OK");
-@@ -607,7 +607,7 @@ static void collapse_max_ptes_swap(void)
- 		goto out;
- 	}
- 
--	if (wait_for_scan("Do not collapse with max_ptes_swap exeeded", p))
-+	if (wait_for_scan("Do not collapse with max_ptes_swap exceeded", p))
- 		fail("Timeout");
- 	else if (check_huge(p))
- 		fail("Fail");
-@@ -654,14 +654,14 @@ static void collapse_single_pte_entry_compound(void)
- 		fail("Fail");
- 	madvise(p, hpage_pmd_size, MADV_NOHUGEPAGE);
- 
--	printf("Split huge page leaving single PTE mapping compount page...");
-+	printf("Split huge page leaving single PTE mapping compound page...");
- 	madvise(p + page_size, hpage_pmd_size - page_size, MADV_DONTNEED);
- 	if (!check_huge(p))
- 		success("OK");
- 	else
- 		fail("Fail");
- 
--	if (wait_for_scan("Collapse PTE table with single PTE mapping compount page", p))
-+	if (wait_for_scan("Collapse PTE table with single PTE mapping compound page", p))
- 		fail("Timeout");
- 	else if (check_huge(p))
- 		success("OK");
-@@ -685,7 +685,7 @@ static void collapse_full_of_compound(void)
- 	else
- 		fail("Fail");
- 
--	printf("Split huge page leaving single PTE page table full of compount pages...");
-+	printf("Split huge page leaving single PTE page table full of compound pages...");
- 	madvise(p, page_size, MADV_NOHUGEPAGE);
- 	madvise(p, hpage_pmd_size, MADV_NOHUGEPAGE);
- 	if (!check_huge(p))
-@@ -908,7 +908,7 @@ static void collapse_max_ptes_shared()
- 		else
- 			fail("Fail");
- 
--		if (wait_for_scan("Do not collapse with max_ptes_shared exeeded", p))
-+		if (wait_for_scan("Do not collapse with max_ptes_shared exceeded", p))
- 			fail("Timeout");
- 		else if (!check_huge(p))
- 			success("OK");
--- 
-2.25.1
+WARNING: Misordered MAINTAINERS entry - list 'W:' before 'F:'
+#3909: FILE: MAINTAINERS:3909:
++F:	Documentation/devicetree/bindings/rng/arm-cctrng.txt
++W:	
+https://developer.arm.com/products/system-ip/trustzone-cryptocell/cryptocell-700-family
 
+
+This is due to wrong ordering of the entries in your submission. If you 
+would like me to send you a patch fixing that, please just let me know.
+
+
+Best regards,
+
+Lukas

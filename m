@@ -2,126 +2,140 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F4EF1B2427
-	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Apr 2020 12:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4B8F1B244E
+	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Apr 2020 12:48:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728584AbgDUKpf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 21 Apr 2020 06:45:35 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:49898 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726120AbgDUKpf (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 21 Apr 2020 06:45:35 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03LAgWTe122997;
-        Tue, 21 Apr 2020 10:45:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=xjrB8UBkgtQfAZWQWCOIt+Y6oS0Ty5B3R37uMdP+3g8=;
- b=AajEf3fFShsegcoNEW+JOBjqQQJjA0tp/GCYa9eNPSmLaOXf/yM9jOKej/AOhNfme7++
- hLWsdPXhd016jrxVW5SRRY0lkEpt4oDQujFoRYk9rfp5UxJuI7RPAu1YHRUhF6J+5XBe
- rX0FrJBM7p1+aTz0OHCLmjPUOTWcQn++nnuWmix9Md5qq2Vmox2Oi2+EJ6gUcy59T43I
- ONs7z6ViDXSPsts0+kyNj76430QCCB4gzHzAuYBgttFr4/5Uoa9+jsvyOVlB1NZB+LQ1
- UBaUgLjLmxZ3Gp/HJF/6j1p0zVDwkc6tWBIb2xaFC57M459G6blcKHrsP4UtlYF0B19X Dw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 30ft6n47kv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 21 Apr 2020 10:45:29 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03LAgTjq031125;
-        Tue, 21 Apr 2020 10:45:29 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 30gbbdenj8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 21 Apr 2020 10:45:29 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03LAjSdo016137;
-        Tue, 21 Apr 2020 10:45:28 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 21 Apr 2020 03:45:28 -0700
-Date:   Tue, 21 Apr 2020 13:45:22 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     oleksandr_andrushchenko@epam.com
-Cc:     dri-devel@lists.freedesktop.org, xen-devel@lists.xenproject.org,
-        kernel-janitors@vger.kernel.org
-Subject: [bug report] drm/xen-front: Add support for Xen PV display frontend
-Message-ID: <20200421104522.GA86681@mwanda>
+        id S1728413AbgDUKs2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 21 Apr 2020 06:48:28 -0400
+Received: from mail-eopbgr10060.outbound.protection.outlook.com ([40.107.1.60]:1415
+        "EHLO EUR02-HE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726018AbgDUKs1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 21 Apr 2020 06:48:27 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gDX88B4naxcIWixpSeeKcvRVdvLGzbCRuzcOQZ441/PFUMByIriH6rxxTUGxrT+zsyp4vC2cDWx7ZoNJGxuJ0RiMvUWUSHsgL6gPaFXNr992JBRQj4eLX2pNybbOTfqp6oDUDd4/s8E1dztUyYF1G3JE8GV4b0QJRggupXItCykBGoxdN7nQZHKyrLlp2RLw+b5/LebERX0Tqstsv2CKS7aRjCQzJmiKUEzhFik/BO6MLJFl4Ga3R7Oe9kN0JqmeFX2557AAISguhWUBuVNt62Bj9le4u5TH4j19IRBbplXe0Qbv6CJLzYDBXWGyCA2qj7X6ji9Ogkhi6PAntR4mgA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZTz/MIlGmhodBFfu85r5AQGrN3PIaHBj6vKYbzVMhxE=;
+ b=TRS+2mHUL/ZSxh5Bj6C5+l8Fq0vhYjAQEPlmuNlRiskUirtXkpUoWl5richoklu9qfRWqTNgeqVn+BVC7yTyr+cnGvR40fXYHy58di4IaLK9YDL8fWW/yc9YRnPaiLbmXy/anPOX6SUyCE7ROE7Ea/xjxdrqhigzAk6l1eErFlEpIskQOvjyLbkDHtJU8Jo9ZLjLNo2g1QyYwThGZ6UtPIA6hU0IFWeLE9OxnodOjo9tr+qgMS+R+T8tHHEHnQN+t5wdamNjLaA3zT9xqT03cWGHQqsbRj50nDbeWkPyH3GC/0jk9MRQOn7YWRproBkau7m0V+cn2kdhwuqfSfuZCg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZTz/MIlGmhodBFfu85r5AQGrN3PIaHBj6vKYbzVMhxE=;
+ b=IpFttvAnVeS+8eLMrtgkdcAMlDgZhEdnHaBZVJzaobgBN9uSs8D37jLJ7ej2x/OWPoouyKteXUDgY9v6RpGfJ+/cpejrckK0tiBNAEgUAwzfYCUKf1UsollTdN+bdz6ZumrhrB4nbKliPu6shCi5sgJg8U1Xd4YCwp6PpZRN00c=
+Received: from HE1PR04MB3196.eurprd04.prod.outlook.com (2603:10a6:7:21::31) by
+ HE1PR04MB3193.eurprd04.prod.outlook.com (2603:10a6:7:22::14) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2921.29; Tue, 21 Apr 2020 10:48:23 +0000
+Received: from HE1PR04MB3196.eurprd04.prod.outlook.com
+ ([fe80::c84a:5e6a:b6e3:4a1f]) by HE1PR04MB3196.eurprd04.prod.outlook.com
+ ([fe80::c84a:5e6a:b6e3:4a1f%7]) with mapi id 15.20.2921.027; Tue, 21 Apr 2020
+ 10:48:23 +0000
+From:   Ashish Kumar <ashish.kumar@nxp.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>, Han Xu <han.xu@nxp.com>,
+        Mark Brown <broonie@kernel.org>
+CC:     "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: RE: [PATCH -next] spi: spi-fsl-qspi: Fix return value check in
+ fsl_qspi_probe()
+Thread-Topic: [PATCH -next] spi: spi-fsl-qspi: Fix return value check in
+ fsl_qspi_probe()
+Thread-Index: AQHWF8CB4WhsoBnUE02CXSTlcmNhpaiDYV9A
+Date:   Tue, 21 Apr 2020 10:48:22 +0000
+Message-ID: <HE1PR04MB31965ACB33866E9A673472AF95D50@HE1PR04MB3196.eurprd04.prod.outlook.com>
+References: <20200421093908.48213-1-weiyongjun1@huawei.com>
+In-Reply-To: <20200421093908.48213-1-weiyongjun1@huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=ashish.kumar@nxp.com; 
+x-originating-ip: [106.215.98.24]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: c3a82d1c-fc4e-4983-e0bc-08d7e5e18378
+x-ms-traffictypediagnostic: HE1PR04MB3193:|HE1PR04MB3193:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <HE1PR04MB319309CA29916498FD085BE795D50@HE1PR04MB3193.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:935;
+x-forefront-prvs: 038002787A
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR04MB3196.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(4636009)(376002)(346002)(366004)(396003)(39860400002)(136003)(316002)(44832011)(26005)(186003)(71200400001)(64756008)(66476007)(6506007)(53546011)(66556008)(66446008)(52536014)(478600001)(76116006)(66946007)(55016002)(9686003)(86362001)(5660300002)(4326008)(110136005)(54906003)(7696005)(33656002)(8676002)(81156014)(8936002)(2906002);DIR:OUT;SFP:1101;
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: PAt+JJyF/95ystx1DavRcRf1ym05t8iowZRyXvfTVL+uEfw69kw4eTVk7wNupEbsQOD4R99+fbAhyRXGhIM0sg5Juvi7W1o+MIx3WVjcvrPVlxx47fN+Wv60pvK3H/Sh9+mumRpkCJbxII7uTxfqfNJ7hhpOXJWvZ0oJv3/c2WUTLL9IlSjVDI9bsH4NQHIekZo3aU9lMFQ5tPCFQSTZs7BMkRQSPqdZpxGY9rDcp2d/+PbkDBuL997Q6Brnblkc8v9468BTYyQWp/tnXfIGMEBQwwUswPh51+QAxbJDYvLF/ZDNKHIwRbE3+LGsVpP/CofLVQlbiMAU8eRoKudvNgjO08b9lr011Qpb8doXVmC7aBCiyV6/OCH4q2a80IMqncPkUkv5DDLScYy1raBcMeawMVCm+DVbltMf6LlcloIeOw0mz/jeAGMKyx5Uhj4O
+x-ms-exchange-antispam-messagedata: RYWnvithbtkWacHwWAdzcULuFmhJUDuUcMLNXZ+orDkXOl25J3G3RUgh/ueIg0chOE9nbzPeMwCRGHQmUUNX5Gh88EwaNvbxwiEKTW1kj+feJJMpyzs63Zj7SfSvBwL7621s2+IOeA3TootXHy+EGA==
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9597 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0
- suspectscore=3 mlxlogscore=999 adultscore=0 mlxscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004210085
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9597 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=3 bulkscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 phishscore=0
- lowpriorityscore=0 malwarescore=0 clxscore=1011 mlxlogscore=999 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004210085
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3a82d1c-fc4e-4983-e0bc-08d7e5e18378
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Apr 2020 10:48:23.0295
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: iZp1CZVtxNUaUNfDFJRNE7eqYqVleuQSLb2p9lnAZ4OHNv8VeoGwKyv5pTieER6zdxxzzUsWyOY2tryvNqEmSw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: HE1PR04MB3193
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Kernel Janitors,
+Hi Wei Yongjun,
 
-Here is another idea that someone could work on, fixing the
-IS_ERR_OR_NULL() checks in the xen driver.
+> -----Original Message-----
+> From: Wei Yongjun <weiyongjun1@huawei.com>
+> Sent: Tuesday, April 21, 2020 3:09 PM
+> To: Han Xu <han.xu@nxp.com>; Mark Brown <broonie@kernel.org>; Ashish
+> Kumar <ashish.kumar@nxp.com>
+> Cc: Wei Yongjun <weiyongjun1@huawei.com>; linux-spi@vger.kernel.org;
+> kernel-janitors@vger.kernel.org
+> Subject: [PATCH -next] spi: spi-fsl-qspi: Fix return value check in
+> fsl_qspi_probe()
 
-The patch c575b7eeb89f: "drm/xen-front: Add support for Xen PV
-display frontend" from Apr 3, 2018, leads to the following static
-checker warning:
+It sound like all return value in probe() is fixed.
+Please reword this commit message like this:
+spi: spi-fsl-qspi: Fix return value check of devm_ioremap() in probe()
 
-	drivers/gpu/drm/xen/xen_drm_front_gem.c:140 xen_drm_front_gem_create()
-	warn: passing zero to 'ERR_CAST'
+>=20
+> In case of error, the function devm_ioremap() returns NULL pointer not
+> ERR_PTR(). The IS_ERR() test in the return value check should be replaced
+> with NULL test.
+>=20
+> Fixes: 858e26a515c2 ("spi: spi-fsl-qspi: Reduce devm_ioremap size to 4 ti=
+mes
+> AHB buffer size")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  drivers/spi/spi-fsl-qspi.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c inde=
+x
+> 83eb8a484faf..6766262d7e75 100644
+> --- a/drivers/spi/spi-fsl-qspi.c
+> +++ b/drivers/spi/spi-fsl-qspi.c
+> @@ -880,8 +880,8 @@ static int fsl_qspi_probe(struct platform_device
+> *pdev)
+>  	/* Since there are 4 cs, map size required is 4 times ahb_buf_size */
+>  	q->ahb_addr =3D devm_ioremap(dev, q->memmap_phy,
+>  				   (q->devtype_data->ahb_buf_size * 4));
+> -	if (IS_ERR(q->ahb_addr)) {
+> -		ret =3D PTR_ERR(q->ahb_addr);
+> +	if (!q->ahb_addr) {
+> +		ret =3D -ENOMEM;
+ Reviewed-by: Ashish Kumar <Ashish.Kumar@nxp.com>
 
-drivers/gpu/drm/xen/xen_drm_front_gem.c
-   133  struct drm_gem_object *xen_drm_front_gem_create(struct drm_device *dev,
-   134                                                  size_t size)
-   135  {
-   136          struct xen_gem_object *xen_obj;
-   137  
-   138          xen_obj = gem_create(dev, size);
-   139          if (IS_ERR_OR_NULL(xen_obj))
-   140                  return ERR_CAST(xen_obj);
+Thanks & Regards
+Ashish=20
+>  		goto err_put_ctrl;
+>  	}
+>=20
+>=20
 
-This warning is old and it's actually the result of a bug I had in my
-devel version of Smatch yesterday.  xen_obj can't really be NULL, but
-if it were then the caller would return success which would probably
-create some issues.
-
-When a function returns both error pointers and NULL then NULL is a
-special case of success.  Like say you have:  "p = start_feature();".
-If there is an allocation failure, then the code should return -ENOMEM
-and the whole thing should fail.  But if the feature is optional and
-the user has disabled it in the config then we return NULL and the
-caller has to be able to accept that.  There are a lot of these
-IS_ERR_OR_NULL() checks in the xen driver...
-
-The one here is clearly buggy because returning NULL would lead to a
-run time failure.  All these IS_ERR_OR_NULL() should be checked and
-probably changed to just IS_ERR().
-
-This sort of change is probably change is probably easiest if you build
-the Smatch DB and you can check if Smatch thinks the functions return
-NULL.
-
-~/smatch/smatch_data/db/smdb.py return_states gem_create | grep INTERNAL
-drivers/gpu/drm/xen/xen_drm_front_gem.c | gem_create | 58 |  (-4095)-(-1) |      INTERNAL |  -1 |                      | struct xen_gem_object*(*)(struct drm_device*, ulong) |
-drivers/gpu/drm/xen/xen_drm_front_gem.c | gem_create | 62 | 4065035897849303040 |      INTERNAL |  -1 |                      | struct xen_gem_object*(*)(struct drm_device*, ulong) |
-drivers/gpu/drm/xen/xen_drm_front_gem.c | gem_create | 66 | 4065035897849303040 |      INTERNAL |  -1 |                      | struct xen_gem_object*(*)(struct drm_device*, ulong) |
-drivers/gpu/drm/xen/xen_drm_front_gem.c | gem_create | 68 | 0,(-4095)-(-1) |      INTERNAL |  -1 |                      | struct xen_gem_object*(*)(struct drm_device*, ulong) |
-
-Smatch thinks that gem_create() sometimes returns NULL or error pointers
-but that's because of a bug in the unreleased version of Smatch and
-because gem_create() uses IS_ERR_OR_NULL().
-
-   141  
-   142          return &xen_obj->base;
-   143  }
-
-regards,
-dan carpenter

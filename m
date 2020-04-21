@@ -2,134 +2,320 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81A191B1C9A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Apr 2020 05:24:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 415D71B1E5E
+	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Apr 2020 07:52:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728128AbgDUDXe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 20 Apr 2020 23:23:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58800 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728117AbgDUDXd (ORCPT
+        id S1725940AbgDUFw1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 21 Apr 2020 01:52:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53424 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725881AbgDUFw1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 20 Apr 2020 23:23:33 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D5BAC061A0E;
-        Mon, 20 Apr 2020 20:23:33 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id w65so5967225pfc.12;
-        Mon, 20 Apr 2020 20:23:33 -0700 (PDT)
+        Tue, 21 Apr 2020 01:52:27 -0400
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB480C061A10
+        for <kernel-janitors@vger.kernel.org>; Mon, 20 Apr 2020 22:52:25 -0700 (PDT)
+Received: by mail-pj1-x1041.google.com with SMTP id a22so902448pjk.5
+        for <kernel-janitors@vger.kernel.org>; Mon, 20 Apr 2020 22:52:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=hAkHMsgW8GMOATHz1y5uXLHZRbJthuEQUyFwW1zRZQM=;
-        b=VPXUahDC4egr5T5AOQWCcO4zp+GKmqPNumciQBEnRpnZbz9csSEtIbonJvKgNgbNAC
-         /26RtixkoiejDvxn5y5XE+0PoTMvwCzM+pmbIPBX50MKcxzCkABeQbwMpmTIqU5HdcMI
-         tGF2eAq/W2XwbV3etne63aQT4EtjHtPRs+22FyNTB7VBrcIHyAK2U9Fx21ZnojRvl8et
-         0x5FPnq2+1qBC3V8vqgaWUnuT2x3opB1vKKq2uUJAJnUeNWlbi3+BwSyf0NZoPCDV6/P
-         dlilEaFTlMgUR+gMg5gpvz/Jqpc5xCy5e6SvWDnWH9oPCP15vUTRrZdhHq3fBdyX7Ljp
-         noNQ==
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=mJgvtzAo6PiW+teMlYV8oXA7KbzTUyqEYabZe2Afi1U=;
+        b=jtCOcXA1pDRNgt+oeZMeN8OptbUKeipNHN9yrrqgQ1UL+ee5zqFAN2MntBwE4ihYkn
+         zWYksnZLufzYrKWHcDmHm/DARQNay06V4yMpw2PJ86CRSCSYfxa3Jr32UwobVKNAfFO7
+         Hg85ykHH4wPUNEQjG02Uowq5rG0EXYSLg0QadN2ODzvwpjrLpwirgpkYJ8HMc2QtZvFf
+         f7KwPKNtL9tuYUJDiHV8GpG6e9sTGpwcFjfy3JMO0h/Hgx4ovqgdEco9qKPx5PTZcbi8
+         WKNJvzZCI4AWdv/wuAuN5wxSDpEABsm38UCDjD6YtktJHwji9fCyS4f9kW6B3D5ip4WH
+         0ktw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=hAkHMsgW8GMOATHz1y5uXLHZRbJthuEQUyFwW1zRZQM=;
-        b=FVcikftf/MX7uL23/gVC84jd2B31pQO/CfW3JLgHFeTeqrnVqutbBZ6vicB3jqaq2j
-         R6MqDuAxiGVQzlAPsVztC+48UqIeBPS5DDJVc3bOxsNyp4GMBUZXyY4BYmgwJ5lX4Kvv
-         5v2WbF6wjmhuqdok0KF4j2EOG4gAjTn/XPpAnSXzhMVU9T0M8gyyf36IlG+8iYC5+eib
-         YlworEJLL09eABM1wmonlTqAeMMNtGS5WN4pJaa1Bgpb1b3A0abtvbyXbmawF85tPvBo
-         73QPc0wlTCqonMh53Hix5y2+ajHHUAGLxFoZz3DIfSYPAx5S2XYGUIdFH2hZtBl5j7d4
-         y9Sg==
-X-Gm-Message-State: AGi0PuaRApg566bADF7IU8WX/y4Es+Mz2Mj0HACHtjGjdThQ1a2TrNod
-        jdf4jVll258Fa/aiFurA800=
-X-Google-Smtp-Source: APiQypLhKGgG/jGFDVrWB+3ZbTxFK/mnqBBi4Q7+MoUlz67fb9NBBXaTrapsFcW+jfbqx8p5W2arGw==
-X-Received: by 2002:a63:6d4a:: with SMTP id i71mr19464270pgc.445.1587439412118;
-        Mon, 20 Apr 2020 20:23:32 -0700 (PDT)
-Received: from ast-mbp.dhcp.thefacebook.com ([2620:10d:c090:400::5:f163])
-        by smtp.gmail.com with ESMTPSA id i4sm866747pjg.4.2020.04.20.20.23.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Apr 2020 20:23:31 -0700 (PDT)
-Date:   Mon, 20 Apr 2020 20:23:28 -0700
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-To:     Song Liu <songliubraving@fb.com>
-Cc:     Mao Wenan <maowenan@huawei.com>, "ast@kernel.org" <ast@kernel.org>,
-        "daniel@iogearbox.net" <daniel@iogearbox.net>,
-        Martin Lau <kafai@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>,
-        "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-        "kpsingh@chromium.org" <kpsingh@chromium.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        kernel-team@fb.com
-Subject: Re: [PATCH bpf-next v2] bpf: remove set but not used variable
- 'dst_known'
-Message-ID: <20200421032328.fglmpdmnwnjts375@ast-mbp.dhcp.thefacebook.com>
-References: <8855e82a-88d0-8d1e-e5e0-47e781f9653c@huawei.com>
- <20200418013735.67882-1-maowenan@huawei.com>
- <C7067847-8EDB-49B5-8DDF-C8504BB82962@fb.com>
+         :in-reply-to:user-agent;
+        bh=mJgvtzAo6PiW+teMlYV8oXA7KbzTUyqEYabZe2Afi1U=;
+        b=lN/M6SG3R+57MKiInvJKAoaVir+9374OwyjinU6t82eN8Nzjf8aGSJ7R8s5FwTv+rv
+         D6qMNv0vhDhl6Ud7qtYn+9wXSVa6UC6IjU2YQJYj8fyOHoCrQXWbVqlJwu2nXwyIhRhs
+         NVYYCIP8dov9IWmMqU4qB8KAyaH5tgE6wb4WQ/QLOeeQYQ61Lv3uxROXJ43/27ABGTDE
+         SLwdZbsLm31wdTQkX6PMCemCyKvpBjxxtzmwkiAgkWS9fuw2k5uIUyoiTf+leleYpgg9
+         DekWobUsEfFKf6ZptJDzoVM/l7wzf5zSy8l6xtieeAp0yvUFsfBj0v4CIJ8d8iPS3TE8
+         Ll1g==
+X-Gm-Message-State: AGi0Puatkkd43gI0iYYMp2tI0vrdjK18vtsR1tGqXV93W3UPxZoeajzJ
+        xlJJ7N0/W6vDiQGrxuycSsAT
+X-Google-Smtp-Source: APiQypLz5WIUL21BrJFE2X1cS9KhMxg7CGPrcjoobEXkFmcrR0iFtbhrYaDce7BSFRhVmvSP/4TTxQ==
+X-Received: by 2002:a17:902:ba89:: with SMTP id k9mr19854616pls.199.1587448343924;
+        Mon, 20 Apr 2020 22:52:23 -0700 (PDT)
+Received: from Mani-XPS-13-9360 ([2409:4072:6289:7463:c15b:2de1:b77e:d971])
+        by smtp.gmail.com with ESMTPSA id s44sm1252851pjc.28.2020.04.20.22.52.20
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 20 Apr 2020 22:52:23 -0700 (PDT)
+Date:   Tue, 21 Apr 2020 11:22:18 +0530
+From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To:     Hemant Kumar <hemantk@codeaurora.org>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        linux-arm-msm@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [bug report] bus: mhi: core: Add support for data transfer
+Message-ID: <20200421055218.GA4327@Mani-XPS-13-9360>
+References: <20200407135559.GA109574@mwanda>
+ <20200407143304.GH2442@Mani-XPS-13-9360>
+ <d30c7648-b657-d8b2-ba64-71f1178b4a68@codeaurora.org>
+ <20200417101428.GA10295@Mani-XPS-13-9360>
+ <184d0d8e-1d5f-c317-a40b-1b44e79ad293@codeaurora.org>
+ <19504ACB-4E2A-4883-92E2-7AAC056CE3B4@linaro.org>
+ <7d1bda90-dec3-3cfe-9bfc-dbcf97f9a72d@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <C7067847-8EDB-49B5-8DDF-C8504BB82962@fb.com>
+In-Reply-To: <7d1bda90-dec3-3cfe-9bfc-dbcf97f9a72d@codeaurora.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Apr 18, 2020 at 06:13:48AM +0000, Song Liu wrote:
+On Mon, Apr 20, 2020 at 03:57:58PM -0700, Hemant Kumar wrote:
+> Hi Mani,
 > 
-> 
-> > On Apr 17, 2020, at 6:37 PM, Mao Wenan <maowenan@huawei.com> wrote:
+> On 4/18/20 12:19 PM, Manivannan Sadhasivam wrote:
+> > Hi Hemant,
 > > 
-> > Fixes gcc '-Wunused-but-set-variable' warning:
+> > Please try to use an email client supporting plain text mode like mutt. Your reply looks mangled.
 > > 
-> > kernel/bpf/verifier.c:5603:18: warning: variable â€˜dst_knownâ€™
-> > set but not used [-Wunused-but-set-variable], delete this
-> > variable.
+> > On 18 April 2020 12:40:10 PM IST, Hemant Kumar <hemantk@codeaurora.org> wrote:
+> > > Hi Mani,
+> > > 
+> > > On 4/17/20 3:14 AM, Manivannan Sadhasivam wrote:
+> > > > Hi Hemant,
+> > > > 
+> > > > On Thu, Apr 16, 2020 at 08:37:16PM -0700, Hemant Kumar wrote:
+> > > > > On 4/7/20 7:33 AM, Manivannan Sadhasivam wrote:
+> > > > > > Hi Dan,
+> > > > > > 
+> > > > > > On Tue, Apr 07, 2020 at 04:55:59PM +0300, Dan Carpenter wrote:
+> > > > > > > Hello Manivannan Sadhasivam,
+> > > > > > > 
+> > > > > > > The patch 189ff97cca53: "bus: mhi: core: Add support for data
+> > > > > > > transfer" from Feb 20, 2020, leads to the following static checker
+> > > > > > > warning:
+> > > > > > > 
+> > > > > > > 	drivers/bus/mhi/core/main.c:1153 mhi_queue_buf()
+> > > > > > > 	error: double locked 'mhi_chan->lock' (orig line 1110)
+> > > > > > > 
+> > > > > > > drivers/bus/mhi/core/main.c
+> > > > > > >      1142          }
+> > > > > > >      1143
+> > > > > > >      1144          /* Toggle wake to exit out of M2 */
+> > > > > > >      1145          mhi_cntrl->wake_toggle(mhi_cntrl);
+> > > > > > >      1146
+> > > > > > >      1147          if (mhi_chan->dir == DMA_TO_DEVICE)
+> > > > > > >      1148                  atomic_inc(&mhi_cntrl->pending_pkts);
+> > > > > > >      1149
+> > > > > > >      1150          if (likely(MHI_DB_ACCESS_VALID(mhi_cntrl))) {
+> > > > > > >      1151                  unsigned long flags;
+> > > > > > >      1152
+> > > > > > >      1153                  read_lock_irqsave(&mhi_chan->lock,
+> > > flags);
+> > > > > parse_xfer_event is taking read lock :
+> > > read_lock_bh(&mhi_chan->lock); first
+> > > > > and later
+> > > > > 
+> > > > > mhi_queue_buf takes read lock: read_lock_irqsave(&mhi_chan->lock,
+> > > flags);
+> > > > > 
+> > > > > Both are read locks which are recursive, is this problematic ?
+> > > > > 
+> > > > read_locks are recursive but I wanted to make the static checker
+> > > happy. But
+> > > > looking into it further (and after having a chat with Arnd), we might
+> > > need to
+> > > > refactor the locking here.
+> > > > 
+> > > > Since 'chan->lock' only prevents 'mhi_chan->ch_state', how about
+> > > doing something
+> > > > like below?
+> > > 
+> > > As comment mentioned for OOB (to enter  DB mode) write lock is acquired
+> > > 
+> > > with preemption disabled (irqsave ver). In case of OOB event control
+> > > does not go to mhi_queue_buf
+> > > 
+> > > path.
 > > 
-> > Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> 
-> Acked-by: Song Liu <songliubraving@fb.com>
-> 
-> With one nit below. 
-> 
-> > ---
-> > v2: remove fixes tag in commit log. 
-> > kernel/bpf/verifier.c | 4 +---
-> > 1 file changed, 1 insertion(+), 3 deletions(-)
-> > 
-> > diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-> > index 04c6630cc18f..c9f50969a689 100644
-> > --- a/kernel/bpf/verifier.c
-> > +++ b/kernel/bpf/verifier.c
-> > @@ -5600,7 +5600,7 @@ static int adjust_scalar_min_max_vals(struct bpf_verifier_env *env,
-> > {
-> > 	struct bpf_reg_state *regs = cur_regs(env);
-> > 	u8 opcode = BPF_OP(insn->code);
-> > -	bool src_known, dst_known;
-> > +	bool src_known;
-> 
-> This is not a hard rule, but we prefer to keep variable definition in 
-> "reverse Christmas tree" order. Since we are on this function, let's 
-> reorder these definitions to something like:
-> 
->         u64 insn_bitness = (BPF_CLASS(insn->code) == BPF_ALU64) ? 64 : 32;
->         struct bpf_reg_state *regs = cur_regs(env);
->         u8 opcode = BPF_OP(insn->code);
->         u32 dst = insn->dst_reg;
->         s64 smin_val, smax_val;
->         u64 umin_val, umax_val;
->         bool src_known;
->         int ret;
+> > Again, why do we need irq version of write lock. It should only be used if the data is shared with hardirq handlers which I don't see. Otherwise, write_lock_bh() looks sufficient to me as this itself is an exclusive lock.
+> irq ver disables preemption where as bh ver does not. In case of OOB event,
+> idea is not get preempted and this is for short duration of ringing the
+> channel doorbell.
 
-I don't want folks to keep re-sorting variables and making patches difficult
-to backport, do git blame, causing bpf vs bpf-next conflicts, etc.
+This is a clear abuse of write_lock_irq() API. write_lock_irq() should _only_
+be used when the data is shared with a hardirq handler. The original comment
+says,
 
-reverse xmas tree is not mandatory. It's a style preference.
-I personally do it for new code, but very rarely for fixes.
-And certainly not for this kind of cleanup.
+"If it's a DB Event then we need to grab the lock with preemption disabled and
+as a write because we have to update db register and there are chances that
+another thread could be doing the same."
 
-Applied. Thanks
+If the 'another' thread has the lock for this piece of code then we don't need
+to disable the irq, isn't it? The irq needs to be disabled only if the 'another'
+thread is a hardirq handler. I think the problem here is you are caution of not
+getting preempted while mhi_ring_chan_db() which I don't see why. Is this
+function non reentrant? I don't think so.
+
+Furthermore, there are _lot_ of places the *_irq and *_bh versions of locks are
+mixed. One such instance is mhi_queue_buf() where the read_lock_irq() is used
+for mhi_ring_chan_db() while mhi_queue_skb() uses read_lock_bh().
+
+> > 
+> > > For transfer completion events >read_lock_bh is acquired and
+> > > channel state is checked.
+> > > 
+> > > This lock is held for entire handling of the transfer completion so
+> > > that
+> > > in case
+> > > 
+> > > __mhi_unprepare_channel() is called from power down context write lock
+> > > is acquired
+> > > 
+> > > for channel lock to change channel state, which would wait until
+> > > parse_xfer_event for
+> > > 
+> > > data transfer is done (reader is in critical section).  In case if
+> > > __mhi_unprepare_channel() wins then
+> > > 
+> > > parse_xfer_event is skipped otherwise parse_xfer_event is done and then
+> > > 
+> > > channel state is changed.
+> > > 
+> > 
+> > So if we get unprepare_channel() after checking the channel state in parse_xfer_event(), what could go wrong?
+> > Also, grabbing the lock for the entire function doesn't look good to me. The purpose of the chan->lock is just to protect 'chan_state'/DB and not the whole function.
+> > 
+> main problem unprepare_channel and parse_xfer_event have lot in common due
+> to that we can not let them run in parallel. For example -parse_xfer_event
+> is working on transfer ring (rp and wp updates)
+> -parse_xfer_event calling dma_unmap_single on buffer
+> -__mhi_unprepare_channel() calling mhi_reset_chan() and
+> mhi_deinit_chan_ctxt().
+
+Hmm. So the issue will be when __mhi_unprepare_channel() gets called after
+parse_xfer_event() checked the 'mhi_chan->ch_state'. So if we have the read_lock
+for the whole case then it is guarenteed to run before __mhi_unprepare_channel()
+does its part.
+
+Let's keep it as it is. But please look into the irq vs bh part above.
+
+Thanks,
+Mani
+
+> > Thanks,
+> > Mani
+> > 
+> > > > 
+> > > > diff --git a/drivers/bus/mhi/core/main.c
+> > > b/drivers/bus/mhi/core/main.c
+> > > > index 3e9aa3b2da77..904f9be7a142 100644
+> > > > --- a/drivers/bus/mhi/core/main.c
+> > > > +++ b/drivers/bus/mhi/core/main.c
+> > > > @@ -474,19 +474,12 @@ static int parse_xfer_event(struct
+> > > mhi_controller *mhi_cntrl,
+> > > >           result.transaction_status = (ev_code == MHI_EV_CC_OVERFLOW)
+> > > ?
+> > > >                   -EOVERFLOW : 0;
+> > > > -       /*
+> > > > -        * If it's a DB Event then we need to grab the lock
+> > > > -        * with preemption disabled and as a write because we
+> > > > -        * have to update db register and there are chances that
+> > > > -        * another thread could be doing the same.
+> > > > -        */
+> > > > -       if (ev_code >= MHI_EV_CC_OOB)
+> > > > -               write_lock_irqsave(&mhi_chan->lock, flags);
+> > > > -       else
+> > > > -               read_lock_bh(&mhi_chan->lock);
+> > > > -
+> > > > -       if (mhi_chan->ch_state != MHI_CH_STATE_ENABLED)
+> > > > -               goto end_process_tx_event;
+> > > > +       read_lock_bh(&mhi_chan->lock);
+> > > > +       if (mhi_chan->ch_state != MHI_CH_STATE_ENABLED) {
+> > > > +               read_unlock_bh(&mhi_chan->lock);
+> > > > +               return 0;
+> > > > +       }
+> > > > +       read_unlock_bh(&mhi_chan->lock);
+> > > >           switch (ev_code) {
+> > > >           case MHI_EV_CC_OVERFLOW:
+> > > > @@ -559,10 +552,12 @@ static int parse_xfer_event(struct
+> > > mhi_controller *mhi_cntrl,
+> > > >                   mhi_chan->db_cfg.db_mode = 1;
+> > > >                   read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
+> > > > +               write_lock_irqsave(&mhi_chan->lock, flags);
+> > > >                   if (tre_ring->wp != tre_ring->rp &&
+> > > >                       MHI_DB_ACCESS_VALID(mhi_cntrl)) {
+> > > >                           mhi_ring_chan_db(mhi_cntrl, mhi_chan);
+> > > >                   }
+> > > > +               write_unlock_irqrestore(&mhi_chan->lock, flags);
+> > > >                   read_unlock_irqrestore(&mhi_cntrl->pm_lock, flags);
+> > > >                   break;
+> > > >           }
+> > > > @@ -572,12 +567,6 @@ static int parse_xfer_event(struct
+> > > mhi_controller *mhi_cntrl,
+> > > >                   break;
+> > > >           } /* switch(MHI_EV_READ_CODE(EV_TRB_CODE,event)) */
+> > > > -end_process_tx_event:
+> > > > -       if (ev_code >= MHI_EV_CC_OOB)
+> > > > -               write_unlock_irqrestore(&mhi_chan->lock, flags);
+> > > > -       else
+> > > > -               read_unlock_bh(&mhi_chan->lock);
+> > > > -
+> > > >           return 0;
+> > > >    }
+> > > > 
+> > > > Moreover, I do have couple of concerns:
+> > > > 
+> > > > 1. 'mhi_chan->db_cfg.db_mode = 1' needs to be added to the critical
+> > > section
+> > > > above.
+> > > > 
+> > > > 2. Why we have {write/read}_lock_irq variants for chan->lock? I don't
+> > > see where
+> > > > the db or ch_state got shared with hardirq handler. Maybe we should
+> > > only have
+> > > > *_bh (softirq) variants all over the place?
+> > > > 
+> > > > Thanks,
+> > > > Mani
+> > > > 
+> > > > > > >                                              ^^^^^^^^^^^^^^^
+> > > > > > > The caller is already holding this lock.
+> > > > > > > 
+> > > > > > Hmm. We have one internal user of this function and that's where
+> > > the locking
+> > > > > > has gone wrong. Will fix it.
+> > > > > > 
+> > > > > > Thanks for reporting!
+> > > > > > 
+> > > > > > Regards,
+> > > > > > Mani
+> > > > > > 
+> > > > > > >      1154                  mhi_ring_chan_db(mhi_cntrl, mhi_chan);
+> > > > > > >      1155                  read_unlock_irqrestore(&mhi_chan->lock,
+> > > flags);
+> > > > > > >      1156          }
+> > > > > > >      1157
+> > > > > > >      1158          read_unlock_irqrestore(&mhi_cntrl->pm_lock,
+> > > flags);
+> > > > > > >      1159
+> > > > > > >      1160          return 0;
+> > > > > > >      1161  }
+> > > > > > >      1162  EXPORT_SYMBOL_GPL(mhi_queue_buf);
+> > > > > > > 
+> > > > > > > regards,
+> > > > > > > dan carpenter
+> > > > > -- 
+> > > > > The Qualcomm Innovation Center, Inc. is a member of the Code Aurora
+> > > Forum,
+> > > > > a Linux Foundation Collaborative Project
+> > 
+> 
+> -- 
+> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+> a Linux Foundation Collaborative Project

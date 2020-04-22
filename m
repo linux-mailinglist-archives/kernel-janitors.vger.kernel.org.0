@@ -2,32 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C0E41B34A0
-	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Apr 2020 03:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54F741B34B9
+	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Apr 2020 04:00:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726321AbgDVBoU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 21 Apr 2020 21:44:20 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:58132 "EHLO huawei.com"
+        id S1726363AbgDVCA2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 21 Apr 2020 22:00:28 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:46200 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726039AbgDVBoU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 21 Apr 2020 21:44:20 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id E8D396EA80555452B6AE;
-        Wed, 22 Apr 2020 09:44:16 +0800 (CST)
+        id S1726055AbgDVCA1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 21 Apr 2020 22:00:27 -0400
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 6582072279BD57595341;
+        Wed, 22 Apr 2020 10:00:24 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 22 Apr 2020 09:44:06 +0800
+ DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 22 Apr 2020 10:00:17 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>,
-        Ashish Kumar <Ashish.Kumar@nxp.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-spi@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next v2] spi: spi-fsl-qspi: Fix return value check of devm_ioremap() in probe
-Date:   Wed, 22 Apr 2020 01:45:43 +0000
-Message-ID: <20200422014543.111070-1-weiyongjun1@huawei.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Erel Geron <erelx.geron@intel.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-wireless@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] mac80211_hwsim: use GFP_ATOMIC under spin lock
+Date:   Wed, 22 Apr 2020 02:01:54 +0000
+Message-ID: <20200422020154.112088-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200421093908.48213-1-weiyongjun1@huawei.com>
-References: <20200421093908.48213-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7BIT
@@ -38,33 +37,27 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, the function devm_ioremap() returns NULL pointer not
-ERR_PTR(). The IS_ERR() test in the return value check should be
-replaced with NULL test.
+A spin lock is taken here so we should use GFP_ATOMIC.
 
-Fixes: 858e26a515c2 ("spi: spi-fsl-qspi: Reduce devm_ioremap size to 4 times AHB buffer size")
+Fixes: 5d44fe7c9808 ("mac80211_hwsim: add frame transmission support over virtio")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-Reviewed-by: Ashish Kumar <Ashish.Kumar@nxp.com>
 ---
-v1 -> v2: fix the subject as Ashish's suggest
----
- drivers/spi/spi-fsl-qspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mac80211_hwsim.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index 83eb8a484faf..6766262d7e75 100644
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -880,8 +880,8 @@ static int fsl_qspi_probe(struct platform_device *pdev)
- 	/* Since there are 4 cs, map size required is 4 times ahb_buf_size */
- 	q->ahb_addr = devm_ioremap(dev, q->memmap_phy,
- 				   (q->devtype_data->ahb_buf_size * 4));
--	if (IS_ERR(q->ahb_addr)) {
--		ret = PTR_ERR(q->ahb_addr);
-+	if (!q->ahb_addr) {
-+		ret = -ENOMEM;
- 		goto err_put_ctrl;
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 7c4b7c31d07a..0528d4cb4d37 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -4068,7 +4068,7 @@ static void hwsim_virtio_rx_work(struct work_struct *work)
  	}
+ 	vq = hwsim_vqs[HWSIM_VQ_RX];
+ 	sg_init_one(sg, skb->head, skb_end_offset(skb));
+-	err = virtqueue_add_inbuf(vq, sg, 1, skb, GFP_KERNEL);
++	err = virtqueue_add_inbuf(vq, sg, 1, skb, GFP_ATOMIC);
+ 	if (WARN(err, "virtqueue_add_inbuf returned %d\n", err))
+ 		nlmsg_free(skb);
+ 	else
 
 
 

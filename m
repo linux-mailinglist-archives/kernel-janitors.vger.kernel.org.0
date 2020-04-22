@@ -2,117 +2,155 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C7A01B3B74
-	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Apr 2020 11:34:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E84F21B3B84
+	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Apr 2020 11:36:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726287AbgDVJeD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 22 Apr 2020 05:34:03 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:37204 "EHLO
+        id S1726079AbgDVJgy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 22 Apr 2020 05:36:54 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:39554 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725912AbgDVJeD (ORCPT
+        with ESMTP id S1725912AbgDVJgy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 22 Apr 2020 05:34:03 -0400
+        Wed, 22 Apr 2020 05:36:54 -0400
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03M9IX1p021651;
-        Wed, 22 Apr 2020 09:33:41 GMT
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03M9YS8I046798;
+        Wed, 22 Apr 2020 09:36:49 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=VrW0SlucwGVpYtW5sBjiy8D6cWqoWtrecyVysdPVPfc=;
- b=Qiniz0pQM5d+f+eZyV8ra2XvsnEmEFwSnsxMQJIh46V64XuHy5JSMXQKzsP2yxK4l5TY
- gaZeC18nBJDc28EkbzzumHE0M3BtYEqlolnTFSiTH06M7txVqsN7RhgXQzwNuu6Nh68f
- TPbO+jcWK4i57lnreoEHPG22+Mjw2PnWV9f7hOjqSTE85SDTa6MXQH1kO4BsMpO1KZ6B
- 1bsd8R+9nMOYGEXEoapjVJEzgK3ONwh0HRM2ZxTz2l2vF9XlvkN66aY0MG90wxaTLsVb
- 87fbRyKb9XwwHd+LusSInDIJA000Za0NUQebrQAhk5bC67JsWS21J+NWk2CaY7wUwgRL Yg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 30fsgm1q8g-1
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=lVFEYa9FLN9V7tZiN4XFyrj0fF6Aq9VZmqOz4exZud8=;
+ b=psNJzeFuZiJZxSPMSQn1GlAL6ezdXlg8c1RpWysw7idMliJTfd1x8gLE0senPawno0ti
+ m8xdYmOZTUxX7jLEJojoTQC1WXhT+zX9tywwOfS6WE/CnwfmW8GWmeUpNd/BqIPuT1xQ
+ A6gsPeAriC6lZkLSXMKjDA6vXEvyXzKxXdnB6PVX0d9hca3exbRVtzgmcyIGdKEEJF6w
+ 08WXKIwmr1SD9gnxctrh0l8QM0x0Yf97ob8MoNspQNxkpcmiRKTYyWjXyaLbutI7AEKb
+ I112F9I2Of5g+oFbM8xWIyhp5VNEDUz95nCSjnVRrGi0klZ7qn0KNOqM6zSpZu2BiHoi zQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 30fsgm1qpf-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 22 Apr 2020 09:33:41 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03M9XT8F167083;
-        Wed, 22 Apr 2020 09:33:40 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 30gb9275m8-1
+        Wed, 22 Apr 2020 09:36:49 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03M9WG2N164011;
+        Wed, 22 Apr 2020 09:36:48 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 30gb1j59v2-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 22 Apr 2020 09:33:40 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 03M9Xcc1012562;
-        Wed, 22 Apr 2020 09:33:38 GMT
-Received: from kadam (/41.57.98.10)
+        Wed, 22 Apr 2020 09:36:48 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03M9amSb029236;
+        Wed, 22 Apr 2020 09:36:48 GMT
+Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 22 Apr 2020 02:33:38 -0700
-Date:   Wed, 22 Apr 2020 12:33:29 +0300
+        with ESMTP ; Wed, 22 Apr 2020 02:36:47 -0700
+Date:   Wed, 22 Apr 2020 12:36:41 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Mao Wenan <maowenan@huawei.com>
-Cc:     ast@kernel.org, daniel@iogearbox.net, kafai@fb.com,
-        songliubraving@fb.com, yhs@fb.com, andriin@fb.com,
-        john.fastabend@gmail.com, kpsingh@chromium.org,
-        netdev@vger.kernel.org, bpf@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH bpf-next 1/2] bpf: Change error code when ops is NULL
-Message-ID: <20200422093329.GI2659@kadam>
-References: <20200422083010.28000-1-maowenan@huawei.com>
- <20200422083010.28000-2-maowenan@huawei.com>
+To:     Jiri Pirko <jiri@mellanox.com>
+Cc:     Ido Schimmel <idosch@mellanox.com>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH net] mlxsw: Fix some IS_ERR() vs NULL bugs
+Message-ID: <20200422093641.GA189235@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200422083010.28000-2-maowenan@huawei.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9598 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
- bulkscore=0 suspectscore=0 malwarescore=0 phishscore=0 spamscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004220076
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0 spamscore=0
+ mlxlogscore=999 mlxscore=0 malwarescore=0 bulkscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004220076
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9598 signatures=668686
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 mlxlogscore=999 malwarescore=0 clxscore=1011
+ lowpriorityscore=0 mlxlogscore=999 malwarescore=0 clxscore=1015
  spamscore=0 bulkscore=0 phishscore=0 suspectscore=0 impostorscore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004220075
+ engine=8.12.0-2003020000 definitions=main-2004220076
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Apr 22, 2020 at 04:30:09PM +0800, Mao Wenan wrote:
-> There is one error printed when use type
-> BPF_MAP_TYPE_SOCKMAP to create map:
-> libbpf: failed to create map (name: 'sock_map'): Invalid argument(-22)
-> 
-> This is because CONFIG_BPF_STREAM_PARSER is not set, and
-> bpf_map_types[type] return invalid ops. It is not clear
-> to show the cause of config missing with return code -EINVAL,
-> so add pr_warn() and change error code to describe the reason.
+The mlxsw_sp_acl_rulei_create() function is supposed to return an error
+pointer from mlxsw_afa_block_create().  The problem is that these
+functions both return NULL instead of error pointers.  Half the callers
+expect NULL and half expect error pointers so it could lead to a NULL
+dereference on failure.
 
-Since you're going to have to redo the commit any way, maybe you should
-put the line breaks at 72 characters.  I think you're using 65 character
-line breaks, but that's only for the Subject.
+This patch changes both of them to return error pointers and changes all
+the callers which checked for NULL to check for IS_ERR() instead.
 
-> 
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> ---
->  kernel/bpf/syscall.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-> index d85f37239540..f67bc063bf75 100644
-> --- a/kernel/bpf/syscall.c
-> +++ b/kernel/bpf/syscall.c
-> @@ -112,9 +112,11 @@ static struct bpf_map *find_and_alloc_map(union bpf_attr *attr)
->  		return ERR_PTR(-EINVAL);
->  	type = array_index_nospec(type, ARRAY_SIZE(bpf_map_types));
->  	ops = bpf_map_types[type];
-> -	if (!ops)
-> -		return ERR_PTR(-EINVAL);
-> -
-> +	if (!ops) {
-> +		pr_warn("map type %d not supported or
-> +			 kernel config not opened\n", type);
+Fixes: 4cda7d8d7098 ("mlxsw: core: Introduce flexible actions support")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_actions.c | 4 ++--
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c          | 2 +-
+ drivers/net/ethernet/mellanox/mlxsw/spectrum2_acl_tcam.c    | 4 ++--
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_mr_tcam.c      | 4 ++--
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
-This pr_warn() will be badly formatted in dmesg because of the new line
-and the tabs.  I tried to add a checkpatch.pl warning for this but maybe
-it only works with -f?...
-
-regards,
-dan carpenter
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_actions.c b/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_actions.c
+index 70a104e728f6..c3d04319ff44 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_actions.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_actions.c
+@@ -380,7 +380,7 @@ struct mlxsw_afa_block *mlxsw_afa_block_create(struct mlxsw_afa *mlxsw_afa)
+ 
+ 	block = kzalloc(sizeof(*block), GFP_KERNEL);
+ 	if (!block)
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
+ 	INIT_LIST_HEAD(&block->resource_list);
+ 	block->afa = mlxsw_afa;
+ 
+@@ -408,7 +408,7 @@ struct mlxsw_afa_block *mlxsw_afa_block_create(struct mlxsw_afa *mlxsw_afa)
+ 	mlxsw_afa_set_destroy(block->first_set);
+ err_first_set_create:
+ 	kfree(block);
+-	return NULL;
++	return ERR_PTR(-ENOMEM);
+ }
+ EXPORT_SYMBOL(mlxsw_afa_block_create);
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
+index 67ee880a8727..01cff711bbd2 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
+@@ -464,7 +464,7 @@ mlxsw_sp_acl_rulei_create(struct mlxsw_sp_acl *acl,
+ 
+ 	rulei = kzalloc(sizeof(*rulei), GFP_KERNEL);
+ 	if (!rulei)
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	if (afa_block) {
+ 		rulei->act_block = afa_block;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum2_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum2_acl_tcam.c
+index 6c66a0f1b79e..ad69913f19c1 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum2_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum2_acl_tcam.c
+@@ -88,8 +88,8 @@ static int mlxsw_sp2_acl_tcam_init(struct mlxsw_sp *mlxsw_sp, void *priv,
+ 	 * to be written using PEFA register to all indexes for all regions.
+ 	 */
+ 	afa_block = mlxsw_afa_block_create(mlxsw_sp->afa);
+-	if (!afa_block) {
+-		err = -ENOMEM;
++	if (IS_ERR(afa_block)) {
++		err = PTR_ERR(afa_block);
+ 		goto err_afa_block;
+ 	}
+ 	err = mlxsw_afa_block_continue(afa_block);
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr_tcam.c
+index 346f4a5fe053..221aa6a474eb 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr_tcam.c
+@@ -199,8 +199,8 @@ mlxsw_sp_mr_tcam_afa_block_create(struct mlxsw_sp *mlxsw_sp,
+ 	int err;
+ 
+ 	afa_block = mlxsw_afa_block_create(mlxsw_sp->afa);
+-	if (!afa_block)
+-		return ERR_PTR(-ENOMEM);
++	if (IS_ERR(afa_block))
++		return afa_block;
+ 
+ 	err = mlxsw_afa_block_append_allocated_counter(afa_block,
+ 						       counter_index);
+-- 
+2.26.1
 

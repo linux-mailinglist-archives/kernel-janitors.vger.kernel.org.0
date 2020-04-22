@@ -2,109 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 277591B3B92
-	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Apr 2020 11:38:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C3521B432D
+	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Apr 2020 13:24:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725994AbgDVJin (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 22 Apr 2020 05:38:43 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:36960 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725912AbgDVJin (ORCPT
+        id S1726719AbgDVLY2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 22 Apr 2020 07:24:28 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:42355 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726386AbgDVLY2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 22 Apr 2020 05:38:43 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03M9Wfw0003602;
-        Wed, 22 Apr 2020 09:38:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=IC+0pG/Aso4gbz60Thi7u+NMmxwUC7iGIz6CNHJpJTA=;
- b=FA/mUWMc/r7dc+4ycPnu5hgia89DHFnIWKW87LdH7oatVWbBzvyY7Ge6Brec12QcqdOu
- K403bXFpmkDw68GSR+2U+AWyKWvdw5rIskv5WFJ4exb+tp0e+FYYKDTGdbR4z8Y0T8ua
- MxmgnlYtrcuiZl2WEHwFPRCM7/bNEmbDNMnKe8ehJWr/Cg2q0ExISnVnlJO/hv+W9mcM
- CqIL8JYzKgLWXazhscHUvp8PXsAbfJVLd9F2z2lOQiJBEVZGl5ouuHtKuC688RptNkCP
- dfK04cIUnVxwRuRXJkWhzB2wrXlcTmMAa8LuU/jeDVRFOWx8flfong/Tri4n4WIGVTb4 Pg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 30jhyc0jb9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 22 Apr 2020 09:38:23 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03M9bmUU102774;
-        Wed, 22 Apr 2020 09:38:23 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 30gb3tmu3c-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 22 Apr 2020 09:38:22 +0000
-Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03M9cIL8029014;
-        Wed, 22 Apr 2020 09:38:18 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 22 Apr 2020 02:38:17 -0700
-Date:   Wed, 22 Apr 2020 12:38:11 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] iio: imu: st_lsm6dsx: unlock on error in
- st_lsm6dsx_shub_write_raw()
-Message-ID: <20200422093811.GA196034@mwanda>
+        Wed, 22 Apr 2020 07:24:28 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jRDUH-0006HA-IO; Wed, 22 Apr 2020 11:24:17 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        sound-open-firmware@alsa-project.org, alsa-devel@alsa-project.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ASoC: SOF: ensure all fields in header are zero'd before copying back to userspace
+Date:   Wed, 22 Apr 2020 12:24:17 +0100
+Message-Id: <20200422112417.208843-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9598 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0 adultscore=0
- mlxlogscore=999 phishscore=0 suspectscore=0 bulkscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004220076
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9598 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0 mlxscore=0
- clxscore=1011 suspectscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
- impostorscore=0 malwarescore=0 priorityscore=1501 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004220076
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We need to release a lock if st_lsm6dsx_check_odr() fails, we can't
-return directly.
+From: Colin Ian King <colin.king@canonical.com>
 
-Fixes: 76551a3c3df1 ("iio: imu: st_lsm6dsx: specify slave odr in slv_odr")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Field header.tlv is uninitialized and being copied back to userspace
+and hence leaking data from the stack to userspace.  Fix this by
+ensuring the header structure is zero'd.
+
+Fixes: c3078f539704 ("ASoC: SOF: Add Sound Open Firmware KControl support")
+Addresses-Coverity: ("Uninitialized scalar variable")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ sound/soc/sof/control.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-index 64ef07a30726..1cf98195f84d 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-@@ -544,8 +544,10 @@ st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
- 
- 			ref_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
- 			odr = st_lsm6dsx_check_odr(ref_sensor, val, &odr_val);
--			if (odr < 0)
--				return odr;
-+			if (odr < 0) {
-+				err = odr;
-+				goto release;
-+			}
- 
- 			sensor->ext_info.slv_odr = val;
- 			sensor->odr = odr;
-@@ -557,6 +559,7 @@ st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
- 		break;
- 	}
- 
-+release:
- 	iio_device_release_direct_mode(iio_dev);
- 
- 	return err;
+diff --git a/sound/soc/sof/control.c b/sound/soc/sof/control.c
+index dfc412e2d956..97d5c1a4c1ff 100644
+--- a/sound/soc/sof/control.c
++++ b/sound/soc/sof/control.c
+@@ -362,7 +362,7 @@ int snd_sof_bytes_ext_get(struct snd_kcontrol *kcontrol,
+ 	struct snd_sof_control *scontrol = be->dobj.private;
+ 	struct snd_soc_component *scomp = scontrol->scomp;
+ 	struct sof_ipc_ctrl_data *cdata = scontrol->control_data;
+-	struct snd_ctl_tlv header;
++	struct snd_ctl_tlv header = { };
+ 	struct snd_ctl_tlv __user *tlvd =
+ 		(struct snd_ctl_tlv __user *)binary_data;
+ 	int data_size;
 -- 
-2.26.1
+2.25.1
 

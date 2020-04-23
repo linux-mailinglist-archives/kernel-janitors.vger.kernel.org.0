@@ -2,57 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABA1B1B648B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Apr 2020 21:35:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E756C1B65B1
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Apr 2020 22:46:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728820AbgDWTfA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Apr 2020 15:35:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35336 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728700AbgDWTfA (ORCPT
+        id S1726060AbgDWUqZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Apr 2020 16:46:25 -0400
+Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:26045 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726057AbgDWUqZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Apr 2020 15:35:00 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7D25C09B042;
-        Thu, 23 Apr 2020 12:35:00 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 68F2A127789E0;
-        Thu, 23 Apr 2020 12:35:00 -0700 (PDT)
-Date:   Thu, 23 Apr 2020 12:34:59 -0700 (PDT)
-Message-Id: <20200423.123459.1317092825451472203.davem@davemloft.net>
-To:     dan.carpenter@oracle.com
-Cc:     jiri@mellanox.com, idosch@mellanox.com, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] mlxsw: Fix some IS_ERR() vs NULL bugs
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200422093641.GA189235@mwanda>
-References: <20200422093641.GA189235@mwanda>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 23 Apr 2020 12:35:00 -0700 (PDT)
+        Thu, 23 Apr 2020 16:46:25 -0400
+Received: from localhost.localdomain ([93.22.149.4])
+        by mwinf5d27 with ME
+        id WLmM2200505vvQD03LmMKL; Thu, 23 Apr 2020 22:46:23 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 23 Apr 2020 22:46:23 +0200
+X-ME-IP: 93.22.149.4
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     satishkh@cisco.com, sebaddel@cisco.com, kartilak@cisco.com,
+        jejb@linux.ibm.com, martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] scsi: fnic: Use kmalloc instead of vmalloc for a small memory allocation
+Date:   Thu, 23 Apr 2020 22:46:20 +0200
+Message-Id: <20200423204620.26395-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Wed, 22 Apr 2020 12:36:41 +0300
+'struct fc_trace_flag_type' is just a few bytes long. There is no need
+to allocate such a structure with vmalloc. Using kmalloc instead.
 
-> The mlxsw_sp_acl_rulei_create() function is supposed to return an error
-> pointer from mlxsw_afa_block_create().  The problem is that these
-> functions both return NULL instead of error pointers.  Half the callers
-> expect NULL and half expect error pointers so it could lead to a NULL
-> dereference on failure.
-> 
-> This patch changes both of them to return error pointers and changes all
-> the callers which checked for NULL to check for IS_ERR() instead.
-> 
-> Fixes: 4cda7d8d7098 ("mlxsw: core: Introduce flexible actions support")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+While at it, axe a useless test when freeing the memory.
 
-Applied, thanks.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/scsi/fnic/fnic_debugfs.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/scsi/fnic/fnic_debugfs.c b/drivers/scsi/fnic/fnic_debugfs.c
+index 13f7d88d6e57..8d6ce3470594 100644
+--- a/drivers/scsi/fnic/fnic_debugfs.c
++++ b/drivers/scsi/fnic/fnic_debugfs.c
+@@ -58,8 +58,7 @@ int fnic_debugfs_init(void)
+ 						fnic_trace_debugfs_root);
+ 
+ 	/* Allocate memory to structure */
+-	fc_trc_flag = (struct fc_trace_flag_type *)
+-		vmalloc(sizeof(struct fc_trace_flag_type));
++	fc_trc_flag = kmalloc(sizeof(*fc_trc_flag), GFP_KERNEL);
+ 
+ 	if (fc_trc_flag) {
+ 		fc_trc_flag->fc_row_file = 0;
+@@ -87,8 +86,7 @@ void fnic_debugfs_terminate(void)
+ 	debugfs_remove(fnic_trace_debugfs_root);
+ 	fnic_trace_debugfs_root = NULL;
+ 
+-	if (fc_trc_flag)
+-		vfree(fc_trc_flag);
++	kfree(fc_trc_flag);
+ }
+ 
+ /*
+-- 
+2.20.1
+

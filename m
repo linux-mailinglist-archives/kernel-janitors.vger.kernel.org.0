@@ -2,95 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 077EE1B54AF
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Apr 2020 08:25:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BA5B1B56CD
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Apr 2020 09:58:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726775AbgDWGZa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Apr 2020 02:25:30 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:40470 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725562AbgDWGZa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Apr 2020 02:25:30 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 290AED655491A23D2DD2;
-        Thu, 23 Apr 2020 14:25:27 +0800 (CST)
-Received: from [127.0.0.1] (10.166.215.92) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.487.0; Thu, 23 Apr 2020
- 14:25:23 +0800
-Subject: Re: [PATCH bpf-next v2 1/2] bpf: Change error code when ops is NULL
-To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>
-CC:     Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>,
-        Network Development <netdev@vger.kernel.org>,
-        bpf <bpf@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Andrii Nakryiko <andrii.nakryiko@gmail.com>
-References: <20200422093329.GI2659@kadam>
- <20200423033314.49205-1-maowenan@huawei.com>
- <20200423033314.49205-2-maowenan@huawei.com>
- <CAADnVQLfqLBzsjK0KddZM7WTL3unzWw+v18L0pw8HQnWsEVUzA@mail.gmail.com>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <bd36c161-8831-1f61-1531-063723a8d8c2@huawei.com>
-Date:   Thu, 23 Apr 2020 14:25:22 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+        id S1726470AbgDWH6c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Apr 2020 03:58:32 -0400
+Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:55314 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725863AbgDWH6c (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 23 Apr 2020 03:58:32 -0400
+Received: from localhost.localdomain ([93.23.15.131])
+        by mwinf5d85 with ME
+        id W7yS2200m2pfeyd037yTwC; Thu, 23 Apr 2020 09:58:29 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 23 Apr 2020 09:58:29 +0200
+X-ME-IP: 93.23.15.131
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     stas.yakovlev@gmail.com, kvalo@codeaurora.org, davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ipw2x00: Remove a memory allocation failure log message
+Date:   Thu, 23 Apr 2020 09:58:25 +0200
+Message-Id: <20200423075825.18206-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <CAADnVQLfqLBzsjK0KddZM7WTL3unzWw+v18L0pw8HQnWsEVUzA@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.166.215.92]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020/4/23 13:43, Alexei Starovoitov wrote:
-> On Wed, Apr 22, 2020 at 8:31 PM Mao Wenan <maowenan@huawei.com> wrote:
->>
->> There is one error printed when use BPF_MAP_TYPE_SOCKMAP to create map:
->> libbpf: failed to create map (name: 'sock_map'): Invalid argument(-22)
->>
->> This is because CONFIG_BPF_STREAM_PARSER is not set, and
->> bpf_map_types[type] return invalid ops. It is not clear to show the
->> cause of config missing with return code -EINVAL, so add pr_warn() and
->> change error code to describe the reason.
->>
->> Signed-off-by: Mao Wenan <maowenan@huawei.com>
->> ---
->>  kernel/bpf/syscall.c | 7 ++++---
->>  1 file changed, 4 insertions(+), 3 deletions(-)
->>
->> diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
->> index d85f37239540..7686778457c7 100644
->> --- a/kernel/bpf/syscall.c
->> +++ b/kernel/bpf/syscall.c
->> @@ -112,9 +112,10 @@ static struct bpf_map *find_and_alloc_map(union bpf_attr *attr)
->>                 return ERR_PTR(-EINVAL);
->>         type = array_index_nospec(type, ARRAY_SIZE(bpf_map_types));
->>         ops = bpf_map_types[type];
->> -       if (!ops)
->> -               return ERR_PTR(-EINVAL);
->> -
->> +       if (!ops) {
->> +               pr_warn("map type %d not supported or kernel config not opened\n", type);
->> +               return ERR_PTR(-EOPNOTSUPP);
->> +       }
-> 
-> I don't think users will like it when kernel spams dmesg.
-> If you need this level of verbosity please teach consumer of libbpf to
-> print them.
-> It's not a job of libbpf either.
-thanks for reviw, so is it better to delete redundant pr_warn()?
+Axe a memory allocation failure log message. This message is useless and
+incorrect (vmalloc is not used here for the memory allocation)
 
-> 
-> .
-> 
+This has been like that since the very beginning of this driver in
+commit 43f66a6ce8da ("Add ipw2200 wireless driver.")
 
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/net/wireless/intel/ipw2x00/ipw2200.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+index 60b5e08dd6df..30c4f041f565 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+@@ -3770,10 +3770,9 @@ static int ipw_queue_tx_init(struct ipw_priv *priv,
+ 	struct pci_dev *dev = priv->pci_dev;
+ 
+ 	q->txb = kmalloc_array(count, sizeof(q->txb[0]), GFP_KERNEL);
+-	if (!q->txb) {
+-		IPW_ERROR("vmalloc for auxiliary BD structures failed\n");
++	if (!q->txb)
+ 		return -ENOMEM;
+-	}
++
+ 
+ 	q->bd =
+ 	    pci_alloc_consistent(dev, sizeof(q->bd[0]) * count, &q->q.dma_addr);
+-- 
+2.20.1
 

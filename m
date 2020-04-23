@@ -2,35 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D1571B5D2F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Apr 2020 16:03:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1076D1B5D5A
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Apr 2020 16:10:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726323AbgDWOCp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Apr 2020 10:02:45 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:40643 "EHLO
+        id S1728292AbgDWOKa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Apr 2020 10:10:30 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:41255 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726060AbgDWOCo (ORCPT
+        with ESMTP id S1726430AbgDWOK3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Apr 2020 10:02:44 -0400
+        Thu, 23 Apr 2020 10:10:29 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jRcR6-0006xx-Rb; Thu, 23 Apr 2020 14:02:40 +0000
+        id 1jRcYS-00087B-Rm; Thu, 23 Apr 2020 14:10:16 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Anthony Koo <Anthony.Koo@amd.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+To:     Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S . Miller" <davem@davemloft.net>,
+        Michael Walle <michael@walle.cc>,
+        Guenter Roeck <linux@roeck-us.net>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/amd/display: fix incorrect assignment due to a typo
-Date:   Thu, 23 Apr 2020 15:02:40 +0100
-Message-Id: <20200423140240.19360-1-colin.king@canonical.com>
+Subject: [PATCH][next] net: phy: bcm54140: fix less than zero comparison on an unsigned
+Date:   Thu, 23 Apr 2020 15:10:16 +0100
+Message-Id: <20200423141016.19666-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,31 +40,41 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The assignment to infopacket->sb[7] looks incorrect, the comment states it
-is the minimum refresh rate yet it is being assigned a value from the
-maximum refresh rate max_refresh_in_uhz. Fix this by using min_refresh_in_uhz
-instead.
+Currently the unsigned variable tmp is being checked for an negative
+error return from the call to bcm_phy_read_rdb and this can never
+be true since tmp is unsigned.  Fix this by making tmp a plain int.
 
-Addresses-Coverity: ("Copy-paste error")
-Fixes: d2bacc38f6ca ("drm/amd/display: Change infopacket type programming")
+Addresses-Coverity: ("Unsigned compared against 0")
+Fixes: 4406d36dfdf1 ("net: phy: bcm54140: add hwmon support")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/amd/display/modules/freesync/freesync.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/bcm54140.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/freesync/freesync.c b/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
-index eb7421e83b86..fe11436536e8 100644
---- a/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
-+++ b/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
-@@ -587,7 +587,7 @@ static void build_vrr_infopacket_data_v3(const struct mod_vrr_params *vrr,
- 	} else {
- 		// Non-fs case, program nominal range
- 		/* PB7 = FreeSync Minimum refresh rate (Hz) */
--		infopacket->sb[7] = (unsigned char)((vrr->max_refresh_in_uhz + 500000) / 1000000);
-+		infopacket->sb[7] = (unsigned char)((vrr->min_refresh_in_uhz + 500000) / 1000000);
- 		/* PB8 = FreeSync Maximum refresh rate (Hz) */
- 		infopacket->sb[8] = (unsigned char)((vrr->max_refresh_in_uhz + 500000) / 1000000);
- 	}
+diff --git a/drivers/net/phy/bcm54140.c b/drivers/net/phy/bcm54140.c
+index aa854477e06a..7341f0126cc4 100644
+--- a/drivers/net/phy/bcm54140.c
++++ b/drivers/net/phy/bcm54140.c
+@@ -191,7 +191,8 @@ static int bcm54140_hwmon_read_alarm(struct device *dev, unsigned int bit,
+ static int bcm54140_hwmon_read_temp(struct device *dev, u32 attr, long *val)
+ {
+ 	struct phy_device *phydev = dev_get_drvdata(dev);
+-	u16 reg, tmp;
++	u16 reg;
++	int tmp;
+ 
+ 	switch (attr) {
+ 	case hwmon_temp_input:
+@@ -224,7 +225,8 @@ static int bcm54140_hwmon_read_in(struct device *dev, u32 attr,
+ 				  int channel, long *val)
+ {
+ 	struct phy_device *phydev = dev_get_drvdata(dev);
+-	u16 bit, reg, tmp;
++	u16 bit, reg;
++	int tmp;
+ 
+ 	switch (attr) {
+ 	case hwmon_in_input:
 -- 
 2.25.1
 

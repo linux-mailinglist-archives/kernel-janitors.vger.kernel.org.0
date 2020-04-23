@@ -2,36 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D74A41B5B2B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Apr 2020 14:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97BFE1B5C23
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Apr 2020 15:07:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726392AbgDWMPY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Apr 2020 08:15:24 -0400
-Received: from mout.web.de ([212.227.15.3]:55209 "EHLO mout.web.de"
+        id S1726372AbgDWNHz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Apr 2020 09:07:55 -0400
+Received: from mout.web.de ([212.227.15.14]:34041 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726121AbgDWMPX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Apr 2020 08:15:23 -0400
+        id S1726375AbgDWNHz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 23 Apr 2020 09:07:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1587644090;
-        bh=1SKzE4Q2FpgGEwUDDVzFQzRLWubTgqwnZLfvXfb0+ZQ=;
+        s=dbaedf251592; t=1587647241;
+        bh=j/OsVSvjW5GF9AuYYuwF5RlUVMErv99o/kA5yjCWrWo=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=hXFnrrmBdJKOhkCU+WE8reYaNWVDUVxsvvUp3pSIEKiLZ7C5xhuw3DX0lkvZZEOFk
-         blvnEHLdZv38q6W/xWdis4zfObjS/B6/BYwcQybTMSCGsbkqUqsBnjIr6bnbgcZA5h
-         A7CGF/hVQCNsMI30Hd9p4gGSEtY1EZ7mmnksqrhA=
+        b=mfRRuifwJT7Bj/K6pADSvQr+883txqe5FBJvTy5Yo4cBgi+Tmj66/04jAJjfoBi6R
+         qYvtJT8wR5CxDY47VuTwivBQ3ARf2fgXlMhzRw8kFMy8zbIE/71qZpQaoZViKgWsWe
+         yM0fK4E6zyPdQFoHJT6ybyyL9EHl9dKpWbfz2iNA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.69.235]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Llncm-1isFw13qW8-00ZMyt; Thu, 23
- Apr 2020 14:14:50 +0200
-To:     Dejin Zheng <zhengdejin5@gmail.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Teddy Wang <teddy.wang@siliconmotion.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v1] fbdev: sm712fb: fix an issue about iounmap for a wrong
- address
+Received: from [192.168.1.2] ([78.49.69.235]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lh6bn-1ipGQg0yql-00oYl8; Thu, 23
+ Apr 2020 15:07:21 +0200
+To:     Sayali Lokhande <sayalil@codeaurora.org>,
+        linux-f2fs-devel@lists.sourceforge.net,
+        Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <yuchao0@huawei.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [f2fs-dev] [PATCH] f2fs: Avoid double lock for cp_rwsem
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,69 +71,58 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <bb6ba7c9-ad92-9c54-e1c4-91d2f7d0f5f8@web.de>
-Date:   Thu, 23 Apr 2020 14:14:48 +0200
+Message-ID: <8f311cd7-bf6d-21a4-c085-6b2feec39717@web.de>
+Date:   Thu, 23 Apr 2020 15:07:20 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:fNl1cgofnTwAo5SJnX+oCy/NEF1B/UCFW519u4Hpg0ptC1sJLg2
- Lgj12RzQSsSjYV5m1/DHaJzegclx/eSNoh1r5k//wRS5zMUgC9Lrt2HJs/fTqwOLs13QgbT
- 2n0nkbFV5jiGwI3L/xUbZrEPLuluP8Fky8h39z9rIqSrLn+xkuDJ47lSEpS/HcclvwrYm9O
- aLXNjNhlma/j5HSigomOw==
+X-Provags-ID: V03:K1:plDI/7mUFknNQx3zJvAn9hmUnw2+ZJUwoltk3Xy9Y1Vcn1vvEja
+ wI4U6Mk2OOIt89U9phh32tnq0Ql2s3fqgPRaiBPuPhLi68pFX1LYUEc6o0QbsXCU0VAx1+C
+ Vh3wS9FXXrPvU9bk3ZLhIHV7WDE9D/2cU5yV8NAea7V+X6ORECS/y/+cAxxipmv4X49iKYP
+ HRRXnQ/M5dAx0M39pD7dw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ZKe2MMTCh5s=:TvG8BqpKT2GzCaKluhcfSy
- kB41QablcGOHx7krOy1EAlWK3bb+35IcWpQLqSgrS/JTIsh2oga1Zh0Ml/A0TjIFTRPlSZKkk
- ACd88BRBqnwsxCdTaqPtjrRzub+ug1qWae7hlkdsfG3vLbCN4I0igyKuFJHRE/dbjxM+pPbUm
- aEkgcoVb6xhkx3sEVY+NlZTtfobK5b3bkC47Dgu8OMnsQb+M+Md28w9Lh80/DhiaBgkhZv+jD
- Kiy8g5zuAafBU+SuyQJSFjYp72b7L8TkdK6CI0vQrOEDr4NWyEgwViDUmQYHZ8AqrsbVRS92+
- Z7vus94bMvaJNV0OCcZhJEQ+GfRAYTAstLP4RcEvQRaSsXQ5sCCgIKNqYApEMy5h169xBjSBH
- iy19lAZSl296Qswm3+n9TOrgVaDVpGCDO91LydWcjHbwB0xHQf0jIYWZNcDi5Cvitp7Vi4zRl
- xp4JlWz3K3HGD5SIFuSbtVNVaF196JRuYL4HnqLiz5i8vuRB4tTQEPAgQczNRyl6k0nuojWv3
- og/F2xr3f49ORUhlnNo/EWpqz3mf/VYIosYcPdABIlimywt+RAne0plOfuO8euRp/pD5cFlqk
- hYH99n/wLbZRgH00vxyPOyGvi4wv7Z2cZErrTGmGg3FyzUzMZv49YE8J2CrXvYSZGdTu7ASzr
- QJnKXrZIT+9ar0whJZavRB7fMH4M6MbGEMK2MrTmU+dVV8PFB2t3IZ7Pa0uIZJ0QjxTNWxoJk
- O/EAfi7Z5dhtlS6Jb1Rb4XAgp/nWDAfUaDx6aWC3AQDJn2OTFqr8rx2MiUvqAh634mg4Lv+80
- 6NAC8HKVOBvxhQ5kfxaby+afxo1sKsoWfn6UuYnxxynVc0hDTeXtP3ObhtCDuFXYzHYp06o2S
- wGaAP4cvCkCMh0GythDdhbYNQfv6y6xTDHi1CB/4c7G0Kx3HFPMBrEzVZXe+Uu3vWV1PqcARt
- 5pbm3UAgYdJybfVd9Sjw0NVzjMXVbQqosx6ynbyyEFl7BRP8F5DDr3WKpR8fFQSAO0GYSQkh5
- e7gi/Co3W5Nbf8OOyQTljy+3h1g/ZdWGdR2bnMaH1aTPlppbz+TfLVSSs/7qXEFfzfDBzgCk6
- Ekr8V+4vQHVWxLSDwoJ6CUTJ+mdvIyB17RyHndMfps6OqCPU0ATm5GM41rYn7Y8UxB8xIVluM
- xjqzG9HgjVhr/3uDBV14MA3qwJGrA8Y6a5as6qcRNLtxooMxS6XACtzjl3iOGR6vQcKgD46VJ
- veHKKNSOE/9WfqMKQ
+X-UI-Out-Filterresults: notjunk:1;V03:K0:9ZDr+S14qw8=:coy8ntUcgaQb7c+zRmUddy
+ upHm3NUKxwDrFkIHy+9wbkiQl30IoDHX1twYUYhnMlcqhiMRJWeyeG0JD3WUGmq4Jm+YFgh1z
+ JJfxVbE/wCOLOFjAC+96oGVkvlE1/A426iT8Q8kKpZNKwEQOJMX8gnpYMNUJJhtD3RK1BUlwi
+ 1pq6YeQEp65yn5qbpK6H5fRHsHhaEgsy3nsJAELxE/2iOq7ddqUijjWHDuvfcDLycBJZRfu6m
+ +sqt9nRtIe+dhcbsetXqoFlEI4pPD0g4lcfL+OYlDx+bJZWtM929gGEXXNeB/u9AXy++wVrLD
+ sdx7ETM/fuYh6H08IPdgy27CEC8jqtBr88SHGYqk4gci4aKq20Q7NH3++6WbWl0EurDDn9Eaw
+ XSdxRsQT3XI1xh2mx2o4Nj5LRudotcWmRKXcZnHP7EE/EFmF1Xl6GGANeNnNhXBATDeIbI6If
+ reuiGamMlBhNwKYsRijElBRVuYzGbFlLjzThR3E8uTJAYAAde4rSReOkpk49fKA89eggvWfqo
+ +j64dWGJJY4TJRX7+JZXksI0h3gGJ8tZmq5QCpewc6RAcVrBUS/nwC3hpymKT5zjaNpXodqg6
+ vpwUtfVoow0HTzwhphFlJghJJfhBbBi9dWrF7ntNtMEJLAxu6tCZhZ82Dnum2XqKrkEWhMw2u
+ s8d8FA1V9GDbCq0s8iw2IrFVqB2nXMp2zCiiKIcPmM1aaNOeq43bdKI+E+jOQhSFZeJOWSd+c
+ xvwBY2GclQBZ6EK3qRGrU/mewrqhpEAkGjSnmArmaeRr2WEOEajvHiucruS1prMzGmOX7J77e
+ 7n985y8Nq8uV6TjNHdJmgmESSuzq+G7tAvxbXLL9cfJ8ueqa8Zi/injpyY4YqmN4nmpFgoy1E
+ PbvV4gakAAQR4ssxTHoeQSPILG59bKjuDbi2PD0hmRA7c+42EeX4rn7q8ofI58c1VYHJc9+Uw
+ zocaU51BgEo1n5zD05cT8g7vRPFC3YlF5qmVkmJ2Me6ZN51G15O4gmbguvASTeVtmCc61LMzZ
+ QnajuUnZ9EABkik9oRmsz04mUN7gEv9HJbWX/w6MadNhuIFwnzC/uJKr2swMsIbxRaPauWvwc
+ wwu+i3O7wfyAii7gtdBaoHPrZSEiwSWXSGMPITcAa3fea940ETcWEK+91MyzcGFdqawqNjH2M
+ eURB1CaeKM9+13XAfGYNXKbPMds9FK432ebyJz9HCK88wvKFgwRONRmLPLQ2JlyVNGtTJNmGD
+ swcDFAvu9Bg/bSvHB
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> the sfb->fb->screen_base is not save the value get by iounmap() when
-> the chip id is 0x720.
-
-I suggest to improve this change description.
-How did you determine relevant differences for the mentioned chip model?
-
-
-> so iounmap() for address sfb->fb->screen_base is not right.
-
-Will another imperative wording become helpful here?
-
-
+> Call stack :
+> f2fs_write_checkpoint()
+> -> block_operations(sbi)
 =E2=80=A6
-> +++ b/drivers/video/fbdev/sm712fb.c
-> @@ -1429,6 +1429,8 @@  static int smtc_map_smem(struct smtcfb_info *sfb,
->  static void smtc_unmap_smem(struct smtcfb_info *sfb)
->  {
->  	if (sfb && sfb->fb->screen_base) {
-> +		if (sfb->chip_id =3D=3D 0x720)
-> +			sfb->fb->screen_base -=3D 0x00200000;
->  		iounmap(sfb->fb->screen_base);
 
-How do you think about to use descriptive identifiers for
-the shown constants?
+Will another imperative wording become helpful besides the provided inform=
+ation
+for this change description?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3Dc578ddb39e565139897124e74e=
+5a43e56538cb33#n151
 
-Would you like to clarify any related software analysis approaches?
+How do you think about to add the tag =E2=80=9CFixes=E2=80=9D because of a=
+djustments
+for the data synchronisation?
 
 Regards,
 Markus

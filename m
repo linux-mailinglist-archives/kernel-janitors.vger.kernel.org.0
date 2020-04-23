@@ -2,92 +2,137 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 579F21B5E40
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Apr 2020 16:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A83511B5E5E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Apr 2020 16:52:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728805AbgDWOsO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Apr 2020 10:48:14 -0400
-Received: from ssl.serverraum.org ([176.9.125.105]:52067 "EHLO
-        ssl.serverraum.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728784AbgDWOsN (ORCPT
+        id S1728886AbgDWOwr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Apr 2020 10:52:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47396 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726380AbgDWOwr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Apr 2020 10:48:13 -0400
-Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ssl.serverraum.org (Postfix) with ESMTPSA id C317422F99;
-        Thu, 23 Apr 2020 16:48:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
-        t=1587653286;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=lLmBZL0FMhG+mFKlP2Ht3IzgRfKlXEzRMeQdQ+FbklY=;
-        b=BMVw9gHa6625K6Ui86hhu5yBTBrixqKjDF/MkErR/f+ykPUOWc+923D2EJAhzY3SZQSwJC
-        NATLzsxcUFj3zAA7qPUQpKwhO1ckB3eV+z6Qb4HppFp3BaweHTtEjzqngjmdjUX3d8gijp
-        aRNO5cl2Zi5o1SJcnUN5hzdrVxIkWio=
+        Thu, 23 Apr 2020 10:52:47 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FCD6C08E934;
+        Thu, 23 Apr 2020 07:52:47 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id t16so2439098plo.7;
+        Thu, 23 Apr 2020 07:52:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=XXa44dRejUVD9khGbpB7Lq0g9wT1bE7Lq11QXvftrgA=;
+        b=qE2OfZI2wUVvj77T4PFS0pvS8DTwl271ADgwm6nQaDeGBfGTNSVgYanwxrIvfw4rAI
+         J58hPTNIqmjrHrUpsIOY6RtbFoJGIgscCA41U8MGHAHQTPoudHOATd9n32TM7IoqKprO
+         7s/TmDNACHiujN3hfikbHxN8ZlKxSGsqz2Ql/+u5h8BPgBFgL19XhinLPzl2rW8Nh1ZQ
+         G/HIyN4hEzJHAz/4ZmhJE3bAvpQqzlXcYv0qngMoe68yFw0BvvR8Am6znPtWDs2jnPQO
+         w/px3lOq3k9fN2N+okO6iwWf0bdu1nGSw3QjAMDkoovNlS16b3D6r2yGbnlV7bXlHBZl
+         4aIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=XXa44dRejUVD9khGbpB7Lq0g9wT1bE7Lq11QXvftrgA=;
+        b=oihQQ+JOFBLI2z7XH6Tt6N0YQvbA58dJUN1ochJS8KOsUL7leK6qLARivz6fgOCCdU
+         wHPtjTxysZ2St37eM47+xbx/kFlbWIgQWDSXv0s2KyjgLb8G4AMWQ6UF35z+4CA9b++E
+         mqwpNETs8hAfN0SPgTbW1p8c06fX1N6+D6PSk8nFE6gzi3TB/YvlmGBEg4krbCz5e/mW
+         LGnQh3VFC7ryNynopDfgtbZtPKliTjwzmIJpgd32bJrc6L7gNcGK8beKBo94LU/Q2MtJ
+         Z3yj7/cfW0dgth/NpoEKauogjUr4P/eGtQxy2erlDzGeHoDTb04/1ab8cLxNINSuGqbQ
+         R4tQ==
+X-Gm-Message-State: AGi0PuY2fLG5Vi/R2cnR4xeJPfQKIGJXN98p4DqIsbZ4tmyj4gW7L0H7
+        R8SA1BHjJvU+iuGmFWzt+X0=
+X-Google-Smtp-Source: APiQypJpH6Jh81nSVTNgvgCANJgQ3DPA4JhoZAwMB7qvMzGPSlAcC3qmZOotUwN/EekORxapq5Vkgw==
+X-Received: by 2002:a17:90a:2f64:: with SMTP id s91mr1147538pjd.30.1587653566730;
+        Thu, 23 Apr 2020 07:52:46 -0700 (PDT)
+Received: from localhost ([176.122.158.71])
+        by smtp.gmail.com with ESMTPSA id r189sm2319896pgr.31.2020.04.23.07.52.45
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 23 Apr 2020 07:52:46 -0700 (PDT)
+Date:   Thu, 23 Apr 2020 22:52:40 +0800
+From:   Dejin Zheng <zhengdejin5@gmail.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Teddy Wang <teddy.wang@siliconmotion.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v1] fbdev: sm712fb: fix an issue about iounmap for a
+ wrong address
+Message-ID: <20200423145239.GC1562@nuc8i5>
+References: <bb6ba7c9-ad92-9c54-e1c4-91d2f7d0f5f8@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 23 Apr 2020 16:48:05 +0200
-From:   Michael Walle <michael@walle.cc>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S . Miller" <davem@davemloft.net>,
-        Guenter Roeck <linux@roeck-us.net>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] net: phy: bcm54140: fix less than zero comparison
- on an unsigned
-In-Reply-To: <20200423141016.19666-1-colin.king@canonical.com>
-References: <20200423141016.19666-1-colin.king@canonical.com>
-Message-ID: <cbb5132b022cd5e954c0fb5aa285dd0a@walle.cc>
-X-Sender: michael@walle.cc
-User-Agent: Roundcube Webmail/1.3.10
-X-Spamd-Bar: +
-X-Spam-Level: *
-X-Rspamd-Server: web
-X-Spam-Status: No, score=1.40
-X-Spam-Score: 1.40
-X-Rspamd-Queue-Id: C317422F99
-X-Spamd-Result: default: False [1.40 / 15.00];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         FREEMAIL_ENVRCPT(0.00)[gmail.com];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         TAGGED_RCPT(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         DKIM_SIGNED(0.00)[];
-         RCPT_COUNT_SEVEN(0.00)[10];
-         NEURAL_HAM(-0.00)[-0.881];
-         RCVD_COUNT_ZERO(0.00)[0];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         FREEMAIL_CC(0.00)[lunn.ch,gmail.com,armlinux.org.uk,davemloft.net,roeck-us.net,vger.kernel.org];
-         MID_RHS_MATCH_FROM(0.00)[];
-         SUSPICIOUS_RECIPS(1.50)[]
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bb6ba7c9-ad92-9c54-e1c4-91d2f7d0f5f8@web.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Am 2020-04-23 16:10, schrieb Colin King:
-> From: Colin Ian King <colin.king@canonical.com>
+On Thu, Apr 23, 2020 at 02:14:48PM +0200, Markus Elfring wrote:
+> > the sfb->fb->screen_base is not save the value get by iounmap() when
+> > the chip id is 0x720.
 > 
-> Currently the unsigned variable tmp is being checked for an negative
-> error return from the call to bcm_phy_read_rdb and this can never
-> be true since tmp is unsigned.  Fix this by making tmp a plain int.
+> I suggest to improve this change description.
+> How did you determine relevant differences for the mentioned chip model?
+>
+Read and check its codes。
+
+smtcfb_pci_probe() --> smtc_map_smem()
+
+smtcfb_pci_probe()
+switch (sfb->chip_id) {
+        case 0x710:
+        case 0x712:
+		sfb->lfb = ioremap(mmio_base, mmio_addr);
+	case 0x720:
+		sfb->dp_regs = ioremap(mmio_base, 0x00200000 + smem_size);
+                sfb->lfb = sfb->dp_regs + 0x00200000;
+	}
+smtc_map_smem()
+	sfb->fb->screen_base = sfb->lfb;
+
+
+smtcfb_pci_remove() --> smtc_unmap_smem()
+
+smtc_unmap_smem()
+	iounmap(sfb->fb->screen_base);
+
 > 
-> Addresses-Coverity: ("Unsigned compared against 0")
-> Fixes: 4406d36dfdf1 ("net: phy: bcm54140: add hwmon support")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > so iounmap() for address sfb->fb->screen_base is not right.
+> 
+> Will another imperative wording become helpful here?
+> 
+yes, this is why need to change this code.
 
-FWIW since Andrew already reviewed it:
+> 
+> …
+> > +++ b/drivers/video/fbdev/sm712fb.c
+> > @@ -1429,6 +1429,8 @@  static int smtc_map_smem(struct smtcfb_info *sfb,
+> >  static void smtc_unmap_smem(struct smtcfb_info *sfb)
+> >  {
+> >  	if (sfb && sfb->fb->screen_base) {
+> > +		if (sfb->chip_id == 0x720)
+> > +			sfb->fb->screen_base -= 0x00200000;
+> >  		iounmap(sfb->fb->screen_base);
+> 
+> How do you think about to use descriptive identifiers for
+> the shown constants?
+>
+These two constants are originally in the driver, I don't know enough
+about its meaning, There are a lot of constants in this driver. If I
+replace it with the macro, I worry that the name of the macro may not
+be accurate.
 
-Reviewed-by: Michael Walle <michael@walle.cc>
+> Would you like to clarify any related software analysis approaches?
+>
+just read coedes and check it.
 
--michael
+> Regards,
+> Markus

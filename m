@@ -2,109 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10B6C1B5DC5
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Apr 2020 16:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20FBC1B5DF7
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Apr 2020 16:37:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726503AbgDWO3O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Apr 2020 10:29:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43658 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726307AbgDWO3N (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Apr 2020 10:29:13 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7F05C08E934;
-        Thu, 23 Apr 2020 07:29:13 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id f7so3017698pfa.9;
-        Thu, 23 Apr 2020 07:29:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=euZIJ/M801FkiIRohqJykf0KTV1d7R1eB6u3qEkTjI0=;
-        b=Ko6BUx5ma8P13bvtmuvtoClR1kdW1PNfQ5Mdcb5ut/b6dbYDkx4snP1pcDRIaxOAWt
-         OrjLtoxwLINDnrWAmg7a5CQU5PcYxBNmj260qRjWiFDyutI3obuDy12DDb+0FtQabOsJ
-         /3rVzC3AOzR+z+YJlDXnT1BweMe1w5xONexIwTNdYDkMCNDJRsU1inGD2jUIRLgKCL0k
-         1bpmI47cx+gGudFoSqsQaGbVCfn+4Mj1YLSG3N0PQxFoc3IwdALS/MkBBF2+D3kD6rLt
-         XH+krkBwKgcXAWWSnTzI88j3+8S+pBK0gz36DD/o1UpqdI95hODX2seSYE5abCiWGtNs
-         2Z5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=euZIJ/M801FkiIRohqJykf0KTV1d7R1eB6u3qEkTjI0=;
-        b=BWE75bbEnls+v0wtezc7btijxW0BiIzpDT8nvkiR9I+d4lKq30D/e40Wscdx6ReMfH
-         xErSW1Nq9xWKxSv63Jv7I8ycXxmBD5V62B9fAsdansMS1OQqbFE1FObG1AtoSrdntjj0
-         AwIG49X20oiGxA9gaadOpqawqRZwls3G97p31CdSffgtz7FFKL99E2xXzPcYODfdJ/fF
-         y/RNwy2PeXqFqOcXwscuudUhLqUfRZf6VuDR+VYcA8nbAQ2kVlN6r49ItRgWYdJz7zLD
-         qkO/TjH92JIZWPXRjGhqFZyC7CYWbmjNBtC6q+qTp/4ZKeRi+sKoi3d43T0z1fHQc1Wd
-         2jOA==
-X-Gm-Message-State: AGi0PuYbDJGvKgNYrrtftyqKEynHOZlMIBV8xAkvtPNfGvoJmMRpN0ro
-        9nnp8CSywumgF9KJjQpuFB4=
-X-Google-Smtp-Source: APiQypLCBsvdXjd0LfkUeemwgs+0ri7ASlr6IwzFVhcmjfzaxZE5iJago8sKARkvbGq9vjBLA4PJvA==
-X-Received: by 2002:aa7:96c1:: with SMTP id h1mr4085226pfq.212.1587652153207;
-        Thu, 23 Apr 2020 07:29:13 -0700 (PDT)
-Received: from localhost (176.122.158.71.16clouds.com. [176.122.158.71])
-        by smtp.gmail.com with ESMTPSA id h5sm2537837pjv.4.2020.04.23.07.29.12
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 23 Apr 2020 07:29:12 -0700 (PDT)
-Date:   Thu, 23 Apr 2020 22:29:09 +0800
-From:   Dejin Zheng <zhengdejin5@gmail.com>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Coccinelle <cocci@systeme.lip6.fr>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
-        Ralf =?utf-8?Q?B=C3=A4chle?= <ralf@linux-mips.org>,
-        Thomas =?utf-8?Q?Bogend=C3=B6rfer?= <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v1] console: fix an issue about ioremap leak.
-Message-ID: <20200423142909.GB1562@nuc8i5>
-References: <c62ec54f-348b-2eae-59eb-374dde4d49ad@web.de>
+        id S1728190AbgDWOhY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Apr 2020 10:37:24 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:58630 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726363AbgDWOhY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 23 Apr 2020 10:37:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=3+fByAMXo9X0NbPvTaF3P44AieG5P/6XjT9WC6GWwOA=; b=WZQXdpe1xs5vNCcREe9Hlz/rQn
+        KTy81E21moUdEgByQ0H3ujl4EFc7M0eQBwU910JMo1s0gi8i/7V1M6XAz+3e7u0mBIf9CAaBlJ6c/
+        8vLooOTBmXCLmXSwQeEuKoF4864sdjREcpNl4OiVRnlEArF7+2bcmguE9RtOXT1r8BrE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.93)
+        (envelope-from <andrew@lunn.ch>)
+        id 1jRcyW-004OZN-Ci; Thu, 23 Apr 2020 16:37:12 +0200
+Date:   Thu, 23 Apr 2020 16:37:12 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S . Miller" <davem@davemloft.net>,
+        Michael Walle <michael@walle.cc>,
+        Guenter Roeck <linux@roeck-us.net>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] net: phy: bcm54140: fix less than zero comparison
+ on an unsigned
+Message-ID: <20200423143712.GA1020784@lunn.ch>
+References: <20200423141016.19666-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c62ec54f-348b-2eae-59eb-374dde4d49ad@web.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200423141016.19666-1-colin.king@canonical.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Apr 23, 2020 at 01:10:14PM +0200, Markus Elfring wrote:
-> > if do_take_over_console() return an error in the newport_probe(),
-> > due to the io virtual address is not released, it will cause a leak.
+On Thu, Apr 23, 2020 at 03:10:16PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> How do you think about a wording variant like the following?
+> Currently the unsigned variable tmp is being checked for an negative
+> error return from the call to bcm_phy_read_rdb and this can never
+> be true since tmp is unsigned.  Fix this by making tmp a plain int.
 > 
->    Subject:
->    [PATCH v2] console: Complete exception handling in newport_probe()
-> 
->    Change description:
->    A call of the function “do_take_over_console” can fail here.
->    The corresponding system resources were not released then.
->    Thus add a call of the function “iounmap” together with the check
->    of a failure predicate.
->
-Thanks!
+> Addresses-Coverity: ("Unsigned compared against 0")
 
-> 
-> I would like to point out that there is a script for the semantic
-> patch language which would detect other questionable source code.
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/scripts/coccinelle/free/iounmap.cocci
-> 
-> How do you think about to extend presented software analysis approaches?
->
-Sorry, I am not familiar with it, I don't know.
+I thought 0 was unsigned?
 
-BR,
-Dejin
+> Fixes: 4406d36dfdf1 ("net: phy: bcm54140: add hwmon support")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-> Regards,
-> Markus
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+    Andrew

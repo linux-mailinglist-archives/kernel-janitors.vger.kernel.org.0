@@ -2,95 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 815EE1B7255
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Apr 2020 12:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A57F1B72CD
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Apr 2020 13:12:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726907AbgDXKov (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 Apr 2020 06:44:51 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:43390 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726582AbgDXKou (ORCPT
+        id S1726793AbgDXLMa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 Apr 2020 07:12:30 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:47502 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726289AbgDXLM3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 Apr 2020 06:44:50 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03OAhLnQ188027;
-        Fri, 24 Apr 2020 10:44:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=lgSP9yyrfb8QaHVkQK0ooYCi2f+LrM6wpIAQEd3T7CQ=;
- b=KS9Cb8tHhEhD76v8cXXgn+iW/pQMkkluNk2x2Qb3L7lzbaY9JWX3VC1xEddwGrogmD9U
- pf/uOVWPf3/x+Dtv2w4hvRsK7nRxR0ROsFpDNj3YbgcAcEt3rVxOjYg3gNF67fNnXboX
- zYsY70KOt0yWfBonHNJ62YmK44QTHaEv3i6QMOC8haaI1eMhIm9Sgq3hWzirLKH75X4D
- 3zslvB8aDRPJWRg0fBpv+GGypve25ILxGBQ6vlU8camFknP78T/gwx53ryJgiOaCGhKf
- IAYLLCCzqXHuVtHEIhdQSmfB4XOVELpIPcWQh3m75NgIv43EQ/fGmp8aMp4WqmnwzAq2 IQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 30ketdknqy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 24 Apr 2020 10:44:45 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03OAgfgd129915;
-        Fri, 24 Apr 2020 10:42:44 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 30gbbptmsm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 24 Apr 2020 10:42:44 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03OAgfuS018654;
-        Fri, 24 Apr 2020 10:42:42 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 24 Apr 2020 03:42:41 -0700
-Date:   Fri, 24 Apr 2020 13:42:35 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] staging: wfx: check ssidlen and prevent an array overflow
-Message-ID: <20200424104235.GA416402@mwanda>
+        Fri, 24 Apr 2020 07:12:29 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jRwFu-0004vt-Gm; Fri, 24 Apr 2020 11:12:26 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] amdgpu/dc: remove redundant assignment to variable 'option'
+Date:   Fri, 24 Apr 2020 12:12:26 +0100
+Message-Id: <20200424111226.11796-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9600 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0
- suspectscore=0 mlxlogscore=999 adultscore=0 mlxscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004240083
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9600 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 spamscore=0
- impostorscore=0 bulkscore=0 mlxlogscore=999 phishscore=0 mlxscore=0
- priorityscore=1501 clxscore=1015 suspectscore=0 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004240083
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We need to cap "ssidlen" to prevent a memcpy() overflow.
+From: Colin Ian King <colin.king@canonical.com>
 
-Fixes: 40115bbc40e2 ("staging: wfx: implement the rest of mac80211 API")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+The variable option is being initialized with a value that is
+never read and it is being updated later with a new value.  The
+initialization is redundant and can be removed.
+
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/staging/wfx/sta.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dce110/dce110_opp_csc_v.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/staging/wfx/sta.c b/drivers/staging/wfx/sta.c
-index c73dbb3a0de8c..3bff0f1e3d9ba 100644
---- a/drivers/staging/wfx/sta.c
-+++ b/drivers/staging/wfx/sta.c
-@@ -479,7 +479,9 @@ static void wfx_do_join(struct wfx_vif *wvif)
- 		ssidie = ieee80211_bss_get_ie(bss, WLAN_EID_SSID);
- 	if (ssidie) {
- 		ssidlen = ssidie[1];
--		memcpy(ssid, &ssidie[2], ssidie[1]);
-+		if (ssidlen > IEEE80211_MAX_SSID_LEN)
-+			ssidlen = IEEE80211_MAX_SSID_LEN;
-+		memcpy(ssid, &ssidie[2], ssidlen);
- 	}
- 	rcu_read_unlock();
- 
+diff --git a/drivers/gpu/drm/amd/display/dc/dce110/dce110_opp_csc_v.c b/drivers/gpu/drm/amd/display/dc/dce110/dce110_opp_csc_v.c
+index 4245e1f818a3..e096d2b95ef9 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce110/dce110_opp_csc_v.c
++++ b/drivers/gpu/drm/amd/display/dc/dce110/dce110_opp_csc_v.c
+@@ -679,8 +679,7 @@ void dce110_opp_v_set_csc_default(
+ 	if (default_adjust->force_hw_default == false) {
+ 		const struct out_csc_color_matrix *elm;
+ 		/* currently parameter not in use */
+-		enum grph_color_adjust_option option =
+-			GRPH_COLOR_MATRIX_HW_DEFAULT;
++		enum grph_color_adjust_option option;
+ 		uint32_t i;
+ 		/*
+ 		 * HW default false we program locally defined matrix
 -- 
-2.26.1
+2.25.1
 

@@ -2,57 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24D2E1B7827
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Apr 2020 16:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52FCE1B783E
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Apr 2020 16:22:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727977AbgDXOQB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 Apr 2020 10:16:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40334 "EHLO
+        id S1727914AbgDXOWA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 Apr 2020 10:22:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727914AbgDXOQA (ORCPT
+        by vger.kernel.org with ESMTP id S1727820AbgDXOWA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 Apr 2020 10:16:00 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5250DC09B045;
-        Fri, 24 Apr 2020 07:16:00 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id h2so10632834wmb.4;
-        Fri, 24 Apr 2020 07:16:00 -0700 (PDT)
+        Fri, 24 Apr 2020 10:22:00 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8D6EC09B045;
+        Fri, 24 Apr 2020 07:21:59 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id x17so10311312wrt.5;
+        Fri, 24 Apr 2020 07:21:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=8w7+uCUhpHYzbGOZ01QDp28us1IRO4sOqHhMEDTp6HU=;
-        b=BiYJa3L1GcSsLCZerQTAWPtUGBFNe3HAGW+NlURNhdrUIHx5elsf6OKXLm9Pd8Qhyz
-         SHsVP0xONFLTM0+8MEQTudYClzAUc0NAVzG/NuAgOYVpCaN6Xb7/Y5KKQ34m0jCnVJYR
-         K+3WDdXRQ4M7Jnu3w8hl/XSkLFdp/sWxUydnF5mdRUQV4eEhIbyvFYHcwAwjPQ4KUOL1
-         jdSRa7oO5bjwZNmgWqNsxhxSRu5DKThAKFe3PU+pijmgadH5BEj/UQLbc833T6GU2D3S
-         tebRFoUOq9csCYKkH1F2n/ddySjJYAT6aRG98nfYpSLfVPp462kyWdugchTc7KdbNeNe
-         qDQw==
+        bh=P42ksOlVF/AdmvKPsOuYxhpgfKkeJHhYzXzUH8TEKYo=;
+        b=RkZKXWojYgferx/UFn3wqIaV79UGDDSZqOrwzdw9IHGFm7l0weOYBhCmmwwSvlHkLj
+         kU6gF8Dk8HA23Oi2gld3VpUdUisrwLGjo/rqjhtgQUCqwiAO6FDHMe4COyCATjWwZchU
+         ZZEsN1V1cwmzkDLWOmQaW4zspyCQ548/BugXGLRp08CI7MNsAnC7Iol4+5CI6DF7TuOq
+         Apl6adE9NKHH419sEN8v2HTquualX/4hTw9CkKLGy+lsMBUkxhIVDAzMMhwd60/WCflz
+         WQ01F3qb6x9/zgSB73A6xupsAmBajt2q5AAML1r/SPdEn7yC2QPmVhiFWVsKwwoT4RjD
+         onDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=8w7+uCUhpHYzbGOZ01QDp28us1IRO4sOqHhMEDTp6HU=;
-        b=bqzHA0aecUFaxRpgbGlEudNXcefrFnhMflUUP8HLu+5CwS0eK4nqfDvVeo/XXDKY/T
-         popxVD9zWzUPsQ7cmfNXoBQhZJZc4QyztPXiJu3C4+eMsLfp85oYrjdbC1RPRBSrEmXo
-         WWj7/BA5+oPCvWRG5qkvHszpfxS7lCF0fRQF+ITlN5tGKbGz2SCiV6TmT9UsYfhIsxrR
-         AWupyAzGIH3f4PfDi1okywc96B6ncGR0ARTXznvQyKNgzNkzNcovqsOQFqBaWByLRSGU
-         guC2sT0+AHoLCBoBKnacuABA4IbsolsWE5+B6ji51I+NunzIVfo+roxtLYZFQ7PHQiHp
-         GLjg==
-X-Gm-Message-State: AGi0PuYVkYIspcG6/VL9RaXJ7GOEYTJf6kUhjLzNCk8WPAgtTc7w4IFH
-        CAVkSOzawYdXHGCY27FcU4p2aOzOKPmTkz5T/80=
-X-Google-Smtp-Source: APiQypJxpZVUieBMlP6z0fAEtLmFyuOe11V+/kd2k3pWQy9UVGsp+SwtFgmr/+ixgaFFx8G3scEDN72dvcJ81EwgYIU=
-X-Received: by 2002:a1c:6344:: with SMTP id x65mr10535226wmb.56.1587737759026;
- Fri, 24 Apr 2020 07:15:59 -0700 (PDT)
+        bh=P42ksOlVF/AdmvKPsOuYxhpgfKkeJHhYzXzUH8TEKYo=;
+        b=RHylmDetzf6LGb0LMW/aDZzaXZpBBCr6i/WYfihDdTEDxNjTV6OlzXVhbkYknybGnQ
+         tl5qpwtpUhLs/giYtxG/FT2TZxQgZl4um6LRnTKbTu772WnofU98kDBZIBQupepK+t08
+         NdF3/uhYBghkFcfbKLyURgCnqlT4WTuwoBbqvIipOK6+oTPckGfMNYgGeSg+hRfYnyGS
+         A3tlHgN6xFRXYsRYyRISWNm/5AmS8d7mNO3AVZWOFT+3ccvwnWKP4ojVIzljXHRwkhsu
+         4fVZqiCB0Q+OJX4vLVoUltwSTJ7cg5RtoMSoG2Qft+L1dQLExuT3YyAwAasijb1AC+3J
+         aKrg==
+X-Gm-Message-State: AGi0PuZidpRlkona8r8KqCFj0McHrQugA1cKpiJfL40ixIwVHOXqsKeg
+        yISGKyICcnqrPWudBJeGk86NOUYPf2SdYPkaerc=
+X-Google-Smtp-Source: APiQypJJ0vGexcoNVu6n5gVmRGV7DqLLurzwRE2ERIyibjQ6iAJM4ySCD/yDHkJDU7tOoJXeG2AM97nay1AkBBxdGDE=
+X-Received: by 2002:adf:cd8c:: with SMTP id q12mr12059598wrj.419.1587738118671;
+ Fri, 24 Apr 2020 07:21:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200424125640.22656-1-colin.king@canonical.com>
-In-Reply-To: <20200424125640.22656-1-colin.king@canonical.com>
+References: <20200424111226.11796-1-colin.king@canonical.com>
+In-Reply-To: <20200424111226.11796-1-colin.king@canonical.com>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Fri, 24 Apr 2020 10:15:48 -0400
-Message-ID: <CADnq5_OXYD0bkLZtfQeL0+B6RrcWjEn2yrAPRANpx0HAtEREEg@mail.gmail.com>
-Subject: Re: [PATCH][next] drm/amdgpu: fix unlocks on error return path
+Date:   Fri, 24 Apr 2020 10:21:47 -0400
+Message-ID: <CADnq5_NcPBfRTgVTAb8D+x+_HB6dJ1wE8_PLUup+iR3nP+2NuQ@mail.gmail.com>
+Subject: Re: [PATCH] amdgpu/dc: remove redundant assignment to variable 'option'
 To:     Colin King <colin.king@canonical.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
+Cc:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
         David Zhou <David1.Zhou@amd.com>,
         David Airlie <airlied@linux.ie>,
@@ -67,59 +69,39 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Apr 24, 2020 at 8:56 AM Colin King <colin.king@canonical.com> wrote:
+On Fri, Apr 24, 2020 at 7:12 AM Colin King <colin.king@canonical.com> wrote:
 >
 > From: Colin Ian King <colin.king@canonical.com>
 >
-> Currently the error returns paths are unlocking lock kiq->ring_lock
-> however it seems this should be dev->gfx.kiq.ring_lock as this
-> is the lock that is being locked and unlocked around the ring
-> operations.  This looks like a bug, fix it by unlocking the
-> correct lock.
+> The variable option is being initialized with a value that is
+> never read and it is being updated later with a new value.  The
+> initialization is redundant and can be removed.
 >
-> [ Note: untested ]
->
-> Addresses-Coverity: ("Missing unlock")
-> Fixes: 82478876eaac ("drm/amdgpu: protect ring overrun")
+> Addresses-Coverity: ("Unused value")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-It's the same lock, just accessed via a local pointer.  I'll take the
-patch and update the commit message when I apply it to avoid confusion
-in the future.
+Applied.  Thanks!
 
 Alex
 
 > ---
->  drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c | 2 +-
->  drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c  | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  drivers/gpu/drm/amd/display/dc/dce110/dce110_opp_csc_v.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 >
-> diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-> index b120f9160f13..edaa50d850a6 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-> @@ -430,7 +430,7 @@ static int gmc_v10_0_flush_gpu_tlb_pasid(struct amdgpu_device *adev,
->                 r = amdgpu_fence_emit_polling(ring, &seq, MAX_KIQ_REG_WAIT);
->                 if (r) {
->                         amdgpu_ring_undo(ring);
-> -                       spin_unlock(&kiq->ring_lock);
-> +                       spin_unlock(&adev->gfx.kiq.ring_lock);
->                         return -ETIME;
->                 }
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-> index 0a6026308343..055ecba754ff 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-> @@ -624,7 +624,7 @@ static int gmc_v9_0_flush_gpu_tlb_pasid(struct amdgpu_device *adev,
->                 r = amdgpu_fence_emit_polling(ring, &seq, MAX_KIQ_REG_WAIT);
->                 if (r) {
->                         amdgpu_ring_undo(ring);
-> -                       spin_unlock(&kiq->ring_lock);
-> +                       spin_unlock(&adev->gfx.kiq.ring_lock);
->                         return -ETIME;
->                 }
->
+> diff --git a/drivers/gpu/drm/amd/display/dc/dce110/dce110_opp_csc_v.c b/drivers/gpu/drm/amd/display/dc/dce110/dce110_opp_csc_v.c
+> index 4245e1f818a3..e096d2b95ef9 100644
+> --- a/drivers/gpu/drm/amd/display/dc/dce110/dce110_opp_csc_v.c
+> +++ b/drivers/gpu/drm/amd/display/dc/dce110/dce110_opp_csc_v.c
+> @@ -679,8 +679,7 @@ void dce110_opp_v_set_csc_default(
+>         if (default_adjust->force_hw_default == false) {
+>                 const struct out_csc_color_matrix *elm;
+>                 /* currently parameter not in use */
+> -               enum grph_color_adjust_option option =
+> -                       GRPH_COLOR_MATRIX_HW_DEFAULT;
+> +               enum grph_color_adjust_option option;
+>                 uint32_t i;
+>                 /*
+>                  * HW default false we program locally defined matrix
 > --
 > 2.25.1
 >

@@ -2,103 +2,123 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E9C21B6AB9
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Apr 2020 03:13:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 343F71B6CB4
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Apr 2020 06:34:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728225AbgDXBNJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Apr 2020 21:13:09 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:2849 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725888AbgDXBNJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Apr 2020 21:13:09 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id C512D7B1357A3939AF7B;
-        Fri, 24 Apr 2020 09:13:05 +0800 (CST)
-Received: from [127.0.0.1] (10.166.215.92) by DGGEMS407-HUB.china.huawei.com
- (10.3.19.207) with Microsoft SMTP Server id 14.3.487.0; Fri, 24 Apr 2020
- 09:13:04 +0800
-Subject: Re: [PATCH bpf-next v2 1/2] bpf: Change error code when ops is NULL
-To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>
-CC:     Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>,
-        Network Development <netdev@vger.kernel.org>,
-        bpf <bpf@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Andrii Nakryiko <andrii.nakryiko@gmail.com>
-References: <20200422093329.GI2659@kadam>
- <20200423033314.49205-1-maowenan@huawei.com>
- <20200423033314.49205-2-maowenan@huawei.com>
- <CAADnVQLfqLBzsjK0KddZM7WTL3unzWw+v18L0pw8HQnWsEVUzA@mail.gmail.com>
- <bd36c161-8831-1f61-1531-063723a8d8c2@huawei.com>
- <CAADnVQK_wWkLFyzZ5eXGvTQmBj=wOXNFL6vRZkNNBHLUYn5w6Q@mail.gmail.com>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <2e90d89c-7a1a-d31b-cfa5-63f4e14e0877@huawei.com>
-Date:   Fri, 24 Apr 2020 09:13:02 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+        id S1726186AbgDXEeA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 Apr 2020 00:34:00 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:29006 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726008AbgDXEd7 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 24 Apr 2020 00:33:59 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1587702839; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=a/cWZWil63oy2LeUPylT7nToPBhx2A8BfuTg5P7sK6o=; b=gefeFifpDOl9DG1WFAiPrYJBEfNRwevuRGQzI1SuF+vLIQLXTwsyErJwgAE8X6ynD0iBTIwQ
+ 8bohoML5jGRsn1MDa9F/7QBipOh3Cqh7eOJqMN/B/d2bJCWzKuZZ5GbwYyGQfrIqx5kk/425
+ lWVQUtuCxZRPRWcaLBT71LpiC3g=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5ea26c23.7f79f87ed6c0-smtp-out-n01;
+ Fri, 24 Apr 2020 04:33:39 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 767B9C432C2; Fri, 24 Apr 2020 04:33:38 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DC793C433CB;
+        Fri, 24 Apr 2020 04:33:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DC793C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        stas.yakovlev@gmail.com, davem@davemloft.net,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] ipw2x00: Remove a memory allocation failure log message
+References: <20200423075825.18206-1-christophe.jaillet@wanadoo.fr>
+        <5868418d-88b0-3694-2942-5988ab15bdcb@cogentembedded.com>
+        <3c80ef48-57a8-b414-6cf1-6c255a46f6be@wanadoo.fr>
+Date:   Fri, 24 Apr 2020 07:33:33 +0300
+In-Reply-To: <3c80ef48-57a8-b414-6cf1-6c255a46f6be@wanadoo.fr> (Christophe
+        JAILLET's message of "Thu, 23 Apr 2020 22:47:25 +0200")
+Message-ID: <87zhb1h59e.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <CAADnVQK_wWkLFyzZ5eXGvTQmBj=wOXNFL6vRZkNNBHLUYn5w6Q@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.166.215.92]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020/4/24 0:07, Alexei Starovoitov wrote:
-> On Wed, Apr 22, 2020 at 11:25 PM maowenan <maowenan@huawei.com> wrote:
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> writes:
+
+> Le 23/04/2020 =C3=A0 11:46, Sergei Shtylyov a =C3=A9crit=C2=A0:
+>> Hello!
 >>
->> On 2020/4/23 13:43, Alexei Starovoitov wrote:
->>> On Wed, Apr 22, 2020 at 8:31 PM Mao Wenan <maowenan@huawei.com> wrote:
->>>>
->>>> There is one error printed when use BPF_MAP_TYPE_SOCKMAP to create map:
->>>> libbpf: failed to create map (name: 'sock_map'): Invalid argument(-22)
->>>>
->>>> This is because CONFIG_BPF_STREAM_PARSER is not set, and
->>>> bpf_map_types[type] return invalid ops. It is not clear to show the
->>>> cause of config missing with return code -EINVAL, so add pr_warn() and
->>>> change error code to describe the reason.
->>>>
->>>> Signed-off-by: Mao Wenan <maowenan@huawei.com>
->>>> ---
->>>>  kernel/bpf/syscall.c | 7 ++++---
->>>>  1 file changed, 4 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
->>>> index d85f37239540..7686778457c7 100644
->>>> --- a/kernel/bpf/syscall.c
->>>> +++ b/kernel/bpf/syscall.c
->>>> @@ -112,9 +112,10 @@ static struct bpf_map *find_and_alloc_map(union bpf_attr *attr)
->>>>                 return ERR_PTR(-EINVAL);
->>>>         type = array_index_nospec(type, ARRAY_SIZE(bpf_map_types));
->>>>         ops = bpf_map_types[type];
->>>> -       if (!ops)
->>>> -               return ERR_PTR(-EINVAL);
->>>> -
->>>> +       if (!ops) {
->>>> +               pr_warn("map type %d not supported or kernel config not opened\n", type);
->>>> +               return ERR_PTR(-EOPNOTSUPP);
->>>> +       }
+>> On 23.04.2020 10:58, Christophe JAILLET wrote:
+>>
+>>> Axe a memory allocation failure log message. This message is useless and
+>>> incorrect (vmalloc is not used here for the memory allocation)
 >>>
->>> I don't think users will like it when kernel spams dmesg.
->>> If you need this level of verbosity please teach consumer of libbpf to
->>> print them.
->>> It's not a job of libbpf either.
->> thanks for reviw, so is it better to delete redundant pr_warn()?
-> 
-> which one?
-I mean pr_warn is no need, this patch just change the return code ERR_PTR(-EOPNOTSUPP);
-+               pr_warn("map type %d not supported or kernel config not opened\n", type);
-> 
-> .
-> 
+>>> This has been like that since the very beginning of this driver in
+>>> commit 43f66a6ce8da ("Add ipw2200 wireless driver.")
+>>>
+>>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>>> ---
+>>> =C2=A0 drivers/net/wireless/intel/ipw2x00/ipw2200.c | 5 ++---
+>>> =C2=A0 1 file changed, 2 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+>>> b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+>>> index 60b5e08dd6df..30c4f041f565 100644
+>>> --- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+>>> +++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+>>> @@ -3770,10 +3770,9 @@ static int ipw_queue_tx_init(struct ipw_priv
+>>> *priv,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct pci_dev *dev =3D priv->pci_dev;
+>>> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 q->txb =3D kmalloc_array(count, s=
+izeof(q->txb[0]), GFP_KERNEL);
+>>> -=C2=A0=C2=A0=C2=A0 if (!q->txb) {
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 IPW_ERROR("vmalloc for auxi=
+liary BD structures failed\n");
+>>> +=C2=A0=C2=A0=C2=A0 if (!q->txb)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -ENOMEM;
+>>> -=C2=A0=C2=A0=C2=A0 }
+>>> +
+>>
+>> =C2=A0=C2=A0 No need for this extra empty line.
+>
+>
+> That's right, sorry about that.
+>
+> Can it be fixed when/if the patch is applied, or should I send a V2?
 
+Please send v2.
 
+> If a V2 is required, should kcalloc be used, as pointed out by Joe Perche=
+s?
+> (personally, If the code works fine as-is, I don't think it is
+> required, but it can't hurt)
+
+There's always the risk of regressions, which happens even with cleanup
+patches so hurting is always possible :)
+
+I can take a patch changing the allocation but please do it in a
+separate patch. Though personally I wouldn't bother, ipw2x00 is an old
+driver and not being actively developed anymore.
+
+--=20
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes

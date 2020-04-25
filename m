@@ -2,39 +2,40 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC1041B880B
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Apr 2020 19:12:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB2901B882A
+	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Apr 2020 19:34:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726169AbgDYRMh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 25 Apr 2020 13:12:37 -0400
-Received: from saturn.retrosnub.co.uk ([46.235.226.198]:57080 "EHLO
-        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726145AbgDYRMh (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 25 Apr 2020 13:12:37 -0400
-X-Greylist: delayed 587 seconds by postgrey-1.27 at vger.kernel.org; Sat, 25 Apr 2020 13:12:36 EDT
+        id S1726177AbgDYRel (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 25 Apr 2020 13:34:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60536 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726157AbgDYRek (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 25 Apr 2020 13:34:40 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 142339E762F;
-        Sat, 25 Apr 2020 18:02:44 +0100 (BST)
-Date:   Sat, 25 Apr 2020 18:02:43 +0100
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "colin.king@canonical.com" <colin.king@canonical.com>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH][next] iio: adc: ad7476: remove redundant null check on
- an array
-Message-ID: <20200425180243.18ff7f13@archlinux>
-In-Reply-To: <20200425180110.3ffa5696@archlinux>
-References: <20200424130419.22940-1-colin.king@canonical.com>
-        <f2c6d3f3f8f884e87f1c9895fe99b77e8f4c1e3e.camel@analog.com>
-        <20200425180110.3ffa5696@archlinux>
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1020420704;
+        Sat, 25 Apr 2020 17:34:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587836080;
+        bh=n/c6G2+pz7iSd0hluR8q+ZQxALEQt3pvWT6Lzkx/HZc=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=gEtD0dS9tKbwL2+xWiTPKjw+xgmDKDM4DOGN0YzGiRk0f18odhsap1Yp/PCpxhnXQ
+         OZT7+4DrLUU580m3qoY7erW6HOoIDdqZR3pCmEQZQ9/5eSvZugzKB7AZdT4t9YoAyS
+         4Fu/iATZWKpP4ho4YJ3Za3Pp1qQX1EMZ4IYRNBUQ=
+Date:   Sat, 25 Apr 2020 18:34:36 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: unlock on error in
+ st_lsm6dsx_shub_write_raw()
+Message-ID: <20200425183436.2d22db77@archlinux>
+In-Reply-To: <20200422093811.GA196034@mwanda>
+References: <20200422093811.GA196034@mwanda>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,53 +45,49 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 25 Apr 2020 18:01:10 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Wed, 22 Apr 2020 12:38:11 +0300
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-> On Fri, 24 Apr 2020 15:01:26 +0000
-> "Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
+> We need to release a lock if st_lsm6dsx_check_odr() fails, we can't
+> return directly.
 > 
-> > On Fri, 2020-04-24 at 14:04 +0100, Colin King wrote:  
-> > > From: Colin Ian King <colin.king@canonical.com>
-> > > 
-> > > The null check on st->chip_info->convst_channel is redundant because
-> > > convst_channel is a 2 element array of struct iio_chan_spec objects
-> > > and this can never be null. Fix this by removing the null check.
-> > >     
-> > 
-> > Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
-> Applied to the togreg branch of iio.git and pushed out as testing.
-> I didn't take this as a fix as it's not doing any harm in the meantime
-> whilst this patch goes the slow route.
-Just noticed this is in next only currently!  Hence can definitely
-got he slow route as doesn't apply to mainline :)
+> Fixes: 76551a3c3df1 ("iio: imu: st_lsm6dsx: specify slave odr in slv_odr")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Good find.
+
+Applied to the fixes-togreg branch of iio.git.
+
+Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 > 
-> Thanks,
-> 
-> Jonathan
-> 
-> >   
-> > > Addresses-Coverity: ("Array compared against 0")
-> > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > > ---
-> > >  drivers/iio/adc/ad7476.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
-> > > index e9984a38fc4c..4e816d714ad2 100644
-> > > --- a/drivers/iio/adc/ad7476.c
-> > > +++ b/drivers/iio/adc/ad7476.c
-> > > @@ -309,7 +309,7 @@ static int ad7476_probe(struct spi_device *spi)
-> > >  	indio_dev->num_channels = 2;
-> > >  	indio_dev->info = &ad7476_info;
-> > >  
-> > > -	if (st->convst_gpio && st->chip_info->convst_channel)
-> > > +	if (st->convst_gpio)
-> > >  		indio_dev->channels = st->chip_info->convst_channel;
-> > >  	/* Setup default message */
-> > >      
-> 
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> index 64ef07a30726..1cf98195f84d 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> @@ -544,8 +544,10 @@ st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
+>  
+>  			ref_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
+>  			odr = st_lsm6dsx_check_odr(ref_sensor, val, &odr_val);
+> -			if (odr < 0)
+> -				return odr;
+> +			if (odr < 0) {
+> +				err = odr;
+> +				goto release;
+> +			}
+>  
+>  			sensor->ext_info.slv_odr = val;
+>  			sensor->odr = odr;
+> @@ -557,6 +559,7 @@ st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
+>  		break;
+>  	}
+>  
+> +release:
+>  	iio_device_release_direct_mode(iio_dev);
+>  
+>  	return err;
 

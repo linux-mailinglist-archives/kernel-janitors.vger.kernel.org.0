@@ -2,61 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BA121B8690
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Apr 2020 14:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AB6D1B87D2
+	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Apr 2020 18:55:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726087AbgDYMou (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 25 Apr 2020 08:44:50 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56956 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725925AbgDYMou (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 25 Apr 2020 08:44:50 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jSKAq-0006Hn-Ew; Sat, 25 Apr 2020 12:44:48 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drivers: uio: remove redundant assignment to variable retval
-Date:   Sat, 25 Apr 2020 13:44:48 +0100
-Message-Id: <20200425124448.139532-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        id S1726233AbgDYQzG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 25 Apr 2020 12:55:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39270 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726152AbgDYQzE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 25 Apr 2020 12:55:04 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 91CCB206D4;
+        Sat, 25 Apr 2020 16:55:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587833704;
+        bh=JjChTrtA0oJ6ePhjEidISsO81puxuHkvJCnWPoasV2c=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=HbrDkR+BPdXmHiPtxrnTJ4qX3w2V5OSeBsbMwy3n39kNV+jOJVi1Sgjird+eIr3Wp
+         lK8Gv114NK7/2Q+aIb7AJZ+G5krVjYafBOFyStPRttxL+MQxXYGmHz//wegZPOeA16
+         q3kpgwzafpCtbpQHxwbBe2kD8InE+RjafBGoIWlg=
+Date:   Sat, 25 Apr 2020 17:54:58 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     lars@metafoo.de, Michael.Hennerich@analog.com,
+        stefan.popa@analog.com, knaack.h@gmx.de, pmeerw@pmeerw.net,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: dac: ad5593r: Fix a typo in MODULE_DESCRIPTION
+Message-ID: <20200425175458.4ba655e0@archlinux>
+In-Reply-To: <20200425065653.31203-1-christophe.jaillet@wanadoo.fr>
+References: <20200425065653.31203-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Sat, 25 Apr 2020 08:56:53 +0200
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-The variable retval is being initialized with a value that is
-never read and it is being updated later with a new value. The
-initialization is redundant and can be removed.
+> This module is related to AD5593R, not AD5592R.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Applied.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/uio/uio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
 
-diff --git a/drivers/uio/uio.c b/drivers/uio/uio.c
-index 6e725c6c6256..73efb80815db 100644
---- a/drivers/uio/uio.c
-+++ b/drivers/uio/uio.c
-@@ -398,7 +398,7 @@ static void uio_dev_del_attributes(struct uio_device *idev)
- 
- static int uio_get_minor(struct uio_device *idev)
- {
--	int retval = -ENOMEM;
-+	int retval;
- 
- 	mutex_lock(&minor_lock);
- 	retval = idr_alloc(&uio_idr, idev, 0, UIO_MAX_DEVICES, GFP_KERNEL);
--- 
-2.25.1
+Jonathan
+
+> ---
+>  drivers/iio/dac/ad5593r.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/dac/ad5593r.c b/drivers/iio/dac/ad5593r.c
+> index 44ea3b8117d0..1fbe9c019c7f 100644
+> --- a/drivers/iio/dac/ad5593r.c
+> +++ b/drivers/iio/dac/ad5593r.c
+> @@ -134,5 +134,5 @@ static struct i2c_driver ad5593r_driver = {
+>  module_i2c_driver(ad5593r_driver);
+>  
+>  MODULE_AUTHOR("Paul Cercueil <paul.cercueil@analog.com>");
+> -MODULE_DESCRIPTION("Analog Devices AD5592R multi-channel converters");
+> +MODULE_DESCRIPTION("Analog Devices AD5593R multi-channel converters");
+>  MODULE_LICENSE("GPL v2");
 

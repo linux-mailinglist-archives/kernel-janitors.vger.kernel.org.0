@@ -2,87 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B71E1B85D8
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Apr 2020 12:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61D301B861F
+	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Apr 2020 13:22:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726092AbgDYKyg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 25 Apr 2020 06:54:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35132 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726050AbgDYKyf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 25 Apr 2020 06:54:35 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E9CB520714;
-        Sat, 25 Apr 2020 10:54:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587812075;
-        bh=XU8fusLrSTHmIUAeVbGFgNvIoVqbEQlw1d7OY9tTAvg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nCa3PyZVCeUVlmy+czbQUoSbGWp5TY6eCGW9a9RqrhOEd4i8Da8iIGz2KhysHPVIv
-         /ArdsHI4hsE15umyFtYnPbtienLTyQBZhgquwoskmWLZBcqdJyO4EOZglxlWSoonq0
-         QKUsISQlJRMJwIRfIZ/ZGzWrhMdHdoMDp2XX0Ww8=
-Date:   Sat, 25 Apr 2020 12:54:32 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Suraj Upadhyay <usuraj35@gmail.com>
-Cc:     jerome.pouiller@silabs.com, dan.carpenter@oracle.com,
-        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] staging: wfx: cleanup long lines in data_tx.c
-Message-ID: <20200425105432.GA2068247@kroah.com>
-References: <20200424134834.GA19700@blackclown>
+        id S1726070AbgDYLWI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 25 Apr 2020 07:22:08 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:56016 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726050AbgDYLWI (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 25 Apr 2020 07:22:08 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jSIsn-0002P5-Uu; Sat, 25 Apr 2020 11:22:06 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] media: stv0900_core: remove redundant assignment to variable val
+Date:   Sat, 25 Apr 2020 12:22:05 +0100
+Message-Id: <20200425112205.137518-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200424134834.GA19700@blackclown>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Apr 24, 2020 at 07:18:34PM +0530, Suraj Upadhyay wrote:
-> Break lines with length over 80 characters to conform
-> to the linux coding style and refactor wherever necessary.
-> 
-> Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
-> ---
-> 
-> Changes in v3:
-> 	- Changed the temporary variable name for the memzcmp statement
-> 	  to is_used. (as suggested).
-> 	- Added a temporary ieee80211_supported_band variable to address
-> 	  the problem in wfx_get_hw_rate() more efficiently. (not
-> 	  suggested, but still).
-> 
-> Changes in v2:
->         - Introduced a temporary variable for the memzcmp statement.
->         - Addressed the checkpatch problem with wfx_get_hw_rate().
->         - Restored the function definition of wfx_tx_get_tx_parms
->           as suggested by the reviewer.
->         - Added suggested changes for req->packet_id statement.
-> 
->  drivers/staging/wfx/data_tx.c | 40 +++++++++++++++++++++++------------
->  1 file changed, 26 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/staging/wfx/data_tx.c b/drivers/staging/wfx/data_tx.c
-> index 9c1a91207dd8..717155975345 100644
-> --- a/drivers/staging/wfx/data_tx.c
-> +++ b/drivers/staging/wfx/data_tx.c
-> @@ -20,6 +20,8 @@
->  static int wfx_get_hw_rate(struct wfx_dev *wdev,
->  			   const struct ieee80211_tx_rate *rate)
->  {
-> +
-> +	struct ieee80211_supported_band *band;
->  	if (rate->idx < 0)
+From: Colin Ian King <colin.king@canonical.com>
 
-checkpatch did not complain about this change?
+The variable val is being initializeed with a value that is never read
+and it is being updated later with a new value. The initialization
+is redundant and can be removed.
 
-It should have...
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/media/dvb-frontends/stv0900_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Please fix that up.
+diff --git a/drivers/media/dvb-frontends/stv0900_core.c b/drivers/media/dvb-frontends/stv0900_core.c
+index 7d93a1617e86..212312d20ff6 100644
+--- a/drivers/media/dvb-frontends/stv0900_core.c
++++ b/drivers/media/dvb-frontends/stv0900_core.c
+@@ -193,7 +193,7 @@ void stv0900_write_bits(struct stv0900_internal *intp, u32 label, u8 val)
+ 
+ u8 stv0900_get_bits(struct stv0900_internal *intp, u32 label)
+ {
+-	u8 val = 0xff;
++	u8 val;
+ 	u8 mask, pos;
+ 
+ 	extract_mask_pos(label, &mask, &pos);
+-- 
+2.25.1
 
-thanks,
-
-greg k-h

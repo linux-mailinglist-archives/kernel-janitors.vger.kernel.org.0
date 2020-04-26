@@ -2,31 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E78C1B9394
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Apr 2020 21:16:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE05F1B93B8
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Apr 2020 21:44:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726202AbgDZTQh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 Apr 2020 15:16:37 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:20502 "EHLO
+        id S1726251AbgDZToL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Apr 2020 15:44:11 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:38893 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726170AbgDZTQg (ORCPT
+        with ESMTP id S1726171AbgDZToK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 Apr 2020 15:16:36 -0400
+        Sun, 26 Apr 2020 15:44:10 -0400
 Received: from localhost.localdomain ([93.23.12.11])
         by mwinf5d64 with ME
-        id XXGZ220060EJ3pp03XGZe2; Sun, 26 Apr 2020 21:16:34 +0200
+        id XXk72200Q0EJ3pp03Xk7zB; Sun, 26 Apr 2020 21:44:09 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 26 Apr 2020 21:16:34 +0200
+X-ME-Date: Sun, 26 Apr 2020 21:44:09 +0200
 X-ME-IP: 93.23.12.11
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     thierry.reding@gmail.com
-Cc:     dri-devel@lists.freedesktop.org, linux-tegra@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, maitysanchayan@gmail.com, robh@kernel.org
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] gpu: host1x: Clean up debugfs in error handling path in 'host1x_probe()'
-Date:   Sun, 26 Apr 2020 21:16:30 +0200
-Message-Id: <20200426191630.41290-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] iio: dac: vf610: Fix an error handling path in 'vf610_dac_probe()'
+Date:   Sun, 26 Apr 2020 21:44:03 +0200
+Message-Id: <20200426194403.41913-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -35,28 +36,29 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'host1x_debug_init()' must be reverted in an error handling path.
+A call to 'vf610_dac_exit()' is missing in an error handling path.
 
-This is already fixed in the remove function since commit 44156eee91ba
-("gpu: host1x: Clean up debugfs on removal")
-
+Fixes: 1b983bf42fad ("iio: dac: vf610_dac: Add IIO DAC driver for Vybrid SoC")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/gpu/host1x/dev.c | 1 +
+Un-tested.
+Proposal based on function names and functions called in the remove function
+---
+ drivers/iio/dac/vf610_dac.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/host1x/dev.c b/drivers/gpu/host1x/dev.c
-index 388bcc2889aa..be46554968af 100644
---- a/drivers/gpu/host1x/dev.c
-+++ b/drivers/gpu/host1x/dev.c
-@@ -435,6 +435,7 @@ static int host1x_probe(struct platform_device *pdev)
+diff --git a/drivers/iio/dac/vf610_dac.c b/drivers/iio/dac/vf610_dac.c
+index 71f8a5c471c4..7f1e9317c3f3 100644
+--- a/drivers/iio/dac/vf610_dac.c
++++ b/drivers/iio/dac/vf610_dac.c
+@@ -223,6 +223,7 @@ static int vf610_dac_probe(struct platform_device *pdev)
  	return 0;
  
- deinit_intr:
-+	host1x_debug_deinit(host);
- 	host1x_intr_deinit(host);
- deinit_syncpt:
- 	host1x_syncpt_deinit(host);
+ error_iio_device_register:
++	vf610_dac_exit(info);
+ 	clk_disable_unprepare(info->clk);
+ 
+ 	return ret;
 -- 
 2.25.1
 

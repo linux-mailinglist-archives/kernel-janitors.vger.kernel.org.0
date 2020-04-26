@@ -2,38 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A2321B91EE
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Apr 2020 19:02:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91CEA1B92BD
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Apr 2020 20:16:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726162AbgDZRCE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 Apr 2020 13:02:04 -0400
-Received: from mout.web.de ([212.227.17.11]:33849 "EHLO mout.web.de"
+        id S1726188AbgDZSQv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Apr 2020 14:16:51 -0400
+Received: from mout.web.de ([212.227.17.11]:57983 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726151AbgDZRCE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 Apr 2020 13:02:04 -0400
+        id S1726151AbgDZSQu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 26 Apr 2020 14:16:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1587920462;
-        bh=MUPsU306dbTDMimvKdP0/q3NBw+LOYLD+RsbuRByH38=;
+        s=dbaedf251592; t=1587924998;
+        bh=Kq9tVciP0aoxOXS+OnnJQPq33LIU0ZN36h026g/j1PY=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=F5yMopp0CJpqF5pUeEudLIMtFfQ2MLaIRyQCNQeM4/J01G1wfGLe3sPQ6IPR4uFTc
-         vf9Aiok7aLTQpq4SmRvx3wOQ4LLPXsAF7j+8HqMuJiFJ7BLjddqKaQtr86bWfdL85q
-         k1RJXMXojy6axFkp+jo4uJQGH5jWnBS24jHT+4E4=
+        b=hH9RDEa8AQt3Fk/GxfPyy/qijzpnLlLjd8Fsn/8Rrb/rIfu1auSIJi8HqMqGWia0k
+         S0RlCXOyB+DWt1U2QWJMUWlx1n2Rh8Pu84AX4qrTi3MkXvN849p1VmovyMOfITW1Vj
+         sSNvd/+L5Qv5JDzSoBIhikfCk6Z2+fz8sOA92dmA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.52.156]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MQvsg-1jdDhA1SGc-00UGaS; Sun, 26
- Apr 2020 19:01:02 +0200
-To:     Wu Bo <wubo40@huawei.com>, alsa-devel@alsa-project.org
+Received: from [192.168.1.2] ([93.133.52.156]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MCImL-1jJjQC3md7-0099y3; Sun, 26
+ Apr 2020 20:16:38 +0200
+To:     Zhiqiang Liu <liuzhiqiang26@huawei.com>,
+        linux-bcache@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Aaron Plattner <aplattner@nvidia.com>,
-        Feilong Lin <linfeilong@huawei.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Libin Yang <libin.yang@linux.intel.com>,
-        Nikhil Mahale <nmahale@nvidia.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        Zhiqiang Liu <liuzhiqiang26@huawei.com>
-Subject: Re: [PATCH] sound:hdmi:fix without unlocked before return
+        Coly Li <colyli@suse.de>, Feilong Lin <linfeilong@huawei.com>,
+        Kent Overstreet <kmo@daterainc.com>, mingfangsen@huawei.com,
+        renxudong1@huawei.com, Wu Bo <wubo40@huawei.com>,
+        yanxiaodan@huawei.com
+Subject: Re: [PATCH V2] bcache: fix potential deadlock problem in
+ btree_gc_coalesce
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -78,87 +75,55 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <475cb7a9-0992-3a79-a0ad-d3f8922ba3cb@web.de>
-Date:   Sun, 26 Apr 2020 19:00:54 +0200
+Message-ID: <80c2a2c6-01b9-8280-34b4-ff6b9cfaf76a@web.de>
+Date:   Sun, 26 Apr 2020 20:16:36 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Vfs6F3fqANSzgHFv3pR2a9iso40vJkZRaKLqbfW3y8Rx0nyez/+
- oyN5O1OAqCsiLtUDyGh7tw7v8eHCgeF9+DD1Txl8KTI93mFn10Mup18EZFmlJ7pNAc2P7kN
- OvYY81k5jcrCPtvU4WNmKV7JyRRWOWjZH3ow5ESWXxCwc8P6ls5Rhyo44PIL5cDkCE3ZJkR
- eF6ofKiByEpEflqhvr6UA==
+X-Provags-ID: V03:K1:E1jSvYhkSSKJu76IhuLc8ALiSJ1F719BmZP0UehV5f9w/ElUxaK
+ rT70czBqUY4t/tb74avmPSinHTA/MJ3PmZFuwUgk1rfabew1/ZwSgTjQiwr4YVOWXFlXOSB
+ klsr0Ln2Jn7sfDVXrXR/qvqCOkxeyrOHRL6HLWMVh26A/IGnvxGljwYtwfjiFoHyuyXKAdW
+ A1F35H/Agx1n+DiQEntVg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:bMUxsOqr8ZY=:p9ILc0b6qfnfMqy+tqFSWH
- yZDF27Fb+b9KHBXakq28+NtMTLuhpZhB/FL34eSjYDpat3U0sWrC5VgLsGxcDf1+U+R28Ptlo
- MRIRhvIapbCchrSSvz5ySfYGi5FiigQr6K9A7i/LdtzwW/8CGCuoGTKxDk1/se8q1Da0RQb/v
- rVZxrTQtc0x3y7Mkgds9aJffETYHM/UHXtpF0+Sjj8hfhxfp10YAcowQnbKrxuQSbUOHSHRRe
- E3c1Dd9/EP0wWzS3H0kyOq2mu8AKebAwNCKJg33a/d8rMDibMeZPilz2N2cxU8WTVpgsTJevH
- 5vpXsMcBLWjZQZg7/0XEyXasiVnWevdcD5gflnYr73+lvU9n9XNAzcELquhQqn66FnzFHzp+l
- 7NGslflyX9rYeGEkvuMWXi1HpJHw0DBYOt1W5BSz65JY67GJ83IdUwup+rDHV04gELwtCnJih
- 2/tza+zF4ly5L39ZmWmt/xkLXf95zfTAVFZF0UF+cQKEAr3q9AQO8jhYxJmwjAn6jvjS/lgdR
- k2RPAW82gNZq5jFc+umDA+lGw3/1oWsBBlIA9iW1At5V/73tpBYRQbpRsoNQ3+PP6oHYa0JdX
- +YqLJaU86O2bS/Y+JPaDDzpBM3HbLjOpMLeHik3xeTprqu0q1N7tkpYoRvV7MFzwqd0gmnRLX
- Q79NbIqvf36DDHrS2jiUT/XRBjp7b6UXmwHzMOvyLOtUy0K9msrgZnNF5LTUMCmSogPFp2TeW
- TGf9/J5Uz2XDS48oHVcTuKAaZOlSz4s97UjrARcWh6IkBs0cmi8qtVhBc4NqAA11hdttDj/aU
- 7agtv+Vgd2jQSzAwDEkF3Hzm584fJoubevaPuy5Z3OteGmspxJ2FgxmW/OhbyltbfyLmP6cBd
- DTKcU8tolPDNpPIMioelpv/Y7ZVU7MvVGqmN5fDAOZCwqCk7JaiYZMR5iYjfxLqHIfBByOgyH
- 1jRfGbNAOOG9B7WdOqOBVrZCWTEzOSfuaNdD4l9BtGGt5atAGLz3PPb5/4LsmHCnvs9hxnjgd
- NxfMfxgpM0fP4j3qxG+xUsUqkAZshfnFRFku/9cb4uoJyKFWqCPM1MY9/3Mz58SE803OWWOZ/
- RLIVtbN0+3YPpX9oMvLDfIPIMBCDRE3hK+H98MKR6xgfNm5aL1NABed1gGZiAp7ylX7xqCXpQ
- a+BnXQsNbjdfp2wqj1XEdpKXSAPGF0hJcfSoVBJ9hmw3N5i9Zud+fxfD92quuoZEgJ+dknL1H
- onxVorBzsSHCHHvdm
+X-UI-Out-Filterresults: notjunk:1;V03:K0:G0Yr6DPWQXM=:YhHmIbKn+z477LCeQq5gRt
+ kikgUz2sWKJB4cCzAp4oUM7sK5zrdpUJcqqyxWi00vd+mKuiUhP+KZfo95aaKoseKJmsJtngI
+ 1+eXw2xr6TFPnkxGg7tSeUvi+fIn5SUJ9jryXjDwlKxx1c85fVh+g9oWCWlBSeeAVZRelT3uk
+ WQoVHDT3wZp0yLZxc1UodJiokSP2/jY7Df+odVw5fshslDqGFJe6yH+1WXaAMF2y1mWOfEh4X
+ gtEV2MkHxfkR90citcOjVf8b3Y+Qf764NNFll+4AaQXY3BzE8vvYBkgUFwB1E4mtQYcABmcSf
+ dKNCh4DIAm3LJ38e548wm4rZajDhGB9MzpzWdVUARiYw4pg4VFvF+aEAhY1bxD+xP80hjPlfK
+ jlyN/r6ZuVqjKh5mLI4zVw1Wb45ySdIUhzN6oTzlrAqGdUjygb4S9AKRWe7I+WxFq7Us3H38J
+ i/BF5i4BYmNOKGPjFIDsnXrKZ27uzO1kBnZf+iqDwSsXDTQsGSpvOvYHEQLhM0hZ9xSADD2iT
+ W04Zn8DOI7c5l3/602tqCpe3Rn/repGkkGuTdwtEZ7GfPZAZOFNluHCVemdv/7Y6k89sDETA1
+ ToXoDuAjVXl3GuRufgtoUqC2TQxx7PsCepFMt/GNsh6REHINXdyM/kWOuAebgxCz+w+VNjgof
+ KWbE/PNy1IEnFM7+kpON1alWx9gz3Tv2rKjzP0J6D7b99nqfB5oh05LL5sUhABERuoRJYsls8
+ rFxujhPTwVAbeO9kOz4L8c5U8zDABQ9FhZ5l1yDjkShUi1lH1Qamm56HvIFAbO0KXIosMy2wN
+ GHSoIL8zDOBzivcS3N+pPGJIwN9cx1VsyScKVFxBG8VChjPkp0M4giLEETFwayA0zEvQ3bQDk
+ a68ZbdQgwWzkp4HcoWGwWCZ8t5svR+CE10QhOJI0x8ebemP3Yx1ftsNglPtrad3c2l0EEu+vQ
+ OsaM6xGNNV6PGe7fE7uo1SRTy1jUJK7X0Oqn9CXAw8RA6+KSAJNvIeYC6fWQY4a2t6U+dqDIZ
+ vTuoTjanWoy8/6+q4YSqyR3ssAsWZb75yLNTyJ2tVCyYmINK+bJbfs9ECa0p2WjsRxtmWprgv
+ AHUpq9/JzirU4G8CzXtALUwm2HwhZebrS///WxnCs1QzRsYrbUSAQxcs2GzOpcAs9l2g08Kcr
+ bgP/vMWAFvbRjfsDifzQPz6y4asdctAfhbQzFiveIm54ZTxgD9ZejAMN3Z5XocREcPT2s1aC0
+ MJbSlGerztGNE+3h0
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> After add sanity check to pass klockwork check,
-> The spdif_mutex should be unlock before return true
-> in check_non_pcm_per_cvt().
+> --
+> V1->V2: rewrite commit log (suggested by Coly Li) and rename the patch
 
-How do you think about a wording variant like the following?
+* The patch version description should be placed behind triple dashes.
 
-   Subject:
-   [PATCH v2] ALSA: hda/hdmi: Unlock a mutex always before returning from =
-check_non_pcm_per_cvt()
-
-   Change description (according to a solution alternative):
-   The exception handling was incomplete in an if branch for
-   a null pointer check of the variable =E2=80=9Cspdif=E2=80=9D.
-   Thus assign an appropriate value to the local variable =E2=80=9Cnon_pcm=
-=E2=80=9D
-   by using a conditional operator instead.
-   A mutex is also appropriately unlocked then.
+* I would find a shorter version identification (without the arrow)
+  also sufficient.
 
 
-=E2=80=A6
-> +++ b/sound/pci/hda/patch_hdmi.c
-> @@ -1848,8 +1848,10 @@ static bool check_non_pcm_per_cvt(struct hda_code=
-c *codec, hda_nid_t cvt_nid)
-=E2=80=A6
-> -	if (WARN_ON(spdif =3D=3D NULL))
-> +	if (WARN_ON(spdif =3D=3D NULL)) {
-> +		mutex_unlock(&codec->spdif_mutex);
->  		return true;
-> +	}
->  	non_pcm =3D !!(spdif->status & IEC958_AES0_NONAUDIO);
+> Fixes: 2a285686c1 ("bcache: btree locking rework")>
 
--	if (WARN_ON(spdif =3D=3D NULL))
--		return true;
--	non_pcm =3D !!(spdif->status & IEC958_AES0_NONAUDIO);
-+	non_pcm =3D WARN_ON(!spdif)
-+		  ? true
-+		  : !!(spdif->status & IEC958_AES0_NONAUDIO);
- 	mutex_unlock(&codec->spdif_mutex);
- 	return non_pcm;
- }
-
-
-Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the change descri=
-ption?
+Will a longer commit identifier be safer for the final change description?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=b2768df24ec400dd4f7fa79542f797e904812053#n183
 
 Regards,
 Markus

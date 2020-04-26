@@ -2,32 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3B361B93D9
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Apr 2020 22:06:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 168591B93E2
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Apr 2020 22:24:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726316AbgDZUGp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 Apr 2020 16:06:45 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:37364 "EHLO
+        id S1726208AbgDZUYB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Apr 2020 16:24:01 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:32879 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726184AbgDZUGp (ORCPT
+        with ESMTP id S1726199AbgDZUYA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 Apr 2020 16:06:45 -0400
+        Sun, 26 Apr 2020 16:24:00 -0400
 Received: from localhost.localdomain ([93.23.12.11])
         by mwinf5d64 with ME
-        id XY6a220010EJ3pp03Y6a9z; Sun, 26 Apr 2020 22:06:40 +0200
+        id XYPx2200C0EJ3pp03YPyzM; Sun, 26 Apr 2020 22:23:59 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 26 Apr 2020 22:06:40 +0200
+X-ME-Date: Sun, 26 Apr 2020 22:23:59 +0200
 X-ME-IP: 93.23.12.11
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     kyungmin.park@samsung.com, kamil@wypas.org, a.hajda@samsung.com,
-        mchehab@kernel.org, s.nawrocki@samsung.com, sachin.kamat@linaro.org
-Cc:     linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+To:     ulf.hansson@linaro.org, drake@endlessm.com,
+        kamlesh.gurudasani@gmail.com, colin.king@canonical.com,
+        linux@rempel-privat.de
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] media: s5p-g2d: Fix a memory leak in an error handling path in 'g2d_probe()'
-Date:   Sun, 26 Apr 2020 22:06:31 +0200
-Message-Id: <20200426200631.42497-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] mmc: alcor: Fix a resource leak in an error handling path in 'alcor_pci_sdmmc_drv_probe()'
+Date:   Sun, 26 Apr 2020 22:23:55 +0200
+Message-Id: <20200426202355.43055-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -36,35 +37,39 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Memory allocated with 'v4l2_m2m_init()' must be freed by a corresponding
-call to 'v4l2_m2m_release()'
+If 'devm_request_threaded_irq()' fails, resources allocated by
+'mmc_alloc_host()' must be freed.
 
-Fixes: 5ce60d790a24 ("[media] s5p-g2d: Add DT based discovery support")
+Fixes: c5413ad815a6 ("mmc: add new Alcor Micro Cardreader SD/MMC driver")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/media/platform/s5p-g2d/g2d.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mmc/host/alcor.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/s5p-g2d/g2d.c b/drivers/media/platform/s5p-g2d/g2d.c
-index 6932fd47071b..ded6fa24677c 100644
---- a/drivers/media/platform/s5p-g2d/g2d.c
-+++ b/drivers/media/platform/s5p-g2d/g2d.c
-@@ -717,12 +717,14 @@ static int g2d_probe(struct platform_device *pdev)
- 	of_id = of_match_node(exynos_g2d_match, pdev->dev.of_node);
- 	if (!of_id) {
- 		ret = -ENODEV;
--		goto unreg_video_dev;
-+		goto free_m2m;
+diff --git a/drivers/mmc/host/alcor.c b/drivers/mmc/host/alcor.c
+index 1aee485d56d4..026ca9194ce5 100644
+--- a/drivers/mmc/host/alcor.c
++++ b/drivers/mmc/host/alcor.c
+@@ -1104,7 +1104,7 @@ static int alcor_pci_sdmmc_drv_probe(struct platform_device *pdev)
+ 
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to get irq for data line\n");
+-		return ret;
++		goto free_host;
  	}
- 	dev->variant = (struct g2d_variant *)of_id->data;
  
+ 	mutex_init(&host->cmd_mutex);
+@@ -1116,6 +1116,10 @@ static int alcor_pci_sdmmc_drv_probe(struct platform_device *pdev)
+ 	dev_set_drvdata(&pdev->dev, host);
+ 	mmc_add_host(mmc);
  	return 0;
++
++free_host:
++	mmc_free_host(mmc);
++	return ret;
+ }
  
-+free_m2m:
-+	v4l2_m2m_release(dev->m2m_dev);
- unreg_video_dev:
- 	video_unregister_device(dev->vfd);
- rel_vdev:
+ static int alcor_pci_sdmmc_drv_remove(struct platform_device *pdev)
 -- 
 2.25.1
 

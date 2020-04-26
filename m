@@ -2,38 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CE661B90B5
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Apr 2020 15:46:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A2321B91EE
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Apr 2020 19:02:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726170AbgDZNp6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 Apr 2020 09:45:58 -0400
-Received: from mout.web.de ([212.227.15.4]:55533 "EHLO mout.web.de"
+        id S1726162AbgDZRCE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Apr 2020 13:02:04 -0400
+Received: from mout.web.de ([212.227.17.11]:33849 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725876AbgDZNp5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 Apr 2020 09:45:57 -0400
+        id S1726151AbgDZRCE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 26 Apr 2020 13:02:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1587908745;
-        bh=5W3b2E7k21ZMiqMvB1KOtLfzNi5N75REcK7+gb02gX8=;
+        s=dbaedf251592; t=1587920462;
+        bh=MUPsU306dbTDMimvKdP0/q3NBw+LOYLD+RsbuRByH38=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=Ec6Ezo7avK9humZh5lhiNUnAjStzh5lwOWOVqN7L//ztNhuVH7qIlsH4LkwJ9UNVA
-         kRiUHrQY0gN/rQ0eY2e6tB3Hg9JGDdtg2vj0SX80ZtpwTWcRK0pe0cPvmscSVY3qgJ
-         ciwASOg0ikWl9jZmjyYOhdiZwo+HL2V4OugN11KY=
+        b=F5yMopp0CJpqF5pUeEudLIMtFfQ2MLaIRyQCNQeM4/J01G1wfGLe3sPQ6IPR4uFTc
+         vf9Aiok7aLTQpq4SmRvx3wOQ4LLPXsAF7j+8HqMuJiFJ7BLjddqKaQtr86bWfdL85q
+         k1RJXMXojy6axFkp+jo4uJQGH5jWnBS24jHT+4E4=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.52.156]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lcxfc-1ikbMH0S92-00iCYy; Sun, 26
- Apr 2020 15:45:45 +0200
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Chris Lew <clew@codeaurora.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Received: from [192.168.1.2] ([93.133.52.156]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MQvsg-1jdDhA1SGc-00UGaS; Sun, 26
+ Apr 2020 19:01:02 +0200
+To:     Wu Bo <wubo40@huawei.com>, alsa-devel@alsa-project.org
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hemant Kumar <hemantk@codeaurora.org>,
-        Jeffrey Hugo <jhugo@codeaurora.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Siddartha Mohanadoss <smohanad@codeaurora.org>
-Subject: Re: [PATCH v2 2/3] net: qrtr: Add MHI transport layer
+        Aaron Plattner <aplattner@nvidia.com>,
+        Feilong Lin <linfeilong@huawei.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Libin Yang <libin.yang@linux.intel.com>,
+        Nikhil Mahale <nmahale@nvidia.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        Zhiqiang Liu <liuzhiqiang26@huawei.com>
+Subject: Re: [PATCH] sound:hdmi:fix without unlocked before return
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -78,81 +78,87 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <85591553-f1f2-a7c9-9c5a-58f74ebeaf38@web.de>
-Date:   Sun, 26 Apr 2020 15:45:41 +0200
+Message-ID: <475cb7a9-0992-3a79-a0ad-d3f8922ba3cb@web.de>
+Date:   Sun, 26 Apr 2020 19:00:54 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:hto1Oe3KMF6Kn2QN25fgiQmcX5MG3/poqV5HXZ2jMTIUTyxQiAB
- 01h21WniyZQ9WtX3+1r20BJ4M/Rg2ggp3OQZ0iPxLDyU+Pphyn3+3xF+is9E0msK0fFRoFE
- J3cuEiRfnMcwqT2+YhxLlliWCikynUPDOOjdxre+U6ZWunbAaoz7u/oZxUwmhiYaD7Grp1h
- vo0Q1AKichEah3p+hziTw==
+X-Provags-ID: V03:K1:Vfs6F3fqANSzgHFv3pR2a9iso40vJkZRaKLqbfW3y8Rx0nyez/+
+ oyN5O1OAqCsiLtUDyGh7tw7v8eHCgeF9+DD1Txl8KTI93mFn10Mup18EZFmlJ7pNAc2P7kN
+ OvYY81k5jcrCPtvU4WNmKV7JyRRWOWjZH3ow5ESWXxCwc8P6ls5Rhyo44PIL5cDkCE3ZJkR
+ eF6ofKiByEpEflqhvr6UA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Fb0qtxIs6Ms=:YHKnr7XW/87wD9cd9K/HTg
- P6QbfCkfZvuD4Bm0nV/xpj173rwzMycOC9YCwIY8Bzgqev+fTIW7YIOhRNEXGFx1cu0VtcH8v
- lZOw5qysrB7KlC3ARMWTaTKLfUuK7ao+JW35Quj2IjvkP19aS++yUyh9uaxuD9Q4qXsS+WPjd
- Yx/YtQ03CqpI3COoQfCXNgX6lknMuDR0MBdOechbiQ/cqXdWAhSVcNZue+4cQGAL7lYT2Uqnw
- yHjIiII8A+W7WQnIPtjKjnigBAkrARNAKh3p9/vQ0g/6sm43WhsqEDiClB99Z+P8b5i2Q5Pzt
- HyWzPlsfyTqxG7tEZHX6HJZ+vs/T9aoIyumtZjrx7gnulupJuBP3f+bf1vz2LKsXhjoyLOBib
- jxJxGGfS6fWIsgRSMtCRpjLKsIf0tCDcF6pl7M9L50HY0WbSC7wpOZSsVGfah979+j/YoVzp5
- BhWwIc3aVhzB0ZT1ONEzS+8WscDmHaOhsqw9mCXYs93TbpZo9YW4apMmf1gya/Ba90z26UHcY
- 1C858lA0sfz5C5fzoaopnCBGaS93MmK2dF3Qf5P2uYCp5GHSYc68d8uoNcBef/G33W55tl6JX
- D0xo1SvUsBXc9UEd2u51P+XV6oja6fyKlXuBs64VWQPx29UtGnkxGqKsUf9jhBt3RXSkU5lKm
- pxg4lsIgnqdc4r1S8AF2I7ObhtwbUid3N5NC4tZ3vAlLsI0rY29gkZFbZFkE9KBxTzW4yP6r2
- CfyAzEEnVIETKMXjwz/nP82iXiKhPwmWTlFZS5iC7J8OIrAp0DDXbEAQqe2hrdSXAXTgKfUZe
- zfqVcML7mggF9ISAw3UormBUzGVGdK+DzrHBA//wWYyl5W/7xZ5pjv+wv9mkUhqIF8waCgiHs
- PRNfRx1bzuH9NkWTE5zz9m5FpADIQL/q1i3cViOsMOb6ELoTyXIEHa1OZ8kmnvM1s+9DCPWDA
- SNT/bYbdYKfFlFjiu7cQRVfuYv0c8+UtWkGFw+Iq5HqwtdtVjLYqUzWmLw3PuLS6QBMctLKht
- /g2XQVnFraJSVyXXa2oz1ACiE2p36rKfEO/tfbsdKANGMUuTnOOQfCQ8UgQrFlFiS+ERCj6vE
- vY62+KOKa2fSDaPeMgOPmNsOAxDrK7Mav4RT8mmfM7kX1h04z7l7n2UcfQU/k/ISu5T4AZ75c
- Zd9lxwc2ugI+e2Q79RiRn8KBpVU3l9LEX7/ZB0+3NBybWI6sSM6FkHMwNc4jkSHb7X24LWs6c
- SxLXFhUm+7rRI0YEB
+X-UI-Out-Filterresults: notjunk:1;V03:K0:bMUxsOqr8ZY=:p9ILc0b6qfnfMqy+tqFSWH
+ yZDF27Fb+b9KHBXakq28+NtMTLuhpZhB/FL34eSjYDpat3U0sWrC5VgLsGxcDf1+U+R28Ptlo
+ MRIRhvIapbCchrSSvz5ySfYGi5FiigQr6K9A7i/LdtzwW/8CGCuoGTKxDk1/se8q1Da0RQb/v
+ rVZxrTQtc0x3y7Mkgds9aJffETYHM/UHXtpF0+Sjj8hfhxfp10YAcowQnbKrxuQSbUOHSHRRe
+ E3c1Dd9/EP0wWzS3H0kyOq2mu8AKebAwNCKJg33a/d8rMDibMeZPilz2N2cxU8WTVpgsTJevH
+ 5vpXsMcBLWjZQZg7/0XEyXasiVnWevdcD5gflnYr73+lvU9n9XNAzcELquhQqn66FnzFHzp+l
+ 7NGslflyX9rYeGEkvuMWXi1HpJHw0DBYOt1W5BSz65JY67GJ83IdUwup+rDHV04gELwtCnJih
+ 2/tza+zF4ly5L39ZmWmt/xkLXf95zfTAVFZF0UF+cQKEAr3q9AQO8jhYxJmwjAn6jvjS/lgdR
+ k2RPAW82gNZq5jFc+umDA+lGw3/1oWsBBlIA9iW1At5V/73tpBYRQbpRsoNQ3+PP6oHYa0JdX
+ +YqLJaU86O2bS/Y+JPaDDzpBM3HbLjOpMLeHik3xeTprqu0q1N7tkpYoRvV7MFzwqd0gmnRLX
+ Q79NbIqvf36DDHrS2jiUT/XRBjp7b6UXmwHzMOvyLOtUy0K9msrgZnNF5LTUMCmSogPFp2TeW
+ TGf9/J5Uz2XDS48oHVcTuKAaZOlSz4s97UjrARcWh6IkBs0cmi8qtVhBc4NqAA11hdttDj/aU
+ 7agtv+Vgd2jQSzAwDEkF3Hzm584fJoubevaPuy5Z3OteGmspxJ2FgxmW/OhbyltbfyLmP6cBd
+ DTKcU8tolPDNpPIMioelpv/Y7ZVU7MvVGqmN5fDAOZCwqCk7JaiYZMR5iYjfxLqHIfBByOgyH
+ 1jRfGbNAOOG9B7WdOqOBVrZCWTEzOSfuaNdD4l9BtGGt5atAGLz3PPb5/4LsmHCnvs9hxnjgd
+ NxfMfxgpM0fP4j3qxG+xUsUqkAZshfnFRFku/9cb4uoJyKFWqCPM1MY9/3Mz58SE803OWWOZ/
+ RLIVtbN0+3YPpX9oMvLDfIPIMBCDRE3hK+H98MKR6xgfNm5aL1NABed1gGZiAp7ylX7xqCXpQ
+ a+BnXQsNbjdfp2wqj1XEdpKXSAPGF0hJcfSoVBJ9hmw3N5i9Zud+fxfD92quuoZEgJ+dknL1H
+ onxVorBzsSHCHHvdm
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Hence, this commit adds MHI transport layer support to QRTR for
-> transferring the QMI messages over IPC Router.
+> After add sanity check to pass klockwork check,
+> The spdif_mutex should be unlock before return true
+> in check_non_pcm_per_cvt().
 
-I suggest to reconsider software development consequences around
-another implementation detail.
+How do you think about a wording variant like the following?
+
+   Subject:
+   [PATCH v2] ALSA: hda/hdmi: Unlock a mutex always before returning from =
+check_non_pcm_per_cvt()
+
+   Change description (according to a solution alternative):
+   The exception handling was incomplete in an if branch for
+   a null pointer check of the variable =E2=80=9Cspdif=E2=80=9D.
+   Thus assign an appropriate value to the local variable =E2=80=9Cnon_pcm=
+=E2=80=9D
+   by using a conditional operator instead.
+   A mutex is also appropriately unlocked then.
 
 
 =E2=80=A6
-> +static int qcom_mhi_qrtr_send(struct qrtr_endpoint *ep, struct sk_buff =
-*skb)
-> +{
+> +++ b/sound/pci/hda/patch_hdmi.c
+> @@ -1848,8 +1848,10 @@ static bool check_non_pcm_per_cvt(struct hda_code=
+c *codec, hda_nid_t cvt_nid)
 =E2=80=A6
-> +	rc =3D mhi_queue_skb(qdev->mhi_dev, DMA_TO_DEVICE, skb, skb->len,
-> +			   MHI_EOT);
-> +	if (rc) {
-> +		kfree_skb(skb);
-> +		return rc;
+> -	if (WARN_ON(spdif =3D=3D NULL))
+> +	if (WARN_ON(spdif =3D=3D NULL)) {
+> +		mutex_unlock(&codec->spdif_mutex);
+>  		return true;
 > +	}
-=E2=80=A6
-> +}
+>  	non_pcm =3D !!(spdif->status & IEC958_AES0_NONAUDIO);
 
-I propose again to add a jump target so that a bit of exception handling c=
-ode
-can be better reused at the end of this function implementation.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/coding-style.rst?id=3Db2768df24ec400dd4f7fa79542f797e9=
-04812053#n450
+-	if (WARN_ON(spdif =3D=3D NULL))
+-		return true;
+-	non_pcm =3D !!(spdif->status & IEC958_AES0_NONAUDIO);
++	non_pcm =3D WARN_ON(!spdif)
++		  ? true
++		  : !!(spdif->status & IEC958_AES0_NONAUDIO);
+ 	mutex_unlock(&codec->spdif_mutex);
+ 	return non_pcm;
+ }
 
-+	if (rc)
-+		goto free_skb;
-=E2=80=A6
-+	return rc;
-+
-+free_skb:
-+	kfree_skb(skb);
-+	return rc;
-+}
 
+Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the change descri=
+ption?
 
 Regards,
 Markus

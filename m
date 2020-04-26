@@ -2,33 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 168591B93E2
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Apr 2020 22:24:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99B7D1B9416
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Apr 2020 22:59:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726208AbgDZUYB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 Apr 2020 16:24:01 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:32879 "EHLO
+        id S1726225AbgDZU7a (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Apr 2020 16:59:30 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:27881 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726199AbgDZUYA (ORCPT
+        with ESMTP id S1726196AbgDZU7a (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 Apr 2020 16:24:00 -0400
+        Sun, 26 Apr 2020 16:59:30 -0400
 Received: from localhost.localdomain ([93.23.12.11])
         by mwinf5d64 with ME
-        id XYPx2200C0EJ3pp03YPyzM; Sun, 26 Apr 2020 22:23:59 +0200
+        id XYzQ2201a0EJ3pp03YzReA; Sun, 26 Apr 2020 22:59:28 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 26 Apr 2020 22:23:59 +0200
+X-ME-Date: Sun, 26 Apr 2020 22:59:28 +0200
 X-ME-IP: 93.23.12.11
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     ulf.hansson@linaro.org, drake@endlessm.com,
-        kamlesh.gurudasani@gmail.com, colin.king@canonical.com,
-        linux@rempel-privat.de
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     davem@davemloft.net, jonas.jensen@gmail.com
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] mmc: alcor: Fix a resource leak in an error handling path in 'alcor_pci_sdmmc_drv_probe()'
-Date:   Sun, 26 Apr 2020 22:23:55 +0200
-Message-Id: <20200426202355.43055-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] net: moxa: Fix a potential double 'free_irq()'
+Date:   Sun, 26 Apr 2020 22:59:21 +0200
+Message-Id: <20200426205921.47714-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -37,39 +35,32 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If 'devm_request_threaded_irq()' fails, resources allocated by
-'mmc_alloc_host()' must be freed.
+Should an irq requested with 'devm_request_irq' be released explicitly,
+it should be done by 'devm_free_irq()', not 'free_irq()'.
 
-Fixes: c5413ad815a6 ("mmc: add new Alcor Micro Cardreader SD/MMC driver")
+Fixes: 6c821bd9edc9 ("net: Add MOXA ART SoCs ethernet driver")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/mmc/host/alcor.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Maybe 'devm_free_irq()' is useless here and it could be freed automatically
+by the core framework, but sometimes irq can be tricky.
+So I've preferred to keep the logic in place.
+---
+ drivers/net/ethernet/moxa/moxart_ether.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/alcor.c b/drivers/mmc/host/alcor.c
-index 1aee485d56d4..026ca9194ce5 100644
---- a/drivers/mmc/host/alcor.c
-+++ b/drivers/mmc/host/alcor.c
-@@ -1104,7 +1104,7 @@ static int alcor_pci_sdmmc_drv_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/moxa/moxart_ether.c b/drivers/net/ethernet/moxa/moxart_ether.c
+index e1651756bf9d..f70bb81e1ed6 100644
+--- a/drivers/net/ethernet/moxa/moxart_ether.c
++++ b/drivers/net/ethernet/moxa/moxart_ether.c
+@@ -564,7 +564,7 @@ static int moxart_remove(struct platform_device *pdev)
+ 	struct net_device *ndev = platform_get_drvdata(pdev);
  
- 	if (ret) {
- 		dev_err(&pdev->dev, "Failed to get irq for data line\n");
--		return ret;
-+		goto free_host;
- 	}
+ 	unregister_netdev(ndev);
+-	free_irq(ndev->irq, ndev);
++	devm_free_irq(&pdev->dev, ndev->irq, ndev);
+ 	moxart_mac_free_memory(ndev);
+ 	free_netdev(ndev);
  
- 	mutex_init(&host->cmd_mutex);
-@@ -1116,6 +1116,10 @@ static int alcor_pci_sdmmc_drv_probe(struct platform_device *pdev)
- 	dev_set_drvdata(&pdev->dev, host);
- 	mmc_add_host(mmc);
- 	return 0;
-+
-+free_host:
-+	mmc_free_host(mmc);
-+	return ret;
- }
- 
- static int alcor_pci_sdmmc_drv_remove(struct platform_device *pdev)
 -- 
 2.25.1
 

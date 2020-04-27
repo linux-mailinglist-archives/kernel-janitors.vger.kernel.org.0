@@ -2,147 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02EC71BA30C
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 13:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A1431BA313
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 14:00:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727055AbgD0L6v (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 07:58:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38850 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726539AbgD0L6v (ORCPT
+        id S1726651AbgD0MAJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 08:00:09 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:36584 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726390AbgD0MAJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 07:58:51 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48542C0610D5;
-        Mon, 27 Apr 2020 04:58:51 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id t40so7357150pjb.3;
-        Mon, 27 Apr 2020 04:58:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=zxZ+N+WEssbmNvYM0Ih4yXgwxlPsTEXMjiSj67uczQI=;
-        b=kzQ6UXfWXmPDhjr5Kr6e6I7CGAQl72AJrdi96DXZAcYemHOlOt6l5MeYZlLhIziP1H
-         dhQxttBUGYvW8YYFkJ8bL3wSfDmAE9hiwsLeD4dNBVP8y6HfMb7zK7sBIFi+co6zQtvi
-         XotJpwYJcrN9E6eoM9+JG8Kf0irrHTosM/JqsGbVMvJW+fxLU189DOM68kmPMS7va4V1
-         o5hA/mIYrcrzB2iyQVP4w420myfpLxTmZLHpOqgoRia/r32o036ck201A6OqdrTkHsaY
-         av1d10Jd+KQPpNlfXdAVJxv4C2FHqmnO4jxll+R6wC7XD/T/82UMt5hMLGHJkr8znuoH
-         rtDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=zxZ+N+WEssbmNvYM0Ih4yXgwxlPsTEXMjiSj67uczQI=;
-        b=FDnM5tP923QgBBwFHPHXL8kyQO1Hu86WZeqg9l8s/HDLVukXn64FlvDQN/hGNKK7Uz
-         26cU0o5AszY4S2PFYcmeEyM0JpY8h0bik8sMbGM+l/+JebLYb+BNg4qmqVeTDIDqKPdD
-         y84VOpEBtj3Hpza+fvmaEpcXtVf7Wj2BICdNf+xzJwNhHh14TVJEEl25/DL7Bwt3j0sq
-         g01t2ZzqfmihfgZm36XBC20fMvEjDpZWN4IFBGO3eyu4Ni+t8fSsEQ405l/TcWrse+7U
-         ETR4wQniXhc0gesSVT9JOoWjbpDjZjgpNFB0FMO6yMiO830Q/NCELQI8p1hgQeuA2+Q1
-         U3iA==
-X-Gm-Message-State: AGi0PuaJI+pqkx3UjjS0Tuc3aoUQyu+EhlsuCHQuQcpGWvaNNFRpzzgu
-        LaJvWJh3dpasCo/71Yu4cUmc1KRj3dxiqQ==
-X-Google-Smtp-Source: APiQypLhTM7RPmcqJ6FJZYoAq3I/OsjlHZfp2aDYHvVekpSby3Pmy6nro0GePcz2aOfAuBy7Qx2q5g==
-X-Received: by 2002:a17:902:c282:: with SMTP id i2mr22629215pld.20.1587988730802;
-        Mon, 27 Apr 2020 04:58:50 -0700 (PDT)
-Received: from blackclown ([171.61.45.154])
-        by smtp.gmail.com with ESMTPSA id x132sm4992788pfc.57.2020.04.27.04.58.47
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 27 Apr 2020 04:58:50 -0700 (PDT)
-Date:   Mon, 27 Apr 2020 17:28:27 +0530
-From:   Suraj Upadhyay <usuraj35@gmail.com>
-To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
-Cc:     gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, devel@driverdev.osuosl.org
-Subject: Re: [PATCH v4] staging: wfx: cleanup long lines in data_tx.c
-Message-ID: <20200427115827.GA3214@blackclown>
-References: <20200425113234.GA14492@blackclown>
- <8518467.FNpd3NTrYF@pc-42>
+        Mon, 27 Apr 2020 08:00:09 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03RBxt0v019547;
+        Mon, 27 Apr 2020 06:59:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1587988795;
+        bh=RwPjkU/TyfREYNsw2qSGE+qMLI6pHP6PnOkaxRCDa30=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=Nc8/sb21qBfvB8mhQ3Xchs+GxOJYcyZFYIWsUVCGRYo7xkpQ5UggxmXpQ0U18mbEo
+         352rdyibSt2YgZf/8PV1rmN8ZNB37FRqqwOvvhq4c/KS3hvLgBUxTtCWowXhXaO3kN
+         vvBWDEJhstuSUbxj8bBThSn5RQ6CdW1gg4pjoEmk=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03RBxtKS094040;
+        Mon, 27 Apr 2020 06:59:55 -0500
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 27
+ Apr 2020 06:59:55 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Mon, 27 Apr 2020 06:59:55 -0500
+Received: from [10.250.151.94] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03RBxppD012048;
+        Mon, 27 Apr 2020 06:59:52 -0500
+Subject: Re: [PATCH -next] PCI: dwc: pci-dra7xx: Fix potential NULL
+ dereference in dra7xx_pcie_probe()
+To:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+CC:     <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <20200427111044.162618-1-weiyongjun1@huawei.com>
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+Message-ID: <cad871c8-0915-9dda-2c61-30dfb5504d23@ti.com>
+Date:   Mon, 27 Apr 2020 17:29:50 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="vtzGhvizbBRQ85DL"
-Content-Disposition: inline
-In-Reply-To: <8518467.FNpd3NTrYF@pc-42>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200427111044.162618-1-weiyongjun1@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hi,
 
---vtzGhvizbBRQ85DL
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 27/04/20 4:40 pm, Wei Yongjun wrote:
+> platform_get_resource() may fail and return NULL, so we should
+> better check it's return value to avoid a NULL pointer dereference
+> a bit later in the code.
+> 
+> This is detected by Coccinelle semantic patch.
+> 
+> @@
+> expression pdev, res, n, t, e, e1, e2;
+> @@
+> 
+> res = \(platform_get_resource\|platform_get_resource_byname\)(pdev, t, n);
+> + if (!res)
+> +   return -EINVAL;
+> ... when != res == NULL
+> e = devm_ioremap(e1, res->start, e2);
+> 
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  drivers/pci/controller/dwc/pci-dra7xx.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+> index 3b0e58f2de58..7a3d12f7e7d9 100644
+> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
+> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+> @@ -878,6 +878,9 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
+>  	}
+>  
+>  	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "ti_conf");
+> +	if (!res)
+> +		return -EINVAL;
+> +
+>  	base = devm_ioremap(dev, res->start, resource_size(res));
 
-On Mon, Apr 27, 2020 at 11:50:23AM +0000, Jerome Pouiller wrote:
-> On Saturday 25 April 2020 13:32:34 CEST Suraj Upadhyay wrote:
-> > Break lines with length over 80 characters to
-> > conform to the linux coding style and refactor
-> > wherever necessary.
-> >=20
-> > Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
-> > ---
-> >=20
-> > Changes in v4:
-> > 	- Added a space after declaration in wfx_get_hw_rate().
-> > 	- A checkpatch warning for this commit is retained at line 75,
-> > 	  to maintain uniformity in function declarations. (Reviewer
-> > 	  jerome suggested).
-> >=20
-> > Changes in v3:
-> >         - Changed the temporary variable name for the memzcmp statement
-> >           to is_used. (as suggested).
-> >         - Added a temporary ieee80211_supported_band variable to address
-> >           the problem in wfx_get_hw_rate() more efficiently. (not
-> >           suggested, but still).
-> >=20
-> > Changes in v2:
-> >         - Introduced a temporary variable for the memzcmp statement.
-> >         - Addressed the checkpatch problem with wfx_get_hw_rate().
-> >         - Restored the function definition of wfx_tx_get_tx_parms
-> >           as suggested by the reviewer.
-> >         - Added suggested changes for req->packet_id statement.
-> >=20
-> >  drivers/staging/wfx/data_tx.c | 40 +++++++++++++++++++++++------------
-> >  1 file changed, 26 insertions(+), 14 deletions(-)
->=20
-> This patch does not contain the suggestions from Dan. However, it is
-> sufficient from my personal point of view.
+I don't see why this should be devm_ioremap(). It should also have been
+devm_ioremap_resource() which does the NULL check.
 
-Yes, I considered them but thought it would be bad to introduce a new
-variable at every iteration of the for-loop.
+Alternately, how about using devm_platform_ioremap_resource_byname()?
 
-> Reviewed-by: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
-
-Thanks Jerome, This was my first patch to the linux kernel.
-
->=20
-> --=20
-> J=E9r=F4me Pouiller
->=20
-
-Regards,
-
-Suraj Upadhyay.
-
---vtzGhvizbBRQ85DL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE7AbCa0kOsMJ4cx0j+gRsbIfe744FAl6myNsACgkQ+gRsbIfe
-746u7w/+PohUp9jD+xMXnW5e8Q49hUyz1vbxWWtc0XF6GlWb8Ki/KOY1kcU6+/Um
-ipSXRDD0hcN8sKalisIVY0PWOAnRerg1GUa7mQWZYw58EGNSDEK4oiiKBXBOtEd+
-P+p4xXjq5tdNXN767/fK7Qy59tWDvT3Wz5yIudvV5EEq68ZTcCFwt15Q65yhQSCU
-vpsqwTTz5ztnYPNLb0aBKOgnvM4W5QHNhOhtBh9QRYeh1EDHPTAMuel38EFCE3tr
-B74zOcqgLCGj8nE6pDdXfHx2remYfO7AKfeDk9w9T3Uxo31wwlUEGS8JzX2VaArp
-xPJfmcPdx0GIjwvSha9XzUpThD4beXGtETTk+Qmfc9mdC9Vsy9ORA6TVSMglvtCW
-VZPT+sQo7M0m7PNU/DdAZiGd9z+/lonv5uP7YgmohkSUiRM/c2e8D3qXcd68tlxJ
-LGSm0kHRPdib6QjzsUdmIyGgm12dV1PO1Sc4Vgfa9G/Mlpg9x0Z1Pjf1FZbZEMra
-6rrftGxAiOnr7U3gjGhdBruNqfrxvHGIy3712YFqKoT7Yi5haRGg0J8SFTzb+bEy
-iEqNsqaxTLn2UDMg54W9qcuXu/U/zDl5pniYoELjANVrB4JuCRUaLpb2f1vp4Gy2
-dFBjsbrCAJ3r808r6AzAOSiJCTJhdg6wIsj9E4c6RVUfPY7JbMI=
-=eJ/o
------END PGP SIGNATURE-----
-
---vtzGhvizbBRQ85DL--
+>  	if (!base)
+>  		return -ENOMEM;
+> 
+> 
+> 
+> 
+> 

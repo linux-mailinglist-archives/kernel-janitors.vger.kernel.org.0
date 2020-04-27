@@ -2,59 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49FDB1BAD89
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 21:08:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC0591BAF39
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 22:21:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726672AbgD0TIC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 15:08:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49860 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726315AbgD0TIC (ORCPT
+        id S1726822AbgD0UVZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 16:21:25 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:45940 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726364AbgD0UVZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 15:08:02 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A72FC0610D5;
-        Mon, 27 Apr 2020 12:08:02 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id A35C015D59E0D;
-        Mon, 27 Apr 2020 12:08:01 -0700 (PDT)
-Date:   Mon, 27 Apr 2020 12:08:00 -0700 (PDT)
-Message-Id: <20200427.120800.2048743248471906857.davem@davemloft.net>
-To:     christophe.jaillet@wanadoo.fr
-Cc:     fthain@telegraphics.com.au, tsbogend@alpha.franken.de,
-        jgarzik@pobox.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] net/sonic: Fix a resource leak in an error handling
- path in 'jazz_sonic_probe()'
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200427061803.53857-1-christophe.jaillet@wanadoo.fr>
-References: <20200427061803.53857-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 27 Apr 2020 12:08:01 -0700 (PDT)
+        Mon, 27 Apr 2020 16:21:25 -0400
+Received: from localhost.localdomain ([93.22.148.32])
+        by mwinf5d25 with ME
+        id XwML2200L0iASfR03wMMSk; Mon, 27 Apr 2020 22:21:21 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 27 Apr 2020 22:21:21 +0200
+X-ME-IP: 93.22.148.32
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     balbi@kernel.org, gregkh@linuxfoundation.org
+Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] usb: phy: twl6030-usb: Fix a resource leak in an error handling path in 'twl6030_usb_probe()'
+Date:   Mon, 27 Apr 2020 22:21:16 +0200
+Message-Id: <20200427202116.94380-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Mon, 27 Apr 2020 08:18:03 +0200
+A call to 'regulator_get()' is hidden in 'twl6030_usb_ldo_init()'. A
+corresponding put must be performed in the error handling path, as
+already done in the remove function.
 
-> A call to 'dma_alloc_coherent()' is hidden in 'sonic_alloc_descriptors()',
-> called from 'sonic_probe1()'.
-> 
-> This is correctly freed in the remove function, but not in the error
-> handling path of the probe function.
-> Fix it and add the missing 'dma_free_coherent()' call.
-> 
-> While at it, rename a label in order to be slightly more informative.
-> 
-> Fixes: efcce839360f ("[PATCH] macsonic/jazzsonic network drivers update")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+While at it, also move a 'free_irq()' call in the error handling path in
+order to be consistent.
 
-Applied, thanks.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Maybe adding a 'twl6030_usb_ldo_uninit()' function would be more explicit.
+---
+ drivers/usb/phy/phy-twl6030-usb.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/usb/phy/phy-twl6030-usb.c b/drivers/usb/phy/phy-twl6030-usb.c
+index bfebf1f2e991..9a7e655d5280 100644
+--- a/drivers/usb/phy/phy-twl6030-usb.c
++++ b/drivers/usb/phy/phy-twl6030-usb.c
+@@ -377,7 +377,7 @@ static int twl6030_usb_probe(struct platform_device *pdev)
+ 	if (status < 0) {
+ 		dev_err(&pdev->dev, "can't get IRQ %d, err %d\n",
+ 			twl->irq1, status);
+-		return status;
++		goto err_put_regulator;
+ 	}
+ 
+ 	status = request_threaded_irq(twl->irq2, NULL, twl6030_usb_irq,
+@@ -386,8 +386,7 @@ static int twl6030_usb_probe(struct platform_device *pdev)
+ 	if (status < 0) {
+ 		dev_err(&pdev->dev, "can't get IRQ %d, err %d\n",
+ 			twl->irq2, status);
+-		free_irq(twl->irq1, twl);
+-		return status;
++		goto err_free_irq1;
+ 	}
+ 
+ 	twl->asleep = 0;
+@@ -396,6 +395,13 @@ static int twl6030_usb_probe(struct platform_device *pdev)
+ 	dev_info(&pdev->dev, "Initialized TWL6030 USB module\n");
+ 
+ 	return 0;
++
++err_free_irq1:
++	free_irq(twl->irq1, twl);
++err_put_regulator:
++	regulator_put(twl->usb3v3);
++
++	return status;
+ }
+ 
+ static int twl6030_usb_remove(struct platform_device *pdev)
+-- 
+2.25.1
+

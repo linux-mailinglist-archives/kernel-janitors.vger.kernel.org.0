@@ -2,90 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC0591BAF39
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 22:21:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07E251BAF41
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 22:21:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726822AbgD0UVZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 16:21:25 -0400
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:45940 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726364AbgD0UVZ (ORCPT
+        id S1726954AbgD0UVn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 16:21:43 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:35762 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726937AbgD0UVn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 16:21:25 -0400
-Received: from localhost.localdomain ([93.22.148.32])
-        by mwinf5d25 with ME
-        id XwML2200L0iASfR03wMMSk; Mon, 27 Apr 2020 22:21:21 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 27 Apr 2020 22:21:21 +0200
-X-ME-IP: 93.22.148.32
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     balbi@kernel.org, gregkh@linuxfoundation.org
-Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] usb: phy: twl6030-usb: Fix a resource leak in an error handling path in 'twl6030_usb_probe()'
-Date:   Mon, 27 Apr 2020 22:21:16 +0200
-Message-Id: <20200427202116.94380-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Mon, 27 Apr 2020 16:21:43 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03RKJOMt141290;
+        Mon, 27 Apr 2020 20:21:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=KvoLYPKdd283izgHcgAFyVVKUQcRl8gnYCXvI/MjoeQ=;
+ b=yeqMK6z8xlcuHiUKdz0/v2Lw+CcTa0mser5C29+zrLCIzhrjgjg0RkMzMSPhLAHFrcHj
+ sv49PpUAbdsKvWA73K3DHNq53vUA6Kdm/5nNzNm/X6nCGfBK949WRDS2v7c1SFPniUNB
+ zmlKNSFlQoojdRP6bLf6uMF3FEFYuD0ax9jvGXY9Jy7QRlIASUvm1GuPjP6GNqyYLoDP
+ zUUanso04iIjW4V12mgpyAiYf+ABu2hNT60aFAyAGogz5dkN+g9v9BkriFjOWJfN9jjs
+ ggfY7ZQ7HPjPpQHXZtpjeEVuwTUX11Dlz5YtUPF7y+335NeRis4irIgPVDeby+kwcXZx jQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 30p2p01a2a-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 27 Apr 2020 20:21:36 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03RKBpff060248;
+        Mon, 27 Apr 2020 20:21:35 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 30mxwwwfxd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 27 Apr 2020 20:21:35 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 03RKLYNX004218;
+        Mon, 27 Apr 2020 20:21:34 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 27 Apr 2020 13:21:34 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     YueHaibing <yuehaibing@huawei.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        Anil Gurumurthy <anil.gurumurthy@qlogic.com>,
+        Sudarsana Kalluru <sudarsana.kalluru@qlogic.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        kernel-janitors@vger.kernel.org, linux-scsi@vger.kernel.org
+Subject: Re: [PATCH -next] scsi: bfa: Remove set but not used variable 'fchs'
+Date:   Mon, 27 Apr 2020 16:21:23 -0400
+Message-Id: <158777063305.4076.8196764911288464111.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200418071057.96699-1-yuehaibing@huawei.com>
+References: <20200418071057.96699-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9604 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 bulkscore=0
+ suspectscore=0 mlxlogscore=999 phishscore=0 malwarescore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004270164
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9604 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 clxscore=1015
+ bulkscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 malwarescore=0
+ mlxscore=0 suspectscore=0 mlxlogscore=999 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004270164
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-A call to 'regulator_get()' is hidden in 'twl6030_usb_ldo_init()'. A
-corresponding put must be performed in the error handling path, as
-already done in the remove function.
+On Sat, 18 Apr 2020 07:10:57 +0000, YueHaibing wrote:
 
-While at it, also move a 'free_irq()' call in the error handling path in
-order to be consistent.
+> Fixes gcc '-Wunused-but-set-variable' warning:
+> 
+> drivers/scsi/bfa/bfa_svc.c: In function 'uf_recv':
+> drivers/scsi/bfa/bfa_svc.c:5520:17: warning:
+>  variable 'fchs' set but not used [-Wunused-but-set-variable]
+>   struct fchs_s *fchs;
+>                  ^
+> 
+> [...]
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Maybe adding a 'twl6030_usb_ldo_uninit()' function would be more explicit.
----
- drivers/usb/phy/phy-twl6030-usb.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+Applied to 5.8/scsi-queue, thanks!
 
-diff --git a/drivers/usb/phy/phy-twl6030-usb.c b/drivers/usb/phy/phy-twl6030-usb.c
-index bfebf1f2e991..9a7e655d5280 100644
---- a/drivers/usb/phy/phy-twl6030-usb.c
-+++ b/drivers/usb/phy/phy-twl6030-usb.c
-@@ -377,7 +377,7 @@ static int twl6030_usb_probe(struct platform_device *pdev)
- 	if (status < 0) {
- 		dev_err(&pdev->dev, "can't get IRQ %d, err %d\n",
- 			twl->irq1, status);
--		return status;
-+		goto err_put_regulator;
- 	}
- 
- 	status = request_threaded_irq(twl->irq2, NULL, twl6030_usb_irq,
-@@ -386,8 +386,7 @@ static int twl6030_usb_probe(struct platform_device *pdev)
- 	if (status < 0) {
- 		dev_err(&pdev->dev, "can't get IRQ %d, err %d\n",
- 			twl->irq2, status);
--		free_irq(twl->irq1, twl);
--		return status;
-+		goto err_free_irq1;
- 	}
- 
- 	twl->asleep = 0;
-@@ -396,6 +395,13 @@ static int twl6030_usb_probe(struct platform_device *pdev)
- 	dev_info(&pdev->dev, "Initialized TWL6030 USB module\n");
- 
- 	return 0;
-+
-+err_free_irq1:
-+	free_irq(twl->irq1, twl);
-+err_put_regulator:
-+	regulator_put(twl->usb3v3);
-+
-+	return status;
- }
- 
- static int twl6030_usb_remove(struct platform_device *pdev)
+[1/1] scsi: bfa: Remove set but not used variable 'fchs'
+      https://git.kernel.org/mkp/scsi/c/0745c834f793
+
 -- 
-2.25.1
-
+Martin K. Petersen	Oracle Linux Engineering

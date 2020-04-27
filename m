@@ -2,53 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5BE91BAF7C
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 22:28:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19D901BB070
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 23:22:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726548AbgD0U23 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 16:28:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34432 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726486AbgD0U23 (ORCPT
+        id S1726262AbgD0VW4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 17:22:56 -0400
+Received: from www62.your-server.de ([213.133.104.62]:47816 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726030AbgD0VW4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 16:28:29 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91E67C0610D5;
-        Mon, 27 Apr 2020 13:28:29 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 0067F15D6F68C;
-        Mon, 27 Apr 2020 13:28:28 -0700 (PDT)
-Date:   Mon, 27 Apr 2020 13:28:27 -0700 (PDT)
-Message-Id: <20200427.132827.1256740159726999330.davem@davemloft.net>
-To:     weiyongjun1@huawei.com
-Cc:     grygorii.strashko@ti.com, netdev@vger.kernel.org,
+        Mon, 27 Apr 2020 17:22:56 -0400
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1jTBDF-00027r-8l; Mon, 27 Apr 2020 23:22:49 +0200
+Received: from [178.195.186.98] (helo=pc-9.home)
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1jTBDE-000NWy-RJ; Mon, 27 Apr 2020 23:22:48 +0200
+Subject: Re: [PATCH bpf-next v3 2/2] libbpf: Return err if bpf_object__load
+ failed
+To:     Mao Wenan <maowenan@huawei.com>, ast@kernel.org, kafai@fb.com,
+        songliubraving@fb.com, yhs@fb.com, andriin@fb.com,
+        john.fastabend@gmail.com, kpsingh@chromium.org,
+        andrii.nakryiko@gmail.com, dan.carpenter@oracle.com
+Cc:     netdev@vger.kernel.org, bpf@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next] net: ethernet: ti: fix return value check in
- k3_cppi_desc_pool_create_name()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200427093343.157119-1-weiyongjun1@huawei.com>
-References: <20200427093343.157119-1-weiyongjun1@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+References: <20200426063635.130680-1-maowenan@huawei.com>
+ <20200426063635.130680-3-maowenan@huawei.com>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <5c730cda-8177-3049-51c5-65e2f22958c5@iogearbox.net>
+Date:   Mon, 27 Apr 2020 23:22:48 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <20200426063635.130680-3-maowenan@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 27 Apr 2020 13:28:29 -0700 (PDT)
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.102.2/25795/Mon Apr 27 14:00:10 2020)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
-Date: Mon, 27 Apr 2020 09:33:43 +0000
-
-> In case of error, the function gen_pool_create() returns NULL pointer
-> not ERR_PTR(). The IS_ERR() test in the return value check should be
-> replaced with NULL test.
+On 4/26/20 8:36 AM, Mao Wenan wrote:
+> bpf_object__load() has various return code, when it failed to load
+> object, it must return err instead of -EINVAL.
 > 
-> Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> Acked-by: Andrii Nakryiko <andriin@fb.com>
 
-Applied.
+Applied, thanks!

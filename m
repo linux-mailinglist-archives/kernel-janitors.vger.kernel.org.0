@@ -2,86 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 779971BB0A2
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 23:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 057BB1BB0D8
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 23:59:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726284AbgD0VhP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 17:37:15 -0400
-Received: from www62.your-server.de ([213.133.104.62]:50032 "EHLO
-        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726194AbgD0VhP (ORCPT
+        id S1726251AbgD0V72 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 17:59:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48642 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726194AbgD0V71 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 17:37:15 -0400
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1jTBR3-00037V-8y; Mon, 27 Apr 2020 23:37:05 +0200
-Received: from [178.195.186.98] (helo=pc-9.home)
-        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1jTBR2-000H1P-R1; Mon, 27 Apr 2020 23:37:04 +0200
-Subject: Re: [PATCH bpf-next v3 1/2] bpf: Change error code when ops is NULL
-To:     Mao Wenan <maowenan@huawei.com>, ast@kernel.org, kafai@fb.com,
-        songliubraving@fb.com, yhs@fb.com, andriin@fb.com,
-        john.fastabend@gmail.com, kpsingh@chromium.org,
-        andrii.nakryiko@gmail.com, dan.carpenter@oracle.com
-Cc:     netdev@vger.kernel.org, bpf@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20200426063635.130680-1-maowenan@huawei.com>
- <20200426063635.130680-2-maowenan@huawei.com>
-From:   Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <6f975e8c-34f5-4bcb-d99d-d1977866bedf@iogearbox.net>
-Date:   Mon, 27 Apr 2020 23:37:03 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        Mon, 27 Apr 2020 17:59:27 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71257C03C1A7
+        for <kernel-janitors@vger.kernel.org>; Mon, 27 Apr 2020 14:59:27 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id j20so14794327edj.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 27 Apr 2020 14:59:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=KXsqXqLa3MNc3GseZAHL6+hrzDA6tgyahvdXcv6nuC0=;
+        b=DfNsTuXejFM4GpdLngZ5Hng3iLMEOmw5AwCqh67++iv5lrN4p7mEwxK9X8c6M5PLNj
+         iXbi579Rs0UuusLh+/qG92t2w7+cC4scewai7HDftHnRMvZIQKkxr1MkuqgjtEjlfpgw
+         7MngMV8YM5JffLfokIPR0hl1VTQfgZ4V5kdLF8HEdB+nmNwASuOTjm53P5xzL+4G6w3p
+         3FZdIm3XNqmVC0z+RSB5hCMSTliW4f8Md5StWC2EHPyVRx1NEkaGZwKAS7lgMDJhsnn/
+         3MilaCQLcgRrHf9zcijHP9mD2eWnoEfC56SjjjNZn4mNET3vVMAdDTyw8+WwA4RsJktO
+         QBmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KXsqXqLa3MNc3GseZAHL6+hrzDA6tgyahvdXcv6nuC0=;
+        b=XUKYG+UfMj2uFuuWNo3WGw2MrenciUOkAeMgzsxv5f+30MMmooTBwfHDwlOsQigium
+         azVQysYDFzF5te/J5eDBatcOYGudQqkX6uwZFTwWqhycThGd1a/Tz/lYHkZM2JzBCiuE
+         Ay+cW574WBF+KRYW3V82o8WAFHPeLyhSXum+hjAVaWyWlWvghTavxZhHc2OeqLMrdMx8
+         DwIBu24s+AGOSoPSAlMQaRH5ivR2P8rn8rKEast7wJPTHsCsALc7Y9rs/AOkJn93N9kL
+         MPDfI4x3YdtsKFqJABlfyj+rO53HWfI4EolS3NvWbKF3Fg0elVhfQV1UYdu1RQEOpAig
+         u8zA==
+X-Gm-Message-State: AGi0PuZ5yR+zOyGXrgkA9M3iBTdppDYlChSW7asFJGdk55vpbHH6l39h
+        mXIe0XbXfChU9Xics//aZMNv/hEKbbeFIBt+k6aO
+X-Google-Smtp-Source: APiQypL5eq/i30h0N49yhKX69dSyitlFFWBEuwUbGs/BB8DWlk7mSCwyYWLIumXrF+U8i72s44CbscVcJbUdGkIvmu0=
+X-Received: by 2002:a05:6402:1215:: with SMTP id c21mr21043564edw.128.1588024766012;
+ Mon, 27 Apr 2020 14:59:26 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200426063635.130680-2-maowenan@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.102.2/25795/Mon Apr 27 14:00:10 2020)
+References: <20200427124935.130432-1-weiyongjun1@huawei.com>
+In-Reply-To: <20200427124935.130432-1-weiyongjun1@huawei.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Mon, 27 Apr 2020 17:59:14 -0400
+Message-ID: <CAHC9VhQdoGgoQGio2_ezjDZe1-AiRAMmQ7Q9Tp8AVEYt2kkjMg@mail.gmail.com>
+Subject: Re: [PATCH -next] selinux: fix error return code in cond_read_list()
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>,
+        Ondrej Mosnacek <omosnace@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>, selinux@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 4/26/20 8:36 AM, Mao Wenan wrote:
-> There is one error printed when use BPF_MAP_TYPE_SOCKMAP to create map:
-> libbpf: failed to create map (name: 'sock_map'): Invalid argument(-22)
-> 
-> This is because CONFIG_BPF_STREAM_PARSER is not set, and
-> bpf_map_types[type] return invalid ops. It is not clear to show the
-> cause of config missing with return code -EINVAL.
-> 
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+On Mon, Apr 27, 2020 at 8:48 AM Wei Yongjun <weiyongjun1@huawei.com> wrote:
+>
+> Fix to return negative error code -ENOMEM from the error handling
+> case instead of 0, as done elsewhere in this function.
+>
+> Fixes: 60abd3181db2 ("selinux: convert cond_list to array")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 > ---
->   kernel/bpf/syscall.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-> index d85f37239540..8ae78c98d91e 100644
-> --- a/kernel/bpf/syscall.c
-> +++ b/kernel/bpf/syscall.c
-> @@ -113,7 +113,7 @@ static struct bpf_map *find_and_alloc_map(union bpf_attr *attr)
->   	type = array_index_nospec(type, ARRAY_SIZE(bpf_map_types));
->   	ops = bpf_map_types[type];
->   	if (!ops)
-> -		return ERR_PTR(-EINVAL);
-> +		return ERR_PTR(-EOPNOTSUPP);
->   
->   	if (ops->map_alloc_check) {
->   		err = ops->map_alloc_check(attr);
-> 
+>  security/selinux/ss/conditional.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Unless I'm missing the use-case, why not using bpftool's feature probe to check for
-availability (alternatively via 'feature probe kernel macros' if you need this into
-inside the BPF prog for ifdef etc)?
+Looks good to me too, thanks for fixing this.  I've merge this into
+selinux/stable-5.7 and I'll send it up to Linus later this week
+assuming testing goes well.
 
-   bpftool feature probe kernel | grep sockmap
-   eBPF map_type sockmap is NOT available
+> diff --git a/security/selinux/ss/conditional.c b/security/selinux/ss/conditional.c
+> index 939a74fd8fb4..da94a1b4bfda 100644
+> --- a/security/selinux/ss/conditional.c
+> +++ b/security/selinux/ss/conditional.c
+> @@ -429,7 +429,7 @@ int cond_read_list(struct policydb *p, void *fp)
+>
+>         p->cond_list = kcalloc(len, sizeof(*p->cond_list), GFP_KERNEL);
+>         if (!p->cond_list)
+> -               return rc;
+> +               return -ENOMEM;
+>
+>         rc = avtab_alloc(&(p->te_cond_avtab), p->te_avtab.nel);
+>         if (rc)
+>
 
-Thanks,
-Daniel
+-- 
+paul moore
+www.paul-moore.com

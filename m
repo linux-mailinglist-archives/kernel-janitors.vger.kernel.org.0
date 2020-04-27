@@ -2,52 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF3561BA9CC
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 18:08:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73B801BA9E2
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 18:14:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728076AbgD0QIl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 12:08:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39608 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726539AbgD0QIl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 12:08:41 -0400
-Received: from localhost (unknown [171.76.79.70])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EBAAE205C9;
-        Mon, 27 Apr 2020 16:08:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588003720;
-        bh=Fht19I4+eezxy5GovEcjy5M55vqSuUXkK9sZ7M4yS2M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Wsy7jmWO9YhGIFy8m+h/Pj5RwoL2HpGQYSA2W2RNN6F4+zdNlshGddo6y/wM+ZGsm
-         jRPfuiim4i5JJbZcWsyBAv+Fdh6HgVvjAkXUxWNtklBjxLKjV/RyEOfHxePjR3Z+Vt
-         Bq28GQ86+r0qPVFxAS41PTQ0cdJ4K7m45IosxJm4=
-Date:   Mon, 27 Apr 2020 21:38:36 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     okaya@kernel.org, agross@kernel.org, bjorn.andersson@linaro.org,
-        dan.j.williams@intel.com, linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] dmaengine: qcom_hidma: Simplify error handling path in
- hidma_probe
-Message-ID: <20200427160836.GI56386@vkoul-mobl.Dlink>
-References: <20200427111043.70218-1-christophe.jaillet@wanadoo.fr>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200427111043.70218-1-christophe.jaillet@wanadoo.fr>
+        id S1728156AbgD0QOm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 12:14:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50676 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725919AbgD0QOm (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Apr 2020 12:14:42 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 256E1C0610D5;
+        Mon, 27 Apr 2020 09:14:42 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 336BE15D45B90;
+        Mon, 27 Apr 2020 09:14:39 -0700 (PDT)
+Date:   Mon, 27 Apr 2020 09:14:38 -0700 (PDT)
+Message-Id: <20200427.091438.1070286832296952889.davem@davemloft.net>
+To:     gregkh@linuxfoundation.org
+Cc:     weiyongjun1@huawei.com, jslaby@suse.com,
+        sparclinux@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] sparc64: vcc: Fix error return code in
+ vcc_probe()
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200427122747.GA2781212@kroah.com>
+References: <20200427122415.47416-1-weiyongjun1@huawei.com>
+        <20200427122747.GA2781212@kroah.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 27 Apr 2020 09:14:39 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 27-04-20, 13:10, Christophe JAILLET wrote:
-> There is no need to call 'hidma_debug_uninit()' in the error handling
-> path. 'hidma_debug_init()' has not been called yet.
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Date: Mon, 27 Apr 2020 14:27:47 +0200
 
-Applied, thanks
+> On Mon, Apr 27, 2020 at 12:24:15PM +0000, Wei Yongjun wrote:
+>> Fix to return negative error code -ENOMEM from the error handling
+>> case instead of 0, as done elsewhere in this function.
+>> 
+>> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+>> ---
+>>  drivers/tty/vcc.c | 1 +
+>>  1 file changed, 1 insertion(+)
+> 
+> Why is sparc64 in your subject line?
 
--- 
-~Vinod
+It's a sparc64 hypervisor console driver.

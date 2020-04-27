@@ -2,65 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE2B91B9FF2
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 11:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EFDA1BA00C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 11:39:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726900AbgD0Jcf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 05:32:35 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:52410 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726003AbgD0Jce (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 05:32:34 -0400
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 3B16A19B022709CB7FA2;
-        Mon, 27 Apr 2020 17:32:32 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.487.0; Mon, 27 Apr 2020 17:32:22 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     "David S . Miller" <davem@davemloft.net>,
-        Grygorii Strashko <grygorii.strashko@ti.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <netdev@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net-next] net: ethernet: ti: fix return value check in k3_cppi_desc_pool_create_name()
-Date:   Mon, 27 Apr 2020 09:33:43 +0000
-Message-ID: <20200427093343.157119-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726003AbgD0JjG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 05:39:06 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:14334 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726349AbgD0JjF (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Apr 2020 05:39:05 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1587980345; h=Content-Type: MIME-Version: Message-ID: Date:
+ References: In-Reply-To: Subject: Cc: To: From: Sender;
+ bh=fUyyyvZY5erFWNghFuz6u1lkeSrntr/X0HIwG5v1vAY=; b=dKv3MKCvrdIpXxFcSOS42HFU8RDES3YdUjoFtpLI5lkvkZ+F8JDfC/ljaTIAF9re7yXt0/vG
+ u8JQZXRIvY0PvJJuG+wvy6XT2Q2bbVzEYL65mSw9ReXbWgx3vAky3yiANL8kgcOtpY4mHEOH
+ pLEni3tn9Ct0PnexxWz1FA4yPGU=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5ea6a820.7f730f8c8228-smtp-out-n03;
+ Mon, 27 Apr 2020 09:38:40 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 2DBE6C432C2; Mon, 27 Apr 2020 09:38:40 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7D714C433D2;
+        Mon, 27 Apr 2020 09:38:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7D714C433D2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Sumit Semwal <sumit.semwal@linaro.org>,
+        kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        ath11k@lists.infradead.org, linux-media@vger.kernel.org
+Subject: Re: [PATCH net-next] ath11k: use GFP_ATOMIC under spin lock
+In-Reply-To: <20200427092417.56236-1-weiyongjun1@huawei.com> (Wei Yongjun's
+        message of "Mon, 27 Apr 2020 09:24:17 +0000")
+References: <20200427092417.56236-1-weiyongjun1@huawei.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Date:   Mon, 27 Apr 2020 12:38:35 +0300
+Message-ID: <877dy1gtes.fsf@kamboji.qca.qualcomm.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, the function gen_pool_create() returns NULL pointer
-not ERR_PTR(). The IS_ERR() test in the return value check should be
-replaced with NULL test.
+Wei Yongjun <weiyongjun1@huawei.com> writes:
 
-Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/net/ethernet/ti/k3-cppi-desc-pool.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> A spin lock is taken here so we should use GFP_ATOMIC.
+>
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 
-diff --git a/drivers/net/ethernet/ti/k3-cppi-desc-pool.c b/drivers/net/ethernet/ti/k3-cppi-desc-pool.c
-index ad7cfc1316ce..38cc12f9f133 100644
---- a/drivers/net/ethernet/ti/k3-cppi-desc-pool.c
-+++ b/drivers/net/ethernet/ti/k3-cppi-desc-pool.c
-@@ -64,8 +64,8 @@ k3_cppi_desc_pool_create_name(struct device *dev, size_t size,
- 		return ERR_PTR(-ENOMEM);
- 
- 	pool->gen_pool = gen_pool_create(ilog2(pool->desc_size), -1);
--	if (IS_ERR(pool->gen_pool)) {
--		ret = PTR_ERR(pool->gen_pool);
-+	if (!pool->gen_pool) {
-+		ret = -ENOMEM;
- 		dev_err(pool->dev, "pool create failed %d\n", ret);
- 		kfree_const(pool_name);
- 		goto gen_pool_create_fail;
+Do note that ath11k patches go to my ath.git tree, not net-next. But no
+need to resend because of this.
 
-
-
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

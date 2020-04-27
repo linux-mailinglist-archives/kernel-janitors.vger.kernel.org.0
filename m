@@ -2,64 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61E341BABE9
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 20:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FDA01BAC17
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 20:14:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726250AbgD0SEb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 14:04:31 -0400
-Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:48070 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726208AbgD0SEb (ORCPT
+        id S1726228AbgD0SOa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 14:14:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41228 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725963AbgD0SOa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 14:04:31 -0400
-Received: from localhost.localdomain ([93.22.148.32])
-        by mwinf5d88 with ME
-        id Xu4R2200P0iASfR03u4S9E; Mon, 27 Apr 2020 20:04:29 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 27 Apr 2020 20:04:29 +0200
-X-ME-IP: 93.22.148.32
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     balbi@kernel.org, gregkh@linuxfoundation.org,
-        colin.king@canonical.com, stern@rowland.harvard.edu, arnd@arndb.de,
-        andrzej.p@samsung.com
-Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] usb: gadget: net2272: Fix a memory leak in an error handling path in 'net2272_plat_probe()'
-Date:   Mon, 27 Apr 2020 20:04:23 +0200
-Message-Id: <20200427180423.88514-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Mon, 27 Apr 2020 14:14:30 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DB15C0610D5;
+        Mon, 27 Apr 2020 11:14:30 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id E598915D53D4C;
+        Mon, 27 Apr 2020 11:14:28 -0700 (PDT)
+Date:   Mon, 27 Apr 2020 11:14:28 -0700 (PDT)
+Message-Id: <20200427.111428.371576843109032987.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: rtnetlink: remove redundant assignment to
+ variable err
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200425112814.137857-1-colin.king@canonical.com>
+References: <20200425112814.137857-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 27 Apr 2020 11:14:29 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'dev' is allocated in 'net2272_probe_init()'. It must be freed in the error
-handling path, as already done in the remove function (i.e.
-'net2272_plat_remove()')
+From: Colin King <colin.king@canonical.com>
+Date: Sat, 25 Apr 2020 12:28:14 +0100
 
-Fixes: 90fccb529d24 ("usb: gadget: Gadget directory cleanup - group UDC drivers")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/usb/gadget/udc/net2272.c | 2 ++
- 1 file changed, 2 insertions(+)
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable err is being initializeed with a value that is never read
+> and it is being updated later with a new value. The initialization
+> is redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-diff --git a/drivers/usb/gadget/udc/net2272.c b/drivers/usb/gadget/udc/net2272.c
-index a8273b589456..5af0fe9c61d7 100644
---- a/drivers/usb/gadget/udc/net2272.c
-+++ b/drivers/usb/gadget/udc/net2272.c
-@@ -2647,6 +2647,8 @@ net2272_plat_probe(struct platform_device *pdev)
-  err_req:
- 	release_mem_region(base, len);
-  err:
-+	kfree(dev);
-+
- 	return ret;
- }
- 
--- 
-2.25.1
-
+Applied, thanks.

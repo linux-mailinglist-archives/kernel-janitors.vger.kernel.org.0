@@ -2,28 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AFE41BA1EA
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 13:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83E071BA1EE
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 13:07:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726881AbgD0LG5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 07:06:57 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:53212 "EHLO huawei.com"
+        id S1726969AbgD0LHX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 07:07:23 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3351 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726485AbgD0LG5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 07:06:57 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 7C8E7C60C90427A39914;
-        Mon, 27 Apr 2020 19:06:54 +0800 (CST)
+        id S1726485AbgD0LHX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Apr 2020 07:07:23 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 958FB754D2A32F7543AA;
+        Mon, 27 Apr 2020 19:07:19 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.487.0; Mon, 27 Apr 2020 19:06:45 +0800
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.487.0; Mon, 27 Apr 2020 19:07:09 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Lee Jones <lee.jones@linaro.org>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH] mfd: wcd934x: Drop kfree for memory allocated with devm_kzalloc
-Date:   Mon, 27 Apr 2020 11:08:05 +0000
-Message-ID: <20200427110805.154447-1-weiyongjun1@huawei.com>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-gpio@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] gpio: mlxbf2: fix return value check in mlxbf2_gpio_get_lock_res()
+Date:   Mon, 27 Apr 2020 11:08:29 +0000
+Message-ID: <20200427110829.154785-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -35,26 +36,30 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-It's not necessary to free memory allocated with devm_kzalloc
-and using kfree leads to a double free.
+In case of error, the function devm_ioremap() returns NULL pointer not
+ERR_PTR(). The IS_ERR() test in the return value check should be
+replaced with NULL test.
 
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/mfd/wcd934x.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpio/gpio-mlxbf2.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/wcd934x.c b/drivers/mfd/wcd934x.c
-index 90341f3c6810..da910302d51a 100644
---- a/drivers/mfd/wcd934x.c
-+++ b/drivers/mfd/wcd934x.c
-@@ -280,7 +280,6 @@ static void wcd934x_slim_remove(struct slim_device *sdev)
+diff --git a/drivers/gpio/gpio-mlxbf2.c b/drivers/gpio/gpio-mlxbf2.c
+index 240b488609ac..fca6a50d9308 100644
+--- a/drivers/gpio/gpio-mlxbf2.c
++++ b/drivers/gpio/gpio-mlxbf2.c
+@@ -109,8 +109,8 @@ static int mlxbf2_gpio_get_lock_res(struct platform_device *pdev)
+ 	}
  
- 	regulator_bulk_disable(WCD934X_MAX_SUPPLY, ddata->supplies);
- 	mfd_remove_devices(&sdev->dev);
--	kfree(ddata);
- }
+ 	yu_arm_gpio_lock_param.io = devm_ioremap(dev, res->start, size);
+-	if (IS_ERR(yu_arm_gpio_lock_param.io))
+-		ret = PTR_ERR(yu_arm_gpio_lock_param.io);
++	if (!yu_arm_gpio_lock_param.io)
++		ret = -ENOMEM;
  
- static const struct slim_device_id wcd934x_slim_id[] = {
+ exit:
+ 	mutex_unlock(yu_arm_gpio_lock_param.lock);
 
 
 

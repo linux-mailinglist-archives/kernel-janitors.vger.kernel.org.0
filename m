@@ -2,63 +2,129 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46D2E1BA294
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 13:41:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C2261BA2EE
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 13:50:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727022AbgD0LlH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 07:41:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35978 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727010AbgD0LlG (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 07:41:06 -0400
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8391C061BD3
-        for <kernel-janitors@vger.kernel.org>; Mon, 27 Apr 2020 04:41:04 -0700 (PDT)
-Received: by mail-il1-x144.google.com with SMTP id w6so16356549ilg.1
-        for <kernel-janitors@vger.kernel.org>; Mon, 27 Apr 2020 04:41:04 -0700 (PDT)
+        id S1726769AbgD0Lu1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 07:50:27 -0400
+Received: from mail-bn8nam11on2046.outbound.protection.outlook.com ([40.107.236.46]:12076
+        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726260AbgD0Lu1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Apr 2020 07:50:27 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dbbtRDq8VWL2xwfcqib2LNVzOZesT04o7UAkOmwf06TF1orrLNWpuq7yCZYhmc9V7ttfDe1owPpdpmq08RTY+J61FBSQgHxLdaBTL08Lflw0Fa8ulvjZP1t/nN83Rg5+PUzBa0ncsEqnEUIKofNtUnSv7iC9sSHANsC4ACSsy89sQpN8tpMssZxCFQ6uZPRnUzMgObexTR36kIBJdOtrXK3EuGSuaZ2nJbJ/uneQASndT/yyCkg3Pf/leXM0QLf1DjSpv9MVvUE1U6w9XKByyGg3skKrOaJ23aquwnlA7VbOcybViGqDZOAJqvLV1VkQayI3Mu1tf2L8vBEkAgY7Mw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EGnLtOC1QmyFVeiI8JAoybh2bejftHJC2AzMZW0eDqA=;
+ b=L6FN123RPwqNyNji49Q/WkPsixMLJSt4DobrA+/kYYm3I1WnYwqREQ8BtxQi9awwBMmnbRd/qpxpiSZuwIxV3OGOZz1LT3Mxpj1pZ9S+/i7JD6Z31KPKXqL6FX8aQe9nTFceuT/HDuM3kpQPouoLphOml2T8HCBxFKuhGS7jFQknPZqGASZGoDtrc0nbl9uR4PGCtpUKAeai97Kf3BNUV66F/SUSQg3XM+wg0wi2dZgnA3RIzdAExMBRCff0/T0x5K+JHXASm1SykWzMu+JkroUpwwoWavpU8RyfA/ig2w2GpNqMW82h5h6YBwXIkKyd5CyPbsJfzYuLkTnkZY/sdg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
+ dkim=pass header.d=silabs.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
-        b=gyhur46zBd2J4ErWZN2Wr1DzSL5A/f491REyzMI+qUJS1AkX1EF6ZUwRsIb8lTPpnP
-         85H8T2+WRlSh9z1sJO++XnnANVDJvFxgZVEVXx/eBA4jP3qQppM1Jb/6b5xP/F+muDWA
-         HWXV+6PKTYqKOAlQgRrivuezDVfPTqsBdd+DjP9TqaHGrEgeg8dykE021P72kJXF2ZtM
-         GCizy19KrTP9/KKgjtQbfrDGLVo2xHVOQXsH5zBKemN2bQw4OsUzNGWijakKNIorJFPi
-         2BIRgbeIOLNd3XH1MAGR4z6gPurQOOqjl28dhdRpGgmYo1NgbEuKisKf8MfoVRLAFWp2
-         b/VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
-        b=G+mxpD/7ZBFC5re3Sk8nK2irS4h4I1xQA5o+s5g4nTaSDsaffWaIPYF2EFqgMXUIG7
-         BeONulAJr/tIktqgoPw336qoocHdFrHQcYuxFkWegEgB0C8v9fihzzKMc2BzJ2bo2uUo
-         3vC8KutQZ5FGPab19JmU/ydzkCEMTkCV1s0ayJ3djmU+quXTXDbI3xwx/EfKalDOwdG3
-         q6QeVDCAasKr42E0L50/yTsdFO8K0WoF3I+soKqTX6uOJe3z9Q1pw5wRcYgq237Tw87n
-         U22HYq2twtgtkuzaNk7U/Rzam+cHUvKICivFXeN117QNrF8CqkGrls1hbGCzq7OuZR9F
-         LWEw==
-X-Gm-Message-State: AGi0Pua+4VJQK1PrTRRWx2VwIwXLflqJd/NAgKBlBQbkEGcc1VI7B0br
-        Vkz+g4ry8advcuvjU4lQh95rhv8UrdgZtp8MnTQ=
-X-Google-Smtp-Source: APiQypIxXj+BykxkQlHPhrWRmh8cErkfIla/aWFxp/Z0rnfOAF+a0Opg2L3mFDxFmQOUGS1UxiN+VBD+iB4pdWuVWQg=
-X-Received: by 2002:a92:50f:: with SMTP id q15mr21210781ile.4.1587987664162;
- Mon, 27 Apr 2020 04:41:04 -0700 (PDT)
+ d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EGnLtOC1QmyFVeiI8JAoybh2bejftHJC2AzMZW0eDqA=;
+ b=dbjPJLZSgssisorQQxPmwlJNOr3uKwO+iY76sx1xeJf9z0wYEbtIZqalzRqyXXifM8EuPEaNJ0xgxrxoroCF7oPStL1syiGqXzxc251A+IlbLqYFQkbeGqd23Uw5/AWCx3FBscyJQKmxPfPwPWkR9SlHkgGbrRIW+9TDZ5Z94Bs=
+Received: from MWHPR11MB1775.namprd11.prod.outlook.com (2603:10b6:300:10e::14)
+ by MWHPR11MB2015.namprd11.prod.outlook.com (2603:10b6:300:28::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.22; Mon, 27 Apr
+ 2020 11:50:23 +0000
+Received: from MWHPR11MB1775.namprd11.prod.outlook.com
+ ([fe80::81d5:b62b:3770:ffbe]) by MWHPR11MB1775.namprd11.prod.outlook.com
+ ([fe80::81d5:b62b:3770:ffbe%10]) with mapi id 15.20.2937.023; Mon, 27 Apr
+ 2020 11:50:23 +0000
+From:   Jerome Pouiller <Jerome.Pouiller@silabs.com>
+To:     Suraj Upadhyay <usuraj35@gmail.com>
+CC:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4] staging: wfx: cleanup long lines in data_tx.c
+Thread-Topic: [PATCH v4] staging: wfx: cleanup long lines in data_tx.c
+Thread-Index: AQHWGvVCTTezREStl0mnzKLBZcOww6iM3iSA
+Date:   Mon, 27 Apr 2020 11:50:23 +0000
+Message-ID: <8518467.FNpd3NTrYF@pc-42>
+References: <20200425113234.GA14492@blackclown>
+In-Reply-To: <20200425113234.GA14492@blackclown>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Jerome.Pouiller@silabs.com; 
+x-originating-ip: [82.67.86.106]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 45059969-2d0e-4e7d-7a79-08d7eaa12b9c
+x-ms-traffictypediagnostic: MWHPR11MB2015:
+x-microsoft-antispam-prvs: <MWHPR11MB2015AACBE1B596E04C1AFA4393AF0@MWHPR11MB2015.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:2958;
+x-forefront-prvs: 0386B406AA
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR11MB1775.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(7916004)(396003)(39850400004)(136003)(346002)(376002)(366004)(6486002)(8676002)(66476007)(33716001)(66556008)(64756008)(66446008)(6512007)(81156014)(316002)(86362001)(26005)(54906003)(66946007)(9686003)(6916009)(8936002)(186003)(66574012)(6506007)(478600001)(5660300002)(4326008)(76116006)(91956017)(2906002)(71200400001)(39026012);DIR:OUT;SFP:1101;
+received-spf: None (protection.outlook.com: silabs.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: gGHjkJjlYM5NP2GrmFr33qcQdJgvtsxvnyddn8mH1k3zfODAlnxNpyYG6TmlUCJPRtjXAioEU2Az3Yq9AZnRiR+S6VW7Fhj2MPynzK6Y0Jdm/QwhieAb5xJMjb/6aFNIVrdgHZkvnewGP6y7UFxTtrxbkuDytuplpDeQTk6FpfdEgY254otQI9LUuqMoUOznNmn5gurSvu4p5+4XtIcmPZzCU0T1i6FclruutyBGwe8d84uZ5Fj9oA5QiixLe1k4tIKhQK3MNQkwWLeUCP1kJYhteiUVEyw5+RHFBNf7vTNcuaE/ImU+wMfbJgARMA/BvmbjR6csLPbsZ+IzOeFBtuWUc176DlOvpuDBHGxPWlQtpSmxewTlLFuACKuYtuaK4y+ytRfoxFCga+xT5U0hCM4AU1zlaihC+roEGlihcwEbkUAa1lnmRbqPCuWR74QPumtKTW3Wa8ZO3ZUcZFwX8K5K9aMVUbB8B+qaKmxrLRIx3k+AxDr36awob/LihNUN
+x-ms-exchange-antispam-messagedata: lZmIoAhY/1dDXEud+CWt5Dd7ToXmnHo7xvQbI5ZIb7t5cBGYwWFGKRnc2m9ay17m9uK7zQeEy58emtLltmRgWRg2lqUJT9U/tS7WndyjKXvihfxagVxvOVOrEwDZtZi8s2NsQt3rEk6KswaO+jsunPQV4SEnmqeLg3+Tm/CCrrMnmRfHzcEtX0qr9QJk1F6u6ipNgXpov44ZjoboZSS3OaVcUHPL4q9qFIxefOYbPG/EtsGRytsrkwbYMbX/c1/zBfJFEo3QGERJzVcDA3Buq2ljx2wABiz1wn22qv/iJHK41EDVAiU5SBHR9I56u1aKwnHj0qvJ2ySiLnKk7C8yMvAdXZ+As8jOg4zkMOEQWc/pnjWTNvWNUL49FsjH7hrM8J7IUvik/7Qa7FEKqnwL/GDzk0lr+gIfR/I7qf42pBP4fab79GIcMQmMMkZkdwWIVJW97v5XjSV7nJbskxQRXSN7ov7/DXYyeC+4ajdOwn+Ws78EwNdiTaPphVLDpq6PU3dR7oeY3WSC4KvG9zEwOzElJLBpekLXlkFDv3DV32kCBlZ3BEJRU9P6bBWKjlJBRf2MGw8F/gwNtJ0VReBpwqtyjrl6JX4AYil6kle0NwlkA9NTs2/P4aNgIEy7nx1DnucSWHJrx88yxgzwlldgSDKKxnBTHdho40sSNtAgi73j2E7NNXLnwghMdWc5FaWnlccBkauT//nJuVtZHCc8DM3FvTDrHxi7iLsULusZ+CUn6Hfp8A4/6TJHyE3WbeqSaQc/uvXeBuLofVpvVVsI9cUiE6QRfrIIaSyMyEGm2wU=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <6A2DEB847822C9418087D29A1D3D10FD@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Received: by 2002:a5d:8f89:0:0:0:0:0 with HTTP; Mon, 27 Apr 2020 04:41:03
- -0700 (PDT)
-Reply-To: convy0090@gmail.com
-From:   Ruben CONVY <andrewboccc@gmail.com>
-Date:   Mon, 27 Apr 2020 12:41:03 +0100
-Message-ID: <CAHVC0+BUDofvorH_OcPXRx-=OZEwfpP7KdZHNg2LzUpRQHM+tg@mail.gmail.com>
-Subject: Why continued silence 2
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: silabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45059969-2d0e-4e7d-7a79-08d7eaa12b9c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Apr 2020 11:50:23.8034
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: hbmcLu6mOb73hLEYfj4onXntaQcNaMLJBI3pmQZHScwB4bQqo2BhtUzzx4YZJCsHm1sqVOS4KZsssRfC6nfK2A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR11MB2015
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Did you receive my previous email regarding your family inheritance?
-Reply strictly through: convy0090@gmail.com
-Best Regards,
-Ruben CONVY
+On Saturday 25 April 2020 13:32:34 CEST Suraj Upadhyay wrote:
+> Break lines with length over 80 characters to
+> conform to the linux coding style and refactor
+> wherever necessary.
+>=20
+> Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
+> ---
+>=20
+> Changes in v4:
+> 	- Added a space after declaration in wfx_get_hw_rate().
+> 	- A checkpatch warning for this commit is retained at line 75,
+> 	  to maintain uniformity in function declarations. (Reviewer
+> 	  jerome suggested).
+>=20
+> Changes in v3:
+>         - Changed the temporary variable name for the memzcmp statement
+>           to is_used. (as suggested).
+>         - Added a temporary ieee80211_supported_band variable to address
+>           the problem in wfx_get_hw_rate() more efficiently. (not
+>           suggested, but still).
+>=20
+> Changes in v2:
+>         - Introduced a temporary variable for the memzcmp statement.
+>         - Addressed the checkpatch problem with wfx_get_hw_rate().
+>         - Restored the function definition of wfx_tx_get_tx_parms
+>           as suggested by the reviewer.
+>         - Added suggested changes for req->packet_id statement.
+>=20
+>  drivers/staging/wfx/data_tx.c | 40 +++++++++++++++++++++++------------
+>  1 file changed, 26 insertions(+), 14 deletions(-)
+
+This patch does not contain the suggestions from Dan. However, it is
+sufficient from my personal point of view.
+
+Reviewed-by: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
+
+
+--=20
+J=E9r=F4me Pouiller
+

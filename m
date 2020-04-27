@@ -2,61 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B82691BA1FF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 13:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 131C11BA1F3
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 13:09:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727010AbgD0LKx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 07:10:53 -0400
-Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:19863 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726998AbgD0LKw (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 07:10:52 -0400
-Received: from localhost.localdomain ([92.148.159.11])
-        by mwinf5d13 with ME
-        id XnAl2200P0F2omL03nAman; Mon, 27 Apr 2020 13:10:51 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 27 Apr 2020 13:10:51 +0200
-X-ME-IP: 92.148.159.11
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     okaya@kernel.org, agross@kernel.org, bjorn.andersson@linaro.org,
-        vkoul@kernel.org, dan.j.williams@intel.com
-Cc:     linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] dmaengine: qcom_hidma: Simplify error handling path in hidma_probe
-Date:   Mon, 27 Apr 2020 13:10:43 +0200
-Message-Id: <20200427111043.70218-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        id S1726795AbgD0LJe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 07:09:34 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:43044 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726604AbgD0LJe (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Apr 2020 07:09:34 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id B77BD70DE93E6557A0F7;
+        Mon, 27 Apr 2020 19:09:30 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.487.0; Mon, 27 Apr 2020 19:09:24 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-omap@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] PCI: dwc: pci-dra7xx: Fix potential NULL dereference in dra7xx_pcie_probe()
+Date:   Mon, 27 Apr 2020 11:10:44 +0000
+Message-ID: <20200427111044.162618-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is no need to call 'hidma_debug_uninit()' in the error handling
-path. 'hidma_debug_init()' has not been called yet.
+platform_get_resource() may fail and return NULL, so we should
+better check it's return value to avoid a NULL pointer dereference
+a bit later in the code.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+This is detected by Coccinelle semantic patch.
+
+@@
+expression pdev, res, n, t, e, e1, e2;
+@@
+
+res = \(platform_get_resource\|platform_get_resource_byname\)(pdev, t, n);
++ if (!res)
++   return -EINVAL;
+... when != res == NULL
+e = devm_ioremap(e1, res->start, e2);
+
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/dma/qcom/hidma.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/pci/controller/dwc/pci-dra7xx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/dma/qcom/hidma.c b/drivers/dma/qcom/hidma.c
-index 411f91fde734..87490e125bc3 100644
---- a/drivers/dma/qcom/hidma.c
-+++ b/drivers/dma/qcom/hidma.c
-@@ -897,7 +897,6 @@ static int hidma_probe(struct platform_device *pdev)
- 	if (msi)
- 		hidma_free_msis(dmadev);
+diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+index 3b0e58f2de58..7a3d12f7e7d9 100644
+--- a/drivers/pci/controller/dwc/pci-dra7xx.c
++++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+@@ -878,6 +878,9 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
+ 	}
  
--	hidma_debug_uninit(dmadev);
- 	hidma_ll_uninit(dmadev->lldev);
- dmafree:
- 	if (dmadev)
--- 
-2.25.1
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "ti_conf");
++	if (!res)
++		return -EINVAL;
++
+ 	base = devm_ioremap(dev, res->start, resource_size(res));
+ 	if (!base)
+ 		return -ENOMEM;
+
+
+
+
 

@@ -2,70 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CC011BA361
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 14:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2D681BA367
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 14:14:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727010AbgD0MNi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 08:13:38 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:47350 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726260AbgD0MNi (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 08:13:38 -0400
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id E1B151C0244; Mon, 27 Apr 2020 14:13:36 +0200 (CEST)
-Date:   Mon, 27 Apr 2020 14:13:36 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Dan Murphy <dmurphy@ti.com>, linux-leds@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] leds: trigger: remove redundant assignment to variable
- ret
-Message-ID: <20200427121336.GB544@duo.ucw.cz>
-References: <20200420221229.99150-1-colin.king@canonical.com>
+        id S1727112AbgD0MN7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 08:13:59 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:48368 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726260AbgD0MN7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Apr 2020 08:13:59 -0400
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 49D2FD425B27427F5F35;
+        Mon, 27 Apr 2020 20:13:57 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
+ 14.3.487.0; Mon, 27 Apr 2020 20:13:48 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        "stigge @ antcom . de" <stigge@antcom.de>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-arm-kernel@lists.infradead.org>, <netdev@vger.kernel.org>,
+        <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <linaro-mm-sig@lists.linaro.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] net: lpc-enet: fix error return code in lpc_mii_init()
+Date:   Mon, 27 Apr 2020 12:15:07 +0000
+Message-ID: <20200427121507.23249-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="l76fUT7nc3MelDdI"
-Content-Disposition: inline
-In-Reply-To: <20200420221229.99150-1-colin.king@canonical.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Fix to return a negative error code from the error handling
+case instead of 0, as done elsewhere in this function.
 
---l76fUT7nc3MelDdI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fixes: b7370112f519 ("lpc32xx: Added ethernet driver")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/net/ethernet/nxp/lpc_eth.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-On Mon 2020-04-20 23:12:29, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> The variable ret is being assigned with a value that is never read
-> and it is being updated later with a new value. The initialization is
-> redundant and can be removed.
->=20
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+diff --git a/drivers/net/ethernet/nxp/lpc_eth.c b/drivers/net/ethernet/nxp/lpc_eth.c
+index d20cf03a3ea0..311454d9b0bc 100644
+--- a/drivers/net/ethernet/nxp/lpc_eth.c
++++ b/drivers/net/ethernet/nxp/lpc_eth.c
+@@ -823,7 +823,8 @@ static int lpc_mii_init(struct netdata_local *pldat)
+ 	if (err)
+ 		goto err_out_unregister_bus;
+ 
+-	if (lpc_mii_probe(pldat->ndev) != 0)
++	err = lpc_mii_probe(pldat->ndev);
++	if (err)
+ 		goto err_out_unregister_bus;
+ 
+ 	return 0;
 
-Thanks, applied.
-								Pavel
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
 
---l76fUT7nc3MelDdI
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCXqbMcAAKCRAw5/Bqldv6
-8o7rAKCm8ntQEIFtZ61dXMpp4NXClLfyAQCfZtfwQz4pO6W+FS3+iyVfQR//BYc=
-=omzN
------END PGP SIGNATURE-----
-
---l76fUT7nc3MelDdI--

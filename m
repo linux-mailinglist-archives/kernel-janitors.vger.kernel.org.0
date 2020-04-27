@@ -2,112 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A1431BA313
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 14:00:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5D021BA341
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 14:10:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726651AbgD0MAJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 08:00:09 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:36584 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726390AbgD0MAJ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 08:00:09 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03RBxt0v019547;
-        Mon, 27 Apr 2020 06:59:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1587988795;
-        bh=RwPjkU/TyfREYNsw2qSGE+qMLI6pHP6PnOkaxRCDa30=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=Nc8/sb21qBfvB8mhQ3Xchs+GxOJYcyZFYIWsUVCGRYo7xkpQ5UggxmXpQ0U18mbEo
-         352rdyibSt2YgZf/8PV1rmN8ZNB37FRqqwOvvhq4c/KS3hvLgBUxTtCWowXhXaO3kN
-         vvBWDEJhstuSUbxj8bBThSn5RQ6CdW1gg4pjoEmk=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03RBxtKS094040;
-        Mon, 27 Apr 2020 06:59:55 -0500
-Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 27
- Apr 2020 06:59:55 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Mon, 27 Apr 2020 06:59:55 -0500
-Received: from [10.250.151.94] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03RBxppD012048;
-        Mon, 27 Apr 2020 06:59:52 -0500
-Subject: Re: [PATCH -next] PCI: dwc: pci-dra7xx: Fix potential NULL
- dereference in dra7xx_pcie_probe()
-To:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-CC:     <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        id S1726998AbgD0MKE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 08:10:04 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:44622 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726260AbgD0MKD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Apr 2020 08:10:03 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id A7FD61909EFFB37EE1E4;
+        Mon, 27 Apr 2020 20:10:00 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.487.0; Mon, 27 Apr 2020 20:09:51 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <netdev@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>
-References: <20200427111044.162618-1-weiyongjun1@huawei.com>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-Message-ID: <cad871c8-0915-9dda-2c61-30dfb5504d23@ti.com>
-Date:   Mon, 27 Apr 2020 17:29:50 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+Subject: [PATCH net-next] octeontx2-pf: Fix error return code in otx2_probe()
+Date:   Mon, 27 Apr 2020 12:11:10 +0000
+Message-ID: <20200427121110.8446-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20200427111044.162618-1-weiyongjun1@huawei.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
+Fix to return negative error code -ENOMEM from the error handling
+case instead of 0, as done elsewhere in this function.
 
-On 27/04/20 4:40 pm, Wei Yongjun wrote:
-> platform_get_resource() may fail and return NULL, so we should
-> better check it's return value to avoid a NULL pointer dereference
-> a bit later in the code.
-> 
-> This is detected by Coccinelle semantic patch.
-> 
-> @@
-> expression pdev, res, n, t, e, e1, e2;
-> @@
-> 
-> res = \(platform_get_resource\|platform_get_resource_byname\)(pdev, t, n);
-> + if (!res)
-> +   return -EINVAL;
-> ... when != res == NULL
-> e = devm_ioremap(e1, res->start, e2);
-> 
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->  drivers/pci/controller/dwc/pci-dra7xx.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-> index 3b0e58f2de58..7a3d12f7e7d9 100644
-> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
-> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-> @@ -878,6 +878,9 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
->  	}
->  
->  	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "ti_conf");
-> +	if (!res)
-> +		return -EINVAL;
-> +
->  	base = devm_ioremap(dev, res->start, resource_size(res));
+Fixes: 5a6d7c9daef3 ("octeontx2-pf: Mailbox communication with AF")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-I don't see why this should be devm_ioremap(). It should also have been
-devm_ioremap_resource() which does the NULL check.
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index 411e5ea1031e..64786568af0d 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -1856,13 +1856,17 @@ static int otx2_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	num_vec = pci_msix_vec_count(pdev);
+ 	hw->irq_name = devm_kmalloc_array(&hw->pdev->dev, num_vec, NAME_SIZE,
+ 					  GFP_KERNEL);
+-	if (!hw->irq_name)
++	if (!hw->irq_name) {
++		err = -ENOMEM;
+ 		goto err_free_netdev;
++	}
+ 
+ 	hw->affinity_mask = devm_kcalloc(&hw->pdev->dev, num_vec,
+ 					 sizeof(cpumask_var_t), GFP_KERNEL);
+-	if (!hw->affinity_mask)
++	if (!hw->affinity_mask) {
++		err = -ENOMEM;
+ 		goto err_free_netdev;
++	}
+ 
+ 	/* Map CSRs */
+ 	pf->reg_base = pcim_iomap(pdev, PCI_CFG_REG_BAR_NUM, 0);
 
-Alternately, how about using devm_platform_ioremap_resource_byname()?
 
->  	if (!base)
->  		return -ENOMEM;
-> 
-> 
-> 
-> 
-> 
+

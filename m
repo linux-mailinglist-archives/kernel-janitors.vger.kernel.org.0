@@ -2,65 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF1F81BB193
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 00:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39A621BB1AC
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 00:50:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726262AbgD0WlY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 18:41:24 -0400
-Received: from yithost.dedicated.co.za ([154.0.167.7]:39692 "EHLO
-        yithost.dedicated.co.za" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726204AbgD0WlY (ORCPT
+        id S1726361AbgD0WuA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 18:50:00 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:54836 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726204AbgD0Wt7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 18:41:24 -0400
-X-Greylist: delayed 1169 seconds by postgrey-1.27 at vger.kernel.org; Mon, 27 Apr 2020 18:41:23 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=rentanddrive.co.za; s=default; h=Content-Type:Content-Transfer-Encoding:
-        MIME-Version:Message-ID:Reply-To:From:Date:Subject:To:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=TvEyhsSbPuA+9MLLa0f5xbYCGh4tN4dEZVDjmm8avZo=; b=QJE8rCFw6QSVNLnNFmHDdvG0jp
-        2V46kZ7/pp0ppmJe5KZ9R/+HqhfQOQjKH4iDCBsMSEY3LZ81JY0jJFzn4pE53TsiiQsuQjhDV86I5
-        Vnx90y5WBSDiaG+x/I3c53X9c72CMLEibl2BmOphloX2rKwE51wlR6lPoXJDlCeQk+bt2lm5uon0a
-        b2JltkePyBTaTHgKru6CYjq7CReEgcvWhaMdD40gxNVdL16NfGDXoHJMmf6VSMKeVE44V8siYx2Lf
-        2Xu8UxbuWsulo/2yFvEUfqf56BhPhqI1yxiCbWDDKCT+7UyXKAthNcHowjusxpOV8C6VMl2lr+LIh
-        L7br+w8g==;
-Received: from rentanddriveco by yithost.dedicated.co.za with local (Exim 4.93)
-        (envelope-from <nicolej@easy2access.co.za>)
-        id 1jTC8N-000Ldf-8N
-        for kernel-janitors@vger.kernel.org; Tue, 28 Apr 2020 00:21:51 +0200
-To:     kernel-janitors@vger.kernel.org
-Subject: =?utf-8?B?Q29weSBvZjog5pGG6ISx5peg6IGK77yM5Lqr5Y+X5LmQ6Laj77yM5YGl5bq3?=  =?utf-8?B?5aix5qiC77yM5a6M576O6YeR5ZSm44CC?=
-X-PHP-Script: www.rentanddrive.co.za/index.php/contact-us for 203.160.52.241
-X-PHP-Originating-Script: 1034:phpmailer.php
-Date:   Mon, 27 Apr 2020 22:21:51 +0000
-From:   Rent and Drive <nicolej@easy2access.co.za>
-Reply-To: =?utf-8?B?5q6154Sm54Sm?= <kernel-janitors@vger.kernel.org>
-Message-ID: <735902c839f1328ec29eb44e01722ba4@www.rentanddrive.co.za>
-X-Priority: 3
-X-Mailer:  
+        Mon, 27 Apr 2020 18:49:59 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03RMnGKi011609;
+        Mon, 27 Apr 2020 22:49:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=1c+Qb0P6m8Bjmtsg/rPwqyaKG/hriJn7/NsqFOKcOsU=;
+ b=JwCNM8AW/dbJuvz0+/3HtR9BfLbskNfRUpOW3+MYz982eaQxZ65kNms8PG+FoHaXUhkt
+ 0WduaFWvcrVOJHLwVy/YX+9vXC4mykDD+C9KimRWTpBdcnqKYTUn7pcAbuUtvlNXYsfa
+ bd92cgXg6/YDYoT06k7tzCiSojS2EI0MU1DSAUwOVEhZWGgaUHrIwN7x/sqEb0n2Xp9u
+ XBGEwqhcEaRJA0KeECvMtNIeAbc1rL+HtcsT9PcNAffTms5BwnuR5YRXSc1vEQLi59e4
+ Cdz4NFnSBhzUSYZNqJ+aMu5EPsl7E7ySLFCY1Dv1lOuaAPdZe009Xfr2y8EREOyhzsiK 8g== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 30p01nk10y-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 27 Apr 2020 22:49:55 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03RMbOC2126457;
+        Mon, 27 Apr 2020 22:49:54 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 30my0avchp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 27 Apr 2020 22:49:54 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 03RMnrjU022306;
+        Mon, 27 Apr 2020 22:49:53 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 27 Apr 2020 15:49:53 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     jejb@linux.ibm.com, aacraid@microsemi.com,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] scsi: aacraid: Fix some error handling paths in 'aac_probe_one()'
+Date:   Mon, 27 Apr 2020 18:49:49 -0400
+Message-Id: <158802757520.27023.14035276109176874290.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200412094039.8822-1-christophe.jaillet@wanadoo.fr>
+References: <20200412094039.8822-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - yithost.dedicated.co.za
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [1034 994] / [0 0]
-X-AntiAbuse: Sender Address Domain - easy2access.co.za
-X-Get-Message-Sender-Via: yithost.dedicated.co.za: authenticated_id: rentanddriveco/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: yithost.dedicated.co.za: rentanddriveco
-X-Source: /usr/bin/bash;5ea75f01 (deleted)
-X-Source-Args: /bin/bash /usr/local/afribin/sendspam -l -c 20 -q 
-X-Source-Dir: /
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9604 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0
+ suspectscore=0 adultscore=0 mlxlogscore=819 bulkscore=0 phishscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004270185
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9604 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 clxscore=1015
+ phishscore=0 mlxlogscore=875 adultscore=0 priorityscore=1501 mlxscore=0
+ suspectscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004270185
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This is a copy of the following message you sent to  via Rent and Drive
+On Sun, 12 Apr 2020 11:40:39 +0200, Christophe JAILLET wrote:
 
-This is an enquiry email via http://www.rentanddrive.co.za/ from:
-段焦焦 <kernel-janitors@vger.kernel.org>
+> If 'scsi_host_alloc()' or 'kcalloc()' fail, 'error' is known to be 0. Set
+> it explicitly to -ENOMEM instead before branching to the error handling
+> path.
+> 
+> While at it, axe 2 useless assignments to 'error'. These values are
+> overwridden a few lines later.
 
-《現淦余乐馆网直营》，2020感恩回馈註测绑咔即领18圜红包，更有渞侟100鎹50元，秒提現，大额無忧，www.1641999 。
+Applied to 5.8/scsi-queue, thanks!
 
+[1/1] scsi: aacraid: Fix error handling paths in aac_probe_one()
+      https://git.kernel.org/mkp/scsi/c/f7854c382240
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

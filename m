@@ -2,33 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2D681BA367
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 14:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5323C1BA382
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 14:23:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727112AbgD0MN7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 08:13:59 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:48368 "EHLO huawei.com"
+        id S1726831AbgD0MXG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 08:23:06 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3353 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726260AbgD0MN7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 08:13:59 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 49D2FD425B27427F5F35;
-        Mon, 27 Apr 2020 20:13:57 +0800 (CST)
+        id S1726260AbgD0MXG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Apr 2020 08:23:06 -0400
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id BBD5E509380F9F68EA05;
+        Mon, 27 Apr 2020 20:23:04 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
- 14.3.487.0; Mon, 27 Apr 2020 20:13:48 +0800
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.487.0; Mon, 27 Apr 2020 20:22:55 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        "stigge @ antcom . de" <stigge@antcom.de>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-arm-kernel@lists.infradead.org>, <netdev@vger.kernel.org>,
-        <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <linaro-mm-sig@lists.linaro.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net-next] net: lpc-enet: fix error return code in lpc_mii_init()
-Date:   Mon, 27 Apr 2020 12:15:07 +0000
-Message-ID: <20200427121507.23249-1-weiyongjun1@huawei.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <sparclinux@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] sparc64: vcc: Fix error return code in vcc_probe()
+Date:   Mon, 27 Apr 2020 12:24:15 +0000
+Message-ID: <20200427122415.47416-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -40,29 +36,25 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return a negative error code from the error handling
+Fix to return negative error code -ENOMEM from the error handling
 case instead of 0, as done elsewhere in this function.
 
-Fixes: b7370112f519 ("lpc32xx: Added ethernet driver")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/net/ethernet/nxp/lpc_eth.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/vcc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/nxp/lpc_eth.c b/drivers/net/ethernet/nxp/lpc_eth.c
-index d20cf03a3ea0..311454d9b0bc 100644
---- a/drivers/net/ethernet/nxp/lpc_eth.c
-+++ b/drivers/net/ethernet/nxp/lpc_eth.c
-@@ -823,7 +823,8 @@ static int lpc_mii_init(struct netdata_local *pldat)
- 	if (err)
- 		goto err_out_unregister_bus;
- 
--	if (lpc_mii_probe(pldat->ndev) != 0)
-+	err = lpc_mii_probe(pldat->ndev);
-+	if (err)
- 		goto err_out_unregister_bus;
- 
- 	return 0;
+diff --git a/drivers/tty/vcc.c b/drivers/tty/vcc.c
+index d2a1e1228c82..9ffd42e333b8 100644
+--- a/drivers/tty/vcc.c
++++ b/drivers/tty/vcc.c
+@@ -605,6 +605,7 @@ static int vcc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+ 	port->index = vcc_table_add(port);
+ 	if (port->index == -1) {
+ 		pr_err("VCC: no more TTY indices left for allocation\n");
++		rv = -ENOMEM;
+ 		goto free_ldc;
+ 	}
 
 
 

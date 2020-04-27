@@ -2,127 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 958FC1BA99D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 18:01:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CC1B1BA82F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 17:39:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728458AbgD0QBg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 12:01:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48640 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727084AbgD0QBg (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 12:01:36 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76EA5C0610D5;
-        Mon, 27 Apr 2020 09:01:36 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id a31so5730469pje.1;
-        Mon, 27 Apr 2020 09:01:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:mime-version
-         :content-disposition:user-agent;
-        bh=9VOe6zfbZtbjAZlq2qI2KNild4EAONAC/y5eieLjgk8=;
-        b=BnX5x9L/dv8XVZnTgnpgDNjk70souLU3wwPPv/bitTN6PWwuVeieuBdqa6dFBgWNWp
-         EKh2SgxyqXL5KUhI+Z60uWqbAQijklGf3dlZLMmIfdHtiplKxrI6Of6Ll8x5VjLD5Bpl
-         Wo3/2H3OLF+zKDxXrkpt3KtuBoy4jxNZGpF+H7ki9eBouYSmMg7J+Pr3Ao9Bfcqzgyf4
-         e8jsOVyDY1hsfym8YFHxOmkoMMAexOsu1rvEAxfWoRYraKDeWt+/ENVlWJEpGfk7jcPB
-         hSpcKEO1NtgNFqvr1B/kfrvd9wo6D+gNv1TeQ2hVZLIniumVIzz3bRRSuUdthh6IDVVL
-         tQ1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:mime-version:content-disposition:user-agent;
-        bh=9VOe6zfbZtbjAZlq2qI2KNild4EAONAC/y5eieLjgk8=;
-        b=relE27VpFudYD5Y6BVtbMRmT02QscMztRxO2VQLLF2NkXevey4N58oqIpi0nuxeVLz
-         okMDLjn4jFID2u+FZNNkxzQoPawG5GC0dmx+usOsioiETHELsxkEM6SHX0d4KF5VmnCI
-         kH0oYU3vCOiBRxOaGDgL5H0lu9AbYqIWfGxi8IyEhOIpMRgY7hbZOSBHfdXqc4x5c3B8
-         gstdg8f1bb2jiS151yQ9goryh8V28ycrcT8zM17lEn1/NqfAIe7c74vk7nvScXxQE/Ul
-         n71XsohIgrFVALzdGcJ0PyP3yI2M6zIr+eWj3q2QXRal2kXAWrP+vVOiyVUhCWVgzekZ
-         jJ9A==
-X-Gm-Message-State: AGi0PuY1W30iQOXDrPTfu8EYUq2JwO5Wy5jisOkdCU6UOay98BysNrcb
-        Vyfmr0/s7/LLwXDiW8ONQNU=
-X-Google-Smtp-Source: APiQypJxjdKJUkibD5FvbEyQw7orSRPWuGaVTPgLdl0DmNd67CJVKb2yIpTTT3nfi4xd/XZUSa0Wrg==
-X-Received: by 2002:a17:90a:324f:: with SMTP id k73mr25155177pjb.195.1588003295930;
-        Mon, 27 Apr 2020 09:01:35 -0700 (PDT)
-Received: from udknight.localhost ([59.57.158.27])
-        by smtp.gmail.com with ESMTPSA id p16sm11578519pjz.2.2020.04.27.09.01.33
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 27 Apr 2020 09:01:34 -0700 (PDT)
-Received: from udknight.localhost (localhost [127.0.0.1])
-        by udknight.localhost (8.14.9/8.14.4) with ESMTP id 03RErdMI019234;
-        Mon, 27 Apr 2020 22:53:39 +0800
-Received: (from root@localhost)
-        by udknight.localhost (8.14.9/8.14.9/Submit) id 03RErXiK019233;
-        Mon, 27 Apr 2020 22:53:33 +0800
-Date:   Mon, 27 Apr 2020 22:53:32 +0800
-From:   Wang YanQing <udknight@gmail.com>
-To:     joe@perches.com
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Andy Whitcroft <apw@canonical.com>, Markus.Elfring@web.de
-Subject: [PATCH v2] checkpatch: add dedicated checker for 'Fixes:' tag
-Message-ID: <20200427145332.GA18830@udknight>
-Mail-Followup-To: Wang YanQing <udknight@gmail.com>, joe@perches.com,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Andy Whitcroft <apw@canonical.com>, Markus.Elfring@web.de
+        id S1728243AbgD0Pjt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 11:39:49 -0400
+Received: from vern.gendns.com ([98.142.107.122]:52338 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726539AbgD0Pjt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Apr 2020 11:39:49 -0400
+X-Greylist: delayed 1376 seconds by postgrey-1.27 at vger.kernel.org; Mon, 27 Apr 2020 11:39:48 EDT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=QHcTOnBrhJ/2TSsv8KnCgPSUCn9klev6fyOnjkLTQHA=; b=rGNlRJBO+DFlpwE/cFAxf47YpC
+        Crudz6L19IvS2rmXE+NPnZV34i3SJpslbDIeXTiScO+gJERn4bj222hhlo2ZVeX9Xqp/yb+tC0RsD
+        KtpRaC036DJlVOpt/oYYGoEF66ZRG8cWD+TmjJOfVDQlhLgDmYgY2vRSJlK685kXl8LKJde/Ha8ov
+        LmoAKhxoesIDGNVN/awVBG+NVetaRoML1GwZMKq7Nc5K6HPu4JKaRSFRNf7TPzNr3KWIKMY9Ogk19
+        UB7AwK3EzDO6iNGqncyGcgqcicsbKXS+Fe/YzYqkDZQXyDPiz2dMDm2FINNvf8NNb9N3nMH71VZP/
+        MWpjIcYQ==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:52234 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <david@lechnology.com>)
+        id 1jT5V4-0007tU-5Z; Mon, 27 Apr 2020 11:16:50 -0400
+Subject: Re: [PATCH net-next] drivers: net: davinci_mdio: fix potential NULL
+ dereference in davinci_mdio_probe()
+To:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>
+Cc:     linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200427094032.181184-1-weiyongjun1@huawei.com>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <d2c55de2-01f0-b123-dee6-5fc74b8b67da@lechnology.com>
+Date:   Mon, 27 Apr 2020 10:16:47 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.7.1 (2016-10-04)
+In-Reply-To: <20200427094032.181184-1-weiyongjun1@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-According to submitting-patches.rst, 'Fixes:' tag has a little
-stricter condition about the one line summary:
-"
-Do not split the tag across multiple
-lines, tags are exempt from the "wrap at 75 columns" rule in order to simplify
-parsing scripts
-"
-And the current 'Fixes:' checker in "# Check for git id commit length and
-improperly formed commit descriptions" doesn't check for invalid commit id
-length, so this patch adds dedicated checker to fix these issues.
+On 4/27/20 4:40 AM, Wei Yongjun wrote:
+> platform_get_resource() may fail and return NULL, so we should
+> better check it's return value to avoid a NULL pointer dereference
+> a bit later in the code.
+> 
+> This is detected by Coccinelle semantic patch.
+> 
+> @@
+> expression pdev, res, n, t, e, e1, e2;
+> @@
+> 
+> res = \(platform_get_resource\|platform_get_resource_byname\)(pdev, t, n);
+> + if (!res)
+> +   return -EINVAL;
+> ... when != res == NULL
+> e = devm_ioremap(e1, res->start, e2);
+> 
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>   drivers/net/ethernet/ti/davinci_mdio.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/ti/davinci_mdio.c b/drivers/net/ethernet/ti/davinci_mdio.c
+> index 38b7f6d35759..702fdc393da0 100644
+> --- a/drivers/net/ethernet/ti/davinci_mdio.c
+> +++ b/drivers/net/ethernet/ti/davinci_mdio.c
+> @@ -397,6 +397,8 @@ static int davinci_mdio_probe(struct platform_device *pdev)
+>   	data->dev = dev;
+>   
+>   	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	if (!res)
+> +		return -EINVAL;
+>   	data->regs = devm_ioremap(dev, res->start, resource_size(res));
+>   	if (!data->regs)
+>   		return -ENOMEM;
+> 
 
-Signed-off-by: Wang YanQing <udknight@gmail.com>
----
- scripts/checkpatch.pl | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
- v1-v2:
- 1: Reword commit log (Markus Elfring).
- 2: Allow more than 12 characters of SHA-1 id (Markus Elfring).
- 3: Update the error message according to reflect the second update.
- 4: Add missing (?:...).
-
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 23a001a..d74683a 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -2820,7 +2820,7 @@ sub process {
- 		    ($line =~ /\bcommit\s+[0-9a-f]{5,}\b/i ||
- 		     ($line =~ /(?:\s|^)[0-9a-f]{12,40}(?:[\s"'\(\[]|$)/i &&
- 		      $line !~ /[\<\[][0-9a-f]{12,40}[\>\]]/i &&
--		      $line !~ /\bfixes:\s*[0-9a-f]{12,40}/i))) {
-+		      $line !~ /^\s*fixes:\s*(?:[0-9a-f]{6,40})\s*(?:.*)/i))) {
- 			my $init_char = "c";
- 			my $orig_commit = "";
- 			my $short = 1;
-@@ -2979,6 +2979,13 @@ sub process {
- 			}
- 		}
- 
-+		if ($in_commit_log && $line =~ /^\s*fixes:\s*([0-9a-f]{6,40})\s*(.*)/i) {
-+		    if (length($1) < 12 || $2 !~ /^\(\"(?:.*)\"\)$/i) {
-+				ERROR("FIXES_TAG",
-+					"please use the 'Fixes:' tag with at least the first 12 characters of the SHA-1 ID, and the one line summary(no across multiple lines)\n" . $herecurr);
-+			}
-+		}
-+
- # ignore non-hunk lines and lines being removed
- 		next if (!$hunk_line || $line =~ /^-/);
- 
--- 
-1.8.5.6.2.g3d8a54e.dirty
+Could we use devm_platform_ioremap_resource() instead?

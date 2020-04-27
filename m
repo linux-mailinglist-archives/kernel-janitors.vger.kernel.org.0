@@ -2,124 +2,155 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0579E1B96A9
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 07:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 428481B96D7
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 07:54:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726520AbgD0Fke (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 01:40:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36366 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726221AbgD0Fke (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 01:40:34 -0400
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4989FC061A10
-        for <kernel-janitors@vger.kernel.org>; Sun, 26 Apr 2020 22:40:34 -0700 (PDT)
-Received: by mail-pj1-x1043.google.com with SMTP id a31so5088079pje.1
-        for <kernel-janitors@vger.kernel.org>; Sun, 26 Apr 2020 22:40:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=22T1fi9hCZYd16gPcEsO2HumG8BRGMGET2lEOhIEL10=;
-        b=AyJkv03rxnWCaBzdAH5twsD9kYcFCs4wXARJ3xX27DJhspQD783axyG9yWI6oKX8Hn
-         WqLMKCdno8670wi5hqobVmFSvs6h2h3Ap5h1Vunq/Ithw0kzdNq5RBAd8JOH8mYIBhwZ
-         4EhT/0kj503nGbUXkckWvsPA2YMfOHM5JWriTedy0ZDTz173mxKGmgtDCOkH+7edLyjp
-         X8YLtKgWTXq5gFQZJdzT0hecoSpiinhbJQ4M8j+acwHRGT6ACdAz6oUUNwu76E9aEMAY
-         D2ZWTJEXX13ZkfHscUEYLxwsJp3rBfJKJo74m2+ePncqCkcm5KZXyUcPZcD/7p4MR0FR
-         7bhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=22T1fi9hCZYd16gPcEsO2HumG8BRGMGET2lEOhIEL10=;
-        b=JTyRZFa1VpbsJS2DU1PDjTnbby/tYihpOVcHmaERKTnlYY4+VthquebNWXoxfObZYJ
-         gMvMIoM1WBz3a+WAE1cQygfkmdA1SXW4vvXzgh8Rub1yzCqqnuWer4b3+D7tFN4Q0V2U
-         kaQM8M6M7Y2I4h0Nr4SI1XYdxDJnoPAlCoDiKZV9ORQel8QMhJBdr1n9DKVbHOSn9yBr
-         NPRLFVxcs09E+ObALLg8AfrnLXAgL4ZHnAqC93SuBxGpD/SOLUuhgh0kxGVpH7mTDoEu
-         zyOSsxeYtHS8QbzVshfhd0VKuZwvIZyRsEYd0r7+gxgjdb+s6Z9au+/R0WJdvaCqQrS1
-         t2Ew==
-X-Gm-Message-State: AGi0Pub25C91F039pYKGFKkYl0MikBfwgVclbr31fuTkj6G0hLFxjjrj
-        XplmbGp9SSrQo7gbMFIZBgpR
-X-Google-Smtp-Source: APiQypLU+w8iopyaIUxj6f7frOXFqJA7R7fUgSTRUGPKn1R4131TNHAPvUBHF5UzJVeSaVns4RLjSw==
-X-Received: by 2002:a17:90a:ae12:: with SMTP id t18mr15259427pjq.26.1587966033683;
-        Sun, 26 Apr 2020 22:40:33 -0700 (PDT)
-Received: from Mani-XPS-13-9360 ([2409:4072:996:8534:8d2a:cf91:2e3d:2746])
-        by smtp.gmail.com with ESMTPSA id o21sm9959514pjr.37.2020.04.26.22.40.26
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 26 Apr 2020 22:40:33 -0700 (PDT)
-Date:   Mon, 27 Apr 2020 11:10:23 +0530
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Chris Lew <clew@codeaurora.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hemant Kumar <hemantk@codeaurora.org>,
-        Jeffrey Hugo <jhugo@codeaurora.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Siddartha Mohanadoss <smohanad@codeaurora.org>
-Subject: Re: [PATCH v2 2/3] net: qrtr: Add MHI transport layer
-Message-ID: <20200427054023.GA3311@Mani-XPS-13-9360>
-References: <85591553-f1f2-a7c9-9c5a-58f74ebeaf38@web.de>
+        id S1726512AbgD0Fyq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 01:54:46 -0400
+Received: from mout.web.de ([217.72.192.78]:42561 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726221AbgD0Fyp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Apr 2020 01:54:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1587966881;
+        bh=CvEdOia6fAvSdHnGMSMI5Rtcn6D+/Gq6x+rN574MCbU=;
+        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
+        b=UG9GoECHVXekacVQKiiLjLOyzmhmIvOJDHRCeMl8oc81YbruPNX2Lyg46LiDw8TnU
+         EM4KbyHF8zgcoXTxtJbzbsh9qPMLh6bYkAY/tGBCRmRxJuKLMe21OemHaeJ1PDnRHE
+         EINtHCF8/ljCOzY1sF2+gKcAYkGbmZEk7EfSHm0E=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.131.190.48]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MT8bi-1jZzkN06gY-00S81W; Mon, 27
+ Apr 2020 07:54:41 +0200
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Colin Ian King <colin.king@canonical.com>,
+        Daniel Drake <drake@endlessm.com>,
+        Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH] mmc: alcor: Fix a resource leak in an error handling path
+ in 'alcor_pci_sdmmc_drv_probe()'
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+To:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+        linux-mmc@vger.kernel.org
+Message-ID: <35c7cffb-02dd-452c-f525-fe5ddcbb0a48@web.de>
+Date:   Mon, 27 Apr 2020 07:54:33 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <85591553-f1f2-a7c9-9c5a-58f74ebeaf38@web.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:OwOxnVlqSwFUD0FvkQf23q2xhV9b2OY6hjmBgLudJkhqOpY2TJn
+ phCU3uWY1jjkDyrWAtwbYep2w6Jryr7O4s5FYbgTRdFbopBpS/RCwQPDBZDHLAYQLZiL/7c
+ 84CVcmRUhxSQujGqCt5a2Q8ljaEh4owaATlTdb22gKWWSqdTaMCW5AY5ThjKhXmSjLxCuR7
+ Llc5okHUg4qDNI6c8hDxg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:kTAeSn7YrU0=:rLX/+45AN6lznfAavQS9J9
+ hk0hgogryjhtDZ/yxoTMEzCwGf6bzv/tNPNV+pNyaCpaj29P+jIpy6g2JrOe59Fe7Y1I55ZMe
+ T/rRUTXUOnB5tBmDg74BmvKKNahmMTPb6V1hbVMoiCHnoGwSNBBR42dnBKQR28FkgO8QISRbV
+ tbFYteOIvfKjbHr7k9e4rSAspwHOG9HsxsEFxQdqFmdnr3OBXzkSpVbdelXxqrc7VD0F7gRRq
+ 1/og4NZmohO+fa4mmMsinikB9G4MRAK+S5zw7T5jwtUl+W92jSYzWW0LjqtY3f26f3R97gPri
+ XAMaAmXTNd2k4MAmfmvgkcn85cMZISn1RUb9H8jTYpc8Tz+QBjbIRwk3x0yL4RHNrn5QZBACC
+ MyXOh5f8ooeUsBcOi1juVwFDYjqpxZKEwcqhsfx0rBQnvtp8lvFwCjkDvy2qsvi2gCFe+HvUb
+ qnRisqBJKrt7ux8WfdpkLEUC6GFoOdelIfj1tAdjq8qScpo0NZ+vifhI3jZmOPi5zfO/JMWiR
+ LDxEEtyXveFjm6huiF3uNMDvkCpkLeueE5Ogs5MLNuEEWxqZlUdQoHQMiM2fmS4t186oqAsEI
+ 7LXrfnlqWDdIjLMXLYrfy+O9JUjp5k4/IPnmuB4cuOBT8P2uE4nhjqk/K9z7TaIK72vHwrumN
+ YlH6MPcM9rjNUVQSMYPGcdK4H/9LLhnM3M3UIf6ajmthq/mrwuTQOuhjqePpA7eEs3CvERG0b
+ qAuJLRVlTzSoY81SLvHjbnAbVvo57VxbjZAu+Te3u8AavA56qp5mSaxutBSC+cUFZ1mqyFIjO
+ +a/FW8B/XM8gezmrQCaENcmk/Y/w9bVg01bmyJ1UZPGutvuz+Yk3HAv68JCdMbLDCqZad9az6
+ sGalgl/4SdVVuGngVESjL5qF9oTCXEYjmrAjTfEYgl5kL1iuiYTJZi5tohqXbSV3tE/QNR1eX
+ SilNGjZjBvvroaW5NGujNCT9HWX506nQrXP0MTrD3pLo+eo40rRKD3ScdmUO3BpUAeDxzdTWW
+ RQ9X8tWRzv/7Ft0saFzJJs1NQmYGMXORcAIspBX+IxbEfNMP+B2gVv+xEYOTTUMoO+MD70ekR
+ V1n0wR2jBlundGr6TIbsRAhNYjLy0qGjQpCS181jpwPjZom2E+MvcZkUHW7c3eE0cROUMnuvY
+ fnm4p8ntmAFWTwTuxT0XMAP8qNpvixzHYbTOwchel1k2F12tKvXZXIRR0HMHf0m2KjfstIH9a
+ +8WtQfTMNe+v9qNS6
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Apr 26, 2020 at 03:45:41PM +0200, Markus Elfring wrote:
-> > Hence, this commit adds MHI transport layer support to QRTR for
-> > transferring the QMI messages over IPC Router.
-> 
-> I suggest to reconsider software development consequences around
-> another implementation detail.
-> 
-> 
-> …
-> > +static int qcom_mhi_qrtr_send(struct qrtr_endpoint *ep, struct sk_buff *skb)
-> > +{
-> …
-> > +	rc = mhi_queue_skb(qdev->mhi_dev, DMA_TO_DEVICE, skb, skb->len,
-> > +			   MHI_EOT);
-> > +	if (rc) {
-> > +		kfree_skb(skb);
-> > +		return rc;
-> > +	}
-> …
-> > +}
-> 
-> I propose again to add a jump target so that a bit of exception handling code
-> can be better reused at the end of this function implementation.
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?id=b2768df24ec400dd4f7fa79542f797e904812053#n450
-> 
+> If 'devm_request_threaded_irq()' fails, resources allocated by
+> 'mmc_alloc_host()' must be freed.
 
-Matter of taste! goto's are really useful if there are multiple exit paths
-available. But in this case there is only one and I don't think we may add
-anymore in future. So I'll keep it as it is.
+How do you think about a wording variant like the following?
 
-Thanks,
-Mani
+   Subject:
+   [PATCH v2] mmc: alcor: Complete exception handling in alcor_pci_sdmmc_d=
+rv_probe()
 
-> +	if (rc)
-> +		goto free_skb;
-> …
-> +	return rc;
-> +
-> +free_skb:
-> +	kfree_skb(skb);
-> +	return rc;
-> +}
-> 
-> 
-> Regards,
-> Markus
+   Change description (according to a solution alternative):
+   The exception handling was incomplete in an if branch
+   after a failed call of the function =E2=80=9Cdevm_request_threaded_irq=
+=E2=80=9D.
+   Thus add a call of the function =E2=80=9Cmmc_free_host=E2=80=9D for the=
+ release of
+   corresponding system resources.
+
+
+> +++ b/drivers/mmc/host/alcor.c
+> @@ -1104,7 +1104,7 @@ static int alcor_pci_sdmmc_drv_probe(struct platfo=
+rm_device *pdev)
+>
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "Failed to get irq for data line\n");
+> -		return ret;
+> +		goto free_host;
+>  	}
+>
+>  	mutex_init(&host->cmd_mutex);
+
+You propose to perform a jump to other code only once in this implementati=
+on.
+I find it more succinct to call the desired function then directly.
+
+ 		dev_err(=E2=80=A6);
++		mmc_free_host(mmc);
+ 		return ret;
+
+
+Regards,
+Markus

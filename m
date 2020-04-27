@@ -2,66 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83E071BA1EE
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 13:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B82691BA1FF
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 13:10:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726969AbgD0LHX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 07:07:23 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3351 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726485AbgD0LHX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 07:07:23 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 958FB754D2A32F7543AA;
-        Mon, 27 Apr 2020 19:07:19 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.487.0; Mon, 27 Apr 2020 19:07:09 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-gpio@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] gpio: mlxbf2: fix return value check in mlxbf2_gpio_get_lock_res()
-Date:   Mon, 27 Apr 2020 11:08:29 +0000
-Message-ID: <20200427110829.154785-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727010AbgD0LKx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 07:10:53 -0400
+Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:19863 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726998AbgD0LKw (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Apr 2020 07:10:52 -0400
+Received: from localhost.localdomain ([92.148.159.11])
+        by mwinf5d13 with ME
+        id XnAl2200P0F2omL03nAman; Mon, 27 Apr 2020 13:10:51 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 27 Apr 2020 13:10:51 +0200
+X-ME-IP: 92.148.159.11
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     okaya@kernel.org, agross@kernel.org, bjorn.andersson@linaro.org,
+        vkoul@kernel.org, dan.j.williams@intel.com
+Cc:     linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] dmaengine: qcom_hidma: Simplify error handling path in hidma_probe
+Date:   Mon, 27 Apr 2020 13:10:43 +0200
+Message-Id: <20200427111043.70218-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, the function devm_ioremap() returns NULL pointer not
-ERR_PTR(). The IS_ERR() test in the return value check should be
-replaced with NULL test.
+There is no need to call 'hidma_debug_uninit()' in the error handling
+path. 'hidma_debug_init()' has not been called yet.
 
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/gpio/gpio-mlxbf2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/dma/qcom/hidma.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-mlxbf2.c b/drivers/gpio/gpio-mlxbf2.c
-index 240b488609ac..fca6a50d9308 100644
---- a/drivers/gpio/gpio-mlxbf2.c
-+++ b/drivers/gpio/gpio-mlxbf2.c
-@@ -109,8 +109,8 @@ static int mlxbf2_gpio_get_lock_res(struct platform_device *pdev)
- 	}
+diff --git a/drivers/dma/qcom/hidma.c b/drivers/dma/qcom/hidma.c
+index 411f91fde734..87490e125bc3 100644
+--- a/drivers/dma/qcom/hidma.c
++++ b/drivers/dma/qcom/hidma.c
+@@ -897,7 +897,6 @@ static int hidma_probe(struct platform_device *pdev)
+ 	if (msi)
+ 		hidma_free_msis(dmadev);
  
- 	yu_arm_gpio_lock_param.io = devm_ioremap(dev, res->start, size);
--	if (IS_ERR(yu_arm_gpio_lock_param.io))
--		ret = PTR_ERR(yu_arm_gpio_lock_param.io);
-+	if (!yu_arm_gpio_lock_param.io)
-+		ret = -ENOMEM;
- 
- exit:
- 	mutex_unlock(yu_arm_gpio_lock_param.lock);
-
-
-
-
+-	hidma_debug_uninit(dmadev);
+ 	hidma_ll_uninit(dmadev->lldev);
+ dmafree:
+ 	if (dmadev)
+-- 
+2.25.1
 

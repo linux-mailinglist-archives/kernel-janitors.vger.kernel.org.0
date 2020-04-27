@@ -2,35 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 491E31BA18B
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 12:42:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64FB51BA18D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 12:42:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726996AbgD0KmO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 06:42:14 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:3312 "EHLO huawei.com"
+        id S1726998AbgD0Kmm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 06:42:42 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3313 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726485AbgD0KmO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 06:42:14 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id D55B66B938826C5264BE;
-        Mon, 27 Apr 2020 18:42:11 +0800 (CST)
+        id S1726485AbgD0Kmm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Apr 2020 06:42:42 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id C946FC3326C60500B4D3;
+        Mon, 27 Apr 2020 18:42:39 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.487.0; Mon, 27 Apr 2020 18:42:02 +0800
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.487.0; Mon, 27 Apr 2020 18:42:28 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Ioana Radulescu <ruxandra.radulescu@nxp.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "Alexei Starovoitov" <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        "Jakub Kicinski" <kuba@kernel.org>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <netdev@vger.kernel.org>,
-        <bpf@vger.kernel.org>, <linux-media@vger.kernel.org>,
-        <dri-devel@lists.freedesktop.org>,
-        <linaro-mm-sig@lists.linaro.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net-next] dpaa2-eth: fix error return code in setup_dpni()
-Date:   Mon, 27 Apr 2020 10:43:22 +0000
-Message-ID: <20200427104322.11214-1-weiyongjun1@huawei.com>
+To:     Kalle Valo <kvalo@codeaurora.org>, Wen Gong <wgong@codeaurora.org>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <ath10k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] ath10k: fix possible memory leak in ath10k_bmi_lz_data_large()
+Date:   Mon, 27 Apr 2020 10:43:48 +0000
+Message-ID: <20200427104348.13570-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -42,29 +35,27 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return negative error code -ENOMEM from the error handling
-case instead of 0, as done elsewhere in this function.
+'cmd' is malloced in ath10k_bmi_lz_data_large() and should be freed
+before leaving from the error handling cases, otherwise it will cause
+memory leak.
 
+Fixes: d58f466a5dee ("ath10k: add large size for BMI download data for SDIO")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/bmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-index 8ec435ba7d27..11accab81ea1 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-@@ -2702,8 +2702,10 @@ static int setup_dpni(struct fsl_mc_device *ls_dev)
- 
- 	priv->cls_rules = devm_kzalloc(dev, sizeof(struct dpaa2_eth_cls_rule) *
- 				       dpaa2_eth_fs_count(priv), GFP_KERNEL);
--	if (!priv->cls_rules)
-+	if (!priv->cls_rules) {
-+		err = -ENOMEM;
- 		goto close;
-+	}
- 
- 	return 0;
+diff --git a/drivers/net/wireless/ath/ath10k/bmi.c b/drivers/net/wireless/ath/ath10k/bmi.c
+index ea908107581d..5b6db6e66f65 100644
+--- a/drivers/net/wireless/ath/ath10k/bmi.c
++++ b/drivers/net/wireless/ath/ath10k/bmi.c
+@@ -380,6 +380,7 @@ static int ath10k_bmi_lz_data_large(struct ath10k *ar, const void *buffer, u32 l
+ 						  NULL, NULL);
+ 		if (ret) {
+ 			ath10k_warn(ar, "unable to write to the device\n");
++			kfree(cmd);
+ 			return ret;
+ 		}
 
 
 

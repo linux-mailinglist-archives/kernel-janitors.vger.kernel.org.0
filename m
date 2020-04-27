@@ -2,62 +2,127 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF63F1BA637
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 16:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 958FC1BA99D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Apr 2020 18:01:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728089AbgD0OUJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 10:20:09 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:56270 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727824AbgD0OUI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 10:20:08 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 677F97D47990EB50A228;
-        Mon, 27 Apr 2020 22:20:01 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.487.0; Mon, 27 Apr 2020 22:19:51 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Kirti Wankhede <kwankhede@nvidia.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <kvm@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] samples: vfio-mdev: fix error return code in mdpy_fb_probe()
-Date:   Mon, 27 Apr 2020 14:21:10 +0000
-Message-ID: <20200427142110.56121-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728458AbgD0QBg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 12:01:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48640 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727084AbgD0QBg (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Apr 2020 12:01:36 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76EA5C0610D5;
+        Mon, 27 Apr 2020 09:01:36 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id a31so5730469pje.1;
+        Mon, 27 Apr 2020 09:01:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:mime-version
+         :content-disposition:user-agent;
+        bh=9VOe6zfbZtbjAZlq2qI2KNild4EAONAC/y5eieLjgk8=;
+        b=BnX5x9L/dv8XVZnTgnpgDNjk70souLU3wwPPv/bitTN6PWwuVeieuBdqa6dFBgWNWp
+         EKh2SgxyqXL5KUhI+Z60uWqbAQijklGf3dlZLMmIfdHtiplKxrI6Of6Ll8x5VjLD5Bpl
+         Wo3/2H3OLF+zKDxXrkpt3KtuBoy4jxNZGpF+H7ki9eBouYSmMg7J+Pr3Ao9Bfcqzgyf4
+         e8jsOVyDY1hsfym8YFHxOmkoMMAexOsu1rvEAxfWoRYraKDeWt+/ENVlWJEpGfk7jcPB
+         hSpcKEO1NtgNFqvr1B/kfrvd9wo6D+gNv1TeQ2hVZLIniumVIzz3bRRSuUdthh6IDVVL
+         tQ1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:mime-version:content-disposition:user-agent;
+        bh=9VOe6zfbZtbjAZlq2qI2KNild4EAONAC/y5eieLjgk8=;
+        b=relE27VpFudYD5Y6BVtbMRmT02QscMztRxO2VQLLF2NkXevey4N58oqIpi0nuxeVLz
+         okMDLjn4jFID2u+FZNNkxzQoPawG5GC0dmx+usOsioiETHELsxkEM6SHX0d4KF5VmnCI
+         kH0oYU3vCOiBRxOaGDgL5H0lu9AbYqIWfGxi8IyEhOIpMRgY7hbZOSBHfdXqc4x5c3B8
+         gstdg8f1bb2jiS151yQ9goryh8V28ycrcT8zM17lEn1/NqfAIe7c74vk7nvScXxQE/Ul
+         n71XsohIgrFVALzdGcJ0PyP3yI2M6zIr+eWj3q2QXRal2kXAWrP+vVOiyVUhCWVgzekZ
+         jJ9A==
+X-Gm-Message-State: AGi0PuY1W30iQOXDrPTfu8EYUq2JwO5Wy5jisOkdCU6UOay98BysNrcb
+        Vyfmr0/s7/LLwXDiW8ONQNU=
+X-Google-Smtp-Source: APiQypJxjdKJUkibD5FvbEyQw7orSRPWuGaVTPgLdl0DmNd67CJVKb2yIpTTT3nfi4xd/XZUSa0Wrg==
+X-Received: by 2002:a17:90a:324f:: with SMTP id k73mr25155177pjb.195.1588003295930;
+        Mon, 27 Apr 2020 09:01:35 -0700 (PDT)
+Received: from udknight.localhost ([59.57.158.27])
+        by smtp.gmail.com with ESMTPSA id p16sm11578519pjz.2.2020.04.27.09.01.33
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 27 Apr 2020 09:01:34 -0700 (PDT)
+Received: from udknight.localhost (localhost [127.0.0.1])
+        by udknight.localhost (8.14.9/8.14.4) with ESMTP id 03RErdMI019234;
+        Mon, 27 Apr 2020 22:53:39 +0800
+Received: (from root@localhost)
+        by udknight.localhost (8.14.9/8.14.9/Submit) id 03RErXiK019233;
+        Mon, 27 Apr 2020 22:53:33 +0800
+Date:   Mon, 27 Apr 2020 22:53:32 +0800
+From:   Wang YanQing <udknight@gmail.com>
+To:     joe@perches.com
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Andy Whitcroft <apw@canonical.com>, Markus.Elfring@web.de
+Subject: [PATCH v2] checkpatch: add dedicated checker for 'Fixes:' tag
+Message-ID: <20200427145332.GA18830@udknight>
+Mail-Followup-To: Wang YanQing <udknight@gmail.com>, joe@perches.com,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Andy Whitcroft <apw@canonical.com>, Markus.Elfring@web.de
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.7.1 (2016-10-04)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return negative error code -ENOMEM from the error handling
-case instead of 0, as done elsewhere in this function.
+According to submitting-patches.rst, 'Fixes:' tag has a little
+stricter condition about the one line summary:
+"
+Do not split the tag across multiple
+lines, tags are exempt from the "wrap at 75 columns" rule in order to simplify
+parsing scripts
+"
+And the current 'Fixes:' checker in "# Check for git id commit length and
+improperly formed commit descriptions" doesn't check for invalid commit id
+length, so this patch adds dedicated checker to fix these issues.
 
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Signed-off-by: Wang YanQing <udknight@gmail.com>
 ---
- samples/vfio-mdev/mdpy-fb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ scripts/checkpatch.pl | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/samples/vfio-mdev/mdpy-fb.c b/samples/vfio-mdev/mdpy-fb.c
-index 21dbf63d6e41..d4abc0594dbd 100644
---- a/samples/vfio-mdev/mdpy-fb.c
-+++ b/samples/vfio-mdev/mdpy-fb.c
-@@ -131,8 +131,10 @@ static int mdpy_fb_probe(struct pci_dev *pdev,
- 		 width, height);
+ v1-v2:
+ 1: Reword commit log (Markus Elfring).
+ 2: Allow more than 12 characters of SHA-1 id (Markus Elfring).
+ 3: Update the error message according to reflect the second update.
+ 4: Add missing (?:...).
+
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 23a001a..d74683a 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -2820,7 +2820,7 @@ sub process {
+ 		    ($line =~ /\bcommit\s+[0-9a-f]{5,}\b/i ||
+ 		     ($line =~ /(?:\s|^)[0-9a-f]{12,40}(?:[\s"'\(\[]|$)/i &&
+ 		      $line !~ /[\<\[][0-9a-f]{12,40}[\>\]]/i &&
+-		      $line !~ /\bfixes:\s*[0-9a-f]{12,40}/i))) {
++		      $line !~ /^\s*fixes:\s*(?:[0-9a-f]{6,40})\s*(?:.*)/i))) {
+ 			my $init_char = "c";
+ 			my $orig_commit = "";
+ 			my $short = 1;
+@@ -2979,6 +2979,13 @@ sub process {
+ 			}
+ 		}
  
- 	info = framebuffer_alloc(sizeof(struct mdpy_fb_par), &pdev->dev);
--	if (!info)
-+	if (!info) {
-+		ret = -ENOMEM;
- 		goto err_release_regions;
-+	}
- 	pci_set_drvdata(pdev, info);
- 	par = info->par;
-
-
-
++		if ($in_commit_log && $line =~ /^\s*fixes:\s*([0-9a-f]{6,40})\s*(.*)/i) {
++		    if (length($1) < 12 || $2 !~ /^\(\"(?:.*)\"\)$/i) {
++				ERROR("FIXES_TAG",
++					"please use the 'Fixes:' tag with at least the first 12 characters of the SHA-1 ID, and the one line summary(no across multiple lines)\n" . $herecurr);
++			}
++		}
++
+ # ignore non-hunk lines and lines being removed
+ 		next if (!$hunk_line || $line =~ /^-/);
+ 
+-- 
+1.8.5.6.2.g3d8a54e.dirty

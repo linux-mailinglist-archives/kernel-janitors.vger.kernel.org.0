@@ -2,92 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAEC51BBBE4
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 13:06:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A6121BBC1F
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 13:14:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726498AbgD1LGh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 07:06:37 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:52798 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726345AbgD1LGh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 07:06:37 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 17C49FA5ABDC1D5E94A3;
-        Tue, 28 Apr 2020 19:06:33 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 28 Apr 2020 19:06:26 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        "Thierry Reding" <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <alsa-devel@alsa-project.org>, <linux-tegra@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] ASoC: tegra: tegra_wm8903: Use devm_snd_soc_register_card()
-Date:   Tue, 28 Apr 2020 11:07:42 +0000
-Message-ID: <20200428110742.110335-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726699AbgD1LOR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 07:14:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59868 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726574AbgD1LOQ (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Apr 2020 07:14:16 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9510C03C1A9;
+        Tue, 28 Apr 2020 04:14:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=Z+2cHsAhwOcwa/ZOru5Iyu559NSgRTBiKbey/voC8u8=; b=nIyNbar6GQ2gfHkkoUVhjswdA8
+        Vkwis7Zk1JPnkr1oXjqfrAthCSBE1dcsEZHAGvSeAMEZXOEGEaU9ODVZ0BE/qRQWfW8sq/3X6uARA
+        asc0G24RG36WSB4dHiVq/3rXfqsnY5iKDhlMjfJlqCrKKDhDh6ORdOVQDti48qO5nzcpPZywR2MCO
+        EyC4qcxNpUwymMgQiGoSnY+uivQ9/bdOqOiIiucHyDujj5d4Po652GcaUO4eeDEVucor+8IbdJrnh
+        PV92NQ3xzaLTRs8ar9EuIBJ/yRZk9WTpdosuE4NxDu+LzeW84kI2tH/yfayOfP2FPmiSlcCyVzJHr
+        SxuOYjFg==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jTOBf-0006yn-Vr; Tue, 28 Apr 2020 11:14:03 +0000
+Date:   Tue, 28 Apr 2020 04:14:03 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Waiman Long <longman@redhat.com>,
+        Manfred Spraul <manfred@colorfullife.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Alexey Dobriyan <adobriyan@gmail.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] ipc: use GFP_ATOMIC under spin lock
+Message-ID: <20200428111403.GJ29705@bombadil.infradead.org>
+References: <20200428034736.27850-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200428034736.27850-1-weiyongjun1@huawei.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Using devm_snd_soc_register_card() can make the code
-shorter and cleaner.
+On Tue, Apr 28, 2020 at 03:47:36AM +0000, Wei Yongjun wrote:
+> The function ipc_id_alloc() is called from ipc_addid(), in which
+> a spin lock is held, so we should use GFP_ATOMIC instead.
+> 
+> Fixes: de5738d1c364 ("ipc: convert ipcs_idr to XArray")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- sound/soc/tegra/tegra_wm8903.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+I see why you think that, but it's not true.  Yes, we hold a spinlock, but
+the spinlock is in an object which is not reachable from any other CPU.
+So it's not possible to deadlock.  This probably confuses all kinds
+of automated checkers, and I should probably rewrite the code to not
+acquire the new spinlock until we're already holding the xa_lock.
 
-diff --git a/sound/soc/tegra/tegra_wm8903.c b/sound/soc/tegra/tegra_wm8903.c
-index 7bf159965c4d..d3ead0213cef 100644
---- a/sound/soc/tegra/tegra_wm8903.c
-+++ b/sound/soc/tegra/tegra_wm8903.c
-@@ -351,9 +351,9 @@ static int tegra_wm8903_driver_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	ret = snd_soc_register_card(card);
-+	ret = devm_snd_soc_register_card(&pdev->dev, card);
- 	if (ret) {
--		dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n",
-+		dev_err(&pdev->dev, "devm_snd_soc_register_card failed (%d)\n",
- 			ret);
- 		return ret;
- 	}
-@@ -361,15 +361,6 @@ static int tegra_wm8903_driver_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
--static int tegra_wm8903_driver_remove(struct platform_device *pdev)
--{
--	struct snd_soc_card *card = platform_get_drvdata(pdev);
--
--	snd_soc_unregister_card(card);
--
--	return 0;
--}
--
- static const struct of_device_id tegra_wm8903_of_match[] = {
- 	{ .compatible = "nvidia,tegra-audio-wm8903", },
- 	{},
-@@ -382,7 +373,6 @@ static struct platform_driver tegra_wm8903_driver = {
- 		.of_match_table = tegra_wm8903_of_match,
- 	},
- 	.probe = tegra_wm8903_driver_probe,
--	.remove = tegra_wm8903_driver_remove,
- };
- module_platform_driver(tegra_wm8903_driver);
-
-
-
+Converting to GFP_ATOMIC is completely wrong.

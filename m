@@ -2,103 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FBAA1BD074
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 01:10:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CB7F1BD089
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 01:17:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726539AbgD1XKY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 19:10:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59352 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726044AbgD1XKX (ORCPT
+        id S1726476AbgD1XRH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 19:17:07 -0400
+Received: from smtprelay0092.hostedemail.com ([216.40.44.92]:40440 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726386AbgD1XRH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 19:10:23 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD617C03C1AC;
-        Tue, 28 Apr 2020 16:10:23 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id w3so89668plz.5;
-        Tue, 28 Apr 2020 16:10:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Vofm21PZH1pw7v6LaX0gc/oJcO0nhMFI7Prv0sy1TXA=;
-        b=mGR6f5gFMQGKkibLEPxRgwv4WHJ+usAUvOAu0DEKXwCUHhfVKSHxNrpaOKjfuisywv
-         u99MldIDb+yq42iZleHTkQG15em+Cq/V8QBvYkq1YkVLAJFMqRBI2RttUmM/mgIq9xTQ
-         9C6OoboHo1PqmHeXMzJIKLWh2ExtZWUbo/K8Sza0wMvdCe6KPHOEjUgvke8a6qqDjd1L
-         GCaU0Dcd/rHDY+QSWMy6EG1mPzbYBSdpOt9nP//D17JGMgMQkGy5busk6Pnj+HR7lxT1
-         9zebMP70KfkdRhX4nexVqRlaZ3IXJ6XIokV9lwu3AD/kcKq3hqeDewhNpX+GH+j3xkhR
-         X4qQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Vofm21PZH1pw7v6LaX0gc/oJcO0nhMFI7Prv0sy1TXA=;
-        b=W5reLrkKhqZ4yjQig9/lCC05GnzQRXW7Xkmsruh0VBtgsxaU1DMj7h3sqWnRa3dQR7
-         DS74ZUf2ll2B+i0yBxrd31gnapjjx58/8P8P1FWr5D3+04FnYTXJXI2ei+rpx3+V5obl
-         JlDg+JLc25HV/bSyLY+RjlyfC3Dhzr2FWIUpoJKbJuAFh71k+Bak8eh7lfiwWG1iLhEV
-         fG38Hiu6ZE0XWcwTVHGhP8BYFDTAJySNwUxP9+oYrJ2C+XlUln4vbChk/6+oI1oUVEHi
-         gGDdTKKtUnlpiHU+7ATTfP4CHMTWwTkh11kKvO0yvII3Vwx8oiyX+V5Qo5J7ER4kLeZO
-         W7SQ==
-X-Gm-Message-State: AGi0PuZSkQC5+4M8R/1OO3GJB9P4/ePSbNKclfo5Hogp4KVu2j1Uky9M
-        Cpc6lg0RKg9ylc0oCuX5ZeM=
-X-Google-Smtp-Source: APiQypJD5d72NHyMgSFqHuc6EW4wsLS8A1IYdUwwqU/m7Ommdnaz1baFawPzDASp7jKZhXYtLcMSeg==
-X-Received: by 2002:a17:90a:db83:: with SMTP id h3mr7732927pjv.87.1588115423366;
-        Tue, 28 Apr 2020 16:10:23 -0700 (PDT)
-Received: from dtor-ws ([2620:15c:202:201:3c2a:73a9:c2cf:7f45])
-        by smtp.gmail.com with ESMTPSA id c80sm15814127pfb.82.2020.04.28.16.10.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2020 16:10:22 -0700 (PDT)
-Date:   Tue, 28 Apr 2020 16:10:20 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Duggan <aduggan@synaptics.com>,
-        Evan Green <evgreen@chromium.org>, linux-input@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] Input: synaptics-rmi4 - fix error return code in
- rmi_driver_probe()
-Message-ID: <20200428231020.GX125362@dtor-ws>
-References: <20200428134948.78343-1-weiyongjun1@huawei.com>
+        Tue, 28 Apr 2020 19:17:07 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 35322182CED28;
+        Tue, 28 Apr 2020 23:17:06 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:967:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2525:2560:2563:2682:2685:2731:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:3872:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:5007:8957:8985:9025:10004:10400:10848:11232:11658:11914:12043:12297:12438:12555:12679:12740:12760:12895:12986:13069:13311:13357:13439:14096:14097:14181:14659:14721:21080:21611:21627:21811:30012:30054:30070:30080:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: body11_780e320e03c1f
+X-Filterd-Recvd-Size: 1981
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf14.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 28 Apr 2020 23:17:04 +0000 (UTC)
+Message-ID: <a2d7dbae193800ce430321d3fcc71ab5d1a5ed03.camel@perches.com>
+Subject: Re: [PATCH v3] checkpatch: add dedicated checker for 'Fixes:' tag
+From:   Joe Perches <joe@perches.com>
+To:     Wang YanQing <udknight@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Andy Whitcroft <apw@canonical.com>, Markus.Elfring@web.de,
+        mcroce@redhat.com
+Date:   Tue, 28 Apr 2020 16:17:03 -0700
+In-Reply-To: <b452dc29fb553fa5993b90131dcdbc04ed87532e.camel@perches.com>
+References: <20200428020223.GA28074@udknight>
+         <b452dc29fb553fa5993b90131dcdbc04ed87532e.camel@perches.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.1-2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200428134948.78343-1-weiyongjun1@huawei.com>
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Apr 28, 2020 at 01:49:48PM +0000, Wei Yongjun wrote:
-> Fix to return a negative error code from the input_register_device()
-> error handling case instead of 0, as done elsewhere in this function.
+On Tue, 2020-04-28 at 09:10 -0700, Joe Perches wrote:
+> On Tue, 2020-04-28 at 10:02 +0800, Wang YanQing wrote:
+> > According to submitting-patches.rst, 'Fixes:' tag has a little
+> > stricter condition about the one line summary:
+> > ...
+> > Do not split the tag across multiple
+> > lines, tags are exempt from the "wrap at 75 columns" rule in order to simplify
+> > parsing scripts
+> > ...
+> > 
+> > And there is no 'Fixes:' tag format checker in checkpatch to check
+> > the commit id length too, so let's add dedicated checker to check
+> > these conditions for 'Fixes:' tag.
 > 
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-
-Applied, thank you.
-
-> ---
->  drivers/input/rmi4/rmi_driver.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> There's no need to duplicate functionality like this.
+> Put this additional Fixes: logic into the existing block.
 > 
-> diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
-> index 190b9974526b..bfc08d7b25d0 100644
-> --- a/drivers/input/rmi4/rmi_driver.c
-> +++ b/drivers/input/rmi4/rmi_driver.c
-> @@ -1210,7 +1210,8 @@ static int rmi_driver_probe(struct device *dev)
->  	if (data->input) {
->  		rmi_driver_set_input_name(rmi_dev, data->input);
->  		if (!rmi_dev->xport->input) {
-> -			if (input_register_device(data->input)) {
-> +			retval = input_register_device(data->input);
-> +			if (retval) {
->  				dev_err(dev, "%s: Failed to register input device.\n",
->  					__func__);
->  				goto err_destroy_functions;
-> 
-> 
+> (and don't take advise from Markus too seriously when it
+> comes to English grammar or wording.  He is not an arbiter
+> of taste for this code)
 > 
 
--- 
-Dmitry
+btw:  I suggested this patch last year.
+
+https://lore.kernel.org/lkml/40bfc40958fca6e2cc9b86101153aa0715fac4f7.camel@perches.com/
+
+

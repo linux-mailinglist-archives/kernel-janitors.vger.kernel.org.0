@@ -2,146 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78F591BBB9C
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 12:53:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAEC51BBBE4
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 13:06:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726466AbgD1KxQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 06:53:16 -0400
-Received: from mout.web.de ([212.227.15.3]:42609 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726436AbgD1KxQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 06:53:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588071188;
-        bh=MuVgc++mK1LoWNYOk+q2KcESKGNFPp/aLL8KlvUH+Gs=;
-        h=X-UI-Sender-Class:Subject:To:References:From:Cc:Date:In-Reply-To;
-        b=RgHbtbSsazkbszQhoU375M3MGYNDvQLKmMHoYFKItv3VmMrnfc4DeGEXpFfKNsk4/
-         PYsQn7j9Sw3ZPnkDrvQtEMUXA0EOA46pkSFt3tcTQ1SX4aWW8Jd7aKtePyyIVHrn4N
-         g7bleMpGVjttU8dBxvkHjC8luWeYr77dowMS5k9I=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.179.255]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MRzYo-1jacsz3aCA-00TDQr; Tue, 28
- Apr 2020 12:53:08 +0200
-Subject: Re: [PATCH v3] checkpatch: add dedicated checker for 'Fixes:' tag
-To:     Wang YanQing <udknight@gmail.com>, Joe Perches <joe@perches.com>,
-        Andy Whitcroft <apw@canonical.com>,
-        kernel-janitors@vger.kernel.org
-References: <20200428020223.GA28074@udknight>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Cc:     linux-kernel@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Matteo Croce <mcroce@redhat.com>
-Message-ID: <38e1a926-53a6-bda6-cb07-2614f4c682ba@web.de>
-Date:   Tue, 28 Apr 2020 12:52:59 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1726498AbgD1LGh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 07:06:37 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:52798 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726345AbgD1LGh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Apr 2020 07:06:37 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 17C49FA5ABDC1D5E94A3;
+        Tue, 28 Apr 2020 19:06:33 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 28 Apr 2020 19:06:26 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        "Thierry Reding" <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <alsa-devel@alsa-project.org>, <linux-tegra@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] ASoC: tegra: tegra_wm8903: Use devm_snd_soc_register_card()
+Date:   Tue, 28 Apr 2020 11:07:42 +0000
+Message-ID: <20200428110742.110335-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20200428020223.GA28074@udknight>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:YKYuo3VtcPy/WpQxFfAYFZ+4mmQ7Yk4hS39wdYgPgrW+R29Y4Iy
- K+yaGL8E7gOgSXLpIIEUIBm31JqdoQWr2CawQjohzk3DFkYeGVCdt+wWKZVwfo5kC4aCTQu
- 2J6NV0QK88qEnsZGFifnMCptx22GC1POT4wIMQfFa4Sl2ELWfNOWGPIBxXD4saySsQ74IGA
- bRKyjK0GUt/spzB8DZuBQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:SKe5jNOUlDI=:nacpSeCOguexjVHhQWvj5w
- nvIlpcInm1WOZOtm0oyxJ5ujgwhqjo86w9iOoO7PkAEqNkuqOi6k+RxmHiM0TZYOCNpzs8mp6
- NBdkMhXxRRTYLzZJO2EQuS2PQVuv7dnJdHpyVy37WPTLMTA3YeRsKunlQqmookoExWUHshYX2
- j3W4fnAh9S3Cwn11Lr4kPmGjDjK0i0EErgxr+T8Rdh6VaufppS2rqX89Vwn1ftrL58mj3F2Ah
- naidg2warb+82F6f5gLA4Pnss1nRzaWLLXnHwrCs6xuL6Dv6GVFUNmIS9JIb76MHOccKhG1+m
- kzImckkIOeu98lzQ78Cz9H1fR4sUY8pudwWMUKlUdHkbDtv8kRgDQ7LR7HsI5FXTb2rjinDld
- Jr2NE5HwGXOU4Rbej54cRsaDAmpFGjLmbGop1R8EUe2tlpsSHz///XhWUMz+jRif2MZlcgQKO
- o6MaMcztXsH865cJC3JiAu9ygYgWO/YpmEZmOjmfeXTcS6ELUG3ND0TX7gdKdmriwHrrcB7VV
- eGsZL2CtdbCaDzyPfJNwPT/4LntDL6f2DZSv7ZRbjyog6oI2bBNlZk1H0qzVVLLKKfUzaEO1Y
- Jw9cxeC+1JqAW+wREQ4RoN9S/PbA9ao9v55PCFkVkg8AJUfXb/kHTJUaq0C+odbcGGn2u6z4V
- +CzikrJveJpkSDF3hModLIn1fqBAi71w35V6684cbSb3GIsL4Vwe51/grL0/Ym/3+Cp6xHgeY
- YuI1grLWmHvS6IgMh3uEojDNJfUjNw/XgZhCQPmqVK2Yj4xL/sOx2bPAMBmKp5d/F7LSjR7ox
- nHmXc/mFZbB1nuZU7WSwWx4NjE/3GUWYIxG9SGp5U+b9QwgdEZU1nhh4Q3R9iAJ3QA0wyMpmw
- TYPWk54sr0O8bqL6ucHi71phHOmG2m4EWiLETbTotO0lqP235ZuoeMgvYjN3nhRAx2fIf17Bq
- jQHG9Dki+KJI3ikhedzuFBIRN9PI3jYmiK4opwU3fqI8AhCva/ov/mfepNeJcvOWXRMCpmRdX
- eqSwMbFFlXJOrdApPBE/JtQZPDhxzpfOPBMlDgX880WkaQ+YNnwHpDh5DPD8hz0TA/5GUX2eP
- FAm4WXOwaGdols5U3cOcgJM+TUmJvWCMBVLkrnud+I40XSP2S5qoE5jJeGEoE7xP/twwHY6DE
- wWLXtc8WHiJqjsx47hzU5Dn+pTCiDwvVBZusqYpdehClByth555ZsqDmL5KjfJWUQ2eSArPLV
- Z/xTYwQ2csk9lkL5b
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> And there is no 'Fixes:' tag format checker in checkpatch
+Using devm_snd_soc_register_card() can make the code
+shorter and cleaner.
 
-I have taken another look at corresponding implementation details.
-Will programming challenges get any more attention?
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ sound/soc/tegra/tegra_wm8903.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
+
+diff --git a/sound/soc/tegra/tegra_wm8903.c b/sound/soc/tegra/tegra_wm8903.c
+index 7bf159965c4d..d3ead0213cef 100644
+--- a/sound/soc/tegra/tegra_wm8903.c
++++ b/sound/soc/tegra/tegra_wm8903.c
+@@ -351,9 +351,9 @@ static int tegra_wm8903_driver_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = snd_soc_register_card(card);
++	ret = devm_snd_soc_register_card(&pdev->dev, card);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n",
++		dev_err(&pdev->dev, "devm_snd_soc_register_card failed (%d)\n",
+ 			ret);
+ 		return ret;
+ 	}
+@@ -361,15 +361,6 @@ static int tegra_wm8903_driver_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static int tegra_wm8903_driver_remove(struct platform_device *pdev)
+-{
+-	struct snd_soc_card *card = platform_get_drvdata(pdev);
+-
+-	snd_soc_unregister_card(card);
+-
+-	return 0;
+-}
+-
+ static const struct of_device_id tegra_wm8903_of_match[] = {
+ 	{ .compatible = "nvidia,tegra-audio-wm8903", },
+ 	{},
+@@ -382,7 +373,6 @@ static struct platform_driver tegra_wm8903_driver = {
+ 		.of_match_table = tegra_wm8903_of_match,
+ 	},
+ 	.probe = tegra_wm8903_driver_probe,
+-	.remove = tegra_wm8903_driver_remove,
+ };
+ module_platform_driver(tegra_wm8903_driver);
 
 
-> to check the commit id length too,
 
-The mentioned script contains the following information.
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/s=
-cripts/checkpatch.pl?id=3Db240f960afb900e59112ebcfa5a759bb0a85a14e#n2818
-
-# Check for git id commit length and improperly formed commit descriptions
-
-
-> so let's add dedicated checker to check these conditions for 'Fixes:' ta=
-g.
-
-How do you think about to reconsider the usage of the word =E2=80=9Cchecke=
-r=E2=80=9D
-at specific places?
-
-
-> +		    my $id =3D '0123456789ab';
-> +		    my $orig_desc =3D "commit description";
-
-* Do you try to extend the existing software analysis approach =E2=80=9CGI=
-T_COMMIT_ID=E2=80=9D?
-
-* Would you like to avoid the development of duplicate Perl code?
-
-Regards,
-Markus

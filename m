@@ -2,33 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F36D51BC01E
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 15:48:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D8B91BC024
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 15:49:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727794AbgD1Nsx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 09:48:53 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:54890 "EHLO huawei.com"
+        id S1727874AbgD1NtM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 09:49:12 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:41056 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726798AbgD1Nsx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 09:48:53 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 337BFB22FFF0DA479CEE;
-        Tue, 28 Apr 2020 21:48:43 +0800 (CST)
+        id S1726798AbgD1NtM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Apr 2020 09:49:12 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 1C32781411DE4945C840;
+        Tue, 28 Apr 2020 21:49:09 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 28 Apr 2020 21:48:32 +0800
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 28 Apr 2020 21:49:02 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Andrew Duggan <aduggan@synaptics.com>,
-        Evan Green <evgreen@chromium.org>
+To:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>
 CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-input@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] Input: synaptics-rmi4 - fix error return code in rmi_driver_probe()
-Date:   Tue, 28 Apr 2020 13:49:48 +0000
-Message-ID: <20200428134948.78343-1-weiyongjun1@huawei.com>
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] stm class: dummy_stm: fix error return code in dummy_stm_init()
+Date:   Tue, 28 Apr 2020 13:50:19 +0000
+Message-ID: <20200428135019.78920-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -40,28 +39,39 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return a negative error code from the input_register_device()
-error handling case instead of 0, as done elsewhere in this function.
+Fix to return error code -ENOMEM from the error handling case instead
+of 0(ret can be overwritted to 0 in for loop).
 
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/input/rmi4/rmi_driver.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hwtracing/stm/dummy_stm.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
-index 190b9974526b..bfc08d7b25d0 100644
---- a/drivers/input/rmi4/rmi_driver.c
-+++ b/drivers/input/rmi4/rmi_driver.c
-@@ -1210,7 +1210,8 @@ static int rmi_driver_probe(struct device *dev)
- 	if (data->input) {
- 		rmi_driver_set_input_name(rmi_dev, data->input);
- 		if (!rmi_dev->xport->input) {
--			if (input_register_device(data->input)) {
-+			retval = input_register_device(data->input);
-+			if (retval) {
- 				dev_err(dev, "%s: Failed to register input device.\n",
- 					__func__);
- 				goto err_destroy_functions;
+diff --git a/drivers/hwtracing/stm/dummy_stm.c b/drivers/hwtracing/stm/dummy_stm.c
+index 38528ffdc0b3..36d32e7afb35 100644
+--- a/drivers/hwtracing/stm/dummy_stm.c
++++ b/drivers/hwtracing/stm/dummy_stm.c
+@@ -68,7 +68,7 @@ static int dummy_stm_link(struct stm_data *data, unsigned int master,
+ 
+ static int dummy_stm_init(void)
+ {
+-	int i, ret = -ENOMEM;
++	int i, ret;
+ 
+ 	if (nr_dummies < 0 || nr_dummies > DUMMY_STM_MAX)
+ 		return -EINVAL;
+@@ -80,8 +80,10 @@ static int dummy_stm_init(void)
+ 
+ 	for (i = 0; i < nr_dummies; i++) {
+ 		dummy_stm[i].name = kasprintf(GFP_KERNEL, "dummy_stm.%d", i);
+-		if (!dummy_stm[i].name)
++		if (!dummy_stm[i].name) {
++			ret = -ENOMEM;
+ 			goto fail_unregister;
++		}
+ 
+ 		dummy_stm[i].sw_start		= master_min;
+ 		dummy_stm[i].sw_end		= master_max;
 
 
 

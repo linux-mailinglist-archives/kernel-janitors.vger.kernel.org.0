@@ -2,30 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEDF91BBFB5
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 15:38:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37DE41BC019
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 15:47:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726942AbgD1Ni1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 09:38:27 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:46552 "EHLO huawei.com"
+        id S1727099AbgD1Nrx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 09:47:53 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3327 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726846AbgD1Ni1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 09:38:27 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 840A11DD02B8EA81E182;
-        Tue, 28 Apr 2020 21:38:24 +0800 (CST)
+        id S1726798AbgD1Nrw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Apr 2020 09:47:52 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 5AB36E1E74B4ADC021EB;
+        Tue, 28 Apr 2020 21:47:49 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 28 Apr 2020 21:38:18 +0800
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 28 Apr 2020 21:47:39 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        zhengbin <zhengbin13@huawei.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-usb@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] usb: gadget: mass_storage: use module_usb_composite_driver to simplify the code
-Date:   Tue, 28 Apr 2020 13:39:34 +0000
-Message-ID: <20200428133934.73637-1-weiyongjun1@huawei.com>
+To:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] stm class: stm_heartbeat: fix error return code
+Date:   Tue, 28 Apr 2020 13:48:55 +0000
+Message-ID: <20200428134855.78014-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -37,39 +39,39 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-module_usb_composite_driver() makes the code simpler by
-eliminating boilerplate code.
+Fix to return error code -ENOMEM from the error handling case instead
+of 0(ret can be overwritted to 0 in for loop).
 
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/usb/gadget/legacy/mass_storage.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ drivers/hwtracing/stm/heartbeat.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/legacy/mass_storage.c b/drivers/usb/gadget/legacy/mass_storage.c
-index f18f77584fc2..9ed22c5fb7fe 100644
---- a/drivers/usb/gadget/legacy/mass_storage.c
-+++ b/drivers/usb/gadget/legacy/mass_storage.c
-@@ -229,18 +229,8 @@ static struct usb_composite_driver msg_driver = {
- 	.unbind		= msg_unbind,
- };
+diff --git a/drivers/hwtracing/stm/heartbeat.c b/drivers/hwtracing/stm/heartbeat.c
+index 3e7df1c0477f..81d7b21d31ec 100644
+--- a/drivers/hwtracing/stm/heartbeat.c
++++ b/drivers/hwtracing/stm/heartbeat.c
+@@ -64,7 +64,7 @@ static void stm_heartbeat_unlink(struct stm_source_data *data)
  
-+module_usb_composite_driver(msg_driver);
-+
- MODULE_DESCRIPTION(DRIVER_DESC);
- MODULE_AUTHOR("Michal Nazarewicz");
- MODULE_LICENSE("GPL");
--
--static int __init msg_init(void)
--{
--	return usb_composite_probe(&msg_driver);
--}
--module_init(msg_init);
--
--static void __exit msg_cleanup(void)
--{
--	usb_composite_unregister(&msg_driver);
--}
--module_exit(msg_cleanup);
+ static int stm_heartbeat_init(void)
+ {
+-	int i, ret = -ENOMEM;
++	int i, ret;
+ 
+ 	if (nr_devs < 0 || nr_devs > STM_HEARTBEAT_MAX)
+ 		return -EINVAL;
+@@ -72,8 +72,10 @@ static int stm_heartbeat_init(void)
+ 	for (i = 0; i < nr_devs; i++) {
+ 		stm_heartbeat[i].data.name =
+ 			kasprintf(GFP_KERNEL, "heartbeat.%d", i);
+-		if (!stm_heartbeat[i].data.name)
++		if (!stm_heartbeat[i].data.name) {
++			ret = -ENOMEM;
+ 			goto fail_unregister;
++		}
+ 
+ 		stm_heartbeat[i].data.nr_chans	= 1;
+ 		stm_heartbeat[i].data.link	= stm_heartbeat_link;
 
 
 

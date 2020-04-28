@@ -2,119 +2,127 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A2D81BBE5C
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 14:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 143241BBE91
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 15:08:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726915AbgD1M4u (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 08:56:50 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:42084 "EHLO
+        id S1726891AbgD1NH7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 09:07:59 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:55216 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726746AbgD1M4t (ORCPT
+        with ESMTP id S1726859AbgD1NH7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 08:56:49 -0400
+        Tue, 28 Apr 2020 09:07:59 -0400
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03SCqkWU167004;
-        Tue, 28 Apr 2020 12:56:38 GMT
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03SD2jZp028814;
+        Tue, 28 Apr 2020 13:07:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : references : mime-version : content-type :
  in-reply-to; s=corp-2020-01-29;
- bh=4qhmUDa7F437ChnjAQ6A8+Tyq1qMBj5fTsTxjwYc8pU=;
- b=riB2txC4dB+WfIbJ8jO8RYQ9znXob3bZ56ZmZBxW7KqkDOga1rfUGMb7qU14dvAOda9d
- m8WWAxv2bH+Q9HvM9XarrdD6ldFP55+oXWVcDUH72Lr2fuPobjhKN3IJyRM40T2j0Krv
- Pj6mYhKXRaJIzWc5zofqPhD9/joQefp/VZwpPCiem7UYmOLD32RqQTKchLfYU0c7wE+X
- LEl0rSBjykJEE1MKJbMCPvL+PTRJieB9jMROEQ4MsjTxHDVdD5nlWnDb2u4LKnLDIU5h
- KkOFaJl1CbWRnGZycfbvKxi1dAjbIv1t4KvOun/B8zjeKQfx/N1E7YYO5Zbd9w4dWyZ8 0A== 
+ bh=pDHU9M6f72WUZ/ZNWExBD4yEfNasWsxAFE00KhinmNc=;
+ b=mqAjY9DCEo1NMLw75T9dtlA6mWmqn4hsaw1BnKMfD4iOfaCJ3rPoMigwbIDmQbsOF36w
+ H4upoPliuTHWYi/atRbVLBJmSULIW+JhYoLzqianNfKynu7j1Ny6sW/N50uD4aJBXV/s
+ EDnHS9yEFb8G//sfi4BWTjAhj/3jkE3dcUIOVO3TE+qBU5yz+ISOMn4K19jgWhppEaKL
+ KXkJS6UPQPAXdkC2Jo0DDGq3YsKAfdqf6a3oSqnpkb+kdJe/nRzgUpyKW/m0iMrEKBSy
+ Ikk40XtAVEwlB9UkZxckzAfLbrEaKjMJcXRFXD16eJ3R23Meg1I358M3c1tFmM7ss+cv gQ== 
 Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 30nucfyqw8-1
+        by aserp2120.oracle.com with ESMTP id 30nucfyteh-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 28 Apr 2020 12:56:38 +0000
+        Tue, 28 Apr 2020 13:07:45 +0000
 Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03SCpt9L182449;
-        Tue, 28 Apr 2020 12:54:37 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 30mxwypfte-1
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03SD1uQg029938;
+        Tue, 28 Apr 2020 13:07:44 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 30mxwyqn8c-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 28 Apr 2020 12:54:37 +0000
-Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03SCsYHe008311;
-        Tue, 28 Apr 2020 12:54:35 GMT
+        Tue, 28 Apr 2020 13:07:44 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 03SD7gXm002218;
+        Tue, 28 Apr 2020 13:07:42 GMT
 Received: from kadam (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 28 Apr 2020 05:54:34 -0700
-Date:   Tue, 28 Apr 2020 15:54:26 +0300
+        with ESMTP ; Tue, 28 Apr 2020 06:07:41 -0700
+Date:   Tue, 28 Apr 2020 16:07:34 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     okaya@kernel.org, agross@kernel.org, bjorn.andersson@linaro.org,
-        vkoul@kernel.org, dan.j.williams@intel.com,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] dmaengine: qcom_hidma: Simplify error handling path in
- hidma_probe
-Message-ID: <20200428125426.GE2014@kadam>
-References: <20200427111043.70218-1-christophe.jaillet@wanadoo.fr>
+To:     Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] PCI: dwc: pci-dra7xx: Fix potential NULL
+ dereference in dra7xx_pcie_probe()
+Message-ID: <20200428130734.GF2014@kadam>
+References: <20200427111044.162618-1-weiyongjun1@huawei.com>
+ <cad871c8-0915-9dda-2c61-30dfb5504d23@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200427111043.70218-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <cad871c8-0915-9dda-2c61-30dfb5504d23@ti.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9604 signatures=668686
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 bulkscore=0
- suspectscore=2 mlxlogscore=999 phishscore=0 malwarescore=0 mlxscore=0
+ suspectscore=0 mlxlogscore=999 phishscore=0 malwarescore=0 mlxscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004280100
+ definitions=main-2004280102
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9604 signatures=668686
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 priorityscore=1501
- mlxlogscore=999 impostorscore=0 suspectscore=2 malwarescore=0
+ mlxlogscore=999 impostorscore=0 suspectscore=0 malwarescore=0
  lowpriorityscore=0 mlxscore=0 spamscore=0 adultscore=0 phishscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004280100
+ engine=8.12.0-2003020000 definitions=main-2004280102
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Apr 27, 2020 at 01:10:43PM +0200, Christophe JAILLET wrote:
-> There is no need to call 'hidma_debug_uninit()' in the error handling
-> path. 'hidma_debug_init()' has not been called yet.
+On Mon, Apr 27, 2020 at 05:29:50PM +0530, Vignesh Raghavendra wrote:
+> Hi,
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->  drivers/dma/qcom/hidma.c | 1 -
->  1 file changed, 1 deletion(-)
+> On 27/04/20 4:40 pm, Wei Yongjun wrote:
+> > platform_get_resource() may fail and return NULL, so we should
+> > better check it's return value to avoid a NULL pointer dereference
+> > a bit later in the code.
+> > 
+> > This is detected by Coccinelle semantic patch.
+> > 
+> > @@
+> > expression pdev, res, n, t, e, e1, e2;
+> > @@
+> > 
+> > res = \(platform_get_resource\|platform_get_resource_byname\)(pdev, t, n);
+> > + if (!res)
+> > +   return -EINVAL;
+> > ... when != res == NULL
+> > e = devm_ioremap(e1, res->start, e2);
+> > 
+> > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> > ---
+> >  drivers/pci/controller/dwc/pci-dra7xx.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+> > index 3b0e58f2de58..7a3d12f7e7d9 100644
+> > --- a/drivers/pci/controller/dwc/pci-dra7xx.c
+> > +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+> > @@ -878,6 +878,9 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
+> >  	}
+> >  
+> >  	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "ti_conf");
+                                           ^^^^
+
+> > +	if (!res)
+> > +		return -EINVAL;
+> > +
+> >  	base = devm_ioremap(dev, res->start, resource_size(res));
+                            ^^^
 > 
-> diff --git a/drivers/dma/qcom/hidma.c b/drivers/dma/qcom/hidma.c
-> index 411f91fde734..87490e125bc3 100644
-> --- a/drivers/dma/qcom/hidma.c
-> +++ b/drivers/dma/qcom/hidma.c
-> @@ -897,7 +897,6 @@ static int hidma_probe(struct platform_device *pdev)
->  	if (msi)
-            ^^^
-This test doesn't work.  It will call free hidma_free_msis() if the
-hidma_request_msi() call fails.  We should do:
+> I don't see why this should be devm_ioremap(). It should also have been
+> devm_ioremap_resource() which does the NULL check.
 
-	if (msi) {
-		rc = hidma_request_msi(dmadev, pdev);
-		msi = false;
-	}
-
-	if (!msi) {
-		hidma_ll_setup_irq(dmadev->lldev, false);
-		rc = devm_request_irq(&pdev->dev, chirq, hidma_chirq_handler,
-				      0, "qcom-hidma", dmadev->lldev);
-		if (rc)
-			goto uninit;
-	}
-
-
->  		hidma_free_msis(dmadev);
->  
-> -	hidma_debug_uninit(dmadev);
->  	hidma_ll_uninit(dmadev->lldev);
->  dmafree:
->  	if (dmadev)
-            ^^^^^^
-This test isn't necessary and should be deleted.
+It's different device pointers.
 
 regards,
 dan carpenter
+

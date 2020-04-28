@@ -2,64 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A4B11BB47D
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 05:25:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E4661BB4C8
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 05:46:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726350AbgD1DZQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Apr 2020 23:25:16 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188]:2064 "EHLO huawei.com"
+        id S1726303AbgD1Dqb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Apr 2020 23:46:31 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3358 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726270AbgD1DZQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Apr 2020 23:25:16 -0400
-Received: from DGGEML404-HUB.china.huawei.com (unknown [172.30.72.57])
-        by Forcepoint Email with ESMTP id 7F131EF0F6DD1DA90DEA;
-        Tue, 28 Apr 2020 11:25:14 +0800 (CST)
-Received: from DGGEML424-HUB.china.huawei.com (10.1.199.41) by
- DGGEML404-HUB.china.huawei.com (10.3.17.39) with Microsoft SMTP Server (TLS)
- id 14.3.487.0; Tue, 28 Apr 2020 11:25:14 +0800
-Received: from DGGEML532-MBS.china.huawei.com ([169.254.7.137]) by
- dggeml424-hub.china.huawei.com ([10.1.199.41]) with mapi id 14.03.0487.000;
- Tue, 28 Apr 2020 11:25:09 +0800
-From:   "weiyongjun (A)" <weiyongjun1@huawei.com>
-To:     David Lechner <david@lechnology.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>
-CC:     "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: re: [PATCH net-next] drivers: net: davinci_mdio: fix potential NULL
- dereference in davinci_mdio_probe()
-Thread-Topic: [PATCH net-next] drivers: net: davinci_mdio: fix potential
- NULL dereference in davinci_mdio_probe()
-Thread-Index: AdYdDJhllU98YjTxSV6t/TDCiihblw==
-Date:   Tue, 28 Apr 2020 03:25:09 +0000
-Message-ID: <6AADFAC011213A4C87B956458587ADB419A6B43E@dggeml532-mbs.china.huawei.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.166.215.142]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1726047AbgD1Dqb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Apr 2020 23:46:31 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 3BA991195396E64954D1;
+        Tue, 28 Apr 2020 11:46:29 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 28 Apr 2020 11:46:18 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Waiman Long <longman@redhat.com>,
+        Manfred Spraul <manfred@colorfullife.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        "Alexey Dobriyan" <adobriyan@gmail.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] ipc: use GFP_ATOMIC under spin lock
+Date:   Tue, 28 Apr 2020 03:47:36 +0000
+Message-ID: <20200428034736.27850-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-PiANCj4gT24gNC8yNy8yMCA0OjQwIEFNLCBXZWkgWW9uZ2p1biB3cm90ZToNCj4gPiBwbGF0Zm9y
-bV9nZXRfcmVzb3VyY2UoKSBtYXkgZmFpbCBhbmQgcmV0dXJuIE5VTEwsIHNvIHdlIHNob3VsZCBi
-ZXR0ZXINCj4gPiBjaGVjayBpdCdzIHJldHVybiB2YWx1ZSB0byBhdm9pZCBhIE5VTEwgcG9pbnRl
-ciBkZXJlZmVyZW5jZSBhIGJpdA0KPiA+IGxhdGVyIGluIHRoZSBjb2RlLg0KPiA+DQo+ID4gVGhp
-cyBpcyBkZXRlY3RlZCBieSBDb2NjaW5lbGxlIHNlbWFudGljIHBhdGNoLg0KPiA+DQo+ID4gQEAN
-Cj4gPiBleHByZXNzaW9uIHBkZXYsIHJlcywgbiwgdCwgZSwgZTEsIGUyOyBAQA0KPiA+DQo+ID4g
-cmVzID0gXChwbGF0Zm9ybV9nZXRfcmVzb3VyY2VcfHBsYXRmb3JtX2dldF9yZXNvdXJjZV9ieW5h
-bWVcKShwZGV2LCB0LCBuKTsNCj4gPiArIGlmICghcmVzKQ0KPiA+ICsgICByZXR1cm4gLUVJTlZB
-TDsNCj4gPiAuLi4gd2hlbiAhPSByZXMgPT0gTlVMTA0KPiA+IGUgPSBkZXZtX2lvcmVtYXAoZTEs
-IHJlcy0+c3RhcnQsIGUyKTsNCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFdlaSBZb25nanVuIDx3
-ZWl5b25nanVuMUBodWF3ZWkuY29tPg0KPiA+IC0tLQ0KPiANCj4gQ291bGQgd2UgdXNlIGRldm1f
-cGxhdGZvcm1faW9yZW1hcF9yZXNvdXJjZSgpIGluc3RlYWQ/DQoNCldlIGNhbm5vdCB1c2UgZGV2
-bV9wbGF0Zm9ybV9pb3JlbWFwX3Jlc291cmNlKCkgaGVyZSwgc2VlDQpDb21taXQgMDNmNjZmMDY3
-NTYwICgibmV0OiBldGhlcm5ldDogdGk6IGRhdmluY2lfbWRpbzogdXNlIGRldm1faW9yZW1hcCgp
-IikNCg0KUmVnYXJkcw0K
+The function ipc_id_alloc() is called from ipc_addid(), in which
+a spin lock is held, so we should use GFP_ATOMIC instead.
+
+Fixes: de5738d1c364 ("ipc: convert ipcs_idr to XArray")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ ipc/util.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/ipc/util.c b/ipc/util.c
+index 723dc4b05208..093b31993d39 100644
+--- a/ipc/util.c
++++ b/ipc/util.c
+@@ -241,7 +241,7 @@ static inline int ipc_id_alloc(struct ipc_ids *ids, struct kern_ipc_perm *new)
+ 					xas.xa_index;
+ 			xas_store(&xas, new);
+ 			xas_clear_mark(&xas, XA_FREE_MARK);
+-		} while (__xas_nomem(&xas, GFP_KERNEL));
++		} while (__xas_nomem(&xas, GFP_ATOMIC));
+ 
+ 		xas_unlock(&xas);
+ 		err = xas_error(&xas);
+@@ -250,7 +250,7 @@ static inline int ipc_id_alloc(struct ipc_ids *ids, struct kern_ipc_perm *new)
+ 		new->id = get_restore_id(ids);
+ 		new->seq = ipcid_to_seqx(new->id);
+ 		idx = ipcid_to_idx(new->id);
+-		err = xa_insert(&ids->ipcs, idx, new, GFP_KERNEL);
++		err = xa_insert(&ids->ipcs, idx, new, GFP_ATOMIC);
+ 		if (err == -EBUSY)
+ 			err = -ENOSPC;
+ 		set_restore_id(ids, -1);
+
+
+

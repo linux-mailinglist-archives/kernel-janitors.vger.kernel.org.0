@@ -2,30 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A3171BB99D
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 11:14:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF6201BB9D3
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 11:28:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726823AbgD1JOM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 05:14:12 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:32668 "EHLO
+        id S1727054AbgD1J2Q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 05:28:16 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:36775 "EHLO
         mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726462AbgD1JOM (ORCPT
+        by vger.kernel.org with ESMTP id S1726932AbgD1J2Q (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 05:14:12 -0400
+        Tue, 28 Apr 2020 05:28:16 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588065252; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1588066095; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=P1PiMuu3oWgoTqEw9FLbtQoQtGRtPeR0ydwWC4gs3rg=;
- b=LvQC/7pnFz4K9t1S71q+EBGiSJC+qIRiwna8mqqxH7fqfvSuQa+tMo7NOOMnfC7SrZQV0F7g
- FkXQYTaCFcv7RUMZKg3GdnfUqf1Y6OugegxbsQv7N6HFO8VcFN3foeyuo0utolZgFXDZ4hY/
- YMZ2iqZH94dnDFQ2VV8JruHV2Bg=
+ Content-Type: Sender; bh=P4VZX3ZX9bjFPFi5wqqFiuPyQ1zJ6+2LvNTJNZrdILk=;
+ b=a5t3KdbKVW01amAhhg+LtkEEUSVD+Fc0W2CwPpdsN1VmpeZ2TajG4CeFXukKu/vHGD62a3xn
+ +enOlG4db3hMgMO4ECYtG9cp11f/sQqeAdZQl0NyBVB7gJ29zRt7sfwoZa4I4nO2hyuPmi8k
+ iSwlNoMIUvGvf+4bexIndP4HNBg=
 X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ea7f3d9.7f5a2fffc6f8-smtp-out-n05;
- Tue, 28 Apr 2020 09:14:01 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5ea7f721.7f3ee3d93308-smtp-out-n03;
+ Tue, 28 Apr 2020 09:28:01 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 8F890C433CB; Tue, 28 Apr 2020 09:14:00 +0000 (UTC)
+        id 224E1C433F2; Tue, 28 Apr 2020 09:28:01 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,27 +35,25 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 22395C433D2;
-        Tue, 28 Apr 2020 09:13:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 22395C433D2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3CEA2C433D2;
+        Tue, 28 Apr 2020 09:27:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3CEA2C433D2
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net-next] ath11k: use GFP_ATOMIC under spin lock
+Subject: Re: [PATCH net-next] ath11k: remove redundant dev_err call in
+ ath11k_ahb_probe()
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200427092417.56236-1-weiyongjun1@huawei.com>
-References: <20200427092417.56236-1-weiyongjun1@huawei.com>
+In-Reply-To: <20200427104403.14598-1-weiyongjun1@huawei.com>
+References: <20200427104403.14598-1-weiyongjun1@huawei.com>
 To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Sumit Semwal <sumit.semwal@linaro.org>,
-        Wei Yongjun <weiyongjun1@huawei.com>,
-        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <linaro-mm-sig@lists.linaro.org>, <kernel-janitors@vger.kernel.org>
+Cc:     Wei Yongjun <weiyongjun1@huawei.com>, <ath11k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200428091400.8F890C433CB@smtp.codeaurora.org>
-Date:   Tue, 28 Apr 2020 09:14:00 +0000 (UTC)
+Message-Id: <20200428092801.224E1C433F2@smtp.codeaurora.org>
+Date:   Tue, 28 Apr 2020 09:28:01 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -63,17 +61,17 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Wei Yongjun <weiyongjun1@huawei.com> wrote:
 
-> A spin lock is taken here so we should use GFP_ATOMIC.
+> There is a error message within devm_ioremap_resource
+> already, so remove the dev_err call to avoid redundant
+> error message.
 > 
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
 > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Patch applied to ath-next branch of ath.git, thanks.
-
-69c93f9674c9 ath11k: use GFP_ATOMIC under spin lock
+I don't see harm having two error messages and having an error message
+within ath11k makes it easier to find the exact location, so I'm
+dropping this.
 
 -- 
-https://patchwork.kernel.org/patch/11511711/
+https://patchwork.kernel.org/patch/11511845/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

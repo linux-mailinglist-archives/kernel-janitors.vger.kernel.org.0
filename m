@@ -2,31 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D7681BC0E4
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 16:13:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90C2D1BC0F6
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 16:16:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727827AbgD1ONw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 10:13:52 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:50156 "EHLO huawei.com"
+        id S1727840AbgD1OQN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 10:16:13 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3328 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727104AbgD1ONw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 10:13:52 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 8F55461E685899CC7FBD;
-        Tue, 28 Apr 2020 22:13:50 +0800 (CST)
+        id S1727790AbgD1OQN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Apr 2020 10:16:13 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id E70692BBD42DE853D15B;
+        Tue, 28 Apr 2020 22:16:07 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 28 Apr 2020 22:13:43 +0800
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 28 Apr 2020 22:16:00 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
         David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>
+        Daniel Vetter <daniel@ffwll.ch>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>
 CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        <dri-devel@lists.freedesktop.org>,
+        <linux-renesas-soc@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] drm/mcde: dsi: Fix return value check in dev_err()
-Date:   Tue, 28 Apr 2020 14:14:59 +0000
-Message-ID: <20200428141459.87624-1-weiyongjun1@huawei.com>
+Subject: [PATCH -next] drm/rcar-du: Fix return value check in rcar_du_cmm_init()
+Date:   Tue, 28 Apr 2020 14:17:16 +0000
+Message-ID: <20200428141716.87958-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -38,35 +41,46 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, the function of_drm_find_bridge() returns NULL pointer
-not ERR_PTR(). The IS_ERR() test in the return value check should be
-replaced with NULL test.
+In case of error, the function of_parse_phandle()/of_find_device_by_node()
+returns NULL pointer not ERR_PTR(). The IS_ERR() test in the return value
+check should be replaced with NULL test
 
+Fixes: 8de707aeb452 ("drm: rcar-du: kms: Initialize CMM instances")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/gpu/drm/mcde/mcde_dsi.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/rcar-du/rcar_du_kms.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/mcde/mcde_dsi.c b/drivers/gpu/drm/mcde/mcde_dsi.c
-index 7af5ebb0c436..e705afc08c4e 100644
---- a/drivers/gpu/drm/mcde/mcde_dsi.c
-+++ b/drivers/gpu/drm/mcde/mcde_dsi.c
-@@ -1073,10 +1073,9 @@ static int mcde_dsi_bind(struct device *dev, struct device *master,
- 			panel = NULL;
+diff --git a/drivers/gpu/drm/rcar-du/rcar_du_kms.c b/drivers/gpu/drm/rcar-du/rcar_du_kms.c
+index 482329102f19..0da711d9b2f8 100644
+--- a/drivers/gpu/drm/rcar-du/rcar_du_kms.c
++++ b/drivers/gpu/drm/rcar-du/rcar_du_kms.c
+@@ -650,10 +650,10 @@ static int rcar_du_cmm_init(struct rcar_du_device *rcdu)
+ 		int ret;
  
- 			bridge = of_drm_find_bridge(child);
--			if (IS_ERR(bridge)) {
--				dev_err(dev, "failed to find bridge (%ld)\n",
--					PTR_ERR(bridge));
--				return PTR_ERR(bridge);
-+			if (!bridge) {
-+				dev_err(dev, "failed to find bridge\n");
-+				return -EINVAL;
- 			}
+ 		cmm = of_parse_phandle(np, "renesas,cmms", i);
+-		if (IS_ERR(cmm)) {
++		if (!cmm) {
+ 			dev_err(rcdu->dev,
+ 				"Failed to parse 'renesas,cmms' property\n");
+-			return PTR_ERR(cmm);
++			return -ENODEV;
  		}
- 	}
-
-
+ 
+ 		if (!of_device_is_available(cmm)) {
+@@ -663,10 +663,10 @@ static int rcar_du_cmm_init(struct rcar_du_device *rcdu)
+ 		}
+ 
+ 		pdev = of_find_device_by_node(cmm);
+-		if (IS_ERR(pdev)) {
++		if (!pdev) {
+ 			dev_err(rcdu->dev, "No device found for CMM%u\n", i);
+ 			of_node_put(cmm);
+-			return PTR_ERR(pdev);
++			return -ENODEV;
+ 		}
+ 
+ 		of_node_put(cmm);
 
 
 

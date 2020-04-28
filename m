@@ -2,124 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9EA71BE1C1
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 16:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8642B1BC686
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 19:23:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726701AbgD2Ox2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Apr 2020 10:53:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36934 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726484AbgD2Ox1 (ORCPT
+        id S1728309AbgD1RXo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 13:23:44 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:56436 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728212AbgD1RXo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Apr 2020 10:53:27 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3D05C03C1AD;
-        Wed, 29 Apr 2020 07:53:27 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id 145so1162776pfw.13;
-        Wed, 29 Apr 2020 07:53:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=0ZRCFqU303/twN8hVJ5hqfcmrbnv34m+1dUf1S5stNk=;
-        b=aOYnwekw+Ep61qJAMEnkw1HpeaNpSpUiVZAODecFZzn3FmNASj/FNznKgfNWegoS60
-         Yx5v1NGzv3S/cPXEc3ALlBzUihHvwDLvBYDf17ffCaRVDrXS7RuTipnW8sDa30ggxmse
-         RxoTryFRRFriEs7NCReUY3zAzzqEf45PXnZxoAn9U33LHz7Y/EXsLGugPMvi1SoSxEqq
-         WjhhGe5oRPVT2bScL/FE/cnQ1Q3Ib8s4lq/Dm0vMqw9KXRs1rHPyQ7f9yl8eiLOl1YIb
-         k+wLFh11qK0RwlCEPBLxcBsPeEylR5cfU3rJWCmg4L/vfq9U6d9G6fHsv3rHNlf8jPL7
-         ofNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :content-transfer-encoding:in-reply-to:user-agent;
-        bh=0ZRCFqU303/twN8hVJ5hqfcmrbnv34m+1dUf1S5stNk=;
-        b=a0i++ZttpGzhTov6BWEBpoZ8GNv933+x4sUKPNbacyDy/S2AEN4BksqR0xDkYtu8WV
-         Dn9wyIZUBTtvQkfOe+qdsdrNmPBYnJ0QJo0hCgPLofepm/CeLIxoyff47JxqZlfDBjGP
-         2Lf51Q0Cra81G9TaC2nSxax/aW+Q2TvRYAkSgHjmaZIJy7xNAT4uiImkPrD6aJ/7jrlT
-         Otc9BTZxB8Dd6DEHzYrfFY8VZWtZoLdxFsyBYNjqkONfPsOJA8+nfQ593hIYMQ87uRVM
-         jPFLvCnpxCOKFGNve47vMMtP5jDdlagDiqgLuPzgNhPIb3N2xLuktonwYvkAnApyGGgF
-         Lvew==
-X-Gm-Message-State: AGi0PuYLitqG4rOy0CCuuNRbkOFogbIeq1xKaicigL7EOlkBusQaw1mN
-        2FvpMyE4yagGPhCnOeYTU0Y=
-X-Google-Smtp-Source: APiQypII7p7aNkIJuh7yMUE3jid684h7H+f5nYDkdRXBk7Yp8huPtWwgw135zQbdhJ8i10Nsn1nMGA==
-X-Received: by 2002:aa7:951b:: with SMTP id b27mr35415299pfp.2.1588172007216;
-        Wed, 29 Apr 2020 07:53:27 -0700 (PDT)
-Received: from udknight.localhost ([59.57.158.27])
-        by smtp.gmail.com with ESMTPSA id y24sm1243603pfn.211.2020.04.29.07.53.25
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 29 Apr 2020 07:53:26 -0700 (PDT)
-Received: from udknight.localhost (localhost [127.0.0.1])
-        by udknight.localhost (8.14.9/8.14.4) with ESMTP id 03SGIdPj000709;
-        Wed, 29 Apr 2020 00:18:39 +0800
-Received: (from root@localhost)
-        by udknight.localhost (8.14.9/8.14.9/Submit) id 03SGIVsG000694;
-        Wed, 29 Apr 2020 00:18:31 +0800
-Date:   Wed, 29 Apr 2020 00:18:31 +0800
-From:   Wang YanQing <udknight@gmail.com>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Joe Perches <joe@perches.com>, Andy Whitcroft <apw@canonical.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Matteo Croce <mcroce@redhat.com>
-Subject: Re: [PATCH v3] checkpatch: add dedicated checker for 'Fixes:' tag
-Message-ID: <20200428161831.GB30042@udknight>
-Mail-Followup-To: Wang YanQing <udknight@gmail.com>,
-        Markus Elfring <Markus.Elfring@web.de>,
-        Joe Perches <joe@perches.com>, Andy Whitcroft <apw@canonical.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Matteo Croce <mcroce@redhat.com>
-References: <20200428020223.GA28074@udknight>
- <38e1a926-53a6-bda6-cb07-2614f4c682ba@web.de>
+        Tue, 28 Apr 2020 13:23:44 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03SHN2qP036115;
+        Tue, 28 Apr 2020 17:23:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=nYRe3Y8uXuglxFzIR12FaigY66zRmKUyGWDwXjiXdU8=;
+ b=cN0Bqq2/+5KRYNGOWfNpmF2uU9/AZOaZnRLCqrEa8dn/0TSCuzme1svSzlLnwkW+8rYK
+ jzh/40NuUaLzABl4FTCby60G7PoklecspEg0nyHSr1hxFRfjRyZwPFsZ6tGzrZBTmWee
+ MvmtIlZOmgx7CjGwclIUJCMoLxqkrrj5A1oyoVl2EYeGhENkvDUFWwnT/c/bu8D04hVX
+ FXm09Uq2SZSxcK+ljsRt4CiKw7kNzfsHCiowYVFK1yRlJ3r4JdBHENHhhQDcWvdxLv18
+ Sm7ZZuhoihIJCxCDuZ817tUtdbF8Ml176gGjCnb6k6HPu5udZg67li7HyjLtkdB5fIzE Nw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 30nucg1br4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 28 Apr 2020 17:23:34 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03SHC1EK003111;
+        Tue, 28 Apr 2020 17:21:34 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 30mxrt194w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 28 Apr 2020 17:21:34 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03SHLUSY017447;
+        Tue, 28 Apr 2020 17:21:30 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 28 Apr 2020 10:21:29 -0700
+Date:   Tue, 28 Apr 2020 20:21:16 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Sinan Kaya <okaya@kernel.org>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        agross@kernel.org, bjorn.andersson@linaro.org, vkoul@kernel.org,
+        dan.j.williams@intel.com, linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] dmaengine: qcom_hidma: Simplify error handling path in
+ hidma_probe
+Message-ID: <20200428172116.GG2014@kadam>
+References: <20200427111043.70218-1-christophe.jaillet@wanadoo.fr>
+ <20200428125426.GE2014@kadam>
+ <1efa0186-7fbe-9cb5-2719-2d7192f99e27@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <38e1a926-53a6-bda6-cb07-2614f4c682ba@web.de>
-User-Agent: Mutt/1.7.1 (2016-10-04)
+In-Reply-To: <1efa0186-7fbe-9cb5-2719-2d7192f99e27@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 suspectscore=2
+ mlxlogscore=999 malwarescore=0 bulkscore=0 spamscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004280136
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 priorityscore=1501
+ mlxlogscore=999 impostorscore=0 suspectscore=2 malwarescore=0
+ lowpriorityscore=0 mlxscore=0 spamscore=0 adultscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004280137
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Apr 28, 2020 at 12:52:59PM +0200, Markus Elfring wrote:
-> > And there is no 'Fixes:' tag format checker in checkpatch
-> 
-> I have taken another look at corresponding implementation details.
-> Will programming challenges get any more attention?
-> 
-> 
-> > to check the commit id length too,
-> 
-> The mentioned script contains the following information.
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/scripts/checkpatch.pl?id=b240f960afb900e59112ebcfa5a759bb0a85a14e#n2818
-> 
-> # Check for git id commit length and improperly formed commit descriptions
-> 
-> 
-> > so let's add dedicated checker to check these conditions for 'Fixes:' tag.
-> 
-> How do you think about to reconsider the usage of the word “checker”
-> at specific places?
+I apologize, I wrote my code hurriedly and did no explain the bug well.
+I understood what the code is doing, but my fix was missing an if
+condition.
 
-Yes, I will use the word "check" only in later version.
+On Tue, Apr 28, 2020 at 12:01:15PM -0400, Sinan Kaya wrote:
+> On 4/28/2020 8:54 AM, Dan Carpenter wrote:
+> >> @@ -897,7 +897,6 @@ static int hidma_probe(struct platform_device *pdev)
+> >>  	if (msi)
+> >             ^^^
+> > This test doesn't work.  It will call free hidma_free_msis() if the
+> > hidma_request_msi() call fails.  We should do:
+> > 
+> > 	if (msi) {
+> > 		rc = hidma_request_msi(dmadev, pdev);
+> > 		msi = false;
 
-> 
-> 
-> > +		    my $id = '0123456789ab';
-> > +		    my $orig_desc = "commit description";
-> 
-> * Do you try to extend the existing software analysis approach “GIT_COMMIT_ID”?
-> 
-> * Would you like to avoid the development of duplicate Perl code?
+What I meant to say here was:
 
-Fixes: lines don't need to have a "commit" prefix before the commit id, the description
-in normal commit id could across multiple lines, and we don't need to consider the
-$commit_log_possible_stack_dump for 'Fixes:' tag line. I mean it will make the GIT_COMMIT_ID
-code become harder to read and maintain.
+	if (msi) {
+		rc = hidma_request_msi(dmadev, pdev);
+		if (rc)
+			msi = false;
 
-> 
-> Regards,
-> Markus
+Otherwise we end up checking freeing the msi in the error handling
+code when we did not take it.
+
+Hopefully, that clears things up?
+
+regards,
+dan carpenter
+

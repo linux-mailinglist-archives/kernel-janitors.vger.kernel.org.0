@@ -2,63 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 350D21BC234
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 17:05:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44C931BC3E4
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 17:41:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728018AbgD1PFq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 11:05:46 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:3330 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727108AbgD1PFq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 11:05:46 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id F14513F101D2B6AD3396;
-        Tue, 28 Apr 2020 23:05:43 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 28 Apr 2020 23:05:34 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kirill Smelkov <kirr@nexedi.com>,
-        Nishka Dasgupta <nishkadg.linux@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <devel@driverdev.osuosl.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] staging: pi433: fix error return code in pi433_probe()
-Date:   Tue, 28 Apr 2020 15:06:50 +0000
-Message-ID: <20200428150650.102340-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+        id S1728327AbgD1PlR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 11:41:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47764 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728292AbgD1PlQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Apr 2020 11:41:16 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 17B62206D9;
+        Tue, 28 Apr 2020 15:41:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588088476;
+        bh=YTmkEeh0V9t31v30Qf9a/Bf0gPGvc6k9LnAqYb5SHLA=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=tEK/xzzSnuP34Iqa/c3Rr4apqerXPegbJea5YBI6IlIMmDk6c8fM6L45PQPv1jMu+
+         YwcLPB71FnKXn+nPGxfidsjfgW9t7YBBZgCx5sa//uqjpHPmWqX+wf8rFXbu4LyE5h
+         IEYNeHsfDb0kXBleFgWb8pbJEg6TE/Cd1F1kankQ=
+Date:   Tue, 28 Apr 2020 16:41:13 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Jonathan Hunter <jonathanh@nvidia.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Wei Yongjun <weiyongjun1@huawei.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Liam Girdwood <lgirdwood@gmail.com>
+Cc:     alsa-devel@alsa-project.org, linux-tegra@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+In-Reply-To: <20200428110742.110335-1-weiyongjun1@huawei.com>
+References: <20200428110742.110335-1-weiyongjun1@huawei.com>
+Subject: Re: [PATCH -next] ASoC: tegra: tegra_wm8903: Use devm_snd_soc_register_card()
+Message-Id: <158808847385.38342.17859489811900791487.b4-ty@kernel.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return negative error code -ENOMEM from cdev alloc failed error
-handling case instead of 0, as done elsewhere in this function.
+On Tue, 28 Apr 2020 11:07:42 +0000, Wei Yongjun wrote:
+> Using devm_snd_soc_register_card() can make the code
+> shorter and cleaner.
+> 
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  sound/soc/tegra/tegra_wm8903.c | 14 ++------------
+>  1 file changed, 2 insertions(+), 12 deletions(-)
+> 
+> [...]
 
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/staging/pi433/pi433_if.c | 1 +
- 1 file changed, 1 insertion(+)
+Applied to
 
-diff --git a/drivers/staging/pi433/pi433_if.c b/drivers/staging/pi433/pi433_if.c
-index 313d22f6210f..c8d0c63fdd1d 100644
---- a/drivers/staging/pi433/pi433_if.c
-+++ b/drivers/staging/pi433/pi433_if.c
-@@ -1230,6 +1230,7 @@ static int pi433_probe(struct spi_device *spi)
- 	device->cdev = cdev_alloc();
- 	if (!device->cdev) {
- 		dev_dbg(device->dev, "allocation of cdev failed");
-+		retval = -ENOMEM;
- 		goto cdev_failed;
- 	}
- 	device->cdev->owner = THIS_MODULE;
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.8
 
+Thanks!
 
+[1/1] ASoC: tegra: tegra_wm8903: Use devm_snd_soc_register_card()
+      commit: ac3367442d9e5971e32014c6fea41ca1662c0e2d
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

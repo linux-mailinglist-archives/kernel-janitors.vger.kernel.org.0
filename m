@@ -2,119 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD2BC1BCCD1
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 21:58:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65C071BCD30
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 22:13:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729038AbgD1T6O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 15:58:14 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:42674 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728559AbgD1T6O (ORCPT
+        id S1726441AbgD1UNe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 16:13:34 -0400
+Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:55581 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726284AbgD1UNd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 15:58:14 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03SJrp4B001622;
-        Tue, 28 Apr 2020 19:58:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=fgVW8SHlL4lo+HxxlLz7Gr/ftUNHzPDePQJYvyyrBI4=;
- b=kxvn03Qcj77WKcY+oCnkzbE133TkmTB5xUfqKzOiKDKPtM8JYr5FTFTykSLs80QP5loP
- i4ZDn+GZWw09SkJOERPGEniHA0LmQTZREao0ypUmcLamJUgU8kApDaoJl2CSRqzL/0EJ
- pCgCJo8SMDgqn0z2i413gk7zMFA82a6opg1BJYb1rL25ShA/Z4M1+H4iED7ubC5z2qKU
- 6fcp/x5CL3bxl0wlh9kLOy6eOWdfJfok6rpGsPA6aFNhF+JmoVW79vL5GnchWKvv9718
- IllIoBefAQcgtXrFa3g7Gn9GFjTxO0U3Sspnx9A9pej0RdJzotn65MH13yRTz6UokuvX qQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 30p2p07gbe-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 28 Apr 2020 19:58:08 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03SJqfKu164941;
-        Tue, 28 Apr 2020 19:56:08 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 30mxpgv1yb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 28 Apr 2020 19:56:08 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03SJu6sf008267;
-        Tue, 28 Apr 2020 19:56:06 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 28 Apr 2020 12:56:06 -0700
-Date:   Tue, 28 Apr 2020 22:56:00 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Suraj Upadhyay <usuraj35@gmail.com>
-Cc:     Jerome Pouiller <Jerome.Pouiller@silabs.com>,
-        devel@driverdev.osuosl.org, gregkh@linuxfoundation.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] staging: wfx: cleanup long lines in data_tx.c
-Message-ID: <20200428195600.GN2014@kadam>
-References: <20200425113234.GA14492@blackclown>
- <8518467.FNpd3NTrYF@pc-42>
- <20200427115827.GA3214@blackclown>
+        Tue, 28 Apr 2020 16:13:33 -0400
+Received: from [192.168.1.41] ([92.148.159.11])
+        by mwinf5d23 with ME
+        id YLDV220080F2omL03LDVBg; Tue, 28 Apr 2020 22:13:31 +0200
+X-ME-Helo: [192.168.1.41]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 28 Apr 2020 22:13:31 +0200
+X-ME-IP: 92.148.159.11
+Subject: Re: [PATCH] firmware: stratix10-svc: Fix some error handling paths in
+ 'stratix10_svc_drv_probe()'
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     richard.gong@linux.intel.com, gregkh@linuxfoundation.org,
+        atull@kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200426190307.40840-1-christophe.jaillet@wanadoo.fr>
+ <20200428115510.GA2014@kadam>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <f812994a-3de7-00d7-5f06-2e819d8be3f3@wanadoo.fr>
+Date:   Tue, 28 Apr 2020 22:13:28 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200427115827.GA3214@blackclown>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
- mlxscore=0 bulkscore=0 adultscore=0 phishscore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004280156
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 clxscore=1015
- bulkscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 malwarescore=0
- mlxscore=0 suspectscore=0 mlxlogscore=999 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004280156
+In-Reply-To: <20200428115510.GA2014@kadam>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Apr 27, 2020 at 05:28:27PM +0530, Suraj Upadhyay wrote:
-> On Mon, Apr 27, 2020 at 11:50:23AM +0000, Jerome Pouiller wrote:
-> > On Saturday 25 April 2020 13:32:34 CEST Suraj Upadhyay wrote:
-> > > Break lines with length over 80 characters to
-> > > conform to the linux coding style and refactor
-> > > wherever necessary.
-> > > 
-> > > Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
-> > > ---
-> > > 
-> > > Changes in v4:
-> > > 	- Added a space after declaration in wfx_get_hw_rate().
-> > > 	- A checkpatch warning for this commit is retained at line 75,
-> > > 	  to maintain uniformity in function declarations. (Reviewer
-> > > 	  jerome suggested).
-> > > 
-> > > Changes in v3:
-> > >         - Changed the temporary variable name for the memzcmp statement
-> > >           to is_used. (as suggested).
-> > >         - Added a temporary ieee80211_supported_band variable to address
-> > >           the problem in wfx_get_hw_rate() more efficiently. (not
-> > >           suggested, but still).
-> > > 
-> > > Changes in v2:
-> > >         - Introduced a temporary variable for the memzcmp statement.
-> > >         - Addressed the checkpatch problem with wfx_get_hw_rate().
-> > >         - Restored the function definition of wfx_tx_get_tx_parms
-> > >           as suggested by the reviewer.
-> > >         - Added suggested changes for req->packet_id statement.
-> > > 
-> > >  drivers/staging/wfx/data_tx.c | 40 +++++++++++++++++++++++------------
-> > >  1 file changed, 26 insertions(+), 14 deletions(-)
-> > 
-> > This patch does not contain the suggestions from Dan. However, it is
-> > sufficient from my personal point of view.
-> 
-> Yes, I considered them but thought it would be bad to introduce a new
-> variable at every iteration of the for-loop.
-> 
+Le 28/04/2020 à 13:55, Dan Carpenter a écrit :
+> On Sun, Apr 26, 2020 at 09:03:07PM +0200, Christophe JAILLET wrote:
+>> If an error occurs after calling 'kfifo_alloc()', the allocated memory
+>> should be freed with 'kfifo_free()', as already done in the remove
+>> function.
+>>
+>> Fixes: b5dc75c915cd ("firmware: stratix10-svc: extend svc to support new RSU features")
+>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>> ---
+>>   drivers/firmware/stratix10-svc.c | 15 +++++++++++----
+>>   1 file changed, 11 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
+>> index d5f0769f3761..cc9df9589195 100644
+>> --- a/drivers/firmware/stratix10-svc.c
+>> +++ b/drivers/firmware/stratix10-svc.c
+>> @@ -1043,24 +1043,31 @@ static int stratix10_svc_drv_probe(struct platform_device *pdev)
+>>   
+>>   	/* add svc client device(s) */
+>>   	svc = devm_kzalloc(dev, sizeof(*svc), GFP_KERNEL);
+>> -	if (!svc)
+>> -		return -ENOMEM;
+>> +	if (!svc) {
+>> +		ret = -ENOMEM;
+>> +		goto err_free_kfifo;
+>> +	}
+>>   
+>>   	svc->stratix10_svc_rsu = platform_device_alloc(STRATIX10_RSU, 0);
+>>   	if (!svc->stratix10_svc_rsu) {
+>>   		dev_err(dev, "failed to allocate %s device\n", STRATIX10_RSU);
+>> -		return -ENOMEM;
+>> +		ret = -ENOMEM;
+>> +		goto err_free_kfifo;
+>>   	}
+>>   
+>>   	ret = platform_device_add(svc->stratix10_svc_rsu);
+>>   	if (ret) {
+>>   		platform_device_put(svc->stratix10_svc_rsu);
+> Why not move this to the unwind code as well and do "goto put_platform;"?
 
-It's not bad at all.  I don't know why someone would think that.
+Sure, I'll send a V2.
 
-regards,
-dan carpenter
+CJ
+
+
+> regards,
+> dan carpenter
+>
+>> -		return ret;
+>> +		goto err_free_kfifo;
+>>   	}
+>>   	dev_set_drvdata(dev, svc);
+>>   
+>>   	pr_info("Intel Service Layer Driver Initialized\n");
+>>   
+>> +	return 0;
+>> +
+>> +err_free_kfifo:
+>> +	kfifo_free(&controller->svc_fifo);
+>>   	return ret;
+>>   }
+>
 

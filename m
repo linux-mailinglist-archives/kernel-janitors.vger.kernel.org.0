@@ -2,139 +2,124 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD6DD1BC4E2
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 18:16:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9EA71BE1C1
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 16:54:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728588AbgD1QQR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 12:16:17 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:56744 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728340AbgD1QQR (ORCPT
+        id S1726701AbgD2Ox2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Apr 2020 10:53:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36934 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726484AbgD2Ox1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 12:16:17 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03SGFudR001305;
-        Tue, 28 Apr 2020 11:15:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1588090556;
-        bh=8fXivnlbbbn4L5jCdnMcunsvQltul4JatC/I2sDPy3k=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=o8Q1dKAKumI9AuZuygJqiQhmee1QA49Ouc81U59hsiww7bK01VgxgrCqdNp7yzX0e
-         R1MmG05B4DFE+VsTxTkArUSJkdZBttmag33or25f9RZ/vacup2HQj3wS8sL6iOXivO
-         8R+19OS0oDS3UMBSbIjtaSdyKcwzFlOxoiKTE4cI=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 03SGFuw7008647
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 28 Apr 2020 11:15:56 -0500
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 28
- Apr 2020 11:15:56 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 28 Apr 2020 11:15:56 -0500
-Received: from [10.250.234.195] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03SGFpMO006509;
-        Tue, 28 Apr 2020 11:15:52 -0500
-Subject: Re: [PATCH -next] PCI: dwc: pci-dra7xx: Fix potential NULL
- dereference in dra7xx_pcie_probe()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <20200427111044.162618-1-weiyongjun1@huawei.com>
- <cad871c8-0915-9dda-2c61-30dfb5504d23@ti.com> <20200428130734.GF2014@kadam>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-Message-ID: <ebb4db96-08ef-64fe-5331-291f054562ed@ti.com>
-Date:   Tue, 28 Apr 2020 21:45:51 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Wed, 29 Apr 2020 10:53:27 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3D05C03C1AD;
+        Wed, 29 Apr 2020 07:53:27 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id 145so1162776pfw.13;
+        Wed, 29 Apr 2020 07:53:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=0ZRCFqU303/twN8hVJ5hqfcmrbnv34m+1dUf1S5stNk=;
+        b=aOYnwekw+Ep61qJAMEnkw1HpeaNpSpUiVZAODecFZzn3FmNASj/FNznKgfNWegoS60
+         Yx5v1NGzv3S/cPXEc3ALlBzUihHvwDLvBYDf17ffCaRVDrXS7RuTipnW8sDa30ggxmse
+         RxoTryFRRFriEs7NCReUY3zAzzqEf45PXnZxoAn9U33LHz7Y/EXsLGugPMvi1SoSxEqq
+         WjhhGe5oRPVT2bScL/FE/cnQ1Q3Ib8s4lq/Dm0vMqw9KXRs1rHPyQ7f9yl8eiLOl1YIb
+         k+wLFh11qK0RwlCEPBLxcBsPeEylR5cfU3rJWCmg4L/vfq9U6d9G6fHsv3rHNlf8jPL7
+         ofNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to:user-agent;
+        bh=0ZRCFqU303/twN8hVJ5hqfcmrbnv34m+1dUf1S5stNk=;
+        b=a0i++ZttpGzhTov6BWEBpoZ8GNv933+x4sUKPNbacyDy/S2AEN4BksqR0xDkYtu8WV
+         Dn9wyIZUBTtvQkfOe+qdsdrNmPBYnJ0QJo0hCgPLofepm/CeLIxoyff47JxqZlfDBjGP
+         2Lf51Q0Cra81G9TaC2nSxax/aW+Q2TvRYAkSgHjmaZIJy7xNAT4uiImkPrD6aJ/7jrlT
+         Otc9BTZxB8Dd6DEHzYrfFY8VZWtZoLdxFsyBYNjqkONfPsOJA8+nfQ593hIYMQ87uRVM
+         jPFLvCnpxCOKFGNve47vMMtP5jDdlagDiqgLuPzgNhPIb3N2xLuktonwYvkAnApyGGgF
+         Lvew==
+X-Gm-Message-State: AGi0PuYLitqG4rOy0CCuuNRbkOFogbIeq1xKaicigL7EOlkBusQaw1mN
+        2FvpMyE4yagGPhCnOeYTU0Y=
+X-Google-Smtp-Source: APiQypII7p7aNkIJuh7yMUE3jid684h7H+f5nYDkdRXBk7Yp8huPtWwgw135zQbdhJ8i10Nsn1nMGA==
+X-Received: by 2002:aa7:951b:: with SMTP id b27mr35415299pfp.2.1588172007216;
+        Wed, 29 Apr 2020 07:53:27 -0700 (PDT)
+Received: from udknight.localhost ([59.57.158.27])
+        by smtp.gmail.com with ESMTPSA id y24sm1243603pfn.211.2020.04.29.07.53.25
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 29 Apr 2020 07:53:26 -0700 (PDT)
+Received: from udknight.localhost (localhost [127.0.0.1])
+        by udknight.localhost (8.14.9/8.14.4) with ESMTP id 03SGIdPj000709;
+        Wed, 29 Apr 2020 00:18:39 +0800
+Received: (from root@localhost)
+        by udknight.localhost (8.14.9/8.14.9/Submit) id 03SGIVsG000694;
+        Wed, 29 Apr 2020 00:18:31 +0800
+Date:   Wed, 29 Apr 2020 00:18:31 +0800
+From:   Wang YanQing <udknight@gmail.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Joe Perches <joe@perches.com>, Andy Whitcroft <apw@canonical.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Matteo Croce <mcroce@redhat.com>
+Subject: Re: [PATCH v3] checkpatch: add dedicated checker for 'Fixes:' tag
+Message-ID: <20200428161831.GB30042@udknight>
+Mail-Followup-To: Wang YanQing <udknight@gmail.com>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        Joe Perches <joe@perches.com>, Andy Whitcroft <apw@canonical.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Matteo Croce <mcroce@redhat.com>
+References: <20200428020223.GA28074@udknight>
+ <38e1a926-53a6-bda6-cb07-2614f4c682ba@web.de>
 MIME-Version: 1.0
-In-Reply-To: <20200428130734.GF2014@kadam>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <38e1a926-53a6-bda6-cb07-2614f4c682ba@web.de>
+User-Agent: Mutt/1.7.1 (2016-10-04)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On 28/04/20 6:37 pm, Dan Carpenter wrote:
-> On Mon, Apr 27, 2020 at 05:29:50PM +0530, Vignesh Raghavendra wrote:
->> Hi,
->>
->> On 27/04/20 4:40 pm, Wei Yongjun wrote:
->>> platform_get_resource() may fail and return NULL, so we should
->>> better check it's return value to avoid a NULL pointer dereference
->>> a bit later in the code.
->>>
->>> This is detected by Coccinelle semantic patch.
->>>
->>> @@
->>> expression pdev, res, n, t, e, e1, e2;
->>> @@
->>>
->>> res = \(platform_get_resource\|platform_get_resource_byname\)(pdev, t, n);
->>> + if (!res)
->>> +   return -EINVAL;
->>> ... when != res == NULL
->>> e = devm_ioremap(e1, res->start, e2);
->>>
->>> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
->>> ---
->>>  drivers/pci/controller/dwc/pci-dra7xx.c | 3 +++
->>>  1 file changed, 3 insertions(+)
->>>
->>> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
->>> index 3b0e58f2de58..7a3d12f7e7d9 100644
->>> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
->>> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
->>> @@ -878,6 +878,9 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
->>>  	}
->>>  
->>>  	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "ti_conf");
->                                            ^^^^
+On Tue, Apr 28, 2020 at 12:52:59PM +0200, Markus Elfring wrote:
+> > And there is no 'Fixes:' tag format checker in checkpatch
 > 
->>> +	if (!res)
->>> +		return -EINVAL;
->>> +
->>>  	base = devm_ioremap(dev, res->start, resource_size(res));
->                             ^^^
->>
->> I don't see why this should be devm_ioremap(). It should also have been
->> devm_ioremap_resource() which does the NULL check.
+> I have taken another look at corresponding implementation details.
+> Will programming challenges get any more attention?
 > 
-> It's different device pointers.
 > 
-
-Sorry, I don't understand this comment... Currently we have:
-
-static int __init dra7xx_pcie_probe(struct platform_device *pdev)
-{
-        struct device *dev = &pdev->dev;
-	...
-	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "ti_conf");
-        base = devm_ioremap(dev, res->start, resource_size(res));
-        if (!base)
-                return -ENOMEM;
-
-Instead of the proposed patch, what I am asking is:
-
-	base = devm_platform_ioremap_resource_byname(pdev, "ti_conf");
-	if (IS_ERR(base))
-		return PTR_ERR(base);
-
-
-
-
-> regards,
-> dan carpenter
+> > to check the commit id length too,
 > 
+> The mentioned script contains the following information.
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/scripts/checkpatch.pl?id=b240f960afb900e59112ebcfa5a759bb0a85a14e#n2818
+> 
+> # Check for git id commit length and improperly formed commit descriptions
+> 
+> 
+> > so let's add dedicated checker to check these conditions for 'Fixes:' tag.
+> 
+> How do you think about to reconsider the usage of the word “checker”
+> at specific places?
+
+Yes, I will use the word "check" only in later version.
+
+> 
+> 
+> > +		    my $id = '0123456789ab';
+> > +		    my $orig_desc = "commit description";
+> 
+> * Do you try to extend the existing software analysis approach “GIT_COMMIT_ID”?
+> 
+> * Would you like to avoid the development of duplicate Perl code?
+
+Fixes: lines don't need to have a "commit" prefix before the commit id, the description
+in normal commit id could across multiple lines, and we don't need to consider the
+$commit_log_possible_stack_dump for 'Fixes:' tag line. I mean it will make the GIT_COMMIT_ID
+code become harder to read and maintain.
+
+> 
+> Regards,
+> Markus

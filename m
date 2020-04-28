@@ -2,50 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 141FF1BB71B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 08:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4CB41BB751
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 09:18:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726303AbgD1G6s (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 02:58:48 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:52106 "EHLO huawei.com"
+        id S1726451AbgD1HSa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 03:18:30 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:41556 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726259AbgD1G6s (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 02:58:48 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id B775DF1D1502DF519A93;
-        Tue, 28 Apr 2020 14:58:45 +0800 (CST)
-Received: from [127.0.0.1] (10.166.215.92) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.487.0; Tue, 28 Apr 2020
- 14:58:44 +0800
-Subject: Re: [PATCH bpf-next v3 1/2] bpf: Change error code when ops is NULL
-To:     Daniel Borkmann <daniel@iogearbox.net>, <ast@kernel.org>,
-        <kafai@fb.com>, <songliubraving@fb.com>, <yhs@fb.com>,
-        <andriin@fb.com>, <john.fastabend@gmail.com>,
-        <kpsingh@chromium.org>, <andrii.nakryiko@gmail.com>,
-        <dan.carpenter@oracle.com>
-CC:     <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
+        id S1726284AbgD1HSa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Apr 2020 03:18:30 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 8D35D3B30969C8CAFF1F;
+        Tue, 28 Apr 2020 15:18:25 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 28 Apr 2020 15:18:15 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <anna.schumaker@netapp.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-nfs@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>
-References: <20200426063635.130680-1-maowenan@huawei.com>
- <20200426063635.130680-2-maowenan@huawei.com>
- <6f975e8c-34f5-4bcb-d99d-d1977866bedf@iogearbox.net>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <0e8261b9-5519-fca3-afb2-e92ef98e8ea4@huawei.com>
-Date:   Tue, 28 Apr 2020 14:58:42 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+Subject: [PATCH -next] NFSv4: Use GFP_ATOMIC under spin lock in _pnfs_grab_empty_layout()
+Date:   Tue, 28 Apr 2020 07:19:32 +0000
+Message-ID: <20200428071932.69976-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <6f975e8c-34f5-4bcb-d99d-d1977866bedf@iogearbox.net>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.166.215.92]
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020/4/28 5:37, Daniel Borkmann wrote:
-> bpftool feature probe kernel | grep sockmap
-ok, thanks.
+A spin lock is taken here so we should use GFP_ATOMIC.
+
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ fs/nfs/pnfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index dd2e14f5875d..d84c1b7b71d2 100644
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -2170,7 +2170,7 @@ _pnfs_grab_empty_layout(struct inode *ino, struct nfs_open_context *ctx)
+ 	struct pnfs_layout_hdr *lo;
+ 
+ 	spin_lock(&ino->i_lock);
+-	lo = pnfs_find_alloc_layout(ino, ctx, GFP_KERNEL);
++	lo = pnfs_find_alloc_layout(ino, ctx, GFP_ATOMIC);
+ 	if (!lo)
+ 		goto out_unlock;
+ 	if (!test_bit(NFS_LAYOUT_INVALID_STID, &lo->plh_flags))
+
+
 

@@ -2,28 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED5F81BC22A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 17:02:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 350D21BC234
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 17:05:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727931AbgD1PCk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 11:02:40 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:3329 "EHLO huawei.com"
+        id S1728018AbgD1PFq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 11:05:46 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3330 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727108AbgD1PCk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 11:02:40 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id BA9D042D3CB2D33CBB90;
-        Tue, 28 Apr 2020 23:02:36 +0800 (CST)
+        id S1727108AbgD1PFq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Apr 2020 11:05:46 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id F14513F101D2B6AD3396;
+        Tue, 28 Apr 2020 23:05:43 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 28 Apr 2020 23:02:28 +0800
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 28 Apr 2020 23:05:34 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Jens Axboe <axboe@kernel.dk>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-block@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] block: fix error return code in mm_pci_probe()
-Date:   Tue, 28 Apr 2020 15:03:44 +0000
-Message-ID: <20200428150344.101399-1-weiyongjun1@huawei.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kirill Smelkov <kirr@nexedi.com>,
+        Nishka Dasgupta <nishkadg.linux@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <devel@driverdev.osuosl.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] staging: pi433: fix error return code in pi433_probe()
+Date:   Tue, 28 Apr 2020 15:06:50 +0000
+Message-ID: <20200428150650.102340-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -35,38 +39,26 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return negative error code -ENOMEM from the memory alloc failed
-error handling case instead of 0, as done elsewhere in this function.
+Fix to return negative error code -ENOMEM from cdev alloc failed error
+handling case instead of 0, as done elsewhere in this function.
 
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/block/umem.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/staging/pi433/pi433_if.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/block/umem.c b/drivers/block/umem.c
-index d84e8a878df2..184cb8f20387 100644
---- a/drivers/block/umem.c
-+++ b/drivers/block/umem.c
-@@ -875,6 +875,7 @@ static int mm_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 	if (card->mm_pages[0].desc == NULL ||
- 	    card->mm_pages[1].desc == NULL) {
- 		dev_printk(KERN_ERR, &card->dev->dev, "alloc failed\n");
-+		ret = -ENOMEM;
- 		goto failed_alloc;
+diff --git a/drivers/staging/pi433/pi433_if.c b/drivers/staging/pi433/pi433_if.c
+index 313d22f6210f..c8d0c63fdd1d 100644
+--- a/drivers/staging/pi433/pi433_if.c
++++ b/drivers/staging/pi433/pi433_if.c
+@@ -1230,6 +1230,7 @@ static int pi433_probe(struct spi_device *spi)
+ 	device->cdev = cdev_alloc();
+ 	if (!device->cdev) {
+ 		dev_dbg(device->dev, "allocation of cdev failed");
++		retval = -ENOMEM;
+ 		goto cdev_failed;
  	}
- 	reset_page(&card->mm_pages[0]);
-@@ -886,8 +887,10 @@ static int mm_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 	spin_lock_init(&card->lock);
- 
- 	card->queue = blk_alloc_queue(mm_make_request, NUMA_NO_NODE);
--	if (!card->queue)
-+	if (!card->queue) {
-+		ret = -ENOMEM;
- 		goto failed_alloc;
-+	}
- 	card->queue->queuedata = card;
- 
- 	tasklet_init(&card->tasklet, process_page, (unsigned long)card);
+ 	device->cdev->owner = THIS_MODULE;
 
 
 

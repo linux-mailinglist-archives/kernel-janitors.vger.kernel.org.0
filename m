@@ -2,34 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90C2D1BC0F6
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 16:16:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99C8D1BC0FF
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 16:17:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727840AbgD1OQN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 10:16:13 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:3328 "EHLO huawei.com"
+        id S1727967AbgD1ORx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 10:17:53 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:40294 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727790AbgD1OQN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 10:16:13 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id E70692BBD42DE853D15B;
-        Tue, 28 Apr 2020 22:16:07 +0800 (CST)
+        id S1727114AbgD1ORx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Apr 2020 10:17:53 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 53F634A93A80664C1FA2;
+        Tue, 28 Apr 2020 22:17:49 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
  DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 28 Apr 2020 22:16:00 +0800
+ 14.3.487.0; Tue, 28 Apr 2020 22:17:39 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Jacopo Mondi <jacopo+renesas@jmondi.org>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <dri-devel@lists.freedesktop.org>,
-        <linux-renesas-soc@vger.kernel.org>,
+To:     "Manoj N . Kumar" <manoj@linux.ibm.com>,
+        "Matthew R. Ochs" <mrochs@linux.ibm.com>,
+        Uma Krishnan <ukrishn@linux.ibm.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-scsi@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] drm/rcar-du: Fix return value check in rcar_du_cmm_init()
-Date:   Tue, 28 Apr 2020 14:17:16 +0000
-Message-ID: <20200428141716.87958-1-weiyongjun1@huawei.com>
+Subject: [PATCH -next] scsi: cxlflash: Fix error return code in cxlflash_probe()
+Date:   Tue, 28 Apr 2020 14:18:55 +0000
+Message-ID: <20200428141855.88704-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -41,46 +39,25 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, the function of_parse_phandle()/of_find_device_by_node()
-returns NULL pointer not ERR_PTR(). The IS_ERR() test in the return value
-check should be replaced with NULL test
+Fix to return negative error code -ENOMEM from create_afu error
+handling case instead of 0, as done elsewhere in this function.
 
-Fixes: 8de707aeb452 ("drm: rcar-du: kms: Initialize CMM instances")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/gpu/drm/rcar-du/rcar_du_kms.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/scsi/cxlflash/main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/rcar-du/rcar_du_kms.c b/drivers/gpu/drm/rcar-du/rcar_du_kms.c
-index 482329102f19..0da711d9b2f8 100644
---- a/drivers/gpu/drm/rcar-du/rcar_du_kms.c
-+++ b/drivers/gpu/drm/rcar-du/rcar_du_kms.c
-@@ -650,10 +650,10 @@ static int rcar_du_cmm_init(struct rcar_du_device *rcdu)
- 		int ret;
- 
- 		cmm = of_parse_phandle(np, "renesas,cmms", i);
--		if (IS_ERR(cmm)) {
-+		if (!cmm) {
- 			dev_err(rcdu->dev,
- 				"Failed to parse 'renesas,cmms' property\n");
--			return PTR_ERR(cmm);
-+			return -ENODEV;
- 		}
- 
- 		if (!of_device_is_available(cmm)) {
-@@ -663,10 +663,10 @@ static int rcar_du_cmm_init(struct rcar_du_device *rcdu)
- 		}
- 
- 		pdev = of_find_device_by_node(cmm);
--		if (IS_ERR(pdev)) {
-+		if (!pdev) {
- 			dev_err(rcdu->dev, "No device found for CMM%u\n", i);
- 			of_node_put(cmm);
--			return PTR_ERR(pdev);
-+			return -ENODEV;
- 		}
- 
- 		of_node_put(cmm);
+diff --git a/drivers/scsi/cxlflash/main.c b/drivers/scsi/cxlflash/main.c
+index fbd2ae40dab4..fcc5aa9f6014 100644
+--- a/drivers/scsi/cxlflash/main.c
++++ b/drivers/scsi/cxlflash/main.c
+@@ -3744,6 +3744,7 @@ static int cxlflash_probe(struct pci_dev *pdev,
+ 	cfg->afu_cookie = cfg->ops->create_afu(pdev);
+ 	if (unlikely(!cfg->afu_cookie)) {
+ 		dev_err(dev, "%s: create_afu failed\n", __func__);
++		rc = -ENOMEM;
+ 		goto out_remove;
+ 	}
 
 
 

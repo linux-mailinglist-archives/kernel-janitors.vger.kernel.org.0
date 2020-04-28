@@ -2,65 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76DA11BB923
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 10:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A3171BB99D
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Apr 2020 11:14:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726534AbgD1It2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 04:49:28 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:35677 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726271AbgD1It1 (ORCPT
+        id S1726823AbgD1JOM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 05:14:12 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:32668 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726462AbgD1JOM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 04:49:27 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jTLvc-00011u-S6; Tue, 28 Apr 2020 08:49:20 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/i915/gt: fix spelling mistake "evalution" -> "evaluation"
-Date:   Tue, 28 Apr 2020 09:49:20 +0100
-Message-Id: <20200428084920.1035125-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
+        Tue, 28 Apr 2020 05:14:12 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1588065252; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=P1PiMuu3oWgoTqEw9FLbtQoQtGRtPeR0ydwWC4gs3rg=;
+ b=LvQC/7pnFz4K9t1S71q+EBGiSJC+qIRiwna8mqqxH7fqfvSuQa+tMo7NOOMnfC7SrZQV0F7g
+ FkXQYTaCFcv7RUMZKg3GdnfUqf1Y6OugegxbsQv7N6HFO8VcFN3foeyuo0utolZgFXDZ4hY/
+ YMZ2iqZH94dnDFQ2VV8JruHV2Bg=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5ea7f3d9.7f5a2fffc6f8-smtp-out-n05;
+ Tue, 28 Apr 2020 09:14:01 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 8F890C433CB; Tue, 28 Apr 2020 09:14:00 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 22395C433D2;
+        Tue, 28 Apr 2020 09:13:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 22395C433D2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH net-next] ath11k: use GFP_ATOMIC under spin lock
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200427092417.56236-1-weiyongjun1@huawei.com>
+References: <20200427092417.56236-1-weiyongjun1@huawei.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Sumit Semwal <sumit.semwal@linaro.org>,
+        Wei Yongjun <weiyongjun1@huawei.com>,
+        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <linaro-mm-sig@lists.linaro.org>, <kernel-janitors@vger.kernel.org>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200428091400.8F890C433CB@smtp.codeaurora.org>
+Date:   Tue, 28 Apr 2020 09:14:00 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Wei Yongjun <weiyongjun1@huawei.com> wrote:
 
-There is a spelling mistaking in a pr_notice message. Fix it.
+> A spin lock is taken here so we should use GFP_ATOMIC.
+> 
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/i915/gt/selftest_rps.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Patch applied to ath-next branch of ath.git, thanks.
 
-diff --git a/drivers/gpu/drm/i915/gt/selftest_rps.c b/drivers/gpu/drm/i915/gt/selftest_rps.c
-index 181b29fa5b58..6ce7003bf92f 100644
---- a/drivers/gpu/drm/i915/gt/selftest_rps.c
-+++ b/drivers/gpu/drm/i915/gt/selftest_rps.c
-@@ -282,7 +282,7 @@ int live_rps_clock_interval(void *arg)
- 						  GEN6_RP_CUR_UP_EI),
- 			     10)) {
- 			/* Just skip the test; assume lack of HW support */
--			pr_notice("%s: rps evalution interval not ticking\n",
-+			pr_notice("%s: rps evaluation interval not ticking\n",
- 				  engine->name);
- 			err = -ENODEV;
- 		} else {
+69c93f9674c9 ath11k: use GFP_ATOMIC under spin lock
+
 -- 
-2.25.1
+https://patchwork.kernel.org/patch/11511711/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

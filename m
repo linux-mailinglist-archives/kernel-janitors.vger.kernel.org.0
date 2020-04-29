@@ -2,67 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 470791BD2B9
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 04:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFA1F1BD37D
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 06:21:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726571AbgD2C6w (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 22:58:52 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3377 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726507AbgD2C6v (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 22:58:51 -0400
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id C58BFA6554E70D350698;
-        Wed, 29 Apr 2020 10:53:18 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 29 Apr 2020 10:53:12 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Sanjay R Mehta <sanju.mehta@amd.com>,
-        Mark Brown <broonie@kernel.org>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-spi@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] spi: spi-amd: Fix a NULL vs IS_ERR() check in amd_spi_probe()
-Date:   Wed, 29 Apr 2020 02:54:26 +0000
-Message-ID: <20200429025426.167664-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+        id S1726636AbgD2EVo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Apr 2020 00:21:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51226 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726451AbgD2EVo (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 29 Apr 2020 00:21:44 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7CC6C03C1AC;
+        Tue, 28 Apr 2020 21:21:42 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id x18so820206wrq.2;
+        Tue, 28 Apr 2020 21:21:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=mCtLbL6Zr88D4dLaHGj83fov+fdvmqInAbjfmiya5zo=;
+        b=KcCq3sClZpqJ+2xt78xBXZ2HjIAMNDO9niYhUn/bcXUsDen5XtDase8Ia/KrNMEauM
+         s7/M9EiQBCHZmekYkS6aMFhwUA59/7+vV2Eu57BotW9DRWB/4dnvhDQ2FrnNlqj7wz4z
+         n3X15y2VRcuo0NXNM044Q2+KSEl94m5XamGtRFzpzcq3XlfKBGxhAsJ+BUzSAtKMDQaz
+         QHtM+sNfE0ggxsEaamQmf+YmMBCK9j9cbz2T0QxduqEGJXxG7xZwVbEU5L0edwPIF4sz
+         CS1xhppM3/KnbXJxBemdcHj0Jv+B4TiXpCjPvIyJZzqYZStoOVsJ0BMG85Sr3NHOLpk7
+         FTWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=mCtLbL6Zr88D4dLaHGj83fov+fdvmqInAbjfmiya5zo=;
+        b=Hm2vtrDclal0pL99Bu9RUqtw6v22V4WmM4HLVr5pC9MIxeNRn9N7BA8ErZt070p5mH
+         Glva7GNl/Am1dLtI7UBNTc4+I1Cd9uOwSymNmBTxxc88cN5Z5dYij4lsPrqX9EwgdgyP
+         ZJ5pJps5NpQOHqpgVPYS4F/SqSpgzAC0uJC724nGrFs5pinVyr9NRcrXv6Yd5zaiGuiC
+         Mj19l9hGPhQAo459QZIxrkftDg1lCgwrrzJ3QQYuy9xzcxONIN2hZbngWnjFGsK/YaTd
+         3CFbQq2Vcf8GTdTYwVU9YJM4cGRCCTbm4JqkgwsSvd8d1BRnPWqcII9BI/JFC04zjwGi
+         hm0w==
+X-Gm-Message-State: AGi0PuZdO91er4T1drKUkfl7Kg00dQs+F6dv7bgT6N5JdFZACaJGAe0Q
+        zgpRwzRIFr1FyRtVM4Dj6Sc=
+X-Google-Smtp-Source: APiQypIsyheNKE+yUYPn7h7Lh02qj284R2B2KtXNfFSBoHmveI6gKwv0q4UjlWp33+buDZ1Wr5yXuA==
+X-Received: by 2002:adf:f604:: with SMTP id t4mr37208925wrp.399.1588134101564;
+        Tue, 28 Apr 2020 21:21:41 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2d97:3d00:e147:2f5e:e04:2e01])
+        by smtp.gmail.com with ESMTPSA id z1sm5958897wmf.15.2020.04.28.21.21.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Apr 2020 21:21:40 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     devel@driverdev.osuosl.org, Joe Perches <joe@perches.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH RESEND] MAINTAINERS: remove entry after hp100 driver removal
+Date:   Wed, 29 Apr 2020 06:21:16 +0200
+Message-Id: <20200429042116.29126-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, the function devm_ioremap_resource() returns ERR_PTR()
-and never returns NULL. The NULL test in the return value check should
-be replaced with IS_ERR().
+Commit a10079c66290 ("staging: remove hp100 driver") removed all files
+from ./drivers/staging/hp/, but missed to adjust MAINTAINERS.
 
-Fixes: bbb336f39efc ("spi: spi-amd: Add AMD SPI controller driver support")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Since then, ./scripts/get_maintainer.pl --self-test=patterns complains:
+
+  warning: no file matches F: drivers/staging/hp/hp100.*
+
+So, drop HP100 Driver entry in MAINTAINERS now.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
- drivers/spi/spi-amd.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Greg, here is a minor non-urgent patch for staging.
 
-diff --git a/drivers/spi/spi-amd.c b/drivers/spi/spi-amd.c
-index 0d9debe1386e..d8e66689d132 100644
---- a/drivers/spi/spi-amd.c
-+++ b/drivers/spi/spi-amd.c
-@@ -266,10 +266,9 @@ static int amd_spi_probe(struct platform_device *pdev)
+applies cleanly on v5.7-rc3, current master and next-20200428
+
+ MAINTAINERS | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 26f281d9f32a..41e2b577488f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7746,11 +7746,6 @@ L:	platform-driver-x86@vger.kernel.org
+ S:	Orphan
+ F:	drivers/platform/x86/tc1100-wmi.c
  
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	amd_spi->io_remap_addr = devm_ioremap_resource(&pdev->dev, res);
+-HP100:	Driver for HP 10/100 Mbit/s Voice Grade Network Adapter Series
+-M:	Jaroslav Kysela <perex@perex.cz>
+-S:	Obsolete
+-F:	drivers/staging/hp/hp100.*
 -
--	if (!amd_spi->io_remap_addr) {
-+	if (IS_ERR(amd_spi->io_remap_addr)) {
-+		err = PTR_ERR(amd_spi->io_remap_addr);
- 		dev_err(dev, "error %d ioremap of SPI registers failed\n", err);
--		err = -ENOMEM;
- 		goto err_free_master;
- 	}
- 	dev_dbg(dev, "io_remap_address: %p\n", amd_spi->io_remap_addr);
-
-
+ HPET:	High Precision Event Timers driver
+ M:	Clemens Ladisch <clemens@ladisch.de>
+ S:	Maintained
+-- 
+2.17.1
 

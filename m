@@ -2,98 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFA1F1BD37D
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 06:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 925241BD3C5
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 06:34:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726636AbgD2EVo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Apr 2020 00:21:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51226 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726451AbgD2EVo (ORCPT
+        id S1726754AbgD2Eey (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Apr 2020 00:34:54 -0400
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:42243 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726682AbgD2Eey (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Apr 2020 00:21:44 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7CC6C03C1AC;
-        Tue, 28 Apr 2020 21:21:42 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id x18so820206wrq.2;
-        Tue, 28 Apr 2020 21:21:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=mCtLbL6Zr88D4dLaHGj83fov+fdvmqInAbjfmiya5zo=;
-        b=KcCq3sClZpqJ+2xt78xBXZ2HjIAMNDO9niYhUn/bcXUsDen5XtDase8Ia/KrNMEauM
-         s7/M9EiQBCHZmekYkS6aMFhwUA59/7+vV2Eu57BotW9DRWB/4dnvhDQ2FrnNlqj7wz4z
-         n3X15y2VRcuo0NXNM044Q2+KSEl94m5XamGtRFzpzcq3XlfKBGxhAsJ+BUzSAtKMDQaz
-         QHtM+sNfE0ggxsEaamQmf+YmMBCK9j9cbz2T0QxduqEGJXxG7xZwVbEU5L0edwPIF4sz
-         CS1xhppM3/KnbXJxBemdcHj0Jv+B4TiXpCjPvIyJZzqYZStoOVsJ0BMG85Sr3NHOLpk7
-         FTWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=mCtLbL6Zr88D4dLaHGj83fov+fdvmqInAbjfmiya5zo=;
-        b=Hm2vtrDclal0pL99Bu9RUqtw6v22V4WmM4HLVr5pC9MIxeNRn9N7BA8ErZt070p5mH
-         Glva7GNl/Am1dLtI7UBNTc4+I1Cd9uOwSymNmBTxxc88cN5Z5dYij4lsPrqX9EwgdgyP
-         ZJ5pJps5NpQOHqpgVPYS4F/SqSpgzAC0uJC724nGrFs5pinVyr9NRcrXv6Yd5zaiGuiC
-         Mj19l9hGPhQAo459QZIxrkftDg1lCgwrrzJ3QQYuy9xzcxONIN2hZbngWnjFGsK/YaTd
-         3CFbQq2Vcf8GTdTYwVU9YJM4cGRCCTbm4JqkgwsSvd8d1BRnPWqcII9BI/JFC04zjwGi
-         hm0w==
-X-Gm-Message-State: AGi0PuZdO91er4T1drKUkfl7Kg00dQs+F6dv7bgT6N5JdFZACaJGAe0Q
-        zgpRwzRIFr1FyRtVM4Dj6Sc=
-X-Google-Smtp-Source: APiQypIsyheNKE+yUYPn7h7Lh02qj284R2B2KtXNfFSBoHmveI6gKwv0q4UjlWp33+buDZ1Wr5yXuA==
-X-Received: by 2002:adf:f604:: with SMTP id t4mr37208925wrp.399.1588134101564;
-        Tue, 28 Apr 2020 21:21:41 -0700 (PDT)
-Received: from felia.fritz.box ([2001:16b8:2d97:3d00:e147:2f5e:e04:2e01])
-        by smtp.gmail.com with ESMTPSA id z1sm5958897wmf.15.2020.04.28.21.21.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2020 21:21:40 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     devel@driverdev.osuosl.org, Joe Perches <joe@perches.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH RESEND] MAINTAINERS: remove entry after hp100 driver removal
-Date:   Wed, 29 Apr 2020 06:21:16 +0200
-Message-Id: <20200429042116.29126-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Wed, 29 Apr 2020 00:34:54 -0400
+Received: from localhost.localdomain ([92.148.159.11])
+        by mwinf5d72 with ME
+        id YUak220030F2omL03UalTv; Wed, 29 Apr 2020 06:34:51 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 29 Apr 2020 06:34:51 +0200
+X-ME-IP: 92.148.159.11
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     b.zolnierkie@samsung.com, gregkh@linuxfoundation.org,
+        mpe@ellerman.id.au, zhenzhong.duan@gmail.com, arnd@arndb.de,
+        tglx@linutronix.de, eric.y.miao@gmail.com, daniel@caiaq.de
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] video: fbdev: pxa3xx_gcu: Fix some resource leak in an error handling path in 'pxa3xx_gcu_probe()'
+Date:   Wed, 29 Apr 2020 06:34:38 +0200
+Message-Id: <20200429043438.96212-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit a10079c66290 ("staging: remove hp100 driver") removed all files
-from ./drivers/staging/hp/, but missed to adjust MAINTAINERS.
+If an error occurs in the loop where we call 'pxa3xx_gcu_add_buffer()',
+any resource already allocated should be freed.
 
-Since then, ./scripts/get_maintainer.pl --self-test=patterns complains:
+In order to fix it, add a call to 'pxa3xx_gcu_free_buffers()' in the error
+handling path, as already done in the remove function.
 
-  warning: no file matches F: drivers/staging/hp/hp100.*
-
-So, drop HP100 Driver entry in MAINTAINERS now.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Fixes: 364dbdf3b6c3 ("video: add driver for PXA3xx 2D graphics accelerator")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
-Greg, here is a minor non-urgent patch for staging.
+ drivers/video/fbdev/pxa3xx-gcu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-applies cleanly on v5.7-rc3, current master and next-20200428
-
- MAINTAINERS | 5 -----
- 1 file changed, 5 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 26f281d9f32a..41e2b577488f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7746,11 +7746,6 @@ L:	platform-driver-x86@vger.kernel.org
- S:	Orphan
- F:	drivers/platform/x86/tc1100-wmi.c
+diff --git a/drivers/video/fbdev/pxa3xx-gcu.c b/drivers/video/fbdev/pxa3xx-gcu.c
+index 4279e13a3b58..68d9c7a681d4 100644
+--- a/drivers/video/fbdev/pxa3xx-gcu.c
++++ b/drivers/video/fbdev/pxa3xx-gcu.c
+@@ -675,6 +675,7 @@ static int pxa3xx_gcu_probe(struct platform_device *pdev)
  
--HP100:	Driver for HP 10/100 Mbit/s Voice Grade Network Adapter Series
--M:	Jaroslav Kysela <perex@perex.cz>
--S:	Obsolete
--F:	drivers/staging/hp/hp100.*
--
- HPET:	High Precision Event Timers driver
- M:	Clemens Ladisch <clemens@ladisch.de>
- S:	Maintained
+ err_disable_clk:
+ 	clk_disable_unprepare(priv->clk);
++	pxa3xx_gcu_free_buffers(dev, priv);
+ 
+ 	return ret;
+ }
 -- 
-2.17.1
+2.25.1
 

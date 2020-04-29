@@ -2,72 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDC401BD0D6
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 02:14:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04D3E1BD182
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 03:04:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726450AbgD2AOV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 20:14:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36262 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726181AbgD2AOV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 20:14:21 -0400
-Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net [73.231.172.41])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B8EB020737;
-        Wed, 29 Apr 2020 00:14:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588119261;
-        bh=ApiAPyhl/EFXtSrNddcCQTYMor9KnWKySFnM/W1KpQc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Gj633SS5ASO3BAGJRPyDnJc9G0cEPDsMsWpEe4wrBEoe0lF42RQ33mz05tbA8WzlV
-         TVNb6T/5oHpRpWlmNZTSZQobZEpyVDLzhXEfds63/1kPcTlJVwuuldLO/hqJVzO31x
-         ilUnL2ltMmDqxFt19OElVcqOxQrPHtY6S0Knl4HE=
-Date:   Tue, 28 Apr 2020 17:14:20 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>,
-        Waiman Long <longman@redhat.com>,
-        Manfred Spraul <manfred@colorfullife.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] ipc: use GFP_ATOMIC under spin lock
-Message-Id: <20200428171420.045f0acc9e1bf20044c4560e@linux-foundation.org>
-In-Reply-To: <20200428111403.GJ29705@bombadil.infradead.org>
-References: <20200428034736.27850-1-weiyongjun1@huawei.com>
-        <20200428111403.GJ29705@bombadil.infradead.org>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        id S1726420AbgD2BEJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 21:04:09 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:41188 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726274AbgD2BEI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Apr 2020 21:04:08 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 442119FE39C8A95023C8;
+        Wed, 29 Apr 2020 09:04:06 +0800 (CST)
+Received: from [10.166.215.142] (10.166.215.142) by smtp.huawei.com
+ (10.3.19.201) with Microsoft SMTP Server (TLS) id 14.3.487.0; Wed, 29 Apr
+ 2020 09:04:03 +0800
+Subject: Re: [PATCH -next] NFSv4: Use GFP_ATOMIC under spin lock in
+ _pnfs_grab_empty_layout()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+CC:     Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <anna.schumaker@netapp.com>,
+        <linux-nfs@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+References: <20200428071932.69976-1-weiyongjun1@huawei.com>
+ <20200428180448.GJ2014@kadam>
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+Message-ID: <8564645e-124c-ef53-3cd8-1d887dfe867e@huawei.com>
+Date:   Wed, 29 Apr 2020 09:03:13 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <20200428180448.GJ2014@kadam>
+Content-Type: text/plain; charset="gbk"
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.166.215.142]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 28 Apr 2020 04:14:03 -0700 Matthew Wilcox <willy@infradead.org> wrote:
 
-> On Tue, Apr 28, 2020 at 03:47:36AM +0000, Wei Yongjun wrote:
-> > The function ipc_id_alloc() is called from ipc_addid(), in which
-> > a spin lock is held, so we should use GFP_ATOMIC instead.
-> > 
-> > Fixes: de5738d1c364 ("ipc: convert ipcs_idr to XArray")
-> > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+
+On 2020/4/29 2:04, Dan Carpenter wrote:
+> On Tue, Apr 28, 2020 at 07:19:32AM +0000, Wei Yongjun wrote:
+>> A spin lock is taken here so we should use GFP_ATOMIC.
+>>
+>> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+>> ---
+>>  fs/nfs/pnfs.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+>> index dd2e14f5875d..d84c1b7b71d2 100644
+>> --- a/fs/nfs/pnfs.c
+>> +++ b/fs/nfs/pnfs.c
+>> @@ -2170,7 +2170,7 @@ _pnfs_grab_empty_layout(struct inode *ino, struct nfs_open_context *ctx)
+>>  	struct pnfs_layout_hdr *lo;
+>>  
+>>  	spin_lock(&ino->i_lock);
+>                    ^^^
+>> -	lo = pnfs_find_alloc_layout(ino, ctx, GFP_KERNEL);
+>> +	lo = pnfs_find_alloc_layout(ino, ctx, GFP_ATOMIC);
+>                                     ^^^
+> It releases the lock before allocating.  It's annotated.
 > 
-> I see why you think that, but it's not true.  Yes, we hold a spinlock, but
-> the spinlock is in an object which is not reachable from any other CPU.
-> So it's not possible to deadlock.
 
-um, then why are we taking it?
+Got it, thanks.
 
->  This probably confuses all kinds
-> of automated checkers,
-
-A big fat code comment would reduce the email traffic?
-
-> and I should probably rewrite the code to not
-> acquire the new spinlock until we're already holding the xa_lock.
-> 
-
+regards,
+Wei Yongjun

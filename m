@@ -2,141 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02B691BDF85
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 15:50:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06CB51BDF9D
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 15:54:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727073AbgD2Ntr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Apr 2020 09:49:47 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:36656 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726765AbgD2Ntr (ORCPT
+        id S1726862AbgD2NyZ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Apr 2020 09:54:25 -0400
+Received: from mail.fireflyinternet.com ([109.228.58.192]:54081 "EHLO
+        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726853AbgD2NyZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Apr 2020 09:49:47 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03TDmrus060234;
-        Wed, 29 Apr 2020 13:49:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=XPl7khAJVlMJvnMhzcBb4TztA3fFxHexfhbx8rcJQQk=;
- b=nnOkb+PWxbkHVpDAv3Pa+P77VkBqx2AyLQn7dp2mdaWsfQtCaHVSHcqyBnP1T6jovR6c
- ZvHUxk/f66dzkMtJeXSY0qOQiS0pkL1IyrNnxoVTUvk0+MNRsA8bd8Othu9wmp97tBBQ
- sknta8xDVDnw2TsghVB0cSp3J//1cv7KsN8+wD6BpkxH9KHwXiPfJcG+7DZkKF4lJqLm
- nc8+k1LniLpmnjWCMBMwjjJGJTzp5z74hU04oa0XPFiEEsaWzKMB8QP/qkLKTQDvK9Id
- /8XKvM28hDW9bCrDqtYY/bZz2L9dpDwg40BZc8OBD7s8BrUy/jTHrQs/QtMPYhsl8LhD eA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 30nucg5u3r-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 29 Apr 2020 13:49:34 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03TDcpMu171959;
-        Wed, 29 Apr 2020 13:47:33 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 30mxpk2f8f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 29 Apr 2020 13:47:33 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 03TDlVke022101;
-        Wed, 29 Apr 2020 13:47:31 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 29 Apr 2020 06:47:31 -0700
-Date:   Wed, 29 Apr 2020 16:47:24 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Jeff Vander Stoep <jeffv@google.com>,
-        SElinux list <selinux@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] selinux: fix error return code in policydb_read()
-Message-ID: <20200429134724.GR2014@kadam>
-References: <20200429073053.83660-1-weiyongjun1@huawei.com>
- <20200429130738.GQ2014@kadam>
- <CAFqZXNs=YTn-mnzSEssR1szRhSw7Ajdaqg=wy88O_F3gBL2rOQ@mail.gmail.com>
+        Wed, 29 Apr 2020 09:54:25 -0400
+X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
+Received: from localhost (unverified [78.156.65.138]) 
+        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 21058883-1500050 
+        for multiple; Wed, 29 Apr 2020 14:53:47 +0100
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFqZXNs=YTn-mnzSEssR1szRhSw7Ajdaqg=wy88O_F3gBL2rOQ@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
- mlxscore=0 bulkscore=0 adultscore=0 phishscore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004290115
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 priorityscore=1501
- mlxlogscore=999 impostorscore=0 suspectscore=0 malwarescore=0
- lowpriorityscore=0 mlxscore=0 spamscore=0 adultscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004290115
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <20200429132425.GE815283@mwanda>
+References: <20200429132425.GE815283@mwanda>
+Subject: Re: [PATCH] drm/i915/selftests: fix error handling in __live_lrc_indirect_ctx_bb()
+Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        Matthew Auld <matthew.auld@intel.com>,
+        Andi Shyti <andi.shyti@intel.com>,
+        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org
+From:   Chris Wilson <chris@chris-wilson.co.uk>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>
+Message-ID: <158816842543.4620.13969605148556812046@build.alporthouse.com>
+User-Agent: alot/0.8.1
+Date:   Wed, 29 Apr 2020 14:53:45 +0100
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Apr 29, 2020 at 03:32:13PM +0200, Ondrej Mosnacek wrote:
-> On Wed, Apr 29, 2020 at 3:15 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> > On Wed, Apr 29, 2020 at 07:30:53AM +0000, Wei Yongjun wrote:
-> > > Fix to return negative error code -ENOMEM from the kvcalloc() error
-> > > handling case instead of 0, as done elsewhere in this function.
-> > >
-> >
-> > Please add a Fixes tag and Cc Kent.
-> >
-> > Fixes: acdf52d97f82 ("selinux: convert to kvmalloc")
-> >
-> >
-> > > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> > > ---
-> > >  security/selinux/ss/policydb.c | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
-> > > index a0b3dc152468..a51e051df2cc 100644
-> > > --- a/security/selinux/ss/policydb.c
-> > > +++ b/security/selinux/ss/policydb.c
-> > > @@ -2638,6 +2638,7 @@ int policydb_read(struct policydb *p, void *fp)
-> > >       if (rc)
-> > >               goto bad;
-> > >
-> > > +     rc = -ENOMEM;
-> > >       p->type_attr_map_array = kvcalloc(p->p_types.nprim,
-> > >                                         sizeof(*p->type_attr_map_array),
-> > >                                         GFP_KERNEL);
-> >
-> > There is another bug earlier in the function as well:
-> >
-> > security/selinux/ss/policydb.c
-> >   2537
-> >   2538          rc = next_entry(buf, fp, sizeof(u32));
-> >   2539          if (rc)
-> >   2540                  goto bad;
-> >   2541          nel = le32_to_cpu(buf[0]);
-> >   2542
-> >   2543          p->role_tr = hashtab_create(role_trans_hash, role_trans_cmp, nel);
-> >   2544          if (!p->role_tr)
-> >   2545                  goto bad;
-> >                         ^^^^^^^^
-> >
-> >   2546          for (i = 0; i < nel; i++) {
-> >   2547                  rc = -ENOMEM;
-> >
-> > This style of setting the error code seems very bug prone.
-> >
-> > The Fixes tag for this one is:
-> > Fixes: e67b2ec9f617 ("selinux: store role transitions in a hash table")
+Quoting Dan Carpenter (2020-04-29 14:24:25)
+> If intel_context_create() fails then it leads to an error pointer
+> dereference.  I shuffled things around to make error handling easier.
 > 
-> FYI, this one is also indirectly fixed by this patch, which is
-> currently pending review:
-> https://patchwork.kernel.org/patch/11514495/
+> Fixes: 1dd47b54baea ("drm/i915: Add live selftests for indirect ctx batchbuffers")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/gpu/drm/i915/gt/selftest_lrc.c | 30 +++++++++++++++-----------
+>  1 file changed, 18 insertions(+), 12 deletions(-)
 > 
+> diff --git a/drivers/gpu/drm/i915/gt/selftest_lrc.c b/drivers/gpu/drm/i915/gt/selftest_lrc.c
+> index d3fa91aed7dee..c4bfad5c49dea 100644
+> --- a/drivers/gpu/drm/i915/gt/selftest_lrc.c
+> +++ b/drivers/gpu/drm/i915/gt/selftest_lrc.c
+> @@ -5795,26 +5795,29 @@ static int indirect_ctx_bb_check(struct intel_context *ce)
+>  static int __live_lrc_indirect_ctx_bb(struct intel_engine_cs *engine)
+>  {
+>         struct intel_context *a, *b;
+> -       int err = 0;
+> +       int err;
+>  
+>         a = intel_context_create(engine);
+> -       b = intel_context_create(engine);
+> -
+> +       if (IS_ERR(a))
+> +               return PTR_ERR(a);
+>         err = intel_context_pin(a);
+>         if (err)
+> -               return err;
+> +               goto put_a;
+>  
+> -       err = intel_context_pin(b);
+> -       if (err) {
+> -               intel_context_put(a);
+> -               return err;
+> +       b = intel_context_create(engine);
+> +       if (IS_ERR(b)) {
+> +               err = PTR_ERR(b);
+> +               goto unpin_a;
+>         }
+> +       err = intel_context_pin(b);
+> +       if (err)
+> +               goto put_b;
+>  
+>         /* We use the already reserved extra page in context state */
+>         if (!a->wa_bb_page) {
+>                 GEM_BUG_ON(b->wa_bb_page);
+>                 GEM_BUG_ON(INTEL_GEN(engine->i915) == 12);
+> -               goto out;
+> +               goto unpin_b;
+>         }
+>  
+>         /*
+> @@ -5829,14 +5832,17 @@ static int __live_lrc_indirect_ctx_bb(struct intel_engine_cs *engine)
+>  
+>         err = indirect_ctx_bb_check(a);
+>         if (err)
+> -               goto out;
+> +               goto unpin_b;
+>  
+>         err = indirect_ctx_bb_check(b);
+> -out:
+> +
+> +unpin_b:
+>         intel_context_unpin(b);
+> +put_b:
+>         intel_context_put(b);
+> -
+> +unpin_a:
+>         intel_context_unpin(a);
+> +put_a:
+>         intel_context_put(a);
 
-Ah.  Fantastic.  Wei, could you just resend your original commit with
-the first Fixes tag and Kent CC'd?
+Onion looks correct, and there should not be any issue with this
+sequence of create/pin.
 
-regards,
-dan carpenter
-
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+-Chris

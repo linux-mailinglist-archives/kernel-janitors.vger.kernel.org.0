@@ -2,72 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CB7F1BD089
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 01:17:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDC401BD0D6
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 02:14:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726476AbgD1XRH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 19:17:07 -0400
-Received: from smtprelay0092.hostedemail.com ([216.40.44.92]:40440 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726386AbgD1XRH (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 19:17:07 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 35322182CED28;
-        Tue, 28 Apr 2020 23:17:06 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:967:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2525:2560:2563:2682:2685:2731:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:3872:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:5007:8957:8985:9025:10004:10400:10848:11232:11658:11914:12043:12297:12438:12555:12679:12740:12760:12895:12986:13069:13311:13357:13439:14096:14097:14181:14659:14721:21080:21611:21627:21811:30012:30054:30070:30080:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: body11_780e320e03c1f
-X-Filterd-Recvd-Size: 1981
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf14.hostedemail.com (Postfix) with ESMTPA;
-        Tue, 28 Apr 2020 23:17:04 +0000 (UTC)
-Message-ID: <a2d7dbae193800ce430321d3fcc71ab5d1a5ed03.camel@perches.com>
-Subject: Re: [PATCH v3] checkpatch: add dedicated checker for 'Fixes:' tag
-From:   Joe Perches <joe@perches.com>
-To:     Wang YanQing <udknight@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Andy Whitcroft <apw@canonical.com>, Markus.Elfring@web.de,
-        mcroce@redhat.com
-Date:   Tue, 28 Apr 2020 16:17:03 -0700
-In-Reply-To: <b452dc29fb553fa5993b90131dcdbc04ed87532e.camel@perches.com>
-References: <20200428020223.GA28074@udknight>
-         <b452dc29fb553fa5993b90131dcdbc04ed87532e.camel@perches.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.1-2 
-MIME-Version: 1.0
+        id S1726450AbgD2AOV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 20:14:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36262 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726181AbgD2AOV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Apr 2020 20:14:21 -0400
+Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net [73.231.172.41])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B8EB020737;
+        Wed, 29 Apr 2020 00:14:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588119261;
+        bh=ApiAPyhl/EFXtSrNddcCQTYMor9KnWKySFnM/W1KpQc=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Gj633SS5ASO3BAGJRPyDnJc9G0cEPDsMsWpEe4wrBEoe0lF42RQ33mz05tbA8WzlV
+         TVNb6T/5oHpRpWlmNZTSZQobZEpyVDLzhXEfds63/1kPcTlJVwuuldLO/hqJVzO31x
+         ilUnL2ltMmDqxFt19OElVcqOxQrPHtY6S0Knl4HE=
+Date:   Tue, 28 Apr 2020 17:14:20 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>,
+        Waiman Long <longman@redhat.com>,
+        Manfred Spraul <manfred@colorfullife.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Alexey Dobriyan <adobriyan@gmail.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] ipc: use GFP_ATOMIC under spin lock
+Message-Id: <20200428171420.045f0acc9e1bf20044c4560e@linux-foundation.org>
+In-Reply-To: <20200428111403.GJ29705@bombadil.infradead.org>
+References: <20200428034736.27850-1-weiyongjun1@huawei.com>
+        <20200428111403.GJ29705@bombadil.infradead.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 2020-04-28 at 09:10 -0700, Joe Perches wrote:
-> On Tue, 2020-04-28 at 10:02 +0800, Wang YanQing wrote:
-> > According to submitting-patches.rst, 'Fixes:' tag has a little
-> > stricter condition about the one line summary:
-> > ...
-> > Do not split the tag across multiple
-> > lines, tags are exempt from the "wrap at 75 columns" rule in order to simplify
-> > parsing scripts
-> > ...
+On Tue, 28 Apr 2020 04:14:03 -0700 Matthew Wilcox <willy@infradead.org> wrote:
+
+> On Tue, Apr 28, 2020 at 03:47:36AM +0000, Wei Yongjun wrote:
+> > The function ipc_id_alloc() is called from ipc_addid(), in which
+> > a spin lock is held, so we should use GFP_ATOMIC instead.
 > > 
-> > And there is no 'Fixes:' tag format checker in checkpatch to check
-> > the commit id length too, so let's add dedicated checker to check
-> > these conditions for 'Fixes:' tag.
+> > Fixes: de5738d1c364 ("ipc: convert ipcs_idr to XArray")
+> > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 > 
-> There's no need to duplicate functionality like this.
-> Put this additional Fixes: logic into the existing block.
+> I see why you think that, but it's not true.  Yes, we hold a spinlock, but
+> the spinlock is in an object which is not reachable from any other CPU.
+> So it's not possible to deadlock.
+
+um, then why are we taking it?
+
+>  This probably confuses all kinds
+> of automated checkers,
+
+A big fat code comment would reduce the email traffic?
+
+> and I should probably rewrite the code to not
+> acquire the new spinlock until we're already holding the xa_lock.
 > 
-> (and don't take advise from Markus too seriously when it
-> comes to English grammar or wording.  He is not an arbiter
-> of taste for this code)
-> 
-
-btw:  I suggested this patch last year.
-
-https://lore.kernel.org/lkml/40bfc40958fca6e2cc9b86101153aa0715fac4f7.camel@perches.com/
-
 

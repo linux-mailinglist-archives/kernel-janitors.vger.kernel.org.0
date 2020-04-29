@@ -2,144 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BC3E1BDB18
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 13:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87FB91BDC11
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 14:26:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726830AbgD2LvO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Apr 2020 07:51:14 -0400
-Received: from mout.web.de ([217.72.192.78]:43245 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726511AbgD2LvK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Apr 2020 07:51:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588161061;
-        bh=YpG1Yk8wmgaxNXrdr0JLTCB7c7Q4uVrpM9UhSdIBYOs=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=rAgS1+H0wd1XqkisItHDnCIAe+A6HN7f+tJb1OlAhT8aXYr6sBt8M4X9Z2uGGJoZm
-         zfK60EWDrq8/VpeE1vF7/7ksRox6uFg6+pun2s4r+FouwJlqmgh/8w9C8zrugaLGik
-         SbQJjRbOSNnLfrD0znoccBLyXLWD1eU2PXAxcKo8=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.72.72]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MKM5t-1jkSeA2Krv-00LyCD; Wed, 29
- Apr 2020 13:51:01 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alan Tull <atull@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Moritz Fischer <mdf@kernel.org>
-Subject: Re: [PATCH 3/4 v2] firmware: stratix10-svc: Fix some error handling
- paths in stratix10_svc_drv_probe()
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-To:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        Richard Gong <richard.gong@linux.intel.com>
-Message-ID: <767eb869-d9c1-757b-77a6-79927728ddcd@web.de>
-Date:   Wed, 29 Apr 2020 13:51:00 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1726781AbgD2M0Z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Apr 2020 08:26:25 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:35168 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726628AbgD2M0Z (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 29 Apr 2020 08:26:25 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03TCJg04100013;
+        Wed, 29 Apr 2020 12:25:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=G4T1e0Zu5w17lAkgEzo9mQq+TIDEuIlWIBxxTVixN+0=;
+ b=mrEkFjIN2dsubqvlOyU9teA2iauOOA1kWYCl/UD12g5OblLFdVciyoDXOkGZN5ZaWQnV
+ KC80T8wDmrH9jQNU3Lw9Il7BYApSGpdYYqNkO1llGWgAEszEtwNhky4hEZmBT7vKARi+
+ uxpAwvmjwCJFTpoEnv+tcQuhIPCdlDsKxZ1adAs7ha1sgzn4Cn39OKxn5qIXOrpWoIDx
+ HnwSU5WY4NrDVsGYep9Qnn5qFUWyXkYCYC+TgEw9zIB6nxRsJf5NbXqrraz6E/kK9LIO
+ iYiQYyvpW+89DXkkH+6ipAbYG3pixgOMhSX97DaUbgQfAX3IcVlf0Ic2uutg8EI0L1XH Zg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 30p01nuwqc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 29 Apr 2020 12:25:55 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03TCGj3w058297;
+        Wed, 29 Apr 2020 12:25:55 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 30mxpjw1q6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 29 Apr 2020 12:25:54 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03TCPlRN013991;
+        Wed, 29 Apr 2020 12:25:47 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 29 Apr 2020 05:25:47 -0700
+Date:   Wed, 29 Apr 2020 15:25:38 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     b.zolnierkie@samsung.com, gregkh@linuxfoundation.org,
+        mpe@ellerman.id.au, zhenzhong.duan@gmail.com, arnd@arndb.de,
+        tglx@linutronix.de, eric.y.miao@gmail.com, daniel@caiaq.de,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] video: fbdev: pxa3xx_gcu: Fix some resource leak in an
+ error handling path in 'pxa3xx_gcu_probe()'
+Message-ID: <20200429122538.GO2014@kadam>
+References: <20200429043438.96212-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:R438sIDxeezX+deWXb3VHlaMCT5XQYYNt1edkyHRb0Aa41E25XI
- Fp16ZddXsuacSbwMdOkv1+tz1w76mMhNc3DUmQVq7GRfW1nVyYhbXLvYUgkWzjpP71xAI1E
- fM4KxzxDKvbsxTrAx8KnJhgB2Q4QBJMPlDOw5yfH3T3vEZQKbR7M03CqV6L0MD6cHfM4HCv
- mik3Ota2s+XdmMdSvwHOw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:X3yf3c0YaFo=:zvBU3T/SXtDugAATfcBv7X
- ZSRcj04b6C1uwPSIyJIhAdOLjXCoCwglZlpYcW9JyMC82WDoAuuUyAjSg/rXSchqjfqaxvNwc
- ISu2QXlv2AL5qO4oN+7k5Fmacmrmo4lW++xCwBuKTVITyeRI5hRhQOFjDngz6KmthIW3Nf+zn
- wvGkOdnOoZX2h2utFSNuXhtRxnhklL+shm+oByiCLsLBBAFsiI3vdnj6Zxm31Mu9OnSzi1tCK
- JbYCZJD1Mr+dq8++2HSHpd43X3R9zj3eOO79QE9JTTLWlIVSFA/gVI42l1/UNRY3Co4hErrzc
- bTRnbH//DjYB4DlCNpxv6omnuA51YoxbUGCHiCbdUSCSUjkUNCz9KUCklzRFUjUC16aVfBp56
- 0feDUovAnKzezQsLeSLlGQoqu/nEsc2Jvf/86ZgY7zp7QZAFl96NtaBxwP8TqNpnwHPeFkWQU
- 5roIDKhTi9RRoifDgowMZQwGox3fB3rGpe3nPYjK/FLMyg4WrN55HabE6gS9wNiu0TqeRn6l6
- DCw/uSsLEo4f4tzMYdrON7u1ea1tc31dKph5Q31LnEYkNIyevEZBxcevdIMxaF12z6fojUSuF
- W0uQ8+RBQQuQAnU0NPhBzKOl8izm8+wYyelOJVLaJ80LW/LxArNU6/Z56gDwh39aNbBZ7jCX8
- eeFxms68zFHkKp6Cd4HYR7c1vUTlko/wJpeQBd9/7YW+8ve9uqodShke4hVF8spD/gnNd81A4
- dnkTmzL5ncOlUi3TGsElxIBmoS9qlrygHKxNedMosdnY0WSebAFFrt8/btMJnLEnNJpR0W8Nq
- IAS8AcIO9hawTjRpWsZJRW14rPTknnSLqlXCC0jE2XHyPh0NfG3adBAAR51jvSs+RGXaBdfF6
- lRwNxTf8++GSJ6ZX8kOyxCcnx44So/wl9nzCy6VPpC83lhmK8FwQI4D/mwfL27l3C4kmSPCrn
- DCwsJpdA+fw6Hn2gplN70/zPFHlmMkyQes1bcU0G0WfmDvTZRaoacvZvPAccifVN2AlUDUuWZ
- Qita64llx6n+YpE66CmfYmVDAve8NKb7gh5t0mi1rGYIScM74cga3E9Gs9BjZ4MY/Ec4J3pO3
- Cy4FuaDfoQbQ94i/wlGbvdlvfK5PyCPFZGWIuzUJIFJ0tvtW/t1+J5AWp2/gi8FfqzK42MsM8
- V0E5GVqzVOZ2TrFPf0pmzaJd5Px+53x0M2HzY/Hrp48fn6VL7P38PrPcXMO1RpeWK7zbFe8jT
- R7kDXj/F9ncnLE4kh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200429043438.96212-1-christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
+ mlxscore=0 bulkscore=0 adultscore=0 phishscore=0 suspectscore=2
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004290105
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 clxscore=1011
+ phishscore=0 mlxlogscore=999 adultscore=0 priorityscore=1501 mlxscore=0
+ suspectscore=2 malwarescore=0 lowpriorityscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004290105
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> While at it, also move a 'platform_device_put()' call to the error handl=
-ing path.
+On Wed, Apr 29, 2020 at 06:34:38AM +0200, Christophe JAILLET wrote:
+> If an error occurs in the loop where we call 'pxa3xx_gcu_add_buffer()',
+> any resource already allocated should be freed.
+> 
+> In order to fix it, add a call to 'pxa3xx_gcu_free_buffers()' in the error
+> handling path, as already done in the remove function.
+> 
+> Fixes: 364dbdf3b6c3 ("video: add driver for PXA3xx 2D graphics accelerator")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  drivers/video/fbdev/pxa3xx-gcu.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/video/fbdev/pxa3xx-gcu.c b/drivers/video/fbdev/pxa3xx-gcu.c
+> index 4279e13a3b58..68d9c7a681d4 100644
+> --- a/drivers/video/fbdev/pxa3xx-gcu.c
+> +++ b/drivers/video/fbdev/pxa3xx-gcu.c
+> @@ -675,6 +675,7 @@ static int pxa3xx_gcu_probe(struct platform_device *pdev)
+>  
+>  err_disable_clk:
+>  	clk_disable_unprepare(priv->clk);
+> +	pxa3xx_gcu_free_buffers(dev, priv);
 
-How do you think about to use the message =E2=80=9CComplete exception hand=
-ling
-in stratix10_svc_drv_probe()=E2=80=9D in the final commit subject?
+The error handling in this function makes no sense and is buggy.  It
+should be that it unwinds in the reverse order from the allocation.  The
+goto should be "goto free_most_recently_allocated_resource;".  Since the
+unwind is done in the wrong order it causes a couple bugs.
 
+These buffers are the last thing which we allocated so they should be
+the first thing which we free.  In this case, calling
+pxa3xx_gcu_free_buffers() before the buffers are allocated is confusing
+but harmless.  The clk_disable_unprepare() is done on some paths where
+the clock was not enabled and that will trigger a WARN() so that's a
+bug.  Syzcaller will complain and if you have reboot on WARN then it's
+annoying.
 
-=E2=80=A6
-> +++ b/drivers/firmware/stratix10-svc.c
-=E2=80=A6
-> @@ -1043,24 +1043,34 @@  static int stratix10_svc_drv_probe(struct platf=
-orm_device *pdev)
-=E2=80=A6
-> +	return 0;
-> +
-> +put_platform:
-> +	platform_device_put(svc->stratix10_svc_rsu);
-> +err_free_kfifo:
-=E2=80=A6
->  	return ret;
->  }
+The second bug is that we don't deregister the misc device or release
+the DMA memory on failure when we allocate the buffers in the loop.
 
+regards,
+dan carpenter
 
-Can the label =E2=80=9Cerr_put_device=E2=80=9D be more appropriate for the=
- improved
-function implementation?
-(Or: Would you like to omit the prefix =E2=80=9Cerr_=E2=80=9D for these ju=
-mp targets?)
-
-Regards,
-Markus

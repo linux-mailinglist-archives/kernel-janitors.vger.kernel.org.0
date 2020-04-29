@@ -2,65 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 925241BD3C5
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 06:34:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FABB1BD3DD
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 06:59:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726754AbgD2Eey (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Apr 2020 00:34:54 -0400
-Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:42243 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726682AbgD2Eey (ORCPT
+        id S1726742AbgD2E7K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Apr 2020 00:59:10 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:27991 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725497AbgD2E7K (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Apr 2020 00:34:54 -0400
-Received: from localhost.localdomain ([92.148.159.11])
-        by mwinf5d72 with ME
-        id YUak220030F2omL03UalTv; Wed, 29 Apr 2020 06:34:51 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 29 Apr 2020 06:34:51 +0200
-X-ME-IP: 92.148.159.11
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     b.zolnierkie@samsung.com, gregkh@linuxfoundation.org,
-        mpe@ellerman.id.au, zhenzhong.duan@gmail.com, arnd@arndb.de,
-        tglx@linutronix.de, eric.y.miao@gmail.com, daniel@caiaq.de
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] video: fbdev: pxa3xx_gcu: Fix some resource leak in an error handling path in 'pxa3xx_gcu_probe()'
-Date:   Wed, 29 Apr 2020 06:34:38 +0200
-Message-Id: <20200429043438.96212-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Wed, 29 Apr 2020 00:59:10 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1588136349; h=Content-Transfer-Encoding: Content-Type:
+ In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
+ Subject: Sender; bh=SgBgKEZAF4DZDU8n6TNtN6h7mhMj7SRUEgP91LQZcK4=; b=jGdfFqflJdVgHwGjeewStdTLV9WphTkjsrWkkOilpwJZ3488RC4HvRojNi+szJoKOvxqze+D
+ aPO5MC9SD9ZPYNudpvVdNeNXfdCQd76Us79KUpT5NF+guZJTEmeadNTS/17PHiu4Aqni/DaE
+ ecPDbEmgJku865wCGoKHBv1A1ks=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5ea90981.7f69907913b0-smtp-out-n03;
+ Wed, 29 Apr 2020 04:58:41 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 38F37C433CB; Wed, 29 Apr 2020 04:58:41 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from [192.168.0.101] (unknown [183.83.143.172])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sayalil)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0FD72C433D2;
+        Wed, 29 Apr 2020 04:58:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0FD72C433D2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=sayalil@codeaurora.org
+Subject: Re: [f2fs-dev] [PATCH V2] f2fs: Avoid double lock for cp_rwsem during
+ checkpoint
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        linux-f2fs-devel@lists.sourceforge.net,
+        Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <yuchao0@huawei.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <07a820a2-b3b3-32ca-75ce-ceaca106d2c6@web.de>
+From:   Sayali Lokhande <sayalil@codeaurora.org>
+Message-ID: <433d4ad5-22e5-fd2b-cab3-9752ed0c66fb@codeaurora.org>
+Date:   Wed, 29 Apr 2020 10:28:36 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <07a820a2-b3b3-32ca-75ce-ceaca106d2c6@web.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If an error occurs in the loop where we call 'pxa3xx_gcu_add_buffer()',
-any resource already allocated should be freed.
+Hi Markus
 
-In order to fix it, add a call to 'pxa3xx_gcu_free_buffers()' in the error
-handling path, as already done in the remove function.
+On 4/27/2020 4:08 PM, Markus Elfring wrote:
+>> … This results in deadlock as
+>> iput() tries to hold cp_rwsem, which is already held at the
+>> beginning by checkpoint->block_operations().
+> Will another imperative wording become helpful besides the provided information
+> for this change description?
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=6a8b55ed4056ea5559ebe4f6a4b247f627870d4c#n151
+>
+> Would you like to add the tag “Fixes” because of adjustments
+> for the data synchronisation?
 
-Fixes: 364dbdf3b6c3 ("video: add driver for PXA3xx 2D graphics accelerator")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/video/fbdev/pxa3xx-gcu.c | 1 +
- 1 file changed, 1 insertion(+)
+I couldn't find any past commit which suits to be added under "Fixes" 
+here. Let me know if you have any other comment.
 
-diff --git a/drivers/video/fbdev/pxa3xx-gcu.c b/drivers/video/fbdev/pxa3xx-gcu.c
-index 4279e13a3b58..68d9c7a681d4 100644
---- a/drivers/video/fbdev/pxa3xx-gcu.c
-+++ b/drivers/video/fbdev/pxa3xx-gcu.c
-@@ -675,6 +675,7 @@ static int pxa3xx_gcu_probe(struct platform_device *pdev)
- 
- err_disable_clk:
- 	clk_disable_unprepare(priv->clk);
-+	pxa3xx_gcu_free_buffers(dev, priv);
- 
- 	return ret;
- }
--- 
-2.25.1
-
+>
+> Regards,
+> Markus

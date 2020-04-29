@@ -2,66 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC9861BE314
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 17:49:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58DE61BE328
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 17:53:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726836AbgD2PtA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Apr 2020 11:49:00 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:36115 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726456AbgD2PtA (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Apr 2020 11:49:00 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jTox5-0005nj-Kc; Wed, 29 Apr 2020 15:48:47 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Borislav Petkov <bp@alien8.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        James Morse <james.morse@arm.com>,
-        Robert Richter <rrichter@marvell.com>,
-        linux-edac@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] EDAC: remove redundant assignment to variable ret
-Date:   Wed, 29 Apr 2020 16:48:47 +0100
-Message-Id: <20200429154847.287001-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        id S1726829AbgD2Px1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Apr 2020 11:53:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41746 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726456AbgD2Px1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 29 Apr 2020 11:53:27 -0400
+Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net [50.39.105.78])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8786221D91;
+        Wed, 29 Apr 2020 15:53:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588175606;
+        bh=lM+jf92e2hWloNhGNv0OCFyAzm6HTRAHqrzHcxhYL40=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=PAwfHGKpdCLYERO8SixsSL4SZwJ4f4MNKIMQQWlNZ1vaaa+PwQ8OeE784qTy3XzGg
+         3Y8ZBcgbnZNTDZQdhyRs3AQsD5xf1DcgcvL7q9Rp4LhEO1kmh/OSKFeWECPN2rh1pL
+         GTU+6jdibZn+ZBQbNCAGAP0RWpsnLXkQXtUEk+78=
+Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
+        id 57DE335226DB; Wed, 29 Apr 2020 08:53:26 -0700 (PDT)
+Date:   Wed, 29 Apr 2020 08:53:26 -0700
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Davidlohr Bueso <dave@stgolabs.net>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] rcutorture: Fix error codes in
+ rcu_torture_read_exit_init()
+Message-ID: <20200429155326.GD7560@paulmck-ThinkPad-P72>
+Reply-To: paulmck@kernel.org
+References: <20200429132235.GA815283@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200429132235.GA815283@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Wed, Apr 29, 2020 at 04:22:35PM +0300, Dan Carpenter wrote:
+> The rcu_torture_read_exit_init() function is supposed to return negative
+> error codes which get propagated back down the call tree but the current
+> code returns true on failure.
+> 
+> Fixes: e02882cd57e3 ("rcutorture: Add races with task-exit processing")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-The variable ret is being assigned with a value that is never read
-and it is being updated later with a new value. The initialization is
-redundant and can be removed.
+Good catch!  Talk about code sort of working by accident!!!
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/edac/amd64_edac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thank you, and I folded this into the original commit with attribution.
 
-diff --git a/drivers/edac/amd64_edac.c b/drivers/edac/amd64_edac.c
-index 6bdc5bb8c8bc..e33f66cee132 100644
---- a/drivers/edac/amd64_edac.c
-+++ b/drivers/edac/amd64_edac.c
-@@ -3400,7 +3400,7 @@ static const struct attribute_group *amd64_edac_attr_groups[] = {
- static int hw_info_get(struct amd64_pvt *pvt)
- {
- 	u16 pci_id1, pci_id2;
--	int ret = -EINVAL;
-+	int ret;
- 
- 	if (pvt->fam >= 0x17) {
- 		pvt->umc = kcalloc(fam_type->max_mcs, sizeof(struct amd64_umc), GFP_KERNEL);
--- 
-2.25.1
+						Thanx, Paul
 
+> ---
+>  kernel/rcu/rcutorture.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+> index 269881e51dc6d..5270674128029 100644
+> --- a/kernel/rcu/rcutorture.c
+> +++ b/kernel/rcu/rcutorture.c
+> @@ -2434,10 +2434,10 @@ static int rcu_torture_read_exit(void *unused)
+>  	return 0;
+>  }
+>  
+> -static bool rcu_torture_read_exit_init(void)
+> +static int rcu_torture_read_exit_init(void)
+>  {
+>  	if (read_exit <= 0)
+> -		return true;
+> +		return -EINVAL;
+>  	init_waitqueue_head(&read_exit_wq);
+>  	read_exit_child_stop = false;
+>  	read_exit_child_stopped = false;
+> -- 
+> 2.26.2
+> 

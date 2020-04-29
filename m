@@ -2,128 +2,204 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B7DB1BDD4F
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 15:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BC6D1BDD2A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 15:08:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726869AbgD2NPI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Apr 2020 09:15:08 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:36118 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726558AbgD2NPH (ORCPT
+        id S1726740AbgD2NIt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Apr 2020 09:08:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48568 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726516AbgD2NIt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Apr 2020 09:15:07 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03TD9J5a089736;
-        Wed, 29 Apr 2020 13:14:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=mime-version :
- message-id : date : from : to : cc : subject : references : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=VV+TtgnM87vuUChG0Zw87MJS37UkJ0IzlgYUObe8IOw=;
- b=czXsNHIVgsZDlCYK7ch1CEkG1dO9uwV89/4ZM9Q3anSz9ZuXGYffjst+xVfcCubynQ7v
- y7em3aQl8u+IGi0g/S9iG0EbK7GPanBEmCPH8RG7M1BAvpZWK1xEK8y0MVgMXr3vCiJc
- 5PsDtDVUJTUZufZDIyLOEhNe6n0GvXy2s9vH3AgaQPf0JW0xxDl01sNoBNyy9faHjb4S
- oWASTvWiIZzkq6XiD47VzeF313Glmhr9miYvrF9TkLwRGij9E8LqLKHgET/61NtSyk2i
- 2vsZ9/7ctYEJrVRs2Nn42iqeNjl7eYdBRL6MeEhbfRWdF1WuvvCLFVhZMCBEPaQ9MPII fQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 30p2p0b21e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 29 Apr 2020 13:14:55 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03TD8DKj114565;
-        Wed, 29 Apr 2020 13:14:54 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 30mxrv2ttp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 29 Apr 2020 13:14:54 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 03TDEovT032406;
-        Wed, 29 Apr 2020 13:14:50 GMT
-Received: from kadam (/41.57.98.10) by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Wed, 29 Apr 2020 06:07:45 -0700
-USER-AGENT: Mutt/1.9.4 (2018-02-28)
+        Wed, 29 Apr 2020 09:08:49 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C70B2C03C1AD;
+        Wed, 29 Apr 2020 06:08:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Transfer-Encoding
+        :Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+        Sender:Reply-To:Content-ID:Content-Description;
+        bh=AyLMpojfSDcshP2OGw7tMbAp20EERqjQfToIT1YcV9Y=; b=A1P9Z1EQPE9z3+AvSk54QE9RII
+        wW+3ExnefJL8JiA4Y8804FEhojjVbr8BszmXz5tZkFDxb2CiLnHLxQ2JfWlQHo64eX8Q+oI/mWI1G
+        9n/bi6dkHFzRH9zg+PDdDE+qMxA7p9BXqAIBaKmfmQMXnOx1QwA/4Gt4/SPD8TlRxfqH2fv2tkUsZ
+        EFufMyMmhP7QOBQnz/GjEEV61KguMw8q3Sp1/HhcDCs/NrpmhdUzFXQUtYVPtRMMOKzEy9qEoKfFZ
+        2YbNkdwsVhLXH9dZe4thd926kMyQ1VsSa1gbXikIjcP9wV2xmvj9228xeBxKchtXrhJHZ2jkSvT+M
+        JAS6sqEA==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jTmS3-0005Yq-Ty; Wed, 29 Apr 2020 13:08:35 +0000
+Date:   Wed, 29 Apr 2020 06:08:35 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Manfred Spraul <manfred@colorfullife.com>
+Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Waiman Long <longman@redhat.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Alexey Dobriyan <adobriyan@gmail.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] ipc: use GFP_ATOMIC under spin lock
+Message-ID: <20200429130835.GS29705@bombadil.infradead.org>
+References: <20200428034736.27850-1-weiyongjun1@huawei.com>
+ <20200428111403.GJ29705@bombadil.infradead.org>
+ <a0f82756-3e51-d960-d901-e4cc3c7c4c19@colorfullife.com>
 MIME-Version: 1.0
-Message-ID: <20200429130738.GQ2014@kadam>
-Date:   Wed, 29 Apr 2020 06:07:38 -0700 (PDT)
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Ondrej Mosnacek <omosnace@redhat.com>,
-        Jeff Vander Stoep <jeffv@google.com>,
-        selinux@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] selinux: fix error return code in policydb_read()
-References: <20200429073053.83660-1-weiyongjun1@huawei.com>
-In-Reply-To: <20200429073053.83660-1-weiyongjun1@huawei.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 suspectscore=0
- mlxlogscore=999 malwarescore=0 bulkscore=0 spamscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004290111
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 clxscore=1011
- bulkscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 malwarescore=0
- mlxscore=0 suspectscore=0 mlxlogscore=999 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004290111
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a0f82756-3e51-d960-d901-e4cc3c7c4c19@colorfullife.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Apr 29, 2020 at 07:30:53AM +0000, Wei Yongjun wrote:
-> Fix to return negative error code -ENOMEM from the kvcalloc() error
-> handling case instead of 0, as done elsewhere in this function.
+On Wed, Apr 29, 2020 at 07:22:13AM +0200, Manfred Spraul wrote:
+> Hello together,
 > 
-
-Please add a Fixes tag and Cc Kent.
-
-Fixes: acdf52d97f82 ("selinux: convert to kvmalloc")
-
-
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->  security/selinux/ss/policydb.c | 1 +
->  1 file changed, 1 insertion(+)
+> On 4/28/20 1:14 PM, Matthew Wilcox wrote:
+> > On Tue, Apr 28, 2020 at 03:47:36AM +0000, Wei Yongjun wrote:
+> > > The function ipc_id_alloc() is called from ipc_addid(), in which
+> > > a spin lock is held, so we should use GFP_ATOMIC instead.
+> > > 
+> > > Fixes: de5738d1c364 ("ipc: convert ipcs_idr to XArray")
+> > > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> > I see why you think that, but it's not true.  Yes, we hold a spinlock, but
+> > the spinlock is in an object which is not reachable from any other CPU.
 > 
-> diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
-> index a0b3dc152468..a51e051df2cc 100644
-> --- a/security/selinux/ss/policydb.c
-> +++ b/security/selinux/ss/policydb.c
-> @@ -2638,6 +2638,7 @@ int policydb_read(struct policydb *p, void *fp)
->  	if (rc)
->  		goto bad;
->  
-> +	rc = -ENOMEM;
->  	p->type_attr_map_array = kvcalloc(p->p_types.nprim,
->  					  sizeof(*p->type_attr_map_array),
->  					  GFP_KERNEL);
+> Is it really allowed that spin_lock()/spin_unlock may happen on different
+> cpus?
+> 
+> CPU1: spin_lock()
+> 
+> CPU1: schedule() -> sleeps
+> 
+> CPU2: -> schedule() returns
+> 
+> CPU2: spin_unlock().
 
-There is another bug earlier in the function as well:
+I think that is allowed, but I'm not an expert in the implementations.
 
-security/selinux/ss/policydb.c
-  2537  
-  2538          rc = next_entry(buf, fp, sizeof(u32));
-  2539          if (rc)
-  2540                  goto bad;
-  2541          nel = le32_to_cpu(buf[0]);
-  2542  
-  2543          p->role_tr = hashtab_create(role_trans_hash, role_trans_cmp, nel);
-  2544          if (!p->role_tr)
-  2545                  goto bad;
-                        ^^^^^^^^
+> > Converting to GFP_ATOMIC is completely wrong.
+> 
+> What is your solution proposal?
+> 
+> xa_store() also gets a gfp_ flag. Thus even splitting _alloc() and _store()
+> won't help
+> 
+>     xa_alloc(,entry=NULL,)
+>     new->seq = ...
+>     spin_lock();
+>     xa_store(,entry=new,GFP_KERNEL);
 
-  2546          for (i = 0; i < nel; i++) {
-  2547                  rc = -ENOMEM;
+While it takes GFP flags, it won't do any allocation if it's overwriting
+an allocated entry.
 
-This style of setting the error code seems very bug prone.
-
-The Fixes tag for this one is:
-Fixes: e67b2ec9f617 ("selinux: store role transitions in a hash table")
-
-Just put both tags in the commit message.
-
-regards,
-dan carpenter
+diff --git a/ipc/util.c b/ipc/util.c
+index 0f6b0e0aa17e..b929ab0072a5 100644
+--- a/ipc/util.c
++++ b/ipc/util.c
+@@ -19,8 +19,8 @@
+  *
+  * General sysv ipc locking scheme:
+  *	rcu_read_lock()
+- *          obtain the ipc object (kern_ipc_perm) by looking up the id in an idr
+- *	    tree.
++ *          obtain the ipc object (kern_ipc_perm) by looking up the id in an
++ *	    xarray.
+  *	    - perform initial checks (capabilities, auditing and permission,
+  *	      etc).
+  *	    - perform read-only operations, such as INFO command, that
+@@ -209,14 +209,14 @@ static inline int ipc_id_alloc(struct ipc_ids *ids, struct kern_ipc_perm *new)
+ 	u32 idx;
+ 	int err;
+ 
++	xa_lock(&ids->ipcs);
++
+ 	if (get_restore_id(ids) < 0) {
+ 		int max_idx;
+ 
+ 		max_idx = max(ids->in_use*3/2, ipc_min_cycle);
+ 		max_idx = min(max_idx, ipc_mni) - 1;
+ 
+-		xa_lock(&ids->ipcs);
+-
+ 		err = __xa_alloc_cyclic(&ids->ipcs, &idx, NULL,
+ 				XA_LIMIT(0, max_idx), &ids->next_idx,
+ 				GFP_KERNEL);
+@@ -224,24 +224,31 @@ static inline int ipc_id_alloc(struct ipc_ids *ids, struct kern_ipc_perm *new)
+ 			ids->seq++;
+ 			if (ids->seq >= ipcid_seq_max())
+ 				ids->seq = 0;
++			err = 0;
+ 		}
+ 
+-		if (err >= 0) {
++		if (!err) {
+ 			new->seq = ids->seq;
+ 			new->id = (new->seq << ipcmni_seq_shift()) + idx;
+-			/* xa_store contains a write barrier */
+-			__xa_store(&ids->ipcs, idx, new, GFP_KERNEL);
+ 		}
+-
+-		xa_unlock(&ids->ipcs);
+ 	} else {
+ 		new->id = get_restore_id(ids);
+ 		new->seq = ipcid_to_seqx(new->id);
+ 		idx = ipcid_to_idx(new->id);
+-		err = xa_insert(&ids->ipcs, idx, new, GFP_KERNEL);
++		err = __xa_insert(&ids->ipcs, idx, NULL, GFP_KERNEL);
+ 		set_restore_id(ids, -1);
+ 	}
+ 
++	/*
++	 * Hold the spinlock so that nobody else can access the object
++	 * once they can find it.  xa_store contains a write barrier so
++	 * all previous stores to 'new' will be visible.
++	 */
++	spin_lock(&new->lock);
++	if (!err)
++		__xa_store(&ids->ipcs, idx, new, GFP_NOWAIT);
++	xa_unlock(&ids->ipcs);
++
+ 	if (err == -EBUSY)
+ 		return -ENOSPC;
+ 	if (err < 0)
+@@ -255,7 +262,7 @@ static inline int ipc_id_alloc(struct ipc_ids *ids, struct kern_ipc_perm *new)
+  * @new: new ipc permission set
+  * @limit: limit for the number of used ids
+  *
+- * Add an entry 'new' to the ipc ids idr. The permissions object is
++ * Add an entry 'new' to the ipc ids. The permissions object is
+  * initialised and the first free entry is set up and the index assigned
+  * is returned. The 'new' entry is returned in a locked state on success.
+  *
+@@ -270,7 +277,7 @@ int ipc_addid(struct ipc_ids *ids, struct kern_ipc_perm *new, int limit)
+ 	kgid_t egid;
+ 	int idx;
+ 
+-	/* 1) Initialize the refcount so that ipc_rcu_putref works */
++	/* Initialize the refcount so that ipc_rcu_putref works */
+ 	refcount_set(&new->refcount, 1);
+ 
+ 	if (limit > ipc_mni)
+@@ -279,12 +286,7 @@ int ipc_addid(struct ipc_ids *ids, struct kern_ipc_perm *new, int limit)
+ 	if (ids->in_use >= limit)
+ 		return -ENOSPC;
+ 
+-	/*
+-	 * 2) Hold the spinlock so that nobody else can access the object
+-	 * once they can find it
+-	 */
+ 	spin_lock_init(&new->lock);
+-	spin_lock(&new->lock);
+ 	current_euid_egid(&euid, &egid);
+ 	new->cuid = new->uid = euid;
+ 	new->gid = new->cgid = egid;
+@@ -588,7 +590,7 @@ void ipc64_perm_to_ipc_perm(struct ipc64_perm *in, struct ipc_perm *out)
+  * @ids: ipc identifier set
+  * @id: ipc id to look for
+  *
+- * Look for an id in the ipc ids idr and return associated ipc object.
++ * Look for an id in the ipc ids and return associated ipc object.
+  *
+  * Call inside the RCU critical section.
+  * The ipc object is *not* locked on exit.

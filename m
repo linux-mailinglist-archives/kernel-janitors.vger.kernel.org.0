@@ -2,32 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48DD81BD60C
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 09:29:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 027941BD6AE
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 09:57:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726470AbgD2H3s (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Apr 2020 03:29:48 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:3336 "EHLO huawei.com"
+        id S1726685AbgD2H5P (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Apr 2020 03:57:15 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3337 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726355AbgD2H3r (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Apr 2020 03:29:47 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 4CF88DE1252FF49D47E6;
-        Wed, 29 Apr 2020 15:29:46 +0800 (CST)
+        id S1726381AbgD2H5P (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 29 Apr 2020 03:57:15 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 1755BB7622E649D10F75;
+        Wed, 29 Apr 2020 15:57:13 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 29 Apr 2020 15:29:39 +0800
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 29 Apr 2020 15:57:06 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        "Ondrej Mosnacek" <omosnace@redhat.com>,
-        Jeff Vander Stoep <jeffv@google.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <selinux@vger.kernel.org>,
+To:     Richard Cochran <richardcochran@gmail.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <netdev@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] selinux: fix error return code in policydb_read()
-Date:   Wed, 29 Apr 2020 07:30:53 +0000
-Message-ID: <20200429073053.83660-1-weiyongjun1@huawei.com>
+Subject: [PATCH -next] ptp: ptp_ines: convert to devm_platform_ioremap_resource
+Date:   Wed, 29 Apr 2020 07:58:20 +0000
+Message-ID: <20200429075820.103452-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -39,26 +35,36 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return negative error code -ENOMEM from the kvcalloc() error
-handling case instead of 0, as done elsewhere in this function.
+Use the helper function that wraps the calls to platform_get_resource()
+and devm_ioremap_resource() together.
 
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- security/selinux/ss/policydb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/ptp/ptp_ines.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
-index a0b3dc152468..a51e051df2cc 100644
---- a/security/selinux/ss/policydb.c
-+++ b/security/selinux/ss/policydb.c
-@@ -2638,6 +2638,7 @@ int policydb_read(struct policydb *p, void *fp)
- 	if (rc)
- 		goto bad;
+diff --git a/drivers/ptp/ptp_ines.c b/drivers/ptp/ptp_ines.c
+index 52d77db39829..7711651ff19e 100644
+--- a/drivers/ptp/ptp_ines.c
++++ b/drivers/ptp/ptp_ines.c
+@@ -783,16 +783,10 @@ static struct mii_timestamping_ctrl ines_ctrl = {
+ static int ines_ptp_ctrl_probe(struct platform_device *pld)
+ {
+ 	struct ines_clock *clock;
+-	struct resource *res;
+ 	void __iomem *addr;
+ 	int err = 0;
  
-+	rc = -ENOMEM;
- 	p->type_attr_map_array = kvcalloc(p->p_types.nprim,
- 					  sizeof(*p->type_attr_map_array),
- 					  GFP_KERNEL);
+-	res = platform_get_resource(pld, IORESOURCE_MEM, 0);
+-	if (!res) {
+-		dev_err(&pld->dev, "missing memory resource\n");
+-		return -EINVAL;
+-	}
+-	addr = devm_ioremap_resource(&pld->dev, res);
++	addr = devm_platform_ioremap_resource(pld, 0);
+ 	if (IS_ERR(addr)) {
+ 		err = PTR_ERR(addr);
+ 		goto out;
 
 
 

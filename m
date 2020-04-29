@@ -2,79 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C113A1BD1D5
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 03:48:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE8AA1BD1DC
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 03:49:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726486AbgD2BsV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 21:48:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55626 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726158AbgD2BsV (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 21:48:21 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5497CC03C1AC;
-        Tue, 28 Apr 2020 18:48:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=LCV05bmUMt/JTnik/FHerL4Ec6mpH5O0Enok8cXx9E8=; b=FkFAtxo48mz7pUFlav7T1IDRCW
-        EkFO3Pxze3Q4aD90IVsb4it+V85tsX7cOEjdDX0reX18BoNdq7zOe7j/KNZGlRS6qEXeUMqobpAhL
-        xLOpR68hSSbWMco3ZLW7gDleGlTlFDS08fAJr/uzLQZKc83VzyI3Rvi8MUNCOuCMgW4W0dtDqLWlQ
-        hld/UnzliFEQfDKWjPxyFORuzQ9a2CXmM2juej1AbUYphFXyLirQXRmw356z+7VkbLe51GbJKo/U0
-        xQb5ZzSNNsjavNkuYLw1eN8uv0/G9yjopfGn4T+1opbtOtpdGf32jCmlKku9/Q0xVmkr4mM2w+X8H
-        2GYE3/Tg==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jTbpT-0004yP-Dr; Wed, 29 Apr 2020 01:48:03 +0000
-Date:   Tue, 28 Apr 2020 18:48:03 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>,
-        Waiman Long <longman@redhat.com>,
-        Manfred Spraul <manfred@colorfullife.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] ipc: use GFP_ATOMIC under spin lock
-Message-ID: <20200429014803.GO29705@bombadil.infradead.org>
-References: <20200428034736.27850-1-weiyongjun1@huawei.com>
- <20200428111403.GJ29705@bombadil.infradead.org>
- <20200428171420.045f0acc9e1bf20044c4560e@linux-foundation.org>
+        id S1726447AbgD2BtY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 21:49:24 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:56330 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726158AbgD2BtX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Apr 2020 21:49:23 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 9CF2E9EA2F8716380393;
+        Wed, 29 Apr 2020 09:49:21 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 29 Apr 2020 09:49:12 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-omap@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next  v2] PCI: dwc: pci-dra7xx: use devm_platform_ioremap_resource_byname()
+Date:   Wed, 29 Apr 2020 01:50:27 +0000
+Message-ID: <20200429015027.134485-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200427111044.162618-1-weiyongjun1@huawei.com>
+References: <20200427111044.162618-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200428171420.045f0acc9e1bf20044c4560e@linux-foundation.org>
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Apr 28, 2020 at 05:14:20PM -0700, Andrew Morton wrote:
-> On Tue, 28 Apr 2020 04:14:03 -0700 Matthew Wilcox <willy@infradead.org> wrote:
-> 
-> > On Tue, Apr 28, 2020 at 03:47:36AM +0000, Wei Yongjun wrote:
-> > > The function ipc_id_alloc() is called from ipc_addid(), in which
-> > > a spin lock is held, so we should use GFP_ATOMIC instead.
-> > > 
-> > > Fixes: de5738d1c364 ("ipc: convert ipcs_idr to XArray")
-> > > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> > 
-> > I see why you think that, but it's not true.  Yes, we hold a spinlock, but
-> > the spinlock is in an object which is not reachable from any other CPU.
-> > So it's not possible to deadlock.
-> 
-> um, then why are we taking it?
+platform_get_resource() may fail and return NULL, so we should better
+check it's return value to avoid a NULL pointer dereference a bit later
+in the code. Fix it to use devm_platform_ioremap_resource_byname()
+instead of calling platform_get_resource_byname() and devm_ioremap().
 
-The lock has to be held by the time 'new' is findable because 'new' is
-not completely constructed at that point.  The finder will try to acquire
-the spinlock before looking at the uninitialised fields, so it's safe.
-But it's not a common idiom we use at all.
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+v1 -> v2: use devm_platform_ioremap_resource_byname, suggest by Vignesh
+---
+ drivers/pci/controller/dwc/pci-dra7xx.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-> >  This probably confuses all kinds
-> > of automated checkers,
-> 
-> A big fat code comment would reduce the email traffic?
+diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+index 3b0e58f2de58..6184ebc9392d 100644
+--- a/drivers/pci/controller/dwc/pci-dra7xx.c
++++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+@@ -840,7 +840,6 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
+ 	struct phy **phy;
+ 	struct device_link **link;
+ 	void __iomem *base;
+-	struct resource *res;
+ 	struct dw_pcie *pci;
+ 	struct dra7xx_pcie *dra7xx;
+ 	struct device *dev = &pdev->dev;
+@@ -877,10 +876,9 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
+ 		return irq;
+ 	}
+ 
+-	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "ti_conf");
+-	base = devm_ioremap(dev, res->start, resource_size(res));
+-	if (!base)
+-		return -ENOMEM;
++	base = devm_platform_ioremap_resource_byname(pdev, "ti_conf");
++	if (IS_ERR(base))
++		return PTR_ERR(base);
+ 
+ 	phy_count = of_property_count_strings(np, "phy-names");
+ 	if (phy_count < 0) {
 
-I think I can rewrite this to take the spinlock after doing the allocation.
+
+

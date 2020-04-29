@@ -2,32 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ECD81BD8C5
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 11:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0748A1BDA33
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 13:01:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726781AbgD2Jul (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Apr 2020 05:50:41 -0400
-Received: from mout.web.de ([217.72.192.78]:36767 "EHLO mout.web.de"
+        id S1726635AbgD2LBI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Apr 2020 07:01:08 -0400
+Received: from mout.web.de ([212.227.15.3]:53601 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726366AbgD2Juk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Apr 2020 05:50:40 -0400
+        id S1726516AbgD2LBH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 29 Apr 2020 07:01:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588153826;
-        bh=a6CbGMAGc+Vf6EJfelPcPqhdFFMCY+kGb2T4Bz4GxtU=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=VelulpLlP8zHSfojwMkwmaqS50/BZyljvAayacWyrjgHWHQWMw/H7WrPbRdd8UxiZ
-         oD6KcOihY745j9BOXy+6/N8rFh1OsOo5fSmXI14+ZBGtp3qsed/I5XUwTWFTp6o9Tl
-         v+j/AjiZvtrsiIQhu5xV65bnZAhmb8q9Af+7G6sk=
+        s=dbaedf251592; t=1588158042;
+        bh=bgrdZSsBnxpNF1hOSKH6C902WZ8whldmXurKxgXfQXU=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=WntFwtyLKTje5G4w9Qmcj4dBoOBcql0XmvBIkuah3CJYqmJuOpy8yBrbV2LKcj0nT
+         Z3ekOrm0jmK8yAiht8j/FB5BrKCz+8QUTFltKo/wSlzaud728j9w+iLpNs9sDNGN3y
+         KaEeKvcMRptS9wLil3swV+wO+18UVkqFSbd7cdcA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.72.72]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MeUc2-1ivlWI3OgG-00aLYe; Wed, 29
- Apr 2020 11:50:26 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alan Tull <atull@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Moritz Fischer <mdf@kernel.org>
-Subject: Re: [PATCH 1/4 v2] firmware: stratix10-svc: Fix genpool creation
- error handling
+Received: from [192.168.1.2] ([93.133.72.72]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MLg8p-1jU1RB0twR-000uBC; Wed, 29
+ Apr 2020 13:00:42 +0200
+Subject: Re: [PATCH -next v2] mailbox: zynqmp-ipi: Fix NULL vs IS_ERR() check
+ in zynqmp_ipi_mbox_probe()
+To:     Wei Yongjun <weiyongjun1@huawei.com>,
+        linux-arm-kernel@lists.infradead.org
+Cc:     Jassi Brar <jassisinghbrar@gmail.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Wendy Liang <wendy.liang@xilinx.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20200429073020.83519-1-weiyongjun1@huawei.com>
+ <20200429093503.150485-1-weiyongjun1@huawei.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -72,62 +76,48 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-To:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        Richard Gong <richard.gong@linux.intel.com>
-Message-ID: <eb56faac-657a-e977-3be1-5f0a78ca509c@web.de>
-Date:   Wed, 29 Apr 2020 11:50:25 +0200
+Message-ID: <93fe8107-ffca-8006-4020-be3bd6edfc57@web.de>
+Date:   Wed, 29 Apr 2020 13:00:41 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20200429093503.150485-1-weiyongjun1@huawei.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-X-Provags-ID: V03:K1:g5j7V+WDBUjIV43oP3Ln6D6tZUjNkYCSa8S0Cj1cueG45mkkKtj
- gW2aHESCy/tI63pOaSEqj403YIZzN7sBZuaISpQgdKKCHCoaHFVbKTEmZBCtZCpM4AZOFbX
- aYiChl7lwt6CcTGAp5EBGW3Nt0UsM+hF15TOpDOyV19Z4+yBHlpLOsgDQ62c4NwVy3hjU9d
- RzZNnxKcTTJQWBsmMNYWA==
+X-Provags-ID: V03:K1:0WI9xzNdwiPNVEbUWiOcWiH3k+Cgu8XWN978CpIwo0lENK+PMIz
+ l6Z6M50PT82/vS7ZvHAfXIv9jtflhdbmx2JJeYQRy9rmxMYZwCA7h0txIyAU0OnbUAbAV+B
+ o+9szGH6a/kIvauGR3g9lrxfjYrjXveH9XQmBiDsETfFZoQSnfY78rLtFARAgV03wnD/+sZ
+ 77bFM85eTe6F84AtzoDgw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:r5lcZnkRrhY=:ig1bowPbN0zhGW2wizbQ84
- MjHwxJRs6HRLCjK3BGODd762QDfUCDwYmskOOqClqR0HduAmwibAs5fUNDT2gMYdZh5TMAhHN
- jrlmSAA0hb8C9lWiXWbIl4eJoYY+yuSet+21hnldc84bYnyUA72+jBhOZuROefALsz8cWEB8m
- QBlfCHanxnLFwp0RO+OCjqHrURyUV06xSfQeNoPGq/lKAbgKFyHaVm9PUl1Z5U+0x9mzTtNT+
- PLPaPK24g7ufvg9ERJJjnhB7SSDm6L3knElwXUiuiOHw9pGo0ovzRgopoTOjUKrcm693N6QlW
- YrFOoCQfqkIx7b2FGa7KMJtphBp9wXp+LcLHpWaq5vJFSttPUNREdWaTzYPAWHV1R9AYg1HEp
- lKprYgkyFX5MjnWX9kKZLFWJFWRUU0kyXCeT8LXJyGBdgA0eQhTXSF8LhcdqCYTuJUbcSWIdh
- RjveYaWNmPmGDqwVlFuMjbjMc6rUJtOETdLiMIbvdD4QmJBJ/ozA1L+egWkKmlOjmFZ+lze3o
- DSjYJBPmqHTD6Px2LmwrQTzjPeq8dq5BqzD4F4SZ1rYI3LayOy+Ozd3sdtSCE3E3VT01t1XzY
- NeZyJNGf387wp3uoQf9EglDpfEBnb08S0V6HJz+XHrZSMS6KnZmrYalWuto6wrcDBBCycA56+
- xcP7qwGtcqrWKGWAf6/9UdG5c7l+cScqf9GCLuFnRu7Lt+oDqwrDIn/4/83QZtEekiCLGYi5l
- 7ohNqTsWfm88AGxOutR7ZRpHbf5kBSW3J2xm75Q6cSYrLIx4jqXmVGHRnmk8jqDWayUhIK9Hj
- l2MYfEr1aMZpfz5McPGk2tdQcMLbtYCJOd5IDlosl3T8KNe5UCilOH6JiC+7jlVm9p4Uzf8uI
- UObhNPeno9M5khrHxjwt8EAPApNHcj+8c21rgrisRFsWOmgQur5hsm7luss15AcYl7thWO8b+
- XS7X2DxHKOPVk4JeBmsACKT9gltrxOUWPLr9qsOX89Meb7oHr/a7G5pOSp55q1lAXUK0jSuht
- ASiI6GE4+qJslOFk2WeTSYW2MKllSc0KkdbTxkefATEXIj85SK8DQnenqABE4h5DvShYf2l5N
- Z4Qg+5WWOnqa3hVWZt9JIIvrlT4msYnkFzzoXlHUoZqELrNcuV09p31aYVlVZUUPON1asNnDj
- hDwxTCd1HBVsuZJdaDViUH9VpIiV7gYbkekikBkqivi3mZv1IEb5I1UzyLOBRrzeqhk6+E/nz
- 6XvYqvjX5eBzY//Oz
+X-UI-Out-Filterresults: notjunk:1;V03:K0:abFhAQNj8xY=:AwpudPg5431nxicLzFL9eA
+ hTt3hDLkEFcw7OwP7Sc1J/1XgNNQdxZakezpFhmWR5biQd6mYq6FMvfO8vhd0aOjhw1COWn9u
+ zd6X+1GU7MQm9w/ECesiz6gjDsL4gVqUPlRLP4u/Amg24ADRfz82eM1DkSv5Hags/+K0OHb/0
+ fPvBsTSivhBLGstLNfxq3TT+u4ng2sQm6Ux1Hhg5Xd2JJzj2QWRtBWcer7jiyPSaFulf13xeC
+ 0krR4Uze3yuUMnsbm2DayrWq91aN/0DWcpv4ZSOkVf8nXgHxSkxNhsRqb1jBxWJXe1wV0KJq4
+ t295btun3+VhfhI5FgMdhLdTbz3YtPmNHDJZavpyKF1J3+F6FaRSst1/KJh+SHIi2nvvvWOod
+ dg8z+PzmxAK4L8bq7dh3RefBbqyt3PmLQlatAn7cjqVU/Z8azzz5oyvhej3DzONfWqHH2o0ne
+ 3bCN3L8Kr2Z6Oky9zbeE84oQI08Nqi2PwbjyKrTP0MhGDPXORYwNmo/Wd2Xdvug0Qt5rRpfWr
+ bmR9txZkamkNQGK03KZA2MbW1DFchxBqCBKjAck8RDTDetK6aD5r990XIpbb6U9kKl4a/m3WM
+ 3LLpfHwcXxW2K3PTSR/KDLN/UNZykS+PEhZW9uoA+fCaZMHnxmKj8zJ8qIC4ILI//57WwRO2E
+ PQmzj+fZOX2xgT/3coWhioQlqw4T82TtKCuD754O/wN+LxIYkeOPl1OGBdk7fvYsaYdPgey0K
+ BeRXgmH2x4jmHE+4CZNfUC//FTVTxGA5PUqlrEgvpLRqTFAQkQQAp7abxmRwNhl15NprBx/3m
+ HIWyAlys2SXaP/AQC5UY01UwTGSYUZ26GkhrFrumtCDiizAYN60TNawISCDPE4anVWGEjuuIp
+ 0o0Fs1TBTVcW9HCLdBuPXGObFffFlackIxrY2ivKQ/zWxqd8YVc7LXijRbU7Axvw9psoZXtUO
+ s0TBmadN7uXb9ev7PFjU49fuDJFn5Mns8fTbLggTVBJd/LspOwhvgp8SIUDagzSqNqJVwBdRh
+ HrofFePbNMxeoe0g7F++NgWlaYUvRiZ3Kva9yGBXgHU6JCkFRUOR5RQwVk99oMK+wVR75QTnI
+ zKxkxluGDCvhGezFm/20omy/lNgCQGjqv9RcH3CqSslYyIsrbmDjO2Tlh7+2am7bfE6lJ1U5U
+ 8MiC78xYioI24YqGGX5fdIHtsVcDE1mvmOBGok6KJY1h5x1emaRipTX9BU2rKgpXJehDWiheB
+ 6qpb+IR3HUn8c+wRl
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> 'svc_create_memory_pool()' returns an error pointer on error, not NULL.
+> So we should check whether the return value of devm_ioremap()
+> is NULL instead of IS_ERR.
 
-Such information is helpful.
-
-
-> Fix the corresponding test and return value accordingly.
->
-> Move the genpool allocation after a few devm_kzalloc in order to ease
-> error handling.
-
-How do you think about a wording variant like the following?
-
-   Change description:
-   * Use a check of the failure predicate which is documented for
-     the svc_create_memory_pool() function in the same source file.
-
-   * Move the genpool allocation behind a few devm_kzalloc() calls
-     in order to ease exception handling.
+Will an other change description provide the preferred imperative wording?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=96c9a7802af7d500a582d89a8b864584fe878c1b#n151
 
 Regards,
 Markus

@@ -2,76 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB0AE1BD51E
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 08:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 173D01BD609
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 09:29:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726630AbgD2GxF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Apr 2020 02:53:05 -0400
-Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:40955 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726759AbgD2GxF (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Apr 2020 02:53:05 -0400
-Received: from localhost.localdomain ([92.148.159.11])
-        by mwinf5d18 with ME
-        id YWt2220030F2omL03Wt2RM; Wed, 29 Apr 2020 08:53:03 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 29 Apr 2020 08:53:03 +0200
-X-ME-IP: 92.148.159.11
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     richard.gong@linux.intel.com, gregkh@linuxfoundation.org,
-        atull@kernel.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH 4/4 v2] firmware: stratix10-svc: Slightly simplify code
-Date:   Wed, 29 Apr 2020 08:52:59 +0200
-Message-Id: <8c505c686438c54da61ad4fe15e1eae722011153.1588142343.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1588142343.git.christophe.jaillet@wanadoo.fr>
-References: <cover.1588142343.git.christophe.jaillet@wanadoo.fr>
+        id S1726501AbgD2H3R (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Apr 2020 03:29:17 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3335 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726355AbgD2H3R (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 29 Apr 2020 03:29:17 -0400
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 5D70739FAA5FA094E860;
+        Wed, 29 Apr 2020 15:29:13 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 29 Apr 2020 15:29:06 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Jassi Brar <jassisinghbrar@gmail.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Wendy Liang <wendy.liang@xilinx.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] mailbox: Fix NULL vs IS_ERR() check in zynqmp_ipi_mbox_probe()
+Date:   Wed, 29 Apr 2020 07:30:20 +0000
+Message-ID: <20200429073020.83519-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Replace 'devm_kmalloc_array(... | __GFP_ZERO)' with the equivalent and
-shorter 'devm_kcalloc(...)'.
+In case of error, the function devm_ioremap() returns NULL pointer not
+ERR_PTR(). The IS_ERR() test in the return value check should be
+replaced with NULL test.
 
-'ctrl->genpool' can not be NULL, so axe a useless test in the remove
-function.
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Fixes: 4981b82ba2ff ("mailbox: ZynqMP IPI mailbox controller")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/firmware/stratix10-svc.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/mailbox/zynqmp-ipi-mailbox.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
-index 739004398877..c228337cb0a1 100644
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -1002,8 +1002,7 @@ static int stratix10_svc_drv_probe(struct platform_device *pdev)
- 	if (!controller)
- 		return -ENOMEM;
- 
--	chans = devm_kmalloc_array(dev, SVC_NUM_CHANNEL,
--				   sizeof(*chans), GFP_KERNEL | __GFP_ZERO);
-+	chans = devm_kcalloc(dev, SVC_NUM_CHANNEL, sizeof(*chans), GFP_KERNEL);
- 	if (!chans)
- 		return -ENOMEM;
- 
-@@ -1086,8 +1085,7 @@ static int stratix10_svc_drv_remove(struct platform_device *pdev)
- 		kthread_stop(ctrl->task);
- 		ctrl->task = NULL;
- 	}
--	if (ctrl->genpool)
--		gen_pool_destroy(ctrl->genpool);
-+	gen_pool_destroy(ctrl->genpool);
- 	list_del(&ctrl->node);
- 
- 	return 0;
--- 
-2.25.1
+diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
+index 86887c9a349a..f9cc674ba9b7 100644
+--- a/drivers/mailbox/zynqmp-ipi-mailbox.c
++++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
+@@ -504,10 +504,9 @@ static int zynqmp_ipi_mbox_probe(struct zynqmp_ipi_mbox *ipi_mbox,
+ 		mchan->req_buf_size = resource_size(&res);
+ 		mchan->req_buf = devm_ioremap(mdev, res.start,
+ 					      mchan->req_buf_size);
+-		if (IS_ERR(mchan->req_buf)) {
++		if (!mchan->req_buf) {
+ 			dev_err(mdev, "Unable to map IPI buffer I/O memory\n");
+-			ret = PTR_ERR(mchan->req_buf);
+-			return ret;
++			return -ENOMEM;
+ 		}
+ 	} else if (ret != -ENODEV) {
+ 		dev_err(mdev, "Unmatched resource %s, %d.\n", name, ret);
+@@ -520,10 +519,9 @@ static int zynqmp_ipi_mbox_probe(struct zynqmp_ipi_mbox *ipi_mbox,
+ 		mchan->resp_buf_size = resource_size(&res);
+ 		mchan->resp_buf = devm_ioremap(mdev, res.start,
+ 					       mchan->resp_buf_size);
+-		if (IS_ERR(mchan->resp_buf)) {
++		if (!mchan->resp_buf) {
+ 			dev_err(mdev, "Unable to map IPI buffer I/O memory\n");
+-			ret = PTR_ERR(mchan->resp_buf);
+-			return ret;
++			return -ENOMEM;
+ 		}
+ 	} else if (ret != -ENODEV) {
+ 		dev_err(mdev, "Unmatched resource %s.\n", name);
+@@ -543,10 +541,9 @@ static int zynqmp_ipi_mbox_probe(struct zynqmp_ipi_mbox *ipi_mbox,
+ 		mchan->req_buf_size = resource_size(&res);
+ 		mchan->req_buf = devm_ioremap(mdev, res.start,
+ 					      mchan->req_buf_size);
+-		if (IS_ERR(mchan->req_buf)) {
++		if (!mchan->req_buf) {
+ 			dev_err(mdev, "Unable to map IPI buffer I/O memory\n");
+-			ret = PTR_ERR(mchan->req_buf);
+-			return ret;
++			return -ENOMEM;
+ 		}
+ 	} else if (ret != -ENODEV) {
+ 		dev_err(mdev, "Unmatched resource %s.\n", name);
+@@ -559,10 +556,9 @@ static int zynqmp_ipi_mbox_probe(struct zynqmp_ipi_mbox *ipi_mbox,
+ 		mchan->resp_buf_size = resource_size(&res);
+ 		mchan->resp_buf = devm_ioremap(mdev, res.start,
+ 					       mchan->resp_buf_size);
+-		if (IS_ERR(mchan->resp_buf)) {
++		if (!mchan->resp_buf) {
+ 			dev_err(mdev, "Unable to map IPI buffer I/O memory\n");
+-			ret = PTR_ERR(mchan->resp_buf);
+-			return ret;
++			return -ENOMEM;
+ 		}
+ 	} else if (ret != -ENODEV) {
+ 		dev_err(mdev, "Unmatched resource %s.\n", name);
+
+
 

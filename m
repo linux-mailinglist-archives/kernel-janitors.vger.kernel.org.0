@@ -2,36 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0748A1BDA33
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 13:01:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BC3E1BDB18
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 13:51:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726635AbgD2LBI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Apr 2020 07:01:08 -0400
-Received: from mout.web.de ([212.227.15.3]:53601 "EHLO mout.web.de"
+        id S1726830AbgD2LvO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Apr 2020 07:51:14 -0400
+Received: from mout.web.de ([217.72.192.78]:43245 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726516AbgD2LBH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Apr 2020 07:01:07 -0400
+        id S1726511AbgD2LvK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 29 Apr 2020 07:51:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588158042;
-        bh=bgrdZSsBnxpNF1hOSKH6C902WZ8whldmXurKxgXfQXU=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=WntFwtyLKTje5G4w9Qmcj4dBoOBcql0XmvBIkuah3CJYqmJuOpy8yBrbV2LKcj0nT
-         Z3ekOrm0jmK8yAiht8j/FB5BrKCz+8QUTFltKo/wSlzaud728j9w+iLpNs9sDNGN3y
-         KaEeKvcMRptS9wLil3swV+wO+18UVkqFSbd7cdcA=
+        s=dbaedf251592; t=1588161061;
+        bh=YpG1Yk8wmgaxNXrdr0JLTCB7c7Q4uVrpM9UhSdIBYOs=;
+        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
+        b=rAgS1+H0wd1XqkisItHDnCIAe+A6HN7f+tJb1OlAhT8aXYr6sBt8M4X9Z2uGGJoZm
+         zfK60EWDrq8/VpeE1vF7/7ksRox6uFg6+pun2s4r+FouwJlqmgh/8w9C8zrugaLGik
+         SbQJjRbOSNnLfrD0znoccBLyXLWD1eU2PXAxcKo8=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.72.72]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MLg8p-1jU1RB0twR-000uBC; Wed, 29
- Apr 2020 13:00:42 +0200
-Subject: Re: [PATCH -next v2] mailbox: zynqmp-ipi: Fix NULL vs IS_ERR() check
- in zynqmp_ipi_mbox_probe()
-To:     Wei Yongjun <weiyongjun1@huawei.com>,
-        linux-arm-kernel@lists.infradead.org
-Cc:     Jassi Brar <jassisinghbrar@gmail.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Wendy Liang <wendy.liang@xilinx.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200429073020.83519-1-weiyongjun1@huawei.com>
- <20200429093503.150485-1-weiyongjun1@huawei.com>
+Received: from [192.168.1.2] ([93.133.72.72]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MKM5t-1jkSeA2Krv-00LyCD; Wed, 29
+ Apr 2020 13:51:01 +0200
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alan Tull <atull@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Moritz Fischer <mdf@kernel.org>
+Subject: Re: [PATCH 3/4 v2] firmware: stratix10-svc: Fix some error handling
+ paths in stratix10_svc_drv_probe()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,48 +72,74 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <93fe8107-ffca-8006-4020-be3bd6edfc57@web.de>
-Date:   Wed, 29 Apr 2020 13:00:41 +0200
+To:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+        Richard Gong <richard.gong@linux.intel.com>
+Message-ID: <767eb869-d9c1-757b-77a6-79927728ddcd@web.de>
+Date:   Wed, 29 Apr 2020 13:51:00 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20200429093503.150485-1-weiyongjun1@huawei.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-X-Provags-ID: V03:K1:0WI9xzNdwiPNVEbUWiOcWiH3k+Cgu8XWN978CpIwo0lENK+PMIz
- l6Z6M50PT82/vS7ZvHAfXIv9jtflhdbmx2JJeYQRy9rmxMYZwCA7h0txIyAU0OnbUAbAV+B
- o+9szGH6a/kIvauGR3g9lrxfjYrjXveH9XQmBiDsETfFZoQSnfY78rLtFARAgV03wnD/+sZ
- 77bFM85eTe6F84AtzoDgw==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:R438sIDxeezX+deWXb3VHlaMCT5XQYYNt1edkyHRb0Aa41E25XI
+ Fp16ZddXsuacSbwMdOkv1+tz1w76mMhNc3DUmQVq7GRfW1nVyYhbXLvYUgkWzjpP71xAI1E
+ fM4KxzxDKvbsxTrAx8KnJhgB2Q4QBJMPlDOw5yfH3T3vEZQKbR7M03CqV6L0MD6cHfM4HCv
+ mik3Ota2s+XdmMdSvwHOw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:abFhAQNj8xY=:AwpudPg5431nxicLzFL9eA
- hTt3hDLkEFcw7OwP7Sc1J/1XgNNQdxZakezpFhmWR5biQd6mYq6FMvfO8vhd0aOjhw1COWn9u
- zd6X+1GU7MQm9w/ECesiz6gjDsL4gVqUPlRLP4u/Amg24ADRfz82eM1DkSv5Hags/+K0OHb/0
- fPvBsTSivhBLGstLNfxq3TT+u4ng2sQm6Ux1Hhg5Xd2JJzj2QWRtBWcer7jiyPSaFulf13xeC
- 0krR4Uze3yuUMnsbm2DayrWq91aN/0DWcpv4ZSOkVf8nXgHxSkxNhsRqb1jBxWJXe1wV0KJq4
- t295btun3+VhfhI5FgMdhLdTbz3YtPmNHDJZavpyKF1J3+F6FaRSst1/KJh+SHIi2nvvvWOod
- dg8z+PzmxAK4L8bq7dh3RefBbqyt3PmLQlatAn7cjqVU/Z8azzz5oyvhej3DzONfWqHH2o0ne
- 3bCN3L8Kr2Z6Oky9zbeE84oQI08Nqi2PwbjyKrTP0MhGDPXORYwNmo/Wd2Xdvug0Qt5rRpfWr
- bmR9txZkamkNQGK03KZA2MbW1DFchxBqCBKjAck8RDTDetK6aD5r990XIpbb6U9kKl4a/m3WM
- 3LLpfHwcXxW2K3PTSR/KDLN/UNZykS+PEhZW9uoA+fCaZMHnxmKj8zJ8qIC4ILI//57WwRO2E
- PQmzj+fZOX2xgT/3coWhioQlqw4T82TtKCuD754O/wN+LxIYkeOPl1OGBdk7fvYsaYdPgey0K
- BeRXgmH2x4jmHE+4CZNfUC//FTVTxGA5PUqlrEgvpLRqTFAQkQQAp7abxmRwNhl15NprBx/3m
- HIWyAlys2SXaP/AQC5UY01UwTGSYUZ26GkhrFrumtCDiizAYN60TNawISCDPE4anVWGEjuuIp
- 0o0Fs1TBTVcW9HCLdBuPXGObFffFlackIxrY2ivKQ/zWxqd8YVc7LXijRbU7Axvw9psoZXtUO
- s0TBmadN7uXb9ev7PFjU49fuDJFn5Mns8fTbLggTVBJd/LspOwhvgp8SIUDagzSqNqJVwBdRh
- HrofFePbNMxeoe0g7F++NgWlaYUvRiZ3Kva9yGBXgHU6JCkFRUOR5RQwVk99oMK+wVR75QTnI
- zKxkxluGDCvhGezFm/20omy/lNgCQGjqv9RcH3CqSslYyIsrbmDjO2Tlh7+2am7bfE6lJ1U5U
- 8MiC78xYioI24YqGGX5fdIHtsVcDE1mvmOBGok6KJY1h5x1emaRipTX9BU2rKgpXJehDWiheB
- 6qpb+IR3HUn8c+wRl
+X-UI-Out-Filterresults: notjunk:1;V03:K0:X3yf3c0YaFo=:zvBU3T/SXtDugAATfcBv7X
+ ZSRcj04b6C1uwPSIyJIhAdOLjXCoCwglZlpYcW9JyMC82WDoAuuUyAjSg/rXSchqjfqaxvNwc
+ ISu2QXlv2AL5qO4oN+7k5Fmacmrmo4lW++xCwBuKTVITyeRI5hRhQOFjDngz6KmthIW3Nf+zn
+ wvGkOdnOoZX2h2utFSNuXhtRxnhklL+shm+oByiCLsLBBAFsiI3vdnj6Zxm31Mu9OnSzi1tCK
+ JbYCZJD1Mr+dq8++2HSHpd43X3R9zj3eOO79QE9JTTLWlIVSFA/gVI42l1/UNRY3Co4hErrzc
+ bTRnbH//DjYB4DlCNpxv6omnuA51YoxbUGCHiCbdUSCSUjkUNCz9KUCklzRFUjUC16aVfBp56
+ 0feDUovAnKzezQsLeSLlGQoqu/nEsc2Jvf/86ZgY7zp7QZAFl96NtaBxwP8TqNpnwHPeFkWQU
+ 5roIDKhTi9RRoifDgowMZQwGox3fB3rGpe3nPYjK/FLMyg4WrN55HabE6gS9wNiu0TqeRn6l6
+ DCw/uSsLEo4f4tzMYdrON7u1ea1tc31dKph5Q31LnEYkNIyevEZBxcevdIMxaF12z6fojUSuF
+ W0uQ8+RBQQuQAnU0NPhBzKOl8izm8+wYyelOJVLaJ80LW/LxArNU6/Z56gDwh39aNbBZ7jCX8
+ eeFxms68zFHkKp6Cd4HYR7c1vUTlko/wJpeQBd9/7YW+8ve9uqodShke4hVF8spD/gnNd81A4
+ dnkTmzL5ncOlUi3TGsElxIBmoS9qlrygHKxNedMosdnY0WSebAFFrt8/btMJnLEnNJpR0W8Nq
+ IAS8AcIO9hawTjRpWsZJRW14rPTknnSLqlXCC0jE2XHyPh0NfG3adBAAR51jvSs+RGXaBdfF6
+ lRwNxTf8++GSJ6ZX8kOyxCcnx44So/wl9nzCy6VPpC83lhmK8FwQI4D/mwfL27l3C4kmSPCrn
+ DCwsJpdA+fw6Hn2gplN70/zPFHlmMkyQes1bcU0G0WfmDvTZRaoacvZvPAccifVN2AlUDUuWZ
+ Qita64llx6n+YpE66CmfYmVDAve8NKb7gh5t0mi1rGYIScM74cga3E9Gs9BjZ4MY/Ec4J3pO3
+ Cy4FuaDfoQbQ94i/wlGbvdlvfK5PyCPFZGWIuzUJIFJ0tvtW/t1+J5AWp2/gi8FfqzK42MsM8
+ V0E5GVqzVOZ2TrFPf0pmzaJd5Px+53x0M2HzY/Hrp48fn6VL7P38PrPcXMO1RpeWK7zbFe8jT
+ R7kDXj/F9ncnLE4kh
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> So we should check whether the return value of devm_ioremap()
-> is NULL instead of IS_ERR.
+> While at it, also move a 'platform_device_put()' call to the error handl=
+ing path.
 
-Will an other change description provide the preferred imperative wording?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=96c9a7802af7d500a582d89a8b864584fe878c1b#n151
+How do you think about to use the message =E2=80=9CComplete exception hand=
+ling
+in stratix10_svc_drv_probe()=E2=80=9D in the final commit subject?
+
+
+=E2=80=A6
+> +++ b/drivers/firmware/stratix10-svc.c
+=E2=80=A6
+> @@ -1043,24 +1043,34 @@  static int stratix10_svc_drv_probe(struct platf=
+orm_device *pdev)
+=E2=80=A6
+> +	return 0;
+> +
+> +put_platform:
+> +	platform_device_put(svc->stratix10_svc_rsu);
+> +err_free_kfifo:
+=E2=80=A6
+>  	return ret;
+>  }
+
+
+Can the label =E2=80=9Cerr_put_device=E2=80=9D be more appropriate for the=
+ improved
+function implementation?
+(Or: Would you like to omit the prefix =E2=80=9Cerr_=E2=80=9D for these ju=
+mp targets?)
 
 Regards,
 Markus

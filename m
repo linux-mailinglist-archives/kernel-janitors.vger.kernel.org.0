@@ -2,77 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A24C1BD6B1
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 09:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0441A1BD77C
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 10:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726746AbgD2H5x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Apr 2020 03:57:53 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:48420 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726345AbgD2H5x (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Apr 2020 03:57:53 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id C0607939E7E81C5643B7;
-        Wed, 29 Apr 2020 15:57:49 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 29 Apr 2020 15:57:41 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Mark Brown <broonie@kernel.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] spi: uniphier: fix error return code in uniphier_spi_probe()
-Date:   Wed, 29 Apr 2020 07:58:55 +0000
-Message-ID: <20200429075855.104487-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726556AbgD2IpN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Apr 2020 04:45:13 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:57825 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726545AbgD2IpN (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 29 Apr 2020 04:45:13 -0400
+Received: from localhost.localdomain ([92.148.159.11])
+        by mwinf5d03 with ME
+        id YYl72200G0F2omL03Yl75P; Wed, 29 Apr 2020 10:45:11 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 29 Apr 2020 10:45:11 +0200
+X-ME-IP: 92.148.159.11
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     b.zolnierkie@samsung.com, sumit.semwal@linaro.org,
+        rafael.j.wysocki@intel.com, corbet@lwn.net,
+        viresh.kumar@linaro.org, jani.nikula@intel.com,
+        mchehab+samsung@kernel.org, eric.miao@marvell.com
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] video: pxafb: Fix the function used to balance a 'dma_alloc_coherent()' call
+Date:   Wed, 29 Apr 2020 10:45:05 +0200
+Message-Id: <20200429084505.108897-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return negative error code -EPROBE_DEFER from the DMA probe defer
-error handling case instead of 0, as done elsewhere in this function.
+'dma_alloc_coherent()' must be balanced by a call to 'dma_free_coherent()'
+not 'dma_free_wc()'.
+The correct dma_free_ function is already used in the error handling path
+of the probe function.
 
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Fixes: 77e196752bdd ("[ARM] pxafb: allow video memory size to be configurable")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/spi/spi-uniphier.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/pxafb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
-index 0fa50979644d..0457d3376873 100644
---- a/drivers/spi/spi-uniphier.c
-+++ b/drivers/spi/spi-uniphier.c
-@@ -716,8 +716,10 @@ static int uniphier_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
+index 00b96a78676e..6f972bed410a 100644
+--- a/drivers/video/fbdev/pxafb.c
++++ b/drivers/video/fbdev/pxafb.c
+@@ -2417,8 +2417,8 @@ static int pxafb_remove(struct platform_device *dev)
  
- 	master->dma_tx = dma_request_chan(&pdev->dev, "tx");
- 	if (IS_ERR_OR_NULL(master->dma_tx)) {
--		if (PTR_ERR(master->dma_tx) == -EPROBE_DEFER)
-+		if (PTR_ERR(master->dma_tx) == -EPROBE_DEFER) {
-+			ret = -EPROBE_DEFER;
- 			goto out_disable_clk;
-+		}
- 		master->dma_tx = NULL;
- 		dma_tx_burst = INT_MAX;
- 	} else {
-@@ -732,8 +734,10 @@ static int uniphier_spi_probe(struct platform_device *pdev)
+ 	free_pages_exact(fbi->video_mem, fbi->video_mem_size);
  
- 	master->dma_rx = dma_request_chan(&pdev->dev, "rx");
- 	if (IS_ERR_OR_NULL(master->dma_rx)) {
--		if (PTR_ERR(master->dma_rx) == -EPROBE_DEFER)
-+		if (PTR_ERR(master->dma_rx) == -EPROBE_DEFER) {
-+			ret = -EPROBE_DEFER;
- 			goto out_disable_clk;
-+		}
- 		master->dma_rx = NULL;
- 		dma_rx_burst = INT_MAX;
- 	} else {
-
-
+-	dma_free_wc(&dev->dev, fbi->dma_buff_size, fbi->dma_buff,
+-		    fbi->dma_buff_phys);
++	dma_free_coherent(&dev->dev, fbi->dma_buff_size, fbi->dma_buff,
++			  fbi->dma_buff_phys);
+ 
+ 	return 0;
+ }
+-- 
+2.25.1
 

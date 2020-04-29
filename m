@@ -2,72 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04D3E1BD182
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 03:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C113A1BD1D5
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 03:48:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726420AbgD2BEJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Apr 2020 21:04:09 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:41188 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726274AbgD2BEI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Apr 2020 21:04:08 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 442119FE39C8A95023C8;
-        Wed, 29 Apr 2020 09:04:06 +0800 (CST)
-Received: from [10.166.215.142] (10.166.215.142) by smtp.huawei.com
- (10.3.19.201) with Microsoft SMTP Server (TLS) id 14.3.487.0; Wed, 29 Apr
- 2020 09:04:03 +0800
-Subject: Re: [PATCH -next] NFSv4: Use GFP_ATOMIC under spin lock in
- _pnfs_grab_empty_layout()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Anna Schumaker <anna.schumaker@netapp.com>,
-        <linux-nfs@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-References: <20200428071932.69976-1-weiyongjun1@huawei.com>
- <20200428180448.GJ2014@kadam>
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-Message-ID: <8564645e-124c-ef53-3cd8-1d887dfe867e@huawei.com>
-Date:   Wed, 29 Apr 2020 09:03:13 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1726486AbgD2BsV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Apr 2020 21:48:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55626 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726158AbgD2BsV (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Apr 2020 21:48:21 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5497CC03C1AC;
+        Tue, 28 Apr 2020 18:48:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=LCV05bmUMt/JTnik/FHerL4Ec6mpH5O0Enok8cXx9E8=; b=FkFAtxo48mz7pUFlav7T1IDRCW
+        EkFO3Pxze3Q4aD90IVsb4it+V85tsX7cOEjdDX0reX18BoNdq7zOe7j/KNZGlRS6qEXeUMqobpAhL
+        xLOpR68hSSbWMco3ZLW7gDleGlTlFDS08fAJr/uzLQZKc83VzyI3Rvi8MUNCOuCMgW4W0dtDqLWlQ
+        hld/UnzliFEQfDKWjPxyFORuzQ9a2CXmM2juej1AbUYphFXyLirQXRmw356z+7VkbLe51GbJKo/U0
+        xQb5ZzSNNsjavNkuYLw1eN8uv0/G9yjopfGn4T+1opbtOtpdGf32jCmlKku9/Q0xVmkr4mM2w+X8H
+        2GYE3/Tg==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jTbpT-0004yP-Dr; Wed, 29 Apr 2020 01:48:03 +0000
+Date:   Tue, 28 Apr 2020 18:48:03 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>,
+        Waiman Long <longman@redhat.com>,
+        Manfred Spraul <manfred@colorfullife.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Alexey Dobriyan <adobriyan@gmail.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] ipc: use GFP_ATOMIC under spin lock
+Message-ID: <20200429014803.GO29705@bombadil.infradead.org>
+References: <20200428034736.27850-1-weiyongjun1@huawei.com>
+ <20200428111403.GJ29705@bombadil.infradead.org>
+ <20200428171420.045f0acc9e1bf20044c4560e@linux-foundation.org>
 MIME-Version: 1.0
-In-Reply-To: <20200428180448.GJ2014@kadam>
-Content-Type: text/plain; charset="gbk"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.166.215.142]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200428171420.045f0acc9e1bf20044c4560e@linux-foundation.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On 2020/4/29 2:04, Dan Carpenter wrote:
-> On Tue, Apr 28, 2020 at 07:19:32AM +0000, Wei Yongjun wrote:
->> A spin lock is taken here so we should use GFP_ATOMIC.
->>
->> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
->> ---
->>  fs/nfs/pnfs.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
->> index dd2e14f5875d..d84c1b7b71d2 100644
->> --- a/fs/nfs/pnfs.c
->> +++ b/fs/nfs/pnfs.c
->> @@ -2170,7 +2170,7 @@ _pnfs_grab_empty_layout(struct inode *ino, struct nfs_open_context *ctx)
->>  	struct pnfs_layout_hdr *lo;
->>  
->>  	spin_lock(&ino->i_lock);
->                    ^^^
->> -	lo = pnfs_find_alloc_layout(ino, ctx, GFP_KERNEL);
->> +	lo = pnfs_find_alloc_layout(ino, ctx, GFP_ATOMIC);
->                                     ^^^
-> It releases the lock before allocating.  It's annotated.
+On Tue, Apr 28, 2020 at 05:14:20PM -0700, Andrew Morton wrote:
+> On Tue, 28 Apr 2020 04:14:03 -0700 Matthew Wilcox <willy@infradead.org> wrote:
 > 
+> > On Tue, Apr 28, 2020 at 03:47:36AM +0000, Wei Yongjun wrote:
+> > > The function ipc_id_alloc() is called from ipc_addid(), in which
+> > > a spin lock is held, so we should use GFP_ATOMIC instead.
+> > > 
+> > > Fixes: de5738d1c364 ("ipc: convert ipcs_idr to XArray")
+> > > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> > 
+> > I see why you think that, but it's not true.  Yes, we hold a spinlock, but
+> > the spinlock is in an object which is not reachable from any other CPU.
+> > So it's not possible to deadlock.
+> 
+> um, then why are we taking it?
 
-Got it, thanks.
+The lock has to be held by the time 'new' is findable because 'new' is
+not completely constructed at that point.  The finder will try to acquire
+the spinlock before looking at the uninitialised fields, so it's safe.
+But it's not a common idiom we use at all.
 
-regards,
-Wei Yongjun
+> >  This probably confuses all kinds
+> > of automated checkers,
+> 
+> A big fat code comment would reduce the email traffic?
+
+I think I can rewrite this to take the spinlock after doing the allocation.

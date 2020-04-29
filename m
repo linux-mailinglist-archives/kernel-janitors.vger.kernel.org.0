@@ -2,187 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 754791BE43A
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 18:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16E661BE45C
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 18:53:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726558AbgD2Qrj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Apr 2020 12:47:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54812 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726456AbgD2Qrj (ORCPT
+        id S1726838AbgD2QxZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Apr 2020 12:53:25 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:29997 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726423AbgD2QxZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Apr 2020 12:47:39 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 297EDC03C1AE;
-        Wed, 29 Apr 2020 09:47:39 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id t7so1048627plr.0;
-        Wed, 29 Apr 2020 09:47:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:mime-version
-         :content-disposition:content-transfer-encoding:user-agent;
-        bh=8olA7bGKpwTL+rub9/QHgnKCc3ZKGK1GWlWeW8QAqvw=;
-        b=T0jV5NUqXAu2hp6WbcE9MU1kfF1Ua+DMHNF3Rtd5h7juQf1Z1B7R6LiywelnQcCA8B
-         6zw0kbjbuuXVI4UhD1F0CbXny+nv1341VtVGzs/0fDgWyLQBTr4tPqACNY7f/+Z7TK24
-         prgG+YEeDbNVmy96ptsNvv7gxdcSSsUSLnnEgZrV3tYEhPQ1Y5u/n6pEU0/2WfHerW9g
-         FXPSRBikIj7c9oMR+69kKn26CWJ7d1QgaurhsHFSZ3gX1S70P13D0JD0eFc5CrKzYnKi
-         1mxFj9zj5CBCg/cNLbE63m0VnP8qgXDBu5gqgc2VOGKIhXquHhZUl1C8NgHKb6xDYfxs
-         2L2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:mime-version:content-disposition
-         :content-transfer-encoding:user-agent;
-        bh=8olA7bGKpwTL+rub9/QHgnKCc3ZKGK1GWlWeW8QAqvw=;
-        b=NBGghtMdM3ne76XIx07qZI3YZXD8O+mUnqjrX3UvIJtpopPjtxOqZGHTmhOUjIJNm7
-         acL7FPSNFutHUMY8mIgdrVn3gAOq+mLnooksY28P/0JQExmZ+F1xq9QiECLeSFIz+yaM
-         v6J+57tB+cqkD3/MlQOFOCrFrp1UVMgUNfleeOGS4/P9fJp1orjVdB4wBsJhNNjzIVSU
-         bwGvbzlOXakCVXCI8SoXLIKiMy70vswH0b2uYCK1slwhUkmeWJbdQ2EhFPPFRtAhgXk5
-         Oa207n7VE98GOorSWBvYQ/oTAgldMudv2mCohBwzU2i/VMijxfRsjwNIS5vHOgyGNJbf
-         YjaA==
-X-Gm-Message-State: AGi0PuZK/SSY9BDh4ov3CSTy1V7rYQxRlnC2bN6RO/GihAaJB9TSzemo
-        6xclGJNrJF64Htn2qVOiUnIZLYcz
-X-Google-Smtp-Source: APiQypJ9G7U5RXGrBLrAmF7yA+s0D+9dvzXHBw/pRM833NET1oopuLWJ5EBedBsfc0sfi2RR+KuGXQ==
-X-Received: by 2002:a17:90a:b884:: with SMTP id o4mr4222432pjr.8.1588178858520;
-        Wed, 29 Apr 2020 09:47:38 -0700 (PDT)
-Received: from udknight.localhost ([59.57.158.27])
-        by smtp.gmail.com with ESMTPSA id w11sm1425302pgj.4.2020.04.29.09.47.37
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 29 Apr 2020 09:47:37 -0700 (PDT)
-Received: from udknight.localhost (localhost [127.0.0.1])
-        by udknight.localhost (8.14.9/8.14.4) with ESMTP id 03TGapvt013853;
-        Thu, 30 Apr 2020 00:36:51 +0800
-Received: (from root@localhost)
-        by udknight.localhost (8.14.9/8.14.9/Submit) id 03TGaj5E013847;
-        Thu, 30 Apr 2020 00:36:45 +0800
-Date:   Thu, 30 Apr 2020 00:36:45 +0800
-From:   Wang YanQing <udknight@gmail.com>
-To:     joe@perches.com
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Andy Whitcroft <apw@canonical.com>, Markus.Elfring@web.de,
-        mcroce@redhat.com
-Subject: [PATCH] checkpatch: add support to check 'Fixes:' tag format
-Message-ID: <20200429163645.GA13810@udknight>
-Mail-Followup-To: Wang YanQing <udknight@gmail.com>, joe@perches.com,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Andy Whitcroft <apw@canonical.com>, Markus.Elfring@web.de,
-        mcroce@redhat.com
+        Wed, 29 Apr 2020 12:53:25 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1588179204; h=Content-Transfer-Encoding: Content-Type:
+ In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
+ Subject: Sender; bh=xhYN2QWZK+xOvZ83m2HJKcXlXIC6qwCWYYV5qQiwaZg=; b=IMC7yXSLYU7fCk4VE8tGPjnCXcGLniD4tLcNph554rB9ECorg1X2n4AXBX0yo306juiRbuJr
+ s3K4BjRwYK7xhyAQnzibN9FNptZx46m9m7sLxUm8OVMabIKaj0QmDQ7nMe0Zu7x70NQ92g60
+ Fr54MHXKLBCrHutnARuHPvL065U=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5ea9b0f0.7fe0ab509f10-smtp-out-n04;
+ Wed, 29 Apr 2020 16:53:04 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 14586C433CB; Wed, 29 Apr 2020 16:53:04 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from [192.168.0.102] (unknown [183.83.143.172])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sayalil)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8EAB0C433D2;
+        Wed, 29 Apr 2020 16:53:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8EAB0C433D2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=sayalil@codeaurora.org
+Subject: Re: [f2fs-dev] [PATCH V2] f2fs: Avoid double lock for cp_rwsem during
+ checkpoint
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Markus Elfring <Markus.Elfring@web.de>,
+        linux-f2fs-devel@lists.sourceforge.net,
+        Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <yuchao0@huawei.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <07a820a2-b3b3-32ca-75ce-ceaca106d2c6@web.de>
+ <433d4ad5-22e5-fd2b-cab3-9752ed0c66fb@codeaurora.org>
+ <20200429124402.GP2014@kadam>
+From:   Sayali Lokhande <sayalil@codeaurora.org>
+Message-ID: <71c37cbb-03cd-134f-8b68-cf06bfa05317@codeaurora.org>
+Date:   Wed, 29 Apr 2020 22:22:58 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <20200429124402.GP2014@kadam>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.7.1 (2016-10-04)
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-According to submitting-patches.rst, 'Fixes:' tag has a little
-stricter condition about the one line summary than normal git
-commit description:
-“...
-Do not split the tag across multiple
-lines, tags are exempt from the "wrap at 75 columns" rule in order to simplify
-parsing scripts
-...”
 
-And there is no sanity check for 'Fixes:' tag format in checkpatch the same
-as GIT_COMMIT_ID for git commit description, so let's expand the GIT_COMMIT_ID
-to add 'Fixes:' tag format check support.
-
-Based on original patch by Joe Perches <joe@perches.com>
-
-Link: https://lore.kernel.org/lkml/40bfc40958fca6e2cc9b86101153aa0715fac4f7.camel@perches.com/
-Signed-off-by: Wang YanQing <udknight@gmail.com>
----
- scripts/checkpatch.pl | 36 ++++++++++++++++++++++++------------
- 1 file changed, 24 insertions(+), 12 deletions(-)
-
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 23a001a..879dcf4 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -2818,11 +2818,13 @@ sub process {
- 		    $line !~ /^\s*(?:Link|Patchwork|http|https|BugLink|base-commit):/i &&
- 		    $line !~ /^This reverts commit [0-9a-f]{7,40}/ &&
- 		    ($line =~ /\bcommit\s+[0-9a-f]{5,}\b/i ||
-+		     $line =~ /\bfixes:\s+[0-9a-f]{5,}\b/i ||
- 		     ($line =~ /(?:\s|^)[0-9a-f]{12,40}(?:[\s"'\(\[]|$)/i &&
--		      $line !~ /[\<\[][0-9a-f]{12,40}[\>\]]/i &&
--		      $line !~ /\bfixes:\s*[0-9a-f]{12,40}/i))) {
-+		      $line !~ /[\<\[][0-9a-f]{12,40}[\>\]]/i))) {
- 			my $init_char = "c";
- 			my $orig_commit = "";
-+			my $prefix = "commit";
-+			my $prefix_case = "[Cc]ommit";
- 			my $short = 1;
- 			my $long = 0;
- 			my $case = 1;
-@@ -2832,19 +2834,28 @@ sub process {
- 			my $id = '0123456789ab';
- 			my $orig_desc = "commit description";
- 			my $description = "";
-+			my $acrosslines = 0;
-+			my $title = "title line";
- 
--			if ($line =~ /\b(c)ommit\s+([0-9a-f]{5,})\b/i) {
-+			if ($line =~ /\b(f)ixes:\s+([0-9a-f]{5,})\b/i) {
-+				$init_char = $1;
-+				$orig_commit = lc($2);
-+				$prefix = "Fixes:";
-+				$prefix_case = "Fixes:";
-+				$init_char = "F";
-+				$title = "a single line title (without line breaks)";
-+			} elsif ($line =~ /\b(c)ommit\s+([0-9a-f]{5,})\b/i) {
- 				$init_char = $1;
- 				$orig_commit = lc($2);
- 			} elsif ($line =~ /\b([0-9a-f]{12,40})\b/i) {
- 				$orig_commit = lc($1);
- 			}
- 
--			$short = 0 if ($line =~ /\bcommit\s+[0-9a-f]{12,40}/i);
--			$long = 1 if ($line =~ /\bcommit\s+[0-9a-f]{41,}/i);
--			$space = 0 if ($line =~ /\bcommit [0-9a-f]/i);
--			$case = 0 if ($line =~ /\b[Cc]ommit\s+[0-9a-f]{5,40}[^A-F]/);
--			if ($line =~ /\bcommit\s+[0-9a-f]{5,}\s+\("([^"]+)"\)/i) {
-+			$short = 0 if ($line =~ /\b$prefix\s+[0-9a-f]{12,40}/i);
-+			$long = 1 if ($line =~ /\b$prefix\s+[0-9a-f]{41,}/i);
-+			$space = 0 if ($line =~ /\b$prefix [0-9a-f]/i);
-+			$case = 0 if ($line =~ /\b$prefix_case\s+[0-9a-f]{5,40}[^A-F]/);
-+			if ($line =~ /\b$prefix\s+[0-9a-f]{5,}\s+\("([^"]+)"\)/i) {
- 				$orig_desc = $1;
- 				$hasparens = 1;
- 			} elsif ($line =~ /\bcommit\s+[0-9a-f]{5,}\s*$/i &&
-@@ -2852,23 +2863,24 @@ sub process {
- 				 $rawlines[$linenr] =~ /^\s*\("([^"]+)"\)/) {
- 				$orig_desc = $1;
- 				$hasparens = 1;
--			} elsif ($line =~ /\bcommit\s+[0-9a-f]{5,}\s+\("[^"]+$/i &&
-+			} elsif ($line =~ /\b$prefix\s+[0-9a-f]{5,}\s+\("[^"]+$/i &&
- 				 defined $rawlines[$linenr] &&
- 				 $rawlines[$linenr] =~ /^\s*[^"]+"\)/) {
--				$line =~ /\bcommit\s+[0-9a-f]{5,}\s+\("([^"]+)$/i;
-+				$line =~ /\b$prefix\s+[0-9a-f]{5,}\s+\("([^"]+)$/i;
- 				$orig_desc = $1;
- 				$rawlines[$linenr] =~ /^\s*([^"]+)"\)/;
- 				$orig_desc .= " " . $1;
- 				$hasparens = 1;
-+				$acrosslines = 1 if ($prefix eq "Fixes:");
- 			}
- 
- 			($id, $description) = git_commit_info($orig_commit,
- 							      $id, $orig_desc);
- 
- 			if (defined($id) &&
--			   ($short || $long || $space || $case || ($orig_desc ne $description) || !$hasparens)) {
-+			   ($short || $long || $space || $case || ($orig_desc ne $description) || !$hasparens || $acrosslines)) {
- 				ERROR("GIT_COMMIT_ID",
--				      "Please use git commit description style 'commit <12+ chars of sha1> (\"<title line>\")' - ie: '${init_char}ommit $id (\"$description\")'\n" . $herecurr);
-+				      "Please use git commit description style '$prefix <12+ chars of sha1> (\"<$title>\")' - ie: '${init_char}" . substr($prefix, 1) . " $id (\"$description\")'\n" . $herecurr);
- 			}
- 		}
- 
--- 
-1.8.5.6.2.g3d8a54e.dirty
+On 4/29/2020 6:14 PM, Dan Carpenter wrote:
+> On Wed, Apr 29, 2020 at 10:28:36AM +0530, Sayali Lokhande wrote:
+>> Hi Markus
+>>
+>> On 4/27/2020 4:08 PM, Markus Elfring wrote:
+>>>> … This results in deadlock as
+>>>> iput() tries to hold cp_rwsem, which is already held at the
+>>>> beginning by checkpoint->block_operations().
+>>> Will another imperative wording become helpful besides the provided information
+>>> for this change description?
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=6a8b55ed4056ea5559ebe4f6a4b247f627870d4c#n151
+>>>
+>>> Would you like to add the tag “Fixes” because of adjustments
+>>> for the data synchronisation?
+>> I couldn't find any past commit which suits to be added under "Fixes" here.
+>> Let me know if you have any other comment.
+> This looks really old.  Maybe commit 399368372ed9 ("f2fs: introduce a
+> new global lock scheme")?
+Yes. Let me update it in Fixes tag in V3 and post it. Thanks for 
+pointing it.
+>
+> regards,
+> dan carpenter
+>

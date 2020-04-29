@@ -2,90 +2,187 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58DE61BE328
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 17:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 754791BE43A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Apr 2020 18:47:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726829AbgD2Px1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Apr 2020 11:53:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41746 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726456AbgD2Px1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Apr 2020 11:53:27 -0400
-Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net [50.39.105.78])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8786221D91;
-        Wed, 29 Apr 2020 15:53:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588175606;
-        bh=lM+jf92e2hWloNhGNv0OCFyAzm6HTRAHqrzHcxhYL40=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=PAwfHGKpdCLYERO8SixsSL4SZwJ4f4MNKIMQQWlNZ1vaaa+PwQ8OeE784qTy3XzGg
-         3Y8ZBcgbnZNTDZQdhyRs3AQsD5xf1DcgcvL7q9Rp4LhEO1kmh/OSKFeWECPN2rh1pL
-         GTU+6jdibZn+ZBQbNCAGAP0RWpsnLXkQXtUEk+78=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id 57DE335226DB; Wed, 29 Apr 2020 08:53:26 -0700 (PDT)
-Date:   Wed, 29 Apr 2020 08:53:26 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Davidlohr Bueso <dave@stgolabs.net>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] rcutorture: Fix error codes in
- rcu_torture_read_exit_init()
-Message-ID: <20200429155326.GD7560@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <20200429132235.GA815283@mwanda>
+        id S1726558AbgD2Qrj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Apr 2020 12:47:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54812 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726456AbgD2Qrj (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 29 Apr 2020 12:47:39 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 297EDC03C1AE;
+        Wed, 29 Apr 2020 09:47:39 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id t7so1048627plr.0;
+        Wed, 29 Apr 2020 09:47:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:mime-version
+         :content-disposition:content-transfer-encoding:user-agent;
+        bh=8olA7bGKpwTL+rub9/QHgnKCc3ZKGK1GWlWeW8QAqvw=;
+        b=T0jV5NUqXAu2hp6WbcE9MU1kfF1Ua+DMHNF3Rtd5h7juQf1Z1B7R6LiywelnQcCA8B
+         6zw0kbjbuuXVI4UhD1F0CbXny+nv1341VtVGzs/0fDgWyLQBTr4tPqACNY7f/+Z7TK24
+         prgG+YEeDbNVmy96ptsNvv7gxdcSSsUSLnnEgZrV3tYEhPQ1Y5u/n6pEU0/2WfHerW9g
+         FXPSRBikIj7c9oMR+69kKn26CWJ7d1QgaurhsHFSZ3gX1S70P13D0JD0eFc5CrKzYnKi
+         1mxFj9zj5CBCg/cNLbE63m0VnP8qgXDBu5gqgc2VOGKIhXquHhZUl1C8NgHKb6xDYfxs
+         2L2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:mime-version:content-disposition
+         :content-transfer-encoding:user-agent;
+        bh=8olA7bGKpwTL+rub9/QHgnKCc3ZKGK1GWlWeW8QAqvw=;
+        b=NBGghtMdM3ne76XIx07qZI3YZXD8O+mUnqjrX3UvIJtpopPjtxOqZGHTmhOUjIJNm7
+         acL7FPSNFutHUMY8mIgdrVn3gAOq+mLnooksY28P/0JQExmZ+F1xq9QiECLeSFIz+yaM
+         v6J+57tB+cqkD3/MlQOFOCrFrp1UVMgUNfleeOGS4/P9fJp1orjVdB4wBsJhNNjzIVSU
+         bwGvbzlOXakCVXCI8SoXLIKiMy70vswH0b2uYCK1slwhUkmeWJbdQ2EhFPPFRtAhgXk5
+         Oa207n7VE98GOorSWBvYQ/oTAgldMudv2mCohBwzU2i/VMijxfRsjwNIS5vHOgyGNJbf
+         YjaA==
+X-Gm-Message-State: AGi0PuZK/SSY9BDh4ov3CSTy1V7rYQxRlnC2bN6RO/GihAaJB9TSzemo
+        6xclGJNrJF64Htn2qVOiUnIZLYcz
+X-Google-Smtp-Source: APiQypJ9G7U5RXGrBLrAmF7yA+s0D+9dvzXHBw/pRM833NET1oopuLWJ5EBedBsfc0sfi2RR+KuGXQ==
+X-Received: by 2002:a17:90a:b884:: with SMTP id o4mr4222432pjr.8.1588178858520;
+        Wed, 29 Apr 2020 09:47:38 -0700 (PDT)
+Received: from udknight.localhost ([59.57.158.27])
+        by smtp.gmail.com with ESMTPSA id w11sm1425302pgj.4.2020.04.29.09.47.37
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 29 Apr 2020 09:47:37 -0700 (PDT)
+Received: from udknight.localhost (localhost [127.0.0.1])
+        by udknight.localhost (8.14.9/8.14.4) with ESMTP id 03TGapvt013853;
+        Thu, 30 Apr 2020 00:36:51 +0800
+Received: (from root@localhost)
+        by udknight.localhost (8.14.9/8.14.9/Submit) id 03TGaj5E013847;
+        Thu, 30 Apr 2020 00:36:45 +0800
+Date:   Thu, 30 Apr 2020 00:36:45 +0800
+From:   Wang YanQing <udknight@gmail.com>
+To:     joe@perches.com
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Andy Whitcroft <apw@canonical.com>, Markus.Elfring@web.de,
+        mcroce@redhat.com
+Subject: [PATCH] checkpatch: add support to check 'Fixes:' tag format
+Message-ID: <20200429163645.GA13810@udknight>
+Mail-Followup-To: Wang YanQing <udknight@gmail.com>, joe@perches.com,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Andy Whitcroft <apw@canonical.com>, Markus.Elfring@web.de,
+        mcroce@redhat.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200429132235.GA815283@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.7.1 (2016-10-04)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Apr 29, 2020 at 04:22:35PM +0300, Dan Carpenter wrote:
-> The rcu_torture_read_exit_init() function is supposed to return negative
-> error codes which get propagated back down the call tree but the current
-> code returns true on failure.
-> 
-> Fixes: e02882cd57e3 ("rcutorture: Add races with task-exit processing")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+According to submitting-patches.rst, 'Fixes:' tag has a little
+stricter condition about the one line summary than normal git
+commit description:
+“...
+Do not split the tag across multiple
+lines, tags are exempt from the "wrap at 75 columns" rule in order to simplify
+parsing scripts
+...”
 
-Good catch!  Talk about code sort of working by accident!!!
+And there is no sanity check for 'Fixes:' tag format in checkpatch the same
+as GIT_COMMIT_ID for git commit description, so let's expand the GIT_COMMIT_ID
+to add 'Fixes:' tag format check support.
 
-Thank you, and I folded this into the original commit with attribution.
+Based on original patch by Joe Perches <joe@perches.com>
 
-						Thanx, Paul
+Link: https://lore.kernel.org/lkml/40bfc40958fca6e2cc9b86101153aa0715fac4f7.camel@perches.com/
+Signed-off-by: Wang YanQing <udknight@gmail.com>
+---
+ scripts/checkpatch.pl | 36 ++++++++++++++++++++++++------------
+ 1 file changed, 24 insertions(+), 12 deletions(-)
 
-> ---
->  kernel/rcu/rcutorture.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-> index 269881e51dc6d..5270674128029 100644
-> --- a/kernel/rcu/rcutorture.c
-> +++ b/kernel/rcu/rcutorture.c
-> @@ -2434,10 +2434,10 @@ static int rcu_torture_read_exit(void *unused)
->  	return 0;
->  }
->  
-> -static bool rcu_torture_read_exit_init(void)
-> +static int rcu_torture_read_exit_init(void)
->  {
->  	if (read_exit <= 0)
-> -		return true;
-> +		return -EINVAL;
->  	init_waitqueue_head(&read_exit_wq);
->  	read_exit_child_stop = false;
->  	read_exit_child_stopped = false;
-> -- 
-> 2.26.2
-> 
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 23a001a..879dcf4 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -2818,11 +2818,13 @@ sub process {
+ 		    $line !~ /^\s*(?:Link|Patchwork|http|https|BugLink|base-commit):/i &&
+ 		    $line !~ /^This reverts commit [0-9a-f]{7,40}/ &&
+ 		    ($line =~ /\bcommit\s+[0-9a-f]{5,}\b/i ||
++		     $line =~ /\bfixes:\s+[0-9a-f]{5,}\b/i ||
+ 		     ($line =~ /(?:\s|^)[0-9a-f]{12,40}(?:[\s"'\(\[]|$)/i &&
+-		      $line !~ /[\<\[][0-9a-f]{12,40}[\>\]]/i &&
+-		      $line !~ /\bfixes:\s*[0-9a-f]{12,40}/i))) {
++		      $line !~ /[\<\[][0-9a-f]{12,40}[\>\]]/i))) {
+ 			my $init_char = "c";
+ 			my $orig_commit = "";
++			my $prefix = "commit";
++			my $prefix_case = "[Cc]ommit";
+ 			my $short = 1;
+ 			my $long = 0;
+ 			my $case = 1;
+@@ -2832,19 +2834,28 @@ sub process {
+ 			my $id = '0123456789ab';
+ 			my $orig_desc = "commit description";
+ 			my $description = "";
++			my $acrosslines = 0;
++			my $title = "title line";
+ 
+-			if ($line =~ /\b(c)ommit\s+([0-9a-f]{5,})\b/i) {
++			if ($line =~ /\b(f)ixes:\s+([0-9a-f]{5,})\b/i) {
++				$init_char = $1;
++				$orig_commit = lc($2);
++				$prefix = "Fixes:";
++				$prefix_case = "Fixes:";
++				$init_char = "F";
++				$title = "a single line title (without line breaks)";
++			} elsif ($line =~ /\b(c)ommit\s+([0-9a-f]{5,})\b/i) {
+ 				$init_char = $1;
+ 				$orig_commit = lc($2);
+ 			} elsif ($line =~ /\b([0-9a-f]{12,40})\b/i) {
+ 				$orig_commit = lc($1);
+ 			}
+ 
+-			$short = 0 if ($line =~ /\bcommit\s+[0-9a-f]{12,40}/i);
+-			$long = 1 if ($line =~ /\bcommit\s+[0-9a-f]{41,}/i);
+-			$space = 0 if ($line =~ /\bcommit [0-9a-f]/i);
+-			$case = 0 if ($line =~ /\b[Cc]ommit\s+[0-9a-f]{5,40}[^A-F]/);
+-			if ($line =~ /\bcommit\s+[0-9a-f]{5,}\s+\("([^"]+)"\)/i) {
++			$short = 0 if ($line =~ /\b$prefix\s+[0-9a-f]{12,40}/i);
++			$long = 1 if ($line =~ /\b$prefix\s+[0-9a-f]{41,}/i);
++			$space = 0 if ($line =~ /\b$prefix [0-9a-f]/i);
++			$case = 0 if ($line =~ /\b$prefix_case\s+[0-9a-f]{5,40}[^A-F]/);
++			if ($line =~ /\b$prefix\s+[0-9a-f]{5,}\s+\("([^"]+)"\)/i) {
+ 				$orig_desc = $1;
+ 				$hasparens = 1;
+ 			} elsif ($line =~ /\bcommit\s+[0-9a-f]{5,}\s*$/i &&
+@@ -2852,23 +2863,24 @@ sub process {
+ 				 $rawlines[$linenr] =~ /^\s*\("([^"]+)"\)/) {
+ 				$orig_desc = $1;
+ 				$hasparens = 1;
+-			} elsif ($line =~ /\bcommit\s+[0-9a-f]{5,}\s+\("[^"]+$/i &&
++			} elsif ($line =~ /\b$prefix\s+[0-9a-f]{5,}\s+\("[^"]+$/i &&
+ 				 defined $rawlines[$linenr] &&
+ 				 $rawlines[$linenr] =~ /^\s*[^"]+"\)/) {
+-				$line =~ /\bcommit\s+[0-9a-f]{5,}\s+\("([^"]+)$/i;
++				$line =~ /\b$prefix\s+[0-9a-f]{5,}\s+\("([^"]+)$/i;
+ 				$orig_desc = $1;
+ 				$rawlines[$linenr] =~ /^\s*([^"]+)"\)/;
+ 				$orig_desc .= " " . $1;
+ 				$hasparens = 1;
++				$acrosslines = 1 if ($prefix eq "Fixes:");
+ 			}
+ 
+ 			($id, $description) = git_commit_info($orig_commit,
+ 							      $id, $orig_desc);
+ 
+ 			if (defined($id) &&
+-			   ($short || $long || $space || $case || ($orig_desc ne $description) || !$hasparens)) {
++			   ($short || $long || $space || $case || ($orig_desc ne $description) || !$hasparens || $acrosslines)) {
+ 				ERROR("GIT_COMMIT_ID",
+-				      "Please use git commit description style 'commit <12+ chars of sha1> (\"<title line>\")' - ie: '${init_char}ommit $id (\"$description\")'\n" . $herecurr);
++				      "Please use git commit description style '$prefix <12+ chars of sha1> (\"<$title>\")' - ie: '${init_char}" . substr($prefix, 1) . " $id (\"$description\")'\n" . $herecurr);
+ 			}
+ 		}
+ 
+-- 
+1.8.5.6.2.g3d8a54e.dirty

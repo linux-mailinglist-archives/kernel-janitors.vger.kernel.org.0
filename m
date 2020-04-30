@@ -2,90 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 550C31BF280
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Apr 2020 10:19:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADD6E1BF27D
+	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Apr 2020 10:17:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726547AbgD3ITD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 Apr 2020 04:19:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59216 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726127AbgD3ITD (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 Apr 2020 04:19:03 -0400
-X-Greylist: delayed 181 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 30 Apr 2020 01:19:03 PDT
-Received: from mo6-p00-ob.smtp.rzone.de (mo6-p00-ob.smtp.rzone.de [IPv6:2a01:238:20a:202:5300::4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A030C035494
-        for <kernel-janitors@vger.kernel.org>; Thu, 30 Apr 2020 01:19:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1588234741;
-        s=strato-dkim-0002; d=chronox.de;
-        h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=N/X1yHgcAwzpNEaixXj7pjLLUEtCJYiXYX1zXTZkYl8=;
-        b=hU+jwibDf6tio92BI7I0THvusA22vHqTbreTYaYtev5ifC4TtLN3P0eH7Qn4N+yR6P
-        EHEwihvMf7pfR3wjcDcBlod36vm0fz/Fwc0pLtHCa2r1aQWq+y4gkBdvXppRjtjlkOyZ
-        VLtwq3k1oMInSRGgkMOeMHAUce9fJ/jRdQotae87LpyRQfVp/thJctFxRNyUM35Vh6aw
-        dbYtmcJOcY0/WC+6GKvAF/zwgngG75gtWflt/an7Uif56C5PcekThWuZBjbLX5w/brzJ
-        WB1Ra+LwnVaRpYpcG/s6CfyY+5E+iQ+jfTl7e4dxvpyAuOoqRLQ+TvXLg4z22AygC93S
-        uCRw==
-X-RZG-AUTH: ":P2ERcEykfu11Y98lp/T7+hdri+uKZK8TKWEqNyiHySGSa9k9xmwdNnzGHXPaJfSfJdtJ"
-X-RZG-CLASS-ID: mo00
-Received: from tauon.chronox.de
-        by smtp.strato.de (RZmta 46.6.2 DYNA|AUTH)
-        with ESMTPSA id u08bf3w3U8FujWg
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Thu, 30 Apr 2020 10:15:56 +0200 (CEST)
-From:   Stephan Mueller <smueller@chronox.de>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
-        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] crypto: drbg - fix error return code in drbg_alloc_state()
-Date:   Thu, 30 Apr 2020 10:15:56 +0200
-Message-ID: <4688335.RcRiWGvq7B@tauon.chronox.de>
-In-Reply-To: <20200430081353.112449-1-weiyongjun1@huawei.com>
-References: <20200430081353.112449-1-weiyongjun1@huawei.com>
+        id S1726546AbgD3IRw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 Apr 2020 04:17:52 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:53136 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726127AbgD3IRw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 30 Apr 2020 04:17:52 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id D3BA41A1A0521FFC5428;
+        Thu, 30 Apr 2020 16:17:50 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.487.0; Thu, 30 Apr 2020 16:17:41 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@chromium.org>,
+        Mauricio Vasquez B <mauricio.vasquez@polito.it>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <netdev@vger.kernel.org>,
+        <bpf@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] bpf: fix error return code in map_lookup_and_delete_elem()
+Date:   Thu, 30 Apr 2020 08:18:51 +0000
+Message-ID: <20200430081851.166996-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Am Donnerstag, 30. April 2020, 10:13:53 CEST schrieb Wei Yongjun:
+Fix to return negative error code -EFAULT from the copy_to_user() error
+handling case instead of 0, as done elsewhere in this function.
 
-Hi Wei,
+Fixes: bd513cd08f10 ("bpf: add MAP_LOOKUP_AND_DELETE_ELEM syscall")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ kernel/bpf/syscall.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-> Fix to return negative error code -ENOMEM from the kzalloc error handling
-> case instead of 0, as done elsewhere in this function.
-> 
-> Fixes: db07cd26ac6a ("crypto: drbg - add FIPS 140-2 CTRNG for noise source")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->  crypto/drbg.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/crypto/drbg.c b/crypto/drbg.c
-> index e57901d8545b..37526eb8c5d5 100644
-> --- a/crypto/drbg.c
-> +++ b/crypto/drbg.c
-> @@ -1306,8 +1306,10 @@ static inline int drbg_alloc_state(struct drbg_state
-> *drbg) if (IS_ENABLED(CONFIG_CRYPTO_FIPS)) {
->  		drbg->prev = kzalloc(drbg_sec_strength(drbg->core->flags),
->  				     GFP_KERNEL);
-> -		if (!drbg->prev)
-> +		if (!drbg->prev) {
-> +			ret = -ENOMEM;
->  			goto fini;
-> +		}
->  		drbg->fips_primed = false;
->  	}
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 3cea7602de78..68c22e9420fa 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -1492,8 +1492,10 @@ static int map_lookup_and_delete_elem(union bpf_attr *attr)
+ 	if (err)
+ 		goto free_value;
+ 
+-	if (copy_to_user(uvalue, value, value_size) != 0)
++	if (copy_to_user(uvalue, value, value_size) != 0) {
++		err = -EFAULT;
+ 		goto free_value;
++	}
+ 
+ 	err = 0;
 
-Thank you
-
-Reviewed-by: Stephan Mueller <smueller@chronox.de>
-
-Ciao
-Stephan
 
 

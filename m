@@ -2,34 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3FED1BF430
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Apr 2020 11:31:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 398421BF73B
+	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Apr 2020 13:56:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726799AbgD3JbF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 Apr 2020 05:31:05 -0400
-Received: from mout.web.de ([212.227.15.3]:38027 "EHLO mout.web.de"
+        id S1726546AbgD3L4j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 Apr 2020 07:56:39 -0400
+Received: from mout.web.de ([212.227.15.3]:52751 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726565AbgD3JbF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 Apr 2020 05:31:05 -0400
+        id S1726127AbgD3L4i (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 30 Apr 2020 07:56:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588239046;
-        bh=Gowt2WfNNzEFY8LK5XA3ciQeDmvVC8xYBPqGGTuSPmo=;
+        s=dbaedf251592; t=1588247784;
+        bh=VGV4Fw2sNEq8D8bF6x0dfHewG3Zs/VQNCW6HfTq7oas=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=E82S3s+Os6LU5No7X++XAxkzOmtMbLFcCMKYj5H9TJzRlwonLTXPAUbllHnGrXWcW
-         TrgMqDkU0pefrv/QvV+v9wfeo1CWAiO+5PoaRAJWVl9WpesGObPgmPcvlSN+kRaApX
-         nuqvDJf5fAgYODFy16Dgi81xFH0YdWEeexRZzk4U=
+        b=mhEJE/AaHsHvaVu9RVBT9dwFLjcJo5t6iZUYYxWJbGXHUH1zpxE91K8oHzdVMO7Jh
+         YQjbXIUASjX6mioywyIoxm6LNfoDqJlbBidHJqKeeluAMwnHGNeji7J3z2t9HVLeRx
+         0fZM2W+fcniXTuJ8ErOJL/+v2tGFT6RUvAUU5xQw=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.131.175.216]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MOAmi-1jZZi531oC-005b7b; Thu, 30
- Apr 2020 11:30:45 +0200
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MOAmi-1jZbS82lIC-005aTk; Thu, 30
+ Apr 2020 13:56:24 +0200
 To:     Wei Yongjun <weiyongjun1@huawei.com>,
         dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Daniel Vetter <daniel@ffwll.ch>,
         David Airlie <airlied@linux.ie>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: Re: [PATCH] drm/vboxvideo: Fix a NULL vs IS_ERR() check in
- vbox_hw_init()
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v2] drm/mcde: dsi: Fix return value check in
+ mcde_dsi_bind()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -74,54 +74,56 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <32389e2b-50e8-8bd4-ee7c-5c6dfa273c00@web.de>
-Date:   Thu, 30 Apr 2020 11:30:38 +0200
+Message-ID: <7be53832-592b-7837-0688-0f1fb98673fb@web.de>
+Date:   Thu, 30 Apr 2020 13:56:23 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:OOmFH7OKkOD10VY8UurnxMCvjed6yhA7Qs2jPdBp3QW2dtWjyQG
- UVN9n6jPeeuotoUny8XgKsrDZHW8dPSZodQ83UHSjIxM3A8cpsyg2fQM2/Qu+nM+s5okSSW
- /N7iQiWy4DLjVPqgG0UrPCiXaar4h0Ep5g20o0GVKfZXonJmWC9iLoAmnS+fDgKIerZcIs2
- lcXOpjDsRPTqPmTxdNCqA==
+X-Provags-ID: V03:K1:4J40lGAYvX/cTfCr1dsT0eIK1GlOrCIKAXj9itU3RAOIioP5XbD
+ 4jFJOy2ZpHULqeuW5iN9hnGzP/lcHzAPKqlpnL0YuFjdKFUh25E4cYfmBvzbE+9wpYiHicR
+ zUoaFWNwdpl8cuFDmC7MuDMn+qBe7YR3V9N+nhQtusfUfRk+wSwal4nduUEgfx2R24iF6mJ
+ ArZBvbZJrpklK6NXY7z8w==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:e3c94EA2XWI=:LQLQ7wJ0u811Xi78nhZi1z
- rn1yaDE5IwiWaXdB/yqYJ0M/Qu51tuIQiRnamgM30WWYZFbjqOTYCkLPdDpHdgQfQ7V5V+EGi
- I7iN3MAORQyVV4LIkzmsxH2O6vZ2S+k5ov5SEFH07J4xHfYTvW9+LT4XfM18mOMyt7jkkQMfm
- dw3hNUXgZUyEDpmBZizG72Q5Tb8RxE/9GVZ0BMpBt0amM9GtJpUltznNovaqq/y+2TM0cF1WZ
- hWw4mM76Ur5fHWq5YRLrwWUyGVke2UyFtJ6Ty9T9TQzRoukCDK5jh/ho449yWJ8fIMo3yLrHL
- /FJHqPN6GYxgyZobFhL/SoCMHia0Pgvl58B82GTP27CRZIw44Ep9oIesYcKXlN7VaoW0MBSkc
- dcUtnCpd6irwBxGhdHefkpjMR5kfgc5TbMLNOVrUaeSHVzYKEAmd04fR5h1eePNzzMHtqRitB
- 8dYqDHr/Lb6Q5SsILmYdcbVgRCvhBX2kvXZDjHtNDnnE1RLlymrMSfFOK+FZT+I5Bb0JfLmlC
- hNt1pS/1s3XSoTtdZksGeTy0ZGJv05iNsz8EA7McGHJLzCsPxNw8cYG2ATLbxquCNTptSoQz/
- B3z93SQ0SSrhekxkVhXxc6+jcSY8Hy4GDW0vn+8wuavlFqqaXHfK2xHbPY74vfp5f0DPGasZT
- GBQebAYUFXSRin4/2KkUE5GM2d4zbqPFkX/vl9ezw0VuGpvhAxxHJg0yW7NuRQAbusqVexjwx
- OWzOq/Xr74cCkIS8ePT5NCegw60RSmWMp0cAQsfvhdIcL20HQQBinJwQ13j8j8npRRGPyvu3o
- XqgEir1NUzvcpEqBbZxunwtOuKAWaqXmS3piPjCo9a6GItFS4b3ppsF5KRyl3tsTDbEThz/I9
- zjC9IRClXlnVaxZzdBF4kjxru++dw02Rc8Cpq35+s6b1I+u9nSh0ppkUhcAITb3QPxu77Ez/D
- MZX97Al4mYjwuHfp/t+IapHIL74hxVzkoOE7HKLylU+olgPCL1xqjXdGE1Ik+SopPH5lavIxP
- FQv33vfrcC7Vm6csYbXxDMRDp39YjqsJBzsxDFzCmwu72FZYbEH9U6HHnAEyqYnsDTVStj8L6
- 3JID8m0KKE+exhRgmVQu2/aVIQBT7pNcPsG/NevDqIlXqtfe5/35XdifMd36oWKPtkWBnoKCG
- adZpkvBpaSVugBzwP0NujZVxAq/xA1AHD8pRzb9U8op+5XqVCKfPjopQF/M3I40tKenL3HwsM
- quBaCU5c8Ew7ZbIsA
+X-UI-Out-Filterresults: notjunk:1;V03:K0:JGOSLXAgGyU=:so3VXLOqyBtcHkr1e26Yr1
+ ww/clhOLJCLxFFbX4coUnB5Z8zjijXCW/eE6AoPczB8hqDmUY25c8/ZbwKtbQ4kPvC0alEEUy
+ ZKGtPc58+j00duflmc5DcYDCgeroGsR47Rp9GhYv74Ujv7Q9gpSrWLcTmHaYgNCFeMt8+9xrI
+ lHqFviTsE1E6vFkY1kTAd4q9SgjKPjtWIId3SOIsZ4n9GroPjhjDvCdENbBk67Hbs2ppHyXWX
+ cvMZdgumvrfOJ3peHpWdxXdR2HqWxTjeShwNsXNWqC3KNe2IbCd2NNfWKGKItMxHqEdVszkC2
+ t5xtoW4rvsUMkbT0qIKISHasNPAOraledKZdFKjZ2xxdQVDagPordKvEZcReFJ1tJw5YSfX1c
+ HVxSPRDo98S/nSj2EvtS+jAyk9HrK8V3vhklsdt3fEdwEOvLjVkSrjF/UtCjReFr1l5ZWfsEM
+ 1Fmqo27FgpQy/WWRT26seg5sRYJoyomTr2xXCrlEAXWRsR3iqXvVYFSZYABJTtUraHFY7wPEH
+ kIe7mdB4Vygxs5jTZlejoFOhnCFFtbQgZFM8MNtOjqYvwLbSKwI/VayHovdt0/vvCDnIYjwAS
+ 2LV5GtPW4IvGjcMs7WjppET6TS9GU3DGFxrusF5OJOZ6qq6j2udk3j/IWGkP7yrr6mbK33M4Y
+ phiRvhlqp/xMps3dB9lUhmfFc4AzBMEZ1sv+il4fFkYBW++5tXGiHxGLH5zWyd2AUpnjUkqRd
+ JJWpmGBv5yk96n2IJbOeAcDDSPhFlfpGgDamqjym7etW5eSgutyHwGl3U+N2BF4QI4PVJHAyN
+ EE9lJlZqxjkJ/S5+tt22RgjdwCkeZ4BHMliCwb5wJYH695OyO6tsOdp4YJB8eRjHl/kbiLOvU
+ 67mjToIfEIbKKJUISMiey1t62eANlqDh8q20jfwuq14lCZvbeJrk12EDU15Pw8h1E3Xs7OgJu
+ x5zSCSxR+9gEJJIddpWYvAgbYBA/i4SnVHMbAcnKRuGxExOa/c2pFKWJbhsGEXfsQ6MJBuRdX
+ 6kmnSs3b7XOL4HBiRBQAc55vjbx+ShHG9xtFebXTFgRBNSKaohmwx+Rz/VTH84j7PUuK6rkoU
+ fln4go6icsNGlavUnEIgFFx4Lhx4saHM9XPyKBNwpi2qpjmU5PKk7fAIr53iUHLPFq3+TlRwW
+ LzU+RS75dPoQKX3kPzXNYInjxJyceTh7cURIQ8Ededbq0MZaHKmT7sjdlkYA2vb84WafXV3Ap
+ eLfrSs9WzuoIdA/Xx
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> The devm_gen_pool_create() function returns ERR_PTR() on error, it
-> doesn't return NULL so this check doesn't work.
+> The of_drm_find_bridge() function returns NULL on error, it doesn't retu=
+rn
+> error pointers so this check doesn't work.
 
 How do you think about a wording variant like the following?
 
    Change description:
-   A null pointer check was performed after a call of the
-   function =E2=80=9Cdevm_gen_pool_create=E2=80=9D despite of the detail
-   that failures are indicated by error pointers instead.
+   An error pointer check was performed after a call of the
+   function =E2=80=9Cof_drm_find_bridge=E2=80=9D despite of the detail
+   that failures are indicated for the bridge search
+   by null pointers instead.
    Thus adjust a check for the failure predicate
-   and return the corresponding error code.
+   and the corresponding exception handling.
 
 
 Regards,

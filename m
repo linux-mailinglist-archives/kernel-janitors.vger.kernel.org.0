@@ -2,64 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B4AF1C07EF
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Apr 2020 22:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D85C1C0766
+	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Apr 2020 22:07:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726817AbgD3Uav (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 Apr 2020 16:30:51 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:53491
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726338AbgD3Uau (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 Apr 2020 16:30:50 -0400
-X-IronPort-AV: E=Sophos;i="5.73,337,1583190000"; 
-   d="scan'208";a="347432591"
-Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/AES256-SHA256; 30 Apr 2020 22:30:48 +0200
-From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Richard Cochran <richardcochran@gmail.com>
-Cc:     kernel-janitors@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Nic Volanschi <eugene.volanschi@inria.fr>
-Subject: [PATCH] dp83640: reverse arguments to list_add_tail
-Date:   Thu, 30 Apr 2020 21:51:32 +0200
-Message-Id: <1588276292-19166-1-git-send-email-Julia.Lawall@inria.fr>
-X-Mailer: git-send-email 1.9.1
+        id S1726645AbgD3UHC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 Apr 2020 16:07:02 -0400
+Received: from sauhun.de ([88.99.104.3]:55464 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726272AbgD3UHB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 30 Apr 2020 16:07:01 -0400
+Received: from localhost (p5486CDDB.dip0.t-ipconnect.de [84.134.205.219])
+        by pokefinder.org (Postfix) with ESMTPSA id 242652C08FC;
+        Thu, 30 Apr 2020 22:07:00 +0200 (CEST)
+Date:   Thu, 30 Apr 2020 22:06:59 +0200
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Elie Morisse <syniurge@gmail.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
+        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
+        linux-i2c@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2] i2c: i2c-amd-mp2-pci: Fix Oops in amd_mp2_pci_init()
+ error handling
+Message-ID: <20200430200659.GA19155@ninjato>
+References: <CAC_JBqofuyRiSmK0mFqVLaY=5k9MYmjGaVmggx2dn_YjN8VOmw@mail.gmail.com>
+ <20190910134242.GA6620@mwanda>
+ <20200430141050.GB3355@ninjato>
+ <CAC_JBqo4x0KBdb3j3VFrZu5sG2Mfx3xpbDzFk68h3TU99ZVj3Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="2fHTh5uZTiUOsy+g"
+Content-Disposition: inline
+In-Reply-To: <CAC_JBqo4x0KBdb3j3VFrZu5sG2Mfx3xpbDzFk68h3TU99ZVj3Q@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In this code, it appears that phyter_clocks is a list head, based on
-the previous list_for_each, and that clock->list is intended to be a
-list element, given that it has just been initialized in
-dp83640_clock_init.  Accordingly, switch the arguments to
-list_add_tail, which takes the list head as the second argument.
 
-Fixes: cb646e2b02b27 ("ptp: Added a clock driver for the National Semiconductor PHYTER.")
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+--2fHTh5uZTiUOsy+g
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
----
-Not tested.
 
- drivers/net/phy/dp83640.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Yes I'm still here to review patches.
 
-diff --git a/drivers/net/phy/dp83640.c b/drivers/net/phy/dp83640.c
-index 415c27310982..ecbd5e0d685c 100644
---- a/drivers/net/phy/dp83640.c
-+++ b/drivers/net/phy/dp83640.c
-@@ -1120,7 +1120,7 @@ static struct dp83640_clock *dp83640_clock_get_bus(struct mii_bus *bus)
- 		goto out;
- 	}
- 	dp83640_clock_init(clock, bus);
--	list_add_tail(&phyter_clocks, &clock->list);
-+	list_add_tail(&clock->list, &phyter_clocks);
- out:
- 	mutex_unlock(&phyter_clocks_lock);
- 
+Glad to hear that :)
 
+
+--2fHTh5uZTiUOsy+g
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl6rL98ACgkQFA3kzBSg
+KbZhCg//QeNHhV9f1rXCvKq5Q0ePNMrFWiSk3HTktz1ULK5o8oRvjberyUM7azzd
+estLO7Wy8q4pFrxmXFs2K3sY3xIB/JyjMKIHMcfvV0gdEb8QHVo5S7BVsbga7qKB
+YRV6Pwk8Z0vbjGfxHjSUomY2x7NRbNJdOS0uMyBMPdG4yRUHo3KJ/ZA7iAeIVB87
+/w7l9mWd6UcQNCdANxMGOhnd5WqdfDCuCAVqpKJ5qWe+G8yNo09VcgGSwKCOfait
+nIuiiY2pDo9MxsvYRBlP3VqQiEQCcQEKZpLzbvC4hP7/GAqa1Jl4Uzwd5GsLCjPw
+IjuX88WWb3Ls2s0G4WBUMCHAfhXw6PL6+aZ6JewGlR3jxOlsRKzpU2eTRlcYm45c
+7MYmHW2V/cmYgqm67WvkP/P8EeqK5dEl3QZNF0k2g2cvjlFidImDKEOBIk8eFofw
+RQhh7dEWYKds2E8kdF7gdZYt/OeMhgQiwGwINHZs91yHXn4tOtrGW2+rvQPoRQry
+Iw0736Kz8Fhp0jxYAXaqAdsSkPnsZJib2ReE0Dd8hMwCFF4iTF2p1jRw6WR7YTrf
+bocsIj5OAIkkQLIOliiPdp6JWLEDsoNNjyt5jCjkq+VD2XfVW5lUSOS/niYX/EX6
+6ooQfkAHWTD+X5IlBLaweUV6q2smwT31j+xetgueb8pYCVnQXdw=
+=g4f+
+-----END PGP SIGNATURE-----
+
+--2fHTh5uZTiUOsy+g--

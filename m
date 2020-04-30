@@ -2,79 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 769301BFE24
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Apr 2020 16:26:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26A911C009A
+	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Apr 2020 17:41:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727117AbgD3O0c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 Apr 2020 10:26:32 -0400
-Received: from www62.your-server.de ([213.133.104.62]:45862 "EHLO
-        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726571AbgD3O0c (ORCPT
+        id S1726827AbgD3PlW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 Apr 2020 11:41:22 -0400
+Received: from smtprelay0083.hostedemail.com ([216.40.44.83]:37512 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726346AbgD3PlW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 Apr 2020 10:26:32 -0400
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1jUA8v-0008Np-49; Thu, 30 Apr 2020 16:26:25 +0200
-Received: from [178.195.186.98] (helo=pc-9.home)
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1jUA8u-000XNU-Nn; Thu, 30 Apr 2020 16:26:24 +0200
-Subject: Re: [PATCH -next] bpf: fix error return code in
- map_lookup_and_delete_elem()
-To:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>,
-        Mauricio Vasquez B <mauricio.vasquez@polito.it>
-Cc:     netdev@vger.kernel.org, bpf@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20200430081851.166996-1-weiyongjun1@huawei.com>
-From:   Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <5813e11c-9aba-8273-e935-1ddb5a3f9b47@iogearbox.net>
-Date:   Thu, 30 Apr 2020 16:26:23 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        Thu, 30 Apr 2020 11:41:22 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay06.hostedemail.com (Postfix) with ESMTP id DCA6C18224D6A;
+        Thu, 30 Apr 2020 15:41:20 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:152:355:379:599:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2553:2559:2562:2693:2731:2827:2911:3138:3139:3140:3141:3142:3353:3622:3653:3865:3866:3867:3868:3870:3871:3872:3873:3874:4321:4425:5007:6119:7903:8957:10004:10400:10848:11026:11232:11473:11658:11783:11914:12297:12555:12679:12740:12895:13069:13071:13161:13229:13311:13357:13618:13894:14180:14181:14659:21080:21433:21451:21627:30054:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: thing45_28b1dc48c5410
+X-Filterd-Recvd-Size: 2578
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf19.hostedemail.com (Postfix) with ESMTPA;
+        Thu, 30 Apr 2020 15:41:19 +0000 (UTC)
+Message-ID: <30efd2838a876029600806e9b53e3284ccabc88d.camel@perches.com>
+Subject: Re: [PATCH] checkpatch: add support to check 'Fixes:' tag format
+From:   Joe Perches <joe@perches.com>
+To:     Wang YanQing <udknight@gmail.com>,
+        Markus Elfring <Markus.Elfring@web.de>
+Cc:     Andy Whitcroft <apw@canonical.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Matteo Croce <mcroce@redhat.com>
+Date:   Thu, 30 Apr 2020 08:41:18 -0700
+In-Reply-To: <20200430125614.GA30691@udknight>
+References: <20200429163645.GA13810@udknight>
+         <4112ab7e-1f06-d880-e471-084c78bc84d4@web.de>
+         <20200430125614.GA30691@udknight>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.1-2 
 MIME-Version: 1.0
-In-Reply-To: <20200430081851.166996-1-weiyongjun1@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.102.2/25798/Thu Apr 30 14:03:33 2020)
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 4/30/20 10:18 AM, Wei Yongjun wrote:
-> Fix to return negative error code -EFAULT from the copy_to_user() error
-> handling case instead of 0, as done elsewhere in this function.
+On Thu, 2020-04-30 at 20:56 +0800, Wang YanQing wrote:
+> On Wed, Apr 29, 2020 at 07:40:21PM +0200, Markus Elfring wrote:
+> > > “...
+> > > Do not split the tag across multiple
+> > > lines, tags are exempt from the "wrap at 75 columns" rule in order to simplify
+> > > parsing scripts
+> > > ...”
+> > 
+> > Why do you not like the reformatting of the quotation so far
+> > (if such change descriptions should cope also with specific
+> > Unicode characters)?
+> > 
+> > “…
+> > Do not split the tag across multiple lines, tags are exempt from
+> > the "wrap at 75 columns" rule in order to simplify parsing scripts.
+> > …”
+> > 
+> > 
 > 
-> Fixes: bd513cd08f10 ("bpf: add MAP_LOOKUP_AND_DELETE_ELEM syscall")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->   kernel/bpf/syscall.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-> index 3cea7602de78..68c22e9420fa 100644
-> --- a/kernel/bpf/syscall.c
-> +++ b/kernel/bpf/syscall.c
-> @@ -1492,8 +1492,10 @@ static int map_lookup_and_delete_elem(union bpf_attr *attr)
->   	if (err)
->   		goto free_value;
->   
-> -	if (copy_to_user(uvalue, value, value_size) != 0)
-> +	if (copy_to_user(uvalue, value, value_size) != 0) {
-> +		err = -EFAULT;
->   		goto free_value;
-> +	}
->   
+> Sigh. I will fix it, but I want to hear from Joe Perches before
+> next patch version.
 
-Good catch! Applied to bpf, thanks!
+Hello YanQing.
+
+Just ignore Markus' replies here, he's well meaning
+but perhaps overly focused on trying to impose formal,
+but somewhat antique grammar and word choice uses that
+aren't particularly important for review.
+
+The most common variant I see here is someone writes
+
+Fixes: SHA1 ("Truncated commit description...")
+
+to apparently avoid a long line.
+
+btw:
+
+you can test your patch using checkpatch and --git like:
+
+$ git log -10000 --no-merges --grep="Fixes:" --format=%H | \
+  while read commit ; do \
+    ./scripts/checkpatch.pl --git $commit --types=GIT_COMMIT_ID --quiet --nosummary; \
+  done
+
+You could filter that either by modifying the patch
+changing to "GIT_COMMIT_ID_TEST" and changing to
+types=GIT_COMMIT_ID_TEST just for Fixes or maybe
+use another grep like grep -B3 -A3 "Fixes:" -i
+
+

@@ -2,82 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E4DB1BFD30
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Apr 2020 16:11:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 769301BFE24
+	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Apr 2020 16:26:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729003AbgD3OK5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 Apr 2020 10:10:57 -0400
-Received: from sauhun.de ([88.99.104.3]:40314 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729053AbgD3OKw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 Apr 2020 10:10:52 -0400
-Received: from localhost (p5486CDDB.dip0.t-ipconnect.de [84.134.205.219])
-        by pokefinder.org (Postfix) with ESMTPSA id AB5A02C08FC;
-        Thu, 30 Apr 2020 16:10:50 +0200 (CEST)
-Date:   Thu, 30 Apr 2020 16:10:50 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Elie Morisse <syniurge@gmail.com>,
-        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
-        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-        linux-i2c@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2] i2c: i2c-amd-mp2-pci: Fix Oops in amd_mp2_pci_init()
- error handling
-Message-ID: <20200430141050.GB3355@ninjato>
-References: <CAC_JBqofuyRiSmK0mFqVLaY=5k9MYmjGaVmggx2dn_YjN8VOmw@mail.gmail.com>
- <20190910134242.GA6620@mwanda>
+        id S1727117AbgD3O0c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 Apr 2020 10:26:32 -0400
+Received: from www62.your-server.de ([213.133.104.62]:45862 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726571AbgD3O0c (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 30 Apr 2020 10:26:32 -0400
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1jUA8v-0008Np-49; Thu, 30 Apr 2020 16:26:25 +0200
+Received: from [178.195.186.98] (helo=pc-9.home)
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1jUA8u-000XNU-Nn; Thu, 30 Apr 2020 16:26:24 +0200
+Subject: Re: [PATCH -next] bpf: fix error return code in
+ map_lookup_and_delete_elem()
+To:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@chromium.org>,
+        Mauricio Vasquez B <mauricio.vasquez@polito.it>
+Cc:     netdev@vger.kernel.org, bpf@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200430081851.166996-1-weiyongjun1@huawei.com>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <5813e11c-9aba-8273-e935-1ddb5a3f9b47@iogearbox.net>
+Date:   Thu, 30 Apr 2020 16:26:23 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="9zSXsLTf0vkW971A"
-Content-Disposition: inline
-In-Reply-To: <20190910134242.GA6620@mwanda>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200430081851.166996-1-weiyongjun1@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.102.2/25798/Thu Apr 30 14:03:33 2020)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On 4/30/20 10:18 AM, Wei Yongjun wrote:
+> Fix to return negative error code -EFAULT from the copy_to_user() error
+> handling case instead of 0, as done elsewhere in this function.
+> 
+> Fixes: bd513cd08f10 ("bpf: add MAP_LOOKUP_AND_DELETE_ELEM syscall")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>   kernel/bpf/syscall.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+> index 3cea7602de78..68c22e9420fa 100644
+> --- a/kernel/bpf/syscall.c
+> +++ b/kernel/bpf/syscall.c
+> @@ -1492,8 +1492,10 @@ static int map_lookup_and_delete_elem(union bpf_attr *attr)
+>   	if (err)
+>   		goto free_value;
+>   
+> -	if (copy_to_user(uvalue, value, value_size) != 0)
+> +	if (copy_to_user(uvalue, value, value_size) != 0) {
+> +		err = -EFAULT;
+>   		goto free_value;
+> +	}
+>   
 
---9zSXsLTf0vkW971A
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Sep 10, 2019 at 04:42:42PM +0300, Dan Carpenter wrote:
-> The problem is that we dereference "privdata->pci_dev" when we print
-> the error messages in amd_mp2_pci_init():
->=20
-> 	dev_err(ndev_dev(privdata), "Failed to enable MP2 PCI device\n");
-> 		^^^^^^^^^^^^^^^^^
->=20
-> Fixes: 529766e0a011 ("i2c: Add drivers for the AMD PCIe MP2 I2C controlle=
-r")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-Applied to for-current, thanks!
-
-Elie, Nehal, Shyam, are you still there to review patches for this
-driver?
-
-
---9zSXsLTf0vkW971A
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl6q3GoACgkQFA3kzBSg
-Kbb3Ww/+IR1Q3p2H6vZjfVbP/E4riOWYHlKhuDWDgmMPjRtep4KFmwo7swfQXwmg
-hMZQxtBq8TiTubh0E893JCCeGoIt9ZA2Mq1tkYBDNc7Ad3yjQu81edCmXHkMxsgW
-RRnCjK+6ssxyLeXh+fZhTDCUyESJpmwRTsUOmisWRiE2RJfmWxY+5YVhJ/IHDaBH
-rKNSsDPYza6EkusCoztaTaw3A7f4gfKqsRv03mBA1WuXE1mG/rZgxhYV2zT9eGtU
-ra6FPdWs6MCGx4OdkqqlofHhsQrZUtTjvT+7baLAZRnY8COxFoutNr1S3vq6GiGo
-0BIS5dd6U1CCiWulK7glHfGI93Lufo5KZ58mm74rF9NvjBRcNt302ZQRrGlb/R2a
-hYcFV5Qyp65glytBRsNgN8Ua2IeTC2tMY/PJBj/K9DvMspDB8G97nERvrVBB82R8
-JMMxbSryHnvD3jsl6bD/BMh91in3VfTPecaB1DLWnendtRU//bPeD49rCSmN0lC8
-/FBdTfYvPorMG2aAGyo3vusL1LeM7o1mVbyH1bPrSdErvDXg1z1ktbL8uxQWKtL8
-NaSh1QsgNzsYfZIc3Jb9TCUTHGxW8uno0fw7zf7i4MK+vu3Yljrzkf+nbsDv7XLz
-iiFTApTilMxmACRANgA3yOo/kzqMUViKZ8jUzrKPTexjLdyLVXo=
-=2Kcc
------END PGP SIGNATURE-----
-
---9zSXsLTf0vkW971A--
+Good catch! Applied to bpf, thanks!

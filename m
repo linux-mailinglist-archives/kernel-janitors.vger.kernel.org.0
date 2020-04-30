@@ -2,96 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 101CB1C06AB
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Apr 2020 21:43:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B4AF1C07EF
+	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Apr 2020 22:30:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726564AbgD3Tni (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 Apr 2020 15:43:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53930 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726396AbgD3Tni (ORCPT
+        id S1726817AbgD3Uav (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 Apr 2020 16:30:51 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:53491
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726338AbgD3Uau (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 Apr 2020 15:43:38 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEFE8C035494;
-        Thu, 30 Apr 2020 12:43:37 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id a21so588044ljb.9;
-        Thu, 30 Apr 2020 12:43:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=IVPO1xM0I+MDkYo8LpexsnbTaUjBHbEZMUn4h6d/yJk=;
-        b=H64ch2SvQrHgGdkRdoGFyKcL0NNL6UBZ4YF6rouXideA5ODxK6YV2mWM9q3OtxSZnj
-         JDI+j73tey4HDkUeGLPR9CPNYBfzCDBAAvU5R/EYY2CKyx39WyElp8Kod7QJcRs49iOM
-         vespz3L9DCUqOPlJBuhssC7GReVLqoYDaDGFqCCpHTt3vhm3qcBtCG8DGh0zJfD0E5k2
-         d2yyY6ugRdy7EgMLBNRf0nDtPxyZFyw7XXVy1Crc8Hkpnh3b1FZrmxBx9wLPSRco4ujb
-         qhtPKQMsjrjQcmdOylXm/L4xb+nHK8YJhFaMxIGO/F7x8rHThWjYi1ATofsRU6/ZItvd
-         conA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=IVPO1xM0I+MDkYo8LpexsnbTaUjBHbEZMUn4h6d/yJk=;
-        b=CNAAO8OQYP5QNIZD231SmsQJGPgGDcgiXLYX78d92/CKxNzH3nmpA/dEYz+Em0u2ng
-         wDaHERhru6YFY62PwL0gDAXbQhWvEGCyTrFfDuA3CqoZ6Ml1fMNhb/SlDYmE/HKmqnGG
-         z1ZkuTGgke7qyYVW06w6PltvXmmjqbILCfBl+njDRsnATxQ3OpfXC5gA6OSxmVdRh8w8
-         9yyky9UVlqho/ARUgx9iDQeGjxc14gSU9BIBlNYaL5FX/1JAl4FLqYmUj8tdXwohKSGs
-         uagozQjWVzBDeN/ZYyA7Tc3n3/R9bHue47B6ojPpJ1UA20ipbvjBtHDHgSvKKbXw+yhS
-         iq2w==
-X-Gm-Message-State: AGi0Puawq14PmQjSCX69LOc+apYDjftyKxan1z0jZbGpaSs0WhulL7rm
-        0baNvC2m/bc9bmLloHghpHaxE9inB9uECm+3YNs=
-X-Google-Smtp-Source: APiQypJEt61lgwTmnSrT4P29kwYjqJoFv6NFou83Lkw5kQqBtzOE9qSxWZMLhr0d4Fnp0XdwVergNcjiMGgWyM+ga3M=
-X-Received: by 2002:a2e:731a:: with SMTP id o26mr290411ljc.189.1588275816438;
- Thu, 30 Apr 2020 12:43:36 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAC_JBqofuyRiSmK0mFqVLaY=5k9MYmjGaVmggx2dn_YjN8VOmw@mail.gmail.com>
- <20190910134242.GA6620@mwanda> <20200430141050.GB3355@ninjato>
-In-Reply-To: <20200430141050.GB3355@ninjato>
-From:   Elie Morisse <syniurge@gmail.com>
-Date:   Thu, 30 Apr 2020 16:43:24 -0300
-Message-ID: <CAC_JBqo4x0KBdb3j3VFrZu5sG2Mfx3xpbDzFk68h3TU99ZVj3Q@mail.gmail.com>
-Subject: Re: [PATCH v2] i2c: i2c-amd-mp2-pci: Fix Oops in amd_mp2_pci_init()
- error handling
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
-        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-        linux-i2c@vger.kernel.org, kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Thu, 30 Apr 2020 16:30:50 -0400
+X-IronPort-AV: E=Sophos;i="5.73,337,1583190000"; 
+   d="scan'208";a="347432591"
+Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/AES256-SHA256; 30 Apr 2020 22:30:48 +0200
+From:   Julia Lawall <Julia.Lawall@inria.fr>
+To:     Richard Cochran <richardcochran@gmail.com>
+Cc:     kernel-janitors@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Nic Volanschi <eugene.volanschi@inria.fr>
+Subject: [PATCH] dp83640: reverse arguments to list_add_tail
+Date:   Thu, 30 Apr 2020 21:51:32 +0200
+Message-Id: <1588276292-19166-1-git-send-email-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 1.9.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
+In this code, it appears that phyter_clocks is a list head, based on
+the previous list_for_each, and that clock->list is intended to be a
+list element, given that it has just been initialized in
+dp83640_clock_init.  Accordingly, switch the arguments to
+list_add_tail, which takes the list head as the second argument.
 
-Yes I'm still here to review patches.
+Fixes: cb646e2b02b27 ("ptp: Added a clock driver for the National Semiconductor PHYTER.")
+Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
-Sorry about this one, I replied to the v1 but in HTML so it bounced
-back the ML and should have but didn't give my ack to the v2. I'll
-make sure to give proper feedback to the latest versions of the
-patches for the I2C MP2 driver in the future.
+---
+Not tested.
 
-Elie
+ drivers/net/phy/dp83640.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Le jeu. 30 avr. 2020 =C3=A0 11:10, Wolfram Sang <wsa@the-dreams.de> a =C3=
-=A9crit :
->
-> On Tue, Sep 10, 2019 at 04:42:42PM +0300, Dan Carpenter wrote:
-> > The problem is that we dereference "privdata->pci_dev" when we print
-> > the error messages in amd_mp2_pci_init():
-> >
-> >       dev_err(ndev_dev(privdata), "Failed to enable MP2 PCI device\n");
-> >               ^^^^^^^^^^^^^^^^^
-> >
-> > Fixes: 529766e0a011 ("i2c: Add drivers for the AMD PCIe MP2 I2C control=
-ler")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
->
-> Applied to for-current, thanks!
->
-> Elie, Nehal, Shyam, are you still there to review patches for this
-> driver?
->
+diff --git a/drivers/net/phy/dp83640.c b/drivers/net/phy/dp83640.c
+index 415c27310982..ecbd5e0d685c 100644
+--- a/drivers/net/phy/dp83640.c
++++ b/drivers/net/phy/dp83640.c
+@@ -1120,7 +1120,7 @@ static struct dp83640_clock *dp83640_clock_get_bus(struct mii_bus *bus)
+ 		goto out;
+ 	}
+ 	dp83640_clock_init(clock, bus);
+-	list_add_tail(&phyter_clocks, &clock->list);
++	list_add_tail(&clock->list, &phyter_clocks);
+ out:
+ 	mutex_unlock(&phyter_clocks_lock);
+ 
+

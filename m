@@ -2,92 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 495281C1D4B
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 May 2020 20:37:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D08E01C1D96
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 May 2020 21:05:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730062AbgEASh1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 1 May 2020 14:37:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42786 "EHLO
+        id S1730381AbgEATFA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 1 May 2020 15:05:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729721AbgEASh0 (ORCPT
+        by vger.kernel.org with ESMTP id S1730033AbgEATFA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 1 May 2020 14:37:26 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9B7C061A0C;
-        Fri,  1 May 2020 11:37:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=hMV97MmaX97miftrzqjeu0TBXLmOOMvlA9imPuzqGGI=; b=mSjUL5OMxeQvBqqi4Ta3hO1Gj
-        UFl50vipSDu80044GX0Ev8w8ZYe5iRWjD9JffxVeJ7YUwr+hJgZVcfEfDvLNNyMmhZKmJpnQ1hlyS
-        7Zle1gxsil4uQgR81WFUtXrSqmY6ODdbHXSIumbYWfYRnWC54p+obQpFAKPnAiJ2QE3/mG0F1TWv5
-        jdPs+/CqSxJ35MCVQuN1jkCRr2Jf6h9dwJn3EKrieehni90AlqkB9cKN1GSvmtW1zW0p1esgLvFgp
-        L7LzB3LEMIbMLJNhs/PGBmj6WpRxOBE/GYw9J41hNrlXl9sm2QyhLjrdgQAmR706dfHqZhSPApkWy
-        3cyL+BsiA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54906)
-        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.90_1)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1jUaX5-0005cR-LV; Fri, 01 May 2020 19:37:07 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1jUaX1-0003KM-F2; Fri, 01 May 2020 19:37:03 +0100
-Date:   Fri, 1 May 2020 19:37:03 +0100
-From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To:     Walter Harms <wharms@bfs.de>
-Cc:     Colin King <colin.king@canonical.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH] net: dsa: sja1105: fix speed setting for 10 MBPS
-Message-ID: <20200501183703.GS1551@shell.armlinux.org.uk>
-References: <20200501134310.289561-1-colin.king@canonical.com>
- <9018be0b7dc441cd8aad625c6cc44e1c@bfs.de>
+        Fri, 1 May 2020 15:05:00 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5B80C061A0E
+        for <kernel-janitors@vger.kernel.org>; Fri,  1 May 2020 12:04:59 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id d16so7994122edq.7
+        for <kernel-janitors@vger.kernel.org>; Fri, 01 May 2020 12:04:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=utiKFhMFXax2OSf9CMAz2YObyOkSwIwuAyj2ZKdulc4=;
+        b=oq5HWHKtpvZhq9Q4KlwOYZdn3kapwhhlYk3Z8d+VY1HjYiKGJfLvL4rMXUOmjCiOi2
+         rEzT3m6v7K/GH4BM0xHlQEJa0i/UzAZ9YJbTmvTgOWqKg+7MeF6PR4SXC7EOdV9Lq1zJ
+         48FYnYBrAjn+i2iMOJJihvDTfAFIXdX+joUTLsUYvgkpZhhH6m7Trb++ErRMxGAmt9tM
+         8ViPwEkD1aHDaR25v3rdHlxgiRINkjXYwztVpkicEyDKDMg78wSoAUY2AxqVJSgAdodt
+         vvqbk1sLQkTkDayB/suEffQjLEWfcA7vRQgpUo3uetmMHt4OpbgFXII6BcMCj5Y86mq7
+         aqng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=utiKFhMFXax2OSf9CMAz2YObyOkSwIwuAyj2ZKdulc4=;
+        b=nSY1XGCf/+cD7zTKu7FeePXS0ZZHFk4EBfH45G5KPOI1AcU2kid5pY95qAgWVao2HM
+         ar4DaJ1HL2ENjF+6dthwd/qDjXvYg4pomILSTMkNgN3hfWJ1ZLJvxnIPYRKZNJKptVQU
+         T216tqFSExnAffbjbuwY15d9ZHZWA01D8ARuTfhsoXj6NQGW0kdqbx9dWpeqKHrVbbNV
+         ELJz5ie0A1n91vyKvVsEW0psU8CfMPXi65Bpi+3ZLhjv7yDi2g1hdK5reXvz1+suMGOU
+         JKSFf2FGzahNJ3ZXB+PlqPf2d40GHAGEsAEbCfGrNzbOtPwr30syogXdq08KtIoJyDjn
+         n4lQ==
+X-Gm-Message-State: AGi0PuanXSyheetxjeJ2yAJXyZS5WpVV7HL4Lyck099jCsT/V46gNzrN
+        LtD9da20gHJeoVSaNiut+I9vohABi5qJSurqlyQ1
+X-Google-Smtp-Source: APiQypISLqBVM6kAdnC7efBpEr9zhjdt95eJNwvxrlblEIgNTRzv6tN3iMIHWIcLkDLNQdSTsdwnZhFXbUB63kTupMk=
+X-Received: by 2002:aa7:cd59:: with SMTP id v25mr4497234edw.135.1588359898382;
+ Fri, 01 May 2020 12:04:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9018be0b7dc441cd8aad625c6cc44e1c@bfs.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20200429073053.83660-1-weiyongjun1@huawei.com>
+In-Reply-To: <20200429073053.83660-1-weiyongjun1@huawei.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Fri, 1 May 2020 15:04:47 -0400
+Message-ID: <CAHC9VhTEHJiRm-9zkic1mUyVJ6WNLL8AhzRsbq+bf7q2GDdCgA@mail.gmail.com>
+Subject: Re: [PATCH -next] selinux: fix error return code in policydb_read()
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>,
+        Ondrej Mosnacek <omosnace@redhat.com>,
+        Jeff Vander Stoep <jeffv@google.com>,
+        selinux@vger.kernel.org, kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, May 01, 2020 at 06:00:52PM +0000, Walter Harms wrote:
-> IMHO it would be better to use switch case here to improve readability.
-> 
-> switch (bmcr & mask) {
-> 
-> case  BMCR_SPEED1000:
->                                  speed = SPEED_1000;
->                                  break;
-> case  BMCR_SPEED100:
->                                  speed = SPEED_100;
->                                  break;
-> case  BMCR_SPEED10:
->                                  speed = SPEED_10;
->                                  break;
-> default:
->                                 speed = SPEED_UNKNOWN
-> }
-> 
-> jm2c,
->  wh
-> 
-> btw: an_enabled ? why not !enabled, mich more easy to read
+On Wed, Apr 29, 2020 at 3:29 AM Wei Yongjun <weiyongjun1@huawei.com> wrote:
+>
+> Fix to return negative error code -ENOMEM from the kvcalloc() error
+> handling case instead of 0, as done elsewhere in this function.
+>
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  security/selinux/ss/policydb.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-You misinterpret "an_enabled".  It's not "negated enabled".  It's not
-even "disabled".  It's short for "autonegotiation enabled".  It's
-positive logic too.
+Regardless of the other error, this patch fixes a legitimate problem
+so I've merged it into selinux/next with the appropriate fixes tag.
+Thanks.
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line in suburbia: sync at 10.2Mbps down 587kbps up
+paul moore
+www.paul-moore.com

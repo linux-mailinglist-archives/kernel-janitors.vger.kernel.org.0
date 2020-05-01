@@ -2,73 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CC011C1275
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 May 2020 14:55:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AF721C1662
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 May 2020 16:08:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728783AbgEAMz2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 1 May 2020 08:55:28 -0400
-Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:56820 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728585AbgEAMz2 (ORCPT
+        id S1731669AbgEANri (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 1 May 2020 09:47:38 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59409 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731613AbgEANnS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 1 May 2020 08:55:28 -0400
-Received: from localhost.localdomain ([92.148.198.27])
-        by mwinf5d51 with ME
-        id ZQvK2200L0bxQ9003QvKEZ; Fri, 01 May 2020 14:55:26 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 01 May 2020 14:55:26 +0200
-X-ME-IP: 92.148.198.27
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     yannick.fertre@st.com, philippe.cornu@st.com,
-        benjamin.gaignard@linaro.org, vincent.abriou@st.com,
-        airlied@linux.ie, daniel@ffwll.ch, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, eric@anholt.net, narmstrong@baylibre.com
-Cc:     dri-devel@lists.freedesktop.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] drm/stm: Fix an error handling path in 'stm_drm_platform_probe()'
-Date:   Fri,  1 May 2020 14:55:11 +0200
-Message-Id: <20200501125511.132029-1-christophe.jaillet@wanadoo.fr>
+        Fri, 1 May 2020 09:43:18 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jUVwd-00067j-4A; Fri, 01 May 2020 13:43:11 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Vladimir Oltean <olteanv@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        linux-kernel@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH] net: dsa: sja1105: fix speed setting for 10 MBPS
+Date:   Fri,  1 May 2020 14:43:10 +0100
+Message-Id: <20200501134310.289561-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If 'drm_dev_register()' fails, a call to 'drv_load()' must be undone, as
-already done in the remove function.
+From: Colin Ian King <colin.king@canonical.com>
 
-Fixes: b759012c5fa7 ("drm/stm: Add STM32 LTDC driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+The current logic for speed checking will never set the speed to 10 MBPS
+because bmcr & BMCR_SPEED10 is always 0 since BMCR_SPEED10 is 0. Also
+the erroneous setting where BMCR_SPEED1000 and BMCR_SPEED100 are both
+set causes the speed to be 1000 MBS.  Fix this by masking bps and checking
+for just the expected settings of BMCR_SPEED1000, BMCR_SPEED100 and
+BMCR_SPEED10 and defaulting to the unknown speed otherwise.
+
+Addresses-Coverity: ("Logically dead code")
+Fixes: ffe10e679cec ("net: dsa: sja1105: Add support for the SGMII port")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/stm/drv.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/dsa/sja1105/sja1105_main.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/stm/drv.c b/drivers/gpu/drm/stm/drv.c
-index ea9fcbdc68b3..9a66e350abd5 100644
---- a/drivers/gpu/drm/stm/drv.c
-+++ b/drivers/gpu/drm/stm/drv.c
-@@ -206,12 +206,14 @@ static int stm_drm_platform_probe(struct platform_device *pdev)
+diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+index 472f4eb20c49..59a9038cdc4e 100644
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -1600,6 +1600,7 @@ static const char * const sja1105_reset_reasons[] = {
+ int sja1105_static_config_reload(struct sja1105_private *priv,
+ 				 enum sja1105_reset_reason reason)
+ {
++	const int mask = (BMCR_SPEED1000 | BMCR_SPEED100 | BMCR_SPEED10);
+ 	struct ptp_system_timestamp ptp_sts_before;
+ 	struct ptp_system_timestamp ptp_sts_after;
+ 	struct sja1105_mac_config_entry *mac;
+@@ -1684,14 +1685,16 @@ int sja1105_static_config_reload(struct sja1105_private *priv,
+ 		sja1105_sgmii_pcs_config(priv, an_enabled, false);
  
- 	ret = drm_dev_register(ddev, 0);
- 	if (ret)
--		goto err_put;
-+		goto err_unload;
+ 		if (!an_enabled) {
+-			int speed = SPEED_UNKNOWN;
++			int speed;
  
- 	drm_fbdev_generic_setup(ddev, 16);
+-			if (bmcr & BMCR_SPEED1000)
++			if ((bmcr & mask) == BMCR_SPEED1000)
+ 				speed = SPEED_1000;
+-			else if (bmcr & BMCR_SPEED100)
++			else if ((bmcr & mask) == BMCR_SPEED100)
+ 				speed = SPEED_100;
+-			else if (bmcr & BMCR_SPEED10)
++			else if ((bmcr & mask) == BMCR_SPEED10)
+ 				speed = SPEED_10;
++			else
++				speed = SPEED_UNKNOWN;
  
- 	return 0;
- 
-+err_unload:
-+	drv_unload(ddev);
- err_put:
- 	drm_dev_put(ddev);
- 
+ 			sja1105_sgmii_pcs_force_speed(priv, speed);
+ 		}
 -- 
 2.25.1
 

@@ -2,77 +2,128 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FE691C1AC9
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 May 2020 18:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C381D1C1AE1
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 May 2020 18:53:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729037AbgEAQrB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 1 May 2020 12:47:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53402 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728896AbgEAQrA (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 1 May 2020 12:47:00 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45EBEC061A0C
-        for <kernel-janitors@vger.kernel.org>; Fri,  1 May 2020 09:47:00 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id x1so7917449ejd.8
-        for <kernel-janitors@vger.kernel.org>; Fri, 01 May 2020 09:47:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=QNT4/Sthucicoz3OfYeIi+e2sDpr2i8vBnDynJ35Ebk=;
-        b=rSfAU2TmEk6FBuKjKXSTI0LO8nMvtqW2/yjEC3/vzKYlLHOVZLomflZPtCvyqxM9u2
-         OoRwF020lTWMsQeX6+ddUBM8M6ARhRapK+2lL6AmOdUJaxHa+MzkFvBYTsm5VyrbfpsK
-         ewy9A3qeaVt8vYQOA6dB8s+c5khNFj5uS6iu+yIB1pkz/in8IrlEa4qbDoPi4QSiu9yK
-         GbX7LiwGYlZPaYHFhkv7KUGM39Yq7YbY8mztL094aLemI+7Jb64o9xAJoONp1yQ0KcIM
-         osDIuyiiKj6GZ59nErVvybAuNw7yJ528u9gf7vLliJgnM/+vGXBGfKWW9DtQWA5rMyJc
-         hF0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=QNT4/Sthucicoz3OfYeIi+e2sDpr2i8vBnDynJ35Ebk=;
-        b=J4YPLptXu1G/Y6ul8Xsh6rpwF4gLdCAJSqCq2dsDfhPVNHLahqJ8w3U/lDbdfexu8L
-         0UXSPo97hS4ilcCzJOMD8/zGR26/ArtljwazkkSJBH16lugrHOB486O/PaNEFjNI6ME7
-         pbSD1BHJ88l5g6U9E0lqIDYdT6oQZSbDu4fa+XVOXlKWTsplBm2HlyfWH6S6VjSBU7Z8
-         r+h/qKMFEnp0xoOZ05GoEWAPOJllcabBjkIQeR2bQTKiF7dAWlKmJ46BUX4VX4q5utEU
-         xjTw3A7Mag4QAF6PwX8PwbXLG+kFcCdYXHdzXLC+npQ1C6NVXHtOp5N5C6tGBsT6gpO5
-         t42A==
-X-Gm-Message-State: AGi0PuarqEYXWIpBf51e4ANxFHZOiGs++58STStnsa5COwZFcJrYeF7u
-        rKkMBB3wqQoRUqZ9VAK46yKkdhn2WqdHNYjOvtQn
-X-Google-Smtp-Source: APiQypLgXEdp+smo5hw20ykRw2ysgbMFkkc78aYzE9Xkik+QAnkiiZ9wRky25HWgHLxlILzDmA6dyAEDnNFSY0xWC2o=
-X-Received: by 2002:a17:906:29c4:: with SMTP id y4mr4088167eje.95.1588351618822;
- Fri, 01 May 2020 09:46:58 -0700 (PDT)
+        id S1729424AbgEAQxD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 1 May 2020 12:53:03 -0400
+Received: from mout.web.de ([212.227.15.4]:51991 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728970AbgEAQxC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 1 May 2020 12:53:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1588351974;
+        bh=cnuZXEO7YQJ4tZE4Noa6guYPZ0C58F4v2mKLzJWyPpU=;
+        h=X-UI-Sender-Class:Subject:To:References:From:Cc:Date:In-Reply-To;
+        b=ndTZ3mIWudo4sTnqrrbKBYDhEqpbL3xAbueCmUK6u3L3mLoGQONHKszD0kZq+fMKh
+         ZgiyHBUgO3glkSsVJisumeDRSXlqdDtBl9o5pm5N7VxBoKld14dgBB8iQzKGZtll8J
+         O8PS8xH0O0J7cddLl/iRVXDgdyUID4XxV6sBNYiE=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.48.136.146]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MQ8ai-1jqTTi0Ds8-00M49M; Fri, 01
+ May 2020 18:52:54 +0200
+Subject: Re: [PATCH v3] checkpatch: add support to check 'Fixes:' tag format
+To:     Wang YanQing <udknight@gmail.com>, Joe Perches <joe@perches.com>,
+        Andy Whitcroft <apw@canonical.com>,
+        kernel-janitors@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20200501154033.GA25730@udknight>
+ <3aeb6ab5059ec753d922051d7732e13322188e7c.camel@perches.com>
+ <20200501163440.GA19874@udknight>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Cc:     linux-kernel@vger.kernel.org,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Matteo Croce <mcroce@redhat.com>
+Message-ID: <b2f44460-dc42-1606-519f-2886c805715e@web.de>
+Date:   Fri, 1 May 2020 18:52:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-References: <20200429073053.83660-1-weiyongjun1@huawei.com> <20200429130738.GQ2014@kadam>
-In-Reply-To: <20200429130738.GQ2014@kadam>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Fri, 1 May 2020 12:46:47 -0400
-Message-ID: <CAHC9VhT1-rV3heNWxcKo58AVsvhGeX5=oTQY8d8uahpMhwbJrA@mail.gmail.com>
-Subject: Re: [PATCH -next] selinux: fix error return code in policydb_read()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Ondrej Mosnacek <omosnace@redhat.com>,
-        Jeff Vander Stoep <jeffv@google.com>,
-        selinux@vger.kernel.org, kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200501163440.GA19874@udknight>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+X-Provags-ID: V03:K1:+2KKWVMN+yXVS0/JfNtbhkKi41xfjFGWEQX1Go/5xaAiXPI34bl
+ VzguRycw5yoyq8cN0D5+1inO7MdyqJcqCQqh2gOLuD+wnYYPsleP0p7MbJh5lfU2+e1i+no
+ RZMYzUZcOmb9G4k3Op18vmVz2cb5QVKVRH1jfV3fZNFTwoYMhC6zdG2lEOm0xrWn7zwiqAe
+ XPS/oITEi5JSfB8TuhRDg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:qsy0+JTT61c=:y+QGXQyUrYhb7s1GAPlY+F
+ cQIfkc9FNaCYU0qwoOdQnHxZCGx5BWg7McWKxyEG7wmvfc+Z0yN7APa/AcRiOZeqCKaE7J/Fy
+ zrBr2APbmBy/iLzGAnF6AfmZatU2vJC+LpKtuRj46a7NBacTA3gUnUNjVXMpmw7ArWlX/tSOk
+ fNiW3fdrSm8dUMEJQbeQuqU84KPP8GOmNjMa8H7CcrmfB4cwb0G33EDgveTG0r58ofwpO214z
+ /CwBXHpDvS9+4dZ3XpAGeRVdttev2S8Cxb5qYVOodzeIRCplBLRiswMWMWepdvMfXqvbyWelx
+ rFCbxNVfo55S6NfQNI5nB+CDXbQ90upSGKiSSLrOD0OPwho0yI5NJx9KjTRsrlTCRzeiP/I1d
+ tUq8Si4pzNaUUpaTwlSA7MVw71JMUd1P6D1hsTGKVNoTaKCOMQg1Hv1/5ml9DQwyNy5qZzqK5
+ /vViUvFsuNj56ibTFOhCpTafxj/4zgI0JMNKYXZdVq+MfhasZJirfOg+0XCeYJtB+of+ugQ0T
+ h/otTWKC4V694zE09NOu6IfjwAJuHPTDACh4dQMavSA/7ywdabh2VZolxIlXmAGtasWr9ZM1P
+ pUYcs7vkbuJ2r3MKDKGS3RdmSd8QKdNrhjaMPI0t+f0eUpcoacFZCLCihwzIguMxcnIukXUm1
+ Fs97u/i6Syx/QL31DZawO/rabIMCRpYWK90kb58gnlEzQ7QANbkft9+blkJl04A6srrgb4sQ5
+ yZW3D5DuM3JYznV9Itx9k6Drpnn1U0asy/yUq9VQbSgV87ezulxWkUng3cGpaR+B14QyN7j3p
+ p2WaproYwKxTecvJOLQjZeuR6VMlbSQfI1UbwaFU9xCWjyv2q+GnJD0Qr9nEifzWADKK9pJAj
+ gUUTBM5ElLMOpPTSpSE4O6HN0AdmTTnCHzeHp/+hFopjTR2AOL4Qrqzkfk/28abJW3VE61Lby
+ 5g2UBk0RDu2StcRosZgRYWcrDyQVwdTlqBd47lYhv+pj6kIygwXjTuVLKHYTzNct2xhMwpdaD
+ 6NW3453O6dIdkfdCAWgtr0g+ZALV3r3/DWb3m7vsbA3xzd5rUbIOwg/BNPoQ756FzxkNHWGrC
+ JyFOmv+PjW8KOzz6XXdCbQtFJnMuFjJQLk3+Jnwkh9FxaOGmnWx9QYcoxEj/IFM15/8xsU7uS
+ MmxCpKgBxjGSw7Dth8/ugyuCcPzEO8Z/voO5vGMOqF7LLwMwDzmsTAZOxncnsd75nlx8nbaKV
+ NdElEqY3Qo9dp4zAn
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Apr 29, 2020 at 9:15 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> On Wed, Apr 29, 2020 at 07:30:53AM +0000, Wei Yongjun wrote:
-> > Fix to return negative error code -ENOMEM from the kvcalloc() error
-> > handling case instead of 0, as done elsewhere in this function.
->
-> Please add a Fixes tag and Cc Kent.
+> I am not sure whether I get your words, you mean we need to emit warning
+> for incomplete title line format? For example:
+> Fixes: 277f27e2f277 ("SUNRPC/cache: Allow garbage collection ... ")
 
-Kent?  Who is Kent?
+I suggest to increase the precision for the usage the ellipsis at the end.
 
--- 
-paul moore
-www.paul-moore.com
+* Triple ASCII dots
+
+* U+2026
+
+* The commit title should probably not be abbreviated too much.
+
+Regards,
+Markus

@@ -2,114 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 668DC1C1AB2
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 May 2020 18:39:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D87E1C1BFE
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 May 2020 19:39:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729670AbgEAQjE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 1 May 2020 12:39:04 -0400
-Received: from mga12.intel.com ([192.55.52.136]:62857 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728443AbgEAQjE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 1 May 2020 12:39:04 -0400
-IronPort-SDR: Y7J3bu9ocWgXIqCSfEeBwOW15jgzYc+o8/HSqFKMenQOUiILZI599PYUkeJrRBewuoUPHUPmbt
- N9ahBaQ8LR8g==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2020 09:39:04 -0700
-IronPort-SDR: zrMjFlI5GKlH4TXYRDlrYH+y4RvFi9JUquNOINeYDvbyd/TY7ET9xA71XSATxJF2sHZhBcsczD
- AIYY9EdWJ68A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,340,1583222400"; 
-   d="scan'208";a="433362656"
-Received: from marshy.an.intel.com (HELO [10.122.105.159]) ([10.122.105.159])
-  by orsmga005.jf.intel.com with ESMTP; 01 May 2020 09:39:03 -0700
-Subject: Re: [PATCH 4/4 v2] firmware: stratix10-svc: Slightly simplify code
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        gregkh@linuxfoundation.org, atull@kernel.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <cover.1588142343.git.christophe.jaillet@wanadoo.fr>
- <8c505c686438c54da61ad4fe15e1eae722011153.1588142343.git.christophe.jaillet@wanadoo.fr>
- <1f8ae50d-6830-7fbb-e999-3e8110fe7cd6@linux.intel.com>
- <c7ac6b7c-a1d5-e001-964b-0881707c41b1@wanadoo.fr>
-From:   Richard Gong <richard.gong@linux.intel.com>
-Message-ID: <2a1de0d5-444a-2680-10b5-8578c2670d54@linux.intel.com>
-Date:   Fri, 1 May 2020 11:55:22 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1729721AbgEARjH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 1 May 2020 13:39:07 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:38787 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729040AbgEARjG (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 1 May 2020 13:39:06 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jUZcr-0004Ox-2y; Fri, 01 May 2020 17:39:01 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        Steve deRosier <derosier@cal-sierra.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] libertas_tf: avoid a null dereference in pointer priv
+Date:   Fri,  1 May 2020 18:39:00 +0100
+Message-Id: <20200501173900.296658-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <c7ac6b7c-a1d5-e001-964b-0881707c41b1@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
+From: Colin Ian King <colin.king@canonical.com>
 
-On 5/1/20 10:48 AM, Christophe JAILLET wrote:
-> Le 01/05/2020 à 17:40, Richard Gong a écrit :
->> Hi,
->>
->> On 4/29/20 1:52 AM, Christophe JAILLET wrote:
->>> Replace 'devm_kmalloc_array(... | __GFP_ZERO)' with the equivalent and
->>> shorter 'devm_kcalloc(...)'.
->>>
->> It doesn't make much sense.
->> Actually devm_kcalloc returns devm_kmalloc_array(.., flag | __GFP_ZERO).
->>
-> The only goal is to have a sightly less verbose code.
-> This saves one line of code and there is no need to wonder why we 
-> explicitly pass __GFP_ZERO to kmalloc_array.
-> 
-> Mostly a matter of taste.
-I prefer this part remain unchanged.
+Currently there is a check if priv is null when calling lbtf_remove_card
+but not in a previous call to if_usb_reset_dev that can also dereference
+priv.  Fix this by also only calling lbtf_remove_card if priv is null.
 
-Regards,
-Richard
+It is noteable that there don't seem to be any bugs reported that the
+null pointer dereference has ever occurred, so I'm not sure if the null
+check is required, but since we're doing a null check anyway it should
+be done for both function calls.
 
-> 
-> 'devm_kcalloc' is inlined, so the binary should be exactly the same. >
-> CJ
-> 
->>> 'ctrl->genpool' can not be NULL, so axe a useless test in the remove
->>> function.
->>>
->>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->>> ---
->>>   drivers/firmware/stratix10-svc.c | 6 ++----
->>>   1 file changed, 2 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/drivers/firmware/stratix10-svc.c 
->>> b/drivers/firmware/stratix10-svc.c
->>> index 739004398877..c228337cb0a1 100644
->>> --- a/drivers/firmware/stratix10-svc.c
->>> +++ b/drivers/firmware/stratix10-svc.c
->>> @@ -1002,8 +1002,7 @@ static int stratix10_svc_drv_probe(struct 
->>> platform_device *pdev)
->>>       if (!controller)
->>>           return -ENOMEM;
->>>   -    chans = devm_kmalloc_array(dev, SVC_NUM_CHANNEL,
->>> -                   sizeof(*chans), GFP_KERNEL | __GFP_ZERO);
->>> +    chans = devm_kcalloc(dev, SVC_NUM_CHANNEL, sizeof(*chans), 
->>> GFP_KERNEL);
->>>       if (!chans)
->>>           return -ENOMEM;
->>>   @@ -1086,8 +1085,7 @@ static int stratix10_svc_drv_remove(struct 
->>> platform_device *pdev)
->>>           kthread_stop(ctrl->task);
->>>           ctrl->task = NULL;
->>>       }
->>> -    if (ctrl->genpool)
->>> -        gen_pool_destroy(ctrl->genpool);
->>> +    gen_pool_destroy(ctrl->genpool);
->>>       list_del(&ctrl->node);
->>>         return 0;
->>>
->>
->> Regards,
->> Richard
->>
-> 
+Addresses-Coverity: ("Dereference before null check")
+Fixes: baa0280f08c7 ("libertas_tf: don't defer firmware loading until start()")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/marvell/libertas_tf/if_usb.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/marvell/libertas_tf/if_usb.c b/drivers/net/wireless/marvell/libertas_tf/if_usb.c
+index 25ac9db35dbf..bedc09215088 100644
+--- a/drivers/net/wireless/marvell/libertas_tf/if_usb.c
++++ b/drivers/net/wireless/marvell/libertas_tf/if_usb.c
+@@ -247,10 +247,10 @@ static void if_usb_disconnect(struct usb_interface *intf)
+ 
+ 	lbtf_deb_enter(LBTF_DEB_MAIN);
+ 
+-	if_usb_reset_device(priv);
+-
+-	if (priv)
++	if (priv) {
++		if_usb_reset_device(priv);
+ 		lbtf_remove_card(priv);
++	}
+ 
+ 	/* Unlink and free urb */
+ 	if_usb_free(cardp);
+-- 
+2.25.1
+

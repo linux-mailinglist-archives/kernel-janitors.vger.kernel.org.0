@@ -2,130 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1E4B1C1DA4
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 May 2020 21:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EC5B1C1E11
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 May 2020 21:51:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730483AbgEATIc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 1 May 2020 15:08:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47642 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729766AbgEATIc (ORCPT
+        id S1726554AbgEATv3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 1 May 2020 15:51:29 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:33710 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726377AbgEATv3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 1 May 2020 15:08:32 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD51FC061A0C
-        for <kernel-janitors@vger.kernel.org>; Fri,  1 May 2020 12:08:31 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id t12so8006005edw.3
-        for <kernel-janitors@vger.kernel.org>; Fri, 01 May 2020 12:08:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=jCkpkOtlwOsj6yyByDhOCENLq0uryXJZ7j98jV5XREE=;
-        b=jZWHktIohCDrUqPhu/jEoxkztd3YJBuBCoZdjhaqYxp6ywGOHpItKmE1ZwKFb6QDCy
-         V9TxOVv5hMV6eroo1tn29Nrdboy+WCIdhWlsVe1wfJBBrHeaJmE3DDhVKRDQA8D+vMUP
-         iUiJQgOzvhvfXrEtFIdEU172W+57HypM/193TSbzIHpfZ10OD4y0dgwsUnA6QfprBA+z
-         lt94UWriv9DYBZ17gKh9c1ovp8BC2M5Fx+OtX/JX1BBShbM7RA7KA1h2n80qK69zqV9/
-         pU3tq4m3zHEIz9NFmyz0mkEJo5rB9bsWpbBMNhMOzeTrgjrD4yA8NNNPWnuKC80zBOEh
-         ytlA==
+        Fri, 1 May 2020 15:51:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1588362688;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=s4R8huL+DY5qznfGLFwoyRq/hVfJS/ePnuccb29e8DE=;
+        b=ewLdW4YvoFCEyVDxAQRKkqzeFeD4O60hLmtY8jtFr33cgkvKtm2Y3DqzZRI4Xq5Ut3GYK3
+        j1zeyJOG0gM5QRZkBZX/I+O+H4OH4pzjEIIUOeQinM4n65LGxJqds0C9MhCbxHGMYq1jaZ
+        Iss0kH7T+QEVANrNY6YP8gPtw3fjHUk=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-270-C0KjUPd4Ov-HXGSeXKc19A-1; Fri, 01 May 2020 15:51:16 -0400
+X-MC-Unique: C0KjUPd4Ov-HXGSeXKc19A-1
+Received: by mail-wr1-f71.google.com with SMTP id f2so6174463wrm.9
+        for <kernel-janitors@vger.kernel.org>; Fri, 01 May 2020 12:51:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=jCkpkOtlwOsj6yyByDhOCENLq0uryXJZ7j98jV5XREE=;
-        b=e//gTHNCAysOM3/9tgBwJOfLBtWCb3X1P/UmO5E4D3+8Ur+gddISzveY0i6QoM987x
-         Kg8qwuC/taZIw2Tm9LkxOsnFiq0A1CF64kajXy029imr5qeE0RRoGLFM8T+N+BSqG1eH
-         2+OEpdAmf8lk36YKCkg32YQMVJkIJJFbI5f2OJmmCY47YztUNAhDTLMUVNe6R/SmsDN7
-         AvxdC/NAvRex5XVwfVHaSkbIWx7xIsa2pECkGMDUJ9+LIM6DVnBsWreasxUTuCFupOdW
-         OzM1xwY+XlexzFTVvVRu5IcDTEf9/Q0sCaLmRSKa/5vP7kUS+T0yC2bhMcI5llP+Wai8
-         yV4w==
-X-Gm-Message-State: AGi0PuYebpTw/Rfp+Vodj1ll7Rgz+EgKALiPwapKYSbeCkc7+Ub9X6T4
-        5i8fBVsaVku6pEciAp+/XSrqKyDoj/N21dcq2Efvfig=
-X-Google-Smtp-Source: APiQypIORs+Cop9IBQicsbUSYN+TGqrD67m97odNJVFMYGwyyQGN1TOIF9907nZhf6eAobrIQN3gAawIrU+7oKHPMKQ=
-X-Received: by 2002:aa7:cb0f:: with SMTP id s15mr4723691edt.164.1588360110335;
- Fri, 01 May 2020 12:08:30 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=s4R8huL+DY5qznfGLFwoyRq/hVfJS/ePnuccb29e8DE=;
+        b=iyJeUgrfCSARBfK4fNKNVDEfuJI96jAUTGWd5GRBwVKkjAIPsjx53ZdAJMtuYY/Fti
+         vwXuxQbBgr37DwsrgHRFLrOVfEcGuEzxP8jrHtmBfeL/KTGJvVjAT3gWhV67rtCapvuw
+         d4ubOGKEZwzwhUq+Sn4ayLxZj7v+SU0M9dzxU0/NVy4HH4LWjg4M/Kotil8SWUBsNWGr
+         1DuNynupoGlfrAW9MkhCu4Lqnk+URgD5Ww9kqi/0JbXZKE/Ky14NgYhxkorRAN5Cl3H/
+         PWvy4xUEJX6pWA1H1btdyGR8JGJH2FxnUHON7fEM8ve6nFuTp8rVOLg9Z3bAPo8ZpCC9
+         g1Fw==
+X-Gm-Message-State: AGi0PuZ2Th+yUoy28jnFZtG5iPmN6GJcd+ZhTG/NDHpiFGpKcQNwWDZd
+        gVI9OrLMfLI5lMiw9SUr6869d8IOfZraTm4T6rnbtEzqGZGRsikQGR31VFDvEle5MHphsnEGH4z
+        K1Erm93R2mWyV3vjL75cwlgeyQjXh
+X-Received: by 2002:a5d:4ac9:: with SMTP id y9mr6124287wrs.182.1588362674733;
+        Fri, 01 May 2020 12:51:14 -0700 (PDT)
+X-Google-Smtp-Source: APiQypIMCIpphYfLtabnfC9Vtc0kottgVu4tSaFbbsFwtCh4oI2U+BWXjlBIgI3gifvTl8FRreaGTQ==
+X-Received: by 2002:a5d:4ac9:: with SMTP id y9mr6124263wrs.182.1588362674467;
+        Fri, 01 May 2020 12:51:14 -0700 (PDT)
+Received: from omos.redhat.com ([2a02:8308:b13f:2100:f695:3ae5:c8bf:2f57])
+        by smtp.gmail.com with ESMTPSA id h137sm1034348wme.0.2020.05.01.12.51.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 May 2020 12:51:13 -0700 (PDT)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+To:     selinux@vger.kernel.org, Paul Moore <paul@paul-moore.com>
+Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
+        kernel-janitors@vger.kernel.org,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: [PATCH] selinux: fix return value on error in policydb_read()
+Date:   Fri,  1 May 2020 21:51:11 +0200
+Message-Id: <20200501195111.3335258-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-References: <20200429073053.83660-1-weiyongjun1@huawei.com>
- <20200429130738.GQ2014@kadam> <CAFqZXNs=YTn-mnzSEssR1szRhSw7Ajdaqg=wy88O_F3gBL2rOQ@mail.gmail.com>
-In-Reply-To: <CAFqZXNs=YTn-mnzSEssR1szRhSw7Ajdaqg=wy88O_F3gBL2rOQ@mail.gmail.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Fri, 1 May 2020 15:08:18 -0400
-Message-ID: <CAHC9VhTxDkrLP4nvwsUTZDNiLPQJn0=gqTr609MCTrXQU40arw@mail.gmail.com>
-Subject: Re: [PATCH -next] selinux: fix error return code in policydb_read()
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Wei Yongjun <weiyongjun1@huawei.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Jeff Vander Stoep <jeffv@google.com>,
-        SElinux list <selinux@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Apr 29, 2020 at 9:32 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> On Wed, Apr 29, 2020 at 3:15 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> > On Wed, Apr 29, 2020 at 07:30:53AM +0000, Wei Yongjun wrote:
-> > > Fix to return negative error code -ENOMEM from the kvcalloc() error
-> > > handling case instead of 0, as done elsewhere in this function.
-> > >
-> >
-> > Please add a Fixes tag and Cc Kent.
-> >
-> > Fixes: acdf52d97f82 ("selinux: convert to kvmalloc")
-> >
-> >
-> > > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> > > ---
-> > >  security/selinux/ss/policydb.c | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
-> > > index a0b3dc152468..a51e051df2cc 100644
-> > > --- a/security/selinux/ss/policydb.c
-> > > +++ b/security/selinux/ss/policydb.c
-> > > @@ -2638,6 +2638,7 @@ int policydb_read(struct policydb *p, void *fp)
-> > >       if (rc)
-> > >               goto bad;
-> > >
-> > > +     rc = -ENOMEM;
-> > >       p->type_attr_map_array = kvcalloc(p->p_types.nprim,
-> > >                                         sizeof(*p->type_attr_map_array),
-> > >                                         GFP_KERNEL);
-> >
-> > There is another bug earlier in the function as well:
-> >
-> > security/selinux/ss/policydb.c
-> >   2537
-> >   2538          rc = next_entry(buf, fp, sizeof(u32));
-> >   2539          if (rc)
-> >   2540                  goto bad;
-> >   2541          nel = le32_to_cpu(buf[0]);
-> >   2542
-> >   2543          p->role_tr = hashtab_create(role_trans_hash, role_trans_cmp, nel);
-> >   2544          if (!p->role_tr)
-> >   2545                  goto bad;
-> >                         ^^^^^^^^
-> >
-> >   2546          for (i = 0; i < nel; i++) {
-> >   2547                  rc = -ENOMEM;
-> >
-> > This style of setting the error code seems very bug prone.
-> >
-> > The Fixes tag for this one is:
-> > Fixes: e67b2ec9f617 ("selinux: store role transitions in a hash table")
->
-> FYI, this one is also indirectly fixed by this patch, which is
-> currently pending review:
-> https://patchwork.kernel.org/patch/11514495/
+The value of rc is still zero from the last assignment when the error
+path is taken. Fix it by setting it to -ENOMEM before the
+hashtab_create() call.
 
-If we know the code is broken, let's fix it independently of a feature
-patch.  Ondrej, I believe the original patch is yours so please send
-me a new patch with just the fix, thank you.
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Fixes: e67b2ec9f617 ("selinux: store role transitions in a hash table")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+---
+ security/selinux/ss/policydb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
+index 1c0041576643..9f7ce3e037d1 100644
+--- a/security/selinux/ss/policydb.c
++++ b/security/selinux/ss/policydb.c
+@@ -2540,6 +2540,7 @@ int policydb_read(struct policydb *p, void *fp)
+ 		goto bad;
+ 	nel = le32_to_cpu(buf[0]);
+ 
++	rc = -ENOMEM;
+ 	p->role_tr = hashtab_create(role_trans_hash, role_trans_cmp, nel);
+ 	if (!p->role_tr)
+ 		goto bad;
 -- 
-paul moore
-www.paul-moore.com
+2.25.4
+

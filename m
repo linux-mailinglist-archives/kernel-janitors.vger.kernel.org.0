@@ -2,66 +2,140 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 549591C24FC
-	for <lists+kernel-janitors@lfdr.de>; Sat,  2 May 2020 14:00:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4BEB1C2531
+	for <lists+kernel-janitors@lfdr.de>; Sat,  2 May 2020 14:21:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727088AbgEBMAG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 2 May 2020 08:00:06 -0400
-Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:49053 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726654AbgEBMAF (ORCPT
+        id S1727864AbgEBMV1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 2 May 2020 08:21:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38530 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727121AbgEBMV0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 2 May 2020 08:00:05 -0400
-Received: from localhost.localdomain ([92.140.215.114])
-        by mwinf5d67 with ME
-        id Znzt220022Ug2Sc03nztS6; Sat, 02 May 2020 14:00:01 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 02 May 2020 14:00:01 +0200
-X-ME-IP: 92.140.215.114
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
-        npiggin@gmail.com, tglx@linutronix.de, maddy@linux.vnet.ibm.com,
-        cclaudio@linux.ibm.com, zhangshaokun@hisilicon.com,
-        atrajeev@linux.vnet.ibm.com, akshay.adiga@linux.vnet.ibm.com,
-        ego@linux.vnet.ibm.com
-Cc:     linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] powerpc/powernv: Fix a warning message
-Date:   Sat,  2 May 2020 13:59:49 +0200
-Message-Id: <20200502115949.139000-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Sat, 2 May 2020 08:21:26 -0400
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14B10C061A0E
+        for <kernel-janitors@vger.kernel.org>; Sat,  2 May 2020 05:21:25 -0700 (PDT)
+Received: by mail-lf1-x144.google.com with SMTP id a9so438292lfb.8
+        for <kernel-janitors@vger.kernel.org>; Sat, 02 May 2020 05:21:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Ceg32SJO0EfoqNJv2X/qLbUtrniOfXr61mP5NwTkMnU=;
+        b=VVkqCu9RDWzq6YBs/j7mOw6q8qNZldPYjfP4UuI2Y4rWUHx4Ici/alROEbx5tk1pt2
+         oIa9S2ePWl69sn0ufl+SZuQVtMeGSJNPIaDp9cqtdvFJLWkXC2NkY3nkx2vKH1JRuu9O
+         jVsrQKte+hcB1DSDCuPb5gJXNSU+KQ1/o3yMLiqIHNEcnQVfwrX6HOAR421LY+I4Cr6L
+         7863hIoMUdmSE1H7gUbE9oQTVt5n7tLHBjgZZZNqIoWlCttTRCbqKXrvSfYjrKJ2w6B4
+         Nqki6Cwxnl5HWqNl4fWMDs+FPd7Wlxw4VViQeqDA5ZR/i4Ynr0qroqlkcu6BTvA+NuN3
+         d0Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Ceg32SJO0EfoqNJv2X/qLbUtrniOfXr61mP5NwTkMnU=;
+        b=GEeOUPU7uZvDfpbZFkIOFY42OP522xd8VFFl72YQGpjrwNfxCDD//ejgb3Sz8ouyse
+         uWU3HyrjsVIkfZlqEvVFQhx4mfl5YuN5N5eLiS/cDf062xenUXSnNfwee6hXs5wUOuJP
+         zxDrAr+Os2OUge+UJ1JA6EDtcP1E1LPweS5t/atAL+E5KJorEXLYmIACWqtSCKJ83p2i
+         2Z7z8wkdWlT69u88d6VbI3ifK4S58QudHVkR10Ze9aVZx5SRci7sml9Vgj7iulNwqnyK
+         1fQT5yGKHh2aVIavPkw6E3+2zXfOVYfpn5R6SljSvhP1tcwNGPxjU6xZ0H17449oCRJW
+         dKCg==
+X-Gm-Message-State: AGi0Pubmfyjnp52wlfZFeJkvocJKJDpe4s/K/MDBKKCuLeEeJg1E1R0L
+        SI1yqvGp3yX7QvXp5t/YMTyZsQ==
+X-Google-Smtp-Source: APiQypK/eS7/y7LmA2plGuu3YKGMbgawTzyGOOoUslRJ6ZF24W0m4iEHUiqZ8X6omdaDwmTd0IR4Kw==
+X-Received: by 2002:a19:10:: with SMTP id 16mr5486216lfa.145.1588422083405;
+        Sat, 02 May 2020 05:21:23 -0700 (PDT)
+Received: from ?IPv6:2a00:1fa0:44e2:b75:5482:ef8f:6eeb:f75c? ([2a00:1fa0:44e2:b75:5482:ef8f:6eeb:f75c])
+        by smtp.gmail.com with ESMTPSA id h24sm4650568lji.99.2020.05.02.05.21.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 02 May 2020 05:21:22 -0700 (PDT)
+Subject: Re: [PATCH] net: dsa: sja1105: fix speed setting for 10 MBPS
+To:     Colin King <colin.king@canonical.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        linux-kernel@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, netdev@vger.kernel.org
+References: <20200501134310.289561-1-colin.king@canonical.com>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <ccfa3bc1-cdbd-f990-321f-55555531d56d@cogentembedded.com>
+Date:   Sat, 2 May 2020 15:21:20 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200501134310.289561-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix a cut'n'paste error in a warning message. This should be
-'cpu-idle-state-residency-ns' to match the property searched in the
-previous 'of_property_read_u32_array()'
+Hello!
 
-Fixes: 9c7b185ab2fe ("powernv/cpuidle: Parse dt idle properties into global structure")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- arch/powerpc/platforms/powernv/idle.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 01.05.2020 16:43, Colin King wrote:
 
-diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-index 78599bca66c2..2dd467383a88 100644
---- a/arch/powerpc/platforms/powernv/idle.c
-+++ b/arch/powerpc/platforms/powernv/idle.c
-@@ -1270,7 +1270,7 @@ static int pnv_parse_cpuidle_dt(void)
- 	/* Read residencies */
- 	if (of_property_read_u32_array(np, "ibm,cpu-idle-state-residency-ns",
- 				       temp_u32, nr_idle_states)) {
--		pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-latencies-ns in DT\n");
-+		pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-residency-ns in DT\n");
- 		rc = -EINVAL;
- 		goto out;
- 	}
--- 
-2.25.1
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The current logic for speed checking will never set the speed to 10 MBPS
+> because bmcr & BMCR_SPEED10 is always 0 since BMCR_SPEED10 is 0. Also
+> the erroneous setting where BMCR_SPEED1000 and BMCR_SPEED100 are both
+> set causes the speed to be 1000 MBS.  Fix this by masking bps and checking
+> for just the expected settings of BMCR_SPEED1000, BMCR_SPEED100 and
+> BMCR_SPEED10 and defaulting to the unknown speed otherwise.
+> 
+> Addresses-Coverity: ("Logically dead code")
+> Fixes: ffe10e679cec ("net: dsa: sja1105: Add support for the SGMII port")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>   drivers/net/dsa/sja1105/sja1105_main.c | 11 +++++++----
+>   1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+> index 472f4eb20c49..59a9038cdc4e 100644
+> --- a/drivers/net/dsa/sja1105/sja1105_main.c
+> +++ b/drivers/net/dsa/sja1105/sja1105_main.c
+> @@ -1600,6 +1600,7 @@ static const char * const sja1105_reset_reasons[] = {
+>   int sja1105_static_config_reload(struct sja1105_private *priv,
+>   				 enum sja1105_reset_reason reason)
+>   {
+> +	const int mask = (BMCR_SPEED1000 | BMCR_SPEED100 | BMCR_SPEED10);
 
+    Why not declare it in the block it's used in? Also, () not needed here.
+
+>   	struct ptp_system_timestamp ptp_sts_before;
+>   	struct ptp_system_timestamp ptp_sts_after;
+>   	struct sja1105_mac_config_entry *mac;
+> @@ -1684,14 +1685,16 @@ int sja1105_static_config_reload(struct sja1105_private *priv,
+>   		sja1105_sgmii_pcs_config(priv, an_enabled, false);
+>   
+>   		if (!an_enabled) {
+> -			int speed = SPEED_UNKNOWN;
+> +			int speed;
+
+    Why not the following?
+
+		int mask = bmcr & (BMCR_SPEED1000 | BMCR_SPEED100 |
+			   BMCR_SPEED10);			
+
+>   
+> -			if (bmcr & BMCR_SPEED1000)
+> +			if ((bmcr & mask) == BMCR_SPEED1000)
+>   				speed = SPEED_1000;
+> -			else if (bmcr & BMCR_SPEED100)
+> +			else if ((bmcr & mask) == BMCR_SPEED100)
+>   				speed = SPEED_100;
+> -			else if (bmcr & BMCR_SPEED10)
+> +			else if ((bmcr & mask) == BMCR_SPEED10)
+>   				speed = SPEED_10;
+> +			else
+> +				speed = SPEED_UNKNOWN;
+>   
+>   			sja1105_sgmii_pcs_force_speed(priv, speed);
+>   		}
+
+MBR, Sergei

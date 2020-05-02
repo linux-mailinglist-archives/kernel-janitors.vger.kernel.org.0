@@ -2,140 +2,132 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4BEB1C2531
-	for <lists+kernel-janitors@lfdr.de>; Sat,  2 May 2020 14:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83A2A1C2710
+	for <lists+kernel-janitors@lfdr.de>; Sat,  2 May 2020 18:48:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727864AbgEBMV1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 2 May 2020 08:21:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38530 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727121AbgEBMV0 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 2 May 2020 08:21:26 -0400
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14B10C061A0E
-        for <kernel-janitors@vger.kernel.org>; Sat,  2 May 2020 05:21:25 -0700 (PDT)
-Received: by mail-lf1-x144.google.com with SMTP id a9so438292lfb.8
-        for <kernel-janitors@vger.kernel.org>; Sat, 02 May 2020 05:21:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Ceg32SJO0EfoqNJv2X/qLbUtrniOfXr61mP5NwTkMnU=;
-        b=VVkqCu9RDWzq6YBs/j7mOw6q8qNZldPYjfP4UuI2Y4rWUHx4Ici/alROEbx5tk1pt2
-         oIa9S2ePWl69sn0ufl+SZuQVtMeGSJNPIaDp9cqtdvFJLWkXC2NkY3nkx2vKH1JRuu9O
-         jVsrQKte+hcB1DSDCuPb5gJXNSU+KQ1/o3yMLiqIHNEcnQVfwrX6HOAR421LY+I4Cr6L
-         7863hIoMUdmSE1H7gUbE9oQTVt5n7tLHBjgZZZNqIoWlCttTRCbqKXrvSfYjrKJ2w6B4
-         Nqki6Cwxnl5HWqNl4fWMDs+FPd7Wlxw4VViQeqDA5ZR/i4Ynr0qroqlkcu6BTvA+NuN3
-         d0Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Ceg32SJO0EfoqNJv2X/qLbUtrniOfXr61mP5NwTkMnU=;
-        b=GEeOUPU7uZvDfpbZFkIOFY42OP522xd8VFFl72YQGpjrwNfxCDD//ejgb3Sz8ouyse
-         uWU3HyrjsVIkfZlqEvVFQhx4mfl5YuN5N5eLiS/cDf062xenUXSnNfwee6hXs5wUOuJP
-         zxDrAr+Os2OUge+UJ1JA6EDtcP1E1LPweS5t/atAL+E5KJorEXLYmIACWqtSCKJ83p2i
-         2Z7z8wkdWlT69u88d6VbI3ifK4S58QudHVkR10Ze9aVZx5SRci7sml9Vgj7iulNwqnyK
-         1fQT5yGKHh2aVIavPkw6E3+2zXfOVYfpn5R6SljSvhP1tcwNGPxjU6xZ0H17449oCRJW
-         dKCg==
-X-Gm-Message-State: AGi0Pubmfyjnp52wlfZFeJkvocJKJDpe4s/K/MDBKKCuLeEeJg1E1R0L
-        SI1yqvGp3yX7QvXp5t/YMTyZsQ==
-X-Google-Smtp-Source: APiQypK/eS7/y7LmA2plGuu3YKGMbgawTzyGOOoUslRJ6ZF24W0m4iEHUiqZ8X6omdaDwmTd0IR4Kw==
-X-Received: by 2002:a19:10:: with SMTP id 16mr5486216lfa.145.1588422083405;
-        Sat, 02 May 2020 05:21:23 -0700 (PDT)
-Received: from ?IPv6:2a00:1fa0:44e2:b75:5482:ef8f:6eeb:f75c? ([2a00:1fa0:44e2:b75:5482:ef8f:6eeb:f75c])
-        by smtp.gmail.com with ESMTPSA id h24sm4650568lji.99.2020.05.02.05.21.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 02 May 2020 05:21:22 -0700 (PDT)
-Subject: Re: [PATCH] net: dsa: sja1105: fix speed setting for 10 MBPS
-To:     Colin King <colin.king@canonical.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        linux-kernel@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, netdev@vger.kernel.org
-References: <20200501134310.289561-1-colin.king@canonical.com>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <ccfa3bc1-cdbd-f990-321f-55555531d56d@cogentembedded.com>
-Date:   Sat, 2 May 2020 15:21:20 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:68.0) Gecko/20100101
+        id S1728361AbgEBQsY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 2 May 2020 12:48:24 -0400
+Received: from mout.web.de ([212.227.15.14]:43397 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728312AbgEBQsX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 2 May 2020 12:48:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1588438097;
+        bh=ot8MtR3g0Z4VK5ZaLgJ9qEWbi/FOrBq+R39dL1Ss9j4=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=nOFABXuSEyJfQ+HzeMlkSDSfMFh4dxpNxJx3/66SkKUGGsT+1M95NbI3Mmh5oIBJp
+         IWIlZyMr5pEQiy9NlofxuuN1LjkTVPhWqe1sCdAGBpcWw1r9K+lCL6s3S0xH6WVBOK
+         Wbh9q2JUKhSr0EN9QsEg5wPbpj8iFeEQA7rU233o=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([2.244.93.244]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MnX5F-1ilNQa27RF-00jcf8; Sat, 02
+ May 2020 18:48:17 +0200
+To:     linux-clk@vger.kernel.org,
+        Michael Turquette <mturquette@baylibre.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+From:   Markus Elfring <Markus.Elfring@web.de>
+Subject: clk: keystone: Clarification for a return value check in
+ _of_pll_clk_init()
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <f1a2a717-f89b-d4c4-02aa-dd106eaed0a9@web.de>
+Date:   Sat, 2 May 2020 18:48:16 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20200501134310.289561-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:1bLnWoWMwoNjavQBlX0SyTNle5P9ix8u7LcAPnhwclEW9W3V7Up
+ Qm5sHKhl4rN/xCflW81nOpbargyg5lexzMWueSmd7ztk1kbL7tA+zcTt4q5GI1kE5CfOSU0
+ M9xPqEIB9Yrtg0h5BATrF2FzyL7CsS25kycB3LUxth8TVyNrqnOYo9CUgozYLIi/QCeLXCQ
+ IvUmp2xRRnn2hKsYBSGXQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:C0x3Fw4bwP0=:MVSPYv4LeQmiBhmCBfapZh
+ TwkLGXCvAwFqbndVQUs0Exqn6Uo903lAf2YkSYicEMw1LGBEbiLAD76geeiIpkx37sL735+MY
+ 5cBnqQeqLhHVOGAqCRN0dScn/9+Y54PVTbgHWNDh+ZkV33k7qZp8z/WrWCVJTYuHY6vPjOjw0
+ XNhnOArg67vwL8L0YhyYrSIqT65TUvnj8k3vTEPIOhW5Q/TDUnbc3eAersGfRIFxTEqyEdre2
+ eelHpp3zEigHG7j1ZxR78uHtTUOvKY9lLdq0nF9ATyQXJ+3g3bv0uavuE9NgRlOpIdX6WaWiE
+ Z6mZukblhmXq/mRAI2eoIGKKYIbGW1icnGwy7Hf9m/grw0IALghS6ZyZBsaCb2PjF84PMjcrL
+ mdIdTloB6iu66f0bxZhQYgqBGwJNt4/n8h5WAnYAxBJOWWcwmMS3x2f+MvsCrCbNDGv6ErQzH
+ DDHDPjrXpswE9z60C6KwYYu5yb7339WuKrN8hR+BvzylgHov+WHXvaGJqt9Vq+WZ8TT0nOaXN
+ IISyyP5aDF/r4PO33zkUStyoib/3JTzUCcT3tikx54OhgBl66bqMktPYsbWf4AYPKXbiX+hW3
+ 2hD7+mc83r4Or4CijehCYHuI3AgjwlsgSZqWo1BYavAd+3aFZp7HW+JtKCwNxh6iGOU1Shm3x
+ 68FgXcnb3u3FPpf5oM07hCxx+9L0PNPZIK/KHym/phJMqsTLjx6lL7Aeew54aqg28volz3kXf
+ UALx/3cq0ngPtAC0a4ebpzAX3VB0BgxibTi1CQDC3CPIIW+fTkLpq4ZX6WesGGGsT7L0Cz1iN
+ MwCeCBMXO6CH/OfkcGetIN1dZHslqmg03AHBFmbyjR8YRKQC4mDmOpT3qxPUpWalwsAjhQJoo
+ U8FMjBReTh3qbmPJi8/KAinQPS0SNgzBKLtz2LbQcXPaa6D3ERquBgqsUR1xQMBKqquGQ9l/Z
+ T/JYJXZ71QBGBnrRnpvCmIp/ztL6QXRn9D0n/tbCmvVAEcfY1cwpiW9MCRNe4C7KWu0eYpRbb
+ ctBUD89c/TunyL9DLUU8Q9vC4ujBFQppbl/PZSZ/eaC27K67OakvAh/BxjhSV4RpQVSNxl20u
+ zjjb9PGIdpHTvSeug6jyWdEiUFF+FpjnqvWjK4M488Zgtjv+ZIYM6oFAlqU+iMrlDjupN0lxk
+ d7acrlcZ0ylKe2I8VFphiakkD8NheAp7tjrliYXspcXofm6rxMrNh9RGPEmvbYkenRgagUxme
+ ZI900XuSEQ8flHEVn
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello!
+Hello,
 
-On 01.05.2020 16:43, Colin King wrote:
+I have tried another small script out for the semantic patch language.
+This source code analysis approach points out that the function =E2=80=9Cc=
+lk_register_pll=E2=80=9D
+is called by the function =E2=80=9C_of_pll_clk_init=E2=80=9D.
+https://elixir.bootlin.com/linux/v5.7-rc3/source/drivers/clk/keystone/pll.=
+c#L153
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
+ivers/clk/keystone/pll.c?id=3D690e2aba7beb1ef06352803bea41a68a3c695015#n15=
+3
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The current logic for speed checking will never set the speed to 10 MBPS
-> because bmcr & BMCR_SPEED10 is always 0 since BMCR_SPEED10 is 0. Also
-> the erroneous setting where BMCR_SPEED1000 and BMCR_SPEED100 are both
-> set causes the speed to be 1000 MBS.  Fix this by masking bps and checking
-> for just the expected settings of BMCR_SPEED1000, BMCR_SPEED100 and
-> BMCR_SPEED10 and defaulting to the unknown speed otherwise.
-> 
-> Addresses-Coverity: ("Logically dead code")
-> Fixes: ffe10e679cec ("net: dsa: sja1105: Add support for the SGMII port")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->   drivers/net/dsa/sja1105/sja1105_main.c | 11 +++++++----
->   1 file changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-> index 472f4eb20c49..59a9038cdc4e 100644
-> --- a/drivers/net/dsa/sja1105/sja1105_main.c
-> +++ b/drivers/net/dsa/sja1105/sja1105_main.c
-> @@ -1600,6 +1600,7 @@ static const char * const sja1105_reset_reasons[] = {
->   int sja1105_static_config_reload(struct sja1105_private *priv,
->   				 enum sja1105_reset_reason reason)
->   {
-> +	const int mask = (BMCR_SPEED1000 | BMCR_SPEED100 | BMCR_SPEED10);
+A null pointer check is performed at this place.
+The function =E2=80=9Cclk_register_pll=E2=80=9D (from the same source file=
+) can eventually
+return the pointer =E2=80=9CERR_PTR(-ENOMEM)=E2=80=9D.
+Is there a need to take this special case also into account?
 
-    Why not declare it in the block it's used in? Also, () not needed here.
-
->   	struct ptp_system_timestamp ptp_sts_before;
->   	struct ptp_system_timestamp ptp_sts_after;
->   	struct sja1105_mac_config_entry *mac;
-> @@ -1684,14 +1685,16 @@ int sja1105_static_config_reload(struct sja1105_private *priv,
->   		sja1105_sgmii_pcs_config(priv, an_enabled, false);
->   
->   		if (!an_enabled) {
-> -			int speed = SPEED_UNKNOWN;
-> +			int speed;
-
-    Why not the following?
-
-		int mask = bmcr & (BMCR_SPEED1000 | BMCR_SPEED100 |
-			   BMCR_SPEED10);			
-
->   
-> -			if (bmcr & BMCR_SPEED1000)
-> +			if ((bmcr & mask) == BMCR_SPEED1000)
->   				speed = SPEED_1000;
-> -			else if (bmcr & BMCR_SPEED100)
-> +			else if ((bmcr & mask) == BMCR_SPEED100)
->   				speed = SPEED_100;
-> -			else if (bmcr & BMCR_SPEED10)
-> +			else if ((bmcr & mask) == BMCR_SPEED10)
->   				speed = SPEED_10;
-> +			else
-> +				speed = SPEED_UNKNOWN;
->   
->   			sja1105_sgmii_pcs_force_speed(priv, speed);
->   		}
-
-MBR, Sergei
+Regards,
+Markus

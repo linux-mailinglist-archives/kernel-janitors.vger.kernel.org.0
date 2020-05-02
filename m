@@ -2,68 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D10C1C2092
-	for <lists+kernel-janitors@lfdr.de>; Sat,  2 May 2020 00:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 959CF1C2430
+	for <lists+kernel-janitors@lfdr.de>; Sat,  2 May 2020 10:50:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726437AbgEAW2T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 1 May 2020 18:28:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50694 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726333AbgEAW2T (ORCPT
+        id S1727095AbgEBItn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 2 May 2020 04:49:43 -0400
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:22291 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725785AbgEBItm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 1 May 2020 18:28:19 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 220C5C061A0C;
-        Fri,  1 May 2020 15:28:19 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 86F3E14F4BE36;
-        Fri,  1 May 2020 15:28:18 -0700 (PDT)
-Date:   Fri, 01 May 2020 15:28:17 -0700 (PDT)
-Message-Id: <20200501.152817.688071349221528108.davem@davemloft.net>
-To:     weiyongjun1@huawei.com
-Cc:     grygorii.strashko@ti.com, david@lechnology.com,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next v2] drivers: net: davinci_mdio: fix potential
- NULL dereference in davinci_mdio_probe()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200429025220.166415-1-weiyongjun1@huawei.com>
-References: <20200427094032.181184-1-weiyongjun1@huawei.com>
-        <20200429025220.166415-1-weiyongjun1@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 01 May 2020 15:28:18 -0700 (PDT)
+        Sat, 2 May 2020 04:49:42 -0400
+Received: from [192.168.1.41] ([92.140.215.114])
+        by mwinf5d26 with ME
+        id ZkpB2200V2Ug2Sc03kpK1y; Sat, 02 May 2020 10:49:36 +0200
+X-ME-Helo: [192.168.1.41]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 02 May 2020 10:49:36 +0200
+X-ME-IP: 92.140.215.114
+Subject: Re: [PATCH 4/4 v2] firmware: stratix10-svc: Slightly simplify code
+To:     Richard Gong <richard.gong@linux.intel.com>,
+        gregkh@linuxfoundation.org, atull@kernel.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <cover.1588142343.git.christophe.jaillet@wanadoo.fr>
+ <8c505c686438c54da61ad4fe15e1eae722011153.1588142343.git.christophe.jaillet@wanadoo.fr>
+ <1f8ae50d-6830-7fbb-e999-3e8110fe7cd6@linux.intel.com>
+ <c7ac6b7c-a1d5-e001-964b-0881707c41b1@wanadoo.fr>
+ <2a1de0d5-444a-2680-10b5-8578c2670d54@linux.intel.com>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <dab419d3-5942-fa89-a352-e8917ced0744@wanadoo.fr>
+Date:   Sat, 2 May 2020 10:49:05 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <2a1de0d5-444a-2680-10b5-8578c2670d54@linux.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
-Date: Wed, 29 Apr 2020 02:52:20 +0000
+Le 01/05/2020 à 18:55, Richard Gong a écrit :
+> Hi,
+>
+> On 5/1/20 10:48 AM, Christophe JAILLET wrote:
+>> Le 01/05/2020 à 17:40, Richard Gong a écrit :
+>>> Hi,
+>>>
+>>> On 4/29/20 1:52 AM, Christophe JAILLET wrote:
+>>>> Replace 'devm_kmalloc_array(... | __GFP_ZERO)' with the equivalent and
+>>>> shorter 'devm_kcalloc(...)'.
+>>>>
+>>> It doesn't make much sense.
+>>> Actually devm_kcalloc returns devm_kmalloc_array(.., flag | 
+>>> __GFP_ZERO).
+>>>
+>> The only goal is to have a sightly less verbose code.
+>> This saves one line of code and there is no need to wonder why we 
+>> explicitly pass __GFP_ZERO to kmalloc_array.
+>>
+>> Mostly a matter of taste.
+> I prefer this part remain unchanged.
+>
 
-> platform_get_resource() may fail and return NULL, so we should
-> better check it's return value to avoid a NULL pointer dereference
-> since devm_ioremap() does not check input parameters for null.
-> 
-> This is detected by Coccinelle semantic patch.
-> 
-> @@
-> expression pdev, res, n, t, e, e1, e2;
-> @@
-> 
-> res = \(platform_get_resource\|platform_get_resource_byname\)(pdev, t, n);
-> + if (!res)
-> +   return -EINVAL;
-> ... when != res == NULL
-> e = devm_ioremap(e1, res->start, e2);
-> 
-> Fixes: 03f66f067560 ("net: ethernet: ti: davinci_mdio: use devm_ioremap()")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> Reviewed-by: Grygorii Strashko <grygorii.strashko@ti.com>
+The easiest would be just to ignore this patch entirely but if you need 
+a v3 for the series, could you tell me if you have any comments on the 3 
+other patches?
 
-Applied.
+CJ
+
+
+> Regards,
+> Richard
+>
+>>
+>> 'devm_kcalloc' is inlined, so the binary should be exactly the same. >
+>> CJ
+>>
+>>>> 'ctrl->genpool' can not be NULL, so axe a useless test in the remove
+>>>> function.
+>>>>
+>>>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>>>> ---
+>>>>   drivers/firmware/stratix10-svc.c | 6 ++----
+>>>>   1 file changed, 2 insertions(+), 4 deletions(-)
+>>>>
+>>>> diff --git a/drivers/firmware/stratix10-svc.c 
+>>>> b/drivers/firmware/stratix10-svc.c
+>>>> index 739004398877..c228337cb0a1 100644
+>>>> --- a/drivers/firmware/stratix10-svc.c
+>>>> +++ b/drivers/firmware/stratix10-svc.c
+>>>> @@ -1002,8 +1002,7 @@ static int stratix10_svc_drv_probe(struct 
+>>>> platform_device *pdev)
+>>>>       if (!controller)
+>>>>           return -ENOMEM;
+>>>>   -    chans = devm_kmalloc_array(dev, SVC_NUM_CHANNEL,
+>>>> -                   sizeof(*chans), GFP_KERNEL | __GFP_ZERO);
+>>>> +    chans = devm_kcalloc(dev, SVC_NUM_CHANNEL, sizeof(*chans), 
+>>>> GFP_KERNEL);
+>>>>       if (!chans)
+>>>>           return -ENOMEM;
+>>>>   @@ -1086,8 +1085,7 @@ static int stratix10_svc_drv_remove(struct 
+>>>> platform_device *pdev)
+>>>>           kthread_stop(ctrl->task);
+>>>>           ctrl->task = NULL;
+>>>>       }
+>>>> -    if (ctrl->genpool)
+>>>> -        gen_pool_destroy(ctrl->genpool);
+>>>> +    gen_pool_destroy(ctrl->genpool);
+>>>>       list_del(&ctrl->node);
+>>>>         return 0;
+>>>>
+>>>
+>>> Regards,
+>>> Richard
+>>>
+>>
+>
+

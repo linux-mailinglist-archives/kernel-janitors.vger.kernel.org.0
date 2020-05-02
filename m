@@ -2,132 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83A2A1C2710
-	for <lists+kernel-janitors@lfdr.de>; Sat,  2 May 2020 18:48:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BCF31C2781
+	for <lists+kernel-janitors@lfdr.de>; Sat,  2 May 2020 20:17:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728361AbgEBQsY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 2 May 2020 12:48:24 -0400
-Received: from mout.web.de ([212.227.15.14]:43397 "EHLO mout.web.de"
+        id S1728252AbgEBSRa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 2 May 2020 14:17:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51386 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728312AbgEBQsX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 2 May 2020 12:48:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588438097;
-        bh=ot8MtR3g0Z4VK5ZaLgJ9qEWbi/FOrBq+R39dL1Ss9j4=;
-        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=nOFABXuSEyJfQ+HzeMlkSDSfMFh4dxpNxJx3/66SkKUGGsT+1M95NbI3Mmh5oIBJp
-         IWIlZyMr5pEQiy9NlofxuuN1LjkTVPhWqe1sCdAGBpcWw1r9K+lCL6s3S0xH6WVBOK
-         Wbh9q2JUKhSr0EN9QsEg5wPbpj8iFeEQA7rU233o=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.93.244]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MnX5F-1ilNQa27RF-00jcf8; Sat, 02
- May 2020 18:48:17 +0200
-To:     linux-clk@vger.kernel.org,
-        Michael Turquette <mturquette@baylibre.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
+        id S1728160AbgEBSRa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 2 May 2020 14:17:30 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0DD6D206F0;
+        Sat,  2 May 2020 18:17:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588443449;
+        bh=tC+oiAKeTHrk/rRn4g4syFenvDMA51mQIsE0Awbapec=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=sxRIYewMyfZrqEaIV6jrfcvdj4l1ezcFSrgwiqJYt9zEqAV+tM33YEVvC6hcj9Z1n
+         T0hkhuFYBFfeZV9cECVXU0qEmSICpMmRscJT1Rpg1ZxBnR/5rLu8ynT6cAy+xQHM4J
+         7Yv5xXyiM0w6mXHIORE8MHrfA0DwjC/2i0V54pcE=
+Date:   Sat, 2 May 2020 19:17:25 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        maitysanchayan@gmail.com, robh@kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: clk: keystone: Clarification for a return value check in
- _of_pll_clk_init()
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <f1a2a717-f89b-d4c4-02aa-dd106eaed0a9@web.de>
-Date:   Sat, 2 May 2020 18:48:16 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+Subject: Re: [PATCH] iio: dac: vf610: Fix an error handling path in
+ 'vf610_dac_probe()'
+Message-ID: <20200502191725.10eabc8a@archlinux>
+In-Reply-To: <20200426194403.41913-1-christophe.jaillet@wanadoo.fr>
+References: <20200426194403.41913-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:1bLnWoWMwoNjavQBlX0SyTNle5P9ix8u7LcAPnhwclEW9W3V7Up
- Qm5sHKhl4rN/xCflW81nOpbargyg5lexzMWueSmd7ztk1kbL7tA+zcTt4q5GI1kE5CfOSU0
- M9xPqEIB9Yrtg0h5BATrF2FzyL7CsS25kycB3LUxth8TVyNrqnOYo9CUgozYLIi/QCeLXCQ
- IvUmp2xRRnn2hKsYBSGXQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:C0x3Fw4bwP0=:MVSPYv4LeQmiBhmCBfapZh
- TwkLGXCvAwFqbndVQUs0Exqn6Uo903lAf2YkSYicEMw1LGBEbiLAD76geeiIpkx37sL735+MY
- 5cBnqQeqLhHVOGAqCRN0dScn/9+Y54PVTbgHWNDh+ZkV33k7qZp8z/WrWCVJTYuHY6vPjOjw0
- XNhnOArg67vwL8L0YhyYrSIqT65TUvnj8k3vTEPIOhW5Q/TDUnbc3eAersGfRIFxTEqyEdre2
- eelHpp3zEigHG7j1ZxR78uHtTUOvKY9lLdq0nF9ATyQXJ+3g3bv0uavuE9NgRlOpIdX6WaWiE
- Z6mZukblhmXq/mRAI2eoIGKKYIbGW1icnGwy7Hf9m/grw0IALghS6ZyZBsaCb2PjF84PMjcrL
- mdIdTloB6iu66f0bxZhQYgqBGwJNt4/n8h5WAnYAxBJOWWcwmMS3x2f+MvsCrCbNDGv6ErQzH
- DDHDPjrXpswE9z60C6KwYYu5yb7339WuKrN8hR+BvzylgHov+WHXvaGJqt9Vq+WZ8TT0nOaXN
- IISyyP5aDF/r4PO33zkUStyoib/3JTzUCcT3tikx54OhgBl66bqMktPYsbWf4AYPKXbiX+hW3
- 2hD7+mc83r4Or4CijehCYHuI3AgjwlsgSZqWo1BYavAd+3aFZp7HW+JtKCwNxh6iGOU1Shm3x
- 68FgXcnb3u3FPpf5oM07hCxx+9L0PNPZIK/KHym/phJMqsTLjx6lL7Aeew54aqg28volz3kXf
- UALx/3cq0ngPtAC0a4ebpzAX3VB0BgxibTi1CQDC3CPIIW+fTkLpq4ZX6WesGGGsT7L0Cz1iN
- MwCeCBMXO6CH/OfkcGetIN1dZHslqmg03AHBFmbyjR8YRKQC4mDmOpT3qxPUpWalwsAjhQJoo
- U8FMjBReTh3qbmPJi8/KAinQPS0SNgzBKLtz2LbQcXPaa6D3ERquBgqsUR1xQMBKqquGQ9l/Z
- T/JYJXZ71QBGBnrRnpvCmIp/ztL6QXRn9D0n/tbCmvVAEcfY1cwpiW9MCRNe4C7KWu0eYpRbb
- ctBUD89c/TunyL9DLUU8Q9vC4ujBFQppbl/PZSZ/eaC27K67OakvAh/BxjhSV4RpQVSNxl20u
- zjjb9PGIdpHTvSeug6jyWdEiUFF+FpjnqvWjK4M488Zgtjv+ZIYM6oFAlqU+iMrlDjupN0lxk
- d7acrlcZ0ylKe2I8VFphiakkD8NheAp7tjrliYXspcXofm6rxMrNh9RGPEmvbYkenRgagUxme
- ZI900XuSEQ8flHEVn
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
+On Sun, 26 Apr 2020 21:44:03 +0200
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-I have tried another small script out for the semantic patch language.
-This source code analysis approach points out that the function =E2=80=9Cc=
-lk_register_pll=E2=80=9D
-is called by the function =E2=80=9C_of_pll_clk_init=E2=80=9D.
-https://elixir.bootlin.com/linux/v5.7-rc3/source/drivers/clk/keystone/pll.=
-c#L153
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
-ivers/clk/keystone/pll.c?id=3D690e2aba7beb1ef06352803bea41a68a3c695015#n15=
-3
+> A call to 'vf610_dac_exit()' is missing in an error handling path.
+> 
+> Fixes: 1b983bf42fad ("iio: dac: vf610_dac: Add IIO DAC driver for Vybrid SoC")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-A null pointer check is performed at this place.
-The function =E2=80=9Cclk_register_pll=E2=80=9D (from the same source file=
-) can eventually
-return the pointer =E2=80=9CERR_PTR(-ENOMEM)=E2=80=9D.
-Is there a need to take this special case also into account?
+I'll count this one as 'obviously' correct, though happy to have input
+from sanchayan if possible.
 
-Regards,
-Markus
+Applied to the fixes-togreg branch of iio.git and marked for stable.
+
+Thanks,
+
+Jonathan
+
+> ---
+> Un-tested.
+> Proposal based on function names and functions called in the remove function
+> ---
+>  drivers/iio/dac/vf610_dac.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/iio/dac/vf610_dac.c b/drivers/iio/dac/vf610_dac.c
+> index 71f8a5c471c4..7f1e9317c3f3 100644
+> --- a/drivers/iio/dac/vf610_dac.c
+> +++ b/drivers/iio/dac/vf610_dac.c
+> @@ -223,6 +223,7 @@ static int vf610_dac_probe(struct platform_device *pdev)
+>  	return 0;
+>  
+>  error_iio_device_register:
+> +	vf610_dac_exit(info);
+>  	clk_disable_unprepare(info->clk);
+>  
+>  	return ret;
+

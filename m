@@ -2,126 +2,340 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26B291C2C10
-	for <lists+kernel-janitors@lfdr.de>; Sun,  3 May 2020 14:06:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8ED21C2C66
+	for <lists+kernel-janitors@lfdr.de>; Sun,  3 May 2020 14:43:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728500AbgECMF4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 3 May 2020 08:05:56 -0400
-Received: from mout.web.de ([212.227.15.14]:41151 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728399AbgECMF4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 3 May 2020 08:05:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588507542;
-        bh=XRnkz74ueXi7rmpVNxIQfdOIFfpQAIN5P21N1C+5fgI=;
-        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=loiacN+rdQUubJGj8RvgXdnfnwwHaY3D4bTPZD/d1DSeUVYmTUg6Dkv/CAKQ3p4OP
-         kjEORJfx9X+6JPTrgx6iBEafTtnTwlHXMPx51oAsBJEe1olvd7S7B5N5iAMoKH91H5
-         o9B2ogPjgO26SC0rO0XZpgeX93v7AbmNAMdRtHhw=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.26.31]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MsJP4-1jAnsa2k8o-00tgkS; Sun, 03
- May 2020 14:05:42 +0200
-To:     Qiushi Wu <wu000273@umn.edu>, linux-rtc@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Kangjie Lu <kjlu@umn.edu>
-Subject: Re: [PATCH] rtc: mc13xxx: fix a double-unlock issue
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <b9c82115-c70a-2381-f920-385846eb2a45@web.de>
-Date:   Sun, 3 May 2020 14:05:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1728737AbgECMlp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 3 May 2020 08:41:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38474 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728726AbgECMll (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 3 May 2020 08:41:41 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73ED3C061A0C;
+        Sun,  3 May 2020 05:41:41 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id a5so2460270pjh.2;
+        Sun, 03 May 2020 05:41:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:mime-version
+         :content-disposition:content-transfer-encoding:user-agent;
+        bh=sNWSQ2e3r65fi7p5W91A8INqU44yfXT1VyZpZnHk3PE=;
+        b=fPomszDW1YQ8WpuzNi2j+327BhK882U+wiWEjzhDb/iUjNzGmhZ5haSzOJJwW6pVOe
+         N7PSWpKoPkT7bgmO1yb27ip0+M5T3puGEBy8Y8VciAePEyyEnrxkiZo6fiIG67fz+2ol
+         c988fHeM4JreZIMv3iv0Bz0mqTuP1kn8o32K7JVQky7up6oRW5gyeaSZOUirxZwg6eBV
+         uou9HwwwdlrS+tN8zyamoEHVbIhYiqgN2dHwmeYFXrbQMaTbbugJSzjtuq7ZavTCC3ro
+         kIFej+/8mZfkj7ARTV06+Khbz/a+sma3dYHQaC8Bkuta4+jqv4nZFLiRSOBKRgMcCr7s
+         yB/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:mime-version:content-disposition
+         :content-transfer-encoding:user-agent;
+        bh=sNWSQ2e3r65fi7p5W91A8INqU44yfXT1VyZpZnHk3PE=;
+        b=C/jNQRT4AiyZCcZantL6mu3saXLUwofxZEYFIae3vi7vEQybaPBcbShOVispIFlMQO
+         Ab1RtWffO0g589eNuH0a8uk47hG4/wnTyGZqjEnU782p1s1lLI3UH6lCsqaVFrNzLDU9
+         YT/WiCB2LdgP5c+T7F1+sUgrz9jVsEjRTMarFrGeFQQ8Od9KAUWr9K5PkpmhCHscLTJc
+         wD7DWh4nzG14VHh1I/xGACKsv55sCcpdDKJ/m9b05gHxnAs5K9nCpttmhQTI8qcKvUuR
+         xmwrVItM+uoxSVPBQH040ZY00FBXvvz38YxzzDDHOuOz+z3IoBwS6vIzB2slvj9/ger3
+         lDqw==
+X-Gm-Message-State: AGi0PuaXyxfN4+EdnUfKM3c8cZAKdvWg7/sFJ9jxBmoi2EIugtaK3CuK
+        vEgNo/qY4bhv2wkrZs03jOg=
+X-Google-Smtp-Source: APiQypLjATz9wkmaDQktTALbjScSlhruKcRRHIFI94E+/fZE10QzK1lGQRV4lENpBGFKw6EIzM0fUA==
+X-Received: by 2002:a17:90a:c702:: with SMTP id o2mr11221813pjt.196.1588509700533;
+        Sun, 03 May 2020 05:41:40 -0700 (PDT)
+Received: from udknight.localhost ([59.57.158.27])
+        by smtp.gmail.com with ESMTPSA id d74sm6512030pfd.70.2020.05.03.05.41.39
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 03 May 2020 05:41:39 -0700 (PDT)
+Received: from udknight.localhost (localhost [127.0.0.1])
+        by udknight.localhost (8.14.9/8.14.4) with ESMTP id 043CTdK4011004;
+        Sun, 3 May 2020 20:29:39 +0800
+Received: (from root@localhost)
+        by udknight.localhost (8.14.9/8.14.9/Submit) id 043CTdmC011003;
+        Sun, 3 May 2020 20:29:39 +0800
+Date:   Sun, 3 May 2020 20:29:38 +0800
+From:   Wang YanQing <udknight@gmail.com>
+To:     joe@perches.com
+Cc:     Andy Whitcroft <apw@canonical.com>, linux-kernel@vger.kernel.org,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Matteo Croce <mcroce@redhat.com>, Markus.Elfring@web.de,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH v5] checkpatch: add support to check 'Fixes:' tag format
+Message-ID: <20200503122938.GC10332@udknight>
+Mail-Followup-To: Wang YanQing <udknight@gmail.com>, joe@perches.com,
+        Andy Whitcroft <apw@canonical.com>, linux-kernel@vger.kernel.org,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Matteo Croce <mcroce@redhat.com>, Markus.Elfring@web.de,
+        kernel-janitors@vger.kernel.org
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:r7ti0yaqPjZEg0G3BPTArXLw16yJ1eN2qi3RD8BlbOKZPEqi+1N
- Lskx+oD4qtJ4H2amvdIAotQty2g4d9EHNkp58XrLSOoJP+JATiabHBoI3llZoPpMHMeKyB9
- yrly8pwGZLFX56zU5ACG+1H5GYBu5u006WhpjTPlEb9/QBrIC13mOdpoGjXXhqRu4cPlwGC
- siDE0a4QgHjiOUlgwc28w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:KvkWAnzfJjY=:JU9cUYviDny1KXAZd+Dl1F
- i9+RAxiRkEobBu9FIWjTVVUf+/HewUMEF+luaFwKFQooXDJsKzcXi9wLmQl5Dv5h74s0wD2Yq
- gIOQbSfHv05wCU5mgvt2AQvGt4zA/8p2Krxw7lfHVr09OfZwdUiXv4vfDitbgMCl+nVpR4wjV
- vH+XH7EhInPfA58T1QaCXTJtbD/b5a8dOpbPRFJY3sxfX2atVNXO3H5FfhzxLQdKRmB1jkVbK
- +Ttd+TqA7NUrGRalfOdsuA5mCayvPkdwqJ6F+SKW+/66K4WQiKvSBF2YLCJ83UhMobfu33FtB
- oGOuM7DPfxwdGD19N2PYDSwyWlc58aQnBxgjlNvIbPi/9bgxF2TlPY0OBwEGfQN+Yroz+OwOx
- Ge41ufM/QYCA3vYXoSI8limvNfBsnZdeMISbwFyYhx9e3q8zkdukkG9g1DXDM3TlYz/PRoBse
- JGBQuEyYDQNhiHi5mjbu1gpN/f2H/ssatexd3nuMHsvmbmcK6PBpCCrqPpPJO2oD4z3TL+Og5
- v+j/wHd4A2fhQXEEyUenWUvAjG3NnLaC3PFWL1YIE/xpVRuuGqL5q/DjUpGntf+VGFI3sbGg8
- nHSQY1GgcT3T56Rk3XCcoiU3NAkA4CHlkvC1gW2Yb9U2p2tfyr3HyQwJdiTLUGlblw6uS4xka
- kZtUnCUp7bxKZJxqBN3dr66BG3qFiWxAJMyEhASLc0KA4OqOTA/sIuf0vZSt7SO7ORb3Zoz2u
- 0FssYn1QI3vxrOPbKZPedK/MQzNG+p8Nk5mTyIR4lmQHGjL7Ci0f2vr3XuB9z+crX+W4yaTf2
- xQig4/8MmK/8p77jjKn7NlC2LFajW1BD6K1ECg/GFoUHdSmqxx+emziKTq1IrsUAq9heWhu60
- TY5tDN7+TtsNM7xo5OSXbU4l3gI5SFn4IsDZGI4SJM3xFA7AEIOd/rxpV9zfPLTEysnRT/Ewi
- SIdBWwsE0gWqbMuw5cVB/4tYwWhnncBbanneo9V1Dj/LyT3mw5ilOoHFou+td9Ch6oBKRjfDB
- 2Ya5uEScoaqnMwHqWCOv86ejZbo/B3OJbga0LtYXGN66cjtEWBkl30OTqc3Ne41IRarUG85L+
- L3TeoqfVG/+z/m/DtiQElMwCGO4Hdlta6cFh3xwNpE8g6ktpWZilv27XmSRxlJt8248ciP2bZ
- aMQG5tKg7SB35KhyhX3RXbAqggtdMruJstQ4M2NBUZrTVeTuE+MsGesMWkyH6dPuHVWe7BO3H
- 73rcNgzlaa7Sz4yl0
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.7.1 (2016-10-04)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> =E2=80=A6 To fix this problem,
-> we need to call mc13xxx_lock() again in this error path.
+According to submitting-patches.rst, 'Fixes:' tag has a little
+stricter condition about the one line summary than normal git
+commit description:
+“...
+Do not split the tag across multiple lines, tags are exempt from
+the "wrap at 75 columns" rule in order to simplify parsing scripts
+...”
 
-How do you think about a wording variant like the following?
+And there is no sanity check for 'Fixes:' tag format in checkpatch
+the same as GIT_COMMIT_ID for git commit description, so let's expand
+the GIT_COMMIT_ID to add 'Fixes:' tag format check support.
 
-   Change description:
-   =E2=80=A6
-   Thus add a call of the function =E2=80=9Cmc13xxx_lock=E2=80=9D in an if=
- branch
-   for the completion of the exception handling.
+The check supports below formats:
+Fixes: 54a4f0239f2e ("KVM: MMU: make kvm_mmu_zap_page() return the number of pages it actually freed")
+Fixes: 85f7cd3a2aad ("Revert "media: Kconfig: better support hybrid TV devices"")
+Fixes: 878520ac45f9 ("ext4: save the error code which triggered...")
+Fixes: 878520ac45f9 ("ext4: save the error code which triggered")
+Fixes: 277f27e2f277 ("SUNRPC/cache: Allow garbage collection ... ")
 
+The check doesn't support below formats and it will emit diagnostics info for them:
+Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface"
+Fixes: 6c73698904aa pinctrl: qcom: Introduce readl/writel accessors
+Fixes: 3fd6e7d9a146 (ASoC: tas571x: New driver for TI TAS571x power amplifiers)
+Fixes: 55697cbb44e4 ("arm64: dts: renesas: r8a779{65,80,90}: Add IPMMU devices nodes)
+Fixes: ba35f8588f47 (“ipvlan: Defer multicast / broadcast processing to a work-queue”)
+Fixes: cd758a9b57ee "KVM: PPC: Book3S HV: Use __gfn_to_pfn_memslot in HPT page fault handler"
+Fixes:      9b1640686470 ("scsi: lpfc: Fix use-after-free mailbox cmd completion")
+Fixes: 03f6fc6de919 ('ASoC: rt5682: Add the soundwire support')
+Fixes: 03404e8ae652("IB/mlx5: Add support to dropless RQ")
 
-Would you like to add the tag =E2=80=9CFixes=E2=80=9D?
+Because after GIT_COMMIT_ID supports 'Fixes:' tag format check, it could do
+the same check as the UNKNOWN_COMMIT_ID, so we don't need UNKNOWN_COMMIT_ID
+anymore and I decide to delete it.
 
-Regards,
-Markus
+Note: this patch also fixes double quotation mark issue for normal git
+      commit description, and now it supports double quotation mark in
+      title line, for example:
+      Commit e33e2241e272 ("Revert "cfg80211: Use 5MHz bandwidth by default
+      when checking usable channels"")
+
+Note: this patch also adds diagnostics info support for normal git commit
+      description format check.
+
+Based on original patch by Joe Perches <joe@perches.com>
+
+Link: https://lore.kernel.org/lkml/40bfc40958fca6e2cc9b86101153aa0715fac4f7.camel@perches.com/
+Signed-off-by: Wang YanQing <udknight@gmail.com>
+---
+ Hi! Joe and all.
+
+ This is the v5 version, and I have tested it with below command:
+ $ git log -10000 --no-merges --grep="Fixes:" --format=%H | \
+ while read commit ; do \
+   ./scripts/checkpatch.pl --git $commit --types=GIT_COMMIT_ID --quiet --nosummary; \
+ done
+
+ The result looks good enough already.
+
+ Thanks.
+
+ v5:
+ 1: Rebased on '[PATCH v2] checkpatch: fix can't check for too long invalid commit id'.
+ 2: Fix wrong diagnostics info for below non-standard 'Fixes:' formats.
+    a: Fixes: 03404e8ae652("IB/mlx5: Add support to dropless RQ")
+    b: Fixes: da97e18458fb: ("perf_event: Add support for LSM and SELinux checks")
+ 3: Reword the diagnostics info for non-standard title format.
+
+ v4:
+ 1: Add diagnostics info support, suggested by Joe Perches and Markus Elfring.
+ 2: Delete UNKNOWN_COMMIT_ID and do the check in GIT_COMMIT_ID.
+
+ v3:
+ 1: Fix a bug in short title line support.
+
+ v2:
+ 1: Add support for double quotation mark in title line, suggested by Markus Elfring.
+ 2: Add support for short title line with/without ellipsis.
+ 3: Add supported format examples and unsupported format examples in changelog.
+ 4: Fix a little wording issue in changelog , suggested by Markus Elfring.
+
+ scripts/checkpatch.pl | 120 +++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 90 insertions(+), 30 deletions(-)
+
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 9b47584..a1e4113 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -2818,51 +2818,101 @@ sub process {
+ 		    $line !~ /^\s*(?:Link|Patchwork|http|https|BugLink|base-commit):/i &&
+ 		    $line !~ /^This reverts commit [0-9a-f]{7,40}/ &&
+ 		    ($line =~ /\bcommit\s+[0-9a-f]{5,}\b/i ||
++		     $line =~ /\bfixes:\s+[0-9a-f]{5,}\b/i ||
+ 		     ($line =~ /(?:\s|^)[0-9a-f]{12,40}(?:[\s"'\(\[]|$)/i &&
+-		      $line !~ /[\<\[][0-9a-f]{12,40}[\>\]]/i &&
+-		      $line !~ /\bfixes:\s*[0-9a-f]{12,40}/i))) {
++		      $line !~ /[\<\[][0-9a-f]{12,40}[\>\]]/i))) {
+ 			my $init_char = "c";
+ 			my $orig_commit = "";
++			my $prefix = "commit";
++			my $prefix_case = "[Cc]ommit";
+ 			my $short = 1;
+ 			my $long = 0;
+ 			my $case = 1;
+ 			my $space = 1;
++			my $space2 = 1;
+ 			my $hasdesc = 0;
+-			my $hasparens = 0;
++			my $has_parens_and_dqm = 0; # Double quotation mark
+ 			my $hasprefix = 1;
+ 			my $id = '0123456789ab';
+ 			my $orig_desc = "commit description";
+ 			my $description = "";
+ 			my $sha1_length_min = 12;
++			my $acrosslines = 0;
++			my $title = "title line";
++			my $desc_mismatch = 0;
++			my $diagnostics = "Diagnostics info:\n";
+ 
+-			if ($line =~ /\b(c)ommit\s+([0-9a-f]{5,})\b/i) {
++			if ($line =~ /\b(f)ixes:\s+([0-9a-f]{5,})\b/i) {
++				$init_char = $1;
++				$orig_commit = lc($2);
++				$prefix = "Fixes:";
++				$prefix_case = "Fixes:";
++				$init_char = "F";
++				$title = "a single line title (without line breaks but ellipsis is fine!)";
++			} elsif ($line =~ /\b(c)ommit\s+([0-9a-f]{5,})\b/i) {
+ 				$init_char = $1;
+ 				$orig_commit = lc($2);
+ 			} elsif ($line =~ /\b([0-9a-f]{12,40})\b/i) {
+ 				$orig_commit = lc($1);
+ 				$hasprefix = 0;
++				$diagnostics .= "Missing prefix \"$prefix_case\".\n";
++
++			}
++
++			if ($line =~ /\b$prefix\s+[0-9a-f]{41,}/i) {
++				$long = 1;
++			} elsif ($line =~ /\b$prefix\s+[0-9a-f]{$sha1_length_min,40}/i) {
++				$short = 0;
++			} elsif ($hasprefix) {
++				$diagnostics .= "Commit id $orig_commit is too short.\n";
++			}
++
++			if ($line =~ /\b$prefix [0-9a-f]/i) {
++				$space = 0;
++			} elsif ($hasprefix) {
++				$diagnostics .= "Extra whitespace between prefix \"${init_char}" . substr($prefix, 1) . "\" and $orig_commit.\n";
++			}
++
++			if ($line =~ /[0-9a-f]{5,} \S+/i || $line =~ /[0-9a-f]{5,}\s*$/i) {
++				$space2 = 0;
++			} elsif ($hasprefix) {
++				$diagnostics .= "We need a single whitespace and only a single whitespace between $orig_commit and title.\n";
+ 			}
+ 
+-			$short = 0 if ($line =~ /\bcommit\s+[0-9a-f]{$sha1_length_min,40}/i);
+-			$long = 1 if ($line =~ /\bcommit\s+[0-9a-f]{41,}/i);
+-			$space = 0 if ($line =~ /\bcommit [0-9a-f]/i);
+-			$case = 0 if ($line =~ /\b[Cc]ommit\s+[0-9a-f]{5,40}[^A-F]/);
+-			if ($line =~ /\bcommit\s+[0-9a-f]{5,}\s+\("([^"]+)"\)/i) {
++			if ($line =~ /\b$prefix_case\s+[0-9a-f]{5,40}[^A-F]/) {
++				$case = 0;
++			} elsif ($hasprefix) {
++				$line =~ /(\b$prefix)\s+[0-9a-f]{5,40}[^A-F]/i;
++				$diagnostics .= "The prefix \"$1\" has case error.\n";
++			}
++
++			if ($line =~ /\b$prefix\s+[0-9a-f]{5,}\s+\("(.+)"\)/i) {
+ 				$orig_desc = $1;
+-				$hasparens = 1;
++				$has_parens_and_dqm = 1;
++				# Drop the ellipsis
++				if ($prefix eq "Fixes:" && $orig_desc =~ /(\s*\.{3}\s*$)/) {
++				    $orig_desc = substr($orig_desc, 0, length($orig_desc) - length($1));
++				}
+ 			} elsif ($line =~ /\bcommit\s+[0-9a-f]{5,}\s*$/i &&
+ 				 defined $rawlines[$linenr] &&
+-				 $rawlines[$linenr] =~ /^\s*\("([^"]+)"\)/) {
++				 $rawlines[$linenr] =~ /^\s*\("(.+)"\)/) {
+ 				$orig_desc = $1;
+-				$hasparens = 1;
+-			} elsif ($line =~ /\bcommit\s+[0-9a-f]{5,}\s+\("[^"]+$/i &&
++				$has_parens_and_dqm = 1;
++			} elsif ($line =~ /\b$prefix\s+[0-9a-f]{5,}\s+\(".+$/i &&
+ 				 defined $rawlines[$linenr] &&
+-				 $rawlines[$linenr] =~ /^\s*[^"]+"\)/) {
+-				$line =~ /\bcommit\s+[0-9a-f]{5,}\s+\("([^"]+)$/i;
++				 $rawlines[$linenr] =~ /^\s*.+"\)/) {
++				$line =~ /\b$prefix\s+[0-9a-f]{5,}\s+\("(.+)$/i;
+ 				$orig_desc = $1;
+-				$rawlines[$linenr] =~ /^\s*([^"]+)"\)/;
++				$rawlines[$linenr] =~ /^\s*(.+)"\)/;
+ 				$orig_desc .= " " . $1;
+-				$hasparens = 1;
++				$has_parens_and_dqm = 1;
++
++				if ($prefix eq "Fixes:") {
++					$acrosslines = 1;
++					$diagnostics .= "The title acrosses lines.\n";
++				}
++			} elsif ($hasprefix && !$space2) {
++				$diagnostics .= "No title in '(\"<$title>\")' format is found.\n";
+ 			}
+ 
+ 			($id, $description) = git_commit_info($orig_commit,
+@@ -2879,10 +2929,31 @@ sub process {
+ 				}
+ 			}
+ 
++			if (defined($id) && $has_parens_and_dqm && ($orig_desc ne $description)) {
++			    # Allow short description without too short!
++			    if ($prefix eq "Fixes:") {
++				if (length($orig_desc) >= length($description)/2) {
++					my $desc = substr($description, 0, length($orig_desc));
++
++					if ($orig_desc ne $desc) {
++						$desc_mismatch = 1;
++						$diagnostics .= "The title doesn't match the original commit.\n";
++					}
++				} else {
++					$desc_mismatch = 1;
++					$diagnostics .= "The title is too abbreviated, at least half of orignial commit title is necessary.\n";
++				}
++			    } else {
++					$desc_mismatch = 1;
++					$diagnostics .= "The title doesn't match the original commit.\n";
++			    }
++			}
++
+ 			if (defined($id) &&
+-			   ($short || $space || $case || ($orig_desc ne $description) || !$hasparens)) {
++			   ($short || $space || $space2 || $case || $desc_mismatch || !$hasprefix || !$has_parens_and_dqm || $acrosslines)) {
+ 				ERROR("GIT_COMMIT_ID",
+-				      "Please use git commit description style 'commit <$sha1_length_min+ chars of sha1> (\"<title line>\")' - ie: '${init_char}ommit $id (\"$description\")'\n" . $herecurr);
++				      "Please use git commit description style '$prefix <$sha1_length_min+ chars of sha1> (\"<$title>\")' - ie: '${init_char}" . substr($prefix, 1) .
++				      " $id (\"$description\")'\n" . $diagnostics . $herecurr);
+ 			}
+ 		}
+ 
+@@ -2982,17 +3053,6 @@ sub process {
+ 			}
+ 		}
+ 
+-# check for invalid commit id
+-		if ($in_commit_log && $line =~ /^fixes:\s+([0-9a-f]{6,40})\b/i) {
+-			my $id;
+-			my $description;
+-			($id, $description) = git_commit_info($1, undef, undef);
+-			if (!defined($id)) {
+-				WARN("UNKNOWN_COMMIT_ID",
+-				     "Unknown commit id '$1', maybe rebased or not pulled?\n" . $herecurr);
+-			}
+-		}
+-
+ # ignore non-hunk lines and lines being removed
+ 		next if (!$hunk_line || $line =~ /^-/);
+ 
+-- 
+1.8.5.6.2.g3d8a54e.dirty

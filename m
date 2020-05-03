@@ -2,169 +2,126 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F19A1C2BF4
-	for <lists+kernel-janitors@lfdr.de>; Sun,  3 May 2020 13:54:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26B291C2C10
+	for <lists+kernel-janitors@lfdr.de>; Sun,  3 May 2020 14:06:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728115AbgECLy0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 3 May 2020 07:54:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59396 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727112AbgECLyZ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 3 May 2020 07:54:25 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBC34C061A0C;
-        Sun,  3 May 2020 04:54:25 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id s8so7164257pgq.1;
-        Sun, 03 May 2020 04:54:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:mime-version
-         :content-disposition:user-agent;
-        bh=BUkMHQD/V/0ORXwYkMywhz4/rrG1c8EmuLKXI0QJv5w=;
-        b=taljpVsPcYgjASQ7IomkR3YZJbOLGafzFyqXmnvC+6zVFMEzneQ/8JJmzqgIPrWV1w
-         rNfS74InWNxXvxnoxhsfXdS9foq22gGlbS7hBBDXSYKxaGhzfDNHbIr9xP5GIbu5jMti
-         jqbeMBcvYK37h4NxLpjBckvG8fuJdlpw3xs5DUT4HnCNMSo/GPXlHN07v8npHM+3Pjag
-         WBlMXAH66S4vfAbf1Fzxw8ddkyylrOv4UKPSoKyyScfS6zzQYyKN4lM4JQOyWPn9WYIe
-         BCYi26Y4EAF6gM7zNQhDkRlkRcMypDdVJjG8QxV6pbUyO9vuBMmwSA2pcxjiQhY4RsuN
-         mq8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:mime-version:content-disposition:user-agent;
-        bh=BUkMHQD/V/0ORXwYkMywhz4/rrG1c8EmuLKXI0QJv5w=;
-        b=FbIeuAEcJ/5kap8L313Qzpsm02yXNeppmS5dGlKD9J8UBVER4VWHekANcwn9yel1L8
-         AaEe2DLSqgyuOdIQoPbZWNumRqUGn+6oCMo4Us0C5ofAUiUwwgAsa82bJpA8Ml0VHjzV
-         h40EP9Oz39Wm0rA6YQpLSw1F72AGQlzh3UbGf3MWZDjfDif5hMTCMww+Yww91q/N0BSM
-         xkYt1msvPZAWnHPB3tllO2W3Fhx27yuUHTunxgdd9tTBBdRpTT/IHSPmYfKibC1OGrJP
-         u/OWzPUE23hN5+2K6szmKzZLg5SIfoF81GuBjaTKWgaaJEqtTDUz+5yGK47aYjmlUF2p
-         ad8w==
-X-Gm-Message-State: AGi0PuYAL1+rBq+U7qz5ILPUOGDdovV/JUzjeW45PWsRuEr9Bam+Qv6J
-        uV76aQKOXNUr7gk6lEx+Eo8=
-X-Google-Smtp-Source: APiQypLSSrXj5uw+ridEe+sj0GIban+7bcW+DaU/Y1Q3vv/3T6eTmpmIzsNSRfjyeFG4O42Em5UXAQ==
-X-Received: by 2002:a62:1415:: with SMTP id 21mr12503275pfu.203.1588506865450;
-        Sun, 03 May 2020 04:54:25 -0700 (PDT)
-Received: from udknight.localhost ([59.57.158.27])
-        by smtp.gmail.com with ESMTPSA id r18sm5775570pgu.93.2020.05.03.04.54.24
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 03 May 2020 04:54:24 -0700 (PDT)
-Received: from udknight.localhost (localhost [127.0.0.1])
-        by udknight.localhost (8.14.9/8.14.4) with ESMTP id 043Bs62H010515;
-        Sun, 3 May 2020 19:54:06 +0800
-Received: (from root@localhost)
-        by udknight.localhost (8.14.9/8.14.9/Submit) id 043Bs6Zl010514;
-        Sun, 3 May 2020 19:54:06 +0800
-Date:   Sun, 3 May 2020 19:54:06 +0800
-From:   Wang YanQing <udknight@gmail.com>
-To:     joe@perches.com
-Cc:     Andy Whitcroft <apw@canonical.com>, linux-kernel@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Matteo Croce <mcroce@redhat.com>, Markus.Elfring@web.de,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] checkpatch: fix can't check for too long invalid commit id
-Message-ID: <20200503115406.GB10332@udknight>
-Mail-Followup-To: Wang YanQing <udknight@gmail.com>, joe@perches.com,
-        Andy Whitcroft <apw@canonical.com>, linux-kernel@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Matteo Croce <mcroce@redhat.com>, Markus.Elfring@web.de,
-        kernel-janitors@vger.kernel.org
+        id S1728500AbgECMF4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 3 May 2020 08:05:56 -0400
+Received: from mout.web.de ([212.227.15.14]:41151 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728399AbgECMF4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 3 May 2020 08:05:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1588507542;
+        bh=XRnkz74ueXi7rmpVNxIQfdOIFfpQAIN5P21N1C+5fgI=;
+        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
+        b=loiacN+rdQUubJGj8RvgXdnfnwwHaY3D4bTPZD/d1DSeUVYmTUg6Dkv/CAKQ3p4OP
+         kjEORJfx9X+6JPTrgx6iBEafTtnTwlHXMPx51oAsBJEe1olvd7S7B5N5iAMoKH91H5
+         o9B2ogPjgO26SC0rO0XZpgeX93v7AbmNAMdRtHhw=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.131.26.31]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MsJP4-1jAnsa2k8o-00tgkS; Sun, 03
+ May 2020 14:05:42 +0200
+To:     Qiushi Wu <wu000273@umn.edu>, linux-rtc@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Kangjie Lu <kjlu@umn.edu>
+Subject: Re: [PATCH] rtc: mc13xxx: fix a double-unlock issue
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <b9c82115-c70a-2381-f920-385846eb2a45@web.de>
+Date:   Sun, 3 May 2020 14:05:41 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.7.1 (2016-10-04)
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:r7ti0yaqPjZEg0G3BPTArXLw16yJ1eN2qi3RD8BlbOKZPEqi+1N
+ Lskx+oD4qtJ4H2amvdIAotQty2g4d9EHNkp58XrLSOoJP+JATiabHBoI3llZoPpMHMeKyB9
+ yrly8pwGZLFX56zU5ACG+1H5GYBu5u006WhpjTPlEb9/QBrIC13mOdpoGjXXhqRu4cPlwGC
+ siDE0a4QgHjiOUlgwc28w==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:KvkWAnzfJjY=:JU9cUYviDny1KXAZd+Dl1F
+ i9+RAxiRkEobBu9FIWjTVVUf+/HewUMEF+luaFwKFQooXDJsKzcXi9wLmQl5Dv5h74s0wD2Yq
+ gIOQbSfHv05wCU5mgvt2AQvGt4zA/8p2Krxw7lfHVr09OfZwdUiXv4vfDitbgMCl+nVpR4wjV
+ vH+XH7EhInPfA58T1QaCXTJtbD/b5a8dOpbPRFJY3sxfX2atVNXO3H5FfhzxLQdKRmB1jkVbK
+ +Ttd+TqA7NUrGRalfOdsuA5mCayvPkdwqJ6F+SKW+/66K4WQiKvSBF2YLCJ83UhMobfu33FtB
+ oGOuM7DPfxwdGD19N2PYDSwyWlc58aQnBxgjlNvIbPi/9bgxF2TlPY0OBwEGfQN+Yroz+OwOx
+ Ge41ufM/QYCA3vYXoSI8limvNfBsnZdeMISbwFyYhx9e3q8zkdukkG9g1DXDM3TlYz/PRoBse
+ JGBQuEyYDQNhiHi5mjbu1gpN/f2H/ssatexd3nuMHsvmbmcK6PBpCCrqPpPJO2oD4z3TL+Og5
+ v+j/wHd4A2fhQXEEyUenWUvAjG3NnLaC3PFWL1YIE/xpVRuuGqL5q/DjUpGntf+VGFI3sbGg8
+ nHSQY1GgcT3T56Rk3XCcoiU3NAkA4CHlkvC1gW2Yb9U2p2tfyr3HyQwJdiTLUGlblw6uS4xka
+ kZtUnCUp7bxKZJxqBN3dr66BG3qFiWxAJMyEhASLc0KA4OqOTA/sIuf0vZSt7SO7ORb3Zoz2u
+ 0FssYn1QI3vxrOPbKZPedK/MQzNG+p8Nk5mTyIR4lmQHGjL7Ci0f2vr3XuB9z+crX+W4yaTf2
+ xQig4/8MmK/8p77jjKn7NlC2LFajW1BD6K1ECg/GFoUHdSmqxx+emziKTq1IrsUAq9heWhu60
+ TY5tDN7+TtsNM7xo5OSXbU4l3gI5SFn4IsDZGI4SJM3xFA7AEIOd/rxpV9zfPLTEysnRT/Ewi
+ SIdBWwsE0gWqbMuw5cVB/4tYwWhnncBbanneo9V1Dj/LyT3mw5ilOoHFou+td9Ch6oBKRjfDB
+ 2Ya5uEScoaqnMwHqWCOv86ejZbo/B3OJbga0LtYXGN66cjtEWBkl30OTqc3Ne41IRarUG85L+
+ L3TeoqfVG/+z/m/DtiQElMwCGO4Hdlta6cFh3xwNpE8g6ktpWZilv27XmSRxlJt8248ciP2bZ
+ aMQG5tKg7SB35KhyhX3RXbAqggtdMruJstQ4M2NBUZrTVeTuE+MsGesMWkyH6dPuHVWe7BO3H
+ 73rcNgzlaa7Sz4yl0
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The current UNKNOWN_COMMIT_ID doesn't check for 41+ length commit id,
-and although GIT_COMMIT_ID will check for 41+ length commit id, but
-it willn't warn anything about it due to 41+ length commit will never
-be defined.
+> =E2=80=A6 To fix this problem,
+> we need to call mc13xxx_lock() again in this error path.
 
-This patch moves the unknown commit id check for normal commit description
-to GIT_COMMIT_ID, and uses ERROR instead of WARN, because unknown commit
-id is total useless to track change history in changelog, it deserves the
-ERROR.
+How do you think about a wording variant like the following?
 
-Signed-off-by: Wang YanQing <udknight@gmail.com>
----
- v2:
- 1: Fix annonying "Invalid commit id" reports for non commit id number string.
- 2: Fix indentaton issue, reported by Joe Perches.
- 3: Reword the error message in code, suggested by Joe Perches.
- 4: Delete unnecessary capture group in UNKNOWN_COMMIT_ID, suggested by Joe Perches.
+   Change description:
+   =E2=80=A6
+   Thus add a call of the function =E2=80=9Cmc13xxx_lock=E2=80=9D in an if=
+ branch
+   for the completion of the exception handling.
 
- scripts/checkpatch.pl | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 23a001a..9b47584 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -2829,18 +2829,21 @@ sub process {
- 			my $space = 1;
- 			my $hasdesc = 0;
- 			my $hasparens = 0;
-+			my $hasprefix = 1;
- 			my $id = '0123456789ab';
- 			my $orig_desc = "commit description";
- 			my $description = "";
-+			my $sha1_length_min = 12;
- 
- 			if ($line =~ /\b(c)ommit\s+([0-9a-f]{5,})\b/i) {
- 				$init_char = $1;
- 				$orig_commit = lc($2);
- 			} elsif ($line =~ /\b([0-9a-f]{12,40})\b/i) {
- 				$orig_commit = lc($1);
-+				$hasprefix = 0;
- 			}
- 
--			$short = 0 if ($line =~ /\bcommit\s+[0-9a-f]{12,40}/i);
-+			$short = 0 if ($line =~ /\bcommit\s+[0-9a-f]{$sha1_length_min,40}/i);
- 			$long = 1 if ($line =~ /\bcommit\s+[0-9a-f]{41,}/i);
- 			$space = 0 if ($line =~ /\bcommit [0-9a-f]/i);
- 			$case = 0 if ($line =~ /\b[Cc]ommit\s+[0-9a-f]{5,40}[^A-F]/);
-@@ -2865,10 +2868,21 @@ sub process {
- 			($id, $description) = git_commit_info($orig_commit,
- 							      $id, $orig_desc);
- 
-+			if ($hasprefix && !defined($id)) {
-+				if ($long) {
-+					ERROR("GIT_COMMIT_ID",
-+					      "Invalid commit id '$orig_commit' length '" . length($orig_commit) . "' exceeds allowed maxium of 40
-+					      ($sha1_length_min+ chars of sha1 is recommended).\n" . $herecurr);
-+				} else {
-+					ERROR("GIT_COMMIT_ID",
-+					      "Unknown commit id '$orig_commit', maybe rebased or not pulled?\n" . $herecurr);
-+				}
-+			}
-+
- 			if (defined($id) &&
--			   ($short || $long || $space || $case || ($orig_desc ne $description) || !$hasparens)) {
-+			   ($short || $space || $case || ($orig_desc ne $description) || !$hasparens)) {
- 				ERROR("GIT_COMMIT_ID",
--				      "Please use git commit description style 'commit <12+ chars of sha1> (\"<title line>\")' - ie: '${init_char}ommit $id (\"$description\")'\n" . $herecurr);
-+				      "Please use git commit description style 'commit <$sha1_length_min+ chars of sha1> (\"<title line>\")' - ie: '${init_char}ommit $id (\"$description\")'\n" . $herecurr);
- 			}
- 		}
- 
-@@ -2969,13 +2983,13 @@ sub process {
- 		}
- 
- # check for invalid commit id
--		if ($in_commit_log && $line =~ /(^fixes:|\bcommit)\s+([0-9a-f]{6,40})\b/i) {
-+		if ($in_commit_log && $line =~ /^fixes:\s+([0-9a-f]{6,40})\b/i) {
- 			my $id;
- 			my $description;
--			($id, $description) = git_commit_info($2, undef, undef);
-+			($id, $description) = git_commit_info($1, undef, undef);
- 			if (!defined($id)) {
- 				WARN("UNKNOWN_COMMIT_ID",
--				     "Unknown commit id '$2', maybe rebased or not pulled?\n" . $herecurr);
-+				     "Unknown commit id '$1', maybe rebased or not pulled?\n" . $herecurr);
- 			}
- 		}
- 
--- 
-1.8.5.6.2.g3d8a54e.dirty
+Would you like to add the tag =E2=80=9CFixes=E2=80=9D?
+
+Regards,
+Markus

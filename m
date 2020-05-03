@@ -2,32 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E98901C2C9E
-	for <lists+kernel-janitors@lfdr.de>; Sun,  3 May 2020 15:04:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA3641C2CDE
+	for <lists+kernel-janitors@lfdr.de>; Sun,  3 May 2020 15:51:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728393AbgECNDz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 3 May 2020 09:03:55 -0400
-Received: from mout.web.de ([212.227.15.3]:50993 "EHLO mout.web.de"
+        id S1728636AbgECNvt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 3 May 2020 09:51:49 -0400
+Received: from mout.web.de ([212.227.15.14]:57839 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728239AbgECNDy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 3 May 2020 09:03:54 -0400
+        id S1728522AbgECNvs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 3 May 2020 09:51:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588511027;
-        bh=luUWOSurUWv8Y8HSTIcfmRsAiC2aJOWuuo0/vNEMFEQ=;
+        s=dbaedf251592; t=1588513901;
+        bh=QDo14EAcszfHq4qC8tvl1KUO8MM5m6uWXSqEEsohp7k=;
         h=X-UI-Sender-Class:Subject:To:References:From:Cc:Date:In-Reply-To;
-        b=I5dB89K04HMvfkNrTUu6X2qoYj5YEDRVxMUY/7bmUO8YlKsX5M+M1wlOdv+7oSrmW
-         JeSjBdTC0QqHIpnnPqrH1Uh5oNhAo0iAILPEzK5mQpp2dFWDw8zkfoW/VC6sYX5zbH
-         MVdSiaj+w09EmV+hFM/FryajhTOym6MmiBn6IKuA=
+        b=JdjgEj4zM0bWfSb43tBGj4pODUJcMz9QUK9CBEMquYWnusRerTC745uuZgMUTuN7V
+         0HLGKQZKD5lu0IQElMWoT/RaeL5umcdjncRFrJ1Gx8los8lnGtS1x+FI5srlA6A26w
+         ZS3EQ6eQ9XWMNykBm/7rDxTdfZc/0qdt2NcEg04o=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.26.31]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mx0Ix-1jFNQ82Ca3-00yPs8; Sun, 03
- May 2020 15:03:47 +0200
-Subject: Re: [PATCH] checkpatch: add support for title acrosses three lines in
- commit id description
+Received: from [192.168.1.2] ([93.131.26.31]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LoLKj-1iyOJx3K1Z-00gEH5; Sun, 03
+ May 2020 15:51:40 +0200
+Subject: Re: [PATCH v5] checkpatch: add support to check 'Fixes:' tag format
 To:     Wang YanQing <udknight@gmail.com>, Joe Perches <joe@perches.com>,
         Andy Whitcroft <apw@canonical.com>,
-        kernel-janitors@vger.kernel.org
-References: <20200503123435.GD10332@udknight>
+        kernel-janitors@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20200503122938.GC10332@udknight>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,56 +74,132 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
 Cc:     linux-kernel@vger.kernel.org,
         Alexei Starovoitov <alexei.starovoitov@gmail.com>,
         Matteo Croce <mcroce@redhat.com>
-Message-ID: <df619612-3825-4637-e025-618a7a982310@web.de>
-Date:   Sun, 3 May 2020 15:03:45 +0200
+Message-ID: <2d13b5c1-6745-23da-e22d-d56f0644edb2@web.de>
+Date:   Sun, 3 May 2020 15:51:39 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20200503123435.GD10332@udknight>
+In-Reply-To: <20200503122938.GC10332@udknight>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:+H1AVTi6CX+RViudSSfT9MZFOWyNtOH0bHzzwEX+EH9FyHN9PF4
- MdC97gdYJqFMs7W+c9dyXJwoX2m/899+ue5F6favdHwS0WXKFm/iV8saQfKx+7/MjE/XZXi
- DQRahSaWAjs6d/UBfoorjE3jr8ASPN7mQ8GgQyxq/C4kNv6P8mhAQE1U2teNAe5WdrrrrA7
- 86EKVsnVn2GJDlYmxwPCw==
+X-Provags-ID: V03:K1:mXyOL/BhJxe3g/a88pBBLWgfZNq7uWEbiPsK7vEJHpp5ON74/Ke
+ w1CMmMjEzQSiZLuHxY7UWwBwWIS8+vNTPfRXSa7VQBU5Zsh1zwalUU1b9cIRymAsZL6OjPI
+ Q/ke2nCUur0NF3BFenU3C0rB54EtmC/c0VrQl6bQjC0nQVKFe4Kh6kWvKsJocZ2CRSEQ+ZJ
+ 9ScMtJka99VFHscQkOgHA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:2RU6bDv9qdo=:FCn9tYU+pH0Eevczq+Pwoe
- asGIPB8kKOYb1JqKv4h/pnUyI1YqV8v68oC0i0lpc7gPg4HbxAYSnUgrorakInf1nuY/ExK5m
- GEBQj4lxBVc1jiqF4uQloQ99ebxLQc/lJ8XNzrtDjNbYzriuHI6LIKwSM4/4ntwh0j6qou9Nt
- GIEL0k7IojyolhqT/QspOugbajWXzDq2ou8APdm9SEDodGvcYalYOXCGAQHnp56wt0qn0ksVF
- JCjJ/Ts2D0R2VJO3S5AziGqZbCNgcIac5SnftHE9yEsGkv2GKJ3edFhvve5qSvg5t9OciKlzN
- +x+vsKr6ocpBsBC+qH51YOFgFmy4U9xkppjtA4qrc9yVKc/uZXJi8NDObQNarAvOH+R3d1v4w
- qoBR3xrRyJ5SM4teicchyEpBu41lWL2DwgLQ+ry6jsutosyUpF7Y8wTNpfksiLkQZoBwwyWsz
- KXJJQlST9pIp8NgbG9c2fXzQ3Ss7UILnYnVmv5VYij2W6xcE/VQKF/DP7YFMt5LAD3w9z9xX6
- ZpPCRbM7PAV7nFCt/fKT6M0rch6wkETH0czSTJshz2pWqc87Q+XMYCK9ceS6q+06+ls6twYMB
- 4aI7ldvTL/lm6JxPSy/vuqG60ILVBHi5TmO71RDadEwGSDxwdrguoNpPpwxSntNIlZfVs9BOs
- CZU7e/KYUH7VKbsp1K0bWzPvHQTCzX51DsrDYxxddwH4eyXRl77qlgMSI/xnxVWu1Q6kK7xtA
- OIJIdn9PDRkeYYomsZaK0uj9qFmKLNTjy1IP8cHA/bercB9D2uoQDF9tV7H2M5AFpuV68pAAo
- a+jULa52PT9Ds1PdHsHl6xcaOkSR5Yu895h7qy89Ku6Vip/uA/qy7sfS3t6p131vjbysPi7jI
- 1qos9H7u3pbBl1F5W9eLfYK28vaOMgQycvN0mT8W0EqTl6qvtohhA8x0Wib/OMDDN+AvWChvf
- cPPrmPw4SYCV8D15vpq3sZo/sCtNWb8yFPVh5ic1SkKQTngga/ZWAke+eKVux0Dt/AA1LOJHt
- 7LDWZzWFKbbyudR5/mlNdxMdvYWNXasS7nI+e+UrOvf7aA4g9VSDRTiqdZa9YDVNIxSvW2ygh
- OJwgtARaHSZL1JIlZh1Fewg7x2KfvMQKqjuR6sFZRHFOrbTnV6rXCmCH+vw1Uru+2PAP+zNEU
- Yvqp55BWfx/A4SpquX/XSP4lHlizWWEMtrqxVtDYJOhNPCJSzEfIhmbwEwQ/tlmbmKF4ojzWw
- XvYlLLi2tY2189wA0
+X-UI-Out-Filterresults: notjunk:1;V03:K0:hXMNh1nUJ1A=:QR7rXnqUX4q+OUI7ie77iE
+ rbu1buULCUtuCxDMGzY6qtzcp62gRL5DhUzMNGWr5UO/bd+NER1Y31wHV6CuKS+/rneTAE/gZ
+ HzfeC+Dt34Ff3lAZ28IIdUEYki5l7WT3gRUoAlsISSDqt6OuUxph1x7MCeBphU04joYZABexp
+ AH2gNP02VNKaWFG570TSJd5mgFgt7mi9bliltd30GbT9he3uVE4HM907jNIu+AiCTltZdx1o4
+ 8S6LCrmGW5KbYkJ2Y73OaDusCN3R1lIUzaxaQZ8NXyMwSz7znjgNb6JNEIpYRw1NIzgny7jHH
+ MQwNdGPHqaPe2YYOA409JhwiRYV3PDFyKvhMgvQ+/jgKuoEZJuGrTzFpzHL90NlLxeZb3d4cU
+ W7iC/ao9mG2qWXhnzsfdzY4X+lgGNsKh+cD5tW87Ns6RiJVtLQNj12TrwvUPolu0Loz0B36oB
+ J9M00vBdbNLHVlu8hIhPZNEZ1fVqFYKmT4XCpa7MNsG/rXfXaIRRZYmnRURFX0oR1sRdUKefI
+ xuELhTrnPshg0S3hJHeu0cJfNdVJoRMjwvP/ylS2ALObZhCc8EyD5y0ZOKOdIQNg5vvCQ9PVm
+ Nm7ZIDlEKZwJOy4xtf03RtUb9mbKNCoLRHudVEUWAtnDXl3zwMAfjqDx5TrzoRCJXrKZTUrLV
+ S+cQewzKaioieyDiF0gSE8DoMbOWyH/DjKqbGAgeoQEh/EOUFpQewp0BM/oOuZoWnY0+sg0qN
+ K7u6oDUgB0CYAHfF7MbIjlbTYt2TaFXIiIrDTwOu9XFWJGZUh+/6ug+PJXsMnRWmpLLW840Ub
+ otU3gNqZbDcg2Ez9drI3bG5FKD40WurlYfFw3w3i22O2hu7dErbVChqN00spvQVwVQc2d8WDN
+ RqJoKnnwEM77yYgAV0PCO3+tGA/pGrXv9CApghMDePXIWq3L8+9EQ5+rbtw/jXvBhk3wpHmBy
+ AAIgGFZBZwnm6EF506aGiHefTF3idMFloJ1Ph3RoBrTxJGnj6nLjeThAvSIU/tczJw5Y9O0CI
+ bfK0hcI17ukYeDnpJiTulvVZLdqzoJyITsHRl+bwZXDF6lFW1LRgDeoQcmXB7LJcxPuciUGal
+ zwO3+szVFg2MLkEMeXtiCCyJGyvZ20rpIFXQpbzcz6ZQ7XKc/HwRBYP3r6Yed1ZewlBjbYT+S
+ 1dQ1WKeP5O3AuaP5rCDsjnNehJkM809yr3Zj5CIAVtYrO6qaeMxSyI9BMxupynkL3EmkYA1Ns
+ qovB0I4QXsXYr0HMb
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> The current GIT_COMMIT_ID will report error when the title in commit id
-> description acrosses three lines, =E2=80=A6
+> =E2=80=9C...
 
-I suggest to improve the commit message (and subsequent Perl code)
-also according to the usage of the text =E2=80=9Cacrosses=E2=80=9D.
+Can the character =E2=80=9CHorizontal ellipsis=E2=80=9D (U+2026) be occasi=
+onally nicer
+instead of three separate dots?
 
 
-> This patch adds support for three lines title in the commit id descripti=
-on,
-> and emit diagnostics info when the title acrosses more than three lines.
+> The check supports below formats:
 
-Please split this paragraph into two imperative wordings.
+I would prefer the explicit wording for the support of (Unicode) ellipses
+also in the shown commit titles.
+Will the document =E2=80=9Csubmitting-patches.rst=E2=80=9D need correspond=
+ing adjustments?
+
+
+> Because after GIT_COMMIT_ID supports 'Fixes:' tag format check, it could=
+ do
+> the same check as the UNKNOWN_COMMIT_ID, so we don't need UNKNOWN_COMMIT=
+_ID
+> anymore and I decide to delete it.
+
+Would you like to propose related software adjustments?
+
+
+> Note: this patch also fixes double quotation mark issue for normal git
+>       commit description, and now it supports double quotation mark in
+>       title line, for example:
+>       Commit e33e2241e272 ("Revert "cfg80211: Use 5MHz bandwidth by defa=
+ult
+>       when checking usable channels"")
+
+Do you care to achieve a safer data format description also for this use c=
+ase?
+
+
+>  This is the v5 version, and I have tested it with below command:
+
+How do you think about to reuse the analysis approach outside
+the script =E2=80=9Ccheckpatch.pl=E2=80=9D?
+
+
+>  v5:
+>  1: Rebased on '[PATCH v2] checkpatch: fix can't check for too long inva=
+lid commit id'.
+
+Are the software dependencies (and corresponding development challenges) g=
+rowing?
+
+
+=E2=80=A6
+> +++ b/scripts/checkpatch.pl
+> @@ -2818,51 +2818,101 @@ sub process {
+=E2=80=A6
+> +		     $line =3D~ /\bfixes:\s+[0-9a-f]{5,}\b/i ||
+
+Would you like to reconsider the program organisation according to
+the application of regular expressions?
+
+
+=E2=80=A6
+> +			if (defined($id) && $has_parens_and_dqm && ($orig_desc ne $descripti=
+on)) {
+> +			    # Allow short description without too short!
+
+Will another wording adjustment become relevant here?
+
+
+> +			    if ($prefix eq "Fixes:") {
+> +				if (length($orig_desc) >=3D length($description)/2) {
+
+Will the structure of the commit title matter any more?
+
+
+=E2=80=A6
+> +					$diagnostics .=3D "The title is too abbreviated, at least half of =
+orignial commit title is necessary.\n";
+
+Will the word =E2=80=9Coriginal=E2=80=9D be more appropriate here?
+(Why did you not integrate my previous patch review comment?)
+
+
+=E2=80=A6
+> +				      "Please use git commit description style '$prefix <$sha1_leng=
+th_min+ chars of sha1> (\"<$title>\")' - ie: '${init_char}" . substr($pref=
+ix, 1) .
+> +				      " $id (\"$description\")'\n" . $diagnostics . $herecurr);
+
+Can error diagnostics become multi-line?
 
 Regards,
 Markus

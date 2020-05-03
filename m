@@ -2,35 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 212DC1C2C89
-	for <lists+kernel-janitors@lfdr.de>; Sun,  3 May 2020 14:54:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E98901C2C9E
+	for <lists+kernel-janitors@lfdr.de>; Sun,  3 May 2020 15:04:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728479AbgECMyk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 3 May 2020 08:54:40 -0400
-Received: from mout.web.de ([212.227.15.14]:59513 "EHLO mout.web.de"
+        id S1728393AbgECNDz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 3 May 2020 09:03:55 -0400
+Received: from mout.web.de ([212.227.15.3]:50993 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728230AbgECMyj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 3 May 2020 08:54:39 -0400
+        id S1728239AbgECNDy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 3 May 2020 09:03:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588510472;
-        bh=9FumUi+lt8UvbeMMdDLgKgHsvnkbteiv5PoK4ODKbiQ=;
-        h=X-UI-Sender-Class:Subject:To:References:Cc:From:Date:In-Reply-To;
-        b=ECmljAsiF9ailistrD1x5v0nSbBSs3122egn/2iy5eA6ti/Kz6SZBdH2CSKMjuIi+
-         ZfrWqDc62BwwtaHlXWRoadwuGP5mI2B3KNc9Pzvyr4a7eYM3+u1vCQRpiJy7qYi7i9
-         cACfKu3wt+/9h3sebDenBprLXWEHT9vBSO1mfNDA=
+        s=dbaedf251592; t=1588511027;
+        bh=luUWOSurUWv8Y8HSTIcfmRsAiC2aJOWuuo0/vNEMFEQ=;
+        h=X-UI-Sender-Class:Subject:To:References:From:Cc:Date:In-Reply-To;
+        b=I5dB89K04HMvfkNrTUu6X2qoYj5YEDRVxMUY/7bmUO8YlKsX5M+M1wlOdv+7oSrmW
+         JeSjBdTC0QqHIpnnPqrH1Uh5oNhAo0iAILPEzK5mQpp2dFWDw8zkfoW/VC6sYX5zbH
+         MVdSiaj+w09EmV+hFM/FryajhTOym6MmiBn6IKuA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.26.31]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Le4js-1io82831mm-00pxTM; Sun, 03
- May 2020 14:54:32 +0200
-Subject: Re: [PATCH v2] checkpatch: fix can't check for too long invalid
- commit id
+Received: from [192.168.1.2] ([93.131.26.31]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mx0Ix-1jFNQ82Ca3-00yPs8; Sun, 03
+ May 2020 15:03:47 +0200
+Subject: Re: [PATCH] checkpatch: add support for title acrosses three lines in
+ commit id description
 To:     Wang YanQing <udknight@gmail.com>, Joe Perches <joe@perches.com>,
         Andy Whitcroft <apw@canonical.com>,
         kernel-janitors@vger.kernel.org
-References: <20200503115406.GB10332@udknight>
-Cc:     linux-kernel@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Matteo Croce <mcroce@redhat.com>
+References: <20200503123435.GD10332@udknight>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,58 +72,59 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <e108fe75-440e-8349-eda1-c28814997a5c@web.de>
-Date:   Sun, 3 May 2020 14:54:31 +0200
+Cc:     linux-kernel@vger.kernel.org,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Matteo Croce <mcroce@redhat.com>
+Message-ID: <df619612-3825-4637-e025-618a7a982310@web.de>
+Date:   Sun, 3 May 2020 15:03:45 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20200503115406.GB10332@udknight>
+In-Reply-To: <20200503123435.GD10332@udknight>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-X-Provags-ID: V03:K1:3TPm0eIkeVSP7dRWQrgq7zKLyD35opWOVw8fknKm/rKwAAXw107
- IcYXO4NltXZ7Vy5N66VZfvfB0fqTXv77nOSR1eNBKTSzqQkxgvJwYWQ7+fV0fH8vzecuGAj
- 1Czbs554iQ8jluxY9zEL4QA8H9Iiyf/DQrLufR493MTP2n0sPF+aWl8wEwoJd/ROOFQAvmn
- gDjUiVwzoP494K6s5wH0A==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:+H1AVTi6CX+RViudSSfT9MZFOWyNtOH0bHzzwEX+EH9FyHN9PF4
+ MdC97gdYJqFMs7W+c9dyXJwoX2m/899+ue5F6favdHwS0WXKFm/iV8saQfKx+7/MjE/XZXi
+ DQRahSaWAjs6d/UBfoorjE3jr8ASPN7mQ8GgQyxq/C4kNv6P8mhAQE1U2teNAe5WdrrrrA7
+ 86EKVsnVn2GJDlYmxwPCw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:SSLLQOKGIPk=:emCK3WkfREfYyqRnjYPcAB
- D8gGp25bPbdZjWBtu+eBWVc1pXFEGCIEMLHcIOofT4QX+0w6mGItnRV6pGIuJLThlWhUlpxzn
- tkeCtQEumGB8LKD4ZTXSF8vlnnkd0TE0KEBSOYPkRKwIFr71j/54qkzpQosUe/oiJnsAlxWmB
- WbnI2bBZZNgQOrQ6yLiZc1n6GrI4eq8kQ7TNmxtrQBsQQTkHDETfho4g5S1LCbzRUQ7MpTlJm
- NktIdgqNHbIumJ/voI7LcxWh1D/cE6Gwkjyp5cc3h0c2WXFJ9H3PLKFosxfxDUdiJWMwKTbtI
- 1yfBm3pfdJYkjIF5524adXiD6RD/X3q47AZHD+VUe6GLC+NNWlTyoy2mb05ifb5q+OflHni9a
- R6zf7x2fa3XH2Zsz6deuXX88Mm7rK3xp5xaVuUpdHffAt0ezHXLZGlhOEKil11FsvhLb7cg6Y
- ge4p75d5NaTvikISRtcImnSNaX3vlSplOQT5MnqupEd4HInxjNJyX3TUgv45LHbkehGG/B+Wr
- HxrrZZuL7UzffSBXN75GUKqFyPZ2o19HUw7Ij5xkmBhSatQH8S+Amlt4ok3IG8uijFrwAkjKp
- bFo+qLgFayZay6RYC0ijqDKFsh08IZJiFcOWKc4xJm2tFPfmwH18Z0iPIV4PdkejJbmpTq2eJ
- eIs8yBnW/sLCdClNRUnWDIBTRRSwWycSnUt8Q3h+AG1q6WDR1fx0Jpv0DgE9UqEHshC4N9bc8
- 9e6cjC5LbC6eevCHam/6r8ZWT8sE3nJvR2qS0XRZCuSChkvamo3kzX0F8sLk2dCz2yxwHsDt3
- D0drA/SDUlFU4JJFtGrV4mCB9Zbb+bYorCSwkVrzyPhriDcQ48iUb83ZI6KX2x/7DFvj7DSqf
- QhaZ/RSOJvTPNah+Wu2O367L2J8a7+ogFO2amrJU/lLkulL6aBJFFnX+R5wb/W1yy3ES5rsQg
- o3PJ4JeP+JNzB/MG9xIPzRNf4RBi2GKVcFkPz5ZL9G0oZj8CewjdvJBdmHy8fj8taerg82/TV
- JMu+g9ke27hUoHIPJmamBGBDARiey/p2eajIBmtaosIEXFCaSFa0U9ifTi98vsx3Ilu0N4AN0
- 81+pvkoroclzG7N7VqJVQEd/sPjk9noVYh9wUsmhZrM3/dtzT76fAvrq2LtrEnGAoCneap+Vx
- +Nf1j9uwwxXezzde8YFKNm4ue2XdogXGpCWgF4tDSNUQfXl2V4gObFJ8DNyGHpRnmdZr9CZSG
- X+bMyT4SAMn9QVUFG
+X-UI-Out-Filterresults: notjunk:1;V03:K0:2RU6bDv9qdo=:FCn9tYU+pH0Eevczq+Pwoe
+ asGIPB8kKOYb1JqKv4h/pnUyI1YqV8v68oC0i0lpc7gPg4HbxAYSnUgrorakInf1nuY/ExK5m
+ GEBQj4lxBVc1jiqF4uQloQ99ebxLQc/lJ8XNzrtDjNbYzriuHI6LIKwSM4/4ntwh0j6qou9Nt
+ GIEL0k7IojyolhqT/QspOugbajWXzDq2ou8APdm9SEDodGvcYalYOXCGAQHnp56wt0qn0ksVF
+ JCjJ/Ts2D0R2VJO3S5AziGqZbCNgcIac5SnftHE9yEsGkv2GKJ3edFhvve5qSvg5t9OciKlzN
+ +x+vsKr6ocpBsBC+qH51YOFgFmy4U9xkppjtA4qrc9yVKc/uZXJi8NDObQNarAvOH+R3d1v4w
+ qoBR3xrRyJ5SM4teicchyEpBu41lWL2DwgLQ+ry6jsutosyUpF7Y8wTNpfksiLkQZoBwwyWsz
+ KXJJQlST9pIp8NgbG9c2fXzQ3Ss7UILnYnVmv5VYij2W6xcE/VQKF/DP7YFMt5LAD3w9z9xX6
+ ZpPCRbM7PAV7nFCt/fKT6M0rch6wkETH0czSTJshz2pWqc87Q+XMYCK9ceS6q+06+ls6twYMB
+ 4aI7ldvTL/lm6JxPSy/vuqG60ILVBHi5TmO71RDadEwGSDxwdrguoNpPpwxSntNIlZfVs9BOs
+ CZU7e/KYUH7VKbsp1K0bWzPvHQTCzX51DsrDYxxddwH4eyXRl77qlgMSI/xnxVWu1Q6kK7xtA
+ OIJIdn9PDRkeYYomsZaK0uj9qFmKLNTjy1IP8cHA/bercB9D2uoQDF9tV7H2M5AFpuV68pAAo
+ a+jULa52PT9Ds1PdHsHl6xcaOkSR5Yu895h7qy89Ku6Vip/uA/qy7sfS3t6p131vjbysPi7jI
+ 1qos9H7u3pbBl1F5W9eLfYK28vaOMgQycvN0mT8W0EqTl6qvtohhA8x0Wib/OMDDN+AvWChvf
+ cPPrmPw4SYCV8D15vpq3sZo/sCtNWb8yFPVh5ic1SkKQTngga/ZWAke+eKVux0Dt/AA1LOJHt
+ 7LDWZzWFKbbyudR5/mlNdxMdvYWNXasS7nI+e+UrOvf7aA4g9VSDRTiqdZa9YDVNIxSvW2ygh
+ OJwgtARaHSZL1JIlZh1Fewg7x2KfvMQKqjuR6sFZRHFOrbTnV6rXCmCH+vw1Uru+2PAP+zNEU
+ Yvqp55BWfx/A4SpquX/XSP4lHlizWWEMtrqxVtDYJOhNPCJSzEfIhmbwEwQ/tlmbmKF4ojzWw
+ XvYlLLi2tY2189wA0
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> it willn't warn anything about it due to 41+ length commit will never
+> The current GIT_COMMIT_ID will report error when the title in commit id
+> description acrosses three lines, =E2=80=A6
 
-I suggest to reconsider also this wording.
-
-Alternatives:
-* will not
-* won't
+I suggest to improve the commit message (and subsequent Perl code)
+also according to the usage of the text =E2=80=9Cacrosses=E2=80=9D.
 
 
-> This patch moves the unknown commit id check for normal commit description
-> to GIT_COMMIT_ID, and uses ERROR instead of WARN, because unknown commit
-> id is total useless to track change history in changelog, it deserves the
-> ERROR.
+> This patch adds support for three lines title in the commit id descripti=
+on,
+> and emit diagnostics info when the title acrosses more than three lines.
 
-Can such a software adjustment trigger any more improvements?
+Please split this paragraph into two imperative wordings.
 
 Regards,
 Markus

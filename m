@@ -2,31 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2334E1C3F8C
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 May 2020 18:16:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 994FB1C3FFA
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 May 2020 18:33:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729540AbgEDQQF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 May 2020 12:16:05 -0400
-Received: from mout.web.de ([212.227.17.11]:55749 "EHLO mout.web.de"
+        id S1729703AbgEDQdx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 May 2020 12:33:53 -0400
+Received: from mout.web.de ([212.227.17.12]:56343 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729253AbgEDQQE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 May 2020 12:16:04 -0400
+        id S1729697AbgEDQdw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 4 May 2020 12:33:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588608949;
-        bh=DQ2nnjZEA8s4f3e4nypJA7Djufr+5weaQyav93E3Oso=;
+        s=dbaedf251592; t=1588610021;
+        bh=iKajeEThUjwNdKgviLkmcHAYeTjhUS1wUVRcmyQKF6Y=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=lyh772TgdBb6MLT0ZJZ2riRi3nvnhxRjy/UD3s5yXQIEALNk+EpgNIeuB1E6nOAJd
-         XDKwCVIh6XOKeMx6f+/uxhvnYUTvVF08ifKtTqsKNcrCGLixZfwJh37n5KrKEcJHLm
-         exGCX5KqYsXodl/Xst42Ngvhm7UuvqqNzy/ofsfI=
+        b=K257McYQeURBaqfoACrBFDGgBSXXGK/wQwEcNSOAL7hOdZGzJMw/igJwkWXB23waI
+         QE5hc5dSGBjiFxVS44eAldPlQl8sPa0beenJ/A54YS8BhPM36tNdB9vmDkWDW6Ynym
+         HHGIyBNv/pFzrg5wvpSWp/K+doxW+G46nUF5iJCw=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.133.152.69]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MT8bi-1jg7M31zUs-00S3b7; Mon, 04
- May 2020 18:15:49 +0200
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LxODe-1j3ir10BNy-016u7u; Mon, 04
+ May 2020 18:33:41 +0200
 To:     Jia-Ju Bai <baijiaju1990@gmail.com>,
         jfs-discussion@lists.sourceforge.net
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Dave Kleikamp <shaggy@kernel.org>
-Subject: Re: [PATCH] fs: jfs: fix a possible data race in txBegin()
+Subject: Re: [PATCH] fs: jfs: fix a possible data race in metapage_writepage()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -71,60 +71,60 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <5ef374a5-0e2e-5c74-a827-0148c384f6e3@web.de>
-Date:   Mon, 4 May 2020 18:15:48 +0200
+Message-ID: <bcfeb785-b787-4ebe-c1e1-159b6efc7e51@web.de>
+Date:   Mon, 4 May 2020 18:33:40 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:8/af1Ha9nzjc2lhZ5r//wz9hohzEA2pfMMozzIES8IlmQdG9k1y
- BKeq18KyyjcU61EVm7XNPp4CtjUHkYKPFVDMMHJ/RNxc4syj33nSr+vVhQt3mCce2gMp5dI
- EN09JEFU8qaIncDi4YTbj7Fq1T5z1YmY4pySdhWxCQo0Nc6eSxY1/YVtR4XXcFNo2KB9trT
- nZNH/YD2V1eKirZfeMePw==
+X-Provags-ID: V03:K1:7YzZOCIxWKK/06F9z/ZoK6WsDS8atsDgIU4fFcNjE6d6Q+wNyQX
+ TbHjc+gy8VxPl6nXw2MEX992I2z5RX7o3FEyn1hhQRCKfQviHJjoPn4YQ9Zn1UI4TT/7LnQ
+ 5bTsgigi4YzCdVxOShXOLhDjtc4tFK8v5Vf/ZazivbflC/VT09VwzktchzAsYooQzhcZLIp
+ WXyV3/ul3uZpfuPLJYI4Q==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ArymooPZTeg=:Dmrghxo4++2SROSRIDzjLs
- KUlKg1b382hJrekSx8GrThMoLNhDaH5QLV0YfUDoKGNPPdGcFtxTsfjy18Lbjvnp57aGna+FK
- Jf0AqGDtF4QFONPIXcdrTYIXGdR4/L32GOjM9XBAc3FAlFNN12YavBRDEIC41eMeJKQ9teHiK
- D7vOY7RZoYK6wqg98jNJ+97qntaRK/D6i3UqwE04MmbIy124VxrWnHWcKcJVtjUXY//NlNNdN
- uZrUfFObTDg0tiwo9DswTYU0aU6rWvSd/pvXoSDVUeC3fxWcjH6mx8JHvqQEmnNL4lshl6bks
- NPHskXYMY2JVGMwbJcwOKss6YM7fOjvGI6+oj2QxhdfGF+uMfjhAGmanvpyCGd9145uP61vtn
- wzpkoyoHRr4aRgulr3LWTBigFEfZWvqcxPzbFSMw9X3bvoyrFinFPXEgCyNp4LB1B3MG6KvRy
- r3kHxPew2Dyne8HgrLo/3RNiH3GHTt9+MGurpptPCHIJaLW519VUv8QzgtS/eXItBqT8SQDIA
- kRY8tsPjx6HsIScW7FNza6Sfu18XnjB9NPYNi/rJIWT0UBid/qESlGZHnK91Fy91NlpnpHEum
- oyViDeD5vkSvMoR71kn6J2Wxx5TGk+BXOXz3N2Bb2Tw7deep5P/cxq6Q68XvX1O9UhlVf2PQU
- GuKibhy7whZcdrRZD7mdp5eJV4kWtb6hGKddtayhTRNpZwWkvcu3HSm1PoeQpzAzK1slrdwfk
- qIfcG4kyjEtuaIjIOalmymsRX2FOujh/+7hteZy1poWavA58zRZ48SIb+P5WPuFXB2eIZKRTt
- KrLhvn8z/yIE+ZFDzTJrneG/SQZvs++mgGEjRtMGalosadISLUGY7QKj7w4kyd3CIor0fslFU
- bMuj4WjJXxLeAReYSZCvqIKGf6bX22SVkAMzePLTiiQGlyH/DZB+wSXnNSFOA7Llp9Yjg1nmj
- hBWdeOcLe8RlMWE8N4RsSSEPc+nbGUugO9MFj8lA2CM4jgEeeBeo+iKlXe2xWMZmBp7/gNn9f
- apLo76LXr84JwQr6E4YfhpA1Z5Xm//Q17UxXfetgA+I89m3O1nQPMar5REX14mkw3y7XUiu2N
- frujy6IW7UipGGbHPZRi20B5WhP2sjvIaw1N8zh7Y3Qzmv0CeQ2mzKWYWJ0fCYHb+8b8Y9MXc
- azl95sxk2K5ZTGRXXR1pUUAWfNLn5Uh/nY3rLKYXMV3U2IcH+VMxCYH40NqkC3G4cndrsku+z
- sgybEMRZCeh6hawSq
+X-UI-Out-Filterresults: notjunk:1;V03:K0:55LdT5xZYwQ=:CDw870Ji6yeC5L4Zf5gTqQ
+ Pyrx1kQLYV9Te7BL8CgSFme9+0o5zNvlEFb6HH3kiOK7wt/H5U4jlwTTEDrrzrGUxa4HkUt6h
+ BpCuVtiu2rZYsny2rWfdkdahOk9FWDuw/80EAQSckcVE1qBiz9Wgmv1LtOpwZiPs3dMOmP2qT
+ hxvazXprI1eew5nIxph0V+YakkiKQ6lw1ZJumfvIr8I+Bj798TaWr3hZAKxdTfjDDVNf0EODH
+ 7lGfDk/LPWUO7y+Ohe8NyXKtVOQ+AFGRQL0+0T00z/IMPglvM7ZiViijxGzeQAtWtRQ9m8YnV
+ i1sviaI3nm94jm8xedRArAIuA/Y9eRTcg1KJhGVmXooB1A5QiJ10KyS1vEhyAjGoENh767Agp
+ IQewBQtBwnICDiP+MqdOLRsoU7B5q0KVLN37l05MdwQctQGwKFKpLCR4poNaXQFv8q0V0kCSu
+ 580M/v35nFkc3X4slRVS3+qIfFnlijH2wzaGySQYxiUukzmiYvvyGpfzqaSoGqJRIdUtcC3gR
+ DFSceH2FRdPtubLmgjKycweYrSQepHVTP78ZL0Hv7LpXLgAb9aOfITuZnxHfZ9o0cbkThlDw1
+ C1+v4sYnNRCSYz3gBnKXar0zANdhBV8iovrQ651gk65f+9yTygvFNfzjpIs5maIrzy1zkhRNm
+ tgWvX3UTvcmE9o525a6ukK5T99TqzI67z7lEJpvAeFts1TkysOh34RKTFQGfAN+IoiMURPxlC
+ 2CvRQeuueisg4aWchdosIBiSLX/dGcaMotjAZwQy6iFJo0XipEmYNROGR6uXSArIQywt3lMRZ
+ rDRO1rGosq9P6adtQyQroB0k5CFLBD6FsTgmXgTEfSAChetd6LluvNd7qMAf11olMom5snTQd
+ lw7BoEIa+JWSEVkXpEPN/oOr4b+9uLyswxTGWYN54NsYK6QY+DmDcFV7U2ZaoMUIOWbul4Yjo
+ 1BXegqTkUYCdUvcACjTYUZoNct4dkFNpb/irhPNZaLpnc5Kfz1yjmKAX2JAGJtqnVnWNnpTs7
+ iKEKXPKBXUuFgEnz2fUtByuHrbrEHCMxzMXVkowPvwE1ZVBLBv5FCd9WVXQA6q0vuaWnvLQp4
+ lTVdQXoookE0bPsZLc/QxQeBNFjy11oSz83LlZlidA/aMMQosRNs/t3KFlpiGcYfSPku/+qr4
+ K/RcRRijjMy7Edmls9frfz39CiSLM5r4S8/xG1JCeueoF06B5M8xWUWoSb8D9wGjy+MnJWMVL
+ +/BDhs8ybSbfsF9E3
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Thus, a data race can occur for tblk->flag.
->
-> To fix this data race, the spinlock log->gclock is used in
-> txBegin().
+=E2=80=A6
+> To fix this data race, the spinlock mp->log->gclock is used in
+> metapage_writepage().
 >
 > This data race is found by our concurrency fuzzer.
 
 How do you think about a wording variant like the following?
 
    Change description:
-   A data race can occur for the data structure member =E2=80=9Cflag=E2=80=
-=9D.
+   =E2=80=A6
    This data race was found by our concurrency fuzzer.
 
-   Thus use the spin lock =E2=80=9Cgclock=E2=80=9D for the resetting of fi=
-ve
-   data structure members in this function implementation.
+   Thus use the spin lock =E2=80=9Cmp->log->gclock=E2=80=9D for the assign=
+ment of
+   the data structure member =E2=80=9Clog->cflag=E2=80=9D to a local varia=
+ble
+   in this function implementation.
 
 
 Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=

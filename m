@@ -2,43 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07A5A1C3965
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 May 2020 14:31:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2334E1C3F8C
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 May 2020 18:16:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728752AbgEDMa5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 May 2020 08:30:57 -0400
-Received: from mout.web.de ([212.227.17.12]:54271 "EHLO mout.web.de"
+        id S1729540AbgEDQQF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 May 2020 12:16:05 -0400
+Received: from mout.web.de ([212.227.17.11]:55749 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727787AbgEDMa4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 May 2020 08:30:56 -0400
+        id S1729253AbgEDQQE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 4 May 2020 12:16:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588595426;
-        bh=4vtckfEA/Gm+6t8z2cMn4aydD8EVKVyz7dijkkXOO7E=;
+        s=dbaedf251592; t=1588608949;
+        bh=DQ2nnjZEA8s4f3e4nypJA7Djufr+5weaQyav93E3Oso=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=J+lp2Lu8oTLdScCp4N1xYAmsWaAeBEaNynd68ALXT3T3rVQNhDGqH8WmD00/LTl0j
-         RDwxa1obRgZzw+ff9MZtW1PHNUgLeeXXOsy/igbzr4TRHMEaQPJkyo7D2Krx0pDh4U
-         DyZiXxqmf/AuVAmIUu/556c+FdzFq7KofIQiRlsw=
+        b=lyh772TgdBb6MLT0ZJZ2riRi3nvnhxRjy/UD3s5yXQIEALNk+EpgNIeuB1E6nOAJd
+         XDKwCVIh6XOKeMx6f+/uxhvnYUTvVF08ifKtTqsKNcrCGLixZfwJh37n5KrKEcJHLm
+         exGCX5KqYsXodl/Xst42Ngvhm7UuvqqNzy/ofsfI=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.152.69]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0McnqH-1jnWjL0493-00HyRI; Mon, 04
- May 2020 14:30:26 +0200
-To:     Aishwarya Ramakrishnan <aishwaryarj100@gmail.com>,
-        linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Baruch Siach <baruch@tkos.co.il>,
-        Dejin Zheng <zhengdejin5@gmail.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Pierre-Yves Mordret <pierre-yves.mordret@st.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Thor Thayer <thor.thayer@linux.intel.com>,
-        Vladimir Zapolskiy <vz@mleia.com>
-Subject: Re: [PATCH] i2c: drivers: Remove superfluous error messages
+Received: from [192.168.1.2] ([93.133.152.69]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MT8bi-1jg7M31zUs-00S3b7; Mon, 04
+ May 2020 18:15:49 +0200
+To:     Jia-Ju Bai <baijiaju1990@gmail.com>,
+        jfs-discussion@lists.sourceforge.net
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Dave Kleikamp <shaggy@kernel.org>
+Subject: Re: [PATCH] fs: jfs: fix a possible data race in txBegin()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -83,62 +71,64 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <52dbb335-d3ea-3f14-8228-5832cfa59728@web.de>
-Date:   Mon, 4 May 2020 14:30:22 +0200
+Message-ID: <5ef374a5-0e2e-5c74-a827-0148c384f6e3@web.de>
+Date:   Mon, 4 May 2020 18:15:48 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:RZsGyjXE5gi9SyRArYhotskAkwdA+dqdoj7wZnD0KdOE2unz7W9
- CsUGdaIryGFBTOGYMG9wmG2BfeOwV6raI0j/dMhPfUt6lw60fo5M72JlQwTJsAvE0rjKbh3
- qFkzNwR8gXb04GEmXKvsOu95/KNOYm5GLcnmwh7/2O705/utTtu23plZEoBS+ebeYVfeM8I
- SpPSGAu4G7AFJQWeww9kA==
+X-Provags-ID: V03:K1:8/af1Ha9nzjc2lhZ5r//wz9hohzEA2pfMMozzIES8IlmQdG9k1y
+ BKeq18KyyjcU61EVm7XNPp4CtjUHkYKPFVDMMHJ/RNxc4syj33nSr+vVhQt3mCce2gMp5dI
+ EN09JEFU8qaIncDi4YTbj7Fq1T5z1YmY4pySdhWxCQo0Nc6eSxY1/YVtR4XXcFNo2KB9trT
+ nZNH/YD2V1eKirZfeMePw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:aATzs2bTDJs=:cYGG3bE1QfrvbCmltKQaFH
- gX/Io+cgeDXi4MjQsWfdmMbHjCYXR6A3LLFXIUJowCPxTH/LtueMvI9wAoHrUVm9fdrnFWbLT
- HpBkn7DB4C0mpnU4gcvjhm6jnwH5y7dTeyTVtsrCsYwMjoU5o3FJI5gcwyjqTBdseKUheFZ3x
- 8XkZqOasxQzXqeGEHSLRx30VTWSpnM3ZHZoB0m2weKPwnH1zWDL2wouV0UEczWz3D+PZm/jmm
- B4uPyEAIXK5CBHKBGxPKyVnp2ZC6+TNwF9uzto1uW+W1mCq2tfeBGXaZ9BK1p1DsvD8Pt0N/M
- nHJEnXUmkRPjDa1mAe96t4qtNxoX1wjHCW9JThTBF5iEl67sp7W174x9VRXLMwTzQNHXEenMR
- HwrU3vW91MYBp51c7mGTeiPgb1YG+XIRKZH+sa6Jo4prabLdhB8A+bANpL0Ps8uAYrd435usl
- VAQ+o/pRmyr5nkF8PxeH7F1eHpsfGU+Io2wpTcPyZJ/aKLhbdwX4X/u4dPxJA8RyAaxevC+G4
- 60KEDNuvH8pXciYG3CHsEVgE5oswuQZ/37a/DD0XNZ6GxzuZVK5QZGX/9UxisM0s+w4oCjrbR
- QaDie1qKWgR7EpY5YabsfCPZUtN9AhaP7vrdxS/bLdc5h203tbaEmsjD0aEBBoadnwUZfP8H2
- yK4Q8b5kIhKKYAGoMbrPWkAmv8f6WMCouCvanl2OQBKeXhdVtiVFix9k9vaO8wqTXKJkQazx2
- i125Uv1V59ZfPbb4NuMbs5qh2G2AEwcZGagmTulXhYeTTlKsNkqpkUdJhsroGalcxspPfhSLB
- EWF3YnTLo8TExr0Q72X7rai55U4/3+nVItC8IglK5nl9+cBUmY0FgeVfP5VNWSiARslCoBfdz
- IR3OKfCg8NL+zOPbrb18BWvjFFZXlFWagU4gjlnE5vhtfm3XwdepUsfSnrq/EzSuv0wY/sBzQ
- Uhj/3rasGsx39yAoNJltS9LFqqZKfMpkb8uansxyn2d+Hv4YS/dVEquF7oDeoie6SWq33h9v0
- 21Qyt9Ul71Q4yDXBtoF0vzTeL7L241ll/jGvBV1Si5BzoAxSjOM7W1J899NpCSUFSfXtqW6Oc
- ks0IkxmD4LkxJe7Gb9JVz9GArSOxi0WmG4p1BunzN0M+U+RT3ur0aeeVMNpft7cqHNTNRRg/N
- SNG3PZxsNMkcmaE9DnbHe3D60nHUgbTd0pHdg//XXYta86jsm5/uYOSTd5feY7WceSUD7AAob
- IneTwQ3uqAHAIxtVA
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ArymooPZTeg=:Dmrghxo4++2SROSRIDzjLs
+ KUlKg1b382hJrekSx8GrThMoLNhDaH5QLV0YfUDoKGNPPdGcFtxTsfjy18Lbjvnp57aGna+FK
+ Jf0AqGDtF4QFONPIXcdrTYIXGdR4/L32GOjM9XBAc3FAlFNN12YavBRDEIC41eMeJKQ9teHiK
+ D7vOY7RZoYK6wqg98jNJ+97qntaRK/D6i3UqwE04MmbIy124VxrWnHWcKcJVtjUXY//NlNNdN
+ uZrUfFObTDg0tiwo9DswTYU0aU6rWvSd/pvXoSDVUeC3fxWcjH6mx8JHvqQEmnNL4lshl6bks
+ NPHskXYMY2JVGMwbJcwOKss6YM7fOjvGI6+oj2QxhdfGF+uMfjhAGmanvpyCGd9145uP61vtn
+ wzpkoyoHRr4aRgulr3LWTBigFEfZWvqcxPzbFSMw9X3bvoyrFinFPXEgCyNp4LB1B3MG6KvRy
+ r3kHxPew2Dyne8HgrLo/3RNiH3GHTt9+MGurpptPCHIJaLW519VUv8QzgtS/eXItBqT8SQDIA
+ kRY8tsPjx6HsIScW7FNza6Sfu18XnjB9NPYNi/rJIWT0UBid/qESlGZHnK91Fy91NlpnpHEum
+ oyViDeD5vkSvMoR71kn6J2Wxx5TGk+BXOXz3N2Bb2Tw7deep5P/cxq6Q68XvX1O9UhlVf2PQU
+ GuKibhy7whZcdrRZD7mdp5eJV4kWtb6hGKddtayhTRNpZwWkvcu3HSm1PoeQpzAzK1slrdwfk
+ qIfcG4kyjEtuaIjIOalmymsRX2FOujh/+7hteZy1poWavA58zRZ48SIb+P5WPuFXB2eIZKRTt
+ KrLhvn8z/yIE+ZFDzTJrneG/SQZvs++mgGEjRtMGalosadISLUGY7QKj7w4kyd3CIor0fslFU
+ bMuj4WjJXxLeAReYSZCvqIKGf6bX22SVkAMzePLTiiQGlyH/DZB+wSXnNSFOA7Llp9Yjg1nmj
+ hBWdeOcLe8RlMWE8N4RsSSEPc+nbGUugO9MFj8lA2CM4jgEeeBeo+iKlXe2xWMZmBp7/gNn9f
+ apLo76LXr84JwQr6E4YfhpA1Z5Xm//Q17UxXfetgA+I89m3O1nQPMar5REX14mkw3y7XUiu2N
+ frujy6IW7UipGGbHPZRi20B5WhP2sjvIaw1N8zh7Y3Qzmv0CeQ2mzKWYWJ0fCYHb+8b8Y9MXc
+ azl95sxk2K5ZTGRXXR1pUUAWfNLn5Uh/nY3rLKYXMV3U2IcH+VMxCYH40NqkC3G4cndrsku+z
+ sgybEMRZCeh6hawSq
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> The function platform_get_irq can log an error by itself.
-> This omit a redundant message for exception handling in the
-> calling function.
+> Thus, a data race can occur for tblk->flag.
+>
+> To fix this data race, the spinlock log->gclock is used in
+> txBegin().
+>
+> This data race is found by our concurrency fuzzer.
 
-I propose to avoid a typo in a word of this change description.
+How do you think about a wording variant like the following?
+
+   Change description:
+   A data race can occur for the data structure member =E2=80=9Cflag=E2=80=
+=9D.
+   This data race was found by our concurrency fuzzer.
+
+   Thus use the spin lock =E2=80=9Cgclock=E2=80=9D for the resetting of fi=
+ve
+   data structure members in this function implementation.
 
 
-> Suggested by Coccinelle.
-
-Can an information like the following be more helpful?
-
-Generated by: scripts/coccinelle/api/platform_get_irq.cocci
-
-
-I observe that a command like =E2=80=9Cmake COCCI=3D=E2=80=A6 M=3Ddrivers/=
-i2c/busses/ coccicheck=E2=80=9D
-points only three source files out for further considerations
-according to such a known transformation pattern in the software =E2=80=9C=
-Linux next-20200504=E2=80=9D.
+Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=
+e?
 
 Regards,
 Markus

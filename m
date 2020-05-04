@@ -2,193 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A67161C3498
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 May 2020 10:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E18D1C34FB
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 May 2020 10:53:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728170AbgEDIhN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 May 2020 04:37:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53670 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726796AbgEDIhN (ORCPT
+        id S1728095AbgEDIxU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 May 2020 04:53:20 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:30552 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726515AbgEDIxU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 May 2020 04:37:13 -0400
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C095C061A0E;
-        Mon,  4 May 2020 01:37:13 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id t16so6513146plo.7;
-        Mon, 04 May 2020 01:37:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:mime-version
-         :content-disposition:user-agent;
-        bh=F4fr9XBi1a/oSkiQzUJpCLmRF7yWLA9/RoAGqLKM65U=;
-        b=BOMsWwB01TCxwzPOJoHmTnCHW3jYNKZB7GWyOete9/X0teL4bxx9EaY1d8wFMlGZRA
-         x/ZryFxdEMkl9Acn7n+MkofZ4lRWnfam8m+NiNTvdnq5jYe8HYz8B6YMwHDSXilWa6tb
-         jh5bGQNOYps9Ee02CK3qEEhqTYkRIlkHigUJKpmfVy5zt5unbWIU+CeVXdD+yeMgSW5b
-         8ow24MtCnBUVyj6OrlD3iNxH6hxZaTTZROgifuOE5QzwN2mw7QGhk8aXqbKyX0fYrq1L
-         YLO9RvWDf9AzAU4CjQQUrZewbchEPC/e0JbRdXNbvfKjE77EhKG5Im8SVZL89k2sjNai
-         ThGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:mime-version:content-disposition:user-agent;
-        bh=F4fr9XBi1a/oSkiQzUJpCLmRF7yWLA9/RoAGqLKM65U=;
-        b=kIjDV18+DIwhg4cqRcopomzjGvotfFFStY8NQowt+MLrwxEAke2/f5VXoLQSlE7soJ
-         0BRuMzr7mjOfeoAUsUOKR0W+BPAdcYNDOXW5BFBPw6Ik0TUF5hK6DjI6wlIP38xsTSft
-         LTF4n4pEtQJ21sbSeeOgyW98I8t5bTEHVri+SKqPSAF8/1Dsw9aL9qANgoX4BNCsHv5B
-         T2I2tvG90/LYrw/zzT2MGeiivhPsgHETYIfztHOpUapw/e47N+h3BhUWi8jmxYBDFZa3
-         iyEHFiC9W8kgtQ4zvASu+EaZocmdbMQUxvuQhQYfTx0vQH1heZ6+ITNkAn9f7gmLlSK/
-         zLJw==
-X-Gm-Message-State: AGi0Pub2LlyX2NH9GDjB34oiBN+lez+t8Cz54oR9hmRkLG2zQTzG8xiN
-        b07FmhT/vchhvrOHN1MO2Xs=
-X-Google-Smtp-Source: APiQypJJ/XkAPpX53ra71qD6r+VzFBmf9NoajSmGICFKdxVuhiQng5atd8KdB+uelFWV+UVaKLaR8w==
-X-Received: by 2002:a17:90a:68cb:: with SMTP id q11mr16665686pjj.15.1588581432612;
-        Mon, 04 May 2020 01:37:12 -0700 (PDT)
-Received: from udknight.localhost ([59.57.158.67])
-        by smtp.gmail.com with ESMTPSA id v7sm8156629pfm.146.2020.05.04.01.37.11
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 04 May 2020 01:37:12 -0700 (PDT)
-Received: from udknight.localhost (localhost [127.0.0.1])
-        by udknight.localhost (8.14.9/8.14.4) with ESMTP id 0448b726030855;
-        Mon, 4 May 2020 16:37:07 +0800
-Received: (from root@localhost)
-        by udknight.localhost (8.14.9/8.14.9/Submit) id 0448b64s030854;
-        Mon, 4 May 2020 16:37:06 +0800
-Date:   Mon, 4 May 2020 16:37:06 +0800
-From:   Wang YanQing <udknight@gmail.com>
-To:     joe@perches.com
-Cc:     Andy Whitcroft <apw@canonical.com>, linux-kernel@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Matteo Croce <mcroce@redhat.com>, Markus.Elfring@web.de,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] checkpatch: allow commit description spans across three
- lines
-Message-ID: <20200504083706.GA30290@udknight>
-Mail-Followup-To: Wang YanQing <udknight@gmail.com>, joe@perches.com,
-        Andy Whitcroft <apw@canonical.com>, linux-kernel@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Matteo Croce <mcroce@redhat.com>, Markus.Elfring@web.de,
-        kernel-janitors@vger.kernel.org
+        Mon, 4 May 2020 04:53:20 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1588582399; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=CMa1D9N18zuEsw1/L8ZNazrLaRo4UzCqb/YkDNYP7Rg=;
+ b=N2Dv5WeS+tCg5544IViKsZ4ZiuXFmPd/p7tnF6QF1wH66tymnXtwB0tVgkBGtgJrN2vih1oe
+ CIfBgPd/FLJh2UoY1lNVt5Qt5rtSvK5QMQHFOgKsQSBqoq1sT6PpLYznjfHNzXkBYKJUQrIq
+ +LJ91usO2ak/ktZB5zNKXwx555w=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eafd7ed.7f7d8afef500-smtp-out-n02;
+ Mon, 04 May 2020 08:53:01 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 03736C433BA; Mon,  4 May 2020 08:53:00 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A8E5AC433D2;
+        Mon,  4 May 2020 08:52:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A8E5AC433D2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.7.1 (2016-10-04)
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH net-next] ath10k: fix possible memory leak in
+ ath10k_bmi_lz_data_large()
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200427104348.13570-1-weiyongjun1@huawei.com>
+References: <20200427104348.13570-1-weiyongjun1@huawei.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Wen Gong <wgong@codeaurora.org>,
+        Wei Yongjun <weiyongjun1@huawei.com>,
+        <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200504085300.03736C433BA@smtp.codeaurora.org>
+Date:   Mon,  4 May 2020 08:53:00 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The current GIT_COMMIT_ID will report error when the commit description
-spans across three lines, for examples:
-"...
-To rehash a previous explanation given in commit 1c44ce560b4d ("net:
-mscc: ocelot: fix vlan_filtering when enslaving to bridge before link is
-up"), the switch driver operates the in a mode where a single VLAN can
-be transmitted as untagged on a particular egress port. That is the
-"native VLAN on trunk port" use case.
-..."
+Wei Yongjun <weiyongjun1@huawei.com> wrote:
 
-The above changelog comes from commit 87b0f983f66f ("net: mscc: ocelot:
-fix untagged packet drops when enslaving to vlan aware bridge").
+> 'cmd' is malloced in ath10k_bmi_lz_data_large() and should be freed
+> before leaving from the error handling cases, otherwise it will cause
+> memory leak.
+> 
+> Fixes: d58f466a5dee ("ath10k: add large size for BMI download data for SDIO")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-"...
-With the optimizations for TLB invalidation from commit 0cef77c7798a
-("powerpc/64s/radix: flush remote CPUs out of single-threaded
-mm_cpumask"), the scope of a TLBI (global vs. local) can now be
-..."
+Patch applied to ath-next branch of ath.git, thanks.
 
-The above changelog comes from commit cca19f0b684f ("powerpc/64s/radix: Fix
-missing global invalidations when removing copro").
+2326aa011967 ath10k: fix possible memory leak in ath10k_bmi_lz_data_large()
 
-The total length of commit description ("commit"+"12+ SHA1"+("title line"))
-exceeds 85 isn't uncommon thing, and it isn't uncommon thing that the ~85
-characters span across three lines, see above examples.
-
-This patch adds support to recognize commit description which spans across
-three lines, then it will not emit error message for such situation.
-
-Signed-off-by: Wang YanQing <udknight@gmail.com>
----
- Hi! Joe
- 
- I have tested with below command:
- git log -10000 --format=%H -i --grep=" commit " | \
- while read commit ; do \
-    echo $commit; \
-    ./scripts/checkpatch.pl --git $commit --types=GIT_COMMIT_ID --quiet --nosummary --color=never; \
-    done
-
- There are ~50 properly formed commit descriptions belong to this class, and I haven't check for
- the non-standard commit descriptions, for examples:
- 3403e56b41c176f6531a2a6d77d85b46fa34169c
- a78945c357f58665d6a5da8a69e085898e831c70
- 87b0f983f66f23762921129fd35966eddc3f2dae
- ac8517440344dbe598f7c1c23e686c800b563061
- cca19f0b684f4ed6aabf6ad07ae3e15e77bfd78a
- 53406ed1bcfdabe4b5bc35e6d17946c6f9f563e2
-
- This number isn't big, but they are all in properly formed format, so I think we should support them
- and avoid emitting false positive error report.
-
- v2:
- 1: Reword the title line.
- 2: Reword the changelog.
- 3: Rewrite the implementation.
-
- scripts/checkpatch.pl | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
-
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index ef34716..8cfc3a9 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -2900,6 +2900,16 @@ sub process {
- 				 $rawlines[$linenr] =~ /^\s*\("(.+)"\)/) {
- 				$orig_desc = $1;
- 				$has_parens_and_dqm = 1;
-+			} elsif ($line =~ /\bcommit\s+[0-9a-f]{5,}\s*$/i &&
-+				 defined $rawlines[$linenr] &&
-+				 $rawlines[$linenr] =~ /^\s*\(".+$/ &&
-+				 defined $rawlines[$linenr + 1] &&
-+				 $rawlines[$linenr + 1] =~ /^\s*.+"\)/) {
-+				$rawlines[$linenr] =~ /^\s*\("(.+)$/i;
-+				$orig_desc = $1;
-+				$rawlines[$linenr + 1] =~ /^\s*(.+)"\)/;
-+				$orig_desc .= " " . $1;
-+				$has_parens_and_dqm = 1;
- 			} elsif ($line =~ /\b$prefix\s+[0-9a-f]{5,}\s+\(".+$/i &&
- 				 defined $rawlines[$linenr] &&
- 				 $rawlines[$linenr] =~ /^\s*.+"\)/) {
-@@ -2913,12 +2923,29 @@ sub process {
- 					$acrosslines = 1;
- 					$diagnostics .= "The $name spans across lines.\n";
- 				}
-+			} elsif ($line =~ /\b$prefix\s+[0-9a-f]{5,}\s+\(".+$/i &&
-+				 defined $rawlines[$linenr] &&
-+				 $rawlines[$linenr] !~ /^\s*.+"\)/ &&
-+				 defined $rawlines[$linenr + 1] &&
-+				 $rawlines[$linenr + 1] =~ /^\s*.+"\)/) {
-+				$line =~ /\b$prefix\s+[0-9a-f]{5,}\s+\("(.+)$/i;
-+				$orig_desc = $1;
-+				$rawlines[$linenr] =~ /^\s*(.+)/;
-+				$orig_desc .= " " . $1;
-+				$rawlines[$linenr + 1] =~ /^\s*(.+)"\)/;
-+				$orig_desc .= " " . $1;
-+				$has_parens_and_dqm = 1;
-+
-+				if ($prefix eq "Fixes:") {
-+					$acrosslines = 1;
-+					$diagnostics .= "The $name spans across lines.\n";
-+				}
- 			} elsif (($line =~ /\bcommit\s+[0-9a-f]{5,}\s*$/i &&
- 				  defined $rawlines[$linenr] &&
- 				  $rawlines[$linenr] =~ /^\s*\("/) ||
- 				 $line =~ /\b$prefix\s+[0-9a-f]{5,}\s+\(".+$/i) {
- 				$diagnostics .= "Missing right '\")' at the end of title line?\n";
--				$diagnostics .= "The $name spans across more than two lines?\n";
-+				$diagnostics .= "The $name spans across more than three lines?\n";
- 			} elsif ($hasprefix && !$space2) {
- 				$diagnostics .= "No title line in '(\"<$title>\")' format is found.\n";
- 			}
 -- 
-1.8.5.6.2.g3d8a54e.dirty
+https://patchwork.kernel.org/patch/11511841/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

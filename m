@@ -2,31 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 994FB1C3FFA
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 May 2020 18:33:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB4701C40A2
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 May 2020 18:58:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729703AbgEDQdx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 May 2020 12:33:53 -0400
-Received: from mout.web.de ([212.227.17.12]:56343 "EHLO mout.web.de"
+        id S1729604AbgEDQ6g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 May 2020 12:58:36 -0400
+Received: from mout.web.de ([212.227.17.12]:53257 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729697AbgEDQdw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 May 2020 12:33:52 -0400
+        id S1729549AbgEDQ6g (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 4 May 2020 12:58:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588610021;
-        bh=iKajeEThUjwNdKgviLkmcHAYeTjhUS1wUVRcmyQKF6Y=;
+        s=dbaedf251592; t=1588611486;
+        bh=9yu6Koqp5kh2GqpJE2jIEtvtR3k1ocsgVchyI/5xi/0=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=K257McYQeURBaqfoACrBFDGgBSXXGK/wQwEcNSOAL7hOdZGzJMw/igJwkWXB23waI
-         QE5hc5dSGBjiFxVS44eAldPlQl8sPa0beenJ/A54YS8BhPM36tNdB9vmDkWDW6Ynym
-         HHGIyBNv/pFzrg5wvpSWp/K+doxW+G46nUF5iJCw=
+        b=k933aCWE9/HQwymsAt5vN7QOhkcRBVCyhXlN+iD1wpiu8p+T+PYALfQwCicSS27R2
+         tcYJNlA4W6wjRN989pKyAzbt5Ngrqzu5v+Gxu8xo9QkDEGM97CoQKDma3htrEjSUMP
+         EjI2PG6WXlQzzV+rxpqN9+wWCd4SpjZkPQcsLJQk=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.133.152.69]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LxODe-1j3ir10BNy-016u7u; Mon, 04
- May 2020 18:33:41 +0200
-To:     Jia-Ju Bai <baijiaju1990@gmail.com>,
-        jfs-discussion@lists.sourceforge.net
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LylnX-1j2u3l1mTv-01644E; Mon, 04
+ May 2020 18:58:06 +0200
+To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Dave Kleikamp <shaggy@kernel.org>
-Subject: Re: [PATCH] fs: jfs: fix a possible data race in metapage_writepage()
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Subject: Re: [PATCH] drm/i915/gem: Fix inconsistent IS_ERR and PTR_ERR
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -71,64 +77,67 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <bcfeb785-b787-4ebe-c1e1-159b6efc7e51@web.de>
-Date:   Mon, 4 May 2020 18:33:40 +0200
+Message-ID: <dfe752dc-6833-2b08-7e7c-6c52ffc81626@web.de>
+Date:   Mon, 4 May 2020 18:58:03 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:7YzZOCIxWKK/06F9z/ZoK6WsDS8atsDgIU4fFcNjE6d6Q+wNyQX
- TbHjc+gy8VxPl6nXw2MEX992I2z5RX7o3FEyn1hhQRCKfQviHJjoPn4YQ9Zn1UI4TT/7LnQ
- 5bTsgigi4YzCdVxOShXOLhDjtc4tFK8v5Vf/ZazivbflC/VT09VwzktchzAsYooQzhcZLIp
- WXyV3/ul3uZpfuPLJYI4Q==
+X-Provags-ID: V03:K1:V7ZLoki0zw30xXuJHbKuYRHN/r2pN25QK+eWkWFJY1gkCecft4S
+ jirT2hs4ZPfMjaM0OmDtx4LX5iOHPotiZWDC1rEKehRp8iFDK5aw7gN5aQT9kI6oz3fkZ8g
+ HsLybDzSuEQhHVVEd/YXO0BKC7XPPphK1bll8ql10XO0VYUfM9bSPjIRI/wAouoAdTZss8h
+ M0QbR9dLi0VoQEoijvv9A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:55LdT5xZYwQ=:CDw870Ji6yeC5L4Zf5gTqQ
- Pyrx1kQLYV9Te7BL8CgSFme9+0o5zNvlEFb6HH3kiOK7wt/H5U4jlwTTEDrrzrGUxa4HkUt6h
- BpCuVtiu2rZYsny2rWfdkdahOk9FWDuw/80EAQSckcVE1qBiz9Wgmv1LtOpwZiPs3dMOmP2qT
- hxvazXprI1eew5nIxph0V+YakkiKQ6lw1ZJumfvIr8I+Bj798TaWr3hZAKxdTfjDDVNf0EODH
- 7lGfDk/LPWUO7y+Ohe8NyXKtVOQ+AFGRQL0+0T00z/IMPglvM7ZiViijxGzeQAtWtRQ9m8YnV
- i1sviaI3nm94jm8xedRArAIuA/Y9eRTcg1KJhGVmXooB1A5QiJ10KyS1vEhyAjGoENh767Agp
- IQewBQtBwnICDiP+MqdOLRsoU7B5q0KVLN37l05MdwQctQGwKFKpLCR4poNaXQFv8q0V0kCSu
- 580M/v35nFkc3X4slRVS3+qIfFnlijH2wzaGySQYxiUukzmiYvvyGpfzqaSoGqJRIdUtcC3gR
- DFSceH2FRdPtubLmgjKycweYrSQepHVTP78ZL0Hv7LpXLgAb9aOfITuZnxHfZ9o0cbkThlDw1
- C1+v4sYnNRCSYz3gBnKXar0zANdhBV8iovrQ651gk65f+9yTygvFNfzjpIs5maIrzy1zkhRNm
- tgWvX3UTvcmE9o525a6ukK5T99TqzI67z7lEJpvAeFts1TkysOh34RKTFQGfAN+IoiMURPxlC
- 2CvRQeuueisg4aWchdosIBiSLX/dGcaMotjAZwQy6iFJo0XipEmYNROGR6uXSArIQywt3lMRZ
- rDRO1rGosq9P6adtQyQroB0k5CFLBD6FsTgmXgTEfSAChetd6LluvNd7qMAf11olMom5snTQd
- lw7BoEIa+JWSEVkXpEPN/oOr4b+9uLyswxTGWYN54NsYK6QY+DmDcFV7U2ZaoMUIOWbul4Yjo
- 1BXegqTkUYCdUvcACjTYUZoNct4dkFNpb/irhPNZaLpnc5Kfz1yjmKAX2JAGJtqnVnWNnpTs7
- iKEKXPKBXUuFgEnz2fUtByuHrbrEHCMxzMXVkowPvwE1ZVBLBv5FCd9WVXQA6q0vuaWnvLQp4
- lTVdQXoookE0bPsZLc/QxQeBNFjy11oSz83LlZlidA/aMMQosRNs/t3KFlpiGcYfSPku/+qr4
- K/RcRRijjMy7Edmls9frfz39CiSLM5r4S8/xG1JCeueoF06B5M8xWUWoSb8D9wGjy+MnJWMVL
- +/BDhs8ybSbfsF9E3
+X-UI-Out-Filterresults: notjunk:1;V03:K0:tRrN58lWQu0=:A4u/Tu+sMvbhE7L5nBiE79
+ zvtjBRFNOTtJOJgE7TQ28EbEdu/2tUpK0X6BBv/CUq2BmyIckrRGh2qYzHCSh74NeToj87sAF
+ LZnfADB3e/q3u36XaOrFli7/PK8aKjOKWNcZne6e+lsgBBI6C6IucM04trkhp0z08ChgVu71h
+ hHISpbhlP9hV6HnhLQY1Zs0DDIpq2nwCPyZ2yfoiwZCtHUJcNhWEmZR71q8Erm1tnTQ3I+3S5
+ 62LAdg19BLgVV3WSljBSjtJmEmUoGJLvpzqMwZDvtedRo+LgPIGU3D2wqTYNCDsgQXct8vJ5E
+ MVRR8xMYdVtWWpg4ZehELxnTo48lU85y9jxCdNtdbsacrSCBX9f8qw7RLnPGJkEBr0/Xy+fYX
+ 1mpIiZOSxVj6678lWPP7O+Aqz7Xj8XQxZzRkN/5UeUWpGbMFJ3yTFi+6dqtTffZofIxpBn1lA
+ Lr6S5f8N8Ki+7F43ZdCfWDxLPZYc3VAhoxz8m/OrIWINK14L9dovLLRvFesmsg5vr3PIOrUTS
+ JMlal8hQ33/v4EEvyVC/n6vg/H57BJy6K2qJxw3J8iqZf7h86IwYdpZkcHBzyQTIYmuC2nFg0
+ 1kqZ508lviGRHJhbGCkqHjWj54vA+S8LzyDGG/knfp2yHDpnOnB1i3W/0fDXF1jcEvA9zTcA8
+ sv2bSiyDxJgxGaAbWkKl4Lr15t4oaWWr2d50HBxiz7P+qHaswXU03R0pxzXgKu3l2vBRe875n
+ K7zx1Qld5kYB2dfpFWo7YzGYrDlQMaOBTed4wDLdHeaS/n6M3tlrhNBazFhsfH6sBOhehdbO7
+ Yt1vhA35BVWo2py8o3p236JRc217QmzqnkYkt8CdDt2pos9boP0S4P4Ea39L9UG+KRLGnhve5
+ VhM1LAa4IPsEGw63GYQsN8dcXBURlOPrtSXanBKiBYdImA5pgfpul9+lZYZjj7Lw2YW4HhNV0
+ neJSRRkAkVzqrKH+fg7OkMrokUFyOYI+Zi1W6zwH2JTFZ7keT15TWjSL4IywWCSwuUlkY7TS0
+ yiqJSE5v1uJk5E7VtxnhTNT25BsftfLPYRrM/KH7IGBlQjFTdBGYuuTbtiFTiD5QlII1i329v
+ P5qnWMnvMBXzxI5UVeTWWMNJW1l0zhJQnEU3cxLYTFWpgg96d/jXLMSj31D3gIBMFWILLQv9T
+ 4LGGJNTUlMqCATiqupWESPwHXAQ6RWtlZDfpg8bx/mUG7HZmMFDTkOnG0w6YmS2himOHaQ+TW
+ jG7eEp3VKLOkhhLV3
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 =E2=80=A6
-> To fix this data race, the spinlock mp->log->gclock is used in
-> metapage_writepage().
+> The proper pointer to be passed as argument is ce.
 >
-> This data race is found by our concurrency fuzzer.
+> This bug was detected with the help of Coccinelle.
 
-How do you think about a wording variant like the following?
-
-   Change description:
-   =E2=80=A6
-   This data race was found by our concurrency fuzzer.
-
-   Thus use the spin lock =E2=80=9Cmp->log->gclock=E2=80=9D for the assign=
-ment of
-   the data structure member =E2=80=9Clog->cflag=E2=80=9D to a local varia=
-ble
-   in this function implementation.
+My software development attention was caught also by your commit message.
 
 
-Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=
-e?
+=E2=80=A6
+> +++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+> @@ -1325,7 +1325,7 @@ static int __reloc_gpu_alloc(struct i915_execbuffe=
+r *eb,
+>
+>  		ce =3D intel_context_create(engine);
+>  		if (IS_ERR(ce)) {
+> -			err =3D PTR_ERR(rq);
+> +			err =3D PTR_ERR(ce);
+>  			goto err_unpin;
+>  		}
+>
+
+Are you looking for any more questionable identifier (or expression) combi=
+nations
+also at other places by the means of advanced source code analysis?
 
 Regards,
 Markus

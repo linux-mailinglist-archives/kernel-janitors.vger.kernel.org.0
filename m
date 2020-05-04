@@ -2,33 +2,43 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EB231C37D4
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 May 2020 13:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 971EA1C3966
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 May 2020 14:31:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728273AbgEDLRV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 May 2020 07:17:21 -0400
-Received: from mout.web.de ([212.227.17.11]:48649 "EHLO mout.web.de"
+        id S1728245AbgEDMaz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 May 2020 08:30:55 -0400
+Received: from mout.web.de ([212.227.17.12]:51955 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726445AbgEDLRV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 May 2020 07:17:21 -0400
+        id S1726915AbgEDMay (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 4 May 2020 08:30:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588591033;
-        bh=sAXNeijFvunPjYnZmxoIOeGxMsw1emZbFQi51Hn/9OI=;
-        h=X-UI-Sender-Class:Subject:To:References:From:Cc:Date:In-Reply-To;
-        b=N7bHxbLmxslktxH+FIHYgzSfh7t750F6uLm5uWYJZwy3PhRvClhxs9rZRmdaV2oFQ
-         VMo0K6sdcBfWCGDuvA+jYdLQK7qGcifgAtTJ0bl8Tr6tiQCaRcSnXLEkiROS6o3H5x
-         I63ieckN/RHeJaRGq8nGMeXlBXg72joc32RLaj4w=
+        s=dbaedf251592; t=1588595426;
+        bh=4vtckfEA/Gm+6t8z2cMn4aydD8EVKVyz7dijkkXOO7E=;
+        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
+        b=J+lp2Lu8oTLdScCp4N1xYAmsWaAeBEaNynd68ALXT3T3rVQNhDGqH8WmD00/LTl0j
+         RDwxa1obRgZzw+ff9MZtW1PHNUgLeeXXOsy/igbzr4TRHMEaQPJkyo7D2Krx0pDh4U
+         DyZiXxqmf/AuVAmIUu/556c+FdzFq7KofIQiRlsw=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.152.69]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LpO4v-1izEwn3N9Z-00f7Wp; Mon, 04
- May 2020 13:17:12 +0200
-Subject: Re: [v6] checkpatch: add support to check 'Fixes:' tag format
-To:     Wang YanQing <udknight@gmail.com>, Joe Perches <joe@perches.com>,
-        Andy Whitcroft <apw@canonical.com>,
-        kernel-janitors@vger.kernel.org
-References: <20200504082002.GA29972@udknight>
- <38251b1f-e89b-7b3a-6045-f5ce1dc2596a@web.de>
- <20200504102242.GA13013@udknight>
+Received: from [192.168.1.2] ([93.133.152.69]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MKa2F-1jXVmY43L5-0022S7; Mon, 04
+ May 2020 14:30:26 +0200
+To:     Aishwarya Ramakrishnan <aishwaryarj100@gmail.com>,
+        linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Baruch Siach <baruch@tkos.co.il>,
+        Dejin Zheng <zhengdejin5@gmail.com>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Pierre-Yves Mordret <pierre-yves.mordret@st.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Thor Thayer <thor.thayer@linux.intel.com>,
+        Vladimir Zapolskiy <vz@mleia.com>
+Subject: Re: [PATCH] i2c: drivers: Remove superfluous error messages
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -73,62 +83,62 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Cc:     linux-kernel@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Matteo Croce <mcroce@redhat.com>
-Message-ID: <56a0219f-48c6-4b15-fd71-e8312079f7f2@web.de>
-Date:   Mon, 4 May 2020 13:17:11 +0200
+Message-ID: <9ecae921-be46-dec0-f62a-f388740b03ea@web.de>
+Date:   Mon, 4 May 2020 14:30:22 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20200504102242.GA13013@udknight>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-X-Provags-ID: V03:K1:XAwsEEwAlE7naomLTM35kK20wop1IQdB5Aq6jB7QaJLWKhwGEKr
- LearugLNrqcIDUE736CiUYSnYnLSEhjr/+/5OTPhG2YbuKxdPOEOGD8SJQ1XKpRmWNqsh+k
- GEjXhaLggjnXZ5yLrKE58royIHv+/qz60UbjJmKnM5fiWyGvoLMiJ3nI7meKINdgJ4xMGSd
- pK4uHWVlqOvgRtTtuAb1A==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:82XsyLyiADQjPETTZUXqQDyUj51NmnSRLUZ/CUItTRuhWhb0zPt
+ tCFeaYfqeXeStYyR7mzvhuhBHFDlIeaMH7jVwDEl1YkzZlnTktLZV7lLAodSZlkdjRG9zyV
+ 4gV5ldHjw92kyo+M68xJZXhPZdozkZ4DIEz7aehAamR5HusyBx+JdJ70YwYeT43w/kwe11o
+ Xzm5NDnrqrtrpNe1Jcv8w==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0s6EoQAqlRc=:YDozR03sPp9QqVNcmdZMT/
- r3hZ/Z5ThiBodFHaILXlKQIPkdXtZn+jsEL41j6mCoGQ0GjJdluZhcxbavw2zTQNyFq6g7DFa
- GDQ+pP+eaokoXY+1zrneIrEJNUqQDrtY9WV8At1BP6iH0JddQeZ4etaRwxR/IZWv2SOq3sEWX
- KG75hy63DSACqb+mAWanufFhJ3M3XfRKb/IM2hZ5d8rMXf7DmjwDIboZm05LNQDNB2dswNTuR
- sIdoiFBE73KtTXYQZmJxs4BwBYqbHVn016WDUsV194P3LDmy2nTyDmzvSH9bhjCYslZTmUFS/
- 3hemXkeEBmqImKGQwV6fPWpQPKnAHJtXoUS0gc9HYOh/nVCXDmc6d7VRSmc2ynYIf5tuqLPPQ
- dI2PieAwaAb1bLhVq0BRmKzwUhncd4hsRn5KLE/WeV6srv1ovuuxySfzcU3VXajkAK8chTTWF
- AgoCzcxforYODcuf1nQJIYhHJ/YO7hsujDdoF3vwxjjca5F1PDH0rsqyzCvyFOgngFyO2mKOl
- 6fd1PxAR8DB0Za2KJOAuVgm1YXKGScPisvGFMEIcqkL7ZVPhDYeBy555sDuWZy9A2IprhZIA9
- WYgcSexsK2H53Xl/0fmFIwiEzu0/wJxU9UJ/3DQ5JQZCv5LfUyo9FQ5e5KFwYkX0eUfriGpVl
- vf6vpnbJkBiR7ZL6Sqd9PAUGPj7N1sjV7JwNAfdHNzCcC061Km4aS3NiWkW8+LMMP7BM9bCcW
- hHefWNeDd0HPs3Fv9FS2qR5HFXC+Xahti3HjPUCBfC2WNhc3g7seQBPtXmLAV7KEafHSXnVUg
- tTkmPgi7/r/46labf6rqXfUs9hggND37PkXgvdsAmqvSUc5IPmwaKuye+CblsV7NFvCQFUyx6
- hYOSQZhtdEY8597Gdgt9VPlkdclXp3qs8w9otuvdD1YmLPFXVOrX04S+4pcDNVxcQINSjta6w
- KLmnH/ENd4IvqWBZdiSB4rdk8fwhw2LhyKv3CVDsNQxhpmgzEzSjznJVpU2DNTKH7OWuw2ubV
- 3/YkONN+rDgWv88F1xeWAMxEN/Ha+3eHpWHnOfuapUKWLcaprnqDMOoqYRUgVPOuHNM0ilGmk
- PBmIp5iEnPa1zuDfnA2S+57DpsXQOyUYk3mohZZRcm39FX1cn8WfS5MwAuWXCItPwW7keC7Uz
- tAX7liGdy9eTCudYMXsMjue9YvFHn+aRfO25WFQgy2vhrV8eJIixfHgSAhjoOtyU1jgXFJRWy
- fT6opEV5KWZFItcCa
+X-UI-Out-Filterresults: notjunk:1;V03:K0:qBm+VNjh1RM=:uZCCvUWfpo5r2gu8R0umae
+ zzOKBSV80kv8XocS1a7mE0yugGxjJLDKsOAd7RQHlZMK06IIwayXMc+g/CyyBZMWK0MFxX1NW
+ PMDGv0tQgjt8eigYOZVWOsHvphWpOvQZJ6GsiDE5crXoMuXEPfz+fybMXfW2rGAuDHion5Xm9
+ uun9WzVh5e8SuhsWv1W+J+m6W2dCoajZn+GgqmtopSSGk5F2M/77sGIMb6bkcMT4hO77Of40B
+ 1yYNs9zMP3KLetQzvEbbf41X0KDvhECMQ3IJbRfOK8Erk0Me7SR4NO2UDmLBSycqj8jVGSfPv
+ WZbPMCsBGSIJl0uhGhRzWNGbjTpm7Mw3Glx/QYGDiUz95uzA6QEVyIbymET71BbJo30ARiZ2y
+ 00Xn6gNQiJgTS7GBWEbhLQFtBV6TtBst3ebY/y9Xz+sJw2ZnGIyV1Lr29oCgFjyCDCWDxTYlZ
+ HPHEnR9a4N6wEerSgaWHJMx07B463MrG5UOCAS7SyUeU9oiEobXDf7GhfbG838w9rgEIqbTw4
+ zdV4u089d97l+Y0ZQqv3Cait3eHrmGUhTV43N7qohvt++dEb0Wf60tCdEp6eJtZ3/RohYYOZ6
+ szaxS5lI7qTaKTKWuNEJvxxZvXJUCJfrIRzb8DHbtYHh6fXsswMUOveYGVC/0A6bEOS1wsWcw
+ iesJnA6FhjGMzUAcSCuwJ4qbLXbBGp6wOKvZape/R9xukkwQ7bLb63OCxYpaEpru7N8/tJlyd
+ ZF0gTUKOfGPtsISZpSMX1oanAU4UxsjrVLVlRsLbzw9pTsFDpHIVg9G1/DO02IifDEkRlju1N
+ GXYXyzzKPQ9vFEBQTikBzCb/3DYXnLuTxahGMqk7o/Ent25POL0UIHYY7vgj4I8AiO6Ha6QEt
+ trbHiWgCESyolIO8ZUDb380AfAycJX9hXI2puar7t2V4Xdrcb8/FcU3O4Qeosb1rYGMVxZ0Zo
+ A1SH9e6L1FyeecXB5vnTSap8sVmcKxKDbZ3owQNHcHczcAFrhHxcnvXBs6OaW51FL3wfNw0Xu
+ BzIyDWBBVarj9x64uLI8VEZ8B/uiG/1pJo9zoYMu+41XZR74dGKZR5CJlOGcP/sONqVm4eTHU
+ lk6cD5aF3VzbRkc2d2/eqDApYdIcpzV3apLGTUjSYz+jtp3iPuMwzpe20WQkdaePw67hWhMfP
+ 4RwE1SPR7M+j6VPZ8ks2W1NPNvYiZNAQGpcWnqF/wdEvFIeJEzSqoHF2z1WC9g4U5tUBP3E38
+ t9q/42j45WRUzIhbG
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> This feature is a side effect of missing right '")' detection, so I think
-> it is acceptable to add it.
+> The function platform_get_irq can log an error by itself.
+> This omit a redundant message for exception handling in the
+> calling function.
 
-Will any more collateral evolution become helpful finally?
-
-
-> But I agree with you, this patch is a little big,
-
-I find such a view also interesting.
+I propose to avoid a typo in a word of this change description.
 
 
-> I don't want to add more code into it.
+> Suggested by Coccinelle.
 
-The software can be extended as usual depending on some factor.
+Can an information like the following be more helpful?
 
-Will your contributions evolve into consistent patch series?
+Generated by: scripts/coccinelle/api/platform_get_irq.cocci
+
+
+I observe that a command like =E2=80=9Cmake COCCI=3D=E2=80=A6 M=3Ddrivers/=
+i2c/busses/ coccicheck=E2=80=9D
+points only three source files out for further considerations
+according to such a known transformation pattern in the software =E2=80=9C=
+Linux next-20200504=E2=80=9D.
 
 Regards,
 Markus

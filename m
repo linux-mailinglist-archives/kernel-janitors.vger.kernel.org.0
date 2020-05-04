@@ -2,79 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4438B1C3607
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 May 2020 11:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FB261C36DA
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 May 2020 12:25:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728476AbgEDJsB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 May 2020 05:48:01 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:26030 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728349AbgEDJr7 (ORCPT
+        id S1728083AbgEDKZH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 May 2020 06:25:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42156 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725928AbgEDKZG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 May 2020 05:47:59 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588585679; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=WM9/aRStIaPaqyNPtJJyM+h9b/Ec7TT+ctCUD/qlxj0=;
- b=AhXm0ThgLI032pS//cqyXlsN4mNcSwgnu85/AnUwS7zJPaDM3hixbCWEiXvF5iJsdFAOppc4
- gVmo5EhRN7+rzakU7pK29ToESRICoJ1ZgSKM0c30zba97a3i+YBpcOL5HZOx+AhzzXXTLnCq
- WRpLb/3PvgLJ/AS4Ir38WZbPpWE=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eafe4c5.7f106080c4c8-smtp-out-n02;
- Mon, 04 May 2020 09:47:49 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 265EFC433BA; Mon,  4 May 2020 09:47:48 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E0311C433D2;
-        Mon,  4 May 2020 09:47:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E0311C433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Mon, 4 May 2020 06:25:06 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB324C061A0E;
+        Mon,  4 May 2020 03:25:06 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id d184so5310050pfd.4;
+        Mon, 04 May 2020 03:25:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Y9wnMZ43MKMfGfmsGbZr1Yrv0Rj1fcakpKjTV0EHXm4=;
+        b=Apcd/jrQOtvxLSEHY9l71zo89xu6FhwfBU+BGiIZ58fyWkBcdEbGcVj+bg9UQfKcBU
+         CPQXfzvzs0/CqfQYUtWM8pv2F6MEEdCSwfQss7VrB/LmoqBDz91D4VvwGvlZ4hiF2tOa
+         flhoSIfyLfhHb3rDO9gYuyucbbTgirGqnyUy5C52JuwKtm/eorD9byBwfUbz4SQj/7US
+         9DPcyD/c5fZOiIfcY9SX0qo/0ToVkw1xcQLymClixTPeo+/LwEUVJf/uW2Gp9hPwLBrm
+         Vl4+e6uv/808rVzdviMUyGh6zYtL5WQ9XTr0iggWgg20l5IaZC1bp/GEcjcumoO43Q9w
+         p3xQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to:user-agent;
+        bh=Y9wnMZ43MKMfGfmsGbZr1Yrv0Rj1fcakpKjTV0EHXm4=;
+        b=kR2JPIX4GSGTajok9ZyOHXS93anJmBybwE0ao3eW27aFXzDnNPviXT2qE409CfIxqa
+         3OUQvSvldEuetTXX8M1Ul5punaE6GbjYaaoQHuyBIJ+wP79xE11GLuUSZYed4hp9nP8u
+         dRdKy0I44mpjSjWJJsMVmmN3FUxzzifZ6R2Czh+wwf6cGS4uvcxBJnH8+PU7UabogFNA
+         iOis3WHqnEERJAT2pi23HhEts6ZYRz2pszAomZScJWD7AMo5CRK07AFuxl5AToeNXJCw
+         TjiytEmwXL3QdUjxSWT5uWdhvkGElGAnmxiG841H85IVcB2kf2vs5/zAw5g4f2bFQYI+
+         PLUQ==
+X-Gm-Message-State: AGi0PuYBlK1zcuxmskciCMvipBQf02S8LUD8MHHYJoQKW7m+PEAZXp79
+        vfxWlhxHcu741aeEBnmDHyhWPn43
+X-Google-Smtp-Source: APiQypICLxpZ6l320rFLm6mz0/2GQh/UZ767zlMnQDxjz8CaMmfx027gYnaOufl2FaegWAdc4gpx/w==
+X-Received: by 2002:a62:4e87:: with SMTP id c129mr16678739pfb.178.1588587906241;
+        Mon, 04 May 2020 03:25:06 -0700 (PDT)
+Received: from udknight.localhost ([59.57.158.67])
+        by smtp.gmail.com with ESMTPSA id w12sm8428885pfq.133.2020.05.04.03.25.04
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 04 May 2020 03:25:05 -0700 (PDT)
+Received: from udknight.localhost (localhost [127.0.0.1])
+        by udknight.localhost (8.14.9/8.14.4) with ESMTP id 044AMlXC013687;
+        Mon, 4 May 2020 18:22:47 +0800
+Received: (from root@localhost)
+        by udknight.localhost (8.14.9/8.14.9/Submit) id 044AMguH013686;
+        Mon, 4 May 2020 18:22:42 +0800
+Date:   Mon, 4 May 2020 18:22:42 +0800
+From:   Wang YanQing <udknight@gmail.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Joe Perches <joe@perches.com>, Andy Whitcroft <apw@canonical.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Matteo Croce <mcroce@redhat.com>
+Subject: Re: [PATCH v6] checkpatch: add support to check 'Fixes:' tag format
+Message-ID: <20200504102242.GA13013@udknight>
+Mail-Followup-To: Wang YanQing <udknight@gmail.com>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        Joe Perches <joe@perches.com>, Andy Whitcroft <apw@canonical.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Matteo Croce <mcroce@redhat.com>
+References: <20200504082002.GA29972@udknight>
+ <38251b1f-e89b-7b3a-6045-f5ce1dc2596a@web.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] rtw88: fix spelling mistake "fimrware" ->
- "firmware"
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200424084733.7716-1-colin.king@canonical.com>
-References: <20200424084733.7716-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200504094748.265EFC433BA@smtp.codeaurora.org>
-Date:   Mon,  4 May 2020 09:47:48 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <38251b1f-e89b-7b3a-6045-f5ce1dc2596a@web.de>
+User-Agent: Mutt/1.7.1 (2016-10-04)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
-
-> From: Colin Ian King <colin.king@canonical.com>
+On Mon, May 04, 2020 at 11:45:02AM +0200, Markus Elfring wrote:
 > 
-> There are spelling mistakes in two rtw_err error messages. Fix them.
+> >  4: Add support to check and emit sensible diagnostics
+> >     info for description which spans across more than
+> >     two lines.
 > 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> My software concerns are growing also for the preferred dependency management.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=0e698dfa282211e414076f9dc7e83c1c288314fd#n138
+>
 
-Patch applied to wireless-drivers-next.git, thanks.
+Hi! Markus Elfring
 
-a6336094c3ab rtw88: fix spelling mistake "fimrware" -> "firmware"
+This feature is a side effect of missing right '")' detection, so I think
+it is acceptable to add it.
 
--- 
-https://patchwork.kernel.org/patch/11507317/
+But I agree with you, this patch is a little big, I don't want to add more
+code into it.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Joe, what is your opinion? Do you think this version is good enough to merge?
+
+Thanks!

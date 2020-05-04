@@ -2,143 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EAD61C35F8
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 May 2020 11:45:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4438B1C3607
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 May 2020 11:48:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728263AbgEDJpK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 May 2020 05:45:10 -0400
-Received: from mout.web.de ([217.72.192.78]:39131 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727108AbgEDJpK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 May 2020 05:45:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588585504;
-        bh=TqKV0o7NRrzkmYgQOjgvKkWtXRaRV+n96KVNMYv+V8Q=;
-        h=X-UI-Sender-Class:Subject:To:References:From:Cc:Date:In-Reply-To;
-        b=AhA/17Mv3e45iVvMwl3MKrCqdS884byNVsggZtsnITRaxixC/KntGRrQosbNG1Ze5
-         cMuZhxxtTLQ5BVLM06gn/rcQai0kv++dXOxH4QkijUH9dDqwSBnBvTseJTP6X33mHv
-         EgC9reASTi06c9zA6L0+i9tODJtOSQYCDxGyHchY=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.152.69]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MQ8ao-1jrUNz3fW4-00MGZn; Mon, 04
- May 2020 11:45:03 +0200
-Subject: Re: [PATCH v6] checkpatch: add support to check 'Fixes:' tag format
-To:     Wang YanQing <udknight@gmail.com>, Joe Perches <joe@perches.com>,
-        Andy Whitcroft <apw@canonical.com>,
-        kernel-janitors@vger.kernel.org
-References: <20200504082002.GA29972@udknight>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Cc:     linux-kernel@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Matteo Croce <mcroce@redhat.com>
-Message-ID: <38251b1f-e89b-7b3a-6045-f5ce1dc2596a@web.de>
-Date:   Mon, 4 May 2020 11:45:02 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1728476AbgEDJsB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 May 2020 05:48:01 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:26030 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728349AbgEDJr7 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 4 May 2020 05:47:59 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1588585679; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=WM9/aRStIaPaqyNPtJJyM+h9b/Ec7TT+ctCUD/qlxj0=;
+ b=AhXm0ThgLI032pS//cqyXlsN4mNcSwgnu85/AnUwS7zJPaDM3hixbCWEiXvF5iJsdFAOppc4
+ gVmo5EhRN7+rzakU7pK29ToESRICoJ1ZgSKM0c30zba97a3i+YBpcOL5HZOx+AhzzXXTLnCq
+ WRpLb/3PvgLJ/AS4Ir38WZbPpWE=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eafe4c5.7f106080c4c8-smtp-out-n02;
+ Mon, 04 May 2020 09:47:49 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 265EFC433BA; Mon,  4 May 2020 09:47:48 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E0311C433D2;
+        Mon,  4 May 2020 09:47:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E0311C433D2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <20200504082002.GA29972@udknight>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:cWhxWqOfXZS3aAPeXGiut3/S25UqYFHgbcxm0tX1X6ECql5E7oG
- zPqVK2BQ6BiodH6pza0ckIyZg7gE6IOF38+PW70H7EAQyIZPfQ5D+QxYZn5JKCWhdaXF97f
- OCWBsFe+lFx20X8MQbhfgtLF3AOJKMywu8BgVxcO8sMvCx13yP2mqa9XxqvzneUcRLpF7Ey
- Sq++yxfFpUaM+gOsICTaA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:1+fMiIGTrBM=:cYeyIlvYCxD9DPildae736
- yoIT41HEf9x/S5mwR0FICCrsxSEFCuOQaEYnYIAeKLJ+yFmFH5IGpb4oDisH75+LzLpklcZBl
- ULmUKagn0wuFJoUuKdRYqRXz3aHx6ZODz0rdwxU2Z8tuS/03pvXDXW8mzMsb4RoimJrH7BSuE
- +eFv1OHw9HUPxnIzguZiRlxvhWZxLoDBJFszAQsn3Edlk18yR+incQH4vp/9/chucCfb5/z4b
- +U5rXqyU26tT7pIS3FJfxk0JHZEpX4cMWwQ9LxugdgfZV5xBGLLPtelQOtH4a0BZZ5SdMiUlN
- MuDgAa3pdYqynLFUa9dW9M4UiLWt4aApn8lL0uGeO4YccYs3Soe/FdKdSw5/kwRQIK7thLI4g
- coQCnJzmTKCMWPoi8BBVahtz9kbXHTLtZt4hfQesVmdhRfldspIIZPHm3lE2b555YYl6dybGb
- K+y7sPrTMaiQi0SYRzL4ZqtiQdSGNr2cyEfqyznQaV+LuOY70h3rS/CYG3vmwePbls6eYOjG/
- YsMKA2upF9u/YLUjlXbfmNipHXFyeRfdQ825Fex+tnZ/+E8b71vrfrjwNJHxqULOtqtMUY40/
- IHUnLZUWoOiNF5phz1UUcCyafrtpaphRq+xlp7uL2XmG63ZrK8KduOgN7lLHHAt3iJlU5kP2a
- G2G1NcbAzJIKYqot6bMrjlSpAgTtmLfecxEDTM00lGH+rBLX7JlNqdQMYu1z2BqrU0cghkT/N
- hTLby1dqkzZZmOFtNZcjnyAjnGUcx1Y/zOfvBYyPuMqSugLuW8WaiP1P/EtaJTRF2V6Inq4X8
- 1IJj/bH5N+jxVW6HBR8qa/+J1Y+TO1wm8CJkLv1Da+uZ6h5e69wa3F4s7Sn10+aN8vDznhvC8
- WkWsig+suq3JmTIiJRWvmr6Nddo131aTEesvoNYHHRf9zp+MIO35ahLXLcjR+OScvUD5lDMFf
- gtobmYl7oLbsum3p1NGAuRcZaqXJdwUu0s3vyYMku9TmFT8g2NfqGLsC+xJuox8AUylj1o9Bj
- vzZkqZF/fyckpUmZsW7BpgD+cwFBizUBQSB+fEVrZqEWQIBtnHbxxRW3bJQZizk6pnrE9ZUo0
- fqx+UMLCXdYRN86EoU3z+FTB0hs9ghld2s7YTJKcD+QXCgM7zkdRFa4l3N7wzt+tBcf7nK9kG
- sqoZM5eo8ipOMeUkv8hXXsX9QFS4iPSPnXVc4GXXuWuqQg/S/nVCyNFjJNI1p1vUcU7Xttakn
- nAzCyBuHRL6xuYeQZ
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH][next] rtw88: fix spelling mistake "fimrware" ->
+ "firmware"
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200424084733.7716-1-colin.king@canonical.com>
+References: <20200424084733.7716-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200504094748.265EFC433BA@smtp.codeaurora.org>
+Date:   Mon,  4 May 2020 09:47:48 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->  v6:
-=E2=80=A6
->  2: Fix a typo issue, reported by =E2=80=A6
->  3: Reword some diagnostics info.
+Colin King <colin.king@canonical.com> wrote:
 
-Such small improvements are nice.
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There are spelling mistakes in two rtw_err error messages. Fix them.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
+Patch applied to wireless-drivers-next.git, thanks.
 
->  4: Add support to check and emit sensible diagnostics
->     info for description which spans across more than
->     two lines.
+a6336094c3ab rtw88: fix spelling mistake "fimrware" -> "firmware"
 
-My software concerns are growing also for the preferred dependency managem=
-ent.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?id=3D0e698dfa282211e414076f9dc7=
-e83c1c288314fd#n138
+-- 
+https://patchwork.kernel.org/patch/11507317/
 
-
->  5: Avoid the word "acrosses", suggested by =E2=80=A6
-
-Another bit of collateral evolution.
-
-But it seems that further suggestions and ideas need more efforts
-to get the desired software development attention (I hope for a while).
-Will the clarification and integration of possibly remaining open issues
-continue in constructive ways?
-
-Regards,
-Markus
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

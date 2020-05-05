@@ -2,50 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B44E81C6165
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 21:54:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 543E41C616A
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 21:57:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729079AbgEETyh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 May 2020 15:54:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45758 "EHLO
+        id S1728660AbgEET5K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 May 2020 15:57:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726350AbgEETyh (ORCPT
+        by vger.kernel.org with ESMTP id S1726350AbgEET5J (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 May 2020 15:54:37 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48028C061A0F;
-        Tue,  5 May 2020 12:54:37 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id B995112809638;
-        Tue,  5 May 2020 12:54:36 -0700 (PDT)
-Date:   Tue, 05 May 2020 12:54:36 -0700 (PDT)
-Message-Id: <20200505.125436.1285648712992200287.davem@davemloft.net>
-To:     yuehaibing@huawei.com
-Cc:     elder@kernel.org, netdev@vger.kernel.org,
+        Tue, 5 May 2020 15:57:09 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75AA7C061A0F;
+        Tue,  5 May 2020 12:57:09 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id j14so2398771lfg.9;
+        Tue, 05 May 2020 12:57:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=U8xNbatZYDJg5E4K6HPS1HOygBlr1yXucatKboZeD4o=;
+        b=ceHY7FSRl6wIu6JczPxHSQFgLm7A3fIwfXdWA4b98i21Na3SxLCM78w8cZbXwqCwDX
+         1+mithseYDnTLdOTiQRboJ6mX0y50GjkmiCQWGuh26rxcNc6sNguiGzXViZTlpfBeE8h
+         U4WGHF/UREMm/mJ9qxetY/wue82ZkBJRdz1JbU/vwESaGIEgUwK5gqpJONks077me7dz
+         LVrs0rOr+OBxxyQ3zKM8gBjoJ6aMAXB+fRWKz/U+NXOJrmGl/qNU5lJRPj9A1etD7zuz
+         9E1ylz7uzJBqQ+xqijrPDJM7EFoQ1ew80/yG4OuaXFfyYmmvppBuKp9b/Babf2Q8T/iO
+         IUJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=U8xNbatZYDJg5E4K6HPS1HOygBlr1yXucatKboZeD4o=;
+        b=coekYnXzkmhaCLd/Ls/aVFiah5LzVrZ1x6tTg5p5D8tvihg0zwx95cJ5is1T6NyzhS
+         WzFQtYAsUNvb3SU3hzGhScfp88wRPJ9Ho2XCVLdGf1K+bIf/daAiItkzqdWRwrleusCv
+         bzuo5bqsTi1WSDKwl6Li5/DQZt9W67ql5Z/+r850XWj3NajkKHTYfzWfWz5MFXng0G0p
+         46t95qtxsCTQlgW9shzsJOITTFWXRhtLc5ie8OLCEa5k/2+DAm86UdOH6sEDibYm/UTU
+         rc3+kEhlqaUasEGfXXMMQDbpk7qxGpJhEqMKy+E7iQQSFh59CQUEHfFobjXuleriQkxZ
+         iXyw==
+X-Gm-Message-State: AGi0PubjmYwobRi4/KL1YhXEAMadf8fEi/eUI/RCZgg+3GP6+NR+MCt3
+        n6S0IuXXaBPVesgnTj9pVoU29dhjsKppn76GVmY=
+X-Google-Smtp-Source: APiQypLM6WUeEOST02t3M86IqCwu+plzoI77TF8QVnk5/olRMs4ioXXFDolNkp2s9YiGvHKreQc2WhFDSNRqbwwVYPw=
+X-Received: by 2002:a19:7f17:: with SMTP id a23mr980350lfd.38.1588708627914;
+ Tue, 05 May 2020 12:57:07 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200505100049.191351-1-yuehaibing@huawei.com>
+In-Reply-To: <20200505100049.191351-1-yuehaibing@huawei.com>
+From:   Souptick Joarder <jrdr.linux@gmail.com>
+Date:   Wed, 6 May 2020 01:35:03 +0530
+Message-ID: <CAFqt6zYfX68YBjtErDEC35Y-SSsGS1Sy=9Yz35h8-pOztq+5HA@mail.gmail.com>
+Subject: Re: [PATCH -next] mm: remove duplicated include from madvise.c
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Christian Brauner <christian@brauner.io>,
+        Linux-MM <linux-mm@kvack.org>, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next] net: ipa: remove duplicated include from
- ipa_mem.c
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200505100307.191806-1-yuehaibing@huawei.com>
-References: <20200505100307.191806-1-yuehaibing@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 05 May 2020 12:54:36 -0700 (PDT)
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
-Date: Tue, 5 May 2020 10:03:07 +0000
-
+On Tue, May 5, 2020 at 3:26 PM YueHaibing <yuehaibing@huawei.com> wrote:
+>
 > Remove duplicated include.
-> 
+>
 > Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-Applied.
+Tested-by: Souptick Joarder <jrdr.linux@gmail.com>
+
+> ---
+>  mm/madvise.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 8fec261457a6..f8be54dd92d3 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -29,7 +29,6 @@
+>  #include <linux/swapops.h>
+>  #include <linux/shmem_fs.h>
+>  #include <linux/mmu_notifier.h>
+> -#include <linux/sched/mm.h>
+>  #include <linux/uio.h>
+>
+>  #include <asm/tlb.h>
+>
+>
+>
+>
+>
+>

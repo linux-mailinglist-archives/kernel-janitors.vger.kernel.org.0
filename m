@@ -2,63 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 274441C51FB
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 11:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59EB71C5239
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 11:56:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728607AbgEEJdq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 May 2020 05:33:46 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:44627 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728180AbgEEJdq (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 May 2020 05:33:46 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jVtxP-0003YD-NN; Tue, 05 May 2020 09:33:43 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org,
-        io-uring@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH]i[next] io_uring: remove redundant check on force_nonblock
-Date:   Tue,  5 May 2020 10:33:43 +0100
-Message-Id: <20200505093343.41869-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        id S1728268AbgEEJ4t (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 May 2020 05:56:49 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3795 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725766AbgEEJ4t (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 5 May 2020 05:56:49 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 2484EF110FAAF2FDBF65;
+        Tue,  5 May 2020 17:56:46 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 5 May 2020 17:56:39 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Christian Brauner <christian@brauner.io>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] mm: remove duplicated include from madvise.c
+Date:   Tue, 5 May 2020 10:00:49 +0000
+Message-ID: <20200505100049.191351-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Remove duplicated include.
 
-The check on force_nonblock is redundant as this is performed
-several statements earlier and also returns with -EAGAIN. Remove
-the redundant check.
-
-Addresses-Coverity: ("Logicall dead code")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- fs/io_uring.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/madvise.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/io_uring.c b/fs/io_uring.c
-index e5dfbbd2aa34..4b1efb062f7f 100644
---- a/fs/io_uring.c
-+++ b/fs/io_uring.c
-@@ -2782,7 +2782,7 @@ static int io_splice(struct io_kiocb *req, bool force_nonblock)
- 	poff_in = (sp->off_in == -1) ? NULL : &sp->off_in;
- 	poff_out = (sp->off_out == -1) ? NULL : &sp->off_out;
- 	ret = do_splice(in, poff_in, out, poff_out, sp->len, flags);
--	if (force_nonblock && ret == -EAGAIN)
-+	if (ret == -EAGAIN)
- 		return -EAGAIN;
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 8fec261457a6..f8be54dd92d3 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -29,7 +29,6 @@
+ #include <linux/swapops.h>
+ #include <linux/shmem_fs.h>
+ #include <linux/mmu_notifier.h>
+-#include <linux/sched/mm.h>
+ #include <linux/uio.h>
  
- 	io_put_file(req, in, (sp->flags & SPLICE_F_FD_IN_FIXED));
--- 
-2.25.1
+ #include <asm/tlb.h>
+
+
+
+
 

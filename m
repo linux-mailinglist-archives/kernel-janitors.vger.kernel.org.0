@@ -2,29 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59EB71C5239
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 11:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFA4A1C5244
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 11:59:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728268AbgEEJ4t (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 May 2020 05:56:49 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:3795 "EHLO huawei.com"
+        id S1728268AbgEEJ7J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 May 2020 05:59:09 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3848 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725766AbgEEJ4t (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 May 2020 05:56:49 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 2484EF110FAAF2FDBF65;
-        Tue,  5 May 2020 17:56:46 +0800 (CST)
+        id S1725766AbgEEJ7J (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 5 May 2020 05:59:09 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 0EACCDC1F4196C5375BC;
+        Tue,  5 May 2020 17:59:06 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 5 May 2020 17:56:39 +0800
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 5 May 2020 17:58:57 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        Christian Brauner <christian@brauner.io>
-CC:     YueHaibing <yuehaibing@huawei.com>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] mm: remove duplicated include from madvise.c
-Date:   Tue, 5 May 2020 10:00:49 +0000
-Message-ID: <20200505100049.191351-1-yuehaibing@huawei.com>
+To:     Alex Elder <elder@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>
+CC:     YueHaibing <yuehaibing@huawei.com>, <netdev@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] net: ipa: remove duplicated include from ipa_mem.c
+Date:   Tue, 5 May 2020 10:03:07 +0000
+Message-ID: <20200505100307.191806-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -40,23 +40,20 @@ Remove duplicated include.
 
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- mm/madvise.c | 1 -
+ drivers/net/ipa/ipa_mem.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 8fec261457a6..f8be54dd92d3 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -29,7 +29,6 @@
- #include <linux/swapops.h>
- #include <linux/shmem_fs.h>
- #include <linux/mmu_notifier.h>
--#include <linux/sched/mm.h>
- #include <linux/uio.h>
- 
- #include <asm/tlb.h>
-
-
+diff --git a/drivers/net/ipa/ipa_mem.c b/drivers/net/ipa/ipa_mem.c
+index aa8f6b0f3d50..3ef814119aab 100644
+--- a/drivers/net/ipa/ipa_mem.c
++++ b/drivers/net/ipa/ipa_mem.c
+@@ -17,7 +17,6 @@
+ #include "ipa_data.h"
+ #include "ipa_cmd.h"
+ #include "ipa_mem.h"
+-#include "ipa_data.h"
+ #include "ipa_table.h"
+ #include "gsi_trans.h"
 
 
 

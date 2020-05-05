@@ -2,110 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98BD01C5FA4
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 20:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EC711C5FD8
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 20:15:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730715AbgEESHq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 May 2020 14:07:46 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:38596 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729315AbgEESHq (ORCPT
+        id S1730750AbgEESPO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 May 2020 14:15:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58498 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729315AbgEESPO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 May 2020 14:07:46 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 045I3AKK191936;
-        Tue, 5 May 2020 18:07:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=ScAX8vSZQvAhSmvUfxCOs1sLqUTNbne2m8bEiaGIqbs=;
- b=pEYWp2zfW3XeEMu62AA+CLp1UNvXfQUr+dnLyF1LTIO0wfP+pENi9ziGLXc6P00f1MvH
- MpFplJ6oDlZhqu46mw0iTtQW319AgdTXSSgMKKnn3l+G414+TXr0n20gk9MCHUCae9q7
- qIJ81TBrsssHpQx8w6SqRk3c6aQlsAkN3pSIsrR76j1BK+09eJnkzNI8n/wi/yXgsej7
- QARQWidjp8HjpGWEasvZKa8R8hRVfXOuAP090BI/8TvejqZs0UoFK55EPqcA8KPQx5Re
- LUbb4adVw5ceE2w11+WIvV7Nlr3uccr+Om9TPLumt8DoM6n3sOW4GRBn/UoKtOHjwQCg Nw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 30s0tmeb0e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 05 May 2020 18:07:43 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 045I7Ng7149147;
-        Tue, 5 May 2020 18:07:43 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 30sjnfa1qr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 05 May 2020 18:07:43 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 045I7eXR010109;
-        Tue, 5 May 2020 18:07:41 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 05 May 2020 11:07:40 -0700
-Date:   Tue, 5 May 2020 21:07:34 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Miklos Szeredi <miklos@szeredi.hu>,
-        Amir Goldstein <amir73il@gmail.com>
-Cc:     linux-unionfs@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] ovl: potential crash in ovl_fid_to_fh()
-Message-ID: <20200505180734.GA47680@mwanda>
+        Tue, 5 May 2020 14:15:14 -0400
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAA7DC061A0F;
+        Tue,  5 May 2020 11:15:13 -0700 (PDT)
+Received: by mail-il1-x144.google.com with SMTP id i16so3159232ils.12;
+        Tue, 05 May 2020 11:15:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pjrvYcwwdk2nMIbGySYgWuQEXMvDJQT1UN96vH/RnKw=;
+        b=XhITRT+Hh4vUEeTCYO09LVIHNdx2OF1TzvxNtbUYtZxFC1P+CcRVvH+xGXtpqvdF1E
+         uSuWsj5WBTaAlJs9N7chEZxS4F8RnrKAfo81s/kPfgMq1OW7lmw6EsAETmUfy8gEfI49
+         Nn2zqAoG7gQtbaplWhnClA7orkbu5su+NGmk9O8/Ishpwwv5raCXx/qTrV5LgF7sLLK2
+         qXIGfSYPyV2rf+buoknRuxT6cvyrXO8JBQCBFn6UHavDOm438b0ElryMUILkJZnvVGzy
+         bPlmth+5lE3exw3ytvUT3bHtRIaGA5HUn5x1T+V31KOn0UX0fzballBnB8DqbXh85/lX
+         Fe7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pjrvYcwwdk2nMIbGySYgWuQEXMvDJQT1UN96vH/RnKw=;
+        b=dhw2p8/Nej5FFC8YAjgATUyjBBQJACTk5SsTKKxlyVsOYz7irIXKyu05ZI04ERx+Wp
+         /OW2Wv6ZDxZpCbKh44kjppsGT+XjK7tP3v5+17BjthYkU5zN81iJJVA+TNUDv7Bwv+w0
+         h06LYWA2CJu3Pk70g6lp1YJwJxQSTU7dEcHnYKCNbJeV4mUWqyp0cr50R631jis8dWmQ
+         +PXfq0lL+eHlUaQLBGrnKp/UW2Px77T61mTymb+yoglaDRVkiHY0fI02dGMu3lpf59Nk
+         fLlHLOECd8coTP06XjvKlyl4qXzqjW1+r2BiR2M3t5bOzlRc7A6HnhG653bFKeVisKRo
+         sSpw==
+X-Gm-Message-State: AGi0PuZ2UhCCPFBixKjjtR3OP51vmySMGUefFR75ExY3PVNxlb3PufYX
+        mvDv0lHlB2ngpJ89uku3yHC03pLKHyBHH7JIJn4=
+X-Google-Smtp-Source: APiQypKpA8DL01sxi2j5auTLr+H5DquoW52m9k2HY/ykqs6biJdSifAMjKX+BDWcmz6gkdBLczbBEpQ2b+VThuZ5gF0=
+X-Received: by 2002:a92:9e11:: with SMTP id q17mr5106885ili.137.1588702513314;
+ Tue, 05 May 2020 11:15:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOQ4uxj0F9V=FOUANKSATR2E==BoLr6OJMqsJe5QCbOLNR0k0A@mail.gmail.com>
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9612 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 adultscore=0 phishscore=0
- mlxlogscore=999 bulkscore=0 malwarescore=0 spamscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2005050138
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9612 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0
- priorityscore=1501 lowpriorityscore=0 spamscore=0 suspectscore=0
- phishscore=0 clxscore=1011 bulkscore=0 mlxlogscore=999 adultscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005050137
+References: <CAOQ4uxj0F9V=FOUANKSATR2E==BoLr6OJMqsJe5QCbOLNR0k0A@mail.gmail.com>
+ <20200505180734.GA47680@mwanda>
+In-Reply-To: <20200505180734.GA47680@mwanda>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Tue, 5 May 2020 21:15:02 +0300
+Message-ID: <CAOQ4uxhOi0H4ecJOc6emFc+bUhepscHF8qHywJQUzr-46H3+yw@mail.gmail.com>
+Subject: Re: [PATCH] ovl: potential crash in ovl_fid_to_fh()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "buflen" value comes from the user and there is a potential that it
-could be zero.  In do_handle_to_path() we know that "handle->handle_bytes"
-is non-zero and we do:
+On Tue, May 5, 2020 at 9:07 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> The "buflen" value comes from the user and there is a potential that it
+> could be zero.  In do_handle_to_path() we know that "handle->handle_bytes"
+> is non-zero and we do:
+>
+>         handle_dwords = handle->handle_bytes >> 2;
+>
+> So values 1-3 become zero.  Then in ovl_fh_to_dentry() we do:
+>
+>         int len = fh_len << 2;
+>
+> So now len is in the "0,4-128" range and a multiple of 4.  But if
+> "buflen" is zero it will try to copy negative bytes when we do the
+> memcpy in ovl_fid_to_fh().
+>
+>         memcpy(&fh->fb, fid, buflen - OVL_FH_WIRE_OFFSET);
+>
+> And that will lead to a crash.  Thanks to Amir Goldstein for his help
+> with this patch.
+>
+> Fixes: cbe7fba8edfc: ("ovl: make sure that real fid is 32bit aligned in memory")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  fs/overlayfs/export.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
+> index 475c61f53f0fe..0e58213ace6d7 100644
+> --- a/fs/overlayfs/export.c
+> +++ b/fs/overlayfs/export.c
+> @@ -776,6 +776,9 @@ static struct ovl_fh *ovl_fid_to_fh(struct fid *fid, int buflen, int fh_type)
+>  {
+>         struct ovl_fh *fh;
+>
+> +       if (buflen <= OVL_FH_WIRE_OFFSET)
+> +               return ERR_PTR(-EINVAL);
+> +
 
-	handle_dwords = handle->handle_bytes >> 2;
+Sorry, I should have been more specific.
+This check belongs after fh_type != OVL_FILEID_V0
+because it is only relevant for OVL_FILEID_V0.
+For OVL_FILEID_V1 len properly checked by ovl_check_fh_len().
 
-So values 1-3 become zero.  Then in ovl_fh_to_dentry() we do:
+Otherwise feel free to add:
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
 
-	int len = fh_len << 2;
 
-So now len is in the "0,4-128" range and a multiple of 4.  But if
-"buflen" is zero it will try to copy negative bytes when we do the
-memcpy in ovl_fid_to_fh().
-
-	memcpy(&fh->fb, fid, buflen - OVL_FH_WIRE_OFFSET);
-
-And that will lead to a crash.  Thanks to Amir Goldstein for his help
-with this patch.
-
-Fixes: cbe7fba8edfc: ("ovl: make sure that real fid is 32bit aligned in memory")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- fs/overlayfs/export.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
-index 475c61f53f0fe..0e58213ace6d7 100644
---- a/fs/overlayfs/export.c
-+++ b/fs/overlayfs/export.c
-@@ -776,6 +776,9 @@ static struct ovl_fh *ovl_fid_to_fh(struct fid *fid, int buflen, int fh_type)
- {
- 	struct ovl_fh *fh;
- 
-+	if (buflen <= OVL_FH_WIRE_OFFSET)
-+		return ERR_PTR(-EINVAL);
-+
- 	/* If on-wire inner fid is aligned - nothing to do */
- 	if (fh_type == OVL_FILEID_V1)
- 		return (struct ovl_fh *)fid;
--- 
-2.26.2
+Thanks,
+Amir.

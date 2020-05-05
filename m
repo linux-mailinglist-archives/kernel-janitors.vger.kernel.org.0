@@ -2,168 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FFC81C5ACA
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 17:15:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98BD01C5FA4
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 20:07:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729818AbgEEPPT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 May 2020 11:15:19 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:58168 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729808AbgEEPPS (ORCPT
+        id S1730715AbgEESHq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 May 2020 14:07:46 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:38596 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729315AbgEESHq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 May 2020 11:15:18 -0400
-Received: from [192.168.42.210] ([93.23.13.215])
-        by mwinf5d12 with ME
-        id b3FG2200a4ePWwV033FGaX; Tue, 05 May 2020 17:15:17 +0200
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 05 May 2020 17:15:17 +0200
-X-ME-IP: 93.23.13.215
-Subject: Re: [PATCH 3/4 v2] firmware: stratix10-svc: Fix some error handling
- paths in 'stratix10_svc_drv_probe()'
-To:     Richard Gong <richard.gong@linux.intel.com>,
-        gregkh@linuxfoundation.org, atull@kernel.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <cover.1588142343.git.christophe.jaillet@wanadoo.fr>
- <0ff40f39de4deb63b03b363d0e0f3e3c8cccd62d.1588142343.git.christophe.jaillet@wanadoo.fr>
- <1c0b3414-aea4-8b10-d4a9-4e04f1988002@linux.intel.com>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <0ecc14c7-b4df-1890-fbe7-91307c2db398@wanadoo.fr>
-Date:   Tue, 5 May 2020 17:15:17 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Tue, 5 May 2020 14:07:46 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 045I3AKK191936;
+        Tue, 5 May 2020 18:07:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2020-01-29; bh=ScAX8vSZQvAhSmvUfxCOs1sLqUTNbne2m8bEiaGIqbs=;
+ b=pEYWp2zfW3XeEMu62AA+CLp1UNvXfQUr+dnLyF1LTIO0wfP+pENi9ziGLXc6P00f1MvH
+ MpFplJ6oDlZhqu46mw0iTtQW319AgdTXSSgMKKnn3l+G414+TXr0n20gk9MCHUCae9q7
+ qIJ81TBrsssHpQx8w6SqRk3c6aQlsAkN3pSIsrR76j1BK+09eJnkzNI8n/wi/yXgsej7
+ QARQWidjp8HjpGWEasvZKa8R8hRVfXOuAP090BI/8TvejqZs0UoFK55EPqcA8KPQx5Re
+ LUbb4adVw5ceE2w11+WIvV7Nlr3uccr+Om9TPLumt8DoM6n3sOW4GRBn/UoKtOHjwQCg Nw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 30s0tmeb0e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 05 May 2020 18:07:43 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 045I7Ng7149147;
+        Tue, 5 May 2020 18:07:43 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 30sjnfa1qr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 05 May 2020 18:07:43 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 045I7eXR010109;
+        Tue, 5 May 2020 18:07:41 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 05 May 2020 11:07:40 -0700
+Date:   Tue, 5 May 2020 21:07:34 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Miklos Szeredi <miklos@szeredi.hu>,
+        Amir Goldstein <amir73il@gmail.com>
+Cc:     linux-unionfs@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] ovl: potential crash in ovl_fid_to_fh()
+Message-ID: <20200505180734.GA47680@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <1c0b3414-aea4-8b10-d4a9-4e04f1988002@linux.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOQ4uxj0F9V=FOUANKSATR2E==BoLr6OJMqsJe5QCbOLNR0k0A@mail.gmail.com>
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9612 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 adultscore=0 phishscore=0
+ mlxlogscore=999 bulkscore=0 malwarescore=0 spamscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005050138
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9612 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0
+ priorityscore=1501 lowpriorityscore=0 spamscore=0 suspectscore=0
+ phishscore=0 clxscore=1011 bulkscore=0 mlxlogscore=999 adultscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005050137
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 05/05/2020 à 16:02, Richard Gong a écrit :
-> Hi,
->
-> Similarly we need add error handling for controller and chans, 
-> something like below:
->
-> @@ -997,13 +997,17 @@ static int stratix10_svc_drv_probe(struct 
-> platform_device *pdev)
->
->         /* allocate service controller and supporting channel */
->         controller = devm_kzalloc(dev, sizeof(*controller), GFP_KERNEL);
-> -       if (!controller)
-> -               return -ENOMEM;
-> +       if (!controller) {
-> +               ret = -ENOMEM;
-> +               goto err_destroy_pool;
-> +       }
->
->         chans = devm_kmalloc_array(dev, SVC_NUM_CHANNEL,
->                                    sizeof(*chans), GFP_KERNEL | 
-> __GFP_ZERO);
-> -       if (!chans)
-> -               return -ENOMEM;
-> +       if (!chans) {
-> +               ret = -ENOMEM;
-> +               goto err_destroy_pool;
-> +       }
->
->         controller->dev = dev;
->         controller->num_chans = SVC_NUM_CHANNEL;
->
-Hi,
+The "buflen" value comes from the user and there is a potential that it
+could be zero.  In do_handle_to_path() we know that "handle->handle_bytes"
+is non-zero and we do:
 
-This is addressed in patch 1/4.
-It moves 'svc_create_memory_pool' after these 2 allocations in order to 
-avoid the goto.
+	handle_dwords = handle->handle_bytes >> 2;
 
-I'll send a V3 in only 1 patch, as you proposed, it will ease review.
+So values 1-3 become zero.  Then in ovl_fh_to_dentry() we do:
 
-CJ
+	int len = fh_len << 2;
 
+So now len is in the "0,4-128" range and a multiple of 4.  But if
+"buflen" is zero it will try to copy negative bytes when we do the
+memcpy in ovl_fid_to_fh().
 
-> On 4/29/20 1:52 AM, Christophe JAILLET wrote:
->> If an error occurs after calling 'svc_create_memory_pool()', the 
->> allocated
->> genpool should be destroyed with 'gen_pool_destroy()', as already 
->> done in
->> the remove function.
->>
->> If an error occurs after calling 'kfifo_alloc()', the allocated memory
->> should be freed with 'kfifo_free()', as already done in the remove
->> function.
->>
->> While at it, also move a 'platform_device_put()' call to the error 
->> handling
->> path.
->>
->> Fixes: b5dc75c915cd ("firmware: stratix10-svc: extend svc to support 
->> new RSU features")
->> Fixes: 7ca5ce896524 ("firmware: add Intel Stratix10 service layer 
->> driver")
->> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->> ---
->>   drivers/firmware/stratix10-svc.c | 26 ++++++++++++++++++--------
->>   1 file changed, 18 insertions(+), 8 deletions(-)
->>
-> I am fine with below changes.
->
->> diff --git a/drivers/firmware/stratix10-svc.c 
->> b/drivers/firmware/stratix10-svc.c
->> index de5870f76c5e..739004398877 100644
->> --- a/drivers/firmware/stratix10-svc.c
->> +++ b/drivers/firmware/stratix10-svc.c
->> @@ -1024,7 +1024,7 @@ static int stratix10_svc_drv_probe(struct 
->> platform_device *pdev)
->>       ret = kfifo_alloc(&controller->svc_fifo, fifo_size, GFP_KERNEL);
->>       if (ret) {
->>           dev_err(dev, "failed to allocate FIFO\n");
->> -        return ret;
->> +        goto err_destroy_pool;
->>       }
->>       spin_lock_init(&controller->svc_fifo_lock);
->>   @@ -1043,24 +1043,34 @@ static int stratix10_svc_drv_probe(struct 
->> platform_device *pdev)
->>         /* add svc client device(s) */
->>       svc = devm_kzalloc(dev, sizeof(*svc), GFP_KERNEL);
->> -    if (!svc)
->> -        return -ENOMEM;
->> +    if (!svc) {
->> +        ret = -ENOMEM;
->> +        goto err_free_kfifo;
->> +    }
->>         svc->stratix10_svc_rsu = platform_device_alloc(STRATIX10_RSU, 
->> 0);
->>       if (!svc->stratix10_svc_rsu) {
->>           dev_err(dev, "failed to allocate %s device\n", STRATIX10_RSU);
->> -        return -ENOMEM;
->> +        ret = -ENOMEM;
->> +        goto err_free_kfifo;
->>       }
->>         ret = platform_device_add(svc->stratix10_svc_rsu);
->> -    if (ret) {
->> -        platform_device_put(svc->stratix10_svc_rsu);
->> -        return ret;
->> -    }
->> +    if (ret)
->> +        goto put_platform;
->> +
->>       dev_set_drvdata(dev, svc);
->>         pr_info("Intel Service Layer Driver Initialized\n");
->>   +    return 0;
->> +
->> +put_platform:
->> +    platform_device_put(svc->stratix10_svc_rsu);
->> +err_free_kfifo:
->> +    kfifo_free(&controller->svc_fifo);
->> +err_destroy_pool:
->> +    gen_pool_destroy(genpool);
->>       return ret;
->>   }
->>
-> Regards,
-> Richard
->
+	memcpy(&fh->fb, fid, buflen - OVL_FH_WIRE_OFFSET);
 
+And that will lead to a crash.  Thanks to Amir Goldstein for his help
+with this patch.
+
+Fixes: cbe7fba8edfc: ("ovl: make sure that real fid is 32bit aligned in memory")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ fs/overlayfs/export.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
+index 475c61f53f0fe..0e58213ace6d7 100644
+--- a/fs/overlayfs/export.c
++++ b/fs/overlayfs/export.c
+@@ -776,6 +776,9 @@ static struct ovl_fh *ovl_fid_to_fh(struct fid *fid, int buflen, int fh_type)
+ {
+ 	struct ovl_fh *fh;
+ 
++	if (buflen <= OVL_FH_WIRE_OFFSET)
++		return ERR_PTR(-EINVAL);
++
+ 	/* If on-wire inner fid is aligned - nothing to do */
+ 	if (fh_type == OVL_FILEID_V1)
+ 		return (struct ovl_fh *)fid;
+-- 
+2.26.2

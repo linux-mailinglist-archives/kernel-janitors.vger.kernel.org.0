@@ -2,59 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B751E1C6103
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 21:27:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4855B1C6109
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 21:28:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728481AbgEET1M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 May 2020 15:27:12 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:56385
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726350AbgEET1L (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 May 2020 15:27:11 -0400
-X-IronPort-AV: E=Sophos;i="5.73,356,1583190000"; 
-   d="scan'208";a="347819655"
-Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/AES256-SHA256; 05 May 2020 21:27:09 +0200
-From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc:     kernel-janitors@vger.kernel.org, Joerg Roedel <joro@8bytes.org>,
-        virtualization@lists.linux-foundation.org,
-        iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
-        eugene.volanschi@inria.fr
-Subject: [PATCH] iommu/virtio: reverse arguments to list_add
-Date:   Tue,  5 May 2020 20:47:47 +0200
-Message-Id: <1588704467-13431-1-git-send-email-Julia.Lawall@inria.fr>
-X-Mailer: git-send-email 1.9.1
+        id S1728947AbgEET2X (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 May 2020 15:28:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40422 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726350AbgEET2X (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 5 May 2020 15:28:23 -0400
+Received: from kernel.org (unknown [104.132.0.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B7975206B9;
+        Tue,  5 May 2020 19:28:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588706902;
+        bh=Yr3TQpeq70JjThAV/5vG6MVwKJzSlkrhF5dMaLEdqM0=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=dcku2eH2BmPmUgxbGP+OoSfkmbJZtg1891jJlQ2Qt73crzD6MNGuTpeHQtt9xxm7q
+         2IzxPdgKZkvx9qGKgq8mlxVYOjkdFmGtruxF5ZT0nFIwQGxp4qNOYpXB5Lu+7felZi
+         PpJkOehG8Z+uUA0t4j+wqeUA2rMUrkpUiUJGFK2I=
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200503190327.153249-1-christophe.jaillet@wanadoo.fr>
+References: <20200503190327.153249-1-christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH] clk: clk-xgene: Fix a typo in Kconfig
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        mturquette@baylibre.com
+Date:   Tue, 05 May 2020 12:28:22 -0700
+Message-ID: <158870690209.26370.14224464671343137404@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Elsewhere in the file, there is a list_for_each_entry with
-&vdev->resv_regions as the second argument, suggesting that
-&vdev->resv_regions is the list head.  So exchange the
-arguments on the list_add call to put the list head in the
-second argument.
+Quoting Christophe JAILLET (2020-05-03 12:03:27)
+> s/Sypport/Support
+>=20
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
 
-Fixes: 2a5a31487445 ("iommu/virtio: Add probe request")
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-
----
- drivers/iommu/virtio-iommu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iommu/virtio-iommu.c b/drivers/iommu/virtio-iommu.c
-index d5cac4f46ca5..4e1d11af23c8 100644
---- a/drivers/iommu/virtio-iommu.c
-+++ b/drivers/iommu/virtio-iommu.c
-@@ -453,7 +453,7 @@ static int viommu_add_resv_mem(struct viommu_endpoint *vdev,
- 	if (!region)
- 		return -ENOMEM;
- 
--	list_add(&vdev->resv_regions, &region->list);
-+	list_add(&region->list, &vdev->resv_regions);
- 	return 0;
- }
- 
-
+Applied to clk-next

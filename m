@@ -2,93 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC6BF1C562E
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 15:04:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 846A51C566B
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 15:10:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728850AbgEENE1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 May 2020 09:04:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37604 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728268AbgEENE1 (ORCPT
+        id S1728608AbgEENKE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 May 2020 09:10:04 -0400
+Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:47215 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728512AbgEENKE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 May 2020 09:04:27 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11CD5C061A0F;
-        Tue,  5 May 2020 06:04:27 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id 18so845724pfv.8;
-        Tue, 05 May 2020 06:04:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=tY2Tzay3CtpKrgEwP5AMH50BGKklVo94Ad6zROIjzd4=;
-        b=hgK6KdCe1MUlx2uapDcoAkSv8U6euhMHtQyQLqeUl+c5XDoAzf6gXknvLILCI25g16
-         iK4YR89e3F4MKtdDHWeY6tcQR28GzqMMOX6fn7Mbq9FYgojY+XNJuB0N2262dx+Url70
-         4PAwzESvGxgPCQfytGGsrQv8Lt+j0roH+KFc1LdCQLLmCG0Vp6UDNpd/UP+YRp3nXVwv
-         QUp0bJos+4P5PMicYhfEXhqmZWyn9UT9cGGgFnT9O5TFYX0uZgEzh2yRJX5D9dGkdeRj
-         rLrwHViuhzyGZhrMEkqwNZlUHYnZ68ulDJX7DwkDwmTQ+zWxA0rRyzueNon/WjoO3ePP
-         Hbwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=tY2Tzay3CtpKrgEwP5AMH50BGKklVo94Ad6zROIjzd4=;
-        b=jSYAkqrlkW18NNr+w/FfPRUxgD0itR4rPNGlmgwEBRrvzuherK1SO5UVoJ+aWblz+F
-         hYdUDbmVQ6v7TYP96mRn49FSEeSGFH1D789BM4pm3ihnAbDNRAsIGYQEBnXR2h7ndzY0
-         0cXQzNFqNahSpgU0NzBZLj720r6FXzlNiJ+E1V61M1uSQnPuW9ZIpGB9sSN5GbSrfqUc
-         VhnBs/7uLTS6wCsD8+HnD3gTbLDM548BE/58yhi6xTq4rBDUmBglCmSR4YU5DuvhfY5a
-         1PjpJSpHjVyx8bK0MNeTYY8J2wKGnfa2eAWN9KnHWb24NZ3ulWzBsCnh4qMH9dqIyQND
-         yGfA==
-X-Gm-Message-State: AGi0PuYBnkiOOug/p8xrQiiv+8wsyFd34Kf7qnYjB0+3JasjyJW2qJc4
-        CR3dj8ZFMY9FsStU+xXJYB8=
-X-Google-Smtp-Source: APiQypIkmjaLT9hLhrdtgGzDP78a4P++lfdDp873GTeMiiFe/EbuahrP7N0IemUKzf2G7LGjNZu+4w==
-X-Received: by 2002:a62:1c89:: with SMTP id c131mr2903107pfc.164.1588683866499;
-        Tue, 05 May 2020 06:04:26 -0700 (PDT)
-Received: from [192.168.1.7] ([120.244.110.63])
-        by smtp.gmail.com with ESMTPSA id b12sm1953307pfd.165.2020.05.05.06.04.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 May 2020 06:04:25 -0700 (PDT)
-Subject: Re: fs: jfs: fix a possible data race in txBegin()
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        jfs-discussion@lists.sourceforge.net
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Dave Kleikamp <shaggy@kernel.org>
-References: <5ef374a5-0e2e-5c74-a827-0148c384f6e3@web.de>
- <abbb03ec-7ce3-08b6-7d08-420743067f19@gmail.com>
- <fa6fabec-8cc5-fc62-657f-3794e9405fac@web.de>
-From:   Jia-Ju Bai <baijiaju1990@gmail.com>
-Message-ID: <e6ec72e5-e1d8-cf15-ddfd-2e335c5de962@gmail.com>
-Date:   Tue, 5 May 2020 21:04:09 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        Tue, 5 May 2020 09:10:04 -0400
+Received: from localhost.localdomain ([93.23.13.215])
+        by mwinf5d18 with ME
+        id b19t220094ePWwV0319taG; Tue, 05 May 2020 15:10:02 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 05 May 2020 15:10:02 +0200
+X-ME-IP: 93.23.13.215
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     nsaenzjulienne@suse.de, f.fainelli@gmail.com, rjui@broadcom.com,
+        sbranden@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+        wsa@the-dreams.de, wahrenst@gmx.net, nh6z@nh6z.net,
+        eric@anholt.net, andriy.shevchenko@linux.intel.com
+Cc:     linux-i2c@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] i2c: bcm2835: Fix an error handling path in 'bcm2835_i2c_probe()'
+Date:   Tue,  5 May 2020 15:09:52 +0200
+Message-Id: <20200505130952.176190-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <fa6fabec-8cc5-fc62-657f-3794e9405fac@web.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+A call to 'clk_set_rate_exclusive()' must be balanced in the error handling
+path.
+Add a corresponding 'clk_rate_exclusive_put()'.
 
+While a it, also balance a 'clk_prepare_enable()' call with a
+'clk_disable_unprepare()' call and move a 'free_irq()' to the new error
+handling path.
 
-On 2020/5/5 13:12, Markus Elfring wrote:
->> I am not sure how to add the tag "Fixes"...
-> How helpful do you find the available software documentation?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=47cf1b422e6093aee2a3e55d5e162112a2c69870#n183
->
->
->> I need to find which previous commit add the code about txBegin()?
-> I suggest to take another look at corresponding source code places
-> by a command like “git blame”.
-> https://git-scm.com/book/en/v2/Git-Tools-Debugging-with-Gits
+This has the side effect to propagate the error code returned by
+'request_irq()' instead of returning -ENODEV.
 
-Thanks a lot, Markus.
-I have used "git blame" to find the last change on the related source code.
-I will send V2 patches, thanks again :)
+This way, the error handling path of the probe function looks similar to
+the remove function.
 
+Fixes: bebff81fb8b9 ("i2c: bcm2835: Model Divider in CCF")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/i2c/busses/i2c-bcm2835.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-Best wishes,
-Jia-Ju Bai
+diff --git a/drivers/i2c/busses/i2c-bcm2835.c b/drivers/i2c/busses/i2c-bcm2835.c
+index d9b86fcc3825..7f403e07dff4 100644
+--- a/drivers/i2c/busses/i2c-bcm2835.c
++++ b/drivers/i2c/busses/i2c-bcm2835.c
+@@ -451,13 +451,14 @@ static int bcm2835_i2c_probe(struct platform_device *pdev)
+ 	ret = clk_prepare_enable(i2c_dev->bus_clk);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Couldn't prepare clock");
+-		return ret;
++		goto err_unprotect_clk;
+ 	}
+ 
+ 	irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+ 	if (!irq) {
+ 		dev_err(&pdev->dev, "No IRQ resource\n");
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto err_unprepare_clk;
+ 	}
+ 	i2c_dev->irq = irq->start;
+ 
+@@ -465,7 +466,7 @@ static int bcm2835_i2c_probe(struct platform_device *pdev)
+ 			  dev_name(&pdev->dev), i2c_dev);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Could not request IRQ\n");
+-		return -ENODEV;
++		goto err_unprepare_clk;
+ 	}
+ 
+ 	adap = &i2c_dev->adapter;
+@@ -483,7 +484,16 @@ static int bcm2835_i2c_probe(struct platform_device *pdev)
+ 
+ 	ret = i2c_add_adapter(adap);
+ 	if (ret)
+-		free_irq(i2c_dev->irq, i2c_dev);
++		goto err_free_irq;
++
++	return 0;
++
++err_free_irq:
++	free_irq(i2c_dev->irq, i2c_dev);
++err_unprepare_clk:
++	clk_disable_unprepare(i2c_dev->bus_clk);
++err_unprotect_clk:
++	clk_rate_exclusive_put(i2c_dev->bus_clk);
+ 
+ 	return ret;
+ }
+-- 
+2.25.1
+

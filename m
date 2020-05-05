@@ -2,132 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 646841C5005
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 10:15:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A7011C5039
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 10:26:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728114AbgEEIPd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 May 2020 04:15:33 -0400
-Received: from mout.web.de ([217.72.192.78]:57769 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725833AbgEEIPc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 May 2020 04:15:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588666508;
-        bh=xb0+yObJ8LX/ryqF56WrDSm/1zLQIxqPtNdtj7KlzLQ=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=UqOdNS+4km77RSRM1WoqtscWjlmjpU/whCRrTEhVHavftK4qXyDODNzucPjWN+T0C
-         8/s3tWW1YrJV9JqIxZW+RH+wv31RihaTBKVAaLHhPJ0nCiDmVF/hCJNfWDs3wMEMaH
-         buUNOueAAtjVMDgbzYS09yV2KkrI9h6BtfpTo6HQ=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.48.132.123]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MrOhx-1ikzGt0K9v-00oX8B; Tue, 05
- May 2020 10:15:08 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chen-Yu Tsai <wens@csie.org>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Jernej Skrabec <jernej.skrabec@siol.net>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>
-Subject: Re: [PATCH] media: sun8i: Fix an error handling path in
- deinterlace_runtime_resume()
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-To:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
-Message-ID: <75dd05b8-7895-e1cf-2c76-2327aa11f033@web.de>
-Date:   Tue, 5 May 2020 10:15:05 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1728006AbgEEI0L (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 May 2020 04:26:11 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:35792 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725320AbgEEI0L (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 5 May 2020 04:26:11 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0458N6ZD135107;
+        Tue, 5 May 2020 08:26:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=vfafqK+gClVsvD0wGa8+iFWiZuHNuS1IxnHzPnTCGTA=;
+ b=zAucqM8ZjJy1x3vZA+k83i6bRxzTkfEJ19ggLKPhVgYhmAoEk4YqtZFWfcAnajXXiRtp
+ RPD0TnvXpy0Ym9pMxZR6LYU58GNzfSW1JyzDW70j9xG3PuhZUlYbVbsueqeQACfgu/fd
+ TuuUG0v1awhPeVaIoRD6Do313dW7ymFy1CHpVJ1YgEltf5BDuMvkuuO1DCNhJZISvFUZ
+ ik+P6S49SoyYsZkPZUq7jIi8XNX4evtBM6jKtBMLQukYTzBvxlehii4twyvxah7qV/fe
+ GovyL9959VQ/Bht9G+fzVSPAiA7xR2b1RvIpwgrxNSV7DBKvvOTH2VNKA4D+cE+ch2+u iQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 30s0tmb86p-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 05 May 2020 08:26:06 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0458NNYO132559;
+        Tue, 5 May 2020 08:26:05 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 30sjndqsdk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 05 May 2020 08:26:05 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0458Q3SN014522;
+        Tue, 5 May 2020 08:26:03 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 05 May 2020 01:26:03 -0700
+Date:   Tue, 5 May 2020 11:25:56 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Dariusz Marcinkiewicz <darekm@google.com>,
+        Kamil Debski <kamil@wypas.org>, linux-media@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] media: cec: silence shift wrapping warning in
+ __cec_s_log_addrs()
+Message-ID: <20200505082556.GA113134@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ra9Z1AZM1ohG0BJsAfpYw+Nq3NhM9qaNW9+6pJX6nXvLTpOydkY
- 0E9GoHt+vErz4+EFcOHtR2q45a38/z5DZ6wrk53Dv0iyymtqJI7cTecD2cyhxVL/5Fsxcw7
- qjWCCGhv6XQkDJ54Fh0UQd3u0NpkBWVTl+b4+JiHzc55lF2Pn/w7nfR3n3l6XR5j0y/ud+s
- WDl9IdT9Th2sD9a+NYa/w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:SEoUJAW4u8I=:eJrDYbtggXycnYIbCBf16Z
- P+y1YFruoAMZBTtQITaRV7TP74W0R6XLq4t2gBOgO6F3dNkjR21ab3jtb9HKwX6aDmgDxbwVV
- q+/r16AH5Wucqj/7RB2VGmgZVDbFzO61UwrXL0Wjir2ACek+W/bwOHXTbOIXSHpWVbbjOjJP2
- QP0mKkIopAIaHLhuroleE+A9VtQwgv+zDixbBXOFDQ4JX8J7L4Rr0i142UfvE/Kr9sKbFF6Dm
- xRr+TIvLAiix84TWCauT8jlKMLZndTd8cyQTIkrsBi2aF4HwuGIi7qy6QGRn2udzEhOSKnK69
- +z6+/XdcwooWa/wwtYnOF3KDCqUg2v4IJv01Wu5O9icxuBzRltKVnjuPsoxnfhHe9GwZyTVd5
- KpOfM1g0V/w9UqJeJ4LkYFBhcuMrBScSYWU/QCavSd2EylZdLCjM96vFd5biV3xd3yDZHWtaq
- amKCwTA6aUt1Yj0t6roxNb6CmvXsr6tQ1MFll+rGyULh/c7gf5wrDnhKyk6jazTzMdtVtihl+
- Jb5PS3w9rFRPn3zNzeG0vHoab4VDVTDFZiJqJQU20gRR7HA65twynG4MUiY6PlJsU1/DuogJ5
- VainFFj7zb5zozrJMk/4c5ssfu0/PCpAVPp45JQ0TdJx3rx9chZ4uuvi0ja8HMXo0vCNJXZLp
- nOviS2QlZKPJol9xpCQVdbAl1AcPsvoMJAeRhX7r/lr4YaRkJbwnviU8VykjFfJZ7Ez4GvqGk
- fOHgoDSqK2ST7qS1tKwV5Mmnuj5cwq4+qEDC9p2geh8rTGLu+g+oyepZSoF799Rsy23Ok1UPJ
- +jxH+wdSE/ukoB+C83yW8HxsaadjnK6Z5ZFZ0gLqUtvbRKoBPwPn8+gmCxDXtzoo++wjtg06E
- 27mI9YOB7+W5UHVAUbBYNRar+cPiqoThF05XJAUjygrf5kh4yKBkJ0cpzhUEa8m51PEDnlmDk
- enkBewrcQpT351gSSqSITNFDramlGNbQmPnaPQfCSJK6oVvKA3nL0SnCdzevav7LEyTYopVhu
- AVZqO+mIDKY6piQhtDw6zw49iHsy4/rFuxHk9CntmhUWDRzx9/f+5M29S65PK0ihOUdETpNDY
- 2Ytz/+j6L+k917zbaWbpH3SHK9BfRnnhyHx5ETRcU1RhD1/PCnGCWt/DV1qxQUox7jM4QrHVB
- o0AOBE/+CiT7BmHfWqlPyVOyjsvZ0IfVIgMThfsSjx0VE7de6BJMRh9qLiKFMTiOf12oGTRUl
- ACkejzQgzF8qCmDYL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9611 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 adultscore=0 phishscore=0
+ mlxlogscore=999 bulkscore=0 malwarescore=0 spamscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005050067
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9611 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0
+ priorityscore=1501 lowpriorityscore=0 spamscore=0 suspectscore=0
+ phishscore=0 clxscore=1011 bulkscore=0 mlxlogscore=999 adultscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005050067
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> It is spurious to call 'clk_disable_unprepare()' when
-> 'clk_prepare_enable()' has not been called yet.
+The log_addrs->log_addr_type[i] value is a u8 which is controlled by
+the user and comes from the ioctl.  If it's over 31 then that results in
+undefined behavior (shift wrapping) and that leads to a Smatch static
+checker warning.  We already cap the value later so we can silence the
+warning just by re-ordering the existing checks.
 
-Can it be that the usage of the word =E2=80=9Csuspicious=E2=80=9D would be=
- more appropriate
-for such a change description?
+I think the UBSan checker will also catch this bug at runtime and
+generate a warning.  But otherwise the bug is harmless.
 
+Fixes: 9881fe0ca187 ("[media] cec: add HDMI CEC framework (adapter)")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+I haven't pushed the Smatch check for this but I've been re-working how
+user data is tracked and hopefully it should reach acceptable false
+positive ratio soon so I can do that.
 
-> Re-order the error handling path to avoid it.
+ drivers/media/cec/core/cec-adap.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Would it be also helpful to explicitly mention in the commit message
-that you would like to move a call of the function =E2=80=9Cclk_rate_exclu=
-sive_put=E2=80=9D
-to the end of this function implementation for the correction
-of the desired exception handling?
+diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
+index 6c95dc471d4c6..6a04d19a96b2e 100644
+--- a/drivers/media/cec/core/cec-adap.c
++++ b/drivers/media/cec/core/cec-adap.c
+@@ -1734,6 +1734,10 @@ int __cec_s_log_addrs(struct cec_adapter *adap,
+ 		unsigned j;
+ 
+ 		log_addrs->log_addr[i] = CEC_LOG_ADDR_INVALID;
++		if (log_addrs->log_addr_type[i] > CEC_LOG_ADDR_TYPE_UNREGISTERED) {
++			dprintk(1, "unknown logical address type\n");
++			return -EINVAL;
++		}
+ 		if (type_mask & (1 << log_addrs->log_addr_type[i])) {
+ 			dprintk(1, "duplicate logical address type\n");
+ 			return -EINVAL;
+@@ -1754,10 +1758,6 @@ int __cec_s_log_addrs(struct cec_adapter *adap,
+ 			dprintk(1, "invalid primary device type\n");
+ 			return -EINVAL;
+ 		}
+-		if (log_addrs->log_addr_type[i] > CEC_LOG_ADDR_TYPE_UNREGISTERED) {
+-			dprintk(1, "unknown logical address type\n");
+-			return -EINVAL;
+-		}
+ 		for (j = 0; j < feature_sz; j++) {
+ 			if ((features[j] & 0x80) == 0) {
+ 				if (op_is_dev_features)
+-- 
+2.26.2
 
-Regards,
-Markus

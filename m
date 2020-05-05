@@ -2,29 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFA4A1C5244
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 11:59:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E99031C5290
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 12:08:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728268AbgEEJ7J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 May 2020 05:59:09 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3848 "EHLO huawei.com"
+        id S1728630AbgEEKIC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 May 2020 06:08:02 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3796 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725766AbgEEJ7J (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 May 2020 05:59:09 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 0EACCDC1F4196C5375BC;
-        Tue,  5 May 2020 17:59:06 +0800 (CST)
+        id S1728600AbgEEKIB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 5 May 2020 06:08:01 -0400
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 00E1E9BE0A6632AAFBDE;
+        Tue,  5 May 2020 18:08:00 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 5 May 2020 17:58:57 +0800
+ DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 5 May 2020 18:07:50 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     Alex Elder <elder@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>
-CC:     YueHaibing <yuehaibing@huawei.com>, <netdev@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net-next] net: ipa: remove duplicated include from ipa_mem.c
-Date:   Tue, 5 May 2020 10:03:07 +0000
-Message-ID: <20200505100307.191806-1-yuehaibing@huawei.com>
+To:     Herbert Xu <herbert@gondor.apana.org.au>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rajan Vaja <rajan.vaja@xilinx.com>,
+        Kalyani Akula <kalyani.akula@xilinx.com>,
+        Jolly Shah <jolly.shah@xilinx.com>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-crypto@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] crypto: xilinx - Remove set but not used variable 'drv_ctx'
+Date:   Tue, 5 May 2020 10:12:00 +0000
+Message-ID: <20200505101200.195184-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -36,24 +41,43 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove duplicated include.
+Fixes gcc '-Wunused-but-set-variable' warning:
 
+drivers/crypto/xilinx/zynqmp-aes-gcm.c: In function 'zynqmp_aes_aead_cipher':
+drivers/crypto/xilinx/zynqmp-aes-gcm.c:83:30: warning:
+ variable 'drv_ctx' set but not used [-Wunused-but-set-variable]
+
+commit bc86f9c54616 ("firmware: xilinx: Remove eemi ops for aes engine") left
+behind this, remove it.
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/net/ipa/ipa_mem.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/crypto/xilinx/zynqmp-aes-gcm.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/net/ipa/ipa_mem.c b/drivers/net/ipa/ipa_mem.c
-index aa8f6b0f3d50..3ef814119aab 100644
---- a/drivers/net/ipa/ipa_mem.c
-+++ b/drivers/net/ipa/ipa_mem.c
-@@ -17,7 +17,6 @@
- #include "ipa_data.h"
- #include "ipa_cmd.h"
- #include "ipa_mem.h"
--#include "ipa_data.h"
- #include "ipa_table.h"
- #include "gsi_trans.h"
+diff --git a/drivers/crypto/xilinx/zynqmp-aes-gcm.c b/drivers/crypto/xilinx/zynqmp-aes-gcm.c
+index d0a0daf3ea08..9a342932b7f3 100644
+--- a/drivers/crypto/xilinx/zynqmp-aes-gcm.c
++++ b/drivers/crypto/xilinx/zynqmp-aes-gcm.c
+@@ -79,8 +79,6 @@ static int zynqmp_aes_aead_cipher(struct aead_request *req)
+ 	struct zynqmp_aead_tfm_ctx *tfm_ctx = crypto_aead_ctx(aead);
+ 	struct zynqmp_aead_req_ctx *rq_ctx = aead_request_ctx(req);
+ 	struct device *dev = tfm_ctx->dev;
+-	struct aead_alg *alg = crypto_aead_alg(aead);
+-	struct zynqmp_aead_drv_ctx *drv_ctx;
+ 	struct zynqmp_aead_hw_req *hwreq;
+ 	dma_addr_t dma_addr_data, dma_addr_hw_req;
+ 	unsigned int data_size;
+@@ -89,8 +87,6 @@ static int zynqmp_aes_aead_cipher(struct aead_request *req)
+ 	char *kbuf;
+ 	int err;
+ 
+-	drv_ctx = container_of(alg, struct zynqmp_aead_drv_ctx, alg.aead);
+-
+ 	if (tfm_ctx->keysrc == ZYNQMP_AES_KUP_KEY)
+ 		dma_size = req->cryptlen + ZYNQMP_AES_KEY_SIZE
+ 			   + GCM_AES_IV_SIZE;
 
 
 

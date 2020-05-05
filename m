@@ -2,63 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F46B1C52A5
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 12:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 696E91C53BB
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 12:54:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728580AbgEEKJ4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 May 2020 06:09:56 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:43852 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728402AbgEEKJz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 May 2020 06:09:55 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id E5C314B04EC27FF0D1CE;
-        Tue,  5 May 2020 18:09:53 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 5 May 2020 18:09:44 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Vinod Koul <vkoul@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>
-CC:     YueHaibing <yuehaibing@huawei.com>, <dmaengine@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] dmaengine: moxart-dma: Drop pointless static qualifier in moxart_probe()
-Date:   Tue, 5 May 2020 10:13:53 +0000
-Message-ID: <20200505101353.195446-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728703AbgEEKye (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 May 2020 06:54:34 -0400
+Received: from foss.arm.com ([217.140.110.172]:37068 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728180AbgEEKye (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 5 May 2020 06:54:34 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2470430E;
+        Tue,  5 May 2020 03:54:33 -0700 (PDT)
+Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E221B3F305;
+        Tue,  5 May 2020 03:54:31 -0700 (PDT)
+Date:   Tue, 5 May 2020 11:54:29 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next  v2] PCI: dwc: pci-dra7xx: use
+ devm_platform_ioremap_resource_byname()
+Message-ID: <20200505105429.GB13446@e121166-lin.cambridge.arm.com>
+References: <20200427111044.162618-1-weiyongjun1@huawei.com>
+ <20200429015027.134485-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200429015027.134485-1-weiyongjun1@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is no need to have the 'void __iomem *dma_base_addr' variable
-static since new value always be assigned before use it.
+On Wed, Apr 29, 2020 at 01:50:27AM +0000, Wei Yongjun wrote:
+> platform_get_resource() may fail and return NULL, so we should better
+> check it's return value to avoid a NULL pointer dereference a bit later
+> in the code. Fix it to use devm_platform_ioremap_resource_byname()
+> instead of calling platform_get_resource_byname() and devm_ioremap().
+> 
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+> v1 -> v2: use devm_platform_ioremap_resource_byname, suggest by Vignesh
+> ---
+>  drivers/pci/controller/dwc/pci-dra7xx.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/dma/moxart-dma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied to pci/dwc, thanks.
 
-diff --git a/drivers/dma/moxart-dma.c b/drivers/dma/moxart-dma.c
-index 2a77fa319d78..347146a6e1d0 100644
---- a/drivers/dma/moxart-dma.c
-+++ b/drivers/dma/moxart-dma.c
-@@ -568,7 +568,7 @@ static int moxart_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct device_node *node = dev->of_node;
- 	struct resource *res;
--	static void __iomem *dma_base_addr;
-+	void __iomem *dma_base_addr;
- 	int ret, i;
- 	unsigned int irq;
- 	struct moxart_chan *ch;
+Lorenzo
 
-
-
-
-
+> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+> index 3b0e58f2de58..6184ebc9392d 100644
+> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
+> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+> @@ -840,7 +840,6 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
+>  	struct phy **phy;
+>  	struct device_link **link;
+>  	void __iomem *base;
+> -	struct resource *res;
+>  	struct dw_pcie *pci;
+>  	struct dra7xx_pcie *dra7xx;
+>  	struct device *dev = &pdev->dev;
+> @@ -877,10 +876,9 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
+>  		return irq;
+>  	}
+>  
+> -	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "ti_conf");
+> -	base = devm_ioremap(dev, res->start, resource_size(res));
+> -	if (!base)
+> -		return -ENOMEM;
+> +	base = devm_platform_ioremap_resource_byname(pdev, "ti_conf");
+> +	if (IS_ERR(base))
+> +		return PTR_ERR(base);
+>  
+>  	phy_count = of_property_count_strings(np, "phy-names");
+>  	if (phy_count < 0) {
+> 
+> 
+> 

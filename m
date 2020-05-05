@@ -2,79 +2,156 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 099C61C575C
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 15:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 842E81C5750
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 15:46:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729032AbgEENs3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 May 2020 09:48:29 -0400
-Received: from m12-17.163.com ([220.181.12.17]:46070 "EHLO m12-17.163.com"
+        id S1728965AbgEENq0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 May 2020 09:46:26 -0400
+Received: from mga04.intel.com ([192.55.52.120]:52025 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728898AbgEENs3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 May 2020 09:48:29 -0400
-X-Greylist: delayed 955 seconds by postgrey-1.27 at vger.kernel.org; Tue, 05 May 2020 09:48:27 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=Subject:From:Message-ID:Date:MIME-Version; bh=vtE9L
-        BKKqPY2QgOdCyMuZW9mjYDyjGtNVqWc4Ka9luo=; b=bpuZ7YTYNZo8qjLCX6F9U
-        ay8iGfhemsjWMvllBx3GKhJ2anA8/6VNjQXiQqR11jgKHjYSFM0cd3YiXkgkIwSS
-        BOsWXdIVUF8umu3yxdlGCG4kJFMgFqbc8uK+/7XmSmdNqdLvpKojArPHjk2jz/Q5
-        1tIjBv3mehZ4LaEbnKmgbY=
-Received: from [192.168.1.7] (unknown [120.244.110.63])
-        by smtp13 (Coremail) with SMTP id EcCowAB37v3carFejW99BA--.112S2;
-        Tue, 05 May 2020 21:32:12 +0800 (CST)
-Subject: Re: fs: jfs: fix a possible data race in txBegin()
-To:     Dave Kleikamp <dave.kleikamp@oracle.com>,
-        Markus Elfring <Markus.Elfring@web.de>,
-        Jia-Ju Bai <baijiaju1990@gmail.com>,
-        jfs-discussion@lists.sourceforge.net
+        id S1728180AbgEENqZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 5 May 2020 09:46:25 -0400
+IronPort-SDR: Sy9rITzggKW7/nnGyFy2l3LwvkfGWjRXp01uJdQotIQcF32CnzA7wI29DPm8cefgciGORbEDbw
+ kV5pG8+2NEDg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2020 06:46:25 -0700
+IronPort-SDR: p6F7EkxRkwvT9S0Gh2WXD0ldgh3mABLeE2Kl4aB8g7+Efe3d5WIH3/eJA3I839vqKZ0vF6mqvh
+ mHRC0lrJS7NQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,355,1583222400"; 
+   d="scan'208";a="434489296"
+Received: from marshy.an.intel.com (HELO [10.122.105.159]) ([10.122.105.159])
+  by orsmga005.jf.intel.com with ESMTP; 05 May 2020 06:46:24 -0700
+Subject: Re: [PATCH 3/4 v2] firmware: stratix10-svc: Fix some error handling
+ paths in 'stratix10_svc_drv_probe()'
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        gregkh@linuxfoundation.org, atull@kernel.org
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <5ef374a5-0e2e-5c74-a827-0148c384f6e3@web.de>
- <abbb03ec-7ce3-08b6-7d08-420743067f19@gmail.com>
- <fa6fabec-8cc5-fc62-657f-3794e9405fac@web.de>
- <df165b9f-7a51-a632-b1a0-a2cf1efa1915@oracle.com>
-From:   Jia-Ju Bai <baijiaju1990@163.com>
-Message-ID: <565e317a-396e-9221-11bb-bc8c76cc9f7a@163.com>
-Date:   Tue, 5 May 2020 21:32:11 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+References: <cover.1588142343.git.christophe.jaillet@wanadoo.fr>
+ <0ff40f39de4deb63b03b363d0e0f3e3c8cccd62d.1588142343.git.christophe.jaillet@wanadoo.fr>
+From:   Richard Gong <richard.gong@linux.intel.com>
+Message-ID: <1c0b3414-aea4-8b10-d4a9-4e04f1988002@linux.intel.com>
+Date:   Tue, 5 May 2020 09:02:39 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <df165b9f-7a51-a632-b1a0-a2cf1efa1915@oracle.com>
+In-Reply-To: <0ff40f39de4deb63b03b363d0e0f3e3c8cccd62d.1588142343.git.christophe.jaillet@wanadoo.fr>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-X-CM-TRANSID: EcCowAB37v3carFejW99BA--.112S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKrWkWFy8ZFyUuF1UKw45Jrb_yoWDCFc_uF
-        s5CFyUGwn8uF1rXFZ7Jw4fZry3Zw47ZF1Yywn5JrW7J3s3tFs5CFZ7KFyYy3W5tF9akrsr
-        Ca1Sqw4Dt3W2qjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU5M5l5UUUUU==
-X-Originating-IP: [120.244.110.63]
-X-CM-SenderInfo: xedlyx5dmximizq6il2tof0z/1tbiVhwbelqzk2jEvAAAsB
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hi,
 
+Similarly we need add error handling for controller and chans, something 
+like below:
 
-On 2020/5/5 21:23, Dave Kleikamp wrote:
-> On 5/5/20 12:12 AM, Markus Elfring wrote:
->>> I am not sure how to add the tag "Fixes"...
->> How helpful do you find the available software documentation?
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=47cf1b422e6093aee2a3e55d5e162112a2c69870#n183
->>
->>
->>> I need to find which previous commit add the code about txBegin()?
->> I suggest to take another look at corresponding source code places
->> by a command like “git blame”.
->> https://git-scm.com/book/en/v2/Git-Tools-Debugging-with-Gits
-> I suspect that the problem was in the code much longer than it has been
-> under git source control.
+@@ -997,13 +997,17 @@ static int stratix10_svc_drv_probe(struct 
+platform_device *pdev)
 
-I agree, because "git blame" shows the last change to txBegin() is 
-commit 1da177e4c3f4, which was submitted in 2005...
-And this commit just added or merged the filesystem to the Linux kernel.
-Thus, adding the tag "Fixes" of this commit should be useless...
+         /* allocate service controller and supporting channel */
+         controller = devm_kzalloc(dev, sizeof(*controller), GFP_KERNEL);
+-       if (!controller)
+-               return -ENOMEM;
++       if (!controller) {
++               ret = -ENOMEM;
++               goto err_destroy_pool;
++       }
 
+         chans = devm_kmalloc_array(dev, SVC_NUM_CHANNEL,
+                                    sizeof(*chans), GFP_KERNEL | 
+__GFP_ZERO);
+-       if (!chans)
+-               return -ENOMEM;
++       if (!chans) {
++               ret = -ENOMEM;
++               goto err_destroy_pool;
++       }
 
-Best wishes,
-Jia-Ju Bai
+         controller->dev = dev;
+         controller->num_chans = SVC_NUM_CHANNEL;
 
+On 4/29/20 1:52 AM, Christophe JAILLET wrote:
+> If an error occurs after calling 'svc_create_memory_pool()', the allocated
+> genpool should be destroyed with 'gen_pool_destroy()', as already done in
+> the remove function.
+> 
+> If an error occurs after calling 'kfifo_alloc()', the allocated memory
+> should be freed with 'kfifo_free()', as already done in the remove
+> function.
+> 
+> While at it, also move a 'platform_device_put()' call to the error handling
+> path.
+> 
+> Fixes: b5dc75c915cd ("firmware: stratix10-svc: extend svc to support new RSU features")
+> Fixes: 7ca5ce896524 ("firmware: add Intel Stratix10 service layer driver")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>   drivers/firmware/stratix10-svc.c | 26 ++++++++++++++++++--------
+>   1 file changed, 18 insertions(+), 8 deletions(-)
+> 
+I am fine with below changes.
+
+> diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
+> index de5870f76c5e..739004398877 100644
+> --- a/drivers/firmware/stratix10-svc.c
+> +++ b/drivers/firmware/stratix10-svc.c
+> @@ -1024,7 +1024,7 @@ static int stratix10_svc_drv_probe(struct platform_device *pdev)
+>   	ret = kfifo_alloc(&controller->svc_fifo, fifo_size, GFP_KERNEL);
+>   	if (ret) {
+>   		dev_err(dev, "failed to allocate FIFO\n");
+> -		return ret;
+> +		goto err_destroy_pool;
+>   	}
+>   	spin_lock_init(&controller->svc_fifo_lock);
+>   
+> @@ -1043,24 +1043,34 @@ static int stratix10_svc_drv_probe(struct platform_device *pdev)
+>   
+>   	/* add svc client device(s) */
+>   	svc = devm_kzalloc(dev, sizeof(*svc), GFP_KERNEL);
+> -	if (!svc)
+> -		return -ENOMEM;
+> +	if (!svc) {
+> +		ret = -ENOMEM;
+> +		goto err_free_kfifo;
+> +	}
+>   
+>   	svc->stratix10_svc_rsu = platform_device_alloc(STRATIX10_RSU, 0);
+>   	if (!svc->stratix10_svc_rsu) {
+>   		dev_err(dev, "failed to allocate %s device\n", STRATIX10_RSU);
+> -		return -ENOMEM;
+> +		ret = -ENOMEM;
+> +		goto err_free_kfifo;
+>   	}
+>   
+>   	ret = platform_device_add(svc->stratix10_svc_rsu);
+> -	if (ret) {
+> -		platform_device_put(svc->stratix10_svc_rsu);
+> -		return ret;
+> -	}
+> +	if (ret)
+> +		goto put_platform;
+> +
+>   	dev_set_drvdata(dev, svc);
+>   
+>   	pr_info("Intel Service Layer Driver Initialized\n");
+>   
+> +	return 0;
+> +
+> +put_platform:
+> +	platform_device_put(svc->stratix10_svc_rsu);
+> +err_free_kfifo:
+> +	kfifo_free(&controller->svc_fifo);
+> +err_destroy_pool:
+> +	gen_pool_destroy(genpool);
+>   	return ret;
+>   }
+>   
+> 
+Regards,
+Richard

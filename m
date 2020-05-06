@@ -2,109 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E8751C677F
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 07:34:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71F591C6790
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 07:46:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727092AbgEFFet (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 01:34:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51310 "EHLO
+        id S1726924AbgEFFqJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 01:46:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725796AbgEFFes (ORCPT
+        by vger.kernel.org with ESMTP id S1725771AbgEFFqI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 01:34:48 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED9DFC061A0F;
-        Tue,  5 May 2020 22:34:46 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id i15so167863wrx.10;
-        Tue, 05 May 2020 22:34:46 -0700 (PDT)
+        Wed, 6 May 2020 01:46:08 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87D25C061A0F;
+        Tue,  5 May 2020 22:46:08 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id v4so4049696wme.1;
+        Tue, 05 May 2020 22:46:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=NgWAlvnGXDmO0eEhhszebxW0OV0q/gUyVYXiRgeW/8M=;
-        b=iy2yoU3JHvdpSiZul4x3UQhvD/HWf+IqXjC96oAsSCQK/g0zML6kZM48ft+ddc14j5
-         Gi1KMLAUBhfFlMd66VwVOx7sdtNSxQIdJIRCaIqKvL3C3JAZ4bIYx8Pdaz5oPo9iz6Ef
-         qWa6qHoPN5W4y2L/uzZClZ5c8Pb1i1T0Q++dKtV7V1B6TqN0xrgdQQhXWgW3wKt2mlHa
-         KSQCX0S/O9Nz/UHYZTUnmD6YKGOuJLU+TA+hukdEj5uLci0JDkUXozlqUOKEAKd/sO5a
-         boiypu5WWDHgNiv1yt1K1UNqYxDVkzTByuRkMROkI65AZsDOEw21qiFavUgTw8IzAjUn
-         9PYg==
+        h=from:date:to:cc:subject:message-id:user-agent:mime-version;
+        bh=e1TERoguEz9nk9SqrBe4h2hEZb+u/o5PdVhS/pRqBTs=;
+        b=nQzX+2ViQzvd+cAHmw8E26W4zg2ynvV1O7XGCCWjkmPE8yr1TuOgSyROEqK2LXe7mC
+         /ZdJOdPCn9zcO4Z2k5+ZoTOukmHTD++IsTXObJS9u5orKzGFu6pMKngSG5SiklT0z7JY
+         MKwwOTDBpJblyhMC3P8AZXAiLhH1302coDd051UyMMeTmqBHPzjfxxDO/ADsasDl2bk2
+         j8UciE49pTr6y/0PEczn0BSD8iVbg9FwHFjOk03oyeqjhJ77nnlwz85JV/yflJmi3UDu
+         PmPI3IgJkzjUVM4TJS2nuefzG92pkpEbt1bwyfRJwHX7pPDcN6fb8IJEy2rqDgymB9CR
+         KoSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=NgWAlvnGXDmO0eEhhszebxW0OV0q/gUyVYXiRgeW/8M=;
-        b=lQgY/zcwzTXNTFKTDuC99Yzcxr522ptKfslCUvV+LhmIlkR+zyQ/HBj0ymYZZBCelb
-         aoNoJ/olsmSf0I2oIdbHkHy5vr23cmyoM+kwR4QyIjdlr9ZTM0iGr4nO7LXQkyX/5tt9
-         yLpRiW6OCqsBsUTKeSDw2gcG2zFDmHJ3emk98H4zLkAjc3F9dRmYnb3MWIF+Py8XvmKC
-         I9LY/p792YnnpnosaIyCOVNfIAqHSmwFQWHRTgZFd1x9Fs+2L5fIQsPr6G6PA2gdpaOH
-         RK6eegkR1OS58C8yY+PWV9v6S8/ADDLuuIfMN5UOdFU6auW7ZECoUkYe7rjSDfSFsV+0
-         fsvw==
-X-Gm-Message-State: AGi0PuZzf2aZNPp0e253weWxWKWFjSUaAR3kKXbQXybRErROVWkjJpRc
-        2NQlS+aPrJK2aZyeqxUo5i4=
-X-Google-Smtp-Source: APiQypJYiKXI14TW+7ZrO/B+v52diF4s9uz6KDF1/WeL4zHPV8YiWC26PvqtosoUqsfUz23jLhlCWA==
-X-Received: by 2002:adf:dc89:: with SMTP id r9mr4384816wrj.300.1588743285536;
-        Tue, 05 May 2020 22:34:45 -0700 (PDT)
-Received: from felia.fritz.box ([2001:16b8:2df1:2500:bc2e:80a7:2be5:2fcf])
-        by smtp.gmail.com with ESMTPSA id y3sm897691wrm.64.2020.05.05.22.34.44
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:user-agent
+         :mime-version;
+        bh=e1TERoguEz9nk9SqrBe4h2hEZb+u/o5PdVhS/pRqBTs=;
+        b=Wu3Bn7kYjStqkVdl+jZSSRAlyMSG3na+3g2ok8tbZvnDwWoaoBmdnjWIe2+Ud8uECf
+         LsCulcDlhuGqS/buSfmwtf11VERYboFypSRohY4y9UFdnevYiivhg/g3uHZsFp/aeW48
+         F5zzInKMCucjDyEeiUkIT2nPSfD8OkvausxgF9FEYrWEhUqvmHbpJ41XOcfBZFuEBqnM
+         OkdybOhibgopW/ESGI1ujajRe8HhPsdtEwiz1+1tHpd4M0x65Y7VdkOSDrd+FAehCB4P
+         ND3layjBJVsQkzPA3GaypL5Ane6BK+we/akGHxJA9ISyTMYIJcFijrobnQEkYYMz/oEm
+         rD1g==
+X-Gm-Message-State: AGi0PuZW1hsnpfveBhlfNkOAn0nrEO9ITDowDAuMl8X/Zq6C8gi5rOnn
+        I4Yigk70eXVr+iKJ12gwppI=
+X-Google-Smtp-Source: APiQypK+swIcBwcJSK76JFD7UfaycsexUHBN1orynIhwHQPeXRQMb327hZdVIdxBOeBBuwGl0BXg2g==
+X-Received: by 2002:a1c:9d8c:: with SMTP id g134mr2392953wme.79.1588743967070;
+        Tue, 05 May 2020 22:46:07 -0700 (PDT)
+Received: from felia ([2001:16b8:2df1:2500:bc2e:80a7:2be5:2fcf])
+        by smtp.gmail.com with ESMTPSA id l6sm910337wrb.75.2020.05.05.22.46.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2020 22:34:44 -0700 (PDT)
+        Tue, 05 May 2020 22:46:06 -0700 (PDT)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Jiri Kosina <trivial@kernel.org>
-Cc:     Lubomir Rintel <lkundrak@v3.sk>, Olof Johansson <olof@lixom.net>,
-        linux-arm-kernel@lists.infradead.org,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH v2 RESEND] MAINTAINERS: rectify MMP SUPPORT after moving cputype.h
-Date:   Wed,  6 May 2020 07:34:31 +0200
-Message-Id: <20200506053431.7464-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
+Date:   Wed, 6 May 2020 07:45:57 +0200 (CEST)
+X-X-Sender: lukas@felia
+To:     Pierre Morel <pmorel@linux.ibm.com>
+cc:     Vasily Gorbik <gor@linux.ibm.com>, Joe Perches <joe@perches.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: MAINTAINERS: Wrong ordering in S390 PCI SUBSYSTEM
+Message-ID: <alpine.DEB.2.21.2005060741520.7719@felia>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 32adcaa010fa ("ARM: mmp: move cputype.h to include/linux/soc/")
-added a file entry that does not point to the intended file location.
+Hi Pierre,
 
-Since then, ./scripts/get_maintainer.pl --self-test complains:
+with your commit de267a7c71ba ("s390/pci: Documentation for zPCI"), 
+visible on next-20200505, ./scripts/checkpatch.pl -f MAINTAINERS 
+complains:
 
-  warning: no file matches F: linux/soc/mmp/
+WARNING: Misordered MAINTAINERS entry - list file patterns in alphabetic order
+#14723: FILE: MAINTAINERS:14723:
++F:	drivers/pci/hotplug/s390_pci_hpc.c
++F:	Documentation/s390/pci.rst
 
-Rectify the MAINTAINERS entry now.
 
-Fixes: 32adcaa010fa ("ARM: mmp: move cputype.h to include/linux/soc/")
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-Jiri, please pick this patch.
+This is due to wrong ordering of the entries in your submission. If you
+would like me to send you a patch fixing that, please just let me know.
 
-v1 & v1-RESEND: was ignored.
+It is a recent addition to checkpatch.pl to report ordering problems in 
+MAINTAINERS, so you might have not seen that at submission time.
 
-v1 -> v2:
-  - v1 does not apply after reordering MAINTAINERS, i.e., commit 4400b7d68f6e
-  ("MAINTAINERS: sort entries by entry name") and commit 3b50142d8528
-  ("MAINTAINERS: sort field names for all entries").
-  - PATCH v2 applies on v5.7-rc1 now. Please pick v2 instead of v1.
 
-v2-resend:
-  - still applies on v5.7-rc4 and next-20200505
-  - asking for inclusion through trivial tree, as maintainers are not
-    responding.
+Best regards,
 
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e64e5db31497..a0fef0c33ba5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11327,7 +11327,7 @@ S:	Odd Fixes
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/lkundrak/linux-mmp.git
- F:	arch/arm/boot/dts/mmp*
- F:	arch/arm/mach-mmp/
--F:	linux/soc/mmp/
-+F:	include/linux/soc/mmp/
- 
- MMP USB PHY DRIVERS
- R:	Lubomir Rintel <lkundrak@v3.sk>
--- 
-2.17.1
+Lukas
 

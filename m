@@ -2,131 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B21141C6C61
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 11:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FEE51C6D02
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 11:35:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728814AbgEFJDh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 05:03:37 -0400
-Received: from mail-am6eur05on2072.outbound.protection.outlook.com ([40.107.22.72]:1504
-        "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726935AbgEFJDh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 05:03:37 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gXqQ2L2LlekanEGi9cbBfwC+L4DYBIgHHkgg9CTOHamMazpOS0MRbt9k7wiVGkYKnHTjDWTgPP1PBp1xTgNRcpWyBWG0kEXbmA8bBe9uE/oC++dgi830xnyVV4O5nund4sguHipD8R4anFMKxjQyHj2oeBv6PoqTqEidJAQd2P0f2R56sA343n1JHE5oZ4hJTd45Mek/oBCbApsDiOr4lJPiqBPhIQupBKp/pRqKrscEx0UzuZOSEcynNz1kTqiZOHt6TOpOGGF+ISckwsu2hV2HZt0PF16lXr8GZLqb7VS16CljIHrQwHN/lca6ohA0CbebJzdUSVPWkK0lJg4PNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+2BfXoS9qBaERq/kGDPcIC4TKFAY2d6ul1LOyp/gL04=;
- b=JBdkwvb0+FDnU10CsowOGkvV5saVnd7e8w7McIwiFDr864G5w1HhmOIrqr/dIB7fueu8HPPsv+Rf5J2DyL462n3Wbb0D2Sn6pZz5t1nqxr2ln1n03c30I3tPLaK7gYJ5+bbYpjJcoQxWbI0xwp+zxZGuX3VTqJL6l/s56iO0hBnTfVmcoH801nhrWv8IZC1FVG3wHktONUAVPnyzbqKVHV8quYnPmdqUVSYzElls7A4rW4iir7I3ycM98Sx3FT/5Eb4xzM4yGVhwuWcFd523F541zfQXdf79nhGSqgNHapyLtjx0JRXmI+dXo+rRPC0Xo3Kt2a368MDcSLi04JSvUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+2BfXoS9qBaERq/kGDPcIC4TKFAY2d6ul1LOyp/gL04=;
- b=oW7BYfQPUyCj08wcYsW44PML9TdMJK/9VJydMBWElXQ4o58AZ68OjjJCi6iFxLoHs63nQ94jjXp55RaK0O3VDhPQhPl71s1w/Kjtx2gV2qr6jmUgvA93XMq1jelSOTqDbZGw4hs1RcAkxoZW1DV/Lg3A2SrBwiWlt1e+zO+4apc=
-Received: from AM7PR04MB7157.eurprd04.prod.outlook.com (2603:10a6:20b:118::20)
- by AM7PR04MB6885.eurprd04.prod.outlook.com (2603:10a6:20b:10d::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2958.21; Wed, 6 May
- 2020 09:03:33 +0000
-Received: from AM7PR04MB7157.eurprd04.prod.outlook.com
- ([fe80::7c34:7ade:17d0:b792]) by AM7PR04MB7157.eurprd04.prod.outlook.com
- ([fe80::7c34:7ade:17d0:b792%9]) with mapi id 15.20.2979.028; Wed, 6 May 2020
- 09:03:33 +0000
-From:   Peter Chen <peter.chen@nxp.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-CC:     "balbi@kernel.org" <balbi@kernel.org>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "jun.li@freescale.com" <jun.li@freescale.com>,
-        "rogerq@ti.com" <rogerq@ti.com>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH] usb: gadget: audio: Fix a missing error return value in
- audio_bind()
-Thread-Topic: [PATCH] usb: gadget: audio: Fix a missing error return value in
- audio_bind()
-Thread-Index: AQHWITg+2d4HmGUDzkWJmNFd0Xw0X6iayB0A
-Date:   Wed, 6 May 2020 09:03:33 +0000
-Message-ID: <20200506090358.GD30237@b29397-desktop>
-References: <20200503104707.148996-1-christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20200503104707.148996-1-christophe.jaillet@wanadoo.fr>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: wanadoo.fr; dkim=none (message not signed)
- header.d=none;wanadoo.fr; dmarc=none action=none header.from=nxp.com;
-x-originating-ip: [119.31.174.66]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 9b678fb9-03ef-4306-f82d-08d7f19c5a7a
-x-ms-traffictypediagnostic: AM7PR04MB6885:|AM7PR04MB6885:
-x-microsoft-antispam-prvs: <AM7PR04MB6885C6434C549D31C0A97D118BA40@AM7PR04MB6885.eurprd04.prod.outlook.com>
-x-ms-exchange-transport-forked: True
-x-ms-oob-tlc-oobclassifiers: OLM:1388;
-x-forefront-prvs: 03950F25EC
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: fiP0JzLzIZgnAChs8V4bbqmFeasD4/UxmnQyin+XSMe6eAPN8ullhuWgmu5YZYYrpeRavXX4TT95K/jpvrhc+MwN+NuY9BxtZVbvv+RDEnMAthG4JPrks1irN2Ozj5Iqk6AdYlKVq31E0qXglpDHn9i0vHGKom1eurIbOD4VkELtFyNitSZS0zluyqSGQI9RcwpquY5dwcSWxZZv5cSwoRqy+W/1LPj9Vj9e0qFsIVJ2XTQPAoJcvb4q4gsil7Cp0GttYHf1GDYeRQSRNFwBEYKkEaOZATSK4/a1QG1pLzMKJkb1Ik7/V9vdxioa9X4f0O1sjFgbtelWS8uV/mzBS3HEUjBF5yvhjEo6sh8XpTHcAMmaJHxfyx94qJ3jbfdmCQmeBwfFPamrvSSq5H9q3MEhyz4xwMavumAaEqfu1z46v3V4njdHy+BxKpOHh+NP5PQNvf/aMe1m3GjRQHvRtcqNbPFmY6oBz08QvfR7gpzv6MIWKTtg3bNushLoof0vKCFPpJz5JFHLZf/TqX946w==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7157.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(7916004)(4636009)(39860400002)(136003)(396003)(366004)(346002)(376002)(33430700001)(6916009)(4326008)(6486002)(86362001)(316002)(6512007)(44832011)(9686003)(33656002)(54906003)(186003)(26005)(66446008)(478600001)(66946007)(91956017)(76116006)(66556008)(33716001)(66476007)(64756008)(53546011)(5660300002)(6506007)(1076003)(8676002)(4744005)(8936002)(33440700001)(71200400001)(2906002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: p1faWPCUgip8TEJ8Cw6AMMjJg2jrNRmY7aWp3yDYHkgr4/ER8SleZ8jPVockkyCl88fsBhuUbzG69X0rzj/2P+IHgp4mohJrWrYJZMbfIJiUUhu4qbHsaSKAnaShy5gCaOB46f2vF0T9yjA48vEeCjbc4NoYUofchOFBrDivSoKY/YtrMcRW7+i5Hc+f/edyAlTLVwp3QYOeFe+WwZF6MHPG7wfnKy/kf65fsZDv3fdOY5DxzJSXfiDybeKMGC2D+bojECTm+sG3lCXrjO+Cz4BZC1qju3jnXTSYNn/NYk5P8jew00Ehqt1T95gFJTWNLurKAVJ7G/TwH1+OuSUi+dR7E6q/JlNAlZe/HtPidowcBRtan7n6m4dUOr+8oZx+en6ytUgtSeiTvQ2wqndUyMma+KyT7+rMMygLTHNRBP5MbfqT3eDQJ36dZhCdsBS3wJzwasAOqqYFLIVGhxaLXtxIYAfJ7bYs0UAVS8zugkv83I+aNrNNJ63vqDKrkvoxPnNeYNXNeNR4tgTpCPDV8XAVKhua105LZzUO8R+7QoQBkAZZ2bGa5DCUAdUWW4//GBzcmr5MWqnJGTsoL3NjZeYPsWFTbrfpHwQlxj8jzZ+P4gAvVxkuEbTJcBYw1Bxkyy4/XQJ9OZlNWGWmRE7XVBPNTjTTuOHxyzrNvz2dqI/JbW729FL3Kw4IWX0+DcDNMscHQvh/nAdq9HB40NySelfF+UnsRr2l2CKsdKb6z6LcnCYCpMhEN7nYcPndEJWFmYBrcYqmN5aXfpwm+D5PDREHwkRYvIM0oqbqtuCORvE=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <C3C6C58B08C009448250D33884C2E52C@eurprd04.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        id S1728663AbgEFJfg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 05:35:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60448 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728640AbgEFJff (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 May 2020 05:35:35 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7462CC061A0F
+        for <kernel-janitors@vger.kernel.org>; Wed,  6 May 2020 02:35:35 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id j5so1368205wrq.2
+        for <kernel-janitors@vger.kernel.org>; Wed, 06 May 2020 02:35:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=hCCpyyCsOwf45inMt3o257A10/7eYZVNmL7O126puyY=;
+        b=qQmDygjweLPcARZKtEeUbSr/HBXsPReN+4F8YbS6vvDa0tGq1EHXWrXA75PwpaRdjY
+         mXiK+Z9ZeDkNeevpk4kqT3qKXBtxVsqTd0+msRTI9uCUkUr51sm73HUAZVDRr7C6OHBY
+         vdEovuXdY87GlYoUTYozZ5pLMPDzr1vD4JSeHk8GGhmi9SWbc61tM5SHbcQPYjMeB1Bf
+         9A6HoSI1Ck8eLfK6x8dOfo/L8/KpJJw3ITP42d6xcQyVuM46JE5qGEKHxJeGScrEg9by
+         mk9TRYdKUIwdHujQ2wm11KE5z73mZ2TaE1PTlkPj3X+H+EG513sFepobGLXfwUyqe9BL
+         zF1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=hCCpyyCsOwf45inMt3o257A10/7eYZVNmL7O126puyY=;
+        b=FJTT0oFRJD4kstPnEEW+QvhJ4cKYD1KVq1muhUae1g7KHd0rGpM/HClVTK93FkFEdH
+         v+8qwT4eXXQTQj8Zi4YENwDQrcipm1EUzmfkDiTTvma+6a3jLxH7I48pRx2+1RuvihOU
+         e3QnzQS++3w3fb0PtOZBdrnYr9RQh0dkwYY9TwTz0H/LKt/df+/DJ4oUZ/vE/oA+7z86
+         XM/zeizGo3fLfmHAlDihmjRezBkVPPG51joBZn27t9HPu4/ksFWJlQheyMOc/kw+W+yr
+         U59/jL5AKHRZPupyAYHi/TpcesCUu8qKKQwyIVvEqT1Cgm1y1cLtlk8OJwlvq0uCLV/J
+         UDjg==
+X-Gm-Message-State: AGi0PuYIzzqDhTpNY+hAst/kp+EXC/4w+2l87TASn7eV3hnRhwMmQ3Gl
+        EXHWCSOS/sG/jRscA/39JANb9QaCJYvc1g==
+X-Google-Smtp-Source: APiQypLQJjy5vw34J6eJsUP2ihdRbCpbrZFEgYI/5478WTJrZUym62sqJpQzFvaN9hsw6iitUy55kA==
+X-Received: by 2002:a5d:6082:: with SMTP id w2mr8373863wrt.163.1588757734052;
+        Wed, 06 May 2020 02:35:34 -0700 (PDT)
+Received: from myrica ([2001:171b:226e:c200:c43b:ef78:d083:b355])
+        by smtp.gmail.com with ESMTPSA id x7sm1677336wmi.17.2020.05.06.02.35.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2020 02:35:33 -0700 (PDT)
+Date:   Wed, 6 May 2020 11:35:24 +0200
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     kernel-janitors@vger.kernel.org, Joerg Roedel <joro@8bytes.org>,
+        virtualization@lists.linux-foundation.org,
+        iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
+        eugene.volanschi@inria.fr
+Subject: Re: [PATCH] iommu/virtio: reverse arguments to list_add
+Message-ID: <20200506093524.GA497896@myrica>
+References: <1588704467-13431-1-git-send-email-Julia.Lawall@inria.fr>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b678fb9-03ef-4306-f82d-08d7f19c5a7a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 May 2020 09:03:33.0509
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: s9UErcjrPZCrEQ5fOHy2Eb0zDxcWC+87SvbAfT3A4sEx5tCBIqh4X9DM2yngHNf5xR3DzOzQ3IJRoCOVCQyiaQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6885
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1588704467-13431-1-git-send-email-Julia.Lawall@inria.fr>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 20-05-03 12:47:07, Christophe JAILLET wrote:
-> If 'usb_otg_descriptor_alloc()' fails, we must return an error code, not =
-0.
->=20
-> Fixes: 56023ce0fd70 ("usb: gadget: audio: allocate and init otg descripto=
-r by otg capabilities")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+On Tue, May 05, 2020 at 08:47:47PM +0200, Julia Lawall wrote:
+> Elsewhere in the file, there is a list_for_each_entry with
+> &vdev->resv_regions as the second argument, suggesting that
+> &vdev->resv_regions is the list head.  So exchange the
+> arguments on the list_add call to put the list head in the
+> second argument.
+> 
+> Fixes: 2a5a31487445 ("iommu/virtio: Add probe request")
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+
+Thanks for the fix. The reason this hasn't blown up so far is
+iommu_alloc_resv_region() initializes region->list, but adding more than
+one item would break the list.
+
+Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+
 > ---
->  drivers/usb/gadget/legacy/audio.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/usb/gadget/legacy/audio.c b/drivers/usb/gadget/legac=
-y/audio.c
-> index dd81fd538cb8..a748ed0842e8 100644
-> --- a/drivers/usb/gadget/legacy/audio.c
-> +++ b/drivers/usb/gadget/legacy/audio.c
-> @@ -300,8 +300,10 @@ static int audio_bind(struct usb_composite_dev *cdev=
-)
->  		struct usb_descriptor_header *usb_desc;
-> =20
->  		usb_desc =3D usb_otg_descriptor_alloc(cdev->gadget);
-> -		if (!usb_desc)
-> +		if (!usb_desc) {
-> +			status =3D -ENOMEM;
->  			goto fail;
-> +		}
->  		usb_otg_descriptor_init(cdev->gadget, usb_desc);
->  		otg_desc[0] =3D usb_desc;
->  		otg_desc[1] =3D NULL;
-> --=20
-> 2.25.1
->=20
-
-Reviewed-by: Peter Chen <peter.chen@nxp.com>
-
---=20
-
-Thanks,
-Peter Chen=
+>  drivers/iommu/virtio-iommu.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iommu/virtio-iommu.c b/drivers/iommu/virtio-iommu.c
+> index d5cac4f46ca5..4e1d11af23c8 100644
+> --- a/drivers/iommu/virtio-iommu.c
+> +++ b/drivers/iommu/virtio-iommu.c
+> @@ -453,7 +453,7 @@ static int viommu_add_resv_mem(struct viommu_endpoint *vdev,
+>  	if (!region)
+>  		return -ENOMEM;
+>  
+> -	list_add(&vdev->resv_regions, &region->list);
+> +	list_add(&region->list, &vdev->resv_regions);
+>  	return 0;
+>  }
+>  
+> 

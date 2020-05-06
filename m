@@ -2,30 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ABB31C6BC9
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 10:32:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11CB41C6C1D
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 10:44:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728832AbgEFIcS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 04:32:18 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:48716 "EHLO
+        id S1728985AbgEFIop (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 04:44:45 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:50029 "EHLO
         mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728349AbgEFIcS (ORCPT
+        by vger.kernel.org with ESMTP id S1728811AbgEFIoo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 04:32:18 -0400
+        Wed, 6 May 2020 04:44:44 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588753937; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1588754683; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=dtx3Rp21IPiCAR5qCT/OcwOnwvEUdhGk2oHx/m6ir5c=;
- b=pikQiEaBOEN9BLc/32Efy2niJe0u842knLf/USsBd4VvzVAjMJky+xC7VnbSg7eVnnd9Mn1+
- dD4Iu5tqFmohCKQg1jnRDz931+fRmNV3gZATYWYGK/Tw5eDE+dnoFQ5GihRO6kymjbYi1qZp
- NXnXfK3G3s2gyl+k0k8y0l8+Zk4=
+ Content-Type: Sender; bh=A0uHUic2syQujRpdYODhDdBPb69QIhvyQafAGfZ0Y/U=;
+ b=Z6r7Jr4Gp+MiOwjmefS73PKiNxXg/h9k11AAet/tFxqOWNgw1oUlNkzXYSXJvB+4esejl9ud
+ daF3MO9734p0mpXYbHV4o1S6n6lsvD+l24l8JO8KxHKi+Qn1mu0fNl8fCbnaiLKwPiYWRgSw
+ HRheeCFlgWMTBS82bwdWEHBIP8I=
 X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb27609.7f2e20474c70-smtp-out-n05;
- Wed, 06 May 2020 08:32:09 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5eb278fa.7f72dee7dea0-smtp-out-n03;
+ Wed, 06 May 2020 08:44:42 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4272FC433BA; Wed,  6 May 2020 08:32:09 +0000 (UTC)
+        id A123EC433BA; Wed,  6 May 2020 08:44:42 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,47 +35,54 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 172FEC433F2;
-        Wed,  6 May 2020 08:32:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 172FEC433F2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 28297C433BA;
+        Wed,  6 May 2020 08:44:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 28297C433BA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] ipw2x00: Remove a memory allocation failure log
- message
+Subject: Re: [PATCH] libertas_tf: avoid a null dereference in pointer priv
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200424154527.27309-1-christophe.jaillet@wanadoo.fr>
-References: <20200424154527.27309-1-christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     stas.yakovlev@gmail.com, davem@davemloft.net,
+In-Reply-To: <20200501173900.296658-1-colin.king@canonical.com>
+References: <20200501173900.296658-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        Steve deRosier <derosier@cal-sierra.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200506083209.4272FC433BA@smtp.codeaurora.org>
-Date:   Wed,  6 May 2020 08:32:09 +0000 (UTC)
+Message-Id: <20200506084442.A123EC433BA@smtp.codeaurora.org>
+Date:   Wed,  6 May 2020 08:44:42 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+Colin King <colin.king@canonical.com> wrote:
 
-> Axe a memory allocation failure log message. This message is useless and
-> incorrect (vmalloc is not used here for the memory allocation)
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> This has been like that since the very beginning of this driver in
-> commit 43f66a6ce8da ("Add ipw2200 wireless driver.")
+> Currently there is a check if priv is null when calling lbtf_remove_card
+> but not in a previous call to if_usb_reset_dev that can also dereference
+> priv.  Fix this by also only calling lbtf_remove_card if priv is null.
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> It is noteable that there don't seem to be any bugs reported that the
+> null pointer dereference has ever occurred, so I'm not sure if the null
+> check is required, but since we're doing a null check anyway it should
+> be done for both function calls.
+> 
+> Addresses-Coverity: ("Dereference before null check")
+> Fixes: baa0280f08c7 ("libertas_tf: don't defer firmware loading until start()")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-c03e3fe91c19 ipw2x00: Remove a memory allocation failure log message
+049ceac308b0 libertas_tf: avoid a null dereference in pointer priv
 
 -- 
-https://patchwork.kernel.org/patch/11508307/
+https://patchwork.kernel.org/patch/11523055/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

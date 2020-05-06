@@ -2,88 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CD031C67AF
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 07:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C14ED1C6967
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 08:51:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727095AbgEFFvk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 01:51:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53936 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727032AbgEFFvj (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 01:51:39 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BF51C061A0F;
-        Tue,  5 May 2020 22:51:39 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id j5so642502wrq.2;
-        Tue, 05 May 2020 22:51:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:message-id:user-agent:mime-version;
-        bh=nSVb3PkS7tlyf+3taQPnEP1Eff6rnFW28O+T1NDOdcE=;
-        b=qa4Zt0huxFz8HpA5bELEktHKTEcCLxRITJXkka3TjD3K1oRws7lktDVasgfGR4c6cD
-         +CHvBYT+Q+63XzWERo73HdLbHj7x3th2TMr7DRDEXumaSousDTqztkM62ykqNIvhfN0J
-         H8wWipCphUgsmTqQlfiYPJpOF8uemyUm/nBYZ+NXhSYYak+bPsSGuFEb5TAsl/cyWOPf
-         x6k1sUpB+ulnhF8LliWQ+he8rpSRM1Hz/0gmuWo9WK21eoQgQrsWQ5EpxfHfjvbOdnrz
-         VB+J8XOvAukaxJZ6Z9D9wMefVSZ04z3MMMUkShIo+GPnDLIPs5IyOVhVDZl2HRn2ObdB
-         a52A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:message-id:user-agent
-         :mime-version;
-        bh=nSVb3PkS7tlyf+3taQPnEP1Eff6rnFW28O+T1NDOdcE=;
-        b=UvO28+ZCcjjoW0ji17h5W0MNYeMAw/Zen5C68ql0sXh3BMGz2vzuF98AGgbTJYND7E
-         K4Cxj0uYbaGmz2OtQtKj80Q+Z7xuZ2HmPjwEDWBNCSXCmBqtqdrf8f8Hw21WvEWfXDxf
-         T8rugGBEn40Nr0QHE+BlyzcUXGIpP8Yr5y0L+atyNIq/EjNZktc7Cl/yPi1+mocoeYwt
-         TzECvReRguBSYeOdcrkbIByUdXoeYeVcemT8JEBmpR0DbqydOLu3fzW+vM7/i5acV14N
-         h8jcFyfXv1TuNQF6QuFIQtOnnSdSRhM+tzkSNUKUUqpY7BtvE9dvw8H0nhDGrWFWZ092
-         vSkg==
-X-Gm-Message-State: AGi0PuZkbeJbPytRTFPSr7UVBdzjF8E/Hf9r1VR07cMz7ON1B0kl5vhi
-        qEvrpZDWbElJhQwTTa4l7FVkG3lB9jQ=
-X-Google-Smtp-Source: APiQypIPZvMmeMC+/3D0zdDLWUsgmfJ8bkt0AnAOeqk3D/5PB61wRUAIAa541ltCRSrdQDdyQ0jfVw==
-X-Received: by 2002:a5d:6b85:: with SMTP id n5mr7673266wrx.370.1588744298190;
-        Tue, 05 May 2020 22:51:38 -0700 (PDT)
-Received: from felia ([2001:16b8:2df1:2500:bc2e:80a7:2be5:2fcf])
-        by smtp.gmail.com with ESMTPSA id 185sm1340363wmc.32.2020.05.05.22.51.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2020 22:51:37 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Wed, 6 May 2020 07:51:36 +0200 (CEST)
-X-X-Sender: lukas@felia
-To:     Jakub Kicinski <kuba@kernel.org>
-cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Joe Perches <joe@perches.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: MAINTAINERS: Wrong ordering in DYNAMIC INTERRUPT MODERATION
-Message-ID: <alpine.DEB.2.21.2005060749590.7719@felia>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        id S1728113AbgEFGvo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 02:51:44 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:35322 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727067AbgEFGvo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 May 2020 02:51:44 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id E7C20E2CA0B008BA9AF9;
+        Wed,  6 May 2020 14:51:41 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 6 May 2020 14:51:33 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Ursula Braun <ubraun@linux.ibm.com>,
+        Karsten Graul <kgraul@linux.ibm.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-s390@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] net/smc: remove set but not used variables 'del_llc, del_llc_resp'
+Date:   Wed, 6 May 2020 06:55:40 +0000
+Message-ID: <20200506065540.171504-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Jakub,
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-with your commit 9b038086f06b ("docs: networking: convert DIM to RST"), 
-visible on next-20200505, ./scripts/checkpatch.pl -f MAINTAINERS 
-complains:
+net/smc/smc_llc.c: In function 'smc_llc_cli_conf_link':
+net/smc/smc_llc.c:753:31: warning:
+ variable 'del_llc' set but not used [-Wunused-but-set-variable]
+  struct smc_llc_msg_del_link *del_llc;
+                               ^
+net/smc/smc_llc.c: In function 'smc_llc_process_srv_delete_link':
+net/smc/smc_llc.c:1311:33: warning:
+ variable 'del_llc_resp' set but not used [-Wunused-but-set-variable]
+    struct smc_llc_msg_del_link *del_llc_resp;
+                                 ^
 
-WARNING: Misordered MAINTAINERS entry - list file patterns in alphabetic order
-#5966: FILE: MAINTAINERS:5966:
-+F:	lib/dim/
-+F:	Documentation/networking/net_dim.rst
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ net/smc/smc_llc.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-This is due to wrong ordering of the entries in your submission. If you 
-would like me to send you a patch fixing that, please just let me know.
+diff --git a/net/smc/smc_llc.c b/net/smc/smc_llc.c
+index 4cc583678ac7..391237b601fe 100644
+--- a/net/smc/smc_llc.c
++++ b/net/smc/smc_llc.c
+@@ -750,7 +750,6 @@ static int smc_llc_cli_conf_link(struct smc_link *link,
+ 				 enum smc_lgr_type lgr_new_t)
+ {
+ 	struct smc_link_group *lgr = link->lgr;
+-	struct smc_llc_msg_del_link *del_llc;
+ 	struct smc_llc_qentry *qentry = NULL;
+ 	int rc = 0;
+ 
+@@ -764,7 +763,6 @@ static int smc_llc_cli_conf_link(struct smc_link *link,
+ 	}
+ 	if (qentry->msg.raw.hdr.common.type != SMC_LLC_CONFIRM_LINK) {
+ 		/* received DELETE_LINK instead */
+-		del_llc = &qentry->msg.delete_link;
+ 		qentry->msg.raw.hdr.flags |= SMC_LLC_FLAG_RESP;
+ 		smc_llc_send_message(link, &qentry->msg);
+ 		smc_llc_flow_qentry_del(&lgr->llc_flow_lcl);
+@@ -1308,16 +1306,12 @@ static void smc_llc_process_srv_delete_link(struct smc_link_group *lgr)
+ 		 * enqueued DELETE_LINK request (forward it)
+ 		 */
+ 		if (!smc_llc_send_message(lnk, &qentry->msg)) {
+-			struct smc_llc_msg_del_link *del_llc_resp;
+ 			struct smc_llc_qentry *qentry2;
+ 
+ 			qentry2 = smc_llc_wait(lgr, lnk, SMC_LLC_WAIT_TIME,
+ 					       SMC_LLC_DELETE_LINK);
+-			if (!qentry2) {
+-			} else {
+-				del_llc_resp = &qentry2->msg.delete_link;
++			if (qentry2)
+ 				smc_llc_flow_qentry_del(&lgr->llc_flow_lcl);
+-			}
+ 		}
+ 	}
+ 	smcr_link_clear(lnk_del, true);
 
-It is a recent addition to checkpatch.pl to report ordering problems in 
-MAINTAINERS, so you might have not seen that at submission time.
 
 
-Best regards,
-
-Lukas

@@ -2,90 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C21201C70D5
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 14:52:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 155171C7126
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 14:57:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728338AbgEFMwQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 08:52:16 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3868 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728081AbgEFMwQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 08:52:16 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 4E7E35DC6618286ED034;
-        Wed,  6 May 2020 20:52:13 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 6 May 2020 20:52:03 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Mark Brown <broonie@kernel.org>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <bcm-kernel-feedback-list@broadcom.com>,
-        <linux-spi@vger.kernel.org>,
-        <linux-rpi-kernel@lists.infradead.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] spi: bcm2835: Fix error return code in bcm2835_dma_init()
-Date:   Wed, 6 May 2020 12:56:07 +0000
-Message-ID: <20200506125607.90952-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728463AbgEFM5s (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 08:57:48 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:46142 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728081AbgEFM5s (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 May 2020 08:57:48 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 046CroAF135400;
+        Wed, 6 May 2020 12:57:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=zzEcQ/51XYDrGSbwzQDwu8TmaSZIn9vYqGi8rV4KNfo=;
+ b=ISAhvdYTU9CODzTkB6KZ9NLgH1FtH7zgIKQ4hTAdRmW6MacoRUUUIZhhKiGiq3aMz9RU
+ Qhm40P9+79CdpL2FQKJhtzKS+CcWOJktniecLe4n/cyll5zrIGjQ8jIVSsQOimYkxS/v
+ uiq1IX0Vgv/PztLaLPBWDJNBNe7x/If7O35h/RcrjpQsAViQ5IRvzMPq4a9FmNsKNnsW
+ DTA6C5hTYcHWBWTKGKgdCbxAD+Z2e42rhDiNcEBMRvwNS303oY3fZAr1VlKY8xwuzeRF
+ P3PhP/Nfx4k6YiEJt2BYJ974w9A3q6ySiyXV8ggbz8PCafMWeO/ydiuo6/C3nYwZNKMn Tg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 30usgq18fk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 06 May 2020 12:57:37 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 046Cpl7V195095;
+        Wed, 6 May 2020 12:57:36 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 30t1r7s6hm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 06 May 2020 12:57:36 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 046CvXMM010468;
+        Wed, 6 May 2020 12:57:34 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 06 May 2020 05:57:33 -0700
+Date:   Wed, 6 May 2020 15:57:23 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     gregkh@linuxfoundation.org, simon@nikanor.nu, jeremy@azazel.net,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] staging: kpc2000: fix error return code in
+ kp2000_pcie_probe()
+Message-ID: <20200506125723.GL1992@kadam>
+References: <20200506125255.90336-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200506125255.90336-1-weiyongjun1@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9612 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 suspectscore=0
+ spamscore=0 mlxlogscore=999 malwarescore=0 phishscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005060101
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9612 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 mlxscore=0
+ priorityscore=1501 lowpriorityscore=0 malwarescore=0 clxscore=1015
+ mlxlogscore=999 spamscore=0 adultscore=0 bulkscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005060101
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return negative error code -ENOMEM from the dma mapping error
-handling case instead of 0, as done elsewhere in this function.
+On Wed, May 06, 2020 at 12:52:55PM +0000, Wei Yongjun wrote:
+> Fix to return a negative error code from the error handling
+> case instead of 0, as done elsewhere in this function. Also
+> removed var 'rv' since we can use 'err' instead.
+> 
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/spi/spi-bcm2835.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Also could you add a Fixes tag?  This goes all the way back to the
+original commit:
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 11c235879bb7..c4f4bd135279 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -940,6 +940,7 @@ static int bcm2835_dma_init(struct spi_controller *ctlr, struct device *dev,
- 	if (dma_mapping_error(ctlr->dma_tx->device->dev, bs->fill_tx_addr)) {
- 		dev_err(dev, "cannot map zero page - not using DMA mode\n");
- 		bs->fill_tx_addr = 0;
-+		ret = -ENOMEM;
- 		goto err_release;
- 	}
- 
-@@ -949,6 +950,7 @@ static int bcm2835_dma_init(struct spi_controller *ctlr, struct device *dev,
- 						     DMA_MEM_TO_DEV, 0);
- 	if (!bs->fill_tx_desc) {
- 		dev_err(dev, "cannot prepare fill_tx_desc - not using DMA mode\n");
-+		ret = -ENOMEM;
- 		goto err_release;
- 	}
- 
-@@ -979,6 +981,7 @@ static int bcm2835_dma_init(struct spi_controller *ctlr, struct device *dev,
- 	if (dma_mapping_error(ctlr->dma_rx->device->dev, bs->clear_rx_addr)) {
- 		dev_err(dev, "cannot map clear_rx_cs - not using DMA mode\n");
- 		bs->clear_rx_addr = 0;
-+		ret = -ENOMEM;
- 		goto err_release;
- 	}
- 
-@@ -989,6 +992,7 @@ static int bcm2835_dma_init(struct spi_controller *ctlr, struct device *dev,
- 					   DMA_MEM_TO_DEV, 0);
- 		if (!bs->clear_rx_desc[i]) {
- 			dev_err(dev, "cannot prepare clear_rx_desc - not using DMA mode\n");
-+			ret = -ENOMEM;
- 			goto err_release;
- 		}
+Fixes: 7dc7967fc39a ("staging: kpc2000: add initial set of Daktronics drivers")
 
-
+regards,
+dan carpenter
 

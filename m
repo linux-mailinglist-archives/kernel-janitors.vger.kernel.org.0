@@ -2,112 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65DAC1C6E8E
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 12:38:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D89D51C6EBE
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 12:51:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729101AbgEFKi3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 06:38:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42204 "EHLO
+        id S1726843AbgEFKvy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 06:51:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728338AbgEFKi3 (ORCPT
+        by vger.kernel.org with ESMTP id S1726558AbgEFKvy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 06:38:29 -0400
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ABEDC061A0F;
-        Wed,  6 May 2020 03:38:29 -0700 (PDT)
-Received: by mail-pj1-x1043.google.com with SMTP id a5so671626pjh.2;
-        Wed, 06 May 2020 03:38:29 -0700 (PDT)
+        Wed, 6 May 2020 06:51:54 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF804C061A0F;
+        Wed,  6 May 2020 03:51:53 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id k19so327875pll.9;
+        Wed, 06 May 2020 03:51:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=1OkzDtpIyQuO7IKIy35A+BZWVbOn5RiVMSLQdPPTaSc=;
-        b=cfeMbzjjr2O4Cw1uSwSiiOnq7ozVGG9+v0gmcQMqOdBGNT94BtXZeH1Vk0DpoIaAJ9
-         Tllhu5B8YINCJR6KvA87+KtaEftkw2Hj+qPDr0N7dih/CK0166AMBKfxUJ4JgOG6ujKR
-         UEo4flpajmZABW4JGOjPD+mqNoenPHGzcRKoatZBzZGBOBu/8CwjQ77cHoCmPm24tM+L
-         bEH5L7IHljTsB1bC1Qvv28aFGS8RKx3ewTBxyUR0G3Tbkwno4CbtDs9mLomGZBD1q1IT
-         ZnN2XJBvG4uHXGM9774PbHY4gDBTF/0YqeoUIHoWtgZ1eO2ZBwdwW9WxmINyrR2JJYzH
-         gyxQ==
+        bh=wvMU1aLNm7t3JO/yRaIHe2DK8IEcl3xIPaOuPy1dfKs=;
+        b=MDvTZdexnqJAkzeaxFXdJOHRsal2E+C6wE/aQCzYB13i2ZNaL7h0dFhWUdUFCci9/p
+         nwjYHAXeR/y010ck0u6Owg96m3CQVFMuNHfd9Nhysv04vQU86hDrJ2HG8UyPHm2AVjGK
+         f5gSWuhpVppMCZ91T5PwLlK+PP2leUqWlgDdU2sOuqKF6d6L++J25/qdi76huZFbTK4K
+         Kkfb906/46AI6kAGdFVBULtSWd9oRmMOJv07k+Zf1h7LZiE02aGYlPH6ngUXo3v+iofE
+         Ldrn1VYeeQ3w1VPocqIaQW95CQZ6BkFzO3ElUhRf2n5sK2Pzs/yZqCVAb2Ot0EhhbSXt
+         HtaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=1OkzDtpIyQuO7IKIy35A+BZWVbOn5RiVMSLQdPPTaSc=;
-        b=Cfpm4/LIeZHSRcHNGdZ6TvXilXqVB5SKFaa0AspgOWUDGLcmZiXkur/MseMIp3J75s
-         gTCeaJ2JPx67Ypxi2XHA59izeUb9tdEGTijrk+ROSSkWP0VAGhH+l1foRtImfBoJN1vb
-         424qPC2GCWadmV5A67U/1hoNLe5hrY5WVvN0AoMACR//mTL6qydxuL+bcBs4xEz5gi+O
-         VXg3ge9LdXUmohmV5WjbWV6pP3JPzJpcuil26ApiUBu7C9dOgZATobGPpX0hYLAVpiWT
-         bzJkABogg9MbisI6HoaRLd/Fa9gEImIkBk68/Q63gunZDlNZRH0elp3EE0gT2vUCCxhc
-         7Tgw==
-X-Gm-Message-State: AGi0PuZ9zdJ2xSydLBizZqYhg2mWmL2GPtn9BOIjzCQH/+uVPgWXxRDu
-        AQVkKEs5854WBXDS8glvaGcDAGiIQsm57g/WPWJxnK7opSE=
-X-Google-Smtp-Source: APiQypIQSsE756MmU5Ui9qd6Ru5n1fOj18yZcTKTZaLH1fRbMTqqyO0CS+qusaR0TW0AGLITbhdOtcSi1Yf7K190AJA=
-X-Received: by 2002:a17:902:6901:: with SMTP id j1mr7086450plk.255.1588761508837;
- Wed, 06 May 2020 03:38:28 -0700 (PDT)
+        bh=wvMU1aLNm7t3JO/yRaIHe2DK8IEcl3xIPaOuPy1dfKs=;
+        b=eFYn4mNqbXnqqHiMdw3wv6axgBWW8L8oIiO7+jRZu0OJ9bxsDyNToBpWmppM+en2R9
+         6pYCYc0zYVxWQbJngUb9ZDfznGVlpEPdt0dkAopp3s8RayYaA8h01IYWuy4jHF8xxJkL
+         kn/XsMuIRBGlC6L5W/GKxDslMX5MZLcscXDJ/fh40R89dmSuGbb9CcY8ti29zp+gPWeu
+         BASdQmp+KQPzBmOEV0mLcV7gcncq0lZFxG6i8mjN+8VfikgVP1GISWpNRkHt7bHGzSGc
+         1jvqNjWka2Qktj3iViy7MsMXSARkoW0NERdYLZT7tyBvTsRSb3dhmV17NZsIMO6tAqyR
+         24aQ==
+X-Gm-Message-State: AGi0PubEv/AY5wNA+eJfP4GZaqnFOVSsBZ/E4iIT4lIDv9Ws8Tuk+kUo
+        T7oTnPBasClR5r6BhGZ6yWfDXb15hREF2OgECAs=
+X-Google-Smtp-Source: APiQypIbC75z+2oCLu7fR5K5Nitt18ISRUW7bK9yAzyrIhIhSJ6AJ+FWpSpIZ8Q2yY6Fc8AA6atjlryccOmS2Tx1jWM=
+X-Received: by 2002:a17:902:6901:: with SMTP id j1mr7127285plk.255.1588762313376;
+ Wed, 06 May 2020 03:51:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200506035206.192173-1-christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20200506035206.192173-1-christophe.jaillet@wanadoo.fr>
+References: <alpine.DEB.2.21.2005060741520.7719@felia>
+In-Reply-To: <alpine.DEB.2.21.2005060741520.7719@felia>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 6 May 2020 13:38:22 +0300
-Message-ID: <CAHp75Vdi+ZYpQPHgoREQ6LTaUHTPmNkR7ULZaVNTJr7Bvh-q9Q@mail.gmail.com>
-Subject: Re: [PATCH] iio: sca3000: Remove an erroneous 'get_device()'
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+Date:   Wed, 6 May 2020 13:51:47 +0300
+Message-ID: <CAHp75VeNiuJ7QXvNO2=W_TjEjjK3xRbg0-Don6HkSOHV5LXRbA@mail.gmail.com>
+Subject: Re: MAINTAINERS: Wrong ordering in S390 PCI SUBSYSTEM
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Pierre Morel <pmorel@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, May 6, 2020 at 6:55 AM Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
+On Wed, May 6, 2020 at 8:46 AM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
 >
-> This looks really unusual to have a 'get_device()' hidden in a 'dev_err()'
-> call.
-> Remove it.
+> Hi Pierre,
 >
-> While at it add a missing \n at the end of the message.
+> with your commit de267a7c71ba ("s390/pci: Documentation for zPCI"),
+> visible on next-20200505, ./scripts/checkpatch.pl -f MAINTAINERS
+> complains:
 >
+> WARNING: Misordered MAINTAINERS entry - list file patterns in alphabetic order
+> #14723: FILE: MAINTAINERS:14723:
+> +F:     drivers/pci/hotplug/s390_pci_hpc.c
+> +F:     Documentation/s390/pci.rst
+>
+>
+> This is due to wrong ordering of the entries in your submission. If you
+> would like me to send you a patch fixing that, please just let me know.
+>
+> It is a recent addition to checkpatch.pl to report ordering problems in
+> MAINTAINERS, so you might have not seen that at submission time.
 
-It should have Fixes tag because it is a quite an issue (get_device()
-breaks reference counting with all problems we may expect).
-
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> This patch is purely speculative.
-> I've looked a bit arround and see no point for this get_device() but other
-> eyes are welcomed :)
-> ---
->  drivers/iio/accel/sca3000.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
-> index 66d768d971e1..6e429072e44a 100644
-> --- a/drivers/iio/accel/sca3000.c
-> +++ b/drivers/iio/accel/sca3000.c
-> @@ -980,7 +980,7 @@ static int sca3000_read_data(struct sca3000_state *st,
->         st->tx[0] = SCA3000_READ_REG(reg_address_high);
->         ret = spi_sync_transfer(st->us, xfer, ARRAY_SIZE(xfer));
->         if (ret) {
-> -               dev_err(get_device(&st->us->dev), "problem reading register");
-> +               dev_err(&st->us->dev, "problem reading register\n");
->                 return ret;
->         }
->
-> --
-> 2.25.1
->
-
+Why not to send a patch?
+Same for the rest of similar mails from you.
 
 -- 
 With Best Regards,

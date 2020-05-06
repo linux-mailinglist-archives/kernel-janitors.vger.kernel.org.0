@@ -2,29 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A74D81C73AE
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 17:12:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3E6E1C74E8
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 17:31:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729344AbgEFPMk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 11:12:40 -0400
-Received: from mout.web.de ([212.227.17.12]:35243 "EHLO mout.web.de"
+        id S1730131AbgEFPal (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 11:30:41 -0400
+Received: from mout.web.de ([217.72.192.78]:59323 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728991AbgEFPMk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 11:12:40 -0400
+        id S1730082AbgEFPak (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 May 2020 11:30:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588777951;
-        bh=0vnNfdzJ/+OWZAUbbv1VGEHAn+XpJdc7Movwb/kchIE=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=TKAlvhn2Slsp9eCiEUJrhH6dEnR2SATBKNjxuBNPLeHEbWZ0LR35v9/TyFy/b/r/m
-         rYeuI2koe9y1n/oqvlBS/rbhR2F4YgKayi1EalwZU/GfZj2EiCsyxJSZiGDpSRLlq9
-         A7ayYqyz2MVFykDSy+JwaBapqNnLh/+tLQwq0TFY=
+        s=dbaedf251592; t=1588779007;
+        bh=g+f6vfgQjmv7bJu4M4nmtheEmi9EEiHRE5sTU3DVh4I=;
+        h=X-UI-Sender-Class:Cc:Subject:To:From:Date;
+        b=WfjfTtHyboxlV1ARE/Lbc933JbGwhTgN7YQEqgUJRyDoQUcgrz7NCSUpAYlKX+XHQ
+         kIgAfIR1Uxirbf2uTEEY1q1nhth2C+MMhMFyaZZ352v0gjRnRgAzsfwLWBCuPtPt4a
+         h3xDOLPWt7ezNnuGsID0Zz1JCRKwowkAD/77pfcc=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.133.162.166]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mrfp8-1ikw5S3mCa-00njRL; Wed, 06
- May 2020 17:12:31 +0200
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MPKFD-1jn2pO1uV3-00Pcgn; Wed, 06
+ May 2020 17:30:07 +0200
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Arnd Bergmann <arnd@arndb.de>, Guan Xuetao <gxt@pku.edu.cn>
-Subject: Re: [PATCH] i2c: puv3: Fix an error handling path in puv3_i2c_probe()
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH] iio: sca3000: Remove an erroneous get_device() call in
+ sca3000_read_data()
+To:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+        linux-iio@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -69,50 +78,46 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-To:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        linux-i2c@vger.kernel.org
-Message-ID: <dbdba794-a6d5-0f37-a675-389681b03c34@web.de>
-Date:   Wed, 6 May 2020 17:12:22 +0200
+Message-ID: <6e972e9b-c799-f0ad-91ac-144640b463f6@web.de>
+Date:   Wed, 6 May 2020 17:30:06 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:9ul9Wt4bi9vTI+Xdpp6hNw8iF0jYpvI946iI07Uyo0yQn1u7eUM
- WBX/f9iHYrz3y8aUVA0tRgWtCGS/UCFX69gSoUnKWBV5ha/c+Xn6KVLr5gRPpbmMbVYymah
- XTHhcoVf9hFw7XVuDIGWAMViIuOSi6nTeUGXeFFCBqKP2ha3xPiDt1bkLBh1fDP5kwqfuor
- BMgM/EIXEO8Tt3XarfWNg==
+X-Provags-ID: V03:K1:h3zmFkgIB3nbx8qAW1Uo09U00WHf1PaFnapI95hJHMaBEy4ccGu
+ VRNyLnXUOjhtzhmufHFTHZHL46NrvFP7d4gSVzCsbAaBPyAwitJ8g08nDDnzhHt4Mq9B6Z8
+ JyYlpVcwn/v/x1UoVOnmQraKWER+vIXg35nb2nQP4P87yc0d8/PxB3tdaUnVQptVjBa2OjO
+ 3bx4Pt9Rv3gZFcULwxUrA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:UKhtddFYyaY=:l9cblQXDdoNFN/P9WToy95
- RMsIi2Drvz9BDN7Ab9XX/NS8XgWXKRZT7lN/dcyE+Czb/x7+OKRXESUVjw5M9wNgcJWB6Ev+Y
- mBFRC1URmjmIWem2/cK6Pkp+rXpgcjdTCLxBjDuINpCjLiSyUYQ4HFz1NKeyBlyUlmODs1FjT
- dRG7o8M4d7jgq3gBRLO9/eQbdcNEYwxIdd6xTsNR3WMfGL29jXFOnau0okYXx8cO4J3O9Hovs
- wl5ACzFvK7RuKIUIMEUjBYSbTssJ+rDT96fqx6B9+Loz9RJj++nAUTEvlY0rS4DWj4SETjJOu
- gbddurAF4VEWEHAHdaV0sfAfJ/+gNJ0YM+1nGrlr/BbV+Gs3hWfCPkkrprVklrq8b+ehv+6kd
- T0zexFGFemKOEkj/KlsmCADeii46BnCrXJ5fDGvwt6SvhNys25pecgHrk/bnzRosMkLaowtvo
- C/sqshCd8urg5mNq29x4PXJge3b/z+hx5CH0CzTM6I5fnuknTPXdhhk+qcMZYa2z0QzqgdNsP
- oroE5Z8NB0nCUnWvNDR//I7qI1NXKrwDu91LJPa86fnQV2mNeMg7k93wPfeazwbAZhTmWsvkb
- dZjPddPlyRQRui3BkXInmj+0WAOcfnTRXF8ptPwxIuPpUyZGi8yGYzPkNmIKKblEw3UFCa9zS
- stcMSSoyFGlhbLp3itJMQbJHaLJ9sq+bev4wmCv6H+IIVBjp0453cPF3RJ6vVJxyWmUlRLbNb
- nZXbg/fpXVERXvN9ETnFbGjt++JoHGWSegOI1RQRr660Ce0I8AOInBnjBXXX6lTUrUyPzzmZF
- iSNT2uDzd96QnGXIcGdNSQ5vyL71Yq1C0zhjCzRK3P5cC6cpX5vPwojJcrE0QMUc+X05E6LyE
- e5MzqwkFgVs54jNmuvN8NBk9C6cOWRZuwTU9bbUJisHJcbje6IJudQ2zEOUkEMAXcyFLVkziv
- 7EQWrKMV9YeAuogPch2co0N8zufmmH3g0sx+lefEwgj1bPxNiJnuMzeqL+LR+gMYLi1s+v53g
- CBmtF1W+rjvPnVAkHhMtpQX2frllQpJKb6pBoznpNeq1GsFrosoucLWGGDwZnyXHkSMoPWEm6
- RU0/yjOSKfS9kEhpBt53GiS7IxIywFSzadEzQcRk3QGz0syLchDPs8GoGClP83erhaMUf9K2n
- Sh7qifpF6aupSg+fbCwGppUgPjdBkD/j2bFBX1kvTN9C0vymksvK9iizD3jyOQ9TYESB8ki1h
- a16pJAyY2yPutt1fS
+X-UI-Out-Filterresults: notjunk:1;V03:K0:OLQHm4Pv5vQ=:MNYLaEG0t4ubmGm5Phhxcm
+ +a4Z89JnCPjqgZsl3isBC7OcA+j9ldHGv52nxiwdlDF+QMy0EwK+eJUbJZAJchXBDoXV9YZZG
+ 1yzH6/lK0q8DVMgJNSnCumzJxqIo8BebqTzgdpyiRa5hNntx13gldE4M/OCJR5KXgBbuy0csI
+ DsCU9qy5vqA6gPoHciPjVjrKlgxG61qyN9hwLv/VnIRda0xtYoXVTKtRwqO5zokPpJOncUXdW
+ OL+HFQRytEWr+KPbEM0PxpKfEbCddP2F85Tikt7u+ZqecEHTgBeDGlIKMLv2osnqeV7rXy7hx
+ eKqaKNWlrYOqt0JO+0yxeqr6HXciCEXnCKPoghqw9YwBFhXxUscShbku3cjp0iTJtrCD3fPy+
+ KCv6ql/K/Fg3Wl5tdopQIL0n9SMers8677fsduKvR6gM0usWlYwRha1pc8NGXcdF5PINRZ8tA
+ w/MYWHdrRZ24ZjiVNzCudkCJlp9DBCxFQ3Uy5O6xps8EiTYFhbOsDhNa+ZGwJ+GZ2zIHYG/Oy
+ y/i63mgWA8J9Kmqoz2MX66CzSJKQlnGsXnCL1qgyZG/G76aoTCnEzonE5vfEkLUye5rM9pJ1s
+ K3OQtij4Dn00eT+aDCs34UTVTsQplFipJiQTZdk0fCTvrzGd29uREt4qZIeQZX7knc9dpTf2Y
+ bUs+oGrMW/SbsSkJir1mcVw1pznfXP60GcHK9a0gwKKN5WOx/kDo85UYVv3PYKwDUkkFKyCgf
+ 7qGb4I5Bri0EXc/1xGNla5JAvNVhD0APM6uj/KQyhVBb1yof8gWFOY0mEGz0sz2asc/jlEsWX
+ tXjgpcgICHIlqyYqeWYb0+/Nti7+RH98TMO7+WF7Nf7USxP2xuzuo2za1HhqhE2RZWyJ+e/Ag
+ ci5qQmuiAQnsbRspp4u/OOaNzvQjQj5YgMw/GXRz/gnmZb+1o2My5n8EnmZHQ+wXeFBuRPaFC
+ Xb4bNjnBfP9zqXMXvVaMcY3aqAOM9cujHNjiLchhWA7bpkmDF4RY9rdKclxotI1JPhE/2Z67W
+ 8X8KMwbKqSJ7Qv8meyP1MJxUmbxyhiD/+k6fi7Dt8Ij4P2yMRDMk9sN1sSWrHh6W8jS42IZTH
+ vAnXRlSptAR0fzmKaRB57V/S8RGuB2W5CPGqItsXtW1xyk5M7KWlX3x+ISsjy6U8bndU0D1po
+ D72pE5G1fdJQNkFxGDNzncsX7hphR63mg9pz16rRJ/p/h4pQo8i0LYxkmRrXEiddQsZ6wyWIQ
+ oclfZBlKB16qXkZ5Y
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> There is a spurious 'put_device()' in the remove function.
+> This looks really unusual to have a 'get_device()' hidden in a 'dev_err()' call.
 
-Do you find differences in the clean-up of system resources suspicious
-between the implementations of the functions =E2=80=9Cpuv3_i2c_remove=E2=
-=80=9D and =E2=80=9Cpuv3_i2c_probe=E2=80=9D?
+Is there a need to prevent similar function calls by the means of
+advanced source code analysis?
 
 Regards,
 Markus

@@ -2,112 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15C001C77EC
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 19:31:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80FAF1C788D
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 19:49:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728761AbgEFRbo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 13:31:44 -0400
-Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:57410 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728082AbgEFRbo (ORCPT
+        id S1729990AbgEFRs4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 13:48:56 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:38754 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728807AbgEFRs4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 13:31:44 -0400
-Received: from [192.168.1.41] ([92.148.185.155])
-        by mwinf5d27 with ME
-        id bVXe2200R3MbWjg03VXfnK; Wed, 06 May 2020 19:31:41 +0200
-X-ME-Helo: [192.168.1.41]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 06 May 2020 19:31:41 +0200
-X-ME-IP: 92.148.185.155
-Subject: Re: [PATCH] iio: sca3000: Remove an erroneous 'get_device()'
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-References: <20200506035206.192173-1-christophe.jaillet@wanadoo.fr>
- <CAHp75Vdi+ZYpQPHgoREQ6LTaUHTPmNkR7ULZaVNTJr7Bvh-q9Q@mail.gmail.com>
-From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <0a8cd600-2b21-2076-1355-8c97d7ceb709@wanadoo.fr>
-Date:   Wed, 6 May 2020 19:31:38 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Wed, 6 May 2020 13:48:56 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk4.altibox.net (Postfix) with ESMTPS id 5DBF280501;
+        Wed,  6 May 2020 19:48:50 +0200 (CEST)
+Date:   Wed, 6 May 2020 19:48:49 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     b.zolnierkie@samsung.com, gregkh@linuxfoundation.org,
+        kstewart@linuxfoundation.org, tglx@linutronix.de, arnd@arndb.de,
+        jani.nikula@intel.com, akpm@osdl.org, adaplas@pol.net,
+        rpurdie@rpsys.net, linux-fbdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH] video: fbdev: w100fb: Fix a potential double free.
+Message-ID: <20200506174849.GG19296@ravnborg.org>
+References: <20200427091945.57534-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-In-Reply-To: <CAHp75Vdi+ZYpQPHgoREQ6LTaUHTPmNkR7ULZaVNTJr7Bvh-q9Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200427091945.57534-1-christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=MOBOZvRl c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=kj9zAlcOel0A:10 a=-sM3sDvmAAAA:8 a=p1g2r8j9AAAA:8 a=hD80L64hAAAA:8
+        a=VwQbUJbxAAAA:8 a=e5mUnYsNAAAA:8 a=0rnci6YRAtboiwCnBc0A:9
+        a=CjuIK1q_8ugA:10 a=LUHx1oGsa4U61Z4w8267:22 a=GEd6vGEn79KL1p3bDQhq:22
+        a=AjGcO6oz07-iQ99wixmX:22 a=Vxmtnl_E_bksehYqCbjh:22
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hi Christophe
+On Mon, Apr 27, 2020 at 11:19:45AM +0200, Christophe JAILLET wrote:
+> Some memory is vmalloc'ed in the 'suspend' function and freed in the
+> 'resume' function.
+> However, it is also freed in the remove function.
+> 
+> In order to avoid a potential double free, set the corresponding pointer
+> to NULL once freed in the 'resume' function.
 
-Le 06/05/2020 à 12:38, Andy Shevchenko a écrit :
-> On Wed, May 6, 2020 at 6:55 AM Christophe JAILLET
-> <christophe.jaillet@wanadoo.fr> wrote:
->> This looks really unusual to have a 'get_device()' hidden in a 'dev_err()'
->> call.
->> Remove it.
->>
->> While at it add a missing \n at the end of the message.
->>
-> It should have Fixes tag because it is a quite an issue (get_device()
-> breaks reference counting with all problems we may expect).
+The changelog talks about a suspend and a resume function.
+But the code has a w100fb_save_vidmem() and a w100fb_restore_vidmem()
+functions.
 
-Agreed and I usually do, but here, I've lost track when this driver has 
-gone out of staging.
+> 
+> Fixes: aac51f09d96a ("[PATCH] w100fb: Rewrite for platform independence")
+This "Fixes" should be followed by:
+Cc: Richard Purdie <rpurdie@rpsys.net>
+Cc: Antonino Daplas <adaplas@pol.net>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: <stable@vger.kernel.org> # v2.6.14+
 
-Based on:
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/drivers/iio/accel/sca3000.c
-The issue was already there on 2016/10/23, but when I try to go one step 
-further:
+This is the output of "dim fixes" - that does some magic to provide
+the above list.
+I filtered a few candidates out that should not be there.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/drivers/staging/iio/accel/sca3000.c?id=2ccf61442ff142d2dde7c47471c2798a4d78b0ad
-^^^^         ^^^^^^^
-works but if I try to see the log for that:
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/drivers/staging/iio/accel/sca3000.c
-^^^         ^^^^^^^
-is empty.
+Please fix both issues and resend.
 
-Most of the time, when I do it like that it works just fine, but not on 
-this file.
+Thanks,
 
-Any other way to navigate in history of moved file would be appreciated.
+	Sam
 
-CJ
 
->
->> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->> ---
->> This patch is purely speculative.
->> I've looked a bit arround and see no point for this get_device() but other
->> eyes are welcomed :)
->> ---
->>   drivers/iio/accel/sca3000.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
->> index 66d768d971e1..6e429072e44a 100644
->> --- a/drivers/iio/accel/sca3000.c
->> +++ b/drivers/iio/accel/sca3000.c
->> @@ -980,7 +980,7 @@ static int sca3000_read_data(struct sca3000_state *st,
->>          st->tx[0] = SCA3000_READ_REG(reg_address_high);
->>          ret = spi_sync_transfer(st->us, xfer, ARRAY_SIZE(xfer));
->>          if (ret) {
->> -               dev_err(get_device(&st->us->dev), "problem reading register");
->> +               dev_err(&st->us->dev, "problem reading register\n");
->>                  return ret;
->>          }
->>
->> --
->> 2.25.1
->>
->
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  drivers/video/fbdev/w100fb.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/video/fbdev/w100fb.c b/drivers/video/fbdev/w100fb.c
+> index 2d6e2738b792..d96ab28f8ce4 100644
+> --- a/drivers/video/fbdev/w100fb.c
+> +++ b/drivers/video/fbdev/w100fb.c
+> @@ -588,6 +588,7 @@ static void w100fb_restore_vidmem(struct w100fb_par *par)
+>  		memsize=par->mach->mem->size;
+>  		memcpy_toio(remapped_fbuf + (W100_FB_BASE-MEM_WINDOW_BASE), par->saved_extmem, memsize);
+>  		vfree(par->saved_extmem);
+> +		par->saved_extmem = NULL;
+>  	}
+>  	if (par->saved_intmem) {
+>  		memsize=MEM_INT_SIZE;
+> @@ -596,6 +597,7 @@ static void w100fb_restore_vidmem(struct w100fb_par *par)
+>  		else
+>  			memcpy_toio(remapped_fbuf + (W100_FB_BASE-MEM_WINDOW_BASE), par->saved_intmem, memsize);
+>  		vfree(par->saved_intmem);
+> +		par->saved_intmem = NULL;
+>  	}
+>  }
+>  
+> -- 
+> 2.25.1
+> 
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

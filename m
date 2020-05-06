@@ -2,31 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED9F91C6650
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 05:28:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BC321C6676
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 05:52:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726770AbgEFD2s (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 May 2020 23:28:48 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:35437 "EHLO
+        id S1726558AbgEFDwS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 May 2020 23:52:18 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:33025 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726641AbgEFD2s (ORCPT
+        with ESMTP id S1726267AbgEFDwS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 May 2020 23:28:48 -0400
+        Tue, 5 May 2020 23:52:18 -0400
 Received: from localhost.localdomain ([93.23.13.221])
         by mwinf5d40 with ME
-        id bFUd2200E4m9Yy503FUdZx; Wed, 06 May 2020 05:28:45 +0200
+        id bFsD2200H4m9Yy503FsDqi; Wed, 06 May 2020 05:52:16 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 06 May 2020 05:28:45 +0200
+X-ME-Date: Wed, 06 May 2020 05:52:16 +0200
 X-ME-IP: 93.23.13.221
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     gxt@pku.edu.cn, arnd@arndb.de
-Cc:     linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, info@metux.net, gregkh@linuxfoundation.org,
+        dan.carpenter@oracle.com, tglx@linutronix.de
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] i2c: puv3: Fix an error handling path in 'puv3_i2c_probe()'
-Date:   Wed,  6 May 2020 05:28:24 +0200
-Message-Id: <20200506032824.191633-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] iio: sca3000: Remove an erroneous 'get_device()'
+Date:   Wed,  6 May 2020 05:52:06 +0200
+Message-Id: <20200506035206.192173-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -35,52 +37,34 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is a spurious 'put_device()' in the remove function.
-A reference to 'pdev->dev' is taken in the probe function without a
-corresponding 'get_device()' to increment the refcounted reference.
+This looks really unusual to have a 'get_device()' hidden in a 'dev_err()'
+call.
+Remove it.
 
-Add the missing 'get_device()' and update the error handling path
-accordingly.
+While at it add a missing \n at the end of the message.
 
-Fixes: d10e4a660d11 ("unicore32 machine related files: add i2c bus drivers for pkunity-v3 soc")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
-This patch is provided as-is. It is not even compile tested because I don't
-use cross-compiler.
-
-It is purely speculative and based on what looks like an unbalanced
-'put_device()' in the remove function.
+This patch is purely speculative.
+I've looked a bit arround and see no point for this get_device() but other
+eyes are welcomed :)
 ---
- drivers/i2c/busses/i2c-puv3.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/iio/accel/sca3000.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-puv3.c b/drivers/i2c/busses/i2c-puv3.c
-index 5cec5a36807d..62a4b860d3c0 100644
---- a/drivers/i2c/busses/i2c-puv3.c
-+++ b/drivers/i2c/busses/i2c-puv3.c
-@@ -203,18 +203,20 @@ static int puv3_i2c_probe(struct platform_device *pdev)
- 			mem->start);
- 	adapter->algo = &puv3_i2c_algorithm;
- 	adapter->class = I2C_CLASS_HWMON;
--	adapter->dev.parent = &pdev->dev;
-+	adapter->dev.parent = get_device(&pdev->dev);
+diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
+index 66d768d971e1..6e429072e44a 100644
+--- a/drivers/iio/accel/sca3000.c
++++ b/drivers/iio/accel/sca3000.c
+@@ -980,7 +980,7 @@ static int sca3000_read_data(struct sca3000_state *st,
+ 	st->tx[0] = SCA3000_READ_REG(reg_address_high);
+ 	ret = spi_sync_transfer(st->us, xfer, ARRAY_SIZE(xfer));
+ 	if (ret) {
+-		dev_err(get_device(&st->us->dev), "problem reading register");
++		dev_err(&st->us->dev, "problem reading register\n");
+ 		return ret;
+ 	}
  
- 	platform_set_drvdata(pdev, adapter);
- 
- 	adapter->nr = pdev->id;
- 	rc = i2c_add_numbered_adapter(adapter);
- 	if (rc)
--		goto fail_add_adapter;
-+		goto fail_put_device;
- 
- 	dev_info(&pdev->dev, "PKUnity v3 i2c bus adapter.\n");
- 	return 0;
- 
-+fail_put_device:
-+	put_device(&pdev->dev);
- fail_add_adapter:
- 	kfree(adapter);
- fail_nomem:
 -- 
 2.25.1
 

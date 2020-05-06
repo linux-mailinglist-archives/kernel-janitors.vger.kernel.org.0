@@ -2,106 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 558271C7AEF
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 22:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D31B1C7B43
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 22:29:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728166AbgEFUJM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 16:09:12 -0400
-Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:21488 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725966AbgEFUJL (ORCPT
+        id S1728057AbgEFU3V (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 16:29:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50134 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727792AbgEFU3U (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 16:09:11 -0400
-Received: from localhost.localdomain ([93.23.14.107])
-        by mwinf5d60 with ME
-        id bY992200F2JbCfx03Y99bF; Wed, 06 May 2020 22:09:10 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 06 May 2020 22:09:10 +0200
-X-ME-IP: 93.23.14.107
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     thierry.reding@gmail.com, jonathanh@nvidia.com
-Cc:     linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] memory: tegra: Fix an error handling path in 'tegra186_emc_probe()'
-Date:   Wed,  6 May 2020 22:09:07 +0200
-Message-Id: <20200506200907.195502-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Wed, 6 May 2020 16:29:20 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 448B4C061A0F;
+        Wed,  6 May 2020 13:29:20 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id i15so3308528wrx.10;
+        Wed, 06 May 2020 13:29:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=YY2elGBAStJd1cDwzd/T4Q8r37Cpy+f5uoWKTJObO0I=;
+        b=UsoIvg5zIyPu1caKoHOWZEqT0A6sfJNLUyL6np7oKUOixM8OefjmkOoGk9XFMADp7f
+         txlh7clckd657zEbTf+sftvIbUj9uv+C+sXIq2gPgj90XiSWORaqWvOQwSGG3jG8T7hh
+         UVN27RTjTPw3ij8hNRLtpmfwd4U556w6VhxPAsKdjBC4Ux2umVhkVHumbUN0u3IhWx3z
+         9hqAx3B49nUXjfkmnkR6nGZu/jj23FlcSyW8pqpfxk1NZ5fjz2I79p8QGXnGhEJ1UygN
+         JaxqnsS+1h0asDA8G0Z0SyuGqvsrSFo3en2WJgAynsZMB6VmHek5Mde2l30l45+eEHFI
+         c7sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=YY2elGBAStJd1cDwzd/T4Q8r37Cpy+f5uoWKTJObO0I=;
+        b=fWAaKvBfj7EQkOuxsuwl4kqTn/fkN2ntw1uEgbJxJ/+0gxp7x272+yme3ehuWjVhlD
+         FwbRGDiePub0+aJDULfXzltY5yZoZlU4GdP73FvR9NVRqmDTf9AD9N5lUZM2cAkMVMMQ
+         4iw2Rdz5NuVQbEVOehbDbWpcITS+iPCtbrHgoGlAnL7uIqJefzI/hx0rL+TmBTDOxjjq
+         Qvlu3J3yUl/veFl3C9Lq4i0AprlELuHBiXZc66ocoPGeEcFEbpWcVvECDT1SyMDWFgPJ
+         U3VM8/XwrPGCHMlfHO8lA/UEuY9+tDvquYg9lth62ZXnS44n+tgG4hAOiTsZ9w9Uc20H
+         yXhQ==
+X-Gm-Message-State: AGi0Pua1e0/a2Jbt2VStPehfs/8ef873GnSZ3BeSXESaYuTcJFDdrHJM
+        l1fpqHyT+PldCk/ZqLUfDaA=
+X-Google-Smtp-Source: APiQypKAIwVRtIRTEGUw6cgpjFr3jvuaFYUNjgxVqZqZCV23smVyUDku3093jGNSleC7trbTSQAHAA==
+X-Received: by 2002:adf:f004:: with SMTP id j4mr11248973wro.123.1588796958987;
+        Wed, 06 May 2020 13:29:18 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2df1:2500:444f:2681:799e:cf0b])
+        by smtp.gmail.com with ESMTPSA id f7sm4165550wrt.10.2020.05.06.13.29.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2020 13:29:18 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: put DYNAMIC INTERRUPT MODERATION in proper order
+Date:   Wed,  6 May 2020 22:29:06 +0200
+Message-Id: <20200506202906.23297-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The call to 'tegra_bpmp_get()' must be balanced by a call to
-'tegra_bpmp_put()' in case of error, as already done in the remove
-function.
+Commit 9b038086f06b ("docs: networking: convert DIM to RST") added a new
+file entry to DYNAMIC INTERRUPT MODERATION to the end, and not following
+alphabetical order.
 
-Add an error handling path and corresponding goto.
+So, ./scripts/checkpatch.pl -f MAINTAINERS complains:
 
-Fixes: 52d15dd23f0b ("memory: tegra: Support DVFS on Tegra186 and later")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+  WARNING: Misordered MAINTAINERS entry - list file patterns in alphabetic
+  order
+  #5966: FILE: MAINTAINERS:5966:
+  +F:      lib/dim/
+  +F:      Documentation/networking/net_dim.rst
+
+Reorder the file entries to keep MAINTAINERS nicely ordered.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
- drivers/memory/tegra/tegra186-emc.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+Jakub, please pick this minor non-urgent patch.
 
-diff --git a/drivers/memory/tegra/tegra186-emc.c b/drivers/memory/tegra/tegra186-emc.c
-index 97f26bc77ad4..7b35bf6450f3 100644
---- a/drivers/memory/tegra/tegra186-emc.c
-+++ b/drivers/memory/tegra/tegra186-emc.c
-@@ -185,7 +185,7 @@ static int tegra186_emc_probe(struct platform_device *pdev)
- 	if (IS_ERR(emc->clk)) {
- 		err = PTR_ERR(emc->clk);
- 		dev_err(&pdev->dev, "failed to get EMC clock: %d\n", err);
--		return err;
-+		goto err_put_bpmp;
- 	}
+applies cleanly on next-20200505
+
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b103ff039077..92dced585e54 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5957,9 +5957,9 @@ F:	lib/dynamic_debug.c
+ DYNAMIC INTERRUPT MODERATION
+ M:	Tal Gilboa <talgi@mellanox.com>
+ S:	Maintained
++F:	Documentation/networking/net_dim.rst
+ F:	include/linux/dim.h
+ F:	lib/dim/
+-F:	Documentation/networking/net_dim.rst
  
- 	platform_set_drvdata(pdev, emc);
-@@ -201,7 +201,7 @@ static int tegra186_emc_probe(struct platform_device *pdev)
- 	err = tegra_bpmp_transfer(emc->bpmp, &msg);
- 	if (err < 0) {
- 		dev_err(&pdev->dev, "failed to EMC DVFS pairs: %d\n", err);
--		return err;
-+		goto err_put_bpmp;
- 	}
- 
- 	emc->debugfs.min_rate = ULONG_MAX;
-@@ -211,8 +211,10 @@ static int tegra186_emc_probe(struct platform_device *pdev)
- 
- 	emc->dvfs = devm_kmalloc_array(&pdev->dev, emc->num_dvfs,
- 				       sizeof(*emc->dvfs), GFP_KERNEL);
--	if (!emc->dvfs)
--		return -ENOMEM;
-+	if (!emc->dvfs) {
-+		err = -ENOMEM;
-+		goto err_put_bpmp;
-+	}
- 
- 	dev_dbg(&pdev->dev, "%u DVFS pairs:\n", emc->num_dvfs);
- 
-@@ -237,7 +239,7 @@ static int tegra186_emc_probe(struct platform_device *pdev)
- 			"failed to set rate range [%lu-%lu] for %pC\n",
- 			emc->debugfs.min_rate, emc->debugfs.max_rate,
- 			emc->clk);
--		return err;
-+		goto err_put_bpmp;
- 	}
- 
- 	emc->debugfs.root = debugfs_create_dir("emc", NULL);
-@@ -254,6 +256,10 @@ static int tegra186_emc_probe(struct platform_device *pdev)
- 			    emc, &tegra186_emc_debug_max_rate_fops);
- 
- 	return 0;
-+
-+err_put_bpmp:
-+	tegra_bpmp_put(emc->bpmp);
-+	return err;
- }
- 
- static int tegra186_emc_remove(struct platform_device *pdev)
+ DZ DECSTATION DZ11 SERIAL DRIVER
+ M:	"Maciej W. Rozycki" <macro@linux-mips.org>
 -- 
-2.25.1
+2.17.1
 

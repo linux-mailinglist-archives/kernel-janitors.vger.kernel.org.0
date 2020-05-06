@@ -2,110 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68F111C6E3C
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 12:20:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65DAC1C6E8E
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 12:38:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728947AbgEFKUT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 06:20:19 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:41660 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726354AbgEFKUR (ORCPT
+        id S1729101AbgEFKi3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 06:38:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42204 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728338AbgEFKi3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 06:20:17 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 046AHosi054927;
-        Wed, 6 May 2020 10:20:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=PuX6rwaGKKV8LkbfAkFg2knCJQfvM5Hq/d81pqR/SMM=;
- b=ZpbybSrPMqRDG1Ik6hp5HoslntrHfXNgA7juIGJXZ7bUeyQaOS8673E9DQkcBGmm2E5i
- Nrq2ZfhArfEV+zFyNeZfjuAnx0jfL8nEv5JyNLcDF/ydbltwIY8356T7dHgF8LHG4Hyr
- f99mIdMZyjo+zScKsR9RtFE0FFkl0wCgkeIqxd+UzLFSbeU7e/2crWClNutB4cODIqOX
- +z1p5b4ENg1ZUjR19hZg8+ATmc0PLhTdeQ8biwIf5SDROwj5lnfD2fk/iArtJuGVaPyx
- lAUAFcsS1CXEQTegzy/hfJNkBLfKYBwosxqR4y2x4kP00Nj8IBJJI0tJvUzxngmQPANz Jw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 30s1gn9byx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 06 May 2020 10:20:06 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 046AHb43028215;
-        Wed, 6 May 2020 10:18:05 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 30sjnhvvjc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 06 May 2020 10:18:05 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 046AI3Am010844;
-        Wed, 6 May 2020 10:18:03 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 06 May 2020 03:18:02 -0700
-Date:   Wed, 6 May 2020 13:17:53 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Pablo Neira Ayuso <pablo@netfilter.org>
-Cc:     Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH net] netfilter: nf_conntrack_pptp: prevent buffer overflows
- in debug code
-Message-ID: <20200506101753.GD77004@mwanda>
+        Wed, 6 May 2020 06:38:29 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ABEDC061A0F;
+        Wed,  6 May 2020 03:38:29 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id a5so671626pjh.2;
+        Wed, 06 May 2020 03:38:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1OkzDtpIyQuO7IKIy35A+BZWVbOn5RiVMSLQdPPTaSc=;
+        b=cfeMbzjjr2O4Cw1uSwSiiOnq7ozVGG9+v0gmcQMqOdBGNT94BtXZeH1Vk0DpoIaAJ9
+         Tllhu5B8YINCJR6KvA87+KtaEftkw2Hj+qPDr0N7dih/CK0166AMBKfxUJ4JgOG6ujKR
+         UEo4flpajmZABW4JGOjPD+mqNoenPHGzcRKoatZBzZGBOBu/8CwjQ77cHoCmPm24tM+L
+         bEH5L7IHljTsB1bC1Qvv28aFGS8RKx3ewTBxyUR0G3Tbkwno4CbtDs9mLomGZBD1q1IT
+         ZnN2XJBvG4uHXGM9774PbHY4gDBTF/0YqeoUIHoWtgZ1eO2ZBwdwW9WxmINyrR2JJYzH
+         gyxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1OkzDtpIyQuO7IKIy35A+BZWVbOn5RiVMSLQdPPTaSc=;
+        b=Cfpm4/LIeZHSRcHNGdZ6TvXilXqVB5SKFaa0AspgOWUDGLcmZiXkur/MseMIp3J75s
+         gTCeaJ2JPx67Ypxi2XHA59izeUb9tdEGTijrk+ROSSkWP0VAGhH+l1foRtImfBoJN1vb
+         424qPC2GCWadmV5A67U/1hoNLe5hrY5WVvN0AoMACR//mTL6qydxuL+bcBs4xEz5gi+O
+         VXg3ge9LdXUmohmV5WjbWV6pP3JPzJpcuil26ApiUBu7C9dOgZATobGPpX0hYLAVpiWT
+         bzJkABogg9MbisI6HoaRLd/Fa9gEImIkBk68/Q63gunZDlNZRH0elp3EE0gT2vUCCxhc
+         7Tgw==
+X-Gm-Message-State: AGi0PuZ9zdJ2xSydLBizZqYhg2mWmL2GPtn9BOIjzCQH/+uVPgWXxRDu
+        AQVkKEs5854WBXDS8glvaGcDAGiIQsm57g/WPWJxnK7opSE=
+X-Google-Smtp-Source: APiQypIQSsE756MmU5Ui9qd6Ru5n1fOj18yZcTKTZaLH1fRbMTqqyO0CS+qusaR0TW0AGLITbhdOtcSi1Yf7K190AJA=
+X-Received: by 2002:a17:902:6901:: with SMTP id j1mr7086450plk.255.1588761508837;
+ Wed, 06 May 2020 03:38:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9612 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 adultscore=0 phishscore=0
- mlxlogscore=999 bulkscore=0 malwarescore=0 spamscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2005060081
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9612 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0 mlxscore=0
- spamscore=0 clxscore=1011 priorityscore=1501 bulkscore=0 phishscore=0
- impostorscore=0 malwarescore=0 lowpriorityscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2005060081
+References: <20200506035206.192173-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20200506035206.192173-1-christophe.jaillet@wanadoo.fr>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 6 May 2020 13:38:22 +0300
+Message-ID: <CAHp75Vdi+ZYpQPHgoREQ6LTaUHTPmNkR7ULZaVNTJr7Bvh-q9Q@mail.gmail.com>
+Subject: Re: [PATCH] iio: sca3000: Remove an erroneous 'get_device()'
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        "Enrico Weigelt, metux IT consult" <info@metux.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Smatch complains that the value for "cmd" comes from the network and
-can't be trusted.  The value is actually checked at the end of these
-functions so I just copied that here as well.
+On Wed, May 6, 2020 at 6:55 AM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
+>
+> This looks really unusual to have a 'get_device()' hidden in a 'dev_err()'
+> call.
+> Remove it.
+>
+> While at it add a missing \n at the end of the message.
+>
 
-Fixes: f09943fefe6b ("[NETFILTER]: nf_conntrack/nf_nat: add PPTP helper port")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- net/netfilter/nf_conntrack_pptp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+It should have Fixes tag because it is a quite an issue (get_device()
+breaks reference counting with all problems we may expect).
 
-diff --git a/net/netfilter/nf_conntrack_pptp.c b/net/netfilter/nf_conntrack_pptp.c
-index a971183f11af7..b4dc567f7fb68 100644
---- a/net/netfilter/nf_conntrack_pptp.c
-+++ b/net/netfilter/nf_conntrack_pptp.c
-@@ -276,7 +276,8 @@ pptp_inbound_pkt(struct sk_buff *skb, unsigned int protoff,
- 	typeof(nf_nat_pptp_hook_inbound) nf_nat_pptp_inbound;
- 
- 	msg = ntohs(ctlh->messageType);
--	pr_debug("inbound control message %s\n", pptp_msg_name[msg]);
-+	pr_debug("inbound control message %s\n",
-+		 msg <= PPTP_MSG_MAX ? pptp_msg_name[msg] : pptp_msg_name[0]);
- 
- 	switch (msg) {
- 	case PPTP_START_SESSION_REPLY:
-@@ -404,7 +405,8 @@ pptp_outbound_pkt(struct sk_buff *skb, unsigned int protoff,
- 	typeof(nf_nat_pptp_hook_outbound) nf_nat_pptp_outbound;
- 
- 	msg = ntohs(ctlh->messageType);
--	pr_debug("outbound control message %s\n", pptp_msg_name[msg]);
-+	pr_debug("outbound control message %s\n",
-+		 msg <= PPTP_MSG_MAX ? pptp_msg_name[msg] : pptp_msg_name[0]);
- 
- 	switch (msg) {
- 	case PPTP_START_SESSION_REQUEST:
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> This patch is purely speculative.
+> I've looked a bit arround and see no point for this get_device() but other
+> eyes are welcomed :)
+> ---
+>  drivers/iio/accel/sca3000.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
+> index 66d768d971e1..6e429072e44a 100644
+> --- a/drivers/iio/accel/sca3000.c
+> +++ b/drivers/iio/accel/sca3000.c
+> @@ -980,7 +980,7 @@ static int sca3000_read_data(struct sca3000_state *st,
+>         st->tx[0] = SCA3000_READ_REG(reg_address_high);
+>         ret = spi_sync_transfer(st->us, xfer, ARRAY_SIZE(xfer));
+>         if (ret) {
+> -               dev_err(get_device(&st->us->dev), "problem reading register");
+> +               dev_err(&st->us->dev, "problem reading register\n");
+>                 return ret;
+>         }
+>
+> --
+> 2.25.1
+>
+
+
 -- 
-2.26.2
-
+With Best Regards,
+Andy Shevchenko

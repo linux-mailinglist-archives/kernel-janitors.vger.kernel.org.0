@@ -2,93 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DA6B1C623F
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 May 2020 22:47:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 960EE1C6591
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 03:36:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729164AbgEEUri (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 May 2020 16:47:38 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:59516 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729123AbgEEUrh (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 May 2020 16:47:37 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 045Kd8Ow083317;
-        Tue, 5 May 2020 20:47:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=WUIzdKS1I7w0qbMI/4oHLxgLL6fcqlw5W8h5bvRuxm8=;
- b=lYbLVxkTQ0LSV+knWH1oM2q3PWGfAEs4RD7rWwp8tBmHesGzDwebNpD/6VM3g/2xw+Xe
- NibasiD0ub2FsYXtSz7RySuUdO8KHTlQrREHQ+jKclNx5AoCcKNMLebTp5gtCMV3og0l
- 62TXU9P24OkVTpZetRrUPZCJY6awEs06Qbdnqsl0SS6pCtq0fNwgSCR8GmGbEwO2q/XI
- JBbGi0evapeIXHOPxbnyWC4sv65bh8a3lC8ryYRZeGJNgyR4s9Ir+2S1M5r1TtNLXeKP
- 5LJDWgL8XyMAZdvfOHTRZVhiTM1I5pC/WXWX6UoRaE9E72WKX81AeG7j+fYpRmOnS4V4 eQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 30s0tmf1sp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 05 May 2020 20:47:30 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 045KktVB038246;
-        Tue, 5 May 2020 20:47:30 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 30sjdttduv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 05 May 2020 20:47:30 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 045KlTUE016522;
-        Tue, 5 May 2020 20:47:29 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 05 May 2020 13:47:28 -0700
-Date:   Tue, 5 May 2020 23:47:21 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Claudiu Manoil <claudiu.manoil@nxp.com>, Po Liu <Po.Liu@nxp.com>
-Cc:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH net-next] enetc: Fix use after free in stream_filter_unref()
-Message-ID: <20200505204721.GA51853@mwanda>
+        id S1729817AbgEFBgQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 May 2020 21:36:16 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:44100 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729647AbgEFBgP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 5 May 2020 21:36:15 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 46E85C72239DDB71EF6C;
+        Wed,  6 May 2020 09:36:11 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 6 May 2020 09:36:00 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Sebastian Reichel <sre@kernel.org>,
+        Micha Mirosaw <mirq-linux@rere.qmqm.pl>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-pm@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] power: supply: bq25890_charger: fix missing unlock on error in bq25890_resume()
+Date:   Wed, 6 May 2020 01:40:08 +0000
+Message-ID: <20200506014008.59755-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9612 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 mlxscore=0
- bulkscore=0 adultscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2005050160
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9612 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0
- priorityscore=1501 lowpriorityscore=0 spamscore=0 suspectscore=0
- phishscore=0 clxscore=1011 bulkscore=0 mlxlogscore=999 adultscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005050159
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This code frees "sfi" and then dereferences it on the next line.
+Add the missing unlock before return from function bq25890_resume()
+in the error handling case.
 
-Fixes: 888ae5a3952b ("net: enetc: add tc flower psfp offload driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Fixes: 72d9cd9cdc18 ("power: bq25890: protect view of the chip's state")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_qos.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/bq25890_charger.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_qos.c b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-index 48e589e9d0f7c..10d79eb46c2e8 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-@@ -902,8 +902,8 @@ static void stream_filter_unref(struct enetc_ndev_priv *priv, u32 index)
- 	if (z) {
- 		enetc_streamfilter_hw_set(priv, sfi, false);
- 		hlist_del(&sfi->node);
--		kfree(sfi);
- 		clear_bit(sfi->index, epsfp.psfp_sfi_bitmap);
-+		kfree(sfi);
- 	}
- }
+diff --git a/drivers/power/supply/bq25890_charger.c b/drivers/power/supply/bq25890_charger.c
+index 9339e216651f..cd9c5ed9bc0c 100644
+--- a/drivers/power/supply/bq25890_charger.c
++++ b/drivers/power/supply/bq25890_charger.c
+@@ -977,14 +977,18 @@ static int bq25890_resume(struct device *dev)
+ 	mutex_lock(&bq->lock);
  
--- 
-2.26.2
+ 	ret = bq25890_get_chip_state(bq, &bq->state);
+-	if (ret < 0)
++	if (ret < 0) {
++		mutex_unlock(&bq->lock);
+ 		return ret;
++	}
+ 
+ 	/* Re-enable ADC only if charger is plugged in. */
+ 	if (bq->state.online) {
+ 		ret = bq25890_field_write(bq, F_CONV_START, 1);
+-		if (ret < 0)
++		if (ret < 0) {
++			mutex_unlock(&bq->lock);
+ 			return ret;
++		}
+ 	}
+ 
+ 	/* signal userspace, maybe state changed while suspended */
+
+
 

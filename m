@@ -2,61 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71F591C6790
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 07:46:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CD031C67AF
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 07:51:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726924AbgEFFqJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 01:46:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53058 "EHLO
+        id S1727095AbgEFFvk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 01:51:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725771AbgEFFqI (ORCPT
+        by vger.kernel.org with ESMTP id S1727032AbgEFFvj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 01:46:08 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87D25C061A0F;
-        Tue,  5 May 2020 22:46:08 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id v4so4049696wme.1;
-        Tue, 05 May 2020 22:46:08 -0700 (PDT)
+        Wed, 6 May 2020 01:51:39 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BF51C061A0F;
+        Tue,  5 May 2020 22:51:39 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id j5so642502wrq.2;
+        Tue, 05 May 2020 22:51:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:date:to:cc:subject:message-id:user-agent:mime-version;
-        bh=e1TERoguEz9nk9SqrBe4h2hEZb+u/o5PdVhS/pRqBTs=;
-        b=nQzX+2ViQzvd+cAHmw8E26W4zg2ynvV1O7XGCCWjkmPE8yr1TuOgSyROEqK2LXe7mC
-         /ZdJOdPCn9zcO4Z2k5+ZoTOukmHTD++IsTXObJS9u5orKzGFu6pMKngSG5SiklT0z7JY
-         MKwwOTDBpJblyhMC3P8AZXAiLhH1302coDd051UyMMeTmqBHPzjfxxDO/ADsasDl2bk2
-         j8UciE49pTr6y/0PEczn0BSD8iVbg9FwHFjOk03oyeqjhJ77nnlwz85JV/yflJmi3UDu
-         PmPI3IgJkzjUVM4TJS2nuefzG92pkpEbt1bwyfRJwHX7pPDcN6fb8IJEy2rqDgymB9CR
-         KoSg==
+        bh=nSVb3PkS7tlyf+3taQPnEP1Eff6rnFW28O+T1NDOdcE=;
+        b=qa4Zt0huxFz8HpA5bELEktHKTEcCLxRITJXkka3TjD3K1oRws7lktDVasgfGR4c6cD
+         +CHvBYT+Q+63XzWERo73HdLbHj7x3th2TMr7DRDEXumaSousDTqztkM62ykqNIvhfN0J
+         H8wWipCphUgsmTqQlfiYPJpOF8uemyUm/nBYZ+NXhSYYak+bPsSGuFEb5TAsl/cyWOPf
+         x6k1sUpB+ulnhF8LliWQ+he8rpSRM1Hz/0gmuWo9WK21eoQgQrsWQ5EpxfHfjvbOdnrz
+         VB+J8XOvAukaxJZ6Z9D9wMefVSZ04z3MMMUkShIo+GPnDLIPs5IyOVhVDZl2HRn2ObdB
+         a52A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:date:to:cc:subject:message-id:user-agent
          :mime-version;
-        bh=e1TERoguEz9nk9SqrBe4h2hEZb+u/o5PdVhS/pRqBTs=;
-        b=Wu3Bn7kYjStqkVdl+jZSSRAlyMSG3na+3g2ok8tbZvnDwWoaoBmdnjWIe2+Ud8uECf
-         LsCulcDlhuGqS/buSfmwtf11VERYboFypSRohY4y9UFdnevYiivhg/g3uHZsFp/aeW48
-         F5zzInKMCucjDyEeiUkIT2nPSfD8OkvausxgF9FEYrWEhUqvmHbpJ41XOcfBZFuEBqnM
-         OkdybOhibgopW/ESGI1ujajRe8HhPsdtEwiz1+1tHpd4M0x65Y7VdkOSDrd+FAehCB4P
-         ND3layjBJVsQkzPA3GaypL5Ane6BK+we/akGHxJA9ISyTMYIJcFijrobnQEkYYMz/oEm
-         rD1g==
-X-Gm-Message-State: AGi0PuZW1hsnpfveBhlfNkOAn0nrEO9ITDowDAuMl8X/Zq6C8gi5rOnn
-        I4Yigk70eXVr+iKJ12gwppI=
-X-Google-Smtp-Source: APiQypK+swIcBwcJSK76JFD7UfaycsexUHBN1orynIhwHQPeXRQMb327hZdVIdxBOeBBuwGl0BXg2g==
-X-Received: by 2002:a1c:9d8c:: with SMTP id g134mr2392953wme.79.1588743967070;
-        Tue, 05 May 2020 22:46:07 -0700 (PDT)
+        bh=nSVb3PkS7tlyf+3taQPnEP1Eff6rnFW28O+T1NDOdcE=;
+        b=UvO28+ZCcjjoW0ji17h5W0MNYeMAw/Zen5C68ql0sXh3BMGz2vzuF98AGgbTJYND7E
+         K4Cxj0uYbaGmz2OtQtKj80Q+Z7xuZ2HmPjwEDWBNCSXCmBqtqdrf8f8Hw21WvEWfXDxf
+         T8rugGBEn40Nr0QHE+BlyzcUXGIpP8Yr5y0L+atyNIq/EjNZktc7Cl/yPi1+mocoeYwt
+         TzECvReRguBSYeOdcrkbIByUdXoeYeVcemT8JEBmpR0DbqydOLu3fzW+vM7/i5acV14N
+         h8jcFyfXv1TuNQF6QuFIQtOnnSdSRhM+tzkSNUKUUqpY7BtvE9dvw8H0nhDGrWFWZ092
+         vSkg==
+X-Gm-Message-State: AGi0PuZkbeJbPytRTFPSr7UVBdzjF8E/Hf9r1VR07cMz7ON1B0kl5vhi
+        qEvrpZDWbElJhQwTTa4l7FVkG3lB9jQ=
+X-Google-Smtp-Source: APiQypIPZvMmeMC+/3D0zdDLWUsgmfJ8bkt0AnAOeqk3D/5PB61wRUAIAa541ltCRSrdQDdyQ0jfVw==
+X-Received: by 2002:a5d:6b85:: with SMTP id n5mr7673266wrx.370.1588744298190;
+        Tue, 05 May 2020 22:51:38 -0700 (PDT)
 Received: from felia ([2001:16b8:2df1:2500:bc2e:80a7:2be5:2fcf])
-        by smtp.gmail.com with ESMTPSA id l6sm910337wrb.75.2020.05.05.22.46.06
+        by smtp.gmail.com with ESMTPSA id 185sm1340363wmc.32.2020.05.05.22.51.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2020 22:46:06 -0700 (PDT)
+        Tue, 05 May 2020 22:51:37 -0700 (PDT)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
 X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Wed, 6 May 2020 07:45:57 +0200 (CEST)
+Date:   Wed, 6 May 2020 07:51:36 +0200 (CEST)
 X-X-Sender: lukas@felia
-To:     Pierre Morel <pmorel@linux.ibm.com>
-cc:     Vasily Gorbik <gor@linux.ibm.com>, Joe Perches <joe@perches.com>,
+To:     Jakub Kicinski <kuba@kernel.org>
+cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Joe Perches <joe@perches.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: MAINTAINERS: Wrong ordering in S390 PCI SUBSYSTEM
-Message-ID: <alpine.DEB.2.21.2005060741520.7719@felia>
+Subject: MAINTAINERS: Wrong ordering in DYNAMIC INTERRUPT MODERATION
+Message-ID: <alpine.DEB.2.21.2005060749590.7719@felia>
 User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -65,19 +66,18 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Pierre,
+Hi Jakub,
 
-with your commit de267a7c71ba ("s390/pci: Documentation for zPCI"), 
+with your commit 9b038086f06b ("docs: networking: convert DIM to RST"), 
 visible on next-20200505, ./scripts/checkpatch.pl -f MAINTAINERS 
 complains:
 
 WARNING: Misordered MAINTAINERS entry - list file patterns in alphabetic order
-#14723: FILE: MAINTAINERS:14723:
-+F:	drivers/pci/hotplug/s390_pci_hpc.c
-+F:	Documentation/s390/pci.rst
+#5966: FILE: MAINTAINERS:5966:
++F:	lib/dim/
++F:	Documentation/networking/net_dim.rst
 
-
-This is due to wrong ordering of the entries in your submission. If you
+This is due to wrong ordering of the entries in your submission. If you 
 would like me to send you a patch fixing that, please just let me know.
 
 It is a recent addition to checkpatch.pl to report ordering problems in 
@@ -87,4 +87,3 @@ MAINTAINERS, so you might have not seen that at submission time.
 Best regards,
 
 Lukas
-

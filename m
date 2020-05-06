@@ -2,75 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFC881C70BC
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 14:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD9C31C70E0
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 14:54:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728196AbgEFMs6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 08:48:58 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:3823 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728181AbgEFMs6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 08:48:58 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id C3A5226F2CDBECB1275D;
-        Wed,  6 May 2020 20:48:55 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 6 May 2020 20:48:49 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     <gregkh@linuxfoundation.org>, <simon@nikanor.nu>,
-        <jeremy@azazel.net>, <dan.carpenter@oracle.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <devel@driverdev.osuosl.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] staging: kpc2000: fix error return code in kp2000_pcie_probe()
-Date:   Wed, 6 May 2020 12:52:55 +0000
-Message-ID: <20200506125255.90336-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728316AbgEFMy0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 08:54:26 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:43432 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728081AbgEFMyZ (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 May 2020 08:54:25 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 046CrGOY135206;
+        Wed, 6 May 2020 12:54:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=Q//xXX00B7/TVN4RISX5EFMGkinEKz/HRr2Wvyujl/c=;
+ b=GD+ZwYjbp6s/Z+yEPbCzG6NTjToFNXJDFZNfzKuTgxCjIl+lIdQZ6dR605AIRFt1M7ht
+ zPSPAbGnT2q/xdC3ZQ7eaX2LIlpiPK67r55e5oxSNjQDyEDy8NwZ08JfZZcvWtXi008E
+ ixM1Qt1cTWdFfYx14jts6pbS1ZAVsP6k+sHB0FX74/JsIwOFSsmTnPojL8FCwx0ek7Jw
+ 0PN4DQNN3Zfxs8sS6Zm9SnxlY/SDqGHa2p0TUQ+hZjlcJ+/MR1nDEkmdJzNlKHCOV1OJ
+ QAGVEh4Ugp1lohxb9IWLBZHzlBICJ/AD45f/SkQ7dfh0Yv73iFHTvydYus1YXe8U6Pqe 4A== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 30usgq17y0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 06 May 2020 12:54:10 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 046CqnPM088039;
+        Wed, 6 May 2020 12:54:10 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 30sjdvf6vf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 06 May 2020 12:54:10 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 046Cs7LX015783;
+        Wed, 6 May 2020 12:54:07 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 06 May 2020 05:54:06 -0700
+Date:   Wed, 6 May 2020 15:53:59 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     gregkh@linuxfoundation.org, simon@nikanor.nu, jeremy@azazel.net,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] staging: kpc2000: fix error return code in
+ kp2000_pcie_probe()
+Message-ID: <20200506125359.GK1992@kadam>
+References: <20200506125255.90336-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200506125255.90336-1-weiyongjun1@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9612 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 mlxscore=0
+ bulkscore=0 adultscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005060101
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9612 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 mlxscore=0
+ priorityscore=1501 lowpriorityscore=0 malwarescore=0 clxscore=1011
+ mlxlogscore=999 spamscore=0 adultscore=0 bulkscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005060101
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return a negative error code from the error handling
-case instead of 0, as done elsewhere in this function. Also
-removed var 'rv' since we can use 'err' instead.
+On Wed, May 06, 2020 at 12:52:55PM +0000, Wei Yongjun wrote:
+> Fix to return a negative error code from the error handling
+> case instead of 0, as done elsewhere in this function. Also
+> removed var 'rv' since we can use 'err' instead.
+> 
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  drivers/staging/kpc2000/kpc2000/core.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/staging/kpc2000/kpc2000/core.c b/drivers/staging/kpc2000/kpc2000/core.c
+> index 7b00d7069e21..14e07742dc9d 100644
+> --- a/drivers/staging/kpc2000/kpc2000/core.c
+> +++ b/drivers/staging/kpc2000/kpc2000/core.c
+> @@ -298,7 +298,6 @@ static int kp2000_pcie_probe(struct pci_dev *pdev,
+>  {
+>  	int err = 0;
+>  	struct kp2000_device *pcard;
+> -	int rv;
+>  	unsigned long reg_bar_phys_addr;
+>  	unsigned long reg_bar_phys_len;
+>  	unsigned long dma_bar_phys_addr;
+> @@ -445,11 +444,11 @@ static int kp2000_pcie_probe(struct pci_dev *pdev,
+>  	if (err < 0)
+>  		goto err_release_dma;
+>  
+> -	rv = request_irq(pcard->pdev->irq, kp2000_irq_handler, IRQF_SHARED,
+> +	err = request_irq(pcard->pdev->irq, kp2000_irq_handler, IRQF_SHARED,
+>  			 pcard->name, pcard);
+                        ^
+Could you add a space character here so the white space still aligns?
 
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/staging/kpc2000/kpc2000/core.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+Otherwise it looks good.  :)
 
-diff --git a/drivers/staging/kpc2000/kpc2000/core.c b/drivers/staging/kpc2000/kpc2000/core.c
-index 7b00d7069e21..14e07742dc9d 100644
---- a/drivers/staging/kpc2000/kpc2000/core.c
-+++ b/drivers/staging/kpc2000/kpc2000/core.c
-@@ -298,7 +298,6 @@ static int kp2000_pcie_probe(struct pci_dev *pdev,
- {
- 	int err = 0;
- 	struct kp2000_device *pcard;
--	int rv;
- 	unsigned long reg_bar_phys_addr;
- 	unsigned long reg_bar_phys_len;
- 	unsigned long dma_bar_phys_addr;
-@@ -445,11 +444,11 @@ static int kp2000_pcie_probe(struct pci_dev *pdev,
- 	if (err < 0)
- 		goto err_release_dma;
- 
--	rv = request_irq(pcard->pdev->irq, kp2000_irq_handler, IRQF_SHARED,
-+	err = request_irq(pcard->pdev->irq, kp2000_irq_handler, IRQF_SHARED,
- 			 pcard->name, pcard);
--	if (rv) {
-+	if (err) {
- 		dev_err(&pcard->pdev->dev,
--			"%s: failed to request_irq: %d\n", __func__, rv);
-+			"%s: failed to request_irq: %d\n", __func__, err);
- 		goto err_disable_msi;
- 	}
-
-
+regards,
+dan carpenter
 

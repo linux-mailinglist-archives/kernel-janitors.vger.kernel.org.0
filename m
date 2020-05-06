@@ -2,98 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C14ED1C6967
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 08:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ABB31C6BC9
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 10:32:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728113AbgEFGvo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 02:51:44 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:35322 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727067AbgEFGvo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 02:51:44 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id E7C20E2CA0B008BA9AF9;
-        Wed,  6 May 2020 14:51:41 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 6 May 2020 14:51:33 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Ursula Braun <ubraun@linux.ibm.com>,
-        Karsten Graul <kgraul@linux.ibm.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-CC:     YueHaibing <yuehaibing@huawei.com>, <linux-s390@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net-next] net/smc: remove set but not used variables 'del_llc, del_llc_resp'
-Date:   Wed, 6 May 2020 06:55:40 +0000
-Message-ID: <20200506065540.171504-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728832AbgEFIcS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 04:32:18 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:48716 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728349AbgEFIcS (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 May 2020 04:32:18 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1588753937; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=dtx3Rp21IPiCAR5qCT/OcwOnwvEUdhGk2oHx/m6ir5c=;
+ b=pikQiEaBOEN9BLc/32Efy2niJe0u842knLf/USsBd4VvzVAjMJky+xC7VnbSg7eVnnd9Mn1+
+ dD4Iu5tqFmohCKQg1jnRDz931+fRmNV3gZATYWYGK/Tw5eDE+dnoFQ5GihRO6kymjbYi1qZp
+ NXnXfK3G3s2gyl+k0k8y0l8+Zk4=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eb27609.7f2e20474c70-smtp-out-n05;
+ Wed, 06 May 2020 08:32:09 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 4272FC433BA; Wed,  6 May 2020 08:32:09 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 172FEC433F2;
+        Wed,  6 May 2020 08:32:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 172FEC433F2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] ipw2x00: Remove a memory allocation failure log
+ message
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200424154527.27309-1-christophe.jaillet@wanadoo.fr>
+References: <20200424154527.27309-1-christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     stas.yakovlev@gmail.com, davem@davemloft.net,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200506083209.4272FC433BA@smtp.codeaurora.org>
+Date:   Wed,  6 May 2020 08:32:09 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-net/smc/smc_llc.c: In function 'smc_llc_cli_conf_link':
-net/smc/smc_llc.c:753:31: warning:
- variable 'del_llc' set but not used [-Wunused-but-set-variable]
-  struct smc_llc_msg_del_link *del_llc;
-                               ^
-net/smc/smc_llc.c: In function 'smc_llc_process_srv_delete_link':
-net/smc/smc_llc.c:1311:33: warning:
- variable 'del_llc_resp' set but not used [-Wunused-but-set-variable]
-    struct smc_llc_msg_del_link *del_llc_resp;
-                                 ^
+> Axe a memory allocation failure log message. This message is useless and
+> incorrect (vmalloc is not used here for the memory allocation)
+> 
+> This has been like that since the very beginning of this driver in
+> commit 43f66a6ce8da ("Add ipw2200 wireless driver.")
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- net/smc/smc_llc.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+Patch applied to wireless-drivers-next.git, thanks.
 
-diff --git a/net/smc/smc_llc.c b/net/smc/smc_llc.c
-index 4cc583678ac7..391237b601fe 100644
---- a/net/smc/smc_llc.c
-+++ b/net/smc/smc_llc.c
-@@ -750,7 +750,6 @@ static int smc_llc_cli_conf_link(struct smc_link *link,
- 				 enum smc_lgr_type lgr_new_t)
- {
- 	struct smc_link_group *lgr = link->lgr;
--	struct smc_llc_msg_del_link *del_llc;
- 	struct smc_llc_qentry *qentry = NULL;
- 	int rc = 0;
- 
-@@ -764,7 +763,6 @@ static int smc_llc_cli_conf_link(struct smc_link *link,
- 	}
- 	if (qentry->msg.raw.hdr.common.type != SMC_LLC_CONFIRM_LINK) {
- 		/* received DELETE_LINK instead */
--		del_llc = &qentry->msg.delete_link;
- 		qentry->msg.raw.hdr.flags |= SMC_LLC_FLAG_RESP;
- 		smc_llc_send_message(link, &qentry->msg);
- 		smc_llc_flow_qentry_del(&lgr->llc_flow_lcl);
-@@ -1308,16 +1306,12 @@ static void smc_llc_process_srv_delete_link(struct smc_link_group *lgr)
- 		 * enqueued DELETE_LINK request (forward it)
- 		 */
- 		if (!smc_llc_send_message(lnk, &qentry->msg)) {
--			struct smc_llc_msg_del_link *del_llc_resp;
- 			struct smc_llc_qentry *qentry2;
- 
- 			qentry2 = smc_llc_wait(lgr, lnk, SMC_LLC_WAIT_TIME,
- 					       SMC_LLC_DELETE_LINK);
--			if (!qentry2) {
--			} else {
--				del_llc_resp = &qentry2->msg.delete_link;
-+			if (qentry2)
- 				smc_llc_flow_qentry_del(&lgr->llc_flow_lcl);
--			}
- 		}
- 	}
- 	smcr_link_clear(lnk_del, true);
+c03e3fe91c19 ipw2x00: Remove a memory allocation failure log message
 
+-- 
+https://patchwork.kernel.org/patch/11508307/
 
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

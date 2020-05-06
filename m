@@ -2,67 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D64D1C7277
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 16:09:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6DBB1C72A4
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 16:19:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728937AbgEFOJ3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 10:09:29 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3871 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725915AbgEFOJ3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 10:09:29 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id B35597B26A92DDEEEFB8;
-        Wed,  6 May 2020 22:09:18 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 6 May 2020 22:09:11 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Matthias Brugger <matthias.bgg@gmail.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] soc: mediatek: Missing platform_device_unregister() on error in mtk_mmsys_probe()
-Date:   Wed, 6 May 2020 14:13:17 +0000
-Message-ID: <20200506141317.119537-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1729083AbgEFOS4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 10:18:56 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:39102 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728555AbgEFOS4 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 May 2020 10:18:56 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 046EHlit110031;
+        Wed, 6 May 2020 14:18:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=3R5fRWwWCvg3X2Ej0wqK3qbEy6u+JOq3Eumk9SuBbLg=;
+ b=Ye8U8cvxibIG5QD9Mmcsyn0VPNdBvJbyVXf+SspKBigDwU2LyWoCQR6d8NYETdtowlYt
+ DQ2nmqErdpNronhN5Uu5DrmhSjPxdQZREkOCJ1nZ2+zheEmxbT+czspV4RkrJXkq828s
+ rUgHQyvGvgVq3swp9pXxc6mKU+cJEyT2QOj30OymaydiYmEEw+dQh6P14n9a7VgCvM/d
+ 3lAtpJ8a+Lu3nAuZ7Xp/oLjPMkWhk/641sl/KRqVOefu4x/kq4/BZugFVsYfRftZPif5
+ 2EVC4xffJx+o4AEjOCSn1e+5KxNG3qqmZckX2RfmqXZ2CBtBVmKaCfBaa2QThg2R0rZ5 Ww== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 30s09ranjv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 06 May 2020 14:18:38 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 046EGoFH054388;
+        Wed, 6 May 2020 14:18:37 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 30sjdvma1s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 06 May 2020 14:18:37 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 046EIaeu029292;
+        Wed, 6 May 2020 14:18:36 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 06 May 2020 07:18:35 -0700
+Date:   Wed, 6 May 2020 17:18:29 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     gregkh@linuxfoundation.org, simon@nikanor.nu, jeremy@azazel.net,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next v2] staging: kpc2000: fix error return code in
+ kp2000_pcie_probe()
+Message-ID: <20200506141829.GM1992@kadam>
+References: <20200506125255.90336-1-weiyongjun1@huawei.com>
+ <20200506134735.102041-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200506134735.102041-1-weiyongjun1@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9612 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 mlxscore=0
+ bulkscore=0 adultscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005060115
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9612 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0
+ lowpriorityscore=0 spamscore=0 adultscore=0 clxscore=1015 suspectscore=0
+ priorityscore=1501 malwarescore=0 mlxlogscore=999 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005060115
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Add the missing platform_device_unregister() before return
-from mtk_mmsys_probe() in the error handling case.
+Fantastic.  Thanks!
 
-Fixes: 667c769246b0 ("soc / drm: mediatek: Fix mediatek-drm device probing")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/soc/mediatek/mtk-mmsys.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-diff --git a/drivers/soc/mediatek/mtk-mmsys.c b/drivers/soc/mediatek/mtk-mmsys.c
-index 05e322c9c301..05ce4cb464b0 100644
---- a/drivers/soc/mediatek/mtk-mmsys.c
-+++ b/drivers/soc/mediatek/mtk-mmsys.c
-@@ -312,8 +312,10 @@ static int mtk_mmsys_probe(struct platform_device *pdev)
- 
- 	drm = platform_device_register_data(&pdev->dev, "mediatek-drm",
- 					    PLATFORM_DEVID_AUTO, NULL, 0);
--	if (IS_ERR(drm))
-+	if (IS_ERR(drm)) {
-+		platform_device_unregister(clks);
- 		return PTR_ERR(drm);
-+	}
- 
- 	return 0;
- }
-
-
+regards,
+dan carpenter
 

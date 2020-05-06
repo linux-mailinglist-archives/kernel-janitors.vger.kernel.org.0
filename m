@@ -2,102 +2,143 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FEE51C6D02
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 11:35:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 605791C6D19
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 11:39:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728663AbgEFJfg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 05:35:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60448 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728640AbgEFJff (ORCPT
+        id S1728729AbgEFJj0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 05:39:26 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:31178 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728306AbgEFJj0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 05:35:35 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7462CC061A0F
-        for <kernel-janitors@vger.kernel.org>; Wed,  6 May 2020 02:35:35 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id j5so1368205wrq.2
-        for <kernel-janitors@vger.kernel.org>; Wed, 06 May 2020 02:35:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=hCCpyyCsOwf45inMt3o257A10/7eYZVNmL7O126puyY=;
-        b=qQmDygjweLPcARZKtEeUbSr/HBXsPReN+4F8YbS6vvDa0tGq1EHXWrXA75PwpaRdjY
-         mXiK+Z9ZeDkNeevpk4kqT3qKXBtxVsqTd0+msRTI9uCUkUr51sm73HUAZVDRr7C6OHBY
-         vdEovuXdY87GlYoUTYozZ5pLMPDzr1vD4JSeHk8GGhmi9SWbc61tM5SHbcQPYjMeB1Bf
-         9A6HoSI1Ck8eLfK6x8dOfo/L8/KpJJw3ITP42d6xcQyVuM46JE5qGEKHxJeGScrEg9by
-         mk9TRYdKUIwdHujQ2wm11KE5z73mZ2TaE1PTlkPj3X+H+EG513sFepobGLXfwUyqe9BL
-         zF1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=hCCpyyCsOwf45inMt3o257A10/7eYZVNmL7O126puyY=;
-        b=FJTT0oFRJD4kstPnEEW+QvhJ4cKYD1KVq1muhUae1g7KHd0rGpM/HClVTK93FkFEdH
-         v+8qwT4eXXQTQj8Zi4YENwDQrcipm1EUzmfkDiTTvma+6a3jLxH7I48pRx2+1RuvihOU
-         e3QnzQS++3w3fb0PtOZBdrnYr9RQh0dkwYY9TwTz0H/LKt/df+/DJ4oUZ/vE/oA+7z86
-         XM/zeizGo3fLfmHAlDihmjRezBkVPPG51joBZn27t9HPu4/ksFWJlQheyMOc/kw+W+yr
-         U59/jL5AKHRZPupyAYHi/TpcesCUu8qKKQwyIVvEqT1Cgm1y1cLtlk8OJwlvq0uCLV/J
-         UDjg==
-X-Gm-Message-State: AGi0PuYIzzqDhTpNY+hAst/kp+EXC/4w+2l87TASn7eV3hnRhwMmQ3Gl
-        EXHWCSOS/sG/jRscA/39JANb9QaCJYvc1g==
-X-Google-Smtp-Source: APiQypLQJjy5vw34J6eJsUP2ihdRbCpbrZFEgYI/5478WTJrZUym62sqJpQzFvaN9hsw6iitUy55kA==
-X-Received: by 2002:a5d:6082:: with SMTP id w2mr8373863wrt.163.1588757734052;
-        Wed, 06 May 2020 02:35:34 -0700 (PDT)
-Received: from myrica ([2001:171b:226e:c200:c43b:ef78:d083:b355])
-        by smtp.gmail.com with ESMTPSA id x7sm1677336wmi.17.2020.05.06.02.35.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2020 02:35:33 -0700 (PDT)
-Date:   Wed, 6 May 2020 11:35:24 +0200
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     kernel-janitors@vger.kernel.org, Joerg Roedel <joro@8bytes.org>,
-        virtualization@lists.linux-foundation.org,
-        iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
-        eugene.volanschi@inria.fr
-Subject: Re: [PATCH] iommu/virtio: reverse arguments to list_add
-Message-ID: <20200506093524.GA497896@myrica>
-References: <1588704467-13431-1-git-send-email-Julia.Lawall@inria.fr>
+        Wed, 6 May 2020 05:39:26 -0400
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0469WYVX188321;
+        Wed, 6 May 2020 05:39:16 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 30s1sxwk3f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 06 May 2020 05:39:15 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+        by ppma03ams.nl.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0469Zux2020607;
+        Wed, 6 May 2020 09:39:13 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+        by ppma03ams.nl.ibm.com with ESMTP id 30s0g5rvx6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 06 May 2020 09:39:13 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0469dBwp51052754
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 6 May 2020 09:39:11 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 09ACB42042;
+        Wed,  6 May 2020 09:39:11 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 5F42F4203F;
+        Wed,  6 May 2020 09:39:10 +0000 (GMT)
+Received: from [9.145.87.216] (unknown [9.145.87.216])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed,  6 May 2020 09:39:10 +0000 (GMT)
+Subject: Re: [PATCH net-next] net/smc: remove set but not used variables
+ 'del_llc, del_llc_resp'
+To:     YueHaibing <yuehaibing@huawei.com>,
+        Ursula Braun <ubraun@linux.ibm.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200506065540.171504-1-yuehaibing@huawei.com>
+From:   Karsten Graul <kgraul@linux.ibm.com>
+Organization: IBM Deutschland Research & Development GmbH
+Message-ID: <7e36e689-f5b7-0140-cd04-be62dcf08fbc@linux.ibm.com>
+Date:   Wed, 6 May 2020 11:39:12 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1588704467-13431-1-git-send-email-Julia.Lawall@inria.fr>
+In-Reply-To: <20200506065540.171504-1-yuehaibing@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-05-06_03:2020-05-04,2020-05-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 phishscore=0 adultscore=0
+ impostorscore=0 mlxlogscore=999 bulkscore=0 clxscore=1011 suspectscore=0
+ mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005060072
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, May 05, 2020 at 08:47:47PM +0200, Julia Lawall wrote:
-> Elsewhere in the file, there is a list_for_each_entry with
-> &vdev->resv_regions as the second argument, suggesting that
-> &vdev->resv_regions is the list head.  So exchange the
-> arguments on the list_add call to put the list head in the
-> second argument.
+On 06/05/2020 08:55, YueHaibing wrote:
+> Fixes gcc '-Wunused-but-set-variable' warning:
+
+Thank you, good catch. Your patch will be part of our next patch submission.
+
+Regards, Karsten
+
 > 
-> Fixes: 2a5a31487445 ("iommu/virtio: Add probe request")
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-
-Thanks for the fix. The reason this hasn't blown up so far is
-iommu_alloc_resv_region() initializes region->list, but adding more than
-one item would break the list.
-
-Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-
+> net/smc/smc_llc.c: In function 'smc_llc_cli_conf_link':
+> net/smc/smc_llc.c:753:31: warning:
+>  variable 'del_llc' set but not used [-Wunused-but-set-variable]
+>   struct smc_llc_msg_del_link *del_llc;
+>                                ^
+> net/smc/smc_llc.c: In function 'smc_llc_process_srv_delete_link':
+> net/smc/smc_llc.c:1311:33: warning:
+>  variable 'del_llc_resp' set but not used [-Wunused-but-set-variable]
+>     struct smc_llc_msg_del_link *del_llc_resp;
+>                                  ^
+> 
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 > ---
->  drivers/iommu/virtio-iommu.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  net/smc/smc_llc.c | 8 +-------
+>  1 file changed, 1 insertion(+), 7 deletions(-)
 > 
-> diff --git a/drivers/iommu/virtio-iommu.c b/drivers/iommu/virtio-iommu.c
-> index d5cac4f46ca5..4e1d11af23c8 100644
-> --- a/drivers/iommu/virtio-iommu.c
-> +++ b/drivers/iommu/virtio-iommu.c
-> @@ -453,7 +453,7 @@ static int viommu_add_resv_mem(struct viommu_endpoint *vdev,
->  	if (!region)
->  		return -ENOMEM;
+> diff --git a/net/smc/smc_llc.c b/net/smc/smc_llc.c
+> index 4cc583678ac7..391237b601fe 100644
+> --- a/net/smc/smc_llc.c
+> +++ b/net/smc/smc_llc.c
+> @@ -750,7 +750,6 @@ static int smc_llc_cli_conf_link(struct smc_link *link,
+>  				 enum smc_lgr_type lgr_new_t)
+>  {
+>  	struct smc_link_group *lgr = link->lgr;
+> -	struct smc_llc_msg_del_link *del_llc;
+>  	struct smc_llc_qentry *qentry = NULL;
+>  	int rc = 0;
 >  
-> -	list_add(&vdev->resv_regions, &region->list);
-> +	list_add(&region->list, &vdev->resv_regions);
->  	return 0;
->  }
+> @@ -764,7 +763,6 @@ static int smc_llc_cli_conf_link(struct smc_link *link,
+>  	}
+>  	if (qentry->msg.raw.hdr.common.type != SMC_LLC_CONFIRM_LINK) {
+>  		/* received DELETE_LINK instead */
+> -		del_llc = &qentry->msg.delete_link;
+>  		qentry->msg.raw.hdr.flags |= SMC_LLC_FLAG_RESP;
+>  		smc_llc_send_message(link, &qentry->msg);
+>  		smc_llc_flow_qentry_del(&lgr->llc_flow_lcl);
+> @@ -1308,16 +1306,12 @@ static void smc_llc_process_srv_delete_link(struct smc_link_group *lgr)
+>  		 * enqueued DELETE_LINK request (forward it)
+>  		 */
+>  		if (!smc_llc_send_message(lnk, &qentry->msg)) {
+> -			struct smc_llc_msg_del_link *del_llc_resp;
+>  			struct smc_llc_qentry *qentry2;
 >  
+>  			qentry2 = smc_llc_wait(lgr, lnk, SMC_LLC_WAIT_TIME,
+>  					       SMC_LLC_DELETE_LINK);
+> -			if (!qentry2) {
+> -			} else {
+> -				del_llc_resp = &qentry2->msg.delete_link;
+> +			if (qentry2)
+>  				smc_llc_flow_qentry_del(&lgr->llc_flow_lcl);
+> -			}
+>  		}
+>  	}
+>  	smcr_link_clear(lnk_del, true);
 > 
+> 
+> 
+
+-- 
+Karsten
+
+(I'm a dude)

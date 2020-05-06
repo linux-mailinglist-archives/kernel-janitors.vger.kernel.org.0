@@ -2,115 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90CD21C6760
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 07:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E8751C677F
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 07:34:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726946AbgEFFVn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 01:21:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49298 "EHLO
+        id S1727092AbgEFFet (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 01:34:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725771AbgEFFVm (ORCPT
+        by vger.kernel.org with ESMTP id S1725796AbgEFFes (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 01:21:42 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80BB8C061A0F;
-        Tue,  5 May 2020 22:21:42 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id y24so946356wma.4;
-        Tue, 05 May 2020 22:21:42 -0700 (PDT)
+        Wed, 6 May 2020 01:34:48 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED9DFC061A0F;
+        Tue,  5 May 2020 22:34:46 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id i15so167863wrx.10;
+        Tue, 05 May 2020 22:34:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
-        bh=h0iQI1iKMcPBV71I0g0LMiicdhg13r/twgoexAQYjOg=;
-        b=msl6k3xUOP10ZQIrXYCaMFC2eKJGRBqIerIoJac6rmTcPojb5Amlk5NSjGXfAbSLrp
-         DWpQMdcDVsOq36HanaHkqt7E/lp2zVW1oivOFY/qts17Xl25PZv4GqbBBjfczdyLzsuy
-         waEtAer881cl93H0GnivxsSJzfcr0vH5BKMRiPoBUbE0Lc9GXlxAjaVDQ7v5WEf97NTS
-         DZg7QOHdbliVz5LqPk0Pi9gMF+8QY8gy2icTnL0nj/7DiH8i+6PKQTf/76cNq2WDxOMb
-         nebvdY5pYh0zzDDt9S6IodHoVQA2HZi/YaHZ9p4Mo8hvF2Y/akMSm4vp7nUvQm6TNcEV
-         WIig==
+        bh=NgWAlvnGXDmO0eEhhszebxW0OV0q/gUyVYXiRgeW/8M=;
+        b=iy2yoU3JHvdpSiZul4x3UQhvD/HWf+IqXjC96oAsSCQK/g0zML6kZM48ft+ddc14j5
+         Gi1KMLAUBhfFlMd66VwVOx7sdtNSxQIdJIRCaIqKvL3C3JAZ4bIYx8Pdaz5oPo9iz6Ef
+         qWa6qHoPN5W4y2L/uzZClZ5c8Pb1i1T0Q++dKtV7V1B6TqN0xrgdQQhXWgW3wKt2mlHa
+         KSQCX0S/O9Nz/UHYZTUnmD6YKGOuJLU+TA+hukdEj5uLci0JDkUXozlqUOKEAKd/sO5a
+         boiypu5WWDHgNiv1yt1K1UNqYxDVkzTByuRkMROkI65AZsDOEw21qiFavUgTw8IzAjUn
+         9PYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=h0iQI1iKMcPBV71I0g0LMiicdhg13r/twgoexAQYjOg=;
-        b=VrLx9NYIW+OQPFPV1Iq/a13Ba4uM1h5vqeLi+McsDD8L+VggRnLXmWxdHdJn08OTnx
-         exhyiGn0Nw23o2aFG4A+tkHbvChYFpf+C3g6x3iBZCbgn2yvwLQF/4I74i5HksT2ZH6o
-         Ik78jhxJSUJHaNjz/AQS6bJVdYQLsqU423jjd/79RJzoiQDoDtHJzP00eTtoGijFPBqn
-         9vNirrDyNh4D6csjASbLb0mw2oTtnq8THHi/OrR3XT1TySQPtPfRjkS29pZdkmwjPjlZ
-         LfMcZeWcINxCFKThXmasi4kspYNDkvTADvYYOvA8NInsLJkkU3a2J1Jr47OYlu4n5agG
-         Wr/g==
-X-Gm-Message-State: AGi0PubxOFrB1oxSfWLb4TZSHbUYCWBXRiwQW2EnOw4fZRJFSUJgakvL
-        JOS0R/dNYnYTLaQIaKGq+dnwL3Cslj8=
-X-Google-Smtp-Source: APiQypKagx74+kFJPZfSSYCvqwjyzlhtiJgX+PfEa4CrNrzTZMNBMRv1S6YPTwKV7XdGDQHsk90mOw==
-X-Received: by 2002:a7b:c0cb:: with SMTP id s11mr2555917wmh.180.1588742501192;
-        Tue, 05 May 2020 22:21:41 -0700 (PDT)
+        bh=NgWAlvnGXDmO0eEhhszebxW0OV0q/gUyVYXiRgeW/8M=;
+        b=lQgY/zcwzTXNTFKTDuC99Yzcxr522ptKfslCUvV+LhmIlkR+zyQ/HBj0ymYZZBCelb
+         aoNoJ/olsmSf0I2oIdbHkHy5vr23cmyoM+kwR4QyIjdlr9ZTM0iGr4nO7LXQkyX/5tt9
+         yLpRiW6OCqsBsUTKeSDw2gcG2zFDmHJ3emk98H4zLkAjc3F9dRmYnb3MWIF+Py8XvmKC
+         I9LY/p792YnnpnosaIyCOVNfIAqHSmwFQWHRTgZFd1x9Fs+2L5fIQsPr6G6PA2gdpaOH
+         RK6eegkR1OS58C8yY+PWV9v6S8/ADDLuuIfMN5UOdFU6auW7ZECoUkYe7rjSDfSFsV+0
+         fsvw==
+X-Gm-Message-State: AGi0PuZzf2aZNPp0e253weWxWKWFjSUaAR3kKXbQXybRErROVWkjJpRc
+        2NQlS+aPrJK2aZyeqxUo5i4=
+X-Google-Smtp-Source: APiQypJYiKXI14TW+7ZrO/B+v52diF4s9uz6KDF1/WeL4zHPV8YiWC26PvqtosoUqsfUz23jLhlCWA==
+X-Received: by 2002:adf:dc89:: with SMTP id r9mr4384816wrj.300.1588743285536;
+        Tue, 05 May 2020 22:34:45 -0700 (PDT)
 Received: from felia.fritz.box ([2001:16b8:2df1:2500:bc2e:80a7:2be5:2fcf])
-        by smtp.gmail.com with ESMTPSA id z16sm873707wrl.0.2020.05.05.22.21.40
+        by smtp.gmail.com with ESMTPSA id y3sm897691wrm.64.2020.05.05.22.34.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2020 22:21:40 -0700 (PDT)
+        Tue, 05 May 2020 22:34:44 -0700 (PDT)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>
-Cc:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+To:     Jiri Kosina <trivial@kernel.org>
+Cc:     Lubomir Rintel <lkundrak@v3.sk>, Olof Johansson <olof@lixom.net>,
+        linux-arm-kernel@lists.infradead.org,
         Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH v2 RESEND] MAINTAINERS: correct typo in new NXP LAYERSCAPE GEN4
-Date:   Wed,  6 May 2020 07:21:30 +0200
-Message-Id: <20200506052130.5780-1-lukas.bulwahn@gmail.com>
+Subject: [PATCH v2 RESEND] MAINTAINERS: rectify MMP SUPPORT after moving cputype.h
+Date:   Wed,  6 May 2020 07:34:31 +0200
+Message-Id: <20200506053431.7464-1-lukas.bulwahn@gmail.com>
 X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 3edeb49525bb ("dt-bindings: PCI: Add NXP Layerscape SoCs PCIe Gen4
-controller") includes a new entry in MAINTAINERS, but slipped in a typo in
-one of the file entries.
+Commit 32adcaa010fa ("ARM: mmp: move cputype.h to include/linux/soc/")
+added a file entry that does not point to the intended file location.
 
-Hence, since then, ./scripts/get_maintainer.pl --self-test complains:
+Since then, ./scripts/get_maintainer.pl --self-test complains:
 
-  warning: no file matches F: \
-    drivers/pci/controller/mobibeil/pcie-layerscape-gen4.c
+  warning: no file matches F: linux/soc/mmp/
 
-Correct the typo in PCI DRIVER FOR NXP LAYERSCAPE GEN4 CONTROLLER.
+Rectify the MAINTAINERS entry now.
 
+Fixes: 32adcaa010fa ("ARM: mmp: move cputype.h to include/linux/soc/")
 Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
-Rob, please pick this patch (it is not urgent, though).
+Jiri, please pick this patch.
 
-v1: https://lore.kernel.org/lkml/20200314142559.13505-1-lukas.bulwahn@gmail.com/
-  - already received: Reviewed-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-  - Bjorn Helgaas' suggestion to squash this into commit 3edeb49525bb
-    ("dt-bindings: PCI: Add NXP Layerscape SoCs PCIe Gen4 controller") before
-    merging upstream did not happen.
+v1 & v1-RESEND: was ignored.
 
 v1 -> v2:
   - v1 does not apply after reordering MAINTAINERS, i.e., commit 4400b7d68f6e
-    ("MAINTAINERS: sort entries by entry name") and commit 3b50142d8528
-    ("MAINTAINERS: sort field names for all entries").
+  ("MAINTAINERS: sort entries by entry name") and commit 3b50142d8528
+  ("MAINTAINERS: sort field names for all entries").
   - PATCH v2 applies on v5.7-rc1 now. Please pick v2 instead of v1.
 
 v2-resend:
-  - resend of v2: https://lore.kernel.org/lkml/20200413070649.7014-1-lukas.bulwahn@gmail.com/ 
-  - still applies to v5.7-rc4 and next-20200505
+  - still applies on v5.7-rc4 and next-20200505
+  - asking for inclusion through trivial tree, as maintainers are not
+    responding.
 
  MAINTAINERS | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index e64e5db31497..0fd27329e6f7 100644
+index e64e5db31497..a0fef0c33ba5 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -12941,7 +12941,7 @@ L:	linux-pci@vger.kernel.org
- L:	linux-arm-kernel@lists.infradead.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt
--F:	drivers/pci/controller/mobibeil/pcie-layerscape-gen4.c
-+F:	drivers/pci/controller/mobiveil/pcie-layerscape-gen4.c
+@@ -11327,7 +11327,7 @@ S:	Odd Fixes
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/lkundrak/linux-mmp.git
+ F:	arch/arm/boot/dts/mmp*
+ F:	arch/arm/mach-mmp/
+-F:	linux/soc/mmp/
++F:	include/linux/soc/mmp/
  
- PCI DRIVER FOR RENESAS R-CAR
- M:	Marek Vasut <marek.vasut+renesas@gmail.com>
+ MMP USB PHY DRIVERS
+ R:	Lubomir Rintel <lkundrak@v3.sk>
 -- 
 2.17.1
 

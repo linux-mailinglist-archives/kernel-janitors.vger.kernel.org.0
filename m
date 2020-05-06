@@ -2,85 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 618851C7045
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 14:28:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FB361C7073
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 14:39:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728088AbgEFM2D (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 08:28:03 -0400
-Received: from mx2.suse.de ([195.135.220.15]:34986 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725985AbgEFM2C (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 08:28:02 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 18BCBAC6C;
-        Wed,  6 May 2020 12:28:04 +0000 (UTC)
-Subject: Re: [PATCH] scsi: fnic: Use kmalloc instead of vmalloc for a small
- memory allocation
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        satishkh@cisco.com, sebaddel@cisco.com, kartilak@cisco.com,
-        jejb@linux.ibm.com, martin.petersen@oracle.com
-Cc:     linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20200423204620.26395-1-christophe.jaillet@wanadoo.fr>
-From:   Hannes Reinecke <hare@suse.de>
-Message-ID: <9675b485-cc1e-d928-6888-00d1d666b599@suse.de>
-Date:   Wed, 6 May 2020 14:27:58 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1728133AbgEFMjC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 08:39:02 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3821 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727874AbgEFMjB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 May 2020 08:39:01 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 0AD9CB85326AE967CA46;
+        Wed,  6 May 2020 20:38:59 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 6 May 2020 20:38:50 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Kangjie Lu <kjlu@umn.edu>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-gpio@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] gpio: exar: Fix error return code in gpio_exar_probe()
+Date:   Wed, 6 May 2020 12:42:56 +0000
+Message-ID: <20200506124256.87628-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20200423204620.26395-1-christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 4/23/20 10:46 PM, Christophe JAILLET wrote:
-> 'struct fc_trace_flag_type' is just a few bytes long. There is no need
-> to allocate such a structure with vmalloc. Using kmalloc instead.
-> 
-> While at it, axe a useless test when freeing the memory.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->   drivers/scsi/fnic/fnic_debugfs.c | 6 ++----
->   1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/scsi/fnic/fnic_debugfs.c b/drivers/scsi/fnic/fnic_debugfs.c
-> index 13f7d88d6e57..8d6ce3470594 100644
-> --- a/drivers/scsi/fnic/fnic_debugfs.c
-> +++ b/drivers/scsi/fnic/fnic_debugfs.c
-> @@ -58,8 +58,7 @@ int fnic_debugfs_init(void)
->   						fnic_trace_debugfs_root);
->   
->   	/* Allocate memory to structure */
-> -	fc_trc_flag = (struct fc_trace_flag_type *)
-> -		vmalloc(sizeof(struct fc_trace_flag_type));
-> +	fc_trc_flag = kmalloc(sizeof(*fc_trc_flag), GFP_KERNEL);
->   
->   	if (fc_trc_flag) {
->   		fc_trc_flag->fc_row_file = 0;
-> @@ -87,8 +86,7 @@ void fnic_debugfs_terminate(void)
->   	debugfs_remove(fnic_trace_debugfs_root);
->   	fnic_trace_debugfs_root = NULL;
->   
-> -	if (fc_trc_flag)
-> -		vfree(fc_trc_flag);
-> +	kfree(fc_trc_flag);
->   }
->   
->   /*
-> 
-Reviewed-by: Hannes Reinecke <har@suse.de>
+Fix to return a negative error code from the error handling
+case instead of 0, as done elsewhere in this function.
 
-Cheers,
+Fixes: 7ecced0934e5 ("gpio: exar: add a check for the return value of ida_simple_get fails")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/gpio/gpio-exar.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Hannes
--- 
-Dr. Hannes Reinecke            Teamlead Storage & Networking
-hare@suse.de                               +49 911 74053 688
-SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), Geschäftsführer: Felix Imendörffer
+diff --git a/drivers/gpio/gpio-exar.c b/drivers/gpio/gpio-exar.c
+index da1ef0b1c291..c5c3fa5b519f 100644
+--- a/drivers/gpio/gpio-exar.c
++++ b/drivers/gpio/gpio-exar.c
+@@ -148,8 +148,10 @@ static int gpio_exar_probe(struct platform_device *pdev)
+ 	mutex_init(&exar_gpio->lock);
+ 
+ 	index = ida_simple_get(&ida_index, 0, 0, GFP_KERNEL);
+-	if (index < 0)
++	if (index < 0) {
++		ret = index;
+ 		goto err_destroy;
++	}
+ 
+ 	sprintf(exar_gpio->name, "exar_gpio%d", index);
+ 	exar_gpio->gpio_chip.label = exar_gpio->name;
+
+
+

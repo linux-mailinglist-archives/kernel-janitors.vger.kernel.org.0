@@ -2,32 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ED1D1C71EA
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 15:43:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AE431C7225
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 15:52:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728710AbgEFNnm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 09:43:42 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:3825 "EHLO huawei.com"
+        id S1728854AbgEFNw1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 09:52:27 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3827 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728248AbgEFNnm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 09:43:42 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id AA80028CC3C2A4686EED;
-        Wed,  6 May 2020 21:43:36 +0800 (CST)
+        id S1728712AbgEFNw1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 May 2020 09:52:27 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 94DC85584B7805E1DE42;
+        Wed,  6 May 2020 21:52:25 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 6 May 2020 21:43:29 +0800
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 6 May 2020 21:52:19 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     <gregkh@linuxfoundation.org>, <simon@nikanor.nu>,
-        <jeremy@azazel.net>, <dan.carpenter@oracle.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <devel@driverdev.osuosl.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next v2] staging: kpc2000: fix error return code in kp2000_pcie_probe()
-Date:   Wed, 6 May 2020 13:47:35 +0000
-Message-ID: <20200506134735.102041-1-weiyongjun1@huawei.com>
+To:     Alan Stern <stern@rowland.harvard.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-usb@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] USB: ohci-sm501: fix error return code in ohci_hcd_sm501_drv_probe()
+Date:   Wed, 6 May 2020 13:56:25 +0000
+Message-ID: <20200506135625.106910-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200506125255.90336-1-weiyongjun1@huawei.com>
-References: <20200506125255.90336-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7BIT
@@ -39,44 +38,32 @@ List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Fix to return a negative error code from the error handling
-case instead of 0, as done elsewhere in this function. Also
-removed var 'rv' since we can use 'err' instead.
+case instead of 0, as done elsewhere in this function.
 
-Fixes: 7dc7967fc39a ("staging: kpc2000: add initial set of Daktronics drivers")
+Fixes: 7d9e6f5aebe8 ("usb: host: ohci-sm501: init genalloc for local memory")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
-v1 -> v2: fix code aligns and add fixes
----
- drivers/staging/kpc2000/kpc2000/core.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/usb/host/ohci-sm501.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/staging/kpc2000/kpc2000/core.c b/drivers/staging/kpc2000/kpc2000/core.c
-index 7b00d7069e21..358d7b2f4ad1 100644
---- a/drivers/staging/kpc2000/kpc2000/core.c
-+++ b/drivers/staging/kpc2000/kpc2000/core.c
-@@ -298,7 +298,6 @@ static int kp2000_pcie_probe(struct pci_dev *pdev,
- {
- 	int err = 0;
- 	struct kp2000_device *pcard;
--	int rv;
- 	unsigned long reg_bar_phys_addr;
- 	unsigned long reg_bar_phys_len;
- 	unsigned long dma_bar_phys_addr;
-@@ -445,11 +444,11 @@ static int kp2000_pcie_probe(struct pci_dev *pdev,
- 	if (err < 0)
- 		goto err_release_dma;
+diff --git a/drivers/usb/host/ohci-sm501.c b/drivers/usb/host/ohci-sm501.c
+index c158cda9e4b9..cff965240327 100644
+--- a/drivers/usb/host/ohci-sm501.c
++++ b/drivers/usb/host/ohci-sm501.c
+@@ -157,9 +157,10 @@ static int ohci_hcd_sm501_drv_probe(struct platform_device *pdev)
+ 	 * the call to usb_hcd_setup_local_mem() below does just that.
+ 	 */
  
--	rv = request_irq(pcard->pdev->irq, kp2000_irq_handler, IRQF_SHARED,
--			 pcard->name, pcard);
--	if (rv) {
-+	err = request_irq(pcard->pdev->irq, kp2000_irq_handler, IRQF_SHARED,
-+			  pcard->name, pcard);
-+	if (err) {
- 		dev_err(&pcard->pdev->dev,
--			"%s: failed to request_irq: %d\n", __func__, rv);
-+			"%s: failed to request_irq: %d\n", __func__, err);
- 		goto err_disable_msi;
- 	}
+-	if (usb_hcd_setup_local_mem(hcd, mem->start,
+-				    mem->start - mem->parent->start,
+-				    resource_size(mem)) < 0)
++	retval = usb_hcd_setup_local_mem(hcd, mem->start,
++					 mem->start - mem->parent->start,
++					 resource_size(mem));
++	if (retval < 0)
+ 		goto err5;
+ 	retval = usb_add_hcd(hcd, irq, IRQF_SHARED);
+ 	if (retval)
 
 
 

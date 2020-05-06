@@ -2,70 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5B431C7280
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 16:12:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D64D1C7277
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 May 2020 16:09:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728740AbgEFOMK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 May 2020 10:12:10 -0400
-Received: from netrider.rowland.org ([192.131.102.5]:49517 "HELO
-        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with SMTP id S1728248AbgEFOMJ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 May 2020 10:12:09 -0400
-Received: (qmail 15152 invoked by uid 500); 6 May 2020 10:12:08 -0400
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 6 May 2020 10:12:08 -0400
-Date:   Wed, 6 May 2020 10:12:08 -0400 (EDT)
-From:   Alan Stern <stern@rowland.harvard.edu>
-X-X-Sender: stern@netrider.rowland.org
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        <linux-usb@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH -next] USB: ohci-sm501: fix error return code in
- ohci_hcd_sm501_drv_probe()
-In-Reply-To: <20200506135625.106910-1-weiyongjun1@huawei.com>
-Message-ID: <Pine.LNX.4.44L0.2005061010480.13334-100000@netrider.rowland.org>
+        id S1728937AbgEFOJ3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 May 2020 10:09:29 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3871 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725915AbgEFOJ3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 May 2020 10:09:29 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id B35597B26A92DDEEEFB8;
+        Wed,  6 May 2020 22:09:18 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 6 May 2020 22:09:11 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Matthias Brugger <matthias.bgg@gmail.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] soc: mediatek: Missing platform_device_unregister() on error in mtk_mmsys_probe()
+Date:   Wed, 6 May 2020 14:13:17 +0000
+Message-ID: <20200506141317.119537-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 6 May 2020, Wei Yongjun wrote:
+Add the missing platform_device_unregister() before return
+from mtk_mmsys_probe() in the error handling case.
 
-> Fix to return a negative error code from the error handling
-> case instead of 0, as done elsewhere in this function.
-> 
-> Fixes: 7d9e6f5aebe8 ("usb: host: ohci-sm501: init genalloc for local memory")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->  drivers/usb/host/ohci-sm501.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/usb/host/ohci-sm501.c b/drivers/usb/host/ohci-sm501.c
-> index c158cda9e4b9..cff965240327 100644
-> --- a/drivers/usb/host/ohci-sm501.c
-> +++ b/drivers/usb/host/ohci-sm501.c
-> @@ -157,9 +157,10 @@ static int ohci_hcd_sm501_drv_probe(struct platform_device *pdev)
->  	 * the call to usb_hcd_setup_local_mem() below does just that.
->  	 */
->  
-> -	if (usb_hcd_setup_local_mem(hcd, mem->start,
-> -				    mem->start - mem->parent->start,
-> -				    resource_size(mem)) < 0)
-> +	retval = usb_hcd_setup_local_mem(hcd, mem->start,
-> +					 mem->start - mem->parent->start,
-> +					 resource_size(mem));
-> +	if (retval < 0)
->  		goto err5;
->  	retval = usb_add_hcd(hcd, irq, IRQF_SHARED);
->  	if (retval)
+Fixes: 667c769246b0 ("soc / drm: mediatek: Fix mediatek-drm device probing")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/soc/mediatek/mtk-mmsys.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
+diff --git a/drivers/soc/mediatek/mtk-mmsys.c b/drivers/soc/mediatek/mtk-mmsys.c
+index 05e322c9c301..05ce4cb464b0 100644
+--- a/drivers/soc/mediatek/mtk-mmsys.c
++++ b/drivers/soc/mediatek/mtk-mmsys.c
+@@ -312,8 +312,10 @@ static int mtk_mmsys_probe(struct platform_device *pdev)
+ 
+ 	drm = platform_device_register_data(&pdev->dev, "mediatek-drm",
+ 					    PLATFORM_DEVID_AUTO, NULL, 0);
+-	if (IS_ERR(drm))
++	if (IS_ERR(drm)) {
++		platform_device_unregister(clks);
+ 		return PTR_ERR(drm);
++	}
+ 
+ 	return 0;
+ }
 
-Thanks for noticing and fixing this.
 
-Alan Stern
 

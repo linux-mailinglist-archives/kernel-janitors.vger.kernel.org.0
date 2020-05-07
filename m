@@ -2,80 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 42B831C8A4F
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 14:18:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF8FF1C8AD5
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 14:34:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726580AbgEGMSW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 May 2020 08:18:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44946 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725879AbgEGMSW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 May 2020 08:18:22 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 618C320CC7;
-        Thu,  7 May 2020 12:18:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588853901;
-        bh=I5hKmcE5mcDLVhZaWDRwI64U3QpiZUFmJdDuCE+vXmE=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=fwpyh3Lq9mAdWayXxnmENOvUYSaL7jTt72sbM3RezkaGAhPeWB5n+kBGgYIECnHHg
-         rhiZgbOKFBvTWslJBreJjVlcVftxMHR2R4WhmM/Nw82hu5LE/J7/Urhwcxr4qSjXac
-         6D73eceh/8FZ9DbaTnhzg6b6Wmx87GdNx1gwhibg=
-Date:   Thu, 07 May 2020 13:18:19 +0100
-From:   Mark Brown <broonie@kernel.org>
+        id S1726843AbgEGMdm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 May 2020 08:33:42 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:21392 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725947AbgEGMdm (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 7 May 2020 08:33:42 -0400
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 047CWFSK031817;
+        Thu, 7 May 2020 08:33:36 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 30s1t08nqa-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 07 May 2020 08:33:35 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+        by ppma03ams.nl.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 047CUFm4029845;
+        Thu, 7 May 2020 12:33:34 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+        by ppma03ams.nl.ibm.com with ESMTP id 30s0g5ubxf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 07 May 2020 12:33:34 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 047CWLeE56754496
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 7 May 2020 12:32:21 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 5EFADA4051;
+        Thu,  7 May 2020 12:33:31 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 0F36EA404D;
+        Thu,  7 May 2020 12:33:31 +0000 (GMT)
+Received: from oc5311105230.ibm.com (unknown [9.145.25.186])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Thu,  7 May 2020 12:33:30 +0000 (GMT)
+Subject: Re: [PATCH -next] s390/ism: fix error return code in ism_probe()
 To:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        Oder Chiou <oder_chiou@realtek.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Liam Girdwood <lgirdwood@gmail.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        alsa-devel@alsa-project.org
-In-Reply-To: <20200507094335.14302-1-weiyongjun1@huawei.com>
-References: <20200507094335.14302-1-weiyongjun1@huawei.com>
-Subject: Re: [PATCH -next] ASoC: rt5677: Use devm_snd_soc_register_component()
-Message-Id: <158885389338.38935.14311915230086603146.b4-ty@kernel.org>
+        Julian Wiedmann <jwi@linux.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Sebastian Ott <sebott@linux.ibm.com>
+Cc:     linux-s390@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Hulk Robot <hulkci@huawei.com>
+References: <20200507094307.14102-1-weiyongjun1@huawei.com>
+From:   Ursula Braun <ubraun@linux.ibm.com>
+Message-ID: <f4a7bc6b-75f1-73a9-5351-3af876a50dec@linux.ibm.com>
+Date:   Thu, 7 May 2020 14:33:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
+MIME-Version: 1.0
+In-Reply-To: <20200507094307.14102-1-weiyongjun1@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-07_06:2020-05-07,2020-05-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 phishscore=0 adultscore=0
+ impostorscore=0 mlxlogscore=999 bulkscore=0 clxscore=1011 suspectscore=0
+ mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005070099
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 7 May 2020 09:43:35 +0000, Wei Yongjun wrote:
-> Using devm_snd_soc_register_component() can make the code
-> shorter and cleaner.
+
+
+On 5/7/20 11:43 AM, Wei Yongjun wrote:
+> Fix to return negative error code -ENOMEM from the smcd_alloc_dev()
+> error handling case instead of 0, as done elsewhere in this function.
 > 
+> Fixes: 684b89bc39ce ("s390/ism: add device driver for internal shared memory")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
 > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+
+Thanks Wei Yongjun - your patch is fine. It will be part of our next patch submission.
+
+Regards, Ursula
+
 > ---
->  sound/soc/codecs/rt5677-spi.c | 12 +++---------
->  1 file changed, 3 insertions(+), 9 deletions(-)
+>  drivers/s390/net/ism_drv.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> [...]
-
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.8
-
-Thanks!
-
-[1/1] ASoC: rt5677: Use devm_snd_soc_register_component()
-      commit: 9558ad215509b75c72c84f4f7691f1bd80fda42a
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+> diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
+> index c75112ee7b97..c7fade836d83 100644
+> --- a/drivers/s390/net/ism_drv.c
+> +++ b/drivers/s390/net/ism_drv.c
+> @@ -521,8 +521,10 @@ static int ism_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>  
+>  	ism->smcd = smcd_alloc_dev(&pdev->dev, dev_name(&pdev->dev), &ism_ops,
+>  				   ISM_NR_DMBS);
+> -	if (!ism->smcd)
+> +	if (!ism->smcd) {
+> +		ret = -ENOMEM;
+>  		goto err_resource;
+> +	}
+>  
+>  	ism->smcd->priv = ism;
+>  	ret = ism_dev_init(ism);
+> 
+> 
+> 

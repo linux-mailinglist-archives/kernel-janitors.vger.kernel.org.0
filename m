@@ -2,29 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A83561C85EC
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 11:39:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A5111C85EE
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 11:39:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726519AbgEGJi7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 May 2020 05:38:59 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3884 "EHLO huawei.com"
+        id S1726572AbgEGJjO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 May 2020 05:39:14 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3885 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725809AbgEGJi7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 May 2020 05:38:59 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 5BCF144FEA0FAA0A3F7F;
-        Thu,  7 May 2020 17:38:57 +0800 (CST)
+        id S1725809AbgEGJjO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 7 May 2020 05:39:14 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 337F46E45F027E20161D;
+        Thu,  7 May 2020 17:39:12 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 7 May 2020 17:38:49 +0800
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.487.0; Thu, 7 May 2020 17:39:05 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Johan Hovold <johan@kernel.org>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] gnss: sirf: fix error return code in sirf_probe()
-Date:   Thu, 7 May 2020 09:42:52 +0000
-Message-ID: <20200507094252.13914-1-weiyongjun1@huawei.com>
+To:     Julian Wiedmann <jwi@linux.ibm.com>,
+        Ursula Braun <ubraun@linux.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Sebastian Ott <sebott@linux.ibm.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-s390@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] s390/ism: fix error return code in ism_probe()
+Date:   Thu, 7 May 2020 09:43:07 +0000
+Message-ID: <20200507094307.14102-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -36,41 +40,32 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return a negative error code from the error handling
-case instead of 0, as done elsewhere in this function.
+Fix to return negative error code -ENOMEM from the smcd_alloc_dev()
+error handling case instead of 0, as done elsewhere in this function.
 
-Fixes: d2efbbd18b1e ("gnss: add driver for sirfstar-based receivers")
+Fixes: 684b89bc39ce ("s390/ism: add device driver for internal shared memory")
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/gnss/sirf.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/s390/net/ism_drv.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gnss/sirf.c b/drivers/gnss/sirf.c
-index effed3a8d398..2ecb1d3e8eeb 100644
---- a/drivers/gnss/sirf.c
-+++ b/drivers/gnss/sirf.c
-@@ -439,14 +439,18 @@ static int sirf_probe(struct serdev_device *serdev)
+diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
+index c75112ee7b97..c7fade836d83 100644
+--- a/drivers/s390/net/ism_drv.c
++++ b/drivers/s390/net/ism_drv.c
+@@ -521,8 +521,10 @@ static int ism_probe(struct pci_dev *pdev, const struct pci_device_id *id)
  
- 	data->on_off = devm_gpiod_get_optional(dev, "sirf,onoff",
- 			GPIOD_OUT_LOW);
--	if (IS_ERR(data->on_off))
-+	if (IS_ERR(data->on_off)) {
-+		ret = PTR_ERR(data->on_off);
- 		goto err_put_device;
+ 	ism->smcd = smcd_alloc_dev(&pdev->dev, dev_name(&pdev->dev), &ism_ops,
+ 				   ISM_NR_DMBS);
+-	if (!ism->smcd)
++	if (!ism->smcd) {
++		ret = -ENOMEM;
+ 		goto err_resource;
 +	}
  
- 	if (data->on_off) {
- 		data->wakeup = devm_gpiod_get_optional(dev, "sirf,wakeup",
- 				GPIOD_IN);
--		if (IS_ERR(data->wakeup))
-+		if (IS_ERR(data->wakeup)) {
-+			ret = PTR_ERR(data->wakeup);
- 			goto err_put_device;
-+		}
- 
- 		ret = regulator_enable(data->vcc);
- 		if (ret)
+ 	ism->smcd->priv = ism;
+ 	ret = ism_dev_init(ism);
 
 
 

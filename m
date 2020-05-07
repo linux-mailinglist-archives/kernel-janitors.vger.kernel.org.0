@@ -2,33 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A5111C85EE
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 11:39:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3C681C85F0
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 11:39:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726572AbgEGJjO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 May 2020 05:39:14 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3885 "EHLO huawei.com"
+        id S1725985AbgEGJjm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 May 2020 05:39:42 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3886 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725809AbgEGJjO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 May 2020 05:39:14 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 337F46E45F027E20161D;
-        Thu,  7 May 2020 17:39:12 +0800 (CST)
+        id S1725809AbgEGJjm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 7 May 2020 05:39:42 -0400
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 489F142A0A6C250BACBC;
+        Thu,  7 May 2020 17:39:40 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 7 May 2020 17:39:05 +0800
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.487.0; Thu, 7 May 2020 17:39:32 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Julian Wiedmann <jwi@linux.ibm.com>,
-        Ursula Braun <ubraun@linux.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Sebastian Ott <sebott@linux.ibm.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-s390@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] s390/ism: fix error return code in ism_probe()
-Date:   Thu, 7 May 2020 09:43:07 +0000
-Message-ID: <20200507094307.14102-1-weiyongjun1@huawei.com>
+To:     Oder Chiou <oder_chiou@realtek.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        "Takashi Iwai" <tiwai@suse.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] ASoC: rt5677: Use devm_snd_soc_register_component()
+Date:   Thu, 7 May 2020 09:43:35 +0000
+Message-ID: <20200507094335.14302-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -40,32 +40,52 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return negative error code -ENOMEM from the smcd_alloc_dev()
-error handling case instead of 0, as done elsewhere in this function.
+Using devm_snd_soc_register_component() can make the code
+shorter and cleaner.
 
-Fixes: 684b89bc39ce ("s390/ism: add device driver for internal shared memory")
-Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/s390/net/ism_drv.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/soc/codecs/rt5677-spi.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
-index c75112ee7b97..c7fade836d83 100644
---- a/drivers/s390/net/ism_drv.c
-+++ b/drivers/s390/net/ism_drv.c
-@@ -521,8 +521,10 @@ static int ism_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+diff --git a/sound/soc/codecs/rt5677-spi.c b/sound/soc/codecs/rt5677-spi.c
+index 3f40d2751833..7bfade8b3d6e 100644
+--- a/sound/soc/codecs/rt5677-spi.c
++++ b/sound/soc/codecs/rt5677-spi.c
+@@ -605,20 +605,15 @@ static int rt5677_spi_probe(struct spi_device *spi)
  
- 	ism->smcd = smcd_alloc_dev(&pdev->dev, dev_name(&pdev->dev), &ism_ops,
- 				   ISM_NR_DMBS);
--	if (!ism->smcd)
-+	if (!ism->smcd) {
-+		ret = -ENOMEM;
- 		goto err_resource;
-+	}
+ 	g_spi = spi;
  
- 	ism->smcd->priv = ism;
- 	ret = ism_dev_init(ism);
+-	ret = snd_soc_register_component(&spi->dev, &rt5677_spi_dai_component,
+-					 &rt5677_spi_dai, 1);
++	ret = devm_snd_soc_register_component(&spi->dev,
++					      &rt5677_spi_dai_component,
++					      &rt5677_spi_dai, 1);
+ 	if (ret < 0)
+ 		dev_err(&spi->dev, "Failed to register component.\n");
+ 
+ 	return ret;
+ }
+ 
+-static int rt5677_spi_remove(struct spi_device *spi)
+-{
+-	snd_soc_unregister_component(&spi->dev);
+-	return 0;
+-}
+-
+ static const struct acpi_device_id rt5677_spi_acpi_id[] = {
+ 	{ "RT5677AA", 0 },
+ 	{ }
+@@ -631,7 +626,6 @@ static struct spi_driver rt5677_spi_driver = {
+ 		.acpi_match_table = ACPI_PTR(rt5677_spi_acpi_id),
+ 	},
+ 	.probe = rt5677_spi_probe,
+-	.remove = rt5677_spi_remove,
+ };
+ module_spi_driver(rt5677_spi_driver);
+ 
+
+
 
 
 

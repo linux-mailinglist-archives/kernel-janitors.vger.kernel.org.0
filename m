@@ -2,62 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 892541C9BC6
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 22:09:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A4381C9BA2
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 22:06:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728748AbgEGUJf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 May 2020 16:09:35 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:51086
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728685AbgEGUJe (ORCPT
+        id S1726926AbgEGUGL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 May 2020 16:06:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45362 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726491AbgEGUGL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 May 2020 16:09:34 -0400
-X-IronPort-AV: E=Sophos;i="5.73,365,1583190000"; 
-   d="scan'208";a="348061030"
-Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/AES256-SHA256; 07 May 2020 22:09:32 +0200
-From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     kernel-janitors@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        linux-kernel@vger.kernel.org,
-        Nic Volanschi <eugene.volanschi@inria.fr>
-Subject: [PATCH] tracing/probe: reverse arguments to list_add
-Date:   Thu,  7 May 2020 21:30:08 +0200
-Message-Id: <1588879808-24488-1-git-send-email-Julia.Lawall@inria.fr>
-X-Mailer: git-send-email 1.9.1
+        Thu, 7 May 2020 16:06:11 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79F81C05BD43;
+        Thu,  7 May 2020 13:06:11 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::d71])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 1FE9A119504E1;
+        Thu,  7 May 2020 13:06:11 -0700 (PDT)
+Date:   Thu, 07 May 2020 13:06:10 -0700 (PDT)
+Message-Id: <20200507.130610.2218488895332459354.davem@davemloft.net>
+To:     Po.Liu@nxp.com
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        netdev@vger.kernel.org, dan.carpenter@oracle.com,
+        claudiu.manoil@nxp.com
+Subject: Re: [net-next] net:enetc: bug fix for qos sfi operate space after
+ freed
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200507105738.29961-1-Po.Liu@nxp.com>
+References: <20200507105738.29961-1-Po.Liu@nxp.com>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 07 May 2020 13:06:11 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Elsewhere in the file, the function trace_kprobe_has_same_kprobe uses
-a trace_probe_event.probes object as the second argument of
-list_for_each_entry, ie as a list head, while the list_for_each_entry
-iterates over the list fields of the trace_probe structures, making
-them the list elements.  So, exchange the arguments on the list_add
-call to put the list head in the second argument.
+From: Po Liu <Po.Liu@nxp.com>
+Date: Thu,  7 May 2020 18:57:38 +0800
 
-Since both list_head structures were just initialized, this problem
-did not cause any loss of information.
+> 'Dan Carpenter' reported:
+> This code frees "sfi" and then dereferences it on the next line:
+>>                 kfree(sfi);
+>>                 clear_bit(sfi->index, epsfp.psfp_sfi_bitmap);
+> 
+> This "sfi->index" should be "index".
+> 
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Po Liu <Po.Liu@nxp.com>
 
-Fixes: 60d53e2c3b75 ("tracing/probe: Split trace_event related data from trace_probe")
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-
----
- kernel/trace/trace_probe.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
-index ab8b6436d53f..b8a928e925c7 100644
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -1006,7 +1006,7 @@ int trace_probe_init(struct trace_probe *tp, const char *event,
- 	INIT_LIST_HEAD(&tp->event->class.fields);
- 	INIT_LIST_HEAD(&tp->event->probes);
- 	INIT_LIST_HEAD(&tp->list);
--	list_add(&tp->event->probes, &tp->list);
-+	list_add(&tp->list, &tp->event->probes);
- 
- 	call = trace_probe_event_call(tp);
- 	call->class = &tp->event->class;
-
+Applied.

@@ -2,28 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C20211C9E1F
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 00:00:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 853DA1C9E34
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 00:06:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726807AbgEGWAm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 May 2020 18:00:42 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:44014 "EHLO
+        id S1727086AbgEGWGe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 May 2020 18:06:34 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:44227 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726531AbgEGWAm (ORCPT
+        with ESMTP id S1726636AbgEGWGe (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 May 2020 18:00:42 -0400
+        Thu, 7 May 2020 18:06:34 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jWoZM-0002Ol-K8; Thu, 07 May 2020 22:00:40 +0000
+        id 1jWodU-000300-A9; Thu, 07 May 2020 22:04:56 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org
+To:     Corentin Chary <corentin.chary@gmail.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        acpi4asus-user@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] media: dvb-frontends: remove redundant initialization of variable status
-Date:   Thu,  7 May 2020 23:00:40 +0100
-Message-Id: <20200507220040.66476-1-colin.king@canonical.com>
+Subject: [PATCH] platform/x86: asus_wmi: remove redundant initialization of variable status
+Date:   Thu,  7 May 2020 23:04:55 +0100
+Message-Id: <20200507220455.66681-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,28 +39,28 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 From: Colin Ian King <colin.king@canonical.com>
 
 The variable status is being initialized with a value that is never read
-and it is being updated later with a new value.  The initialization is
+and it is being updated later with a new value. The initialization is
 redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/media/dvb-frontends/drxk_hard.c | 2 +-
+ drivers/platform/x86/asus-wmi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/drxk_hard.c b/drivers/media/dvb-frontends/drxk_hard.c
-index 0a4875b391d9..7e8e5c308d1c 100644
---- a/drivers/media/dvb-frontends/drxk_hard.c
-+++ b/drivers/media/dvb-frontends/drxk_hard.c
-@@ -1093,7 +1093,7 @@ static int init_hi(struct drxk_state *state)
+diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+index bb7c529d7d16..1909d728a536 100644
+--- a/drivers/platform/x86/asus-wmi.c
++++ b/drivers/platform/x86/asus-wmi.c
+@@ -309,7 +309,7 @@ static int asus_wmi_evaluate_method_agfn(const struct acpi_buffer args)
+ 	struct acpi_buffer input;
+ 	u64 phys_addr;
+ 	u32 retval;
+-	u32 status = -1;
++	u32 status;
  
- static int mpegts_configure_pins(struct drxk_state *state, bool mpeg_enable)
- {
--	int status = -1;
-+	int status;
- 	u16 sio_pdr_mclk_cfg = 0;
- 	u16 sio_pdr_mdx_cfg = 0;
- 	u16 err_cfg = 0;
+ 	/*
+ 	 * Copy to dma capable address otherwise memory corruption occurs as
 -- 
 2.25.1
 

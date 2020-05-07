@@ -2,29 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDCA01C94A3
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 17:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8BB01C96C3
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 18:45:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726884AbgEGPQQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 May 2020 11:16:16 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:57721 "EHLO
+        id S1726946AbgEGQpb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 May 2020 12:45:31 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:33296 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725914AbgEGPQP (ORCPT
+        with ESMTP id S1726367AbgEGQpb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 May 2020 11:16:15 -0400
+        Thu, 7 May 2020 12:45:31 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jWiFu-00019X-VP; Thu, 07 May 2020 15:16:11 +0000
+        id 1jWjcE-0003a6-O8; Thu, 07 May 2020 16:43:18 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Leon Romanovsky <leon@kernel.org>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] RDMA/mlx5: remove duplicated assignment to variable rcqe_sz
-Date:   Thu,  7 May 2020 16:16:10 +0100
-Message-Id: <20200507151610.52636-1-colin.king@canonical.com>
+Subject: [PATCH][next] ath11k: remove redundant initialization of pointer info
+Date:   Thu,  7 May 2020 17:43:18 +0100
+Message-Id: <20200507164318.56570-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,29 +37,30 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable rcqe_sz is being unnecessarily assigned twice, fix this
-by removing one of the duplicates.
+Pointer info is being assigned twice, once at the start of the function
+and secondly when it is just about to be accessed. Remove the redundant
+initialization and keep the original assignment to info that is close
+to the memcpy that uses it.
 
-Addresses-Coverity: ("Evaluation order violation")
+Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/infiniband/hw/mlx5/qp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
-index e5891d3da945..0d292d93f5e7 100644
---- a/drivers/infiniband/hw/mlx5/qp.c
-+++ b/drivers/infiniband/hw/mlx5/qp.c
-@@ -2043,8 +2043,7 @@ static int create_user_qp(struct mlx5_ib_dev *dev, struct ib_pd *pd,
- 	if ((qp->flags_en & MLX5_QP_FLAG_SCATTER_CQE) &&
- 	    (init_attr->qp_type == IB_QPT_RC ||
- 	     init_attr->qp_type == IB_QPT_UC)) {
--		int rcqe_sz = rcqe_sz =
--			mlx5_ib_get_cqe_size(init_attr->recv_cq);
-+		int rcqe_sz = mlx5_ib_get_cqe_size(init_attr->recv_cq);
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index d9117ebf2809..1a7e5817e5c8 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -3692,7 +3692,7 @@ static int __ath11k_set_antenna(struct ath11k *ar, u32 tx_ant, u32 rx_ant)
+ int ath11k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void *ctx)
+ {
+ 	struct sk_buff *msdu = skb;
+-	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(msdu);
++	struct ieee80211_tx_info *info;
+ 	struct ath11k *ar = ctx;
+ 	struct ath11k_base *ab = ar->ab;
  
- 		MLX5_SET(qpc, qpc, cs_res,
- 			 rcqe_sz == 128 ? MLX5_RES_SCAT_DATA64_CQE :
 -- 
 2.25.1
 

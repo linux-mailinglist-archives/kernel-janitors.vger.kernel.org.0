@@ -2,65 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 988771C9C73
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 22:33:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 687421C9C69
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 22:31:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726807AbgEGUdQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 May 2020 16:33:16 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:41576 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726575AbgEGUdP (ORCPT
+        id S1726519AbgEGUbd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 May 2020 16:31:33 -0400
+Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:26682 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726093AbgEGUbc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 May 2020 16:33:15 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jWnAl-00078f-F3; Thu, 07 May 2020 20:31:11 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     James Smart <james.smart@broadcom.com>,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] scsi: lpfc: remove redundant initialization to variable rc
-Date:   Thu,  7 May 2020 21:31:11 +0100
-Message-Id: <20200507203111.64709-1-colin.king@canonical.com>
+        Thu, 7 May 2020 16:31:32 -0400
+Received: from localhost.localdomain ([93.23.14.230])
+        by mwinf5d39 with ME
+        id bwXV220044xouCl03wXVlj; Thu, 07 May 2020 22:31:31 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 07 May 2020 22:31:31 +0200
+X-ME-IP: 93.23.14.230
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     kishon@ti.com, vkoul@kernel.org, tony@atomide.com, pavel@ucw.cz,
+        sebastian.reichel@collabora.com
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] phy: cpcap-usb: Remove some useless code
+Date:   Thu,  7 May 2020 22:31:27 +0200
+Message-Id: <20200507203127.202197-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Axe a clk that is unused in the driver.
 
-The variable rc is being initialized with a value that is never read
-and it is being updated later with a new value.  The initialization is
-redundant and can be removed.
-
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/scsi/lpfc/lpfc_attr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/motorola/phy-cpcap-usb.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_attr.c b/drivers/scsi/lpfc/lpfc_attr.c
-index 1354c141d614..87ac8ac0f72a 100644
---- a/drivers/scsi/lpfc/lpfc_attr.c
-+++ b/drivers/scsi/lpfc/lpfc_attr.c
-@@ -4877,7 +4877,7 @@ lpfc_request_firmware_upgrade_store(struct device *dev,
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct lpfc_vport *vport = (struct lpfc_vport *)shost->hostdata;
- 	struct lpfc_hba *phba = vport->phba;
--	int val = 0, rc = -EINVAL;
-+	int val = 0, rc;
+diff --git a/drivers/phy/motorola/phy-cpcap-usb.c b/drivers/phy/motorola/phy-cpcap-usb.c
+index 12e71a315a2c..089db0dea703 100644
+--- a/drivers/phy/motorola/phy-cpcap-usb.c
++++ b/drivers/phy/motorola/phy-cpcap-usb.c
+@@ -122,7 +122,6 @@ enum cpcap_gpio_mode {
+ struct cpcap_phy_ddata {
+ 	struct regmap *reg;
+ 	struct device *dev;
+-	struct clk *refclk;
+ 	struct usb_phy phy;
+ 	struct delayed_work detect_work;
+ 	struct pinctrl *pins;
+@@ -707,7 +706,6 @@ static int cpcap_usb_phy_remove(struct platform_device *pdev)
  
- 	/* Sanity check on user data */
- 	if (!isdigit(buf[0]))
+ 	usb_remove_phy(&ddata->phy);
+ 	cancel_delayed_work_sync(&ddata->detect_work);
+-	clk_unprepare(ddata->refclk);
+ 	regulator_disable(ddata->vusb);
+ 
+ 	return 0;
 -- 
 2.25.1
 

@@ -2,30 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B58B11C8156
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 07:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C488B1C8170
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 07:18:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725857AbgEGFJm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 May 2020 01:09:42 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3878 "EHLO huawei.com"
+        id S1725857AbgEGFSU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 May 2020 01:18:20 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3831 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725763AbgEGFJl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 May 2020 01:09:41 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id EFFFCD9064177ED8F717;
-        Thu,  7 May 2020 13:09:39 +0800 (CST)
+        id S1725601AbgEGFSU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 7 May 2020 01:18:20 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 41BE2419C58FC7F755E5;
+        Thu,  7 May 2020 13:18:18 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 7 May 2020 13:09:29 +0800
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.487.0; Thu, 7 May 2020 13:18:08 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Roger Quadros <rogerq@ti.com>, Li Jun <jun.li@freescale.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-usb@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] usb: gadget: legacy: fix error return code in cdc_bind()
-Date:   Thu, 7 May 2020 05:13:32 +0000
-Message-ID: <20200507051332.99188-1-weiyongjun1@huawei.com>
+To:     David Kershner <david.kershner@unisys.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <sparmaintainer@unisys.com>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] visorbus: fix error return code in visorchipset_init()
+Date:   Thu, 7 May 2020 05:22:11 +0000
+Message-ID: <20200507052211.103018-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -37,32 +35,40 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If 'usb_otg_descriptor_alloc()' fails, we must return a
-negative error code -ENOMEM, not 0.
+Fix to return negative error code -ENODEV from the visor_check_channel()
+error handling case instead of 0. Also change the error code to -ENOMEM
+in kzalloc() error case.
 
-Fixes: ab6796ae9833 ("usb: gadget: cdc2: allocate and init otg descriptor by otg capabilities")
-Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/usb/gadget/legacy/cdc2.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/visorbus/visorchipset.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/legacy/cdc2.c b/drivers/usb/gadget/legacy/cdc2.c
-index 8d7a556ece30..563363aba48f 100644
---- a/drivers/usb/gadget/legacy/cdc2.c
-+++ b/drivers/usb/gadget/legacy/cdc2.c
-@@ -179,8 +179,10 @@ static int cdc_bind(struct usb_composite_dev *cdev)
- 		struct usb_descriptor_header *usb_desc;
+diff --git a/drivers/visorbus/visorchipset.c b/drivers/visorbus/visorchipset.c
+index cb1eb7e05f87..5668cad86e37 100644
+--- a/drivers/visorbus/visorchipset.c
++++ b/drivers/visorbus/visorchipset.c
+@@ -1561,7 +1561,7 @@ static void controlvm_periodic_work(struct work_struct *work)
  
- 		usb_desc = usb_otg_descriptor_alloc(gadget);
--		if (!usb_desc)
-+		if (!usb_desc) {
-+			status = -ENOMEM;
- 			goto fail1;
-+		}
- 		usb_otg_descriptor_init(gadget, usb_desc);
- 		otg_desc[0] = usb_desc;
- 		otg_desc[1] = NULL;
+ static int visorchipset_init(struct acpi_device *acpi_device)
+ {
+-	int err = -ENODEV;
++	int err = -ENOMEM;
+ 	struct visorchannel *controlvm_channel;
+ 
+ 	chipset_dev = kzalloc(sizeof(*chipset_dev), GFP_KERNEL);
+@@ -1584,8 +1584,10 @@ static int visorchipset_init(struct acpi_device *acpi_device)
+ 				 "controlvm",
+ 				 sizeof(struct visor_controlvm_channel),
+ 				 VISOR_CONTROLVM_CHANNEL_VERSIONID,
+-				 VISOR_CHANNEL_SIGNATURE))
++				 VISOR_CHANNEL_SIGNATURE)) {
++		err = -ENODEV;
+ 		goto error_delete_groups;
++	}
+ 	/* if booting in a crash kernel */
+ 	if (is_kdump_kernel())
+ 		INIT_DELAYED_WORK(&chipset_dev->periodic_controlvm_work,
 
 
 

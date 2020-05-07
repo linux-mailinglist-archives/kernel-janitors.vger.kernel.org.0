@@ -2,30 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA7D21C93D4
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 17:10:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDCA01C94A3
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 17:16:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727940AbgEGPJo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 May 2020 11:09:44 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:57117 "EHLO
+        id S1726884AbgEGPQQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 May 2020 11:16:16 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:57721 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725985AbgEGPJo (ORCPT
+        with ESMTP id S1725914AbgEGPQP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 May 2020 11:09:44 -0400
+        Thu, 7 May 2020 11:16:15 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jWi6u-0008H6-Py; Thu, 07 May 2020 15:06:52 +0000
+        id 1jWiFu-00019X-VP; Thu, 07 May 2020 15:16:11 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Christian Gromm <christian.gromm@microchip.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        devel@driverdev.osuosl.org
+To:     Leon Romanovsky <leon@kernel.org>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] staging: most: usb: sanity check channel before using it as an index into arrays
-Date:   Thu,  7 May 2020 16:06:52 +0100
-Message-Id: <20200507150652.52238-1-colin.king@canonical.com>
+Subject: [PATCH][next] RDMA/mlx5: remove duplicated assignment to variable rcqe_sz
+Date:   Thu,  7 May 2020 16:16:10 +0100
+Message-Id: <20200507151610.52636-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,46 +36,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently channel is being sanity checked after it has been used as
-an index into some arrays. Fix this by moving the sanity check of
-channel before the arrays are indexed with it.
+The variable rcqe_sz is being unnecessarily assigned twice, fix this
+by removing one of the duplicates.
 
-Addresses-Coverity: ("Negative array index read")
-Fixes: 59ed0480b950 ("Staging: most: replace pr_*() functions by dev_*()")
+Addresses-Coverity: ("Evaluation order violation")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/staging/most/usb/usb.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/infiniband/hw/mlx5/qp.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/staging/most/usb/usb.c b/drivers/staging/most/usb/usb.c
-index b31a49c37f7f..24ebd3071380 100644
---- a/drivers/staging/most/usb/usb.c
-+++ b/drivers/staging/most/usb/usb.c
-@@ -664,11 +664,6 @@ static int hdm_configure_channel(struct most_interface *iface, int channel,
- 	struct most_dev *mdev = to_mdev(iface);
- 	struct device *dev = &mdev->usb_device->dev;
+diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
+index e5891d3da945..0d292d93f5e7 100644
+--- a/drivers/infiniband/hw/mlx5/qp.c
++++ b/drivers/infiniband/hw/mlx5/qp.c
+@@ -2043,8 +2043,7 @@ static int create_user_qp(struct mlx5_ib_dev *dev, struct ib_pd *pd,
+ 	if ((qp->flags_en & MLX5_QP_FLAG_SCATTER_CQE) &&
+ 	    (init_attr->qp_type == IB_QPT_RC ||
+ 	     init_attr->qp_type == IB_QPT_UC)) {
+-		int rcqe_sz = rcqe_sz =
+-			mlx5_ib_get_cqe_size(init_attr->recv_cq);
++		int rcqe_sz = mlx5_ib_get_cqe_size(init_attr->recv_cq);
  
--	mdev->is_channel_healthy[channel] = true;
--	mdev->clear_work[channel].channel = channel;
--	mdev->clear_work[channel].mdev = mdev;
--	INIT_WORK(&mdev->clear_work[channel].ws, wq_clear_halt);
--
- 	if (!conf) {
- 		dev_err(dev, "Bad config pointer.\n");
- 		return -EINVAL;
-@@ -677,6 +672,12 @@ static int hdm_configure_channel(struct most_interface *iface, int channel,
- 		dev_err(dev, "Channel ID out of range.\n");
- 		return -EINVAL;
- 	}
-+
-+	mdev->is_channel_healthy[channel] = true;
-+	mdev->clear_work[channel].channel = channel;
-+	mdev->clear_work[channel].mdev = mdev;
-+	INIT_WORK(&mdev->clear_work[channel].ws, wq_clear_halt);
-+
- 	if (!conf->num_buffers || !conf->buffer_size) {
- 		dev_err(dev, "Misconfig: buffer size or #buffers zero.\n");
- 		return -EINVAL;
+ 		MLX5_SET(qpc, qpc, cs_res,
+ 			 rcqe_sz == 128 ? MLX5_RES_SCAT_DATA64_CQE :
 -- 
 2.25.1
 

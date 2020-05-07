@@ -2,60 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 302DA1C993B
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 20:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9881C1C9B03
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 21:27:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726860AbgEGSYh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 May 2020 14:24:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43100 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726367AbgEGSYh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 May 2020 14:24:37 -0400
-Received: from localhost (unknown [213.57.247.131])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 01DCB2073A;
-        Thu,  7 May 2020 18:24:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588875876;
-        bh=ttfxh5UZgMWDmlCbVUviUlcKCIw0gaoctdxt32VgcHo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vZFF+uizKqMn2OVUpNdm0ULOf+2jh2PSuQmfwCjtnPgOu69M77NXimqc7P9+edXSh
-         btbrk0qiLI+8+dbQGljQb4qaCa11ZkJ6f+tL5VKFAKWnATe8yXFVZL1520PlG5ecPK
-         dyohdNfiTUgKJqfbwqdsYviXxWS9OB2axEVpbY7Q=
-Date:   Thu, 7 May 2020 21:24:32 +0300
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] RDMA/mlx5: remove duplicated assignment to
- variable rcqe_sz
-Message-ID: <20200507182432.GD104730@unreal>
-References: <20200507151610.52636-1-colin.king@canonical.com>
+        id S1726598AbgEGT1X (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 May 2020 15:27:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39328 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726320AbgEGT1W (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 7 May 2020 15:27:22 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67EDFC05BD43;
+        Thu,  7 May 2020 12:27:22 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id y3so7796270wrt.1;
+        Thu, 07 May 2020 12:27:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=juyJ9lwzr2janjOSEHzVoFlAFrc9APYn5GdZLAkVqVc=;
+        b=umE8GfA+bHenXOWvcmjiP+45bDgfaYbTvHQ/hacGGjWxmK3hRlnoqycD0UKK8jGCko
+         iak/Jv50S+X4+ZAowstqq4ZYxe+Sb85eqR/7LYk+6gczJv6Cw7RVzJIGRwjyOX792eWb
+         H2hzes4pJSXnXI4G/r099kpqo8cmEvLbpHeXDKWXnQO6R6N1lrP0w6Ki2blPG7Fd/JQV
+         HQ+j1Sxs07V71UwwHqbHwX7gfPZq4LgA1JXbbES1asXVyMd4bz60Zn3YR515FeR8+k/Q
+         I0NvNscwlFH4PENJZoRJny3fQqYODqROOzsGUjbZfyCTBCUO6E3onx5hZnPiEsj1Ovpk
+         T52w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=juyJ9lwzr2janjOSEHzVoFlAFrc9APYn5GdZLAkVqVc=;
+        b=eSak8UyTxcacLXEJWxL/np5AFcW/1IcdRW6Z+QkSY9k/RhrGui4APEOSWERcLeBK2s
+         qYmWpw7LqkRQgcCOa5OqqKhoXyDo9e0mVNDsItOhJGIpMP3olwqwKxANT40AjMObxR0y
+         MmqW1QPopoBQWZ15AKTAmn1plIg7XKhkEZUzNjSo7T61m3jQjTFssnqO9uvk6fN+TH7A
+         T6TFuiUC35nBbQ92XSk/FiLEM1eHmOC3TtZ4koBpRBLubwTZt0QX3AO5QKv84RPGcu9G
+         DHMw9HTwYaWg40mnQ9tJyfsh7mE2Z6JhiDvWC3abcv9eQjJrszicD9SUN5wX2UprIlDT
+         uKmQ==
+X-Gm-Message-State: AGi0PuZJ9M/vDi7Aasf/HEsbaWuSzZqI4ATVL3QV7k0oGsI6WKGt0+5b
+        QQp0DANUl5tQjO+GSq3ZxIY=
+X-Google-Smtp-Source: APiQypJOZABF8JKClO8579wnGqVXB4heq+mJNVis4yMmBNkvzyrxD3cHqfWEUirjY8quYem3/WrGeg==
+X-Received: by 2002:adf:d0d1:: with SMTP id z17mr17076474wrh.295.1588879640019;
+        Thu, 07 May 2020 12:27:20 -0700 (PDT)
+Received: from localhost (p2E5BE57B.dip0.t-ipconnect.de. [46.91.229.123])
+        by smtp.gmail.com with ESMTPSA id w11sm9184361wmi.32.2020.05.07.12.27.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2020 12:27:18 -0700 (PDT)
+Date:   Thu, 7 May 2020 21:27:17 +0200
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     jonathanh@nvidia.com, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] memory: tegra: Fix an error handling path in
+ 'tegra186_emc_probe()'
+Message-ID: <20200507192717.GA2905961@ulmo>
+References: <20200506200907.195502-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="OgqxwSJOaUobr8KG"
 Content-Disposition: inline
-In-Reply-To: <20200507151610.52636-1-colin.king@canonical.com>
+In-Reply-To: <20200506200907.195502-1-christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.13.1 (2019-12-14)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, May 07, 2020 at 04:16:10PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->
-> The variable rcqe_sz is being unnecessarily assigned twice, fix this
-> by removing one of the duplicates.
->
-> Addresses-Coverity: ("Evaluation order violation")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
+--OgqxwSJOaUobr8KG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, May 06, 2020 at 10:09:07PM +0200, Christophe JAILLET wrote:
+> The call to 'tegra_bpmp_get()' must be balanced by a call to
+> 'tegra_bpmp_put()' in case of error, as already done in the remove
+> function.
+>=20
+> Add an error handling path and corresponding goto.
+>=20
+> Fixes: 52d15dd23f0b ("memory: tegra: Support DVFS on Tegra186 and later")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > ---
->  drivers/infiniband/hw/mlx5/qp.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
+>  drivers/memory/tegra/tegra186-emc.c | 16 +++++++++++-----
+>  1 file changed, 11 insertions(+), 5 deletions(-)
 
-Fixes: 8bde2c509e40 ("RDMA/mlx5: Update all DRIVER QP places to use QP subtype")
+Applied to for-5.8/memory, thanks.
 
-Thanks,
-Acked-by: Leon Romanovsky <leonro@mellanox.com>
+Thierry
+
+--OgqxwSJOaUobr8KG
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl60YRIACgkQ3SOs138+
+s6E0uhAArwnuPlgr7H/3NTv0vER3Av5CqoabBWqcHkdalDEoowrpcAIKG7Y+J3yp
+teJ8yCVlGPVPQp5P3peK+ABdZCVVtLx6FnRfuiIlEFih8xJwfLmUukabewO3+sC6
+TE0QZtJl7q4R9aXRHHvi2lv/Wl2X4j7A3ucZEVYcB4fEHI7GCWJaGluR6/B6QRS6
+D7ad5FQOPbDKWr7vg8ePm+mfypMs8Fes739f8JDnBCnS9Ol3s6Z83xnBc7BTlcUl
+hxqY8YRBbyiyWIjTbo5jjg1UGYdKdt0c42YIvmnMpRfxMpwlyyIYDZDirLGo+cF9
+ZjJ4p9cVyTTgL9J3CR4LUA2Klxsa6iaLC2lzZ/bUq4zLzxBtWVQinN2z/j8Lav24
+54dW1UqhW7VLFxOWqZNa8X7vHTI7LF/gxiaop6J6o/+vYVpIkwHIftEyJz7Na2VO
+rfS5Njj9WgYAlNYP4mq1kZigXZOpW5s8ahOpoVA6q0Qbcas11eR8oU8QvwiYQ4c3
+v/tDrG/IqehyIpEdvmz7Xr63j45QQmxWH0hYDd1gBRWCzWfB/dM1e41LQe0sOTes
+HhWd0qmmj9Ld0XvnYEZvwRTA0nQkuPAH9pr5PdHedUyB/EpKtOnZYM+VQZ/8JAEA
+/5X/ZuRMs5hrKgT8XsVTrtnVo+dMxclmYN7CtSizt4LjMumBIH8=
+=jPaV
+-----END PGP SIGNATURE-----
+
+--OgqxwSJOaUobr8KG--

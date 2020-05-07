@@ -2,32 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1F9C1C8FFC
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 16:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA7D21C93D4
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 May 2020 17:10:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728980AbgEGOgh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 May 2020 10:36:37 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:55690 "EHLO
+        id S1727940AbgEGPJo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 May 2020 11:09:44 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:57117 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728381AbgEGOgg (ORCPT
+        with ESMTP id S1725985AbgEGPJo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 May 2020 10:36:36 -0400
+        Thu, 7 May 2020 11:09:44 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jWhbb-0004ZE-4U; Thu, 07 May 2020 14:34:31 +0000
+        id 1jWi6u-0008H6-Py; Thu, 07 May 2020 15:06:52 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S . Miller" <davem@davemloft.net>,
-        Oleksij Rempel <linux@rempel-privat.de>, netdev@vger.kernel.org
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Christian Gromm <christian.gromm@microchip.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] net: phy: fix less than zero comparison with unsigned variable val
-Date:   Thu,  7 May 2020 15:34:30 +0100
-Message-Id: <20200507143430.50507-1-colin.king@canonical.com>
+Subject: [PATCH][next] staging: most: usb: sanity check channel before using it as an index into arrays
+Date:   Thu,  7 May 2020 16:06:52 +0100
+Message-Id: <20200507150652.52238-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,30 +37,46 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The unsigned variable val is being checked for an error by checking
-if it is less than zero. This can never occur because val is unsigned.
-Fix this by making val a plain int.
+Currently channel is being sanity checked after it has been used as
+an index into some arrays. Fix this by moving the sanity check of
+channel before the arrays are indexed with it.
 
-Addresses-Coverity: ("Unsigned compared against zero")
-Fixes: bdbdac7649fa ("ethtool: provide UAPI for PHY master/slave configuration.")
+Addresses-Coverity: ("Negative array index read")
+Fixes: 59ed0480b950 ("Staging: most: replace pr_*() functions by dev_*()")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/phy/phy_device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/most/usb/usb.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 83fc8e1b5793..c3a107cf578e 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1948,7 +1948,7 @@ static int genphy_setup_master_slave(struct phy_device *phydev)
- static int genphy_read_master_slave(struct phy_device *phydev)
- {
- 	int cfg, state;
--	u16 val;
-+	int val;
+diff --git a/drivers/staging/most/usb/usb.c b/drivers/staging/most/usb/usb.c
+index b31a49c37f7f..24ebd3071380 100644
+--- a/drivers/staging/most/usb/usb.c
++++ b/drivers/staging/most/usb/usb.c
+@@ -664,11 +664,6 @@ static int hdm_configure_channel(struct most_interface *iface, int channel,
+ 	struct most_dev *mdev = to_mdev(iface);
+ 	struct device *dev = &mdev->usb_device->dev;
  
- 	if (!phydev->is_gigabit_capable) {
- 		phydev->master_slave_get = MASTER_SLAVE_CFG_UNSUPPORTED;
+-	mdev->is_channel_healthy[channel] = true;
+-	mdev->clear_work[channel].channel = channel;
+-	mdev->clear_work[channel].mdev = mdev;
+-	INIT_WORK(&mdev->clear_work[channel].ws, wq_clear_halt);
+-
+ 	if (!conf) {
+ 		dev_err(dev, "Bad config pointer.\n");
+ 		return -EINVAL;
+@@ -677,6 +672,12 @@ static int hdm_configure_channel(struct most_interface *iface, int channel,
+ 		dev_err(dev, "Channel ID out of range.\n");
+ 		return -EINVAL;
+ 	}
++
++	mdev->is_channel_healthy[channel] = true;
++	mdev->clear_work[channel].channel = channel;
++	mdev->clear_work[channel].mdev = mdev;
++	INIT_WORK(&mdev->clear_work[channel].ws, wq_clear_halt);
++
+ 	if (!conf->num_buffers || !conf->buffer_size) {
+ 		dev_err(dev, "Misconfig: buffer size or #buffers zero.\n");
+ 		return -EINVAL;
 -- 
 2.25.1
 

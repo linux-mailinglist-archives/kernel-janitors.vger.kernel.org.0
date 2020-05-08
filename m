@@ -2,84 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 797931CB252
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 16:52:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB7891CB289
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 17:07:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728152AbgEHOwX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 10:52:23 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:53528 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728130AbgEHOwW (ORCPT
+        id S1727029AbgEHPHy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 11:07:54 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:47948 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726913AbgEHPHy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 10:52:22 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 048EnS7G066839;
-        Fri, 8 May 2020 14:51:45 GMT
+        Fri, 8 May 2020 11:07:54 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 048F7oj4126568;
+        Fri, 8 May 2020 15:07:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=H53MWy6dhP3UdGhQsVHvIU1qakOi+iDSoSFMC+dgrvs=;
- b=KfLsY8G0zHjnTr9Fba5pSDHbZNgaB3jQUv3bF0bm+60uJ88JModvJ6vqfx/6NsU5Pcgj
- gNE3Qply8HfD+euxqH5tuIm3rA+T6K1Lz8PZJghoL2tfBAoyczl5pLOSzvISrUlU8wf5
- fIg0qZIQklSTxSVCCuZl3i1bNoV3goqzi+57Se8/FJdsPQU2AJJ2FxGaxHpBCVCUm7yD
- hH5aDOR3i9SKGPdtd+4NkY9JS0edCkTUiD2YjX4zz8M60ZhDfF7PbOw1Oqcx58qggxjY
- PXRZ1E+LKk82dzk7NXgFzVV2HaGFkf+kpegH4Z3SbnGaHChcvzi7JUlcT9M1GV8x0xfa Pg== 
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=ygriZszAK7uOqyWhz842ZZT0KgYajtrTrd4tzNFIj/0=;
+ b=Gwz1VLQALtvp35MtFeGpQufTqn1dft1N2tri/H7KDUgJpn+hO0jTDG0JBpAEIfEScZRR
+ xsuqcFHBfV8Z4F6aJELnyplEfgY6BTM/I58RHGPiI4PBM6vd4+UmDv1/sGZzjzPYT2Mu
+ JzO5W4gqfsJIyPbY52IWIWDa01L99Uwr0ph3IrvO5i1gEQPHnV0d60hrce3ZmOc7rkDS
+ O5zKK7NxAQfItqJv6VJ43Avm/kK95h8rBNUp5FEbqUKGfs0EhSVF4unu/VWhynfSwkD0
+ jwt5gdNBuNqQ3ToQsPqolj3qYOMlSTzWaOv89rQWjQE1l/5W2FueCWKUBYWe8GP3sBpR hQ== 
 Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 30vtepkcy3-1
+        by userp2120.oracle.com with ESMTP id 30vtexug38-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 08 May 2020 14:51:45 +0000
+        Fri, 08 May 2020 15:07:50 +0000
 Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 048EkvhN050162;
-        Fri, 8 May 2020 14:51:45 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 30vtdnr041-1
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 048F6wb0129074;
+        Fri, 8 May 2020 15:07:48 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 30vtdnrwck-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 08 May 2020 14:51:45 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 048EpftU026800;
-        Fri, 8 May 2020 14:51:41 GMT
-Received: from kadam (/41.57.98.10)
+        Fri, 08 May 2020 15:07:47 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 048F7lxK016233;
+        Fri, 8 May 2020 15:07:47 GMT
+Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 08 May 2020 07:51:41 -0700
-Date:   Fri, 8 May 2020 17:51:33 +0300
+        with ESMTP ; Fri, 08 May 2020 08:07:46 -0700
+Date:   Fri, 8 May 2020 18:07:40 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Yunfeng Ye <yeyunfeng@huawei.com>
-Cc:     mhiramat@kernel.org, linux-kernel@vger.kernel.org,
-        Markus.Elfring@web.de, rostedt@goodmis.org,
-        kernel-janitors@vger.kernel.org, Shiyuan Hu <hushiyuan@huawei.com>,
-        Hewenliang <hewenliang4@huawei.com>
-Subject: Re: [PATCH v4] tools/bootconfig: fix resource leak in apply_xbc()
-Message-ID: <20200508145133.GG9365@kadam>
-References: <bdda096b-9f8a-dacb-9f89-9077d1288ad7@huawei.com>
- <20200508144009.GQ1992@kadam>
+To:     Tejun Heo <tj@kernel.org>, Sean Fu <fxinrong@gmail.com>
+Cc:     Lai Jiangshan <jiangshanlai@gmail.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] workqueue: Fix an use after free in init_rescuer()
+Message-ID: <20200508150740.GA415175@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200508144009.GQ1992@kadam>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9614 signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 spamscore=0
- mlxscore=0 mlxlogscore=785 bulkscore=0 phishscore=0 suspectscore=0
+ mlxscore=0 mlxlogscore=999 bulkscore=0 phishscore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2005080132
+ definitions=main-2005080135
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9614 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0
- impostorscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 suspectscore=0 mlxscore=0
- mlxlogscore=846 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2003020000 definitions=main-2005080132
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 adultscore=0
+ spamscore=0 suspectscore=0 bulkscore=0 priorityscore=1501 malwarescore=0
+ phishscore=0 impostorscore=0 mlxscore=0 mlxlogscore=999 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005080135
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, May 08, 2020 at 05:40:09PM +0300, Dan Carpenter wrote:
-> Looks good thanks!
-> 
-> Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
+We need to preserve error code before freeing "rescuer".
 
-I was also absolutely fine with the v3 patch as well.
+Fixes: f187b6974f6df ("workqueue: Use IS_ERR and PTR_ERR instead of PTR_ERR_OR_ZERO.")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+Another option would be to just revert the original commit.
 
-regards,
-dan carpenter
+ kernel/workqueue.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index ddf0537dce140..10ed8d761e0b7 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -4197,6 +4197,7 @@ static int wq_clamp_max_active(int max_active, unsigned int flags,
+ static int init_rescuer(struct workqueue_struct *wq)
+ {
+ 	struct worker *rescuer;
++	int ret;
+ 
+ 	if (!(wq->flags & WQ_MEM_RECLAIM))
+ 		return 0;
+@@ -4208,8 +4209,9 @@ static int init_rescuer(struct workqueue_struct *wq)
+ 	rescuer->rescue_wq = wq;
+ 	rescuer->task = kthread_create(rescuer_thread, rescuer, "%s", wq->name);
+ 	if (IS_ERR(rescuer->task)) {
++		ret = PTR_ERR(rescuer->task);
+ 		kfree(rescuer);
+-		return PTR_ERR(rescuer->task);
++		return ret;
+ 	}
+ 
+ 	wq->rescuer = rescuer;
+-- 
+2.26.2
 

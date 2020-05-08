@@ -2,38 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AF5A1CAAD2
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 14:37:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E6951CAAD5
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 14:37:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728032AbgEHMhL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 08:37:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51336 "EHLO mail.kernel.org"
+        id S1728053AbgEHMhQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 08:37:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51488 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728018AbgEHMhK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 08:37:10 -0400
+        id S1728018AbgEHMhP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 8 May 2020 08:37:15 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 721CD21835;
-        Fri,  8 May 2020 12:37:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8E5E424953;
+        Fri,  8 May 2020 12:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588941429;
-        bh=rBlSr5NBHfZ/N935rLEslrLFisg4sr5EccNQDxUtH+s=;
+        s=default; t=1588941435;
+        bh=GCQZRYNuZPMp57ZSTlZkuHsJuxHJNw2e2VjolFX+Zc8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S9IbPLXKtSNk20Ao7Q5HByk0DowwFdXMH9u5wIYHKZ66jx/vxt/1KyGfzoeHOs8qE
-         M27TNaSRMnzfsifmdLa2ZBWHkvG4qSWmRDHvZO5P0uRbCJLPBeqeSufFxu0PZ/2dEM
-         JNKQGEWVdP/DCl2pJadMK6mhUPp7SoBVth0WxAfA=
+        b=OPDkvC0zet4SoFrJFLfMD76TZ4LS4HgeDI+CYUseQiiSAjqfBStBlVo6/nS+mK2Ii
+         nesEijcGDcMz+H8LojYQTwlN1Q/rXoL3K6p9tWakiZDixxvNMzdgIep76esj0eBXMn
+         fmsqYPIC1oc2I9PNJvACz5nuiZb2towMfVXaV0HU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Dan Carpenter <dan.carpenter@oracle.com>,
-        David Daney <david.daney@cavium.com>,
-        Rob Herring <robh@kernel.org>,
-        Marc Zyngier <marc.zyngier@arm.com>, linux-mips@linux-mips.org,
-        kernel-janitors@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 029/312] MIPS: Octeon: Off by one in octeon_irq_gpio_map()
-Date:   Fri,  8 May 2020 14:30:20 +0200
-Message-Id: <20200508123126.529643159@linuxfoundation.org>
+        linux-mips@linux-mips.org, kernel-janitors@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.4 031/312] MIPS: RM7000: Double locking bug in rm7k_tc_disable()
+Date:   Fri,  8 May 2020 14:30:22 +0200
+Message-Id: <20200508123126.677472805@linuxfoundation.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200508123124.574959822@linuxfoundation.org>
 References: <20200508123124.574959822@linuxfoundation.org>
@@ -48,35 +46,33 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Dan Carpenter <dan.carpenter@oracle.com>
 
-commit 008d0cf1ec69ec6d2c08f2d23aff2b67cbe5d2af upstream.
+commit 58a7e1c140f3ad61646bc0cd9a1f6a9cafc0b225 upstream.
 
-It should be >= ARRAY_SIZE() instead of > ARRAY_SIZE().
+We obviously intended to enable IRQs again at the end.
 
-Fixes: 64b139f97c01 ('MIPS: OCTEON: irq: add CIB and other fixes')
+Fixes: 745aef5df1e2 ('MIPS: RM7000: Add support for tertiary cache')
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Acked-by: David Daney <david.daney@cavium.com>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Marc Zyngier <marc.zyngier@arm.com>
 Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
 Cc: kernel-janitors@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/13813/
+Patchwork: https://patchwork.linux-mips.org/patch/13815/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/cavium-octeon/octeon-irq.c |    2 +-
+ arch/mips/mm/sc-rm7k.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/cavium-octeon/octeon-irq.c
-+++ b/arch/mips/cavium-octeon/octeon-irq.c
-@@ -1220,7 +1220,7 @@ static int octeon_irq_gpio_map(struct ir
+--- a/arch/mips/mm/sc-rm7k.c
++++ b/arch/mips/mm/sc-rm7k.c
+@@ -161,7 +161,7 @@ static void rm7k_tc_disable(void)
+ 	local_irq_save(flags);
+ 	blast_rm7k_tcache();
+ 	clear_c0_config(RM7K_CONF_TE);
+-	local_irq_save(flags);
++	local_irq_restore(flags);
+ }
  
- 	line = (hw + gpiod->base_hwirq) >> 6;
- 	bit = (hw + gpiod->base_hwirq) & 63;
--	if (line > ARRAY_SIZE(octeon_irq_ciu_to_irq) ||
-+	if (line >= ARRAY_SIZE(octeon_irq_ciu_to_irq) ||
- 		octeon_irq_ciu_to_irq[line][bit] != 0)
- 		return -EINVAL;
- 
+ static void rm7k_sc_disable(void)
 
 

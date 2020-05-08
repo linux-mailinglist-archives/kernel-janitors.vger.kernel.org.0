@@ -2,115 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B0DB1CAA4D
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 14:10:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AF5A1CAAD2
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 14:37:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726776AbgEHMKJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 08:10:09 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:39142 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726627AbgEHMKJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 08:10:09 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 75BC7E1BE2FFC8B5EA40;
-        Fri,  8 May 2020 20:10:07 +0800 (CST)
-Received: from [127.0.0.1] (10.166.215.237) by DGGEMS414-HUB.china.huawei.com
- (10.3.19.214) with Microsoft SMTP Server id 14.3.487.0; Fri, 8 May 2020
- 20:09:58 +0800
-To:     <mhiramat@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <Markus.Elfring@web.de>, <rostedt@goodmis.org>,
-        <kernel-janitors@vger.kernel.org>, <dan.carpenter@oracle.com>
-CC:     Shiyuan Hu <hushiyuan@huawei.com>,
-        Hewenliang <hewenliang4@huawei.com>
-From:   Yunfeng Ye <yeyunfeng@huawei.com>
-Subject: [PATCH v4] tools/bootconfig: fix resource leak in apply_xbc()
-Message-ID: <bdda096b-9f8a-dacb-9f89-9077d1288ad7@huawei.com>
-Date:   Fri, 8 May 2020 20:09:46 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1728032AbgEHMhL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 08:37:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51336 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728018AbgEHMhK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 8 May 2020 08:37:10 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 721CD21835;
+        Fri,  8 May 2020 12:37:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588941429;
+        bh=rBlSr5NBHfZ/N935rLEslrLFisg4sr5EccNQDxUtH+s=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=S9IbPLXKtSNk20Ao7Q5HByk0DowwFdXMH9u5wIYHKZ66jx/vxt/1KyGfzoeHOs8qE
+         M27TNaSRMnzfsifmdLa2ZBWHkvG4qSWmRDHvZO5P0uRbCJLPBeqeSufFxu0PZ/2dEM
+         JNKQGEWVdP/DCl2pJadMK6mhUPp7SoBVth0WxAfA=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Dan Carpenter <dan.carpenter@oracle.com>,
+        David Daney <david.daney@cavium.com>,
+        Rob Herring <robh@kernel.org>,
+        Marc Zyngier <marc.zyngier@arm.com>, linux-mips@linux-mips.org,
+        kernel-janitors@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.4 029/312] MIPS: Octeon: Off by one in octeon_irq_gpio_map()
+Date:   Fri,  8 May 2020 14:30:20 +0200
+Message-Id: <20200508123126.529643159@linuxfoundation.org>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200508123124.574959822@linuxfoundation.org>
+References: <20200508123124.574959822@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.166.215.237]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-An error is found by a internel analysis tool:
-  "Memory leak: data" and "Resource leak: fd" in tools/bootconfig/main.c
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-Fix the @data and @fd allocations that are leaked in the error path of
-apply_xbc().
+commit 008d0cf1ec69ec6d2c08f2d23aff2b67cbe5d2af upstream.
 
-Fixes: 85c46b78da58 ("bootconfig: Add bootconfig magic word for indicating bootconfig explicitly")
-Fixes: 950313ebf79c ("tools: bootconfig: Add bootconfig command")
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+It should be >= ARRAY_SIZE() instead of > ARRAY_SIZE().
+
+Fixes: 64b139f97c01 ('MIPS: OCTEON: irq: add CIB and other fixes')
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Acked-by: David Daney <david.daney@cavium.com>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Marc Zyngier <marc.zyngier@arm.com>
+Cc: linux-mips@linux-mips.org
+Cc: kernel-janitors@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/13813/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
 ---
-v3 -> v4:
- - update the commit message
+ arch/mips/cavium-octeon/octeon-irq.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-v2 -> v3:
- - set 'ret' to 0 before returning on success
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -1220,7 +1220,7 @@ static int octeon_irq_gpio_map(struct ir
+ 
+ 	line = (hw + gpiod->base_hwirq) >> 6;
+ 	bit = (hw + gpiod->base_hwirq) & 63;
+-	if (line > ARRAY_SIZE(octeon_irq_ciu_to_irq) ||
++	if (line >= ARRAY_SIZE(octeon_irq_ciu_to_irq) ||
+ 		octeon_irq_ciu_to_irq[line][bit] != 0)
+ 		return -EINVAL;
+ 
 
-v1 -> v2:
- - complete the error handling at other error path
- - add "Fixes" tag
-
- tools/bootconfig/main.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
-
-diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
-index 16b9a420e6fd..17a9837dcfaa 100644
---- a/tools/bootconfig/main.c
-+++ b/tools/bootconfig/main.c
-@@ -314,31 +314,35 @@ int apply_xbc(const char *path, const char *xbc_path)
- 	ret = delete_xbc(path);
- 	if (ret < 0) {
- 		pr_err("Failed to delete previous boot config: %d\n", ret);
--		return ret;
-+		goto free_data;
- 	}
-
- 	/* Apply new one */
- 	fd = open(path, O_RDWR | O_APPEND);
- 	if (fd < 0) {
- 		pr_err("Failed to open %s: %d\n", path, fd);
--		return fd;
-+		ret = fd;
-+		goto free_data;
- 	}
- 	/* TODO: Ensure the @path is initramfs/initrd image */
- 	ret = write(fd, data, size + 8);
- 	if (ret < 0) {
- 		pr_err("Failed to apply a boot config: %d\n", ret);
--		return ret;
-+		goto close_fd;
- 	}
- 	/* Write a magic word of the bootconfig */
- 	ret = write(fd, BOOTCONFIG_MAGIC, BOOTCONFIG_MAGIC_LEN);
--	if (ret < 0) {
-+	if (ret < 0)
- 		pr_err("Failed to apply a boot config magic: %d\n", ret);
--		return ret;
--	}
-+
-+	ret = 0;
-+
-+close_fd:
- 	close(fd);
-+free_data:
- 	free(data);
-
--	return 0;
-+	return ret;
- }
-
- int usage(void)
--- 
-1.8.3.1
 

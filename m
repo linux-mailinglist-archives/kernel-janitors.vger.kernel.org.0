@@ -2,101 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAA0A1CA6A3
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 10:54:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BD641CA790
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 11:52:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726948AbgEHIyY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 04:54:24 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:50522 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726091AbgEHIyY (ORCPT
+        id S1726612AbgEHJwY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 05:52:24 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:59216
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725825AbgEHJwX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 04:54:24 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0488sBTb045458;
-        Fri, 8 May 2020 03:54:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1588928051;
-        bh=ZrBzU2NvJVBdusFAfOPLzRcXzk6CIzk04r5ERKP1Z2k=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=E4aLPdYXjfqVKd7rQKdcTvuwjZWnEJQcMnTlnn5Y0g7pK7WMCp0EPWkk8JBzi+/S3
-         bkWkV0XU3uNSzWB9mWfvr2gI8M6RwYyRVtm6IT/Cv2TzDINFYdOGU06F7hsDcVb0M3
-         XKFdznCN/lwxF9zbtq4A7ZYuoO8JaXc664aWYEQM=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0488sBAo129398;
-        Fri, 8 May 2020 03:54:11 -0500
-Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 8 May
- 2020 03:54:11 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE102.ent.ti.com
- (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 8 May 2020 03:54:11 -0500
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0488s8mO073269;
-        Fri, 8 May 2020 03:54:09 -0500
-Subject: Re: [PATCH net-next] net: ethernet: ti: fix error return code in
- am65_cpsw_nuss_probe()
-To:     Wei Yongjun <weiyongjun1@huawei.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Colin Ian King <colin.king@canonical.com>,
-        Jakub Kicinski <kuba@kernel.org>
-CC:     <netdev@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-References: <20200508021059.172001-1-weiyongjun1@huawei.com>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <4440e1fc-2749-cf36-b5d0-fa252789d37c@ti.com>
-Date:   Fri, 8 May 2020 11:54:07 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <20200508021059.172001-1-weiyongjun1@huawei.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+        Fri, 8 May 2020 05:52:23 -0400
+X-IronPort-AV: E=Sophos;i="5.73,367,1583190000"; 
+   d="scan'208";a="348097894"
+Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/AES256-SHA256; 08 May 2020 11:52:21 +0200
+From:   Julia Lawall <Julia.Lawall@inria.fr>
+To:     Jeremy Kerr <jk@ozlabs.org>
+Cc:     kernel-janitors@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        Nic Volanschi <eugene.volanschi@inria.fr>
+Subject: [PATCH] powerpc/spufs: adjust list element pointer type
+Date:   Fri,  8 May 2020 11:12:56 +0200
+Message-Id: <1588929176-28527-1-git-send-email-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 1.9.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Other uses of &gang->aff_list_head, eg in spufs_assert_affinity, indicate
+that the list elements have type spu_context, not spu as used here.  Change
+the type of tmp accordingly.
 
+This has no impact on the execution, because tmp is not used in the body of
+the loop.
 
-On 08/05/2020 05:10, Wei Yongjun wrote:
-> Fix to return negative error code -ENOMEM from the cpsw_ale_create()
-> error handling case instead of 0, as done elsewhere in this function.
-> 
-> Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->   drivers/net/ethernet/ti/am65-cpsw-nuss.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-> index f8c589929308..066ba52f57cb 100644
-> --- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-> +++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-> @@ -2065,6 +2065,7 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
->   	common->ale = cpsw_ale_create(&ale_params);
->   	if (!common->ale) {
->   		dev_err(dev, "error initializing ale engine\n");
-> +		ret = -ENOMEM;
->   		goto err_of_clear;
->   	}
-> 
-> 
-> 
+Fixes: c5fc8d2a92461 ("[CELL] cell: add placement computation for scheduling of affinity contexts")
+Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
-It seems not enough.
+---
+ arch/powerpc/platforms/cell/spufs/sched.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-For consistency, Could you update it as below?
-- cpsw_ale_create() to return PTR_ERR() in all places
-- users to use IS_ERR() and ret = PTR_ERR()
+diff --git a/arch/powerpc/platforms/cell/spufs/sched.c b/arch/powerpc/platforms/cell/spufs/sched.c
+index f18d5067cd0f..487fcb47f10d 100644
+--- a/arch/powerpc/platforms/cell/spufs/sched.c
++++ b/arch/powerpc/platforms/cell/spufs/sched.c
+@@ -344,8 +344,7 @@ static struct spu *aff_ref_location(struct spu_context *ctx, int mem_aff,
+ static void aff_set_ref_point_location(struct spu_gang *gang)
+ {
+ 	int mem_aff, gs, lowest_offset;
+-	struct spu_context *ctx;
+-	struct spu *tmp;
++	struct spu_context *tmp, *ctx;
+ 
+ 	mem_aff = gang->aff_ref_ctx->flags & SPU_CREATE_AFFINITY_MEM;
+ 	lowest_offset = 0;
 
-
--- 
-Best regards,
-grygorii

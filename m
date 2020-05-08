@@ -2,103 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E1701C9F5C
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 01:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D47221C9F69
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 02:04:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727086AbgEGX5S (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 May 2020 19:57:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54408 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726480AbgEGX5R (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 May 2020 19:57:17 -0400
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7315920720;
-        Thu,  7 May 2020 23:57:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588895836;
-        bh=2o+y8fxLqhtXg3APfBgUNDvTw0QO66MYP7OHCoVyRF4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=tvJM2f15l0kGd0TcPZ5vvEL9T0JafTX9h9hN27JKxQS0JWHerHbeDey3Mbw8YF0WA
-         sMGk9CHL7k6wiBe60ImJu1FPC/jngFFZiLfNHeIppfP0mK2SOLuawse2sjah5xl0ko
-         Pc0Fbkn52l14GZ3LdCA4Ouv+DsGC3gWSQlnAqXug=
-Date:   Fri, 8 May 2020 08:57:12 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     Julia Lawall <Julia.Lawall@inria.fr>,
-        kernel-janitors@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        linux-kernel@vger.kernel.org,
-        Nic Volanschi <eugene.volanschi@inria.fr>,
-        Masami Hiramatsu <mhiramat@kernel.org>
-Subject: Re: [PATCH] tracing/probe: reverse arguments to list_add
-Message-Id: <20200508085712.dcb44a32d1fb50c0a7e3e2a9@kernel.org>
-In-Reply-To: <20200507165053.291ba5ea@gandalf.local.home>
-References: <1588879808-24488-1-git-send-email-Julia.Lawall@inria.fr>
-        <20200507165053.291ba5ea@gandalf.local.home>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S1726641AbgEHAES (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 May 2020 20:04:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54152 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726476AbgEHAER (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 7 May 2020 20:04:17 -0400
+Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E80AC05BD09
+        for <kernel-janitors@vger.kernel.org>; Thu,  7 May 2020 17:04:17 -0700 (PDT)
+Received: by mail-qv1-xf35.google.com with SMTP id 59so3633109qva.13
+        for <kernel-janitors@vger.kernel.org>; Thu, 07 May 2020 17:04:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=2thaB8NuEajRNyAZPfj2ahshuNntoNHnFvdss0W1UZM=;
+        b=krVrVHtWCPse14460tvZqXI94GbqW0s1ZjlGaNIV8uuD3N0NDhrRxkCvBWqjQNqLA0
+         jCqs/OSu603ANt/nKyfGRwpC73aKWiiqQRWSUrnCZTSYcJxROvp59SUOaK1XOGv1nibj
+         qoKZyYKqV8BZQw4hZt21PouoKPldpY4dQXhtxJmbqCZ1kfcgcuMBo3E4fXDMFtI9iIq5
+         qjOgQtU5jpp9lmbUdZXhSmvSVXolkYzi8uJ2DxStsVWo2FLQ0n5GkO6eTsbmDykYy099
+         3+vNanYafLz59aXcO5q3gIx9wDDuDkc6WH4JEN8vYPLE+hX7JIKuYADwCnHOdTWy7kPa
+         u9cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=2thaB8NuEajRNyAZPfj2ahshuNntoNHnFvdss0W1UZM=;
+        b=bTmykgSXwNqtoEL+hOUXAyOPmpqeLATtnL6B/sbFhmIV9ueCVCljTG9bQt11Vmbp1S
+         kUHw85aZpXKrK4j21LjQSTZPew8IuI3GX+vzq5bqTgND8zlavwkICN05u4Z4v3ihH4a8
+         3FWBdMPOyES1ujTkFFY1vdwktcb/8Aqnb6Lz9VJgabNRyk0+xwGZ0Iq8KeLaUYTxi7RA
+         LN1n7f6gkJCP3FNeCm2I2+MRD8S3/J6YZllZdgif4BeibG8u/632//5d/ojuhwAgteQ8
+         xB4/gWqwxLdurHghxwazEqBb429bcmePhyfCaYisYLteX+KB+lbNtfvuXSkEuPsICTOB
+         e57A==
+X-Gm-Message-State: AGi0Puas8mnMfUVf5GKB3Gaq8llWudZf1R63t1Vvwx9mY9Yuhofu3IUa
+        mJAv46JaGFqhXk0iMbLR1U5wSA==
+X-Google-Smtp-Source: APiQypIOWSUwEdj/qgeHNzM9aQNKP6cGb0OMtCYmu0sroLLZqUodgxtmJH26nuxT1g/GP20i0tP1mw==
+X-Received: by 2002:ad4:42c9:: with SMTP id f9mr118700qvr.228.1588896256353;
+        Thu, 07 May 2020 17:04:16 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.57.212])
+        by smtp.gmail.com with ESMTPSA id h188sm5476567qke.82.2020.05.07.17.04.15
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 07 May 2020 17:04:15 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1jWqUx-0001Ul-Ah; Thu, 07 May 2020 21:04:15 -0300
+Date:   Thu, 7 May 2020 21:04:15 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Leon Romanovsky <leon@kernel.org>,
+        Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] RDMA/mlx5: remove duplicated assignment to
+ variable rcqe_sz
+Message-ID: <20200508000415.GA5704@ziepe.ca>
+References: <20200507151610.52636-1-colin.king@canonical.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200507151610.52636-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 7 May 2020 16:50:53 -0400
-Steven Rostedt <rostedt@goodmis.org> wrote:
-
-> On Thu,  7 May 2020 21:30:08 +0200
-> Julia Lawall <Julia.Lawall@inria.fr> wrote:
+On Thu, May 07, 2020 at 04:16:10PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> > Elsewhere in the file, the function trace_kprobe_has_same_kprobe uses
-> > a trace_probe_event.probes object as the second argument of
-> > list_for_each_entry, ie as a list head, while the list_for_each_entry
-> > iterates over the list fields of the trace_probe structures, making
-> > them the list elements.  So, exchange the arguments on the list_add
-> > call to put the list head in the second argument.
-> > 
-> > Since both list_head structures were just initialized, this problem
-> > did not cause any loss of information.
-> > 
-
-Oops, good catch!
-
-> > Fixes: 60d53e2c3b75 ("tracing/probe: Split trace_event related data from trace_probe")
-> > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> The variable rcqe_sz is being unnecessarily assigned twice, fix this
+> by removing one of the duplicates.
 > 
-> Masami,
-> 
-> Can you give a Reviewed-by to this?
+> Addresses-Coverity: ("Evaluation order violation")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Acked-by: Leon Romanovsky <leonro@mellanox.com>
+> ---
+>  drivers/infiniband/hw/mlx5/qp.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
-Yes, thanks Julia!
+Applied to for-next, thanks
 
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-
-Thank you,
-> 
-> -- Steve
-> 
-> > 
-> > ---
-> >  kernel/trace/trace_probe.c |    2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
-> > index ab8b6436d53f..b8a928e925c7 100644
-> > --- a/kernel/trace/trace_probe.c
-> > +++ b/kernel/trace/trace_probe.c
-> > @@ -1006,7 +1006,7 @@ int trace_probe_init(struct trace_probe *tp, const char *event,
-> >  	INIT_LIST_HEAD(&tp->event->class.fields);
-> >  	INIT_LIST_HEAD(&tp->event->probes);
-> >  	INIT_LIST_HEAD(&tp->list);
-> > -	list_add(&tp->event->probes, &tp->list);
-> > +	list_add(&tp->list, &tp->event->probes);
-> >  
-> >  	call = trace_probe_event_call(tp);
-> >  	call->class = &tp->event->class;
-> 
-
-
--- 
-Masami Hiramatsu <mhiramat@kernel.org>
+Jason

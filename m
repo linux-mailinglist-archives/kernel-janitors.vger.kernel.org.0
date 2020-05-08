@@ -2,71 +2,132 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DB611CB58A
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 19:14:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21E571CB5E1
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 19:26:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728056AbgEHROH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 13:14:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50322 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728050AbgEHROG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 13:14:06 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B404F218AC;
-        Fri,  8 May 2020 17:14:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588958046;
-        bh=xJpBX49Nndw+pJN9+D6u8WDxXHkJRRUTyGdc9YJD67U=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=F1wBzsU5ffIeWVi4UPj1N4MWX38z8ebAJYZcVOgGNDcDhDGRAlR0NOdPtVRUUkJsy
-         m9eFejbV+v//CJjPWT5QouhKL1L4CMrER4gRG9x7VXp2qK1N5U/Eg8Lc0RUu7uW/ja
-         /kw5pr+4GSHWPvTDqYYQb/9QJq62q7yAuUyKVA1w=
-Date:   Fri, 08 May 2020 18:14:03 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Sanjay R Mehta <sanju.mehta@amd.com>,
-        Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     linux-spi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Hulk Robot <hulkci@huawei.com>
-In-Reply-To: <20200507115550.139457-1-weiyongjun1@huawei.com>
-References: <20200507115550.139457-1-weiyongjun1@huawei.com>
-Subject: Re: [PATCH -next] spi: spi-amd: Remove spi_master_put in amd_spi_remove()
-Message-Id: <158895800278.30774.17228690037210292718.b4-ty@kernel.org>
+        id S1727849AbgEHR0C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 13:26:02 -0400
+Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:17420 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726843AbgEHR0C (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 8 May 2020 13:26:02 -0400
+Received: from localhost.localdomain ([93.23.14.114])
+        by mwinf5d27 with ME
+        id cHRy2200M2Tev1p03HRzku; Fri, 08 May 2020 19:26:00 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 08 May 2020 19:26:00 +0200
+X-ME-IP: 93.23.14.114
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     davem@davemloft.net, fthain@telegraphics.com.au
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] net/sonic: Fix some resource leaks in error handling paths
+Date:   Fri,  8 May 2020 19:25:57 +0200
+Message-Id: <20200508172557.218132-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 7 May 2020 11:55:50 +0000, Wei Yongjun wrote:
-> The call to spi_master_put() in amd_spi_remove() is redundant and
-> may causes user after free since the master have been freed by
-> spi_unregister_master(), so remove it.
+A call to 'dma_alloc_coherent()' is hidden in 'sonic_alloc_descriptors()'.
 
-Applied to
+This is correctly freed in the remove function, but not in the error
+handling path of the probe function.
+Fix it and add the missing 'dma_free_coherent()' call.
 
-   local tree regulator/for-5.7
+While at it, rename a label in order to be slightly more informative and
+split some too long lines.
 
-Thanks!
+This patch is similar to commit 10e3cc180e64 ("net/sonic: Fix a resource leak in an error handling path in 'jazz_sonic_probe()'")
+which was for 'jazzsonic.c'.
 
-[1/1] spi: spi-amd: Remove spi_master_put in amd_spi_remove()
-      (no commit info)
+Suggested-by: Finn Thain <fthain@telegraphics.com.au>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Only macsonic has been compile tested. I don't have the needed setup to
+compile xtsonic
+---
+ drivers/net/ethernet/natsemi/macsonic.c | 17 +++++++++++++----
+ drivers/net/ethernet/natsemi/xtsonic.c  |  7 +++++--
+ 2 files changed, 18 insertions(+), 6 deletions(-)
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+diff --git a/drivers/net/ethernet/natsemi/macsonic.c b/drivers/net/ethernet/natsemi/macsonic.c
+index 1b5559aacb38..38d86c712bbc 100644
+--- a/drivers/net/ethernet/natsemi/macsonic.c
++++ b/drivers/net/ethernet/natsemi/macsonic.c
+@@ -506,10 +506,14 @@ static int mac_sonic_platform_probe(struct platform_device *pdev)
+ 
+ 	err = register_netdev(dev);
+ 	if (err)
+-		goto out;
++		goto undo_probe1;
+ 
+ 	return 0;
+ 
++undo_probe1:
++	dma_free_coherent(lp->device,
++			  SIZEOF_SONIC_DESC * SONIC_BUS_SCALE(lp->dma_bitmode),
++			  lp->descriptors, lp->descriptors_laddr);
+ out:
+ 	free_netdev(dev);
+ 
+@@ -527,8 +531,9 @@ static int mac_sonic_platform_remove(struct platform_device *pdev)
+ 	struct sonic_local* lp = netdev_priv(dev);
+ 
+ 	unregister_netdev(dev);
+-	dma_free_coherent(lp->device, SIZEOF_SONIC_DESC * SONIC_BUS_SCALE(lp->dma_bitmode),
+-	                  lp->descriptors, lp->descriptors_laddr);
++	dma_free_coherent(lp->device,
++			  SIZEOF_SONIC_DESC * SONIC_BUS_SCALE(lp->dma_bitmode),
++			  lp->descriptors, lp->descriptors_laddr);
+ 	free_netdev(dev);
+ 
+ 	return 0;
+@@ -584,12 +589,16 @@ static int mac_sonic_nubus_probe(struct nubus_board *board)
+ 
+ 	err = register_netdev(ndev);
+ 	if (err)
+-		goto out;
++		goto undo_probe1;
+ 
+ 	nubus_set_drvdata(board, ndev);
+ 
+ 	return 0;
+ 
++undo_probe1:
++	dma_free_coherent(lp->device,
++			  SIZEOF_SONIC_DESC * SONIC_BUS_SCALE(lp->dma_bitmode),
++			  lp->descriptors, lp->descriptors_laddr);
+ out:
+ 	free_netdev(ndev);
+ 	return err;
+diff --git a/drivers/net/ethernet/natsemi/xtsonic.c b/drivers/net/ethernet/natsemi/xtsonic.c
+index dda9ec7d9cee..a917f1a830fc 100644
+--- a/drivers/net/ethernet/natsemi/xtsonic.c
++++ b/drivers/net/ethernet/natsemi/xtsonic.c
+@@ -229,11 +229,14 @@ int xtsonic_probe(struct platform_device *pdev)
+ 	sonic_msg_init(dev);
+ 
+ 	if ((err = register_netdev(dev)))
+-		goto out1;
++		goto undo_probe1;
+ 
+ 	return 0;
+ 
+-out1:
++undo_probe1:
++	dma_free_coherent(lp->device,
++			  SIZEOF_SONIC_DESC * SONIC_BUS_SCALE(lp->dma_bitmode),
++			  lp->descriptors, lp->descriptors_laddr);
+ 	release_region(dev->base_addr, SONIC_MEM_SIZE);
+ out:
+ 	free_netdev(dev);
+-- 
+2.25.1
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

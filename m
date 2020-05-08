@@ -2,96 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E6371CB1E4
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 16:37:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF6F51CB209
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 16:41:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726897AbgEHOhf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 10:37:35 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:45970 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726689AbgEHOhf (ORCPT
+        id S1728277AbgEHOlF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 10:41:05 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:40152 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728174AbgEHOk4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 10:37:35 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 048EYEY5066844;
-        Fri, 8 May 2020 14:37:29 GMT
+        Fri, 8 May 2020 10:40:56 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 048Ebnqo151224;
+        Fri, 8 May 2020 14:40:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=mRBlnLIi63DIBclr56V03rZJn6uvyhzmKtShbOW07ng=;
- b=oxJ0BwQx8NfahV28FF4nFdjUz/nYuzv5SBUVE0IAASj9gU8UorTSjLuIPpmMeb0h9ZP8
- 0IeKHq8jHnhPL8Av+EG7dcauOCE8bopzk1ZWLSrRlKDekNvMPZmq4aWuqxWyzoKSc+Hi
- 995j7O7YmzTwolWSsUeABN5fHtNDyKQHsHUio7zmJtV1wPI5queKFue3FkN74Ctw/o6P
- 0u+hM9t8eFaqukN7LbFEC+EXzCXNYneBRPUkt81Jl3V28qIcpf1f1OhaaPpIsLRm0YRA
- TAI2gUpYF4LFwLwJF88S0jGR5N8bQlUeY6XwyNJtqkYyaecTJNbXPJR9Cg/wjnWLnbLn gg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 30vtexuak1-1
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=9Pd6sdzTLPNAE5lKGbzkZBJdj4O3PQMJ6IPM7eKBgG0=;
+ b=zbWum2G0ONLEDe7HujZ8RBdWshb1C66Kikq4kBZLWK8MnHDZeaeAWVUKi69rxnM2H5fF
+ Pp2l5cdPtT+ceGsDz8gE/TLnApl3ov1kZekOJwZETwF3KnIHUBj8ry8oS5/KOiyO7qKb
+ JcZchFi6mTiicfnWuz5J27g+0+geKdvynDn/UJ+w9YDOahr1KYecK+2x95ElNdueXBHM
+ uhSxQbaP90ziupWiHQjPj3nrg4lr3gKPBbe3ariNHs/42VAQ/4MZyczzF7dVDy3BLKHl
+ IUu+XWX3qOYHbspSdU78fuF3wj1oTOjUnMcENgblh0Hxm4FUDPXD8uUZ6h1v5+xomvpr ag== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 30vtewub88-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 08 May 2020 14:37:29 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 048Ea0qH099152;
-        Fri, 8 May 2020 14:37:29 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 30vtecnydh-1
+        Fri, 08 May 2020 14:40:20 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 048Eap0a190858;
+        Fri, 8 May 2020 14:40:19 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 30vtegvcrh-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 08 May 2020 14:37:29 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 048EbRGa027544;
-        Fri, 8 May 2020 14:37:27 GMT
-Received: from mwanda (/41.57.98.10)
+        Fri, 08 May 2020 14:40:19 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 048EeHOB002292;
+        Fri, 8 May 2020 14:40:17 GMT
+Received: from kadam (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 08 May 2020 07:37:27 -0700
-Date:   Fri, 8 May 2020 17:37:20 +0300
+        with ESMTP ; Fri, 08 May 2020 07:40:16 -0700
+Date:   Fri, 8 May 2020 17:40:09 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Ioana Ciornei <ioana.ciornei@nxp.com>
-Cc:     Ioana Radulescu <ruxandra.radulescu@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH net] dpaa2-eth: prevent array underflow in update_cls_rule()
-Message-ID: <20200508143720.GA410645@mwanda>
+To:     Yunfeng Ye <yeyunfeng@huawei.com>
+Cc:     mhiramat@kernel.org, linux-kernel@vger.kernel.org,
+        Markus.Elfring@web.de, rostedt@goodmis.org,
+        kernel-janitors@vger.kernel.org, Shiyuan Hu <hushiyuan@huawei.com>,
+        Hewenliang <hewenliang4@huawei.com>
+Subject: Re: [PATCH v4] tools/bootconfig: fix resource leak in apply_xbc()
+Message-ID: <20200508144009.GQ1992@kadam>
+References: <bdda096b-9f8a-dacb-9f89-9077d1288ad7@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+In-Reply-To: <bdda096b-9f8a-dacb-9f89-9077d1288ad7@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9614 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0
- mlxlogscore=999 phishscore=0 mlxscore=0 adultscore=0 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005080129
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0
+ phishscore=0 mlxlogscore=899 bulkscore=0 malwarescore=0 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005080130
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9614 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 adultscore=0
- spamscore=0 suspectscore=0 bulkscore=0 priorityscore=1501 malwarescore=0
- phishscore=0 impostorscore=0 mlxscore=0 mlxlogscore=999 clxscore=1015
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 mlxlogscore=946
+ malwarescore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0
+ impostorscore=0 suspectscore=0 adultscore=0 clxscore=1015 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2005080129
+ definitions=main-2005080130
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "location" is controlled by the user via the ethtool_set_rxnfc()
-function.  This update_cls_rule() function checks for array overflows
-but it doesn't check if the value is negative.  I have changed the type
-to unsigned to prevent array underflows.
+Looks good thanks!
 
-Fixes: afb90dbb5f78 ("dpaa2-eth: Add ethtool support for flow classification")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c
-index bd13ee48d6230..049afd1d6252d 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c
-@@ -635,7 +635,7 @@ static int num_rules(struct dpaa2_eth_priv *priv)
- 
- static int update_cls_rule(struct net_device *net_dev,
- 			   struct ethtool_rx_flow_spec *new_fs,
--			   int location)
-+			   unsigned int location)
- {
- 	struct dpaa2_eth_priv *priv = netdev_priv(net_dev);
- 	struct dpaa2_eth_cls_rule *rule;
--- 
-2.26.2
+regards,
+dan carpenter
 

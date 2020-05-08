@@ -2,74 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86D891CA4E4
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 09:12:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D0A11CA51F
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 09:23:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727032AbgEHHM3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 03:12:29 -0400
-Received: from smtp01.smtpout.orange.fr ([80.12.242.123]:32485 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726618AbgEHHM3 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 03:12:29 -0400
-Received: from localhost.localdomain ([93.23.14.114])
-        by mwinf5d01 with ME
-        id c7CQ2200A2Tev1p037CQVC; Fri, 08 May 2020 09:12:26 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 08 May 2020 09:12:26 +0200
-X-ME-IP: 93.23.14.114
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     milo.kim@ti.com, sre@kernel.org, anton.vorontsov@linaro.org
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] power: supply: lp8788: Fix an error handling path in 'lp8788_charger_probe()'
-Date:   Fri,  8 May 2020 09:11:50 +0200
-Message-Id: <20200508071150.204974-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        id S1726746AbgEHHXo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 03:23:44 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:4294 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726207AbgEHHXo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 8 May 2020 03:23:44 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id B262BE723199C5072069;
+        Fri,  8 May 2020 15:23:41 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.487.0; Fri, 8 May 2020 15:23:35 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Jakub Kicinski <kuba@kernel.org>, Qiushi Wu <wu000273@umn.edu>,
+        "Jakub Kicinski" <jakub.kicinski@netronome.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <oss-drivers@netronome.com>,
+        <netdev@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH net-next] nfp: abm: fix error return code in nfp_abm_vnic_alloc()
+Date:   Fri, 8 May 2020 07:27:35 +0000
+Message-ID: <20200508072735.61047-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, resources allocated in 'lp8788_setup_adc_channel()' must
-be released.
+Fix to return negative error code -ENOMEM from the kzalloc() error
+handling case instead of 0, as done elsewhere in this function.
 
-Add a call to 'lp8788_release_adc_channel()' as already done in the remove
-function.
-
-Fixes: 98a276649358 ("power_supply: Add new lp8788 charger driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Fixes: 174ab544e3bc ("nfp: abm: add cls_u32 offload for simple band classification")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/power/supply/lp8788-charger.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/netronome/nfp/abm/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/lp8788-charger.c b/drivers/power/supply/lp8788-charger.c
-index 84a206f42a8e..641815eb24bc 100644
---- a/drivers/power/supply/lp8788-charger.c
-+++ b/drivers/power/supply/lp8788-charger.c
-@@ -719,13 +719,17 @@ static int lp8788_charger_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/netronome/nfp/abm/main.c b/drivers/net/ethernet/netronome/nfp/abm/main.c
+index 354efffac0f9..bdbf0726145e 100644
+--- a/drivers/net/ethernet/netronome/nfp/abm/main.c
++++ b/drivers/net/ethernet/netronome/nfp/abm/main.c
+@@ -333,8 +333,10 @@ nfp_abm_vnic_alloc(struct nfp_app *app, struct nfp_net *nn, unsigned int id)
+ 		goto err_free_alink;
  
- 	ret = lp8788_psy_register(pdev, pchg);
- 	if (ret)
--		return ret;
-+		goto err_release_adc_channel;
+ 	alink->prio_map = kzalloc(abm->prio_map_len, GFP_KERNEL);
+-	if (!alink->prio_map)
++	if (!alink->prio_map) {
++		err = -ENOMEM;
+ 		goto err_free_alink;
++	}
  
- 	ret = lp8788_irq_register(pdev, pchg);
- 	if (ret)
- 		dev_warn(dev, "failed to register charger irq: %d\n", ret);
- 
- 	return 0;
-+
-+err_release_adc_channel:
-+	lp8788_release_adc_channel(pchg);
-+	return ret;
- }
- 
- static int lp8788_charger_remove(struct platform_device *pdev)
--- 
-2.25.1
+ 	/* This is a multi-host app, make sure MAC/PHY is up, but don't
+ 	 * make the MAC/PHY state follow the state of any of the ports.
+
+
 

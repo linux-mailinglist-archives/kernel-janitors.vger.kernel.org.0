@@ -2,42 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 466BD1CA863
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 12:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05DDF1CA875
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 12:40:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726751AbgEHKco (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 06:32:44 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:60028 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725825AbgEHKco (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 06:32:44 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id B9288C16EDEDE9957474;
-        Fri,  8 May 2020 18:32:40 +0800 (CST)
-Received: from [127.0.0.1] (10.166.215.237) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.487.0; Fri, 8 May 2020
- 18:32:31 +0800
-Subject: Re: [PATCH v2] tools/bootconfig: fix resource leak in apply_xbc()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     <mhiramat@kernel.org>, <rostedt@goodmis.org>,
-        <linux-kernel@vger.kernel.org>, <Markus.Elfring@web.de>,
-        <kernel-janitors@vger.kernel.org>,
-        Shiyuan Hu <hushiyuan@huawei.com>,
-        Hewenliang <hewenliang4@huawei.com>
-References: <189d719f-a8b8-6e10-ae2f-8120c3d2b7a9@huawei.com>
- <20200508093059.GF9365@kadam>
-From:   Yunfeng Ye <yeyunfeng@huawei.com>
-Message-ID: <5e8e9e2e-e7a0-a9f7-79d7-1b48d5f7a6ae@huawei.com>
-Date:   Fri, 8 May 2020 18:32:19 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726689AbgEHKkS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 06:40:18 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:28123 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726519AbgEHKkS (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 8 May 2020 06:40:18 -0400
+X-IronPort-AV: E=Sophos;i="5.73,367,1583190000"; 
+   d="scan'208";a="448810012"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 May 2020 12:40:08 +0200
+Date:   Fri, 8 May 2020 12:40:08 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Jeremy Kerr <jk@ozlabs.org>
+cc:     kernel-janitors@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        Nic Volanschi <eugene.volanschi@inria.fr>
+Subject: Re: [PATCH] powerpc/spufs: adjust list element pointer type
+In-Reply-To: <4c9cc9184213ded65489cb95050046c8904ddad8.camel@ozlabs.org>
+Message-ID: <alpine.DEB.2.21.2005081237210.5307@hadrien>
+References: <1588929176-28527-1-git-send-email-Julia.Lawall@inria.fr> <4c9cc9184213ded65489cb95050046c8904ddad8.camel@ozlabs.org>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-In-Reply-To: <20200508093059.GF9365@kadam>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.166.215.237]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -45,69 +40,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
 
-On 2020/5/8 17:30, Dan Carpenter wrote:
-> On Fri, May 08, 2020 at 02:51:15PM +0800, Yunfeng Ye wrote:
->> diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
->> index 16b9a420e6fd..d034f86022b7 100644
->> --- a/tools/bootconfig/main.c
->> +++ b/tools/bootconfig/main.c
->> @@ -314,31 +314,33 @@ int apply_xbc(const char *path, const char *xbc_path)
->>  	ret = delete_xbc(path);
->>  	if (ret < 0) {
->>  		pr_err("Failed to delete previous boot config: %d\n", ret);
->> -		return ret;
->> +		goto free_data;
->>  	}
->>
->>  	/* Apply new one */
->>  	fd = open(path, O_RDWR | O_APPEND);
->>  	if (fd < 0) {
->>  		pr_err("Failed to open %s: %d\n", path, fd);
->> -		return fd;
->> +		ret = fd;
->> +		goto free_data;
->>  	}
->>  	/* TODO: Ensure the @path is initramfs/initrd image */
->>  	ret = write(fd, data, size + 8);
->>  	if (ret < 0) {
->>  		pr_err("Failed to apply a boot config: %d\n", ret);
->> -		return ret;
->> +		goto close_fd;
->>  	}
->>  	/* Write a magic word of the bootconfig */
->>  	ret = write(fd, BOOTCONFIG_MAGIC, BOOTCONFIG_MAGIC_LEN);
-> 
-> write returns the number of bytes written on success
-> 
->> -	if (ret < 0) {
->> +	if (ret < 0)
->>  		pr_err("Failed to apply a boot config magic: %d\n", ret);
->> -		return ret;
->> -	}
->> +
->> +close_fd:
->>  	close(fd);
->> +free_data:
->>  	free(data);
->>
->> -	return 0;
->> +	return ret;
-> 
-> But we want to return zero on success.
-> 
-yes, I should set 'ret' to 0 before returning on success. thanks.
+On Fri, 8 May 2020, Jeremy Kerr wrote:
 
->>  }
-> 
-> Btw, these leaks are totally harmless.  This is a short running user
-> space program with is going to immediately exit on error so the memory
-> will be freed anyway.  But the benifit is to silence static checker
-> warnings so that's useful.
-> 
-> regards,
-> dan carpenter
-> 
-> 
-> .
-> 
+> Hi Julia,
+>
+> > Other uses of &gang->aff_list_head, eg in spufs_assert_affinity, indicate
+> > that the list elements have type spu_context, not spu as used here.  Change
+> > the type of tmp accordingly.
+>
+> Looks good to me; we could even use ctx there, rather than the separate
+> tmp variable.
 
+I thought about that, but it seemed a little bit abusive, since ctx is
+used in an iteration over another list.  But if you prefer that I can
+change it.
+
+julia
+
+>
+> Reviewed-by: Jeremy Kerr <jk@ozlabs.org>
+>
+> Cheers,
+>
+>
+> Jeremy
+>
+>

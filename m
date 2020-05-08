@@ -2,79 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A1CE1CA7E8
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 12:07:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC8131CA801
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 12:14:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726627AbgEHKH2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 06:07:28 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:4301 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726083AbgEHKH1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 06:07:27 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id AF96F2CEC951BF87FF06;
-        Fri,  8 May 2020 18:07:25 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
- 14.3.487.0; Fri, 8 May 2020 18:07:15 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <netdev@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net-next] net: dsa: vsc73xx: convert to devm_platform_ioremap_resource
-Date:   Fri, 8 May 2020 10:11:14 +0000
-Message-ID: <20200508101114.2331-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+        id S1726638AbgEHKNz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 06:13:55 -0400
+Received: from ozlabs.org ([203.11.71.1]:33175 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725815AbgEHKNy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 8 May 2020 06:13:54 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 49JR4b4g6Nz9sRf;
+        Fri,  8 May 2020 20:13:51 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+        t=1588932832; bh=eCsSRJac38GrK7EJdAunFBqxque6vOn9w3DPcafz3R8=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=miPMYgFoekg62ODTyI9JNEJp2uOCmzjkR6ys1sNheups67c8l+BE5tDou9TYtUQwb
+         zflbxzwtf1iZtSD4CE9+TrrctGVqWas4ktFTzeUn/exEfXyVHHGmEVKYyD4FJAIkUo
+         U2TaxLMUn2zxY7i8wzoiFs3DAa4QM3deWqrKYS1p/x/jenOqF2xtR7MXHFh1xOOO7Y
+         Q584B/BxsxF83t4Akn57ebL5U2nt5FCV9EIEJrkWFKJaIfbexZmX2exIy0SKnSvElt
+         arDPDzKYi1feq4f7XshEXweejBRMYXthElqi3MjnSIrmxueO9Zog7UJUOQtpnPlrxx
+         xT6JgawC4/qWQ==
+Message-ID: <4c9cc9184213ded65489cb95050046c8904ddad8.camel@ozlabs.org>
+Subject: Re: [PATCH] powerpc/spufs: adjust list element pointer type
+From:   Jeremy Kerr <jk@ozlabs.org>
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     kernel-janitors@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        Nic Volanschi <eugene.volanschi@inria.fr>
+Date:   Fri, 08 May 2020 18:13:46 +0800
+In-Reply-To: <1588929176-28527-1-git-send-email-Julia.Lawall@inria.fr>
+References: <1588929176-28527-1-git-send-email-Julia.Lawall@inria.fr>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Use the helper function that wraps the calls to platform_get_resource()
-and devm_ioremap_resource() together.
+Hi Julia,
 
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/net/dsa/vitesse-vsc73xx-platform.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+> Other uses of &gang->aff_list_head, eg in spufs_assert_affinity, indicate
+> that the list elements have type spu_context, not spu as used here.  Change
+> the type of tmp accordingly.
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-platform.c b/drivers/net/dsa/vitesse-vsc73xx-platform.c
-index 0541785f9fee..5e54a5726aa4 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-platform.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-platform.c
-@@ -89,7 +89,6 @@ static int vsc73xx_platform_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct vsc73xx_platform *vsc_platform;
--	struct resource *res = NULL;
- 	int ret;
- 
- 	vsc_platform = devm_kzalloc(dev, sizeof(*vsc_platform), GFP_KERNEL);
-@@ -103,14 +102,7 @@ static int vsc73xx_platform_probe(struct platform_device *pdev)
- 	vsc_platform->vsc.ops = &vsc73xx_platform_ops;
- 
- 	/* obtain I/O memory space */
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res) {
--		dev_err(&pdev->dev, "cannot obtain I/O memory space\n");
--		ret = -ENXIO;
--		return ret;
--	}
--
--	vsc_platform->base_addr = devm_ioremap_resource(&pdev->dev, res);
-+	vsc_platform->base_addr = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(vsc_platform->base_addr)) {
- 		dev_err(&pdev->dev, "cannot request I/O memory space\n");
- 		ret = -ENXIO;
+Looks good to me; we could even use ctx there, rather than the separate
+tmp variable.
+
+Reviewed-by: Jeremy Kerr <jk@ozlabs.org>
+
+Cheers,
 
 
-
-
+Jeremy
 

@@ -2,63 +2,132 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BD641CA790
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 11:52:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50E4A1CA733
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 11:31:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726612AbgEHJwY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 05:52:24 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:59216
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725825AbgEHJwX (ORCPT
+        id S1726712AbgEHJbq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 05:31:46 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:37648 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725775AbgEHJbq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 05:52:23 -0400
-X-IronPort-AV: E=Sophos;i="5.73,367,1583190000"; 
-   d="scan'208";a="348097894"
-Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/AES256-SHA256; 08 May 2020 11:52:21 +0200
-From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Jeremy Kerr <jk@ozlabs.org>
-Cc:     kernel-janitors@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        Nic Volanschi <eugene.volanschi@inria.fr>
-Subject: [PATCH] powerpc/spufs: adjust list element pointer type
-Date:   Fri,  8 May 2020 11:12:56 +0200
-Message-Id: <1588929176-28527-1-git-send-email-Julia.Lawall@inria.fr>
-X-Mailer: git-send-email 1.9.1
+        Fri, 8 May 2020 05:31:46 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0489KDOD099780;
+        Fri, 8 May 2020 09:31:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=UZ2ma67AX3lRvpseip2E11GzpNLI8lK74io02epYF/E=;
+ b=CToSh1WHAGRDRcQA1nPPfiTLuX+deuWKH0cxtc3rFESAO8F7KyCX7Mj4lvXUYjQXt13N
+ Zg/N4C7N5zBg7q7JOhjp9FKEMi+YoEiYrwqaymwqGNYcKSoPkFdy4oIJ+QtNaORqQcPY
+ VksM+qezkjen8pyL2lZZNXPBs6iDD10pBGIfRISLxhhIF6LCCiiLHMcUCTm+NeHxz0XN
+ d5j0DW4ghxs5M5ZjB/AYgkHsY3Q+Se90flVjO2iukMZ9OxWMQmn7ksI4ViDCdFfv3GPT
+ enhc4rOUGIdJK+9Zzv8rM9KgpK9XHtxXFAeeker/+/1IbIT80L5NpjW1c5gPovOR9Qmm Bg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 30vtepj2jq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 08 May 2020 09:31:09 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0489JvpK151688;
+        Fri, 8 May 2020 09:31:09 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 30vtdn8ga8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 08 May 2020 09:31:09 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0489V69Y027596;
+        Fri, 8 May 2020 09:31:06 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 08 May 2020 02:31:06 -0700
+Date:   Fri, 8 May 2020 12:30:59 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Yunfeng Ye <yeyunfeng@huawei.com>
+Cc:     mhiramat@kernel.org, rostedt@goodmis.org,
+        linux-kernel@vger.kernel.org, Markus.Elfring@web.de,
+        kernel-janitors@vger.kernel.org, Shiyuan Hu <hushiyuan@huawei.com>,
+        Hewenliang <hewenliang4@huawei.com>
+Subject: Re: [PATCH v2] tools/bootconfig: fix resource leak in apply_xbc()
+Message-ID: <20200508093059.GF9365@kadam>
+References: <189d719f-a8b8-6e10-ae2f-8120c3d2b7a9@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <189d719f-a8b8-6e10-ae2f-8120c3d2b7a9@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9614 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 spamscore=0
+ mlxscore=0 mlxlogscore=896 bulkscore=0 phishscore=0 suspectscore=2
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005080081
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9614 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0
+ impostorscore=0 phishscore=0 clxscore=1011 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 suspectscore=2 mlxscore=0
+ mlxlogscore=926 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2003020000 definitions=main-2005080081
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Other uses of &gang->aff_list_head, eg in spufs_assert_affinity, indicate
-that the list elements have type spu_context, not spu as used here.  Change
-the type of tmp accordingly.
+On Fri, May 08, 2020 at 02:51:15PM +0800, Yunfeng Ye wrote:
+> diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
+> index 16b9a420e6fd..d034f86022b7 100644
+> --- a/tools/bootconfig/main.c
+> +++ b/tools/bootconfig/main.c
+> @@ -314,31 +314,33 @@ int apply_xbc(const char *path, const char *xbc_path)
+>  	ret = delete_xbc(path);
+>  	if (ret < 0) {
+>  		pr_err("Failed to delete previous boot config: %d\n", ret);
+> -		return ret;
+> +		goto free_data;
+>  	}
+> 
+>  	/* Apply new one */
+>  	fd = open(path, O_RDWR | O_APPEND);
+>  	if (fd < 0) {
+>  		pr_err("Failed to open %s: %d\n", path, fd);
+> -		return fd;
+> +		ret = fd;
+> +		goto free_data;
+>  	}
+>  	/* TODO: Ensure the @path is initramfs/initrd image */
+>  	ret = write(fd, data, size + 8);
+>  	if (ret < 0) {
+>  		pr_err("Failed to apply a boot config: %d\n", ret);
+> -		return ret;
+> +		goto close_fd;
+>  	}
+>  	/* Write a magic word of the bootconfig */
+>  	ret = write(fd, BOOTCONFIG_MAGIC, BOOTCONFIG_MAGIC_LEN);
 
-This has no impact on the execution, because tmp is not used in the body of
-the loop.
+write returns the number of bytes written on success
 
-Fixes: c5fc8d2a92461 ("[CELL] cell: add placement computation for scheduling of affinity contexts")
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> -	if (ret < 0) {
+> +	if (ret < 0)
+>  		pr_err("Failed to apply a boot config magic: %d\n", ret);
+> -		return ret;
+> -	}
+> +
+> +close_fd:
+>  	close(fd);
+> +free_data:
+>  	free(data);
+> 
+> -	return 0;
+> +	return ret;
 
----
- arch/powerpc/platforms/cell/spufs/sched.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+But we want to return zero on success.
 
-diff --git a/arch/powerpc/platforms/cell/spufs/sched.c b/arch/powerpc/platforms/cell/spufs/sched.c
-index f18d5067cd0f..487fcb47f10d 100644
---- a/arch/powerpc/platforms/cell/spufs/sched.c
-+++ b/arch/powerpc/platforms/cell/spufs/sched.c
-@@ -344,8 +344,7 @@ static struct spu *aff_ref_location(struct spu_context *ctx, int mem_aff,
- static void aff_set_ref_point_location(struct spu_gang *gang)
- {
- 	int mem_aff, gs, lowest_offset;
--	struct spu_context *ctx;
--	struct spu *tmp;
-+	struct spu_context *tmp, *ctx;
- 
- 	mem_aff = gang->aff_ref_ctx->flags & SPU_CREATE_AFFINITY_MEM;
- 	lowest_offset = 0;
+>  }
+
+Btw, these leaks are totally harmless.  This is a short running user
+space program with is going to immediately exit on error so the memory
+will be freed anyway.  But the benifit is to silence static checker
+warnings so that's useful.
+
+regards,
+dan carpenter
 

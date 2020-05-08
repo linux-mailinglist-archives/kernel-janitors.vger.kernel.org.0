@@ -2,111 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0486F1CA849
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 12:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 466BD1CA863
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 12:32:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726519AbgEHK0f (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 06:26:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38278 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725825AbgEHK0f (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 06:26:35 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A831BC05BD43;
-        Fri,  8 May 2020 03:26:34 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id s8so1243553wrt.9;
-        Fri, 08 May 2020 03:26:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=U/nGiKbFLFriNl4EVgpGj88MYeZZdcTLN4ma7CGTOns=;
-        b=f5YjvUPChhk0lY3dMb5i7+8WWfjET6KiM41cHBRUu6xufVdFD+lXMAQ8LwyL+QfbD4
-         W8rrmbc5708tczFvjA3+i0m70+26t13Dih7H2T0D/fedRyIbGkXRzjWEUsBoIbqs5uhU
-         Ustc+v1CDaRSr16TyxMWmiXR83u5yH0ipJxHRGfE9lGYtWNkGIy/U//whczKkAFjp1b9
-         GYUyiogtmunUJAeUY46LFh8/NRyJMxxO/CkFVlbB2V1yYRtxS7MAE2eEkQYMtwPM1NU7
-         EqRtaEhfIHvEzGkipg7KxZKDfELKELHg6PcsTrHA3O7Fc7aHahTQkvOG2/G+WK56HcKI
-         oVEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=U/nGiKbFLFriNl4EVgpGj88MYeZZdcTLN4ma7CGTOns=;
-        b=Oy4yuKFjTE35o/g8FziF+iQC/pjcDbqZbXRdEMSEE72zbxZRiffoN3Q/n7nnjDIhYA
-         CNq1jB7qyLpTq6nM5nWXyblDwI3rqDl7AOOhVfCChi8PNhfnys6Xr/8L4w1wy8swR6fc
-         1Pgz094e2SlRkExwHFV8JigJ8rmHC5HGLBG8maTJ++vmG/1yUNAoQevyag4apP+pd39t
-         gxLlWoaNaFJV/EThJJpSE7dbIo9xR7p48f8Cea2xcv4422xZH6Sew5u7FU2a52MPkaqA
-         Y/TbV+Q/KaF0rMDN+O13kITHH2z4+VidOkqjbQVa2z+9Ze63OKc+UgwV3GsXqa9AqNzg
-         EzaQ==
-X-Gm-Message-State: AGi0PuaaPEnrmIa3dz+5URAfkb3mjzv5MhFhshn+5MrnRbM2Vos4rzh+
-        DsoQuGCPQHJ2iwZyZZ5Y5xE=
-X-Google-Smtp-Source: APiQypKRGJRAQ0UZdIySQIaoUKnB7SQfKdP6aHBF/MqvfySOmbKcCMXcGTUk1STZ47zTNYv8/b2/xw==
-X-Received: by 2002:adf:e788:: with SMTP id n8mr418066wrm.317.1588933593344;
-        Fri, 08 May 2020 03:26:33 -0700 (PDT)
-Received: from localhost (p2E5BE57B.dip0.t-ipconnect.de. [46.91.229.123])
-        by smtp.gmail.com with ESMTPSA id c19sm2364623wrb.89.2020.05.08.03.26.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2020 03:26:31 -0700 (PDT)
-Date:   Fri, 8 May 2020 12:26:31 +0200
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     dri-devel@lists.freedesktop.org, linux-tegra@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] gpu: host1x: Clean up debugfs in error handling path in
- 'host1x_probe()'
-Message-ID: <20200508102631.GA3030605@ulmo>
-References: <20200426191630.41290-1-christophe.jaillet@wanadoo.fr>
+        id S1726751AbgEHKco (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 06:32:44 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:60028 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725825AbgEHKco (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 8 May 2020 06:32:44 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id B9288C16EDEDE9957474;
+        Fri,  8 May 2020 18:32:40 +0800 (CST)
+Received: from [127.0.0.1] (10.166.215.237) by DGGEMS401-HUB.china.huawei.com
+ (10.3.19.201) with Microsoft SMTP Server id 14.3.487.0; Fri, 8 May 2020
+ 18:32:31 +0800
+Subject: Re: [PATCH v2] tools/bootconfig: fix resource leak in apply_xbc()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+CC:     <mhiramat@kernel.org>, <rostedt@goodmis.org>,
+        <linux-kernel@vger.kernel.org>, <Markus.Elfring@web.de>,
+        <kernel-janitors@vger.kernel.org>,
+        Shiyuan Hu <hushiyuan@huawei.com>,
+        Hewenliang <hewenliang4@huawei.com>
+References: <189d719f-a8b8-6e10-ae2f-8120c3d2b7a9@huawei.com>
+ <20200508093059.GF9365@kadam>
+From:   Yunfeng Ye <yeyunfeng@huawei.com>
+Message-ID: <5e8e9e2e-e7a0-a9f7-79d7-1b48d5f7a6ae@huawei.com>
+Date:   Fri, 8 May 2020 18:32:19 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="pWyiEgJYm5f9v55/"
-Content-Disposition: inline
-In-Reply-To: <20200426191630.41290-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Mutt/1.13.1 (2019-12-14)
+In-Reply-To: <20200508093059.GF9365@kadam>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.166.215.237]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
---pWyiEgJYm5f9v55/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Apr 26, 2020 at 09:16:30PM +0200, Christophe JAILLET wrote:
-> 'host1x_debug_init()' must be reverted in an error handling path.
->=20
-> This is already fixed in the remove function since commit 44156eee91ba
-> ("gpu: host1x: Clean up debugfs on removal")
->=20
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->  drivers/gpu/host1x/dev.c | 1 +
->  1 file changed, 1 insertion(+)
+On 2020/5/8 17:30, Dan Carpenter wrote:
+> On Fri, May 08, 2020 at 02:51:15PM +0800, Yunfeng Ye wrote:
+>> diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
+>> index 16b9a420e6fd..d034f86022b7 100644
+>> --- a/tools/bootconfig/main.c
+>> +++ b/tools/bootconfig/main.c
+>> @@ -314,31 +314,33 @@ int apply_xbc(const char *path, const char *xbc_path)
+>>  	ret = delete_xbc(path);
+>>  	if (ret < 0) {
+>>  		pr_err("Failed to delete previous boot config: %d\n", ret);
+>> -		return ret;
+>> +		goto free_data;
+>>  	}
+>>
+>>  	/* Apply new one */
+>>  	fd = open(path, O_RDWR | O_APPEND);
+>>  	if (fd < 0) {
+>>  		pr_err("Failed to open %s: %d\n", path, fd);
+>> -		return fd;
+>> +		ret = fd;
+>> +		goto free_data;
+>>  	}
+>>  	/* TODO: Ensure the @path is initramfs/initrd image */
+>>  	ret = write(fd, data, size + 8);
+>>  	if (ret < 0) {
+>>  		pr_err("Failed to apply a boot config: %d\n", ret);
+>> -		return ret;
+>> +		goto close_fd;
+>>  	}
+>>  	/* Write a magic word of the bootconfig */
+>>  	ret = write(fd, BOOTCONFIG_MAGIC, BOOTCONFIG_MAGIC_LEN);
+> 
+> write returns the number of bytes written on success
+> 
+>> -	if (ret < 0) {
+>> +	if (ret < 0)
+>>  		pr_err("Failed to apply a boot config magic: %d\n", ret);
+>> -		return ret;
+>> -	}
+>> +
+>> +close_fd:
+>>  	close(fd);
+>> +free_data:
+>>  	free(data);
+>>
+>> -	return 0;
+>> +	return ret;
+> 
+> But we want to return zero on success.
+> 
+yes, I should set 'ret' to 0 before returning on success. thanks.
 
-Applied, thanks.
+>>  }
+> 
+> Btw, these leaks are totally harmless.  This is a short running user
+> space program with is going to immediately exit on error so the memory
+> will be freed anyway.  But the benifit is to silence static checker
+> warnings so that's useful.
+> 
+> regards,
+> dan carpenter
+> 
+> 
+> .
+> 
 
-Thierry
-
---pWyiEgJYm5f9v55/
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl61M9QACgkQ3SOs138+
-s6E5qA/+MmoiWrLTVaFdEnFgY568ldpbMKJel9y+2djQ7IncLvkQt+g/Z6o0ghVD
-OkhEvQfWM6rdYUehLaFfN9k1VJ+8VaNqrvDPa+SEfivIS0lDAF5dU4x6rOxN8gFf
-t6VHONMlhZsHhPI8jlMvIW+v3OczrbDzXmo5P9o6iKPFDfkqEpbS8FAqlzhpXGPY
-qVSmowOZtNJcvF1754ssJFb95uz0kl0XZ6LNa5Pgl1YFHgBAZrUKHtu5ekmvs2hU
-tXJB6Z/nyJs8/38HWqQD6+6MjOsPVD3hBEf/Mz6PE3TLSQlTxUoGGvECjU4NNnnl
-HrdBPXIOCNYC5a8KAEyaFg9I4jUcpnhwfB7RwXZeFUmUMdl0DZx4m6jckCbD13pV
-Qax13ypm7mUuTAh1ZpzI01Vb193QG5Zx3YpSb/cFlFeoe12YXZH+j9lawuoCI83s
-TfcwxTaPtYhUd3UnxpW21SKmun49sL12lilKyLhydEWCVcMozaYJUyz7wkJPEoU5
-Jkpnu8M1YhW6W3nFa/hOBXdcEHg+LG14DRaGZ/Dfv+9oMRNcOEoW+p7WZSSDODs1
-84p1Ec/NedIcB9XJjtaB6RLkwu5PbPk5g7uBEZLl6hVSZfUnXW7/wg/zcuedwkO4
-p7GYMpqt2vRfQ7iM4VXH60fqlN3lF1GDj0T5JZsMrclFInwK2dw=
-=zg/O
------END PGP SIGNATURE-----
-
---pWyiEgJYm5f9v55/--

@@ -2,100 +2,123 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 455B51CA47E
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 08:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 941C81CA4CC
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 09:08:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726616AbgEHGvZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 02:51:25 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:48270 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725971AbgEHGvY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 02:51:24 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 5A4FDF0DB85854F959CA;
-        Fri,  8 May 2020 14:51:22 +0800 (CST)
-Received: from [127.0.0.1] (10.166.215.237) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.487.0; Fri, 8 May 2020
- 14:51:16 +0800
-To:     <mhiramat@kernel.org>, <rostedt@goodmis.org>,
-        <linux-kernel@vger.kernel.org>, <Markus.Elfring@web.de>,
-        <rostedt@goodmis.org>, <kernel-janitors@vger.kernel.org>,
-        Shiyuan Hu <hushiyuan@huawei.com>,
-        Hewenliang <hewenliang4@huawei.com>
-From:   Yunfeng Ye <yeyunfeng@huawei.com>
-Subject: [PATCH v2] tools/bootconfig: fix resource leak in apply_xbc()
-Message-ID: <189d719f-a8b8-6e10-ae2f-8120c3d2b7a9@huawei.com>
-Date:   Fri, 8 May 2020 14:51:15 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726036AbgEHHIm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 03:08:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35760 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725991AbgEHHIm (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 8 May 2020 03:08:42 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3D5CC05BD09
+        for <kernel-janitors@vger.kernel.org>; Fri,  8 May 2020 00:08:41 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id z8so602449wrw.3
+        for <kernel-janitors@vger.kernel.org>; Fri, 08 May 2020 00:08:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=DmTzp+J4aS4CxYYhCILNVwYfVehwX/dqCJCx5jKGlEM=;
+        b=CEhHuPS/Sdlv7SlOF1Hc4wrg/jxQ0bfVMANuWCZjoRc8dNc/HsdgEoZO7HGBHXwoaf
+         ruEIoF3gHK5AY6lSz66A+ROgs5JDNmxQyX5jJA9tVa0h0eLsOpexhZTVa8lNea46FiWB
+         /GPsBiQ9zAcTAkVD8gFbnjr8OjE1EkxiL9eto=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=DmTzp+J4aS4CxYYhCILNVwYfVehwX/dqCJCx5jKGlEM=;
+        b=UbAfJVj9amDJmkRoBCxgps/hu5WlfwhIsgofQgx0EhJ3aCB3RlrJEcCcm+jQSp2yUY
+         my8z54PzZpQQjTCW5y7/q3P0siQxYlGAUNOlNxJkZtRD87Ymhzshkd4qRwTSVbqiCozJ
+         j/iwKlmPFgil/SHyFXRgwqCP3ivV/23MtX7p7LT/k865zvmdLMHjjH4R9yJkL7mbDLub
+         41edh5vu5qDDBVF7V0i5oPYe46AhKzzJhl04mDAuMnP5MAhhDi6JLlJ+zY7bD/yyIKsR
+         2hFyhEA+MHkncVihMtNDyMP1IksDg9/ix3CS5EkeIs5zsRGdFUz/HCEZNjXN8atcbSNV
+         MGvQ==
+X-Gm-Message-State: AGi0PuZ2CuN1GLfjqxvz0c9dz1KfiI4B0WIhNPccST3nrAujp/Y+rODh
+        DUah5zP4iunsq7oPP9xLg943tg==
+X-Google-Smtp-Source: APiQypIdXHZDbCY1mjOHI7A02KN/NFXcXdx0OSG3FPCPhGoilD6eSlbRaDrFn+uMA+JdV38nVB2Qsw==
+X-Received: by 2002:adf:e791:: with SMTP id n17mr1265834wrm.217.1588921720359;
+        Fri, 08 May 2020 00:08:40 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id s24sm12302509wmj.28.2020.05.08.00.08.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 May 2020 00:08:39 -0700 (PDT)
+Date:   Fri, 8 May 2020 09:08:37 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Inki Dae <inki.dae@samsung.com>,
+        Joonyoung Shim <jy0922.shim@samsung.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm/exynos: remove redundant initialization to variable
+ 'start'
+Message-ID: <20200508070837.GF1383626@phenom.ffwll.local>
+Mail-Followup-To: Colin King <colin.king@canonical.com>,
+        Inki Dae <inki.dae@samsung.com>,
+        Joonyoung Shim <jy0922.shim@samsung.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        David Airlie <airlied@linux.ie>, Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20200507202237.64350-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.166.215.237]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200507202237.64350-1-colin.king@canonical.com>
+X-Operating-System: Linux phenom 5.4.0-4-amd64 
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix the @data and @fd allocations that are leaked in the error path of
-apply_xbc().
+On Thu, May 07, 2020 at 09:22:37PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable 'start' is being initialized with a value that is never read
+> and it is being updated later with a new value.  The initialization is
+> redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Fixes: 85c46b78da58 ("bootconfig: Add bootconfig magic word for indicating bootconfig explicitly")
-Fixes: 950313ebf79c ("tools: bootconfig: Add bootconfig command")
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
----
- tools/bootconfig/main.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
-index 16b9a420e6fd..d034f86022b7 100644
---- a/tools/bootconfig/main.c
-+++ b/tools/bootconfig/main.c
-@@ -314,31 +314,33 @@ int apply_xbc(const char *path, const char *xbc_path)
- 	ret = delete_xbc(path);
- 	if (ret < 0) {
- 		pr_err("Failed to delete previous boot config: %d\n", ret);
--		return ret;
-+		goto free_data;
- 	}
+> ---
+>  drivers/gpu/drm/exynos/exynos_drm_dsi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/exynos/exynos_drm_dsi.c b/drivers/gpu/drm/exynos/exynos_drm_dsi.c
+> index 902938d2568f..b0b9cb1ec18f 100644
+> --- a/drivers/gpu/drm/exynos/exynos_drm_dsi.c
+> +++ b/drivers/gpu/drm/exynos/exynos_drm_dsi.c
+> @@ -1150,7 +1150,7 @@ static bool exynos_dsi_transfer_finish(struct exynos_dsi *dsi)
+>  {
+>  	struct exynos_dsi_transfer *xfer;
+>  	unsigned long flags;
+> -	bool start = true;
+> +	bool start;
+>  
+>  	spin_lock_irqsave(&dsi->transfer_lock, flags);
+>  
+> -- 
+> 2.25.1
+> 
 
- 	/* Apply new one */
- 	fd = open(path, O_RDWR | O_APPEND);
- 	if (fd < 0) {
- 		pr_err("Failed to open %s: %d\n", path, fd);
--		return fd;
-+		ret = fd;
-+		goto free_data;
- 	}
- 	/* TODO: Ensure the @path is initramfs/initrd image */
- 	ret = write(fd, data, size + 8);
- 	if (ret < 0) {
- 		pr_err("Failed to apply a boot config: %d\n", ret);
--		return ret;
-+		goto close_fd;
- 	}
- 	/* Write a magic word of the bootconfig */
- 	ret = write(fd, BOOTCONFIG_MAGIC, BOOTCONFIG_MAGIC_LEN);
--	if (ret < 0) {
-+	if (ret < 0)
- 		pr_err("Failed to apply a boot config magic: %d\n", ret);
--		return ret;
--	}
-+
-+close_fd:
- 	close(fd);
-+free_data:
- 	free(data);
-
--	return 0;
-+	return ret;
- }
-
- int usage(void)
 -- 
-1.8.3.1
-
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch

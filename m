@@ -2,97 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 355D41CB20E
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 16:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40AC11CB238
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 16:46:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728301AbgEHOlN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 10:41:13 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:40432 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728174AbgEHOlL (ORCPT
+        id S1727902AbgEHOqT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 10:46:19 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:46982 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727851AbgEHOqT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 10:41:11 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 048Ebmmb151195;
-        Fri, 8 May 2020 14:40:32 GMT
+        Fri, 8 May 2020 10:46:19 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 048EhgYt060805;
+        Fri, 8 May 2020 14:45:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=B1c1c4b7hcwNQpIS66ZNy2hvCK33KO4bX3N1aBJuM1c=;
- b=iBy3sM5gzqqO9TmCpG6EnnQDsryKuEu9BCc9Wl1tZ/U6DZR8IIV/Q1IHr7ERdefSRe1x
- /qmlmoYLrCCUfMhC+Z5QWcORvPJC+jOKphHEe7zpFD/g1tCoo4Blj7Xbn/RVqrAS4uc8
- Rb/mlNaiCth0NyPbN7HHOFKlJ8ZiUxD3lAu9CHKr9HRT1Y425wJ5gwuCv6CK+/yDjPAE
- szwyutASWoLWN/fa8xLJYV9ESwLpUUvU6/bpzvob+7Jg77phEtZVai/NDqBgAzxk73e9
- nfmsu8R1UdzsJIry7UtU7a5JSlA0BB7xOFRbFtp4nuAjkciP5fYkQwqKGjRiwC1f1S88 Nw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 30vtewub98-1
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=mBsJBO8AIHjfSjv3iPsT+zmmyIaT3vU/FP/YdVrrvSA=;
+ b=E7YUpOfGLEDqJ0uMKlRI9FGlL2K/xojah3OPtoBtuE5lRvLgjSGAAzkyvzYmyUSmsy/p
+ 7xr2ERQyS70wY+kWe4PeG34MWzfey0lWEXEezE9Q2iu870nl+mrVb1E003fDA5gGRVKh
+ AqvJKRXsdZNbwrLIppkX1ksaESCMtutsJBZ9zrnjjrhuxGnVeTXlTVfhEC1ubhFLInYe
+ 6DV1bTW25YJJxLDsadsDTeZ77TVgtgky0N/UJxJt9qZgSdiykIsTKeSF/C84YuCjzQVW
+ F8UCQZ+sroMqDc1px8PXsiFQWEFMQnLGgZLBkEQMfTpCJjnpe074sPZ8PJCWW3tzzbQE LQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 30vtepkbsh-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 08 May 2020 14:40:32 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 048Eba9h145238;
-        Fri, 8 May 2020 14:40:31 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 30vte02xpu-1
+        Fri, 08 May 2020 14:45:38 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 048EgvNo040482;
+        Fri, 8 May 2020 14:45:38 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 30vtdnqmvw-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 08 May 2020 14:40:31 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 048EeUww002334;
-        Fri, 8 May 2020 14:40:30 GMT
-Received: from mwanda (/41.57.98.10)
+        Fri, 08 May 2020 14:45:38 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 048EjZKg032026;
+        Fri, 8 May 2020 14:45:35 GMT
+Received: from kadam (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 08 May 2020 07:40:29 -0700
-Date:   Fri, 8 May 2020 17:40:22 +0300
+        with ESMTP ; Fri, 08 May 2020 07:45:34 -0700
+Date:   Fri, 8 May 2020 17:45:27 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Stefan Richter <stefanr@s5r6.in-berlin.de>
-Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] firewire: Using uninitialized values in node_probe()
-Message-ID: <20200508144022.GB410645@mwanda>
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     Yunfeng Ye <yeyunfeng@huawei.com>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Shiyuan Hu <hushiyuan@huawei.com>,
+        Hewenliang <hewenliang4@huawei.com>
+Subject: Re: [v3] tools/bootconfig: fix resource leak in apply_xbc()
+Message-ID: <20200508144527.GR1992@kadam>
+References: <3569aa33-8963-966d-9247-ec79b3b3d56d@huawei.com>
+ <5e2c3348-f346-e3f2-9c7c-5c4135f9b38c@web.de>
+ <559edb00-a03b-747e-8ba7-1f16285deefb@huawei.com>
+ <65057e82-8002-4ec4-b714-25ac8d05cb68@web.de>
+ <938cd0e9-d96b-766c-cfbc-4f0b73d97cd4@huawei.com>
+ <20200508090053.430d28d7@gandalf.local.home>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+In-Reply-To: <20200508090053.430d28d7@gandalf.local.home>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9614 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
- bulkscore=0 malwarescore=0 suspectscore=0 adultscore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005080130
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9614 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 mlxlogscore=999
- malwarescore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0
- impostorscore=0 suspectscore=0 adultscore=0 clxscore=1011 phishscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 spamscore=0
+ mlxscore=0 mlxlogscore=999 bulkscore=0 phishscore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2005080130
+ definitions=main-2005080131
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9614 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0
+ impostorscore=0 phishscore=0 clxscore=1015 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 suspectscore=0 mlxscore=0
+ mlxlogscore=999 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2003020000 definitions=main-2005080131
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If fw_csr_string() returns -ENOENT, then "name" is uninitialized.  So
-then the "strlen(model_names[i]) <= name_len" is true because strlen()
-is unsigned and -ENOENT is type promoted to a very high positive value.
-Then the "strncmp(name, model_names[i], name_len)" uses uninitialized
-data because "name" is uninitialized.
+On Fri, May 08, 2020 at 09:00:53AM -0400, Steven Rostedt wrote:
+> On Fri, 8 May 2020 19:42:56 +0800
+> Yunfeng Ye <yeyunfeng@huawei.com> wrote:
+> 
+> > On 2020/5/8 19:30, Markus Elfring wrote:
+> > >> this change can fix the warning of tools.  
+> > > 
+> > > Would you like to point any specific source code analysis tools out
+> > > for this issue?
+> > > (Can a corresponding attribution become relevant for a clearer
+> > > change description?)
+> > >   
+> > The tools we used is not for open source. it point out some error description like
+> > "Memory leak: data" and "Resource leak: fd" in tools/bootconfig/main.c.
+> > 
+> > Can I only description:
+> >   "Memory and resource leak is found by a static code analysis tools" ? thanks.
+> 
+> Markus please stop! Your suggestions are just your preferences that are not
+> required for the kernel.
+> 
+> Yunfeng, your v2 was fine and has already landed in Linus's tree. Feel free
+> to ignore Markus's suggestions in the future.
 
-Fixes: 92374e886c75 ("[media] firedtv: drop obsolete backend abstraction")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/media/firewire/firedtv-fw.c | 2 ++
- 1 file changed, 2 insertions(+)
+There was actually a bug in v2.  It exits with a non-zero instead of
+zero on success so it will mess up people's scripts.
 
-diff --git a/drivers/media/firewire/firedtv-fw.c b/drivers/media/firewire/firedtv-fw.c
-index 97144734eb052..3f1ca40b9b987 100644
---- a/drivers/media/firewire/firedtv-fw.c
-+++ b/drivers/media/firewire/firedtv-fw.c
-@@ -272,6 +272,8 @@ static int node_probe(struct fw_unit *unit, const struct ieee1394_device_id *id)
- 
- 	name_len = fw_csr_string(unit->directory, CSR_MODEL,
- 				 name, sizeof(name));
-+	if (name_len < 0)
-+		return name_len;
- 	for (i = ARRAY_SIZE(model_names); --i; )
- 		if (strlen(model_names[i]) <= name_len &&
- 		    strncmp(name, model_names[i], name_len) == 0)
--- 
-2.26.2
-
+regards,
+dan carpenter

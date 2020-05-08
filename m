@@ -2,35 +2,41 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E05351CB3BB
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 17:43:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9957C1CB51A
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 18:43:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728219AbgEHPnZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 11:43:25 -0400
-Received: from mout.web.de ([217.72.192.78]:49095 "EHLO mout.web.de"
+        id S1726937AbgEHQm7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 12:42:59 -0400
+Received: from mout.web.de ([212.227.17.12]:46103 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727092AbgEHPnY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 11:43:24 -0400
+        id S1726750AbgEHQm6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 8 May 2020 12:42:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588952549;
-        bh=Q0M54iaQfTx/siQf5AYxkuXAwOG3MGeXnJDWoLBUUG8=;
+        s=dbaedf251592; t=1588956127;
+        bh=RMnvIO2pfjr68s7Le/qhS4XDeqiKe90+5ZTv7eEL7xM=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=hgSKOuwzJr1pJ39T2HikMasrV4sBk5XYzff9S46kGixa40A80T6IgfEJvC81KM0WT
-         eXOQfm7qlilLrhmRNPuQHwU64/PbnMnKasFacYI2aqEBI2sEbYPVbwwHQmkD2RU9mp
-         3bRiXANn9S734zDnrSldvbW+XPZNajRimsAUqnJE=
+        b=EEZ/A21uwKbTER/4MHPCoXZEmmqyY9eloXuyWwSwgpDZD3/SlURAgWljnhsPiYjrK
+         vgwe6ZXGI0WDh33i6qes30I8Vhiot6B796vElWwz2NtQQdhzE6sniwqCnUP6obyU9H
+         ZKbkJzbqTqsG4Ve3d5HL3R/T1UMHXRMO5l3Ah2sg=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.132.146.138]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MJWsc-1jqnr32NOi-00K2aG; Fri, 08
- May 2020 17:42:29 +0200
-Subject: Re: [PATCH v4] tools/bootconfig: Completion of error handling
-To:     Yunfeng Ye <yeyunfeng@huawei.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MK56y-1jqPL705Tq-00Lh2b; Fri, 08
+ May 2020 18:42:07 +0200
+Subject: Re: [v3] tools/bootconfig: fix resource leak in apply_xbc()
+To:     Steven Rostedt <rostedt@goodmis.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Yunfeng Ye <yeyunfeng@huawei.com>,
         Masami Hiramatsu <mhiramat@kernel.org>,
         kernel-janitors@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Shiyuan Hu <hushiyuan@huawei.com>,
-        Hewenliang <hewenliang4@huawei.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-References: <bdda096b-9f8a-dacb-9f89-9077d1288ad7@huawei.com>
+        Hewenliang <hewenliang4@huawei.com>
+References: <3569aa33-8963-966d-9247-ec79b3b3d56d@huawei.com>
+ <5e2c3348-f346-e3f2-9c7c-5c4135f9b38c@web.de>
+ <559edb00-a03b-747e-8ba7-1f16285deefb@huawei.com>
+ <65057e82-8002-4ec4-b714-25ac8d05cb68@web.de>
+ <938cd0e9-d96b-766c-cfbc-4f0b73d97cd4@huawei.com>
+ <20200508090053.430d28d7@gandalf.local.home> <20200508144527.GR1992@kadam>
+ <20200508111449.575d176c@gandalf.local.home>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,57 +81,57 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <839d6c0f-4c77-d8f4-3aff-c5762190c57e@web.de>
-Date:   Fri, 8 May 2020 17:42:22 +0200
+Message-ID: <dbfae758-c516-dca1-5511-9618510e49e8@web.de>
+Date:   Fri, 8 May 2020 18:42:05 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <bdda096b-9f8a-dacb-9f89-9077d1288ad7@huawei.com>
+In-Reply-To: <20200508111449.575d176c@gandalf.local.home>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:fq+oQAiyBcB7uyxqcBPUfqHyg4Zxep+WhGzXEKKzYW+RTo1+7hb
- V1CwleNqcaThd6kTcV49G9y/UaeQjq7SCN4HfXtJICSki0mTc2Rgy4bfVwKqy9m4G9wREg4
- z2i7oHRlLW4cCOJBNSN1H88TY2zGbK+PSOVDSUBJosz7Vlye6qoE6//eSBVTDWEiQvhEg7s
- Azr6TUP5X2m6cu4X0rt9g==
+X-Provags-ID: V03:K1:sYUkUfOdJ2IcPc5l4kaPfsMdMYNc2QlWZSLHQoCG0hXjvamaSWN
+ Z3sdXpVJsOTFfBC+0Kvc8Q9BSopFOA/2RhkCroBvPatREL6e6Sqfj30vBuvpm0v1aU+HDL5
+ zpRcMA1mBembgQeTA0X6NuUgFG5LfIbmwQpv/+1I8Aq7FG9qr2oiEBGAm1wZF7Hgl7kK8if
+ TAzKcZr2HkujBvZfD/znw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:TdqqzrJY158=:23osdqmCnHvFRdeVumsNtA
- D5n3vujCdd0R6YbPIqKIZJWzmCecTknjsIB18rexOzanBTFi6ek5SMscRE7fx68GHgAe5NH02
- hxZ5tfKZJHRMlmvaEfVF29irGRTjmBBdd85t3N2VVKPhGIwjcu48qmyUh5VYVrI5uy+WDbTn9
- 6yZfCBi4Kj5p+Wvq37E3G5QTtZQKISTDDRCxvhIvFKwlILPEP4o8/roGiHYXbhn3Vqt8wXiLO
- hJwy2qQUtQ/PLZO9u4TRxRbK/nv0bwwzsPG4p89l8HvH+4GSVXShTrOjHugJkBLO00oklbiZ0
- tYwKJL2qhMgasYHdw3Og94drySLsTafQPeVFd0VHEVabbo5AFjgeGXS5+q/CKpbYvV3LpDutw
- 8jUmVe8iwC2GdZ6AqDwAONPOwqYVZfbNjPfxZAZbkKR7QTAQt433Ih6YBsA01vBxou7sJtS4k
- s1MyWcrc5U6dDed3ILpy5Hi+Qc2K7WeAeb7kWLB/0w1HfS/3RzSk9mChBnuQE5aZSC71tORNk
- VvZreFmvUMYpDrE1jpaO09/8Nd2M76zhr+HwukmUSnRQM4AOwwEMZmdbqNMkXq7l1ohfn28su
- drp4xQU61W+D9QUSsHs/EdHTzQXbldFHF14QnElJ0ZFOCNESCcj/M/kAPmbVmfAVDWPOt6j/3
- tRvNEojMiiy3a+/3nuWdWRYOvxL4PrPf+HgeS6XCre1dHyUH/QM+XOt/8HLatOGjDPkgMhm0w
- ijiebyaRXqSgxCuvBmQ9ra7GMCpNT+kTVCt525WhpFrPBfT28LUSXI7v7IPQZYbyKorORTRkE
- 6j8gqKcJqtsUo72njMPjnX5xqwXKb6bgeGykHVBDLlrS1V/crMs3w0Dxc2GTrudk7/vOm7gyV
- yqnGD9lylcd7AOPInOet69Chvi9opfycaZWOYXDeYB9qPIk41iVEpy3hZIukXtqwFNIZCsF4O
- cTBlxMDem8XCkq2D8p826LA9wba9uzb8kf35dqSkzk3V4GB3vRCKAPqgdANTtLxcycaV9LF7z
- 5ePzNCkm7/A793quw9mSUxKEfXaTnc3nnN75D1W0tZNMexLvNFIUDUWD5w1jjXlc9gPlU34ZK
- H5xwyLLFd3qX8oRA22FwI1L4e0j61ZWG3th/3F4ajbo6PtDzDSnOLKGDYfCR1PvchZaKBifFO
- X7xy/wb/3Yxawgv7tKSycb+gr2vqBnb66RUTW7cUDa36MlKb+9CnnB0ZN0LB1oVQkeBSmajqg
- JUPHSbgcQUS5brv7d
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1+QWiQmkbP4=:iy+x8Nr5fC1VL1AIhvG+VJ
+ kQQQRbSsU0LjVwWLqDYgDJQ8XEuLROCgBjmzrDJTpScjGA/BqGgsTuXQGtMqrVzBV/nxWxb/Q
+ lycUCUKKr9o+NymnT41Ec6InCPWg6lDtMVf38ZA8HSJEQi38bkf7IFjWJRXtnWWw3rgte38iw
+ 7eTytrkCTqMa9fBC/NFnbBP0M3sEFsTP5eCqIEkD9xgX9hVR9+up82hIHExDWcHt0w1e7ylka
+ YFskC471aQxU8Gvx6R/JEFIjReHxbyO3oxHxFZCm3QqRVIlA+dIl/L0vpu463Vaq/LAZlh1B/
+ kb9etwlMoUBHwiOGQWHTc9NCv0QkC0PMatsDD1MX1Almy0+M/kpjorEvsRoALEfVn4DY0j7ol
+ +dyvZFsxnIn7vORVvyCOf/8h/A8C8lyUEiXKziLImllqEuIiGwzTnsDUWj7k3VHOt6nICthMu
+ lJaKzwyKqvbFewa/hLZ1YzPdGZvLPiXkLGmakrrIfZRzX0/stGDDT1YVtqHC7BCUi4WYIyLOd
+ BqP+NjpYuTlJV5eI8M6YclZcBDO0xuQP7IVKPeXKAou9JvFXQSV/jllPPZc3PKXLDyX7nev1I
+ oxhOfazNYQ07Z+dwz5gEaSfz1zqpi1ojLtpn45Zsdog/rJ1WaJFpTvayOuVuNwezmJCACBnWc
+ b/sxV7BEGkl5NY4HGMhXh18SwKwcu84QwHN5f/FS+RYUwPhyUmK4xxuplzqrzSLI5X+20uQZl
+ Smki4Pvjwg0EoSrCW6pRhHpJcX4Yw4vEtR0pSDHnHWYyzAJV/zyo0fL3fAfOX6MbVMFoGHao8
+ Ty5LJsSObbuLrQshQAS2tymILGwODzK/1CRmX5YL4MM0xTkSMELBEgXyyad/13vE2sr0NDocX
+ 6lGDZ4oLj71VgbXtYrBR/5QihZmLbhzGmN5odQE4GiW0ZA+LoaaUpDkEajR2FT3Vfo5KZtNOX
+ 3JueANVsoGFpMasc0KoSCZqnDxWaFDIS420iZVnL9G67yVALXcKbcDsLm0HL6aP+/pDoa6Qka
+ 1EYeIrEE+9k5xRScdDyWBMCnP0b0Kw+LZc/sb7+nl0QDkMRY7al/MAcqd8SY0Q/Ro0JB/x1u/
+ ACVP82q80CxYzhKRipc/Tk3ooGctElPsUHe3JrevBcmmmIKhFtqaOYOQQbzGcU/GZIFZHDFCS
+ DpVr2FXTXlYaCSI5ilRM4C79S9m/mA27GL/B38DK/SfKUaJMiT7G9DshH58Q4pQlSm6B0eLdu
+ mJKmBKjLNFvMpJ+RZ
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-=E2=80=A6
-> +++ b/tools/bootconfig/main.c
-> @@ -314,31 +314,35 @@ int apply_xbc(const char *path, const char *xbc_pa=
-th)
-=E2=80=A6
-> +close_fd:
->  	close(fd);
+>> There was actually a bug in v2.  It exits with a non-zero instead of
+>> zero on success so it will mess up people's scripts.
+>
+> Thanks, I just fixed it. And because of the distraction of Markus's
+> bikesheding, it was missed :-(
 
-Do analysis tools point any software development concerns out
-at this source code place?
-https://wiki.sei.cmu.edu/confluence/display/c/ERR33-C.+Detect+and+handle+s=
-tandard+library+errors#ERR33-C.Detectandhandlestandardlibraryerrors-Automa=
-tedDetection
+I am curious how the software development attention will evolve further.
+tools/bootconfig: Fix apply_xbc() to return zero on success
+https://lore.kernel.org/lkml/20200508111349.3b599bde@gandalf.local.home/
+https://lore.kernel.org/patchwork/patch/1239092/
+https://lkml.org/lkml/2020/5/8/1342
+
+Will additional change possibilities be taken into account?
 
 Regards,
 Markus

@@ -2,67 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05DDF1CA875
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 12:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BACF1CA8A4
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 12:53:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726689AbgEHKkS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 06:40:18 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:28123 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726519AbgEHKkS (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 06:40:18 -0400
-X-IronPort-AV: E=Sophos;i="5.73,367,1583190000"; 
-   d="scan'208";a="448810012"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 May 2020 12:40:08 +0200
-Date:   Fri, 8 May 2020 12:40:08 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Jeremy Kerr <jk@ozlabs.org>
-cc:     kernel-janitors@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        Nic Volanschi <eugene.volanschi@inria.fr>
-Subject: Re: [PATCH] powerpc/spufs: adjust list element pointer type
-In-Reply-To: <4c9cc9184213ded65489cb95050046c8904ddad8.camel@ozlabs.org>
-Message-ID: <alpine.DEB.2.21.2005081237210.5307@hadrien>
-References: <1588929176-28527-1-git-send-email-Julia.Lawall@inria.fr> <4c9cc9184213ded65489cb95050046c8904ddad8.camel@ozlabs.org>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        id S1726809AbgEHKxF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 06:53:05 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:4302 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726325AbgEHKxF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 8 May 2020 06:53:05 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id C14AC10F0AFAD4AF2FD8;
+        Fri,  8 May 2020 18:53:02 +0800 (CST)
+Received: from [127.0.0.1] (10.166.215.237) by DGGEMS401-HUB.china.huawei.com
+ (10.3.19.201) with Microsoft SMTP Server id 14.3.487.0; Fri, 8 May 2020
+ 18:52:53 +0800
+From:   Yunfeng Ye <yeyunfeng@huawei.com>
+Subject: [PATCH v3] tools/bootconfig: fix resource leak in apply_xbc()
+To:     <mhiramat@kernel.org>, <rostedt@goodmis.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        <Markus.Elfring@web.de>, <dan.carpenter@oracle.com>,
+        Shiyuan Hu <hushiyuan@huawei.com>,
+        Hewenliang <hewenliang4@huawei.com>
+Message-ID: <3569aa33-8963-966d-9247-ec79b3b3d56d@huawei.com>
+Date:   Fri, 8 May 2020 18:52:53 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.166.215.237]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Fix the @data and @fd allocations that are leaked in the error path of
+apply_xbc().
 
+Fixes: 85c46b78da58 ("bootconfig: Add bootconfig magic word for indicating bootconfig explicitly")
+Fixes: 950313ebf79c ("tools: bootconfig: Add bootconfig command")
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+---
+v2 -> v3:
+ - set 'ret' to 0 before returning on success
 
-On Fri, 8 May 2020, Jeremy Kerr wrote:
+v1 -> v2:
+ - complete the error handling at other error path
+ - add "Fixes" tag
 
-> Hi Julia,
->
-> > Other uses of &gang->aff_list_head, eg in spufs_assert_affinity, indicate
-> > that the list elements have type spu_context, not spu as used here.  Change
-> > the type of tmp accordingly.
->
-> Looks good to me; we could even use ctx there, rather than the separate
-> tmp variable.
+ tools/bootconfig/main.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-I thought about that, but it seemed a little bit abusive, since ctx is
-used in an iteration over another list.  But if you prefer that I can
-change it.
+diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
+index 16b9a420e6fd..17a9837dcfaa 100644
+--- a/tools/bootconfig/main.c
++++ b/tools/bootconfig/main.c
+@@ -314,31 +314,35 @@ int apply_xbc(const char *path, const char *xbc_path)
+ 	ret = delete_xbc(path);
+ 	if (ret < 0) {
+ 		pr_err("Failed to delete previous boot config: %d\n", ret);
+-		return ret;
++		goto free_data;
+ 	}
 
-julia
+ 	/* Apply new one */
+ 	fd = open(path, O_RDWR | O_APPEND);
+ 	if (fd < 0) {
+ 		pr_err("Failed to open %s: %d\n", path, fd);
+-		return fd;
++		ret = fd;
++		goto free_data;
+ 	}
+ 	/* TODO: Ensure the @path is initramfs/initrd image */
+ 	ret = write(fd, data, size + 8);
+ 	if (ret < 0) {
+ 		pr_err("Failed to apply a boot config: %d\n", ret);
+-		return ret;
++		goto close_fd;
+ 	}
+ 	/* Write a magic word of the bootconfig */
+ 	ret = write(fd, BOOTCONFIG_MAGIC, BOOTCONFIG_MAGIC_LEN);
+-	if (ret < 0) {
++	if (ret < 0)
+ 		pr_err("Failed to apply a boot config magic: %d\n", ret);
+-		return ret;
+-	}
++
++	ret = 0;
++
++close_fd:
+ 	close(fd);
++free_data:
+ 	free(data);
 
->
-> Reviewed-by: Jeremy Kerr <jk@ozlabs.org>
->
-> Cheers,
->
->
-> Jeremy
->
->
+-	return 0;
++	return ret;
+ }
+
+ int usage(void)
+-- 
+1.8.3.1
+

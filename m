@@ -2,74 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56B471CB661
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 19:53:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C239A1CB86A
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 May 2020 21:38:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727083AbgEHRxx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 13:53:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44476 "EHLO mail.kernel.org"
+        id S1727123AbgEHTiZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 15:38:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36678 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726756AbgEHRxx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 13:53:53 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        id S1726767AbgEHTiY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 8 May 2020 15:38:24 -0400
+Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.4])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 80D0B21582;
-        Fri,  8 May 2020 17:53:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 295452184D;
+        Fri,  8 May 2020 19:38:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588960433;
-        bh=Mf9YIX9seHuKR93Yab643q2cVaLURMwAj0uaQu5emzo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CqhCorGrx/A0ACnX3azbJyBTQTTLcHR/kWY2TMS/7VhSQrNeqX6fBeX4sNp5VVSvQ
-         +r/a8EYWpL1nWHMqs4rAcTSgdomr3amYNmt8m71wJ9kB6LO6HHli9Xb1CQO4Q8v86t
-         l2L0K4aBBZxrid8H+NeOjv0fw01waBKqJ6gvKiVw=
-Date:   Fri, 8 May 2020 18:53:50 +0100
-From:   Mark Brown <broonie@kernel.org>
+        s=default; t=1588966704;
+        bh=vDMmV532cu6IYoaHWWtZRzKoqJ0ehYiUfefn2GdxIik=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=gE5kEWnC9eaW4FnmtnaixrHhRL5fv4uXJQ31kvWbqwPkM+3zWp6n5sf5PJDkQr7Iz
+         AicdHmXN0GFxgzSLkMiOwkg+etxlc7qtxTg1GVfWg7ZC4kwvRWnumu3UKlM9BgRjsV
+         ttsvbed+P833oFVbJe6sMmHqcCHuWGlVhA9vtEjE=
+Date:   Fri, 8 May 2020 12:38:22 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
 To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Sanjay R Mehta <sanju.mehta@amd.com>, linux-spi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH -next] spi: spi-amd: Remove spi_master_put in
- amd_spi_remove()
-Message-ID: <20200508175350.GA3011@sirena.org.uk>
-References: <20200507115550.139457-1-weiyongjun1@huawei.com>
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Colin Ian King <colin.king@canonical.com>,
+        <netdev@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: Re: [PATCH net-next v2] net: ethernet: ti: fix some return value
+ check of cpsw_ale_create()
+Message-ID: <20200508123822.5324b74f@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <da50aa53-a967-83b7-0737-701ab30228e4@ti.com>
+References: <20200508021059.172001-1-weiyongjun1@huawei.com>
+        <20200508100649.1112-1-weiyongjun1@huawei.com>
+        <da50aa53-a967-83b7-0737-701ab30228e4@ti.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="BXVAT5kNtrzKuDFl"
-Content-Disposition: inline
-In-Reply-To: <20200507115550.139457-1-weiyongjun1@huawei.com>
-X-Cookie: I just had a NOSE JOB!!
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Fri, 8 May 2020 14:26:27 +0300 Grygorii Strashko wrote:
+> On 08/05/2020 13:06, Wei Yongjun wrote:
+> > cpsw_ale_create() can return both NULL and PTR_ERR(), but all of
+> > the caller only check NULL for error handling. This patch convert
+> > it to only return PTR_ERR() in all error cases, all the caller using
+> > IS_ERR() install of NULL test.
+> > 
+> > Also fix a return negative error code from the cpsw_ale_create()
+> > error handling case instead of 0 in am65_cpsw_nuss_probe().
+> > 
+> > Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
+> > Fixes: 4b41d3436796 ("net: ethernet: ti: cpsw: allow untagged traffic on host port")  
+> 
+> ^ I do not think it can be back-ported so far back.
+> So, or drop second "Fixes: 4b41d3436796"
+> or split am65-cpsw-nuss.c changes
 
---BXVAT5kNtrzKuDFl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Thu, May 07, 2020 at 11:55:50AM +0000, Wei Yongjun wrote:
-> The call to spi_master_put() in amd_spi_remove() is redundant and
-> may causes user after free since the master have been freed by
-> spi_unregister_master(), so remove it.
-
-This doesn't apply against current code, please check and resend (there
-were quite a few issues that got fixed).
-
---BXVAT5kNtrzKuDFl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl61nK0ACgkQJNaLcl1U
-h9APGQgAg5Mu75hZSXDbUWOiVnemr3EA0Rq6XsrwDrZd7UUq9wXkFGqfk70MEeWj
-gqcdLS68iTMFeIQ1ph1516b7cuYmMZBGU/lH22bOyYoveTpKto6QNsz3KX6G+2dC
-BktSNvldIjJ2VKFtZWziAYv3QDbDCgTSskrUf+u/qNfm/oo114RO1cYbCsr6CLFZ
-c0JRUNdM0MIMcjrkKz8lb81jO+bs9t1aizdgbbZvteHVF6bV6mGtLHDvxfXRu/QT
-tOQMKjIUj4H3R45mDIfIevFcMEAoo9wB7ZDUkUuNoDiR7h7++ETjUTbWnEojOx+Q
-FjR+eFGJMYLBh3m4QAbTssVZC72xjA==
-=MHHd
------END PGP SIGNATURE-----
-
---BXVAT5kNtrzKuDFl--
+Please also tag this commit with [net] not [net-next], 
+AFAICS the problem is present in Linus's tree.

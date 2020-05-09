@@ -2,93 +2,128 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AC4F1CC08D
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 12:51:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7720F1CC105
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 13:35:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728028AbgEIKvf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 9 May 2020 06:51:35 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:37226 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726913AbgEIKve (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 9 May 2020 06:51:34 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 049ApJRr145599;
-        Sat, 9 May 2020 10:51:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=iClix6iGeS3i7GMym7ParF65KME/peMHzJR8tma/hLI=;
- b=eoKwoirT7d97vHXNY0d79Xf+vc2xS/XOL5Nm5qzDr1F7Gkv4RouwaNrTL30JH3X6xm7F
- wdFK6+KjedbbKbDAe5LtbOlAQa6HSn0GtRKmWWgLuMjoxTlU1buVR7V3cXgcgnWE5XqS
- N1trN7xLysIls+br53a9HEAOwLvi74ZTQB+5yBM4TP2aT1A2MJP/CVikM/maVyvHuLWG
- vDLYH62s/hCIgQ37Bf6e4BRVS1kluwbeOxfJLGM2XgAL+PXq1qWcOJyeLWcboHp5JEBM
- Av75rUgD0uhM6rsJRm9gsTif9sUKhafOV+XNv2Vk48BpcNJSBaNAAVwrTSYkktrTGGjr mQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 30wn5mgm6g-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 09 May 2020 10:51:28 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 049AXgcN112427;
-        Sat, 9 May 2020 10:51:27 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 30wmb0xdw6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 09 May 2020 10:51:27 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 049ApQo3021103;
-        Sat, 9 May 2020 10:51:26 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 09 May 2020 03:51:26 -0700
-Date:   Sat, 9 May 2020 13:51:20 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] cnic: remove redundant assignment to variable ret
-Message-ID: <20200509105120.GH9365@kadam>
-References: <20200508224026.483746-1-colin.king@canonical.com>
+        id S1728281AbgEILfv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 9 May 2020 07:35:51 -0400
+Received: from mout.web.de ([217.72.192.78]:60697 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727820AbgEILfu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 9 May 2020 07:35:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1589024137;
+        bh=+l59GLSaJJyYmgkGic3MxEnRzt1Zg9pMcqBsDoQtzDs=;
+        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
+        b=MZnRQj1Uvp1CDd93+QJSQQSf5oKTjf6SJ3vZQGh9eGX/YRR3u//G/dvAxCv/nax14
+         Sp6WFa1Ytr5bH/nVXGlgRtuIlCTQ83fvZmzGYxTc52FrDGGbetvlbkvBXjK8xILw2e
+         w1C8IddK7qDoizNGgZQxDs7pj47tvl8CIlkfx/Ow=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.48.147.78]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Ma0Tu-1jalRd1lJc-00W8Th; Sat, 09
+ May 2020 13:35:37 +0200
+To:     Kefeng Wang <wangkefeng.wang@huawei.com>,
+        kernel-janitors@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ingo Molnar <mingo@kernel.org>
+Subject: Re: [PATCH 1/3] seq_file: Introduce DEFINE_SEQ_ATTRIBUTE() helper
+ macro
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <050ec4c0-1bf0-3880-e368-41d9dc7a3f7f@web.de>
+Date:   Sat, 9 May 2020 13:35:36 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200508224026.483746-1-colin.king@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9615 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
- bulkscore=0 mlxscore=0 suspectscore=0 spamscore=0 phishscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005090098
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9615 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 bulkscore=0
- priorityscore=1501 mlxscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
- spamscore=0 clxscore=1015 malwarescore=0 adultscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2005090099
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:lomFFwZjljkJmAMmwe1bu4GNyQOwQy+toXhy9VAz6pudshYSYQL
+ iX4M/Hzn1+Cq+niiOGZsCuuveGlpHL7sfCZROzvph/E8h9zrdnwze48y9jythYAw1stJGmi
+ dR7ssviaLDEdrMnv615eE0d6MIqhEgoTguyNZhbFcwhSdYm6IXP0aLqGUntkl08re+Y0XIW
+ vziAsk1J6x0amko7M/FCA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:NzkCWd9XxMw=:qZbH4alA3u8eIWe6YxKcWP
+ eropUKwoDbLaodnNX4djTEza/vFAcQCKCqDqB0HjG+XwbIZBpvX2ZqEC0m+33inZUjAeqsb6+
+ N4yo5joSD/ohXbWSuNDoyB17iLSBktzQ3DXPC++ZWPY8zoyslmO/zucm+QKyVQVzEc9wWgVM6
+ BrKnJw4bbwdhccz/3gxCdzyI16NIu3YvTHRhFdOFuH6I0bYfJyvHneqQMRq7YhK7Svj6sa4By
+ zGPY8sR6dWkW2TMIP/TDVun18m3f6Q1+xyk560KIbHMXn7UMlQJakiWQrkjl6sXXLRxFaU+3z
+ CZFuMtB2j7z8IzJMAPNtqAyaaBCwRtBu+j++bprVzrJmm/QkxqV710eyrEGQDxoNJrCLhtEUN
+ HRaMxwqNmxizmuCzb0sl8QmJR07qm1RGfwtmUxmWwBtsZtUqlmBeNhAI568XvYdfFT6FyS+/t
+ weJnMT5J1NA8S4c8TGlNhT45sAZ9TdtioUziKuic0URvYH0mlLLmh6Ke2qN+Mjv7JwRWYyFIS
+ 4JmJrb7QBHxNjZjDJgedvk/PiHsEEcsdFg88tE1IzyBxybyqhby27O8QXINLrtMl1dJfCQpuv
+ /Dlr3gctfnGVSuim9JplxdYttVcfG122J2B2NLdTUpjcOFy6TAh0EMbR5ZttBuus/G65AL6Ik
+ Y0Aiz0ozjnH4VkS9Hb0QfVAh8MwZkvJdX7sNn0108rXxspHX/H3m01psZYEj8F/dhsDlR6Oqv
+ yDth/GrpPCT7bLARHwuh5CgAYMx1W/6k/4IFikYgczVU5Nk3Rlo2DWSOS3PPBg7CbTEj1TJQB
+ dyM0wOHCkDR7/Iwu583WstNZq4btAbdY5K+EMdvVQjua3pVH43wbwU/QhEp1iauzaPtK+THTN
+ c6CuoOrC6/gmHLjP9cHZ5UFO4OcI51Jjl1SqbC8FIL0NC68wcgow7cR9gcB4TD3WpppbirKVX
+ jTUEs7RUFS13+QEji++5Tj+arJk+g3gUcwEIlqsrXms6Im8/OpVfhK7VUWG97FDbKveUMSN7X
+ U6LN+P+GyXRlAvdCoPp4tK5vYI0XOBK8Ug/4kVILYT4TBOBFALIkZHoo3Ftw12MUyPXb9tWiH
+ phHPYeWR0ZGp97nWnnRc9a2YoQY7sEvrCpCinAh40EsjvjtMT4w0SUOuD5qJLQJOB9UjyKT5R
+ WE9Qu6MZjDwJ2DxplGPy+AWsRtabTdyrF6HZYh3oY0QV3aa1/mJdsvf8atM1bEg6noMi5kQ1g
+ xR5v5m63Bv4q/tqYF
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, May 08, 2020 at 11:40:26PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable ret is being assigned with a value that is never read,
-> the assignment is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+=E2=80=A6
+> +++ b/include/linux/seq_file.h
+> @@ -145,6 +145,25 @@ void *__seq_open_private(struct file *, const struc=
+t seq_operations *, int);
+> int seq_open_private(struct file *, const struct seq_operations *, int);
+> int seq_release_private(struct inode *, struct file *);
+>
+> +#define DEFINE_SEQ_ATTRIBUTE(__name)					\
+> +static int __name ## _open(struct inode *inode, struct file *file)	\
+=E2=80=A6
 
-We used to return negative error codes until commit 23021c21055f ("cnic:
-Improve error recovery on bnx2x devices").
+Can such a macro work also with an identifier which does not contain
+double underscores?
 
-To be honest, I like the deliberate "ret = 0;" because this code will
-trigger a static checker warning about wrong error codes.  Also it looks
-wrong to human reviewers.  We should probably add a comment:
-
-	/* Deliberately returning success */
-	return 0;
-
-regards,
-dan carpenter
-
+Regards,
+Markus

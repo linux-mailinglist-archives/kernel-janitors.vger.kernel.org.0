@@ -2,97 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F352C1CBEE0
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 10:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C73EC1CBF20
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 10:38:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727820AbgEIIXd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 9 May 2020 04:23:33 -0400
-Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:50242 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726214AbgEIIXd (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 9 May 2020 04:23:33 -0400
-Received: from localhost.localdomain ([93.22.149.123])
-        by mwinf5d73 with ME
-        id cYPT2200N2fyvbx03YPU05; Sat, 09 May 2020 10:23:29 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 09 May 2020 10:23:29 +0200
-X-ME-IP: 93.22.149.123
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     milo.kim@ti.com, sre@kernel.org, anton.vorontsov@linaro.org
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH V2] power: supply: lp8788: Fix an error handling path in 'lp8788_charger_probe()'
-Date:   Sat,  9 May 2020 10:23:23 +0200
-Message-Id: <20200509082323.223884-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        id S1727116AbgEIIiv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 9 May 2020 04:38:51 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:4314 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725930AbgEIIiu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 9 May 2020 04:38:50 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 5A748C4CB26369EF78C8;
+        Sat,  9 May 2020 16:38:48 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.487.0; Sat, 9 May 2020 16:38:41 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Ohad Ben-Cohen <ohad@wizery.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        "Erin Lo" <erin.lo@mediatek.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-remoteproc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] remoteproc/mediatek: fix invalid use of sizeof in scp_ipi_init()
+Date:   Sat, 9 May 2020 08:42:37 +0000
+Message-ID: <20200509084237.36293-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In the probe function, in case of error, resources allocated in
-'lp8788_setup_adc_channel()' must be released.
+sizeof() when applied to a pointer typed expression gives the
+size of the pointer, not that of the pointed data.
 
-This can be achieved easily by using the devm_ variant of
-'iio_channel_get()'.
-This has the extra benefit to simplify the remove function and to axe the
-'lp8788_release_adc_channel()' function which is now useless.
-
-Fixes: 98a276649358 ("power_supply: Add new lp8788 charger driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Fixes: 63c13d61eafe ("remoteproc/mediatek: add SCP support for mt8183")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
-V2: use devm_iio_channel_get instead of iio_channel_get and simplify code
----
- drivers/power/supply/lp8788-charger.c | 18 ++----------------
- 1 file changed, 2 insertions(+), 16 deletions(-)
+ drivers/remoteproc/mtk_scp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/power/supply/lp8788-charger.c b/drivers/power/supply/lp8788-charger.c
-index 84a206f42a8e..e7931ffb7151 100644
---- a/drivers/power/supply/lp8788-charger.c
-+++ b/drivers/power/supply/lp8788-charger.c
-@@ -572,27 +572,14 @@ static void lp8788_setup_adc_channel(struct device *dev,
- 		return;
- 
- 	/* ADC channel for battery voltage */
--	chan = iio_channel_get(dev, pdata->adc_vbatt);
-+	chan = devm_iio_channel_get(dev, pdata->adc_vbatt);
- 	pchg->chan[LP8788_VBATT] = IS_ERR(chan) ? NULL : chan;
- 
- 	/* ADC channel for battery temperature */
--	chan = iio_channel_get(dev, pdata->adc_batt_temp);
-+	chan = devm_iio_channel_get(dev, pdata->adc_batt_temp);
- 	pchg->chan[LP8788_BATT_TEMP] = IS_ERR(chan) ? NULL : chan;
- }
- 
--static void lp8788_release_adc_channel(struct lp8788_charger *pchg)
--{
--	int i;
--
--	for (i = 0; i < LP8788_NUM_CHG_ADC; i++) {
--		if (!pchg->chan[i])
--			continue;
--
--		iio_channel_release(pchg->chan[i]);
--		pchg->chan[i] = NULL;
--	}
--}
--
- static ssize_t lp8788_show_charger_status(struct device *dev,
- 				struct device_attribute *attr, char *buf)
- {
-@@ -735,7 +722,6 @@ static int lp8788_charger_remove(struct platform_device *pdev)
- 	flush_work(&pchg->charger_work);
- 	lp8788_irq_unregister(pdev, pchg);
- 	lp8788_psy_unregister(pchg);
--	lp8788_release_adc_channel(pchg);
+diff --git a/drivers/remoteproc/mtk_scp.c b/drivers/remoteproc/mtk_scp.c
+index 2bead57c9cf9..ac13e7b046a6 100644
+--- a/drivers/remoteproc/mtk_scp.c
++++ b/drivers/remoteproc/mtk_scp.c
+@@ -132,8 +132,8 @@ static int scp_ipi_init(struct mtk_scp *scp)
+ 		(struct mtk_share_obj __iomem *)(scp->sram_base + recv_offset);
+ 	scp->send_buf =
+ 		(struct mtk_share_obj __iomem *)(scp->sram_base + send_offset);
+-	memset_io(scp->recv_buf, 0, sizeof(scp->recv_buf));
+-	memset_io(scp->send_buf, 0, sizeof(scp->send_buf));
++	memset_io(scp->recv_buf, 0, sizeof(*scp->recv_buf));
++	memset_io(scp->send_buf, 0, sizeof(*scp->send_buf));
  
  	return 0;
  }
--- 
-2.25.1
+
+
 

@@ -2,117 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E36861CBBB2
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 02:15:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CDC91CBBB7
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 02:15:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728417AbgEIAOe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 20:14:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55086 "EHLO
+        id S1728372AbgEIAPd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 20:15:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727959AbgEIAOe (ORCPT
+        by vger.kernel.org with ESMTP id S1727983AbgEIAPd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 20:14:34 -0400
+        Fri, 8 May 2020 20:15:33 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C1B5C061A0C;
-        Fri,  8 May 2020 17:14:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F52FC061A0C;
+        Fri,  8 May 2020 17:15:33 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: sre)
-        with ESMTPSA id 38D8C2A2ECF
+        with ESMTPSA id 203592A33A3
 Received: by earth.universe (Postfix, from userid 1000)
-        id B1ECA3C08C6; Sat,  9 May 2020 02:14:29 +0200 (CEST)
-Date:   Sat, 9 May 2020 02:14:29 +0200
+        id 9BE163C08C6; Sat,  9 May 2020 02:15:29 +0200 (CEST)
+Date:   Sat, 9 May 2020 02:15:29 +0200
 From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     milo.kim@ti.com, anton.vorontsov@linaro.org,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>, linux-pm@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] power: supply: lp8788: Fix an error handling path in
- 'lp8788_charger_probe()'
-Message-ID: <20200509001429.65lk56xov22fxa47@earth.universe>
-References: <20200508071150.204974-1-christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH] power: bq25890: unlock on error paths in bq25890_resume()
+Message-ID: <20200509001529.vikzemeiifyfp4fs@earth.universe>
+References: <20200506101116.GA77004@mwanda>
+ <20200506122019.GB18376@qmqm.qmqm.pl>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="elsq2nfey66uahg5"
+        protocol="application/pgp-signature"; boundary="os2uun2xexgi6yf2"
 Content-Disposition: inline
-In-Reply-To: <20200508071150.204974-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20200506122019.GB18376@qmqm.qmqm.pl>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
---elsq2nfey66uahg5
-Content-Type: text/plain; charset=us-ascii
+--os2uun2xexgi6yf2
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-Please change the driver to call devm_iio_channel_get() instead of
-iio_channel_get() and drop the lp8788_release_adc_channel() function.
+On Wed, May 06, 2020 at 02:20:20PM +0200, Micha=C5=82 Miros=C5=82aw wrote:
+> On Wed, May 06, 2020 at 01:11:16PM +0300, Dan Carpenter wrote:
+> > We introduced some new locking here, but need to update the error
+> > paths so they unlock before returning.
+>=20
+> Reviewed-by: Micha=C5=82 Miros=C5=82aw <mirq-linux@rere.qmqm.pl>
+
+Thanks, queued.
 
 -- Sebastian
 
-On Fri, May 08, 2020 at 09:11:50AM +0200, Christophe JAILLET wrote:
-> In case of error, resources allocated in 'lp8788_setup_adc_channel()' must
-> be released.
->=20
-> Add a call to 'lp8788_release_adc_channel()' as already done in the remove
-> function.
->=20
-> Fixes: 98a276649358 ("power_supply: Add new lp8788 charger driver")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->  drivers/power/supply/lp8788-charger.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/power/supply/lp8788-charger.c b/drivers/power/supply=
-/lp8788-charger.c
-> index 84a206f42a8e..641815eb24bc 100644
-> --- a/drivers/power/supply/lp8788-charger.c
-> +++ b/drivers/power/supply/lp8788-charger.c
-> @@ -719,13 +719,17 @@ static int lp8788_charger_probe(struct platform_dev=
-ice *pdev)
-> =20
->  	ret =3D lp8788_psy_register(pdev, pchg);
->  	if (ret)
-> -		return ret;
-> +		goto err_release_adc_channel;
-> =20
->  	ret =3D lp8788_irq_register(pdev, pchg);
->  	if (ret)
->  		dev_warn(dev, "failed to register charger irq: %d\n", ret);
-> =20
->  	return 0;
-> +
-> +err_release_adc_channel:
-> +	lp8788_release_adc_channel(pchg);
-> +	return ret;
->  }
-> =20
->  static int lp8788_charger_remove(struct platform_device *pdev)
-> --=20
-> 2.25.1
->=20
+> > Fixes: 72d9cd9cdc18 ("power: bq25890: protect view of the chip's state")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> >  drivers/power/supply/bq25890_charger.c | 7 ++++---
+> >  1 file changed, 4 insertions(+), 3 deletions(-)
+> >=20
+> > diff --git a/drivers/power/supply/bq25890_charger.c b/drivers/power/sup=
+ply/bq25890_charger.c
+> > index 9339e216651ff..20b9824ef5acd 100644
+> > --- a/drivers/power/supply/bq25890_charger.c
+> > +++ b/drivers/power/supply/bq25890_charger.c
+> > @@ -978,21 +978,22 @@ static int bq25890_resume(struct device *dev)
+> > =20
+> >  	ret =3D bq25890_get_chip_state(bq, &bq->state);
+> >  	if (ret < 0)
+> > -		return ret;
+> > +		goto unlock;
+> > =20
+> >  	/* Re-enable ADC only if charger is plugged in. */
+> >  	if (bq->state.online) {
+> >  		ret =3D bq25890_field_write(bq, F_CONV_START, 1);
+> >  		if (ret < 0)
+> > -			return ret;
+> > +			goto unlock;
+> >  	}
+> > =20
+> >  	/* signal userspace, maybe state changed while suspended */
+> >  	power_supply_changed(bq->charger);
+> > =20
+> > +unlock:
+> >  	mutex_unlock(&bq->lock);
+> > =20
+> > -	return 0;
+> > +	return ret;
+> >  }
+> >  #endif
+> > =20
+> > --=20
+> > 2.26.2
+> >=20
 
---elsq2nfey66uahg5
+--os2uun2xexgi6yf2
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl619eAACgkQ2O7X88g7
-+pqhUQ//XakrsUVE5Wq5klKII1Z1Xz6RLpu0yPGB2ZR+Rg/IWcHR5CBlT/WYmFUK
-vgUi9bYkL00DvvG63gWySGvM6wINXEw9qU+j0qLYCg31jOB74Vz2TVdpS/ZP2son
-jD3hP5eIw+IaaTU4Nt/ScL3Ywcu3boL8JrADRkuIrGHVqC4WO56LRHYc1EzXzXMD
-A83Cnx+JTGesyK6uDrGdw7Ac8JoEcEZy4Db7u31S42wMpArfr8s3FYEV7G1pF5gV
-/2IfoneLLdUVJYQgG0kRQC+zL1Zvrr8Rf/U6OVNahNAtr5GuV7wde3MQaFqOppHt
-JcKalt30MoQndXUXsyFaY5GKHU9k7DlDm9Y3ZasKyvOqbdoRwhz0OwhqkbT/rgVR
-AQGm/ii6ZElIfgmWr7E9PHyThjHN+yI7RdXxpMDybsgnAQAyxIuBRglavoDBikfA
-dOnlfITqJtsFPlBhsaI5fd72EfjylVczOHwTelAsf7+KFL58wOA+M8FXoQ8Jx3L0
-dRVoNRB5SjK4Fqdd5DFeAwfpuGm5+li5akN4w7Vd+tPrXbS87ljO2bFz6aoRU4k7
-LARlmKJNqBQKXpI6J5tXMMw+YuZqy6D17kjK0cSPp4qEOFq577UW+wKLJ0dcuESS
-MGO4z8sOg7zosW7QUQnj08T5Ppa9vsiXamiGaSULgQnlclsraM4=
-=Pdz3
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl619iEACgkQ2O7X88g7
++poabw/+ImmnCtrv3oeQlxgy1kvUmLKF+VY8OcGAGt+GHgx4XNKwXKaKcX4vSff2
+82m0CZAQsJWkItPv2ImEBf/X6ikWQAay6xtFLV5DuHG6YqcgCMvE4grl2T1pwoMh
+Gj4uutn4N5a5zXBfm7dtMImwOpwnNIDCxbl2DFWhYrrH8h1pVnYVzU7ryfSu9EUm
+/z7ouvMuAKHI9Sb/pCaEGOU2GyzSBwdbFzFSGtSCiLFUxxdA5r/7U9Wz794LpoTG
+LRav7bQMeAJvJrHTmuHxZMtEiDil2qlXl8URvc7qAmPc6h+GbJrYOPZz9k94z8YS
+h0JUxybdaSmwuEVtTXJiEHO3GcHsrJphqEvnhOIHZQwr680Sjsf9HME8YCMCjyHb
+ce7y3GxGH5ip05/en28f0TObHHupwSPDRSBO2p/4jloWiwkBU0UWkowzWJV+qBLc
+jOf0hJKBJ0b9bJbQnPdzzx4+QQNdGVUrwY+erXSFXmm8fnaQ84y7+rCD07+O5gLV
+604U4PA/QxXyr7CZ6JGsPVryBjhopqp28k+2zwoZYGzEklTOZjXbLn8jn/CKuPIH
+H5owsCiI/+oTKwFfRJgjCGwuIDXvBORJAfkirrMaxPK0XoEgKIqzemPPQ8CBW+od
+Wsgq19OUxBxhPRTe9QBe2Sk6xtCzh57N0+vHYhrZg1kVB0gOll4=
+=h8Do
 -----END PGP SIGNATURE-----
 
---elsq2nfey66uahg5--
+--os2uun2xexgi6yf2--

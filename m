@@ -2,128 +2,127 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7720F1CC105
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 13:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB5351CC1A5
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 15:11:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728281AbgEILfv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 9 May 2020 07:35:51 -0400
-Received: from mout.web.de ([217.72.192.78]:60697 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727820AbgEILfu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 9 May 2020 07:35:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1589024137;
-        bh=+l59GLSaJJyYmgkGic3MxEnRzt1Zg9pMcqBsDoQtzDs=;
-        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=MZnRQj1Uvp1CDd93+QJSQQSf5oKTjf6SJ3vZQGh9eGX/YRR3u//G/dvAxCv/nax14
-         Sp6WFa1Ytr5bH/nVXGlgRtuIlCTQ83fvZmzGYxTc52FrDGGbetvlbkvBXjK8xILw2e
-         w1C8IddK7qDoizNGgZQxDs7pj47tvl8CIlkfx/Ow=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.48.147.78]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1Ma0Tu-1jalRd1lJc-00W8Th; Sat, 09
- May 2020 13:35:37 +0200
-To:     Kefeng Wang <wangkefeng.wang@huawei.com>,
-        kernel-janitors@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ingo Molnar <mingo@kernel.org>
-Subject: Re: [PATCH 1/3] seq_file: Introduce DEFINE_SEQ_ATTRIBUTE() helper
- macro
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <050ec4c0-1bf0-3880-e368-41d9dc7a3f7f@web.de>
-Date:   Sat, 9 May 2020 13:35:36 +0200
+        id S1727820AbgEINLY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 9 May 2020 09:11:24 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:60258 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726370AbgEINLY (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 9 May 2020 09:11:24 -0400
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 049D2H4B033546;
+        Sat, 9 May 2020 09:11:05 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 30ws22cerg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sat, 09 May 2020 09:11:05 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 049D2O3I034043;
+        Sat, 9 May 2020 09:11:04 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 30ws22ceqv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sat, 09 May 2020 09:11:04 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+        by ppma01fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 049DB2RM021530;
+        Sat, 9 May 2020 13:11:02 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma01fra.de.ibm.com with ESMTP id 30wm558a45-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sat, 09 May 2020 13:11:01 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 049DAxgU60948762
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 9 May 2020 13:10:59 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id ADA9242045;
+        Sat,  9 May 2020 13:10:59 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B2ED042041;
+        Sat,  9 May 2020 13:10:56 +0000 (GMT)
+Received: from JAVRIS.in.ibm.com (unknown [9.199.41.60])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Sat,  9 May 2020 13:10:56 +0000 (GMT)
+Subject: Re: [PATCH] MAINTAINERS: adjust to livepatch .klp.arch removal
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Jiri Kosina <jkosina@suse.cz>,
+        Peter Zijlstra <peterz@infradead.org>
+Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Petr Mladek <pmladek@suse.com>,
+        Joe Lawrence <joe.lawrence@redhat.com>,
+        live-patching@vger.kernel.org, Joe Perches <joe@perches.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200509073258.5970-1-lukas.bulwahn@gmail.com>
+From:   Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
+Message-ID: <bfe91b2d-e319-bf12-6a15-4f200d0e8ea4@linux.vnet.ibm.com>
+Date:   Sat, 9 May 2020 18:40:54 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20200509073258.5970-1-lukas.bulwahn@gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:lomFFwZjljkJmAMmwe1bu4GNyQOwQy+toXhy9VAz6pudshYSYQL
- iX4M/Hzn1+Cq+niiOGZsCuuveGlpHL7sfCZROzvph/E8h9zrdnwze48y9jythYAw1stJGmi
- dR7ssviaLDEdrMnv615eE0d6MIqhEgoTguyNZhbFcwhSdYm6IXP0aLqGUntkl08re+Y0XIW
- vziAsk1J6x0amko7M/FCA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:NzkCWd9XxMw=:qZbH4alA3u8eIWe6YxKcWP
- eropUKwoDbLaodnNX4djTEza/vFAcQCKCqDqB0HjG+XwbIZBpvX2ZqEC0m+33inZUjAeqsb6+
- N4yo5joSD/ohXbWSuNDoyB17iLSBktzQ3DXPC++ZWPY8zoyslmO/zucm+QKyVQVzEc9wWgVM6
- BrKnJw4bbwdhccz/3gxCdzyI16NIu3YvTHRhFdOFuH6I0bYfJyvHneqQMRq7YhK7Svj6sa4By
- zGPY8sR6dWkW2TMIP/TDVun18m3f6Q1+xyk560KIbHMXn7UMlQJakiWQrkjl6sXXLRxFaU+3z
- CZFuMtB2j7z8IzJMAPNtqAyaaBCwRtBu+j++bprVzrJmm/QkxqV710eyrEGQDxoNJrCLhtEUN
- HRaMxwqNmxizmuCzb0sl8QmJR07qm1RGfwtmUxmWwBtsZtUqlmBeNhAI568XvYdfFT6FyS+/t
- weJnMT5J1NA8S4c8TGlNhT45sAZ9TdtioUziKuic0URvYH0mlLLmh6Ke2qN+Mjv7JwRWYyFIS
- 4JmJrb7QBHxNjZjDJgedvk/PiHsEEcsdFg88tE1IzyBxybyqhby27O8QXINLrtMl1dJfCQpuv
- /Dlr3gctfnGVSuim9JplxdYttVcfG122J2B2NLdTUpjcOFy6TAh0EMbR5ZttBuus/G65AL6Ik
- Y0Aiz0ozjnH4VkS9Hb0QfVAh8MwZkvJdX7sNn0108rXxspHX/H3m01psZYEj8F/dhsDlR6Oqv
- yDth/GrpPCT7bLARHwuh5CgAYMx1W/6k/4IFikYgczVU5Nk3Rlo2DWSOS3PPBg7CbTEj1TJQB
- dyM0wOHCkDR7/Iwu583WstNZq4btAbdY5K+EMdvVQjua3pVH43wbwU/QhEp1iauzaPtK+THTN
- c6CuoOrC6/gmHLjP9cHZ5UFO4OcI51Jjl1SqbC8FIL0NC68wcgow7cR9gcB4TD3WpppbirKVX
- jTUEs7RUFS13+QEji++5Tj+arJk+g3gUcwEIlqsrXms6Im8/OpVfhK7VUWG97FDbKveUMSN7X
- U6LN+P+GyXRlAvdCoPp4tK5vYI0XOBK8Ug/4kVILYT4TBOBFALIkZHoo3Ftw12MUyPXb9tWiH
- phHPYeWR0ZGp97nWnnRc9a2YoQY7sEvrCpCinAh40EsjvjtMT4w0SUOuD5qJLQJOB9UjyKT5R
- WE9Qu6MZjDwJ2DxplGPy+AWsRtabTdyrF6HZYh3oY0QV3aa1/mJdsvf8atM1bEg6noMi5kQ1g
- xR5v5m63Bv4q/tqYF
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-09_03:2020-05-08,2020-05-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1011
+ suspectscore=0 bulkscore=0 adultscore=0 impostorscore=0 mlxscore=0
+ lowpriorityscore=0 malwarescore=0 mlxlogscore=771 priorityscore=1501
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005090111
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-=E2=80=A6
-> +++ b/include/linux/seq_file.h
-> @@ -145,6 +145,25 @@ void *__seq_open_private(struct file *, const struc=
-t seq_operations *, int);
-> int seq_open_private(struct file *, const struct seq_operations *, int);
-> int seq_release_private(struct inode *, struct file *);
->
-> +#define DEFINE_SEQ_ATTRIBUTE(__name)					\
-> +static int __name ## _open(struct inode *inode, struct file *file)	\
-=E2=80=A6
+On 5/9/20 1:02 PM, Lukas Bulwahn wrote:
+> Commit 1d05334d2899 ("livepatch: Remove .klp.arch") removed
+> arch/x86/kernel/livepatch.c, but missed to adjust the LIVE PATCHING entry
+> in MAINTAINERS.
+> 
+> Since then, ./scripts/get_maintainer.pl --self-test=patterns complains:
+> 
+>   warning: no file matches  F:  arch/x86/kernel/livepatch.c
+> 
+> So, drop that obsolete file entry in MAINTAINERS.
 
-Can such a macro work also with an identifier which does not contain
-double underscores?
+Patch looks good to me,  you probably want to add following architecture
+specific livepatching header files to the list:
 
-Regards,
-Markus
+arch/s390/include/asm/livepatch.h
+arch/powerpc/include/asm/livepatch.h
+
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+> Jiri, please take this minor non-urgent patch for livepatching/for-next.
+> Peter, please ack.
+> 
+> applies cleanly on next-20200508
+> 
+>  MAINTAINERS | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 92657a132417..642f55c4b556 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -9909,7 +9909,6 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/livepatching/livepatching.g
+>  F:	Documentation/ABI/testing/sysfs-kernel-livepatch
+>  F:	Documentation/livepatch/
+>  F:	arch/x86/include/asm/livepatch.h
+> -F:	arch/x86/kernel/livepatch.c
+>  F:	include/linux/livepatch.h
+>  F:	kernel/livepatch/
+>  F:	samples/livepatch/
+> 
+
+
+-- 
+Kamalesh

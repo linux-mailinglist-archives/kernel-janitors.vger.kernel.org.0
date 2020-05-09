@@ -2,66 +2,138 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D83751CC53A
-	for <lists+kernel-janitors@lfdr.de>; Sun, 10 May 2020 01:42:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F84C1CC559
+	for <lists+kernel-janitors@lfdr.de>; Sun, 10 May 2020 01:44:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728864AbgEIXli (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 9 May 2020 19:41:38 -0400
-Received: from smtprelay0250.hostedemail.com ([216.40.44.250]:51344 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728842AbgEIXle (ORCPT
+        id S1728073AbgEIXnm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 9 May 2020 19:43:42 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:34160 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726356AbgEIXnm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 9 May 2020 19:41:34 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 47A3518029120;
-        Sat,  9 May 2020 23:41:33 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1539:1593:1594:1711:1714:1730:1747:1777:1792:2393:2540:2553:2559:2562:2828:3138:3139:3140:3141:3142:3351:3622:3865:3866:3867:3868:3870:3871:3872:3873:4321:5007:7576:10004:10400:10848:10967:11232:11658:11914:12297:12740:12760:12895:13069:13311:13357:13439:14181:14659:14721:21080:21451:21627:21740:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: magic98_64b48ef0ebc31
-X-Filterd-Recvd-Size: 1718
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf17.hostedemail.com (Postfix) with ESMTPA;
-        Sat,  9 May 2020 23:41:31 +0000 (UTC)
-Message-ID: <1870db200ffa03e3fce935b5e35e4562989d2dcf.camel@perches.com>
-Subject: Re: [PATCH] net/sonic: Fix some resource leaks in error handling
- paths
-From:   Joe Perches <joe@perches.com>
-To:     David Miller <davem@davemloft.net>
-Cc:     kuba@kernel.org, christophe.jaillet@wanadoo.fr,
-        fthain@telegraphics.com.au, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Date:   Sat, 09 May 2020 16:41:30 -0700
-In-Reply-To: <20200509.163217.1372289149714306397.davem@davemloft.net>
-References: <50ef36cd-d095-9abe-26ea-d363d11ce521@wanadoo.fr>
-         <20200509111321.51419b19@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-         <fc5cf8da8e70ebb981a9fc3aec6834c74197f0ed.camel@perches.com>
-         <20200509.163217.1372289149714306397.davem@davemloft.net>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.1-2 
+        Sat, 9 May 2020 19:43:42 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id B494F2A01A7
+Received: by earth.universe (Postfix, from userid 1000)
+        id DCAE43C08C7; Sun, 10 May 2020 01:43:38 +0200 (CEST)
+Date:   Sun, 10 May 2020 01:43:38 +0200
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     milo.kim@ti.com, anton.vorontsov@linaro.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH V2] power: supply: lp8788: Fix an error handling path in
+ 'lp8788_charger_probe()'
+Message-ID: <20200509234338.htilukszgiktza62@earth.universe>
+References: <20200509082323.223884-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="fvloof6eixjzfmk4"
+Content-Disposition: inline
+In-Reply-To: <20200509082323.223884-1-christophe.jaillet@wanadoo.fr>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 2020-05-09 at 16:32 -0700, David Miller wrote:
-> From: Joe Perches <joe@perches.com>
-> Date: Sat, 09 May 2020 15:42:36 -0700
-> 
-> > David, maybe I missed some notification about Jakub's role.
-> > 
-> > What is Jakub's role in relation to the networking tree?
-> 
-> He is the co-maintainer of the networking tree and you should respect
-> his actions and feedback as if it were coming from me.
 
-If he's committing drivers then presumably then
-he should be added to this section as well.
+--fvloof6eixjzfmk4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-NETWORKING DRIVERS
-M:	"David S. Miller" <davem@davemloft.net>
-L:	netdev@vger.kernel.org
-S:	Odd Fixes
+Hi,
 
+On Sat, May 09, 2020 at 10:23:23AM +0200, Christophe JAILLET wrote:
+> In the probe function, in case of error, resources allocated in
+> 'lp8788_setup_adc_channel()' must be released.
+>=20
+> This can be achieved easily by using the devm_ variant of
+> 'iio_channel_get()'.
+> This has the extra benefit to simplify the remove function and to axe the
+> 'lp8788_release_adc_channel()' function which is now useless.
+>=20
+> Fixes: 98a276649358 ("power_supply: Add new lp8788 charger driver")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> V2: use devm_iio_channel_get instead of iio_channel_get and simplify code
+> ---
+
+Thanks, queued.
+
+-- Sebastian
+
+>  drivers/power/supply/lp8788-charger.c | 18 ++----------------
+>  1 file changed, 2 insertions(+), 16 deletions(-)
+>=20
+> diff --git a/drivers/power/supply/lp8788-charger.c b/drivers/power/supply=
+/lp8788-charger.c
+> index 84a206f42a8e..e7931ffb7151 100644
+> --- a/drivers/power/supply/lp8788-charger.c
+> +++ b/drivers/power/supply/lp8788-charger.c
+> @@ -572,27 +572,14 @@ static void lp8788_setup_adc_channel(struct device =
+*dev,
+>  		return;
+> =20
+>  	/* ADC channel for battery voltage */
+> -	chan =3D iio_channel_get(dev, pdata->adc_vbatt);
+> +	chan =3D devm_iio_channel_get(dev, pdata->adc_vbatt);
+>  	pchg->chan[LP8788_VBATT] =3D IS_ERR(chan) ? NULL : chan;
+> =20
+>  	/* ADC channel for battery temperature */
+> -	chan =3D iio_channel_get(dev, pdata->adc_batt_temp);
+> +	chan =3D devm_iio_channel_get(dev, pdata->adc_batt_temp);
+>  	pchg->chan[LP8788_BATT_TEMP] =3D IS_ERR(chan) ? NULL : chan;
+>  }
+> =20
+> -static void lp8788_release_adc_channel(struct lp8788_charger *pchg)
+> -{
+> -	int i;
+> -
+> -	for (i =3D 0; i < LP8788_NUM_CHG_ADC; i++) {
+> -		if (!pchg->chan[i])
+> -			continue;
+> -
+> -		iio_channel_release(pchg->chan[i]);
+> -		pchg->chan[i] =3D NULL;
+> -	}
+> -}
+> -
+>  static ssize_t lp8788_show_charger_status(struct device *dev,
+>  				struct device_attribute *attr, char *buf)
+>  {
+> @@ -735,7 +722,6 @@ static int lp8788_charger_remove(struct platform_devi=
+ce *pdev)
+>  	flush_work(&pchg->charger_work);
+>  	lp8788_irq_unregister(pdev, pchg);
+>  	lp8788_psy_unregister(pchg);
+> -	lp8788_release_adc_channel(pchg);
+> =20
+>  	return 0;
+>  }
+> --=20
+> 2.25.1
+>=20
+
+--fvloof6eixjzfmk4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl63QCoACgkQ2O7X88g7
++pqXkw//TQAiHoFVbfj4PDt6JINhpc+KHH09+OYBJASqORFGRahjpl9lRP2KwOWC
+M5slAVpIewYZduNjMSiXLsl3E9THqT4aPlMCQsPbMbqf9opbo+v/N+99eqK6H7zX
+muI5Ujy4mal8dQblR2ePlZiZkXj+rcY85JwW4BndWPDxY6H66GlYdFTuBdphLqIJ
+o3dFznmKZBWVk7jLogVf0Cqa/lK1h4FAg/X9f+9gsX8WEZujUONFdYxccQxlGZXt
+pBVVeTlg4a7PdXvvKDZwNLrhIs4tRI3ePc8cxcjkl2R9GUmk4r2LV2xswrkYbBpt
+dhYnPSHSKwFupk2iDiqL6cZxGdjyI7xHy/06rQO+vo2FgI6xDSsEgYhRFV2WrgME
+4T0FJOUw3wSEXpxndU/Q0339Hbq27n6m5ql3w5CNLOGU5phWFGGFJLxfYj2do8Gj
+9KwXpGGZy0hr03y0G036B+kWWxbrhoPfOE0VPfIo7ZcSFqXQNGPw+fQELbI1DFvI
+ElAndnEVL6hIa2iQyXHAqSkkPo/uq87/miBDo3DyHnmkshZAB3hLVmXEaMG+82Rq
+vPbK+TCz2sqHDKS6CDEAOZ/pG9P0wL5WUHP8uSLBq3dLqkKY+1zsjlhPHqwH9q44
+t9MY0/eLvpGTMWVwIO01U3Rpo4m6FdjN8JwahBASvoRzLEeUh5c=
+=2IDJ
+-----END PGP SIGNATURE-----
+
+--fvloof6eixjzfmk4--

@@ -2,79 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FA1D1CBEAC
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 10:02:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F352C1CBEE0
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 10:23:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727118AbgEIICB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 9 May 2020 04:02:01 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:57710 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726950AbgEIICB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 9 May 2020 04:02:01 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 03E36742CF12882AFA33;
-        Sat,  9 May 2020 16:01:59 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.487.0; Sat, 9 May 2020 16:01:52 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Ayush Sawal <ayush.sawal@chelsio.com>,
-        Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
-        Rohit Maheshwari <rohitm@chelsio.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-crypto@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] cxgb4/chcr: Fix error return code in chcr_ktls_dev_add()
-Date:   Sat, 9 May 2020 08:05:48 +0000
-Message-ID: <20200509080548.118667-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727820AbgEIIXd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 9 May 2020 04:23:33 -0400
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:50242 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726214AbgEIIXd (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 9 May 2020 04:23:33 -0400
+Received: from localhost.localdomain ([93.22.149.123])
+        by mwinf5d73 with ME
+        id cYPT2200N2fyvbx03YPU05; Sat, 09 May 2020 10:23:29 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 09 May 2020 10:23:29 +0200
+X-ME-IP: 93.22.149.123
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     milo.kim@ti.com, sre@kernel.org, anton.vorontsov@linaro.org
+Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH V2] power: supply: lp8788: Fix an error handling path in 'lp8788_charger_probe()'
+Date:   Sat,  9 May 2020 10:23:23 +0200
+Message-Id: <20200509082323.223884-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return a negative error code from the error handling
-case instead of 0, as done elsewhere in this function.
+In the probe function, in case of error, resources allocated in
+'lp8788_setup_adc_channel()' must be released.
 
-Fixes: 34aba2c45024 ("cxgb4/chcr : Register to tls add and del callback")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+This can be achieved easily by using the devm_ variant of
+'iio_channel_get()'.
+This has the extra benefit to simplify the remove function and to axe the
+'lp8788_release_adc_channel()' function which is now useless.
+
+Fixes: 98a276649358 ("power_supply: Add new lp8788 charger driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/crypto/chelsio/chcr_ktls.c | 3 +++
- 1 file changed, 3 insertions(+)
+V2: use devm_iio_channel_get instead of iio_channel_get and simplify code
+---
+ drivers/power/supply/lp8788-charger.c | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/crypto/chelsio/chcr_ktls.c b/drivers/crypto/chelsio/chcr_ktls.c
-index 43d9e2420110..baaea8ce4080 100644
---- a/drivers/crypto/chelsio/chcr_ktls.c
-+++ b/drivers/crypto/chelsio/chcr_ktls.c
-@@ -501,12 +501,14 @@ static int chcr_ktls_dev_add(struct net_device *netdev, struct sock *sk,
- 	dst = sk_dst_get(sk);
- 	if (!dst) {
- 		pr_err("DST entry not found\n");
-+		ret = -ENOENT;
- 		goto out2;
- 	}
- 	n = dst_neigh_lookup(dst, daaddr);
- 	if (!n || !n->dev) {
- 		pr_err("neighbour not found\n");
- 		dst_release(dst);
-+		ret = -ENOENT;
- 		goto out2;
- 	}
- 	tx_info->l2te  = cxgb4_l2t_get(adap->l2t, n, n->dev, 0);
-@@ -516,6 +518,7 @@ static int chcr_ktls_dev_add(struct net_device *netdev, struct sock *sk,
+diff --git a/drivers/power/supply/lp8788-charger.c b/drivers/power/supply/lp8788-charger.c
+index 84a206f42a8e..e7931ffb7151 100644
+--- a/drivers/power/supply/lp8788-charger.c
++++ b/drivers/power/supply/lp8788-charger.c
+@@ -572,27 +572,14 @@ static void lp8788_setup_adc_channel(struct device *dev,
+ 		return;
  
- 	if (!tx_info->l2te) {
- 		pr_err("l2t entry not found\n");
-+		ret = -ENOENT;
- 		goto out2;
- 	}
-
-
+ 	/* ADC channel for battery voltage */
+-	chan = iio_channel_get(dev, pdata->adc_vbatt);
++	chan = devm_iio_channel_get(dev, pdata->adc_vbatt);
+ 	pchg->chan[LP8788_VBATT] = IS_ERR(chan) ? NULL : chan;
+ 
+ 	/* ADC channel for battery temperature */
+-	chan = iio_channel_get(dev, pdata->adc_batt_temp);
++	chan = devm_iio_channel_get(dev, pdata->adc_batt_temp);
+ 	pchg->chan[LP8788_BATT_TEMP] = IS_ERR(chan) ? NULL : chan;
+ }
+ 
+-static void lp8788_release_adc_channel(struct lp8788_charger *pchg)
+-{
+-	int i;
+-
+-	for (i = 0; i < LP8788_NUM_CHG_ADC; i++) {
+-		if (!pchg->chan[i])
+-			continue;
+-
+-		iio_channel_release(pchg->chan[i]);
+-		pchg->chan[i] = NULL;
+-	}
+-}
+-
+ static ssize_t lp8788_show_charger_status(struct device *dev,
+ 				struct device_attribute *attr, char *buf)
+ {
+@@ -735,7 +722,6 @@ static int lp8788_charger_remove(struct platform_device *pdev)
+ 	flush_work(&pchg->charger_work);
+ 	lp8788_irq_unregister(pdev, pchg);
+ 	lp8788_psy_unregister(pchg);
+-	lp8788_release_adc_channel(pchg);
+ 
+ 	return 0;
+ }
+-- 
+2.25.1
 

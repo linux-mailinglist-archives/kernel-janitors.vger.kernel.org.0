@@ -2,77 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0A051CC241
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 16:50:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 905041CC2DD
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 18:47:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728104AbgEIOu4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 9 May 2020 10:50:56 -0400
-Received: from smtp.infotech.no ([82.134.31.41]:51148 "EHLO smtp.infotech.no"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727105AbgEIOu4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 9 May 2020 10:50:56 -0400
-X-Greylist: delayed 338 seconds by postgrey-1.27 at vger.kernel.org; Sat, 09 May 2020 10:50:56 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by smtp.infotech.no (Postfix) with ESMTP id EB35220418E;
-        Sat,  9 May 2020 16:45:16 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new-2.6.6 (20110518) (Debian) at infotech.no
-Received: from smtp.infotech.no ([127.0.0.1])
-        by localhost (smtp.infotech.no [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id M1NS0c49Laat; Sat,  9 May 2020 16:45:11 +0200 (CEST)
-Received: from [192.168.48.23] (host-23-251-188-50.dyn.295.ca [23.251.188.50])
-        by smtp.infotech.no (Postfix) with ESMTPA id 4386B204150;
-        Sat,  9 May 2020 16:45:09 +0200 (CEST)
-Reply-To: dgilbert@interlog.com
-Subject: Re: [PATCH] scsi: scsi_debug: fix an error handling bug in
- sdeb_zbc_model_str()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>
-Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200509100408.GA5555@mwanda>
-From:   Douglas Gilbert <dgilbert@interlog.com>
-Message-ID: <0398fb52-dd1e-bb02-5160-69f2537132b7@interlog.com>
-Date:   Sat, 9 May 2020 10:45:07 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1728364AbgEIQrS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 9 May 2020 12:47:18 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:52878 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726214AbgEIQrS (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 9 May 2020 12:47:18 -0400
+Received: from [192.168.42.210] ([93.22.151.218])
+        by mwinf5d41 with ME
+        id cgn9220054iyQ5p03gn9Tp; Sat, 09 May 2020 18:47:16 +0200
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 09 May 2020 18:47:16 +0200
+X-ME-IP: 93.22.151.218
+Subject: Re: [PATCH] net/sonic: Fix some resource leaks in error handling
+ paths
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     davem@davemloft.net, fthain@telegraphics.com.au,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200508172557.218132-1-christophe.jaillet@wanadoo.fr>
+ <20200508185402.41d9d068@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <50ef36cd-d095-9abe-26ea-d363d11ce521@wanadoo.fr>
+Date:   Sat, 9 May 2020 18:47:08 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <20200509100408.GA5555@mwanda>
+In-Reply-To: <20200508185402.41d9d068@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-CA
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020-05-09 6:04 a.m., Dan Carpenter wrote:
-> This test is checking the wrong variable.  It should be testing "ret".
-> The "sdeb_zbc_model" variable is an enum (unsigned in this situation)
-> and we never assign negative values to it.
-> 
-> Fixes: 9267e0eb41fe ("scsi: scsi_debug: Add ZBC module parameter")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Le 09/05/2020 à 03:54, Jakub Kicinski a écrit :
+> On Fri,  8 May 2020 19:25:57 +0200 Christophe JAILLET wrote:
+>> @@ -527,8 +531,9 @@ static int mac_sonic_platform_remove(struct platform_device *pdev)
+>>   	struct sonic_local* lp = netdev_priv(dev);
+>>   
+>>   	unregister_netdev(dev);
+>> -	dma_free_coherent(lp->device, SIZEOF_SONIC_DESC * SONIC_BUS_SCALE(lp->dma_bitmode),
+>> -	                  lp->descriptors, lp->descriptors_laddr);
+>> +	dma_free_coherent(lp->device,
+>> +			  SIZEOF_SONIC_DESC * SONIC_BUS_SCALE(lp->dma_bitmode),
+>> +			  lp->descriptors, lp->descriptors_laddr);
+>>   	free_netdev(dev);
+>>   
+>>   	return 0;
+> This is a white-space only change, right? Since this is a fix we should
+> avoid making cleanups which are not strictly necessary.
+>
+Right.
 
-s/ret/res/ at the end of the first line above.
+The reason of this clean-up is that I wanted to avoid a checkpatch 
+warning with the proposed patch and I felt that having the same layout 
+in the error handling path of the probe function and in the remove 
+function was clearer.
+So I updated also the remove function.
 
-Acked-by: Douglas Gilbert <dgilbert@interlog.com>
+Fell free to ignore this hunk if not desired. I will not sent a V2 only 
+for that.
 
-> ---
->   drivers/scsi/scsi_debug.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/scsi/scsi_debug.c b/drivers/scsi/scsi_debug.c
-> index 105e563d87b4e..73847366dc495 100644
-> --- a/drivers/scsi/scsi_debug.c
-> +++ b/drivers/scsi/scsi_debug.c
-> @@ -6460,7 +6460,7 @@ static int sdeb_zbc_model_str(const char *cp)
->   		res = sysfs_match_string(zbc_model_strs_b, cp);
->   		if (res < 0) {
->   			res = sysfs_match_string(zbc_model_strs_c, cp);
-> -			if (sdeb_zbc_model < 0)
-> +			if (res < 0)
->   				return -EINVAL;
->   		}
->   	}
-> 
+CJ
 

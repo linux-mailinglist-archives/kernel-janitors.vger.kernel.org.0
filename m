@@ -2,34 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C73EC1CBF20
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 10:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1BD81CBFD7
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 11:30:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727116AbgEIIiv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 9 May 2020 04:38:51 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:4314 "EHLO huawei.com"
+        id S1728244AbgEIJ3w (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 9 May 2020 05:29:52 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:32988 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725930AbgEIIiu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 9 May 2020 04:38:50 -0400
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 5A748C4CB26369EF78C8;
-        Sat,  9 May 2020 16:38:48 +0800 (CST)
+        id S1726885AbgEIJ3w (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 9 May 2020 05:29:52 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id B8EAA1A5248D2D890D87;
+        Sat,  9 May 2020 17:29:49 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.487.0; Sat, 9 May 2020 16:38:41 +0800
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.487.0; Sat, 9 May 2020 17:29:41 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Ohad Ben-Cohen <ohad@wizery.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        "Erin Lo" <erin.lo@mediatek.com>
+To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>
 CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-remoteproc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
+        <sound-open-firmware@alsa-project.org>,
+        <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] remoteproc/mediatek: fix invalid use of sizeof in scp_ipi_init()
-Date:   Sat, 9 May 2020 08:42:37 +0000
-Message-ID: <20200509084237.36293-1-weiyongjun1@huawei.com>
+Subject: [PATCH -next] ASoC: SOF: core: fix error return code in sof_probe_continue()
+Date:   Sat, 9 May 2020 09:33:37 +0000
+Message-ID: <20200509093337.78897-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -41,31 +43,28 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-sizeof() when applied to a pointer typed expression gives the
-size of the pointer, not that of the pointed data.
+Fix to return negative error code -ENOMEM from the IPC init error
+handling case instead of 0, as done elsewhere in this function.
 
-Fixes: 63c13d61eafe ("remoteproc/mediatek: add SCP support for mt8183")
+Fixes: c16211d6226d ("ASoC: SOF: Add Sound Open Firmware driver core")
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/remoteproc/mtk_scp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/sof/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/remoteproc/mtk_scp.c b/drivers/remoteproc/mtk_scp.c
-index 2bead57c9cf9..ac13e7b046a6 100644
---- a/drivers/remoteproc/mtk_scp.c
-+++ b/drivers/remoteproc/mtk_scp.c
-@@ -132,8 +132,8 @@ static int scp_ipi_init(struct mtk_scp *scp)
- 		(struct mtk_share_obj __iomem *)(scp->sram_base + recv_offset);
- 	scp->send_buf =
- 		(struct mtk_share_obj __iomem *)(scp->sram_base + send_offset);
--	memset_io(scp->recv_buf, 0, sizeof(scp->recv_buf));
--	memset_io(scp->send_buf, 0, sizeof(scp->send_buf));
-+	memset_io(scp->recv_buf, 0, sizeof(*scp->recv_buf));
-+	memset_io(scp->send_buf, 0, sizeof(*scp->send_buf));
- 
- 	return 0;
- }
+diff --git a/sound/soc/sof/core.c b/sound/soc/sof/core.c
+index 94a2cb58ab9a..ef9be4f45e27 100644
+--- a/sound/soc/sof/core.c
++++ b/sound/soc/sof/core.c
+@@ -176,6 +176,7 @@ static int sof_probe_continue(struct snd_sof_dev *sdev)
+ 	/* init the IPC */
+ 	sdev->ipc = snd_sof_ipc_init(sdev);
+ 	if (!sdev->ipc) {
++		ret = -ENOMEM;
+ 		dev_err(sdev->dev, "error: failed to init DSP IPC %d\n", ret);
+ 		goto ipc_err;
+ 	}
 
 
 

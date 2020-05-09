@@ -2,87 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E4E11CBC90
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 04:31:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAECD1CBCA0
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 04:58:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728651AbgEICbw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 May 2020 22:31:52 -0400
-Received: from smtprelay0160.hostedemail.com ([216.40.44.160]:58544 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728353AbgEICbw (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 May 2020 22:31:52 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 105B4180A733F;
-        Sat,  9 May 2020 02:31:51 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3866:3867:3868:3872:3873:4321:5007:7809:9010:10004:10400:10848:10967:11026:11232:11473:11658:11914:12043:12297:12438:12740:12760:12895:13069:13311:13357:13439:13891:14096:14097:14181:14659:14721:21080:21324:21451:21627:21740:30054:30064:30083:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: pan63_4a25c479b7e55
-X-Filterd-Recvd-Size: 2571
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf19.hostedemail.com (Postfix) with ESMTPA;
-        Sat,  9 May 2020 02:31:49 +0000 (UTC)
-Message-ID: <fbd61323358554b00460c97ec303572189f99544.camel@perches.com>
-Subject: Re: [PATCH] net: tg3: tidy up loop, remove need to compute off with
- a multiply
-From:   Joe Perches <joe@perches.com>
-To:     Jakub Kicinski <kuba@kernel.org>,
-        Colin Ian King <colin.king@canonical.com>
-Cc:     Siva Reddy Kallam <siva.kallam@broadcom.com>,
-        Prashant Sreedharan <prashant@broadcom.com>,
-        Michael Chan <mchan@broadcom.com>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Fri, 08 May 2020 19:31:48 -0700
-In-Reply-To: <20200508184814.45e10c12@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-References: <20200508225301.484094-1-colin.king@canonical.com>
-         <1890306fc8c9306abe11186d419d84f784ee6144.camel@perches.com>
-         <160ce1ee-3bb5-3357-64f3-e5dea8c0538d@canonical.com>
-         <20200508184814.45e10c12@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.1-2 
+        id S1728487AbgEIC63 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 May 2020 22:58:29 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:4309 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728353AbgEIC62 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 8 May 2020 22:58:28 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 1DF718F04DBA6D651016;
+        Sat,  9 May 2020 10:58:26 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.487.0; Sat, 9 May 2020 10:58:17 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Georgi Djakov <georgi.djakov@linaro.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Alexandre Bailon <abailon@baylibre.com>,
+        Leonard Crestez <leonard.crestez@nxp.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-pm@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] interconnect: imx: Fix return value check in imx_icc_node_init_qos()
+Date:   Sat, 9 May 2020 03:02:14 +0000
+Message-ID: <20200509030214.14435-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 2020-05-08 at 18:48 -0700, Jakub Kicinski wrote:
-> On Sat, 9 May 2020 00:31:03 +0100 Colin Ian King wrote:
-> > > My preference would be for
-> > > 
-> > > {
-> > > 	int i;
-> > > 	u32 off = 0;
-> > > 
-> > > 	for (i = 0; i < TG3_SD_NUM_RECS; i++) {
-> > > 		tg3_ape_scratchpad_read(tp, (u32 *)ocir, off, TC3_OCIR_LEN);
-> > > 
-> > > 		if (ocir->signature != TG3_OCIR_SIG_MAGIC ||
-> > > 		    !(ocir->version_flags & TG3_OCIR_FLAG_ACTIVE))
-> > > 			memset(ocir, 0, TG3_OCIR_LEN);
-> > > 
-> > > 		off += TG3_OCIR_LEN;
-> > > 		ocir++;
-> > > 	}
-> > >   
-> > OK, I'll send a V3 tomorrow.
-> 
-> I already reviewed and applied v2, just waiting for builds to finish,
-> let's leave it.
+In case of error, the function of_parse_phandle() returns NULL pointer
+not ERR_PTR(). The IS_ERR() test in the return value check should be
+replaced with NULL test.
 
+Fixes: f0d8048525d7 ("interconnect: Add imx core driver")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/interconnect/imx/imx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-I think clarity should be preferred.
-Are you a maintainer of this file?
+diff --git a/drivers/interconnect/imx/imx.c b/drivers/interconnect/imx/imx.c
+index 6884212511f0..ac420f86008e 100644
+--- a/drivers/interconnect/imx/imx.c
++++ b/drivers/interconnect/imx/imx.c
+@@ -90,10 +90,10 @@ static int imx_icc_node_init_qos(struct icc_provider *provider,
+ 			node->name, node->id);
+ 	} else {
+ 		dn = of_parse_phandle(dev->of_node, adj->phandle_name, 0);
+-		if (IS_ERR(dn)) {
+-			dev_warn(dev, "Failed to parse %s: %ld\n",
+-				 adj->phandle_name, PTR_ERR(dn));
+-			return PTR_ERR(dn);
++		if (!dn) {
++			dev_warn(dev, "Failed to parse %s\n",
++				 adj->phandle_name);
++			return -ENODEV;
+ 		}
+ 		/* Allow scaling to be disabled on a per-node basis */
+ 		if (!dn || !of_device_is_available(dn)) {
 
-$ ./scripts/get_maintainer.pl -f drivers/net/ethernet/broadcom/tg3.c
-Siva Reddy Kallam <siva.kallam@broadcom.com> (supporter:BROADCOM TG3 GIGABIT ETHERNET DRIVER)
-Prashant Sreedharan <prashant@broadcom.com> (supporter:BROADCOM TG3 GIGABIT ETHERNET DRIVER)
-Michael Chan <mchan@broadcom.com> (supporter:BROADCOM TG3 GIGABIT ETHERNET DRIVER)
-"David S. Miller" <davem@davemloft.net> (odd fixer:NETWORKING DRIVERS)
-netdev@vger.kernel.org (open list:BROADCOM TG3 GIGABIT ETHERNET DRIVER)
-linux-kernel@vger.kernel.org (open list)
 
 

@@ -2,83 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6D201CC3A2
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 20:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1566B1CC494
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 22:32:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728073AbgEISN3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 9 May 2020 14:13:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37602 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727106AbgEISN2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 9 May 2020 14:13:28 -0400
-Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (c-67-180-217-166.hsd1.ca.comcast.net [67.180.217.166])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E6FBB21473;
-        Sat,  9 May 2020 18:13:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589048008;
-        bh=ZvfcP8iKmBJsOOsYuB1cFVtXFkMyiFexkKn+eQSnu1s=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=oHDtZjNMF4UUKE9+bMS4H/MSNGlbRT64LaiEVszUAFnG6h71myoEF453iy/2/h/Lh
-         YWzVRPaEKfXxualsCAS1x2XIRpANu61rt8CVUDEfiwD9d8N+1WPiP+s4PR00VNhgmX
-         M2fLqDQLI5dRxg4K6S0X68J6dj+F+c4Az8ThTUGE=
-Date:   Sat, 9 May 2020 11:13:21 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+        id S1727834AbgEIUcI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 9 May 2020 16:32:08 -0400
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:18147 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726019AbgEIUcI (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 9 May 2020 16:32:08 -0400
+Received: from [192.168.42.210] ([93.23.15.202])
+        by mwinf5d70 with ME
+        id ckXz220064MaNxZ03kXzm4; Sat, 09 May 2020 22:32:06 +0200
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 09 May 2020 22:32:06 +0200
+X-ME-IP: 93.23.15.202
+Subject: Re: [PATCH] net/sonic: Fix some resource leaks in error handling
+ paths
+To:     Jakub Kicinski <kuba@kernel.org>
 Cc:     davem@davemloft.net, fthain@telegraphics.com.au,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] net/sonic: Fix some resource leaks in error handling
- paths
-Message-ID: <20200509111321.51419b19@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <50ef36cd-d095-9abe-26ea-d363d11ce521@wanadoo.fr>
 References: <20200508172557.218132-1-christophe.jaillet@wanadoo.fr>
-        <20200508185402.41d9d068@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        <50ef36cd-d095-9abe-26ea-d363d11ce521@wanadoo.fr>
+ <20200508185402.41d9d068@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <50ef36cd-d095-9abe-26ea-d363d11ce521@wanadoo.fr>
+ <20200509111321.51419b19@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <9f7ed642-c464-feec-2dfd-13333621492f@wanadoo.fr>
+Date:   Sat, 9 May 2020 22:31:59 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200509111321.51419b19@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 9 May 2020 18:47:08 +0200 Christophe JAILLET wrote:
-> Le 09/05/2020 =C3=A0 03:54, Jakub Kicinski a =C3=A9crit=C2=A0:
-> > On Fri,  8 May 2020 19:25:57 +0200 Christophe JAILLET wrote: =20
-> >> @@ -527,8 +531,9 @@ static int mac_sonic_platform_remove(struct platfo=
-rm_device *pdev)
-> >>   	struct sonic_local* lp =3D netdev_priv(dev);
-> >>  =20
-> >>   	unregister_netdev(dev);
-> >> -	dma_free_coherent(lp->device, SIZEOF_SONIC_DESC * SONIC_BUS_SCALE(lp=
-->dma_bitmode),
-> >> -	                  lp->descriptors, lp->descriptors_laddr);
-> >> +	dma_free_coherent(lp->device,
-> >> +			  SIZEOF_SONIC_DESC * SONIC_BUS_SCALE(lp->dma_bitmode),
-> >> +			  lp->descriptors, lp->descriptors_laddr);
-> >>   	free_netdev(dev);
-> >>  =20
-> >>   	return 0; =20
-> > This is a white-space only change, right? Since this is a fix we should
-> > avoid making cleanups which are not strictly necessary.
+Le 09/05/2020 à 20:13, Jakub Kicinski a écrit :
+> On Sat, 9 May 2020 18:47:08 +0200 Christophe JAILLET wrote:
+>> Le 09/05/2020 à 03:54, Jakub Kicinski a écrit :
+>>> On Fri,  8 May 2020 19:25:57 +0200 Christophe JAILLET wrote:
+>>>> @@ -527,8 +531,9 @@ static int mac_sonic_platform_remove(struct platform_device *pdev)
+>>>>    	struct sonic_local* lp = netdev_priv(dev);
+>>>>    
+>>>>    	unregister_netdev(dev);
+>>>> -	dma_free_coherent(lp->device, SIZEOF_SONIC_DESC * SONIC_BUS_SCALE(lp->dma_bitmode),
+>>>> -	                  lp->descriptors, lp->descriptors_laddr);
+>>>> +	dma_free_coherent(lp->device,
+>>>> +			  SIZEOF_SONIC_DESC * SONIC_BUS_SCALE(lp->dma_bitmode),
+>>>> +			  lp->descriptors, lp->descriptors_laddr);
+>>>>    	free_netdev(dev);
+>>>>    
+>>>>    	return 0;
+>>> This is a white-space only change, right? Since this is a fix we should
+>>> avoid making cleanups which are not strictly necessary.
+>> Right.
+>>
+>> The reason of this clean-up is that I wanted to avoid a checkpatch
+>> warning with the proposed patch and I felt that having the same layout
+>> in the error handling path of the probe function and in the remove
+>> function was clearer.
+>> So I updated also the remove function.
+> I understand the motivation is good.
 >
-> Right.
->=20
-> The reason of this clean-up is that I wanted to avoid a checkpatch=20
-> warning with the proposed patch and I felt that having the same layout=20
-> in the error handling path of the probe function and in the remove=20
-> function was clearer.
-> So I updated also the remove function.
+>> Fell free to ignore this hunk if not desired. I will not sent a V2 only
+>> for that.
+> That's not how it works. Busy maintainers don't have time to hand edit
+> patches. I'm not applying this to the networking tree and I'm tossing it
+> from patchwork. Please address the basic feedback.
+>
+> Thank you.
+>
+Hi,
 
-I understand the motivation is good.
+that's not the way you would like it to work.
+It happens that some maintainers make some small adjustments in the 
+commit message or the patch itself.
 
-> Fell free to ignore this hunk if not desired. I will not sent a V2 only=20
-> for that.
+The patch is good enough for me. If you can not accept the additional 
+small clean-up, or don't have time to tweak it by yourself, or by anyone 
+else, please, just reject it.
+The issue I propose to fix is minor and unlikely to happen anyway.
 
-That's not how it works. Busy maintainers don't have time to hand edit
-patches. I'm not applying this to the networking tree and I'm tossing it
-from patchwork. Please address the basic feedback.
+If anyone else cares to update the proposal, please do.
 
-Thank you.
+
+I don't want to discuss your motivation, I understand them.
+
+But please, do also understand mine and do not require too futile things 
+from hobbyists.
+
+Spending time only to remove a CR because it does not match your quality 
+standard or your expectation of what a patch is, is of no interest for me.
+That's why I told I would not send a V2.
+
+
+It is up to you to accept it as-is, update it or reject it, according to 
+the value you think this patch has.
+
+Hoping for your understanding and sorry for wasting your time.
+
+Best regards,
+CJ
+

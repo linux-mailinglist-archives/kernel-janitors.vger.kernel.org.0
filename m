@@ -2,102 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B373B1CBE6C
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 09:33:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF7301CBE97
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 09:53:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729006AbgEIHdR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 9 May 2020 03:33:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38022 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728783AbgEIHdQ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 9 May 2020 03:33:16 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D08D3C061A0C;
-        Sat,  9 May 2020 00:33:15 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id x17so4506200wrt.5;
-        Sat, 09 May 2020 00:33:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=JzII+/ip8LqgseqkpLSSihEGHWvUlzQVWw55jRYME58=;
-        b=E2idVmRrLfXzjWuOge01x9LEGPM+aP1tprtJ9oV2gDjZs4CqElrZqsLDTL/QYwEPde
-         2SndPpVpaQHDh4LalEk9DQ6SIn55638UN3z+q9pZCyHj19ba+D9JpoI1WIwu6IctK5x/
-         eyvtHDwNoI1aPF6eqIQnkmnCzv+73UkZfJ7u768SQsQs7cg6psAOc2MtzSCuszH5rEZT
-         o9MXsv3p78nNmIsXY2+Aw+IwX9lYE2oqlrww87TkTUwLBOrSjalVFo8225h9qZEk2Z71
-         xBFNZlg/Fwf3eJWBjj/SeCXGLzRzp0LniMQFVHQHYx4VSQpLP502q1MZ8+tLIaXejWSM
-         yNJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=JzII+/ip8LqgseqkpLSSihEGHWvUlzQVWw55jRYME58=;
-        b=hMbyHkrRlzPYU5ol8SlJBYIbJ503Tpi69/NZAxvZ+On/Q2qvpCxN3dBqJEV6PUyhdz
-         9eOXcjnEXM9uYXPptwE9XCEX1UFmWdKk2Guxv8bWVoF4ksHTDV09YIMT6AIANOGCeBnt
-         vio1NtnjVNvGgNamf8/DjamORfbdWB/mp0cyIa+O4R/5l4dI9w/HMO9UEzbn/iGseYAw
-         yomAnlZzi31pCo9vX3zinBpTEoS5agnfvQeYdnEo2A4wd/2GokzjPkWueMkKz9U0To4n
-         WuuzXCglkPpgs6HzEV8ioGkhUWWAjfinJmsBoxRL4vLyHV4U0rdSPuPloHy1XNRZ2xaY
-         iD4Q==
-X-Gm-Message-State: AGi0Pubt+sz1TovjdWCpncuRkZIC3eE3nzgQl/JP/fD/NyuK3GFX++ic
-        IFqJdzYpWivRja6Hua9CJCo=
-X-Google-Smtp-Source: APiQypK5+lymdTCRNfyJZjPR9RVDesDwYyb0xT+Bl8rGLfeyEloWc0zMGzcH+LSjJqSto90pIUea+g==
-X-Received: by 2002:adf:82c3:: with SMTP id 61mr7556187wrc.326.1589009594505;
-        Sat, 09 May 2020 00:33:14 -0700 (PDT)
-Received: from felia.fritz.box ([2001:16b8:2d78:ee00:a1d0:e5b9:8d00:ef35])
-        by smtp.gmail.com with ESMTPSA id a10sm7437826wrp.0.2020.05.09.00.33.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 May 2020 00:33:13 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Jiri Kosina <jkosina@suse.cz>,
-        Peter Zijlstra <peterz@infradead.org>
-Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
-        Jiri Kosina <jikos@kernel.org>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Petr Mladek <pmladek@suse.com>,
-        Joe Lawrence <joe.lawrence@redhat.com>,
-        live-patching@vger.kernel.org, Joe Perches <joe@perches.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: adjust to livepatch .klp.arch removal
-Date:   Sat,  9 May 2020 09:32:58 +0200
-Message-Id: <20200509073258.5970-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726012AbgEIHxM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 9 May 2020 03:53:12 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:4371 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725920AbgEIHxM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 9 May 2020 03:53:12 -0400
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 9064E33347D0D4770EB6;
+        Sat,  9 May 2020 15:53:06 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.487.0; Sat, 9 May 2020 15:52:57 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Hemant Kumar <hemantk@codeaurora.org>,
+        Jeffrey Hugo <jhugo@codeaurora.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Sujeev Dias <sdias@codeaurora.org>,
+        Siddartha Mohanadoss <smohanad@codeaurora.org>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-arm-msm@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] bus: mhi: core: Fix some error return code
+Date:   Sat, 9 May 2020 07:56:54 +0000
+Message-ID: <20200509075654.175002-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 1d05334d2899 ("livepatch: Remove .klp.arch") removed
-arch/x86/kernel/livepatch.c, but missed to adjust the LIVE PATCHING entry
-in MAINTAINERS.
+Fix to return negative error code from the error handling case
+instead of 0 in mhi_init_dev_ctxt() and mhi_driver_probe().
 
-Since then, ./scripts/get_maintainer.pl --self-test=patterns complains:
-
-  warning: no file matches  F:  arch/x86/kernel/livepatch.c
-
-So, drop that obsolete file entry in MAINTAINERS.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Fixes: 3000f85b8f47 ("bus: mhi: core: Add support for basic PM operations")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
-Jiri, please take this minor non-urgent patch for livepatching/for-next.
-Peter, please ack.
+ drivers/bus/mhi/core/init.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-applies cleanly on next-20200508
+diff --git a/drivers/bus/mhi/core/init.c b/drivers/bus/mhi/core/init.c
+index eb2ab058a01d..1f8c82603179 100644
+--- a/drivers/bus/mhi/core/init.c
++++ b/drivers/bus/mhi/core/init.c
+@@ -291,6 +291,7 @@ int mhi_init_dev_ctxt(struct mhi_controller *mhi_cntrl)
+ 	}
+ 
+ 	/* Setup cmd context */
++	ret = -ENOMEM;
+ 	mhi_ctxt->cmd_ctxt = mhi_alloc_coherent(mhi_cntrl,
+ 						sizeof(*mhi_ctxt->cmd_ctxt) *
+ 						NR_OF_CMD_RINGS,
+@@ -1100,6 +1101,7 @@ static int mhi_driver_probe(struct device *dev)
+ 		}
+ 	}
+ 
++	ret = -EINVAL;
+ 	if (dl_chan) {
+ 		/*
+ 		 * If channel supports LPM notifications then status_cb should
 
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 92657a132417..642f55c4b556 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9909,7 +9909,6 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/livepatching/livepatching.g
- F:	Documentation/ABI/testing/sysfs-kernel-livepatch
- F:	Documentation/livepatch/
- F:	arch/x86/include/asm/livepatch.h
--F:	arch/x86/kernel/livepatch.c
- F:	include/linux/livepatch.h
- F:	kernel/livepatch/
- F:	samples/livepatch/
--- 
-2.17.1
 

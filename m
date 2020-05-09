@@ -2,112 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1566B1CC494
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 22:32:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B94E51CC4C4
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 23:41:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727834AbgEIUcI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 9 May 2020 16:32:08 -0400
-Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:18147 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726019AbgEIUcI (ORCPT
+        id S1728199AbgEIVlQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 9 May 2020 17:41:16 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50014 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726120AbgEIVlQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 9 May 2020 16:32:08 -0400
-Received: from [192.168.42.210] ([93.23.15.202])
-        by mwinf5d70 with ME
-        id ckXz220064MaNxZ03kXzm4; Sat, 09 May 2020 22:32:06 +0200
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 09 May 2020 22:32:06 +0200
-X-ME-IP: 93.23.15.202
-Subject: Re: [PATCH] net/sonic: Fix some resource leaks in error handling
- paths
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     davem@davemloft.net, fthain@telegraphics.com.au,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20200508172557.218132-1-christophe.jaillet@wanadoo.fr>
- <20200508185402.41d9d068@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <50ef36cd-d095-9abe-26ea-d363d11ce521@wanadoo.fr>
- <20200509111321.51419b19@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <9f7ed642-c464-feec-2dfd-13333621492f@wanadoo.fr>
-Date:   Sat, 9 May 2020 22:31:59 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        Sat, 9 May 2020 17:41:16 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jXXDb-00049o-8Z; Sat, 09 May 2020 21:41:11 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     "David S . Miller" <davem@davemloft.net>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-usb@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] net: usb: ax88179_178a: remove redundant assignment to variable ret
+Date:   Sat,  9 May 2020 22:41:11 +0100
+Message-Id: <20200509214111.505920-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20200509111321.51419b19@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 09/05/2020 à 20:13, Jakub Kicinski a écrit :
-> On Sat, 9 May 2020 18:47:08 +0200 Christophe JAILLET wrote:
->> Le 09/05/2020 à 03:54, Jakub Kicinski a écrit :
->>> On Fri,  8 May 2020 19:25:57 +0200 Christophe JAILLET wrote:
->>>> @@ -527,8 +531,9 @@ static int mac_sonic_platform_remove(struct platform_device *pdev)
->>>>    	struct sonic_local* lp = netdev_priv(dev);
->>>>    
->>>>    	unregister_netdev(dev);
->>>> -	dma_free_coherent(lp->device, SIZEOF_SONIC_DESC * SONIC_BUS_SCALE(lp->dma_bitmode),
->>>> -	                  lp->descriptors, lp->descriptors_laddr);
->>>> +	dma_free_coherent(lp->device,
->>>> +			  SIZEOF_SONIC_DESC * SONIC_BUS_SCALE(lp->dma_bitmode),
->>>> +			  lp->descriptors, lp->descriptors_laddr);
->>>>    	free_netdev(dev);
->>>>    
->>>>    	return 0;
->>> This is a white-space only change, right? Since this is a fix we should
->>> avoid making cleanups which are not strictly necessary.
->> Right.
->>
->> The reason of this clean-up is that I wanted to avoid a checkpatch
->> warning with the proposed patch and I felt that having the same layout
->> in the error handling path of the probe function and in the remove
->> function was clearer.
->> So I updated also the remove function.
-> I understand the motivation is good.
->
->> Fell free to ignore this hunk if not desired. I will not sent a V2 only
->> for that.
-> That's not how it works. Busy maintainers don't have time to hand edit
-> patches. I'm not applying this to the networking tree and I'm tossing it
-> from patchwork. Please address the basic feedback.
->
-> Thank you.
->
-Hi,
+From: Colin Ian King <colin.king@canonical.com>
 
-that's not the way you would like it to work.
-It happens that some maintainers make some small adjustments in the 
-commit message or the patch itself.
+The variable ret is being initializeed with a value that is never read
+and it is being updated later with a new value. The initialization
+is redundant and can be removed.
 
-The patch is good enough for me. If you can not accept the additional 
-small clean-up, or don't have time to tweak it by yourself, or by anyone 
-else, please, just reject it.
-The issue I propose to fix is minor and unlikely to happen anyway.
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/usb/ax88179_178a.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-If anyone else cares to update the proposal, please do.
-
-
-I don't want to discuss your motivation, I understand them.
-
-But please, do also understand mine and do not require too futile things 
-from hobbyists.
-
-Spending time only to remove a CR because it does not match your quality 
-standard or your expectation of what a patch is, is of no interest for me.
-That's why I told I would not send a V2.
-
-
-It is up to you to accept it as-is, update it or reject it, according to 
-the value you think this patch has.
-
-Hoping for your understanding and sorry for wasting your time.
-
-Best regards,
-CJ
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index b05bb11a02cb..950711448f39 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -860,7 +860,7 @@ static int ax88179_set_eee(struct net_device *net, struct ethtool_eee *edata)
+ {
+ 	struct usbnet *dev = netdev_priv(net);
+ 	struct ax88179_data *priv = (struct ax88179_data *)dev->data;
+-	int ret = -EOPNOTSUPP;
++	int ret;
+ 
+ 	priv->eee_enabled = edata->eee_enabled;
+ 	if (!priv->eee_enabled) {
+-- 
+2.25.1
 

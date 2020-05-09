@@ -2,143 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCDF11CBE05
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 08:15:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B373B1CBE6C
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 May 2020 09:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728861AbgEIGPm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 9 May 2020 02:15:42 -0400
-Received: from mout.web.de ([217.72.192.78]:53217 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725822AbgEIGPl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 9 May 2020 02:15:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1589004925;
-        bh=ifcV3ZHs6w2S6xwGj4cy+pBXQRHSzpfPrRFt6UkrSUs=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=Zz6L1nYQou7GnhzbX5fOFkHQ3q67xI93xTaVAEcRfrb8BCqeb3f8ExMMpMwxUhyg9
-         w8ZjFGSzzLnL0NYZEjVPFq4GdT3cyQcM/nlBP0fpI9cHqY0r+JUhAvysfjvDw018jf
-         f9dM2RsIcqdBOZ1ZoLjyxr+oxm/Wyn+oEKkYMh8c=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.48.147.78]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MSrl3-1jfFMW28kn-00RnHW; Sat, 09
- May 2020 08:15:25 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Finn Thain <fthain@telegraphics.com.au>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH] net/sonic: Fix some resource leaks in error handling
- paths
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-To:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        netdev@vger.kernel.org
-Message-ID: <b7651b26-ac1e-6281-efb2-7eff0018b158@web.de>
-Date:   Sat, 9 May 2020 08:15:18 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:q7OD8yBSZzkshqpVZn9WpjIxXdZ5nl4Od1KAm8Ec1iweRgjciU9
- 9QrlqSHKp7XQfFV6Frxvf5Ept8+A9BKfmqNe6wPIHfOCvL00Wxr0xwxKBdeXDGzPMm72jFl
- +n+0Gi1Qk8JFwi68QsgdZ5clFawSWzhu1+nbINI2RynMDjhpoghCxCxRN8SZ3bopZe67/GK
- Rd+c1kekLKXQiVeny3GSQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:KBxsFh92u2w=:Oc2aNy8cfUMLfaP1GvpY/v
- q208mgYrSIT4f8Iy0I+FCbAs0/4jj5TJmjFqX8y4BBImXZYwFuZoAzRZcA9rNrSgXFdsxFk4w
- xvbaAvUcRk2WZVyFn1luAAngvYF5rBgeHvmqD/05ncRfOP21w2XQfzL3tLXPoT2HZoqRoiAxi
- ygr8QGsPZgb3qPvTnlmnsopDPGeuPnvtsSJZA3M87cS+tdZteu6z9+PcUP4lN2/jXzoiwahvu
- DC2Bt9X9WF98P1v3fPknlqdRD6rvpLig2SetqhX/KGNxhv7pkchn/Fju1LDxr+Xnp1wryRlTd
- 9YzUCJJAkqtpqlYlHEiZ/AGdnxBxqcOLNRmFmQWNCf0H9xXDI/caxn1/aPb/KaibLito+sYKG
- 89mMNHO3gyeCsI36NPtP6EMwJAgRY/GBZ4yKPzymjYUS6NfcxM2fUEwFEyWYz+pWSVD5xu1lM
- Sghc9qouJ1RBioHfYQtiofQH21/Jkok5bTf1bj5ZDGteYgiz38U5UchASkSqcg/a1GfKcm4On
- v/0TGqeW7uk7E1O9u3o/6qHQgliti9D0wG+I9uY4o7FVHFdaT3hndc3v7TRtOhjVf3y9BFt5y
- zgU4ZFxdTe+2p681GLy8Y0iTO8HI9Y60CH6b3tVQ/jJkI6qzRJ+tDerHEiks+gAKwe/XiWV/i
- i4pfszFFEYTpnneKiv7/4khTVGHBJ19MFiwTctyS900E1WhX/p/7sXxVotj11bT4wJc8fi7k3
- N6tLgNxjbIg3sRipbmWEWfWOS3lpNU6DlKRMHZZimcrmyaP7z2pkyVmtJ1FvC4/V965j1j7b7
- nVxKDswuIka1iXra1WJLEsyhAd6crNEzNFrsMI29JVcErWQG3A22x2SpBpwvXYepzcKf4ZSsZ
- 2r0LH0Lbn+OHaqpQ5MVCTQyNUkoFINN0r6FosDnQOQPDTZt4GWBkWB2E4HTxUTY8JYuAoRAfw
- /r9JEutL/oo8c0KLqZ8zmDZwpcxSo00e+zkhexQ7Aw5wVjS2Pg2oPRg+Nh/IVHGX8WF4s4zNA
- xyn1UIXPN8MTG0JvyGOmn2BB5TmAXLa+JK/hwfhDZoQ7L7QnNvQZ3lYe+adqs9MPh7P5OiaPd
- ZrPMz7ryBjRjIpHvawipzfG0zkEuS9iX4ZkG1RvccsOy/rkjB49/75fAgra5rNl+YomI9QEDJ
- oCk/Tbl7G+2/+JUnHthmhR5C49P4Pel4bsrW9gRgyOTGJPAqIqNTykZZl8hWDnOk3TK7OPwpw
- 5SsjemwsfzOMEyC/w
+        id S1729006AbgEIHdR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 9 May 2020 03:33:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38022 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728783AbgEIHdQ (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 9 May 2020 03:33:16 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D08D3C061A0C;
+        Sat,  9 May 2020 00:33:15 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id x17so4506200wrt.5;
+        Sat, 09 May 2020 00:33:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=JzII+/ip8LqgseqkpLSSihEGHWvUlzQVWw55jRYME58=;
+        b=E2idVmRrLfXzjWuOge01x9LEGPM+aP1tprtJ9oV2gDjZs4CqElrZqsLDTL/QYwEPde
+         2SndPpVpaQHDh4LalEk9DQ6SIn55638UN3z+q9pZCyHj19ba+D9JpoI1WIwu6IctK5x/
+         eyvtHDwNoI1aPF6eqIQnkmnCzv+73UkZfJ7u768SQsQs7cg6psAOc2MtzSCuszH5rEZT
+         o9MXsv3p78nNmIsXY2+Aw+IwX9lYE2oqlrww87TkTUwLBOrSjalVFo8225h9qZEk2Z71
+         xBFNZlg/Fwf3eJWBjj/SeCXGLzRzp0LniMQFVHQHYx4VSQpLP502q1MZ8+tLIaXejWSM
+         yNJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=JzII+/ip8LqgseqkpLSSihEGHWvUlzQVWw55jRYME58=;
+        b=hMbyHkrRlzPYU5ol8SlJBYIbJ503Tpi69/NZAxvZ+On/Q2qvpCxN3dBqJEV6PUyhdz
+         9eOXcjnEXM9uYXPptwE9XCEX1UFmWdKk2Guxv8bWVoF4ksHTDV09YIMT6AIANOGCeBnt
+         vio1NtnjVNvGgNamf8/DjamORfbdWB/mp0cyIa+O4R/5l4dI9w/HMO9UEzbn/iGseYAw
+         yomAnlZzi31pCo9vX3zinBpTEoS5agnfvQeYdnEo2A4wd/2GokzjPkWueMkKz9U0To4n
+         WuuzXCglkPpgs6HzEV8ioGkhUWWAjfinJmsBoxRL4vLyHV4U0rdSPuPloHy1XNRZ2xaY
+         iD4Q==
+X-Gm-Message-State: AGi0Pubt+sz1TovjdWCpncuRkZIC3eE3nzgQl/JP/fD/NyuK3GFX++ic
+        IFqJdzYpWivRja6Hua9CJCo=
+X-Google-Smtp-Source: APiQypK5+lymdTCRNfyJZjPR9RVDesDwYyb0xT+Bl8rGLfeyEloWc0zMGzcH+LSjJqSto90pIUea+g==
+X-Received: by 2002:adf:82c3:: with SMTP id 61mr7556187wrc.326.1589009594505;
+        Sat, 09 May 2020 00:33:14 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2d78:ee00:a1d0:e5b9:8d00:ef35])
+        by smtp.gmail.com with ESMTPSA id a10sm7437826wrp.0.2020.05.09.00.33.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 May 2020 00:33:13 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Jiri Kosina <jkosina@suse.cz>,
+        Peter Zijlstra <peterz@infradead.org>
+Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Petr Mladek <pmladek@suse.com>,
+        Joe Lawrence <joe.lawrence@redhat.com>,
+        live-patching@vger.kernel.org, Joe Perches <joe@perches.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: adjust to livepatch .klp.arch removal
+Date:   Sat,  9 May 2020 09:32:58 +0200
+Message-Id: <20200509073258.5970-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> While at it, rename a label in order to be slightly more informative and
-> split some too long lines.
+Commit 1d05334d2899 ("livepatch: Remove .klp.arch") removed
+arch/x86/kernel/livepatch.c, but missed to adjust the LIVE PATCHING entry
+in MAINTAINERS.
 
-Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the change descri=
-ption?
+Since then, ./scripts/get_maintainer.pl --self-test=patterns complains:
 
+  warning: no file matches  F:  arch/x86/kernel/livepatch.c
 
-=E2=80=A6
-> +++ b/drivers/net/ethernet/natsemi/macsonic.c
-> @@ -506,10 +506,14 @@ static int mac_sonic_platform_probe(struct platfor=
-m_device *pdev)
->
->  	err =3D register_netdev(dev);
->  	if (err)
-> -		goto out;
-> +		goto undo_probe1;
->
->  	return 0;
->
-> +undo_probe1:
-> +	dma_free_coherent(lp->device,
-> +			  SIZEOF_SONIC_DESC * SONIC_BUS_SCALE(lp->dma_bitmode),
-> +			  lp->descriptors, lp->descriptors_laddr);
->  out:
-=E2=80=A6
+So, drop that obsolete file entry in MAINTAINERS.
 
-How do you think about the possibility to use the label =E2=80=9Cfree_dma=
-=E2=80=9D?
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+Jiri, please take this minor non-urgent patch for livepatching/for-next.
+Peter, please ack.
 
-Regards,
-Markus
+applies cleanly on next-20200508
+
+ MAINTAINERS | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 92657a132417..642f55c4b556 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9909,7 +9909,6 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/livepatching/livepatching.g
+ F:	Documentation/ABI/testing/sysfs-kernel-livepatch
+ F:	Documentation/livepatch/
+ F:	arch/x86/include/asm/livepatch.h
+-F:	arch/x86/kernel/livepatch.c
+ F:	include/linux/livepatch.h
+ F:	kernel/livepatch/
+ F:	samples/livepatch/
+-- 
+2.17.1
+

@@ -2,67 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C53F1CC9F6
-	for <lists+kernel-janitors@lfdr.de>; Sun, 10 May 2020 11:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EBEF1CCA54
+	for <lists+kernel-janitors@lfdr.de>; Sun, 10 May 2020 12:33:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727887AbgEJJ4C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 10 May 2020 05:56:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58164 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725994AbgEJJ4C (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 10 May 2020 05:56:02 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 482AA20820;
-        Sun, 10 May 2020 09:56:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589104562;
-        bh=cQSr1HS81+V30WagzCd/YqqVCmaLXvKM/9B2aSABrlY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=q1wnvjDzywli3oofFSy4iomVjMB8Eo8elFHYjtawRagYiMi+4FzYyi/QWRG71L0+v
-         2Bj7kaGjy87aAEiqsxTtli3mc8yhN3gIrx2GwFe54FjgwLyGufmh2ilCbVUlUnaoqq
-         PZF7bztSGvH1oHr2RUz0uXX1T+uHOjvQAZPpaAww=
-Date:   Sun, 10 May 2020 10:55:57 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH] iio: sca3000: Remove an erroneous get_device() call in
- sca3000_read_data()
-Message-ID: <20200510105557.716fa742@archlinux>
-In-Reply-To: <6e972e9b-c799-f0ad-91ac-144640b463f6@web.de>
-References: <6e972e9b-c799-f0ad-91ac-144640b463f6@web.de>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1728996AbgEJKdi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 10 May 2020 06:33:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34328 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726630AbgEJKdi (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 10 May 2020 06:33:38 -0400
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0018BC061A0C;
+        Sun, 10 May 2020 03:33:37 -0700 (PDT)
+Received: by mail-il1-x142.google.com with SMTP id v10so2378513ilq.8;
+        Sun, 10 May 2020 03:33:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=9MhU1qxBhHgVGXr08PP5FOxyGrOpVSZlL9oot8vd0Tk=;
+        b=S/pp2I92VN17TuNxdZ0OCTbEMUiZiu6Z6FsHV0W+uy6p41FMXHsZ724v1HIr1Y3t/3
+         PSGUhe4fuHIf5Z3uCINKpDTAeNhp3K+IbJDLwSC32ZKGD2IN5U2iLQ1IRsJSWqiJlhGL
+         vVIFgk8CBnf+Rbh5ML577bbcvPU+k3UtY4IgJvx1n4d/qHPboDMZkFoM/Cnnjb4c3SiV
+         TID0Vp9hlmXslxDoWVIVub74vnDhgl6h/NXh3LQ/k3LllzP1L6lmzemg3zhWGm8FVe2E
+         5hY7UpXEkh+KBqMVLGkSFeMZnQ1LARWvwBhAjP4KmZchwYu0SbbHU4pvul0qg6XHDET8
+         JVxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9MhU1qxBhHgVGXr08PP5FOxyGrOpVSZlL9oot8vd0Tk=;
+        b=DFPHp9EKeqTbj9+usPK83ZCT1kqZe83Q9Lbw4gc5RbUNP4iTW9G8bK78Y4JYo+nlLA
+         YPWcmkgcGDn1Nc6I0ovakrpHyuzA3POKPMkLMLH09GbpNb7wzNr2EPLxxGzx+GywpFBa
+         wzZYWurXqlMoe1t7pbr+qGfiVrWhrnE6sD3KRafBZxgI3nwmyqdH9AXoQS7c872FICPN
+         n/mTuHogdROGxNBB7gEdXus9DfVOwK4axydgXN2e7n7T0IDyvzfJDVrYKGVoONr5dzLH
+         Ty/xTNJinZMtGXrwc6sd65yj2LZn2C/agUFiDOBwS1XxPUOi3LYG1xIyuovwvZam/DE5
+         qTQw==
+X-Gm-Message-State: AGi0PuY4XEGbXwbZGcak3mQ1j/sDXV402a7EAjmnmjUwkPK9ZzpfL7HC
+        5ckDjKoiOweOnvDo08zPL3Xm8FbiTwk41YsUljVgetSh
+X-Google-Smtp-Source: APiQypJujdQpJU4zFu1TcCMDwR8LGjZxvj1n+h7Wtb2/p0xaTZ/uB4wEbCDUk4amEeAk5bQirurBQBV1W3culaiCL+s=
+X-Received: by 2002:a05:6e02:973:: with SMTP id q19mr3087421ilt.164.1589106817201;
+ Sun, 10 May 2020 03:33:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20200508150740.GA415175@mwanda>
+In-Reply-To: <20200508150740.GA415175@mwanda>
+From:   Lai Jiangshan <jiangshanlai@gmail.com>
+Date:   Sun, 10 May 2020 18:33:26 +0800
+Message-ID: <CAJhGHyCC+oLV3iqP7ZEU+x0BRcQiKYm6sYmAFTmOemJOJubayg@mail.gmail.com>
+Subject: Re: [PATCH] workqueue: Fix an use after free in init_rescuer()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Tejun Heo <tj@kernel.org>, Sean Fu <fxinrong@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 6 May 2020 17:30:06 +0200
-Markus Elfring <Markus.Elfring@web.de> wrote:
+Reviewed-by: Lai Jiangshan <jiangshanlai@gmail.com>
 
-> > This looks really unusual to have a 'get_device()' hidden in a 'dev_err()' call.  
-> 
-> Is there a need to prevent similar function calls by the means of
-> advanced source code analysis?
-
-It's a seriously stupid bug so I'd have thought unlikely to
-occur often enough to be worth it.
-
-Jonathan
-
-> 
-> Regards,
-> Markus
-
+On Fri, May 8, 2020 at 11:07 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> We need to preserve error code before freeing "rescuer".
+>
+> Fixes: f187b6974f6df ("workqueue: Use IS_ERR and PTR_ERR instead of PTR_ERR_OR_ZERO.")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> Another option would be to just revert the original commit.
+>
+>  kernel/workqueue.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+> index ddf0537dce140..10ed8d761e0b7 100644
+> --- a/kernel/workqueue.c
+> +++ b/kernel/workqueue.c
+> @@ -4197,6 +4197,7 @@ static int wq_clamp_max_active(int max_active, unsigned int flags,
+>  static int init_rescuer(struct workqueue_struct *wq)
+>  {
+>         struct worker *rescuer;
+> +       int ret;
+>
+>         if (!(wq->flags & WQ_MEM_RECLAIM))
+>                 return 0;
+> @@ -4208,8 +4209,9 @@ static int init_rescuer(struct workqueue_struct *wq)
+>         rescuer->rescue_wq = wq;
+>         rescuer->task = kthread_create(rescuer_thread, rescuer, "%s", wq->name);
+>         if (IS_ERR(rescuer->task)) {
+> +               ret = PTR_ERR(rescuer->task);
+>                 kfree(rescuer);
+> -               return PTR_ERR(rescuer->task);
+> +               return ret;
+>         }
+>
+>         wq->rescuer = rescuer;
+> --
+> 2.26.2
+>

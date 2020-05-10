@@ -2,102 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EBEF1CCA54
-	for <lists+kernel-janitors@lfdr.de>; Sun, 10 May 2020 12:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 338641CCB3F
+	for <lists+kernel-janitors@lfdr.de>; Sun, 10 May 2020 15:04:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728996AbgEJKdi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 10 May 2020 06:33:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34328 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726630AbgEJKdi (ORCPT
+        id S1728922AbgEJNEH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 10 May 2020 09:04:07 -0400
+Received: from smtp01.smtpout.orange.fr ([80.12.242.123]:24207 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728645AbgEJNEH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 10 May 2020 06:33:38 -0400
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0018BC061A0C;
-        Sun, 10 May 2020 03:33:37 -0700 (PDT)
-Received: by mail-il1-x142.google.com with SMTP id v10so2378513ilq.8;
-        Sun, 10 May 2020 03:33:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9MhU1qxBhHgVGXr08PP5FOxyGrOpVSZlL9oot8vd0Tk=;
-        b=S/pp2I92VN17TuNxdZ0OCTbEMUiZiu6Z6FsHV0W+uy6p41FMXHsZ724v1HIr1Y3t/3
-         PSGUhe4fuHIf5Z3uCINKpDTAeNhp3K+IbJDLwSC32ZKGD2IN5U2iLQ1IRsJSWqiJlhGL
-         vVIFgk8CBnf+Rbh5ML577bbcvPU+k3UtY4IgJvx1n4d/qHPboDMZkFoM/Cnnjb4c3SiV
-         TID0Vp9hlmXslxDoWVIVub74vnDhgl6h/NXh3LQ/k3LllzP1L6lmzemg3zhWGm8FVe2E
-         5hY7UpXEkh+KBqMVLGkSFeMZnQ1LARWvwBhAjP4KmZchwYu0SbbHU4pvul0qg6XHDET8
-         JVxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9MhU1qxBhHgVGXr08PP5FOxyGrOpVSZlL9oot8vd0Tk=;
-        b=DFPHp9EKeqTbj9+usPK83ZCT1kqZe83Q9Lbw4gc5RbUNP4iTW9G8bK78Y4JYo+nlLA
-         YPWcmkgcGDn1Nc6I0ovakrpHyuzA3POKPMkLMLH09GbpNb7wzNr2EPLxxGzx+GywpFBa
-         wzZYWurXqlMoe1t7pbr+qGfiVrWhrnE6sD3KRafBZxgI3nwmyqdH9AXoQS7c872FICPN
-         n/mTuHogdROGxNBB7gEdXus9DfVOwK4axydgXN2e7n7T0IDyvzfJDVrYKGVoONr5dzLH
-         Ty/xTNJinZMtGXrwc6sd65yj2LZn2C/agUFiDOBwS1XxPUOi3LYG1xIyuovwvZam/DE5
-         qTQw==
-X-Gm-Message-State: AGi0PuY4XEGbXwbZGcak3mQ1j/sDXV402a7EAjmnmjUwkPK9ZzpfL7HC
-        5ckDjKoiOweOnvDo08zPL3Xm8FbiTwk41YsUljVgetSh
-X-Google-Smtp-Source: APiQypJujdQpJU4zFu1TcCMDwR8LGjZxvj1n+h7Wtb2/p0xaTZ/uB4wEbCDUk4amEeAk5bQirurBQBV1W3culaiCL+s=
-X-Received: by 2002:a05:6e02:973:: with SMTP id q19mr3087421ilt.164.1589106817201;
- Sun, 10 May 2020 03:33:37 -0700 (PDT)
+        Sun, 10 May 2020 09:04:07 -0400
+Received: from localhost.localdomain ([93.23.13.120])
+        by mwinf5d53 with ME
+        id d13z2200A2bQer90313z03; Sun, 10 May 2020 15:04:05 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 10 May 2020 15:04:05 +0200
+X-ME-IP: 93.23.13.120
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     michal.simek@xilinx.com, rajan.vaja@xilinx.com,
+        jolly.shah@xilinx.com, gregkh@linuxfoundation.org,
+        tejas.patel@xilinx.com, manish.narani@xilinx.com,
+        ravi.patel@xilinx.com
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] firmware: xilinx: Fix an error handling path in 'zynqmp_firmware_probe()'
+Date:   Sun, 10 May 2020 15:03:57 +0200
+Message-Id: <20200510130357.233364-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20200508150740.GA415175@mwanda>
-In-Reply-To: <20200508150740.GA415175@mwanda>
-From:   Lai Jiangshan <jiangshanlai@gmail.com>
-Date:   Sun, 10 May 2020 18:33:26 +0800
-Message-ID: <CAJhGHyCC+oLV3iqP7ZEU+x0BRcQiKYm6sYmAFTmOemJOJubayg@mail.gmail.com>
-Subject: Re: [PATCH] workqueue: Fix an use after free in init_rescuer()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Tejun Heo <tj@kernel.org>, Sean Fu <fxinrong@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Reviewed-by: Lai Jiangshan <jiangshanlai@gmail.com>
+If 'mfd_add_devices()' fails, we must undo 'zynqmp_pm_api_debugfs_init()'
+otherwise some debugfs directory and files will be left.
 
-On Fri, May 8, 2020 at 11:07 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> We need to preserve error code before freeing "rescuer".
->
-> Fixes: f187b6974f6df ("workqueue: Use IS_ERR and PTR_ERR instead of PTR_ERR_OR_ZERO.")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> Another option would be to just revert the original commit.
->
->  kernel/workqueue.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-> index ddf0537dce140..10ed8d761e0b7 100644
-> --- a/kernel/workqueue.c
-> +++ b/kernel/workqueue.c
-> @@ -4197,6 +4197,7 @@ static int wq_clamp_max_active(int max_active, unsigned int flags,
->  static int init_rescuer(struct workqueue_struct *wq)
->  {
->         struct worker *rescuer;
-> +       int ret;
->
->         if (!(wq->flags & WQ_MEM_RECLAIM))
->                 return 0;
-> @@ -4208,8 +4209,9 @@ static int init_rescuer(struct workqueue_struct *wq)
->         rescuer->rescue_wq = wq;
->         rescuer->task = kthread_create(rescuer_thread, rescuer, "%s", wq->name);
->         if (IS_ERR(rescuer->task)) {
-> +               ret = PTR_ERR(rescuer->task);
->                 kfree(rescuer);
-> -               return PTR_ERR(rescuer->task);
-> +               return ret;
->         }
->
->         wq->rescuer = rescuer;
-> --
-> 2.26.2
->
+Just move the call to 'zynqmp_pm_api_debugfs_init()' a few lines below to
+fix the issue.
+
+Fixes: e23d9c6d0d49 ("drivers: soc: xilinx: Add ZynqMP power domain driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Not related to this fix, but I think that:
+   - a call to 'of_platform_depopulate()' is missing in the remove function
+   - we shouldn't return of_platform_populate(); directly because we
+     don't have the opportunity to call 'mfd_remove_devices()' as done in
+     the remove function, and 'of_platform_depopulate()' for what have
+     been populated yet
+
+I'm not familiar with this API, so I just point it out to get feedback.
+---
+ drivers/firmware/xilinx/zynqmp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/firmware/xilinx/zynqmp.c b/drivers/firmware/xilinx/zynqmp.c
+index 8095fa84d5d7..8d1ff2454e2e 100644
+--- a/drivers/firmware/xilinx/zynqmp.c
++++ b/drivers/firmware/xilinx/zynqmp.c
+@@ -1235,8 +1235,6 @@ static int zynqmp_firmware_probe(struct platform_device *pdev)
+ 	pr_info("%s Trustzone version v%d.%d\n", __func__,
+ 		pm_tz_version >> 16, pm_tz_version & 0xFFFF);
+ 
+-	zynqmp_pm_api_debugfs_init();
+-
+ 	ret = mfd_add_devices(&pdev->dev, PLATFORM_DEVID_NONE, firmware_devs,
+ 			      ARRAY_SIZE(firmware_devs), NULL, 0, NULL);
+ 	if (ret) {
+@@ -1244,6 +1242,8 @@ static int zynqmp_firmware_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
++	zynqmp_pm_api_debugfs_init();
++
+ 	return of_platform_populate(dev->of_node, NULL, NULL, dev);
+ }
+ 
+-- 
+2.25.1
+

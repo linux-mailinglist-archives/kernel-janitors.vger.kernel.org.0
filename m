@@ -2,34 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 338641CCB3F
-	for <lists+kernel-janitors@lfdr.de>; Sun, 10 May 2020 15:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B034E1CCC09
+	for <lists+kernel-janitors@lfdr.de>; Sun, 10 May 2020 17:48:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728922AbgEJNEH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 10 May 2020 09:04:07 -0400
-Received: from smtp01.smtpout.orange.fr ([80.12.242.123]:24207 "EHLO
+        id S1728972AbgEJPss (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 10 May 2020 11:48:48 -0400
+Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:28461 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728645AbgEJNEH (ORCPT
+        with ESMTP id S1726955AbgEJPsr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 10 May 2020 09:04:07 -0400
-Received: from localhost.localdomain ([93.23.13.120])
-        by mwinf5d53 with ME
-        id d13z2200A2bQer90313z03; Sun, 10 May 2020 15:04:05 +0200
+        Sun, 10 May 2020 11:48:47 -0400
+Received: from localhost.localdomain ([92.148.185.155])
+        by mwinf5d69 with ME
+        id d3oc220073MbWjg033ocWy; Sun, 10 May 2020 17:48:44 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 10 May 2020 15:04:05 +0200
-X-ME-IP: 93.23.13.120
+X-ME-Date: Sun, 10 May 2020 17:48:44 +0200
+X-ME-IP: 92.148.185.155
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     michal.simek@xilinx.com, rajan.vaja@xilinx.com,
-        jolly.shah@xilinx.com, gregkh@linuxfoundation.org,
-        tejas.patel@xilinx.com, manish.narani@xilinx.com,
-        ravi.patel@xilinx.com
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+To:     inki.dae@samsung.com, jy0922.shim@samsung.com,
+        sw0312.kim@samsung.com, kyungmin.park@samsung.com,
+        airlied@linux.ie, daniel@ffwll.ch, kgene@kernel.org,
+        krzk@kernel.org
+Cc:     dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] firmware: xilinx: Fix an error handling path in 'zynqmp_firmware_probe()'
-Date:   Sun, 10 May 2020 15:03:57 +0200
-Message-Id: <20200510130357.233364-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] drm/exynos: dsi: Remove bridge node reference in error handling path in probe function
+Date:   Sun, 10 May 2020 17:48:33 +0200
+Message-Id: <20200510154833.238320-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -38,49 +40,107 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If 'mfd_add_devices()' fails, we must undo 'zynqmp_pm_api_debugfs_init()'
-otherwise some debugfs directory and files will be left.
+'exynos_dsi_parse_dt()' takes a reference to 'dsi->in_bridge_node'.
+This must be released in the error handling path.
 
-Just move the call to 'zynqmp_pm_api_debugfs_init()' a few lines below to
-fix the issue.
+This patch is similar to commit 70505c2ef94b ("drm/exynos: dsi: Remove bridge node reference in removal")
+which fixed the issue in the remove function.
 
-Fixes: e23d9c6d0d49 ("drivers: soc: xilinx: Add ZynqMP power domain driver")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
-Not related to this fix, but I think that:
-   - a call to 'of_platform_depopulate()' is missing in the remove function
-   - we shouldn't return of_platform_populate(); directly because we
-     don't have the opportunity to call 'mfd_remove_devices()' as done in
-     the remove function, and 'of_platform_depopulate()' for what have
-     been populated yet
+A Fixes tag could be required, but I've not been able to figure out which
+one to use.
 
-I'm not familiar with this API, so I just point it out to get feedback.
+I think that moving 'exynos_dsi_parse_dt()' in the probe could simplify
+the error handling in the probe function. However, I don't know this code
+well enough to play this game. So better safe than sorry.
+So I've kept the logic in place and added goto everywhere. :(
 ---
- drivers/firmware/xilinx/zynqmp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_dsi.c | 28 ++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/firmware/xilinx/zynqmp.c b/drivers/firmware/xilinx/zynqmp.c
-index 8095fa84d5d7..8d1ff2454e2e 100644
---- a/drivers/firmware/xilinx/zynqmp.c
-+++ b/drivers/firmware/xilinx/zynqmp.c
-@@ -1235,8 +1235,6 @@ static int zynqmp_firmware_probe(struct platform_device *pdev)
- 	pr_info("%s Trustzone version v%d.%d\n", __func__,
- 		pm_tz_version >> 16, pm_tz_version & 0xFFFF);
- 
--	zynqmp_pm_api_debugfs_init();
--
- 	ret = mfd_add_devices(&pdev->dev, PLATFORM_DEVID_NONE, firmware_devs,
- 			      ARRAY_SIZE(firmware_devs), NULL, 0, NULL);
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_dsi.c b/drivers/gpu/drm/exynos/exynos_drm_dsi.c
+index 902938d2568f..2aa74c3dc733 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_dsi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_dsi.c
+@@ -1770,14 +1770,17 @@ static int exynos_dsi_probe(struct platform_device *pdev)
  	if (ret) {
-@@ -1244,6 +1242,8 @@ static int zynqmp_firmware_probe(struct platform_device *pdev)
- 		return ret;
+ 		if (ret != -EPROBE_DEFER)
+ 			dev_info(dev, "failed to get regulators: %d\n", ret);
+-		return ret;
++		goto err_put_in_bridge_node;
  	}
  
-+	zynqmp_pm_api_debugfs_init();
+ 	dsi->clks = devm_kcalloc(dev,
+ 			dsi->driver_data->num_clks, sizeof(*dsi->clks),
+ 			GFP_KERNEL);
+-	if (!dsi->clks)
+-		return -ENOMEM;
++	if (!dsi->clks) {
++		ret = -ENOMEM;
++		goto err_put_in_bridge_node;
++	}
 +
- 	return of_platform_populate(dev->of_node, NULL, NULL, dev);
+ 
+ 	for (i = 0; i < dsi->driver_data->num_clks; i++) {
+ 		dsi->clks[i] = devm_clk_get(dev, clk_names[i]);
+@@ -1791,7 +1794,8 @@ static int exynos_dsi_probe(struct platform_device *pdev)
+ 
+ 			dev_info(dev, "failed to get the clock: %s\n",
+ 					clk_names[i]);
+-			return PTR_ERR(dsi->clks[i]);
++			ret = PTR_ERR(dsi->clks[i]);
++			goto err_put_in_bridge_node;
+ 		}
+ 	}
+ 
+@@ -1799,19 +1803,22 @@ static int exynos_dsi_probe(struct platform_device *pdev)
+ 	dsi->reg_base = devm_ioremap_resource(dev, res);
+ 	if (IS_ERR(dsi->reg_base)) {
+ 		dev_err(dev, "failed to remap io region\n");
+-		return PTR_ERR(dsi->reg_base);
++		ret = PTR_ERR(dsi->reg_base);
++		goto err_put_in_bridge_node;
+ 	}
+ 
+ 	dsi->phy = devm_phy_get(dev, "dsim");
+ 	if (IS_ERR(dsi->phy)) {
+ 		dev_info(dev, "failed to get dsim phy\n");
+-		return PTR_ERR(dsi->phy);
++		ret = PTR_ERR(dsi->phy);
++		goto err_put_in_bridge_node;
+ 	}
+ 
+ 	dsi->irq = platform_get_irq(pdev, 0);
+ 	if (dsi->irq < 0) {
+ 		dev_err(dev, "failed to request dsi irq resource\n");
+-		return dsi->irq;
++		ret = dsi->irq;
++		goto err_put_in_bridge_node;
+ 	}
+ 
+ 	irq_set_status_flags(dsi->irq, IRQ_NOAUTOEN);
+@@ -1820,7 +1827,7 @@ static int exynos_dsi_probe(struct platform_device *pdev)
+ 					dev_name(dev), dsi);
+ 	if (ret) {
+ 		dev_err(dev, "failed to request dsi irq\n");
+-		return ret;
++		goto err_put_in_bridge_node;
+ 	}
+ 
+ 	platform_set_drvdata(pdev, &dsi->encoder);
+@@ -1828,6 +1835,11 @@ static int exynos_dsi_probe(struct platform_device *pdev)
+ 	pm_runtime_enable(dev);
+ 
+ 	return component_add(dev, &exynos_dsi_component_ops);
++
++err_put_in_bridge_node:
++	of_node_put(dsi->in_bridge_node);
++
++	return ret;
  }
  
+ static int exynos_dsi_remove(struct platform_device *pdev)
 -- 
 2.25.1
 

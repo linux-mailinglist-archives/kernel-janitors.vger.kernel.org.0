@@ -2,95 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16D301CE180
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 May 2020 19:20:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74DF61CE195
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 May 2020 19:22:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730925AbgEKRUT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 May 2020 13:20:19 -0400
-Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:16849 "EHLO
-        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730215AbgEKRUS (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 May 2020 13:20:18 -0400
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5eb988cc0000>; Mon, 11 May 2020 10:18:04 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate101.nvidia.com (PGP Universal service);
-  Mon, 11 May 2020 10:20:18 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate101.nvidia.com on Mon, 11 May 2020 10:20:18 -0700
-Received: from rcampbell-dev.nvidia.com (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 11 May
- 2020 17:20:18 +0000
-Subject: Re: [PATCH -next] mm/hmm/test: fix error return code in
- hmm_dmirror_init()
-To:     Wei Yongjun <weiyongjun1@huawei.com>, <jglisse@redhat.com>
-CC:     <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-References: <20200509030234.14747-1-weiyongjun1@huawei.com>
-X-Nvconfidentiality: public
-From:   Ralph Campbell <rcampbell@nvidia.com>
-Message-ID: <b8da4751-ea8a-7e4d-9a6c-ee6bd7038eb7@nvidia.com>
-Date:   Mon, 11 May 2020 10:20:17 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
-MIME-Version: 1.0
-In-Reply-To: <20200509030234.14747-1-weiyongjun1@huawei.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1589217484; bh=wNAbLk5sDgndY9hDmHmxMZeBtoQPrcvtrpgtPuwit0M=;
-        h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
-         Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
-         X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
-         Content-Transfer-Encoding;
-        b=DWV1hSl5q9MhAU6xNAFYiGni49rK3N2gDogEE1sB6S7uYJY1E8bnF9MzNFAG2+top
-         RRx3eL/aLmjj+CsPT99PNpomuBpFpdBzYqvNm2kwLA2ToodCT48Kktx2D9VNEp49J1
-         4gUkiE+cBOEeb2qg2GXeCvyDHXghhVh+9mqZHgfzfm8+Hc5eMHpB5PehQL09uBl/aF
-         PCUFkj/L7mwwo+s0+oLd+HOjCUS+XUJBeyVFoh0RKzJwOZaFr/qWJ9Yst8fKJiJhoR
-         asRSsplrtjNa+v/C6sSv+C7WzpxFANnXhBHvKHMfB8/5XZlWi1Vtqz7vWE+iUkuRvW
-         aG9ngH4914iog==
+        id S1730983AbgEKRWB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 May 2020 13:22:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39390 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730966AbgEKRWB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 11 May 2020 13:22:01 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3F68720714;
+        Mon, 11 May 2020 17:22:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589217720;
+        bh=6lsmrtwsjS337+6ZaMJ1uBpd2A8KX8OTri/jsmfkVsY=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=GqwA1+soX8/N+5KPE26D5ForS1gU5fJ9AlJ7l/J7WzCfy2kMAOpE0COf5LJRGwyiw
+         GwgBXNebjLjld5GjFImJ9jhBF0UxIkYOJUD6gMhGPOaCrMg3QKcBgBUFciboD3fzA3
+         st/Aeh/ip4NQmPaLDrXd2xQT54fLfenVdii2fNSE=
+Date:   Mon, 11 May 2020 18:21:58 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Sanjay R Mehta <sanju.mehta@amd.com>,
+        Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org,
+        Hulk Robot <hulkci@huawei.com>
+In-Reply-To: <20200507115550.139457-1-weiyongjun1@huawei.com>
+References: <20200507115550.139457-1-weiyongjun1@huawei.com>
+Subject: Re: [PATCH -next] spi: spi-amd: Remove spi_master_put in amd_spi_remove()
+Message-Id: <158921769453.22432.2365518895564552869.b4-ty@kernel.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Thu, 7 May 2020 11:55:50 +0000, Wei Yongjun wrote:
+> The call to spi_master_put() in amd_spi_remove() is redundant and
+> may causes user after free since the master have been freed by
+> spi_unregister_master(), so remove it.
 
-On 5/8/20 8:02 PM, Wei Yongjun wrote:
-> Fix to return negative error code -ENOMEM from the alloc_page() error
-> handling case instead of 0, as done elsewhere in this function.
-> 
-> Fixes: 5d5e54be8a1e ("mm/hmm/test: add selftest driver for HMM")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Applied to
 
-Looks good, thanks!
-Reviewed-by: Ralph Campbell <rcampbell@nvidia.com>
+   local tree spi/for-5.7
 
-> ---
->   lib/test_hmm.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-> index 00bca6116f93..b4d9434e49e7 100644
-> --- a/lib/test_hmm.c
-> +++ b/lib/test_hmm.c
-> @@ -1119,8 +1119,10 @@ static int __init hmm_dmirror_init(void)
->   	 * make the code here simpler (i.e., we need a struct page for it).
->   	 */
->   	dmirror_zero_page = alloc_page(GFP_HIGHUSER | __GFP_ZERO);
-> -	if (!dmirror_zero_page)
-> +	if (!dmirror_zero_page) {
-> +		ret = -ENOMEM;
->   		goto err_chrdev;
-> +	}
->   
->   	pr_info("HMM test module loaded. This is only for testing HMM.\n");
->   	return 0;
-> 
-> 
-> 
+Thanks!
+
+[1/1] spi: spi-amd: Remove spi_master_put in amd_spi_remove()
+      (no commit info)
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

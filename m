@@ -2,157 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90EC21CDD17
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 May 2020 16:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50A161CDD1C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 May 2020 16:27:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729359AbgEKO0O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 May 2020 10:26:14 -0400
-Received: from mx01-sz.bfs.de ([194.94.69.67]:55480 "EHLO mx01-sz.bfs.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725993AbgEKO0N (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 May 2020 10:26:13 -0400
-Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
-        by mx01-sz.bfs.de (Postfix) with ESMTPS id 106C920511;
-        Mon, 11 May 2020 16:26:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1589207171;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=9kaEHvBtEYSLwOSsd7oE6EH1nwQqWqDHGfHfs4bqpY4=;
-        b=rS2fU/naCneek6a1qDKkudR28Kx4o67i7xs5aSSlARr4NrGg0FFlNoGBWOcC/g+Mxp/VnS
-        ISpkZl7/8p3Z2F5MVf/zbA+X+aiCyfROYhLDTtxY+YkaA6RF2LpnxtQzvNDZBycD4hKS/M
-        z/S0aFSoZmhYlJp6GzHodceMJvvYulkvQIc3uj7r430wViUlIqF2+K9ggPw4LYgXJyUV21
-        5J/FjeHbPJGxScAOy/+IKHcz7yqPPG69I3bM9MLXXzzFrSlhnyv4ZNAA1cms97i52RhLA1
-        nbGPRDsh9qjxiyH/+WH/yS9dniHTdUg3tvt8+AZB54mqYUUVbGvWkrhETwR7sw==
-Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
- (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.1913.5; Mon, 11 May
- 2020 16:26:10 +0200
-Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
- SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%6]) with mapi id
- 15.01.1913.005; Mon, 11 May 2020 16:26:10 +0200
-From:   Walter Harms <wharms@bfs.de>
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Wei Yongjun <weiyongjun1@huawei.com>
-CC:     Hemant Kumar <hemantk@codeaurora.org>,
-        Jeffrey Hugo <jhugo@codeaurora.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sujeev Dias <sdias@codeaurora.org>,
-        Siddartha Mohanadoss <smohanad@codeaurora.org>,
-        "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: AW: [PATCH -next] bus: mhi: core: Fix some error return code
-Thread-Topic: [PATCH -next] bus: mhi: core: Fix some error return code
-Thread-Index: AQHWJdbmJCUP43lzz0ivM6Xt7/S4/aiikW4AgABhdDQ=
-Date:   Mon, 11 May 2020 14:26:10 +0000
-Message-ID: <78d3f7d7be1849138df7dcf9d49177b5@bfs.de>
-References: <20200509075654.175002-1-weiyongjun1@huawei.com>,<20200511103124.GA12753@mani>
-In-Reply-To: <20200511103124.GA12753@mani>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.137.16.39]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1729408AbgEKO1F (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 May 2020 10:27:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39132 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725993AbgEKO1E (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 11 May 2020 10:27:04 -0400
+Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DEBBC061A0C;
+        Mon, 11 May 2020 07:27:04 -0700 (PDT)
+Received: by mail-qt1-x841.google.com with SMTP id b1so7263043qtt.1;
+        Mon, 11 May 2020 07:27:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=xQIMMWmkmzNPu5lBxwc6esCz5frrLfz7ITsHgCO5zBs=;
+        b=WZYuEsND7nPWq2Ociq595u+4iPmO5a8oFBQAFb2TxtO5zI5rGx3QRCRYKN9hb4kp4Q
+         ZXfHUeXHVagWoZ1lPNLUl3vf+c3ikWiKkWqCv9s7iHSMbi1AZGJk1Qfrol29ppAg5Mwm
+         NqwcZwZTfFAWpKNmzNN5qxIMnDfDFuhduNH8B8RIoHxW2eXHlQTGBcTvGdL8SUfp6GqN
+         WWdGnqWtT0Co9WGjW29SEOI9W+QW9yzUinmtJ4UZsZ+GL/OxkxlfF5eCmmPDhlY7qf6t
+         n8DPw1DlX7gfduX4bA54od3KtG9qR/eKPiwQH9KJLiVaw9/orm6V2+5e4JSbVf6E0LS4
+         2T8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=xQIMMWmkmzNPu5lBxwc6esCz5frrLfz7ITsHgCO5zBs=;
+        b=ANjNBAai5bmWuamYvFHJik5k7DonraEf2YeW2PR1bEmmMCiwhmQT2jyd8guKlxz0Eb
+         kcIMGZfltcA85y58LbrxCuLJX+fEbVPzBcEYztA/yyLDaM6L0uGHIIA5Q7x5TAJDu0/k
+         QorVpW7bnkaGvI348uqN/VNbQ5uVqV/ew3hp2K/GWRJDURf5qEHTgz/pnWGQMFUB79cv
+         IxVtlzPCY/zVRFGd7ZN174KuPyxDqbLHrgBjE7a/XM/1gd0X73dV//7/EZ1RVoE+qntF
+         Syr8JwxJFSkkJWh5pr/lS9OfuXJZQT0VhkCLe5L2cZKEBbVatiTqS1Z8oLodvOOMU9H7
+         f/zg==
+X-Gm-Message-State: AGi0Pua4jNYDuARYQalBEXoZ9swdl2WbGp5yFj5OamubyvOpAS9+qiT/
+        QzU6/OnBh4z6hgzRBtdV4Ogr8chJ74Y=
+X-Google-Smtp-Source: APiQypJIIaf9khQucTgkaHqPimOAkk9DYKCGhIcuGyXRB5i5RTGaYiM/ULDO7vjSmWwpIlfC8nXYhA==
+X-Received: by 2002:ac8:7b8e:: with SMTP id p14mr17416133qtu.219.1589207223754;
+        Mon, 11 May 2020 07:27:03 -0700 (PDT)
+Received: from localhost ([199.96.181.106])
+        by smtp.gmail.com with ESMTPSA id y28sm3625959qtc.62.2020.05.11.07.27.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2020 07:27:03 -0700 (PDT)
+Date:   Mon, 11 May 2020 10:27:01 -0400
+From:   Tejun Heo <tj@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Sean Fu <fxinrong@gmail.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] workqueue: Fix an use after free in init_rescuer()
+Message-ID: <20200511142701.GC16815@mtj.duckdns.org>
+References: <20200508150740.GA415175@mwanda>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.92
-Authentication-Results: mx01-sz.bfs.de;
-        none
-X-Spamd-Result: default: False [-2.92 / 7.00];
-         ARC_NA(0.00)[];
-         TO_DN_EQ_ADDR_SOME(0.00)[];
-         HAS_XOIP(0.00)[];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         DKIM_SIGNED(0.00)[];
-         RCPT_COUNT_SEVEN(0.00)[10];
-         NEURAL_HAM(-0.00)[-0.989];
-         RCVD_NO_TLS_LAST(0.10)[];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         MID_RHS_MATCH_FROM(0.00)[];
-         BAYES_HAM(-2.92)[99.67%]
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200508150740.GA415175@mwanda>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello guys,
-some nitpicking ...
-the prefered kernalstyle is:
+On Fri, May 08, 2020 at 06:07:40PM +0300, Dan Carpenter wrote:
+> We need to preserve error code before freeing "rescuer".
+> 
+> Fixes: f187b6974f6df ("workqueue: Use IS_ERR and PTR_ERR instead of PTR_ERR_OR_ZERO.")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-if (condition)
-   set error_code
-   do something
+Applied to wq/for-5.8. Thank you.
 
-from what i can see it is
-
- set error_code
-      if (condition)
-
-jm2c
- re,
- wh
-
-________________________________________
-Von: kernel-janitors-owner@vger.kernel.org <kernel-janitors-owner@vger.kern=
-el.org> im Auftrag von Manivannan Sadhasivam <manivannan.sadhasivam@linaro.=
-org>
-Gesendet: Montag, 11. Mai 2020 12:31:24
-An: Wei Yongjun
-Cc: Hemant Kumar; Jeffrey Hugo; Greg Kroah-Hartman; Sujeev Dias; Siddartha =
-Mohanadoss; linux-arm-msm@vger.kernel.org; kernel-janitors@vger.kernel.org;=
- Hulk Robot
-Betreff: Re: [PATCH -next] bus: mhi: core: Fix some error return code
-
-On 0509, Wei Yongjun wrote:
-> Fix to return negative error code from the error handling case
-> instead of 0 in mhi_init_dev_ctxt() and mhi_driver_probe().
->
-> Fixes: 3000f85b8f47 ("bus: mhi: core: Add support for basic PM operations=
-")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-
-Thanks,
-Mani
-
-> ---
->  drivers/bus/mhi/core/init.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/bus/mhi/core/init.c b/drivers/bus/mhi/core/init.c
-> index eb2ab058a01d..1f8c82603179 100644
-> --- a/drivers/bus/mhi/core/init.c
-> +++ b/drivers/bus/mhi/core/init.c
-> @@ -291,6 +291,7 @@ int mhi_init_dev_ctxt(struct mhi_controller *mhi_cntr=
-l)
->       }
->
->       /* Setup cmd context */
-> +     ret =3D -ENOMEM;
->       mhi_ctxt->cmd_ctxt =3D mhi_alloc_coherent(mhi_cntrl,
->                                               sizeof(*mhi_ctxt->cmd_ctxt)=
- *
->                                               NR_OF_CMD_RINGS,
-> @@ -1100,6 +1101,7 @@ static int mhi_driver_probe(struct device *dev)
->               }
->       }
->
-> +     ret =3D -EINVAL;
->       if (dl_chan) {
->               /*
->                * If channel supports LPM notifications then status_cb sho=
-uld
->
->
->
+-- 
+tejun

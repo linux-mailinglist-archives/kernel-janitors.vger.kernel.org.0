@@ -2,39 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67CF41CD211
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 May 2020 08:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1D591CD353
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 May 2020 09:55:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727019AbgEKGsw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 May 2020 02:48:52 -0400
-Received: from mout.web.de ([212.227.15.3]:39935 "EHLO mout.web.de"
+        id S1728151AbgEKHzP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 May 2020 03:55:15 -0400
+Received: from mout.web.de ([212.227.15.3]:42175 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726109AbgEKGsv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 May 2020 02:48:51 -0400
+        id S1726173AbgEKHzO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 11 May 2020 03:55:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1589179713;
-        bh=I7ZMUbsLp3ba8yPp5HvebF9FR82Id0vPvozz+hw8gPg=;
+        s=dbaedf251592; t=1589183699;
+        bh=SxeoKwHdTMYDV8yc9DyM1v9iJ5uFpRGYEyppCZGeAl4=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=m/i3QTDK1Cy6JCftMOfTlTO7anEesMjAMdIhGmjxl4fSvRQrVh0APHCJNyx3kmoqW
-         LMe7/f17/sMEFJzubD6tkchFAI99MwILdytLE53wW6pb0ytQGOQ/uDtfW+QcYLFcKR
-         LgTpN+EQssvJvr2PzUqKCnC2FJNWWoLaldAEuVWo=
+        b=syD/a49EMTKAxLjoWfwplmkIFY1zwg83Pw4XPlmLlrem40cGJu2Vh/R6Rnp5jM+M9
+         T5xXCmUt+M0HyQx7CeKK31S8GctjWC9sR3BkglqqMD5QMCsOkzfgZQf67YEyhkZkuX
+         Ew2/eYSkZ7E6Uu/rC/Jq1Yk18K9nCwhA/k85V83Q=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.185.130]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MLxrY-1jSWT70pLw-007mz3; Mon, 11
- May 2020 08:48:33 +0200
-Subject: Re: net/sonic: Fix some resource leaks in error handling paths
+Received: from [192.168.1.2] ([2.243.185.130]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M5fhI-1jA5Ix1oL2-00xYi1; Mon, 11
+ May 2020 09:54:59 +0200
+Subject: Re: [PATCH v2] net/sonic: Fix some resource leaks in error handling
+ paths
 To:     Finn Thain <fthain@telegraphics.com.au>,
+        "David S. Miller" <davem@davemloft.net>,
         Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
         netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-References: <b7651b26-ac1e-6281-efb2-7eff0018b158@web.de>
- <alpine.LNX.2.22.394.2005100922240.11@nippy.intranet>
- <9d279f21-6172-5318-4e29-061277e82157@web.de>
- <alpine.LNX.2.22.394.2005101738510.11@nippy.intranet>
- <bc70e24c-dd31-75b7-6ece-2ad31982641e@web.de>
- <alpine.LNX.2.22.394.2005110845060.8@nippy.intranet>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        =?UTF-8?Q?Thomas_Bogend=c3=b6rfer?= <tsbogend@alpha.franken.de>,
+        Chris Zankel <chris@zankel.net>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <3eaa58c16dcf313ff7cb873dcff21659b0ea037d.1589158098.git.fthain@telegraphics.com.au>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -79,120 +77,90 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <9994a7de-0399-fb34-237a-a3c71b3cf568@web.de>
-Date:   Mon, 11 May 2020 08:48:21 +0200
+Message-ID: <f9a2c71b-e001-d546-64cd-8a904ae881ca@web.de>
+Date:   Mon, 11 May 2020 09:54:56 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <alpine.LNX.2.22.394.2005110845060.8@nippy.intranet>
+In-Reply-To: <3eaa58c16dcf313ff7cb873dcff21659b0ea037d.1589158098.git.fthain@telegraphics.com.au>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:uZi5+O0uS2C5ciQOk5D1zedOssFPxSDT1BQBW8wI1gVgF6ssWik
- MvALphqfXpNv+cFhDHBRHtg+BgYWV53rmClWNVn7lj8OeAOkB4zqVDxfXiE2TqkizevQTOu
- qcQIqZ/5X+eskO4OC6QcEGyH+98PbFDLYuUuQVq00DLLOmE6JHN+5LVbsO1f+sbmMZ4+siT
- DNRKKEO9MzwK3QFL4kAcQ==
+X-Provags-ID: V03:K1:lMX6L/xPU+LnOvXWYWppgvBITGxbf53w7sXD13Jjbsx5KoiLCxp
+ TyLb+HiD8bjqTt/Ur/hTAPsYZp3xYJmsg7OJrHgppvPlLYsrfT4RaIKBIX1R47A3V3FvpiL
+ MK0SKbLdHTDsv5hmzjZ+71U6ZyvtdO7YkAl+duD9eo94sJpGpf8dCuc15I1zg/extljc8uU
+ lM7vkHkVIMJyt76NA9V5Q==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:z0wbBaVbcPg=:YJ6IH3Qcx6jm83n2G3bYYW
- cHIvsZG0rydZ7XQ5yUIGPLLyyoxgIJOigEkIIfIb2WxA4f0o9otzeDHl+5DtBkNQ32nlV+Dpw
- WwQk6cErOa90O62U9GVzXtFDV8TWZ+DEQbnb8TCKrg5Z0rl1XZND9Eif55JvIJQx3J8wp2Zn4
- 5IHJ8oU70CJFicsqaQlFt16Nyd9JbaSqb8HtIU/htiYuK0dc5+BzVoP99h1VFxbA3xXscmShn
- GkninevpayJMqMlgYggQtEGyom57GvaEKvbN/T47C9wOOVE1GkTTkYvqAV/Ful4Rvu0vh1czN
- fYNxchqSSeFMVauCmhfqlUCIrKR6R1N8JnM1uhvyv7ta1Dx1X/Ju0H+ZcfW9pABRbFhKiUftI
- 6mHjP/wJLYhYgmyrlU+bmJAMXR4Ja4gRyhK/5bWedpmFWhu/oCLUb+dz57B1tzxdWWQhbel8u
- P4hcV4uKQPNYdB3FHjyE/GRFtnQMd5Ee7v0lY1meaWI6JRhk+drKjoRS5fGPVmEdv8U15U+cg
- SPN8qmx5EdHw5y4nwazPGKdRY1PsgSmZtl+0rTHTkdo+NB70Jp4NEFu2zxH8+rKiF4JEt3kCM
- EVgNf1LvjXOJf0WRPCgfN0dT8t/D09hrD3BWMjuyN8HLki14PEUgZ/ITBpB9fk+wxpB4P9dAc
- YKBVedZUFbLokP7dGB/1DhiegXYjykTtYDbuIkIDcQkXbw6sazJ1mpiCUwAaT8/LnDmCmMJyG
- rqD4Zjjb8eekGTcCe576snbSFVibMqvpoAZ05MUPC0dA5iWNkCv2iUb/Icq7dY3weHiI+4e7b
- vKIE6HeT6Xs8huL+aKWRdb3FVKPf1uu4mMDBVousZNCeql5Hs3kLF3Ihuf+qORB2nsoIs0f7T
- vs4l5SjjLaRxOYjziacN1AVRb+I6O4zhYrqHeozvdEq2cUbtpbBVfpthke86t6tjxZS33AwS6
- oMOs/r6VIH71bRIya+AEzQ3tIVNKLcY1oSM+N+/+KtPPVTsDV8h0+04ZdALppXqXvkYZGXtFX
- +Nn9ZSnW03bXwLnUPM6jLxJRa3StRCzL6jUvxk+Zk71P41kSzS8hHLmGVXrIMwWRwj2YyGfpl
- 77qIK7IsTep/0+sLQJujw7rmXQqEgxM0CTesScdDTCxPfMub/ca526zXHLDrH4TLDr2ih8AdV
- 702uco/hi6Sw5oweTmONzPX/DQsmTM6aSxixPOf50BmiYNNbaHxqzvUmdC5vqXeTILeUhVLsv
- +jzUGdGse3R1bO9Xs
+X-UI-Out-Filterresults: notjunk:1;V03:K0:hk7Te1kuLBs=:HLdD4ujWZ/rIGYBtVDdHcD
+ 9+3/Z2o9cjUJh6q5wpDVKJnUIP36u5BdfuK/UQlWUbe5JapHlh8N4XTha/QLZowdMLbPZCET4
+ Dq2dTsZS4i2+nyMcda2ERHrKHc1kNM2tFbksYSEVtzqNz1hkxa5lfrJVI86/hxZ7T+76v7WEF
+ tgVDyAIM4YGmMk2KTN5cjTF9/GUM/WZ9Aj4ZTHzgw4wPmur0hsQtJJeme1+1xIDoSWhsQpIDh
+ Ho7d7lo2LVoYxmSA/TWcYyITpcWCVpkhqIaoOE6xUDvOy/a5QVsy+UzMn9soUC2ey2DzhT9cK
+ kiqf1Focdq67K4F46CFNmbfbpvcjDn6+HAXBWYyG/YMZoxylTXVj2hR0C9uUpuhd16G9Yp6x8
+ N7sftqvQR752Hm7sQqGE6gQ++X0Y2ns8nJz/FbF4QKH7CkSsjAB9GpN4zTv/ZRU5ExPPoLW+e
+ Yicw8xCxERaZiJgpD+xukqRPhmi2OefLUcsqpkBOKy1JcZXM/p5TOzcSTJ0zUYUNKxUxdI9/u
+ RrwfhU6sDqYlctNjYf67gRChwiuQYg22GN2oCSEGunvfluqo94Iy6PaxzWCcC9myQygHwVJUU
+ Ne0u/ZACd/QEBZ2z/tZVx186pnRNF/ZXA4l5OlwmKr5Z2CkIS+tjrIguXKLMQr3XSgN5Lq512
+ 8dAIGCqd0a2ScdRy/85dt2BKD6xNBsbPkDKZJHFjCdoskWHLnpiJbMhOABtFStR6esU1T35Qa
+ pfncNYxnW6AkNzaueou7MDP2DWkcKVm2kp///yeo6u/IbAh+nlDSkncG7oT8n+19qDIYAYoT8
+ Fio2uVEZHhYHC7s0UUe2laCulUrFI9CRjzR/+kBRIILiQ7KzAgucmiIOHojC+vA1XP35DSM3j
+ yJ8JyaxOfFBDMZddXBddaRzkfnfJlvywM9VmRZqwUWLDh4BH2qMrrI/Y17eBSPB5/gltRmMf0
+ LaG92417BnJlg0JTTlzKbxYK5+YiBoO8qMps8qnu0swHLBDpS3zk6g3mr2kEgg7vtXaun8nn5
+ v3nHDPEE+ADMW6AtoyNDdGB5yB70SLob5IRUU3tpM7g3HGt1n64ZVAwn7TSrCpbq+nds6Y4Cp
+ 7ZplnvtOkFjCAn/oR6CEcaKJ9Y4ht7itjIhwmA83RWHDfDpenYzf6/SvlmPq6RzWFM6b2W/uD
+ qr/BD3sfrw9eWMm1GMzPgIQPLTYmaJOLyTscGge8b4PmKx1MYAbjEUmimXfrKpkyK8xqAuwhe
+ jJdeBu/vNh3pBs/3E
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> If you can't determine when the bug was introduced,
+> Changed since v1:
+>  - Improved commit log slightly.
+>  - Changed 'undo_probe1' to 'undo_probe' where appropriate.
 
-I might be able to determine also this information.
-
-
-> how can you criticise a patch for the lack of a Fixes tag?
-
-I dared to point two details out for the discussed patch.
+I find this response interesting.
 
 
->> To which commit would you like to refer to for the proposed adjustment
->> of the function =E2=80=9Cmac_sonic_platform_probe=E2=80=9D?
+> ---
+
+I suggest to replace these triple dashes by a blank line.
+
+
+>  drivers/net/ethernet/natsemi/macsonic.c | 17 +++++++++++++----
+>  drivers/net/ethernet/natsemi/xtsonic.c  |  7 +++++--
+
+I imagine that this change combination will need further clarification
+because David Miller provided the information =E2=80=9CApplied, thanks.=E2=
+=80=9D on 2020-04-27.
+
+net/sonic: Fix a resource leak in an error handling path in 'jazz_sonic_pr=
+obe()'
+https://lore.kernel.org/patchwork/comment/1426045/
+https://lkml.org/lkml/2020/4/27/1014
+
+
+=E2=80=A6
+> +++ b/drivers/net/ethernet/natsemi/xtsonic.c
+> @@ -229,11 +229,14 @@ int xtsonic_probe(struct platform_device *pdev)
+>  	sonic_msg_init(dev);
 >
-> That was my question to you. We seem to be talking past each other.
-
-We come along different views for this patch review.
-Who is going to add a possible reference for this issue?
-
-
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/Documentation/process/coding-style.rst?id=3De99332e7b4cda6e60f5b5916cf994=
-3a79dbef902#n460
+>  	if ((err =3D register_netdev(dev)))
+> -		goto out1;
+> +		goto undo_probe1;
 >
-> My preference is unimportant here.
-
-It is also relevant here because you added the tag =E2=80=9CReviewed-by=E2=
-=80=9D.
-https://lore.kernel.org/patchwork/comment/1433193/
-https://lkml.org/lkml/2020/5/8/1827
-
-
-> I presume that you mean to assert that Christophe's patch
-> breaches the style guide.
-
-I propose to take such a possibility into account.
-
-
-> However, 'sonic_probe1' is the name of a function.
-
-The discussed source file does not contain such an identifier.
-https://elixir.bootlin.com/linux/v5.7-rc5/source/drivers/net/ethernet/nats=
-emi/macsonic.c#L486
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
-ivers/net/ethernet/natsemi/macsonic.c?id=3D2ef96a5bb12be62ef75b5828c0aab83=
-8ebb29cb8#n486
-
-
-> This is not some sequence of GW-BASIC labels referred to in the style gu=
-ide.
-
-I recommend to read the current section =E2=80=9C7) Centralized exiting of=
- functions=E2=80=9D
-once more.
-
-
->> Can programming preferences evolve into the direction of =E2=80=9Csay w=
-hat the
->> goto does=E2=80=9D?
+>  	return 0;
 >
-> I could agree that macsonic.c has no function resembling "probe1",
-> and that portion of the patch could be improved.
+> -out1:
+> +undo_probe1:
+> +	dma_free_coherent(lp->device,
+> +			  SIZEOF_SONIC_DESC * SONIC_BUS_SCALE(lp->dma_bitmode),
+> +			  lp->descriptors, lp->descriptors_laddr);
+>  	release_region(dev->base_addr, SONIC_MEM_SIZE);
+>  out:
+=E2=80=A6
 
-I find this feedback interesting.
-
-
-> Was that the opinion you were trying to express by way of rhetorical
-> questions? I can't tell.
-
-Some known factors triggered my suggestion to consider the use of
-the label =E2=80=9Cfree_dma=E2=80=9D.
-
-
-> Is it possible for a reviewer to effectively criticise C by use of
-> English, when his C ability surpasses his English ability?
-
-We come along possibly usual communication challenges.
+Can it be nicer to use the label =E2=80=9Cfree_dma=E2=80=9D?
 
 Regards,
 Markus

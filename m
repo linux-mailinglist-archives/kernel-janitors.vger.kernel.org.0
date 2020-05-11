@@ -2,101 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 329D71CE2F5
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 May 2020 20:43:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52BC81CE476
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 May 2020 21:29:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731165AbgEKSnf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 May 2020 14:43:35 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:56102 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729727AbgEKSne (ORCPT
+        id S1731488AbgEKT3A (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 May 2020 15:29:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58064 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1731353AbgEKT27 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 May 2020 14:43:34 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04BIREs5162785;
-        Mon, 11 May 2020 18:43:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=ipZEsRzQpAd3YeSqXHHV6cyBJrvAY2iFbiN9Tq/iOIA=;
- b=z8uFppRsbqNeWz9BAAySEDB+0vzSJHlXxJFzBfgVzBNeuIb8f4m2MCdaY+2dvXfvfYcf
- uztISlNoirk+eaq10PEqWlUQ/uWNLMNxdc8jRSx+tQSST2aUlwsS6burHLvEh/fC7Y01
- 1bHkg0bLzop3QGjbY6bbjmoJg7b6w9QrtrX4bKyXYwHPxQ51Zb7h762V0GF2npAnrOvG
- /r12YvQJkSJ7ud+9EH06bzImJwgzhabIlKUG/bGp1YQfxreiKBruGUiO21EJids2696V
- Ts1YKVmIu+v7mPgiLnaZqZXGNAcFbJ3v+tCEKv6RbH8VeiAaR5RGpQNjpqypBlQa4Arw cg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 30x3mbpub9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 11 May 2020 18:43:20 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04BITfw2174062;
-        Mon, 11 May 2020 18:43:20 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 30x69rj4bf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 11 May 2020 18:43:20 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04BIhHnS020044;
-        Mon, 11 May 2020 18:43:17 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 11 May 2020 11:43:16 -0700
-Date:   Mon, 11 May 2020 21:43:06 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Walter Harms <wharms@bfs.de>
-Cc:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Wei Yongjun <weiyongjun1@huawei.com>,
-        Hemant Kumar <hemantk@codeaurora.org>,
-        Jeffrey Hugo <jhugo@codeaurora.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sujeev Dias <sdias@codeaurora.org>,
-        Siddartha Mohanadoss <smohanad@codeaurora.org>,
-        "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH -next] bus: mhi: core: Fix some error return code
-Message-ID: <20200511184306.GI9365@kadam>
-References: <20200509075654.175002-1-weiyongjun1@huawei.com>
- <20200511103124.GA12753@mani>
- <78d3f7d7be1849138df7dcf9d49177b5@bfs.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <78d3f7d7be1849138df7dcf9d49177b5@bfs.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 adultscore=0
- spamscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2005110141
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 impostorscore=0
- mlxscore=0 suspectscore=0 bulkscore=0 mlxlogscore=999 phishscore=0
- malwarescore=0 lowpriorityscore=0 spamscore=0 adultscore=0 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2005110141
+        Mon, 11 May 2020 15:28:59 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62FC5C061A0C;
+        Mon, 11 May 2020 12:28:59 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id k1so12462812wrx.4;
+        Mon, 11 May 2020 12:28:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=ZAtH0faIljYlKbUs4LOqwPvsHvq1UMeElD7Sjj/OCPg=;
+        b=eSLzEC3SAsl3cXTDCPbtCGyX8b2dFryfRulWYzicOAsqusDu34FRZwOuHH8HUh0qBI
+         XuQumhjFb9KdzljstM2R5RpVmMwrhlQj2RVC6Ada+RHuVbMZ0IPfH+d4DZh+X9V/Ppnq
+         YisCkeowg2JpZIpfvSzft5Sb0pHA8TuG6pQyRvkbDMaBRv4hvL36txLFMflZ8J+XAPqL
+         FylG7Ts6DqwWevPNj80HwojO2onvzq3dWqgtWiBTmVrxmunF66B0/62AoV4+dzl5r7cv
+         Ab8B2Sxi5nsVHLq9W4zBpFtrdW4NyVjRt5JJcvc1rO6RsHZmEUzSgGtSk9tVTY/T4LG+
+         9oqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=ZAtH0faIljYlKbUs4LOqwPvsHvq1UMeElD7Sjj/OCPg=;
+        b=QG2qnpcfbV5lHkvqOtBE4E+Ria0WZd1y8HxGNnDgLQ7YihHRnjkCGGq7C7zmcfts9e
+         B/px4bZZIqJSiOjX4FAvH9QebmZHiuQ+T9h05EKu2LxfiGDxVEwDaPNbqe0UBq6yooy6
+         xgK8W+gfmAHaNpUB12Fcdd471SgW0/eCW4RjTokNrZE+A1kvlQFjRfLqPSbMjLecZDbI
+         STEgj6TQs4n9iRhrdcLl/49+x/eumSZRjmXaPxGXnuNccphEwooyV3qCpRTGnMGouSSz
+         P+GEa1cgrRf9GOtvLemKPr6HUPBNwvn0pOujeN+BuKJ8jztkIp5S14WJW1LWORWlNHTE
+         w25g==
+X-Gm-Message-State: AGi0Pub3/oAGfHUuWFArlxk/BrJ70iVbSMI37FNT9cSmKFECCP2X4KGr
+        GqeLwNvERcyp6ENHIBy+/0c=
+X-Google-Smtp-Source: APiQypL550SiDakiWSzBnEQgDEpmGUtS2Kxf+BKvqRsSGWbsDn8qXbb87i4v281xXMYsGjt4jNmqOA==
+X-Received: by 2002:a5d:4008:: with SMTP id n8mr7444252wrp.82.1589225338114;
+        Mon, 11 May 2020 12:28:58 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2dce:7200:7930:ad7c:21cb:6736])
+        by smtp.gmail.com with ESMTPSA id u9sm7218846wmb.19.2020.05.11.12.28.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2020 12:28:57 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Sowjanya Komatineni <skomatineni@nvidia.com>
+Cc:     linux-media@vger.kernel.org, linux-tegra@vger.kernel.org,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: correct path in TEGRA VIDEO DRIVER
+Date:   Mon, 11 May 2020 21:28:44 +0200
+Message-Id: <20200511192844.11044-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, May 11, 2020 at 02:26:10PM +0000, Walter Harms wrote:
-> Hello guys,
-> some nitpicking ...
-> the prefered kernalstyle is:
-> 
-> if (condition)
->    set error_code
->    do something
-> 
-> from what i can see it is
-> 
->  set error_code
->       if (condition)
+Commit 423d10a99b30 ("media: tegra: Add Tegra210 Video input driver") added
+the driver to drivers/staging/media/tegra-video/, but commit 2c6b617f2cca
+("MAINTAINERS: Add Tegra Video driver section") added a file entry
+referring to drivers/staging/media/tegra/.
 
-There isn't a prefered style.  Both are accepted.  Most people have a
-personal preference, but there isn't an official preference.
+Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
 
-regards,
-dan carpenter
+  warning: no file matches  F:  drivers/staging/media/tegra/
+
+Adjust the file entry in TEGRA VIDEO DRIVER to the correct path.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+Sowjanya, please ack this minor patch.
+
+applies cleanly on next-20200511
+
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 0abba1aff1ae..dd310f1c3bb7 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16679,7 +16679,7 @@ L:	linux-media@vger.kernel.org
+ L:	linux-tegra@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.txt
+-F:	drivers/staging/media/tegra/
++F:	drivers/staging/media/tegra-video/
+ 
+ TEGRA XUSB PADCTL DRIVER
+ M:	JC Kuo <jckuo@nvidia.com>
+-- 
+2.17.1
 

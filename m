@@ -2,37 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1D591CD353
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 May 2020 09:55:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0D9E1CD3AE
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 May 2020 10:20:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728151AbgEKHzP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 May 2020 03:55:15 -0400
-Received: from mout.web.de ([212.227.15.3]:42175 "EHLO mout.web.de"
+        id S1729049AbgEKIUo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 May 2020 04:20:44 -0400
+Received: from mout.web.de ([212.227.15.4]:47581 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726173AbgEKHzO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 May 2020 03:55:14 -0400
+        id S1728556AbgEKIUo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 11 May 2020 04:20:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1589183699;
-        bh=SxeoKwHdTMYDV8yc9DyM1v9iJ5uFpRGYEyppCZGeAl4=;
+        s=dbaedf251592; t=1589185230;
+        bh=3y2G1yVpBuGXndYc8M5o8p9u3GOYWTFXQ4LaWMQUhsA=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=syD/a49EMTKAxLjoWfwplmkIFY1zwg83Pw4XPlmLlrem40cGJu2Vh/R6Rnp5jM+M9
-         T5xXCmUt+M0HyQx7CeKK31S8GctjWC9sR3BkglqqMD5QMCsOkzfgZQf67YEyhkZkuX
-         Ew2/eYSkZ7E6Uu/rC/Jq1Yk18K9nCwhA/k85V83Q=
+        b=q3ORAHPGCU+CY6EErWtcqvFn6Hz8QaiZChqrH9YHZR61M76ZLcjpmpQlQbN8cQ2gC
+         yofPpIEe9Brum8uDa7jEsEExElY5KSt78p32gMnBJ9Qd+99o3XDLvEe1vVb1f4sARl
+         +IOGMxiBR+uZmrAWPr1GU8fg9v3ikHpS/zUX0MRI=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.185.130]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0M5fhI-1jA5Ix1oL2-00xYi1; Mon, 11
- May 2020 09:54:59 +0200
-Subject: Re: [PATCH v2] net/sonic: Fix some resource leaks in error handling
- paths
-To:     Finn Thain <fthain@telegraphics.com.au>,
+Received: from [192.168.1.2] ([2.243.185.130]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MC0PR-1jNunj1s1V-00CTbF; Mon, 11
+ May 2020 10:20:30 +0200
+Subject: Re: net/sonic: Fix some resource leaks in error handling paths
+To:     Finn Thain <fthain@telegraphics.com.au>, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
-        Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        netdev@vger.kernel.org
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        =?UTF-8?Q?Thomas_Bogend=c3=b6rfer?= <tsbogend@alpha.franken.de>,
-        Chris Zankel <chris@zankel.net>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <3eaa58c16dcf313ff7cb873dcff21659b0ea037d.1589158098.git.fthain@telegraphics.com.au>
+        Jakub Kicinski <kuba@kernel.org>,
+        Christophe Jaillet <christophe.jaillet@wanadoo.fr>
+References: <b7651b26-ac1e-6281-efb2-7eff0018b158@web.de>
+ <alpine.LNX.2.22.394.2005100922240.11@nippy.intranet>
+ <9d279f21-6172-5318-4e29-061277e82157@web.de>
+ <alpine.LNX.2.22.394.2005101738510.11@nippy.intranet>
+ <bc70e24c-dd31-75b7-6ece-2ad31982641e@web.de>
+ <alpine.LNX.2.22.394.2005110845060.8@nippy.intranet>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -77,90 +78,56 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <f9a2c71b-e001-d546-64cd-8a904ae881ca@web.de>
-Date:   Mon, 11 May 2020 09:54:56 +0200
+Message-ID: <00a5237c-13b4-07b5-99ee-8f63d4276fb4@web.de>
+Date:   Mon, 11 May 2020 10:20:24 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <3eaa58c16dcf313ff7cb873dcff21659b0ea037d.1589158098.git.fthain@telegraphics.com.au>
+In-Reply-To: <alpine.LNX.2.22.394.2005110845060.8@nippy.intranet>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:lMX6L/xPU+LnOvXWYWppgvBITGxbf53w7sXD13Jjbsx5KoiLCxp
- TyLb+HiD8bjqTt/Ur/hTAPsYZp3xYJmsg7OJrHgppvPlLYsrfT4RaIKBIX1R47A3V3FvpiL
- MK0SKbLdHTDsv5hmzjZ+71U6ZyvtdO7YkAl+duD9eo94sJpGpf8dCuc15I1zg/extljc8uU
- lM7vkHkVIMJyt76NA9V5Q==
+X-Provags-ID: V03:K1:FcCYv6jfu0c0+k+4KEQ+qlVkkWGxC0hIDrjL1SvyRQhMaw3FHZo
+ nVGi1rqsJuPlWoirMErPCn75VV1ZSdyGsCKJ6V9lm3s4xRpBMTiIdXfhr4FDR5laMt3eZeq
+ 4gPeC6MXBhQgmA98jsgWXkTDC6asKiXEaqzLD6krs/1/9A9kT/7D6BMMcrD+vLjB6x74OxS
+ ULSvBvfRYj4E0ww3tKtHw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:hk7Te1kuLBs=:HLdD4ujWZ/rIGYBtVDdHcD
- 9+3/Z2o9cjUJh6q5wpDVKJnUIP36u5BdfuK/UQlWUbe5JapHlh8N4XTha/QLZowdMLbPZCET4
- Dq2dTsZS4i2+nyMcda2ERHrKHc1kNM2tFbksYSEVtzqNz1hkxa5lfrJVI86/hxZ7T+76v7WEF
- tgVDyAIM4YGmMk2KTN5cjTF9/GUM/WZ9Aj4ZTHzgw4wPmur0hsQtJJeme1+1xIDoSWhsQpIDh
- Ho7d7lo2LVoYxmSA/TWcYyITpcWCVpkhqIaoOE6xUDvOy/a5QVsy+UzMn9soUC2ey2DzhT9cK
- kiqf1Focdq67K4F46CFNmbfbpvcjDn6+HAXBWYyG/YMZoxylTXVj2hR0C9uUpuhd16G9Yp6x8
- N7sftqvQR752Hm7sQqGE6gQ++X0Y2ns8nJz/FbF4QKH7CkSsjAB9GpN4zTv/ZRU5ExPPoLW+e
- Yicw8xCxERaZiJgpD+xukqRPhmi2OefLUcsqpkBOKy1JcZXM/p5TOzcSTJ0zUYUNKxUxdI9/u
- RrwfhU6sDqYlctNjYf67gRChwiuQYg22GN2oCSEGunvfluqo94Iy6PaxzWCcC9myQygHwVJUU
- Ne0u/ZACd/QEBZ2z/tZVx186pnRNF/ZXA4l5OlwmKr5Z2CkIS+tjrIguXKLMQr3XSgN5Lq512
- 8dAIGCqd0a2ScdRy/85dt2BKD6xNBsbPkDKZJHFjCdoskWHLnpiJbMhOABtFStR6esU1T35Qa
- pfncNYxnW6AkNzaueou7MDP2DWkcKVm2kp///yeo6u/IbAh+nlDSkncG7oT8n+19qDIYAYoT8
- Fio2uVEZHhYHC7s0UUe2laCulUrFI9CRjzR/+kBRIILiQ7KzAgucmiIOHojC+vA1XP35DSM3j
- yJ8JyaxOfFBDMZddXBddaRzkfnfJlvywM9VmRZqwUWLDh4BH2qMrrI/Y17eBSPB5/gltRmMf0
- LaG92417BnJlg0JTTlzKbxYK5+YiBoO8qMps8qnu0swHLBDpS3zk6g3mr2kEgg7vtXaun8nn5
- v3nHDPEE+ADMW6AtoyNDdGB5yB70SLob5IRUU3tpM7g3HGt1n64ZVAwn7TSrCpbq+nds6Y4Cp
- 7ZplnvtOkFjCAn/oR6CEcaKJ9Y4ht7itjIhwmA83RWHDfDpenYzf6/SvlmPq6RzWFM6b2W/uD
- qr/BD3sfrw9eWMm1GMzPgIQPLTYmaJOLyTscGge8b4PmKx1MYAbjEUmimXfrKpkyK8xqAuwhe
- jJdeBu/vNh3pBs/3E
+X-UI-Out-Filterresults: notjunk:1;V03:K0:dGLVDhFnwyw=:kEv6jVJS7ZcOONvXu2SzN4
+ Thsgdpw3hyFvJIcCxhavm4cXKOZ21CCOSUdi4w9HrKeifB7aI4GsngZAwKU2oJcZ6unqhrBe2
+ uLaIA+mymtiknM+ILy25dV8pqrs/eHjPdmZ/gEMRXGHkxn7KxcafesjEagj+lkDZCI9LftmUA
+ xg1Gy/wyuOP0Xkduy2U1br0aTlePDlrqJczxyTQTsOLWMJ7aFP16Dc9zNYij0rewjV7CkPox9
+ AxxOJjZUBX9Ad6nqzO4xJQl4GjlDq2bmUYbZtxiL3fNnOUDB6kXURQt4DR6cMLhrQZFGSqOPI
+ 7gjfit/pyeYqXIptmJlCf9vYU2TVcworYC+WhfpDD1Go0iolSTnEsuC6HysGvdYmNtOa5cVKy
+ M7fycQcewO1yDl8/l+G5FGxTt+OO09PZdvOBRFl5b4FjfP1qOcRkczSVAndGFCfCxLT+MrrBG
+ 1Dci/QHBhgmNiBnhdrnNuuAAdH0tB8c1X1/Pf+Zmj7oHD3biYt/Do02EqHgUO4L1seQ6X21gg
+ p8jE2PC7Gg1n9sao9di5RzSJXv29WoNlDASWNU+/Wx5ByFAP73iZzOmy/IuxW083Bxq5o5r4u
+ 3aogwfYLgFwwtCVJpa2OeqhP0AKWkuhvGYFybu6ukMtV2DohR/+kATqR23iqUEzNs1MJfeAUD
+ +RkfAU4RlCryG9L+Vzz3r6670t9jT2kpJ6br1/TBvGbduGKLVNJNtANwBUFeXl79rdeZHHNz0
+ 2W/KhdC5VNwQAi5RXthG4huKUroFgRuNtQhU/5PFaVsgKVZ45U6YMR6txuj7tASMzbQOTH3vM
+ v+C/Co4ZD0VrZs36Ni2BBXT86hHLQRBY89/uQRjsnQh50WQ/DL+YjmFrjabJvtRkUR4Vc47l7
+ tXWlB9czvFz230O7/Qv08VxswhwAGp3VP0N2NU4bLFA/LEhWrXHhQ3/7p873X+DMY7fzIlwMk
+ jXHbSVPAVMnPbi7BQojd1NkolIOON0Jw1j/lS/9mFzrCzwey8esal1jlG/IwTv+OavsGJB1lb
+ G/KaQbqgTrmtCGcr7ZoblmvLgV9TNY6RFDS+B7+BUDRkFcKEFV4afZUmiU4Jr/KK2VA7bKqGg
+ e7A/K9HQbE0pgw/+EFqHpyVivvt7q8kYoUhh6cLAZ1BX3ZqMcYTRMFKD3Dl97NIVuC8/AL9e8
+ eKIcm2wYBz+BtN1RaT7GsKc1PZ9vzdYnq4x9oisGRMYbJmW3wD/On/EhvJMVgbhKXQv/CBNJs
+ Wy2wNJGTLDFBeeXLY
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Changed since v1:
->  - Improved commit log slightly.
->  - Changed 'undo_probe1' to 'undo_probe' where appropriate.
-
-I find this response interesting.
-
-
-> ---
-
-I suggest to replace these triple dashes by a blank line.
-
-
->  drivers/net/ethernet/natsemi/macsonic.c | 17 +++++++++++++----
->  drivers/net/ethernet/natsemi/xtsonic.c  |  7 +++++--
-
-I imagine that this change combination will need further clarification
-because David Miller provided the information =E2=80=9CApplied, thanks.=E2=
-=80=9D on 2020-04-27.
-
-net/sonic: Fix a resource leak in an error handling path in 'jazz_sonic_pr=
-obe()'
-https://lore.kernel.org/patchwork/comment/1426045/
-https://lkml.org/lkml/2020/4/27/1014
-
-
-=E2=80=A6
-> +++ b/drivers/net/ethernet/natsemi/xtsonic.c
-> @@ -229,11 +229,14 @@ int xtsonic_probe(struct platform_device *pdev)
->  	sonic_msg_init(dev);
+>> To which commit would you like to refer to for the proposed adjustment
+>> of the function =E2=80=9Cmac_sonic_platform_probe=E2=80=9D?
 >
->  	if ((err =3D register_netdev(dev)))
-> -		goto out1;
-> +		goto undo_probe1;
->
->  	return 0;
->
-> -out1:
-> +undo_probe1:
-> +	dma_free_coherent(lp->device,
-> +			  SIZEOF_SONIC_DESC * SONIC_BUS_SCALE(lp->dma_bitmode),
-> +			  lp->descriptors, lp->descriptors_laddr);
->  	release_region(dev->base_addr, SONIC_MEM_SIZE);
->  out:
-=E2=80=A6
+> That was my question to you. We seem to be talking past each other.
 
-Can it be nicer to use the label =E2=80=9Cfree_dma=E2=80=9D?
+I have needed a moment to notice your patch as another constructive respon=
+se
+for this code review.
+
+[PATCH v2] net/sonic: Fix some resource leaks in error handling paths
+https://lore.kernel.org/r/3eaa58c16dcf313ff7cb873dcff21659b0ea037d.1589158=
+098.git.fthain@telegraphics.com.au/
 
 Regards,
 Markus

@@ -2,70 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F39F81CCE4A
-	for <lists+kernel-janitors@lfdr.de>; Sun, 10 May 2020 23:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEE971CCEDC
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 May 2020 02:28:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729380AbgEJVvI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 10 May 2020 17:51:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40290 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727771AbgEJVvI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 10 May 2020 17:51:08 -0400
-Received: from pobox.suse.cz (nat1.prg.suse.com [195.250.132.148])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2109E20801;
-        Sun, 10 May 2020 21:51:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589147467;
-        bh=i4ZPjwrBwKNSFaeYz7pCXGUsqvDB4d5elw4u0iWikqo=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=qitNJdcXLZqpDlIrtjn2N+p/iDXOHEpBMDjVawS+xKO4G0vgNsROFtKDM3gtIOKM3
-         NgEzu68AHqBKTw21Sc47X+ZemTTvI2x3BjyTL/cnsBIy925Ip5eCw4QutpXEk8mgbQ
-         OoFo4mNNfWnnfdele7WPBIgTPdb0sP648yH6JZCc=
-Date:   Sun, 10 May 2020 23:51:04 +0200 (CEST)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-cc:     Peter Zijlstra <peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Petr Mladek <pmladek@suse.com>,
-        Joe Lawrence <joe.lawrence@redhat.com>,
-        live-patching@vger.kernel.org, Joe Perches <joe@perches.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: adjust to livepatch .klp.arch removal
-In-Reply-To: <20200509073258.5970-1-lukas.bulwahn@gmail.com>
-Message-ID: <nycvar.YFH.7.76.2005102350050.25812@cbobk.fhfr.pm>
-References: <20200509073258.5970-1-lukas.bulwahn@gmail.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        id S1729258AbgEKA2c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 10 May 2020 20:28:32 -0400
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:38942 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729168AbgEKA2c (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 10 May 2020 20:28:32 -0400
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id AAECC299CB;
+        Sun, 10 May 2020 20:28:27 -0400 (EDT)
+Date:   Mon, 11 May 2020 10:28:34 +1000 (AEST)
+From:   Finn Thain <fthain@telegraphics.com.au>
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: Re: net/sonic: Fix some resource leaks in error handling paths
+In-Reply-To: <bc70e24c-dd31-75b7-6ece-2ad31982641e@web.de>
+Message-ID: <alpine.LNX.2.22.394.2005110845060.8@nippy.intranet>
+References: <b7651b26-ac1e-6281-efb2-7eff0018b158@web.de> <alpine.LNX.2.22.394.2005100922240.11@nippy.intranet> <9d279f21-6172-5318-4e29-061277e82157@web.de> <alpine.LNX.2.22.394.2005101738510.11@nippy.intranet>
+ <bc70e24c-dd31-75b7-6ece-2ad31982641e@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: multipart/mixed; BOUNDARY="-1463811774-1651048744-1589151508=:8"
+Content-ID: <alpine.LNX.2.22.394.2005110858570.8@nippy.intranet>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 9 May 2020, Lukas Bulwahn wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-> Commit 1d05334d2899 ("livepatch: Remove .klp.arch") removed
-> arch/x86/kernel/livepatch.c, but missed to adjust the LIVE PATCHING entry
-> in MAINTAINERS.
-> 
-> Since then, ./scripts/get_maintainer.pl --self-test=patterns complains:
-> 
->   warning: no file matches  F:  arch/x86/kernel/livepatch.c
-> 
-> So, drop that obsolete file entry in MAINTAINERS.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---1463811774-1651048744-1589151508=:8
+Content-Type: text/plain; CHARSET=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-ID: <alpine.LNX.2.22.394.2005110858571.8@nippy.intranet>
 
-I've added
+On Sun, 10 May 2020, Markus Elfring wrote:
 
-	Fixes: 1d05334d2899 ("livepatch: Remove .klp.arch")
+> >
+> > Do you know when these bugs were introduced?
+>=20
+> I suggest to take another look at a provided tag =E2=80=9CFixes=E2=80=9D.
 
-and applied, thanks.
+If you can't determine when the bug was introduced, how can you criticise=
+=20
+a patch for the lack of a Fixes tag?
 
--- 
-Jiri Kosina
-SUSE Labs
+> To which commit would you like to refer to for the proposed adjustment=20
+> of the function =E2=80=9Cmac_sonic_platform_probe=E2=80=9D?
+>=20
 
+That was my question to you. We seem to be talking past each other.=20
+Unforunately I only speak English, so if this misunderstanding is to be=20
+resolved, you're going to have to try harder to make yourself understood.
+
+> > Naming goto labels is just painting another bikeshed. Yes, some=20
+> > alternatives are preferable but it takes too long to identify them and=
+=20
+> > finding consensus is unlikely anyway, as it's a matter of taste.
+>=20
+> Would you find numbered labels unwanted according to a possible=20
+> interpretation related to 'GW-BASIC' identifier selection?
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/D=
+ocumentation/process/coding-style.rst?id=3De99332e7b4cda6e60f5b5916cf9943a7=
+9dbef902#n460
+>=20
+
+My preference is unimportant here. Therefore, your question must be=20
+rhetorical. I presume that you mean to assert that Christophe's patch=20
+breaches the style guide.
+
+However, 'sonic_probe1' is the name of a function. The name of the goto=20
+label 'undo_probe1' reflects the name of the function.
+
+This is not some sequence of GW-BASIC labels referred to in the style=20
+guide. And neither does the patch add new functions with numbered names.
+
+> Can programming preferences evolve into the direction of =E2=80=9Csay wha=
+t the=20
+> goto does=E2=80=9D?
+>=20
+
+I could agree that macsonic.c has no function resembling "probe1", and=20
+that portion of the patch could be improved.
+
+Was that the opinion you were trying to express by way of rhetorical=20
+questions? I can't tell.
+
+Is it possible for a reviewer to effectively criticise C by use of=20
+English, when his C ability surpasses his English ability?
+
+You needn't answer that question, but please do consider it.
+
+> Regards,
+> Markus
+>=20
+---1463811774-1651048744-1589151508=:8--

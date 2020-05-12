@@ -2,107 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3419B1CFD18
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 20:19:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 145CE1CFD27
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 20:22:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730712AbgELST0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 May 2020 14:19:26 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:44906 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725950AbgELSTZ (ORCPT
+        id S1726465AbgELSWz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 May 2020 14:22:55 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:46509 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725938AbgELSWz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 May 2020 14:19:25 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04CIIlLI040021;
-        Tue, 12 May 2020 18:19:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=dYwi2oG1eCIysvZvhhpdKWvgXg6lkmSypKhPpmx3GFo=;
- b=qUp3GgCcMfnugz6FEENaoTy3ePTXGOHYFcdd/qUrQsN8JZvNplDvuxe5VcYJlifQlhLw
- y99ZpzlowV0N85Ev43PUQGwzt/8M9FvzF5chUkgS9H9ha92GbTbQM/aJBQJOOCmrToox
- g/Gk1gzsH0I81u5AHwgVDx8z14Gom2ZBwWhUNScNR9qud9IHC3pSAiwu/GH+aIYkpi0f
- SpGMtDMcyDUfSXX9jCDaFqlUBTRPRipRwwdARob5uxCOkIA+4aDhAhaAHfPnsPwT75pX
- wx0iZ+x1jUZ/5Vz2nRFMTDKqDl1PJg0GtlLVu++w2mNeYVy6rLVtB4/yS/+oRHoOCy4Q jg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 3100yfr05g-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 12 May 2020 18:19:18 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04CIICIq047040;
-        Tue, 12 May 2020 18:19:18 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 3100y8r2d7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 12 May 2020 18:19:18 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04CIJHnn005365;
-        Tue, 12 May 2020 18:19:17 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 12 May 2020 11:19:16 -0700
-Date:   Tue, 12 May 2020 21:19:09 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     James Smart <james.smart@broadcom.com>
-Cc:     Dick Kennedy <dick.kennedy@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>,
-        Paul Ely <paul.ely@broadcom.com>, linux-scsi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] scsi: lpfc: Fix a use after free in
- lpfc_nvme_unsol_ls_handler()
-Message-ID: <20200512181909.GA299091@mwanda>
+        Tue, 12 May 2020 14:22:55 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jYZYL-0006pL-CA; Tue, 12 May 2020 18:22:53 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        linux-fsdevel@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] fs: remove redundant assignment to variable ret
+Date:   Tue, 12 May 2020 19:22:53 +0100
+Message-Id: <20200512182253.223249-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9619 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 phishscore=0
- adultscore=0 suspectscore=2 mlxscore=0 mlxlogscore=795 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005120138
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9619 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 adultscore=0
- mlxscore=0 suspectscore=2 spamscore=0 mlxlogscore=833 malwarescore=0
- bulkscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005120138
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "axchg" pointer is dereferenced when we call the
-lpfc_nvme_unsol_ls_issue_abort() function.  It can't be either freed or
-NULL.
+From: Colin Ian King <colin.king@canonical.com>
 
-Fixes: 3a8070c567aa ("lpfc: Refactor NVME LS receive handling")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+The variable ret is being assigned a value that is never read and it
+is being updated later with a new value. The assignment is redundant
+and can be removed.
+
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/scsi/lpfc/lpfc_sli.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/super.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
-index 38889cb6e1996..fcf51b4192d66 100644
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -2895,14 +2895,14 @@ lpfc_nvme_unsol_ls_handler(struct lpfc_hba *phba, struct lpfc_iocbq *piocb)
- 			(phba->nvmet_support) ? "T" : "I", ret);
- 
- out_fail:
--	kfree(axchg);
--
- 	/* recycle receive buffer */
- 	lpfc_in_buf_free(phba, &nvmebuf->dbuf);
- 
- 	/* If start of new exchange, abort it */
--	if (fctl & FC_FC_FIRST_SEQ && !(fctl & FC_FC_EX_CTX))
-+	if (axchg && (fctl & FC_FC_FIRST_SEQ) && !(fctl & FC_FC_EX_CTX))
- 		lpfc_nvme_unsol_ls_issue_abort(phba, axchg, sid, oxid);
-+
-+	kfree(axchg);
- }
- 
- /**
+diff --git a/fs/super.c b/fs/super.c
+index b0a511bef4a0..6674c2af26ef 100644
+--- a/fs/super.c
++++ b/fs/super.c
+@@ -2052,7 +2052,6 @@ SYSCALL_DEFINE5(watch_sb,
+ 		if (drop_s_count)
+ 			put_super(s);
+ 	} else {
+-		ret = -EBADSLT;
+ 		down_write(&s->s_umount);
+ 		ret = remove_watch_from_object(s->s_watchers, wqueue,
+ 					       s->s_unique_id, false);
 -- 
-2.26.2
+2.25.1
 

@@ -2,65 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 053D61CF4BD
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 14:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC7241CF531
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 15:04:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729919AbgELMsK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 May 2020 08:48:10 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:33333 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729626AbgELMsK (ORCPT
+        id S1729750AbgELNEE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 May 2020 09:04:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53112 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725923AbgELNEE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 May 2020 08:48:10 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jYUKM-00007g-AO; Tue, 12 May 2020 12:48:06 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/amdgpu: remove redundant assignment to variable ret
-Date:   Tue, 12 May 2020 13:48:06 +0100
-Message-Id: <20200512124806.195856-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        Tue, 12 May 2020 09:04:04 -0400
+Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D9F0C061A0C;
+        Tue, 12 May 2020 06:04:04 -0700 (PDT)
+Received: by mail-vs1-xe42.google.com with SMTP id l25so7774518vso.6;
+        Tue, 12 May 2020 06:04:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WYYWk5B2Zk3TwldAUzCtTJK0glo/7kNcHTQydLAHm5E=;
+        b=cHo71XNftzYCde+bfpfj3O5Me55d/CAF5uoY/3V6E4gXpR2DbAJUqHnB3U2PoAuPXf
+         +jvSQcMEWbRTS89iqGm064nmezHp+7/wF5uH3tyUkSc4R5pkcDKPIYbrYDbNaQxOjKxj
+         2Xl32Yq45X+snmh1X8CFrneUQu61MsPP5TfmRhdCdlbhcPQ6ZfjEqVDuVwX73I5HcoJz
+         arzItnlRTzilZiKhUB/QYi0gSGwCbjQ7vMkte8LXU113pdTcZ4UA3fS2Kz4LKUad4boU
+         CqMIy+MiXQhYJI3/cVd4ve/e8vid87Xl86l0Xg8M0kLqwsXVK53thEdrIyKWZi/8X3ZU
+         AvrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WYYWk5B2Zk3TwldAUzCtTJK0glo/7kNcHTQydLAHm5E=;
+        b=HMzdlE+SlXmcDRrRBr3AFghw4T/mt39zzVcn3G0+P4boMVpiQWNs7b1xkg7fC58oxq
+         PRhUCe26YNQwNEIMdlKGpVtZ+nctqIkp8ghPTh72x0lRPY+tP6TNXFBZEvLV/F5nyjiS
+         TlxuVZrNRxO5qAMbfx564O8/iLNjmxtSo8wUhyx0yG6R0I1pwUbR5wyn2fIZn+Plls+i
+         PPLYvvtEeSygFgYa9PT8mcySsNFUc9tp0Pq1GLAPbV1Ww8LaQHYf5lQeHuTVCjCFW+JP
+         vj54v6wcIT6RsomyJeRTZQvAybAzfr8XjEW6Jbgm/J/BC6drZ/BsI6Nm9enDfiQ0KHCV
+         KvDg==
+X-Gm-Message-State: AGi0PuaIV8t9dWT34k1mRajBpqGkg4p+zgh1O4CLhhwCF2LsjH7LTHsj
+        D8Zr6uKFFbq1vY22CWOXREcwj/HnzRouSEDKZ8Q=
+X-Google-Smtp-Source: APiQypJ4NEstWoq9lkMhuVta2nDgCif74eH1N9G3xJwYqz8c5+2f0vuiPACHvfsMZLwR/GXfTW7+fce+ImJb3qkLZhE=
+X-Received: by 2002:a67:c482:: with SMTP id d2mr16214320vsk.37.1589288643312;
+ Tue, 12 May 2020 06:04:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20200428141459.87624-1-weiyongjun1@huawei.com> <CACRpkdZ++vYw8LAiNUv6AXQ0QTh+W9vSL0_w2AR-GNNd=GH7FA@mail.gmail.com>
+In-Reply-To: <CACRpkdZ++vYw8LAiNUv6AXQ0QTh+W9vSL0_w2AR-GNNd=GH7FA@mail.gmail.com>
+From:   Emil Velikov <emil.l.velikov@gmail.com>
+Date:   Tue, 12 May 2020 14:01:24 +0100
+Message-ID: <CACvgo51t+LdpRuFw-uXgbstpHMRrgMt3s62mFsyO37OHjuWJNw@mail.gmail.com>
+Subject: Re: [PATCH -next] drm/mcde: dsi: Fix return value check in dev_err()
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
+        David Airlie <airlied@linux.ie>,
+        kernel-janitors@vger.kernel.org,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hi all,
 
-The variable ret is being initializeed with a value that is never read
-and it is being updated later with a new value. The initialization
-is redundant and can be removed.
+On Tue, 12 May 2020 at 12:49, Linus Walleij <linus.walleij@linaro.org> wrote:
+>
+> On Tue, Apr 28, 2020 at 4:13 PM Wei Yongjun <weiyongjun1@huawei.com> wrote:
+>
+> > In case of error, the function of_drm_find_bridge() returns NULL pointer
+> > not ERR_PTR(). The IS_ERR() test in the return value check should be
+> > replaced with NULL test.
+> >
+> > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+>
+> Patch applied! Thanks Wei, sorry for the long delay.
+>
+It would be nice if of_drm_find_bridge and of_drm_find_panel were
+consistent - either return NULL or an ERR_PTR.
+Otherwise the next person using them is likely to get it wrong.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c
-index 90610b4f2c75..e9e59bc68c9f 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c
-@@ -441,7 +441,7 @@ int amdgpu_xgmi_set_pstate(struct amdgpu_device *adev, int pstate)
- 
- int amdgpu_xgmi_update_topology(struct amdgpu_hive_info *hive, struct amdgpu_device *adev)
- {
--	int ret = -EINVAL;
-+	int ret;
- 
- 	/* Each psp need to set the latest topology */
- 	ret = psp_xgmi_set_topology_info(&adev->psp,
--- 
-2.25.1
-
+-Emil

@@ -2,173 +2,175 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA86F1CE4C1
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 May 2020 21:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E2961CE977
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 02:08:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729135AbgEKTti (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 May 2020 15:49:38 -0400
-Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:7490 "EHLO
-        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727873AbgEKTth (ORCPT
+        id S1728116AbgELAIU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 May 2020 20:08:20 -0400
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:42550 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725836AbgELAIT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 May 2020 15:49:37 -0400
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5eb9abca0000>; Mon, 11 May 2020 12:47:22 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate101.nvidia.com (PGP Universal service);
-  Mon, 11 May 2020 12:49:37 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate101.nvidia.com on Mon, 11 May 2020 12:49:37 -0700
-Received: from rcampbell-dev.nvidia.com (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 11 May
- 2020 19:49:36 +0000
-Subject: Re: [PATCH] mm/hmm/test: Fix some copy_to_user() error handling
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>
-CC:     Jason Gunthorpe <jgg@ziepe.ca>, <linux-mm@kvack.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <20200511183704.GA225608@mwanda>
-From:   Ralph Campbell <rcampbell@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <45d2a836-67d1-ad07-7a1d-0031865f6742@nvidia.com>
-Date:   Mon, 11 May 2020 12:49:36 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Mon, 11 May 2020 20:08:19 -0400
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id 3995529BDB;
+        Mon, 11 May 2020 20:08:16 -0400 (EDT)
+Date:   Tue, 12 May 2020 10:08:23 +1000 (AEST)
+From:   Finn Thain <fthain@telegraphics.com.au>
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: Re: net/sonic: Fix some resource leaks in error handling paths
+In-Reply-To: <9994a7de-0399-fb34-237a-a3c71b3cf568@web.de>
+Message-ID: <alpine.LNX.2.22.394.2005120905410.8@nippy.intranet>
+References: <b7651b26-ac1e-6281-efb2-7eff0018b158@web.de> <alpine.LNX.2.22.394.2005100922240.11@nippy.intranet> <9d279f21-6172-5318-4e29-061277e82157@web.de> <alpine.LNX.2.22.394.2005101738510.11@nippy.intranet> <bc70e24c-dd31-75b7-6ece-2ad31982641e@web.de>
+ <alpine.LNX.2.22.394.2005110845060.8@nippy.intranet> <9994a7de-0399-fb34-237a-a3c71b3cf568@web.de>
 MIME-Version: 1.0
-In-Reply-To: <20200511183704.GA225608@mwanda>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1589226442; bh=PBC+0STwLzeZBP0HEvdFrTGn0AxD5O/UYz1nIZQS02o=;
-        h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
-         Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
-         X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
-         Content-Transfer-Encoding;
-        b=ASQBGY0g2vzTx088oZmTchA4HHL5cP00ci4We3aT4tW4T3Mrl8rtFEqjvjCUT01LQ
-         29EnYHyDnHNJNez1+LdvQQjja1Cuy2XpZK/H7AbeiRGv49YoDMiY/pHStX5GsDSUlO
-         oOan2nQGcvYULMvYgfcoGI5sExwhxe6XXzjaJ9iNUfg+jZmxRbXLGzkQtachwertMu
-         HQ/pFo+gt+6/Ov/YK3wBRhp/ZvsppyiryODmkMax20NwNZsFj1MVu9pPP12Jl7Ns8f
-         /izTA2UzQeuoD3RIfbK9Ph5vdJ6gQ7FzGfqYUqvZupoMc3Zu3W5KKPLKxRT2+ip8Gk
-         34+4STB22bbnA==
+Content-Type: multipart/mixed; BOUNDARY="-1463811774-1457172623-1589239130=:8"
+Content-ID: <alpine.LNX.2.22.394.2005120920320.8@nippy.intranet>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-On 5/11/20 11:37 AM, Dan Carpenter wrote:
-> The copy_to_user() function returns the number of bytes which weren't
-> copied but we want to return negative error codes.  Also in dmirror_write()
-> if the copy_from_user() fails then there is some cleanup needed before
-> we can return so I fixed that as well.
-> 
-> Fixes: 5d5e54be8a1e3 ("mm/hmm/test: add selftest driver for HMM")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---1463811774-1457172623-1589239130=:8
+Content-Type: text/plain; CHARSET=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-ID: <alpine.LNX.2.22.394.2005120920321.8@nippy.intranet>
 
-Thanks for fixing this.
-Reviewed-by: Ralph Campbell <rcampbell@nvidia.com>
 
-> ---
->   lib/test_hmm.c | 41 +++++++++++++++++++++++++----------------
->   1 file changed, 25 insertions(+), 16 deletions(-)
-> 
-> diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-> index 00bca6116f930..fd4889f7b3d90 100644
-> --- a/lib/test_hmm.c
-> +++ b/lib/test_hmm.c
-> @@ -360,9 +360,11 @@ static int dmirror_read(struct dmirror *dmirror, struct hmm_dmirror_cmd *cmd)
->   		cmd->faults++;
->   	}
->   
-> -	if (ret == 0)
-> -		ret = copy_to_user(u64_to_user_ptr(cmd->ptr), bounce.ptr,
-> -					bounce.size);
-> +	if (ret == 0) {
-> +		if (copy_to_user(u64_to_user_ptr(cmd->ptr), bounce.ptr,
-> +				 bounce.size))
-> +			ret = -EFAULT;
-> +	}
->   	cmd->cpages = bounce.cpages;
->   	dmirror_bounce_fini(&bounce);
->   	return ret;
-> @@ -412,10 +414,11 @@ static int dmirror_write(struct dmirror *dmirror, struct hmm_dmirror_cmd *cmd)
->   	ret = dmirror_bounce_init(&bounce, start, size);
->   	if (ret)
->   		return ret;
-> -	ret = copy_from_user(bounce.ptr, u64_to_user_ptr(cmd->ptr),
-> -				bounce.size);
-> -	if (ret)
-> -		return ret;
-> +	if (copy_from_user(bounce.ptr, u64_to_user_ptr(cmd->ptr),
-> +			   bounce.size)) {
-> +		ret = -EFAULT;
-> +		goto fini;
-> +	}
->   
->   	while (1) {
->   		mutex_lock(&dmirror->mutex);
-> @@ -431,6 +434,7 @@ static int dmirror_write(struct dmirror *dmirror, struct hmm_dmirror_cmd *cmd)
->   		cmd->faults++;
->   	}
->   
-> +fini:
->   	cmd->cpages = bounce.cpages;
->   	dmirror_bounce_fini(&bounce);
->   	return ret;
-> @@ -715,9 +719,11 @@ static int dmirror_migrate(struct dmirror *dmirror,
->   	mutex_lock(&dmirror->mutex);
->   	ret = dmirror_do_read(dmirror, start, end, &bounce);
->   	mutex_unlock(&dmirror->mutex);
-> -	if (ret == 0)
-> -		ret = copy_to_user(u64_to_user_ptr(cmd->ptr), bounce.ptr,
-> -					bounce.size);
-> +	if (ret == 0) {
-> +		if (copy_to_user(u64_to_user_ptr(cmd->ptr), bounce.ptr,
-> +				 bounce.size))
-> +			ret = -EFAULT;
-> +	}
->   	cmd->cpages = bounce.cpages;
->   	dmirror_bounce_fini(&bounce);
->   	return ret;
-> @@ -886,9 +892,10 @@ static int dmirror_snapshot(struct dmirror *dmirror,
->   			break;
->   
->   		n = (range.end - range.start) >> PAGE_SHIFT;
-> -		ret = copy_to_user(uptr, perm, n);
-> -		if (ret)
-> +		if (copy_to_user(uptr, perm, n)) {
-> +			ret = -EFAULT;
->   			break;
-> +		}
->   
->   		cmd->cpages += n;
->   		uptr += n;
-> @@ -911,9 +918,8 @@ static long dmirror_fops_unlocked_ioctl(struct file *filp,
->   	if (!dmirror)
->   		return -EINVAL;
->   
-> -	ret = copy_from_user(&cmd, uarg, sizeof(cmd));
-> -	if (ret)
-> -		return ret;
-> +	if (copy_from_user(&cmd, uarg, sizeof(cmd)))
-> +		return -EFAULT;
->   
->   	if (cmd.addr & ~PAGE_MASK)
->   		return -EINVAL;
-> @@ -946,7 +952,10 @@ static long dmirror_fops_unlocked_ioctl(struct file *filp,
->   	if (ret)
->   		return ret;
->   
-> -	return copy_to_user(uarg, &cmd, sizeof(cmd));
-> +	if (copy_to_user(uarg, &cmd, sizeof(cmd)))
-> +		return -EFAULT;
-> +
-> +	return 0;
->   }
->   
->   static const struct file_operations dmirror_fops = {
-> 
+On Mon, 11 May 2020, Markus Elfring wrote:
+
+> > If you can't determine when the bug was introduced,
+>=20
+> I might be able to determine also this information.
+>=20
+
+This is tantamount to an admission of duplicity.
+
+>=20
+> > how can you criticise a patch for the lack of a Fixes tag?
+>=20
+> I dared to point two details out for the discussed patch.
+>=20
+
+You deliberately chose those two details. You appear to be oblivious to=20
+your own motives.
+
+>=20
+> >> To which commit would you like to refer to for the proposed=20
+> >> adjustment of the function =E2=80=9Cmac_sonic_platform_probe=E2=80=9D?
+> >
+> > That was my question to you. We seem to be talking past each other.
+>=20
+> We come along different views for this patch review. Who is going to add=
+=20
+> a possible reference for this issue?
+>=20
+
+Other opinions are not relevant: I was trying to communicate with you.
+
+>=20
+> >> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
+e/Documentation/process/coding-style.rst?id=3De99332e7b4cda6e60f5b5916cf994=
+3a79dbef902#n460
+>=20
+> >
+> > My preference is unimportant here.
+>=20
+> It is also relevant here because you added the tag =E2=80=9CReviewed-by=
+=E2=80=9D.=20
+> https://lore.kernel.org/patchwork/comment/1433193/=20
+> https://lkml.org/lkml/2020/5/8/1827
+>=20
+
+You have quoted my words out-of-context and twisted their meaning to suit=
+=20
+your purposes.
+
+>=20
+> > I presume that you mean to assert that Christophe's patch breaches the=
+=20
+> > style guide.
+>=20
+> I propose to take such a possibility into account.
+>=20
+
+This "possibility" was among the reasons why the patch was posted to a=20
+mailing list by its author. That possibility is a given. If you claim this=
+=20
+possibility as your motivation, you are being foolish or dishonest.
+
+>=20
+> > However, 'sonic_probe1' is the name of a function.
+>=20
+> The discussed source file does not contain such an identifier.=20
+> https://elixir.bootlin.com/linux/v5.7-rc5/source/drivers/net/ethernet/nat=
+semi/macsonic.c#L486=20
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/d=
+rivers/net/ethernet/natsemi/macsonic.c?id=3D2ef96a5bb12be62ef75b5828c0aab83=
+8ebb29cb8#n486
+>=20
+
+That's what I told you in my previous email. You're welcome.
+
+>=20
+> > This is not some sequence of GW-BASIC labels referred to in the style=
+=20
+> > guide.
+>=20
+> I recommend to read the current section =E2=80=9C7) Centralized exiting o=
+f=20
+> functions=E2=80=9D once more.
+>=20
+
+Again, you are proposing a bike shed of a different color.
+
+>=20
+> >> Can programming preferences evolve into the direction of =E2=80=9Csay =
+what=20
+> >> the goto does=E2=80=9D?
+> >
+> > I could agree that macsonic.c has no function resembling "probe1", and=
+=20
+> > that portion of the patch could be improved.
+>=20
+> I find this feedback interesting.
+>=20
+>=20
+> > Was that the opinion you were trying to express by way of rhetorical=20
+> > questions? I can't tell.
+>=20
+> Some known factors triggered my suggestion to consider the use of the=20
+> label =E2=80=9Cfree_dma=E2=80=9D.
+>=20
+
+If you cannot express or convey your "known factors" then they aren't=20
+useful.
+
+>=20
+> > Is it possible for a reviewer to effectively criticise C by use of=20
+> > English, when his C ability surpasses his English ability?
+>=20
+> We come along possibly usual communication challenges.
+>=20
+
+That looks like a machine translation. I can't make sense of it, sorry.
+
+> Regards,
+> Markus
+>=20
+
+Markus, if you were to write a patch to improve upon coding-style.rst, who=
+=20
+should review it?
+
+If you are unable to write or review such a patch, how can you hope to=20
+adjudicate compliance?
+---1463811774-1457172623-1589239130=:8--

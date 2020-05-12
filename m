@@ -2,51 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23ED31CFB33
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 18:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB7BD1CFB3B
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 18:45:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727977AbgELQo7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 May 2020 12:44:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41802 "EHLO mail.kernel.org"
+        id S1728777AbgELQpR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 May 2020 12:45:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42224 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725554AbgELQo7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 May 2020 12:44:59 -0400
+        id S1725554AbgELQpR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 12 May 2020 12:45:17 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6D50F20720;
-        Tue, 12 May 2020 16:44:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 62A0C20714;
+        Tue, 12 May 2020 16:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589301899;
-        bh=HIPh/7Pej6FxAyJY1UIQvN4prK7E723HFpfiw6vDSfk=;
+        s=default; t=1589301916;
+        bh=PoU1PDlU8EtoqlFaKH81yByCt0mWPcBR7YxQuQ0TaeM=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=SdXK2HcDTUQNahZO54CHbOKW0fQNrt//a/8i+Nwgy52LLng9X2Gq9TmQ7UZltrKRT
-         xkvuAbUYYxEDu3a/45b5sustEBFxAGcpuCPWjvNAQLxWNDKNVfHJ0wVJS8uGxbtTjX
-         +XWOhYI0/02jNATWfj7kXndA0HqvJnY1UY0GCtyY=
-Date:   Tue, 12 May 2020 17:44:56 +0100
+        b=NSaEkz8h2XIJ8DYvcW+GtWUn+dfGp8KHikaeRgwfWw+GuNqwXRCGo6uvX1n1qdaqj
+         aYvwlYOaCdchKoByZK89nXSFA9Wi7EWCZlE5VFn2ZNoopKxEtc22z07QIf+mzobT+t
+         x8doeUp+oESQWVCEq76ZJzNwrZT0rFcvBzelPO+s=
+Date:   Tue, 12 May 2020 17:45:14 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     lee.jones@linaro.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linus.walleij@linaro.org, lgirdwood@gmail.com, perex@perex.cz,
-        tiwai@suse.com
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        lgirdwood@gmail.com, linux-omap@vger.kernel.org, perex@perex.cz,
+        tiwai@suse.com, jarkko.nikula@bitmer.com, peter.ujfalusi@ti.com
 Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-In-Reply-To: <20200512100705.246349-1-christophe.jaillet@wanadoo.fr>
-References: <20200512100705.246349-1-christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH] ASoC: ux500: mop500: Fix some refcounted resources issues
-Message-Id: <158930188456.55827.11720310632308061350.b4-ty@kernel.org>
+In-Reply-To: <20200512134325.252073-1-christophe.jaillet@wanadoo.fr>
+References: <20200512134325.252073-1-christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH] ASoC: ti: omap-mcbsp: Fix an error handling path in 'asoc_mcbsp_probe()'
+Message-Id: <158930188456.55827.1765769472470838223.b4-ty@kernel.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 12 May 2020 12:07:05 +0200, Christophe JAILLET wrote:
-> There are 2 issues here:
->    - if one of the 'of_parse_phandle' fails, calling 'mop500_of_node_put()'
->      is a no-op because the 'mop500_dai_links' structure has not been
->      initialized yet, so the referenced are not decremented
->    - The reference stored in 'mop500_dai_links[i].codecs' is refcounted
->      only once in the probe and must be decremented only once.
+On Tue, 12 May 2020 15:43:25 +0200, Christophe JAILLET wrote:
+> If an error occurs after the call to 'omap_mcbsp_init()', the reference to
+> 'mcbsp->fclk' must be decremented, as already done in the remove function.
+> 
+> This can be achieved easily by using the devm_ variant of 'clk_get()'
+> when the reference is taken in 'omap_mcbsp_init()'
+> 
+> This fixes the leak in the probe and has the side effect to simplify both
+> the error handling path of 'omap_mcbsp_init()' and the remove function.
 
 Applied to
 
@@ -54,8 +55,8 @@ Applied to
 
 Thanks!
 
-[1/1] ASoC: ux500: mop500: Fix some refcounted resources issues
-      commit: 4e8748fcaeec073e3ba794871ce86c545e4f961f
+[1/1] ASoC: ti: omap-mcbsp: Fix an error handling path in 'asoc_mcbsp_probe()'
+      commit: 03990fd58d2b7c8f7d53e514ba9b8749fac260f9
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

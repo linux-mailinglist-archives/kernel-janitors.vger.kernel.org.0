@@ -2,87 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E2BB1CEC62
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 07:21:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4218F1CECF8
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 08:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725892AbgELFVR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 May 2020 01:21:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37066 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725536AbgELFVR (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 May 2020 01:21:17 -0400
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3944DC061A0C;
-        Mon, 11 May 2020 22:21:17 -0700 (PDT)
-Received: by mail-wr1-x433.google.com with SMTP id y3so13701481wrt.1;
-        Mon, 11 May 2020 22:21:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:message-id:user-agent:mime-version;
-        bh=iPNWrjCXLG5PobA8YJLbqbttbn3fSW2nFeC8Eks6Lm8=;
-        b=bq2dqmF04qwpjjm8fxx3txA1QpoMZXU1/icZ9Lzk+Ur7CL/QanWEh+ELVDAHeu3hiU
-         aMhdRWuN309gwOBzR9tmovi6pHfHZyb47UPAL7hqdl4ijuhud869SXUeNVgrQcRwRJlh
-         XyAfUWl3qYgLFLZcHU68SQVsBL5iMS5Htdtt5/+haAkFr32uPyjUZZRVrD/obzXQuXx6
-         Amob/waiJjU4E/KDCVNidVPbP0lEs93LCm7js3fUJc/p+a2Y6UynPRLnaqVwA8EI1aM6
-         ih0yvIil0nIwTrl51Xl5zfbgK2Y+kErLZMtzZDaSjJJbnnto+oH2SyGlEJP8cvEvIj/k
-         URaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:message-id:user-agent
-         :mime-version;
-        bh=iPNWrjCXLG5PobA8YJLbqbttbn3fSW2nFeC8Eks6Lm8=;
-        b=ejMEP6fHarbMzCeJU+fNmpq+WjdFKMPBwAZluTqlH7ccggMxdFOanPiS3epq2JhZ6h
-         5wEu02UJsQwJ1+jM3c6NyNh3Ckc0BjCxm12xYUnKwdMKSqHd1GjM6HtO6sMcifT4TbTU
-         OG+l5i2qe4BSwknpgRsaqQNmx1UdlMUgMWmWjvdRrcXO+U7hS+bZTj1bg7tSw/3Nd26c
-         9npiD9M+3Nh6T69QSroN9RvbeoIerxuQ04qhH2Os86UG3+WoZ9vpoLaCEfB7ut7WttTI
-         eHuI+SgwRMXrcs4Vc4rVmei1YgYZ0x/dCvTB16BR9CoCMlj9lGdbZlrQ3IWnAh0irUmB
-         6XNQ==
-X-Gm-Message-State: AGi0PubGdxJMVJWcwe0iiMKvt7g7a85s7i3YdZTUMXYCHd1lQepX7kV4
-        rK/9x/il9SxP7YKMh5sqrEAS8G6AIBw=
-X-Google-Smtp-Source: APiQypK7ThE8Zug7UHhcpytlSDewjztqnIvLlaa5ZIW10ubZlqdWzCXgNYxxjoFGF+Vxgm23GM0pPg==
-X-Received: by 2002:adf:db4c:: with SMTP id f12mr15531337wrj.387.1589260875606;
-        Mon, 11 May 2020 22:21:15 -0700 (PDT)
-Received: from felia ([2001:16b8:2ddc:4100:5571:bcd0:adce:c7ab])
-        by smtp.gmail.com with ESMTPSA id 77sm21471812wrc.6.2020.05.11.22.21.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2020 22:21:15 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Tue, 12 May 2020 07:21:01 +0200 (CEST)
-X-X-Sender: lukas@felia
-To:     David Hildenbrand <david@redhat.com>
-cc:     "Michael S. Tsirkin" <mst@redhat.com>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: MAINTAINERS: Wrong ordering in VIRTIO BALLOON
-Message-ID: <alpine.DEB.2.21.2005120717260.3701@felia>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        id S1728329AbgELGWn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 May 2020 02:22:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36630 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725987AbgELGWn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 12 May 2020 02:22:43 -0400
+Received: from localhost (unknown [213.57.247.131])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6D24C20746;
+        Tue, 12 May 2020 06:22:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589264563;
+        bh=BxjNkebzRELWBrlQoNKYuJjXKqEOGdzqAH1umRBcOhw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oWOVCrIR/yLyCPBjfx02nnI2sqixBHfysB5Xppu+td5xqKs+FSUCbEr2BIZvsqJAR
+         ZK6pX1OZVIvrFrB79RpG8w6eksCNecO2euitGBS0P3cou77XnURUlXZXm4jn+/Zulx
+         rjpKeIFQnF/vnE6J8+sIQP2DcBG2aqoqIAjQISkk=
+Date:   Tue, 12 May 2020 09:22:38 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Yanjun Zhu <yanjunz@mellanox.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] RDMA/rxe: Return -EFAULT if copy_from_user() fails
+Message-ID: <20200512062238.GD4814@unreal>
+References: <20200511183742.GB225608@mwanda>
+ <AM6PR05MB6263ECA5663A63A9CC825145D8BE0@AM6PR05MB6263.eurprd05.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AM6PR05MB6263ECA5663A63A9CC825145D8BE0@AM6PR05MB6263.eurprd05.prod.outlook.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi David,
+On Tue, May 12, 2020 at 01:12:38AM +0000, Yanjun Zhu wrote:
+> Does this "err = -EFAULT;" make any sense in your commit?
 
-with your commit 6d6b93b9afd8 ("MAINTAINERS: Add myself as virtio-balloon 
-co-maintainer"), visible on next-20200508, ./scripts/checkpatch.pl -f 
-MAINTAINERS complains:
+Yanjun, please stop top-posting, it is annoying.
 
-WARNING: Misordered MAINTAINERS entry - list file patterns in alphabetic order
-#17982: FILE: MAINTAINERS:17982:
-+F:	include/uapi/linux/virtio_balloon.h
-+F:	include/linux/balloon_compaction.h
-
-This is due to wrong ordering of the entries in your submission. If you 
-would like me to send you a patch fixing that, please just let me know.
-
-It is a recent addition to checkpatch.pl to report ordering problems in 
-MAINTAINERS, so you might have not seen that at submission time.
-
-
-Best regards,
-
-Lukas
+Thanks

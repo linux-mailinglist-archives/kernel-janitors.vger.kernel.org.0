@@ -2,65 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E097B1CED77
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 09:02:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A19941CEE2B
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 09:35:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726008AbgELHCI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 May 2020 03:02:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57474 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725814AbgELHCH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 May 2020 03:02:07 -0400
-Received: from localhost (unknown [213.57.247.131])
+        id S1729134AbgELHep (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 May 2020 03:34:45 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:28824 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729106AbgELHeo (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 12 May 2020 03:34:44 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1589268884; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=uFiuGc8W66I7hSPinkBYZFyZWCjdkRgvzWyfPckBQg4=;
+ b=oiWl8c0qbBKjxYS06kLKbLPuCZ8zDEY24DbIgaPg53vwjaDrstehMPYyoQw+llxaxDV0SUIL
+ BhV61y9CAeYNF0nbKGKkqMQU4YMJSWmLWfeVcwIjYcXGb5FUin3KUuwAPtk8kUf2RFOKtAth
+ 052a6GjdpKppAWQ0JbnRx42yA14=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eba5182.7f4fa1cc5c38-smtp-out-n05;
+ Tue, 12 May 2020 07:34:26 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 0C16DC433F2; Tue, 12 May 2020 07:34:25 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C06E120733;
-        Tue, 12 May 2020 07:02:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589266927;
-        bh=uSOfI4jLujJD9FGvskSJuIAF0tfoPKrsy0lRcuM89QQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qoWPpLrNnJvr4Jk+RYS0Dffs4H8g6tT/uJqAWGlj7iJgtyf9FUqta6+0QNwOOisQB
-         IQxGdIM/L64g/WNStEDve7j2uafMfXH5djPK7hAbToxjGEQoLrv0QsadgN4BVjMm2K
-         LAhPQCGhFiFmpgBjL7avsJEo+Neu7ptbTK5U88Pk=
-Date:   Tue, 12 May 2020 10:02:03 +0300
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Zhu Yanjun <yanjunz@mellanox.com>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] RDMA/rxe: Return -EFAULT if copy_from_user() fails
-Message-ID: <20200512070203.GG4814@unreal>
-References: <20200511183742.GB225608@mwanda>
- <20200512062936.GE4814@unreal>
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2003FC433BA;
+        Tue, 12 May 2020 07:34:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2003FC433BA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200512062936.GE4814@unreal>
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH][next] ath11k: remove redundant initialization of pointer
+ info
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200507164318.56570-1-colin.king@canonical.com>
+References: <20200507164318.56570-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200512073425.0C16DC433F2@smtp.codeaurora.org>
+Date:   Tue, 12 May 2020 07:34:25 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, May 12, 2020 at 09:29:36AM +0300, Leon Romanovsky wrote:
-> On Mon, May 11, 2020 at 09:37:42PM +0300, Dan Carpenter wrote:
-> > This function used to always return -EINVAL but we updated it to try
-> > preserve the error codes.  Unfortunately the copy_to_user() is returning
-> > the number of bytes remaining to be copied instead of a negative error
-> > code.
-> >
-> > Fixes: a3a974b4654d ("RDMA/rxe: Always return ERR_PTR from rxe_create_mmap_info()")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> >  drivers/infiniband/sw/rxe/rxe_queue.c | 5 +++--
-> >  1 file changed, 3 insertions(+), 2 deletions(-)
->
->
-> Thanks,
-> Reviewed-by: Leon Romanovsky <leonro@mellanox.com>
+Colin King <colin.king@canonical.com> wrote:
 
-Actually Yanjun is right and "err" can be removed.
+> Pointer info is being assigned twice, once at the start of the function
+> and secondly when it is just about to be accessed. Remove the redundant
+> initialization and keep the original assignment to info that is close
+> to the memcpy that uses it.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Thanks
+Patch applied to ath-next branch of ath.git, thanks.
+
+52b776fa5921 ath11k: remove redundant initialization of pointer info
+
+-- 
+https://patchwork.kernel.org/patch/11534415/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

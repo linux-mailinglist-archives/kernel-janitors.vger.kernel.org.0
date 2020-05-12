@@ -2,31 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C24F1CFBDE
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 19:19:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9635F1CFC57
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 19:38:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729271AbgELRTj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 May 2020 13:19:39 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:43977 "EHLO
+        id S1729583AbgELRiF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 May 2020 13:38:05 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:44495 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726287AbgELRTj (ORCPT
+        with ESMTP id S1725554AbgELRiE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 May 2020 13:19:39 -0400
+        Tue, 12 May 2020 13:38:04 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jYYZ2-0002Sf-8n; Tue, 12 May 2020 17:19:32 +0000
+        id 1jYYqv-0003bJ-JX; Tue, 12 May 2020 17:38:01 +0000
 From:   Colin King <colin.king@canonical.com>
 To:     Kees Cook <keescook@chromium.org>,
         Anton Vorontsov <anton@enomsg.org>,
         Colin Cross <ccross@android.com>,
-        Tony Luck <tony.luck@intel.com>,
-        WeiXiong Liao <liaoweixiong@allwinnertech.com>
+        Tony Luck <tony.luck@intel.com>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] pstore/zone: fix dereference of pointer before it has been null checked
-Date:   Tue, 12 May 2020 18:19:32 +0100
-Message-Id: <20200512171932.222102-1-colin.king@canonical.com>
+Subject: [PATCH][next] pstore/zone: remove redundant initializations to variable ret
+Date:   Tue, 12 May 2020 18:38:01 +0100
+Message-Id: <20200512173801.222666-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -38,39 +37,45 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently the assignment of cnt dereferences pointer 'record' before
-the pointer has been null checked. Fix this by only making this
-dereference after it has been null checked close to the point cnt
-is to be used.
+The variable rc is being initialized with a value that is never read and it
+is being updated later with a new value.  The initialization is redundant
+and can be removed.  In one of the cases, ret can also be moved inside a
+for-loop to reduce the scope.
 
-Addresses-Coverity: ("Dereference before null check")
-Fixes: 637ce64e7f57 ("pstore/zone,blk: Add support for pmsg frontend")
+Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- fs/pstore/zone.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/pstore/zone.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/fs/pstore/zone.c b/fs/pstore/zone.c
-index c5bf3b9f644f..3cf7d6762c76 100644
+index 3cf7d6762c76..419de481c69c 100644
 --- a/fs/pstore/zone.c
 +++ b/fs/pstore/zone.c
-@@ -825,7 +825,7 @@ static int notrace psz_record_write(struct pstore_zone *zone,
+@@ -600,7 +600,7 @@ static int psz_recover_zones(struct psz_context *cxt,
+  */
+ static inline int psz_recovery(struct psz_context *cxt)
+ {
+-	int ret = -EBUSY;
++	int ret;
+ 
+ 	if (atomic_read(&cxt->recovered))
+ 		return 0;
+@@ -746,13 +746,13 @@ static void psz_write_kmsg_hdr(struct pstore_zone *zone,
+ static inline int notrace psz_kmsg_write_record(struct psz_context *cxt,
  		struct pstore_record *record)
  {
- 	size_t start, rem;
--	int cnt = record->size;
-+	int cnt;
- 	bool is_full_data = false;
- 	char *buf = record->buf;
+-	int ret = -EBUSY;
+ 	size_t size, hlen;
+ 	struct pstore_zone *zone;
+ 	unsigned int i;
  
-@@ -835,6 +835,7 @@ static int notrace psz_record_write(struct pstore_zone *zone,
- 	if (atomic_read(&zone->buffer->datalen) >= zone->buffer_size)
- 		is_full_data = true;
+ 	for (i = 0; i < cxt->kmsg_max_cnt; i++) {
+ 		unsigned int zonenum, len;
++		int ret;
  
-+	cnt = record->size;
- 	if (unlikely(cnt > zone->buffer_size)) {
- 		buf += cnt - zone->buffer_size;
- 		cnt = zone->buffer_size;
+ 		zonenum = (cxt->kmsg_write_cnt + i) % cxt->kmsg_max_cnt;
+ 		zone = cxt->kpszs[zonenum];
 -- 
 2.25.1
 

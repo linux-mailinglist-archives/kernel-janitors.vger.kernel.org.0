@@ -2,119 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B34B1CFE83
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 21:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5086C1CFEC8
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 21:59:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730889AbgELTlB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 May 2020 15:41:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58404 "EHLO
+        id S1730889AbgELT7P (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 May 2020 15:59:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728081AbgELTlA (ORCPT
+        with ESMTP id S1726324AbgELT7P (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 May 2020 15:41:00 -0400
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCA51C061A0E
-        for <kernel-janitors@vger.kernel.org>; Tue, 12 May 2020 12:41:00 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id u10so5830844pls.8
-        for <kernel-janitors@vger.kernel.org>; Tue, 12 May 2020 12:41:00 -0700 (PDT)
+        Tue, 12 May 2020 15:59:15 -0400
+Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3035C061A0E
+        for <kernel-janitors@vger.kernel.org>; Tue, 12 May 2020 12:59:14 -0700 (PDT)
+Received: by mail-qv1-xf42.google.com with SMTP id t8so6605446qvw.5
+        for <kernel-janitors@vger.kernel.org>; Tue, 12 May 2020 12:59:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
+        d=ziepe.ca; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=7D7Hp2GHNstyMCh5/XTJVjifd1carg86uB7RWlRtVlk=;
-        b=eAi54b7sSwZ/ceWB/pyFmHuU9A6POh5j1MeBzE62jl0QdYxK30WtVdS7xnYkks0AZC
-         5DiGpqVxN8FSMTdmAOz613qHVonGKpeU99UX5OlJRWpbO/Z95dNEVD6dLyNS2bvfChTt
-         s+NKxPBc5j1gvCxYMmBes/J5zxuTGia5axYko=
+         :content-disposition:in-reply-to:user-agent;
+        bh=G0E+aRa/ZtrphMMA9D9NE7f6TBwYO8PfcdNUKK6vjxM=;
+        b=RvG9v0Odg6qBR62ASTwz6eXPTa5d3e3jqj23LRj7mYiCspx8Lhv9J/F9/GU+RSWJQL
+         S0KhpwyTD4SiCgCUZexbjIUqlPzB98A4q/sXuskbTx2ffJscPBmP0cZkBCA2y5RDLikg
+         aD+zWPSUqEyeqDKtwhDXrB0ww6O9xn5elj19OD526q57VO4JrHUU8wHEr/TiYHz8QZOn
+         zN6slqAJXqTj5IrE2+Rl+5b+SR6WrLwx3uGncejjsI6RsKekMylec3MPlvEUSgiFI4eB
+         5pBCSr24/IjOGNt03rY6lioDEieojUiD9SLmPGjJxZPeFXk1hhij+bkjvr8LyRx4RMOB
+         kRxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=7D7Hp2GHNstyMCh5/XTJVjifd1carg86uB7RWlRtVlk=;
-        b=JLojtk7mq4Q41xMtGyzEjFqKGtFaIJwy/luiI4Pp9oXBFx3IAvjgK92WI3aqoYe2GL
-         3umDh0fjCBXYLpUfKddspvtjpKJY0Ssd2JntnNeKgZI2SrMhTz9HP0NfFnS5xxEID/f/
-         /rvaqOEoM+Pc9sUKYHOsfJirylJ1Ne1E4Zk0DNtWuQW5dOvxXumkw7WZAL6z0JTW10oT
-         uCTkwnIWc4Okeu7oCHEXWZpV2h5QGGt105wXQtxOrlAVvo/wNYJH9+ieB8GIhVc1ijsM
-         THf72rheNFrlr9laDct+CIqFNCU1ez93mHGiNFeULgcLzf/XH3dLvnCf9rG0LxtwlKny
-         Z2dA==
-X-Gm-Message-State: AGi0PuarzyCRcdCqHV7tbbiPlpESIKndE4ViSxw8Te4s5NAVbQ0bbJkR
-        0hysWZXPxci93lsmOMJUQsB0nw==
-X-Google-Smtp-Source: APiQypJFl6pnbq/6iz9o/q8NodQpt4ZAxP/h9BeLDm25JvtCQXuKGkQ1+6UchXzPAdhaBpsn0jK7+A==
-X-Received: by 2002:a17:902:6b01:: with SMTP id o1mr22072464plk.64.1589312460110;
-        Tue, 12 May 2020 12:41:00 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id c2sm8737915pgj.93.2020.05.12.12.40.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2020 12:40:59 -0700 (PDT)
-Date:   Tue, 12 May 2020 12:40:57 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Anton Vorontsov <anton@enomsg.org>,
-        Colin Cross <ccross@android.com>,
-        Tony Luck <tony.luck@intel.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] pstore/zone: remove redundant initializations to
- variable ret
-Message-ID: <202005121240.1C306861D@keescook>
-References: <20200512173801.222666-1-colin.king@canonical.com>
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=G0E+aRa/ZtrphMMA9D9NE7f6TBwYO8PfcdNUKK6vjxM=;
+        b=RC9U7y6KvczPRC32WqbicrKYUyqLR43Bqw/IQazSDT3tG7c6lnd7uArdDYQ9/pbyif
+         P8tBBa8XToDu4q1dnaB44mRpnP6agr0cZpRRrIc8EcIxup+lXIdrbN3DR+4s3xZAp2AD
+         TuXblNaLuJkKfhHCECvQrhWnohkCpwwRdLQQNltL0Od5ppeGsdazbgiXLQtP5JA/zgTf
+         DscJPf/uy6ufvIcdFGEBG7wc2+MCroBGK29mlTZ93amamccspzg5KEc4d3hXB25zrRsb
+         QoyifZczpgxi7ysmb/ZQqkqPQOIse3EEhPolQk+rSdjcxUEEulFLVVCrIxm01H964WrD
+         MRmQ==
+X-Gm-Message-State: AGi0PubugQMHKkabl8TXTZV9owm9Ssoupzko6fDxm8nHO+zsBML7yp72
+        cu4m4b7v8NmBclpAo9XT8Og3J86aJFQ=
+X-Google-Smtp-Source: APiQypI4djh3JsPTXr1ZWOiJGKRTthks1rzNkpnJFW1YgbpflsyktHQNnCWGxvpkoWENatD9+/5s9Q==
+X-Received: by 2002:a0c:9002:: with SMTP id o2mr22007639qvo.3.1589313554114;
+        Tue, 12 May 2020 12:59:14 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.57.212])
+        by smtp.gmail.com with ESMTPSA id h18sm5904214qkh.3.2020.05.12.12.59.13
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 12 May 2020 12:59:13 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1jYb3X-0002ON-Vr; Tue, 12 May 2020 16:59:11 -0300
+Date:   Tue, 12 May 2020 16:59:11 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     jglisse@redhat.com, Ralph Campbell <rcampbell@nvidia.com>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
+Subject: Re: [PATCH -next] mm/hmm/test: fix missing unlock on error in
+ dmirror_migrate_finalize_and_map()
+Message-ID: <20200512195911.GA9154@ziepe.ca>
+References: <20200509030225.14592-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200512173801.222666-1-colin.king@canonical.com>
+In-Reply-To: <20200509030225.14592-1-weiyongjun1@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, May 12, 2020 at 06:38:01PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Sat, May 09, 2020 at 03:02:25AM +0000, Wei Yongjun wrote:
+> Add the missing unlock before return from function
+> dmirror_migrate_finalize_and_map() in the error
+> handling case.
 > 
-> The variable rc is being initialized with a value that is never read and it
-> is being updated later with a new value.  The initialization is redundant
-> and can be removed.  In one of the cases, ret can also be moved inside a
-> for-loop to reduce the scope.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Thanks!
-
+> Fixes: 5d5e54be8a1e ("mm/hmm/test: add selftest driver for HMM")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 > ---
->  fs/pstore/zone.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/pstore/zone.c b/fs/pstore/zone.c
-> index 3cf7d6762c76..419de481c69c 100644
-> --- a/fs/pstore/zone.c
-> +++ b/fs/pstore/zone.c
-> @@ -600,7 +600,7 @@ static int psz_recover_zones(struct psz_context *cxt,
->   */
->  static inline int psz_recovery(struct psz_context *cxt)
->  {
-> -	int ret = -EBUSY;
-> +	int ret;
->  
->  	if (atomic_read(&cxt->recovered))
->  		return 0;
+>  lib/test_hmm.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 
-I've refactored this code.
+Thank you, I squashed this into the original commit
 
-> @@ -746,13 +746,13 @@ static void psz_write_kmsg_hdr(struct pstore_zone *zone,
->  static inline int notrace psz_kmsg_write_record(struct psz_context *cxt,
->  		struct pstore_record *record)
->  {
-> -	int ret = -EBUSY;
->  	size_t size, hlen;
->  	struct pstore_zone *zone;
->  	unsigned int i;
->  
->  	for (i = 0; i < cxt->kmsg_max_cnt; i++) {
->  		unsigned int zonenum, len;
-> +		int ret;
->  
->  		zonenum = (cxt->kmsg_write_cnt + i) % cxt->kmsg_max_cnt;
->  		zone = cxt->kpszs[zonenum];
-
-And I've applied this hunk. Thanks!
-
--- 
-Kees Cook
+Jason

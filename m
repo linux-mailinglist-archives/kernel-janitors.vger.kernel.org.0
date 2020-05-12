@@ -2,83 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC7241CF531
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 15:04:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B61651CF55D
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 15:14:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729750AbgELNEE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 May 2020 09:04:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53112 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725923AbgELNEE (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 May 2020 09:04:04 -0400
-Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D9F0C061A0C;
-        Tue, 12 May 2020 06:04:04 -0700 (PDT)
-Received: by mail-vs1-xe42.google.com with SMTP id l25so7774518vso.6;
-        Tue, 12 May 2020 06:04:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WYYWk5B2Zk3TwldAUzCtTJK0glo/7kNcHTQydLAHm5E=;
-        b=cHo71XNftzYCde+bfpfj3O5Me55d/CAF5uoY/3V6E4gXpR2DbAJUqHnB3U2PoAuPXf
-         +jvSQcMEWbRTS89iqGm064nmezHp+7/wF5uH3tyUkSc4R5pkcDKPIYbrYDbNaQxOjKxj
-         2Xl32Yq45X+snmh1X8CFrneUQu61MsPP5TfmRhdCdlbhcPQ6ZfjEqVDuVwX73I5HcoJz
-         arzItnlRTzilZiKhUB/QYi0gSGwCbjQ7vMkte8LXU113pdTcZ4UA3fS2Kz4LKUad4boU
-         CqMIy+MiXQhYJI3/cVd4ve/e8vid87Xl86l0Xg8M0kLqwsXVK53thEdrIyKWZi/8X3ZU
-         AvrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WYYWk5B2Zk3TwldAUzCtTJK0glo/7kNcHTQydLAHm5E=;
-        b=HMzdlE+SlXmcDRrRBr3AFghw4T/mt39zzVcn3G0+P4boMVpiQWNs7b1xkg7fC58oxq
-         PRhUCe26YNQwNEIMdlKGpVtZ+nctqIkp8ghPTh72x0lRPY+tP6TNXFBZEvLV/F5nyjiS
-         TlxuVZrNRxO5qAMbfx564O8/iLNjmxtSo8wUhyx0yG6R0I1pwUbR5wyn2fIZn+Plls+i
-         PPLYvvtEeSygFgYa9PT8mcySsNFUc9tp0Pq1GLAPbV1Ww8LaQHYf5lQeHuTVCjCFW+JP
-         vj54v6wcIT6RsomyJeRTZQvAybAzfr8XjEW6Jbgm/J/BC6drZ/BsI6Nm9enDfiQ0KHCV
-         KvDg==
-X-Gm-Message-State: AGi0PuaIV8t9dWT34k1mRajBpqGkg4p+zgh1O4CLhhwCF2LsjH7LTHsj
-        D8Zr6uKFFbq1vY22CWOXREcwj/HnzRouSEDKZ8Q=
-X-Google-Smtp-Source: APiQypJ4NEstWoq9lkMhuVta2nDgCif74eH1N9G3xJwYqz8c5+2f0vuiPACHvfsMZLwR/GXfTW7+fce+ImJb3qkLZhE=
-X-Received: by 2002:a67:c482:: with SMTP id d2mr16214320vsk.37.1589288643312;
- Tue, 12 May 2020 06:04:03 -0700 (PDT)
+        id S1730007AbgELNOr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 May 2020 09:14:47 -0400
+Received: from www.zeus03.de ([194.117.254.33]:53900 "EHLO mail.zeus03.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728283AbgELNOr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 12 May 2020 09:14:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=k1; bh=bVnvR3rOZs7GQ5Rx/p20PMBOzRG4
+        5vFIXWPPh4D/qKA=; b=OQg+dVZ/hvYZcb9qtk8hkak52UNO4J1vCotQUy18WU0q
+        nZ63gSXb59JW8mL+J9qfkjH0ihXkzTYoQw48IYCxwqPBNzJMNoYWGlpuScyzKlSJ
+        9Mq7k8vHTvlcH0uPJkr3z5AsG5dtvvzY4mxgmGgbaJOXyYOtHtWgDmBVdb3scbM=
+Received: (qmail 2948160 invoked from network); 12 May 2020 15:08:04 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 12 May 2020 15:08:04 +0200
+X-UD-Smtp-Session: l3s3148p1@ZV9lJ3Ol5MQgAwDPXw2aAE67cgFBY+HL
+Date:   Tue, 12 May 2020 15:08:03 +0200
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     peda@axentia.se, robh@kernel.org, linux-i2c@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] i2c: mux: demux-pinctrl: Fix an error handling path in
+ 'i2c_demux_pinctrl_probe()'
+Message-ID: <20200512130802.GC13516@ninjato>
+References: <20200506192100.194821-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-References: <20200428141459.87624-1-weiyongjun1@huawei.com> <CACRpkdZ++vYw8LAiNUv6AXQ0QTh+W9vSL0_w2AR-GNNd=GH7FA@mail.gmail.com>
-In-Reply-To: <CACRpkdZ++vYw8LAiNUv6AXQ0QTh+W9vSL0_w2AR-GNNd=GH7FA@mail.gmail.com>
-From:   Emil Velikov <emil.l.velikov@gmail.com>
-Date:   Tue, 12 May 2020 14:01:24 +0100
-Message-ID: <CACvgo51t+LdpRuFw-uXgbstpHMRrgMt3s62mFsyO37OHjuWJNw@mail.gmail.com>
-Subject: Re: [PATCH -next] drm/mcde: dsi: Fix return value check in dev_err()
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
-        David Airlie <airlied@linux.ie>,
-        kernel-janitors@vger.kernel.org,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="nmemrqcdn5VTmUEE"
+Content-Disposition: inline
+In-Reply-To: <20200506192100.194821-1-christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi all,
 
-On Tue, 12 May 2020 at 12:49, Linus Walleij <linus.walleij@linaro.org> wrote:
->
-> On Tue, Apr 28, 2020 at 4:13 PM Wei Yongjun <weiyongjun1@huawei.com> wrote:
->
-> > In case of error, the function of_drm_find_bridge() returns NULL pointer
-> > not ERR_PTR(). The IS_ERR() test in the return value check should be
-> > replaced with NULL test.
-> >
-> > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
->
-> Patch applied! Thanks Wei, sorry for the long delay.
->
-It would be nice if of_drm_find_bridge and of_drm_find_panel were
-consistent - either return NULL or an ERR_PTR.
-Otherwise the next person using them is likely to get it wrong.
+--nmemrqcdn5VTmUEE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--Emil
+On Wed, May 06, 2020 at 09:21:00PM +0200, Christophe JAILLET wrote:
+> A call to 'i2c_demux_deactivate_master()' is missing in the error handling
+> path, as already done in the remove function.
+>=20
+> Fixes: 50a5ba876908 ("i2c: mux: demux-pinctrl: add driver")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+
+Applied to for-current, thanks! Peter, I hope you are okay with me
+applying patches for my strange driver directly.
+
+
+--nmemrqcdn5VTmUEE
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl66n7IACgkQFA3kzBSg
+KbYd7w//QfbfCkh7Qi2tx9ZYq6DwTGtz92vvLnKEiVAe684hJqfbIT58KB6Y+xxs
+hvLU37hPtQHEylKHPjZKP4reKet/qhMBwa+izmicml37AYk/WT+bISP7bDz/cZm6
+9gR9FGV/236CcswGGLcru8Us9PnxWnajXTq/Zgfb0/WcGfD+cV5zc3EDlR4iTAs/
+wwJH7sLUoC6HTLWtEHDX9wRc35Baq1TqrHrecknGPctQgj2HNxickJrHJNclkEJ7
+ZqTs//75b7SXWE4eE2WG4PYY2m12NkAuzTwkWLTJdmuuINBtbfEpJsfuONd1CX1j
+PP/y25ssXKY5W0Qxq8/iR/Vb5rla2NtvOowCMjlWCTQmOkoaR1/wWJ12fDx4XOuj
+Ut+zNMSg6OnnnW56rMe8pe54PjYszVuC9wwZk9skcuFWRYOVU5Vi0zfTIXnO5WHO
+pBR6+BSHd04tndfm14qwNGIUa7DY4XwL07VlZVVHJ7vuzk8WyM65O2YuyfNh12O2
+6zOMrG+FLYnDH4yiusAgQVEE3utwknrxUm5y0YI7SMLOnhHpbc7UAnhWk0H+AKeW
+3jooXGPRT7BOSMLlRc6tvW3EEDJpjB6iUN8CNkc0yFSEFpGXS32YC1hTMcuNvcbG
+NXvY6NpeIWHNfXoWZgcrJzMwqcXxhR79oWSyEdn2E69AFUMPmOs=
+=Nlce
+-----END PGP SIGNATURE-----
+
+--nmemrqcdn5VTmUEE--

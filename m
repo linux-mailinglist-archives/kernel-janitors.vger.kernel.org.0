@@ -2,31 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0171A1CFBA0
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 19:07:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA95E1CFBBA
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 19:14:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726287AbgELRH1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 May 2020 13:07:27 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:43412 "EHLO
+        id S1726465AbgELROA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 May 2020 13:14:00 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:43842 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725938AbgELRH1 (ORCPT
+        with ESMTP id S1725938AbgELRN7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 May 2020 13:07:27 -0400
+        Tue, 12 May 2020 13:13:59 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jYYND-0001Xv-Me; Tue, 12 May 2020 17:07:19 +0000
+        id 1jYYTb-00026T-Sc; Tue, 12 May 2020 17:13:55 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Kees Cook <keescook@chromium.org>,
-        Anton Vorontsov <anton@enomsg.org>,
-        Colin Cross <ccross@android.com>,
-        Tony Luck <tony.luck@intel.com>,
-        WeiXiong Liao <liaoweixiong@allwinnertech.com>
+To:     Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
+        Edward Cree <ecree@solarflare.com>,
+        Martin Habets <mhabets@solarflare.com>,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] pstore/zone,blk: fix dereference of pointer before it has been null checked
-Date:   Tue, 12 May 2020 18:07:19 +0100
-Message-Id: <20200512170719.221514-1-colin.king@canonical.com>
+Subject: [PATCH][next] sfc: fix dereference of table before it is null checked
+Date:   Tue, 12 May 2020 18:13:55 +0100
+Message-Id: <20200512171355.221810-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -38,39 +37,35 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently the assignment of ctx dereferences pointer 'record' before
-the pointer has been null checked. Fix this by only making this
-dereference after it has been null checked close to the point ctx
-is to be used.
+Currently pointer table is being dereferenced on a null check of
+table->must_restore_filters before it is being null checked, leading
+to a potential null pointer dereference issue.  Fix this by null
+checking table before dereferencing it when checking for a null
+table->must_restore_filters.
 
 Addresses-Coverity: ("Dereference before null check")
-Fixes: bb4ccd1e6f56 ("pstore/zone,blk: Add ftrace frontend support")
+Fixes: e4fe938cff04 ("sfc: move 'must restore' flags out of ef10-specific nic_data")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- fs/pstore/zone.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/sfc/mcdi_filters.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/fs/pstore/zone.c b/fs/pstore/zone.c
-index bd8e194110fc..c5bf3b9f644f 100644
---- a/fs/pstore/zone.c
-+++ b/fs/pstore/zone.c
-@@ -998,7 +998,7 @@ static ssize_t psz_kmsg_read(struct pstore_zone *zone,
- static ssize_t psz_ftrace_read(struct pstore_zone *zone,
- 		struct pstore_record *record)
- {
--	struct psz_context *cxt = record->psi->data;
-+	struct psz_context *cxt;
- 	struct psz_buffer *buf;
- 	int ret;
+diff --git a/drivers/net/ethernet/sfc/mcdi_filters.c b/drivers/net/ethernet/sfc/mcdi_filters.c
+index 88de95a8c08c..455a62814fb9 100644
+--- a/drivers/net/ethernet/sfc/mcdi_filters.c
++++ b/drivers/net/ethernet/sfc/mcdi_filters.c
+@@ -1369,10 +1369,7 @@ void efx_mcdi_filter_table_restore(struct efx_nic *efx)
  
-@@ -1018,6 +1018,7 @@ static ssize_t psz_ftrace_read(struct pstore_zone *zone,
- 		return ret;
+ 	WARN_ON(!rwsem_is_locked(&efx->filter_sem));
  
- out:
-+	cxt = record->psi->data;
- 	if (cxt->ftrace_read_cnt < cxt->ftrace_max_cnt)
- 		/* then, read next ftrace zone */
- 		return -ENOMSG;
+-	if (!table->must_restore_filters)
+-		return;
+-
+-	if (!table)
++	if (!table || !table->must_restore_filters)
+ 		return;
+ 
+ 	down_write(&table->lock);
 -- 
 2.25.1
 

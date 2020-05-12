@@ -2,106 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7A2B1CF9DC
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 17:54:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D57C1CFA82
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 18:23:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730696AbgELPyD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 May 2020 11:54:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51454 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727869AbgELPyD (ORCPT
+        id S1726324AbgELQXt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 May 2020 12:23:49 -0400
+Received: from smtprelay0236.hostedemail.com ([216.40.44.236]:35566 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725851AbgELQXt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 May 2020 11:54:03 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06691C061A0C;
-        Tue, 12 May 2020 08:54:03 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id l18so16064178wrn.6;
-        Tue, 12 May 2020 08:54:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gqLRxvMmqILCLzIsTlGbC4llYBLLqdGwC3gVHSsdlAY=;
-        b=kF0koygmMuIGjj/ZPdBj0uzF19MXcgBj3NFB/K0c1X0zozm2G9b8a/620FkVENe5Jw
-         wfq2YI4/bZ/ySAHJD/+/N9NMRwQr69kUPqCbDZcve4+EDUEWgJKBVvg7fIefJAmKH5J+
-         ukG1otkwBPWU+OoNIqly2M64c24lDYPKnjCWI0oXkkxpARLxPJelhRg7troyC3CK+zoV
-         zlaOjsVLaZbReKQZTMxS2liKh97B3aF8FesfHC2Fkz9fkGkQb1BusyHEWdavQSO1G2G1
-         aB9ry4Yb8C5BXiw10VKfrgiL6FTxUXzTnaO0PdiTRhgSPv3DounNF4th5lfe4ZAsRPhe
-         m1VA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gqLRxvMmqILCLzIsTlGbC4llYBLLqdGwC3gVHSsdlAY=;
-        b=mwHR9hiIo1XBXKjtfp9K0eZj/juFkerTtsPuhTUponiFRt/fVuHud4p/EQUuP0tz+5
-         L9vhxfkpTBm7pP+DLgnJ6EbJoj2EOxSii9ogwB8nutzDTmVJ48O3Iv9aUABZ8eA8uj4V
-         vmGFTAy/kv/49JbJBIvWLVVTmsJzyOOb6vGcm2hqKZeA4nRwxdutns5geeGRGfYyJRiG
-         6vkDY4LmmdgaRpj/IUEofaWYju7+j0g3jXSmkFJ7Dy6eIm6TJDEnkxcsq14o+pDd0T5m
-         E29epw366RnMXJXyVpW0zieIg5B/mMo7t5lChNToPHl1zQvOg3iPCQ/YiDjRTpkv+GvE
-         BZ7g==
-X-Gm-Message-State: AGi0Puaj2AJV+Ejgqv8kP2doo2QYUTVEkZ2mULgTVW4vTkU3FD5nOkHi
-        UUOJjhQ5oVB1fKit3c8c/kU8qSaRAJHnWm1Xu8AN+w==
-X-Google-Smtp-Source: APiQypKOU/Rd8sG8437lj8j+RkUwRZ/eidY0aY3ImsSTCM9cZAif57CmdDRBPlSXBebCYX8Hj7ohdNcq9ejB8BZfCRQ=
-X-Received: by 2002:adf:fa91:: with SMTP id h17mr25463264wrr.111.1589298841655;
- Tue, 12 May 2020 08:54:01 -0700 (PDT)
+        Tue, 12 May 2020 12:23:49 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 5274B180A9553;
+        Tue, 12 May 2020 16:23:48 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 90,9,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:560:599:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2559:2562:2693:2731:2828:2895:3138:3139:3140:3141:3142:3354:3622:3865:3866:3867:3868:3870:3871:3872:3873:3874:4250:4321:5007:6238:7875:9010:10004:10400:10450:10455:10848:11232:11473:11658:11914:12043:12297:12555:12740:12760:12895:12986:13138:13149:13161:13229:13230:13231:13439:13870:14096:14097:14180:14181:14659:14721:19904:19999:21060:21080:21324:21451:21627:21740:21741:30030:30034:30054:30070:30083:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:3,LUA_SUMMARY:none
+X-HE-Tag: ice59_5b42530d4ca5b
+X-Filterd-Recvd-Size: 2966
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf06.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 12 May 2020 16:23:46 +0000 (UTC)
+Message-ID: <80146d5713f8579a92b4da1e2b7d7626999dd9be.camel@perches.com>
+Subject: Re: MAINTAINERS: Wrong ordering in VIRTIO BALLOON
+From:   Joe Perches <joe@perches.com>
+To:     David Hildenbrand <david@redhat.com>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue, 12 May 2020 09:23:45 -0700
+In-Reply-To: <bb2eea77-72df-6c53-5397-de057ffc9dd8@redhat.com>
+References: <alpine.DEB.2.21.2005120717260.3701@felia>
+         <bb2eea77-72df-6c53-5397-de057ffc9dd8@redhat.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.1-2 
 MIME-Version: 1.0
-References: <20200512124806.195856-1-colin.king@canonical.com>
-In-Reply-To: <20200512124806.195856-1-colin.king@canonical.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Tue, 12 May 2020 11:53:50 -0400
-Message-ID: <CADnq5_PPLtqWPtE9LTEz3j333EyqSQ1Y-0p_7YR=cLAEmu7Now@mail.gmail.com>
-Subject: Re: [PATCH][next] drm/amdgpu: remove redundant assignment to variable ret
-To:     Colin King <colin.king@canonical.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, May 12, 2020 at 8:48 AM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> The variable ret is being initializeed with a value that is never read
-> and it is being updated later with a new value. The initialization
-> is redundant and can be removed.
->
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On Tue, 2020-05-12 at 08:38 +0200, David Hildenbrand wrote:
+> On 12.05.20 07:21, Lukas Bulwahn wrote:
+> > Hi David,
+> > 
+> > with your commit 6d6b93b9afd8 ("MAINTAINERS: Add myself as virtio-balloon 
+> > co-maintainer"), visible on next-20200508, ./scripts/checkpatch.pl -f 
+> > MAINTAINERS complains:
+> > 
+> > WARNING: Misordered MAINTAINERS entry - list file patterns in alphabetic order
+> > #17982: FILE: MAINTAINERS:17982:
+> > +F:	include/uapi/linux/virtio_balloon.h
+> > +F:	include/linux/balloon_compaction.h
+> > 
+> > This is due to wrong ordering of the entries in your submission. If you 
+> > would like me to send you a patch fixing that, please just let me know.
+> > 
+> > It is a recent addition to checkpatch.pl to report ordering problems in 
+> > MAINTAINERS, so you might have not seen that at submission time.
+> 
+> Thanks for the notification Lukas,
+> 
+> b962ee8622d0 ("checkpatch: additional MAINTAINER section entry ordering
+> checks") is not in Linus' tree yet AFAIKS.
+> 
+> I can see that 3b50142d8528 ("MAINTAINERS: sort field names for all
+> entries") is upstream. I do wonder if we should just do another batch
+> update after the checkpatch patch is upstream instead, I guess more will
+> pile up?
+> 
+> @mst, joe, what do you prefer?
+> 
+> 1. I can resend the original patch.
+> 2. Lukas can send a fixup that we might want to squash.
+> 3. We wait until the checkpatch change goes upstream and to a final
+> batch update.
 
-Applied.  Thanks!
+A fixup patch would work.
 
-Alex
+I think if Linus every once in awhile just before an -rc1 runs
+scripts/parse-maintainers like:
 
-> ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c
-> index 90610b4f2c75..e9e59bc68c9f 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.c
-> @@ -441,7 +441,7 @@ int amdgpu_xgmi_set_pstate(struct amdgpu_device *adev, int pstate)
->
->  int amdgpu_xgmi_update_topology(struct amdgpu_hive_info *hive, struct amdgpu_device *adev)
->  {
-> -       int ret = -EINVAL;
-> +       int ret;
->
->         /* Each psp need to set the latest topology */
->         ret = psp_xgmi_set_topology_info(&adev->psp,
-> --
-> 2.25.1
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+commit 3b50142d8528 ("MAINTAINERS: sort field names for all entries")
+
+then these sorts of individual patches would not matter much.
+
+This first time the script was run, I think there was just 1 patch
+conflict from -next to Linus' tree, and that scripted change was
+fairly large.
+
+As the changes will generally be smaller in the future, it's unlikely
+there will be a significant number of conflicts.
+
+

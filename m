@@ -2,68 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 189571CEA14
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 03:22:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D10941CEB7D
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 05:31:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728440AbgELBWX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 May 2020 21:22:23 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:4391 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728115AbgELBWX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 May 2020 21:22:23 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 145B24DB18404248E0B4;
-        Tue, 12 May 2020 09:22:21 +0800 (CST)
-Received: from [10.166.215.142] (10.166.215.142) by smtp.huawei.com
- (10.3.19.201) with Microsoft SMTP Server (TLS) id 14.3.487.0; Tue, 12 May
- 2020 09:22:14 +0800
-Subject: Re: [PATCH -next] spi: spi-amd: Remove spi_master_put in
- amd_spi_remove()
-To:     Mark Brown <broonie@kernel.org>,
-        Sanjay R Mehta <sanju.mehta@amd.com>
-CC:     <kernel-janitors@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-References: <20200507115550.139457-1-weiyongjun1@huawei.com>
- <158921769453.22432.2365518895564552869.b4-ty@kernel.org>
- <20200511172920.GJ8216@sirena.org.uk>
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-Message-ID: <566833d4-23e9-6ab6-e7bb-245678d25ee2@huawei.com>
-Date:   Tue, 12 May 2020 09:22:13 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1728792AbgELDbX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 May 2020 23:31:23 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:35382 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728455AbgELDbU (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 11 May 2020 23:31:20 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04C3N3Np072963;
+        Tue, 12 May 2020 03:31:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=mime-version :
+ message-id : date : from : to : cc : subject : references : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=4bAuAI6MNYAXc//k73oPqBbwpdcjw/L0xcodzJz3lMw=;
+ b=RPeJmGzxh2P4GuzVH5aIZ+Hk7deq5f+CCeCG16647QardtoQ6iqRCcSuNysqh6PaAjsu
+ dSnhmIyXdhBKJ0KfSAvEcnTFVgI66+f1kVFj9H+qv9RanMCfUw+qLB+oKYZpb++orJ0S
+ erXhCCNjhUhWypmJl3HxCmsFvWEzw6Ez3bHk1qIhAlKNkNXjWe+SrZSF+U868EuAj/pN
+ CkoN0tIz0ypvpsRX5Nl3AncWD4GjRXssMz6t5VxQiSC6M/yl1ehll+Uj3BK3sjVAnKHO
+ CTWAPRrTpNAhSMvK4SSVb2/nmSE4Do/p1p0WUR2wPv8elNO4saroHMQXlzY5CeIRKqxd Hw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 30x3mbrgkg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 12 May 2020 03:31:14 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04C3MVoH016085;
+        Tue, 12 May 2020 03:29:13 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 30xbggtnp4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 12 May 2020 03:29:13 +0000
+Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04C3TCY2019111;
+        Tue, 12 May 2020 03:29:12 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201) by default (Oracle
+ Beehive Gateway v4.0) with ESMTP ; Mon, 11 May 2020 20:28:41 -0700
 MIME-Version: 1.0
-In-Reply-To: <20200511172920.GJ8216@sirena.org.uk>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.166.215.142]
-X-CFilter-Loop: Reflected
+Message-ID: <158925392374.17325.12424804060546822236.b4-ty@oracle.com>
+Date:   Tue, 12 May 2020 03:28:28 +0000 (UTC)
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     linux-scsi@vger.kernel.org, James Smart <james.smart@broadcom.com>,
+        Colin King <colin.king@canonical.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        Dick Kennedy <dick.kennedy@broadcom.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] scsi: lpfc: remove redundant initialization to variable
+ rc
+References: <20200507203111.64709-1-colin.king@canonical.com>
+In-Reply-To: <20200507203111.64709-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.26.2
+Content-Type: text/plain; charset=ascii
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=967
+ spamscore=0 suspectscore=0 phishscore=0 bulkscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005120029
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 impostorscore=0
+ mlxscore=0 suspectscore=0 bulkscore=0 mlxlogscore=999 phishscore=0
+ malwarescore=0 lowpriorityscore=0 spamscore=0 adultscore=0 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005120029
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Thu, 7 May 2020 21:31:11 +0100, Colin King wrote:
 
+> The variable rc is being initialized with a value that is never read
+> and it is being updated later with a new value.  The initialization is
+> redundant and can be removed.
 
-On 2020/5/12 1:29, Mark Brown wrote:
-> On Mon, May 11, 2020 at 06:22:01PM +0100, Mark Brown wrote:
->> On Thu, 7 May 2020 11:55:50 +0000, Wei Yongjun wrote:
->>> The call to spi_master_put() in amd_spi_remove() is redundant and
->>> may causes user after free since the master have been freed by
->>> spi_unregister_master(), so remove it.
->>
->> Applied to
->>
->>    local tree spi/for-5.7
-> 
-> No it wasn't, sorry for the noise here.
-> 
+Applied to 5.8/scsi-queue, thanks!
 
-I saw similar patch has been merged, so we do not need this patch any more.
+[1/1] scsi: lpfc: Remove redundant initialization to variable rc
+      https://git.kernel.org/mkp/scsi/c/6e27a86aed97
 
-7b9c94bd13cc ("spi: amd: Fix refcount underflow on remove")
-
-Links:
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=7b9c94bd13cc9dc9c0c4932ebacf756ae612d52a
-
-Regards,
-Wei Yongjun
+-- 
+Martin K. Petersen	Oracle Linux Engineering

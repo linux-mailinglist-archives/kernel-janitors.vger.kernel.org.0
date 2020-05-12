@@ -2,158 +2,142 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7EDD1CEED0
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 10:08:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA6C71CEEF5
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 10:17:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729135AbgELIIg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 May 2020 04:08:36 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:52784 "EHLO
+        id S1726067AbgELIRX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 May 2020 04:17:23 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:59044 "EHLO
         userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725889AbgELIIg (ORCPT
+        with ESMTP id S1725813AbgELIRW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 May 2020 04:08:36 -0400
+        Tue, 12 May 2020 04:17:22 -0400
 Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04C82FKR141578;
-        Tue, 12 May 2020 08:06:47 GMT
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04C88Rh5158523;
+        Tue, 12 May 2020 08:17:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=Oa8J6zinMCa7UnQSKo6wOi+seluNKXvx9yPIBfVSmuk=;
- b=fzHZs4jNmYVcDfM4CtDYCWiHiPyCuDbnq1GTsDfjIJrTTFQAWpGpu5Uh/M8VTiezlerL
- F3cU3TQCGujHVT7EycoqAiqSsuaFqHDpOfnNu0zHz8XDFVPYsyqomyTVP4qwMJMMXAzE
- QrhJjbjjAJ960nfzkQltn9S3ge1Zd8oG+jiZBXx+JpJAwBQnpd51qb5Ggg7XsPxgxDhH
- Tpaz25u/Jm8I0wqDiLQ6OjYFN+8TLg/7HnAOvbJ2+vK7vADllUH3x0Rialbzib555XHn
- vhDg7SO1KOMv9RKltWLb1X54ygCjkYCZNPNzdIs30Fy1sMz0Jbb+O7D5fQDRaJuU0c0T NQ== 
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=Wtx+Im5F71V8RatK2uIv9RRgCiFIudT/bKBzgs/sGXg=;
+ b=nok1386cXMS6Oe+Zkr8IKuydliXujlazuBGl2LfAdxEjgLc6SLo00Kb3IBJYW6C2WY7u
+ BTXT5SxRj/XX8WB4YisKBRnazxN3CND40C2XbwkKrcdDG4GoxGHQ6x8LfXCTtnOpNAcw
+ ALPRc0V8pClr7wevKzCuUicaejs3Hi8DD4qZI34JRNkAERQcZ6gPVOt6BERM4VM7VnVW
+ n7gxEm7DwFSVodq+b9XOZBOLFyTp+KraSV9oawPkp+KlwQdRDsmpTwJAe+9/HCB280t1
+ u/m73MBOYGNGcg8WPzXwv8aTMdaB/WEFvAGVOic+IgBz5LMoP8WH+BVpCyqWRxA5aFAU ww== 
 Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 30x3gmhfbb-1
+        by userp2130.oracle.com with ESMTP id 30x3gmhgnq-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 12 May 2020 08:06:47 +0000
+        Tue, 12 May 2020 08:17:14 +0000
 Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04C83usG095425;
-        Tue, 12 May 2020 08:04:47 GMT
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04C8DvgB137018;
+        Tue, 12 May 2020 08:17:14 GMT
 Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 30ydspxp67-1
+        by userp3030.oracle.com with ESMTP id 30ydspya4k-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 12 May 2020 08:04:47 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04C84imh004935;
-        Tue, 12 May 2020 08:04:44 GMT
-Received: from mwanda (/10.175.212.140)
+        Tue, 12 May 2020 08:17:14 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04C8HD7M010693;
+        Tue, 12 May 2020 08:17:13 GMT
+Received: from kadam (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 12 May 2020 01:04:44 -0700
-Date:   Tue, 12 May 2020 11:04:36 +0300
+        with ESMTP ; Tue, 12 May 2020 01:17:12 -0700
+Date:   Tue, 12 May 2020 11:17:06 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Rohit Maheshwari <rohitm@chelsio.com>
-Cc:     Ayush Sawal <ayush.sawal@chelsio.com>,
-        Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Wei Yongjun <weiyongjun1@huawei.com>,
-        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH] cxgb4/chcr: Fix a leak in chcr_ktls_dev_add()
-Message-ID: <20200512080436.GA247819@mwanda>
+To:     Leon Romanovsky <leon@kernel.org>
+Cc:     Zhu Yanjun <yanjunz@mellanox.com>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] RDMA/rxe: Return -EFAULT if copy_from_user() fails
+Message-ID: <20200512081706.GJ9365@kadam>
+References: <20200511183742.GB225608@mwanda>
+ <20200512062936.GE4814@unreal>
+ <20200512070203.GG4814@unreal>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200509080548.118667-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email haha only kidding
+In-Reply-To: <20200512070203.GG4814@unreal>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=2 mlxscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0 mlxscore=0
  adultscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0 spamscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2005120068
+ definitions=main-2005120070
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618 signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
- clxscore=1011 spamscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0
- malwarescore=0 priorityscore=1501 mlxscore=0 suspectscore=2
+ clxscore=1015 spamscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0
+ malwarescore=0 priorityscore=1501 mlxscore=0 suspectscore=0
  impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005120068
+ engine=8.12.0-2003020000 definitions=main-2005120069
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We need to free "tx_info->l2te" if chcr_setup_connection() fails.  My
-other concern was that if we free "tx_info" then "tx_ctx->chcr_info"
-points to a freed variable.  I don't think this causes a problem but
-it's cleaner to reset it back to NULL.  Also I renamed the labels to
-say what the gotos do instead of using numbered labels.
+On Tue, May 12, 2020 at 10:02:03AM +0300, Leon Romanovsky wrote:
+> On Tue, May 12, 2020 at 09:29:36AM +0300, Leon Romanovsky wrote:
+> > On Mon, May 11, 2020 at 09:37:42PM +0300, Dan Carpenter wrote:
+> > > This function used to always return -EINVAL but we updated it to try
+> > > preserve the error codes.  Unfortunately the copy_to_user() is returning
+> > > the number of bytes remaining to be copied instead of a negative error
+> > > code.
+> > >
+> > > Fixes: a3a974b4654d ("RDMA/rxe: Always return ERR_PTR from rxe_create_mmap_info()")
+> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > > ---
+> > >  drivers/infiniband/sw/rxe/rxe_queue.c | 5 +++--
+> > >  1 file changed, 3 insertions(+), 2 deletions(-)
+> >
+> >
+> > Thanks,
+> > Reviewed-by: Leon Romanovsky <leonro@mellanox.com>
+> 
+> Actually Yanjun is right and "err" can be removed.
+> 
+> Thanks
 
-Fixes: 34aba2c45024 ("cxgb4/chcr : Register to tls add and del callback")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-Applies on top of Wei Yongjun's patch.
+I don't know if the code you guys are looking at is older or newer than
+linux-next...  :P
 
- drivers/crypto/chelsio/chcr_ktls.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+drivers/infiniband/sw/rxe/rxe_queue.c
+    39  int do_mmap_info(struct rxe_dev *rxe, struct mminfo __user *outbuf,
+    40                   struct ib_udata *udata, struct rxe_queue_buf *buf,
+    41                   size_t buf_size, struct rxe_mmap_info **ip_p)
+    42  {
+    43          int err;
+                    ^^^
 
-diff --git a/drivers/crypto/chelsio/chcr_ktls.c b/drivers/crypto/chelsio/chcr_ktls.c
-index baaea8ce40806..3173ac3099bc6 100644
---- a/drivers/crypto/chelsio/chcr_ktls.c
-+++ b/drivers/crypto/chelsio/chcr_ktls.c
-@@ -478,7 +478,7 @@ static int chcr_ktls_dev_add(struct net_device *netdev, struct sock *sk,
- 
- 	tx_info->rx_qid = chcr_get_first_rx_qid(adap);
- 	if (unlikely(tx_info->rx_qid < 0))
--		goto out2;
-+		goto free_tx_info;
- 
- 	tx_info->prev_seq = start_offload_tcp_sn;
- 	tx_info->tcp_start_seq_number = start_offload_tcp_sn;
-@@ -486,7 +486,7 @@ static int chcr_ktls_dev_add(struct net_device *netdev, struct sock *sk,
- 	/* save crypto keys */
- 	ret = chcr_ktls_save_keys(tx_info, crypto_info, direction);
- 	if (ret < 0)
--		goto out2;
-+		goto free_tx_info;
- 
- 	/* get peer ip */
- 	if (sk->sk_family == AF_INET ||
-@@ -502,14 +502,14 @@ static int chcr_ktls_dev_add(struct net_device *netdev, struct sock *sk,
- 	if (!dst) {
- 		pr_err("DST entry not found\n");
- 		ret = -ENOENT;
--		goto out2;
-+		goto free_tx_info;
- 	}
- 	n = dst_neigh_lookup(dst, daaddr);
- 	if (!n || !n->dev) {
- 		pr_err("neighbour not found\n");
- 		dst_release(dst);
- 		ret = -ENOENT;
--		goto out2;
-+		goto free_tx_info;
- 	}
- 	tx_info->l2te  = cxgb4_l2t_get(adap->l2t, n, n->dev, 0);
- 
-@@ -519,7 +519,7 @@ static int chcr_ktls_dev_add(struct net_device *netdev, struct sock *sk,
- 	if (!tx_info->l2te) {
- 		pr_err("l2t entry not found\n");
- 		ret = -ENOENT;
--		goto out2;
-+		goto free_tx_info;
- 	}
- 
- 	tx_ctx->chcr_info = tx_info;
-@@ -529,12 +529,16 @@ static int chcr_ktls_dev_add(struct net_device *netdev, struct sock *sk,
- 	 */
- 	ret = chcr_setup_connection(sk, tx_info);
- 	if (ret)
--		goto out2;
-+		goto free_l2te;
- 
- 	atomic64_inc(&adap->chcr_stats.ktls_tx_connection_open);
- 	return 0;
--out2:
-+
-+free_l2te:
-+	cxgb4_l2t_release(tx_info->l2te);
-+free_tx_info:
- 	kvfree(tx_info);
-+	tx_ctx->chcr_info = NULL;
- out:
- 	atomic64_inc(&adap->chcr_stats.ktls_tx_connection_fail);
- 	return ret;
--- 
-2.26.2
+    44          struct rxe_mmap_info *ip = NULL;
+    45  
+    46          if (outbuf) {
+    47                  ip = rxe_create_mmap_info(rxe, buf_size, udata, buf);
+    48                  if (IS_ERR(ip)) {
+    49                          err = PTR_ERR(ip);
+    50                          goto err1;
+                                ^^^^^^^^^
+    51                  }
+    52  
+    53                  err = copy_to_user(outbuf, &ip->info, sizeof(ip->info));
+    54                  if (err)
+    55                          goto err2;
+                                ^^^^^^^^^
+    56  
+    57                  spin_lock_bh(&rxe->pending_lock);
+    58                  list_add(&ip->pending_mmaps, &rxe->pending_mmaps);
+    59                  spin_unlock_bh(&rxe->pending_lock);
+    60          }
+    61  
+    62          *ip_p = ip;
+    63  
+    64          return 0;
+    65  
+    66  err2:
+    67          kfree(ip);
+    68  err1:
+    69          return err;
+                       ^^^
+    70  }
 
+regards,
+dan carpenter

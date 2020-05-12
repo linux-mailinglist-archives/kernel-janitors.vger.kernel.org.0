@@ -2,175 +2,133 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E2961CE977
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 02:08:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B692B1CEA07
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 03:12:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728116AbgELAIU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 May 2020 20:08:20 -0400
-Received: from kvm5.telegraphics.com.au ([98.124.60.144]:42550 "EHLO
-        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725836AbgELAIT (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 May 2020 20:08:19 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by kvm5.telegraphics.com.au (Postfix) with ESMTP id 3995529BDB;
-        Mon, 11 May 2020 20:08:16 -0400 (EDT)
-Date:   Tue, 12 May 2020 10:08:23 +1000 (AEST)
-From:   Finn Thain <fthain@telegraphics.com.au>
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: Re: net/sonic: Fix some resource leaks in error handling paths
-In-Reply-To: <9994a7de-0399-fb34-237a-a3c71b3cf568@web.de>
-Message-ID: <alpine.LNX.2.22.394.2005120905410.8@nippy.intranet>
-References: <b7651b26-ac1e-6281-efb2-7eff0018b158@web.de> <alpine.LNX.2.22.394.2005100922240.11@nippy.intranet> <9d279f21-6172-5318-4e29-061277e82157@web.de> <alpine.LNX.2.22.394.2005101738510.11@nippy.intranet> <bc70e24c-dd31-75b7-6ece-2ad31982641e@web.de>
- <alpine.LNX.2.22.394.2005110845060.8@nippy.intranet> <9994a7de-0399-fb34-237a-a3c71b3cf568@web.de>
+        id S1728419AbgELBMo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 May 2020 21:12:44 -0400
+Received: from mail-eopbgr80078.outbound.protection.outlook.com ([40.107.8.78]:5429
+        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728115AbgELBMn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 11 May 2020 21:12:43 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=W9p4KUmQD7OJYl/X5zXo6QCroJRS1LI2vKom4gq0kDlMKwj0kKuS1LHhXOtY0NixEaCtnOjQficLWbXNr22a0cfu7FYhVS2C3jp5vlt7d0tMba+jqm0/rcwGUgtY/XGUO6C5jCQ9jM++Vjj6x+y3O+6RiUnsaFGfni+x4QhbwH0q8nCCDw/E5CiJdaR6PYTocC8KbIyAtN8/2lsZ4nX6bELkZVSKGxA2wPQ+cYKcvZwyXyzpc4afmu4hpna4q2LZQxvxduYi/3Fomku30Qhb6BK0rsvW97ge+cREizjK0ZLHSVmdr8XG/5JIhel5uD/WzHL7FMQH1VyX/6AoOdwnbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=91ONJgmbd0PEvhabhdUwSGqJMI3wICitjIGshI9VfYY=;
+ b=g9MgXVnWXA5JfoJKzRCFpSNn6kgTBiOpsH/Bhiw5NL+9ZUmd0wLjjCYRwWfTn+L63P/rA9uDlCVEcDM3TD+W8Y3GfGy8cKFUrhszMmY+1nc1uUorf9tN7b681fO1cicSIQ8BjETY6LSr84wJO6iJX9hqrgcBzgzG9JvcFhiqiKaoU6QzTbe+F4h240RKYnlB+sdW4+7zqKv8NfTzPslt1AyZEokNxmLlfFwntbL8xd7GHwZLZVKfe4dY43JbzePlLwM7jykgSDpaBqA69VpLLV1Q3ddC2BzrWc4Xz5ezIf2Pe/PTckVIGJa7klhGyY4h3YhwIKe0HerfTojm93D/UQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
+ dkim=pass header.d=mellanox.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=91ONJgmbd0PEvhabhdUwSGqJMI3wICitjIGshI9VfYY=;
+ b=YgyqzWRE0+KhrtgCj0W+Qtzc/XVXHWzvDHbjQjyhGcPwA567NLFYPvPgZ8hxfUtJuISvp0rpkUfufw1kF8mPq0kRScuyOszpZ5mPShE8zbxJ0qx6BKrwMlPA6Ox9HKnDBs3S+RthFKFIXFa3P1j48lOvWYRkAiUWr0A3km5mNxg=
+Received: from AM6PR05MB6263.eurprd05.prod.outlook.com (2603:10a6:20b:5::31)
+ by AM6PR05MB5781.eurprd05.prod.outlook.com (2603:10a6:20b:95::32) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2979.34; Tue, 12 May
+ 2020 01:12:39 +0000
+Received: from AM6PR05MB6263.eurprd05.prod.outlook.com
+ ([fe80::6dad:73a3:a3af:c829]) by AM6PR05MB6263.eurprd05.prod.outlook.com
+ ([fe80::6dad:73a3:a3af:c829%6]) with mapi id 15.20.2979.033; Tue, 12 May 2020
+ 01:12:38 +0000
+From:   Yanjun Zhu <yanjunz@mellanox.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+CC:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: RE: [PATCH] RDMA/rxe: Return -EFAULT if copy_from_user() fails
+Thread-Topic: [PATCH] RDMA/rxe: Return -EFAULT if copy_from_user() fails
+Thread-Index: AQHWJ8NJYVVyKN0IEUq6MA/gyfBb3qijpRUQ
+Date:   Tue, 12 May 2020 01:12:38 +0000
+Message-ID: <AM6PR05MB6263ECA5663A63A9CC825145D8BE0@AM6PR05MB6263.eurprd05.prod.outlook.com>
+References: <20200511183742.GB225608@mwanda>
+In-Reply-To: <20200511183742.GB225608@mwanda>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: oracle.com; dkim=none (message not signed)
+ header.d=none;oracle.com; dmarc=none action=none header.from=mellanox.com;
+x-originating-ip: [118.201.220.138]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 36d04bac-2001-430c-3d4e-08d7f6119008
+x-ms-traffictypediagnostic: AM6PR05MB5781:
+x-microsoft-antispam-prvs: <AM6PR05MB57814C3DB95802F4075A6292D8BE0@AM6PR05MB5781.eurprd05.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:519;
+x-forefront-prvs: 0401647B7F
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: O0c3ZRYM4sQblCI/mistx1VEsjllQ1nGMXhAVkpk8FCLz9MaMcw2NwC2un5NG52Ldh+fpx67actdyrYBrlYTZSfHlIQ6AqkOaUm5BY1jfsQrDB4KHZ2TwtCCTYc9YHwTfYY2rUPbrBxeULr929eb1xQwLLcEZVI57UCZQb/iJClkPu+rX4cAol/zdHcRppS/74IgDsBrAypP8zFgOVQa4yfDg0cV749CHJKKW1sXIHeOV18oBU4K3jdisw6AqYd9d/BwEZI2kGUx3/fTRrACveujkj/eiezsqB6h8lxrSDlcFzcnvFe5DIfe3Xd2Gqa6sIWHGPo6FXs/kV9wHFWMC6wOfXzbM45ffD/Wea/sTOHpH5oJQYBl/694v39d2sZux0bdLMCW/avMXdhmQfB1O9N/3WGtvcHRqsbd34Kyi/eT/1ZlEXGdEhDCCuASytjfdRQ0DiAnKphjUG+3k+qhU9UqsHEQKFScyZvObCGzMiZpnrgXVuvdFPgso8SZGuPOvFVNw2ybFNh1mNVA5SukPA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR05MB6263.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(366004)(376002)(346002)(39860400002)(396003)(136003)(33430700001)(186003)(6506007)(316002)(9686003)(66556008)(33656002)(478600001)(55016002)(2906002)(33440700001)(64756008)(66446008)(52536014)(110136005)(66476007)(26005)(8936002)(4326008)(86362001)(8676002)(53546011)(71200400001)(66946007)(54906003)(76116006)(7696005)(5660300002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: OuKpJTtOzqH4nfAwZ6VxtG7U6Y2c1WQEkcLLa34hDvzXQoFtDHft23NwNj/t7gXw5cSJdbwAT8KnUkc1/RI0YeGlcWzIBtBZUJrCXgyntElIzw8ZBZ9aLFUN06Ff2VQ78q9JoXL4kEBE0D6tjZPuEbMft02EEGErN7lu+ytrQVYIMgEG8f4eXG82QfyfbGpgRuWPjBsuB23r9XYc43k+SdZ1lakNhssQhMIDV0j/BdjNQZtoIB9G1BxJOWuPsGyKwuvfPavhYkqy8Y/oT0T/NtmA4MJu55lPaOOnvsbNUBrbrrhd9fl3zD+rl4YUCQ++GpZySHfZqqcf55AKVXN9I9sILqIMtzzJsF/fLQMXMtZBqjUc7MwGFtQjaXPnCM1W9iZEthvDZ9UECYug9KUY1w/q3gtM9W44pOdI8+FBIubX1VlGwLRc5wgTZLl4sSABxuRRxd8bgKCaHxGQv3/I4OYEO1g+GM922SI96+MLhIyK1Gn4rQd34ir3JM2p5yAV
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="-1463811774-1457172623-1589239130=:8"
-Content-ID: <alpine.LNX.2.22.394.2005120920320.8@nippy.intranet>
+X-OriginatorOrg: Mellanox.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 36d04bac-2001-430c-3d4e-08d7f6119008
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 May 2020 01:12:38.6221
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a652971c-7d2e-4d9b-a6a4-d149256f461b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Skx18CmWCFiQNvOgysSOqcL5gxeQS0NUeC7+iqjp8CPdZZXKJC21g5MxwN4sMB0CsUgoqOY72YE1F00u6YsS8A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR05MB5781
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Does this "err =3D -EFAULT;" make any sense in your commit?
 
----1463811774-1457172623-1589239130=:8
-Content-Type: text/plain; CHARSET=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <alpine.LNX.2.22.394.2005120920321.8@nippy.intranet>
+Zhu Yanjun
 
+-----Original Message-----
+From: Dan Carpenter <dan.carpenter@oracle.com>=20
+Sent: Tuesday, May 12, 2020 2:38 AM
+To: Yanjun Zhu <yanjunz@mellanox.com>; Sudip Mukherjee <sudipm.mukherjee@gm=
+ail.com>
+Cc: Doug Ledford <dledford@redhat.com>; Jason Gunthorpe <jgg@ziepe.ca>; lin=
+ux-rdma@vger.kernel.org; kernel-janitors@vger.kernel.org
+Subject: [PATCH] RDMA/rxe: Return -EFAULT if copy_from_user() fails
 
-On Mon, 11 May 2020, Markus Elfring wrote:
+This function used to always return -EINVAL but we updated it to try preser=
+ve the error codes.  Unfortunately the copy_to_user() is returning the numb=
+er of bytes remaining to be copied instead of a negative error code.
 
-> > If you can't determine when the bug was introduced,
->=20
-> I might be able to determine also this information.
->=20
+Fixes: a3a974b4654d ("RDMA/rxe: Always return ERR_PTR from rxe_create_mmap_=
+info()")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/infiniband/sw/rxe/rxe_queue.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-This is tantamount to an admission of duplicity.
-
->=20
-> > how can you criticise a patch for the lack of a Fixes tag?
->=20
-> I dared to point two details out for the discussed patch.
->=20
-
-You deliberately chose those two details. You appear to be oblivious to=20
-your own motives.
-
->=20
-> >> To which commit would you like to refer to for the proposed=20
-> >> adjustment of the function =E2=80=9Cmac_sonic_platform_probe=E2=80=9D?
-> >
-> > That was my question to you. We seem to be talking past each other.
->=20
-> We come along different views for this patch review. Who is going to add=
+diff --git a/drivers/infiniband/sw/rxe/rxe_queue.c b/drivers/infiniband/sw/=
+rxe/rxe_queue.c
+index fef2ab5112de5..245040c3a35d0 100644
+--- a/drivers/infiniband/sw/rxe/rxe_queue.c
++++ b/drivers/infiniband/sw/rxe/rxe_queue.c
+@@ -50,9 +50,10 @@ int do_mmap_info(struct rxe_dev *rxe, struct mminfo __us=
+er *outbuf,
+ 			goto err1;
+ 		}
 =20
-> a possible reference for this issue?
->=20
-
-Other opinions are not relevant: I was trying to communicate with you.
-
->=20
-> >> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
-e/Documentation/process/coding-style.rst?id=3De99332e7b4cda6e60f5b5916cf994=
-3a79dbef902#n460
->=20
-> >
-> > My preference is unimportant here.
->=20
-> It is also relevant here because you added the tag =E2=80=9CReviewed-by=
-=E2=80=9D.=20
-> https://lore.kernel.org/patchwork/comment/1433193/=20
-> https://lkml.org/lkml/2020/5/8/1827
->=20
-
-You have quoted my words out-of-context and twisted their meaning to suit=
+-		err =3D copy_to_user(outbuf, &ip->info, sizeof(ip->info));
+-		if (err)
++		if (copy_to_user(outbuf, &ip->info, sizeof(ip->info))) {
++			err =3D -EFAULT;
+ 			goto err2;
++		}
 =20
-your purposes.
+ 		spin_lock_bh(&rxe->pending_lock);
+ 		list_add(&ip->pending_mmaps, &rxe->pending_mmaps);
+--
+2.26.2
 
->=20
-> > I presume that you mean to assert that Christophe's patch breaches the=
-=20
-> > style guide.
->=20
-> I propose to take such a possibility into account.
->=20
-
-This "possibility" was among the reasons why the patch was posted to a=20
-mailing list by its author. That possibility is a given. If you claim this=
-=20
-possibility as your motivation, you are being foolish or dishonest.
-
->=20
-> > However, 'sonic_probe1' is the name of a function.
->=20
-> The discussed source file does not contain such an identifier.=20
-> https://elixir.bootlin.com/linux/v5.7-rc5/source/drivers/net/ethernet/nat=
-semi/macsonic.c#L486=20
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/d=
-rivers/net/ethernet/natsemi/macsonic.c?id=3D2ef96a5bb12be62ef75b5828c0aab83=
-8ebb29cb8#n486
->=20
-
-That's what I told you in my previous email. You're welcome.
-
->=20
-> > This is not some sequence of GW-BASIC labels referred to in the style=
-=20
-> > guide.
->=20
-> I recommend to read the current section =E2=80=9C7) Centralized exiting o=
-f=20
-> functions=E2=80=9D once more.
->=20
-
-Again, you are proposing a bike shed of a different color.
-
->=20
-> >> Can programming preferences evolve into the direction of =E2=80=9Csay =
-what=20
-> >> the goto does=E2=80=9D?
-> >
-> > I could agree that macsonic.c has no function resembling "probe1", and=
-=20
-> > that portion of the patch could be improved.
->=20
-> I find this feedback interesting.
->=20
->=20
-> > Was that the opinion you were trying to express by way of rhetorical=20
-> > questions? I can't tell.
->=20
-> Some known factors triggered my suggestion to consider the use of the=20
-> label =E2=80=9Cfree_dma=E2=80=9D.
->=20
-
-If you cannot express or convey your "known factors" then they aren't=20
-useful.
-
->=20
-> > Is it possible for a reviewer to effectively criticise C by use of=20
-> > English, when his C ability surpasses his English ability?
->=20
-> We come along possibly usual communication challenges.
->=20
-
-That looks like a machine translation. I can't make sense of it, sorry.
-
-> Regards,
-> Markus
->=20
-
-Markus, if you were to write a patch to improve upon coding-style.rst, who=
-=20
-should review it?
-
-If you are unable to write or review such a patch, how can you hope to=20
-adjudicate compliance?
----1463811774-1457172623-1589239130=:8--

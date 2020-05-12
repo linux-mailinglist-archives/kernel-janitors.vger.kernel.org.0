@@ -2,77 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB7BD1CFB3B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 18:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0171A1CFBA0
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 19:07:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728777AbgELQpR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 May 2020 12:45:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42224 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725554AbgELQpR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 May 2020 12:45:17 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 62A0C20714;
-        Tue, 12 May 2020 16:45:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589301916;
-        bh=PoU1PDlU8EtoqlFaKH81yByCt0mWPcBR7YxQuQ0TaeM=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=NSaEkz8h2XIJ8DYvcW+GtWUn+dfGp8KHikaeRgwfWw+GuNqwXRCGo6uvX1n1qdaqj
-         aYvwlYOaCdchKoByZK89nXSFA9Wi7EWCZlE5VFn2ZNoopKxEtc22z07QIf+mzobT+t
-         x8doeUp+oESQWVCEq76ZJzNwrZT0rFcvBzelPO+s=
-Date:   Tue, 12 May 2020 17:45:14 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        lgirdwood@gmail.com, linux-omap@vger.kernel.org, perex@perex.cz,
-        tiwai@suse.com, jarkko.nikula@bitmer.com, peter.ujfalusi@ti.com
-Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-In-Reply-To: <20200512134325.252073-1-christophe.jaillet@wanadoo.fr>
-References: <20200512134325.252073-1-christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH] ASoC: ti: omap-mcbsp: Fix an error handling path in 'asoc_mcbsp_probe()'
-Message-Id: <158930188456.55827.1765769472470838223.b4-ty@kernel.org>
+        id S1726287AbgELRH1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 May 2020 13:07:27 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:43412 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725938AbgELRH1 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 12 May 2020 13:07:27 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jYYND-0001Xv-Me; Tue, 12 May 2020 17:07:19 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Kees Cook <keescook@chromium.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>,
+        WeiXiong Liao <liaoweixiong@allwinnertech.com>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] pstore/zone,blk: fix dereference of pointer before it has been null checked
+Date:   Tue, 12 May 2020 18:07:19 +0100
+Message-Id: <20200512170719.221514-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 12 May 2020 15:43:25 +0200, Christophe JAILLET wrote:
-> If an error occurs after the call to 'omap_mcbsp_init()', the reference to
-> 'mcbsp->fclk' must be decremented, as already done in the remove function.
-> 
-> This can be achieved easily by using the devm_ variant of 'clk_get()'
-> when the reference is taken in 'omap_mcbsp_init()'
-> 
-> This fixes the leak in the probe and has the side effect to simplify both
-> the error handling path of 'omap_mcbsp_init()' and the remove function.
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied to
+Currently the assignment of ctx dereferences pointer 'record' before
+the pointer has been null checked. Fix this by only making this
+dereference after it has been null checked close to the point ctx
+is to be used.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.8
+Addresses-Coverity: ("Dereference before null check")
+Fixes: bb4ccd1e6f56 ("pstore/zone,blk: Add ftrace frontend support")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ fs/pstore/zone.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Thanks!
+diff --git a/fs/pstore/zone.c b/fs/pstore/zone.c
+index bd8e194110fc..c5bf3b9f644f 100644
+--- a/fs/pstore/zone.c
++++ b/fs/pstore/zone.c
+@@ -998,7 +998,7 @@ static ssize_t psz_kmsg_read(struct pstore_zone *zone,
+ static ssize_t psz_ftrace_read(struct pstore_zone *zone,
+ 		struct pstore_record *record)
+ {
+-	struct psz_context *cxt = record->psi->data;
++	struct psz_context *cxt;
+ 	struct psz_buffer *buf;
+ 	int ret;
+ 
+@@ -1018,6 +1018,7 @@ static ssize_t psz_ftrace_read(struct pstore_zone *zone,
+ 		return ret;
+ 
+ out:
++	cxt = record->psi->data;
+ 	if (cxt->ftrace_read_cnt < cxt->ftrace_max_cnt)
+ 		/* then, read next ftrace zone */
+ 		return -ENOMSG;
+-- 
+2.25.1
 
-[1/1] ASoC: ti: omap-mcbsp: Fix an error handling path in 'asoc_mcbsp_probe()'
-      commit: 03990fd58d2b7c8f7d53e514ba9b8749fac260f9
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

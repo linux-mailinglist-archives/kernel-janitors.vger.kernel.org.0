@@ -2,85 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE6F61CEB5E
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 05:28:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E2BB1CEC62
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 07:21:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728753AbgELD2s (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 May 2020 23:28:48 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:40710 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727942AbgELD2r (ORCPT
+        id S1725892AbgELFVR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 May 2020 01:21:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37066 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725536AbgELFVR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 May 2020 23:28:47 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04C3N1U4130524;
-        Tue, 12 May 2020 03:28:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=m5qrEoeVo3J6HsD0ioGFPBGzKVsrLJsPeIFoyJcaAV8=;
- b=YXwBHSy3cTHGUavYcZeM0c0oAbMSnsYCzQOXERAhc2EHCOcAhtvTAMGPCxsOeG87cyx0
- y5OxK4zuNyy+jUgsUKjhkbDUdiPtrPDPozI1lNhRtHSfPSDhPb+XBmlN5j/jVEkvR8tQ
- gEoPawV+id5ZKK40o7j5makJrhKFX7GY5kUA+MYAq1mmx0yTkfNOMfZOiBtin9xDp2Cr
- aaU69IqPuh2Dh+/xKRAQUtxSu8srmucL2KJLdRA9+Sk1/oAhksC7KmrAk1XTUZmIdIuB
- wqOsaraWaSRP3ylvSF7/iV+24Oo7QxLOYm9QMfalRWA6yZJ9oS78VafRD2AshA4DW93K vg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 30x3gsggnw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 12 May 2020 03:28:45 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04C3NdpR074826;
-        Tue, 12 May 2020 03:28:44 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 30x63nx9xr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 12 May 2020 03:28:44 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04C3ShIS018967;
-        Tue, 12 May 2020 03:28:43 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 11 May 2020 20:28:42 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Douglas Gilbert <dgilbert@interlog.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        kernel-janitors@vger.kernel.org, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH] scsi: scsi_debug: fix an error handling bug in sdeb_zbc_model_str()
-Date:   Mon, 11 May 2020 23:28:29 -0400
-Message-Id: <158925392375.17325.5928930344403606433.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200509100408.GA5555@mwanda>
-References: <20200509100408.GA5555@mwanda>
+        Tue, 12 May 2020 01:21:17 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3944DC061A0C;
+        Mon, 11 May 2020 22:21:17 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id y3so13701481wrt.1;
+        Mon, 11 May 2020 22:21:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:message-id:user-agent:mime-version;
+        bh=iPNWrjCXLG5PobA8YJLbqbttbn3fSW2nFeC8Eks6Lm8=;
+        b=bq2dqmF04qwpjjm8fxx3txA1QpoMZXU1/icZ9Lzk+Ur7CL/QanWEh+ELVDAHeu3hiU
+         aMhdRWuN309gwOBzR9tmovi6pHfHZyb47UPAL7hqdl4ijuhud869SXUeNVgrQcRwRJlh
+         XyAfUWl3qYgLFLZcHU68SQVsBL5iMS5Htdtt5/+haAkFr32uPyjUZZRVrD/obzXQuXx6
+         Amob/waiJjU4E/KDCVNidVPbP0lEs93LCm7js3fUJc/p+a2Y6UynPRLnaqVwA8EI1aM6
+         ih0yvIil0nIwTrl51Xl5zfbgK2Y+kErLZMtzZDaSjJJbnnto+oH2SyGlEJP8cvEvIj/k
+         URaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:user-agent
+         :mime-version;
+        bh=iPNWrjCXLG5PobA8YJLbqbttbn3fSW2nFeC8Eks6Lm8=;
+        b=ejMEP6fHarbMzCeJU+fNmpq+WjdFKMPBwAZluTqlH7ccggMxdFOanPiS3epq2JhZ6h
+         5wEu02UJsQwJ1+jM3c6NyNh3Ckc0BjCxm12xYUnKwdMKSqHd1GjM6HtO6sMcifT4TbTU
+         OG+l5i2qe4BSwknpgRsaqQNmx1UdlMUgMWmWjvdRrcXO+U7hS+bZTj1bg7tSw/3Nd26c
+         9npiD9M+3Nh6T69QSroN9RvbeoIerxuQ04qhH2Os86UG3+WoZ9vpoLaCEfB7ut7WttTI
+         eHuI+SgwRMXrcs4Vc4rVmei1YgYZ0x/dCvTB16BR9CoCMlj9lGdbZlrQ3IWnAh0irUmB
+         6XNQ==
+X-Gm-Message-State: AGi0PubGdxJMVJWcwe0iiMKvt7g7a85s7i3YdZTUMXYCHd1lQepX7kV4
+        rK/9x/il9SxP7YKMh5sqrEAS8G6AIBw=
+X-Google-Smtp-Source: APiQypK7ThE8Zug7UHhcpytlSDewjztqnIvLlaa5ZIW10ubZlqdWzCXgNYxxjoFGF+Vxgm23GM0pPg==
+X-Received: by 2002:adf:db4c:: with SMTP id f12mr15531337wrj.387.1589260875606;
+        Mon, 11 May 2020 22:21:15 -0700 (PDT)
+Received: from felia ([2001:16b8:2ddc:4100:5571:bcd0:adce:c7ab])
+        by smtp.gmail.com with ESMTPSA id 77sm21471812wrc.6.2020.05.11.22.21.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2020 22:21:15 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
+Date:   Tue, 12 May 2020 07:21:01 +0200 (CEST)
+X-X-Sender: lukas@felia
+To:     David Hildenbrand <david@redhat.com>
+cc:     "Michael S. Tsirkin" <mst@redhat.com>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: MAINTAINERS: Wrong ordering in VIRTIO BALLOON
+Message-ID: <alpine.DEB.2.21.2005120717260.3701@felia>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 suspectscore=0
- malwarescore=0 phishscore=0 adultscore=0 mlxlogscore=999 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2005120029
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
- malwarescore=0 adultscore=0 mlxscore=0 priorityscore=1501
- lowpriorityscore=0 impostorscore=0 clxscore=1015 bulkscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005120029
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 9 May 2020 13:04:08 +0300, Dan Carpenter wrote:
+Hi David,
 
-> This test is checking the wrong variable.  It should be testing "ret".
-> The "sdeb_zbc_model" variable is an enum (unsigned in this situation)
-> and we never assign negative values to it.
+with your commit 6d6b93b9afd8 ("MAINTAINERS: Add myself as virtio-balloon 
+co-maintainer"), visible on next-20200508, ./scripts/checkpatch.pl -f 
+MAINTAINERS complains:
 
-Applied to 5.8/scsi-queue, thanks!
+WARNING: Misordered MAINTAINERS entry - list file patterns in alphabetic order
+#17982: FILE: MAINTAINERS:17982:
++F:	include/uapi/linux/virtio_balloon.h
++F:	include/linux/balloon_compaction.h
 
-[1/1] scsi: scsi_debug: Fix an error handling bug in sdeb_zbc_model_str()
-      https://git.kernel.org/mkp/scsi/c/47742bde281b
+This is due to wrong ordering of the entries in your submission. If you 
+would like me to send you a patch fixing that, please just let me know.
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+It is a recent addition to checkpatch.pl to report ordering problems in 
+MAINTAINERS, so you might have not seen that at submission time.
+
+
+Best regards,
+
+Lukas

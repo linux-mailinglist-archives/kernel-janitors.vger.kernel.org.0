@@ -2,161 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF3291D15C1
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 15:38:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1EB51D15D6
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 15:39:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388087AbgEMNiM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 May 2020 09:38:12 -0400
-Received: from mx01-sz.bfs.de ([194.94.69.67]:31887 "EHLO mx02-sz.bfs.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727792AbgEMNiM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 May 2020 09:38:12 -0400
-Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
-        by mx02-sz.bfs.de (Postfix) with ESMTPS id 4CE302036A;
-        Wed, 13 May 2020 15:38:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1589377090;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=LZA2nEoSqh2DjvT74Q0ciKIZm6DaJuhkd7LpVsE0u8I=;
-        b=AuoVseomCftwvIIiIVjmnErjsHLbEyWa0K+t10urfDUioF4GdDHKBgkn3VS9aM6U93bCnG
-        bVlMIPsK/P2X4twYbYmflHrCQE1TcMxs+dVIztq17e0Q0dzZY5+mZseGyGT/Kj2Q72MM+g
-        kKKwm+vYvFScVMOdCbtFFPoZO2JNSsnYe/ugdtm8JfpIoF5qNywxu/qvIuUwBtdhgGxwOa
-        4kBnI/Mn2Vu7BrU1KFL/8+CoZIpZRfdF6juctB7P3QTdujPVj67iZziSGZoIr851LHtDAh
-        ljcIzuw32pu4lzynMzA2UA8zpA3HrXx6RIJ6PVNDqVTgd8yn+lrSPrpBpVgELg==
-Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
- (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.1913.5; Wed, 13 May
- 2020 15:38:09 +0200
-Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
- SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%6]) with mapi id
- 15.01.1913.005; Wed, 13 May 2020 15:38:09 +0200
-From:   Walter Harms <wharms@bfs.de>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Jussi Kivilinna <jussi.kivilinna@iki.fi>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: AW: [PATCH] rtlwifi: Fix a double free in _rtl_usb_tx_urb_setup()
-Thread-Topic: [PATCH] rtlwifi: Fix a double free in _rtl_usb_tx_urb_setup()
-Thread-Index: AQHWKQqIUFdz9Xa4v0qQxm8hInt8X6imAcXl
-Date:   Wed, 13 May 2020 13:38:09 +0000
-Message-ID: <ba9452bd2cff4888b76fd17ef85a274b@bfs.de>
-References: <20200513093951.GD347693@mwanda>
-In-Reply-To: <20200513093951.GD347693@mwanda>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.137.16.40]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S2388677AbgEMNjT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 13 May 2020 09:39:19 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:46136 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388387AbgEMNjQ (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 13 May 2020 09:39:16 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04DDXcSw023838;
+        Wed, 13 May 2020 13:39:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=PvexMS2meS82OY541i238cspkD4E+hVHPZqNSlfraF0=;
+ b=D48OsAb0cBVXdDoRrY/h8Tjk6+jhks0Jo3EhzVjqTlIiExu1AxLS2LncYUqDHwR4jEHN
+ 40sDIMjS5XEUEliOxxxFM+dm+mVOcqhInghzT0YHiN9jdoEFSUNkJ8HEcVaeI2v04SmQ
+ SH+YdcOw6JPxMxgZb/HNsb9M/fdvD2pQEPkz1tT21SzXUYFGXcyjG15+J0oC3FffRVh3
+ D3Z73QAh4TDb6LM5L2f/dsDAgmjibHN8h369mjemIoGrc7EFN3U4c9g0dZoPe1EPw8uJ
+ BCBDek7BFANkg9GxMQegQJHAPRhVEj5nfqVQf3bOXg10xhk6iNEDLYxk1jYvCebKLaFs Iw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 3100xwc82c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 13 May 2020 13:39:13 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04DDYXaa036264;
+        Wed, 13 May 2020 13:39:12 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 3100ym3sbb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 13 May 2020 13:39:12 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04DDdBd3004555;
+        Wed, 13 May 2020 13:39:11 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 13 May 2020 06:39:10 -0700
+Date:   Wed, 13 May 2020 16:39:05 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Brian Foster <bfoster@redhat.com>
+Cc:     "Darrick J. Wong" <darrick.wong@oracle.com>,
+        linux-xfs@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] xfs: fix error code in xfs_iflush_cluster()
+Message-ID: <20200513133905.GB3041@kadam>
+References: <20200513094803.GF347693@mwanda>
+ <20200513132904.GE44225@bfoster>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.12
-Authentication-Results: mx02-sz.bfs.de;
-        none
-X-Spamd-Result: default: False [-2.12 / 7.00];
-         ARC_NA(0.00)[];
-         TO_DN_EQ_ADDR_SOME(0.00)[];
-         HAS_XOIP(0.00)[];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         RCPT_COUNT_FIVE(0.00)[6];
-         DKIM_SIGNED(0.00)[];
-         NEURAL_HAM(-0.00)[-0.892];
-         RCVD_NO_TLS_LAST(0.10)[];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         MID_RHS_MATCH_FROM(0.00)[];
-         BAYES_HAM(-2.12)[95.75%]
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200513132904.GE44225@bfoster>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9619 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005130121
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9619 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 lowpriorityscore=0
+ suspectscore=0 mlxlogscore=999 clxscore=1015 cotscore=-2147483648
+ mlxscore=0 phishscore=0 adultscore=0 impostorscore=0 bulkscore=0
+ malwarescore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005130121
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-IMHO _rtl_usb_transmit() should not free() either
-it should return -1.
-The only caller is rtl_usb_tx() where we need a check:
+Oh yeah.  You're right.  This patch isn't correct.  Sorry about that.
 
-if ( _rtl_usb_transmit()  < 0)
-  goto err_free;
+I worry that there are several static analyzer's which will warn about
+this code...
 
-but i am confused, rtl_usb_tx() is returning NETDEV_TX_OK in an error case =
-?
-
-err_free:
-     dev_kfree_skb_any(skb);
-      return NETDEV_TX_OK;
-
-hope that helps,
-  wh
-________________________________________
-Von: kernel-janitors-owner@vger.kernel.org <kernel-janitors-owner@vger.kern=
-el.org> im Auftrag von Dan Carpenter <dan.carpenter@oracle.com>
-Gesendet: Mittwoch, 13. Mai 2020 11:39:51
-An: Ping-Ke Shih; Jussi Kivilinna
-Cc: Kalle Valo; linux-wireless@vger.kernel.org; kernel-janitors@vger.kernel=
-.org
-Betreff: [PATCH] rtlwifi: Fix a double free in _rtl_usb_tx_urb_setup()
-
-Seven years ago we tried to fix a leak but actually introduced a double
-free instead.  It was an understandable mistake because the code was a
-bit confusing and the free was done in the wrong place.  The "skb"
-pointer is freed in both _rtl_usb_tx_urb_setup() and _rtl_usb_transmit().
-The free belongs _rtl_usb_transmit() instead of _rtl_usb_tx_urb_setup()
-and I've cleaned the code up a bit to hopefully make it more clear.
-
-Fixes: 36ef0b473fbf ("rtlwifi: usb: add missing freeing of skbuff")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/net/wireless/realtek/rtlwifi/usb.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wirel=
-ess/realtek/rtlwifi/usb.c
-index 348b0072cdd69..c66c6dc003783 100644
---- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -881,10 +881,8 @@ static struct urb *_rtl_usb_tx_urb_setup(struct ieee80=
-211_hw *hw,
-
-        WARN_ON(NULL =3D=3D skb);
-        _urb =3D usb_alloc_urb(0, GFP_ATOMIC);
--       if (!_urb) {
--               kfree_skb(skb);
-+       if (!_urb)
-                return NULL;
--       }
-        _rtl_install_trx_info(rtlusb, skb, ep_num);
-        usb_fill_bulk_urb(_urb, rtlusb->udev, usb_sndbulkpipe(rtlusb->udev,
-                          ep_num), skb->data, skb->len, _rtl_tx_complete, s=
-kb);
-@@ -898,7 +896,6 @@ static void _rtl_usb_transmit(struct ieee80211_hw *hw, =
-struct sk_buff *skb,
-        struct rtl_usb *rtlusb =3D rtl_usbdev(rtl_usbpriv(hw));
-        u32 ep_num;
-        struct urb *_urb =3D NULL;
--       struct sk_buff *_skb =3D NULL;
-
-        WARN_ON(NULL =3D=3D rtlusb->usb_tx_aggregate_hdl);
-        if (unlikely(IS_USB_STOP(rtlusb))) {
-@@ -907,8 +904,7 @@ static void _rtl_usb_transmit(struct ieee80211_hw *hw, =
-struct sk_buff *skb,
-                return;
-        }
-        ep_num =3D rtlusb->ep_map.ep_mapping[qnum];
--       _skb =3D skb;
--       _urb =3D _rtl_usb_tx_urb_setup(hw, _skb, ep_num);
-+       _urb =3D _rtl_usb_tx_urb_setup(hw, skb, ep_num);
-        if (unlikely(!_urb)) {
-                pr_err("Can't allocate urb. Drop skb!\n");
-                kfree_skb(skb);
---
-2.26.2
+regards,
+dan carpenter
 

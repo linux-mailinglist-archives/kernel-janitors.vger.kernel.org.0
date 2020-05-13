@@ -2,117 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E64B81D18D2
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 17:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D7BB1D18F9
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 17:20:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729392AbgEMPLU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 May 2020 11:11:20 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:43318 "EHLO
+        id S1732124AbgEMPUB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 13 May 2020 11:20:01 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:51962 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727778AbgEMPLU (ORCPT
+        with ESMTP id S1728692AbgEMPUB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 May 2020 11:11:20 -0400
+        Wed, 13 May 2020 11:20:01 -0400
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04DF7DEC014596;
-        Wed, 13 May 2020 15:11:07 GMT
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04DFHL62025624;
+        Wed, 13 May 2020 15:19:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=M7tgw7hQmZDZ9d1ChBVFlk09jVIDx3jqCjHhRB1m9TI=;
- b=EvBKpFq8qD5mFfdo2m2ZU2l0N/Odm/zYRYiOXvH4Mi68c0/r77mgxYyfigdqTaqrnOK2
- 5kcFD6WBlr2MAeP9KYE1U+DFV/FftUk2yCGAM8StyV2iuaXaSMgfkdQERhXDPsRFU+rc
- O4Pwssz8GVW507lJDxLJvb95eyBlvPMGSXfIvtyzC15CqWX4Eg5FTohF0NC6CbUwkkO4
- 82LCIhMJFmOwKh0TFzRn56LqPyg9BdEcUgclS/k5ueFuUGgpb3vhoH2qhla9000xEWab
- XXqFw40B2sy6aqc1CGLP7iBdyQmZrpxarfPsZHDeiR0OMK99BSRQC7qIPrqq3Pkcc9yl nA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 3100xwct6b-1
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=lQzg+hTLBo5ADd2ibPbdibWF8nrD4PGyeob0tXg672I=;
+ b=Mj8Cmpx4iaUNtjryWqUYua97OZVdscA+fps2R3IYoIV2Hz+Wbv6t22PD0PT5cdDokKVr
+ 2U9PGKqPWuN0wmOttcZh3spgdzpK5CdVXpL5Ji5uRZsNaVDYvthYMMC3ZC5f+S0Df4EJ
+ +lObwHBowhaHrxvSv65g8vdZZO1TPRwJEgYUUypuOPvXM6dpV2GDSqkqk9lCRdCsCXwO
+ BzKxG+nzJ9Bwc2XV4sYnbzHY94Thz7JqbFjmXEawax7wFrDgNyFQCKt4SCJ5La8qRRVl
+ dW5zuJpF4gu7KIKqcuiDTQDIwrdDnxbaBhErTH3msgeg2d2clvau31koUS3FsUoQZLWj yQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 3100xwcv47-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 13 May 2020 15:11:07 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04DF8afw009989;
-        Wed, 13 May 2020 15:09:06 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 3100ym8m3h-1
+        Wed, 13 May 2020 15:19:57 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04DFHveR096257;
+        Wed, 13 May 2020 15:17:57 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 3100yaqdd0-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 13 May 2020 15:09:06 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04DF938P005780;
-        Wed, 13 May 2020 15:09:04 GMT
-Received: from kadam (/41.57.98.10)
+        Wed, 13 May 2020 15:17:56 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04DFHtO6024996;
+        Wed, 13 May 2020 15:17:55 GMT
+Received: from localhost (/67.169.218.210)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 13 May 2020 08:09:03 -0700
-Date:   Wed, 13 May 2020 18:08:55 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Miklos Szeredi <miklos@szeredi.hu>,
-        Amir Goldstein <amir73il@gmail.com>
-Cc:     linux-unionfs@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: [PATCH v3] ovl: potential crash in ovl_fid_to_fh()
-Message-ID: <20200513150855.GD3041@kadam>
+        with ESMTP ; Wed, 13 May 2020 08:17:55 -0700
+Date:   Wed, 13 May 2020 08:17:54 -0700
+From:   "Darrick J. Wong" <darrick.wong@oracle.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Brian Foster <bfoster@redhat.com>, linux-xfs@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] xfs: fix error code in xfs_iflush_cluster()
+Message-ID: <20200513151754.GC1984748@magnolia>
+References: <20200513094803.GF347693@mwanda>
+ <20200513132904.GE44225@bfoster>
+ <20200513133905.GB3041@kadam>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200513102346.6c04d912@canb.auug.org.au>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200513133905.GB3041@kadam>
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9620 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005130136
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 phishscore=0
+ adultscore=0 suspectscore=1 mlxscore=0 mlxlogscore=999 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005130137
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9620 signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 lowpriorityscore=0
- suspectscore=0 mlxlogscore=999 clxscore=1011 cotscore=-2147483648
+ suspectscore=1 mlxlogscore=999 clxscore=1011 cotscore=-2147483648
  mlxscore=0 phishscore=0 adultscore=0 impostorscore=0 bulkscore=0
  malwarescore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005130136
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005130137
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "buflen" value comes from the user and there is a potential that it
-could be zero.  In do_handle_to_path() we know that "handle->handle_bytes"
-is non-zero and we do:
+On Wed, May 13, 2020 at 04:39:05PM +0300, Dan Carpenter wrote:
+> Oh yeah.  You're right.  This patch isn't correct.  Sorry about that.
+> 
+> I worry that there are several static analyzer's which will warn about
+> this code...
 
-	handle_dwords = handle->handle_bytes >> 2;
+/me wonders if this particular instance ought to have a breadcrumb to
+remind future readers that we can handle the lack of memory, e.g.
 
-So values 1-3 become zero.  Then in ovl_fh_to_dentry() we do:
+cilist = kmem_alloc(..., KM_MAYFAIL...);
+if (!cilist) {
+	/* memory is tight, so defer the inode cluster flush */
+	goto out_put;
+}
 
-	int len = fh_len << 2;
+--D
 
-So now len is in the "0,4-128" range and a multiple of 4.  But if
-"buflen" is zero it will try to copy negative bytes when we do the
-memcpy in ovl_fid_to_fh().
-
-	memcpy(&fh->fb, fid, buflen - OVL_FH_WIRE_OFFSET);
-
-And that will lead to a crash.  Thanks to Amir Goldstein for his help
-with this patch.
-
-Fixes: cbe7fba8edfc ("ovl: make sure that real fid is 32bit aligned in memory")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
----
-v2: Move the check after the other checks
-v3: Fix Fixes tag
-
- fs/overlayfs/export.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
-index 475c61f53f0fe..ed5c1078919cc 100644
---- a/fs/overlayfs/export.c
-+++ b/fs/overlayfs/export.c
-@@ -783,6 +783,9 @@ static struct ovl_fh *ovl_fid_to_fh(struct fid *fid, int buflen, int fh_type)
- 	if (fh_type != OVL_FILEID_V0)
- 		return ERR_PTR(-EINVAL);
- 
-+	if (buflen <= OVL_FH_WIRE_OFFSET)
-+		return ERR_PTR(-EINVAL);
-+
- 	fh = kzalloc(buflen, GFP_KERNEL);
- 	if (!fh)
- 		return ERR_PTR(-ENOMEM);
--- 
-2.26.2
+> regards,
+> dan carpenter
+> 

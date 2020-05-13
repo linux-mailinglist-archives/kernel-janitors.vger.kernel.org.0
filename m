@@ -2,86 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4216E1CFECD
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 May 2020 22:00:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5755C1D0448
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 03:20:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730950AbgELUAD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 May 2020 16:00:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33138 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728275AbgELUAD (ORCPT
+        id S1731988AbgEMBUv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 May 2020 21:20:51 -0400
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:48866 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731604AbgEMBUv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 May 2020 16:00:03 -0400
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3BECC061A0C
-        for <kernel-janitors@vger.kernel.org>; Tue, 12 May 2020 13:00:02 -0700 (PDT)
-Received: by mail-qk1-x742.google.com with SMTP id f189so9328896qkd.5
-        for <kernel-janitors@vger.kernel.org>; Tue, 12 May 2020 13:00:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=hph7m+QWM+PUvHgFd6P1tSDWqCEm+ZM+VGd8EVir3aw=;
-        b=WP/bUxOuH3O5G7JSrqrmQrrF0fMfSTYjDrTlDz2RvaMD6vs1v1g+fZk7mi/S01vDXN
-         pfINNoqHpAfxVVQfu2kToT1A4Y2XVLZPFiULT+s0FUYfcOr+pvuzXYoBMRcRmNeNUQi/
-         7XMOn/3orRnviOHNR/5gAeVdhfKA91T3vN8pBZ8hx+ZTf1YuYvpyaKvUJd1oL0o/Q+WZ
-         7Kc27m/AcgUZHMvq65WVxdHOn1wP/ut/dkIphA2NjUqt4dJfF6S8R8d0JvSlsNAUyhWv
-         oXf2+K3AmMc0uj6b52ag0hJ1U53T72eIpSkQ+aVTIZ0yH2m78oM9BXdtKIj+RbLB3o3L
-         2b+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=hph7m+QWM+PUvHgFd6P1tSDWqCEm+ZM+VGd8EVir3aw=;
-        b=pZOzyg4dfPjOghay0td6HcUR6UcoCOi4a0IAXi1lgGQg9K+1migfFSr/X5yvQYnF4+
-         xuxlPNqo7GW+5D2O6w3pWJrWO6x+lorWxSnxuGBJa3pqn1sRcbm37VI+OoUXimqhiGfq
-         bxNO/l125nK135Ge4gRjJhE6lBp0td0DnzKTVugWCzF3pRSwtgZhFbPNpzRIQEPrmsOs
-         OqHU7FvWtKKgKPUjSYDu+gKeWSWAePEo8plT2l53Jw5T4Zg5iIgthh+Stsy66zfGbfx/
-         6N+QqJ9ru6X01t++TKu13Na1z7N39IcCtcGVtjx2QoHq8E51JGMVMs5ANGpe3gtQzdfX
-         6HAw==
-X-Gm-Message-State: AGi0Pubs7Jl0EEziIQhj2O5Pemc/2TSg0kdkM7cIWUtV8Rr2GDtvFwYI
-        a/gwT82F/MfMQ+CgnHBKAPrpog==
-X-Google-Smtp-Source: APiQypJHPzfJAlIPmc2g23wMQ1YKV//K5WdTr4V6Hc5ZeYs71sdMaWrQNWo5kCI8va4xh9o/rSCNXA==
-X-Received: by 2002:a37:b847:: with SMTP id i68mr15348735qkf.431.1589313602178;
-        Tue, 12 May 2020 13:00:02 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.57.212])
-        by smtp.gmail.com with ESMTPSA id z18sm12799888qti.47.2020.05.12.13.00.01
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 12 May 2020 13:00:01 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1jYb4L-0002PS-BY; Tue, 12 May 2020 17:00:01 -0300
-Date:   Tue, 12 May 2020 17:00:01 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
-        Ralph Campbell <rcampbell@nvidia.com>, linux-mm@kvack.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] mm/hmm/test: Fix some copy_to_user() error handling
-Message-ID: <20200512200001.GC9154@ziepe.ca>
-References: <20200511183704.GA225608@mwanda>
+        Tue, 12 May 2020 21:20:51 -0400
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id F311729CEA;
+        Tue, 12 May 2020 21:14:48 -0400 (EDT)
+Date:   Wed, 13 May 2020 11:14:56 +1000 (AEST)
+From:   Finn Thain <fthain@telegraphics.com.au>
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Christophe Jaillet <christophe.jaillet@wanadoo.fr>
+Subject: Re: net/sonic: Fix some resource leaks in error handling paths
+In-Reply-To: <3fabce05-7da9-7daa-d92c-411369f35b4a@web.de>
+Message-ID: <alpine.LNX.2.22.394.2005131028450.20@nippy.intranet>
+References: <b7651b26-ac1e-6281-efb2-7eff0018b158@web.de> <alpine.LNX.2.22.394.2005100922240.11@nippy.intranet> <9d279f21-6172-5318-4e29-061277e82157@web.de> <alpine.LNX.2.22.394.2005101738510.11@nippy.intranet> <bc70e24c-dd31-75b7-6ece-2ad31982641e@web.de>
+ <alpine.LNX.2.22.394.2005110845060.8@nippy.intranet> <9994a7de-0399-fb34-237a-a3c71b3cf568@web.de> <alpine.LNX.2.22.394.2005120905410.8@nippy.intranet> <3fabce05-7da9-7daa-d92c-411369f35b4a@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200511183704.GA225608@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, May 11, 2020 at 09:37:04PM +0300, Dan Carpenter wrote:
-> The copy_to_user() function returns the number of bytes which weren't
-> copied but we want to return negative error codes.  Also in dmirror_write()
-> if the copy_from_user() fails then there is some cleanup needed before
-> we can return so I fixed that as well.
+On Tue, 12 May 2020, Markus Elfring wrote:
+
+> > Markus, if you were to write a patch to improve upon coding-style.rst, 
+> > who should review it?
 > 
-> Fixes: 5d5e54be8a1e3 ("mm/hmm/test: add selftest driver for HMM")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  lib/test_hmm.c | 41 +++++++++++++++++++++++++----------------
->  1 file changed, 25 insertions(+), 16 deletions(-)
+> All involved contributors have got chances to provide constructive 
+> comments.
 
-Thank you, I squashed this into the original commit.
+But how could someone be elevated to "involved contributor" if their 
+patches were to be blocked by arbitrary application of the rules?
 
-Jason
+> I would be curious who will actually dare to contribute further ideas 
+> for this area.
+> 
+
+You seem to be uniquely positioned to do that, if only because you cited 
+rules which don't appear to support your objection.
+
+> 
+> > If you are unable to write or review such a patch, how can you hope to 
+> > adjudicate compliance?
+> 
+> I can also try to achieve more improvements here to see how the 
+> available software documentation will evolve.
+> 
+
+When the people who write and review the coding standards are the same 
+people who write and review the code, the standards devolve (given the 
+prevailing incentives).
+
+> Regards, 
+> Markus
+> 

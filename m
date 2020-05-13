@@ -2,63 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3567B1D0C8F
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 11:44:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC9E81D0CDD
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 11:48:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729917AbgEMJom (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 May 2020 05:44:42 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:37596 "EHLO
+        id S1733017AbgEMJsO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 13 May 2020 05:48:14 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:40022 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726532AbgEMJom (ORCPT
+        with ESMTP id S1733024AbgEMJsN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 May 2020 05:44:42 -0400
+        Wed, 13 May 2020 05:48:13 -0400
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04D9h7L2021465;
-        Wed, 13 May 2020 09:44:36 GMT
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04D9h8LY021476;
+        Wed, 13 May 2020 09:48:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=CqEotzK6nQD/0Q7SQNmyOVX9sntRWK4KGEuUznZHTa0=;
- b=k5VgYvjGFH+F3FqGaJzYhdoQ/RtcRg6ClF6s7gAhpUlBdivzyt0G+mTzeW5ecihp1Wn1
- GkC3c71VcZkzvXvTNnIHuutzNC9e5wB3vW6511DdWfMm5bbrvmdjkBrPf/hBcIBZmEwh
- YLgs0lO//7EHJEM508qU1oMuhIC0O3w10ii808yMcoJLeXiRpP/ydHn/eepmP0IbWx6i
- 9QNE/tuWJV2PczQ6ooIMWPc9/wMyDNNmXVYbbEKDLv9syk7qCNrsOunfzsCHA1922GJm
- LvhC+8Ms3ULB5Szav8gE38nt/MerHiPblnk8eIbjbR7x0ohuZwFyHJOTrbgY/TLk2d3h tw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 3100xwb611-1
+ bh=M9f22pix6sGmZGJQEzn4zeCqKpeE34MvPJzVQ1yF3Ik=;
+ b=ILTZ4qex3Htk/PwyQdKGLoJrbbHslJiC+rty0LUtcUnRzBjHSk8hlQZGJjcDNcP32hkc
+ QHrFnxVKDudP2i/FSZ+gs8zh8LAzQGU3z4UvFfVFzWm449tQDWed7oWUO5Fg5YbRFddN
+ dg7gQrYrKrLEGojewxXABbaTBHmOUtug4NwSCi7mt0QCDzRTD43IwWp5ydGdMw426hsY
+ qweIIchvAG6KhIFL1KRFLrBHPqPs/NB9EhtYE1DtHCHEKIXhgulXI8zSkhdyq77i7ZhF
+ H4o+SE/244Heov/5PTMPpY3505twCUOsl2Hy3apNqF9t01s/iMw2krIM38JEloJgPOz3 0Q== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 3100xwb6er-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 13 May 2020 09:44:36 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04D9c99m111664;
-        Wed, 13 May 2020 09:42:36 GMT
+        Wed, 13 May 2020 09:48:10 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04D9gcVT116320;
+        Wed, 13 May 2020 09:48:10 GMT
 Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 3100ya794q-1
+        by aserp3020.oracle.com with ESMTP id 3100yr1fes-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 13 May 2020 09:42:36 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04D9gYs7023475;
-        Wed, 13 May 2020 09:42:34 GMT
+        Wed, 13 May 2020 09:48:10 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04D9m9lm026506;
+        Wed, 13 May 2020 09:48:09 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 13 May 2020 02:42:31 -0700
-Date:   Wed, 13 May 2020 12:42:25 +0300
+        with ESMTP ; Wed, 13 May 2020 02:48:09 -0700
+Date:   Wed, 13 May 2020 12:48:03 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-        Ralph Campbell <rcampbell@nvidia.com>
-Cc:     linux-mm@kvack.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] mm/hmm/test: fix an error code in hmm_dmirror_init()
-Message-ID: <20200513094225.GE347693@mwanda>
+To:     "Darrick J. Wong" <darrick.wong@oracle.com>,
+        Brian Foster <bfoster@redhat.com>
+Cc:     linux-xfs@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] xfs: fix error code in xfs_iflush_cluster()
+Message-ID: <20200513094803.GF347693@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9619 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 phishscore=0
- adultscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005130087
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0
+ malwarescore=0 mlxscore=0 mlxlogscore=999 spamscore=0 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005130088
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9619 signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 lowpriorityscore=0
- suspectscore=0 mlxlogscore=999 clxscore=1015 cotscore=-2147483648
+ suspectscore=0 mlxlogscore=999 clxscore=1011 cotscore=-2147483648
  mlxscore=0 phishscore=0 adultscore=0 impostorscore=0 bulkscore=0
  malwarescore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.12.0-2004280000 definitions=main-2005130088
@@ -67,31 +67,33 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If the allocation fails, then this should return -ENOMEM instead of
-success.
+Originally this function used to always return -EFSCORRUPTED on error
+but now we're trying to return more informative error codes.
+Unfortunately, there was one error path missed.  If this kmem_alloc()
+allocation fails then we need to return -ENOMEM instead of success.
 
-Fixes: a149d2eb654b ("mm/hmm/test: add selftest driver for HMM")
+Fixes: f20192991d79 ("xfs: simplify inode flush error handling")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- lib/test_hmm.c | 4 +++-
+ fs/xfs/xfs_inode.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index 00bca6116f930..b4d9434e49e72 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -1119,8 +1119,10 @@ static int __init hmm_dmirror_init(void)
- 	 * make the code here simpler (i.e., we need a struct page for it).
- 	 */
- 	dmirror_zero_page = alloc_page(GFP_HIGHUSER | __GFP_ZERO);
--	if (!dmirror_zero_page)
-+	if (!dmirror_zero_page) {
-+		ret = -ENOMEM;
- 		goto err_chrdev;
+diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
+index ab31a5dec7aab..63aeda7cbafb0 100644
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -3505,8 +3505,10 @@ xfs_iflush_cluster(
+ 
+ 	cilist_size = igeo->inodes_per_cluster * sizeof(struct xfs_inode *);
+ 	cilist = kmem_alloc(cilist_size, KM_MAYFAIL|KM_NOFS);
+-	if (!cilist)
++	if (!cilist) {
++		error = -ENOMEM;
+ 		goto out_put;
 +	}
  
- 	pr_info("HMM test module loaded. This is only for testing HMM.\n");
- 	return 0;
+ 	mask = ~(igeo->inodes_per_cluster - 1);
+ 	first_index = XFS_INO_TO_AGINO(mp, ip->i_ino) & mask;
 -- 
 2.26.2
 

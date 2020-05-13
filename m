@@ -2,59 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63A021D04D3
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 04:22:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C6991D04DB
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 04:23:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727792AbgEMCWM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 May 2020 22:22:12 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:48890 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726885AbgEMCWM (ORCPT
+        id S1727981AbgEMCXn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 May 2020 22:23:43 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:42528 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726885AbgEMCXn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 May 2020 22:22:12 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04D2M2GV128834;
-        Tue, 12 May 2020 21:22:02 -0500
+        Tue, 12 May 2020 22:23:43 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04D2NWkT017956;
+        Tue, 12 May 2020 21:23:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1589336522;
-        bh=PkD79KhQ6L8I25qd2ophTzYoQjxGMbERYNBealN9Tg8=;
+        s=ti-com-17Q1; t=1589336612;
+        bh=Y2b2td/dgG3mv8QkpPXvhABe6AB0Z2lXZW74es4K0x0=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=EMESmRnrmvDtPJnv7F+d6anbts8qm7QEn2R0yzTqNIZZiugyEwhKrM02pyT10TWGK
-         03bSQmfPFGIuvDXH17WoZksnzwcGCx77a6W4Rw/sSVDNlUOuPPq67aKl6GWW6on/jR
-         c2dCVOF/NzxWdPnXuCCrL+mmXgL401kdUFpRboIs=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04D2M2dA127541
+        b=vmW/z2lw4crt15DU/pQvKyYaDDLKZeaWhHQ2eBCiDHZc2FcTKKlLgUwiStiCGxWDN
+         6lqZCVbVwEN28toEbukrmHLYg/fRUmnidBssA3LzUtSIWF7RzGqLaI+OjS5FXeFg/x
+         JB8VAkMoEUQcOfo5dOL9T8e50+6kxmmchQQNgP14=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04D2NWFC006884
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 12 May 2020 21:22:02 -0500
-Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 12 May 2020 21:23:32 -0500
+Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 12
- May 2020 21:22:01 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ May 2020 21:23:31 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 12 May 2020 21:22:01 -0500
+ Frontend Transport; Tue, 12 May 2020 21:23:31 -0500
 Received: from [10.250.233.85] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04D2LwIV034536;
-        Tue, 12 May 2020 21:21:59 -0500
-Subject: Re: [PATCH] phy: cpcap-usb: Remove some useless code
-To:     Tony Lindgren <tony@atomide.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-CC:     <vkoul@kernel.org>, <pavel@ucw.cz>,
-        <sebastian.reichel@collabora.com>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <20200507203127.202197-1-christophe.jaillet@wanadoo.fr>
- <20200508152254.GZ37466@atomide.com>
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04D2NSaU111706;
+        Tue, 12 May 2020 21:23:29 -0500
+Subject: Re: [PATCH -next] phy: ti: j721e-wiz: Fix some error return code in
+ wiz_probe()
+To:     Roger Quadros <rogerq@ti.com>,
+        Wei Yongjun <weiyongjun1@huawei.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Jyri Sarha <jsarha@ti.com>, Sekhar Nori <nsekhar@ti.com>
+CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+References: <20200507054109.110849-1-weiyongjun1@huawei.com>
+ <f5cd603f-0f0b-23a4-310a-3a40f8f4f69a@ti.com>
 From:   Kishon Vijay Abraham I <kishon@ti.com>
-Message-ID: <c8a8bcf5-f7e1-115d-34f5-3b88bc1ef0d7@ti.com>
-Date:   Wed, 13 May 2020 07:51:57 +0530
+Message-ID: <fc4b4490-c3d1-aad0-59ee-76585b562ed3@ti.com>
+Date:   Wed, 13 May 2020 07:53:28 +0530
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <20200508152254.GZ37466@atomide.com>
+In-Reply-To: <f5cd603f-0f0b-23a4-310a-3a40f8f4f69a@ti.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
@@ -63,14 +66,59 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
 
-On 5/8/2020 8:52 PM, Tony Lindgren wrote:
-> * Christophe JAILLET <christophe.jaillet@wanadoo.fr> [200507 20:32]:
->> Axe a clk that is unused in the driver.
+On 5/7/2020 12:11 PM, Roger Quadros wrote:
 > 
-> Thanks for fixing it:
 > 
-> Acked-by: Tony Lindgren <tony@atomide.com>
+> On 07/05/2020 08:41, Wei Yongjun wrote:
+>> Fix to return negative error code from some error handling
+>> cases instead of 0, as done elsewhere in this function.
+>>
+>> Fixes: 091876cc355d ("phy: ti: j721e-wiz: Add support for WIZ module present
+>> in TI J721E SoC")
+>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> 
+> Acked-by: Roger Quadros <rogerq@ti.com>
 
 merged, thanks!
 
 -Kishon
+> 
+>> ---
+>>   drivers/phy/ti/phy-j721e-wiz.c | 6 +++++-
+>>   1 file changed, 5 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/phy/ti/phy-j721e-wiz.c b/drivers/phy/ti/phy-j721e-wiz.c
+>> index 1d12d1b1b63a..30ea5b207285 100644
+>> --- a/drivers/phy/ti/phy-j721e-wiz.c
+>> +++ b/drivers/phy/ti/phy-j721e-wiz.c
+>> @@ -841,8 +841,10 @@ static int wiz_probe(struct platform_device *pdev)
+>>       }
+>>         base = devm_ioremap(dev, res.start, resource_size(&res));
+>> -    if (!base)
+>> +    if (!base) {
+>> +        ret = -ENOMEM;
+>>           goto err_addr_to_resource;
+>> +    }
+>>         regmap = devm_regmap_init_mmio(dev, base, &wiz_regmap_config);
+>>       if (IS_ERR(regmap)) {
+>> @@ -859,6 +861,7 @@ static int wiz_probe(struct platform_device *pdev)
+>>         if (num_lanes > WIZ_MAX_LANES) {
+>>           dev_err(dev, "Cannot support %d lanes\n", num_lanes);
+>> +        ret = -ENODEV;
+>>           goto err_addr_to_resource;
+>>       }
+>>   @@ -948,6 +951,7 @@ static int wiz_probe(struct platform_device *pdev)
+>>       serdes_pdev = of_platform_device_create(child_node, NULL, dev);
+>>       if (!serdes_pdev) {
+>>           dev_WARN(dev, "Unable to create SERDES platform device\n");
+>> +        ret = -ENOMEM;
+>>           goto err_pdev_create;
+>>       }
+>>       wiz->serdes_pdev = serdes_pdev;
+>>
+>>
+>>
+> 
+> cheers,
+> -roger

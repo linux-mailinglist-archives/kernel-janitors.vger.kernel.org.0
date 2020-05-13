@@ -2,92 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 930D21D1E8E
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 21:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 348FB1D1FE6
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 22:15:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390392AbgEMTIh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 May 2020 15:08:37 -0400
-Received: from hqnvemgate25.nvidia.com ([216.228.121.64]:6424 "EHLO
-        hqnvemgate25.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732218AbgEMTIh (ORCPT
+        id S2390848AbgEMUPP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 13 May 2020 16:15:15 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:18802 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387996AbgEMUPL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 May 2020 15:08:37 -0400
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate25.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5ebc45690000>; Wed, 13 May 2020 12:07:22 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate101.nvidia.com (PGP Universal service);
-  Wed, 13 May 2020 12:08:36 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate101.nvidia.com on Wed, 13 May 2020 12:08:36 -0700
-Received: from rcampbell-dev.nvidia.com (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 13 May
- 2020 19:08:36 +0000
-Subject: Re: [PATCH] mm/hmm/test: fix an error code in hmm_dmirror_init()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>
-CC:     <linux-mm@kvack.org>, <kernel-janitors@vger.kernel.org>
-References: <20200513094225.GE347693@mwanda>
-X-Nvconfidentiality: public
-From:   Ralph Campbell <rcampbell@nvidia.com>
-Message-ID: <86b773ef-bc31-7d1c-f271-583c1f0a420a@nvidia.com>
-Date:   Wed, 13 May 2020 12:08:36 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Wed, 13 May 2020 16:15:11 -0400
+Received: from localhost.localdomain ([93.22.149.176])
+        by mwinf5d52 with ME
+        id eLEy2200C3obZW503LEzLB; Wed, 13 May 2020 22:15:07 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 13 May 2020 22:15:07 +0200
+X-ME-IP: 93.22.149.176
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     kvalo@codeaurora.org, davem@davemloft.net, pradeepc@codeaurora.org
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ath11k: Fix some resource leaks in error path in 'ath11k_thermal_register()'
+Date:   Wed, 13 May 2020 22:14:54 +0200
+Message-Id: <20200513201454.258111-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20200513094225.GE347693@mwanda>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1589396842; bh=mINCvI4gI2qbbvGcwy+fHHBtl4Zj+bEhAa8NpAUA6aE=;
-        h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
-         Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
-         X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
-         Content-Transfer-Encoding;
-        b=b5Et0h+N1drl4gzSU1TbCxwevl3nCnM+akbvWqzLpuhPrlXfaWsSHF1eJLq6pHcEp
-         bEU54aPiolAQ5OpVdm0SrBYJQAT/WlMz3gjG85JEnxUNqIa+3lRb4Zcv8gs0aPE0xT
-         djGg/aHPSyvmLWaI59mKB/eLZ4e5GlryCjB/o1unV/WIYOzSvz3i84unuUdV14EY9E
-         OswKxrD0zhGq/o1Q8kQPa8E3cOCucKB+hLF+wh5B+KYA1uJC3Jh89ajOd/qPkwtJsb
-         A4srYh5HIbx1NTZeGO9aZh/YWza/k87/RehE3O/1HCn56a/lCFu/vkv3hFNMmlC7Go
-         jiqePHTWR6+ZQ==
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+If 'thermal_cooling_device_register()' fails, we must undo what has been
+allocated so far. So we must go to 'err_thermal_destroy' instead of
+returning directly
 
-On 5/13/20 2:42 AM, Dan Carpenter wrote:
-> If the allocation fails, then this should return -ENOMEM instead of
-> success.
-> 
-> Fixes: a149d2eb654b ("mm/hmm/test: add selftest driver for HMM")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->   lib/test_hmm.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-> index 00bca6116f930..b4d9434e49e72 100644
-> --- a/lib/test_hmm.c
-> +++ b/lib/test_hmm.c
-> @@ -1119,8 +1119,10 @@ static int __init hmm_dmirror_init(void)
->   	 * make the code here simpler (i.e., we need a struct page for it).
->   	 */
->   	dmirror_zero_page = alloc_page(GFP_HIGHUSER | __GFP_ZERO);
-> -	if (!dmirror_zero_page)
-> +	if (!dmirror_zero_page) {
-> +		ret = -ENOMEM;
->   		goto err_chrdev;
-> +	}
->   
->   	pr_info("HMM test module loaded. This is only for testing HMM.\n");
->   	return 0;
-> 
+In case of error in 'ath11k_thermal_register()', the previous
+'thermal_cooling_device_register()' call must also be undone. Move the
+'ar->thermal.cdev = cdev' a few lines above in order for this to be done
+in 'ath11k_thermal_unregister()' which is called in the error handling
+path.
 
-Thanks for fixing this. It looks like Wei Yongjun beat you to it
-and Jason Gunthorpe has applied it to the hmm tree.
+Fixes: 2a63bbca06b2 ("ath11k: add thermal cooling device support")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+I'm not 100% confident with this patch.
 
-https://lore.kernel.org/linux-mm/20200512195932.GB9154@ziepe.ca/
+- When calling 'ath11k_thermal_unregister()', we try to release some
+  resources that have not been allocated yet. I don't know if it can be an
+  issue or not.
+- I think that we should propagate the error code, instead of forcing
+  -EINVAL.
+---
+ drivers/net/wireless/ath/ath11k/thermal.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/thermal.c b/drivers/net/wireless/ath/ath11k/thermal.c
+index 259dddbda2c7..5a7e150c621b 100644
+--- a/drivers/net/wireless/ath/ath11k/thermal.c
++++ b/drivers/net/wireless/ath/ath11k/thermal.c
+@@ -174,9 +174,12 @@ int ath11k_thermal_register(struct ath11k_base *sc)
+ 		if (IS_ERR(cdev)) {
+ 			ath11k_err(sc, "failed to setup thermal device result: %ld\n",
+ 				   PTR_ERR(cdev));
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto err_thermal_destroy;
+ 		}
+ 
++		ar->thermal.cdev = cdev;
++
+ 		ret = sysfs_create_link(&ar->hw->wiphy->dev.kobj, &cdev->device.kobj,
+ 					"cooling_device");
+ 		if (ret) {
+@@ -184,7 +187,6 @@ int ath11k_thermal_register(struct ath11k_base *sc)
+ 			goto err_thermal_destroy;
+ 		}
+ 
+-		ar->thermal.cdev = cdev;
+ 		if (!IS_REACHABLE(CONFIG_HWMON))
+ 			return 0;
+ 
+-- 
+2.25.1
+

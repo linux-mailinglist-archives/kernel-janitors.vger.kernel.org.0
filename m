@@ -2,50 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23C711D122B
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 14:03:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C89A1D14E5
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 15:29:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731493AbgEMMDr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 May 2020 08:03:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48090 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728165AbgEMMDr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 May 2020 08:03:47 -0400
-Received: from localhost (unknown [106.200.233.149])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S2387725AbgEMN3M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 13 May 2020 09:29:12 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:53024 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1729309AbgEMN3M (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 13 May 2020 09:29:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1589376551;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=pOwx14FGJ6dB9UfzXjhZTHkoq20fuY/tcXO6FqODSMs=;
+        b=Ax0wGK+lMYrlG4RjKMj8Jff5x0qBzP5A97Zyr+ajC2TRlzIemlfFnT18PyV58bLMVjDRK/
+        513jeFvq3kRc6Dfbui318Fk8ZGVAC4C+gU1ouo1Ingu8bWUxoYF48DH4qOp9YLcWRPk2SV
+        Cvs1yMTWT9+4vKFwiFmBiYKLPawJ+Tg=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-389-SbHmL0KBPOeZPb5Mi6dNBg-1; Wed, 13 May 2020 09:29:07 -0400
+X-MC-Unique: SbHmL0KBPOeZPb5Mi6dNBg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DEB72206CC;
-        Wed, 13 May 2020 12:03:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589371426;
-        bh=jgsvEj4hSp2KHLWxRQq4uLcCV2APGpBgXkd4qjzuuS0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=U0a4nebR/bFTaCFNsP/skJdIa7ZZ+JKTWA2wtFHGnX4KbMT+74EqKRtiSEHWLYkx/
-         Nkh3rNpX9HqszmdJ/c117ZObpGsajqHnQDVFb0O3VGKZmOi1S8Idc04eMqkhf9CdbY
-         6uDdjYJiwFp4qiY+xY75pgyIubZ/BHoQoixxbHls=
-Date:   Wed, 13 May 2020 17:33:42 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>, dmaengine@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] dmaengine: moxart-dma: Drop pointless static
- qualifier in moxart_probe()
-Message-ID: <20200513120342.GH14092@vkoul-mobl>
-References: <20200505101353.195446-1-yuehaibing@huawei.com>
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 58DB41005512;
+        Wed, 13 May 2020 13:29:06 +0000 (UTC)
+Received: from bfoster (dhcp-41-2.bos.redhat.com [10.18.41.2])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id E693A6A963;
+        Wed, 13 May 2020 13:29:05 +0000 (UTC)
+Date:   Wed, 13 May 2020 09:29:04 -0400
+From:   Brian Foster <bfoster@redhat.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     "Darrick J. Wong" <darrick.wong@oracle.com>,
+        linux-xfs@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] xfs: fix error code in xfs_iflush_cluster()
+Message-ID: <20200513132904.GE44225@bfoster>
+References: <20200513094803.GF347693@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200505101353.195446-1-yuehaibing@huawei.com>
+In-Reply-To: <20200513094803.GF347693@mwanda>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 05-05-20, 10:13, YueHaibing wrote:
-> There is no need to have the 'void __iomem *dma_base_addr' variable
-> static since new value always be assigned before use it.
+On Wed, May 13, 2020 at 12:48:03PM +0300, Dan Carpenter wrote:
+> Originally this function used to always return -EFSCORRUPTED on error
+> but now we're trying to return more informative error codes.
+> Unfortunately, there was one error path missed.  If this kmem_alloc()
+> allocation fails then we need to return -ENOMEM instead of success.
+> 
+> Fixes: f20192991d79 ("xfs: simplify inode flush error handling")
 
-Applied, thanks
+This logic predates that patch, and I think it may be by design. Inode
+cluster flushing is an optimization to flush other dirty inodes in the
+same cluster we're about to queue for writeback. If the cluster flush
+fails due to an operational error such as memory allocation failure, we
+don't want to report an error because that would shutdown the fs when
+otherwise the side effect would be that the other inodes in the cluster
+would be flushed individually. This is distinct from failing to flush a
+particular inode due to corruption, which is a fatal filesystem error.
 
--- 
-~Vinod
+Brian
+
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  fs/xfs/xfs_inode.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
+> index ab31a5dec7aab..63aeda7cbafb0 100644
+> --- a/fs/xfs/xfs_inode.c
+> +++ b/fs/xfs/xfs_inode.c
+> @@ -3505,8 +3505,10 @@ xfs_iflush_cluster(
+>  
+>  	cilist_size = igeo->inodes_per_cluster * sizeof(struct xfs_inode *);
+>  	cilist = kmem_alloc(cilist_size, KM_MAYFAIL|KM_NOFS);
+> -	if (!cilist)
+> +	if (!cilist) {
+> +		error = -ENOMEM;
+>  		goto out_put;
+> +	}
+>  
+>  	mask = ~(igeo->inodes_per_cluster - 1);
+>  	first_index = XFS_INO_TO_AGINO(mp, ip->i_ino) & mask;
+> -- 
+> 2.26.2
+> 
+

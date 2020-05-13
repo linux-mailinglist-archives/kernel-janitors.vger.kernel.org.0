@@ -2,96 +2,161 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C89A1D14E5
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 15:29:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF3291D15C1
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 15:38:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387725AbgEMN3M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 May 2020 09:29:12 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:53024 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729309AbgEMN3M (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 May 2020 09:29:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1589376551;
+        id S2388087AbgEMNiM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 13 May 2020 09:38:12 -0400
+Received: from mx01-sz.bfs.de ([194.94.69.67]:31887 "EHLO mx02-sz.bfs.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727792AbgEMNiM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 13 May 2020 09:38:12 -0400
+Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
+        by mx02-sz.bfs.de (Postfix) with ESMTPS id 4CE302036A;
+        Wed, 13 May 2020 15:38:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1589377090;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pOwx14FGJ6dB9UfzXjhZTHkoq20fuY/tcXO6FqODSMs=;
-        b=Ax0wGK+lMYrlG4RjKMj8Jff5x0qBzP5A97Zyr+ajC2TRlzIemlfFnT18PyV58bLMVjDRK/
-        513jeFvq3kRc6Dfbui318Fk8ZGVAC4C+gU1ouo1Ingu8bWUxoYF48DH4qOp9YLcWRPk2SV
-        Cvs1yMTWT9+4vKFwiFmBiYKLPawJ+Tg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-389-SbHmL0KBPOeZPb5Mi6dNBg-1; Wed, 13 May 2020 09:29:07 -0400
-X-MC-Unique: SbHmL0KBPOeZPb5Mi6dNBg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 58DB41005512;
-        Wed, 13 May 2020 13:29:06 +0000 (UTC)
-Received: from bfoster (dhcp-41-2.bos.redhat.com [10.18.41.2])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id E693A6A963;
-        Wed, 13 May 2020 13:29:05 +0000 (UTC)
-Date:   Wed, 13 May 2020 09:29:04 -0400
-From:   Brian Foster <bfoster@redhat.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     "Darrick J. Wong" <darrick.wong@oracle.com>,
-        linux-xfs@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] xfs: fix error code in xfs_iflush_cluster()
-Message-ID: <20200513132904.GE44225@bfoster>
-References: <20200513094803.GF347693@mwanda>
+        bh=LZA2nEoSqh2DjvT74Q0ciKIZm6DaJuhkd7LpVsE0u8I=;
+        b=AuoVseomCftwvIIiIVjmnErjsHLbEyWa0K+t10urfDUioF4GdDHKBgkn3VS9aM6U93bCnG
+        bVlMIPsK/P2X4twYbYmflHrCQE1TcMxs+dVIztq17e0Q0dzZY5+mZseGyGT/Kj2Q72MM+g
+        kKKwm+vYvFScVMOdCbtFFPoZO2JNSsnYe/ugdtm8JfpIoF5qNywxu/qvIuUwBtdhgGxwOa
+        4kBnI/Mn2Vu7BrU1KFL/8+CoZIpZRfdF6juctB7P3QTdujPVj67iZziSGZoIr851LHtDAh
+        ljcIzuw32pu4lzynMzA2UA8zpA3HrXx6RIJ6PVNDqVTgd8yn+lrSPrpBpVgELg==
+Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
+ (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.1913.5; Wed, 13 May
+ 2020 15:38:09 +0200
+Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
+ SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%6]) with mapi id
+ 15.01.1913.005; Wed, 13 May 2020 15:38:09 +0200
+From:   Walter Harms <wharms@bfs.de>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Jussi Kivilinna <jussi.kivilinna@iki.fi>
+CC:     Kalle Valo <kvalo@codeaurora.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: AW: [PATCH] rtlwifi: Fix a double free in _rtl_usb_tx_urb_setup()
+Thread-Topic: [PATCH] rtlwifi: Fix a double free in _rtl_usb_tx_urb_setup()
+Thread-Index: AQHWKQqIUFdz9Xa4v0qQxm8hInt8X6imAcXl
+Date:   Wed, 13 May 2020 13:38:09 +0000
+Message-ID: <ba9452bd2cff4888b76fd17ef85a274b@bfs.de>
+References: <20200513093951.GD347693@mwanda>
+In-Reply-To: <20200513093951.GD347693@mwanda>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.137.16.40]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200513094803.GF347693@mwanda>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Spam-Status: No, score=-2.12
+Authentication-Results: mx02-sz.bfs.de;
+        none
+X-Spamd-Result: default: False [-2.12 / 7.00];
+         ARC_NA(0.00)[];
+         TO_DN_EQ_ADDR_SOME(0.00)[];
+         HAS_XOIP(0.00)[];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         MIME_GOOD(-0.10)[text/plain];
+         RCPT_COUNT_FIVE(0.00)[6];
+         DKIM_SIGNED(0.00)[];
+         NEURAL_HAM(-0.00)[-0.892];
+         RCVD_NO_TLS_LAST(0.10)[];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         RCVD_COUNT_TWO(0.00)[2];
+         MID_RHS_MATCH_FROM(0.00)[];
+         BAYES_HAM(-2.12)[95.75%]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, May 13, 2020 at 12:48:03PM +0300, Dan Carpenter wrote:
-> Originally this function used to always return -EFSCORRUPTED on error
-> but now we're trying to return more informative error codes.
-> Unfortunately, there was one error path missed.  If this kmem_alloc()
-> allocation fails then we need to return -ENOMEM instead of success.
-> 
-> Fixes: f20192991d79 ("xfs: simplify inode flush error handling")
+IMHO _rtl_usb_transmit() should not free() either
+it should return -1.
+The only caller is rtl_usb_tx() where we need a check:
 
-This logic predates that patch, and I think it may be by design. Inode
-cluster flushing is an optimization to flush other dirty inodes in the
-same cluster we're about to queue for writeback. If the cluster flush
-fails due to an operational error such as memory allocation failure, we
-don't want to report an error because that would shutdown the fs when
-otherwise the side effect would be that the other inodes in the cluster
-would be flushed individually. This is distinct from failing to flush a
-particular inode due to corruption, which is a fatal filesystem error.
+if ( _rtl_usb_transmit()  < 0)
+  goto err_free;
 
-Brian
+but i am confused, rtl_usb_tx() is returning NETDEV_TX_OK in an error case =
+?
 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  fs/xfs/xfs_inode.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
-> index ab31a5dec7aab..63aeda7cbafb0 100644
-> --- a/fs/xfs/xfs_inode.c
-> +++ b/fs/xfs/xfs_inode.c
-> @@ -3505,8 +3505,10 @@ xfs_iflush_cluster(
->  
->  	cilist_size = igeo->inodes_per_cluster * sizeof(struct xfs_inode *);
->  	cilist = kmem_alloc(cilist_size, KM_MAYFAIL|KM_NOFS);
-> -	if (!cilist)
-> +	if (!cilist) {
-> +		error = -ENOMEM;
->  		goto out_put;
-> +	}
->  
->  	mask = ~(igeo->inodes_per_cluster - 1);
->  	first_index = XFS_INO_TO_AGINO(mp, ip->i_ino) & mask;
-> -- 
-> 2.26.2
-> 
+err_free:
+     dev_kfree_skb_any(skb);
+      return NETDEV_TX_OK;
+
+hope that helps,
+  wh
+________________________________________
+Von: kernel-janitors-owner@vger.kernel.org <kernel-janitors-owner@vger.kern=
+el.org> im Auftrag von Dan Carpenter <dan.carpenter@oracle.com>
+Gesendet: Mittwoch, 13. Mai 2020 11:39:51
+An: Ping-Ke Shih; Jussi Kivilinna
+Cc: Kalle Valo; linux-wireless@vger.kernel.org; kernel-janitors@vger.kernel=
+.org
+Betreff: [PATCH] rtlwifi: Fix a double free in _rtl_usb_tx_urb_setup()
+
+Seven years ago we tried to fix a leak but actually introduced a double
+free instead.  It was an understandable mistake because the code was a
+bit confusing and the free was done in the wrong place.  The "skb"
+pointer is freed in both _rtl_usb_tx_urb_setup() and _rtl_usb_transmit().
+The free belongs _rtl_usb_transmit() instead of _rtl_usb_tx_urb_setup()
+and I've cleaned the code up a bit to hopefully make it more clear.
+
+Fixes: 36ef0b473fbf ("rtlwifi: usb: add missing freeing of skbuff")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/usb.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wirel=
+ess/realtek/rtlwifi/usb.c
+index 348b0072cdd69..c66c6dc003783 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -881,10 +881,8 @@ static struct urb *_rtl_usb_tx_urb_setup(struct ieee80=
+211_hw *hw,
+
+        WARN_ON(NULL =3D=3D skb);
+        _urb =3D usb_alloc_urb(0, GFP_ATOMIC);
+-       if (!_urb) {
+-               kfree_skb(skb);
++       if (!_urb)
+                return NULL;
+-       }
+        _rtl_install_trx_info(rtlusb, skb, ep_num);
+        usb_fill_bulk_urb(_urb, rtlusb->udev, usb_sndbulkpipe(rtlusb->udev,
+                          ep_num), skb->data, skb->len, _rtl_tx_complete, s=
+kb);
+@@ -898,7 +896,6 @@ static void _rtl_usb_transmit(struct ieee80211_hw *hw, =
+struct sk_buff *skb,
+        struct rtl_usb *rtlusb =3D rtl_usbdev(rtl_usbpriv(hw));
+        u32 ep_num;
+        struct urb *_urb =3D NULL;
+-       struct sk_buff *_skb =3D NULL;
+
+        WARN_ON(NULL =3D=3D rtlusb->usb_tx_aggregate_hdl);
+        if (unlikely(IS_USB_STOP(rtlusb))) {
+@@ -907,8 +904,7 @@ static void _rtl_usb_transmit(struct ieee80211_hw *hw, =
+struct sk_buff *skb,
+                return;
+        }
+        ep_num =3D rtlusb->ep_map.ep_mapping[qnum];
+-       _skb =3D skb;
+-       _urb =3D _rtl_usb_tx_urb_setup(hw, _skb, ep_num);
++       _urb =3D _rtl_usb_tx_urb_setup(hw, skb, ep_num);
+        if (unlikely(!_urb)) {
+                pr_err("Can't allocate urb. Drop skb!\n");
+                kfree_skb(skb);
+--
+2.26.2
 

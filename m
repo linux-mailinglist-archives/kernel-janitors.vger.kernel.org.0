@@ -2,59 +2,47 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 512FD1D21E1
-	for <lists+kernel-janitors@lfdr.de>; Thu, 14 May 2020 00:20:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 215641D22DB
+	for <lists+kernel-janitors@lfdr.de>; Thu, 14 May 2020 01:17:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730830AbgEMWUa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 May 2020 18:20:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53870 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730064AbgEMWUa (ORCPT
+        id S1732452AbgEMXQu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 13 May 2020 19:16:50 -0400
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:52394 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732161AbgEMXQu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 May 2020 18:20:30 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F685C061A0C;
-        Wed, 13 May 2020 15:20:30 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id F0F5812118550;
-        Wed, 13 May 2020 15:20:28 -0700 (PDT)
-Date:   Wed, 13 May 2020 15:20:28 -0700 (PDT)
-Message-Id: <20200513.152028.653894441720284438.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     linux-net-drivers@solarflare.com, ecree@solarflare.com,
-        mhabets@solarflare.com, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] sfc: fix dereference of table before it is null
- checked
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200512171355.221810-1-colin.king@canonical.com>
-References: <20200512171355.221810-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 13 May 2020 15:20:29 -0700 (PDT)
+        Wed, 13 May 2020 19:16:50 -0400
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id BD5E829E7C;
+        Wed, 13 May 2020 19:16:46 -0400 (EDT)
+Date:   Thu, 14 May 2020 09:16:55 +1000 (AEST)
+From:   Finn Thain <fthain@telegraphics.com.au>
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Christophe Jaillet <christophe.jaillet@wanadoo.fr>
+Subject: Re: net/sonic: Software evolution around the application of coding
+ standards
+In-Reply-To: <47b7cfc3-68a1-b1da-9761-ab27dc8118ad@web.de>
+Message-ID: <alpine.LNX.2.22.394.2005140853420.8@nippy.intranet>
+References: <b7651b26-ac1e-6281-efb2-7eff0018b158@web.de> <alpine.LNX.2.22.394.2005100922240.11@nippy.intranet> <9d279f21-6172-5318-4e29-061277e82157@web.de> <alpine.LNX.2.22.394.2005101738510.11@nippy.intranet> <bc70e24c-dd31-75b7-6ece-2ad31982641e@web.de>
+ <alpine.LNX.2.22.394.2005110845060.8@nippy.intranet> <9994a7de-0399-fb34-237a-a3c71b3cf568@web.de> <alpine.LNX.2.22.394.2005120905410.8@nippy.intranet> <3fabce05-7da9-7daa-d92c-411369f35b4a@web.de> <alpine.LNX.2.22.394.2005131028450.20@nippy.intranet>
+ <47b7cfc3-68a1-b1da-9761-ab27dc8118ad@web.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Tue, 12 May 2020 18:13:55 +0100
+On Wed, 13 May 2020, Markus Elfring wrote:
 
-> From: Colin Ian King <colin.king@canonical.com>
+> some developers care to improve the compliance with the current 
+> standard at various source code places, don't they?
 > 
-> Currently pointer table is being dereferenced on a null check of
-> table->must_restore_filters before it is being null checked, leading
-> to a potential null pointer dereference issue.  Fix this by null
-> checking table before dereferencing it when checking for a null
-> table->must_restore_filters.
-> 
-> Addresses-Coverity: ("Dereference before null check")
-> Fixes: e4fe938cff04 ("sfc: move 'must restore' flags out of ef10-specific nic_data")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Applied, thanks.
+This thread appears to be circular. Before I abandon it as folly, perhaps 
+you would answer one more question. Out of all of the semantic patches in 
+scripts/coccinelle, would you care to cast a vote for the best one?

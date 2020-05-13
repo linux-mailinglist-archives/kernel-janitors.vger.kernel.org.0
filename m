@@ -2,90 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 348FB1D1FE6
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 22:15:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8314C1D2102
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 May 2020 23:28:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390848AbgEMUPP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 May 2020 16:15:15 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:18802 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387996AbgEMUPL (ORCPT
+        id S1728871AbgEMV1M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 13 May 2020 17:27:12 -0400
+Received: from mail110.syd.optusnet.com.au ([211.29.132.97]:52369 "EHLO
+        mail110.syd.optusnet.com.au" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728341AbgEMV1M (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 May 2020 16:15:11 -0400
-Received: from localhost.localdomain ([93.22.149.176])
-        by mwinf5d52 with ME
-        id eLEy2200C3obZW503LEzLB; Wed, 13 May 2020 22:15:07 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 13 May 2020 22:15:07 +0200
-X-ME-IP: 93.22.149.176
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     kvalo@codeaurora.org, davem@davemloft.net, pradeepc@codeaurora.org
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] ath11k: Fix some resource leaks in error path in 'ath11k_thermal_register()'
-Date:   Wed, 13 May 2020 22:14:54 +0200
-Message-Id: <20200513201454.258111-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Wed, 13 May 2020 17:27:12 -0400
+X-Greylist: delayed 1072 seconds by postgrey-1.27 at vger.kernel.org; Wed, 13 May 2020 17:27:11 EDT
+Received: from dread.disaster.area (pa49-195-157-175.pa.nsw.optusnet.com.au [49.195.157.175])
+        by mail110.syd.optusnet.com.au (Postfix) with ESMTPS id 6EB0A107917;
+        Thu, 14 May 2020 07:09:17 +1000 (AEST)
+Received: from dave by dread.disaster.area with local (Exim 4.92.3)
+        (envelope-from <david@fromorbit.com>)
+        id 1jYycu-00007D-8R; Thu, 14 May 2020 07:09:16 +1000
+Date:   Thu, 14 May 2020 07:09:16 +1000
+From:   Dave Chinner <david@fromorbit.com>
+To:     "Darrick J. Wong" <darrick.wong@oracle.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Brian Foster <bfoster@redhat.com>, linux-xfs@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] xfs: fix error code in xfs_iflush_cluster()
+Message-ID: <20200513210916.GF2040@dread.disaster.area>
+References: <20200513094803.GF347693@mwanda>
+ <20200513132904.GE44225@bfoster>
+ <20200513133905.GB3041@kadam>
+ <20200513151754.GC1984748@magnolia>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200513151754.GC1984748@magnolia>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Optus-CM-Score: 0
+X-Optus-CM-Analysis: v=2.3 cv=X6os11be c=1 sm=1 tr=0
+        a=ONQRW0k9raierNYdzxQi9Q==:117 a=ONQRW0k9raierNYdzxQi9Q==:17
+        a=kj9zAlcOel0A:10 a=sTwFKg_x9MkA:10 a=7-415B0cAAAA:8
+        a=yV3fj3RYXbjK8M9sN0wA:9 a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If 'thermal_cooling_device_register()' fails, we must undo what has been
-allocated so far. So we must go to 'err_thermal_destroy' instead of
-returning directly
+On Wed, May 13, 2020 at 08:17:54AM -0700, Darrick J. Wong wrote:
+> On Wed, May 13, 2020 at 04:39:05PM +0300, Dan Carpenter wrote:
+> > Oh yeah.  You're right.  This patch isn't correct.  Sorry about that.
+> > 
+> > I worry that there are several static analyzer's which will warn about
+> > this code...
+> 
+> /me wonders if this particular instance ought to have a breadcrumb to
+> remind future readers that we can handle the lack of memory, e.g.
+> 
+> cilist = kmem_alloc(..., KM_MAYFAIL...);
+> if (!cilist) {
+> 	/* memory is tight, so defer the inode cluster flush */
+> 	goto out_put;
+> }
 
-In case of error in 'ath11k_thermal_register()', the previous
-'thermal_cooling_device_register()' call must also be undone. Move the
-'ar->thermal.cdev = cdev' a few lines above in order for this to be done
-in 'ath11k_thermal_unregister()' which is called in the error handling
-path.
+I'm working on patches that make this memory allocation go away
+altogether, so I'd suggest just ignoring it for now.
 
-Fixes: 2a63bbca06b2 ("ath11k: add thermal cooling device support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-I'm not 100% confident with this patch.
+Cheers,
 
-- When calling 'ath11k_thermal_unregister()', we try to release some
-  resources that have not been allocated yet. I don't know if it can be an
-  issue or not.
-- I think that we should propagate the error code, instead of forcing
-  -EINVAL.
----
- drivers/net/wireless/ath/ath11k/thermal.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/thermal.c b/drivers/net/wireless/ath/ath11k/thermal.c
-index 259dddbda2c7..5a7e150c621b 100644
---- a/drivers/net/wireless/ath/ath11k/thermal.c
-+++ b/drivers/net/wireless/ath/ath11k/thermal.c
-@@ -174,9 +174,12 @@ int ath11k_thermal_register(struct ath11k_base *sc)
- 		if (IS_ERR(cdev)) {
- 			ath11k_err(sc, "failed to setup thermal device result: %ld\n",
- 				   PTR_ERR(cdev));
--			return -EINVAL;
-+			ret = -EINVAL;
-+			goto err_thermal_destroy;
- 		}
- 
-+		ar->thermal.cdev = cdev;
-+
- 		ret = sysfs_create_link(&ar->hw->wiphy->dev.kobj, &cdev->device.kobj,
- 					"cooling_device");
- 		if (ret) {
-@@ -184,7 +187,6 @@ int ath11k_thermal_register(struct ath11k_base *sc)
- 			goto err_thermal_destroy;
- 		}
- 
--		ar->thermal.cdev = cdev;
- 		if (!IS_REACHABLE(CONFIG_HWMON))
- 			return 0;
- 
+Dave.
 -- 
-2.25.1
-
+Dave Chinner
+david@fromorbit.com

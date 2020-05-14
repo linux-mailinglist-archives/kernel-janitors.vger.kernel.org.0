@@ -2,132 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CDA31D3414
-	for <lists+kernel-janitors@lfdr.de>; Thu, 14 May 2020 17:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 096D31D3741
+	for <lists+kernel-janitors@lfdr.de>; Thu, 14 May 2020 19:03:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728144AbgENPBK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 14 May 2020 11:01:10 -0400
-Received: from mx0a-00082601.pphosted.com ([67.231.145.42]:46254 "EHLO
-        mx0a-00082601.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728127AbgENPBJ (ORCPT
+        id S1726084AbgENRDr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 14 May 2020 13:03:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59678 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726037AbgENRDq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 14 May 2020 11:01:09 -0400
-Received: from pps.filterd (m0148461.ppops.net [127.0.0.1])
-        by mx0a-00082601.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04EEorcm005470;
-        Thu, 14 May 2020 08:00:53 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=facebook;
- bh=4n/wuN5QDwFdFWsRX9AkWANLhfK4zlDMecclEqXO/ME=;
- b=LSRtSoiiiVVpU0MPw5bykCA7NQbDApF7x66/P46aJG0Vg6HuiViw3bz9W5SJJC74cpMG
- IX0hV9jPS6IiBZN+7tUwZPbJc4TeTGWhS6RqIRQPdlaXSLMS/fKlIpeORkMCdL+Uaya0
- IFhHIemImd1VmXLrjZZ1VfEgZQSbkTWFrSI= 
-Received: from maileast.thefacebook.com ([163.114.130.16])
-        by mx0a-00082601.pphosted.com with ESMTP id 3100wybvnx-3
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 14 May 2020 08:00:51 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (100.104.31.183)
- by o365-in.thefacebook.com (100.104.35.175) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1847.3; Thu, 14 May 2020 08:00:50 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GlS7IQFdesDEL0Fl6ldCf0uPIrNXuiJvzYpsvuS9C8EvFYxoaVObBWLTPe8WnXlWUUCMGFH5jcVACdgJuMTakMwUCJE9qRtRBECEIjVJ3qnpmSqKDGNLJerHSI94k/abBrn0uK1rxUZgz6aWsR98d2KuXif0XOqQO6eromQVtFtG1YF8ltgfm3Fsedy1RIwgMj9vj7sgmEVRv0/cb2pRL7eI8mZHdMQdKwiewFe5OMQdmMfr8EGJn/j1qY5aifOCQ6N4XwkAyM0R1xQJAUM0ouvoCvs5GwFCwUrNX8HUVKaVWwMHo1p2QxCwlcOGJo+XNUIzoyuHQRUyHFY0qL1ENA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4n/wuN5QDwFdFWsRX9AkWANLhfK4zlDMecclEqXO/ME=;
- b=Pa7KBsJwVGwAcT9TZRADMK78T/10uH2y/Ecv4Fq/2a3M9B9KtPIGSB2qi1RTMLdlem15Fx2YbWZEgNCrAESFt6S1JZIbGlaGJLXArw4BDvdHrn4lIkCBYPegUiMRQoAnWtiZj0S/lSl9+QRad7gS/BDeobUQSvlfb0FZeLoS6dYVTpObmcFhuzg9tWXwZx2zv8BwQY8a5pCqFYqhoGv0cyLIVVtGvHmwqKTdhFmJukJJBDEojy0E5ea7j3cTYpp6uiDrLWsOEtleO00dr+0E9wJc+LY9x9v+3y0vow94LwOkMnzzTYNwigq0w+XJi3or+yOFOjUD/SUBUAV9BoNpaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fb.com; dmarc=pass action=none header.from=fb.com; dkim=pass
- header.d=fb.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.onmicrosoft.com;
- s=selector2-fb-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4n/wuN5QDwFdFWsRX9AkWANLhfK4zlDMecclEqXO/ME=;
- b=X4JWUAzbwfNBfWVwZXpZzDXhE6d4WIQ5UJDiItzu9CSm/+XEV3bq/e8d3m6StF2XGZzLPVHLNANrD8OiqqxhWTGO5fQusWG+0ZssOH3wdtrQSEGdnJzza9w0R/RyNu7JhRoUBvEbxIiu3wm4ixx6CZ3BvSmbEUOAdhrwcJu9HDc=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=fb.com;
-Received: from BYAPR15MB4088.namprd15.prod.outlook.com (2603:10b6:a02:c3::18)
- by BYAPR15MB2629.namprd15.prod.outlook.com (2603:10b6:a03:14f::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.20; Thu, 14 May
- 2020 15:00:43 +0000
-Received: from BYAPR15MB4088.namprd15.prod.outlook.com
- ([fe80::4922:9927:5d6c:5301]) by BYAPR15MB4088.namprd15.prod.outlook.com
- ([fe80::4922:9927:5d6c:5301%7]) with mapi id 15.20.3000.022; Thu, 14 May 2020
- 15:00:43 +0000
-Subject: Re: [PATCH][next] selftest/bpf: fix spelling mistake "SIGALARM" ->
- "SIGALRM"
-To:     Colin King <colin.king@canonical.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>, <netdev@vger.kernel.org>,
-        <bpf@vger.kernel.org>
-CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20200514121529.259668-1-colin.king@canonical.com>
-From:   Yonghong Song <yhs@fb.com>
-Message-ID: <bae961e3-a3ae-2652-6f4e-df97f501db0e@fb.com>
-Date:   Thu, 14 May 2020 08:00:41 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
- Gecko/20100101 Thunderbird/68.8.0
-In-Reply-To: <20200514121529.259668-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY5PR13CA0009.namprd13.prod.outlook.com
- (2603:10b6:a03:180::22) To BYAPR15MB4088.namprd15.prod.outlook.com
- (2603:10b6:a02:c3::18)
+        Thu, 14 May 2020 13:03:46 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BC32C061A0C
+        for <kernel-janitors@vger.kernel.org>; Thu, 14 May 2020 10:03:46 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id l18so5213372wrn.6
+        for <kernel-janitors@vger.kernel.org>; Thu, 14 May 2020 10:03:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=md6Q3mRbTQ1WmLDfzP4CL8pYGQVjx67A8SJwik18qaQ=;
+        b=Qp/j+VhkQBLwdy6pZLOdjD1KkK4SB6fdULcil1Bb/ApzRWGdZFxAc9p7F6UbNIQKCI
+         CyZb//esyNNS8dxg9kMCgpNGmvdUrjXk0nPRN/j9JMX8vlYLYIb6TdNc+L2HnSLasb2C
+         2wckG7U/dN5L6jeYO7chclIEByFxQfyw/dd/I=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=md6Q3mRbTQ1WmLDfzP4CL8pYGQVjx67A8SJwik18qaQ=;
+        b=gBR8way5CcZfjdR1VG27nbatk0DaUF9Fv3qhTf93IRSxSK/jrCQB/bDrc0POR9rh9j
+         RNihVmyZOGUnr7iOO2RoLb5S3Gaypo9SzyBbp44atEy81T1eXFn6qZCfAacL4hMuo+cw
+         Xcpy5Q7n+s+fRBAMFkbiPf72QmM+HL80W9Z4BhhtvWXY5n/wESLeG66sYDY8ayHkgCSh
+         kYTNVjTZij5astuBoxx4WpVmkQqapHRhZu9H4gIRjahdRU7/z7rkMWVbDAR11iJesk8M
+         2zAphVtCL6cfVPi5Qs+mzmxriF8AtIYYclDkF3I/I+IUr5hB5MlGxEZWBQ3H8phfD8Q5
+         LUXg==
+X-Gm-Message-State: AOAM5313SgY4IPMCgGhYVS6oTE8lAGq6ZIDGXiRbXZp69LnmkekRxB1q
+        kzdIGXnutrELNvlw7JSll9DYdGFh87U5pmDQ7n3nijFdC1Kpkif4xzbVlSSG5CMy+s+0FzMtuJp
+        zmvt3azjWKwk7r3V3NOMVbmtXBGa5gw7rVY0OWQWxFZps536c4lLwTm7/jNeVyLrrse19J5HLJ4
+        eshTPkNds=
+X-Google-Smtp-Source: ABdhPJy6ZDXeup/5XjzV2A/FK2RNwAx28chynbVnxv+3+oi/KkFUEHyq19N8uVacZ7JTDJdhCQWCMQ==
+X-Received: by 2002:a5d:4dc9:: with SMTP id f9mr6406995wru.407.1589475824199;
+        Thu, 14 May 2020 10:03:44 -0700 (PDT)
+Received: from [10.230.185.151] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id n7sm4786435wro.94.2020.05.14.10.03.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 May 2020 10:03:42 -0700 (PDT)
+Subject: Re: [PATCH] scsi: lpfc: Fix a use after free in
+ lpfc_nvme_unsol_ls_handler()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Dick Kennedy <dick.kennedy@broadcom.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>,
+        Paul Ely <paul.ely@broadcom.com>, linux-scsi@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200512181909.GA299091@mwanda>
+From:   James Smart <james.smart@broadcom.com>
+Message-ID: <4c0aa874-35db-65b5-e541-d513e7906254@broadcom.com>
+Date:   Thu, 14 May 2020 10:03:38 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from MacBook-Pro-52.local (2620:10d:c090:400::5:3bff) by BY5PR13CA0009.namprd13.prod.outlook.com (2603:10b6:a03:180::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.11 via Frontend Transport; Thu, 14 May 2020 15:00:42 +0000
-X-Originating-IP: [2620:10d:c090:400::5:3bff]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ef30043f-28e6-4414-d2b4-08d7f817931e
-X-MS-TrafficTypeDiagnostic: BYAPR15MB2629:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BYAPR15MB2629897504C2234EB923682DD3BC0@BYAPR15MB2629.namprd15.prod.outlook.com>
-X-FB-Source: Internal
-X-MS-Oob-TLC-OOBClassifiers: OLM:486;
-X-Forefront-PRVS: 040359335D
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: mta0yQtvG7LGzCMuBWIMcX6JlTk+Jp7eSz70+k9SJTC3Qz0Xm0dpkosz2xd3IxTZf7QAYoqRTZiVRSUieOImX2cakEAvBk3l1iHwI/9PPBogZ+TErfjFdR2SRasdE7iqxrn6iC6r6/Lmb7/dW68b1ZBlSQ5x9jR+XcLtNBmnS4aw5tnXQ/np8jBKlKcOzfUAozPMnNH2DIs/h8n5uvT9U8z4z8Nyvkc6wam1fBcthXLiw90jaZm0UCSdptcQRz3rm4D8X8QY0r1XNPSEQ5gUyqyUng6fKsgzKGuOl0vxkqwVPU6E88hmPJm1y3sGbpDTRiCCg9E2+37thEjfNzFcHDQ7neazhPv1vYSCJNpfxjIGTxv8QFet5VDNUvHb7AsDEu2i94pqWa9kFiBRxh6ohXloUQqSKr5fDh3Lr5nWv1BUEBVvwlt0jsz7q3oPEi1wGtBRQJTRzCSAroA6xPnwj4HUofdzZ7oVI1pxXEbDyqna2eU7TLxSsfkADyTLMDU3XeAtrvSqXDfI1/XOV39xZg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR15MB4088.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(376002)(346002)(366004)(39860400002)(136003)(396003)(110136005)(86362001)(186003)(52116002)(31696002)(53546011)(31686004)(6506007)(8936002)(7416002)(8676002)(2616005)(316002)(36756003)(5660300002)(2906002)(478600001)(6486002)(558084003)(66946007)(4326008)(66556008)(16526019)(6512007)(66476007)(921003)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: zbDR5vX0OWfkuuTCe19Tml8b/VGpX67c29fwdi4jzYaKv7ZzgD7xz1acSTzLLzCSXlJbxab0BUyK+ddMqQOYMV8OSP53NquDqpvgYPx4LaSga7L9vqxW4fs/j/QS462/DuRa0Z5OFgudsDxhTydres2F/yki+edyK6jZAqlS5WuTIMT9y26pfguOIjDrjLtYveJlCpgCH2qfH59hpIRuRoVCi+kp3PPe7AxZgWNJompplUxJ66WrXcIR9O1e5kNl3L3gXNCIU4Bn3oWUrHF0ejGnH3s+Qg1yJcLuyAK4iWLZO8f1O4S5R5zSKgAZHj1I6wLhNWB8y0vu4vGkvBOQMu1u7zzXdc7E+/qExEakmoTqzkH2WIXsl9wyMe+ZT40jwVqjSMUmc7kWuPbRbRLi/V6BF6coFueR47zUYtE0fNzfmQh+dCa2fxEnzSwo0RntGStg4JVDBM6S0KaGPeuyv1Z4YfWDzsjDXL0KC7YX6Yt/sJdEXfXtmY/j8JOANPoqgFhREYfHmGvm+6UnNQl9Ag==
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef30043f-28e6-4414-d2b4-08d7f817931e
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 May 2020 15:00:43.4040
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: U7fG7ac31Vvf7Jgl2xMkLJaZlJQpC8diQiVJQUwpd2ZAu18nDvEYEdLSG8TG+4Qe
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR15MB2629
-X-OriginatorOrg: fb.com
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
- definitions=2020-05-14_05:2020-05-14,2020-05-14 signatures=0
-X-Proofpoint-Spam-Details: rule=fb_default_notspam policy=fb_default score=0 suspectscore=0
- priorityscore=1501 mlxscore=0 adultscore=0 mlxlogscore=827
- cotscore=-2147483648 impostorscore=0 spamscore=0 lowpriorityscore=0
- clxscore=1011 bulkscore=0 phishscore=0 malwarescore=0 classifier=spam
- adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005140132
-X-FB-Internal: deliver
+In-Reply-To: <20200512181909.GA299091@mwanda>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
+On 5/12/2020 11:19 AM, Dan Carpenter wrote:
+> The "axchg" pointer is dereferenced when we call the
+> lpfc_nvme_unsol_ls_issue_abort() function.  It can't be either freed or
+> NULL.
+>
+> Fixes: 3a8070c567aa ("lpfc: Refactor NVME LS receive handling")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>   drivers/scsi/lpfc/lpfc_sli.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
+> index 38889cb6e1996..fcf51b4192d66 100644
+> --- a/drivers/scsi/lpfc/lpfc_sli.c
+> +++ b/drivers/scsi/lpfc/lpfc_sli.c
+> @@ -2895,14 +2895,14 @@ lpfc_nvme_unsol_ls_handler(struct lpfc_hba *phba, struct lpfc_iocbq *piocb)
+>   			(phba->nvmet_support) ? "T" : "I", ret);
+>   
+>   out_fail:
+> -	kfree(axchg);
+> -
+>   	/* recycle receive buffer */
+>   	lpfc_in_buf_free(phba, &nvmebuf->dbuf);
+>   
+>   	/* If start of new exchange, abort it */
+> -	if (fctl & FC_FC_FIRST_SEQ && !(fctl & FC_FC_EX_CTX))
+> +	if (axchg && (fctl & FC_FC_FIRST_SEQ) && !(fctl & FC_FC_EX_CTX))
+>   		lpfc_nvme_unsol_ls_issue_abort(phba, axchg, sid, oxid);
+> +
+> +	kfree(axchg);
+>   }
+>   
+>   /**
 
-On 5/14/20 5:15 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in an error message, fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Acked-by: Yonghong Song <yhs@fb.com>
+Reviewed-by: James Smart <james.smart@broadcom.com>
+
+Thank You
+
+-- james
+

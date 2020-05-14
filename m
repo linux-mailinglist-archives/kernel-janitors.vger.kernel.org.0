@@ -2,109 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BF7E1D3F70
-	for <lists+kernel-janitors@lfdr.de>; Thu, 14 May 2020 23:00:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1883C1D405F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 14 May 2020 23:45:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727833AbgENVAG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 14 May 2020 17:00:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40162 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726201AbgENVAE (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 14 May 2020 17:00:04 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 354E8C061A0C;
-        Thu, 14 May 2020 14:00:03 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id l21so139812eji.4;
-        Thu, 14 May 2020 14:00:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=oLhuR8HS5ejq1vXdwrdSp2iS9vK3c80XB67HZI/sIAk=;
-        b=JMzyOVelIl+D9VNYc15hQhibmAOQzixQf4tza209c9xFcrofC0aFYUgCqQyVqaWR6y
-         TjIu6J6lcvsg0lSB4aPOWfIcu/1nWI4S881QE5RpIwGZyD1WwAUgq/JLOfa3Y370tYVb
-         ix2giNJIK+fNr9sn7qxiCL3N+7yDSg4TMGHDRxRPAgjHh25J9mCVLgmLftlBonarlQBC
-         ljSonxdNOe1oHwhBPqRIetmmdLO9mzXhEO05PlOFI9RdsXfc9mKQYN8T9pcC+oX/vjgT
-         o5sMS4OZs9sFH4f5qNUH6Dgho8UcEv0jfushG8dzbsIqyU0M3dx7uLJjMYxHDrYXJ0c4
-         lPqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=oLhuR8HS5ejq1vXdwrdSp2iS9vK3c80XB67HZI/sIAk=;
-        b=r2L00ODy9SatTvnYhrtDblevwRJLXjN4uNnhkGEqpQrS4CmKf5xn9vKQBKqtshPEjN
-         zYkirOje6zoYUsu7LFRl3KYR1jyxTWPGC9v8HJXTzjFYQtuVKKeljFy3JZWF6seN/B7E
-         1eo7ka1Xdz9JqC4JoEDulcJc4yh+OIt8LGBsxenYIjN+XgxUq7aQOTGS8fRp8X6Hs2Uf
-         +UHWCcXvwiNeKbywfy7PEE6pHsqUog4iySCzmCeEiZlHas7/s8kAzhXAFvUxjxunthol
-         AoVaQPf5zJbojRHJGrlLyZM74Rz59BDK3KAq/x8I9GkvOlJF7e6u300sETRb8j75eE2v
-         9Sgg==
-X-Gm-Message-State: AOAM530Ln88wZjptlg2A+noDEBr8olnfcjNJWMd/utZxfzVwKFhHVY7D
-        WiLkZfRmPiHy9QvUF3D+lMrsk4k3uAt7REIZqCoVNSq8
-X-Google-Smtp-Source: ABdhPJxxoY1f6fVa6YQPSyhvR2jwvZmnKgI9b2jjpnJ9nf4hE4za+JJteHbAUqFch4+Lo2HWdonQM8Ko1nVkTp1pcZA=
-X-Received: by 2002:a17:906:27c2:: with SMTP id k2mr5592477ejc.239.1589490001827;
- Thu, 14 May 2020 14:00:01 -0700 (PDT)
+        id S1727858AbgENVpJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 14 May 2020 17:45:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56294 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726216AbgENVpJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 14 May 2020 17:45:09 -0400
+Received: from pobox.suse.cz (nat1.prg.suse.com [195.250.132.148])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 70B3E20709;
+        Thu, 14 May 2020 21:45:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589492708;
+        bh=SrjBxjuvO2xIOH81KR141yOl4ZrKeyzuGmHkqf9XFGA=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=R1VGab0Nt7+Xgr5r/YG6q2wVuG7JVAdqrEdlDRXs3RvfywgsAc4R6hWti66JDBWHK
+         A19V4brp1JkCbas+v55UFeYRwpl9i0vPpCje/eM/DUk4XMaRxUQ39XqMc0HAXcrccM
+         Bua6aWzIvEf76Sl8QdMsAwp5sOf5I439+y5EojkA=
+Date:   Thu, 14 May 2020 23:45:04 +0200 (CEST)
+From:   Jiri Kosina <jikos@kernel.org>
+To:     Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
+cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Petr Mladek <pmladek@suse.com>,
+        Joe Lawrence <joe.lawrence@redhat.com>,
+        live-patching@vger.kernel.org, Joe Perches <joe@perches.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: adjust to livepatch .klp.arch removal
+In-Reply-To: <bfe91b2d-e319-bf12-6a15-4f200d0e8ea4@linux.vnet.ibm.com>
+Message-ID: <nycvar.YFH.7.76.2005142344230.25812@cbobk.fhfr.pm>
+References: <20200509073258.5970-1-lukas.bulwahn@gmail.com> <bfe91b2d-e319-bf12-6a15-4f200d0e8ea4@linux.vnet.ibm.com>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-References: <20200514183302.16925-1-colin.king@canonical.com>
-In-Reply-To: <20200514183302.16925-1-colin.king@canonical.com>
-From:   Vladimir Oltean <olteanv@gmail.com>
-Date:   Thu, 14 May 2020 23:59:50 +0300
-Message-ID: <CA+h21hpdw5aXLnS0VRnf1XWkseKY83pAoqvUuM09xAFLHyrqWw@mail.gmail.com>
-Subject: Re: [PATCH][next] net: dsa: felix: fix incorrect clamp calculation
- for burst
-To:     Colin King <colin.king@canonical.com>
-Cc:     Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Xiaoliang Yang <xiaoliang.yang_1@nxp.com>,
-        netdev <netdev@vger.kernel.org>, kernel-janitors@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Colin,
+On Sat, 9 May 2020, Kamalesh Babulal wrote:
 
-On Thu, 14 May 2020 at 21:34, Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Currently burst is clamping on rate and not burst, the assignment
-> of burst from the clamping discards the previous assignment of burst.
-> This looks like a cut-n-paste error from the previous clamping
-> calculation on ramp.  Fix this by replacing ramp with burst.
->
-> Addresses-Coverity: ("Unused value")
-> Fixes: 0fbabf875d18 ("net: dsa: felix: add support Credit Based Shaper(CBS) for hardware offload")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
+> > Commit 1d05334d2899 ("livepatch: Remove .klp.arch") removed
+> > arch/x86/kernel/livepatch.c, but missed to adjust the LIVE PATCHING entry
+> > in MAINTAINERS.
+> > 
+> > Since then, ./scripts/get_maintainer.pl --self-test=patterns complains:
+> > 
+> >   warning: no file matches  F:  arch/x86/kernel/livepatch.c
+> > 
+> > So, drop that obsolete file entry in MAINTAINERS.
+> 
+> Patch looks good to me,  you probably want to add following architecture
+> specific livepatching header files to the list:
+> 
+> arch/s390/include/asm/livepatch.h
+> arch/powerpc/include/asm/livepatch.h
 
-Acked-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Good point, thanks for spotting it Kamalesh. I've queued the patch below 
+on top.
 
->  drivers/net/dsa/ocelot/felix_vsc9959.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/dsa/ocelot/felix_vsc9959.c b/drivers/net/dsa/ocelot/felix_vsc9959.c
-> index df4498c0e864..85e34d85cc51 100644
-> --- a/drivers/net/dsa/ocelot/felix_vsc9959.c
-> +++ b/drivers/net/dsa/ocelot/felix_vsc9959.c
-> @@ -1360,7 +1360,7 @@ static int vsc9959_qos_port_cbs_set(struct dsa_switch *ds, int port,
->         /* Burst unit is 4kB */
->         burst = DIV_ROUND_UP(cbs_qopt->hicredit, 4096);
->         /* Avoid using zero burst size */
-> -       burst = clamp_t(u32, rate, 1, GENMASK(5, 0));
-> +       burst = clamp_t(u32, burst, 1, GENMASK(5, 0));
->         ocelot_write_gix(ocelot,
->                          QSYS_CIR_CFG_CIR_RATE(rate) |
->                          QSYS_CIR_CFG_CIR_BURST(burst),
-> --
-> 2.25.1
->
 
-Thanks!
--Vladimir
+
+From: Jiri Kosina <jkosina@suse.cz>
+Subject: [PATCH] livepatch: add arch-specific headers to MAINTAINERS
+
+Add arch-specific livepatch.h for s390 and powerpc to MAINTAINERS
+F: patterns.
+
+Reported-by: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+---
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7e0827670425..8e14444eb98d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9854,6 +9854,8 @@ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/livepatching/livepatching.git
+ F:	Documentation/ABI/testing/sysfs-kernel-livepatch
+ F:	Documentation/livepatch/
++F:	arch/powerpc/include/asm/livepatch.h
++F:	arch/s390/include/asm/livepatch.h
+ F:	arch/x86/include/asm/livepatch.h
+ F:	include/linux/livepatch.h
+ F:	kernel/livepatch/
+
+
+-- 
+Jiri Kosina
+SUSE Labs
+

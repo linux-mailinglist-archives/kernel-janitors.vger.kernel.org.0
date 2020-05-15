@@ -2,66 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87C201D4803
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 May 2020 10:20:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AE481D4AB5
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 May 2020 12:19:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727926AbgEOIUG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 15 May 2020 04:20:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55238 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727838AbgEOIUG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 15 May 2020 04:20:06 -0400
-Received: from pobox.suse.cz (nat1.prg.suse.com [195.250.132.148])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A6AD820657;
-        Fri, 15 May 2020 08:20:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589530805;
-        bh=MIlGuQgco5xlMobbfG+DhJtDOkUGJNUrRQxXMs79N0M=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=k+284gXvCo5VcDPPtjT7hCZ/LtFdXvCK5j1Qz0OUC5xHDCgcVZtXLGK4P4hEPPlum
-         nCD9FhiCDZsPRlO4Lk8EGBsaURC0odEnVv//RboaNMUpkHO5kTzP2W09yOMX506QCd
-         4Yl+ztZfz51Kyc1nz7bYRqkMPv8T5V7xS4aFJYq4=
-Date:   Fri, 15 May 2020 10:20:01 +0200 (CEST)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
-cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Petr Mladek <pmladek@suse.com>,
-        Joe Lawrence <joe.lawrence@redhat.com>,
-        live-patching@vger.kernel.org, Joe Perches <joe@perches.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: adjust to livepatch .klp.arch removal
-In-Reply-To: <509c316f-5b34-2859-49aa-e4fe4a407428@linux.vnet.ibm.com>
-Message-ID: <nycvar.YFH.7.76.2005151019150.25812@cbobk.fhfr.pm>
-References: <20200509073258.5970-1-lukas.bulwahn@gmail.com> <bfe91b2d-e319-bf12-6a15-4f200d0e8ea4@linux.vnet.ibm.com> <nycvar.YFH.7.76.2005142344230.25812@cbobk.fhfr.pm> <509c316f-5b34-2859-49aa-e4fe4a407428@linux.vnet.ibm.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        id S1728102AbgEOKTb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 15 May 2020 06:19:31 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:51830 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727927AbgEOKTb (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 15 May 2020 06:19:31 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04FA6aWf066361;
+        Fri, 15 May 2020 10:19:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2020-01-29; bh=Sraec879HLM5mjkyogjFeEukkZwmyXPLKB47XiprxHQ=;
+ b=AOrQHDKhZmh7LCauki/I/L1zz5BtGRBDBykkJnK5poPnUy/7xKKy3L7uNzf0I57JLG61
+ pNt7KfFXAiKI7OllVQyWXCra2aY7vN8op9V4JPlTEyuy3viffgcmCAtIalCD0oC1fj76
+ tTFJijWEj5OYto0qQAf5r9ccW8dhk8/MI/QdF6Sipdx8nlzvJs5CWhEgFpWHCXdEaTnb
+ fY/YsfGDlz2TZN8WAMVvz+hHr4i0hhhizF5AKOYKYr0X2EBx4lyML2Yoe6Div6Vj8GLr
+ dGJGN/Ud2YZ6sJjdUGovMWPbRkGz9TRpkqgvz6rRsWEWPHMJhA9TVa+LmkkJiujJOx+y GQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 3100yga5jy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 15 May 2020 10:19:16 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04FAEBC8192223;
+        Fri, 15 May 2020 10:19:16 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 3100yjqfnf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 15 May 2020 10:19:16 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04FAJDdv007968;
+        Fri, 15 May 2020 10:19:13 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 15 May 2020 03:19:12 -0700
+Date:   Fri, 15 May 2020 13:19:03 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     James Smart <james.smart@broadcom.com>,
+        linux-nvme@lists.infradead.org
+Cc:     Dick Kennedy <dick.kennedy@broadcom.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>,
+        Paul Ely <paul.ely@broadcom.com>, linux-scsi@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH resend] scsi: lpfc: Fix a use after free in
+ lpfc_nvme_unsol_ls_handler()
+Message-ID: <20200515101903.GJ3041@kadam>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq1y2purqt1.fsf@oracle.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9621 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 suspectscore=2 adultscore=0 mlxscore=0 mlxlogscore=903
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005150089
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9621 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 adultscore=0
+ cotscore=-2147483648 mlxscore=0 suspectscore=2 spamscore=0 impostorscore=0
+ mlxlogscore=931 malwarescore=0 clxscore=1011 phishscore=0 bulkscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005150088
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 15 May 2020, Kamalesh Babulal wrote:
+The "axchg" pointer is dereferenced when we call the
+lpfc_nvme_unsol_ls_issue_abort() function.  It can't be either freed or
+NULL.
 
-> Thanks, Jiri. I realized later, that the lib/livepatch directory also 
-> needs to be included in the list of files maintained under livepatch. 
-> Earlier, this week I had sent a patch to the mailing list that includes 
-> both arch headers and lib/livepatch to the list of files, the link to 
-> the patch is:
-> 
-> https://lore.kernel.org/live-patching/20200511061014.308675-1-kamalesh@linux.vnet.ibm.com/
+Fixes: 3a8070c567aa ("lpfc: Refactor NVME LS receive handling")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Reviewed-by: James Smart <james.smart@broadcom.com>
+---
+Resending to the NVMe list.  Added James' R-b.
 
-Ah, I wasn't CCed, so it fell in between cracks, sorry. Could you please 
-resend the lib/livepatch part separately? I'll apply it on top.
+Is there a way we could update MAINTAINERS so that ./get_maintainer.pl
+send these to the correct list?
 
-Thanks,
+ drivers/scsi/lpfc/lpfc_sli.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
+index 38889cb6e1996..fcf51b4192d66 100644
+--- a/drivers/scsi/lpfc/lpfc_sli.c
++++ b/drivers/scsi/lpfc/lpfc_sli.c
+@@ -2895,14 +2895,14 @@ lpfc_nvme_unsol_ls_handler(struct lpfc_hba *phba, struct lpfc_iocbq *piocb)
+ 			(phba->nvmet_support) ? "T" : "I", ret);
+ 
+ out_fail:
+-	kfree(axchg);
+-
+ 	/* recycle receive buffer */
+ 	lpfc_in_buf_free(phba, &nvmebuf->dbuf);
+ 
+ 	/* If start of new exchange, abort it */
+-	if (fctl & FC_FC_FIRST_SEQ && !(fctl & FC_FC_EX_CTX))
++	if (axchg && (fctl & FC_FC_FIRST_SEQ) && !(fctl & FC_FC_EX_CTX))
+ 		lpfc_nvme_unsol_ls_issue_abort(phba, axchg, sid, oxid);
++
++	kfree(axchg);
+ }
+ 
+ /**
 -- 
-Jiri Kosina
-SUSE Labs
-
+2.26.2

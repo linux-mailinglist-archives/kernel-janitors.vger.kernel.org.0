@@ -2,75 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 737EB1D4AC6
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 May 2020 12:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C75731D4D67
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 May 2020 14:07:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728139AbgEOKWh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 15 May 2020 06:22:37 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50839 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728047AbgEOKWf (ORCPT
+        id S1726118AbgEOMHV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 15 May 2020 08:07:21 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:47372 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726096AbgEOMHU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 15 May 2020 06:22:35 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jZXU2-0002o7-Q9; Fri, 15 May 2020 10:22:26 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] rtlwifi: rtl8192ee: remove redundant for-loop
-Date:   Fri, 15 May 2020 11:22:26 +0100
-Message-Id: <20200515102226.29819-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 15 May 2020 08:07:20 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04FC6bHj060986;
+        Fri, 15 May 2020 12:07:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=+w+qMJL5qpqG93GwokgbYaw4uytxGs6s1y/FgpYaxpE=;
+ b=DPL3WYO4ATRLMc597dc/nqE8KDtIHPs+MJnsFUQaUDZo6X5CSw0W53xC+oNSq4w1Vgma
+ RUf+lMAU6Jyf+/l4LSGyYAKTw93rMiMRlPcKUJiXyXElz9oD2HszsIzlEas2dTkUKMRY
+ 0WuhEy3nip3Mn0cByJxle1iR2YxdObOPfER2+ebg8Ve530YXy2ypyHp3p45blUqFrSRh
+ X/bmR3wLzj3ZpzeZWb5ZHXsLYRCIbpYt6apCyTPnJaw5CAJbZgKIiZrmxNS5HEWrR2NT
+ gCc2r46mCPFzvItF4eJGu2pgs7jXTxi5bPRj6EvqyHmJg0GoUSk5nSxyif4V6UqmA7CH jg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 3100ygaj0e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 15 May 2020 12:07:07 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04FC49Y0104758;
+        Fri, 15 May 2020 12:07:07 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 3100yer6uc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 15 May 2020 12:07:07 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04FC75eu031091;
+        Fri, 15 May 2020 12:07:06 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 15 May 2020 05:07:05 -0700
+Date:   Fri, 15 May 2020 15:06:59 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Keith Busch <kbusch@kernel.org>
+Cc:     Jens Axboe <axboe@fb.com>, Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        linux-nvme@lists.infradead.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] nvme: delete an unnecessary declaration
+Message-ID: <20200515120659.GA575846@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9621 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 phishscore=0
+ adultscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005150104
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9621 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 adultscore=0
+ cotscore=-2147483648 mlxscore=0 suspectscore=0 spamscore=0 impostorscore=0
+ mlxlogscore=999 malwarescore=0 clxscore=1011 phishscore=0 bulkscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005150105
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+The nvme_put_ctrl() is implemented earlier as an inline function so
+this declaration isn't required.
 
-The for-loop seems to be redundant, the assignments for indexes
-0..2 are being over-written by the last index 3 in the loop. Remove
-the loop and use index 3 instead.
-
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- .../net/wireless/realtek/rtlwifi/rtl8192ee/phy.c   | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/nvme/host/nvme.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-index 6dba576aa81e..bb291b951f4d 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-@@ -2866,14 +2866,12 @@ void rtl92ee_phy_iq_calibrate(struct ieee80211_hw *hw, bool b_recovery)
- 		}
- 	}
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index f3ab17778349..86f152e777bc 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -497,7 +497,6 @@ int nvme_init_ctrl(struct nvme_ctrl *ctrl, struct device *dev,
+ void nvme_uninit_ctrl(struct nvme_ctrl *ctrl);
+ void nvme_start_ctrl(struct nvme_ctrl *ctrl);
+ void nvme_stop_ctrl(struct nvme_ctrl *ctrl);
+-void nvme_put_ctrl(struct nvme_ctrl *ctrl);
+ int nvme_init_identify(struct nvme_ctrl *ctrl);
  
--	for (i = 0; i < 4; i++) {
--		reg_e94 = result[i][0];
--		reg_e9c = result[i][1];
--		reg_ea4 = result[i][2];
--		reg_eb4 = result[i][4];
--		reg_ebc = result[i][5];
--		reg_ec4 = result[i][6];
--	}
-+	reg_e94 = result[3][0];
-+	reg_e9c = result[3][1];
-+	reg_ea4 = result[3][2];
-+	reg_eb4 = result[3][4];
-+	reg_ebc = result[3][5];
-+	reg_ec4 = result[3][6];
- 
- 	if (final_candidate != 0xff) {
- 		reg_e94 = result[final_candidate][0];
+ void nvme_remove_namespaces(struct nvme_ctrl *ctrl);
 -- 
-2.25.1
+2.26.2
 

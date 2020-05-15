@@ -2,33 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD9C21D5336
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 May 2020 17:09:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C13591D55EE
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 May 2020 18:26:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726438AbgEOPIy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 15 May 2020 11:08:54 -0400
-Received: from mout.web.de ([212.227.17.11]:53791 "EHLO mout.web.de"
+        id S1726624AbgEOQ0E (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 15 May 2020 12:26:04 -0400
+Received: from mout.web.de ([212.227.17.11]:50275 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726234AbgEOPIx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 15 May 2020 11:08:53 -0400
+        id S1726246AbgEOQ0D (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 15 May 2020 12:26:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1589555313;
-        bh=2Az8NnR7wJ9rN2x9fHizGYiaHCVrPmmewTwIZIfBU5s=;
+        s=dbaedf251592; t=1589559952;
+        bh=MJy3u2eAO0hkXrveSlr4+ROSkr3dNK2kMlqQXTE1l8k=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=ZXqvivJYAuG2fJlojZrSHhjwQJMqWniMoTMe+0INKTTnV58dM4Xixiq/5QBWDZMyb
-         UuWu3I3Hwznw0mN1iaJ/pKKdSzfPsgGXwiZOvQzrM7OyVnVACMjAFuS87gZditjEN+
-         qdVQ4/JD85kb8t11+KIeFoDLzVGDucar4JRBeb2A=
+        b=eYgLn2+CJ7P0SfCYXVKHagzAx8y7x4KnHQmhNJyyOTf9fsryBh6/88Z57ooF6zfyF
+         0e/punGW+WkczgPP303epZVlH0Rt+D5LPXW8r+6oBefMvgOUyGeZasylYCBmpok24y
+         +IrGNyqFPcOfbMGY3w+9LjZQVwjVh38ip1hQ0sUw=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([78.49.164.161]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MOArg-1jU6AW37fY-005YVb; Fri, 15
- May 2020 17:08:32 +0200
-To:     Wu Bo <wubo40@huawei.com>, cgroups@vger.kernel.org,
-        linux-block@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Feilong Lin <linfeilong@huawei.com>,
-        Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
-        Zhiqiang Liu <liuzhiqiang26@huawei.com>
-Subject: Re: [PATCH] blkcg: Fix memory leak in blkg_conf_prep()
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lnj7L-1isLiZ0vBH-00hvY0; Fri, 15
+ May 2020 18:25:52 +0200
+To:     Divya Indi <divya.indi@oracle.com>, linux-rdma@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Doug Ledford <dledford@redhat.com>,
+        Gerd Rausch <gerd.rausch@oracle.com>,
+        =?UTF-8?Q?H=c3=a5kon_Bugge?= <haakon.bugge@oracle.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Kaike Wan <kaike.wan@intel.com>,
+        Rama Nichanamatlu <rama.nichanamatlu@oracle.com>,
+        Srinivas Eeda <srinivas.eeda@oracle.com>
+Subject: Re: [PATCH] IB/sa: Fix use-after-free in ib_nl_send_msg()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -73,60 +76,69 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <4c670a6c-98c3-2b14-7438-09199506d92f@web.de>
-Date:   Fri, 15 May 2020 17:08:24 +0200
+Message-ID: <b4b66f61-d49e-fd87-87a5-7f5bfff6fd7f@web.de>
+Date:   Fri, 15 May 2020 18:25:51 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6zCR73WCJ+xsN9FSih8Z9jG+4rbMSSH93H8i/IOv2Je0OjMfyGL
- gMTBw3FdaTzbP0Bq0Zx6MC6lUmzzAzLij6ZyDsQu+HRUqVtXsLk94WRIYNNFngJZFzysEIx
- Y0czS7ob3NZ55bWZzX/jn9j2Uc0UG2nHPzZ2BgfaUWhjJm77ZZ1JVC6/KJoEIGnOC/w3wIV
- Ld0oBSoqKP7R/Za0EoyTA==
+X-Provags-ID: V03:K1:LcCBZhor9WpnLF02wGAaBo/E2Exu1Z8aZzCiPdWs16gBEcjAZTy
+ LDgvYzZNaLFmf09nKtnMT/Tc59F4w0lXyL2mEJfhM6iW82tFNFLUEb/2klA3JRq0b9H9Vxp
+ TyONplvlY2qBITvI1VLOcSLanmfLQgagBhLHbAvYlI5gIHOGJQuaOlH8ZWHpfNlLGYFIyF2
+ VjyAlAvSGcBu63CBI947A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:V4nh84CWi3w=:PU/8sCh+p7VyTbyebDcCCU
- 9Ui/9Ggc12N8n5H/kSY8qHx6adZz0Zn8udibpHMPUVSMRxHT7g1ifarghHAhXx6G76++SMOxs
- 189VwvtJjgCvXN0G6YEO6rs6ri5zsKB3RQf8buVohG/ZjO3OTkZGv4TRNO4B10o9f6nuZ1G2V
- Htd5UEqgqr5GRnXJMhPduqQoEQ5SQZ2wlGWeOnil8rnBY01ILN8LHuMwNwhg3flfdW9ZIzt0h
- ff8S6GBitend6XoVUw1hPanP0dqMM7k2HsZlx++gadSSHg4h4KN0wxDKR+gnuXr3k+SM4Yu48
- AIG1k5+VqT0CtIvlQOKPMAyNxSFpx6zXQn9VDXv1Uqy36F8O3Tzb+/puEVTc+gOo78IQmdfCC
- VYc5NH6DOAJIrewP/bFIZ3gP0IY6IzmDVNGogGNBJeUpq25CyB1Aw3QsNLSP33LmrC/6hI6Sl
- o6lpYuxKRokkUaxu6WHLS45DI2IKVYEwQdCpmQssC0WVBe+Jm5BE+ZKbm3OyoeR0bC4uMF9mS
- wsbNoy+9rRrB3+pQmN2WdLFf4Zm0By5yBLXYvrpmRwad8A6m5/lomK2hkVVtpH3jCJSINL4Q1
- YMPrfUCzf23N8EwrTtBWEHmC7GrCmYvY3xt/rnx3VWfyU8D8SYb6Om+J1wtMEvYIGC3A0M9xl
- DzSqgQpZrB1ulo5Wxf00xchOcacAhee+V0fZlsxCqZq3BBxoG1F7sPpARuZ531DNMF+1rFYoC
- 5qcNBUK26tpkj0uOUCdpDVaK1dWxiSF+sXzXArnQcZymvo+eFOwGQArOHMNglGFJm1XPAHQZn
- sewfSOPSgZiHWo7WzPwB/AlymHm7i+6FJP8OvqEr5DCNVoxECqygYJN6uBGBaSXavtbQ2Fr/t
- M7cxx9F2aiOhScl+imSnnlQ0alXV4XTgcHTwbeRbN9tjEOuBxnsZ3jk0l9L2uwSG3f7ZeEmjq
- UZw+BLgF9JemuOJ9s08p4WV2vZ+150+2amWHQuJ1koZh2PdltPVock2TX8xSn8fbmMWE+XW4K
- JjbVFUjFKLiNMkjBk0VORIyty7Ixecm3+/t3kv+UcpghCyRyuoRmeqU4ZFwD6a1aAFB24lorl
- oacTKnNTDyKT6pBzsda4ZIJMUfWrvxEQg3RL5Mps2qUmVN0Cp0KvH3h0oQ/BjtUgjYGA6E/+k
- Q1LKyX1F07hymGx6sB7EYT2GexnRzm0UF8JcHQ0ev6IvQB3g1C7YGdLPfXPXsA43vnWcVUEy+
- NLj3TxcLTA8UsERUN
+X-UI-Out-Filterresults: notjunk:1;V03:K0:zQs/J0HN8js=:dfdpH6NfeTiGcDNq6YjYN1
+ 7kaBxcaCfeYAydjrnwvfztSlV7nLywA2Jh6LcTiYKK7+6sS0YgvBfsUeGo5//Icanqlysj18S
+ rEHJwimwl3hiM3jXNvPmhjjYi7+5zwqWibBtiQtEz28A7VLIga8njuubf8N1zd+0EVsvWrEux
+ 22bwyc2CiVpluE2FpKQ8K4mD/VogK8vTcDCiTTbskFNg+3Fci39dsokNKyfl7KHTc8Nigf/jf
+ za8WmjaSZxfzlagUsF+058gx+4TofrdPS76Vng8yOSCTrOA7l5mC19hJ7dLFhwmFN0pa9DN3M
+ Ok/nC+bC2k34irKMpDSnoTzuoYilofikFyKEDrWE4vczoMM1DJ+jqFENlPHMo+WhaExOu12dw
+ lJ4I9Mtessh3QAu4dgsx995KPE7uEwPx6+OXXrRH5sHRywvFXgPydQYEMunLizb1tgBNuLm9v
+ /7/MOxA3xH5+j6Eg/Q8pqxW2PjD+bs6BGjMPsCf3LoYIpnRkNJDwjYmPCOLh0zp5/t6LNv2vb
+ n60YxzafS58PlJQZYuzEZQ92+JYttkRb2bnqKy4NkLqMJuhcEy+ljxXX10cxx2sLOv97r6N4v
+ l336fvsxEjXJFKO2ZuZ3/jqDdWPhK1emniz5OH4Rwvv5Be1o7qc7VONzOUE2g69SB0RjqRSrD
+ q0v4XimuoF4otUOIiwjjLScpIdrTsaMXB+qRPOz3fVNSt7VA+0mMBikX5A2LinayQCtbIkJBT
+ wIvppIR06CRD8ZbcosH0/N9nqkqfyhsTMHGmfar/TUGNL8V5naJRSjel76PMhoXnU74KU7AC9
+ DAvPSK79Jd0U1nlVswxRYLtFk98jPZsVpmpLx15fNr7m8IcNsgJqQ213xWN1GA+siVA0Ok/jZ
+ FOTCXFMN38xyt3I67cAbMmC2cTS9Hla9M57feMboFZwCa5m/5i6lhTNMxBNCkB+0+1a0843PA
+ vYppGv5O1T6YQ12pDhsTsven57oSKFiuSvRBjiYRqyyubnN7QaIbtd6BCICc/pVzGDQVGLiIB
+ F9QCBaaqLz2MdOskZTx9lv9kyl436Jxyfcv6hotJ2MzTniGW0OZukQhZwrhbY+913WmE+mJVC
+ vwyoBjNhFufOpuwdXV7h74+Cy0TVlaH6XGHIt4HMt9CmcBzTABHdEZMkX1+99OajXI030lhtz
+ TzygSTuaGPlMv8DZXIf5WMaTwgRuHxLgHfZQOEmUtVP94OHggc88yZgQv+rCYvj4M7MZgy59C
+ pIi16y9NcxTAjbd2f
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-=E2=80=A6
-> new_blkg =3D blkg_alloc(pos, q, GFP_KERNEL);
-=E2=80=A6
+> This patch fixes commit -
+> commit 3ebd2fd0d011 ("IB/sa: Put netlink request into the request list b=
+efore sending")'
+>
+> Above commit adds the query to the request list before ib_nl_snd_msg.
 
-I suggest to omit the source code quotation from the change description.
+I suggest to improve also this change description.
+
+  The query to the request list was added before ib_nl_snd_msg()
+  by the commit 3ebd2fd0d011 ("=E2=80=A6").
 
 
-> if calling blkg_lookup_check() failed, at the IS_ERR block,
-> the new_blkg should be free before goto lable fail_unlock
-> in blkg_conf_prep() function.
+> This flag Indicates =E2=80=A6
 
-How do you think about a wording variant like the following?
+=E2=80=A6 indicates =E2=80=A6
 
-  If a call of the function =E2=80=9Cblkg_lookup_check=E2=80=9D failed,
-  release the previously allocated block group before jumping
-  to the target =E2=80=9Cfail_unlock=E2=80=9D in the implementation of
-  the function =E2=80=9Cblkg_conf_prep=E2=80=9D.
+
+> To handle the case where a response is received before we could set this
+> flag, the response handler waits for the flag to be
+> set before proceeding with the query.
+
+Please reconsider the word wrapping.
+
+  To handle the case where a response is received before we could set
+  this flag, the response handler waits for the flag to be set
+  before proceeding with the query.
 
 
 Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=

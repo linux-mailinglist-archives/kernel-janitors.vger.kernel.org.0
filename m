@@ -2,115 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AE481D4AB5
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 May 2020 12:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 737EB1D4AC6
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 May 2020 12:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728102AbgEOKTb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 15 May 2020 06:19:31 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:51830 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727927AbgEOKTb (ORCPT
+        id S1728139AbgEOKWh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 15 May 2020 06:22:37 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50839 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728047AbgEOKWf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 15 May 2020 06:19:31 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04FA6aWf066361;
-        Fri, 15 May 2020 10:19:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=Sraec879HLM5mjkyogjFeEukkZwmyXPLKB47XiprxHQ=;
- b=AOrQHDKhZmh7LCauki/I/L1zz5BtGRBDBykkJnK5poPnUy/7xKKy3L7uNzf0I57JLG61
- pNt7KfFXAiKI7OllVQyWXCra2aY7vN8op9V4JPlTEyuy3viffgcmCAtIalCD0oC1fj76
- tTFJijWEj5OYto0qQAf5r9ccW8dhk8/MI/QdF6Sipdx8nlzvJs5CWhEgFpWHCXdEaTnb
- fY/YsfGDlz2TZN8WAMVvz+hHr4i0hhhizF5AKOYKYr0X2EBx4lyML2Yoe6Div6Vj8GLr
- dGJGN/Ud2YZ6sJjdUGovMWPbRkGz9TRpkqgvz6rRsWEWPHMJhA9TVa+LmkkJiujJOx+y GQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 3100yga5jy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 15 May 2020 10:19:16 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04FAEBC8192223;
-        Fri, 15 May 2020 10:19:16 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 3100yjqfnf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 15 May 2020 10:19:16 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04FAJDdv007968;
-        Fri, 15 May 2020 10:19:13 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 15 May 2020 03:19:12 -0700
-Date:   Fri, 15 May 2020 13:19:03 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     James Smart <james.smart@broadcom.com>,
-        linux-nvme@lists.infradead.org
-Cc:     Dick Kennedy <dick.kennedy@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>,
-        Paul Ely <paul.ely@broadcom.com>, linux-scsi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH resend] scsi: lpfc: Fix a use after free in
- lpfc_nvme_unsol_ls_handler()
-Message-ID: <20200515101903.GJ3041@kadam>
+        Fri, 15 May 2020 06:22:35 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jZXU2-0002o7-Q9; Fri, 15 May 2020 10:22:26 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] rtlwifi: rtl8192ee: remove redundant for-loop
+Date:   Fri, 15 May 2020 11:22:26 +0100
+Message-Id: <20200515102226.29819-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq1y2purqt1.fsf@oracle.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9621 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 bulkscore=0
- phishscore=0 suspectscore=2 adultscore=0 mlxscore=0 mlxlogscore=903
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005150089
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9621 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 adultscore=0
- cotscore=-2147483648 mlxscore=0 suspectscore=2 spamscore=0 impostorscore=0
- mlxlogscore=931 malwarescore=0 clxscore=1011 phishscore=0 bulkscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005150088
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "axchg" pointer is dereferenced when we call the
-lpfc_nvme_unsol_ls_issue_abort() function.  It can't be either freed or
-NULL.
+From: Colin Ian King <colin.king@canonical.com>
 
-Fixes: 3a8070c567aa ("lpfc: Refactor NVME LS receive handling")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Reviewed-by: James Smart <james.smart@broadcom.com>
+The for-loop seems to be redundant, the assignments for indexes
+0..2 are being over-written by the last index 3 in the loop. Remove
+the loop and use index 3 instead.
+
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
-Resending to the NVMe list.  Added James' R-b.
+ .../net/wireless/realtek/rtlwifi/rtl8192ee/phy.c   | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-Is there a way we could update MAINTAINERS so that ./get_maintainer.pl
-send these to the correct list?
-
- drivers/scsi/lpfc/lpfc_sli.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
-index 38889cb6e1996..fcf51b4192d66 100644
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -2895,14 +2895,14 @@ lpfc_nvme_unsol_ls_handler(struct lpfc_hba *phba, struct lpfc_iocbq *piocb)
- 			(phba->nvmet_support) ? "T" : "I", ret);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
+index 6dba576aa81e..bb291b951f4d 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
+@@ -2866,14 +2866,12 @@ void rtl92ee_phy_iq_calibrate(struct ieee80211_hw *hw, bool b_recovery)
+ 		}
+ 	}
  
- out_fail:
--	kfree(axchg);
--
- 	/* recycle receive buffer */
- 	lpfc_in_buf_free(phba, &nvmebuf->dbuf);
+-	for (i = 0; i < 4; i++) {
+-		reg_e94 = result[i][0];
+-		reg_e9c = result[i][1];
+-		reg_ea4 = result[i][2];
+-		reg_eb4 = result[i][4];
+-		reg_ebc = result[i][5];
+-		reg_ec4 = result[i][6];
+-	}
++	reg_e94 = result[3][0];
++	reg_e9c = result[3][1];
++	reg_ea4 = result[3][2];
++	reg_eb4 = result[3][4];
++	reg_ebc = result[3][5];
++	reg_ec4 = result[3][6];
  
- 	/* If start of new exchange, abort it */
--	if (fctl & FC_FC_FIRST_SEQ && !(fctl & FC_FC_EX_CTX))
-+	if (axchg && (fctl & FC_FC_FIRST_SEQ) && !(fctl & FC_FC_EX_CTX))
- 		lpfc_nvme_unsol_ls_issue_abort(phba, axchg, sid, oxid);
-+
-+	kfree(axchg);
- }
- 
- /**
+ 	if (final_candidate != 0xff) {
+ 		reg_e94 = result[final_candidate][0];
 -- 
-2.26.2
+2.25.1
+

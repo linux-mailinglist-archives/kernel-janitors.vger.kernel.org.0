@@ -2,91 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10D5B1D4206
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 May 2020 02:22:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 839931D420F
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 May 2020 02:26:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728219AbgEOAVu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 14 May 2020 20:21:50 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:49206 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726287AbgEOAVu (ORCPT
+        id S1728441AbgEOA0g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 14 May 2020 20:26:36 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:57865 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728131AbgEOA0g (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 14 May 2020 20:21:50 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04F0LUWl191258;
-        Fri, 15 May 2020 00:21:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2020-01-29;
- bh=ETSBHDCL7TNRxPWmHsl09jWxyBGnYxZ+hLUh9qKhCcs=;
- b=ppTMkdbZ+nYtAAAWpouZ81dznyu4TyjDI4vHgEMtudXs6n9gUz+LYlfmNy5EMjPC2W7p
- RzcRvdYJAzDzHxytzEgt7ak+tT4WvTuLYkyIPiEwE4xnHNuMjGNb3XGfc0BVJz2M2Fon
- n1PE13Ug6Xmdt/hYwmysbCAZB5SGbdSV6oQMx1VGUFaFZ5WBsQOT5gL1pil/pGPeiONR
- kULjIgVt7C8KD3J6wTM9jaYWhaNVsyPFGiV7bdE2CkrBR5oZIuLE2FgfRcaoNp7dExhX
- s0xBw1oi6+Mw/73Fz/TNlmrO3tgHeo+8M/xk68vATLv6n1taa/AR/vxeFrYMqc7UDOh0 YA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 3100xwnwqj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 15 May 2020 00:21:38 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04F0IkN8132809;
-        Fri, 15 May 2020 00:21:38 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 3100yqbmau-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 15 May 2020 00:21:37 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04F0LZNe004467;
-        Fri, 15 May 2020 00:21:36 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 14 May 2020 17:21:33 -0700
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     James Smart <james.smart@broadcom.com>,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>,
-        Paul Ely <paul.ely@broadcom.com>, linux-scsi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH] scsi: lpfc: Fix a use after free in
- lpfc_nvme_unsol_ls_handler()
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20200512181909.GA299091@mwanda>
-Date:   Thu, 14 May 2020 20:21:30 -0400
-In-Reply-To: <20200512181909.GA299091@mwanda> (Dan Carpenter's message of
-        "Tue, 12 May 2020 21:19:09 +0300")
-Message-ID: <yq1y2purqt1.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.0.91 (gnu/linux)
+        Thu, 14 May 2020 20:26:36 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 04F0QFPu8011756, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 04F0QFPu8011756
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 15 May 2020 08:26:15 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 15 May 2020 08:26:15 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 15 May 2020 08:26:15 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::8001:f5f5:a41e:f8d4]) by
+ RTEXMB04.realtek.com.tw ([fe80::8001:f5f5:a41e:f8d4%3]) with mapi id
+ 15.01.1779.005; Fri, 15 May 2020 08:26:15 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Tony Chuang <yhchuang@realtek.com>,
+        "colin.king@canonical.com" <colin.king@canonical.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH][next] rtw88: 8723d: fix incorrect setting of ldo_pwr
+Thread-Topic: [PATCH][next] rtw88: 8723d: fix incorrect setting of ldo_pwr
+Thread-Index: AQHWKhti7lhzaSVBmUG5wyOyhYF1sqinxIaA
+Date:   Fri, 15 May 2020 00:26:14 +0000
+Message-ID: <1589502367.2500.2.camel@realtek.com>
+References: <20200514181329.16292-1-colin.king@canonical.com>
+In-Reply-To: <20200514181329.16292-1-colin.king@canonical.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.213]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <7BA5728ACA45E54F983A55A77EB2DFA0@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9621 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=724 adultscore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005150000
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9621 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 lowpriorityscore=0
- suspectscore=0 mlxlogscore=753 clxscore=1011 cotscore=-2147483648
- mlxscore=0 phishscore=0 adultscore=0 impostorscore=0 bulkscore=0
- malwarescore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005150001
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-Dan,
-
-> The "axchg" pointer is dereferenced when we call the
-> lpfc_nvme_unsol_ls_issue_abort() function.  It can't be either freed or
-> NULL.
->
-> Fixes: 3a8070c567aa ("lpfc: Refactor NVME LS receive handling")
-
-This fix needs to go through the NVMe tree.
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+T24gVGh1LCAyMDIwLTA1LTE0IGF0IDE4OjEzICswMDAwLCBDb2xpbiBLaW5nIHdyb3RlOg0KPiBG
+cm9tOiBDb2xpbiBJYW4gS2luZyA8Y29saW4ua2luZ0BjYW5vbmljYWwuY29tPg0KPiANCj4gQ3Vy
+cmVudGx5IGxkb19wd3IgaGFzIHRoZSBMRE8yNSB2b2x0YWdlIGJpdHMgc2V0IHRvIHplcm8gYW5k
+IHRoZW4NCj4gaXQgaXMgb3ZlcndyaXR0ZW4gd2l0aCB0aGUgbmV3IHZvbHRhZ2Ugc2V0dGluZy4g
+VGhlIGFzc2lnbm1lbnQNCj4gbG9va3MgaW5jb3JyZWN0LCBpdCBzaG91bGQgYmUgYml0LXdpc2Ug
+b3InaW5nIGluIHRoZSBuZXcgdm9sdGFnZQ0KPiBzZXR0aW5nIHJhdGhlciB0aGFuIGEgZGlyZWN0
+IGFzc2lnbm1lbnQuDQo+IA0KPiBBZGRyZXNzZXMtQ292ZXJpdHk6ICgiVW51c2VkIHZhbHVlIikN
+Cj4gRml4ZXM6IDFhZmI1ZWI3YTAwZCAoInJ0dzg4OiA4NzIzZDogQWRkIGNmZ19sZG8yNSB0byBj
+b250cm9sIExETzI1IikNCj4gU2lnbmVkLW9mZi1ieTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtp
+bmdAY2Fub25pY2FsLmNvbT4NCg0KVGhhbmsgeW91IGZvciB5b3VyIGZpeC4NCg0KQWNrZWQtYnk6
+IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KDQo+IC0tLQ0KPiDCoGRyaXZlcnMv
+bmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODcyM2QuYyB8IDIgKy0NCj4gwqAxIGZpbGUg
+Y2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkNCj4gDQo+IGRpZmYgLS1naXQg
+YS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg3MjNkLmMNCj4gYi9kcml2
+ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg3MjNkLmMNCj4gaW5kZXggYjUxN2Fm
+NDE3ZTBlLi4yYzZlNDE3YzViY2EgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNz
+L3JlYWx0ZWsvcnR3ODgvcnR3ODcyM2QuYw0KPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9y
+ZWFsdGVrL3J0dzg4L3J0dzg3MjNkLmMNCj4gQEAgLTU2MSw3ICs1NjEsNyBAQCBzdGF0aWMgdm9p
+ZCBydHc4NzIzZF9jZmdfbGRvMjUoc3RydWN0IHJ0d19kZXYgKnJ0d2RldiwNCj4gYm9vbCBlbmFi
+bGUpDQo+IMKgCWxkb19wd3IgPSBydHdfcmVhZDgocnR3ZGV2LCBSRUdfTERPX0VGVVNFX0NUUkwg
+KyAzKTsNCj4gwqAJaWYgKGVuYWJsZSkgew0KPiDCoAkJbGRvX3B3ciAmPSB+QklUX01BU0tfTERP
+MjVfVk9MVEFHRTsNCj4gLQkJbGRvX3B3ciA9IChCSVRfTERPMjVfVk9MVEFHRV9WMjUgPDwgNCkg
+fCBCSVRfTERPMjVfRU47DQo+ICsJCWxkb19wd3IgfD0gKEJJVF9MRE8yNV9WT0xUQUdFX1YyNSA8
+PCA0KSB8IEJJVF9MRE8yNV9FTjsNCj4gwqAJfSBlbHNlIHsNCj4gwqAJCWxkb19wd3IgJj0gfkJJ
+VF9MRE8yNV9FTjsNCj4gwqAJfQ0KPiAtLcKgDQo+IDIuMjUuMQ0KPiANCj4gDQo+IC0tLS0tLVBs
+ZWFzZSBjb25zaWRlciB0aGUgZW52aXJvbm1lbnQgYmVmb3JlIHByaW50aW5nIHRoaXMgZS1tYWls
+Lg0KDQoNCg==

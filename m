@@ -2,111 +2,118 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7237E1D5FF9
-	for <lists+kernel-janitors@lfdr.de>; Sat, 16 May 2020 11:27:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E4751D6075
+	for <lists+kernel-janitors@lfdr.de>; Sat, 16 May 2020 12:57:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726462AbgEPJZi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 16 May 2020 05:25:38 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59063 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726264AbgEPJZi (ORCPT
+        id S1726247AbgEPK5r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 16 May 2020 06:57:47 -0400
+Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:28586 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726044AbgEPK5q (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 16 May 2020 05:25:38 -0400
-Received: from [82.43.126.140] (helo=[192.168.0.209])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jZt4Z-00087x-8W; Sat, 16 May 2020 09:25:35 +0000
-Subject: Re: [PATCH][next] USB: EHCI: ehci-mv: fix less than zero comparison
- of an unsigned int
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alan Stern <stern@rowland.harvard.edu>
-Cc:     Zhang Shengju <zhangshengju@cmss.chinamobile.com>,
-        Tang Bin <tangbin@cmss.chinamobile.com>,
-        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20200515165453.104028-1-colin.king@canonical.com>
- <20200515172121.GA5498@rowland.harvard.edu>
- <20200516063045.GA3846431@kroah.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <abab6ad5-5c97-60d4-031a-64632c0e2b04@canonical.com>
-Date:   Sat, 16 May 2020 10:25:34 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        Sat, 16 May 2020 06:57:46 -0400
+Received: from localhost.localdomain ([93.22.148.0])
+        by mwinf5d14 with ME
+        id fNxd2200K00kvqt03Nxeb5; Sat, 16 May 2020 12:57:43 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 16 May 2020 12:57:43 +0200
+X-ME-IP: 93.22.148.0
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     inki.dae@samsung.com, jy0922.shim@samsung.com,
+        sw0312.kim@samsung.com, kyungmin.park@samsung.com,
+        airlied@linux.ie, daniel@ffwll.ch, kgene@kernel.org,
+        krzk@kernel.org
+Cc:     dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH v2] drm/exynos: dsi: Remove bridge node reference in error handling path in probe function
+Date:   Sat, 16 May 2020 12:57:36 +0200
+Message-Id: <20200516105736.269669-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20200516063045.GA3846431@kroah.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 16/05/2020 07:30, Greg Kroah-Hartman wrote:
-> On Fri, May 15, 2020 at 01:21:21PM -0400, Alan Stern wrote:
->> On Fri, May 15, 2020 at 05:54:53PM +0100, Colin King wrote:
->>> From: Colin Ian King <colin.king@canonical.com>
->>>
->>> The comparison of hcd->irq to less than zero for an error check will
->>> never be true because hcd->irq is an unsigned int.  Fix this by
->>> assigning the int retval to the return of platform_get_irq and checking
->>> this for the -ve error condition and assigning hcd->irq to retval.
->>>
->>> Addresses-Coverity: ("Unsigned compared against 0")
->>> Fixes: c856b4b0fdb5 ("USB: EHCI: ehci-mv: fix error handling in mv_ehci_probe()")
->>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->>> ---
->>
->> Thanks to Coverity for spotting this.  Any reason why it didn't spot 
->> exactly the same mistake in the ohci-da8xx.c driver?
-> 
-> I think Coverity only runs on a limited kernel configuration and does
-> not build everything :(
-> 
-I do x86-64 make allmodconfig builds, so it does a fair amount of
-coverage on the builds
+'exynos_dsi_parse_dt()' takes a reference to 'dsi->in_bridge_node'.
+This must be released in the error handling path.
 
-Colin
+In order to do that, add an error handling path and move the
+'exynos_dsi_parse_dt()' call from the beginning to the end of the probe
+function to ease the error handling path.
+This function only sets some variables which are used only in the
+'transfer' function.
+
+The call chain is:
+   .transfer
+    --> exynos_dsi_host_transfer
+      --> exynos_dsi_init
+        --> exynos_dsi_enable_clock  (use burst_clk_rate and esc_clk_rate)
+          --> exynos_dsi_set_pll     (use pll_clk_rate)
+
+While at it, also handle cases where 'component_add()' fails.
+
+This patch is similar to commit 70505c2ef94b ("drm/exynos: dsi: Remove bridge node reference in removal")
+which fixed the issue in the remove function.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+A Fixes tag could be required, but I've not been able to figure out which
+one to use.
+
+v2: move around 'exynos_dsi_parse_dt' instead of adding many gotos
+    handle component_add failures
+---
+ drivers/gpu/drm/exynos/exynos_drm_dsi.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_dsi.c b/drivers/gpu/drm/exynos/exynos_drm_dsi.c
+index 902938d2568f..a9d24402fabf 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_dsi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_dsi.c
+@@ -1759,10 +1759,6 @@ static int exynos_dsi_probe(struct platform_device *pdev)
+ 	dsi->dev = dev;
+ 	dsi->driver_data = of_device_get_match_data(dev);
+ 
+-	ret = exynos_dsi_parse_dt(dsi);
+-	if (ret)
+-		return ret;
+-
+ 	dsi->supplies[0].supply = "vddcore";
+ 	dsi->supplies[1].supply = "vddio";
+ 	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(dsi->supplies),
+@@ -1823,11 +1819,25 @@ static int exynos_dsi_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
++	ret = exynos_dsi_parse_dt(dsi);
++	if (ret)
++		return ret;
++
+ 	platform_set_drvdata(pdev, &dsi->encoder);
+ 
+ 	pm_runtime_enable(dev);
+ 
+-	return component_add(dev, &exynos_dsi_component_ops);
++	ret = component_add(dev, &exynos_dsi_component_ops);
++	if (ret)
++		goto err_disable_runtime;
++
++	return 0;
++
++err_disable_runtime:
++	pm_runtime_disable(dev);
++	of_node_put(dsi->in_bridge_node);
++
++	return ret;
+ }
+ 
+ static int exynos_dsi_remove(struct platform_device *pdev)
+-- 
+2.25.1
+

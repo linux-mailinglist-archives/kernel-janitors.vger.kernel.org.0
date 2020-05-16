@@ -2,77 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8C0C1D5CB9
-	for <lists+kernel-janitors@lfdr.de>; Sat, 16 May 2020 01:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F161E1D5D92
+	for <lists+kernel-janitors@lfdr.de>; Sat, 16 May 2020 03:17:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726553AbgEOXWy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 15 May 2020 19:22:54 -0400
-Received: from cmccmta2.chinamobile.com ([221.176.66.80]:14157 "EHLO
-        cmccmta2.chinamobile.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726183AbgEOXWy (ORCPT
+        id S1726653AbgEPBRN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 15 May 2020 21:17:13 -0400
+Received: from netrider.rowland.org ([192.131.102.5]:43661 "HELO
+        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S1726231AbgEPBRM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 15 May 2020 19:22:54 -0400
-Received: from spf.mail.chinamobile.com (unknown[172.16.121.5]) by rmmx-syy-dmz-app07-12007 (RichMail) with SMTP id 2ee75ebf2446435-09b10; Sat, 16 May 2020 07:22:48 +0800 (CST)
-X-RM-TRANSID: 2ee75ebf2446435-09b10
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG: 00000000
-Received: from [192.168.0.101] (unknown[112.1.172.85])
-        by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee35ebf244773b-96322;
-        Sat, 16 May 2020 07:22:48 +0800 (CST)
-X-RM-TRANSID: 2ee35ebf244773b-96322
-Subject: Re: [PATCH][next] USB: EHCI: ehci-mv: fix less than zero comparisonof
- an unsigned int
-To:     Alan Stern <stern@rowland.harvard.edu>,
-        Colin King <colin.king@canonical.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Fri, 15 May 2020 21:17:12 -0400
+Received: (qmail 14004 invoked by uid 500); 15 May 2020 21:17:11 -0400
+Date:   Fri, 15 May 2020 21:17:11 -0400
+From:   Alan Stern <stern@rowland.harvard.edu>
+To:     Tang Bin <tangbin@cmss.chinamobile.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Zhang Shengju <zhangshengju@cmss.chinamobile.com>,
         linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] USB: EHCI: ehci-mv: fix less than zero
+ comparisonof an unsigned int
+Message-ID: <20200516011711.GA13833@rowland.harvard.edu>
 References: <20200515165453.104028-1-colin.king@canonical.com>
  <20200515172121.GA5498@rowland.harvard.edu>
-From:   Tang Bin <tangbin@cmss.chinamobile.com>
-Message-ID: <fec1e461-16f3-9d5f-bc23-129c71229b9d@cmss.chinamobile.com>
-Date:   Sat, 16 May 2020 07:23:42 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ <fec1e461-16f3-9d5f-bc23-129c71229b9d@cmss.chinamobile.com>
 MIME-Version: 1.0
-In-Reply-To: <20200515172121.GA5498@rowland.harvard.edu>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+In-Reply-To: <fec1e461-16f3-9d5f-bc23-129c71229b9d@cmss.chinamobile.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Alan & Colin：
+On Sat, May 16, 2020 at 07:23:42AM +0800, Tang Bin wrote:
+> Hi Alan & Colin：
+> 
+> On 2020/5/16 1:21, Alan Stern wrote:
+> > On Fri, May 15, 2020 at 05:54:53PM +0100, Colin King wrote:
+> > > From: Colin Ian King <colin.king@canonical.com>
+> > > 
+> > > The comparison of hcd->irq to less than zero for an error check will
+> > > never be true because hcd->irq is an unsigned int.  Fix this by
+> > > assigning the int retval to the return of platform_get_irq and checking
+> > > this for the -ve error condition and assigning hcd->irq to retval.
+> > > 
+> > > Addresses-Coverity: ("Unsigned compared against 0")
+> > > Fixes: c856b4b0fdb5 ("USB: EHCI: ehci-mv: fix error handling in mv_ehci_probe()")
+> > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > > ---
+> > Thanks to Coverity for spotting this.  Any reason why it didn't spot
+> > exactly the same mistake in the ohci-da8xx.c driver?
+> 
+> I just looked at the code and wondered whether it would be more appropriate
+> to modify the header file "hcd.h".  Since 'irq' might be an negative, why
+> not just modify the variables in the 'struct usb_hcd',  'unsigned int 
+> irq'--> 'int irq'? After all, it's a public one.
 
-On 2020/5/16 1:21, Alan Stern wrote:
-> On Fri, May 15, 2020 at 05:54:53PM +0100, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> The comparison of hcd->irq to less than zero for an error check will
->> never be true because hcd->irq is an unsigned int.  Fix this by
->> assigning the int retval to the return of platform_get_irq and checking
->> this for the -ve error condition and assigning hcd->irq to retval.
->>
->> Addresses-Coverity: ("Unsigned compared against 0")
->> Fixes: c856b4b0fdb5 ("USB: EHCI: ehci-mv: fix error handling in mv_ehci_probe()")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
-> Thanks to Coverity for spotting this.  Any reason why it didn't spot
-> exactly the same mistake in the ohci-da8xx.c driver?
+I think the code in the drivers should be changed.  The reason is if 
+platform_get_irq() returns a negative value, then that value should be 
+what the probe function returns.
 
-I just looked at the code and wondered whether it would be more 
-appropriate to modify the header file "hcd.h".  Since 'irq' might be an 
-negative, why not just modify the variables in the 'struct usb_hcd',  
-'unsigned int  irq'--> 'int irq'? After all, it's a public one.
-
-Thanks,
-
-Tang Bin
-
->
->
-
-
+Alan Stern

@@ -2,100 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BAE01D772A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 18 May 2020 13:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7FEE1D7737
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 May 2020 13:34:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727873AbgERLcp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 May 2020 07:32:45 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:44912 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726590AbgERLco (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 May 2020 07:32:44 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04IBR8En030210;
-        Mon, 18 May 2020 11:32:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=Nf4Rh2W7FuA5dcxB52Yb3a1cDcQWNzGxXYU7kpXcYOs=;
- b=reQJpdgKciM7tKTDXmtbEwWYIBsfiLz5q0YT3X14iPZz7K/GfjX8lEWRBFCqcsR9LX+i
- KKS9hLMm3Yxm95bKmOC17YhIBcm9frl/1HaS42mJzoLHMOuvGSKkhqeLeHFHGPj6MYIE
- woE/F9Odues1s1B2meS6bluwBuYbeGmy6DAG22T7QFVeHGLMJqFFJMFrqS+OebYYE7fo
- cfoN5XCqV9mgVaFIKqnZvDRgNbnh/WRhc0zZn0c4WvTeNlJDITcJfuD1G4LZoYp2DTDj
- ZxqDpe/v+Lf2EbEwuDgOBef67eoIJIlmi2M8K1m5icqF8s8t3NjH1ffCZ2swvqSJSYij OQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 3127kqx7tp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 18 May 2020 11:32:37 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04IBSuGt121191;
-        Mon, 18 May 2020 11:30:36 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 312t30m2qd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 18 May 2020 11:30:36 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04IBUTmb001719;
-        Mon, 18 May 2020 11:30:29 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 18 May 2020 04:30:29 -0700
-Date:   Mon, 18 May 2020 14:30:21 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>
-Cc:     Michael Ellerman <mpe@ellerman.id.au>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] of: drop a reference on error in __of_attach_node_sysfs()
-Message-ID: <20200518113021.GB48709@mwanda>
+        id S1727008AbgERLej (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 May 2020 07:34:39 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:51082 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726526AbgERLej (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 18 May 2020 07:34:39 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id D496DEC4CE1912E258A9;
+        Mon, 18 May 2020 19:34:34 +0800 (CST)
+Received: from [127.0.0.1] (10.166.215.100) by DGGEMS404-HUB.china.huawei.com
+ (10.3.19.204) with Microsoft SMTP Server id 14.3.487.0; Mon, 18 May 2020
+ 19:34:28 +0800
+Subject: Re: [PATCH] blkcg: Fix memory leak in blkg_conf_prep()
+To:     Markus Elfring <Markus.Elfring@web.de>, <cgroups@vger.kernel.org>,
+        <linux-block@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        "Feilong Lin" <linfeilong@huawei.com>,
+        Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
+        Zhiqiang Liu <liuzhiqiang26@huawei.com>
+References: <4c670a6c-98c3-2b14-7438-09199506d92f@web.de>
+From:   Wu Bo <wubo40@huawei.com>
+Message-ID: <5cfba9c1-675d-d4e8-65bf-746712ae32e5@huawei.com>
+Date:   Mon, 18 May 2020 19:34:27 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9624 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 mlxlogscore=999
- phishscore=0 mlxscore=0 malwarescore=0 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005180104
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9624 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
- bulkscore=0 clxscore=1011 priorityscore=1501 mlxscore=0 impostorscore=0
- suspectscore=0 mlxlogscore=999 malwarescore=0 cotscore=-2147483648
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005180103
+In-Reply-To: <4c670a6c-98c3-2b14-7438-09199506d92f@web.de>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.166.215.100]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We add a new of_node_get() to this function, but we should drop the
-reference if kobject_add().
+On 2020/5/15 23:08, Markus Elfring wrote:
+> …
+>> new_blkg = blkg_alloc(pos, q, GFP_KERNEL);
+> …
+> 
+> I suggest to omit the source code quotation from the change description.
+> 
+> 
+>> if calling blkg_lookup_check() failed, at the IS_ERR block,
+>> the new_blkg should be free before goto lable fail_unlock
+>> in blkg_conf_prep() function.
+> 
+> How do you think about a wording variant like the following?
+> 
+>    If a call of the function “blkg_lookup_check” failed,
+>    release the previously allocated block group before jumping
+>    to the target “fail_unlock” in the implementation of
+>    the function “blkg_conf_prep”.
+> 
 
-Fixes: 5b2c2f5a0ea3 ("of: overlay: add missing of_node_get() in __of_attach_node_sysfs")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-From static analysis.  Maybe we should just call of_node_get() right
-before we return 0?
+Thanks for your suggestion. omit the source code quotation from the 
+description is more friendly. I will modify the description in V2 patch.
 
- drivers/of/kobj.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Thanks,
+Wu Bo
 
-diff --git a/drivers/of/kobj.c b/drivers/of/kobj.c
-index c72eef988041..a90dc4b3b060 100644
---- a/drivers/of/kobj.c
-+++ b/drivers/of/kobj.c
-@@ -138,8 +138,10 @@ int __of_attach_node_sysfs(struct device_node *np)
- 
- 	rc = kobject_add(&np->kobj, parent, "%s", name);
- 	kfree(name);
--	if (rc)
-+	if (rc) {
-+		of_node_put(np);
- 		return rc;
-+	}
- 
- 	for_each_property_of_node(np, pp)
- 		__of_add_property_sysfs(np, pp);
--- 
-2.26.2
+> 
+> Would you like to add the tag “Fixes” to the commit message?
+> 
+> Regards,
+> Markus
+> 
+
 

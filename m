@@ -2,30 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 934611D7853
-	for <lists+kernel-janitors@lfdr.de>; Mon, 18 May 2020 14:17:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B5EF1D785A
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 May 2020 14:19:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727814AbgERMRr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 May 2020 08:17:47 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:34201 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726758AbgERMRp (ORCPT
+        id S1726990AbgERMTt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 May 2020 08:19:49 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:29631 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726557AbgERMTs (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 May 2020 08:17:45 -0400
+        Mon, 18 May 2020 08:19:48 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589804265; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1589804388; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=gXT98i0A24jvgpR3VLzzjDcMw6z0mC5dHttghjpZqI0=;
- b=ToKPJCJNdCQs+sMC3g+xXSNp5QQF6Fx84F6Jfzw7442UAITNTde+Rl8QCGqpHOJCalRGHzpK
- 5X3pdKTQIlN9aUJLSt+qgyg1yuVB6ayGwb9R/EIjpas4Kc765MrqQBoiOlT1MHb1Z6J2Vzw+
- nUFA2Vq2RNfFKht0/z+0h2X2sOU=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ Content-Type: Sender; bh=RkLZWqjK5J2QQRE7bqK/5Ne832290KHKl7J2BIb/wP8=;
+ b=Uy9asZZduAWGAzGiob23+fgzhdqmNcsCQy7DfK+melehbZopM5Vt0kPUNZfIPfLKykzrAt2C
+ E2WyAWQsPi1dCKUgXWfioSS4lYE8DOAFxVYtW0Ytgvq9U/pe1c06JTV72lLq9He6Yk2DHSmD
+ 9ZV/P94ZrQ+a7jND1BnAi7JWReM=
+X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ec27ce7.7f97ccfd9730-smtp-out-n02;
- Mon, 18 May 2020 12:17:43 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5ec27d54.7fdbc1d299d0-smtp-out-n03;
+ Mon, 18 May 2020 12:19:32 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 20D94C43636; Mon, 18 May 2020 12:17:42 +0000 (UTC)
+        id CBE53C433D2; Mon, 18 May 2020 12:19:32 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,27 +35,25 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CFB42C433F2;
-        Mon, 18 May 2020 12:17:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CFB42C433F2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3A4DAC433F2;
+        Mon, 18 May 2020 12:19:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3A4DAC433F2
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] rtw88: 8723d: fix incorrect setting of ldo_pwr
+Subject: Re: [PATCH] rtlwifi: rtl8192ee: remove redundant for-loop
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200514181329.16292-1-colin.king@canonical.com>
-References: <20200514181329.16292-1-colin.king@canonical.com>
+In-Reply-To: <20200515102226.29819-1-colin.king@canonical.com>
+References: <20200515102226.29819-1-colin.king@canonical.com>
 To:     Colin King <colin.king@canonical.com>
-Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Ping-Ke Shih <pkshih@realtek.com>,
+Cc:     "David S . Miller" <davem@davemloft.net>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200518121742.20D94C43636@smtp.codeaurora.org>
-Date:   Mon, 18 May 2020 12:17:42 +0000 (UTC)
+Message-Id: <20200518121932.CBE53C433D2@smtp.codeaurora.org>
+Date:   Mon, 18 May 2020 12:19:32 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -65,21 +63,18 @@ Colin King <colin.king@canonical.com> wrote:
 
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> Currently ldo_pwr has the LDO25 voltage bits set to zero and then
-> it is overwritten with the new voltage setting. The assignment
-> looks incorrect, it should be bit-wise or'ing in the new voltage
-> setting rather than a direct assignment.
+> The for-loop seems to be redundant, the assignments for indexes
+> 0..2 are being over-written by the last index 3 in the loop. Remove
+> the loop and use index 3 instead.
 > 
 > Addresses-Coverity: ("Unused value")
-> Fixes: 1afb5eb7a00d ("rtw88: 8723d: Add cfg_ldo25 to control LDO25")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-c5457559b626 rtw88: 8723d: fix incorrect setting of ldo_pwr
+b0a4bb7693be rtlwifi: rtl8192ee: remove redundant for-loop
 
 -- 
-https://patchwork.kernel.org/patch/11549469/
+https://patchwork.kernel.org/patch/11551059/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

@@ -2,71 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35E091D7FB0
-	for <lists+kernel-janitors@lfdr.de>; Mon, 18 May 2020 19:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1D951D7FC0
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 May 2020 19:11:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727973AbgERRJS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 May 2020 13:09:18 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42349 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727006AbgERRJS (ORCPT
+        id S1727942AbgERRLU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 May 2020 13:11:20 -0400
+Received: from smtprelay0009.hostedemail.com ([216.40.44.9]:47312 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727006AbgERRLU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 May 2020 13:09:18 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jajGI-00029G-Ff; Mon, 18 May 2020 17:09:10 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>,
-        Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/i915: fix incorrect return of an error status
-Date:   Mon, 18 May 2020 18:09:10 +0100
-Message-Id: <20200518170910.58292-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        Mon, 18 May 2020 13:11:20 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay01.hostedemail.com (Postfix) with ESMTP id DDE31100E7B40;
+        Mon, 18 May 2020 17:11:18 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3353:3622:3865:3866:3867:3868:3871:4321:5007:7576:7903:10004:10400:10848:11026:11232:11658:11914:12043:12296:12297:12438:12555:12740:12760:12895:12986:13069:13255:13311:13357:13439:14096:14097:14181:14659:14721:21080:21451:21627:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:3,LUA_SUMMARY:none
+X-HE-Tag: badge74_7fac34a359a27
+X-Filterd-Recvd-Size: 2431
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf08.hostedemail.com (Postfix) with ESMTPA;
+        Mon, 18 May 2020 17:11:17 +0000 (UTC)
+Message-ID: <06434e4d5980b17a1cacee80369087cbd7a8cbe0.camel@perches.com>
+Subject: Re: [PATCH][next] i2c: mediatek: fix integer overflow on an integer
+ multiplication
+From:   Joe Perches <joe@perches.com>
+To:     Wolfram Sang <wsa@kernel.org>,
+        Colin King <colin.king@canonical.com>, qii.wang@mediatek.com
+Cc:     Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 18 May 2020 10:11:16 -0700
+In-Reply-To: <20200518165928.GA5109@ninjato>
+References: <20200518165529.57821-1-colin.king@canonical.com>
+         <20200518165928.GA5109@ninjato>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.1-2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Mon, 2020-05-18 at 18:59 +0200, Wolfram Sang wrote:
+> On Mon, May 18, 2020 at 05:55:29PM +0100, Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > Currently the calculation of sample_ns is using a 32 bit integer
+> > multiplication and can potentially overflow. Fix this by making the
+> > constant a long long to use a 64 bit multiply and hence
+> > avoid an overflow.
+> > 
+> > Addresses-Coverity: ("Unintentional integer overflow")
+> > Fixes: 5f1ae73d538a ("i2c: mediatek: Add i2c ac-timing adjust support")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> 
+> CCing the patch author.
+> 
+> > ---
+> >  drivers/i2c/busses/i2c-mt65xx.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/i2c/busses/i2c-mt65xx.c b/drivers/i2c/busses/i2c-mt65xx.c
+> > index 702061805925..c93492b997ce 100644
+> > --- a/drivers/i2c/busses/i2c-mt65xx.c
+> > +++ b/drivers/i2c/busses/i2c-mt65xx.c
+> > @@ -551,7 +551,7 @@ static int mtk_i2c_check_ac_timing(struct mtk_i2c *i2c,
+> >  	const struct i2c_spec_values *spec;
+> >  	unsigned int su_sta_cnt, low_cnt, high_cnt, max_step_cnt;
+> >  	unsigned int sda_max, sda_min, clk_ns, max_sta_cnt = 0x3f;
+> > -	long long sample_ns = (1000000000 * (sample_cnt + 1)) / clk_src;
+> > +	long long sample_ns = (1000000000LL * (sample_cnt + 1)) / clk_src;
 
-Currently when a call to intel_atomic_get_dbuf_state fails the
-error value being returns is a potentially uninitialized value
-in variable ret.  Fix this by returning the error value of
-new_dbuf_state.
+unsigned long long?
 
-Addresses-Coverity: ("Uninitialized scalar value")
-Fixes: 3cf43cdc63fb ("drm/i915: Introduce proper dbuf state")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/i915/intel_pm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/i915/intel_pm.c b/drivers/gpu/drm/i915/intel_pm.c
-index a21e36ed1a77..762a5184fc69 100644
---- a/drivers/gpu/drm/i915/intel_pm.c
-+++ b/drivers/gpu/drm/i915/intel_pm.c
-@@ -5917,7 +5917,7 @@ skl_ddb_add_affected_pipes(struct intel_atomic_state *state)
- 
- 		new_dbuf_state = intel_atomic_get_dbuf_state(state);
- 		if (IS_ERR(new_dbuf_state))
--			return ret;
-+			return PTR_ERR(new_dbuf_state);
- 
- 		old_dbuf_state = intel_atomic_get_old_dbuf_state(state);
- 
--- 
-2.25.1
 

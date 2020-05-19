@@ -2,79 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E35831DA30C
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 May 2020 22:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF1331DA4E4
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 00:44:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727030AbgESUpM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 May 2020 16:45:12 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:19562 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726447AbgESUpM (ORCPT
+        id S1726938AbgESWoe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 May 2020 18:44:34 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:37443 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726348AbgESWoe (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 May 2020 16:45:12 -0400
-Received: from localhost.localdomain ([93.22.37.87])
-        by mwinf5d40 with ME
-        id gkl92200J1sokYV03klAAT; Tue, 19 May 2020 22:45:11 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 19 May 2020 22:45:11 +0200
-X-ME-IP: 93.22.37.87
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     herbert@gondor.apana.org.au, davem@davemloft.net,
-        jsrikanth@marvell.com, phemadri@marvell.com,
-        gustavo@embeddedor.com, tglx@linutronix.de
-Cc:     linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] crypto: cavium/nitrox - Fix 'nitrox_get_first_device()' when ndevlist is fully iterated
-Date:   Tue, 19 May 2020 22:45:03 +0200
-Message-Id: <20200519204503.281872-1-christophe.jaillet@wanadoo.fr>
+        Tue, 19 May 2020 18:44:34 -0400
+Received: from [82.43.126.140] (helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jbAyL-0000Lw-4y; Tue, 19 May 2020 22:44:29 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Tony Lindgren <tony@atomide.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] clocksource/drivers/timer-ti-dm: fix spelling mistake "detectt" -> "detect"
+Date:   Tue, 19 May 2020 23:44:28 +0100
+Message-Id: <20200519224428.6195-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-When a list is completely iterated with 'list_for_each_entry(x, ...)', x is
-not NULL at the end.
+From: Colin Ian King <colin.king@canonical.com>
 
-Introduce an intermediate variable and test it instead, in order to
-reliably know if something was found or not.
+There is a spelling mistake in a pr_err message. Fix it.
 
-Fixes: f2663872f073 ("crypto: cavium - Register the CNN55XX supported crypto algorithms.")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/crypto/cavium/nitrox/nitrox_main.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/clocksource/timer-ti-dm-systimer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/cavium/nitrox/nitrox_main.c b/drivers/crypto/cavium/nitrox/nitrox_main.c
-index 788c6607078b..172cafe7c039 100644
---- a/drivers/crypto/cavium/nitrox/nitrox_main.c
-+++ b/drivers/crypto/cavium/nitrox/nitrox_main.c
-@@ -278,15 +278,18 @@ static void nitrox_remove_from_devlist(struct nitrox_device *ndev)
+diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
+index 1495618a5744..45f300305aa3 100644
+--- a/drivers/clocksource/timer-ti-dm-systimer.c
++++ b/drivers/clocksource/timer-ti-dm-systimer.c
+@@ -701,7 +701,7 @@ static int __init dmtimer_systimer_init(struct device_node *np)
+ 		dmtimer_systimer_select_best();
  
- struct nitrox_device *nitrox_get_first_device(void)
- {
--	struct nitrox_device *ndev = NULL;
-+	struct nitrox_device *ndev;
-+	bool found = false;
+ 	if (!clocksource && !clockevent) {
+-		pr_err("%s: unable to detectt system timers, update dtb?\n",
++		pr_err("%s: unable to detect system timers, update dtb?\n",
+ 		       __func__);
  
- 	mutex_lock(&devlist_lock);
- 	list_for_each_entry(ndev, &ndevlist, list) {
--		if (nitrox_ready(ndev))
-+		if (nitrox_ready(ndev)) {
-+			found = true;
- 			break;
-+		}
- 	}
- 	mutex_unlock(&devlist_lock);
--	if (!ndev)
-+	if (!found)
- 		return NULL;
- 
- 	refcount_inc(&ndev->refcnt);
+ 		return -EINVAL;
 -- 
 2.25.1
 

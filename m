@@ -2,91 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 805941D9067
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 May 2020 08:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8F701D9313
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 May 2020 11:15:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728361AbgESG4M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 May 2020 02:56:12 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:54954 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728191AbgESG4K (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 May 2020 02:56:10 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589871369; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=0qIm7vciFqshx69ineP5uqBYK6jDShcXu+uD5JF18EY=;
- b=OaEUKTP5tfSfBaMAjW4t4H4xPsK1eB7yDfB7oFAddzEfwMZz5vyAEUlLiQr0Ud4WpBuiiHrT
- 0ze9mKSKT4MqfY0k0+qCuJv9YniSfbmmLL5mQAYVMRMRa9tJ+ZKiRuZ5K97z7zqfwePjzmfi
- LDkJZYbH+1E1mtTGTknOvdcZPH4=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5ec383018ebbf95ecbd06813 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 19 May 2020 06:56:01
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C7ADBC44788; Tue, 19 May 2020 06:56:00 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 00283C432C2;
-        Tue, 19 May 2020 06:55:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 00283C432C2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1728594AbgESJPr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 May 2020 05:15:47 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:55070 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728582AbgESJPr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 19 May 2020 05:15:47 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 3006BE2481FF2DFF7BBE;
+        Tue, 19 May 2020 17:15:45 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 19 May 2020 17:15:35 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Joerg Roedel <joro@8bytes.org>, Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        "Maxime Ripard" <maxime@cerno.tech>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <iommu@lists.linux-foundation.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] iommu/sun50i: Fix return value check in sun50i_iommu_probe()
+Date:   Tue, 19 May 2020 09:18:57 +0000
+Message-ID: <20200519091857.134170-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: Fix some resource leaks in error path in
- 'ath11k_thermal_register()'
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200513201454.258111-1-christophe.jaillet@wanadoo.fr>
-References: <20200513201454.258111-1-christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     davem@davemloft.net, pradeepc@codeaurora.org,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200519065600.C7ADBC44788@smtp.codeaurora.org>
-Date:   Tue, 19 May 2020 06:56:00 +0000 (UTC)
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+In case of error, the function devm_platform_ioremap_resource() returns
+ERR_PTR() not NULL. The NULL test in the return value check must be
+replaced with IS_ERR().
 
-> If 'thermal_cooling_device_register()' fails, we must undo what has been
-> allocated so far. So we must go to 'err_thermal_destroy' instead of
-> returning directly
-> 
-> In case of error in 'ath11k_thermal_register()', the previous
-> 'thermal_cooling_device_register()' call must also be undone. Move the
-> 'ar->thermal.cdev = cdev' a few lines above in order for this to be done
-> in 'ath11k_thermal_unregister()' which is called in the error handling
-> path.
-> 
-> Fixes: 2a63bbca06b2 ("ath11k: add thermal cooling device support")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Fixes: 4100b8c229b3 ("iommu: Add Allwinner H6 IOMMU driver")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/iommu/sun50i-iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Patch applied to ath-next branch of ath.git, thanks.
+diff --git a/drivers/iommu/sun50i-iommu.c b/drivers/iommu/sun50i-iommu.c
+index 9c763d4a8e2a..1fa09ddcebd4 100644
+--- a/drivers/iommu/sun50i-iommu.c
++++ b/drivers/iommu/sun50i-iommu.c
+@@ -941,7 +941,7 @@ static int sun50i_iommu_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	iommu->base = devm_platform_ioremap_resource(pdev, 0);
+-	if (!iommu->base) {
++	if (IS_ERR(iommu->base)) {
+ 		ret = PTR_ERR(iommu->base);
+ 		goto err_free_group;
+ 	}
 
-25ca180ad380 ath11k: Fix some resource leaks in error path in 'ath11k_thermal_register()'
 
--- 
-https://patchwork.kernel.org/patch/11547195/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

@@ -2,115 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25BB21D95D4
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 May 2020 14:05:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4150E1D95D1
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 May 2020 14:04:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728662AbgESMFP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 May 2020 08:05:15 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:36540 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726949AbgESMFO (ORCPT
+        id S1728662AbgESMEE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 May 2020 08:04:04 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:57192 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726949AbgESMED (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 May 2020 08:05:14 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04JC36kD118347;
-        Tue, 19 May 2020 12:05:06 GMT
+        Tue, 19 May 2020 08:04:03 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04JC1lWV037335;
+        Tue, 19 May 2020 12:03:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=2fpmY1k55WSq8WljHrbcXEhrjzL8/nsgsGqNUB8dwII=;
- b=aYhuBfrFn8xwLyp/OcAgaRdEW0b8PIXIppoEPm5GvR0xkE8PlJnbandLn3Ca9Y0CjCGl
- DK5+7NhRhKHq+aNUxnB+SUC96h7COSK+bwavR21391pOsfjIJvCTzneQ6P28JpzEUXtt
- hek7HGWhL6FhpRbkPAYMLygopZbt+rSjKpMuW0wHj7s0SyBz9C7Qg0JShKKHJ6cDoAKw
- fQIpcESIsL3RWqY3eA7kChyYGZEOxNX7sgGKqsh5mz80e5HtD4eL8BgCLsB98Dy4QpkY
- DAU/A1g0gRhKCoOXcUM28F3d38pFvVYcoAxw/9oOJmqspvWXf9DwFlBIW1VmfmGDhGwl Jw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 3127kr4xee-1
+ bh=5Dh6Kmbkk88WlGxBnrORL6ipiVsjzGGG0ld8Cmr/oEo=;
+ b=a3vCr1Qssr/Fsd8D+n7WkYPUngrf5ETstMC+iQqlmXSoTGiwYDMf8ZgBPRG9OBQhVAD4
+ 1uExhBaIvTiCoGVx35LUSfcVLEc8F6cEgJMrQrEx3ooMFns9WfxjWfe2Zu/a8CodXpkv
+ BN0wKfQGdw69PBIW3doicKCBwvfD30EJ9/MR3IsUOTU1xa2mmROQKhAXDMZfuMdWJjBd
+ +60flxBPivF+IMbeWQ/GWeVdnwxA16AaP/hdUbMVnXTV3keb0m5ZXzh7QS4qsXtYPi0R
+ cIv4Z185OevARFYzHwPLuGW+MQKyrBrEK+67ANbHYuFU6O2ZH0t+iZ1z1NFCNB61orRk JQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 31284kvwgj-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 19 May 2020 12:05:06 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04JC2YY0084270;
-        Tue, 19 May 2020 12:03:05 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 313gj1j7b1-1
+        Tue, 19 May 2020 12:03:58 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04JC32cL065970;
+        Tue, 19 May 2020 12:03:58 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 312t343b34-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 19 May 2020 12:03:05 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04JC34ho028158;
-        Tue, 19 May 2020 12:03:04 GMT
+        Tue, 19 May 2020 12:03:58 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04JC3sGQ018978;
+        Tue, 19 May 2020 12:03:55 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 19 May 2020 05:03:04 -0700
-Date:   Tue, 19 May 2020 15:02:56 +0300
+        with ESMTP ; Tue, 19 May 2020 05:03:54 -0700
+Date:   Tue, 19 May 2020 15:03:47 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
 To:     Danil Kipnis <danil.kipnis@cloud.ionos.com>,
         Jack Wang <jinpu.wang@cloud.ionos.com>
-Cc:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] RDMA/rtrs: Fix some signedness bugs in error handling
-Message-ID: <20200519120256.GC42765@mwanda>
+Cc:     Jens Axboe <axboe@kernel.dk>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Bart Van Assche <bvanassche@acm.org>,
+        linux-block@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] block/rnbd: Fix an IS_ERR() vs NULL check in
+ find_or_create_sess()
+Message-ID: <20200519120347.GD42765@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9625 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 malwarescore=0
- mlxscore=0 adultscore=0 bulkscore=0 suspectscore=0 mlxlogscore=999
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 mlxlogscore=999
+ phishscore=0 mlxscore=0 malwarescore=0 suspectscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
  definitions=main-2005190109
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9625 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
- bulkscore=0 clxscore=1015 priorityscore=1501 mlxscore=0 impostorscore=0
- suspectscore=0 mlxlogscore=999 malwarescore=0 cotscore=-2147483648
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005190109
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0
+ cotscore=-2147483648 impostorscore=0 malwarescore=0 mlxlogscore=999
+ lowpriorityscore=0 phishscore=0 spamscore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 clxscore=1011 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005190109
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The problem is that "req->sg_cnt" is an unsigned int so if "nr" is
-negative, it gets type promoted to a high positive value and the
-condition is false.  This patch fixes it by handling negatives separately.
+The alloc_sess() function returns error pointers, it never returns NULL.
 
-Fixes: 6a98d71daea1 ("RDMA/rtrs: client: main functionality")
+Fixes: f7a7a5c228d4 ("block/rnbd: client: main functionality")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-clt.c | 7 +++----
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 2 +-
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/block/rnbd/rnbd-clt.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-index 468fdd0d8713..17f99f0962d0 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-@@ -1047,11 +1047,10 @@ static int rtrs_map_sg_fr(struct rtrs_clt_io_req *req, size_t count)
- 
- 	/* Align the MR to a 4K page size to match the block virt boundary */
- 	nr = ib_map_mr_sg(req->mr, req->sglist, count, NULL, SZ_4K);
--	if (unlikely(nr < req->sg_cnt)) {
--		if (nr < 0)
--			return nr;
-+	if (nr < 0)
-+		return -EINVAL;
-+	if (unlikely(nr < req->sg_cnt))
- 		return -EINVAL;
--	}
- 	ib_update_fast_reg_key(req->mr, ib_inc_rkey(req->mr->rkey));
- 
- 	return nr;
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index ba8ab33b94a2..eefd149ce7a4 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -649,7 +649,7 @@ static int map_cont_bufs(struct rtrs_srv_sess *sess)
+diff --git a/drivers/block/rnbd/rnbd-clt.c b/drivers/block/rnbd/rnbd-clt.c
+index 55bff3b1be71..a033247281da 100644
+--- a/drivers/block/rnbd/rnbd-clt.c
++++ b/drivers/block/rnbd/rnbd-clt.c
+@@ -923,13 +923,12 @@ rnbd_clt_session *find_or_create_sess(const char *sessname, bool *first)
+ 	sess = __find_and_get_sess(sessname);
+ 	if (!sess) {
+ 		sess = alloc_sess(sessname);
+-		if (sess) {
+-			list_add(&sess->list, &sess_list);
+-			*first = true;
+-		} else {
++		if (IS_ERR(sess)) {
+ 			mutex_unlock(&sess_lock);
+-			return ERR_PTR(-ENOMEM);
++			return sess;
  		}
- 		nr = ib_map_mr_sg(mr, sgt->sgl, sgt->nents,
- 				  NULL, max_chunk_size);
--		if (nr < sgt->nents) {
-+		if (nr < 0 || nr < sgt->nents) {
- 			err = nr < 0 ? nr : -EINVAL;
- 			goto dereg_mr;
- 		}
++		list_add(&sess->list, &sess_list);
++		*first = true;
+ 	} else
+ 		*first = false;
+ 	mutex_unlock(&sess_lock);
 -- 
 2.26.2
 

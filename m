@@ -2,99 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B38E81D9B91
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 May 2020 17:45:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A65561D9B93
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 May 2020 17:45:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728967AbgESPpl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 May 2020 11:45:41 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:52750 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728778AbgESPpl (ORCPT
+        id S1729007AbgESPp4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 May 2020 11:45:56 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53562 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728778AbgESPp4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 May 2020 11:45:41 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04JFba9R137478;
-        Tue, 19 May 2020 15:45:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=N051ZBCa5vr/bo3pN8vlQTa8Ks4pH+TkFHzqVXxAw7Q=;
- b=mRJoEAxJFFj9D3cNgTMNEHVxko9PvrqTS3UiRZe2m995gwFpsE4+dKTPjnBEv4A2Zvun
- EM8RWYkb7RCFRFwyghQz0EUyELWgUAKEoHtzP8lhNzhbAtGPZdhmeiJ+l0xf8+yDiSXa
- fLqjpyCNOxkCQNguro9HGx4hu6FL4apyxTc3WmrinbTm1IM6+5H4e+ORSO135gbDmSuV
- boW8ihTm8FcaGE3EqdL6n3Ytj7Vo2bW9M520OAFF/LLJdjolj6Y3/MTz8sVoFyL71abX
- 81madnE3i67gr6brPIXy65VLxPV3+TVYxUJRWlIbAhQINm5ScX/cfoiN0eoezd5MOIEn 0A== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 3128tne3yj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 19 May 2020 15:45:35 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04JFdHDP123517;
-        Tue, 19 May 2020 15:45:34 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 312t34mqg1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 19 May 2020 15:45:34 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04JFjW9i012230;
-        Tue, 19 May 2020 15:45:32 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 19 May 2020 08:45:31 -0700
-Date:   Tue, 19 May 2020 18:45:25 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Danil Kipnis <danil.kipnis@cloud.ionos.com>
-Cc:     Jack Wang <jinpu.wang@cloud.ionos.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] RDMA/rtrs: Fix a couple off by one bugs in
- rtrs_srv_rdma_done()
-Message-ID: <20200519154525.GA66801@mwanda>
+        Tue, 19 May 2020 11:45:56 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jb4RF-0003IW-Eo; Tue, 19 May 2020 15:45:53 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Evgeniy Polyakov <zbr@ioremap.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Akira Shimahara <akira215corp@gmail.com>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] w1_therm: remove redundant assignments to variable ret
+Date:   Tue, 19 May 2020 16:45:53 +0100
+Message-Id: <20200519154553.873413-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHg0Huz39q9nWwTrtCY=SgU=T9oZJQdchx6c1LOPbSQiywzrqw@mail.gmail.com>
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 mlxlogscore=999
- phishscore=0 mlxscore=0 malwarescore=0 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005190134
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 bulkscore=0 spamscore=0
- clxscore=1015 cotscore=-2147483648 suspectscore=0 lowpriorityscore=0
- adultscore=0 phishscore=0 mlxlogscore=999 mlxscore=0 priorityscore=1501
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005190134
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-These > comparisons should be >= to prevent accessing one element
-beyond the end of the buffer.
+From: Colin Ian King <colin.king@canonical.com>
 
-Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+The variable ret is being initialized with a value that is never read
+and it is being updated later with a new value. The initialization
+is redundant and can be removed.
+
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/w1/slaves/w1_therm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index 658c8999cb0d..0b53b79b0e27 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -1213,8 +1213,8 @@ static void rtrs_srv_rdma_done(struct ib_cq *cq, struct ib_wc *wc)
+diff --git a/drivers/w1/slaves/w1_therm.c b/drivers/w1/slaves/w1_therm.c
+index cc4b88056b33..d5f062c05c9d 100644
+--- a/drivers/w1/slaves/w1_therm.c
++++ b/drivers/w1/slaves/w1_therm.c
+@@ -505,7 +505,7 @@ static inline int w1_DS18S20_write_data(struct w1_slave *sl,
  
- 			msg_id = imm_payload >> sess->mem_bits;
- 			off = imm_payload & ((1 << sess->mem_bits) - 1);
--			if (unlikely(msg_id > srv->queue_depth ||
--				     off > max_chunk_size)) {
-+			if (unlikely(msg_id >= srv->queue_depth ||
-+				     off >= max_chunk_size)) {
- 				rtrs_err(s, "Wrong msg_id %u, off %u\n",
- 					  msg_id, off);
- 				close_sess(sess);
+ static inline int w1_DS18B20_set_resolution(struct w1_slave *sl, int val)
+ {
+-	int ret = -ENODEV;
++	int ret;
+ 	u8 new_config_register[3];	/* array of data to be written */
+ 	struct therm_info info;
+ 
+@@ -538,7 +538,7 @@ static inline int w1_DS18B20_set_resolution(struct w1_slave *sl, int val)
+ 
+ static inline int w1_DS18B20_get_resolution(struct w1_slave *sl)
+ {
+-	int ret = -ENODEV;
++	int ret;
+ 	u8 config_register;
+ 	struct therm_info info;
+ 
+@@ -1499,7 +1499,7 @@ static ssize_t alarms_show(struct device *device,
+ 	struct device_attribute *attr, char *buf)
+ {
+ 	struct w1_slave *sl = dev_to_w1_slave(device);
+-	int ret = -ENODEV;
++	int ret;
+ 	s8 th = 0, tl = 0;
+ 	struct therm_info scratchpad;
+ 
+@@ -1523,7 +1523,7 @@ static ssize_t alarms_store(struct device *device,
+ 	struct w1_slave *sl = dev_to_w1_slave(device);
+ 	struct therm_info info;
+ 	u8 new_config_register[3];	/* array of data to be written */
+-	int temp, ret = -EINVAL;
++	int temp, ret;
+ 	char *token = NULL;
+ 	s8 tl, th, tt;	/* 1 byte per value + temp ring order */
+ 	char *p_args = kmalloc(size, GFP_KERNEL);
 -- 
-2.26.2
+2.25.1
 

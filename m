@@ -2,89 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7264F1DA55D
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 01:26:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D0681DA580
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 01:29:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727998AbgESXZ6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 May 2020 19:25:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56420 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728301AbgESXZx (ORCPT
+        id S1728326AbgESX2k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 May 2020 19:28:40 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:56754 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726178AbgESX2k (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 May 2020 19:25:53 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D134C061A0E
-        for <kernel-janitors@vger.kernel.org>; Tue, 19 May 2020 16:25:52 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id u1so879766wmn.3
-        for <kernel-janitors@vger.kernel.org>; Tue, 19 May 2020 16:25:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=qxIrWzKndId5M02rldluZtVI7y5X3L/VGh+mHmelStw=;
-        b=bZZrY/6tnWofgWh1MVFkN2oZF55QFsh6vsmWfPfWynoox7tKL3JPfxFjowkszeHgPx
-         1JVy3ftg9oXLAPKDUz8BulIDv4k5i2acYWPg3e/Nn68uarVz3TxdSIZkSOBrSxhw+CfS
-         9ZL02L9Fb8mqZWxt5DbkYgNo5beZkAPW853nWPV53ATfqgrfSXlfwEKdjcHbTnn0uNQ2
-         HklkmdipI/ikgP6Z8bD5VsxYA9ZlTlwT+37fCvqDWwXcPnYZY0LoCWHOu6SsI4OHJ4wd
-         3Cw95kgQ1AeHVIGYjWGB4jsw5ccBVlGOlvfl/P27ncyY07XQ9CWRavUrQU9zdVIPGMUg
-         se1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=qxIrWzKndId5M02rldluZtVI7y5X3L/VGh+mHmelStw=;
-        b=lMSLG9AnnyAQT4aI5gwzTbQXR9fexrI0xOBUtfwpt1jMPkWqp9Qzsky+Ddfr9tPnF6
-         Y50hue876s2Y7ikR1pq1z1+UyME3ZU5Gn194K/Pg84YI7ID1p6hVNRRkg9XH/wue1BCa
-         I/rp5VV8wxTYRWbWpXgUCCHvlv6qymhYT9HzSBpptPXleHvpnCyN8NuouPEPqavA8bpE
-         PSTcCsgs4ti9mirUPg60ltnvjYb+yq2CehzMNssg/wtlkINS6xZfY5hHubCCW7Cf8dJT
-         eJDQQWOTcfOOKudNm/18m8ZWPtaenftIVFvgEatUHojFL+k4U04geOMZeuFseFx7YYXB
-         fn9g==
-X-Gm-Message-State: AOAM5337UxhhsIJiDmGy0PA9E9TmWKeKY1woAnG5J7+IRqht2oweBTW3
-        a9uX9M8Y823g82mPbo9pQGemZQ==
-X-Google-Smtp-Source: ABdhPJwVz5iNSn8vvVkwnZdoEnwfRvCEGJGZnX/iunolwoitoPT3eaDCdu53wzgC5+x5WDnoxG6miw==
-X-Received: by 2002:a1c:7d02:: with SMTP id y2mr267408wmc.92.1589930749374;
-        Tue, 19 May 2020 16:25:49 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:e504:4297:986:ffb0? ([2a01:e34:ed2f:f020:e504:4297:986:ffb0])
-        by smtp.googlemail.com with ESMTPSA id v19sm898944wml.43.2020.05.19.16.25.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 May 2020 16:25:48 -0700 (PDT)
-Subject: Re: [PATCH][next] clocksource/drivers/timer-ti-dm: fix spelling
- mistake "detectt" -> "detect"
-To:     Colin King <colin.king@canonical.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200519224428.6195-1-colin.king@canonical.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <61864ba7-e3f3-8156-d133-9baa5f9138bc@linaro.org>
-Date:   Wed, 20 May 2020 01:25:48 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Tue, 19 May 2020 19:28:40 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04JNSJDp037309;
+        Tue, 19 May 2020 23:28:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=M5LEFtpHenxdN5OssGmdMFWdxxZp3ytb3DEOBVu2Qp8=;
+ b=qjHvey87wAtJXA1UO88cuAbaXB2s9pe7Qv6y6DAOO66xzRtv/KkCvsmRhWMeaKGPP1DK
+ ooOKZ5mf/ZoR30gDJy8/fgWLML0QqKms4tkHgGofE9XIDP2zTYsRTW7yodLKRhEWodU5
+ +7Tu4p387GZ8aH0vO0uAoSgbdexHjWVKN91S+/2kB7V88R6NzxyNT3EwW14IkJWIb9da
+ kPXfcNcwwtu9Vm2EX+e0EFHE0LhcpyXOJbZXS5ifszEGpDOyvmqXksPjvrtS49Lvg3tC
+ xrdHjJHMoLalRRSIrDUCMjyPHU7uBej2AKZ6/06csTu+IEdJU9Spsqi/fgfbeQZkdl5l Bg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 3127kr89dc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 19 May 2020 23:28:35 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04JNMgFE170219;
+        Tue, 19 May 2020 23:28:35 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 313gj2ffgd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 19 May 2020 23:28:35 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04JNSWFK018962;
+        Tue, 19 May 2020 23:28:32 GMT
+Received: from dhcp-10-159-149-244.vpn.oracle.com (/10.159.149.244)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 19 May 2020 16:28:32 -0700
+Subject: Re: [PATCH] IB/sa: Fix use-after-free in ib_nl_send_msg()
+To:     Markus Elfring <Markus.Elfring@web.de>, linux-rdma@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Doug Ledford <dledford@redhat.com>,
+        Gerd Rausch <gerd.rausch@oracle.com>,
+        =?UTF-8?Q?H=c3=a5kon_Bugge?= <haakon.bugge@oracle.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Kaike Wan <kaike.wan@intel.com>,
+        Rama Nichanamatlu <rama.nichanamatlu@oracle.com>,
+        Srinivas Eeda <srinivas.eeda@oracle.com>
+References: <b4b66f61-d49e-fd87-87a5-7f5bfff6fd7f@web.de>
+From:   Divya Indi <divya.indi@oracle.com>
+Message-ID: <f3eec429-65a7-fbf9-81fa-2df9aa62b98d@oracle.com>
+Date:   Tue, 19 May 2020 16:27:39 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
+ Gecko/20100101 Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <20200519224428.6195-1-colin.king@canonical.com>
+In-Reply-To: <b4b66f61-d49e-fd87-87a5-7f5bfff6fd7f@web.de>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 malwarescore=0
+ mlxscore=0 adultscore=0 bulkscore=0 suspectscore=3 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005190199
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
+ bulkscore=0 clxscore=1011 priorityscore=1501 mlxscore=0 impostorscore=0
+ suspectscore=3 mlxlogscore=999 malwarescore=0 cotscore=-2147483648
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005190199
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 20/05/2020 00:44, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in a pr_err message. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
+Hi Markus,
 
-Applied, thanks
+Thanks for taking the time to review.
 
+On 5/15/20 9:25 AM, Markus Elfring wrote:
+>> This patch fixes commit -
+>> commit 3ebd2fd0d011 ("IB/sa: Put netlink request into the request list before sending")'
+>>
+>> Above commit adds the query to the request list before ib_nl_snd_msg.
+> I suggest to improve also this change description.
+>
+>   The query to the request list was added before ib_nl_snd_msg()
+>   by the commit 3ebd2fd0d011 ("…").
+Noted, will make this change.
+>
+>> This flag Indicates …
+> … indicates …
+Noted.
+>
+>> To handle the case where a response is received before we could set this
+>> flag, the response handler waits for the flag to be
+>> set before proceeding with the query.
+> Please reconsider the word wrapping.
+>
+>   To handle the case where a response is received before we could set
+>   this flag, the response handler waits for the flag to be set
+>   before proceeding with the query.
+>
+>
+> Would you like to add the tag “Fixes” to the commit message?
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+Noted!
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Thanks,
+
+Divya
+
+>
+> Regards,
+> Markus

@@ -2,74 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 47AAE1D9C42
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 May 2020 18:18:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8FC61D9C77
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 May 2020 18:25:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729053AbgESQSJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 May 2020 12:18:09 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:41769 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728689AbgESQSI (ORCPT
+        id S1729293AbgESQZX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 May 2020 12:25:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46536 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729041AbgESQZX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 May 2020 12:18:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1589905088;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0Qrhv2MHcmowyV5LiaC9P4RZtjx9DBBpr0tpbzf5lPc=;
-        b=byLE+f96s8cvDBhX0tERZd/Hk1rdfoTZOBjdZR2dMCscMmDq0UlY/bJeeT8LJjXKxcefPU
-        CCMwkdqfddy2qj8u8RHAGi/Euk/sHLy34/dQ7WN++czwbqWXJXGYYvm8gveb13qM+XNVzh
-        RehORo9RbtDWTS/XkjyDN3d6cKM5vmM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-154-zjlBHk-INtKFUFEsNxAk6g-1; Tue, 19 May 2020 12:18:06 -0400
-X-MC-Unique: zjlBHk-INtKFUFEsNxAk6g-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 37B751005510;
-        Tue, 19 May 2020 16:18:05 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-112-95.rdu2.redhat.com [10.10.112.95])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5FC856F7E0;
-        Tue, 19 May 2020 16:18:04 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20200515120908.GB575846@mwanda>
-References: <20200515120908.GB575846@mwanda>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     dhowells@redhat.com, linux-fsdevel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] fsinfo: Fix uninitialized variable in fsinfo_generic_mount_all()
+        Tue, 19 May 2020 12:25:23 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21BA6C08C5C0;
+        Tue, 19 May 2020 09:25:23 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id l18so76658wrn.6;
+        Tue, 19 May 2020 09:25:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=nM06eYScX+XNokoAV7+9FvMc5yktmL9LEFe0oZB9L9Y=;
+        b=KuOCfHiLtLqcY80YA+zJqExocYmA8ZcpYRP7snwL65qx/hbvURsliycG9heOxO/fV9
+         3Fy8c4PR03P7tJFeX6QBgSkJqs9Ox3G8ZiJorzGDmj/Fm28CAqn80qZMPVt6IRhK5NnR
+         XIz5wtA8TfBPLSt0N8XTk3m851XhAsb7wmGNNDnzxVgBLuv+uWSVQeCb4cFcPQmReL0o
+         R4LqUkztD9SW7JXk6ISHBZnchT+LNFVEeoY62cVM18Yh08LQM52fQ8Amxaky1vH5WZgj
+         kUgXE3/gIcS28w2cvagnv5hQjpJskXkFxORXhdE63CaThtyKjsF4N6l8RTMBv8P2LOmA
+         ss4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=nM06eYScX+XNokoAV7+9FvMc5yktmL9LEFe0oZB9L9Y=;
+        b=qaGsh9aTlJbs21Dhzvzyg3LkSC9QHZszaOvZpYcOWM88laBfxBkR++crbVaa188DmI
+         7qvmncPxpINhfqCqAnIN6/bCfZmwZ9KkslsZ7pQTr4XWO3theqpWpLTW6rQ/mG9A55+c
+         139mLREEsCJoLZdMuyC3DtfENahMOkwlMOnr9ysp2wp0d03m0Ntny30kj1U7uId8SiGl
+         XFEC4ARCxFSujDO91hF96l3+KYy2nKp7LbogZ2HodpyCvq01/vyOkU3kc572yFq5v+vQ
+         ueHaPInQEGa3XWkc7EY9Fkl1avntFn66J+xYFhBgizKzN03O4AweEoLd/I7c4HzfHJt9
+         /6xw==
+X-Gm-Message-State: AOAM532mt5X0llN6pIzlKw6dGbdPRshdyB81sBh6ONfc+C0JTmj6SEek
+        kf/7Td09/9wgbwtwVenh/RU=
+X-Google-Smtp-Source: ABdhPJxag+JM0bTEClmR4Am4vtfn8gaUpVvbku+9BQ3YhxQkbmBNaa4vnCEDKCbL5TbA35D/8bJsOw==
+X-Received: by 2002:adf:dcc6:: with SMTP id x6mr26271344wrm.126.1589905521923;
+        Tue, 19 May 2020 09:25:21 -0700 (PDT)
+Received: from localhost (pd9e51079.dip0.t-ipconnect.de. [217.229.16.121])
+        by smtp.gmail.com with ESMTPSA id l18sm206371wmj.22.2020.05.19.09.25.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 May 2020 09:25:20 -0700 (PDT)
+Date:   Tue, 19 May 2020 18:25:19 +0200
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     ldewangan@nvidia.com, jonathanh@nvidia.com,
+        dan.j.williams@intel.com, vkoul@kernel.org,
+        dmaengine@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] dmaengine: tegra210-adma: Fix an error handling path in
+ 'tegra_adma_probe()'
+Message-ID: <20200519162519.GE2113674@ulmo>
+References: <20200516214205.276266-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1514222.1589905083.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date:   Tue, 19 May 2020 17:18:03 +0100
-Message-ID: <1514223.1589905083@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="5xSkJheCpeK0RUEJ"
+Content-Disposition: inline
+In-Reply-To: <20200516214205.276266-1-christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.13.1 (2019-12-14)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-> The "conn" variable is never set to false.
-> =
+--5xSkJheCpeK0RUEJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Fixes: f2494de388bd ("fsinfo: Add an attribute that lists all the visibl=
-e mounts in a namespace")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+On Sat, May 16, 2020 at 11:42:05PM +0200, Christophe JAILLET wrote:
+> Commit b53611fb1ce9 ("dmaengine: tegra210-adma: Fix crash during probe")
+> has moved some code in the probe function and reordered the error handling
+> path accordingly.
+> However, a goto has been missed.
+>=20
+> Fix it and goto the right label if 'dma_async_device_register()' fails, so
+> that all resources are released.
+>=20
+> Fixes: b53611fb1ce9 ("dmaengine: tegra210-adma: Fix crash during probe")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > ---
-> The buggy commit looks like preliminary stuff not pushed to anywhere so
-> probably this can just be folded in.
+>  drivers/dma/tegra210-adma.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-I folded in someone else's equivalent patch, thanks.
+Acked-by: Thierry Reding <treding@nvidia.com>
 
-David
+--5xSkJheCpeK0RUEJ
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl7ECG8ACgkQ3SOs138+
+s6HyGBAAtqw2Y28Sav7FpIgNdlgPeJGBIZ8WuLD4zojjs15UzXAuuHndZNzOR1xL
+dJSZvlK1T2GFmmtHmzjJJUtng+A9GDFJD8J6UeKOdpy6eLlmvtRT6hCueljrJGOb
+aKdGNRnFBoDZ/DqBArUILTkTgCdqHY66gacajY7p42DHGr7RxovPr/RNjzblE4Ae
+7uA1CEY9Hqs3Xu7P5Aty3UhFh0cubPGCtMRnW9Y9hvyv6XSWIVnzAUwMiPJGBNLg
+pn3D9WeK970Ef/QEvkRCWNW4mpM1dfiHmIjbjcFRwn1NvuTI4A1MukWzS3/Qbs9u
+SrLIquFBkk+AtGNF5pPW/RmKOFTq+6eDaMEArLVuN6G6MNrS2xCE2mN2hb1arBAH
+rV/7Sc+H/FfEWjXtRSnf0JwZmSKB/rObzOyPTAzERwKDNTVU1XDuCWSjlAv9A8e/
+7TLFcFueYmMZO48jvdw1NL4u+v2kf0rWWzcyNBVeukTSHrlNvT+jI50fJ9omb0Bp
+RqM5CktLjENleIelSb25TSFRjMB27w703QJdRb7Njr/iDw65wrasz+q8dqGCJLJQ
+AFqb5peekfnhyQcHiYqd9cU+FYXnk+UJNUv3uh1T+JWZM+ec8NbDJe7v1JpTtWIY
+2Yw4rtrkVHfL/mqnKkFzPLziFy72mrh7IQ1bHHx9CyTibg9B0dU=
+=TqZK
+-----END PGP SIGNATURE-----
+
+--5xSkJheCpeK0RUEJ--

@@ -2,97 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E50DF1D8A26
-	for <lists+kernel-janitors@lfdr.de>; Mon, 18 May 2020 23:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 805941D9067
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 May 2020 08:57:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728083AbgERVlW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 May 2020 17:41:22 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:60212 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726492AbgERVlW (ORCPT
+        id S1728361AbgESG4M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 May 2020 02:56:12 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:54954 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728191AbgESG4K (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 May 2020 17:41:22 -0400
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04ILVuwV091023;
-        Mon, 18 May 2020 17:41:17 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 312cayq8dg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 18 May 2020 17:41:17 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-        by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04ILdiee002643;
-        Mon, 18 May 2020 21:41:16 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
-        by ppma04wdc.us.ibm.com with ESMTP id 313wh3hf44-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 18 May 2020 21:41:16 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
-        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04ILfFmx37159408
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 18 May 2020 21:41:15 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 51666124054;
-        Mon, 18 May 2020 21:41:15 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id CCE0E124052;
-        Mon, 18 May 2020 21:41:14 +0000 (GMT)
-Received: from p8tul1-build.aus.stglabs.ibm.com (unknown [9.3.141.206])
-        by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTPS;
-        Mon, 18 May 2020 21:41:14 +0000 (GMT)
-Date:   Mon, 18 May 2020 16:41:14 -0500
-From:   "Matthew R. Ochs" <mrochs@linux.ibm.com>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     "Manoj N . Kumar" <manoj@linux.ibm.com>,
-        Uma Krishnan <ukrishn@linux.ibm.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] scsi: cxlflash: Fix error return code in
- cxlflash_probe()
-Message-ID: <20200518214114.GA16690@p8tul1-build.aus.stglabs.ibm.com>
-References: <20200428141855.88704-1-weiyongjun1@huawei.com>
+        Tue, 19 May 2020 02:56:10 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1589871369; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=0qIm7vciFqshx69ineP5uqBYK6jDShcXu+uD5JF18EY=;
+ b=OaEUKTP5tfSfBaMAjW4t4H4xPsK1eB7yDfB7oFAddzEfwMZz5vyAEUlLiQr0Ud4WpBuiiHrT
+ 0ze9mKSKT4MqfY0k0+qCuJv9YniSfbmmLL5mQAYVMRMRa9tJ+ZKiRuZ5K97z7zqfwePjzmfi
+ LDkJZYbH+1E1mtTGTknOvdcZPH4=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5ec383018ebbf95ecbd06813 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 19 May 2020 06:56:01
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C7ADBC44788; Tue, 19 May 2020 06:56:00 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 00283C432C2;
+        Tue, 19 May 2020 06:55:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 00283C432C2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200428141855.88704-1-weiyongjun1@huawei.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
- definitions=2020-05-18_06:2020-05-15,2020-05-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- lowpriorityscore=0 mlxscore=0 suspectscore=0 spamscore=0 impostorscore=0
- malwarescore=0 adultscore=0 bulkscore=0 clxscore=1011 mlxlogscore=999
- priorityscore=1501 cotscore=-2147483648 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005180181
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath11k: Fix some resource leaks in error path in
+ 'ath11k_thermal_register()'
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200513201454.258111-1-christophe.jaillet@wanadoo.fr>
+References: <20200513201454.258111-1-christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     davem@davemloft.net, pradeepc@codeaurora.org,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200519065600.C7ADBC44788@smtp.codeaurora.org>
+Date:   Tue, 19 May 2020 06:56:00 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Apr 28, 2020 at 02:18:55PM +0000, Wei Yongjun wrote:
-> Fix to return negative error code -ENOMEM from create_afu error
-> handling case instead of 0, as done elsewhere in this function.
-> 
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-Acked-by: Matthew R. Ochs <mrochs@linux.ibm.com>
+> If 'thermal_cooling_device_register()' fails, we must undo what has been
+> allocated so far. So we must go to 'err_thermal_destroy' instead of
+> returning directly
+> 
+> In case of error in 'ath11k_thermal_register()', the previous
+> 'thermal_cooling_device_register()' call must also be undone. Move the
+> 'ar->thermal.cdev = cdev' a few lines above in order for this to be done
+> in 'ath11k_thermal_unregister()' which is called in the error handling
+> path.
+> 
+> Fixes: 2a63bbca06b2 ("ath11k: add thermal cooling device support")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-> ---
->  drivers/scsi/cxlflash/main.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/scsi/cxlflash/main.c b/drivers/scsi/cxlflash/main.c
-> index fbd2ae40dab4..fcc5aa9f6014 100644
-> --- a/drivers/scsi/cxlflash/main.c
-> +++ b/drivers/scsi/cxlflash/main.c
-> @@ -3744,6 +3744,7 @@ static int cxlflash_probe(struct pci_dev *pdev,
->  	cfg->afu_cookie = cfg->ops->create_afu(pdev);
->  	if (unlikely(!cfg->afu_cookie)) {
->  		dev_err(dev, "%s: create_afu failed\n", __func__);
-> +		rc = -ENOMEM;
->  		goto out_remove;
->  	}
-> 
-> 
-> 
+Patch applied to ath-next branch of ath.git, thanks.
+
+25ca180ad380 ath11k: Fix some resource leaks in error path in 'ath11k_thermal_register()'
+
+-- 
+https://patchwork.kernel.org/patch/11547195/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+

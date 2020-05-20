@@ -2,57 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D06C41DA70E
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 03:16:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 715181DA80D
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 04:32:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728437AbgETBQA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 May 2020 21:16:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34376 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728432AbgETBP7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 May 2020 21:15:59 -0400
-Received: from dragon (80.251.214.228.16clouds.com [80.251.214.228])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 74DC420708;
-        Wed, 20 May 2020 01:15:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589937359;
-        bh=TwPwgTYvTEYaQWEjnZhfryxbLYyPyfXaMLzE2omlkKU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=G7Ut8+wNuQRERggPEgOf4c+nmjtd6XoYxyF/Brh3lBf86yb8TVVysUT2Uiq2ZNAV9
-         430dMJbypg6RO/AEvQmoZczVLpts9azdxt+u1MWWrxdgeCemkKdoLaAU6+KhEhzBHz
-         80AMgAgd2p1qGs/gRfNHaULWsNv9ahOchefScL4U=
-Date:   Wed, 20 May 2020 09:15:54 +0800
-From:   Shawn Guo <shawnguo@kernel.org>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Dong Aisheng <aisheng.dong@nxp.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] firmware: imx: scu: Fix possible memory leak in
- imx_scu_probe()
-Message-ID: <20200520011545.GI11739@dragon>
-References: <20200506051410.27219-1-weiyongjun1@huawei.com>
+        id S1728129AbgETCcc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 May 2020 22:32:32 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:39408 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728476AbgETCcb (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 19 May 2020 22:32:31 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04K2Vt7F126178;
+        Wed, 20 May 2020 02:32:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=HzhG297ioBOB/YzfdikV1L+kCAUZ8qyPl4LE6DrrEvA=;
+ b=EBuAl5fWmxfK7DZv4SfAiYm1am23NdV8qijR2fWVxrSylgeLWxxyA1s30sU10rcs0DCE
+ AyrVar4PyNvYl2qX4pBbwJC7ADW7jcsEksxvl011NsRx2l5Skju+5WCsMqfTCql1ZDX7
+ uKaAgj756X8Q+zWhGZiqrrYzVv0ILOidVeZVAyUN02GTI2YjFLiWuRgCWuFbSFObtUTc
+ 9G4sCsFFTW7bUL1RVGr3Ac28sNe91c+aIAah4U6W6oeSTwsQgl0n0OXAJfd4NfjMkBqr
+ rxsDwd1hRka//fSMZT+SggKRgufLL1LYS1ZvQOG/qhGkwEBDPERXNYoORFmlYcD4bko1 kQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 3128tngj23-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 20 May 2020 02:32:22 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04K2T9Ax162915;
+        Wed, 20 May 2020 02:30:22 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 312sxtvfe8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 20 May 2020 02:30:22 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04K2ULKJ024147;
+        Wed, 20 May 2020 02:30:21 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 19 May 2020 19:30:21 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     "Manoj N . Kumar" <manoj@linux.ibm.com>,
+        Uma Krishnan <ukrishn@linux.ibm.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        Wei Yongjun <weiyongjun1@huawei.com>,
+        "Matthew R. Ochs" <mrochs@linux.ibm.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        kernel-janitors@vger.kernel.org, linux-scsi@vger.kernel.org
+Subject: Re: [PATCH -next] scsi: cxlflash: Fix error return code in cxlflash_probe()
+Date:   Tue, 19 May 2020 22:30:08 -0400
+Message-Id: <158994171817.20861.9312326618891332978.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200428141855.88704-1-weiyongjun1@huawei.com>
+References: <20200428141855.88704-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200506051410.27219-1-weiyongjun1@huawei.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 malwarescore=0
+ mlxlogscore=999 bulkscore=0 mlxscore=0 suspectscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005200018
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 cotscore=-2147483648 suspectscore=0 lowpriorityscore=0
+ adultscore=0 phishscore=0 mlxlogscore=999 mlxscore=0 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005200019
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, May 06, 2020 at 05:14:10AM +0000, Wei Yongjun wrote:
-> 'chan_name' is malloced in imx_scu_probe() and should be freed
-> before leaving from the error handling cases, otherwise it will
-> cause memory leak.
-> 
-> Fixes: edbee095fafb ("firmware: imx: add SCU firmware driver support")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+On Tue, 28 Apr 2020 14:18:55 +0000, Wei Yongjun wrote:
 
-Applied, thanks.
+> Fix to return negative error code -ENOMEM from create_afu error
+> handling case instead of 0, as done elsewhere in this function.
+
+Applied to 5.8/scsi-queue, thanks!
+
+[1/1] scsi: cxlflash: Fix error return code in cxlflash_probe()
+      https://git.kernel.org/mkp/scsi/c/d0b1e4a638d6
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

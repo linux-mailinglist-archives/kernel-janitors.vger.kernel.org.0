@@ -2,102 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A33701DBD73
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 21:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1AA41DBDB7
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 21:14:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726853AbgETS7z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 May 2020 14:59:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42264 "EHLO
+        id S1726856AbgETTOr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 May 2020 15:14:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726548AbgETS7y (ORCPT
+        with ESMTP id S1726720AbgETTOq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 May 2020 14:59:54 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A78AC061A0E;
-        Wed, 20 May 2020 11:59:53 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id u1so3487317wmn.3;
-        Wed, 20 May 2020 11:59:53 -0700 (PDT)
+        Wed, 20 May 2020 15:14:46 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB17CC061A0F
+        for <kernel-janitors@vger.kernel.org>; Wed, 20 May 2020 12:14:46 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id q8so2043684pfu.5
+        for <kernel-janitors@vger.kernel.org>; Wed, 20 May 2020 12:14:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=fnshiy6ihG9QhaGP6naqQpz00mp02JHtZheI8F1kYaM=;
-        b=LMx+SdcVWNgrCI/SwL9uv/KpzlE4nNYpyDC/Qs7GCtcpfMqszET3vUOSHYZm+a7TsB
-         kCrRw4lPadNsy8pHZ5KYrPz8pgw6MKPiE9HYHPivG4fHIEQty7nYzEwEvQqTZGd23ZHU
-         mKHJf+EIof99d3ATX3LwiH5lc8Q65OyANQT6gDDp9HrefEI+p/uAIjmDUaZSUCifdB4H
-         HLcK573YuYicChl3CkLBGuESoFktARC7HkR1uLhe5Irc/DlglckvI/CB+Ci5v0O8PKW2
-         DWzaZtyWHa2VFVx5MOPi7U/rPyejQYbORcyQ1r8ktBdvcaOMuWN1z0873Vn8OnfbrTTy
-         XTTw==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Qfy34lYRRu2hV9OIa5dl/okKsPjOM6Et+8fxjIcZ8qY=;
+        b=YPfYkeDQ+gTAnpY83KaW2QBCh0nknfH2vVvk2LUApXk9qaJe5Hz4Rxy/G/8hbay8fy
+         xakYhlfFqyK3LFTgqSed31/sqJXoPPf2jrL/PW6spmdmlZNQQeRehNaczgRdo8roFXj0
+         HMre2Iw6aAbK5sJlUNl8ghoeGyUurmjxofAGjR0QSYz72JaLpBIZovngV8J1v1EXW6Zs
+         hvOlnxRWNEI4mNcV1lGpwCbbIkHUVpG2Mg55TFe6rX5kWphAa++GsBLUUxkjMzuJtBZ8
+         hUHtbMlrwvKs7xUOAXFXh5JvNgfXihort5UYPodpNE2bfZOhjJ98YRRe+V0qCtfuLc0n
+         Y91A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=fnshiy6ihG9QhaGP6naqQpz00mp02JHtZheI8F1kYaM=;
-        b=aGvYDm80CUft1kQZJ+9Xoc6rPrSb7WdgRUFZ2wFfG+FXj2H6toC558CEo67fPNW7+m
-         Vm62WFswO7JXWSgtCgyYyvXaV8sCfDm9XA7ruWVIdJyast6Gw0fDQgTCM70gG8zF88X0
-         BVYPKao2mMDGxxDX8pQW3U5RpnKT4KuOD+3mdp63b49t2RIgxaQ0ju3H97DRhSSf1+1N
-         x7A1k8LNyQsQuFrMYSX+QRS6Su+9Xc+1WplbXiAm9deloZktIicMouvTRFfeGeM8O2Lq
-         JSAwmYjvi6o4Kpp7LNrOqGwsebxK9PsUcceXr5WSSQoJS/vChlUZ7XVIO2wQr7/wPZFp
-         +bAQ==
-X-Gm-Message-State: AOAM531lLLZC8b9ZHEmNx+w+HDordXFMusnTZeZ4LzFvu1qG4E3+lcS3
-        HkW8OxRXGXAu670HXhPOlC4=
-X-Google-Smtp-Source: ABdhPJxTXt+BUKcH00voKpAxp/kIhKxbelcXyVkcM2PQ+e7817YIs0PeHaSR8i7UnQp3Yhugozz8pw==
-X-Received: by 2002:a7b:c8d2:: with SMTP id f18mr5658325wml.174.1590001192003;
-        Wed, 20 May 2020 11:59:52 -0700 (PDT)
-Received: from localhost.localdomain.localdomain (ip68-5-85-189.oc.oc.cox.net. [68.5.85.189])
-        by smtp.gmail.com with ESMTPSA id c19sm3896483wrb.89.2020.05.20.11.59.49
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 20 May 2020 11:59:51 -0700 (PDT)
-From:   James Smart <jsmart2021@gmail.com>
-To:     linux-nvme@lists.infradead.org
-Cc:     linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        paul.ely@broadcom.com, hare@suse.de, jejb@linux.ibm.com,
-        axboe@kernel.dk, martin.petersen@oracle.com, hch@infradead.org,
-        dan.carpenter@oracle.com, James Smart <jsmart2021@gmail.com>,
-        Dick Kennedy <dick.kennedy@broadcom.com>
-Subject: [PATCH 3/3] lpfc: Fix return value in __lpfc_nvme_ls_abort
-Date:   Wed, 20 May 2020 11:59:29 -0700
-Message-Id: <20200520185929.48779-4-jsmart2021@gmail.com>
-X-Mailer: git-send-email 2.26.1
-In-Reply-To: <20200520185929.48779-1-jsmart2021@gmail.com>
-References: <20200520185929.48779-1-jsmart2021@gmail.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Qfy34lYRRu2hV9OIa5dl/okKsPjOM6Et+8fxjIcZ8qY=;
+        b=D5IP6jBGFMw031qj65dzFqtUGeH28PFqKSI27qrAwnL6oGrpgiTvTvisSMZZvwXQmB
+         dflapUWY0Y6JyB7i7B8dRpOcgRiBfII4mNeLHqoOyTMoWQnS7YzavHcnzZd9Hd3SQerq
+         vTns2wYf9TzQHHImYne7icLDLyBPAWFzy8Kv+gvcxbvpeq88ruKlrZon84n1AkxxOUwM
+         Na74IWxwn5EwuBcEK5+w0BxD/cFggn3sJ+P0lauVA53yRHVQMb02Tt2I5EUnXXR9LPBb
+         Qjp8jvIZBIRjcgvPOSGoJn3jSjYtmCNfmI/yM8+T+IJi7datgdI3Cn9wG6Jr4QstrEYC
+         UNJA==
+X-Gm-Message-State: AOAM533XUTIT5MTrfX2H47STVn6bTrBLXe4SFgWi3UE/hbkWNVlAlUmk
+        gtF9xfX1luq30DhHdBxDETztEQ==
+X-Google-Smtp-Source: ABdhPJyw2DUw4oJ1hNWGLteEorty/WEjBaKTJv6w8lsZzPw2ZAHapKnm5FWasJ1sNvo4UI2B2pwOhQ==
+X-Received: by 2002:a63:b146:: with SMTP id g6mr5344808pgp.396.1590002086070;
+        Wed, 20 May 2020 12:14:46 -0700 (PDT)
+Received: from builder.lan (104-188-17-28.lightspeed.sndgca.sbcglobal.net. [104.188.17.28])
+        by smtp.gmail.com with ESMTPSA id 5sm2300189pgl.4.2020.05.20.12.14.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2020 12:14:45 -0700 (PDT)
+Date:   Wed, 20 May 2020 12:13:26 -0700
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Ohad Ben-Cohen <ohad@wizery.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-remoteproc@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] remoteproc: Fix an error code in devm_rproc_alloc()
+Message-ID: <20200520191326.GH408178@builder.lan>
+References: <20200520120705.GH172354@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200520120705.GH172354@mwanda>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-A static checker reported the following issue:
-  drivers/scsi/lpfc/lpfc_nvmet.c:1366 lpfc_nvmet_ls_abort()
-  warn: 'ret' can be either negative or positive
+On Wed 20 May 05:07 PDT 2020, Dan Carpenter wrote:
 
-The comment indicates a non-zero value indicates error in the
-form of -Exxx, but the code is returning "1".
+> The comments say that this function should return NULL on error and the
+> caller expects NULL returns as well so I have modified the code to match.
+> Returning an ERR_PTR(-ENOMEM) would lead to an OOps.
+> 
+> Fixes: 305ac5a766b1 ("remoteproc: Add device-managed variants of rproc_alloc/rproc_add")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Fix the code to return -EINVAL to be compliant to comment.
+Reviewed-by and applied
 
-Fixes: e96a22b0b7c2 ("lpfc: Refactor Send LS Abort support")
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Dick Kennedy <dick.kennedy@broadcom.com>
-Signed-off-by: James Smart <jsmart2021@gmail.com>
----
- drivers/scsi/lpfc/lpfc_nvme.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
+Bjorn
 
-diff --git a/drivers/scsi/lpfc/lpfc_nvme.c b/drivers/scsi/lpfc/lpfc_nvme.c
-index 21bbccf0dc31..b46ba70f78da 100644
---- a/drivers/scsi/lpfc/lpfc_nvme.c
-+++ b/drivers/scsi/lpfc/lpfc_nvme.c
-@@ -895,7 +895,7 @@ __lpfc_nvme_ls_abort(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
- 	lpfc_printf_vlog(vport, KERN_INFO, LOG_NVME_DISC | LOG_NVME_ABTS,
- 			 "6213 NVMEx LS REQ Abort: Unable to locate req x%p\n",
- 			 pnvme_lsreq);
--	return 1;
-+	return -EINVAL;
- }
- 
- static int
--- 
-2.26.1
-
+> ---
+>  drivers/remoteproc/remoteproc_core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+> index 0cc015fabf78..9f04c30c4aaf 100644
+> --- a/drivers/remoteproc/remoteproc_core.c
+> +++ b/drivers/remoteproc/remoteproc_core.c
+> @@ -2297,7 +2297,7 @@ struct rproc *devm_rproc_alloc(struct device *dev, const char *name,
+>  
+>  	ptr = devres_alloc(devm_rproc_free, sizeof(*ptr), GFP_KERNEL);
+>  	if (!ptr)
+> -		return ERR_PTR(-ENOMEM);
+> +		return NULL;
+>  
+>  	rproc = rproc_alloc(dev, name, ops, firmware, len);
+>  	if (rproc) {
+> -- 
+> 2.26.2
+> 

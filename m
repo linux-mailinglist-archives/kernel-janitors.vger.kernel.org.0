@@ -2,95 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8F211DB2C0
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 14:09:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A2481DB2B8
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 14:08:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726881AbgETMJ0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 May 2020 08:09:26 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:38266 "EHLO
+        id S1726525AbgETMIQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 May 2020 08:08:16 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:37532 "EHLO
         userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726857AbgETMJZ (ORCPT
+        with ESMTP id S1726224AbgETMIQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 May 2020 08:09:25 -0400
+        Wed, 20 May 2020 08:08:16 -0400
 Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KC7cvO192422;
-        Wed, 20 May 2020 12:09:19 GMT
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KC89T5192735;
+        Wed, 20 May 2020 12:08:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=o7T4F3P2WqySm0CYgUXnMJepL9DfNg/WBzj9WeyK7eA=;
- b=tUwGok/esi+XX3kwrrrNBUziMOQ9m9hUlscdz45Cnch+HjVfCoiliWMrmDFSqr/1WMg6
- zZxHEXQJRmbMqC9bqU92FRO/JjA6jJWBnTTwkrs64pXIry//bu2bKN5viEST6/m5py6r
- ZN71LsGb//NT161yshc+ONfCbaKMOXRRkMAMz6z57hkx9P19w68HPIqPeoaUkucJos2G
- jU8W3tJrIW9lYUR+2B9x7C9inaWMW12f1UIjbUuh+RySxUSt3UMfKsmF/xjk4sBiJ1nh
- jyQrDjmE597U9xR7FxqDplug//yCONsYxyByEtDnEdsdl1KKSsiHCyMGXNFcHInRzCku NQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 31501r9850-1
+ bh=pZAPjeoI2xoUqEyaRPjaQ4Ox+SaH6agdK7O7UIhiaI0=;
+ b=PmDTRhJ9cWXHzK89OejwhJak/4sjFjjNPeEbxdHQaF7r06QC6pr9WRgN0ilMhw5cJKl2
+ wC60n+oE6j4fVtTd4B28Mza+bHvft/nChjJDxJRiXLSaoFmKhAsA7QEEnsgr/5aWvWZE
+ ym/RolFsfFkhLrXA4air15JpCoYAxt5xOmMOX1rhoRIBnT57+sKwDOr1fj4vSx8oiDp2
+ QyadLQ5QskZLhjnYe2IQMM44OaM8XOZE4QLJG/ae295IHSdjuZBBPS+XZcGTAX2m1XbO
+ taErhF5wx5UIDfN6sc5SCuCDDmTRKcL6wFe9XAp+TTXZwUSIileeZzhXn3BlIPjvDx1i aA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 31501r980m-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 20 May 2020 12:09:19 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KC37rx085443;
-        Wed, 20 May 2020 12:07:18 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 312t37f11g-1
+        Wed, 20 May 2020 12:08:11 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KC3AJ6104590;
+        Wed, 20 May 2020 12:08:11 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 31502063tv-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 20 May 2020 12:07:18 +0000
+        Wed, 20 May 2020 12:08:11 +0000
 Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04KC7BgQ006170;
-        Wed, 20 May 2020 12:07:11 GMT
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04KC8AEi017587;
+        Wed, 20 May 2020 12:08:10 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 20 May 2020 05:07:11 -0700
-Date:   Wed, 20 May 2020 15:07:05 +0300
+        with ESMTP ; Wed, 20 May 2020 05:08:09 -0700
+Date:   Wed, 20 May 2020 15:08:04 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Ohad Ben-Cohen <ohad@wizery.com>,
-        Paul Cercueil <paul@crapouillou.net>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-remoteproc@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] remoteproc: Fix an error code in devm_rproc_alloc()
-Message-ID: <20200520120705.GH172354@mwanda>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] bus: arm-integrator-lm: Fix an IS_ERR() vs NULL check
+Message-ID: <20200520120804.GI172354@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 mlxlogscore=999
- phishscore=0 mlxscore=0 malwarescore=0 suspectscore=2 adultscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 bulkscore=0 suspectscore=0 phishscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
  definitions=main-2005200105
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 spamscore=0
- mlxlogscore=999 clxscore=1011 priorityscore=1501 cotscore=-2147483648
+ mlxlogscore=999 clxscore=1015 priorityscore=1501 cotscore=-2147483648
  impostorscore=0 bulkscore=0 adultscore=0 malwarescore=0 phishscore=0
- mlxscore=0 suspectscore=2 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2004280000 definitions=main-2005200106
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The comments say that this function should return NULL on error and the
-caller expects NULL returns as well so I have modified the code to match.
-Returning an ERR_PTR(-ENOMEM) would lead to an OOps.
+The of_find_matching_node() function returns NULL on error, it never
+returns error pointers.  This doesn't really impact runtime very much
+because if "syscon" is NULL then syscon_node_to_regmap() will return
+-EINVAL.  The only runtime difference is that now it returns -ENODEV.
 
-Fixes: 305ac5a766b1 ("remoteproc: Add device-managed variants of rproc_alloc/rproc_add")
+Fixes: ccea5e8a5918 ("bus: Add driver for Integrator/AP logic modules")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/remoteproc/remoteproc_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The first patch which added this file doesn't give a good hint what the
+subsystem prefix should be so I just guessed "bus: arm-integrator-lm:".
 
-diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
-index 0cc015fabf78..9f04c30c4aaf 100644
---- a/drivers/remoteproc/remoteproc_core.c
-+++ b/drivers/remoteproc/remoteproc_core.c
-@@ -2297,7 +2297,7 @@ struct rproc *devm_rproc_alloc(struct device *dev, const char *name,
+ drivers/bus/arm-integrator-lm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/bus/arm-integrator-lm.c b/drivers/bus/arm-integrator-lm.c
+index 669ea7e1f92e..845b6c43fef8 100644
+--- a/drivers/bus/arm-integrator-lm.c
++++ b/drivers/bus/arm-integrator-lm.c
+@@ -78,10 +78,10 @@ static int integrator_ap_lm_probe(struct platform_device *pdev)
  
- 	ptr = devres_alloc(devm_rproc_free, sizeof(*ptr), GFP_KERNEL);
- 	if (!ptr)
--		return ERR_PTR(-ENOMEM);
-+		return NULL;
- 
- 	rproc = rproc_alloc(dev, name, ops, firmware, len);
- 	if (rproc) {
+ 	/* Look up the system controller */
+ 	syscon = of_find_matching_node(NULL, integrator_ap_syscon_match);
+-	if (IS_ERR(syscon)) {
++	if (!syscon) {
+ 		dev_err(dev,
+ 			"could not find Integrator/AP system controller\n");
+-		return PTR_ERR(syscon);
++		return -ENODEV;
+ 	}
+ 	map = syscon_node_to_regmap(syscon);
+ 	if (IS_ERR(map)) {
 -- 
 2.26.2
 

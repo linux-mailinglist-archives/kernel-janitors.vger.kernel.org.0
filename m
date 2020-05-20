@@ -2,123 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E74521DB2AB
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 14:05:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 224BA1DB2B3
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 14:06:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726846AbgETMFX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 May 2020 08:05:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33688 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726436AbgETMFX (ORCPT
+        id S1727024AbgETMGW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 May 2020 08:06:22 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:32898 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726435AbgETMGW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 May 2020 08:05:23 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D000C061A0E;
-        Wed, 20 May 2020 05:05:23 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id se13so3453454ejb.9;
-        Wed, 20 May 2020 05:05:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=reply-to:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=IpcuDlVK4ewXDEYJwfHRhSq6queIrqFdGofnfdB2b5w=;
-        b=onX2mjo3ZhjB0Rm0CUCdmoTq9xTcOPNo4s5dhyCMe2uhOVJMo7SZsPW9VGTeh20rH9
-         Zay7CC5J9eMlj0sywrYRVB9uRatEAZAtXXGRxMVXkdTFQ1sK6od0rnvplRyxfP2ypBIy
-         3fOk+Y6pqAI877qGZV9OO/rFrXX+8uScKcLpbOORM42wqnAlS1Xo5qCTFtIMx/KaxAW5
-         7zQzorlV+jpu38Za5wp9UlKpBJdvzePpr81AhfJeuX3UYcPAdK9lyRyLBZjPVANWNkdd
-         5ro6AbnmSMmcsjmW7ZjqI2wzwRUdgkhK8JZPXzkFr8PeMdayDguSyv/HTcuWoZ8Tunb0
-         dI7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:reply-to:subject:to:cc:references:from
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-transfer-encoding:content-language;
-        bh=IpcuDlVK4ewXDEYJwfHRhSq6queIrqFdGofnfdB2b5w=;
-        b=n1297N49uZ81EoEA+PW7e4G0GSP0yVMdzILXpb52Knwr+XJaJf6gLzzf9dw3pMgDY0
-         xOdWMSWDRZuMVArRkkBRZcvzrBQmFDNnuxeW5bL/LkT3LvaEBXJftYS9mm9rNp2eR3Bz
-         rZvOyJluCBbe+cidzKd/5TJb6nTxITFQk3rbmVegmg/jlyDKsgdX/qOQyOnRECaGMqjU
-         rVHWjOstVJ2ZgkdRVHVzJj4/LEK2pJ/PHKqIobq1CpJHmm+rEHPF6mHMcvHYBuMewLXr
-         Qxte4/S5mrQv20PGfviRqMqqhpN49CWpglqab2Jkx/pG3uqFc9ZBQ7GVQ+QdcTQXTHws
-         k6Vg==
-X-Gm-Message-State: AOAM530CBxqzEOdouVOECxwz0P04FYr5417B7vW8obU8VHsujgXEK8fT
-        nUztxCSha/ipoHGQWecyXvI=
-X-Google-Smtp-Source: ABdhPJwr6r+idrtcT++eTWfSy6fLWhDhq5ATlJSlfd5P0GodqO/MjCxxPCBQLhArlKbZoForyIwaWg==
-X-Received: by 2002:a17:906:3cd:: with SMTP id c13mr3534648eja.164.1589976321947;
-        Wed, 20 May 2020 05:05:21 -0700 (PDT)
-Received: from ?IPv6:2a02:908:1252:fb60:be8a:bd56:1f94:86e7? ([2a02:908:1252:fb60:be8a:bd56:1f94:86e7])
-        by smtp.gmail.com with ESMTPSA id g25sm1601766edm.57.2020.05.20.05.05.20
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 20 May 2020 05:05:21 -0700 (PDT)
-Reply-To: christian.koenig@amd.com
-Subject: Re: [PATCH] drm/amdgpu: off by on in
- amdgpu_device_attr_create_groups() error handling
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Kevin Wang <kevin1.wang@amd.com>
-Cc:     David Airlie <airlied@linux.ie>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        Hawking Zhang <Hawking.Zhang@amd.com>,
-        Rui Huang <ray.huang@amd.com>, dri-devel@lists.freedesktop.org,
-        Daniel Vetter <daniel@ffwll.ch>, Evan Quan <evan.quan@amd.com>,
-        Kenneth Feng <kenneth.feng@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Yintian Tao <yttao@amd.com>
-References: <20200520120054.GB172354@mwanda>
-From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>
-Message-ID: <62d9d539-8401-233a-3f20-984042489987@gmail.com>
-Date:   Wed, 20 May 2020 14:05:19 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Wed, 20 May 2020 08:06:22 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KC3F3Z151918;
+        Wed, 20 May 2020 12:06:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=yZ4iTAxcmb9BmNsSUTH20REYWMTGdIsUfcYaP4mTS5s=;
+ b=lUuK5vDVMpXEslMAplMqdkjdsg53Rx8Tp/ZKb1YyZ3oxf7SLLoPEyH+3SH3rXIs3WUxo
+ dSHNYTZx+ctplo6INqf0bvA/SUOtp8NUQRZX18TBN4zd13ykkwUQtWYZxwpctwxx4JHU
+ 6+zxDoXbGnbfB7xe8swPq3oNx4JN1WfsXOCka6XX03eK9n0UrWYJi8c/ATYgCY+Rjrfd
+ iOIOk75Vy293QvjjJitlNmSU6CK2gTWZgXm16WwFNj8ys5gCoKASrvsgLHR/7VGEfcu1
+ ArcjgExsS6wZv2uk2r1xdXLdcilUYp3xjToXj4l1SetSuJJ+c+zH8i21ZvFgFg6HO8wH Dg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 3127kraqp0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 20 May 2020 12:06:02 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KC397m104555;
+        Wed, 20 May 2020 12:06:02 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 3150205y6p-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 20 May 2020 12:06:01 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04KC5xVd016623;
+        Wed, 20 May 2020 12:05:59 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 20 May 2020 05:05:59 -0700
+Date:   Wed, 20 May 2020 15:05:51 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        YF Luo <yf.luo@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Yiwei Chung <yiwei.chung@mediatek.com>,
+        Chih-Min Chen <chih-min.chen@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] mt76: mt7915: fix locking bug in mt7915_sta_rc_update()
+Message-ID: <20200520120551.GG172354@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20200520120054.GB172354@mwanda>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 bulkscore=0 suspectscore=0 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005200105
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
+ bulkscore=0 clxscore=1011 priorityscore=1501 mlxscore=0 impostorscore=0
+ suspectscore=0 mlxlogscore=999 malwarescore=0 cotscore=-2147483648
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005200105
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Am 20.05.20 um 14:00 schrieb Dan Carpenter:
-> This loop in the error handling code should start a "i - 1" and end at
-> "i == 0".  Currently it starts a "i" and ends at "i == 1".  The result
-> is that it removes one attribute that wasn't created yet, and leaks the
-> zeroeth attribute.
->
-> Fixes: 4e01847c38f7 ("drm/amdgpu: optimize amdgpu device attribute code")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->   drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c
-> index b75362bf0742..ee4a8e44fbeb 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c
-> @@ -1931,7 +1931,7 @@ static int amdgpu_device_attr_create_groups(struct amdgpu_device *adev,
->   					    uint32_t mask)
->   {
->   	int ret = 0;
-> -	uint32_t i = 0;
-> +	int i;
->   
->   	for (i = 0; i < counts; i++) {
->   		ret = amdgpu_device_attr_create(adev, &attrs[i], mask);
-> @@ -1942,9 +1942,8 @@ static int amdgpu_device_attr_create_groups(struct amdgpu_device *adev,
->   	return 0;
->   
->   failed:
-> -	for (; i > 0; i--) {
-> +	while (--i >= 0)
+This function calls rcu_read_lock() twice instead of unlocking.
 
-As far as I know the common idiom for this is while (i--) which even 
-works without changing the type of i to signed.
+Fixes: e57b7901469f ("mt76: add mac80211 driver for MT7915 PCIe-based chipsets")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Christian.
-
->   		amdgpu_device_attr_remove(adev, &attrs[i]);
-> -	}
->   
->   	return ret;
->   }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 98567374c2c9..3f00f5439c7c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -790,7 +790,7 @@ mt7915_sta_rc_update(struct ieee80211_hw *hw,
+ 		rcu_read_unlock();
+ 		return;
+ 	}
+-	rcu_read_lock();
++	rcu_read_unlock();
+ 
+ 	set_bit(changed, &msta->stats.changed);
+ 	ieee80211_queue_work(hw, &msta->stats_work);
+-- 
+2.26.2
 

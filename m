@@ -2,100 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 224BA1DB2B3
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 14:06:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8F211DB2C0
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 14:09:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727024AbgETMGW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 May 2020 08:06:22 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:32898 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726435AbgETMGW (ORCPT
+        id S1726881AbgETMJ0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 May 2020 08:09:26 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:38266 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726857AbgETMJZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 May 2020 08:06:22 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KC3F3Z151918;
-        Wed, 20 May 2020 12:06:02 GMT
+        Wed, 20 May 2020 08:09:25 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KC7cvO192422;
+        Wed, 20 May 2020 12:09:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=yZ4iTAxcmb9BmNsSUTH20REYWMTGdIsUfcYaP4mTS5s=;
- b=lUuK5vDVMpXEslMAplMqdkjdsg53Rx8Tp/ZKb1YyZ3oxf7SLLoPEyH+3SH3rXIs3WUxo
- dSHNYTZx+ctplo6INqf0bvA/SUOtp8NUQRZX18TBN4zd13ykkwUQtWYZxwpctwxx4JHU
- 6+zxDoXbGnbfB7xe8swPq3oNx4JN1WfsXOCka6XX03eK9n0UrWYJi8c/ATYgCY+Rjrfd
- iOIOk75Vy293QvjjJitlNmSU6CK2gTWZgXm16WwFNj8ys5gCoKASrvsgLHR/7VGEfcu1
- ArcjgExsS6wZv2uk2r1xdXLdcilUYp3xjToXj4l1SetSuJJ+c+zH8i21ZvFgFg6HO8wH Dg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 3127kraqp0-1
+ bh=o7T4F3P2WqySm0CYgUXnMJepL9DfNg/WBzj9WeyK7eA=;
+ b=tUwGok/esi+XX3kwrrrNBUziMOQ9m9hUlscdz45Cnch+HjVfCoiliWMrmDFSqr/1WMg6
+ zZxHEXQJRmbMqC9bqU92FRO/JjA6jJWBnTTwkrs64pXIry//bu2bKN5viEST6/m5py6r
+ ZN71LsGb//NT161yshc+ONfCbaKMOXRRkMAMz6z57hkx9P19w68HPIqPeoaUkucJos2G
+ jU8W3tJrIW9lYUR+2B9x7C9inaWMW12f1UIjbUuh+RySxUSt3UMfKsmF/xjk4sBiJ1nh
+ jyQrDjmE597U9xR7FxqDplug//yCONsYxyByEtDnEdsdl1KKSsiHCyMGXNFcHInRzCku NQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 31501r9850-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 20 May 2020 12:06:02 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KC397m104555;
-        Wed, 20 May 2020 12:06:02 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 3150205y6p-1
+        Wed, 20 May 2020 12:09:19 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KC37rx085443;
+        Wed, 20 May 2020 12:07:18 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 312t37f11g-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 20 May 2020 12:06:01 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04KC5xVd016623;
-        Wed, 20 May 2020 12:05:59 GMT
+        Wed, 20 May 2020 12:07:18 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04KC7BgQ006170;
+        Wed, 20 May 2020 12:07:11 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 20 May 2020 05:05:59 -0700
-Date:   Wed, 20 May 2020 15:05:51 +0300
+        with ESMTP ; Wed, 20 May 2020 05:07:11 -0700
+Date:   Wed, 20 May 2020 15:07:05 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        YF Luo <yf.luo@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Yiwei Chung <yiwei.chung@mediatek.com>,
-        Chih-Min Chen <chih-min.chen@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] mt76: mt7915: fix locking bug in mt7915_sta_rc_update()
-Message-ID: <20200520120551.GG172354@mwanda>
+To:     Ohad Ben-Cohen <ohad@wizery.com>,
+        Paul Cercueil <paul@crapouillou.net>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-remoteproc@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] remoteproc: Fix an error code in devm_rproc_alloc()
+Message-ID: <20200520120705.GH172354@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 bulkscore=0 suspectscore=0 phishscore=0 malwarescore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 mlxlogscore=999
+ phishscore=0 mlxscore=0 malwarescore=0 suspectscore=2 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
  definitions=main-2005200105
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
- bulkscore=0 clxscore=1011 priorityscore=1501 mlxscore=0 impostorscore=0
- suspectscore=0 mlxlogscore=999 malwarescore=0 cotscore=-2147483648
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005200105
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 spamscore=0
+ mlxlogscore=999 clxscore=1011 priorityscore=1501 cotscore=-2147483648
+ impostorscore=0 bulkscore=0 adultscore=0 malwarescore=0 phishscore=0
+ mlxscore=0 suspectscore=2 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005200106
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This function calls rcu_read_lock() twice instead of unlocking.
+The comments say that this function should return NULL on error and the
+caller expects NULL returns as well so I have modified the code to match.
+Returning an ERR_PTR(-ENOMEM) would lead to an OOps.
 
-Fixes: e57b7901469f ("mt76: add mac80211 driver for MT7915 PCIe-based chipsets")
+Fixes: 305ac5a766b1 ("remoteproc: Add device-managed variants of rproc_alloc/rproc_add")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 2 +-
+ drivers/remoteproc/remoteproc_core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 98567374c2c9..3f00f5439c7c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -790,7 +790,7 @@ mt7915_sta_rc_update(struct ieee80211_hw *hw,
- 		rcu_read_unlock();
- 		return;
- 	}
--	rcu_read_lock();
-+	rcu_read_unlock();
+diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+index 0cc015fabf78..9f04c30c4aaf 100644
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -2297,7 +2297,7 @@ struct rproc *devm_rproc_alloc(struct device *dev, const char *name,
  
- 	set_bit(changed, &msta->stats.changed);
- 	ieee80211_queue_work(hw, &msta->stats_work);
+ 	ptr = devres_alloc(devm_rproc_free, sizeof(*ptr), GFP_KERNEL);
+ 	if (!ptr)
+-		return ERR_PTR(-ENOMEM);
++		return NULL;
+ 
+ 	rproc = rproc_alloc(dev, name, ops, firmware, len);
+ 	if (rproc) {
 -- 
 2.26.2
 

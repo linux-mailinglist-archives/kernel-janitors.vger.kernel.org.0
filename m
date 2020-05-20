@@ -2,102 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A2481DB2B8
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 14:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00BA61DB2D2
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 14:13:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726525AbgETMIQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 May 2020 08:08:16 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:37532 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726224AbgETMIQ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 May 2020 08:08:16 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KC89T5192735;
-        Wed, 20 May 2020 12:08:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=pZAPjeoI2xoUqEyaRPjaQ4Ox+SaH6agdK7O7UIhiaI0=;
- b=PmDTRhJ9cWXHzK89OejwhJak/4sjFjjNPeEbxdHQaF7r06QC6pr9WRgN0ilMhw5cJKl2
- wC60n+oE6j4fVtTd4B28Mza+bHvft/nChjJDxJRiXLSaoFmKhAsA7QEEnsgr/5aWvWZE
- ym/RolFsfFkhLrXA4air15JpCoYAxt5xOmMOX1rhoRIBnT57+sKwDOr1fj4vSx8oiDp2
- QyadLQ5QskZLhjnYe2IQMM44OaM8XOZE4QLJG/ae295IHSdjuZBBPS+XZcGTAX2m1XbO
- taErhF5wx5UIDfN6sc5SCuCDDmTRKcL6wFe9XAp+TTXZwUSIileeZzhXn3BlIPjvDx1i aA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 31501r980m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 20 May 2020 12:08:11 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KC3AJ6104590;
-        Wed, 20 May 2020 12:08:11 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 31502063tv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 20 May 2020 12:08:11 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04KC8AEi017587;
-        Wed, 20 May 2020 12:08:10 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 20 May 2020 05:08:09 -0700
-Date:   Wed, 20 May 2020 15:08:04 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] bus: arm-integrator-lm: Fix an IS_ERR() vs NULL check
-Message-ID: <20200520120804.GI172354@mwanda>
+        id S1726560AbgETMNo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 May 2020 08:13:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55100 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726224AbgETMNn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 20 May 2020 08:13:43 -0400
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E5C3620758;
+        Wed, 20 May 2020 12:13:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589976823;
+        bh=eiU9ulrXo9//FrP90hIhY+NjAvrqcWQpknvLFOmH76Y=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=yZYGkFyv04VHheGle3iylFTms1gPrfCjLo5r5/jHnQ4a4Jyjfzga/2ShzAut47vdw
+         pqtQf0GTjRxUhmA72d0NTk7T5j9+v/cmZyKKSPu8+8bJnC4esPrYZNWNqc7td/1+ha
+         rMIuivgOWHgczc+3s4+IOpPQ7J6gwZTLZL37/SNA=
+Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
+        by disco-boy.misterjones.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <maz@kernel.org>)
+        id 1jbNbR-00Dv6k-BG; Wed, 20 May 2020 13:13:41 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 bulkscore=0 suspectscore=0 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005200105
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 spamscore=0
- mlxlogscore=999 clxscore=1015 priorityscore=1501 cotscore=-2147483648
- impostorscore=0 bulkscore=0 adultscore=0 malwarescore=0 phishscore=0
- mlxscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005200106
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 20 May 2020 13:13:41 +0100
+From:   Marc Zyngier <maz@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Allison Randal <allison@lohutok.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: dummy_evgen: Fix use after free on error in
+ iio_dummy_evgen_create()
+In-Reply-To: <20200520120306.GD172354@mwanda>
+References: <20200520120306.GD172354@mwanda>
+User-Agent: Roundcube Webmail/1.4.4
+Message-ID: <000f28ab442759baf6b6251b207aeabb@kernel.org>
+X-Sender: maz@kernel.org
+X-SA-Exim-Connect-IP: 51.254.78.96
+X-SA-Exim-Rcpt-To: dan.carpenter@oracle.com, jic23@kernel.org, bgolaszewski@baylibre.com, knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net, kstewart@linuxfoundation.org, allison@lohutok.net, linus.walleij@linaro.org, linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The of_find_matching_node() function returns NULL on error, it never
-returns error pointers.  This doesn't really impact runtime very much
-because if "syscon" is NULL then syscon_node_to_regmap() will return
--EINVAL.  The only runtime difference is that now it returns -ENODEV.
+Hi Dan,
 
-Fixes: ccea5e8a5918 ("bus: Add driver for Integrator/AP logic modules")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-The first patch which added this file doesn't give a good hint what the
-subsystem prefix should be so I just guessed "bus: arm-integrator-lm:".
+On 2020-05-20 13:03, Dan Carpenter wrote:
+> We need to preserve the "iio_evgen->irq_sim_domain" error code before
+> we free "iio_evgen" otherwise it leads to a use after free.
+> 
+> Fixes: 337cbeb2c13e ("genirq/irq_sim: Simplify the API")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/iio/dummy/iio_dummy_evgen.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/dummy/iio_dummy_evgen.c
+> b/drivers/iio/dummy/iio_dummy_evgen.c
+> index 409fe0f7df1c..ee85d596e528 100644
+> --- a/drivers/iio/dummy/iio_dummy_evgen.c
+> +++ b/drivers/iio/dummy/iio_dummy_evgen.c
+> @@ -45,6 +45,8 @@ static struct iio_dummy_eventgen *iio_evgen;
+> 
+>  static int iio_dummy_evgen_create(void)
+>  {
+> +	int ret;
+> +
+>  	iio_evgen = kzalloc(sizeof(*iio_evgen), GFP_KERNEL);
+>  	if (!iio_evgen)
+>  		return -ENOMEM;
+> @@ -52,8 +54,9 @@ static int iio_dummy_evgen_create(void)
+>  	iio_evgen->irq_sim_domain = irq_domain_create_sim(NULL,
+>  							  IIO_EVENTGEN_NO);
+>  	if (IS_ERR(iio_evgen->irq_sim_domain)) {
+> +		ret = PTR_ERR(iio_evgen->irq_sim_domain);
+>  		kfree(iio_evgen);
+> -		return PTR_ERR(iio_evgen->irq_sim_domain);
+> +		return ret;
+>  	}
+> 
+>  	mutex_init(&iio_evgen->lock);
 
- drivers/bus/arm-integrator-lm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Nice catch. I've applied it to irq/irqchip-next, since
+the offending patch is queued there.
 
-diff --git a/drivers/bus/arm-integrator-lm.c b/drivers/bus/arm-integrator-lm.c
-index 669ea7e1f92e..845b6c43fef8 100644
---- a/drivers/bus/arm-integrator-lm.c
-+++ b/drivers/bus/arm-integrator-lm.c
-@@ -78,10 +78,10 @@ static int integrator_ap_lm_probe(struct platform_device *pdev)
- 
- 	/* Look up the system controller */
- 	syscon = of_find_matching_node(NULL, integrator_ap_syscon_match);
--	if (IS_ERR(syscon)) {
-+	if (!syscon) {
- 		dev_err(dev,
- 			"could not find Integrator/AP system controller\n");
--		return PTR_ERR(syscon);
-+		return -ENODEV;
- 	}
- 	map = syscon_node_to_regmap(syscon);
- 	if (IS_ERR(map)) {
+Thanks,
+
+         M.
 -- 
-2.26.2
-
+Jazz is not dead. It just smells funny...

@@ -2,116 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FDAB1DB9FD
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 18:44:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACCBC1DBA5A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 18:56:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726737AbgETQoP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 May 2020 12:44:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49030 "EHLO
+        id S1726984AbgETQ4C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 May 2020 12:56:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726566AbgETQoP (ORCPT
+        with ESMTP id S1726747AbgETQ4B (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 May 2020 12:44:15 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B0F5C061A0E;
-        Wed, 20 May 2020 09:44:15 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id f13so3123344wmc.5;
-        Wed, 20 May 2020 09:44:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=3jCtfz7Ic5XqdCt18jlvYpCTz0c7NtD54EbrgW/fLek=;
-        b=e6WCsxraezDoLoAyCmCttY3zRFoX6sEkeD3cLMVBHcq5EdGuKD0yB/H4VQcn50JjJC
-         TfqzlXYDug3yTT+a5wk5I178EDxYoo/rb5B/JQcbsYg2bkkcLUWa8VkkJ2ADg5b2JMG4
-         khF+d62nXmIcNLz0Uky9ThDqflOL4iWUfQEw8yW0V0GJ29RS9aO6Wq+qPkY+EdWx4TH6
-         qKcQU26TP1FV3i2WlMcXB36CoN6zPxDqGYkM19phZ2aQ9vnokL426ouVQia3CcNf5aw4
-         Y5G/sgnsG3M7Fqjt0Spy7gfdgWWjlNaGT91TLZHNFKJnX+LTJYzbNOuZGfKLoDDNpJ0e
-         UwAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=3jCtfz7Ic5XqdCt18jlvYpCTz0c7NtD54EbrgW/fLek=;
-        b=MEMlXyhAc2O+z09mKvQg1TQ9NwgsyvYYMwT6s4sLFUyD7qLyFbyU2PNOSafB4Qpanc
-         ZNnZvXwWqgrv/iv2lw4Yr7QbBvqZl+dgIFhIoPwunSSL+l002guTEqQtANrncyNNXCQ0
-         i/iGr7x+vSHPnf0X6nrWCaP3YeABGCMddazMQwoDiUB+r44bppLLFirNA61n+4Jk1Apx
-         XrMRP3htGr9Bfr/eOgIT5TskUvSKof4CDG7bCL5ksPRXdQV+bfBb897BTvb4Yg8AahkL
-         N4BUI+iydBGZzgmRucMtgh4ofYl5rZCWOiKebJpxujcOpcuG4qzIDugpTf4EFFNbmnyt
-         Bc2g==
-X-Gm-Message-State: AOAM531rpRNZLHot9maeZi2whqvPuv1StkRFDqxF8vVZNVpFbCaH5ev3
-        zak2iHtqcamOyoa1LBJ+s+ErUBJO
-X-Google-Smtp-Source: ABdhPJw/gfgIM9TbfRNf1ZQUpGl1c44L8viKUblBw+jRA59LyVatuKwFObnWJY8z+jjTg6MgwkRq1Q==
-X-Received: by 2002:a1c:e188:: with SMTP id y130mr5715413wmg.105.1589993053745;
-        Wed, 20 May 2020 09:44:13 -0700 (PDT)
-Received: from akira-laptop.home ([2a01:cb19:8b28:7600:a0b9:1c6f:cfba:2b21])
-        by smtp.gmail.com with ESMTPSA id v5sm3381242wrr.93.2020.05.20.09.44.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2020 09:44:13 -0700 (PDT)
-Message-ID: <5f5b6a08acc94089caf3f9969579a45c4744c7b3.camel@gmail.com>
-Subject: Re: [PATCH] w1_therm: Free the correct variable
-From:   Akira shimahara <akira215corp@gmail.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Evgeniy Polyakov <zbr@ioremap.net>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Richard Fontana <rfontana@redhat.com>,
-        Allison Randal <allison@lohutok.net>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Date:   Wed, 20 May 2020 18:44:11 +0200
-In-Reply-To: <20200520120019.GA172354@mwanda>
-References: <20200520120019.GA172354@mwanda>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
+        Wed, 20 May 2020 12:56:01 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94E9EC061A0E;
+        Wed, 20 May 2020 09:56:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=IghXcCDK0cEq/Kj0CX/Mm43AHbJSZlDSkk+jenubsNQ=; b=BQDaGBspyP167GjL2cQ6d5nYLD
+        AZ6i8M4iloyuqf7rJPi3xaEjhZ8sg98tXuZelUK5kQV/n2kscQCoNEQXqDPRNb0KZ+HTrwNsQoJUW
+        GNnZkkshlOPFtAMxINd9zLARk/fVY+pNjkTkVcG/cw60pz108g+QhXQaCvpaqPTzz23i+XsGlHdeg
+        y9pVlPVqmacuJxuZYm7IakGkDpcTYWjVieB40HumuUQzP6s+s6JwFxmHbyjTVlJ78X1+T8Nwc+l0u
+        S0Ns0NEyWHg92ygZEHUG8PyovrEWcotmbkN8+muw/qDUBZkJgCbOlBPeEGX+OP8Mlck8cxMJi/h0E
+        otDXNaHA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jbS0b-0005MA-9e; Wed, 20 May 2020 16:55:57 +0000
+Date:   Wed, 20 May 2020 09:55:57 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     James Smart <james.smart@broadcom.com>,
+        linux-nvme@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
+        Dick Kennedy <dick.kennedy@broadcom.com>,
+        linux-scsi@vger.kernel.org,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        kernel-janitors@vger.kernel.org, Paul Ely <paul.ely@broadcom.com>,
+        Hannes Reinecke <hare@suse.de>
+Subject: Re: [PATCH resend] scsi: lpfc: Fix a use after free in
+ lpfc_nvme_unsol_ls_handler()
+Message-ID: <20200520165557.GA9700@infradead.org>
+References: <yq1y2purqt1.fsf@oracle.com>
+ <20200515101903.GJ3041@kadam>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200515101903.GJ3041@kadam>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
-
-Le mercredi 20 mai 2020 à 15:00 +0300, Dan Carpenter a écrit :
-> The problem is that we change "p_args" to point to the middle of the
-> string so when we free it at the end of the function it's not freeing
-> the same pointer that we originally allocated.
-> 
-> Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> From static analysis.  I guess it must not cause too much of a problem
-> at run time?
-> 
->  drivers/w1/slaves/w1_therm.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/w1/slaves/w1_therm.c b/drivers/w1/slaves/w1_therm.c
-> index cc4b88056b33..a6c85e486671 100644
-> --- a/drivers/w1/slaves/w1_therm.c
-> +++ b/drivers/w1/slaves/w1_therm.c
-> @@ -1526,8 +1526,9 @@ static ssize_t alarms_store(struct device *device,
->  	int temp, ret = -EINVAL;
->  	char *token = NULL;
->  	s8 tl, th, tt;	/* 1 byte per value + temp ring order */
-> -	char *p_args = kmalloc(size, GFP_KERNEL);
-> +	char *p_args, *orig;
->  
-> +	p_args = orig = kmalloc(size, GFP_KERNEL);
->  	/* Safe string copys as buf is const */
->  	if (!p_args) {
->  		dev_warn(device,
-> @@ -1611,7 +1612,7 @@ static ssize_t alarms_store(struct device *device,
->  
->  free_m:
->  	/* free allocated memory */
-> -	kfree(p_args);
-> +	kfree(orig);
->  
->  	return size;
->  }
-
-I tested it on several devices to be safe, no issue at runtime.
-Sorry for the mistake and thanks for the fix.
-
-Akira Shimahara
-
+James, can you review this patch?

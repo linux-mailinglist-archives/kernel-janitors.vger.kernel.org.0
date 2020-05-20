@@ -2,55 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACCBC1DBA5A
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 18:56:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A80A21DBAD2
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 19:12:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726984AbgETQ4C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 May 2020 12:56:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50888 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726747AbgETQ4B (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 May 2020 12:56:01 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94E9EC061A0E;
-        Wed, 20 May 2020 09:56:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=IghXcCDK0cEq/Kj0CX/Mm43AHbJSZlDSkk+jenubsNQ=; b=BQDaGBspyP167GjL2cQ6d5nYLD
-        AZ6i8M4iloyuqf7rJPi3xaEjhZ8sg98tXuZelUK5kQV/n2kscQCoNEQXqDPRNb0KZ+HTrwNsQoJUW
-        GNnZkkshlOPFtAMxINd9zLARk/fVY+pNjkTkVcG/cw60pz108g+QhXQaCvpaqPTzz23i+XsGlHdeg
-        y9pVlPVqmacuJxuZYm7IakGkDpcTYWjVieB40HumuUQzP6s+s6JwFxmHbyjTVlJ78X1+T8Nwc+l0u
-        S0Ns0NEyWHg92ygZEHUG8PyovrEWcotmbkN8+muw/qDUBZkJgCbOlBPeEGX+OP8Mlck8cxMJi/h0E
-        otDXNaHA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jbS0b-0005MA-9e; Wed, 20 May 2020 16:55:57 +0000
-Date:   Wed, 20 May 2020 09:55:57 -0700
-From:   Christoph Hellwig <hch@infradead.org>
+        id S1726691AbgETRMX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 May 2020 13:12:23 -0400
+Received: from verein.lst.de ([213.95.11.211]:50851 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726566AbgETRMX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 20 May 2020 13:12:23 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id A1CF868BEB; Wed, 20 May 2020 19:12:20 +0200 (CEST)
+Date:   Wed, 20 May 2020 19:12:20 +0200
+From:   Christoph Hellwig <hch@lst.de>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     James Smart <james.smart@broadcom.com>,
-        linux-nvme@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        linux-scsi@vger.kernel.org,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        kernel-janitors@vger.kernel.org, Paul Ely <paul.ely@broadcom.com>,
-        Hannes Reinecke <hare@suse.de>
-Subject: Re: [PATCH resend] scsi: lpfc: Fix a use after free in
- lpfc_nvme_unsol_ls_handler()
-Message-ID: <20200520165557.GA9700@infradead.org>
-References: <yq1y2purqt1.fsf@oracle.com>
- <20200515101903.GJ3041@kadam>
+Cc:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        linux-nvme@lists.infradead.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] nvme: delete an unnecessary declaration
+Message-ID: <20200520171220.GA9677@lst.de>
+References: <20200515120659.GA575846@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200515101903.GJ3041@kadam>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20200515120659.GA575846@mwanda>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-James, can you review this patch?
+Thanks,
+
+applied to nvme-5.8.

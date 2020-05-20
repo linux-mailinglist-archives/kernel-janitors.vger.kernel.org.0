@@ -2,106 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8931D1DB4A0
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 15:10:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B81A1DB759
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 May 2020 16:47:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726546AbgETNKj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 May 2020 09:10:39 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:47878 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726439AbgETNKh (ORCPT
+        id S1726548AbgETOrX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 May 2020 10:47:23 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:52718 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726545AbgETOrX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 May 2020 09:10:37 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KD8JFi064189;
-        Wed, 20 May 2020 13:10:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=R7gtf0kiWbCNJ0UhI5MwvQ47qSSl1HmSUaTx5bHu6G0=;
- b=o4m1NTL434XJQbAkIuOB//h3s4FworvA3R42ve4vzv2KBNyiMoH/EbmcxuhOlXbZd+A9
- vJW4rNRvhlnDIx2czecGKoM7wSEB7Cm4Lt0EGB05DA1cOixhUrZ2Uk434gcFJoJr4h30
- EvBTF06GCH/PagknjE+aV2ROHM1ySQqhjKRMgDwfwkqEXlYbNtDw4UfSzcqXBnc626oh
- rQYKowjZKekgM+ykGLa/pW7YGTtZdX3t4A6hKcwuW799AcWvhQafXS7J6Ej6Nl/+rxAb
- sKyP2sKE+2DnK+TCtqHM1Hz9D1ld0gFjEnAevWLNbstcYQpLpg0tNinE6yVGMpu3/Tst GQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 3127krb14d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 20 May 2020 13:10:32 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KD8SBh188047;
-        Wed, 20 May 2020 13:08:31 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 314gm724eb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 20 May 2020 13:08:30 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04KD8Lud010719;
-        Wed, 20 May 2020 13:08:21 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 20 May 2020 06:08:20 -0700
-Date:   Wed, 20 May 2020 16:08:12 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Alex Deucher <alexander.deucher@amd.com>,
-        Kevin Wang <kevin1.wang@amd.com>
-Cc:     Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Evan Quan <evan.quan@amd.com>,
-        Rui Huang <ray.huang@amd.com>,
-        Kenneth Feng <kenneth.feng@amd.com>,
-        Yintian Tao <yttao@amd.com>,
-        Hawking Zhang <Hawking.Zhang@amd.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] drm/amdgpu: off by on in
- amdgpu_device_attr_create_groups() error handling
-Message-ID: <20200520130812.GA177222@mwanda>
+        Wed, 20 May 2020 10:47:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1589986040; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=t1ZlYSu22epfMxRnYs8iJPp9xd2l4qnINjM6pWxZLyo=;
+        b=n0wsLkMBoiYntekMmPHEN2V2OECWGEeQN1i5/tL9YBi8rdiM8+wsgjM3ZI5zJaJWb/i1ON
+        ucQ6mteX6lzyJ3vr3knTNdV2SY4yZEIwmab0Mj8CEbXEXUr6otiq+PMJlfIXtzx7QFc1oZ
+        Mlrj62HUWfuaBTR+QkZIqhYHua9urVY=
+Date:   Wed, 20 May 2020 16:47:10 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH] remoteproc: Fix an error code in devm_rproc_alloc()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Ohad Ben-Cohen <ohad@wizery.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-remoteproc@vger.kernel.org, kernel-janitors@vger.kernel.org
+Message-Id: <M2XMAQ.69YYPQMEVN31@crapouillou.net>
+In-Reply-To: <20200520120705.GH172354@mwanda>
+References: <20200520120705.GH172354@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200520125209.GP3041@kadam>
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
- adultscore=0 phishscore=0 mlxscore=0 spamscore=0 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005200113
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
- bulkscore=0 clxscore=1015 priorityscore=1501 mlxscore=0 impostorscore=0
- suspectscore=0 mlxlogscore=999 malwarescore=0 cotscore=-2147483648
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005200113
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This loop in the error handling code should start a "i - 1" and end at
-"i == 0".  Currently it starts a "i" and ends at "i == 1".  The result
-is that it removes one attribute that wasn't created yet, and leaks the
-zeroeth attribute.
+Hi Dan,
 
-Fixes: 4e01847c38f7 ("drm/amdgpu: optimize amdgpu device attribute code")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-v2: style change
+Le mer. 20 mai 2020 =E0 15:07, Dan Carpenter <dan.carpenter@oracle.com>=20
+a =E9crit :
+> The comments say that this function should return NULL on error and=20
+> the
+> caller expects NULL returns as well so I have modified the code to=20
+> match.
+> Returning an ERR_PTR(-ENOMEM) would lead to an OOps.
+>=20
+> Fixes: 305ac5a766b1 ("remoteproc: Add device-managed variants of=20
+> rproc_alloc/rproc_add")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
- drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c           | 3 +--
- 1 files changed, 1 insertions(+), 2 deletions(-)
+Alright, makes sense.
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c
-index b75362bf0742..e809534fabd4 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c
-@@ -1942,9 +1942,8 @@ static int amdgpu_device_attr_create_groups(struct amdgpu_device *adev,
- 	return 0;
- 
- failed:
--	for (; i > 0; i--) {
-+	while (i--)
- 		amdgpu_device_attr_remove(adev, &attrs[i]);
--	}
- 
- 	return ret;
- }
+Reviewed-by: Paul Cercueil <paul@crapouillou.net>
+
+Cheers,
+-Paul
+
+> ---
+>  drivers/remoteproc/remoteproc_core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/remoteproc/remoteproc_core.c=20
+> b/drivers/remoteproc/remoteproc_core.c
+> index 0cc015fabf78..9f04c30c4aaf 100644
+> --- a/drivers/remoteproc/remoteproc_core.c
+> +++ b/drivers/remoteproc/remoteproc_core.c
+> @@ -2297,7 +2297,7 @@ struct rproc *devm_rproc_alloc(struct device=20
+> *dev, const char *name,
+>=20
+>  	ptr =3D devres_alloc(devm_rproc_free, sizeof(*ptr), GFP_KERNEL);
+>  	if (!ptr)
+> -		return ERR_PTR(-ENOMEM);
+> +		return NULL;
+>=20
+>  	rproc =3D rproc_alloc(dev, name, ops, firmware, len);
+>  	if (rproc) {
+> --
+> 2.26.2
+>=20
+
+

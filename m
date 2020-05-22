@@ -2,87 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 274DB1DF1F6
-	for <lists+kernel-janitors@lfdr.de>; Sat, 23 May 2020 00:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B53C41DF2A2
+	for <lists+kernel-janitors@lfdr.de>; Sat, 23 May 2020 01:02:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731224AbgEVWku (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 22 May 2020 18:40:50 -0400
-Received: from mail-il1-f193.google.com ([209.85.166.193]:39705 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731029AbgEVWku (ORCPT
+        id S1731195AbgEVXCM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 22 May 2020 19:02:12 -0400
+Received: from mail-il1-f195.google.com ([209.85.166.195]:43890 "EHLO
+        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731172AbgEVXCL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 22 May 2020 18:40:50 -0400
-Received: by mail-il1-f193.google.com with SMTP id c20so12367530ilk.6;
-        Fri, 22 May 2020 15:40:49 -0700 (PDT)
+        Fri, 22 May 2020 19:02:11 -0400
+Received: by mail-il1-f195.google.com with SMTP id l20so12356698ilj.10;
+        Fri, 22 May 2020 16:02:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=L9O1ztl73QCyaz4czM7KN6rZzxlSQiG/LQQETJdvECE=;
-        b=qywbsa09nrFJ9IcOsm5wHV/D/3rQbDkB7zXtN8FlDG41tyOseF6tA3d0GvxHm3bhcq
-         Grj6YYlFS+EikpydQKXYOgH2uFL7a9xUKLh2TLLxtgRNtt49xJhVk1LZcncAuRU8OU5/
-         N/1TkKW43TYc8M/it9lE4uge+hzUuxNkHgLkPM8+k9gO/MJIZleo9fcJhpk8zJQT7LWt
-         gOTIAUCRUGKEgx5d4dms+O0xwGL/+nCAKj/H/ZAwQnKNDjWhidYnJ4SoRGY68qymUk7f
-         2/GYQq3Kn+C9L6MbctHqNUW1QOf3FjpCNuqfqodujijT0EAYxtSl0EDcB9p6RW30fnpw
-         oKMw==
-X-Gm-Message-State: AOAM530ERGKPFNF6lXmk0nLpkkX7e3HsYMMRK/2LA++S7HkY2PJl2yXA
-        bvPCXPn5lBUqx1IhoSLnQadyutxpJqw=
-X-Google-Smtp-Source: ABdhPJwFf0FNqC6ZgYM/FHrk3wPlyCTZJJB3LVatxCaJKD4IqZ24qDgivXe1I/k+FmhXZCfV1ejcNA==
-X-Received: by 2002:a05:6e02:ec2:: with SMTP id i2mr15593326ilk.262.1590187248869;
-        Fri, 22 May 2020 15:40:48 -0700 (PDT)
-Received: from mail-io1-f43.google.com (mail-io1-f43.google.com. [209.85.166.43])
-        by smtp.gmail.com with ESMTPSA id l21sm2016938ili.8.2020.05.22.15.40.48
+        bh=C/nTM//7FB1PAbN/moZIfyohRFuX/F3Z6XuMSd7PjCw=;
+        b=A1C9+WsZPdd9i60EaAeVkNFAWtxxNKbZbE32kVpP7DnEIB46M88eQ7b2AftqFL6m5Z
+         s1+kb1eqEf3qZhp61I+SGvZ9FjvuOI+XaAxSJxExrAdicH9+5BRvB2fxYE/jxhaOY/+M
+         OyFSQvGDTQMMIiYIw0O33phRVLx9sS9Zt7YygrEEl/2y02E6OvllUhDk3G3iqcbMuyEo
+         JZ0yt+6ObdxJ/cVkWPHW5ksMZnvhIkjU95Fsl3PyD3g43v9fRwexG0e2Hjck0NYEp1gi
+         pT3sEfaNmOHHf9+zizpG0PJidE/xJb6BUuSuRM45s3X/XP3t7s/QH+nnczWgzg2h0dv5
+         8PEA==
+X-Gm-Message-State: AOAM530JBNoM60PxcWPdaL37FTtSf2WiBXOm/qtwCfcdaXAScySgCyLZ
+        ZefR72plirKiqK/rNsuMEeqwILtEjSI=
+X-Google-Smtp-Source: ABdhPJwYRCX6lT2c+xy+02DIHWNUuEeX6ytF4C5N+UtEhlbh+z4YHcpyyAD/hSAPT8FfQfvOraSugQ==
+X-Received: by 2002:a92:9c52:: with SMTP id h79mr7665854ili.252.1590188530978;
+        Fri, 22 May 2020 16:02:10 -0700 (PDT)
+Received: from mail-il1-f169.google.com (mail-il1-f169.google.com. [209.85.166.169])
+        by smtp.gmail.com with ESMTPSA id v70sm5563101ilk.84.2020.05.22.16.02.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 May 2020 15:40:48 -0700 (PDT)
-Received: by mail-io1-f43.google.com with SMTP id d7so13194450ioq.5;
-        Fri, 22 May 2020 15:40:48 -0700 (PDT)
-X-Received: by 2002:a02:5e81:: with SMTP id h123mr9862796jab.99.1590187248159;
- Fri, 22 May 2020 15:40:48 -0700 (PDT)
+        Fri, 22 May 2020 16:02:10 -0700 (PDT)
+Received: by mail-il1-f169.google.com with SMTP id m6so12383260ilq.7;
+        Fri, 22 May 2020 16:02:09 -0700 (PDT)
+X-Received: by 2002:a92:5cc1:: with SMTP id d62mr15036209ilg.95.1590188529711;
+ Fri, 22 May 2020 16:02:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200410015832.8012-1-tangbin@cmss.chinamobile.com>
- <be8cd229-884a-40e6-3363-7c4680a51b30@web.de> <0b718268-d330-dfc1-aca3-3dd3203363d7@cmss.chinamobile.com>
- <20200414083036.GC14722@kadam> <f712918c-2f61-0ba5-2ba8-b5ca3cce9a35@cmss.chinamobile.com>
-In-Reply-To: <f712918c-2f61-0ba5-2ba8-b5ca3cce9a35@cmss.chinamobile.com>
+References: <20200327161349.284679-1-colin.king@canonical.com>
+In-Reply-To: <20200327161349.284679-1-colin.king@canonical.com>
 From:   Li Yang <leoyang.li@nxp.com>
-Date:   Fri, 22 May 2020 17:40:24 -0500
-X-Gmail-Original-Message-ID: <CADRPPNRJe6aE3MXjK0z6uYtey3smU8cbFcGBqqv0ELJ9SxApvQ@mail.gmail.com>
-Message-ID: <CADRPPNRJe6aE3MXjK0z6uYtey3smU8cbFcGBqqv0ELJ9SxApvQ@mail.gmail.com>
-Subject: Re: [PATCH] usb: gadget: fsl: Fix a wrong judgment in fsl_udc_probe()
-To:     Tang Bin <tangbin@cmss.chinamobile.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>,
-        Markus Elfring <Markus.Elfring@web.de>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Date:   Fri, 22 May 2020 18:01:44 -0500
+X-Gmail-Original-Message-ID: <CADRPPNQ4KrnSsG2PxgXxe-+c5DQsUNQjw3f9Xq-kxP3+xAaQcQ@mail.gmail.com>
+Message-ID: <CADRPPNQ4KrnSsG2PxgXxe-+c5DQsUNQjw3f9Xq-kxP3+xAaQcQ@mail.gmail.com>
+Subject: Re: [PATCH] soc: fsl: qe: clean up an indentation issue
+To:     Colin King <colin.king@canonical.com>
+Cc:     Qiang Zhao <qiang.zhao@nxp.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        kernel-janitors@vger.kernel.org,
+        lkml <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Apr 14, 2020 at 4:13 AM Tang Bin <tangbin@cmss.chinamobile.com> wrote:
+On Fri, Mar 27, 2020 at 11:15 AM Colin King <colin.king@canonical.com> wrote:
 >
-> Hi
+> From: Colin Ian King <colin.king@canonical.com>
 >
-> On 2020/4/14 16:30, Dan Carpenter wrote:
-> > On Fri, Apr 10, 2020 at 04:05:06PM +0800, Tang Bin wrote:
-> >>>
-> >>>> Thus it must be fixed.
-> >>> Wording alternative:
-> >>>     Thus adjust the error detection and corresponding exception handling.
-> >> Got it.
-> > Wow...
-> >
-> > No, don't listen to Markus when it comes to writing commit messages.
-> > You couldn't find worse advice anywhere.  :P
+> There is a statement that not indented correctly, remove the
+> extraneous space.
 >
-> I'm actively waiting for a reply from the maintainer. Thank you very much.
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Sorry for the late response.
+Applied for next.  Thanks.
 
-Acked-by: Li Yang <leoyang.li@nxp.com>
-
-Regards,
-Leo
+> ---
+>  drivers/soc/fsl/qe/ucc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/soc/fsl/qe/ucc.c b/drivers/soc/fsl/qe/ucc.c
+> index d6c93970df4d..cac0fb7693a0 100644
+> --- a/drivers/soc/fsl/qe/ucc.c
+> +++ b/drivers/soc/fsl/qe/ucc.c
+> @@ -519,7 +519,7 @@ int ucc_set_tdm_rxtx_clk(u32 tdm_num, enum qe_clock clock,
+>         int clock_bits;
+>         u32 shift;
+>         struct qe_mux __iomem *qe_mux_reg;
+> -        __be32 __iomem *cmxs1cr;
+> +       __be32 __iomem *cmxs1cr;
+>
+>         qe_mux_reg = &qe_immr->qmx;
+>
+> --
+> 2.25.1
+>

@@ -2,94 +2,118 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 068601DE10C
-	for <lists+kernel-janitors@lfdr.de>; Fri, 22 May 2020 09:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F3261DE363
+	for <lists+kernel-janitors@lfdr.de>; Fri, 22 May 2020 11:42:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728344AbgEVHdI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 22 May 2020 03:33:08 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:57240 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728214AbgEVHdG (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 22 May 2020 03:33:06 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04M7RiMI099138;
-        Fri, 22 May 2020 07:31:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=FHKudRAmfJMTmkL5lBhr9gMRqVNot+ZGcY+gLOKSPWQ=;
- b=zr8ftTxmN8djMVNxsfauxHijqmQZJ27JNYNzSbiwZV1H4No0xKEXcoTBytv3PDJSvcrp
- /Nyramp0bw+dLsKfAey75XBoOuEv6PhQEYKJ3fSf3n1UF81MxbM2guQfVP9qMNYBHSff
- 0IBWTd1TSwN4MLhOwVoRqfipf6RiOQW0ZCK7XL0FAcRfHgkHtQjUaJ+5Ssh5CBYpXINY
- 19VERK0I4Y44f8lhzUIpFleEzhe1ducy/y6uezF+0Px3K3Lqe7sK49O1DZqJJPuH2L+p
- jIo5SWG9s0WsYzgwXQcbaKu7YC1xheaXy9TBqY2v9S5VpftJZIi8oHvInJOIZ0c/DQKw 9g== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 31501rjt8p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 22 May 2020 07:31:24 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04M7TICY165649;
-        Fri, 22 May 2020 07:29:24 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 315023u8fy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 22 May 2020 07:29:24 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04M7TJnm022187;
-        Fri, 22 May 2020 07:29:19 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 22 May 2020 00:29:18 -0700
-Date:   Fri, 22 May 2020 10:29:11 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     James Smart <jsmart2021@gmail.com>
-Cc:     linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, paul.ely@broadcom.com,
-        hare@suse.de, jejb@linux.ibm.com, axboe@kernel.dk,
-        martin.petersen@oracle.com, hch@infradead.org
-Subject: Re: [PATCH 0/3] lpfc: Fix errors in LS receive refactoring
-Message-ID: <20200522072911.GA22511@kadam>
-References: <20200520185929.48779-1-jsmart2021@gmail.com>
+        id S1728425AbgEVJmV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 22 May 2020 05:42:21 -0400
+Received: from mout.web.de ([212.227.15.4]:60039 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728212AbgEVJmU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 22 May 2020 05:42:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1590140535;
+        bh=MKYiq5Sp1KMcCd7UJd3BkYZ0+IXM0YIHV3p4p3MDECU=;
+        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
+        b=BHFs04E+hswktYe45EHT3IHDl2L+J1QlV2Of+iHrH9X0jk4Hgs2B/6UMXMagi7A3W
+         0jjcCc1btvEOlujY+pYYpe87mWSmO1VrSSk4p3XJX/aauBf1h+EZqffd7W5xme0FZ7
+         MGrFcOQxtoBfRcjIMU2hXmKSNpvJEGG+d74jiclo=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.48.165.155]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1N5CUb-1isena20zl-0119Qm; Fri, 22
+ May 2020 11:42:15 +0200
+To:     Qian Cai <cai@lca.pw>, kvm@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Cornelia Huck <cohuck@redhat.com>
+Subject: Re: [PATCH] vfio/pci: Avoid a null pointer dereference in
+ vfio_config_free()
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <74c0fac5-fe3f-e1f6-672d-3be4a8945426@web.de>
+Date:   Fri, 22 May 2020 11:42:14 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200520185929.48779-1-jsmart2021@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9628 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 bulkscore=0 suspectscore=0 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005220060
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9628 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 spamscore=0
- mlxlogscore=999 clxscore=1015 priorityscore=1501 cotscore=-2147483648
- impostorscore=0 bulkscore=0 adultscore=0 malwarescore=0 phishscore=0
- mlxscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005220060
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+X-Provags-ID: V03:K1:qOSyTnymd+d6xaaDBwrKiBqGknfKfUVmir0qs8TAGvMUpDbbJ43
+ aCEMihLPSh4X7yq6YPImbzxVMBBljUV06A8PCPaCSvfcTlyMydX6YelHG5bos1W9G+Zo/UQ
+ +zAfijCnfnXyGGRd/Sgb7QKj/caPQH6LdBO51lzHf8+cdSdL8bLT6hdv5HG/JsRDK3gnsqc
+ gF23z5nzMMHpQ5KwBpfjA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:cqSOM2ILvSM=:yJqwMPhSwjPl4eeiRmBcVV
+ CEMh2CDbVnOWDvN9bzvyjC/vXy3gHhsACE+WGPORMEu0Uw6Mh6vI/KXxzu0ooEfuj4PfiIMQt
+ 5yf1tvIYpMkA7r4Kv5xyVdMEuJDuObKCVofpJXjZLehhek2OlpyWrX50lZuTBKzjKISoXfruE
+ YnV1l00DevJA+j7ViA1iXez6AVbw7+nbtT9JLuy56QwlvvvWOrxqM6t9RCcON6sPxfQB3yd7y
+ FXqVVpt9wvOFzMHBSqpo+iYrMvLtulrgne6Suvekj/7k/hi0gRKkMdyrhpVJ1p9SEMKoU0VeB
+ ySypmzw5jzIkNVpeW+BzHjMNtBh5gEVt8T4Zzklr35YRJvgDcZEFoBxGr6fash0imQzgDoLsi
+ yRcsOlZKr1b+iTd3bZqqCaW/yzGWkXiggLYSdV+a9HP8qlQni83LP9XvQqFcDNJBraKGLpg91
+ 1yU97urDkWxFe020XUgTtOHPSpz5OrHMeSnq+zti8NOxjHFGrL/e+T+814tlJDftlrS2IsBVL
+ vYVkQJ7d43l7NsvNSBIAuf6JkNJq4x4OqCKyh/QP0JJVTvL94DMx2T6WdR84pdoD4iny1xIKe
+ CrkzRthYdwZyrGtd0u1kSsHdinezD15sbmt/QsRvOJ6CMIpmnSUrvjs7zkx75YqjwzfS0Fy+M
+ XvriesO8Dl+P7za0YJisiXXBLx1HniHFBTgch/5pb5Vgb1luc//sPx5TovnTtpiULBQMcOZ5d
+ rgQfOiTyQ8e9y9g/hBrhSEgekB0qjCsquGwRjti3RB0Jh3HAS5hS+WpUEGXI7N6ui58pYJOWj
+ gFxlHdb2KTswo/RnxSWk9DlLBmY+LuDJRguv4fwjoRmA403dFGgU9VJnZDnFM42qmXFZFCxDO
+ 0a5gegIv63UxXfTrkZSlT9eKYChsTjuJYkE3u3K2uxbVdE/tHv3mLR2+z+rgDCYs5VkXLanVl
+ ZHXFoLC7fQo/6+Pj9XjLkn1LX2TZ0c79kY5VL1nFwAPxa7H8jgyeS/NhqZENKYtQu+JQX2Vw5
+ jw5t+FxlkLel+Vofzllg797yBKIbUCph7BwZ6SW0eR31x5dud66Od2lGBrBc219FYRZ+lcBae
+ M+SW47HKwI7wk3BUz5NyugTbbe0y3Y6NOe/SVrR9wmr6akIeXaSSISpN3U9JlKsvZRXKkms9c
+ xgYFsCzFH9n4f4FIMcVnre3JjAkQgQoa950mevzVFV5U13wbV75073+hc9ihJ1a94oGVV7SLS
+ /6XLR9j3p3eXFHIWH
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, May 20, 2020 at 11:59:26AM -0700, James Smart wrote:
-> A prior patch set refactored lpfc to create common routines for NVME LS
-> handling for use by both the initiator and target paths.  The refactoring
-> introduced several errors spotted by additional testing and static checker
-> reporting.
-> 
-> This patch set corrects those errors.
-> 
-> The patches should enter via the nvme tree, as the lpfc modifications were
-> in support of nvme-fc transport api deltas merged via the nvme tree.
-> 
-> -- james
+> It is possible vfio_config_init() does not call vfio_cap_len(), and then
+> vdev->msi_perm == NULL. Later, in vfio_config_free(), it could trigger a
+> null-ptr-deref.
 
-Thanks!
+I suggest to add an imperative wording to the commit message.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=051143e1602d90ea71887d92363edd539d411de5#n151
 
-Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-regards,
-dan carpenter
-
-
+Regards,
+Markus

@@ -2,118 +2,402 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F3261DE363
-	for <lists+kernel-janitors@lfdr.de>; Fri, 22 May 2020 11:42:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9189A1DE392
+	for <lists+kernel-janitors@lfdr.de>; Fri, 22 May 2020 11:57:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728425AbgEVJmV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 22 May 2020 05:42:21 -0400
-Received: from mout.web.de ([212.227.15.4]:60039 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728212AbgEVJmU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 22 May 2020 05:42:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590140535;
-        bh=MKYiq5Sp1KMcCd7UJd3BkYZ0+IXM0YIHV3p4p3MDECU=;
-        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=BHFs04E+hswktYe45EHT3IHDl2L+J1QlV2Of+iHrH9X0jk4Hgs2B/6UMXMagi7A3W
-         0jjcCc1btvEOlujY+pYYpe87mWSmO1VrSSk4p3XJX/aauBf1h+EZqffd7W5xme0FZ7
-         MGrFcOQxtoBfRcjIMU2hXmKSNpvJEGG+d74jiclo=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.48.165.155]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N5CUb-1isena20zl-0119Qm; Fri, 22
- May 2020 11:42:15 +0200
-To:     Qian Cai <cai@lca.pw>, kvm@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Cornelia Huck <cohuck@redhat.com>
-Subject: Re: [PATCH] vfio/pci: Avoid a null pointer dereference in
- vfio_config_free()
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <74c0fac5-fe3f-e1f6-672d-3be4a8945426@web.de>
-Date:   Fri, 22 May 2020 11:42:14 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1728281AbgEVJ5H (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 22 May 2020 05:57:07 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:48024 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728212AbgEVJ5G (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 22 May 2020 05:57:06 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04M9pV6D147900;
+        Fri, 22 May 2020 09:56:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=0V3vrVVBtUNxnLjq61/47fmwyQQP6sizC37Id65usHw=;
+ b=Ix+63zbWsfTnAc3aRNbLgukhCixrZLYtINpD1sga+b8O/CvfMOCo3KvfhmADGXp2aiFU
+ fG2eoasOpcfIDYaeAceOB3ByxnELaIkJc4jDDv92Yvdbe5S6/c5vo/h3sNq5NA3Aa2kS
+ /+Ekvng1znM+9Qt4Ye6xwy00B7spb9Qp1RyRmCfzqBtW5caF8IlLsiEpVEfD232QNcLC
+ ZzBtqYnr3OVgpgBzbJAu0wZciTg6/tPeLNVW7uiURKEqrIxlEDKEll2YHEZ/oLFbSWjw
+ z1Qlq0shYng9kxtO2ak1rB5ne6cgNMOBEv2OPOM37x1XRApqRRFHAK72Yb036/YLGdUp xg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 31501rkfq7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 22 May 2020 09:56:53 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04M9qaCV086299;
+        Fri, 22 May 2020 09:56:52 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 314gmaunf5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 22 May 2020 09:56:52 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04M9uoxA027043;
+        Fri, 22 May 2020 09:56:52 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 22 May 2020 02:56:49 -0700
+Date:   Fri, 22 May 2020 12:56:40 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     oshpigelman@habana.ai
+Cc:     Omer Shpigelman <oshpigelman@habana.ai>,
+        kernel-janitors@vger.kernel.org
+Subject: [bug report] habanalabs: add gaudi security module
+Message-ID: <20200522095640.GA32453@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-X-Provags-ID: V03:K1:qOSyTnymd+d6xaaDBwrKiBqGknfKfUVmir0qs8TAGvMUpDbbJ43
- aCEMihLPSh4X7yq6YPImbzxVMBBljUV06A8PCPaCSvfcTlyMydX6YelHG5bos1W9G+Zo/UQ
- +zAfijCnfnXyGGRd/Sgb7QKj/caPQH6LdBO51lzHf8+cdSdL8bLT6hdv5HG/JsRDK3gnsqc
- gF23z5nzMMHpQ5KwBpfjA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:cqSOM2ILvSM=:yJqwMPhSwjPl4eeiRmBcVV
- CEMh2CDbVnOWDvN9bzvyjC/vXy3gHhsACE+WGPORMEu0Uw6Mh6vI/KXxzu0ooEfuj4PfiIMQt
- 5yf1tvIYpMkA7r4Kv5xyVdMEuJDuObKCVofpJXjZLehhek2OlpyWrX50lZuTBKzjKISoXfruE
- YnV1l00DevJA+j7ViA1iXez6AVbw7+nbtT9JLuy56QwlvvvWOrxqM6t9RCcON6sPxfQB3yd7y
- FXqVVpt9wvOFzMHBSqpo+iYrMvLtulrgne6Suvekj/7k/hi0gRKkMdyrhpVJ1p9SEMKoU0VeB
- ySypmzw5jzIkNVpeW+BzHjMNtBh5gEVt8T4Zzklr35YRJvgDcZEFoBxGr6fash0imQzgDoLsi
- yRcsOlZKr1b+iTd3bZqqCaW/yzGWkXiggLYSdV+a9HP8qlQni83LP9XvQqFcDNJBraKGLpg91
- 1yU97urDkWxFe020XUgTtOHPSpz5OrHMeSnq+zti8NOxjHFGrL/e+T+814tlJDftlrS2IsBVL
- vYVkQJ7d43l7NsvNSBIAuf6JkNJq4x4OqCKyh/QP0JJVTvL94DMx2T6WdR84pdoD4iny1xIKe
- CrkzRthYdwZyrGtd0u1kSsHdinezD15sbmt/QsRvOJ6CMIpmnSUrvjs7zkx75YqjwzfS0Fy+M
- XvriesO8Dl+P7za0YJisiXXBLx1HniHFBTgch/5pb5Vgb1luc//sPx5TovnTtpiULBQMcOZ5d
- rgQfOiTyQ8e9y9g/hBrhSEgekB0qjCsquGwRjti3RB0Jh3HAS5hS+WpUEGXI7N6ui58pYJOWj
- gFxlHdb2KTswo/RnxSWk9DlLBmY+LuDJRguv4fwjoRmA403dFGgU9VJnZDnFM42qmXFZFCxDO
- 0a5gegIv63UxXfTrkZSlT9eKYChsTjuJYkE3u3K2uxbVdE/tHv3mLR2+z+rgDCYs5VkXLanVl
- ZHXFoLC7fQo/6+Pj9XjLkn1LX2TZ0c79kY5VL1nFwAPxa7H8jgyeS/NhqZENKYtQu+JQX2Vw5
- jw5t+FxlkLel+Vofzllg797yBKIbUCph7BwZ6SW0eR31x5dud66Od2lGBrBc219FYRZ+lcBae
- M+SW47HKwI7wk3BUz5NyugTbbe0y3Y6NOe/SVrR9wmr6akIeXaSSISpN3U9JlKsvZRXKkms9c
- xgYFsCzFH9n4f4FIMcVnre3JjAkQgQoa950mevzVFV5U13wbV75073+hc9ihJ1a94oGVV7SLS
- /6XLR9j3p3eXFHIWH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9628 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=904
+ adultscore=0 phishscore=0 mlxscore=0 spamscore=0 suspectscore=3
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005220080
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9628 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 spamscore=0
+ mlxlogscore=935 clxscore=1011 priorityscore=1501 cotscore=-2147483648
+ impostorscore=0 bulkscore=0 adultscore=0 malwarescore=0 phishscore=0
+ mlxscore=0 suspectscore=3 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005220080
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> It is possible vfio_config_init() does not call vfio_cap_len(), and then
-> vdev->msi_perm == NULL. Later, in vfio_config_free(), it could trigger a
-> null-ptr-deref.
+Hello Omer Shpigelman,
 
-I suggest to add an imperative wording to the commit message.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=051143e1602d90ea71887d92363edd539d411de5#n151
+The patch 3a3a5bf19639: "habanalabs: add gaudi security module" from
+May 11, 2020, leads to the following static checker warning:
 
-Regards,
-Markus
+	drivers/misc/habanalabs/gaudi/gaudi_security.c:527 gaudi_init_mme_protection_bits()
+	warn: odd binop '0x60400 & 0x7f'
+
+drivers/misc/habanalabs/gaudi/gaudi_security.c
+   514          mask |= 1 << ((mmMME0_CTRL_TE_CLOSE_CGATE & 0x7F) >> 2);
+   515          mask |= 1 << ((mmMME0_CTRL_AGU_SM_INFLIGHT_CNTR & 0x7F) >> 2);
+   516          mask |= 1 << ((mmMME0_CTRL_AGU_SM_TOTAL_CNTR & 0x7F) >> 2);
+   517          mask |= 1 << ((mmMME0_CTRL_EZSYNC_OUT_CREDIT & 0x7F) >> 2);
+   518          mask |= 1 << ((mmMME0_CTRL_PCU_RL_SAT_SEC & 0x7F) >> 2);
+   519          mask |= 1 << ((mmMME0_CTRL_AGU_SYNC_MSG_AXI_USER & 0x7F) >> 2);
+   520          mask |= 1 << ((mmMME0_CTRL_QM_SLV_LBW_CLK_EN & 0x7F) >> 2);
+   521  
+   522          WREG32(pb_addr + word_offset, ~mask);
+   523  
+   524          pb_addr = (mmMME0_CTRL_SHADOW_0_STATUS & ~0xFFF) + PROT_BITS_OFFS;
+   525          word_offset = ((mmMME0_CTRL_SHADOW_0_STATUS & PROT_BITS_OFFS) >> 7)
+   526                          << 2;
+   527          mask = 1 << ((mmMME0_CTRL_SHADOW_0_STATUS & 0x7F) >> 2);
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This is zero.
+
+   528  
+   529          WREG32(pb_addr + word_offset, ~mask);
+   530  
+   531          pb_addr = (mmMME0_QM_GLBL_CFG0 & ~0xFFF) + PROT_BITS_OFFS;
+   532          word_offset = ((mmMME0_QM_GLBL_CFG0 & PROT_BITS_OFFS) >> 7) << 2;
+   533          mask = 1 << ((mmMME0_QM_GLBL_CFG0 & 0x7F) >> 2);
+   534          mask |= 1 << ((mmMME0_QM_GLBL_CFG1 & 0x7F) >> 2);
+
+There are a about 300 similar warnings.
+
+drivers/misc/habanalabs/gaudi/gaudi_security.c:527 gaudi_init_mme_protection_bits() warn: odd binop '0x60400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:532 gaudi_init_mme_protection_bits() warn: odd binop '0x68000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:533 gaudi_init_mme_protection_bits() warn: odd binop '0x68000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:567 gaudi_init_mme_protection_bits() warn: odd binop '0x68080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:604 gaudi_init_mme_protection_bits() warn: odd binop '0x68100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:624 gaudi_init_mme_protection_bits() warn: odd binop '0x68180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:657 gaudi_init_mme_protection_bits() warn: odd binop '0x68200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:695 gaudi_init_mme_protection_bits() warn: odd binop '0x68280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:733 gaudi_init_mme_protection_bits() warn: odd binop '0x68300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:763 gaudi_init_mme_protection_bits() warn: odd binop '0x68400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:821 gaudi_init_mme_protection_bits() warn: odd binop '0x68a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:846 gaudi_init_mme_protection_bits() warn: odd binop '0x68b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:879 gaudi_init_mme_protection_bits() warn: odd binop '0x68c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:899 gaudi_init_mme_protection_bits() warn: odd binop '0x68c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:920 gaudi_init_mme_protection_bits() warn: odd binop '0x68d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:962 gaudi_init_mme_protection_bits() warn: odd binop '0xe0400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1006 gaudi_init_mme_protection_bits() warn: odd binop '0x160400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1011 gaudi_init_mme_protection_bits() warn: odd binop '0x168000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1012 gaudi_init_mme_protection_bits() warn: odd binop '0x168000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1046 gaudi_init_mme_protection_bits() warn: odd binop '0x168080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1083 gaudi_init_mme_protection_bits() warn: odd binop '0x168100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1103 gaudi_init_mme_protection_bits() warn: odd binop '0x168180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1136 gaudi_init_mme_protection_bits() warn: odd binop '0x168200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1174 gaudi_init_mme_protection_bits() warn: odd binop '0x168280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1212 gaudi_init_mme_protection_bits() warn: odd binop '0x168300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1242 gaudi_init_mme_protection_bits() warn: odd binop '0x168400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1300 gaudi_init_mme_protection_bits() warn: odd binop '0x168a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1326 gaudi_init_mme_protection_bits() warn: odd binop '0x168b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1359 gaudi_init_mme_protection_bits() warn: odd binop '0x168c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1379 gaudi_init_mme_protection_bits() warn: odd binop '0x168c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1400 gaudi_init_mme_protection_bits() warn: odd binop '0x168d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1442 gaudi_init_mme_protection_bits() warn: odd binop '0x1e0400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1489 gaudi_init_dma_protection_bits() warn: odd binop '0x508000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1490 gaudi_init_dma_protection_bits() warn: odd binop '0x508000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1524 gaudi_init_dma_protection_bits() warn: odd binop '0x508080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1561 gaudi_init_dma_protection_bits() warn: odd binop '0x508100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1581 gaudi_init_dma_protection_bits() warn: odd binop '0x508180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1614 gaudi_init_dma_protection_bits() warn: odd binop '0x508200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1652 gaudi_init_dma_protection_bits() warn: odd binop '0x508280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1691 gaudi_init_dma_protection_bits() warn: odd binop '0x508300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1721 gaudi_init_dma_protection_bits() warn: odd binop '0x508400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1779 gaudi_init_dma_protection_bits() warn: odd binop '0x508a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1805 gaudi_init_dma_protection_bits() warn: odd binop '0x508b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1838 gaudi_init_dma_protection_bits() warn: odd binop '0x508c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1858 gaudi_init_dma_protection_bits() warn: odd binop '0x508c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1879 gaudi_init_dma_protection_bits() warn: odd binop '0x508d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1884 gaudi_init_dma_protection_bits() warn: odd binop '0x528000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1885 gaudi_init_dma_protection_bits() warn: odd binop '0x528000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1919 gaudi_init_dma_protection_bits() warn: odd binop '0x528080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1956 gaudi_init_dma_protection_bits() warn: odd binop '0x528100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:1976 gaudi_init_dma_protection_bits() warn: odd binop '0x528180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2009 gaudi_init_dma_protection_bits() warn: odd binop '0x528200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2047 gaudi_init_dma_protection_bits() warn: odd binop '0x528280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2086 gaudi_init_dma_protection_bits() warn: odd binop '0x528300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2116 gaudi_init_dma_protection_bits() warn: odd binop '0x528400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2174 gaudi_init_dma_protection_bits() warn: odd binop '0x528a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2201 gaudi_init_dma_protection_bits() warn: odd binop '0x528b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2234 gaudi_init_dma_protection_bits() warn: odd binop '0x528c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2254 gaudi_init_dma_protection_bits() warn: odd binop '0x528c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2275 gaudi_init_dma_protection_bits() warn: odd binop '0x528d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2280 gaudi_init_dma_protection_bits() warn: odd binop '0x548000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2281 gaudi_init_dma_protection_bits() warn: odd binop '0x548000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2315 gaudi_init_dma_protection_bits() warn: odd binop '0x548080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2352 gaudi_init_dma_protection_bits() warn: odd binop '0x548100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2372 gaudi_init_dma_protection_bits() warn: odd binop '0x548180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2405 gaudi_init_dma_protection_bits() warn: odd binop '0x548200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2443 gaudi_init_dma_protection_bits() warn: odd binop '0x548280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2482 gaudi_init_dma_protection_bits() warn: odd binop '0x548300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2512 gaudi_init_dma_protection_bits() warn: odd binop '0x548400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2570 gaudi_init_dma_protection_bits() warn: odd binop '0x548a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2597 gaudi_init_dma_protection_bits() warn: odd binop '0x548b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2630 gaudi_init_dma_protection_bits() warn: odd binop '0x548c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2650 gaudi_init_dma_protection_bits() warn: odd binop '0x548c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2671 gaudi_init_dma_protection_bits() warn: odd binop '0x548d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2676 gaudi_init_dma_protection_bits() warn: odd binop '0x568000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2677 gaudi_init_dma_protection_bits() warn: odd binop '0x568000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2711 gaudi_init_dma_protection_bits() warn: odd binop '0x568080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2748 gaudi_init_dma_protection_bits() warn: odd binop '0x568100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2768 gaudi_init_dma_protection_bits() warn: odd binop '0x568180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2801 gaudi_init_dma_protection_bits() warn: odd binop '0x568200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2839 gaudi_init_dma_protection_bits() warn: odd binop '0x568280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2878 gaudi_init_dma_protection_bits() warn: odd binop '0x568300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2908 gaudi_init_dma_protection_bits() warn: odd binop '0x568400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2966 gaudi_init_dma_protection_bits() warn: odd binop '0x568a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:2993 gaudi_init_dma_protection_bits() warn: odd binop '0x568b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3026 gaudi_init_dma_protection_bits() warn: odd binop '0x568c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3046 gaudi_init_dma_protection_bits() warn: odd binop '0x568c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3067 gaudi_init_dma_protection_bits() warn: odd binop '0x568d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3072 gaudi_init_dma_protection_bits() warn: odd binop '0x588000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3073 gaudi_init_dma_protection_bits() warn: odd binop '0x588000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3107 gaudi_init_dma_protection_bits() warn: odd binop '0x588080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3144 gaudi_init_dma_protection_bits() warn: odd binop '0x588100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3164 gaudi_init_dma_protection_bits() warn: odd binop '0x588180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3197 gaudi_init_dma_protection_bits() warn: odd binop '0x588200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3235 gaudi_init_dma_protection_bits() warn: odd binop '0x588280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3274 gaudi_init_dma_protection_bits() warn: odd binop '0x588300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3304 gaudi_init_dma_protection_bits() warn: odd binop '0x588400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3362 gaudi_init_dma_protection_bits() warn: odd binop '0x588a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3389 gaudi_init_dma_protection_bits() warn: odd binop '0x588b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3422 gaudi_init_dma_protection_bits() warn: odd binop '0x588c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3442 gaudi_init_dma_protection_bits() warn: odd binop '0x588c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3463 gaudi_init_dma_protection_bits() warn: odd binop '0x588d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3468 gaudi_init_dma_protection_bits() warn: odd binop '0x5a8000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3469 gaudi_init_dma_protection_bits() warn: odd binop '0x5a8000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3503 gaudi_init_dma_protection_bits() warn: odd binop '0x5a8080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3540 gaudi_init_dma_protection_bits() warn: odd binop '0x5a8100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3560 gaudi_init_dma_protection_bits() warn: odd binop '0x5a8180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3593 gaudi_init_dma_protection_bits() warn: odd binop '0x5a8200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3631 gaudi_init_dma_protection_bits() warn: odd binop '0x5a8280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3670 gaudi_init_dma_protection_bits() warn: odd binop '0x5a8300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3700 gaudi_init_dma_protection_bits() warn: odd binop '0x5a8400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3758 gaudi_init_dma_protection_bits() warn: odd binop '0x5a8a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3785 gaudi_init_dma_protection_bits() warn: odd binop '0x5a8b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3818 gaudi_init_dma_protection_bits() warn: odd binop '0x5a8c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3838 gaudi_init_dma_protection_bits() warn: odd binop '0x5a8c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3859 gaudi_init_dma_protection_bits() warn: odd binop '0x5a8d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3864 gaudi_init_dma_protection_bits() warn: odd binop '0x5c8000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3865 gaudi_init_dma_protection_bits() warn: odd binop '0x5c8000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3899 gaudi_init_dma_protection_bits() warn: odd binop '0x5c8080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3936 gaudi_init_dma_protection_bits() warn: odd binop '0x5c8100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3956 gaudi_init_dma_protection_bits() warn: odd binop '0x5c8180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:3989 gaudi_init_dma_protection_bits() warn: odd binop '0x5c8200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4027 gaudi_init_dma_protection_bits() warn: odd binop '0x5c8280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4066 gaudi_init_dma_protection_bits() warn: odd binop '0x5c8300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4096 gaudi_init_dma_protection_bits() warn: odd binop '0x5c8400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4154 gaudi_init_dma_protection_bits() warn: odd binop '0x5c8a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4181 gaudi_init_dma_protection_bits() warn: odd binop '0x5c8b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4214 gaudi_init_dma_protection_bits() warn: odd binop '0x5c8c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4234 gaudi_init_dma_protection_bits() warn: odd binop '0x5c8c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4255 gaudi_init_dma_protection_bits() warn: odd binop '0x5c8d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4260 gaudi_init_dma_protection_bits() warn: odd binop '0x5e8000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4261 gaudi_init_dma_protection_bits() warn: odd binop '0x5e8000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4295 gaudi_init_dma_protection_bits() warn: odd binop '0x5e8080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4332 gaudi_init_dma_protection_bits() warn: odd binop '0x5e8100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4352 gaudi_init_dma_protection_bits() warn: odd binop '0x5e8180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4385 gaudi_init_dma_protection_bits() warn: odd binop '0x5e8200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4423 gaudi_init_dma_protection_bits() warn: odd binop '0x5e8280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4462 gaudi_init_dma_protection_bits() warn: odd binop '0x5e8300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4492 gaudi_init_dma_protection_bits() warn: odd binop '0x5e8400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4550 gaudi_init_dma_protection_bits() warn: odd binop '0x5e8a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4577 gaudi_init_dma_protection_bits() warn: odd binop '0x5e8b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4610 gaudi_init_dma_protection_bits() warn: odd binop '0x5e8c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4630 gaudi_init_dma_protection_bits() warn: odd binop '0x5e8c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4651 gaudi_init_dma_protection_bits() warn: odd binop '0x5e8d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4656 gaudi_init_dma_protection_bits() warn: odd binop '0x500000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4657 gaudi_init_dma_protection_bits() warn: odd binop '0x500000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4674 gaudi_init_dma_protection_bits() warn: odd binop '0x500100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4705 gaudi_init_dma_protection_bits() warn: odd binop '0x500200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4721 gaudi_init_dma_protection_bits() warn: odd binop '0x520000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4722 gaudi_init_dma_protection_bits() warn: odd binop '0x520000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4739 gaudi_init_dma_protection_bits() warn: odd binop '0x520100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4770 gaudi_init_dma_protection_bits() warn: odd binop '0x520200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4786 gaudi_init_dma_protection_bits() warn: odd binop '0x540000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4787 gaudi_init_dma_protection_bits() warn: odd binop '0x540000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4804 gaudi_init_dma_protection_bits() warn: odd binop '0x540100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4834 gaudi_init_dma_protection_bits() warn: odd binop '0x540200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4850 gaudi_init_dma_protection_bits() warn: odd binop '0x560000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4851 gaudi_init_dma_protection_bits() warn: odd binop '0x560000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4868 gaudi_init_dma_protection_bits() warn: odd binop '0x560100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4898 gaudi_init_dma_protection_bits() warn: odd binop '0x560200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4914 gaudi_init_dma_protection_bits() warn: odd binop '0x580000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4915 gaudi_init_dma_protection_bits() warn: odd binop '0x580000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4932 gaudi_init_dma_protection_bits() warn: odd binop '0x580100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4962 gaudi_init_dma_protection_bits() warn: odd binop '0x580200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4978 gaudi_init_dma_protection_bits() warn: odd binop '0x5a0000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4979 gaudi_init_dma_protection_bits() warn: odd binop '0x5a0000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:4996 gaudi_init_dma_protection_bits() warn: odd binop '0x5a0100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5026 gaudi_init_dma_protection_bits() warn: odd binop '0x5a0200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5042 gaudi_init_dma_protection_bits() warn: odd binop '0x5c0000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5043 gaudi_init_dma_protection_bits() warn: odd binop '0x5c0000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5060 gaudi_init_dma_protection_bits() warn: odd binop '0x5c0100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5090 gaudi_init_dma_protection_bits() warn: odd binop '0x5c0200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5106 gaudi_init_dma_protection_bits() warn: odd binop '0x5e0000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5107 gaudi_init_dma_protection_bits() warn: odd binop '0x5e0000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5124 gaudi_init_dma_protection_bits() warn: odd binop '0x5e0100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5154 gaudi_init_dma_protection_bits() warn: odd binop '0x5e0200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5188 gaudi_init_tpc_protection_bits() warn: odd binop '0xe08000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5189 gaudi_init_tpc_protection_bits() warn: odd binop '0xe08000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5223 gaudi_init_tpc_protection_bits() warn: odd binop '0xe08080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5260 gaudi_init_tpc_protection_bits() warn: odd binop '0xe08100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5280 gaudi_init_tpc_protection_bits() warn: odd binop '0xe08180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5313 gaudi_init_tpc_protection_bits() warn: odd binop '0xe08200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5351 gaudi_init_tpc_protection_bits() warn: odd binop '0xe08280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5391 gaudi_init_tpc_protection_bits() warn: odd binop '0xe08300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5421 gaudi_init_tpc_protection_bits() warn: odd binop '0xe08400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5479 gaudi_init_tpc_protection_bits() warn: odd binop '0xe08a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5506 gaudi_init_tpc_protection_bits() warn: odd binop '0xe08b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5539 gaudi_init_tpc_protection_bits() warn: odd binop '0xe08c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5559 gaudi_init_tpc_protection_bits() warn: odd binop '0xe08c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5580 gaudi_init_tpc_protection_bits() warn: odd binop '0xe08d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5592 gaudi_init_tpc_protection_bits() warn: odd binop '0xe06900 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5646 gaudi_init_tpc_protection_bits() warn: odd binop '0xe48000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5647 gaudi_init_tpc_protection_bits() warn: odd binop '0xe48000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5681 gaudi_init_tpc_protection_bits() warn: odd binop '0xe48080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5718 gaudi_init_tpc_protection_bits() warn: odd binop '0xe48100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5738 gaudi_init_tpc_protection_bits() warn: odd binop '0xe48180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5771 gaudi_init_tpc_protection_bits() warn: odd binop '0xe48200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5809 gaudi_init_tpc_protection_bits() warn: odd binop '0xe48280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5847 gaudi_init_tpc_protection_bits() warn: odd binop '0xe48300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5877 gaudi_init_tpc_protection_bits() warn: odd binop '0xe48400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5935 gaudi_init_tpc_protection_bits() warn: odd binop '0xe48a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5962 gaudi_init_tpc_protection_bits() warn: odd binop '0xe48b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:5995 gaudi_init_tpc_protection_bits() warn: odd binop '0xe48c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6015 gaudi_init_tpc_protection_bits() warn: odd binop '0xe48c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6036 gaudi_init_tpc_protection_bits() warn: odd binop '0xe48d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6048 gaudi_init_tpc_protection_bits() warn: odd binop '0xe46900 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6102 gaudi_init_tpc_protection_bits() warn: odd binop '0xe88000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6103 gaudi_init_tpc_protection_bits() warn: odd binop '0xe88000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6137 gaudi_init_tpc_protection_bits() warn: odd binop '0xe88080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6174 gaudi_init_tpc_protection_bits() warn: odd binop '0xe88100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6194 gaudi_init_tpc_protection_bits() warn: odd binop '0xe88180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6227 gaudi_init_tpc_protection_bits() warn: odd binop '0xe88200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6265 gaudi_init_tpc_protection_bits() warn: odd binop '0xe88280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6303 gaudi_init_tpc_protection_bits() warn: odd binop '0xe88300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6333 gaudi_init_tpc_protection_bits() warn: odd binop '0xe88400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6391 gaudi_init_tpc_protection_bits() warn: odd binop '0xe88a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6417 gaudi_init_tpc_protection_bits() warn: odd binop '0xe88b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6450 gaudi_init_tpc_protection_bits() warn: odd binop '0xe88c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6470 gaudi_init_tpc_protection_bits() warn: odd binop '0xe88c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6491 gaudi_init_tpc_protection_bits() warn: odd binop '0xe88d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6503 gaudi_init_tpc_protection_bits() warn: odd binop '0xe86900 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6557 gaudi_init_tpc_protection_bits() warn: odd binop '0xec8000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6558 gaudi_init_tpc_protection_bits() warn: odd binop '0xec8000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6592 gaudi_init_tpc_protection_bits() warn: odd binop '0xec8080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6629 gaudi_init_tpc_protection_bits() warn: odd binop '0xec8100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6649 gaudi_init_tpc_protection_bits() warn: odd binop '0xec8180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6682 gaudi_init_tpc_protection_bits() warn: odd binop '0xec8200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6720 gaudi_init_tpc_protection_bits() warn: odd binop '0xec8280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6758 gaudi_init_tpc_protection_bits() warn: odd binop '0xec8300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6788 gaudi_init_tpc_protection_bits() warn: odd binop '0xec8400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6846 gaudi_init_tpc_protection_bits() warn: odd binop '0xec8a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6872 gaudi_init_tpc_protection_bits() warn: odd binop '0xec8b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6905 gaudi_init_tpc_protection_bits() warn: odd binop '0xec8c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6925 gaudi_init_tpc_protection_bits() warn: odd binop '0xec8c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6946 gaudi_init_tpc_protection_bits() warn: odd binop '0xec8d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:6958 gaudi_init_tpc_protection_bits() warn: odd binop '0xec6900 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7012 gaudi_init_tpc_protection_bits() warn: odd binop '0xf08000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7013 gaudi_init_tpc_protection_bits() warn: odd binop '0xf08000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7047 gaudi_init_tpc_protection_bits() warn: odd binop '0xf08080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7084 gaudi_init_tpc_protection_bits() warn: odd binop '0xf08100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7104 gaudi_init_tpc_protection_bits() warn: odd binop '0xf08180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7137 gaudi_init_tpc_protection_bits() warn: odd binop '0xf08200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7175 gaudi_init_tpc_protection_bits() warn: odd binop '0xf08280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7213 gaudi_init_tpc_protection_bits() warn: odd binop '0xf08300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7243 gaudi_init_tpc_protection_bits() warn: odd binop '0xf08400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7301 gaudi_init_tpc_protection_bits() warn: odd binop '0xf08a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7327 gaudi_init_tpc_protection_bits() warn: odd binop '0xf08b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7360 gaudi_init_tpc_protection_bits() warn: odd binop '0xf08c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7380 gaudi_init_tpc_protection_bits() warn: odd binop '0xf08c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7401 gaudi_init_tpc_protection_bits() warn: odd binop '0xf08d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7413 gaudi_init_tpc_protection_bits() warn: odd binop '0xf06900 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7467 gaudi_init_tpc_protection_bits() warn: odd binop '0xf48000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7468 gaudi_init_tpc_protection_bits() warn: odd binop '0xf48000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7502 gaudi_init_tpc_protection_bits() warn: odd binop '0xf48080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7539 gaudi_init_tpc_protection_bits() warn: odd binop '0xf48100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7559 gaudi_init_tpc_protection_bits() warn: odd binop '0xf48180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7592 gaudi_init_tpc_protection_bits() warn: odd binop '0xf48200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7630 gaudi_init_tpc_protection_bits() warn: odd binop '0xf48280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7668 gaudi_init_tpc_protection_bits() warn: odd binop '0xf48300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7698 gaudi_init_tpc_protection_bits() warn: odd binop '0xf48400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7756 gaudi_init_tpc_protection_bits() warn: odd binop '0xf48a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7782 gaudi_init_tpc_protection_bits() warn: odd binop '0xf48b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7815 gaudi_init_tpc_protection_bits() warn: odd binop '0xf48c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7835 gaudi_init_tpc_protection_bits() warn: odd binop '0xf48c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7856 gaudi_init_tpc_protection_bits() warn: odd binop '0xf48d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7868 gaudi_init_tpc_protection_bits() warn: odd binop '0xf46900 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7922 gaudi_init_tpc_protection_bits() warn: odd binop '0xf88000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7923 gaudi_init_tpc_protection_bits() warn: odd binop '0xf88000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7957 gaudi_init_tpc_protection_bits() warn: odd binop '0xf88080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:7994 gaudi_init_tpc_protection_bits() warn: odd binop '0xf88100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8014 gaudi_init_tpc_protection_bits() warn: odd binop '0xf88180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8047 gaudi_init_tpc_protection_bits() warn: odd binop '0xf88200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8085 gaudi_init_tpc_protection_bits() warn: odd binop '0xf88280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8123 gaudi_init_tpc_protection_bits() warn: odd binop '0xf88300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8153 gaudi_init_tpc_protection_bits() warn: odd binop '0xf88400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8211 gaudi_init_tpc_protection_bits() warn: odd binop '0xf88a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8238 gaudi_init_tpc_protection_bits() warn: odd binop '0xf88b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8271 gaudi_init_tpc_protection_bits() warn: odd binop '0xf88c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8291 gaudi_init_tpc_protection_bits() warn: odd binop '0xf88c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8313 gaudi_init_tpc_protection_bits() warn: odd binop '0xf88d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8325 gaudi_init_tpc_protection_bits() warn: odd binop '0xf86900 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8379 gaudi_init_tpc_protection_bits() warn: odd binop '0xfc8000 & 0xf80'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8380 gaudi_init_tpc_protection_bits() warn: odd binop '0xfc8000 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8414 gaudi_init_tpc_protection_bits() warn: odd binop '0xfc8080 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8451 gaudi_init_tpc_protection_bits() warn: odd binop '0xfc8100 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8471 gaudi_init_tpc_protection_bits() warn: odd binop '0xfc8180 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8504 gaudi_init_tpc_protection_bits() warn: odd binop '0xfc8200 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8542 gaudi_init_tpc_protection_bits() warn: odd binop '0xfc8280 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8582 gaudi_init_tpc_protection_bits() warn: odd binop '0xfc8300 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8612 gaudi_init_tpc_protection_bits() warn: odd binop '0xfc8400 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8670 gaudi_init_tpc_protection_bits() warn: odd binop '0xfc8a80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8696 gaudi_init_tpc_protection_bits() warn: odd binop '0xfc8b80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8729 gaudi_init_tpc_protection_bits() warn: odd binop '0xfc8c00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8749 gaudi_init_tpc_protection_bits() warn: odd binop '0xfc8c80 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8770 gaudi_init_tpc_protection_bits() warn: odd binop '0xfc8d00 & 0x7f'
+drivers/misc/habanalabs/gaudi/gaudi_security.c:8782 gaudi_init_tpc_protection_bits() warn: odd binop '0xfc6900 & 0x7f'
+
+regards,
+dan carpenter

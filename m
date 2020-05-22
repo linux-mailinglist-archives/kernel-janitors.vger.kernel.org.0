@@ -2,80 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B2951DDF24
-	for <lists+kernel-janitors@lfdr.de>; Fri, 22 May 2020 07:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 068601DE10C
+	for <lists+kernel-janitors@lfdr.de>; Fri, 22 May 2020 09:33:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728196AbgEVFNX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 22 May 2020 01:13:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51882 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728056AbgEVFNV (ORCPT
+        id S1728344AbgEVHdI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 22 May 2020 03:33:08 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:57240 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728214AbgEVHdG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 22 May 2020 01:13:21 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 240C5C05BD43
-        for <kernel-janitors@vger.kernel.org>; Thu, 21 May 2020 22:13:21 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id s3so11551471eji.6
-        for <kernel-janitors@vger.kernel.org>; Thu, 21 May 2020 22:13:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloud.ionos.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MWHQvFpaWXA6nLt3wiLhFrrphRE3s7yxYwyGrpAyCCM=;
-        b=Lr2U5tw3AowCbUkTYoqFdKDRVE1y5tShPYT2nKRYPcQSFbe7yLJBuUDAhTM+megEwA
-         aivo5+nWC+g53adSl4NUU0zFcsrVFR7lPcz/Cy0K406aPEMkZOC9zcT8D4rcFJIRASpa
-         JmP0U6C0zTVigc+48r7GpI20gLcm4zgApshrNPruaAS9utb7qEjrxXq9FiJMqzU4oSxK
-         NiTidua7XbaVUmo+hoMpgJMOV8KzYuBT7tAU9KJfFZ3RLcvg7l7i04NK6TNQ4FQLTtea
-         lblwWAlyOOwFH/D/8wAked+Wt6Iv1wS0sY9FscTihu3339ZpKG1Vhx32cG4vK8byv3MK
-         NTXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MWHQvFpaWXA6nLt3wiLhFrrphRE3s7yxYwyGrpAyCCM=;
-        b=hDAa+65f65FTfZ93V4vNRkDmmRmPGqnWudGhnNCnEfdsPIRDvFjT58tYdtvMc1/ptO
-         wYRoH3HlUUfdzzSBhY4T5Vt/sHnfrTsbHSBgyCiN05aShxkpMPGGa5MwpRZAq6zXHoUM
-         oiZ5H1Rm1MvvLRyHnUcrD4yxroFQ6+DqpvMbD3zSDbmF4CjCgSEjVJ3oHzO9OQ85pE4W
-         fybgWiV+5HICaelhM/7jlHL+hrgmSRCOOWVikCc9vF6fq8+LSNl6fxS3vWGo/na4Gu5L
-         EiauNEEIhPKQZZqOmQ80Tdkfi0glv74QFAse2uQNi0uG4Ms9L+MdSePYlr/esanl8SRL
-         VAHA==
-X-Gm-Message-State: AOAM531jsUlvPjUv3ERbahydpr9YqGh1cORc8KQUoJ9XecbltcB8wMWB
-        YgOZLg46dwBbe/sK8/xHz4Y9PP0NoGPjlM7+PWJIvQ==
-X-Google-Smtp-Source: ABdhPJzZxiF70JkXGmjOELNN0LmRH4kyPtlEx4e9CMFAS4mjQopoe0fUhygSewFtJRDauvv9xcgvb103OXHkbfqDMAQ=
-X-Received: by 2002:a17:907:36d:: with SMTP id rs13mr6765653ejb.478.1590124399660;
- Thu, 21 May 2020 22:13:19 -0700 (PDT)
+        Fri, 22 May 2020 03:33:06 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04M7RiMI099138;
+        Fri, 22 May 2020 07:31:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=FHKudRAmfJMTmkL5lBhr9gMRqVNot+ZGcY+gLOKSPWQ=;
+ b=zr8ftTxmN8djMVNxsfauxHijqmQZJ27JNYNzSbiwZV1H4No0xKEXcoTBytv3PDJSvcrp
+ /Nyramp0bw+dLsKfAey75XBoOuEv6PhQEYKJ3fSf3n1UF81MxbM2guQfVP9qMNYBHSff
+ 0IBWTd1TSwN4MLhOwVoRqfipf6RiOQW0ZCK7XL0FAcRfHgkHtQjUaJ+5Ssh5CBYpXINY
+ 19VERK0I4Y44f8lhzUIpFleEzhe1ducy/y6uezF+0Px3K3Lqe7sK49O1DZqJJPuH2L+p
+ jIo5SWG9s0WsYzgwXQcbaKu7YC1xheaXy9TBqY2v9S5VpftJZIi8oHvInJOIZ0c/DQKw 9g== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 31501rjt8p-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 22 May 2020 07:31:24 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04M7TICY165649;
+        Fri, 22 May 2020 07:29:24 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 315023u8fy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 22 May 2020 07:29:24 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04M7TJnm022187;
+        Fri, 22 May 2020 07:29:19 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 22 May 2020 00:29:18 -0700
+Date:   Fri, 22 May 2020 10:29:11 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     James Smart <jsmart2021@gmail.com>
+Cc:     linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, paul.ely@broadcom.com,
+        hare@suse.de, jejb@linux.ibm.com, axboe@kernel.dk,
+        martin.petersen@oracle.com, hch@infradead.org
+Subject: Re: [PATCH 0/3] lpfc: Fix errors in LS receive refactoring
+Message-ID: <20200522072911.GA22511@kadam>
+References: <20200520185929.48779-1-jsmart2021@gmail.com>
 MIME-Version: 1.0
-References: <20200519120347.GD42765@mwanda> <CAMGffEnuk2WfWmwjKy_Sqcuf_xKwzrPpE_o8j3nHM30ADr8HVw@mail.gmail.com>
-In-Reply-To: <CAMGffEnuk2WfWmwjKy_Sqcuf_xKwzrPpE_o8j3nHM30ADr8HVw@mail.gmail.com>
-From:   Jinpu Wang <jinpu.wang@cloud.ionos.com>
-Date:   Fri, 22 May 2020 07:13:08 +0200
-Message-ID: <CAMGffEmC215iOmtT_iZizey=jnbgWneE5f5zapYvdJi5WYDM1w@mail.gmail.com>
-Subject: Re: [PATCH] block/rnbd: Fix an IS_ERR() vs NULL check in find_or_create_sess()
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     Danil Kipnis <danil.kipnis@cloud.ionos.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Bart Van Assche <bvanassche@acm.org>,
-        linux-block@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200520185929.48779-1-jsmart2021@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9628 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 bulkscore=0 suspectscore=0 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005220060
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9628 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 spamscore=0
+ mlxlogscore=999 clxscore=1015 priorityscore=1501 cotscore=-2147483648
+ impostorscore=0 bulkscore=0 adultscore=0 malwarescore=0 phishscore=0
+ mlxscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005220060
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, May 19, 2020 at 2:52 PM Jinpu Wang <jinpu.wang@cloud.ionos.com> wrote:
->
-> On Tue, May 19, 2020 at 2:04 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> >
-> > The alloc_sess() function returns error pointers, it never returns NULL.
-> >
-> > Fixes: f7a7a5c228d4 ("block/rnbd: client: main functionality")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Thanks Dan,
-> Reviewed-by: Jack Wang <jinpu.wang@cloud.ionos.com>
+On Wed, May 20, 2020 at 11:59:26AM -0700, James Smart wrote:
+> A prior patch set refactored lpfc to create common routines for NVME LS
+> handling for use by both the initiator and target paths.  The refactoring
+> introduced several errors spotted by additional testing and static checker
+> reporting.
+> 
+> This patch set corrects those errors.
+> 
+> The patches should enter via the nvme tree, as the lpfc modifications were
+> in support of nvme-fc transport api deltas merged via the nvme tree.
+> 
+> -- james
 
-Hi Jason,
+Thanks!
 
-Could you also queue this fix for for-next?
+Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Thanks
+regards,
+dan carpenter
+
+

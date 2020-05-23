@@ -2,66 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CEF891DF4F1
-	for <lists+kernel-janitors@lfdr.de>; Sat, 23 May 2020 07:22:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89A8F1DF68B
+	for <lists+kernel-janitors@lfdr.de>; Sat, 23 May 2020 12:11:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387443AbgEWFWE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 23 May 2020 01:22:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51086 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387426AbgEWFWE (ORCPT
+        id S2387761AbgEWKLp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 23 May 2020 06:11:45 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:47792 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725268AbgEWKLp (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 23 May 2020 01:22:04 -0400
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06CF7C061A0E
-        for <kernel-janitors@vger.kernel.org>; Fri, 22 May 2020 22:22:03 -0700 (PDT)
-Received: by mail-il1-x142.google.com with SMTP id y17so10713754ilg.0
-        for <kernel-janitors@vger.kernel.org>; Fri, 22 May 2020 22:22:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
-        b=UnMS+VPnG/+DRBU6fzJM3+nEWvv+7Wut19Ek2ByMKzPAub+l47BGE0L42sg/70efVq
-         FwHysuSwIojOc+qAFocG+1uZOpyFPptkTEs/2hmn3LSG7xzH1WrYExajSYTfzARxnj5B
-         Y3PGD7rZqF/h0HEW6LAI5AK3FSMr1RdoHpEO5otULED09qbyBbvxRuCi2TVgz8nBOfSG
-         KQoaeCPNrtCajCVsinbnIdn+n7H/JgSKoozWenymkliNCAIJoxwVh81G5FlKd6D8VnRG
-         TtHmCZXe3hDX69YGpjR1VYiLv0+nQ/4OQIYahK1qJemnVxtxg7RFhIHhRfYSwFfZmmUj
-         z+4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
-        b=fejv0eMlqGUwAaRoSCw7KZ4wb5iStXanD09DfH0O3poClj/NHZbcAlop8eEm9LBcIZ
-         Dl9aiDifY21NfggJltp7nnf9KSEJht4Q4tWAsvX1DKbGh/e4BTYOvaGHHgXOXT2EDCSG
-         jQT1ivpmhbz0mIZ2oCXrRHICEnbu+HVcLQCqQxyY4IYRAGReWHlQ+unJss4sCIlVs98D
-         bRto+d+yxpB3ReEOdS7Ufr9UxA0UmAvXtQXuAKeArl59r/MBLvdFPA6lNETVBA5mN8wH
-         lhWJJ5vUc2YZYfula8grz/2zQrQO5CWil1s+Hr590KKV6MQqlBHsDMidErQvehyp3Lx5
-         Nn4A==
-X-Gm-Message-State: AOAM533KzOVk1il2w8T3eSyya3ZIo6ay+rKuuW2CXSCxzdIAvn4z3nn1
-        MgT/vVkpbnPTKJtrMLBFugkqT6CfyqG76sYppEM=
-X-Google-Smtp-Source: ABdhPJwJ0ngTj14MByEs6cGQwjlkZXiTmHXNh8YA+fodrGloe1I5EVcERtcCQBQpAPcdtQG5e9KyXnRKX2Ljfzhk+cU=
-X-Received: by 2002:a05:6e02:503:: with SMTP id d3mr16498428ils.208.1590211323214;
- Fri, 22 May 2020 22:22:03 -0700 (PDT)
+        Sat, 23 May 2020 06:11:45 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04NA8E8r056160;
+        Sat, 23 May 2020 10:11:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=n4h8Ze/WKiLXL3/dPkzL/wAshMKn0b30Ha6W6Rr7XF8=;
+ b=oCl8f3ICddFsd+XbIb+UWjYuM20nfc+mTATGV6AaPSujHe2g4Vvf1HVK0coJPmEE0Jb5
+ SkVT+li1vlyRmeQecBv6McHElWBjb3Pp1OVqVGAKydxY4iWrliHOk+CccX+ZP3r4JBYH
+ /9YuUnMJXzynwu11vuM0N1P62FC3WqQzVFYFFnPsHYk4MGu4dLn+YtWS19XmlHF/9f9E
+ ACtwTrOO72E4+w7hazE/BxdX5iTWyhWnO/r5WGl6xtbJbzw87z7m9g8PgPxR2w6fR/4n
+ VVHLRiOmHNPFC9CfKcuJ6xUAsZoNTgxvPl7P8W8Rn2CnZV7DFYMLxlPt+GE5VDXxBva2 Bw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 316u8qgpgr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 23 May 2020 10:11:38 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04NA9Ie4122828;
+        Sat, 23 May 2020 10:11:38 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 316un0g2wq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 23 May 2020 10:11:37 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04NABbO9022106;
+        Sat, 23 May 2020 10:11:37 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 23 May 2020 03:11:36 -0700
+Date:   Sat, 23 May 2020 13:11:29 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Cc:     Mike Christie <mchristi@redhat.com>, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] scsi: target: tcmu: Fix a use after free in
+ tcmu_check_expired_queue_cmd()
+Message-ID: <20200523101129.GB98132@mwanda>
 MIME-Version: 1.0
-Received: by 2002:a92:3608:0:0:0:0:0 with HTTP; Fri, 22 May 2020 22:22:02
- -0700 (PDT)
-Reply-To: mrs.chantala2055@gmail.com
-From:   "mrs.chantal" <mrs.mariaj1@gmail.com>
-Date:   Sat, 23 May 2020 05:22:02 +0000
-Message-ID: <CAKHDNB=K779Qqrip-n2VgNH_5vu-Z5PsGRBbjZ06yORD7wTjqw@mail.gmail.com>
-Subject: ok.Compliment
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9629 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 mlxscore=0
+ malwarescore=0 phishscore=0 spamscore=0 suspectscore=2 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005230084
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9629 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0
+ priorityscore=1501 spamscore=0 cotscore=-2147483648 suspectscore=2
+ phishscore=0 clxscore=1011 mlxlogscore=999 bulkscore=0 adultscore=0
+ lowpriorityscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005230084
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-     Compliment of the day to you. I am Mrs.CHANTAL I am sending this brief
-    letter to solicit your partnership to transfer $13.5 Million US
-    Dollars.I shall send you more information and procedures when I receive
-    positive response From you. Please send me a message in My private
-    email address is ( mrschantal066@gmail.com  )
-    Best Regards
-    MrS.Chantal
+The pr_debug() dereferences "cmd" after we already freed it by calling
+tcmu_free_cmd(cmd).  The debug printk needs to be done earlier.
+
+Fixes: 61fb24822166 ("scsi: target: tcmu: Userspace must not complete queued commands")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/target/target_core_user.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
+index 904d8a8373f2..28fb9441de7a 100644
+--- a/drivers/target/target_core_user.c
++++ b/drivers/target/target_core_user.c
+@@ -1292,13 +1292,13 @@ static void tcmu_check_expired_queue_cmd(struct tcmu_cmd *cmd)
+ 	if (!time_after(jiffies, cmd->deadline))
+ 		return;
+ 
++	pr_debug("Timing out queued cmd %p on dev %s.\n",
++		  cmd, cmd->tcmu_dev->name);
++
+ 	list_del_init(&cmd->queue_entry);
+ 	se_cmd = cmd->se_cmd;
+ 	tcmu_free_cmd(cmd);
+ 
+-	pr_debug("Timing out queued cmd %p on dev %s.\n",
+-		  cmd, cmd->tcmu_dev->name);
+-
+ 	target_complete_cmd(se_cmd, SAM_STAT_TASK_SET_FULL);
+ }
+ 
+-- 
+2.26.2
+

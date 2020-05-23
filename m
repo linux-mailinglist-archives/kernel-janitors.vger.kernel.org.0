@@ -2,99 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58FA01DF9C1
-	for <lists+kernel-janitors@lfdr.de>; Sat, 23 May 2020 19:47:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17C0A1DFA92
+	for <lists+kernel-janitors@lfdr.de>; Sat, 23 May 2020 21:04:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388045AbgEWRri (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 23 May 2020 13:47:38 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:56974 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387515AbgEWRrh (ORCPT
+        id S2387580AbgEWTE1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 23 May 2020 15:04:27 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:48404 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2387536AbgEWTE0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 23 May 2020 13:47:37 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04NHfZGI061426;
-        Sat, 23 May 2020 17:47:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=+K7hQZPEXSyknr5qcG7D4mkj48QK4TpEeGTcX08C/ss=;
- b=AqD505EQz3V9MBm8s4Q2RU8YHY/vna50cBXOf1fEDcZjDRi489GMpKosyh+oAe2+AT3v
- uqhenmCnBOrdBxYRl150TOZlSUTS4mHQB30bC87q46BQeWUsmq1crivMnOwKG1zMZE1H
- khANm2GiBbYH5e30S8lXuNfAeybzMvO4rHf6g564r53qtutLCEWvlQ70iHDtcVgERyOp
- dJ/asBivQhW4D7xdQHQT2rxrkhY/gzxEWo/dUuE7QomGAPDPtyK9pirklT16LFbdXIDd
- 2v2Nl7wqoAoIIO3tKTOiuDQ24IVY8R+ovkCvreLEOhAWZnTTRs54bW+QpOWLWLBlwNNd Zg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 316vfn16td-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sat, 23 May 2020 17:47:05 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04NHhKp2080621;
-        Sat, 23 May 2020 17:47:05 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 316un1djh2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 23 May 2020 17:47:05 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04NHkx1e010453;
-        Sat, 23 May 2020 17:47:00 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 23 May 2020 10:46:59 -0700
-Date:   Sat, 23 May 2020 20:46:48 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Al Viro <viro@zeniv.linux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        Sat, 23 May 2020 15:04:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1590260664;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=6GIOD3WfqW5VONY6+8OFH3ayDFnP8eaMVgGkRrbEXpg=;
+        b=iIUjNhJZIaIa8oN7522qBor30OE/kop6r8yWcOH9laqupro1vAmT0rD4o7CzHVMj3jTl0p
+        f19NZ80X9lc+VQ+frg79VuJXjVhifZhOr6Kr+jh+XF+YBqQI6gtdkvjJ/AI2FuKOSlI0jg
+        tYPErjHEnH51Ij6QXJ0fFIfyIzyOI40=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-163-hcuBo1kAPw6CsohYNAnbZw-1; Sat, 23 May 2020 15:04:21 -0400
+X-MC-Unique: hcuBo1kAPw6CsohYNAnbZw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7949D464;
+        Sat, 23 May 2020 19:04:19 +0000 (UTC)
+Received: from [10.10.112.111] (ovpn-112-111.rdu2.redhat.com [10.10.112.111])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 52BF46EA52;
+        Sat, 23 May 2020 19:04:15 +0000 (UTC)
+Subject: Re: [PATCH] scsi: target: tcmu: Fix a use after free in
+ tcmu_check_expired_queue_cmd()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH net-next] ipv4:  potential underflow in compat_ip_setsockopt()
-Message-ID: <20200523174648.GA105146@mwanda>
+References: <20200523101129.GB98132@mwanda>
+From:   Mike Christie <mchristi@redhat.com>
+Message-ID: <0d4b569b-f21f-43f3-b25c-0b4c06cbe718@redhat.com>
+Date:   Sat, 23 May 2020 14:04:14 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9630 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 mlxscore=0
- malwarescore=0 phishscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005230147
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9630 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 clxscore=1011
- priorityscore=1501 mlxscore=0 malwarescore=0 spamscore=0 impostorscore=0
- mlxlogscore=999 lowpriorityscore=0 bulkscore=0 adultscore=0 suspectscore=0
- cotscore=-2147483648 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005230147
+In-Reply-To: <20200523101129.GB98132@mwanda>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The value of "n" is capped at 0x1ffffff but it checked for negative
-values.  I don't think this causes a problem but I'm not certain and
-it's harmless to prevent it.
+On 5/23/20 5:11 AM, Dan Carpenter wrote:
+> The pr_debug() dereferences "cmd" after we already freed it by calling
+> tcmu_free_cmd(cmd).  The debug printk needs to be done earlier.
+> 
+> Fixes: 61fb24822166 ("scsi: target: tcmu: Userspace must not complete queued commands")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/target/target_core_user.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
+> index 904d8a8373f2..28fb9441de7a 100644
+> --- a/drivers/target/target_core_user.c
+> +++ b/drivers/target/target_core_user.c
+> @@ -1292,13 +1292,13 @@ static void tcmu_check_expired_queue_cmd(struct tcmu_cmd *cmd)
+>  	if (!time_after(jiffies, cmd->deadline))
+>  		return;
+>  
+> +	pr_debug("Timing out queued cmd %p on dev %s.\n",
+> +		  cmd, cmd->tcmu_dev->name);
+> +
+>  	list_del_init(&cmd->queue_entry);
+>  	se_cmd = cmd->se_cmd;
+>  	tcmu_free_cmd(cmd);
+>  
+> -	pr_debug("Timing out queued cmd %p on dev %s.\n",
+> -		  cmd, cmd->tcmu_dev->name);
+> -
+>  	target_complete_cmd(se_cmd, SAM_STAT_TASK_SET_FULL);
+>  }
+>  
 
-Fixes: 2e04172875c9 ("ipv4: do compat setsockopt for MCAST_MSFILTER directly")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
+Thanks.
 
- net/ipv4/ip_sockglue.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/ipv4/ip_sockglue.c b/net/ipv4/ip_sockglue.c
-index a2469bc57cfe..f43d5f12aa86 100644
---- a/net/ipv4/ip_sockglue.c
-+++ b/net/ipv4/ip_sockglue.c
-@@ -1347,8 +1347,8 @@ int compat_ip_setsockopt(struct sock *sk, int level, int optname,
- 	{
- 		const int size0 = offsetof(struct compat_group_filter, gf_slist);
- 		struct compat_group_filter *gf32;
-+		unsigned int n;
- 		void *p;
--		int n;
- 
- 		if (optlen < size0)
- 			return -EINVAL;
--- 
-2.26.2
+Reviewed-by: Mike Christie <mchristi@redhat.com>
 

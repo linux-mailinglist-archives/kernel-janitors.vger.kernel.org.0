@@ -2,138 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0C271DFFE0
-	for <lists+kernel-janitors@lfdr.de>; Sun, 24 May 2020 17:33:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17FE31E006E
+	for <lists+kernel-janitors@lfdr.de>; Sun, 24 May 2020 18:10:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727869AbgEXPdO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 24 May 2020 11:33:14 -0400
-Received: from mout.web.de ([212.227.15.3]:57735 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727027AbgEXPdN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 24 May 2020 11:33:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590334384;
-        bh=RvgPa4HlNKsPOWlekAAfTVT3667QgjoEs86JI0r2Qeg=;
-        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=eNTRFVPAcfD0k8Jgb5em/LgdMeU+YlNZ8Qgd8JbhW2S2pFuv3bvTPH+VpX/iQSzpz
-         1cCt9LsQTPro0tmPVPaJeMRQvI/oLNinUDe+NOWXbemvg2T/nKKAVfybJaR2Wh1Okz
-         AZvUQh5FMcRuQ1JS8bU8uh00aM1ceH//hQh2OVyc=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.187.46]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N45xt-1iv7cc3Phh-0101UC; Sun, 24
- May 2020 17:33:03 +0200
-To:     Zhang Qiang <qiang.zhang@windriver.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Tejun Heo <tj@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] workqueue: Fix double kfree(rescuer) in
- destroy_workqueue()
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <96b49f22-50a7-9c8f-7c9d-f178195de717@web.de>
-Date:   Sun, 24 May 2020 17:33:02 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1728347AbgEXQKp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 24 May 2020 12:10:45 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:39352 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727823AbgEXQKp (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 24 May 2020 12:10:45 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jctD1-0007Av-Bf; Sun, 24 May 2020 16:10:43 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] loop: remove redundant assignment to variable error
+Date:   Sun, 24 May 2020 17:10:43 +0100
+Message-Id: <20200524161043.20292-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:mOD4CB+9dD1DHW4Qao41dV9PM62AVLbj+yo4k9fbpMtKkcvfpEk
- DVg3ALUHUigWgIp/rjL6mv7gF/b+r3j/YBENYb6uF9GlRmqaD5pGEI6cN5aYpXO8JZFTvB2
- jaR2SAQjjW0wdBsiD+TSD9ShZsFKj4RTRwHOQVlwIBh9O5ZyzqSlqbdfnp1VUj6hgjTWplh
- gqsmI0JYFW2Ob3Ls1fS+Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:peOpKegWxJI=:U28k7U/C75VtPYdRc2nV37
- w926RpLs7NjWfbkEz9+n5osTFLWAPTB5SfCIZ/lS3YOCyGeG9/BCevDlM8HdfqVDhH5zufOfP
- ijI8lI3qZqmcnt/ITwL2kQIyrRyxE7rcF0uF1+i2gL/8/fcHyooaey4HyNeLMFvFP642zvMkm
- 15+oNVq7snnxLUF7MYbC02bIDbMp3Ox56SQFYNzWr5DpPYu8JhIK18Yc0y7BvVbywgSVnTdJU
- WDwwotyOkJ3Dkqwc01V28PVLk6hdkTClGF9QWe0oBDjIR/3yk8GZKvaLhiAxfE3TXSEI7cNs2
- lXNoqsinenrQa5nzrKFnzJPeN3BRvLfCinVJ0kKFsh4tNDpoAAe8deAuTv5LfbJJoo4ZLlR5z
- WFzKmTFMGsMCjmfKYCVo32L5jMInnc7/85856id8rZB6YkiD2WIk3nzIG/f71AU94o3NVoTvS
- mRTfxx0PICE5kCRjVCp4I4xH5eTJohH9NCw9vm/RaUtj4AbyVCGDPcTZfdWpZTdNPEfbWeZAX
- 5yWKQYOzlBENL1Fr5sHDu+wnmpq7uIW5gJNfCTp5IRk3Y3Kr7WSUSrL4Kld+nf9ZUkFralGI7
- RFn8bv2oWxGqnCiJU2dPKx3LArCkVTO7aZcwQPGkO7Ww/EjZrE6zxQMaT4QmLduv8Ynm7/rY3
- 8EKXWW4Mui9rr5RI11XPG94kkgRv+opEPbMav0toTp3rW2lXakewbwK4c/mlCF7Gl5jfIKwjh
- AFtMImG53eO278ojqYSsNr6puvBzR+AzHd7s5LlVXVi6hWDj8gUBBsu2EMQWIRNEoEOseZ2zW
- jHdCe7ocVL+g8W8w10kuCTr6fUZ9XGKgqMZwmS9l9iJ7xRuJnF7bm0HmYuBSO+yIFPhVW+d3l
- TzTL4/2xMcBsZ86gq8JUSeDdP3BDUaVZvNNmw0HRSSi6lDBA6p+7W7CyeTF9JvpwT0xot/yxQ
- YVoweT4wXyY8vntujWYCXsa99eY8EQOPcJsnVdU42+XSpM/yCyJCkGqHRB/6VPI3wLkgX5p5I
- JLWwlH5FQcZeFTxSKvURgXBhZ3plcYIVqMo0mkBnsRnLclTbFyGY+p6Hp9XqOD5sqcS3GeSTN
- hV2zTW+vmboeZdPHhIBrkttQwpoKJnd/8syxi8AUZLrv9hf57g1y/OeCWuwSEl8W3u3auaAC/
- yhyAqk344nrqJB5oxWNWVySIMEebFIBtHa3Gd61CBCKXBOLNFGxWBIIFQ/V1jS/aX/U4tdFDZ
- X/RVmd9KwcQXK6b4n
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> When destroy_workqueue if rescuer worker exist,wq->rescuer pointer be
-> kfree. if sanity checks passed. the func call_rcu(&wq->rcu, rcu_free_wq)
-> will be called if the wq->flags & WQ_UNBOUND is false,in rcu_free_wq
-> func wq->rescuer pointer was kfree again.
+From: Colin Ian King <colin.king@canonical.com>
 
-1. I suggest to improve also this change description.
-   Do you try to explain here that a call of the function =E2=80=9Cfree_wo=
-rkqueue_attrs=E2=80=9D
-   (or =E2=80=9Cfree_percpu=E2=80=9D) would perform sufficient clean-up of=
- system resources
-   in this use case?
+The variable error is being assigned a value that is never
+read so the assignment is redundant and can be removed.
 
-2. You proposed to delete the function call =E2=80=9Ckfree(wq->rescuer)=E2=
-=80=9D from
-   the implementation of the function =E2=80=9Crcu_free_wq=E2=80=9D.
-   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tre=
-e/kernel/workqueue.c?id=3Dc11d28ab4a691736e30b49813fb801847bd44e83#n3482
-   https://elixir.bootlin.com/linux/v5.7-rc6/source/kernel/workqueue.c#L34=
-82
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/block/loop.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-   This function name should be specified also in the patch subject,
-   shouldn't it?
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index c20d01c08e5c..060da16b3743 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -1136,8 +1136,6 @@ static int loop_configure(struct loop_device *lo, fmode_t mode,
+ 	if (error)
+ 		goto out_unlock;
+ 
+-	error = 0;
+-
+ 	set_device_ro(bdev, (lo->lo_flags & LO_FLAGS_READ_ONLY) != 0);
+ 
+ 	lo->use_dio = lo->lo_flags & LO_FLAGS_DIRECT_IO;
+-- 
+2.25.1
 
-3. Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit mes=
-sage?
-
-Regards,
-Markus

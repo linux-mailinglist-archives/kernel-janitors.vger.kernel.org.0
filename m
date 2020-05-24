@@ -2,32 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9CA41E03A9
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 May 2020 00:27:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4EDB1E03C8
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 May 2020 00:53:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388431AbgEXW1Z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 24 May 2020 18:27:25 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:44290 "EHLO
+        id S2388104AbgEXWsF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 24 May 2020 18:48:05 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:44489 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388229AbgEXW1Z (ORCPT
+        with ESMTP id S2387863AbgEXWsF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 24 May 2020 18:27:25 -0400
+        Sun, 24 May 2020 18:48:05 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jcz5Q-0008Vx-0y; Sun, 24 May 2020 22:27:16 +0000
+        id 1jczPW-00013I-He; Sun, 24 May 2020 22:48:02 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org
+To:     Mike Marshall <hubcap@omnibond.com>,
+        Martin Brandenburg <martin@omnibond.com>,
+        devel@lists.orangefs.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/auth: remove redundant assignment to variable ret
-Date:   Sun, 24 May 2020 23:27:15 +0100
-Message-Id: <20200524222715.27305-1-colin.king@canonical.com>
+Subject: [PATCH] orangefs: remove redundant assignment to variable ret
+Date:   Sun, 24 May 2020 23:48:02 +0100
+Message-Id: <20200524224802.27850-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -46,22 +43,22 @@ initialization is redundant and can be removed.
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/drm_auth.c | 2 +-
+ fs/orangefs/orangefs-mod.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_auth.c b/drivers/gpu/drm/drm_auth.c
-index 800ac39f3213..74ce0c29c960 100644
---- a/drivers/gpu/drm/drm_auth.c
-+++ b/drivers/gpu/drm/drm_auth.c
-@@ -282,7 +282,7 @@ static void drm_drop_master(struct drm_device *dev,
- int drm_dropmaster_ioctl(struct drm_device *dev, void *data,
- 			 struct drm_file *file_priv)
+diff --git a/fs/orangefs/orangefs-mod.c b/fs/orangefs/orangefs-mod.c
+index c010c1fddafc..289b648ae196 100644
+--- a/fs/orangefs/orangefs-mod.c
++++ b/fs/orangefs/orangefs-mod.c
+@@ -79,7 +79,7 @@ DECLARE_WAIT_QUEUE_HEAD(orangefs_request_list_waitq);
+ 
+ static int __init orangefs_init(void)
  {
--	int ret = -EINVAL;
+-	int ret = -1;
 +	int ret;
+ 	__u32 i = 0;
  
- 	mutex_lock(&dev->master_mutex);
- 
+ 	if (op_timeout_secs < 0)
 -- 
 2.25.1
 

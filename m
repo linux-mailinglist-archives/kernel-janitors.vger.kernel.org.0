@@ -2,47 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F6AF1DFD81
-	for <lists+kernel-janitors@lfdr.de>; Sun, 24 May 2020 09:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B57891DFD93
+	for <lists+kernel-janitors@lfdr.de>; Sun, 24 May 2020 09:47:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728837AbgEXHA6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 24 May 2020 03:00:58 -0400
-Received: from mout.web.de ([212.227.17.12]:34365 "EHLO mout.web.de"
+        id S1728077AbgEXHq4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 24 May 2020 03:46:56 -0400
+Received: from mout.web.de ([217.72.192.78]:40719 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726331AbgEXHA6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 24 May 2020 03:00:58 -0400
+        id S1726796AbgEXHqz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 24 May 2020 03:46:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590303631;
-        bh=Dwiv4seL8ee3C/JloOJp8AqoZ3iVO2A78wPGNVrFh6Q=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=L0J2hS910OaEKV1Wwqcx1IIuKd45X3S8K6SQ2IipLa3MKLacznvq0WYCnPwVGE/Qp
-         VR4yaZyMREH4XJwpyzMs6ClZgtWQ8ilizEruW+7mK0suXGGUv8vGq/Am+QS7W0b9wg
-         1sOyprr8fLxMEzyBFFMotLyNWvTNGoG6WwfVzQU4=
+        s=dbaedf251592; t=1590306411;
+        bh=RVx2ZpfrKwAQMz1Fvlh8UKxMRyjqGc9WECkJRsumVFg=;
+        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
+        b=f+asM5zM/k+m7lwzW0OPZH1NUkj8qEtiv6oVzxuXxMTVdj4GQsVe/uHzcjW6Hb/zH
+         j7gdKzEM+6kXwgAjuB6ymE2P8YYCmfejk1rIeqTKe1cG+Q4dvvHGjrA93nrHakZCJY
+         E/B/dQ1ySGbzCqesZWrQdgT0ceD9+oBJfsuG7J4Q=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.132.187.46]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MidDR-1j8tmi2aXP-00faTt; Sun, 24
- May 2020 09:00:31 +0200
-Cc:     Ard Biesheuvel <ardb@kernel.org>, Barry Song <baohua@kernel.org>,
-        Baruch Siach <baruch@tkos.co.il>,
-        Fabio Estevam <festevam@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?Q?Heiko_St=c3=bcbner?= <heiko@sntech.de>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Wolfram Sang <wsa@the-dreams.de>, linux-kernel@vger.kernel.org,
-        Coccinelle <cocci@systeme.lip6.fr>
-Subject: Re: [PATCH v2 1/2] drivers: provide devm_platform_request_irq()
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MXGOC-1jWlZl11lW-00YsIH; Sun, 24
+ May 2020 09:46:51 +0200
+To:     Kaitao Cheng <pilgrimtao@gmail.com>, linux-fsdevel@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Alexey Dobriyan <adobriyan@gmail.com>,
+        Muchun Song <songmuchun@bytedance.com>
+Subject: Re: [PATCH] proc/fd: Remove the initialization of variables in
+ seq_show()
 From:   Markus Elfring <Markus.Elfring@web.de>
-To:     Dejin Zheng <zhengdejin5@gmail.com>, linux-i2c@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -86,61 +72,60 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <b0a8e1be-359a-17bf-0eb8-dcf175042811@web.de>
-Date:   Sun, 24 May 2020 09:00:28 +0200
+Message-ID: <e218bc34-b8cf-cf0d-aaf1-e1f259d29f7c@web.de>
+Date:   Sun, 24 May 2020 09:46:50 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ULSRbIDGYv0TpbBixJ0D35hpO5y9lMrzoQ2VCe5oADr7pOzYlV5
- vwXwranJ0xdJ+1UGm3v5J0PW8LdhVU/gX8aQVwVKik5oVYHoE/YniUQ0rHSdmvgjgngcrj1
- CC8BHzn2RcfdRr+KzOlq6o737rK3+rl86V5nHvA8Csc/PDWvWha4M1Nyy4h7EOnPmn4vJaK
- imDbCJHjNWhbsDgmIYI4A==
+X-Provags-ID: V03:K1:DkfpQb1eUe7ib/LnNNAnPf2vk0nC57Dnmw1w3PAvhXKKlO4u/HF
+ n7j6Ybmf8+OfYpII9QlGJCt22NHNywJBWSQd56nwdINTsSNc1eSTzfzJ4A/cf04tU7bkAuX
+ GXKVbpeAXkY+AHPrUYQAksVb6fvp+JXBTFomMLUrZ/kKjR/6zEcsesdEbTI4hTtbkBJb1u/
+ 6cR7hg1KD+/5YAcdC5lIg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:GnBOMT+WNFM=:/XNU8XdCn3fwkt7SaukubD
- 3XYFxWwoxuHR4sY/EFqR1ujGl0OooAeaGZzA8EO4J7luXRPKxlvBJtvKlUBRVLqLEyYR2hUSo
- OtKThrk8eQxGbvJWcNMxlXCh9faiHn+LicD7cdhyEiIfhf9xu9IBxPUR7mvqHViIBkUEjRYnj
- Lwc4/LP4iMpsrvhCfRjPhGWvrUH2qZPsQXNzp2OfFH/KBAUij0lPljmMQYcBRPRMMcT7TBN5L
- zbYRwdAzQFktYJlfvsPHLKBt9g2KnSQyosG80o+/opZBFOkLqTXWE8khIf+Cav1p/J2PFfeYy
- KbDfmZGaIoeIukwjtKMT2EVGL8UlapEbPQsvN7+PZfKIWhlKESSSm6ezhFMp2GOgE4SgqNsis
- kdBUa4KwPV0ayD+paJiBQzJifK7HswaI28jKJWvz6GNLKPMClM0ZYs2+tUQ4R5OZggRu5pi6U
- VVEbLBcmvhF4ck2el5EYCqMSc68sOOM4SW5VAYVvme1TdG51KmaSZeIRB3GEHqVJtfbNAtQlZ
- wcA/+v3uuaSEt3w3/TZM0sLbYAM58xDKv2SyCGmJC8YMGVr6T9+SUSxsJiwKZZSsPQmoB6f7d
- 2CCSb0p8R/29b2c/Jrf0IRS6PYP/R+Hpt9v5IpCUf5pxnZfybnn8neBQIWx8CUvyc1AQOlvqJ
- hkdmZuPwV17oawhEziBGjH5TbgX78UDuwmnkdUY73nlON6Pet1UVxEeIXdeYOfwEB1kR19Bhi
- ZIJzZ9Hm30aFB+RbJ3nCJaiFIKn/Lod3UwQfA2xjk2zFGDhQpzxVV4JTPcD+tG5kHkvbRFueI
- PvSFldOnRB23hqhLL2f/gLAVPVnu9SPjv14yfgtGZudiveipYU+w+MkkFRaWXty6+sOvlAZs0
- D4IJkzLSBQL8T90yJD4xZoWOjCAxevjRIeK0MKJZgNRU1iMDcPHtlKGVRNnt1JLwDmQo/Q87t
- wMwUGTmn9TH3I5+A1AMSVoMAw+9BiRV0SZkvaAYaZen/gZREko8B3oDS3pqc3PBqVUfVfVBhX
- hAsC8tNZFC2nZkn5q1IxpA+nbL3KswMWfFq46T1EUwbzJUZ7SiBk+jbqsdm8ifVtvye6lzJ8M
- 0XIxc+71U03OtQ9OZNq0iy1JSL8bHY0vSg4uFZr9wkKbq0W+TrG0wpMugW7zsCeVmQscseUN8
- 6F9THKiaWhWWsMUuEYqovSvfBe7izY1bk5SBIVeoDQ5y5Csulnhuh7hG/ffq0yKcsNXA0mqvh
- g1kjNvbuO7aQHGEpY
+X-UI-Out-Filterresults: notjunk:1;V03:K0:aJN1yDCRtTE=:c5iEpkAwjn6hFw1GtWBYae
+ FDUZDxbHnKWqV9Ph109r1QFs+cAZycSwlNTEZrBReHwUU2ghklwtrksCXJs6rpwB5vx+C1Tlv
+ nNUCyPrRzYjcrWJamHKwEhWJJeFZMFQS8AaIUv8TWc+AVIrBW5/Kgi2cgO47lz5Hy3D3KKnU/
+ BOPLOfKuK/BtP1/dq1NeurugQeC31d14AQEKudvqPnmTEog7hUWAhHLPYFy8R0XFmSphXliLs
+ s9MTEbU719vKeaB7OYV3ubu7W3oJZ5dZtuWxndGjMEfhXbWex6NEsfMwbsylPfpbVOIPd3pJI
+ wod/DAWsMEb45FxoRK/xf65PFmhK2bFwr3PBiiMn92WqUPFgUGs7hzPBmzE9yBFs+O3jd6oZ6
+ 8wYHPb83WWee8Bxr/tZgI/v83aOhJ9afoOjkP/1fBJ/NPDgk6iCzYtuvZPHLyJXdgUq3rUItn
+ MpDgi4Lvx+lgvtNt79YLFjv10KNnhFP6T4dxNfmVAFMjknNiJU0EZETGhyjb4xb9G2crU7XUH
+ 8EtEV8eABTX7WFekvmZajJ7wPEvBE/98NoSDqw6Kap1IJkHUCo6aNoABNIer05P7GFiVAUm1O
+ QregnxSGN538HdwKzbxSvWgiM9RYCEx5wd30BRugEVrQsRUcPhUdznpxeAht3dnWu1OXQSPK8
+ BSmCEvTH09LoxSNPD+w7jPDYKumOHH/JgeJmMp//EIgPlZIIB/YhPSPtF6XR4rXugfERT3s3m
+ EoTpqEVOpZb0/YDzZx1fi+o4H62ufCYytUjSLb02W7jbMQka5t5je40Uy9cqaB58Gpd7AQ9qA
+ XdJpsieXlWxeJo97c9IfTFLpSq1yvEEkJ2fFmuMZlUTHUt4iblOKncjmJ5Iu1KCOVxksKMmUf
+ WwonzHpMsvvYXbyH2SFRahAYpg+Wz0arg0HprbSXA2Rx9sioXkFAuiz0JM6NzrDSHHJRQ4LsT
+ 1l4eKYlukL1Knn9vl6/bLbHSR3JDJFjlOWidcq9YoAv9NcYw6olkV6xtpnRA+TdFFrU/K71S6
+ sxZfW2AlKF+U+TH68S5m8d0+nF3aifR0V+yZuiA0EK2kxRXzRiD3vSO9U20aEX6ZcavOdOpKH
+ HvOgJRLWFrM7Wt+Y7WbYPxyTnOuJn3DKaR3E2eeMuJh6qrn651BJXomuyZtLeoVJL0zhV4ycm
+ uYUA7e3hBI6g2OQry/S16F/xPY6wpC4O6nvIoGQWr5VSD23YqOyIfBRca3O34xneydY17Qnj+
+ TpBISmZ6vstFTHySq
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> It will call devm_request_irq() after platform_get_irq() function
-> in many drivers, sometimes, it is not right for the error handling
-> of these two functions in some drivers. so provide this function
-> to simplify the driver.
+> The variables{files, file} will definitely be assigned,
 
-I recommend to improve also this change description.
-How do you think about a wording variant like the following?
-
-   The function =E2=80=9Cdevm_request_irq=E2=80=9D is called after the
-   function =E2=80=9Cplatform_get_irq=E2=80=9D in many drivers.
-   The exception handling is incomplete there sometimes.
-   Thus add a corresponding wrapper function for the simplification
-   of the drivers.
+I find an other specification nicer for these identifiers.
 
 
-Will a companion script for the semantic patch language (Coccinelle softwa=
-re)
-become helpful for further support of collateral evolution?
+> so we don't need to initialize them.
+
+I suggest to recheck programming concerns around the handling
+of the null pointer for the variable =E2=80=9Cfile=E2=80=9D.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs=
+/proc/fd.c?id=3Dcaffb99b6929f41a69edbb5aef3a359bf45f3315#n20
+https://elixir.bootlin.com/linux/v5.7-rc6/source/fs/proc/fd.c#L20
+
+Will another imperative wording be preferred for the change description?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3Dcaffb99b6929f41a69edbb5aef=
+3a359bf45f3315#n151
 
 Regards,
 Markus

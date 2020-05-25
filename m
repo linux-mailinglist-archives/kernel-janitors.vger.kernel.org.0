@@ -2,95 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C79481E09C4
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 May 2020 11:12:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EA4D1E0A0A
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 May 2020 11:17:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388920AbgEYJMF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 25 May 2020 05:12:05 -0400
-Received: from mail1.bemta26.messagelabs.com ([85.158.142.2]:28796 "EHLO
-        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725809AbgEYJME (ORCPT
+        id S2389528AbgEYJRh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 25 May 2020 05:17:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53780 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389524AbgEYJRg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 May 2020 05:12:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1590397921; i=@ts.fujitsu.com;
-        bh=2N0ta0xkTHO1ASuSy/Hz5DBj4Fs/cClPX1DUdDg6Jm0=;
-        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-         In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        b=sSNYdPqgbEpkF5OqBVrKLjTt0ITIgf0gdL9s1RkcknCwqoKTVe/FGjxIEqSc84AUM
-         4TTl9nkRHmp+7jH8ek3ELF5p1L9wHe3kjZfpKUEw/hOldxXpEcBj5wMD9czw6Lch8/
-         d5CufJse9qQGriK7HkQOpZez63vk7r7W+rZsEiGBOjF88iXwBxNzi3jLuBPEPfyCc3
-         yFJMWBJ9ktwE5SSXM3IJ+JWan2Bmr4mNjpBViMazKemJFJCq72/JvcF/5F07C2VzSG
-         6ePvImUO5ARvVZmhEBQKHBNQJ52ewrJTc3D6ajEZw8F/Ht4HdmwJJvR/AKxlDa388S
-         gp2ZHjG+WSC1Q==
-Received: from [100.113.3.197] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-2.bemta.az-a.eu-central-1.aws.symcld.net id C2/00-40520-1EB8BCE5; Mon, 25 May 2020 09:12:01 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrFIsWRWlGSWpSXmKPExsViZ8MxRfdh9+k
-  4g92fuCxe/5vOYrH1lrRF9/UdbBbLj/9jslh/ZAOjRevSt0wObB4fn95i8Xi/7yqbx+dNcgHM
-  UayZeUn5FQmsGavWzWMv+Mxc8eZaI1MD4wLmLkYuDiGByYwSUxe2sEA4/YwS5yaAZDg5hAUSJ
-  JZu+cYCYosIpEvcOfuGEaSIWaCLUeLUuaWMIAkhAW2JdROes4PYbAIGEism3Qdr4BVwlNj28w
-  KYzSKgKrF0+yk2EFtUIFzixZY/rBA1ghInZz4Bq+EU0JE4+n85WJxZwExi3uaHzBC2uMStJ/O
-  ZIGx5ie1v5zBPYOSfhaR9FpKWWUhaZiFpWcDIsorRIqkoMz2jJDcxM0fX0MBA19DQWNdQ19RC
-  L7FKN1EvtVQ3OTWvpCgRKKmXWF6sV1yZm5yTopeXWrKJERgFKYWMVjsYt659r3eIUZKDSUmUl
-  6v8dJwQX1J+SmVGYnFGfFFpTmrxIUYZDg4lCV65TqCcYFFqempFWmYOMCJh0hIcPEoivFldQG
-  ne4oLE3OLMdIjUKUZFKXFeOWAcCwmAJDJK8+DaYEngEqOslDAvIwMDgxBPQWpRbmYJqvwrRnE
-  ORiVh3j0g43ky80rgpr8CWswEtPjy+lMgi0sSEVJSDUwb9+RfcmHeuY3v6/EHGWH+UR8WlRw5
-  WXKLZZbbBv3UFy9LBK8WFHDfejKlZMet34xJN9g2Vx9UXv5x20euC+9Ni8++udN37fenoicuh
-  /UPrjnnfvVy1crb557xZm3OL64xZ+GJKdl64lZiedwq27LlayceqZvdf/WshpjVOsUzv8QD5u
-  hXJ763lPt9qlRPoG4hw6qZFSs3lYWnHuQMmrdmXQbrQ/1pslvDWhWMWL9k7Vzpz1rzQ9d8dvm
-  li1vtZCqmP2PU/2mfdXj5lubKXTaOHz7/StDI+7Uof2W3UHvXpYeb1qyznvG+fHW41vVvKTtT
-  Ko44Nh7123Rx5R9+54bGl98m1GtuOsJ8adW8ielsukosxRmJhlrMRcWJAMfaget9AwAA
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-36.tower-232.messagelabs.com!1590397920!627678!1
-X-Originating-IP: [62.60.8.148]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.1; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 30111 invoked from network); 25 May 2020 09:12:01 -0000
-Received: from unknown (HELO mailhost1.uk.fujitsu.com) (62.60.8.148)
-  by server-36.tower-232.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 25 May 2020 09:12:01 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost1.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 04P9BprI027707;
-        Mon, 25 May 2020 10:11:51 +0100
-Received: from [172.17.39.90] (unknown [172.17.39.90])
-        by x-serv01 (Postfix) with ESMTP id 5E9C920619;
-        Mon, 25 May 2020 11:11:40 +0200 (CEST)
-Subject: Re: [PATCH] scsi: target: tcmu: Fix a use after free in
- tcmu_check_expired_queue_cmd()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     Mike Christie <mchristi@redhat.com>, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200523101129.GB98132@mwanda>
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Message-ID: <68d6b1e9-65fa-e91c-e55e-f520839b5efe@ts.fujitsu.com>
-Date:   Mon, 25 May 2020 11:11:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.0
+        Mon, 25 May 2020 05:17:36 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9E3BC061A0E
+        for <kernel-janitors@vger.kernel.org>; Mon, 25 May 2020 02:17:35 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id b6so20001483ljj.1
+        for <kernel-janitors@vger.kernel.org>; Mon, 25 May 2020 02:17:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kO5vtDW6efTPWMJdT/IeulhOhr/Shn99sWBgLzctM/I=;
+        b=WnOIkPx9Iho6akm/1otb3bzxcZJDFFWZUf0ZjYnagW3G3rEtAz/XI2cTG4Lmrs+lh/
+         uBwn9VGTsCsRHjRxCmEv60TCrrlcOA5JJI3AxviDtqbJ3irKCEL0R27GEnM9uT5hV38f
+         bPQ3nYPD42R4MAlowsgym120v3L/+zSTn1//Guj0XdlwR8QbIwlCJmsXHhkQh3Uh1OzL
+         VFM4s9fjlUaOnjMt6dmVpCM0WDEvzScRcDxUFsq64+kCzT/z0p3pbp+kTWGfnh5Hzh2u
+         i5YHaWguB7kt6FD5BQKe5mirOW+yxm8TZl3lHm3vNw3ouA1OOyDp8ZET5jiVHRtjO2oz
+         luhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kO5vtDW6efTPWMJdT/IeulhOhr/Shn99sWBgLzctM/I=;
+        b=jgjrq+L5R33M2kk24Lf71JSiBUn4T5AGgBhBr/uOmPVjYScfT1cx+fp2P1qOIhK4vq
+         YwVO7fevrmUD5BHvwuYt61DP1/cPSszqfaXpJg4BE8eCOXIiTDK0Geg7a+6AlqIhcSKb
+         JB4+44IJq3sLeCUCUyCey47B3s7g09h//ORiaqp2MjsOLrBIJd20jhrjdxN/pMxJM9D+
+         iPgS2FOkP/G7iQ9yTjY3RV7gBWaF3PrUgrYlT29rz45vAiG1fnEpFr+xalI+VtuVvwlN
+         HUElhAX7s36HKZhBInk2ay9qxzlFRnN2upNaErqQBcuwbsdwb+taZPeic6caV6pp9bNG
+         CX3g==
+X-Gm-Message-State: AOAM532sp2obY/gztWFb9iS+GFlZLCFqjdPdgJ+4rw7NMZddQxklOvLg
+        rS7dtKt28rrjUpOtz2F358yGModIAhtzs3mlJpWtmQ==
+X-Google-Smtp-Source: ABdhPJwFBs5dI5yirBLSFwiXWY52PiIXgZlGCLWwULeUThanyG8/0gUHFgUFcCvEjDwM9cabi1NMWxCRZgAoHBkp9KM=
+X-Received: by 2002:a05:651c:32d:: with SMTP id b13mr2970920ljp.283.1590398254315;
+ Mon, 25 May 2020 02:17:34 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200523101129.GB98132@mwanda>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20200520032150.165388-1-weiyongjun1@huawei.com>
+In-Reply-To: <20200520032150.165388-1-weiyongjun1@huawei.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 25 May 2020 11:17:23 +0200
+Message-ID: <CACRpkdYXmziVfd0ZDTq_3ReCdcw9cWPXXD1H9jfxvLiE=7EDDA@mail.gmail.com>
+Subject: Re: [PATCH -next] bus: arm-integrator-lm: Fix return value check in integrator_ap_lm_probe()
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 05/23/20 12:11, Dan Carpenter wrote:
-> The pr_debug() dereferences "cmd" after we already freed it by calling
-> tcmu_free_cmd(cmd).  The debug printk needs to be done earlier.
-> 
-> Fixes: 61fb24822166 ("scsi: target: tcmu: Userspace must not complete queued commands")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->   drivers/target/target_core_user.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
+Hi Wei,
 
-Thank you.
+On Wed, May 20, 2020 at 5:18 AM Wei Yongjun <weiyongjun1@huawei.com> wrote:
 
-I'm very sorry for this stupid bug.
+> In case of error, the function of_find_matching_node() returns NULL
+> pointer not ERR_PTR(). The IS_ERR() test in the return value check
+> should be replaced with NULL test.
+>
+> Fixes: ccea5e8a5918 ("bus: Add driver for Integrator/AP logic modules")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 
-BR, Bodo
+I applied this and signed it off and sent it over to the ARM SoC
+maintainers.
+
+Yours,
+Linus Walleij

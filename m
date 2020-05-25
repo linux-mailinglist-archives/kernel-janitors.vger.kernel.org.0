@@ -2,33 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F5701E0B11
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 May 2020 11:55:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43E3D1E0B3F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 May 2020 12:02:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389653AbgEYJzP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 25 May 2020 05:55:15 -0400
-Received: from mout.web.de ([212.227.15.3]:45191 "EHLO mout.web.de"
+        id S2389740AbgEYKCN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 25 May 2020 06:02:13 -0400
+Received: from mout.web.de ([212.227.15.14]:42859 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389356AbgEYJzP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 May 2020 05:55:15 -0400
+        id S2389678AbgEYKCJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 25 May 2020 06:02:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590400506;
-        bh=7r8ZING/UJm6QJnR4xMZWyZcAOsoA7IVK723b7SMWgI=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=Se7r9aA9U9Odihgl3tAjt//Ub4a9x/QHIgSqbPNi3UWmWFFWeVyNoQ/hMFIMEmOVR
-         AdawboeN3lvLduW09hvncZUpBWYCvRU7KWyveVR7oW/lOjgFL71Y2e9Av0DfVmwGpC
-         WERC8/uHZaURFSTkF75sevPqUNu29I+RlVAnvlY4=
+        s=dbaedf251592; t=1590400920;
+        bh=I4AC220AsvLo1AfbrJuiQXJY0TZLYS/i5UQOwj/yE4M=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=jYzGloPJe0SLYyvc21IyK/j1R07xIoVZaIrHmbhPjsjE2kUBWaQID2HIqIuPsiIvz
+         zwKcPGiI1WmrytKo24kLYhyyVsoCY/3Zzhv4TV30n3ZE6KOpsXOugPQKu/B1Nop9Mx
+         6cP+lnZXLCD4zB7QibuWigfsB/21Y6FbvO0+77jA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.186.124]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MZSBG-1jZOIu2j3O-00WVjw; Mon, 25
- May 2020 11:55:06 +0200
-Subject: Re: [PATCH v2] workqueue: Fix double kfree for rescuer
-From:   Markus Elfring <Markus.Elfring@web.de>
+Received: from [192.168.1.2] ([93.135.186.124]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LiaAW-1j2jBM1P92-00cdoU; Mon, 25
+ May 2020 12:02:00 +0200
+Subject: Re: [PATCH v3] workqueue: Fix double kfree for rescuer
 To:     Zhang Qiang <qiang.zhang@windriver.com>, Tejun Heo <tj@kernel.org>,
         Lai Jiangshan <jiangshanlai@gmail.com>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200525075901.12699-1-qiang.zhang@windriver.com>
- <7d19381c-2c51-deb4-f82f-d54bc56c6ecf@web.de>
+References: <20200525093019.2253-1-qiang.zhang@windriver.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -72,53 +71,70 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <e7d637d0-06e2-25e3-9af7-8c4668f9172f@web.de>
-Date:   Mon, 25 May 2020 11:55:05 +0200
+Message-ID: <7c320424-fb25-1c4a-3d52-5d381c7b2884@web.de>
+Date:   Mon, 25 May 2020 12:01:59 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <7d19381c-2c51-deb4-f82f-d54bc56c6ecf@web.de>
+In-Reply-To: <20200525093019.2253-1-qiang.zhang@windriver.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:A2nqinC1u9ZUtltO6CX/3Ndkld8EOakMcnBsDHbc8x+TGhbw6/B
- ykxWTdMWiXnS7pGPfPCLA87JG+dn5nTdo5EmHqlSMq6D0dwcjCw1lPMa/yXvXaNVlPsVEP0
- BcAay3y7IFvAqph+2HTqRXA08MBC+8bIyjTpnbh4JT3kLzMqeG8qB9+hH74OUaJmUHNuZQT
- rEy3l1IFCxy3t3eAYW0TA==
+X-Provags-ID: V03:K1:L4hbfwj2vomAq8IAhHRYfpD90cmwhfM0pN5j4bMaF66si+sg6zh
+ FAacoqGPX6M53LHs9SrwraAtYEFTVom/LE4d4CiLBSrhf8uQ5LrvYfKT2WsR3vtYA69A1MO
+ qb+TLGKNqSqpbiIrhBjdBwxvRuSKC2/Un9LQyXccm9Ar3N/fnlrXplXgrtLfIeZBwvz+B6l
+ dPiz6s7TL6AroQASX5Snw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:aafKFYFSKrM=:M57tAMuitLUmVhpi8928B2
- fPu7gSANOvD/0XHK6YEMRINzcZYQKtmdowwQ7Ooyd2kxudqb8PBVInVXANfmBSIi7JpEmHxzy
- j/Ix+sbZB0GXmhnjfkkp8cATDNaQ1YuKmKl5KnuutUUPjmmupNkMFauDt6dCT5T4okbE0eOQy
- IKgBVqFsXaotWSDw9ES/f2+s1+9oH0Gc+S3s7X0QjcdmN0IlrHII3VmubCs8O4x+77Fw4yU6h
- hCPEM9XQxS8HQx/QWUzLksPim2G/H7HEaUQM2e8bZ/sMR/MXux3V7p8AigtsreAJUJ/RHNJzD
- xdW4beAKDl/gGP0WIaHsSJVH5tPSKr4xJJP4gc43L9/2eee3fJt+9bhgHSKkc8YgUUn9egjiH
- xaIw5r8LzIvvUJC+qbwvJNSURdQt2vxcB1zqBFWb4/hXFNB3/p7P+zgb009YSR6rX/iPOUdYZ
- a1yVkIoIm8NuvfkObFZowZxkHtxYVhqPbJWG1nki/8LRVKK0Om9IVkLOAfWT+h91ceMNN8vsj
- YRDjuS1UKFae/DTcAkAedHc56bCbskM12zAbPCr6Qjbu9+hLpas7kaaIGTuh+soj8S8AZcc1Z
- TvQDo0aKH1q7+4688bYekuJ1ljjg3w3RdaBbnI0tRzbHYIjJqs//J9eaRKxu7uwpUWR7W2Kz5
- 4o0f8UW6CsgJsjR915Ra8cGqt7W9XSBD2o07gxqx3Kq+AsIUX5cJliCRabc842TgKOVHcOa9Q
- 9aZFTHFKc8FivFL/XjKTwyUBjjOo75D2Pnsr7JSwiCrEchcwV7aCkiqMYlcecApSzM/p0JnDI
- X11GoWFicyED77teEiz3J5j/0xWAo8quvYf+watAmtnJdhCFVBI3ymLdZK5EaYBfZLJjulyap
- Pa0sRrknd//VKxMMJfZsXiZg2aQ6lzDGpSNwy3Jyuc9AqzmHrafRHynZ6iN0odW/p36/wJfBB
- S6HztM+/t76mTxb7IEa2FFnLZRD6GXFPY4s+5a9aXf704d6OWEAlSMgvdYdN879qM30WEsGD2
- wOX8z8FsrI98PqeOvxDopceKa6HJx8JUbbmlmD6zIo4i0DTK82QAjeM5t6DZI1dllXrnR0RZJ
- DCBPHoMImHZCU8ShV6JgaO3gBwNHeuE4RL5Za1ErtzN3ttwCj63qMQguGDvSoD6+4GkAoqokM
- n+kpiecNetWudVteYNfYu42hUPl8jzBQWEvE+KMPTtEF/9Ra0cx4sg4h0bHz2xS+coSKMoKzc
- SMqWJqLusJmsQ71fv
+X-UI-Out-Filterresults: notjunk:1;V03:K0:QT8xuCdb2Lg=:znCo0DV3xEPPm9Y24UgYn8
+ MEh+McKaaJXHxlwJrby3C7dDRwcEeL8m2UtBKJq/qZBibdNQ7m8Y407jCflK/RCmAmP/HSJQa
+ OpktclxelSqFZwgqySnHZKJL+2o3YcabTH7G1DV9maBXw9NCe4OHeMOS4kEGYX+v7zzOBShF5
+ 2uWRGIL6FHIRji2dZaLIipgKzRe+vUsKafFDid0dbWVmE3IB2FuENHMHG8oBbiv/GPlFPr5kA
+ PldOGCKzPUZXg6mtVylqLJ2ruSc2GMZE/fDJ8fpyt1K5zq54UuIZVnWyGGa3HQZTDsYpQMIUf
+ uidj2LU36OzxixiUizMOuBhbszbicaKXjbGi032tI9Q+U9hCPCNS6zm+F2RWzR6sSAUWU+O5K
+ yEkz+Mms2sXspPbIbdUPGaR+LfL2FTgrdpjGUMOHMfdWxVknN+7q004kaizvvwj5mxuhMqx/9
+ F+dQ2vCltB30CcndTnP2GtqgtoAhwGX3WoowNqm1tE6xc1ErxkXpD7g0XLqQyljAbQWxOLx3o
+ sdMaA1wAQ3lef5UVurLHcYDFS/a8Qia4CTX0v5vUQQpcs2Gu+3ufL5KSrWn5G8Uz0rtNLH5Xl
+ tnIjJuN+yhLW4Z48EPqlEY/Xc3ZbuEKYtMnIfFw2EAIJwe5y6j8qhM2119qaTNWh7zKcyJObp
+ ZDF7kjwhZjso3LKYENH/P+uQJ3DTpTMl27jCeWymd40aWHeBLUJUeZG49dapNby57/qXqnzHv
+ 2t+CnK0x8dCMfFnuIYplLLS0T/yBwxBrYe/a5QfS70m1f6p5aND8u38+JScN13GjEit+hzIzh
+ praojYOSvfOtGq2VEVD65iP4/tuiT6YyEJGW+W7DXdKSEEN5kGLRQFtoC730CNt0lr2/eo/6f
+ Bqs3jTgvzDNKCdXBQxumCEIyL+Szbkxjvu9zFqRHnm7DjM1bzks7kkCm+ovqr4TEqDwbB3vGz
+ dY6SIkR2E8ShJf1PgE+iIEwwgTwCvdpAljqo0kq1FXjiHdIHIM2K1gwJwvd6QkZfciebjXXDh
+ IwlVBg8YvNpEovbv6W2IQ6Gte4m4wKVc5YPqJq0gZhnlMprIRWbjYFiae/1nhbhuxWTJGCNk2
+ poUFH9pDfx5A7WLZyC0j6ocxoJoOp0NAz62Zu8bqHCaTnpqVe8m+QIpJfdbGOBo+dv0KW8uZf
+ BMGSeaB9OSBH5vjLIAgD+OM50dfTs/9uMNTdW9VN1TrDB+pRZSU3x+VHh7uNbXpYKSEF6NKr9
+ dGzUB8MhgOgzGNCPA
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> * The function call =E2=80=9Cdestroy_workqueue=E2=80=9D can be performed=
- there in an if branch
->   after the statement =E2=80=9Cwq->rescuer =3D NULL=E2=80=9D was execute=
-d.
+> The callback function "rcu_free_wq" could be called after memory
+> was released for "rescuer" already, Thus delete a misplaced call
+> of the function "kfree".
 
-Another correction:
+I got into the mood to follow your interpretation of the
+software situation for a moment.
+
+I have taken another look also at the implementation of the function =E2=
+=80=9Cdestroy_workqueue=E2=80=9D.
+
 * The function call =E2=80=9Ckfree(rescuer)=E2=80=9D can be performed ther=
 e in an if branch
   after the statement =E2=80=9Cwq->rescuer =3D NULL=E2=80=9D was executed.
+
+* This data processing is independent from a possible call of the
+  function =E2=80=9Ccall_rcu(&wq->rcu, rcu_free_wq)=E2=80=9D in another if=
+ branch.
+  Thus it seems that a null pointer is intentionally passed by a data stru=
+cture
+  member to this callback function on demand.
+  The corresponding call of the function =E2=80=9Ckfree=E2=80=9D can toler=
+ate this special case.
+
+
+Now I find that the proposed change can be inappropriate.
+I'm sorry for undesirable confusion because of this patch review.
 
 Regards,
 Markus

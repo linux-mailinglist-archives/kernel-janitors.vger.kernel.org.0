@@ -2,23 +2,23 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0674F1E06DF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 May 2020 08:28:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9DEE1E0733
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 May 2020 08:43:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388399AbgEYG2y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 25 May 2020 02:28:54 -0400
-Received: from mail-bn7nam10on2040.outbound.protection.outlook.com ([40.107.92.40]:26273
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
+        id S2388655AbgEYGno (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 25 May 2020 02:43:44 -0400
+Received: from mail-eopbgr760088.outbound.protection.outlook.com ([40.107.76.88]:35342
+        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730113AbgEYG2y (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 May 2020 02:28:54 -0400
+        id S1726393AbgEYGnn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 25 May 2020 02:43:43 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nQdsbpQ2UHGdkOh59r6glEhshGyusqLcmu37NXXS4onxdxX9YjtXhfecSBiPeBz9TVuZXapBihPlQfMKTqVH4ZoxPgjuomi4Tdr1Hqq80drX8jCCUdYM/A1o9KEme4u1xsE9aQOazT6tfmDBWUYwUG/QxJpOOL77op+ser357Yxx8mGj/ajl4uzujsRR1hrXuFTBcLpSGntfrx0TeWQqbzn9QNtopV4yL28mPxI0+ji2SzpElNeH1dxiweftdInOG/9spTwvUOTG7QcwtWGOjHJIQ4vjeuX7VEL1/qRFesH7k9otXsGnhQZ+yYXYGZ/krUTiWAjkCAxxSbgHbnCF0w==
+ b=SUm8d2DrOou9YCdHSY13M9iHYESZavafGzBtm0Nuus7Eajs8cOJHmS0qKu9OEcGBgpp+4X2Q1pCu94M68TDSmQgsZLJEILlfy1bub15o09FYLMdlfkuU1lA9i3gVNE2LnUm4OvwkR1geUIEFd94WeaXtGd4jjmWEfQYpBqY4rBiepd2/pCroEL/hk2xz0Ie/tr1oRZBvV74XBLglmpwUJKAwiWiYUreT/OD8sWj9jM/0mMpr5OLNBO2idMguK7dqLyPzDiC6EzJMM4negcoQYUyTgncV38lu96sfVNMJK+TEIHcVjMEfV1WXMxdgT84V0LmWztX8OfdKcOBf/VmfCw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=44ETfCzMO2uG6HiMRKAwSTLcNoVE6oQydn0GVvJF0JA=;
- b=KdK1ZgrfkjcajNp88TxLkACO8zhd3ru95YKvaM++NEksB234H+MRdOpeiYLkJgsvtU0vWkIZHv/uB49GCOs/G5ZXFQ0jITA3lzlBbSohaejzkfzRW5ieNSdFfWIxMAarx0sZVPYRwJldWxstf3GtA06LkVUlKV1AHEaO8tO7HoDPCrDb7uS5yAr+f5JObySNoSctdYfwc61RKcyRUbiyefbcEVxmwe1jejKUUkGdqQaETijuWok41S2+LYSjSzTeZCsjuia+pwQHAaxeHT5hyhMoj8GtQawc2PihK1xrZdYempmJVHP4fzNismj08PzIrT37IkBY2hpha+h6vo9fpA==
+ bh=CR1k3IYnonZ7TtHGKmv1Gec6Jm5s95480uejbVYecxw=;
+ b=LlLLnzTTOqcFZklMYNLY2MBiJIN+7ECBb5t2LTUaYK0jdCZJkiDaOn1I9QeYNl1/ob0HIumV+p4nXZoKrOyaTfQGUNw2BtM0kNCwjsv3ZUPwrksZ3/uzHrCzJrRR7cyK/AlsyNsVICDdgRya4jblmBd3R0tHJyF97q/nxigTe0OGuvQZ87IeWkvGs2wOEyXioTo2cscvDIme2HPOM3A4k7QsAZHa/AR2/IpfsligxMNYMuPKzmJw/d9VutZP0Z8ZepN/cOl7OtnVgTdw64p1NEgZbEcUFD/BwFgnmtRey+7fnoknLpLIAZh0g83uyCJHA27O5H+glAZ7dYMh7ynL1g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=windriver.com; dmarc=pass action=none
  header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
@@ -26,20 +26,20 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=windriversystems.onmicrosoft.com;
  s=selector2-windriversystems-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=44ETfCzMO2uG6HiMRKAwSTLcNoVE6oQydn0GVvJF0JA=;
- b=A/B18SGBa+XH/2/m4ncZ9QamK7nqVCwUyGHJT6Taht96Q2YedY/fzNywhNbsY2X9VepiJiyLr/DGM0aK4TXI3PRzLFGTNd0916Bn41R5EMlmrzVAKSEAIHNnH3RqrnCYgPrTvhY0MyUp2+bHSjirQlyDDyD1z24lSeDL9hD/68M=
+ bh=CR1k3IYnonZ7TtHGKmv1Gec6Jm5s95480uejbVYecxw=;
+ b=Y8H8ioarrn/G4FXxkG3lP0/Pe/izMg88C0CT0KMCdgkOgmWNFTHi1qa8nMuqtGq5WeshVOcqpaE0oiSKobUd8vO2zfgKJDA5qqtyxnCdq6/NwGuW0LhSL+T4O39HOx8uGs8/7X0cb5Z5f11q6w4fzcUUHnw+iebM9YEgU+INsKg=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none
  header.from=windriver.com;
 Received: from BN6PR11MB3954.namprd11.prod.outlook.com (2603:10b6:405:79::35)
- by BN6PR11MB1921.namprd11.prod.outlook.com (2603:10b6:404:104::21) with
+ by BN6PR11MB1427.namprd11.prod.outlook.com (2603:10b6:405:8::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.26; Mon, 25 May
- 2020 06:28:48 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.23; Mon, 25 May
+ 2020 06:43:39 +0000
 Received: from BN6PR11MB3954.namprd11.prod.outlook.com
  ([fe80::c05b:5a81:29d8:6b7f]) by BN6PR11MB3954.namprd11.prod.outlook.com
  ([fe80::c05b:5a81:29d8:6b7f%6]) with mapi id 15.20.3021.029; Mon, 25 May 2020
- 06:28:48 +0000
+ 06:43:39 +0000
 Subject: Re: [PATCH] workqueue: Fix double kfree(rescuer) in
  destroy_workqueue()
 To:     Markus Elfring <Markus.Elfring@web.de>,
@@ -48,41 +48,41 @@ To:     Markus Elfring <Markus.Elfring@web.de>,
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 References: <96b49f22-50a7-9c8f-7c9d-f178195de717@web.de>
 From:   qzhang2 <qiang.zhang@windriver.com>
-Message-ID: <d9dd0dc2-e169-6a63-9a79-d692994324f1@windriver.com>
-Date:   Mon, 25 May 2020 14:28:28 +0800
+Message-ID: <69170178-f149-b44b-6465-a4c6ab893d52@windriver.com>
+Date:   Mon, 25 May 2020 14:43:31 +0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 In-Reply-To: <96b49f22-50a7-9c8f-7c9d-f178195de717@web.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: HK2PR02CA0133.apcprd02.prod.outlook.com
- (2603:1096:202:16::17) To BN6PR11MB3954.namprd11.prod.outlook.com
+X-ClientProxiedBy: HK0PR03CA0111.apcprd03.prod.outlook.com
+ (2603:1096:203:b0::27) To BN6PR11MB3954.namprd11.prod.outlook.com
  (2603:10b6:405:79::35)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [128.224.162.183] (60.247.85.82) by HK2PR02CA0133.apcprd02.prod.outlook.com (2603:1096:202:16::17) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.24 via Frontend Transport; Mon, 25 May 2020 06:28:46 +0000
+Received: from [128.224.162.183] (60.247.85.82) by HK0PR03CA0111.apcprd03.prod.outlook.com (2603:1096:203:b0::27) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.23 via Frontend Transport; Mon, 25 May 2020 06:43:37 +0000
 X-Originating-IP: [60.247.85.82]
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 44aad4aa-dc63-4f77-bd0f-08d80074e211
-X-MS-TrafficTypeDiagnostic: BN6PR11MB1921:
-X-Microsoft-Antispam-PRVS: <BN6PR11MB19216E8D02661D5A22FE296BFFB30@BN6PR11MB1921.namprd11.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: 3fecc4d8-3cd1-4f3d-2676-08d80076f4fb
+X-MS-TrafficTypeDiagnostic: BN6PR11MB1427:
+X-Microsoft-Antispam-PRVS: <BN6PR11MB1427805026E27528F31324E2FFB30@BN6PR11MB1427.namprd11.prod.outlook.com>
 X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
 X-Forefront-PRVS: 0414DF926F
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: rnu+EnCOv0zQ4B6pF/uF3aoJxYYNqKZYA/p9eMaSg/fRnGWoPskoY4+/CUuoDRgZgD7/GyhHnPpW/cd8yAlzDYYOBtuqGRbz+C7RgdWwdmA1ASsx59YHQhPIi7diOX8r5la5fL336fdzwUUcwWHu8dEfBOM3LZD0UCYgIl31PDMPLUltudN1F2NVzGrrYr98YZxXsP9IoF3APXQqNCWHPsAcADzDAEYdocMCy4HLvpeNhGCj/clsnDwzAJlawE2Najxa/SAsD4WUn72ylcabOokdzStTtQEAkYgiljal6hTd7dO8mCfMRQPMNVMskLSy1b7awOThUVgysW5iaY/YzZvUFF/RPFq2KVGZaL6Qza4Z5Ym8A8xAMyNvhzOWfz+WVVXA/nOj/6rxQsuM+xf1rw7SMQ/y4jrByH4MvFJn8PcNh5SbvBSAreiE/cEfbktEUqo5RzPhqef4Wmxric1yBah+ZAD8aHIAshPSqS3H33c3Th+cyluRWmJ0vUxl2GxtwP9rUcuZ1AOHz2wunxmmWeWRAIEE1huvDwRXmFUGJgk=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR11MB3954.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(376002)(136003)(396003)(366004)(39840400004)(346002)(6706004)(6666004)(8676002)(2616005)(956004)(8936002)(31696002)(5660300002)(16576012)(478600001)(966005)(86362001)(4326008)(316002)(110136005)(31686004)(186003)(16526019)(36756003)(53546011)(52116002)(66556008)(66476007)(6486002)(66946007)(26005)(2906002)(78286006)(43062003)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: AApfSbzYdwQV5g87E6RkS6eSaVlTNUW61OhX507VI3DR8ERJos5VgmdzGWBHrctZbs3lNmVygKToFCZUagJVINp33woZJgSs0G3baFiNNBJrQjOO6PSZeIb36xSRCt1pEyVcCXBVnhk369DUbWMJKNqBkAmicUM7dKZfy056ErTZYA4HIA2Ks0iwRxAaM8wYuBcmpIg4gqoHFMiug+GyX0ixfSR1S8UnSmTfJWm/Lkae3JToah1IU9xzPKJtmOU1QDxMSa8oiCvzW0mZ4jrm9YZgj5pXIHdVvXK7H/jR9w2veHFVVio358Wp4YduQ+I5D55T3eA62VOuk3d7Q+EB6Bw85xiGQ5BK+PSvJH3Rs6jYVyY//ihum7MyDmdzzHLVRKb4ftodzEKqRpBRNjA7vrQ1Kb9F3tFLlmE9YbovMtFdvHYqVYWPAMMU0m4WZuuiXM32wZUS87YAyvunQRdCQ/AWHQfeJewuX3M1MqCXwmM=
+X-Microsoft-Antispam-Message-Info: zuGFWhsvB2GJhPGxPgjY7PHj1uRv31OzKjo0Qyx3IgxXtPCpNj5JWbEZTuISvMU1nS1vRr7y37ueyaepUNMfas1MdR03kqW6yu1du5kHIzmJTikiry5krRnvMtlAgWmaFSY9fMa9ci2g7vOX6/+NkA5M00x0/vq7cz90j3O9q+5GAybZJB/fK9lBQ3i8fUMRfCwjFyBPYjIqThDwALph97nwS/z5Fie7vVKDGSMJ6SnBeVToxGzak1HvHFhon2q/1UCQhZx2QD6byK7hfaY72s0TCSS5YUh+1z1qxuYP7OOInsl7o8ltFrgAJcUG6xvK0ybfl4XpgzfONBeA7RjHLcgM3GeRxWIyTsfFLGaC3rFbtqhfBItQe8kvo2hRlgAoQKrSmmbf7SbdSOxy23FsKtBicwld9dRJ29GUuTZSRoEarBl03dZ/IoTTN9/MS5pcWaIPfbMnjDBOrRDFIReRdGhFMuJ1wacYnoLLvXRndDCup5HaygxEMXxCnfkJ2p+NIi+EKYF0QBzqeaJcRwSin66XI6YFdml5ew70JYXjlDg=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR11MB3954.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(376002)(346002)(366004)(39840400004)(136003)(396003)(6706004)(36756003)(66946007)(66556008)(66476007)(6666004)(31686004)(5660300002)(4326008)(6486002)(31696002)(26005)(53546011)(52116002)(316002)(86362001)(16576012)(478600001)(110136005)(966005)(2616005)(2906002)(8936002)(186003)(8676002)(956004)(16526019)(78286006)(43062003)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: 9ZHTYEqb9CZeBuF1Ht6OD0rDzpZRtJv74tigoBcnHrIeW60Q5M5DEfITHQgzyQ0GtblhQkQuZ8x5hvZqMR/uieIJlG7I1nxQyWdkqA1qJm2c7wW6r8duEXDkPI5mhX7I+Pi5D3/LsqB1f37QvTznsLz9UdGt6g9jgWhlGROKfcXlIBf9rXbHLbP/cVgayNafSSI4QvLhE4KYbfBo+BmV3dK/sneNMfv5QMJb3uA9oNQxzw7NcR1HffycYzR49Yj/RjsWVpfKJZ+r87Yg36HP4ZCronrfXkMjZ5r2czK04Jm2rnHQL5WGhe7mYC0wFt8cKX1PXFj3dAxaI1BXpjvRvMYOjkop1NM9t3otMvHlfWFPN4cl35JKc+bZyl/U+RdZfMjdXdy26yOxss3cupCJ/KJcx6SEq/R4jA8/DIRU9JuIz/Sad/htXbKNaCnnCk1d30yaAECbmLN1sMXMOIl88U0+YfeNcyT/rAkVungtsWM=
 X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 44aad4aa-dc63-4f77-bd0f-08d80074e211
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2020 06:28:48.4353
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3fecc4d8-3cd1-4f3d-2676-08d80076f4fb
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2020 06:43:39.2454
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lAePpH2QrhvmLJpgcUPwhF3VzRhBWBW88oA8C6iGjp64Aj7eq4St91FtXHPApVQYZo+dI4IiMO2cCELV8zNVyi9/nlYOU+0LElNfEYbDW5I=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR11MB1921
+X-MS-Exchange-CrossTenant-UserPrincipalName: xawy3WJ342o46T2kpC0Fe3oYVWRHOEsEr+Ep3Jb3hT7+lu53TZrTeXLyPPh6IocbUbFX9zI5YjTprOaS/831T8bGUMXD4Gbf2NKAIEw50S0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR11MB1427
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -92,16 +92,17 @@ Sorry I didn't describe clearly
 
 I describe the meaning as follows:
 
-	destroy_workqueue
-		if(wq->rescuer)
-			struct worker *rescuer = wq->rescuer
-			kfree(rescuer)
-		..................
-                 if (!(wq->flags & WQ_UNBOUND))
-			call_rcu(&wq->rcu, rcu_free_wq)
-			......................
-			rcu_free_wq
-				kfree(wq->rescuer)
+  destroy_workqueue:
+	if(wq->rescuer)
+		struct worker *rescuer = wq->rescuer
+		kfree(rescuer)  //first kfree
+		
+
+         if (!(wq->flags & WQ_UNBOUND))
+		call_rcu(&wq->rcu, rcu_free_wq)
+			
+		rcu_free_wq
+			kfree(wq->rescuer) //second kfree
 
 there are double free.
 

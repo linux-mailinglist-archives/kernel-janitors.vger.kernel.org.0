@@ -2,34 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01CBC1E0777
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 May 2020 09:05:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4530F1E08A8
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 May 2020 10:21:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388925AbgEYHE6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 25 May 2020 03:04:58 -0400
-Received: from mout.web.de ([212.227.15.14]:37821 "EHLO mout.web.de"
+        id S1731413AbgEYIU5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 25 May 2020 04:20:57 -0400
+Received: from mout.web.de ([212.227.15.14]:42701 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388385AbgEYHE5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 May 2020 03:04:57 -0400
+        id S1725849AbgEYIUz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 25 May 2020 04:20:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590390288;
-        bh=XN/8bP+JztC7FWmfDY5wchPuBCjRd/bzjUXLltJmfFk=;
+        s=dbaedf251592; t=1590394846;
+        bh=0tet/MAF1XgKTxPpxeRnsPyYCjI2rjofhsmdK+9nw/Y=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=bl8G0I+cjJijgkq0QF1yjzi867NlsmzsB9O//XGhyeh+kIsl6mL2aSFURAp54bh6Q
-         yXqjCVtuus0/Js3Lv4CmekLFwO1rT+EIPTgwTdy25CxQ8cFNheamx9RxO7g3/UJ1Ys
-         9HW2v+VJTZQOgqlpt2a2G8L7Bitoq8j/e03rh+HY=
+        b=YzYPRNY0gieE3mZt21qRe8Wm44nhFRfxlzORB4RfmDrPZR77gf/2k9h4I65LrBJmZ
+         I9DbgVXNPvBX4oTwknGcswOGiqAtczKT1qDC/G1juToVxkw/lH/iZA3FuMkF0HutAd
+         Lat5dCMmNg/lRubRYSjrUki/TYLwbFVvWiM/Vl9s=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.186.124]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0M73XZ-1ircss3Sth-00wjFY; Mon, 25
- May 2020 09:04:47 +0200
-Subject: Re: [PATCH] workqueue: Fix double kfree(rescuer) in
- destroy_workqueue()
-To:     Qiang Zhang <qiang.zhang@windriver.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Tejun Heo <tj@kernel.org>
+Received: from [192.168.1.2] ([93.135.186.124]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lh6fv-1jHUJm48yl-00oaNV; Mon, 25
+ May 2020 10:20:46 +0200
+Subject: =?UTF-8?Q?Re=3a_=5bPATCH_v2=5d_workqueue=3a_Delete_duplicate_kfree?=
+ =?UTF-8?B?KCkgY2FsbCBmb3Ig4oCccmVzY3VlcuKAnSBmcm9tIHJjdV9mcmVlX3dxKCk=?=
+To:     Zhang Qiang <qiang.zhang@windriver.com>, Tejun Heo <tj@kernel.org>,
+        Lai Jiangshan <jiangshanlai@gmail.com>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <96b49f22-50a7-9c8f-7c9d-f178195de717@web.de>
- <69170178-f149-b44b-6465-a4c6ab893d52@windriver.com>
+References: <20200525075901.12699-1-qiang.zhang@windriver.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -74,53 +72,62 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <cb2735b1-c54a-8746-d776-951081582366@web.de>
-Date:   Mon, 25 May 2020 09:04:46 +0200
+Message-ID: <efe09ccb-914c-6573-b88f-919bddff20a5@web.de>
+Date:   Mon, 25 May 2020 10:20:45 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <69170178-f149-b44b-6465-a4c6ab893d52@windriver.com>
+In-Reply-To: <20200525075901.12699-1-qiang.zhang@windriver.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:XM/UPWxEwJSqrzdZtuHujA6YaO0VRSqTgZ3nfEuw0R4TW++3p2d
- +ImW6Zdy9uA3Y17eW8EiS1mIzw5N5HF/jh/MEJ2jz6fVqU4+YQczNtUIpzv18CBDushFfkw
- zTEx2wCShGiCNCZd1VqK1n064T2rmhoJn/FN6gx9OA2ccd4RTdl8GLG+gJ4FVmnVHVw6tPR
- A2FOHvXnRDasILvbyDM4Q==
+X-Provags-ID: V03:K1:ux9I03w0FBB/uuLHfUCG2T8Y8rfoUzRVcJydsbtVGjwox42/VuJ
+ 6sxfWXegnlCdXxxe7Q9CdZ4yidefcgctmvxGAsFmtTy3he3iV+DfweGDswwhx7f72CbmP0P
+ kAWEdWb+TuBfpQxZsHUQHFEp9GberC/8YWikKWpQ5Ak/KIMqXWv3tkzzVDQVjTEWP2FGrJl
+ nguAaNhSUXnlhnfABbFgQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:I9Qr39uPVw0=:/kPg2f8RGNhs8C/ALm6Qyg
- 7VIHMla623sOnEq6dZr3uxnKmE+1cI9TyZGSrlAKdVDq377k6ku0A+H/zpD31VcsV0HF2Jgsd
- 9Hi6Gl0X2oRoYXYyAFtOmCgtwlBsydzvuBBmQkTdSfq4Y7eM4N8O9lZvqRyNxPLiLj3dQtoKG
- guDhio9pPoNr3DjRxa77EOOh268MZ7+qlZDHNBHtaTIrXJkyLgNJ4Zi05HQ4fm5SyOdIQGCAQ
- FeY/WmCrbkoK2XSo9C85EFQNwvWGleMxEIt+9azj+ScTtixOPUAnPw0Ikl1OJdjugXwdE93d3
- rgbekFZwiJXnexQCBzVD0j9RdifQ/9q5x5/x/+xZ2cJaI914SsfdQd0MG+YbqMJ/Lv6CUDxQa
- OZXAg1a9rii4VstZwpok5EmE4wuUnkqomHvRt+MzJwTn8T/xnsVJw4ye3QU97i8V+wfsoufK4
- 31gHMF4giEhLdDIj13TUqUwx5QObWiS6DsSJ57IXgSc5naVkdSrM/ulWoYWu5tnGVAq51dqzX
- 8YRILqH8BVJ4+k101UmmINMJefyZ8r/CozBn9cLznavOqkSfrH2BrP/d09/Sj02+JfI2SP/s3
- D2yPwwPBB7p3qXZfDxCDcTUCGtTFnGrCO7h4wC33Cg4ggzXw6YqMUIH0xeW4XVqfIoHYAh0f4
- pUl94ha3d4wQbBlsGppoML+y2NsrIj2wD8fNagbd/Ev3UtwpqqzBWbTN6AIkt9OR2JDMC1ZX9
- AfeMPzTj4+DVG5gu/hOXTclMgbP32p/NPp0v0gY1vDmbp5YVzji9LqjxJnboE2xxQdqVfZ0ML
- oYA97/F0pNKyRXCqfzwGc+QCA04hZ7hl8AeJJsADl/ZOZBwvWr7YROFQ4WNbboOsPytaldwlk
- VMkLnOaGQgUL+RPxpN4U0ZhFyGZhg6P7Z4HvoNpqQeja93bacphVS3uerXbTN1mhcznqCqxIV
- UrPp9woH8TPIMfrF69jpsh1AxjAAPseBPrFCy/mxwJ5rCkwTsULsWrzAFdZou84Ns8UE2RIMu
- DvEqI9pKhfamaCj2JhAFFRIECa42q56P0kkUdI5PJekviMknirA/VhtnjwyeHV8Zjt9k434JL
- VEPVttZEQtF/KbT/OpTYdrtLgLIODOxiytgLgArqyxCbdzqWJ8dZrgxVftkWDI0eRkSgMNrnr
- HIoBp8smdL+w9Ps2xbVhqNpvfgABydJQLccHQGc/kTGaVgOS+JP4v2qHpQFOjnzbslOAAGTmZ
- HpPbvkjEDh9gns3cV
+X-UI-Out-Filterresults: notjunk:1;V03:K0:FdMoqVmeSAU=:E5ww2FvZzAnXfZW4Udig7K
+ gu19nSyHzLfBHh/RxHwjmtoVlEcPGFlsVQHYmvxMXbw7eptbQTeOKsh7gd50MCBpjsklsVZ+l
+ 6rsTgPyfgzr8wXt7r+ucCHycmQYyPMGhc1rz31nvR4n9CtfHPfMYHevmpFd2L83/+USskswOH
+ JMdNqoM4BgUien/se9tEpqb+zUuBR2lNWjUmEQZpQWoYeUJNjozpg0N6Kx5ZB6+/nCgcbzx2y
+ NUAnNRjmsOPuiWcKvBKg5b3DIH9L6eVTGmfPs971WNiK+t45moXIzp6QVS37SKb5OMADUWW0e
+ u6kufsUK1yBwRESVVxHfodKlLfIYir7hNTpi3SR8RCfS//R83bs/78N+ZtyJIp0wxxKPgruZ+
+ tVJAzVj148w2fCye8o9Y5CTM5Ne5MNQeBukGheppq3cxnM1Aw3NycZjLM1XO1MBUDpqx9qalc
+ eeeg+sdj9GYyvJ8YHq6M5Q7WpX0/oChYpQqTKECNJypcacAmsTgsQyD+GMIpLVfheHifMFpLw
+ 88ALEPrVwBZygaYdFtX7I2pXLQw56bRosCfak4MX106S+BDbsSEwpS9tUzyJUSv4ePmPbnEd8
+ TnHiBb7xZELzuaFNHou+YG9dnpL4Fqpm0Q7kfDKR06XOHM+zxi9u3wZCcBI2Fq3fMcPQ1eycr
+ cyI51/QTTwc2Ar0B3Toe2Lgw4kT4XUYeB7JFm6FqMOuB9zn5935ffJg6Vi6e4gehUdq8zFIs5
+ xHLItoMzapEfgdZ4dagPjiFcYuiI5l1QBU/zTgH7XLIsCyL7Tez6Fl0VoCBwFumLb4wbMN0Ms
+ sVuQpmDARjJ/9FPsoakhys4aWQQqpLrL4qLTyby4gWosRLHaMV+Q3WaQZ1leLUmjg/14zWDSe
+ lAsN6B/OdpF28VoLKowYwrLUn4Ih1mVocCDH7u8HJ8MICteydL4Hy9vf7o1IXV7WLK7a4w7h0
+ FWXW8RxTtzj0h5m3mzrD54fTxpHGOJPoCj0A5ITY3GmYiyk3M11RNO2yNZH1VE7+/6b3VMCju
+ nW5Ys1H0cApeu9p+YzJ4dlbFEqcUF0wfiBJAFboYXdJ2fXVEkHDHrDe8kN0rwAdOtny7Aoq2u
+ o5ap0fafZOQ/ERCdHZThilDWJLTfjmwhWZJ3P6wmIDfjHrPPbs3pBDakctv8mcLQMaK9ps/ZS
+ oirhqJd/RwWVTU6zU4OSV4xpUsdPSFFn4x72VmYtY42rXu9w5bzTTO6cG9SiuwTCDmPQ59lte
+ imw7qyuCYVzNds4QR
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Sorry I didn't describe clearly
->
-> I describe the meaning as follows:
+> The duplicate memory release should be deleted from the implementation
+> of the callback function "rcu_free_wq".
 
-Can it help to adjust the change description in the way
-that a duplicate memory release should be deleted from the implementation
-of the callback function =E2=80=9Crcu_free_wq=E2=80=9D?
+I would find it nicer if you would have extended my simple wording suggest=
+ion.
 
-Which commit should be referenced for the tag =E2=80=9CFixes=E2=80=9D?
+1. Mention conditions:
+   The callback function =E2=80=9Crcu_free_wq=E2=80=9D could be called aft=
+er memory was released
+   for =E2=80=9Crescuer=E2=80=9D already.
+
+2. Specify the desired action:
+   Thus delete a misplaced call of the function =E2=80=9Ckfree=E2=80=9D.
+
+3. Please keep the patch versioning consistent.
+   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/Documentation/process/submitting-patches.rst?id=3D9cb1fd0efd195590b828b9b=
+865421ad345a4a145#n709
 
 Regards,
 Markus

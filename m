@@ -2,131 +2,125 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9DEE1E0733
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 May 2020 08:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01CBC1E0777
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 May 2020 09:05:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388655AbgEYGno (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 25 May 2020 02:43:44 -0400
-Received: from mail-eopbgr760088.outbound.protection.outlook.com ([40.107.76.88]:35342
-        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726393AbgEYGnn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 May 2020 02:43:43 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SUm8d2DrOou9YCdHSY13M9iHYESZavafGzBtm0Nuus7Eajs8cOJHmS0qKu9OEcGBgpp+4X2Q1pCu94M68TDSmQgsZLJEILlfy1bub15o09FYLMdlfkuU1lA9i3gVNE2LnUm4OvwkR1geUIEFd94WeaXtGd4jjmWEfQYpBqY4rBiepd2/pCroEL/hk2xz0Ie/tr1oRZBvV74XBLglmpwUJKAwiWiYUreT/OD8sWj9jM/0mMpr5OLNBO2idMguK7dqLyPzDiC6EzJMM4negcoQYUyTgncV38lu96sfVNMJK+TEIHcVjMEfV1WXMxdgT84V0LmWztX8OfdKcOBf/VmfCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CR1k3IYnonZ7TtHGKmv1Gec6Jm5s95480uejbVYecxw=;
- b=LlLLnzTTOqcFZklMYNLY2MBiJIN+7ECBb5t2LTUaYK0jdCZJkiDaOn1I9QeYNl1/ob0HIumV+p4nXZoKrOyaTfQGUNw2BtM0kNCwjsv3ZUPwrksZ3/uzHrCzJrRR7cyK/AlsyNsVICDdgRya4jblmBd3R0tHJyF97q/nxigTe0OGuvQZ87IeWkvGs2wOEyXioTo2cscvDIme2HPOM3A4k7QsAZHa/AR2/IpfsligxMNYMuPKzmJw/d9VutZP0Z8ZepN/cOl7OtnVgTdw64p1NEgZbEcUFD/BwFgnmtRey+7fnoknLpLIAZh0g83uyCJHA27O5H+glAZ7dYMh7ynL1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=windriversystems.onmicrosoft.com;
- s=selector2-windriversystems-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CR1k3IYnonZ7TtHGKmv1Gec6Jm5s95480uejbVYecxw=;
- b=Y8H8ioarrn/G4FXxkG3lP0/Pe/izMg88C0CT0KMCdgkOgmWNFTHi1qa8nMuqtGq5WeshVOcqpaE0oiSKobUd8vO2zfgKJDA5qqtyxnCdq6/NwGuW0LhSL+T4O39HOx8uGs8/7X0cb5Z5f11q6w4fzcUUHnw+iebM9YEgU+INsKg=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=windriver.com;
-Received: from BN6PR11MB3954.namprd11.prod.outlook.com (2603:10b6:405:79::35)
- by BN6PR11MB1427.namprd11.prod.outlook.com (2603:10b6:405:8::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.23; Mon, 25 May
- 2020 06:43:39 +0000
-Received: from BN6PR11MB3954.namprd11.prod.outlook.com
- ([fe80::c05b:5a81:29d8:6b7f]) by BN6PR11MB3954.namprd11.prod.outlook.com
- ([fe80::c05b:5a81:29d8:6b7f%6]) with mapi id 15.20.3021.029; Mon, 25 May 2020
- 06:43:39 +0000
+        id S2388925AbgEYHE6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 25 May 2020 03:04:58 -0400
+Received: from mout.web.de ([212.227.15.14]:37821 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388385AbgEYHE5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 25 May 2020 03:04:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1590390288;
+        bh=XN/8bP+JztC7FWmfDY5wchPuBCjRd/bzjUXLltJmfFk=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=bl8G0I+cjJijgkq0QF1yjzi867NlsmzsB9O//XGhyeh+kIsl6mL2aSFURAp54bh6Q
+         yXqjCVtuus0/Js3Lv4CmekLFwO1rT+EIPTgwTdy25CxQ8cFNheamx9RxO7g3/UJ1Ys
+         9HW2v+VJTZQOgqlpt2a2G8L7Bitoq8j/e03rh+HY=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.135.186.124]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M73XZ-1ircss3Sth-00wjFY; Mon, 25
+ May 2020 09:04:47 +0200
 Subject: Re: [PATCH] workqueue: Fix double kfree(rescuer) in
  destroy_workqueue()
-To:     Markus Elfring <Markus.Elfring@web.de>,
+To:     Qiang Zhang <qiang.zhang@windriver.com>,
         Lai Jiangshan <jiangshanlai@gmail.com>,
         Tejun Heo <tj@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 References: <96b49f22-50a7-9c8f-7c9d-f178195de717@web.de>
-From:   qzhang2 <qiang.zhang@windriver.com>
-Message-ID: <69170178-f149-b44b-6465-a4c6ab893d52@windriver.com>
-Date:   Mon, 25 May 2020 14:43:31 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-In-Reply-To: <96b49f22-50a7-9c8f-7c9d-f178195de717@web.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: HK0PR03CA0111.apcprd03.prod.outlook.com
- (2603:1096:203:b0::27) To BN6PR11MB3954.namprd11.prod.outlook.com
- (2603:10b6:405:79::35)
+ <69170178-f149-b44b-6465-a4c6ab893d52@windriver.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
+ +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
+ mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
+ lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
+ YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
+ GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
+ rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
+ 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
+ jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
+ BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
+ cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
+ Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
+ g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
+ OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
+ CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
+ LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
+ sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
+ kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
+ i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
+ g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
+ q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
+ NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
+ nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
+ 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
+ 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
+ wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
+ riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
+ DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
+ fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
+ 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
+ xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
+ qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
+ Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
+ Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
+ +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
+ hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
+ /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
+ tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
+ qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
+ Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
+ x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
+ pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
+Message-ID: <cb2735b1-c54a-8746-d776-951081582366@web.de>
+Date:   Mon, 25 May 2020 09:04:46 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [128.224.162.183] (60.247.85.82) by HK0PR03CA0111.apcprd03.prod.outlook.com (2603:1096:203:b0::27) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.23 via Frontend Transport; Mon, 25 May 2020 06:43:37 +0000
-X-Originating-IP: [60.247.85.82]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 3fecc4d8-3cd1-4f3d-2676-08d80076f4fb
-X-MS-TrafficTypeDiagnostic: BN6PR11MB1427:
-X-Microsoft-Antispam-PRVS: <BN6PR11MB1427805026E27528F31324E2FFB30@BN6PR11MB1427.namprd11.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
-X-Forefront-PRVS: 0414DF926F
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: zuGFWhsvB2GJhPGxPgjY7PHj1uRv31OzKjo0Qyx3IgxXtPCpNj5JWbEZTuISvMU1nS1vRr7y37ueyaepUNMfas1MdR03kqW6yu1du5kHIzmJTikiry5krRnvMtlAgWmaFSY9fMa9ci2g7vOX6/+NkA5M00x0/vq7cz90j3O9q+5GAybZJB/fK9lBQ3i8fUMRfCwjFyBPYjIqThDwALph97nwS/z5Fie7vVKDGSMJ6SnBeVToxGzak1HvHFhon2q/1UCQhZx2QD6byK7hfaY72s0TCSS5YUh+1z1qxuYP7OOInsl7o8ltFrgAJcUG6xvK0ybfl4XpgzfONBeA7RjHLcgM3GeRxWIyTsfFLGaC3rFbtqhfBItQe8kvo2hRlgAoQKrSmmbf7SbdSOxy23FsKtBicwld9dRJ29GUuTZSRoEarBl03dZ/IoTTN9/MS5pcWaIPfbMnjDBOrRDFIReRdGhFMuJ1wacYnoLLvXRndDCup5HaygxEMXxCnfkJ2p+NIi+EKYF0QBzqeaJcRwSin66XI6YFdml5ew70JYXjlDg=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR11MB3954.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(376002)(346002)(366004)(39840400004)(136003)(396003)(6706004)(36756003)(66946007)(66556008)(66476007)(6666004)(31686004)(5660300002)(4326008)(6486002)(31696002)(26005)(53546011)(52116002)(316002)(86362001)(16576012)(478600001)(110136005)(966005)(2616005)(2906002)(8936002)(186003)(8676002)(956004)(16526019)(78286006)(43062003)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: 9ZHTYEqb9CZeBuF1Ht6OD0rDzpZRtJv74tigoBcnHrIeW60Q5M5DEfITHQgzyQ0GtblhQkQuZ8x5hvZqMR/uieIJlG7I1nxQyWdkqA1qJm2c7wW6r8duEXDkPI5mhX7I+Pi5D3/LsqB1f37QvTznsLz9UdGt6g9jgWhlGROKfcXlIBf9rXbHLbP/cVgayNafSSI4QvLhE4KYbfBo+BmV3dK/sneNMfv5QMJb3uA9oNQxzw7NcR1HffycYzR49Yj/RjsWVpfKJZ+r87Yg36HP4ZCronrfXkMjZ5r2czK04Jm2rnHQL5WGhe7mYC0wFt8cKX1PXFj3dAxaI1BXpjvRvMYOjkop1NM9t3otMvHlfWFPN4cl35JKc+bZyl/U+RdZfMjdXdy26yOxss3cupCJ/KJcx6SEq/R4jA8/DIRU9JuIz/Sad/htXbKNaCnnCk1d30yaAECbmLN1sMXMOIl88U0+YfeNcyT/rAkVungtsWM=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3fecc4d8-3cd1-4f3d-2676-08d80076f4fb
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2020 06:43:39.2454
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xawy3WJ342o46T2kpC0Fe3oYVWRHOEsEr+Ep3Jb3hT7+lu53TZrTeXLyPPh6IocbUbFX9zI5YjTprOaS/831T8bGUMXD4Gbf2NKAIEw50S0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR11MB1427
+In-Reply-To: <69170178-f149-b44b-6465-a4c6ab893d52@windriver.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:XM/UPWxEwJSqrzdZtuHujA6YaO0VRSqTgZ3nfEuw0R4TW++3p2d
+ +ImW6Zdy9uA3Y17eW8EiS1mIzw5N5HF/jh/MEJ2jz6fVqU4+YQczNtUIpzv18CBDushFfkw
+ zTEx2wCShGiCNCZd1VqK1n064T2rmhoJn/FN6gx9OA2ccd4RTdl8GLG+gJ4FVmnVHVw6tPR
+ A2FOHvXnRDasILvbyDM4Q==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:I9Qr39uPVw0=:/kPg2f8RGNhs8C/ALm6Qyg
+ 7VIHMla623sOnEq6dZr3uxnKmE+1cI9TyZGSrlAKdVDq377k6ku0A+H/zpD31VcsV0HF2Jgsd
+ 9Hi6Gl0X2oRoYXYyAFtOmCgtwlBsydzvuBBmQkTdSfq4Y7eM4N8O9lZvqRyNxPLiLj3dQtoKG
+ guDhio9pPoNr3DjRxa77EOOh268MZ7+qlZDHNBHtaTIrXJkyLgNJ4Zi05HQ4fm5SyOdIQGCAQ
+ FeY/WmCrbkoK2XSo9C85EFQNwvWGleMxEIt+9azj+ScTtixOPUAnPw0Ikl1OJdjugXwdE93d3
+ rgbekFZwiJXnexQCBzVD0j9RdifQ/9q5x5/x/+xZ2cJaI914SsfdQd0MG+YbqMJ/Lv6CUDxQa
+ OZXAg1a9rii4VstZwpok5EmE4wuUnkqomHvRt+MzJwTn8T/xnsVJw4ye3QU97i8V+wfsoufK4
+ 31gHMF4giEhLdDIj13TUqUwx5QObWiS6DsSJ57IXgSc5naVkdSrM/ulWoYWu5tnGVAq51dqzX
+ 8YRILqH8BVJ4+k101UmmINMJefyZ8r/CozBn9cLznavOqkSfrH2BrP/d09/Sj02+JfI2SP/s3
+ D2yPwwPBB7p3qXZfDxCDcTUCGtTFnGrCO7h4wC33Cg4ggzXw6YqMUIH0xeW4XVqfIoHYAh0f4
+ pUl94ha3d4wQbBlsGppoML+y2NsrIj2wD8fNagbd/Ev3UtwpqqzBWbTN6AIkt9OR2JDMC1ZX9
+ AfeMPzTj4+DVG5gu/hOXTclMgbP32p/NPp0v0gY1vDmbp5YVzji9LqjxJnboE2xxQdqVfZ0ML
+ oYA97/F0pNKyRXCqfzwGc+QCA04hZ7hl8AeJJsADl/ZOZBwvWr7YROFQ4WNbboOsPytaldwlk
+ VMkLnOaGQgUL+RPxpN4U0ZhFyGZhg6P7Z4HvoNpqQeja93bacphVS3uerXbTN1mhcznqCqxIV
+ UrPp9woH8TPIMfrF69jpsh1AxjAAPseBPrFCy/mxwJ5rCkwTsULsWrzAFdZou84Ns8UE2RIMu
+ DvEqI9pKhfamaCj2JhAFFRIECa42q56P0kkUdI5PJekviMknirA/VhtnjwyeHV8Zjt9k434JL
+ VEPVttZEQtF/KbT/OpTYdrtLgLIODOxiytgLgArqyxCbdzqWJ8dZrgxVftkWDI0eRkSgMNrnr
+ HIoBp8smdL+w9Ps2xbVhqNpvfgABydJQLccHQGc/kTGaVgOS+JP4v2qHpQFOjnzbslOAAGTmZ
+ HpPbvkjEDh9gns3cV
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Sorry I didn't describe clearly
+> Sorry I didn't describe clearly
+>
+> I describe the meaning as follows:
 
-I describe the meaning as follows:
+Can it help to adjust the change description in the way
+that a duplicate memory release should be deleted from the implementation
+of the callback function =E2=80=9Crcu_free_wq=E2=80=9D?
 
-  destroy_workqueue:
-	if(wq->rescuer)
-		struct worker *rescuer = wq->rescuer
-		kfree(rescuer)  //first kfree
-		
+Which commit should be referenced for the tag =E2=80=9CFixes=E2=80=9D?
 
-         if (!(wq->flags & WQ_UNBOUND))
-		call_rcu(&wq->rcu, rcu_free_wq)
-			
-		rcu_free_wq
-			kfree(wq->rescuer) //second kfree
-
-there are double free.
-
-On 5/24/20 11:33 PM, Markus Elfring wrote:
->> When destroy_workqueue if rescuer worker exist,wq->rescuer pointer be
->> kfree. if sanity checks passed. the func call_rcu(&wq->rcu, rcu_free_wq)
->> will be called if the wq->flags & WQ_UNBOUND is false,in rcu_free_wq
->> func wq->rescuer pointer was kfree again.
-> 
-> 1. I suggest to improve also this change description.
->     Do you try to explain here that a call of the function “free_workqueue_attrs”
->     (or “free_percpu”) would perform sufficient clean-up of system resources
->     in this use case?
-> 
-> 2. You proposed to delete the function call “kfree(wq->rescuer)” from
->     the implementation of the function “rcu_free_wq”.
->     https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/kernel/workqueue.c?id=c11d28ab4a691736e30b49813fb801847bd44e83#n3482
->     https://elixir.bootlin.com/linux/v5.7-rc6/source/kernel/workqueue.c#L3482
-> 
->     This function name should be specified also in the patch subject,
->     shouldn't it?
-> 
-> 3. Would you like to add the tag “Fixes” to the commit message?
-> 
-> Regards,
-> Markus
-> 
+Regards,
+Markus

@@ -2,52 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA98A1E2490
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 May 2020 16:53:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 379C91E29A8
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 May 2020 20:08:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729303AbgEZOxo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 May 2020 10:53:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50334 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726916AbgEZOxo (ORCPT
+        id S1728685AbgEZSHP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 May 2020 14:07:15 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:54013 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727016AbgEZSHP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 May 2020 10:53:44 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53F13C03E96D;
-        Tue, 26 May 2020 07:53:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=4CjAmi30LAVB8ETLdMsuowaxBjBIdLdRt5GpwP/DM6w=; b=fu+G1VUNChJfi1lQIbdOx0911I
-        Cy/RGHaEEwn+z7tK6qvQ2+JOjretTS8U2TsxU653Iovr8Qbe3BX8QLr3cOSZRIYFxmXqtqFW52P7E
-        SEO96XrFf0srLLk07JjbKkxe0EjTovpGgXkkLy8lDUHFqEaKixYq2ih7CwIOlx+hYEssvz7nQZerg
-        9TTPp/3uR79vLVQxpC5tn81D4VsVLiPvj173NMGqb8zfqOTB5nH52Z3Pdv2ycyfDpH1Cw0zKdV0ai
-        fNgXQHNea+UYoSf5jGC37y1HubpK7D791wyL/dM26HMk/MqVRuJYfqV81nPCqkhVJdqD5fPEbQlSZ
-        HKl5OsCA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jdaxa-0001E7-RR; Tue, 26 May 2020 14:53:42 +0000
-Date:   Tue, 26 May 2020 07:53:42 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     James Smart <jsmart2021@gmail.com>
-Cc:     linux-nvme@lists.infradead.org, axboe@kernel.dk,
-        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        jejb@linux.ibm.com, kernel-janitors@vger.kernel.org,
-        hch@infradead.org, paul.ely@broadcom.com, hare@suse.de,
-        dan.carpenter@oracle.com
-Subject: Re: [PATCH 0/3] lpfc: Fix errors in LS receive refactoring
-Message-ID: <20200526145342.GA4348@infradead.org>
-References: <20200520185929.48779-1-jsmart2021@gmail.com>
+        Tue, 26 May 2020 14:07:15 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jddyl-0007H4-4U; Tue, 26 May 2020 18:07:07 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Pablo Neira Ayuso <pablo@netfilter.org>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] netfilter: conntrack: fix an unsigned int comparison to less than zero
+Date:   Tue, 26 May 2020 19:07:06 +0100
+Message-Id: <20200526180706.199338-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200520185929.48779-1-jsmart2021@gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Thanks,
+From: Colin Ian King <colin.king@canonical.com>
 
-applied to nvme-5.8.
+The error check to see if protoff is less than zero is always false
+because it is a unsigned int.  The call to ipv6_skip_exthdr can return
+negative values for an error so cast protoff to int to fix this check.
+
+Addresses-Coverity: ("Macro compares unsigned to 0 (no effect)")
+Fixes: ee04805ff54a ("netfilter: conntrack: make conntrack userspace helpers work again")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ net/netfilter/nf_conntrack_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
+index 08e0c19f6b39..2933b96a90c6 100644
+--- a/net/netfilter/nf_conntrack_core.c
++++ b/net/netfilter/nf_conntrack_core.c
+@@ -2114,7 +2114,7 @@ static int nf_confirm_cthelper(struct sk_buff *skb, struct nf_conn *ct,
+ 		pnum = ipv6_hdr(skb)->nexthdr;
+ 		protoff = ipv6_skip_exthdr(skb, sizeof(struct ipv6hdr), &pnum,
+ 					   &frag_off);
+-		if (protoff < 0 || (frag_off & htons(~0x7)) != 0)
++		if ((int)protoff < 0 || (frag_off & htons(~0x7)) != 0)
+ 			return 0;
+ 		break;
+ 	}
+-- 
+2.25.1
+

@@ -2,33 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5BA61E1E0E
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 May 2020 11:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 752401E1FC8
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 May 2020 12:34:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731707AbgEZJLu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 May 2020 05:11:50 -0400
-Received: from mout.web.de ([212.227.17.12]:40165 "EHLO mout.web.de"
+        id S1731913AbgEZKer (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 May 2020 06:34:47 -0400
+Received: from mout.web.de ([212.227.17.12]:56249 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728682AbgEZJLu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 May 2020 05:11:50 -0400
+        id S1728515AbgEZKeq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 26 May 2020 06:34:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590484301;
-        bh=/E6hvivA05+qc1qjF8glQbdVCkS3pOI33LGy9LvZcBw=;
+        s=dbaedf251592; t=1590489277;
+        bh=7u9oSDrBiM+Eeht4sUhZouVaeeN5mZTWOWmSmZsMWXU=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=OjBHhlsSjrq5qBmqWjzzLzEasa/486Rmy23w7FUyqw3/HinHOB/kd0kEivIamh1c0
-         uhXVwEpqdtGjH+4AH8vJo/nTU3B28U1fEmVN5C1Hn+Hell1ONY+eVd0MpctuFaSYIp
-         Zc/RsNTbqg0DRP8YBq7qXbCLnepEhLodfCUgRd0Q=
+        b=bN9vlqT5JLfPXBl3TM2SKwKw2dsXmq7UgacpL0KF0MfIWxf7FvSFG/9tcq837es5O
+         GtAKf9TlOHlBkvMvde1Yd3uS8T4Z2WVQRKw0hjJCgnNa/3qONoWAAPMjhzvnFoqIqN
+         8/gu9VTgEQDQUBaHML6/e/duDzjEm6nBXlAtANnQ=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.141.233]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MXGOC-1jWITr2vuQ-00YsXm; Tue, 26
- May 2020 11:11:41 +0200
+Received: from [192.168.1.2] ([93.131.141.233]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MSJGB-1jTGS60RKd-00TS48; Tue, 26
+ May 2020 12:34:37 +0200
 Subject: Re: [v3] workqueue: Fix double kfree for rescuer
-To:     Lai Jiangshan <jiangshanlai@gmail.com>,
-        Zhang Qiang <qiang.zhang@windriver.com>
-Cc:     Tejun Heo <tj@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+To:     Zhang Qiang <qiang.zhang@windriver.com>
+Cc:     Lai Jiangshan <jiangshanlai@gmail.com>, Tejun Heo <tj@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
 References: <20200525093019.2253-1-qiang.zhang@windriver.com>
  <CAJhGHyC4XcNL8yzWZKZ=73wZJej4JwCaAHGV8qjYn-AqcEAEjQ@mail.gmail.com>
+ <9e7c20bd-8161-0790-36de-108c6dae65df@windriver.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -73,52 +74,54 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <5e1582ac-2f89-80cb-283d-57ba5003890f@web.de>
-Date:   Tue, 26 May 2020 11:11:40 +0200
+Message-ID: <093e5131-fdee-54fd-e2e1-a632435005b7@web.de>
+Date:   Tue, 26 May 2020 12:34:36 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <CAJhGHyC4XcNL8yzWZKZ=73wZJej4JwCaAHGV8qjYn-AqcEAEjQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <9e7c20bd-8161-0790-36de-108c6dae65df@windriver.com>
+Content-Type: text/plain; charset=gbk
 Content-Language: en-GB
-X-Provags-ID: V03:K1:MN4RE7QSo/P9fckSg8VfDd5UiNXTdNAVQXC+XN4bydpj2dNbUru
- fZNtcT693mWEOu2anGh6MXMqD+FZ7G0mvCj5hqCpcDJxMAujczTyEarhbNC0aTCfbeHdHny
- h3QO0tEDQp7+F1oxLinCJFJrUZHZkh7+oSSvX8zzroOFazmQjIfCqXNhi9BgKPkeLElLqEG
- 3iKQNnA5Q9+campRUIfhw==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:KNCgUYi5nbcYDioWOboF1X/nYU4WzAyzj0bjapBrUvXjfgzBYVG
+ AoYQWi76yXd1ftYwtxI0kgBdYNruCxT4fX68vcQsWWDuJ6qvKKw171bS+kJWaqwTYf3sOie
+ FI6r/VnViDMwxUzzOoryPHkUvtbboMQOVBs2rcRJtxsko8wT6kkhyjtzC3K78BIeIk8n/FO
+ V0xL0/cdF//ktdNelNm4g==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:xo+kCO12k20=:Sb7BFVxSbdVrGRCCBICOxf
- O2OUWMCNjfZpPG9yNgxsIvVHYvaurLFbd/MZ6BmBXfX5pxeBxRJxuZbgNcBqnUoIUx4xoV2On
- eE8nXxIc41CvKY1Ui3cwJPbvJ/QNmXaLTS7VzDR/7UtV/DVEjFcoECye1+yZzXmidhScbcR1R
- 720u3MkNR6a9kSiPQSzQPbZT789rHHdcbEGaGEskgfvgFTquu7QCBY932ISrUxRL1ihR+BwSx
- A++nQb7nsWJg4Gx7VGtqY9W5DS2tAnFAstge9s9ke5EFynj9pbs4Pbl0BjYkLe/5B7W1CJHim
- tW0KrA/6tbVJXoSNKpAhiiFHPQOMQeo4EktohQQPz+OVPTlOQ7P8cInCH2tc/JlwVYnX0xOGm
- lUEKSbzMDLBTk94WOgu+zdv9fzE7/2yu2bF6TpHKLKmzQhmTxPVWg9HEswYd73Z2Q8tm/dJbf
- algoWDA0RH+8H9U06Z7DNQon06d+oR9q+OrthEW6wC7lceUCmFJ827Wj3VXO4NAxiEqCQhKg1
- XFyacA9pBEZPfGlzeXhbwulsdb0dbxXNKKoo+5wSVex1MqIHiUYBHx43l/8pQMO1BOdVXCKKZ
- ebTw3GWOASUYCxXLqci4sqU8YtCvdmH651cS5OY3b2TCrj5OBjtnxh1ABaYPytt/8U7BXSKYh
- uR2npvSnBgnXV8JF8VOFqUrOL8Bt3AmjtwNeMNHm257k8q1/a2wq0zxiQuwA48fBv5E+IiEwo
- BubExafiM7ripUqRJJXz/6SmZBRIQxErr+uullBl1yeIZDQQoQQcPamAAENjzD23N47m/AK/4
- k/GBysCqnIRFjO/ykyLvU9PaS74wcwIU0+ZrFXJhqFN9M2ixO2fIxB42D2+eJUbtyDSV9joWP
- uVy2ysFvYgB1xvREzc7DSq30zIbR1sNFoO1e8cI/FGucjJqRqNc11TsnjGhVxnstZDUUnvrMY
- +lI1nyxs1MJeglSdregplOh0heqOBHzuKUjvBMd52ZlOnEdUjnUeMR4GkDfBj5kRKJcLrLLiw
- OLh7m8yO+4rxdzcT94gcHX8qa/WHRw8URbL5O2izvcIP6HOzSCBgSSlYWXvT4KnsqtrcqKKLE
- gS8LlibQ6Ar9GbfgrnSjAryn40ryMiCD8AdIb5UTSvfz4/7WLU7OhwCNoMmywmbnG5GBNNwFo
- AQxw3Sgoe4vjCK917HWgt1ffxoWqvP94K4i4N6Ik4QosPgJQcrRLvXIcYK/qfg1YhtVs2rKYC
- AK2WBu2OpivWRer/Z
+X-UI-Out-Filterresults: notjunk:1;V03:K0:oF6noQlMybA=:fLm0TS0eCvdhZ96RfB6cnW
+ QaCqz+8qGnazsNi9DQQ+utv7CdxnFp/PHK8wyUDDQYkLBzVNbJvUCwQ07CaOXzeIcxKjsQKBY
+ o8hIEvAQcYC+S2GjLlraDcwveN8FzMedEseA3V2eTRS0ldFWBUeX8s7Bd0S72LK7hjusPSv3M
+ Fw+yh4TUCIbSv+gOTTLny79aWPZCqQLOH+sixieBuf+kC2tBJrgvYFljXzQLqDs2BH/02O4Ed
+ y+fXwpXHchGI6tE85mPOC6RffNUxEyCYrUorY2nvV897kY/MVW89GjOppZgQhovxu8rNj5sGr
+ huUFC+e/P4dXMEQ7XYvW/HjkYaSvExcH2rqs1swsudXGYIVmJpbrHYD9iqFswLSXQbAbAMwXi
+ W1sjEgDAOu45HEu/V7v7foh/fmurL2IaTVoJoknHBxKz1TvcRYNBglGSPvzfrP5OD2uyfjiNw
+ 638KwxA9GCrEpWFwVgoFJ1z3XltxAdAdBhM7fEI0CxdSD3keBKCSLNiJdD06nB346YXqFanYJ
+ KpBD8Qv4TBk677iggD/vjul0gpvu2+8LyqFOWDZmFp0RLPkPEiHFlyy3x5WyqUZEBGaiXeWDS
+ CYiylb4wrN/Z6pLw2O342Os5khzcUtyqUpfRJBX4Ig9Psa46WHyswELGWVkd/Jf7zY8zu3JPm
+ +BCuqUj3w9LF75Lct+LJN0elfpEkOUCRMke+207NrSiKEj8lau0fbJdMFRLXuiElmweOICyXO
+ nRNrgT+OzA3HBmZvNnU4ZvKPAi6EPPWNXibNjewKDwydFcneZkNBSgnwARZb9/2jIAcU9VvIN
+ 8A+kTg5hgqtbPwn6ZB2jAV7DYI0sAcLBB6SgHi9+vNT0e8RqJ9Kve1SW9AIuZzdQoXELv6BwF
+ kBp2nvLYP9wf/nqJ9u0eeVtt4OvoItasy3qVBqSUTATOuqa0CSn/1yRqQcg9X1I6gq4km24sN
+ 9jTg4RuTgg3MsLCQIMOs8+qs2gFSBuyBX0s6hMiuXmZ6QvP1tRNpDI59m+lz7R3zIv0H69Rcg
+ 7YM57bXpSK1xXyc6YapSMXSv5h9+aigdkQnF6hQ3Pyy788omAX/MGXQsZIS4/PI6Nj2D5kua8
+ RdfoXUsZloqN9ytExvrN2jDLHaa1Wq6IX8za+EDpEcboNcy7z1+9dpBt8SjS5tZh6ATFeAevt
+ IHM7WxkZB0ddzQORfut/dnAso5B5dONMcsjflt8HTf5DtPtAxVNAjtfOflJfG9kenco/m2WQ/
+ Lf85TWEhofO6VqTRD
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> wq->rescuer is guaranteed to be NULL in rcu_free_wq()
+> There is something wrong with my description.  is it feasible to describ=
+e as follows:
+>
+> The resucer is already free in "destroy_workqueue" and
+>     "wq->rescuer =3D NULL" was executed, but in "rcu_free_wq"
+>     it's release again (equivalent to kfree(NULL)), this is
+>     unnecessary, so should remove.
 
-I was unsure about this data processing detail.
-
-
-> The patch is a cleanup to remove a "kfree(NULL);".
-
-I would prefer also an improved commit message according to
-the understanding of the software situation in this direction.
+I find that this suggestion indicates further wording challenges.
+Please try another variant.
 
 Regards,
 Markus

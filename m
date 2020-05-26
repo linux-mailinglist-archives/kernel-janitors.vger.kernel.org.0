@@ -2,68 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6557C1E3345
-	for <lists+kernel-janitors@lfdr.de>; Wed, 27 May 2020 00:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F7D91E339B
+	for <lists+kernel-janitors@lfdr.de>; Wed, 27 May 2020 01:21:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404489AbgEZW4y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 May 2020 18:56:54 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:34720 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404359AbgEZW4y (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 May 2020 18:56:54 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jdiV7-0003WM-HL; Tue, 26 May 2020 22:56:49 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jiri Pirko <jiri@mellanox.com>, Ido Schimmel <idosch@mellanox.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mlxsw: spectrum_router: remove redundant initialization of pointer br_dev
-Date:   Tue, 26 May 2020 23:56:49 +0100
-Message-Id: <20200526225649.64257-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        id S2389976AbgEZXUw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 May 2020 19:20:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35854 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389325AbgEZXUw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 26 May 2020 19:20:52 -0400
+Received: from gmail.com (unknown [104.132.1.76])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D5C98206D5;
+        Tue, 26 May 2020 23:20:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590535252;
+        bh=xrVFvxDC4L9h+KyIUKm+5dHHGSOZQYUfP3L/3TPpd1Q=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=LbUMb4xAkoLmZe+SD3jrSQBj5OmRJBV5CY7g/c9d9olwSx6BZHa5u4wyGKnrlz3JX
+         cLhvwqob5PkRLckyvW8EekHX8Q54ROEokJPJNHIR4K8stAvrGybd8/iScxqsfg8baJ
+         FbhshxKSckmkdne0feZ93cwom/fFkbJtiE518qI8=
+Date:   Tue, 26 May 2020 16:20:50 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Satya Tangirala <satyat@google.com>
+Subject: Re: [PATCH][next] block: blk-crypto-fallback: remove redundant
+ initialization of variable err
+Message-ID: <20200526232050.GB182086@gmail.com>
+References: <20200526224902.63975-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200526224902.63975-1-colin.king@canonical.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Tue, May 26, 2020 at 11:49:02PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable err is being initialized with a value that is never read
+> and it is being updated later with a new value.  The initialization is
+> redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  block/blk-crypto-fallback.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/block/blk-crypto-fallback.c b/block/blk-crypto-fallback.c
+> index 74ab137ae3ba..6e49688a2d80 100644
+> --- a/block/blk-crypto-fallback.c
+> +++ b/block/blk-crypto-fallback.c
+> @@ -529,7 +529,7 @@ static bool blk_crypto_fallback_inited;
+>  static int blk_crypto_fallback_init(void)
+>  {
+>  	int i;
+> -	int err = -ENOMEM;
+> +	int err;
+>  
+>  	if (blk_crypto_fallback_inited)
+>  		return 0;
 
-The pointer br_dev is being initialized with a value that is never read
-and is being updated with a new value later on. The initialization
-is redundant and can be removed.
+Looks good, you can add:
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+	Reviewed-by: Eric Biggers <ebiggers@google.com>
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-index 71aee4914619..8f485f9a07a7 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-@@ -7572,11 +7572,12 @@ static struct mlxsw_sp_fid *
- mlxsw_sp_rif_vlan_fid_get(struct mlxsw_sp_rif *rif,
- 			  struct netlink_ext_ack *extack)
- {
--	struct net_device *br_dev = rif->dev;
-+	struct net_device *br_dev;
- 	u16 vid;
- 	int err;
- 
- 	if (is_vlan_dev(rif->dev)) {
-+
- 		vid = vlan_dev_vlan_id(rif->dev);
- 		br_dev = vlan_dev_real_dev(rif->dev);
- 		if (WARN_ON(!netif_is_bridge_master(br_dev)))
--- 
-2.25.1
-
+- Eric

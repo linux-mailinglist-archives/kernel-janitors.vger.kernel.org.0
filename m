@@ -2,98 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D5611E21D7
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 May 2020 14:29:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA98A1E2490
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 May 2020 16:53:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731580AbgEZM3J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 May 2020 08:29:09 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:51258 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731488AbgEZM3J (ORCPT
+        id S1729303AbgEZOxo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 May 2020 10:53:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50334 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726916AbgEZOxo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 May 2020 08:29:09 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04QCLYV7077972;
-        Tue, 26 May 2020 12:29:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=JueZGH4jRyV/FbA7prhvrV2KXyPZ+erywDSfRyAqt/s=;
- b=srv5/tS5UrVkWeig9LYApeK/xwASJntbgqp5M/Af8Ze1vVV15/efKf+BE3NRUKenT8a6
- oupjHM7lMXtKkZYmoP1PjoLJSKMhMtyeZXLDvZ0hU7EM8yp4evvqdXkjkO2dVY/0/rrB
- 7zRpUVS0lLjxG0Vm8eTlWRwsL69W6if+NJXg6AXv6pHC6kNX2JOdDso3x6nxpF7GWaZL
- bE2TdsOOFq28wJHnunEG8R+4/MUWXY0s6sBgOKf7GLAAR+HP1syap9rQWb3qLHucAB5S
- FCh1HPyXLevCPQG8M+if31dKpt+Q/oOfC7danR8s2tTULos9JMG/BgBGHSB5h6+DnYVn WQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 316u8qscb7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 26 May 2020 12:29:03 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04QCIwcG181230;
-        Tue, 26 May 2020 12:27:02 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 317ddnsngu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 26 May 2020 12:27:02 +0000
-Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04QCR14d007013;
-        Tue, 26 May 2020 12:27:01 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 26 May 2020 05:27:00 -0700
-Date:   Tue, 26 May 2020 15:26:45 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Mike Christie <mchristi@redhat.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] scsi: target: tcmu: Fix a use after free in
- tcmu_check_expired_queue_cmd()
-Message-ID: <20200526122645.GG22511@kadam>
-References: <20200523101129.GB98132@mwanda>
- <68d6b1e9-65fa-e91c-e55e-f520839b5efe@ts.fujitsu.com>
+        Tue, 26 May 2020 10:53:44 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53F13C03E96D;
+        Tue, 26 May 2020 07:53:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=4CjAmi30LAVB8ETLdMsuowaxBjBIdLdRt5GpwP/DM6w=; b=fu+G1VUNChJfi1lQIbdOx0911I
+        Cy/RGHaEEwn+z7tK6qvQ2+JOjretTS8U2TsxU653Iovr8Qbe3BX8QLr3cOSZRIYFxmXqtqFW52P7E
+        SEO96XrFf0srLLk07JjbKkxe0EjTovpGgXkkLy8lDUHFqEaKixYq2ih7CwIOlx+hYEssvz7nQZerg
+        9TTPp/3uR79vLVQxpC5tn81D4VsVLiPvj173NMGqb8zfqOTB5nH52Z3Pdv2ycyfDpH1Cw0zKdV0ai
+        fNgXQHNea+UYoSf5jGC37y1HubpK7D791wyL/dM26HMk/MqVRuJYfqV81nPCqkhVJdqD5fPEbQlSZ
+        HKl5OsCA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jdaxa-0001E7-RR; Tue, 26 May 2020 14:53:42 +0000
+Date:   Tue, 26 May 2020 07:53:42 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     James Smart <jsmart2021@gmail.com>
+Cc:     linux-nvme@lists.infradead.org, axboe@kernel.dk,
+        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        jejb@linux.ibm.com, kernel-janitors@vger.kernel.org,
+        hch@infradead.org, paul.ely@broadcom.com, hare@suse.de,
+        dan.carpenter@oracle.com
+Subject: Re: [PATCH 0/3] lpfc: Fix errors in LS receive refactoring
+Message-ID: <20200526145342.GA4348@infradead.org>
+References: <20200520185929.48779-1-jsmart2021@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <68d6b1e9-65fa-e91c-e55e-f520839b5efe@ts.fujitsu.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9632 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0 mlxscore=0
- phishscore=0 adultscore=0 suspectscore=2 spamscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005260094
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9632 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0
- priorityscore=1501 spamscore=0 cotscore=-2147483648 suspectscore=2
- phishscore=0 clxscore=1015 mlxlogscore=999 bulkscore=0 adultscore=0
- lowpriorityscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005260094
+In-Reply-To: <20200520185929.48779-1-jsmart2021@gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, May 25, 2020 at 11:11:38AM +0200, Bodo Stroesser wrote:
-> On 05/23/20 12:11, Dan Carpenter wrote:
-> > The pr_debug() dereferences "cmd" after we already freed it by calling
-> > tcmu_free_cmd(cmd).  The debug printk needs to be done earlier.
-> > 
-> > Fixes: 61fb24822166 ("scsi: target: tcmu: Userspace must not complete queued commands")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> >   drivers/target/target_core_user.c | 6 +++---
-> >   1 file changed, 3 insertions(+), 3 deletions(-)
-> > 
-> 
-> Thank you.
-> 
-> I'm very sorry for this stupid bug.
+Thanks,
 
-Bugs like this are super common.  Part of being human.  It would have
-been hard to discover via testing because you have disable memory
-poisoning on free and debugging at the same time.
-
-regards,
-dan carpenter
-
+applied to nvme-5.8.

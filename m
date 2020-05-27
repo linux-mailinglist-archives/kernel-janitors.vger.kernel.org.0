@@ -2,78 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF8C51E3CF3
-	for <lists+kernel-janitors@lfdr.de>; Wed, 27 May 2020 11:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 684601E400F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 27 May 2020 13:29:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388404AbgE0JAR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 27 May 2020 05:00:17 -0400
-Received: from out3-smtp.messagingengine.com ([66.111.4.27]:60345 "EHLO
-        out3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388251AbgE0JAQ (ORCPT
+        id S1727927AbgE0L3c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 27 May 2020 07:29:32 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:57255 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725766AbgE0L3b (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 27 May 2020 05:00:16 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 7B9615C01A7;
-        Wed, 27 May 2020 05:00:15 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Wed, 27 May 2020 05:00:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=3ZRtiX
-        lcFQeWgLraPyBZ52n+2xUg/Eap8AOdNZJnsiM=; b=kpVwA1ooWMY1GERAeJ1I4i
-        NKmF3C7XjF1Qfzufdga2X0bvgpskSXp+zOx6hQK6BYL71jzG5WO7EOFXWoetrv9I
-        pNuCuVz/l4Swic9Vj8ZWKJQn1Uu02uaSjISgVkLPb+iyFZ/MWXGc5da5eS2L7rJ8
-        1E8gKfgUsRkkCkEyFlOlXZIjFg086i2DuqcEYZUWcmsOpF4JIqly3ThvgrjbSRaM
-        PC/2uFSsqKNoBllLv5L/hH2/GGrEMh6vX/84Bs93wEsmnQStUEftJvRjegy0LLGp
-        TTX9PFKWupf8atAyLobnHEWkNhSfy7Pc3tmXfg3hL2/Ko1Hdn76mxe7kuGxQ37DQ
-        ==
-X-ME-Sender: <xms:HyzOXhxHULXxQXP6jVh68lamNyyVSAOXBOJC-l_JAj3KY0zU6zLrsg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedruddvgedgtdekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefkughoucfu
-    tghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrdhorhhgqeenucggtffrrghtth
-    gvrhhnpedtffekkeefudffveegueejffejhfetgfeuuefgvedtieehudeuueekhfduheel
-    teenucfkphepuddtledrieehrddufeelrddukedtnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomhepihguohhstghhsehiughoshgthhdrohhrgh
-X-ME-Proxy: <xmx:HyzOXhSL13DQuGBmZ3vRvkBnO3sH_4HilU2Dx85_iRmrt1OWZSBe2w>
-    <xmx:HyzOXrWHijhxf3VgC_WQMoG8QES7eW0NpFTl7JQJRKceG7qXSRYYTw>
-    <xmx:HyzOXjjSp97FHIN8OtlOnU5ew1Q2cow-3wCvQhzN7TDiov5QK2-UsA>
-    <xmx:HyzOXqNqBn1FTq_h8yiTPYIPPe-eB58tIGdKuqnqTy-8f1gBj4E2WQ>
-Received: from localhost (bzq-109-65-139-180.red.bezeqint.net [109.65.139.180])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 8F65C3060F09;
-        Wed, 27 May 2020 05:00:14 -0400 (EDT)
-Date:   Wed, 27 May 2020 12:00:11 +0300
-From:   Ido Schimmel <idosch@idosch.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Jiri Pirko <jiri@mellanox.com>, Ido Schimmel <idosch@mellanox.com>,
+        Wed, 27 May 2020 07:29:31 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jduFO-0000sM-Co; Wed, 27 May 2020 11:29:22 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Ayush Sawal <ayush.sawal@chelsio.com>,
+        Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
+        Rohit Maheshwari <rohitm@chelsio.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][V2][net-next] mlxsw: spectrum_router: remove redundant
- initialization of pointer br_dev
-Message-ID: <20200527090011.GA1519147@splinter>
-References: <20200527081555.124615-1-colin.king@canonical.com>
+        linux-crypto@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] crypto: chelsio: remove redundant premature assignment to iv
+Date:   Wed, 27 May 2020 12:29:22 +0100
+Message-Id: <20200527112922.171745-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200527081555.124615-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, May 27, 2020 at 09:15:55AM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The pointer br_dev is being initialized with a value that is never read
-> and is being updated with a new value later on. The initialization
-> is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Reviewed-by: Ido Schimmel <idosch@mellanox.com>
+Variable iv is being assigned twice with the same value, the first
+assignment is redundant and can be removed and instead keep the
+latter assignment of iv as it is closer to the point it is being
+used.
 
-Thanks
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/crypto/chelsio/chcr_ipsec.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/crypto/chelsio/chcr_ipsec.c b/drivers/crypto/chelsio/chcr_ipsec.c
+index af961dcd317b..f9ad8c93e5ff 100644
+--- a/drivers/crypto/chelsio/chcr_ipsec.c
++++ b/drivers/crypto/chelsio/chcr_ipsec.c
+@@ -398,7 +398,6 @@ inline void *copy_esn_pktxt(struct sk_buff *skb,
+ 	memset(pos, 0, len);
+ 	aadiv = (struct chcr_ipsec_aadiv *)pos;
+ 	esphdr = (struct ip_esp_hdr *)skb_transport_header(skb);
+-	iv = skb_transport_header(skb) + sizeof(struct ip_esp_hdr);
+ 	xo = xfrm_offload(skb);
+ 
+ 	aadiv->spi = (esphdr->spi);
+-- 
+2.25.1
+

@@ -2,99 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 769F21E348B
-	for <lists+kernel-janitors@lfdr.de>; Wed, 27 May 2020 03:16:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFC801E354B
+	for <lists+kernel-janitors@lfdr.de>; Wed, 27 May 2020 04:14:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728239AbgE0BPk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 May 2020 21:15:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34726 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727937AbgE0BPj (ORCPT
+        id S1726222AbgE0CNT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 May 2020 22:13:19 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:41376 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725271AbgE0CNS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 May 2020 21:15:39 -0400
-Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD60DC061A0F;
-        Tue, 26 May 2020 18:15:39 -0700 (PDT)
-Received: by mail-qv1-xf42.google.com with SMTP id fb16so10475080qvb.5;
-        Tue, 26 May 2020 18:15:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=FTgIoFmJ7jfvCnsMHaD2LwHD2SvL+8p8rVd1cLx0pZk=;
-        b=a6HfxCcAy2VRykaLYxvM4uw3+o0TAWsiCmJGmNev0x20n4iEYgRdW24Tcy/4Hftcjf
-         RcQp1mENUMF4C0fzYbmbqtknxC1cF5tXbG3S5/WBasPozxrC6FYWjQ23yylLTaVLehb9
-         NV167rh7foAVhdaT6eE2qiIi/SaQnDoAr5WSxdL7niqBlaEe3ATynnW8ctd+M5ByDPox
-         aj4i/ng8QhHv6MQ5faR0F57vqYi4rS1YZrZuPft5KbwdKHEAmA9EImIhX+MVyrg5ZtYs
-         +F0nyNeHhYkGiY99qD4XQ7B7bdXCGxFAzcvFG5H/vjyNUBT15ujgVTmRgTRjzKVGA1TS
-         tKGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=FTgIoFmJ7jfvCnsMHaD2LwHD2SvL+8p8rVd1cLx0pZk=;
-        b=Q+7BOawyBDeI6sfb9a5Vd/jIY8KxvH/wd0lxSe2zq/X78p3PDUwpQhcxKhWOx//AXj
-         oVESGDRKBmkrvg6fFSr+Aw2zO3YNsvs8VYtvhJ6QBZioLPBoXdJ9AKY+FF1w9Z/sIhWz
-         Ft1VgB2ur7tgaKqiZ0NQDYlcCn9ReOdppWi82MaaXZJPazSchINtncrncvSa0ckLjjNR
-         S9LsSUVRcTuqA4bD44rpPBJ2wB7Rz+eVJMLD0pUvnqvzc0wKDP1sYVPhW803Rl7hWh5x
-         Xrb6Ai5UJGdMuuzj1DqUMXyijOYkKpj4VokjuKdKm8iTevPTXW9a15QPZAmk7baXxZzT
-         /oMg==
-X-Gm-Message-State: AOAM530DF86cJ+fZTtNYDpw4qrWFywLcmZqhB/ZfUAw+6NvqpGuXY4Pp
-        WoY6YOzAu0HFurThPO5ww+Y8WaPE
-X-Google-Smtp-Source: ABdhPJzhHYEnsFjAcxTahAY8N/o0kUYmHWW2UkM8khFdgcPuVK8kItL3mDaXBSrBe69uoVRE4aPqbA==
-X-Received: by 2002:a05:6214:311:: with SMTP id i17mr22067329qvu.59.1590542138847;
-        Tue, 26 May 2020 18:15:38 -0700 (PDT)
-Received: from ?IPv6:2601:282:803:7700:85b5:c99:767e:c12? ([2601:282:803:7700:85b5:c99:767e:c12])
-        by smtp.googlemail.com with ESMTPSA id m7sm1149167qti.6.2020.05.26.18.15.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 May 2020 18:15:38 -0700 (PDT)
-Subject: Re: [PATCH] mlxsw: spectrum_router: remove redundant initialization
- of pointer br_dev
-To:     Colin King <colin.king@canonical.com>,
-        Jiri Pirko <jiri@mellanox.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200526225649.64257-1-colin.king@canonical.com>
-From:   David Ahern <dsahern@gmail.com>
-Message-ID: <77496adf-bddf-7911-dacb-f383b5ca6d17@gmail.com>
-Date:   Tue, 26 May 2020 19:15:36 -0600
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.8.0
+        Tue, 26 May 2020 22:13:18 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04R2CAGj057411;
+        Wed, 27 May 2020 02:13:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=htDXYTJoz9m6N/9b0zVKzXQMGg7hWLaW1feSs1VNM5I=;
+ b=xjc+KQvQyzSrH9aQV7SFWrMvePF57DDccAi0nauv/mcQUWQEGlu/7qrD3Zy77G445u5r
+ ik8IHtr63gmhqMlq60pN98MVrxVZsBIRxrEdbOJDP9P2pu5ebjr6NUJ3TC6FFWjvRwjE
+ nmX0uPk6CH7sxJZ6fQ71iKJMo5dKGt+xhIJcTCfMwjGpgTc/k09S60tEnsR4hGbtqN/l
+ 8JZ+fnNo4q66G/ZcfjcluE8NGblDwTEY4XvNschjHfPYuZHX7B69xAZeGlPQqzOv5Qjd
+ poKUJ+vPdQU+9RuL5WTpZGdWPcZ1fN2ipjvRLY9OYwUwpef+1zaCaEqpSeC3D65OLMhY MA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 318xbjvym3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 27 May 2020 02:13:10 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04R27ZdN190108;
+        Wed, 27 May 2020 02:13:10 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 317dkthef7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 27 May 2020 02:13:10 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04R2D8Zt024038;
+        Wed, 27 May 2020 02:13:08 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 26 May 2020 19:13:08 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Karen Xie <kxie@chelsio.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org,
+        James Bottomley <James.Bottomley@suse.de>,
+        Mike Christie <michaelc@cs.wisc.edu>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] scsi: cxgb3i: fix some leaks in init_act_open()
+Date:   Tue, 26 May 2020 22:12:54 -0400
+Message-Id: <159054550935.12032.3078033061151944751.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200521121221.GA247492@mwanda>
+References: <20200521121221.GA247492@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20200526225649.64257-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9633 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0 bulkscore=0
+ spamscore=0 suspectscore=0 mlxscore=0 adultscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005270012
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9633 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0 mlxscore=0
+ lowpriorityscore=0 priorityscore=1501 phishscore=0 cotscore=-2147483648
+ suspectscore=0 bulkscore=0 clxscore=1011 impostorscore=0 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005270013
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 5/26/20 4:56 PM, Colin King wrote:
-> diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-> index 71aee4914619..8f485f9a07a7 100644
-> --- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-> +++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-> @@ -7572,11 +7572,12 @@ static struct mlxsw_sp_fid *
->  mlxsw_sp_rif_vlan_fid_get(struct mlxsw_sp_rif *rif,
->  			  struct netlink_ext_ack *extack)
->  {
-> -	struct net_device *br_dev = rif->dev;
-> +	struct net_device *br_dev;
->  	u16 vid;
->  	int err;
->  
->  	if (is_vlan_dev(rif->dev)) {
-> +
+On Thu, 21 May 2020 15:12:21 +0300, Dan Carpenter wrote:
 
-stray newline added
+> There wasn't any clean up done if cxgb3_alloc_atid() failed and also the
+> original code didn't release "csk->l2t".
 
+Applied to 5.8/scsi-queue, thanks!
 
->  		vid = vlan_dev_vlan_id(rif->dev);
->  		br_dev = vlan_dev_real_dev(rif->dev);
->  		if (WARN_ON(!netif_is_bridge_master(br_dev)))
-> 
+[1/1] scsi: cxgb3i: Fix some leaks in init_act_open()
+      https://git.kernel.org/mkp/scsi/c/b6170a49c59c
 
+-- 
+Martin K. Petersen	Oracle Linux Engineering

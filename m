@@ -2,105 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D25361E367F
-	for <lists+kernel-janitors@lfdr.de>; Wed, 27 May 2020 05:25:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64FB41E387A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 27 May 2020 07:49:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728558AbgE0DZt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 May 2020 23:25:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54646 "EHLO
+        id S1726394AbgE0FtX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 27 May 2020 01:49:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725893AbgE0DZs (ORCPT
+        with ESMTP id S1725747AbgE0FtW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 May 2020 23:25:48 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9979EC061A0F;
-        Tue, 26 May 2020 20:25:47 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id v63so11151785pfb.10;
-        Tue, 26 May 2020 20:25:47 -0700 (PDT)
+        Wed, 27 May 2020 01:49:22 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F23DBC03E96F
+        for <kernel-janitors@vger.kernel.org>; Tue, 26 May 2020 22:49:20 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id z18so27346873lji.12
+        for <kernel-janitors@vger.kernel.org>; Tue, 26 May 2020 22:49:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=+LoutGusB/DPRmQJ774sLiZdDOwxl2Urz+NIX0qJuGk=;
-        b=SG8o27GOj8uGlIOjHmSbmkDbPXp9q2jD5zg+tjj9kWkRV66mAhxC/sO5mgNM7fdmUH
-         0CMJa5/KJnAgjzog3jsp9eSoWKbDtsqss4qdtnkzLvVh+Zzw4jAKSXaFpjzUofqUi0dY
-         I8xCNqO6gRs3sLPhy7KwgTD0oy2SdNWkYLahQja8HdvTkVYDXMOhxEzFm5EVwNlgpiMU
-         mc+V7lcWPGuVjvdQlArigQLoSBZ2nvHYVlbkX+B6dQ5CYm0iyvXbgE9M/W4zO2Py/MFQ
-         inE5iW6zJe5CcuZhsWUvm9lq7NjDvb+6QAMsdsLfbq1S5Tw0Ll3LXyXICRU8+mIGg6+E
-         YXzA==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6Ey3RUpCGa5Aox52KZ5G497GPuu8CFMaGOEj0YfbRCE=;
+        b=IHURO0exP8ThsysvtvUVDN5cTBjZW1A5ogekeUUqLNeYB2FGz4d/s/pWf9IREZvWh9
+         6f3oUSCkM5uanpvYDqHX3Mm1dW6YEvprJ2NdjOmDgkcMox49wszIokbgRyhNb/ash0mu
+         qYG2m30mWdIbE6HauFvsy7lUAeG0MY1Cm+vBQsDVjJpR9COGe8J5mWSqMVoOZlsvr2IP
+         oU15BvzZaVmPzyM5p78RnO4P8b+XQ8wJv69PMeJ0ggxtY8eq28DwZ3LeT+ptx8vU9z0A
+         KVTOsFtyrGmTzfq1xSBTHeSDuo80Ah7EpSzJJflNND68IyDuCgHx9iUdQKy9CgFuAM0I
+         +6vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=+LoutGusB/DPRmQJ774sLiZdDOwxl2Urz+NIX0qJuGk=;
-        b=J28NkEhKtM9O1c55Vwki05txAm2hmwlOkYPN6CVSYYkpgYCzDQMh/orw3iTGeVvD1c
-         VGwD2wkynBfVN93BHvimxLMxbFT/S0sLX+BWMH4hCcebHubQGYu5p1vPQ6QKc/2pYoXF
-         fesYqpXQrtLez5XZZWazleACSSZSTwrX1UmHe2JRlDX5LpdU3nn71Pf77POSJWTLD/kB
-         2UZjhU4wA25OSy3niTR1wO1haPHBX+Q86eAuO/75lUBZCNfHHGmxYEVnnTBj+JWsW9FH
-         R3i8e1DCZDXMOuGiVZuofI2Di5QaKKjiHgOfwEJ1jE56+uuY2SfLXYEey2mxlFYuIOki
-         SjmQ==
-X-Gm-Message-State: AOAM533k95YLgG5uCRyZaoSVr5qQtGJ+VLOp1ZWwSl/lV6D2cBKcjAIQ
-        OfGB/LGxGeuY9AN1LcgicjY=
-X-Google-Smtp-Source: ABdhPJyL7/Ee2xG8f4YZQOo5SM6fDnvglKdX92dvDKXoNDVPGc1PO3DAs8c4RmF5mmJZsmNSaJAnMQ==
-X-Received: by 2002:a63:c311:: with SMTP id c17mr1965284pgd.103.1590549947242;
-        Tue, 26 May 2020 20:25:47 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id u5sm750419pjv.54.2020.05.26.20.25.46
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 26 May 2020 20:25:46 -0700 (PDT)
-Date:   Tue, 26 May 2020 20:25:45 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Naveen Krishna Chatradhi <nchatrad@amd.com>,
-        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH -next] hwmon: amd_energy: Missing
- platform_driver_unregister() on error in amd_energy_init()
-Message-ID: <20200527032545.GA259122@roeck-us.net>
-References: <20200527022417.105620-1-weiyongjun1@huawei.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6Ey3RUpCGa5Aox52KZ5G497GPuu8CFMaGOEj0YfbRCE=;
+        b=YDz6+X6Q9BAPO/5E2IvZEpCuFwVPjldnswFwJnF+d/ojgGxXAkUiRCyiuadIB3IXrt
+         8ec/2wnvkm0CRRzdxXOoWJ038kzb+H8aJS+GiuHFWtOnyVZv/AbYw0BV87sL7W5+0fbr
+         fzVSOQxkWg3HyyvRhVUzVONjlI/sdtGOxgGsuETPWBdHRWGZ1fWXiGiZqrMF+ZEi2hjS
+         wB+dUThZemae+QL3cpBg3OPXVnwo4bOV0NIVAuBL3QjK0ZFeLj1qNpI/VMe1OpTqMOhr
+         NuFgiM5SMx9GPQhMypKnfGBnE22M90PwiK2Mseq8KFz7o3bvkBQd9hXs0b+Pom69mZOO
+         AJDg==
+X-Gm-Message-State: AOAM5318GQLfHjRASMM49Y0k24MyPEQdN0f7NOMior3Zg7TfwMn94Wg3
+        88wssVisvKydrY1qcvUaCgNS5PQ5cnrBKl6gwOCXGQ==
+X-Google-Smtp-Source: ABdhPJwnO7GDTOtyL2kiFe3jVfkqBAg7nq2J7SDhBgiLgtUefNePgtYaoje9dfB2Zk33EfyfNamq1jgS7Fz6Jg4SKys=
+X-Received: by 2002:a2e:8e91:: with SMTP id z17mr2117948ljk.144.1590558559281;
+ Tue, 26 May 2020 22:49:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200527022417.105620-1-weiyongjun1@huawei.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20200526224116.63549-1-colin.king@canonical.com>
+In-Reply-To: <20200526224116.63549-1-colin.king@canonical.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 27 May 2020 07:49:08 +0200
+Message-ID: <CACRpkdb7s77aOnQxMQ=Gi9zcy_fz37PZ5E3+vk0=P5N8wjA6sw@mail.gmail.com>
+Subject: Re: [PATCH] clk: versatile: remove redundant assignment to pointer clk
+To:     Colin King <colin.king@canonical.com>
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, May 27, 2020 at 02:24:17AM +0000, Wei Yongjun wrote:
-> Add the missing platform_driver_unregister() before return
-> from amd_energy_init() in the error handling case.
-> 
-> Fixes: 8abee9566b7e ("hwmon: Add amd_energy driver to report energy counters")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> Acked-by: Naveen krishna Chatradhi <nchatrad@amd.com>
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+On Wed, May 27, 2020 at 12:41 AM Colin King <colin.king@canonical.com> wrote:
 
-Applied.
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The pointer clk is being initialized with a value that is never read
+> and is being updated with a new value later on. The initialization
+> is redundant and can be removed.
+>
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Thanks,
-Guenter
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-> ---
->  drivers/hwmon/amd_energy.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hwmon/amd_energy.c b/drivers/hwmon/amd_energy.c
-> index bc8b643a37d5..e95b7426106e 100644
-> --- a/drivers/hwmon/amd_energy.c
-> +++ b/drivers/hwmon/amd_energy.c
-> @@ -379,8 +379,10 @@ static int __init amd_energy_init(void)
->  		return ret;
->  
->  	amd_energy_platdev = platform_device_alloc(DRVNAME, 0);
-> -	if (!amd_energy_platdev)
-> +	if (!amd_energy_platdev) {
-> +		platform_driver_unregister(&amd_energy_driver);
->  		return -ENOMEM;
-> +	}
->  
->  	ret = platform_device_add(amd_energy_platdev);
->  	if (ret) {
+Yours,
+Linus Walleij

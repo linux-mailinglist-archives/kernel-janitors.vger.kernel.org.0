@@ -2,55 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFEDA1E44F1
-	for <lists+kernel-janitors@lfdr.de>; Wed, 27 May 2020 15:58:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE1AB1E4698
+	for <lists+kernel-janitors@lfdr.de>; Wed, 27 May 2020 16:58:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389110AbgE0N6g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 27 May 2020 09:58:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39594 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389102AbgE0N6f (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 27 May 2020 09:58:35 -0400
-X-Greylist: delayed 2687 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 27 May 2020 06:58:34 PDT
-Received: from msa14.plala.or.jp (msa14.plala.or.jp [IPv6:2400:7800:0:502e::14])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A7837C08C5C3;
-        Wed, 27 May 2020 06:58:34 -0700 (PDT)
-Received: from mwebp13 ([172.23.13.133]) by msa14.plala.or.jp with ESMTP
-          id <20200527135834.WHTB3566.msa14.plala.or.jp@mwebp13>;
-          Wed, 27 May 2020 22:58:34 +0900
-Date:   Wed, 27 May 2020 22:58:33 +0900
-From:   "Mrs.Judith Rice" <hamurafujimi@tmail.plala.or.jp>
-Reply-To: jonesevansje@gmail.com
-Message-ID: <20200527225834.AOWGS.1026.root@mwebp13>
-Subject: Spende
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-2022-jp
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-Sensitivity: Normal
-X-VirusScan: Outbound; mvir-ac14; Wed, 27 May 2020 22:58:34 +0900
-To:     unlisted-recipients:; (no To-header on input)
+        id S2389441AbgE0O6N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 27 May 2020 10:58:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53706 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388738AbgE0O6N (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 27 May 2020 10:58:13 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 753DB2088E;
+        Wed, 27 May 2020 14:58:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590591493;
+        bh=n3T3SCw7AuNm+LGdYO+r5qpnOKzrU0x+b1p1GFAuRg4=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=clIMJ+gt1V10YcDy1CW3cRioiIu1IIxtmB1+ghdi9LkQDIaTTRX/HryEFwOMSbSCH
+         oxse4sGd3xANMflPwtPhJwIN0uX2HKBOtc9GZa8shaxIrcPNxZIFiHSiX9KTzr3s9O
+         aVmnYXR9VZlp26At+IKdgWeccHt5ISL07FHx/yI0=
+Date:   Wed, 27 May 2020 15:58:10 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Robert Jarzmik <robert.jarzmik@free.fr>,
+        Takashi Iwai <tiwai@suse.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Wei Yongjun <weiyongjun1@huawei.com>,
+        Daniel Mack <daniel@zonque.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-arm-kernel@lists.infradead.org
+In-Reply-To: <20200527030210.124393-1-weiyongjun1@huawei.com>
+References: <20200527030210.124393-1-weiyongjun1@huawei.com>
+Subject: Re: [PATCH -next] ASoC: mmp-sspa: Fix return value check in asoc_mmp_sspa_probe()
+Message-Id: <159059147354.50918.14800110942668588703.b4-ty@kernel.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Attn:
+On Wed, 27 May 2020 03:02:10 +0000, Wei Yongjun wrote:
+> In case of error, the function devm_ioremap() returns NULL pointer not
+> ERR_PTR(). The IS_ERR() test in the return value check should be
+> replaced with NULL test.
 
-Es tut uns leid, dass wir Sie aufgrund eines Mismanagent of Beneficaries-Fonds von unseren ernannten Zonal Managern versp&#228;tet kontaktiert haben. Bitte beachten Sie, dass Sie qualifiziert sind, die Zahlung von 900.000,00 USD an der ATM-Karte mit neunhunderttausend Dollar zu erhalten.
+Applied to
 
-Als Entsch&#228;digung von WORLD BANK / IWF (Internationaler W&#228;hrungsfonds) f&#252;r die automatisch &#252;ber einen E-Mail-Wahlautomaten gezogenen, die in der Vergangenheit noch nicht abgeschlossene Transaktionen hatten.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-F&#252;r weitere Informationen kontaktieren Sie bitte Rev.EVANS JONES ( jonesevansje@gmail.com )
+Thanks!
 
-Bitte senden Sie ihm Ihre pers&#246;nlichen Daten wie:
+[1/1] ASoC: mmp-sspa: Fix return value check in asoc_mmp_sspa_probe()
+      commit: 185457632ba344d3100e6bdd8ba839b959521813
 
-Vollst&#228;ndiger Name:
-Wohnanschrift:
-Telefonnummer:
-Herkunftsland:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Gr&#252;&#223;e,
-Mrs. Judith Rice
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

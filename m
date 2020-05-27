@@ -2,56 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33B341E3970
-	for <lists+kernel-janitors@lfdr.de>; Wed, 27 May 2020 08:41:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B56401E3BBE
+	for <lists+kernel-janitors@lfdr.de>; Wed, 27 May 2020 10:17:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728546AbgE0Gkt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 27 May 2020 02:40:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57990 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725613AbgE0Gkt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 27 May 2020 02:40:49 -0400
-Received: from kernel.org (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 45BA320776;
-        Wed, 27 May 2020 06:40:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590561649;
-        bh=EZwP7lM7uW8E9faXfL+mfjk8mEB24LowJAd2r0TjsKw=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=MH1cB4g5OtKBSVv3WSdi9m2jR9lhT/vmwZCONqPoMT3+Ce88BKvyOL+HVXmagezpm
-         wulNTl8dERmfVgt2aShrusAVGKgfQJY5UV0BqzBeQ8QA6VaRpmL71LNJBqFY98GSwj
-         4GQjpl2oUbMsjotc+GP51phe9+IIAHeGg6kdgfQc=
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20200526224116.63549-1-colin.king@canonical.com>
-References: <20200526224116.63549-1-colin.king@canonical.com>
-Subject: Re: [PATCH] clk: versatile: remove redundant assignment to pointer clk
-From:   Stephen Boyd <sboyd@kernel.org>
+        id S2387809AbgE0IQB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 27 May 2020 04:16:01 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50641 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387776AbgE0IQB (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 27 May 2020 04:16:01 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jdrEB-0004gk-Cx; Wed, 27 May 2020 08:15:55 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jiri Pirko <jiri@mellanox.com>, Ido Schimmel <idosch@mellanox.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-To:     Colin King <colin.king@canonical.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
-Date:   Tue, 26 May 2020 23:40:48 -0700
-Message-ID: <159056164860.88029.7554351167857846969@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9
+Subject: [PATCH][V2][net-next] mlxsw: spectrum_router: remove redundant initialization of pointer br_dev 
+Date:   Wed, 27 May 2020 09:15:55 +0100
+Message-Id: <20200527081555.124615-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Colin King (2020-05-26 15:41:16)
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> The pointer clk is being initialized with a value that is never read
-> and is being updated with a new value later on. The initialization
-> is redundant and can be removed.
->=20
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied to clk-next
+The pointer br_dev is being initialized with a value that is never read
+and is being updated with a new value later on. The initialization
+is redundant and can be removed.
+
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+
+V2: remove stray blank line
+
+---
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
+index 71aee4914619..c425b78c6093 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
+@@ -7572,7 +7572,7 @@ static struct mlxsw_sp_fid *
+ mlxsw_sp_rif_vlan_fid_get(struct mlxsw_sp_rif *rif,
+ 			  struct netlink_ext_ack *extack)
+ {
+-	struct net_device *br_dev = rif->dev;
++	struct net_device *br_dev;
+ 	u16 vid;
+ 	int err;
+ 
+-- 
+2.25.1
+

@@ -2,28 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDB4A1E42A9
-	for <lists+kernel-janitors@lfdr.de>; Wed, 27 May 2020 14:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 754651E42C8
+	for <lists+kernel-janitors@lfdr.de>; Wed, 27 May 2020 14:56:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730140AbgE0Mud (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 27 May 2020 08:50:33 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:60069 "EHLO
+        id S1730183AbgE0M4Q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 27 May 2020 08:56:16 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:60159 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730085AbgE0Mud (ORCPT
+        with ESMTP id S1730045AbgE0M4P (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 27 May 2020 08:50:33 -0400
+        Wed, 27 May 2020 08:56:15 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jdvVv-00007C-9i; Wed, 27 May 2020 12:50:31 +0000
+        id 1jdvbP-0000Yq-SZ; Wed, 27 May 2020 12:56:11 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Steve French <sfrench@samba.org>, linux-cifs@vger.kernel.org,
-        samba-technical@lists.samba.org
+To:     Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <anna.schumaker@netapp.com>,
+        linux-nfs@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] cifs: remove redundant initialization of variable rc
-Date:   Wed, 27 May 2020 13:50:31 +0100
-Message-Id: <20200527125031.173987-1-colin.king@canonical.com>
+Subject: [PATCH] NFS: remove redundant initialization of variable result
+Date:   Wed, 27 May 2020 13:56:11 +0100
+Message-Id: <20200527125611.174291-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,29 +36,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable rc is being initialized with a value that is never read
+The variable result is being initialized with a value that is never read
 and it is being updated later with a new value.  The initialization is
 redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- fs/cifs/cifssmb.c | 2 +-
+ fs/nfs/direct.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/cifs/cifssmb.c b/fs/cifs/cifssmb.c
-index 5014a82391ff..d62f9175c546 100644
---- a/fs/cifs/cifssmb.c
-+++ b/fs/cifs/cifssmb.c
-@@ -2375,7 +2375,7 @@ int
- CIFSSMBWrite2(const unsigned int xid, struct cifs_io_parms *io_parms,
- 	      unsigned int *nbytes, struct kvec *iov, int n_vec)
- {
--	int rc = -EACCES;
-+	int rc;
- 	WRITE_REQ *pSMB = NULL;
- 	int wct;
- 	int smb_hdr_len;
+diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
+index a57e7c72c7f4..bb63e2b93ff7 100644
+--- a/fs/nfs/direct.c
++++ b/fs/nfs/direct.c
+@@ -446,7 +446,7 @@ ssize_t nfs_file_direct_read(struct kiocb *iocb, struct iov_iter *iter)
+ 	struct inode *inode = mapping->host;
+ 	struct nfs_direct_req *dreq;
+ 	struct nfs_lock_context *l_ctx;
+-	ssize_t result = -EINVAL, requested;
++	ssize_t result, requested;
+ 	size_t count = iov_iter_count(iter);
+ 	nfs_add_stats(mapping->host, NFSIOS_DIRECTREADBYTES, count);
+ 
 -- 
 2.25.1
 

@@ -2,85 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 582C41E5C7B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 11:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BACC11E5D41
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 12:38:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387607AbgE1J5W (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 05:57:22 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:58862 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387432AbgE1J5V (ORCPT
+        id S2387901AbgE1KiN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 06:38:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34280 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387846AbgE1KiM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 05:57:21 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04S9u2nJ123745;
-        Thu, 28 May 2020 09:57:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=PdmQuxdVwBxh/Lw17j3u3VbvlIP0mJKPP2d2XTJSZnM=;
- b=sU5FFmgpUPDK12cdmZ4NJyoBh8ZuGlG0QfQkk6esfrP3SvXj3ULfopuBnsZ1eCPNkEaR
- cT8JGfRNiMkrM3sC1Y4KmQxxsKWxFlJzq7zLQxlKoB/MXwRGWQ1lKzCdEb93zXYFAi6c
- wM52q29XzbSBxOAkzeQvqGI8DHo/nJLZurHYcwfx/70JMJqZkI3W3RS0zMOZ6t83l9HX
- Ubnz3LkM50h0T4qdKLcv+ISTp2jiNraz90DlnhbCkl4NToXh1dSafKynG0eMYAW042Ps
- Sj5szxXdiZZ7REissN4pAWBTYkazVlCaTckL5SDzmScbcjw20W/h17eB1jAp/W0sAjQ6 jQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 318xbk44gt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 28 May 2020 09:57:17 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04S9mu4D052688;
-        Thu, 28 May 2020 09:57:17 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 317ds282f4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 28 May 2020 09:57:17 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04S9vGAL016319;
-        Thu, 28 May 2020 09:57:16 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 28 May 2020 02:57:15 -0700
-Date:   Thu, 28 May 2020 12:57:03 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "Zhang, Qiang" <Qiang.Zhang@windriver.com>
-Cc:     Markus Elfring <markus.elfring@web.de>, Tejun Heo <tj@kernel.org>,
+        Thu, 28 May 2020 06:38:12 -0400
+Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66371C05BD1E;
+        Thu, 28 May 2020 03:38:12 -0700 (PDT)
+Received: by mail-qt1-x82e.google.com with SMTP id a23so21790574qto.1;
+        Thu, 28 May 2020 03:38:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=emDCwji6yzqB6XWcm2nmGRgKBFmFlbUttEJdLroXddo=;
+        b=juvACnWOxakqdNtqXbniA2Y716WAvrKMo85eCSPzcK/58thhrHJxFvVCAnhdTjEsC9
+         K+DIYC6/iXiKLKpoxTtlq3fPrDH0zj4WO8c09riSXO0vqYlTyaa3br7u+Aim3FrXKNi3
+         JDK8Y7pm+9tKHVT77w/ZodWhEu0P8bwlb1RfMLfFw/MPP60gcBlvvIIH4hZq+1/ABWYg
+         OGXYzE8dwRLoU2caEq7nl0Wfy9z6YBtYF4VH1pLx3fGOogR3vCoh90iIx2VExVj6X4Xn
+         QqjiM+pKWS5XDZMIDG8nSz7lelXowEj7C/6f9+Esj1UDigyJYkfC/eszlyFjZv3Vtle5
+         MYuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=emDCwji6yzqB6XWcm2nmGRgKBFmFlbUttEJdLroXddo=;
+        b=pujIiBUwb5uzh+w0bePqVvkuMqYmk0kPCj1Xpmui6ZMbpQOguQn8L5Q559JipuifcF
+         niUofjGkJbK+afOg0Ws6BEFhBrC89hyP8CnLk5PZUSTg7/R3y0PSgYBEjBBSWySzV4so
+         pAZIGLHm5LHmVDeIyykGc0QWtXzhYYOf7H0iGwZHXrrOdot97/IlxQAv41UWYfCcgA5A
+         fnOCMx+MW5RrQyib1lg6OAmTmP5XgFQpALaGBKNq4jiZsG3hv+sXZEVyZtstmXfO7+0n
+         nX6M7oMltWwusLGnEYYVrZ/7dUfUX62mBSs4ujgIiSejy44H1uRP2ycWsyVGjljOHfEl
+         528Q==
+X-Gm-Message-State: AOAM532pq2D8GxlISgXEzOCPenI3k/hnfofk6idiFDVUcGrKck0rn6j7
+        qm09ahMqog2/s1VBe8EYWBJroHr0
+X-Google-Smtp-Source: ABdhPJw0VtxBM5GYncbYmh7fMALQFius+WP39LE5d1nV6HGBJAaGYzMaI6HcSnIlgf4rxi3pAr0dUA==
+X-Received: by 2002:aed:221d:: with SMTP id n29mr2312329qtc.286.1590662291390;
+        Thu, 28 May 2020 03:38:11 -0700 (PDT)
+Received: from localhost ([199.96.181.106])
+        by smtp.gmail.com with ESMTPSA id n25sm4522829qkk.76.2020.05.28.03.38.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2020 03:38:10 -0700 (PDT)
+Date:   Thu, 28 May 2020 06:38:09 -0400
+From:   Tejun Heo <tj@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     "Zhang, Qiang" <Qiang.Zhang@windriver.com>,
+        Markus Elfring <markus.elfring@web.de>,
         Lai Jiangshan <jiangshanlai@gmail.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
 Subject: Re: =?utf-8?B?5Zue5aSNOiBbUEFUQ0ggdjU=?= =?utf-8?Q?=5D?= workqueue:
  Remove unnecessary kfree() call in rcu_free_wq()
-Message-ID: <20200528095703.GH30374@kadam>
+Message-ID: <20200528103809.GK83516@mtj.thefacebook.com>
 References: <20200527075715.36849-1-qiang.zhang@windriver.com>
  <284c7851-4e89-a00f-a2e6-aa8e2e1f3fce@web.de>
  <DM6PR11MB32573F3884A864ECD586235EFF8E0@DM6PR11MB3257.namprd11.prod.outlook.com>
  <DM6PR11MB3257D6E7E93A518392502809FF8E0@DM6PR11MB3257.namprd11.prod.outlook.com>
+ <20200528095703.GH30374@kadam>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DM6PR11MB3257D6E7E93A518392502809FF8E0@DM6PR11MB3257.namprd11.prod.outlook.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9634 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 malwarescore=0
- mlxlogscore=999 adultscore=0 suspectscore=0 bulkscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005280066
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9634 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0 mlxscore=0
- lowpriorityscore=0 priorityscore=1501 phishscore=0 cotscore=-2147483648
- suspectscore=0 bulkscore=0 clxscore=1011 impostorscore=0 malwarescore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005280066
+In-Reply-To: <20200528095703.GH30374@kadam>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Guys, the patch is wrong.  The kfree is harmless when this is called
-from destroy_workqueue() and required when it's called from
-pwq_unbound_release_workfn().  Lai Jiangshan already explained this
-already.  Why are we still discussing this?
+On Thu, May 28, 2020 at 12:57:03PM +0300, Dan Carpenter wrote:
+> Guys, the patch is wrong.  The kfree is harmless when this is called
+> from destroy_workqueue() and required when it's called from
+> pwq_unbound_release_workfn().  Lai Jiangshan already explained this
+> already.  Why are we still discussing this?
 
-regards,
-dan carpenter
+Oops, missed that. Reverting.
 
+Thanks.
+
+-- 
+tejun

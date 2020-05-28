@@ -2,91 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DEC51E616F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 14:52:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73F681E61A0
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 15:05:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390000AbgE1Mvy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 08:51:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55034 "EHLO
+        id S2390020AbgE1NE6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 09:04:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389873AbgE1Mvx (ORCPT
+        with ESMTP id S2389949AbgE1NE5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 08:51:53 -0400
-Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1C90C05BD1E;
-        Thu, 28 May 2020 05:51:53 -0700 (PDT)
-Received: by mail-vs1-xe42.google.com with SMTP id 1so15652160vsl.9;
-        Thu, 28 May 2020 05:51:53 -0700 (PDT)
+        Thu, 28 May 2020 09:04:57 -0400
+Received: from mail-oo1-xc43.google.com (mail-oo1-xc43.google.com [IPv6:2607:f8b0:4864:20::c43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA69EC05BD1E;
+        Thu, 28 May 2020 06:04:56 -0700 (PDT)
+Received: by mail-oo1-xc43.google.com with SMTP id p9so205082oot.12;
+        Thu, 28 May 2020 06:04:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=lt0aJ/HKY3louy8TYKyi0MkEQNaEc9fCj6oIXB48VFQ=;
-        b=TJ92fK8qL246A8nOM5+5qXGRx3BB4SkxAQKInO/7psKXNC/ZHMNacF6wXsnsy2jdyV
-         OzEGZYo1pcBk1/JltGEHWzI6PKDE6muiYbB2IRohny0bEkbiB7iQM/bj80YXNht5GpFD
-         BDfrrZqiaU3Uup/yaVIbeWMfjx6kM366fMA5D4rfLlsSeZB4/JHn2/Lzj7OurLNyzjmZ
-         sHD1vfxWk6omsxb15Vr7vIjzi6py73u8e88VJYn3gAanuwaFj20EOuq2Y3HqPDr1YU9J
-         1AMoeD4EC5LHEPWq5jQ9Ynea22LBVceNdk5TTd/P9kEv0FcQbBBRLYBriaxxEzZnKEqf
-         JbRQ==
+         :cc;
+        bh=dXvaWSVcWI+s2rivrPO3m0AhkrEjwrLISc3YJtC2j14=;
+        b=s5jar91qveoXsSmBnvJBdN6BXNkjNpmgqkD0I8+dlVOqaPVHIc0Qw5eCo/TCcJGgqp
+         o+510nC/x4mxgwJVDRetJ7bF36F+Ry4m9vUd3D233ZVFWQn2++PSAMHFb/QKm8OufiiZ
+         vRNnOgmZsXixMKQYqZe7JN1Y1KnHAlOP7M6E9rlqVLocqc7TN/DSTMqjMaFOBhYKhLca
+         YhfFNPbqx/hA3EqrrbvSRWM4YVV3oMxU6seI/QxxMSlyD5ncrJA9+FlXyRkHeY80nqto
+         RPM5oFI6IjrcXrsM4+E2eZMrqRNKRlV3TvY5wPLJQe+ZeQnsYXvjuXaUBB4BCAs+FrPi
+         6jIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=lt0aJ/HKY3louy8TYKyi0MkEQNaEc9fCj6oIXB48VFQ=;
-        b=mn+9gQ2EEA/K7ioYA5L0jlbDcr3K+KpL+SmjG7GbVsY5nRrAR6JwMExkkMD6as8GKs
-         gRxCD0yK773hP4vaEgJc5WzpIURt49tpGl8OSY+njrsW57htcrYHOZihApU5GsskuFe/
-         Vvox9IqBHJwbRW+EwaWF20OGRywQpLEtCzeSgXccwG4Kmcf/I5E8W/1x0+wkjel2S0Kd
-         efb2A5N9YkqqgW7uwfnYbg8r0HQtsSYxlE+GZYDEeiKCpa7+fiCJ1PMLb1mkkic8/Dfa
-         nq5t5biJH3zeJTK/shvYH9Fp/tVnDyWkAFcx/6koykkf9oOYXLWaXVOXJk7e1C+TK6do
-         9MGA==
-X-Gm-Message-State: AOAM532e8rl/hicf23lebAb6Az4LwEiasXLZzJQFf6HpySNS6GgbQtbW
-        du9p78hnwJRc0qDtxzd1czG+NG+o1QJjs2pAZ0E=
-X-Google-Smtp-Source: ABdhPJyiA4HP9FtEREIW9ZmZ9toaJsyV9aglFdMu/vg2mezc8Vcr3ocA/07CzY15XP7SRq6hvc6uXL/R+3504/iKxVY=
-X-Received: by 2002:a67:e012:: with SMTP id c18mr1712875vsl.12.1590670312908;
- Thu, 28 May 2020 05:51:52 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=dXvaWSVcWI+s2rivrPO3m0AhkrEjwrLISc3YJtC2j14=;
+        b=jgLzdHUoxdQji47ytjtXn1zDxWmRLRhHtvT+rAauzE1vbagMjrMkHCBULFA6FtbgE/
+         Bh+A+Nxk8UyZHx5MQ5cQnr3xSLTmLtShoIWiyL1O8Me8d/zSabjs3Zvpu7Jqv1xIjlvr
+         KAErfdYoT7qozEnFWYt5ajgXmIISO+7uZG2tIKNWFik47dkyXQuBA84M4bNopEi9jKKJ
+         2FbcerA7JliecVPp78POFsslf6haWhCnnayjjeFCJQWv6OhW8jrICW2vVB/CSgd2JE+P
+         aUKylx8jkgWeraY6YANdMH+ofzLaukAdFK1VpWJaUqhT6lhuylk4LsIQv9XgNQfRIefd
+         q+1Q==
+X-Gm-Message-State: AOAM533KtIbPDfcCvZqm4SBKtXbJiq1reCtSRqMWN3hg1bEL/ONZBkip
+        1LQmv694te3sOqBp+b6ZX6wTbi/5hYxRiOxvSUs=
+X-Google-Smtp-Source: ABdhPJzyKhFsbHsoUArICsjrlH/FRsLsBzb83SSuwMvyuJNbabfEHdxpBOmN/SFsVOgT/6UMtLY91WnIexORQ4O1rDE=
+X-Received: by 2002:a4a:874c:: with SMTP id a12mr2388682ooi.77.1590671095963;
+ Thu, 28 May 2020 06:04:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <e218bc34-b8cf-cf0d-aaf1-e1f259d29f7c@web.de>
-In-Reply-To: <e218bc34-b8cf-cf0d-aaf1-e1f259d29f7c@web.de>
-From:   Tao pilgrim <pilgrimtao@gmail.com>
-Date:   Thu, 28 May 2020 20:51:41 +0800
-Message-ID: <CAAWJmAYox7VNCzj7FnRdiX450wd=DtZAcZv3_2JiPmBuLvUMeQ@mail.gmail.com>
-Subject: Re: [PATCH] proc/fd: Remove the initialization of variables in seq_show()
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        Muchun Song <songmuchun@bytedance.com>
+References: <20200528123726.GB1219412@mwanda>
+In-Reply-To: <20200528123726.GB1219412@mwanda>
+From:   Oded Gabbay <oded.gabbay@gmail.com>
+Date:   Thu, 28 May 2020 16:04:29 +0300
+Message-ID: <CAFCwf11CwBwHm5MVN6Mg8wXy0O09yKb-RtYqSa4Z3Wv+SrfcvQ@mail.gmail.com>
+Subject: Re: [PATCH] habanalabs: fix error code in unmap_device_va()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Omer Shpigelman <oshpigelman@habana.ai>,
+        "Linux-Kernel@Vger. Kernel. Org" <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> > The variables{files, file} will definitely be assigned,
->
-> I find an other specification nicer for these identifiers.
->
->
-> > so we don't need to initialize them.
->
-> I suggest to recheck programming concerns around the handling
-> of the null pointer for the variable =E2=80=9Cfile=E2=80=9D.
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/f=
-s/proc/fd.c?id=3Dcaffb99b6929f41a69edbb5aef3a359bf45f3315#n20
-> https://elixir.bootlin.com/linux/v5.7-rc6/source/fs/proc/fd.c#L20
+Thanks, we already have a patch ready for that in -fixes branch that
+will be applied in 5.8-rc2
+Oded
 
-We don't need to initialize the variable =E2=80=9Cfile=E2=80=9D.
-On line 34, if (files) is true,
-{file =3D fcheck_files(files, fd)} will be executed on line 38.
-On line 34, if (files) is flse,
-{return ret;} will be executed on line 54, and seq_show() will exit directl=
-y.
-I don't find the programming concerns around the handling of the null
-pointer for the variable =E2=80=9Cfile=E2=80=9D.
-
-If you have other suggestions, please elaborate on the details.
-
---
-Yours,
-Kaitao Cheng
+On Thu, May 28, 2020 at 3:39 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> Smatch complains that "rc" can be uninitialized on certain paths.
+>
+> Fixes: 8ff5f4fd40df ("habanalabs: handle MMU cache invalidation timeout")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/misc/habanalabs/memory.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/misc/habanalabs/memory.c b/drivers/misc/habanalabs/memory.c
+> index 4b8eed1ca5130..47da84a177197 100644
+> --- a/drivers/misc/habanalabs/memory.c
+> +++ b/drivers/misc/habanalabs/memory.c
+> @@ -1023,7 +1023,7 @@ static int unmap_device_va(struct hl_ctx *ctx, u64 vaddr, bool ctx_free)
+>         struct hl_va_range *va_range;
+>         enum vm_type_t *vm_type;
+>         bool is_userptr;
+> -       int rc;
+> +       int rc = 0;
+>
+>         /* protect from double entrance */
+>         mutex_lock(&ctx->mem_hash_lock);
+> --
+> 2.26.2
+>

@@ -2,33 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6E291E6708
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 18:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8827B1E6859
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 19:09:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404850AbgE1QEQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 12:04:16 -0400
-Received: from mout.web.de ([212.227.15.4]:56869 "EHLO mout.web.de"
+        id S2405343AbgE1RJd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 13:09:33 -0400
+Received: from mout.web.de ([212.227.15.14]:57239 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404688AbgE1QEK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 12:04:10 -0400
+        id S2405314AbgE1RJc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 May 2020 13:09:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590681845;
-        bh=WF8t3qfTbXpIhenHywPzgwEX9tbGimI9zcibEVfQI3A=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=iryYm0Q8wJ4JmZf/laKrq0brNsNLGUWrtbXfZe3Dt6FJM4+Yuqd58EogAOZPzxR8O
-         Pg1lf69Ib7MEyrpK+YzGxRlfINyK34fS4fH3omHD2B/tqi2WWFsWIJ5ckKOrMkg7Uz
-         Zrs3oiXNrvyrhGU+CaLiDsO54QDBzXzN09IbxmVs=
+        s=dbaedf251592; t=1590685759;
+        bh=p69aR/nzaRPTpqEpuHitn5IvyCINJBKAMa323BW+lFY=;
+        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
+        b=g+g9aK35W80VreSFHoYkUcbrmKo3i8elKoo4gS2qujGz4g/zIaT/XIeWEyWvD6AWX
+         F5GCTvolFCT8AE1syLLEdTn1HHxzWmQOzwYiiBx4vz9z5ahfZu7DsXgVG021vAXBo+
+         jYkQQBNDAba3T1YSuWb5QTHi69j0kbAYi2OeJMbY=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([2.244.30.242]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MMZck-1jev6Z15TC-008Gwz; Thu, 28
- May 2020 18:04:05 +0200
-Subject: Re: proc/fd: Remove the initialization of variables in seq_show()
-To:     Tao pilgrim <pilgrimtao@gmail.com>, linux-fsdevel@vger.kernel.org
+Received: from [192.168.1.3] ([2.244.30.242]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MsJP4-1ikc4q3nPG-00tgiv; Thu, 28
+ May 2020 19:09:19 +0200
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        Muchun Song <songmuchun@bytedance.com>
-References: <e218bc34-b8cf-cf0d-aaf1-e1f259d29f7c@web.de>
- <CAAWJmAYox7VNCzj7FnRdiX450wd=DtZAcZv3_2JiPmBuLvUMeQ@mail.gmail.com>
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sean Wang <sean.wang@mediatek.com>
+Subject: Re: [PATCH] Bluetooth: btmtkuart: Improve exception handling in
+ btmtuart_probe()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -73,73 +73,63 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <826fc010-5002-c9f0-1af6-36346e922cdb@web.de>
-Date:   Thu, 28 May 2020 18:04:04 +0200
+To:     Chuhong Yuan <hslester96@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-bluetooth@vger.kernel.org, linux-mediatek@lists.infradead.org
+Message-ID: <dd458e1d-26cf-2cc6-4fdb-fb464f9c3ac6@web.de>
+Date:   Thu, 28 May 2020 19:09:17 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <CAAWJmAYox7VNCzj7FnRdiX450wd=DtZAcZv3_2JiPmBuLvUMeQ@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:le3kD2sakBsATxt5j2a9jE6nOaygsLR+1cIE/AQmJMlNJEy6Mec
- E1GDYoaAriKndNohTI18I71Rh6mczk8XvIqw1cSkYtJAr+FIYv9EPM3w2RyUF7vU3xROA5Y
- X3sGFFaejChf0WptS2OJJO9HAxt+kjps67UkTRTW7nTd8QR4NxQhb+ch/XFm8R+E1kpYGPc
- TbPsGQfc3ERTJZaNqywCg==
+X-Provags-ID: V03:K1:HFJVBKBfwx0BNkuJVnzSfsep+qen5ugQ2lnxQrmomHOtQfGba7Z
+ rJiWEr4b3kJL2GNgc9vP/hSOvBCEdkSuGQ3jHIVvxslVHZc5VZ/0qNPkKN3UlaAg2VSefSj
+ ejdyEEA3yBSElB/TBHtYbcVt2e3tqsCZrEHKSLlmFTcHLUTui1WLpsywmVS7aT484Cx5MlP
+ EuPm7xaDFTuFWLXCjZCsw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:6ag6QytpkC0=:F0iNzaB/GOsJyPCYy2+r8T
- TWQRa6ouemXZcW829tPcHS1gbStLedigicfHq/tmSiVuC+7WuCya6XCg+sDp/vCjwKpnTS85r
- 1UnRNjF+TxT7j2LhPcNHlGNoqExK/nQPAWOq6qqVAw2AN2JV4ZHm5mIrLW7Mfje/FSQnjAbNu
- Z73+aEaFVH0Z7C6m1cyClv1G1nZIubr/GE1k0W30/GPYyNB+7B+HYrPCIStIi7v50nfYmqoWI
- Nadg0dFW9L/WT6snJ+Diflw+Nc6msDErBEJ1zYBTBGI/C6WfPJ1Uowb2XXR/iaHi/XGja0EPR
- w0c65axxy3gSuz0ULP40ThA1586heOT49Dtjd4cnwprKu8+nU+K6+doGUKCGFwhRRDXORb+Xe
- yUGp6JxrKIx0DCbRxx1A1zFGi2+c9WPe6pafbzHC15GRlDjNg0/AOeIBSAj1WYO/tPzT9GUxF
- oMvUxcXGP5/pT86c5IVlnyuzr6331Yt6YDn0vEOFzYcAjtiLBVUEn4mNSWi0gK/6K8QQ9eozR
- x828HS72b7IGfpZQvkgwvzVRzbocFZPOehuvKJa74D/vTcd0v9eLvo8sKHIuM3ptg4l30kMjK
- BDVhRkhPxDDkdkhcNhcbwIkLpvyU/D3SRizOWR9MTTTOyD+xbJx1hazWEDn0MUZZLDF7x64uV
- 8/tZ90N3tiJpQb24g6FH4O2LoHrls8U/yMLLYteMCO49SPL4yqCDf3ify/O7MPHALHqPvtuN3
- 58qEyPlThgr5ESD1Bqdfv1OpzvNXOmgiooGXLZ3lf5absRKLy9OobLZWhAopswXPHjt+KP6XA
- IYocbYXkPB8XZx3MpTXe9GkxYRd8Tssy7vMHxxqMLIW5EewNLhMd4ioddq5jOzPtuPFNn0DPj
- 4Bm13GIE3dUc1TbMu2bL/aKly23Vw0RvxnEAW8C52x0RPUVf4ZGjt7Jk7u2YNVuGz98Y7EA4d
- wu96fBJAyuPMYaDLf4+i52OoR2yN6xzbnwZ+M0aSwLmyjqvOxbVHXis/iVApuN/EJIhlc3cGZ
- P17i4dQuHMYo0t2+Zbu/4coEL7fLYsFfysqGRuC0W1E/FmJ+MDBa7G3s+64zENWSOnuVKWzAg
- 8fzI4zZ9BqeGYrMtCF9FZO4aPg7FgIDdnTq4W0qeEl9XXNO67pYCGsxquRrFXn7MX3nMieLrf
- 1fs+IYg9Q+otF01gOPfV5qDcVofWCpow29vmVr16t7mk3BBdguR2xKkjGw06X3H9DZrgwpqH5
- z3mX4chLr6TTNnP4z
+X-UI-Out-Filterresults: notjunk:1;V03:K0:LZNn0mmb3u0=:6LsgHWgEz2hDXrj8PKKaB+
+ U50BTzHMVQh30L6ETjehkxyOXZRwf8wuCYIYMvBU8TV/4hFYjid9h8cJTaONmYr4umbUSc3vP
+ GyldNHjjwZxT6LUBujJvU/JtgefcORHdCc31XRo+nLjLKaJQB5O1qlXt4dTHevrOvsH4dZdpR
+ cR1FuAusyTes0KtBWEuWgnWy539s8ltkf67JUNGmNK2U3r27nsCQprynQVE09QxcguNGCXq8g
+ vXs+hJM9fabWY5PiNwVF+P4A0m+jRYzFjNDwh41dkSy5xz2N1R1b1jdRQViVdPcbMeIqf8W7G
+ DyX86uPfk9kc/5lUGDE4Px2n3SCI9FtOxs9roputVg+H9accphilh6t+xgZQ01VlhcD6y95Cq
+ ayqdKdlJxg2fZAqW44i506OYQpSpZVZxEXOS4Oh12sxpsDYpp5Lm/B9BKhA2gUj89ioOoa61a
+ mstAEa/eUgDYllnvwCXNYHhoFn2o0S3yMbqLG3WkEjSbJvY8mDccQNFKwl2qNcQhNZcDM0LtP
+ k5gmO/OxPPh3pF0Q6kJur7876DcEfo4JCWmR4qJCovu8M2nqC62LnrIIKeRhOiDpcVVYXyRzr
+ of9w2SNvMJ4sPPxE7vubDU5nMou9gL+jyUZsdUE3+Nz5hPHgHty5MhlUhVZHGIihK7YXbmpcL
+ T6asi8L3WdYPW1awMBay9mCa3hMr3cr8F1Js8aDV5Z9Mf5tdLKyGErrUtSpFXbkFs8weMObST
+ RAEnaxWMv78xGlz4Gh4JekK2cKzKmbL72EoaQdLJRIADnqTw5bT8EckGyC/CNUWvnJktJSDg+
+ pG8BubmpVF2qAGpWMavUtzuP7l2EG0o8vphzEKylV9kxNADg4+FDPsGgg9KNzBllUWEcVHDhq
+ PPz+GGNrQhVkOenHkUHMY3XwTa7Pj/Hn/pgxP3Gf1zYofYoM0aWoIeHJdtluI9FrJHkBr6pSp
+ 7ZVvor7o+xIDXjel1Fy4AM3Ilz8p/DDrJytakNvs27e9rWNyAKlJW0WEwxXLoqGbouWNKqVRG
+ Fyn0lqHnMA/M5t85U3ATOTwxNBOVpoT1EkGi9eCTjGacsuFgqHw+7XB/w8sxgQWvOnvK13kFv
+ yvVmW7nqvLKxoR09Oz3XRn1Agor+saY6SsXJ05qZQSLZ46Mu09jj4drm48K73bEyu/R2YAUSV
+ 9LBlmkW2SmcmsdSETolSTsYMHzGgnTdroJ6PeCNTa/itA7S1LMQF920kyVlohc22UwgC1Ikxa
+ IZpoYBPXhEiAC5fzc
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->>> The variables{files, file} will definitely be assigned,
->>
->> I find an other specification nicer for these identifiers.
->>
->>
->>> so we don't need to initialize them.
-=E2=80=A6
-> We don't need to initialize the variable =E2=80=9Cfile=E2=80=9D.
+> btmtuart_probe() misses several function calls in its error paths,
+> including hci_free_dev() and clk_disable_unprepare().
+> Refactor the code and call correct undo functions to fix the error
+> paths.
 
-I can agree to this interpretation of the software situation
-because there is a precondition involved for the variable =E2=80=9Cret=E2=
-=80=9D.
-https://elixir.bootlin.com/linux/v5.7-rc7/source/fs/proc/fd.c#L20
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs=
-/proc/fd.c?id=3Db0c3ba31be3e45a130e13b278cf3b90f69bda6f6#n20
+How do you think about a wording variant like the following?
+
+   Change description:
+   Calls of the functions =E2=80=9Cclk_disable_unprepare=E2=80=9D and =E2=
+=80=9Chci_free_dev=E2=80=9D
+   were missing for the exception handling.
+   Thus add the missed function calls together with corresponding
+   jump targets.
 
 
-> I don't find the programming concerns around the handling of the null
-> pointer for the variable =E2=80=9Cfile=E2=80=9D.
-
-I find the initial change description too terse and therefore incomplete.
-
-
-> If you have other suggestions, please elaborate on the details.
-
-I propose to extend the patch.
-How do you think about to convert initialisations for the variables
-=E2=80=9Cf_flags=E2=80=9D and =E2=80=9Cret=E2=80=9D also into later assign=
-ments?
+Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=
+e?
 
 Regards,
 Markus

@@ -2,30 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 174BD1E6E69
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 00:12:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7E4B1E6ED3
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 00:25:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436891AbgE1WMZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 18:12:25 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:45708 "EHLO
+        id S2437037AbgE1WZ3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 18:25:29 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:46115 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2436887AbgE1WMY (ORCPT
+        with ESMTP id S2437180AbgE1WY7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 18:12:24 -0400
+        Thu, 28 May 2020 18:24:59 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jeQl9-0007zv-Hz; Thu, 28 May 2020 22:12:19 +0000
+        id 1jeQxK-0000Up-4x; Thu, 28 May 2020 22:24:54 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rahul Tanwar <rahul.tanwar@linux.intel.com>,
-        linux-clk@vger.kernel.org
+To:     Felix Kuehling <Felix.Kuehling@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Mukul Joshi <mukul.joshi@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] clk: intel: remove redundant initialization of variable rate64
-Date:   Thu, 28 May 2020 23:12:19 +0100
-Message-Id: <20200528221219.535804-1-colin.king@canonical.com>
+Subject: [PATCH][next] drm/amdkfd: fix a dereference of pdd before it is null checked
+Date:   Thu, 28 May 2020 23:24:53 +0100
+Message-Id: <20200528222453.536137-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,29 +40,35 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable rate64 is being initialized with a value that is never read
-and it is being updated later with a new value.  The initialization is
-redundant and can be removed.
+Currently pointer pdd is being dereferenced when assigning pointer
+dpm and then pdd is being null checked.  Fix this by checking if
+pdd is null before the dereference of pdd occurs.
 
-Addresses-Coverity: ("Unused value")
+Addresses-Coverity: ("Dereference before null check")
+Fixes: 522b89c63370 ("drm/amdkfd: Track SDMA utilization per process")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/clk/x86/clk-cgu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/x86/clk-cgu.c b/drivers/clk/x86/clk-cgu.c
-index 802a7fa88535..56af0e04ec1e 100644
---- a/drivers/clk/x86/clk-cgu.c
-+++ b/drivers/clk/x86/clk-cgu.c
-@@ -538,7 +538,7 @@ lgm_clk_ddiv_round_rate(struct clk_hw *hw, unsigned long rate,
- 	struct lgm_clk_ddiv *ddiv = to_lgm_clk_ddiv(hw);
- 	u32 div, ddiv1, ddiv2;
- 	unsigned long flags;
--	u64 rate64 = rate;
-+	u64 rate64;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index 25636789f3d3..bdc58741b32e 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -103,10 +103,11 @@ static void kfd_sdma_activity_worker(struct work_struct *work)
+ 		return;
  
- 	div = DIV_ROUND_CLOSEST_ULL((u64)*prate, rate);
+ 	pdd = workarea->pdd;
++	if (!pdd)
++		return;
+ 	dqm = pdd->dev->dqm;
+ 	qpd = &pdd->qpd;
+-
+-	if (!pdd || !dqm || !qpd)
++	if (!dqm || !qpd)
+ 		return;
  
+ 	mm = get_task_mm(pdd->process->lead_thread);
 -- 
 2.25.1
 

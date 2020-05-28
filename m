@@ -2,115 +2,154 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 878AA1E64DD
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 16:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D24931E6552
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 17:03:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403781AbgE1O4B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 10:56:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46214 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391332AbgE1Oz7 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 10:55:59 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD2C6C08C5C7
-        for <kernel-janitors@vger.kernel.org>; Thu, 28 May 2020 07:55:58 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id r7so11562210wro.1
-        for <kernel-janitors@vger.kernel.org>; Thu, 28 May 2020 07:55:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cumulusnetworks.com; s=google;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=EneWOSiakfCEBaGnxTPG1pDLBtx0joXUVr4u5ehgW3o=;
-        b=E48ktRuxhpbVEBsogPQwIhCX+QdVASFipvgGxF9Jh2+6mBhSWXz+xMMaAOTNP6CyPe
-         9ztFbUVfCr/1IU06ipTsV+cU/HKxibCQAiBxazot2AGMjqj/UtJjY5b/6cyFlG0FktES
-         CjEqaPrDQ3Zwh3yN54NVP7gE5yXe1oyl6Wgz4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=EneWOSiakfCEBaGnxTPG1pDLBtx0joXUVr4u5ehgW3o=;
-        b=FoZI9mIyhgYyFD63Mjdmn98uH0LUEbPdZ3ebI59xOCPN2obmb9M+A0A8eN5h+go0bn
-         9NiVQGtSUacd7BtNrIpU9Y/4rfeo7A+tTiWuKINs3MntjE0f54whOK9ncz8hcvdXzGP7
-         QVmGUfrvKS1Jjb93t0DSRpxkUAKJpOrecEakEGpWKVX3hxZfZFHxbMe/DH9nJ7EBLVp2
-         Cyq7MLbcN5kEiX80c70FZbHKTMZgmT/zlntfXEPmtuPFdyOx7DAKZi+HurDMDbpEqvcv
-         6mXGsm/mt+zsXLh2m1v8GZocc1/J5cTrudWab9T6UJX0Qfpc7M4ygpXZ3rxv1rg4Tmq8
-         GZGA==
-X-Gm-Message-State: AOAM533t2sM/FMfQowdNVmvL8Map1swUJTZbfafRTm0qpNhH2eZeULdi
-        HlWp2G+vpnxS0KYCj8EH96LeYA==
-X-Google-Smtp-Source: ABdhPJzQUq72JztGH2vQBnYxdj0ih8RSMgb5VMRbG33nWrvt2fkhWG9C9dpWueI/PvK7ArgQjpCE8Q==
-X-Received: by 2002:a05:6000:1192:: with SMTP id g18mr4141547wrx.326.1590677757388;
-        Thu, 28 May 2020 07:55:57 -0700 (PDT)
-Received: from [192.168.51.243] ([78.128.78.220])
-        by smtp.gmail.com with ESMTPSA id y37sm7276009wrd.55.2020.05.28.07.55.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 May 2020 07:55:56 -0700 (PDT)
-Subject: Re: [PATCH][net-next] nexthop: fix incorrect allocation failure on
- nhg->spare
-From:   Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
-To:     Colin King <colin.king@canonical.com>,
-        David Ahern <dsahern@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200528145114.420100-1-colin.king@canonical.com>
- <8b73e872-c05e-e93f-1d2d-3466da4ddbcc@cumulusnetworks.com>
-Message-ID: <b0852a83-c3a5-a1be-6554-dc035e5b3d6e@cumulusnetworks.com>
-Date:   Thu, 28 May 2020 17:55:55 +0300
+        id S2403936AbgE1PCu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 11:02:50 -0400
+Received: from mout.web.de ([212.227.17.12]:41941 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2403912AbgE1PCs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 May 2020 11:02:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1590678139;
+        bh=XAlZ9NlFpmpE4T1vzDKjCyi79kivASTGD6nypBrWwyU=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=IsgGFPf7bd45fb9vMm5tRv2jjsFQXKrY+PEODjX0mtbq1BOoGkk5/A1+y88O3fT57
+         sL7leqDtKPS1Dw0903JlCHlN/q2wBJIwhqYkKgDsRXR2S8UlSAC4wXh9slhFU8bmlO
+         MDaaZlHsujpTds+Q/0rdY5LfAy7YAvf/qjrv0iik=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.3] ([2.244.30.242]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MG9DC-1joFex1Uia-00Germ; Thu, 28
+ May 2020 17:02:19 +0200
+Subject: Re: [v5] workqueue: Remove unnecessary kfree() call in rcu_free_wq()
+To:     Lai Jiangshan <jiangshanlai@gmail.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Tejun Heo <tj@kernel.org>
+Cc:     Zhang Qiang <qiang.zhang@windriver.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20200527075715.36849-1-qiang.zhang@windriver.com>
+ <284c7851-4e89-a00f-a2e6-aa8e2e1f3fce@web.de>
+ <DM6PR11MB32573F3884A864ECD586235EFF8E0@DM6PR11MB3257.namprd11.prod.outlook.com>
+ <DM6PR11MB3257D6E7E93A518392502809FF8E0@DM6PR11MB3257.namprd11.prod.outlook.com>
+ <20200528095703.GH30374@kadam>
+ <CAJhGHyD1nV=M=ccycqCMt86GMuZGkO9trbJ=4ti4EzP9kta6iA@mail.gmail.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <75afce2b-cdf0-b917-cab5-f36d105abcfc@web.de>
+Date:   Thu, 28 May 2020 17:02:18 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <8b73e872-c05e-e93f-1d2d-3466da4ddbcc@cumulusnetworks.com>
+In-Reply-To: <CAJhGHyD1nV=M=ccycqCMt86GMuZGkO9trbJ=4ti4EzP9kta6iA@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:SyQea2mcR7kZajl+TazE9ttwxonaCGfXKQ2UnI3DIy2jOqVknLK
+ NSVku7ElU39PDHnalEfvGxWNU6tAlz1UdBstByK+owtpPhevM2ebWZT42GToGdUSLefjgEk
+ qAobBy4LQUAzBOfiDdTbhgPFWcyk659vL/mLrG157mff1nZUu3QvN3fFskluVpM/5J8hjvl
+ eV1f3zHQCUWn5cxQH/yuA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:AczgUwj0+1g=:fqQvrpBy7yOvwjP+2RzH4P
+ GXMkj5L+E3sKg/4fyrvsjXFe5zyhN83XHf/jXbe+JTakbzzOX//AFUtZSatUF9ajfu/8F+DwW
+ b7p48G1ZSEkqPqAkoGmbJFeorz0cghvcUwTMeTIZREexTQo6lEpBIm/76os4dbwdqCEh60Oqg
+ uw3Bp/GH7JnwkTVNeBFV1V85Q1VIq1n3XvS+vuVJGnRkO+TlY72XvniyH7md++5Z9gOwlR85p
+ LdLRektbUJwmAYsRVtC5MqgICkHH56lNVTWMhbt3NziHv8L8ZliMposRyi15FWxAruEq7O7kQ
+ nsiH24y+a80+ZzfEeqchBqGaSY+vFOnT0YYtHKkfC9USCMpZduEtPRlIjDbBcjcKdzpsZsoyI
+ RYRyie42/X98bz8xfjhM478JDes7Tbpuu0Ik9zA8JymjN2IUhKWllODqojK6Q5ClvMNgEzaK3
+ HX8o9UdGst60qGVgXEfCC3qKsmnDJmWN1iWx5SCJ0w18F1ClyNSHVdCDv1ej6SLJ30wniLmS2
+ zs73ttW7Wm1hZoJOE9D0K3bfEAOuZOUkBlM7qhRoHMbbV+wK6/xeEw1Xw3wpgaMqC4AzTiCFo
+ mcXaECKEaqqXCni37sJ/Wi/Lxo+LZvmxv35OW0rB1bfoW9sDii/71oG5O/aEnuufGpp3O1lCV
+ b+B9397ZLcm5u3DzvwEVOvLG2LIaeR3jeJ6x11iRTpVEYZuHmG2o7D5dPUO8Is+I5+m/SGp9G
+ tPmU70gHqrPssc8xcwlU+HZqEn4mP9VySol03OUvLl7pS5Apbo7gB8u7CzXC2pntNOrBFVcy4
+ gDostiZUrRpPsnX7XNFn7ISZGlVERHPCVppGi4cSw3Dwi0MhEFxffSep4XR6nfJMG8PWzcxIB
+ FgRztVuevYe0164+mlwfMz9V94AX0bAwzAI3PkN7LYiA758lZJUyeLgu7s2zxsWmEOlRlg5N7
+ ffpNziy+0IKYw1tf6Q42sF3zDqnjvH35YAMa4GlLa+j+EaFkxhIWFlBpcB0d+EETffEyfDhs/
+ SCzbZYZMv6aUs+u/gqE2H1ea+EetoS/etoyK6HTejr9VAvMUd17KdU53DAVt4GCR75kwaRkbE
+ ofjxia0hff2wqvWEmVAqxZg0wHaEvyADgR/x4j+Jj2GHXYwhN639AJ0UoTaLsU2QL9caDXL6q
+ Ki4pqpD1oFeBiTIi2B8yK8O9CY9jR19Tle9Ra0/qG7PIf+dlb2bHiWiQ4niTMb05sxrZTO9tJ
+ 8S5EKNmYYE+r9Zv1w
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 28/05/2020 17:53, Nikolay Aleksandrov wrote:
-> On 28/05/2020 17:51, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> The allocation failure check for nhg->spare is currently checking
->> the pointer nhg rather than nhg->spare which is never false. Fix
->> this by checking nhg->spare instead.
->>
->> Addresses-Coverity: ("Logically dead code")
->> Fixes: 430a049190de ("nexthop: Add support for nexthop groups")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>  net/ipv4/nexthop.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
->> index ebafa5ed91ac..97423d6f2de9 100644
->> --- a/net/ipv4/nexthop.c
->> +++ b/net/ipv4/nexthop.c
->> @@ -1185,7 +1185,7 @@ static struct nexthop *nexthop_create_group(struct net *net,
->>  
->>  	/* spare group used for removals */
->>  	nhg->spare = nexthop_grp_alloc(num_nh);
->> -	if (!nhg) {
->> +	if (!nhg->spare) {
->>  		kfree(nhg);
->>  		kfree(nh);
->>  		return NULL;
->>
-> 
-> Good catch, embarrassing copy paste error :-/
-> Acked-by: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
-> 
+> I'm also confused why they have been debating about the changelog
+> after the patch was queued.
 
-Wait - that should be targeted at -net, that's where the fixes went.
-And the fixes tag is wrong, nhg->spare was very recently added by:
-commit 90f33bffa382
-Author: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
-Date:   Tue May 26 12:56:15 2020 -0600
+I suggest to take another look at the provided patch review comments.
 
-    nexthops: don't modify published nexthop groups
 
+> My statement was about "the patch is a correct cleanup,
+> but the changelog is totally misleading".
+
+The commit message was accordingly adjusted, wasn't it?
+
+
+> destroy_workqueue(percpu_wq) -> rcu_free_wq()
+> or
+> destroy_workqueue(unbound_wq) -> put_pwq() ->
+> pwq_unbound_release_workfn() -> rcu_free_wq()
+>
+> So the patch is correct to me. Only can destroy_workqueue()
+> lead to rcu_free_wq().
+>
+> Still, the kfree(NULL) is harmless. But it is cleaner
+> to have the patch.
+
+Thanks for such a feedback.
+
+
+> But the changelog is wrong, even after the lengthened debating,
+
+Do you expect any corresponding improvements?
+
+
+> and English is not my mother tongue, so I just looked on.
+
+How will the patch review evolve further despite of this information?
+
+Regards,
+Markus

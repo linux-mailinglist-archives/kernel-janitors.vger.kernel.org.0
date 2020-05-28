@@ -2,76 +2,150 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B21B21E59EC
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 09:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 084BC1E5A62
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 10:08:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726111AbgE1HzO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 03:55:14 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:5300 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725901AbgE1HzO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 03:55:14 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id E437587AD107F6AD0F4C;
-        Thu, 28 May 2020 15:55:12 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 28 May 2020 15:55:06 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Mike Marciniszyn <mike.marciniszyn@intel.com>,
-        Dennis Dalessandro <dennis.dalessandro@intel.com>,
-        Doug Ledford <dledford@redhat.com>,
-        "Jason Gunthorpe" <jgg@ziepe.ca>
-CC:     YueHaibing <yuehaibing@huawei.com>, <linux-rdma@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] IB/hfi1: Remove set but not used variable 'priv'
-Date:   Thu, 28 May 2020 07:59:46 +0000
-Message-ID: <20200528075946.123480-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726394AbgE1IH7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 04:07:59 -0400
+Received: from mout.web.de ([212.227.15.4]:33987 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725786AbgE1IH6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 May 2020 04:07:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1590653269;
+        bh=Kjxv5j/70jFJObItlorcZS0xPRih2dduzhD0gfulbCU=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=htNks5ESpYHDEZfGwTkdX3EIIHqVRGrQZlffDtk1EH/2oxIy5bSsRxLGuYaMpLQnu
+         lTXfNK7pdF4a3dsOY6AeuRHfadjfGMzmBKaziNCRNhLahQX5JLlnbSUnKY6D+Qpc4x
+         pZsCOX9Sq7EU2yCFmvffYlmzJkKmtPi6QVYmBEZQ=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([2.243.155.229]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MW6Ib-1jXELs0e7d-00XOOu; Thu, 28
+ May 2020 10:07:49 +0200
+Subject: Re: [PATCH v6] workqueue: Remove unnecessary kfree() call in
+ rcu_free_wq()
+To:     Zhang Qiang <qiang.zhang@windriver.com>, Tejun Heo <tj@kernel.org>,
+        Lai Jiangshan <jiangshanlai@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20200528013736.39356-1-qiang.zhang@windriver.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <4f292007-4da0-3558-4c6b-ca3eaf884193@web.de>
+Date:   Thu, 28 May 2020 10:07:48 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20200528013736.39356-1-qiang.zhang@windriver.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:uqNzjfOkrcuvda9fmBmbhmRDEw0/pz1M4Qv09p1m1OR7vIMo387
+ dloYPfbsEcQZ/SjxWokYN7nLDCSQggthv+6uplr6YuG0zA4UddXn7WkctPMI+mj40JB/iIu
+ HSWf7bufV5UcjUszptnUrW7BhwgZKcjmM5UY5P5wu8hDjnWLuJ3Z2MY1ywqsKhV2XnCgLJA
+ hdLVHxtaTLSSFx2ZjP+iQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:PyTAXYFcb/w=:CGNO5UpeFqRLQPOcIfl+aq
+ r12DDwVQFwBvDQRt6Jzdhds6JDLBI+etcGX+lRb7T9I20wETdl2rXw0IBOomCqegr7kzeFdEU
+ 3Co2bNqR+xJijTrgXQHCNh95ZrGqBVwVYidZVWH+eVdsepTyJo8CgscwpUk8Ki50uQrW1oYKd
+ Nxf22rQHfUOCc/JNpfMOsoAHe9jPunKm5WzqjX/iM8kX4SDkrFaMstEsNhadgjPRPRm3sPwXm
+ XeIpON1ypCbnxR6HVjcEIhO8Qsjc1Tc2gvFbwk69Kx0sNtrh6ForcFhgW1iaZN7GmyKPtkGQf
+ vrLBqgIq6NnuJ3zt8iJJdDicsK2J+GtYn7fnyAsN3cpPBJyVe5GZy3aAkzCooDOAalPRp9uXp
+ /Z03iFWSoyTVKz+kuH1qWvW+kdbAV1Dhn62V80f5qrZXWffqsDOojSFig3lhxoGvBtgvqOUKC
+ OUbwurqmQQe3pC/zAJ5EwHPcu2eWXbCnebR9adG/vnKI6YPPG0ISme7rxXkwfYItpRvR8k9mg
+ VK3ha+xQTFANAn5KgVT3Zzf9SvKXf8+vztALJTipN780YJ2aOjRgTEdKAWgRpjyih+PmzzEv8
+ /uWY6Xa9kJQ1XjqxoTu/xf9Dn3jkgm4JFydnhiz9CU2BDQYusTni+c56r3kfVDyb54iE7P1B5
+ T+9rH6xKdpF+Nr9Tu+Wv+Gxj8fPtEv89ogJgDnL2/qjf1eXETH7fu6fld5ovJ21N5hZvNM+g8
+ uWamEWRtPXzBI+koId7MXI4Jyd/lrB4p+ckdD5gX0iJE9O3CPCqLoI3vr7ptDZ8UwofxP29PE
+ jyJgpZ/iynppsnvShRHu5SctXxf4y6gFXAvm3FqJijJ5h/FLGnNgVIf63K90oqzc+qC2ob3DH
+ L0U37JumhuiaSnKceBTk9eOk+Yl3jxclS/Y+JGgJJjOtADeLq8HJajGLIJ86pJg3/9G0CmrQX
+ eD4HbwO69eewzKJbyChn3uVhQAN8wXrAZk9PYl1T4HDaomNccB+O5JkFzWxYt1YqawZ5DgkMd
+ OEgovoBXs881ITXD/ryQ2EVrH0CqloPKi/FCqxIzSs6wCHvyoszJsqij1yWk0JaqBGernh5YQ
+ AuAOO3P3bxpdY+WUkPQe9hNZzOb/GpPqm2PkuGFaybq9kgrsWFDuKojQKF/A/6FVVvWTYy+k5
+ CKWMkT8tTiRW/SSMuvvmG6r2EGDiteIL2wcOf/cbqTj5SzxBUpQHLFgjf14zYnnaasIle/qly
+ juvrqq0/y+GqA+JHG
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-drivers/infiniband/hw/hfi1/netdev_rx.c: In function 'hfi1_netdev_free':
-drivers/infiniband/hw/hfi1/netdev_rx.c:374:27: warning:
- variable 'priv' set but not used [-Wunused-but-set-variable]
+> Thus delete this function call which became unnecessary with the referen=
+ced
+> software update.
+=E2=80=A6
+> Co-developed-by: Markus Elfring <Markus.Elfring@web.de>
 
-It is never used, so can be removed, then null check before
-kfree is unneeded.
+I guess that this tag should usually trigger another consequence like the =
+following.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3Db0c3ba31be3e45a130e13b278c=
+f3b90f69bda6f6#n548
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/infiniband/hw/hfi1/netdev_rx.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/infiniband/hw/hfi1/netdev_rx.c b/drivers/infiniband/hw/hfi1/netdev_rx.c
-index 58af6a454761..bd6546b52159 100644
---- a/drivers/infiniband/hw/hfi1/netdev_rx.c
-+++ b/drivers/infiniband/hw/hfi1/netdev_rx.c
-@@ -371,14 +371,9 @@ int hfi1_netdev_alloc(struct hfi1_devdata *dd)
- 
- void hfi1_netdev_free(struct hfi1_devdata *dd)
- {
--	struct hfi1_netdev_priv *priv;
--
--	if (dd->dummy_netdev) {
--		priv = hfi1_netdev_priv(dd->dummy_netdev);
--		dd_dev_info(dd, "hfi1 netdev freed\n");
--		kfree(dd->dummy_netdev);
--		dd->dummy_netdev = NULL;
--	}
-+	dd_dev_info(dd, "hfi1 netdev freed\n");
-+	kfree(dd->dummy_netdev);
-+	dd->dummy_netdev = NULL;
- }
- 
- /**
+Signed-off-by: Markus Elfring <Markus.Elfring@web.de>
 
 
+Is there a need to tag also the patch review contribution of Lai Jiangshan=
+?
+https://lore.kernel.org/lkml/CAJhGHyC4XcNL8yzWZKZ=3D73wZJej4JwCaAHGV8qjYn-=
+AqcEAEjQ@mail.gmail.com/
+https://lore.kernel.org/patchwork/comment/1442889/
+https://lkml.org/lkml/2020/5/26/201
 
+
+I am unsure if such aspects will matter after Tejun Heo responded with the=
+ information
+=E2=80=9CApplied to wq/for-5.8.=E2=80=9D to the previous patch version yes=
+terday.
+https://lore.kernel.org/lkml/20200527135214.GI83516@mtj.thefacebook.com/
+https://lore.kernel.org/patchwork/comment/1443888/
+
+
+>  v1->v2->v3->v4->v5->v6:
+>  Modify weakly submitted information and tag.
+
+I am curious how our imaginations and preferences will evolve further
+also for such wording selections.
+
+Regards,
+Markus

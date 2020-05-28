@@ -2,73 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7E4B1E6ED3
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 00:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A7641E6FDA
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 01:01:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437037AbgE1WZ3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 18:25:29 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:46115 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2437180AbgE1WY7 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 18:24:59 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jeQxK-0000Up-4x; Thu, 28 May 2020 22:24:54 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Felix Kuehling <Felix.Kuehling@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Mukul Joshi <mukul.joshi@amd.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/amdkfd: fix a dereference of pdd before it is null checked
-Date:   Thu, 28 May 2020 23:24:53 +0100
-Message-Id: <20200528222453.536137-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
+        id S1728653AbgE1XBA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 19:01:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46298 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727899AbgE1XAz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 May 2020 19:00:55 -0400
+Received: from kernel.org (unknown [104.132.0.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 69B002074B;
+        Thu, 28 May 2020 23:00:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590706855;
+        bh=BjaPhLv7o3F9Baq35hcGqpi0Mk/SufIcuOaMQDHCS9c=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=P1T6h3goNb5Pe3t56fZFSyff4JfuW/pOATL+5x9+iVegZ36QKcaKYkXyDv4SHfVni
+         6kqffzJuvKhBpf2ykGLzze2sZd3t2q3qPKdPHu9zxEdxyGjY+Kh++JBtn/MOOK46yL
+         jaGpjXBITmL//5+If8qr08n/sGIkENepKN4yDNws=
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200528221219.535804-1-colin.king@canonical.com>
+References: <20200528221219.535804-1-colin.king@canonical.com>
+Subject: Re: [PATCH][next] clk: intel: remove redundant initialization of variable rate64
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+To:     Colin King <colin.king@canonical.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rahul Tanwar <rahul.tanwar@linux.intel.com>,
+        linux-clk@vger.kernel.org
+Date:   Thu, 28 May 2020 16:00:54 -0700
+Message-ID: <159070685467.69627.16613075011399178571@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Quoting Colin King (2020-05-28 15:12:19)
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> The variable rate64 is being initialized with a value that is never read
+> and it is being updated later with a new value.  The initialization is
+> redundant and can be removed.
+>=20
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
 
-Currently pointer pdd is being dereferenced when assigning pointer
-dpm and then pdd is being null checked.  Fix this by checking if
-pdd is null before the dereference of pdd occurs.
-
-Addresses-Coverity: ("Dereference before null check")
-Fixes: 522b89c63370 ("drm/amdkfd: Track SDMA utilization per process")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/amd/amdkfd/kfd_process.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-index 25636789f3d3..bdc58741b32e 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -103,10 +103,11 @@ static void kfd_sdma_activity_worker(struct work_struct *work)
- 		return;
- 
- 	pdd = workarea->pdd;
-+	if (!pdd)
-+		return;
- 	dqm = pdd->dev->dqm;
- 	qpd = &pdd->qpd;
--
--	if (!pdd || !dqm || !qpd)
-+	if (!dqm || !qpd)
- 		return;
- 
- 	mm = get_task_mm(pdd->process->lead_thread);
--- 
-2.25.1
-
+Applied to clk-next

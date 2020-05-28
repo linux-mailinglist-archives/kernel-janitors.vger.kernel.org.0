@@ -2,74 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35EC61E6254
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 15:32:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C41481E6331
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 16:04:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390354AbgE1NcC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 09:32:02 -0400
-Received: from mga11.intel.com ([192.55.52.93]:21122 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390303AbgE1NcC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 09:32:02 -0400
-IronPort-SDR: 9BvkWFpb6aHVx8DD7Cjk4B+FrP0/n5mz3jII8ScOW9CmiYHRtrVC3QgNIstjJlbij+dli1fjCR
- CNCY9IJqa8RQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2020 06:32:00 -0700
-IronPort-SDR: dbsPAqdPM7hNXfSpV6dA5BCc4Or8fjAcOLgXC+Mhy9OvnkSbeZsWyH7YkkSTLdkZDOSf9nWMlo
- fDxn2BtPyZ9A==
-X-IronPort-AV: E=Sophos;i="5.73,444,1583222400"; 
-   d="scan'208";a="267215656"
-Received: from ddalessa-mobl.amr.corp.intel.com (HELO [10.254.205.103]) ([10.254.205.103])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2020 06:31:58 -0700
-Subject: Re: [PATCH][next] IB/hfi1: fix spelling mistake "enought" -> "enough"
-To:     Colin King <colin.king@canonical.com>,
-        Mike Marciniszyn <mike.marciniszyn@intel.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200528110709.400935-1-colin.king@canonical.com>
-From:   Dennis Dalessandro <dennis.dalessandro@intel.com>
-Message-ID: <d60039c9-b0a5-cff5-410e-0d98f020e577@intel.com>
-Date:   Thu, 28 May 2020 09:31:55 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+        id S2390857AbgE1OEI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 10:04:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38070 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390644AbgE1OEE (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 May 2020 10:04:04 -0400
+Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D1D8C05BD1E;
+        Thu, 28 May 2020 07:04:04 -0700 (PDT)
+Received: by mail-qt1-x841.google.com with SMTP id z1so122650qtn.2;
+        Thu, 28 May 2020 07:04:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=EBD7IPZhPK6LYEpuUm9uYZgoKSKV6F+qQYG7TUFwOBk=;
+        b=qOzW1pAeJlvpU3IPXP5a+SZ03JGuxgKHseAl/bi7J7DqaZVwJa5QmrtrPr5e5etDfB
+         2Zjs3Jenivlp6HhzVugJ1rvqIWm9lau58W/4Ju1loK8vxQYYSMm2G2le6dt+crmwYLi7
+         2EH0IOA6U44/TDz6WEK4KEuiGeqcoPaTFcJSywkkZsUITScl6COflTq22fN89s7GSUQO
+         ebJCE/xZu1wSjfoQiKNvTXy+Y7rgrpU8ysy1D5kR1eRIDNsQe0EBnBYmylOIACQNhxhR
+         TUlV7kaMSEKfjzMmF6ROisX/YJ+vMXnuB0Et4Trc1jlqw0wT9KBLjLLr1OWlFtMkTM8q
+         Njig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=EBD7IPZhPK6LYEpuUm9uYZgoKSKV6F+qQYG7TUFwOBk=;
+        b=BAQ0eueq2UtpAdwX9SAZ88AatJ5Sa+PYURFjQy8ENdkayFY7sC01eFcW/18m7a2MJg
+         OXbxG/f65W1tO7F+bDgADtZ2s6+5gIBnvIOSUzpBTpew3oCd4/4zn1GsDqoj9kw/je4o
+         qhAfAoS+8OFIuOoUmbelJGH0W7EH6G3J5+Iu4ioCTouyvA8LAzliycVt5erExdiEz6Iu
+         1Twjo3fPR/jCxGfi5HPzDp1/l/i+mjBMncSdJbmoDjQrEGcUFePNw6eOTyzv83/hxjR6
+         UCG3zVCBKCRCdckZmZlZGuoAFiqxoYwfv+C+vbKuTFE1OA4rV6hjB17z+I1/HrHFCEsy
+         PB3Q==
+X-Gm-Message-State: AOAM533iGZ54MpL+MkeMg4ruwdrOe9pIAeFZfmmGUgz9B6CG5uebz5yw
+        8CZ0LiG67dV3wNF2pNwH+8w=
+X-Google-Smtp-Source: ABdhPJxLDJSpWjyDvtA1dv/WxHHofDQc5w+PCpAkPSnNcrs107St/oCxV6bvuJPWfG09qxgbbNbq9Q==
+X-Received: by 2002:ac8:4e4a:: with SMTP id e10mr3112122qtw.203.1590674640313;
+        Thu, 28 May 2020 07:04:00 -0700 (PDT)
+Received: from localhost ([199.96.181.106])
+        by smtp.gmail.com with ESMTPSA id w10sm5779166qtc.15.2020.05.28.07.03.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2020 07:03:59 -0700 (PDT)
+Date:   Thu, 28 May 2020 10:03:57 -0400
+From:   Tejun Heo <tj@kernel.org>
+To:     Lai Jiangshan <jiangshanlai@gmail.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "Zhang, Qiang" <Qiang.Zhang@windriver.com>,
+        Markus Elfring <markus.elfring@web.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: =?utf-8?B?5Zue5aSNOiBbUEFUQ0ggdjU=?= =?utf-8?Q?=5D?= workqueue:
+ Remove unnecessary kfree() call in rcu_free_wq()
+Message-ID: <20200528140357.GL83516@mtj.thefacebook.com>
+References: <20200527075715.36849-1-qiang.zhang@windriver.com>
+ <284c7851-4e89-a00f-a2e6-aa8e2e1f3fce@web.de>
+ <DM6PR11MB32573F3884A864ECD586235EFF8E0@DM6PR11MB3257.namprd11.prod.outlook.com>
+ <DM6PR11MB3257D6E7E93A518392502809FF8E0@DM6PR11MB3257.namprd11.prod.outlook.com>
+ <20200528095703.GH30374@kadam>
+ <CAJhGHyD1nV=M=ccycqCMt86GMuZGkO9trbJ=4ti4EzP9kta6iA@mail.gmail.com>
+ <20200528122545.GP22511@kadam>
+ <CAJhGHyBUkMZ=cV+Qf-5+PMAFqgebbRLc46OZSSUSgoRROpUk2A@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200528110709.400935-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJhGHyBUkMZ=cV+Qf-5+PMAFqgebbRLc46OZSSUSgoRROpUk2A@mail.gmail.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 5/28/2020 7:07 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in an error message. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->   drivers/infiniband/hw/hfi1/chip.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/infiniband/hw/hfi1/chip.c b/drivers/infiniband/hw/hfi1/chip.c
-> index 7f35b9ea158b..15f9c635f292 100644
-> --- a/drivers/infiniband/hw/hfi1/chip.c
-> +++ b/drivers/infiniband/hw/hfi1/chip.c
-> @@ -14559,7 +14559,7 @@ static bool hfi1_netdev_update_rmt(struct hfi1_devdata *dd)
->   	}
->   
->   	if (hfi1_is_rmt_full(rmt_start, NUM_NETDEV_MAP_ENTRIES)) {
-> -		dd_dev_err(dd, "Not enought RMT entries used = %d\n",
-> +		dd_dev_err(dd, "Not enough RMT entries used = %d\n",
->   			   rmt_start);
->   		return false;
->   	}
-> 
+Hello,
 
-Thanks!
+On Thu, May 28, 2020 at 09:27:03PM +0800, Lai Jiangshan wrote:
+> wq owns the ultimate or permanent references to itself by
+> owning references to wq->numa_pwq_tbl[node], wq->dfl_pwq.
+> The pwq's references keep the pwq in wq->pwqs.
 
-Acked-by: Dennis Dalessandro <dennis.dalessandro@intel.com>
+Yeah, regardless of who puts a wq the last time, the base reference is put
+by destroy_workqueue() and thus it's guaranteed that a wq can't be rcu freed
+without going through destroy_workqueue(). lol I'm undoing the revert.
+
+Thanks.
+
+-- 
+tejun

@@ -2,39 +2,41 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 102F61E642C
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 16:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 447AC1E6455
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 16:45:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726567AbgE1Okq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 10:40:46 -0400
-Received: from mout.web.de ([212.227.17.11]:55281 "EHLO mout.web.de"
+        id S1728583AbgE1OpT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 10:45:19 -0400
+Received: from mout.web.de ([212.227.17.12]:60099 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725795AbgE1Okp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 10:40:45 -0400
+        id S1725922AbgE1OpS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 May 2020 10:45:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590676831;
-        bh=HYU9sYcWSnsaVuYUbeTcXYC6woawYhMkBcGEBFM9d/s=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=rJX7Rg8hbtIRVcucubgY+UgTewnKFYAjU4vZ74g4KWP5lQGFks4SfmXZG9BLjjpHL
-         qkrXeynwhw9kGbBRbWgqLGMREsaTaEqul98jMmhb/b0YTHbDd3W1U3m1SF85GrZLgZ
-         BpOUZ9b1LCNxZsY/7OkLVeHg2ujLzMpOVeIrClVU=
+        s=dbaedf251592; t=1590677106;
+        bh=Ji+TnI2/l/tfPAhTFGuY2bDQt0RWf1M1u3vwa2F6Hss=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=pVhJ0QiyzrelEonbutiGe/B4RvYYC5lOTafZl0dgU/mK9PBqWKiW5PEcjs4iaEVWs
+         iLnVdOoAjgZEAF2ku8Tc8JMdRVuQBqd90X4J/6vOLy3/lL4jtYmCSuPLYLsThxFJ0R
+         zq/hyJuZgRFc5kkajyywUtbSeuGFPDrujsocoMlk=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([2.244.30.242]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MRCrb-1jRLX60oAx-00Uawr; Thu, 28
- May 2020 16:40:31 +0200
+Received: from [192.168.1.3] ([2.244.30.242]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MBB3s-1jjHqu0IWc-00CkOR; Thu, 28
+ May 2020 16:45:06 +0200
 Subject: Re: [v5] workqueue: Remove unnecessary kfree() call in rcu_free_wq()
-From:   Markus Elfring <Markus.Elfring@web.de>
-To:     Tejun Heo <tj@kernel.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
+To:     Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
         Zhang Qiang <qiang.zhang@windriver.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 References: <20200527075715.36849-1-qiang.zhang@windriver.com>
  <284c7851-4e89-a00f-a2e6-aa8e2e1f3fce@web.de>
  <DM6PR11MB32573F3884A864ECD586235EFF8E0@DM6PR11MB3257.namprd11.prod.outlook.com>
  <DM6PR11MB3257D6E7E93A518392502809FF8E0@DM6PR11MB3257.namprd11.prod.outlook.com>
- <20200528095703.GH30374@kadam> <20200528103809.GK83516@mtj.thefacebook.com>
- <5e25fc22-fb61-46f8-a8ec-232bceee40b7@web.de>
+ <20200528095703.GH30374@kadam>
+ <CAJhGHyD1nV=M=ccycqCMt86GMuZGkO9trbJ=4ti4EzP9kta6iA@mail.gmail.com>
+ <20200528122545.GP22511@kadam>
+ <CAJhGHyBUkMZ=cV+Qf-5+PMAFqgebbRLc46OZSSUSgoRROpUk2A@mail.gmail.com>
+ <20200528140357.GL83516@mtj.thefacebook.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -78,48 +80,51 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <17ea4742-6fdb-c0a2-666d-a9c2b8f2bf4a@web.de>
-Date:   Thu, 28 May 2020 16:40:30 +0200
+Message-ID: <a3349efe-5291-637a-f98d-407a33f2fede@web.de>
+Date:   Thu, 28 May 2020 16:45:05 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <5e25fc22-fb61-46f8-a8ec-232bceee40b7@web.de>
+In-Reply-To: <20200528140357.GL83516@mtj.thefacebook.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-X-Provags-ID: V03:K1:/Y1VGSyd9/aNLKYxfRXIALqLijS2Uw8DEKzJ8hQbHWwiwQOfEFq
- /SP60uA8Z1QeWwuncJ+O6flTO/+RjhQFUh5hwuE+BygQWSnt04p2HbH1/AXs2Y6LhNhBWfz
- ur+5TPLPx8hXnfEhuGAJevc3Ev1HhzjFlT0M1DahlLYMWUAQGlTjVjN13dl1F1HT1CS2V/J
- mkIY8wjIJNbvEdi7Q4QaQ==
+X-Provags-ID: V03:K1:SEPL94SsTVWqsHP+v75Rc9Xv5QXiVgVLCbgV//JUdIwaxlNCPaM
+ FryG8tBcnSJ2nKvUJ0Q298R4uiDRj2GpN2JuYJK5fnJmCT0SJRjRDrZ5PoId/Vb5VR/p/ul
+ SBeMHiMgviud4J7GPdlwtFFu7fhy1grsOET32MjdqYbiRYVyYOAsZwMKnyes/51T1ZH8NTz
+ Sh80XKB2o1z2opRKBYfXQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:LOk2aV/F0bs=:vVLvv8ygg/Upu1A0Z7RDi9
- HTg0BFRgg4ypvGbjXciKaLueN2fmH9WqtWYt/OXMRz9ceS4e1mUO7o4PPDxOqRUAuVUaFL9iQ
- zEgQyhh6SXQCnVumvDknsiUwmyyoZOBc8o0A21xioxHsUn527AtadLvaIOB4VAfsEHWI3cVIs
- mddN+zkoGCMMwFurjXx0wTl8JmfvcWhPBWarRZlVXtcLDhRlpL60mqy9rRH3wI/RGrdW/mfp6
- cgcuvvqiyqV1neN0JhLFmu6M3fHFiqAtIeb2Sobey/IQrEJTrGOShKrq5JcXhGQAYyrwbIzBw
- dl20O588FA9AdAQmCRxenZMyrdr3jM0buKkMFndZW6WbyyaQmxsHexcNkRNXKmZxR2vKAQcWW
- jWCglXMFbwcSmkYjXqlS0SFkoUbD6GU/atsWcnG3Pi9davrYDWjd7VneK3u8QGiBgwkD1blBG
- yIzXJqussSXqv1oWV7DO1MoiaoD6fLq1p//Zu5rjJHlfLlTndQTDd39zhY4sPahDaJ+S2Gq6/
- pVHS0p/gYqeNx9LWQ1W938XImjwM5IEpbBIItqgbpNm/6LcAqlkj82Zob65WKEsbfxmLBsXw2
- gDz16bfaeKjoRXRiCm/BC6x6ZRHHmkGpLRAr0Oc38aTpTL+1+yRqwlu7GS6Jif3f2aIDuT7V/
- igH5Y6aScrSWn44s2/p2PHBleTL70NjFdV8uDkMFFHVsLvSSKAMwHIfopvE+BaoKe+vBduxA3
- jLBydIhjfby+xeWzjNcwfMEKDAg/A/Foh8fTAl4q2efKxz3TZUz2O6wX/HzdjpRQ9fpB/7UK+
- 31JUulitbH3Hb2+5/QTnJtdkOE2dXnjuhppXp6YKmUaZ5PtLRyqtP78X7AzNQNHcmMyiiLmMj
- zY5FQiTZo1L1b8FU1gMS6GIs14OKqAp8ZQl1gZ/pFUjFTB9O0KtMRY6mHFx3w1M0iE8tUqQc5
- ypZ74dFnzVAnMChrvWo0g1OsOWj45+ElhHBTpa+En3NvflWFhO8X9irhckbMQX4h24KMXFtQe
- nTNiLfxA9ql8cLGEqdjNRlKZiiSfgUer+PGAi9eent1vvYS+vkuh84v+AtDlPaXADm0O+b5bF
- 3olsLP7F+SmkU3VMrI1jWeohd9EaekkNiXIckl1QzJZbnnlPitVyzZTMlXZil0b+WPldT6gw/
- tnC5FGUm4sXe0cVQdcMKDnjRuixrfzDri9ea4HDpc5+BNr9n/w0fwVwAfMDOkBp4Yt9ZuxQ/W
- gMnyFGanUVNgvR/3w
+X-UI-Out-Filterresults: notjunk:1;V03:K0:axBDLpeRwhk=:DTDhoN+CvquUprReTOYZO3
+ 691D2ldjxpZfqaUfktWxUpIgu5qeeIb6btsUf/12bQIUCvHumYVQ0LrzAoSQuJ2hQlODdWzdT
+ XWryfgpiE7KqhFd88knIQgnaAoDE6bM3PYsUEKgM5PmhLhy1tuVKqYXfZ2+KyV/2cKljkQ5FG
+ +xqpePzcb9nAU+JE44wEnmM1qLgGy2XozW+b+a1NMNNKB/F1G8bE8Vg0aKkh7oxkeMAMRVlc8
+ WxK3j6ciXy+qrARWQc655TBk+ZWf6kjItA0sJ83rbKt93WHX9tR35uaU1WXH0ApI7WoEyEB2E
+ /2pnB2v+iATuwUUl2YVL16jmuumqkD4PRXrJQm33KmESV0ezRRXh4mbqhBLya3EjKnD8HZH8K
+ ucqoR6LZUe4ABWregE/zD1Q8Z3IiStptujhXcLYi9Tffb2wTmf0e5iU02ETttV8IrOyHVyAbg
+ +tktd9f2XHgnl2Hs+1IULUprxTxg/dli/BM3ChBxcBbUYt1Ysdol8hEmjMhqqetJxWVFhiSdJ
+ F37FXatP3gKnlaBLAQbptt2ataiM/XpopwLkUWUfAJgFiNTjeLVZCO6dXF+u3sxfwaKmPV04q
+ evHDlWhZpALSXBu54NeZEdX0EIJc/a/Iv28VSQHILxz383LZGP5q+IKFGLzqAviTWHsVNeAMG
+ C9NJJD7HO2f0tVbkqWS25tNPrAewj5KVt0OAVtyi0mG5w/kcFYZLMeS1nlZQi9cd4FELOrE9c
+ HGZ+pNrIKNmsJn9g4dJ5SgUzJ+OM3BJpu4DYZuQHIExRADheeVuMK3NiErumYx0le+1y7GuGD
+ ADkx01AtNoogdWfd8Rh+PKaCWfDbCzITr0jde+Yihm8e6nJtlW2KkkkFcjeA3Nkyb9rDeClAx
+ jkUAvXO0h90buw9ovIUEd7i4mXokefHAaF8fh3ctit2SUlgrNfcJN/Zo8d9bBHoz+TNpEiX9p
+ tlVRZ6dOIyq+1XcVPuEX3NbS+qZ7VyN52rLrkilUhQkXnbAU+ioCw6+LYjayCD8RlPmW3ViT8
+ OWrREZT1MwAorvgRMo2HtYtzQmeZT730nDe3ES0JSsKF7zEnljWtF496l7yJtpwEczByUl5Un
+ YytbiZpE2tH0gSZItJ4zBBpDgrGA0U7RHHSBIt9AK5VZEAlHO+1RQuuur++9qlcXzhqPf2yjY
+ 4bIdnkG9Qkk8qbovC8wCdi1Ooe7cGs6EdGHU1mxRuJRtJZtxkk8FwIQaIt3h9yfZTLudGwMe0
+ I6NwrcgRUHKa6xr+U
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Can it matter to use separate callback functions for these cases?
-> https://elixir.bootlin.com/linux/v5.7-rc7/C/ident/rcu_free_pwq
+> Yeah, regardless of who puts a wq the last time, the base reference is put
+> by destroy_workqueue() and thus it's guaranteed that a wq can't be rcu freed
+> without going through destroy_workqueue(). lol I'm undoing the revert.
 
-See also:
-https://elixir.bootlin.com/linux/v5.7-rc7/C/ident/rcu_free_wq
+* Would you like to add such background information to the change description?
+
+* How do you think about integrate a following patch version after
+  the extra clarification?
 
 Regards,
 Markus

@@ -2,150 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 084BC1E5A62
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 10:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 582C41E5C7B
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 11:57:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726394AbgE1IH7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 04:07:59 -0400
-Received: from mout.web.de ([212.227.15.4]:33987 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725786AbgE1IH6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 04:07:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590653269;
-        bh=Kjxv5j/70jFJObItlorcZS0xPRih2dduzhD0gfulbCU=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=htNks5ESpYHDEZfGwTkdX3EIIHqVRGrQZlffDtk1EH/2oxIy5bSsRxLGuYaMpLQnu
-         lTXfNK7pdF4a3dsOY6AeuRHfadjfGMzmBKaziNCRNhLahQX5JLlnbSUnKY6D+Qpc4x
-         pZsCOX9Sq7EU2yCFmvffYlmzJkKmtPi6QVYmBEZQ=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.155.229]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MW6Ib-1jXELs0e7d-00XOOu; Thu, 28
- May 2020 10:07:49 +0200
-Subject: Re: [PATCH v6] workqueue: Remove unnecessary kfree() call in
- rcu_free_wq()
-To:     Zhang Qiang <qiang.zhang@windriver.com>, Tejun Heo <tj@kernel.org>,
-        Lai Jiangshan <jiangshanlai@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200528013736.39356-1-qiang.zhang@windriver.com>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <4f292007-4da0-3558-4c6b-ca3eaf884193@web.de>
-Date:   Thu, 28 May 2020 10:07:48 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S2387607AbgE1J5W (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 05:57:22 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:58862 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387432AbgE1J5V (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 May 2020 05:57:21 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04S9u2nJ123745;
+        Thu, 28 May 2020 09:57:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=PdmQuxdVwBxh/Lw17j3u3VbvlIP0mJKPP2d2XTJSZnM=;
+ b=sU5FFmgpUPDK12cdmZ4NJyoBh8ZuGlG0QfQkk6esfrP3SvXj3ULfopuBnsZ1eCPNkEaR
+ cT8JGfRNiMkrM3sC1Y4KmQxxsKWxFlJzq7zLQxlKoB/MXwRGWQ1lKzCdEb93zXYFAi6c
+ wM52q29XzbSBxOAkzeQvqGI8DHo/nJLZurHYcwfx/70JMJqZkI3W3RS0zMOZ6t83l9HX
+ Ubnz3LkM50h0T4qdKLcv+ISTp2jiNraz90DlnhbCkl4NToXh1dSafKynG0eMYAW042Ps
+ Sj5szxXdiZZ7REissN4pAWBTYkazVlCaTckL5SDzmScbcjw20W/h17eB1jAp/W0sAjQ6 jQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 318xbk44gt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 28 May 2020 09:57:17 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04S9mu4D052688;
+        Thu, 28 May 2020 09:57:17 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 317ds282f4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 28 May 2020 09:57:17 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04S9vGAL016319;
+        Thu, 28 May 2020 09:57:16 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 28 May 2020 02:57:15 -0700
+Date:   Thu, 28 May 2020 12:57:03 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     "Zhang, Qiang" <Qiang.Zhang@windriver.com>
+Cc:     Markus Elfring <markus.elfring@web.de>, Tejun Heo <tj@kernel.org>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: =?utf-8?B?5Zue5aSNOiBbUEFUQ0ggdjU=?= =?utf-8?Q?=5D?= workqueue:
+ Remove unnecessary kfree() call in rcu_free_wq()
+Message-ID: <20200528095703.GH30374@kadam>
+References: <20200527075715.36849-1-qiang.zhang@windriver.com>
+ <284c7851-4e89-a00f-a2e6-aa8e2e1f3fce@web.de>
+ <DM6PR11MB32573F3884A864ECD586235EFF8E0@DM6PR11MB3257.namprd11.prod.outlook.com>
+ <DM6PR11MB3257D6E7E93A518392502809FF8E0@DM6PR11MB3257.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-In-Reply-To: <20200528013736.39356-1-qiang.zhang@windriver.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:uqNzjfOkrcuvda9fmBmbhmRDEw0/pz1M4Qv09p1m1OR7vIMo387
- dloYPfbsEcQZ/SjxWokYN7nLDCSQggthv+6uplr6YuG0zA4UddXn7WkctPMI+mj40JB/iIu
- HSWf7bufV5UcjUszptnUrW7BhwgZKcjmM5UY5P5wu8hDjnWLuJ3Z2MY1ywqsKhV2XnCgLJA
- hdLVHxtaTLSSFx2ZjP+iQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:PyTAXYFcb/w=:CGNO5UpeFqRLQPOcIfl+aq
- r12DDwVQFwBvDQRt6Jzdhds6JDLBI+etcGX+lRb7T9I20wETdl2rXw0IBOomCqegr7kzeFdEU
- 3Co2bNqR+xJijTrgXQHCNh95ZrGqBVwVYidZVWH+eVdsepTyJo8CgscwpUk8Ki50uQrW1oYKd
- Nxf22rQHfUOCc/JNpfMOsoAHe9jPunKm5WzqjX/iM8kX4SDkrFaMstEsNhadgjPRPRm3sPwXm
- XeIpON1ypCbnxR6HVjcEIhO8Qsjc1Tc2gvFbwk69Kx0sNtrh6ForcFhgW1iaZN7GmyKPtkGQf
- vrLBqgIq6NnuJ3zt8iJJdDicsK2J+GtYn7fnyAsN3cpPBJyVe5GZy3aAkzCooDOAalPRp9uXp
- /Z03iFWSoyTVKz+kuH1qWvW+kdbAV1Dhn62V80f5qrZXWffqsDOojSFig3lhxoGvBtgvqOUKC
- OUbwurqmQQe3pC/zAJ5EwHPcu2eWXbCnebR9adG/vnKI6YPPG0ISme7rxXkwfYItpRvR8k9mg
- VK3ha+xQTFANAn5KgVT3Zzf9SvKXf8+vztALJTipN780YJ2aOjRgTEdKAWgRpjyih+PmzzEv8
- /uWY6Xa9kJQ1XjqxoTu/xf9Dn3jkgm4JFydnhiz9CU2BDQYusTni+c56r3kfVDyb54iE7P1B5
- T+9rH6xKdpF+Nr9Tu+Wv+Gxj8fPtEv89ogJgDnL2/qjf1eXETH7fu6fld5ovJ21N5hZvNM+g8
- uWamEWRtPXzBI+koId7MXI4Jyd/lrB4p+ckdD5gX0iJE9O3CPCqLoI3vr7ptDZ8UwofxP29PE
- jyJgpZ/iynppsnvShRHu5SctXxf4y6gFXAvm3FqJijJ5h/FLGnNgVIf63K90oqzc+qC2ob3DH
- L0U37JumhuiaSnKceBTk9eOk+Yl3jxclS/Y+JGgJJjOtADeLq8HJajGLIJ86pJg3/9G0CmrQX
- eD4HbwO69eewzKJbyChn3uVhQAN8wXrAZk9PYl1T4HDaomNccB+O5JkFzWxYt1YqawZ5DgkMd
- OEgovoBXs881ITXD/ryQ2EVrH0CqloPKi/FCqxIzSs6wCHvyoszJsqij1yWk0JaqBGernh5YQ
- AuAOO3P3bxpdY+WUkPQe9hNZzOb/GpPqm2PkuGFaybq9kgrsWFDuKojQKF/A/6FVVvWTYy+k5
- CKWMkT8tTiRW/SSMuvvmG6r2EGDiteIL2wcOf/cbqTj5SzxBUpQHLFgjf14zYnnaasIle/qly
- juvrqq0/y+GqA+JHG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DM6PR11MB3257D6E7E93A518392502809FF8E0@DM6PR11MB3257.namprd11.prod.outlook.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9634 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 malwarescore=0
+ mlxlogscore=999 adultscore=0 suspectscore=0 bulkscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005280066
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9634 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0 mlxscore=0
+ lowpriorityscore=0 priorityscore=1501 phishscore=0 cotscore=-2147483648
+ suspectscore=0 bulkscore=0 clxscore=1011 impostorscore=0 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005280066
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Thus delete this function call which became unnecessary with the referen=
-ced
-> software update.
-=E2=80=A6
-> Co-developed-by: Markus Elfring <Markus.Elfring@web.de>
+Guys, the patch is wrong.  The kfree is harmless when this is called
+from destroy_workqueue() and required when it's called from
+pwq_unbound_release_workfn().  Lai Jiangshan already explained this
+already.  Why are we still discussing this?
 
-I guess that this tag should usually trigger another consequence like the =
-following.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?id=3Db0c3ba31be3e45a130e13b278c=
-f3b90f69bda6f6#n548
+regards,
+dan carpenter
 
-Signed-off-by: Markus Elfring <Markus.Elfring@web.de>
-
-
-Is there a need to tag also the patch review contribution of Lai Jiangshan=
-?
-https://lore.kernel.org/lkml/CAJhGHyC4XcNL8yzWZKZ=3D73wZJej4JwCaAHGV8qjYn-=
-AqcEAEjQ@mail.gmail.com/
-https://lore.kernel.org/patchwork/comment/1442889/
-https://lkml.org/lkml/2020/5/26/201
-
-
-I am unsure if such aspects will matter after Tejun Heo responded with the=
- information
-=E2=80=9CApplied to wq/for-5.8.=E2=80=9D to the previous patch version yes=
-terday.
-https://lore.kernel.org/lkml/20200527135214.GI83516@mtj.thefacebook.com/
-https://lore.kernel.org/patchwork/comment/1443888/
-
-
->  v1->v2->v3->v4->v5->v6:
->  Modify weakly submitted information and tag.
-
-I am curious how our imaginations and preferences will evolve further
-also for such wording selections.
-
-Regards,
-Markus

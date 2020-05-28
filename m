@@ -2,49 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 146461E58BA
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 09:34:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76CF81E58E8
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 09:39:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726533AbgE1Her (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 03:34:47 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:35248 "EHLO fornost.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726393AbgE1Heq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 03:34:46 -0400
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
-        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
-        id 1jeD3U-0000oY-0x; Thu, 28 May 2020 17:34:21 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Thu, 28 May 2020 17:34:20 +1000
-Date:   Thu, 28 May 2020 17:34:20 +1000
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     davem@davemloft.net, jsrikanth@marvell.com, phemadri@marvell.com,
-        gustavo@embeddedor.com, tglx@linutronix.de,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] crypto: cavium/nitrox - Fix a typo in a comment
-Message-ID: <20200528073419.GA32600@gondor.apana.org.au>
-References: <20200519203654.281351-1-christophe.jaillet@wanadoo.fr>
+        id S1726862AbgE1Hj2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 03:39:28 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:5297 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725839AbgE1Hj2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 May 2020 03:39:28 -0400
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 91F35AA34D5E91D3E78B;
+        Thu, 28 May 2020 15:39:25 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.487.0; Thu, 28 May 2020 15:39:18 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Jon Maloy <jmaloy@redhat.com>, Ying Xue <ying.xue@windriver.com>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>
+CC:     YueHaibing <yuehaibing@huawei.com>, <netdev@vger.kernel.org>,
+        <tipc-discussion@lists.sourceforge.net>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] tipc: remove set but not used variable 'prev'
+Date:   Thu, 28 May 2020 07:43:59 +0000
+Message-ID: <20200528074359.116680-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200519203654.281351-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, May 19, 2020 at 10:36:54PM +0200, Christophe JAILLET wrote:
-> s/NITORX/NITROX/
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->  drivers/crypto/cavium/nitrox/nitrox_main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+net/tipc/msg.c: In function 'tipc_msg_append':
+net/tipc/msg.c:215:24: warning:
+ variable 'prev' set but not used [-Wunused-but-set-variable]
+
+commit 0a3e060f340d ("tipc: add test for Nagle algorithm effectiveness")
+left behind this, remove it.
+
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ net/tipc/msg.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/net/tipc/msg.c b/net/tipc/msg.c
+index 23809039dda1..c0afcd627c5e 100644
+--- a/net/tipc/msg.c
++++ b/net/tipc/msg.c
+@@ -212,7 +212,7 @@ int tipc_buf_append(struct sk_buff **headbuf, struct sk_buff **buf)
+ int tipc_msg_append(struct tipc_msg *_hdr, struct msghdr *m, int dlen,
+ 		    int mss, struct sk_buff_head *txq)
+ {
+-	struct sk_buff *skb, *prev;
++	struct sk_buff *skb;
+ 	int accounted, total, curr;
+ 	int mlen, cpy, rem = dlen;
+ 	struct tipc_msg *hdr;
+@@ -223,7 +223,6 @@ int tipc_msg_append(struct tipc_msg *_hdr, struct msghdr *m, int dlen,
+ 
+ 	while (rem) {
+ 		if (!skb || skb->len >= mss) {
+-			prev = skb;
+ 			skb = tipc_buf_acquire(mss, GFP_KERNEL);
+ 			if (unlikely(!skb))
+ 				return -ENOMEM;
+
+
+

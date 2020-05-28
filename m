@@ -2,33 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8827B1E6859
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 19:09:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECA951E6BAA
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 21:49:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405343AbgE1RJd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 13:09:33 -0400
-Received: from mout.web.de ([212.227.15.14]:57239 "EHLO mout.web.de"
+        id S2406820AbgE1TtW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 15:49:22 -0400
+Received: from mout.web.de ([212.227.15.4]:48433 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405314AbgE1RJc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 13:09:32 -0400
+        id S2406793AbgE1TtL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 May 2020 15:49:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590685759;
-        bh=p69aR/nzaRPTpqEpuHitn5IvyCINJBKAMa323BW+lFY=;
+        s=dbaedf251592; t=1590695339;
+        bh=+B7LBaGX99S3uPjCcCLsxs3BCct//Xlvs6N9ytdHIBk=;
         h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=g+g9aK35W80VreSFHoYkUcbrmKo3i8elKoo4gS2qujGz4g/zIaT/XIeWEyWvD6AWX
-         F5GCTvolFCT8AE1syLLEdTn1HHxzWmQOzwYiiBx4vz9z5ahfZu7DsXgVG021vAXBo+
-         jYkQQBNDAba3T1YSuWb5QTHi69j0kbAYi2OeJMbY=
+        b=NIVjeoGVrMq0EaifFBo73HopbicIFYFK692s4AY2G+YxiNBiGaAER4Y16xPF2eIxe
+         iDrA5V5kwYEpwmG3UPxERXfnb9vd8FbpkyUHh1JHlWijuJlT0pUEhXgbjaCkbmBcuV
+         qO7CFafeAk1SDOS6G+pExj10OrPTWS0GAJiixa5k=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([2.244.30.242]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MsJP4-1ikc4q3nPG-00tgiv; Thu, 28
- May 2020 19:09:19 +0200
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sean Wang <sean.wang@mediatek.com>
-Subject: Re: [PATCH] Bluetooth: btmtkuart: Improve exception handling in
- btmtuart_probe()
+Received: from [192.168.1.3] ([2.244.30.242]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MWBA1-1jTlQ207p3-00XL9c; Thu, 28
+ May 2020 21:48:59 +0200
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Kangjie Lu <kjlu@umn.edu>,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        Vyacheslav Dubeyko <Vyacheslav.Dubeyko@hgst.com>
+Subject: Re: [PATCH] nilfs2: Fix reference count leak in
+ nilfs_sysfs_create_snapshot_group()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -73,63 +73,64 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-To:     Chuhong Yuan <hslester96@gmail.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-bluetooth@vger.kernel.org, linux-mediatek@lists.infradead.org
-Message-ID: <dd458e1d-26cf-2cc6-4fdb-fb464f9c3ac6@web.de>
-Date:   Thu, 28 May 2020 19:09:17 +0200
+To:     Qiushi Wu <wu000273@umn.edu>, linux-nilfs@vger.kernel.org
+Message-ID: <30cf7534-b62e-84b1-571a-945aaffac5b0@web.de>
+Date:   Thu, 28 May 2020 21:48:57 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:HFJVBKBfwx0BNkuJVnzSfsep+qen5ugQ2lnxQrmomHOtQfGba7Z
- rJiWEr4b3kJL2GNgc9vP/hSOvBCEdkSuGQ3jHIVvxslVHZc5VZ/0qNPkKN3UlaAg2VSefSj
- ejdyEEA3yBSElB/TBHtYbcVt2e3tqsCZrEHKSLlmFTcHLUTui1WLpsywmVS7aT484Cx5MlP
- EuPm7xaDFTuFWLXCjZCsw==
+X-Provags-ID: V03:K1:ajXO0YaxVu1A9JNlZ6X1YWeTq2R1Ffmuf9mMz97iM2/JRvJ/LV7
+ iQ3dfXP2v5wBFDQx/M7/lEuxLCow0kymXxATnQI8laJmtop5UhQRsYUp0GwL4vd7LuYwCAd
+ UVsBlymNld+f+VXIaDxa+9DZ4BOdCBcLl4Twyqn+MZ0js6rO5QnKw95+doivJymrU/aBgCG
+ ab3c/asbrD25nFdUajCaA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:LZNn0mmb3u0=:6LsgHWgEz2hDXrj8PKKaB+
- U50BTzHMVQh30L6ETjehkxyOXZRwf8wuCYIYMvBU8TV/4hFYjid9h8cJTaONmYr4umbUSc3vP
- GyldNHjjwZxT6LUBujJvU/JtgefcORHdCc31XRo+nLjLKaJQB5O1qlXt4dTHevrOvsH4dZdpR
- cR1FuAusyTes0KtBWEuWgnWy539s8ltkf67JUNGmNK2U3r27nsCQprynQVE09QxcguNGCXq8g
- vXs+hJM9fabWY5PiNwVF+P4A0m+jRYzFjNDwh41dkSy5xz2N1R1b1jdRQViVdPcbMeIqf8W7G
- DyX86uPfk9kc/5lUGDE4Px2n3SCI9FtOxs9roputVg+H9accphilh6t+xgZQ01VlhcD6y95Cq
- ayqdKdlJxg2fZAqW44i506OYQpSpZVZxEXOS4Oh12sxpsDYpp5Lm/B9BKhA2gUj89ioOoa61a
- mstAEa/eUgDYllnvwCXNYHhoFn2o0S3yMbqLG3WkEjSbJvY8mDccQNFKwl2qNcQhNZcDM0LtP
- k5gmO/OxPPh3pF0Q6kJur7876DcEfo4JCWmR4qJCovu8M2nqC62LnrIIKeRhOiDpcVVYXyRzr
- of9w2SNvMJ4sPPxE7vubDU5nMou9gL+jyUZsdUE3+Nz5hPHgHty5MhlUhVZHGIihK7YXbmpcL
- T6asi8L3WdYPW1awMBay9mCa3hMr3cr8F1Js8aDV5Z9Mf5tdLKyGErrUtSpFXbkFs8weMObST
- RAEnaxWMv78xGlz4Gh4JekK2cKzKmbL72EoaQdLJRIADnqTw5bT8EckGyC/CNUWvnJktJSDg+
- pG8BubmpVF2qAGpWMavUtzuP7l2EG0o8vphzEKylV9kxNADg4+FDPsGgg9KNzBllUWEcVHDhq
- PPz+GGNrQhVkOenHkUHMY3XwTa7Pj/Hn/pgxP3Gf1zYofYoM0aWoIeHJdtluI9FrJHkBr6pSp
- 7ZVvor7o+xIDXjel1Fy4AM3Ilz8p/DDrJytakNvs27e9rWNyAKlJW0WEwxXLoqGbouWNKqVRG
- Fyn0lqHnMA/M5t85U3ATOTwxNBOVpoT1EkGi9eCTjGacsuFgqHw+7XB/w8sxgQWvOnvK13kFv
- yvVmW7nqvLKxoR09Oz3XRn1Agor+saY6SsXJ05qZQSLZ46Mu09jj4drm48K73bEyu/R2YAUSV
- 9LBlmkW2SmcmsdSETolSTsYMHzGgnTdroJ6PeCNTa/itA7S1LMQF920kyVlohc22UwgC1Ikxa
- IZpoYBPXhEiAC5fzc
+X-UI-Out-Filterresults: notjunk:1;V03:K0:EcToFCvm6YU=:EaU6WsQaqAnoenU0XO/5qh
+ 44qS66SJR4YAgNw0JjQPbXDD5ypMBEtuxZwtxR100l7rnjC72UhCUYpOPssT0MAzyEu48qolE
+ lI5thNg6W+YZAcFOVJIqDeNrh8DaYSvWp8LzyZ7NiWULitGFg2NAzwg9t4ch6F7Z9fLe0B1Wp
+ tHddzksJj+47wpPfRSPBy7ZuyKOResZ2feCA+StpsReyVgfE9j+TO53/lq1uLnvkSO/4eNsDO
+ b48CK9cjw6EVF+ReO6bVCr4VFIWlpTmwcfvb9/eYbJZo8vNgSMySTYfS9XxWLcULaKgCazP65
+ buL35NxNvOJORDVpIwTrXikyIooPf01oXhvdobc3SCtLx6kBJPPCdYcqTmLvpQ6SxgZ1Yar9m
+ dB+2/APD3841wV6SzEeTaqH0Y2GjUgq6qnde+p+Wp8KISDZ3SET7KM+I3ZlKpzHi9KhomKXhr
+ iUBM9Ey0Z0sGcvawqQB914rbVxXG0fHz0pRj2bUdBMeps2FQmLTPLVDzjdWhD5o5uEW5Pa2cf
+ cnDNG02xjC2+zMB3mHlTdy9nYMSH7O1VvpvHIYxRs13FKIf/oNF1gjGPa/rPdxIiZxD+H8Zvw
+ Ulqyp5l01DdO6qNHtk/yMBGLO5gYlKRXyjqSmgA+xRmN2Agw31B6zX7umzYC9OFGQxDQhjp2J
+ P3H4xrI6HM3UQgghuH01nLVmCVJn4TJ5sFqrrD2e0ufILAyqiVxQPScQ14kfvCaC9uvy1u+Ld
+ NL20LXljSYJ3yZfdldGxqqzgAttylANp8rbz0me40BfCbAkicQPRxwdxdPZd/oZ+1u4eNWzoB
+ +A146TKtiM8Ot7XJbWEr+SDhL5o75TIggfGpYAGMHqkyaOEbpU9oyD3jlFqYXLKwfmejphjGq
+ eRCmXZ6uycjfvhS+ESwj9jlwNJioR2NIJ4aVnTDXRitTcZdMAO8RQY1S3L+qAqbEkSHhqY3W+
+ SjPN62Us01Cp7/YuCuDZtNUspfgXuWYp8nMWSvgEkeE3Jt4uzsC24/eg13PKbTyWf1yHeTv4y
+ ZQjsM4iIdRZxCLNLkhOHKb7Lj4dtixGYfZ1Boc/51Js6QIRFRC5pvC+KL8IwUrn5wsmBtCrpw
+ bDz0jnaUUlhm6soVwiaHyhk6EDk4TYd+2UD62CYpGWCdubHOqiPV3oM8I04HRY3kcIQ37DmlV
+ jJs/1cJqG98/1lQ7PhlUR2YKE+tvG0DHdyEdCi96BS3VjC6ly+AngTATUKIXqRwKoeR+rx7Eq
+ 9fTsX9OmM28fq1YKw
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> btmtuart_probe() misses several function calls in its error paths,
-> including hci_free_dev() and clk_disable_unprepare().
-> Refactor the code and call correct undo functions to fix the error
-> paths.
+> kobject_init_and_add() takes reference even when it fails.
 
-How do you think about a wording variant like the following?
-
-   Change description:
-   Calls of the functions =E2=80=9Cclk_disable_unprepare=E2=80=9D and =E2=
-=80=9Chci_free_dev=E2=80=9D
-   were missing for the exception handling.
-   Thus add the missed function calls together with corresponding
-   jump targets.
+It will be helpful to mention which object is referenced here, won't it?
 
 
-Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=
-e?
+> If this function returns an error, kobject_put() must be called to
+> properly clean up the memory associated with the object.
+
+I guess that an imperative wording is preferred also for this change descr=
+iption.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3Db0c3ba31be3e45a130e13b278c=
+f3b90f69bda6f6#n151
+
+How do you think about to combine this update step together with
+=E2=80=9Cnilfs2: Fix reference count leak in nilfs_sysfs_create_device_gro=
+up=E2=80=9D
+into a small patch series?
+https://lore.kernel.org/patchwork/patch/1248696/
+https://lore.kernel.org/lkml/20200527200933.31135-1-wu000273@umn.edu/
 
 Regards,
 Markus

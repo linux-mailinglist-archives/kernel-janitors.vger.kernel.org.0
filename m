@@ -2,63 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C41481E6331
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 16:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34F2F1E6359
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 16:08:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390857AbgE1OEI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 10:04:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38070 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390644AbgE1OEE (ORCPT
+        id S2390862AbgE1OIG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 10:08:06 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:35186 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390658AbgE1OIF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 10:04:04 -0400
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D1D8C05BD1E;
-        Thu, 28 May 2020 07:04:04 -0700 (PDT)
-Received: by mail-qt1-x841.google.com with SMTP id z1so122650qtn.2;
-        Thu, 28 May 2020 07:04:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=EBD7IPZhPK6LYEpuUm9uYZgoKSKV6F+qQYG7TUFwOBk=;
-        b=qOzW1pAeJlvpU3IPXP5a+SZ03JGuxgKHseAl/bi7J7DqaZVwJa5QmrtrPr5e5etDfB
-         2Zjs3Jenivlp6HhzVugJ1rvqIWm9lau58W/4Ju1loK8vxQYYSMm2G2le6dt+crmwYLi7
-         2EH0IOA6U44/TDz6WEK4KEuiGeqcoPaTFcJSywkkZsUITScl6COflTq22fN89s7GSUQO
-         ebJCE/xZu1wSjfoQiKNvTXy+Y7rgrpU8ysy1D5kR1eRIDNsQe0EBnBYmylOIACQNhxhR
-         TUlV7kaMSEKfjzMmF6ROisX/YJ+vMXnuB0Et4Trc1jlqw0wT9KBLjLLr1OWlFtMkTM8q
-         Njig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=EBD7IPZhPK6LYEpuUm9uYZgoKSKV6F+qQYG7TUFwOBk=;
-        b=BAQ0eueq2UtpAdwX9SAZ88AatJ5Sa+PYURFjQy8ENdkayFY7sC01eFcW/18m7a2MJg
-         OXbxG/f65W1tO7F+bDgADtZ2s6+5gIBnvIOSUzpBTpew3oCd4/4zn1GsDqoj9kw/je4o
-         qhAfAoS+8OFIuOoUmbelJGH0W7EH6G3J5+Iu4ioCTouyvA8LAzliycVt5erExdiEz6Iu
-         1Twjo3fPR/jCxGfi5HPzDp1/l/i+mjBMncSdJbmoDjQrEGcUFePNw6eOTyzv83/hxjR6
-         UCG3zVCBKCRCdckZmZlZGuoAFiqxoYwfv+C+vbKuTFE1OA4rV6hjB17z+I1/HrHFCEsy
-         PB3Q==
-X-Gm-Message-State: AOAM533iGZ54MpL+MkeMg4ruwdrOe9pIAeFZfmmGUgz9B6CG5uebz5yw
-        8CZ0LiG67dV3wNF2pNwH+8w=
-X-Google-Smtp-Source: ABdhPJxLDJSpWjyDvtA1dv/WxHHofDQc5w+PCpAkPSnNcrs107St/oCxV6bvuJPWfG09qxgbbNbq9Q==
-X-Received: by 2002:ac8:4e4a:: with SMTP id e10mr3112122qtw.203.1590674640313;
-        Thu, 28 May 2020 07:04:00 -0700 (PDT)
-Received: from localhost ([199.96.181.106])
-        by smtp.gmail.com with ESMTPSA id w10sm5779166qtc.15.2020.05.28.07.03.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2020 07:03:59 -0700 (PDT)
-Date:   Thu, 28 May 2020 10:03:57 -0400
-From:   Tejun Heo <tj@kernel.org>
+        Thu, 28 May 2020 10:08:05 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04SE7nD5146260;
+        Thu, 28 May 2020 14:08:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=ZpO6geCXEfKtvVwoUpLjfojIWR34s984zqeSiyiYS48=;
+ b=h5z6gv2KVvsDaOPttrHkFk2r058+LiTdnzBMPdpxqnfYVHG7q3T+S36fH0ORBUpqinHC
+ T+tM5ZqpJqf+unhhEiboocr4GyB8RcfXQE97+85u8z1EuMk2LWyHIFrhVtg+gIe3hpQ7
+ QYFIfxiJJ9w37EHssl/vz0k85M/F2jAvZDRnSSi5u1007PoC9/PppOo8jYZ3K9bDFatW
+ +UhXGDjaJUuX3bJScptDxT0+AG+yuK6XWk0wcrjETxBksdnDO+Uj1jldF4P+SjQk1Twa
+ gkjvXe2Gbk1bXm1ybXip4fiRkgS3trZXs3aMpe07daXexjg+ZFEO8I3YgY2Ml1B0x+hp QA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 318xbk58ch-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 28 May 2020 14:08:00 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04SE7d3c150848;
+        Thu, 28 May 2020 14:07:59 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 31a9ksjjga-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 28 May 2020 14:07:59 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04SE7w0i007174;
+        Thu, 28 May 2020 14:07:58 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 28 May 2020 07:06:20 -0700
+Date:   Thu, 28 May 2020 17:06:13 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
 To:     Lai Jiangshan <jiangshanlai@gmail.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        "Zhang, Qiang" <Qiang.Zhang@windriver.com>,
+Cc:     "Zhang, Qiang" <Qiang.Zhang@windriver.com>,
         Markus Elfring <markus.elfring@web.de>,
+        Tejun Heo <tj@kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
 Subject: Re: =?utf-8?B?5Zue5aSNOiBbUEFUQ0ggdjU=?= =?utf-8?Q?=5D?= workqueue:
  Remove unnecessary kfree() call in rcu_free_wq()
-Message-ID: <20200528140357.GL83516@mtj.thefacebook.com>
+Message-ID: <20200528140613.GK30374@kadam>
 References: <20200527075715.36849-1-qiang.zhang@windriver.com>
  <284c7851-4e89-a00f-a2e6-aa8e2e1f3fce@web.de>
  <DM6PR11MB32573F3884A864ECD586235EFF8E0@DM6PR11MB3257.namprd11.prod.outlook.com>
@@ -71,23 +64,87 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <CAJhGHyBUkMZ=cV+Qf-5+PMAFqgebbRLc46OZSSUSgoRROpUk2A@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9634 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 mlxscore=0 adultscore=0
+ mlxlogscore=999 malwarescore=0 spamscore=0 bulkscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005280097
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9634 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0 mlxscore=0
+ lowpriorityscore=0 priorityscore=1501 phishscore=0 cotscore=-2147483648
+ suspectscore=2 bulkscore=0 clxscore=1015 impostorscore=0 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005280097
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
-
 On Thu, May 28, 2020 at 09:27:03PM +0800, Lai Jiangshan wrote:
+> On Thu, May 28, 2020 at 8:27 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> >
+> > On Thu, May 28, 2020 at 08:08:06PM +0800, Lai Jiangshan wrote:
+> > > On Thu, May 28, 2020 at 5:57 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> > > >
+> > > > Guys, the patch is wrong.  The kfree is harmless when this is called
+> > > > from destroy_workqueue() and required when it's called from
+> > > > pwq_unbound_release_workfn().  Lai Jiangshan already explained this
+> > > > already.  Why are we still discussing this?
+> > > >
+> > >
+> > > I'm also confused why they have been debating about the changelog
+> > > after the patch was queued. My statement was about "the patch is
+> > > a correct cleanup, but the changelog is totally misleading".
+> > >
+> > > destroy_workqueue(percpu_wq) -> rcu_free_wq()
+> > > or
+> > > destroy_workqueue(unbound_wq) -> put_pwq() ->
+> > > pwq_unbound_release_workfn() -> rcu_free_wq()
+> > >
+> > > So the patch is correct to me. Only can destroy_workqueue()
+> > > lead to rcu_free_wq().
+> >
+> > It looks like there are lots of paths which call put_pwq() and
+> > put_pwq_unlocked().
+> >
+> >   1168  static void pwq_dec_nr_in_flight(struct pool_workqueue *pwq, int color)
+> >   1169  {
+> >   1170          /* uncolored work items don't participate in flushing or nr_active */
+> >   1171          if (color == WORK_NO_COLOR)
+> >   1172                  goto out_put;
+> >   1173
+> >
+> > We don't take an extra reference in this function.
+> >
+> >   1200  out_put:
+> >   1201          put_pwq(pwq);
+> >   1202  }
+> >
+> > I don't know this code well, so I will defer to your expertise if you
+> > say it is correct.
+> 
 > wq owns the ultimate or permanent references to itself by
 > owning references to wq->numa_pwq_tbl[node], wq->dfl_pwq.
 > The pwq's references keep the pwq in wq->pwqs.
+> 
+> Only destroy_workqueue() can release these ultimate references
+> and then (after maybe a period of time) deplete the wq->pwqs
+> finally and then free itself in rcu callback.
+> 
+> Actually, in short, we don't need the care about the above
+> detail. The responsibility to free rescuer is on
+> destroy_workqueue(), and since it does the free early,
+> it doesn't need to do it again later.
+> 
+> e2dca7adff8f moved the free of rescuer into rcu callback,
+> and I didn't check all the changes between then and now.
+> But at least now, the rescuer is not accessed in rcu mananer,
+> so we don't need to free it in rcu mananer.
+> 
 
-Yeah, regardless of who puts a wq the last time, the base reference is put
-by destroy_workqueue() and thus it's guaranteed that a wq can't be rcu freed
-without going through destroy_workqueue(). lol I'm undoing the revert.
+Ah...  Thanks for the explanation!
 
-Thanks.
+regards,
+dan carpenter
 
--- 
-tejun

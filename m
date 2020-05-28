@@ -2,141 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B9601E622E
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 15:27:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35EC61E6254
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 15:32:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390352AbgE1N1c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 09:27:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60548 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390344AbgE1N1P (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 09:27:15 -0400
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF678C05BD1E;
-        Thu, 28 May 2020 06:27:15 -0700 (PDT)
-Received: by mail-il1-x142.google.com with SMTP id a18so82202ilp.7;
-        Thu, 28 May 2020 06:27:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=H100vx4HtZK6A8WC+MIYosS8a3IpEO7hNBhEASfUOGM=;
-        b=Izd8YsFoxhrf/1rw5M5WLdUssMEblhPRFZbRnHk6wEbHvn9LJq/RfQAGTtUetmykel
-         MOhYZKyvOVJSYLdlLFfShdGrq9SMN2sPFA+GAm1dsyKkYKv6EObC/H7VvAfhZY2PlAmf
-         pgPMjrRV5WsPGMxOhLiHG/QWE7pQ/NZ+tXnPv4UZxUo1hVqaXdIw7hgDpagohmhVhCDt
-         RtmCk06wnHq/Xvgi3eG+MNPH+e703foRfuxjTbyojVnN++2QrNr1VjuqTJzfjc2l1smX
-         90Gv6A2QngX8fqBmhrbZY5csJK5rPjYJ841MdL5opCQBrE3cVNN7oES+1ncGMfSaoPwH
-         OAsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=H100vx4HtZK6A8WC+MIYosS8a3IpEO7hNBhEASfUOGM=;
-        b=fMbtfgMkTcJ6KYcd8abR71L/vRuJgpdmPDPRtLx5J/YXX4iY7IkLQnUrDoxcQRM+0F
-         cEYvsBrhc3JdtJ4cajddVDmMP4eQi7QjVoFE2oxFNPf0xdF7rH0hD+rqWUomgxB1vdkl
-         7NaRqroxxchldU3Z/RM6lh8w0fLXjKSvWAkkO9j1C7yr+EoLJIvJWhY7yDBDNPF1D5NF
-         e21X8DPMPAgH94eFZDi39L1ikX7s6VYAssJdRhVz1y8zKLokEztHd/uhvd6m2gp1pLUi
-         tkVQAETIKNIovOIbbZuqzMeZpImCaokPUcHmMiTEH03d38wy9cgYOwi2n4mvToCe6qgT
-         kLfg==
-X-Gm-Message-State: AOAM531eyoAuAthUD5euMj4DylWTixeWLHYG39axqPIYcqyR/fjuIRh8
-        KnpVAh8vl7F0aMA1aSjtPgfyL0VN3Ct49q+P0Gk=
-X-Google-Smtp-Source: ABdhPJxGPhlnZHmpjVMecMlBqT/wtOYf9Xer8dYZPvRWWvcAX/A325G0HQBL8wQLIvRxLZy8YeldYw6LKMdciO8dO4I=
-X-Received: by 2002:a92:c8d1:: with SMTP id c17mr2695246ilq.308.1590672435135;
- Thu, 28 May 2020 06:27:15 -0700 (PDT)
+        id S2390354AbgE1NcC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 09:32:02 -0400
+Received: from mga11.intel.com ([192.55.52.93]:21122 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2390303AbgE1NcC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 May 2020 09:32:02 -0400
+IronPort-SDR: 9BvkWFpb6aHVx8DD7Cjk4B+FrP0/n5mz3jII8ScOW9CmiYHRtrVC3QgNIstjJlbij+dli1fjCR
+ CNCY9IJqa8RQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2020 06:32:00 -0700
+IronPort-SDR: dbsPAqdPM7hNXfSpV6dA5BCc4Or8fjAcOLgXC+Mhy9OvnkSbeZsWyH7YkkSTLdkZDOSf9nWMlo
+ fDxn2BtPyZ9A==
+X-IronPort-AV: E=Sophos;i="5.73,444,1583222400"; 
+   d="scan'208";a="267215656"
+Received: from ddalessa-mobl.amr.corp.intel.com (HELO [10.254.205.103]) ([10.254.205.103])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2020 06:31:58 -0700
+Subject: Re: [PATCH][next] IB/hfi1: fix spelling mistake "enought" -> "enough"
+To:     Colin King <colin.king@canonical.com>,
+        Mike Marciniszyn <mike.marciniszyn@intel.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200528110709.400935-1-colin.king@canonical.com>
+From:   Dennis Dalessandro <dennis.dalessandro@intel.com>
+Message-ID: <d60039c9-b0a5-cff5-410e-0d98f020e577@intel.com>
+Date:   Thu, 28 May 2020 09:31:55 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
 MIME-Version: 1.0
-References: <20200527075715.36849-1-qiang.zhang@windriver.com>
- <284c7851-4e89-a00f-a2e6-aa8e2e1f3fce@web.de> <DM6PR11MB32573F3884A864ECD586235EFF8E0@DM6PR11MB3257.namprd11.prod.outlook.com>
- <DM6PR11MB3257D6E7E93A518392502809FF8E0@DM6PR11MB3257.namprd11.prod.outlook.com>
- <20200528095703.GH30374@kadam> <CAJhGHyD1nV=M=ccycqCMt86GMuZGkO9trbJ=4ti4EzP9kta6iA@mail.gmail.com>
- <20200528122545.GP22511@kadam>
-In-Reply-To: <20200528122545.GP22511@kadam>
-From:   Lai Jiangshan <jiangshanlai@gmail.com>
-Date:   Thu, 28 May 2020 21:27:03 +0800
-Message-ID: <CAJhGHyBUkMZ=cV+Qf-5+PMAFqgebbRLc46OZSSUSgoRROpUk2A@mail.gmail.com>
-Subject: =?UTF-8?B?UmU6IOWbnuWkjTogW1BBVENIIHY1XSB3b3JrcXVldWU6IFJlbW92ZSB1bm5lY2Vzc2FyeQ==?=
-        =?UTF-8?B?IGtmcmVlKCkgY2FsbCBpbiByY3VfZnJlZV93cSgp?=
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     "Zhang, Qiang" <Qiang.Zhang@windriver.com>,
-        Markus Elfring <markus.elfring@web.de>,
-        Tejun Heo <tj@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200528110709.400935-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, May 28, 2020 at 8:27 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> On Thu, May 28, 2020 at 08:08:06PM +0800, Lai Jiangshan wrote:
-> > On Thu, May 28, 2020 at 5:57 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> > >
-> > > Guys, the patch is wrong.  The kfree is harmless when this is called
-> > > from destroy_workqueue() and required when it's called from
-> > > pwq_unbound_release_workfn().  Lai Jiangshan already explained this
-> > > already.  Why are we still discussing this?
-> > >
-> >
-> > I'm also confused why they have been debating about the changelog
-> > after the patch was queued. My statement was about "the patch is
-> > a correct cleanup, but the changelog is totally misleading".
-> >
-> > destroy_workqueue(percpu_wq) -> rcu_free_wq()
-> > or
-> > destroy_workqueue(unbound_wq) -> put_pwq() ->
-> > pwq_unbound_release_workfn() -> rcu_free_wq()
-> >
-> > So the patch is correct to me. Only can destroy_workqueue()
-> > lead to rcu_free_wq().
->
-> It looks like there are lots of paths which call put_pwq() and
-> put_pwq_unlocked().
->
->   1168  static void pwq_dec_nr_in_flight(struct pool_workqueue *pwq, int color)
->   1169  {
->   1170          /* uncolored work items don't participate in flushing or nr_active */
->   1171          if (color == WORK_NO_COLOR)
->   1172                  goto out_put;
->   1173
->
-> We don't take an extra reference in this function.
->
->   1200  out_put:
->   1201          put_pwq(pwq);
->   1202  }
->
-> I don't know this code well, so I will defer to your expertise if you
-> say it is correct.
+On 5/28/2020 7:07 AM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a spelling mistake in an error message. Fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>   drivers/infiniband/hw/hfi1/chip.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/infiniband/hw/hfi1/chip.c b/drivers/infiniband/hw/hfi1/chip.c
+> index 7f35b9ea158b..15f9c635f292 100644
+> --- a/drivers/infiniband/hw/hfi1/chip.c
+> +++ b/drivers/infiniband/hw/hfi1/chip.c
+> @@ -14559,7 +14559,7 @@ static bool hfi1_netdev_update_rmt(struct hfi1_devdata *dd)
+>   	}
+>   
+>   	if (hfi1_is_rmt_full(rmt_start, NUM_NETDEV_MAP_ENTRIES)) {
+> -		dd_dev_err(dd, "Not enought RMT entries used = %d\n",
+> +		dd_dev_err(dd, "Not enough RMT entries used = %d\n",
+>   			   rmt_start);
+>   		return false;
+>   	}
+> 
 
-wq owns the ultimate or permanent references to itself by
-owning references to wq->numa_pwq_tbl[node], wq->dfl_pwq.
-The pwq's references keep the pwq in wq->pwqs.
+Thanks!
 
-Only destroy_workqueue() can release these ultimate references
-and then (after maybe a period of time) deplete the wq->pwqs
-finally and then free itself in rcu callback.
-
-Actually, in short, we don't need the care about the above
-detail. The responsibility to free rescuer is on
-destroy_workqueue(), and since it does the free early,
-it doesn't need to do it again later.
-
-e2dca7adff8f moved the free of rescuer into rcu callback,
-and I didn't check all the changes between then and now.
-But at least now, the rescuer is not accessed in rcu mananer,
-so we don't need to free it in rcu mananer.
-
->
-> >
-> > Still, the kfree(NULL) is harmless. But it is cleaner
-> > to have the patch. But the changelog is wrong, even after
-> > the lengthened debating, and English is not my mother tongue,
-> > so I just looked on.
->
-> We have tried to tell Markus not to advise people about commit messages
-> but he doesn't listen.  He has discouraged some contributors.  :/
->
-> regards,
-> dan carpenter
+Acked-by: Dennis Dalessandro <dennis.dalessandro@intel.com>

@@ -2,95 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C36B01E611C
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 14:40:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86D291E614C
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 14:48:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389840AbgE1Mju (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 08:39:50 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:47472 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389746AbgE1Mjt (ORCPT
+        id S2389965AbgE1MsS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 08:48:18 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:59638 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389852AbgE1MsR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 08:39:49 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04SCcBWp077816;
-        Thu, 28 May 2020 12:39:37 GMT
+        Thu, 28 May 2020 08:48:17 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04SCbfKr144094;
+        Thu, 28 May 2020 12:48:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=9zN7Q4P5SLs/uK+J0DPJ8yIEgj4koWHklFCW9uYBztE=;
- b=OkNfGYgtVkPs5Vi30Ub2tw+HfAZ0nBlOoZTXHNlSVbs6yQvaoLG2Of2gMe3QDw5xa+wO
- Xl/+Y5+/OmShBO28mJ4sjL7+EAhIBw9B7m+kMO4YDDBcK4YDADEemELI7gLLDBtiACdm
- D+iriZQ2k6xvLSqUENZsyWPUlVCRR4JQZPaWTyPt4KZM3f2mYTRMI8fqevg2ZOIkp4fH
- 7kOQp0tIOJBAM+MYF17CifP3hpN8RYDomEapPCPRtduE5if0IEHZ6Zg49+D+LKpHMn83
- eyEhG6gcW/c2zu7VKDx/DM36CjSXDPo2C2qSLX34ecqK78jugbcQVKRpaPei7CzGRXY9 Sg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 318xe1mqrt-1
+ bh=4MhLm3IwlAX0+PMwL8iXWxVwK1DxULSymdapXAO1u2U=;
+ b=geURq/j8aOmtLLp/5ebYTnaPSflS7Q4ZZQP10agwdrg+sGBAFkmBidSZpVegN9bVDAnC
+ e+binqmqMEDxkU0XZ0jsYgzfgIgFsb+F96JadoXONk8ma5oLw3lLUrQhihLH5Ko+sknD
+ d0K73kLVHXyrUYsCInSaTgQnjBYxIwr4N2BVrCdRV3S7b+z90OEk0JVT63y9GrDVgWW0
+ QnGLjhd/ffgPL3H3L+D8haetQ2JUU9bHnU84hpY3B0QuaeDVy93tCTSmimwRc9/cmjYq
+ ITjH3ysWzIy0E0dhIKIa3M74BA3aZO5oDUcD6knFK3qQiIDvO2PpoLILxQZai6xyKwG9 bw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 316u8r4s80-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 28 May 2020 12:39:37 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04SCJ6Ww003852;
-        Thu, 28 May 2020 12:37:37 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 317ddsq3cc-1
+        Thu, 28 May 2020 12:48:12 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04SCbcGG191796;
+        Thu, 28 May 2020 12:48:12 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 31a9kse0dj-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 28 May 2020 12:37:37 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04SCbYFX004962;
-        Thu, 28 May 2020 12:37:35 GMT
+        Thu, 28 May 2020 12:48:12 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04SCmBm9021233;
+        Thu, 28 May 2020 12:48:11 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 28 May 2020 05:37:33 -0700
-Date:   Thu, 28 May 2020 15:37:26 +0300
+        with ESMTP ; Thu, 28 May 2020 05:48:10 -0700
+Date:   Thu, 28 May 2020 15:48:03 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Oded Gabbay <oded.gabbay@gmail.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Omer Shpigelman <oshpigelman@habana.ai>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] habanalabs: fix error code in unmap_device_va()
-Message-ID: <20200528123726.GB1219412@mwanda>
+To:     Saeed Mahameed <saeedm@mellanox.com>
+Cc:     Leon Romanovsky <leon@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Vlad Buslov <vladbu@mellanox.com>,
+        Roi Dayan <roid@mellanox.com>,
+        Paul Blakey <paulb@mellanox.com>, Eli Cohen <eli@mellanox.com>,
+        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH net-next] net/mlx5e: Uninitialized variable in
+ mlx5e_attach_decap()
+Message-ID: <20200528124803.GC1219412@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9634 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0 mlxscore=0
- phishscore=0 adultscore=0 suspectscore=2 spamscore=0 malwarescore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0 adultscore=0
+ mlxlogscore=999 malwarescore=0 spamscore=0 bulkscore=0 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005280086
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9634 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
- adultscore=0 cotscore=-2147483648 mlxscore=0 bulkscore=0
- priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
- clxscore=1015 impostorscore=0 suspectscore=2 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
  definitions=main-2005280087
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9634 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0
+ priorityscore=1501 spamscore=0 cotscore=-2147483648 suspectscore=0
+ phishscore=0 clxscore=1011 mlxlogscore=999 bulkscore=0 adultscore=0
+ lowpriorityscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005280087
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Smatch complains that "rc" can be uninitialized on certain paths.
+The "ret" variable isn't initialized on the success path.
 
-Fixes: 8ff5f4fd40df ("habanalabs: handle MMU cache invalidation timeout")
+There is an uninitentional behavior in current releases of GCC where
+instead of warning about the uninitialized variable, it instead
+initializes it to zero.  So that means that this bug likely doesn't
+affect testing.
+
+Fixes: 14e6b038afa0 ("net/mlx5e: Add support for hw decapsulation of MPLS over UDP")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/misc/habanalabs/memory.c | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/misc/habanalabs/memory.c b/drivers/misc/habanalabs/memory.c
-index 4b8eed1ca5130..47da84a177197 100644
---- a/drivers/misc/habanalabs/memory.c
-+++ b/drivers/misc/habanalabs/memory.c
-@@ -1023,7 +1023,7 @@ static int unmap_device_va(struct hl_ctx *ctx, u64 vaddr, bool ctx_free)
- 	struct hl_va_range *va_range;
- 	enum vm_type_t *vm_type;
- 	bool is_userptr;
--	int rc;
-+	int rc = 0;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+index 571da14809fec..ae53bf5994215 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+@@ -3637,7 +3637,7 @@ static int mlx5e_attach_decap(struct mlx5e_priv *priv,
+ 	struct mlx5e_decap_entry *d;
+ 	struct mlx5e_decap_key key;
+ 	uintptr_t hash_key;
+-	int err;
++	int err = 0;
  
- 	/* protect from double entrance */
- 	mutex_lock(&ctx->mem_hash_lock);
+ 	parse_attr = attr->parse_attr;
+ 	if (sizeof(parse_attr->eth) > MLX5_CAP_ESW(priv->mdev, max_encap_header_size)) {
 -- 
 2.26.2
 

@@ -2,37 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64D811E593F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 09:44:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B21B21E59EC
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 09:55:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726495AbgE1Ho1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 03:44:27 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:5298 "EHLO huawei.com"
+        id S1726111AbgE1HzO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 03:55:14 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:5300 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725811AbgE1Ho1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 03:44:27 -0400
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id D494069D223870CB3645;
-        Thu, 28 May 2020 15:44:24 +0800 (CST)
+        id S1725901AbgE1HzO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 May 2020 03:55:14 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id E437587AD107F6AD0F4C;
+        Thu, 28 May 2020 15:55:12 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 28 May 2020 15:44:15 +0800
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.487.0; Thu, 28 May 2020 15:55:06 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        "Kalle Valo" <kvalo@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "Matthias Brugger" <matthias.bgg@gmail.com>,
-        Sean Wang <sean.wang@mediatek.com>
-CC:     YueHaibing <yuehaibing@huawei.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <netdev@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
+To:     Mike Marciniszyn <mike.marciniszyn@intel.com>,
+        Dennis Dalessandro <dennis.dalessandro@intel.com>,
+        Doug Ledford <dledford@redhat.com>,
+        "Jason Gunthorpe" <jgg@ziepe.ca>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-rdma@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>
-Subject: [PATCH] mt76: mt7615: Use kmemdup in mt7615_queue_key_update()
-Date:   Thu, 28 May 2020 07:48:56 +0000
-Message-ID: <20200528074856.118279-1-yuehaibing@huawei.com>
+Subject: [PATCH -next] IB/hfi1: Remove set but not used variable 'priv'
+Date:   Thu, 28 May 2020 07:59:46 +0000
+Message-ID: <20200528075946.123480-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -44,31 +38,40 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Use kmemdup rather than duplicating its implementation
+drivers/infiniband/hw/hfi1/netdev_rx.c: In function 'hfi1_netdev_free':
+drivers/infiniband/hw/hfi1/netdev_rx.c:374:27: warning:
+ variable 'priv' set but not used [-Wunused-but-set-variable]
+
+It is never used, so can be removed, then null check before
+kfree is unneeded.
 
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/main.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/infiniband/hw/hfi1/netdev_rx.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index 2e9e9d3519d7..c32f06c85f0f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -289,12 +289,11 @@ mt7615_queue_key_update(struct mt7615_dev *dev, enum set_key_cmd cmd,
- 	wd->type = MT7615_WTBL_KEY_DESC;
- 	wd->sta = msta;
+diff --git a/drivers/infiniband/hw/hfi1/netdev_rx.c b/drivers/infiniband/hw/hfi1/netdev_rx.c
+index 58af6a454761..bd6546b52159 100644
+--- a/drivers/infiniband/hw/hfi1/netdev_rx.c
++++ b/drivers/infiniband/hw/hfi1/netdev_rx.c
+@@ -371,14 +371,9 @@ int hfi1_netdev_alloc(struct hfi1_devdata *dd)
  
--	wd->key.key = kzalloc(key->keylen, GFP_KERNEL);
-+	wd->key.key = kmemdup(key->key, key->keylen, GFP_KERNEL);
- 	if (!wd->key.key) {
- 		kfree(wd);
- 		return -ENOMEM;
- 	}
--	memcpy(wd->key.key, key->key, key->keylen);
- 	wd->key.cipher = key->cipher;
- 	wd->key.keyidx = key->keyidx;
- 	wd->key.keylen = key->keylen;
+ void hfi1_netdev_free(struct hfi1_devdata *dd)
+ {
+-	struct hfi1_netdev_priv *priv;
+-
+-	if (dd->dummy_netdev) {
+-		priv = hfi1_netdev_priv(dd->dummy_netdev);
+-		dd_dev_info(dd, "hfi1 netdev freed\n");
+-		kfree(dd->dummy_netdev);
+-		dd->dummy_netdev = NULL;
+-	}
++	dd_dev_info(dd, "hfi1 netdev freed\n");
++	kfree(dd->dummy_netdev);
++	dd->dummy_netdev = NULL;
+ }
+ 
+ /**
 
 
 

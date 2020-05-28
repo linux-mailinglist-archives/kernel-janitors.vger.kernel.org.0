@@ -2,104 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86D291E614C
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 14:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DDE31E6161
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 May 2020 14:50:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389965AbgE1MsS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 08:48:18 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:59638 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389852AbgE1MsR (ORCPT
+        id S2389920AbgE1MuQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 08:50:16 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:54890 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389851AbgE1MuM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 08:48:17 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04SCbfKr144094;
-        Thu, 28 May 2020 12:48:12 GMT
+        Thu, 28 May 2020 08:50:12 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04SCcB6f077838;
+        Thu, 28 May 2020 12:50:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=4MhLm3IwlAX0+PMwL8iXWxVwK1DxULSymdapXAO1u2U=;
- b=geURq/j8aOmtLLp/5ebYTnaPSflS7Q4ZZQP10agwdrg+sGBAFkmBidSZpVegN9bVDAnC
- e+binqmqMEDxkU0XZ0jsYgzfgIgFsb+F96JadoXONk8ma5oLw3lLUrQhihLH5Ko+sknD
- d0K73kLVHXyrUYsCInSaTgQnjBYxIwr4N2BVrCdRV3S7b+z90OEk0JVT63y9GrDVgWW0
- QnGLjhd/ffgPL3H3L+D8haetQ2JUU9bHnU84hpY3B0QuaeDVy93tCTSmimwRc9/cmjYq
- ITjH3ysWzIy0E0dhIKIa3M74BA3aZO5oDUcD6knFK3qQiIDvO2PpoLILxQZai6xyKwG9 bw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 316u8r4s80-1
+ bh=42pW05J+XGKKbj5116SvnJ6S67bu8Mxa49NL4WicG40=;
+ b=EaK3zKf/TUl6Wd7VsummzrwfJVG5Y93Xh6hhruHbf7oaNJ+851oyypQG8hPMz4+cU9/o
+ ywLqMW1IoorIjhRYxbboKP0+uB57Cmdj14BYoXBXeHUFWNqCPf+EoONAgDN+IhTTzQJz
+ jTEcr8qfZvr7Lfbq2s/OUKgDyFE0R+LqtmxlEyNGE08+JNT9d3CxflVjg4BzZkfvNHAL
+ UzksfDCkH25/i2my3bcakBNxNoccEV+phHXxDfO3Lhh8A/d7YnriiZOTauqdD9zkxTVF
+ jC0LHCygtdEmhR3VqjAB9LIiypaFApkk6Z0VBmmheI0rowt6h+kGx6/r3LSasPQZpkDG GA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 318xe1msbj-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 28 May 2020 12:48:12 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04SCbcGG191796;
-        Thu, 28 May 2020 12:48:12 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 31a9kse0dj-1
+        Thu, 28 May 2020 12:50:05 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04SCbcum004032;
+        Thu, 28 May 2020 12:50:05 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 317j5v71bg-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 28 May 2020 12:48:12 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04SCmBm9021233;
-        Thu, 28 May 2020 12:48:11 GMT
+        Thu, 28 May 2020 12:50:05 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04SCo3Ur002534;
+        Thu, 28 May 2020 12:50:03 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 28 May 2020 05:48:10 -0700
-Date:   Thu, 28 May 2020 15:48:03 +0300
+        with ESMTP ; Thu, 28 May 2020 05:50:02 -0700
+Date:   Thu, 28 May 2020 15:49:57 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Saeed Mahameed <saeedm@mellanox.com>
-Cc:     Leon Romanovsky <leon@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Vlad Buslov <vladbu@mellanox.com>,
-        Roi Dayan <roid@mellanox.com>,
-        Paul Blakey <paulb@mellanox.com>, Eli Cohen <eli@mellanox.com>,
-        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+To:     Vishal Kulkarni <vishal@chelsio.com>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH net-next] net/mlx5e: Uninitialized variable in
- mlx5e_attach_decap()
-Message-ID: <20200528124803.GC1219412@mwanda>
+Subject: [PATCH net-next] cxgb4: cleanup error code in setup_sge_queues_uld()
+Message-ID: <20200528124957.GD1219412@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9634 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0 adultscore=0
- mlxlogscore=999 malwarescore=0 spamscore=0 bulkscore=0 phishscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 suspectscore=0
+ mlxlogscore=999 mlxscore=0 adultscore=0 phishscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
  definitions=main-2005280087
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9634 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0
- priorityscore=1501 spamscore=0 cotscore=-2147483648 suspectscore=0
- phishscore=0 clxscore=1011 mlxlogscore=999 bulkscore=0 adultscore=0
- lowpriorityscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005280087
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
+ adultscore=0 cotscore=-2147483648 mlxscore=0 bulkscore=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
+ clxscore=1011 impostorscore=0 suspectscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005280087
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "ret" variable isn't initialized on the success path.
+The caller doesn't care about the error codes, they only check for zero
+vs non-zero.  Still, it's better to preserve the negative error codes
+from alloc_uld_rxqs() instead of changing it to 1.  We can also return
+directly if there is a failure.
 
-There is an uninitentional behavior in current releases of GCC where
-instead of warning about the uninitialized variable, it instead
-initializes it to zero.  So that means that this bug likely doesn't
-affect testing.
-
-Fixes: 14e6b038afa0 ("net/mlx5e: Add support for hw decapsulation of MPLS over UDP")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This isn't a bugfix so it should probably go to net-next, but the code
+is pretty old.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index 571da14809fec..ae53bf5994215 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -3637,7 +3637,7 @@ static int mlx5e_attach_decap(struct mlx5e_priv *priv,
- 	struct mlx5e_decap_entry *d;
- 	struct mlx5e_decap_key key;
- 	uintptr_t hash_key;
--	int err;
-+	int err = 0;
+The other error handling only checks the last iteration in the
+for_each_port() loop.  I didn't change that because it's slightly
+riskier and I can't test the code.
+
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_uld.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_uld.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_uld.c
+index 6b1d3df4b9bae..9e3c6b36cde89 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_uld.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_uld.c
+@@ -174,13 +174,14 @@ static int
+ setup_sge_queues_uld(struct adapter *adap, unsigned int uld_type, bool lro)
+ {
+ 	struct sge_uld_rxq_info *rxq_info = adap->sge.uld_rxq_info[uld_type];
+-	int i, ret = 0;
++	int i, ret;
  
- 	parse_attr = attr->parse_attr;
- 	if (sizeof(parse_attr->eth) > MLX5_CAP_ESW(priv->mdev, max_encap_header_size)) {
+-	ret = !(!alloc_uld_rxqs(adap, rxq_info, lro));
++	ret = alloc_uld_rxqs(adap, rxq_info, lro);
++	if (ret)
++		return ret;
+ 
+ 	/* Tell uP to route control queue completions to rdma rspq */
+-	if (adap->flags & CXGB4_FULL_INIT_DONE &&
+-	    !ret && uld_type == CXGB4_ULD_RDMA) {
++	if (adap->flags & CXGB4_FULL_INIT_DONE && uld_type == CXGB4_ULD_RDMA) {
+ 		struct sge *s = &adap->sge;
+ 		unsigned int cmplqid;
+ 		u32 param, cmdop;
 -- 
 2.26.2
 

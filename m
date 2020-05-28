@@ -2,46 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3DB61E6E62
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 00:07:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 174BD1E6E69
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 00:12:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436829AbgE1WHe convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 18:07:34 -0400
-Received: from mail.bnv.gob.ve ([201.249.200.115]:47850 "EHLO
-        correo.bnv.gob.ve" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2436764AbgE1WHd (ORCPT
+        id S2436891AbgE1WMZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 May 2020 18:12:25 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:45708 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2436887AbgE1WMY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 18:07:33 -0400
-Received: from localhost (localhost.bnv.gob.ve [127.0.0.1])
-        by correo.bnv.gob.ve (Postfix) with ESMTP id 3F78238E1605;
-        Thu, 28 May 2020 13:44:56 -0400 (-04)
-Received: from correo.bnv.gob.ve ([127.0.0.1])
-        by localhost (correo.bnv.gob.ve [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id bhCqNNew6nQU; Thu, 28 May 2020 13:44:56 -0400 (-04)
-Received: from localhost (localhost.bnv.gob.ve [127.0.0.1])
-        by correo.bnv.gob.ve (Postfix) with ESMTP id 752E838E1AC9;
-        Thu, 28 May 2020 13:02:24 -0400 (-04)
-X-Virus-Scanned: amavisd-new at bnv.gob.ve
-Received: from correo.bnv.gob.ve ([127.0.0.1])
-        by localhost (correo.bnv.gob.ve [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 5Hmd2nqQPUpi; Thu, 28 May 2020 13:02:24 -0400 (-04)
-Received: from [10.19.23.127] (unknown [105.0.4.230])
-        by correo.bnv.gob.ve (Postfix) with ESMTPSA id ED27338E0587;
-        Thu, 28 May 2020 12:28:05 -0400 (-04)
-Content-Type: text/plain; charset="iso-8859-1"
+        Thu, 28 May 2020 18:12:24 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jeQl9-0007zv-Hz; Thu, 28 May 2020 22:12:19 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rahul Tanwar <rahul.tanwar@linux.intel.com>,
+        linux-clk@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] clk: intel: remove redundant initialization of variable rate64
+Date:   Thu, 28 May 2020 23:12:19 +0100
+Message-Id: <20200528221219.535804-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Spende von 2.000.000,00 Euro
-To:     Recipients <manuel@info.com>
-From:   "manuel franco" <manuel@info.com>
-Date:   Thu, 28 May 2020 18:27:53 +0200
-Reply-To: manuelfrancospende11@gmail.com
-Message-Id: <20200528162805.ED27338E0587@correo.bnv.gob.ve>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Ich bin Manuel Franco, ich spende Ihnen 2.000.000,00 Euro. Nehmen Sie jetzt Kontakt mit mir auf, damit wir fortfahren können.
+From: Colin Ian King <colin.king@canonical.com>
+
+The variable rate64 is being initialized with a value that is never read
+and it is being updated later with a new value.  The initialization is
+redundant and can be removed.
+
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/clk/x86/clk-cgu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/clk/x86/clk-cgu.c b/drivers/clk/x86/clk-cgu.c
+index 802a7fa88535..56af0e04ec1e 100644
+--- a/drivers/clk/x86/clk-cgu.c
++++ b/drivers/clk/x86/clk-cgu.c
+@@ -538,7 +538,7 @@ lgm_clk_ddiv_round_rate(struct clk_hw *hw, unsigned long rate,
+ 	struct lgm_clk_ddiv *ddiv = to_lgm_clk_ddiv(hw);
+ 	u32 div, ddiv1, ddiv2;
+ 	unsigned long flags;
+-	u64 rate64 = rate;
++	u64 rate64;
+ 
+ 	div = DIV_ROUND_CLOSEST_ULL((u64)*prate, rate);
+ 
+-- 
+2.25.1
+

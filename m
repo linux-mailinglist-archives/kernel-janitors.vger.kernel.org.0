@@ -2,110 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 796C41E75DE
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 08:24:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9394A1E7698
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 09:26:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726086AbgE2GYJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 29 May 2020 02:24:09 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:43246 "EHLO huawei.com"
+        id S1725852AbgE2H0j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 29 May 2020 03:26:39 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:37664 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725768AbgE2GYJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 29 May 2020 02:24:09 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id A8E095C7FBDDFB1A1C84;
-        Fri, 29 May 2020 14:24:06 +0800 (CST)
-Received: from [10.63.139.185] (10.63.139.185) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.487.0; Fri, 29 May 2020 14:24:01 +0800
-Subject: Re: [PATCH] crypto: hisilicon/qm - allow smaller reads in debugfs
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-References: <20200528123703.GA1219412@mwanda>
-CC:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-From:   Zhou Wang <wangzhou1@hisilicon.com>
-Message-ID: <5ED0AA81.5080105@hisilicon.com>
-Date:   Fri, 29 May 2020 14:24:01 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
+        id S1725355AbgE2H0j (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 29 May 2020 03:26:39 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 920E05587BB7B903D501;
+        Fri, 29 May 2020 15:26:37 +0800 (CST)
+Received: from [127.0.0.1] (10.67.103.119) by DGGEMS402-HUB.china.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server id 14.3.487.0; Fri, 29 May 2020
+ 15:26:30 +0800
+Subject: Re: [PATCH][next] RDMA/hns: remove duplicate assignment to pointer
+ raq
+To:     Colin King <colin.king@canonical.com>,
+        Wei Hu <huwei87@hisilicon.com>,
+        Weihang Li <liweihang@huawei.com>,
+        Doug Ledford <dledford@redhat.com>,
+        "Jason Gunthorpe" <jgg@ziepe.ca>, <linux-rdma@vger.kernel.org>
+CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20200528150427.420624-1-colin.king@canonical.com>
+From:   oulijun <oulijun@huawei.com>
+Message-ID: <7a803901-5405-4837-3fa8-d81e8bdfc067@huawei.com>
+Date:   Fri, 29 May 2020 15:26:30 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.0
 MIME-Version: 1.0
-In-Reply-To: <20200528123703.GA1219412@mwanda>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.63.139.185]
+In-Reply-To: <20200528150427.420624-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.103.119]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020/5/28 20:37, Dan Carpenter wrote:
-> Originally this code rejected any read less than 256 bytes.  There
-> is no need for this artificial limit.
-> 
-> Also I have changed the snprintf() functions to scnprintf().  The
-> difference is that snprintf() returns the number of bytes which would
-> have been copied if there were enough space and scnprintf() returns the
-> number of bytes which were actually copied.  It doesn't matter here
-> because the strings are very short so they can't go over 256 bytes.
-> 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Looks good to me, thanks!
-Reviewed-by: Zhou Wang <wangzhou1@hisilicon.com>
 
+在 2020/5/28 23:04, Colin King 写道:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The pointer raq is being assigned twice. Fix this by removing
+> one of the redundant assignments.
+> 
+> Fixes: 14ba87304bf9 ("RDMA/hns: Remove redundant type cast for general pointers")
+> Addressses-Coverity: ("Evaluation order violation")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/crypto/hisilicon/qm.c | 18 ++++++++----------
->  1 file changed, 8 insertions(+), 10 deletions(-)
+>   drivers/infiniband/hw/hns/hns_roce_hw_v1.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
-> index a781c02251980..9c0c9f500d91d 100644
-> --- a/drivers/crypto/hisilicon/qm.c
-> +++ b/drivers/crypto/hisilicon/qm.c
-> @@ -1076,16 +1076,15 @@ static ssize_t qm_cmd_read(struct file *filp, char __user *buffer,
->  	if (*pos)
->  		return 0;
->  
-> -	if (count < QM_DBG_READ_LEN)
-> -		return -ENOSPC;
-> -
-> -	len = snprintf(buf, QM_DBG_READ_LEN, "%s\n",
-> +	len = scnprintf(buf, QM_DBG_READ_LEN, "%s\n",
->  		       "Please echo help to cmd to get help information");
->  
-> +	len = min_t(size_t, len, count);
->  	if (copy_to_user(buffer, buf, len))
->  		return -EFAULT;
->  
-> -	return (*pos = len);
-> +	*pos = len;
-> +	return len;
->  }
->  
->  static void *qm_ctx_alloc(struct hisi_qm *qm, size_t ctx_size,
-> @@ -2710,19 +2709,18 @@ static ssize_t qm_status_read(struct file *filp, char __user *buffer,
->  	if (*pos)
->  		return 0;
->  
-> -	if (count < QM_DBG_READ_LEN)
-> -		return -ENOSPC;
-> -
->  	val = atomic_read(&qm->status.flags);
-> -	len = snprintf(buf, QM_DBG_READ_LEN, "%s\n", qm_s[val]);
-> +	len = scnprintf(buf, QM_DBG_READ_LEN, "%s\n", qm_s[val]);
->  	if (!len)
->  		return -EFAULT;
->  
-> +	len = min_t(size_t, len, count);
->  	cp_len = copy_to_user(buffer, buf, len);
->  	if (cp_len)
->  		return -EFAULT;
->  
-> -	return (*pos = len);
-> +	*pos = len;
-> +	return len;
->  }
->  
->  static const struct file_operations qm_status_fops = {
+> diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v1.c b/drivers/infiniband/hw/hns/hns_roce_hw_v1.c
+> index 8ff6b922b4d7..d02207cd30df 100644
+> --- a/drivers/infiniband/hw/hns/hns_roce_hw_v1.c
+> +++ b/drivers/infiniband/hw/hns/hns_roce_hw_v1.c
+> @@ -1146,7 +1146,7 @@ static void hns_roce_db_free(struct hns_roce_dev *hr_dev)
+>   static int hns_roce_raq_init(struct hns_roce_dev *hr_dev)
+>   {
+>   	struct hns_roce_v1_priv *priv = hr_dev->priv;
+> -	struct hns_roce_raq_table *raq = raq = &priv->raq_table;
+> +	struct hns_roce_raq_table *raq = &priv->raq_table;
+>   	struct device *dev = &hr_dev->pdev->dev;
+>   	int raq_shift = 0;
+>   	dma_addr_t addr;
 > 
+thanks
+

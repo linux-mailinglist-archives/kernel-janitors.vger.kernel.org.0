@@ -2,134 +2,153 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E1391E7265
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 04:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 865D41E7523
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 06:52:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404641AbgE2CGg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 May 2020 22:06:36 -0400
-Received: from mail-bn7nam10on2086.outbound.protection.outlook.com ([40.107.92.86]:7206
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2404550AbgE2CGf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 May 2020 22:06:35 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iCOwS60GmzbFQqccOYw7SgwAjr/rvWwMu3tBNewgUv0PfBZkeMPqbMoNn60RVMOP6XtPmk0pSN3YCqnrHqvOcpWOHMFbg7/PTyKNByRMfTCokpp49cbnY5YHq8ieLsCtO00/shV2gIOYcZOEZSlbXJAeRBI689KV6OXVIu05i27F/VWjVzKwFvO7HSb2P19YOGw/fBSYDynbO79h9FFcSfn16X3/RWWFUFTOUX6mxHdAgsHPH4vE4x/u3N+A0qPJ6eK3TSpw59HOiWFRampw+eX5FZ86aCDsA87d2bkm1a/Vpu9KKg8cndvysYrTAcTk/1cw4eAjv+4PQ23GyNtFAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f15cFJguZyj/vi3mBdvW33G30Pql4r56hquaySHucJo=;
- b=J7yKKHTbbJ5Jo1eXLYpq4dL0Dp3zXI0RdS3w8prJCOhMgn591WJoQyjIeRNWSqppR0z3mEPyCHAuVtgtKKI3gkWjLGwMhhsq3rZ68oCRnXw7uBg3z5k+hocqT5sD6TMyA+qdxkPR0Zx5/cxiU73+dh4w66pQhRMtVOIB2uRLpyioJOaj6Oc3AkFWeC/HSjIACGGfnFexLXJP8JX7t3/VcGY00rkdhnhvygQw9Bn0vKikDT8S8fP/UVFp/hfbvJk5EU1exIQLA0NprvMRwnXu3jRmvW7lm8ddLYhgNaSieXBL2Cqpd2xUzp8dLImFi1OF29AhPQfNxlJ7wInEOmVE6g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f15cFJguZyj/vi3mBdvW33G30Pql4r56hquaySHucJo=;
- b=iGv47NeWDWkNLYBRWiZH8xWrte1HLjpKyq0w9xlypj5B4jt4Kj/bwxdDjgpg3PLdA+7lZCxt15dOEYUx+R2Y0i/3LOykqyyhajm/PFNAoKqGgYWDyiChH5tB+VCBWqJDyGoN7VNMeA0fxPVKAYMllj8hrVu3vO8AaX/8bWDlODE=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=amd.com;
-Received: from SN1PR12MB2414.namprd12.prod.outlook.com (2603:10b6:802:2e::31)
- by SN1PR12MB2382.namprd12.prod.outlook.com (2603:10b6:802:2e::30) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.24; Fri, 29 May
- 2020 02:06:27 +0000
-Received: from SN1PR12MB2414.namprd12.prod.outlook.com
- ([fe80::18d:97b:661f:9314]) by SN1PR12MB2414.namprd12.prod.outlook.com
- ([fe80::18d:97b:661f:9314%7]) with mapi id 15.20.3021.030; Fri, 29 May 2020
- 02:06:27 +0000
-Subject: Re: [PATCH][next] drm/amdkfd: fix a dereference of pdd before it is
- null checked
-To:     Colin King <colin.king@canonical.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Mukul Joshi <mukul.joshi@amd.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200528222453.536137-1-colin.king@canonical.com>
-From:   Felix Kuehling <felix.kuehling@amd.com>
-Message-ID: <dc37cf9d-ddaf-94c7-8fc1-460c8da59d7b@amd.com>
-Date:   Thu, 28 May 2020 22:06:14 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-In-Reply-To: <20200528222453.536137-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-ClientProxiedBy: BN6PR03CA0016.namprd03.prod.outlook.com
- (2603:10b6:404:23::26) To SN1PR12MB2414.namprd12.prod.outlook.com
- (2603:10b6:802:2e::31)
+        id S1725830AbgE2EwA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 29 May 2020 00:52:00 -0400
+Received: from mout.web.de ([212.227.15.3]:45591 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725601AbgE2EwA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 29 May 2020 00:52:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1590727910;
+        bh=9s8HVWZnrNlsYF4NgOgs7U6BwK85FTelc8UkaeUj92U=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=He3pHNuw73/ydGfKjr8y1sAUq7NpqVU80PSxusgCAC5qE9qIGvAjHvmC9Kn7SAOUk
+         3yriIoWdsg6CQxyfr61+EKjX1Gh8I5l8ORnk8BYOgUpDiSkOQqGR4ISzGUvpRRnEJU
+         0E02a+h0o3/qhJoLo9WIfP5GX7Oj0+DE5PR+GQg8=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.3] ([93.131.188.184]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MEmbK-1jlhzo2cJO-00G5Bd; Fri, 29
+ May 2020 06:51:50 +0200
+Subject: Re: nilfs2: Fix reference count leak in
+ nilfs_sysfs_create_snapshot_group()
+To:     Qiushi Wu <wu000273@umn.edu>, linux-nilfs@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Kangjie Lu <kjlu@umn.edu>,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        Vyacheslav Dubeyko <Vyacheslav.Dubeyko@hgst.com>
+References: <30cf7534-b62e-84b1-571a-945aaffac5b0@web.de>
+ <CAMV6ehE3jm4ZasYqd12f=e0TNN_kfiX7yCMVHkmESKP0WbuqTw@mail.gmail.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <b4e9eb17-7c5a-15ed-5ff7-2334ff13e9d7@web.de>
+Date:   Fri, 29 May 2020 06:51:42 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.252.0.178] (165.204.84.11) by BN6PR03CA0016.namprd03.prod.outlook.com (2603:10b6:404:23::26) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3045.19 via Frontend Transport; Fri, 29 May 2020 02:06:19 +0000
-X-Originating-IP: [165.204.84.11]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 34c71310-dd95-4301-03da-08d80374e4ff
-X-MS-TrafficTypeDiagnostic: SN1PR12MB2382:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SN1PR12MB23825E9A06128F3B4F87579E928F0@SN1PR12MB2382.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2089;
-X-Forefront-PRVS: 04180B6720
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: gwUTGxNA4W6LYh4sHypTUjqcQIiVsBd52NEvm8h/yUegNTIxnpwp/Z+Kx2kBuWG+mW3QurXS5tYdsii1npN7jLDkVCMV14vrqF1rHucMbIQ+4XU98DioUlnvHxTU4yp5Q5NnG6DPaU3I0vfvDgzMAj8EKxAa0P7128BB0wry4t4XMV1yl7n48JT5N1KG2qHK0mgJBgEvbohgvANaiQHIYzuFQWnviAjCK8xAvRRXpDNfSPyeirc0ScicTqEEHWophnHKtuYDPJT+iWk1b4IGRvRmKxEdwlIEmWp6JA+t5vshbAb+yoL8fUK1TeNgVmS+fwFRJXCzZsklL5Qevc+CGdlf5VYT1fYS17yPqe8IaBVzeDxFHGWJM1MHL2MYO71f
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN1PR12MB2414.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(346002)(39860400002)(136003)(376002)(366004)(396003)(44832011)(110136005)(8676002)(66556008)(66476007)(8936002)(66946007)(6666004)(16576012)(86362001)(31696002)(956004)(316002)(2616005)(2906002)(36756003)(4326008)(5660300002)(6486002)(52116002)(186003)(16526019)(53546011)(478600001)(83380400001)(31686004)(26005)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: Thy+b6u0b15/E0GayQZ/CpXwlswPJB56yZsu2ncfgnq8PaWwMxEFr74kCq2clrFOuj6DMO+35l55P5I4LjXqm937Ry20kIkE7Chpo4ugkwYBD48pLcpUEMkTswOwG10uakkla7k5Gke2RLPRNjYL6s+A06nXiV5ip7DifS3Vbk1WthWE9hhYTPtrlDrSyF3C9fEFlhsyC3IrJcgykCfrR7xR3QKg2yY+pAPNBAzQ+XOHyIkgbMrvX9l30N5U/o4ERvBwjkpQAStVriIaeno9dZPOE7kf0XWesdOF5OWsRQ0QdcMeDRM2ftXVyWL+pW79STQ3JqZ+Up7XTq8Zx1IHfs+bj0DMUyi6FEh2BZUMXBwTwzV+IFhKl5A5E3Okq1PhYM5ZtD4eQwXxydWOmAM5PqXe9hyHhD8Z+sS8ozpizdko2A5sTgsCFazG7ewBugUBMLAizGfABdzV0oc+sQkcIauyFA31Hr7e/RQfKg3/Nj9CYrdly8xLUpipa2ppYQ5/
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34c71310-dd95-4301-03da-08d80374e4ff
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2020 02:06:26.8801
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WZJLwpF/belaR7HMp3FQImEPNZbw3eh4p2VaO5Shtq0e3w9WtzXmmZAke0+PduBnvmhU+zLwrjhlRNbPnck75w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR12MB2382
+In-Reply-To: <CAMV6ehE3jm4ZasYqd12f=e0TNN_kfiX7yCMVHkmESKP0WbuqTw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:XKuf8ZSnXQHsZOavZvRwDBXRig77n6U6qj/zp5SsPQt4Fy93B1j
+ RZC/dHuQ4DiTgYCoiazeqHYqnHzzDuHKLV7On+uHL3H805+i+gHpiH5QLBZXMxuCUKLw72n
+ DTbMLtFME4FE+IvwRzwwfbganNwANeuV1mCW9RQ5S8k8ZJls/MYplzgcvnVytO384aC9CU+
+ ExDqaws9NaSyAfVAU2rRQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:SG6lFVkg1J8=:EMwtzq9KUnlOS0M3glXrmC
+ IPxt6VrTRiC5Ubzt+sTr+aSIvq6INFpV1Xn0RYGEc7p71u3pG+UUN7YwlRUtMF/lH8bDnA+HX
+ 7Mfx0AhKlw6/g/Io7dcR1jS1K2s6xm1a94n7GzV8Fscy6ZChbpDELbjAuDN7PsS1zMz4qCzum
+ bWatPwdWiyi+7iHY1lx+mxcv85VDcYjtWdEEnFbcKcu9g1NBL1P52CarC4t8w1inf8yio1VXG
+ vsv8Lp5u096sBqukmgu9Rji47BXR/CXxvDnT8A6cEmpSSkOGmKVNMaQUNSDvM2Sfn8k412z8u
+ BC1PORaHQ2Vx53SlDTM5uruSQoM8ZRegY/RpsrgFvTog3TXU3G5mHmAfmKJQcJpNv9QveFK5h
+ VhbLhgyGbxg3ROrUiT6gCfu1V5flDkiyB+9p+YrLCUuOp10dwOjn6ueYGQ5UdUf7dDJNPUG7G
+ zRM7KUkZQ5RbxULiQ93yxOjCMeoArX2jAdUzXc/UdlszRyLnNbNj+kmm5K65+rKWKjsgCCMZZ
+ FfQsshoGQ7+ly8JdfbnF6XqqD3RgVZJlsDDbNtSVujbRCw8/CT1+tDvWO1IbV3Vr+QFOSXo6d
+ fhcqjPbD6ZHLejg6/xlY8Lon1F6kDUGWb4inlSB2VMSXduDa/6LI9qakQPo7G30gpz4Tk0ZZn
+ ScXKGxE2uQKEqZNPZNzaPmsKRy0s7IxGdoaZPufECQBAC+1vx2Vhk3F3Jvx+Q+oAaxvIzsb90
+ jMKNrqcdurw139TLwg2RDPWlErC/XLDvid0nqlpwayZxQ1nZY1KCeiL8B8TaRW8X9sgZsJzBP
+ dxn7UAcTfNnJL7BWXG8h86ys95w0DZ1/8aRUKn0tamQtOdl4Q0SYqaiq3u9bO+NVRrI8h9Zvz
+ 8Ad6AGS4Y5kfGpvk7l9PdKCg53+8zMA5xdTTXe1fT5mwspk0VpwoFna1ymqNFdIvaihtEZnpr
+ uVjIbx9LFDTKozY8bBqSAmb0NToKTAuh2cbgSwG3n2vTxf1KclI5rWhLF96GnsNfsGLh+IZ48
+ xsBCibpa5s/IVxDDfqYMuvjQnG2d5o65srRvYJivFaq7QSjQyVNAqGNzxAVsxi/7DDqQMtxXH
+ yekZQ0J9s5Se6gHgBULrcUiPzm8auRMtoeH8M7DnlkO8Pvlbf972UW3sGmkQIsGqquunLqLzx
+ 5hS3fuLWlViI316F+nj95iys24zXHFcXXwC7JgJnVRsM10c4EN2RLBl5AJbAePxZDy65MtHfX
+ BHpYnfF4E4T7unYzD
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020-05-28 18:24, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Currently pointer pdd is being dereferenced when assigning pointer
-> dpm and then pdd is being null checked.  Fix this by checking if
-> pdd is null before the dereference of pdd occurs.
->
-> Addresses-Coverity: ("Dereference before null check")
-> Fixes: 522b89c63370 ("drm/amdkfd: Track SDMA utilization per process")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> I think there is only one object that can be modified in this function,
 
-Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Such a view can be reasonable.
 
-I applied the patch to our internal amd-staging-drm-next.
+
+> so I didn't mention it.
+
+I suggest to reconsider the conclusion.
+
+
+>> I guess that an imperative wording is preferred also for this change de=
+scription.
+>
+> This sentence is referenced from the code comment, so I haven't change i=
+t.
+> https://elixir.bootlin.com/linux/v5.7-rc7/source/lib/kobject.c#L459
+
+I find that that there are further possibilities to consider for improveme=
+nts
+around the presented commit message (even after the mentioned copy
+from the function description of this programming interface).
+
+
+>> How do you think about to combine this update step together with
+>> =E2=80=9Cnilfs2: Fix reference count leak in nilfs_sysfs_create_device_=
+group=E2=80=9D
+>> into a small patch series?
+>
+> I'd like to improve the similar issues after I reporting this bunch of b=
+ugs.
+
+Did you find questionable implementation details with the help of an evolv=
+ing
+source code analysis tool?
 
 Regards,
-   Felix
-
-
-> ---
->   drivers/gpu/drm/amd/amdkfd/kfd_process.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-> index 25636789f3d3..bdc58741b32e 100644
-> --- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-> +++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-> @@ -103,10 +103,11 @@ static void kfd_sdma_activity_worker(struct work_struct *work)
->   		return;
->   
->   	pdd = workarea->pdd;
-> +	if (!pdd)
-> +		return;
->   	dqm = pdd->dev->dqm;
->   	qpd = &pdd->qpd;
-> -
-> -	if (!pdd || !dqm || !qpd)
-> +	if (!dqm || !qpd)
->   		return;
->   
->   	mm = get_task_mm(pdd->process->lead_thread);
+Markus

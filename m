@@ -2,101 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D8631E7D30
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 14:28:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E548E1E7E83
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 15:20:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726459AbgE2M21 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 29 May 2020 08:28:27 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:46020 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725865AbgE2M20 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 29 May 2020 08:28:26 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04TCIEJP178159;
-        Fri, 29 May 2020 12:28:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=SPN5tu+DzLP7xBB4KSi//zwtdPV66GdUhG62R2cTY4I=;
- b=nToWXUFw4kJZDlysmEvIsKeVLkepx9hSd50G9dnoZToELIBbfKayfmu36dEboJODFILF
- mtmVKJKkdukQEJUX2NMAqdI5mUNh3FX1+3JADM0FcmSYQeRoN+uObN0M+mliMrf9MLI5
- 4C5H6tZd9+SLYUFWH8mrmgx45QCu+dIwOHTDK5IVT/HEEU5vpK/g+oRNQOIIHSpfAavt
- BKsValVH25RcAwYWLqFhIHMcwqGulcBfj71pxqiuATFsQttAJWYuKhj+84/o2kdBfbaS
- Q0Z2/S6VGB69j2LKYebY+He7+MlJJ67tn33683gDhSTGMXkz+hGlUScnhFJRoHUqKnFj Hg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 318xe1t3fg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 29 May 2020 12:28:01 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04TCD9FQ137625;
-        Fri, 29 May 2020 12:28:01 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 317ddubyvj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 29 May 2020 12:28:01 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04TCRwnp016835;
-        Fri, 29 May 2020 12:27:58 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 29 May 2020 05:27:58 -0700
-Date:   Fri, 29 May 2020 15:27:44 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Fenghua Yu <fenghua.yu@intel.com>
-Cc:     Reinette Chatre <reinette.chatre@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] x86/resctrl: fix a NULL vs IS_ERR() static checker warning
-Message-ID: <20200529122744.GA1217265@mwanda>
+        id S1726712AbgE2NUR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 29 May 2020 09:20:17 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:55512 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726477AbgE2NUQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 29 May 2020 09:20:16 -0400
+Received: from zn.tnic (p200300ec2f0f5e00857ed3907e46012a.dip0.t-ipconnect.de [IPv6:2003:ec:2f0f:5e00:857e:d390:7e46:12a])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2CDA41EC03C5;
+        Fri, 29 May 2020 15:20:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1590758413;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=XVaZiehB90ylZm8b6gsSiQdmzzkWhRJkko9zO0S+8Bc=;
+        b=Qtz75ZfzhMRraEPBn64PkGQTSDRPq5rwwteABf59yEftCQGx51Vuwdsj1TFr8Y+Ge9dqjS
+        jgy6ukI+tRz2vO3Iw6y74dhjL8+dQta1P3LZadeTvf4wUe/DwEaPYpngvpFIFR4gnRcQmA
+        NqWT9Vj/LG2QDcrc30h5KRNqlmRb74E=
+Date:   Fri, 29 May 2020 15:20:08 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Tony Luck <tony.luck@intel.com>,
+        James Morse <james.morse@arm.com>,
+        Robert Richter <rrichter@marvell.com>,
+        linux-edac@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] EDAC: remove redundant assignment to variable ret
+Message-ID: <20200529132008.GI9011@zn.tnic>
+References: <20200429154847.287001-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9635 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0 mlxscore=0
- phishscore=0 adultscore=0 suspectscore=0 spamscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005290099
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9635 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
- adultscore=0 cotscore=-2147483648 mlxscore=0 bulkscore=0
- priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
- clxscore=1011 impostorscore=0 suspectscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005290099
+In-Reply-To: <20200429154847.287001-1-colin.king@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The callers don't expect *d_cdp to be set to an error pointer, they only
-check for NULL.  This leads to a static checker warning:
+On Wed, Apr 29, 2020 at 04:48:47PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable ret is being assigned with a value that is never read
+> and it is being updated later with a new value. The initialization is
+> redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/edac/amd64_edac.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/edac/amd64_edac.c b/drivers/edac/amd64_edac.c
+> index 6bdc5bb8c8bc..e33f66cee132 100644
+> --- a/drivers/edac/amd64_edac.c
+> +++ b/drivers/edac/amd64_edac.c
+> @@ -3400,7 +3400,7 @@ static const struct attribute_group *amd64_edac_attr_groups[] = {
+>  static int hw_info_get(struct amd64_pvt *pvt)
+>  {
+>  	u16 pci_id1, pci_id2;
+> -	int ret = -EINVAL;
+> +	int ret;
+>  
+>  	if (pvt->fam >= 0x17) {
+>  		pvt->umc = kcalloc(fam_type->max_mcs, sizeof(struct amd64_umc), GFP_KERNEL);
+> -- 
 
-    arch/x86/kernel/cpu/resctrl/rdtgroup.c:2648 __init_one_rdt_domain()
-    warn: 'd_cdp' could be an error pointer
+Applied, thanks.
 
-I don't think this will lead to a real life bug, but it's easy enough to
-change it to be NULL.
-
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- arch/x86/kernel/cpu/resctrl/rdtgroup.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-index 23b4b61319d3f..3f844f14fc0a6 100644
---- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-+++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -1117,6 +1117,7 @@ static int rdt_cdp_peer_get(struct rdt_resource *r, struct rdt_domain *d,
- 	_d_cdp = rdt_find_domain(_r_cdp, d->id, NULL);
- 	if (WARN_ON(IS_ERR_OR_NULL(_d_cdp))) {
- 		_r_cdp = NULL;
-+		_d_cdp = NULL;
- 		ret = -EINVAL;
- 	}
- 
 -- 
-2.26.2
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette

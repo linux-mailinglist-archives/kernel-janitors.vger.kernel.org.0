@@ -2,71 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB8311E7C49
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 13:50:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D8631E7D30
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 14:28:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726816AbgE2LuL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 29 May 2020 07:50:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43884 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725795AbgE2LuK (ORCPT
+        id S1726459AbgE2M21 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 29 May 2020 08:28:27 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:46020 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725865AbgE2M20 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 29 May 2020 07:50:10 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B15D5C03E969;
-        Fri, 29 May 2020 04:50:10 -0700 (PDT)
-Received: from zn.tnic (p200300ec2f0f5e0065ddb5c3466bc22e.dip0.t-ipconnect.de [IPv6:2003:ec:2f0f:5e00:65dd:b5c3:466b:c22e])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2147D1EC034F;
-        Fri, 29 May 2020 13:50:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1590753009;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=8uVG8SSA7EoFL0uY2ymRckM3QLUfLiR58WqegFOFyS8=;
-        b=B3M8BCT7Bj4c2FvAhaetyMK3iaJAYzYb1CAOH9yGxH4jYGkLa9TMbxoYdYKvBGNvQkaa8g
-        9jMM9iTzXv5rIkjh6dEWij6fOAgWRSFuYZR5kAk7MMF2uWYUA3o4dV1JUVcAHt1jk9oSaU
-        lOioPDeuztomIM2HDHCvSNLcnRPnAC0=
-Date:   Fri, 29 May 2020 13:50:04 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Doug Thompson <dougthompson@xmission.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Morse <james.morse@arm.com>, Kangjie Lu <kjlu@umn.edu>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Qiushi Wu <wu000273@umn.edu>,
-        Robert Richter <rrichter@marvell.com>,
-        Tony Luck <tony.luck@intel.com>
-Subject: Re: edac: Fix reference count leak in
- edac_device_register_sysfs_main_kobj()
-Message-ID: <20200529115004.GE9011@zn.tnic>
-References: <28ebc99f-c0dd-00b2-7a53-9edf0df36c9c@web.de>
- <20200529093644.GC9011@zn.tnic>
- <c304a0b0-692a-0696-6750-05a3db6a4b42@web.de>
- <20200529094758.GD9011@zn.tnic>
- <fac5fdef-6148-38fb-1149-5bfc06969ac8@web.de>
+        Fri, 29 May 2020 08:28:26 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04TCIEJP178159;
+        Fri, 29 May 2020 12:28:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=SPN5tu+DzLP7xBB4KSi//zwtdPV66GdUhG62R2cTY4I=;
+ b=nToWXUFw4kJZDlysmEvIsKeVLkepx9hSd50G9dnoZToELIBbfKayfmu36dEboJODFILF
+ mtmVKJKkdukQEJUX2NMAqdI5mUNh3FX1+3JADM0FcmSYQeRoN+uObN0M+mliMrf9MLI5
+ 4C5H6tZd9+SLYUFWH8mrmgx45QCu+dIwOHTDK5IVT/HEEU5vpK/g+oRNQOIIHSpfAavt
+ BKsValVH25RcAwYWLqFhIHMcwqGulcBfj71pxqiuATFsQttAJWYuKhj+84/o2kdBfbaS
+ Q0Z2/S6VGB69j2LKYebY+He7+MlJJ67tn33683gDhSTGMXkz+hGlUScnhFJRoHUqKnFj Hg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 318xe1t3fg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 29 May 2020 12:28:01 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04TCD9FQ137625;
+        Fri, 29 May 2020 12:28:01 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 317ddubyvj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 29 May 2020 12:28:01 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04TCRwnp016835;
+        Fri, 29 May 2020 12:27:58 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 29 May 2020 05:27:58 -0700
+Date:   Fri, 29 May 2020 15:27:44 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Fenghua Yu <fenghua.yu@intel.com>
+Cc:     Reinette Chatre <reinette.chatre@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] x86/resctrl: fix a NULL vs IS_ERR() static checker warning
+Message-ID: <20200529122744.GA1217265@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fac5fdef-6148-38fb-1149-5bfc06969ac8@web.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9635 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0 mlxscore=0
+ phishscore=0 adultscore=0 suspectscore=0 spamscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005290099
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9635 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
+ adultscore=0 cotscore=-2147483648 mlxscore=0 bulkscore=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
+ clxscore=1011 impostorscore=0 suspectscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005290099
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Which part of
+The callers don't expect *d_cdp to be set to an error pointer, they only
+check for NULL.  This leads to a static checker warning:
 
-	"Please refrain from "reviewing" EDAC patches!"
+    arch/x86/kernel/cpu/resctrl/rdtgroup.c:2648 __init_one_rdt_domain()
+    warn: 'd_cdp' could be an error pointer
 
-don't you understand?
+I don't think this will lead to a real life bug, but it's easy enough to
+change it to be NULL.
 
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+index 23b4b61319d3f..3f844f14fc0a6 100644
+--- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
++++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+@@ -1117,6 +1117,7 @@ static int rdt_cdp_peer_get(struct rdt_resource *r, struct rdt_domain *d,
+ 	_d_cdp = rdt_find_domain(_r_cdp, d->id, NULL);
+ 	if (WARN_ON(IS_ERR_OR_NULL(_d_cdp))) {
+ 		_r_cdp = NULL;
++		_d_cdp = NULL;
+ 		ret = -EINVAL;
+ 	}
+ 
 -- 
-Regards/Gruss,
-    Boris.
+2.26.2
 
-https://people.kernel.org/tglx/notes-about-netiquette

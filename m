@@ -2,37 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 865D41E7523
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 06:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB6CF1E7587
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 07:45:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725830AbgE2EwA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 29 May 2020 00:52:00 -0400
-Received: from mout.web.de ([212.227.15.3]:45591 "EHLO mout.web.de"
+        id S1725988AbgE2Fpx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 29 May 2020 01:45:53 -0400
+Received: from mout.web.de ([212.227.15.3]:58433 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725601AbgE2EwA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 29 May 2020 00:52:00 -0400
+        id S1725355AbgE2Fpw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 29 May 2020 01:45:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590727910;
-        bh=9s8HVWZnrNlsYF4NgOgs7U6BwK85FTelc8UkaeUj92U=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=He3pHNuw73/ydGfKjr8y1sAUq7NpqVU80PSxusgCAC5qE9qIGvAjHvmC9Kn7SAOUk
-         3yriIoWdsg6CQxyfr61+EKjX1Gh8I5l8ORnk8BYOgUpDiSkOQqGR4ISzGUvpRRnEJU
-         0E02a+h0o3/qhJoLo9WIfP5GX7Oj0+DE5PR+GQg8=
+        s=dbaedf251592; t=1590731139;
+        bh=sjCtEFzZ5Xk+2jMsjk3i83yv7YIJPotpPQD6rKcpc0E=;
+        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
+        b=ISUXv1KSVs5YDwozCm70TLiQ7f2zcwPsw8peZwwy1z5wt8wZtONV+DdGtMen1ZND1
+         kMCA8eYRTdfrZaqv2AOufzBp6YfKJA6uVRfH9fhsn4R1QlsLz4A3l9kU+PPtKIyfWp
+         PuKI0NhMHqBqHFLa2Herr1PWU4VWMb3EqWmw7huQ=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([93.131.188.184]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MEmbK-1jlhzo2cJO-00G5Bd; Fri, 29
- May 2020 06:51:50 +0200
-Subject: Re: nilfs2: Fix reference count leak in
- nilfs_sysfs_create_snapshot_group()
-To:     Qiushi Wu <wu000273@umn.edu>, linux-nilfs@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
+Received: from [192.168.1.3] ([93.131.188.184]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mv3US-1ingAN1qjI-00qwy1; Fri, 29
+ May 2020 07:45:39 +0200
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alex Chiang <achiang@hp.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Jesse Barnes <jbarnes@virtuousgeek.org>,
         Kangjie Lu <kjlu@umn.edu>,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        Vyacheslav Dubeyko <Vyacheslav.Dubeyko@hgst.com>
-References: <30cf7534-b62e-84b1-571a-945aaffac5b0@web.de>
- <CAMV6ehE3jm4ZasYqd12f=e0TNN_kfiX7yCMVHkmESKP0WbuqTw@mail.gmail.com>
+        Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>
+Subject: Re: [PATCH] PCI: Fix reference count leak in pci_create_slot()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -77,78 +73,77 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <b4e9eb17-7c5a-15ed-5ff7-2334ff13e9d7@web.de>
-Date:   Fri, 29 May 2020 06:51:42 +0200
+To:     Qiushi Wu <wu000273@umn.edu>, linux-pci@vger.kernel.org
+Message-ID: <4cf93f73-5bea-9748-f97b-99a6efe9ea20@web.de>
+Date:   Fri, 29 May 2020 07:45:38 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <CAMV6ehE3jm4ZasYqd12f=e0TNN_kfiX7yCMVHkmESKP0WbuqTw@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:XKuf8ZSnXQHsZOavZvRwDBXRig77n6U6qj/zp5SsPQt4Fy93B1j
- RZC/dHuQ4DiTgYCoiazeqHYqnHzzDuHKLV7On+uHL3H805+i+gHpiH5QLBZXMxuCUKLw72n
- DTbMLtFME4FE+IvwRzwwfbganNwANeuV1mCW9RQ5S8k8ZJls/MYplzgcvnVytO384aC9CU+
- ExDqaws9NaSyAfVAU2rRQ==
+X-Provags-ID: V03:K1:QG4m24v4tia6C2u5PBjoiLZBrlLZ3jP3y/bJnHLWSZICR+PjIqv
+ AKU13+vOktVCRVN6HamkoLqLTvxkmghdXYPf137IuzH+fyo7MkoMHyi/3ssqCc30PDo9hZc
+ 9kgbZNKvlF99Y9N3gUNhS3u0ergWFFit3hOiH5yo8/6o5hARYpyh843meBFgCmd9raZCTcj
+ ++kc9HEnuZzT64DL7oykA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:SG6lFVkg1J8=:EMwtzq9KUnlOS0M3glXrmC
- IPxt6VrTRiC5Ubzt+sTr+aSIvq6INFpV1Xn0RYGEc7p71u3pG+UUN7YwlRUtMF/lH8bDnA+HX
- 7Mfx0AhKlw6/g/Io7dcR1jS1K2s6xm1a94n7GzV8Fscy6ZChbpDELbjAuDN7PsS1zMz4qCzum
- bWatPwdWiyi+7iHY1lx+mxcv85VDcYjtWdEEnFbcKcu9g1NBL1P52CarC4t8w1inf8yio1VXG
- vsv8Lp5u096sBqukmgu9Rji47BXR/CXxvDnT8A6cEmpSSkOGmKVNMaQUNSDvM2Sfn8k412z8u
- BC1PORaHQ2Vx53SlDTM5uruSQoM8ZRegY/RpsrgFvTog3TXU3G5mHmAfmKJQcJpNv9QveFK5h
- VhbLhgyGbxg3ROrUiT6gCfu1V5flDkiyB+9p+YrLCUuOp10dwOjn6ueYGQ5UdUf7dDJNPUG7G
- zRM7KUkZQ5RbxULiQ93yxOjCMeoArX2jAdUzXc/UdlszRyLnNbNj+kmm5K65+rKWKjsgCCMZZ
- FfQsshoGQ7+ly8JdfbnF6XqqD3RgVZJlsDDbNtSVujbRCw8/CT1+tDvWO1IbV3Vr+QFOSXo6d
- fhcqjPbD6ZHLejg6/xlY8Lon1F6kDUGWb4inlSB2VMSXduDa/6LI9qakQPo7G30gpz4Tk0ZZn
- ScXKGxE2uQKEqZNPZNzaPmsKRy0s7IxGdoaZPufECQBAC+1vx2Vhk3F3Jvx+Q+oAaxvIzsb90
- jMKNrqcdurw139TLwg2RDPWlErC/XLDvid0nqlpwayZxQ1nZY1KCeiL8B8TaRW8X9sgZsJzBP
- dxn7UAcTfNnJL7BWXG8h86ys95w0DZ1/8aRUKn0tamQtOdl4Q0SYqaiq3u9bO+NVRrI8h9Zvz
- 8Ad6AGS4Y5kfGpvk7l9PdKCg53+8zMA5xdTTXe1fT5mwspk0VpwoFna1ymqNFdIvaihtEZnpr
- uVjIbx9LFDTKozY8bBqSAmb0NToKTAuh2cbgSwG3n2vTxf1KclI5rWhLF96GnsNfsGLh+IZ48
- xsBCibpa5s/IVxDDfqYMuvjQnG2d5o65srRvYJivFaq7QSjQyVNAqGNzxAVsxi/7DDqQMtxXH
- yekZQ0J9s5Se6gHgBULrcUiPzm8auRMtoeH8M7DnlkO8Pvlbf972UW3sGmkQIsGqquunLqLzx
- 5hS3fuLWlViI316F+nj95iys24zXHFcXXwC7JgJnVRsM10c4EN2RLBl5AJbAePxZDy65MtHfX
- BHpYnfF4E4T7unYzD
+X-UI-Out-Filterresults: notjunk:1;V03:K0:pLgsO9uIE3c=:xx7lWoDVpGKDaUcGnn+tNf
+ VwSAi6FRkA/2/FY3TpKNapGaCDciMsCj6JWftZp5qSSeUYMYBX7kzS3+indi7IujFhq0reApG
+ jGC28SkSbX0tatu/Wq26sfL7+a4bIeYqzFd7bh6vfDrftlTDejjjuAeU4DgwOmugGSyLUCszi
+ PisEVC4FUHD+nBvGKm+rwzyzFAEd/TM0A/0VCBBJlUrp9JuAYb7sx1GXHc4/G+6tIBk2l7jHb
+ oisFmrETVVNgGmVqwz1+9yRq+t65QWLa2nCLoVKUUqWhANsP5+Lmqhh4wALXdrtzvincGpHBd
+ A0lCz2b33e6HEq0HsXFGQnscdjPh+GGVp4YGTZYXnRQf7eJKT5JVaa9iJTY83uLHfmeG3k4Di
+ pAOtLgCMa1vF7FiBXUdr5XY3PifjFDiAlpLeIfMPggruMnHAwClQkKhnk6ZDpwlXKTNvgbM1g
+ 1mhzf2Tyl9t076wmTxkoa2P6eCjLIOhk5NtA9gQMik+lw+U1ZJsZVGXxgwYo7dVhK4LREuhb1
+ oKZ0KyiMfCNN/aZMax0nZaaj/Oel4+uhKNmvdEeGGaQ9/ij+OhtKxIReDmeTvURkSZUAADcEZ
+ qd/6qzaGrBhn0AzNCbopszBAF4YIMElII9w8LdBV2xuc7UsmQMFedRLlip0pvmDP98qwaL36/
+ J7uDyobzsMydF6tmkS09Z5Tn4TFhQzx2O66zDD9KaaKLLlUxiSIVsyYAf/Fo5DKwhg66RhIue
+ HHunU12I5dH0zWQYMb5HKwNSBVOOweCv+ZVtFLuMQv5urGLfIIGQSD/snSrMLeLfqEpoZIyFg
+ 7V4+oKBGJkrlS1e9MIasUT3iHtPXQ+VpDSzpv+uXOahjwCz7Dx9fwYDE3Wpoh1Xw6HaWb417y
+ ZB/+Xmm86v09xyAGa7gF2fRvbmi1MHdSAELaDK2bxm6MEifEBa33dkxa9AKdGhLMSRBYAe385
+ H3Eftfh31zfKllZzIkRTsai/F5QPJ6L5MScn04CpcfLIuwGHC+TFx7CyUJ231IJaBFTM/Xx2/
+ Yaz+0Uljfesr5UeasM8wqK9HYukU0hmCqf7RYyVg6CXfaLbJcELMif//hSjxrtberD6n+VBU+
+ RImWw9Nk9/XRlVT5dwx2tC2uxgWc63T2WRWh6KcPa81uqvubShFZK0JPToGKpDunDm90/o7sr
+ 9misiBkzZgt1nBpxgKZ+OWP/CFajyRUoBF6aSs/qEhhuRdJbXszJmBIcNawBVaDMOovt6gCgf
+ NgJ4T3aEKgneddCWH
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> I think there is only one object that can be modified in this function,
-
-Such a view can be reasonable.
+Please add a prefix to the patch subject.
 
 
-> so I didn't mention it.
+> kobject_init_and_add() takes reference even when it fails.
 
-I suggest to reconsider the conclusion.
-
-
->> I guess that an imperative wording is preferred also for this change de=
-scription.
->
-> This sentence is referenced from the code comment, so I haven't change i=
-t.
-> https://elixir.bootlin.com/linux/v5.7-rc7/source/lib/kobject.c#L459
-
-I find that that there are further possibilities to consider for improveme=
-nts
-around the presented commit message (even after the mentioned copy
-from the function description of this programming interface).
+I suggest to extend this description another bit.
+Which object is affected here?
 
 
->> How do you think about to combine this update step together with
->> =E2=80=9Cnilfs2: Fix reference count leak in nilfs_sysfs_create_device_=
-group=E2=80=9D
->> into a small patch series?
->
-> I'd like to improve the similar issues after I reporting this bunch of b=
-ugs.
+> If this function returns an error, kobject_put() must be called to
+> properly clean up the memory associated with the object.
 
-Did you find questionable implementation details with the help of an evolv=
-ing
-source code analysis tool?
+Such a copy from the function description of this programming interface
+can be helpful.
+
+
+> Thus, when call of kobject_init_and_add() fail,
+
+I propose to avoid the repetition of this condition.
+
+
+> we should call kobject_put() instead of kfree().
+
+How do you think about a wording variant like the following?
+
+   Replace a call of the function =E2=80=9Ckfree=E2=80=9D by =E2=80=9Ckobj=
+ect_put=E2=80=9D
+   because of using kernel objects in the proper way.
+
+
+> Previous commit "b8eb718348b8" fixed a similar problem.
+
+I wonder if such information is really relevant for the commit message.
 
 Regards,
 Markus

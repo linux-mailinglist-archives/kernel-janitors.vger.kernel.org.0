@@ -2,100 +2,138 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3681C1E7A07
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 12:05:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 646441E7A19
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 12:09:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725836AbgE2KFR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 29 May 2020 06:05:17 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:48016 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725306AbgE2KFQ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 29 May 2020 06:05:16 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04TA1rMF087676;
-        Fri, 29 May 2020 10:05:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=0gJLq4YojQgaIIrHm1luPyKNZoJoIPK+46mPmjZtKgg=;
- b=j+cQfjbpt+xzDLxDpETFbG3oFhJIHfhNq6SpJxbj3QdLtrNTZPkCSbCaDfjO8HSGgk6U
- yE1ysnVJ98dbQsAC30H3CybTi8ofelMl+eS02i8ONbfbkhMajbBEgXU9gledNdpQHfq9
- YxJt8dSLvDbWLdVfPIT6yNitgi9Ef0KqcHdCb+oOs2ajiQynyntnP/L2Tq8b1eOA2FwP
- 1LTKZRUCpquxMSwtDgBRXBHZSOdeHES1TkNNMhPtWTGMuqmkVfNimYAiV9DS1TxfEbY/
- WFVCBCWgbzqO8M0+wu0+w84MdpaPaRJYiq0O8x8YD49vrJIFQY2dP3+TX1rwEhHUqCIy lQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 318xbk9m94-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 29 May 2020 10:05:11 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04T9xNNT179592;
-        Fri, 29 May 2020 10:03:11 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 317ddu7q9u-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 29 May 2020 10:03:11 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04TA39V2008190;
-        Fri, 29 May 2020 10:03:09 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 29 May 2020 03:03:09 -0700
-Date:   Fri, 29 May 2020 13:03:02 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Mike Marciniszyn <mike.marciniszyn@intel.com>,
-        Grzegorz Andrejczuk <grzegorz.andrejczuk@intel.com>
-Cc:     Dennis Dalessandro <dennis.dalessandro@intel.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Ira Weiny <ira.weiny@intel.com>,
-        "Vishwanathapura, Niranjana" <niranjana.vishwanathapura@intel.com>,
-        Andrzej Kacprowski <andrzej.kacprowski@intel.com>,
-        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] IB/hfi1: Fix an error code in hfi1_vnic_init()
-Message-ID: <20200529100302.GC1304852@mwanda>
+        id S1726563AbgE2KJb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 29 May 2020 06:09:31 -0400
+Received: from mout.web.de ([212.227.17.11]:54043 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725681AbgE2KJ2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 29 May 2020 06:09:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1590746948;
+        bh=JKeMacfXaOGqud1C1KeJRX000f1ebFNNh25h6Ivz62E=;
+        h=X-UI-Sender-Class:Cc:Subject:To:From:Date;
+        b=DPkyrqJ3xxROgDSc6NhOzVwMRKARyEDUMp0Pzu3zcbOqc2uBZPesgajrW1G1U8JxC
+         m53eejK0PO8A/8EC1TRt0XFvYXVgpCsqIS/TR9pCr28J13tEB1dIEdV2cXGogHxpyk
+         1sJv2odAaAaErbBgtHG12E37dlHQ5eH1UjXtVgHE=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.135.165.0]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MThAi-1jVmFA1dmi-00QSzc; Fri, 29
+ May 2020 12:09:08 +0200
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chris Leech <cleech@redhat.com>,
+        "James E. J. Bottomley" <jejb@linux.ibm.com>,
+        Kangjie Lu <kjlu@umn.edu>, Lee Duncan <lduncan@suse.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: Re: [PATCH] scsi: Fix reference count leak in
+ iscsi_boot_create_kobj()
+To:     Qiushi Wu <wu000273@umn.edu>, linux-scsi@vger.kernel.org,
+        open-iscsi@googlegroups.com
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
+ +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
+ mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
+ lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
+ YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
+ GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
+ rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
+ 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
+ jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
+ BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
+ cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
+ Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
+ g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
+ OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
+ CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
+ LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
+ sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
+ kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
+ i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
+ g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
+ q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
+ NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
+ nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
+ 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
+ 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
+ wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
+ riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
+ DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
+ fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
+ 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
+ xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
+ qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
+ Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
+ Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
+ +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
+ hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
+ /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
+ tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
+ qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
+ Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
+ x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
+ pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
+Message-ID: <62ff53e5-32d0-0440-045d-881350b2e6cd@web.de>
+Date:   Fri, 29 May 2020 12:09:06 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9635 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0 mlxscore=0
- phishscore=0 adultscore=0 suspectscore=0 spamscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005290079
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9635 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0 mlxscore=0
- lowpriorityscore=0 priorityscore=1501 phishscore=0 cotscore=-2147483648
- suspectscore=0 bulkscore=0 clxscore=1011 impostorscore=0 malwarescore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005290079
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:vTRUWehU/DHrU2DUP28btpGrWnuMd4+h88H42tvoTy7k7vS2EBT
+ Qv4RGT1H8WhAv09pN2Vv7dfrOyACh5W78AqXOUXvYF+xnls6zkdwTCvb+ijWQLVumrMRHQ+
+ OD8BxTsNLhlNTnypHCnzdtBWZ7Qs0VdrUEjaRYeCC9y7fKtaw16x3TCANhvcWhPrc8Vv1ZW
+ 6pOcwkhXXRzmmHi29R1tA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:OjKtTZt2LZA=:gFbMUDbwyEXMlFgjGDyX50
+ /9SxR9hYBTgcpEfSwF9eGESnzJwFBRCYRVE4XcDLoeCUo1LjXu8CSNlTfCz/tHFJiAcsZB/+u
+ S6qVNYteMGN/AaZC0dDUtRHZfjB0SkwjsJf/avzg8HVOttN/WvL94rYgHshEXBFLVFCRBkQ2f
+ RelljmOgqD4qO1qoz/D+o/HJRP3Hvy7Rx2z04Xh0ckIZBzNZYUHvuvI7A9O9UR0uNMdsCpDyl
+ sI992X54pmIjxpN1gGQvrA/iygWWT96INjmwVTbmlcDmgkizIpTIM3KEbmJAhVF7bVC1UXXrH
+ 1fLd0lUPLXm9EnoqjzGoELYshy2d0GITzTHGe09nrQqHsV7gxo3sAg146JiqXRuSKSuJVbYlr
+ kGy4GYqC8tc6N//cPn5q7iplpGjYgW60VCzrb/CJvLxrHmu7NWDPV2x8ep2yq9bdqhNwNbS1W
+ M7BCAIWlMZVHazpInfdvmuQPiMQWw+1nfE+v+2HG7k8aAlMlKnMZop95JLn27xKvP6/An2eHr
+ Pwm5Ruz6mdPaMtmrprzI3HBsbwiFGPBInOyPKl/ygB7N/YvPoDxnC+FG+lwp9mv7x2teJ+qEU
+ X6xh6Kt87NzzxOWhCbZSzbylrMa1RAyAv8iFlFMgVdafAGZmtdX+SjHKOYKxeMYBztfGJQ4R+
+ gpuG9qEmR9abfX0ugEKPtxOGeM7RhWm/5jODF8tPBxz53uWoTtQSEfKM7wl6QWu110rHsjNZi
+ fSiARd3Fo2O0yuKjXCdgzy8UNhzlhrtKbqk9GW7/rPYkpCt9JMkzogyn4HfG3OgxasXpqzUsa
+ 2j64W+NcL+IWTutsu8W6YlAECtBoWW9LJbck9M9KXQSooQ/2wqGuWLcv2TjaWgkWDwinvL4bq
+ g/azpLs7aj6G6KizPOHyrgVpuRia5u7+zKsKtE1Rl6/umSoLs+iN2Kjty7+uF4v9lxZWUZew9
+ yHxAzm7ZqeoYH5AjBCSFpd06zTKbi4dfkrYm2+dzrTALWaiU5k8MAvCbfK53S/frIcHDgQsdk
+ kxcDluJXFODjIao832mWIR8LDUoIl8Xofs8EziJHsr9UQLrrj3tNTycbl6H2ZFb6b51Z5YMQD
+ ccMHwyL+lr9dIdVl+x2JIjzhHkzMH7RTy9rwIBXNBWoHr1Ovq7f+yPo+EvkSoS+WuMiQQGusL
+ P5jDxghChO+E3OHRFYv58RIa3TXU/lskl/oEDEehAXHdRLj7qVKJF1/qwxr0wtFPUk0bsdwpt
+ l8RCjSUveVWvi9qc1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We should preserve the error code from hfi1_netdev_rx_init() but
-currently the function returns success instead.
+> kobject_init_and_add() should be handled when it return an error,
+> because kobject_init_and_add() takes reference even when it fails.
 
-Fixes: 2280740f01ae ("IB/hfi1: Virtual Network Interface Controller (VNIC) HW support")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/infiniband/hw/hfi1/vnic_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+I find this wording approach improvable.
 
-diff --git a/drivers/infiniband/hw/hfi1/vnic_main.c b/drivers/infiniband/hw/hfi1/vnic_main.c
-index b183c56b7b6a4..f89d0cb1c7204 100644
---- a/drivers/infiniband/hw/hfi1/vnic_main.c
-+++ b/drivers/infiniband/hw/hfi1/vnic_main.c
-@@ -512,7 +512,8 @@ static int hfi1_vnic_init(struct hfi1_vnic_vport_info *vinfo)
- 			goto txreq_fail;
- 	}
- 
--	if (hfi1_netdev_rx_init(dd)) {
-+	rc = hfi1_netdev_rx_init(dd);
-+	if (rc) {
- 		dd_dev_err(dd, "Unable to initialize netdev contexts\n");
- 		goto alloc_fail;
- 	}
--- 
-2.26.2
 
+> Previous commit "b8eb718348b8" fixed a similar problem.
+
+I suggest to omit this information from the commit message.
+
+
+> Thus replace calling kfree() by calling kobject_put().
+
+How do you think about a wording variant like the following?
+
+   Thus replace a call of the function =E2=80=9Ckfree=E2=80=9D by =E2=80=
+=9Ckobject_put=E2=80=9D
+   because of using kernel objects in the proper way.
+
+
+Please take another look also at the message field =E2=80=9CTo=E2=80=9D.
+Which recipients should be specified there first?
+
+Regards,
+Markus

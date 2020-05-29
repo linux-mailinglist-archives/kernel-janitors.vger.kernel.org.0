@@ -2,35 +2,40 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C80B91E7A1D
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 12:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C64061E7AC4
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 May 2020 12:41:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726638AbgE2KJe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 29 May 2020 06:09:34 -0400
-Received: from mout.web.de ([212.227.17.12]:58947 "EHLO mout.web.de"
+        id S1726039AbgE2KlH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 29 May 2020 06:41:07 -0400
+Received: from mout.web.de ([217.72.192.78]:52875 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726509AbgE2KJ2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 29 May 2020 06:09:28 -0400
+        id S1725601AbgE2KlE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 29 May 2020 06:41:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590746948;
-        bh=JKeMacfXaOGqud1C1KeJRX000f1ebFNNh25h6Ivz62E=;
-        h=X-UI-Sender-Class:Cc:Subject:To:From:Date;
-        b=DPkyrqJ3xxROgDSc6NhOzVwMRKARyEDUMp0Pzu3zcbOqc2uBZPesgajrW1G1U8JxC
-         m53eejK0PO8A/8EC1TRt0XFvYXVgpCsqIS/TR9pCr28J13tEB1dIEdV2cXGogHxpyk
-         1sJv2odAaAaErbBgtHG12E37dlHQ5eH1UjXtVgHE=
+        s=dbaedf251592; t=1590748824;
+        bh=+wAiMDNFio602uNPabgw/r6hz20IhiL6ukS6zVbgxVY=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=pLN5QeTo3FCrf4/IS4IDvoWobgm7luKLKu+wxr2RbxKB2EvRFXqQgr661ZAtpRSoN
+         xXtc+EhcMx68y3FSFmuSkrf2aF73hUGjqgV2Q+rnQ+NAzsLf7piWkclqEX7GPo9+0B
+         tOnS1G/3Bvy7NIr7M75yz1m1KLnoBqaRw8YcGNEA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.165.0]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MJnrX-1jPPNl309p-00KJZN; Fri, 29
- May 2020 12:09:08 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chris Leech <cleech@redhat.com>,
-        "James E. J. Bottomley" <jejb@linux.ibm.com>,
-        Kangjie Lu <kjlu@umn.edu>, Lee Duncan <lduncan@suse.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: Re: [PATCH] scsi: Fix reference count leak in
- iscsi_boot_create_kobj()
-To:     Qiushi Wu <wu000273@umn.edu>, linux-scsi@vger.kernel.org,
-        open-iscsi@googlegroups.com
+Received: from [192.168.1.2] ([93.135.165.0]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MAvKi-1joToC2qUW-009u3d; Fri, 29
+ May 2020 12:40:24 +0200
+Subject: Re: edac: Fix reference count leak in
+ edac_device_register_sysfs_main_kobj()
+To:     Borislav Petkov <bp@alien8.de>, linux-edac@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Doug Thompson <dougthompson@xmission.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        James Morse <james.morse@arm.com>, Kangjie Lu <kjlu@umn.edu>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Qiushi Wu <wu000273@umn.edu>,
+        Robert Richter <rrichter@marvell.com>,
+        Tony Luck <tony.luck@intel.com>
+References: <28ebc99f-c0dd-00b2-7a53-9edf0df36c9c@web.de>
+ <20200529093644.GC9011@zn.tnic> <c304a0b0-692a-0696-6750-05a3db6a4b42@web.de>
+ <20200529094758.GD9011@zn.tnic>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,65 +80,60 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <e7ff4f24-7708-15a0-5afe-18d50c9622af@web.de>
-Date:   Fri, 29 May 2020 12:09:06 +0200
+Message-ID: <fac5fdef-6148-38fb-1149-5bfc06969ac8@web.de>
+Date:   Fri, 29 May 2020 12:40:21 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
+In-Reply-To: <20200529094758.GD9011@zn.tnic>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:UEEr7n3B2NPfGFyeQvVhNqqk0HhusthGYYZtuU6IvnySkAeDNf7
- oINcuU7HB736pBqJIs4bky1uicCExxfA96LYT7tJdwl0JCPAduxavOW8KYtwrShBYZK2Hvx
- UZmEhUR57HnKwlkZs5T9mu5LOzRjxHbxWCoxIyrmcAj0EIzG2mUJQTASHMYwxhzOcgG3hgj
- TWdSioAbjyUtWXJ0oi6tw==
+X-Provags-ID: V03:K1:m00H7/5g61GUHTEsuih9HUrppIpBDMeVP4mfZeArkSlTbm9cwX0
+ RDxCkuFhVPb0/gUIfXSsWF/vFlNxt+m6VGCoWMmdrlN5H3n9JmUTGpnTZNsJ8FpJIT4U7Mp
+ NZbnN4JBKcJXWpNGtBryv79mQmtVN63shS2Q/+Q5JnnXzRvjcWPxpUtSN5On7brCC/NrUZ+
+ OgK+3rQ6xXPvVYEp1vuZQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:pQrpA1KJ3G8=:URVKqtA2JFqvH4LaRD+dl1
- jOKQ5cBbrKB1vhFtwTpChpeU2iTOZ54ftsBqwcA80hmO9ZxNwGmE7JtRGYfUCXjKUKbmpkeZW
- r16yYvq/8XvnpwLx4VW1jGKCp7lKXNs6gEm1sD1bOhNYHdWt/dXXudJTTC2IY04M1LufLsEbI
- O5RMMeOGgVYCAF8Q/GERZyu5w1U4yFw5vkIdMN+HxW0R1qpN80PkDytLspBF22QNgz0hvNUuq
- nY99crpO1Blfj95uTEQIbgfnr6Kd198JdmoRScYtZUTs4XzDmD4rgitXXwlB09tb/A7GMfGAT
- OOb7ETn4hEUfJ93ahFp3lxAdhB6rBjgVB9gckqIFLrT90UFPNQUrZf/YvYT2dFJnak7eFOuWQ
- BkzI5e8hFR47GMXxItXlnwVOHdZUBWApCjVodil74nzqUNFX8NtBeftdahdMqSQh7/daKjacu
- bMfHcQ0wdpgqYm480c70Pwjfy6rcqOE+8x9PQjfFYloyw1SpUfb6qvhNFZOqEpX6B4LnakDJR
- 0ekxFUQiKi/ufMOGQEaUYhLfzVr+19Pkj8S0sTt9jWxDdMmhvdvKANmhmf/dJhmtL13esSFTW
- /9zBCMhQQIC/JrQv9trfeYYylU1mNqnD/r0I7c4JysKsYRRdxooJyeiLgBVV2AFcnMwhiShsi
- YQoDIcJLN7kixUs6JcXSD4jqm5dF4z0l59Vb1CU7wsgN9m2dJ7F4Qlx/aSJVGuNKjxz7ZyUYL
- 0RA3GwRPeg1cFgeC0lA7JUymD+xUBgJrVCaJETyzm1hbT0xBBq+vVbNYtYcwSdy/4a+e7oBoQ
- oSBBN8mvOOg7rrrMfUv7mfYYae0SNEsCOb5H/I4xclgpMwsS2asd+1tLGRxBkVUQ4B53a9Skf
- BaM1sDEcmY5+g/hgsWJ2aPd45XNPvBMQoxrKYoJbB1T6Jb9SVY2dAW+yB4w4jbBEWE4r8FTOc
- NkU7AuPlkZeMc9wLvBugUe62404JOoNrX/iwsnY06WT+6wi5Pqq0K04TX14jEXkX2EpZ1/iuw
- 4H5Q3JgZphoCB2WQHwyZr969NvEsfhBvB6sp8zLRALJsK/Kw59UzbzV6/+Xu1QNoAF5yAjElR
- yY1pfNGhmgRsb9BWXyHazZT/0VvJgRmbHPcjApCDtrctQewItOICzZpgsli8udkqpYfXtjJUn
- VPJfhIAapt4/TXFqu92oaylFG/2juuintE6YMMZE4n2b5kO8aO8vY3si74qI+Bhl49dDTHQCp
- BmBXDh5SzwjVCG81f
+X-UI-Out-Filterresults: notjunk:1;V03:K0:dNfjEbEIGD8=:ujD+oHSd1WKaUfiugcPN9Y
+ IRynuLjmeYGiVSuPjMq6VjzddpCk6zYxKehDiENzEhOgC2tZzzChlNGs3Dz37heRr3NG96d/q
+ 3WwhG5bhInS/lM40z7L8usl3ifARcJmqCUyu5FrqJOkrQzATMY59Fx0+4EBpnRL9L213eo9xz
+ tvMSKTJ/UpM+Zp9tSnhBphF9wzLkKOWh6E2mf5Ifsy9jmeAGmXLeIHYvRJYqVfKR0YgfWaMlW
+ TJ7xMpq+Yyu/lKh2mOkLGQ1SjRdYDhGx2RWCv+afgrm0DtP0+9jtr/tLtji7frGagZZHGarfA
+ 1K1AzLbdg/R8BzQXF02mh7R0yyUrD4CxfXr61/6N3kD8v2NSrsr+1ImW0odfGjhGE9U5rs99s
+ 4+GGPS+39jV9KPB01lTUb7o3N1YoaHrHlCOYYv9OvldV0k31Wch2FBemVgTDKMllyXqs/U7KH
+ PSdSJ2/zrsD2BymT7K43X/imMaGYOVlPXfyQhcR6vm5uLVc0JNoD0mOIrOSNgte+wObZNx+y4
+ PYnmQ/AJA4Fpew6/pQKr1kf2j8ihPhXzyMtlLrHKaNYRyr3VyCWaZVmftty3LiYMBz1FssNZ8
+ QIDIIkyPDVXBPajVBq2hXMEaC2BPVvoiYFD6bt8WkpvcJDt4T7udcJvsjXT1lTNchCdSvFily
+ 5JJ+2gzTrxikZg5MCxzN0YvRnwoELIqt8XpSVwRZCN0q4x0goibrLLhOuZrreevPY29VMSISZ
+ ETrdWj/xU1FuNZiQMIMI8y1OszT9ko1OT2NlqPuMY0Pt+t12fzvyzzIYA8LHUV6AKohiUtu2V
+ QoeGeviunwgz1eK43VBqx12N+/EVZ3cUhVct9uYm+eUtbxXyUzRbZs+DOxfR1IOxA1wA0L8os
+ dsoeeDBh5l1tdsU2Qb4ohWZDTp8Jotm3kk/KbIGgxQYoWltRrqjyPivHYPrsEb2oTWSyqKeh5
+ dYKbQzs3oO4k6EZabqbzMp7WGwxH6WvTO1Lk3jwVeRamRFT05YvmamsmTdn/O1psk4pmd9ahM
+ l2PO3U9JhgcNjZ3DaUx6Zab/+S9fFH5rEdoOiWr+a4ftjxN5P1SW3Cp7CE5vMiV26a79SKgzQ
+ 38b3eVJyAjxWKO+bs5TURYKv8cqpu23IXgib/OMYEJFyzZ3xT1/pNGrMfY6NWWHp9bMYUZlKh
+ qUoTCWN+fmZG7gdn/Tf1YL+Ix2lsXfgwjUQify3j1UIrOwDDa3O/koG9aaTJDzkbn2iMR2kxW
+ fkCaVsGe72f5JEwoG
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> kobject_init_and_add() should be handled when it return an error,
-> because kobject_init_and_add() takes reference even when it fails.
+> We have me stopping you from giving new submitters wrong review
 
-I find this wording approach improvable.
-
-
-> Previous commit "b8eb718348b8" fixed a similar problem.
-
-I suggest to omit this information from the commit message.
+I do not find my suggestions wrong for this issue.
 
 
-> Thus replace calling kfree() by calling kobject_put().
+> and bad advice.
 
-How do you think about a wording variant like the following?
-
-   Thus replace a call of the function =E2=80=9Ckfree=E2=80=9D by =E2=80=
-=9Ckobject_put=E2=80=9D
-   because of using kernel objects in the proper way.
+But I can understand that we might occasionally prefer other software development approaches.
 
 
-Please take another look also at the message field =E2=80=9CTo=E2=80=9D.
-Which recipients should be specified there first?
+> Please refrain from "reviewing" EDAC patches!
+
+Would you prefer to clarify any remaining adjustments from my selection
+of change possibilities?
+https://lore.kernel.org/linux-edac/3cf2076e-6394-4997-613d-cbf5b6dbee1e@web.de/
+https://lore.kernel.org/patchwork/patch/1130412/
+https://lkml.org/lkml/2019/9/21/121
 
 Regards,
 Markus

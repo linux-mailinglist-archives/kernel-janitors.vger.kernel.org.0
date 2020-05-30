@@ -2,55 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 162F11E8C7C
-	for <lists+kernel-janitors@lfdr.de>; Sat, 30 May 2020 02:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65CD71E8EE1
+	for <lists+kernel-janitors@lfdr.de>; Sat, 30 May 2020 09:29:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728585AbgE3APY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 29 May 2020 20:15:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47452 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726898AbgE3APY (ORCPT
+        id S1728826AbgE3H3l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 30 May 2020 03:29:41 -0400
+Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:37142 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726843AbgE3H3l (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 29 May 2020 20:15:24 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2890C03E969;
-        Fri, 29 May 2020 17:15:23 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id AA5AC12875128;
-        Fri, 29 May 2020 17:15:22 -0700 (PDT)
-Date:   Fri, 29 May 2020 17:15:21 -0700 (PDT)
-Message-Id: <20200529.171521.699478164991447623.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     dsahern@kernel.org, kuznet@ms2.inr.ac.ru, yoshfuji@linux-ipv6.org,
-        kuba@kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][net-next] nexthop: fix incorrect allocation failure on
- nhg->spare
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200528145114.420100-1-colin.king@canonical.com>
-References: <20200528145114.420100-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 29 May 2020 17:15:23 -0700 (PDT)
+        Sat, 30 May 2020 03:29:41 -0400
+Received: from localhost.localdomain ([93.23.15.192])
+        by mwinf5d20 with ME
+        id kvVb2200M48dfat03vVcV9; Sat, 30 May 2020 09:29:38 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 30 May 2020 09:29:38 +0200
+X-ME-IP: 93.23.15.192
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     linux@armlinux.org.uk, jejb@linux.ibm.com,
+        martin.petersen@oracle.com
+Cc:     linux-arm-kernel@lists.infradead.org, linux-scsi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] scsi: powertec: Fix different dev_id between 'request_irq()' and 'free_irq()'
+Date:   Sat, 30 May 2020 09:29:33 +0200
+Message-Id: <20200530072933.576851-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Thu, 28 May 2020 15:51:14 +0100
+The dev_id used in 'request_irq()' and 'free_irq()' should match.
+So use 'host' in both cases.
 
-> @@ -1185,7 +1185,7 @@ static struct nexthop *nexthop_create_group(struct net *net,
->  
->  	/* spare group used for removals */
->  	nhg->spare = nexthop_grp_alloc(num_nh);
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/scsi/arm/powertec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I don't even see this line in the current net-next tree nor any references
-to ->spare.
+diff --git a/drivers/scsi/arm/powertec.c b/drivers/scsi/arm/powertec.c
+index 772a13e5fd91..723b80084498 100644
+--- a/drivers/scsi/arm/powertec.c
++++ b/drivers/scsi/arm/powertec.c
+@@ -354,7 +354,7 @@ static int powertecscsi_probe(struct expansion_card *ec,
+ 		goto out_free;
+ 
+ 	ret = request_irq(ec->irq, powertecscsi_intr,
+-			  0, "powertec", info);
++			  0, "powertec", host);
+ 	if (ret) {
+ 		printk("scsi%d: IRQ%d not free: %d\n",
+ 		       host->host_no, ec->irq, ret);
+-- 
+2.25.1
 
-What am I missing?

@@ -2,30 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 655F71E984C
-	for <lists+kernel-janitors@lfdr.de>; Sun, 31 May 2020 17:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F05B31E98BE
+	for <lists+kernel-janitors@lfdr.de>; Sun, 31 May 2020 18:07:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728200AbgEaPCA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 31 May 2020 11:02:00 -0400
-Received: from mout.web.de ([212.227.15.3]:58131 "EHLO mout.web.de"
+        id S1727963AbgEaQHW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 31 May 2020 12:07:22 -0400
+Received: from mout.web.de ([212.227.15.3]:38077 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725889AbgEaPB7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 31 May 2020 11:01:59 -0400
+        id S1725912AbgEaQHV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 31 May 2020 12:07:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590937288;
-        bh=J/eJtvv3gAULoPyXTLodRrIJ9L0Dv9wyGP2oxhrU6KM=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=WRmLi9n93AA2t75dWfWmrAloEg4YATc5pFYzD704u5ptlMcROwH9kbwyr6yiIdNuQ
-         AaJo1rd0wltTFfDSq8CzfW798Rs9QF2r4+Ap2UkPb8WL6jzwthablj9T4J0NF186XC
-         LStDwREoueQLWM+HoNbC2HpAOnzFskM48QWihHGw=
+        s=dbaedf251592; t=1590941207;
+        bh=vOrM0uWQIJc26fYdgszEhsgU2uFU+0knpZn9MTMqFO0=;
+        h=X-UI-Sender-Class:Cc:Subject:To:From:Date;
+        b=XeXA68G6vpm5R91zxudgNtnAtcZrryh280aO1dJ5JVMZNBKFDC9OK9jgGSbd52LXa
+         woFTCYqrjR/219cJrZ2ZAD3pRwq7pszUG8x6wvYJOKvf07JiwQ5sTFiGx2xXNc40Kd
+         Op01eUQLmAavC3oa+IU3cBanCFevx/Wz25a1LSrg=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.19.10]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LyE3J-1itgB33Fif-015Zk4; Sun, 31
- May 2020 17:01:28 +0200
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Kangjie Lu <kjlu@umn.edu>, Sebastian Reichel <sre@kernel.org>
-Subject: Re: [PATCH v2] power: supply: bq24190_charger: Fix runtime PM
- imbalance in bq24190_sysfs_store()
+Received: from [192.168.1.2] ([93.131.19.10]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MPrLL-1jIW2e1uhH-00Mt9i; Sun, 31
+ May 2020 18:06:47 +0200
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kangjie Lu <kjlu@umn.edu>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Kukjin Kim <kgene@kernel.org>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: Re: [PATCH] media: exynos4-is: Fix runtime PM imbalance in
+ isp_video_open()
+To:     Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -70,48 +78,45 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-To:     Dinghao Liu <dinghao.liu@zju.edu.cn>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-pm@vger.kernel.org
-Message-ID: <e3faa9ac-c35e-41cc-a298-84ee81c74183@web.de>
-Date:   Sun, 31 May 2020 17:01:26 +0200
+Message-ID: <3b8459ce-114b-f69a-b671-4f4cc0127fd6@web.de>
+Date:   Sun, 31 May 2020 18:06:42 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:E3uoQ5Rd3D1rVr3S209zE4D6OKnXNVtKjJzBHOenjUIqRtrW3tR
- 0yN25lnBczmeDsnHKksXhIZKb+9PSuH4lU8+GZJ1SCj75O+5jaDx7UvO5yKbY2ZldCvKXcX
- Uj2Ypgy4VPORJqjlfdEFWpt8oHXsYKDfKFsjV4r4ssKlodx5/yPwoDgE5LKFyt0WwFb+nvE
- 3mSAkbIV8rsGfa/vcPgQA==
+X-Provags-ID: V03:K1:Iqb1YqZFmNyxXRJYB1dTeDkFbw3LpMXZQm7FMyRq8G+4hObAibP
+ v3A5AoHvKkkibTT6HoVXfscrtcYJVKHzzvlBmGPN7kbX0uEyKoX7Yco2Ogo57axQsw/QFeW
+ Ony4DSylZEe5b/I5LoIcHdtWKIH4Toe5rSX8G9pBTCGrsU9824wgsqv6D+Y8bnB/1mP0OiQ
+ cJRLQpcVKtLNdyA+BaEfg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:35H5Mmqidv0=:iCoTpGRmXTgJs53c8SoNbZ
- fcUYGZO3IT26ULIbo2EVsu3ITRAUXB4ZJIwZPWQucY97TTVtZIOibq/nNEt5YCV01NykCgaYh
- bNixjNBxrEMvxqxflzmhKffZj2U1VpxrI/abGrr7HjQVQ54GXBLg1zAEC862a5qvoRQiuKrE6
- nGMx8vROt0gh/Eac0tECbkRTOPKzxiD6M31Lh8EgyxEk/KoBTIZjl+24jZ8ypKcfKEzghG+D5
- JQKyVRaZUaNbtQZqtJzKHpN/CYQw9befqnQ/t05d08/8SV2uwWpRs0Ef62uDeTBZcF+TGJoFA
- Izel4wbnr2yOzUAabbMYJzIKWxkMgGMzV7X2NYkvDJF5z1iN3pq0KOJEo/FuXfHvWnkZkLCry
- FvQ5Mln791FTYZMctutLV/ocOkt/OdZICwDZhfoTLH2FPP4RUGmKQXcqUcPkGv1D8gnU0s/UD
- bwJoTORtCPXGnoN0PR7cCKyj40d1gPMYx/Zq/Z5GsembCGYJf3nFz0f+pZchr+2oo1b8K962A
- NpjoLweWr1h9EzGv7ycuENl8782dbvqH9mipLSFEydNyPHgbyR9HofN4SnUalx3INmzShfAdV
- UP28Fl+Lh0z9npnAnhfjKXmPeYyuLHEusYSk904juGTw1PjrKfryuVafabws3XlMpiBwKO/gE
- v+ZG5xsccdZDBvRQqZU8WQKPdWfgC/VWfCSFmRgmZ4PqJvttj+T4qLkW3u+inMCoOgMusPTcc
- EIsGx5yLtAz40ZrVCrdr/siJIrgNQYrTA2ot8JqXYoUchxxmnIKYU1iLNxd0/J9QucCSF4Iv+
- biKD7IoxkiaOQODlBYd58jqFUFGNP8km5sLRyzZVpTdI657/Plb83wm2c9bRlGCqQFOhRWtpq
- yeIJlodAKgMUCrOO1mLxrmtwr/rT5XWX3wyznDCunUbmiI6bAjpLaeBLnNO3v8O1PPR8OXoTQ
- jegGr25eOYrFedd08LwyKEYqhOtVaybMBQIb+Els9im2QmK0xi5BLYjilXq9kvy/rdU+v7G2Q
- pNep3MheyPvMTzBmKSbdc+Xh0k6UUzPqqOCxutSWiikSYQhAsOnfq11Sg0mJAAOg72C8X8/qt
- yv8BD53oMxGUQzuqjLqtLT7C5DMk9N+3hJ6tWCIpPcUFe9AzaTpewPYig/iKhhYPwAFVae1wg
- FDMD2R9ujfwOCy1Lec6y9T5pFxI7+6OcZeyIaxSkgas7UhTvRUJhRZ39+lUYUETU0BBBYBNSr
- DyT9t+yv7HuJJ1s46
+X-UI-Out-Filterresults: notjunk:1;V03:K0:eH/AxAQ0MPQ=:W+SF6UAcADoPQv+PS16g51
+ GNENNi6yomYx8OcR2ouUJH3EZ7PEw4ZWOnSRy4mNQIPcP2ASJdOMcsL8rbCKRJjY0h7kKa1Ko
+ XhXQheggZyUCvhs9BhjQhBgWfJGLBNLiMaZdAS4taF1sZcES1dFdYFhvH9FkBPQR5T8tIkVeS
+ 4RzOasdS2MXxtGE5OotRPDYbZ6Qzi8OHtDEtkea0u/cmNAfUvKZjwLOVZ7zOlLRdzC7w0bjy3
+ 7m7Ktao9/eYggiksmDPJxtjbB4+ZYQvJgldUPzxdrybtfXExQ0QRFRLybf6BoiQT2l2lm3Omr
+ tllnm0XL3nJBhcdIWcG3/RCVJAndlOdN7Pl6wQ/qKV7dq/cRk/MV0U5HpKUuzLhls5AToxQqP
+ Vp/3pVPeOrk5m4i6JjT0Lrlc9xxCftDxlvRJ/a20+m8tjhubwukkqMzdyGJkxnIX8Br3tCFB1
+ JqwPJU6MypqcZAHWFw3HdVTm5X0wyfeFDr6/G5Q14ia776TaWHJmBfhF203rpjOBlw8VqGeYI
+ KvoZEdfGf5tdHvQxMN009gbGwYjUO5JmRcHuRNVN9fwEBVgNz/wOv8VwhrA/++SOjLGzYZnyw
+ eRuTYiBVH+5LYjsT63ZFkUGOUacpi/JTEq8O/vv0pmU7kYTU3KopiMMGfxMUcdj7AUPLw2+tw
+ 1rU0XCB9pajtUAGT8vWzDRk5tJMlfWm2kKR3NhFyLN2IHlMpOUVCIp9mOOC1u2j0oVnhVHGBO
+ vROP39sZIq6U6vGkNZWtprOw29+JduDPK7zjBZoMNy973FiBdfSeNUJOyfsltuHQUuZcgsXhq
+ Arl/0qmU1OqwdcG09KoOoJ4ssyzEjqBiGG7Q+lh2Yw8L/9L57GwgIjsVw2Xx3tBJfEJsOgYpN
+ xo9TO7l97Kg65ea7x0gnu6p9MRCHL0HqfXkx0RqaJyHynghsnbjYAZ5BYG+jbPgATJG6TCQBx
+ j4dh3J0kCwBwHQOglxHRtwlCTNptezu79GeMvlNgHJk8aQHGsO4flDnxT5Y0CuPBK4rGOib7m
+ bzkB778bJvwWUTMa0mR7elxxJoU9a0dp2cHa6fEUhrlfNIdusxN4Su+fD+V+67XX5FXDLUaHD
+ juPAOsP5iEu7HfkrT5+cGcBiNd9tJSQoA8jvvpg95poOR9SZV4v3y6FNLmJ5b040socfGTF3/
+ zfmwpHM8T+OW8CMMGOk5LnQFD3twl14aeM8HNQ3C5Y4zHQm5an0OCMrM7Vb926hEOBCCV4XBo
+ rlzfiGrXpIxauARHL
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 > pm_runtime_get_sync() increments the runtime PM usage counter even
-> it returns an error code. Thus a pairing decrement is needed on
+> when it returns an error code. Thus a pairing decrement is needed on
 > the error handling path to keep the counter balanced.
 
 How do you think about a wording variant like the following?
@@ -125,6 +130,28 @@ nt it also
 
 Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=
 e?
+
+
+Can it make sense to combine the software adjustment with the
+update step =E2=80=9Cmedia: exynos4-is: Fix runtime PM imbalance in fimc_i=
+s_probe=E2=80=9D?
+https://lore.kernel.org/linux-arm-kernel/20200524025903.17219-1-dinghao.li=
+u@zju.edu.cn/
+https://lore.kernel.org/patchwork/patch/1246424/
+
+
+=E2=80=A6
++++ b/drivers/media/platform/exynos4-is/fimc-isp-video.c
+@@ -293,6 +293,7 @@  static int isp_video_open(struct file *file)
+ 	if (!ret)
+ 		goto unlock;
+ rel_fh:
++	pm_runtime_put_noidle(&isp->pdev->dev);
+ 	v4l2_fh_release(file);
+ unlock:
+=E2=80=A6
+
+Is there a need to use a label like =E2=80=9Cput_pm=E2=80=9D?
 
 Regards,
 Markus

@@ -2,33 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86E401E9810
-	for <lists+kernel-janitors@lfdr.de>; Sun, 31 May 2020 16:06:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 655F71E984C
+	for <lists+kernel-janitors@lfdr.de>; Sun, 31 May 2020 17:02:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728039AbgEaOGy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 31 May 2020 10:06:54 -0400
-Received: from mout.web.de ([212.227.15.4]:44701 "EHLO mout.web.de"
+        id S1728200AbgEaPCA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 31 May 2020 11:02:00 -0400
+Received: from mout.web.de ([212.227.15.3]:58131 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725889AbgEaOGx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 31 May 2020 10:06:53 -0400
+        id S1725889AbgEaPB7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 31 May 2020 11:01:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590933980;
-        bh=DxdIS954Ga9FjxgbahaPvGvimZTwhA0hHvbIIzkRjVQ=;
+        s=dbaedf251592; t=1590937288;
+        bh=J/eJtvv3gAULoPyXTLodRrIJ9L0Dv9wyGP2oxhrU6KM=;
         h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=AcdDwdvvoWZi4cQPcYNYnbXWspUTc+E0NnQ5NfBj5ukn8RB+Omar9WZtTFHzH962B
-         zmZQsGjDMOont4Q9MkHzGFCEOnr6iyLw3xaM5vbvRgkBLf9mxcVViHUszKWiIyJLOg
-         eIwY8J3T+OEq1T8VpKepF/xpaPBDtDOiSYjmHTv8=
+        b=WRmLi9n93AA2t75dWfWmrAloEg4YATc5pFYzD704u5ptlMcROwH9kbwyr6yiIdNuQ
+         AaJo1rd0wltTFfDSq8CzfW798Rs9QF2r4+Ap2UkPb8WL6jzwthablj9T4J0NF186XC
+         LStDwREoueQLWM+HoNbC2HpAOnzFskM48QWihHGw=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.19.10]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MFL64-1jkqee2qEG-00EQDR; Sun, 31
- May 2020 16:06:20 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Jonathan Cameron <jic23@kernel.org>, Kangjie Lu <kjlu@umn.edu>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH v2] iio: magnetometer: ak8974: Fix runtime PM imbalance on
- error in ak8974_probe()
+Received: from [192.168.1.2] ([93.131.19.10]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LyE3J-1itgB33Fif-015Zk4; Sun, 31
+ May 2020 17:01:28 +0200
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Kangjie Lu <kjlu@umn.edu>, Sebastian Reichel <sre@kernel.org>
+Subject: Re: [PATCH v2] power: supply: bq24190_charger: Fix runtime PM
+ imbalance in bq24190_sysfs_store()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -74,87 +71,60 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
 To:     Dinghao Liu <dinghao.liu@zju.edu.cn>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio@vger.kernel.org
-Message-ID: <dd84c12f-277d-27e7-3727-4592e530e4ed@web.de>
-Date:   Sun, 31 May 2020 16:06:11 +0200
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-pm@vger.kernel.org
+Message-ID: <e3faa9ac-c35e-41cc-a298-84ee81c74183@web.de>
+Date:   Sun, 31 May 2020 17:01:26 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:mwD1h5bMpJDwWo3VzgZwasVQKzBtC5x3uV3bVMn/+XimOeKhxnm
- TcmkijzkNZP0x66IfSSAJcvw8pygiaNT7ABZjT43yZgn1l6Rplhpgs15BpIY2luIASBDUvI
- 9FKzb5lGMQUI2ST9qiYCetIoRt+UiCgYzml1QmyYuAuH/2cOrCtLARl3iH4q5y52RLfYfEF
- 4eNHBUCsOjeldreV9x5pQ==
+X-Provags-ID: V03:K1:E3uoQ5Rd3D1rVr3S209zE4D6OKnXNVtKjJzBHOenjUIqRtrW3tR
+ 0yN25lnBczmeDsnHKksXhIZKb+9PSuH4lU8+GZJ1SCj75O+5jaDx7UvO5yKbY2ZldCvKXcX
+ Uj2Ypgy4VPORJqjlfdEFWpt8oHXsYKDfKFsjV4r4ssKlodx5/yPwoDgE5LKFyt0WwFb+nvE
+ 3mSAkbIV8rsGfa/vcPgQA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:WvJU4xNNi6k=:7YOBk+wDXUg0trm0YKm+Mi
- 7lLUbYPdhBvfny2WzKPt9iT7VhLNGJAHJeRTZazgWDma1Pc01i+QCAnAhncYZXR2g/4Pfud8H
- R1v0DxItmNqNsDRD5tA8EUKUH8huYqEPPiFrSE/ec31MkypIW/yz1jd/0t6nNIfjhOFINY7sm
- tbYkQma9yBa68jAQnyLeLovS9hSWjdK99I1pOUtqnnH8lmr7BjyjwXcgLhrohnUVl01cmbY/R
- pxWsC+aa38KqNrO/AKwIH2+5yl6Jo+RDJlDyeIKL1G6DEI6YPNqKfypT9y4Q7X7Onwcy2GNz4
- o8VuCTHoeetjNawLZpLnKE0jHCJk9ygnq5SPh4oZGMPzfBkjxhn9bxitkN0jW4n1Drzk4kcNQ
- hRQSslfFg5jOK2KgtpZKmpumeck35Rb7KHUdU1gizDSQygthaPv/YohuU5GDr8ppkRCRk1PdF
- PLFsjZmRggx15YkInePqYGlMnXSs2GehuTvsrxmnLZTfUHpYtgTE6IN5+qrRNBUt99BhpDcJZ
- uEMr/Ke0hfL0olNrB22ZM0L/91vKwYHna33La45s2RdWWqZyEQqDXIW+5gR572AjtsfnJAG6T
- jpZSwsnDmBsJbLo1z2Fb/Zkha8G30YOEafBH5JwH8u2AEUduZW/TSa7CVla9rtMPccdjc50Zo
- /q+vXOJSWdXGjIt+SOdDzhq56sbzBVam65U9FLDcWuPnvrA72ikrA5Ui1DJgMz7dcst5VmgMA
- +1Hx2y9yS2ewz2Xfzbpkqv0DjG1TfmmfxZ/eBgdQmzRvgLIZqizMBSFJyak5HRZaZn3XnNQJM
- jxU77qdyULkcJ/DbZsgRC8fvZY8U2uzqJLTnvuX1bh1CmOH2RYYdIZhnq4pFec9pDOoiKxHpu
- a5P5mqCQtRdVTalHcvZ/W3J5wvaYY1hXm5AlABj8zTp/qfaz+OjHGZZYbCShgY2A8ymhUhxbi
- BcAllLblthu57QyL1zpXni+Q+ryIfJo4TM9swvB9jRuv7AbIV4gkJBsQer6g8XNspHpab2HC/
- uhuJhG0KCYY2qOS+Ne4I9cANQHCAwQg/0j7z/EZwQor9iwNTB8LUg7o/5/OvLC794sRRf9ksR
- vtJ1xFs6MOqAs/xpHDiTP4DVVpiRP0tQFSlPE/LGL23nc4Qc+ph5oYJ0F4apogn5sZOQKu68k
- dPOE1kdzo0Infjc1quTqLd1Wwf23V7zjQsbYj7t4DLe/boFLTz12ApuDfweaAkQBYdrHfJ2Ze
- FvE8Ro1pS3G3Wf8Cs
+X-UI-Out-Filterresults: notjunk:1;V03:K0:35H5Mmqidv0=:iCoTpGRmXTgJs53c8SoNbZ
+ fcUYGZO3IT26ULIbo2EVsu3ITRAUXB4ZJIwZPWQucY97TTVtZIOibq/nNEt5YCV01NykCgaYh
+ bNixjNBxrEMvxqxflzmhKffZj2U1VpxrI/abGrr7HjQVQ54GXBLg1zAEC862a5qvoRQiuKrE6
+ nGMx8vROt0gh/Eac0tECbkRTOPKzxiD6M31Lh8EgyxEk/KoBTIZjl+24jZ8ypKcfKEzghG+D5
+ JQKyVRaZUaNbtQZqtJzKHpN/CYQw9befqnQ/t05d08/8SV2uwWpRs0Ef62uDeTBZcF+TGJoFA
+ Izel4wbnr2yOzUAabbMYJzIKWxkMgGMzV7X2NYkvDJF5z1iN3pq0KOJEo/FuXfHvWnkZkLCry
+ FvQ5Mln791FTYZMctutLV/ocOkt/OdZICwDZhfoTLH2FPP4RUGmKQXcqUcPkGv1D8gnU0s/UD
+ bwJoTORtCPXGnoN0PR7cCKyj40d1gPMYx/Zq/Z5GsembCGYJf3nFz0f+pZchr+2oo1b8K962A
+ NpjoLweWr1h9EzGv7ycuENl8782dbvqH9mipLSFEydNyPHgbyR9HofN4SnUalx3INmzShfAdV
+ UP28Fl+Lh0z9npnAnhfjKXmPeYyuLHEusYSk904juGTw1PjrKfryuVafabws3XlMpiBwKO/gE
+ v+ZG5xsccdZDBvRQqZU8WQKPdWfgC/VWfCSFmRgmZ4PqJvttj+T4qLkW3u+inMCoOgMusPTcc
+ EIsGx5yLtAz40ZrVCrdr/siJIrgNQYrTA2ot8JqXYoUchxxmnIKYU1iLNxd0/J9QucCSF4Iv+
+ biKD7IoxkiaOQODlBYd58jqFUFGNP8km5sLRyzZVpTdI657/Plb83wm2c9bRlGCqQFOhRWtpq
+ yeIJlodAKgMUCrOO1mLxrmtwr/rT5XWX3wyznDCunUbmiI6bAjpLaeBLnNO3v8O1PPR8OXoTQ
+ jegGr25eOYrFedd08LwyKEYqhOtVaybMBQIb+Els9im2QmK0xi5BLYjilXq9kvy/rdU+v7G2Q
+ pNep3MheyPvMTzBmKSbdc+Xh0k6UUzPqqOCxutSWiikSYQhAsOnfq11Sg0mJAAOg72C8X8/qt
+ yv8BD53oMxGUQzuqjLqtLT7C5DMk9N+3hJ6tWCIpPcUFe9AzaTpewPYig/iKhhYPwAFVae1wg
+ FDMD2R9ujfwOCy1Lec6y9T5pFxI7+6OcZeyIaxSkgas7UhTvRUJhRZ39+lUYUETU0BBBYBNSr
+ DyT9t+yv7HuJJ1s46
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> When devm_regmap_init_i2c() returns an error code, a pairing
-> runtime PM usage counter decrement is needed to keep the
-> counter balanced.
+> pm_runtime_get_sync() increments the runtime PM usage counter even
+> it returns an error code. Thus a pairing decrement is needed on
+> the error handling path to keep the counter balanced.
 
-How do you think about to replace the word =E2=80=9Cpairing=E2=80=9D by =
-=E2=80=9Ccorresponding=E2=80=9D?
+How do you think about a wording variant like the following?
 
-
-> For error paths after ak8974_set_power(),
-> ak8974_detect() and ak8974_reset(), things are the same.
-
-Will an other wording become more helpful than this information?
-
-
-> However, When iio_triggered_buffer_setup() returns an error
-> code, there will be two PM usgae counter decrements.
-
-Please avoid two typos in this sentence.
+   Change description:
+   The PM runtime usage counter is incremented even if a call of
+   the function =E2=80=9Cpm_runtime_get_sync=E2=80=9D failed. Thus decreme=
+nt it also
+   in an error case so that the reference counting is kept consistent.
 
 
 Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=
 e?
-
-
-=E2=80=A6
-+++ b/drivers/iio/magnetometer/ak8974.c
-=E2=80=A6
-@@ -854,7 +856,6 @@  static int ak8974_probe(struct i2c_client *i2c,
-=E2=80=A6
-
-Can a source code variant like the following make sense
-for a more complete exception handling?
-
-power_off:
-	ak8974_set_power(ak8974, AK8974_PWR_OFF);
-put_pm:
-	pm_runtime_put_noidle(&i2c->dev);
-	pm_runtime_disable(&i2c->dev);
-disable_regulator:
-	regulator_bulk_disable(ARRAY_SIZE(ak8974->regs), ak8974->regs);
-	return ret;
-
 
 Regards,
 Markus

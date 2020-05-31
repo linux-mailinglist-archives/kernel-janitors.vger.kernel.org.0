@@ -2,65 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A5221E96AB
-	for <lists+kernel-janitors@lfdr.de>; Sun, 31 May 2020 11:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDA301E96D0
+	for <lists+kernel-janitors@lfdr.de>; Sun, 31 May 2020 12:05:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728049AbgEaJv5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 31 May 2020 05:51:57 -0400
-Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:28594 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728019AbgEaJv5 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 31 May 2020 05:51:57 -0400
-Received: from localhost.localdomain ([93.23.14.245])
-        by mwinf5d05 with ME
-        id lMrs2200E5HDzGl03MrtmT; Sun, 31 May 2020 11:51:55 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 31 May 2020 11:51:55 +0200
-X-ME-IP: 93.23.14.245
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     linux@armlinux.org.uk, tglx@linutronix.de, allison@lohutok.net,
-        kstewart@linuxfoundation.org, info@metux.net,
-        gregkh@linuxfoundation.org
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] ARM: smp_twd: mark a function as __init to save some memory
-Date:   Sun, 31 May 2020 11:51:51 +0200
-Message-Id: <20200531095151.597393-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        id S1727887AbgEaKFR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 31 May 2020 06:05:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45702 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726020AbgEaKFQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 31 May 2020 06:05:16 -0400
+Received: from localhost (unknown [213.57.247.131])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9D4F42065C;
+        Sun, 31 May 2020 10:05:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590919516;
+        bh=dXMkwnQAZeL8TcvuYCcB71Ob/n8op4hHUM0jXpeFsF0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=f30JjTwtkm98IMUZWXgOVX7LK4OL2SoQSIE7+UqWa3kKeI/G9tQfcFuvG9mh9TA8Y
+         8Rt1fv7hmM1Fh9SURXjDSrlpHZ2go9Sm3RG8cUspDi3BDAgDGNI5gf2gHoTqAuljLL
+         3UB/NeuuN8jMfpF8G0HE04Md7FL+MVVKf/tUJrXQ=
+Date:   Sun, 31 May 2020 13:05:12 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Mike Marciniszyn <mike.marciniszyn@intel.com>,
+        Grzegorz Andrejczuk <grzegorz.andrejczuk@intel.com>,
+        Dennis Dalessandro <dennis.dalessandro@intel.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2] IB/hfi1: Fix hfi1_netdev_rx_init() error handling
+Message-ID: <20200531100512.GH66309@unreal>
+References: <BY5PR11MB3958CF61BB1F59A6F6B5234D868F0@BY5PR11MB3958.namprd11.prod.outlook.com>
+ <20200530140224.GA1330098@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200530140224.GA1330098@mwanda>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'twd_clk_init()' is only called via 'core_initcall'.
-It can be marked as __init to save a few bytes of memory.
+On Sat, May 30, 2020 at 05:02:24PM +0300, Dan Carpenter wrote:
+> The hfi1_vnic_up() function doesn't check whether hfi1_netdev_rx_init()
+> returns errors.  In hfi1_vnic_init() we need to change the code to
+> preserve the error code instead of returning success.
+>
+> Fixes: 2280740f01ae ("IB/hfi1: Virtual Network Interface Controller (VNIC) HW support")
+> Fixes: 4730f4a6c6b2 ("IB/hfi1: Activate the dummy netdev")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> v2: Add error handling in hfi1_vnic_up() and add second fixes tag
+>
+>  drivers/infiniband/hw/hfi1/vnic_main.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/infiniband/hw/hfi1/vnic_main.c b/drivers/infiniband/hw/hfi1/vnic_main.c
+> index b183c56b7b6a4..03f8be8e9488e 100644
+> --- a/drivers/infiniband/hw/hfi1/vnic_main.c
+> +++ b/drivers/infiniband/hw/hfi1/vnic_main.c
+> @@ -457,13 +457,19 @@ static int hfi1_vnic_up(struct hfi1_vnic_vport_info *vinfo)
+>  	if (rc < 0)
+>  		return rc;
+>
+> -	hfi1_netdev_rx_init(dd);
+> +	rc = hfi1_netdev_rx_init(dd);
+> +	if (rc < 0)
+> +		goto err_remove;
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-For the records, this function has been introduced in commit 4fd7f9b12810
-("ARM: 7212/1: smp_twd: reconfigure clockevents after cpufreq change")
----
- arch/arm/kernel/smp_twd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Why did you check for the negative value here and didn't check below?
 
-diff --git a/arch/arm/kernel/smp_twd.c b/arch/arm/kernel/smp_twd.c
-index 9a14f721a2b0..e0a0b0d820bc 100644
---- a/arch/arm/kernel/smp_twd.c
-+++ b/arch/arm/kernel/smp_twd.c
-@@ -129,7 +129,7 @@ static struct notifier_block twd_clk_nb = {
- 	.notifier_call = twd_rate_change,
- };
- 
--static int twd_clk_init(void)
-+static int __init twd_clk_init(void)
- {
- 	if (twd_evt && raw_cpu_ptr(twd_evt) && !IS_ERR(twd_clk))
- 		return clk_notifier_register(twd_clk, &twd_clk_nb);
--- 
-2.25.1
+Thanks
 
+>
+>  	netif_carrier_on(netdev);
+>  	netif_tx_start_all_queues(netdev);
+>  	set_bit(HFI1_VNIC_UP, &vinfo->flags);
+>
+>  	return 0;
+> +
+> +err_remove:
+> +	hfi1_netdev_remove_data(dd, VNIC_ID(vinfo->vesw_id));
+> +	return rc;
+>  }
+>
+>  static void hfi1_vnic_down(struct hfi1_vnic_vport_info *vinfo)
+> @@ -512,7 +518,8 @@ static int hfi1_vnic_init(struct hfi1_vnic_vport_info *vinfo)
+>  			goto txreq_fail;
+>  	}
+>
+> -	if (hfi1_netdev_rx_init(dd)) {
+> +	rc = hfi1_netdev_rx_init(dd);
+> +	if (rc) {
+>  		dd_dev_err(dd, "Unable to initialize netdev contexts\n");
+>  		goto alloc_fail;
+>  	}
+> --
+> 2.26.2
+>

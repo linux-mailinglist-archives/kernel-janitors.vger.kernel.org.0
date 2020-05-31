@@ -2,71 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C48A1E9620
-	for <lists+kernel-janitors@lfdr.de>; Sun, 31 May 2020 09:20:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A4B11E962A
+	for <lists+kernel-janitors@lfdr.de>; Sun, 31 May 2020 09:37:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726924AbgEaHUI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 31 May 2020 03:20:08 -0400
-Received: from mail.zju.edu.cn ([61.164.42.155]:60458 "EHLO zju.edu.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726803AbgEaHUI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 31 May 2020 03:20:08 -0400
-Received: by ajax-webmail-mail-app4 (Coremail) ; Sun, 31 May 2020 15:19:51
- +0800 (GMT+08:00)
-X-Originating-IP: [10.192.85.18]
-Date:   Sun, 31 May 2020 15:19:51 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   dinghao.liu@zju.edu.cn
-To:     "Markus Elfring" <Markus.Elfring@web.de>
-Cc:     kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
-        linux-i2c@vger.kernel.org, linux-imx@nxp.com,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Dong Aisheng" <aisheng.dong@nxp.com>,
-        "Fabio Estevam" <festevam@gmail.com>, "Kangjie Lu" <kjlu@umn.edu>,
-        "Sascha Hauer" <s.hauer@pengutronix.de>,
-        "Shawn Guo" <shawnguo@kernel.org>
-Subject: Re: Re: [PATCH v2] i2c: imx-lpi2c: Fix runtime PM imbalance on
- error in lpi2c_imx_master_enable()
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.10 build 20190906(84e8bf8f)
- Copyright (c) 2002-2020 www.mailtech.cn zju.edu.cn
-In-Reply-To: <845a11a9-51ed-cc7c-350f-b319111f32ee@web.de>
-References: <845a11a9-51ed-cc7c-350f-b319111f32ee@web.de>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+        id S1727098AbgEaHhc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 31 May 2020 03:37:32 -0400
+Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:56897 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726803AbgEaHhb (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 31 May 2020 03:37:31 -0400
+Received: from localhost.localdomain ([93.23.14.245])
+        by mwinf5d45 with ME
+        id lKdN220075HDzGl03KdP5C; Sun, 31 May 2020 09:37:28 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 31 May 2020 09:37:28 +0200
+X-ME-IP: 93.23.14.245
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     daniel@zonque.org, haojian.zhuang@gmail.com,
+        robert.jarzmik@free.fr, linus.walleij@linaro.org
+Cc:     linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] pinctrl: pxa: pxa2xx: Remove 'pxa2xx_pinctrl_exit()' which is unused and broken
+Date:   Sun, 31 May 2020 09:37:16 +0200
+Message-Id: <20200531073716.593343-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Message-ID: <1f6c3bbb.db553.1726999de41.Coremail.dinghao.liu@zju.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: cS_KCgC3WeSXWtNeXepiAA--.9453W
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAg0OBlZdtOWM2gAhsq
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJTRUUUbA0S07vEb7Iv0x
-        C_Cr1lV2xY67kC6x804xWlV2xY67CY07I20VC2zVCF04k26cxKx2IYs7xG6rWj6s0DMIAI
-        bVAFxVCF77xC64kEw24lV2xY67C26IkvcIIF6IxKo4kEV4ylV2xY628lY4IE4IxF12IF4w
-        CS07vE84x0c7CEj48ve4kI8wCS07vE84ACjcxK6xIIjxv20xvE14v26w1j6s0DMIAIbVA2
-        z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJr0_GcWlV2xY628EF7xvwVC2z280aVAFwI0_Gc
-        CE3s1lV2xY628EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wCS07vEe2I262IYc4CY6c8I
-        j28IcVAaY2xG8wCS07vE5I8CrVACY4xI64kE6c02F40Ex7xfMIAIbVAv7VC0I7IYx2IY67
-        AKxVWUJVWUGwCS07vEYx0Ex4A2jsIE14v26r1j6r4UMIAIbVAm72CE4IkC6x0Yz7v_Jr0_
-        Gr1lV2xY64IIrI8v6xkF7I0E8cxan2IY04v7MIAIbVCjxxvEw4WlV2xY6xkI7II2jI8vz4
-        vEwIxGrwCS07vE42xK82IY6x8ErcxFaVAv8VW8uw4UJr1UMIAIbVCF72vE77IF4wCS07vE
-        4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lV2xY6I8I3I0E5I8CrVAFwI0_Jr0_Jr4lV2xY6I8I3I
-        0E7480Y4vE14v26r106r1rMIAIbVC2zVAF1VAY17CE14v26r1q6r43MIAIbVCI42IY6xII
-        jxv20xvE14v26r1j6r1xMIAIbVCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lV2xY6I
-        IF0xvE42xK8VAvwI8IcIk0rVWrZr1j6s0DMIAIbVCI42IY6I8E87Iv67AKxVWUJVW8JwCS
-        07vEIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUU==
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-CkhpLCBNYXJrdXMsIAoKPiAqIEhvdyBkbyB5b3UgdGhpbmsgYWJvdXQgdG8gcmVwbGFjZSB0aGUg
-d29yZCDigJxwYWlyaW5n4oCdIGJ5IOKAnGNvcnJlc3BvbmRpbmfigJ0/Cj4gCj4gKiBXaWxsIGl0
-IGJlIGhlbHBmdWwgdG8gYWRkIGFuIGltcGVyYXRpdmUgd29yZGluZz8KPiAgIGh0dHBzOi8vZ2l0
-Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3RvcnZhbGRzL2xpbnV4LmdpdC90
-cmVlL0RvY3VtZW50YXRpb24vcHJvY2Vzcy9zdWJtaXR0aW5nLXBhdGNoZXMucnN0P2lkPWZmZWI1
-OTVkODQ4MTFkZGUxNmEyOGIzM2Q4YTdjZjI2ZDUxZDUxYjMjbjE1MQo+IAo+ICogV291bGQgeW91
-IGxpa2UgdG8gYWRkIHRoZSB0YWcg4oCcRml4ZXPigJ0gdG8gdGhlIGNvbW1pdCBtZXNzYWdlPwo+
-IAo+ICogQXJlIHlvdSBnb2luZyB0byB0YWtlIHN1Y2ggcG9zc2liaWxpdGllcyBpbnRvIGFjY291
-bnQgZm9yIGFueSBtb3JlIHBhdGNoZXM/Cj4gCgpUaGFuayB5b3UgZm9yIHlvdXIgYWR2aWNlISBJ
-IHdpbGwgZml4IHRoZW0gc29vbiBpbiB0aGUgbmV4dCB2ZXJzaW9uIG9mIHBhdGNoLgoKUmVnYXJk
-cywKRGluZ2hhbw==
+Commit 6d33ee7a0534 ("pinctrl: pxa: Use devm_pinctrl_register() for pinctrl registration")
+has turned a 'pinctrl_register()' into 'devm_pinctrl_register()' in
+'pxa2xx_pinctrl_init()'.
+However, the corresponding 'pinctrl_unregister()' call in
+'pxa2xx_pinctrl_exit()' has not been removed.
+
+This is not an issue, because 'pxa2xx_pinctrl_exit()' is unused.
+Remove it now to avoid some wondering in the future and save a few LoC.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If some some reason the function should be kept, at least it should be
+only 'return 0;'
+---
+ drivers/pinctrl/pxa/pinctrl-pxa2xx.c | 9 ---------
+ 1 file changed, 9 deletions(-)
+
+diff --git a/drivers/pinctrl/pxa/pinctrl-pxa2xx.c b/drivers/pinctrl/pxa/pinctrl-pxa2xx.c
+index bddf2c5dd3bf..eab029a21643 100644
+--- a/drivers/pinctrl/pxa/pinctrl-pxa2xx.c
++++ b/drivers/pinctrl/pxa/pinctrl-pxa2xx.c
+@@ -425,15 +425,6 @@ int pxa2xx_pinctrl_init(struct platform_device *pdev,
+ }
+ EXPORT_SYMBOL_GPL(pxa2xx_pinctrl_init);
+ 
+-int pxa2xx_pinctrl_exit(struct platform_device *pdev)
+-{
+-	struct pxa_pinctrl *pctl = platform_get_drvdata(pdev);
+-
+-	pinctrl_unregister(pctl->pctl_dev);
+-	return 0;
+-}
+-EXPORT_SYMBOL_GPL(pxa2xx_pinctrl_exit);
+-
+ MODULE_AUTHOR("Robert Jarzmik <robert.jarzmik@free.fr>");
+ MODULE_DESCRIPTION("Marvell PXA2xx pinctrl driver");
+ MODULE_LICENSE("GPL v2");
+-- 
+2.25.1
+

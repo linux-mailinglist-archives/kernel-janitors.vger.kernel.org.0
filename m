@@ -2,76 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31B201E96F8
-	for <lists+kernel-janitors@lfdr.de>; Sun, 31 May 2020 12:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0947A1E9723
+	for <lists+kernel-janitors@lfdr.de>; Sun, 31 May 2020 13:00:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727847AbgEaKnL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 31 May 2020 06:43:11 -0400
-Received: from spam.zju.edu.cn ([61.164.42.155]:13692 "EHLO zju.edu.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725813AbgEaKnL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 31 May 2020 06:43:11 -0400
-Received: by ajax-webmail-mail-app4 (Coremail) ; Sun, 31 May 2020 18:42:59
- +0800 (GMT+08:00)
-X-Originating-IP: [10.192.85.18]
-Date:   Sun, 31 May 2020 18:42:59 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   dinghao.liu@zju.edu.cn
-To:     "Markus Elfring" <Markus.Elfring@web.de>
-Cc:     dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Ben Skeggs" <bskeggs@redhat.com>,
-        "David Airlie" <airlied@linux.ie>, "Kangjie Lu" <kjlu@umn.edu>
-Subject: Re: Re: drm/nouveau/clk/gm20b: Fix memory leak in gm20b_clk_new()
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.10 build 20190906(84e8bf8f)
- Copyright (c) 2002-2020 www.mailtech.cn zju.edu.cn
-In-Reply-To: <d05224e4-d682-de3e-928f-5af7b8597a8d@web.de>
-References: <dd729c13-fbc8-22e7-7d8e-e3e126f66943@web.de>
- <40d8fb01.db721.17269d3d620.Coremail.dinghao.liu@zju.edu.cn>
- <74977dc6-7ace-6ef7-4fcd-3f6c89a3eb5f@web.de>
- <286858ff.db7e3.17269ee5f3f.Coremail.dinghao.liu@zju.edu.cn>
- <5a073b2b-5102-adec-84dd-b62dc48c7451@web.de>
- <1c5b64dc.db888.1726a03b710.Coremail.dinghao.liu@zju.edu.cn>
- <d05224e4-d682-de3e-928f-5af7b8597a8d@web.de>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+        id S1728277AbgEaLAZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 31 May 2020 07:00:25 -0400
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:55996 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728125AbgEaLAW (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 31 May 2020 07:00:22 -0400
+Received: from localhost.localdomain ([93.23.14.245])
+        by mwinf5d05 with ME
+        id lP0H220095HDzGl03P0He9; Sun, 31 May 2020 13:00:20 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 31 May 2020 13:00:20 +0200
+X-ME-IP: 93.23.14.245
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     catalin.marinas@arm.com, will@kernel.org, tglx@linutronix.de,
+        paulmck@kernel.org, gregkh@linuxfoundation.org,
+        mhiramat@kernel.org, dianders@chromium.org
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] arm64: debug: mark a function as __init to save some memory
+Date:   Sun, 31 May 2020 13:00:15 +0200
+Message-Id: <20200531110015.598607-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Message-ID: <599cd7d4.dbaba.1726a53da96.Coremail.dinghao.liu@zju.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: cS_KCgDn7wczitNeallkAA--.10192W
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAg4RBlZdtOY+wQABs8
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJTRUUUbL0S07vEb7Iv0x
-        C_Cr1lV2xY67kC6x804xWlV2xY67CY07I20VC2zVCF04k26cxKx2IYs7xG6rWj6s0DMIAI
-        bVAFxVCF77xC64kEw24lV2xY67C26IkvcIIF6IxKo4kEV4ylV2xY628lY4IE4IxF12IF4w
-        CS07vE84x0c7CEj48ve4kI8wCS07vE84ACjcxK6xIIjxv20xvE14v26w1j6s0DMIAIbVA2
-        z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIAIbVA2z4x0Y4vEx4A2jsIE14v26r
-        xl6s0DMIAIbVA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1lV2xY62AIxVAIcxkEcVAq
-        07x20xvEncxIr21lV2xY6c02F40EFcxC0VAKzVAqx4xG6I80ewCS07vEYx0E2Ix0cI8IcV
-        AFwI0_Jr0_Jr4lV2xY6cIj6I8E87Iv67AKxVWUJVW8JwCS07vEOx8S6xCaFVCjc4AY6r1j
-        6r4UMIAIbVCjxxvEw4WlV2xY6xkI7II2jI8vz4vEwIxGrwCS07vE42xK82IY6x8ErcxFaV
-        Av8VW8uw4UJr1UMIAIbVCF72vE77IF4wCS07vE4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lV2xY
-        6I8I3I0E5I8CrVAFwI0_Jr0_Jr4lV2xY6I8I3I0E7480Y4vE14v26r106r1rMIAIbVC2zV
-        AF1VAY17CE14v26r1q6r43MIAIbVCI42IY6xIIjxv20xvE14v26r1j6r1xMIAIbVCI42IY
-        6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lV2xY6IIF0xvE42xK8VAvwI8IcIk0rVWrZr1j6s
-        0DMIAIbVCI42IY6I8E87Iv67AKxVWUJVW8JwCS07vEIxAIcVC2z280aVCY1x0267AKxVW8
-        JVW8JrUvcSsGvfC2KfnxnUU==
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-PiA+IElmIGdrMjBhX2Nsa19jdG9yKCkgbmV2ZXIgcmV0dXJucyBzdWNoIGFuIGVycm9yIGNvZGUs
-Cj4gPiB3ZSBtYXkgbmVlZCBub3QgdG8gcmVsZWFzZSB0aGlzIGNsb2NrIG9iamVjdC4KPiAKPiBX
-b3VsZCB5b3UgbGlrZSB0byBhY2hpZXZlIGNvbXBsZXRlIGV4Y2VwdGlvbiBoYW5kbGluZwo+IGFs
-c28gZm9yIHRoaXMgZnVuY3Rpb24gaW1wbGVtZW50YXRpb24/Cj4gCgpJdCBzZWVtcyB0aGF0IGl0
-J3MgcG9zc2libGUgdG8gZ2V0IC1FTk9NRU0gZnJvbSBnazIwYV9jbGtfY3RvcigpLgpUaGUgY2Fs
-bCBjaGFpbiBpcyBhcyBmb2xsb3dzOgpnazIwYV9jbGtfY3RvcigpIDwtIG52a21fY2xrX2N0b3Io
-KSA8LSBudmttX25vdGlmeV9pbml0KCkKCldoZW4gbnZrbV9ub3RpZnlfaW5pdCgpIHJldHVybnMg
-LUVOT01FTSwgYWxsIG9mIGl0cyBjYWxsZXJzIChhbmQgCmNhbGxlcnMgb2YgY2FsbGVycykgd2ls
-bCBiZSBpbmZsdWVuY2VkIGlmIHRoZXJlIGlzIGEgZmFpbGVkCmt6YWxsb2MgaW5zaWRlIHdoaWNo
-LiAKCkluIHRoaXMgY2FzZSwgbWF5YmUgd2Ugc2hvdWxkIGNoZWNrIHRoZSByZXR1cm4gdmFsdWUg
-b2YgCmdrMjBhX2Nsa19jdG9yKCkgYW5kIHJlbGVhc2UgY2xrIGlmIGl0IHJldHVybnMgLUVOT01F
-TS4gCkFuZCBtYW55IG90aGVyIGZ1bmN0aW9ucyBhbHNvIGhhdmUgdGhlIHNhbWUgaXNzdWUgKGUu
-Zy4sCmdtMjBiX2Nsa19uZXdfc3BlZWRvMCkuIERvIHlvdSBoYXZlIGFueSBpZGVhIGFib3V0IHRo
-aXMgCnByb2JsZW0/CgpSZWdhcmRzLApEaW5naGFv
+'debug_monitors_init()' is only called via 'postcore_initcall'.
+It can be marked as __init to save a few bytes of memory.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ arch/arm64/kernel/debug-monitors.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/kernel/debug-monitors.c b/arch/arm64/kernel/debug-monitors.c
+index 15e80c876d46..5df49366e9ab 100644
+--- a/arch/arm64/kernel/debug-monitors.c
++++ b/arch/arm64/kernel/debug-monitors.c
+@@ -130,7 +130,7 @@ static int clear_os_lock(unsigned int cpu)
+ 	return 0;
+ }
+ 
+-static int debug_monitors_init(void)
++static int __init debug_monitors_init(void)
+ {
+ 	return cpuhp_setup_state(CPUHP_AP_ARM64_DEBUG_MONITORS_STARTING,
+ 				 "arm64/debug_monitors:starting",
+-- 
+2.25.1
+

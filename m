@@ -2,91 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C25571EA599
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 16:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A411E1EA852
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 19:18:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726124AbgFAOOz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jun 2020 10:14:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58010 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726075AbgFAOOy (ORCPT
+        id S1727953AbgFARSI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jun 2020 13:18:08 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:39982 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726125AbgFARSI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jun 2020 10:14:54 -0400
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1093FC03E96B
-        for <kernel-janitors@vger.kernel.org>; Mon,  1 Jun 2020 07:14:53 -0700 (PDT)
-Received: by mail-qk1-x743.google.com with SMTP id w1so9132227qkw.5
-        for <kernel-janitors@vger.kernel.org>; Mon, 01 Jun 2020 07:14:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=IFSd0lM+5oS0t921WLpOPbQzBucVukCdkUKKoErmEbs=;
-        b=ievD0DqZ66bOEIA0HZ8vcqwFy/CIAUwBRl9L33AQUKWCvTpex47aCyGGXnaJOz1sbe
-         CvZlHT4O6tvclmJ69Q9msBZwNuiWxhaotER2AFQ+M7Z4dAon4c/nO2RwtOQK+t+vR2Hw
-         VrNc9AErucu9NiJw/rnJBGq1RYKLbKu7FB7ji8iuk0nWRcW9WyONYiJ8zj/y14aIGq9y
-         qr+NoYl8E6QltEPwwMrm2BhfZOnOb/MgJHtcozQ8DYzklvRoWDJpTl33h7uj0oWD0hHF
-         NcajsHHMVYkwX2ud+6Kj5TqD+LEYZ33TxE8cTzls+slsg5jLejCz836Gp05ELHFJAt6Y
-         KK8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=IFSd0lM+5oS0t921WLpOPbQzBucVukCdkUKKoErmEbs=;
-        b=DpHfxNzJkA8qVoy6PQwR67A/2KhloLSKN1BOqG6famhsM0R2czmoi7/wOMLWor8ucc
-         c7R9FO0kDKrENWdnzk7bWsXQWZ+WPAQb+j5CuJanCCGQZbuk4F93rMWDn138+swgZ90q
-         TjbSZ/0H1AztxC1YETZ3PHZPIic8M7b6Fnh6QkA9Go74/W93iHds98BD1aR1gvsbosAn
-         JS5gYxrFRHhQ6LBQETyO58BDPlAh2SO5Q2vdXv1YscFShDL6HPp5BUFY0mu706ZYIetQ
-         RgKiS6MUK80HbqwXlZF+G0oUoLNNMKN3iLV+sq8sPJ/NLmTN4JKX+JZGI/1aLgzPtC/8
-         WGAQ==
-X-Gm-Message-State: AOAM533PXGW1RtOE10f7QBtkpfZKWXiZA8a+4iGZe5JeOCNst6LVNauR
-        d7MV0I5s9D3sKTcGXM9IymYnog==
-X-Google-Smtp-Source: ABdhPJxsxLusMAVoQVodlnsvnv+YbVV98ASJ0KcxzqmXYzN3sXp5jwD89vPhryNmJWMoLVXwQPj7Zg==
-X-Received: by 2002:a37:4e54:: with SMTP id c81mr19435565qkb.46.1591020892158;
-        Mon, 01 Jun 2020 07:14:52 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.48.30])
-        by smtp.gmail.com with ESMTPSA id s42sm16325603qtk.14.2020.06.01.07.14.51
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 01 Jun 2020 07:14:51 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1jflDG-0006GL-Mq; Mon, 01 Jun 2020 11:14:50 -0300
-Date:   Mon, 1 Jun 2020 11:14:50 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Mike Marciniszyn <mike.marciniszyn@intel.com>,
-        Grzegorz Andrejczuk <grzegorz.andrejczuk@intel.com>,
-        Dennis Dalessandro <dennis.dalessandro@intel.com>,
-        Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
+        Mon, 1 Jun 2020 13:18:08 -0400
+Received: from [10.0.2.15] ([93.22.149.119])
+        by mwinf5d64 with ME
+        id ltHv220022aoEEt03tJ3C9; Mon, 01 Jun 2020 19:18:06 +0200
+X-ME-Helo: [10.0.2.15]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 01 Jun 2020 19:18:06 +0200
+X-ME-IP: 93.22.149.119
+Subject: Re: [PATCH] kernel: power: swap: mark a function as __init to save
+ some memory
+To:     Joe Perches <joe@perches.com>, rjw@rjwysocki.net, pavel@ucw.cz,
+        len.brown@intel.com, Dan Carpenter <error27@gmail.com>
+Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2] IB/hfi1: Fix hfi1_netdev_rx_init() error handling
-Message-ID: <20200601141450.GA24045@ziepe.ca>
-References: <BY5PR11MB3958CF61BB1F59A6F6B5234D868F0@BY5PR11MB3958.namprd11.prod.outlook.com>
- <20200530140224.GA1330098@mwanda>
+References: <20200531210059.647066-1-christophe.jaillet@wanadoo.fr>
+ <effe3cde7b1f188427c42c476f5a96251d837416.camel@perches.com>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <71346705-6882-d2ca-3c53-1a5b23d66bbf@wanadoo.fr>
+Date:   Mon, 1 Jun 2020 19:17:54 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200530140224.GA1330098@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <effe3cde7b1f188427c42c476f5a96251d837416.camel@perches.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, May 30, 2020 at 05:02:24PM +0300, Dan Carpenter wrote:
-> The hfi1_vnic_up() function doesn't check whether hfi1_netdev_rx_init()
-> returns errors.  In hfi1_vnic_init() we need to change the code to
-> preserve the error code instead of returning success.
+Le 01/06/2020 à 00:11, Joe Perches a écrit :
+> (adding Dan Carpenter)
 > 
-> Fixes: 2280740f01ae ("IB/hfi1: Virtual Network Interface Controller (VNIC) HW support")
-> Fixes: 4730f4a6c6b2 ("IB/hfi1: Activate the dummy netdev")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> v2: Add error handling in hfi1_vnic_up() and add second fixes tag
+> On Sun, 2020-05-31 at 23:00 +0200, Christophe JAILLET wrote:
+>> 'swsusp_header_init()' is only called via 'core_initcall'.
+>> It can be marked as __init to save a few bytes of memory.
 > 
->  drivers/infiniband/hw/hfi1/vnic_main.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
+> Hey Dan
+> 
+> smatch has a full function calling tree right?
+> 
+> Can smatch find unmarked functions called only by __init
+> functions so those unmarked functions can be appropriately
+> marked with __init like the below?
+> 
 
-Applied to for-next with the 'if (rc)' fixup, thanks
+Hi, in case of interest for anyone, I actually find such things as follow:
+    - grep to spot xxx_initcall macro (see comments in the perl script 
+below)
+    - a perl script which tries to spot missing __init
 
-Jason
+The false positive rate is low.
+Feel free to use and propose patches based on it.
+
+CJ
+
+________________________________________________
+#!/usr/bin/perl
+
+use warnings;
+use strict;
+
+# grep -r --include=*.c -E 
+'^[[:space:]]*(early|core|postcore|arch|subsys|fs|device|late)_initcall\(.*\)' 
+* > tmp.txt
+my $tmp="tmp.txt";
+
+open(my $fh, "<", $tmp);
+while (my $line = <$fh>) {
+         # Each line looks like:
+         #      net/mac80211/main.c:subsys_initcall(ieee80211_init);
+         if ($line =~ /^(.*):.*\((.*)\)/) {
+             system("grep -E '$2\\(void' $1 | grep -v -E '__.*init'");
+         }
+}
+close($fh)
+
+
+>> ---
+>>   kernel/power/swap.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/kernel/power/swap.c b/kernel/power/swap.c
+>> index ca0fcb5ced71..01e2858b5fe3 100644
+>> --- a/kernel/power/swap.c
+>> +++ b/kernel/power/swap.c
+>> @@ -1590,7 +1590,7 @@ int swsusp_unmark(void)
+>>   }
+>>   #endif
+>>   
+>> -static int swsusp_header_init(void)
+>> +static int __init swsusp_header_init(void)
+>>   {
+>>   	swsusp_header = (struct swsusp_header*) __get_free_page(GFP_KERNEL);
+>>   	if (!swsusp_header)
+> 
+> 
+

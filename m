@@ -2,114 +2,149 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4696E1EA568
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 15:56:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CDD71EA572
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 16:00:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726825AbgFAN4r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jun 2020 09:56:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55182 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726017AbgFAN4r (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jun 2020 09:56:47 -0400
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6EB1C03E96B
-        for <kernel-janitors@vger.kernel.org>; Mon,  1 Jun 2020 06:56:46 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id f18so9105614qkh.1
-        for <kernel-janitors@vger.kernel.org>; Mon, 01 Jun 2020 06:56:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=ntTQh6WltJCEpegt7h2c57+gIBfSY5EOmHIEsgHmRIU=;
-        b=CNZwg+F26lNY1SXnZVmmSMZ1s3wURI5mydV600unahy2nf+Sq43rl1GEyJ2sG1aE5Y
-         uPKF4mQ7lvFBncydxzKWwkxXxDQ1nc5wt46auLeL+KYtST6DJ7gK9nUm4DS6oWOEOwZG
-         lnWKlgexrnInnplLafYvwuyHLAJ3V00DSDkU1AtgvEf0u9f8eGJELuBolKTi61jtYRjZ
-         GQX+GDBr2EuChpxPCQU3xcoXmDfq3Gj3qp8naHWHOgVbeeNJfF1n8iW0sxVlHkFFDdie
-         5lhWeWOCWwIA+getqlMHXxUDE9+vLGxNcrco9FlkaeiopKti4FP5+rQVztySlLJ2slOF
-         PPXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ntTQh6WltJCEpegt7h2c57+gIBfSY5EOmHIEsgHmRIU=;
-        b=aCPGZc8TUWBQjYWDk81xetTV/VjQYaxmf7QgmrRLSWX+rpD+jHUzC8F6UWPJziEt09
-         Uh68ULeJPKCEUgBPHrMYyNogOCJSif4IGok/JEws4KnheNFM5YQdy5nAK11UfYwf4tkX
-         sB06XQ4pfzs0cMSuT7mp7EIj6TBKkcml98kt84cnMmIs1Y6g60bGeqf2erGdmYWly7w2
-         UZHss1HAsNz3n2KJBS60QTCvdgU9oSj7R/Dt5OtzvTxD90k/8ilKvxuTA8Ts+dJtGsSu
-         cvA27Cqf+yjGprDmG1oD+L6/FGrZFC8oo4qAI9w515I0jQvhaYOqUfYbmXy7PmsLf36O
-         9+ag==
-X-Gm-Message-State: AOAM531fSO7/Ss7Fy0gOVmNlHKlHSh4gFGzoorNIQsazmXpKwwFEGZFB
-        3Udi8PAbCZP6lvxZ+XQbI8ps9w==
-X-Google-Smtp-Source: ABdhPJxDT/YlICzGv8LgIeCF6lFgoL6j+xKq2z+DcM5OIioTXwPBgw7wCBUAW/nOX+6QKfh1IlKWxA==
-X-Received: by 2002:a37:b547:: with SMTP id e68mr2119990qkf.127.1591019806061;
-        Mon, 01 Jun 2020 06:56:46 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.48.30])
-        by smtp.gmail.com with ESMTPSA id j22sm14545311qke.117.2020.06.01.06.56.45
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 01 Jun 2020 06:56:45 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1jfkvl-0004UF-0T; Mon, 01 Jun 2020 10:56:45 -0300
-Date:   Mon, 1 Jun 2020 10:56:45 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Dennis Dalessandro <dennis.dalessandro@intel.com>
-Cc:     "Marciniszyn, Mike" <mike.marciniszyn@intel.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Doug Ledford <dledford@redhat.com>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "Dan Carpenter (dan.carpenter@oracle.com)" <dan.carpenter@oracle.com>
-Subject: Re: [PATCH -next] IB/hfi1: Remove set but not used variable 'priv'
-Message-ID: <20200601135644.GD4872@ziepe.ca>
-References: <20200528075946.123480-1-yuehaibing@huawei.com>
- <MN2PR11MB396654BC46500F828609C6A3868E0@MN2PR11MB3966.namprd11.prod.outlook.com>
- <86634519-3dd8-0c6a-a8d2-19f4b986fd3d@intel.com>
+        id S1726128AbgFAOAw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jun 2020 10:00:52 -0400
+Received: from mout.web.de ([212.227.15.3]:50265 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726017AbgFAOAv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 1 Jun 2020 10:00:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1591020034;
+        bh=e4M583n+ndEFe7uz2Jqv6SloIP8i0ix03FxgdPGGvhQ=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=ct9Ob0fVIXFHh1FpSun13ZCyN6SGRqjW958I+rXjkNRBFcH4a+vUB9JQLnLli7hhV
+         Mc7DXeXJks9HkufQx42nTt1HEnDeZqPitrreAekK9aX3nKQiawVZiyzzFdPPUWPHGd
+         UQ003s8kf9SMzmGZ7IgI1DMmnKjivUqYj+Jfhayg=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.49.133.32]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1N4vNQ-1iwuDG2K6m-010sT9; Mon, 01
+ Jun 2020 16:00:34 +0200
+Subject: Re: [1/2] ubifs: Fix potential memory leaks while iterating entries
+To:     Zhihao Cheng <chengzhihao1@huawei.com>,
+        linux-mtd@lists.infradead.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Richard Weinberger <richard@nod.at>,
+        Yi Zhang <yi.zhang@huawei.com>
+References: <2bec05b7-78d3-fa36-134a-efbe977933e3@web.de>
+ <45e2cd69-93ec-a0b9-b2a6-d170eee44055@huawei.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <4fe27809-552e-ea98-ba1f-cbf68e625d22@web.de>
+Date:   Mon, 1 Jun 2020 16:00:33 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <86634519-3dd8-0c6a-a8d2-19f4b986fd3d@intel.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <45e2cd69-93ec-a0b9-b2a6-d170eee44055@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Obc3LXDUWzNYAR7rOJ2xt8xMNqUN5H+O9DoGw784fRwgkHrQVxb
+ oPmoTc6ELoffvar2f6rRfG01a9xxHevQlOSC4JPSHtoHGwgBhAySkqqvHyvUnF7mNewo3f9
+ ccgHkfs68V3O/gOtGExNbcaL/IGXFSuUfLEjJ7tiCuBu1ogHJPDJizn3RfoB+6NNm3Ho+Pu
+ ITaeuSIa912MCrFB1Xxlg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:VXWDgan85Jg=:B9USaHgU53/jTmeGtDUtib
+ me6ZCwodrgs8hm3QQ/V+mJguGfFFkYvs1AYNUi+ekCMD1a/ylJfx7eAYKkNAwnGBy5U6p14lC
+ 8BMyu3+W+aJ3zw/3JVfqm+jcedtUPzya/7fWuc+jfetDinHEtp36rvo05KTbYwGo2HHlBFEEc
+ EQJfGl3drXju9u2Cer6DOIU4RZ450Rs0v8C2YSayaG4GxSVwBpF+jwK8UoyHuG4By6KiKYrvx
+ 1KE/4nfc9F3wigtmCjQ6L/r7wpuIz+KgQJyDWJqSj7YW/VBmLNA01DgK0mjdmcZCu7SjGTvLP
+ vtMAs+zdlEtHlRq1sNfQhBJOTTiDhFWbxKKWNeJXNjjN9fXFKfmKC89gF5O8NxmTLP0MZYWlp
+ 7RHa+3qeZY6ex6TwkwW08irGIV63EpzUSrVlYI9iyX8QLsiFbuPiiZ8RcaU77Enrnmj7EfNma
+ gIqtVahHyxcliTBLdy8h8jfbfJM4sZP6fvpVTM/61IHx51wpuyw1nwtBkf9J+Qw7+Il/S/NHr
+ rD7z7JugvB9jIs65yROpUUA2t2oYoxc+VlZkJtf4KCfxpdA4slvJMbxEkZXqxTy4k56lXBveg
+ cmqzZLlroNOA7d1yMMHdrUQmXUa+gDedhBqwSICXcMdsnSxDZq1wObbDlWDY0kAwO5pwwy1RQ
+ NhyHAlJP5YxmHGE+nOFWm+uZr/urxwy7bH3Oh+BDZnW5gZT4PxCE6lBEiw26c4M+Bnn9IXwzY
+ ER3pzly8diSAd6EP+f/wByP377lVAFIzsHjP26aoTX1hZorG4pi4occqIF+FfT539ZZsb6wST
+ GWfb0Sm5bFzl7ONb0AYWnyMtrrjcmL1eW4oqNQBFafsJBnLurg8SZLXXujsb6YJIGjfE8RoGQ
+ iDMpFimtNUEpZCGJbiQKDx8oYESxnNo4fbHa/A4TQY+818VnGapYBfKgrZLwTlRSUIAhJ6C4M
+ w+FVHQeMc+GW765Sbolp5f8S6vkPVtzONe/lgWgPCHRm07rOPwOuxDNEN2zqmMw2eOgT8b50/
+ /aQKH1ZLBBu7DMhZ3go/azhu5Yiws+8q/G/ufUZEd8YU/qQ8aVWLS2Reda5iXFsUkHmNBsw8Q
+ KsG8WIWuvDzaG1LbHhW7nRihjcQbFrDQEF/6RcWC1z7CXtHDOiFCYEZbTg7ChA46DOvZ3uM8/
+ gQPh9hmDxru6oWfFcvgKXRR14+d/Bbtk5V/Kdvm/72AJoiOdkuNnhKCkxAaNiZVTo029uh7xv
+ j7DOmAzaUpcVdd/8E
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jun 01, 2020 at 09:45:52AM -0400, Dennis Dalessandro wrote:
-> On 5/28/2020 7:25 AM, Marciniszyn, Mike wrote:
-> > > From: YueHaibing <yuehaibing@huawei.com>
-> > > Sent: Thursday, May 28, 2020 4:00 AM
-> > > Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> > >   drivers/infiniband/hw/hfi1/netdev_rx.c | 11 +++--------
-> > >   1 file changed, 3 insertions(+), 8 deletions(-)
-> > > 
-> > > diff --git a/drivers/infiniband/hw/hfi1/netdev_rx.c
-> > > b/drivers/infiniband/hw/hfi1/netdev_rx.c
-> > > index 58af6a454761..bd6546b52159 100644
-> > > +++ b/drivers/infiniband/hw/hfi1/netdev_rx.c
-> > > @@ -371,14 +371,9 @@ int hfi1_netdev_alloc(struct hfi1_devdata *dd)
-> > > 
-> > >   void hfi1_netdev_free(struct hfi1_devdata *dd)
-> > >   {
-> > > -struct hfi1_netdev_priv *priv;
-> > > -
-> > > -if (dd->dummy_netdev) {
-> > > -priv = hfi1_netdev_priv(dd->dummy_netdev);
-> > > -dd_dev_info(dd, "hfi1 netdev freed\n");
-> > > -kfree(dd->dummy_netdev);
-> > > -dd->dummy_netdev = NULL;
-> > > -}
-> > > +dd_dev_info(dd, "hfi1 netdev freed\n");
-> > > +kfree(dd->dummy_netdev);
-> > 
-> > Dan Carpenter has reported kfree() should be free_netdev()...
-> > 
-> > Mike
-> > 
-> 
-> I'm OK with this patch going in and then adding a separate one to fix the
-> kfree. Or this one can be touched up to include that as well.
+>> I suggest to avoid the specification of duplicate function calls
+>> (also for the desired exception handling).
+>> Will it be helpful to add a few jump targets?
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/Documentation/process/coding-style.rst?id=3D3d77e6a8804abcc0504c904bd6e5c=
+df3a5cf8162#n455
+> I've thought about using "goto err_tag_2" in kill_xattrs code block to r=
+elease prev xent,
 
-Please resend it with both things fixed
+I propose to choose better labels.
 
-Jason
+
+> but later it needs to jump to 'out_release tag=E2=80=98 for releasing pr=
+eviously requested memory,
+> which can clutter the code.
+
+Would you like to reconsider this view?
+
+
+> It seems that two consecutive 'goto tags' will make the code less readab=
+le.
+
+How do you think about to try another software adjustment out in such a de=
+sign direction?
+
+
+Can it make sense to combine changes together with the update step
+=E2=80=9Cubifs: dent: Fix some potential memory leaks while iterating entr=
+ies=E2=80=9D
+into a single patch?
+https://lore.kernel.org/linux-mtd/20200601091037.3794172-2-chengzhihao1@hu=
+awei.com/
+https://lore.kernel.org/patchwork/patch/1250456/
+
+Regards,
+Markus

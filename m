@@ -2,145 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 590BD1EA4F4
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 15:25:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B69341EA540
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 15:46:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727769AbgFANZ2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jun 2020 09:25:28 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:44712 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727113AbgFANZZ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jun 2020 09:25:25 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200601132523euoutp025ca15811de0d22e6355820a1aecb8ab1~Ubl8mNu_f1973219732euoutp02Z
-        for <kernel-janitors@vger.kernel.org>; Mon,  1 Jun 2020 13:25:23 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200601132523euoutp025ca15811de0d22e6355820a1aecb8ab1~Ubl8mNu_f1973219732euoutp02Z
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1591017923;
-        bh=YiwThElw53LJigTjhogLOgCPtHePhvTe1Wd48l2j3Zk=;
-        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
-        b=MkZBcmx5dTkcTSvGNhCAM8dtsZZV2rfttLS8PpIFfmngDC4YynrrO31IcFh1hiwOQ
-         ScgjCAgRdz4FPnA/YnrMqYVxuweUsE8COFV/k0QTW7BCrTUwngD4JSqvTmWJGKbMzU
-         VN3lWbxInG/+bbDsfg8E2r5oR3YPiOuFFbnzAFvY=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200601132523eucas1p1487a12788c6e7f519fcdde3d83ce3ead~Ubl8WnRjC2549925499eucas1p1J;
-        Mon,  1 Jun 2020 13:25:23 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id D7.33.60679.2C105DE5; Mon,  1
-        Jun 2020 14:25:22 +0100 (BST)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20200601132522eucas1p2779cda96b3267b044b4eaae18c226d87~Ubl76CI3O2512925129eucas1p2q;
-        Mon,  1 Jun 2020 13:25:22 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20200601132522eusmtrp21f463bd75d32c710cbebf63f471af021~Ubl75RTq31059710597eusmtrp2o;
-        Mon,  1 Jun 2020 13:25:22 +0000 (GMT)
-X-AuditID: cbfec7f4-0e5ff7000001ed07-48-5ed501c277e6
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 4A.95.07950.2C105DE5; Mon,  1
-        Jun 2020 14:25:22 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200601132521eusmtip2cfdcb48b1d4e86b512e5445c7d11ad62~Ubl7UgHnr1389413894eusmtip2T;
-        Mon,  1 Jun 2020 13:25:21 +0000 (GMT)
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: Re: [PATCH] video: pxafb: Fix the function used to balance a
- 'dma_alloc_coherent()' call
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     sumit.semwal@linaro.org, rafael.j.wysocki@intel.com,
-        corbet@lwn.net, viresh.kumar@linaro.org, jani.nikula@intel.com,
-        mchehab+samsung@kernel.org, eric.miao@marvell.com,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Message-ID: <b39fa7b2-fc01-be3e-f899-40b949aa11ee@samsung.com>
-Date:   Mon, 1 Jun 2020 15:25:21 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.8.0
+        id S1726075AbgFANpz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jun 2020 09:45:55 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:47866 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725974AbgFANpz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 1 Jun 2020 09:45:55 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id C65D430C51C257326BBE;
+        Mon,  1 Jun 2020 21:45:52 +0800 (CST)
+Received: from [127.0.0.1] (10.166.213.18) by DGGEMS402-HUB.china.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server id 14.3.487.0; Mon, 1 Jun 2020
+ 21:45:45 +0800
+Subject: Re: [PATCH 1/2] ubifs: Fix potential memory leaks while iterating
+ entries
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        <linux-mtd@lists.infradead.org>
+CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        "Richard Weinberger" <richard@nod.at>,
+        Yi Zhang <yi.zhang@huawei.com>
+References: <2bec05b7-78d3-fa36-134a-efbe977933e3@web.de>
+From:   Zhihao Cheng <chengzhihao1@huawei.com>
+Message-ID: <45e2cd69-93ec-a0b9-b2a6-d170eee44055@huawei.com>
+Date:   Mon, 1 Jun 2020 21:45:44 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20200429084505.108897-1-christophe.jaillet@wanadoo.fr>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfyyUcRzH932eu+ce5uzrXPMZle3WalmRau1ZydKMxz8qrc1S6uLparmL
-        u1A2pmwRMdGoGyOSHxUydxf5I9dGuqUltYiJ1NTtjhxKC93jYfnv8+P1/ry/7+1Lk7JesTd9
-        XnOJ02qUCQrKVWTsmn+z3Yzex+7ouRPEGDrLxcz482zE9M9OUkzWRCZiOoasiDEM+jAvC6bE
-        zLv2MoqZnL5BMF/qbBLm1bBDwjyZZQ+4sdUd3wm2peEGxQ596KDYkbxugq0uKBazxffekqyj
-        ZSPrGG4SH6aPuwbFcwnnUzhtQPBp13NXP8oTR10ufy2ZJTJRPp2LXGjAu2HINiDJRa60DNch
-        mB8YW2lmENysmkM8JcMOBI/zw1YVpjk7JUC1CEqMz1Yam1NuyRXxFIX3wq3sBqdaQnviOKgI
-        4adyvAfKCz6RPE7iJgJ69PMEv5DiYFhcyiP5WoQ3gd3St2y8DkfD9OcXYoHxgJ6748vnXXAo
-        jBvKl3kSe8HgeAUh1L5gspUtGwD+KYGKmjxnHNrZhELR7xNCAE/40d0qEer1sNTGa3m+EcFC
-        zsSK2ISgtniREqh9MNT7h+IPkXgrNLUHCOMQKGz9tXLfHT7aPIQ3uEORsZQUxlLIuS4T6M3Q
-        /KCZWrXNbasnC5FCvyaZfk0a/Zo0+v++lUjUgLy4ZJ1axel2arhUf51SrUvWqPzjLqpbkPOX
-        WRa7Z56i9r9nzAjTSOEmpcf6Y2ViZYruitqMgCYVcunB15ZYmTReeSWN0148pU1O4HRm5EOL
-        FF7SXVXfT8qwSnmJu8BxiZx2dUvQLt6ZKKG0PDqlxzPq9n2/I5X7DyV1X+uIeOlRgDVGe0hZ
-        8oWF+G/uGflb1KUxpnvuMWkwRVg95n9G/ogQTUsnvuSkW3NmRqMaO5Nmkrqy3DZWP9rGhNub
-        5XrafHbAMX00XF8W+GGDtcbqZTAkZqQfG6lNjX5IhsmzVSPxvpH1u/v6UxUi3TlloB+p1Sn/
-        AQbWc6NhAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrIIsWRmVeSWpSXmKPExsVy+t/xe7qHGK/GGZxqlrfYenAuq8WTA+2M
-        Fle+vmezaH7RwGix585rRoutt6QtTvR9YLW4vGsOm8X7T51MFo9XvGW3OHX3M7vFxq8eDjwe
-        i/e8ZPLYtKqTzePOtT1sHve7jzN5LO6bzOoxeeFFZo/Pm+Q8Pt9dzxrAEaVnU5RfWpKqkJFf
-        XGKrFG1oYaRnaGmhZ2RiqWdobB5rZWSqpG9nk5Kak1mWWqRvl6CX0XhDpOAhZ8XTaV+ZGhh7
-        OboYOTkkBEwktn97x9bFyMUhJLCUUeLN3SnsXYwcQAkZiePryyBqhCX+XOuCqnnNKPFucj8L
-        SIJNwEpiYvsqxi5Gdg5hgWSJ+Y4gUREBM4m5fbeZQcqZBdYzScw5/5sZonc6o8S8zsdsIFW8
-        AnYS//53M4PYLAIqEu9OX2IEsUUFIiQO75jFCFEjKHFy5hOwXZwCLhJPts4Fq2cWUJf4M+8S
-        lC0ucevJfCYIW15i+9s5zBMYhWYhaZ+FpGUWkpZZSFoWMLKsYhRJLS3OTc8tNtIrTswtLs1L
-        10vOz93ECIzebcd+btnB2PUu+BCjAAejEg/vhvtX4oRYE8uKK3MPMUpwMCuJ8DqdPR0nxJuS
-        WFmVWpQfX1Sak1p8iNEU6LmJzFKiyfnAxJJXEm9oamhuYWlobmxubGahJM7bIXAwRkggPbEk
-        NTs1tSC1CKaPiYNTqoFR0aM77YHmspdZ7ALedpErl64Ryda1YF151s/9O1dp5qTqf9OTKicG
-        RD31M2z8k9RwfOKh63dPZuc59S/nvaz8hl9U+ePvuxqF5/ps7f9by6usPHN5Tnnb21k3vkY1
-        XyrNjHe8s05rZX7rklVyO6q373nbqP5m/QOFXo/gCYGLGjj4ptjcdf+pxFKckWioxVxUnAgA
-        PUEHRvQCAAA=
-X-CMS-MailID: 20200601132522eucas1p2779cda96b3267b044b4eaae18c226d87
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200429084519eucas1p2813ed7e76d573778607ac1270d8cb2e7
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200429084519eucas1p2813ed7e76d573778607ac1270d8cb2e7
-References: <CGME20200429084519eucas1p2813ed7e76d573778607ac1270d8cb2e7@eucas1p2.samsung.com>
-        <20200429084505.108897-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <2bec05b7-78d3-fa36-134a-efbe977933e3@web.de>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.166.213.18]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+在 2020/6/1 20:00, Markus Elfring 写道:
+>> Fix some potential memory leaks in error handling branches while
+>> iterating xattr entries.
+> Such information is useful.
+>
+>
+>> For example, function ubifs_tnc_remove_ino()
+>> forgets to free pxent if it exists. Similar problems also exist in
+>> ubifs_purge_xattrs(), ubifs_add_orphan() and ubifs_jnl_write_inode().
+> Can an other wording variant be a bit nicer?
+Thanks for reminding, I will improve this description.
+>
+> I suggest to avoid the specification of duplicate function calls
+> (also for the desired exception handling).
+> Will it be helpful to add a few jump targets?
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?id=3d77e6a8804abcc0504c904bd6e5cdf3a5cf8162#n455
+I've thought about using "goto err_tag_2" in kill_xattrs code block to 
+release prev xent, but later it needs to jump to 'out_release tag‘ for 
+releasing previously requested memory, which can clutter the code. It 
+seems that two consecutive 'goto tags' will make the code less readable.
+> Regards,
+> Markus
+>
+> .
 
-On 4/29/20 10:45 AM, Christophe JAILLET wrote:
-> 'dma_alloc_coherent()' must be balanced by a call to 'dma_free_coherent()'
-> not 'dma_free_wc()'.
-> The correct dma_free_ function is already used in the error handling path
-> of the probe function.
-> 
-> Fixes: 77e196752bdd ("[ARM] pxafb: allow video memory size to be configurable")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Applied to drm-misc-next tree (patch should show up in v5.9), thanks.
 
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
-
-> ---
->  drivers/video/fbdev/pxafb.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
-> index 00b96a78676e..6f972bed410a 100644
-> --- a/drivers/video/fbdev/pxafb.c
-> +++ b/drivers/video/fbdev/pxafb.c
-> @@ -2417,8 +2417,8 @@ static int pxafb_remove(struct platform_device *dev)
->  
->  	free_pages_exact(fbi->video_mem, fbi->video_mem_size);
->  
-> -	dma_free_wc(&dev->dev, fbi->dma_buff_size, fbi->dma_buff,
-> -		    fbi->dma_buff_phys);
-> +	dma_free_coherent(&dev->dev, fbi->dma_buff_size, fbi->dma_buff,
-> +			  fbi->dma_buff_phys);
->  
->  	return 0;
->  }
-> 

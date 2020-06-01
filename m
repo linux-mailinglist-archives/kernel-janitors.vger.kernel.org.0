@@ -2,64 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BDDD1EA86B
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 19:31:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 029D21EAE88
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 20:54:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726149AbgFARbb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jun 2020 13:31:31 -0400
-Received: from rere.qmqm.pl ([91.227.64.183]:42220 "EHLO rere.qmqm.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726073AbgFARbb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jun 2020 13:31:31 -0400
-Received: from remote.user (localhost [127.0.0.1])
-        by rere.qmqm.pl (Postfix) with ESMTPSA id 49bMfS2W0LzLn;
-        Mon,  1 Jun 2020 19:31:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-        t=1591032689; bh=OcbJRSI9gSF9z5NgduN2oVxJ6vT/DUHo/GDJNy7Y0Is=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=oO3KEZHmFcixsHiF3qnNmW6/EaRrzo5ZWLa8usHOmKZLeqcBlzOwyoIXVFZ5y2Bzy
-         tYH2SgKLRYiMAXaI/xPqQBRZbuetTrK8vnZPUl6MkAwaFocrSHsyqpDoRXVk8L5dU6
-         +L26ikeDTAIUDCRYAkfRPurU8uZZaA9GQk/26W0lNFaSPugQp9KJ1XW14ZEd+XO82Z
-         +21ysbjhAD3kzwfDgnR3vEkubG4VA76j0epEm3xkR/NRKIgRLDjee+Nv/J0E4BqqBS
-         RuMZNzijow8bL4OoAChoVn+m8AiEoJ9ltbgttpX/lfcIUxMiGZnsAqitqjYTUAzdgK
-         YIJSeGX1Pe/qA==
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 0.102.2 at mail
-Date:   Mon, 1 Jun 2020 19:31:27 +0200
-From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>
-Subject: Re: [PATCH] misc: atmel-ssc: lock with mutex instead of spinlock
-Message-ID: <20200601173126.GA31822@qmqm.qmqm.pl>
-References: <eb9b1cb3-5b3f-f387-da45-71427a4383ed@web.de>
+        id S1729833AbgFASBs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jun 2020 14:01:48 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:52670 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729824AbgFASBp (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 1 Jun 2020 14:01:45 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 051HrAJo101049;
+        Mon, 1 Jun 2020 18:01:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=AHke+bg16Z5eFtvtzQE+luqkCa/0wc68XqV/6ESZPME=;
+ b=nTMVfaPdq7B4yo989SJoDn0hDwQ/Yoq8LnWD25djRrXr3/0t6tMByz1UakWsd25PKDbV
+ bfc9zJ3U87FxkxrFiEAK7dLuH91B6dwN2xzUnIN1P410u4QoxuZg0+mJM3qBOlNSVl0j
+ gk6sp6gKvgrebkWL6UXE/pLexaGfdcPpHQ8kQ44fvHEx2VYVvM7OzdFHktru890KitmE
+ o/bhSc/YUCq5R1alF7gBNjkL+Y9t65MUkvCMaTkN3IWnLl50kR2L5AymTj7CBR/qj7Hu
+ go4iJf33m64W8wi1DEVo5KcrApj9d1TGZNa3jku62pWgUO6e1U14rthZaw2jjEYBfmYE EQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 31bfem01sg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 01 Jun 2020 18:01:41 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 051Hru8f029414;
+        Mon, 1 Jun 2020 18:01:40 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 31c18rvg12-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 01 Jun 2020 18:01:40 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 051I1cxv012436;
+        Mon, 1 Jun 2020 18:01:38 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 01 Jun 2020 11:01:38 -0700
+Date:   Mon, 1 Jun 2020 21:01:31 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jason Gunthorpe <jgg@ziepe.ca>
+Cc:     Mike Marciniszyn <mike.marciniszyn@intel.com>,
+        Grzegorz Andrejczuk <grzegorz.andrejczuk@intel.com>,
+        Dennis Dalessandro <dennis.dalessandro@intel.com>,
+        Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2] IB/hfi1: Fix hfi1_netdev_rx_init() error handling
+Message-ID: <20200601180131.GU22511@kadam>
+References: <BY5PR11MB3958CF61BB1F59A6F6B5234D868F0@BY5PR11MB3958.namprd11.prod.outlook.com>
+ <20200530140224.GA1330098@mwanda>
+ <20200601141450.GA24045@ziepe.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <eb9b1cb3-5b3f-f387-da45-71427a4383ed@web.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200601141450.GA24045@ziepe.ca>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9639 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0 mlxscore=0
+ adultscore=0 mlxlogscore=999 suspectscore=0 spamscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006010134
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9639 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
+ mlxlogscore=999 priorityscore=1501 bulkscore=0 phishscore=0 clxscore=1015
+ impostorscore=0 adultscore=0 spamscore=0 mlxscore=0 lowpriorityscore=0
+ cotscore=-2147483648 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006010134
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jun 01, 2020 at 11:18:48AM +0200, Markus Elfring wrote:
-> > Uninterruptible context is not needed in the driver and causes lockdep
-> > warning because of mutex taken in of_alias_get_id().
+On Mon, Jun 01, 2020 at 11:14:50AM -0300, Jason Gunthorpe wrote:
+> On Sat, May 30, 2020 at 05:02:24PM +0300, Dan Carpenter wrote:
+> > The hfi1_vnic_up() function doesn't check whether hfi1_netdev_rx_init()
+> > returns errors.  In hfi1_vnic_init() we need to change the code to
+> > preserve the error code instead of returning success.
+> > 
+> > Fixes: 2280740f01ae ("IB/hfi1: Virtual Network Interface Controller (VNIC) HW support")
+> > Fixes: 4730f4a6c6b2 ("IB/hfi1: Activate the dummy netdev")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> > v2: Add error handling in hfi1_vnic_up() and add second fixes tag
+> > 
+> >  drivers/infiniband/hw/hfi1/vnic_main.c | 11 +++++++++--
+> >  1 file changed, 9 insertions(+), 2 deletions(-)
 > 
-> Was a spin lock taken?
-> > Convert the lock to mutex to avoid the issue.
-> Would you like to add the tag “Fixes” to the commit message?
+> Applied to for-next with the 'if (rc)' fixup, thanks
 
-I guess we can add:
+Thanks.  I would have resent it, but it's a three day weekend here...
 
-Fixes: 099343c64e16 ("ARM: at91: atmel-ssc: add device tree support")
+regards,
+dan carpenter
 
-Best Regards
-Michał Mirosław

@@ -2,109 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C0071EA590
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 16:09:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C25571EA599
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 16:14:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726340AbgFAOJz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jun 2020 10:09:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57216 "EHLO
+        id S1726124AbgFAOOz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jun 2020 10:14:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726017AbgFAOJy (ORCPT
+        with ESMTP id S1726075AbgFAOOy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jun 2020 10:09:54 -0400
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48145C05BD43;
-        Mon,  1 Jun 2020 07:09:54 -0700 (PDT)
-Received: by mail-qt1-x842.google.com with SMTP id k22so7723294qtm.6;
-        Mon, 01 Jun 2020 07:09:54 -0700 (PDT)
+        Mon, 1 Jun 2020 10:14:54 -0400
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1093FC03E96B
+        for <kernel-janitors@vger.kernel.org>; Mon,  1 Jun 2020 07:14:53 -0700 (PDT)
+Received: by mail-qk1-x743.google.com with SMTP id w1so9132227qkw.5
+        for <kernel-janitors@vger.kernel.org>; Mon, 01 Jun 2020 07:14:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=fbZdYm4tTM0Wf8wHGSlW2NhyIxRchTNsSSc7i/vJwUY=;
-        b=kSx0giQCmk8jKz9zLHENY9L49nkWaOdhf+miZFc4fUnYnH7yS+vGn2/UTMyAtN0saj
-         Tttps9HZ5cPkvO6Bp3q0M1JMTVSHO/b7dPGrON3WScYc42ArduTtXxavwG2byBagNkyS
-         uZnAeV9585cA4t/2Qmm92YBK/7TrZzb7LRxbIYIms66qvQ/5NearRkjNwbxF0SfKoyQ6
-         dnfNen+c0Y+/0Vv8AK04BshId5yeqj+4zxYRQ/wfvMDTi6leZvlxQ90wJYne/qfy4ooP
-         0u0jHEf8Zo85zsMRwArtNNk3iDF73CPaNSlUbNqFxaXMmC5zvH+0WITyHmP2bbf4JkYS
-         MeYg==
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=IFSd0lM+5oS0t921WLpOPbQzBucVukCdkUKKoErmEbs=;
+        b=ievD0DqZ66bOEIA0HZ8vcqwFy/CIAUwBRl9L33AQUKWCvTpex47aCyGGXnaJOz1sbe
+         CvZlHT4O6tvclmJ69Q9msBZwNuiWxhaotER2AFQ+M7Z4dAon4c/nO2RwtOQK+t+vR2Hw
+         VrNc9AErucu9NiJw/rnJBGq1RYKLbKu7FB7ji8iuk0nWRcW9WyONYiJ8zj/y14aIGq9y
+         qr+NoYl8E6QltEPwwMrm2BhfZOnOb/MgJHtcozQ8DYzklvRoWDJpTl33h7uj0oWD0hHF
+         NcajsHHMVYkwX2ud+6Kj5TqD+LEYZ33TxE8cTzls+slsg5jLejCz836Gp05ELHFJAt6Y
+         KK8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=fbZdYm4tTM0Wf8wHGSlW2NhyIxRchTNsSSc7i/vJwUY=;
-        b=MdRdm8cuODrYcE2dFlXABkLNjLV0LRnZ4iIr2sSzP7b7vReVIZJkrBOgI9lUdKiIGU
-         Ni36qWv99tDtMz89rwSPt9jL3j1ASMSwK64qrp55PwSYf1eBY1EnwkbDT+O+bH8P9T+f
-         1vcQGgApSVKte4bgDljm3oyXhSwkT3AaRj+b6s5ZINwgCQPvQTX8qIBFYFVm3FHDi53u
-         4BMB8DacTRHM37wOuXE67JfEg7vruW6//P/23qy2n59mmJkWyU62kmcnW5KeOnC1AxtF
-         CJJwv6YdoKw2eAilJ7C8Su4KhbHY8c9CIdke/XwVEz90UbI0v/1XqxGwF0+LYW6YXoAc
-         naIA==
-X-Gm-Message-State: AOAM530LEeNk51+VeHI2yP8lesyoAHWu9VZGjzM9KIyz51sl0mZ3u0oH
-        LwAGk0NGiuryfuIjLfC8SB6PWBRtcYj0dFCXttQ=
-X-Google-Smtp-Source: ABdhPJwGW2ZENsU+eUl90VzY2ukI4PYEvzXgVI2JyhW55CHCb4hCQO0fv4p5gwypjw2JD23oGBIulQwZc2NO51VKkdk=
-X-Received: by 2002:aed:2ca5:: with SMTP id g34mr6557125qtd.13.1591020593557;
- Mon, 01 Jun 2020 07:09:53 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=IFSd0lM+5oS0t921WLpOPbQzBucVukCdkUKKoErmEbs=;
+        b=DpHfxNzJkA8qVoy6PQwR67A/2KhloLSKN1BOqG6famhsM0R2czmoi7/wOMLWor8ucc
+         c7R9FO0kDKrENWdnzk7bWsXQWZ+WPAQb+j5CuJanCCGQZbuk4F93rMWDn138+swgZ90q
+         TjbSZ/0H1AztxC1YETZ3PHZPIic8M7b6Fnh6QkA9Go74/W93iHds98BD1aR1gvsbosAn
+         JS5gYxrFRHhQ6LBQETyO58BDPlAh2SO5Q2vdXv1YscFShDL6HPp5BUFY0mu706ZYIetQ
+         RgKiS6MUK80HbqwXlZF+G0oUoLNNMKN3iLV+sq8sPJ/NLmTN4JKX+JZGI/1aLgzPtC/8
+         WGAQ==
+X-Gm-Message-State: AOAM533PXGW1RtOE10f7QBtkpfZKWXiZA8a+4iGZe5JeOCNst6LVNauR
+        d7MV0I5s9D3sKTcGXM9IymYnog==
+X-Google-Smtp-Source: ABdhPJxsxLusMAVoQVodlnsvnv+YbVV98ASJ0KcxzqmXYzN3sXp5jwD89vPhryNmJWMoLVXwQPj7Zg==
+X-Received: by 2002:a37:4e54:: with SMTP id c81mr19435565qkb.46.1591020892158;
+        Mon, 01 Jun 2020 07:14:52 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.48.30])
+        by smtp.gmail.com with ESMTPSA id s42sm16325603qtk.14.2020.06.01.07.14.51
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 01 Jun 2020 07:14:51 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1jflDG-0006GL-Mq; Mon, 01 Jun 2020 11:14:50 -0300
+Date:   Mon, 1 Jun 2020 11:14:50 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Mike Marciniszyn <mike.marciniszyn@intel.com>,
+        Grzegorz Andrejczuk <grzegorz.andrejczuk@intel.com>,
+        Dennis Dalessandro <dennis.dalessandro@intel.com>,
+        Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2] IB/hfi1: Fix hfi1_netdev_rx_init() error handling
+Message-ID: <20200601141450.GA24045@ziepe.ca>
+References: <BY5PR11MB3958CF61BB1F59A6F6B5234D868F0@BY5PR11MB3958.namprd11.prod.outlook.com>
+ <20200530140224.GA1330098@mwanda>
 MIME-Version: 1.0
-References: <2bec05b7-78d3-fa36-134a-efbe977933e3@web.de> <45e2cd69-93ec-a0b9-b2a6-d170eee44055@huawei.com>
- <4fe27809-552e-ea98-ba1f-cbf68e625d22@web.de>
-In-Reply-To: <4fe27809-552e-ea98-ba1f-cbf68e625d22@web.de>
-From:   Richard Weinberger <richard.weinberger@gmail.com>
-Date:   Mon, 1 Jun 2020 16:09:42 +0200
-Message-ID: <CAFLxGvzS+o0Q2w1at8aJkhJ6BAcemL_LO9rrOT0O-TKewB0gYw@mail.gmail.com>
-Subject: Re: [1/2] ubifs: Fix potential memory leaks while iterating entries
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Zhihao Cheng <chengzhihao1@huawei.com>,
-        linux-mtd@lists.infradead.org, Richard Weinberger <richard@nod.at>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Yi Zhang <yi.zhang@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200530140224.GA1330098@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jun 1, 2020 at 4:00 PM Markus Elfring <Markus.Elfring@web.de> wrote=
-:
->
-> >> I suggest to avoid the specification of duplicate function calls
-> >> (also for the desired exception handling).
-> >> Will it be helpful to add a few jump targets?
-> >> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
-e/Documentation/process/coding-style.rst?id=3D3d77e6a8804abcc0504c904bd6e5c=
-df3a5cf8162#n455
-> > I've thought about using "goto err_tag_2" in kill_xattrs code block to =
-release prev xent,
->
-> I propose to choose better labels.
->
->
-> > but later it needs to jump to 'out_release tag=E2=80=98 for releasing p=
-reviously requested memory,
-> > which can clutter the code.
->
-> Would you like to reconsider this view?
->
->
-> > It seems that two consecutive 'goto tags' will make the code less reada=
-ble.
->
-> How do you think about to try another software adjustment out in such a d=
-esign direction?
->
->
-> Can it make sense to combine changes together with the update step
-> =E2=80=9Cubifs: dent: Fix some potential memory leaks while iterating ent=
-ries=E2=80=9D
-> into a single patch?
-> https://lore.kernel.org/linux-mtd/20200601091037.3794172-2-chengzhihao1@h=
-uawei.com/
-> https://lore.kernel.org/patchwork/patch/1250456/
+On Sat, May 30, 2020 at 05:02:24PM +0300, Dan Carpenter wrote:
+> The hfi1_vnic_up() function doesn't check whether hfi1_netdev_rx_init()
+> returns errors.  In hfi1_vnic_init() we need to change the code to
+> preserve the error code instead of returning success.
+> 
+> Fixes: 2280740f01ae ("IB/hfi1: Virtual Network Interface Controller (VNIC) HW support")
+> Fixes: 4730f4a6c6b2 ("IB/hfi1: Activate the dummy netdev")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> v2: Add error handling in hfi1_vnic_up() and add second fixes tag
+> 
+>  drivers/infiniband/hw/hfi1/vnic_main.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
 
-No. Please stop this kind of bikeshedding.
-Zhihao, feel free to ignore all "advice" given by Markus Elfring.
+Applied to for-next with the 'if (rc)' fixup, thanks
 
---=20
-Thanks,
-//richard
+Jason

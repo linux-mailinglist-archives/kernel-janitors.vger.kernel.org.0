@@ -2,69 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B69341EA540
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 15:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A712F1EA53D
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 15:45:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726075AbgFANpz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jun 2020 09:45:55 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:47866 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725974AbgFANpz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jun 2020 09:45:55 -0400
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id C65D430C51C257326BBE;
-        Mon,  1 Jun 2020 21:45:52 +0800 (CST)
-Received: from [127.0.0.1] (10.166.213.18) by DGGEMS402-HUB.china.huawei.com
- (10.3.19.202) with Microsoft SMTP Server id 14.3.487.0; Mon, 1 Jun 2020
- 21:45:45 +0800
-Subject: Re: [PATCH 1/2] ubifs: Fix potential memory leaks while iterating
- entries
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        <linux-mtd@lists.infradead.org>
-CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        "Richard Weinberger" <richard@nod.at>,
-        Yi Zhang <yi.zhang@huawei.com>
-References: <2bec05b7-78d3-fa36-134a-efbe977933e3@web.de>
-From:   Zhihao Cheng <chengzhihao1@huawei.com>
-Message-ID: <45e2cd69-93ec-a0b9-b2a6-d170eee44055@huawei.com>
-Date:   Mon, 1 Jun 2020 21:45:44 +0800
+        id S1726322AbgFANp5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jun 2020 09:45:57 -0400
+Received: from mga09.intel.com ([134.134.136.24]:23189 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726125AbgFANp4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 1 Jun 2020 09:45:56 -0400
+IronPort-SDR: J1iAgNkI/BaTElVYjwbXWZKRBaUhAeaF/lU38uJPacwe5v2WB5+X/wh1PtLE+CEVAVyRNbzNYn
+ QZj/Za+1ARAQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2020 06:45:55 -0700
+IronPort-SDR: /Rgu7q7gUsns4oxFuTeGawdR2NTYZUveCKAghkLjDOlgIUVs1Mz9AMMXESFT8LpaHBOsTT0zo+
+ be0HP0co2Qxg==
+X-IronPort-AV: E=Sophos;i="5.73,461,1583222400"; 
+   d="scan'208";a="444294162"
+Received: from ddalessa-mobl.amr.corp.intel.com (HELO [10.254.204.208]) ([10.254.204.208])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2020 06:45:54 -0700
+Subject: Re: [PATCH -next] IB/hfi1: Remove set but not used variable 'priv'
+To:     "Marciniszyn, Mike" <mike.marciniszyn@intel.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>
+Cc:     "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "Dan Carpenter (dan.carpenter@oracle.com)" <dan.carpenter@oracle.com>
+References: <20200528075946.123480-1-yuehaibing@huawei.com>
+ <MN2PR11MB396654BC46500F828609C6A3868E0@MN2PR11MB3966.namprd11.prod.outlook.com>
+From:   Dennis Dalessandro <dennis.dalessandro@intel.com>
+Message-ID: <86634519-3dd8-0c6a-a8d2-19f4b986fd3d@intel.com>
+Date:   Mon, 1 Jun 2020 09:45:52 -0400
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ Thunderbird/68.8.1
 MIME-Version: 1.0
-In-Reply-To: <2bec05b7-78d3-fa36-134a-efbe977933e3@web.de>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.166.213.18]
-X-CFilter-Loop: Reflected
+In-Reply-To: <MN2PR11MB396654BC46500F828609C6A3868E0@MN2PR11MB3966.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-在 2020/6/1 20:00, Markus Elfring 写道:
->> Fix some potential memory leaks in error handling branches while
->> iterating xattr entries.
-> Such information is useful.
->
->
->> For example, function ubifs_tnc_remove_ino()
->> forgets to free pxent if it exists. Similar problems also exist in
->> ubifs_purge_xattrs(), ubifs_add_orphan() and ubifs_jnl_write_inode().
-> Can an other wording variant be a bit nicer?
-Thanks for reminding, I will improve this description.
->
-> I suggest to avoid the specification of duplicate function calls
-> (also for the desired exception handling).
-> Will it be helpful to add a few jump targets?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?id=3d77e6a8804abcc0504c904bd6e5cdf3a5cf8162#n455
-I've thought about using "goto err_tag_2" in kill_xattrs code block to 
-release prev xent, but later it needs to jump to 'out_release tag‘ for 
-releasing previously requested memory, which can clutter the code. It 
-seems that two consecutive 'goto tags' will make the code less readable.
-> Regards,
-> Markus
->
-> .
+On 5/28/2020 7:25 AM, Marciniszyn, Mike wrote:
+>> From: YueHaibing <yuehaibing@huawei.com>
+>> Sent: Thursday, May 28, 2020 4:00 AM
+>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+>> ---
+>>   drivers/infiniband/hw/hfi1/netdev_rx.c | 11 +++--------
+>>   1 file changed, 3 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/infiniband/hw/hfi1/netdev_rx.c
+>> b/drivers/infiniband/hw/hfi1/netdev_rx.c
+>> index 58af6a454761..bd6546b52159 100644
+>> --- a/drivers/infiniband/hw/hfi1/netdev_rx.c
+>> +++ b/drivers/infiniband/hw/hfi1/netdev_rx.c
+>> @@ -371,14 +371,9 @@ int hfi1_netdev_alloc(struct hfi1_devdata *dd)
+>>
+>>   void hfi1_netdev_free(struct hfi1_devdata *dd)
+>>   {
+>> -struct hfi1_netdev_priv *priv;
+>> -
+>> -if (dd->dummy_netdev) {
+>> -priv = hfi1_netdev_priv(dd->dummy_netdev);
+>> -dd_dev_info(dd, "hfi1 netdev freed\n");
+>> -kfree(dd->dummy_netdev);
+>> -dd->dummy_netdev = NULL;
+>> -}
+>> +dd_dev_info(dd, "hfi1 netdev freed\n");
+>> +kfree(dd->dummy_netdev);
+> 
+> Dan Carpenter has reported kfree() should be free_netdev()...
+> 
+> Mike
+> 
 
+I'm OK with this patch going in and then adding a separate one to fix 
+the kfree. Or this one can be touched up to include that as well.
 
+-Denny
 

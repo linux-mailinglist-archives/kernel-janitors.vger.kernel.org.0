@@ -2,29 +2,26 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 629281E9D76
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 07:48:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27FB31E9E1B
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 08:25:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727000AbgFAFsQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jun 2020 01:48:16 -0400
-Received: from mout.web.de ([212.227.15.3]:59209 "EHLO mout.web.de"
+        id S1728081AbgFAGYw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jun 2020 02:24:52 -0400
+Received: from mout.web.de ([212.227.15.4]:50853 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726165AbgFAFsP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jun 2020 01:48:15 -0400
+        id S1725972AbgFAGYw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 1 Jun 2020 02:24:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590990482;
-        bh=3NfdEOcEuVpzHL9fLwQi+w0me4LqMXjJFSJdC/uf5L8=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=P8xRdqxh7FvbjIqH42zo0uh9RUAyxSKyEWdW+qB9YcXiVLayEkeXX6lYeAJUxo3Ix
-         IHwWu9A9H7+iUO28kcQlqC9e2a3jtV486zB4QElI/R+t7lejocYzB+NzQaDcW1Ehbv
-         XcpdBVWUfTtqi6leL94kDoNDdE3OgNJjlTFXEfwU=
+        s=dbaedf251592; t=1590992682;
+        bh=Ak+Px/5HEJXfJ/lE5xEC2iR5TdWHacf3Il39+e8DwxA=;
+        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
+        b=ns58LOtMMf0kPD+Z0uPPvOG377CXZoE2ECVLxXzPY/dezZdiCxglPto/yMWV/YtYK
+         eh9AZdu0mFnvr9aMneoo28E1/RfCbAYInZ2ig/I6n8QMrcz8nXK9h5GRyV/XzqrMFM
+         oGLiGnK/4acFmImCR9qFsQjKKgxFgBoBbetZ4bHo=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.133.32]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MYw31-1jTLNp0J8t-00VgDQ; Mon, 01
- Jun 2020 07:48:02 +0200
-Subject: Re: [2/2] Coccinelle: memdup_user: Extending data processing for
- special tokens
-From:   Markus Elfring <Markus.Elfring@web.de>
+Received: from [192.168.1.2] ([78.49.133.32]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1M5Qq9-1jeoOd2m9d-001SDi; Mon, 01
+ Jun 2020 08:24:42 +0200
 To:     Denis Efremov <efremov@linux.com>,
         Gilles Muller <Gilles.Muller@lip6.fr>,
         Julia Lawall <Julia.Lawall@lip6.fr>,
@@ -34,7 +31,9 @@ To:     Denis Efremov <efremov@linux.com>,
         Coccinelle <cocci@systeme.lip6.fr>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
         Joe Perches <joe@perches.com>
-References: <02c75f13-ec79-f4c0-f28a-8a354ea1f6f0@web.de>
+Subject: Re: [PATCH 2/2] Coccinelle: extend memdup_user rule with
+ vmemdup_user()
+From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -78,79 +77,62 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <6cd81cb9-7fb6-bddc-65df-c3d50677ae7d@web.de>
-Date:   Mon, 1 Jun 2020 07:47:52 +0200
+Message-ID: <273990e2-f289-905f-2930-725540857c67@web.de>
+Date:   Mon, 1 Jun 2020 08:24:39 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
-In-Reply-To: <02c75f13-ec79-f4c0-f28a-8a354ea1f6f0@web.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:IqoQ5dImrO129UCFy2lJjRF+bn2zNZpg52mE0au73MyJnd+8WNb
- nQYKpxbfZXHbE9NMzWf6G5xZ3YM5cpZvwL8USfURxSHvMOk1OYeYPPdY2nMKI8mrxRRMurX
- 7n7ALMbGcm2oA5jfoaMJ6tXT4AAbD4NgNFpbeahbEml5dXcdiEFxffz+xJpUDDBwm0coEve
- 9bWrcjobqSA2hzRw5Xp9g==
+X-Provags-ID: V03:K1:uJXpoaBZnAHhSbVc2pcAmpLqH94Icrl3JMRWVPulxEGURZA7JvP
+ ARk6ALy5ZHu6wHdmgdEAC1YTSVGzMocVJxzZoZui6sP1JM3XL4FJ4tAxA7kbF4F+SvqZ1CB
+ xZQWzt7aOjvtEZmEVeoW54vPdt7dWUb1KwWduKJ2tQG3UcV8pddy4/w0B+NFI181wDbEfRm
+ JNJ/KWzi1DsQTugX67W5Q==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:MEQ4ZoR97/E=:89/TNEFVVwGZjvN9ZHHTDG
- 7pl2dFFVfDgQhkZWyGwCYghDyGUd7iF6bv8AIjUlnu2WXXZ8AC4/XJZR2iFhB3FW/YJo8Xzj3
- mwoNNL3/ZDo1GuavFEhtVRBwIfsocDxDXZrAsUobfoJXDygL7lPYMcqWZk09J4opKPzboz3oD
- /sJ3pkYiCm8WVhL8xamOwbyOcV/JIvlyj8orLL0elAMTHhFTGzIttQbjA5WtzX9/+LDX4JZ3z
- xUpxjNMdQ4siLPqyW8my4Ig6kxaHESS6/y0GpezzF++W4oN/+ODXGiRnHceZuze5NXmBRx3K4
- yDI5Qcd0PXdOJVKrQsZpHnyHc9Nvr9DWhw9Q9aPIU9mcUbGa3Y5jSDvYx+cE+o849CLku0eyU
- Vrxd9jtSlIrcopofICaq2uPnogO5yzBlhwoiKcYD2Ys8M9t9/PON6YWpU/bq3a7EEREr30QZy
- ETwrsbNQRulhOsTtjkuOf+EgC5nsHwsq9DyicT3Y9h4ibGKbUng9ypJEVHZbdoDKCvj1tMH/X
- +zoQrJB84oeR6pnnDeHt2/mj7tmj2NB7Ku8BwJf9eLS1631djYnVgJsSgPfoCxfk+rgKkMiY1
- 7r14y4ekWJdQuY2yN7B3CE8aIKvyDF0jmtAy/wc7cDet6E3HOC5/AbiRBKO+L2EjYiJG8TvwA
- Y5XeNEJ62PEpD5nG0TnyG1q6zmOU+xPwKeV3ngTDsVyTNG/TyVPo5/09GxRgvkWXBCdNS+MmA
- zh30G+r6gWTbY/6ikE2f4n9MV+SDDotkG9pupf3o7/O6EtF5W3FVNsU9oEoUiuPtg/+Tl4DLJ
- BUIIMm1JjZZvKLXYAiRt8HIeLy+XJTjb1QXE0uKPWmfAqDeva3tcmoqGIWBmgKP5rGa5E21pw
- zys9GOeSTKVD6jcEUznxSeo8dDnKkxyhK/pGwfccgshE/olUWHf3vMy30leur8n6lPHvZZ/DQ
- 3ebN8Xu1uBn5M3r+X08vATTUICmPLrCGoLe7DCWmYd6j2nK8HCbtlaDTNRac6rk7kw58eH8qL
- U7osNA3MHLEsdPw/yhyh8bo99RrLF/bB7YrayctLlDunag0m9INfj+BHUUcBpah2Q7Dp4yd/S
- QjtXshxVp3xl/jj5TYlNKk3JrdxrjBkP1BEy6Bb6R58Y4ux7rlULgbX/a0Zz/shvZ4ut6Vy7g
- jXb4x0qv2Y6BRV4jJ4halGA5pH7UMh/Q+rbS3Zub9mJt9tbtkRhfWN40m5dV39D3t8abtcHDa
- AEwK6VRcfFGjlJiuf
+X-UI-Out-Filterresults: notjunk:1;V03:K0:oNIbB36nRgg=:XyUYnNoD3lg09w5Q75R3MQ
+ TjlvNz/l+/FzGe9ZSjAqp6BdBFJ23RCMgsXDuDEZqwwIaYQRYGzijR+BjYMLFgFoI7982Lpa8
+ DWV0wH9EQAvPDxgZdaPGbYdhYjXenbavnVy3KpXDFasVTfM9Fm92XnPJxqxu18Gyn/5hzhGqD
+ lTC/pmaItVaMBCUZBuFqXKoQtRXnTfSr+kMvTTNVHmZg++PoUGw6aL35oYRGP3vLKyLi8HXLV
+ Fot4XGvjf2HPJ/Sh/cLUvjuD7yJIXUsva57+BvG1Dx+esNHu/Sf8gpYbg1NhdQxBLWgDt/T4c
+ 61+13amjCTsEpDOoU3OxRlAWzHbpJniopoh8T4EFiMVQBCAwFH+ouOKBYYujYTnvemVpzKLVH
+ M/Rea+MSIC5yWlvj05Jzfd2u75Q2xQpC9lM/WmC7Js7D48pg0i79RXRl1k0KtPQKXM8S8WtYU
+ cpbm6EXU9Tij6I34E3fHRRZW/P1N2fLY7QjGDP7ELQM9Uz8ETuqV8TxnVTPw6yhSQd3cvs9VK
+ eGRuvH6B9tpBZYQ4ASN/j+00T6/lrr+o2Ki6n2pBqhKPFwvqOZAHLMQqOzYTHyxIi2lMCPz5h
+ QBR+7TDAjDXbZCpCbPl2qcj3XpmPCf0rUudj6FDtd6IAldyjrvSIZZs2kPnvy2b6IdqDA22NX
+ CEMsV2u3rA5tX2pOyk9CrEKUdeHbrnkNVqpmyks/SNstFtBTSBW1RsN8gEMDCPnLfKDoDPvYv
+ VbE+D8DWvdt0qHtGkzmB0YVSvOnFMUZuswbxYHEFU8l9DXJhzp80Za+YwMgWcoe0NzBQ4ykIj
+ ZSeA7Fxm5qn7rG0rETdtePuFCBxp7HtoAN1LYWMupU5u0p4lCnBUj2j8IHPwhSjxcAUJrKzg/
+ Z1Kc28brs5JY4HL9eo0TJZEYZXZlSOKplTxQ60NliENEF9n5CnSH6Lo9H9D+gqMhhmz2X9HSY
+ 0fO5DMsK8tuyT4fxNo67vYMKUpghWXCiLbZ7pAohHwLU2YGueJMmUCDOpCDIg5abOW/HC0/29
+ OsgyJfGmDa452K5Ih3qandj497eWr6Y8tWd+hz6sLV47rK+H0hp4K4POcKophHP43XBOUkO0J
+ rR502pop9wagnB48Kv8/E99kuFzhTwBEU6oRMx8YzDYPVeCe8azReHGGRP5On9s8tFnyCoA2u
+ U7m0LiAK+Hqy8ub56xfo509HQL65HwaZ+HBYcdByY2hjPUtxJBXXr5rgCQUrBGaiVV04i0zwQ
+ c+vJNlo9SbSxahxc5
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Unfortunately, the Coccinelle software does not like the following
-> SmPL code variant so far.
->
->  to =3D
-> (
-> -     \( kmalloc \| kzalloc \)
-> +     memdup_user
-> |
-> -     \( kvmalloc \| kvzalloc \)
-> +     vmemdup_user
-> )
->                  (
-> -                 size, \( GFP_KERNEL \| GFP_USER \)
-> +                 from, size
->                  );
->
->
-> Message:
-> 25: no available token to attach to
+> +@rv depends on !patch@
+> +expression from,to,size;
+> +position p;
+> +statement S1,S2;
+> +@@
+> +
+> +*  to =3D \(kvmalloc@p\|kvzalloc@p\)(size,\(GFP_KERNEL\|GFP_USER\));
+> +   if (to=3D=3DNULL || ...) S1
+> +   if (copy_from_user(to, from, size) !=3D 0)
+> +   S2
 
-I have adjusted a bit of OCaml source code.
-Thus I could see where such information was provided.
-https://github.com/coccinelle/coccinelle/blob/7cf2c23e64066d5249a64a316cc5=
-347831f7a63f/parsing_cocci/insert_plus.ml#L1041
-
-=E2=80=A6
-  | (((infop,count,pcode) as p) :: ps) as all ->
-      (* =E2=80=A6
-	 modifications.  for the moment, we thus give an error, asking the
-	 user to rewrite the semantic patch. *)
-      if greater_than_end infop infom1 || is_minus m1 || !empty_isos
-=E2=80=A6
+How does the SmPL asterisk functionality fit to the operation
+modes =E2=80=9Corg=E2=80=9D and =E2=80=9Creport=E2=80=9D?
 
 
-Will the referenced comment get any more software development attention?
+> +@script:python depends on org && r@
+
+I find the modification of SmPL rule dependencies also interesting.
+Are these specifications really required?
 
 Regards,
 Markus

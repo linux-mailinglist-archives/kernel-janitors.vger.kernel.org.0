@@ -2,43 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8556B1EA2AB
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 13:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7D341EA2A8
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 13:31:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726113AbgFALc3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jun 2020 07:32:29 -0400
-Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:41459 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725972AbgFALc2 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jun 2020 07:32:28 -0400
-Received: from [192.168.1.41] ([92.140.207.208])
-        by mwinf5d35 with ME
-        id lnXo2200Y4WJoZY03nXyvM; Mon, 01 Jun 2020 13:32:27 +0200
-X-ME-Helo: [192.168.1.41]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 01 Jun 2020 13:32:27 +0200
-X-ME-IP: 92.140.207.208
+        id S1726075AbgFALbn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jun 2020 07:31:43 -0400
+Received: from ciao.gmane.io ([159.69.161.202]:54270 "EHLO ciao.gmane.io"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725838AbgFALbn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 1 Jun 2020 07:31:43 -0400
+Received: from list by ciao.gmane.io with local (Exim 4.92)
+        (envelope-from <glkj-kernel-janitors-2@m.gmane-mx.org>)
+        id 1jfifM-000Puj-Ll
+        for kernel-janitors@vger.kernel.org; Mon, 01 Jun 2020 13:31:40 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To:     kernel-janitors@vger.kernel.org
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Subject: Re: [PATCH] pinctrl: pxa: pxa2xx: Remove 'pxa2xx_pinctrl_exit()'
  which is unused and broken
-To:     Robert Jarzmik <robert.jarzmik@free.fr>
-Cc:     daniel@zonque.org, haojian.zhuang@gmail.com,
-        linus.walleij@linaro.org, linux-arm-kernel@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Newsgroups: gmane.linux.kernel.janitors,gmane.linux.ports.arm.kernel,gmane.linux.kernel.gpio,gmane.linux.kernel
+Date:   Mon, 1 Jun 2020 13:31:23 +0200
+Message-ID: <a2e34c9a-676f-d83f-f395-7428af038c16@wanadoo.fr>
 References: <20200531073716.593343-1-christophe.jaillet@wanadoo.fr>
  <87h7vvb1s3.fsf@belgarion.home>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <a2e34c9a-676f-d83f-f395-7428af038c16@wanadoo.fr>
-Date:   Mon, 1 Jun 2020 13:31:23 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
-MIME-Version: 1.0
-In-Reply-To: <87h7vvb1s3.fsf@belgarion.home>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
+In-Reply-To: <87h7vvb1s3.fsf@belgarion.home>
 Content-Language: en-US
+Cc:     linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -74,4 +68,5 @@ CJ
 > --
 > Robert
 >
+
 

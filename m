@@ -2,111 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A411E1EA852
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 19:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 041791EA864
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 19:27:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727953AbgFARSI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jun 2020 13:18:08 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:39982 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726125AbgFARSI (ORCPT
+        id S1727803AbgFAR14 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jun 2020 13:27:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59684 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726017AbgFAR1z (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jun 2020 13:18:08 -0400
-Received: from [10.0.2.15] ([93.22.149.119])
-        by mwinf5d64 with ME
-        id ltHv220022aoEEt03tJ3C9; Mon, 01 Jun 2020 19:18:06 +0200
-X-ME-Helo: [10.0.2.15]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 01 Jun 2020 19:18:06 +0200
-X-ME-IP: 93.22.149.119
-Subject: Re: [PATCH] kernel: power: swap: mark a function as __init to save
- some memory
-To:     Joe Perches <joe@perches.com>, rjw@rjwysocki.net, pavel@ucw.cz,
-        len.brown@intel.com, Dan Carpenter <error27@gmail.com>
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20200531210059.647066-1-christophe.jaillet@wanadoo.fr>
- <effe3cde7b1f188427c42c476f5a96251d837416.camel@perches.com>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <71346705-6882-d2ca-3c53-1a5b23d66bbf@wanadoo.fr>
-Date:   Mon, 1 Jun 2020 19:17:54 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Mon, 1 Jun 2020 13:27:55 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0AC4C08C5C0
+        for <kernel-janitors@vger.kernel.org>; Mon,  1 Jun 2020 10:27:55 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id g28so9093115qkl.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 01 Jun 2020 10:27:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=rP96bP6VHS9TeHJeGdUoDEYfJkP4LQceFnB5HubYOzw=;
+        b=P6RwgixOqC5RlNfT20WL62Ws8X15jXEXiYG64uhAbucpL33u5vtJoUEQ+vhWwb/BLg
+         nPUbefHIHHz4vloQwBdHF42RLvCON4P9RY+a6+HcHOB3dtnff1ucgwzuvmrMc8POyPYd
+         2DF11x97dgLv6p6caGHu3EQtYFhUa42OvErXkxSJrSroVv7SFeQdUJvuF/OxEFO15Kbp
+         dtcJAwBUaReA3EKXLqvi8v2keF0+bM1KofZ/ZIT7bet5v0VK+LcjfCQXgJCJgWIqAxKC
+         Y9pEUXySMbKyDrhL5xjwRwFIXN7GuiMJB7GeTDACsWKs3i2WKUvgSpuQlsVl6Ka6DAtq
+         l+zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=rP96bP6VHS9TeHJeGdUoDEYfJkP4LQceFnB5HubYOzw=;
+        b=RUCakMU+SV+sO8VXGaPTmrN+5uF7DKBEzcfphcrqxV65jxAAuX6iKmWQXeSsYrIKG7
+         aKxA21KNiae6F66oXTRgZhzeJ6E5DTFhSOiwchxVzcOrpn01NSnE/X19+e7qGE5oiYbA
+         XmP7Iz3G7TNqAHCJn7o/GAaufE8iz9ABBeLNOfs0Ff19wDTI/dpn2qAKKmJF5kV6K0HS
+         5bcjNOMNwwge8fudSz9fjXLWeP0FL7hrEFw03lp2gQNfWCKa+hS6viS3RfUFuGKCh/vU
+         KJc2DyYHxXN+8nSqpTncIzsih5nzI3RcOYinbOnuoyBu9JpPmbSWwhznX8/JD+ROulSt
+         ISYg==
+X-Gm-Message-State: AOAM533WUiN8lunNJrZt73v2yyDMBl3axSCZ7+FcRyCIm2P1MyRGyI9S
+        GMParbQDu/Z/r4g4cPkA08Vg0w==
+X-Google-Smtp-Source: ABdhPJy7SpZKGc58CsHzwAOBldOQ4MAAWziUZt1G+tpGs58ZA+wKk+DQJiAKvZg5YfHWsky8RXbvJQ==
+X-Received: by 2002:a37:a08e:: with SMTP id j136mr16395613qke.415.1591032474756;
+        Mon, 01 Jun 2020 10:27:54 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.48.30])
+        by smtp.gmail.com with ESMTPSA id o3sm15575276qkj.97.2020.06.01.10.27.54
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 01 Jun 2020 10:27:54 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1jfoE5-0000fL-JB; Mon, 01 Jun 2020 14:27:53 -0300
+Date:   Mon, 1 Jun 2020 14:27:53 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Lijun Ou <oulijun@huawei.com>, Xi Wang <wangxi11@huawei.com>,
+        "Wei Hu(Xavier)" <huwei87@hisilicon.com>,
+        Weihang Li <liweihang@huawei.com>,
+        Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] RDMA/hns: Uninitialized variable in
+ modify_qp_init_to_rtr()
+Message-ID: <20200601172753.GA2538@ziepe.ca>
+References: <20200529083918.GA1298465@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <effe3cde7b1f188427c42c476f5a96251d837416.camel@perches.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200529083918.GA1298465@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 01/06/2020 à 00:11, Joe Perches a écrit :
-> (adding Dan Carpenter)
+On Fri, May 29, 2020 at 11:39:18AM +0300, Dan Carpenter wrote:
+> The "dmac" variable is used before it is initialized.
 > 
-> On Sun, 2020-05-31 at 23:00 +0200, Christophe JAILLET wrote:
->> 'swsusp_header_init()' is only called via 'core_initcall'.
->> It can be marked as __init to save a few bytes of memory.
-> 
-> Hey Dan
-> 
-> smatch has a full function calling tree right?
-> 
-> Can smatch find unmarked functions called only by __init
-> functions so those unmarked functions can be appropriately
-> marked with __init like the below?
-> 
+> Fixes: 494c3b312255 ("RDMA/hns: Refactor the QP context filling process related to WQE buffer configure")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Reviewed-by: Leon Romanovsky <leonro@mellanox.com>
+> ---
+>  drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Hi, in case of interest for anyone, I actually find such things as follow:
-    - grep to spot xxx_initcall macro (see comments in the perl script 
-below)
-    - a perl script which tries to spot missing __init
+Applied to for-next, thanks
 
-The false positive rate is low.
-Feel free to use and propose patches based on it.
-
-CJ
-
-________________________________________________
-#!/usr/bin/perl
-
-use warnings;
-use strict;
-
-# grep -r --include=*.c -E 
-'^[[:space:]]*(early|core|postcore|arch|subsys|fs|device|late)_initcall\(.*\)' 
-* > tmp.txt
-my $tmp="tmp.txt";
-
-open(my $fh, "<", $tmp);
-while (my $line = <$fh>) {
-         # Each line looks like:
-         #      net/mac80211/main.c:subsys_initcall(ieee80211_init);
-         if ($line =~ /^(.*):.*\((.*)\)/) {
-             system("grep -E '$2\\(void' $1 | grep -v -E '__.*init'");
-         }
-}
-close($fh)
-
-
->> ---
->>   kernel/power/swap.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/kernel/power/swap.c b/kernel/power/swap.c
->> index ca0fcb5ced71..01e2858b5fe3 100644
->> --- a/kernel/power/swap.c
->> +++ b/kernel/power/swap.c
->> @@ -1590,7 +1590,7 @@ int swsusp_unmark(void)
->>   }
->>   #endif
->>   
->> -static int swsusp_header_init(void)
->> +static int __init swsusp_header_init(void)
->>   {
->>   	swsusp_header = (struct swsusp_header*) __get_free_page(GFP_KERNEL);
->>   	if (!swsusp_header)
-> 
-> 
-
+Jason

@@ -2,38 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A3B71E9E65
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 08:42:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 319AC1EA034
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 10:37:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727096AbgFAGmi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jun 2020 02:42:38 -0400
-Received: from mout.web.de ([212.227.15.14]:42153 "EHLO mout.web.de"
+        id S1728344AbgFAIhp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jun 2020 04:37:45 -0400
+Received: from mout.web.de ([212.227.15.3]:58225 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726107AbgFAGmh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jun 2020 02:42:37 -0400
+        id S1726142AbgFAIho (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 1 Jun 2020 04:37:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590993732;
-        bh=tKOtouNpgU/IF7WGTYjqhR34wOq1MycJ9MCg4fP3yVs=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=MxFsclfTklOvaRoBK4ZpfmjEsH4rKjNWoWg9GXNkRlGJniKXyx9X1r5W1f592aFb9
-         hXKDwa7QpW0zAc/MDNzaWyi8uWwpw8gHwXuz0LuhEySP+STXPfg5xeRPvFj857fAoF
-         6eBsxXuPulNtk4bP2TEV+SJlGYyGNtztaQM2JWfQ=
+        s=dbaedf251592; t=1591000645;
+        bh=443Hq2HPlgJiFQQQ7keR6nHLyv8izXj6cs1nNOXWoOY=;
+        h=X-UI-Sender-Class:Cc:Subject:To:From:Date;
+        b=qMDSPL/yfrVBHgofxkLbxl8tO6YYuL3xPeY3Gv+95ZSs1b8zdWjaMxk6VGMaVD/Xt
+         OXnQfA4inO2ap7KV0ZpVE7hBxDyOO8VKkYiL3zyiHQp5JTGuJt5DwUWZIHE+PazVVz
+         XHhIw5JDTUJIOx90dXQOEAecvcNnyc2DTdH4QYWU=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.133.32]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MK6mD-1jepCY3k1d-001O9T; Mon, 01
- Jun 2020 08:42:12 +0200
-Subject: Re: [PATCH v3] i2c: imx-lpi2c: Fix runtime PM imbalance in
- lpi2c_imx_master_enable()
-To:     Dinghao Liu <dinghao.liu@zju.edu.cn>,
-        Fugang Duan <fugang.duan@nxp.com>, kernel@pengutronix.de,
-        linux-imx@nxp.com, linux-i2c@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Dong Aisheng <aisheng.dong@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>, Kangjie Lu <kjlu@umn.edu>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>
-References: <20200601061640.27632-1-dinghao.liu@zju.edu.cn>
+Received: from [192.168.1.2] ([78.49.133.32]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MW9ra-1jVEUB2zN4-00XbUu; Mon, 01
+ Jun 2020 10:37:25 +0200
+Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Qiushi Wu <wu000273@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
+        Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] pwm: img: call pm_runtime_put in pm_runtime_get_sync
+ failed case
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        linux-pwm@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -78,58 +77,52 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <77448b13-9233-20a8-5e68-a8830314c27d@web.de>
-Date:   Mon, 1 Jun 2020 08:42:08 +0200
+Message-ID: <166b2437-748a-1c1a-2b7f-e1163e4855d0@web.de>
+Date:   Mon, 1 Jun 2020 10:37:23 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
-In-Reply-To: <20200601061640.27632-1-dinghao.liu@zju.edu.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ZkPZbkfzFinZrQLxVG6GTQz9drdW40WO6R+HEO+80m3z360YPLt
- lC2xGNp4QKSxUPFTqy+nMLUriY2fC4sBSmeJy2ucbJOe6exqWQ/2VJsgae/WKh6rkIibzJs
- bmLh3fZcvL6GdSgH6PkfdQlUl115g9YSGPYTVhiCuHHmQuPSQfJQV7xzWP/8y0ubf+LRUNV
- E2pyvcTsWtCfBazMOWWpQ==
+X-Provags-ID: V03:K1:EGSFtVu3Zec5yU0hXypJVihgHAoseeXVttRVcc/oxi3Fff90Zvh
+ HEvTmVbYkcnXXd3Gm0uG0t0TYno758ftf7tIoRs46ENkWNj7nZU44lKEblyvIeQ41oSH1ei
+ ZaEX++XGKnnDwVi0vZa9KK6qE3jLGOBq8HMz7TtSFTynaCdJiiEwgVCAfqDJoNbb3Gj0iij
+ OcBQB0qn3lnOX/aZQ1x4g==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:1rs281+F7ss=:HXxDFXERtaQu8mjySKm7So
- kNWGCJ9MoMLW/c2yQ9Ydm3XnCHV2tKbS23GI0TLLww8v8mY+1A1Q7FpBKkfLEQa7x6J3dzW9K
- pbNoKXJ1IKGEAmLT1CeaK9bnmko3JSLXQR2aYaZQ9FyPejtPZE79Z9/SDrAHlmteuAVymmPL6
- KC3vrygE3AwU6RZZYY6TFMHNCwmZzk+8cC2Y921AgrlIvHctZtX810ZhwS7xIWHZvQ9K0TKaM
- wAPkgA6SGMwWXu/WgVhhEsOUgfuKHS4Sdb6GLLXqk8PLruf5tTfhx6a1Rg9qls7r4ep2E71aM
- fhPC/ppKH4Ttv1ndehO9FGAW9uvDadrgELgl8X21BdOCyw1Yry+tQtxt97wYm7JGnAemzv5ux
- luEYmJVrP50TgAembUF3NRrWQLcn/L72ELc4FsUuudOC/PTFzIpSPbgBnWXfjgXMNpG0fMyDO
- R8l2hhWD31v36MXjuo0PS3XNa4vswgDn7gTPS2xsTqZ7V7/jcu228EOAvLjyeZJpcThETmk7n
- lDnOuzWFGquUgintiLkvJ7neKbDDRF/tDyZmLdXHu7cvogKByQMGQelgDffowsTRawELfkwKC
- CZL1ohvxUqT9GcngO0AtSTvXx1FNi4o39XB8ocSWPIoGTAYtO4HoznGXeN5mdy/ZUspQX7yrY
- mdgdD8HBiTQKlXxDhJXLB6d7PuKid0O9fPjZBTQPtZCnDkqIpgqWOzrCW0/WCgh7JTBFKOEQu
- /GUt5gxQPVE0PTrmYTahPvRIJQCycBSkxhR3VTF/IooRnl3La2+9kpXKrJdi6zvdgjNlIy246
- MdEe0Qg9+vxI79kYFXL6v/KIxxonl6vTKhZa0tQ4GR1NurH/DFutZjdMoSB6YPvLOhallPmLV
- DThl757gX2+54X2JZEa5kdqv3FE/f4iuQ+prl75qPBNMqD/jUmVwteYelklD80WGir8WH1O0o
- cxB17R2gT/EfZahPpCcxHrpdo5nTbY4IRCZZkkQ/i/CJah1nQNCpRbZArHxVdCDfxt8BwItab
- WzaFFN6CtcTaOzViQSAiE+Tc5806xu1LlG7BulgDmu5ogm74TbcQ1dyoLL980m/IbV8un575B
- KuoiIdPQq+Y5ovm0kU0ccNOJIlimy9Dr38oH4GsyHY9CIFWElHVAC0SshUPUHYF6jnH43d9rF
- 2c7BkMROt404+HWQ+zaodEtXvAnP7ALIWhksIND8tLy0EcgbZ6/KkII6/C2B8jh9Bo6Z0x1/d
- Shgp55VP8CBBwGeKU
+X-UI-Out-Filterresults: notjunk:1;V03:K0:WXVs/5qNz5k=:mJdWac6p+fWRiEuH1hR0CM
+ DZJXz8EvWvDAPSZfqVz/o8uY7UUywFOsw1VE9U7cvyVD86YqMmp6oqkIFWRLUOHGb7b1JavUa
+ Hj6+VrAXcD9g1rVZp0BWccCKdHv/Ml85Xu1oVNifPsqIzRLoDKKJ5c5iA/YsEKYZGDzAkvpGY
+ OUtv8/Vk8V3Y54FNWaUxP0FI5MusgP2iq2s7lqMsHT4hpzoVQu4lUb/0H8EQLXVN4pxW0s+FG
+ Jm2+36Pc0W+mP5t9GgB/L86Jn1fzEGO/Q2uHMFOp/ioVK+f46IOwir3JQNNd2OqOir/zFYNS+
+ Q5YEW0ySGl1u/Uqg6gmAVH1yZE7/dgoT9l95IqjSrJLp9/GaFTqbe1ho/+jkBaf8jdocj1K6N
+ 1w0FzlDUsamXXPqvaJrGjZdS5lnSELFw2aI9BHGjdNnvdav5dnOo39dknNDMVxKkc8E1HK9mi
+ k5b2UguiWBjN0bUSQBCD7GV+/2xm7V4Xf9nF7ZUuOwoG8CReOAgKkRu5zN7uQ2RIwVehfNr2Y
+ xb6LwCyqiJLriUXhW7J8QzD4tREOw6spdV8pAZW8DImV4btAzc071O3ClrbZ5YxZX/rrJNlc/
+ J0uZZ+gis+uIwmM8w5f9asfOE+5W+dG+iNxHwExgKR9hI40n7til11Vi/A/4+bAJcIzyCwRoM
+ Q3c6mZSaq2spwQyAffNfZ55/ZFu2Pq0eJf+M/j+z8Wi9Uu44LbOFpPTpVnq5Hh+KAcbDUXjM7
+ 0hnZV4kli8AfO4dbAWcp9mfoAf1sWb9bg3HfTvIOUUOoSetJqmPHMLReeoTUiCOucjUFq15Fu
+ A3lzyzs5TArnfxE89oB9ooN+NCLmsOt8ldQ4kJtZv+V4wG/xhNYdEq94f8qy8RQQ0w+LDy73S
+ SUq2X2OLttBwpmEp68Z5ep/kCBoLfW8P2sCEbJqfo2f/uwPoKru07VoYl0DVHJyDE4Ia4+gLj
+ rRVlUkBgXnzAEDi2AQkBOGNsThP9UFlevsHT4l2nBKvEUHyHR+XfPs4NRYdCui74Ei68vjvGP
+ 9l+LgnFO8DMsXewiqKp7shfl64Y5GvVFqORM5OKXGxl/yTCz25ZfNh4ZqQsIP2k479wm+ZN85
+ +NWv+Xjsz5rpho7K8iBrusGPJ9+Q/6xzqg0JQJ2pAAHWn7CcO40ckcPJzDla4vowsc+LOLlZJ
+ FBdeH6XZ3lLW+zLUzCk+gSCjMm0KVanTeVAnbP/HEOAx1IeR1BsysMGZSL9LyUbwO4z6+zxCJ
+ NJslfhYMs4SfBh5NR
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> pm_runtime_get_sync() increments the runtime PM usage counter even
-> the call returns an error code. Thus a corresponding decrement is
-> needed on the error handling path to keep the counter balanced.
->
-> Fix this by adding the missed function call.
+> Even in failed case of pm_runtime_get_sync, the usage_count
+> is incremented. In order to keep the usage_count with correct
+> value call appropriate put.
 
-How do you think about a wording variant like the following?
+* I suggest to adjust the word =E2=80=9Cusage_count=E2=80=9D in this chang=
+e description.
 
-   Change description:
-   The PM runtime usage counter is incremented even if a call of
-   the function =E2=80=9Cpm_runtime_get_sync=E2=80=9D failed. Thus decreme=
-nt it also
-   in an error case so that the reference counting is kept consistent.
-
+* Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit mess=
+age?
 
 Regards,
 Markus

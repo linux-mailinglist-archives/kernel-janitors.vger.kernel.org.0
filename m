@@ -2,126 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EA991EA0CE
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 11:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F1E91EA1A8
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 12:16:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727004AbgFAJTH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jun 2020 05:19:07 -0400
-Received: from mout.web.de ([212.227.15.4]:49081 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725946AbgFAJTG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jun 2020 05:19:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591003129;
-        bh=W+ZgEtIxGb6XZJ441yxdASxhL4NeqT35LP0D+pot0Ws=;
-        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=prRp4Wf1bRY+KDL/S4kuiB5RurEEcKvIXGJUCrYoTM7j/HcLROrCwOo19aIL4GbOB
-         888XvLu/H8y3b5iiHzv7TJcLkD65C92lK4jUYOWbCbFa+FYQBtqnMiRF7n8UOHwdmi
-         /QzP+1kTDX0UYDpNALl24Yae2M61ooaMlRS5y8KM=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.133.32]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MMXx5-1jNjfa2Djz-00Ja9d; Mon, 01
- Jun 2020 11:18:49 +0200
-To:     =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        linux-arm-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>
-Subject: Re: [PATCH] misc: atmel-ssc: lock with mutex instead of spinlock
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <eb9b1cb3-5b3f-f387-da45-71427a4383ed@web.de>
-Date:   Mon, 1 Jun 2020 11:18:48 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+        id S1725973AbgFAKQY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jun 2020 06:16:24 -0400
+Received: from mail-db8eur05on2083.outbound.protection.outlook.com ([40.107.20.83]:6237
+        "EHLO EUR05-DB8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725925AbgFAKQX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 1 Jun 2020 06:16:23 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GsnunleFyzPPTV/LSermN7syM5Ic9kWGhNKArr6xqk6kLpHmN673fquJKv+7xtdpDzCCLws/L0n2HOzQ/2iX1ZUc5d83lbkW9jcNJazI9OjpVO/Wdkz08clo+Mwfn4TCjcz667GItzPQ8G5uGMCEyusejdblbvGuMKU0zF1u7s1247LnPXKbOT7ULUkhpE9NV+J3pu4aSLAFHepeK5LXj5XrTqJHRqKBoPf7xFSARzJCWiMkWBZuyJ9dA45bAUd7WNnjwU0XIE6pZBwkZpNbiZaIps3kBtBKWoxq8oDdnSh8SSmglB/Xf1tBjiovjJjNTTX7CI2GO81DUeuPAnL0lQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=E4OHZkbQdFPlFTgF/DtvlEq8Td4ac5xsKtXGzjPUc3I=;
+ b=WWgJFSriF5HuxIge845F7DLO2Lri5cEw2kb1HdiVuHoaJzM5qGFRXN4O3cwUEtNlRwIKgJHhnqtkGhVyT86DnJE6A2n1FBsXXr57+HIh1TvhT3Saft+9GLh5YAUVwPBcVMtuQqpv/X0vq94R2kKhgk9s6QQpKiLMfKG5HiBEwKHsruVQO8Ceb/mwzSjE4zarzu0Mc9TIBcfxdAHZ28DmVyaVF+VIaTxC8QqGXDOvvaSHkGaKqM1A29FnLKyImb+jzsX18khu5Sp2PTq9/qVVBFZKUbYjSaK6YCLckv/m+cfw8bibM/NcR3RC8K7RAxLhnJD07ElGxshEA7Q0Kh8d6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=E4OHZkbQdFPlFTgF/DtvlEq8Td4ac5xsKtXGzjPUc3I=;
+ b=Cf5lcC1nsllXLEf5h1C271xXf1RgP+sqrJK9+Itazgbwj/b9G7iPHC6hTJuV2nY3TiU/7RlHYbQ5YFGTsgAbDUTSGPzSjdXmjCuaWxuUcnylbR1sdCip2FmK/1xXe6JmWGuRA8/On0YvOl9Yz0yEilqIESxG+rqyWXVbCOV8BiI=
+Received: from AM6PR04MB4966.eurprd04.prod.outlook.com (2603:10a6:20b:2::14)
+ by AM6PR04MB4998.eurprd04.prod.outlook.com (2603:10a6:20b:f::28) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3045.17; Mon, 1 Jun
+ 2020 10:16:19 +0000
+Received: from AM6PR04MB4966.eurprd04.prod.outlook.com
+ ([fe80::3c6c:a0e9:9a4e:c51d]) by AM6PR04MB4966.eurprd04.prod.outlook.com
+ ([fe80::3c6c:a0e9:9a4e:c51d%7]) with mapi id 15.20.3045.024; Mon, 1 Jun 2020
+ 10:16:19 +0000
+From:   Aisheng Dong <aisheng.dong@nxp.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "stefan@agner.ch" <stefan@agner.ch>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        Gary Bisson <gary.bisson@boundarydevices.com>
+CC:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: RE: [PATCH] pinctrl: freescale: imx: Fix an error handling path in
+ 'imx_pinctrl_probe()'
+Thread-Topic: [PATCH] pinctrl: freescale: imx: Fix an error handling path in
+ 'imx_pinctrl_probe()'
+Thread-Index: AQHWNsPj8tlpXuDuT0ye55IEW7BSE6jDjWYw
+Date:   Mon, 1 Jun 2020 10:16:19 +0000
+Message-ID: <AM6PR04MB49667D023D9C5ACB7CABF229808A0@AM6PR04MB4966.eurprd04.prod.outlook.com>
+References: <20200530204955.588962-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20200530204955.588962-1-christophe.jaillet@wanadoo.fr>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: wanadoo.fr; dkim=none (message not signed)
+ header.d=none;wanadoo.fr; dmarc=none action=none header.from=nxp.com;
+x-originating-ip: [119.31.174.66]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 867180a4-0b95-430e-d8fc-08d80614d3e2
+x-ms-traffictypediagnostic: AM6PR04MB4998:
+x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <AM6PR04MB499803DAAC07E8AD53FFB312808A0@AM6PR04MB4998.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4125;
+x-forefront-prvs: 0421BF7135
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Cty4bjJsVdUZMGOtZl7eV7/lJGhnd5QPoXBV7kAU7s7vnZFycA4oExklCSubQisfqX5E6Do8bnCm/JrDKBgqt6AB5hTAHiTlnbGDYnaBYRIdzPlXTDTpjc0x+HKfDyAMeoXYcgumM2zKWWw7AY2SrZOXTEiFIBaY5ihOXgXfgeWYf94ojv6A9PRScS8rXGPTXCpEVNLZf81OPvYILgvxuDjC7+CY4/k/4oyPwtWZyGTDV7QhnZTSkChGNX4GpE4O4hQhUadK8Ivgav+dMlBmEX67ni6YQ5KhC6WFsZ/MrS2EKbNUq4SZPHH3Z4d5aQZ32PLgnwL6n+cH6yG3vn58gw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4966.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(136003)(366004)(396003)(346002)(376002)(39860400002)(316002)(2906002)(44832011)(4326008)(5660300002)(110136005)(54906003)(9686003)(478600001)(8936002)(7416002)(8676002)(55016002)(76116006)(64756008)(66556008)(66476007)(66446008)(186003)(86362001)(71200400001)(66946007)(52536014)(6506007)(33656002)(4744005)(7696005)(26005);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: N7kCS5j+ylbfCePzl2Y6T8C6jvINIh/MeOZ1rgVj1lSk/ZJvgpHoVvEfZ7rvOuytVMI4O4UgKflt5Lwdz/Xv5dzJxxGBM5t6ll0KtrfPS1JUH8jfqpk5cfMNT7yGlkGbA0KV+fftgVbTUbB9z2ihM5zN43JqDFqVH/VyTezFwgZG0dqV2tQQFp6ZJ9n4x2WY+UvyIe9hQnxsN2XC3XkKpLG89vXHWIOm4CjA/RL7scFo3V51w9xOEPFY50+q5wiAoTDt+BOCHZ1/W7uLD+UiUnPoia3jpAk+lx8j3olba3zKGaLlgUfQubclR94vVlJeCoRcsaWWaWL4TuNiELpuLt48RjNGzrdENsW1bYTekA/8eTgKMNGZeJ65Dv0l+YPC9pj0UgcR+9tZ0is6NFZDDSSVSTEIE09clGItHEtHODAS8o1uOO3/xac31q/yXZRIBIfVmRnI4Boq9bT28H5GHLxLs/LVWkjkcdaq+RH7fp0=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:5DulBwr2jsMUSpEppPIKQx0o5MyiFakHWWiD7IiokDqY3QZuxT7
- Q5VbrdfeGgnRFETSTWDfoFV7iCwBwyoxM2LxDt6DXZvTtsQQTUP90bgb9sg6nTDEnFW+Ut4
- FPBtGyRUuQFTrIA7F/GBhzct8hkTd2fEeq3gilncfO5LtFrGbFnYS5bIalfbefTjDLJOer/
- a9AoZyH1s8def9QGeqAkA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:uTzdNDcQuZY=:oo1RjsekvhzHSQP1rGdl9v
- ftzOBbPbTZb3npwTF7x/lLDAU7PBch5gKLs4tyi/1qP3HtyRTBkiWH1DoHEEHuEcdKOXvZL8C
- rEMko7MvWyA44wrQtFzHnDPPVcwBc+1xgxkNwgvLt5pUdsWxG6nRutsXpZuBxo/W0APNj6rG+
- d7K4W71vQ/Q8z+jIpPrkQpWiKhgACbcNaJ4eeet09yQns6vqBs0hLBNWYUSe38IG5YnzLL9eS
- 65vZibMe6Ieg76H31ps3xnujwOJCjMgmxeJzLUS8DDXAZJaf7ADI8hL7Cw2c731EDf2z+5Hum
- n9PZqH54lXhMeNM70UuVOdI25lf/A/7AU+SsE7qWtkRLnc37rjN8E+XH8eap/PDNlkCZ8GI+E
- Dhzqb/z0G7RJcvPnw4hujIwXpgInhGkM+oskFesuc+DXRoO53Au7F4uvAyE19u92tjel8QkLa
- +xqkY1KIUchxWyaa0nbLu/2FSZ5b1YIXTmjriEelr7AQpFkuR6NUve/tMsaPKml0vMDgPvt+7
- f+x0//HJ2y8GPwPFSsBFUXNlKfv03nqZR3Ox6ReTJXbjtGKqA9Rr0l90360qVwC4jTnr6QDA/
- P7DmMYcZGfkPWzxP8UU3Wvvc4gWoMXDCAdVqoewnaiJDc8sGMo9UySdhkbjtjlh3MLedFhEAq
- hRpkoE2xi7qbYXG2mp8gmF1DqCgK5tZxkMEIy0pJUYQSBELybygdMoYEog5C3esWHkMxXErm2
- ho4RKDmCIiCUntRJ/61ZupZMOCsQCwgNvddD49J1V7Xd2uHlhfL/03/dNjQJENe9f0MRr4pNr
- 7AVdur7pg2dqFFu+Jyshu2k8LvaxtOEceY63dVuWq/ljCKOwyyOTiY5D0LiaFu7P3yUdktO3m
- jLdU996cKsejDbrcNSLM7UdEDHNnTTr4ZnyD7eR9Q/tw4tjgds8QGpPGSYoXx1iayjoBFqGg/
- 75ztmkgZnuziQ7KX0XXoVplxEJBQMXQVte4vTpUZdi1NN2vTfZdAThJXzNkBG3eZVoJbe0nPh
- AXUNWPbkdRLYz0dz6SP6IEBJyiDgkysNSKRlSP7HD/a6V7EnV3PQHX73gUTyUtEHgpzG7XVBg
- Clbn+QG84oz674fCkaH2H3IfuXB8yJsjEzIJNPCY/pNC35pAhteoQmrdWEdCKRj6k6IFqf62t
- MimGVS6PodqlbmX0eD5E53YrseSk/8R9oEEElW3Q7amvgei2kuV/7CRrqh2mK91UdvGtqsIjT
- +VIW1Oiiy/Gdjo05+
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 867180a4-0b95-430e-d8fc-08d80614d3e2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jun 2020 10:16:19.6227
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /lrE817ubhxrVGk/665edRMfb+okPAe72CfvR2mDZxajbYJEafv/WdVEDUtO3EKF27E6SMg9W9yzMRGqTqeuqQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR04MB4998
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Uninterruptible context is not needed in the driver and causes lockdep
-> warning because of mutex taken in of_alias_get_id().
-
-Was a spin lock taken?
-
-
-> Convert the lock to mutex to avoid the issue.
-
-Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=
-e?
-
-Regards,
-Markus
+PiBGcm9tOiBDaHJpc3RvcGhlIEpBSUxMRVQgPGNocmlzdG9waGUuamFpbGxldEB3YW5hZG9vLmZy
+Pg0KPiBTZW50OiBTdW5kYXksIE1heSAzMSwgMjAyMCA0OjUwIEFNDQo+IA0KPiAncGluY3RybF91
+bnJlZ2lzdGVyKCknIHNob3VsZCBub3QgYmUgY2FsbGVkIHRvIHVuZG8NCj4gJ2Rldm1fcGluY3Ry
+bF9yZWdpc3Rlcl9hbmRfaW5pdCgpJywgaXQgaXMgYWxyZWFkeSBoYW5kbGVkIGJ5IHRoZSBmcmFt
+ZXdvcmsuDQo+IA0KPiBUaGlzIHNpbXBsaWZpZXMgdGhlIGVycm9yIGhhbmRsaW5nIHBhdGhzIG9m
+IHRoZSBwcm9iZSBmdW5jdGlvbi4NCj4gVGhlICdpbXhfZnJlZV9yZXNvdXJjZXMoKScgY2FuIGJl
+IHJlbW92ZWQgYXMgd2VsbC4NCj4gDQo+IEZpeGVzOiBhNTFjMTU4YmYwZjcgKCJwaW5jdHJsOiBp
+bXg6IHVzZSByYWRpeCB0cmVlcyBmb3IgZ3JvdXBzIGFuZCBmdW5jdGlvbnMiKQ0KPiBTaWduZWQt
+b2ZmLWJ5OiBDaHJpc3RvcGhlIEpBSUxMRVQgPGNocmlzdG9waGUuamFpbGxldEB3YW5hZG9vLmZy
+Pg0KDQpSZXZpZXdlZC1ieTogRG9uZyBBaXNoZW5nIDxhaXNoZW5nLmRvbmdAbnhwLmNvbT4NCg0K
+UmVnYXJkcw0KQWlzaGVuZw0K

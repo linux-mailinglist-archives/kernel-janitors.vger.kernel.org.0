@@ -2,77 +2,123 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 095CF1E9AAC
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 00:11:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F07131E9BA7
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 04:19:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728306AbgEaWLa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 31 May 2020 18:11:30 -0400
-Received: from smtprelay0182.hostedemail.com ([216.40.44.182]:57272 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726008AbgEaWLa (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 31 May 2020 18:11:30 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 90F1C1802926E;
-        Sun, 31 May 2020 22:11:29 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:966:981:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2196:2199:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3865:3866:3867:3871:3872:4250:4321:4385:5007:7903:10004:10400:10848:11026:11232:11658:11914:12048:12295:12297:12555:12740:12760:12895:13069:13311:13357:13439:14096:14097:14180:14659:14721:21080:21324:21627:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: chess64_5207aa126d78
-X-Filterd-Recvd-Size: 1901
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf03.hostedemail.com (Postfix) with ESMTPA;
-        Sun, 31 May 2020 22:11:28 +0000 (UTC)
-Message-ID: <effe3cde7b1f188427c42c476f5a96251d837416.camel@perches.com>
-Subject: Re: [PATCH] kernel: power: swap: mark a function as __init to save
- some memory
-From:   Joe Perches <joe@perches.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        rjw@rjwysocki.net, pavel@ucw.cz, len.brown@intel.com,
-        Dan Carpenter <error27@gmail.com>
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Date:   Sun, 31 May 2020 15:11:27 -0700
-In-Reply-To: <20200531210059.647066-1-christophe.jaillet@wanadoo.fr>
-References: <20200531210059.647066-1-christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.2-0ubuntu1 
+        id S1727063AbgFACTE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 31 May 2020 22:19:04 -0400
+Received: from szxga03-in.huawei.com ([45.249.212.189]:2513 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726860AbgFACTE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 31 May 2020 22:19:04 -0400
+Received: from DGGEMM404-HUB.china.huawei.com (unknown [172.30.72.57])
+        by Forcepoint Email with ESMTP id 9893F90A4FBC51007D1C;
+        Mon,  1 Jun 2020 10:19:01 +0800 (CST)
+Received: from dggeme762-chm.china.huawei.com (10.3.19.108) by
+ DGGEMM404-HUB.china.huawei.com (10.3.20.212) with Microsoft SMTP Server (TLS)
+ id 14.3.487.0; Mon, 1 Jun 2020 10:19:01 +0800
+Received: from [10.65.91.233] (10.65.91.233) by dggeme762-chm.china.huawei.com
+ (10.3.19.108) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1913.5; Mon, 1 Jun
+ 2020 10:19:01 +0800
+Subject: Re: [PATCH] crypto: hisilicon/qm - allow smaller reads in debugfs
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>
+CC:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <20200528123703.GA1219412@mwanda>
+From:   Shukun Tan <tanshukun1@huawei.com>
+Message-ID: <b6da310b-e633-9f74-f7af-7791d803aaf5@huawei.com>
+Date:   Mon, 1 Jun 2020 10:19:00 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
 MIME-Version: 1.0
+In-Reply-To: <20200528123703.GA1219412@mwanda>
+Content-Type: text/plain; charset="gbk"
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.65.91.233]
+X-ClientProxiedBy: dggeme719-chm.china.huawei.com (10.1.199.115) To
+ dggeme762-chm.china.huawei.com (10.3.19.108)
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-(adding Dan Carpenter)
+Hi Dan & Zhou,
 
-On Sun, 2020-05-31 at 23:00 +0200, Christophe JAILLET wrote:
-> 'swsusp_header_init()' is only called via 'core_initcall'.
-> It can be marked as __init to save a few bytes of memory.
-
-Hey Dan
-
-smatch has a full function calling tree right?
-
-Can smatch find unmarked functions called only by __init
-functions so those unmarked functions can be appropriately
-marked with __init like the below?
-
-> ---
->  kernel/power/swap.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On 2020/5/28 20:37, Dan Carpenter wrote:
+> Originally this code rejected any read less than 256 bytes.  There
+> is no need for this artificial limit.
 > 
-> diff --git a/kernel/power/swap.c b/kernel/power/swap.c
-> index ca0fcb5ced71..01e2858b5fe3 100644
-> --- a/kernel/power/swap.c
-> +++ b/kernel/power/swap.c
-> @@ -1590,7 +1590,7 @@ int swsusp_unmark(void)
->  }
->  #endif
+> Also I have changed the snprintf() functions to scnprintf().  The
+> difference is that snprintf() returns the number of bytes which would
+> have been copied if there were enough space and scnprintf() returns the
+> number of bytes which were actually copied.  It doesn't matter here
+> because the strings are very short so they can't go over 256 bytes.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/crypto/hisilicon/qm.c | 18 ++++++++----------
+>  1 file changed, 8 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
+> index a781c02251980..9c0c9f500d91d 100644
+> --- a/drivers/crypto/hisilicon/qm.c
+> +++ b/drivers/crypto/hisilicon/qm.c
+> @@ -1076,16 +1076,15 @@ static ssize_t qm_cmd_read(struct file *filp, char __user *buffer,
+>  	if (*pos)
+>  		return 0;
 >  
-> -static int swsusp_header_init(void)
-> +static int __init swsusp_header_init(void)
->  {
->  	swsusp_header = (struct swsusp_header*) __get_free_page(GFP_KERNEL);
->  	if (!swsusp_header)
+> -	if (count < QM_DBG_READ_LEN)
+> -		return -ENOSPC;
+> -
 
+I think we should keep it, maybe you are right when using 'cat', but if you use 'read'
+system call this may make the user read only part of the prompt. This may break our
+original design. :)
+
+Thanks,
+Shukun
+
+> -	len = snprintf(buf, QM_DBG_READ_LEN, "%s\n",
+> +	len = scnprintf(buf, QM_DBG_READ_LEN, "%s\n",
+>  		       "Please echo help to cmd to get help information");
+>  
+> +	len = min_t(size_t, len, count);
+>  	if (copy_to_user(buffer, buf, len))
+>  		return -EFAULT;
+>  
+> -	return (*pos = len);
+> +	*pos = len;
+> +	return len;
+>  }
+>  
+>  static void *qm_ctx_alloc(struct hisi_qm *qm, size_t ctx_size,
+> @@ -2710,19 +2709,18 @@ static ssize_t qm_status_read(struct file *filp, char __user *buffer,
+>  	if (*pos)
+>  		return 0;
+>  
+> -	if (count < QM_DBG_READ_LEN)
+> -		return -ENOSPC;
+> -
+>  	val = atomic_read(&qm->status.flags);
+> -	len = snprintf(buf, QM_DBG_READ_LEN, "%s\n", qm_s[val]);
+> +	len = scnprintf(buf, QM_DBG_READ_LEN, "%s\n", qm_s[val]);
+>  	if (!len)
+>  		return -EFAULT;
+>  
+> +	len = min_t(size_t, len, count);
+>  	cp_len = copy_to_user(buffer, buf, len);
+>  	if (cp_len)
+>  		return -EFAULT;
+>  
+> -	return (*pos = len);
+> +	*pos = len;
+> +	return len;
+>  }
+>  
+>  static const struct file_operations qm_status_fops = {
+> 

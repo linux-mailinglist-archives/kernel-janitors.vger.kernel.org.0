@@ -2,85 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5DAC1EBF09
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 17:30:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5709A1EBF18
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 17:35:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726223AbgFBPaj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jun 2020 11:30:39 -0400
-Received: from mga12.intel.com ([192.55.52.136]:16053 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726112AbgFBPaj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jun 2020 11:30:39 -0400
-IronPort-SDR: /IG68SwVwgXGShQyWxhrFQpbSBnjVN+av9WFZ+RYHP0a6IN3X5lkUS0lTxM8rVUo6hagyilDW3
- cFDTYTOXBd8A==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2020 08:30:26 -0700
-IronPort-SDR: d5EdmYzh9a8PyRQSBpfkNaZ5Zx17bWFjOT8KVeU+Lrb7xj0hvAMCoxRMHpd0lWwK9Zpn3o7iNH
- 4LXThYfTl8Qw==
-X-IronPort-AV: E=Sophos;i="5.73,464,1583222400"; 
-   d="scan'208";a="257661820"
-Received: from ddalessa-mobl.amr.corp.intel.com (HELO [10.254.200.182]) ([10.254.200.182])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2020 08:30:15 -0700
-Subject: Re: [PATCH -next] IB/hfi1: Use free_netdev() in hfi1_netdev_free()
-To:     YueHaibing <yuehaibing@huawei.com>, mike.marciniszyn@intel.com,
-        dledford@redhat.com, jgg@ziepe.ca, sadanand.warrier@intel.com,
-        grzegorz.andrejczuk@intel.com
-Cc:     linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dan.carpenter@oracle.com, kernel-janitors@vger.kernel.org
-References: <20200601135644.GD4872@ziepe.ca>
- <20200602061635.31224-1-yuehaibing@huawei.com>
-From:   Dennis Dalessandro <dennis.dalessandro@intel.com>
-Message-ID: <75257c20-3cf2-7ecc-0d66-e1f4155ba105@intel.com>
-Date:   Tue, 2 Jun 2020 11:30:13 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+        id S1726485AbgFBPfK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jun 2020 11:35:10 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:42396 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726112AbgFBPfK (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jun 2020 11:35:10 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jg8wU-0004wo-Ar; Tue, 02 Jun 2020 15:35:06 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     David Howells <dhowells@redhat.com>, linux-afs@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org
+Subject: [PATCH][next] afs: fix double kfree on cell_name on error exit path
+Date:   Tue,  2 Jun 2020 16:35:05 +0100
+Message-Id: <20200602153505.64714-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20200602061635.31224-1-yuehaibing@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 6/2/2020 2:16 AM, YueHaibing wrote:
-> dummy_netdev shold be freed by free_netdev() instead of
-> kfree(). Also remove unneeded variable 'priv'
-> 
-> Fixes: 4730f4a6c6b2 ("IB/hfi1: Activate the dummy netdev")
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> ---
->   drivers/infiniband/hw/hfi1/netdev_rx.c | 5 +----
->   1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/drivers/infiniband/hw/hfi1/netdev_rx.c b/drivers/infiniband/hw/hfi1/netdev_rx.c
-> index 58af6a454761..63688e85e8da 100644
-> --- a/drivers/infiniband/hw/hfi1/netdev_rx.c
-> +++ b/drivers/infiniband/hw/hfi1/netdev_rx.c
-> @@ -371,12 +371,9 @@ int hfi1_netdev_alloc(struct hfi1_devdata *dd)
->   
->   void hfi1_netdev_free(struct hfi1_devdata *dd)
->   {
-> -	struct hfi1_netdev_priv *priv;
-> -
->   	if (dd->dummy_netdev) {
-> -		priv = hfi1_netdev_priv(dd->dummy_netdev);
->   		dd_dev_info(dd, "hfi1 netdev freed\n");
-> -		kfree(dd->dummy_netdev);
-> +		free_netdev(dd->dummy_netdev);
->   		dd->dummy_netdev = NULL;
->   	}
->   }
-> 
+From: Colin Ian King <colin.king@canonical.com>
 
-For the kfree->free_netdev, you probably want to add:
-Reported-by: kbuild test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+The error exit path is currently kfree'ing cell_name for a second time,
+the previous kfree of this object occurred a statement earlier. Fix this
+by removing it.
 
-Also can add:
-Reviewed-by: Dennis Dalessandro <dennis.dalessandro@intel.com>
+Addresses-Coverity: ("Double free")
+Fixes: 6147fe6b7f8c ("afs: Detect cell aliases 3 - YFS Cells with a canonical cell name op")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ fs/afs/vl_alias.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Thanks
+diff --git a/fs/afs/vl_alias.c b/fs/afs/vl_alias.c
+index 6c1cf702478e..093895c49c21 100644
+--- a/fs/afs/vl_alias.c
++++ b/fs/afs/vl_alias.c
+@@ -315,10 +315,8 @@ static int yfs_check_canonical_cell_name(struct afs_cell *cell, struct key *key)
+ 	master = afs_lookup_cell(cell->net, cell_name, strlen(cell_name),
+ 				 NULL, false);
+ 	kfree(cell_name);
+-	if (IS_ERR(master)) {
+-		kfree(cell_name);
++	if (IS_ERR(master))
+ 		return PTR_ERR(master);
+-	}
+ 
+ 	cell->alias_of = master; /* Transfer our ref */
+ 	return 1;
+-- 
+2.25.1
+

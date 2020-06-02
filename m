@@ -2,107 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8600F1EB0A1
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jun 2020 23:03:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E14A71EB2D4
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 02:59:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728629AbgFAVD2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jun 2020 17:03:28 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:37380 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728467AbgFAVD2 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jun 2020 17:03:28 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 051IGOkB133702;
-        Mon, 1 Jun 2020 18:31:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=klYhvleN5+bHtn61y7WVGwD1VVLVcs1uWE0ZQPZDGoA=;
- b=XpxeXoezca5asoGN6eYmhtqWCb0uWLJ+p24yfEsWCpdUE+jBOyMKCU+0HfW8ABik6+5D
- b/9JkCwWFahi4LJ5zZ8D9LpQcUbeZVtfWaDGSCawUrSVAMyPlrnwo4McWwN2WxLTEH3s
- nvsNw2+qt4H8maj/l24WmychyKJAUJSGR0KDsVSUyDSyYPyXye0j9Kq1UaFu3WAIhpyV
- dIQuYbWKfpTbwQfkLxixpmlAQp9wQVoayGzRRGW8VPww8YOaVK6j1Y9XkQtvocbMs5mu
- 20q1gicdQ8F1TqrcBaZzgxslNayWq5KUcYdI/19OB1499ZgF/8GfwGmobQWtzUztoz/l GA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 31bfem05wg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 01 Jun 2020 18:31:14 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 051IDrYw029652;
-        Mon, 1 Jun 2020 18:31:13 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 31c25ke6xs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 01 Jun 2020 18:31:13 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 051IVBmD031819;
-        Mon, 1 Jun 2020 18:31:11 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 01 Jun 2020 11:31:11 -0700
-Date:   Mon, 1 Jun 2020 21:31:02 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Robert Jarzmik <robert.jarzmik@free.fr>, daniel@zonque.org,
-        haojian.zhuang@gmail.com, linus.walleij@linaro.org,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] pinctrl: pxa: pxa2xx: Remove 'pxa2xx_pinctrl_exit()'
- which is unused and broken
-Message-ID: <20200601183102.GS30374@kadam>
-References: <20200531073716.593343-1-christophe.jaillet@wanadoo.fr>
- <87h7vvb1s3.fsf@belgarion.home>
- <a2e34c9a-676f-d83f-f395-7428af038c16@wanadoo.fr>
+        id S1725825AbgFBA7Y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jun 2020 20:59:24 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:40716 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725793AbgFBA7Y (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 1 Jun 2020 20:59:24 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id A46C03EAA86A60DBE163;
+        Tue,  2 Jun 2020 08:59:21 +0800 (CST)
+Received: from [127.0.0.1] (10.166.215.154) by DGGEMS410-HUB.china.huawei.com
+ (10.3.19.210) with Microsoft SMTP Server id 14.3.487.0; Tue, 2 Jun 2020
+ 08:59:18 +0800
+Subject: Re: [PATCH -next] IB/hfi1: Remove set but not used variable 'priv'
+To:     Jason Gunthorpe <jgg@ziepe.ca>,
+        Dennis Dalessandro <dennis.dalessandro@intel.com>
+References: <20200528075946.123480-1-yuehaibing@huawei.com>
+ <MN2PR11MB396654BC46500F828609C6A3868E0@MN2PR11MB3966.namprd11.prod.outlook.com>
+ <86634519-3dd8-0c6a-a8d2-19f4b986fd3d@intel.com>
+ <20200601135644.GD4872@ziepe.ca>
+CC:     "Marciniszyn, Mike" <mike.marciniszyn@intel.com>,
+        Doug Ledford <dledford@redhat.com>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "Dan Carpenter (dan.carpenter@oracle.com)" <dan.carpenter@oracle.com>
+From:   Yuehaibing <yuehaibing@huawei.com>
+Message-ID: <56063ae0-30a2-6522-2b6a-86b749264e78@huawei.com>
+Date:   Tue, 2 Jun 2020 08:59:17 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a2e34c9a-676f-d83f-f395-7428af038c16@wanadoo.fr>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9639 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0 spamscore=0
- malwarescore=0 bulkscore=1 mlxscore=0 phishscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006010137
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9639 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
- mlxlogscore=999 priorityscore=1501 bulkscore=3 phishscore=0 clxscore=1011
- impostorscore=0 adultscore=0 spamscore=0 mlxscore=0 lowpriorityscore=3
- cotscore=-2147483648 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006010137
+In-Reply-To: <20200601135644.GD4872@ziepe.ca>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.166.215.154]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jun 01, 2020 at 01:31:23PM +0200, Christophe JAILLET wrote:
-> Le 01/06/2020 à 10:58, Robert Jarzmik a écrit :
-> > Christophe JAILLET <christophe.jaillet@wanadoo.fr> writes:
-> > 
-> > > Commit 6d33ee7a0534 ("pinctrl: pxa: Use devm_pinctrl_register() for pinctrl registration")
-> > > has turned a 'pinctrl_register()' into 'devm_pinctrl_register()' in
-> > > 'pxa2xx_pinctrl_init()'.
-> > > However, the corresponding 'pinctrl_unregister()' call in
-> > > 'pxa2xx_pinctrl_exit()' has not been removed.
-> > > 
-> > > This is not an issue, because 'pxa2xx_pinctrl_exit()' is unused.
-> > > Remove it now to avoid some wondering in the future and save a few LoC.
-> > > 
-> > > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> > Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
-> > 
-> > Would be even a better patch with a :
-> > Fixes: 6d33ee7a0534 ("pinctrl: pxa: Use devm_pinctrl_register() for pinctrl registration")
+On 2020/6/1 21:56, Jason Gunthorpe wrote:
+> On Mon, Jun 01, 2020 at 09:45:52AM -0400, Dennis Dalessandro wrote:
+>> On 5/28/2020 7:25 AM, Marciniszyn, Mike wrote:
+>>>> From: YueHaibing <yuehaibing@huawei.com>
+>>>> Sent: Thursday, May 28, 2020 4:00 AM
+>>>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+>>>>   drivers/infiniband/hw/hfi1/netdev_rx.c | 11 +++--------
+>>>>   1 file changed, 3 insertions(+), 8 deletions(-)
+>>>>
+>>>> diff --git a/drivers/infiniband/hw/hfi1/netdev_rx.c
+>>>> b/drivers/infiniband/hw/hfi1/netdev_rx.c
+>>>> index 58af6a454761..bd6546b52159 100644
+>>>> +++ b/drivers/infiniband/hw/hfi1/netdev_rx.c
+>>>> @@ -371,14 +371,9 @@ int hfi1_netdev_alloc(struct hfi1_devdata *dd)
+>>>>
+>>>>   void hfi1_netdev_free(struct hfi1_devdata *dd)
+>>>>   {
+>>>> -struct hfi1_netdev_priv *priv;
+>>>> -
+>>>> -if (dd->dummy_netdev) {
+>>>> -priv = hfi1_netdev_priv(dd->dummy_netdev);
+>>>> -dd_dev_info(dd, "hfi1 netdev freed\n");
+>>>> -kfree(dd->dummy_netdev);
+>>>> -dd->dummy_netdev = NULL;
+>>>> -}
+>>>> +dd_dev_info(dd, "hfi1 netdev freed\n");
+>>>> +kfree(dd->dummy_netdev);
+>>>
+>>> Dan Carpenter has reported kfree() should be free_netdev()...
+>>>
+>>> Mike
+>>>
+>>
+>> I'm OK with this patch going in and then adding a separate one to fix the
+>> kfree. Or this one can be touched up to include that as well.
 > 
-> I was wondering it was was needed in this case.
-> The patch does not really fix anything, as the function is unused. Or it
-> fixes things on a theoretical point of view.
+> Please resend it with both things fixed
 
-There is no concensus...  We should call a vote on this at Kernel
-Summit.  :P
-
-regards,
-dan carpenter
-
+Ok, will do that in v2.
+> 
+> Jason
+> 
+> 
 

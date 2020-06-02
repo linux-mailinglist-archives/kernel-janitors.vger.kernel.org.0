@@ -2,66 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5709A1EBF18
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 17:35:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AD321EBF2C
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 17:39:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726485AbgFBPfK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jun 2020 11:35:10 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42396 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726112AbgFBPfK (ORCPT
+        id S1726311AbgFBPjV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jun 2020 11:39:21 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:49756 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726112AbgFBPjV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jun 2020 11:35:10 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jg8wU-0004wo-Ar; Tue, 02 Jun 2020 15:35:06 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     David Howells <dhowells@redhat.com>, linux-afs@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org
-Subject: [PATCH][next] afs: fix double kfree on cell_name on error exit path
-Date:   Tue,  2 Jun 2020 16:35:05 +0100
-Message-Id: <20200602153505.64714-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        Tue, 2 Jun 2020 11:39:21 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 052FW32Q105146;
+        Tue, 2 Jun 2020 15:39:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=DSbMhSk8SwxhpgAbU8esEvoZolFH3pziYxtelXV4q54=;
+ b=zMUNe/3wVc2t0iNS0FHrcOZneeoox1E76XhWQ0SxVThFK9zD02pbVo+mIylWmRF/7lx3
+ Ct3IhpYmvEK7KhiAgJVShmkgJVkE9fldJVQHVuE6shhBGucp5ZQXksuGU37sBloc4h7w
+ 3yYyq63lrrQOuQ7yA74jSpzQUv5lIFOec4j3db9mOqPJKKLNXAY16LqI6FtAvqjJ2Pu0
+ Ryt/cdtemq7uKVKpj4vOa6b47tQPWR1n7A2PbS2Us1tVJU/BemmCP3U5St/wJksnZBkV
+ FpalnxmW4FTe2nfXybQAN/qHdTs956D1ant0TZROQAaEGxxJkF/7Q1J8IZGXBmfTAtOM ig== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 31dkruhrxp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 02 Jun 2020 15:39:14 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 052FY0Fc104603;
+        Tue, 2 Jun 2020 15:39:14 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 31dju1phrx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 02 Jun 2020 15:39:14 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 052Fd8SF030859;
+        Tue, 2 Jun 2020 15:39:08 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 02 Jun 2020 08:39:08 -0700
+Date:   Tue, 2 Jun 2020 18:39:00 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Ben Skeggs <bskeggs@redhat.com>,
+        David Airlie <airlied@linux.ie>, Kangjie Lu <kjlu@umn.edu>
+Subject: Re: [PATCH] drm/nouveau/clk/gm20b: Fix memory leak in gm20b_clk_new()
+Message-ID: <20200602153900.GW22511@kadam>
+References: <dd729c13-fbc8-22e7-7d8e-e3e126f66943@web.de>
+ <40d8fb01.db721.17269d3d620.Coremail.dinghao.liu@zju.edu.cn>
+ <20200602102955.GZ30374@kadam>
+ <65e3d2b7-b0ad-f387-b8fe-d83ea816a0f6@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <65e3d2b7-b0ad-f387-b8fe-d83ea816a0f6@web.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9640 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
+ phishscore=0 malwarescore=0 mlxscore=0 adultscore=0 bulkscore=0
+ suspectscore=18 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006020111
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9640 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 priorityscore=1501
+ mlxscore=0 lowpriorityscore=0 suspectscore=18 malwarescore=0 clxscore=1015
+ adultscore=0 mlxlogscore=999 cotscore=-2147483648 phishscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006020111
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Tue, Jun 02, 2020 at 01:10:34PM +0200, Markus Elfring wrote:
+> > The original patch was basically fine.
+> 
+> I propose to reconsider the interpretation of the software situation once more.
+> 
+> * Should the allocated clock object be kept usable even after
+>   a successful return from this function?
 
-The error exit path is currently kfree'ing cell_name for a second time,
-the previous kfree of this object occurred a statement earlier. Fix this
-by removing it.
+Heh.  You're right.  The patch is freeing "clk" on the success path so
+that doesn't work.
 
-Addresses-Coverity: ("Double free")
-Fixes: 6147fe6b7f8c ("afs: Detect cell aliases 3 - YFS Cells with a canonical cell name op")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- fs/afs/vl_alias.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/fs/afs/vl_alias.c b/fs/afs/vl_alias.c
-index 6c1cf702478e..093895c49c21 100644
---- a/fs/afs/vl_alias.c
-+++ b/fs/afs/vl_alias.c
-@@ -315,10 +315,8 @@ static int yfs_check_canonical_cell_name(struct afs_cell *cell, struct key *key)
- 	master = afs_lookup_cell(cell->net, cell_name, strlen(cell_name),
- 				 NULL, false);
- 	kfree(cell_name);
--	if (IS_ERR(master)) {
--		kfree(cell_name);
-+	if (IS_ERR(master))
- 		return PTR_ERR(master);
--	}
- 
- 	cell->alias_of = master; /* Transfer our ref */
- 	return 1;
--- 
-2.25.1
+regards,
+dan carpenter
 

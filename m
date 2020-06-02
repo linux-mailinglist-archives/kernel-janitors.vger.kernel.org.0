@@ -2,90 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E14A71EB2D4
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 02:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B99FD1EB325
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 03:51:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725825AbgFBA7Y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jun 2020 20:59:24 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:40716 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725793AbgFBA7Y (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jun 2020 20:59:24 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id A46C03EAA86A60DBE163;
-        Tue,  2 Jun 2020 08:59:21 +0800 (CST)
-Received: from [127.0.0.1] (10.166.215.154) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.487.0; Tue, 2 Jun 2020
- 08:59:18 +0800
-Subject: Re: [PATCH -next] IB/hfi1: Remove set but not used variable 'priv'
-To:     Jason Gunthorpe <jgg@ziepe.ca>,
-        Dennis Dalessandro <dennis.dalessandro@intel.com>
-References: <20200528075946.123480-1-yuehaibing@huawei.com>
- <MN2PR11MB396654BC46500F828609C6A3868E0@MN2PR11MB3966.namprd11.prod.outlook.com>
- <86634519-3dd8-0c6a-a8d2-19f4b986fd3d@intel.com>
- <20200601135644.GD4872@ziepe.ca>
-CC:     "Marciniszyn, Mike" <mike.marciniszyn@intel.com>,
-        Doug Ledford <dledford@redhat.com>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "Dan Carpenter (dan.carpenter@oracle.com)" <dan.carpenter@oracle.com>
-From:   Yuehaibing <yuehaibing@huawei.com>
-Message-ID: <56063ae0-30a2-6522-2b6a-86b749264e78@huawei.com>
-Date:   Tue, 2 Jun 2020 08:59:17 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+        id S1726370AbgFBBur (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jun 2020 21:50:47 -0400
+Received: from out30-43.freemail.mail.aliyun.com ([115.124.30.43]:52495 "EHLO
+        out30-43.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725940AbgFBBur (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 1 Jun 2020 21:50:47 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0U-Kjvi7_1591062644;
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0U-Kjvi7_1591062644)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Tue, 02 Jun 2020 09:50:44 +0800
+Date:   Tue, 2 Jun 2020 09:50:44 +0800
+From:   Baolin Wang <baolin.wang@linux.alibaba.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
+        iommu@lists.linux-foundation.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iommu: Improve exception handling in iommu_group_alloc()
+Message-ID: <20200602015044.GA89266@VM20190228-100.tbsite.net>
+Reply-To: Baolin Wang <baolin.wang@linux.alibaba.com>
+References: <9f8d8308-2056-8e33-7b38-0b7d96e51c3c@web.de>
 MIME-Version: 1.0
-In-Reply-To: <20200601135644.GD4872@ziepe.ca>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.166.215.154]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=gb2312
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9f8d8308-2056-8e33-7b38-0b7d96e51c3c@web.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020/6/1 21:56, Jason Gunthorpe wrote:
-> On Mon, Jun 01, 2020 at 09:45:52AM -0400, Dennis Dalessandro wrote:
->> On 5/28/2020 7:25 AM, Marciniszyn, Mike wrote:
->>>> From: YueHaibing <yuehaibing@huawei.com>
->>>> Sent: Thursday, May 28, 2020 4:00 AM
->>>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
->>>>   drivers/infiniband/hw/hfi1/netdev_rx.c | 11 +++--------
->>>>   1 file changed, 3 insertions(+), 8 deletions(-)
->>>>
->>>> diff --git a/drivers/infiniband/hw/hfi1/netdev_rx.c
->>>> b/drivers/infiniband/hw/hfi1/netdev_rx.c
->>>> index 58af6a454761..bd6546b52159 100644
->>>> +++ b/drivers/infiniband/hw/hfi1/netdev_rx.c
->>>> @@ -371,14 +371,9 @@ int hfi1_netdev_alloc(struct hfi1_devdata *dd)
->>>>
->>>>   void hfi1_netdev_free(struct hfi1_devdata *dd)
->>>>   {
->>>> -struct hfi1_netdev_priv *priv;
->>>> -
->>>> -if (dd->dummy_netdev) {
->>>> -priv = hfi1_netdev_priv(dd->dummy_netdev);
->>>> -dd_dev_info(dd, "hfi1 netdev freed\n");
->>>> -kfree(dd->dummy_netdev);
->>>> -dd->dummy_netdev = NULL;
->>>> -}
->>>> +dd_dev_info(dd, "hfi1 netdev freed\n");
->>>> +kfree(dd->dummy_netdev);
->>>
->>> Dan Carpenter has reported kfree() should be free_netdev()...
->>>
->>> Mike
->>>
->>
->> I'm OK with this patch going in and then adding a separate one to fix the
->> kfree. Or this one can be touched up to include that as well.
+On Mon, Jun 01, 2020 at 02:38:05PM +0200, Markus Elfring wrote:
+> > Optimize the error handling to free the resources correctly when
+> > failed to allocate an iommu group.
 > 
-> Please resend it with both things fixed
+> * I would not categorise the desired completion of exception handling
+>   as a software optimisation.
+> 
+> * Would you like to add the tag ¡°Fixes¡± to the commit message?
 
-Ok, will do that in v2.
+Sure.
+
 > 
-> Jason
-> 
-> 
+> * I suggest to avoid the specification of duplicate function calls.
+>   Will it be helpful to add a few jump targets?
+>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?id=3d77e6a8804abcc0504c904bd6e5cdf3a5cf8162#n455
+
+I don't think it is helpful or readable to add some jump targets here, since the exception handling is very simple here.
 

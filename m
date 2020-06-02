@@ -2,150 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84C3F1EBD66
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 15:54:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 922661EBDB7
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 16:13:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726842AbgFBNym (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jun 2020 09:54:42 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:52588 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725940AbgFBNym (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jun 2020 09:54:42 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 052DqYKO120296;
-        Tue, 2 Jun 2020 13:54:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : reply-to : mime-version : content-type;
- s=corp-2020-01-29; bh=PvGlKKbIzRg+r/rxEzHH7QUrhuv1NTZV4doWX07tn4o=;
- b=rORvsn2dvfxdda6CIal3pCOM1RbD9OnHPl26ZLw5ONJ2y0cxGoo1O22WiYU7m822AAIu
- VbcMAeWlcMFLzA8mzZ63E2Pj5g6Ds+poCt+SCZNf+1fKk0bnvglQBuF0xE//vAn3MIQU
- V3gBtSLn/Zl7Hhw4smg2Bkf1IZAci4bpgpBwYPefKwt8YzOcF2bG/kTOJte8bdgimbNt
- 1h/4Es+smv9HxxntTFWSlChEb1WdGfxKEC89iSLqJCU8akrV5qo7AonT8/SFx+OjSTf3
- HtFT8XOljBdQIZAQSL+n3FtGv7Bz7z1v+nRFD7tjtvNXGvSr6r9jAJqzak+8GYWEXTGq 7g== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 31bewqv7gp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 02 Jun 2020 13:54:19 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 052DrP2a142498;
-        Tue, 2 Jun 2020 13:54:18 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 31c12p80yc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 02 Jun 2020 13:54:18 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 052DsGZr004520;
-        Tue, 2 Jun 2020 13:54:16 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 02 Jun 2020 06:54:16 -0700
-Date:   Tue, 2 Jun 2020 16:54:09 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Zhou Wang <wangzhou1@hisilicon.com>,
-        Shukun Tan <tanshukun1@huawei.com>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        id S1727065AbgFBONK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jun 2020 10:13:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60038 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726000AbgFBONK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jun 2020 10:13:10 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DC0DE206E2;
+        Tue,  2 Jun 2020 14:13:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1591107189;
+        bh=eoCV77ebnGXc80BKlBswulqCHVzwy3/Grt/NEStAdkw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IDExaWXh/vvrizG/Ny8gDiqzvGDrYpQcN8GhkpAzbJzaksTXATbU5SYXNSgvjIlIz
+         m1RK0VgQFCQKCw1+n4suuwoqS8qGrXdEP9P8xzpzh1/f4buCReS7qyKO1NhlEhircG
+         en3LPCIuungYQaEaYLAnxz/AHEmz2OfRLLpt2Eg4=
+Date:   Tue, 2 Jun 2020 15:13:06 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        linux-spi@vger.kernel.org, Navid Emamdoost <emamd001@umn.edu>,
+        Kangjie Lu <kjlu@umn.edu>, Stephen McCamant <smccaman@umn.edu>,
+        Qiushi Wu <wu000273@umn.edu>,
+        Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] crypto: hisilicon - allow smaller reads in debugfs
-Message-ID: <20200602135409.GA59808@mwanda>
-Reply-To: b6da310b-e633-9f74-f7af-7791d803aaf5@huawei.com
+Subject: Re: [PATCH] spi: spi-ti-qspi: call pm_runtime_put on pm_runtime_get
+ failure
+Message-ID: <20200602141306.GH5684@sirena.org.uk>
+References: <26028f50-3fb8-eb08-3c9f-08ada018bf9e@web.de>
+ <20200602094947.GA5684@sirena.org.uk>
+ <1c13e0ec-e50f-9eea-5704-052d2d682727@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ik0NlRzMGhMnxrMX"
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9639 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 malwarescore=0
- adultscore=0 suspectscore=0 spamscore=0 bulkscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006020098
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9639 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 bulkscore=0
- phishscore=0 suspectscore=0 impostorscore=0 cotscore=-2147483648
- lowpriorityscore=0 mlxscore=0 adultscore=0 spamscore=0 mlxlogscore=999
- malwarescore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006020098
+In-Reply-To: <1c13e0ec-e50f-9eea-5704-052d2d682727@web.de>
+X-Cookie: We are not a clone.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Originally this code rejected any read less than 256 bytes.  There
-is no need for this artificial limit.  We should just use the normal
-helper functions to read a string from the kernel.
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-v2: Use simple_read_from_buffer().  The v1 was slightly half arsed
-because I left the original check for:
+--ik0NlRzMGhMnxrMX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-	if (*pos)
-		return 0;
+On Tue, Jun 02, 2020 at 12:02:11PM +0200, Markus Elfring wrote:
 
-So it could result in partial reads.  The new code means that if you
-want to read the buffer one byte at a time, that's fine or if you want
-to read it in one 256 byte chunk that's also fine.  Plus it deletes 21
-lines of code and is a lot cleaner.
+> > The original changelog is perfectly fine, please stop sending these.
 
- drivers/crypto/hisilicon/qm.c | 33 ++++++---------------------------
- 1 file changed, 6 insertions(+), 27 deletions(-)
+> I find this commit message improvable also according to Linux software
+> development documentation.
 
-diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
-index 9bb263cec6c30..13ccb9e29a2e1 100644
---- a/drivers/crypto/hisilicon/qm.c
-+++ b/drivers/crypto/hisilicon/qm.c
-@@ -1064,19 +1064,10 @@ static ssize_t qm_cmd_read(struct file *filp, char __user *buffer,
- 	char buf[QM_DBG_READ_LEN];
- 	int len;
- 
--	if (*pos)
--		return 0;
--
--	if (count < QM_DBG_READ_LEN)
--		return -ENOSPC;
-+	len = scnprintf(buf, QM_DBG_READ_LEN, "%s\n",
-+			"Please echo help to cmd to get help information");
- 
--	len = snprintf(buf, QM_DBG_READ_LEN, "%s\n",
--		       "Please echo help to cmd to get help information");
--
--	if (copy_to_user(buffer, buf, len))
--		return -EFAULT;
--
--	return (*pos = len);
-+	return simple_read_from_buffer(buffer, count, pos, buf, len);
- }
- 
- static void *qm_ctx_alloc(struct hisi_qm *qm, size_t ctx_size,
-@@ -2691,24 +2682,12 @@ static ssize_t qm_status_read(struct file *filp, char __user *buffer,
- {
- 	struct hisi_qm *qm = filp->private_data;
- 	char buf[QM_DBG_READ_LEN];
--	int val, cp_len, len;
--
--	if (*pos)
--		return 0;
--
--	if (count < QM_DBG_READ_LEN)
--		return -ENOSPC;
-+	int val, len;
- 
- 	val = atomic_read(&qm->status.flags);
--	len = snprintf(buf, QM_DBG_READ_LEN, "%s\n", qm_s[val]);
--	if (!len)
--		return -EFAULT;
--
--	cp_len = copy_to_user(buffer, buf, len);
--	if (cp_len)
--		return -EFAULT;
-+	len = scnprintf(buf, QM_DBG_READ_LEN, "%s\n", qm_s[val]);
- 
--	return (*pos = len);
-+	return simple_read_from_buffer(buffer, count, pos, buf, len);
- }
- 
- static const struct file_operations qm_status_fops = {
--- 
-2.26.2
+Causing people to send out new versions of things for tweaks to the
+commit log consumes time for them and everyone they're sending changes
+to.  Pushing people to make trivial rewordings of their commit logs to
+match your particular taste is not a good use of people's time.
 
+--ik0NlRzMGhMnxrMX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl7WXnIACgkQJNaLcl1U
+h9BIPAf/Qg3X33LluXMNn6+or5b8wx23/eNT76IKOCDLt2nsBUFeX0RTB14vx2Ij
+wQwNT/+zdryOjbNaDuuxsRM0DV4SawkJVlaUJ81/HDGRTzyD7LbZwDy7GMSrkhW/
+suZlkonuFDGJ07yuMaYGcGykfALQc8/37nX5+WSOX682mHkqnpzIy1uZL231RcLg
+hhccjsA7NflG4vQzHy6cdAnoRTVdXtp9EZ50jXdrQjS6BaAtJniAn9B6j7ifz8s/
+f3j0pUuLHqkXXY+yP5B8I0QWoTUkFSd/f+LL8PdwG5qfp17iswdqZoutqVwwzsOw
+aQeBit3pr2gLrZOVf6/Ehu7Je1Jnqw==
+=e8Ou
+-----END PGP SIGNATURE-----
+
+--ik0NlRzMGhMnxrMX--

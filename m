@@ -2,91 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AD321EBF2C
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 17:39:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B9C71EBF82
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 17:58:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726311AbgFBPjV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jun 2020 11:39:21 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:49756 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726112AbgFBPjV (ORCPT
+        id S1726345AbgFBP54 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jun 2020 11:57:56 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:59696 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726223AbgFBP54 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jun 2020 11:39:21 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 052FW32Q105146;
-        Tue, 2 Jun 2020 15:39:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=DSbMhSk8SwxhpgAbU8esEvoZolFH3pziYxtelXV4q54=;
- b=zMUNe/3wVc2t0iNS0FHrcOZneeoox1E76XhWQ0SxVThFK9zD02pbVo+mIylWmRF/7lx3
- Ct3IhpYmvEK7KhiAgJVShmkgJVkE9fldJVQHVuE6shhBGucp5ZQXksuGU37sBloc4h7w
- 3yYyq63lrrQOuQ7yA74jSpzQUv5lIFOec4j3db9mOqPJKKLNXAY16LqI6FtAvqjJ2Pu0
- Ryt/cdtemq7uKVKpj4vOa6b47tQPWR1n7A2PbS2Us1tVJU/BemmCP3U5St/wJksnZBkV
- FpalnxmW4FTe2nfXybQAN/qHdTs956D1ant0TZROQAaEGxxJkF/7Q1J8IZGXBmfTAtOM ig== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 31dkruhrxp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 02 Jun 2020 15:39:14 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 052FY0Fc104603;
-        Tue, 2 Jun 2020 15:39:14 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 31dju1phrx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 02 Jun 2020 15:39:14 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 052Fd8SF030859;
-        Tue, 2 Jun 2020 15:39:08 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 02 Jun 2020 08:39:08 -0700
-Date:   Tue, 2 Jun 2020 18:39:00 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Dinghao Liu <dinghao.liu@zju.edu.cn>,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ben Skeggs <bskeggs@redhat.com>,
-        David Airlie <airlied@linux.ie>, Kangjie Lu <kjlu@umn.edu>
-Subject: Re: [PATCH] drm/nouveau/clk/gm20b: Fix memory leak in gm20b_clk_new()
-Message-ID: <20200602153900.GW22511@kadam>
-References: <dd729c13-fbc8-22e7-7d8e-e3e126f66943@web.de>
- <40d8fb01.db721.17269d3d620.Coremail.dinghao.liu@zju.edu.cn>
- <20200602102955.GZ30374@kadam>
- <65e3d2b7-b0ad-f387-b8fe-d83ea816a0f6@web.de>
+        Tue, 2 Jun 2020 11:57:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1591113474;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ASapiG1/TIS7H1SxUqbkFSMoaWA/OIJ5pQnMhbATzrQ=;
+        b=UMZTjsmZxCEWul1paEA/8Xs5PMInd8rrx0akvh9oaYSxY2enBUW5SVigjQRTm+8c8qodza
+        eT5Vvf98NSXANYaeaCEeVkomOYBmkE0oas7wwLx1XM93ZGzE4jS1lNEfM1zoZ6KYE6eOkc
+        RAsiAOKLiiw7VlFG8tFIhnTXfu1/Jfo=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-274-ktdmV6otPgG0CWWrUc8lSQ-1; Tue, 02 Jun 2020 11:57:42 -0400
+X-MC-Unique: ktdmV6otPgG0CWWrUc8lSQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B14C4107B0EF;
+        Tue,  2 Jun 2020 15:57:41 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-112-138.rdu2.redhat.com [10.10.112.138])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id BE51A1BCBE;
+        Tue,  2 Jun 2020 15:57:40 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20200602153505.64714-1-colin.king@canonical.com>
+References: <20200602153505.64714-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     dhowells@redhat.com, linux-afs@lists.infradead.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH][next] afs: fix double kfree on cell_name on error exit path
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <65e3d2b7-b0ad-f387-b8fe-d83ea816a0f6@web.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9640 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
- phishscore=0 malwarescore=0 mlxscore=0 adultscore=0 bulkscore=0
- suspectscore=18 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006020111
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9640 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 priorityscore=1501
- mlxscore=0 lowpriorityscore=0 suspectscore=18 malwarescore=0 clxscore=1015
- adultscore=0 mlxlogscore=999 cotscore=-2147483648 phishscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006020111
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1504659.1591113454.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date:   Tue, 02 Jun 2020 16:57:34 +0100
+Message-ID: <1504660.1591113454@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jun 02, 2020 at 01:10:34PM +0200, Markus Elfring wrote:
-> > The original patch was basically fine.
-> 
-> I propose to reconsider the interpretation of the software situation once more.
-> 
-> * Should the allocated clock object be kept usable even after
->   a successful return from this function?
+Colin King <colin.king@canonical.com> wrote:
 
-Heh.  You're right.  The patch is freeing "clk" on the success path so
-that doesn't work.
+> From: Colin Ian King <colin.king@canonical.com>
+> =
 
-regards,
-dan carpenter
+> The error exit path is currently kfree'ing cell_name for a second time,
+> the previous kfree of this object occurred a statement earlier. Fix this
+> by removing it.
+> =
+
+> Addresses-Coverity: ("Double free")
+> Fixes: 6147fe6b7f8c ("afs: Detect cell aliases 3 - YFS Cells with a cano=
+nical cell name op")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
+I've folded it in, thanks.
+
+David
 

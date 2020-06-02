@@ -2,35 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8008D1EB62F
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 09:06:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53ED11EB6E6
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 10:00:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726130AbgFBHGa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jun 2020 03:06:30 -0400
-Received: from mout.web.de ([212.227.15.3]:56427 "EHLO mout.web.de"
+        id S1725995AbgFBIA2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jun 2020 04:00:28 -0400
+Received: from mout.web.de ([212.227.15.3]:57239 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725958AbgFBHG3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jun 2020 03:06:29 -0400
+        id S1725811AbgFBIA1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jun 2020 04:00:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591081573;
-        bh=3Bmo/FstVjMESOqr4jH3BM6qBvz/63iqicZxdkKFNGE=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=qyHztjWrawclVP5TU0teVaC5QGxpVWb2g6+NKiL9/IJ68u4ALeAq0OAYIXHDaegb7
-         d+USuaSnKKWEYUE+xaUr2Yt6cuIzmqJ4b4PMqHUL5MnKNKqaDRy7nbzi/h7ZQZ7kxN
-         CbrHXYnN/TegSSr0B15wTVHVZiNfq7Zq3IvQRVXE=
+        s=dbaedf251592; t=1591084815;
+        bh=WDTzVTHGmlp+OKn3B4aToc1JJv25StJggllptMxwqW0=;
+        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
+        b=BKyq8Jp/aP9jLSFRhzEcVlsSJ7f1HgTKEdsx/kiskfg1w+PvdD2yOykrtJO9qJKyL
+         IA8d1EIEiO4hRS/FFEiKWTdUqu/PX3Q1Wz51tCvu/rfI22YK9EcueGbkDOCT2xqxS+
+         k/dZPkFSruLwXNAP8qhi9gjW6yBrSulE+bywGcc4=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.186.246]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lecda-1jCfj12P5q-00qRoz; Tue, 02
- Jun 2020 09:06:13 +0200
-Subject: Re: iommu: Improve exception handling in iommu_group_alloc()
-To:     Baolin Wang <baolin.wang@linux.alibaba.com>,
-        iommu@lists.linux-foundation.org
-Cc:     =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <9f8d8308-2056-8e33-7b38-0b7d96e51c3c@web.de>
- <20200602015044.GA89266@VM20190228-100.tbsite.net>
- <b31fbcd1-b5f8-992b-a994-2a950ab36b61@web.de>
- <20200602055639.GB89266@VM20190228-100.tbsite.net>
+Received: from [192.168.1.2] ([2.243.186.246]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MUCz1-1jX3Rk1uEd-00RGnz; Tue, 02
+ Jun 2020 10:00:15 +0200
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Qiushi Wu <wu000273@umn.edu>, Kangjie Lu <kjlu@umn.edu>
+Subject: Re: [PATCH v2] iommu: Improve exception handling in
+ iommu_group_alloc()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,66 +70,58 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <44b4a048-ef36-f75b-5869-22e5fe4b15d2@web.de>
-Date:   Tue, 2 Jun 2020 09:06:12 +0200
+To:     Baolin Wang <baolin.wang@linux.alibaba.com>,
+        =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
+        iommu@lists.linux-foundation.org
+Message-ID: <c6f587ac-aebe-3aae-da0e-087dc7f78ac5@web.de>
+Date:   Tue, 2 Jun 2020 10:00:13 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
-In-Reply-To: <20200602055639.GB89266@VM20190228-100.tbsite.net>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:eMosH1UTbBDIg78NfuZoHK77msPCbizRxnTp/nSwYuEzfDGJ/fO
- s4PNQOqsra3BrHoLzV5UoPaHYfjWhz6V1oPiAicIFfn5b5ymE/00p5hrvDqZEhPz6nBdaBE
- qAtzbu+inpc80YtSct0V39rUTGi69f8VXRSCtyQtU6PtbVYP595EpZxQuJbpSeT2PXbTfFG
- iLlKYw7Ry4apdO0bT0e2Q==
+X-Provags-ID: V03:K1:2nsbRfza6hwFswpjoHsdOMyT2iUDhwVGN2ST+H1u/k28aNAo6eW
+ sq3+wS6MYXyYunk0ZeMmlnAZ4MH9h2DiWMXmL4a9mDUb1v1Zf2iJAOn8GNjxPK7I3Z+ozJy
+ 4g/8u0cYK356M+6v251ikTUIO+Te9g47b3t0byYt3wKVYtcuQ9y9MUkMI5cxy9XSSxrdSRH
+ ME6IFE+RqySD+SrQG7ekQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:H8Xw11KU2Kc=:WpWb356sHDumiusM8R6Jry
- 1D/cPIxGr+akDkEvm/EIHJ/o0cQZnlP0Ndgaw6u1I3gg+oe1doeU/KQ+1NSwWIs7bq0h7Ansq
- fnS91RU1rjbgl51e8iKT59mEtO3LIUJ6j7cnZ/DWQideKoMUWqUyAyZKAr2E4Y6sfKyTbKV/4
- ZoFIPp44I4YwZSRYVQk1DXGb4mvMiWHTWSjWPIAgj3Fo5VJmbMRIgOSnOOHYETWZrKnnKinjw
- IIaFoN0lwQ308fg8PIWhiMTiV6mXJ8aifouBPUaQcSSVn9KuReH2c9+TI/B6Mtc02ZWlVFK/j
- Bd2b2BFEwg8kerTdxkNRJrC48T14Sxs02I14w+MrbJSGpK/aPuuak475JOQBb6etqE0HEWhqr
- PdHCgPDoNOuowdlFTMgDj54cEkPvXGymYC1bvvGbfN8Lf+bE6lLl5jqxRxG9jh0uzVeSOooxw
- f8cxXOxlCGKevT0xGnUTlVLsXF8O3E7dCwDSH60BRPNLlNNLXbLxQmMXUwLRlrWJjopBa9lDj
- UBzhxPi8lrHLIqhnjwd7SdecFMIKAnrhYR9zNbIwddxPIoX8S1YYQy6iCblMtfkfL/RZpCW07
- Xd3msDzRJ0pvAQM4Fn5MdN2hpxSzA2fQNqqmFfUhe/J0V0ZtOuSjtts6f8CLSZyw2mjdChbCe
- 2TAZCOTRm5Ag8clx58NxUDYPeRMyzetzw0pEii4QvJ0L5zlwzbxx7+gPI3qyLfPcHMKybL+/9
- /dWjq6ZXMWuw2soclLil9Rpx+PQ8FG58qhvwPV40SLYzQppaXzttzoFYBi4sf3+PdZTAURnOD
- m7gjCMEadNTife8bNZksc9S4vALbkaRo/l3YJLq4CSlhSeqPwg2jjLTu+uGZNzPlOPfsXlD9C
- Zt/bjLmvIkkj/XUAeb7hE9REWHqZAGE3EZbYM7znP9PjHJyeGbcKJDWV0yTGJKE7MG9PmGMOQ
- OXc6fYa79nU545rZfTvnNUQDWkS76mvXe1zr6DtYEy6bo/A7niqhl33A8O45LwzCmopol4yoZ
- fvUm96qCX4Upy50KuiUgXrOGj6wP/c/gb5/Z0slNG+/P7TssGscLLGpRSiJonq4E5BWdVaqj8
- KgCl61zeubhdHRYBS/LmE9vQLgJBpn4K4w5M/DV6Ww6qMPSOCJWQlYkUtllXcn6uFrRD75fGM
- hVHgVeHYj6doIZ2oNUsn2BGwCKn62BkxDF7Ly9Gmn8CUrQQPJl5juo4Q+gOlcp+udzzXRBuVB
- C0ttB/0bpcKhucMDA
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Qa4nB0VQa90=:xozb6EhVlbPDbDEray/hyo
+ TDRSIdhZOygLp3SO9M6I0+HCjRGIIMp6zEjBcW7rMVJcMF19w+6OpSfnGlT0zMEX/dWs+Pcva
+ UsyxNYe8BR8V0I/XFnFzkvljiApnQLolCFvGbFNzVv4pqBYS9HRoXhANj5MBEcHlxZpKV1A1x
+ NAMYffO1D0NSad9ghY//BqKlHa6g82zuUD6uEKW7eQGPq3gYrJLn8fajnjdXcstdy+eVSmT8m
+ daNhszrkdjtQ8qeG8+g7xo4k6eNKYXZxO3A7BaqCLDbqhwhQhxe2/D9qwdtUYFXJ//nMGloYV
+ ZXO0CZUu63IAJdT5faK2fq7yd/ytp6gZRnFBkhvE133/NEP9ja+aA1PZPmlm/Ds91FKueslfK
+ Xm+LLLJI9Ab1uPUMsYGuL1qwxdDaX2kQ2HBqVYc2/sZfGDt/qYHDh1XdSStaQJ2FvIc8EQrvl
+ GMsRsZLON4aAbVoNkek7fhCJewkghFEo4iJ9bPduWuX81cFioBXWroCl2QA3r0wG463vp4y/U
+ 2GVVcUL0dpiEFEf2lPGZRdSp6ZnRPgvxEyFVtJlEPJNwZupHZOPog57pEGsmljhaH/FUnHcGa
+ lZKTCVJXXiMOadXx38e408Sa9e+VyJNYXLOmtF52AyuXhMdKPmydHp1Qn6Coc4ShZ7ulZHkdh
+ 6L32WT88hLhJilFPsn0WBBU6ECR1Asm+6VHbz4+jCqwPiPGHBfikFrkZIQGaPNGbo04ZhTrp4
+ TRvjY38o5MZoS9WGVS1mOevncqUWCsg1HpVEm8qotcDv3TADLV8F+B0neh0/SjMSMrOauTMtA
+ lGg3y8uyGVUSQh5zjR/OyHyfZ40w1A4GQuAShZ93dE7MeI9Z78RLSdw3Hyz/myVHNnpSLe4b4
+ Xc4TRw/7gzaYLSaw4qDUv0SsFYUcquDh/yq1SCe8HNbh/atcnT0+LkxxK8PwhOCWkam0o7t6y
+ xKQ0nYLu1zR32YF0USNGG/nb71YIFnK6VNeu4xJtkZgdPb8z1H+4Wm/9EtA5Hykm0YTJM3Lhr
+ T40t2YtHvjaIbu1fDKv+y8kcL2ml0FuKtUX5SjezCrES2Z+JqoJXSKVl/cZkFXB9QqU1CQ3Hk
+ 7V9QOy9+T/nuiiiGU8A/m7pYl9FIaaWPN0qu88bImqsBsyIrjWs+JUwsWt8owAKMnoezXuu/Z
+ rvjm/ElNI3owQ5PH5ZvZAuE1UT/idEHVP+D8mUdPlCP2fJPoXB9Hb0WhukAC3J0fTsAa76+gU
+ OLNVyCZBFST4ap4+e
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> Do you disagree to the application of the Linux coding style then
->> for the recommended exception handling?
->
-> No, that's not what I mean. My point is the exception handling in this
-> patch is simple and no need to add 'goto' statement which does not help
-> to improve readability.
+> Improve the exception handling to free the resources correctly when
+> failed to allocate an iommu group.
 
-Do we come along different programming imaginations?
+I propose to avoid the specification of duplicate function calls.
+Will it become helpful to add a few jump targets?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?id=f359287765c04711ff54fbd11645271d8e5ff763#n455
 
 
-> And I agree it is helpful for the cases where a function exits from mult=
-iple locations
-> and more same cleanup work need to do.
+> ---
+>  drivers/iommu/iommu.c | 10 ++++++++--
 
-Can this view fit also to calls of the function =E2=80=9Ckobject_put=E2=80=
-=9D?
-https://lore.kernel.org/patchwork/patch/1251326/
-https://lore.kernel.org/linux-iommu/8bfd018ef4add083a35a6a94a8da045cf3af51=
-b6.1591063271.git.baolin.wang@linux.alibaba.com/
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
-ivers/iommu/iommu.c?id=3D7cc31613734c4870ae32f5265d576ef296621343#n478
-https://elixir.bootlin.com/linux/v5.7/source/drivers/iommu/iommu.c#L478
+I suggest to replace the triple dashes before this diffstat
+by a blank line.
 
 Regards,
 Markus

@@ -2,73 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C712B1EC36F
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 22:08:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CC1C1EC38E
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 22:16:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727982AbgFBUIH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jun 2020 16:08:07 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:41464 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726130AbgFBUIG (ORCPT
+        id S1728202AbgFBUQO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jun 2020 16:16:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56634 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727794AbgFBUQO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jun 2020 16:08:06 -0400
-Received: from [192.168.42.210] ([93.22.133.243])
-        by mwinf5d52 with ME
-        id mL83220025FEkrh03L83SZ; Tue, 02 Jun 2020 22:08:04 +0200
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 02 Jun 2020 22:08:04 +0200
-X-ME-IP: 93.22.133.243
-Subject: Re: [PATCH] pinctrl: freescale: imx: Fix an error handling path in
- 'imx_pinctrl_probe()'
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     aisheng.dong@nxp.com, festevam@gmail.com, linus.walleij@linaro.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stefan@agner.ch, gary.bisson@boundarydevices.com,
-        linux-gpio@vger.kernel.org, linux-imx@nxp.com,
-        kernel@pengutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
-        linux-arm-kernel@lists.infradead.org
-References: <20200530204955.588962-1-christophe.jaillet@wanadoo.fr>
- <20200602101346.GW30374@kadam>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <9e186840-aece-cfcc-918a-8441db9f6f7b@wanadoo.fr>
-Date:   Tue, 2 Jun 2020 22:08:02 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+        Tue, 2 Jun 2020 16:16:14 -0400
+Received: from mail-vs1-xe2c.google.com (mail-vs1-xe2c.google.com [IPv6:2607:f8b0:4864:20::e2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E73B6C08C5C0
+        for <kernel-janitors@vger.kernel.org>; Tue,  2 Jun 2020 13:16:13 -0700 (PDT)
+Received: by mail-vs1-xe2c.google.com with SMTP id y123so35846vsb.6
+        for <kernel-janitors@vger.kernel.org>; Tue, 02 Jun 2020 13:16:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=eb3sWwf5IKoZQzOvkPaaI1IVQ2HjKkCnRKRFnGOH6+c=;
+        b=KhsfJG4oCqsoI9GIRhKRpIjrp+9Zk74mdmmp8aCuq2a1hgIQ/UEuenme9wTW2SXfXm
+         1/XPNUzOuTTbgBxplftFl0LAjy45v8lJBqTnN2qMlWRC6O+QVF3q+VGOlS6VSxtm8DBB
+         qv8HQFKA8f/Dkn6T68mdKjvpc314PmcVLN85M=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=eb3sWwf5IKoZQzOvkPaaI1IVQ2HjKkCnRKRFnGOH6+c=;
+        b=l3YgPu8AEPqVYck4aKUWc24ddWkdgB3UbHlcJLj/rly84GDD55n3C5mJUKVao7Gg9o
+         930iyhqHtaY/zwEUDZcKxr93eZJT3cZ6rEtQyFVUbkj8sTxD0qVp8ESTbwziPTZRZHQw
+         +MablOgQ1tOky3O/sxBVn0X/8Tl2znVxf7lPjMcEHEILe38RHfdf8IlQ8r7AkCU45p4A
+         648y6uzKrpnBFdm0vn4SCpWwnvT7y5B4pGPjD/uLKUfo+QuZTowdQV3EFQJz/OkOycBv
+         Zp1iv7yXvvmIDAJf/EVW7PXTC2Zqx39rzsNtH00grd7KLbY4K2vtipj7jLYvbt8stAw/
+         49dQ==
+X-Gm-Message-State: AOAM530QlVQ5gzTrOcZPOtZAUpgU24L8FyLfgF1UeeCkcY5cVcPFn8wf
+        sTjw5NVl91OgmKfCWZRNBuyeyk6DUlyzaV0zce1wKA==
+X-Google-Smtp-Source: ABdhPJwWxSm48xu2IYedE3HjBxqBh3jhrLAkDus9F6Z+pbc6ymhCS+e1o72yry/mjVZJVupAG6T+jS2ABjv5v1psG+w=
+X-Received: by 2002:a67:22c1:: with SMTP id i184mr6737005vsi.119.1591128972715;
+ Tue, 02 Jun 2020 13:16:12 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200602101346.GW30374@kadam>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+References: <20200602052104.7795-1-lukas.bulwahn@gmail.com> <828311d2-61ea-42cb-1449-a53f3772543d@roeck-us.net>
+In-Reply-To: <828311d2-61ea-42cb-1449-a53f3772543d@roeck-us.net>
+From:   Julius Werner <jwerner@chromium.org>
+Date:   Tue, 2 Jun 2020 13:16:01 -0700
+Message-ID: <CAODwPW_oxDxF_5-icRs0eaRVLgtP+bDc_OSKa=EcfeSp=c6Fag@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: rectify entry in ARM SMC WATCHDOG DRIVER
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Julius Werner <jwerner@chromium.org>,
+        Evan Benn <evanbenn@chromium.org>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        LINUX-WATCHDOG <linux-watchdog@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 02/06/2020 à 12:13, Dan Carpenter a écrit :
-> On Sat, May 30, 2020 at 10:49:55PM +0200, Christophe JAILLET wrote:
->> 'pinctrl_unregister()' should not be called to undo
->> 'devm_pinctrl_register_and_init()', it is already handled by the framework.
->>
->> This simplifies the error handling paths of the probe function.
->> The 'imx_free_resources()' can be removed as well.
->>
->> Fixes: a51c158bf0f7 ("pinctrl: imx: use radix trees for groups and functions")
->> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->> ---
-> You didn't introduce this but the:
->
-> 	ipctl->input_sel_base = of_iomap(np, 0);
->
-> should be changed to devm_of_iomap().
-Done as a separated patch.
-
-Thx for the review and the comment.
-
-
-CJ
-
-> regards,
-> dan carpenter
-
-
+Reviewed-by: Julius Werner <jwerner@chromium.org>

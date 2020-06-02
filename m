@@ -2,30 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53ED11EB6E6
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 10:00:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96AA31EB793
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 10:41:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725995AbgFBIA2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jun 2020 04:00:28 -0400
-Received: from mout.web.de ([212.227.15.3]:57239 "EHLO mout.web.de"
+        id S1726606AbgFBIk4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jun 2020 04:40:56 -0400
+Received: from mout.web.de ([212.227.15.3]:42407 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725811AbgFBIA1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jun 2020 04:00:27 -0400
+        id S1726594AbgFBIkz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jun 2020 04:40:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591084815;
-        bh=WDTzVTHGmlp+OKn3B4aToc1JJv25StJggllptMxwqW0=;
+        s=dbaedf251592; t=1591087235;
+        bh=P4Sw0AHLKTABiGZ3F2jMUCU5oo6aGFO8jS0VkJZhLf0=;
         h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=BKyq8Jp/aP9jLSFRhzEcVlsSJ7f1HgTKEdsx/kiskfg1w+PvdD2yOykrtJO9qJKyL
-         IA8d1EIEiO4hRS/FFEiKWTdUqu/PX3Q1Wz51tCvu/rfI22YK9EcueGbkDOCT2xqxS+
-         k/dZPkFSruLwXNAP8qhi9gjW6yBrSulE+bywGcc4=
+        b=gQRcnLNOPSlN1xXwb2GNhU8D5PxUACixEv8vfXRDthHA0f/JOgUEfNKrpD6z52602
+         MkYXyeNcY/YJPNMS+xCXu31xtYkcI7nKD9+HqRPB+F9bb7wuuJ+ztYR1s85yidA7/g
+         4jQatirh4klWlmgeufGTCr2Ui3MllqhmjcuKkhhk=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.186.246]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MUCz1-1jX3Rk1uEd-00RGnz; Tue, 02
- Jun 2020 10:00:15 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Qiushi Wu <wu000273@umn.edu>, Kangjie Lu <kjlu@umn.edu>
-Subject: Re: [PATCH v2] iommu: Improve exception handling in
- iommu_group_alloc()
+Received: from [192.168.1.2] ([2.243.186.246]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MhDRB-1jKMtO20cj-00MIdK; Tue, 02
+ Jun 2020 10:40:35 +0200
+Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
+        Qiushi Wu <wu000273@umn.edu>, Mark Brown <broonie@kernel.org>,
+        Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] spi: spi-ti-qspi: call pm_runtime_put on pm_runtime_get
+ failure
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -70,58 +74,60 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-To:     Baolin Wang <baolin.wang@linux.alibaba.com>,
-        =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
-        iommu@lists.linux-foundation.org
-Message-ID: <c6f587ac-aebe-3aae-da0e-087dc7f78ac5@web.de>
-Date:   Tue, 2 Jun 2020 10:00:13 +0200
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        linux-spi@vger.kernel.org
+Message-ID: <26028f50-3fb8-eb08-3c9f-08ada018bf9e@web.de>
+Date:   Tue, 2 Jun 2020 10:40:33 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-X-Provags-ID: V03:K1:2nsbRfza6hwFswpjoHsdOMyT2iUDhwVGN2ST+H1u/k28aNAo6eW
- sq3+wS6MYXyYunk0ZeMmlnAZ4MH9h2DiWMXmL4a9mDUb1v1Zf2iJAOn8GNjxPK7I3Z+ozJy
- 4g/8u0cYK356M+6v251ikTUIO+Te9g47b3t0byYt3wKVYtcuQ9y9MUkMI5cxy9XSSxrdSRH
- ME6IFE+RqySD+SrQG7ekQ==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Xee8jVqmdupQA1Q8ogP5YuiQtLRQ4I4+pAbq5AURMwE8RLGuIP9
+ 7LiM7EiHiZ0HPJX8AmzBBrkCaIpy4/QiphB0ibCeXQNCGZiBeUqfIGC7VsfZXpeVYaVBq5t
+ AED9UZ4ALHL9qXC+b9ssxB0/9ca+3zmUGQgO5h9Ad/V3N2fTj5Zb+wlU5Ojw1pM4/46qSTB
+ 0amh2Iqt7Tbm53IEpLYMQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Qa4nB0VQa90=:xozb6EhVlbPDbDEray/hyo
- TDRSIdhZOygLp3SO9M6I0+HCjRGIIMp6zEjBcW7rMVJcMF19w+6OpSfnGlT0zMEX/dWs+Pcva
- UsyxNYe8BR8V0I/XFnFzkvljiApnQLolCFvGbFNzVv4pqBYS9HRoXhANj5MBEcHlxZpKV1A1x
- NAMYffO1D0NSad9ghY//BqKlHa6g82zuUD6uEKW7eQGPq3gYrJLn8fajnjdXcstdy+eVSmT8m
- daNhszrkdjtQ8qeG8+g7xo4k6eNKYXZxO3A7BaqCLDbqhwhQhxe2/D9qwdtUYFXJ//nMGloYV
- ZXO0CZUu63IAJdT5faK2fq7yd/ytp6gZRnFBkhvE133/NEP9ja+aA1PZPmlm/Ds91FKueslfK
- Xm+LLLJI9Ab1uPUMsYGuL1qwxdDaX2kQ2HBqVYc2/sZfGDt/qYHDh1XdSStaQJ2FvIc8EQrvl
- GMsRsZLON4aAbVoNkek7fhCJewkghFEo4iJ9bPduWuX81cFioBXWroCl2QA3r0wG463vp4y/U
- 2GVVcUL0dpiEFEf2lPGZRdSp6ZnRPgvxEyFVtJlEPJNwZupHZOPog57pEGsmljhaH/FUnHcGa
- lZKTCVJXXiMOadXx38e408Sa9e+VyJNYXLOmtF52AyuXhMdKPmydHp1Qn6Coc4ShZ7ulZHkdh
- 6L32WT88hLhJilFPsn0WBBU6ECR1Asm+6VHbz4+jCqwPiPGHBfikFrkZIQGaPNGbo04ZhTrp4
- TRvjY38o5MZoS9WGVS1mOevncqUWCsg1HpVEm8qotcDv3TADLV8F+B0neh0/SjMSMrOauTMtA
- lGg3y8uyGVUSQh5zjR/OyHyfZ40w1A4GQuAShZ93dE7MeI9Z78RLSdw3Hyz/myVHNnpSLe4b4
- Xc4TRw/7gzaYLSaw4qDUv0SsFYUcquDh/yq1SCe8HNbh/atcnT0+LkxxK8PwhOCWkam0o7t6y
- xKQ0nYLu1zR32YF0USNGG/nb71YIFnK6VNeu4xJtkZgdPb8z1H+4Wm/9EtA5Hykm0YTJM3Lhr
- T40t2YtHvjaIbu1fDKv+y8kcL2ml0FuKtUX5SjezCrES2Z+JqoJXSKVl/cZkFXB9QqU1CQ3Hk
- 7V9QOy9+T/nuiiiGU8A/m7pYl9FIaaWPN0qu88bImqsBsyIrjWs+JUwsWt8owAKMnoezXuu/Z
- rvjm/ElNI3owQ5PH5ZvZAuE1UT/idEHVP+D8mUdPlCP2fJPoXB9Hb0WhukAC3J0fTsAa76+gU
- OLNVyCZBFST4ap4+e
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ODODpRg23Ik=:B3nRjOy2nFp9BF5hswpiI7
+ n8gaObQtgDkcjMX1tx8/xn/dlRKPwh5Pw8pF6O62y0XLf1TXdygW1vSbTk+CPvovouP5zJLnl
+ hlUYfamqfA8/BhriDtvblrtpPw9eRSv5R76gWLnDUGCW2sDmyxEsJPUD3uO86DUVVLMxB66EN
+ xfbeAtVhyQ9PtKCVwwHupyKpVUgItqeIYbX/I6XoKAyjzaoGVDhLz5KREGwaiQjftbOh7TbRb
+ QPyeO4zmdw92k+UxdB2j3+59Z/AXMyCanDDsoh8aJjThByRiIa0uQqaW96VgSE/gvMl53Goi5
+ MaTeKzUKk9kXbsIeEgCRy9W5rVdh/JhVCegjkNIt9ab/SS2gRVeVi+BTa7gtJkDDbHxFq0waB
+ GvAMQVzlPJk/LL1Y4BkxGQXn+1Q5AkoZyD23yYL/yM3eCrJlAVST6eGjbByjwy6cXVsNtGSc3
+ Fr4l4HXsXFuWZudCl8f/ka9fUJP9N7+XMymEfPXY7EdVOsaE1FLq2TNAztIjMJ52clmi8x4yR
+ xLFeMiOinfZnxB411YNWnthQJdX9i30yD76C3KKWUTIHVO+9mjlQZvmC88FFdYVfY36N2A1CB
+ 8kRi5McFPsYhOR2InXGO8QB5SG2U6frJTBKA78PebRXABs4226DhQLoZbbsgmtF/On5kWfjkb
+ e5jn9/282HtaBa/2G2vPvfTCHf0BvYrWk5SMa8aiaP90LO0MLlOX+yrIpa8aWpzcC+o2sYNJ2
+ d6ZmQxMVOO03z5j7r0AgRWNYCUL6YfgciGV6MzOhrWWJBYQhLE6oulxNuttWkT2h7tNjsLXgi
+ t+U4rBzmRnu69temCXIG3DygLxonykUR4GmNEFQpGyLjKqcLGcwwnpCabgX+46aOk5zzCscAT
+ iMaNm9ezuCO/u3oF56nSQZCkkvfzItsbdMAFqoHTjhpj3GJ3YbIu27IpEtE+DFJE8zYa2Ekwo
+ NlCcm99dyGseELgaEDnTYKhH/ZdfQabnqamoKU75tn+eIMlAXuIT/DZU2euXluXYl2FnusyqL
+ Ag091GWrimsad0RPZY9T0+DhXKDFzK3gvZyRA6w0WLIrA6Nu0sY7JAWr9W53JvpaHbOdsjTOl
+ EaO1fKibCN+WUvIWcEcPE5sWRm4UQywr7vf9j2YaYNeZkwQ+5qLAgTY90COE223kGiumD+eF8
+ JJb9cWMRzNEdFy9BZG5R3qIXfbSyQFFDhdmzt9maXoVZ/wQd9W5RRTnApyaMeZbh93FP0QdjK
+ q+iSxoVUD7wqaWPF6
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Improve the exception handling to free the resources correctly when
-> failed to allocate an iommu group.
+> The counter is incremented via pm_runtime_get even in failure case.
+> To correct the counter call pm_runtime_put in case of failure, too.
 
-I propose to avoid the specification of duplicate function calls.
-Will it become helpful to add a few jump targets?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?id=f359287765c04711ff54fbd11645271d8e5ff763#n455
+How do you think about a wording variant like the following?
+
+   Change description:
+   The PM runtime reference counter is generally incremented by a call of
+   the function =E2=80=9Cpm_runtime_get_sync=E2=80=9D.
+   Thus call the function =E2=80=9Cpm_runtime_put_autosuspend=E2=80=9D als=
+o in one error case
+   to keep the reference counting consistent.
 
 
-> ---
->  drivers/iommu/iommu.c | 10 ++++++++--
-
-I suggest to replace the triple dashes before this diffstat
-by a blank line.
+Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=
+e?
 
 Regards,
 Markus

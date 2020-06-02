@@ -2,32 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 879111EBF98
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 18:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D0FE1EC0DB
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 19:20:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726580AbgFBQF0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jun 2020 12:05:26 -0400
-Received: from mout.web.de ([212.227.17.11]:36423 "EHLO mout.web.de"
+        id S1726589AbgFBRUs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jun 2020 13:20:48 -0400
+Received: from mout.web.de ([212.227.17.11]:43961 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726140AbgFBQFZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jun 2020 12:05:25 -0400
+        id S1726019AbgFBRUr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jun 2020 13:20:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591113912;
-        bh=RVIJhnmYHVzwEIV6eBW7bKgScuuqxOdFPaqgSLjJePY=;
+        s=dbaedf251592; t=1591118434;
+        bh=vzoyCQAVhDVRG128Qg5VrOsZZSGwD/IaCEQIgguYR/k=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=GZCHiMkgngHgty2QAIBuZ3lo8UoYeCO7M4JDFQuMLtkJfulXIYaEzRflK7Bcw4X7L
-         B6eu0ZGZb9iA+EAaR+jhcom9BedOONX7l2AFO2JgRAdGes462XHdzK4wrY+kSbTQV9
-         c6bE32ODhwU3ekdZkHL2H5HiTd69AHYRfqvfOIsI=
+        b=l6z8ud1KAiU5N+b9C+nmGxSQxBiNBONjivhnkXqiKOx5tqb9AGpHjM6vHhyQNl07r
+         gakM7xUNAQOFSoSodhWBIBKGSvxtB8iFC2xrt/xR8uNy9dItG/d5HJe2vKVNDJiNtf
+         EuA9KCd1NRanbmd+Nwl3ZhB76UhnkvZryBUVxuFA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.243.186.246]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1My6lR-1ilpUl1bot-00zRtJ; Tue, 02
- Jun 2020 18:05:12 +0200
-To:     Lai Jiangshan <laijs@linux.alibaba.com>,
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MWz8l-1jVYeh1GTx-00XUqQ; Tue, 02
+ Jun 2020 19:20:34 +0200
+To:     Wang Hai <wanghai38@huawei.com>, linuxppc-dev@lists.ozlabs.org
+Cc:     Andrew Donnellan <ajd@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Frederic Barrat <fbarrat@linux.ibm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ian Munsie <imunsie@au1.ibm.com>, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Cc:     Lai Jiangshan <jiangshanlai@gmail.com>,
-        linux-kernel@vger.kernel.org, Tejun Heo <tj@kernel.org>
-Subject: Re: [PATCH v2] workqueue: ensure all flush_work() completed when
- being destroyed
+Subject: Re: [PATCH] cxl: Fix kobject memory leak in cxl_sysfs_afu_new_cr()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -72,76 +74,66 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <52adbed0-57ae-7af6-a673-2111e4d42252@web.de>
-Date:   Tue, 2 Jun 2020 18:05:11 +0200
+Message-ID: <b9791ff3-8397-f6e9-ca88-59c9bbe8c78f@web.de>
+Date:   Tue, 2 Jun 2020 19:20:32 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Xu/PwYxXryyG1PnNCbc1YWRuI5ag9zFwCP9TOJXxxEBHNaeKsQJ
- X6OBPJ1aGcLlqcA1Rmhcw2RBFjEqDse77tdcXQXlWlVBU98OxR9NXdgI1R6MdOSprxYbCHP
- CNqdS5T5+jiLRxVhGOZWNNJ3wdJbBxCa9+Ku8vqqRTnE5f+hkbiUokAtVER3Hb5mqN3yBz8
- ytHdDFTn2tOwDSykeYeHg==
+X-Provags-ID: V03:K1:GXgW0Cj5LnEMpxP3UD/IYVpnnIdAdXbfa/5xLeUwq9XKXYBFO1+
+ oKcn+E+yM3LDjCr2WbsYIjAAmJ0O+xkEssw9E/5V5X6WQgDqbMVK94WwJL45xusTWjyAsDT
+ 99AAZ0Zp3/vkQq7wlVcJF1fY+aDQMO8z//z1ftE9scc5G5HpWkfJE3HzJkgBRPvOXWGn8v5
+ 6uirGFn64ctMNa2IAY/YA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+HNJP0C/Dtk=:mLymU//VRWxPlMGWK7eGqO
- X9s7tasDipi4XTDG+h2WPh+kZcpGWDSgVp/1MAQMijHhO9KHXxFR4oOVydDeswiDyuo2ZVk6P
- eTGx7V1LRg0RjmtXcvKN/3nLxk3o92kWRrthFiC0xbDtsoj4xDiazPBjRu45OVXraVFxrxkZg
- PORvj1UidCb8/8CNpoJ40i48YiNV4nahO4973dRPb9/enJAZ3Dcf3kYzNWvUID7Ig4js2eIPU
- HOGlDkB7RgwgO8Rqgo+fhil8nfLQY+Vwp21v1akXHSkNSycP+tCjQHSkabBf01f+a3bAkPPEx
- /Mnh8UcBLZbe5FOjNwTLs7qJIaUE8AoPtj097nyaxToMxk/7KETKfW7HLW3iD9FyHq5m6qFu/
- Y0t72EpzyHefnvJGpmb42+3yF/yoiON5CyDNg1v6BA9CFRbd2WFbO/VsjayuXPu0NHzmqf0a8
- /YwaODj92SEcl0VkcNb6HIC8A3hT4z9y6iYgL47xinXKP/sb32gXjR7zA0B0fYq89VfQr00vN
- m0IQEwD1+3E8rrAqfcDdn6DecrUT/pYNTHwry6te3jCbzVkkPAbW1E0AR+3ZNJ2UdrIdS3jIM
- nKbAWTQu5SiVI9J5+L0a2ExqyUBXT5P9IWA7TwJ8286yQRHUCOue2TsRrSiZL8UZMIXHZeiv9
- bQAahktrN/ZvOGs3zqFO3BjkJELiZify1CxXD2HcezYCZnA/PrkNH5/O2GyskI59Xkrq6MEdc
- SnS2Ffi4c8y2gJyBgyvGnbd4ploecg+hMv2tA7By3FGPC0llmeCzUpEmL33XMqqGGoSQuXVS5
- KYMcD7fSTrezs1oqKOge2M+ecCID/eWIeVcT3EdTCeU2ppTj++ix75DBjjomQZyMg8zjbLu+m
- dep/qm9ySMtqtmWnVpb3qjeGLncMpCl7U9g5EFZbUuqGyXE4pNYFq9sJjZLPdjBzMC4lvI/x7
- viQRhnHINBg9r/97/NBLV3EnYXGW2+xY5UL/eKibq2X/TIl9KLQX4Hz+xe7ib7B56GdKwKtdl
- pliO9boAGOIuJL+Ub/PqhPpZlKHQQpTFERwbXnoAAmQWUJyvSEPyPEGnqnR4DMv6aHefsBScS
- NEgA3+HJl8GK4rmkYF508A0Ik4fp8geosvEOz7eyhUNAM0v+aPyw/QiCN24K4pjvOz9ammcYC
- GsNmhha37k3w7k5zrdzlvTziOvn383WcCF6ZpiXFMKyQZ6jmIWAc6FunxcixKS71550x6fkVl
- uyvpX6/z0teX0lKzp
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Vq9OeyU7w2g=:Fpn5ZTmBdR99Z5AhGWdjGi
+ nRdPbvxmV8UODpIcg1QWz2JVLyn7ZdfSrPU8XMwiIW8NL/E46N+rFm4zFbgQd6qspcmJodtJU
+ jgZa4VhOcc5CiqMRISNzfwUFd6ELGh/hUSetd6FlCIz6orkGmS6nj50rmA6HWWy5SZAGRts2F
+ ZaTMzEsl20ODnSZ4UV3aMEfkIroIXFoHXfRaMkp+LmKqNEH+blt1GPoLgrahnh9V39N3r0OqH
+ DVvgmXlwUzruOVq6/+NANn8NK84toF58/KDXJ+e7tIgvpofwlyKjHyNzAyJO7BaKmAQQKt9AL
+ i64NJSP6I8l+RAvzGqUgXCvpjriPqaikA7RZbP/lIKCWfpwywJ4sleZp57FAkgkm7HbfxWBzz
+ Idip8gtcaFY3yEqrN2GIp1ysHbXLsczAd/bCfJraL4ulkwbXGt+dbJzeq1SWp2sLm250ieqNw
+ t3QOkyMAtLE15OjS0z4KUZS97s5GW9C8ZAwbTkzrMBFPUv4DHikTHwUoGaMK2ZmrN5w1KJTyj
+ 3bCfKwFpxa6EpkoHM45yR0sE43h2u71O+lRFMoEkJ6/dB8AzlCAQpdsLfgslXbwS0d1FS5ax/
+ tQXcQBRAxSe0opWfD4r0404yO3ZOD7mg0YjqYWS2rqq20tl1UQC5uMnz3O3TuZxXyM42m5iT+
+ IPJThl2S0RD8SkvFXNdTwPr19rO+k3xocoFi+NGLNo8xBatqKSI2H35q3nEjg3NizFkTjhj7l
+ VoVsKILai07odxlf1FUuP0+kmx7myoEwxoG0lW4fRoWoY86MUTa2XBB5aXlmc1LOut2n+gZYx
+ TKmdtjCaXP3FSJaa8e7IWcBu/WiLQt8pfdL3CPYii73AeiFt3wNkfIZgFbnRAOlvmqSNeLnlU
+ wwzg0C8rRfUZNoIlvawVXtRsTmb4+G/mOUZPi3f5GZHgGKGK8cpZtu2a6AVkbdHY/0J1YVZQI
+ 1RLC3cxpYemTW3e/so+YsT2/b+96vvggA78lKKn3dpF85BUmA7MjRNx8aFSfsxP4gkK/mfLQz
+ bQErQo2S+hsQg0sdm5iY3IfiYQyw0X9m+VebHjP3jd1DI4xoJQke91MX/dzFKSE70QvkMOmGZ
+ lm3XdDo09pXfGz/HwNnMInMBbk9XIVFET6r8DHgXzEN5KmSs1HOnylrvEW3ZMR9egq0b8nlHa
+ rR0XQWsRddGQpJWMZMddR9khA3W7Qxe3SdG2OQQIqIBrDZlCIcWzF4GzVPluLCb4NufGlAsa0
+ SBggMH+M9YqNBcBi2
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Please avoid a typo for the patch subject.
+> Fix it by adding a call to kobject_put() in the error path of
+> kobject_init_and_add().
+
+Thanks for another completion of the exception handling.
+
+Would an other patch subject be a bit nicer?
 
 
-> But
-e22bee782b3b("=E2=80=A6")
+=E2=80=A6
+> +++ b/drivers/misc/cxl/sysfs.c
+> @@ -624,7 +624,7 @@ static struct afu_config_record *cxl_sysfs_afu_new_c=
+r(struct cxl_afu *afu, int c
+>  	rc =3D kobject_init_and_add(&cr->kobj, &afu_config_record_type,
+>  				  &afu->dev.kobj, "cr%i", cr->cr);
+>  	if (rc)
+> -		goto err;
+> +		goto err1;
+=E2=80=A6
 
-Perhaps small adjustments?:
-But commit e22bee782b3b ("=E2=80=A6")
-
-
-> and the wokenup wq-user code
-
-=E2=80=A6 woken-up =E2=80=A6
-
-
-> can be scheduled eariler than =E2=80=A6
-
-=E2=80=A6 earlier =E2=80=A6
-
-
-> Changed from V1:
-> 	Change from flush_no_color based mechanism to atomic+completion
-
-Is there a need to reflect the versioning also in the patch subject?
-
-
-> 	based as TJ suggested.
-
-May the real name be specified?
-
-
-Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=
-e?
+Can an other label be more reasonable here?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/coding-style.rst?id=3Df359287765c04711ff54fbd11645271d=
+8e5ff763#n465
 
 Regards,
 Markus

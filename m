@@ -2,56 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93B431EB588
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 07:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A34E1EB5B8
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jun 2020 08:17:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725921AbgFBF4n (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jun 2020 01:56:43 -0400
-Received: from out30-43.freemail.mail.aliyun.com ([115.124.30.43]:48031 "EHLO
-        out30-43.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725787AbgFBF4n (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jun 2020 01:56:43 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R941e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e07425;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0U-LpR9d_1591077399;
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0U-LpR9d_1591077399)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 02 Jun 2020 13:56:40 +0800
-Date:   Tue, 2 Jun 2020 13:56:39 +0800
-From:   Baolin Wang <baolin.wang@linux.alibaba.com>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     iommu@lists.linux-foundation.org,
-        =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: iommu: Improve exception handling in iommu_group_alloc()
-Message-ID: <20200602055639.GB89266@VM20190228-100.tbsite.net>
-Reply-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-References: <9f8d8308-2056-8e33-7b38-0b7d96e51c3c@web.de>
- <20200602015044.GA89266@VM20190228-100.tbsite.net>
- <b31fbcd1-b5f8-992b-a994-2a950ab36b61@web.de>
+        id S1726000AbgFBGRD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jun 2020 02:17:03 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:34478 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725616AbgFBGRD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jun 2020 02:17:03 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id CDB40BC41E81E25A4047;
+        Tue,  2 Jun 2020 14:16:54 +0800 (CST)
+Received: from localhost (10.166.215.154) by DGGEMS402-HUB.china.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server id 14.3.487.0; Tue, 2 Jun 2020
+ 14:16:44 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <mike.marciniszyn@intel.com>, <dennis.dalessandro@intel.com>,
+        <dledford@redhat.com>, <jgg@ziepe.ca>,
+        <sadanand.warrier@intel.com>, <grzegorz.andrejczuk@intel.com>,
+        <yuehaibing@huawei.com>
+CC:     <linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <dan.carpenter@oracle.com>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] IB/hfi1: Use free_netdev() in hfi1_netdev_free()
+Date:   Tue, 2 Jun 2020 14:16:35 +0800
+Message-ID: <20200602061635.31224-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
+In-Reply-To: <20200601135644.GD4872@ziepe.ca>
+References: <20200601135644.GD4872@ziepe.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b31fbcd1-b5f8-992b-a994-2a950ab36b61@web.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Type: text/plain
+X-Originating-IP: [10.166.215.154]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jun 02, 2020 at 07:01:02AM +0200, Markus Elfring wrote:
-> >> * I suggest to avoid the specification of duplicate function calls.
-> >>   Will it be helpful to add a few jump targets?
-> >>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?id=3d77e6a8804abcc0504c904bd6e5cdf3a5cf8162#n455
-> >
-> > I don't think it is helpful or readable to add some jump targets here,
-> > since the exception handling is very simple here.
-> 
-> Do you disagree to the application of the Linux coding style then
-> for the recommended exception handling?
+dummy_netdev shold be freed by free_netdev() instead of
+kfree(). Also remove unneeded variable 'priv'
 
-No, that's not what I mean. My point is the exception handling in this
-patch is simple and no need to add 'goto' statement which does not help
-to improve readability. And I agree it is helpful for the cases where a
-function exits from multiple locations and more same cleanup work need
-to do.
+Fixes: 4730f4a6c6b2 ("IB/hfi1: Activate the dummy netdev")
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/infiniband/hw/hfi1/netdev_rx.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/drivers/infiniband/hw/hfi1/netdev_rx.c b/drivers/infiniband/hw/hfi1/netdev_rx.c
+index 58af6a454761..63688e85e8da 100644
+--- a/drivers/infiniband/hw/hfi1/netdev_rx.c
++++ b/drivers/infiniband/hw/hfi1/netdev_rx.c
+@@ -371,12 +371,9 @@ int hfi1_netdev_alloc(struct hfi1_devdata *dd)
+ 
+ void hfi1_netdev_free(struct hfi1_devdata *dd)
+ {
+-	struct hfi1_netdev_priv *priv;
+-
+ 	if (dd->dummy_netdev) {
+-		priv = hfi1_netdev_priv(dd->dummy_netdev);
+ 		dd_dev_info(dd, "hfi1 netdev freed\n");
+-		kfree(dd->dummy_netdev);
++		free_netdev(dd->dummy_netdev);
+ 		dd->dummy_netdev = NULL;
+ 	}
+ }
+-- 
+2.17.1
+
 

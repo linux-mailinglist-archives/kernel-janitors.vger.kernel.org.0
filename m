@@ -2,72 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66E701ECC6E
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 11:19:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82C471ECCB7
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 11:39:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726625AbgFCJTk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jun 2020 05:19:40 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:59694 "EHLO
-        mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725881AbgFCJTj (ORCPT
+        id S1726066AbgFCJjo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Jun 2020 05:39:44 -0400
+Received: from stargate.chelsio.com ([12.32.117.8]:44367 "EHLO
+        stargate.chelsio.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725854AbgFCJjo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jun 2020 05:19:39 -0400
-Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 7AA73803083B;
-        Wed,  3 Jun 2020 09:19:36 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at baikalelectronics.ru
-Received: from mail.baikalelectronics.ru ([127.0.0.1])
-        by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id xlDcL2gyq2Ni; Wed,  3 Jun 2020 12:19:35 +0300 (MSK)
-Date:   Wed, 3 Jun 2020 12:19:34 +0300
-From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To:     Colin King <colin.king@canonical.com>
-CC:     Serge Semin <fancer.lancer@gmail.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, <linux-clk@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH][next] clk: baikal-t1: fix spelling mistake
- "Uncompatible" -> "Incompatible"
-Message-ID: <20200603091934.vt5skqdzy6gnc5rk@mobilestation>
-References: <20200602121030.39132-1-colin.king@canonical.com>
+        Wed, 3 Jun 2020 05:39:44 -0400
+Received: from [10.193.177.165] (sicon-nithya-lt.asicdesigners.com [10.193.177.165] (may be forged))
+        by stargate.chelsio.com (8.13.8/8.13.8) with ESMTP id 0539db3c003822;
+        Wed, 3 Jun 2020 02:39:38 -0700
+Subject: Re: [bug report] crypto/chtls: IPv6 support for inline TLS
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     kernel-janitors@vger.kernel.org
+References: <20200603090637.GA1760819@mwanda>
+From:   Vinay Kumar Yadav <vinay.yadav@chelsio.com>
+Message-ID: <95b9547e-baea-54f6-5fa3-311dad9f578b@chelsio.com>
+Date:   Wed, 3 Jun 2020 15:12:35 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20200602121030.39132-1-colin.king@canonical.com>
-X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
+In-Reply-To: <20200603090637.GA1760819@mwanda>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jun 02, 2020 at 01:10:30PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in a pr_err error message. Fix it.
+Hi Dan,
 
-Thanks!
+I will be fixing it in my next patch.
+Thanks for pointing out.
 
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-
+On 6/3/2020 2:36 PM, Dan Carpenter wrote:
+> Hello Vinay Kumar Yadav,
 > 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/clk/baikal-t1/clk-ccu-div.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> The patch 6abde0b24122: "crypto/chtls: IPv6 support for inline TLS"
+> from Jun 2, 2020, leads to the following static checker warning:
 > 
-> diff --git a/drivers/clk/baikal-t1/clk-ccu-div.c b/drivers/clk/baikal-t1/clk-ccu-div.c
-> index b479156e5e9b..f141fda12b09 100644
-> --- a/drivers/clk/baikal-t1/clk-ccu-div.c
-> +++ b/drivers/clk/baikal-t1/clk-ccu-div.c
-> @@ -316,7 +316,7 @@ static struct ccu_div_data *ccu_div_create_data(struct device_node *np)
->  		data->rst_num = ARRAY_SIZE(sys_rst_map);
->  		data->rst_map = sys_rst_map;
->  	} else {
-> -		pr_err("Uncompatible DT node '%s' specified\n",
-> +		pr_err("Incompatible DT node '%s' specified\n",
->  			of_node_full_name(np));
->  		ret = -EINVAL;
->  		goto err_kfree_data;
-> -- 
-> 2.25.1
+> 	drivers/crypto/chelsio/chtls/chtls_cm.c:110 chtls_find_netdev()
+> 	warn: inconsistent indenting
+> 
+> drivers/crypto/chelsio/chtls/chtls_cm.c
+>      92  static struct net_device *chtls_find_netdev(struct chtls_dev *cdev,
+>      93                                              struct sock *sk)
+>      94  {
+>      95          struct net_device *ndev = cdev->ports[0];
+>      96          struct net_device *temp;
+>      97          int addr_type;
+>      98
+>      99          switch (sk->sk_family) {
+>     100          case PF_INET:
+>     101                  if (likely(!inet_sk(sk)->inet_rcv_saddr))
+>     102                          return ndev;
+>     103                  ndev = ip_dev_find(&init_net, inet_sk(sk)->inet_rcv_saddr);
+>     104                  break;
+>     105          case PF_INET6:
+>     106                  addr_type = ipv6_addr_type(&sk->sk_v6_rcv_saddr);
+>     107                  if (likely(addr_type == IPV6_ADDR_ANY))
+>     108                          return ndev;
+>     109
+>     110          for_each_netdev_rcu(&init_net, temp) {
+> 
+> Probably this should be indented another tab.
+> 
+>     111                  if (ipv6_chk_addr(&init_net, (struct in6_addr *)
+>     112                                    &sk->sk_v6_rcv_saddr, temp, 1)) {
+>     113                          ndev = temp;
+>     114                          break;
+>     115                  }
+>     116          }
+>     117          break;
+>     118          default:
+>     119                  return NULL;
+>     120          }
+>     121
+>     122          if (!ndev)
+>     123                  return NULL;
+>     124
+>     125          if (is_vlan_dev(ndev))
+>     126                  return vlan_dev_real_dev(ndev);
+>     127          return ndev;
+>     128  }
+> 
+> regards,
+> dan carpenter
 > 

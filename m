@@ -2,85 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 426571EC759
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 04:32:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BC9E1EC7A7
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 05:01:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725920AbgFCCbx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jun 2020 22:31:53 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:45570 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725810AbgFCCbx (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jun 2020 22:31:53 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0532SVpu178301;
-        Wed, 3 Jun 2020 02:31:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=u2aJoUxMgAN+vkHGkDQfKC/5UfOa0XaTL0uXb+xpki8=;
- b=fd54wUT69gpvcYoNP79aEwygpXkqcE1JAlsPL1LFHs9dxWwzdUyNyr74GWCpxBpW3yMB
- QiorkJSbkFEJiU40ytmP4N9Z6ltVsETkI3YzToAZB6EAx+HwmEAqQpXN7E6qE31ckWWn
- 2DYfdEcxPDx14JOsZAI9/s17mjcQLUgsNor+Q5Xdd9FhyH6FVphN9e/QKFGYxgpJbu50
- OxoDD9GkwhG42Wfhx3yv7LGVSwH55gRDh0pUZZcXpwbarnGMpxuIZTusdtzDtpO3QbW9
- MPTrk+ntrWPPhEMXFfz8PnxX/x+glJENN44d00ntFUOUwnGlOdmiUTseHZTAOLEA+PY1 Vg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 31bewqxw8w-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 03 Jun 2020 02:31:47 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0532RwhP063159;
-        Wed, 3 Jun 2020 02:31:46 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 31c25qpmet-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 03 Jun 2020 02:31:46 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0532Vjg3032613;
-        Wed, 3 Jun 2020 02:31:45 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 02 Jun 2020 19:31:45 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     QLogic-Storage-Upstream@cavium.com, linux-scsi@vger.kernel.org,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        Colin King <colin.king@canonical.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] scsi: qedf: remove redundant initialization of variable rc
-Date:   Tue,  2 Jun 2020 22:31:35 -0400
-Message-Id: <159114947917.26776.1378073901882312431.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200527115242.172344-1-colin.king@canonical.com>
-References: <20200527115242.172344-1-colin.king@canonical.com>
+        id S1725855AbgFCDBj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jun 2020 23:01:39 -0400
+Received: from ozlabs.org ([203.11.71.1]:51817 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725780AbgFCDBi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jun 2020 23:01:38 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 49cDFr0mZBz9sTD;
+        Wed,  3 Jun 2020 13:01:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1591153296;
+        bh=oNX5+B3yN7rD8ZhFo8Gqpc+HpYbEV/fR85vMqUwAnmA=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=ezkeEDVoIrEXgihjwswT53YYSm9b7aQCc+/JKPjZpEmY1rvyJIiesqBN14sEIS1Nj
+         BOp7gC6V9J6tMJj1elQfy6mN714ToP2lD9LDGXcHbBdtwSRmo6gV00sOILCOrQ4A4k
+         bqUqjTvGWHvx7dwn2iD5CJjeDExgLjOr29A8ItNC1D6hjHwvCtSp/4zauh4PI30Gui
+         vCLInUu5PGr4veb3dqsHKFTMiNW57iveP4Jg4hKKqJXo/qfXy2tBDnfZJvpNh3+zNo
+         ofutgsqEpo3kc0rHtz+QIKbMZ/SNf4j/UCv+lmscprOxnTm1URoX1hasM2WsfeBk/N
+         fSMMHk1LRk9IQ==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     "wanghai \(M\)" <wanghai38@huawei.com>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        linuxppc-dev@lists.ozlabs.org
+Cc:     Andrew Donnellan <ajd@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Frederic Barrat <fbarrat@linux.ibm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ian Munsie <imunsie@au1.ibm.com>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] cxl: Fix kobject memory leak in cxl_sysfs_afu_new_cr()
+In-Reply-To: <25ad528b-beaf-820f-9738-ea304dcbc0d7@huawei.com>
+References: <b9791ff3-8397-f6e9-ca88-59c9bbe8c78f@web.de> <25ad528b-beaf-820f-9738-ea304dcbc0d7@huawei.com>
+Date:   Wed, 03 Jun 2020 13:02:00 +1000
+Message-ID: <877dwoj1hz.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9640 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0 spamscore=0
- malwarescore=0 bulkscore=0 mlxscore=0 phishscore=0 mlxlogscore=902
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006030017
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9640 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 bulkscore=0
- phishscore=0 suspectscore=0 impostorscore=0 cotscore=-2147483648
- lowpriorityscore=0 mlxscore=0 adultscore=0 spamscore=0 mlxlogscore=957
- malwarescore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006030017
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 27 May 2020 12:52:42 +0100, Colin King wrote:
+"wanghai (M)" <wanghai38@huawei.com> writes:
+> =E5=9C=A8 2020/6/3 1:20, Markus Elfring =E5=86=99=E9=81=93:
+>>> Fix it by adding a call to kobject_put() in the error path of
+>>> kobject_init_and_add().
+>> Thanks for another completion of the exception handling.
+>>
+>> Would an other patch subject be a bit nicer?
+> Thanks for the guidance, I will perfect this description and send a v2
+>>
+>> =E2=80=A6
+>>> +++ b/drivers/misc/cxl/sysfs.c
+>>> @@ -624,7 +624,7 @@ static struct afu_config_record *cxl_sysfs_afu_new_=
+cr(struct cxl_afu *afu, int c
+>>>   	rc =3D kobject_init_and_add(&cr->kobj, &afu_config_record_type,
+>>>   				  &afu->dev.kobj, "cr%i", cr->cr);
+>>>   	if (rc)
+>>> -		goto err;
+>>> +		goto err1;
+>> =E2=80=A6
+>>
+>> Can an other label be more reasonable here?
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+Documentation/process/coding-style.rst?id=3Df359287765c04711ff54fbd11645271=
+d8e5ff763#n465
+> I just used the original author's label, should I replace all his labels=
+=20
+> like'err','err1' with reasonable one.
 
-> The variable rc is being initialized with a value that is never read
-> and it is being updated later with a new value.  The initialization is
-> redundant and can be removed.
+No.
 
-Applied to 5.8/scsi-queue, thanks!
-
-[1/1] scsi: qedf: Remove redundant initialization of variable rc
-      https://git.kernel.org/mkp/scsi/c/89523cb8a67c
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+cheers

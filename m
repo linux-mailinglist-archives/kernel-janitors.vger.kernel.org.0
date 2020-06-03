@@ -2,68 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9302C1EC6E6
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 03:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 743BB1EC742
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 04:22:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728306AbgFCBms (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jun 2020 21:42:48 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:49994 "EHLO huawei.com"
+        id S1725936AbgFCCWH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jun 2020 22:22:07 -0400
+Received: from mail.zju.edu.cn ([61.164.42.155]:60592 "EHLO zju.edu.cn"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726894AbgFCBms (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jun 2020 21:42:48 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 607BF51E75753D39F3C8;
-        Wed,  3 Jun 2020 09:42:46 +0800 (CST)
-Received: from [127.0.0.1] (10.166.215.205) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.487.0; Wed, 3 Jun 2020
- 09:42:42 +0800
-Subject: Re: [PATCH] cxl: Fix kobject memory leak in cxl_sysfs_afu_new_cr()
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        <linuxppc-dev@lists.ozlabs.org>
-CC:     Andrew Donnellan <ajd@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Frederic Barrat <fbarrat@linux.ibm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ian Munsie <imunsie@au1.ibm.com>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-References: <b9791ff3-8397-f6e9-ca88-59c9bbe8c78f@web.de>
-From:   "wanghai (M)" <wanghai38@huawei.com>
-Message-ID: <25ad528b-beaf-820f-9738-ea304dcbc0d7@huawei.com>
-Date:   Wed, 3 Jun 2020 09:42:41 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1725789AbgFCCWH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jun 2020 22:22:07 -0400
+Received: by ajax-webmail-mail-app2 (Coremail) ; Wed, 3 Jun 2020 10:21:47
+ +0800 (GMT+08:00)
+X-Originating-IP: [222.205.72.4]
+Date:   Wed, 3 Jun 2020 10:21:47 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From:   dinghao.liu@zju.edu.cn
+To:     "Dan Carpenter" <dan.carpenter@oracle.com>
+Cc:     "Markus Elfring" <Markus.Elfring@web.de>,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Ben Skeggs" <bskeggs@redhat.com>,
+        "David Airlie" <airlied@linux.ie>, "Kangjie Lu" <kjlu@umn.edu>
+Subject: Re: Re: [PATCH] drm/nouveau/clk/gm20b: Fix memory leak in
+ gm20b_clk_new()
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.10 build 20190906(84e8bf8f)
+ Copyright (c) 2002-2020 www.mailtech.cn zju.edu.cn
+In-Reply-To: <20200602153900.GW22511@kadam>
+References: <dd729c13-fbc8-22e7-7d8e-e3e126f66943@web.de>
+ <40d8fb01.db721.17269d3d620.Coremail.dinghao.liu@zju.edu.cn>
+ <20200602102955.GZ30374@kadam>
+ <65e3d2b7-b0ad-f387-b8fe-d83ea816a0f6@web.de>
+ <20200602153900.GW22511@kadam>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 MIME-Version: 1.0
-In-Reply-To: <b9791ff3-8397-f6e9-ca88-59c9bbe8c78f@web.de>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.166.215.205]
-X-CFilter-Loop: Reflected
+Message-ID: <5d580094.f274c.17277fc124e.Coremail.dinghao.liu@zju.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: by_KCgDnX5c8Cddeg0ppAA--.16819W
+X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAgkABlZdtOb8QgABsr
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJTRUUUbGvS07vEb7Iv0x
+        C_Cr1lV2xY67kC6x804xWlV2xY67CY07I20VC2zVCF04k26cxKx2IYs7xG6rWj6s0DMIAI
+        bVAFxVCF77xC64kEw24lV2xY67C26IkvcIIF6IxKo4kEV4ylV2xY628lY4IE4IxF12IF4w
+        CS07vE84x0c7CEj48ve4kI8wCS07vE84ACjcxK6xIIjxv20xvE14v26w1j6s0DMIAIbVA2
+        z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW0oVCq3wCS07vE84ACjcxK6I8E87Iv67AKxVW0oV
+        Cq3wCS07vE84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DMIAIbVAS0I0E0xvYzxvE52x0
+        82IY62kv0487MIAIbVAqx4xG64xvF2IEw4CE5I8CrVC2j2WlV2xY6cIj6xIIjxv20xvE14
+        v26r1j6r18MIAIbVAv7VC2z280aVAFwI0_Jr0_Gr1lV2xY6cvjeVCFs4IE7xkEbVWUJVW8
+        JwCS07vE7I0Y64k_MIAIbVCY02Avz4vE14v_Gr1lV2xY6xkI7II2jI8vz4vEwIxGrwCS07
+        vE42xK82IY6x8ErcxFaVAv8VW8uw4UJr1UMIAIbVCF72vE77IF4wCS07vE4I8I3I0E4IkC
+        6x0Yz7v_Jr0_Gr1lV2xY6I8I3I0E5I8CrVAFwI0_Jr0_Jr4lV2xY6I8I3I0E7480Y4vE14
+        v26r106r1rMIAIbVC2zVAF1VAY17CE14v26r1q6r43MIAIbVCI42IY6xIIjxv20xvE14v2
+        6r1j6r1xMIAIbVCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lV2xY6IIF0xvE42xK8V
+        AvwI8IcIk0rVWrZr1j6s0DMIAIbVCI42IY6I8E87Iv67AKxVWUJVW8JwCS07vEIxAIcVC2
+        z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73U
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-在 2020/6/3 1:20, Markus Elfring 写道:
->> Fix it by adding a call to kobject_put() in the error path of
->> kobject_init_and_add().
-> Thanks for another completion of the exception handling.
->
-> Would an other patch subject be a bit nicer?
-Thanks for the guidance, I will perfect this description and send a v2
->
-> …
->> +++ b/drivers/misc/cxl/sysfs.c
->> @@ -624,7 +624,7 @@ static struct afu_config_record *cxl_sysfs_afu_new_cr(struct cxl_afu *afu, int c
->>   	rc = kobject_init_and_add(&cr->kobj, &afu_config_record_type,
->>   				  &afu->dev.kobj, "cr%i", cr->cr);
->>   	if (rc)
->> -		goto err;
->> +		goto err1;
-> …
->
-> Can an other label be more reasonable here?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?id=f359287765c04711ff54fbd11645271d8e5ff763#n465
-I just used the original author's label, should I replace all his labels 
-like'err','err1' with reasonable one.
-
+Cj4gT24gVHVlLCBKdW4gMDIsIDIwMjAgYXQgMDE6MTA6MzRQTSArMDIwMCwgTWFya3VzIEVsZnJp
+bmcgd3JvdGU6Cj4gPiA+IFRoZSBvcmlnaW5hbCBwYXRjaCB3YXMgYmFzaWNhbGx5IGZpbmUuCj4g
+PiAKPiA+IEkgcHJvcG9zZSB0byByZWNvbnNpZGVyIHRoZSBpbnRlcnByZXRhdGlvbiBvZiB0aGUg
+c29mdHdhcmUgc2l0dWF0aW9uIG9uY2UgbW9yZS4KPiA+IAo+ID4gKiBTaG91bGQgdGhlIGFsbG9j
+YXRlZCBjbG9jayBvYmplY3QgYmUga2VwdCB1c2FibGUgZXZlbiBhZnRlcgo+ID4gICBhIHN1Y2Nl
+c3NmdWwgcmV0dXJuIGZyb20gdGhpcyBmdW5jdGlvbj8KPiAKPiBIZWguICBZb3UncmUgcmlnaHQu
+ICBUaGUgcGF0Y2ggaXMgZnJlZWluZyAiY2xrIiBvbiB0aGUgc3VjY2VzcyBwYXRoIHNvCj4gdGhh
+dCBkb2Vzbid0IHdvcmsuCj4gCgpCZW4gaGFzIGV4cGxhaW5lZCB0aGlzIHByb2JsZW06Cmh0dHBz
+Oi8vbG9yZS5rZXJuZWwub3JnL3BhdGNod29yay9wYXRjaC8xMjQ5NTkyLwpTaW5jZSB0aGUgY2Fs
+bGVyIHdpbGwgY2hlY2sgInBjbGsiIG9uIGZhaWx1cmUsIHdlIGRvbid0IG5lZWQgdG8gZnJlZQoi
+Y2xrIiBpbiBnbTIwYl9jbGtfbmV3KCkgYW5kIEkgdGhpbmsgdGhpcyBwYXRjaCBpcyBubyBsb25n
+ZXIgbmVlZGVkLgoKUmVnYXJkcywKRGluZ2hhbw==

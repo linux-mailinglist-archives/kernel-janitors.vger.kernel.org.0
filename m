@@ -2,107 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E9991ECD63
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 12:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 244EF1ECD9C
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 12:33:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726862AbgFCKUW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jun 2020 06:20:22 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:42092 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725881AbgFCKUV (ORCPT
+        id S1725943AbgFCKdl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Jun 2020 06:33:41 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:44324 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725882AbgFCKdk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jun 2020 06:20:21 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 053AIMUL159618;
-        Wed, 3 Jun 2020 10:20:09 GMT
+        Wed, 3 Jun 2020 06:33:40 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 053AWKjt189975;
+        Wed, 3 Jun 2020 10:33:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=N40z633LNowyCQVNEvl6MS9FPGIJdrJqcLP6SfUn1iU=;
- b=SYspAE/UOq2dSwHesE26TxlSOM7c7iuzeEuyQaoQ3FjjOp5thyrkn0jKdA62PuN8Afkp
- zvJrolXDF1TmmiKQIuPqnHWDd9p76QyOhNeuwwCBoLoTjpJXzrz2XcYoqIQ7p/J7m0we
- nKvf2KYDhWKDhx/b70W+BprHtwO3Afl5y+irGtNyPc6Dl7RkNCyEcprXLKRIS2BwhIBn
- CGiIljTDGSZk1aQ2fikecQkcI0juS2UdDXpd46i7o/ODIYf5P76JnWT+2rCGAonhlMAf
- 3NnlA+LfYNi76NeW/N6IzGSjINEjL0CzDSLmOBxw/jXOJPIl+oEw+r7kEltu4G2kTD7j 5g== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 31bewr0j9t-1
+ bh=i83UHZA/ju/dd2Ebu/hEqlipBVxwiTDKMwOBwGXEIWg=;
+ b=R02QdH4PrqVhf84uqypGWfi+K2T+/rkhFrEp+duhRMNmSNCpRcTkocDP7ss1D5TjCtVM
+ GIG46dp5Ck3HwH+vxO9Yebz2+tWjFDnY9K9xb4SRYB44oDppgu7VxdmVFh5OVoennvEs
+ 1UCdXiuXilzZZQ23bEXzEj/mCFJHwjWgbH9EXjlCMJaG81Hurle1iq7sv+G823NztvWG
+ Rb65JLFrGJMF8t0SyiWc/QezL0G9TSSwWBKEzTc24UDGO83VC7PsukPwfrgM8t9ttTcN
+ 1Sb5pXUKt0VRWlWMsVv0WYs73gy+AFylbV1p1pzqvlnegiiw3C0tEQjnu3MA2/JMTlNq Mw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 31dkrunkwf-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 03 Jun 2020 10:20:09 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 053AI3RL136497;
-        Wed, 3 Jun 2020 10:20:08 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 31dju30nr6-1
+        Wed, 03 Jun 2020 10:33:37 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 053ATJ3F025379;
+        Wed, 3 Jun 2020 10:33:36 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 31c1dysw38-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 03 Jun 2020 10:20:08 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 053AK6Mm029263;
-        Wed, 3 Jun 2020 10:20:06 GMT
+        Wed, 03 Jun 2020 10:33:36 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 053AXZPh017815;
+        Wed, 3 Jun 2020 10:33:35 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 03 Jun 2020 03:20:05 -0700
-Date:   Wed, 3 Jun 2020 13:19:58 +0300
+        with ESMTP ; Wed, 03 Jun 2020 03:33:35 -0700
+Date:   Wed, 3 Jun 2020 13:33:29 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Nishka Dasgupta <nishkadg.linux@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Michael Straube <straube.linux@gmail.com>,
-        Denis Straghkov <d.straghkov@ispras.ru>,
-        Nachammai Karuppiah <nachukannan@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] Staging: rtl8723bs: prevent buffer overflow in
- update_sta_support_rate()
-Message-ID: <20200603101958.GA1845750@mwanda>
+To:     Jassi Brar <jassisinghbrar@gmail.com>
+Cc:     Lee Jones <lee.jones@linaro.org>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] mailbox: mailbox-test: Fix a potential Oops on allocation
+ failure
+Message-ID: <20200603103329.GB1845750@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9640 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
- phishscore=0 malwarescore=0 mlxscore=0 adultscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006030080
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=918
+ spamscore=0 bulkscore=0 adultscore=0 suspectscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006030082
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9640 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 bulkscore=0
- phishscore=0 suspectscore=0 impostorscore=0 cotscore=-2147483648
- lowpriorityscore=0 mlxscore=0 adultscore=0 spamscore=0 mlxlogscore=999
- malwarescore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006030080
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 priorityscore=1501
+ mlxscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 clxscore=1011
+ adultscore=0 mlxlogscore=959 cotscore=-2147483648 phishscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006030082
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "ie_len" variable is in the 0-255 range and it comes from the
-network.  If it's over NDIS_802_11_LENGTH_RATES_EX (16) then that will
-lead to memory corruption.
+The callers are expecting NULL on error so if we return an error pointer
+it eventually results in an Oops.
 
-Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/staging/rtl8723bs/core/rtw_wlan_util.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mailbox/mailbox-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/rtl8723bs/core/rtw_wlan_util.c b/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
-index 69bcd172b2987..a3ea7ce3e12e9 100644
---- a/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
-@@ -1824,12 +1824,14 @@ int update_sta_support_rate(struct adapter *padapter, u8 *pvar_ie, uint var_ie_l
- 	pIE = (struct ndis_80211_var_ie *)rtw_get_ie(pvar_ie, _SUPPORTEDRATES_IE_, &ie_len, var_ie_len);
- 	if (!pIE)
- 		return _FAIL;
-+	if (ie_len > sizeof(pmlmeinfo->FW_sta_info[cam_idx].SupportedRates))
-+		return _FAIL;
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index 4555d678fadda..51640a7999e6b 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -327,7 +327,7 @@ mbox_test_request_channel(struct platform_device *pdev, const char *name)
  
- 	memcpy(pmlmeinfo->FW_sta_info[cam_idx].SupportedRates, pIE->data, ie_len);
- 	supportRateNum = ie_len;
+ 	client = devm_kzalloc(&pdev->dev, sizeof(*client), GFP_KERNEL);
+ 	if (!client)
+-		return ERR_PTR(-ENOMEM);
++		return NULL;
  
- 	pIE = (struct ndis_80211_var_ie *)rtw_get_ie(pvar_ie, _EXT_SUPPORTEDRATES_IE_, &ie_len, var_ie_len);
--	if (pIE)
-+	if (pIE && (ie_len <= sizeof(pmlmeinfo->FW_sta_info[cam_idx].SupportedRates) - supportRateNum))
- 		memcpy((pmlmeinfo->FW_sta_info[cam_idx].SupportedRates + supportRateNum), pIE->data, ie_len);
- 
- 	return _SUCCESS;
+ 	client->dev		= &pdev->dev;
+ 	client->rx_callback	= mbox_test_receive_message;
 -- 
 2.26.2
 

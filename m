@@ -2,94 +2,133 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 244EF1ECD9C
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 12:33:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7800C1ECE7E
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 13:37:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725943AbgFCKdl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jun 2020 06:33:41 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:44324 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725882AbgFCKdk (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jun 2020 06:33:40 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 053AWKjt189975;
-        Wed, 3 Jun 2020 10:33:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=i83UHZA/ju/dd2Ebu/hEqlipBVxwiTDKMwOBwGXEIWg=;
- b=R02QdH4PrqVhf84uqypGWfi+K2T+/rkhFrEp+duhRMNmSNCpRcTkocDP7ss1D5TjCtVM
- GIG46dp5Ck3HwH+vxO9Yebz2+tWjFDnY9K9xb4SRYB44oDppgu7VxdmVFh5OVoennvEs
- 1UCdXiuXilzZZQ23bEXzEj/mCFJHwjWgbH9EXjlCMJaG81Hurle1iq7sv+G823NztvWG
- Rb65JLFrGJMF8t0SyiWc/QezL0G9TSSwWBKEzTc24UDGO83VC7PsukPwfrgM8t9ttTcN
- 1Sb5pXUKt0VRWlWMsVv0WYs73gy+AFylbV1p1pzqvlnegiiw3C0tEQjnu3MA2/JMTlNq Mw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 31dkrunkwf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 03 Jun 2020 10:33:37 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 053ATJ3F025379;
-        Wed, 3 Jun 2020 10:33:36 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 31c1dysw38-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 03 Jun 2020 10:33:36 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 053AXZPh017815;
-        Wed, 3 Jun 2020 10:33:35 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 03 Jun 2020 03:33:35 -0700
-Date:   Wed, 3 Jun 2020 13:33:29 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jassi Brar <jassisinghbrar@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>, linux-kernel@vger.kernel.org,
+        id S1726066AbgFCLg7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Jun 2020 07:36:59 -0400
+Received: from bilbo.ozlabs.org ([203.11.71.1]:38639 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725855AbgFCLg6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 3 Jun 2020 07:36:58 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 49cRhQ32M6z9sRW;
+        Wed,  3 Jun 2020 21:36:54 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1591184216;
+        bh=39iM+Z0hy1K0/qYyBuIARyEAO9/YU5aPM+R2qwBBQdM=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=iSCF64D3VHl6DjoxeOmJly7GrKK7olGjrkPSTmU13cAavhy+66gUU1DkpkLu6DRhA
+         dOcNk5WDPMUw6onS6I/BuveZOoRtNU5omaxf/slwrH4RgyK7lXdhmEI02l4/jB48Yx
+         sie1sk8T8cwMp3+S/5lfrT53Bsh8T48dGVYWlhAKiehfAkNdjpk+binImctf09Kwl8
+         j1+gbPacA7Md5/Wgvt1hjJ+SaDHCgTt0okDBjy/8V/umMzZrjOAHQG9kBwr9WX1OkS
+         a/iavYuuubkL/1q+RvMST1pTr+wdqku++XwGUGIOLg+B+9bXuhbCP12n6OFWXnjCrC
+         z7BoTqDzCEDtg==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Markus Elfring <Markus.Elfring@web.de>,
+        Liao Pingfang <liao.pingfang@zte.com.cn>,
+        linuxppc-dev@lists.ozlabs.org, Joe Perches <joe@perches.com>,
+        Allison Randal <allison@lohutok.net>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Colin Cross <ccross@android.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kees Cook <keescook@chromium.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Wang Liang <wang.liang82@zte.com.cn>,
+        Xue Zhihong <xue.zhihong@zte.com.cn>,
+        Yi Wang <wang.yi59@zte.com.cn>,
+        LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] mailbox: mailbox-test: Fix a potential Oops on allocation
- failure
-Message-ID: <20200603103329.GB1845750@mwanda>
+Subject: Re: [PATCH] powerpc/nvram: Replace kmalloc with kzalloc in the error message
+In-Reply-To: <20200602114158.GB30374@kadam>
+References: <c3d22d89-9133-30aa-8270-c515df214963@web.de> <87imgai394.fsf@mpe.ellerman.id.au> <a3c158fa-3829-f38a-9202-8984b5ef5f21@web.de> <87a71liucy.fsf@mpe.ellerman.id.au> <20200602114158.GB30374@kadam>
+Date:   Wed, 03 Jun 2020 21:37:18 +1000
+Message-ID: <87tuzsgz2p.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9640 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=918
- spamscore=0 bulkscore=0 adultscore=0 suspectscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006030082
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9640 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 priorityscore=1501
- mlxscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 clxscore=1011
- adultscore=0 mlxlogscore=959 cotscore=-2147483648 phishscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006030082
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The callers are expecting NULL on error so if we return an error pointer
-it eventually results in an Oops.
+Dan Carpenter <dan.carpenter@oracle.com> writes:
+> On Tue, Jun 02, 2020 at 09:23:57PM +1000, Michael Ellerman wrote:
+>> Markus Elfring <Markus.Elfring@web.de> writes:
+>> >>>> Please just remove the message instead, it's a tiny allocation that=
+'s
+>> >>>> unlikely to ever fail, and the caller will print an error anyway.
+>> >>>
+>> >>> How do you think about to take another look at a previous update sug=
+gestion
+>> >>> like the following?
+>> >>>
+>> >>> powerpc/nvram: Delete three error messages for a failed memory alloc=
+ation
+>> >>> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/00845261-852=
+8-d011-d3b8-e9355a231d3a@users.sourceforge.net/
+>> >>> https://lore.kernel.org/linuxppc-dev/00845261-8528-d011-d3b8-e9355a2=
+31d3a@users.sourceforge.net/
+>> >>> https://lore.kernel.org/patchwork/patch/752720/
+>> >>> https://lkml.org/lkml/2017/1/19/537
+>> >>
+>> >> That deleted the messages from nvram_scan_partitions(), but neither of
+>> >> the callers of nvram_scan_paritions() check its return value or print
+>> >> anything if it fails. So removing those messages would make those
+>> >> failures silent which is not what we want.
+>> >
+>> > * How do you think about information like the following?
+>> >   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/t=
+ree/Documentation/process/coding-style.rst?id=3Df359287765c04711ff54fbd1164=
+5271d8e5ff763#n883
+>> > =E2=80=9C=E2=80=A6
+>> > These generic allocation functions all emit a stack dump on failure wh=
+en used
+>> > without __GFP_NOWARN so there is no use in emitting an additional fail=
+ure
+>> > message when NULL is returned.
+>> > =E2=80=A6=E2=80=9D
+>>=20
+>> Are you sure that's actually true?
+>>=20
+>> A quick look around in slub.c leads me to:
+>>=20
+>> slab_out_of_memory(struct kmem_cache *s, gfp_t gfpflags, int nid)
+>> {
+>> #ifdef CONFIG_SLUB_DEBUG
+>
+> You first have to enable EXPERT mode before you can disable SLUB_DEBUG.
 
-Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/mailbox/mailbox-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I see ~175 defconfigs with CONFIG_EXPERT=3Dy, so that's not really a high
+bar unfortunately.
 
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index 4555d678fadda..51640a7999e6b 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -327,7 +327,7 @@ mbox_test_request_channel(struct platform_device *pdev, const char *name)
- 
- 	client = devm_kzalloc(&pdev->dev, sizeof(*client), GFP_KERNEL);
- 	if (!client)
--		return ERR_PTR(-ENOMEM);
-+		return NULL;
- 
- 	client->dev		= &pdev->dev;
- 	client->rx_callback	= mbox_test_receive_message;
--- 
-2.26.2
+And there's 38 defconfigs with SLUB_DEBUG=3Dn.
 
+So for kernels built with those defconfigs that documentation is plain
+wrong and misleading.
+
+And then there's SLOB which doesn't dump stack anywhere AFAICS.
+
+In fact slab_out_of_memory() doesn't emit a stack dump either, it just
+prints a bunch of slab related info!
+
+> So that hopefully means you *really* want to save memory.  It doesn't
+> make sense to add a bunch of memory wasting printks when the users want
+> to go to extra lengths to conserve memory.
+
+I agree that in many cases those printks are just a waste of space in
+the source and the binary and should be removed.
+
+But I dislike being told "these generic allocation functions all emit a
+stack dump" only to find out that actually they don't, they print some
+other debug info, and depending on config settings they actually don't
+print _anything_.
+
+cheers

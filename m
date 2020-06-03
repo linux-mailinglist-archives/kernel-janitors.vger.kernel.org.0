@@ -2,74 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 743BB1EC742
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 04:22:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 426571EC759
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 04:32:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725936AbgFCCWH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jun 2020 22:22:07 -0400
-Received: from mail.zju.edu.cn ([61.164.42.155]:60592 "EHLO zju.edu.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725789AbgFCCWH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jun 2020 22:22:07 -0400
-Received: by ajax-webmail-mail-app2 (Coremail) ; Wed, 3 Jun 2020 10:21:47
- +0800 (GMT+08:00)
-X-Originating-IP: [222.205.72.4]
-Date:   Wed, 3 Jun 2020 10:21:47 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   dinghao.liu@zju.edu.cn
-To:     "Dan Carpenter" <dan.carpenter@oracle.com>
-Cc:     "Markus Elfring" <Markus.Elfring@web.de>,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Ben Skeggs" <bskeggs@redhat.com>,
-        "David Airlie" <airlied@linux.ie>, "Kangjie Lu" <kjlu@umn.edu>
-Subject: Re: Re: [PATCH] drm/nouveau/clk/gm20b: Fix memory leak in
- gm20b_clk_new()
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.10 build 20190906(84e8bf8f)
- Copyright (c) 2002-2020 www.mailtech.cn zju.edu.cn
-In-Reply-To: <20200602153900.GW22511@kadam>
-References: <dd729c13-fbc8-22e7-7d8e-e3e126f66943@web.de>
- <40d8fb01.db721.17269d3d620.Coremail.dinghao.liu@zju.edu.cn>
- <20200602102955.GZ30374@kadam>
- <65e3d2b7-b0ad-f387-b8fe-d83ea816a0f6@web.de>
- <20200602153900.GW22511@kadam>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+        id S1725920AbgFCCbx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jun 2020 22:31:53 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:45570 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725810AbgFCCbx (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jun 2020 22:31:53 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0532SVpu178301;
+        Wed, 3 Jun 2020 02:31:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=u2aJoUxMgAN+vkHGkDQfKC/5UfOa0XaTL0uXb+xpki8=;
+ b=fd54wUT69gpvcYoNP79aEwygpXkqcE1JAlsPL1LFHs9dxWwzdUyNyr74GWCpxBpW3yMB
+ QiorkJSbkFEJiU40ytmP4N9Z6ltVsETkI3YzToAZB6EAx+HwmEAqQpXN7E6qE31ckWWn
+ 2DYfdEcxPDx14JOsZAI9/s17mjcQLUgsNor+Q5Xdd9FhyH6FVphN9e/QKFGYxgpJbu50
+ OxoDD9GkwhG42Wfhx3yv7LGVSwH55gRDh0pUZZcXpwbarnGMpxuIZTusdtzDtpO3QbW9
+ MPTrk+ntrWPPhEMXFfz8PnxX/x+glJENN44d00ntFUOUwnGlOdmiUTseHZTAOLEA+PY1 Vg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 31bewqxw8w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 03 Jun 2020 02:31:47 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0532RwhP063159;
+        Wed, 3 Jun 2020 02:31:46 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 31c25qpmet-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 03 Jun 2020 02:31:46 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0532Vjg3032613;
+        Wed, 3 Jun 2020 02:31:45 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 02 Jun 2020 19:31:45 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     QLogic-Storage-Upstream@cavium.com, linux-scsi@vger.kernel.org,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        Colin King <colin.king@canonical.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] scsi: qedf: remove redundant initialization of variable rc
+Date:   Tue,  2 Jun 2020 22:31:35 -0400
+Message-Id: <159114947917.26776.1378073901882312431.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200527115242.172344-1-colin.king@canonical.com>
+References: <20200527115242.172344-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Message-ID: <5d580094.f274c.17277fc124e.Coremail.dinghao.liu@zju.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: by_KCgDnX5c8Cddeg0ppAA--.16819W
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAgkABlZdtOb8QgABsr
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJTRUUUbGvS07vEb7Iv0x
-        C_Cr1lV2xY67kC6x804xWlV2xY67CY07I20VC2zVCF04k26cxKx2IYs7xG6rWj6s0DMIAI
-        bVAFxVCF77xC64kEw24lV2xY67C26IkvcIIF6IxKo4kEV4ylV2xY628lY4IE4IxF12IF4w
-        CS07vE84x0c7CEj48ve4kI8wCS07vE84ACjcxK6xIIjxv20xvE14v26w1j6s0DMIAIbVA2
-        z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW0oVCq3wCS07vE84ACjcxK6I8E87Iv67AKxVW0oV
-        Cq3wCS07vE84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DMIAIbVAS0I0E0xvYzxvE52x0
-        82IY62kv0487MIAIbVAqx4xG64xvF2IEw4CE5I8CrVC2j2WlV2xY6cIj6xIIjxv20xvE14
-        v26r1j6r18MIAIbVAv7VC2z280aVAFwI0_Jr0_Gr1lV2xY6cvjeVCFs4IE7xkEbVWUJVW8
-        JwCS07vE7I0Y64k_MIAIbVCY02Avz4vE14v_Gr1lV2xY6xkI7II2jI8vz4vEwIxGrwCS07
-        vE42xK82IY6x8ErcxFaVAv8VW8uw4UJr1UMIAIbVCF72vE77IF4wCS07vE4I8I3I0E4IkC
-        6x0Yz7v_Jr0_Gr1lV2xY6I8I3I0E5I8CrVAFwI0_Jr0_Jr4lV2xY6I8I3I0E7480Y4vE14
-        v26r106r1rMIAIbVC2zVAF1VAY17CE14v26r1q6r43MIAIbVCI42IY6xIIjxv20xvE14v2
-        6r1j6r1xMIAIbVCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lV2xY6IIF0xvE42xK8V
-        AvwI8IcIk0rVWrZr1j6s0DMIAIbVCI42IY6I8E87Iv67AKxVWUJVW8JwCS07vEIxAIcVC2
-        z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73U
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9640 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0 spamscore=0
+ malwarescore=0 bulkscore=0 mlxscore=0 phishscore=0 mlxlogscore=902
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006030017
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9640 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 bulkscore=0
+ phishscore=0 suspectscore=0 impostorscore=0 cotscore=-2147483648
+ lowpriorityscore=0 mlxscore=0 adultscore=0 spamscore=0 mlxlogscore=957
+ malwarescore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006030017
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Cj4gT24gVHVlLCBKdW4gMDIsIDIwMjAgYXQgMDE6MTA6MzRQTSArMDIwMCwgTWFya3VzIEVsZnJp
-bmcgd3JvdGU6Cj4gPiA+IFRoZSBvcmlnaW5hbCBwYXRjaCB3YXMgYmFzaWNhbGx5IGZpbmUuCj4g
-PiAKPiA+IEkgcHJvcG9zZSB0byByZWNvbnNpZGVyIHRoZSBpbnRlcnByZXRhdGlvbiBvZiB0aGUg
-c29mdHdhcmUgc2l0dWF0aW9uIG9uY2UgbW9yZS4KPiA+IAo+ID4gKiBTaG91bGQgdGhlIGFsbG9j
-YXRlZCBjbG9jayBvYmplY3QgYmUga2VwdCB1c2FibGUgZXZlbiBhZnRlcgo+ID4gICBhIHN1Y2Nl
-c3NmdWwgcmV0dXJuIGZyb20gdGhpcyBmdW5jdGlvbj8KPiAKPiBIZWguICBZb3UncmUgcmlnaHQu
-ICBUaGUgcGF0Y2ggaXMgZnJlZWluZyAiY2xrIiBvbiB0aGUgc3VjY2VzcyBwYXRoIHNvCj4gdGhh
-dCBkb2Vzbid0IHdvcmsuCj4gCgpCZW4gaGFzIGV4cGxhaW5lZCB0aGlzIHByb2JsZW06Cmh0dHBz
-Oi8vbG9yZS5rZXJuZWwub3JnL3BhdGNod29yay9wYXRjaC8xMjQ5NTkyLwpTaW5jZSB0aGUgY2Fs
-bGVyIHdpbGwgY2hlY2sgInBjbGsiIG9uIGZhaWx1cmUsIHdlIGRvbid0IG5lZWQgdG8gZnJlZQoi
-Y2xrIiBpbiBnbTIwYl9jbGtfbmV3KCkgYW5kIEkgdGhpbmsgdGhpcyBwYXRjaCBpcyBubyBsb25n
-ZXIgbmVlZGVkLgoKUmVnYXJkcywKRGluZ2hhbw==
+On Wed, 27 May 2020 12:52:42 +0100, Colin King wrote:
+
+> The variable rc is being initialized with a value that is never read
+> and it is being updated later with a new value.  The initialization is
+> redundant and can be removed.
+
+Applied to 5.8/scsi-queue, thanks!
+
+[1/1] scsi: qedf: Remove redundant initialization of variable rc
+      https://git.kernel.org/mkp/scsi/c/89523cb8a67c
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

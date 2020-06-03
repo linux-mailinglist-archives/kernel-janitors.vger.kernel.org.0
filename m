@@ -2,89 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B15011EC64D
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 02:36:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1C091EC673
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 03:12:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728187AbgFCAgN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jun 2020 20:36:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40212 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726214AbgFCAgJ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jun 2020 20:36:09 -0400
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 895BAC08C5C0
-        for <kernel-janitors@vger.kernel.org>; Tue,  2 Jun 2020 17:36:08 -0700 (PDT)
-Received: by mail-qt1-x842.google.com with SMTP id y1so588069qtv.12
-        for <kernel-janitors@vger.kernel.org>; Tue, 02 Jun 2020 17:36:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=ZDyu11+uzJ9R+6JCcZBH8+VKsi1c+9TLG+xONMv+Rm4=;
-        b=S8qECI/akVQWNTmF1OlK/qSV0xbddTynf0excoMRnoWTuQYOrMZ41fk/m6beJ1GD6+
-         2RpqWdKWzZdrFPFsDxBUpUt4ZjP2keuRW9t2lsjRPs4eHHHknWj93boD4/oxb9lwkojN
-         XfdQdMx4A+PXVd9ml9kyj++gVsaRL4ktNvOIWmWyNzzpx5gSTb3NdCegU+Mj65zQQisk
-         CUujStwVfb4ecmDvAabeRoeUzq3a0nKH0tVHed6UP6Hh0Qr8rpHMkS/D5a4ZhfAI/AUr
-         HfYHDXJf5oWzsIitW/bwP4mxd3V+Jqde2ikX3vk+0j4Q1Wez7lltlh+zS2/VaeIVA8i0
-         yYDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ZDyu11+uzJ9R+6JCcZBH8+VKsi1c+9TLG+xONMv+Rm4=;
-        b=jR/cFvRO1bfo38H71TJSmrxavA6kGo6+VwIqlfLo+DcahEPJpiJoAUTNP7zftg5faM
-         +3FAjKs2NSIFcbdL570egVXMNjckFcLT6M24m61AfRyW6nI/GEDu+oMMuxN0G8sej7gC
-         bcfrwXnz//GXz5aZyghGQcGI50JhZs9/09t9rJ8hBBuAfP5WtLIBMtIfdTTWacZxnb/V
-         25EUOV6H96V+p7Z6MFclsbJnqfpNipDpymTtOO2bv2vd4xFltUY3NB8fG4XZ9V+ldkmV
-         UHN4Xys8p1Y+PchYEStQFIxnGDljttmsSg6aE+n95UYv27wa3qBLGK0xUnowD1FndSLP
-         OGRA==
-X-Gm-Message-State: AOAM532x7RB0f92z3T8m5xfODKr2bjBqD5zTF+OayRqH6yip36Wyncqq
-        VTHfjpxxk/amjC/ZLqixpdoNdA==
-X-Google-Smtp-Source: ABdhPJw+NP9vqZzh5B4ezhB8Uc90ff1uDKVcWJiS5ZWSOvk4f8fyWHsBExI+P/HHGJdm566y5qdL5g==
-X-Received: by 2002:aed:3aa3:: with SMTP id o32mr31597656qte.364.1591144567614;
-        Tue, 02 Jun 2020 17:36:07 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.48.30])
-        by smtp.gmail.com with ESMTPSA id m53sm530387qtb.64.2020.06.02.17.36.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2020 17:36:06 -0700 (PDT)
-Received: from jgg by mlx with local (Exim 4.93)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1jgHO2-000YYG-8d; Tue, 02 Jun 2020 21:36:06 -0300
-Date:   Tue, 2 Jun 2020 21:36:06 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     mike.marciniszyn@intel.com, dennis.dalessandro@intel.com,
-        dledford@redhat.com, sadanand.warrier@intel.com,
-        grzegorz.andrejczuk@intel.com, linux-rdma@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dan.carpenter@oracle.com,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] IB/hfi1: Use free_netdev() in hfi1_netdev_free()
-Message-ID: <20200603003606.GA132773@ziepe.ca>
-References: <20200601135644.GD4872@ziepe.ca>
- <20200602061635.31224-1-yuehaibing@huawei.com>
+        id S1728174AbgFCBMd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jun 2020 21:12:33 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:41730 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726112AbgFCBMd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jun 2020 21:12:33 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 71F915A433E1043B5189;
+        Wed,  3 Jun 2020 09:12:31 +0800 (CST)
+Received: from [127.0.0.1] (10.166.215.204) by DGGEMS404-HUB.china.huawei.com
+ (10.3.19.204) with Microsoft SMTP Server id 14.3.487.0; Wed, 3 Jun 2020
+ 09:12:22 +0800
+Subject: Re: [PATCH] pinctrl: sirf: Add missing put_device() call in
+ sirfsoc_gpio_probe()
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-gpio@vger.kernel.org>
+CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Yi Zhang" <yi.zhang@huawei.com>, Barry Song <baohua@kernel.org>
+References: <01abac73-2107-daf2-d7bd-bef9d73d554a@web.de>
+From:   "yukuai (C)" <yukuai3@huawei.com>
+Message-ID: <0c3372cf-342f-81c7-fab8-4a68e59ebbd2@huawei.com>
+Date:   Wed, 3 Jun 2020 09:12:21 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200602061635.31224-1-yuehaibing@huawei.com>
+In-Reply-To: <01abac73-2107-daf2-d7bd-bef9d73d554a@web.de>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.166.215.204]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jun 02, 2020 at 02:16:35PM +0800, YueHaibing wrote:
-> dummy_netdev shold be freed by free_netdev() instead of
-> kfree(). Also remove unneeded variable 'priv'
+On 2020/6/3 2:56, Markus Elfring wrote:
+>> in sirfsoc_gpio_probe(), if of_find_device_by_node() succeed,
+>> put_device() is missing in the error handling patch.
 > 
-> Fixes: 4730f4a6c6b2 ("IB/hfi1: Activate the dummy netdev")
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> Reported-by: kbuild test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Reviewed-by: Dennis Dalessandro <dennis.dalessandro@intel.com>
-> ---
->  drivers/infiniband/hw/hfi1/netdev_rx.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+> How do you think about another wording variant?
+> 
+>     A coccicheck run provided information like the following.
+> 
+>     drivers/pinctrl/sirf/pinctrl-sirf.c:798:2-8: ERROR: missing put_device;
+>     call of_find_device_by_node on line 792, but without a corresponding
+>     object release within this function.
+> 
+>     Generated by: scripts/coccinelle/free/put_device.cocci
+> 
+>     Thus add a jump target to fix the exception handling for this
+>     function implementation.
+> 
+> 
+> Would you like to add the tag “Fixes” to the commit message?
+> 
+Will do, thanks for your advise!
 
-Applied to for-next, thanks
+Yu Kuai
 
-Jason

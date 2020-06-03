@@ -2,22 +2,22 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67CDB1ECF8D
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 14:15:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 163C41ECFAA
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 14:20:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725965AbgFCMPF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jun 2020 08:15:05 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:48866 "EHLO
+        id S1726143AbgFCMUe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Jun 2020 08:20:34 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:48981 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725890AbgFCMPE (ORCPT
+        with ESMTP id S1726015AbgFCMUd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jun 2020 08:15:04 -0400
+        Wed, 3 Jun 2020 08:20:33 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212])
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jgSIP-0005O4-VV; Wed, 03 Jun 2020 12:15:02 +0000
-Subject: NAK: [PATCH][next] usb: xhci: fix spelling mistake in Kconfig
+        id 1jgSNj-0005rx-87; Wed, 03 Jun 2020 12:20:31 +0000
+Subject: Re: NAK: [PATCH][next] usb: xhci: fix spelling mistake in Kconfig
  "firwmare" -> "firmware"
 From:   Colin Ian King <colin.king@canonical.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -25,6 +25,7 @@ To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-usb@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20200603121152.16550-1-colin.king@canonical.com>
+ <ef00cbe5-d11a-d4d5-3797-173fbd125e14@canonical.com>
 Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
  mQINBE6TJCgBEACo6nMNvy06zNKj5tiwDsXXS+LhT+LwtEsy9EnraKYXAf2xwazcICSjX06e
  fanlyhB0figzQO0n/tP7BcfMVNG7n1+DC71mSyRK1ZERcG1523ajvdZOxbBCTvTitYOy3bjs
@@ -67,12 +68,12 @@ Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
  WNp62+mTeHsX6v9EACH4S+Cw9Q1qJElFEu9/1vFNBmGY2vDv14gU2xEiS2eIvKiYl/b5Y85Q
  QLOHWV8up73KK5Qq/6bm4BqVd1rKGI9un8kezUQNGBKre2KKs6wquH8oynDP/baoYxEGMXBg
  GF/qjOC6OY+U7kNUW3N/A7J3M2VdOTLu3hVTzJMZdlMmmsg74azvZDV75dUigqXcwjE=
-Message-ID: <ef00cbe5-d11a-d4d5-3797-173fbd125e14@canonical.com>
-Date:   Wed, 3 Jun 2020 13:15:01 +0100
+Message-ID: <07fa7631-b26e-62b4-ae32-56158886ec1e@canonical.com>
+Date:   Wed, 3 Jun 2020 13:20:30 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
-In-Reply-To: <20200603121152.16550-1-colin.king@canonical.com>
+In-Reply-To: <ef00cbe5-d11a-d4d5-3797-173fbd125e14@canonical.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -81,32 +82,38 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 03/06/2020 13:11, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On 03/06/2020 13:15, Colin Ian King wrote:
+> On 03/06/2020 13:11, Colin King wrote:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> There are two spelling mistakes in the Kconfig text. Fix these.
+>>
+>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>> ---
+>>  drivers/usb/host/Kconfig | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
+>> index 62c348062e48..5f4b6c71392c 100644
+>> --- a/drivers/usb/host/Kconfig
+>> +++ b/drivers/usb/host/Kconfig
+>> @@ -44,10 +44,10 @@ config USB_XHCI_PCI
+>>  	default y
+>>  
+>>  config USB_XHCI_PCI_RENESAS
+>> -	tristate "Support for additional Renesas xHCI controller with firwmare"
+>> +	tristate "Support for additional Renesas xHCI controller with firmware"
+>>  	---help---
+>>  	  Say 'Y' to enable the support for the Renesas xHCI controller with
+>> -	  firwmare. Make sure you have the firwmare for the device and
+>> +	  firmware. Make sure you have the firwmare for the device and
+>>  	  installed on your system for this device to work.
+>>  	  If unsure, say 'N'.
+>>  
+>>
+> Spotted one more, I'll send a V2
 > 
-> There are two spelling mistakes in the Kconfig text. Fix these.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/usb/host/Kconfig | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-> index 62c348062e48..5f4b6c71392c 100644
-> --- a/drivers/usb/host/Kconfig
-> +++ b/drivers/usb/host/Kconfig
-> @@ -44,10 +44,10 @@ config USB_XHCI_PCI
->  	default y
->  
->  config USB_XHCI_PCI_RENESAS
-> -	tristate "Support for additional Renesas xHCI controller with firwmare"
-> +	tristate "Support for additional Renesas xHCI controller with firmware"
->  	---help---
->  	  Say 'Y' to enable the support for the Renesas xHCI controller with
-> -	  firwmare. Make sure you have the firwmare for the device and
-> +	  firmware. Make sure you have the firwmare for the device and
->  	  installed on your system for this device to work.
->  	  If unsure, say 'N'.
->  
-> 
-Spotted one more, I'll send a V2
+Please ignore the NAK, I was looking at the wrong file, doh.  The
+original patch is fine.
+
+Colin

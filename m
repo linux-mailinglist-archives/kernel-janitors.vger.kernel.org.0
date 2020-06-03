@@ -2,34 +2,41 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF8881ED6E5
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 21:30:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 765601ED6FF
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 21:40:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726126AbgFCTaV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jun 2020 15:30:21 -0400
-Received: from mout.web.de ([212.227.15.14]:34689 "EHLO mout.web.de"
+        id S1725955AbgFCTke (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Jun 2020 15:40:34 -0400
+Received: from mout.web.de ([212.227.15.3]:38271 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725821AbgFCTaU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jun 2020 15:30:20 -0400
+        id S1725821AbgFCTkd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 3 Jun 2020 15:40:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591212611;
-        bh=51Nqv/upDYdrjeVzruw2L3D2ZrE9E25j2glTzWyX+DI=;
-        h=X-UI-Sender-Class:Cc:Subject:To:From:Date;
-        b=HgrYxFWGJ20jnAN8cutKrm10ZcYhF5nGxlLYV8i2tBhHLRFgKMu/fBqOPiLxx/Rkj
-         ZGPA9ygU+hjb4G+FsX9+p4MN8najOBCc7ggUQEP71AUVz7+hw9eTXSiJe5dl7VHzOp
-         34pxdTpfo8/YEbKmaDKMzuOadKl8K/msYFszLvQs=
+        s=dbaedf251592; t=1591213208;
+        bh=HlNFrML3ugUOMYnxbMzqvbQ5qfFCwejS79sqFYHvkMY=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=Tsc/GgTzGOPXoo/so2Mke808NlebzVJYADKWwhsRREN5i2lrmIPDfyfoIU8KbT8zi
+         WoBtueiPLi7PRbKUU6YToJe/AO1dEm5EWowg7j6ELdKHtKwbz/F2Z9InQ94iVhp7IO
+         PD510rBX44e1lf9zIBH9Yk9l78ZoWSIHG8Puu4jw=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.82.231]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Mb8d1-1jQGKH3FwR-00Kckz; Wed, 03
- Jun 2020 21:30:10 +0200
-Cc:     Alasdair Kergon <agk@redhat.com>,
-        Damien Le Moal <damien.lemoal@wdc.com>,
-        Hannes Reinecke <hare@suse.de>,
-        Mike Snitzer <snitzer@redhat.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] dm zoned: Fix memory leak of newly allocated zone on
- xa_insert failure
-To:     Colin Ian King <colin.king@canonical.com>, dm-devel@redhat.com
+Received: from [192.168.1.2] ([93.131.82.231]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MHYHE-1jhedg0348-003JA3; Wed, 03
+ Jun 2020 21:40:08 +0200
+Subject: Re: [PATCH v2] dmaengine: stm32-dma: call pm_runtime_put if
+ pm_runtime_get_sync fails
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-stm32@st-md-mailman.stormreply.com
+Cc:     Alexandre Torgue <alexandre.torgue@st.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
+        Qiushi Wu <wu000273@umn.edu>, Vinod Koul <vkoul@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+References: <873bfb31-52d8-7c9b-5480-4a94dc945307@web.de>
+ <CAEkB2ET_gfNUAuoZHxiGWZX7d3CQaJYJJqS2Fspif5mFq4-xfA@mail.gmail.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -74,47 +81,55 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <6ae5a0f1-68d3-a0f9-e7f0-5c9f008204a8@web.de>
-Date:   Wed, 3 Jun 2020 21:30:09 +0200
+Message-ID: <8a751660-a268-1153-8d94-94d994772689@web.de>
+Date:   Wed, 3 Jun 2020 21:40:05 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
+In-Reply-To: <CAEkB2ET_gfNUAuoZHxiGWZX7d3CQaJYJJqS2Fspif5mFq4-xfA@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Bn9dduKdWLaVz4HGfEeblTBOd5rRdpGCjDDRsgChYo+6jdtV7Ws
- YYUJEh6HyaoK2PncVm7mLiizeMlL7mnMwVNUyh7qsfXOv7HT8iKhBumZ2KATjMc8/STPR48
- Ac1cmTRW1WisC1YPrsly5scavA5N04EWDF6K92msIMGe1Rr3lsjgpf1OLCvRBJlbk7JDYgc
- xEIOjeLYfHs23Rk1X8l9w==
+X-Provags-ID: V03:K1:RqhrfONo8K7l4ePFTEhbjL7slmvd4F33jqdLYnFHzdGF6iOg0zP
+ FqWsIoFPS5aYbKuAS0hCPNN9GqN9t343PuA/inNVWXqj4dHKXIwDsgGIylE5El83gokz5Vu
+ CB16uJqbTz5kgCfsxYuhcrWlImDpZNYMfGNmDHzqHNAuc6yz/kHg9itY17+dhsyWhToVWrr
+ vnLY4iQXh9J8ma0r1f1Hg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:8rATjH4Yuhc=:eEEMQqjK5dkT0Lh3bI34Rz
- aEpJqI3YbptUONxcHgRjdRXSsdkXAerOnNEv/2CDiVnOZoeGDHEiKNRMAPL4cyEsuyZBLovBz
- VPwhf8IB0lJJon3ShXH0bRgp3QTJ/eNWWeuFCS9EQ4/kB9oY7SEGBFPrRl+pWQ1fdf2I4jbeU
- U2Q77yWCMdmPaU3rWtnKXS0y33JgzWS74j3ahV6JnMTQ69+2ex5sSZIQ/yg9DKqkmHaej+3kI
- jDUmi7FssjkaRW2KTsY43uYpyqlj7SuA/aTj9WY0QMbsF8lML5SXA61E/zoaG+C5cAf1iuQVl
- 8TtDGBL9pKn/SvIECWy1qx3kt71AEjq/JKqZ315M4AoGWPIBRYaA7MT4Ioi303ilrc/mcIHIn
- Ee8LUfKq2I/d6xto4yejeP6du13B0jsCy7VRiGLV4fIbdS0ZmqSa31oaeUP1HPFqDLp9C2wd8
- PTJUSYHbOnUc5tjyEi0Qb1RJ6yJJ9jXlF3QvQwLGcxJKGp0t4jWmkUTP9JyT5PdK5ftxqWnkM
- a/ZEt1wk+miN3vbbrhXdoz4LiexMUP3HxjgKnPNcvVKyx+EyOkLZ626oqVJWvlv5CEJSwirY1
- Gm5XXFp3KiEQkP14Dxpiq1HpfiF7l8K8zBT8esQJ16FUpNVfoMSHnCW+pYJw6tpHFC2tUkVOJ
- EouHtAAqCTCXI+BLdUxOqplaMqjdXzH1VRGKmey4KEOuzQmFDV0+tDTqCkQlukHm+opd6D4HO
- ++p4Pd+8E6CmGxo2CqkJl5zxa2nfhBS3V60tXFpZNPknTLgzceK1Rv8KhNdZ46Ew1mM8LL8vR
- kXm1NWO6Dw1LLjqWIzUP2/1QvdUXVnXGqCvusrYKFiiPHPOoMbqNiBekgXyj4g2XpljVrLKCx
- O/SQ4ivIAolbmg9hrkcVEfo7byRcn60GKkcn1Qq628PC/n2F8PE/ksuD6bBxrNOQccCccpOX4
- y2YQURBHBbeAhjtHtS1gvAQdrlIfuTORT2jTSj4UZeE7dA274ULDqh4ahgoJr1cdCNK9anCiy
- 8N9esFpYkmsHePBenS0tnlDJcwejEQONCcKBf+WzTLPzTY5AhqI4UvPSchvO3SeF/uT+LOqr3
- GN/avlPXWeQH30yZxUYRrLridX8v3D1/LY3Y26VcDzB/datjTsWYDpdKAq4D4Ded015Pkh+qS
- B5FjL32c0U5gii3xorB2n1KmipM6NO/6/ZZ3a0GSmB2D8hFO/mEodmkry+uSK/0hi12LwfCWr
- wTYZ0CUzZP2Mfa6ZU
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+N1Y0jXpYVw=:qAZ3jiouL1p3QProXXjJ8I
+ y6Yfk0jhfJ1916HWlKZHJ18Jul46WNZEGtC8MjBcauAwmGBMMWffxJOuPe7yrZFPVwOYpbpTP
+ tIkrj4igzxla8DuJZhYxFV4dGFs6uWV6dIzvbcF6VkkfhAKnrhdf3sSlO+p/j40TXHhSeIlF8
+ GlwpdCnUaa5+J2623aMaMUrSO1FaF6+FQN86zntcKTZo34/Zxf6hP6RgAnjQLl+pqrs4DuwKO
+ ghxNXnf5xTbunZ5ydK6nwuRlAor3zdkOGfwKw3l08ytSV2vkfWFYoh324M2gu+nAn+icfCUk7
+ WYRaS69pdN9q7Q8wTKLB+Y6p0IopMtHhVs44056KuZFokJQ+BtrpyiFaEXgsnzNycHoK38Pa/
+ TtfYL0pCMA19Zw72eHTFCjGRr6OZgv04/Xv4QO11ki7MxpBbStxabowHh4FOdZ8xpBTDSomYn
+ co41TchOGZFJPalltG0qyr8jD+SG9NAQoEXwCHpUiWfipKHjTrSyLqJFxDOJr1PilFmjm038c
+ gl4o0U+Dl0QaSPJOvpItq47rBQfQbxxUn+EK0rmS5wwYe20Salqu02HRagXdeNGgjvXCZcYWW
+ xBSRB2QVcUm9PLPGBUISVAxEX+9u5OZ/KQUSOQiRruK7R8xEwLY2ZFxqgq2rK+kixxMxc9jrt
+ jDBXqlYkFrPy5UOFkSPv/RQtgY+ZON5knF0C9CWK4glAM7yJJ1NNRXhpsRL9go/IQ/Bf5XYnK
+ vtug4sqAz4iYuYpn4kJwvca/7YFqdZt119mc90q1/KHieJK8ZAH2hRgOBYxDwlyD+7LcFU3Iu
+ hTQJN4T9fxf2tAqTFLSytXoA43v7avf5G8n8Bc5MKOZbs4gqG+T+pEpyxXD280VBjNVtim5ck
+ miU/rsRrROgOPbRXUKpD7Ea8KaB6LimwqkvAbFYNT3MwNjZn69cqJNfF1lq0F26Fxc8bAtvgG
+ CA7oRsKrmNscmWro92LHe5r28UJBmo2Z/NbsGfYd3poslCogaeTDhvbwnPnPAK98QDvrzsrEo
+ NDaaRJ3/Lyh+njl4o/+pBdjlPZZZKgoGVEG2ir2dc7UVmLKfHW+ire0NHvhSWs8wsA7tMmOwf
+ pssFUkNKXra7hh2ITr1CH9PZvPzs9tZHPVVyTGL0eDQKnwnLZtSo7VWGTasoUINveLwqofmKA
+ uZdGdApGUwEM1pE7XXKH1V8Q8Dj0ATnhirf7OYkjCzoiEBQxp7rx4oggVUafhiLmE+NSual0i
+ kbGO7elQC4G3rmHeA
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Currently if an xa_insert fails then there is a memory lead of the
-> recently allocated zone object. =E2=80=A6
+>> How do you think about a wording variant like the following?
+> Please stop proposing rewording on my patches!
 
-I hope that a typo will be avoided for the final change description.
+I am trying to remind you on open issues according to patch review concerns.
+
+
+> I will consider updating my patches only if a maintainer asks for it.
+
+* I hope that more contributors would like to improve the software quality
+  also for commit messages.
+
+* Would the adjusted patch prefix need a different version indication?
 
 Regards,
 Markus

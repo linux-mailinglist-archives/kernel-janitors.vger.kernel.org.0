@@ -2,39 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3815F1EC88C
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 07:05:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1443B1EC894
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 07:07:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725810AbgFCFFT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jun 2020 01:05:19 -0400
-Received: from mout.web.de ([212.227.15.14]:33961 "EHLO mout.web.de"
+        id S1725868AbgFCFHg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Jun 2020 01:07:36 -0400
+Received: from mout.web.de ([212.227.15.3]:60207 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725792AbgFCFFS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jun 2020 01:05:18 -0400
+        id S1725807AbgFCFHf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 3 Jun 2020 01:07:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591160686;
-        bh=EBSTXtu1ei7txhmEeQVcUPxSCEHlwUnoocCsxoIbpao=;
+        s=dbaedf251592; t=1591160843;
+        bh=5YtTV9QSRV+W9hQitTlstdO3VpKB4X79hpPCb9EhlAY=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=LYbxMZRHWYrWU6DF9r0XzgnH+55/csk6qmK/letqWGH//KONPdxut8FSdIv0463eO
-         lyIgu19mi7P71folsmAYPRXboyqKFCuU8UM8Irpas9E4L/Nfw9Zx3zY8YY2JlRMl3C
-         6k+4DnDXr7chrgoDcFx0Ifzic+vO3fLzN9x1Jp3Q=
+        b=n5BBIUPKa72MBvV9Qhh1lFX2Iv7HE4yRgRbKKjYyP23udXa68YoRrc3r+UI9F1vZV
+         qpcJsE2RMgU0p7GhoVrZutf6yh36GrCKtyD6ooDm1Bk/R+kreRzwsuoTHArUAYshn3
+         vacRr3ifyXELDxlMXpz4zeXXVG38BuDJVW5m1AmA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.82.231]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MumNL-1iove91CyJ-00rm2g; Wed, 03
- Jun 2020 07:04:46 +0200
-Subject: Re: drm/nouveau/clk/gm20b: Understanding challenges around
- gm20b_clk_new()
-To:     Dinghao Liu <dinghao.liu@zju.edu.cn>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ben Skeggs <bskeggs@redhat.com>,
-        David Airlie <airlied@linux.ie>, Kangjie Lu <kjlu@umn.edu>
-References: <dd729c13-fbc8-22e7-7d8e-e3e126f66943@web.de>
- <40d8fb01.db721.17269d3d620.Coremail.dinghao.liu@zju.edu.cn>
- <20200602102955.GZ30374@kadam> <65e3d2b7-b0ad-f387-b8fe-d83ea816a0f6@web.de>
- <20200602153900.GW22511@kadam>
- <5d580094.f274c.17277fc124e.Coremail.dinghao.liu@zju.edu.cn>
+Received: from [192.168.1.2] ([93.131.82.231]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MUEsc-1jX2FN0Tas-00Qzie; Wed, 03
+ Jun 2020 07:07:23 +0200
+Subject: Re: cxl: Fix kobject memory leak in cxl_sysfs_afu_new_cr()
+To:     Michael Ellerman <mpe@ellerman.id.au>,
+        Wang Hai <wanghai38@huawei.com>, linuxppc-dev@lists.ozlabs.org
+Cc:     Andrew Donnellan <ajd@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Frederic Barrat <fbarrat@linux.ibm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ian Munsie <imunsie@au1.ibm.com>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <b9791ff3-8397-f6e9-ca88-59c9bbe8c78f@web.de>
+ <25ad528b-beaf-820f-9738-ea304dcbc0d7@huawei.com>
+ <877dwoj1hz.fsf@mpe.ellerman.id.au>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -79,55 +78,54 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <75a33776-cd69-edba-8d20-ffcf99ca1879@web.de>
-Date:   Wed, 3 Jun 2020 07:04:37 +0200
+Message-ID: <1d9752bf-fe39-6e1d-bda1-47c90ef9c37d@web.de>
+Date:   Wed, 3 Jun 2020 07:07:20 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
-In-Reply-To: <5d580094.f274c.17277fc124e.Coremail.dinghao.liu@zju.edu.cn>
+In-Reply-To: <877dwoj1hz.fsf@mpe.ellerman.id.au>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:HBphbPr3xWqK/Noy1A3QhHsm7WTySxNbm5b0+Lz/09Uxie+7c74
- 08LVOOCIidrsRqtFHthQf8yJLXYQE6of6jPr0+jOjYLfXIisO1I5FNUnF+AwEOcB00d4fyf
- htrEcuVkeXjxl1ISV917SvJ6ASBw6Htsnlbxi8/JtkRRX3PHOiLdTuq7ppZ6U8rFzG2dGzZ
- 6iXA5Sv/6Iq9uCLZLOMSQ==
+X-Provags-ID: V03:K1:clihFhtMBl0JjcLlTwGdMqBQupmYB68FkNlkt7J4zx9z/l27qca
+ qhW+fVO9cfO5V/ATXnh9Wbu72iLpk01kQpUOUGhOzniyoTkptNrEQrevH8s/9T6nV3Y3Ywk
+ djoC6wxM5r4HD3BgPIDnnLbCjlEy6EjhWRC+Ru9mARiEnDaCX9JFmC3MM26IRqq4qxsmupK
+ pW0TFAsWHTwOMum5/VfwA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:gNMoRoqYDhw=:YreU4RNV1//AIvRoXibpUs
- ZJScl4cCA2FKNuW6dzPKzWQzqbheRt34gyh0FCzF6RGi1FT2V2nZOBdrYsp430bblouzen2+D
- hlwYScEn+w6Se7nB9H60MZ2YDRqvMmRKGgeiOhy7AF+JfQOgVxgvkiZujDFxKUCpkdvXBTrmP
- OqmPio2t4NbLuEnNXH+NMbpUTpESWHU1/qyzzioZCt0qH0WjzK5OvTpV1DIsetNh6XQOS4sQT
- oitVQNVKz+XQ0VfvIXG4RPJLdb3JSuJBqxze8rGWcntt4mybLDeYP7OR4jGR39SThFPdzE/8j
- p6chZ0TUrxDFaw0i3t/ijwxsQPEvliAu1XALWQBp/eKlB4h91LmFh+/d/pxWlq2engf00LSBf
- 8D5JiHPGR5h87RurXjcmm+bk4BRbL6Ss0bb7bVPJ9mqc2NnWCNEcbbWYp7zP+SnqIUdUkTe1Z
- QFOaS9dzxfJvRbXSJsoNQm0m2n6M0Ugi6Nn57jJlf0tW/FWsAoNEMucrgvKW92dt3+YjGmruz
- x0edkoTczwnf15duIYfuVxtF/HdAvhBe/B3aWcIIULfGt+OuLnRvddTy/XfKoPVMgQh3aqh47
- 2UdLOeIYWrTWQmwkxgWpL6O9Rh1yvp5H04ILtb9PWhgmWgnhrhAlOfe5O/wTVKRH8Lfzol711
- 7j5J92CcqlePEfXVaTcfCFZqa+LFJJ7v10BWkN44T46dbljLV7LvsOHoS0M3AVKyjHMXGH7K7
- URXh7fuEencRCStZUyljfjI6Xgep8g5KXs75r6bZ/hgsJY3NdEKjtDpx7AiXMeZaRC6RxWW/2
- H718b125RhxzscLS5kP7wLMiHEKAwDRgSaohiMeCW7965muBHIBgs2SJ/LZnvARp/PzoR6kL5
- 1UW2BrPI6qVG/AJq3RCx8t0N/AO9gGeppZziBtb6ewIwljl8i0Iu/Jz96j3frdpg9yRM8vbfL
- KUtSMIj0mNxeUp1Oe5JIPaQnLWl/LRpUnpldYPejXb/jqA1w6Q8k8udG61l6noI40aHgaBUD6
- SWo12vnQReIJO9fONvng40Lcobcw1n8yyxAbzEmDk1E6N2V+jO5YQPgw79M6hYF2D6lkykKK0
- 1HzNrOohI4EV39+1QB7xHslQ3METXfXjX2vdAft5aDiqjJfDufNg+FgCbV2ueLCJmfpBnJUGz
- KILiDlMgBTU7j0tvWOCYm35PvF7KjF089isThMSHpHagAsduiN7/D9kcQXDcnfrWNg7Phrhcp
- ld1INWv3x9GXTUtmm
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0rkCxrChgxA=:lV7CqI362TV7K5ZFxV7ILy
+ bAVBnGfJRyiroWeEW1LP3U9x15QUUCqnehHl9ZJAOxFMK97+z6tVi1RDGuxpTX3N3gy/o/XWP
+ eoauJocZeNRsSylW4YXaA4fHqYj1PhxygyxsxnNn/kE6QiYtEK3RKkVK89pbUD/7DEdVE8LMS
+ 1aWBhib6P6/AP8ZFwW2jeCMAnYvRMVG4ODKA7tujfly7DC3stLm1SATE76vnhI+CrStmIf2b6
+ DRGW8n9s313nlJusAyCW+AEttLkVUATICd8x742N5PXGpqc9pY3nH+aLQJOHcNxaa00tL6nsH
+ ZdAxrtLLpBzO0uKMl8I0iwo5UQDlnjD+YNPnkUbygPuDn3UFQnK1/NamvpsPZOJehlqTOlS/E
+ oykKHcEQZgNG7VICz/qenfqRQtF1SRH7tA6SgZwOGW97ignCghRePtH11dYSE0ywP36ahfIik
+ xrkeMt1Jfuvc/SRSfX/gch1ke6/5eIAp02PxIimj23BqrdEtPSCFGFvNWXstrhdIX/RAaR6M4
+ 38dilnZTchlggflzRK8ubTJWUqP8gMlNAXB+kNaXSox8EsUAoyUg1su1xDs6bV4gLkHAnuEdt
+ z8cfx8lz2JhTfuYwz5ImuPkhVGDwbgiW7sO9/QBcKffOvkdtYatvWGQBwQCpVd9rUyEpQUcNN
+ +TskoVkLSaaBajqnS0CLM+XpEvODhxdVNQQ7QeSSoLRTB6F0xHJGhOdrSYq7aN+bxt2KqKZQo
+ Wa82CgRV+MuUTO6Jr4zjwiBOpO5UN+/vS06SaHLfOjk+Dd66KIRNoH6MJI7KoanC1NJreECmj
+ gTfX9d8uq6U6UI0ED4HWa185nBTeY/ovNA2iswbrwyDms9VrxGGybvZf5ziBOkWDvBm6qpbEU
+ adN68pNTHAQ1YfL8gqMkMVTchtmd51qL+CWDyBoSnjOxADRrCn/ySzTAh9wAJQMXwdFxbq3nG
+ ZHUJTVnpr6N9zBmIIqXKUdgaBFTLP7Y/CeRrJeApfC/63dHSFFV4Z1z9J4ALC5HPb91HGS/4+
+ rTsDGxrhOaBa5DNneVaj+KxQ0rOBNxe1s45iI7fqyU2nyOPXwblCdsLbqSMeeTiCsNZ2V341x
+ u67kp9zZN9kCBDTfb2lczcDumnovZp8M206F0I3+MJEz3EjecuF53siyzvVy+HZWW+z433LCc
+ 8d5gFxXyVal7OBaU1l133hYhuq8ONFax/QXONiSNbrtwc/hDTZixKXxxGxveYWHNN3KXvU5C0
+ GJ3COdDK+DpY+HiTy
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Ben has explained this problem:
-> https://lore.kernel.org/patchwork/patch/1249592/
-> Since the caller will check "pclk" on failure, we don't need to free
-> "clk" in gm20b_clk_new() and I think this patch is no longer needed.
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
+e/Documentation/process/coding-style.rst?id=3Df359287765c04711ff54fbd11645=
+271d8e5ff763#n465
+>> I just used the original author's label, should I replace all his label=
+s
+>> like'err','err1' with reasonable one.
+>
+> No.
 
-* I am curious if it can become easier to see the relationships for
-  these variables according to mentioned =E2=80=9Cdestructor=E2=80=9D call=
-s.
-
-* Did you notice opportunities to improve source code analysis
-  (or software documentation) accordingly?
+Do you insist to deviate from the current Linux coding style?
 
 Regards,
 Markus

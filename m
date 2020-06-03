@@ -2,27 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F43F1ED3B2
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 17:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CCC41ED3E5
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jun 2020 18:03:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726260AbgFCPqB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jun 2020 11:46:01 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56894 "EHLO
+        id S1726046AbgFCQDB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Jun 2020 12:03:01 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:57469 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725884AbgFCPqB (ORCPT
+        with ESMTP id S1725810AbgFCQDA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jun 2020 11:46:01 -0400
+        Wed, 3 Jun 2020 12:03:00 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jgVaZ-00052R-Na; Wed, 03 Jun 2020 15:45:59 +0000
+        id 1jgVqw-0006Bm-JU; Wed, 03 Jun 2020 16:02:54 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org
+To:     Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com,
+        Damien Le Moal <damien.lemoal@wdc.com>,
+        Hannes Reinecke <hare@suse.de>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ovl: fix null pointer dereference on null stack pointer on error return
-Date:   Wed,  3 Jun 2020 16:45:59 +0100
-Message-Id: <20200603154559.140418-1-colin.king@canonical.com>
+Subject: [PATCH][next] dm zoned: fix memory leak of newly allocated zone on xa_insert failure
+Date:   Wed,  3 Jun 2020 17:02:54 +0100
+Message-Id: <20200603160254.142222-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -34,45 +37,33 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There are two error return paths where the call to path_put is
-dereferencing the null pointer 'stack'.  Fix this by avoiding the
-error exit path via label 'out_err' that will lead to the path_put
-calls and instead just return the error code directly.
+Currently if an xa_insert fails then there is a memory lead of the
+recently allocated zone object. Fix this by kfree'ing zone before
+returning on the error return path.
 
-Addresses-Coverity: ("Dereference after null check)"
-Fixes: 4155c10a0309 ("ovl: clean up getting lower layers")
+Addresses-Coverity: ("Resource leak")
+Fixes: 1a311efa3916 ("dm zoned: convert to xarray")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- fs/overlayfs/super.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/md/dm-zoned-metadata.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-index 1094836f7e31..4be1b041b32c 100644
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -1594,20 +1594,18 @@ static struct ovl_entry *ovl_get_lowerstack(struct super_block *sb,
- 	unsigned int i;
- 	struct ovl_entry *oe;
+diff --git a/drivers/md/dm-zoned-metadata.c b/drivers/md/dm-zoned-metadata.c
+index b23ff090c056..130b5a6d9f12 100644
+--- a/drivers/md/dm-zoned-metadata.c
++++ b/drivers/md/dm-zoned-metadata.c
+@@ -313,8 +313,10 @@ static struct dm_zone *dmz_insert(struct dmz_metadata *zmd,
+ 	if (!zone)
+ 		return ERR_PTR(-ENOMEM);
  
--	err = -EINVAL;
- 	if (!ofs->config.upperdir && numlower == 1) {
- 		pr_err("at least 2 lowerdir are needed while upperdir nonexistent\n");
--		goto out_err;
-+		return ERR_PTR(-EINVAL);
- 	} else if (!ofs->config.upperdir && ofs->config.nfs_export &&
- 		   ofs->config.redirect_follow) {
- 		pr_warn("NFS export requires \"redirect_dir=nofollow\" on non-upper mount, falling back to nfs_export=off.\n");
- 		ofs->config.nfs_export = false;
- 	}
+-	if (xa_insert(&zmd->zones, zone_id, zone, GFP_KERNEL))
++	if (xa_insert(&zmd->zones, zone_id, zone, GFP_KERNEL)) {
++		kfree(zone);
+ 		return ERR_PTR(-EBUSY);
++	}
  
--	err = -ENOMEM;
- 	stack = kcalloc(numlower, sizeof(struct path), GFP_KERNEL);
- 	if (!stack)
--		goto out_err;
-+		return ERR_PTR(-ENOMEM);
- 
- 	err = -EINVAL;
- 	for (i = 0; i < numlower; i++) {
+ 	INIT_LIST_HEAD(&zone->link);
+ 	atomic_set(&zone->refcount, 0);
 -- 
 2.25.1
 

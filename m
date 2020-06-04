@@ -2,108 +2,136 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 227CE1EEA0A
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 20:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEB8E1EEA34
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 20:24:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730387AbgFDSCa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jun 2020 14:02:30 -0400
-Received: from smtprelay0191.hostedemail.com ([216.40.44.191]:59524 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730055AbgFDSCa (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jun 2020 14:02:30 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 99980F4D1E;
-        Thu,  4 Jun 2020 18:02:27 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:960:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2828:2892:2911:3138:3139:3140:3141:3142:3354:3622:3865:3866:3867:3868:3870:3871:3872:3874:4321:4425:5007:6119:7903:10004:10400:10848:11232:11658:11914:12297:12663:12679:12740:12760:12895:13069:13095:13255:13311:13357:13439:14096:14097:14659:21080:21433:21451:21627:21790:21939:21987:30054:30075:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: sugar90_6017dc626d99
-X-Filterd-Recvd-Size: 3603
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf03.hostedemail.com (Postfix) with ESMTPA;
-        Thu,  4 Jun 2020 18:02:25 +0000 (UTC)
-Message-ID: <c925d033cf566743a1f6255da7843d1b85451d2f.camel@perches.com>
-Subject: Re: [PATCH] pinctrl: pxa: pxa2xx: Remove 'pxa2xx_pinctrl_exit()'
- which is unused and broken
-From:   Joe Perches <joe@perches.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Julia Lawall <julia.lawall@inria.fr>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Date:   Thu, 04 Jun 2020 11:02:23 -0700
-In-Reply-To: <20200604173500.GI22511@kadam>
-References: <CACRpkdasbS-4_ZwC-Ucm8tkSUW5tAQdUrXjxHXQ3J0goVYfgHw@mail.gmail.com>
-         <20200604083120.GF22511@kadam>
-         <2aa49a543e6f48a6f428a37b63a06f9149870225.camel@perches.com>
-         <alpine.DEB.2.21.2006041147360.2577@hadrien>
-         <32232229031e02edcc268b1074c9bac44012ee35.camel@perches.com>
-         <alpine.DEB.2.21.2006041228520.2577@hadrien>
-         <10e54ee84bd44171ef329bed9e7e6a946bae61ba.camel@perches.com>
-         <alpine.DEB.2.21.2006041328570.2577@hadrien> <20200604123038.GG22511@kadam>
-         <0749ac5e3868c6ba50728ced8366bfd86b0b8500.camel@perches.com>
-         <20200604173500.GI22511@kadam>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.2-0ubuntu1 
+        id S1730739AbgFDSYq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jun 2020 14:24:46 -0400
+Received: from mout.web.de ([217.72.192.78]:54947 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730714AbgFDSYp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Jun 2020 14:24:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1591295076;
+        bh=nil5JN57Rxa6Zg/7er4FrelLppL4VQaglgRdUWjzBe0=;
+        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
+        b=C+jwrDD2gM3/ex7+E7bIp69BwAelmRnbXRXOJURUFARHfnAyHOSGKUbkKC3047bcf
+         /zsZ+MVO22nXviF8Rfb0+HLGMkUeySD86bk+t081tSEEmyB70e92rfkk/2Stze0Kxh
+         YAYy11fJUymJN9ZPjwmEe8DdOW3DiiIBSUgT/1Jc=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.132.94.220]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M8hsl-1imBMN0ovz-00wEut; Thu, 04
+ Jun 2020 20:24:36 +0200
+To:     Venkata Lakshmi Narayana Gubba <gubbaven@codeaurora.org>,
+        linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org
+Cc:     Balakrishna Godavarthi <bgodavar@codeaurora.org>,
+        hemantg@codeaurora.org, Johan Hedberg <johan.hedberg@gmail.com>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Rocky Liao <rjliao@codeaurora.org>,
+        Rob Herring <robh@kernel.org>,
+        Sean Paul <seanpaul@chromium.org>,
+        Claire Chang <tientzu@chromium.org>, yshavit@google.com,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] Bluetooth: hci_qca: Fix double free during SSR timeout
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <d3444be6-28e6-bef5-08cf-6038620f65c6@web.de>
+Date:   Thu, 4 Jun 2020 20:24:34 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:z3amskq1UWPBdHEnJ2qbXAr/4jQ/NbVHv57NvQfk5LeIL+YcHF/
+ XWAJ+1qPWcyit7scpJlLuLlHJ/BubgnXKeOA4jl2Cm8etXfV5hjw8iJvskTPvKMGs7BxLBs
+ fUDPybfn0DgKbigdkSBOZl9Ax5lSI0NOCgqvRpW7PfnZPYILNXkcJKv+T3PPf7JAd9pIwYv
+ MpzEBGmQDBmlgnqoquLAg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:vhqmhcfZzQA=:RkHhpTWK/4JxrK+ltlVtCQ
+ bQeeKWe8lNNq8kh92Z+EH6VdgBQVPaOM+Epd9C0EmUVqITb9ZrjT5/2zziAK5RE2Ilhf+QsFn
+ BXukae83MX0UXPz0wcYKw++0GGaJ8nHaGm1isnBMdC5ndZ5orJhfK8iuzIQbB6e9jIkAZCAiy
+ 0yYl5MKNRHOp2myDbI34hRexn8xALshLlDQt1PdmAfe4Zq550U+ihtWyNBfk8H8g28KeMoVfu
+ WVysFrjCcwNMgNrBigojhJKbkeuusjyMl3qqX8FlJVft3hE5rpAZ+0kU3fB3F+xxf7L8/WpRo
+ eUva2yU9bVe5Qx6zKQ1xM45aRDCGMzhHDSqIE5Z2Gfy8UBi2k6hVwkHQwjBJsAFydgaod9eTT
+ r3qmL6aX6Wd2JJVSAM02msXXdyHZGm5elna751s946OM9wFSFfme2qGVCKwPbCrzCceqR2+aU
+ fa3OmCM3FSgnmDD8z1OxEfquiy1JqVL9dpW7yHq3tGDSCF8muvoLw67UWDs4vmQ+fGWXybw7y
+ Uw49EymUBwJkAC543Ou7TWHKSU5YSykc1Kl3ZxYKZKnYgOAakQt6if1Ul1/VsWgkJxF54kgJj
+ +tVpjJwnrRUFK25tB05/96cE6NwdPndiUk+bACiCbjzOV5VSoFTpOiqWsao6Uu+9lHHqgVdB4
+ ZTEadWfUPeY6whFVvF3yItnVIm/vLotcPsPDQTziF6nonVGwin/lNtgRAulLgVMMq69O0G+qf
+ jOOaJ7QCrYPCtahNXJHvOnIsTwBtn+CYB97GrB0ZN/tBES53spayESfg6tAUk5YD8jlApypPw
+ k0j2ekSprS7a6yIFsxepXSVgAJOClkcnhQuSz88uzwJFn0i2uWEyl0Bm/7D9KMONpQDhsTzrc
+ rHK12suVcD4x6IHr34FOsrOUCQX92eooF/LPsckRAQkH0qhq9339qDt/+tmfcaTZJftR/yDA3
+ +OVuXnuduKbMT5uRWcMeIDd0fOjM3kM+g9EBmlrvwRkNjigifNgIaaAwqbeQsiaz0ddZzO3aL
+ hfiBzQiEi0dkBsY5P2j9YyWcaTnP0yvopWboNZxdWpPfdOV7L5PhdI2vTicvk2daeLwR+Gm3n
+ r5JAhD3Fx+LNgQmgZx91SkVisEAeSVe3xtnAFwa67QP2SkJmCF2kWm6PJDWy2ad41SdVwZVM7
+ AXDOjiAdzK5FgJI0oHLP6W5gQebhWht98tFzR8Ldna6MUb5lHMwbNhoMsVVSCi7PQdIkuvpCI
+ X/B9sdIUtOncWx4i8
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 2020-06-04 at 20:35 +0300, Dan Carpenter wrote:
-> On Thu, Jun 04, 2020 at 09:08:44AM -0700, Joe Perches wrote:
-> > On Thu, 2020-06-04 at 15:30 +0300, Dan Carpenter wrote:
-> > > On Thu, Jun 04, 2020 at 01:42:12PM +0200, Julia Lawall wrote:
-> > > > OK, I recall a discussion with Dan where he suggested that some things
-> > > > that were not actually bug fixes could also merit a Fixes tag.  But it's
-> > > > probably better if he weighs in directly.
-> > > 
-> > > I generally think Fixes should only be used for "real bug" fixes.
-> > > 
-> > > The one exception is when I'm reviewing a patch that fixes an "unused
-> > > assignment" static checker warning is that I know which commit
-> > > introduced the warning.
+> Due to race conditions between qca_hw_error and qca_controller_memdump
+> during SSR timeout,the same pointer is freed twice.
 
-Sometimes those warnings are introduced by new compiler
-versions.
-
-That's why I don't care for -Werror use in Makefiles.
-
-> > > I don't have strong feelings if it's in the
-> > > Fixes tag or if it's just mentioned in the commit message.
-> > 
-> > My view is that changes that silence compiler warnings are
-> > not fixing bugs and that these changes should generally not
-> > be backported.
-> > 
-> The Fixes tag is useful for backports but that's not whole the point of
-> it.  It's also for collecting metrics.
-
-Hmm, how are these metrics used?
-
-> Also sometimes we fix the bug
-> before the kernel is released so the Fixes tag means we can automatically
-> ignore those ones when we look at which patches to backport.
-> 
-> I don't care if the "unused assignment" patches use a Fixes tag or just
-> mention the commit.  Either way the information is there for when I
-> review the patch.
-
-Perhaps there could/should be some distinction between
-"real bug" fixes and trivialities like "unused assignment"
-
-Maybe something like:
-	Updates: <commit> ("commit description")
-vs
-	Fixes: <commit> ("commit description")
+This is an unfortunate software situation.
 
 
+> Which results to double free error.
+
+How do you think about to omit this sentence from the change description?
+
+
+> Now a lock is acquired while SSR state moved to timeout.
+
+I suggest to convert this information into an imperative wording.
+
+Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=
+e?
+
+Regards,
+Markus

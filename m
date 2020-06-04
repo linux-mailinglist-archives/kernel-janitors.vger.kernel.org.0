@@ -2,124 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DCC81EDFD0
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 10:31:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CB7E1EE02C
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 10:55:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727101AbgFDIbu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jun 2020 04:31:50 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:34318 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726802AbgFDIbt (ORCPT
+        id S1727806AbgFDIzF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jun 2020 04:55:05 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:56536 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726664AbgFDIzF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jun 2020 04:31:49 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0548S7eE162710;
-        Thu, 4 Jun 2020 08:31:38 GMT
+        Thu, 4 Jun 2020 04:55:05 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0548kV17025798;
+        Thu, 4 Jun 2020 08:54:46 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=+U9pBSfXjXliRGgKHYuTmpAMur9djQ6OelvtEfxEzig=;
- b=UO/LN4Bzs6xjnoWtETZZ9tUKZi4IMXwj8kxT3lDrze66+DSq4UYaQiVpuocgZ06E6dPw
- zTdJ6CqCbO/4qG+IQcpHUA9vL5TruB9frU7HjIxssuyCJDZuFlcEEqZX1PB8Oy5VRzD3
- 3HLknCF6aeDGKs8Pyb+uO2rudpgM85OgLzpEac/Vn/kuwNWYNcpUGqKKpIiturlJQkSn
- loymQNZZIz/wVm+kZBlNzDnJlKDBB1OiqGKWgNuJlBS8tZtpSWOlJohD4LYzTd+wZOsV
- msAF445HU/jAKAVI9QqBklUp4yzhv7ynQSdBSjiGWzVf2B+3F6qba7kEj3ciKfUKcCZj QQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 31evvn06hp-1
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2020-01-29; bh=JIQfxmPvTFHHyVrHNeasOgcdmrQ+G3M5MRzkNLwrEqs=;
+ b=B/THnTSpSZVKPVZDbzXqGZ0Ri2QVlJWQoLNZPv0GtT71G7zbbEfTU36kJn3SPksT2kR4
+ ekv/gTdftG1l3HGtGr/M8GvbzSTyRepIouOeSoL4ud6RTmypOQ0hAhlWNsJncVOik5vJ
+ SuPi/yMnHSGwqtPdOGwLuSajpcNAj4s1z5idXX5a27RBmj+RMOa6/Ab4m/0aMKSNlOzi
+ ad4L48I0bQrHxLXavR2MM6lGBRzr8kNyON7Owlljav72yj9GjTpxQ9xgYmbolMm6LMJN
+ WdRq5CbBg0pAKpDGgDJCxDQW8NNiMIPtmnzLeqMhOltX6HJL6n6yy7Vba7++cXiYa+3D 3Q== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 31evap0hsq-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 04 Jun 2020 08:31:38 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0548TMjT116781;
-        Thu, 4 Jun 2020 08:31:37 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 31c1e1dqyu-1
+        Thu, 04 Jun 2020 08:54:46 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0548m6sZ006063;
+        Thu, 4 Jun 2020 08:54:45 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 31dju4nure-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 04 Jun 2020 08:31:37 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0548VVjI025648;
-        Thu, 4 Jun 2020 08:31:31 GMT
-Received: from kadam (/41.57.98.10)
+        Thu, 04 Jun 2020 08:54:45 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0548si4v002251;
+        Thu, 4 Jun 2020 08:54:44 GMT
+Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 04 Jun 2020 01:31:30 -0700
-Date:   Thu, 4 Jun 2020 11:31:20 +0300
+        with ESMTP ; Thu, 04 Jun 2020 01:54:43 -0700
+Date:   Thu, 4 Jun 2020 11:54:36 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+To:     Alexei Starovoitov <ast@kernel.org>
+Cc:     Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@chromium.org>, bpf@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] pinctrl: pxa: pxa2xx: Remove 'pxa2xx_pinctrl_exit()'
- which is unused and broken
-Message-ID: <20200604083120.GF22511@kadam>
-References: <20200531073716.593343-1-christophe.jaillet@wanadoo.fr>
- <87h7vvb1s3.fsf@belgarion.home>
- <a2e34c9a-676f-d83f-f395-7428af038c16@wanadoo.fr>
- <20200601183102.GS30374@kadam>
- <CACRpkdasbS-4_ZwC-Ucm8tkSUW5tAQdUrXjxHXQ3J0goVYfgHw@mail.gmail.com>
+Subject: [PATCH v2 bpf-next] bpf: Fix an error code in check_btf_func()
+Message-ID: <20200604085436.GA943001@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACRpkdasbS-4_ZwC-Ucm8tkSUW5tAQdUrXjxHXQ3J0goVYfgHw@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <CAADnVQJPwtan12Htu-0VhvuC3M-o_kbnPpN=SXVC-amn9BcZCw@mail.gmail.com>
+X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9641 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=999
- spamscore=0 bulkscore=0 adultscore=0 suspectscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006040058
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
+ phishscore=0 malwarescore=0 mlxscore=0 adultscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006040059
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9641 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 cotscore=-2147483648 suspectscore=0
- phishscore=0 clxscore=1015 malwarescore=0 mlxscore=0 priorityscore=1501
- bulkscore=0 impostorscore=0 adultscore=0 mlxlogscore=999 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006040058
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0
+ impostorscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0
+ priorityscore=1501 clxscore=1015 phishscore=0 mlxlogscore=999 mlxscore=0
+ suspectscore=0 cotscore=-2147483648 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006040059
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jun 04, 2020 at 12:08:49AM +0200, Linus Walleij wrote:
-> On Mon, Jun 1, 2020 at 8:31 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> > On Mon, Jun 01, 2020 at 01:31:23PM +0200, Christophe JAILLET wrote:
-> > > Le 01/06/2020 à 10:58, Robert Jarzmik a écrit :
-> > > > Christophe JAILLET <christophe.jaillet@wanadoo.fr> writes:
-> > > >
-> > > > > Commit 6d33ee7a0534 ("pinctrl: pxa: Use devm_pinctrl_register() for pinctrl registration")
-> > > > > has turned a 'pinctrl_register()' into 'devm_pinctrl_register()' in
-> > > > > 'pxa2xx_pinctrl_init()'.
-> > > > > However, the corresponding 'pinctrl_unregister()' call in
-> > > > > 'pxa2xx_pinctrl_exit()' has not been removed.
-> > > > >
-> > > > > This is not an issue, because 'pxa2xx_pinctrl_exit()' is unused.
-> > > > > Remove it now to avoid some wondering in the future and save a few LoC.
-> > > > >
-> > > > > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> > > > Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
-> > > >
-> > > > Would be even a better patch with a :
-> > > > Fixes: 6d33ee7a0534 ("pinctrl: pxa: Use devm_pinctrl_register() for pinctrl registration")
-> > >
-> > > I was wondering it was was needed in this case.
-> > > The patch does not really fix anything, as the function is unused. Or it
-> > > fixes things on a theoretical point of view.
-> >
-> > There is no concensus...  We should call a vote on this at Kernel
-> > Summit.  :P
-> 
-> Fixes means it fixes something that was wrong in that commit.
-> That's all. Whether syntactic or semantic or regression or
-> serious or not does not matter. It is also not compulsory to
-> add it is just helpful.
+This code returns success if the "info_aux" allocation fails but it
+should return -ENOMEM.
 
-Fixes tag should be compulsory for actual bug fixes.  We had a the
-Bad Binder exploit last year because commit f5cb779ba163
-("ANDROID: binder: remove waitqueue when thread exits.") had no Fixes
-tag and wasn't backported to Android kernels.
+Fixes: 8c1b6e69dcc1 ("bpf: Compare BTF types of functions arguments with actual types")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+v2: style change
 
-regards,
-dan carpenter
+ kernel/bpf/verifier.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 5c7bbaac81ef9..34cde841ab681 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -7552,7 +7552,7 @@ static int check_btf_func(struct bpf_verifier_env *env,
+ 	const struct btf *btf;
+ 	void __user *urecord;
+ 	u32 prev_offset = 0;
+-	int ret = 0;
++	int ret = -ENOMEM;
+ 
+ 	nfuncs = attr->func_info_cnt;
+ 	if (!nfuncs)
+-- 
+2.26.2
 

@@ -2,129 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DEEE1EEB1D
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 21:27:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 824CB1EED75
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 23:43:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729214AbgFDT1R (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jun 2020 15:27:17 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:41315 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728116AbgFDT1Q (ORCPT
+        id S1728215AbgFDVnd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jun 2020 17:43:33 -0400
+Received: from www62.your-server.de ([213.133.104.62]:51232 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725943AbgFDVnd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jun 2020 15:27:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1591298833;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Q49Z4256vOBoq7DStqgcJEK9UupKdzcyujqiCc4dd9o=;
-        b=FRDcHS9URDOTjooFuWKdeubu1+27tSZZUu1xCOh4wjBbHMND7FpVxQgfsfOWwnqKzr1qBi
-        aapEY9pexnpcWWYVvuwx/HdwTpu0Vzix5UdggeEl58V93Bfxz0X8FJGMKnR+MS+wgJ/hZ8
-        oxo2Qmplifwe0jtWyvd0x8K1hxV4sDk=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-465-jvmt-XI0OCWXRzoX06F93Q-1; Thu, 04 Jun 2020 15:27:09 -0400
-X-MC-Unique: jvmt-XI0OCWXRzoX06F93Q-1
-Received: by mail-wr1-f69.google.com with SMTP id w4so2820517wrl.13
-        for <kernel-janitors@vger.kernel.org>; Thu, 04 Jun 2020 12:27:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Q49Z4256vOBoq7DStqgcJEK9UupKdzcyujqiCc4dd9o=;
-        b=OhXvYlhYG5CY5p1LzJreK98uV7qnScrBTtl/a3lE+WwDkAiqbeLtKUlVcpfic+cvf5
-         2boqzBAR3mAPBdusZ3ZkkMLtDmPEZBqgLeVp5H3bKHrkq4fo31LSJzRfEReerChA1zAo
-         U1d2B/MV5NAzg1UCvrovZuVcMbhnzpntJAIZr31fsE59lLuVq8z95RwHUt40qj3RqYEQ
-         RClqipXt4DT0lG9dtC3+WLxye0eHTTkTT8Qj2Npr4DMR7D6Fax+izM/c3COLk4SW6+OX
-         Fb/PPyPfr6M10BqsZivN/8h562sWZYammTyUmhgfv3fxOxO/Ti7Vm/HtoThGcZjBdH7O
-         ZvQw==
-X-Gm-Message-State: AOAM530I7voIMzGfWPwpEH7VjP4SKUEp8+m9dwMKTMWa6+B+51op720e
-        pyhRxHZKtvPkOBJtf5KmQbhOlkqxr++k1navukMckRQIvd1q1BR/qG0nqgqzINJNjgQI5GtdS0f
-        LnDqFX0EjshtjmUSjjz9EBvBv4rML
-X-Received: by 2002:a05:600c:c3:: with SMTP id u3mr5149986wmm.108.1591298828086;
-        Thu, 04 Jun 2020 12:27:08 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyvcnPpK6VBqKCpJV3bB7l7vAoUXzeRhj0mnBk/bmYIFW6j4ZT+bUa1mlOaLtCHj4EUtktr1A==
-X-Received: by 2002:a05:600c:c3:: with SMTP id u3mr5149966wmm.108.1591298827858;
-        Thu, 04 Jun 2020 12:27:07 -0700 (PDT)
-Received: from redhat.com (bzq-109-64-41-91.red.bezeqint.net. [109.64.41.91])
-        by smtp.gmail.com with ESMTPSA id y37sm10879481wrd.55.2020.06.04.12.27.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2020 12:27:07 -0700 (PDT)
-Date:   Thu, 4 Jun 2020 15:27:05 -0400
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Joe Perches <joe@perches.com>
-Cc:     David Hildenbrand <david@redhat.com>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: MAINTAINERS: Wrong ordering in VIRTIO BALLOON
-Message-ID: <20200604152654-mutt-send-email-mst@kernel.org>
-References: <alpine.DEB.2.21.2005120717260.3701@felia>
- <bb2eea77-72df-6c53-5397-de057ffc9dd8@redhat.com>
- <80146d5713f8579a92b4da1e2b7d7626999dd9be.camel@perches.com>
+        Thu, 4 Jun 2020 17:43:33 -0400
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1jgxe2-0007pu-Nn; Thu, 04 Jun 2020 23:43:26 +0200
+Received: from [178.196.57.75] (helo=pc-9.home)
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1jgxe2-000OOD-Bz; Thu, 04 Jun 2020 23:43:26 +0200
+Subject: Re: [PATCH v2 bpf-next] bpf: Fix an error code in check_btf_func()
+To:     Song Liu <song@kernel.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Alexei Starovoitov <ast@kernel.org>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@chromium.org>, bpf <bpf@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+References: <CAADnVQJPwtan12Htu-0VhvuC3M-o_kbnPpN=SXVC-amn9BcZCw@mail.gmail.com>
+ <20200604085436.GA943001@mwanda>
+ <CAPhsuW7BK+4sJ42YpseWkHf0brW65se5HkQCkq-ONHx--sW4iw@mail.gmail.com>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <1834d76c-dfff-20ca-370c-443f42968588@iogearbox.net>
+Date:   Thu, 4 Jun 2020 23:43:25 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <80146d5713f8579a92b4da1e2b7d7626999dd9be.camel@perches.com>
+In-Reply-To: <CAPhsuW7BK+4sJ42YpseWkHf0brW65se5HkQCkq-ONHx--sW4iw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.102.2/25833/Thu Jun  4 14:45:29 2020)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, May 12, 2020 at 09:23:45AM -0700, Joe Perches wrote:
-> On Tue, 2020-05-12 at 08:38 +0200, David Hildenbrand wrote:
-> > On 12.05.20 07:21, Lukas Bulwahn wrote:
-> > > Hi David,
-> > > 
-> > > with your commit 6d6b93b9afd8 ("MAINTAINERS: Add myself as virtio-balloon 
-> > > co-maintainer"), visible on next-20200508, ./scripts/checkpatch.pl -f 
-> > > MAINTAINERS complains:
-> > > 
-> > > WARNING: Misordered MAINTAINERS entry - list file patterns in alphabetic order
-> > > #17982: FILE: MAINTAINERS:17982:
-> > > +F:	include/uapi/linux/virtio_balloon.h
-> > > +F:	include/linux/balloon_compaction.h
-> > > 
-> > > This is due to wrong ordering of the entries in your submission. If you 
-> > > would like me to send you a patch fixing that, please just let me know.
-> > > 
-> > > It is a recent addition to checkpatch.pl to report ordering problems in 
-> > > MAINTAINERS, so you might have not seen that at submission time.
-> > 
-> > Thanks for the notification Lukas,
-> > 
-> > b962ee8622d0 ("checkpatch: additional MAINTAINER section entry ordering
-> > checks") is not in Linus' tree yet AFAIKS.
-> > 
-> > I can see that 3b50142d8528 ("MAINTAINERS: sort field names for all
-> > entries") is upstream. I do wonder if we should just do another batch
-> > update after the checkpatch patch is upstream instead, I guess more will
-> > pile up?
-> > 
-> > @mst, joe, what do you prefer?
-> > 
-> > 1. I can resend the original patch.
-> > 2. Lukas can send a fixup that we might want to squash.
-> > 3. We wait until the checkpatch change goes upstream and to a final
-> > batch update.
+On 6/4/20 8:37 PM, Song Liu wrote:
+> On Thu, Jun 4, 2020 at 1:55 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>>
+>> This code returns success if the "info_aux" allocation fails but it
+>> should return -ENOMEM.
+>>
+>> Fixes: 8c1b6e69dcc1 ("bpf: Compare BTF types of functions arguments with actual types")
+>> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > 
-> A fixup patch would work.
-> 
-> I think if Linus every once in awhile just before an -rc1 runs
-> scripts/parse-maintainers like:
-> 
-> commit 3b50142d8528 ("MAINTAINERS: sort field names for all entries")
-> 
-> then these sorts of individual patches would not matter much.
-> 
-> This first time the script was run, I think there was just 1 patch
-> conflict from -next to Linus' tree, and that scripted change was
-> fairly large.
-> 
-> As the changes will generally be smaller in the future, it's unlikely
-> there will be a significant number of conflicts.
-> 
+> Acked-by: Song Liu <songliubraving@fb.com>
 
-
-ok so just send a fixup patch pls.
-
+Applied, thanks (my personal style preference would have been v1, but fair enough).

@@ -2,123 +2,129 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DAF5D1EEAAE
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 20:55:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1B631EEADB
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 21:08:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728996AbgFDSzP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jun 2020 14:55:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38144 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728938AbgFDSzP (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jun 2020 14:55:15 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D50DC08C5C0;
-        Thu,  4 Jun 2020 11:55:15 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id p5so7251252wrw.9;
-        Thu, 04 Jun 2020 11:55:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=uiinNKg/VAAIBsMjrTVJDCNhmBGSNxHkcjt+mWjcnNg=;
-        b=lDrViyRHFcdsinb5IHbP2qqOylfphQlSRMERDMe/wtWEswGJIceld6eWHhWVmj9kwY
-         S9GDEP0NS16fM+nVJhx89txvsDrW8ZZPerN1C/nr8xYKjrLIJ1Dj67yMXuLMtidBXCjv
-         l+uaJ0XsIXIb4XkViWBX1q43C7BVVfOVhxmBNVcFfMDZnzjQcCcXsx+HP2/L33r49U9l
-         1gqQClBCFhkzWQzH5HubbtmYfShFnXIaUk+sA1cOP9p0adzuhnYRYCP3CshXQEppsPs6
-         n5zO4FlxpRudlVm5V/E1QprnephQG9ygNndFspWN/lLh5tZQl0dNtThKw/VNb5KfvKBV
-         gEjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=uiinNKg/VAAIBsMjrTVJDCNhmBGSNxHkcjt+mWjcnNg=;
-        b=QCH7i91czk6W90v56naiDA0FNICgQAJPdhTIj7ZylX4PWj+qK5NHWeym5DqAnjb7fP
-         9zcfA6QavklLk+ZqotigUoSDp3uMNGPa9qCcbk4Rw+bvLSwkqZPBi2aVQEGjL1+PsvKs
-         D4PU0vmhrXz0FgoVOG9k5YScnI/Lhl6r122EA6nLfnGocyuJE3oMqtnjmWSZaQra1Opu
-         iXBJUfL7MKkv7Y65o02sXUrYdMuWuF81PF/q0htVWHLCeKJAZN0fp/8NmRnUyx1aiqDi
-         KGEj9AZUWsxZpd4Jnj4/j8SVZN5xfSDzt03McRb4DD5z3N3w3TmKuZAA/KGlWZMfY3up
-         sGgg==
-X-Gm-Message-State: AOAM5336Y8x6g9JU+lnHGMAJ8vuvpQY9dZtcE4RE2/mez2elYwKmvONA
-        4vvLlBr7n4/yHQMdwAjcQJLcSBmeGqceQ1GARKc=
-X-Google-Smtp-Source: ABdhPJyO1qtFfu8kgFgNsp7xryFcB2IwdjYxZjFEdLusH+8TaUd3IzJ4bblyVzCLX2N+e0qXfwjUFreeN2ucvhsw9nc=
-X-Received: by 2002:a5d:6789:: with SMTP id v9mr6163777wru.124.1591296913673;
- Thu, 04 Jun 2020 11:55:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200604103544.14515-1-colin.king@canonical.com>
-In-Reply-To: <20200604103544.14515-1-colin.king@canonical.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Thu, 4 Jun 2020 14:55:02 -0400
-Message-ID: <CADnq5_M1f8WrNfmo3xS7G=kVaCougjk1Ebiq1yWN1QG4gTkxZw@mail.gmail.com>
-Subject: Re: [PATCH][next] drm/amd/display: fix spelling mistake:
- "propogation" -> "propagation"
-To:     Colin King <colin.king@canonical.com>
-Cc:     Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        id S1729635AbgFDTIV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jun 2020 15:08:21 -0400
+Received: from mout.web.de ([212.227.17.12]:57747 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729310AbgFDTIV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Jun 2020 15:08:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1591297676;
+        bh=JbzMdzFOzCTsibWwfsPpxK0BShMK2VsDXLIYdKprY00=;
+        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
+        b=qBOwYG5gxDn5aB9WWdq9lQ95XfJKD231xBcY1NSN9+Mam2M9ZpJr2T9T1CT9Xqwu9
+         rEX81vUCk1c98mK2oUEiqqjXKDzpq2ptH6iAncHwjQQm/HPAw7hh+N4TETULCKnbLP
+         NXUm9j02x18HWONoBlK5LjeagXXfatqwdRv8BpYw=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.132.94.220]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MsrhK-1io0DE25No-00t6Da; Thu, 04
+ Jun 2020 21:07:56 +0200
+Cc:     Anson Huang <Anson.Huang@nxp.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Yi Zhang <yi.zhang@huawei.com>,
+        kernel-janitors@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] ARM: imx6: add missing put_device() call in
+ imx6q_suspend_init()
+From:   Markus Elfring <Markus.Elfring@web.de>
+To:     Yu Kuai <yukuai3@huawei.com>, kernel@pengutronix.de,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
+ +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
+ mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
+ lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
+ YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
+ GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
+ rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
+ 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
+ jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
+ BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
+ cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
+ Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
+ g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
+ OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
+ CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
+ LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
+ sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
+ kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
+ i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
+ g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
+ q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
+ NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
+ nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
+ 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
+ 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
+ wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
+ riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
+ DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
+ fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
+ 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
+ xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
+ qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
+ Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
+ Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
+ +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
+ hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
+ /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
+ tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
+ qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
+ Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
+ x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
+ pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
+Message-ID: <cf810c93-297c-c02c-9bba-8c3d097b8e31@web.de>
+Date:   Thu, 4 Jun 2020 21:07:55 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:XFGsV0QKIXJfaz2i0ga3WHMhzuzk6lKF+KUAnTOGnoBnphAbrMV
+ nyx1x1gvgaCb41DMh90xa/ORO29oOH7RG46fya33Wz+wa6qnrqVKG1bNnxvhF3/8NlT1yKX
+ YiSynMk/6NZskf7lr/s0whnQsxu/MkNedXcZ8u3uA3TD7pS8/Gi0kg8IB2iwYZ0mxZ+PqXh
+ uytUaPMiiZrkC3HkI8DCg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:eKr1vF7wTfk=:4U46qkCn9wPU67wuYyaE0S
+ jUWXai863XDATWGg4zj3PE+M0j9LvdKQtwibK4EI9e2tSZeoz6ryYsuQaSWWigw5/1Y5bYQIN
+ zOTf5ntbm78cMxZU/j9wfx7MVbvtO7I/0mYtGFYGXtZfkuEz+NCTSMG7MVboKDCo+AUpArctG
+ lQhQvYaWf0vpEaoLMe0/7vejgIWuEh79iYsL67HTW1CLiJq7JGzLDKQ8UVM11fYf9xngAZOIg
+ XBUkwuu/8yicEnDl8trP1YTfmLhb0ykJcUXuI+TqwbhxB8ecjlpdCO/fPg5rwR2rRgty7OsxG
+ lvkfBTFnCOE6/XkqQL7OsvSdNrgyoFoJI1mq7KC2wUdBuLevzUtuP5S34VG9blibRI76D+WBR
+ Af1eD7vsKZPDabjq4l8tba3tE7iHDolJtePMT1QqL45wVdo7Aa1OQjtuihOik+Q7B/Aed4F1i
+ s9AtPPUhYdJjpNI5RSB6klvjr34WQvIh8blMb+JeP+jd0N3wHPkyYkvhoScB1KVMiNRsWkA8x
+ wC8yQhHyAs+d6HkZJNkahcM50QIrGYYebwyB4Q6/2ovQ2ymnO+1FSCBptFndiHzsJsDc6J3K5
+ yCbXYpFirKyS/BrpGy/8lNrN6Mh6eqMUo3XdRxjBe4PANrhoYDzFIwl0tCIXKMTssRLyt1iY2
+ fZ0aKHyxdcOpC4xrXQjx42nFhMR9iwmPl/6LwMHd4+NSFw6sjRHbfmJBN1MDgiLQAhpg1ip8r
+ DwHNodCTZMWhQYUIoFHzUVbJItuSSa0oKc6XZ4IcUddSINVuK87zZrZZ0mNmjaaGU3p8Rd9uP
+ Frl6NW2rZCraq1H6wkc8W8tYZWXtRCRZU5xeUARC5S2T+LAUvlFVkqzrp7xrjwde6hOAjR2BL
+ 1d2MWg3/Ar2zzHTAOE5f0GpWveBj6rN5nwAxxir8ju1Z86dRw0IUWR6Kyn93WL/QX7Yvb4j5H
+ uq9LFZOfS78JSc/8T2bPH5YDCdrBsqikiIFYoTF28PrHsxbkeevYYrQruq8bbItIBn7Pdioid
+ QREe0V9J7E/rcd9RPnlY+7CoPu6iqpU9caqr6bK1vrv+IgpOdUk8uNRVJLquBbzuWGm9YaOo3
+ kufJ6cR4OCArj3pA/9J2rkd34rPV9q0Oe4eEsm/oaMFbKU3XpU8DWSlrS41l35TN3LSoUGWPt
+ 9gx0zqVkWrFtUjRdJDW6MDoqJGEddOrvPQO6GZOx818/p9e1ewdEsKVAgYpAnDsydPQD5XwcF
+ UeqzIX6m3nLNzRWL9
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Applied.  thanks!
+> if of_find_device_by_node() succeed, imx6q_suspend_init() doesn't have a
+> corresponding put_device(). Thus add a jump target to fix the exception
+> handling for this function implementation.
 
-Alex
+Do you find a previous update suggestion useful?
 
-On Thu, Jun 4, 2020 at 6:35 AM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> There is a spelling mistake in a dml_print message. Fix it.
->
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30=
-.c b/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-> index 65da6304d6a6..2a32ed6682fc 100644
-> --- a/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-> +++ b/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-> @@ -1308,7 +1308,7 @@ static bool CalculatePrefetchSchedule(
->                 dml_print("DML:  Tr0: %fus - time to fetch first row of d=
-ata pagetables and first row of meta data (done in parallel)\n", TimeForFet=
-chingRowInVBlank);
->                 dml_print("DML:  Tr1: %fus - time to fetch second row of =
-data pagetables and second row of meta data (done in parallel)\n", TimeForF=
-etchingRowInVBlank);
->                 dml_print("DML:  Tsw: %fus =3D time to fetch enough pixel=
- data and cursor data to feed the scalers init position and detile\n", (dou=
-ble)LinesToRequestPrefetchPixelData * LineTime);
-> -               dml_print("DML: To: %fus - time for propogation from scal=
-er to optc\n", (*DSTYAfterScaler + ((*DSTXAfterScaler) / (double) myPipe->H=
-Total)) * LineTime);
-> +               dml_print("DML: To: %fus - time for propagation from scal=
-er to optc\n", (*DSTYAfterScaler + ((*DSTXAfterScaler) / (double) myPipe->H=
-Total)) * LineTime);
->                 dml_print("DML: Tvstartup - Tsetup - Tcalc - Twait - Tpre=
- - To > 0\n");
->                 dml_print("DML: Tslack(pre): %fus - time left over in sch=
-edule\n", VStartup * LineTime - TimeForFetchingMetaPTE - 2 * TimeForFetchin=
-gRowInVBlank - (*DSTYAfterScaler + ((*DSTXAfterScaler) / (double) myPipe->H=
-Total)) * LineTime - TWait - TCalc - Tsetup);
->                 dml_print("DML: row_bytes =3D dpte_row_bytes (per_pipe) =
-=3D PixelPTEBytesPerRow =3D : %d\n", PixelPTEBytesPerRow);
-> --
-> 2.25.1
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+ARM: imx6: Add missing put_device() call in imx6q_suspend_init()
+https://lore.kernel.org/linux-arm-kernel/5acd7308-f6e1-4b1e-c744-bb2e5fdca1be@web.de/
+https://lore.kernel.org/patchwork/patch/1151158/
+https://lkml.org/lkml/2019/11/9/125
+
+Regards,
+Markus

@@ -2,65 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 824CB1EED75
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 23:43:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2B0A1EEDF9
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 00:52:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728215AbgFDVnd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jun 2020 17:43:33 -0400
-Received: from www62.your-server.de ([213.133.104.62]:51232 "EHLO
-        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725943AbgFDVnd (ORCPT
+        id S1726842AbgFDWwi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jun 2020 18:52:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46688 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726446AbgFDWwi (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jun 2020 17:43:33 -0400
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1jgxe2-0007pu-Nn; Thu, 04 Jun 2020 23:43:26 +0200
-Received: from [178.196.57.75] (helo=pc-9.home)
-        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1jgxe2-000OOD-Bz; Thu, 04 Jun 2020 23:43:26 +0200
-Subject: Re: [PATCH v2 bpf-next] bpf: Fix an error code in check_btf_func()
-To:     Song Liu <song@kernel.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Alexei Starovoitov <ast@kernel.org>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>, bpf <bpf@vger.kernel.org>,
+        Thu, 4 Jun 2020 18:52:38 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AC33C08C5C0;
+        Thu,  4 Jun 2020 15:52:38 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id CCED511F5F8D1;
+        Thu,  4 Jun 2020 15:52:36 -0700 (PDT)
+Date:   Thu, 04 Jun 2020 15:52:35 -0700 (PDT)
+Message-Id: <20200604.155235.1008812507143457607.davem@davemloft.net>
+To:     dan.carpenter@oracle.com
+Cc:     peppe.cavallaro@st.com, fugang.duan@nxp.com,
+        alexandre.torgue@st.com, joabreu@synopsys.com, kuba@kernel.org,
+        mcoquelin.stm32@gmail.com, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+        linux-imx@nxp.com, netdev@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
         kernel-janitors@vger.kernel.org
-References: <CAADnVQJPwtan12Htu-0VhvuC3M-o_kbnPpN=SXVC-amn9BcZCw@mail.gmail.com>
- <20200604085436.GA943001@mwanda>
- <CAPhsuW7BK+4sJ42YpseWkHf0brW65se5HkQCkq-ONHx--sW4iw@mail.gmail.com>
-From:   Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <1834d76c-dfff-20ca-370c-443f42968588@iogearbox.net>
-Date:   Thu, 4 Jun 2020 23:43:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
-MIME-Version: 1.0
-In-Reply-To: <CAPhsuW7BK+4sJ42YpseWkHf0brW65se5HkQCkq-ONHx--sW4iw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Subject: Re: [PATCH net-next] net: ethernet: dwmac: Fix an error code in
+ imx_dwmac_probe()
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200603175025.GA19353@mwanda>
+References: <20200603175025.GA19353@mwanda>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.102.2/25833/Thu Jun  4 14:45:29 2020)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 04 Jun 2020 15:52:37 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 6/4/20 8:37 PM, Song Liu wrote:
-> On Thu, Jun 4, 2020 at 1:55 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->>
->> This code returns success if the "info_aux" allocation fails but it
->> should return -ENOMEM.
->>
->> Fixes: 8c1b6e69dcc1 ("bpf: Compare BTF types of functions arguments with actual types")
->> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> 
-> Acked-by: Song Liu <songliubraving@fb.com>
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Date: Wed, 3 Jun 2020 20:50:25 +0300
 
-Applied, thanks (my personal style preference would have been v1, but fair enough).
+> The code is return PTR_ERR(NULL) which is zero or success.  We should
+> return -ENOMEM instead.
+> 
+> Fixes: 94abdad6974a5 ("net: ethernet: dwmac: add ethernet glue logic for NXP imx8 chip")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+Applied.

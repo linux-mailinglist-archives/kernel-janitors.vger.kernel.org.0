@@ -2,101 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CB7E1EE02C
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 10:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2E6C1EE08A
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 11:07:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727806AbgFDIzF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jun 2020 04:55:05 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:56536 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726664AbgFDIzF (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jun 2020 04:55:05 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0548kV17025798;
-        Thu, 4 Jun 2020 08:54:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=JIQfxmPvTFHHyVrHNeasOgcdmrQ+G3M5MRzkNLwrEqs=;
- b=B/THnTSpSZVKPVZDbzXqGZ0Ri2QVlJWQoLNZPv0GtT71G7zbbEfTU36kJn3SPksT2kR4
- ekv/gTdftG1l3HGtGr/M8GvbzSTyRepIouOeSoL4ud6RTmypOQ0hAhlWNsJncVOik5vJ
- SuPi/yMnHSGwqtPdOGwLuSajpcNAj4s1z5idXX5a27RBmj+RMOa6/Ab4m/0aMKSNlOzi
- ad4L48I0bQrHxLXavR2MM6lGBRzr8kNyON7Owlljav72yj9GjTpxQ9xgYmbolMm6LMJN
- WdRq5CbBg0pAKpDGgDJCxDQW8NNiMIPtmnzLeqMhOltX6HJL6n6yy7Vba7++cXiYa+3D 3Q== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 31evap0hsq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 04 Jun 2020 08:54:46 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0548m6sZ006063;
-        Thu, 4 Jun 2020 08:54:45 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 31dju4nure-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 04 Jun 2020 08:54:45 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0548si4v002251;
-        Thu, 4 Jun 2020 08:54:44 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 04 Jun 2020 01:54:43 -0700
-Date:   Thu, 4 Jun 2020 11:54:36 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Alexei Starovoitov <ast@kernel.org>
-Cc:     Daniel Borkmann <daniel@iogearbox.net>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>, bpf@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH v2 bpf-next] bpf: Fix an error code in check_btf_func()
-Message-ID: <20200604085436.GA943001@mwanda>
+        id S1728327AbgFDJHZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jun 2020 05:07:25 -0400
+Received: from foss.arm.com ([217.140.110.172]:41890 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728089AbgFDJHY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Jun 2020 05:07:24 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7DCBA55D;
+        Thu,  4 Jun 2020 02:07:24 -0700 (PDT)
+Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 605653F6CF;
+        Thu,  4 Jun 2020 02:07:23 -0700 (PDT)
+Date:   Thu, 4 Jun 2020 10:07:17 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-pci@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] PCI: uniphier: Fix some error handling in
+ uniphier_pcie_ep_probe()
+Message-ID: <20200604090717.GA28503@e121166-lin.cambridge.arm.com>
+References: <20200603175207.GB18931@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAADnVQJPwtan12Htu-0VhvuC3M-o_kbnPpN=SXVC-amn9BcZCw@mail.gmail.com>
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9641 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
- phishscore=0 malwarescore=0 mlxscore=0 adultscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006040059
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9641 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0
- impostorscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 clxscore=1015 phishscore=0 mlxlogscore=999 mlxscore=0
- suspectscore=0 cotscore=-2147483648 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006040059
+In-Reply-To: <20200603175207.GB18931@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This code returns success if the "info_aux" allocation fails but it
-should return -ENOMEM.
+On Wed, Jun 03, 2020 at 08:52:07PM +0300, Dan Carpenter wrote:
+> This code is checking the wrong variable.  It should be checking
+> "clk_gio" instead of "clk".  The "priv->clk" pointer is NULL at this
+> point so the condition is false.
+> 
+> Fixes: 006564dee8253 ("PCI: uniphier: Add Socionext UniPhier Pro5 PCIe endpoint controller driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/pci/controller/dwc/pcie-uniphier-ep.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Fixes: 8c1b6e69dcc1 ("bpf: Compare BTF types of functions arguments with actual types")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-v2: style change
+Squashed in the commit it is fixing, thanks !
 
- kernel/bpf/verifier.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Lorenzo
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 5c7bbaac81ef9..34cde841ab681 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -7552,7 +7552,7 @@ static int check_btf_func(struct bpf_verifier_env *env,
- 	const struct btf *btf;
- 	void __user *urecord;
- 	u32 prev_offset = 0;
--	int ret = 0;
-+	int ret = -ENOMEM;
- 
- 	nfuncs = attr->func_info_cnt;
- 	if (!nfuncs)
--- 
-2.26.2
-
+> diff --git a/drivers/pci/controller/dwc/pcie-uniphier-ep.c b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
+> index 0f36aa33d2e50..1483559600610 100644
+> --- a/drivers/pci/controller/dwc/pcie-uniphier-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
+> @@ -324,8 +324,8 @@ static int uniphier_pcie_ep_probe(struct platform_device *pdev)
+>  		return PTR_ERR(priv->base);
+>  
+>  	priv->clk_gio = devm_clk_get(dev, "gio");
+> -	if (IS_ERR(priv->clk))
+> -		return PTR_ERR(priv->clk);
+> +	if (IS_ERR(priv->clk_gio))
+> +		return PTR_ERR(priv->clk_gio);
+>  
+>  	priv->rst_gio = devm_reset_control_get_shared(dev, "gio");
+>  	if (IS_ERR(priv->rst_gio))
+> -- 
+> 2.26.2
+> 

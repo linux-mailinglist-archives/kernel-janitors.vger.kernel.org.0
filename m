@@ -2,134 +2,124 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FF111EDB44
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 04:36:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58E4F1EDCB7
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 07:41:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726874AbgFDCgd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jun 2020 22:36:33 -0400
-Received: from mail-eopbgr70071.outbound.protection.outlook.com ([40.107.7.71]:10691
-        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
+        id S1726158AbgFDFlY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jun 2020 01:41:24 -0400
+Received: from mail-eopbgr140052.outbound.protection.outlook.com ([40.107.14.52]:48670
+        "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726047AbgFDCgd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jun 2020 22:36:33 -0400
+        id S1726003AbgFDFlX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Jun 2020 01:41:23 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D1DudB4SCL3zmp/xWIPaEkzrRVxU8QNLQCTqrbXNlUr3uZm8p+rWvXwl2Urpr58OCVIBVeSZ6fYRxr5GxcF1fmU+C20QIMKEhjZtUKycYW3K3qW5aM2mcBEkaylwWyb46NtaXyeL8qWpN3QR5ussamXG61ZX3/xlOteG633STyrXKmquvHH0Y6sYeSYkFv44B7AAmz5p4+5BJeOB40vhhhoWTz6DI93A2bBrUtRbUQtoms1SC3krBVPRMKEG6UFZrzw4TgCgGf59B3UDATeesjLtws9Sw1M6fxqnmgaFVHh49ynvtyeDvox24ikqptCEMZnN5r7IRFRPykxe2GA/yw==
+ b=Aqxzdn6bJcBrKzpgmLDwQFhfzjTts5JEuJgBxZcF7WzkpVCdb5Cz9yMzaBLbGzrdep3WmwgkIqx/ikLKWRHi1Ee+BnMZJ3D5p42QRn5OFWLBWgaRHt7+W/HFJM/DG+RdatRg+4n27AoOiW203oP8lQQkBvoGPEadt6VAk339KKL5hMuPsuXMfUbXHMOqCp/pHzVF7H3XG3RDpSlscyvwiQEWTVSP33MKbeAuh5//chR4C3EZSDu6hsrBTFotBN2sJchOTQcoJp7qMuJkRC9cUdBctgCWSCvqSWsRKn+1HVMOupPrqbpEgMavajKkbyJE6gwoOZAPOYazgQrUpRhz+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oDQHXDsTaick5RedFb6PCmFYQJtR4hT2nG/MVl0FtVU=;
- b=EhmXd57WVGtjl7tJbcwQCaWikQwKwjXTKE2zpWHOYM30C0ySMkdS0Bei1+PT+ikLu+VbriNfJmBIxgUnUhN+xws62TkI5ZM1XxyUsB0GHPOjASPb8jzqC9atvMUYp0LUkeFqZ9faAhg1sJ6PpgfaO85zS5WIkZuWggk/3qJEjJta4YbU9Bis+aZQRuZpRW9If+xUaLZovIUNkEIsWpSwTX1fYNFQ36iWergIs7Sm3SDrmObvVT3/vS/AMnvg/ejnbKPsD6bDhmmIMldwguIWsI6bl0SLWnGaSriI2rbdqMRI7QRq02c6nOhcjd5tB5uh/sPEcRM9kvEQZmxKh7yqZQ==
+ bh=GzhzH+a4/oSdXJTWe3th/r3ALOW4JJTp+smCvWKsSpQ=;
+ b=TFqVSdMfh+uooUwz4LnCz9S0gt/7c4y5utgwxrymzCpgACtniha8RWv34WsNPCyAyRabClS5dgql0Wf1dt+HwgAAiNYNu/Dj7klxeT8ofuWaiX5IYQAU89/MqEoCQqHLZQ2PnkggEmRnLaHYfmmfnpvRHh3jlciPs230IXnelsZROK8zZsvJY3N16SXo1VeVK2F9gRCA9H7jvFARPChlfpI28Q+U5nXVTiLsEa1UTwUO0ruSkkAzngeSJInfkK9hovRv2E8Oyu2lsHiclZxuHkxsxhnfqfGznGB44soA4zpDYf6M8J4oMoZqq91ns2eewTuHVUmPT2x+bVKI5eaegg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
+ dkim=pass header.d=mellanox.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oDQHXDsTaick5RedFb6PCmFYQJtR4hT2nG/MVl0FtVU=;
- b=ZMnMWrESqKNAtpr7jhmVOvXoL8FocX+0/ozfZPWcZP0w0FlqPPgPxCVXKd6TNB/E6lzw6T/yF/qE4lTPyCdLpp0jYznTaizKjJ5n8bqfk9otx/216fNxzcZRySyqWgfRqfwhK29ZFeUYW5HjXOr8urIg1gjvoxHejS1pTCrNq0U=
-Received: from AM6PR0402MB3607.eurprd04.prod.outlook.com
- (2603:10a6:209:12::18) by AM6PR0402MB3527.eurprd04.prod.outlook.com
- (2603:10a6:209:6::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3066.18; Thu, 4 Jun
- 2020 02:36:28 +0000
-Received: from AM6PR0402MB3607.eurprd04.prod.outlook.com
- ([fe80::35f8:f020:9b47:9aa1]) by AM6PR0402MB3607.eurprd04.prod.outlook.com
- ([fe80::35f8:f020:9b47:9aa1%7]) with mapi id 15.20.3045.024; Thu, 4 Jun 2020
- 02:36:28 +0000
-From:   Andy Duan <fugang.duan@nxp.com>
+ bh=GzhzH+a4/oSdXJTWe3th/r3ALOW4JJTp+smCvWKsSpQ=;
+ b=qqj09P3Vx0oClUEm7atu6DiAU/cyHVhq93zPt+xGEJY3tyQTIT56qPb6mdmD+Ni7USoyvYNC28sQavH6Zdrf4oLV2fGTr43IXhARMRcepobUFWug01of43TAiFvrg2uOX+ZtPTz8Ldp7Gf4qduJHyesXljloVgyokHAyfEM2zI8=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none
+ header.from=mellanox.com;
+Received: from DB7PR05MB4156.eurprd05.prod.outlook.com (2603:10a6:5:18::21) by
+ DB7PR05MB5017.eurprd05.prod.outlook.com (2603:10a6:10:22::33) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3066.18; Thu, 4 Jun 2020 05:41:18 +0000
+Received: from DB7PR05MB4156.eurprd05.prod.outlook.com
+ ([fe80::39ab:622c:b05b:c86]) by DB7PR05MB4156.eurprd05.prod.outlook.com
+ ([fe80::39ab:622c:b05b:c86%3]) with mapi id 15.20.3066.018; Thu, 4 Jun 2020
+ 05:41:17 +0000
+Subject: Re: [PATCH] net/mlx5: E-Switch, Fix an Oops error handling code
 To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>
-CC:     Alexandre Torgue <alexandre.torgue@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        Saeed Mahameed <saeedm@mellanox.com>,
+        Vu Pham <vuhuong@mellanox.com>
+Cc:     Leon Romanovsky <leon@kernel.org>,
         Jakub Kicinski <kuba@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-stm32@st-md-mailman.stormreply.com" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: RE: [EXT] [PATCH net-next] net: ethernet: dwmac: Fix an error code in
- imx_dwmac_probe()
-Thread-Topic: [EXT] [PATCH net-next] net: ethernet: dwmac: Fix an error code
- in imx_dwmac_probe()
-Thread-Index: AQHWOc+DMpUVYvKlDkqH243mKsxfkajHvadQ
-Date:   Thu, 4 Jun 2020 02:36:28 +0000
-Message-ID: <AM6PR0402MB360703C2D2EAC8A58D7BEF2DFF890@AM6PR0402MB3607.eurprd04.prod.outlook.com>
-References: <20200603175025.GA19353@mwanda>
-In-Reply-To: <20200603175025.GA19353@mwanda>
-Accept-Language: zh-CN, en-US
+        Mark Bloch <markb@mellanox.com>,
+        Parav Pandit <parav@mellanox.com>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200603175316.GC18931@mwanda>
+From:   Roi Dayan <roid@mellanox.com>
+Message-ID: <3f29e5cd-f02d-3eb0-f2d6-601702c6a2ae@mellanox.com>
+Date:   Thu, 4 Jun 2020 08:41:21 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
+In-Reply-To: <20200603175316.GC18931@mwanda>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: oracle.com; dkim=none (message not signed)
- header.d=none;oracle.com; dmarc=none action=none header.from=nxp.com;
-x-originating-ip: [119.31.174.66]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: f5f4fb41-2853-45ca-5c84-08d8083015a2
-x-ms-traffictypediagnostic: AM6PR0402MB3527:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <AM6PR0402MB352784D14FA0CAE7DB218D6CFF890@AM6PR0402MB3527.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:785;
-x-forefront-prvs: 04244E0DC5
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: zxDnyBf+NUawQ0u8MzlYPZp6WLeaQUwu0x+BK7H4EncOtOdcdoV2KEb4eQasLs9Li6eOIwwUh8JEkqjnPPj5548No1N6JmvNuehcIT4+hRoWct5Q682JyAi2AmnHgJGoyxyPVJgxSgQ3iA2zm9Hd5YXipMxKSsBr0ImRaWy8GVXQtNp0PKdOYH2+tqSIPbWZbJLOCU0ehKd7IJXPkK2pPFadG3jCNSrTd2P70vvz8eZEeMrT+3bpYUfZbgp9ce4EEKxG9ougyJciZLOXHwkK+r5W+PYY1AK0zYauJXTwXSEz1qSRkAkGU3J6xSnn3/+F
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR0402MB3607.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(39860400002)(346002)(376002)(396003)(366004)(136003)(54906003)(76116006)(5660300002)(83380400001)(66476007)(64756008)(66446008)(66556008)(66946007)(8676002)(110136005)(8936002)(4326008)(52536014)(2906002)(316002)(33656002)(7696005)(6506007)(7416002)(478600001)(71200400001)(86362001)(9686003)(55016002)(26005)(186003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: GWsgkfonioMnefdd5KJY2OFWrYYD4rGij2UmuvM1K/NzsmOYxxVN0W2piPlumTwXiiPDonAkfKu3AmZAm+AnPIRSCDSHRG7qzPOv5ks3eodIklvpnTBPDZAV/eRTA+/8ojZME1yRo2dEsvLWQlCeLtJma0y7kSqjeFTi2EOQEwIzznTpsBsxcW0rfMb9yPbFeor+dFfvlQG3/A5HRabmpynDYRHai2QyFfSDkeTnvwvTWxUJE60Y/VfbgxrvK4wF1DMOLAB4FTVhRzugkP9VMVp2arkGzlDWS/i/F1X6aMCY2xNlBUPrXmnRhwt2kiHwRQ7SYq/USClJ/IKVBwR6h1qFH9I1HXFMqK7MSUFyTpjx6qmG4Gowc4sAhg37+3f0d85YDs1fFadtSGgQgZLu/JaFJPXk/vG//CZfYQaoz3hNiwd4eUKPXmGokJPaQKzgsHJlGwSGDueHWhi4ephvfA338kdmAJL27rxSbK4g73k=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM0PR06CA0077.eurprd06.prod.outlook.com
+ (2603:10a6:208:fa::18) To DB7PR05MB4156.eurprd05.prod.outlook.com
+ (2603:10a6:5:18::21)
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f5f4fb41-2853-45ca-5c84-08d8083015a2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jun 2020 02:36:28.6101
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.1.170] (176.231.113.172) by AM0PR06CA0077.eurprd06.prod.outlook.com (2603:10a6:208:fa::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3066.18 via Frontend Transport; Thu, 4 Jun 2020 05:41:16 +0000
+X-Originating-IP: [176.231.113.172]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 6565d77e-d85e-4692-56c9-08d80849e708
+X-MS-TrafficTypeDiagnostic: DB7PR05MB5017:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DB7PR05MB5017A7512FA2BB440E3CFF65B5890@DB7PR05MB5017.eurprd05.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:69;
+X-Forefront-PRVS: 04244E0DC5
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 1olN5pu+AhjrINwsm5yC+2Cioi64/gaBTOq3gGW7N9JqCXOXluRsz0fcX8hpNCBZr+ubglhmJfVOXhiXLYuMcYNIeJcPejsuA2ud2rcW8a5LnvZez9K9+4yZfqPrgm00iARbq9+5BLZcL5hywFEoR8VGrzj8GlC0muLmJxDKOn8Z06onhrpqn04MYtQ79uyzIS6S5/2kpqM/i9AFLHKULbWRKDu3coNyzKINMBjv3iw9GQDPbDejhG7yUUsqaBT9u7cS9jCHjZy6ZOAV60NDe90wDupStWOaCs0hdTyXIYNJ4aKvWEvsbhMXFHqzLS78keCL+Y0CsI7SipN2E2C4JZFUSkxeX+n9GoRqe4hcz6k2EUIrT9BE4SePC9YHqImL
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR05MB4156.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(346002)(376002)(136003)(39860400002)(396003)(366004)(31696002)(86362001)(36756003)(31686004)(53546011)(83380400001)(478600001)(52116002)(8676002)(66946007)(66476007)(66556008)(8936002)(6666004)(316002)(2906002)(54906003)(110136005)(16526019)(6636002)(186003)(2616005)(956004)(5660300002)(6486002)(26005)(16576012)(4326008)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: qFfcBO08pnpcDAsoYRkLQGG/TzepLbJHhETG1ecrK6C5Agsmca4ZiOPSTDWOxRPa5iQtHennWItys9nD0zDJaHn2sALB6xgpVdDyqq4UMK8jHwRZBtKPYYMM29y2YC1HAZN2JIvjfLll9BTHOirXgGJd8cor/9AkMJZmeXMip6MKdibpXzPiEF73XKxWpRwhm008ga7hwWrv6l8McT6BwQmqiAbCho6SNG5h0XTiKjeuhME5kZjFpKQhVl4h3/RAert5GmaHyaTWgjVGwkIofBYqigQQro6Q9iJLPRcaZisCuwG2cgGvpnb8ublAcdTns4CzPvs+XsSlmX5GfX6kbBum3DYg7YSKL9wmPyeHZ4juT6nPOWvpy710cNSY2gRJ9By6BwoBMvLTNdrRWTvCeR/qG+BZQfuCnRANX/5pmA/V9HOXaLRq6mqAkaZfHqyJrvpdYH1e9d9i94WU7MYvVPCGTveS8oTDcpgBeB45BqDaX3ns5qF+I6OEYrmLS/qG
+X-OriginatorOrg: Mellanox.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6565d77e-d85e-4692-56c9-08d80849e708
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2020 05:41:17.8271
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: YMBSPYuwXPA8Vy3GErwgJDqweN1TjuHxE35YIwmtDy9kNaHAoBMg59xB4SyCJ5DIU07YRv2aF2y53tzUiIPDnw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR0402MB3527
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: a652971c-7d2e-4d9b-a6a4-d149256f461b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tjLOLWh4E5YBsl6BOHDWOMkD2IQl/TvDIw24oX24voPIuboWoK76p6wqW6BVs0ePTjFF6tCMkdAL0pGjtJDxNg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR05MB5017
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com> Sent: Thursday, June 4, 2020=
- 1:50 AM
-> The code is return PTR_ERR(NULL) which is zero or success.  We should
-> return -ENOMEM instead.
->=20
-> Fixes: 94abdad6974a5 ("net: ethernet: dwmac: add ethernet glue logic for
-> NXP imx8 chip")
+
+
+On 2020-06-03 8:53 PM, Dan Carpenter wrote:
+> The error handling dereferences "vport".  There is nothing we can do if
+> it is an error pointer except returning the error code.
+> 
+> Fixes: 133dcfc577ea ("net/mlx5: E-Switch, Alloc and free unique metadata for match")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-Thanks!
-
-Acked-by: Fugang Duan <fugang.duan@nxp.com>
 > ---
->  drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> index 5010af7dab4af..3c5df5eeed6c8 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> @@ -225,7 +225,7 @@ static int imx_dwmac_probe(struct platform_device
-> *pdev)
->=20
->         dwmac =3D devm_kzalloc(&pdev->dev, sizeof(*dwmac),
-> GFP_KERNEL);
->         if (!dwmac)
-> -               return PTR_ERR(dwmac);
-> +               return -ENOMEM;
->=20
->         plat_dat =3D stmmac_probe_config_dt(pdev, &stmmac_res.mac);
->         if (IS_ERR(plat_dat))
-> --
-> 2.26.2
+>  drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_ofld.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_ofld.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_ofld.c
+> index 4e55d7225a265..857f6193f3b14 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_ofld.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_ofld.c
+> @@ -301,8 +301,7 @@ int mlx5_esw_acl_ingress_vport_bond_update(struct mlx5_eswitch *esw, u16 vport_n
+>  
+>  	if (WARN_ON_ONCE(IS_ERR(vport))) {
+>  		esw_warn(esw->dev, "vport(%d) invalid!\n", vport_num);
+> -		err = PTR_ERR(vport);
+> -		goto out;
+> +		return PTR_ERR(vport);
+>  	}
+>  
+>  	esw_acl_ingress_ofld_rules_destroy(esw, vport);
+> 
+
+thanks!
+
+Reviewed-by: Roi Dayan <roid@mellanox.com>
 

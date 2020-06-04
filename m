@@ -2,73 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2E6C1EE08A
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 11:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D536B1EE101
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 11:17:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728327AbgFDJHZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jun 2020 05:07:25 -0400
-Received: from foss.arm.com ([217.140.110.172]:41890 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728089AbgFDJHY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jun 2020 05:07:24 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7DCBA55D;
-        Thu,  4 Jun 2020 02:07:24 -0700 (PDT)
-Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 605653F6CF;
-        Thu,  4 Jun 2020 02:07:23 -0700 (PDT)
-Date:   Thu, 4 Jun 2020 10:07:17 +0100
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        linux-pci@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] PCI: uniphier: Fix some error handling in
- uniphier_pcie_ep_probe()
-Message-ID: <20200604090717.GA28503@e121166-lin.cambridge.arm.com>
-References: <20200603175207.GB18931@mwanda>
+        id S1727925AbgFDJRk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jun 2020 05:17:40 -0400
+Received: from smtprelay0175.hostedemail.com ([216.40.44.175]:59320 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726248AbgFDJRk (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Jun 2020 05:17:40 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 7FBE8837F27E;
+        Thu,  4 Jun 2020 09:17:39 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:968:973:979:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2553:2559:2562:2693:2828:2911:3138:3139:3140:3141:3142:3354:3622:3865:3867:3868:3870:3871:3872:3874:4250:4321:4383:4425:5007:6119:6755:7903:10004:10400:10848:11026:11218:11232:11658:11914:12043:12219:12297:12438:12555:12740:12760:12895:13149:13230:13255:13439:14093:14097:14181:14659:14721:21080:21324:21450:21451:21627:30054:30074:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: lock32_040a1d426d96
+X-Filterd-Recvd-Size: 3759
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf08.hostedemail.com (Postfix) with ESMTPA;
+        Thu,  4 Jun 2020 09:17:36 +0000 (UTC)
+Message-ID: <2aa49a543e6f48a6f428a37b63a06f9149870225.camel@perches.com>
+Subject: Re: [PATCH] pinctrl: pxa: pxa2xx: Remove 'pxa2xx_pinctrl_exit()'
+ which is unused and broken
+From:   Joe Perches <joe@perches.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Date:   Thu, 04 Jun 2020 02:17:35 -0700
+In-Reply-To: <20200604083120.GF22511@kadam>
+References: <20200531073716.593343-1-christophe.jaillet@wanadoo.fr>
+         <87h7vvb1s3.fsf@belgarion.home>
+         <a2e34c9a-676f-d83f-f395-7428af038c16@wanadoo.fr>
+         <20200601183102.GS30374@kadam>
+         <CACRpkdasbS-4_ZwC-Ucm8tkSUW5tAQdUrXjxHXQ3J0goVYfgHw@mail.gmail.com>
+         <20200604083120.GF22511@kadam>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.2-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200603175207.GB18931@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jun 03, 2020 at 08:52:07PM +0300, Dan Carpenter wrote:
-> This code is checking the wrong variable.  It should be checking
-> "clk_gio" instead of "clk".  The "priv->clk" pointer is NULL at this
-> point so the condition is false.
+On Thu, 2020-06-04 at 11:31 +0300, Dan Carpenter wrote:
+> On Thu, Jun 04, 2020 at 12:08:49AM +0200, Linus Walleij wrote:
+[]
+> > Fixes means it fixes something that was wrong in that commit.
+> > That's all. Whether syntactic or semantic or regression or
+> > serious or not does not matter. It is also not compulsory to
+> > add it is just helpful.
 > 
-> Fixes: 006564dee8253 ("PCI: uniphier: Add Socionext UniPhier Pro5 PCIe endpoint controller driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/pci/controller/dwc/pcie-uniphier-ep.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> Fixes tag should be compulsory for actual bug fixes.  We had a the
+> Bad Binder exploit last year because commit f5cb779ba163
+> ("ANDROID: binder: remove waitqueue when thread exits.") had no Fixes
+> tag and wasn't backported to Android kernels.
 
-Squashed in the commit it is fixing, thanks !
+Fixes tags IMO should be exclusively for actual bug fixes
+and should be mandatory.
 
-Lorenzo
+Perhaps:
+---
+ Documentation/process/submitting-patches.rst | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-> diff --git a/drivers/pci/controller/dwc/pcie-uniphier-ep.c b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-> index 0f36aa33d2e50..1483559600610 100644
-> --- a/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-> @@ -324,8 +324,8 @@ static int uniphier_pcie_ep_probe(struct platform_device *pdev)
->  		return PTR_ERR(priv->base);
->  
->  	priv->clk_gio = devm_clk_get(dev, "gio");
-> -	if (IS_ERR(priv->clk))
-> -		return PTR_ERR(priv->clk);
-> +	if (IS_ERR(priv->clk_gio))
-> +		return PTR_ERR(priv->clk_gio);
->  
->  	priv->rst_gio = devm_reset_control_get_shared(dev, "gio");
->  	if (IS_ERR(priv->rst_gio))
-> -- 
-> 2.26.2
-> 
+diff --git a/Documentation/process/submitting-patches.rst b/Documentation/process/submitting-patches.rst
+index 1699b7f8e63a..285a84ae79de 100644
+--- a/Documentation/process/submitting-patches.rst
++++ b/Documentation/process/submitting-patches.rst
+@@ -636,12 +636,14 @@ idea was not posted in a public forum. That said, if we diligently credit our
+ idea reporters, they will, hopefully, be inspired to help us again in the
+ future.
+ 
+-A Fixes: tag indicates that the patch fixes an issue in a previous commit. It
+-is used to make it easy to determine where a bug originated, which can help
+-review a bug fix. This tag also assists the stable kernel team in determining
+-which stable kernel versions should receive your fix. This is the preferred
+-method for indicating a bug fixed by the patch. See :ref:`describe_changes`
+-for more details.
++A Fixes: tag indicates that the patch fixes a "bug". i.e.: a logic defect or
++regression in a previous commit.  A Fixes: tag should not be used to indicate
++that a previous commit had some trivial defect in spelling in the commit log or
++some whitespace defect.  The Fixes: tag is used to make it easy to determine
++where a bug originated, which can help review a bug fix. The Fixes: tag also
++assists the stable kernel team in determining which stable kernel versions
++should receive your fix. This is the preferred method for indicating a bug is
++fixed by the patch.  See :ref:`describe_changes` for more details.
+ 
+ .. _the_canonical_patch_format:
+ 
+

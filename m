@@ -2,124 +2,149 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58E4F1EDCB7
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 07:41:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F152C1EDCBD
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 07:44:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726158AbgFDFlY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jun 2020 01:41:24 -0400
-Received: from mail-eopbgr140052.outbound.protection.outlook.com ([40.107.14.52]:48670
-        "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726003AbgFDFlX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jun 2020 01:41:23 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Aqxzdn6bJcBrKzpgmLDwQFhfzjTts5JEuJgBxZcF7WzkpVCdb5Cz9yMzaBLbGzrdep3WmwgkIqx/ikLKWRHi1Ee+BnMZJ3D5p42QRn5OFWLBWgaRHt7+W/HFJM/DG+RdatRg+4n27AoOiW203oP8lQQkBvoGPEadt6VAk339KKL5hMuPsuXMfUbXHMOqCp/pHzVF7H3XG3RDpSlscyvwiQEWTVSP33MKbeAuh5//chR4C3EZSDu6hsrBTFotBN2sJchOTQcoJp7qMuJkRC9cUdBctgCWSCvqSWsRKn+1HVMOupPrqbpEgMavajKkbyJE6gwoOZAPOYazgQrUpRhz+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GzhzH+a4/oSdXJTWe3th/r3ALOW4JJTp+smCvWKsSpQ=;
- b=TFqVSdMfh+uooUwz4LnCz9S0gt/7c4y5utgwxrymzCpgACtniha8RWv34WsNPCyAyRabClS5dgql0Wf1dt+HwgAAiNYNu/Dj7klxeT8ofuWaiX5IYQAU89/MqEoCQqHLZQ2PnkggEmRnLaHYfmmfnpvRHh3jlciPs230IXnelsZROK8zZsvJY3N16SXo1VeVK2F9gRCA9H7jvFARPChlfpI28Q+U5nXVTiLsEa1UTwUO0ruSkkAzngeSJInfkK9hovRv2E8Oyu2lsHiclZxuHkxsxhnfqfGznGB44soA4zpDYf6M8J4oMoZqq91ns2eewTuHVUmPT2x+bVKI5eaegg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
- dkim=pass header.d=mellanox.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GzhzH+a4/oSdXJTWe3th/r3ALOW4JJTp+smCvWKsSpQ=;
- b=qqj09P3Vx0oClUEm7atu6DiAU/cyHVhq93zPt+xGEJY3tyQTIT56qPb6mdmD+Ni7USoyvYNC28sQavH6Zdrf4oLV2fGTr43IXhARMRcepobUFWug01of43TAiFvrg2uOX+ZtPTz8Ldp7Gf4qduJHyesXljloVgyokHAyfEM2zI8=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=mellanox.com;
-Received: from DB7PR05MB4156.eurprd05.prod.outlook.com (2603:10a6:5:18::21) by
- DB7PR05MB5017.eurprd05.prod.outlook.com (2603:10a6:10:22::33) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3066.18; Thu, 4 Jun 2020 05:41:18 +0000
-Received: from DB7PR05MB4156.eurprd05.prod.outlook.com
- ([fe80::39ab:622c:b05b:c86]) by DB7PR05MB4156.eurprd05.prod.outlook.com
- ([fe80::39ab:622c:b05b:c86%3]) with mapi id 15.20.3066.018; Thu, 4 Jun 2020
- 05:41:17 +0000
-Subject: Re: [PATCH] net/mlx5: E-Switch, Fix an Oops error handling code
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Saeed Mahameed <saeedm@mellanox.com>,
-        Vu Pham <vuhuong@mellanox.com>
-Cc:     Leon Romanovsky <leon@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Mark Bloch <markb@mellanox.com>,
-        Parav Pandit <parav@mellanox.com>, linux-rdma@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20200603175316.GC18931@mwanda>
-From:   Roi Dayan <roid@mellanox.com>
-Message-ID: <3f29e5cd-f02d-3eb0-f2d6-601702c6a2ae@mellanox.com>
-Date:   Thu, 4 Jun 2020 08:41:21 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+        id S1726246AbgFDFnv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jun 2020 01:43:51 -0400
+Received: from mout.web.de ([212.227.17.11]:48187 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726003AbgFDFnu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Jun 2020 01:43:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1591249403;
+        bh=3MkFD5u516RHMXs9tkq7u9K3YawNQbXNaeFLtPqnKtQ=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=I3ELH3x/3D6qSmpDrl6cD8y2KG2tp5tbMj+Qfv9YpzGMIIwVe972QmH57+VgAQkYh
+         bSCsyUCtVOO20dU4qAnDsGWf8YOojtRy7uyVToqZY814GDfKw/j5Yupune1uBzydMm
+         mKUa10L1rXvME15InwNqd8ht3s2Kue7pi/iIvULA=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.132.94.220]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mhnw2-1j307X1kG0-00drys; Thu, 04
+ Jun 2020 07:43:23 +0200
+Subject: Re: dmaengine: stm32-mdma: call pm_runtime_put if pm_runtime_get_sync
+ fails
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Navid Emamdoost <navid.emamdoost@gmail.com>,
+        dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-stm32@st-md-mailman.stormreply.com
+Cc:     Alexandre Torgue <alexandre.torgue@st.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
+        Qiushi Wu <wu000273@umn.edu>, Vinod Koul <vkoul@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <873bfb31-52d8-7c9b-5480-4a94dc945307@web.de>
+ <CAMuHMdU3wMT_pnh4NE9W9Su6qip_oObgd6OiRCwfuvouqjXKHA@mail.gmail.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <3eca8df2-22ae-06e0-5809-c11e459915d5@web.de>
+Date:   Thu, 4 Jun 2020 07:43:14 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
-In-Reply-To: <20200603175316.GC18931@mwanda>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM0PR06CA0077.eurprd06.prod.outlook.com
- (2603:10a6:208:fa::18) To DB7PR05MB4156.eurprd05.prod.outlook.com
- (2603:10a6:5:18::21)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.1.170] (176.231.113.172) by AM0PR06CA0077.eurprd06.prod.outlook.com (2603:10a6:208:fa::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3066.18 via Frontend Transport; Thu, 4 Jun 2020 05:41:16 +0000
-X-Originating-IP: [176.231.113.172]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 6565d77e-d85e-4692-56c9-08d80849e708
-X-MS-TrafficTypeDiagnostic: DB7PR05MB5017:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DB7PR05MB5017A7512FA2BB440E3CFF65B5890@DB7PR05MB5017.eurprd05.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:69;
-X-Forefront-PRVS: 04244E0DC5
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1olN5pu+AhjrINwsm5yC+2Cioi64/gaBTOq3gGW7N9JqCXOXluRsz0fcX8hpNCBZr+ubglhmJfVOXhiXLYuMcYNIeJcPejsuA2ud2rcW8a5LnvZez9K9+4yZfqPrgm00iARbq9+5BLZcL5hywFEoR8VGrzj8GlC0muLmJxDKOn8Z06onhrpqn04MYtQ79uyzIS6S5/2kpqM/i9AFLHKULbWRKDu3coNyzKINMBjv3iw9GQDPbDejhG7yUUsqaBT9u7cS9jCHjZy6ZOAV60NDe90wDupStWOaCs0hdTyXIYNJ4aKvWEvsbhMXFHqzLS78keCL+Y0CsI7SipN2E2C4JZFUSkxeX+n9GoRqe4hcz6k2EUIrT9BE4SePC9YHqImL
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR05MB4156.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(346002)(376002)(136003)(39860400002)(396003)(366004)(31696002)(86362001)(36756003)(31686004)(53546011)(83380400001)(478600001)(52116002)(8676002)(66946007)(66476007)(66556008)(8936002)(6666004)(316002)(2906002)(54906003)(110136005)(16526019)(6636002)(186003)(2616005)(956004)(5660300002)(6486002)(26005)(16576012)(4326008)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: qFfcBO08pnpcDAsoYRkLQGG/TzepLbJHhETG1ecrK6C5Agsmca4ZiOPSTDWOxRPa5iQtHennWItys9nD0zDJaHn2sALB6xgpVdDyqq4UMK8jHwRZBtKPYYMM29y2YC1HAZN2JIvjfLll9BTHOirXgGJd8cor/9AkMJZmeXMip6MKdibpXzPiEF73XKxWpRwhm008ga7hwWrv6l8McT6BwQmqiAbCho6SNG5h0XTiKjeuhME5kZjFpKQhVl4h3/RAert5GmaHyaTWgjVGwkIofBYqigQQro6Q9iJLPRcaZisCuwG2cgGvpnb8ublAcdTns4CzPvs+XsSlmX5GfX6kbBum3DYg7YSKL9wmPyeHZ4juT6nPOWvpy710cNSY2gRJ9By6BwoBMvLTNdrRWTvCeR/qG+BZQfuCnRANX/5pmA/V9HOXaLRq6mqAkaZfHqyJrvpdYH1e9d9i94WU7MYvVPCGTveS8oTDcpgBeB45BqDaX3ns5qF+I6OEYrmLS/qG
-X-OriginatorOrg: Mellanox.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6565d77e-d85e-4692-56c9-08d80849e708
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2020 05:41:17.8271
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: a652971c-7d2e-4d9b-a6a4-d149256f461b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tjLOLWh4E5YBsl6BOHDWOMkD2IQl/TvDIw24oX24voPIuboWoK76p6wqW6BVs0ePTjFF6tCMkdAL0pGjtJDxNg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR05MB5017
+In-Reply-To: <CAMuHMdU3wMT_pnh4NE9W9Su6qip_oObgd6OiRCwfuvouqjXKHA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:KynnLDi6KBJoEMNje4oN1eTT3NNOBiFU90Q69446fFG5stNUo72
+ FmPpM60Wdq/d742po5l185fsNTdEDnhKVsx7aalLxglMhzAV90r4HJIuNIXyDynopO8z3cO
+ rSQX0gMpluWTpgfluIkxagVEvTHi5/jehR6PUJ27joHQ+P/nnEHIVLBgzdLIdNjGirWpTop
+ L+EIi5rZtfUcE6YQgH6lA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:qeH4pHbZvq8=:jmti1En2s8gckqqZeTZkwb
+ S2shioru5R/hBxKDoGZEIcnMw/SwoBEyEPX059DjUeanDvCc7Fac9WiLMWPBD8AJQUSPGuKCk
+ CDDxPa8qm2v90HBzoLF92WP64GNbts+YMlr8bjCcCdh695FEjG1lIiVC3sRvPiWn0+Du931ui
+ Fc93bAeZ1RJKoEa+eXUzqCihuCA2Qz5ztiEE33lsfWcp7K+yQqeSxf7VlIlfOkLJTeRuzQwW8
+ OStLEkZ9W5WOYscIZs8ETeG4nO9ydJWWU1btmxy4Ec7tZ4VPSAQMg2sFUET7c7ET0TgDZq7xf
+ I0eZTkLk5qMx8LBtCHqZpK+1pTBEJQ/rqdhncwjgpdN95tCJMYGg+ShhPZbHtIe2V7c8Suka6
+ Dm9jvBe8SPEhv3eI3JLAFf6jdnk5KcWsNzfPGqVKaar+/u9j1Y6JYyQ5bbJNxP6IcUpdWwnZ9
+ cTG7tXpX4GjH5ZTGzHbLt4Qv7ZWRxT4y9OEeqiaDBXGLMMU+Q0JUxv+4WaVg1NDHX0zl3MTtn
+ RLeV8vsBuIoaqOyowaC0eRaDtK87AbVtNxMl3JUZDzSVRB2CrK44HXXaufPqxYNmBspRqRRIH
+ E9PzeatfbiLycom1n9IsyDLiTtDoIB5aX+OmRtwlCoN5HgfVKQL8qYDJ+fVcJI8kmaKRzI+Re
+ Bx336G8dL+2iEjO7QoK5OtoEpmP9raxiivSBRUjTlDG7bfjs9G8QcMOWWApTMU8JoXtC2ItFi
+ RcdPdFbO8Ire1AXb5qsh9qkouwcYqNv5s0Nz0B/71LCAsOP2vHlo9HYEtrwtNWNmvwhU1jNf8
+ vm+Q/EEBUHuNZ8FIZhFM0+fyve7dLAoCyTyWvMgSd3C7LoeEsd28BlF+H+ubwTlzuQ7sv6x1D
+ cFUF/gaF/PqL13J78WEXIu/OzIHvEhkXZqCT5gksVHT2c9d+qKgwXXwSt4NQMqj1rPavqqEMG
+ yCHyi4RAyQ0ODjosyaRSavc60sRq95c5pmzfrEKKIP6pJ7uMFZsY7dolAPSF2b/M9K9zd2+I7
+ UgzRX06sH1ZCiGQBTju0A4P04qVZjnnZyF1R9B/eE45meR+AgcQQb3c94sKFLloRj7MW+ac6Y
+ /Q10piqqruZ/1Z7ae91DnKbn7gGsUnqQl+vC1yj2Gh1uvQFeNUXKA9zOYH3xPpA+8EHBi/c/8
+ jinOPQC/S4lk4yUyY20RCgt3WNwTDlc+RAwzuBVvezI38NmgmZ1I+iE2zC0969K48rC+WTY04
+ 0PvWapH4m8KRnD3AY
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+>>> Calling pm_runtime_get_sync increments the counter even in case of
+>>> failure, causing incorrect ref count. Call pm_runtime_put if
+>>> pm_runtime_get_sync fails.
+>>
+>> Is it appropriate to copy a sentence from the change description
+>> into the patch subject?
+>>
+>> How do you think about a wording variant like the following?
+>>
+>>    The PM runtime reference counter is generally incremented by a call =
+of
+>>    the function =E2=80=9Cpm_runtime_get_sync=E2=80=9D.
+>>    Thus call the function =E2=80=9Cpm_runtime_put=E2=80=9D also in two =
+error cases
+>>    to keep the reference counting consistent.
+>
+> IMHO the important part is "even in case of failure", which you dropped.
+> Missing that point was the root cause of the issue being fixed.
+> Hence I prefer the original description, FWIW.
 
+Would you like to comment any more of the presented patch review concerns?
 
-On 2020-06-03 8:53 PM, Dan Carpenter wrote:
-> The error handling dereferences "vport".  There is nothing we can do if
-> it is an error pointer except returning the error code.
-> 
-> Fixes: 133dcfc577ea ("net/mlx5: E-Switch, Alloc and free unique metadata for match")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_ofld.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_ofld.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_ofld.c
-> index 4e55d7225a265..857f6193f3b14 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_ofld.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_ofld.c
-> @@ -301,8 +301,7 @@ int mlx5_esw_acl_ingress_vport_bond_update(struct mlx5_eswitch *esw, u16 vport_n
->  
->  	if (WARN_ON_ONCE(IS_ERR(vport))) {
->  		esw_warn(esw->dev, "vport(%d) invalid!\n", vport_num);
-> -		err = PTR_ERR(vport);
-> -		goto out;
-> +		return PTR_ERR(vport);
->  	}
->  
->  	esw_acl_ingress_ofld_rules_destroy(esw, vport);
-> 
+Can it make sense to combine any adjustments into a single patch
+according to the discussed software transformation pattern?
+https://lore.kernel.org/patchwork/project/lkml/list/?submitter=3D26544&sta=
+te=3D*&q=3Dengine%3A+stm32&archive=3Dboth
 
-thanks!
-
-Reviewed-by: Roi Dayan <roid@mellanox.com>
-
+Regards,
+Markus

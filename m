@@ -2,129 +2,141 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1B631EEADB
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 21:08:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 599601EEB00
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jun 2020 21:16:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729635AbgFDTIV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jun 2020 15:08:21 -0400
-Received: from mout.web.de ([212.227.17.12]:57747 "EHLO mout.web.de"
+        id S1728584AbgFDTQm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jun 2020 15:16:42 -0400
+Received: from mga17.intel.com ([192.55.52.151]:47658 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729310AbgFDTIV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jun 2020 15:08:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591297676;
-        bh=JbzMdzFOzCTsibWwfsPpxK0BShMK2VsDXLIYdKprY00=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=qBOwYG5gxDn5aB9WWdq9lQ95XfJKD231xBcY1NSN9+Mam2M9ZpJr2T9T1CT9Xqwu9
-         rEX81vUCk1c98mK2oUEiqqjXKDzpq2ptH6iAncHwjQQm/HPAw7hh+N4TETULCKnbLP
-         NXUm9j02x18HWONoBlK5LjeagXXfatqwdRv8BpYw=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.94.220]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MsrhK-1io0DE25No-00t6Da; Thu, 04
- Jun 2020 21:07:56 +0200
-Cc:     Anson Huang <Anson.Huang@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Yi Zhang <yi.zhang@huawei.com>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ARM: imx6: add missing put_device() call in
- imx6q_suspend_init()
-From:   Markus Elfring <Markus.Elfring@web.de>
-To:     Yu Kuai <yukuai3@huawei.com>, kernel@pengutronix.de,
-        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <cf810c93-297c-c02c-9bba-8c3d097b8e31@web.de>
-Date:   Thu, 4 Jun 2020 21:07:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+        id S1725939AbgFDTQl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Jun 2020 15:16:41 -0400
+IronPort-SDR: Vt6zg0W/jyxzeMkyWc8Ui/ZBjgM8pZ3dP9Sq2fp9ljFc0orYSvl0OtsQO5mfvrF7OstNregeHm
+ 3kDEafLA3aWA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2020 12:16:39 -0700
+IronPort-SDR: uv9cUDw8Zk6fikDiNZaplWYf7Eo5VRGo1QrIxpQAFrLlRdUqIJ+mRx3Yuuog1pCIufHdk7ZwPR
+ OPAH3dyncynA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,472,1583222400"; 
+   d="scan'208";a="471640645"
+Received: from orsmsx101.amr.corp.intel.com ([10.22.225.128])
+  by fmsmga005.fm.intel.com with ESMTP; 04 Jun 2020 12:16:39 -0700
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX101.amr.corp.intel.com (10.22.225.128) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 4 Jun 2020 12:16:39 -0700
+Received: from orsmsx607.amr.corp.intel.com (10.22.229.20) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Thu, 4 Jun 2020 12:16:38 -0700
+Received: from ORSEDG002.ED.cps.intel.com (10.7.248.5) by
+ orsmsx607.amr.corp.intel.com (10.22.229.20) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5
+ via Frontend Transport; Thu, 4 Jun 2020 12:16:38 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.172)
+ by edgegateway.intel.com (134.134.137.101) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 4 Jun 2020 12:16:12 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EeKwHF56C01Y4VyJYgakjtAGNTEtZe7UV0ZK/KAWjfRYGkYt7Z3jBVrs31+Nenp+1C6fEaonCjx0HPE1fda1oAjSxMJaEPPxHxEKSgwvCC5mD9jIShfGFsQz7Y8dbmcl0H1Uo6TWbvCnIAcTjUNMRyf9YdD+TFeSEdZ1AC56w8V0E4Era73QSRZc9SdsBkoKv+c4XNtW3IPTxt1TaiBodfl6nQR7YIuodZFMr7sdFqMiHFiU7ozn/yfrOeMLAKK39qIn1UV3FunM3R6P1n7LlBeqyw3JiZP/Smv6QKcB2i6yXVwnZ3BjWRycDGZIE6EpEklaS9VdARitbv+nLRajgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0ny4/83fmanaKWIRTBBbtEsXpeK0vQPiJpGGN+NKKYE=;
+ b=iYnry22qYXb5sT5cofNByc5543q7Zn0YmtElgGPgikgHwStYz05FLo0PurSctFxYbolAHiXuicw2NKzJfZbS+G8OTU07s3Fm7H5quodOoqivNFJRLEoymMG0k/y7UT0wRkun2GUA7nbzbs2/UYcjYxoDWBCo0flqbHl5CJxMtDqJDuhfZmYLnAYSNSWLbLZDBXRrXPL4ReDt8+V0Ge1FaIITS36zDCvu3jBNKZ6ZsvRnU6UbP07EL7HEbU99vb8rhkKHEQh10OQX/A0D50v2WSsVnZor3EiEYJc0JHL8Ij05mtKz9vwvRgJcYFcwANoZ3goesH6dV4LyTbBhYkSmsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0ny4/83fmanaKWIRTBBbtEsXpeK0vQPiJpGGN+NKKYE=;
+ b=DSDaeFx+SVeVUhTsMOC0N09fWOp/rwu/jTF6S6Ns+aXkvXNR6r93238+yLZl2/4dSXhI2Ex0XqranZxxHrjB5DCGLivl0XdW5XQAJiLqviUCXe71z1BfwJt1fO/rXTKRYotPV7aISsrhzEeulWo40ZrOGPoAVzwMJmAW5BO8Bl0=
+Received: from MWHPR11MB1663.namprd11.prod.outlook.com (2603:10b6:301:d::15)
+ by MWHPR11MB1552.namprd11.prod.outlook.com (2603:10b6:301:e::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3066.20; Thu, 4 Jun
+ 2020 19:16:11 +0000
+Received: from MWHPR11MB1663.namprd11.prod.outlook.com
+ ([fe80::fd6d:2fa7:3dcd:30]) by MWHPR11MB1663.namprd11.prod.outlook.com
+ ([fe80::fd6d:2fa7:3dcd:30%12]) with mapi id 15.20.3045.024; Thu, 4 Jun 2020
+ 19:16:11 +0000
+From:   "Bowers, AndrewX" <andrewx.bowers@intel.com>
+CC:     "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: RE: [Intel-wired-lan] [PATCH net-next] ice: Fix error return code in
+ ice_add_prof()
+Thread-Topic: [Intel-wired-lan] [PATCH net-next] ice: Fix error return code in
+ ice_add_prof()
+Thread-Index: AQHWHI0AU/4Hcp/qn0KoJYsUf7CVyqjJD/jg
+Date:   Thu, 4 Jun 2020 19:16:11 +0000
+Message-ID: <MWHPR11MB1663790302E561B81C8767078C890@MWHPR11MB1663.namprd11.prod.outlook.com>
+References: <20200427121228.12241-1-weiyongjun1@huawei.com>
+In-Reply-To: <20200427121228.12241-1-weiyongjun1@huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+dlp-version: 11.2.0.6
+authentication-results: lists.osuosl.org; dkim=none (message not signed)
+ header.d=none;lists.osuosl.org; dmarc=none action=none header.from=intel.com;
+x-originating-ip: [192.55.52.206]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 33d814cb-44a3-458a-ff5e-08d808bbbe1a
+x-ms-traffictypediagnostic: MWHPR11MB1552:
+x-microsoft-antispam-prvs: <MWHPR11MB1552075E12C363E016F729F28C890@MWHPR11MB1552.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:2399;
+x-forefront-prvs: 04244E0DC5
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: mYPQE+NKeOoI2jiWnEdWC/HoAaZ7xFxGIrXyr9Yp8ytVtYHIBnhC7bR5hWeOw4L4dLO1704TKnskGK3Mp7Oi2n0gM7FMzjp6NV16S3eqFYkgTc6ma5QtHmz/hrXdxue/lPEUwMvNNrl8xOCNQXGcx6TQhUM22lnzHSCjZ4XpGYEfdk5bi5HFfWQ4g7xduj0BRy4r9s7ElATrwnOGKqocEHeVFni1HPsQ99tFbNRqiXuz6Z3hzjwBJ3qWEUEPxYNbCjc1norXWWS7njRfsMoeZqFU7D7aC+TXi/zL3UALT1+0uxsCnt/eDAKDNo1cEHJiEVM/uszYNp5Lg5xiQ0naXw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR11MB1663.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(376002)(39860400002)(396003)(346002)(136003)(366004)(4326008)(6506007)(9686003)(478600001)(55016002)(53546011)(4744005)(71200400001)(66946007)(2906002)(66446008)(83380400001)(26005)(64756008)(8676002)(66476007)(66556008)(316002)(86362001)(33656002)(7696005)(52536014)(186003)(76116006)(8936002)(5660300002)(109986005)(54906003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: v3zmepSsb8+NmzvM6vUOJTva0xBP44g4fNM/SJT+5BvEjU/aPlAKGE00KlYMsfsg4FUqGQ1zFfRaZrV3ebTvIxC9vBJnRlWTSmoXi55lfBuRDh28SR7auEsG9mrxvJv2XAS+mzF62ve43E+Kon9z8l7MML+xmC+kD8AJvy/a+L/hbZP+Uie4KT/pwiBEEAHR9LRYEQ8MZuYgojIjgDA8EbRITLLGGLIYIXqIT7jhKmADbfE77oQYAdLSi2cMA7WY0+SIJSRpkdmCsDdk3kJy9FZjkm+B/YSfODe0eopU/QeoXR2LIKFQtRoiiVqxhOZbZQMGYSsJzmMm7DgswlNOE8oq482Myyd7nxDflqcNQ+aUIGxp17+bFpKjx5AV+29BFT5JZO1RrrWd3sd4WL6QXO1oYnN6MOAia9MZqkqk7lwUTOcJ1tWi2ohQONbHqkegoFb55uJRYR4XH0ZRh1R0A4BmaJWMRuYguTJCGLJRE0E=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:XFGsV0QKIXJfaz2i0ga3WHMhzuzk6lKF+KUAnTOGnoBnphAbrMV
- nyx1x1gvgaCb41DMh90xa/ORO29oOH7RG46fya33Wz+wa6qnrqVKG1bNnxvhF3/8NlT1yKX
- YiSynMk/6NZskf7lr/s0whnQsxu/MkNedXcZ8u3uA3TD7pS8/Gi0kg8IB2iwYZ0mxZ+PqXh
- uytUaPMiiZrkC3HkI8DCg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:eKr1vF7wTfk=:4U46qkCn9wPU67wuYyaE0S
- jUWXai863XDATWGg4zj3PE+M0j9LvdKQtwibK4EI9e2tSZeoz6ryYsuQaSWWigw5/1Y5bYQIN
- zOTf5ntbm78cMxZU/j9wfx7MVbvtO7I/0mYtGFYGXtZfkuEz+NCTSMG7MVboKDCo+AUpArctG
- lQhQvYaWf0vpEaoLMe0/7vejgIWuEh79iYsL67HTW1CLiJq7JGzLDKQ8UVM11fYf9xngAZOIg
- XBUkwuu/8yicEnDl8trP1YTfmLhb0ykJcUXuI+TqwbhxB8ecjlpdCO/fPg5rwR2rRgty7OsxG
- lvkfBTFnCOE6/XkqQL7OsvSdNrgyoFoJI1mq7KC2wUdBuLevzUtuP5S34VG9blibRI76D+WBR
- Af1eD7vsKZPDabjq4l8tba3tE7iHDolJtePMT1QqL45wVdo7Aa1OQjtuihOik+Q7B/Aed4F1i
- s9AtPPUhYdJjpNI5RSB6klvjr34WQvIh8blMb+JeP+jd0N3wHPkyYkvhoScB1KVMiNRsWkA8x
- wC8yQhHyAs+d6HkZJNkahcM50QIrGYYebwyB4Q6/2ovQ2ymnO+1FSCBptFndiHzsJsDc6J3K5
- yCbXYpFirKyS/BrpGy/8lNrN6Mh6eqMUo3XdRxjBe4PANrhoYDzFIwl0tCIXKMTssRLyt1iY2
- fZ0aKHyxdcOpC4xrXQjx42nFhMR9iwmPl/6LwMHd4+NSFw6sjRHbfmJBN1MDgiLQAhpg1ip8r
- DwHNodCTZMWhQYUIoFHzUVbJItuSSa0oKc6XZ4IcUddSINVuK87zZrZZ0mNmjaaGU3p8Rd9uP
- Frl6NW2rZCraq1H6wkc8W8tYZWXtRCRZU5xeUARC5S2T+LAUvlFVkqzrp7xrjwde6hOAjR2BL
- 1d2MWg3/Ar2zzHTAOE5f0GpWveBj6rN5nwAxxir8ju1Z86dRw0IUWR6Kyn93WL/QX7Yvb4j5H
- uq9LFZOfS78JSc/8T2bPH5YDCdrBsqikiIFYoTF28PrHsxbkeevYYrQruq8bbItIBn7Pdioid
- QREe0V9J7E/rcd9RPnlY+7CoPu6iqpU9caqr6bK1vrv+IgpOdUk8uNRVJLquBbzuWGm9YaOo3
- kufJ6cR4OCArj3pA/9J2rkd34rPV9q0Oe4eEsm/oaMFbKU3XpU8DWSlrS41l35TN3LSoUGWPt
- 9gx0zqVkWrFtUjRdJDW6MDoqJGEddOrvPQO6GZOx818/p9e1ewdEsKVAgYpAnDsydPQD5XwcF
- UeqzIX6m3nLNzRWL9
+X-MS-Exchange-CrossTenant-Network-Message-Id: 33d814cb-44a3-458a-ff5e-08d808bbbe1a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jun 2020 19:16:11.2272
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: yqIw1ku/rwIQLaiICJXhSky05WGNQclr8J7Z3FVIOXsGNw+ejDX3/45ElnDJ28+tfYZ2r0cvOCKuSO87fYjAYIRgoJvTxJQqcjmXStwjigc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR11MB1552
+X-OriginatorOrg: intel.com
+To:     unlisted-recipients:; (no To-header on input)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> if of_find_device_by_node() succeed, imx6q_suspend_init() doesn't have a
-> corresponding put_device(). Thus add a jump target to fix the exception
-> handling for this function implementation.
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
+> Wei Yongjun
+> Sent: Monday, April 27, 2020 5:12 AM
+> To: Kirsher, Jeffrey T <jeffrey.t.kirsher@intel.com>; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>
+> Cc: intel-wired-lan@lists.osuosl.org; kernel-janitors@vger.kernel.org; We=
+i
+> Yongjun <weiyongjun1@huawei.com>; netdev@vger.kernel.org
+> Subject: [Intel-wired-lan] [PATCH net-next] ice: Fix error return code in
+> ice_add_prof()
+>=20
+> Fix to return a error code from the error handling case instead of 0, as =
+done
+> elsewhere in this function.
+>=20
+> Fixes: 31ad4e4ee1e4 ("ice: Allocate flow profile")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  drivers/net/ethernet/intel/ice/ice_flex_pipe.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 
-Do you find a previous update suggestion useful?
+Tested-by: Andrew Bowers <andrewx.bowers@intel.com>
 
-ARM: imx6: Add missing put_device() call in imx6q_suspend_init()
-https://lore.kernel.org/linux-arm-kernel/5acd7308-f6e1-4b1e-c744-bb2e5fdca1be@web.de/
-https://lore.kernel.org/patchwork/patch/1151158/
-https://lkml.org/lkml/2019/11/9/125
 
-Regards,
-Markus

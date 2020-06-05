@@ -2,72 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9445D1EF3D4
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 11:15:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DF221EF472
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 11:45:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726213AbgFEJOv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jun 2020 05:14:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47518 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726144AbgFEJOv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jun 2020 05:14:51 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 994992075B;
-        Fri,  5 Jun 2020 09:14:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591348491;
-        bh=9/irAEKgQLs2mjoPzBDlR/SIym+QZ+oBpLry4Oo6pGQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ox4AV7UJIG9KUSCxbj1RnfI1D5s0XTCQdvXVsAyHvTef3UJU16+9C64UXo4nLHpkV
-         GcQ9/o3UST4kOY22mcOpaeNRQ3OOpZh53kbX9tHnqogCNarYXCeUKpnv6ARKbNXErm
-         4y2F2bBIoXtWr/Wu8aEI/rIB58ioQcu1bPL00RlY=
-Date:   Fri, 5 Jun 2020 11:14:49 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        Zhang Qiang <qiang.zhang@windriver.com>
-Cc:     linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Felipe Balbi <balbi@kernel.org>,
-        Kyungtae Kim <kt0755@gmail.com>
-Subject: Re: [PATCH] usb: gadget: function: printer: Fix use-after-free in
- __lock_acquire()
-Message-ID: <20200605091449.GA2321638@kroah.com>
-References: <5207d179-0a7d-b5ff-af34-102fb21028b5@web.de>
+        id S1726270AbgFEJo1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jun 2020 05:44:27 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:34252 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726242AbgFEJo1 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 5 Jun 2020 05:44:27 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0559WPAR020418;
+        Fri, 5 Jun 2020 09:44:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=qqApPwaVsfD9KsWb9ZyJEdEVujKUGkYoa9MNEy7rOgw=;
+ b=fh3v6xc2K8PcQ+zXUCdybeuP5xdRJxcdvjETG0pvaclDVmio2zsBTIhjDulrOz1XZFYQ
+ iaak6lheEb0bDsEeuQ7ADjnNOjJghIwmPKzdkGPe10v+SWOWWPqj0w8au8drGUvyzpGp
+ BLgNIidDGZxdbrT5PYpw594bqmF0hTxkegqXF2Nve/qe5bPDaCoY04/gAZUskchs+TMV
+ 38FHKd53dX8M+3htO5XiRqOdwrsLQyGIQgfncrPVoEn0IBNhmTCc0Ip2FFWcrcdx4AB1
+ cOMI564TFkm33GTZXtsr5mQTQoHwX2k1H0GwHbm8GmQNzffno9NpjpJHIWJLabqSteaF AA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 31f926227d-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 05 Jun 2020 09:44:09 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0559YLqa146838;
+        Fri, 5 Jun 2020 09:44:08 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 31f926y236-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 05 Jun 2020 09:44:08 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0559i3Ee022645;
+        Fri, 5 Jun 2020 09:44:06 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 05 Jun 2020 02:44:02 -0700
+Date:   Fri, 5 Jun 2020 12:43:54 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jason Yan <yanaijie@huawei.com>, Jan Kara <jack@suse.cz>
+Cc:     Markus Elfring <Markus.Elfring@web.de>,
+        linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        hulkci@huawei.com, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
+        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+        Ming Lei <ming.lei@redhat.com>
+Subject: Re: [PATCH v2] block: Fix use-after-free in blkdev_get()
+Message-ID: <20200605094353.GS30374@kadam>
+References: <88676ff2-cb7e-70ec-4421-ecf8318990b1@web.de>
+ <5fa658bf-3028-9b5c-30cc-dbdef6bf8f7a@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5207d179-0a7d-b5ff-af34-102fb21028b5@web.de>
+In-Reply-To: <5fa658bf-3028-9b5c-30cc-dbdef6bf8f7a@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9642 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ suspectscore=2 mlxscore=0 adultscore=0 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006050074
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9642 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0
+ suspectscore=2 cotscore=-2147483648 bulkscore=0 clxscore=1011
+ impostorscore=0 priorityscore=1501 malwarescore=0 mlxlogscore=999
+ spamscore=0 lowpriorityscore=0 mlxscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006050074
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jun 05, 2020 at 10:57:55AM +0200, Markus Elfring wrote:
-> > Fix this by increase object reference count.
-> 
-> I find this description incomplete according to the proposed changes.
-> 
-> Would you like to add the tag “Fixes” to the commit message?
+A lot of maintainers have blocked Markus and asked him to stop trying
+to help people write commit message.  Saying "bdev" instead of "block
+device" is more clear so your original message was better.
 
-Hi,
+The Fixes tag is a good idea though:
 
-This is the semi-friendly patch-bot of Greg Kroah-Hartman.  You seem to
-have sent a nonsensical or otherwise pointless review comment to a patch
-submission on a Linux kernel developer mailing list.
+Fixes: 89e524c04fa9 ("loop: Fix mount(2) failure due to race with LOOP_SET_FD")
 
-I strongly suggest that you not do this anymore.  Please do not bother
-developers who are actively working to produce patches and features with
-comments that, in the end, are a waste of time.
+It broke last July.  Before that, we used to check if __blkdev_get()
+failed before dereferencing "bdev".
 
-Patch submitter, please ignore this suggestion, it is not needed to be
-followed at all, as the person/bot/AI that sent it is on almost all
-Linux kernel maintainer's blacklists and is ignored by them.  Please
-feel free to also do the same.
+I wonder if maybe the best fix is to re-add the "if (!res) " check back
+to blkdev_get().  The __blkdev_get() looks like it can also free "whole"
+though if it calls itself recursively and I don't really know this code
+so I can't say for sure...
 
-thanks,
+regards,
+dan carpenter
 
-greg k-h's patch email bot

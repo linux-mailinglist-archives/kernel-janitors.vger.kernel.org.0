@@ -2,130 +2,130 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 761751EF8E7
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 15:24:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F3FB1EF8FD
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 15:26:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726940AbgFENYF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jun 2020 09:24:05 -0400
-Received: from mout.web.de ([212.227.15.3]:41993 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726894AbgFENYE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jun 2020 09:24:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591363423;
-        bh=tuG0dZ1YiipXhKqpByGWLeDV+TUK9ozfY2PMN7JgfY0=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=ZSlKtdDTbAsej8vgSsmeCzAeOeXKqASnz5uXWtDauAIQXvRrAezErr7Nolyyzqk1P
-         X2gWxm4lf8y6K/EjyHHItJIyB0J09N/8tHUWDW2NK7vWpmQw5BNYp1ojQjdffN2aIc
-         +PsIrDZ7Sky3kOs7wIa8PTQKaEUpvN+aW70Tv/Mk=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.102.114]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MX0q4-1jV4p91lW0-00VxiJ; Fri, 05
- Jun 2020 15:23:43 +0200
-Subject: Re: block: Fix use-after-free in blkdev_get()
-To:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org
-Cc:     Matthew Wilcox <willy@infradead.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Jason Yan <yanaijie@huawei.com>, hulkci@huawei.com,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>,
-        Ming Lei <ming.lei@redhat.com>
-References: <88676ff2-cb7e-70ec-4421-ecf8318990b1@web.de>
- <5fa658bf-3028-9b5c-30cc-dbdef6bf8f7a@huawei.com>
- <20200605094353.GS30374@kadam> <2ee6f2f7-eaec-e748-bead-0ad59f4c378b@web.de>
- <20200605111049.GA19604@bombadil.infradead.org>
- <b6c8ebd7-ccd3-2a94-05b2-7b92a30ec8a9@web.de>
- <20200605115158.GD19604@bombadil.infradead.org>
- <453060f2-80af-86a4-7e33-78d4cc87503f@web.de>
- <1d95e2f6-7cf8-f0d3-bf8a-54d0a99c9ba1@kernel.dk>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <b642a81c-84cd-ca05-5708-c109dc2e5ea8@web.de>
-Date:   Fri, 5 Jun 2020 15:23:42 +0200
+        id S1727019AbgFEN0v (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jun 2020 09:26:51 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:54246 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726711AbgFEN0u (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 5 Jun 2020 09:26:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1591363608;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Ma5m4eBugzAUFyTBU0r9XwTfnQoHVYy4LZfMChs09d4=;
+        b=XBH4ulNqzS0FxG6x/DmgAS4EPzHA+dPWnANzWVPA7wX3QlTr0xljSqcgVSYQzPKFcWifqO
+        /fU01gjQQvF3eSSr7EtdOM7jjTAl1CGTbewWDEnEy2hRAL4N1AV3cPOlZHknNE2FWA+SIr
+        isknC2EdTBxtJ1dMDu7uESlbFyOJrgM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-212-wIDj6aWVOMODeOUPQ4ZeLg-1; Fri, 05 Jun 2020 09:26:43 -0400
+X-MC-Unique: wIDj6aWVOMODeOUPQ4ZeLg-1
+Received: by mail-wr1-f70.google.com with SMTP id n6so3786797wrv.6
+        for <kernel-janitors@vger.kernel.org>; Fri, 05 Jun 2020 06:26:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Ma5m4eBugzAUFyTBU0r9XwTfnQoHVYy4LZfMChs09d4=;
+        b=j7OU2nNSdoPnJh0NeCZGrIt/V9gclLw558Dti+722S/K5WsY+NhHhlyksADSiIihHm
+         EERWF+p5ZGlmwxuuPsQFJISMGGaMvuAO3O54rA8kUwisC16oKKBYKixa5spi+AaGmXS7
+         FkzQxCum3Mfqmqsnx+4ahD7s/LVOZw/lAkc6W4Uclb9gKWAjLvxt4dbMWE/xWrpr4NN2
+         XLmDFXcVQlpM7QI5FLXRXpM3Q2pBX+T1+VeYbbFixCfuX3PE611iA9i/ox5NnSIvmmQ5
+         dbgr3L7Tn3bJmAVUzKSn98rdOC81gzb3GbE6nO7pFjcTbe329yzeSOLZtht5r4Yn6cP3
+         sX5Q==
+X-Gm-Message-State: AOAM532MThNfvGlGk8REmjFbKsInw8Tz2vsbM3v/Kqfnx7e9zTvogx8+
+        PElDGosZiYsCgJ4mtJEMXUNFrv/DqZTSOA1uRPoUImjtQ9jO3aX6y8SB7k3fDt6/44KCQWl3sFS
+        fsvSHUoqcOS6UusGChOOUuFMF20Q2
+X-Received: by 2002:adf:e68a:: with SMTP id r10mr9488543wrm.384.1591363601935;
+        Fri, 05 Jun 2020 06:26:41 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzQv5AllPZVkRCl0tV0eLTawsBo4pIGSnRkC36iEv0AyEIWBrY46UyZcIOzVe74SuM/91keTQ==
+X-Received: by 2002:adf:e68a:: with SMTP id r10mr9488504wrm.384.1591363601629;
+        Fri, 05 Jun 2020 06:26:41 -0700 (PDT)
+Received: from [192.168.178.58] ([151.20.243.176])
+        by smtp.gmail.com with ESMTPSA id z2sm11769932wrs.87.2020.06.05.06.26.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Jun 2020 06:26:40 -0700 (PDT)
+Subject: Re: [PATCH] KVM: selftests: delete some dead code
+To:     Peter Xu <peterx@redhat.com>, Andrew Jones <drjones@redhat.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Ben Gardon <bgardon@google.com>, Shuah Khan <shuah@kernel.org>,
+        kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200605110048.GB978434@mwanda>
+ <9f20e25d-599d-c203-e3d4-905b122ef5a3@redhat.com>
+ <20200605115316.z5tavmf5rjobypve@kamzik.brq.redhat.com>
+ <20200605124816.GB55548@xz-x1>
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <891e89c8-8467-eeb4-1b23-337b88a299dd@redhat.com>
+Date:   Fri, 5 Jun 2020 15:26:39 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <1d95e2f6-7cf8-f0d3-bf8a-54d0a99c9ba1@kernel.dk>
+In-Reply-To: <20200605124816.GB55548@xz-x1>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-X-Provags-ID: V03:K1:BwE1qV5V3yoaN8alh2loRJYQ/SNkXOJw/is3lGQ+r33syBYM4rc
- 7tZT4t8XdjBmX/Pko0yuAeYfpre4BQVQOX6GukHH8Ozp3tQd/PqNbT/VNYj1IE4B5jHyFPr
- FGDcqZHx1bq2oxmylMjbydGs2kt44oZEEcwsE5RZygiiElElHKZFJdhyo+Sq1572LbVSsPz
- 4SjcToTf3mJGRwmRKbopA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:iozseHijVFE=:ffGMyIeUiaLTrjIaP9Ukdo
- BHUF88Mw2P6UnEgz9e9WavSgrUb+6Ucv5WY5HS7Mjjt8oucC36Q26jMwzsh2sD6QZ3K+ytfWQ
- bbn1h9w8M0B0N2eCXmDVYuWffyoprKsCQRkPegyFazaX2Xr/HqpmqhQYb8DGguBc+ycGeuRtX
- AgAEvsccSX5SzCwrV3f9f53N0IYJ1t54FAw+XOl3HV2TrLZnQDGVAC518VWc1WI4wHx+nURT8
- 4N3zsPYnywl54C/+o5M09fdaIYibYxeh7fTMDVdUIzVR4jMaPCWO2Dod8Aaqs7OlCIAh6hMVl
- mKKo1HzBixSQ7mch9gRRZ8TbFLaOtwA5u3/ACRGkDCwl7HY8OEsSkDPasxx9nUop5kRCDzAvR
- L72lPfBQewEEFbcwQxdpb7rG0v3K11jCZUWrJOIaE2SD1reqQagggqgMe07h9Jz9R4eBpXfny
- Xvacb974arGEmsDS02fx8GEGb1nwB6COrW50QAt8Cug2Lp0c/u6dqb5YO8rzxN2bmiuTbyGxd
- 7fP0+m+q6vZtqoiYP942FaoA9eIL+JZ4A9rG7YZt/8anX4V5sgOA1EwNY/nC+jSYshE4ZURAy
- 0yqvZ+I/G/gOwnskwapZk0Y6OkrxwysFJrcoCyr8EpbNTLuzTuXcupci7qDhrgTwddDSx5Acm
- DYcF3/PY79kpzmNlr7rQweuRUrulWXQnfPYfOWQg99g+bLOCxDZ3WdeAzzWl/KUkurWBvaZmJ
- DiBOyoBSouG9+lVLm0fdaANcBNn7mwJuJqem5rE3NSbFha1+56ZzUbjsp7XTVPjAbTRcjEFLl
- 2wPK0ECkhoFjq2HOxkxptY8w++OpfF7hfu2lK3IMHSOi6Xa+WMcfIsnbCzgSS0R+WlTB+wEat
- dPpy4M1sjrykyVrMMgkVnuQMQnyKlwvye3PHVDBLEqbmJr43Dif25WNDnpXOFPL1XXQynNIU3
- mEEb1dBHZPVfEHkdi/2R8U9lZy1/F6uBT0YTXqMBBVk3hx7siDZkkG3wUuV0cwk1hIG9AUK2i
- Xxbo+Ct4vpHYJ3rChyJpXOAi0CQ39H7imbTx9olDZ7UvMaSPj9g2bQ5KYslSlE0LNgWcfFfyG
- MPtGFzgFKjMiBnh+ZJwB/JtVXiVaBEJBjdT7/f1BAiv2O9RTBIKORqlw4yPvcQBGS+kBcIlKB
- 1fOGn+1Ix/KxDoyxlmOKKRonT6AbpCkNlKUUu7rYMcOeeMuBtDVTJXdLVxlJMMNF5jDtYEBNk
- 0Ym1+aXaS64XShxPR
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Maintainers generally do change commit messages to improve them,
-> if needed.
+On 05/06/20 14:48, Peter Xu wrote:
+>>> The bug is that strtoul is "impossible" to use correctly.
+> Could I ask why?
 
-You have got a documented choice here.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=435faf5c218a47fd6258187f62d9bb1009717896#n468
+To see see how annoying the situation is, check out utils/cutils.c in
+QEMU; basically, it is very hard to do error handling.  From the man page:
 
-Regards,
-Markus
+       Since  strtoul() can legitimately return 0 or ULONG_MAX
+       (ULLONG_MAX for strtoull()) on both success and failure, the
+       calling program should set errno to 0 before the call, and then
+       determine if an error occurred by checking whether errno has
+       a nonzero value after the call.
+
+and of course no one wants to write code for that every time they have
+to parse a number.
+
+In addition, if the string is empty it returns 0, and of endptr is NULL
+it will accept something like "123abc" and return 123.
+
+So it is not literally impossible, but it is a poorly-designed interface
+which is a major source of bugs.  On Rusty's API design levels[1][2], I
+would put it at 3 if I'm feeling generous ("Read the documentation and
+you'll get it right"), and at -4 to -7 ("The obvious use is wrong") if
+it's been a bad day.
+
+Therefore it's quite common to have a wrapper like
+
+    int my_strtoul(char *p, char **endptr, unsigned long *result);
+
+The wrapper will:
+
+- check that the string is not empty
+
+- always return 0 or -1 because of the by-reference output argument "result"
+
+- take care of checking that the entire input string was parsed, for
+example by rejecting partial parsing of the string if endptr == NULL.
+
+This version gets a solid 7 ("The obvious use is probably the correct
+one"); possibly even 8 ("The compiler will warn if you get it wrong")
+because the output argument gives you better protection against overflow.
+
+Regarding overflow, there is a strtol but not a strtoi, so you need to
+have a temporary long and do range checking manually.  Again, you will
+most likely make mistakes if you use strtol, while my_strtol will merely
+make it annoying but it should be obvious that you're getting it wrong.
+
+Paolo
+
+[1] https://ozlabs.org/~rusty/index.cgi/tech/2008-03-30.html
+[2] https://ozlabs.org/~rusty/index.cgi/tech/2008-04-01.html
+

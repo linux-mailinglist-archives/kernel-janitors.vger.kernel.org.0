@@ -2,81 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D6E01EF99C
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 15:49:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBFA31EFBB6
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 16:42:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727049AbgFENtU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jun 2020 09:49:20 -0400
-Received: from mga03.intel.com ([134.134.136.65]:54997 "EHLO mga03.intel.com"
+        id S1728307AbgFEOmj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jun 2020 10:42:39 -0400
+Received: from mx2.suse.de ([195.135.220.15]:58088 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727014AbgFENtU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jun 2020 09:49:20 -0400
-IronPort-SDR: DujeTM2AkV+JAJOEqHlw2isYSZJiRJj15YRPWLi8ZzMJRuK1iMrsH+yBxn1HhD/JRq50XEGr17
- QA/DwGwUUf8A==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2020 06:49:20 -0700
-IronPort-SDR: p3OZQIeTht0UzBij0WEyDk4bQ9mbt8x+0i8S4aQBnM9G7dXZg/7LHsnARcgH7JqT7+Eo93il2e
- VS3NAv9vg46Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,476,1583222400"; 
-   d="scan'208";a="445897890"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga005.jf.intel.com with ESMTP; 05 Jun 2020 06:49:17 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-        id 8F8C7190; Fri,  5 Jun 2020 16:49:16 +0300 (EEST)
-Date:   Fri, 5 Jun 2020 16:49:16 +0300
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+        id S1728007AbgFEOmi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 5 Jun 2020 10:42:38 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 24986AAD0;
+        Fri,  5 Jun 2020 14:42:40 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+        id 4B4D41E1281; Fri,  5 Jun 2020 16:42:36 +0200 (CEST)
+Date:   Fri, 5 Jun 2020 16:42:36 +0200
+From:   Jan Kara <jack@suse.cz>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Shuah Khan <shuah@kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Zi Yan <ziy@nvidia.com>,
-        William Kucharski <william.kucharski@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Yang Shi <yang.shi@linux.alibaba.com>,
-        John Hubbard <jhubbard@nvidia.com>,
-        linux-kselftest@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] khugepaged: selftests: fix timeout condition in
- wait_for_scan()
-Message-ID: <20200605134916.tq6lfut3cikhuhbf@black.fi.intel.com>
-References: <20200605110736.GH978434@mwanda>
+Cc:     Jason Yan <yanaijie@huawei.com>, Jan Kara <jack@suse.cz>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        hulkci@huawei.com, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
+        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+        Ming Lei <ming.lei@redhat.com>
+Subject: Re: [PATCH v2] block: Fix use-after-free in blkdev_get()
+Message-ID: <20200605144236.GB13248@quack2.suse.cz>
+References: <88676ff2-cb7e-70ec-4421-ecf8318990b1@web.de>
+ <5fa658bf-3028-9b5c-30cc-dbdef6bf8f7a@huawei.com>
+ <20200605094353.GS30374@kadam>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200605110736.GH978434@mwanda>
+In-Reply-To: <20200605094353.GS30374@kadam>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jun 05, 2020 at 02:07:36PM +0300, Dan Carpenter wrote:
-> The loop exits with "timeout" set to -1 and not to 0 so the test needs
-> to be fixed.
-> 
-> Fixes: e7b592f6caca ("khugepaged: add self test")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  tools/testing/selftests/vm/khugepaged.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/vm/khugepaged.c b/tools/testing/selftests/vm/khugepaged.c
-> index 51b89cedd09d1..8b75821302a79 100644
-> --- a/tools/testing/selftests/vm/khugepaged.c
-> +++ b/tools/testing/selftests/vm/khugepaged.c
-> @@ -502,7 +502,7 @@ static bool wait_for_scan(const char *msg, char *p)
->  
->  	madvise(p, hpage_pmd_size, MADV_NOHUGEPAGE);
->  
-> -	return !timeout;
-> +	return timeout == -1;
->  }
->  
->  static void alloc_at_fault(void)
+On Fri 05-06-20 12:43:54, Dan Carpenter wrote:
+> I wonder if maybe the best fix is to re-add the "if (!res) " check back
+> to blkdev_get().
 
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Well, it won't be that simple since we need to call bd_abort_claiming()
+under bdev->bd_mutex. And the fact that __blkdev_get() frees the reference
+you pass to it is somewhat subtle and surprising so I think we are better
+off getting rid of that.
 
-Thanks.
-
+								Honza
 -- 
- Kirill A. Shutemov
+Jan Kara <jack@suse.com>
+SUSE Labs, CR

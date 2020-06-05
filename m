@@ -2,99 +2,138 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DD771EF627
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 13:08:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 485801EF624
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 13:07:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726947AbgFELID (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jun 2020 07:08:03 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:48084 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726771AbgFELID (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jun 2020 07:08:03 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 055B6fAo030623;
-        Fri, 5 Jun 2020 11:07:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=DWdZJiAoSkzSBRrQkC9u7xM53dpdlyqE37xadceBSB8=;
- b=vY84+X7SG4MDS7SB3lpoL5edWX3UJ6FobfudSxVmXSNhUhl35DawPKbmekbYf9oio6T0
- 1M2BCaqeUv3VTtlG0iEDMHYvptyS1TDU/WQED8rg9e9oINI87sLTmGfDIaM0VZ4EWoNN
- v3ltvvonKFsXkNaTgfPBQO2YKnkC1/GxjyiEoW933O1DzQyeGduUp63NtzvdHaubin4h
- bctLU/DFHEwiIXO5EdhDRbsj++TZfZ9IQBKvV5PD9Z4SNXcN+isQ3tFuIvgXln3ZyOeL
- VEqLCVZHLqhqS0vXHvh4acHEXuWMjweddQkzsQMuQmO0APiLPIcPNLxTJtLcZxNkemBB lQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 31f91dtbdr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 05 Jun 2020 11:07:48 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 055B7R40039911;
-        Fri, 5 Jun 2020 11:07:47 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 31f92sm38y-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 05 Jun 2020 11:07:47 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 055B7iE6030772;
-        Fri, 5 Jun 2020 11:07:45 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 05 Jun 2020 04:07:44 -0700
-Date:   Fri, 5 Jun 2020 14:07:36 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Shuah Khan <shuah@kernel.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>, Zi Yan <ziy@nvidia.com>,
-        William Kucharski <william.kucharski@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Yang Shi <yang.shi@linux.alibaba.com>,
-        John Hubbard <jhubbard@nvidia.com>,
-        linux-kselftest@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] khugepaged: selftests: fix timeout condition in
- wait_for_scan()
-Message-ID: <20200605110736.GH978434@mwanda>
+        id S1726771AbgFELHy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jun 2020 07:07:54 -0400
+Received: from mail-co1nam11on2082.outbound.protection.outlook.com ([40.107.220.82]:6134
+        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726507AbgFELHy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 5 Jun 2020 07:07:54 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XJ0FcBYZBBRoK0w4futHpKkx6TzPBD5DO84+Q67f8QLkxOP/8YM6qbNBBYy0s6yEQXjGWjdfhZ8TuqTmKw2eAbjygqjps+3QvTOOa59bHcQ1E388HxcRCYOjKo+16jADZbTjmDMHTRQwKExnFQL522kN4u9ZEgTipRPOsVbPGPj0H9Vvk7jlaUlB8ibLviw1yWmKKAB3XZs+el048FAh9s5mV2HVPSdoDuZ51DVA9VlN0gnoGKpFFk1mF2Wq0PLnMowXWUkgvFc6Y5eBPaRFkthjEq4Rf/KjG+I9rzWR9Pg7qF9/nwUoUoeSplK0k/4iZHdHQsu2i02wwu111UUXbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ik0XCRDqVwwOuciP5ij4Sy+ot28ozVbQ7LZbXtfU+Lg=;
+ b=FICFou71lDM2xRwHNCsFe//LKUMiCjq0XP/QWMlAzZfqShXv1P6dOhkbNshTpRlexawkqszakDIF/D5D+wMkzPtIxckhkQ9QH9hAYt+4F4yK0Uks7NmkpiUzxMZuk+NesRfz15K9F9bS5kZ43bZ83vQF06CCwFBxI34ieWVDR0JqAn0heV4pwySHAcrIkdSar/rZ7mcNCGQKPAN86lNav7uh0/j3CR2zfCn7JI9mqEZVstrXuYFzLRRQdbcgmpURLpoYJebAcfHHKtImgfR6vDXHMwmw/y9xh5a/cbc9djmxcF0rszFDJpHljBuNXb/WOseCNVHmGJiljYr7V0YxNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 149.199.60.83) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=xilinx.com;
+ dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
+ not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ik0XCRDqVwwOuciP5ij4Sy+ot28ozVbQ7LZbXtfU+Lg=;
+ b=pplRLbuMxw6LagaibqlPsv9OlqBJ+etddK8cWuoVggeCdOmXC6flSLLF0jnCbTMXWe7HKvjFl/mmbkQIth9+2ZazzPK03t61fnZMjUZujtRTz30YLk/QYPx3S4DGNU56cdZqu9WAxWthZtsUjPaCxdgZZDcwaFuIlP13uf1wQ9U=
+Received: from SN6PR01CA0024.prod.exchangelabs.com (2603:10b6:805:b6::37) by
+ BY5PR02MB6258.namprd02.prod.outlook.com (2603:10b6:a03:1b1::33) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3066.18; Fri, 5 Jun
+ 2020 11:07:51 +0000
+Received: from SN1NAM02FT018.eop-nam02.prod.protection.outlook.com
+ (2603:10b6:805:b6:cafe::82) by SN6PR01CA0024.outlook.office365.com
+ (2603:10b6:805:b6::37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3066.18 via Frontend
+ Transport; Fri, 5 Jun 2020 11:07:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.60.83)
+ smtp.mailfrom=xilinx.com; vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=bestguesspass action=none
+ header.from=xilinx.com;
+Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
+ 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
+ client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
+Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
+ SN1NAM02FT018.mail.protection.outlook.com (10.152.72.122) with Microsoft SMTP
+ Server id 15.20.3066.18 via Frontend Transport; Fri, 5 Jun 2020 11:07:51
+ +0000
+Received: from [149.199.38.66] (port=45043 helo=xsj-pvapsmtp01)
+        by xsj-pvapsmtpgw01 with esmtp (Exim 4.90)
+        (envelope-from <michal.simek@xilinx.com>)
+        id 1jhABi-0000ej-RU; Fri, 05 Jun 2020 04:07:02 -0700
+Received: from [127.0.0.1] (helo=localhost)
+        by xsj-pvapsmtp01 with smtp (Exim 4.63)
+        (envelope-from <michal.simek@xilinx.com>)
+        id 1jhACV-0007tP-5u; Fri, 05 Jun 2020 04:07:51 -0700
+Received: from [172.30.17.109]
+        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
+        (envelope-from <michals@xilinx.com>)
+        id 1jhACR-0007t2-Fz; Fri, 05 Jun 2020 04:07:47 -0700
+Subject: Re: [PATCH] soc: xilinx: Fix error code in zynqmp_pm_probe()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Tejas Patel <tejas.patel@xilinx.com>
+Cc:     Rajan Vaja <rajan.vaja@xilinx.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jolly Shah <jolly.shah@xilinx.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200605110020.GA978434@mwanda>
+From:   Michal Simek <michal.simek@xilinx.com>
+Message-ID: <951de328-3647-ea49-ecec-1f0f98ceb4b1@xilinx.com>
+Date:   Fri, 5 Jun 2020 13:07:44 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9642 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 mlxscore=0
- malwarescore=0 spamscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006050086
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9642 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 bulkscore=0
- clxscore=1011 cotscore=-2147483648 malwarescore=0 adultscore=0
- priorityscore=1501 suspectscore=0 phishscore=0 spamscore=0 mlxscore=0
- impostorscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006050086
+In-Reply-To: <20200605110020.GA978434@mwanda>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
+X-TM-AS-User-Approved-Sender: Yes;Yes
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:149.199.60.83;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:xsj-pvapsmtpgw01;PTR:unknown-60-83.xilinx.com;CAT:NONE;SFTY:;SFS:(136003)(346002)(376002)(39860400002)(396003)(46966005)(36756003)(8936002)(336012)(83380400001)(31686004)(426003)(186003)(81166007)(26005)(9786002)(47076004)(31696002)(356005)(2616005)(82310400002)(82740400003)(54906003)(478600001)(44832011)(110136005)(70206006)(2906002)(316002)(4326008)(8676002)(6636002)(6666004)(70586007)(5660300002)(43740500002);DIR:OUT;SFP:1101;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a6d2e917-f5c5-4d28-2f0b-08d80940b069
+X-MS-TrafficTypeDiagnostic: BY5PR02MB6258:
+X-Microsoft-Antispam-PRVS: <BY5PR02MB62587C5F12AD9158C1173602C6860@BY5PR02MB6258.namprd02.prod.outlook.com>
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-Oob-TLC-OOBClassifiers: OLM:1468;
+X-Forefront-PRVS: 0425A67DEF
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: hYfliUgxGG6e7BW/A6Yg7frorBlDM2j8FUj/7aXR1PaMJBINYB+h+SSn65ikDOxcPLvizJbnzJiNSEbefA5v5q7aXwipafBways4hgy17WEvaJdqxJUUsM7fn013euGtD+3+T6LO86J0VpRPoP1DjegbuIX3EAkCxl4PjObGxtNb5y9wE9vYUjRiF4a3WuEbQLHPoXG+F+vdY5kePATYGrRlMRS6RVKNQfQxJuKmDaWD0VI1+sGXdYXW8FoRlfzV14L93pvxUuRkDQvw9j9XdSEwUfg11Yo+zeLfwg+Oba1jonYMp4/owVnNqrtWuBYKD6tVPGm9mIgf17DnyC4sg4/w0PKCN0pVgcM08ZJEPDTpJ6ECtN/lfQUs2ZVcr84Nr6WQFbuZRpNTc4OrbNT80soEJaQUyWyoeyL3k1MMlbvhr1j4Tj6BWgpKX4HdlO7d
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2020 11:07:51.5085
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6d2e917-f5c5-4d28-2f0b-08d80940b069
+X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR02MB6258
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The loop exits with "timeout" set to -1 and not to 0 so the test needs
-to be fixed.
+On 05. 06. 20 13:00, Dan Carpenter wrote:
+> This should be returning PTR_ERR() but it returns IS_ERR() instead.
+> 
+> Fixes: ffdbae28d9d1 ("drivers: soc: xilinx: Use mailbox IPI callback")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/soc/xilinx/zynqmp_power.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/soc/xilinx/zynqmp_power.c b/drivers/soc/xilinx/zynqmp_power.c
+> index 31ff49fcd078b..c556623dae024 100644
+> --- a/drivers/soc/xilinx/zynqmp_power.c
+> +++ b/drivers/soc/xilinx/zynqmp_power.c
+> @@ -205,7 +205,7 @@ static int zynqmp_pm_probe(struct platform_device *pdev)
+>  		rx_chan = mbox_request_channel_byname(client, "rx");
+>  		if (IS_ERR(rx_chan)) {
+>  			dev_err(&pdev->dev, "Failed to request rx channel\n");
+> -			return IS_ERR(rx_chan);
+> +			return PTR_ERR(rx_chan);
+>  		}
+>  	} else if (of_find_property(pdev->dev.of_node, "interrupts", NULL)) {
+>  		irq = platform_get_irq(pdev, 0);
+> 
 
-Fixes: e7b592f6caca ("khugepaged: add self test")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- tools/testing/selftests/vm/khugepaged.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Michal Simek <michal.simek@xilinx.com>
 
-diff --git a/tools/testing/selftests/vm/khugepaged.c b/tools/testing/selftests/vm/khugepaged.c
-index 51b89cedd09d1..8b75821302a79 100644
---- a/tools/testing/selftests/vm/khugepaged.c
-+++ b/tools/testing/selftests/vm/khugepaged.c
-@@ -502,7 +502,7 @@ static bool wait_for_scan(const char *msg, char *p)
- 
- 	madvise(p, hpage_pmd_size, MADV_NOHUGEPAGE);
- 
--	return !timeout;
-+	return timeout == -1;
- }
- 
- static void alloc_at_fault(void)
--- 
-2.26.2
-
+Thanks,
+Michal

@@ -2,98 +2,131 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F01B41EF612
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 13:06:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A141E1EF60C
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 13:04:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726965AbgFELFL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jun 2020 07:05:11 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:60462 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726787AbgFELFK (ORCPT
+        id S1726963AbgFELET (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jun 2020 07:04:19 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:56582 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726787AbgFELES (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jun 2020 07:05:10 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 055B27Jx151335;
-        Fri, 5 Jun 2020 11:05:07 GMT
+        Fri, 5 Jun 2020 07:04:18 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 055B2Cep164913;
+        Fri, 5 Jun 2020 11:03:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=3sHH2Wse00aR/Y1ZohIfUUEnncmFL+Yyv7Uy0bES180=;
- b=xVXah9xmG7Y/f4McyECSJZDlXT8lP5WV3LENffT5ugSyK2gdp2e/xalOw+P4xqwv+bZF
- 6nAOJ4YtZn28NDXC02tL3BYRlZFITThhaD+RNn6SiCsASLkbaBo8CwdBKZsd0D6nPQs/
- 45aqG2XY+hiG8mgxGHmliJcbKsl5nNRq02xUE+5bECgouALn6p1hCMHxj4Qg79WPrVbL
- O1w5bALxGvg8UpSHfiMWzWvqRNIPPmamRCRC8N65Egl0m7Tt6wq0B99RJJVv6Pgi+Rx4
- LYUA6OP8sEUj4J0Bs7/9WlRay4mZikjFfrT61Kj+bvnEI4EpxIG89cHTmEtWe1Ey47em yA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 31f9242amh-1
+ bh=/CQIFfdEXbHYL9KAyqe41mZw3wOfUdI9/0EmBUD6MHg=;
+ b=lmCMNiQe3vTmw1hdPO+S2Y8+q39E5NJG7EcTTN8N/jWM59n0UYxDmUF+TljA/mUxttgJ
+ S6kYcrUn/+2EL++awH4ZBVcNhkcMr8oMKoV+5Xz5NlOF+z6+2sj8z4ZWCmR9qGVf0/hD
+ FeJHlV29RSffXewc3s8/I7R5ZUPY1c/bb5xCWxxPnYVrYxrRrgAtm+koAL8ZXbTnFPLC
+ fXqqNXK8BlmVq2YdQ1ZcZUlx8ePfaoEk5TYWOoZ6puYkd9NHi3LctGC9vXt29LRO9VWe
+ JV03NPMyCxl1GgPyDs4Pj1z0I5TvpMKPPMsIIEvvNu+aWiNTDqruy8vpcgzJNHwKnA7V 5A== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 31f9262a9p-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 05 Jun 2020 11:05:07 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 055Aw8Tx119582;
-        Fri, 5 Jun 2020 11:03:07 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 31f9272tj4-1
+        Fri, 05 Jun 2020 11:03:55 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 055B3Qxi029185;
+        Fri, 5 Jun 2020 11:03:55 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 31f92skya6-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 05 Jun 2020 11:03:07 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 055B35uo007659;
-        Fri, 5 Jun 2020 11:03:06 GMT
+        Fri, 05 Jun 2020 11:03:55 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 055B3lSa029081;
+        Fri, 5 Jun 2020 11:03:47 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 05 Jun 2020 04:03:05 -0700
-Date:   Fri, 5 Jun 2020 14:02:58 +0300
+        with ESMTP ; Fri, 05 Jun 2020 04:03:46 -0700
+Date:   Fri, 5 Jun 2020 14:03:39 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "Manoj N. Kumar" <manoj@linux.ibm.com>,
-        "Matthew R. Ochs" <mrochs@linux.vnet.ibm.com>
-Cc:     Uma Krishnan <ukrishn@linux.ibm.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] cxlflash: remove an unnecessary NULL check
-Message-ID: <20200605110258.GD978434@mwanda>
+To:     Boris Brezillon <bbrezillon@kernel.org>,
+        SrujanaChalla <schalla@marvell.com>
+Cc:     Arnaud Ebalard <arno@natisbad.org>,
+        Srujana Challa <schalla@marvell.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Lukasz Bartosik <lbartosik@marvell.com>,
+        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] crypto: marvell/octeontx - Fix a potential NULL dereference
+Message-ID: <20200605110339.GE978434@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9642 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0
- mlxlogscore=999 bulkscore=0 suspectscore=0 adultscore=0 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006050084
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 mlxscore=0
+ malwarescore=0 spamscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006050085
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9642 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 impostorscore=0
- adultscore=0 priorityscore=1501 mlxlogscore=999 mlxscore=0 bulkscore=0
- lowpriorityscore=0 cotscore=-2147483648 phishscore=0 spamscore=0
- malwarescore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006050085
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0
+ suspectscore=0 cotscore=-2147483648 bulkscore=0 clxscore=1011
+ impostorscore=0 priorityscore=1501 malwarescore=0 mlxlogscore=999
+ spamscore=0 lowpriorityscore=0 mlxscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006050085
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "cmd" pointer was already dereferenced a couple lines earlier so
-this NULL check is too late.  Fortunately, the pointer can never be NULL
-and the check can be removed.
+Smatch reports that:
 
+    drivers/crypto/marvell/octeontx/otx_cptvf_algs.c:132 otx_cpt_aead_callback()
+    warn: variable dereferenced before check 'cpt_info' (see line 121)
+
+This function is called from process_pending_queue() as:
+
+drivers/crypto/marvell/octeontx/otx_cptvf_reqmgr.c
+   599                  /*
+   600                   * Call callback after current pending entry has been
+   601                   * processed, we don't do it if the callback pointer is
+   602                   * invalid.
+   603                   */
+   604                  if (callback)
+   605                          callback(res_code, areq, cpt_info);
+
+It does appear to me that "cpt_info" can be NULL so this could lead to
+a NULL dereference.
+
+Fixes: 10b4f09491bf ("crypto: marvell - add the Virtual Function driver for CPT")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/scsi/cxlflash/main.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/crypto/marvell/octeontx/otx_cptvf_algs.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/cxlflash/main.c b/drivers/scsi/cxlflash/main.c
-index fcc5aa9f60147..94250ebe9e803 100644
---- a/drivers/scsi/cxlflash/main.c
-+++ b/drivers/scsi/cxlflash/main.c
-@@ -47,9 +47,6 @@ static void process_cmd_err(struct afu_cmd *cmd, struct scsi_cmnd *scp)
- 	struct sisl_ioasa *ioasa;
- 	u32 resid;
+diff --git a/drivers/crypto/marvell/octeontx/otx_cptvf_algs.c b/drivers/crypto/marvell/octeontx/otx_cptvf_algs.c
+index 60e744f680d34..1e0a1d70ebd39 100644
+--- a/drivers/crypto/marvell/octeontx/otx_cptvf_algs.c
++++ b/drivers/crypto/marvell/octeontx/otx_cptvf_algs.c
+@@ -118,6 +118,9 @@ static void otx_cpt_aead_callback(int status, void *arg1, void *arg2)
+ 	struct otx_cpt_req_info *cpt_req;
+ 	struct pci_dev *pdev;
  
--	if (unlikely(!cmd))
--		return;
--
- 	ioasa = &(cmd->sa);
- 
- 	if (ioasa->rc.flags & SISL_RC_FLAGS_UNDERRUN) {
++	if (!cpt_info)
++		goto complete;
++
+ 	cpt_req = cpt_info->req;
+ 	if (!status) {
+ 		/*
+@@ -129,10 +132,10 @@ static void otx_cpt_aead_callback(int status, void *arg1, void *arg2)
+ 		    !cpt_req->is_enc)
+ 			status = validate_hmac_cipher_null(cpt_req);
+ 	}
+-	if (cpt_info) {
+-		pdev = cpt_info->pdev;
+-		do_request_cleanup(pdev, cpt_info);
+-	}
++	pdev = cpt_info->pdev;
++	do_request_cleanup(pdev, cpt_info);
++
++complete:
+ 	if (areq)
+ 		areq->complete(areq, status);
+ }
 -- 
 2.26.2
 

@@ -2,141 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EAD71EF5E6
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 12:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CE7B1EF5FB
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 13:00:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726938AbgFEK5K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jun 2020 06:57:10 -0400
-Received: from mout.web.de ([212.227.15.14]:44467 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726834AbgFEK5J (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jun 2020 06:57:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591354606;
-        bh=rSnfjIPja85QGA/ERMsy+/tfFYjepZiJhqusKyxLkFk=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=l8UBnGn82p+OytB9mzehMWlXnE/c9Oa0oKX73nlwFOMmSxTUM9iuzbSB7c+Id8s+j
-         /v35GLHuIdLc4VxYeMekQslvC3eOPaPeJyD1THYPzGRRjtgInVfW4LEh3dPqCk5/zN
-         hIDrOsmTG4kNrAsghnmIQUrfzZT8vDZUBbBi3x8c=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.102.114]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MYcpr-1jTk0T2EPz-00Vgn7; Fri, 05
- Jun 2020 12:56:46 +0200
-Subject: Re: [PATCH v2] block: Fix use-after-free in blkdev_get()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Jason Yan <yanaijie@huawei.com>, linux-block@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org
-Cc:     hulkci@huawei.com, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
-        Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>,
-        Jens Axboe <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>
-References: <88676ff2-cb7e-70ec-4421-ecf8318990b1@web.de>
- <5fa658bf-3028-9b5c-30cc-dbdef6bf8f7a@huawei.com>
- <20200605094353.GS30374@kadam>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <2ee6f2f7-eaec-e748-bead-0ad59f4c378b@web.de>
-Date:   Fri, 5 Jun 2020 12:56:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+        id S1726893AbgFELAj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jun 2020 07:00:39 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:42970 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726877AbgFELAi (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 5 Jun 2020 07:00:38 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 055AuhAU009940;
+        Fri, 5 Jun 2020 11:00:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=V0ubaUIN8W9lc6XMfm+T9kuHl5SLdA5xza5SBaAtBI0=;
+ b=AUp8k3jC/5PRtTKKyrZReG6odvTBwW5ig9t0XdLrUL5hAnVeJgcw3Qbox02bVruKtZWK
+ lV9kbAXkCBdUT9tIhJzJC4bLlverzAc9d9Ozo8MfD7WKAkSkd0zgn7se0s/WWJlMHWU7
+ bGhkxYaKS7f0nAVKywCIzdul/RVaP8o52XlzNMcn8QemvV5HmRbvfXW58z0l8toJIRQb
+ 7vdpcvOmK7bEcWE2SUwlvNnxDFV95T8gdQgLRBbaq8Ib7w+dJF9y1i+wOK1ucL80/9F7
+ LCyZxAdS5iGNU7lPRstrBKuXjOEU5sh02kNVE2iF/BiixueJHnCllLnl+XoqDCe3yohc rg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 31f91dtac0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 05 Jun 2020 11:00:30 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 055AxR9V016558;
+        Fri, 5 Jun 2020 11:00:29 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 31f92sksmy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 05 Jun 2020 11:00:29 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 055B0SBY004168;
+        Fri, 5 Jun 2020 11:00:28 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 05 Jun 2020 04:00:27 -0700
+Date:   Fri, 5 Jun 2020 14:00:20 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Michal Simek <michal.simek@xilinx.com>,
+        Tejas Patel <tejas.patel@xilinx.com>
+Cc:     Rajan Vaja <rajan.vaja@xilinx.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jolly Shah <jolly.shah@xilinx.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] soc: xilinx: Fix error code in zynqmp_pm_probe()
+Message-ID: <20200605110020.GA978434@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20200605094353.GS30374@kadam>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:dRd58kkRgO+FkYctmKLtqIsGHz847dnAboKzyJJI459iQb92L0I
- /jkxoCVcKUo2YN8Jdn5sB94LHb4rEp+TQwINI3ymXY1yYNAv4uZhga92XzKwEE4ThFmktgy
- 5U+fmIQ+tyjvgTMseXshgs/sGCYHTkTMB4JGW7w16omFGY98I1cgJ02Dd8PAG23vJ0yFDtj
- eN3w9nWa8XUNgD0VH1R8g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:wCp/MjImjsw=:sbzqgK/Sbbg6Jvko1W2h/4
- JigwSaZnJBhV81llTnCKYWq6EBMeu1Hh1Oi3Wk+WrSq4/9B/1PEvVT6u5qL7kAn7kAzl9J8l2
- bnyjPoKAV6YaGliIS14j8MqxyFb9QUOiqS0JBcAfuac1nqWAqwXgm6h9oZgIl0fzLZJUX0Ym/
- IWuNpdRmnoPfcG9UPUCsh9z6RdRGIixeIsQDIgvOdf6gZBzO5wa3+SnSm4ZO3yOK8qQSh0yPl
- vDU7Kxwh4diiRBw+dbZvt21zcvTVvvKPOJkXy1j4ZqKVY6Y1M+ECwyPXaJPFiYAFuhk273DUb
- oRF6BTbNtRJxluJkEH5O+1LU6G3BHnrfvKxLLSsu8ZDqcHGZ8sYHL6lCDsU5zPOBVnMKuh6Vl
- I1S9A0b5VIN6thIY9Sp0MIWGml4aEVgoGxmS7imv5T1QB2GNMtZTfGAWOQyiZ3V2VN1I01o8F
- JqukmS0vQE4KZv0HdUXg9kG/95dOpDDDiv5buV4SGl8Kjs1s3pNTU5eZuO3vL8WVmO4dVMk1+
- S+n34TExgo+QQJG0492Q1wSotR6MYQciQIH/b+ZpsUpAy3dZCHjgKnPwWy0Nt42ps0ixefu+R
- S/t7SA65f8wU++dNcD0bDorIMDXmba5SGOSgPGuR3PLFBA7yNj4Q1L8Sa8tQlBTmkEoLY+mud
- hV63uIgCNm4a4uSLwMWDLDLsGl/relGKYviRZ0PNq/3vc2ZXp6soppcnD8KcfMTieEAC4wTHU
- +ulNjMdiIKK7jRWMNgY4B8aTWXuOpaHSsuW1stq7J5Ds6jMW6DTnMtMObs1eFzcR4liN9Zl+c
- i9yiXGTd+PJXkhEnJ8FV4wizcG0rhBIzh2uR+2c4bhAjoFJijB1hmsV5efwEWqE/88s1nKwFU
- kNUqFPXu1xoZ8zY/nlPeys5Ybr9peFx6y//yQbGjG84CefJXYemYo+IgfVAhLmFqGjx8Yk/Ko
- xPXLKWsrQligCeL7drWi3GmRxb9pSCIyhBZ3hjlJkiMG2j7K46seIYz/57jqQWBKNUUFJKl8K
- K19OBaoJ8efiQGf92Sa1okhvKP2FbaD5UnGcS+Z1MLBd9GxHjdSCy4DPltF0r9eDb7/MC+R87
- poD86MewSiElgrUsovAuQwJ4Q/ywHlTtbvPtPlm5omzpATckgiNKIfGr3fPpi4cbGPALLYnBM
- GO84m+sDfaGfn9FHlANNmiwdeaPVUORwnRP3gqoziLRmvpxkEqocd1V+7g4IUjyGg6uwHz8Mk
- 6Hz6ReOfv4I357hFH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9642 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 mlxscore=0
+ malwarescore=0 spamscore=0 suspectscore=0 mlxlogscore=879 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006050084
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9642 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 bulkscore=0
+ clxscore=1011 cotscore=-2147483648 malwarescore=0 adultscore=0
+ priorityscore=1501 suspectscore=0 phishscore=0 spamscore=0 mlxscore=0
+ impostorscore=0 mlxlogscore=913 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006050084
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> A lot of maintainers have blocked Markus and asked him to stop trying
-> to help people write commit message.
+This should be returning PTR_ERR() but it returns IS_ERR() instead.
 
-I am trying to contribute a bit of patch review as usual.
+Fixes: ffdbae28d9d1 ("drivers: soc: xilinx: Use mailbox IPI callback")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/soc/xilinx/zynqmp_power.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/soc/xilinx/zynqmp_power.c b/drivers/soc/xilinx/zynqmp_power.c
+index 31ff49fcd078b..c556623dae024 100644
+--- a/drivers/soc/xilinx/zynqmp_power.c
++++ b/drivers/soc/xilinx/zynqmp_power.c
+@@ -205,7 +205,7 @@ static int zynqmp_pm_probe(struct platform_device *pdev)
+ 		rx_chan = mbox_request_channel_byname(client, "rx");
+ 		if (IS_ERR(rx_chan)) {
+ 			dev_err(&pdev->dev, "Failed to request rx channel\n");
+-			return IS_ERR(rx_chan);
++			return PTR_ERR(rx_chan);
+ 		}
+ 	} else if (of_find_property(pdev->dev.of_node, "interrupts", NULL)) {
+ 		irq = platform_get_irq(pdev, 0);
+-- 
+2.26.2
 
-> Saying "bdev" instead of "block device" is more clear
-
-I find this view interesting.
-
-
-> so your original message was better.
-
-Does this feedback include reported spelling mistakes?
-
-
-> The Fixes tag is a good idea though:
->
-> Fixes: 89e524c04fa9 ("loop: Fix mount(2) failure due to race with LOOP_S=
-ET_FD")
-
-Thanks for your addition.
-
-Regards,
-Markus

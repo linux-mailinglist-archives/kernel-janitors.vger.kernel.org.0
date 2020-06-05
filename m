@@ -2,135 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02C3C1EFF36
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 19:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C41D1EFFB6
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 20:11:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727877AbgFERkK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jun 2020 13:40:10 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:20408 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727080AbgFERkK (ORCPT
+        id S1728155AbgFESLP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jun 2020 14:11:15 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:52808 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726077AbgFESLO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jun 2020 13:40:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1591378808;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=/opGoEgIoDnDcLi9yZX38mmT0/AADXDWxmU4z3ixU+s=;
-        b=O4qTlFkmNcbuI8DhkBundRv7i1G4Pao1MjwLAgWMynwknKIxW9iKZZELrFC3AuDk4SHIPw
-        rAYF9n+zzL0mDsqriRqjTGn1Gvs6T34V0BE+9haM3eDEk8NgcA4D/O7XxQLc9h0S4UT2+f
-        nLRFbMgVggNxwqKEtHYFi5hUHd2aBTw=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-285-IDMs-q1ZOeuZSjNKpVGJZA-1; Fri, 05 Jun 2020 13:40:01 -0400
-X-MC-Unique: IDMs-q1ZOeuZSjNKpVGJZA-1
-Received: by mail-qt1-f199.google.com with SMTP id u26so9105864qtj.21
-        for <kernel-janitors@vger.kernel.org>; Fri, 05 Jun 2020 10:40:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=/opGoEgIoDnDcLi9yZX38mmT0/AADXDWxmU4z3ixU+s=;
-        b=eWAFE/jDEnIfcTWEnT59Jg8X9NsBJzjsZC3U3X46UQXRG/ouqzwrg5M1uszTzglxC4
-         koQp/cFOXMHqnewgzsY4iBKnUiYmTWaWt06R3txWnyavWUKwAXiJQEeH78+jx+nIIvda
-         jubW/85mkA/EmlEJA9spP8+gw7SXC56ULzcyaWN9b/DVsEW3j1vcgYDJuorxGPAQllvt
-         VenUQapwXBj7rDnP/s6mMApJnWrL2ceb4+HV+OxAX7iEWQU3ANBWiLQ9aplruUFyovOs
-         uaFgxeeHr495wBDvXay+L7YOp6qhA4I3WnPEXNH/lGgfUJcmRIMmVv/ZG04UlbaFfmcC
-         BXkg==
-X-Gm-Message-State: AOAM533FVaTHTBymqLpTAOFjLN2wQjcEVG0Jkpprdf2MqfZJWeWStBj3
-        MEqsVXYtGE5VgHY+/2DK4nxbhKQtA5+8YVYXyYXd1bQsL6R08uMqekFqWV/3B8ZdrJdMH4heyFa
-        VN5r2nv1BTHla1/qYDoSh0vuuwBnc
-X-Received: by 2002:a0c:b516:: with SMTP id d22mr11035122qve.88.1591378801303;
-        Fri, 05 Jun 2020 10:40:01 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyR45UIs5BGkXfLlHRAVY1bsHugsmO0ud2/c7cAJHdU9j6xjM6xDnoawCzMXujmNEXw/5BqWQ==
-X-Received: by 2002:a0c:b516:: with SMTP id d22mr11035076qve.88.1591378800779;
-        Fri, 05 Jun 2020 10:40:00 -0700 (PDT)
-Received: from xz-x1 ([2607:9880:19c0:32::2])
-        by smtp.gmail.com with ESMTPSA id d13sm328302qkc.121.2020.06.05.10.39.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jun 2020 10:39:59 -0700 (PDT)
-Date:   Fri, 5 Jun 2020 13:39:58 -0400
-From:   Peter Xu <peterx@redhat.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>
-Cc:     Andrew Jones <drjones@redhat.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Ben Gardon <bgardon@google.com>, Shuah Khan <shuah@kernel.org>,
-        kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] KVM: selftests: delete some dead code
-Message-ID: <20200605173958.GC71522@xz-x1>
-References: <20200605110048.GB978434@mwanda>
- <9f20e25d-599d-c203-e3d4-905b122ef5a3@redhat.com>
- <20200605115316.z5tavmf5rjobypve@kamzik.brq.redhat.com>
- <20200605124816.GB55548@xz-x1>
- <891e89c8-8467-eeb4-1b23-337b88a299dd@redhat.com>
+        Fri, 5 Jun 2020 14:11:14 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 055I8CQ5102490;
+        Fri, 5 Jun 2020 18:10:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=a4XaveQpAaQa2mw3il6Qi66Kdmgjqk/04IfyDbfuZOQ=;
+ b=TOJoy37INOWoUNxh4EAkC3tJJh/ECSCuvtOhWAS4NSeZyCjRrCsD3Z6EetUvUSKmEpeZ
+ E3ytfPKjbZvHXMkE1Swau4LvjbD5QlmLYz+FR3/6i34071X0mYTEReOpYGAdX4KGVbCp
+ myCums3m3orFSmWW+bojM2PR10BZE0EX8efh9tHMtZg2v1HwZ+JhXz3bXXzUhdErnbFe
+ IK3q+Ui7W47bNb+YTwqM4kpK2eT9tP5bLdgaroFCzxRztvvp+RtWr5v7XJhA2Mxft5F2
+ ozk92BhoV8J20fNyWVJGvnWMPaD/Qq3hMbyn5ImjbQFbYgh9MDypv9SYYQkDz196ksQX OA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 31f926445u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 05 Jun 2020 18:10:59 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 055I88MV181261;
+        Fri, 5 Jun 2020 18:08:58 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 31f928aagq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 05 Jun 2020 18:08:58 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 055I8tPQ026391;
+        Fri, 5 Jun 2020 18:08:56 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 05 Jun 2020 11:08:54 -0700
+Date:   Fri, 5 Jun 2020 21:08:45 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jan Kara <jack@suse.cz>
+Cc:     Jason Yan <yanaijie@huawei.com>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        hulkci@huawei.com, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
+        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+        Ming Lei <ming.lei@redhat.com>
+Subject: Re: [PATCH v2] block: Fix use-after-free in blkdev_get()
+Message-ID: <20200605180845.GU30374@kadam>
+References: <88676ff2-cb7e-70ec-4421-ecf8318990b1@web.de>
+ <5fa658bf-3028-9b5c-30cc-dbdef6bf8f7a@huawei.com>
+ <20200605094353.GS30374@kadam>
+ <20200605144236.GB13248@quack2.suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <891e89c8-8467-eeb4-1b23-337b88a299dd@redhat.com>
+In-Reply-To: <20200605144236.GB13248@quack2.suse.cz>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9643 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ suspectscore=0 mlxscore=0 adultscore=0 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006050134
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9643 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0
+ suspectscore=0 cotscore=-2147483648 bulkscore=0 clxscore=1015
+ impostorscore=0 priorityscore=1501 malwarescore=0 mlxlogscore=999
+ spamscore=0 lowpriorityscore=0 mlxscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006050134
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jun 05, 2020 at 03:26:39PM +0200, Paolo Bonzini wrote:
-> On 05/06/20 14:48, Peter Xu wrote:
-> >>> The bug is that strtoul is "impossible" to use correctly.
-> > Could I ask why?
+On Fri, Jun 05, 2020 at 04:42:36PM +0200, Jan Kara wrote:
+> On Fri 05-06-20 12:43:54, Dan Carpenter wrote:
+> > I wonder if maybe the best fix is to re-add the "if (!res) " check back
+> > to blkdev_get().
 > 
-> To see see how annoying the situation is, check out utils/cutils.c in
-> QEMU; basically, it is very hard to do error handling.  From the man page:
-> 
->        Since  strtoul() can legitimately return 0 or ULONG_MAX
->        (ULLONG_MAX for strtoull()) on both success and failure, the
->        calling program should set errno to 0 before the call, and then
->        determine if an error occurred by checking whether errno has
->        a nonzero value after the call.
-> 
-> and of course no one wants to write code for that every time they have
-> to parse a number.
-> 
-> In addition, if the string is empty it returns 0, and of endptr is NULL
-> it will accept something like "123abc" and return 123.
-> 
-> So it is not literally impossible, but it is a poorly-designed interface
-> which is a major source of bugs.  On Rusty's API design levels[1][2], I
-> would put it at 3 if I'm feeling generous ("Read the documentation and
-> you'll get it right"), and at -4 to -7 ("The obvious use is wrong") if
-> it's been a bad day.
-> 
-> Therefore it's quite common to have a wrapper like
-> 
->     int my_strtoul(char *p, char **endptr, unsigned long *result);
-> 
-> The wrapper will:
-> 
-> - check that the string is not empty
-> 
-> - always return 0 or -1 because of the by-reference output argument "result"
-> 
-> - take care of checking that the entire input string was parsed, for
-> example by rejecting partial parsing of the string if endptr == NULL.
-> 
-> This version gets a solid 7 ("The obvious use is probably the correct
-> one"); possibly even 8 ("The compiler will warn if you get it wrong")
-> because the output argument gives you better protection against overflow.
-> 
-> Regarding overflow, there is a strtol but not a strtoi, so you need to
-> have a temporary long and do range checking manually.  Again, you will
-> most likely make mistakes if you use strtol, while my_strtol will merely
-> make it annoying but it should be obvious that you're getting it wrong.
-> 
-> Paolo
-> 
-> [1] https://ozlabs.org/~rusty/index.cgi/tech/2008-03-30.html
-> [2] https://ozlabs.org/~rusty/index.cgi/tech/2008-04-01.html
+> Well, it won't be that simple since we need to call bd_abort_claiming()
+> under bdev->bd_mutex. And the fact that __blkdev_get() frees the reference
+> you pass to it is somewhat subtle and surprising so I think we are better
+> off getting rid of that.
 
-Fair enough, and a good reading material. :)
+Fair enough.
 
-Thanks!
+Jason Yan sent a v3 of this patch that frees "whole".  I've looked it
+over pretty close and I think it's probably correct.
 
--- 
-Peter Xu
+(not that my opinion should count for much because I don't know this
+code very well at all).
+
+regards,
+dan carpenter
 

@@ -2,39 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C3AF1EF522
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 12:16:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EAD71EF5E6
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 12:57:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726077AbgFEKP7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jun 2020 06:15:59 -0400
-Received: from mout.web.de ([212.227.15.4]:38527 "EHLO mout.web.de"
+        id S1726938AbgFEK5K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jun 2020 06:57:10 -0400
+Received: from mout.web.de ([212.227.15.14]:44467 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725926AbgFEKP6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jun 2020 06:15:58 -0400
+        id S1726834AbgFEK5J (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 5 Jun 2020 06:57:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591352135;
-        bh=yywBzy7IlBWWqUGaVS7rm8tbU8bXI8UdPAJ+F0kmUj4=;
+        s=dbaedf251592; t=1591354606;
+        bh=rSnfjIPja85QGA/ERMsy+/tfFYjepZiJhqusKyxLkFk=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=Vvu0MyIu6xVTOYAe9zDtUv+kec47dbOdiXep7f6LIpmGNTONfLEUBZLtkZ/yAFbCx
-         OH12vfyMef45sVDuIPcZV/dtrnqJOf/jNswCSefsQq6z80+L4jqU99hkl+bSRd7A1A
-         O6iaJfHctkj4G2yBbubPfswIL620GH/jOKdX/vwI=
+        b=l8UBnGn82p+OytB9mzehMWlXnE/c9Oa0oKX73nlwFOMmSxTUM9iuzbSB7c+Id8s+j
+         /v35GLHuIdLc4VxYeMekQslvC3eOPaPeJyD1THYPzGRRjtgInVfW4LEh3dPqCk5/zN
+         hIDrOsmTG4kNrAsghnmIQUrfzZT8vDZUBbBi3x8c=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.102.114]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MQ6KJ-1jcSI93dlj-005JbL; Fri, 05
- Jun 2020 12:15:35 +0200
-Subject: Re: ARM: imx6: add missing put_device() call in imx6q_suspend_init()
-To:     Yu Kuai <yukuai3@huawei.com>, kernel@pengutronix.de,
-        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com
-Cc:     Anson Huang <Anson.Huang@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Yi Zhang <yi.zhang@huawei.com>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-References: <cf810c93-297c-c02c-9bba-8c3d097b8e31@web.de>
- <2ab2cc9f-c720-75ca-e20c-0e4236ff45fd@huawei.com>
+Received: from [192.168.1.2] ([93.131.102.114]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MYcpr-1jTk0T2EPz-00Vgn7; Fri, 05
+ Jun 2020 12:56:46 +0200
+Subject: Re: [PATCH v2] block: Fix use-after-free in blkdev_get()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Jason Yan <yanaijie@huawei.com>, linux-block@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org
+Cc:     hulkci@huawei.com, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
+        Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>,
+        Jens Axboe <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>
+References: <88676ff2-cb7e-70ec-4421-ecf8318990b1@web.de>
+ <5fa658bf-3028-9b5c-30cc-dbdef6bf8f7a@huawei.com>
+ <20200605094353.GS30374@kadam>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -79,79 +77,66 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <1542979d-f7f6-bcf1-53c3-22b7c076ddc7@web.de>
-Date:   Fri, 5 Jun 2020 12:15:32 +0200
+Message-ID: <2ee6f2f7-eaec-e748-bead-0ad59f4c378b@web.de>
+Date:   Fri, 5 Jun 2020 12:56:45 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
-In-Reply-To: <2ab2cc9f-c720-75ca-e20c-0e4236ff45fd@huawei.com>
+In-Reply-To: <20200605094353.GS30374@kadam>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:0FVJtvCytfg6Zx3l+WMfAdoOjp+2WiI53dYtZZSuTjDfkVgvGI4
- f16OD0Rbg5e4QGrXvwyxZOksKyvXRxLGebS4sB223RpVz/IM5SZGbr242LpeX1dQYoQxNsq
- ldsHC5egVY+Q7Su+J17N2OZERoj9eLOJu0KeY1YuijVKDWA/XczIU+3s4PtmKVI81ZD92ip
- xgLI24aShTvvJpgcmrmwQ==
+X-Provags-ID: V03:K1:dRd58kkRgO+FkYctmKLtqIsGHz847dnAboKzyJJI459iQb92L0I
+ /jkxoCVcKUo2YN8Jdn5sB94LHb4rEp+TQwINI3ymXY1yYNAv4uZhga92XzKwEE4ThFmktgy
+ 5U+fmIQ+tyjvgTMseXshgs/sGCYHTkTMB4JGW7w16omFGY98I1cgJ02Dd8PAG23vJ0yFDtj
+ eN3w9nWa8XUNgD0VH1R8g==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:gWzO+9+zM+4=:5ZtYMkGn6cTqu4NEjAigx4
- IQALEt6wTL5Mxz/Pe2SgLW3S1E5boEY5R7ji7YfeJlOyYBzOwZsRwULAf0EWPuvQXY+5QErSd
- 1FbJ/EvJKsdQ57Pz0eHu6MyerGB2lgQNLpZGyhMWbEwPb970Lj/W8hNAzXqi9kegYJURxuwPi
- 6xzQ/Tu12l9JmIoUyk/xhuAliXZaYObVp3jur+/BwEjwR3Y9TSv9MTv70OJWAXXMT0bTawjsQ
- 0YgJgL3Sf9qVPjz+LgXn3h/7Y/km7oEElbxo0FxsvgBM8m5lwC0OEeC7d3ruhd3rpkt4YFVOu
- czjKdmnSinemmP5vqcppklpzYJQWkxuql1EOne8yk1jFvtSNgn7+PG7xWdMAg4GNrPppuqmkr
- i8u9PRCeH7vh9ihm3uJYvs25EauneuMIUzv7qJMxvHOkaqILm4Gg5EGbHOBDou3OnbTEpWMi4
- YXaYhpTfih/exSVKRlaCD23tV4yiLvD8BxFC8tDM1BBKgt0QgpCm2jppwpxKyKIAV3o0ccuw/
- LSVtHIqBdux5BxpZ7BUsPd8POr7CbE0UQgQOZECi289FNi9/p10YyQOQE02DJP67dC8jnxco8
- 1lgf4rTZygu0DNiNe9Mu4G3U16P0kkXjEqVTi1cZCSh9Q3dyrsgIHVvp2p06yo27K5Ow5fEl0
- YJf3P2uhvABCoK6tQdCHSNL8Nj+1pBd9NthikLtVZF6wZRTfGYMmfdFGbK1Y91nZ6OSLYoiTV
- Iu8nZeSJdyiTupQsQ/Iop08ToOGRi1bWrob57unM0qkqsDGZcI809R4fI2/Ot5H++HdNeGyaO
- 3WyJxMOmbMpwpglwIzWnXM0ZOLBazGGK386cEMa9X8tvi9GFHNw+bcOpH4Sqe0qvUAGRMFicI
- WkrvBR8hnm+1K/yol1PFY+N7sU4dMOvW6MPI4cQEmSWt/e0wQpaInYClvvh6p2OZ3VISbFnTZ
- ukLptyZDk8wL/impQAQPiIwgrr9lIldhLMnIwmCsNyqeCc/GNjHECxXXhMWKQlFOMYm8Tzdf5
- KITVoYcyrp8z6+y6DOJvHrON8dMdtJsCVY17iQlVB0/sCJCRKUIteTFSlCe6zRtNLfK29Lw/R
- /l4GKwmhqO1Hb/zQh0JLdneRvs+pGLL4k3idJ9XAFf3pjH3yufp4VkZjhUxt1WXDRDec0Qwjz
- 0ReCFNFuMFmE1YCw6Gk7J3TH9Y3FOhJQIGSLCjIFzAG8/gfmII2YTNnw3H2ubUdvkZJpZCLXu
- nVsBQ1d2agAzE57Yl
+X-UI-Out-Filterresults: notjunk:1;V03:K0:wCp/MjImjsw=:sbzqgK/Sbbg6Jvko1W2h/4
+ JigwSaZnJBhV81llTnCKYWq6EBMeu1Hh1Oi3Wk+WrSq4/9B/1PEvVT6u5qL7kAn7kAzl9J8l2
+ bnyjPoKAV6YaGliIS14j8MqxyFb9QUOiqS0JBcAfuac1nqWAqwXgm6h9oZgIl0fzLZJUX0Ym/
+ IWuNpdRmnoPfcG9UPUCsh9z6RdRGIixeIsQDIgvOdf6gZBzO5wa3+SnSm4ZO3yOK8qQSh0yPl
+ vDU7Kxwh4diiRBw+dbZvt21zcvTVvvKPOJkXy1j4ZqKVY6Y1M+ECwyPXaJPFiYAFuhk273DUb
+ oRF6BTbNtRJxluJkEH5O+1LU6G3BHnrfvKxLLSsu8ZDqcHGZ8sYHL6lCDsU5zPOBVnMKuh6Vl
+ I1S9A0b5VIN6thIY9Sp0MIWGml4aEVgoGxmS7imv5T1QB2GNMtZTfGAWOQyiZ3V2VN1I01o8F
+ JqukmS0vQE4KZv0HdUXg9kG/95dOpDDDiv5buV4SGl8Kjs1s3pNTU5eZuO3vL8WVmO4dVMk1+
+ S+n34TExgo+QQJG0492Q1wSotR6MYQciQIH/b+ZpsUpAy3dZCHjgKnPwWy0Nt42ps0ixefu+R
+ S/t7SA65f8wU++dNcD0bDorIMDXmba5SGOSgPGuR3PLFBA7yNj4Q1L8Sa8tQlBTmkEoLY+mud
+ hV63uIgCNm4a4uSLwMWDLDLsGl/relGKYviRZ0PNq/3vc2ZXp6soppcnD8KcfMTieEAC4wTHU
+ +ulNjMdiIKK7jRWMNgY4B8aTWXuOpaHSsuW1stq7J5Ds6jMW6DTnMtMObs1eFzcR4liN9Zl+c
+ i9yiXGTd+PJXkhEnJ8FV4wizcG0rhBIzh2uR+2c4bhAjoFJijB1hmsV5efwEWqE/88s1nKwFU
+ kNUqFPXu1xoZ8zY/nlPeys5Ybr9peFx6y//yQbGjG84CefJXYemYo+IgfVAhLmFqGjx8Yk/Ko
+ xPXLKWsrQligCeL7drWi3GmRxb9pSCIyhBZ3hjlJkiMG2j7K46seIYz/57jqQWBKNUUFJKl8K
+ K19OBaoJ8efiQGf92Sa1okhvKP2FbaD5UnGcS+Z1MLBd9GxHjdSCy4DPltF0r9eDb7/MC+R87
+ poD86MewSiElgrUsovAuQwJ4Q/ywHlTtbvPtPlm5omzpATckgiNKIfGr3fPpi4cbGPALLYnBM
+ GO84m+sDfaGfn9FHlANNmiwdeaPVUORwnRP3gqoziLRmvpxkEqocd1V+7g4IUjyGg6uwHz8Mk
+ 6Hz6ReOfv4I357hFH
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> Do you find a previous update suggestion useful?
->>
->> ARM: imx6: Add missing put_device() call in imx6q_suspend_init()
->> https://lore.kernel.org/linux-arm-kernel/5acd7308-f6e1-4b1e-c744-bb2e5f=
-dca1be@web.de/
->> https://lore.kernel.org/patchwork/patch/1151158/
->> https://lkml.org/lkml/2019/11/9/125
-=E2=80=A6
-> It is useful indeed.
+> A lot of maintainers have blocked Markus and asked him to stop trying
+> to help people write commit message.
 
-Thanks for your positive feedback.
+I am trying to contribute a bit of patch review as usual.
 
 
-> Although I didn't run cocci script, since it can produce too many false =
-result
-> which is hard to filter out.
+> Saying "bdev" instead of "block device" is more clear
 
-Would you like to clarify any corresponding software analysis options?
+I find this view interesting.
 
 
-> BTW, I see you haver done the work already, I guess I won't send any pat=
-ches
-> related to 'missing put_device after of_find_device_by_node()'.
+> so your original message was better.
 
-You may continue also with contributions in such a direction.
-I would like to point out that other developers occasionally got into the =
-mood
-to improve implementation details in similar ways already.
+Does this feedback include reported spelling mistakes?
 
 
-> Any idea why these pathes didn't get applied ?
+> The Fixes tag is a good idea though:
+>
+> Fixes: 89e524c04fa9 ("loop: Fix mount(2) failure due to race with LOOP_S=
+ET_FD")
 
-I can make assumptions about the reasons for the possibly questionable han=
-dling
-of such patches.
+Thanks for your addition.
 
 Regards,
 Markus

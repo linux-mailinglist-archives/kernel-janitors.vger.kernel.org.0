@@ -2,33 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F2AC1EF31F
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 10:31:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFC621EF387
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 10:58:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726179AbgFEIaq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jun 2020 04:30:46 -0400
-Received: from mout.web.de ([212.227.15.14]:34623 "EHLO mout.web.de"
+        id S1726116AbgFEI6H (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jun 2020 04:58:07 -0400
+Received: from mout.web.de ([212.227.15.3]:36563 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725986AbgFEIaq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jun 2020 04:30:46 -0400
+        id S1726062AbgFEI6H (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 5 Jun 2020 04:58:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591345837;
-        bh=YMUSygJK/1CfsirIVydQxFMpeFiWKiHb6Bd0D6hIBWE=;
-        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=hINNALY5Shh3lbAOMWoQ0H9xw525JMbvHdlX0B/VmElK4rNiwH1RMcL3SLsZdQrjd
-         TlwTHRYYgahurH6PQPL48uYOuM37r0eRL48obD7y5YulhiWMkI/vjs0OEIQRYuVKnd
-         MEJCrvxjXKBT6GvPgx54xgocZfKNbTWcskQbCzjs=
+        s=dbaedf251592; t=1591347477;
+        bh=mvKBubzFUDxdlOMgJZA16TcBAVFbjITInuGBs3aqAuQ=;
+        h=X-UI-Sender-Class:Cc:Subject:To:From:Date;
+        b=c3uBVHmTVbcY2pMiDiu32Xac2xD76mWfCjOSBrnW9v+rPiQvDBK2K6yP9VSxy1WRd
+         HZEo8ScIhiwt13cE7/Dd1U6xm1+KBbDdoA2L+mPQmpIKbLiZ440E7Fye5LJ/7vQWaM
+         A+E88cIiDelpoMLbKQ5kjIM8lppLtUYB9yQ/oa2Q=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.102.114]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LnBTZ-1j2ryr42yj-00hKtz; Fri, 05
- Jun 2020 10:30:37 +0200
-To:     Jason Yan <yanaijie@huawei.com>, linux-block@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org
-Cc:     hulkci@huawei.com, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
-        Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>,
-        Jens Axboe <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>
-Subject: Re: [PATCH v2] block: Fix use-after-free in blkdev_get()
+Received: from [192.168.1.2] ([93.131.102.114]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MXoca-1jSwqP0ZC8-00Y7HP; Fri, 05
+ Jun 2020 10:57:57 +0200
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kyungtae Kim <kt0755@gmail.com>
+Subject: Re: [PATCH] usb: gadget: function: printer: Fix use-after-free in
+ __lock_acquire()
+To:     Zhang Qiang <qiang.zhang@windriver.com>, linux-usb@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -73,70 +74,46 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <88676ff2-cb7e-70ec-4421-ecf8318990b1@web.de>
-Date:   Fri, 5 Jun 2020 10:30:35 +0200
+Message-ID: <5207d179-0a7d-b5ff-af34-102fb21028b5@web.de>
+Date:   Fri, 5 Jun 2020 10:57:55 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:pZTNExEyMmWyixWDPTWYbdbk4w3QJ76Wkvj+qIgO/VkU/p2Z0Z2
- gxv6hZJ30bWF9sKOW/2jpnMYFq4L9l8F5jLD/QOquAajZw4UE9zFh0ojVSJFqOVNtUY5qII
- Z8jaHhi7Ultr2agz+pLni3IPxtWOgh9yTQT3KDYPYt9H0QaH05C74Kz2+od3UNV66wiwQV/
- lBbmE/pRjEvzDCD6Oi1dg==
+X-Provags-ID: V03:K1:g1UIEY0k7OwMw1allXLSGsecgBjQu3CCAc1mDU/pq9erQifvD9f
+ dLPTmSa3N/gXqkCT5VS8ifyTAUpl/ZEb5qaZRCfKcUzZiP6L+Ko2Var1BWveUwhbDVconBT
+ W8NlTy5/hqSsLEkWbLHLINGUuixYHCArsUnjKfy3QLhGbwi1xjLDro9WhHIp7qmE2J3z22V
+ 9lc2BhYYgNrJ1bEMaQr3A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:cXpuJYfXKGE=:5mIHmeYz+SPaOqdGZJMV0S
- f3j6l4Py283kfFVq7utFNC2vVGohXgjBcUe29Af55kK6fIL8ssIYFwqXQb78FQzTZfhVW04nZ
- fwt1OjrD5KcTCKpDGODW18rsvpi0eY0/opOSSgsDCGZFbSROIbphQF/qLhPl9VhJZzQStpgmB
- 2XMy3+c9xKn+H7ESbezc6nyaPTHlDEcKgLRB60Qc5aAerjKgrf5lbYjKM3nMsHm42MctwfLb4
- or7hf8MY9loQyTV7d/EjXvXIm+YCq9uo4S26ncfop71rWF3L4vaT6WzXiWxPvi9dALHG4B3Di
- d+eJshatv/5hWl+LkDIXIiOSJ52yf1wynL5eYx4dEuwBd8Hs426L0qPxN6HppZP1K0N5jmOmz
- 63gg3KllmUq47iP02JuQRzlHDAEPhPpZQHGj3tLaB+Laog6FWkc/xjvsNgk4843BnrhthiWjQ
- 20tOyIxahCgG3oWCghM85AsX+DqqAbo0WumYXi54g4h/x9KJfJLaoSWdXxmHdAWSWHJbUJD8z
- XIjK+88Ik3hEtINTaF28YBKmC/Pr06rMY755AKFlRI+snfk0uVxeQouGtilOEPqPrPcG8HI+Q
- HjlVb+R4IuhgWwlfQhaIgLe9ltQomHJ5LvX01wKbgsSYQdcg/560tkxj69drw5MuXKrDxJQTO
- 6/s+wUoZToOpTysKGg92VCJRB0u7BnCVdhTXVJ8zPV+QVWcyPVb2HJUkvXMO1MRCA469KuZHE
- 0JQqDOXX1oGKJXlXHYTk6FdpEBVIGtn53TTLz89ZIgKeiBfHox8LEAyjd72EM+na7HHDhjO++
- /AF6oS7xrn4wIh8J/8fZTM61s04n+Mdrb6mV8+SKS369eC7kDUl98qENUuwWttIhNZJCV+vzP
- xE2R+nrN2m7mto/4enRGQp1nr9ocC1WIqPXIHc/x7m7xcxF8PN5jyj7+Y1F2UOPSldgYQpF84
- M7MaBQxj4FhSv+ZTixAvEuUoLbWXtj0j4J4neIS5qFpmdCWQS5SvI+JcOxEkhK8EdHGX56nrg
- +UJq4UiRd20c9oeGWC3zOb/gbDmZftqandceGlTQ+1ax/9l0sx9t9dO+atovPEH7VOwt0q2xZ
- lPdf2oJx03WnNnPMtR1kGgTNgJO3VLmMp3ZWuU7bAudXAqn2JCiDQPpNAbC3BooNchvi6DKZ1
- nfkBEP3c/GJ7uqr6FGVtS3sP9TPv4XK3/147MFPtZjL3Lk9JUY5BszzBEFsEm8jxtuhnR8Vem
- H+NQDXwscDb/OQxN3
+X-UI-Out-Filterresults: notjunk:1;V03:K0:uT7lgZaP7iQ=:v9fqPdj3XEknU0jRUkmSzo
+ d7ZUHDIRjZwQJI6JswyFkUSnHspPkWJYOJ6CD2sbleAhKkaOuXgFeWut3in7KPQYodF9AieGq
+ pL1Hiy1Cf8F9tPUuSX3u/UhBHrA49daJC/y7+hjGHt9lmTgKSSrw/oipYrlsvDGIREX9+hPhp
+ wS+ZvJ9NMQaZ5HZ9jOeuZ1ENtwIGZOJXHqlKj3i7mP/8yowDhpBu+tBzFRE7AHJ0MZfO1iOSs
+ XfEOSjqmqXhZjX0kOZiacIMNSHiZnoikKFb75Yx/6Nl1Gkm0ch2wAge3syydwU3sMhrt9xOqw
+ tTfBwo29hp+3jpTXUr8mdLelXdy6S8QFAIA2fk+lJBiPQHK4CeiFyjJ8siwB6vnOsXFWn8edU
+ owy0tRlBi3OAc4UX+bKWZZHBcRdTtuBtIE74XqFDpq4R4hjxwOw+pdQkVfuzlVX7QER8STAeW
+ mOozLuLEsGKLPqrjCrU9xYECXkS4i5Iesor1MennT0AnA6BmC+2ITRj/lX1mPhbJEB9lo0FjB
+ KzBZCpusIhdAeb/s4dRfKCJHciMMdOE8Pdgsl1CkraYErjC27uQ0FJNVOX0dcjTZhGnvwWXXy
+ eXvHgXLy7Rn/H1NEXtizyakvskNu5QFxN6VbqfQTg3nsuuTB28DbaVYgd76b/M+jqs4Ojgw27
+ Y4vdE8bWGyptW1QVT+JA/XS0wG9qFe3nXb9NZFidJIY0JszHbTHtNmUimuHgGIDJ1kMjYtQaZ
+ caU+w+Ft3eT/DMa4QQrHNbrWXgY+7O7R6PYeTez4qFG+Bsicj8KU0tx2jSWxLeR9O2oyd7AVf
+ KJV700Le1raUJ/Vs9qobqmarMNV5shp7kseo+cP4u/K2xDAdSASUG6NbVGfbQoQW05fN7c8eP
+ X3q3hgfFmA3ZhR26fghJXL/m5i9rLLEd1UFbUVkOXaoQahw3OKxWHpjWDZon6ckIQ7JteHB8R
+ qEPAg1TX/M7Ljb2XJrkFQnjpdOKKCiJic98VKzsepweRl7AHCSryfWDdDRcidirjxYW9F6NdF
+ XDT0wwDLEaVdTJWV02qmrDliZ6s5UyY1/FYcP8fSKzV3ms4OKv7shbff24ChwHYfAAL/lb/Hk
+ 78GCVx/ZZi56IjbMJxdZaEugfdzyzhvsXXQ/lsPh9ijYiiBmVmotBfbUCSr2+8mBfgk/JN5LO
+ UV9rZ9Q88lZ+PXSvzUkvFGWSMIUj7dAXzksN0dGq5ozaUStu+oKZHJMXoyNdqS8A5GNZy63yy
+ foRkbv7ERFO96II+M
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> =E2=80=A6 released the refcount of the bdev (actually the refcount of
-> the bdev inode).
+> Fix this by increase object reference count.
 
-Wording adjustments:
-=E2=80=A6 released the reference count of the block device inode.
-
-
-> =E2=80=A6 access bdev after =E2=80=A6
-
-=E2=80=A6 access block device after =E2=80=A6
-
-
-> accually bdev is =E2=80=A6
-
-bdev is =E2=80=A6
-
-
-> =E2=80=A6 This may leads to use-after-free if the refcount is =E2=80=A6
-
-=E2=80=A6 This results in an use after free if the reference count =E2=80=
-=A6
-
-
-> following scenerio:
-
-following scenario:
-
+I find this description incomplete according to the proposed changes.
 
 Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=
 e?

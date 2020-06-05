@@ -2,133 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 064611EF842
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 14:47:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F6CB1EF84A
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 14:48:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726837AbgFEMrb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jun 2020 08:47:31 -0400
-Received: from mout.web.de ([212.227.15.14]:56239 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726499AbgFEMra (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jun 2020 08:47:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591361222;
-        bh=SN17IllDT+/NWqqllnTWBMfMqp5AhSBlFt21ZNtHUwc=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=fBgGe2WVoTJIxqubkLLd12TMPtSvUx3kLc3AzNWLIhKNGHX6EcjrPvON4peUZCy5p
-         vs1X7mY04S3fshgrVCsM5d8wyhhTVIwCLGhl6AaZnyHGX9BU2fwTEOLQ0kJHtvDDJF
-         rrDuJdrU/qvR0Vxf9a3SrSVrK2dmchudaT/qQ7Mk=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.102.114]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MRD0p-1jX2CH1e3T-00UYw6; Fri, 05
- Jun 2020 14:47:02 +0200
-Subject: Re: block: Fix use-after-free in blkdev_get()
-To:     Matthew Wilcox <willy@infradead.org>, linux-block@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Jason Yan <yanaijie@huawei.com>, hulkci@huawei.com,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>,
-        Jens Axboe <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>
-References: <88676ff2-cb7e-70ec-4421-ecf8318990b1@web.de>
- <5fa658bf-3028-9b5c-30cc-dbdef6bf8f7a@huawei.com>
- <20200605094353.GS30374@kadam> <2ee6f2f7-eaec-e748-bead-0ad59f4c378b@web.de>
- <20200605111039.GL22511@kadam> <63e57552-ab95-7bb4-b4f1-70a307b6381d@web.de>
- <20200605114208.GC19604@bombadil.infradead.org>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <a050788f-5875-0115-af31-692fd6bf3a88@web.de>
-Date:   Fri, 5 Jun 2020 14:47:00 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+        id S1726889AbgFEMsX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jun 2020 08:48:23 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:57662 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726879AbgFEMsX (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 5 Jun 2020 08:48:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1591361301;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=eO1D3JEFx3gMyiYe03xD1d+mWzCgrlVM6JLDMuUPpwI=;
+        b=HoHfI3/tB7+HeilpL1Jd+0KsMn5HCNh2ckp81PWMODwkEngcXQh5iuAmKiLQBfhhjZpVAE
+        3hHfCYLfMbVeOMIlEvohEOKD8nolBvu2uQfYFZU+gXCRzo66IqIvKbIpDI8fL9WIvD5A9D
+        AkuDjvQGANB4DjxzobJOhYCDzHjGjXg=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-247-xA7feO_DO3ST7CeIocVSQQ-1; Fri, 05 Jun 2020 08:48:20 -0400
+X-MC-Unique: xA7feO_DO3ST7CeIocVSQQ-1
+Received: by mail-qt1-f199.google.com with SMTP id w14so8314463qtv.19
+        for <kernel-janitors@vger.kernel.org>; Fri, 05 Jun 2020 05:48:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=eO1D3JEFx3gMyiYe03xD1d+mWzCgrlVM6JLDMuUPpwI=;
+        b=r7GT6WA3uzsSXwq0XGnfW1EV8VIylVaz2GKk8anFchbGw8UGa1jPglg+r+bIJyQD97
+         ptwEZQP+nQ42fJH37lKW8P6Vcr89n78ZXb6ph20eRozs4Rg4W8pB01eIPgH8RumNmNY2
+         gXnTe3jw39Mf0zQujaRiCTD/wmCnE+sBMfJK1w+yz5BbnpFaRfTJxUsBaVvrCxu0GNK3
+         VKVETJfmuc+HFaMUE6USB0cQmk+xC+kcoZStMEnReXPGBpQP8eRGdk7BddywP60aWnIt
+         O0f0TrFQN1nuZ9ZA3osb2SxPKZHB4XJhKWovfFiqGAPKW2Cno+KGZWMu1VQ0Lv+lzjR0
+         5trg==
+X-Gm-Message-State: AOAM530l3CyS5f+OkehGMfuYyaW4yi1aEGOBR7uiAGXBfQEm5RRODKOP
+        ooLYwJcC0Ue7e3BKkSsQFy9wcGU2Eaab5/M63gn1cxI8hP6x4gfHCvgeg8TCcQRIplTc1dxglvs
+        QZ3Ezlg4sB/qmUh8OURe5Lx5dKsXt
+X-Received: by 2002:aed:21af:: with SMTP id l44mr10019742qtc.124.1591361299524;
+        Fri, 05 Jun 2020 05:48:19 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwKVSPnObIIx/lF3VrXTnCi0p2UjVU2aEXiipGyR5R5g+TcrRTsbvtNz/PEa3g8UQfd15ZLLQ==
+X-Received: by 2002:aed:21af:: with SMTP id l44mr10019726qtc.124.1591361299260;
+        Fri, 05 Jun 2020 05:48:19 -0700 (PDT)
+Received: from xz-x1 ([2607:9880:19c0:32::2])
+        by smtp.gmail.com with ESMTPSA id j5sm7534542qtr.73.2020.06.05.05.48.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jun 2020 05:48:18 -0700 (PDT)
+Date:   Fri, 5 Jun 2020 08:48:16 -0400
+From:   Peter Xu <peterx@redhat.com>
+To:     Andrew Jones <drjones@redhat.com>
+Cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Ben Gardon <bgardon@google.com>, Shuah Khan <shuah@kernel.org>,
+        kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] KVM: selftests: delete some dead code
+Message-ID: <20200605124816.GB55548@xz-x1>
+References: <20200605110048.GB978434@mwanda>
+ <9f20e25d-599d-c203-e3d4-905b122ef5a3@redhat.com>
+ <20200605115316.z5tavmf5rjobypve@kamzik.brq.redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20200605114208.GC19604@bombadil.infradead.org>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:oIn+vpSz4b31UQrkyKzudYg8vSBCCfBxn4PdpTLdoQOkTOFgrub
- 9pOfYpbQ9tOfovQR0ERqre3vjM1ceKwBta/82Oq4vSswYdvnUiv2rux1REPnVf9t4OStP9m
- syc+6CnJiIz8ApmhZ/Mqt/X3uvtAlV20uKf5R5+OqRH0I6Yzcjuk/NosyrOcy1HZdv7iAQJ
- omnb5musy5qc8Tin6Y2JA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:cUBm0qZHOvE=:TAbGAthldnwGITdrVu2zjz
- /9mHmpEQMFivjrRPnL14l2Zibbk8QnhL5ceJKR5cOrkEKBLzsK1VAyGs4nIL5UdC291XAbTND
- a3+sp3rO1qQPBeqEPiG9Ka00N9H5nZ29ntdaEY3VFGw2N32xO0cjGxqf0+LreApURRA/QGLyp
- jdp4IyNGeru9GnQ1Lmk12u1ByKFhSFLZHv8PVk9UJG4mi23HmABG3Diqr8M88xlKvoQDQvRqh
- iwsNi0QZCPduYEwy3v1gYUbDNw4UUpAGvLbRz/ccyE6uyZgzogFpv44YawUo1zeTRts3jccyC
- GPpKXF+HS9+lbr5OEoDoC/LomMfCTXCNo8nNoceF3yjf86hqfGxlUZZTfDxhYxNEQsrroOmeJ
- TaQ6MGEb538OI/J7EBMeZH+tb0wZnyhnk4MgRtKDcvLnzkUcKNxlENvogwmVuW/+rllM5I5eJ
- epmyHHDRt9g6oHCBVXbE2HsSUUQwnSok+xn92oaxih2V6W33w4Z6+AWhDk+JOU3PEw4hF2cqt
- seQBbfURpCasndUd11qY0wLC+TKwK0Z0a6ZYWnypUWHd5/0GcAMViN703o6C9bWe2/FPtS9WR
- ACVFzAR7pliiLeFNp01rGBgx/SAxsgy5XQ7/1EZ7y1TwTnkAQXNq5ByRGzwfCHlwjpsBYFauV
- Ufz+HG1lAB4zxPcjTReJfUVO9hJOQHUpQeLPh7cnWO9LlG+zRMxg9niZwfGUn/POGCllJPJGe
- IZRgfB2xHZdGsL4gdwDWRsB2dKBZewfopy1t2YIniPTT+6G5Cl5DrSuANEX9SSWIcCcpFNgLE
- JN61KJusB5faV0X71SZpZpUkk1d01kBSCjLjB28b91Vm2vMJ1clNn/p+LtFGBNAzrXHUKtvuh
- XStbmzZjkJH3I1MRq90jqYOlJ1/si7+BqVhb8S5Hg4B/HXSHKu6NszeMBEA3HR6rn4U8+VWbP
- dm7gh8sxmdhGwSNawXYy0nnM6YvOYsxXMa4DlzeNCTY7GtWfPIvEcoQ0Nl0iporEJgZjyrNI9
- md2hYP7PHHBSJshNXq4NC7259Cf0gOYd+YvhewpLOzBYNOEXivXBy5bf2S58X9qTLd3/QHFTD
- 9soGJYF+eYFcOPwY3xJPvB6zvclYF/AFWrKwfgH49W456zDGqB0GaUZcqf6Itt+SepwdPu59f
- uCn4EPaoaUUbZnfw4Gm0fnReZsf0giDkQtqn2xzRXBWQFN7BTIIj6w9QuCberYirYyJAzSgCX
- /wmI1dSUa0HI0mSzL
+Content-Disposition: inline
+In-Reply-To: <20200605115316.z5tavmf5rjobypve@kamzik.brq.redhat.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> Some developers found parts of my reviews helpful, didn't they?
->
-> Overall you are a net negative to kernel development.
+On Fri, Jun 05, 2020 at 01:53:16PM +0200, Andrew Jones wrote:
+> On Fri, Jun 05, 2020 at 01:16:59PM +0200, Paolo Bonzini wrote:
+> > On 05/06/20 13:00, Dan Carpenter wrote:
+> > > The "uffd_delay" variable is unsigned so it's always going to be >= 0.
+> > > 
+> > > Fixes: 0119cb365c93 ("KVM: selftests: Add configurable demand paging delay")
+> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > > ---
+> > >  tools/testing/selftests/kvm/demand_paging_test.c | 2 --
+> > >  1 file changed, 2 deletions(-)
+> > > 
+> > > diff --git a/tools/testing/selftests/kvm/demand_paging_test.c b/tools/testing/selftests/kvm/demand_paging_test.c
+> > > index 360cd3ea4cd67..4eb79621434e6 100644
+> > > --- a/tools/testing/selftests/kvm/demand_paging_test.c
+> > > +++ b/tools/testing/selftests/kvm/demand_paging_test.c
+> > > @@ -615,8 +615,6 @@ int main(int argc, char *argv[])
+> > >  			break;
+> > >  		case 'd':
+> > >  			uffd_delay = strtoul(optarg, NULL, 0);
+> > > -			TEST_ASSERT(uffd_delay >= 0,
+> > > -				    "A negative UFFD delay is not supported.");
+> > >  			break;
+> > >  		case 'b':
+> > >  			vcpu_memory_bytes = parse_size(optarg);
+> > > 
+> > 
+> > The bug is that strtoul is "impossible" to use correctly.
 
-Which concrete items do you like less here?
+Could I ask why?
 
+> > The right fix
+> > would be to have a replacement for strtoul.
+> 
+> The test needs an upper limit. It obviously doesn't make sense to ever
+> want a ULONG_MAX usec delay. What's the maximum number of usecs we should
+> allow?
 
-> Please change how you contribute.
+Maybe this test can also be used to emulate a hang-forever kvm mmu fault due to
+some reason we wanted, by specifying an extremely large value here?  From that
+POV, seems still ok to even keep it unbound as a test...
 
-I am curious to find the details out which might hinder progress
-in desirable directions (according to your views)?
+Thanks,
 
-Regards,
-Markus
+-- 
+Peter Xu
+

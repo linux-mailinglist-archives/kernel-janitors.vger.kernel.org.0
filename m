@@ -2,57 +2,134 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2B0A1EEDF9
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 00:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33D4D1EEEF6
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 03:20:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726842AbgFDWwi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jun 2020 18:52:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46688 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726446AbgFDWwi (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jun 2020 18:52:38 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AC33C08C5C0;
-        Thu,  4 Jun 2020 15:52:38 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id CCED511F5F8D1;
-        Thu,  4 Jun 2020 15:52:36 -0700 (PDT)
-Date:   Thu, 04 Jun 2020 15:52:35 -0700 (PDT)
-Message-Id: <20200604.155235.1008812507143457607.davem@davemloft.net>
-To:     dan.carpenter@oracle.com
-Cc:     peppe.cavallaro@st.com, fugang.duan@nxp.com,
-        alexandre.torgue@st.com, joabreu@synopsys.com, kuba@kernel.org,
-        mcoquelin.stm32@gmail.com, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-        linux-imx@nxp.com, netdev@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next] net: ethernet: dwmac: Fix an error code in
- imx_dwmac_probe()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200603175025.GA19353@mwanda>
-References: <20200603175025.GA19353@mwanda>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+        id S1726072AbgFEBT6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jun 2020 21:19:58 -0400
+Received: from szxga01-in.huawei.com ([45.249.212.187]:2158 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725863AbgFEBT6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Jun 2020 21:19:58 -0400
+Received: from DGGEMM405-HUB.china.huawei.com (unknown [172.30.72.56])
+        by Forcepoint Email with ESMTP id 049E4A98727A423C7765;
+        Fri,  5 Jun 2020 09:19:55 +0800 (CST)
+Received: from dggeme762-chm.china.huawei.com (10.3.19.108) by
+ DGGEMM405-HUB.china.huawei.com (10.3.20.213) with Microsoft SMTP Server (TLS)
+ id 14.3.487.0; Fri, 5 Jun 2020 09:19:54 +0800
+Received: from [10.65.91.233] (10.65.91.233) by dggeme762-chm.china.huawei.com
+ (10.3.19.108) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1913.5; Fri, 5 Jun
+ 2020 09:19:54 +0800
+Subject: Re: [PATCH v2] crypto: hisilicon - allow smaller reads in debugfs
+To:     <b6da310b-e633-9f74-f7af-7791d803aaf5@huawei.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>
+CC:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <20200602135409.GA59808@mwanda>
+From:   Shukun Tan <tanshukun1@huawei.com>
+Message-ID: <3e9b204f-ef53-31c5-afcd-e0791224c2b0@huawei.com>
+Date:   Fri, 5 Jun 2020 09:19:53 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
+MIME-Version: 1.0
+In-Reply-To: <20200602135409.GA59808@mwanda>
+Content-Type: text/plain; charset="gbk"
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 04 Jun 2020 15:52:37 -0700 (PDT)
+X-Originating-IP: [10.65.91.233]
+X-ClientProxiedBy: dggeme715-chm.china.huawei.com (10.1.199.111) To
+ dggeme762-chm.china.huawei.com (10.3.19.108)
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Wed, 3 Jun 2020 20:50:25 +0300
+Hi Dan,
 
-> The code is return PTR_ERR(NULL) which is zero or success.  We should
-> return -ENOMEM instead.
+On 2020/6/2 21:54, Dan Carpenter wrote:
+> Originally this code rejected any read less than 256 bytes.  There
+> is no need for this artificial limit.  We should just use the normal
+> helper functions to read a string from the kernel.
 > 
-> Fixes: 94abdad6974a5 ("net: ethernet: dwmac: add ethernet glue logic for NXP imx8 chip")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> v2: Use simple_read_from_buffer().  The v1 was slightly half arsed
+> because I left the original check for:
+> 
+> 	if (*pos)
+> 		return 0;
+> 
+> So it could result in partial reads.  The new code means that if you
+> want to read the buffer one byte at a time, that's fine or if you want
+> to read it in one 256 byte chunk that's also fine.  Plus it deletes 21
+> lines of code and is a lot cleaner.
+> 
 
-Applied.
+In fact, In our original design, we do not hope the user do the partial reads.
+Thank you for your work, but I still insist on adding this limit.
+
+Thanks,
+Shukun
+
+>  drivers/crypto/hisilicon/qm.c | 33 ++++++---------------------------
+>  1 file changed, 6 insertions(+), 27 deletions(-)
+> 
+> diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
+> index 9bb263cec6c30..13ccb9e29a2e1 100644
+> --- a/drivers/crypto/hisilicon/qm.c
+> +++ b/drivers/crypto/hisilicon/qm.c
+> @@ -1064,19 +1064,10 @@ static ssize_t qm_cmd_read(struct file *filp, char __user *buffer,
+>  	char buf[QM_DBG_READ_LEN];
+>  	int len;
+>  
+> -	if (*pos)
+> -		return 0;
+> -
+> -	if (count < QM_DBG_READ_LEN)
+> -		return -ENOSPC;
+> +	len = scnprintf(buf, QM_DBG_READ_LEN, "%s\n",
+> +			"Please echo help to cmd to get help information");
+>  
+> -	len = snprintf(buf, QM_DBG_READ_LEN, "%s\n",
+> -		       "Please echo help to cmd to get help information");
+> -
+> -	if (copy_to_user(buffer, buf, len))
+> -		return -EFAULT;
+> -
+> -	return (*pos = len);
+> +	return simple_read_from_buffer(buffer, count, pos, buf, len);
+>  }
+>  
+>  static void *qm_ctx_alloc(struct hisi_qm *qm, size_t ctx_size,
+> @@ -2691,24 +2682,12 @@ static ssize_t qm_status_read(struct file *filp, char __user *buffer,
+>  {
+>  	struct hisi_qm *qm = filp->private_data;
+>  	char buf[QM_DBG_READ_LEN];
+> -	int val, cp_len, len;
+> -
+> -	if (*pos)
+> -		return 0;
+> -
+> -	if (count < QM_DBG_READ_LEN)
+> -		return -ENOSPC;
+> +	int val, len;
+>  
+>  	val = atomic_read(&qm->status.flags);
+> -	len = snprintf(buf, QM_DBG_READ_LEN, "%s\n", qm_s[val]);
+> -	if (!len)
+> -		return -EFAULT;
+> -
+> -	cp_len = copy_to_user(buffer, buf, len);
+> -	if (cp_len)
+> -		return -EFAULT;
+> +	len = scnprintf(buf, QM_DBG_READ_LEN, "%s\n", qm_s[val]);
+>  
+> -	return (*pos = len);
+> +	return simple_read_from_buffer(buffer, count, pos, buf, len);
+>  }
+>  
+>  static const struct file_operations qm_status_fops = {
+> 

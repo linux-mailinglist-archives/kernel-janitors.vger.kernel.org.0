@@ -2,138 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 485801EF624
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 13:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A8531EF635
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jun 2020 13:11:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726771AbgFELHy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jun 2020 07:07:54 -0400
-Received: from mail-co1nam11on2082.outbound.protection.outlook.com ([40.107.220.82]:6134
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726507AbgFELHy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jun 2020 07:07:54 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XJ0FcBYZBBRoK0w4futHpKkx6TzPBD5DO84+Q67f8QLkxOP/8YM6qbNBBYy0s6yEQXjGWjdfhZ8TuqTmKw2eAbjygqjps+3QvTOOa59bHcQ1E388HxcRCYOjKo+16jADZbTjmDMHTRQwKExnFQL522kN4u9ZEgTipRPOsVbPGPj0H9Vvk7jlaUlB8ibLviw1yWmKKAB3XZs+el048FAh9s5mV2HVPSdoDuZ51DVA9VlN0gnoGKpFFk1mF2Wq0PLnMowXWUkgvFc6Y5eBPaRFkthjEq4Rf/KjG+I9rzWR9Pg7qF9/nwUoUoeSplK0k/4iZHdHQsu2i02wwu111UUXbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ik0XCRDqVwwOuciP5ij4Sy+ot28ozVbQ7LZbXtfU+Lg=;
- b=FICFou71lDM2xRwHNCsFe//LKUMiCjq0XP/QWMlAzZfqShXv1P6dOhkbNshTpRlexawkqszakDIF/D5D+wMkzPtIxckhkQ9QH9hAYt+4F4yK0Uks7NmkpiUzxMZuk+NesRfz15K9F9bS5kZ43bZ83vQF06CCwFBxI34ieWVDR0JqAn0heV4pwySHAcrIkdSar/rZ7mcNCGQKPAN86lNav7uh0/j3CR2zfCn7JI9mqEZVstrXuYFzLRRQdbcgmpURLpoYJebAcfHHKtImgfR6vDXHMwmw/y9xh5a/cbc9djmxcF0rszFDJpHljBuNXb/WOseCNVHmGJiljYr7V0YxNg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 149.199.60.83) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=xilinx.com;
- dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
- not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ik0XCRDqVwwOuciP5ij4Sy+ot28ozVbQ7LZbXtfU+Lg=;
- b=pplRLbuMxw6LagaibqlPsv9OlqBJ+etddK8cWuoVggeCdOmXC6flSLLF0jnCbTMXWe7HKvjFl/mmbkQIth9+2ZazzPK03t61fnZMjUZujtRTz30YLk/QYPx3S4DGNU56cdZqu9WAxWthZtsUjPaCxdgZZDcwaFuIlP13uf1wQ9U=
-Received: from SN6PR01CA0024.prod.exchangelabs.com (2603:10b6:805:b6::37) by
- BY5PR02MB6258.namprd02.prod.outlook.com (2603:10b6:a03:1b1::33) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3066.18; Fri, 5 Jun
- 2020 11:07:51 +0000
-Received: from SN1NAM02FT018.eop-nam02.prod.protection.outlook.com
- (2603:10b6:805:b6:cafe::82) by SN6PR01CA0024.outlook.office365.com
- (2603:10b6:805:b6::37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3066.18 via Frontend
- Transport; Fri, 5 Jun 2020 11:07:51 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.60.83)
- smtp.mailfrom=xilinx.com; vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=bestguesspass action=none
- header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
-Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
- SN1NAM02FT018.mail.protection.outlook.com (10.152.72.122) with Microsoft SMTP
- Server id 15.20.3066.18 via Frontend Transport; Fri, 5 Jun 2020 11:07:51
- +0000
-Received: from [149.199.38.66] (port=45043 helo=xsj-pvapsmtp01)
-        by xsj-pvapsmtpgw01 with esmtp (Exim 4.90)
-        (envelope-from <michal.simek@xilinx.com>)
-        id 1jhABi-0000ej-RU; Fri, 05 Jun 2020 04:07:02 -0700
-Received: from [127.0.0.1] (helo=localhost)
-        by xsj-pvapsmtp01 with smtp (Exim 4.63)
-        (envelope-from <michal.simek@xilinx.com>)
-        id 1jhACV-0007tP-5u; Fri, 05 Jun 2020 04:07:51 -0700
-Received: from [172.30.17.109]
-        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
-        (envelope-from <michals@xilinx.com>)
-        id 1jhACR-0007t2-Fz; Fri, 05 Jun 2020 04:07:47 -0700
-Subject: Re: [PATCH] soc: xilinx: Fix error code in zynqmp_pm_probe()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Tejas Patel <tejas.patel@xilinx.com>
-Cc:     Rajan Vaja <rajan.vaja@xilinx.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jolly Shah <jolly.shah@xilinx.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20200605110020.GA978434@mwanda>
-From:   Michal Simek <michal.simek@xilinx.com>
-Message-ID: <951de328-3647-ea49-ecec-1f0f98ceb4b1@xilinx.com>
-Date:   Fri, 5 Jun 2020 13:07:44 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1726724AbgFELLG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jun 2020 07:11:06 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:36006 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726225AbgFELLG (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 5 Jun 2020 07:11:06 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 055B83lh168014;
+        Fri, 5 Jun 2020 11:10:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=ewGA2tK1MJb/nDf13NL3fAygRBoRCzb/PU2eg7IcvtE=;
+ b=vmHgHKU/GHGV9FwOTVWJEitxYR5oZ2OjM82lWn8jXPLys/J2hiBKL/3FoLQ8kSDMMEN8
+ dTraEpCr8zciqFBLj2owYktLWrf4eA+oi16DRSk0JJMpavfV8rEzbXYLcWLyMoPHcElV
+ Cia620ZygGjCXpI88uJ03FIG9IbTmj7pFntrS0xlwG+E7IftFERD6SNqWVsef10ua/Oy
+ 0Jgona1+QEVAUVSXm7OUlOQqW1MB9CD3+5eAjkXUg0dpzbXo1l0rOk3nqy5vdHq9Gzlb
+ 2XRCJRXoq3kMj1DT3R+KgZImRieAoMT/KiN02IAzWBApRjDZ5S+Ye4pGXzgi3t8GILzp nA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 31f9242b9x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 05 Jun 2020 11:10:52 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 055B7bj3036919;
+        Fri, 5 Jun 2020 11:10:51 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 31f925af9t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 05 Jun 2020 11:10:51 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 055BAmZG002688;
+        Fri, 5 Jun 2020 11:10:48 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 05 Jun 2020 04:10:47 -0700
+Date:   Fri, 5 Jun 2020 14:10:39 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Jason Yan <yanaijie@huawei.com>, linux-block@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, hulkci@huawei.com,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>,
+        Jens Axboe <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>
+Subject: Re: [PATCH v2] block: Fix use-after-free in blkdev_get()
+Message-ID: <20200605111039.GL22511@kadam>
+References: <88676ff2-cb7e-70ec-4421-ecf8318990b1@web.de>
+ <5fa658bf-3028-9b5c-30cc-dbdef6bf8f7a@huawei.com>
+ <20200605094353.GS30374@kadam>
+ <2ee6f2f7-eaec-e748-bead-0ad59f4c378b@web.de>
 MIME-Version: 1.0
-In-Reply-To: <20200605110020.GA978434@mwanda>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
-X-TM-AS-User-Approved-Sender: Yes;Yes
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:149.199.60.83;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:xsj-pvapsmtpgw01;PTR:unknown-60-83.xilinx.com;CAT:NONE;SFTY:;SFS:(136003)(346002)(376002)(39860400002)(396003)(46966005)(36756003)(8936002)(336012)(83380400001)(31686004)(426003)(186003)(81166007)(26005)(9786002)(47076004)(31696002)(356005)(2616005)(82310400002)(82740400003)(54906003)(478600001)(44832011)(110136005)(70206006)(2906002)(316002)(4326008)(8676002)(6636002)(6666004)(70586007)(5660300002)(43740500002);DIR:OUT;SFP:1101;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a6d2e917-f5c5-4d28-2f0b-08d80940b069
-X-MS-TrafficTypeDiagnostic: BY5PR02MB6258:
-X-Microsoft-Antispam-PRVS: <BY5PR02MB62587C5F12AD9158C1173602C6860@BY5PR02MB6258.namprd02.prod.outlook.com>
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:1468;
-X-Forefront-PRVS: 0425A67DEF
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: hYfliUgxGG6e7BW/A6Yg7frorBlDM2j8FUj/7aXR1PaMJBINYB+h+SSn65ikDOxcPLvizJbnzJiNSEbefA5v5q7aXwipafBways4hgy17WEvaJdqxJUUsM7fn013euGtD+3+T6LO86J0VpRPoP1DjegbuIX3EAkCxl4PjObGxtNb5y9wE9vYUjRiF4a3WuEbQLHPoXG+F+vdY5kePATYGrRlMRS6RVKNQfQxJuKmDaWD0VI1+sGXdYXW8FoRlfzV14L93pvxUuRkDQvw9j9XdSEwUfg11Yo+zeLfwg+Oba1jonYMp4/owVnNqrtWuBYKD6tVPGm9mIgf17DnyC4sg4/w0PKCN0pVgcM08ZJEPDTpJ6ECtN/lfQUs2ZVcr84Nr6WQFbuZRpNTc4OrbNT80soEJaQUyWyoeyL3k1MMlbvhr1j4Tj6BWgpKX4HdlO7d
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2020 11:07:51.5085
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6d2e917-f5c5-4d28-2f0b-08d80940b069
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR02MB6258
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2ee6f2f7-eaec-e748-bead-0ad59f4c378b@web.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9642 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=908
+ malwarescore=0 bulkscore=0 mlxscore=0 spamscore=0 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006050086
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9642 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 impostorscore=0
+ adultscore=0 priorityscore=1501 mlxlogscore=942 mlxscore=0 bulkscore=0
+ lowpriorityscore=0 cotscore=-2147483648 phishscore=0 spamscore=0
+ malwarescore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006050086
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 05. 06. 20 13:00, Dan Carpenter wrote:
-> This should be returning PTR_ERR() but it returns IS_ERR() instead.
+On Fri, Jun 05, 2020 at 12:56:45PM +0200, Markus Elfring wrote:
+> > A lot of maintainers have blocked Markus and asked him to stop trying
+> > to help people write commit message.
 > 
-> Fixes: ffdbae28d9d1 ("drivers: soc: xilinx: Use mailbox IPI callback")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/soc/xilinx/zynqmp_power.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/soc/xilinx/zynqmp_power.c b/drivers/soc/xilinx/zynqmp_power.c
-> index 31ff49fcd078b..c556623dae024 100644
-> --- a/drivers/soc/xilinx/zynqmp_power.c
-> +++ b/drivers/soc/xilinx/zynqmp_power.c
-> @@ -205,7 +205,7 @@ static int zynqmp_pm_probe(struct platform_device *pdev)
->  		rx_chan = mbox_request_channel_byname(client, "rx");
->  		if (IS_ERR(rx_chan)) {
->  			dev_err(&pdev->dev, "Failed to request rx channel\n");
-> -			return IS_ERR(rx_chan);
-> +			return PTR_ERR(rx_chan);
->  		}
->  	} else if (of_find_property(pdev->dev.of_node, "interrupts", NULL)) {
->  		irq = platform_get_irq(pdev, 0);
+> I am trying to contribute a bit of patch review as usual.
 > 
 
-Reviewed-by: Michal Simek <michal.simek@xilinx.com>
+We have asked you again and again to stop commenting on commit messages.
+New kernel developers have emailed me privately to say that your review
+comments confused and discouraged them.  Greg has created a email bot to
+respond to your commit message reviews.
 
-Thanks,
-Michal
+regards,
+dan carpenter
+

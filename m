@@ -2,85 +2,188 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 064691F054F
-	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jun 2020 08:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F28A51F0595
+	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jun 2020 09:30:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726323AbgFFGAk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 6 Jun 2020 02:00:40 -0400
-Received: from mout.web.de ([212.227.15.4]:41239 "EHLO mout.web.de"
+        id S1728598AbgFFHau (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 6 Jun 2020 03:30:50 -0400
+Received: from mout.web.de ([212.227.15.3]:50991 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725765AbgFFGAk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 6 Jun 2020 02:00:40 -0400
+        id S1728135AbgFFHat (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 6 Jun 2020 03:30:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591423234;
-        bh=H1Ao6vP9lU9EngLrseK+nBm2ub0kJKTgSlPISojb9Fc=;
+        s=dbaedf251592; t=1591428639;
+        bh=l8w3MJRuKfT5a3/310Ltd3vufAdJhbojIeIwIevJwZI=;
         h=X-UI-Sender-Class:Cc:Subject:To:From:Date;
-        b=gNCGfebth34IK5pFJBE9pLGSTqQJ5oOHDcK6xbnOs54+Glwmobfu+iHqs6TWgy8Mv
-         Tg+oyGvX+0UO3oVjx+rxcF/ORcHju56yAliVMj9ro6eGznniks3bdy0LJ3Lw0vWkqG
-         faA04T7UYmIF56406SiX1L4SkTX6FNxpT1C0uQ20=
+        b=RGZAKkqOGNeozTQh2gTA30oQjnqCIM7nJAoJLnz8dC3doHQHjV7snL59Tn4C0JXeZ
+         tORHJjFUFs9UUKl8mCx8JTSdr7h9GA9wghTCf4TTtT9e/7jidxp3eHvsgTR1+VqY7W
+         ZaAg6AMZZ5D/zimw+p5HJ0Hvx9oaC0QTkPVfwLLg=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.40.239]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N2BI2-1ixzPY0HuQ-013cVF; Sat, 06
- Jun 2020 08:00:34 +0200
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Joe Perches <joe@perches.com>
-Subject: Re: coccinelle: api: add kzfree script
-To:     Julia Lawall <julia.lawall@inria.fr>,
-        Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>
+Received: from [192.168.1.2] ([2.244.40.239]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LvB2o-1iz1gK44Sg-010OPA; Sat, 06
+ Jun 2020 09:30:39 +0200
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] coccinelle: api: add kvfree script
+To:     Denis Efremov <efremov@linux.com>,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Message-ID: <e10d3917-da30-94d6-9f41-b0343daf3e23@web.de>
-Date:   Sat, 6 Jun 2020 08:00:26 +0200
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <99ed463c-b7ba-0400-7cf7-5bcc1992baef@web.de>
+Date:   Sat, 6 Jun 2020 09:30:36 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:YRbsCH7PYA848quT921A20ta+BtCVKbtvkjQLNMZwo7UgvP3arS
- oHuP2hBrrwCnlVaRqTvnOTmPuvoFqEh6z1JmUhrU5aAU4cQkiplI9k8d3RTD+SLTQpHTT9b
- ED5mg4NfN4xxinp5O9BUr60e4P31u3MfMsAzjN3KPBriyPpZw/jqSfxzSphk6Ihunh5hvaD
- BsVxfZZUC2NS8qAZt03vg==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:X/kkZ06rZlFudE0r7jf+z2dqyNagehQu4UReRu9kWQ93tX5M4/9
+ 4u6rRbi5VKMBa1w+pv3VJg0uk2VDfj4Tqpgt5ljTeKmqcwZOUp+oORk9Zb6zdkehxSq0TyN
+ Q0vJIAc7CJEw6/bQRnOMP+YVLk26i9gTA0JHDy15gEWiw0CU+EkquC625Tt0k/NDsLZrhQv
+ iqYKaTL93bHhweaTAbHWg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:CMT8fhY/qqs=:oHylNa2ezW901Ss5jsFNbz
- KqHJbN0AAXIwlFx6sc0SnCABecSqlWMrHLxA3JP/bi636I89HYqCOR3kqKdCelcFqMzBuuV/h
- nke0fBo4HGiXYxda7Cy2jA+GrY8pSfE0N08DOTXnl3vyNkxEXmTGMuiVX8wpMXYt9cq/7+DAj
- fmo9aiN7rkuyr4mkKSzwtbn3QZHJAgPMJuvGLytQcRgQeYa1Gu9T/6cXGy7VnKasAwTmCq9rS
- 2TPAGXxcuoGtQFEYcv61H8uDlP230YaM7MDCHPifsYV7H7V5GLcD/C2Jmvneb7jMCldzbHGkL
- TjHS3EP/uzW2QKlvzR+2ikG0cxl63Vu+9Ww/rJ0mc1Q/q0mBAc6qDeV3CRxXTvzwotgJGesVW
- D4Na/k9T/8g29QuINlvPpXMMiNon9dXWA/NDLf56zwG3czQnqUSVB9V1VT8Qp51/pBtQbKKDd
- 0EfmguGxtJnNSq1Af1pbbTPVD8yOif7Rvpc7ZaUm8L3kC0yLiVLltjXvPOmdIMaHwS2NGp2ez
- pJem+hmpx5AnsHnxV/uruUJzBn0hQ8kLv/41uCR9NLaegwCkuainsBK5yitE+b2UfVLnXz3jn
- TeV8YbQ9qJQnz64vA7649IKpBIlHAhKsPpYtYsUYffWehxrfXSWVmAPf3crjZd2kyyMpBrqv+
- LFAhKNSk5xpC+IsCKQoSKF4Wcjef9NSkk6YZi7bG+DO4626GGmG/phMvupnbJg8/03xIfSbc9
- 6Yj4T8mvMihusUYb1oErlts7rb0hAAJ2/jXdRIlKpOcELW89VQyrnKgrbkoHDAV3t97WqrQiu
- cWIhQZuvZzLITXy6pmLoDdT5z8k9197m6SlHUgXZxv7FwSHJzXZlU5uCXf/EUFLre2EvseZUH
- zSRadRWrjrbYThocHY3s7DPzBzCAz81LvV1+prQ1hNa6/tHB+JXYBRa8MrVlWu/ehuyFKnkv4
- 0GGlTY1hCC2MCpJRyGXTFR3JXAJi9CLyE0mYt/VDCxquf6zt2dDsDKxtCDB+w4JyamCiImDAj
- 3agqsn8w7sCC716IBsOqs+gRl1HDdwoi6Tvc2mrGV0VahFMASaTF34q9s+aX0naFzrN3LB21x
- 3gK5rfzyMrRbZbwiD+wTRLisyjuXl0qJcBrsKRbhuV8T1d96hKPwQ+OBHKgytVpgX1JLHDl+I
- IjcI/6i/3AWKATYEZdXTpkckdWdfHo4TP4xCB8Ns0vU/X7tDoHaeMErclVjQIyZSxvK/qgzXl
- yWyVdhlflLBnxwnR3
+X-UI-Out-Filterresults: notjunk:1;V03:K0:8DXUGpkGegA=:rCnfwWiWh5Vd72NjfdR7m9
+ R8wxZ1DAtuMVAhbYXMtXEJrsUZlAdnQUoFdnDgxFASl3Lub+FsmJsFMKqGUVvWcpjL06XaXKn
+ +pbx65owYcCgGLWr5rJzuKpKcJ7rUs77FlRariSy+OYR01Uo+6Bt6ikDN+2YLL11MzQBGkCos
+ q/33J1vnBs1GamfVESckUM3fSftKh8byPTJMiTAtlHHz1jUffNdRKbD8eowff8qSO7EVf27ll
+ KhZBxMCMuCkZdRb7znJnEnoRhVN3QFY0Ku2mH5zPJhRNFnBYxXgba1mYVhIKRQaGteOuXsP2J
+ Yj4RCBGHTJF2oG9HxQTiYeitIg7UhOoJLxMkSt3kctFK0jCUR4P6ysazNOHz91DveQcHDqXC/
+ JULnsJLhEe6M1bGYmtbIw5ISIeCIaSKcl7uSJrBZjnSIZ5ZEwrU9YQkBMj2Z6d+BgnS1lbGsq
+ ITGu385cPxWSVmGSHve9Diko6YEqxjX3i37bed6ZppBnnFtoN+31bKkDsAuPlKpYGxFI4R/9T
+ Njr23kO8RzdodmIv4D5j6/+el/VvUN8g7FYRgsze8jj+nXfGKIdiv+/r7g95Ac+3WHl+5dMdx
+ A0AKgj4WdCOamKjCrtm430DI+hl3fZVlLaU5xzixJLkO6dK7PzqCtQOdP2mnwcXwIbzXXk++8
+ QgSGT+u6MZjW9zNbxRCEsBRo4xETCGbsc9Hxd7TgTXTJYartHdiWRPvNUJzmh0/jEkuvotn+N
+ MPnWnbU7EXf1WQxPydyWBopTVe85j3toUCimV1/AaFpjOTlgeEEI5Idk4p57VjTbfUS7XjtCF
+ XU2YZXL0e5oihQhHvEcuBTC2YKGxv2fgDv3YNyYvT+QX8aUbIjop7G676w2fzr8q9A3+k4JIX
+ f7bISIvNDFiDNy7vXC8LzRydxDnqfYk6Fhd2s5AjtINpPW5hYxOO3IsqOCDHFYXshvdWavgLK
+ sYbbbWLsmX2y0mix0UUYkWdvRZVwznlqk72OOsVtwDi0lVXRgvvs6X7UJW0xJPP5hc4ezlwYf
+ QD4p/aG5fBKmc5XgVurx5JUnSI6Y3acg5ZD/XjgCOEyU9HKr0VPcD2Bkgr8LObN7Yg6ykgpnh
+ QQxdfmqWvW0v0RDalNBG7TNE62WDc78fmefiuadc6JmZh3Y8B2ohFNVQ7wXA+ig+xVIAtnIqG
+ mTEYLXptd7elkrn0lOb2pPQRxLVAutxmFaANkWDXO0A+zU7f3HA9kw/I3fd38SHfxtnk9BYVy
+ dY1DJy8bRSRq8rO++
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Is avoiding transforming the case where E is not verified to be a pointer a concern?
+> Check that alloc and free types of functions match each other.
 
-I imagine that answers to this question have got consequences also on
-the confidence level for such SmPL scripts.
-The desire and requirement to specify data type restrictions (for expressions)
-can influence data processing efforts in significant ways.
+Further software development challenges are interesting also for such an u=
+se case.
 
-* If it would be accepted to choose a simpler source code search approach,
-  there are corresponding risks to consider.
 
-* If you would like to reduce the general possibility for false positives
-  according to advanced software analysis, the amount of data processing
-  will increase because information from header files will probably be needed.
-  The run time characteristics will become more interesting then.
-  Additional program execution parameters will be relevant for this use case.
+> +/// Check that kvmalloc'ed memory is freed by kfree functions,
+> +/// vmalloc'ed by vfree functions and kvmalloc'ed by kvfree
+> +/// functions.
+
+* How do you think about to offer a wording suggestion for subjects of
+  generated patches?
+
+* Will the presented case distinction trigger further improvements for
+  the desired matching?
+
+* Would you like to generalise the safe handling of allocations
+  and corresponding release of system resources?
+
+
+> +// Confidence: High
+
+I suggest to reconsider this information once more.
+
+
+> +virtual patch
+> +virtual report
+> +virtual org
+> +virtual context
+
++virtual patch, report, org, context
+
+Is such a SmPL code variant more succinct?
+
+
+> +@choice@
+
+* Can it be that this SmPL rule is not relevant for all operation modes?
+
+* Will additional dependencies matter?
+
+
+> +    E =3D \(kmalloc@kok\|kzalloc@kok\|krealloc@kok\|kcalloc@kok\|kmallo=
+c_node@kok\|kzalloc_node@kok\|kmalloc_array@kok\|kmalloc_array_node@kok\|k=
+calloc_node@kok\)(...)
+
+I would prefer an other coding style here.
+
+* Items for such SmPL disjunctions can be specified also on multiple lines=
+.
+
+* The semantic patch language supports further means to handle function na=
+me lists
+  in more convenient ways.
+  Would you like to work with customised constraints?
+
+
+> +msg =3D "WARNING: kmalloc is used to allocate this memory at line %s" %=
+ (k[0].line)
+> +coccilib.report.print_report(p[0], msg)
+
+* I propose once more omit the extra variable =E2=80=9Cmsg=E2=80=9D at sim=
+ilar places.
+  The desired message object can be directly passed as a function paramete=
+r.
+
+* I find the diagnostic text insufficient.
+
+* Can the corresponding function category be dynamically determined?
+
+
+Are you looking for opportunities to avoid unwanted code duplication?
 
 Regards,
 Markus

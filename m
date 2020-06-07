@@ -2,42 +2,40 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A27511F0A48
-	for <lists+kernel-janitors@lfdr.de>; Sun,  7 Jun 2020 08:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB6491F0B9A
+	for <lists+kernel-janitors@lfdr.de>; Sun,  7 Jun 2020 16:02:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726314AbgFGGnJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 7 Jun 2020 02:43:09 -0400
-Received: from mout.web.de ([217.72.192.78]:33801 "EHLO mout.web.de"
+        id S1726566AbgFGOCp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 7 Jun 2020 10:02:45 -0400
+Received: from mout.web.de ([217.72.192.78]:49521 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726192AbgFGGnI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 7 Jun 2020 02:43:08 -0400
+        id S1726561AbgFGOCo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 7 Jun 2020 10:02:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591512172;
-        bh=C14jTFdBniLyU//fambBzHFvEplMYic9zRGDYcczO5w=;
+        s=dbaedf251592; t=1591538557;
+        bh=5QtWumSDrQ9lY8+/aCrrp9DRjDuI13kxcHSTQiJNETE=;
         h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=pkSHQEsxph8fvccKHxm7PO8otQ4Y0p1TVlXe+HeADE45zPRyj7HHK11dD0zod73Do
-         TYajCT4O1fLZfux+O7f7YdVeTM1tdZkNkbSbHhTxXWR36FIJz+j3wHie36L4cFuq8n
-         4T3QWIqQFnUDKaE+UFoFzbKA7WollYdz/ALRRyp8=
+        b=DG2GqDBsbnOExDjB/bKtbVCNSxGDjOCLRZmYgtkXab+EzmAyYnJMAnrIjk/+4iH1I
+         LGVaWeEfLjKn/VHt9Oa1QyZ9jvg7fuPDtGO7A+eBqXXk2QFJ78WA+YeGpyO6gZbNjO
+         dssCJmAFeoO3LZOjQeg4qjYzD5yDL1kPvIBZJsiE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.149.75]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MKJ7S-1jhGmr3mxK-001h9E; Sun, 07
- Jun 2020 08:42:52 +0200
-Subject: Re: Coccinelle: Improving software components around usage of SmPL
- disjunctions
+Received: from [192.168.1.2] ([78.49.149.75]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mc1VF-1j68Hq0Cp5-00dMY3; Sun, 07
+ Jun 2020 16:02:37 +0200
+Subject: Re: Coccinelle: Extending capabilities for source file pre-selection
 From:   Markus Elfring <Markus.Elfring@web.de>
 To:     Julia Lawall <julia.lawall@inria.fr>,
         Denis Efremov <efremov@linux.com>,
         Coccinelle <cocci@systeme.lip6.fr>
 Cc:     Gilles Muller <Gilles.Muller@lip6.fr>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
         Michal Marek <michal.lkml@markovi.net>,
         Nicolas Palix <nicolas.palix@imag.fr>,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <99ed463c-b7ba-0400-7cf7-5bcc1992baef@web.de>
  <alpine.DEB.2.21.2006060944320.2578@hadrien>
- <51a176d4-8c59-5da1-b4d2-c97b17b691a7@web.de>
- <alpine.DEB.2.21.2006061307020.2578@hadrien>
- <bf698c44-4384-e471-3ff0-e38587140b98@web.de>
+ <cfb8a321-1f6e-8d0f-65c4-e7f73a1b111d@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -81,66 +79,73 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <e06c858b-80fe-9d7c-be48-882162a414fe@web.de>
-Date:   Sun, 7 Jun 2020 08:42:42 +0200
+Message-ID: <4c70ade8-1ab0-6a9a-30c0-d25b0e22ec8c@web.de>
+Date:   Sun, 7 Jun 2020 16:02:35 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
-In-Reply-To: <bf698c44-4384-e471-3ff0-e38587140b98@web.de>
+In-Reply-To: <cfb8a321-1f6e-8d0f-65c4-e7f73a1b111d@web.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:i7Jb9vdrzAd2LmX4YKf9o5wC3r/vzdumhKlgqu5Qnwrfs/qj09c
- cPEwEkqdJ7HfvnKsSePbNKGQbpCf0wlJUe4mEerL8WZEtQsyHi8Hq8gbTD1hrfCAcr/8E7a
- NAR6m6Tu3ZjORyB1HYgjLmVvirqAkkrXbwry34/RicMT4r7plTuNHpVzCdgiAnV6lp4s6pW
- IRLdc//Gt5SaRbJKwvjGg==
+X-Provags-ID: V03:K1:OohkZzPxSmNGzyOyybqr82LifHUI4ucB0eJ+rK1T0boTHPB49K8
+ ceRYMhs8rsVFm51VWa67IkLG4/LqXFU06Wmt9YmmF5MNTHMeFJ8H5zu+sLyk4zssnDgxqCe
+ gRinVzmFZHwcd6RBYRi3Q+INDX8sIjrmZrq32ghm5FdozytFEBbDKmEmKKDKqEWDu8TotOP
+ NcyciE7WHSrQ5JH7jo2QQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:7Y3KBZ3kMgU=:8KBAgmNI8Mr2D/CAQ6U6xG
- NI/xOnci3DLqn6+XLw2+IYbtAqZSArCTm0Nj80L/xXh+Xl+tPn5xkrYP5eqr9IhtrA98KQrdB
- Sv+jF7vhhDKOpyNm6vBYntfzvDmOrjX3MPJkO18Yh8l2zp4rBRT1byo9aGSbjTU0F78KjC4zn
- bcRWs8gWu7VTB79yAcDSYsh2o/LU7ziwsjvQ3bAPH9htzHpZruU+8jhE41dXccNb5r0wH1psW
- fD6co3T+Ti6uIi1Nv9+dJMhiw7xBAoR28PcXI/E8p4d3x5o9f4ebUi60IEXs1sZal/G7yrzrV
- IUsP9WOtPsvBgbU5czgRjDbjbMw85dxAiQ3awk/c5CU4Z7E3imHbOkqHEGUW+KwgFPQR5iyRB
- rjLyEUsKD+Vc5mexy2gx5MYkkHpr7qwsp2xln26Z4ShY75meYL6eupGJd63GjOpuHSEsiZDug
- a6Gd0+pxBwxN8AA+YqRQC3NGE9cn0XpWTAkq2VmvsiSJ63UoIX5QX43fLl2J5ousa8WZCqruz
- 2ocYsDjEDePTqktMsTEeTt97+d3TUK+YCUTebcVwQ9krN8WAOmYyhXgBbTvT5ZbqUFwAkahbJ
- +afDMjdfso9AIQ1YuNv5i2Es5fx7P3soaVktoPbwTy4UbrHmdMDuaECywTQJlbLK5ni/fu5sq
- rHZhPexHM72ALHqVINzuWUXE1cUeg+n6G3ibyhQAaGeSaZzPlv/0yRe7zS54EqYrX5bdEX9P4
- Kn7TnIWGXcyhlCcRO0Wr7H+5Oc0eYAZWPKL3TrJDUC/mrM692dJT+8+VyN1K7dqmXaSTh74ee
- dS6bvfSPLDd42ytBiYjRGn6Cs2WAWbMuR275WyztqWvtAkZ8qe+qkvlXSTV3aeY0IKzlftUnJ
- q8V8ncf6sTf5iWfdbbnoyeN8ffCkVi+R66rsWVihNbdsLaZLtG5qWXphbm5SpI3REu7dBle4n
- ciVhhr6G9EGAbM6beXSFkWosifFPFWEPJT8AvMbAq+HpVwew4WIzzkCMhU7gQ62/zwaRindyw
- HabtyQjGoELCC35QkSWj/RczC7wGVhqEaY4htl6XLSZlQRoIpdaYaSifZBE4PXZ9XxhoRy7Jr
- WvDhdNhP7uzC759FXInF0srynabIZAFwrPtulC4bdIj6tCYkvehVCpEWCjk4LUEXeDQWZka+p
- Bkv4X+gJab7WyDyv+I4nYpfjrs/BoVe9enhKImFdLNg5WtH9VGMtGxys8xgxJl4wlJJSD+kaB
- Lnjka2P4fcVhsDNoL
+X-UI-Out-Filterresults: notjunk:1;V03:K0:aK3w7VUrrwQ=:CgPJCviPZkcOguvmDJcAnA
+ Hp6QafgElSdLlwFX5gdOWC/wb7Z+B1q9g/ahzG3oN2dBzRwuya3r4spTfupWuyIp+mcksTKyj
+ RVZ9Ix4uriQpbrgHxvUlWZxGdgkuQ1popVcZJzxtJET07DJsTQ74QEcSzyU4W+qwtvYyxgLR+
+ wFhsPNH04P2Wvjm5v4NO84Of7vt5tlt0cd9nxvb4dWvsCAp4gR0ptsOAuAtIM4APhAJ4ManMg
+ Istw1y4fLIbtYjT7Hfm2vUH3pNr8uotyInCibU0jRAQ6oKkioJy+dpcGnpBUb+SizcirsMSqq
+ OlCD7ec6j/T6UY1Le7mwnFkO5b2MtoYr4aFoVwJL2iD8OvHG4y2sJEOUVgJTLePIQLsEIeCGp
+ 9LzVSxe+kLfx+2dLhoQuiGuj+BKm7A+3rah/z8pxgIYxMacoRKF4rxWsBV1v1niWiSG6jbFOo
+ NYng8OwiT/WA69TPZi4Wp/TKvXliocmzqzELj8vF4kczC6hdkW9QgIP9fwnGCs//GFjWgANWW
+ 95DzQTO6PGLE479kT8Fl0mHSEMONj7zd1t70qRPeg6Xq5Y8iwCAEXHBUInv0d+GiQ5+Bv3VYO
+ NmJ5CTLdadr6/9FIPmhb1PI5TDcnPenh127TUMavAwQPgYDG25F77Q849LvCLeNLBxyP5hL4i
+ OS5M0eRDwIBMIaXDMc+qbsf7ZpepYQYo5es+N9rix+6c91XS0vwMLNano9oCVBk5iMQU53ERC
+ NtDpfERr/d0e60cNaj9oNwF/jjs4A2U9lwtWesHEPlQX1MUYR7jjLqkwxNzXvIwFXa7db7/uV
+ Lta86wsT733qmu8DDBaCXZCKsZA62eirsKhhPhpwFeFaK54j1Wjn8NZEri50X+yTU4I30G2v+
+ Z/pEHX3Sn9x1XtxEk7CRZiwCxtBqGw9rRA1PLVr1DLefJNk4p8Wn5wgzFmElKxvDAFBYwd8eP
+ gT5bTFAa+7fKXH7Oir+ZvMPlLw+4iCHdwVmD0aD80IfMLKOWQdwxeZAcWmIkazZib99yO/LvT
+ AUCHTgokuzkSBMFyovrHm9ZgHV4pRIxdNZRImjhjJZGnZHWzk/ASuiTqilHyNRkk/AUxgtLhU
+ LSnhtZGSI734XCPU6lQATIr/BsqvbMcHRSKX7A2xYt7D1eXZvAmKDkR/1q3n0KSwYgO3zeqTw
+ NniHDNlGsuIx0S4+WouGpjwe2JFx0F7qWDowvONMiMBpj1uRLYsoAH5OPh+hkJ2sJC/6R9IKu
+ 4RiyArrx5XkVCn1Zl
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> But hiding information that could be apparent to the SmPL compiler
->> and could be used to improve the performance of the matching
->> process is not one of them.
+>> Coccinelle is not able to optimize its search process
 >
-> Will any software extensions become possible also in this area?
+> The software contains some limitations which might be changeable.
+>
+>
+>> according to the information in constraints.
+>
+> Will related solution ideas become more interesting?
 
-You pointed out that SmPL disjunctions can trigger specific consequences
-according to functionality which is different from SmPL constraints.
-Both application areas support data processing for function name lists
-to some degree.
-Each element of a SmPL disjunction refers to a fragment of a detailed
-source code search pattern. We are discussing use cases where a search
-pattern is occasionally restricted in the way that only identifiers
-should be found at a specific place.
+I propose to move parts of the mentioned concerns out of the way.
 
-* Does this detail provide the opportunity to improve the corresponding
-  software any more?
 
-* Can a feature request like =E2=80=9CWorking with variables for case matc=
-h
-  identification by SmPL disjunctions=E2=80=9D become more interesting?
-  https://github.com/coccinelle/coccinelle/issues/159
+The software performs a source file pre-selection.
+https://github.com/coccinelle/coccinelle/blob/7cf2c23e64066d5249a64a316cc5=
+347831f7a63f/docs/manual/spatch_options.tex#L183
+
+File indexes can become involved according to search tools like
+=E2=80=9CGLIMPSE=E2=80=9D and =E2=80=9CGNU idutils=E2=80=9D.
+They can restrict the support for desired queries on file contents.
+
+I got the impression that SmPL constraint variants can be specified in way=
+s
+which would fit also to such data format restrictions.
+
+Higher level SmPL constraints can be more challenging to map to advanced q=
+ueries.
+
+
+How are the chances to improve the software situation here?
 
 Regards,
 Markus

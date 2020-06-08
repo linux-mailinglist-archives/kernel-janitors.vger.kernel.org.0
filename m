@@ -2,108 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 938EB1F2094
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jun 2020 22:17:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA91A1F20BA
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jun 2020 22:31:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726592AbgFHUQ7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Jun 2020 16:16:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39638 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726415AbgFHUQ7 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Jun 2020 16:16:59 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F8C7C08C5C2;
-        Mon,  8 Jun 2020 13:16:58 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id c3so18831073wru.12;
-        Mon, 08 Jun 2020 13:16:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=7Uk3yl1D/RpkBqrAcsQCxgo9zOQry2M3RLC+d4sbwjc=;
-        b=KaUV47mtAjCf/bz0YZHKdm++WkOzlNNqKOTlrQl5HMnHCY4tg4SpP9NUUalsTQSIPX
-         SbtkTrdwAOQPFfCntH8S42NPOWYQlS+joCK6Cqd5jltJP+L/BTLeXSqjHffJXJY7uw3z
-         2n3pO+LVOi3m5d0dG0c0QZ7+H3gzRF9K7nWjTgy9CO4xPwyCdbMmChzGlEeCqrSHnxJm
-         fr9udMEvUnGGUq+l+rSOJnhEq7ThCvD7JykrAZg7fYBK9DGaNheE9GgZTdSdEnQm2QoG
-         +MiH+IgkcWX8jkW+g16y+d0G2iNcpiv6zpYMG6WNcfvHkiCZViIs5F3SM1AUANx6RNZV
-         kAiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7Uk3yl1D/RpkBqrAcsQCxgo9zOQry2M3RLC+d4sbwjc=;
-        b=NyWmzj4wo6/9Mdp/CYbfmd2Xk4KWspaonkE7l3lf5KHMLMyckQAJRea8Row2+Kzk6p
-         PbaSDMtTPXlLkfhSO67IAOuqGA3shBr0czmkcxEQ5H2SqcrzlFf/ugv312GOp7emMYtU
-         PPHx63kCfaxqPim/fzJTHWy9casm8IUaNFMEX/Tt+0/8H8SH/SLphTnl4QXlXPlRlWoL
-         PzFESmY4oGBzBKBosiQ/uGXuQl0+M6F+1iCvt1tV89vURhT7bXkYinJBlRLfLkZtW53f
-         k3NlykPtax5f9gFYfmiFkholndXq9m018jgc8kiB6DgX+TlfT6jTmFX+CyT+WxxCSdB9
-         ae0A==
-X-Gm-Message-State: AOAM532fpXnoGIsZaSGM9DGOHSBoTFozQKGxWeoEo0YAuwTrzArHqgYq
-        6t6+oKiw9YTKtwGDkQT0y6JALanSEOyVkrIUq8M=
-X-Google-Smtp-Source: ABdhPJx9dJpsk3rcGGUxOzw0jvEvBmj8RgagpHeQThpZRVMrnNVNvHPnxS+rDhvphLPshA4vOZFQRgrWilTTcYy9cq8=
-X-Received: by 2002:a5d:6789:: with SMTP id v9mr566434wru.124.1591647417434;
- Mon, 08 Jun 2020 13:16:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200608141657.GB1912173@mwanda>
-In-Reply-To: <20200608141657.GB1912173@mwanda>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Mon, 8 Jun 2020 16:16:46 -0400
-Message-ID: <CADnq5_Mg2kJOmD40VyVNqbKnKU89QaNRLJ7dbre_pLDX2NuXog@mail.gmail.com>
-Subject: Re: [PATCH] drm/amd/display: Fix indenting in dcn30_set_output_transfer_func()
+        id S1726794AbgFHUbB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Jun 2020 16:31:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54754 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726522AbgFHUbB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 8 Jun 2020 16:31:01 -0400
+Received: from localhost (p54b3319c.dip0.t-ipconnect.de [84.179.49.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 740AE2074B;
+        Mon,  8 Jun 2020 20:31:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1591648261;
+        bh=/TR0znQSNBVEfdoSa73R4jFdN9S+pGIjLvb2EUYPsAQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=q8C+OJniVQ0Eovxv2qrqW6OCfM/CSPEHEbprxNlWJD2AxVr64STFO0mCOvpMktdt6
+         Np+uZvKMHDZN6kSMFrHoclwxSAKxyyrue1Gf6ja74kFqYGReg/18s7xZ0lB9W3DCZD
+         /jpNGuDeNfqGCyB8iv2bfSB6/vnq6O+z1DfN3Qp0=
+Date:   Mon, 8 Jun 2020 22:30:55 +0200
+From:   Wolfram Sang <wsa@kernel.org>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        David Airlie <airlied@linux.ie>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, Daniel Vetter <daniel@ffwll.ch>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Tali Perry <tali.perry1@gmail.com>, linux-i2c@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] i2c: npcm7xx: Fix a couple error codes in probe
+Message-ID: <20200608203055.GA917@ninjato>
+References: <20200608141727.GC1912173@mwanda>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="5vNYLRcllDrimb99"
+Content-Disposition: inline
+In-Reply-To: <20200608141727.GC1912173@mwanda>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jun 8, 2020 at 10:17 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> These lines are a part of the if statement and they are supposed to
-> be indented one more tab.
->
+
+--5vNYLRcllDrimb99
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Jun 08, 2020 at 05:17:27PM +0300, Dan Carpenter wrote:
+> The code here is accidentally returning IS_ERR() which is 1 but it
+> should be returning negative error codes with PTR_ERR().
+>=20
+> Fixes: 56a1485b102e ("i2c: npcm7xx: Add Nuvoton NPCM I2C controller drive=
+r")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Applied.  thanks!
+Applied to for-5.8, thanks!
 
-Alex
 
-> ---
->  drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-> index ab20320ebc994..37c310dbb3665 100644
-> --- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-> +++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-> @@ -203,9 +203,9 @@ bool dcn30_set_output_transfer_func(struct dc *dc,
->                                         stream->out_transfer_func,
->                                         &mpc->blender_params, false))
->                                 params = &mpc->blender_params;
-> -                /* there are no ROM LUTs in OUTGAM */
-> -               if (stream->out_transfer_func->type == TF_TYPE_PREDEFINED)
-> -                       BREAK_TO_DEBUGGER();
-> +                        /* there are no ROM LUTs in OUTGAM */
-> +                       if (stream->out_transfer_func->type == TF_TYPE_PREDEFINED)
-> +                               BREAK_TO_DEBUGGER();
->                 }
->         }
->
-> --
-> 2.26.2
->
-> _______________________________________________
-> amd-gfx mailing list
-> amd-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/amd-gfx
+--5vNYLRcllDrimb99
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl7en/sACgkQFA3kzBSg
+KbZttQ/9Ey8Kf2SvVwUBxEWRZzA0wki7LFu+OIJR8IdQvyx13t2rYOSLZ8Rh7ehZ
+GYENcTfBohlyr0V2Rd0sVL0MjhwpDjUYFyBvMlz9fOP2+xmlq2uF+iOINIToz0CJ
+RTqYfOXxbqfcnQBUXuQWKJJc7rQyhwEWOS3VdTUt/khe2Kg60hfrYO5jkXwucm0B
+ULVWXiu5UYWLo0xwstbUPPkFk8dUleR6wnNqVhtgmG5RdbUnNCxpGhVqAymqzX0l
+YQUpURv9HP+wZERAIryr0nk+P9h41Wfh/pG1vXQkQ1i1zl9yU35yS9tpZnRJeVW3
+7FkjsNO9ZSlmKIjMI7lpPZgOI7jLL3a764UmUM2tSy/KgDFdzWkZ8065U+rx8nOE
+8Yc3Rw3xQsZb8xorwn/a1UtpY25uEBM1oxKMsgXvvNW/zbyxMu9Pw0PJSWB5WCXp
+pvcY+Wfec6v6CGX66Wm3OqHfZquMwcn5xUp+zdX5SouNIuQw8lVZksh91ZGBxakZ
+4uVm1JGYPJoZvMY1UDLFZ1AadeODlsCIr4GOkDyfFL7M9XJ/Un6/gsAjpAtAsQx0
+iUJPvdcuJE5T6vW2K1+TkyjabjpSHc/zoJ3SOzgO8MKrQZOLqUPUn4RziIxglqMm
+rzkMUWqK034wLy9uzYgPZo+7JnhvyFNRM2sBxldH4q/IcFOOrPI=
+=IgmB
+-----END PGP SIGNATURE-----
+
+--5vNYLRcllDrimb99--

@@ -2,146 +2,146 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC1341F1E8D
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jun 2020 19:50:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 313791F1F0C
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jun 2020 20:32:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730382AbgFHRuJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Jun 2020 13:50:09 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:60936 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730379AbgFHRuI (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Jun 2020 13:50:08 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 058HkRqb105840;
-        Mon, 8 Jun 2020 17:49:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=ncmODzgoWtkudobrbPyNbaCQiNZTBtUZcMm2aBJK4rY=;
- b=UuEoKDxNP+ztqskyqBSLAZeRHX/MII4zJX50QQxw3OyFF98b2mzRdMAAggZoRfdhkbIG
- 60xQ2pzWRJGwmq87x+AKYqJ5froms2rt9AWRDvsx373OhEpOzjEERAqZJWnxrO6Ypnty
- 9xUgiGaE0XO+IeV9dA8cD/BTCfuG57i+kJpDihEriQhiMGhB70xrMvBZm2xqBWDoSa31
- w0/E5DCFhCJRq+RmZG/yE8MHACizqquEyAOy+at+nJfi/x4/WZ/eRVwGL7eoFh1N/XLK
- 5VegiooZX6qTk8h5AZkpjWJmBdasjFcTO8VyA6A9ptmQpjTb1M+Hg3oSDoI6Ac2dRRJR sg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 31g3smr3t6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 08 Jun 2020 17:49:59 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 058HmJeL135601;
-        Mon, 8 Jun 2020 17:49:59 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 31gn23fgd4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 08 Jun 2020 17:49:59 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 058HnqxD022415;
-        Mon, 8 Jun 2020 17:49:53 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 08 Jun 2020 10:49:51 -0700
-Date:   Mon, 8 Jun 2020 20:49:43 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Joe Perches <joe@perches.com>
-Cc:     Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] drm/amd/display: Fix indenting in
- dcn30_set_output_transfer_func()
-Message-ID: <20200608174943.GU22511@kadam>
-References: <20200608141657.GB1912173@mwanda>
- <dcce7f702c674999c31fd358c3970d5fee1a6725.camel@perches.com>
+        id S1725878AbgFHScU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Jun 2020 14:32:20 -0400
+Received: from mout.web.de ([212.227.17.11]:45125 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725280AbgFHScT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 8 Jun 2020 14:32:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1591641129;
+        bh=IBDqx493tt1wkXPpzA/7XTXyPaT674q56+B8I9R8/Mc=;
+        h=X-UI-Sender-Class:Cc:Subject:To:From:Date;
+        b=cuS5Uer4odfzpa9bmbQtXv5wZ0gEHR4K/J4HmJ+9DFSKTILGPpjWZ+lIIZze/kz19
+         iLratHInx5wnGFThue81BGIC5EL/fI+M6IJnyl8hh473wm/ZtF6jiO2q0vfRaxpki3
+         PIxN+clmW0rdLr8elQwezyqinTKMhxks8d0D8Tfc=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.49.116.236]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LnSGg-1j0nod1O9O-00hdVB; Mon, 08
+ Jun 2020 20:32:09 +0200
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/4] coccinelle: api: extend memdup_user rule with
+ vmemdup_user()
+To:     Denis Efremov <efremov@linux.com>,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <6c9c6a4c-c305-ddab-8a1b-e4dc448d643f@web.de>
+Date:   Mon, 8 Jun 2020 20:32:07 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dcce7f702c674999c31fd358c3970d5fee1a6725.camel@perches.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9646 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 mlxscore=0
- phishscore=0 adultscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006080126
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9646 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 impostorscore=0 cotscore=-2147483648 suspectscore=0
- spamscore=0 bulkscore=0 malwarescore=0 phishscore=0 mlxscore=0
- mlxlogscore=999 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006080126
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:iLwj2vJ0brvPvZKas/bjtr4Ytr7QXduKpi1DO9Ef38xrMnv2qkl
+ Oclt+grMGWcZC+wYpEqApO6uJ3a3gpavFR0PkZxMsPxgLR++MUrpz+484gwhwAtDN9W2Jhq
+ 2Vb26ufFZ8y0KGXfFTe5baW4KQeTBoqBMiyX2p2VFtf2EV0oZLB4ymAzXLa++m1/8UIHiCK
+ 0ukmNHy+Qao51iivo2A1Q==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:VwCSdTMk4/c=:9UKXcnQ3ZtQlFAIgWoIzPi
+ fsCnHyP+zCJMvr68eP93e48dM//1a0qPSTE1q0KrUtM5vicxZVKJ8mlsMhXC33I6XOuZJNFTK
+ feYUoWGc/dmQc0KtM7Pde/EzC1P2q9HfV/zUlB1fXdwhBkKRR02qxzEAWIcQf7DkgaM6/fzAf
+ uxKyKraTQ4mYdVb4wvg6a3lgLqLX8Fi1WkfJz49xfVjfx4cEjKAqWWfEB04wRGemR7jABmKbh
+ UxQN3PdRD42Tv78AhlLgPftA7gXotTyXLpJ1XBFZLjuuRAK+l8S8XbTEko776WZ4mrizwbzAe
+ UtZxpNt2J+LrwlkFSmhmPunZZFlp45D/USUi9XDZ21LtTs2L54tpvdZ4+jMjpQ9bEi52J94G1
+ FQOwRZXhZEic0v3RpxHs9974Nw2lc8WQP/vRfuzvxB3kFhuu7ek45Yy06O4RDpRYUsciasGhZ
+ CLkcZtduTcww+GvF6GgsUFfEymzmKOqmhwOP2HhBTb1SlYoLpaYeGQJKpB/i8aqpBlji0wDmh
+ M6R8Whe8FffluD9cCM2eFULGhAq4l1N/PCzrlhoEOxk3ve4ePgOXVUA9q2zZ+G2VyEn9Qy5SS
+ eDzdZM9bhpP8rGbFr0HStQAO3USrXvkFn3MDzZkEbRfxr47mqvgljtGnQYZJoG72ozD+04JB4
+ ZB0ShNssYhYTB7InvxVQZxeYCcI0l2ld72h0CZ7CQsFukGNG/W3gMMJGylfn5s7EiBDc87uJU
+ KcuHu64+7JnzhOGTlF/t8PGHh7hL3DPuOVSb4/sdbbC/tKfDGPokjaKgygCRg5EATB9NNpkYI
+ MANKB9jbQeOS45Ij6ZtYbu3c0alxhZM21Aw3jQF7LEe2tgJvAA6zkGvfNKketFL6+JxyFjzB3
+ oMRN33Hou0B+0BAysDsSeiPoKjVwIPCQ4s5IeuL2qGa8R9gBVcN+eTMfDqZ8evUcxlRYl3OZR
+ 6Fh1T77dnc9XchVL67GJnPlOcpibTC1jXuU02UTASRD17jFrxTJmTfKa2BjR58Tn2rULOvksS
+ 5AnvxKET3VsaVR7OkgBVyXn5a5MJNCj/niuZlLaqJhQQRSOmXaLWDvk87sWJEyIs1yLK/QS0e
+ Y139L5G7BIhWs8ZzBFkoeeB4PvxgPTinRuDknVYaggp0ytMFDNBZvGdExMKTARJIhu5YDIGDc
+ Vh+Lp3Zmfnlo7f2PGlcDr42cwgAhPXCDKX6Jw0MXOkxcFvx/Boh6HttsVHtkEwHJIOAgEKQsb
+ MvBIkkk7t2/gCXfXk
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jun 08, 2020 at 10:16:27AM -0700, Joe Perches wrote:
-> On Mon, 2020-06-08 at 17:16 +0300, Dan Carpenter wrote:
-> > These lines are a part of the if statement and they are supposed to
-> > be indented one more tab.
-> > 
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> >  drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-> > index ab20320ebc994..37c310dbb3665 100644
-> > --- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-> > +++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-> > @@ -203,9 +203,9 @@ bool dcn30_set_output_transfer_func(struct dc *dc,
-> >  					stream->out_transfer_func,
-> >  					&mpc->blender_params, false))
-> >  				params = &mpc->blender_params;
-> > -		 /* there are no ROM LUTs in OUTGAM */
-> > -		if (stream->out_transfer_func->type == TF_TYPE_PREDEFINED)
-> > -			BREAK_TO_DEBUGGER();
-> > +			 /* there are no ROM LUTs in OUTGAM */
-> > +			if (stream->out_transfer_func->type == TF_TYPE_PREDEFINED)
-> > +				BREAK_TO_DEBUGGER();
-> >  		}
-> >  	}
-> >  
-> 
-> Maybe the if is at the right indentation but the
-> close brace below the if is misplaced instead?
-> 
+=E2=80=A6
++++ b/scripts/coccinelle/api/memdup_user.cocci
+@@ -39,6 +39,28 @@ =E2=80=A6
+=E2=80=A6
+> +@depends on patch@
+> +expression from,to,size;
+> +identifier l1,l2;
+> +@@
+> +
+> +-  to =3D \(kvmalloc\|kvzalloc\)(size,\(GFP_KERNEL\|GFP_USER\));
+> ++  to =3D vmemdup_user(from,size);
 
-Yeah.  I considered that, but the code is correct, it's just the
-indenting is wrong.  I normally leave drm/amd/ code alone but this
-indenting was so confusing that I though it was worth fixing.
+I suggest to combine the desired adjustment with the previous SmPL rule
+by using another disjunction.
 
-There are lots of ugly stuff which is not confusing like this:  (The
-line numbers are from next-20200605).
 
-drivers/gpu/drm/amd/amdgpu/../powerplay/amd_powerplay.c:1530 pp_asic_reset_mode_2() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dce_calcs.c:3387 bw_calcs() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_dwb.c:104 dwb2_enable() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_dpp_cm.c:450 dpp20_get_blndgam_current() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_dpp_cm.c:543 dpp20_get_shaper_current() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_mpc.c:306 mpc20_get_ogam_current() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_link_dp.c:1519 dc_link_dp_perform_link_training() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_link.c:3137 core_link_enable_stream() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_hwseq.c:207 dcn30_set_output_transfer_func() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_dpp.c:650 dpp3_get_blndgam_current() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_dpp.c:747 dpp3_get_shaper_current() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_dpp_cm.c:67 dpp30_get_gamcor_current() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_mpc.c:116 mpc3_get_ogam_current() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_mpc.c:432 mpc3_get_shaper_current() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_resource.c:2351 dcn30_update_bw_bounding_box() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_optc.c:178 optc3_set_dsc_config() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn20/display_mode_vba_20.c:2704 dml20_DISPCLKDPPCLKDCFCLKDeepSleepPrefetchParametersWatermarksAndPerformanceCalculation() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn20/display_mode_vba_20v2.c:2777 dml20v2_DISPCLKDPPCLKDCFCLKDeepSleepPrefetchParametersWatermarksAndPerformanceCalculation() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn21/display_mode_vba_21.c:2633 DISPCLKDPPCLKDCFCLKDeepSleepPrefetchParametersWatermarksAndPerformanceCalculation() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn21/display_mode_vba_21.c:5031 dml21_ModeSupportAndSystemConfigurationFull() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn21/display_mode_vba_21.c:5036 dml21_ModeSupportAndSystemConfigurationFull() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn21/display_mode_vba_21.c:5056 dml21_ModeSupportAndSystemConfigurationFull() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/../display/modules/power/power_helpers.c:731 dmcu_load_iram() warn: inconsistent indenting
-drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c:5062 gfx_v8_0_pre_soft_reset() warn: inconsistent indenting
+> +@rv depends on !patch@
+> +expression from,to,size;
+> +position p;
+> +statement S1,S2;
+> +@@
+> +
+> +*  to =3D \(kvmalloc@p\|kvzalloc@p\)(size,\(GFP_KERNEL\|GFP_USER\));
+> +   if (to=3D=3DNULL || ...) S1
+> +   if (copy_from_user(to, from, size) !=3D 0)
+> +   S2
 
-regards,
-dan carpenter 
+How does the SmPL asterisk functionality fit to the operation
+modes =E2=80=9Corg=E2=80=9D and =E2=80=9Creport=E2=80=9D?
+
+Regards,
+Markus

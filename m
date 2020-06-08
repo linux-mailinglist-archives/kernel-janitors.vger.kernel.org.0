@@ -2,74 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D04D1F1727
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jun 2020 13:01:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AA371F179E
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jun 2020 13:23:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729529AbgFHLBi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Jun 2020 07:01:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53700 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729398AbgFHLBi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Jun 2020 07:01:38 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7EF082076A;
-        Mon,  8 Jun 2020 11:01:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591614098;
-        bh=x49fyr0xuV1XEupCgRZKXrj5qYCz0FvfqLfcYZx0Mwc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=1erz/OSTvA+nNa+hbzuS12qIiYPDOK/A7oX19gP0yaHEuSzY4YNDA58qfi9cxY67L
-         td1KwKMqD9dQCq0hqorYhfjSgvoqswcApfuvbhjXIKA+Zb3ywA6XYtLAfup/xd+D+C
-         6w5WDm1Z8sOlFpFuTSXxBN1R/eR8qj8131HhLEGc=
-Date:   Mon, 8 Jun 2020 13:01:32 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        Qiang Zhang <Qiang.Zhang@windriver.com>
-Cc:     linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Felipe Balbi <balbi@kernel.org>,
-        Kyungtae Kim <kt0755@gmail.com>
-Subject: Re: usb: gadget: function: printer: Fix use-after-free in
- __lock_acquire()
-Message-ID: <20200608110132.GA296162@kroah.com>
-References: <5207d179-0a7d-b5ff-af34-102fb21028b5@web.de>
- <DM5PR11MB205835FB50BA296232BC3163FF850@DM5PR11MB2058.namprd11.prod.outlook.com>
- <ae59cac9-d770-36bd-ccb2-e5e442bd5e0a@web.de>
+        id S1729659AbgFHLW6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Jun 2020 07:22:58 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:46400 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729640AbgFHLWu (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 8 Jun 2020 07:22:50 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 058BMRGD111939;
+        Mon, 8 Jun 2020 11:22:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=g/SBqla2Qz8YmgXWV5dNE6NiesBkgSREBkriy+DQb8o=;
+ b=T2VIpFyRZdRUANYlq3EtlHGqp8itK8+N7iO7owb3UkNmIQnmlkjUZjHNsC4JQ8Z5yCZD
+ SGoJ1XLBMMT7lUSQyg5PNdF/yyMUhwIp6fzvzsVKWFnt8iihZ5XHGtYeGM69Vw9eW5t+
+ Mgj0WcDHHJ0+k6k4aSg4gVNSpSwB9JphTvMU9Mn1Th4IfAK1DxC2w4DULZBiAH3Y/oBu
+ izQAKPWW+xk6JzJtIepE5jnm6IkKsG+49UHcvd6EVyEz15hMyoewGo1ODtK4fne/Vq0e
+ 5o1aQ/XlxyDzNbdLzzIPhTR1TzAlHUxQxxNYAsLNv5VPbAM0cJ/FAJcezXRZJFYwyznQ pw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 31g3smp5y8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 08 Jun 2020 11:22:39 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 058BHmnK020506;
+        Mon, 8 Jun 2020 11:22:38 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 31gmqm38yx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 08 Jun 2020 11:22:38 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 058BMaa1010818;
+        Mon, 8 Jun 2020 11:22:37 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 08 Jun 2020 04:22:36 -0700
+Date:   Mon, 8 Jun 2020 14:22:28 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Joe Perches <joe@perches.com>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        rjw@rjwysocki.net, pavel@ucw.cz, len.brown@intel.com,
+        Dan Carpenter <error27@gmail.com>, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] kernel: power: swap: mark a function as __init to save
+ some memory
+Message-ID: <20200608112228.GW30374@kadam>
+References: <20200531210059.647066-1-christophe.jaillet@wanadoo.fr>
+ <effe3cde7b1f188427c42c476f5a96251d837416.camel@perches.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ae59cac9-d770-36bd-ccb2-e5e442bd5e0a@web.de>
+In-Reply-To: <effe3cde7b1f188427c42c476f5a96251d837416.camel@perches.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9645 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 mlxscore=0
+ mlxlogscore=936 adultscore=0 spamscore=0 suspectscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006080086
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9645 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 impostorscore=0 cotscore=-2147483648 suspectscore=0
+ spamscore=0 bulkscore=0 malwarescore=0 phishscore=0 mlxscore=0
+ mlxlogscore=963 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006080086
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jun 08, 2020 at 12:55:13PM +0200, Markus Elfring wrote:
-> > I don't need to add Fix tag to view the code.
+On Sun, May 31, 2020 at 03:11:27PM -0700, Joe Perches wrote:
+> (adding Dan Carpenter)
 > 
-> I have got understanding difficulties for this kind of feedback.
-> How much do you care for corresponding patch review concerns?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=af7b4801030c07637840191c69eb666917e4135d#n183
+> On Sun, 2020-05-31 at 23:00 +0200, Christophe JAILLET wrote:
+> > 'swsusp_header_init()' is only called via 'core_initcall'.
+> > It can be marked as __init to save a few bytes of memory.
+> 
+> Hey Dan
+> 
+> smatch has a full function calling tree right?
+> 
+> Can smatch find unmarked functions called only by __init
+> functions so those unmarked functions can be appropriately
+> marked with __init like the below?
+> 
 
-Hi,
+It turns out it's complicated to do this in Smatch because Sparse
+ignores the section attribute.  :/
 
-This is the semi-friendly patch-bot of Greg Kroah-Hartman.
+regards,
+dan carpenter
 
-Markus, you seem to have sent a nonsensical or otherwise pointless review
-comment to a patch submission on a Linux kernel developer mailing list.
-I strongly suggest that you not do this anymore.  Please do not bother
-developers who are actively working to produce patches and features with
-comments that, in the end, are a waste of time.
-
-Patch submitter, please ignore Markus's suggestion; you do not needed
-to follow it at all.  The person/bot/AI that sent it is being ignored by
-almost all Linux kernel maintainers for having a persistent pattern of
-behavior of producing distracting and pointless commentary, and inability
-to adapt to feedback.  Please feel free to also ignore emails from them.
-
-thanks,
-
-greg k-h's patch email bot

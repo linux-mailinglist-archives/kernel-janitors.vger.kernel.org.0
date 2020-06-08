@@ -2,108 +2,156 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4446D1F1390
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jun 2020 09:28:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58E311F1498
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jun 2020 10:41:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728908AbgFHH2j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Jun 2020 03:28:39 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:43916 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727977AbgFHH2i (ORCPT
+        id S1729085AbgFHIlQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Jun 2020 04:41:16 -0400
+Received: from smtprelay0159.hostedemail.com ([216.40.44.159]:50282 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727788AbgFHIlQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Jun 2020 03:28:38 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0587SGFU006604;
-        Mon, 8 Jun 2020 07:28:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=iFFUWrJmQAMs+azOlyv2mkVbVKIPtj2LzUbOvvjmz4o=;
- b=YmNcypAZfmglnw+NsFR4ekBO8PSvVbRjinKDt5afAhHX+AYpUMbmqOKMblkXMhJ0r0D3
- o1XR1Agx+pG1e4AZki5CDt0ycPZi8VjBrkACy2kez6/6oXlmwMU8xErjcPBo8zg6ishE
- wOMV6n+bXcCIB+oLorEvbW6i+KQkkCifPUkAXVnJmEjV93JsQS+6EtyGnO3BJyAtQBew
- iPAkAXOuUciE7vV9vkLsgqb45+FqxGmzW9wzOM9gH0MNpV93k6WFaTPkE3VJpMQISQi5
- iXT035CD16vJy7jb68gEZTXHQw0rKHFfWzlAJSOLqcWjvbY0NtfMIN2VKfj2mU2RMogd qA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 31g2jqwa4w-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 08 Jun 2020 07:28:33 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0587LjiN010869;
-        Mon, 8 Jun 2020 07:26:33 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 31gmwpj6sj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 08 Jun 2020 07:26:33 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0587QWeV000572;
-        Mon, 8 Jun 2020 07:26:32 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 08 Jun 2020 00:26:31 -0700
-Date:   Mon, 8 Jun 2020 10:26:25 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "Rodolfo C. Villordo" <rodolfovillordo@gmail.com>
-Cc:     Forest Bond <forest@alittletooquiet.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+        Mon, 8 Jun 2020 04:41:16 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 693DC802FD46;
+        Mon,  8 Jun 2020 08:41:13 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:960:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1543:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2828:2895:3138:3139:3140:3141:3142:3354:3622:3865:3866:3867:3868:3870:3871:3872:3873:3874:4250:4321:4605:5007:7903:8957:10004:10400:10450:10455:10471:10848:11026:11232:11473:11658:11914:12043:12109:12114:12296:12297:12438:12740:12760:12895:13161:13229:13255:13439:13972:14181:14659:14721:19904:19999:21080:21433:21451:21627:21740:21819:21939:21990:30012:30022:30034:30054:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: tramp89_2b10e8f26db8
+X-Filterd-Recvd-Size: 4924
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf17.hostedemail.com (Postfix) with ESMTPA;
+        Mon,  8 Jun 2020 08:41:12 +0000 (UTC)
+Message-ID: <e3d7cc965eccec881bc35ae18d63f4bc23c33dfc.camel@perches.com>
 Subject: Re: Forest Bond <forest@alittletooquiet.net>,Greg Kroah-Hartman
  <gregkh@linuxfoundation.org>,devel@driverdev.osuosl.org,linux-kernel@vger.kernel.org
-Message-ID: <20200608072625.GV30374@kadam>
+From:   Joe Perches <joe@perches.com>
+To:     Julia Lawall <julia.lawall@inria.fr>,
+        Al Viro <viro@zeniv.linux.org.uk>
+Cc:     "Rodolfo C. Villordo" <rodolfovillordo@gmail.com>,
+        Forest Bond <forest@alittletooquiet.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 08 Jun 2020 01:41:11 -0700
+In-Reply-To: <alpine.DEB.2.21.2006080758510.2430@hadrien>
 References: <20200607224156.GA24090@ip-172-31-24-31.ec2.internal>
+         <20200608054614.GO23230@ZenIV.linux.org.uk>
+         <alpine.DEB.2.21.2006080758510.2430@hadrien>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.2-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200607224156.GA24090@ip-172-31-24-31.ec2.internal>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9645 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 adultscore=0
- mlxscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006080055
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9645 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
- cotscore=-2147483648 priorityscore=1501 spamscore=0 suspectscore=0
- lowpriorityscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0
- phishscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006080056
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Jun 07, 2020 at 10:41:56PM +0000, Rodolfo C. Villordo wrote:
->  	/* RTSRrvTime */
-> -	uRrvTime = uRTSTime + uCTSTime + uAckTime + uDataTime + 3 * pDevice->uSIFS;
-> +	uRrvTime = uRTSTime + uCTSTime + uAckTime + uDataTime
-> +			+ 3 * pDevice->uSIFS;
+On Mon, 2020-06-08 at 07:59 +0200, Julia Lawall wrote:
+> On Mon, 8 Jun 2020, Al Viro wrote:
+> 
+> > On Sun, Jun 07, 2020 at 10:41:56PM +0000, Rodolfo C. Villordo wrote:
+> > > Multiple line over 80 characters fixes by splitting in multiple lines.
+> > > Warning found by checkpatch.pl
+> > 
+> > I doubt that checkpatch.pl can catch the real problems there:
+> > 
+> > * Hungarian Notation Sucks.  Really.
+> > * so does CamelCase, especially for wonders like s_uGetRTSCTSRsvTime
+> 
+> Rodolfo,
+> 
+> If you work hard with Coccinelle and python scripting, it can help with
+> the first two problems.
 
-The + character should go on the first line:
-
-	uRrvTime = uRTSTime + uCTSTime + uAckTime + uDataTime +
-		   3 * pDevice->uSIFS;
-
-The second line should be indented with:
-
-[tab][tab][space][space][space]3 * pDevice->uSIFS;
-
-Same rules apply everywhere.  I'm not going to comment on every line.
-
->  	case RTSDUR_BA_F0: /* RTSDuration_ba_f0 */
-> -		uCTSTime = bb_get_frame_time(pDevice->byPreambleType, byPktType, 14, pDevice->byTopCCKBasicRate);
-> -		if ((byFBOption == AUTO_FB_0) && (wRate >= RATE_18M) && (wRate <= RATE_54M))
-> +		uCTSTime = bb_get_frame_time(pDevice->byPreambleType, byPktType,
-> +					     14, pDevice->byTopCCKBasicRate);
-> +		if ((byFBOption == AUTO_FB_0) && (wRate >= RATE_18M) &&
-> +		    (wRate <= RATE_54M))
+These VIA vt6655/vt6656 drivers have been in staging for more than
+a decade.  There are relatively few checkpatch coding style
+cleanups to do but there are many overall style issues to resolve.
 
 
-Here it's awkward to break the two wRate conditions across multiple
-lines.  It's better to write:
+It's true the identifier transforms could be done with Coccinelle,
+but the problem is larger than identifier types and line lengths.
 
-		if ((byFBOption == AUTO_FB_0) &&
-	            (wRate >= RATE_18M) && (wRate <= RATE_54M))
+Hungarian renaming can't really be automated, it's basically a
+sed problem where the new identifiers have to be chosen by someone
+with specific device knowledge.
 
-regards,
-dan carpenter
+Look at vt6655/rf.c:
+
+Lots of things should be reduced/replaced/simplified.
+For instance, these repeated patterns exist:
+
+	"(BY_AL2230_REG_LEN << 3) + IFREGCTL_REGW"
+	"(BY_AL7230_REG_LEN << 3) + IFREGCTL_REGW"
+
+There are 300+ uses just in this one file.
+
+It's a lot of visual noise that should be minimized by using macros.
+It would also reduce the number of checkpatch's long line warnings.
+
+All the of unsigned char could be u8, unsigned short -> u16, etc.
+Many arrays could be static const.
+
+Nearly every function in the file could be improved.
+
+For instance, this code could be written altogether:
+
+bool RFbAL7230SelectChannelPostProcess(struct vnt_private *priv,
+				       u16 byOldChannel,
+				       u16 byNewChannel)
+{
+	bool ret;
+
+	ret = true;
+
+	/* if change between 11 b/g and 11a need to update the following
+	 * register
+	 * Channel Index 1~14
+	 */
+	if ((byOldChannel <= CB_MAX_CHANNEL_24G) && (byNewChannel > CB_MAX_CHANNEL_24G)) {
+		/* Change from 2.4G to 5G [Reg] */
+		ret &= IFRFbWriteEmbedded(priv, dwAL7230InitTableAMode[2]);
+		ret &= IFRFbWriteEmbedded(priv, dwAL7230InitTableAMode[3]);
+		ret &= IFRFbWriteEmbedded(priv, dwAL7230InitTableAMode[5]);
+		ret &= IFRFbWriteEmbedded(priv, dwAL7230InitTableAMode[7]);
+		ret &= IFRFbWriteEmbedded(priv, dwAL7230InitTableAMode[10]);
+		ret &= IFRFbWriteEmbedded(priv, dwAL7230InitTableAMode[12]);
+		ret &= IFRFbWriteEmbedded(priv, dwAL7230InitTableAMode[15]);
+	} else if ((byOldChannel > CB_MAX_CHANNEL_24G) && (byNewChannel <= CB_MAX_CHANNEL_24G)) {
+		/* Change from 5G to 2.4G [Reg] */
+		ret &= IFRFbWriteEmbedded(priv, dwAL7230InitTable[2]);
+		ret &= IFRFbWriteEmbedded(priv, dwAL7230InitTable[3]);
+		ret &= IFRFbWriteEmbedded(priv, dwAL7230InitTable[5]);
+		ret &= IFRFbWriteEmbedded(priv, dwAL7230InitTable[7]);
+		ret &= IFRFbWriteEmbedded(priv, dwAL7230InitTable[10]);
+		ret &= IFRFbWriteEmbedded(priv, dwAL7230InitTable[12]);
+		ret &= IFRFbWriteEmbedded(priv, dwAL7230InitTable[15]);
+	}
+
+	return ret;
+}
+
+This could be something like: (written in email client, untested)
+
+{
+	unsigned long *table;
+	static const int indices[] = {2, 3, 5, 7, 10, 12, 15};
+	int i;
+	bool ret = true;
+
+	/* if changing between 11b/g and 11a, update the indices registers */
+
+	if (byOldChannel <= CB_MAX_CHANNEL_24G && byNewChannel > CB_MAX_CHANNEL_24G)
+		table = dwAL7230InitTableAMode;
+	else if (byOldChannel > CB_MAX_CHANNEL_24G && byNewChannel <= CB_MAX_CHANNEL_24G)
+		table = dwAL7230InitTable;
+	else
+		return ret;
+
+	for (i = 0 ; i < ARRAY_SIZE(indices); i++)
+		ret &= IFRFbWriteEmbedded(priv, table[indices[i]]);
+
+	return ret;
+}
+
 

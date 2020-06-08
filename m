@@ -2,76 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 444F01F1905
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jun 2020 14:46:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B3941F1AC1
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jun 2020 16:16:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729069AbgFHMqY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Jun 2020 08:46:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53978 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728173AbgFHMqO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Jun 2020 08:46:14 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 213622072F;
-        Mon,  8 Jun 2020 12:46:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591620371;
-        bh=FCAvqfmKFayKCxPdwRtAqVx7sG8HLE4jjh4Q6F84pqk=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=pvoyh0Wmbo79Pc12rA2pIrsB8hDaGNNVxeCDJUrDxMXEg53yWzsj/jpoCMVRQ/D+k
-         iS4q0ZxJQwdYgnH5S5bPje7+IJARN2szNwFq7POidTzoZLNpDR/H7bW51LWAzgk6YT
-         GT/iYSpw5umoi75sI57tbGb1OzSZk8hx6Qd8TspE=
-Date:   Mon, 08 Jun 2020 13:46:09 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Jerome Brunet <jbrunet@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Colin King <colin.king@canonical.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Jaroslav Kysela <perex@perex.cz>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-amlogic@lists.infradead.org, alsa-devel@alsa-project.org,
-        Takashi Iwai <tiwai@suse.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-In-Reply-To: <20200604171216.60043-1-colin.king@canonical.com>
-References: <20200604171216.60043-1-colin.king@canonical.com>
-Subject: Re: [PATCH] ASoC: meson: fix memory leak of links if allocation of ldata fails
-Message-Id: <159162036934.23368.2440967052610831030.b4-ty@kernel.org>
+        id S1729973AbgFHOQu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Jun 2020 10:16:50 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:37280 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729969AbgFHOQt (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 8 Jun 2020 10:16:49 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 058EGinr019012;
+        Mon, 8 Jun 2020 14:16:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=hMtLnsxq3vYQ/tEpRoQzUmipcu6sgK4LnOH203zQx4E=;
+ b=G0nx0Gf8Uh4VA+1LxkU7UFWjNI4PFoOuDQYk+OW8H7SPy0W34qSHbPUy+xkbj8j01ubd
+ +4SD65KiM4eoppE+Ri8s2TKSZL+xv6doW5KSbuII4spO/MEE8/v4GiqSmlSATGelvH64
+ HRdE5ysljtGBGKd+kj05ARJRLC00TUgVzLaUXQeoGj/UichKPpzLKQ90YpP9yN2ZoAzb
+ avszYLXSbuPEbFog3QTn6cKPhg6wABjE8FmOYckPL3W2mFhhqJXfWO8swIKas+DS8GWh
+ nhFg1nsXj4xAs9/f8YBNRnwpGC4JgiK1Kldl7dqBILudJ1Uk5HoLmxoeLbUrC1aYvyo6 tg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 31g33ky435-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 08 Jun 2020 14:16:44 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 058E4NNa057384;
+        Mon, 8 Jun 2020 14:16:39 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 31gmwq0dyp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 08 Jun 2020 14:16:39 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 058EGaS2004302;
+        Mon, 8 Jun 2020 14:16:37 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 08 Jun 2020 07:16:36 -0700
+Date:   Mon, 8 Jun 2020 17:16:29 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Namjae Jeon <namjae.jeon@samsung.com>,
+        Tetsuhiro Kohada <kohada.t2@gmail.com>
+Cc:     Sungjong Seo <sj1557.seo@samsung.com>,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] exfat: Fix pontential use after free in
+ exfat_load_upcase_table()
+Message-ID: <20200608141629.GA1912173@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9645 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 spamscore=0 adultscore=0
+ mlxscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006080105
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9645 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 adultscore=0 spamscore=0
+ cotscore=-2147483648 malwarescore=0 phishscore=0 mlxscore=0 clxscore=1011
+ lowpriorityscore=0 impostorscore=0 priorityscore=1501 mlxlogscore=999
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006080106
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 4 Jun 2020 18:12:16 +0100, Colin King wrote:
-> Currently if the allocation of ldata fails the error return path
-> does not kfree the allocated links object.  Fix this by adding
-> an error exit return path that performs the necessary kfree'ing.
+This code calls brelse(bh) and then dereferences "bh" on the next line
+resulting in a possible use after free.  The brelse() should just be
+moved down a line.
 
-Applied to
+Fixes: b676fdbcf4c8 ("exfat: standardize checksum calculation")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ fs/exfat/nls.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+diff --git a/fs/exfat/nls.c b/fs/exfat/nls.c
+index c1ec056954974..57b5a7a4d1f7a 100644
+--- a/fs/exfat/nls.c
++++ b/fs/exfat/nls.c
+@@ -692,8 +692,8 @@ static int exfat_load_upcase_table(struct super_block *sb,
+ 				index++;
+ 			}
+ 		}
+-		brelse(bh);
+ 		chksum = exfat_calc_chksum32(bh->b_data, i, chksum, CS_DEFAULT);
++		brelse(bh);
+ 	}
+ 
+ 	if (index >= 0xFFFF && utbl_checksum == chksum)
+-- 
+2.26.2
 
-Thanks!
-
-[1/1] ASoC: meson: fix memory leak of links if allocation of ldata fails
-      commit: 6e801dc411329aff592fbd48fb116183d0acdb00
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

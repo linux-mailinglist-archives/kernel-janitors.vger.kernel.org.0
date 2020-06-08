@@ -2,103 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27AF61F131A
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jun 2020 08:54:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4446D1F1390
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jun 2020 09:28:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728931AbgFHGyj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Jun 2020 02:54:39 -0400
-Received: from mail-mw2nam10on2055.outbound.protection.outlook.com ([40.107.94.55]:22497
-        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728159AbgFHGyi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Jun 2020 02:54:38 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=giNGmzJZQJxd3f5vssNH1YrMZHqmKEAGy9ZjFpZWp57jHW7yEKeqCipc5mnjEb7xdRWYZ9rEL5dpAOEpu2sz2zcoyDWzXutphYqJJw6us71jdhabdHuaOS2KaQwEqMKHghbU1KVWxCOUXZ6ihhuW41pbv7XBJANe0GhzPwcw9I0E4NjkU5/pjQCRmzy0RSI+FSoliANRJ1JyVgG3RHTAadCeA8zTRz9tAHoNZnihuYfbqsd+WkF2mgIMiWlTWggB1N3A69iXR9JhssOSgRieF888EzXMbE6BalA+8ST70I6pB4J7wVXvmSygtZ7O0NPe9ozwLJEArZ0MYjgD1pb5BQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t4jPbrcjs/YFiTM/3A9d0iU2+aTecaiSv5EtzEgqU1M=;
- b=KB+FSG/315VChma9jfi7SDVlPRq+JXzVOpxrCgybFQlHHsYFAJHfFtw6/UW7cvlZJQqXt5njHDBW2h16hJ54lXd1ELADD9ePw+Hl3jByhg7GoTG9TAa021GJv28Sxe9pfOrNr8salE7mmV3vH1SACmNtwN8mSm1+aF0NzMoavHQHFnNIJ1ynvV+kdS90QYJvvN6dt7nkdsOWwuwJlpqbrhJCHcZrmJItfKt3oDzIphuj1ahkp9h1NOKRShbvvYakGtEl0VBGrnUi+8sjeLXkLtRU151SlvmQ+Ck5Mwm16JudiS5wWsa+P5aKjpKUtK9IOSwpDeDUpietPIaivbgRkw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=windriversystems.onmicrosoft.com;
- s=selector2-windriversystems-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t4jPbrcjs/YFiTM/3A9d0iU2+aTecaiSv5EtzEgqU1M=;
- b=kya0L573f5opjogRaFnQSzF3Ldj9N5/Q/b3R6AMHEZQj0WByWVXmgibAWvWx/E5gNZfyRLBz4PQ38bl9c7NpWZjlXXGCcGtkFrRY9JsiEux+RRPU/HnKeq67i+W9Y7Y0GiChnmgG0KU/IGzabMqjrVzwTStABqwUQGNbYUPyub0=
-Received: from DM5PR11MB2058.namprd11.prod.outlook.com (2603:10b6:3:12::23) by
- DM5PR11MB0073.namprd11.prod.outlook.com (2603:10b6:4:67::37) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3066.23; Mon, 8 Jun 2020 06:54:36 +0000
-Received: from DM5PR11MB2058.namprd11.prod.outlook.com
- ([fe80::38ae:4906:7fdb:3199]) by DM5PR11MB2058.namprd11.prod.outlook.com
- ([fe80::38ae:4906:7fdb:3199%7]) with mapi id 15.20.3066.023; Mon, 8 Jun 2020
- 06:54:36 +0000
-From:   "Zhang, Qiang" <Qiang.Zhang@windriver.com>
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Felipe Balbi <balbi@kernel.org>,
+        id S1728908AbgFHH2j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Jun 2020 03:28:39 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:43916 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727977AbgFHH2i (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 8 Jun 2020 03:28:38 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0587SGFU006604;
+        Mon, 8 Jun 2020 07:28:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=iFFUWrJmQAMs+azOlyv2mkVbVKIPtj2LzUbOvvjmz4o=;
+ b=YmNcypAZfmglnw+NsFR4ekBO8PSvVbRjinKDt5afAhHX+AYpUMbmqOKMblkXMhJ0r0D3
+ o1XR1Agx+pG1e4AZki5CDt0ycPZi8VjBrkACy2kez6/6oXlmwMU8xErjcPBo8zg6ishE
+ wOMV6n+bXcCIB+oLorEvbW6i+KQkkCifPUkAXVnJmEjV93JsQS+6EtyGnO3BJyAtQBew
+ iPAkAXOuUciE7vV9vkLsgqb45+FqxGmzW9wzOM9gH0MNpV93k6WFaTPkE3VJpMQISQi5
+ iXT035CD16vJy7jb68gEZTXHQw0rKHFfWzlAJSOLqcWjvbY0NtfMIN2VKfj2mU2RMogd qA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 31g2jqwa4w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 08 Jun 2020 07:28:33 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0587LjiN010869;
+        Mon, 8 Jun 2020 07:26:33 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 31gmwpj6sj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 08 Jun 2020 07:26:33 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0587QWeV000572;
+        Mon, 8 Jun 2020 07:26:32 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 08 Jun 2020 00:26:31 -0700
+Date:   Mon, 8 Jun 2020 10:26:25 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     "Rodolfo C. Villordo" <rodolfovillordo@gmail.com>
+Cc:     Forest Bond <forest@alittletooquiet.net>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kyungtae Kim <kt0755@gmail.com>
-Subject: =?gb2312?B?u9i4tDogW1BBVENIXSB1c2I6IGdhZGdldDogZnVuY3Rpb246IHByaW50ZXI6?=
- =?gb2312?B?IEZpeCB1c2UtYWZ0ZXItZnJlZSBpbiBfX2xvY2tfYWNxdWlyZSgp?=
-Thread-Topic: [PATCH] usb: gadget: function: printer: Fix use-after-free in
- __lock_acquire()
-Thread-Index: AQHWOxd3pvSJzCcPhkuwExEvp5/TI6jOTEjR
-Date:   Mon, 8 Jun 2020 06:54:35 +0000
-Message-ID: <DM5PR11MB205835FB50BA296232BC3163FF850@DM5PR11MB2058.namprd11.prod.outlook.com>
-References: <5207d179-0a7d-b5ff-af34-102fb21028b5@web.de>
-In-Reply-To: <5207d179-0a7d-b5ff-af34-102fb21028b5@web.de>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: web.de; dkim=none (message not signed)
- header.d=none;web.de; dmarc=none action=none header.from=windriver.com;
-x-originating-ip: [60.247.85.82]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: e4a628c1-cd69-4d6b-6a5f-08d80b78ce74
-x-ms-traffictypediagnostic: DM5PR11MB0073:
-x-microsoft-antispam-prvs: <DM5PR11MB007380024575F3714820B8A3FF850@DM5PR11MB0073.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:400;
-x-forefront-prvs: 042857DBB5
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Z3dPATE8LavtU7OYfDEcLUaRx74MBs6JsO/pyyamsH4EjtDzHkfgJmP09cd/v3wZq4wF8Aeomijf2Fqy9gSHpmF3ZIDh+SBVbsvdhNOFkJAQdE2enwd+9DLi8ZShm8aP0G82nEnq6MXIEqevre++pd50Am40WKpWmlJ+NRjkWbZp5ys4M8y2PMUOR/2JcRPAEmtx4ro9oCTroE7QbHAUh0Iacj/d8sDQLVm/Uknn1v+BeXpdJ0jbeb+k2ZKiJtz35ztTPPpeq5hTDJiHhdurl2tQvpFvcFo8TG0TSpTTrfwrT0WmX/gAm+5L5CyyAy4ulsv/la77th3OWH/4nFfV/g==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR11MB2058.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(346002)(376002)(396003)(136003)(366004)(39840400004)(8936002)(478600001)(9686003)(71200400001)(54906003)(4326008)(86362001)(7696005)(33656002)(55016002)(110136005)(4744005)(83380400001)(66446008)(66556008)(64756008)(5660300002)(52536014)(316002)(91956017)(2906002)(26005)(76116006)(66946007)(6506007)(224303003)(66476007)(186003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: mYV6bxxXDMqEsHqZsBX9RtoMuHWgRL3eVtADwr1T3M0TAdM0m8sF41tjIz6HUxXwCiPWOu1u8xNZZ0rsu4oRha7JGvXKiLpnoe9w3uSd0Xd+aaBrLNj5A3pgO34AmElfrqrpbudosKa/2kFkVBmRRVww/RbLqRVmhdIWorrX2khJH73HVnmO5mnqJnq9r3qIAX4CGR/+zeFahs0e1TJM1lerYdf3UrpVJb+8PeUDKb6DWWiMOJrzCFGA98iQlw3mZ18Ayerodv+0l6dngPjj5sxosjiM0HZmwj6+Ffejdlz3UVoPbS6cR3oQ5e/GdrHUhgfNLmpADxgJTEpkWh/HJkmFA9WYMNi9UDyLd3ZKpYbYyXl1hRHqNVKann+22eSWNCAZIJOlYfEHjf1NaINmCB/gBAwv8PHV89elb7Q6w+wRvcqIK/Z/bFQEBCiOD9rU7fnCFZqLPGgaYrQHb39391vNQbIqDprEuYvS8Ymub28=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: Forest Bond <forest@alittletooquiet.net>,Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>,devel@driverdev.osuosl.org,linux-kernel@vger.kernel.org
+Message-ID: <20200608072625.GV30374@kadam>
+References: <20200607224156.GA24090@ip-172-31-24-31.ec2.internal>
 MIME-Version: 1.0
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4a628c1-cd69-4d6b-6a5f-08d80b78ce74
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jun 2020 06:54:35.8063
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: yk42BQH+VTtTpveuCtncE915DvdMQs5yfsEGbxAw89FK10MoIdeZWYs5oH6o5Z+pkJ6rCilJs2eo9pWTt4Gx/vbe7ccQaNEHW+lx6He7BTI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR11MB0073
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200607224156.GA24090@ip-172-31-24-31.ec2.internal>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9645 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 adultscore=0
+ mlxscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006080055
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9645 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
+ cotscore=-2147483648 priorityscore=1501 spamscore=0 suspectscore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0
+ phishscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006080056
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-SGkgTWFya3VzLg0KSSBkb24ndCBuZWVkIHRvIGFkZCBGaXggdGFnIHRvIHZpZXcgdGhlIGNvZGUu
-DQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCreivP7IyzogTWFy
-a3VzIEVsZnJpbmcgPE1hcmt1cy5FbGZyaW5nQHdlYi5kZT4NCreiy83KsbzkOiAyMDIwxOo21MI1
-yNUgMTY6NTcNCsrVvP7IyzogWmhhbmcsIFFpYW5nOyBsaW51eC11c2JAdmdlci5rZXJuZWwub3Jn
-DQqzrcvNOiBrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdl
-ci5rZXJuZWwub3JnOyBBbGFuIFN0ZXJuOyBGZWxpcGUgQmFsYmk7IEdyZWcgS3JvYWgtSGFydG1h
-bjsgS3l1bmd0YWUgS2ltDQrW98ziOiBSZTogW1BBVENIXSB1c2I6IGdhZGdldDogZnVuY3Rpb246
-IHByaW50ZXI6IEZpeCB1c2UtYWZ0ZXItZnJlZSBpbiBfX2xvY2tfYWNxdWlyZSgpDQoNCj4gRml4
-IHRoaXMgYnkgaW5jcmVhc2Ugb2JqZWN0IHJlZmVyZW5jZSBjb3VudC4NCg0KSSBmaW5kIHRoaXMg
-ZGVzY3JpcHRpb24gaW5jb21wbGV0ZSBhY2NvcmRpbmcgdG8gdGhlIHByb3Bvc2VkIGNoYW5nZXMu
-DQoNCldvdWxkIHlvdSBsaWtlIHRvIGFkZCB0aGUgdGFnIKGwRml4ZXOhsSB0byB0aGUgY29tbWl0
-IG1lc3NhZ2U/DQoNClJlZ2FyZHMsDQpNYXJrdXMNCg==
+On Sun, Jun 07, 2020 at 10:41:56PM +0000, Rodolfo C. Villordo wrote:
+>  	/* RTSRrvTime */
+> -	uRrvTime = uRTSTime + uCTSTime + uAckTime + uDataTime + 3 * pDevice->uSIFS;
+> +	uRrvTime = uRTSTime + uCTSTime + uAckTime + uDataTime
+> +			+ 3 * pDevice->uSIFS;
+
+The + character should go on the first line:
+
+	uRrvTime = uRTSTime + uCTSTime + uAckTime + uDataTime +
+		   3 * pDevice->uSIFS;
+
+The second line should be indented with:
+
+[tab][tab][space][space][space]3 * pDevice->uSIFS;
+
+Same rules apply everywhere.  I'm not going to comment on every line.
+
+>  	case RTSDUR_BA_F0: /* RTSDuration_ba_f0 */
+> -		uCTSTime = bb_get_frame_time(pDevice->byPreambleType, byPktType, 14, pDevice->byTopCCKBasicRate);
+> -		if ((byFBOption == AUTO_FB_0) && (wRate >= RATE_18M) && (wRate <= RATE_54M))
+> +		uCTSTime = bb_get_frame_time(pDevice->byPreambleType, byPktType,
+> +					     14, pDevice->byTopCCKBasicRate);
+> +		if ((byFBOption == AUTO_FB_0) && (wRate >= RATE_18M) &&
+> +		    (wRate <= RATE_54M))
+
+
+Here it's awkward to break the two wRate conditions across multiple
+lines.  It's better to write:
+
+		if ((byFBOption == AUTO_FB_0) &&
+	            (wRate >= RATE_18M) && (wRate <= RATE_54M))
+
+regards,
+dan carpenter
+

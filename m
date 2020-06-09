@@ -2,56 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C8AD1F4845
-	for <lists+kernel-janitors@lfdr.de>; Tue,  9 Jun 2020 22:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7308E1F48FD
+	for <lists+kernel-janitors@lfdr.de>; Tue,  9 Jun 2020 23:43:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727053AbgFIUpl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 9 Jun 2020 16:45:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50078 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727005AbgFIUpk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 9 Jun 2020 16:45:40 -0400
-Received: from kernel.org (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3E1632068D;
-        Tue,  9 Jun 2020 20:45:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591735540;
-        bh=FQIs4tePx//1D6KMmaz9yjlTM6qx4AFNCuoeejrUMEw=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=D8UOBA0ZkKvIPyEePFqKdIjrx9XjAVdGw1ebjLdsP8+/K+FFbBvsSIDMdpet2Uq/Y
-         L+4JUEDOWUY4i5ZWziYBiGEBBiSD7noxe7Nzm5Fl9xK0L9tcifeBbCbb2mRa/DsVr/
-         ckoyKbJh9GTGI3M6vC6/w1af6Xq/w2+TXsLc28Sk=
-Content-Type: text/plain; charset="utf-8"
+        id S1728077AbgFIVna (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 9 Jun 2020 17:43:30 -0400
+Received: from rrcs-72-43-215-122.nys.biz.rr.com ([72.43.215.122]:40292 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728012AbgFIVna (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 9 Jun 2020 17:43:30 -0400
+Received: from Shop01 (localhost [127.0.0.1])
+        by localhost.localdomain (Postfix) with SMTP id 2E88E24785A;
+        Tue,  9 Jun 2020 05:10:48 -0400 (EDT)
+Received: from [212.244.199.249] by Shop01 with ESMTP id F6D1C5CCB33 for <phil@ipom.com>; Tue, 09 Jun 2020 07:02:51 -0300
+Message-ID: <t75-$-$r4v-$8fs7-pfh-d$u$ja@14mk9m1ey90ff>
+From:   "Mrs. Janet Olsen " <mrs.janetolse@gmail.com>
+Reply-To: "Mrs. Janet Olsen " <mrs.janetolse@gmail.com>
+To:     phil@ipom.com
+Subject: Your response 
+Date:   Tue, 09 Jun 20 07:02:51 GMT
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20200602172435.70282-1-colin.king@canonical.com>
-References: <20200602172435.70282-1-colin.king@canonical.com>
-Subject: Re: [PATCH] clk: baikal-t1: remove redundant assignment to variable 'divider'
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-To:     Colin King <colin.king@canonical.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        linux-clk@vger.kernel.org
-Date:   Tue, 09 Jun 2020 13:45:39 -0700
-Message-ID: <159173553955.242598.16478893358446362532@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9
+Content-Type: multipart/alternative;
+        boundary="C.9.8A.110."
+X-Priority: 5
+X-MSMail-Priority: Low
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Colin King (2020-06-02 10:24:35)
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> The variable divider is being initialized with a value that is never read
-> and it is being updated later with a new value.  The initialization is
-> redundant and can be removed.
->=20
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
 
-Applied to clk-next
+--C.9.8A.110.
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
+
+Hello, 
+
+Greetings from Mrs. Janet Olsen, from Norway.
+ 
+Please i will like to establish some investments over there, such as Orpha=
+nage home and Hospital for Cancer patients but i don't have anyone, Who ca=
+n handle the contracts for me over there.
+
+So, I am contacting to ask you and to know if you will be able of handling=
+ the contracts for me over there and you will be rewarded bountifully.
+
+Thanks and remain good, till i hear from you soon, for the full details.
+
+Regards, 
+
+Mrs. Janet Olsen.=20
+
+--C.9.8A.110.--
+

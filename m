@@ -2,82 +2,140 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA91A1F20BA
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jun 2020 22:31:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF9771F2E19
+	for <lists+kernel-janitors@lfdr.de>; Tue,  9 Jun 2020 02:40:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726794AbgFHUbB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Jun 2020 16:31:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54754 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726522AbgFHUbB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Jun 2020 16:31:01 -0400
-Received: from localhost (p54b3319c.dip0.t-ipconnect.de [84.179.49.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 740AE2074B;
-        Mon,  8 Jun 2020 20:31:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591648261;
-        bh=/TR0znQSNBVEfdoSa73R4jFdN9S+pGIjLvb2EUYPsAQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=q8C+OJniVQ0Eovxv2qrqW6OCfM/CSPEHEbprxNlWJD2AxVr64STFO0mCOvpMktdt6
-         Np+uZvKMHDZN6kSMFrHoclwxSAKxyyrue1Gf6ja74kFqYGReg/18s7xZ0lB9W3DCZD
-         /jpNGuDeNfqGCyB8iv2bfSB6/vnq6O+z1DfN3Qp0=
-Date:   Mon, 8 Jun 2020 22:30:55 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Tali Perry <tali.perry1@gmail.com>, linux-i2c@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] i2c: npcm7xx: Fix a couple error codes in probe
-Message-ID: <20200608203055.GA917@ninjato>
-References: <20200608141727.GC1912173@mwanda>
+        id S1729203AbgFIAis (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Jun 2020 20:38:48 -0400
+Received: from mailout1.samsung.com ([203.254.224.24]:35149 "EHLO
+        mailout1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729796AbgFIAh4 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 8 Jun 2020 20:37:56 -0400
+Received: from epcas1p1.samsung.com (unknown [182.195.41.45])
+        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20200609003750epoutp01ce11abc5479c60ddfd0c917c501d37e6~WuSE4wmKU2325823258epoutp019
+        for <kernel-janitors@vger.kernel.org>; Tue,  9 Jun 2020 00:37:50 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20200609003750epoutp01ce11abc5479c60ddfd0c917c501d37e6~WuSE4wmKU2325823258epoutp019
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1591663070;
+        bh=q10Na41zgCObZAxAJMn9N7qtdNyK7r4tQYvR2kZZd4M=;
+        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+        b=F5gn54VAk//Z48by8f0X1qw7NBjCk+0p+SJ6Ys0x34hy/y57sjAVmF2okhPW5okpz
+         yH9nMkvmBy3+UdIqkqoludKuWhr51Pe9EXnegOBoCn7pNCFsG0hGiDpsP+mb7+VkxX
+         WakJsBMc/L2mpt2i2iLE+fmqMhkpkT1ivx0VRU+Y=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+        epcas1p3.samsung.com (KnoxPortal) with ESMTP id
+        20200609003750epcas1p3a17b1b95b0ef23dcd1c1988f6fcb98b8~WuSEgedWT2513525135epcas1p3b;
+        Tue,  9 Jun 2020 00:37:50 +0000 (GMT)
+Received: from epsmges1p3.samsung.com (unknown [182.195.40.162]) by
+        epsnrtp2.localdomain (Postfix) with ESMTP id 49grn92QpvzMqYkX; Tue,  9 Jun
+        2020 00:37:49 +0000 (GMT)
+Received: from epcas1p4.samsung.com ( [182.195.41.48]) by
+        epsmges1p3.samsung.com (Symantec Messaging Gateway) with SMTP id
+        32.EF.29173.DD9DEDE5; Tue,  9 Jun 2020 09:37:49 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200609003748epcas1p1f034333f92535dc97f26cd9f49560551~WuSDSQ7yK2846528465epcas1p1N;
+        Tue,  9 Jun 2020 00:37:48 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20200609003748epsmtrp26ce49200a9880f5e57c12609a201fea4~WuSDRsbRP0964509645epsmtrp2A;
+        Tue,  9 Jun 2020 00:37:48 +0000 (GMT)
+X-AuditID: b6c32a37-9b7ff700000071f5-27-5eded9dd804b
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        2B.51.08382.CD9DEDE5; Tue,  9 Jun 2020 09:37:48 +0900 (KST)
+Received: from namjaejeon01 (unknown [10.88.104.63]) by epsmtip1.samsung.com
+        (KnoxPortal) with ESMTPA id
+        20200609003748epsmtip16b4f0313886b6c2080097ae6ffaf5729~WuSDJNifI1188711887epsmtip1W;
+        Tue,  9 Jun 2020 00:37:48 +0000 (GMT)
+From:   "Namjae Jeon" <namjae.jeon@samsung.com>
+To:     "'Dan Carpenter'" <dan.carpenter@oracle.com>
+Cc:     "'Sungjong Seo'" <sj1557.seo@samsung.com>,
+        <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>,
+        "'Tetsuhiro Kohada'" <kohada.t2@gmail.com>
+In-Reply-To: <20200608141629.GA1912173@mwanda>
+Subject: RE: [PATCH] exfat: Fix pontential use after free in
+ exfat_load_upcase_table()
+Date:   Tue, 9 Jun 2020 09:37:48 +0900
+Message-ID: <00a401d63df6$3370adc0$9a520940$@samsung.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="5vNYLRcllDrimb99"
-Content-Disposition: inline
-In-Reply-To: <20200608141727.GC1912173@mwanda>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQHN6CJjsnVWAfliAKZmdf3Bml3OWAGGpuqaqNPltlA=
+Content-Language: ko
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFuphk+LIzCtJLcpLzFFi42LZdljTQPfuzXtxBtM/81m8/jedxWLrLWmL
+        H3Nvs1js2XuSxeLyrjlsFlv+HWF1YPPYOesuu8fHp7dYPPq2rGL0+LxJLoAlKscmIzUxJbVI
+        ITUvOT8lMy/dVsk7ON453tTMwFDX0NLCXEkhLzE31VbJxSdA1y0zB2i3kkJZYk4pUCggsbhY
+        Sd/Opii/tCRVISO/uMRWKbUgJafA0KBArzgxt7g0L10vOT/XytDAwMgUqDIhJ6N99XTmgrNs
+        Fe8/tLA1MM5l7WLk5JAQMJHYu2AXO4gtJLCDUeLaQqkuRi4g+xOjxMz1N9ggnG+MElea3zLB
+        dNx9858JIrGXUWJu5xSo9peMEsfuxoDYbAK6Ev/+7GcDsUUEDCTunXzBAtLALHCYUeJix0yw
+        SZwCehKrbs9lBrGFBSIkvj55zAhiswioSMy9dgOshlfAUuLcj/1QtqDEyZlPWEBsZgF5ie1v
+        5zBDXKQg8fPpMlaIZVYSv8/uZ4WoEZGY3dnGDLJYQqCXQ+LL1p9QT7tITJz5kw3CFpZ4dXwL
+        O4QtJfH53V6gOAeQXS3xcT/U/A5GiRffbSFsY4mb6zewgpQwC2hKrN+lDxFWlNj5ey4jxFo+
+        iXdfe1ghpvBKdLQJQZSoSvRdOgwNQ2mJrvYP7BMYlWYheWwWksdmIXlgFsKyBYwsqxjFUguK
+        c9NTiw0LjJHjehMjOFlqme9gnPb2g94hRiYOxkOMEhzMSiK81Q/uxAnxpiRWVqUW5ccXleak
+        Fh9iNAUG9URmKdHkfGC6ziuJNzQ1MjY2tjAxMzczNVYS5/W1uhAnJJCeWJKanZpakFoE08fE
+        wSnVwFR1zlnrmMbN7T/nPWZmnJE5N+/zKhFf5a+da/bcdn2Xfvjcdp5tfxXj129Ozpd99Cck
+        bPqZAnXxgqerX4od3dzdGBu0+Z7EhuqXy+b/+8TIe/pUnIXOGgOVV6rnCxclb0jmdQqaEMZg
+        0BzgptUvpn/bvDegPnzLn/igT1UTzZ2Xme/zzdCalnVDOGp1jO7bsGNTXn48Y+a417nll0Sd
+        Wznf9Lfc2768/cj+xWWGh7n/tYbbcb8Ymi1m3pp702nm0tgJlyqmySTd5s7I0dHm4GY6pj7j
+        yxXB1kgl06l5T/d42/E/4oirvfevNErkXuDaXuvHzq8WqExY8/zq6TNrNvDVGR493etxUuf0
+        tMYK5UVKLMUZiYZazEXFiQC2EZnSHwQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrGLMWRmVeSWpSXmKPExsWy7bCSnO6dm/fiDP4uMbN4/W86i8XWW9IW
+        P+beZrHYs/cki8XlXXPYLLb8O8LqwOaxc9Zddo+PT2+xePRtWcXo8XmTXABLFJdNSmpOZllq
+        kb5dAldG++rpzAVn2Sref2hha2Ccy9rFyMkhIWAicffNf6YuRi4OIYHdjBLbuuZAJaQljp04
+        w9zFyAFkC0scPlwMUfOcUeLSkVnMIDVsAroS//7sZwOxRQQMJO6dfMECUsQscJRRovVXD1hC
+        SKBeYvHhKUwgNqeAnsSq23PBmoUFwiTWHbjNCGKzCKhIzL12A6yGV8BS4tyP/VC2oMTJmU9Y
+        QI5gBupt2whWziwgL7H97RxmiDsVJH4+XcYKcYOVxO+z+1khakQkZne2MU9gFJ6FZNIshEmz
+        kEyahaRjASPLKkbJ1ILi3PTcYsMCw7zUcr3ixNzi0rx0veT83E2M4KjR0tzBuH3VB71DjEwc
+        jIcYJTiYlUR4qx/ciRPiTUmsrEotyo8vKs1JLT7EKM3BoiTOe6NwYZyQQHpiSWp2ampBahFM
+        lomDU6qBaX7R669X87r1Q84GPbqaJbl7edv1eCXNqo/XdqrefNtmZX1iqc/aL3eSgnb/DPA/
+        fbuqc+MXry9TDq1uuZBV+jvihL2p5fK7pfu+lIlwK+Waxn6q6XubuWsLt2SkW23Ah7MLsrpd
+        J767Is9TFL6nwvhD14k3bz7tetz5ROpkxl2NIxe+Tv2eZ7jhWVlSOZO5n06l+tl7G/a8vNp5
+        6bS8ve/SuxKsYgryliHVNh7MZ94qLJKxiGI6z2mZsCWYa2HWiV9umTpPVkfOTdxtMv+u/Ham
+        tScNfm7+PbfZO+MTT3DsjbbjNXPDZq+0ki5t23z5UG+/dLT6y1tZlZNWHD6sqXGiPWv+7YcP
+        rjOv1Ghu/qjEUpyRaKjFXFScCADf18VmCQMAAA==
+X-CMS-MailID: 20200609003748epcas1p1f034333f92535dc97f26cd9f49560551
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20200608141649epcas1p14558f3552afb0fcd3cd32a8c09afb880
+References: <CGME20200608141649epcas1p14558f3552afb0fcd3cd32a8c09afb880@epcas1p1.samsung.com>
+        <20200608141629.GA1912173@mwanda>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
---5vNYLRcllDrimb99
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Jun 08, 2020 at 05:17:27PM +0300, Dan Carpenter wrote:
-> The code here is accidentally returning IS_ERR() which is 1 but it
-> should be returning negative error codes with PTR_ERR().
->=20
-> Fixes: 56a1485b102e ("i2c: npcm7xx: Add Nuvoton NPCM I2C controller drive=
-r")
+> This code calls brelse(bh) and then dereferences "bh" on the next line resulting in a possible use
+> after free.  The brelse() should just be moved down a line.
+> 
+> Fixes: b676fdbcf4c8 ("exfat: standardize checksum calculation")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Applied. Thanks!
+> ---
+>  fs/exfat/nls.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/exfat/nls.c b/fs/exfat/nls.c index c1ec056954974..57b5a7a4d1f7a 100644
+> --- a/fs/exfat/nls.c
+> +++ b/fs/exfat/nls.c
+> @@ -692,8 +692,8 @@ static int exfat_load_upcase_table(struct super_block *sb,
+>  				index++;
+>  			}
+>  		}
+> -		brelse(bh);
+>  		chksum = exfat_calc_chksum32(bh->b_data, i, chksum, CS_DEFAULT);
+> +		brelse(bh);
+>  	}
+> 
+>  	if (index >= 0xFFFF && utbl_checksum == chksum)
+> --
+> 2.26.2
 
-Applied to for-5.8, thanks!
 
-
---5vNYLRcllDrimb99
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl7en/sACgkQFA3kzBSg
-KbZttQ/9Ey8Kf2SvVwUBxEWRZzA0wki7LFu+OIJR8IdQvyx13t2rYOSLZ8Rh7ehZ
-GYENcTfBohlyr0V2Rd0sVL0MjhwpDjUYFyBvMlz9fOP2+xmlq2uF+iOINIToz0CJ
-RTqYfOXxbqfcnQBUXuQWKJJc7rQyhwEWOS3VdTUt/khe2Kg60hfrYO5jkXwucm0B
-ULVWXiu5UYWLo0xwstbUPPkFk8dUleR6wnNqVhtgmG5RdbUnNCxpGhVqAymqzX0l
-YQUpURv9HP+wZERAIryr0nk+P9h41Wfh/pG1vXQkQ1i1zl9yU35yS9tpZnRJeVW3
-7FkjsNO9ZSlmKIjMI7lpPZgOI7jLL3a764UmUM2tSy/KgDFdzWkZ8065U+rx8nOE
-8Yc3Rw3xQsZb8xorwn/a1UtpY25uEBM1oxKMsgXvvNW/zbyxMu9Pw0PJSWB5WCXp
-pvcY+Wfec6v6CGX66Wm3OqHfZquMwcn5xUp+zdX5SouNIuQw8lVZksh91ZGBxakZ
-4uVm1JGYPJoZvMY1UDLFZ1AadeODlsCIr4GOkDyfFL7M9XJ/Un6/gsAjpAtAsQx0
-iUJPvdcuJE5T6vW2K1+TkyjabjpSHc/zoJ3SOzgO8MKrQZOLqUPUn4RziIxglqMm
-rzkMUWqK034wLy9uzYgPZo+7JnhvyFNRM2sBxldH4q/IcFOOrPI=
-=IgmB
------END PGP SIGNATURE-----
-
---5vNYLRcllDrimb99--

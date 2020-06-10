@@ -2,88 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DCF51F53DC
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 13:53:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 034521F5402
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 13:58:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728684AbgFJLxg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Jun 2020 07:53:36 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:46988 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728583AbgFJLxf (ORCPT
+        id S1728614AbgFJL6J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Jun 2020 07:58:09 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:33518 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728562AbgFJL6J (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Jun 2020 07:53:35 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05ABqQtc139508;
-        Wed, 10 Jun 2020 11:53:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : message-id : references : date : in-reply-to : mime-version :
- content-type; s=corp-2020-01-29;
- bh=lLuLvWf3spNYNgQdNK2VUalQ9x6mRO55PW3ewD79iEg=;
- b=x2kiaGPxJ+E1anrnxZXxIbVkTnjBICzvi33S0QcvKPUdDLjbrJrbV/ZKaBR6QcFQlU0z
- u6D7kBXw9ER1cXoMqVRTWbseJsbodfOsneudcDLPVOb7L7iEt7a8h0fr4DpPXhsnTAeA
- +Lgp6CFQOxFmlWwXDid3kvqQUVaLIbJcqJtb340AQCgRuiT33w0aVvpUdtA/OBmqTsTs
- 8f/TDAVn9owDJ3o9bGOzYRKvMzkP71h9LVlK1W4xBAvLW5IKTm007gw9Ro9+/+78sdkj
- NixQQkTdZvtGV3YfNTltr7lzg8D65yhhXtevVWphC/nGE8RoHkFx/fCyZV157ywLzwCy zA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 31g2jr9x5x-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 10 Jun 2020 11:53:19 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05ABqRE6194928;
-        Wed, 10 Jun 2020 11:53:18 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 31gn28tbgp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 10 Jun 2020 11:53:18 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05ABr80w012721;
-        Wed, 10 Jun 2020 11:53:11 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 10 Jun 2020 04:53:08 -0700
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        jejb@linux.ibm.com, linux@armlinux.org.uk,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH] scsi: powertec: Fix different dev_id between
- 'request_irq()' and 'free_irq()'
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <yq11rmnrvcl.fsf@ca-mkp.ca.oracle.com>
-References: <20200530072933.576851-1-christophe.jaillet@wanadoo.fr>
-        <159175686974.7062.8526082970785072740.b4-ty@oracle.com>
-        <08f63617-03df-71cf-70c4-00f08a9f51d8@wanadoo.fr>
-Date:   Wed, 10 Jun 2020 07:53:06 -0400
-In-Reply-To: <08f63617-03df-71cf-70c4-00f08a9f51d8@wanadoo.fr> (Christophe
-        JAILLET's message of "Wed, 10 Jun 2020 07:35:49 +0200")
+        Wed, 10 Jun 2020 07:58:09 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jizMq-0000Nb-Ho; Wed, 10 Jun 2020 11:58:04 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Dave Airlie <airlied@redhat.com>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/ast: fix missing break in switch statement for format->cpp[0] case 4
+Date:   Wed, 10 Jun 2020 12:58:04 +0100
+Message-Id: <20200610115804.1132338-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0.rc0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9647 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 mlxscore=0
- phishscore=0 adultscore=0 bulkscore=0 malwarescore=0 mlxlogscore=649
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006100091
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9647 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
- cotscore=-2147483648 priorityscore=1501 spamscore=0 suspectscore=0
- lowpriorityscore=0 bulkscore=0 mlxlogscore=701 malwarescore=0 mlxscore=0
- phishscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006100091
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
-Christophe,
+Currently the switch statement for format->cpp[0] value 4 assigns
+color_index which is never read again and then falls through to the
+default case and returns. This looks like a missing break statement
+bug. Fix this by adding a break statement.
 
->> [1/1] scsi: powertec: Fix different dev_id between request_irq() and free_irq()
->>        https://git.kernel.org/mkp/scsi/c/af7b415a1ebf
->>
-> Please revert,
+Addresses-Coverity: ("Unused value")
+Fixes: 259d14a76a27 ("drm/ast: Split ast_set_vbios_mode_info()")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/ast/ast_mode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Dropped (x2).
-
+diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
+index 7d39b858c9f1..3a3a511670c9 100644
+--- a/drivers/gpu/drm/ast/ast_mode.c
++++ b/drivers/gpu/drm/ast/ast_mode.c
+@@ -226,6 +226,7 @@ static void ast_set_vbios_color_reg(struct ast_private *ast,
+ 	case 3:
+ 	case 4:
+ 		color_index = TrueCModeIndex;
++		break;
+ 	default:
+ 		return;
+ 	}
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.27.0.rc0
+

@@ -2,156 +2,125 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 553AD1F59CB
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 19:15:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C373D1F5A36
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 19:22:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727059AbgFJRPF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Jun 2020 13:15:05 -0400
-Received: from mx2.suse.de ([195.135.220.15]:48694 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726979AbgFJRPF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Jun 2020 13:15:05 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 58E21B009;
-        Wed, 10 Jun 2020 17:15:06 +0000 (UTC)
-Subject: Re: [PATCH] drm/ast: fix missing break in switch statement for
- format->cpp[0] case 4
-To:     Colin King <colin.king@canonical.com>,
-        Dave Airlie <airlied@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200610115804.1132338-1-colin.king@canonical.com>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- mQENBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAG0J1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPokBVAQTAQgAPhYh
- BHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsDBQkDwmcABQsJCAcCBhUKCQgLAgQWAgMB
- Ah4BAheAAAoJEGgNwR1TC3ojR80H/jH+vYavwQ+TvO8ksXL9JQWc3IFSiGpuSVXLCdg62AmR
- irxW+qCwNncNQyb9rd30gzdectSkPWL3KSqEResBe24IbA5/jSkPweJasgXtfhuyoeCJ6PXo
- clQQGKIoFIAEv1s8l0ggPZswvCinegl1diyJXUXmdEJRTWYAtxn/atut1o6Giv6D2qmYbXN7
- mneMC5MzlLaJKUtoH7U/IjVw1sx2qtxAZGKVm4RZxPnMCp9E1MAr5t4dP5gJCIiqsdrVqI6i
- KupZstMxstPU//azmz7ZWWxT0JzgJqZSvPYx/SATeexTYBP47YFyri4jnsty2ErS91E6H8os
- Bv6pnSn7eAq5AQ0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRH
- UE9eosYbT6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgT
- RjP+qbU63Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+R
- dhgATnWWGKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zb
- ehDda8lvhFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r
- 12+lqdsAEQEAAYkBPAQYAQgAJhYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsMBQkD
- wmcAAAoJEGgNwR1TC3ojpfcIAInwP5OlcEKokTnHCiDTz4Ony4GnHRP2fXATQZCKxmu4AJY2
- h9ifw9Nf2TjCZ6AMvC3thAN0rFDj55N9l4s1CpaDo4J+0fkrHuyNacnT206CeJV1E7NYntxU
- n+LSiRrOdywn6erjxRi9EYTVLCHcDhBEjKmFZfg4AM4GZMWX1lg0+eHbd5oL1as28WvvI/uI
- aMyV8RbyXot1r/8QLlWldU3NrTF5p7TMU2y3ZH2mf5suSKHAMtbE4jKJ8ZHFOo3GhLgjVrBW
- HE9JXO08xKkgD+w6v83+nomsEuf6C6LYrqY/tsZvyEX6zN8CtirPdPWu/VXNRYAl/lat7lSI
- 3H26qrE=
-Message-ID: <3286283e-f202-a515-0ae1-89c0d3e855fb@suse.de>
-Date:   Wed, 10 Jun 2020 19:14:57 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+        id S1728098AbgFJRWk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Jun 2020 13:22:40 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:51510 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728063AbgFJRWk (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 10 Jun 2020 13:22:40 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05AHMS6Z148213;
+        Wed, 10 Jun 2020 17:22:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2020-01-29; bh=aL0a/xbCZCIDNKCgomY8AnMMHs27tbW+9lkiBuLKCj8=;
+ b=UpNiHbMz/tLQlpq7JPOzoDd0XPh7Y0M44PoYbGoLOkesVOZ57Seiyd8TXQpmdCuW/4J9
+ W2Dl9Ic/3H9r8Dxg6b42TMVDK+GXDLn801xoQl95WrSLXOcAPQ4m7kG/66SmPcT/Ul83
+ M7ml/b/rh1w2ZbrDQOanQU3ZiyuJCToNees4GRiuNvZgM6SuMAQYFbRQ92egqEZ5CerQ
+ rE0maflJjwXXNPgr3vxj5PwRNisWtkqYDu20XvCdYIyL4Rp8YIYF2BI4gpj0s07kTobT
+ 0ef5JLv5VXoxhV/jWcr3eJ4DPahM9SoOstZ3uxvZ1vYwIZahtiYoAc0qTwLfbUf6DRHw uw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 31g3sn3h8g-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 10 Jun 2020 17:22:28 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05AHMQvU087955;
+        Wed, 10 Jun 2020 17:22:27 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 31gn29jd3s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 10 Jun 2020 17:22:27 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05AHMKkR030983;
+        Wed, 10 Jun 2020 17:22:20 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 10 Jun 2020 10:22:20 -0700
+Date:   Wed, 10 Jun 2020 20:22:13 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-fsdevel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Namjae Jeon <namjae.jeon@samsung.com>,
+        Sungjong Seo <sj1557.seo@samsung.com>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        Tetsuhiro Kohada <kohada.t2@gmail.com>,
+        Wei Yongjun <weiyongjun1@huawei.com>
+Subject: [PATCH v2] exfat: add missing brelse() calls on error paths
+Message-ID: <20200610172213.GA90634@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20200610115804.1132338-1-colin.king@canonical.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="UsxwGtEEheNGlAKZ6LKRC92AjTcFcuLXI"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6939014a-adbf-f970-2541-df16d35de7e5@web.de>
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9648 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 mlxscore=0
+ phishscore=0 adultscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006100133
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9648 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 impostorscore=0 cotscore=-2147483648 suspectscore=0
+ spamscore=0 bulkscore=0 malwarescore=0 phishscore=0 mlxscore=0
+ mlxlogscore=999 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006100133
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---UsxwGtEEheNGlAKZ6LKRC92AjTcFcuLXI
-Content-Type: multipart/mixed; boundary="Eah6yEBgs72EXQ71v3OZ8NDYMEkLD36Kz";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Colin King <colin.king@canonical.com>, Dave Airlie <airlied@redhat.com>,
- David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
- Gerd Hoffmann <kraxel@redhat.com>, dri-devel@lists.freedesktop.org
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-ID: <3286283e-f202-a515-0ae1-89c0d3e855fb@suse.de>
-Subject: Re: [PATCH] drm/ast: fix missing break in switch statement for
- format->cpp[0] case 4
-References: <20200610115804.1132338-1-colin.king@canonical.com>
-In-Reply-To: <20200610115804.1132338-1-colin.king@canonical.com>
+If the second exfat_get_dentry() call fails then we need to release
+"old_bh" before returning.  There is a similar bug in exfat_move_file().
 
---Eah6yEBgs72EXQ71v3OZ8NDYMEkLD36Kz
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Fixes: 5f2aa075070c ("exfat: add inode operations")
+Reported-by: Markus Elfring <Markus.Elfring@web.de>
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+v2: fix exfat_move_file() as well.  Also add a Fixes tag.
 
-Hi
+ fs/exfat/namei.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-Am 10.06.20 um 13:58 schrieb Colin King:
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> Currently the switch statement for format->cpp[0] value 4 assigns
-> color_index which is never read again and then falls through to the
-> default case and returns. This looks like a missing break statement
-> bug. Fix this by adding a break statement.
->=20
-> Addresses-Coverity: ("Unused value")
-> Fixes: 259d14a76a27 ("drm/ast: Split ast_set_vbios_mode_info()")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+diff --git a/fs/exfat/namei.c b/fs/exfat/namei.c
+index 5b0f35329d63e..edd8023865a0e 100644
+--- a/fs/exfat/namei.c
++++ b/fs/exfat/namei.c
+@@ -1077,10 +1077,14 @@ static int exfat_rename_file(struct inode *inode, struct exfat_chain *p_dir,
+ 
+ 		epold = exfat_get_dentry(sb, p_dir, oldentry + 1, &old_bh,
+ 			&sector_old);
++		if (!epold)
++			return -EIO;
+ 		epnew = exfat_get_dentry(sb, p_dir, newentry + 1, &new_bh,
+ 			&sector_new);
+-		if (!epold || !epnew)
++		if (!epnew) {
++			brelse(old_bh);
+ 			return -EIO;
++		}
+ 
+ 		memcpy(epnew, epold, DENTRY_SIZE);
+ 		exfat_update_bh(sb, new_bh, sync);
+@@ -1161,10 +1165,14 @@ static int exfat_move_file(struct inode *inode, struct exfat_chain *p_olddir,
+ 
+ 	epmov = exfat_get_dentry(sb, p_olddir, oldentry + 1, &mov_bh,
+ 		&sector_mov);
++	if (!epmov)
++		return -EIO;
+ 	epnew = exfat_get_dentry(sb, p_newdir, newentry + 1, &new_bh,
+ 		&sector_new);
+-	if (!epmov || !epnew)
++	if (!epnew) {
++		brelse(mov_bh);
+ 		return -EIO;
++	}
+ 
+ 	memcpy(epnew, epmov, DENTRY_SIZE);
+ 	exfat_update_bh(sb, new_bh, IS_DIRSYNC(inode));
+-- 
+2.26.2
 
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-Thanks for the fix. I'll test and merge the patch tomorrow.
-
-Best regards
-Thomas
-
-> ---
->  drivers/gpu/drm/ast/ast_mode.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_m=
-ode.c
-> index 7d39b858c9f1..3a3a511670c9 100644
-> --- a/drivers/gpu/drm/ast/ast_mode.c
-> +++ b/drivers/gpu/drm/ast/ast_mode.c
-> @@ -226,6 +226,7 @@ static void ast_set_vbios_color_reg(struct ast_priv=
-ate *ast,
->  	case 3:
->  	case 4:
->  		color_index =3D TrueCModeIndex;
-> +		break;
->  	default:
->  		return;
->  	}
->=20
-
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-(HRB 36809, AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
-
-
---Eah6yEBgs72EXQ71v3OZ8NDYMEkLD36Kz--
-
---UsxwGtEEheNGlAKZ6LKRC92AjTcFcuLXI
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl7hFRUACgkQaA3BHVML
-eiNuewf+NSC3xjI5ZqB94Yy11a5/KKJtyGy9G3I638ASSLvAjH4PiqkGQCW246p7
-QrOnWTdoKlW6XreLjH06r3+9Jb6WafV/ewvzio6+SvuD64edsef6HBekhUlKwYo3
-1593l1mh+DKw3o+uGYUBo96Oj5RY3yZrSjfnhAfOd116th4V5YbOOyakfWQ0gEhX
-xE0+r9NB+BtY1rPUNDcucYn37j4twAICKVPOX2shYc/Qpoc8cE/QI9Y7J/ktpy11
-3LMItZvlevCWP/79zrdpy/buo603otmLkn5Ia8QMtFAKZ+IBIzo97fdHVqrC/aHZ
-X3f5bYnUyyOscA5mRY72K1veGuupuQ==
-=kXy7
------END PGP SIGNATURE-----
-
---UsxwGtEEheNGlAKZ6LKRC92AjTcFcuLXI--

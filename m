@@ -2,88 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBE1C1F4B20
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 04:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3B291F4B88
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 04:42:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726046AbgFJCDO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 9 Jun 2020 22:03:14 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:51404 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725798AbgFJCDN (ORCPT
+        id S1726108AbgFJCmE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 9 Jun 2020 22:42:04 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:60844 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725927AbgFJCmD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 9 Jun 2020 22:03:13 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05A22rRC028473;
-        Wed, 10 Jun 2020 02:02:53 GMT
+        Tue, 9 Jun 2020 22:42:03 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05A2aQ53156139;
+        Wed, 10 Jun 2020 02:41:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2020-01-29;
- bh=OyjqTL3RFU3qhRhjl1q+nR+l4wbwyQdM/xh+BDHyC/Q=;
- b=A890azgFkB3wqpRI89CnZldQ8yTmMpDXaWngJiW8JTxbsqhLe1M8vVoG7Ngl8bxMTt/+
- 0pD/DFFXcmw1uMnwDqc91EaTouHiO54UexWUGwF3B302GLRFcEG5l0vOUBVc0p9UMDVk
- hC0V8Zc5nFToM02wRMEqFEOwQtIlwrkGgrHNL/MGAlI4XwDeHfUk5msexZj6equoRBqX
- BB3aAEfIKXn70IsL01jJFDJZTACI6GZfUpQ+0VIh9ZzqIV77+80Aaiky1uXZaGW7qqdJ
- VaO7JFUrxja9Uxaa3vnK4OcXKZ+C8mAqaxf0V4zwAORLtTL7v30bpOdRyKVV0i4Scycq Xw== 
+ bh=jsoQcyzfrxL4t8e+aWIRBwCpl33orrtek8y501RHyXY=;
+ b=ac++HWFR3PniNo+ib7ObhN2pXkU5X3ONXn9a+sCR9kaE/S/jfXkgciDuaEbHn7A2Rem3
+ n6jFTQ7JrrC8TPsJjf97NH+t+bEUCKuW9b6qmQ467e6Henc0gjZTUg8ei2wE9XpwTi59
+ gG4nqAi9nAKc7FUlgSFDuJqcZsQtg8D1YuexnXRlWa0inqB9hN7nRoPvYmznfFeR58/X
+ 8EvObtt3v4XzM9ScrKqgnxXPd2OM8VEmc7A6YsitMMocvkEVLHUzTHZxPCVAJe/G2EfF
+ RlejOJXRwDWmBCBazBIgYuXuPYb/qRbA57AxZuArqW+tNUtw0zu0bpBrwgk7Wl787/f1 UQ== 
 Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 31jepnsq8u-1
+        by userp2120.oracle.com with ESMTP id 31g3smytkq-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 10 Jun 2020 02:02:53 +0000
+        Wed, 10 Jun 2020 02:41:26 +0000
 Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05A1wPNd020921;
-        Wed, 10 Jun 2020 02:02:52 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 31gmwsbn7t-1
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05A2cQsU168143;
+        Wed, 10 Jun 2020 02:41:26 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 31gmwsd3dm-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 10 Jun 2020 02:02:52 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05A22pcH004447;
-        Wed, 10 Jun 2020 02:02:51 GMT
+        Wed, 10 Jun 2020 02:41:26 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05A2fMSp000824;
+        Wed, 10 Jun 2020 02:41:22 GMT
 Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 09 Jun 2020 19:02:50 -0700
+        with ESMTP ; Tue, 09 Jun 2020 19:41:22 -0700
 From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     "Matthew R. Ochs" <mrochs@linux.vnet.ibm.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        "Manoj N. Kumar" <manoj@linux.ibm.com>
+To:     jejb@linux.ibm.com, linux@armlinux.org.uk,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        kernel-janitors@vger.kernel.org,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        linux-kernel@vger.kernel.org, Uma Krishnan <ukrishn@linux.ibm.com>,
-        linux-scsi@vger.kernel.org
-Subject: Re: [PATCH] cxlflash: remove an unnecessary NULL check
-Date:   Tue,  9 Jun 2020 22:02:44 -0400
-Message-Id: <159175452258.16072.8552277193377320754.b4-ty@oracle.com>
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-scsi@vger.kernel.org
+Subject: Re: [PATCH] scsi: acornscsi: Fix an error handling path in 'acornscsi_probe()'
+Date:   Tue,  9 Jun 2020 22:41:19 -0400
+Message-Id: <159175686975.7062.3916571088976504463.b4-ty@oracle.com>
 X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200605110258.GD978434@mwanda>
-References: <20200605110258.GD978434@mwanda>
+In-Reply-To: <20200530081622.577888-1-christophe.jaillet@wanadoo.fr>
+References: <20200530081622.577888-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9647 signatures=668680
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 adultscore=0
- mlxscore=0 mlxlogscore=941 bulkscore=0 malwarescore=0 phishscore=0
+ mlxscore=0 mlxlogscore=971 bulkscore=0 malwarescore=0 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006100013
+ definitions=main-2006100019
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9647 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 suspectscore=0
- priorityscore=1501 bulkscore=0 clxscore=1011 phishscore=0 impostorscore=0
- malwarescore=0 mlxscore=0 cotscore=-2147483648 adultscore=0 spamscore=0
- mlxlogscore=980 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006100013
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 impostorscore=0 cotscore=-2147483648 suspectscore=0
+ spamscore=0 bulkscore=0 malwarescore=0 phishscore=0 mlxscore=0
+ mlxlogscore=999 clxscore=1011 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006100019
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 5 Jun 2020 14:02:58 +0300, Dan Carpenter wrote:
+On Sat, 30 May 2020 10:16:22 +0200, Christophe JAILLET wrote:
 
-> The "cmd" pointer was already dereferenced a couple lines earlier so
-> this NULL check is too late.  Fortunately, the pointer can never be NULL
-> and the check can be removed.
+> 'ret' is known to be 0 at this point.
+> So, explicitly return -ENOMEM if one of the 'ecardm_iomap()' calls fail.
 
 Applied to 5.8/scsi-queue, thanks!
 
-[1/1] scsi: cxlflash: Remove an unnecessary NULL check
-      https://git.kernel.org/mkp/scsi/c/89dd9ce784fb
+[1/1] scsi: acornscsi: Fix an error handling path in acornscsi_probe()
+      https://git.kernel.org/mkp/scsi/c/7960c0b29626
 
 -- 
 Martin K. Petersen	Oracle Linux Engineering

@@ -2,187 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC10C1F52AF
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 12:57:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DCF51F53DC
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 13:53:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728381AbgFJK5d (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Jun 2020 06:57:33 -0400
-Received: from mail-mw2nam10on2069.outbound.protection.outlook.com ([40.107.94.69]:6030
-        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728344AbgFJK5c (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Jun 2020 06:57:32 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YLgVbX5NZu334nwE336o4ekJrH8zyIGWhO1JhAsYO7DfBEPUIBmnPG1px5UrPXI4lTLWkSgZIzVTgWMC1VeXWv23xIOHP3rB/+Z89pZJuhAdRfoCoLYYVb1kB+zAbs3BHM+hkP8C6M5uS4pkZX+L4pq/TOfaxa7Mm8JbPfquR+C27GwGw3dH837wp/sdPWyWGqG69EfF8DWh4jzLxT4WpD7IHcFt2iL7mX7fLwtLWsFVKdEiBvzHs2GVWosjc3PHOtwoeSJq9IynZDFa64oe9UPL+AU8DAJiMcikRdtlZBlbbDw0UzN0+1PYtkm3QP3G7WWjbjDdrdVX6ggF5lYO5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ob9wDTXNyz1NHxWYfF1nQdGGeMt2RMl7fRCaVaDP1Do=;
- b=Ej5btI7WhtYR4NNpQ4KHkKFjvCqcodGrIEZrWzCtfAeCZwovEgX+5tA5LFbJqnu2haqNm5UqCqpJED6rI5r34ty+STKtI5EHnrw/24ue3ubTYO17zBd1R9+xB8NUkCRLmCnitWkzWmdsTSGc4uz+G9nJcSt9xiSc8r/yweBKylD6cx6TMQyjJNZZKBWvXh9eGRCqaVbf7NnG4OEkxJy9pDezpVAULF3M4liP6kGIBJjrXiRzsYzKUJ1W9TIHeHWSdzxbijMXQp3akGfBLBy3vNyKy9YGPLOOiaS0nAI6Bt1slZDm0FcJk0Nyl98CXjf8SBsihHQMHAQH4xgZuSBj2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ob9wDTXNyz1NHxWYfF1nQdGGeMt2RMl7fRCaVaDP1Do=;
- b=3c75FYYFYmkhFrZfR5N5J+JE8Rdycx7beIjngkyW044BVPQllt8mUrjQLf8IBC74m5GogudTQEqeN5yfvScZMF6Jdh8btDDostlusUA1nFr1Myj+HOHAxGs3KXoIEBt7oiCziM0KbYhLC3t5ZbrGp7p5VzZJ7XO1M+6zyTZrvmU=
-Received: from DM6PR12MB2619.namprd12.prod.outlook.com (2603:10b6:5:45::18) by
- DM6PR12MB3372.namprd12.prod.outlook.com (2603:10b6:5:11b::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3066.20; Wed, 10 Jun 2020 10:57:29 +0000
-Received: from DM6PR12MB2619.namprd12.prod.outlook.com
- ([fe80::c157:8999:dcc3:536f]) by DM6PR12MB2619.namprd12.prod.outlook.com
- ([fe80::c157:8999:dcc3:536f%3]) with mapi id 15.20.3066.023; Wed, 10 Jun 2020
- 10:57:29 +0000
-From:   "Quan, Evan" <Evan.Quan@amd.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>
-CC:     "Koenig, Christian" <Christian.Koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "Zhang, Hawking" <Hawking.Zhang@amd.com>,
-        "Kuehling, Felix" <Felix.Kuehling@amd.com>,
-        "Zhou1, Tao" <Tao.Zhou1@amd.com>, "Ma, Le" <Le.Ma@amd.com>,
-        "Xiao, Jack" <Jack.Xiao@amd.com>,
-        "Kim, Jonathan" <Jonathan.Kim@amd.com>,
-        "Greathouse, Joseph" <Joseph.Greathouse@amd.com>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: RE: [PATCH v2] drm/amdgpu: Fix a buffer overflow handling the serial
- number
-Thread-Topic: [PATCH v2] drm/amdgpu: Fix a buffer overflow handling the serial
- number
-Thread-Index: AQHWPwUjjUQvGtGEYU24/3ErTNSjyqjRrbNA
-Date:   Wed, 10 Jun 2020 10:57:29 +0000
-Message-ID: <DM6PR12MB2619D7FBF176EEA50DB3E2AAE4830@DM6PR12MB2619.namprd12.prod.outlook.com>
-References: <DM6PR12MB26194168100E5F96FF94D066E4820@DM6PR12MB2619.namprd12.prod.outlook.com>
- <20200610085653.GA5439@mwanda>
-In-Reply-To: <20200610085653.GA5439@mwanda>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_76546daa-41b6-470c-bb85-f6f40f044d7f_ActionId=61133f07-20e3-48e3-be9c-0000b585cd10;MSIP_Label_76546daa-41b6-470c-bb85-f6f40f044d7f_ContentBits=0;MSIP_Label_76546daa-41b6-470c-bb85-f6f40f044d7f_Enabled=true;MSIP_Label_76546daa-41b6-470c-bb85-f6f40f044d7f_Method=Standard;MSIP_Label_76546daa-41b6-470c-bb85-f6f40f044d7f_Name=Internal
- Use Only -
- Unrestricted;MSIP_Label_76546daa-41b6-470c-bb85-f6f40f044d7f_SetDate=2020-06-10T10:57:03Z;MSIP_Label_76546daa-41b6-470c-bb85-f6f40f044d7f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
-authentication-results: oracle.com; dkim=none (message not signed)
- header.d=none;oracle.com; dmarc=none action=none header.from=amd.com;
-x-originating-ip: [58.247.170.242]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: d3cba574-bf6f-4552-0193-08d80d2d1196
-x-ms-traffictypediagnostic: DM6PR12MB3372:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DM6PR12MB3372174C916841CD3CA7B20CE4830@DM6PR12MB3372.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
-x-forefront-prvs: 0430FA5CB7
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 93K2GhohQZAaiKFaSsAYY4WjNgaPLWPGtLo31eeCaa0ZJwRHJ5bC/APJKWpMciW1L406Ou9TaHeajMcZ8xOYIWe2SqP895F2xY5A9T1l9EbzYOZGUZJ052VfCL1TaL0tA1K+jXIJIzv2OUWr+lvpjDdRabuY43TbnhuBjMBgCCAx1YJfbUTCMs6lHf5xQBqPqCY9T54NN07cE/M1fKLdPQZByotzfk+I9l3ZmsQApcFvQRImhU6NrHjJlq6rVse3N/pB4kc9+iSa23Ac1WPd6oFlMMbGbyWbmTz0Q6fuXyINqD+NrTpDZeuIWdZwutCj9sl6gG/HHJIGcSzNvHyJHQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2619.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(396003)(136003)(376002)(346002)(39860400002)(366004)(86362001)(52536014)(8936002)(6506007)(71200400001)(5660300002)(6636002)(7696005)(83380400001)(8676002)(54906003)(33656002)(110136005)(2906002)(186003)(316002)(4326008)(53546011)(66556008)(66476007)(66446008)(26005)(478600001)(66946007)(64756008)(76116006)(9686003)(55016002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: 6woD4hZMM7m2fjiZbB8MZds6dRdMN6mUbyPTB4X0Sg5T5k21XZLG7gHY/m+PUEsMsGqEvcJ93ngpQyaF5fFnbsV2uyftXCLNYkGIMr0XrkWghkX1oqEIMK9XA9/ILmLarDmILiKSPDabVsJhEghj5VmiDIShnVs+K++3+Iqpsb0V97GkXmsPwoYlJWGNX/+jQ4cy21pty1xfQghnv+J1a9GER/TbT8kTj1E+wwtJnLvpOw76QBV+HW4HUrVwR0I5EB0PrehFbUc10AwS+zixX6eI7uNfFrwuR4PwVsN1RmqtXXrTWty1owBDIrXvVxw+ygRA5QXeefUAQ6CChuMGEKHRv1UsmtskWGyXA8mgYW1ypfqF2lIIetuLsJ5BlltwAwLtxERqy9yAV0ZTAseGXgPA0r+k1N4LB5K/abAtBni7+yt8oqaH1p+1Vjk0Xhjd/+1no1rwTTmDA0HVmc63VMAdrDOgQPg8PFM3dDxxqQCiASqZ4RrTbgWLHypCB7gR
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1728684AbgFJLxg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Jun 2020 07:53:36 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:46988 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728583AbgFJLxf (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 10 Jun 2020 07:53:35 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05ABqQtc139508;
+        Wed, 10 Jun 2020 11:53:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : mime-version :
+ content-type; s=corp-2020-01-29;
+ bh=lLuLvWf3spNYNgQdNK2VUalQ9x6mRO55PW3ewD79iEg=;
+ b=x2kiaGPxJ+E1anrnxZXxIbVkTnjBICzvi33S0QcvKPUdDLjbrJrbV/ZKaBR6QcFQlU0z
+ u6D7kBXw9ER1cXoMqVRTWbseJsbodfOsneudcDLPVOb7L7iEt7a8h0fr4DpPXhsnTAeA
+ +Lgp6CFQOxFmlWwXDid3kvqQUVaLIbJcqJtb340AQCgRuiT33w0aVvpUdtA/OBmqTsTs
+ 8f/TDAVn9owDJ3o9bGOzYRKvMzkP71h9LVlK1W4xBAvLW5IKTm007gw9Ro9+/+78sdkj
+ NixQQkTdZvtGV3YfNTltr7lzg8D65yhhXtevVWphC/nGE8RoHkFx/fCyZV157ywLzwCy zA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 31g2jr9x5x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 10 Jun 2020 11:53:19 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05ABqRE6194928;
+        Wed, 10 Jun 2020 11:53:18 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 31gn28tbgp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 10 Jun 2020 11:53:18 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05ABr80w012721;
+        Wed, 10 Jun 2020 11:53:11 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 10 Jun 2020 04:53:08 -0700
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        jejb@linux.ibm.com, linux@armlinux.org.uk,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-scsi@vger.kernel.org
+Subject: Re: [PATCH] scsi: powertec: Fix different dev_id between
+ 'request_irq()' and 'free_irq()'
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq11rmnrvcl.fsf@ca-mkp.ca.oracle.com>
+References: <20200530072933.576851-1-christophe.jaillet@wanadoo.fr>
+        <159175686974.7062.8526082970785072740.b4-ty@oracle.com>
+        <08f63617-03df-71cf-70c4-00f08a9f51d8@wanadoo.fr>
+Date:   Wed, 10 Jun 2020 07:53:06 -0400
+In-Reply-To: <08f63617-03df-71cf-70c4-00f08a9f51d8@wanadoo.fr> (Christophe
+        JAILLET's message of "Wed, 10 Jun 2020 07:35:49 +0200")
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3cba574-bf6f-4552-0193-08d80d2d1196
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jun 2020 10:57:29.0869
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0F2EaiB9XtrGcyiwNrIi8wwwqVA9BuRUGg4DFaUspBs8TZb8H5mwKuYOAnAeWtNZ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB3372
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9647 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 mlxscore=0
+ phishscore=0 adultscore=0 bulkscore=0 malwarescore=0 mlxlogscore=649
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006100091
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9647 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
+ cotscore=-2147483648 priorityscore=1501 spamscore=0 suspectscore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=701 malwarescore=0 mlxscore=0
+ phishscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006100091
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-[AMD Official Use Only - Internal Distribution Only]
 
-Reviewed-by: Evan Quan <evan.quan@amd.com>
+Christophe,
 
------Original Message-----
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Sent: Wednesday, June 10, 2020 4:57 PM
-To: Deucher, Alexander <Alexander.Deucher@amd.com>
-Cc: Koenig, Christian <Christian.Koenig@amd.com>; David Airlie <airlied@lin=
-ux.ie>; Daniel Vetter <daniel@ffwll.ch>; Quan, Evan <Evan.Quan@amd.com>; Zh=
-ang, Hawking <Hawking.Zhang@amd.com>; Kuehling, Felix <Felix.Kuehling@amd.c=
-om>; Zhou1, Tao <Tao.Zhou1@amd.com>; Ma, Le <Le.Ma@amd.com>; Xiao, Jack <Ja=
-ck.Xiao@amd.com>; Kim, Jonathan <Jonathan.Kim@amd.com>; Greathouse, Joseph =
-<Joseph.Greathouse@amd.com>; amd-gfx@lists.freedesktop.org; kernel-janitors=
-@vger.kernel.org
-Subject: [PATCH v2] drm/amdgpu: Fix a buffer overflow handling the serial n=
-umber
+>> [1/1] scsi: powertec: Fix different dev_id between request_irq() and free_irq()
+>>        https://git.kernel.org/mkp/scsi/c/af7b415a1ebf
+>>
+> Please revert,
 
-The comments say that the serial number is a 16-digit HEX string so the
-buffer needs to be at least 17 characters to hold the NUL terminator.
+Dropped (x2).
 
-The other issue is that "size" returned from sprintf() is the number of
-characters before the NUL terminator so the memcpy() wasn't copying the
-terminator.  The serial number needs to be NUL terminated so that it
-doesn't lead to a read overflow in amdgpu_device_get_serial_number().
-Also it's just cleaner and faster to sprintf() directly to adev->serial[]
-instead of using a temporary buffer.
-
-Fixes: 81a16241114b ("drm/amdgpu: Add unique_id and serial_number for Arctu=
-rus v3")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-v2: Change adev->serial.  The original patch would have just moved the
-overflow until amdgpu_device_get_serial_number() is called.
-
- drivers/gpu/drm/amd/amdgpu/amdgpu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
----
- drivers/gpu/drm/amd/amdgpu/amdgpu.h          | 2 +-
- drivers/gpu/drm/amd/powerplay/arcturus_ppt.c | 6 ++----
- 2 files changed, 3 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdg=
-pu/amdgpu.h
-index 135530286f34f..905cf0bac100c 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-@@ -986,7 +986,7 @@ struct amdgpu_device {
- /* Chip product information */
- charproduct_number[16];
- charproduct_name[32];
--charserial[16];
-+charserial[20];
-
- struct amdgpu_autodumpautodump;
-
-diff --git a/drivers/gpu/drm/amd/powerplay/arcturus_ppt.c b/drivers/gpu/drm=
-/amd/powerplay/arcturus_ppt.c
-index df7b408319f76..d58146a5fa21d 100644
---- a/drivers/gpu/drm/amd/powerplay/arcturus_ppt.c
-+++ b/drivers/gpu/drm/amd/powerplay/arcturus_ppt.c
-@@ -2265,8 +2265,7 @@ static void arcturus_i2c_eeprom_control_fini(struct i=
-2c_adapter *control)
- static void arcturus_get_unique_id(struct smu_context *smu)
- {
- struct amdgpu_device *adev =3D smu->adev;
--uint32_t top32, bottom32, smu_version, size;
--char sn[16];
-+uint32_t top32, bottom32, smu_version;
- uint64_t id;
-
- if (smu_get_smc_version(smu, NULL, &smu_version)) {
-@@ -2289,8 +2288,7 @@ static void arcturus_get_unique_id(struct smu_context=
- *smu)
- /* For Arcturus-and-later, unique_id =3D=3D serial_number, so convert it t=
-o a
-  * 16-digit HEX string for convenience and backwards-compatibility
-  */
--size =3D sprintf(sn, "%llx", id);
--memcpy(adev->serial, &sn, size);
-+sprintf(adev->serial, "%llx", id);
- }
-
- static bool arcturus_is_baco_supported(struct smu_context *smu)
---
-2.26.2
-
+-- 
+Martin K. Petersen	Oracle Linux Engineering

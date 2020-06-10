@@ -2,173 +2,169 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A698F1F5C02
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 21:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3AFD1F5C55
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 22:01:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729982AbgFJThA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Jun 2020 15:37:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54772 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727011AbgFJTg7 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Jun 2020 15:36:59 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15143C03E96B
-        for <kernel-janitors@vger.kernel.org>; Wed, 10 Jun 2020 12:36:59 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id r7so3659288wro.1
-        for <kernel-janitors@vger.kernel.org>; Wed, 10 Jun 2020 12:36:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=zK9Na9bM9IaNoE4p4nOpguw7r1p99iLUMMW//x2Gu0c=;
-        b=CZy/EcESP55U+vnTvyKyaWf+KdsrMo8yLlgBFIkxyURkI1TsR9rV1cBCs3ZiqVPeXj
-         JQ4RZGnTAGfD/GTCPDXSDGpb+tRVYkrs+AwvoDsoRofpdSQUvktj8njNHU70+WyRWZDi
-         l0K1aP7ZndaJIQAJZef9uAVh7Colw73aeLO44VFOoFkkVjHCZyomrv9sQWvzIuCMGgVZ
-         id6Eui98tIKj1MKFkSCEykQbSHgaYN8aOFFOLM2UT+zRwDtDriZU16bwSWPvHYem6IvH
-         9C+55LU9UzzPdbnGKgU3lxqFJgwgU2PLW5+LPYeFCQvPNj37Lj6x8iUH961zabPXtCgX
-         Jq4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=zK9Na9bM9IaNoE4p4nOpguw7r1p99iLUMMW//x2Gu0c=;
-        b=jBUrciSIFWbTwzj0jkAq0UTGFq8xhfxJ2ILSRQb863oItE1IvykC+d7G+gWl8aEq2v
-         RhYQWtOkeyrh6tESnlUsDpr5dvzmGXvXGKRqtahxWItW+weuWopnqkNa3SVlks6j4M7i
-         uxhhF8h0S5R2bXWqG3crNx7Ap5DTr2KhR30y/EdkMwjf/5ajdkmJOf9t9iQtiv0CdcJg
-         Cu5XFaNr7fVS0JAIocJr7tP0FamdOV99CyF6pI29rQpgO8MZ/yGRk5YyzLa0sgXNiQ/d
-         7YNVfyFqDAK0t3SunuVjgw30CesAEMLHid87nJrTkaQ+ZqqpNknPicj2r1Kho6CnWSts
-         kkng==
-X-Gm-Message-State: AOAM531CJ7omklzXDWny5Y4gN4K88BRYXg4XnUzIgSFhE63wsF+0QGVZ
-        4woUcX41Kw0ZZkmCpG6VpOAi1bQk9UhiWoei9V8=
-X-Google-Smtp-Source: ABdhPJzdnrAJ9XnOAge2SeI9sCnxMlkwX2bJfV3ZkxCAqaZKLwPyw3WK0bsN7RRXFvz+iWZMxi+6pa+KWG4bQr9peGs=
-X-Received: by 2002:adf:fd41:: with SMTP id h1mr5625751wrs.374.1591817817732;
- Wed, 10 Jun 2020 12:36:57 -0700 (PDT)
+        id S1730450AbgFJUBH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Jun 2020 16:01:07 -0400
+Received: from mout.web.de ([212.227.17.12]:42811 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727038AbgFJUBG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 10 Jun 2020 16:01:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1591819231;
+        bh=V/kXYOzuw6rH33xEKI0N1+DMgJKBXkECKuaKk9JHHnw=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=Xf7T8lewcVQ950UiWBGazQBupJWbngdQ6RKlNpv7lXxjzOiBGo58ntdcQizhBSw6F
+         WBGzWXY1cKuCKdgEbGyiWYW6pkvAgW+HTwpoudoE9p9/Cl6EXKXghdBV/BqD6iszWB
+         OiRXvFsW+ZQgaFqAUjAJ5nGAs3pwWo1+ELwQ/3es=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.133.155.16]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MGicf-1jeNo62qtV-00DUaM; Wed, 10
+ Jun 2020 22:00:31 +0200
+Subject: Re: exfat: add missing brelse() calls on error paths
+To:     Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Namjae Jeon <namjae.jeon@samsung.com>,
+        Sungjong Seo <sj1557.seo@samsung.com>,
+        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+        Tetsuhiro Kohada <kohada.t2@gmail.com>,
+        Wei Yongjun <weiyongjun1@huawei.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+References: <20200610172213.GA90634@mwanda>
+ <740ce77a-5404-102b-832f-870cbec82d56@web.de> <20200610184517.GC4282@kadam>
+ <b44caf20-d3fc-30ac-f716-2375ed55dc9a@web.de>
+ <20200610192244.GK19604@bombadil.infradead.org>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <015e5093-d139-6bee-ca45-4cb0e871e65d@web.de>
+Date:   Wed, 10 Jun 2020 22:00:24 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
 MIME-Version: 1.0
-References: <DM6PR12MB26194168100E5F96FF94D066E4820@DM6PR12MB2619.namprd12.prod.outlook.com>
- <20200610085653.GA5439@mwanda> <DM6PR12MB2619D7FBF176EEA50DB3E2AAE4830@DM6PR12MB2619.namprd12.prod.outlook.com>
-In-Reply-To: <DM6PR12MB2619D7FBF176EEA50DB3E2AAE4830@DM6PR12MB2619.namprd12.prod.outlook.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Wed, 10 Jun 2020 15:36:45 -0400
-Message-ID: <CADnq5_MwY0Jme+K_Cdu2Gaq-P4DcHq-CzVP3BD1sE+F22z-a5w@mail.gmail.com>
-Subject: Re: [PATCH v2] drm/amdgpu: Fix a buffer overflow handling the serial number
-To:     "Quan, Evan" <Evan.Quan@amd.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Xiao, Jack" <Jack.Xiao@amd.com>,
-        "Kim, Jonathan" <Jonathan.Kim@amd.com>,
-        "Greathouse, Joseph" <Joseph.Greathouse@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        "Kuehling, Felix" <Felix.Kuehling@amd.com>,
-        "Zhou1, Tao" <Tao.Zhou1@amd.com>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "Ma, Le" <Le.Ma@amd.com>, Daniel Vetter <daniel@ffwll.ch>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Zhang, Hawking" <Hawking.Zhang@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200610192244.GK19604@bombadil.infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+X-Provags-ID: V03:K1:1CFfg75+PNIhMjnaQFQgUxOoGYHJRs1zzs0vyK9t5n9UoWJv9Ig
+ mPzwqJ5d+rMhw20lCvjXHC5KCvcB+1bOIhzn2E2SyJAbaMlB/zOe3aNf1lEflIgac/9wB/b
+ DGe8OrxFqAvL3lypMV8JLiPeuesd2VFZGYdjqkHzAPfmc2yHujO6gFIoC4Xb2e6QdAz3GkK
+ K5XPIrYve5ki1KAalEFfw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:MOzWbS8W4yg=:fpMHfAlrbTN5wB+pGEIK+u
+ h0vrDtpssBVanAfTMcK/8e/dMTFFiATBtMwubX2lFbFQG/PTkBIll21BOHz6ncwSRtr4bncYv
+ fghoFFgnVap9HlYNRfba1+dLJzCpyWiEbYjCB1AyCubhgvHFGWq3iZ1UkR67xpOOOrxJdpzx4
+ OMbcxgpcRDnimk4SjT4Sn5XecMuw9AIq2Z5maYfPORsr5TpOTEgsrxqzyrt67aLzPnZVQ6zcS
+ BG1koWnh4/GO669tfLy+5UH3TZG778v4FLffyBVcPhn+FTC4Wig15Tf/MbB7M1NWTl0ljVwuu
+ HrqvMQZ35a4FCqCsFDkIHWLyB5eKOfm46lD2GMeBgrLUs4KR4Al6bFtH5MYnnbm/3IlnSGkVs
+ BHAnPjKHOTCICXUKnc8Nizj0yiwWzEauRutD6XyJHNgz4FwJapT/jUMOufUY16Q72WmVWjbTb
+ ytlsnh2Q67ENwY9oFq9fwO2Y6Tit/D+WP9QSmDj2y62gafOH85pMweVG1aO4H7B9+DLSUUrKT
+ 3RKyXwt4TZxB8BElrIKsQa5QujqpZNof1S7wjcRVQ+oCsKz0zKPK5yjUrGafVBaA6bltBFOUj
+ bwF7VioP/KRMjvLOc0mr6jDENGY4KnFMve7TBywyjxl40oiIR9HMZYodRJ/ejWmlUPIQGoZaN
+ NGY34FlRAfi5QeK1H4FKoWCRZw1ASCw/ZD8XjX0/kgB2maGjLlt8xfipSD7UWkPt/QOJVvnPy
+ lBeTCzEOCDHHyFSv6R8SN6/Qs6fa90B2vCjQlHlwhfCL06Wq8xsxaXoWz8vz98ddW/guUtWmg
+ O397UvsP3rbSKQuhCAeu+Y1mGKw/1PrUHb18XVwdtB1FHIAusIAsPdF2qt9hBbfzCeDHmtfxV
+ rj8A1ZnX/5hS6C9jXsWlSGjt/cTUjZR1Z4PSd2UCzNb9Z2a2IDaQo2qv16v1+WZqCh29peHHo
+ Mjju+cI/ba52ZA2H7SSH2RrxXr7Ds5ugX2zmy/gPsZwYTrYd8U+zDQ6NmMN70PhYacffH8sFt
+ ATpnJ45B9veqWzOn/gSsGDmYxxIznxYbix5eu78gIZ4DgXdj7PKaF/YCddgVeHKrrl78NnhbX
+ QQ5PuPn5co0kL2xWHPZ6kZ9iTaeyke+KPtzs7/xf5eSBkBkUWFaumEaIZo0f7QkxlSMDqHEWt
+ dIov0Z0ft9l8lp/oWFedKXJcL8z4tRy2jqs394XO9iP83KWdIBL7/3IS57/QUHa+2tIuLPVkp
+ jTm/kTEBdTdYf9WGk
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jun 10, 2020 at 6:57 AM Quan, Evan <Evan.Quan@amd.com> wrote:
->
-> [AMD Official Use Only - Internal Distribution Only]
->
-> Reviewed-by: Evan Quan <evan.quan@amd.com>
+> You're nitpicking commit messages.
 
-Applied.  Thanks!
-
-Alex
+I am occasionally trying to achieve corresponding improvements.
 
 
->
-> -----Original Message-----
-> From: Dan Carpenter <dan.carpenter@oracle.com>
-> Sent: Wednesday, June 10, 2020 4:57 PM
-> To: Deucher, Alexander <Alexander.Deucher@amd.com>
-> Cc: Koenig, Christian <Christian.Koenig@amd.com>; David Airlie <airlied@l=
-inux.ie>; Daniel Vetter <daniel@ffwll.ch>; Quan, Evan <Evan.Quan@amd.com>; =
-Zhang, Hawking <Hawking.Zhang@amd.com>; Kuehling, Felix <Felix.Kuehling@amd=
-.com>; Zhou1, Tao <Tao.Zhou1@amd.com>; Ma, Le <Le.Ma@amd.com>; Xiao, Jack <=
-Jack.Xiao@amd.com>; Kim, Jonathan <Jonathan.Kim@amd.com>; Greathouse, Josep=
-h <Joseph.Greathouse@amd.com>; amd-gfx@lists.freedesktop.org; kernel-janito=
-rs@vger.kernel.org
-> Subject: [PATCH v2] drm/amdgpu: Fix a buffer overflow handling the serial=
- number
->
-> The comments say that the serial number is a 16-digit HEX string so the
-> buffer needs to be at least 17 characters to hold the NUL terminator.
->
-> The other issue is that "size" returned from sprintf() is the number of
-> characters before the NUL terminator so the memcpy() wasn't copying the
-> terminator.  The serial number needs to be NUL terminated so that it
-> doesn't lead to a read overflow in amdgpu_device_get_serial_number().
-> Also it's just cleaner and faster to sprintf() directly to adev->serial[]
-> instead of using a temporary buffer.
->
-> Fixes: 81a16241114b ("drm/amdgpu: Add unique_id and serial_number for Arc=
-turus v3")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> v2: Change adev->serial.  The original patch would have just moved the
-> overflow until amdgpu_device_get_serial_number() is called.
->
->  drivers/gpu/drm/amd/amdgpu/amdgpu.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu.h          | 2 +-
->  drivers/gpu/drm/amd/powerplay/arcturus_ppt.c | 6 ++----
->  2 files changed, 3 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/am=
-dgpu/amdgpu.h
-> index 135530286f34f..905cf0bac100c 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-> @@ -986,7 +986,7 @@ struct amdgpu_device {
->  /* Chip product information */
->  charproduct_number[16];
->  charproduct_name[32];
-> -charserial[16];
-> +charserial[20];
->
->  struct amdgpu_autodumpautodump;
->
-> diff --git a/drivers/gpu/drm/amd/powerplay/arcturus_ppt.c b/drivers/gpu/d=
-rm/amd/powerplay/arcturus_ppt.c
-> index df7b408319f76..d58146a5fa21d 100644
-> --- a/drivers/gpu/drm/amd/powerplay/arcturus_ppt.c
-> +++ b/drivers/gpu/drm/amd/powerplay/arcturus_ppt.c
-> @@ -2265,8 +2265,7 @@ static void arcturus_i2c_eeprom_control_fini(struct=
- i2c_adapter *control)
->  static void arcturus_get_unique_id(struct smu_context *smu)
->  {
->  struct amdgpu_device *adev =3D smu->adev;
-> -uint32_t top32, bottom32, smu_version, size;
-> -char sn[16];
-> +uint32_t top32, bottom32, smu_version;
->  uint64_t id;
->
->  if (smu_get_smc_version(smu, NULL, &smu_version)) {
-> @@ -2289,8 +2288,7 @@ static void arcturus_get_unique_id(struct smu_conte=
-xt *smu)
->  /* For Arcturus-and-later, unique_id =3D=3D serial_number, so convert it=
- to a
->   * 16-digit HEX string for convenience and backwards-compatibility
->   */
-> -size =3D sprintf(sn, "%llx", id);
-> -memcpy(adev->serial, &sn, size);
-> +sprintf(adev->serial, "%llx", id);
->  }
->
->  static bool arcturus_is_baco_supported(struct smu_context *smu)
-> --
-> 2.26.2
->
-> _______________________________________________
-> amd-gfx mailing list
-> amd-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/amd-gfx
+> This is exactly the kind of thing which drives people away.
+
+Would you like to follow official patch process documentation?
+
+
+> Dan's commit message is fine.
+
+I have got the impression that he indicates another deviation from
+a well-known requirement. I am curious under which circumstances
+such a patch review concern will be taken into account finally.
+
+
+> It's actually hilarious because your emails are so unclear that I
+> can't understand them.
+
+I find such feedback surprising and interesting.
+I hope that we can reduce understanding difficulties together.
+
+
+> I have no idea what "collateral evolution" means
+
+This term expresses the situation that a single change can trigger
+further changes.
+
+Examples for programmers:
+A)
+* You add an argument to an used function.
+* How many function calls will need related adjustments?
+
+B)
+* Some function calls can fail.
+* How do you think about to complete error detection and the
+  corresponding exception handling?
+
+
+> and yet you use it in almost every email.
+
+You exaggerate here.
+
+
+> Why can't you use the same terminology the rest of us use?
+
+I got also used to some wording approaches.
+Which terminology variation do you prefer?
+
+Regards,
+Markus

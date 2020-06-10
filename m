@@ -2,68 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 364B51F4A20
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 01:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBE1C1F4B20
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 04:03:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725964AbgFIXbs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 9 Jun 2020 19:31:48 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:38354 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725797AbgFIXbs (ORCPT
+        id S1726046AbgFJCDO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 9 Jun 2020 22:03:14 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:51404 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725798AbgFJCDN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 9 Jun 2020 19:31:48 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jiniD-0005mQ-Lw; Tue, 09 Jun 2020 23:31:21 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <sean.j.christopherson@intel.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
-        kvm@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] kvm: i8254: remove redundant assignment to pointer s
-Date:   Wed, 10 Jun 2020 00:31:21 +0100
-Message-Id: <20200609233121.1118683-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0.rc0
+        Tue, 9 Jun 2020 22:03:13 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05A22rRC028473;
+        Wed, 10 Jun 2020 02:02:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=OyjqTL3RFU3qhRhjl1q+nR+l4wbwyQdM/xh+BDHyC/Q=;
+ b=A890azgFkB3wqpRI89CnZldQ8yTmMpDXaWngJiW8JTxbsqhLe1M8vVoG7Ngl8bxMTt/+
+ 0pD/DFFXcmw1uMnwDqc91EaTouHiO54UexWUGwF3B302GLRFcEG5l0vOUBVc0p9UMDVk
+ hC0V8Zc5nFToM02wRMEqFEOwQtIlwrkGgrHNL/MGAlI4XwDeHfUk5msexZj6equoRBqX
+ BB3aAEfIKXn70IsL01jJFDJZTACI6GZfUpQ+0VIh9ZzqIV77+80Aaiky1uXZaGW7qqdJ
+ VaO7JFUrxja9Uxaa3vnK4OcXKZ+C8mAqaxf0V4zwAORLtTL7v30bpOdRyKVV0i4Scycq Xw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 31jepnsq8u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 10 Jun 2020 02:02:53 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05A1wPNd020921;
+        Wed, 10 Jun 2020 02:02:52 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 31gmwsbn7t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 10 Jun 2020 02:02:52 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05A22pcH004447;
+        Wed, 10 Jun 2020 02:02:51 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 09 Jun 2020 19:02:50 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     "Matthew R. Ochs" <mrochs@linux.vnet.ibm.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        "Manoj N. Kumar" <manoj@linux.ibm.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        kernel-janitors@vger.kernel.org,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        linux-kernel@vger.kernel.org, Uma Krishnan <ukrishn@linux.ibm.com>,
+        linux-scsi@vger.kernel.org
+Subject: Re: [PATCH] cxlflash: remove an unnecessary NULL check
+Date:   Tue,  9 Jun 2020 22:02:44 -0400
+Message-Id: <159175452258.16072.8552277193377320754.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200605110258.GD978434@mwanda>
+References: <20200605110258.GD978434@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9647 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 adultscore=0
+ mlxscore=0 mlxlogscore=941 bulkscore=0 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006100013
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9647 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1011 phishscore=0 impostorscore=0
+ malwarescore=0 mlxscore=0 cotscore=-2147483648 adultscore=0 spamscore=0
+ mlxlogscore=980 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006100013
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Fri, 5 Jun 2020 14:02:58 +0300, Dan Carpenter wrote:
 
-The pointer s is being assigned a value that is never read, the
-assignment is redundant and can be removed.
+> The "cmd" pointer was already dereferenced a couple lines earlier so
+> this NULL check is too late.  Fortunately, the pointer can never be NULL
+> and the check can be removed.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- arch/x86/kvm/i8254.c | 1 -
- 1 file changed, 1 deletion(-)
+Applied to 5.8/scsi-queue, thanks!
 
-diff --git a/arch/x86/kvm/i8254.c b/arch/x86/kvm/i8254.c
-index febca334c320..a6e218c6140d 100644
---- a/arch/x86/kvm/i8254.c
-+++ b/arch/x86/kvm/i8254.c
-@@ -462,7 +462,6 @@ static int pit_ioport_write(struct kvm_vcpu *vcpu,
- 		if (channel == 3) {
- 			/* Read-Back Command. */
- 			for (channel = 0; channel < 3; channel++) {
--				s = &pit_state->channels[channel];
- 				if (val & (2 << channel)) {
- 					if (!(val & 0x20))
- 						pit_latch_count(pit, channel);
+[1/1] scsi: cxlflash: Remove an unnecessary NULL check
+      https://git.kernel.org/mkp/scsi/c/89dd9ce784fb
+
 -- 
-2.27.0.rc0
-
+Martin K. Petersen	Oracle Linux Engineering

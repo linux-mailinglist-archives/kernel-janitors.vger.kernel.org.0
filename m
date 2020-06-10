@@ -2,114 +2,141 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 462E31F505A
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 10:33:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B03CC1F509F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 10:57:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726817AbgFJIdC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Jun 2020 04:33:02 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:33365 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726809AbgFJIdC (ORCPT
+        id S1726912AbgFJI5R (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Jun 2020 04:57:17 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:52578 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726855AbgFJI5R (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Jun 2020 04:33:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1591777980;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=/CzDQqYRGgoycRXVjpGii7I26mAUdaOWbacFoesUyuU=;
-        b=R3aZvon1E294tGk8eeqTC+pM9y2GzzTwdGpgLNxyneB7jWhNJOpEdLBbRCgHxdZ+T00evt
-        AIzT3qXwptekTYx9zWHx3KoL7PmMae4qTTISecX3rwHWTYh8WTDBINo92pqZ/2bHxgu0+S
-        tVu71RztIYpVk96MNWMqPrMF85oWnL8=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-102--wyA8oGVMzaNi36SvKWaCA-1; Wed, 10 Jun 2020 04:32:58 -0400
-X-MC-Unique: -wyA8oGVMzaNi36SvKWaCA-1
-Received: by mail-ej1-f72.google.com with SMTP id i17so755456ejb.9
-        for <kernel-janitors@vger.kernel.org>; Wed, 10 Jun 2020 01:32:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=/CzDQqYRGgoycRXVjpGii7I26mAUdaOWbacFoesUyuU=;
-        b=nIW5MfLZa2eQpYOm9biTDGolndnsXDUO6i5Z5qyzy4VgQQUjq1/hyGBAZ5pDuapZru
-         cVeGZttShqBULXdcl9QJCFrsrKd6egUvoNBfSmRdaWxY4Cm1Jehe6mjgjNWnKVrpEvx4
-         4crNYZy2OuAq0iiDA8TaVvcjv1qzCSW167RYeDv7erJqd1U9lcBO+ohXDSo4/A8Voeik
-         h/ZPoJEH+JQjSo1xyQmz4CdMD6Ct9YCLJ7S7D7A29cTzr+AHbCo8TJE8HKM3VSOQrZwY
-         5FuPrg2urcWg18BS62pLz25yb4tr5VeQ5HJFpLAMPe3aiH0NsbJSbmR2cgG0VEbyLhLP
-         qhPA==
-X-Gm-Message-State: AOAM532RTBNL0V6qOhV8hAac/YgYQUCGaZSthmNb3VFKzQwO3W+/NlME
-        KUKmlbWJWiZrtUUqpJX0STacWp/nUrXe/fCsfzB0jY3I1RNKT8yInrlYCmhifkc0IGebml8VR2V
-        ox9/4YKuG0cExOQtxU9Gh8QhFYA/D
-X-Received: by 2002:aa7:c4c7:: with SMTP id p7mr1548533edr.271.1591777977419;
-        Wed, 10 Jun 2020 01:32:57 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyRDXVgnf8jf3KQtAoZpcPajfcKWk4OSBUiV1BVsb+L5Lx8Bk89ta016RNTLmlCPlXXZtcimg==
-X-Received: by 2002:aa7:c4c7:: with SMTP id p7mr1548507edr.271.1591777977145;
-        Wed, 10 Jun 2020 01:32:57 -0700 (PDT)
-Received: from vitty.brq.redhat.com (g-server-2.ign.cz. [91.219.240.2])
-        by smtp.gmail.com with ESMTPSA id ok21sm14043099ejb.82.2020.06.10.01.32.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2020 01:32:56 -0700 (PDT)
-From:   Vitaly Kuznetsov <vkuznets@redhat.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <sean.j.christopherson@intel.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
-        kvm@vger.kernel.org
-Subject: Re: [PATCH] kvm: i8254: remove redundant assignment to pointer s
-In-Reply-To: <20200609233121.1118683-1-colin.king@canonical.com>
-References: <20200609233121.1118683-1-colin.king@canonical.com>
-Date:   Wed, 10 Jun 2020 10:32:55 +0200
-Message-ID: <875zbzb9s8.fsf@vitty.brq.redhat.com>
+        Wed, 10 Jun 2020 04:57:17 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05A8qZtf057987;
+        Wed, 10 Jun 2020 08:57:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2020-01-29; bh=U3rmNlKU4okJAzL7TELrQhC3V+3dWp+gWSymDbfp8zg=;
+ b=eFzdfKGKDuHAfoMxn9wNH76A04atieHJ3qriyUKIMe5l4CIGwnfB4Q0ebeKE1+nfQuP9
+ YrsQeErvU2R1cXFFJ5do/guhwSkkMpnU8IMC70vWETfMIsXKaOhKnkmB8UQ0iw0j30Wn
+ vfAKp8gEYkG1tpncUOuciYsOBxen+ZKG7woGLhmzCNZAorlfjRiIDT1R0HT3fKDMf79S
+ KdIoHR7CQzBPM6AOpqbO3fSiIb16S2wELW+7lbNFK3xvKsxNwocCQ16bIiMNq+ohPos9
+ 5DtSd2/FSdh3Uz9hBKqQTxeL0vuC+pgd4wLsP8mUQupfQryFA9vLkHUqfOsQl1Y9gO2w 1Q== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 31g2jr98xh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 10 Jun 2020 08:57:12 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05A8liLD186955;
+        Wed, 10 Jun 2020 08:57:11 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 31gn2y4axg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 10 Jun 2020 08:57:11 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05A8v2NT013173;
+        Wed, 10 Jun 2020 08:57:03 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 10 Jun 2020 01:57:02 -0700
+Date:   Wed, 10 Jun 2020 11:56:53 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Alex Deucher <alexander.deucher@amd.com>
+Cc:     Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, Evan Quan <evan.quan@amd.com>,
+        Hawking Zhang <Hawking.Zhang@amd.com>,
+        Felix Kuehling <Felix.Kuehling@amd.com>,
+        Tao Zhou <tao.zhou1@amd.com>, Le Ma <le.ma@amd.com>,
+        Jack Xiao <Jack.Xiao@amd.com>,
+        Jonathan Kim <jonathan.kim@amd.com>,
+        Joseph Greathouse <Joseph.Greathouse@amd.com>,
+        amd-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH v2] drm/amdgpu: Fix a buffer overflow handling the serial
+ number
+Message-ID: <20200610085653.GA5439@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DM6PR12MB26194168100E5F96FF94D066E4820@DM6PR12MB2619.namprd12.prod.outlook.com>
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9647 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 malwarescore=0
+ bulkscore=0 adultscore=0 mlxlogscore=999 spamscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006100068
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9647 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
+ cotscore=-2147483648 priorityscore=1501 spamscore=0 suspectscore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0
+ phishscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006100068
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> writes:
+The comments say that the serial number is a 16-digit HEX string so the
+buffer needs to be at least 17 characters to hold the NUL terminator.
 
-> From: Colin Ian King <colin.king@canonical.com>
->
-> The pointer s is being assigned a value that is never read, the
-> assignment is redundant and can be removed.
->
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+The other issue is that "size" returned from sprintf() is the number of
+characters before the NUL terminator so the memcpy() wasn't copying the
+terminator.  The serial number needs to be NUL terminated so that it
+doesn't lead to a read overflow in amdgpu_device_get_serial_number().
+Also it's just cleaner and faster to sprintf() directly to adev->serial[]
+instead of using a temporary buffer.
 
-It seems it wasn't used since the very beginning,
+Fixes: 81a16241114b ("drm/amdgpu: Add unique_id and serial_number for Arcturus v3")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+v2: Change adev->serial.  The original patch would have just moved the
+overflow until amdgpu_device_get_serial_number() is called.
 
-Fixes: 7837699fa6d7 ("KVM: In kernel PIT model")
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h          | 2 +-
+ drivers/gpu/drm/amd/powerplay/arcturus_ppt.c | 6 ++----
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
-QEMU code (from where KVM's implementation originates), however, 
-does make use of 's' here as it open codes pit_latch_status().
-
-> ---
->  arch/x86/kvm/i8254.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/arch/x86/kvm/i8254.c b/arch/x86/kvm/i8254.c
-> index febca334c320..a6e218c6140d 100644
-> --- a/arch/x86/kvm/i8254.c
-> +++ b/arch/x86/kvm/i8254.c
-> @@ -462,7 +462,6 @@ static int pit_ioport_write(struct kvm_vcpu *vcpu,
->  		if (channel == 3) {
->  			/* Read-Back Command. */
->  			for (channel = 0; channel < 3; channel++) {
-> -				s = &pit_state->channels[channel];
->  				if (val & (2 << channel)) {
->  					if (!(val & 0x20))
->  						pit_latch_count(pit, channel);
-
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+index 135530286f34f..905cf0bac100c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -986,7 +986,7 @@ struct amdgpu_device {
+ 	/* Chip product information */
+ 	char				product_number[16];
+ 	char				product_name[32];
+-	char				serial[16];
++	char				serial[20];
+ 
+ 	struct amdgpu_autodump		autodump;
+ 
+diff --git a/drivers/gpu/drm/amd/powerplay/arcturus_ppt.c b/drivers/gpu/drm/amd/powerplay/arcturus_ppt.c
+index df7b408319f76..d58146a5fa21d 100644
+--- a/drivers/gpu/drm/amd/powerplay/arcturus_ppt.c
++++ b/drivers/gpu/drm/amd/powerplay/arcturus_ppt.c
+@@ -2265,8 +2265,7 @@ static void arcturus_i2c_eeprom_control_fini(struct i2c_adapter *control)
+ static void arcturus_get_unique_id(struct smu_context *smu)
+ {
+ 	struct amdgpu_device *adev = smu->adev;
+-	uint32_t top32, bottom32, smu_version, size;
+-	char sn[16];
++	uint32_t top32, bottom32, smu_version;
+ 	uint64_t id;
+ 
+ 	if (smu_get_smc_version(smu, NULL, &smu_version)) {
+@@ -2289,8 +2288,7 @@ static void arcturus_get_unique_id(struct smu_context *smu)
+ 	/* For Arcturus-and-later, unique_id == serial_number, so convert it to a
+ 	 * 16-digit HEX string for convenience and backwards-compatibility
+ 	 */
+-	size = sprintf(sn, "%llx", id);
+-	memcpy(adev->serial, &sn, size);
++	sprintf(adev->serial, "%llx", id);
+ }
+ 
+ static bool arcturus_is_baco_supported(struct smu_context *smu)
 -- 
-Vitaly
+2.26.2
 

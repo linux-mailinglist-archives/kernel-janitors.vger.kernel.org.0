@@ -2,99 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBD5B1F5146
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 11:39:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E40DA1F5154
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 11:43:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727871AbgFJJjn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Jun 2020 05:39:43 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:51651 "EHLO
+        id S1727842AbgFJJns (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Jun 2020 05:43:48 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:23216 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727007AbgFJJjm (ORCPT
+        with ESMTP id S1727007AbgFJJnr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Jun 2020 05:39:42 -0400
+        Wed, 10 Jun 2020 05:43:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1591781981;
+        s=mimecast20190719; t=1591782226;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0H9JvbVSTDy5EkcBxAYDLVdpZdU6drMIY4wiOG5g/Cg=;
-        b=LgiZoQ7hpFwiFWah2o9PgSn0JevR3usDy5lrzkxVlB19C6JdmrOlkwVSfNasly0s21KdXN
-        amguAYByArB1UQZPDUG+iOSvVsT3eJwVPpiB9YhsJFvM59zm9QlR1RKq6D+76veH9Z2+YM
-        co9vAqol/9yoSdQ00zVju5giMu5E/O0=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-247-vY77l9teOmWJ1AhTUr94Bw-1; Wed, 10 Jun 2020 05:39:39 -0400
-X-MC-Unique: vY77l9teOmWJ1AhTUr94Bw-1
-Received: by mail-wr1-f72.google.com with SMTP id o1so827095wrm.17
-        for <kernel-janitors@vger.kernel.org>; Wed, 10 Jun 2020 02:39:39 -0700 (PDT)
+        bh=cqenDkPII+w3N9PhboDRPWmnWtl237duUuxheBtHmo8=;
+        b=G76ln/OnIfxWU3eNFgDtyNtLlhgPloY4BX8h32WuQAKMMpMK28C1m1v8Zli+0UjAsCmrr2
+        +Ao2Esb1z3SavZJffwQYXAdldb/V1BXbGJqHEVAvlDJ1C1c69MAIvjYOQ+LqvyQmBW1V8z
+        9+5aaequMhziMHX/DbzLHmxFGoibPCc=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-223-0u-MJCVGNNOwphSE_seZsg-1; Wed, 10 Jun 2020 05:43:45 -0400
+X-MC-Unique: 0u-MJCVGNNOwphSE_seZsg-1
+Received: by mail-wr1-f70.google.com with SMTP id n6so846932wrv.6
+        for <kernel-janitors@vger.kernel.org>; Wed, 10 Jun 2020 02:43:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=0H9JvbVSTDy5EkcBxAYDLVdpZdU6drMIY4wiOG5g/Cg=;
-        b=oHzj6zVlJx7QSzuRqFSR1J/6RlgzFrfoEKvD+t0HlmhEk/Gll0S/TpHpX8dSCSaJ0A
-         lUYB5B6HqeLjDu76I+kMHrjpaJa+4DwdowUlfzK+QYY6gFJmPeuJhH5b+iB6DlMwmU6J
-         utByg8nwDiC0bKDY0t9QAOOvI0PZhhA5/OtsTykvucu7DxYtczjC0eh9lW64SVBZhgj7
-         KtsyX+YmiS/AD6OFVsiNsFEI/GjcsXGNxm735D8d6AXK2hSiT8N1KjG1IY6ZOp/7O+KR
-         IZcOSQUUehFJlO2vR/kCWbDBCR1juo8yLAOSw8H8oDnQgw6zOKNZySm7AWJZuu5nahbq
-         aL4A==
-X-Gm-Message-State: AOAM53173borzzSrbPTNDC/FcgRXIio4lK5h0MzPrZJA4WsiuwnDjvM9
-        81iCuWPU6515Wyjeu7Xyu2coeUleh+EnLz6SsTlqixX26m/RfLgI6BjEB/TJWw2eOR8HflK/VyR
-        fN+E7/H2pq8an2dPIHd+tWaQtoz30
-X-Received: by 2002:adf:f2c2:: with SMTP id d2mr2548439wrp.424.1591781978383;
-        Wed, 10 Jun 2020 02:39:38 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxymu+fkfSsDo8znawTJ6c4VcvlNi7tdHuvNBBytAhcUZ0W/2OrQ3nbVPMH2Y9nzbPs1nQa3w==
-X-Received: by 2002:adf:f2c2:: with SMTP id d2mr2548422wrp.424.1591781978220;
-        Wed, 10 Jun 2020 02:39:38 -0700 (PDT)
-Received: from redhat.com ([212.92.121.57])
-        by smtp.gmail.com with ESMTPSA id c70sm5964690wme.32.2020.06.10.02.39.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2020 02:39:37 -0700 (PDT)
-Date:   Wed, 10 Jun 2020 05:39:35 -0400
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jason Wang <jasowang@redhat.com>, kvm@vger.kernel.org,
+        h=x-gm-message-state:content-transfer-encoding:from:mime-version
+         :subject:date:message-id:references:cc:in-reply-to:to;
+        bh=cqenDkPII+w3N9PhboDRPWmnWtl237duUuxheBtHmo8=;
+        b=m4m0boQRhueN0z1QtWOiK/CPkNoO3iQ91mfMBNlqccoIx1tYETKcliTlBKImv+LAyo
+         PMfpa/Pf5s8Fw9cqaysioGjXJdmzwCk7KT916tzsYxAGwN6/+QjTcR7TAJQPa5xuweoZ
+         mSyqtTklE5OuAwJekepduB/sLiM9K3glP8sUrsNrR3Kk0QtKAq2h3pAjLb+dccXYsSjd
+         /E8UoFAze1yQEn6Nw4ZlUTCL3xZxNVYTjXRbXBwt8cg9rRCACnjUnf3vdA0PRS7BczDD
+         BBoa64vHQqBgXBcd6XiEWENy/UFGDFLLMsL7WXpbUCRwWk8o0xIzfX0x0Ssb3jE3IwwO
+         Xw5Q==
+X-Gm-Message-State: AOAM5334SwJNBSD2eq4Saa0jK+2fZHonlTynxwQ916QdjLlc1BM2qU25
+        PZhoKfgWooNlFEb+cwlo1bO57QeIttaepxl6art9NTjam8vSVLfXJchrXY755n906WgwVooA8ip
+        wnDNq5P9KmmY9nF8YYsQvttlS6Xrm
+X-Received: by 2002:adf:ecc2:: with SMTP id s2mr2948661wro.60.1591782224277;
+        Wed, 10 Jun 2020 02:43:44 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzVmcr+jf7/ZMdNhZWn5hNRs0ZgnnoTFCWKF9letJebZyLdzd6sY5umcaFiaoilisOKVzp02w==
+X-Received: by 2002:adf:ecc2:: with SMTP id s2mr2948642wro.60.1591782224092;
+        Wed, 10 Jun 2020 02:43:44 -0700 (PDT)
+Received: from [192.168.3.122] (p4ff23dec.dip0.t-ipconnect.de. [79.242.61.236])
+        by smtp.gmail.com with ESMTPSA id r5sm7527242wrq.0.2020.06.10.02.43.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Jun 2020 02:43:42 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From:   David Hildenbrand <david@redhat.com>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH] virtio-mem: silence a static checker warning
+Date:   Wed, 10 Jun 2020 11:43:42 +0200
+Message-Id: <56B2561B-33AC-40AB-9991-97EC72F9613F@redhat.com>
+References: <20200610085911.GC5439@mwanda>
+Cc:     David Hildenbrand <david@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
         virtualization@lists.linux-foundation.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] vhost_vdpa: Fix potential underflow in vhost_vdpa_mmap()
-Message-ID: <20200610053926-mutt-send-email-mst@kernel.org>
-References: <20200610085852.GB5439@mwanda>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200610085852.GB5439@mwanda>
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <20200610085911.GC5439@mwanda>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+X-Mailer: iPhone Mail (17E262)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jun 10, 2020 at 11:58:52AM +0300, Dan Carpenter wrote:
-> The "vma->vm_pgoff" variable is an unsigned long so if it's larger than
-> INT_MAX then "index" can be negative leading to an underflow.  Fix this
-> by changing the type of "index" to "unsigned long".
-> 
-> Fixes: ddd89d0a059d ("vhost_vdpa: support doorbell mapping via mmap")
+
+
+> Am 10.06.2020 um 10:59 schrieb Dan Carpenter <dan.carpenter@oracle.com>:
+>=20
+> =EF=BB=BFSmatch complains that "rc" can be uninitialized if we hit the "br=
+eak;"
+> statement on the first iteration through the loop.  I suspect that this
+> can't happen in real life, but returning a zero literal is cleaner and
+> silence the static checker warning.
+>=20
+
+Right, it=E2=80=98s impossible in real life. Thanks!
+
+Acked-by: David Hildenbrand <david@redhat.com>
+
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-Applied, thanks!
-
 > ---
->  drivers/vhost/vdpa.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-> index 7580e34f76c10..a54b60d6623f0 100644
-> --- a/drivers/vhost/vdpa.c
-> +++ b/drivers/vhost/vdpa.c
-> @@ -818,7 +818,7 @@ static int vhost_vdpa_mmap(struct file *file, struct vm_area_struct *vma)
->  	struct vdpa_device *vdpa = v->vdpa;
->  	const struct vdpa_config_ops *ops = vdpa->config;
->  	struct vdpa_notification_area notify;
-> -	int index = vma->vm_pgoff;
-> +	unsigned long index = vma->vm_pgoff;
->  
->  	if (vma->vm_end - vma->vm_start != PAGE_SIZE)
->  		return -EINVAL;
-> -- 
+> drivers/virtio/virtio_mem.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
+> index f658fe9149beb..893ef18060a02 100644
+> --- a/drivers/virtio/virtio_mem.c
+> +++ b/drivers/virtio/virtio_mem.c
+> @@ -1192,7 +1192,7 @@ static int virtio_mem_mb_plug_any_sb(struct virtio_m=
+em *vm, unsigned long mb_id,
+>                        VIRTIO_MEM_MB_STATE_OFFLINE);
+>    }
+>=20
+> -    return rc;
+> +    return 0;
+> }
+>=20
+> /*
+> --=20
 > 2.26.2
+>=20
 

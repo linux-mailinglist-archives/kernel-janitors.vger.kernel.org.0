@@ -2,100 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BEB61F55BB
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 15:25:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61DAB1F5712
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 16:54:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729291AbgFJNZG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Jun 2020 09:25:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53654 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726306AbgFJNZG (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Jun 2020 09:25:06 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE93DC03E96B;
-        Wed, 10 Jun 2020 06:25:04 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id 23so1096327pfw.10;
-        Wed, 10 Jun 2020 06:25:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=FfKor7U0vt++yfBwrBnYdBw94nHhQ+oK4lCeZS+RVok=;
-        b=XEpFdcXAC8lUmQMA4LZKUk42GCEPu5SfwDZhnnY7Y7Dtl0xnoDr692efQjav3p1u87
-         jFjcBG+llTAssII/mof+5UneBOC2czmGyke+iuyBGBVSCvRs5/07PHj1aOqf1SX1wTfZ
-         JNT1jop4fZ3CUye1QHaF2Q9LA/zBvJj1Tc5FyRG9TubNw0+/OaDFb9XzekeMA1+6B1EI
-         tgDCzgz5e/hXEzj6nI9N9pl7Jvo4vC6Y5ny3pIduuDXKrxq0mJ3d/t7hRPlIPXZkq+VI
-         es3xe+7Pvdw31WqKY1rsJApoU4Un3DSNruiShcNZfQymGC78W1v4P1jvJz3QQN218aoa
-         5GZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=FfKor7U0vt++yfBwrBnYdBw94nHhQ+oK4lCeZS+RVok=;
-        b=Ima9Q57fnoz7UennfjDtzqM80n+Y+ShfkV7gONR72mXMW8RkWGMkr0VTyR1XltQp2T
-         V3yDNDrJEs2AtCSdg7OJhDp25JI+y0ZFExgUFRnO9F5VKDBlhn2q7C0GVL52r8ZNyBMV
-         gAljo9YxCzPHqMAYHJ1ULt7C+bSpoZnAOskLd2dcUPrkygCLvJclQGsKRh+Y4dx6PaAQ
-         9rr1PYHA3iolUydlPrpOR/MWyLIub17g5lvFCwC6ME0neH2v3ToXScP4CZTgoJTdOtSs
-         aV8xbirChCr4VgZ4nPiWHzbuYrQeEQQ8sL8QwSLEaMTXtNxF/r4U+fqSUiF1Vdq0x9gw
-         pH9A==
-X-Gm-Message-State: AOAM533nmf70P+wpvY5lgkAxc8KZnNKjtYTduz6z8S0gx9RSgOeJWL4u
-        DATM+XjdHM2MSlM5SMK+T8o=
-X-Google-Smtp-Source: ABdhPJwIvkk87KsmwR6I07XB8/aAVqDMq5KVoIIQX5CDv3cotSqyh7b9ZM2QPx3gbDvvCbpyEPTHNA==
-X-Received: by 2002:a63:ef09:: with SMTP id u9mr2807679pgh.406.1591795504119;
-        Wed, 10 Jun 2020 06:25:04 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id s197sm13379356pfc.188.2020.06.10.06.25.02
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 10 Jun 2020 06:25:03 -0700 (PDT)
-Date:   Wed, 10 Jun 2020 06:25:01 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] hwmon: i5k_amb: remove redundant assignment to variable
- res
-Message-ID: <20200610132501.GA112976@roeck-us.net>
-References: <20200610123638.1133428-1-colin.king@canonical.com>
+        id S1729952AbgFJOxv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Jun 2020 10:53:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43824 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726943AbgFJOxu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 10 Jun 2020 10:53:50 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BDBAC2072F;
+        Wed, 10 Jun 2020 14:53:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1591800830;
+        bh=TC73ZRDSuoUg0mbgkZG8iBdzAr9faRcRABDM7yMly28=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=TFu/AplpxtnCVEq78ohceG29T7SYBjPC5HIAjxG+hxCRxeLrPsNRy6j26NYJwFeJ3
+         QvsLuNdCVS76nhPuHuTAwnK+XQfju0sw8jNByZiGyMECclLQF04DAR+Z4IqXPkEVqP
+         MgQGPcl1Ntz21ulzRCF6E58ON+T9q5eiGmmkIeOE=
+Date:   Wed, 10 Jun 2020 16:53:44 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-fsdevel@vger.kernel.org,
+        Namjae Jeon <namjae.jeon@samsung.com>,
+        Sungjong Seo <sj1557.seo@samsung.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        Tetsuhiro Kohada <kohada.t2@gmail.com>,
+        Wei Yongjun <weiyongjun1@huawei.com>
+Subject: Re: exfat: Improving exception handling in two functions
+Message-ID: <20200610145344.GA2102023@kroah.com>
+References: <9b9272fb-b265-010b-0696-4c0579abd841@web.de>
+ <208cba7b-e535-c8e0-5ac7-f15170117a7f@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200610123638.1133428-1-colin.king@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <208cba7b-e535-c8e0-5ac7-f15170117a7f@web.de>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jun 10, 2020 at 01:36:38PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Wed, Jun 10, 2020 at 11:27:58AM +0200, Markus Elfring wrote:
+> Hello,
 > 
-> The variable res is being initialized with a value that is
-> never read and it is being updated later with a new value. The
-> initialization is redundant and can be removed.
+> I have taken another look at pointer usage after calls of the function “brelse”.
+> My source code analysis approach pointed implementation details
+> like the following out for further software development considerations.
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/fs/exfat/namei.c?id=3d155ae4358baf4831609c2f9cd09396a2b8badf#n1078
 > 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Applied.
-
-Thanks,
-Guenter
-
-> ---
->  drivers/hwmon/i5k_amb.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> …
+> 		epold = exfat_get_dentry(sb, p_dir, oldentry + 1, &old_bh,
+> 			&sector_old);
+> 		epnew = exfat_get_dentry(sb, p_dir, newentry + 1, &new_bh,
+> 			&sector_new);
+> 		if (!epold || !epnew)
+> 			return -EIO;
+> …
 > 
-> diff --git a/drivers/hwmon/i5k_amb.c b/drivers/hwmon/i5k_amb.c
-> index eeac4b04df27..cd5b62905eee 100644
-> --- a/drivers/hwmon/i5k_amb.c
-> +++ b/drivers/hwmon/i5k_amb.c
-> @@ -396,7 +396,7 @@ static int i5k_amb_hwmon_init(struct platform_device *pdev)
->  
->  static int i5k_amb_add(void)
->  {
-> -	int res = -ENODEV;
-> +	int res;
->  
->  	/* only ever going to be one of these */
->  	amb_pdev = platform_device_alloc(DRVNAME, 0);
+> I suggest to split such an error check.
+> How do you think about to release a buffer head object for the desired
+> exception handling if one of these function calls succeeded?
+> 
+> Would you like to adjust such code in the functions “exfat_rename_file”
+> and “exfat_move_file”?
+> 
+> Regards,
+> Markus
+
+Hi,
+
+This is the semi-friendly patch-bot of Greg Kroah-Hartman.
+
+Markus, you seem to have sent a nonsensical or otherwise pointless
+review comment to a patch submission on a Linux kernel developer mailing
+list.  I strongly suggest that you not do this anymore.  Please do not
+bother developers who are actively working to produce patches and
+features with comments that, in the end, are a waste of time.
+
+Patch submitter, please ignore Markus's suggestion; you do not need to
+follow it at all.  The person/bot/AI that sent it is being ignored by
+almost all Linux kernel maintainers for having a persistent pattern of
+behavior of producing distracting and pointless commentary, and
+inability to adapt to feedback.  Please feel free to also ignore emails
+from them.
+
+thanks,
+
+greg k-h's patch email bot

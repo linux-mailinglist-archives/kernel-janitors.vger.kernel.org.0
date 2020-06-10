@@ -2,56 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6ADA21F5A44
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 19:25:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92EED1F5A47
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 19:26:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726408AbgFJRZC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Jun 2020 13:25:02 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:54764 "EHLO
+        id S1726327AbgFJR0c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Jun 2020 13:26:32 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:55764 "EHLO
         userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726095AbgFJRZC (ORCPT
+        with ESMTP id S1726095AbgFJR0b (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Jun 2020 13:25:02 -0400
+        Wed, 10 Jun 2020 13:26:31 -0400
 Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05AHMLs9089394;
-        Wed, 10 Jun 2020 17:24:59 GMT
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05AHMO7o089411;
+        Wed, 10 Jun 2020 17:26:24 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=6OQAg/GSkape6JgCC1S+D4gsmrbv8peyHFGiheXUuGY=;
- b=ytsotbX4vVC1gMQZ6wNSB5HRCXhWyIZPwRFurGaulP75U8v+6FR0ShkmKGm25HqUor5x
- EQWYCxvnkK2ZZUO/GFBPj7NvRGX21RTmlZSTv/r/VVPqrGF3Q9geEJFDnvya1pgHL6+D
- Suda45vGCnRUH6KKnvblowVNXVrZGw19kmWpZDAPWqY1WvrVaOZgT71oGoYPWa0jxVoS
- K7OB30e4Wn31aZts5TprlItME2C9EHFfXt0sCJUfoAYcmQhQXTPtbrB7/3kR19gKXqGQ
- jMr+UoePjjo/vg5lG4k0/0zBzc1sLGvm3TVSg4eueYdc54tUbw100ISP9np15GHHH/+f Ww== 
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=ijYAQnfitZ0djMaR0rpx+C3/Bd2mhPossi+K/mI0VoI=;
+ b=kI75ydh9ZL5mQPBTpohY4GT9bQrOliTsUsmcseh1HpRMR2Ay8CP7R+wsB+gSaOfFPRsj
+ YG2pSAxlBuTvDEF2tBzkisr9OnnhhEseZsjYL02tI2JqAHEpeBdY3EENXe8xiVcZbosm
+ gzUqQoEdddo7iduvSkWWi9G7rPRlR13pONPQqymkg7lCiSqlOj8XSd00f6GLklYpDGl2
+ ewF6x5hwQaNuT3IGU7c2Y1dqXjIS/2Qq6z6TvOorHt0Y2ZkakW9qg12h4DVnRkjZB3mF
+ RrsEDTyollatoZRiE979GlzYW7M6sQ5ouR8pEevQppKT9DUb7G68nU/JaN114NLDIV2G tw== 
 Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 31g2jrbp1m-1
+        by userp2130.oracle.com with ESMTP id 31g2jrbp85-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 10 Jun 2020 17:24:59 +0000
+        Wed, 10 Jun 2020 17:26:24 +0000
 Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05AHNjJo099715;
-        Wed, 10 Jun 2020 17:24:59 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 31gn2ytq9v-1
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05AHNjRL099650;
+        Wed, 10 Jun 2020 17:26:24 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 31gn2yts7u-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 10 Jun 2020 17:24:59 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05AHOw9f013073;
-        Wed, 10 Jun 2020 17:24:58 GMT
+        Wed, 10 Jun 2020 17:26:24 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05AHQN5v000591;
+        Wed, 10 Jun 2020 17:26:23 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 10 Jun 2020 10:24:57 -0700
-Date:   Wed, 10 Jun 2020 20:24:51 +0300
+        with ESMTP ; Wed, 10 Jun 2020 10:26:22 -0700
+Date:   Wed, 10 Jun 2020 20:26:15 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Joshua Morris <josh.h.morris@us.ibm.com>,
-        Philip Kelleher <pjk1939@linux.ibm.com>
-Cc:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH 2/2] rsxx: Return -EFAULT if copy_to_user() fails
-Message-ID: <20200610172451.GC90634@mwanda>
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>
+Cc:     Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Chuhong Yuan <hslester96@gmail.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] media: pxa_camera: remove an impossible condition
+Message-ID: <20200610172615.GD90634@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200610172359.GB90634@mwanda>
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9648 signatures=668680
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 malwarescore=0
@@ -62,49 +63,53 @@ X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9648 signatures=6
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
  cotscore=-2147483648 priorityscore=1501 spamscore=0 suspectscore=0
  lowpriorityscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0
- phishscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ phishscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2004280000 definitions=main-2006100133
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The copy_to_user() function returns the number of bytes remaining but
-we want to return -EFAULT to the user if it can't complete the copy.
-The "st" variable only holds zero on success or negative error codes on
-failure so the type should be int.
+It's not possible for "pcdev->mclk" to be zero because we check for
+that earlier and set it to 20000000 in that situation.  If it were
+possible, that would be a problem because it could have lead to an Oops
+in the error handling when we call v4l2_clk_unregister(pcdev->mclk_clk);
 
-Fixes: 36f988e978f8 ("rsxx: Adding in debugfs entries.")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/block/rsxx/core.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/media/platform/pxa_camera.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/block/rsxx/core.c b/drivers/block/rsxx/core.c
-index 6207449fa716f..558fa263acbc0 100644
---- a/drivers/block/rsxx/core.c
-+++ b/drivers/block/rsxx/core.c
-@@ -165,15 +165,17 @@ static ssize_t rsxx_cram_read(struct file *fp, char __user *ubuf,
- {
- 	struct rsxx_cardinfo *card = file_inode(fp)->i_private;
- 	char *buf;
--	ssize_t st;
-+	int st;
+diff --git a/drivers/media/platform/pxa_camera.c b/drivers/media/platform/pxa_camera.c
+index 3c5fe737d36f7..8e5613c1fe067 100644
+--- a/drivers/media/platform/pxa_camera.c
++++ b/drivers/media/platform/pxa_camera.c
+@@ -2504,17 +2504,14 @@ static int pxa_camera_probe(struct platform_device *pdev)
+ 	if (err)
+ 		goto exit_notifier_cleanup;
  
- 	buf = kzalloc(cnt, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
+-	if (pcdev->mclk) {
+-		v4l2_clk_name_i2c(clk_name, sizeof(clk_name),
+-				  pcdev->asd.match.i2c.adapter_id,
+-				  pcdev->asd.match.i2c.address);
+-
+-		pcdev->mclk_clk = v4l2_clk_register(&pxa_camera_mclk_ops,
+-						    clk_name, NULL);
+-		if (IS_ERR(pcdev->mclk_clk)) {
+-			err = PTR_ERR(pcdev->mclk_clk);
+-			goto exit_notifier_cleanup;
+-		}
++	v4l2_clk_name_i2c(clk_name, sizeof(clk_name),
++			  pcdev->asd.match.i2c.adapter_id,
++			  pcdev->asd.match.i2c.address);
++
++	pcdev->mclk_clk = v4l2_clk_register(&pxa_camera_mclk_ops, clk_name, NULL);
++	if (IS_ERR(pcdev->mclk_clk)) {
++		err = PTR_ERR(pcdev->mclk_clk);
++		goto exit_notifier_cleanup;
+ 	}
  
- 	st = rsxx_creg_read(card, CREG_ADD_CRAM + (u32)*ppos, cnt, buf, 1);
--	if (!st)
--		st = copy_to_user(ubuf, buf, cnt);
-+	if (!st) {
-+		if (copy_to_user(ubuf, buf, cnt))
-+			st = -EFAULT;
-+	}
- 	kfree(buf);
- 	if (st)
- 		return st;
+ 	err = v4l2_async_notifier_register(&pcdev->v4l2_dev, &pcdev->notifier);
 -- 
 2.26.2
 

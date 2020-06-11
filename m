@@ -2,28 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0883B1F6AF2
-	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Jun 2020 17:27:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E98581F6B0F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Jun 2020 17:31:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728488AbgFKP1K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 11 Jun 2020 11:27:10 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:55252 "EHLO
+        id S1728592AbgFKPbL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 11 Jun 2020 11:31:11 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:55344 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726497AbgFKP1K (ORCPT
+        with ESMTP id S1728506AbgFKPbL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 11 Jun 2020 11:27:10 -0400
+        Thu, 11 Jun 2020 11:31:11 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jjP6i-0006HN-DI; Thu, 11 Jun 2020 15:27:08 +0000
+        id 1jjPAb-0006an-47; Thu, 11 Jun 2020 15:31:09 +0000
 From:   Colin King <colin.king@canonical.com>
 To:     Arnd Bergmann <arnd@arndb.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] char/mwave: remove redundant initialization of variable bRC
-Date:   Thu, 11 Jun 2020 16:27:08 +0100
-Message-Id: <20200611152708.927344-1-colin.king@canonical.com>
+Subject: [PATCH] ttyprintk: remove redundant initialization of variable ret
+Date:   Thu, 11 Jun 2020 16:31:08 +0100
+Message-Id: <20200611153108.927614-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0.rc0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,37 +35,28 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable bRC is being initialized with a value that is never read
+The variable ret is being initialized with a value that is never read
 and it is being updated later with a new value.  The initialization is
 redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/char/mwave/smapi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/char/ttyprintk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/char/mwave/smapi.c b/drivers/char/mwave/smapi.c
-index 691f5898bb32..f8d79d393b69 100644
---- a/drivers/char/mwave/smapi.c
-+++ b/drivers/char/mwave/smapi.c
-@@ -126,7 +126,7 @@ static int smapi_request(unsigned short inBX, unsigned short inCX,
+diff --git a/drivers/char/ttyprintk.c b/drivers/char/ttyprintk.c
+index 56db949a7b70..6a0059e508e3 100644
+--- a/drivers/char/ttyprintk.c
++++ b/drivers/char/ttyprintk.c
+@@ -172,7 +172,7 @@ static struct tty_driver *ttyprintk_driver;
  
- int smapi_query_DSP_cfg(SMAPI_DSP_SETTINGS * pSettings)
+ static int __init ttyprintk_init(void)
  {
--	int bRC = -EIO;
-+	int bRC;
- 	unsigned short usAX, usBX, usCX, usDX, usDI, usSI;
- 	static const unsigned short ausDspBases[] = {
- 		0x0030, 0x4E30, 0x8E30, 0xCE30,
-@@ -497,7 +497,7 @@ int smapi_set_DSP_cfg(void)
+-	int ret = -ENOMEM;
++	int ret;
  
- int smapi_set_DSP_power_state(bool bOn)
- {
--	int bRC = -EIO;
-+	int bRC;
- 	unsigned short usAX, usBX, usCX, usDX, usDI, usSI;
- 	unsigned short usPowerFunction;
+ 	spin_lock_init(&tpk_port.spinlock);
  
 -- 
 2.27.0.rc0

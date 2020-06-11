@@ -2,169 +2,125 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3AFD1F5C55
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jun 2020 22:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 799A21F609A
+	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Jun 2020 05:41:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730450AbgFJUBH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Jun 2020 16:01:07 -0400
-Received: from mout.web.de ([212.227.17.12]:42811 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727038AbgFJUBG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Jun 2020 16:01:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591819231;
-        bh=V/kXYOzuw6rH33xEKI0N1+DMgJKBXkECKuaKk9JHHnw=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=Xf7T8lewcVQ950UiWBGazQBupJWbngdQ6RKlNpv7lXxjzOiBGo58ntdcQizhBSw6F
-         WBGzWXY1cKuCKdgEbGyiWYW6pkvAgW+HTwpoudoE9p9/Cl6EXKXghdBV/BqD6iszWB
-         OiRXvFsW+ZQgaFqAUjAJ5nGAs3pwWo1+ELwQ/3es=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.155.16]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MGicf-1jeNo62qtV-00DUaM; Wed, 10
- Jun 2020 22:00:31 +0200
-Subject: Re: exfat: add missing brelse() calls on error paths
-To:     Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Namjae Jeon <namjae.jeon@samsung.com>,
-        Sungjong Seo <sj1557.seo@samsung.com>,
-        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
-        Tetsuhiro Kohada <kohada.t2@gmail.com>,
-        Wei Yongjun <weiyongjun1@huawei.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-References: <20200610172213.GA90634@mwanda>
- <740ce77a-5404-102b-832f-870cbec82d56@web.de> <20200610184517.GC4282@kadam>
- <b44caf20-d3fc-30ac-f716-2375ed55dc9a@web.de>
- <20200610192244.GK19604@bombadil.infradead.org>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
- +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
- mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
- lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
- YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
- GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
- rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
- 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
- jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
- BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
- cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
- Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
- g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
- OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
- CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
- LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
- sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
- kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
- i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
- g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
- q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
- NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
- nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
- 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
- 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
- wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
- riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
- DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
- fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
- 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
- xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
- qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
- Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
- Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
- +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
- hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
- /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
- tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
- qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
- Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
- x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
- pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <015e5093-d139-6bee-ca45-4cb0e871e65d@web.de>
-Date:   Wed, 10 Jun 2020 22:00:24 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+        id S1726339AbgFKDlK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Jun 2020 23:41:10 -0400
+Received: from mailout2.samsung.com ([203.254.224.25]:48132 "EHLO
+        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726279AbgFKDlJ (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 10 Jun 2020 23:41:09 -0400
+Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
+        by mailout2.samsung.com (KnoxPortal) with ESMTP id 20200611034107epoutp028896c546c648a0d4df113d1ff401f87b~XYErb_zD70893308933epoutp02h
+        for <kernel-janitors@vger.kernel.org>; Thu, 11 Jun 2020 03:41:07 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20200611034107epoutp028896c546c648a0d4df113d1ff401f87b~XYErb_zD70893308933epoutp02h
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1591846867;
+        bh=V6x0CC0dSJI52/fvB4p8HDQIDD1KqNhQ5jAgQ9dlyxM=;
+        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+        b=lxuqE6BUDJX97XxWMaDFnR/+dOx1zPbNycimS9eNgbjQTHUP6bte30vmBwvoZ6jpp
+         u/ILWf+lrIvdRQgy3XtebhymtF7lFnu/hVAB+6UkXaPPLw1c6ZFKKeh9MTY/Jqt1gX
+         RX5naaY0ydAVwmzYstRqciCRKvDd7pTQm5mpRei4=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+        epcas1p3.samsung.com (KnoxPortal) with ESMTP id
+        20200611034107epcas1p34327c2a7182298862d3f5cff9de4489b~XYErKExDL3020130201epcas1p3W;
+        Thu, 11 Jun 2020 03:41:07 +0000 (GMT)
+Received: from epsmges1p3.samsung.com (unknown [182.195.40.162]) by
+        epsnrtp4.localdomain (Postfix) with ESMTP id 49j8lk4QpqzMqYkV; Thu, 11 Jun
+        2020 03:41:06 +0000 (GMT)
+Received: from epcas1p3.samsung.com ( [182.195.41.47]) by
+        epsmges1p3.samsung.com (Symantec Messaging Gateway) with SMTP id
+        00.3E.29173.2D7A1EE5; Thu, 11 Jun 2020 12:41:06 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200611034106epcas1p195947d55fda88a49228be1ec06401cba~XYEpqcDER2338923389epcas1p1o;
+        Thu, 11 Jun 2020 03:41:06 +0000 (GMT)
+Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200611034105epsmtrp1b6e2ec7bde217b9e3f78a3271024192c~XYEpl0L721381213812epsmtrp1H;
+        Thu, 11 Jun 2020 03:41:05 +0000 (GMT)
+X-AuditID: b6c32a37-9cdff700000071f5-2a-5ee1a7d244a4
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
+        F1.EF.08303.1D7A1EE5; Thu, 11 Jun 2020 12:41:05 +0900 (KST)
+Received: from namjaejeon01 (unknown [10.88.104.63]) by epsmtip2.samsung.com
+        (KnoxPortal) with ESMTPA id
+        20200611034105epsmtip27d4824bd0bc082146fa3cc8842c94b8e~XYEpaEU4K0594905949epsmtip2q;
+        Thu, 11 Jun 2020 03:41:05 +0000 (GMT)
+From:   "Namjae Jeon" <namjae.jeon@samsung.com>
+To:     "'Dan Carpenter'" <dan.carpenter@oracle.com>
+Cc:     <linux-fsdevel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        "'Sungjong Seo'" <sj1557.seo@samsung.com>,
+        =?iso-8859-1?Q?'Pali_Roh=E1r'?= <pali@kernel.org>,
+        "'Markus Elfring'" <Markus.Elfring@web.de>,
+        "'Tetsuhiro Kohada'" <kohada.t2@gmail.com>,
+        "'Wei Yongjun'" <weiyongjun1@huawei.com>
+In-Reply-To: <20200610172213.GA90634@mwanda>
+Subject: RE: [PATCH v2] exfat: add missing brelse() calls on error paths
+Date:   Thu, 11 Jun 2020 12:41:05 +0900
+Message-ID: <00a801d63fa2$230d14c0$69273e40$@samsung.com>
 MIME-Version: 1.0
-In-Reply-To: <20200610192244.GK19604@bombadil.infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-X-Provags-ID: V03:K1:1CFfg75+PNIhMjnaQFQgUxOoGYHJRs1zzs0vyK9t5n9UoWJv9Ig
- mPzwqJ5d+rMhw20lCvjXHC5KCvcB+1bOIhzn2E2SyJAbaMlB/zOe3aNf1lEflIgac/9wB/b
- DGe8OrxFqAvL3lypMV8JLiPeuesd2VFZGYdjqkHzAPfmc2yHujO6gFIoC4Xb2e6QdAz3GkK
- K5XPIrYve5ki1KAalEFfw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:MOzWbS8W4yg=:fpMHfAlrbTN5wB+pGEIK+u
- h0vrDtpssBVanAfTMcK/8e/dMTFFiATBtMwubX2lFbFQG/PTkBIll21BOHz6ncwSRtr4bncYv
- fghoFFgnVap9HlYNRfba1+dLJzCpyWiEbYjCB1AyCubhgvHFGWq3iZ1UkR67xpOOOrxJdpzx4
- OMbcxgpcRDnimk4SjT4Sn5XecMuw9AIq2Z5maYfPORsr5TpOTEgsrxqzyrt67aLzPnZVQ6zcS
- BG1koWnh4/GO669tfLy+5UH3TZG778v4FLffyBVcPhn+FTC4Wig15Tf/MbB7M1NWTl0ljVwuu
- HrqvMQZ35a4FCqCsFDkIHWLyB5eKOfm46lD2GMeBgrLUs4KR4Al6bFtH5MYnnbm/3IlnSGkVs
- BHAnPjKHOTCICXUKnc8Nizj0yiwWzEauRutD6XyJHNgz4FwJapT/jUMOufUY16Q72WmVWjbTb
- ytlsnh2Q67ENwY9oFq9fwO2Y6Tit/D+WP9QSmDj2y62gafOH85pMweVG1aO4H7B9+DLSUUrKT
- 3RKyXwt4TZxB8BElrIKsQa5QujqpZNof1S7wjcRVQ+oCsKz0zKPK5yjUrGafVBaA6bltBFOUj
- bwF7VioP/KRMjvLOc0mr6jDENGY4KnFMve7TBywyjxl40oiIR9HMZYodRJ/ejWmlUPIQGoZaN
- NGY34FlRAfi5QeK1H4FKoWCRZw1ASCw/ZD8XjX0/kgB2maGjLlt8xfipSD7UWkPt/QOJVvnPy
- lBeTCzEOCDHHyFSv6R8SN6/Qs6fa90B2vCjQlHlwhfCL06Wq8xsxaXoWz8vz98ddW/guUtWmg
- O397UvsP3rbSKQuhCAeu+Y1mGKw/1PrUHb18XVwdtB1FHIAusIAsPdF2qt9hBbfzCeDHmtfxV
- rj8A1ZnX/5hS6C9jXsWlSGjt/cTUjZR1Z4PSd2UCzNb9Z2a2IDaQo2qv16v1+WZqCh29peHHo
- Mjju+cI/ba52ZA2H7SSH2RrxXr7Ds5ugX2zmy/gPsZwYTrYd8U+zDQ6NmMN70PhYacffH8sFt
- ATpnJ45B9veqWzOn/gSsGDmYxxIznxYbix5eu78gIZ4DgXdj7PKaF/YCddgVeHKrrl78NnhbX
- QQ5PuPn5co0kL2xWHPZ6kZ9iTaeyke+KPtzs7/xf5eSBkBkUWFaumEaIZo0f7QkxlSMDqHEWt
- dIov0Z0ft9l8lp/oWFedKXJcL8z4tRy2jqs394XO9iP83KWdIBL7/3IS57/QUHa+2tIuLPVkp
- jTm/kTEBdTdYf9WGk
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQIRrAfa6wiWBnxmC0CvH5lIv9XJ0gH3LYStqEwybXA=
+Content-Language: ko
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrLJsWRmVeSWpSXmKPExsWy7bCmvu6l5Q/jDN7cUbR4/W86i8XWW9IW
+        P+beZrHYs/cki8XlXXPYLP7Pes5qsWDPaTaLLf+OsFoc/rKLzYHTY+esu+weLUfesnpsWtXJ
+        5vHx6S0Wj74tqxg9Pm+S87j9bBtLAHtUjk1GamJKapFCal5yfkpmXrqtkndwvHO8qZmBoa6h
+        pYW5kkJeYm6qrZKLT4CuW2YO0GVKCmWJOaVAoYDE4mIlfTubovzSklSFjPziElul1IKUnAJD
+        gwK94sTc4tK8dL3k/FwrQwMDI1OgyoScjFWn1jIXXGGqePTmPlMD4zymLkZODgkBE4mTR56z
+        djFycQgJ7GCUaJhwAMr5xCjxp3k7I4TzmVHi25l+RpiWFVtPsEAkdjFKHD+3mB3Cecko8Xn7
+        RRaQKjYBXYl/f/azgdgiAgYS906+AOtgFjjHJPH/5GlWkASngI7E1WV7wWxhAQ+Jf1c2MoPY
+        LAKqEkuWLQGL8wpYSiw4fJQNwhaUODnzCdgCZgE9iRtTp7BB2PIS29/OYYY4T0Hi59NlQL0c
+        QIutJGYtroEoEZGY3dnGDHKDhMAODokTu59CveMisWn9DDYIW1ji1fEt7BC2lMTL/jZ2kDkS
+        AtUSH/dDje9glHjx3RbCNpa4uX4DK4StKLHz91xGiF18Eu++9rBCtPJKdLQJQZSoSvRdOgwN
+        d2mJrvYP7BMYlWYheWwWksdmIXlsFpIPFjCyrGIUSy0ozk1PLTYsMEaO7k2M4HSrZb6Dcdrb
+        D3qHGJk4GA8xSnAwK4nwCoo/jBPiTUmsrEotyo8vKs1JLT7EaAoM64nMUqLJ+cCEn1cSb2hq
+        ZGxsbGFiZm5maqwkzutrdSFOSCA9sSQ1OzW1ILUIpo+Jg1OqgelSz4FPUi77//Zcyp2/4i+L
+        aW71Zp4H0lIJz1tYOe3ZIvSfXmPtmCojI13h/F3mWOWutB1m6pXXTjy9Ir6L6W5N4UHH/5u4
+        Fd8wp6nFTndy2fWT2Ufm2Mrapd8z7SpXd93x4L37+OqdLcu2+drvuLZOyPrCkuXPb+RtKpRZ
+        sVJzroTcY78OhR/3NDVfy4U3P3ldK7fp51/B/ZyfD/5b5H11lsoJlyS1L/Zv/A2Ot3zoOKb1
+        PMbl+v7MQ7Xe67LnPG7Lvrlbp3fv2pqw9R0Za0UXr5ysdyTkpP9pr2+yFssTPihwKQVP0Tld
+        27bidCHLbEdujd8fUid0SOXtn/Ow8rb/h/YbbObXPFa/+N6uMXW9EktxRqKhFnNRcSIATWuw
+        s0AEAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprCIsWRmVeSWpSXmKPExsWy7bCSvO7F5Q/jDNY2m1u8/jedxWLrLWmL
+        H3Nvs1js2XuSxeLyrjlsFv9nPWe1WLDnNJvFln9HWC0Of9nF5sDpsXPWXXaPliNvWT02repk
+        8/j49BaLR9+WVYwenzfJedx+to0lgD2KyyYlNSezLLVI3y6BK2PVqbXMBVeYKh69uc/UwDiP
+        qYuRk0NCwERixdYTLF2MXBxCAjsYJRbdvgCVkJY4duIMcxcjB5AtLHH4cDFEzXNGiVl3z4PV
+        sAnoSvz7s58NxBYRMJC4d/IF2CBmgStMEvu2zmcDaRYSqJVYc1gUpIZTQEfi6rK9rCC2sICH
+        xL8rG5lBbBYBVYkly5aAxXkFLCUWHD7KBmELSpyc+YQFxGYGmn//UAcrhC0vsf3tHGaIOxUk
+        fj5dxgqySkTASmLW4hqIEhGJ2Z1tzBMYhWchmTQLyaRZSCbNQtKygJFlFaNkakFxbnpusWGB
+        UV5quV5xYm5xaV66XnJ+7iZGcMRpae1g3LPqg94hRiYOxkOMEhzMSiK8guIP44R4UxIrq1KL
+        8uOLSnNSiw8xSnOwKInzfp21ME5IID2xJDU7NbUgtQgmy8TBKdXA1LtzXvXkK5f9mKuvMk7g
+        qqnN3BW/3WLb5CmNqt1fb0eu1/u97P3WMhUuD8M67SPzxZ9On17zz3/z/glc1wWVxQ4e5s24
+        /nVeDsuKhGNL1rpNcKxpCXSu7Fh+bQtPTLBWSaSPn7vCBQejKUaN09/ofCmZ+m9a/qFVi8O2
+        x03+rpOuri7aZqmodKPxwE+W2pNnOu4vebVwqRiviCFTv7IQj9rE/86WjuaCEv2WNauLV3zY
+        MjXZ/LDpm6XaT9nOlVdHLHTYGm0nps1w/+fkVzvPuLrenfTu+oOU1Qqsm5Kefl1nKDhDaqW4
+        5aLf3LpnrR2zWrj4TRmW9r7jeOfiICq6Z1L7mwPepzWvXFVrbtS6psRSnJFoqMVcVJwIAFwI
+        fD4nAwAA
+X-CMS-MailID: 20200611034106epcas1p195947d55fda88a49228be1ec06401cba
+X-Msg-Generator: CA
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20200610172239epcas1p1facf5f0026208683a593eeb7271c8cce
+References: <CGME20200610172239epcas1p1facf5f0026208683a593eeb7271c8cce@epcas1p1.samsung.com>
+        <20200610172213.GA90634@mwanda>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> You're nitpicking commit messages.
+> If the second exfat_get_dentry() call fails then we need to release "old_bh" before returning.  There
+> is a similar bug in exfat_move_file().
+> 
+> Fixes: 5f2aa075070c ("exfat: add inode operations")
+> Reported-by: Markus Elfring <Markus.Elfring@web.de>
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Applied. Thanks!
 
-I am occasionally trying to achieve corresponding improvements.
-
-
-> This is exactly the kind of thing which drives people away.
-
-Would you like to follow official patch process documentation?
-
-
-> Dan's commit message is fine.
-
-I have got the impression that he indicates another deviation from
-a well-known requirement. I am curious under which circumstances
-such a patch review concern will be taken into account finally.
-
-
-> It's actually hilarious because your emails are so unclear that I
-> can't understand them.
-
-I find such feedback surprising and interesting.
-I hope that we can reduce understanding difficulties together.
-
-
-> I have no idea what "collateral evolution" means
-
-This term expresses the situation that a single change can trigger
-further changes.
-
-Examples for programmers:
-A)
-* You add an argument to an used function.
-* How many function calls will need related adjustments?
-
-B)
-* Some function calls can fail.
-* How do you think about to complete error detection and the
-  corresponding exception handling?
-
-
-> and yet you use it in almost every email.
-
-You exaggerate here.
-
-
-> Why can't you use the same terminology the rest of us use?
-
-I got also used to some wording approaches.
-Which terminology variation do you prefer?
-
-Regards,
-Markus

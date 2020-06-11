@@ -2,97 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ABC01F69CC
-	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Jun 2020 16:20:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8044B1F6A10
+	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Jun 2020 16:30:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728118AbgFKOTv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 11 Jun 2020 10:19:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37468 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726936AbgFKOTv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 11 Jun 2020 10:19:51 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0882F20801;
-        Thu, 11 Jun 2020 14:19:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591885190;
-        bh=iBtLF+CBhTmtuou9PxAkvWs1JyESEMIpwdk/QHqOQXI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=z3qJLpU6SJwDEAgOqrrIDTRc+I7WXjSzI0eD7wi4GcSwrhXNh4RsdUlWEUaGkc9TY
-         SxxyaVsM4dId5UyIYKx+SqOx4VBiChgA5BPQJIo+6LTHzFPveocjceexsM6Dt1yBKn
-         DNtlMfGNvQh6k0Y8v3uyCiIOGdH5Khj5mO+PerWI=
-Date:   Thu, 11 Jun 2020 16:19:43 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Liao Pingfang <liao.pingfang@zte.com.cn>,
-        linux-btrfs@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chris Mason <clm@fb.com>,
-        David Sterba <dsterba@suse.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        Wang Liang <wang.liang82@zte.com.cn>,
-        Xue Zhihong <xue.zhihong@zte.com.cn>,
-        Yi Wang <wang.yi59@zte.com.cn>
-Subject: Re: [PATCH v2] btrfs: Remove error messages for failed memory
- allocations
-Message-ID: <20200611141943.GA1245098@kroah.com>
-References: <59c4741e-5749-4782-33f8-cc3a30ecf5e5@web.de>
+        id S1728382AbgFKOaR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 11 Jun 2020 10:30:17 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:52728 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728323AbgFKOaR (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 11 Jun 2020 10:30:17 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jjODf-0000ff-14; Thu, 11 Jun 2020 14:30:15 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     linux-block@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] pktcdvd: remove redundant initialization of variable ret
+Date:   Thu, 11 Jun 2020 15:30:14 +0100
+Message-Id: <20200611143014.925317-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0.rc0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <59c4741e-5749-4782-33f8-cc3a30ecf5e5@web.de>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jun 11, 2020 at 04:00:21PM +0200, Markus Elfring wrote:
-> > As there is a dump_stack() done on memory allocation
-> > failures, these messages might as well be deleted instead.
-> 
-> * I imagine that an other wording variant can become clearer
->   for the change description.
-> 
-> * I suggest to reconsider the patch subject.
-> 
-> 
-> …
-> > +++ b/fs/btrfs/check-integrity.c
-> > @@ -632,7 +632,6 @@  static int btrfsic_process_superblock(struct btrfsic_state *state,
-> >
-> >  	selected_super = kzalloc(sizeof(*selected_super), GFP_NOFS);
-> >  	if (NULL == selected_super) {
-> > -		pr_info("btrfsic: error, kmalloc failed!\n");
-> >  		return -ENOMEM;
-> >  	}
-> 
-> 
-> How do you think about to use the following error handling instead?
-> 
-> 	if (!selected_super)
-> 		return -ENOMEM;
-> 
+From: Colin Ian King <colin.king@canonical.com>
 
+The variable ret is being initialized with a value that is never read
+and it is being updated later with a new value.  The initialization is
+redundant and can be removed.
 
-Hi,
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/block/pktcdvd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This is the semi-friendly patch-bot of Greg Kroah-Hartman.
+diff --git a/drivers/block/pktcdvd.c b/drivers/block/pktcdvd.c
+index 0b944ac96d6b..27a33adc41e4 100644
+--- a/drivers/block/pktcdvd.c
++++ b/drivers/block/pktcdvd.c
+@@ -1613,7 +1613,7 @@ static noinline_for_stack int pkt_get_last_written(struct pktcdvd_device *pd,
+ 	disc_information di;
+ 	track_information ti;
+ 	__u32 last_track;
+-	int ret = -1;
++	int ret;
+ 
+ 	ret = pkt_get_disc_info(pd, &di);
+ 	if (ret)
+-- 
+2.27.0.rc0
 
-Markus, you seem to have sent a nonsensical or otherwise pointless
-review comment to a patch submission on a Linux kernel developer mailing
-list.  I strongly suggest that you not do this anymore.  Please do not
-bother developers who are actively working to produce patches and
-features with comments that, in the end, are a waste of time.
-
-Patch submitter, please ignore Markus's suggestion; you do not need to
-follow it at all.  The person/bot/AI that sent it is being ignored by
-almost all Linux kernel maintainers for having a persistent pattern of
-behavior of producing distracting and pointless commentary, and
-inability to adapt to feedback.  Please feel free to also ignore emails
-from them.
-
-thanks,
-
-greg k-h's patch email bot

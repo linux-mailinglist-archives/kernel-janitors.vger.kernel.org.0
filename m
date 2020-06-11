@@ -2,28 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E98581F6B0F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Jun 2020 17:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F5121F6B33
+	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Jun 2020 17:40:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728592AbgFKPbL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 11 Jun 2020 11:31:11 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:55344 "EHLO
+        id S1728436AbgFKPjl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 11 Jun 2020 11:39:41 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:55501 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728506AbgFKPbL (ORCPT
+        with ESMTP id S1728104AbgFKPjk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 11 Jun 2020 11:31:11 -0400
+        Thu, 11 Jun 2020 11:39:40 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jjPAb-0006an-47; Thu, 11 Jun 2020 15:31:09 +0000
+        id 1jjPIk-0007Go-OY; Thu, 11 Jun 2020 15:39:34 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     =?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+        Aymen Sghaier <aymen.sghaier@nxp.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-crypto@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ttyprintk: remove redundant initialization of variable ret
-Date:   Thu, 11 Jun 2020 16:31:08 +0100
-Message-Id: <20200611153108.927614-1-colin.king@canonical.com>
+Subject: [PATCH] crypto: caam/qi2: remove redundant assignment to ret
+Date:   Thu, 11 Jun 2020 16:39:34 +0100
+Message-Id: <20200611153934.928021-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0.rc0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,28 +38,35 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable ret is being initialized with a value that is never read
-and it is being updated later with a new value.  The initialization is
-redundant and can be removed.
+The variable ret is being assigned a value that is never read, the
+error exit path via label 'unmap' returns -ENOMEM anyhow, so assigning
+ret with -ENOMEM is redundamt.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/char/ttyprintk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/caam/caamalg_qi2.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/char/ttyprintk.c b/drivers/char/ttyprintk.c
-index 56db949a7b70..6a0059e508e3 100644
---- a/drivers/char/ttyprintk.c
-+++ b/drivers/char/ttyprintk.c
-@@ -172,7 +172,7 @@ static struct tty_driver *ttyprintk_driver;
- 
- static int __init ttyprintk_init(void)
- {
--	int ret = -ENOMEM;
-+	int ret;
- 
- 	spin_lock_init(&tpk_port.spinlock);
+diff --git a/drivers/crypto/caam/caamalg_qi2.c b/drivers/crypto/caam/caamalg_qi2.c
+index 28669cbecf77..ef2c4e095db3 100644
+--- a/drivers/crypto/caam/caamalg_qi2.c
++++ b/drivers/crypto/caam/caamalg_qi2.c
+@@ -4044,7 +4044,6 @@ static int ahash_finup_no_ctx(struct ahash_request *req)
+ 					  DMA_TO_DEVICE);
+ 	if (dma_mapping_error(ctx->dev, edesc->qm_sg_dma)) {
+ 		dev_err(ctx->dev, "unable to map S/G table\n");
+-		ret = -ENOMEM;
+ 		goto unmap;
+ 	}
+ 	edesc->qm_sg_bytes = qm_sg_bytes;
+@@ -4055,7 +4054,6 @@ static int ahash_finup_no_ctx(struct ahash_request *req)
+ 	if (dma_mapping_error(ctx->dev, state->ctx_dma)) {
+ 		dev_err(ctx->dev, "unable to map ctx\n");
+ 		state->ctx_dma = 0;
+-		ret = -ENOMEM;
+ 		goto unmap;
+ 	}
  
 -- 
 2.27.0.rc0

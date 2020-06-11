@@ -2,26 +2,26 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED7951F6336
-	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Jun 2020 10:02:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACFED1F63CD
+	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Jun 2020 10:41:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726897AbgFKICf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 11 Jun 2020 04:02:35 -0400
-Received: from mout.web.de ([212.227.17.11]:47523 "EHLO mout.web.de"
+        id S1726956AbgFKIkn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 11 Jun 2020 04:40:43 -0400
+Received: from mout.web.de ([217.72.192.78]:58227 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726757AbgFKICe (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 11 Jun 2020 04:02:34 -0400
+        id S1726861AbgFKIkm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 11 Jun 2020 04:40:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591862464;
-        bh=+y1PmpNFdbQw+ppUZ7tcxHX8SdjdXK80MSRo8PVIBgE=;
+        s=dbaedf251592; t=1591864819;
+        bh=zpUnNHx3y8WGBaVPPdHssJwROMHnN/kqwDTEvacxkS4=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=kK29WhgFU1xX85Gpc429cWP9XvRaarQ5X3ZTvD9tnokFw0GmqmNRcCAkfjmRM5iEJ
-         A/mA17dN5mjZs5fCvO6D35BNeoMCrsGMETOxMGRrqwZIWYtyetbhnK/+cRJ7VctZU7
-         HRrpSx3nFLBXrYArS9MlLQhPUOLl4+YOsh/40usE=
+        b=BDK5Iqdg1pY5TY88M4QE8pTgmnfUDHd5VRMUFfYfGQyZvu4qyI5FzIZD4Akwr+x6X
+         L5HSnkJCUzAUofmoNYOpehoBfoMtwpn+0JTKJL8bq+z/R8A+JzXra9zu199rWFsG1t
+         I8C90xHmOYb9cTBq67kYEoFz52C77Iz7UnTYwBZQ=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.66.14]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MWAwH-1jP8qP0j7J-00XOTy; Thu, 11
- Jun 2020 10:01:04 +0200
+Received: from [192.168.1.2] ([78.49.66.14]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LkyIj-1jAmko19QT-00ap8V; Thu, 11
+ Jun 2020 10:40:19 +0200
 Subject: Re: [PATCH v2] exfat: add missing brelse() calls on error paths
 To:     Dan Carpenter <dan.carpenter@oracle.com>,
         Namjae Jeon <namjae.jeon@samsung.com>,
@@ -76,8 +76,8 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <6e64100a-b623-a4d2-c5d0-cc9235669cdf@web.de>
-Date:   Thu, 11 Jun 2020 10:00:55 +0200
+Message-ID: <420560fd-51bf-2d17-7a49-ac56653ec779@web.de>
+Date:   Thu, 11 Jun 2020 10:40:17 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
@@ -85,30 +85,30 @@ In-Reply-To: <20200610172213.GA90634@mwanda>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Br+WZCnyOu5MQovsERuy+CrDXcu2aPq4x6am0ZY6q1wVxOBphvf
- xvzsJwDf4pBPKrXLUhf7lcZvVm02iiUCIVmkjxGtj2PxxAxqnNoD76jK3O22SE5I/gMevdH
- l9RJ/Cpp7fEmXIIFc2Rzbs2EVc4AVyGiw9m7MYz6oGSmOB8FxW2KaYU241NrkoYpx9LNJdG
- sT4x0Gg6rbCJ6UsdaLx0Q==
+X-Provags-ID: V03:K1:mIWPchu3X/9IVg9sCJv01i56NsfoxFRahJhCNtrpmdMJYr39Wzs
+ 00BTrxHHIZ1PJV7KO0dezQdpUgwdmt9dvRKDHVUmw7uVygUzWQtzSCvgmc2wGIfJ9yqEl1J
+ Yct8qpKYNAqkz/xyQQu1zULeVBUmuSuZln/P3s6C5r+Fmt96LL6AJzchp3RoPVoLjvL4KFo
+ 8UWynw4PQUKt+5d7f8Veg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:sLSyAfGt6VY=:vAC2rbclw+OinxlXAknKiW
- KyXPaJqfvEc87/pHAodb5v+TiAMFJaeHME4ZgNNLrIlWcDbAim/SRFFmGsK7fRUtvyYnkn5Du
- AV2qGQqXwNPcnXr4G5Hxeaa/FHD2e/XHfhx7mbMBUneu4KYtPSwhtBGS+2NnLvOfg4yY00A7h
- HgbfcAT4nbD8rfGnYiNV2WhHgZny/5ebMRhJN85jzGCFPECCfrGNV10lLvmw9a0Zl/EIQtwRu
- VBqzmPZ/WsGMvhPVzzartIaiFwaghovtyGDxMzaXlRn2kRGPFVdlsqngkp2RFueFUeMZIoPuo
- wlfhDBtL18f1JLjkMN7ZJvG/GImLhKnvFrR48d63+VIkhigJZ1TnwznbUn7FtgzW+dcA2EA2E
- 66LhadGrJtf6xzsIih4sEvxWbquXqbOq4C5xGKK+N7NRvBXBSqoVkP6FV2vdlCfdsvermWaI8
- 7RAQvx6wMxH0L53wUGdbsw3Fb7qZz3uulFrlvLhsdT4p0eIOOwtcFfhcS+gZEtAMgDzAyCSXm
- 9ENfyPvjkTcvMpJPR91VpTc48RtxZr3x6DcnUov0I3F8Q9Se4DzICCUOzGDfmkZuF1JzmtKKZ
- Rou3qF7DY42aSb43lttRUy7MWTh0uR7BrAErbvDtIdCPuTneIwUdYU5Ed+wm3rfQybZG48ksm
- 2ggOzUXMyL27/G+nFGw/wirTHChe32/mz1XcKGVjPqwr6IM0IPJfGis8dfK4HNRaBeXu4IQX1
- 0xd2p163QsoPeaGvAu2Du19hsLBu16ImavNm8IMhHy+B62eW6d8hz3T5xGWgv9Fj61p7SsM8h
- guGX39oSuBg5p1Ik0bZD2A/YIA+sMn2RoCp9Zw2KjiH+0TmOlWdAFw/wnex6+SEMH0ssvrjuX
- q1MbZo1PQt7g17UdDZXdRZ/ACz53t4C7i64ihXT8KRwYyUpD8/+9fDOnsX7aUBpn8dgzYq9KO
- +xhOoJmqE9/jTIQQ1yc3pUPvFbzod5ZxwlxDvWZnuQ0pT0eu3IeKufApCJiZyJt29YRiFQU9D
- LZdtxepHGE9taV0Tdr5520mpFxouTYwrs3y042+znxtlS7zx8vqCzdiPtjMN7SUutITudkmKp
- rRUDKPPj+KCBgb5XCdVEgHya9ry7jdF/E/wcMcuX6kQPnma4J/ekOQBCLffysQLRTYYQMFA65
- ipOcK+nbmxnHSlflFPa+XCST0Ea9ctTiKXm0AKo1Rsn8g/oyDnXgCPenovyjNXu+x4n0jIBjT
- s1Q7ctvYWC7o+FT1d
+X-UI-Out-Filterresults: notjunk:1;V03:K0:3ojKIIZhqF8=:SfZZKhLWR8QBExDqCOLSsk
+ Ivtto0puV6BaId2NG3J8EL+VsGhHK7ScLourO0oVD3zLTKM2+CYNwc4ualpdXzP5lzeRpYek1
+ H33dGdqXRPrL3s/xzQj0FasywshcashkffhxNn/xZRcoh7ZgYFmJxJHZo6AONkmRSPWUu5BYJ
+ 1L9U5P8TVyDhbntdU2Sq89obxFTzZKFN0EEwnHez0PRZRg+d+dUggzPoQby5ghTVsSnUfksGe
+ tMdX4QVJhlpuod3E4MyQxtxDzpfDdHlMSWPtZPPW1WP79En9voJG68xy9mH2psjFEB7zzSIbA
+ VVksyTj1ycUu4l+NvIJrAq1b1/Xcqy8i3E5goGzkJo1F3gBSJwRHeIPOy6ldaGivavMROTLY3
+ nQ3SGsal4NnTQp6vZi5bXvdq5d6wCDJ2/494d55BNyJT+H4xE/zcIBUfwclLZz8Nc/R6HcILM
+ +jzpKWx2EzSEKzA2FcWbOlCnhlZX21r8fkCfLYGHGpgSsjpdzKOGCKX5+jBXGZqmTsPPOvIt1
+ LMoTiwVt8EWTlO2dRCuJvupczFB3paBsugnVOt/NppHGWpWx4KyAU+9UhxYllpmeBSL+ZP2RX
+ wXfG58kR7Wh+WcbOMx0+58CMvlLiDkDFHvOYTUwYE2KY/eHesL8P8Q6MdKrPpqmgfyzapFsXM
+ dWOoAfaowcekc099shHvycz0NgEVIyYSvpgPCmOXv8PHxhu/TzA4ZvgXV4aI5ad2iPZzkdx7O
+ Qb7FrvYf1jUmO7xy5SjgM3ayaW9HCVsdPSC5zkNR7kUo5KxY3sgUGbgfn7K5EgZeWU3avisbj
+ 25Ca02YnieAKuKDVFLusext44YW7p0MLnjMUPGfbIk4ws0SlacPR4U/TQ5FzJn5Gx3rXgNIMc
+ ZQ0L0uE0yvv46L7y/yQVs/xd0G4cxrINOS586mx5n4nTvtx9syeLDwDhh+piagUfWiWOHJEF6
+ sV+qpBgYHX4ewjUH07jx9omXwbwt2SzUW6cJUEcLR/ZcKx7JunVaaY6bBbDYfOXEQrxhdTbT3
+ DHQfwtWhjOmIkRYxNDYHmbr9S7CiysCXQqiAqZs4JRs/xLrFceBfYATWwoVUAw40+P6WGmXjb
+ xd7dunzHSYIGmcuAkupUgbYdXPXXWjGzke9bFh7WNbrju23JoqZ0t3puMenAC1NLPi8k4ztbF
+ O3V/cEJLqexQBhdxT9UGIiJDr+s6sPmbmuqHvjKCxLC4mqBWjL26LlhLR8IFzL3O7kU5HcpMe
+ f+HM6Uxi3VjHOAOgU
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -125,9 +125,12 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 > +			return -EIO;
 =E2=80=A6
 
-Can it become helpful to annotate such null pointer checks for branch pred=
-iction?
-Would you like to indicate a likelihood in any way?
+Will there be a need to reconsider the indentation for function call param=
+eters
+in such source files?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/coding-style.rst?id=3Db29482fde649c72441d5478a4ea2c52c=
+56d97a5e#n93
 
 Regards,
 Markus

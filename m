@@ -2,312 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63D9A1F794F
-	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Jun 2020 16:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 297341F7B75
+	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Jun 2020 18:10:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726314AbgFLOLU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 12 Jun 2020 10:11:20 -0400
-Received: from mx01-sz.bfs.de ([194.94.69.67]:22797 "EHLO mx01-sz.bfs.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726085AbgFLOLU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 12 Jun 2020 10:11:20 -0400
-Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
-        by mx01-sz.bfs.de (Postfix) with ESMTPS id 35DE4202F0;
-        Fri, 12 Jun 2020 16:11:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1591971077;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=rCt+zPHuTM/eBgI+6Wbu3vlbltRttVGV2Uwnv+yEG1Y=;
-        b=lspbOloZqL6u0qm35FR4cpXwIxvjaTbA9WeHGq1aJcyucsCvtNmBYhM2ofH3b2fgpZrget
-        YVHzFyJtnVIewtpf3gXokjF4lsx6vcdAniwJvrijMp8AZmT/leUVdkUQB8BgJ1HMQXQ+Gs
-        I2BVfj12UONhuU/JI8WKZxbjBPIGkusv1sjrra8HRy/00+9Jz4Un9K3Ss7rSbKNALDoPKA
-        9CSeXAachkec1csCm8ljiKz4gQZY/qIzBZ0cdtCr2NTpbQcHXyX4hm0cXqWvJoIE1fXXtc
-        QVddZfTSSOUaQJE04von+c3C6OWkjm2Vn7RjMmEfvfBbrfKnOmSa4k/HYedQEQ==
-Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
- (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.1913.5; Fri, 12 Jun
- 2020 16:11:16 +0200
-Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
- SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%6]) with mapi id
- 15.01.1913.005; Fri, 12 Jun 2020 16:11:16 +0200
-From:   Walter Harms <wharms@bfs.de>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Mike Leach <mike.leach@linaro.org>
-CC:     Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: AW: [PATCH] coresight: cti: Fix error handling in probe
-Thread-Topic: [PATCH] coresight: cti: Fix error handling in probe
-Thread-Index: AQHWQL/uFacPuxfT5k+bfPO1tVl2Q6jVA0Va
-Date:   Fri, 12 Jun 2020 14:11:16 +0000
-Message-ID: <6c59bdbc15714b089d256ad50aee58cb@bfs.de>
-References: <20200612121047.GF4282@kadam>,<20200612121133.GA1139533@mwanda>
-In-Reply-To: <20200612121133.GA1139533@mwanda>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.137.16.40]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1726290AbgFLQKF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 12 Jun 2020 12:10:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43258 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726053AbgFLQKE (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 12 Jun 2020 12:10:04 -0400
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C90E8C03E96F;
+        Fri, 12 Jun 2020 09:10:04 -0700 (PDT)
+Received: by mail-pj1-x1041.google.com with SMTP id i4so4051153pjd.0;
+        Fri, 12 Jun 2020 09:10:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xGowqnfFw5R0e+Qkd5MSY7h9qfsgL+NMoQac/0huSiE=;
+        b=LWM0JgqePgHG1PtiYO/tQhhZ1IXZhDY688eqkDRtu1G1KB+lncE7qt6C/K+OD2wmIo
+         tev4g5xZQfGKLtZ0hvJbO+hFbxh7VtYJUr0VfhammcNc+16YdKyPEoDrU+UqTTNm7XLq
+         mekKCMO+v1GtAxaPyZszhPsElYm4alT9pqHosUEB+yoz/ipvIZkjuTReR1HFg5aPgTIp
+         YUI/maaYipbxTTfA9mf7qWkSnmRZP3EbkWmXiOssuTHB6qN6L2YJ+0pm2Kt3lMpONx62
+         RUYKiVwKxZdPpFIkevS+tVZYMrn24QAyZsQIk6WxXsFgGDP+UxyUvpPcUqHyzBftA3Xm
+         toIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xGowqnfFw5R0e+Qkd5MSY7h9qfsgL+NMoQac/0huSiE=;
+        b=FvxgINoX7u0GGrWc8QdTTi8QI6leOgUe44hadKgm+rwUTPb0EZJ56WE+qUO27Ha1wb
+         0dmLuHztCuPADe3k8IU0YgykqQboVnCw/nsi2f/yJVyB3oTGcQOczdElkcYZIUZkQUqO
+         loFqiIgco6UY4UL04betue9TrGiOD1K5ZbZEeXcXrMOipAHBvDuwnfQarfiNZLtXKhQ4
+         u1Sy+n26zXFEUDLG72AfzgUjn16dLCgVXc0RYT1Fmd12xhuxg4tHn09tDsNFfV5rH1l7
+         kjmC8dyb5qz/0iYDQNCdB1ZSEoqIfbRyMwLkZWACc8ve+XyIk5BJH3LKhCDn5s2ZxTAe
+         VFOQ==
+X-Gm-Message-State: AOAM532kQlNOjZUZrRkh06c9BKEjmQQ5c5DdAHxqe9RyZMU2zzB6YMRu
+        gTZJVylgclVUPrk+qOdT8No=
+X-Google-Smtp-Source: ABdhPJxdvPCcklOmzTvVthz1jvb5cZfjfI+ke/dS44xFChUkO0IZXR8rFybDkP8OxkPZmS5VPqeVig==
+X-Received: by 2002:a17:902:b718:: with SMTP id d24mr11541086pls.185.1591978204151;
+        Fri, 12 Jun 2020 09:10:04 -0700 (PDT)
+Received: from Smcdef-MBP.lan ([103.136.221.72])
+        by smtp.gmail.com with ESMTPSA id x1sm5794879pju.3.2020.06.12.09.10.01
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 12 Jun 2020 09:10:03 -0700 (PDT)
+From:   Kaitao Cheng <pilgrimtao@gmail.com>
+To:     adobriyan@gmail.com, Markus.Elfring@web.de
+Cc:     linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        songmuchun@bytedance.com, kernel-janitors@vger.kernel.org,
+        Kaitao Cheng <pilgrimtao@gmail.com>
+Subject: [PATCH v2] proc/fd: Remove unnecessary {files, f_flags, file} initialization in seq_show()
+Date:   Sat, 13 Jun 2020 00:09:46 +0800
+Message-Id: <20200612160946.21187-1-pilgrimtao@gmail.com>
+X-Mailer: git-send-email 2.21.0 (Apple Git-122)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.65
-Authentication-Results: mx01-sz.bfs.de;
-        none
-X-Spamd-Result: default: False [-2.65 / 7.00];
-         ARC_NA(0.00)[];
-         TO_DN_EQ_ADDR_SOME(0.00)[];
-         HAS_XOIP(0.00)[];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         DKIM_SIGNED(0.00)[];
-         RCPT_COUNT_SEVEN(0.00)[9];
-         NEURAL_HAM(-0.00)[-1.034];
-         RCVD_NO_TLS_LAST(0.10)[];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         MID_RHS_MATCH_FROM(0.00)[];
-         BAYES_HAM(-2.65)[98.44%]
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
+'files' will be immediately reassigned. 'f_flags' and 'file' will be
+overwritten in the if{} or seq_show() directly exits with an error.
+so we don't need to consume CPU resources to initialize them.
 
-nit picking in cti_pm_release()
-
-IMHO this should be done in 2 steps:
-      if (--nr_cti_cpu =3D=3D 0)
-->
-  --nr_cti_cpu ;
- if ( nr_cti_cpu =3D=3D 0)
-
-the decrement is easy to miss (what i did first).
-
-yes, i noticed that it is also in the original code and
-it is not that important but while you are here ...
-
-jm2c,
-re,
- wh
-________________________________________
-Von: kernel-janitors-owner@vger.kernel.org <kernel-janitors-owner@vger.kern=
-el.org> im Auftrag von Dan Carpenter <dan.carpenter@oracle.com>
-Gesendet: Freitag, 12. Juni 2020 14:11:33
-An: Mike Leach
-Cc: Mathieu Poirier; Suzuki K Poulose; Alexander Shishkin; Greg Kroah-Hartm=
-an; linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org; ker=
-nel-janitors@vger.kernel.org
-Betreff: [PATCH] coresight: cti: Fix error handling in probe
-
-There were a couple problems with error handling in the probe function:
-1)  If the "drvdata" allocation failed then it lead to a NULL
-    dereference.
-2)  On several error paths we decremented "nr_cti_cpu" before it was
-    incremented which lead to a reference counting bug.
-
-There were also some parts of the error handling which were not bugs but
-were messy.  The error handling was confusing to read.  It printed some
-unnecessary error messages.
-
-The simplest way to fix these problems was to create a cti_pm_setup()
-function that did all the power management setup in one go.  That way
-when we call cti_pm_release() we don't have to deal with the
-complications of a partially configured power management config.
-
-I reversed the "if (drvdata->ctidev.cpu >=3D 0)" condition in cti_pm_releas=
-e()
-so that it mirros the new cti_pm_setup() function.
-
-Fixes: 6a0953ce7de9 ("coresight: cti: Add CPU idle pm notifer to CTI device=
-s")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Kaitao Cheng <pilgrimtao@gmail.com>
 ---
-Please note!!!  I cannot compile this patch.  Mike can you review it?
 
- drivers/hwtracing/coresight/coresight-cti.c | 96 ++++++++++++---------
- 1 file changed, 54 insertions(+), 42 deletions(-)
+v2 ChangeLog:
+  1. Fix some commit message
+  2. Remove unnecessary f_flags initialization
 
-diff --git a/drivers/hwtracing/coresight/coresight-cti.c b/drivers/hwtracin=
-g/coresight/coresight-cti.c
-index 40387d58c8e7..d2da5bf9f552 100644
---- a/drivers/hwtracing/coresight/coresight-cti.c
-+++ b/drivers/hwtracing/coresight/coresight-cti.c
-@@ -747,17 +747,50 @@ static int cti_dying_cpu(unsigned int cpu)
-        return 0;
- }
+ fs/proc/fd.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-+static int cti_pm_setup(struct cti_drvdata *drvdata)
-+{
-+       int ret;
-+
-+       if (drvdata->ctidev.cpu =3D=3D -1)
-+               return 0;
-+
-+       if (nr_cti_cpu)
-+               goto done;
-+
-+       cpus_read_lock();
-+       ret =3D cpuhp_setup_state_nocalls_cpuslocked(
-+                       CPUHP_AP_ARM_CORESIGHT_CTI_STARTING,
-+                       "arm/coresight_cti:starting",
-+                       cti_starting_cpu, cti_dying_cpu);
-+       if (ret) {
-+               cpus_read_unlock();
-+               return ret;
-+       }
-+
-+       ret =3D cpu_pm_register_notifier(&cti_cpu_pm_nb);
-+       cpus_read_unlock();
-+       if (ret) {
-+               cpuhp_remove_state_nocalls(CPUHP_AP_ARM_CORESIGHT_CTI_START=
-ING);
-+               return ret;
-+       }
-+
-+done:
-+       nr_cti_cpu++;
-+       cti_cpu_drvdata[drvdata->ctidev.cpu] =3D drvdata;
-+
-+       return 0;
-+}
-+
- /* release PM registrations */
- static void cti_pm_release(struct cti_drvdata *drvdata)
+diff --git a/fs/proc/fd.c b/fs/proc/fd.c
+index 81882a13212d..d3854b76e95e 100644
+--- a/fs/proc/fd.c
++++ b/fs/proc/fd.c
+@@ -19,9 +19,9 @@
+ 
+ static int seq_show(struct seq_file *m, void *v)
  {
--       if (drvdata->ctidev.cpu >=3D 0) {
--               if (--nr_cti_cpu =3D=3D 0) {
--                       cpu_pm_unregister_notifier(&cti_cpu_pm_nb);
-+       if (drvdata->ctidev.cpu =3D=3D -1)
-+               return;
-
--                       cpuhp_remove_state_nocalls(
--                               CPUHP_AP_ARM_CORESIGHT_CTI_STARTING);
--               }
--               cti_cpu_drvdata[drvdata->ctidev.cpu] =3D NULL;
-+       cti_cpu_drvdata[drvdata->ctidev.cpu] =3D drvdata;
-+       if (--nr_cti_cpu =3D=3D 0) {
-+               cpu_pm_unregister_notifier(&cti_cpu_pm_nb);
-+               cpuhp_remove_state_nocalls(CPUHP_AP_ARM_CORESIGHT_CTI_START=
-ING);
-        }
- }
-
-@@ -823,19 +856,14 @@ static int cti_probe(struct amba_device *adev, const =
-struct amba_id *id)
-
-        /* driver data*/
-        drvdata =3D devm_kzalloc(dev, sizeof(*drvdata), GFP_KERNEL);
--       if (!drvdata) {
--               ret =3D -ENOMEM;
--               dev_info(dev, "%s, mem err\n", __func__);
--               goto err_out;
--       }
-+       if (!drvdata)
-+               return -ENOMEM;
-
-        /* Validity for the resource is already checked by the AMBA core */
-        base =3D devm_ioremap_resource(dev, res);
--       if (IS_ERR(base)) {
--               ret =3D PTR_ERR(base);
--               dev_err(dev, "%s, remap err\n", __func__);
--               goto err_out;
--       }
-+       if (IS_ERR(base))
-+               return PTR_ERR(base);
-+
-        drvdata->base =3D base;
-
-        dev_set_drvdata(dev, drvdata);
-@@ -854,8 +882,7 @@ static int cti_probe(struct amba_device *adev, const st=
-ruct amba_id *id)
-        pdata =3D coresight_cti_get_platform_data(dev);
-        if (IS_ERR(pdata)) {
-                dev_err(dev, "coresight_cti_get_platform_data err\n");
--               ret =3D  PTR_ERR(pdata);
--               goto err_out;
-+               return  PTR_ERR(pdata);
-        }
-
-        /* default to powered - could change on PM notifications */
-@@ -867,35 +894,20 @@ static int cti_probe(struct amba_device *adev, const =
-struct amba_id *id)
-                                               drvdata->ctidev.cpu);
-        else
-                cti_desc.name =3D coresight_alloc_device_name(&cti_sys_devs=
-, dev);
--       if (!cti_desc.name) {
--               ret =3D -ENOMEM;
--               goto err_out;
--       }
-+       if (!cti_desc.name)
-+               return -ENOMEM;
-
-        /* setup CPU power management handling for CPU bound CTI devices. *=
-/
--       if (drvdata->ctidev.cpu >=3D 0) {
--               cti_cpu_drvdata[drvdata->ctidev.cpu] =3D drvdata;
--               if (!nr_cti_cpu++) {
--                       cpus_read_lock();
--                       ret =3D cpuhp_setup_state_nocalls_cpuslocked(
--                               CPUHP_AP_ARM_CORESIGHT_CTI_STARTING,
--                               "arm/coresight_cti:starting",
--                               cti_starting_cpu, cti_dying_cpu);
--
--                       if (!ret)
--                               ret =3D cpu_pm_register_notifier(&cti_cpu_p=
-m_nb);
--                       cpus_read_unlock();
--                       if (ret)
--                               goto err_out;
--               }
--       }
-+       ret =3D cti_pm_setup(drvdata);
-+       if (ret)
-+               return ret;
-
-        /* create dynamic attributes for connections */
-        ret =3D cti_create_cons_sysfs(dev, drvdata);
-        if (ret) {
-                dev_err(dev, "%s: create dynamic sysfs entries failed\n",
-                        cti_desc.name);
--               goto err_out;
-+               goto pm_release;
-        }
-
-        /* set up coresight component description */
-@@ -908,7 +920,7 @@ static int cti_probe(struct amba_device *adev, const st=
-ruct amba_id *id)
-        drvdata->csdev =3D coresight_register(&cti_desc);
-        if (IS_ERR(drvdata->csdev)) {
-                ret =3D PTR_ERR(drvdata->csdev);
--               goto err_out;
-+               goto pm_release;
-        }
-
-        /* add to list of CTI devices */
-@@ -927,7 +939,7 @@ static int cti_probe(struct amba_device *adev, const st=
-ruct amba_id *id)
-        dev_info(&drvdata->csdev->dev, "CTI initialized\n");
-        return 0;
-
--err_out:
-+pm_release:
-        cti_pm_release(drvdata);
-        return ret;
- }
---
-2.27.0
+-	struct files_struct *files = NULL;
+-	int f_flags = 0, ret = -ENOENT;
+-	struct file *file = NULL;
++	struct files_struct *files;
++	int f_flags, ret = -ENOENT;
++	struct file *file;
+ 	struct task_struct *task;
+ 
+ 	task = get_proc_task(m->private);
+-- 
+2.20.1
 

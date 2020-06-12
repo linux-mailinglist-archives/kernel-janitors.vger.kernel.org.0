@@ -2,42 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8B7F1F7D51
-	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Jun 2020 21:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 891531F7DC3
+	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Jun 2020 21:49:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726327AbgFLTCu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 12 Jun 2020 15:02:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41670 "EHLO
+        id S1726327AbgFLTtO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 12 Jun 2020 15:49:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726268AbgFLTCt (ORCPT
+        with ESMTP id S1726268AbgFLTtO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 12 Jun 2020 15:02:49 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC8C6C03E96F;
-        Fri, 12 Jun 2020 12:02:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=QUddZ3OHFNrtwyrtYg4m8F5i/OwG1LsXcrJzkeltTVc=; b=XYYXsFL7nanpz4DETGfT+Qd+U2
-        ErSqdvUvOdzuLZpRlSfAC2bv9EOcc/6appuEdZ06FI7IQT+8iNiuAOhWcLU01ZGd/+mD3zwoQ+1Jd
-        8+87r5dz9dYC92OWIexVsU3AYRWD5Hfv1g0JQXdPvEYP58IRDPxJjq7I5cpQd1iGlfMuEL/GSb7aI
-        ruQR8fvcnJyfHRHijk1GvbGoclp+a+eAXzrfoi3wR/zSmhqYfMpbcMhJYthzc2LAIRPFKSrrt9lLW
-        h8PpNkcCvKblImCVtxzvJq8L+I0k7DumDcAHSLsuxF56bsxUBJBO9BWH5B01XojhuTkEd50OZCp80
-        sjv8se0A==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jjowy-0004LF-J3; Fri, 12 Jun 2020 19:02:48 +0000
-Date:   Fri, 12 Jun 2020 12:02:48 -0700
-From:   Matthew Wilcox <willy@infradead.org>
+        Fri, 12 Jun 2020 15:49:14 -0400
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB613C03E96F;
+        Fri, 12 Jun 2020 12:49:13 -0700 (PDT)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.93 #3 (Red Hat Linux))
+        id 1jjpfh-007nEs-Ie; Fri, 12 Jun 2020 19:49:01 +0000
+Date:   Fri, 12 Jun 2020 20:49:01 +0100
+From:   Al Viro <viro@zeniv.linux.org.uk>
 To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Kaitao Cheng <pilgrimtao@gmail.com>, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+Cc:     Matthew Wilcox <willy@infradead.org>,
+        Kaitao Cheng <pilgrimtao@gmail.com>,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
         Alexey Dobriyan <adobriyan@gmail.com>,
         Colin Ian King <colin.king@canonical.com>,
         Muchun Song <songmuchun@bytedance.com>
 Subject: Re: [v2] proc/fd: Remove unnecessary variable initialisations in
  seq_show()
-Message-ID: <20200612190248.GJ8681@bombadil.infradead.org>
+Message-ID: <20200612194901.GD23230@ZenIV.linux.org.uk>
 References: <20200612160946.21187-1-pilgrimtao@gmail.com>
  <7fdada40-370d-37b3-3aab-bfbedaa1804f@web.de>
  <20200612170033.GF8681@bombadil.infradead.org>
@@ -66,6 +58,11 @@ On Fri, Jun 12, 2020 at 09:00:14PM +0200, Markus Elfring wrote:
 > Can we continue to clarify the concrete programming items
 > also for a more constructive review of this patch variant?
 
-Generationally, pandemics are an investment opportunity for the
-likeminded.  Talking about human nature is the ultimate world view for
-the proletariat.
+The really shocking part is that apparently this thing is _not_ a bot -
+according to the people who'd been unfortunate enough to meet it, it's
+hosted by wetware and behaviour is the same face-to-face...
+
+I'm still not convinced that it's not a sociology student collecting
+PhD material, though - something around strong programme crowd,
+with their religious avoidance of learning the subject matter, lest
+it taints their "research"...

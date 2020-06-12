@@ -2,74 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5CC51F7C0F
-	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Jun 2020 19:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFF931F7C95
+	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Jun 2020 19:43:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726576AbgFLREc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 12 Jun 2020 13:04:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51620 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726290AbgFLREb (ORCPT
+        id S1726366AbgFLRnx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 12 Jun 2020 13:43:53 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:49880 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726085AbgFLRnx (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 12 Jun 2020 13:04:31 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8AE5C03E96F;
-        Fri, 12 Jun 2020 10:04:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Transfer-Encoding
-        :Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Sender:Reply-To:Content-ID:Content-Description;
-        bh=qjz2DxxHjX1AszTx5TAMHcOt/ERrUE8Sugt/lsPH6Xc=; b=Vj26xR7ZuawPvLWBqn3Dp7Z/mB
-        foePpiqYcNhO/KOnBf/9iVcaLzEmkioc4Vm9ZD1wyER2Zzvq5pUWbKqqXFLQJcL+aGKSiVn8GQEOQ
-        dKHKcTEMFs/Oisp9/YgzxjMle8ejH68iA5Wwye7yq20NCS5mtAUPpCLK9QFQ0h8kKRTJFhNqOBxTk
-        65Elfcmjbp3UkrHCBikiH8bgGRkwpzVrlrehDRPnO//TfYrLCQa0d7a67Di4dTtogpUVDnrR1OTTQ
-        xaZwNSkUE7I2J2OLiQosgQKBmF5Z5aI26Ty87WT2jjjf41RN5tExvTYvqc1I+f8lHFO4cZfcRYHMv
-        ajEoWyOQ==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jjn6V-00048n-8I; Fri, 12 Jun 2020 17:04:31 +0000
-Date:   Fri, 12 Jun 2020 10:04:31 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Kaitao Cheng <pilgrimtao@gmail.com>, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        Colin Ian King <colin.king@canonical.com>,
-        Muchun Song <songmuchun@bytedance.com>
-Subject: Re: [PATCH v2] proc/fd: Remove unnecessary variable initialisations
- in seq_show()
-Message-ID: <20200612170431.GG8681@bombadil.infradead.org>
-References: <20200612160946.21187-1-pilgrimtao@gmail.com>
- <7fdada40-370d-37b3-3aab-bfbedaa1804f@web.de>
- <20200612170033.GF8681@bombadil.infradead.org>
- <80794080-138f-d015-39df-36832e9ab5d4@web.de>
+        Fri, 12 Jun 2020 13:43:53 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05CHh9hb020476;
+        Fri, 12 Jun 2020 17:43:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=sDXzqeSxZKG8oEBI8F3mco5PsGVz1ZSzi3GmCkClRpM=;
+ b=dLaoF70Ho+GVFZ+vOzknqvVG7qIkq9hVDWyW9ONL3/v5dj3g3fENcu4GYiCbGw1vUpKH
+ t2swAKm2sSFIPp2WiVj2hzLY092JfOMMw+odVzo5mUga+aoYThxeIpAYhYFgc81i0DTZ
+ 6qcNMH1k2Peu8NmEetS8w8yWaoEgQtk/OtcDe+hy3EtqPMDvVXViI4FOQZGqpGI2/IDC
+ tzfzVFqDAhfHsf8w8PsWktkSu08S/IUrdx6Xow9G+e5W+imuYIa6Xayf4sHQ80/6cpL/
+ HtRKoOPWb7Q/TPaX/5MiSYS/lqRn+atHx+We53N3nT2RRG6onwl9n7felGhcUjSMebF3 oA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 31jepp7xvg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 12 Jun 2020 17:43:35 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05CHgkrC132293;
+        Fri, 12 Jun 2020 17:43:34 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 31mebng8pe-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 12 Jun 2020 17:43:34 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05CHcjqF028407;
+        Fri, 12 Jun 2020 17:38:46 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 12 Jun 2020 10:38:45 -0700
+Date:   Fri, 12 Jun 2020 20:38:38 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Walter Harms <wharms@bfs.de>
+Cc:     Mike Leach <mike.leach@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] coresight: cti: Fix error handling in probe
+Message-ID: <20200612173838.GH4282@kadam>
+References: <20200612121047.GF4282@kadam>
+ <20200612121133.GA1139533@mwanda>
+ <6c59bdbc15714b089d256ad50aee58cb@bfs.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <80794080-138f-d015-39df-36832e9ab5d4@web.de>
+In-Reply-To: <6c59bdbc15714b089d256ad50aee58cb@bfs.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9650 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 malwarescore=0
+ spamscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006120128
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9650 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1015 phishscore=0 impostorscore=0
+ malwarescore=0 mlxscore=0 cotscore=-2147483648 adultscore=0 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006120128
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jun 12, 2020 at 07:03:49PM +0200, Markus Elfring wrote:
-> >>> 'files' will be immediately reassigned. 'f_flags' and 'file' will be
-> >>> overwritten in the if{} or seq_show() directly exits with an error.
-> >>> so we don't need to consume CPU resources to initialize them.
-> >>
-> >> I suggest to improve also this change description.
-> >>
-> >> * Should the mentioned identifiers refer to variables?
-> >>
-> >> * Will another imperative wording be preferred?
-> >>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=b791d1bdf9212d944d749a5c7ff6febdba241771#n151
-> >>
-> >> * I propose to extend the patch a bit more.
-> >>   How do you think about to convert the initialisation for the variable “ret”
-> >>   also into a later assignment?
-> >
-> > Please stop commenting on people's changelogs.  You add no value.
+On Fri, Jun 12, 2020 at 02:11:16PM +0000, Walter Harms wrote:
+> Hi Dan,
 > 
-> Would you like to clarify concrete software development ideas?
+> nit picking in cti_pm_release()
+> 
+> IMHO this should be done in 2 steps:
+>       if (--nr_cti_cpu == 0)
+> ->
+>   --nr_cti_cpu ;
+>  if ( nr_cti_cpu == 0)
 
-Yes.  Learn something deeply, then your opinion will have value.
+The first way is sort of the more canonical way to write it...  By far.
+
+regards,
+carpenter
+

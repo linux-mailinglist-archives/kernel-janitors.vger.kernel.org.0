@@ -2,35 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C94791F817D
-	for <lists+kernel-janitors@lfdr.de>; Sat, 13 Jun 2020 09:15:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ABA71F848D
+	for <lists+kernel-janitors@lfdr.de>; Sat, 13 Jun 2020 20:08:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726416AbgFMHPf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 13 Jun 2020 03:15:35 -0400
-Received: from mout.web.de ([212.227.15.14]:55901 "EHLO mout.web.de"
+        id S1726460AbgFMSIM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 13 Jun 2020 14:08:12 -0400
+Received: from mout.web.de ([212.227.17.11]:41823 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725771AbgFMHPf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 13 Jun 2020 03:15:35 -0400
+        id S1726277AbgFMSIL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 13 Jun 2020 14:08:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592032514;
-        bh=Vi7sYjFH49Vu7klCRw9AFR9filGVhiZCDgj1TNtaUfA=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=K9shExZM/9pY8udcmOD+ngT4hvtfggdXeteDgPjPK/oeSvnuzZrci4fw9u9XX7Ffp
-         M+Xb1I3OxilYMjMSsPf+ZAnEZv3v/cBlMYLbKjDJFJ/EsGXupT3aZabehSZbzuP90t
-         n7pOkhdb28bYdd/sVQfXyNfDS/9m7Gzvv0hzJ1eI=
+        s=dbaedf251592; t=1592071684;
+        bh=k9d9hnXuse+jsz5uM/GvN9PsPqTCtT8JfXbci4vUQoI=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=CsX6HCEUezqYtb+eNNHFOc+FycMzhRxQ3pxkJ9gAS/8ZO2zU4fl5jOuP+DcuJum7l
+         44r7T7N6gPPwdmlBGELDD7uA40YDFQTCFy2LkLVxcJHaR+oQqG+mm0dCpszOda0F54
+         KGPTpoDcR5ECAE5N/EUIeGKuGwMp3ATOXcmXF+N8=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.51.155]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MVcvn-1jPneX26Qh-00Z0Tn; Sat, 13
- Jun 2020 09:15:14 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Dennis Dalessandro <dennis.dalessandro@intel.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Kangjie Lu <kjlu@umn.edu>,
-        Mike Marciniszyn <mike.marciniszyn@intel.com>,
-        Qiushi Wu <wu000273@umn.edu>
-Subject: Re: [PATCH] RDMA/rvt: Improve exception handling in rvt_create_qp()
+Received: from [192.168.1.2] ([93.132.51.155]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MuVGC-1iu7z41Y9K-00rXGX; Sat, 13
+ Jun 2020 20:08:04 +0200
+To:     linux-ext4@vger.kernel.org,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        Theodore Ts'o <tytso@mit.edu>
+Cc:     kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
 From:   Markus Elfring <Markus.Elfring@web.de>
-To:     Aditya Pakki <pakki001@umn.edu>, linux-rdma@vger.kernel.org
+Subject: [PATCH] ext4: Delete unnecessary checks before brelse()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -74,83 +72,90 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <5d99dfe5-67ed-00d2-c2da-77058fb770c6@web.de>
-Date:   Sat, 13 Jun 2020 09:15:12 +0200
+Message-ID: <0d713702-072f-a89c-20ec-ca70aa83a432@web.de>
+Date:   Sat, 13 Jun 2020 20:07:56 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:wel+iYWrKu0b/j3mDn+d7PRf9eGuvJVK9O3COQH8wD0kR9EnOGD
- OFqSMTo+TyXpOyAzu1xnt8IuO5IUrl1n56u8dJl0fwHRxu1I0rfwaiOY8DhCBs1p6TTXSbW
- X9GeXVX6q8ByJtVhRa8fR4ZgfU6Gucwxo69R6bDiIl86b3T16oEusfIk4/VhZieyVtMiLM7
- ocZC/RkTKwqwaY3k4u9Xw==
+X-Provags-ID: V03:K1:ifHTnBihTZc70KcqZuk18YkTaNBylLGEHU9jBbOuRs6qliSG9Ex
+ eu3xTVdsdygkUocDLA5boMrEMwY3Ik2Jxzx4R8p2138W/Iu1y+GROK/VQry8AK2Gx4aWgTr
+ n5Xa9hyAy+cDKMkut2+N4LsKNKlSUiujk/s8NbyslPS9RcoMAMddsHScZzhxSL43GK+y4++
+ EfCLSv9U6aHGBG7t0n7pA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:GSB0jT2Pv7A=:QfwmDEUJLtvBAP2dFhx1ht
- tevRsY4BmNmY5r6DB/UVSEl2tFHWqajkNOPalmG+hYJYv9EAMsGxGJ3ZLyEmOqy/fxWw0aa+r
- QHIL7vQJC4/ghdRdT9g4a3gUumEYu7qj9TOoZGxuVuclXkp4f2VCtebZeAiDiKAZl5o+AG9kF
- vXn+ElbRke+CqjI42Ebo77Q92QpMHQ5ZYcijm8FiRZh76I/f8cz8HrDj6bsc/TKZHc+3YDE+V
- +Kpoa2VpR7PEOUmWR+bpq6pDJajdazi19uXp7+CwM/963ZTvIP3J1cqUpZ1NoOn4ez4IOgHuC
- JDJ6XcIhDUUoqOgefy0L/SB4leSJ3ef/fzjpb5h8YExpgk0MqaHJsQv6KxH96dZDG6p6cDezV
- zp5p5YhNSFNDQ4yTfJSYHAvlTL8g6QTMd5m9RHvglLwwBEubYVjCb40MMMgngbAv5qUKsty5B
- 1uA1y03/NKx+d83wuZOWYLqqi8hZ75Xxzdf3C+9mzxeUiJrcGoxSHQ+ZAocJFhE9Vzb1nb102
- 8OiWbfyNy+FcDr82uoeSVWKp0zCMOsc0eaVePCBJARvGzIjXrtcwE6x1PN68KCnSvxsSIdcGu
- 0zOJQ6ajSF0vToKOXcoIe+IXU1x8oWidi5UIxJaW9vufBK7BMRQM9eBk8k1oZEUAEGM8T02Vv
- XonDJFiv5Po8pKLi02tYsuZ0DNsS/5aTd2aK0tJNIRdqv7udYtv7gkUZMcQAegPRILRo706F4
- TndMW80efuWZa9RgMjpQuitn/czR//PYt18cG1sxY6ROfjEo7SpoXFlnOmbkpMng17ACnNC/Y
- X1rn7c27vcJzigVdx+4GHlln/2GQT7V7ao8lBUnLkh1Is1+1Pw+uM6vY4VrDrE725eqtZmKnV
- A6iBK3TgZE1KQQ6QGrZCINkQx9Z7e57e47wrvYSDrcNGDIYf9Y4EcPttz3lOPdZQnrD9dSZ8/
- 25sKS78Vyf/gPPLu6kijX3q1KfkVbhpAcKk11Ucz9AANCvnex0UVIOTM6oe90JEh1rfj0S0pI
- 9JifUrWskib/YC1EYdnkK2VMOQpub2GRzFlFmajH4twksflsAFyHHalDGtzC2TX4SrTOqRBcG
- 69LqwfSrrpmvihcm0dnNtxqSM1O+73vWC173VVgSECNf/L9i/9aMHysSrhSRMjy58bjnoQJL4
- 2sM0bXj8L+GM1TFLvfeVi5xiH3mETr43RTZ615aWuGlMUjmQtaYjXob5DPWdzrwwbDSSOhx9s
- ED4etOIvcADFPE46p
+X-UI-Out-Filterresults: notjunk:1;V03:K0:8zwRtvnSsNA=:FB4hNqSSbyAZkKshdQwb0U
+ HOiLLiLNnJJn2Z8+vEz/oIK/XeezPkygB+vLecj4SwBe8cYGyYsyEzOXlrIKVTUVu6N2ZugZB
+ ahP+EKzRtMHa1BerIJvP+hSkYRoCHhlQaAGOloyS5PudCoiLWfWMM4S9HnV7ecnEFZNamaQCe
+ aNJZJWeHoxnWj3OYY2DU4IaTh3MMZNr3AOWdGuUKvaKg9if8sZe0kMmaS4PXiwzEPLP7PqXyL
+ KXzY4BZH7mBqO65n574jqgraIYfYvqmOyPnrFNOxgp4j91HGl9HWBMa2G1c/leqm8iwzrX71P
+ C9ugWrlLadeaszMki5rRE6Ckquj6nlEgWW1CJjxbkzm8ThpILvLctIHT1Kow+RRDIXPEk2g1H
+ 8bsBd2bOI6O237+wSodYk0/EA98OlyNB+9qT3EtsPw4x6cqzbTxb8vnSy0nOiURyoYssQD/Hq
+ P8yVyjLC8/Ow6ASW/a6/pMPRUpctHlZ9g7PX3g5hCD1lZN+xFHkxYe/H25amkUtOPCGTOW7ZY
+ FXkoEdDyn+ajVYvHCFrf6ulYhMKTaSXoDR6rBrLi0UVwmBDPguLa9+cr5z5hrXU8ooECwyBbP
+ WACNh7ISh5SC99cbwf+aq/u4pq6WPjDSlLSy3+14tGCBG/Vw7EJTOUS+QYrlUWOL6D664aJfS
+ T3a0SFCo3XHtrTjsouK6pX+QdoKBjpqmeBFGooAO0rNcaMqr1iyEM94Zp7e89Dr5R+DNpKkaU
+ BVoLOGvF/1y/1/qQRBaIMNg7u3KQL1ND+rojYuAbnWlxdMe2LZQDm2dNrxm5zSD7bTDO+Sbd7
+ 3CgutMtNwYQUH6oCKjKqujmN2bXSK690pRh5k+Jj1bHiiq4opXZvZjKRRSej6n/m3tkTRQoWe
+ f0Vme6232WrX20jojDcmnScT8yIYWzCyzkMy9IMR+4h2e35rvtSai+JPoLkJ5DH5c72IUDE67
+ fc4jPyK+Hhh88jeXu8m4OMCkUnV6yoqRHknqNf//hGmj9egp3ITAwNZV+sgcqFe7dggbsGgEK
+ PjG8T/dhc5+Wf7TgxMomHXn545WL+eMgzOXQdtvHGvWkWgE92blAMkyWhNAbYk0MsyB24CYQ2
+ 2nfNjV8dVCCfGXu5IesrUnSgZNU6LXM/XlqeDgDKuGJZZAW9WnbDZ9BJ9lUUBU1E+e/EHsdUX
+ kpbLXgy9FnBBAJIrPWegEp9MRmhnXuLNq/3PH5tgopphdzfUKWGLFauid8ijFTt6WPptk92uF
+ QmOhMuw1i3IOhacKv
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> =E2=80=A6 The patch fixes this issue by
-> calling rvt_free_rq().
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Sat, 13 Jun 2020 19:12:24 +0200
 
-I suggest to choose another imperative wording for your change description=
-.
-Will the tag =E2=80=9CFixes=E2=80=9D become helpful for the commit message=
-?
+The brelse() function tests whether its argument is NULL
+and then returns immediately.
+Thus remove the tests which are not needed around the shown calls.
 
-=E2=80=A6
-> +++ b/drivers/infiniband/sw/rdmavt/qp.c
-> @@ -1203,6 +1203,7 @@  struct ib_qp *rvt_create_qp(struct ib_pd *ibpd,
->  			qp->s_flags =3D RVT_S_SIGNAL_REQ_WR;
->  		err =3D alloc_ud_wq_attr(qp, rdi->dparms.node);
->  		if (err) {
-> +			rvt_free_rq(&qp->r_rq);
->  			ret =3D (ERR_PTR(err));
->  			goto bail_driver_priv;
->  		}
+This issue was detected by using the Coccinelle software.
 
-How do you think about the following code variant with the addition
-of a jump target?
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ fs/ext4/extents.c | 6 ++----
+ fs/ext4/xattr.c   | 3 +--
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
- 		err =3D alloc_ud_wq_attr(qp, rdi->dparms.node);
- 		if (err) {
- 			ret =3D (ERR_PTR(err));
--			goto bail_driver_priv;
-+			goto bail_free_rq;
- 		}
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 221f240eae60..315276d50aa8 100644
+=2D-- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -693,10 +693,8 @@ void ext4_ext_drop_refs(struct ext4_ext_path *path)
+ 		return;
+ 	depth =3D path->p_depth;
+ 	for (i =3D 0; i <=3D depth; i++, path++) {
+-		if (path->p_bh) {
+-			brelse(path->p_bh);
+-			path->p_bh =3D NULL;
+-		}
++		brelse(path->p_bh);
++		path->p_bh =3D NULL;
+ 	}
+ }
 
-=E2=80=A6
+diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
+index 9b29a40738ac..eb997ce21be3 100644
+=2D-- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1354,8 +1354,7 @@ static int ext4_xattr_inode_write(handle_t *handle, =
+struct inode *ea_inode,
 
- bail_rq_wq:
--	rvt_free_rq(&qp->r_rq);
- 	free_ud_wq_attr(qp);
-+
-+bail_free_rq:
-+	rvt_free_rq(&qp->r_rq);
+ 	block =3D 0;
+ 	while (wsize < bufsize) {
+-		if (bh !=3D NULL)
+-			brelse(bh);
++		brelse(bh);
+ 		csize =3D (bufsize - wsize) > blocksize ? blocksize :
+ 								bufsize - wsize;
+ 		bh =3D ext4_getblk(handle, ea_inode, block, 0);
+=2D-
+2.27.0
 
- bail_driver_priv:
-
-
-Regards,
-Markus

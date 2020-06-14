@@ -2,35 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EB221F8802
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jun 2020 11:18:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 626D01F8823
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jun 2020 11:33:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726926AbgFNJSE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 14 Jun 2020 05:18:04 -0400
-Received: from mout.web.de ([212.227.17.12]:49041 "EHLO mout.web.de"
+        id S1726921AbgFNJdv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 14 Jun 2020 05:33:51 -0400
+Received: from mout.web.de ([217.72.192.78]:47213 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726900AbgFNJSD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 14 Jun 2020 05:18:03 -0400
+        id S1725265AbgFNJdu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 14 Jun 2020 05:33:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592126274;
-        bh=TISY3EZssvH50ZFWglrAf1p5P4JbXnkonXNkHeVQ62I=;
+        s=dbaedf251592; t=1592127215;
+        bh=OH6G4YIWrOCwofY64qVP1rh+B9uREuwO7Gq1odxhXvk=;
         h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=IQ5ErSkP+1m9914jxIwQW2l6kf+vKCu3yCmCXIBuTn+MeVaj3Psd6LhMc/ToRHsVp
-         bTMSf4mFiEnyr6ZyIVISwDYYGWhPwEumvrqDX+DCYCwmc1ikf+2pJT3HzB6XfAqIzw
-         LCp8SkA0I7h/MlZxqr7sUtNinCwmwKgwzY/jtlR0=
+        b=U0jPXtCFnPBfYEaxAxSelNX6cUFBGAfg1JgzjRH+hLtXlGcuQM74aeVCO9+pRY39P
+         ehBvYzx2y/xPXn1CUeBPHTsa7G8z8kMPQr8FmbkWLBCT35D0+ME9h/y6ftcbhBGZSg
+         hUBX3wk/NZj/UMpmHzgydOASOy2CUFzuNGQFX+b0=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.103.145]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MyvBA-1iyMQi2WxO-00vsRL; Sun, 14
- Jun 2020 11:17:54 +0200
+Received: from [192.168.1.2] ([93.131.103.145]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lheij-1j6NMk1fs1-00mreL; Sun, 14
+ Jun 2020 11:33:35 +0200
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
         Qiushi Wu <wu000273@umn.edu>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Jonathan Bakker <xc-racer2@live.ca>,
-        =?UTF-8?Q?Pawe=c5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Input: bma150: fix ref count leak in bma150_open
+Subject: Re: [PATCH] Input: stmfts: fix ref count leak in stmfts_input_open
 From:   Markus Elfring <Markus.Elfring@web.de>
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -74,69 +77,62 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-input@vger.kernel.org
-Message-ID: <da86c987-5fbc-b20d-549d-6b0910ef8709@web.de>
-Date:   Sun, 14 Jun 2020 11:17:53 +0200
+Message-ID: <5b0147ab-f0bc-7380-6300-90e555534cb4@web.de>
+Date:   Sun, 14 Jun 2020 11:33:34 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:yP5ZB9EZcCfVG3ImcGG/nlzZX+GhjzHZrBh7unHuwa3yxmVo9if
- zpGOUx/few1j/LHzoK+nz+9huv9pAg2DWdexejtAUhlDGc2AwXA7kk0nDiLg9vpwAo4LH3Q
- YQfxXhKVYfRPAIESLSmFJ2zbn5Skr7v1naIEz4hUY5u8WTpR09yvC2qfAVWtCP1LLIYiitB
- nfPn5cni9/tzDKLt08IEg==
+X-Provags-ID: V03:K1:DAZlzO03MgQlRK84nwjKrl/6g/AAmCSSCTEfMQsrm11BvRkezO6
+ AAp/YNWWVfr/8oNvMrLeS0iPKc0KALrvx1d2OqnM4t6VmmFhKuZS6cI5TH4rFcYhCIt4iUh
+ LaGHHZ8iBDaMNS+uSR3t1hccjgf9MlOLVSWStBNsqD0sAtpSflZ9ZxQXW0MHNR1sjx2fkhI
+ rIzmOSggGdZucVB3e/cMg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:SwWi2GZC8GE=:R0F2yk9qwhc0/4W4jTeA+7
- +ho7VLtA6UqoMGwU5QwiO5noSPFcNahz1AAXwiyN0p3mpZHodzWF/GeNN4X6WYfVIqmxNAmE9
- mdcY+8n7NcNE/6NMMewcjuWDFeW1Cve+o9vXvjU/DgC0VUsC4CYYOEkBXftiHtxKS2jH5FaPq
- XHXnnd9fwxgEDR7ROA3GRIDeb7vwYjoR32Uq7Z4kDsBvOosxy7jZnU5MM1ni1RGEJAvwxVcjq
- bTnlF0Z5aLeR5Qs826RcVHwXJvDt7uzMXmu8Z0BhQUUijmmVq4Ds8TvuBPrvFTXQ9jna6yqEz
- +fs4npSgHZyOwQdqgO9S8cysuwkbJfnaiodyXOOGHAqs4/4vkt+T7tEMugLD3Qnjza6fXHFnl
- F5Jhu/GT12wLJ8BZKqAX6nCBNLau5izEVd0XHtIWh/HHzR8T59XVHRJVo8IOfPZys+56KuAkC
- pvlCjUP1FyNcbLw0xRAL0tTxela0edBrjwFmiGo2k1D+o7X9iG0bgT3TfZAAi+IktV93MPLcA
- XKpcqu4AhBCvD6UbA2rFMmOYUXO8TpJ658HES2W0cJE/kryBamIdyAvUjHzInbXc319dI3Jsf
- +IFyMV6qK4YTv+1rslC2W+y5501nhBCku6rkNeg+3Z+aIlzN4iMJKNieRgavDjzuWKBsoEcUA
- Nrbb69zxNMcC/OdaJzgXAublY4/dm+Jd0qXU11Tx3T3ztkX/tpQZudqxxVGJ4GuhMlOMk4yhX
- PnUT3jb1SVVkqGd7Qq/WplPBXYCoHk+p8JerNPf1MTPfV/JNm2bJoSG4vNdWTaY9nfX7UYtVL
- o6sq37WYaso3iu62KYh1k837iV5VJHIoE88OeVnkfD/oDifd4NEZISwaUuK1AOf5IUf7BH2NN
- BZtozx2iQJzm/Qms8ZTn++D4VJwM5nqGpoYwkERpDLFFE0MhFrrO9W4Fo+UoSqx85eNCAmJYj
- DQxzA+i1v3DYEeIjpe+bfGnSjVli2UvcxLmN8hoQSc40FmYeIICSrdhV1zvjkAG6YdnDabOpi
- H1d3fwcoHbz+TEhs0BEPqZ5XpZ6FwOCLcLhRWj0gQ0N2S3TPOp5pFydxheIuXV6ExO+tTBYY6
- zPDqshonjIkfyGQUt/tEaEVhSxpsuQVh3HfdNBiApu9XeVfcQwd82cUzNJYX/5slwaF4Pgvhn
- qHs6DCCNOfatZqkM0BFoTC+lj7BOQXflCwTHvjZ1Q+LZFUJG4nYJgw5VCAJxSk6VUKE4uaAGP
- As3Ym1R4yuAn34UtD
+X-UI-Out-Filterresults: notjunk:1;V03:K0:urm8Ip8SAso=:E+BuA/MAZEHBAY2r3bwDk9
+ ZbuYMm9lEN394lqdI6gELN7PULiRQi5r/lD89cpYkzwD38RNDmk6uD/RuiJPppQtOGaW+hMck
+ gNJc7LVY7/xssUiowl2O4ol0xzZ2B3JPH0SZuyOFBZMKY1IbiFGhOoTaoFpgw2+vXh2ULtdtB
+ SeIffR7BQKFcdeupwKW72dRAunGMXYjUlT+Dy7CbMyy0q1gEn/go7AJauM/rh5fbNbCAUR2a6
+ yNMtttOvUW+aD8fNiwTQrjaZabZktVBWcv4GBVtd/1lh6Oo6gW3/EF3wxUejpfkKXhAZ2rqND
+ XBUn0Jvarl2ZL79+eHDnT+KiSXx3m5R7yw8dvafVZUiHcZwYVfYaL54RRXmr6MDleLD3mMKTG
+ g9ZYcfZs/m6NK3dTWO7xDXsTJ2NWPxoH0cw+VpFo8vU9Md/RTb53s/1RfCF6/TWG9fg9+b6Qe
+ QDq3Om4+PvH3UWULDGpgSd+CeVlHn7P2jqmZriuhb4dYQAcTUjHTDx8t+WT9BNLDWS90hDQJO
+ AHmSgxG4vB75mRQXC6xSy7JDb57UXzWqkdgECSuwmpdUlNGZJBWBLYTdvvzXH/eGOCZ3kzXa+
+ WY5506lRHAM+8f2woeVGedGAXbYyCX9Llzwatheeou6uk9ljvW4Q0/pHX67dRpzZKC4VwqeVr
+ aOpBCldA6uRSaTuc7uI6aGVwWabEEZTYQ4FGtgP+jQMFYEsotdGBxiq6iECpG7sEX7DX0UGmp
+ PyFNsKjo9/3fc4ORTUFd6SuJsypwwnUWe6WReZpGfB0umEfxUidsv6Qhy5Ff5QMJlyVatXM/L
+ T0eYvshWWzYLrNgTZxRobNeG+bi3QQ94v+l+2LlFKe/FkRUFortJ44WMp/zupZH9fE8FQNUZr
+ /FGu3qepFbE0FPrD4I/J+2tz6DSBH6ofQ9dGJKLsW/ileyhETwiFoURSOYg1V97nQ+Y3R0GLc
+ BBu7agcsVXFA2rqirp8xmQTFmQDI3PovpAUSX3noLlhODEzyBXOc71jSVKFbfUmmu871QyF0/
+ /RfB2obzWeXfJnV3MIfq1vU9Fxi4jN+jieHIQ2UOY+t/pj25Noq2tIWHH2fQJdHuHA3sIB+Ou
+ ce0hp+e/Re8ljmwDwgaFKX/hWZ9kw2XiFh/6xehqEqAjt1pbEoa2OmelWk9g+Q7EqdLSHNGCM
+ VdTeM259cB9kBODF8d6CIFFVpgEsfJgD0iSgBHhNbsbfncS3iGLJ8s+N0Oqk9p370vxRYTM5O
+ zRVKM1J+TXRdr6K9L
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> in bma150_open, =E2=80=A6
+> in stmfts_input_open, =E2=80=A6
 
 * Can the term =E2=80=9Creference count=E2=80=9D become relevant also for =
 this commit message
   besides other possible adjustments?
 
-* Will the tag =E2=80=9CFixes=E2=80=9D become helpful?
+* Would you like to add the tag =E2=80=9CFixes=E2=80=9D?
 
 
 =E2=80=A6
-> +++ b/drivers/input/misc/bma150.c
+> +++ b/drivers/input/touchscreen/stmfts.c
 =E2=80=A6
-> @@ -357,10 +357,13 @@  static int bma150_open(struct input_dev *input)
->  	if (bma150->mode !=3D BMA150_MODE_NORMAL) {
->  		error =3D bma150_set_mode(bma150, BMA150_MODE_NORMAL);
->  		if (error)
-> -			return error;
-> +			goto out;
+> @@ -367,6 +367,9 @@  static int stmfts_input_open(struct input_dev *dev)
 >  	}
 >
 >  	return 0;
 > +out:
-> +	pm_runtime_put(&bma150->client->dev);
-> +	return error;
+> +	pm_runtime_put(&sdata->client->dev);
+> +	return err;
 >  }
 =E2=80=A6
 

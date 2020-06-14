@@ -2,65 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCFB01F8767
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jun 2020 09:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9DF61F8775
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jun 2020 09:16:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726844AbgFNHMl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 14 Jun 2020 03:12:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60810 "EHLO mail.kernel.org"
+        id S1726936AbgFNHPw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 14 Jun 2020 03:15:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34490 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725265AbgFNHMk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 14 Jun 2020 03:12:40 -0400
+        id S1725385AbgFNHPv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 14 Jun 2020 03:15:51 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 72E7B20714;
-        Sun, 14 Jun 2020 07:12:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 72ADA20747;
+        Sun, 14 Jun 2020 07:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592118760;
-        bh=0vN1w9ETUOy/X7MD4cx87lWgTNrDzSyXiwMz9T1CyeA=;
+        s=default; t=1592118951;
+        bh=zZll6urelXML0NUSf47w9Vs7Ajbn1wggmOPGwgn3j1A=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=emUfJCiKDRvZYA9vTPzurljz+hHAFSsF1POBOJeAZlSsuDkdk+mJU0KsKE45mtvgk
-         ERE3ROK1Akj2xkMvKApmgrwh9s+m+uicxQJxX0nKUpfCBBhBRAXLSkHVErHU437Wzx
-         9yUjfCV0OuK0m1KnLN8T9x4L6khXelo1AHYMkvjc=
-Date:   Sun, 14 Jun 2020 09:12:35 +0200
+        b=u7C5T79t0SzgyScYuY2I5hl5Jv03Uc5Kh92W2UQ56gcNN3ZahJz7111Vp22nb4t3r
+         4svvn5fiL+13qCWi1zsmKCwwexgdPP1cDwXcFT7SfdtsWEk5Jh0EB1g0a46P1HJfgM
+         ZDL9+dupLe0uk3h1u+xlk0tIml+UB8NAqBIvvHfQ=
+Date:   Sun, 14 Jun 2020 09:15:48 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
 To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Kaitao Cheng <pilgrimtao@gmail.com>, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        Colin Ian King <colin.king@canonical.com>,
-        Muchun Song <songmuchun@bytedance.com>
-Subject: Re: [PATCH v2] proc/fd: Remove unnecessary variable initialisations
- in seq_show()
-Message-ID: <20200614071235.GA2629255@kroah.com>
-References: <20200612160946.21187-1-pilgrimtao@gmail.com>
- <7fdada40-370d-37b3-3aab-bfbedaa1804f@web.de>
+Cc:     Aditya Pakki <pakki001@umn.edu>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Dennis Dalessandro <dennis.dalessandro@intel.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, Kangjie Lu <kjlu@umn.edu>,
+        Mike Marciniszyn <mike.marciniszyn@intel.com>,
+        Qiushi Wu <wu000273@umn.edu>
+Subject: Re: [PATCH] RDMA/rvt: Improve exception handling in rvt_create_qp()
+Message-ID: <20200614071548.GG2629255@kroah.com>
+References: <5d99dfe5-67ed-00d2-c2da-77058fb770c6@web.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <7fdada40-370d-37b3-3aab-bfbedaa1804f@web.de>
+In-Reply-To: <5d99dfe5-67ed-00d2-c2da-77058fb770c6@web.de>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jun 12, 2020 at 06:45:57PM +0200, Markus Elfring wrote:
-> > 'files' will be immediately reassigned. 'f_flags' and 'file' will be
-> > overwritten in the if{} or seq_show() directly exits with an error.
-> > so we don't need to consume CPU resources to initialize them.
+On Sat, Jun 13, 2020 at 09:15:12AM +0200, Markus Elfring wrote:
+> > … The patch fixes this issue by
+> > calling rvt_free_rq().
 > 
-> I suggest to improve also this change description.
+> I suggest to choose another imperative wording for your change description.
+> Will the tag “Fixes” become helpful for the commit message?
 > 
-> * Should the mentioned identifiers refer to variables?
+> …
+> > +++ b/drivers/infiniband/sw/rdmavt/qp.c
+> > @@ -1203,6 +1203,7 @@  struct ib_qp *rvt_create_qp(struct ib_pd *ibpd,
+> >  			qp->s_flags = RVT_S_SIGNAL_REQ_WR;
+> >  		err = alloc_ud_wq_attr(qp, rdi->dparms.node);
+> >  		if (err) {
+> > +			rvt_free_rq(&qp->r_rq);
+> >  			ret = (ERR_PTR(err));
+> >  			goto bail_driver_priv;
+> >  		}
 > 
-> * Will another imperative wording be preferred?
->   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=b791d1bdf9212d944d749a5c7ff6febdba241771#n151
+> How do you think about the following code variant with the addition
+> of a jump target?
 > 
-> * I propose to extend the patch a bit more.
->   How do you think about to convert the initialisation for the variable “ret”
->   also into a later assignment?
+>  		err = alloc_ud_wq_attr(qp, rdi->dparms.node);
+>  		if (err) {
+>  			ret = (ERR_PTR(err));
+> -			goto bail_driver_priv;
+> +			goto bail_free_rq;
+>  		}
+> 
+> …
+> 
+>  bail_rq_wq:
+> -	rvt_free_rq(&qp->r_rq);
+>  	free_ud_wq_attr(qp);
+> +
+> +bail_free_rq:
+> +	rvt_free_rq(&qp->r_rq);
+> 
+>  bail_driver_priv:
+> 
 > 
 > Regards,
 > Markus

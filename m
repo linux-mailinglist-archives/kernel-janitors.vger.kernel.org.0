@@ -2,33 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16F561F87CA
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jun 2020 10:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EB221F8802
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jun 2020 11:18:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726786AbgFNI4a (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 14 Jun 2020 04:56:30 -0400
-Received: from mout.web.de ([212.227.17.11]:39239 "EHLO mout.web.de"
+        id S1726926AbgFNJSE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 14 Jun 2020 05:18:04 -0400
+Received: from mout.web.de ([212.227.17.12]:49041 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725265AbgFNI4a (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 14 Jun 2020 04:56:30 -0400
+        id S1726900AbgFNJSD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 14 Jun 2020 05:18:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592124976;
-        bh=1XKwjy46DP0XP1BezOttDjslx/1Fvlxmazm0SmzeslA=;
+        s=dbaedf251592; t=1592126274;
+        bh=TISY3EZssvH50ZFWglrAf1p5P4JbXnkonXNkHeVQ62I=;
         h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=NF9ccStdhdx4YYSPvH7fUAoH9YmOBXDbZpLo5nye251d5UFGudDBTFlZxHwyi6cjy
-         L/Q5AiaTJ4F57zLojdCngm9EDAKLrcenKG1Kw7UHZK3OJdH6gBBGOYsffTtW+jYLzf
-         oGWg5ITNIZ5fJiMPpjr/lLgv07/IfJqiC/WVVzs8=
+        b=IQ5ErSkP+1m9914jxIwQW2l6kf+vKCu3yCmCXIBuTn+MeVaj3Psd6LhMc/ToRHsVp
+         bTMSf4mFiEnyr6ZyIVISwDYYGWhPwEumvrqDX+DCYCwmc1ikf+2pJT3HzB6XfAqIzw
+         LCp8SkA0I7h/MlZxqr7sUtNinCwmwKgwzY/jtlR0=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.103.145]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MBTQo-1jb0Eg0S2w-00AUxb; Sun, 14
- Jun 2020 10:56:16 +0200
+Received: from [192.168.1.2] ([93.131.103.145]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MyvBA-1iyMQi2WxO-00vsRL; Sun, 14
+ Jun 2020 11:17:54 +0200
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
         Qiushi Wu <wu000273@umn.edu>,
-        "David S. Miller" <davem@davemloft.net>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Jonathan Bakker <xc-racer2@live.ca>,
+        =?UTF-8?Q?Pawe=c5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: macb: fix ref count leaking via pm_runtime_get_sync
+Subject: Re: [PATCH] Input: bma150: fix ref count leak in bma150_open
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -73,68 +74,69 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>, netdev@vger.kernel.org
-Message-ID: <c145121b-3d69-a02a-17f5-f0eb2f166663@web.de>
-Date:   Sun, 14 Jun 2020 10:56:14 +0200
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        linux-input@vger.kernel.org
+Message-ID: <da86c987-5fbc-b20d-549d-6b0910ef8709@web.de>
+Date:   Sun, 14 Jun 2020 11:17:53 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:YIGYcO6P89/n84JoJbJS+s6UtPxuIxy1TvrfeYMMdZk/xJySr6U
- 59SvoFNUi7DB9aitWb7SwqJ3Bcawfo23Cvz1cIgzzX6Ih/dX9RgspQqpaRjtaQb/tA096T6
- IRYipq5I3UDCCCuMnfHiXuviBWRK/+UUl5XAjJuB8sXsyVzwACthBX9XhHOtK3/zgkcpEw0
- WuimbHrvGvebXWdOzUcww==
+X-Provags-ID: V03:K1:yP5ZB9EZcCfVG3ImcGG/nlzZX+GhjzHZrBh7unHuwa3yxmVo9if
+ zpGOUx/few1j/LHzoK+nz+9huv9pAg2DWdexejtAUhlDGc2AwXA7kk0nDiLg9vpwAo4LH3Q
+ YQfxXhKVYfRPAIESLSmFJ2zbn5Skr7v1naIEz4hUY5u8WTpR09yvC2qfAVWtCP1LLIYiitB
+ nfPn5cni9/tzDKLt08IEg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:eg7k3wsso20=:lcbrm8SQgQoTD/1/qEfMDy
- cRuzbj3YLhaX0fCxLlo1QhztDSvpEFIElnQsBIZ8UZZFZecqQjOreWKnLedrid+XYIf0q/XBz
- txTDAql446R4zGCDaRNl5zinbqVfgcLBEFY07FehG0da802LC4FlbWUiKwOQUJrF81DhgS0ZY
- JgYeDynhn0xFYingk1o0xAr2hWARvSAz+ogeSX1QuZOZ4CJRXy3NlyVC7jwNvIN7tQWBkVSDg
- LigGeg9YhOhBujOBJ9N7PjgXpZrfF5TFIxCWMGBF/Q6rAYoC/x80YIm40kgVp5CNwvDSJRk6x
- B9IYYvkHEOYnn45Qn2/azW5K4bbgR3Rjt89bijkfTx0vauNI7J3865MXia1d0g+VdfmwNG/ey
- rQqUb8IEaPXH2UoAUdySiGO6oNe0PYM/HlC/0oexMO85bu+8MrXUSz3BJYaEt8aDTxhhUVfmj
- ra4fz+lhq2WMSyrkE2NWBTTIhhURrK3hs9Co2aEAZGaKyF3Njrii2qUeW1SsRMQjosvGn2Khy
- Ein4fOgUojW4mzXoc9Q3Sz6NS/q6lJBZVXjDHLcwv8rFALX63D+MvW73w/m2ZWB8/laZG/CvJ
- AuUcvrWg9CdFsYNkBFzmXyxrJQl2KM3XtTHnbjmuhAYO47D+w61jawcp5q0FO1WHKbyTzlaHU
- ExqjGdmo7O4PQWdMBM7uyKBY4mTAxgxrD3oUQbU3FtlTcT2eZ0YeyDaQVw8xmXddidDuKh7/2
- +alcdV8sT0XlXDL/P6Iaopia5uydBVjYGCCZvFROaiDgF97wIS8kiBZ1mvYckA/TORsUbk3cT
- TtFlm2KiLE74qHlov5NAzEnoYtkt66dsveJ09/eMd/nW97hl0kklErQ/4IuF3JDxoBtIbRi+t
- JL7PMBe/uX3B2gSvovxFb/LkXVT/Tizx3mb8gXi96aRKUX4MU2LbaB4rPTudQT0x7dQWA06Ip
- SvaGEUBtQpkQ4tUx3Uneuo1F9cmEUhkfZApCYZB64TFIw408Z6jowscRxpGJquUsxHD6sz/Eu
- zP2cB4X/z2sQx0p/p/P38136i3uaNM0+iajD1NKunSjH0S9rZyCPhFs+czsmVW6HAqAXBIda1
- pTtgIR/QdSCuuEx0m10yPsE40K3sDUt4JJdKEaM2Yaf2kfMbFqI3GWMu6pmA5QoDZZQDe51w8
- urEiH9d39zhiRF3C9119zfb90UZ0nTjrQucUrsdkOLCjTDzo38Fx2L4YctEQ49gbKtQquPpwd
- x/uE/wqekthK8LF8h
+X-UI-Out-Filterresults: notjunk:1;V03:K0:SwWi2GZC8GE=:R0F2yk9qwhc0/4W4jTeA+7
+ +ho7VLtA6UqoMGwU5QwiO5noSPFcNahz1AAXwiyN0p3mpZHodzWF/GeNN4X6WYfVIqmxNAmE9
+ mdcY+8n7NcNE/6NMMewcjuWDFeW1Cve+o9vXvjU/DgC0VUsC4CYYOEkBXftiHtxKS2jH5FaPq
+ XHXnnd9fwxgEDR7ROA3GRIDeb7vwYjoR32Uq7Z4kDsBvOosxy7jZnU5MM1ni1RGEJAvwxVcjq
+ bTnlF0Z5aLeR5Qs826RcVHwXJvDt7uzMXmu8Z0BhQUUijmmVq4Ds8TvuBPrvFTXQ9jna6yqEz
+ +fs4npSgHZyOwQdqgO9S8cysuwkbJfnaiodyXOOGHAqs4/4vkt+T7tEMugLD3Qnjza6fXHFnl
+ F5Jhu/GT12wLJ8BZKqAX6nCBNLau5izEVd0XHtIWh/HHzR8T59XVHRJVo8IOfPZys+56KuAkC
+ pvlCjUP1FyNcbLw0xRAL0tTxela0edBrjwFmiGo2k1D+o7X9iG0bgT3TfZAAi+IktV93MPLcA
+ XKpcqu4AhBCvD6UbA2rFMmOYUXO8TpJ658HES2W0cJE/kryBamIdyAvUjHzInbXc319dI3Jsf
+ +IFyMV6qK4YTv+1rslC2W+y5501nhBCku6rkNeg+3Z+aIlzN4iMJKNieRgavDjzuWKBsoEcUA
+ Nrbb69zxNMcC/OdaJzgXAublY4/dm+Jd0qXU11Tx3T3ztkX/tpQZudqxxVGJ4GuhMlOMk4yhX
+ PnUT3jb1SVVkqGd7Qq/WplPBXYCoHk+p8JerNPf1MTPfV/JNm2bJoSG4vNdWTaY9nfX7UYtVL
+ o6sq37WYaso3iu62KYh1k837iV5VJHIoE88OeVnkfD/oDifd4NEZISwaUuK1AOf5IUf7BH2NN
+ BZtozx2iQJzm/Qms8ZTn++D4VJwM5nqGpoYwkERpDLFFE0MhFrrO9W4Fo+UoSqx85eNCAmJYj
+ DQxzA+i1v3DYEeIjpe+bfGnSjVli2UvcxLmN8hoQSc40FmYeIICSrdhV1zvjkAG6YdnDabOpi
+ H1d3fwcoHbz+TEhs0BEPqZ5XpZ6FwOCLcLhRWj0gQ0N2S3TPOp5pFydxheIuXV6ExO+tTBYY6
+ zPDqshonjIkfyGQUt/tEaEVhSxpsuQVh3HfdNBiApu9XeVfcQwd82cUzNJYX/5slwaF4Pgvhn
+ qHs6DCCNOfatZqkM0BFoTC+lj7BOQXflCwTHvjZ1Q+LZFUJG4nYJgw5VCAJxSk6VUKE4uaAGP
+ As3Ym1R4yuAn34UtD
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> in macb_mdio_write, =E2=80=A6
+> in bma150_open, =E2=80=A6
 
-* Will a desire evolve to improve also this commit message?
+* Can the term =E2=80=9Creference count=E2=80=9D become relevant also for =
+this commit message
+  besides other possible adjustments?
 
 * Will the tag =E2=80=9CFixes=E2=80=9D become helpful?
 
 
 =E2=80=A6
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/input/misc/bma150.c
 =E2=80=A6
-> @@ -3840,11 +3842,14 @@  static int at91ether_open(struct net_device *de=
-v)
->
->  	ret =3D macb_phylink_connect(lp);
->  	if (ret)
-> -		return ret;
-> +		goto out;
->
->  	netif_start_queue(dev);
+> @@ -357,10 +357,13 @@  static int bma150_open(struct input_dev *input)
+>  	if (bma150->mode !=3D BMA150_MODE_NORMAL) {
+>  		error =3D bma150_set_mode(bma150, BMA150_MODE_NORMAL);
+>  		if (error)
+> -			return error;
+> +			goto out;
+>  	}
 >
 >  	return 0;
 > +out:
-> +	pm_runtime_put(&lp->pdev->dev);
-> +	return ret;
+> +	pm_runtime_put(&bma150->client->dev);
+> +	return error;
 >  }
 =E2=80=A6
 

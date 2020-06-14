@@ -2,36 +2,41 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCB351F88BD
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jun 2020 14:17:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E9CA1F88DB
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jun 2020 15:06:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726950AbgFNMRU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 14 Jun 2020 08:17:20 -0400
-Received: from mout.web.de ([217.72.192.78]:52937 "EHLO mout.web.de"
+        id S1727116AbgFNNGO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 14 Jun 2020 09:06:14 -0400
+Received: from mout.web.de ([217.72.192.78]:55063 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726981AbgFNMRU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 14 Jun 2020 08:17:20 -0400
+        id S1726925AbgFNNGM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 14 Jun 2020 09:06:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592137013;
-        bh=3uPeZr7YUtp8oPBanX8wpWVmN5bEN92MxWCaDMklPvQ=;
+        s=dbaedf251592; t=1592139949;
+        bh=twBWjKWwkxqpHDAJyLnk+motZ58+jjTK9fg8hzaK/BM=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=APf6tsCZ9Q1T1q4LZeI/S86C/NAzHLWwSkuLCdfntkhlHxb5JW5ZF2DRVGrItTPxf
-         TupY7NZhrpk8Uqx9t2sZPo5Pbo93xNxX2W4PfkC6MnuR0hwcfsdL5B1GLJ713dDO/q
-         PSlKc9pSJSms4/wnkOioBMqtdt1Oj5IC07Da3GGA=
+        b=AkVdMyZjAQLAIvy9qJ20t6E1XG/33Uri3FU+pir5Lz7Q2Rjp+66I1rZHnxu/dgQQT
+         CkhVQa17hiKw9CK8kgICRXsayajLB8OhNR1oxSGU4MRYKdoE/QkS3UsAcJ4NF3PWJ/
+         4lK/JoGE2KxGQIpIcXOQHpnIpNPLda3sZWLquZZw=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.103.145]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MS2LO-1jLoEg3AUM-00TGVa; Sun, 14
- Jun 2020 14:16:52 +0200
+Received: from [192.168.1.2] ([93.131.103.145]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MsJOq-1ivWfX0yOA-00tkAx; Sun, 14
+ Jun 2020 15:05:49 +0200
 To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        dri-devel@lists.freedesktop.org
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
-        Qiushi Wu <wu000273@umn.edu>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>, Eric Anholt <eric@anholt.net>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] drm/vc4: fix ref count leak in vc4_dsi_encoder_enable
+        Qiushi Wu <wu000273@umn.edu>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Andrey Grodzovsky <andrey.grodzovsky@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Shirish S <shirish.s@amd.com>, Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>, Lyude Paul <lyude@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Yu Kuai <yukuai3@huawei.com>
+Subject: Re: [PATCH] drm/amdgpu: fix ref count leak in
+ amdgpu_display_crtc_set_config
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,46 +81,44 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <a81cacf1-88e5-18d1-9d01-8e8d32f6f0a7@web.de>
-Date:   Sun, 14 Jun 2020 14:16:50 +0200
+Message-ID: <241aaf11-d4a0-e5a9-9744-75839006c128@web.de>
+Date:   Sun, 14 Jun 2020 15:05:46 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:g7WsRZns8wK5DeP8vMqrf1sr3VIsyatiqyKyZOtsG8Fwee6lCiJ
- tcE2gFd3gFNCOhU4MVba6g8qpkQQnmE9RhWRgDTbP1jXY9AfMgjOGdCZI9xqATkC6l+a/gd
- Fhh+9/gI+5+x/v+BQOogOi1EVi2BOxATnDA78sHjOeCPUWJxsHDrQYblS5dq9yLN7M1O8WA
- OcMcExBpmezB7wlmpiG1g==
+X-Provags-ID: V03:K1:jISW+Z2OwzdSP+oBBBHLf/NafH24FJYxgakUacwhi3+VepG1uKU
+ WMiRnTTFV/i3rpYkRVT6CSokq3Y1BnhkT8jsNYH5qKecsjMfIrxUk+L+S1M00hxoS+FjuGO
+ 1gZXQyX68il89HsZuDKwZ3g94irEijpqn7pGPtJeAddqx3cDkAF4CsB+ePRn/gdPABJL3V7
+ SFyuSJlTugi3zz6ejehmg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:yHXBjf+SAZM=:7G1iR+qf8bpnXx7LjxfqT4
- t1O0mcP90xvonwfqwq9Q87uw7FXXzZ48LD0xNuaH6Dy2xe3e3SwWhaQmc74/fuQdoDm7f+/T+
- 4VkWggaCk5nAT4AVCvbce9cyOcqeMBqeXWMfYUZcA17PGFNYn55FhY2KQNCxLiRMAfhYD+yTO
- SfsgXX1cXSbvkESaNrv8VNwhbHOq7Y2J+5oyG0xRW7662IF9Ggwl3dNyVaVdbs1PmuYhFF6NL
- IkxfVdG5n/Y2BHXpMIc6rCYFwWE9yTq0PUurTdiKd1AxrmObiMEGiG9N7NfQVx+lXQk+iBSQ+
- YFexzfZli66RqaMAVwK+7Sz34skMN9Qav5AUABNmdjhKp1yF7bBmhhH9P/OSUra4hC3gPAQ+1
- uWXL5YgcP+OSnVb628FwOstRt0qOV6rzYk8gwtbAe1XBIMrpLxtfaMT5FhilRUg6BZImUVL87
- F3RuFARVB1SRoE/vErptN9/ssRytqeC2Y5PIUROqklgLtUVLz/wINN0udBWmGzGVzFHtBbIr8
- lbiy3MaGbdfdjFOano99jjUBwMKezQ1FkYIKsfqmRFz/ktS2Ga9HNf3WUu7EMjrdD37FpSv28
- XOQ7/wHlNjoYA1YDAzR23SwHlu7zSJ6vZtxu6ui5hXHxWVSJdzJXEQ/YX2KC69gv/0qFPpnSA
- jqkSTNGa6t2limdTJ7KtRsbSh17myv123SX41mONhPZLWZ16FnnkTgUE5o6SH9A5WDsx89YoP
- s2f4vVbBMFVIy2dk9H+w0GmEtCLiz6o/uAfG6cxwkb4SpEFViSmynI6jJnXKNUWNNlz/jYvvC
- 1PHejOSUcQvhPjjxmhLksigIVGbVziqF4jG2T+YOXrjky9mLfDb9KuopDBv8N4fzm0IYxLskv
- ZB9q+wns5/Rm7E1Z7X//yhOu2wlJERQXJ1NZAHrcKskTWtyip2dZ84lYud8wtpGTk6A0zPylI
- aoSdOxjQCWJ8CD7jvLR6celNKo/9iRmucj58XBEhffG3mjJjecYMDWp/h7L5MnU04BwTpoQcb
- GL35oO/nCR/qkReWx5IZgwqfOPvauJK05P43Qjk9wbYxY0nJ43Q3k2MhYHN0JfUM6G5GeFGa+
- 1WtLWb3fD8yZwfyPG1+BSiNLZzAJQaOADx5BQDjnGP+MrTOgvcPDswYHRG29D9PwiwMDQmky6
- gj52eY4K+k55i0EN9JmXjoSspUtbgO4dcJEVByXJZyYoIJKIDb3UDxZzQ3GpadhSA3c+vLidS
- JsEZT1aBlqj578coA
+X-UI-Out-Filterresults: notjunk:1;V03:K0:v7eTGvr1Xs0=:XPocsuC/DHM9Xn8JheBKVW
+ XW/nyoUHPiXrgYDha2KtAgCeX6UTf7J0nchvy8vYbvZvLXqch721rKQEjkNDNIp7guqv5acEe
+ At08joOFPl4z2pzel8gdtoTp0MAxO0o+bzC7oLwBZfMOt+wqeGrDb1qFv2pLZc30s9dRG6AnT
+ SVPyYhU+Lt+Neqi1c4ask82Z5Cc3Uv8x7dElvgqdUcgjRDcsivpFsUYev4ZAJBLq5NPV1kYrn
+ oTgvU9gbqRIqAaD7+TAQUWJWIIISXhayK/Jv5ZQ0f6maA1x4VNKatyM+tlliwRLy0Orc+I20o
+ mmtG2FAJVPiftrRm+2hocFJ36naHsyJacW2rjUCOKCxoojU74jNcd6j8w13fSr0uzfvW0mx6k
+ 7RFgHfLmwct020oEZ+YyGpv0G7zUlLicXQJ+XhDOuD8ykqEQxtwy0nMBq0rbaHtDdW6LqmEYE
+ LsWmrW2QfdPceZ6VzJMP6Z0bnBaORjrHhpz8Z9XN4xQ+o0olSsydKS8Y+GiR1/6AT9GwYSk0W
+ /ZC5aOa5fES0QmF+k7rQI/Wxpopoc7sDh113mR348P1lqNwzXs/ZA5uXyV5dwrsA94ExY56el
+ kOmmlI71j7PzNYnnr4U56CC7LZIg3MHZxcRP7UF8yfIvj4vxBxYKIKBjfzqP8UlpmZtQztDoP
+ /zIYwbyxActTbC/J6fyXsGhvZskE6kks0iAqxM4qGh9eHs86DHaTDXUA1OsytuDNd5KzZ74xb
+ ifEjcINAsvfcFGTZNW9Dfcbo57xYk1w+EZwHHA6NyRudhHJIEiAB9tjR86b76WNGNMW5P5Ldv
+ aVpxzZ8CUMzmzI3KYJq2EmQq9Kv69p82Ykv1lKhAUJtxYz3KxNq67snJFqnXRFzyzd7PT4BYv
+ /ANCXPiTHqUDeNiExvJH1OLuTREwk+XVcnsXFhC4BpyR62NcMkLT3XlRqJiHFtYExw223kN0S
+ 8Gxy5tgR425YkC/lecpEsXxWjtL8eiQA7EMFOn9IvKW8sDEs0MkuQUxEuGTIiMzJc56grxKKd
+ r/UbBYBQAg7U8f1YROBUvWYVHZHdEUyZ6BClrHfHaFRxqoLurV6T4+5gFAd3X+L8DoWDPT8Du
+ BTP4j5l5Hnw3ZVNkUNxkYxRnEIzlSjEjCZWCb3yRXNHiLbF8jmh6ih67gChwzfjOiGj5Ynd8t
+ t4Ip5ZogHoGR6x8F9JtnmY5m9xnXhlHw4FGw12C89+0FYErRg1O76h5lvWfc3BCqTOgc2PiKp
+ U3iRys3OxLLBpCwd7
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> in vc4_dsi_encoder_enable, the call to pm_runtime_get_sync increments
-> the counter even in case of failure, leading to incorrect
-> ref count. In case of failure, decrement the ref count before returning.
+> in amdgpu_display_crtc_set_config, =E2=80=A6
 
 * Can the term =E2=80=9Creference count=E2=80=9D become relevant also for =
 this commit message
@@ -128,25 +131,19 @@ this commit message
 
 
 =E2=80=A6
-> +++ b/drivers/gpu/drm/vc4/vc4_dsi.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
 =E2=80=A6
-> @@ -1088,6 +1088,8 @@  static void vc4_dsi_encoder_enable(struct drm_enc=
-oder *encoder)
->  		dev_info(&dsi->pdev->dev, "DSI regs after:\n");
->  		drm_print_regset32(&p, &dsi->regset);
+> @@ -306,6 +306,7 @@  int amdgpu_display_crtc_set_config(struct drm_mode_=
+set *set,
+>  		adev->have_disp_power_ref =3D false;
 >  	}
+>
 > +out:
-> +	pm_runtime_put(dev);
->  }
-=E2=80=A6
+>  	/* drop the power reference we got coming in here */
+>  	pm_runtime_put_autosuspend(dev->dev);
+>  	return ret;
 
-* Perhaps use the label =E2=80=9Cput_runtime=E2=80=9D instead?
-
-* Do you propose to perform an additional function call always
-  (and not only according to failure cases)?
-
-* How do you think about calling the function =E2=80=9Cpm_runtime_put_noid=
-le=E2=80=9D?
+Perhaps use the label =E2=80=9Cput_runtime=E2=80=9D instead?
 
 Regards,
 Markus

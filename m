@@ -2,38 +2,40 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 626D01F8823
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jun 2020 11:33:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C563A1F88A2
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jun 2020 13:31:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726921AbgFNJdv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 14 Jun 2020 05:33:51 -0400
-Received: from mout.web.de ([217.72.192.78]:47213 "EHLO mout.web.de"
+        id S1727077AbgFNLbb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 14 Jun 2020 07:31:31 -0400
+Received: from mout.web.de ([212.227.17.12]:37383 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725265AbgFNJdu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 14 Jun 2020 05:33:50 -0400
+        id S1726950AbgFNLb0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 14 Jun 2020 07:31:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592127215;
-        bh=OH6G4YIWrOCwofY64qVP1rh+B9uREuwO7Gq1odxhXvk=;
+        s=dbaedf251592; t=1592134272;
+        bh=99e5fUmdAPxpyhSRJewC1/udHxWyON/Mb6axo3Pi7nw=;
         h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=U0jPXtCFnPBfYEaxAxSelNX6cUFBGAfg1JgzjRH+hLtXlGcuQM74aeVCO9+pRY39P
-         ehBvYzx2y/xPXn1CUeBPHTsa7G8z8kMPQr8FmbkWLBCT35D0+ME9h/y6ftcbhBGZSg
-         hUBX3wk/NZj/UMpmHzgydOASOy2CUFzuNGQFX+b0=
+        b=RKUhYc0rWQnux02Ro1wBTLVZ620PnblMZuUuWhzu7KyGcMPzXoBahzGOYt9IN9HXG
+         zMG2SQsNxuOiN/HwWo8U7yMwbQgZ6YPAWM6zqhDDvy/pma2JpMLdlws99KlcXYQM7q
+         6JfGX+shsCiswN1PhQRiAPDsf+dkgyVAKkPmEh8E=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.103.145]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lheij-1j6NMk1fs1-00mreL; Sun, 14
- Jun 2020 11:33:35 +0200
+Received: from [192.168.1.2] ([93.131.103.145]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N7xeb-1ipDYK3zCl-014xYv; Sun, 14
+ Jun 2020 13:31:12 +0200
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
         Qiushi Wu <wu000273@umn.edu>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alyssa Rosenzweig <alyssa.rosenzweig@collabora.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>, Rob Herring <robh@kernel.org>,
+        Steven Price <steven.price@arm.com>,
+        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Input: stmfts: fix ref count leak in stmfts_input_open
+Subject: Re: [PATCH] drm/panfrost: fix ref count leak in
+ panfrost_job_hw_submit
 From:   Markus Elfring <Markus.Elfring@web.de>
 To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com
+        dri-devel@lists.freedesktop.org
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -77,44 +79,44 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <5b0147ab-f0bc-7380-6300-90e555534cb4@web.de>
-Date:   Sun, 14 Jun 2020 11:33:34 +0200
+Message-ID: <f99b8509-c2b9-e96a-3cb6-5e693afa138a@web.de>
+Date:   Sun, 14 Jun 2020 13:31:09 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:DAZlzO03MgQlRK84nwjKrl/6g/AAmCSSCTEfMQsrm11BvRkezO6
- AAp/YNWWVfr/8oNvMrLeS0iPKc0KALrvx1d2OqnM4t6VmmFhKuZS6cI5TH4rFcYhCIt4iUh
- LaGHHZ8iBDaMNS+uSR3t1hccjgf9MlOLVSWStBNsqD0sAtpSflZ9ZxQXW0MHNR1sjx2fkhI
- rIzmOSggGdZucVB3e/cMg==
+X-Provags-ID: V03:K1:Pv8l/tQ9ungOKaqE7zOGU5a+YRAU1Ed5M+XWe+BxSHwbcZ0aiOs
+ oPQBnkfxckklejUtugCVnOPGkz7HSO38w56J+Wi2MqqoGqC1Z6YvfbXv6aFVB6AUdV/DpgG
+ iFWdZalMrxOelQttxfuMotFBZasV0jsy57PbHrACyM5aHx+T4kLmgBLoy5VbCNtxEBT/QaS
+ 9yvd1Yi5wc56xqbM3l7jQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:urm8Ip8SAso=:E+BuA/MAZEHBAY2r3bwDk9
- ZbuYMm9lEN394lqdI6gELN7PULiRQi5r/lD89cpYkzwD38RNDmk6uD/RuiJPppQtOGaW+hMck
- gNJc7LVY7/xssUiowl2O4ol0xzZ2B3JPH0SZuyOFBZMKY1IbiFGhOoTaoFpgw2+vXh2ULtdtB
- SeIffR7BQKFcdeupwKW72dRAunGMXYjUlT+Dy7CbMyy0q1gEn/go7AJauM/rh5fbNbCAUR2a6
- yNMtttOvUW+aD8fNiwTQrjaZabZktVBWcv4GBVtd/1lh6Oo6gW3/EF3wxUejpfkKXhAZ2rqND
- XBUn0Jvarl2ZL79+eHDnT+KiSXx3m5R7yw8dvafVZUiHcZwYVfYaL54RRXmr6MDleLD3mMKTG
- g9ZYcfZs/m6NK3dTWO7xDXsTJ2NWPxoH0cw+VpFo8vU9Md/RTb53s/1RfCF6/TWG9fg9+b6Qe
- QDq3Om4+PvH3UWULDGpgSd+CeVlHn7P2jqmZriuhb4dYQAcTUjHTDx8t+WT9BNLDWS90hDQJO
- AHmSgxG4vB75mRQXC6xSy7JDb57UXzWqkdgECSuwmpdUlNGZJBWBLYTdvvzXH/eGOCZ3kzXa+
- WY5506lRHAM+8f2woeVGedGAXbYyCX9Llzwatheeou6uk9ljvW4Q0/pHX67dRpzZKC4VwqeVr
- aOpBCldA6uRSaTuc7uI6aGVwWabEEZTYQ4FGtgP+jQMFYEsotdGBxiq6iECpG7sEX7DX0UGmp
- PyFNsKjo9/3fc4ORTUFd6SuJsypwwnUWe6WReZpGfB0umEfxUidsv6Qhy5Ff5QMJlyVatXM/L
- T0eYvshWWzYLrNgTZxRobNeG+bi3QQ94v+l+2LlFKe/FkRUFortJ44WMp/zupZH9fE8FQNUZr
- /FGu3qepFbE0FPrD4I/J+2tz6DSBH6ofQ9dGJKLsW/ileyhETwiFoURSOYg1V97nQ+Y3R0GLc
- BBu7agcsVXFA2rqirp8xmQTFmQDI3PovpAUSX3noLlhODEzyBXOc71jSVKFbfUmmu871QyF0/
- /RfB2obzWeXfJnV3MIfq1vU9Fxi4jN+jieHIQ2UOY+t/pj25Noq2tIWHH2fQJdHuHA3sIB+Ou
- ce0hp+e/Re8ljmwDwgaFKX/hWZ9kw2XiFh/6xehqEqAjt1pbEoa2OmelWk9g+Q7EqdLSHNGCM
- VdTeM259cB9kBODF8d6CIFFVpgEsfJgD0iSgBHhNbsbfncS3iGLJ8s+N0Oqk9p370vxRYTM5O
- zRVKM1J+TXRdr6K9L
+X-UI-Out-Filterresults: notjunk:1;V03:K0:HTs8QJXUewM=:jD8FDbRg3IX+u58po7lt/m
+ AbqRwHbNp0h3XPfDHN6klHjUXksteIsOdDV6pt76+SnkIJ8QbkoTYEM153aGpWuKXWGW6OyDf
+ JsK3xdbBhk2jbKDlThfilH2oA5PFOuNrzakDbzy4F9+4EZRQ7tg0gHaqmBRZGJSej2WuDen8G
+ +6SgdbXWSUyKPTBrkQhtH1csVFxYP5XZ/FImd3+eyG4N/lF1Uut1GdIgGDHZU5Ob4Fl2FfgU+
+ 6p56ZQ1yjNtzdUIxmEvh8dYLU2Sj5O7WTGdIZvJtuYtq6h3E+CVKG7xv/8CmXFxWVl7SzEPzm
+ s9yjX+OfMTPuUc2RNiy5buWFLw+dU9R6PDPAblJXSjrGOrMCkGYXf2+jEdooPviSkUfAvScM3
+ XHPSNqLRsRwpUG+1iF5bgZdBWWtb2u+7/hzuozSuba+ClvQMMEGqeBIIWya+C+5BzQxfOBDIy
+ 7SRFTLzGYHF9Pq6pA7jWLxNB8yOkO2yYCoKScPB+Bq70f+zVdhVkik3eUJWGYaL9IJgO5+2yA
+ Oaq169Z+kAA956mkgBCgC9fW6TWDYKKHN5mfyf8776Rr/ow/llH+F5lHHs8WV3v8v3/zcq70B
+ lw9s0Kvr67aPmfTLfcSn8/xwQiIPYsrMeL+ci5cGxAriY8iEpEhVVrGhuW+NeDkFMzw9diEwf
+ GYRnhgNEYHsBzU/hJsIRPNxNlTusnrDmyJpdISgAFDPoUDSBz7bP4NDDJn9UX+Iu4wU2mcIL2
+ ZDBDA4gGmbTu3wKRMmj2HclITmQb1R5d/bAUJUzy3Jyl3tZpsuVKyuORk9aiQAqYSxz6r6bhq
+ 6vi0n9j+N6bFTp0YjJUBbmz8P9baM2i62DoR/uGDQx/6GKsQsk/7K0ZIXCaOOahUUldtR/twa
+ BZONj17a4Bc6CbkfsbnDlegya2h/fMowA1+qicW0oFmZsfFslM7i8ESMKSaQirTbPT2UFeqtI
+ Xugai9RyBt+CzUPzKBYlHKgfdj6X4nSHXrRvXjRFT1zfRIqZ8DNgnuUhI0czKqv+pSH1CRBsx
+ tOtpPpQqNsPYK6VrX+mrcGvpR28YW7m3KQnKirL6lIC9ISkzB8u9fcaQQ4anQ+wjrdCDq4T6H
+ biW2XjjUim/kA9cWZy/x5PYa2WA/ByIHW1zt4bEC8GXzNF0VXunhdQC/hLKx4QmiloUFBe3B/
+ KDvpsa9Abrkc+j8jOIrlEEpufPCznj3UMe/AZ2EcGsXbQ8H3THgt4hP5X/DW2KhvFkyWmhKNg
+ Csj76nfhhsZKhcn6N
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> in stmfts_input_open, =E2=80=A6
+> in panfrost_job_hw_submit, =E2=80=A6
 
 * Can the term =E2=80=9Creference count=E2=80=9D become relevant also for =
 this commit message
@@ -124,19 +126,20 @@ this commit message
 
 
 =E2=80=A6
-> +++ b/drivers/input/touchscreen/stmfts.c
+> +++ b/drivers/gpu/drm/panfrost/panfrost_job.c
 =E2=80=A6
-> @@ -367,6 +367,9 @@  static int stmfts_input_open(struct input_dev *dev)
->  	}
+> @@ -184,6 +183,9 @@  static void panfrost_job_hw_submit(struct panfrost_=
+job *job, int js)
+>  				job, js, jc_head);
 >
->  	return 0;
+>  	job_write(pfdev, JS_COMMAND_NEXT(js), JS_COMMAND_START);
 > +out:
-> +	pm_runtime_put(&sdata->client->dev);
-> +	return err;
+> +	pm_runtime_put_sync_autosuspend(pfdev->dev);
+> +	return;
 >  }
 =E2=80=A6
 
-Perhaps use the label =E2=80=9Cput_runtime=E2=80=9D instead?
+Perhaps use the label =E2=80=9Cput_sync=E2=80=9D instead?
 
 Regards,
 Markus

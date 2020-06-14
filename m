@@ -2,34 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E376A1F87A5
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jun 2020 10:26:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16F561F87CA
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jun 2020 10:56:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726755AbgFNI0A (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 14 Jun 2020 04:26:00 -0400
-Received: from mout.web.de ([212.227.17.12]:40159 "EHLO mout.web.de"
+        id S1726786AbgFNI4a (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 14 Jun 2020 04:56:30 -0400
+Received: from mout.web.de ([212.227.17.11]:39239 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725265AbgFNIZ7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 14 Jun 2020 04:25:59 -0400
+        id S1725265AbgFNI4a (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 14 Jun 2020 04:56:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592123143;
-        bh=wxTFjGGrH+o7SM0GZXIuMetiHFRN0FqP7XJd2HJ5iNk=;
+        s=dbaedf251592; t=1592124976;
+        bh=1XKwjy46DP0XP1BezOttDjslx/1Fvlxmazm0SmzeslA=;
         h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=Jl+8vUIRKYn+caXq3AsvT1oUg1jYXwQAnTQJrnjIYTZ7++mwFwCsgD61fhJ24Z4Tm
-         nYOKOxgfmLQoo4K4IhQMhez5ylJylWosAmKQBIQY3ufxVCdlvNP9atThwlyEyvDSgK
-         bhboCJSOaIeX/WG0mIj2ybBUnM47MiOliCP83UuY=
+        b=NF9ccStdhdx4YYSPvH7fUAoH9YmOBXDbZpLo5nye251d5UFGudDBTFlZxHwyi6cjy
+         L/Q5AiaTJ4F57zLojdCngm9EDAKLrcenKG1Kw7UHZK3OJdH6gBBGOYsffTtW+jYLzf
+         oGWg5ITNIZ5fJiMPpjr/lLgv07/IfJqiC/WVVzs8=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.103.145]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mdf8F-1jAm5n3HDl-00ZW3I; Sun, 14
- Jun 2020 10:25:42 +0200
+Received: from [192.168.1.2] ([93.131.103.145]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MBTQo-1jb0Eg0S2w-00AUxb; Sun, 14
+ Jun 2020 10:56:16 +0200
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen McCamant <mccamant@cs.umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
         Qiushi Wu <wu000273@umn.edu>,
         "David S. Miller" <davem@davemloft.net>,
-        Fugang Duan <fugang.duan@nxp.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: fec: fix ref count leaking when pm_runtime_get_sync
- fails
+Subject: Re: [PATCH] net: macb: fix ref count leaking via pm_runtime_get_sync
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,85 +74,69 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
 To:     Navid Emamdoost <navid.emamdoost@gmail.com>, netdev@vger.kernel.org
-Message-ID: <38dcaa5d-98ad-e1df-6e83-2e6dd677a483@web.de>
-Date:   Sun, 14 Jun 2020 10:25:38 +0200
+Message-ID: <c145121b-3d69-a02a-17f5-f0eb2f166663@web.de>
+Date:   Sun, 14 Jun 2020 10:56:14 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:7JWjazx6Gvzi2ymxy+2LPOQa0z8Dej9yXLglMl9obS7g2gPBEPR
- S6hV4uat1fQDm/HTsoxZI/QIJc1IXUCZ2IrpwR6BP0llJHeb5ctscDntvK0ifgBg8mb4oEF
- SbVS8IjqoASxOfrPoOTGYeVJzzw5ckBfhNbyUxy0B6kidlLnbCBEtnhhxIck4z/kDT9hVKz
- dnjLUEbNewhqoIc1BcdWw==
+X-Provags-ID: V03:K1:YIGYcO6P89/n84JoJbJS+s6UtPxuIxy1TvrfeYMMdZk/xJySr6U
+ 59SvoFNUi7DB9aitWb7SwqJ3Bcawfo23Cvz1cIgzzX6Ih/dX9RgspQqpaRjtaQb/tA096T6
+ IRYipq5I3UDCCCuMnfHiXuviBWRK/+UUl5XAjJuB8sXsyVzwACthBX9XhHOtK3/zgkcpEw0
+ WuimbHrvGvebXWdOzUcww==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:5KI8mUZQ6I4=:XxjMcKaIpU9m0d5pHrGTAA
- Cr7KoCBpS1SdPd5P4MHMH+YA7IFlplOtTbi/VWnSlHoek0uvu/7enSpMvR6935WxVPdJymFZU
- F5rtNagT6AvYJKT6ajgYCho1+Q86GF5hQdIbKYKowtUvaKmxEvj2RX+Ket3Sz8aNCvJLHvd6R
- kKZx7I7gLZmC4nZNktSZs5+n7erCAVoPs8P6u35RtfLExy/zSIzoGcWQNzq5zS4BYEq8F8dDT
- hBasCv/xUm+onUW/6q4FEmvDKcqoOgjxOYO/u+X9y5EyVPl0Lstw1yCPAWXmt0qNvAZ3G+/Nr
- k8tWpaqEoIhHwnJb0jVp6z1DrqroH+UHlU0KeP/Uz42vqADL7lPfQEd/DI0iU8Vm0oefiZGEa
- tPfKPAOvwSvKvabkebsOxNGbiOWiRoR6W5Jd8acjiROqfQzYymvXXGvY0MaL0FRizihkLbUGr
- JeAMSbbJF86xdnQnL1eQAE+b79RQEatUBOoFLLYLlvCC3pg8D4i6JEI2dPjYZ++1vHJDaB/Y9
- EmkDssC9Og5S+aUKvpoV9/hEFdMi9HBNjZ+DPBX9y0HftA+Zt2ysWqhL6sLsYYZaqEDyvCA77
- Kpt8HccmYcWHMP0UPYTJqTUf4sOaI0ZidQ4KHriOEIXnyxOwUR3pdVLqQ6G0sQc7rExzjSSy1
- j5Ys3VWHsKf6XDYmNUKAMzDTQi0uKyRo8L78TBjXfTQe9zJr4jmk6XLeiYY47BRPSE1ov2BuE
- 3RtY5rlk/q33oOKcqSQem4ONwubp4QWwcCoV+lh+0W3ZSNp/FU7YtoMql/wWl0pPegTpa5sOC
- pGY097zzsRVcmQyFR/SiRqPMn6x5P/VjEJyleawEHv0KZkILUzzt6djyXaYdiUH5ZDu2j0Q6Y
- l7yDz5KiiZ7fps14gt6YBGVtWYhiCXE0eCV4ysv9AOu9Rr7YainF9L9SDA/yfFLjZoGM/yewx
- qDs6CILE0M0lpoQK8Yoe5AaAMFoyV+OgGcRVw1vvU5MMthDuCC9YNuCzd8FauxNcTlKl1KvuW
- AaX17KTZ2mUinQMVe7q1mjX5wvHtrN9W1c53GSrI24F6StfyleV1TRIF+F9TfnKkTzqFrpoTj
- djXALIHLbE3ZgP+IgVI4jdKkfdQ3ABFAUHEGR74nKS2Dy5G1afjS3lfsvY+8VNeZPAdE+49Fu
- 3uxkGrkrEqbu6fflmz6vgpy5R7/X29K+N9cbFqKhuWbD2SWBy4/gbI+gbyNFMzdgss1KI07Aq
- 5nIarzJipuo5vGQPs
+X-UI-Out-Filterresults: notjunk:1;V03:K0:eg7k3wsso20=:lcbrm8SQgQoTD/1/qEfMDy
+ cRuzbj3YLhaX0fCxLlo1QhztDSvpEFIElnQsBIZ8UZZFZecqQjOreWKnLedrid+XYIf0q/XBz
+ txTDAql446R4zGCDaRNl5zinbqVfgcLBEFY07FehG0da802LC4FlbWUiKwOQUJrF81DhgS0ZY
+ JgYeDynhn0xFYingk1o0xAr2hWARvSAz+ogeSX1QuZOZ4CJRXy3NlyVC7jwNvIN7tQWBkVSDg
+ LigGeg9YhOhBujOBJ9N7PjgXpZrfF5TFIxCWMGBF/Q6rAYoC/x80YIm40kgVp5CNwvDSJRk6x
+ B9IYYvkHEOYnn45Qn2/azW5K4bbgR3Rjt89bijkfTx0vauNI7J3865MXia1d0g+VdfmwNG/ey
+ rQqUb8IEaPXH2UoAUdySiGO6oNe0PYM/HlC/0oexMO85bu+8MrXUSz3BJYaEt8aDTxhhUVfmj
+ ra4fz+lhq2WMSyrkE2NWBTTIhhURrK3hs9Co2aEAZGaKyF3Njrii2qUeW1SsRMQjosvGn2Khy
+ Ein4fOgUojW4mzXoc9Q3Sz6NS/q6lJBZVXjDHLcwv8rFALX63D+MvW73w/m2ZWB8/laZG/CvJ
+ AuUcvrWg9CdFsYNkBFzmXyxrJQl2KM3XtTHnbjmuhAYO47D+w61jawcp5q0FO1WHKbyTzlaHU
+ ExqjGdmo7O4PQWdMBM7uyKBY4mTAxgxrD3oUQbU3FtlTcT2eZ0YeyDaQVw8xmXddidDuKh7/2
+ +alcdV8sT0XlXDL/P6Iaopia5uydBVjYGCCZvFROaiDgF97wIS8kiBZ1mvYckA/TORsUbk3cT
+ TtFlm2KiLE74qHlov5NAzEnoYtkt66dsveJ09/eMd/nW97hl0kklErQ/4IuF3JDxoBtIbRi+t
+ JL7PMBe/uX3B2gSvovxFb/LkXVT/Tizx3mb8gXi96aRKUX4MU2LbaB4rPTudQT0x7dQWA06Ip
+ SvaGEUBtQpkQ4tUx3Uneuo1F9cmEUhkfZApCYZB64TFIw408Z6jowscRxpGJquUsxHD6sz/Eu
+ zP2cB4X/z2sQx0p/p/P38136i3uaNM0+iajD1NKunSjH0S9rZyCPhFs+czsmVW6HAqAXBIda1
+ pTtgIR/QdSCuuEx0m10yPsE40K3sDUt4JJdKEaM2Yaf2kfMbFqI3GWMu6pmA5QoDZZQDe51w8
+ urEiH9d39zhiRF3C9119zfb90UZ0nTjrQucUrsdkOLCjTDzo38Fx2L4YctEQ49gbKtQquPpwd
+ x/uE/wqekthK8LF8h
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> in fec_enet_mdio_read, =E2=80=A6
+> in macb_mdio_write, =E2=80=A6
 
-I am curious under which circumstances you would like to improve
-such commit messages.
+* Will a desire evolve to improve also this commit message?
 
 * Will the tag =E2=80=9CFixes=E2=80=9D become helpful?
 
-* Which source code analysis tools did trigger to send
-  update suggestions according to 16 similar issues for today?
-
 
 =E2=80=A6
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
 =E2=80=A6
-> @@ -1893,8 +1895,10 @@  static int fec_enet_mdio_write(struct mii_bus *b=
-us, int mii_id, int regnum,
->  	bool is_c45 =3D !!(regnum & MII_ADDR_C45);
+> @@ -3840,11 +3842,14 @@  static int at91ether_open(struct net_device *de=
+v)
 >
->  	ret =3D pm_runtime_get_sync(dev);
-> -	if (ret < 0)
-> +	if (ret < 0) {
-> +		pm_runtime_put_autosuspend(dev);
->  		return ret;
-> +	}
->  	else
->  		ret =3D 0;
-
-I suggest to adjust also the source code from the else branch.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/coding-style.rst?id=3D96144c58abe7ff767e754b5b80995f7b=
-8846d49b#n196
-
-
-=E2=80=A6
-> @@ -2276,6 +2280,7 @@  static void fec_enet_get_regs(struct net_device *=
-ndev,
->  	}
+>  	ret =3D macb_phylink_connect(lp);
+>  	if (ret)
+> -		return ret;
+> +		goto out;
 >
->  	pm_runtime_mark_last_busy(dev);
+>  	netif_start_queue(dev);
+>
+>  	return 0;
 > +out:
->  	pm_runtime_put_autosuspend(dev);
+> +	pm_runtime_put(&lp->pdev->dev);
+> +	return ret;
 >  }
+=E2=80=A6
 
 Perhaps use the label =E2=80=9Cput_runtime=E2=80=9D instead?
 

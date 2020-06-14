@@ -2,40 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FBAA1F889E
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jun 2020 13:31:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCB351F88BD
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jun 2020 14:17:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727043AbgFNLb0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 14 Jun 2020 07:31:26 -0400
-Received: from mout.web.de ([217.72.192.78]:39831 "EHLO mout.web.de"
+        id S1726950AbgFNMRU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 14 Jun 2020 08:17:20 -0400
+Received: from mout.web.de ([217.72.192.78]:52937 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726965AbgFNLbZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 14 Jun 2020 07:31:25 -0400
+        id S1726981AbgFNMRU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 14 Jun 2020 08:17:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592134272;
-        bh=99e5fUmdAPxpyhSRJewC1/udHxWyON/Mb6axo3Pi7nw=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=RKUhYc0rWQnux02Ro1wBTLVZ620PnblMZuUuWhzu7KyGcMPzXoBahzGOYt9IN9HXG
-         zMG2SQsNxuOiN/HwWo8U7yMwbQgZ6YPAWM6zqhDDvy/pma2JpMLdlws99KlcXYQM7q
-         6JfGX+shsCiswN1PhQRiAPDsf+dkgyVAKkPmEh8E=
+        s=dbaedf251592; t=1592137013;
+        bh=3uPeZr7YUtp8oPBanX8wpWVmN5bEN92MxWCaDMklPvQ=;
+        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
+        b=APf6tsCZ9Q1T1q4LZeI/S86C/NAzHLWwSkuLCdfntkhlHxb5JW5ZF2DRVGrItTPxf
+         TupY7NZhrpk8Uqx9t2sZPo5Pbo93xNxX2W4PfkC6MnuR0hwcfsdL5B1GLJ713dDO/q
+         PSlKc9pSJSms4/wnkOioBMqtdt1Oj5IC07Da3GGA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.103.145]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MK24P-1jjc2f0ABp-001UNV; Sun, 14
- Jun 2020 13:31:12 +0200
+Received: from [192.168.1.2] ([93.131.103.145]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MS2LO-1jLoEg3AUM-00TGVa; Sun, 14
+ Jun 2020 14:16:52 +0200
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        dri-devel@lists.freedesktop.org
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
         Qiushi Wu <wu000273@umn.edu>,
-        Alyssa Rosenzweig <alyssa.rosenzweig@collabora.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>, Rob Herring <robh@kernel.org>,
-        Steven Price <steven.price@arm.com>,
-        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
+        David Airlie <airlied@linux.ie>, Eric Anholt <eric@anholt.net>,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] drm/panfrost: fix ref count leak in
- panfrost_job_hw_submit
+Subject: Re: [PATCH] drm/vc4: fix ref count leak in vc4_dsi_encoder_enable
 From:   Markus Elfring <Markus.Elfring@web.de>
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        dri-devel@lists.freedesktop.org
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -79,67 +76,77 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <bb7c5ba8-92e5-c286-2599-a567597821bd@web.de>
-Date:   Sun, 14 Jun 2020 13:31:09 +0200
+Message-ID: <a81cacf1-88e5-18d1-9d01-8e8d32f6f0a7@web.de>
+Date:   Sun, 14 Jun 2020 14:16:50 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:FsG0eqYQUCEy4oT1KD7RmUvTHqavlg8gPF9F86wn8DMkMvTzQDX
- YP1vg91L0AKDAgyaBEyyzUnFCY0wgSQ1jxF6IKlteMeilE5ROn0DtKo+Jrw9o23RpGBMGsA
- 4jhSE47VLdztPsd0k1mCgQuVv1Hnxb+vCIop51fPUupHQsA16ia2HTdB+yN1Q8H9U5e/Dct
- oPtG9gbi+rKImu+/9zHRg==
+X-Provags-ID: V03:K1:g7WsRZns8wK5DeP8vMqrf1sr3VIsyatiqyKyZOtsG8Fwee6lCiJ
+ tcE2gFd3gFNCOhU4MVba6g8qpkQQnmE9RhWRgDTbP1jXY9AfMgjOGdCZI9xqATkC6l+a/gd
+ Fhh+9/gI+5+x/v+BQOogOi1EVi2BOxATnDA78sHjOeCPUWJxsHDrQYblS5dq9yLN7M1O8WA
+ OcMcExBpmezB7wlmpiG1g==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:vkz9YcZtDLc=:xFIj4LbjypOPfz4KNO+3fR
- 53NmeJ5v4rwxm01VNKBknqh3J+o3hGrEnMlRZOvLAEjNA9V+tMNGekOPsHHZ1ECfUTW0I3AVg
- UkBEvSumu0Qkb6VKvox/lDfRB74tmGJiUe2wyElut9fyJpwtMzRfBi4QXrAsURHlsCPUVE/KX
- fz6jnxDccVX7Mf2tlPWM12Z7HLt6Y27fQhXY5ZfueoAdoK1iu++AEOQP8tsgkf14tGRqTgP6b
- djVZxCX2UfkOCKfxQhArsLXSr49U6KID40DlcF5HR/CToyUXkf5Fi3TQ2YNq2oVNWtLfueE0R
- Ovxt+taJZdIGMGsaCCvYsjt5gQFAHQeKaI6NZVv2cpP0UN14b9URgKvkGiiW1NCYs6VJ+4s/a
- wrl1Sb7hRnPtPc8lAVlGyHco56UzUQ/IseSsbTU4Tt2lPSNA8m4OnUWWVkGLHr14ePEN+OHA/
- Wtb0euIAJWUGrJHAzVZ5Kh4EXpAPME7BSmcqyyzELN7pjIT/UuszRqcjDJe2DKVOKs6FInH/d
- 8U51sLPUPvhITDxzdRvnEC8eRZgmCYaDOoRUzi1eQNaUAve1JjuDAflv+J2tqLHxSrwtJuzOu
- CO73q7pH5wxGzYAvCAbDZ7glM5tzEC5HzeYTiRc+m40sF+gnnb020yq55TXa/FyOkUWaoamlo
- 44fc8fFudesBZr78IuYRQnAAD/0aypuet2GQ7FXg6YBZdXZPx9d34U/T65C3wC+pdTNRH6eDi
- fjGKvswDVc7KDsuU6prw0oxZkSL11Ob/JJREKNgDxfSKALmrLuK9lZiM7Dl6IU1i7p/mssorJ
- jo676wBNtxVTmvweWIbEbqqkMs1VLav+fHQO3PY3BO7VCUUFVmkOeGyfN/wx5+6Y+LjqoY/9T
- EGo7poSSWqS6D/OxxkPtttHiJSnMnmAY97AVweuOVJBRgLjgrqNBbylPLRDSDmVaICzHJB2tH
- S9ffQRmPUqiEOe0SaXADEHRXfWE62GGt5ZhHcdbEL7oa9hOo5x3rWuBlF6+uL0Gj7EFImIPpX
- Vz1eZXEU16a6jD7lt2VDDQlRXokSI0slT/MG0PdpydNiQidBqN6fkujMOdQvJc6M4FXGXZpeC
- 5kBTVYhpwVnuE6kT+rkwZ/TOh5Z2rhUCSZw+fKnKLrbjdMZqNLQV8hTiMSsNV6bBUEQoANs47
- gYTkx33Cx27CoDVGu71SNg0BlmREEJ17/76oAHQA/wgnQnzp2xnPqsWVNKGdqFGC5aFhMUrSU
- 2AcqmezIZP3l+nmyn
+X-UI-Out-Filterresults: notjunk:1;V03:K0:yHXBjf+SAZM=:7G1iR+qf8bpnXx7LjxfqT4
+ t1O0mcP90xvonwfqwq9Q87uw7FXXzZ48LD0xNuaH6Dy2xe3e3SwWhaQmc74/fuQdoDm7f+/T+
+ 4VkWggaCk5nAT4AVCvbce9cyOcqeMBqeXWMfYUZcA17PGFNYn55FhY2KQNCxLiRMAfhYD+yTO
+ SfsgXX1cXSbvkESaNrv8VNwhbHOq7Y2J+5oyG0xRW7662IF9Ggwl3dNyVaVdbs1PmuYhFF6NL
+ IkxfVdG5n/Y2BHXpMIc6rCYFwWE9yTq0PUurTdiKd1AxrmObiMEGiG9N7NfQVx+lXQk+iBSQ+
+ YFexzfZli66RqaMAVwK+7Sz34skMN9Qav5AUABNmdjhKp1yF7bBmhhH9P/OSUra4hC3gPAQ+1
+ uWXL5YgcP+OSnVb628FwOstRt0qOV6rzYk8gwtbAe1XBIMrpLxtfaMT5FhilRUg6BZImUVL87
+ F3RuFARVB1SRoE/vErptN9/ssRytqeC2Y5PIUROqklgLtUVLz/wINN0udBWmGzGVzFHtBbIr8
+ lbiy3MaGbdfdjFOano99jjUBwMKezQ1FkYIKsfqmRFz/ktS2Ga9HNf3WUu7EMjrdD37FpSv28
+ XOQ7/wHlNjoYA1YDAzR23SwHlu7zSJ6vZtxu6ui5hXHxWVSJdzJXEQ/YX2KC69gv/0qFPpnSA
+ jqkSTNGa6t2limdTJ7KtRsbSh17myv123SX41mONhPZLWZ16FnnkTgUE5o6SH9A5WDsx89YoP
+ s2f4vVbBMFVIy2dk9H+w0GmEtCLiz6o/uAfG6cxwkb4SpEFViSmynI6jJnXKNUWNNlz/jYvvC
+ 1PHejOSUcQvhPjjxmhLksigIVGbVziqF4jG2T+YOXrjky9mLfDb9KuopDBv8N4fzm0IYxLskv
+ ZB9q+wns5/Rm7E1Z7X//yhOu2wlJERQXJ1NZAHrcKskTWtyip2dZ84lYud8wtpGTk6A0zPylI
+ aoSdOxjQCWJ8CD7jvLR6celNKo/9iRmucj58XBEhffG3mjJjecYMDWp/h7L5MnU04BwTpoQcb
+ GL35oO/nCR/qkReWx5IZgwqfOPvauJK05P43Qjk9wbYxY0nJ43Q3k2MhYHN0JfUM6G5GeFGa+
+ 1WtLWb3fD8yZwfyPG1+BSiNLZzAJQaOADx5BQDjnGP+MrTOgvcPDswYHRG29D9PwiwMDQmky6
+ gj52eY4K+k55i0EN9JmXjoSspUtbgO4dcJEVByXJZyYoIJKIDb3UDxZzQ3GpadhSA3c+vLidS
+ JsEZT1aBlqj578coA
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> in panfrost_job_hw_submit, =E2=80=A6
+> in vc4_dsi_encoder_enable, the call to pm_runtime_get_sync increments
+> the counter even in case of failure, leading to incorrect
+> ref count. In case of failure, decrement the ref count before returning.
 
 * Can the term =E2=80=9Creference count=E2=80=9D become relevant also for =
 this commit message
   besides other possible adjustments?
 
+* Can it be nicer to combine proposed updates for this software module
+  as a patch series (with a cover letter)?
+
 * Would you like to add the tag =E2=80=9CFixes=E2=80=9D?
 
 
 =E2=80=A6
-> +++ b/drivers/gpu/drm/panfrost/panfrost_job.c
+> +++ b/drivers/gpu/drm/vc4/vc4_dsi.c
 =E2=80=A6
-> @@ -184,6 +183,9 @@  static void panfrost_job_hw_submit(struct panfrost_=
-job *job, int js)
->  				job, js, jc_head);
->
->  	job_write(pfdev, JS_COMMAND_NEXT(js), JS_COMMAND_START);
+> @@ -1088,6 +1088,8 @@  static void vc4_dsi_encoder_enable(struct drm_enc=
+oder *encoder)
+>  		dev_info(&dsi->pdev->dev, "DSI regs after:\n");
+>  		drm_print_regset32(&p, &dsi->regset);
+>  	}
 > +out:
-> +	pm_runtime_put_sync_autosuspend(pfdev->dev);
-> +	return;
+> +	pm_runtime_put(dev);
 >  }
 =E2=80=A6
 
-Perhaps use the label =E2=80=9Cput_sync=E2=80=9D instead?
+* Perhaps use the label =E2=80=9Cput_runtime=E2=80=9D instead?
+
+* Do you propose to perform an additional function call always
+  (and not only according to failure cases)?
+
+* How do you think about calling the function =E2=80=9Cpm_runtime_put_noid=
+le=E2=80=9D?
 
 Regards,
 Markus

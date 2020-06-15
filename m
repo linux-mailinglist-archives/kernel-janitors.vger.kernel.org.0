@@ -2,36 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58CAB1F9991
-	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jun 2020 16:04:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 492731F9BA1
+	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jun 2020 17:11:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730109AbgFOOEv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 15 Jun 2020 10:04:51 -0400
-Received: from mout.web.de ([212.227.17.12]:44813 "EHLO mout.web.de"
+        id S1730698AbgFOPLV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 15 Jun 2020 11:11:21 -0400
+Received: from mout.web.de ([212.227.17.12]:32997 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728510AbgFOOEt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 15 Jun 2020 10:04:49 -0400
+        id S1729875AbgFOPLV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 15 Jun 2020 11:11:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592229880;
-        bh=4v21AZdQnfl4I0lRhOIakIYNWUq/Km4A1kjWkH+LG+k=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=I8w6ve+YKYhThZ5ofnfAiHqCU6Iq0GaKT36raCtasNO/C1hsYDcMCg+shCQretSDK
-         2R4ivxOfmD6Q7PJxZN5wEtYBPSi6Z0aUGucyr38L+j7sSnCB95rrOxEVML66BjUcO6
-         k/VGonGCrDOX31U126vWYT/MxzRNwupovNjzlGf0=
+        s=dbaedf251592; t=1592233848;
+        bh=kewYcNlx9u4ehFUVrYtEia6YoZTBtdSfH1Eo75yhOu4=;
+        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
+        b=U7YMjK1NM8/0UDWLLPhGKwe1GSbUZFFZ19WnsE0SlQnfPGsey+cpc4//oJ7geNPZf
+         g6DMDCxHe9WsnWdrChRJRwOGT61Umf7xvETz7GmQIDwoUNALlkVJRpAM1qbDY+lpvd
+         VLKKmJyLupff51PUMeUhsi673B3391A8s5jTFSok=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([78.49.107.236]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M1o86-1ivkAs1QQU-00tnO6; Mon, 15
- Jun 2020 16:04:40 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] coccinelle: api: add device_attr_show script
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LmuAa-1jH1FT3sWS-00h6O7; Mon, 15
+ Jun 2020 17:10:48 +0200
+To:     Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Steven Rostedt <rostedt@goodmis.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] tracing/probe: fix memleak in fetch_op_data operations
 From:   Markus Elfring <Markus.Elfring@web.de>
-To:     Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Julia Lawall <julia.lawall@lip6.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -75,79 +71,52 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <1f028ee6-b014-c240-21d8-0c1950334fe6@web.de>
-Date:   Mon, 15 Jun 2020 16:04:39 +0200
+Message-ID: <89f42852-80ef-1634-68fe-b7f686f8ce59@web.de>
+Date:   Mon, 15 Jun 2020 17:10:46 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ZHx86tvl9ZN2Q273cNj9qJz+VxDh7ipJR+Ha23Z/58jiwxrAkuX
- sxDc8DXF1pHdiOrY0LFdU4Vpo65k11kXZvoTipRisB+u7lnegNmrRMfv0C2bUDYrEUUy7HC
- n1xDtOrB9aTNlkPLuNqg1otetrw8ccFOPcqdbIFs48bL+hn38TSmUQvqhJy3Fj5AYOjES5o
- D8FVCfiVrIFxi9w/I9lPA==
+X-Provags-ID: V03:K1:vi7WLM5/T85hSfNSI1p9TaeM1q7TzworEPsm+qyWP9dxAYCvg4v
+ 5uWtBDrzPycPqqtS1ucqgHO44lWi6eDEz3FlpyKA9umfz1yDl1+cSE0xb1D0HL3n9XJs4qS
+ VUB1j1NsLYU0zsRt3OG/d3vtpDcesyKT0SRmzaY8QUItCjE32oczXIGUin/CUZcyjT2IXrI
+ +Ax/dYJTuJCzPNKjnCEfw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0MtBwmoIY+o=:sedTTOKGnKCR6XboMZ0vhW
- T2BHiXqCdkej4yq+NYLSQVHjX1XTsTsNDK2IARqkK1hI5lpzfdM/kMqpMH83IfTyDbFc3cjM+
- 6WZ7YhNIWvrrik/k2++CcpX89pZTDmgSHjdQLoV3I8QMHjtmQmqYHPGd4WIxiLQEFItX7t368
- lOv1QOPblDh8BaVCNVTN6jplY+WBSbBQVjgxWKL8+eosRjUS4hhxwGWbpC8ivbNlBjKw3QfaF
- ZQGnnz/f8nETWUIzips7ModFvv7+yRL0xcRGmzpU0qVor0ojfbOYVUWoBi9gSxzjoY2nus7ca
- ne7aPKBS39CTg5X/1l8WK3EAOsfszIlN3CpHkjVPjbw5lurPV4QiIJzq9FeD0cIUHOapV9sSv
- jrOugx2ycYvxHXoO8LiIwdZouUPiKV0G5MuHjpDraPYzqudX7prYsXkHtrCIg4AaJDhYwT6UO
- 9xusztz7Xp4DwNnxZGgpm4cyf+wsXibQ3NZKEXvwTkHRIV99LJ/7NrRqy1q9W7fWNkS0GYsRi
- voyP4b62sHsTCo86AQWZfcsbNVT7CKGx+9yGdGJeqpxBimk3FQeueRYWmhMcI08wCCDhDYG/G
- MauZCP2tDVt3C0GaXMl0XcMr1G3kPZ3fGtemWvC+ySLitk2BjOGtHDYjI1gyK6FWNedhuNvkj
- 8Jg7Z5EM0FhvAC5CUmz6yNWg4ZbTAtuYmYHm1pIe+S8rg4pZXpGNXNx3r5lxjhw6mj02+v+aP
- v/GJ0AUgo5e/gDLzzXzgaTyyrzP8IOAum57wfk0BLKmG41+bgzpqw13FfgoE1AODiubWsFxzC
- IyrVhNNI+UWOx6sy7qrEtsrunbXKRb09MclwlgQAb+i0hZnwbF9ta9FRSDsrxxEbLKyLfX+rg
- CfjdNhlIFSQul/8N5a1VR5CUWprtcP6k8Eg9ZqpGBp822ub6qSv09jU32BybtDcDzypfQT1jZ
- fyzEEGnYvuxaowjcrwKGnFy51vtrepB9IDc6ISmhv1PkPqoR5kh8+DZqg62QbFI0Ai0mnSGuT
- YMafZGeEN3cBWrCn3yqQ8KTVY7nccAiT6s8/4h4LlGM8oTgbvC2BFgXmK1I6tpEJlt/rsF3RP
- XadVDJrJdyQLgNw8847sS5+aamRBiCaGxoBVZuWAJdw8dlnoEvdRj5rvYM5VjgGiZG43GEExz
- yajQKCTE89ozfsxOYmTPssT/y7T4m97guJniW/DAVIWt0p7mx/eWV8IOq/vC4tyJmVtCUAxq7
- 4RtZj0gWVAhtJjm2e
+X-UI-Out-Filterresults: notjunk:1;V03:K0:7FDhM/dBy1A=:0UEFNAr+lCez8EAkR9205S
+ Wk9MR0u90t21g+/nLu3rMX3HUFjZAQ90ejg0OLxkue9KxEsbJn7tjswVvAAgk2QNVJMU9R+PE
+ pE4LBPkAft6LrUaqPyV2fclsdTD6DFFakJT6FIrbr5aMB8Y4z8gdAE6Q9BluQJfbwT7H75mee
+ VyQT2gd+0MM9O8kmuS9ZgQyWn2WoyBC869gPuD9lI/YEIWzT//yUehADYUU9IfGCVoO6cPatx
+ I9cfmK4cUBudm+Eo7USDqAAa99Jov4bT0LKz6ELW6D0PI7YVMrx5+qo1TNm2wi7tq7XhCd75C
+ WU/nV1vpcKZtqvngVeXmytFAiWV8AIbNccgCkzJRAbUEq+cfZnE/d7RotLia8LRA/DVZi4y7K
+ QbwYMx/eTLdLa/i5HeuAtfuKMBorY2PKTjlzctcGq4l9ebkfv26Ryz36tEiN1/pKRGcMWGdX5
+ U0IxOs8to96j3XLhpjBDaSZfNp3iAmMLqzho3t5sQipE0jdeo96nn6uYS4B/a6tihaiUeGKsy
+ rdUqQj7Qo+lATSg6iBHfR2wWLdnuPhtiNZwhpt1e5EwxnAChVvZzs0WkYZ+emgz0rXQb9TS58
+ vrx347RXv8LNv9kwhIIB4bejoGwSpRxabZLEceOWS6PMxjtf/u1aarvO/6uJ0Bg92luEjq6IR
+ R9529iveTGwikHjhfTc0RQgipsRUx8zIScgWyjT9ILTM9dK5eEHGG1vhBrzDWB7udzmcqGezG
+ KyFgsgHK0IZnBVy8AznpRPvBxS9LWoYuwZ6JPImAEn4TuZpAXz49A/wZykKsHcVoEXT4gzTWT
+ jy74MauizU4YCj4NhvdQB8OcyUqZsEZmE42fZuZz5GPIfjeapYHnyS/kC8xiReABpWEWt9zBR
+ 1gDCwI8/JO1ODyoY8oHMbsL0jdbkDPyQJvQbcRS3MUPlnHvQRadKmGSqJ/YDK7CP3NMijGTk9
+ l5kVoWizs0l6VsbIMuCrszqaPjJu7V4GpL87qhKsqZi/q9mmVS57Nzx3iYGO+RLF4UNGaTMLS
+ 94FDDjwxx5VdgS+GonkjmX8FASw+z/nQ2vKVPk0SJvNy1aFcdn+Y77vKHBt0q47Qa/GlMgvNj
+ RvyjCVbEqo9SWegaT+1zi6f9xovobLthnmPJIqM9VENxyEUSfnqpay4x0Ar1mGu+ZFa2lraTB
+ Bwc+MLsPIXeSu2UK5LEOWXzs3ZexRoteGv22yfN2lv1tPS76BWGv6HehAxsDELifljJHs7O5Z
+ Yksem6de9umIY/ln5
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> +// Confidence: High
-
-Would you like to add any suggestion for a possible patch message?
-
-
 =E2=80=A6
-> +virtual report
-> +virtual org
-> +virtual context
-> +virtual patch
+> Post parse_probe_arg(), the FETCH_OP_DATA operation type is overwritten
+> to FETCH_OP_ST_STRING, as a result memory is never freed =E2=80=A6
 
-+virtual report, org, context, patch
+How do you think about to use the term =E2=80=9Cmemory leak=E2=80=9D in th=
+e patch subject?
 
-Is such a SmPL code variant more succinct?
-
-
-=E2=80=A6
-> +ssize_t show(struct device *dev, struct device_attribute *attr, char *b=
-uf)
-> +{
-> +	<...
-> +*	return snprintf@p(...);
-> +	...>
-> +}
-
-I suggest to reconsider the selection of the SmPL nest construct.
-https://github.com/coccinelle/coccinelle/blob/e06b9156dfa02a28cf3cbf0913a1=
-0513f3d163ab/docs/manual/cocci_syntax.tex#L783
-
-Can the construct =E2=80=9C<+... =E2=80=A6 ...+>=E2=80=9D become relevant =
-here?
-
-
-Would you like to consider any further software design consequences
-around the safe application of the asterisk functionality in rules
-for the semantic patch language?
+Will the tag =E2=80=9CFixes=E2=80=9D become helpful for the commit message=
+?
 
 Regards,
 Markus

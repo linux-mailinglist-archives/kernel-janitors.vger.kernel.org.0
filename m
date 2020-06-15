@@ -2,40 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFD2D1F9C6A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jun 2020 17:58:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B408C1F9D04
+	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jun 2020 18:20:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730447AbgFOP56 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 15 Jun 2020 11:57:58 -0400
-Received: from mout.web.de ([217.72.192.78]:35009 "EHLO mout.web.de"
+        id S1730545AbgFOQSs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 15 Jun 2020 12:18:48 -0400
+Received: from mout.web.de ([217.72.192.78]:33635 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728477AbgFOP55 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 15 Jun 2020 11:57:57 -0400
+        id S1729949AbgFOQSr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 15 Jun 2020 12:18:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592236661;
-        bh=j+PBmo/R8jKyWORcywbmsA0MKDmsl/lXrcLHqjImqyI=;
+        s=dbaedf251592; t=1592237917;
+        bh=BBSWKa1BT4odTyFowADUxBXtGZDSq9RZr94SarqThJU=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=izOVr15EUjENRdSNZrLjArOQqBMhJynLEaUA1zWlkZa+Oq2YOOzQantO1Uf4wg+xv
-         c8rPpuMwOP4ABEq6Nkzowf6hpQKHq53YrkB3kfv77EF9Z0kVxKZB0QuThpM9UmC8N3
-         00bIkqMrRG9p5gwCVT+gf9YJzs8+90LxDzvz5UDA=
+        b=m/39FMsP8Msj4ar+AMgsGdlmZthUWHjaxpX3Aa6qINWWs7LuGYSCftAGuuRcCXDdC
+         OYwXqLpPxvbB2tArrrFV4kLNMhB+xAdbWpxU5PzowXiwwhvlx8H9HZNIpzQNeB1r9W
+         GCLLm2uzX56Ztb3n9jjrDdvTy2kJqDC4jAPAiAgA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([78.49.107.236]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MjPPs-1j4OvX30BO-00kyrY; Mon, 15
- Jun 2020 17:57:41 +0200
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N1d3a-1inQc11lXs-011wMh; Mon, 15
+ Jun 2020 18:18:37 +0200
 To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        dri-devel@lists.freedesktop.org, etnaviv@lists.freedesktop.org,
-        linux+etnaviv@armlinux.org.uk
+        linux-input@vger.kernel.org
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <mccamant@cs.umn.edu>,
         Qiushi Wu <wu000273@umn.edu>, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Christian Gmeiner <christian.gmeiner@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Lucas Stach <l.stach@pengutronix.de>
-Subject: Re: [PATCH v2] drm/etnaviv: fix ref count leak via
- pm_runtime_get_sync
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Jonathan Bakker <xc-racer2@live.ca>,
+        =?UTF-8?Q?Pawe=c5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>
+Subject: Re: [PATCH v2] Input: bma150: fix ref count leak in bma150_open
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -80,67 +77,71 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <77698453-95ba-5e99-bba5-2ca4a4918026@web.de>
-Date:   Mon, 15 Jun 2020 17:57:38 +0200
+Message-ID: <3639cbd1-1ddc-2207-b119-b6a45723be04@web.de>
+Date:   Mon, 15 Jun 2020 18:18:36 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:cnE7yTcEoKAz2gwfVrF5In4bRE8Sye/h13yy1qddljPU6McyGYq
- pbW0hjBcUJ0uHtFfUPeLF8PQ+ezgHGXIfueedFj2Or2n9B7VW6xH3d4/z+V4Z9JdLSdFEzE
- pd939kSAtUI689FPHlOMX0iWnU+2+644w1WJKBqp8wgC3sYTePjWgDPM4Lt9l2OAK1u8bnj
- KT7Tdogld7PUDyN1jZbJg==
+X-Provags-ID: V03:K1:VTqywmnqXhh1sFuWcRuMfoHDKipBL+RB+3+uSyworcNC9emE5aP
+ EzURLgEhfzfhzG4NhBnAiRkOkPrAjdv3aIucrvzZxOH2X2IFWhfGFXfQELmhPGpxEBDWv/8
+ DdEajUU3xxPzmRvJUbFStF5kRD20PjP/328646z5CCiebcwuDtf/Gnqf1STuMq/tahCO+hw
+ vOdX8WlVtQt8Mb8o/mRnA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:awtHdo3yDe0=:oRLD6eU3G1eHW3Xecm+dw4
- 1X8UD8dL9lYh+K67JaqRR4ri8byecxZ6E3EcrH1/CPn5bHLun3hH34DtMf+zecBE6DvEC3wTZ
- D+vZeqKKjiazPKZc/V+DwI59CMzL57coWFiO8L3ZSy2C8o6n8U8aLpsvcyl8cYGPhej21Bjxu
- rSzrIs9b1330OfQmE4ivYV+1trpfgJWCoUpJSq9Tqag3sEZ7zMq0Z4pi9VdU0xv0aXoijQkwZ
- 1wpeKEV5qWUBScanmO2wmnF04Ae199W30FvgUbagGaS7kfbFibWiCRy/r5k0DUXxe8bNSPgTI
- wSPjx7yu5BQm19qT3TA3pZSPeNfqSUZi5BLxZbPF2MrzwSG+vd6LEb26JqpyJvgRUatCDFDDz
- Wfx5F6VXx5r3ZBx9MsFTHjvm0MpSXxOQAy+ZR56RIFcmK97TJkNcmEcQR/OzsqXpjTrR6OPrI
- Fs5ikpXUGxjLb2rpQDNufUapFtqXZFO+XBtaeSdp3ZJWXwpkmO7zGBI0BIv6Z2aw62iwhpugP
- w6lrZ2rujevkCaSH8ApE6kJ3zxeXGxuYKys3f8nF338upeFh3Nq0gn5ig+Ag7xtp9H1v9LtLK
- vMTKG325mzOl1hVlHc/sBRC6xoRI/YgiXDFQd/uGHEYi+CeqZmjDZRy+JGj0PJohvtn0UtBqm
- JHuRPsa7G1o0nNtVJ0F++E9jmQG7nXfrdt2hFw3sBkpP6oVibXrYLrGbxw8N3ItsDqz+ss/p9
- kgt4tAFfyDEKPIHjLl8gwHCA37/JyenduIz5TJj+FHe8HNGEG5+tbC1iH9A1nfbPCVNB9rGx4
- 0WI/3KgQlAio0llyo1fpp7tv/vUW0h4aTMfX+kR2BIpCdfb4LlcKjOy3psOOPxoF/h6VKEu+6
- ToftZ4GZ2QvhZTA+lcqVvVauThu1pvLHBeqRXefFUjr6LjFTb35cYHyYAboVr1By1aMVh0h+N
- 3wXHeWYucm6MDNfdORQ3qvuG/a8bfj2vnOViF7E4COigcjBRFu6P2r2VduKwCSkSndBo0l9lC
- h/LaoGp+K5PF0/XV3Dz/E5Bnocl7KU38qSdqf2Z7LDo1JdR5dQMas4jN6NbvwqO9F/l1Gda84
- iUJRP4ia6mq6VlJAMBgoaa9RcyCUylhJVsWgIofpVA2LNvdlHeFbrMAbCsO7a0u5MSX4exIXx
- YCZuhywobJzQSroFtZJ7S7eABos84ba8MVpyDpo9Xj93aO1WySdknMuiuPjx6umfMXOx3vXn5
- 88sE19pgIK8xROxMG
+X-UI-Out-Filterresults: notjunk:1;V03:K0:9Ptve2kG4dI=:DRAlfciNSwFpgAsznRzTnW
+ i6arelAbDfkawyOrllVyB2ol0g59Yk+l748P89l2wO3/pvZauS5a6n9qcBu3u7sU3ocN3uoKp
+ EhsedEeLYymje87vz6cXrPAf+LTGllMoFi/w6mlAnlMMexAviWEikKM4SMomVkq7UoDdPC98z
+ QMr9kAw2Btz0eTamV2zswYyxMgPXjbmNn1HpxUEAG9HzqW622jJwt/ZGJ9h3MbJhdNukPeuYC
+ EkS3G1e/4OvkUH11+0AKbtakwex1tZKIznKlsDKWZlsxAByzFsmMOJ4+lFJYobHa9QtCSl5Ny
+ V6Wb6aq3wggqCHejfhnNwjsscoQrb85tOfkkuMdsuNA5F93GpQVkNMLaFo8wL0tKk90B62xTg
+ 7KdII6ypdG8POCjRCGe3y6y78MR7uRwsi8ddD8d9dn9pQ8BUWcJ/sSnAW4W4vynPYDkBsvimj
+ GeXlrM0PxSFdX4l7Bph9uubI//tzoFwv5Tr3yJBAbD9Bo1vFU+t4ymPdkbuRrxSDHHZ2mfvyt
+ E6atto23K0XqpnBPR6Jjgdxc9vVnqozgpYY/UWWhsp0aIXY7Yf+mL/4qSVcq0lvaF2RcAekn9
+ MU9ufcy2LthrhuTIXslbnXkKXkz4Wu8PLaMkM6EYg//TYbHEOcCDlJ4uNDLIgR/eyJ2KX9qyv
+ K/jXOk38n12Oc2GXFcpQb2IqwGsWCDVfdC7/jOfWUsP/L6sCh2y3dFLO7CQOH1NFuL+PJ3JzQ
+ H9AgDGJVqdlOokG0I4tAKRMjmXBCgPDRltXNfWKSihN9mOOQsA5sdi1tbPrN2n6PE3OVMy8XG
+ L9fO4WwnYYrn4ViziQhW4dos5oSEp742fdyUnPJn2H96ONPAL2llSRFkKs/YjcKbNGMAUN0BG
+ 6gF9eJ7hSrex5akBERscKJtGgMshS9DzPEh1PpfQTUj0zQts6zvSqXk7vDq6VkM4RIfqy1/oD
+ BnZIieqYoGcXeaa2br+haPCrrEWSs8QDt6zmYb+AGX8mPOUOzurFvoFNJMQwQdUwoMazIor3e
+ T1hJtbLjEwzmRAnZS/r2m5LegM6Pas5j0W8/JdDDvEeQhLl9ufOjwEG9MHeDEpa/LSSy7WAhk
+ LyzEQ/lYmgoTLp0+gVwujRAChhUWox88Dt88GUJjutwcNUpmHtVZAAsAzYsdnrK1fkO1JG3Xg
+ yBm88pfjfdrJ8hslc0yDuKzfduPSkX8y6RblF/d/JDN+gPb6hDlB+mgiYn4o4alGfzlgIPHVo
+ nNLBTNLplUH3FOfyB
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+> in bma150_open, =E2=80=A6
+
+* Can the term =E2=80=9Creference count=E2=80=9D become relevant also for =
+this commit message
+  besides other possible adjustments?
+
+* Would you like to add the tag =E2=80=9CFixes=E2=80=9D?
+
+
 =E2=80=A6
-> In case of failure, decrement the ref count before returning.
-
-Can it be nicer to use the term =E2=80=9Creference count=E2=80=9D here?
-
-Will the tag =E2=80=9CFixes=E2=80=9D become helpful for the commit message=
-?
-
-
+> +++ b/drivers/input/misc/bma150.c
 =E2=80=A6
-> +++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-=E2=80=A6
-> @@ -1326,6 +1331,7 @@  struct dma_fence *etnaviv_gpu_submit(struct etnav=
-iv_gem_submit *submit)
->  	ret =3D event_alloc(gpu, nr_events, event);
->  	if (ret) {
->  		DRM_ERROR("no free events\n");
-> +		pm_runtime_put_noidle(gpu->dev);
->  		return NULL;
+> @@ -357,10 +357,13 @@  static int bma150_open(struct input_dev *input)
+>  	if (bma150->mode !=3D BMA150_MODE_NORMAL) {
+>  		error =3D bma150_set_mode(bma150, BMA150_MODE_NORMAL);
+>  		if (error)
+> -			return error;
+> +			goto out;
 >  	}
+>
+>  	return 0;
+> +out:
+> +	pm_runtime_put_noidle(&bma150->client->dev);
+> +	return error;
+>  }
+=E2=80=A6
 
-I suggest to move a bit of exception handling code to the end of
-this function implementation so that it can be better reused after
-the addition of a jump target like =E2=80=9Cput_runtime=E2=80=9D.
+Perhaps use the label =E2=80=9Cput_runtime=E2=80=9D instead?
 
 Regards,
 Markus

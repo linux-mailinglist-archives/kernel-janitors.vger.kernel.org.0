@@ -2,37 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B408C1F9D04
-	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jun 2020 18:20:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9880C1F9D66
+	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jun 2020 18:28:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730545AbgFOQSs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 15 Jun 2020 12:18:48 -0400
-Received: from mout.web.de ([217.72.192.78]:33635 "EHLO mout.web.de"
+        id S1731039AbgFOQ2G (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 15 Jun 2020 12:28:06 -0400
+Received: from mout.web.de ([212.227.17.11]:55497 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729949AbgFOQSr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 15 Jun 2020 12:18:47 -0400
+        id S1730552AbgFOQ2F (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 15 Jun 2020 12:28:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592237917;
-        bh=BBSWKa1BT4odTyFowADUxBXtGZDSq9RZr94SarqThJU=;
-        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=m/39FMsP8Msj4ar+AMgsGdlmZthUWHjaxpX3Aa6qINWWs7LuGYSCftAGuuRcCXDdC
-         OYwXqLpPxvbB2tArrrFV4kLNMhB+xAdbWpxU5PzowXiwwhvlx8H9HZNIpzQNeB1r9W
-         GCLLm2uzX56Ztb3n9jjrDdvTy2kJqDC4jAPAiAgA=
+        s=dbaedf251592; t=1592238473;
+        bh=e/lJOtaL+2N+4pjgb8r5HbCYBQk8FFSd/yF+vwzzG2s=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=TnauHkUiMJStPu6u8jMFIZfrDg1p6Xn3j4hPXt5cA0AkLnNoQP0IvYQjYHkI55t0i
+         9IhQQQSG8kfaCrDWK5JJDL74eYKob6GzZRYV8aBAByyCOTKL5iEZ2Sr9LrbvLx41ii
+         dmUobb7dJi//osL1Pl11qy4FjXL/tOiF1kiwt8N4=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.107.236]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1N1d3a-1inQc11lXs-011wMh; Mon, 15
- Jun 2020 18:18:37 +0200
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-input@vger.kernel.org
-Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen McCamant <mccamant@cs.umn.edu>,
-        Qiushi Wu <wu000273@umn.edu>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Jonathan Bakker <xc-racer2@live.ca>,
-        =?UTF-8?Q?Pawe=c5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>
-Subject: Re: [PATCH v2] Input: bma150: fix ref count leak in bma150_open
+Received: from [192.168.1.2] ([78.49.107.236]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LoYb8-1jHbxD1UD4-00gXy3; Mon, 15
+ Jun 2020 18:27:53 +0200
+Subject: Re: coccinelle: api: add device_attr_show script
+To:     Julia Lawall <julia.lawall@inria.fr>,
+        Denis Efremov <efremov@linux.com>,
+        Coccinelle <cocci@systeme.lip6.fr>
+Cc:     Gilles Muller <Gilles.Muller@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <1f028ee6-b014-c240-21d8-0c1950334fe6@web.de>
+ <alpine.DEB.2.22.394.2006151742090.23306@hadrien>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -77,71 +77,74 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <3639cbd1-1ddc-2207-b119-b6a45723be04@web.de>
-Date:   Mon, 15 Jun 2020 18:18:36 +0200
+Message-ID: <6ce5346f-127d-e2fd-c703-9adf21060e30@web.de>
+Date:   Mon, 15 Jun 2020 18:27:50 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
+In-Reply-To: <alpine.DEB.2.22.394.2006151742090.23306@hadrien>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:VTqywmnqXhh1sFuWcRuMfoHDKipBL+RB+3+uSyworcNC9emE5aP
- EzURLgEhfzfhzG4NhBnAiRkOkPrAjdv3aIucrvzZxOH2X2IFWhfGFXfQELmhPGpxEBDWv/8
- DdEajUU3xxPzmRvJUbFStF5kRD20PjP/328646z5CCiebcwuDtf/Gnqf1STuMq/tahCO+hw
- vOdX8WlVtQt8Mb8o/mRnA==
+X-Provags-ID: V03:K1:bZzrFuVdGUgLdZzUXBBG0c9thtgiUwj8WaN6Q5o5jIrqNCip1Be
+ dG1XHK3hC4sWWyK45HksQ3tuQ1TmIoB64NLLm3y5aMn/3xpX7iz3WpSHyaNA+7RMVZB6EGg
+ JCPyPhApFHqFWxIwyVl78r1WZFaq0wo2Yetz3bxs7BxZ8NFiM5dAsRVd66gbqBvJz+95Jrn
+ +jh9PELkddakMgCnV0jBg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:9Ptve2kG4dI=:DRAlfciNSwFpgAsznRzTnW
- i6arelAbDfkawyOrllVyB2ol0g59Yk+l748P89l2wO3/pvZauS5a6n9qcBu3u7sU3ocN3uoKp
- EhsedEeLYymje87vz6cXrPAf+LTGllMoFi/w6mlAnlMMexAviWEikKM4SMomVkq7UoDdPC98z
- QMr9kAw2Btz0eTamV2zswYyxMgPXjbmNn1HpxUEAG9HzqW622jJwt/ZGJ9h3MbJhdNukPeuYC
- EkS3G1e/4OvkUH11+0AKbtakwex1tZKIznKlsDKWZlsxAByzFsmMOJ4+lFJYobHa9QtCSl5Ny
- V6Wb6aq3wggqCHejfhnNwjsscoQrb85tOfkkuMdsuNA5F93GpQVkNMLaFo8wL0tKk90B62xTg
- 7KdII6ypdG8POCjRCGe3y6y78MR7uRwsi8ddD8d9dn9pQ8BUWcJ/sSnAW4W4vynPYDkBsvimj
- GeXlrM0PxSFdX4l7Bph9uubI//tzoFwv5Tr3yJBAbD9Bo1vFU+t4ymPdkbuRrxSDHHZ2mfvyt
- E6atto23K0XqpnBPR6Jjgdxc9vVnqozgpYY/UWWhsp0aIXY7Yf+mL/4qSVcq0lvaF2RcAekn9
- MU9ufcy2LthrhuTIXslbnXkKXkz4Wu8PLaMkM6EYg//TYbHEOcCDlJ4uNDLIgR/eyJ2KX9qyv
- K/jXOk38n12Oc2GXFcpQb2IqwGsWCDVfdC7/jOfWUsP/L6sCh2y3dFLO7CQOH1NFuL+PJ3JzQ
- H9AgDGJVqdlOokG0I4tAKRMjmXBCgPDRltXNfWKSihN9mOOQsA5sdi1tbPrN2n6PE3OVMy8XG
- L9fO4WwnYYrn4ViziQhW4dos5oSEp742fdyUnPJn2H96ONPAL2llSRFkKs/YjcKbNGMAUN0BG
- 6gF9eJ7hSrex5akBERscKJtGgMshS9DzPEh1PpfQTUj0zQts6zvSqXk7vDq6VkM4RIfqy1/oD
- BnZIieqYoGcXeaa2br+haPCrrEWSs8QDt6zmYb+AGX8mPOUOzurFvoFNJMQwQdUwoMazIor3e
- T1hJtbLjEwzmRAnZS/r2m5LegM6Pas5j0W8/JdDDvEeQhLl9ufOjwEG9MHeDEpa/LSSy7WAhk
- LyzEQ/lYmgoTLp0+gVwujRAChhUWox88Dt88GUJjutwcNUpmHtVZAAsAzYsdnrK1fkO1JG3Xg
- yBm88pfjfdrJ8hslc0yDuKzfduPSkX8y6RblF/d/JDN+gPb6hDlB+mgiYn4o4alGfzlgIPHVo
- nNLBTNLplUH3FOfyB
+X-UI-Out-Filterresults: notjunk:1;V03:K0:il27v5Vtuc4=:4iYvsLpOR3sdm+6VeKsqlk
+ p+siBA4y7tA9Jr9DA1fPcX7KX3iAclijagf2ZBOCvJQasSqIC8q3Um4iUsq+wLAkJZAly3EVv
+ ZIS+mt3v0IzQr8JnJpj8WM+QrhG48I7FN4TNKWAAKESN4niOLKswRZrKWUAwxCZv2o6qctgur
+ g4GId1sYmJIXA4SEEpwruiCa0a2DphSM52c5jAImKw248tP08CiL3y4rei9Si1VE9wEE/rsbL
+ NvEwcebypEucRJSulpHTQlE3T/w2GVXrTX6+0obYWDMYSHHnm1t+gFpIIgPbG6GzMBX46s9s1
+ S00AepUrrwVmyvBYc0DMYW8UAWPaHtQV7cPzYA2ElMGCzILwEOdYbeILXhzuIffnrD1wQREdw
+ 4XubRG6BkLPVziGUeX/JipQZTRXO2w89DCO80T9Jz7O30S+ILRZVQDYnwAfMn3kqxuWZlJyFE
+ Gx35/cV7hiOr6yDAU0hYHYl8b7MCMTjn0ziPvpczJ/yj+zz9Mo84xIOciVQi6j03q8c+G9boN
+ TPI0V/hA7ILrpAzWrhK9j/gcVjKx8rYvVADKxhrh01R92/tfSxH5y3RZ/eYiPcE9iW/QYctfW
+ 6axMYW19wMKA1itl3BvMfU85gdlrPkFQ+SykfM8D6jxvBU2S+scya5jVqi7VJRaWFqJhA0vfw
+ a0uIPi2AGuC9C7qE1Jb9iYu3Slbo3KZujEFJoPyefTqpIPYBPBhDYdjZ1sjE4C43wcGNI5nDY
+ twpYtDHL30Ij0qnyJhNyKlx2C9CRiNgCETMY3s4Szt5trRf2anu6JKhmKJcs2BkI1PoCbtLMh
+ 2/EIosAccRpwuZBpgmAW93Lo8YvH63W7a0vRZpVfZwFUeVEuvN7n/Iv8zrKO1WbhMO9ZlysMd
+ /894emfoVyXGUqMG4jF9dyIz0fur1znxnfziNyU9JOWmQJIgqzLYPvWEWEPxzjQ223er87Ne5
+ r9ZU5NBLuHN4tgfzkh43G+Pmh+tYH6nBBkiKgRwx4x357GKsaHquot9RDB8Fx8Z/8olCHkMm9
+ BLGvo0jBE10wd2uIOzeEW7n4gyXN5z7jfmL4C+7JBNI3zuIaS7hBLn4n3T29LQBXJ7eMXivF4
+ MDimnHN18QmQhGV2aIY0Vz5booNFDDt4xscSWeACc84gpCZhgrNbaTqKznoRq2vnZkhkEukzR
+ svJoD1hY4yB5XiAzHnVImV94IMOGfGPaO9g8sIcnXlmva71njT+Thr8tcojZpO92V2rNcNajm
+ 6L4dnC7Q2JSONEmdL
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> in bma150_open, =E2=80=A6
-
-* Can the term =E2=80=9Creference count=E2=80=9D become relevant also for =
-this commit message
-  besides other possible adjustments?
-
-* Would you like to add the tag =E2=80=9CFixes=E2=80=9D?
-
-
-=E2=80=A6
-> +++ b/drivers/input/misc/bma150.c
-=E2=80=A6
-> @@ -357,10 +357,13 @@  static int bma150_open(struct input_dev *input)
->  	if (bma150->mode !=3D BMA150_MODE_NORMAL) {
->  		error =3D bma150_set_mode(bma150, BMA150_MODE_NORMAL);
->  		if (error)
-> -			return error;
-> +			goto out;
->  	}
+>> +virtual report, org, context, patch
+>>
+>> Is such a SmPL code variant more succinct?
 >
->  	return 0;
-> +out:
-> +	pm_runtime_put_noidle(&bma150->client->dev);
-> +	return error;
->  }
-=E2=80=A6
+> This doens't matter.
 
-Perhaps use the label =E2=80=9Cput_runtime=E2=80=9D instead?
+Can less duplicate code be a bit nicer?
+
+
+>>> +ssize_t show(struct device *dev, struct device_attribute *attr, char =
+*buf)
+>>> +{
+>>> +	<...
+>>> +*	return snprintf@p(...);
+>>> +	...>
+>>> +}
+>>
+>> I suggest to reconsider the selection of the SmPL nest construct.
+>> https://github.com/coccinelle/coccinelle/blob/e06b9156dfa02a28cf3cbf091=
+3a10513f3d163ab/docs/manual/cocci_syntax.tex#L783
+>>
+>> Can the construct =E2=80=9C<+... =E2=80=A6 ...+>=E2=80=9D become releva=
+nt here?
+>
+> <... ...> is fine if the only thing that will be used afterwards is what
+> is inside the <... ...>
+
+I propose once more to distinguish better if the shown return statement
+may be really treated as optional for such a source code search approach
+(or not).
 
 Regards,
 Markus

@@ -2,95 +2,163 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07EC81F9552
-	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jun 2020 13:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 915B11F9671
+	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jun 2020 14:25:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729038AbgFOL2N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 15 Jun 2020 07:28:13 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:43930 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729660AbgFOL2M (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 15 Jun 2020 07:28:12 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05FBS6cr059559;
-        Mon, 15 Jun 2020 11:28:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=bW/5BY6xbS9kCz3oxAq+2lszNKPZYcPTz9MWUXSJJTQ=;
- b=wnMc+XgdTGjIpfovt6h+TkCHH8gpIP0F826ijhQJKbqm1QyVvXzg0IC0p9lMp3Te11Gv
- N9R1BZpmDr4CO3J/rmt/nIbSA7UnajrKa8y9cCG2FS6cFjX2OAe82nL0aLz5e6vx2FfZ
- mNySk3dCPo57La2K6rIEyoDxIGodC64zhIA2sZtcqCTL272d2DOW5QWMiOaPRePe/qKu
- XxAWUDlLAmUgP3VjHKdXHtJB0T3eVEnSF20LRJbYtG/PP74mPQxxdOHP4WeHrWx8ZtKR
- p69HftAValRgQbBFUXpJ97gcF+6FzuJpqYQe5SpG4ai4jAbPY4ZjIvEldqd5o8VeYLWy ew== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 31p6e5rgg5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 15 Jun 2020 11:28:06 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05FBS5O2154092;
-        Mon, 15 Jun 2020 11:28:05 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 31p6s54tys-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 15 Jun 2020 11:28:05 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05FBS15X010407;
-        Mon, 15 Jun 2020 11:28:02 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 15 Jun 2020 04:28:01 -0700
-Date:   Mon, 15 Jun 2020 14:27:54 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Eric Anholt <eric@anholt.net>
-Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] drm/vc4: Fix an error code vc4_create_object()
-Message-ID: <20200615112754.GB1207669@mwanda>
+        id S1729634AbgFOMZc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 15 Jun 2020 08:25:32 -0400
+Received: from mout.web.de ([217.72.192.78]:40593 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728285AbgFOMZc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 15 Jun 2020 08:25:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1592223922;
+        bh=SLW0K5XcsPn+JHgObFUtlXKUjuYrOty55OQmV6+9D5Q=;
+        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
+        b=iuH9H/eha4NUEPipKimZYJffJnmsaxACAOX7waSYRXeF4IQkw0Otm2KeANW03HBJO
+         O4xdDiAwaG+QB+FQWBIviMbCR3W5qKMm7GkgLN8Eyx3x+M3N1i/d4nsS4X9ZUdiSMR
+         E7f4XMWFNcv0VpJfMaFj6c9zV/y2aK9FZvh19Dxw=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.49.107.236]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lheqz-1j73Z24AJF-00mpMI; Mon, 15
+ Jun 2020 14:25:22 +0200
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH] coccinelle: misc: add array_size_dup script to detect
+ missed overflow checks
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+To:     Denis Efremov <efremov@linux.com>,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>
+Message-ID: <180ac25d-d4de-41c3-3159-835e10cfc809@web.de>
+Date:   Mon, 15 Jun 2020 14:25:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9652 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
- mlxlogscore=999 adultscore=0 phishscore=0 bulkscore=0 spamscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006150092
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9652 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 adultscore=0
- mlxscore=0 phishscore=0 mlxlogscore=999 lowpriorityscore=0 clxscore=1011
- suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 impostorscore=0
- cotscore=-2147483648 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006150092
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:/BotToIf8alCFZpo2hh7sAs8CshL3zewrYhKP1h9i3Odtnohtdx
+ L9TFmGNueB0Aim3B2aAJObBT1Rvic6mCoZ4ItL4ixyi09x7nNGorf3fenUnlQMMyXQGrm+P
+ TBYSDzaXQlIc67ao5L1j3oG1Oe21FF5x/UrwRqbvuUbKJM6YhvuKpoQ8+STFey64bpKxqZ/
+ uc6ec6qMbg9aNsX9sNwUw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1V8/DnCbQQ0=:6bkKfe3Y4d1bQvDnkIxZZ4
+ 6b1BHheK/6V6K2ZEn+YgdwztQIR01j94uuZBT54xIu0sK4tBI1XxMfKL5cBsAHs2FsYfqd/S5
+ gR6GVjvFPvr0EEgodhZS/w36IvWmhBRdaJB2NGUEx72N1L5/fUYoX4+fEOUUWq78ezfj3pM23
+ pM06ipHmu40EL3ezKnd3zc+F/kxInleF9fUa45098yBCq7LXf8N80N7Qftm54Us51laMWa1id
+ cKE7biQEH12MdBQDLzQW8UW6ZWVI+m5oTsaPfye626gCDQEjM5x541u6CM7+oTA61B4spir6r
+ ArwvzgFofRomJjY56MnKGCLWKggIs9iWh52byBqfuFb0RWdLAhuxL5kG0OWvN7PGxyGlMbcmP
+ GYo0NsKlg4BNAfHy3SJknmq4lgQ53vgi9VB1wpEzz6guMUnQz1xHB4cqKhOwpg13DmS1oTieV
+ /NPC1c1hmEc0TAWCJdX811nLuB8LJ8P32J+rf+RxeBhbimmZ6ubzcYkZ04Iznj/zEsvLWOZ0r
+ +H1tpOCLOL45DrmmsifE30/pMPJYxuqMyQY/yLDJdu26At0Gy3h/ycoD3EZhUaDJxSaxT2KmS
+ uI/Jy8uMYGQNtgv9XoQUXeh+9Ua4D2PzAmZXsW73Yq9iRESLx6nhN4MLCuvHvzzhC9kSHgjkP
+ /129p5Lc4whkbFgmwyjKnEm9mGx6/Cwy58cLF65p3XB+uQAoWm272TGtsQeWS/EHQZu5cY+H4
+ gm0VIVjhvsQdmQmUqyItqNFhTLEuXa6Odvo3ohPk03E3oJdYontRMY8DQHA1uRQeprxa1Qq2T
+ BPWOuu1SnD0yWT2chQ5xPafl0/QfdbHkrjT45Mq0TPohrir1T1vYSPQyeZAvbs5UjjgBk+kbg
+ pvHfC3M+akU/Q6/IGjeS+hDuabILlbwbUN3kTFz8BZLHXrNVLZ0+pIYl9gRo6mihTN/jD7MnP
+ 27W+vM9uzyj16yqAzMRKweh/E8rcZO2dmqSNwXFuT8P2AxFIR9pGTbmE3jJz44Q1OMLCEeL+M
+ 4V9A5QA8QOsn1nM/mlGooBkYvOSkZWRYSjyIrdebmUBf6oQRk0c9aq1KxnsCie2CRgDGaFJml
+ +VsA4cHcOJZKph+gE4/MEPThxbl8uqP0qm/fnful5kKu0Hkk4/He2pYIBQvogrwaF5y4KfVPE
+ JnRxIH3hH+UNSCeEgMR55DiSk6nF58ewZQvkBePgjAijnWCnbKWAOGaAz3wV8SVL09sZQ3HSr
+ 2NN1UHvK36SNYpNDZ
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The vc4_create_object() needs to return NULL on error, not error
-pointers.  If it returns an error pointer then that will lead to an
-Oops in the callers.  Fortunately, in current kernels small allocations
-always succed so this will never happen.
+I suggest to avoid a typo in the previous patch subject.
 
-Fixes: c826a6e10644 ("drm/vc4: Add a BO cache.")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/gpu/drm/vc4/vc4_bo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_bo.c b/drivers/gpu/drm/vc4/vc4_bo.c
-index 72d30d90b856c..0af246a5609ca 100644
---- a/drivers/gpu/drm/vc4/vc4_bo.c
-+++ b/drivers/gpu/drm/vc4/vc4_bo.c
-@@ -389,7 +389,7 @@ struct drm_gem_object *vc4_create_object(struct drm_device *dev, size_t size)
- 
- 	bo = kzalloc(sizeof(*bo), GFP_KERNEL);
- 	if (!bo)
--		return ERR_PTR(-ENOMEM);
-+		return NULL;
- 
- 	bo->madv = VC4_MADV_WILLNEED;
- 	refcount_set(&bo->usecnt, 0);
--- 
-2.26.2
+=E2=80=A6
+> +virtual context
+> +virtual report
+> +virtual org
 
++virtual context, report, org
+
+Is such a SmPL code variant more succinct?
+
+
+=E2=80=A6
+> +@as_next@
+> +expression subE1 <=3D as.E1;
+> +expression as.E1;
+=E2=80=A6
+
+I propose to reduce the repetition of this SmPL key word.
+
+
+=E2=80=A6
+> +  ... when !=3D \(E1\|E2\|subE1\|subE2\)=3DE3
+> +      when !=3D \(E1\|E2\|subE1\|subE2\)+=3DE3
+=E2=80=A6
+
+Can it make sense to express a constraint for a metavariable of
+the type =E2=80=9Cassignment operator=E2=80=9D?
+
+
+> +      when !=3D \(&E1\|&E2\|&subE1\|&subE2\)
+
+How do you think about to use the following code exclusion specification?
+
++      when !=3D & \(E1 \| E2 \| subE1 \| subE2\)
+
+
+=E2=80=A6
+> +msg =3D "WARNING: same struct_size (line %s)" % (p1[0].line)
+> +coccilib.org.print_todo(p2[0], msg)
+
+I suggest once more to pass the desired message object directly as a funct=
+ion argument
+(without using an extra Python variable).
+
+Regards,
+Markus

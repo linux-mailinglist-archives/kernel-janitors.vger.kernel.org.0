@@ -2,31 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 915B11F9671
-	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jun 2020 14:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52D2E1F9864
+	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jun 2020 15:27:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729634AbgFOMZc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 15 Jun 2020 08:25:32 -0400
-Received: from mout.web.de ([217.72.192.78]:40593 "EHLO mout.web.de"
+        id S1730377AbgFON06 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 15 Jun 2020 09:26:58 -0400
+Received: from mout.web.de ([217.72.192.78]:44431 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728285AbgFOMZc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 15 Jun 2020 08:25:32 -0400
+        id S1730155AbgFON0z (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 15 Jun 2020 09:26:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592223922;
-        bh=SLW0K5XcsPn+JHgObFUtlXKUjuYrOty55OQmV6+9D5Q=;
+        s=dbaedf251592; t=1592227605;
+        bh=yAKWgp/Tvaiw5OQKWpFzUE0F/BMcjcnPIYvMRZeg5QA=;
         h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=iuH9H/eha4NUEPipKimZYJffJnmsaxACAOX7waSYRXeF4IQkw0Otm2KeANW03HBJO
-         O4xdDiAwaG+QB+FQWBIviMbCR3W5qKMm7GkgLN8Eyx3x+M3N1i/d4nsS4X9ZUdiSMR
-         E7f4XMWFNcv0VpJfMaFj6c9zV/y2aK9FZvh19Dxw=
+        b=YHoIaWVirvDxZJTUaDvamyB975dT8z34Xk6KOJqyQH2zkymHev45fSd/Qho3UKM3z
+         xnG7+Aqh7DJw9exnGzdgJ4WrSWxZqpRayctjwaXVDmdAMUXjNO8l58GV0KiOAO63F8
+         1ef+r2IGG0UE1yXykTpvCfSuCB/dBw6MljWplMGU=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.107.236]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lheqz-1j73Z24AJF-00mpMI; Mon, 15
- Jun 2020 14:25:22 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH] coccinelle: misc: add array_size_dup script to detect
- missed overflow checks
+Received: from [192.168.1.2] ([78.49.107.236]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1My6pZ-1iykt00ufH-00zVfy; Mon, 15
+ Jun 2020 15:26:45 +0200
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] coccinelle: api: add kzfree script
 From:   Markus Elfring <Markus.Elfring@web.de>
+To:     Denis Efremov <efremov@linux.com>,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -70,95 +75,128 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-To:     Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Julia Lawall <julia.lawall@lip6.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>
-Message-ID: <180ac25d-d4de-41c3-3159-835e10cfc809@web.de>
-Date:   Mon, 15 Jun 2020 14:25:20 +0200
+Message-ID: <a316f076-1686-25d8-18fe-1bbc0cf9a701@web.de>
+Date:   Mon, 15 Jun 2020 15:26:43 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:/BotToIf8alCFZpo2hh7sAs8CshL3zewrYhKP1h9i3Odtnohtdx
- L9TFmGNueB0Aim3B2aAJObBT1Rvic6mCoZ4ItL4ixyi09x7nNGorf3fenUnlQMMyXQGrm+P
- TBYSDzaXQlIc67ao5L1j3oG1Oe21FF5x/UrwRqbvuUbKJM6YhvuKpoQ8+STFey64bpKxqZ/
- uc6ec6qMbg9aNsX9sNwUw==
+X-Provags-ID: V03:K1:/b4Ia59bBSMcrMDs43+fJ6k7vf7kjhSkOQx7bo8OBNwNrZoQ+lB
+ rwB4iPY8PGA86WfqZQdJ+G/aEDqERtWZxaJqcfC9w7YXFctf5VFfNGBKNSYzM4kwdjnMkui
+ apFmordzThiX0VQWSxZKtorYZyavtE18AGyr9Kkf3MoQnRxUX6d1kQV7Bkl87UvmHjrTG3z
+ IQH96dNfnGEm2d/+NHcrw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:1V8/DnCbQQ0=:6bkKfe3Y4d1bQvDnkIxZZ4
- 6b1BHheK/6V6K2ZEn+YgdwztQIR01j94uuZBT54xIu0sK4tBI1XxMfKL5cBsAHs2FsYfqd/S5
- gR6GVjvFPvr0EEgodhZS/w36IvWmhBRdaJB2NGUEx72N1L5/fUYoX4+fEOUUWq78ezfj3pM23
- pM06ipHmu40EL3ezKnd3zc+F/kxInleF9fUa45098yBCq7LXf8N80N7Qftm54Us51laMWa1id
- cKE7biQEH12MdBQDLzQW8UW6ZWVI+m5oTsaPfye626gCDQEjM5x541u6CM7+oTA61B4spir6r
- ArwvzgFofRomJjY56MnKGCLWKggIs9iWh52byBqfuFb0RWdLAhuxL5kG0OWvN7PGxyGlMbcmP
- GYo0NsKlg4BNAfHy3SJknmq4lgQ53vgi9VB1wpEzz6guMUnQz1xHB4cqKhOwpg13DmS1oTieV
- /NPC1c1hmEc0TAWCJdX811nLuB8LJ8P32J+rf+RxeBhbimmZ6ubzcYkZ04Iznj/zEsvLWOZ0r
- +H1tpOCLOL45DrmmsifE30/pMPJYxuqMyQY/yLDJdu26At0Gy3h/ycoD3EZhUaDJxSaxT2KmS
- uI/Jy8uMYGQNtgv9XoQUXeh+9Ua4D2PzAmZXsW73Yq9iRESLx6nhN4MLCuvHvzzhC9kSHgjkP
- /129p5Lc4whkbFgmwyjKnEm9mGx6/Cwy58cLF65p3XB+uQAoWm272TGtsQeWS/EHQZu5cY+H4
- gm0VIVjhvsQdmQmUqyItqNFhTLEuXa6Odvo3ohPk03E3oJdYontRMY8DQHA1uRQeprxa1Qq2T
- BPWOuu1SnD0yWT2chQ5xPafl0/QfdbHkrjT45Mq0TPohrir1T1vYSPQyeZAvbs5UjjgBk+kbg
- pvHfC3M+akU/Q6/IGjeS+hDuabILlbwbUN3kTFz8BZLHXrNVLZ0+pIYl9gRo6mihTN/jD7MnP
- 27W+vM9uzyj16yqAzMRKweh/E8rcZO2dmqSNwXFuT8P2AxFIR9pGTbmE3jJz44Q1OMLCEeL+M
- 4V9A5QA8QOsn1nM/mlGooBkYvOSkZWRYSjyIrdebmUBf6oQRk0c9aq1KxnsCie2CRgDGaFJml
- +VsA4cHcOJZKph+gE4/MEPThxbl8uqP0qm/fnful5kKu0Hkk4/He2pYIBQvogrwaF5y4KfVPE
- JnRxIH3hH+UNSCeEgMR55DiSk6nF58ewZQvkBePgjAijnWCnbKWAOGaAz3wV8SVL09sZQ3HSr
- 2NN1UHvK36SNYpNDZ
+X-UI-Out-Filterresults: notjunk:1;V03:K0:MdkxZBBFxJc=:klYJ+Q9XiVvPxdzbm0WtFL
+ pXYbJy5+gSNAY+inWrSfy//afYzlGY4/A+RmX5IINaY4BQc3apSFYtzH/lOYPJVA6KnKASBjd
+ swRtayiY98AZCoLwM95DPImiwGLWbgnJX6Q+DHCldovSAOcZ57C57RVxZfQuBfLUZtdbXbyIG
+ n5v75sQhF29kpT46JbLpW9uMiWzFyK/tyirH8tgHlfOvS4n08PwEdHoC6qBbBajLdZ4AtY7pJ
+ h79WjBQ297GWABXMQfBpwxIetJ8TEcCzMTs9uI26Hju+iCvlzbHWW42w4NMxMaYZDt+ZDoOLR
+ FBcamsBhCnyhv1wnvhduDJprT2Deu2LLUxRfb08Zu/+98TxZ6MU1yV+IciCk9YzrPgBz5ozii
+ 19ws3oPG3+DQF9xemXyaEOW2qO3dZC9bY276ScdiXoUUR9HXmP6LEvQl3txWZ5kekJnECQe5J
+ tYcPCAs0he6ImZU4uXjelGyJXLnEOwQS9f34MZX2ojHDZeLhZwsO8Zi1q60nVt788T5XqPmEf
+ ukspI21XxufI25vR2EY/4wlR25r4m1J+TdRKprfAm+G6qIQqJ6EusyEdgIDoBxx9yjgjZ5dVF
+ k8jpgv2X/wTRoZjf2yiXkHr1uVgQs4gqgqnKItx7znXAiCIPmCI7UEVRclFwlwJdwQc8alNxH
+ YC84KkHIXh3QPyRzw64XERLZMAJ4LpXuOGrDj3uuC1SHYiikF1f4NZtKWpdaCmfuzdsa1nGc6
+ zXz6LfIky19D36IHlK0N4LnX9zOzyf20G3j3G5avValzpcHWA8Oyfm35yOFkkbRQf/ppg3T9c
+ 5R12u8uftmPejrhh4qSW9gasNaul+Pn5YNX9IpxtrWpW3YMZqXZTjuhPAjQeACR9VCCPdnlWo
+ HeyfiERs0JdPQJYeDILGWUOyOi7T1zLgRt2fdWuwbmyR61CaD3nwactmOIiVDr2sR6XWWFXyK
+ gspk4/UnNouwkD9Sm4UIJcH2sPS2bkbFyu6uVehBZeKo88iE8ZZJc4clFghuYA4Qxp88sH7Ci
+ t2XSDD3lvkZ+QRN/yXPFEwdEMLYkZWyHZL5vF/UD+Z0uvRc/IgV2SIKmgfOaQMVkkk7UxmSj4
+ QKIoLNiRMJ2sTGW2WTA6/2kklI7lDSg3k8TCiVlcOGcDQ3JZFEGlxbwW3ztXbSZeJyH4vfsH1
+ eBSMvKVD2rj1ExUHnn7P4J6YXUrk3QL9m1qFbkyJxFpuAiJ91fPpUSCtchI74DlHXGSl6cgXy
+ DRWoRanyG6yZ/+Oc4
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-I suggest to avoid a typo in the previous patch subject.
-
-
 =E2=80=A6
 > +virtual context
-> +virtual report
+> +virtual patch
 > +virtual org
+> +virtual report
 
-+virtual context, report, org
++virtual context, patch, org, report
 
 Is such a SmPL code variant more succinct?
 
 
 =E2=80=A6
-> +@as_next@
-> +expression subE1 <=3D as.E1;
-> +expression as.E1;
-=E2=80=A6
+> +if (...)
+> +  \(memset@ok\|memzero_explicit@ok\)(...);
 
-I propose to reduce the repetition of this SmPL key word.
-
-
-=E2=80=A6
-> +  ... when !=3D \(E1\|E2\|subE1\|subE2\)=3DE3
-> +      when !=3D \(E1\|E2\|subE1\|subE2\)+=3DE3
-=E2=80=A6
-
-Can it make sense to express a constraint for a metavariable of
-the type =E2=80=9Cassignment operator=E2=80=9D?
-
-
-> +      when !=3D \(&E1\|&E2\|&subE1\|&subE2\)
-
-How do you think about to use the following code exclusion specification?
-
-+      when !=3D & \(E1 \| E2 \| subE1 \| subE2\)
+Would you like to tolerate any extra source code around such a function ca=
+ll
+in an if branch?
 
 
 =E2=80=A6
-> +msg =3D "WARNING: same struct_size (line %s)" % (p1[0].line)
-> +coccilib.org.print_todo(p2[0], msg)
+> +(
+> +* memset@m((T)E, 0, ...);
+> +|
+> +* memzero_explicit@m((T)E, ...);
+> +)
+=E2=80=A6
 
-I suggest once more to pass the desired message object directly as a funct=
-ion argument
-(without using an extra Python variable).
+I suggest to move a semicolon.
+
++(
++*memset@m((T)E, 0, ...)
++|
++*memzero_explicit@m((T)E, ...)
++);
+
+
+=E2=80=A6
+> +- \(kfree\|vfree\|kvfree\)(E);
+> ++ kvfree_sensitive(E, size);
+=E2=80=A6
+
+Would you like to increase the precision a bit for the change specificatio=
+n?
+
++-\(kfree\|vfree\|kvfree\)
+++kvfree_sensitive
++ (E
+++ , size
++ );
+
+
+=E2=80=A6
+> +(
+> +- kfree(E);
+> ++ kzfree(E);
+> +|
+> +- \(vfree\|kvfree\)(E);
+> ++ kvfree_sensitive(E, size);
+> +)
+=E2=80=A6
+
++(
++-kfree
+++kzfree
++      (E)
++|
++-\(vfree\|kvfree\)
+++kvfree_sensitive
++ (E
+++ , size
++ )
++);
+
+
+=E2=80=A6
+> +coccilib.org.print_todo(p[0],
+> +  "WARNING: opportunity for kzfree/kvfree_sensitive")
+
+I suggest to align the second function parameter.
+
++coccilib.org.print_todo(p[0],
++                        "WARNING: opportunity for kzfree/kvfree_sensitive=
+")
+
 
 Regards,
 Markus

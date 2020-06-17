@@ -2,64 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBFC51FC945
-	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Jun 2020 10:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F13D81FC95E
+	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Jun 2020 10:59:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725901AbgFQIwV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 17 Jun 2020 04:52:21 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59724 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725536AbgFQIwV (ORCPT
+        id S1726583AbgFQI7Z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 17 Jun 2020 04:59:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36142 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725964AbgFQI7Y (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 17 Jun 2020 04:52:21 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jlTnj-0000eH-ND; Wed, 17 Jun 2020 08:52:07 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/i915/selftests: fix spelling mistake "submited" -> "submitted"
-Date:   Wed, 17 Jun 2020 09:52:07 +0100
-Message-Id: <20200617085207.167552-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0.rc0
+        Wed, 17 Jun 2020 04:59:24 -0400
+Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AD1EC061573;
+        Wed, 17 Jun 2020 01:59:24 -0700 (PDT)
+Received: by mail-vs1-xe44.google.com with SMTP id l10so918275vsr.10;
+        Wed, 17 Jun 2020 01:59:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=EYFdMqmIuxR/QD+dIztgN1OBOyAiHVdjdW3clKBfx9w=;
+        b=YootRK1o/udIGpVTrSt0b6/K6VzGjZvz3cEm9RpKyz4BswP0wBqUjzOPoH4EOOVwkV
+         oF3kdAtTnl80p5ZbZJ/N7DqKYe5Yk5NahvHD+h3uT2mTbIGqQ65VEmghjk0pGeVZ+BaD
+         8i5mbNGeC7SdbeaAmjRzRHn1NX6qI0loVq032cnOmJzqQGRvw9T8IUEvt79+Q0B7auKD
+         kF5/DwtVLoAPsxey47ySitNdVJVX2lZfo6GZam0zP52oF+ASGmXZ5VPE+IPPMrOkQbE1
+         r+9cLNfNbeV9vOqp3Bm7aS0Bmynqc2JCDJszzJv0hSLEaQSe5+l5UwsAg18AO2ycumDh
+         /v5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=EYFdMqmIuxR/QD+dIztgN1OBOyAiHVdjdW3clKBfx9w=;
+        b=L/XsoTGvivTLjGZoQcN+ssRgBzqC6D0EAmE8rpSrMkX9DO3+OCG/caLcee/GVGhKT0
+         44ie1569J7LH+0d+kgENKkqt39wuZG4LFKYpyLF/tPxiJDCL1FHPcHrdFfIQLCQOYSF1
+         Ei5xYB35cgXmN4pO/dvse8Ri1O+izJA4OnlEopw6mUe7P2SVVPlyYw7vvfa97dm8SdNr
+         sQlvUVzpBs4eJ3LPv2+EAjxx61IG5HNma0wFeMTfZo4OF8Waeu6U9mYILtRRjKjqFSSz
+         PtoOLJzAfRck7IMCngT0uZJlJ0sX2N5HhCjQwgEi/2c7UUcqS5zCifaIf4USEeuPJ/A/
+         tRmQ==
+X-Gm-Message-State: AOAM533V4SE4LJQY1MF3cT2wEcairbNYZ84lmI4B0BWUMW1Y8CKTPMOg
+        uw42ufsA/oko+iXQdY35KwGMgO+hwz8eGYNF7dA=
+X-Google-Smtp-Source: ABdhPJyc1vZfkYuSzIe3xUWojqAeNU1qlFHLUMD47fby93Le5wM33xkoWW/r8PFCmbr5olRG8c6+eESixM28o0UA/NA=
+X-Received: by 2002:a67:fb8e:: with SMTP id n14mr4826303vsr.136.1592384363723;
+ Wed, 17 Jun 2020 01:59:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20200617084911.167359-1-colin.king@canonical.com>
+In-Reply-To: <20200617084911.167359-1-colin.king@canonical.com>
+From:   Alim Akhtar <alim.akhtar@gmail.com>
+Date:   Wed, 17 Jun 2020 14:28:48 +0530
+Message-ID: <CAGOxZ52KM-DpPPv5qpKZCRoXzEH=YJvcHsNs=3t6rcrB8yX56Q@mail.gmail.com>
+Subject: Re: [PATCH][next] scsi: ufs: ufs-exynos: fix spelling mistake
+ "pa_granularty" -> "pa_granularity"
+To:     Colin King <colin.king@canonical.com>
+Cc:     Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Seungwon Jeon <essuuj@gmail.com>,
+        Kiwoong Kim <kwmad.kim@samsung.com>,
+        linux-scsi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Wed, Jun 17, 2020 at 2:19 PM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There is a spelling mistake in a dev_warn message. Fix it.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+Thanks Colin,
+Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
 
-There is a spelling mistake in a pr_err message. Fix it.
+>  drivers/scsi/ufs/ufs-exynos.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/scsi/ufs/ufs-exynos.c b/drivers/scsi/ufs/ufs-exynos.c
+> index 440f2af83d9c..0a9e99084f2a 100644
+> --- a/drivers/scsi/ufs/ufs-exynos.c
+> +++ b/drivers/scsi/ufs/ufs-exynos.c
+> @@ -883,7 +883,7 @@ static int exynos_ufs_post_link(struct ufs_hba *hba)
+>                 if (attr->pa_granularity < 1 || attr->pa_granularity > 6) {
+>                         /* Valid range for granularity: 1 ~ 6 */
+>                         dev_warn(hba->dev,
+> -                               "%s: pa_granularty %d is invalid, assuming backwards compatibility\n",
+> +                               "%s: pa_granularity %d is invalid, assuming backwards compatibility\n",
+>                                 __func__,
+>                                 attr->pa_granularity);
+>                         attr->pa_granularity = 6;
+> --
+> 2.27.0.rc0
+>
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/i915/gt/selftest_lrc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/selftest_lrc.c b/drivers/gpu/drm/i915/gt/selftest_lrc.c
-index b8b7b91019f4..547edf3d902b 100644
---- a/drivers/gpu/drm/i915/gt/selftest_lrc.c
-+++ b/drivers/gpu/drm/i915/gt/selftest_lrc.c
-@@ -482,7 +482,7 @@ static int live_unlite_ring(void *arg)
- 		err = wait_for_submit(engine, rq, HZ / 2);
- 		i915_request_put(rq);
- 		if (err) {
--			pr_err("%s: preemption request was not submited\n",
-+			pr_err("%s: preemption request was not submitted\n",
- 			       engine->name);
- 			err = -ETIME;
- 		}
 -- 
-2.27.0.rc0
-
+Regards,
+Alim

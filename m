@@ -2,29 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA9641FD173
-	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Jun 2020 18:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D62D31FD27D
+	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Jun 2020 18:44:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726919AbgFQQAL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 17 Jun 2020 12:00:11 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:45563 "EHLO
+        id S1726861AbgFQQoL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 17 Jun 2020 12:44:11 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:46980 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726341AbgFQQAK (ORCPT
+        with ESMTP id S1726511AbgFQQoL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 17 Jun 2020 12:00:10 -0400
+        Wed, 17 Jun 2020 12:44:11 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jlaTo-0003xt-5r; Wed, 17 Jun 2020 16:00:00 +0000
+        id 1jlbAT-0007qk-Lj; Wed, 17 Jun 2020 16:44:05 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
         dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/mm/selftests: fix unsigned comparison with less than zero
-Date:   Wed, 17 Jun 2020 16:59:59 +0100
-Message-Id: <20200617155959.231740-1-colin.king@canonical.com>
+Subject: [PATCH] drm/fbdev: fix a memory leak on the dmt_mode object
+Date:   Wed, 17 Jun 2020 17:44:05 +0100
+Message-Id: <20200617164405.232639-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0.rc0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,38 +39,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Function get_insert_time can return error values that are cast
-to a u64. The checks of insert_time1 and insert_time2 check for
-the errors but because they are u64 variables the check for less
-than zero can never be true. Fix this by casting the value to s64
-to allow of the negative error check to succeed.
+Object drm_mode is allocated by the call to drm_mode_find_dmt
+(via the call to drm_mode_duplicate and drm_mode_create). The
+object is never free'd and hence causes a small memory leak.
+Fix this by kfree'ing drm_mode once it is no longer required.
 
-Addresses-Coverity: ("Unsigned compared against 0, no effect")
-Fixes: 6e60d5ded06b ("drm/mm: add ig_frag selftest")
+Addresses-Coverity: ("Resource leak")
+Fixes: 1d42bbc8f7f9 ("drm/fbdev: fix cloning on fbcon")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/selftests/test-drm_mm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_client_modeset.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/selftests/test-drm_mm.c b/drivers/gpu/drm/selftests/test-drm_mm.c
-index 3846b0f5bae3..671a152a6df2 100644
---- a/drivers/gpu/drm/selftests/test-drm_mm.c
-+++ b/drivers/gpu/drm/selftests/test-drm_mm.c
-@@ -1124,12 +1124,12 @@ static int igt_frag(void *ignored)
+diff --git a/drivers/gpu/drm/drm_client_modeset.c b/drivers/gpu/drm/drm_client_modeset.c
+index b7e9e1c2564c..c0119e4db045 100644
+--- a/drivers/gpu/drm/drm_client_modeset.c
++++ b/drivers/gpu/drm/drm_client_modeset.c
+@@ -324,6 +324,8 @@ static bool drm_client_target_cloned(struct drm_device *dev,
+ 			can_clone = false;
+ 	}
  
- 		insert_time1 = get_insert_time(&mm, insert_size,
- 					       nodes + insert_size, mode);
--		if (insert_time1 < 0)
-+		if ((s64)insert_time1 < 0)
- 			goto err;
- 
- 		insert_time2 = get_insert_time(&mm, (insert_size * 2),
- 					       nodes + insert_size * 2, mode);
--		if (insert_time2 < 0)
-+		if ((s64)insert_time2 < 0)
- 			goto err;
- 
- 		pr_info("%s fragmented insert of %u and %u insertions took %llu and %llu nsecs\n",
++	kfree(dmt_mode);
++
+ 	if (can_clone) {
+ 		DRM_DEBUG_KMS("can clone using 1024x768\n");
+ 		return true;
 -- 
 2.27.0.rc0
 

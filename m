@@ -2,77 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F1A31FB5DD
-	for <lists+kernel-janitors@lfdr.de>; Tue, 16 Jun 2020 17:17:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E88C81FC939
+	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Jun 2020 10:49:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729782AbgFPPRO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 16 Jun 2020 11:17:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36204 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728183AbgFPPRN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 16 Jun 2020 11:17:13 -0400
-Received: from pobox.suse.cz (nat1.prg.suse.com [195.250.132.148])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 124DA207C3;
-        Tue, 16 Jun 2020 15:17:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592320633;
-        bh=m8KMGIhi8TwpzFZcPdaAHpApXMmafeRrM3MfBbC2yy8=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=m7jemaBrZWRJ7wdnW1byQq8GLTQQlD6rxa8Uk4825fuOC5N+aIyQZbObaRuvu1rNq
-         aDTueKcRq/4zbnXVM9CUbD7A/B0ayYIonIBqY6/mrk779x6kk7mB8PLSBV0cZXx7r+
-         36o4VH9YRLps+IUz4PaHCvqiGd6b8lBFf/1ptYj0=
-Date:   Tue, 16 Jun 2020 17:17:10 +0200 (CEST)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-cc:     Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-usb@vger.kernel.org, linux-input@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] HID: usbhid: remove redundant assignment to variable
- retval
-In-Reply-To: <20200610123101.1133117-1-colin.king@canonical.com>
-Message-ID: <nycvar.YFH.7.76.2006161717030.13242@cbobk.fhfr.pm>
-References: <20200610123101.1133117-1-colin.king@canonical.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        id S1726591AbgFQItV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 17 Jun 2020 04:49:21 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59644 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725967AbgFQItV (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 17 Jun 2020 04:49:21 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jlTkt-0000JZ-QT; Wed, 17 Jun 2020 08:49:12 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Seungwon Jeon <essuuj@gmail.com>,
+        Kiwoong Kim <kwmad.kim@samsung.com>,
+        linux-scsi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] scsi: ufs: ufs-exynos: fix spelling mistake "pa_granularty" -> "pa_granularity"
+Date:   Wed, 17 Jun 2020 09:49:11 +0100
+Message-Id: <20200617084911.167359-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0.rc0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 10 Jun 2020, Colin King wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable retval is being initialized with a value that is
-> never read and it is being updated later with a new value. The
-> initialization is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/hid/usbhid/hid-core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
-> index 17a638f15082..17a29ee0ac6c 100644
-> --- a/drivers/hid/usbhid/hid-core.c
-> +++ b/drivers/hid/usbhid/hid-core.c
-> @@ -1667,7 +1667,7 @@ struct usb_interface *usbhid_find_interface(int minor)
->  
->  static int __init hid_init(void)
->  {
-> -	int retval = -ENOMEM;
-> +	int retval;
->  
->  	retval = hid_quirks_init(quirks_param, BUS_USB, MAX_USBHID_BOOT_QUIRKS);
->  	if (retval)
+There is a spelling mistake in a dev_warn message. Fix it.
 
-Applied, thanks.
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/scsi/ufs/ufs-exynos.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/scsi/ufs/ufs-exynos.c b/drivers/scsi/ufs/ufs-exynos.c
+index 440f2af83d9c..0a9e99084f2a 100644
+--- a/drivers/scsi/ufs/ufs-exynos.c
++++ b/drivers/scsi/ufs/ufs-exynos.c
+@@ -883,7 +883,7 @@ static int exynos_ufs_post_link(struct ufs_hba *hba)
+ 		if (attr->pa_granularity < 1 || attr->pa_granularity > 6) {
+ 			/* Valid range for granularity: 1 ~ 6 */
+ 			dev_warn(hba->dev,
+-				"%s: pa_granularty %d is invalid, assuming backwards compatibility\n",
++				"%s: pa_granularity %d is invalid, assuming backwards compatibility\n",
+ 				__func__,
+ 				attr->pa_granularity);
+ 			attr->pa_granularity = 6;
 -- 
-Jiri Kosina
-SUSE Labs
+2.27.0.rc0
 

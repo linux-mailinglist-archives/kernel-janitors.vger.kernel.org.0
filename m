@@ -2,138 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1DE61FF258
-	for <lists+kernel-janitors@lfdr.de>; Thu, 18 Jun 2020 14:51:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E31751FF2CD
+	for <lists+kernel-janitors@lfdr.de>; Thu, 18 Jun 2020 15:16:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729772AbgFRMum (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 18 Jun 2020 08:50:42 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:51637 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730047AbgFRMui (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 18 Jun 2020 08:50:38 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jlu02-0000v3-SH; Thu, 18 Jun 2020 12:50:34 +0000
-To:     Liviu Dudau <liviu.dudau@arm.com>
-Cc:     Brian Starkey <brian.starkey@arm.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20200618100400.11464-1-colin.king@canonical.com>
- <20200618121405.GJ159988@e110455-lin.cambridge.arm.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Subject: Re: [PATCH] drm/arm: fix unintentional integer overflow on left shift
-Message-ID: <5d08fbec-75d8-d9a9-af61-e6ab98e77c80@canonical.com>
-Date:   Thu, 18 Jun 2020 13:50:34 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
-MIME-Version: 1.0
-In-Reply-To: <20200618121405.GJ159988@e110455-lin.cambridge.arm.com>
+        id S1729601AbgFRNQo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 18 Jun 2020 09:16:44 -0400
+Received: from mail-eopbgr70057.outbound.protection.outlook.com ([40.107.7.57]:6083
+        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728632AbgFRNQh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 18 Jun 2020 09:16:37 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=g/1+f1MMQtUbdhw2g7J/Ba/QGpgleer0e/7x7ElX1xljT1brC+6pzbHqKyRB7/jacNOjOAitXYvN8vMnChYT6FtiYdW5KjWDpem6EI+SzLoPHjQZETdwVEjFF+pVRaJJnZGw9vesCbU/KqvDdJZ5dzh3mZAi+x9aqPZF8yVOd0Uesgq4btCeGKAOc1MDnUf2lhWU7x/7vMyxHRpn+Wx2GkUsKNpdVXxkt7zd29xAIVGX8zvSy0aFZZipuRukNe3wICX45mEgatLOdmnPnejvWtN4B1E+w2OUPSUWMGd/wsJHWKsqaTdu9E49LmcEkydrCuKNRB7Dg3plObBHkWqxhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aLIVCobv+W2l/D5MH6wzp50yQZ2+ZqMd6zZCmLl5Jlo=;
+ b=bqRxfyTSiEnZQDhP9WbXoXIQAw8cHLZmezOxQO4deJ1pyeKoCEKdyKop/t/CI4cp4cIf3CDWj87kjP8v4r1n7LFUQu7YjWTpo+icydBtG3wU76qqkQvxUVBkACBhAFrx58ghBZxpnFKGYTIgiq/xUheWqD7Vuu7VumQURkkXygNWUolJuceKADKXGAkxa6XD+CN9dJgi48X2570kVfC1LfeXK6v1x/HOXLxrP2X2sgDIXirYMbWiFH3TauC9GveENUgqMhuhs1wMBe35cWc6iT+6kVm/PlDOhuwvwDPemTmr0SQwQcM8k0fmx8v4g18psr+Bt2gsDnU9Nk/QfgGjgg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aLIVCobv+W2l/D5MH6wzp50yQZ2+ZqMd6zZCmLl5Jlo=;
+ b=rchpbBYbYkcHz8j1rtcmPVssA00tr6moAJ5leFF6I2Ot5zpGIS65WAhaDzwPFVDNQ2iWohZZPsKqNBsXqgkoeyU7p1d/t75/foOKeuJ5Q2UzKejLc5xAIgrFY5PesYr+nMAqa5Jl5CtaCvutxvsG4ut7IvhByOUq5h3QLdOmRPI=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=nxp.com;
+Received: from VI1PR04MB4046.eurprd04.prod.outlook.com (2603:10a6:803:4d::29)
+ by VI1PR04MB7040.eurprd04.prod.outlook.com (2603:10a6:800:121::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.22; Thu, 18 Jun
+ 2020 13:16:33 +0000
+Received: from VI1PR04MB4046.eurprd04.prod.outlook.com
+ ([fe80::4cf0:3c9c:ed2:aacd]) by VI1PR04MB4046.eurprd04.prod.outlook.com
+ ([fe80::4cf0:3c9c:ed2:aacd%4]) with mapi id 15.20.3109.021; Thu, 18 Jun 2020
+ 13:16:33 +0000
+Subject: Re: [PATCH] crypto: caam/qi2: remove redundant assignment to ret
+To:     Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     Colin King <colin.king@canonical.com>,
+        Aymen Sghaier <aymen.sghaier@nxp.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20200611153934.928021-1-colin.king@canonical.com>
+ <8e08adcb-ef91-124d-d093-921fc97da3af@nxp.com>
+ <20200618110050.GA10995@gondor.apana.org.au>
+From:   =?UTF-8?Q?Horia_Geant=c4=83?= <horia.geanta@nxp.com>
+Message-ID: <b351f9b5-940c-61d3-38f2-3654c6da55b0@nxp.com>
+Date:   Thu, 18 Jun 2020 16:16:29 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
+In-Reply-To: <20200618110050.GA10995@gondor.apana.org.au>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AM0PR10CA0102.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:208:e6::19) To VI1PR04MB4046.eurprd04.prod.outlook.com
+ (2603:10a6:803:4d::29)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.0.129] (84.117.251.185) by AM0PR10CA0102.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:e6::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.22 via Frontend Transport; Thu, 18 Jun 2020 13:16:31 +0000
+X-Originating-IP: [84.117.251.185]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 22df849f-a429-4a54-75fc-08d81389d206
+X-MS-TrafficTypeDiagnostic: VI1PR04MB7040:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <VI1PR04MB7040263ED365BF74AB21979A989B0@VI1PR04MB7040.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-Forefront-PRVS: 0438F90F17
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: y/jwljeUU5gpiI4hgSV0ERaw3ACayJvfYFl21jfl+ncxqu0yZ2fY2WwTb71hBfF7LXhRU5xdC9Oh0Z9bAK3+Yn6TtdUZeOz52jkp6YhFLjotVeI+mxAM5jjGyEBG3LhIIa8fKwWOY7n2Pr2/xZnEYg6ZIzxvVjT1lf6E6JjHUreK7JbJTTU6SMAGKW1+on4aM8iy6gIuOtGCdxOkTQpZdscgdjT+ndWTCRmvuw/O0uQYb1qPUvvH9DbRnfUjBLn7yZEoCXR5X0WzZJy7l6B12X0EIyu5K5XXRVqphTrcAkQBz71KAswWtqmbc8kcxsFRdv9T7+IqW3F/00DGpbnDMPJdhrpSAmMv2M0lJ9yNxahCC2RxVdOSSjFBeod/dV+V
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB4046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(39860400002)(396003)(376002)(366004)(346002)(136003)(66946007)(66476007)(66556008)(52116002)(26005)(186003)(16526019)(54906003)(316002)(16576012)(956004)(2616005)(86362001)(31686004)(53546011)(31696002)(8936002)(36756003)(4744005)(6486002)(8676002)(5660300002)(2906002)(4326008)(6916009)(478600001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: VafZBJHnCWXzvotJaKGxdRQilRTRVUdBpwYhkwr4QLnKDHbtAPvkgTYCPiqdZ4rVSTDLhi6Z8cpdHmfnu7iXQSp5EzbiVubgCmD/b9+gh+9KUYYO3ITWLwkxIimY7hctQYSuCB5o+q8SCMMszxO+jMr2OcpHT645+ThgqB5NVemQpKaUVHPKJVl2G6qqlVLjsoqoKDBOk2S7lTXa1bZhxcKBccq6kcX7Wkqq0NiL8kfxfIHnCBIuYU4YEtwvPNlCmicZSdNmeT48fpi2adHVKeGHtQC1UIEit02SenVlxaIJZvM3n1wCls0J1LcR5MuVM4Qa63qfPX3Ah1mPU7nAMTB/A18ZyxY0pvoqQWY99FU2HQSKx+cYP+s+t0o5A70wrpIPELfMEomwsghie9bhF5hQoq2tAKpP9uMdM1+MHojHLv9gc6d67vtKuwnnVIuI11SYFxWr+XYrb+vcdGOyU6MGTOCHYSrEMiZOxCBFZJub8FvA67CU+6zQAw2Y6cHB
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 22df849f-a429-4a54-75fc-08d81389d206
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2020 13:16:33.1559
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KA34An8/6vT1n/5ZJ7/Sg/PLXc8ve7sVqJVUri+XCpvYWSt4yDav5f7f8KhmCwll7UzZjWeUskv6OFRwScd8ew==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7040
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 18/06/2020 13:14, Liviu Dudau wrote:
-> On Thu, Jun 18, 2020 at 11:04:00AM +0100, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Hi Colin,
-> 
+On 6/18/2020 2:00 PM, Herbert Xu wrote:
+> On Thu, Jun 18, 2020 at 01:54:55PM +0300, Horia Geantă wrote:
 >>
->> Shifting the integer value 1 is evaluated using 32-bit arithmetic
->> and then used in an expression that expects a long value leads to
->> a potential integer overflow.
-> 
-> I'm afraid this explanation makes no sense to me. Do you care to explain better what
-> you think the issue is? If the shift is done as 32-bit arithmetic and then promoted
-> to long how does the overflow happen?
-
-The shift is performed using 32 bit signed math and then assigned to an
-unsigned 64 bit long. This if the shift is 31 bits then the signed int
-conversion of 0x80000000 to unsigned long becomes 0xffffffff80000000.
-If the shift is more than 32 bits then result overflows and becomes 0x0.
-
-Colin
-
-> 
-> Best regards,
-> Liviu
-> 
->> Fix this by using the BIT macro to
->> perform the shift to avoid the overflow.
+>> The proper fix would be updating the ahash_finup_no_ctx() function
+>> to return the specific error code:
+>> 	return ret;
+>> instead of returning -ENOMEM for all error cases.
 >>
->> Addresses-Coverity: ("Unintentional integer overflow")
->> Fixes: ad49f8602fe8 ("drm/arm: Add support for Mali Display Processors")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>  drivers/gpu/drm/arm/malidp_planes.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/gpu/drm/arm/malidp_planes.c b/drivers/gpu/drm/arm/malidp_planes.c
->> index 37715cc6064e..ab45ac445045 100644
->> --- a/drivers/gpu/drm/arm/malidp_planes.c
->> +++ b/drivers/gpu/drm/arm/malidp_planes.c
->> @@ -928,7 +928,7 @@ int malidp_de_planes_init(struct drm_device *drm)
->>  	const struct malidp_hw_regmap *map = &malidp->dev->hw->map;
->>  	struct malidp_plane *plane = NULL;
->>  	enum drm_plane_type plane_type;
->> -	unsigned long crtcs = 1 << drm->mode_config.num_crtc;
->> +	unsigned long crtcs = BIT(drm->mode_config.num_crtc);
->>  	unsigned long flags = DRM_MODE_ROTATE_0 | DRM_MODE_ROTATE_90 | DRM_MODE_ROTATE_180 |
->>  			      DRM_MODE_ROTATE_270 | DRM_MODE_REFLECT_X | DRM_MODE_REFLECT_Y;
->>  	unsigned int blend_caps = BIT(DRM_MODE_BLEND_PIXEL_NONE) |
->> -- 
->> 2.27.0.rc0
->>
+>> For example error code returned by dpaa2_caam_enqueue()
+>> should be returned instead of -ENOMEM.
 > 
+> You can do that as a follow-up.  The patch is correct as is.
+> 
+Just that the follow-up implies adding all the code back.
 
+Anyway, not a big deal...
+
+Thanks,
+Horia

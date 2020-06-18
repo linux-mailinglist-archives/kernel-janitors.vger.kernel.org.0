@@ -2,106 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D38FF1FF65E
-	for <lists+kernel-janitors@lfdr.de>; Thu, 18 Jun 2020 17:15:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 076941FF67A
+	for <lists+kernel-janitors@lfdr.de>; Thu, 18 Jun 2020 17:22:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728331AbgFRPPm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 18 Jun 2020 11:15:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34112 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726879AbgFRPPl (ORCPT
+        id S1731261AbgFRPWY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 18 Jun 2020 11:22:24 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:52588 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727045AbgFRPWX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 18 Jun 2020 11:15:41 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76F75C06174E;
-        Thu, 18 Jun 2020 08:15:41 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id q11so6476931wrp.3;
-        Thu, 18 Jun 2020 08:15:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hzlvT3gaSlLbN4f2sLYshLtTaNcAUW9eRJsVAjGv5Ko=;
-        b=qtMsv7AwvP28H04YkN6EWvksFGG0W2yZaMKLxPJQnvzfC1QQON8ZhE78yHS6xPa5XO
-         LuiCJ2qpgqvmf7JWSmKmcLlvT7gbb8MNVZ/YDM2iaZ33v2R6E7nQUsOJfPs5r2/er912
-         jET4OpIXCXlSDDLNklSrG+fTsA7WWKpAqytffIVZxEGG/s/hALY1Ff+5ZbazpmvDUdDa
-         FHHjlmjUR9YhqlQQX+vVZWEjoVcE4rYIGTRG3JaK1ci4Xp9ZPfxugrCG/b7uPn2VzEfP
-         PclGgDIyESG5oFxxhN+omK4rA0i7kxs3fnCpe8cVZTjOm68UKcE8YUVyKdNjBCs3LwYy
-         CrHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hzlvT3gaSlLbN4f2sLYshLtTaNcAUW9eRJsVAjGv5Ko=;
-        b=KdZoaISSQGFW7mES1d3Kdzb6bUbeM0aBPrreqYT8WrNt1O/bGKBxPE/OGsY9pEakzW
-         OhPyUO0oscsaTYI1dzCGBGpD/ie3cM0mzw1xQokkf1xd0BVxoP89opaoxOgvgnTzH3dJ
-         718DRCnzyPllw8aqDcBfghIvNRmvyMLGxE8tzulRxFgLZXKY41u8i5tpzXtSlht/YTZk
-         9UeeGh+ei5Zrs7cpIeyiF/jnhDdTnyHg70z6J/t5kF7BdGkhxvBxATSEwqdZX0AHWc+b
-         MH7G9HiIF4PRSPWRDPZ+W5GC6cC6Q0Q27P4ZF7GIqdWi+pvu0P7yQKBCiUutTlqR7Thp
-         sY9w==
-X-Gm-Message-State: AOAM532RqoOyO9Ou6/3k5WSLxNJzQsPhLRB10HLzNrN8LlKMV3SNOfhl
-        OVkHu1M/uWJgitl5g81gKIXZjq0Afr/XgdSKdzA=
-X-Google-Smtp-Source: ABdhPJzZdbx39Ada+O27jmlcsTDezs3Ch1jm0rrsMzDul8XqjyMgpuRoP5sfTmlIH1uh8tBxx7i44dGJ+BtI4f4Dxj8=
-X-Received: by 2002:adf:f7ce:: with SMTP id a14mr5073030wrq.362.1592493340203;
- Thu, 18 Jun 2020 08:15:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200618102622.12256-1-colin.king@canonical.com>
-In-Reply-To: <20200618102622.12256-1-colin.king@canonical.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Thu, 18 Jun 2020 11:15:29 -0400
-Message-ID: <CADnq5_OeVaKbr46WDQ0GcnLd1CE2EbwmRxyVOVqJcqwkJN5qNg@mail.gmail.com>
-Subject: Re: [PATCH] drm/amdgpu: remove redundant initialization of variable ret
-To:     Colin King <colin.king@canonical.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        Thu, 18 Jun 2020 11:22:23 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05IFLs3C065365;
+        Thu, 18 Jun 2020 15:22:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=7siOWtMnW9wq0JjrCezGCY1u1cWhmZsBCe02fyT6lLA=;
+ b=pUugeWrMkLx5n843KOXWlWw4YwnoT88FeIheD9HTLJ0SYwBT5t3g9KSnnNNmJeXm3pMQ
+ 3URa9d7YvodGrTgY6f4yY72K9nOCvluxJ9g+idGfh4nGOLMDY+bEjHF2axfwTM8qGEGj
+ +4CHA8Q9gBzk61lHyu8GP7VSPiCw62gAcYobgWwQ3SDEGAEfrXNpVG/n6kFgrJoTKjv2
+ azazMyn1nDT0irU99tbgRvHwu/rI8whCvjVb9M9XehblcBTAACZUV6uG8fOn6dI/NMm4
+ Yoo11SPWTXVmtJureZa9U5WQZDy97WzytgR/9yJgC1leZSWh0cpgoa/a7Y1bHEgn8dM7 +w== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 31q6601uks-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 18 Jun 2020 15:22:14 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05IFJELR191509;
+        Thu, 18 Jun 2020 15:22:13 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 31q66pxekr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 18 Jun 2020 15:22:13 +0000
+Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05IFMBYE010808;
+        Thu, 18 Jun 2020 15:22:12 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 18 Jun 2020 08:22:11 -0700
+Date:   Thu, 18 Jun 2020 18:22:04 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Garrit Franke <garritfranke@gmail.com>
+Cc:     Liviu Dudau <liviu.dudau@arm.com>,
+        Colin Ian King <colin.king@canonical.com>,
         David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH] drm/arm: fix unintentional integer overflow on left shift
+Message-ID: <20200618152204.GU4151@kadam>
+References: <20200618100400.11464-1-colin.king@canonical.com>
+ <20200618121405.GJ159988@e110455-lin.cambridge.arm.com>
+ <5d08fbec-75d8-d9a9-af61-e6ab98e77c80@canonical.com>
+ <20200618142106.GK159988@e110455-lin.cambridge.arm.com>
+ <CAD16O86ebsDkwbnuw2G04YZWfukqxJ=_Tex5OT07icEpfPdQNw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAD16O86ebsDkwbnuw2G04YZWfukqxJ=_Tex5OT07icEpfPdQNw@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9655 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 phishscore=0
+ mlxscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006180116
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9655 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 malwarescore=0
+ bulkscore=0 phishscore=0 adultscore=0 priorityscore=1501 mlxscore=0
+ spamscore=0 clxscore=1011 mlxlogscore=999 suspectscore=0 impostorscore=0
+ cotscore=-2147483648 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006180117
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jun 18, 2020 at 6:26 AM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> The variable ret is being initialized with a value that is never read
-> and it is being updated later with a new value.  The initialization is
-> redundant and can be removed.
->
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On Thu, Jun 18, 2020 at 04:36:51PM +0200, Garrit Franke wrote:
+> Hi all, newbie here.
+> Can the BIT macro be safely used on other parts of the kernel as well?
+> Just using git grep "1 <<" returns a ton of results where bit shifting
+> is used the old fashioned way.
 
-Applied.  thanks!
+Yeah.  There is a checkpatch warning for it and everything.  :)
 
-Alex
+But I like the way you think.  Start with patches to staging though.
+People don't necessarily like doing cleanups on ancient code.
 
-> ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c
-> index b2cdc8a1268f..58b76d3d7365 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c
-> @@ -1609,7 +1609,7 @@ static ssize_t amdgpu_set_pp_power_profile_mode(struct device *dev,
->                 const char *buf,
->                 size_t count)
->  {
-> -       int ret = 0xff;
-> +       int ret;
->         struct drm_device *ddev = dev_get_drvdata(dev);
->         struct amdgpu_device *adev = ddev->dev_private;
->         uint32_t parameter_size = 0;
-> --
-> 2.27.0.rc0
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+regards,
+dan carpenter
+

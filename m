@@ -2,76 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 717CA1FF631
-	for <lists+kernel-janitors@lfdr.de>; Thu, 18 Jun 2020 17:07:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D38FF1FF65E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 18 Jun 2020 17:15:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730930AbgFRPHn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 18 Jun 2020 11:07:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32870 "EHLO
+        id S1728331AbgFRPPm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 18 Jun 2020 11:15:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727841AbgFRPHn (ORCPT
+        with ESMTP id S1726879AbgFRPPl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 18 Jun 2020 11:07:43 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37FCFC06174E
-        for <kernel-janitors@vger.kernel.org>; Thu, 18 Jun 2020 08:07:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:
-        Subject:Sender:Reply-To:Cc:Content-ID:Content-Description;
-        bh=m+OFfJSY4rZKdVoH+w5N0+dEjJsPwsStzddDtn4aW6E=; b=IiQ857N6XbavPmxpulXY13bcSi
-        E/3slYAVPIraPbQN4scsZzF9adDs42xqOvfF49rqKGKh9oXNKbpYC0E0IHeFugOeU7niPIoNYS+qB
-        rvzxDVWayYlwqr3Y83Wz9f4AJuvOpT3yDCF0CAaHIqaXXcI/+UVr/F6zlrSW1a9ZBxf0h0UJGvCCy
-        Cr8gePvcEiTUjJfqZ+UbbyYTEbHrVCoAodH0ARhdRYtrw+wOgA3LaSU22vJrYmzDM3QbVtWBR/R75
-        kJP3Fhh39dhhIOhffNSDp71KREeCoOo2xVIdFGkarVMtL0P4nQMftE2pM10fd/0kWl4LaJ6MSBXjk
-        EpgluBgw==;
-Received: from [2601:1c0:6280:3f0::19c2]
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jlw8k-0006R2-Ti; Thu, 18 Jun 2020 15:07:42 +0000
-Subject: Re: [help][coccinelle] coccicheck failed
-To:     Giacomo Picchiarelli <gpicchiarelli@gmail.com>,
-        kernel-janitors@vger.kernel.org
-References: <47cba5b5-0d49-f6e8-09db-557a4c15f285@gmail.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <a28e6bff-c108-bcaa-78f7-3b525c73e81b@infradead.org>
-Date:   Thu, 18 Jun 2020 08:07:41 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        Thu, 18 Jun 2020 11:15:41 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76F75C06174E;
+        Thu, 18 Jun 2020 08:15:41 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id q11so6476931wrp.3;
+        Thu, 18 Jun 2020 08:15:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=hzlvT3gaSlLbN4f2sLYshLtTaNcAUW9eRJsVAjGv5Ko=;
+        b=qtMsv7AwvP28H04YkN6EWvksFGG0W2yZaMKLxPJQnvzfC1QQON8ZhE78yHS6xPa5XO
+         LuiCJ2qpgqvmf7JWSmKmcLlvT7gbb8MNVZ/YDM2iaZ33v2R6E7nQUsOJfPs5r2/er912
+         jET4OpIXCXlSDDLNklSrG+fTsA7WWKpAqytffIVZxEGG/s/hALY1Ff+5ZbazpmvDUdDa
+         FHHjlmjUR9YhqlQQX+vVZWEjoVcE4rYIGTRG3JaK1ci4Xp9ZPfxugrCG/b7uPn2VzEfP
+         PclGgDIyESG5oFxxhN+omK4rA0i7kxs3fnCpe8cVZTjOm68UKcE8YUVyKdNjBCs3LwYy
+         CrHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=hzlvT3gaSlLbN4f2sLYshLtTaNcAUW9eRJsVAjGv5Ko=;
+        b=KdZoaISSQGFW7mES1d3Kdzb6bUbeM0aBPrreqYT8WrNt1O/bGKBxPE/OGsY9pEakzW
+         OhPyUO0oscsaTYI1dzCGBGpD/ie3cM0mzw1xQokkf1xd0BVxoP89opaoxOgvgnTzH3dJ
+         718DRCnzyPllw8aqDcBfghIvNRmvyMLGxE8tzulRxFgLZXKY41u8i5tpzXtSlht/YTZk
+         9UeeGh+ei5Zrs7cpIeyiF/jnhDdTnyHg70z6J/t5kF7BdGkhxvBxATSEwqdZX0AHWc+b
+         MH7G9HiIF4PRSPWRDPZ+W5GC6cC6Q0Q27P4ZF7GIqdWi+pvu0P7yQKBCiUutTlqR7Thp
+         sY9w==
+X-Gm-Message-State: AOAM532RqoOyO9Ou6/3k5WSLxNJzQsPhLRB10HLzNrN8LlKMV3SNOfhl
+        OVkHu1M/uWJgitl5g81gKIXZjq0Afr/XgdSKdzA=
+X-Google-Smtp-Source: ABdhPJzZdbx39Ada+O27jmlcsTDezs3Ch1jm0rrsMzDul8XqjyMgpuRoP5sfTmlIH1uh8tBxx7i44dGJ+BtI4f4Dxj8=
+X-Received: by 2002:adf:f7ce:: with SMTP id a14mr5073030wrq.362.1592493340203;
+ Thu, 18 Jun 2020 08:15:40 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <47cba5b5-0d49-f6e8-09db-557a4c15f285@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20200618102622.12256-1-colin.king@canonical.com>
+In-Reply-To: <20200618102622.12256-1-colin.king@canonical.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Thu, 18 Jun 2020 11:15:29 -0400
+Message-ID: <CADnq5_OeVaKbr46WDQ0GcnLd1CE2EbwmRxyVOVqJcqwkJN5qNg@mail.gmail.com>
+Subject: Re: [PATCH] drm/amdgpu: remove redundant initialization of variable ret
+To:     Colin King <colin.king@canonical.com>
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 6/18/20 6:23 AM, Giacomo Picchiarelli wrote:
-> Newbie here. I couldn't try the patch attached. 
-> I'm using coccinelle (spatch version 1.0.4 with Python support and with PCRE support), 
-> I'm having issues with the following command:
-> 
-> make coccicheck MODE=patch
-> 
-> "./tools/testing/selftests/net/hwtstamp_config.c:74:45-46: WARNING: Use ARRAY_SIZE
-> 
-> 807 811
-> 
-> coccicheck failed"
-> 
-> Applied to: commit 1b5044021070efa3259f3e9548dc35d1eb6aa844 (HEAD -> master, origin/master, origin/HEAD)
-> Merge: 69119673bd50 dbed452a078d
-> Author: Linus Torvalds <torvalds@linux-foundation.org>
-> Date:   Wed Jun 17 11:29:37 2020 -0700
-> 
-> Suggestions?
+On Thu, Jun 18, 2020 at 6:26 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The variable ret is being initialized with a value that is never read
+> and it is being updated later with a new value.  The initialization is
+> redundant and can be removed.
+>
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
+Applied.  thanks!
 
-Add "DEBUG_FILE=cocci.err" to the command line. "cocci.err" will contain
-more detailed info about the failure, then someone might know what to do
-about it.
+Alex
 
--- 
-~Randy
-
+> ---
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c
+> index b2cdc8a1268f..58b76d3d7365 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c
+> @@ -1609,7 +1609,7 @@ static ssize_t amdgpu_set_pp_power_profile_mode(struct device *dev,
+>                 const char *buf,
+>                 size_t count)
+>  {
+> -       int ret = 0xff;
+> +       int ret;
+>         struct drm_device *ddev = dev_get_drvdata(dev);
+>         struct amdgpu_device *adev = ddev->dev_private;
+>         uint32_t parameter_size = 0;
+> --
+> 2.27.0.rc0
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

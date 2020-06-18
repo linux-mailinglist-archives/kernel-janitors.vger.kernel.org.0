@@ -2,66 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFC721FF47D
-	for <lists+kernel-janitors@lfdr.de>; Thu, 18 Jun 2020 16:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7230F1FF494
+	for <lists+kernel-janitors@lfdr.de>; Thu, 18 Jun 2020 16:21:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728830AbgFROQ3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 18 Jun 2020 10:16:29 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:52220 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727078AbgFROQ2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 18 Jun 2020 10:16:28 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id CD63D63B92EC7A708921;
-        Thu, 18 Jun 2020 22:16:22 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 18 Jun 2020 22:16:14 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH] iavf: fix error return code in iavf_init_get_resources()
-Date:   Thu, 18 Jun 2020 14:19:53 +0000
-Message-ID: <20200618141953.29674-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728614AbgFROVI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 18 Jun 2020 10:21:08 -0400
+Received: from foss.arm.com ([217.140.110.172]:51018 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727078AbgFROVI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 18 Jun 2020 10:21:08 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0D4B2101E;
+        Thu, 18 Jun 2020 07:21:08 -0700 (PDT)
+Received: from e110455-lin.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E1CDE3F6CF;
+        Thu, 18 Jun 2020 07:21:07 -0700 (PDT)
+Received: by e110455-lin.cambridge.arm.com (Postfix, from userid 1000)
+        id AB6D7682B9C; Thu, 18 Jun 2020 15:21:06 +0100 (BST)
+Date:   Thu, 18 Jun 2020 15:21:06 +0100
+From:   Liviu Dudau <liviu.dudau@arm.com>
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     David Airlie <airlied@linux.ie>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH] drm/arm: fix unintentional integer overflow on left shift
+Message-ID: <20200618142106.GK159988@e110455-lin.cambridge.arm.com>
+References: <20200618100400.11464-1-colin.king@canonical.com>
+ <20200618121405.GJ159988@e110455-lin.cambridge.arm.com>
+ <5d08fbec-75d8-d9a9-af61-e6ab98e77c80@canonical.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5d08fbec-75d8-d9a9-af61-e6ab98e77c80@canonical.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return negative error code -ENOMEM from the error handling
-case instead of 0, as done elsewhere in this function.
+On Thu, Jun 18, 2020 at 01:50:34PM +0100, Colin Ian King wrote:
+> On 18/06/2020 13:14, Liviu Dudau wrote:
+> > On Thu, Jun 18, 2020 at 11:04:00AM +0100, Colin King wrote:
+> >> From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > Hi Colin,
+> > 
+> >>
+> >> Shifting the integer value 1 is evaluated using 32-bit arithmetic
+> >> and then used in an expression that expects a long value leads to
+> >> a potential integer overflow.
+> > 
+> > I'm afraid this explanation makes no sense to me. Do you care to explain better what
+> > you think the issue is? If the shift is done as 32-bit arithmetic and then promoted
+> > to long how does the overflow happen?
+> 
+> The shift is performed using 32 bit signed math and then assigned to an
+> unsigned 64 bit long. This if the shift is 31 bits then the signed int
+> conversion of 0x80000000 to unsigned long becomes 0xffffffff80000000.
+> If the shift is more than 32 bits then result overflows and becomes 0x0.
 
-Fixes: b66c7bc1cd4d ("iavf: Refactor init state machine")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/net/ethernet/intel/iavf/iavf_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+You are right, I've missed the fact that it is signed math. Not very likely that
+we are going to ever have 30 or more CRTCs in the driver, but Coverity has no
+way of knowing that.
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index fa82768e5eda..bc83e2d99944 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -1863,8 +1863,10 @@ static int iavf_init_get_resources(struct iavf_adapter *adapter)
- 
- 	adapter->rss_key = kzalloc(adapter->rss_key_size, GFP_KERNEL);
- 	adapter->rss_lut = kzalloc(adapter->rss_lut_size, GFP_KERNEL);
--	if (!adapter->rss_key || !adapter->rss_lut)
-+	if (!adapter->rss_key || !adapter->rss_lut) {
-+		err = -ENOMEM;
- 		goto err_mem;
-+	}
- 	if (RSS_AQ(adapter))
- 		adapter->aq_required |= IAVF_FLAG_AQ_CONFIGURE_RSS;
- 	else
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
 
+I will pull this into drm-misc-next today.
 
+Best regards,
+Liviu
 
+> 
+> Colin
+> 
+> > 
+> > Best regards,
+> > Liviu
+> > 
+> >> Fix this by using the BIT macro to
+> >> perform the shift to avoid the overflow.
+> >>
+> >> Addresses-Coverity: ("Unintentional integer overflow")
+> >> Fixes: ad49f8602fe8 ("drm/arm: Add support for Mali Display Processors")
+> >> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> >> ---
+> >>  drivers/gpu/drm/arm/malidp_planes.c | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/gpu/drm/arm/malidp_planes.c b/drivers/gpu/drm/arm/malidp_planes.c
+> >> index 37715cc6064e..ab45ac445045 100644
+> >> --- a/drivers/gpu/drm/arm/malidp_planes.c
+> >> +++ b/drivers/gpu/drm/arm/malidp_planes.c
+> >> @@ -928,7 +928,7 @@ int malidp_de_planes_init(struct drm_device *drm)
+> >>  	const struct malidp_hw_regmap *map = &malidp->dev->hw->map;
+> >>  	struct malidp_plane *plane = NULL;
+> >>  	enum drm_plane_type plane_type;
+> >> -	unsigned long crtcs = 1 << drm->mode_config.num_crtc;
+> >> +	unsigned long crtcs = BIT(drm->mode_config.num_crtc);
+> >>  	unsigned long flags = DRM_MODE_ROTATE_0 | DRM_MODE_ROTATE_90 | DRM_MODE_ROTATE_180 |
+> >>  			      DRM_MODE_ROTATE_270 | DRM_MODE_REFLECT_X | DRM_MODE_REFLECT_Y;
+> >>  	unsigned int blend_caps = BIT(DRM_MODE_BLEND_PIXEL_NONE) |
+> >> -- 
+> >> 2.27.0.rc0
+> >>
+> > 
+> 
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+
+-- 
+====================
+| I would like to |
+| fix the world,  |
+| but they're not |
+| giving me the   |
+ \ source code!  /
+  ---------------
+    ¯\_(ツ)_/¯

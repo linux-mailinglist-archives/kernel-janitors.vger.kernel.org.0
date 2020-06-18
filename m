@@ -2,28 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BE5A1FEEB9
-	for <lists+kernel-janitors@lfdr.de>; Thu, 18 Jun 2020 11:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DD161FEF3C
+	for <lists+kernel-janitors@lfdr.de>; Thu, 18 Jun 2020 12:04:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729236AbgFRJc3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 18 Jun 2020 05:32:29 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:46072 "EHLO
+        id S1728416AbgFRKEF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 18 Jun 2020 06:04:05 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:46771 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728943AbgFRJc1 (ORCPT
+        with ESMTP id S1728361AbgFRKEF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 18 Jun 2020 05:32:27 -0400
+        Thu, 18 Jun 2020 06:04:05 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jlquH-0007MQ-3N; Thu, 18 Jun 2020 09:32:25 +0000
+        id 1jlrOr-0002xe-89; Thu, 18 Jun 2020 10:04:01 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org
+To:     Liviu Dudau <liviu.dudau@arm.com>,
+        Brian Starkey <brian.starkey@arm.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next][V2] usb: xhci: fix spelling mistake in Kconfig "firwmare" -> "firmware"
-Date:   Thu, 18 Jun 2020 10:32:24 +0100
-Message-Id: <20200618093224.10179-1-colin.king@canonical.com>
+Subject: [PATCH] drm/arm: fix unintentional integer overflow on left shift
+Date:   Thu, 18 Jun 2020 11:04:00 +0100
+Message-Id: <20200618100400.11464-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0.rc0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,34 +38,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There are two spelling mistakes in the Kconfig text. Fix these.
+Shifting the integer value 1 is evaluated using 32-bit arithmetic
+and then used in an expression that expects a long value leads to
+a potential integer overflow. Fix this by using the BIT macro to
+perform the shift to avoid the overflow.
 
+Addresses-Coverity: ("Unintentional integer overflow")
+Fixes: ad49f8602fe8 ("drm/arm: Add support for Mali Display Processors")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
+ drivers/gpu/drm/arm/malidp_planes.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-V2: rework so that it cleanly applies against Greg's current USB repo
-
----
- drivers/usb/host/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index 1cb3004ea7b2..ab12c4bf0ef1 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -44,10 +44,10 @@ config USB_XHCI_PCI
- 	default y
- 
- config USB_XHCI_PCI_RENESAS
--	tristate "Support for additional Renesas xHCI controller with firwmare"
-+	tristate "Support for additional Renesas xHCI controller with firmware"
- 	help
- 	  Say 'Y' to enable the support for the Renesas xHCI controller with
--	  firwmare. Make sure you have the firwmare for the device and
-+	  firmware. Make sure you have the firwmare for the device and
- 	  installed on your system for this device to work.
- 	  If unsure, say 'N'.
- 
+diff --git a/drivers/gpu/drm/arm/malidp_planes.c b/drivers/gpu/drm/arm/malidp_planes.c
+index 37715cc6064e..ab45ac445045 100644
+--- a/drivers/gpu/drm/arm/malidp_planes.c
++++ b/drivers/gpu/drm/arm/malidp_planes.c
+@@ -928,7 +928,7 @@ int malidp_de_planes_init(struct drm_device *drm)
+ 	const struct malidp_hw_regmap *map = &malidp->dev->hw->map;
+ 	struct malidp_plane *plane = NULL;
+ 	enum drm_plane_type plane_type;
+-	unsigned long crtcs = 1 << drm->mode_config.num_crtc;
++	unsigned long crtcs = BIT(drm->mode_config.num_crtc);
+ 	unsigned long flags = DRM_MODE_ROTATE_0 | DRM_MODE_ROTATE_90 | DRM_MODE_ROTATE_180 |
+ 			      DRM_MODE_ROTATE_270 | DRM_MODE_REFLECT_X | DRM_MODE_REFLECT_Y;
+ 	unsigned int blend_caps = BIT(DRM_MODE_BLEND_PIXEL_NONE) |
 -- 
 2.27.0.rc0
 

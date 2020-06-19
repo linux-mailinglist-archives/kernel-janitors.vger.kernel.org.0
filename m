@@ -2,54 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04CB0200B74
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jun 2020 16:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA1DE200B93
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jun 2020 16:33:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733168AbgFSOaZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 19 Jun 2020 10:30:25 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:53336 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726594AbgFSOaZ (ORCPT
+        id S1733278AbgFSOdC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 19 Jun 2020 10:33:02 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:35970 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1733089AbgFSOdB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 19 Jun 2020 10:30:25 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05JEDCmA158837;
-        Fri, 19 Jun 2020 14:30:16 GMT
+        Fri, 19 Jun 2020 10:33:01 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05JEVYcK140893;
+        Fri, 19 Jun 2020 14:32:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=rogk33tCLb714YF5tgoNqkyveFcOFQsCLb6Cz+GSq0k=;
- b=zV8TEMGvvNfbISMYwnSqPuACfelJaCsusMmgz6xP4P6Hv0fL0LnzGdgOVTYIItGtkVOx
- dSpLwOnTK6UmGibPbtXkSvYawRsrTWR09g4Qs9mige6QVGhujOKXWRFzOYa5nnZIGIkk
- bCqRI7oPs3eaCJkTUGD3rGwgAWv93XMFSjYfwf04/h70FUpDcWPWvxxVGqPF7N5FbY/d
- rRBrlirr/LWTU7pPzQ+1Pk5CRCswJG4ORHZvtJQQa2C09LyYBhvslZJQ1BEOqcRZXccl
- 21Kx75qEn1jzBp/QRlTVKOmHlrpZcz7X7sxVt/rbq9982H5M63qQoKJsVj05dmI43gPp ZA== 
+ bh=0a0jfa6ndZYP4+GPbWa68eEdOsgS9W5sVAeMAk3I0v4=;
+ b=o1+Q0KlZH3M2mRp3tG+vYQ2FJaRCyzH4TEyKGTCVngzWD/SQ5U70/YDW29uG+ZhmBtrW
+ u9RW0LpiZF6vp1UhtId4T/rt5ivsqxLy9k0evoxi86YpArxqckKciyYO5QndIAxLvajV
+ b/Bt377CRr7I8BO0xMwv2vUVOV9z2v0ihYzc4lKG5UbT9DhSJGBQBTD3/NwIQynH7dpo
+ 7nHuycfpsq60NBWavK99AtUJ9PgXuR7pkdBBpN3+cWeppam5B9UhDwogeH86Lw2g2KaY
+ lWwRUuQ7UdS7lqbyOOw90ZKvrTU1y+zNub4H3DHxK/IM5HMc0RJW5PYuHPCmOo9ndK5s YQ== 
 Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 31qecm5jvm-1
+        by userp2120.oracle.com with ESMTP id 31qg35d03s-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 19 Jun 2020 14:30:16 +0000
+        Fri, 19 Jun 2020 14:32:51 +0000
 Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05JE9PYR111479;
-        Fri, 19 Jun 2020 14:30:15 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 31q66vm1rw-1
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05JE9P1Y111498;
+        Fri, 19 Jun 2020 14:30:51 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 31q66vm3ga-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 19 Jun 2020 14:30:15 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05JEUE3V027999;
-        Fri, 19 Jun 2020 14:30:14 GMT
+        Fri, 19 Jun 2020 14:30:51 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05JEUnOp008628;
+        Fri, 19 Jun 2020 14:30:49 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 19 Jun 2020 07:30:13 -0700
-Date:   Fri, 19 Jun 2020 17:30:07 +0300
+        with ESMTP ; Fri, 19 Jun 2020 07:30:48 -0700
+Date:   Fri, 19 Jun 2020 17:30:41 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Michael Tretter <m.tretter@pengutronix.de>
-Cc:     Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
+To:     Nilesh Javali <njavali@marvell.com>,
+        Darren Trapp <darren.trapp@cavium.com>
+Cc:     GR-QLogic-Storage-Upstream@marvell.com,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Himanshu Madhani <himanshu.madhani@cavium.com>,
+        Johannes Thumshirn <jthumshirn@suse.de>,
+        Hannes Reinecke <hare@suse.com>, linux-scsi@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] media: allegro: Fix some NULL vs IS_ERR() checks in probe
-Message-ID: <20200619143007.GC267142@mwanda>
+Subject: [PATCH] scsi: qla2xxx: Fix a condition in
+ qla2x00_find_all_fabric_devs()
+Message-ID: <20200619143041.GD267142@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -60,53 +64,40 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 ml
  spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2004280000 definitions=main-2006190106
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9656 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 cotscore=-2147483648 malwarescore=0
- clxscore=1011 adultscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
- mlxlogscore=999 priorityscore=1501 bulkscore=0 phishscore=0 mlxscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006190106
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 mlxscore=0
+ clxscore=1011 malwarescore=0 impostorscore=0 adultscore=0
+ cotscore=-2147483648 lowpriorityscore=0 mlxlogscore=999 spamscore=0
+ suspectscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006190107
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The devm_ioremap() function doesn't return error pointers, it returns
-NULL on error.
+This code doesn't make sense unless the correct "fcport" was found.
 
-Fixes: f20387dfd065 ("media: allegro: add Allegro DVT video IP core driver")
+Fixes: 9dd9686b1419 ("scsi: qla2xxx: Add changes for devloss timeout in driver")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/staging/media/allegro-dvt/allegro-core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+This is from static analysis and review.  I'm not super familiar with
+the code and I can't test it.  Please review it extra carefully.
 
-diff --git a/drivers/staging/media/allegro-dvt/allegro-core.c b/drivers/staging/media/allegro-dvt/allegro-core.c
-index 70f133a842dd..3ed66aae741d 100644
---- a/drivers/staging/media/allegro-dvt/allegro-core.c
-+++ b/drivers/staging/media/allegro-dvt/allegro-core.c
-@@ -3065,9 +3065,9 @@ static int allegro_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
- 	regs = devm_ioremap(&pdev->dev, res->start, resource_size(res));
--	if (IS_ERR(regs)) {
-+	if (!regs) {
- 		dev_err(&pdev->dev, "failed to map registers\n");
--		return PTR_ERR(regs);
-+		return -ENOMEM;
- 	}
- 	dev->regmap = devm_regmap_init_mmio(&pdev->dev, regs,
- 					    &allegro_regmap_config);
-@@ -3085,9 +3085,9 @@ static int allegro_probe(struct platform_device *pdev)
- 	sram_regs = devm_ioremap(&pdev->dev,
- 				 sram_res->start,
- 				 resource_size(sram_res));
--	if (IS_ERR(sram_regs)) {
-+	if (!sram_regs) {
- 		dev_err(&pdev->dev, "failed to map sram\n");
--		return PTR_ERR(sram_regs);
-+		return -ENOMEM;
- 	}
- 	dev->sram = devm_regmap_init_mmio(&pdev->dev, sram_regs,
- 					  &allegro_sram_config);
+ drivers/scsi/qla2xxx/qla_init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
+index 4576d3ae9937..2436a17f5cd9 100644
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -5944,7 +5944,7 @@ qla2x00_find_all_fabric_devs(scsi_qla_host_t *vha)
+ 			break;
+ 		}
+ 
+-		if (NVME_TARGET(vha->hw, fcport)) {
++		if (found && NVME_TARGET(vha->hw, fcport)) {
+ 			if (fcport->disc_state == DSC_DELETE_PEND) {
+ 				qla2x00_set_fcport_disc_state(fcport, DSC_GNL);
+ 				vha->fcport_count--;
 -- 
 2.27.0
 

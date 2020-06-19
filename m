@@ -2,29 +2,39 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 214D02011DC
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jun 2020 17:47:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3D9A2014E6
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jun 2020 18:22:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405272AbgFSPqT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 19 Jun 2020 11:46:19 -0400
-Received: from mout.web.de ([212.227.15.14]:35373 "EHLO mout.web.de"
+        id S2394465AbgFSQPG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 19 Jun 2020 12:15:06 -0400
+Received: from mout.web.de ([212.227.15.14]:56741 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2393496AbgFSP0l (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 19 Jun 2020 11:26:41 -0400
+        id S2391043AbgFSPDo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 19 Jun 2020 11:03:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592580394;
-        bh=1/GDrKnoAzkupFdrRTGpCfampXo+6ifil2ModgwaGvU=;
+        s=dbaedf251592; t=1592579002;
+        bh=GxYh1qdG0mY8NBgFhfOclaGuSJllPFVrAzWx8/7J4Os=;
         h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=M+gek/ynz2XgO+mUMRP05L2lhNYSaH/iv51fox0siLxd6oU5DxVN6gQCvlOdVB+34
-         JsWElPrNoST4vuCHtNdw5mUn3HpGAWnU5ig1z4PDnh6iX5cXqXjP+EzSG6R8bCUFzS
-         yV5GEq2XqTlgx+E7UF543BcrDQk3CNKAaAOETsrE=
+        b=dnvK6hy2/lDP5qxtum5D/NUKgieXMtg84RL1gjMcc3KhM8XXcg6vioONzhpJn0kU+
+         WVM+kDtsg8f7e9ETrZ3b1COhHwG4Ftzw7Ou3eB96vAIFsc8X+MwTDkxO4Xo8C8YI4R
+         PHEKFyY4p9AbETpahXMIosqf67WegJ09PwosLGvM=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.139.231]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1M43KW-1jmIuY0fQG-0007Vj; Fri, 19
- Jun 2020 17:26:34 +0200
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] coccinelle: api/kstrdup: fix coccinelle position
+Received: from [192.168.1.2] ([93.132.139.231]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MhWop-1jIAOH0MHT-00eetB; Fri, 19
+ Jun 2020 17:03:22 +0200
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        "Gustavo A. R. Silva" <garsilva@embeddedor.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH v3] coccinelle: misc: add array_size_dup script to detect
+ missed overflow checks
 From:   Markus Elfring <Markus.Elfring@web.de>
+To:     Denis Efremov <efremov@linux.com>,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -68,60 +78,96 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-To:     Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Julia Lawall <julia.lawall@lip6.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>
-Message-ID: <0f221342-cd9c-04d2-da01-f86574d3de34@web.de>
-Date:   Fri, 19 Jun 2020 17:26:32 +0200
+Message-ID: <cf6ab028-4297-dfab-35a7-cb6589fe61ac@web.de>
+Date:   Fri, 19 Jun 2020 17:03:18 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:4A8O+v/braYvujFpniGy20a6x6QdcckHyF/IRe/dy9FTzDcLsos
- xK4P7tjvYRQDo5+iplWnDzGbFQ+u5ET5jVLr/4oM9gL6cGFo+f66vwm1o8P5Ww0w1EBe/Rp
- LaaPsPIuYzIfEuGETVwDSlfBDPyClrkb235VBoBFFovFxzA9hdw0KG8DsO4sfkMxR+qHkt+
- E7bYJW5PO8QgwDAvyb1KQ==
+X-Provags-ID: V03:K1:0dDirl9a1cXle/tNkqr42+2WaoqiVXrFC5lI+chji2DVPI7fmJX
+ B+FHitTBLLj7znFEwh45Sc1LCXF9QziVsXM8GJXu4q29LHgXELN1w4KC/13krJ0QxmMaVw7
+ yaQGaVb+R91z53LDiUE9igNYXrkfEBRa3WmuiuPD5EE95Zq3Rgi/VPQT0HKVva6J2HZaAKj
+ KaMc1LUoPBZ0DsbHU7uCQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:wXnT8ygw07M=:nn614KRPWLpTtI2xc+bXAJ
- bHAH9M3rofijLo+WKAwkKHDpL3jjEh333dUPuEYjsS6vAC2GrHwM41ozX3BIwmQ6CgfSHGRTS
- TTDW6w8itXCSxdHq/lXoW3JhPqV9Gx08kMoXcU4w6MspOUhas3W1uxZtm1EMLh9NvyHF1qKOW
- Dl39jKXfk55cErkHO8KNqVkJJT/Uc3LINkLqvdLDkPJlt7+u75TPnKsZMaiIDIh6Tk/Lwsmkv
- s0cRWbY3OO4IAnBQ9ngbhpqU+/UOEccz+zYuwgYCmTvDX3KNZ9/aZTOY545+Y1Vwwn2J8Uj2d
- V6MB+ajtyydG9M4vY0srz3nKEsz3w0J5vosvYEa9/5j0XkECGNFLr7onJvSXjlT+iifaWT/U6
- eKfpHUBpg36YxHJ0/TgBHpPoHT0YDruLbD4llXfqYA+ZufmE+JO3uWydZPmubsgM4SRIs7gfL
- yH8mfkPF8W1QOJErMvynaOjtKQaFbVh9VUGZjQeaX6aZMmA4zbKCcw5X3D/+4xQemjsiNGKwe
- QG1XS0hENA4jIXpjY17hH0IAWoPh+fVRUu0UURXrU0G6n7M1BR/TieoL8VyfuI/8HXZ98xNdu
- 9qQIJKlV/bvoxWxTFDGLdgiijrG1VQJegjWqUdeZ0mwgt+9cQnfjdp6W2U+UT0Anh6/5ADhPt
- oNAKJAlok0szGy6i+FODulYqwfioi9Y4EsIiCW6VyUtZSNKI+UoL19OFzstCKIsHzPcpxD2tA
- KPzIphrlK766z28UAyMhcr73pGhorau8w6vYdbQa8u6SG6n9zDg04bbc6036Q4I/Oa2iJJ4DJ
- HRbpKJP5j19jY9/FgAR9S2/LHYpiASeF2l7wwfeQaIhy7nsLGHEN86LZTE7jXFrtEth62svlK
- 8FlNPgXhUIJR3pJ1HqQ2jBaJkUiQh7UCvpYrVf2zzsaTgP7e2kVyf4NHUjrA0Sw+NclzsTFzO
- gY7xqVWIIYJZ+1qyolkdBS0w8EENoOpR3mFX3o21KV5d665WqHJ+bJiPDOnpY27+n52e/CD4e
- f5oTBKbmGqy21G39VHMGM3LZnnKKHoOW60LKf//ZKp+9knHJWPqqrar20I2XDR8lzLyaUcUgJ
- 5XPNOIswvpMZFNCjb3omZo+UhDyFnW++ApIa35eEGNdlrrlEs4te/4BpcVSwXFLuGOYKR0JeF
- 4jlD/nF9/g4CCRSSiVYS3vSBsJhEtZI1sF7CvA0Hf10uFHST8ACMq9n9czsTVGs2ZYyNmsph+
- byKHf5SSDD0uR1JFM
+X-UI-Out-Filterresults: notjunk:1;V03:K0:joucBZ9eE5E=:RIurRgSuJTokqpZGz+2J0+
+ bzt2le0VsugVrWTRNfAclI6TswkmQMTisFuD7m4bfql08FVvEVAK3IkzGCLw4rEoRxiNLV5C3
+ 27sQ8k8C1YjbJGA+F4oQDFze8uBYna+DaifXRmHZI40KmW/Sf2+zfK+3oMd/otG3LW4blgPFw
+ y+QtNd6OfHNclWKRy8YwawTX+L/9DI7YhgxmcUPAJs+l6JyI/gc/J86fP2GfUvwgUEeU2UY0/
+ JHWpNDieZu0lJZCN2h03TRvGD1NupB54Sh/MRRJbVeHhopPy6D0RzteNzfyzsA1kkdtd9FqER
+ XFUvUhIYZsKpO3Pys7qBNw9GBgRACNidMgkb1FLiGxStctedIsD8s/z4MDfM8493oODh7fYeW
+ ca9rqK4/tz/VzLnSCSKxgQEQGHNSMqS9o4K83vgl0dlT7YUFhGKO8RaS9kcu1Azu1k7EkRJFr
+ yT7nCzogr1wE27RktKqppzOAmLZHNjcJmBkx/n5n4u2qXDp7eyCZyXy0XSwMiiB/o0+FWlM9W
+ GSCPtp8fjsmLfPh4r9UeYY5qoGh2VOQ/Go7t5AZLSRLv9ohyeYUEulo+ag6JugMJPTlVMqWmH
+ X/tpwhbATdJD35oRRLR5IzqhZ2ebXMOZTyfxM/FvWjjTojNKy0i18naG72gYUvn3F1g7RxK+e
+ oIgWgMKnGxUz3OMzIwjFiiCgPXtIMr7PF2IgMXUqQ+KR3mUIzTWPt/4GIicridnDYz2RAUmU0
+ LAfyaHNCpwA4bbUz/YdDOgWkmui8s7l3bhxVsUbVYCymMqlkxadpudYNbX3ofpu7tKEiSfy74
+ T0qiZAMhgM4DOskVTOwmdoUW7l1Cu6EZRAFfvicro78szVX7pW67gXfJ2+M356EUle9IgASf0
+ 9yEzzyUQNkcqZY+kJkwSY+ZKJnXlz6WRoZard745n861vN2ZE32S1V74vCBn5WXDape0tu5Kr
+ TuRxinw2M64b3ABfzQHH/uGflLBUnhdKJeNA6HFbAukTfzZtGVwBev/hvdSmVX5SpvvH6Vifg
+ aJQ6dPJkJImQs7StvSXyR7S933tPFJTb0xdRQCFoXAwa4ETPq9a9LLQgn8VKE3gt09DYbHJzJ
+ v8geyl17eODgecgJ5wJUCvEx70k+R3PAinonliCaiQUuNup53NaqDXO8D+63/WYEd5WeMSWuM
+ PNVU0JX7tmrbw+4GQBJC4mjRPgulKt8rdb2zz63RrI6YSORmfw0KI1AICp1FZw923gY0TUg/1
+ sYwn1O6MfVqqCW4BS
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> There is a typo in rule r2. Position p1 should be attached to kzalloc() =
-call.
+> Changes in v2:
+=E2=80=A6
+> - assignment operator used
 
-I find such a suggestion reasonable for an implementation detail.
+I would prefer the distinction for the application of corresponding metava=
+riables.
 
-I would find an other patch subject clearer.
+
+> Changes in v3:
+=E2=80=A6
+>  - \(&E1\|&E2\) changed to &\(E1\|E2\)
+
+Would it be more helpful to mention the movement of the ampersand
+before SmPL disjunctions?
 
 
-How do you think about to move the specification =E2=80=9C@p1=E2=80=9D out=
- of SmPL disjunctions?
+=E2=80=A6
+> +virtual context
+> +virtual report
+> +virtual org
+
+Can the following SmPL code variant become more attractive?
+
++virtual context, report, org
+
+
+=E2=80=A6
+> +expression subE1 <=3D as.E1;
+> +expression subE2 <=3D as.E2;
+> +expression as.E1, as.E2, E3;
+
+How do you think about the following SmPL code variant?
+
++expression subE1 <=3D as.E1,
++           subE2 <=3D as.E2,
++           as.E1,
++           as.E2,
++           E3;
+
+
+=E2=80=A6
+> +coccilib.report.print_report(p2[0],
+> +f"WARNING: same struct_size (line {p1[0].line})")
+
+Please align such function parameters.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/coding-style.rst?id=3D5e857ce6eae7ca21b2055cca4885545e=
+29228fe2#n93
+
++coccilib.report.print_report(p2[0],
++                             f"WARNING: same struct_size (line {p1[0].lin=
+e})")
+
 
 Regards,
 Markus

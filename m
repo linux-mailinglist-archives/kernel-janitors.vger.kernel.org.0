@@ -2,132 +2,186 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EDAB20087A
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jun 2020 14:16:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9BEB200954
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jun 2020 15:02:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732868AbgFSMP5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 19 Jun 2020 08:15:57 -0400
-Received: from mout.web.de ([212.227.15.4]:37479 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731561AbgFSMPv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 19 Jun 2020 08:15:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592568935;
-        bh=45UgeJv4t65eu4zPCmJvNpVnUo7ZfpKmm0k9LndJsks=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=Yecaf6gj4cR2Pksp9Js8UeVO+MNjZbWGmDnsnuhS3sHsSWrInRQI3/qsmEJ18sBHj
-         rhpx+N4EJ8qCvTB9d/JIl7U1uFetrGORYRz1R+hvcNFP5qF9vpgTlKP+5Zzc6mrEl9
-         T3U/K54jm3PqYM0gZ5Ya6X0wZrgDKFmw4K+IIes4=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.139.231]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LecN4-1j5kAj0xig-00qRCG; Fri, 19
- Jun 2020 14:15:35 +0200
-Cc:     opensource.kernel@vivo.com, Aditya Pakki <pakki001@umn.edu>,
-        Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
-        Qiushi Wu <wu000273@umn.edu>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        =?UTF-8?Q?Felix_K=c3=bchling?= <Felix.Kuehling@amd.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>
-Subject: Re: [PATCH] drm/amdkfd: Fix memory leaks according to error branches
-From:   Markus Elfring <Markus.Elfring@web.de>
-To:     Bernard Zhao <bernard@vivo.com>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <c966b91e-765f-c36c-2563-4e348fd1daf6@web.de>
-Date:   Fri, 19 Jun 2020 14:15:32 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        id S1731687AbgFSNCG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 19 Jun 2020 09:02:06 -0400
+Received: from mail-eopbgr150045.outbound.protection.outlook.com ([40.107.15.45]:55893
+        "EHLO EUR01-DB5-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1732809AbgFSNBx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 19 Jun 2020 09:01:53 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UXOvBzdwtDxJ4uZTNmQqFKi6xVEFjKGgvGkY8w+1gcYMUzqziQBce078ScqR/J3msr95tcytKan8DzvzN+Czgpnrqds7IOHeFijFz/viwdJ16HA3iARzBKiNiZeFnR3SZtHFkkrQi8YiHR54a4JbCIVFdJYP66mhJgpmx/IPAaeyXqWAQ8yS6vv/q3rFTVjl0V641yjUhG4pCeQvrrm9KNbLeJVYm2Ht8fQp4zWc20ptzXF1+XAOl41HfiMAIqJZNpIh/1bJ3L7CIKu4FV+darWiRGXv1qRqthBF3kZQkZZLu+jhk8LKvnt8C6b5e2CHNT5f3hGKs3Oue6ofzKma4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/FAJ23ZPMQuSyoi/VLPM6PnQ9ZS6rxZwIEFtJri6DtI=;
+ b=eC+KnZ0PP0uQK5IHRXKbjeOrgHQmVMT+fgJ6nZdoQnPJrSh0ySrp4NZ/m7io5boX+6L8hF2LVOAxLEdYs7vKWMrhQsdBl6FbcWkICsegzB8Rn1Eem4ihAf3fqAoUXBTIAkiJ/E2wPRqpAQ0AU6jwha17UEUp3OYRnWtyBPpAPO01ULcZkSH2ANeKDQd2bBA9OZ8TbjP+q0pHrBhdforgxwttJTo/l39gGPqSqq/DOevH7G6NsgfIYFY1RchijxMbkfJr9pUCn5LxslGlpsowLzxCt6awDB7NN8JuumMjtlfsE7rTVdDlShYUMdwltixN+On1COS8fFHye5BnfuNSCg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
+ dkim=pass header.d=mellanox.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/FAJ23ZPMQuSyoi/VLPM6PnQ9ZS6rxZwIEFtJri6DtI=;
+ b=ed4Lc3Bw+GCrUpj7R9naEw/Gshf0kCoVVREhHY9InTMRlD9Vn9xakioYNWDWQJfyGiakuNZZuE5Zut14QwO7MwnlaHh0xbDBs80K2EZtMUio2v1mLOlIh7k8wUk04c+WorhDf2k7BFxljjRDXluyIOjGpllCRSdfB+0SPL4tKpQ=
+Authentication-Results: oracle.com; dkim=none (message not signed)
+ header.d=none;oracle.com; dmarc=none action=none header.from=mellanox.com;
+Received: from AM0PR05MB6754.eurprd05.prod.outlook.com (2603:10a6:20b:15a::7)
+ by AM0PR05MB5745.eurprd05.prod.outlook.com (2603:10a6:208:110::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.21; Fri, 19 Jun
+ 2020 13:01:49 +0000
+Received: from AM0PR05MB6754.eurprd05.prod.outlook.com
+ ([fe80::c0cc:a656:610c:88f2]) by AM0PR05MB6754.eurprd05.prod.outlook.com
+ ([fe80::c0cc:a656:610c:88f2%3]) with mapi id 15.20.3109.021; Fri, 19 Jun 2020
+ 13:01:49 +0000
+Date:   Fri, 19 Jun 2020 16:01:47 +0300
+From:   Ido Schimmel <idosch@mellanox.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     kernel-janitors@vger.kernel.org
+Subject: Re: [bug report] mlxsw: spectrum: Adjust headroom buffers for 8x
+ ports
+Message-ID: <20200619130147.GA400150@splinter>
+References: <20200619100907.GA246319@mwanda>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200619100907.GA246319@mwanda>
+X-ClientProxiedBy: AM0PR04CA0045.eurprd04.prod.outlook.com
+ (2603:10a6:208:1::22) To AM0PR05MB6754.eurprd05.prod.outlook.com
+ (2603:10a6:20b:15a::7)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:bW/jlvnVLAJqZr8DAAisjb74aEUzKSMI3tkulAuAkBcRr7D/Ac8
- Js053pNH47f7md+XQThFTIy3GMK4avN5YSs0NxDfhGprk5wAJ2isK/4Aar5h1wCJ3wv5e5D
- 9Kz1RLx7jf8jLjWWtD3SdqykCQfwkJjPd1yrbVdbQJ/PcrVGh6cTWGQzBRWaRI4UMHx9TzY
- Vq8D3r3AEo4v+R0v3GJsw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:NNc4CFBbVQw=:aBMbY0JcBtV/ZHsxAV/gBT
- 8lGmEqt61nXy2U2c/Kk3x37uN/RhQHlIskwB1kwAsjKipFcTTv1uUOc4QoquWWKcn3SeH5/Zn
- JOSX4uoZKjhp0b52BmlLC6k9iXMzof65X7S1hmtBKLsHiuL7tghnbNxqBT5erMGjBwZ4mDG8d
- Jwd1vRfrbvPo3IFFeYhxgtOY1JJldNCgiz0RG5QVKNW/UzYzi4wsmTZVW06fHLHBz7Ib5j4di
- de4jCwh0qBPSpaAyUPop7ujZ+spuiFKgElUeo98PCY5ys6fA6WghMot0hePPb2EjpVo+ZCjgH
- AilZInQO7QtQo7AxZbYLVICdzehvI6j0FKQrLVveFSonIGpn/Z4vz1AuaazrW9dzLkjk7Y24k
- KrHscqcR7iS2wtpLRgUKg5zRyM7AQFiijR8Y8KCuUHWoUKn+YvbDmefZ/5EEj9+wyVbDByorg
- 6tC5sXC3EhKpKhgy/dIVE5ouoK4hWVXddtU51B6+Q2elxXIILJMrWxWcyZWZOSSDD69UZmwfv
- Jvr+sayG7hhYuL7pTEwmMs6IWOI3Wo4mJvLxffVp52UXVl2BSzGQIDaP30Qq0NMOORSOZNxGT
- lCObH0pH6iv5dzDZHh9F7cZclfJ4SQ8rdPSCm0pyBVzogCCuHCsTuGQXZaUlSKSFE8j8Jai0J
- 3/qTPwMQ+zxfoW5LC1uWDpg4K1+gSEa3eyFF7Oj5wd5ArIOg6zwu/TvhISlxhWi7BWFN02uZk
- 5Jqm8JYu4jbVwHrI8xn2X4OimKf2mI4wt3H8S+C/Xn75rLncuBplavNHGnHilvIKFOEBeFBTZ
- ubLA+KatpfW3qjmstpvp1yIqHAuRcrDOFUMB9U+r9XRdg0zjmfbGzcfizberKPZQlKgv4YjP5
- gVMaKk2Yb2x6FmnLbr0A8bhlcDWuS5SRhpMiWS0Tc0JeAt+C815s3Zxp1/zXnkTtq0NR90RKw
- rBsQ1gYI95VhsU6vur8XdP9+yV+cuR2pLZaJSZ5f5uy1aTDFbx+5WibMpPY2gFNj6iAAI6Gdg
- TZrTfoSD90/bDxcip5aOBYJuAdn21gu4WffcT7ZuqKMZxjdzsm3KfM5rrVG+jSoyAC1iC21Y0
- UKoWc1ZCcRrYElPYt6yQ47BX2J4Vd+hHkeZJOAAKnQcdnYWnvOaKLJLB+fGdtMiz5wft9cKmE
- hzOSV6GCh29oQr0g8xgyfs2K1H9GPCFD1BcenayOKAyndHsjcOwdnxIOziUe3lDaQhWsNioDJ
- Mp5EPu0irg/USbzU2
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from localhost (193.47.165.251) by AM0PR04CA0045.eurprd04.prod.outlook.com (2603:10a6:208:1::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.21 via Frontend Transport; Fri, 19 Jun 2020 13:01:49 +0000
+X-Originating-IP: [193.47.165.251]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: fea85e49-c58c-4e8b-5023-08d81450ee0f
+X-MS-TrafficTypeDiagnostic: AM0PR05MB5745:
+X-Microsoft-Antispam-PRVS: <AM0PR05MB5745F3CDE99731D6F02B3905BF980@AM0PR05MB5745.eurprd05.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1360;
+X-Forefront-PRVS: 0439571D1D
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ULLipAR97RlX7b71ZWu9bykGgePnCJW5ucDsHUQhRtZnhkIvNycl4aSbqVrWJIkcNPVzNT5hUnQcDkGR5pLw5SHdqUeRv328AbOCSSZS25Kn7dMTsYYh/RaiLffY9jKoOn4CBFYtYadNOUG1kjvlZqToY1e3Z8ZDbzjyttilrY0eGrefGuqabGF5DG0MGlZJAoSqJIaAYNpwOVDTmSZy7C4edFdD443SzwWffoIYVMjUS+dcvYzVVN2uhHLYrKxA3jc8QM/KvNEvDJgCD2iQ+hh4TawCI2uJAgApLbP8BlV3L+kcnUJaUhwySYxFP5BL1g8QJNJ+uACyaucuujmPlw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR05MB6754.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(7916004)(4636009)(346002)(136003)(376002)(396003)(39860400002)(366004)(956004)(186003)(478600001)(33716001)(16526019)(33656002)(66946007)(66476007)(66556008)(5660300002)(4326008)(316002)(52116002)(6916009)(86362001)(6496006)(8936002)(83380400001)(9686003)(8676002)(6486002)(1076003)(26005)(2906002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: LIFPDubblIQtNqeV9Kme1/PClZwBE5VdtCBi6hJlxgkmgwUdKBJ2HoWbmR+j8OFtuH/PrIOl8ctxz7nhKJ0XaoOSnfLd2TIRi6cfGubuk3X647I6lmQqp7XUS1f83mi/dLBxL2QGqxkC3+dfjQnV4Xp8eB2FZfpbkZRDlrNqwQ87Kz6TcVs2s/reqhc2S+zCjDsi/SxGcmbV3iCIdn89K/lEDIEnzwEtCI45/+0WxZhvxt9uCmj3JR06OQ/tv1S4JMTmmEOc0ebkcIL0u2BfXSxTI1KaXT1IXOlWdr8uo+NWKVCqdiR8G0NHSGu9qPyy6ZtaCSzn+J3pGd+Keu8mFruXl1Q/oXuaSJvyLv0M0GDoFdilbBcVDmfNrr8hxeo/BvxaFk6kvwGCm0oZ3vtSrOqX+qo2tWE4ZTRCbUZyIeaVm9TKle2KMIUOFWuYgMNScn/uzchXbRMXtVAUhvFtZkAn+AaXgURklVfTldB01UtdNBSzZ1puVbDhCB0p0BL/
+X-OriginatorOrg: Mellanox.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fea85e49-c58c-4e8b-5023-08d81450ee0f
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2020 13:01:49.8796
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: a652971c-7d2e-4d9b-a6a4-d149256f461b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: s1muiOajsWoKxHIeY7UYEdkKxklyR9Rw5huUtdC+QlWNSnyTG/SE/abzWoduEMo9XWEKhwNaU8d6uXZ+XkAlZQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR05MB5745
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> The function kobject_init_and_add alloc memory like:
-> kobject_init_and_add->kobject_add_varg->kobject_set_name_vargs
-> ->kvasprintf_const->kstrdup_const->kstrdup->kmalloc_track_caller
-> ->kmalloc_slab, in err branch this memory not free. If use
-> kmemleak, this path maybe catched.
-> These changes are to add kobject_put in kobject_init_and_add
-> failed branch, fix potential memleak.
+On Fri, Jun 19, 2020 at 01:09:07PM +0300, Dan Carpenter wrote:
+> Hello Ido Schimmel,
+> 
+> The patch 60833d54d56c: "mlxsw: spectrum: Adjust headroom buffers for
+> 8x ports" from Jun 16, 2020, leads to the following static checker
+> warning:
 
-I suggest to improve this change description.
+Thanks for the report, Dan.
 
-* Can an other wording variant be nicer?
+Colin already reported it to me and I have the below patch in my queue
+to address the issue. WDYT?
 
-* Will the tag =E2=80=9CFixes=E2=80=9D become helpful?
+commit 7f3da2eeb1011ce4117ad75df91dc0b16b7b561b
+Author: Ido Schimmel <idosch@mellanox.com>
+Date:   Thu Jun 18 18:14:04 2020 +0300
 
-Regards,
-Markus
+    mlxsw: spectrum: Do not rely on machine endianness
+    
+    The second commit cited below performed a cast of 'u32 buffsize' to
+    '(u16 *)' when calling mlxsw_sp_port_headroom_8x_adjust():
+    
+    mlxsw_sp_port_headroom_8x_adjust(mlxsw_sp_port, (u16 *) &buffsize);
+    
+    Colin noted that this will behave differently on big endian
+    architectures compared to little endian architectures.
+    
+    Fix this by following Colin's suggestion and have the function accept
+    and return 'u32' instead of passing the current size by reference.
+    
+    Fixes: da382875c616 ("mlxsw: spectrum: Extend to support Spectrum-3 ASIC")
+    Fixes: 60833d54d56c ("mlxsw: spectrum: Adjust headroom buffers for 8x ports")
+    Signed-off-by: Ido Schimmel <idosch@mellanox.com>
+    Reported-by: Colin Ian King <colin.king@canonical.com>
+    Suggested-by: Colin Ian King <colin.king@canonical.com>
+
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
+index 55af877763ed..029ea344ad65 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
+@@ -978,10 +978,10 @@ int __mlxsw_sp_port_headroom_set(struct mlxsw_sp_port *mlxsw_sp_port, int mtu,
+ 
+ 		lossy = !(pfc || pause_en);
+ 		thres_cells = mlxsw_sp_pg_buf_threshold_get(mlxsw_sp, mtu);
+-		mlxsw_sp_port_headroom_8x_adjust(mlxsw_sp_port, &thres_cells);
++		thres_cells = mlxsw_sp_port_headroom_8x_adjust(mlxsw_sp_port, thres_cells);
+ 		delay_cells = mlxsw_sp_pg_buf_delay_get(mlxsw_sp, mtu, delay,
+ 							pfc, pause_en);
+-		mlxsw_sp_port_headroom_8x_adjust(mlxsw_sp_port, &delay_cells);
++		delay_cells = mlxsw_sp_port_headroom_8x_adjust(mlxsw_sp_port, delay_cells);
+ 		total_cells = thres_cells + delay_cells;
+ 
+ 		taken_headroom_cells += total_cells;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum.h b/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
+index 6e87457dd635..3abe3e7d89bc 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
+@@ -374,17 +374,15 @@ mlxsw_sp_port_vlan_find_by_vid(const struct mlxsw_sp_port *mlxsw_sp_port,
+ 	return NULL;
+ }
+ 
+-static inline void
++static inline u32
+ mlxsw_sp_port_headroom_8x_adjust(const struct mlxsw_sp_port *mlxsw_sp_port,
+-				 u16 *p_size)
++				 u32 size_cells)
+ {
+ 	/* Ports with eight lanes use two headroom buffers between which the
+ 	 * configured headroom size is split. Therefore, multiply the calculated
+ 	 * headroom size by two.
+ 	 */
+-	if (mlxsw_sp_port->mapping.width != 8)
+-		return;
+-	*p_size *= 2;
++	return mlxsw_sp_port->mapping.width == 8 ? 2 * size_cells : size_cells;
+ }
+ 
+ enum mlxsw_sp_flood_type {
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_buffers.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_buffers.c
+index f25a8b084b4b..6f84557a5a6f 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_buffers.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_buffers.c
+@@ -312,7 +312,7 @@ static int mlxsw_sp_port_pb_init(struct mlxsw_sp_port *mlxsw_sp_port)
+ 
+ 		if (i == MLXSW_SP_PB_UNUSED)
+ 			continue;
+-		mlxsw_sp_port_headroom_8x_adjust(mlxsw_sp_port, &size);
++		size = mlxsw_sp_port_headroom_8x_adjust(mlxsw_sp_port, size);
+ 		mlxsw_reg_pbmc_lossy_buffer_pack(pbmc_pl, i, size);
+ 	}
+ 	mlxsw_reg_pbmc_lossy_buffer_pack(pbmc_pl,
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
+index f843545d3478..92351a79addc 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
+@@ -782,7 +782,7 @@ mlxsw_sp_span_port_buffer_update(struct mlxsw_sp_port *mlxsw_sp_port, u16 mtu)
+ 		speed = 0;
+ 
+ 	buffsize = mlxsw_sp_span_buffsize_get(mlxsw_sp, speed, mtu);
+-	mlxsw_sp_port_headroom_8x_adjust(mlxsw_sp_port, (u16 *) &buffsize);
++	buffsize = mlxsw_sp_port_headroom_8x_adjust(mlxsw_sp_port, buffsize);
+ 	mlxsw_reg_sbib_pack(sbib_pl, mlxsw_sp_port->local_port, buffsize);
+ 	return mlxsw_reg_write(mlxsw_sp->core, MLXSW_REG(sbib), sbib_pl);
+ }

@@ -2,40 +2,39 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90A17200796
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jun 2020 13:16:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EDAB20087A
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jun 2020 14:16:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729862AbgFSLQX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 19 Jun 2020 07:16:23 -0400
-Received: from mout.web.de ([212.227.15.4]:58235 "EHLO mout.web.de"
+        id S1732868AbgFSMP5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 19 Jun 2020 08:15:57 -0400
+Received: from mout.web.de ([212.227.15.4]:37479 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729779AbgFSLQT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 19 Jun 2020 07:16:19 -0400
+        id S1731561AbgFSMPv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 19 Jun 2020 08:15:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592565357;
-        bh=zrGN2/4FMUrTh6i8ulXHhVkLqpabsZXVXUk0EsEVmyE=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=WjEdVGPrY37EQTtjT1Z1gP4xUwbycB19ga9GReJ7s9bGyB7Ahct6PSV5TLyTGIcQM
-         PW0hgXC/510gtbEJVliGoqgHc3rKBTbinUx5kI5T1JyKgMErSLAbXqx1S/097gJsqw
-         RUBIVeDw6PgxXhMOwrUXUKPBh73ifXBx0P1kPwM4=
+        s=dbaedf251592; t=1592568935;
+        bh=45UgeJv4t65eu4zPCmJvNpVnUo7ZfpKmm0k9LndJsks=;
+        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
+        b=Yecaf6gj4cR2Pksp9Js8UeVO+MNjZbWGmDnsnuhS3sHsSWrInRQI3/qsmEJ18sBHj
+         rhpx+N4EJ8qCvTB9d/JIl7U1uFetrGORYRz1R+hvcNFP5qF9vpgTlKP+5Zzc6mrEl9
+         T3U/K54jm3PqYM0gZ5Ya6X0wZrgDKFmw4K+IIes4=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.139.231]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1Melaj-1jC4tt3fSn-00apC6; Fri, 19
- Jun 2020 13:15:56 +0200
-Subject: Re: Coccinelle: Improving convenience for message exchange
-To:     Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>
-Cc:     Gilles Muller <Gilles.Muller@lip6.fr>,
-        Julia Lawall <julia.lawall@lip6.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        "Gustavo A. R. Silva" <garsilva@embeddedor.com>,
-        Kees Cook <keescook@chromium.org>
-References: <54ac89f1-5f38-8909-a652-c658a5a1f36b@web.de>
- <759d33d2-25a2-f55f-7e3a-7481ab5dd0fc@linux.com>
+Received: from [192.168.1.2] ([93.132.139.231]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LecN4-1j5kAj0xig-00qRCG; Fri, 19
+ Jun 2020 14:15:35 +0200
+Cc:     opensource.kernel@vivo.com, Aditya Pakki <pakki001@umn.edu>,
+        Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
+        Qiushi Wu <wu000273@umn.edu>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        =?UTF-8?Q?Felix_K=c3=bchling?= <Felix.Kuehling@amd.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>
+Subject: Re: [PATCH] drm/amdkfd: Fix memory leaks according to error branches
 From:   Markus Elfring <Markus.Elfring@web.de>
+To:     Bernard Zhao <bernard@vivo.com>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -79,67 +78,56 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <9d59e035-c348-d61b-0206-d9e33094c605@web.de>
-Date:   Fri, 19 Jun 2020 13:15:43 +0200
+Message-ID: <c966b91e-765f-c36c-2563-4e348fd1daf6@web.de>
+Date:   Fri, 19 Jun 2020 14:15:32 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <759d33d2-25a2-f55f-7e3a-7481ab5dd0fc@linux.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:FchTfQ/IvuPtD5FC8vGxz+IvKjRiYq9XB2ZGr3afxpWRUMEoh3K
- 6c+63I22c/ZsF7Vdp6UE3qX5mxNsXqIw09BCM3Vd7y7RaMlTJ4xq3yzdrn3Jo/yQigBkxYn
- iZ4yKKXk4dsLvcQ/G5BxaJR50bRgaa+nIyh5/V5ks6IW60Y8Fqt/uVHRg4bMQoYnTRrm7CJ
- V3jdsgk0amga+ta2mqI2g==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:bW/jlvnVLAJqZr8DAAisjb74aEUzKSMI3tkulAuAkBcRr7D/Ac8
+ Js053pNH47f7md+XQThFTIy3GMK4avN5YSs0NxDfhGprk5wAJ2isK/4Aar5h1wCJ3wv5e5D
+ 9Kz1RLx7jf8jLjWWtD3SdqykCQfwkJjPd1yrbVdbQJ/PcrVGh6cTWGQzBRWaRI4UMHx9TzY
+ Vq8D3r3AEo4v+R0v3GJsw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:9LfeHfE41nU=:ZoS9CyYVx4yVjgCcmCydXx
- gjTnrOKdtCTKirN9ogNfWvkCGxP8W5R8jZlELJXYBOdgxBJ2VTpGVTaW4VWg31wmfn6Ok96IO
- m+keu8OHRDmgLl/lKo2PrCmIY6CAMuY/jgARqxjIlSc8Kgp7IyLFX8VGKx+dMgBjft71t9rPn
- Y/PxN3HRKSoG0dsR/NMzagIs59BXk1POuu+U8pFdABnH+z8eGgUbjRpklYRm/Lq+MzKhzvXjk
- myOSCDl/DQyFzUgcHqL5XT7f/PcZOkmcuOVa16L4IY+X5sbjw0tjBGgarWXCbWy7qsKLRhA5x
- uZpsi1G3PUMyqJhle1e/t8bT5LmGCI5wHIAyqUt2SU2T+1ANcrHej2PsR7VRc+ORkGlFrXXLx
- mjbVunuXrg/9yyYkGGdVPlsgVXR6R6NoFuHFqCRaMbcJIZ0X+E0iI5SEFcU1z1xABo24tBnPu
- 9ua3HOCTq8OFNQxw3ZCmb0ScLWSghm3v2XP6161BqWCx1mXsU1Y1bVx0jFOYIEiIUfOcLrMJu
- 5rLLzo6nq7UG6X+mC+9fgQjXu4Ac8nOJtwK65+u3nSN/CpcdnVc9Iu5ANY4VHhTDMWzublkRi
- S+bX5omDDJbWWkFxaGsyU4qD5IG4Fp6sBywC7W4z3FXRaV9yUG+G9yGAbeIsH1G+XBwDpSUpc
- wDl+qDmhw+khE3T8yOa+BVbbNuhPUS0jAIi9Nc1KCLSHXDyD3TsSh6lfQoUyhnM1EHQomxYNX
- mcL6TZfrQcKmZYDoH/RnbDaUksQ6cO/cx0VplcUNB4+sRxWGLc/XfSjCA+RIm1VScZV6bOXpw
- JS7XD5EYm8lsxye263JsppGDyu7JkxDAlSd3ep9QuMNgruupyibZdvjwILttUh/qk7F1BzCPc
- gn4uDxqrk1eReTGGPRiRSoscrq/yt1Wn9dBYLMYYtJIP+S/kfJvohXLVVLPrONmlhikIe81uC
- K+bpB69UgaUa/yOUYIT16MXmqJDZgnP2PeXRw8j3Wlx1bRXFj6ZEbg9J9R2PBS6xe5zKq3j1R
- hOt7EG0kvKgP9a0aw2ilEff5RAEGKc0ejjpgcWSXwHUyWZCC/Bi/iKrYrqeDTG5v+oV5idbpu
- srCXUsmo0xyw/jT5JLTkus9/EIoT4GcE4QsufvvDyN06huf1eu+WSyIVBP3kVO+WgOmid2YwX
- npahz0G94UON9lfm0ZA0/NCE51s2zyLZUdmWbjvC+Szr+h0lBteaGM00M2spmmObc6SP3LGBX
- sp4nL1aqYwOcUZv9C
+X-UI-Out-Filterresults: notjunk:1;V03:K0:NNc4CFBbVQw=:aBMbY0JcBtV/ZHsxAV/gBT
+ 8lGmEqt61nXy2U2c/Kk3x37uN/RhQHlIskwB1kwAsjKipFcTTv1uUOc4QoquWWKcn3SeH5/Zn
+ JOSX4uoZKjhp0b52BmlLC6k9iXMzof65X7S1hmtBKLsHiuL7tghnbNxqBT5erMGjBwZ4mDG8d
+ Jwd1vRfrbvPo3IFFeYhxgtOY1JJldNCgiz0RG5QVKNW/UzYzi4wsmTZVW06fHLHBz7Ib5j4di
+ de4jCwh0qBPSpaAyUPop7ujZ+spuiFKgElUeo98PCY5ys6fA6WghMot0hePPb2EjpVo+ZCjgH
+ AilZInQO7QtQo7AxZbYLVICdzehvI6j0FKQrLVveFSonIGpn/Z4vz1AuaazrW9dzLkjk7Y24k
+ KrHscqcR7iS2wtpLRgUKg5zRyM7AQFiijR8Y8KCuUHWoUKn+YvbDmefZ/5EEj9+wyVbDByorg
+ 6tC5sXC3EhKpKhgy/dIVE5ouoK4hWVXddtU51B6+Q2elxXIILJMrWxWcyZWZOSSDD69UZmwfv
+ Jvr+sayG7hhYuL7pTEwmMs6IWOI3Wo4mJvLxffVp52UXVl2BSzGQIDaP30Qq0NMOORSOZNxGT
+ lCObH0pH6iv5dzDZHh9F7cZclfJ4SQ8rdPSCm0pyBVzogCCuHCsTuGQXZaUlSKSFE8j8Jai0J
+ 3/qTPwMQ+zxfoW5LC1uWDpg4K1+gSEa3eyFF7Oj5wd5ArIOg6zwu/TvhISlxhWi7BWFN02uZk
+ 5Jqm8JYu4jbVwHrI8xn2X4OimKf2mI4wt3H8S+C/Xn75rLncuBplavNHGnHilvIKFOEBeFBTZ
+ ubLA+KatpfW3qjmstpvp1yIqHAuRcrDOFUMB9U+r9XRdg0zjmfbGzcfizberKPZQlKgv4YjP5
+ gVMaKk2Yb2x6FmnLbr0A8bhlcDWuS5SRhpMiWS0Tc0JeAt+C815s3Zxp1/zXnkTtq0NR90RKw
+ rBsQ1gYI95VhsU6vur8XdP9+yV+cuR2pLZaJSZ5f5uy1aTDFbx+5WibMpPY2gFNj6iAAI6Gdg
+ TZrTfoSD90/bDxcip5aOBYJuAdn21gu4WffcT7ZuqKMZxjdzsm3KfM5rrVG+jSoyAC1iC21Y0
+ UKoWc1ZCcRrYElPYt6yQ47BX2J4Vd+hHkeZJOAAKnQcdnYWnvOaKLJLB+fGdtMiz5wft9cKmE
+ hzOSV6GCh29oQr0g8xgyfs2K1H9GPCFD1BcenayOKAyndHsjcOwdnxIOziUe3lDaQhWsNioDJ
+ Mp5EPu0irg/USbzU2
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> I can't handle your suggestions
+> The function kobject_init_and_add alloc memory like:
+> kobject_init_and_add->kobject_add_varg->kobject_set_name_vargs
+> ->kvasprintf_const->kstrdup_const->kstrdup->kmalloc_track_caller
+> ->kmalloc_slab, in err branch this memory not free. If use
+> kmemleak, this path maybe catched.
+> These changes are to add kobject_put in kobject_init_and_add
+> failed branch, fix potential memleak.
 
-I hope that you can work with provided information to some degree.
+I suggest to improve this change description.
 
+* Can an other wording variant be nicer?
 
-> because your mails constantly break the threads.
-
-Would you like to take another look at reasons for such an effect?
-
-
-> I just can't find them
-
-Please try again.
-Were relevant data stored in usable message folders?
-
-https://systeme.lip6.fr/pipermail/cocci/2020-June/thread.html
-https://lore.kernel.org/cocci/
-
-
-> after due to missed/wrong In-Reply-To headers.
-
-How do you think about to influence the situation in ways
-which can improve the desired data processing considerably?
+* Will the tag =E2=80=9CFixes=E2=80=9D become helpful?
 
 Regards,
 Markus

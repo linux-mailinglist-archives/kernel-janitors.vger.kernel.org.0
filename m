@@ -2,90 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 991FF2009FC
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jun 2020 15:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAC71200B71
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jun 2020 16:30:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732813AbgFSNZr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 19 Jun 2020 09:25:47 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:55818 "EHLO
+        id S1728169AbgFSOaJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 19 Jun 2020 10:30:09 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:53094 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729080AbgFSNZo (ORCPT
+        with ESMTP id S1726993AbgFSOaI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 19 Jun 2020 09:25:44 -0400
+        Fri, 19 Jun 2020 10:30:08 -0400
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05JDHA33050202;
-        Fri, 19 Jun 2020 13:25:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=FVXkHIRRaqRBu+bg+o5FU7sEhy5DvuhQuDeGuapHRpg=;
- b=y/Xy0toCsfOKakBG6QuJsl+dYxZn0v/NA4HSS452aEa31i92UYjSpDRY/DvfymqA28iH
- jWFs+40nv+9+TzXkSLYs3f4etZ3Q5i00aXFFzDCX/ULP9xySX5imvNh8Ym+CRqoxM3q8
- i8pydSqjIxLIIIo/i5lvVQQcvqlQeV2kXNm76t5ZyEyfP4bq5ykxxpVN7bwhcPyhZ9OW
- A/E1vPUTqI5r0u4+glw+S56U/EIeYd7Zl5Bv3X3X6EKXijFuLUK3S9mzfq8YPMxn5W9D
- aZlAKq3YA713rmp7xZDcRycZX/dlEcYqKrbsKZvPbCIa5tSeazE3E8/fp29Ud0tVjbtC /Q== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 31qecm58y9-1
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05JEDIFx158879;
+        Fri, 19 Jun 2020 14:30:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=mime-version :
+ message-id : date : from : to : cc : subject : content-type :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=B/h4/Smp0b+GZtYXT6WoZKLL0Di7be3tZw+sca6yhxU=;
+ b=dXxPQTrfkwbSmVjHZu3Y0c+Jap5JtawE0xiYy7epxZj/QQqeTULL7gf0U8U24Cgk7yOk
+ Is04EMvpx9/lhlDucePvHb5TE+DZtvWKjaFdXEHUS68hp4JZdhx8oAIHsizZqUn14RfM
+ zD3LsKO961e41aN52dc53PPjaGaSU0OaiPgpxrkGxPVQsrDrsqwcHbabT4ccykm4jlwq
+ u3krZgjb2wvkIsohYtKtLHWxVLTFLncy5Yw/NR8+/XU10bfUzH+UvFtufNiyeHxlylN+
+ MUmJSC1XpQsZD8E1vlHtq0/BxtYK20jXV42wBHR+Q4QwQm/VY3OryxYv2+g5K7SStS5z 5g== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 31qecm5ju6-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 19 Jun 2020 13:25:41 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05JDJHP4143610;
-        Fri, 19 Jun 2020 13:25:40 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 31q66rgd3f-1
+        Fri, 19 Jun 2020 14:30:00 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05JE9Og7111375;
+        Fri, 19 Jun 2020 14:30:00 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 31q66vm0j8-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 19 Jun 2020 13:25:40 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05JDPdNU026961;
-        Fri, 19 Jun 2020 13:25:39 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 19 Jun 2020 06:25:39 -0700
-Date:   Fri, 19 Jun 2020 16:25:34 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Ido Schimmel <idosch@mellanox.com>
-Cc:     kernel-janitors@vger.kernel.org
-Subject: Re: [bug report] mlxsw: spectrum: Adjust headroom buffers for 8x
- ports
-Message-ID: <20200619132534.GX4151@kadam>
-References: <20200619100907.GA246319@mwanda>
- <20200619130147.GA400150@splinter>
+        Fri, 19 Jun 2020 14:29:59 +0000
+Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05JETw3q008177;
+        Fri, 19 Jun 2020 14:29:58 GMT
+Received: from mwanda (/41.57.98.10) by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Fri, 19 Jun 2020 07:29:28 -0700
 MIME-Version: 1.0
+Message-ID: <20200619142922.GA267142@mwanda>
+Date:   Fri, 19 Jun 2020 14:29:22 +0000 (UTC)
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Karthikeyan Periyasamy <periyasa@codeaurora.org>
+Cc:     Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH net-next] ath11k: fix uninitialized return in
+ ath11k_spectral_process_data()
+X-Mailer: git-send-email haha only kidding
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200619130147.GA400150@splinter>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 7bit
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9656 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 phishscore=0
- mlxscore=0 bulkscore=0 malwarescore=0 mlxlogscore=987 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006190098
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ bulkscore=0 adultscore=0 phishscore=0 suspectscore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006190106
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9656 signatures=668680
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 cotscore=-2147483648 malwarescore=0
- clxscore=1015 adultscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
+ clxscore=1011 adultscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
  mlxlogscore=999 priorityscore=1501 bulkscore=0 phishscore=0 mlxscore=0
  impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006190098
+ engine=8.12.0-2004280000 definitions=main-2006190106
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jun 19, 2020 at 04:01:47PM +0300, Ido Schimmel wrote:
-> On Fri, Jun 19, 2020 at 01:09:07PM +0300, Dan Carpenter wrote:
-> > Hello Ido Schimmel,
-> > 
-> > The patch 60833d54d56c: "mlxsw: spectrum: Adjust headroom buffers for
-> > 8x ports" from Jun 16, 2020, leads to the following static checker
-> > warning:
-> 
-> Thanks for the report, Dan.
-> 
-> Colin already reported it to me and I have the below patch in my queue
-> to address the issue. WDYT?
+There is a success path where "ret" isn't initialized where we never
+have a ATH11K_SPECTRAL_TAG_SCAN_SEARCH and then ret isn't initialized.
 
-Looks good.  Thanks!
+Fixes: 9d11b7bff950 ("ath11k: add support for spectral scan")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/ath/ath11k/spectral.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-regards,
-dan carpenter
+diff --git a/drivers/net/wireless/ath/ath11k/spectral.c b/drivers/net/wireless/ath/ath11k/spectral.c
+index 1c5d65bb411f..bfbf905f7507 100644
+--- a/drivers/net/wireless/ath/ath11k/spectral.c
++++ b/drivers/net/wireless/ath/ath11k/spectral.c
+@@ -677,7 +677,7 @@ static int ath11k_spectral_process_data(struct ath11k *ar,
+ 	u32 data_len, i;
+ 	u8 sign, tag;
+ 	int tlv_len, sample_sz;
+-	int ret;
++	int ret = 0;
+ 	bool quit = false;
+ 
+ 	spin_lock_bh(&ar->spectral.lock);
+-- 
+2.27.0
 

@@ -2,36 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7458B20237E
-	for <lists+kernel-janitors@lfdr.de>; Sat, 20 Jun 2020 14:06:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F6A22023D2
+	for <lists+kernel-janitors@lfdr.de>; Sat, 20 Jun 2020 14:37:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728094AbgFTMG0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 20 Jun 2020 08:06:26 -0400
-Received: from mout.web.de ([212.227.15.3]:38855 "EHLO mout.web.de"
+        id S1728127AbgFTMhn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 20 Jun 2020 08:37:43 -0400
+Received: from mout.web.de ([212.227.15.14]:51589 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728028AbgFTMGY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 20 Jun 2020 08:06:24 -0400
+        id S1728064AbgFTMhm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 20 Jun 2020 08:37:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592654756;
-        bh=42kox52x5HpeaYmlS8iN/4a3O5nbkPDAEP7S2unRXk0=;
+        s=dbaedf251592; t=1592656651;
+        bh=ITHlY66gl0MgNokIXLyjMVP7wGUV88CZWdzeFYFNWDg=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=PSMdyJdiPSNfETdpp0pchjC8ho/A2mDDmrynvsKLDlYdU2vdAQP/JqUunJm57Fusc
-         A3EqqVFEJR6MiYjmP81EKsAAaFOOmGm+DMNTf1qvK8zjW7RO4sApwg2Haq1itshsOA
-         1R+6e9fRxos4TBXh/Iwn7LX95Y7iLBqBZQjR/CV8=
+        b=OfgsR1c2Gf5nYREMdL+d5DG0NZyZ5cMfCJIfTWEng3TSedgUUQrhEHeHGNRT6b1Sy
+         Fiz38wEQa2ya+tVbuPmoFaiWBs6Ipdj9VDIHkLpC6VMMPlmGARzSAA9Pxsyxx1UkCj
+         shgnG7GXFNyMpFvcAMXlzzUAZ/lpCdppiBvhgL4U=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.139.185]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LpQjF-1jGI7724lp-00f8bk; Sat, 20
- Jun 2020 14:05:56 +0200
-To:     Zheng Bin <zhengbin13@huawei.com>, linux-block@vger.kernel.org
-Cc:     nbd@other.debian.org, Navid Emamdoost <navid.emamdoost@gmail.com>,
-        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen McCamant <mccamant@cs.umn.edu>,
-        Qiushi Wu <wu000273@umn.edu>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        Josef Bacik <josef@toxicpanda.com>,
-        Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>,
-        Yi Zhang <yi.zhang@huawei.com>
-Subject: Re: [PATCH v2] nbd: Fix memory leak in nbd_add_socket
+Received: from [192.168.1.2] ([2.243.139.185]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MLy84-1jnkoQ4B4O-007kJV; Sat, 20
+ Jun 2020 14:37:31 +0200
+To:     Bernard Zhao <bernard@vivo.com>, opensource.kernel@vivo.com,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        =?UTF-8?Q?Felix_K=c3=bchling?= <Felix.Kuehling@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>
+Subject: Re: [PATCH v3] drm/amd: Fix memory leak according to error branch
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,87 +75,59 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <b55f8af2-b20c-214f-90f0-9b6efcb7273c@web.de>
-Date:   Sat, 20 Jun 2020 14:05:53 +0200
+Message-ID: <119b7d8c-b164-ef23-84cc-4904d34ac023@web.de>
+Date:   Sat, 20 Jun 2020 14:37:28 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:fx4SRyXo0jNr5mPJylsMhZlfteu2CS304HYyK3aGfdL2nAhOOjd
- yE5x41KuAhq5SF9sIsrNOtbWuKG1BsIkG79e6LeM72s/gFk6bIBNBZ7G0dIhh++jOih2seU
- /RBx3U0LOrLoHdw/0NtM3WUcgJflhbDlQtcjCDxcDJydEUv9yz+fzEB7URgaJyx64p71xvg
- MvjIlyaoxEoxP8e8paWjg==
+X-Provags-ID: V03:K1:oXT06f42Q4s3s5cHYlyLWk4f54E74Wz+v/0QbzrhsHP/Fc3tgeP
+ fhd7SZn4LgB+mYnBaOc4XleQyNGPw6lOhXzRcmHP4YzVXiCKG+0Ic4RSSxQcZPkI6B/svyp
+ fLqoBPQC1lumHbcor85v41D5yphQ/Y2SWDe/4DO0242OjAfULRm10Pu8utW+FgoAJwKA3dH
+ u0g6eRBnmES2U9Z1CYxVQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:AJbsK0XqvpM=:nVOkrWqzJ9B0Waj5yxBjBF
- UfQJNSKo7nIf0S3OfOJyLw8d9T8lKI6gq2lEbyHBzdgWEjdhiGnnewBtZjPjtpXUAHYNTWlvU
- Rb1t+dgbtp+MAipRuuJLCZ56cTgVkiRPG4+EYKw6NYu1Y14KRw/X5kQocOds4jovJVjFyC+uq
- tmlzZ4evfq4EMHn4Vcr9EKRfDe44oeMz2hpr224UvaftvjLHAM+AdA8DE2L92Xf7ebl2e8HuF
- oV4B5h/bhLIanTMSdJp6DBS1GImXqiTlxTDvt/2lrrqv+bdBiMjo/4WBAbE5b6jL5Ru2nu3x/
- fR6eWAF/hEO43fz6BPwFAJY3yYZKhzI6c9pXbUmJHfo4es0xP+FZSEVrTDA9TnldUkRwrT3yj
- 4UZeV3ZoYvv/yfaPzapJbeK8r1zW5XErRbf7OazbfE3y14q+5L2vSPJU5ato3cY9dX0Nf7IpF
- ViokwvAhr1X5AcsBSsriqscwbhfrdpDOfFJSWxbI+PMqsBcdl37j20o4eozIcXlyZkmJmdrgj
- r0YmJ/r/pY4l9wv7/JnubBkgYUlJfrPysUDbYsIgsSmalOXlng7d8Nq1FLosojQhNRV8OPD/0
- cQPXrtX6dkpXjH3SYQbJQHBgyOkOHa4+zsOuXkfeBvTxZRB6F/b4tXPLlEecaAwN3t027CDdY
- DXyybiqlghL0vgpiIwkPpfnYvNtcWEMuWIvrF1FZCjQ12asKSdib+zQ7MN50v3o2Tyxu9bJ95
- wq4AJ+4imyBSrmTtSWo2HrsKVxOBCzivt1E2kuzChFskpESbTFUaeDd1csLamGW8hBqbULBVm
- ckwoZqxlSwD0Gj8ucJsrZoi1jc8Ud14hUtiVM4zeJO1PbAO2VlHvOIvg8rFK0RNkcSFI8mvPH
- OrxKBVRtRm6lnIcma1wKvQc+fm2CqupBxI/OYWZkfxV00UCtmKGIqhtysgo8IaRS6QXLYexhs
- WKY/umZKPa4CIvGQscQywds4TggE45k89qE5ES4+uUBa2ZhT24VlhMYWIuPFy6XrgQabMX9rY
- K8hhleekQgxgwj7d4UKZBNCPd795w7u6mwg+c9HlfBMvTQHixqhmnXPXvRmFMMCeA+jRypKeR
- 4fQXbL+p1RwJs1FELwwAEFOJD2/U7Zs+k7t3d8+YRXj3t6AGR+sjTRwVBe2XIIwElWcc7aQfg
- jUDDVY9IizI6KoFHZ7lw66/rD+YcxraQuFHEv21M6oBWzcxJhojAJwty3l/mIlR1g8SsTPaJk
- 7kWz7g8VJE8YYaANi
+X-UI-Out-Filterresults: notjunk:1;V03:K0:W3WUjaFUM4I=:+uEKHLiyIy9oBO/whHk1kq
+ /6pNth6kxQ6Vrhd67ncOvX8c5Er4m4i0X1MWNXmwYcoggxq8DFL8Ln9uAufeVWKVrcFnNjBcd
+ HnD/H1l8sdQw3BSVjVuY0ySa2NoPFUH4OXOioijgAIJwyYBPu12sR7TswBDf4NSfysm4bvIru
+ l/7dZXR0lNKgqhbUgvQw0U39y29Y4HYqfLAx9/KOixFGpisSEWxT81coCLLFnGg+Q66s9s+J6
+ A73E6GjbA76QsY6mq7uINUDM191wd0C8bRfwFyJ9sdqNRchg3ZLkPCg4AeVO0ujNm7Hf6IhL4
+ 2T5tTJc8nZFpl737rx3jkOomUzsFWEcser1j/ZnEf4O1jcN9ZqbTymL84EeiOaMFcF26t4hbB
+ xpTFrxmD5XhQlc+gyKP+yGBXlPS69cOPzB6lx5uQZ3BOR1OxammVngO/5pg7U7fQ5cEQpd8N0
+ C9BkxgFfQUEbjeKLBMWHWx1vjggZoDw8Xb4hCJcmtkipkQxX0zELYgSUlcK5YlqkaRsEg8WXI
+ MjgauNLTF3W6otSlU6g7B2cmLtwG/BzCEGFFcnxvrUgI150aasI1wKmi+mol6J+mYqvR5VWPu
+ uQuqv8I3KUQq0W5i1FcqiKgNHg+EO8AX+5/gUhEmR8E2spvsDjY5qWLREPRW0JTPEp/dd62uz
+ 9/pF96BO8PrjE4uteARArPgSfADaVj8Tn6A9ywZLNZ1imKzQCHnEhyoHfaLU5/Bz5iE6isKAN
+ S3QtLr0WCoaWF9LmieegPoI3cIinCrO6FtcFLgF80PC9ngYv+sKqVP5fWoDPnX+lYXI8YId5N
+ E842DmfUDtjXTmzOzXlZf0RsiJI/NnQDKHz+6roHDb9Ww/PoEWcvx3doOXFyfWBWwGB6CIEex
+ uIfEW40xrBtrOJdJTtiQ9fXE9XZ0cLBt1gftIVhC/fYXd48RicuQyMlgKLkYokhBbfQkHoT+R
+ WXFeKvb1LMn5QYj5Tc1BNV9cX77kcxTijbJZ9fE6HgRVCxElaIYbDCgIe5EBK/xdtk6MJa9p7
+ NbWapq6wAURvv6Z5p3R/FkqOX8X3f34uLRqVB0ki0ngrapVhzl9+XFKedpgH4oavYqYhalxOZ
+ qjV3Izdvbwu8F83KRmsjS7XZ2Zw4f5PT6B8qjgCKJntdl2Aff69a2yfcgkFsQgw875CzZZSkC
+ 6BMAEBp76Ot4AQb7BhZiQtwrtx1w2pgyIxM3pUm6HHgYbL2IvGmy/KMjX73G+snbWfo7Q36y1
+ hRy7Cdyhf2fxp1PhR
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> If we add first socket to nbd, config->socks is malloced but
-> num_connections does not update(nsock's allocation fail), the memory
-> is leaked. Cause in later nbd_config_put(), will only free config->socks
-> when num_connections is not 0.
->
-> Let nsock's allocation first to avoid this.
-
-I suggest to improve this change description.
-Can an other wording variant be nicer?
-
-
+> The function kobject_init_and_add alloc memory like:
+> kobject_init_and_add->kobject_add_varg->kobject_set_name_vargs
+> ->kvasprintf_const->kstrdup_const->kstrdup->kmalloc_track_caller
+> ->kmalloc_slab, in err branch this memory not free. If use
+> kmemleak, this path maybe catched.
+> These changes are to add kobject_put in kobject_init_and_add
+> failed branch, fix potential memleak.
 =E2=80=A6
-> +++ b/drivers/block/nbd.c
-> @@ -1037,21 +1037,22 @@  static int nbd_add_socket(struct nbd_device *nb=
-d, unsigned long arg,
->  		return -EBUSY;
->  	}
->
-> +	nsock =3D kzalloc(sizeof(struct nbd_sock), GFP_KERNEL);
+> Changes since V2:
+> *remove duplicate kobject_put in kfd_procfs_init.
 
-Please use the following code variant.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/coding-style.rst?id=3D4333a9b0b67bb4e8bcd91bdd80da80b0=
-ec151162#n854
+Under which circumstances are going to improve this change description acc=
+ordingly?
 
-+	nsock =3D kzalloc(sizeof(*nsock), GFP_KERNEL);
-
-
-=E2=80=A6
->  	if (!socks) {
->  		sockfd_put(sock);
-> +		kfree(nsock);
->  		return -ENOMEM;
->  	}
-
-Please take another software design possibility into account.
-
- 	if (!socks) {
--		sockfd_put(sock);
--		return -ENOMEM;
-+		kfree(nsock);
-+		goto put_socket;
- 	}
-
+Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=
+e?
 
 Regards,
 Markus

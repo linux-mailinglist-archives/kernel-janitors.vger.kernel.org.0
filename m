@@ -2,35 +2,39 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F6A22023D2
-	for <lists+kernel-janitors@lfdr.de>; Sat, 20 Jun 2020 14:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D51582023DF
+	for <lists+kernel-janitors@lfdr.de>; Sat, 20 Jun 2020 14:57:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728127AbgFTMhn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 20 Jun 2020 08:37:43 -0400
-Received: from mout.web.de ([212.227.15.14]:51589 "EHLO mout.web.de"
+        id S1728156AbgFTM5B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 20 Jun 2020 08:57:01 -0400
+Received: from mout.web.de ([212.227.15.14]:53021 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728064AbgFTMhm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 20 Jun 2020 08:37:42 -0400
+        id S1728127AbgFTM47 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 20 Jun 2020 08:56:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592656651;
-        bh=ITHlY66gl0MgNokIXLyjMVP7wGUV88CZWdzeFYFNWDg=;
-        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=OfgsR1c2Gf5nYREMdL+d5DG0NZyZ5cMfCJIfTWEng3TSedgUUQrhEHeHGNRT6b1Sy
-         Fiz38wEQa2ya+tVbuPmoFaiWBs6Ipdj9VDIHkLpC6VMMPlmGARzSAA9Pxsyxx1UkCj
-         shgnG7GXFNyMpFvcAMXlzzUAZ/lpCdppiBvhgL4U=
+        s=dbaedf251592; t=1592657807;
+        bh=ypxhGWOAU0x47edkgXOGRtJjGgNSKxoy9ckaT3hv3bQ=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=liqNX3vsW6V+2jwh0SjfGLYRVnHO5z7lieVqJROiAaJwLkmG2Qv956evJbEH8CDlF
+         IXZx8rJFMTPUYgbsGDJfz6Ef3vmdPFf3GCw3dmvudRP4xDnb+9KtblUnBC8ZuQ2yIt
+         qwW0xz+4QSkSNsw89vPqWWysXjU8QSDXUMlnkfRI=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.139.185]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MLy84-1jnkoQ4B4O-007kJV; Sat, 20
- Jun 2020 14:37:31 +0200
-To:     Bernard Zhao <bernard@vivo.com>, opensource.kernel@vivo.com,
+Received: from [192.168.1.2] ([2.243.139.185]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mrwrx-1j8OE61yib-00o0QC; Sat, 20
+ Jun 2020 14:56:47 +0200
+Subject: Re: [PATCH v2] drm/amdkfd: Fix memory leaks according to error
+ branches
+To:     Julia Lawall <julia.lawall@inria.fr>,
+        Bernard Zhao <bernard@vivo.com>, opensource.kernel@vivo.com,
         amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        =?UTF-8?Q?Felix_K=c3=bchling?= <Felix.Kuehling@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
         Alex Deucher <alexander.deucher@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>
-Subject: Re: [PATCH v3] drm/amd: Fix memory leak according to error branch
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        =?UTF-8?Q?Felix_K=c3=bchling?= <Felix.Kuehling@amd.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>
+References: <0e76e678-94b1-8f69-d52c-2b67608d5ef8@web.de>
+ <alpine.DEB.2.22.394.2006201126130.2918@hadrien>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,59 +79,65 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <119b7d8c-b164-ef23-84cc-4904d34ac023@web.de>
-Date:   Sat, 20 Jun 2020 14:37:28 +0200
+Message-ID: <8527c6b5-c3ed-340d-4ba0-6396d6cc5da2@web.de>
+Date:   Sat, 20 Jun 2020 14:56:45 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
+In-Reply-To: <alpine.DEB.2.22.394.2006201126130.2918@hadrien>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:oXT06f42Q4s3s5cHYlyLWk4f54E74Wz+v/0QbzrhsHP/Fc3tgeP
- fhd7SZn4LgB+mYnBaOc4XleQyNGPw6lOhXzRcmHP4YzVXiCKG+0Ic4RSSxQcZPkI6B/svyp
- fLqoBPQC1lumHbcor85v41D5yphQ/Y2SWDe/4DO0242OjAfULRm10Pu8utW+FgoAJwKA3dH
- u0g6eRBnmES2U9Z1CYxVQ==
+X-Provags-ID: V03:K1:oP/ITVu7Ur7FRnqxphsFlkED4ONhpXaAiJsEuKf9/0MgSVrW+y4
+ kr5hR6VqA5ilXfaiZeFoCQG21Bh2egYUEI70MpkvV5i18PMvkCBjoTYgCrVrwVzWrLH+uj0
+ SdJw/jjUlxxxeAkVVWIQgdY+3RKmJ1Qnbcv6RwEFxEhP/egG9Yt13hAoi/4KEDJcVAOgS+k
+ o+iLN2RMr3faFOtWDmUng==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:W3WUjaFUM4I=:+uEKHLiyIy9oBO/whHk1kq
- /6pNth6kxQ6Vrhd67ncOvX8c5Er4m4i0X1MWNXmwYcoggxq8DFL8Ln9uAufeVWKVrcFnNjBcd
- HnD/H1l8sdQw3BSVjVuY0ySa2NoPFUH4OXOioijgAIJwyYBPu12sR7TswBDf4NSfysm4bvIru
- l/7dZXR0lNKgqhbUgvQw0U39y29Y4HYqfLAx9/KOixFGpisSEWxT81coCLLFnGg+Q66s9s+J6
- A73E6GjbA76QsY6mq7uINUDM191wd0C8bRfwFyJ9sdqNRchg3ZLkPCg4AeVO0ujNm7Hf6IhL4
- 2T5tTJc8nZFpl737rx3jkOomUzsFWEcser1j/ZnEf4O1jcN9ZqbTymL84EeiOaMFcF26t4hbB
- xpTFrxmD5XhQlc+gyKP+yGBXlPS69cOPzB6lx5uQZ3BOR1OxammVngO/5pg7U7fQ5cEQpd8N0
- C9BkxgFfQUEbjeKLBMWHWx1vjggZoDw8Xb4hCJcmtkipkQxX0zELYgSUlcK5YlqkaRsEg8WXI
- MjgauNLTF3W6otSlU6g7B2cmLtwG/BzCEGFFcnxvrUgI150aasI1wKmi+mol6J+mYqvR5VWPu
- uQuqv8I3KUQq0W5i1FcqiKgNHg+EO8AX+5/gUhEmR8E2spvsDjY5qWLREPRW0JTPEp/dd62uz
- 9/pF96BO8PrjE4uteARArPgSfADaVj8Tn6A9ywZLNZ1imKzQCHnEhyoHfaLU5/Bz5iE6isKAN
- S3QtLr0WCoaWF9LmieegPoI3cIinCrO6FtcFLgF80PC9ngYv+sKqVP5fWoDPnX+lYXI8YId5N
- E842DmfUDtjXTmzOzXlZf0RsiJI/NnQDKHz+6roHDb9Ww/PoEWcvx3doOXFyfWBWwGB6CIEex
- uIfEW40xrBtrOJdJTtiQ9fXE9XZ0cLBt1gftIVhC/fYXd48RicuQyMlgKLkYokhBbfQkHoT+R
- WXFeKvb1LMn5QYj5Tc1BNV9cX77kcxTijbJZ9fE6HgRVCxElaIYbDCgIe5EBK/xdtk6MJa9p7
- NbWapq6wAURvv6Z5p3R/FkqOX8X3f34uLRqVB0ki0ngrapVhzl9+XFKedpgH4oavYqYhalxOZ
- qjV3Izdvbwu8F83KRmsjS7XZ2Zw4f5PT6B8qjgCKJntdl2Aff69a2yfcgkFsQgw875CzZZSkC
- 6BMAEBp76Ot4AQb7BhZiQtwrtx1w2pgyIxM3pUm6HHgYbL2IvGmy/KMjX73G+snbWfo7Q36y1
- hRy7Cdyhf2fxp1PhR
+X-UI-Out-Filterresults: notjunk:1;V03:K0:jh3yB5aGkpw=:+v9f+1BB+3Sm2Ymjgxa9zS
+ lj8fsxCEIncQ+bgNyRhnkReXmvU1fhLGWNdinP+7VTNY/t+QO6VSOx8KMumxhNjyEysMEOL27
+ gLJkTCmp1h0Nwfj4DX+O902bH9BGjHufO7m+ZhQi8Xk+FJR6oEB2AjmDV7s89aHCagy0MmNlD
+ YpsSEXn1ehnKMI0x0Hk0Ge5LVS5yXkYPQ/5gXBBIrax6qkch9+w5JXdgJDAu+nP8q2+fq2MOJ
+ pcXXI/llj0WAzCOkv2XOyV06ai/A7SnVnPCjEyWFB9+07i13tn+0CIpLxZRPG/zh82BnkSLwH
+ V1eAzTKCdYY9B9vL1rKviC5p9sjR2AKKWGYVLgW4AULk0gSHnKH9VU3uyRj2lvbt8fHbhDWrY
+ WCuxYTbLBCK8pZ2crpeuxiO/2jCziFOYc9kJtjLqCxB35j+7L8hCMTwHnI0AuoKOHQHVmtNOa
+ MjEcPB4V+9JZmWH2DUaV8q6Xx2kGHTyvg3O1zI0+4LBKDczbia4g7XmRO3LMSIjjHPX0ZuwnD
+ ETDPWZUQYHLw4Xqm5eW+EF0FmWNDMXixUmNi41729acgzXfI3AO23pbmSUMSfAwZsHGywZ93R
+ QxveplmbHvIWTJn3qlP2rHuh8sLNrkSQd8gyDZqXApPVmbTogyE3OFijYmKQnzt2aHTBlJGUP
+ 1Q3XNnuY+v8B797WuruUPgvIIWnG4A8IT11QpGfGt4QucXFwLXcwqpDSX8BabA34pVD47Rugh
+ NVdTk4rIE+2o3SQUj2AlDSrbPXAwKapnCVAtCK5gpnnmAP3P/LFZ/4gz+mgh0M/YT/NDtZS/j
+ LevJr4XPgUT4DDyFz3aV01gr4mMwBwRM30swmoUuES1dg1Zb8F3keaBRnO9Z58EYwT5iOVpmC
+ LEIqZ8BX8PFrQ29lYzWcvWEewcmabXe1aRdk3t99IeCwcgVhfxris6NeXSBsI11GkGI70HoDg
+ qQHijnze4DSk7cm3Is0hoMxIUmEdkLCq6M/r+jvlkKR4vum/RLxHTDDfDlIf1vXpa4k+reC2g
+ xOSe5JjDhvDi5hEGiOy93+/PyJARlVYmio964Vaso6PekB4ff2SyOsNQuxSGzecRJZg9BifUv
+ Lu417UKmg7KoCbQTE5tcPARp495PNfEIluY121lKp2REF2V4nOCV6xtXAppPHsvoizXBzxFOC
+ qBJ0hgmiiJ4/HB9NuMiGJwsZksfn515rP2JK/D/KsBow0t6sRGqDmZsOC/abYXLwVmDAu0HDA
+ PzyMN9hCOhM6fZFnu
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> The function kobject_init_and_add alloc memory like:
-> kobject_init_and_add->kobject_add_varg->kobject_set_name_vargs
-> ->kvasprintf_const->kstrdup_const->kstrdup->kmalloc_track_caller
-> ->kmalloc_slab, in err branch this memory not free. If use
-> kmemleak, this path maybe catched.
-> These changes are to add kobject_put in kobject_init_and_add
-> failed branch, fix potential memleak.
-=E2=80=A6
-> Changes since V2:
-> *remove duplicate kobject_put in kfd_procfs_init.
+>> I suggest to improve this change description.
+>>
+>> * Can an other wording variant be nicer?
+>
+> Markus's suggestion is as usual extremely imprecise.
 
-Under which circumstances are going to improve this change description acc=
-ordingly?
+I pointed a general possibility out. I did not propose an exact wording
+alternative as it happened for other patches.
 
-Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=
-e?
+
+> However, I also find the message quite unclear.
+
+I find this response interesting.
+
+
+> It would be good to always use English words.
+
+I am curious how this review will evolve further with such information
+also after the third patch version.
+https://lore.kernel.org/lkml/20200620091152.11206-1-bernard@vivo.com/
+https://lore.kernel.org/patchwork/patch/1260303/
 
 Regards,
 Markus

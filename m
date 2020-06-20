@@ -2,268 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3374201F77
-	for <lists+kernel-janitors@lfdr.de>; Sat, 20 Jun 2020 03:27:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30226202038
+	for <lists+kernel-janitors@lfdr.de>; Sat, 20 Jun 2020 05:27:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731365AbgFTB1E (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 19 Jun 2020 21:27:04 -0400
-Received: from szxga03-in.huawei.com ([45.249.212.189]:2524 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730293AbgFTB1D (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 19 Jun 2020 21:27:03 -0400
-Received: from DGGEMM402-HUB.china.huawei.com (unknown [172.30.72.54])
-        by Forcepoint Email with ESMTP id 0E8AC2FE055C115EE758;
-        Sat, 20 Jun 2020 09:27:01 +0800 (CST)
-Received: from dggeme758-chm.china.huawei.com (10.3.19.104) by
- DGGEMM402-HUB.china.huawei.com (10.3.20.210) with Microsoft SMTP Server (TLS)
- id 14.3.487.0; Sat, 20 Jun 2020 09:27:00 +0800
-Received: from [10.174.61.242] (10.174.61.242) by
- dggeme758-chm.china.huawei.com (10.3.19.104) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.1913.5; Sat, 20 Jun 2020 09:27:00 +0800
-Subject: Re: [bug report] hinic: add mailbox function support
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     <kernel-janitors@vger.kernel.org>, <yin.yinshi@huawei.com>,
-        <cloud.wangxiaoyun@huawei.com>, <luoxingyu@huawei.com>
-References: <20200619100327.GA245452@mwanda>
-From:   "luobin (L)" <luobin9@huawei.com>
-Message-ID: <189e5546-0268-6619-d806-d2effcefba0b@huawei.com>
-Date:   Sat, 20 Jun 2020 09:26:59 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        id S1732633AbgFTD1C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 19 Jun 2020 23:27:02 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:58752 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732629AbgFTD1B (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 19 Jun 2020 23:27:01 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05K3IXU3194488;
+        Sat, 20 Jun 2020 03:26:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=PF84+gWPFaJNdwDpeizHfentgldpxqhtBTI+d6ZBfuM=;
+ b=BT0qt+tc6qfjaZXXBP1CxgHKRKdWtr4bi40pftvAezuG/T58SvV25XVG0FwQXd7WSK66
+ Oa+lbZsqPLpb4fgUip1qB9+jrl4nmQQpcW5rzRft6I+BU70rV0qvYWjLO50nXixBn0MC
+ U26zhkmQ+WVKUcjUurKCMsHCLy3dNMaH5Cn+ollb6OywDNdP98yz38mvOfCdGQ2G2hDQ
+ 8dZrtxDBokGC79EfdJA7Roxu4J8OQ/dMNAzraTRQX98F98pPGqmZICYbJC2OEkc1di8z
+ 06nIzObYzRJnYYMpzDHGu2Iz32xkPfxK/MBEpKue+pEsXD8fseVlJ3zMLwVsFyuUqwUN 2A== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 31s9vqr1vs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 20 Jun 2020 03:26:45 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05K3Jc0p005666;
+        Sat, 20 Jun 2020 03:26:44 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 31sa8yh28f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 20 Jun 2020 03:26:44 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05K3Qggp002429;
+        Sat, 20 Jun 2020 03:26:43 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 19 Jun 2020 20:26:42 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     Avri Altman <avri.altman@wdc.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Kiwoong Kim <kwmad.kim@samsung.com>,
+        Colin King <colin.king@canonical.com>,
+        Seungwon Jeon <essuuj@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-scsi@vger.kernel.org,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Kukjin Kim <kgene@kernel.org>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH][next] scsi: ufs: ufs-exynos: fix spelling mistake "pa_granularty" -> "pa_granularity"
+Date:   Fri, 19 Jun 2020 23:26:36 -0400
+Message-Id: <159262354734.7800.18123945491973468082.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200617084911.167359-1-colin.king@canonical.com>
+References: <20200617084911.167359-1-colin.king@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <20200619100327.GA245452@mwanda>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.61.242]
-X-ClientProxiedBy: dggeme720-chm.china.huawei.com (10.1.199.116) To
- dggeme758-chm.china.huawei.com (10.3.19.104)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9657 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 adultscore=0
+ malwarescore=0 spamscore=0 mlxlogscore=960 mlxscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006200022
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9657 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 clxscore=1011
+ malwarescore=0 lowpriorityscore=0 suspectscore=0 priorityscore=1501
+ mlxlogscore=983 mlxscore=0 phishscore=0 cotscore=-2147483648 spamscore=0
+ adultscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006200022
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020/6/19 18:03, Dan Carpenter wrote:
-> Hello Luo bin,
-> 
-> The patch a425b6e1c69b: "hinic: add mailbox function support" from
-> Apr 25, 2020, leads to the following static checker warning:
-> 
-> 	drivers/net/ethernet/huawei/hinic/hinic_hw_dev.c:817 hinic_init_hwdev()
-> 	error: passing non negative 65280 to ERR_PTR
-> 
-> drivers/net/ethernet/huawei/hinic/hinic_hw_dev.c
->    716  struct hinic_hwdev *hinic_init_hwdev(struct pci_dev *pdev)
->    717  {
->    718          struct hinic_pfhwdev *pfhwdev;
->    719          struct hinic_hwdev *hwdev;
->    720          struct hinic_hwif *hwif;
->    721          int err, num_aeqs;
->    722  
->    723          hwif = devm_kzalloc(&pdev->dev, sizeof(*hwif), GFP_KERNEL);
->    724          if (!hwif)
->    725                  return ERR_PTR(-ENOMEM);
->    726  
->    727          err = hinic_init_hwif(hwif, pdev);
->    728          if (err) {
->    729                  dev_err(&pdev->dev, "Failed to init HW interface\n");
->    730                  return ERR_PTR(err);
->    731          }
->    732  
->    733          pfhwdev = devm_kzalloc(&pdev->dev, sizeof(*pfhwdev), GFP_KERNEL);
->    734          if (!pfhwdev) {
->    735                  err = -ENOMEM;
->    736                  goto err_pfhwdev_alloc;
->    737          }
->    738  
->    739          hwdev = &pfhwdev->hwdev;
->    740          hwdev->hwif = hwif;
->    741  
->    742          err = init_msix(hwdev);
->    743          if (err) {
->    744                  dev_err(&pdev->dev, "Failed to init msix\n");
->    745                  goto err_init_msix;
->    746          }
->    747  
->    748          err = wait_for_outbound_state(hwdev);
->    749          if (err) {
->    750                  dev_warn(&pdev->dev, "outbound - disabled, try again\n");
->    751                  hinic_outbound_state_set(hwif, HINIC_OUTBOUND_ENABLE);
->    752          }
->    753  
->    754          num_aeqs = HINIC_HWIF_NUM_AEQS(hwif);
->    755  
->    756          err = hinic_aeqs_init(&hwdev->aeqs, hwif, num_aeqs,
->    757                                HINIC_DEFAULT_AEQ_LEN, HINIC_EQ_PAGE_SIZE,
->    758                                hwdev->msix_entries);
->    759          if (err) {
->    760                  dev_err(&pdev->dev, "Failed to init async event queues\n");
->    761                  goto err_aeqs_init;
->    762          }
->    763  
->    764          err = init_pfhwdev(pfhwdev);
->    765          if (err) {
->    766                  dev_err(&pdev->dev, "Failed to init PF HW device\n");
->    767                  goto err_init_pfhwdev;
->    768          }
->    769  
->    770          err = hinic_l2nic_reset(hwdev);
->    771          if (err)
->    772                  goto err_l2nic_reset;
->    773  
->    774          err = get_dev_cap(hwdev);
->                 ^^^^^^^^^^^^^^^^^^^^^^^^
-> This function sometimes returns positive values on error which will
-> lead to an Oops eventually.
-> 
->    775          if (err) {
->    776                  dev_err(&pdev->dev, "Failed to get device capabilities\n");
->    777                  goto err_dev_cap;
->    778          }
->    779  
->    780          err = hinic_vf_func_init(hwdev);
->    781          if (err) {
->    782                  dev_err(&pdev->dev, "Failed to init nic mbox\n");
->    783                  goto err_vf_func_init;
->    784          }
->    785  
->    786          err = init_fw_ctxt(hwdev);
->    787          if (err) {
->    788                  dev_err(&pdev->dev, "Failed to init function table\n");
->    789                  goto err_init_fw_ctxt;
->    790          }
->    791  
->    792          err = set_resources_state(hwdev, HINIC_RES_ACTIVE);
->                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> Same here according to Smatch.
-> 
->    793          if (err) {
->    794                  dev_err(&pdev->dev, "Failed to set resources state\n");
->    795                  goto err_resources_state;
->    796          }
->    797  
->    798          return hwdev;
->    799  
->    800  err_resources_state:
->    801  err_init_fw_ctxt:
->    802          hinic_vf_func_free(hwdev);
->    803  err_vf_func_init:
->    804  err_l2nic_reset:
->    805  err_dev_cap:
->    806          free_pfhwdev(pfhwdev);
->    807  
->    808  err_init_pfhwdev:
->    809          hinic_aeqs_free(&hwdev->aeqs);
->    810  
->    811  err_aeqs_init:
->    812          disable_msix(hwdev);
->    813  
->    814  err_init_msix:
->    815  err_pfhwdev_alloc:
->    816          hinic_free_hwif(hwif);
->    817          return ERR_PTR(err);
->                                ^^^
-> If "err" isn't a negative error code it will lead to an Oops in the
-> caller.
-> 
->    818  }
-> 
-> One function which will cause an Oops is mbox_resp_info_handler():
-> 
-> drivers/net/ethernet/huawei/hinic/hinic_hw_mbox.c
->    832  static int mbox_resp_info_handler(struct hinic_mbox_func_to_func *func_to_func,
->    833                                    struct hinic_recv_mbox *mbox_for_resp,
->    834                                    enum hinic_mod_type mod, u16 cmd,
->    835                                    void *buf_out, u16 *out_size)
->    836  {
->    837          int err;
->    838  
->    839          if (mbox_for_resp->msg_info.status) {
->    840                  err = mbox_for_resp->msg_info.status;
->                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 
->    841                  if (err != HINIC_MBOX_PF_BUSY_ACTIVE_FW)
->    842                          dev_err(&func_to_func->hwif->pdev->dev, "Mbox response error(0x%x)\n",
->    843                                  mbox_for_resp->msg_info.status);
->    844                  return err;
->                                ^^^
-> Here err is a u8 so it can't be a negative error code.
-> 
->    845          }
->    846  
->    847          if (buf_out && out_size) {
->    848                  if (*out_size < mbox_for_resp->mbox_len) {
->    849                          dev_err(&func_to_func->hwif->pdev->dev,
->    850                                  "Invalid response mbox message length: %d for mod %d cmd %d, should less than: %d\n",
->    851                                  mbox_for_resp->mbox_len, mod, cmd, *out_size);
->    852                          return -EFAULT;
->    853                  }
->    854  
->    855                  if (mbox_for_resp->mbox_len)
->    856                          memcpy(buf_out, mbox_for_resp->mbox,
->    857                                 mbox_for_resp->mbox_len);
->    858  
->    859                  *out_size = mbox_for_resp->mbox_len;
->    860          }
->    861  
->    862          return 0;
->    863  }
-> 
-> I guess the main problem is functions like send_mbox_seg() which do:
-> 
-> drivers/net/ethernet/huawei/hinic/hinic_hw_mbox.c
->    662  static int send_mbox_seg(struct hinic_mbox_func_to_func *func_to_func,
->    663                           u64 header, u16 dst_func, void *seg, u16 seg_len,
->    664                           int poll, void *msg_info)
->    665  {
->    666          struct hinic_send_mbox *send_mbox = &func_to_func->send_mbox;
->    667          u16 seq_dir = HINIC_MBOX_HEADER_GET(header, DIRECTION);
->    668          struct hinic_hwdev *hwdev = func_to_func->hwdev;
->    669          struct completion *done = &send_mbox->send_done;
->    670          u8 num_aeqs = hwdev->hwif->attr.num_aeqs;
->    671          u16 dst_aeqn, wb_status = 0, errcode;
->    672  
->    673          if (num_aeqs >= 4)
->    674                  dst_aeqn = (seq_dir == HINIC_HWIF_DIRECT_SEND) ?
->    675                             HINIC_MBOX_RECV_AEQN : HINIC_MBOX_RSP_AEQN;
->    676          else
->    677                  dst_aeqn = 0;
->    678  
->    679          if (!poll)
->    680                  init_completion(done);
->    681  
->    682          clear_mbox_status(send_mbox);
->    683  
->    684          mbox_copy_header(hwdev, send_mbox, &header);
->    685  
->    686          mbox_copy_send_data(hwdev, send_mbox, seg, seg_len);
->    687  
->    688          write_mbox_msg_attr(func_to_func, dst_func, dst_aeqn, seg_len, poll);
->    689  
->    690          wmb(); /* writing the mbox msg attributes */
->    691  
->    692          if (wait_for_mbox_seg_completion(func_to_func, poll, &wb_status))
->    693                  return -ETIMEDOUT;
->    694  
->    695          if (!MBOX_STATUS_SUCCESS(wb_status)) {
->    696                  dev_err(&hwdev->hwif->pdev->dev, "Send mailbox segment to function %d error, wb status: 0x%x\n",
->    697                          dst_func, wb_status);
->    698                  errcode = MBOX_STATUS_ERRCODE(wb_status);
->    699                  return errcode ? errcode : -EFAULT;
->                                          ^^^^^^^
-> Positive error code leads to Oops.
-> 
->    700          }
->    701  
->    702          return 0;
->    703  }
-> 
-> I'm not sure if that's every problem, but it's a start.  ;)
-> 
-> regards,
-> dan carpenter
-> .
-> 
-I'll fix it. Thanks for your review.
+On Wed, 17 Jun 2020 09:49:11 +0100, Colin King wrote:
+
+> There is a spelling mistake in a dev_warn message. Fix it.
+
+Applied to 5.9/scsi-queue, thanks!
+
+[1/1] scsi: ufs: ufs-exynos: Fix spelling mistake "pa_granularty" -> "pa_granularity"
+      https://git.kernel.org/mkp/scsi/c/393403efc360
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

@@ -2,128 +2,180 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05F20202522
-	for <lists+kernel-janitors@lfdr.de>; Sat, 20 Jun 2020 18:15:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02B3F2027DC
+	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Jun 2020 03:38:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728007AbgFTQPB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 20 Jun 2020 12:15:01 -0400
-Received: from mout.web.de ([212.227.15.4]:53141 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725880AbgFTQPB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 20 Jun 2020 12:15:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592669686;
-        bh=GkxzUop8V8rXlGE6J5+lqYfRSh4yg12UHlm3n3ahwyA=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=a4rlFE8XGqBVbLrc2TKCv/EK1RI7adEXxpN8LsGUkf3KlPTUZ4cIoMpUaRn7xh28o
-         EufulKaKRdD+xVXbuKCYfm3WjZwuhsYQaMVFJFMcMQnjctiFdyJwRoTm8WuZ8O+o0x
-         PJoYALwx9Uk5i1T79TGZrj0Bj6p4NofVA5qr6Cv8=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.139.185]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MkElZ-1j2rnA3nvl-00kiT8; Sat, 20
- Jun 2020 18:14:46 +0200
-Subject: Re: [v2] drm/amdkfd: Fix memory leaks according to error branches
-To:     Julia Lawall <julia.lawall@inria.fr>,
-        Bernard Zhao <bernard@vivo.com>, opensource.kernel@vivo.com,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        =?UTF-8?Q?Felix_K=c3=bchling?= <Felix.Kuehling@amd.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Rob Clark <robdclark@chromium.org>
-References: <0e76e678-94b1-8f69-d52c-2b67608d5ef8@web.de>
- <alpine.DEB.2.22.394.2006201126130.2918@hadrien>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <24b55845-6aac-fa4c-c65f-e479de1bbd6f@web.de>
-Date:   Sat, 20 Jun 2020 18:14:44 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        id S1728994AbgFUBiW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 20 Jun 2020 21:38:22 -0400
+Received: from mailout3.samsung.com ([203.254.224.33]:14958 "EHLO
+        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729040AbgFUBiV (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 20 Jun 2020 21:38:21 -0400
+Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
+        by mailout3.samsung.com (KnoxPortal) with ESMTP id 20200621013818epoutp036a91120b4a22ff2bbd82b4bb925d43c9~aa2SX49kB3022130221epoutp03N
+        for <kernel-janitors@vger.kernel.org>; Sun, 21 Jun 2020 01:38:18 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20200621013818epoutp036a91120b4a22ff2bbd82b4bb925d43c9~aa2SX49kB3022130221epoutp03N
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1592703498;
+        bh=Wf35kHoe0kBkM2P1G3hvVfMZgb+ge6GLQ+rh6scetTA=;
+        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+        b=oyZfjqOmmvg4CquvIiWu9xZbjq6xXpmsr6O429uxn9H7vy+qZbjvn/vjoe0zlq3J3
+         vNvp1ggF9n6WpaQ80ppuxz0gvnxAyQBJ7ZVPqSOtiEw/5nQAn08WGUPSxHCFEwJ5fK
+         /VnL+85z/Pozqnlg8CbKouizo/wKAp72s92ROP60=
+Received: from epsmges5p1new.samsung.com (unknown [182.195.42.73]) by
+        epcas5p3.samsung.com (KnoxPortal) with ESMTP id
+        20200621013816epcas5p3c091768b942a44b4e9ee4ca532f740b8~aa2QtRjrS0280502805epcas5p34;
+        Sun, 21 Jun 2020 01:38:16 +0000 (GMT)
+Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
+        epsmges5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        F8.7F.09467.80ABEEE5; Sun, 21 Jun 2020 10:38:16 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+        20200621013815epcas5p33e3ce3ac74320cab11a9b7ad89a94801~aa2QK9WUq1672016720epcas5p3p;
+        Sun, 21 Jun 2020 01:38:15 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200621013815epsmtrp1acbc7b1126993a84f4179ed8b8e04bcc~aa2QKK0580926709267epsmtrp1J;
+        Sun, 21 Jun 2020 01:38:15 +0000 (GMT)
+X-AuditID: b6c32a49-a29ff700000024fb-af-5eeeba08ef53
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        94.56.08382.70ABEEE5; Sun, 21 Jun 2020 10:38:15 +0900 (KST)
+Received: from alimakhtar02 (unknown [107.108.234.165]) by
+        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200621013812epsmtip1d7c354e34ec41636e6480620c63d0b58~aa2NCWDBA3012930129epsmtip1P;
+        Sun, 21 Jun 2020 01:38:12 +0000 (GMT)
+From:   "Alim Akhtar" <alim.akhtar@samsung.com>
+To:     "'Wei Yongjun'" <weiyongjun1@huawei.com>,
+        "'Avri Altman'" <avri.altman@wdc.com>,
+        "'James E.J. Bottomley'" <jejb@linux.ibm.com>,
+        "'Martin K. Petersen'" <martin.petersen@oracle.com>,
+        "'Kukjin Kim'" <kgene@kernel.org>,
+        "'Krzysztof Kozlowski'" <krzk@kernel.org>,
+        "'Kiwoong Kim'" <kwmad.kim@samsung.com>,
+        "'Seungwon Jeon'" <essuuj@gmail.com>
+Cc:     <linux-scsi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-samsung-soc@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>,
+        "'Hulk Robot'" <hulkci@huawei.com>
+In-Reply-To: <20200618133837.127274-1-weiyongjun1@huawei.com>
+Subject: RE: [PATCH -next] scsi: ufs: ufs-exynos: Fix return value check in
+ exynos_ufs_init()
+Date:   Sun, 21 Jun 2020 07:08:10 +0530
+Message-ID: <005301d6476c$a1e22200$e5a66600$@samsung.com>
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.22.394.2006201126130.2918@hadrien>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-X-Provags-ID: V03:K1:dddi+ST13hC+JmXVRlll4n8RIaaozevP2KyZmxxSr0Lc1Hhn+Zi
- 9FO2dis//To4bxqww6Rlja6+NVXoZhhQt9O7GBijMse7rTvK4ldvI0fKH1RGXH3H/BbJuMn
- ax4MfwlhZzH87vLTFTHLnxvy1+EJ2Q6+GOuRM08O1Ot19skxZwoPH0i6gs5P5VExpxlAUrs
- E3hjstk2JbtmoQ24/OcOA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:QU3a1UHBLwo=:87SR8wZ7bGgtI8yEYmPdRC
- WgUh77PdI5t0vyqiemJU0sCFxd7U8xoDj+4fSRBdLIaI1gzgAEXc631jim/bCx16q/ZKNROoB
- 49YWmcOKM4D52lF3dwyZLuwnIYurYm9VdW8rb9rQSF4qxDDMV6XSpvJhto2y4w0BIuKQqqLV5
- i4gZqkS5YH4mj44u5eWOyw7WJ6Ooj8trdnyolbjiDear8NRwtg5JoM1RAVPVOXjrpbCJwXtl9
- UfGLiXnhAsGocdypDPsZ0yvVjM+wM+QOboBUvgDTOGCO3VYDX0+ubyO8mOfimX0QQVC1eoJv1
- MeqlUHleKyfWitRVnJLiA8r9Nq2uRhxy8qI3I/K2ECtGBfckfngaXBkZxoIknYOr5PtEsOKwh
- AJVmFQw1mknh2hl3rRcpHz5nf7D+OJ5oeQqAtrQghfUCu0z74YCuEmtbr15zurjd+B19ophZb
- zyyFo/iFTXABOyy6jG/9jVxN/X8BWJe6aXkiGAyTd/W723uP/3CeRAQgFx3mAHmg3c6of9U4h
- N0tnOGrMSU5y9fcL54HbumH7AFSTlQh5r9ok8j9ieuwgPe3nI8H2srNmoTYeo4ddvYBsRjaOL
- fcHcCuAhhJKXs5lMrlwUv1YgakjOcP330Z8G5u2SmWpn9nWuQiJuQGaVGCTmHEym7wWjVnl4f
- z9X0ShPbRpSIs1ko6xGTEBB/mXJW6yelMr9ZYIRvUc8mW3DDbVhU/Gcf+kLixibwLWPKJu0AK
- rzKbpmFmHkd78osYgdsV4fwMsHm62EVLi2EdLMiBgdSfxBvo7e6/y18ibb84MCP4QcFjeMjdg
- CxyPeUATrnvyKH2ChlgZw66FKBx9TKBPW4dS0bj4vyvlz2aQb7UqExWB7YJHRSobgB5i9C1T/
- f40/ndnQ8xLPoB2jtU5mfso0+iA8IMyH5GOCnXfvGu0GfLc+n74YJ0unQOSy7UyyCwdpqJhAh
- 4SPJSEzmOK84MEGOvwIoNTsFturOFZ5UWjyA/MOziUACfZ05mlbD4fKNpLkQaQ7uiRQoU6jJc
- FA6bEJV2H2OxIH+fZ3iwvbHNwB5/nxR67v8oy3u16rP10lReib7Q/JhqbWPk5bV8NqTFuDfW/
- C0EXEmxbPNWjRLU6UeWaX+pnFoxLziwbhanvi1gBRJNnPip7GnhgnX+RyIdhnhIQEduGVRIV3
- tg7HINzV7/vWnqGN/1m068iwXcum0Bdeo3wU8jOTKEgI0l1Og25wXDOjX5S5nCa1PtmEBzwi6
- 2DtcCxmq/Pe0oOqdn
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQHj8OS7jYL7T9AGs6Fok+5I/oXdWQK16nsaqLFHRuA=
+Content-Language: en-in
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrAKsWRmVeSWpSXmKPExsWy7bCmhi7HrndxBvNusVm8/HmVzWL5hSVM
+        Fv+XX2G0WHRjG5PF1lvSFv2PXzNbnD+/gd3i5pajLBabHl9jtZhxfh+TRff1HUANx/8xWRz+
+        sovNgddj56y77B4tR96yemxa1cnmMWHRAUaPzUvqPT4+vcXi0bdlFaPH501yHu0HupkCOKO4
+        bFJSczLLUov07RK4Mtp3PWEpmMFf0f9iKXsD42qeLkZODgkBE4mT9xezdzFycQgJ7GaUOLRv
+        KytIQkjgE6PEtB4xiMQ3RokvR6exw3R0Hb7CApHYyyjxqXc+G4TzhlHi5otWRpAqNgFdiR2L
+        28ASIgJ3mCS6WtrAljAL7GCUePf9KdgSTgFbiV+PJrGB2MIC8RLXmnaAdbMIqEq8uLsTLM4r
+        YClx4s8FJghbUOLkzCcsIDazgLzE9rdzmCFuUpD4+XQZ2EwRASuJRX+vsEPUiEsc/dnDDLJY
+        QuABh8Ste62sEA0uEpMuPYdqFpZ4dXwL1HNSEi/7QS7lALKzJXp2GUOEaySWzjvGAmHbSxy4
+        MocFpIRZQFNi/S59iFV8Er2/nzBBdPJKdLQJQVSrSjS/uwrVKS0xsbsb6gAPid/dz1knMCrO
+        QvLYLCSPzULywCyEZQsYWVYxSqYWFOempxabFhjmpZbrFSfmFpfmpesl5+duYgQnOi3PHYx3
+        H3zQO8TIxMF4iFGCg1lJhPd1wLs4Id6UxMqq1KL8+KLSnNTiQ4zSHCxK4rxKP87ECQmkJ5ak
+        ZqemFqQWwWSZODilGpiE4z9sSJ7rH/3/Zkrd1iWrxebx/Z0onz77CV+EscBHeYZ1xp41h1Ju
+        ZNe/q5v285u0fW/+Hbt+/QNchbOzst3vZVi73vry2VOZRdfAvmj2ce3At+ViSxpN7b8tcOFq
+        ipndk7lVTrnlQPe+izEdS5LeFbu5HOB8eCFaTvBDe8LjMukVZ9dtq9K98m15nTrjpPDA94W/
+        813MDTWndz6sOpNT861MU/dxjVPalsbL57NOHlyxYIa7Hv/EB1VPErX2b9YyaM7yfPbV7sxU
+        z21fDjw92HonZYtLy88n07a0fXzzau3+5q5MhnMnVjU+urux9+Knh6Uv2x9m5a0W2nfy5ObD
+        y11Ein+WFH/Q03CaZLtdiaU4I9FQi7moOBEAVwbEZuMDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrCIsWRmVeSWpSXmKPExsWy7bCSnC77rndxBu3LlC1e/rzKZrH8whIm
+        i//LrzBaLLqxjcli6y1pi/7Hr5ktzp/fwG5xc8tRFotNj6+xWsw4v4/Jovv6DqCG4/+YLA5/
+        2cXmwOuxc9Zddo+WI29ZPTat6mTzmLDoAKPH5iX1Hh+f3mLx6NuyitHj8yY5j/YD3UwBnFFc
+        NimpOZllqUX6dglcGe27nrAUzOCv6H+xlL2BcTVPFyMnh4SAiUTX4SssXYxcHEICuxklFtze
+        zg6RkJa4vnEClC0ssfLfc3aIoleMEi+X32ADSbAJ6ErsWNzGBpIQEXjEJLHvwGGwUcwCexgl
+        Wtbth2rpY5SYP2k2WAungK3Er0eTwGxhgViJZWenMYLYLAKqEi/u7gSL8wpYSpz4c4EJwhaU
+        ODnzCdBUDqCpehJtG8HKmQXkJba/ncMMcZ6CxM+ny1hBbBEBK4lFf6+wQ9SISxz92cM8gVF4
+        FpJJsxAmzUIyaRaSjgWMLKsYJVMLinPTc4sNCwzzUsv1ihNzi0vz0vWS83M3MYIjVktzB+P2
+        VR/0DjEycTAeYpTgYFYS4X0d8C5OiDclsbIqtSg/vqg0J7X4EKM0B4uSOO+NwoVxQgLpiSWp
+        2ampBalFMFkmDk6pBiYfq13ywvYzwy4VmX3Ucgn5JqXVHvrD1/e/2k+3qWmZ27vfzb10hu/2
+        o6sfV0k/Kzyikmj+8t7/Fs3vH0Mld6zgvutrbH5ZfKKyzcu/NceF1qkrP9sVs3GS7IHH3voi
+        sammHCnFizvsFcM/7Pvw6Ka66pEFNyY5TF3Gm364e8I1l4lnL9g+OH1qtmPhvk+yP18udspM
+        qV/q5dfupXFaQUlg+maNmX5XRYKMr744tCQn7vauJXFKp++lrTMsr1tx5uXsqFtcahNOLN7z
+        RiqrgVdTSe5f4uEfQV8mvdBcqKLzS2O9snN438K1kt8dukX8qjQmnLu0vYfX3mbtjg2H9h/q
+        YhTUkti2cb37fIOdP2Z/UmIpzkg01GIuKk4EAIUGRlRHAwAA
+X-CMS-MailID: 20200621013815epcas5p33e3ce3ac74320cab11a9b7ad89a94801
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+X-CMS-RootMailID: 20200618133510epcas5p2e9350caceec46069d21174129af4564a
+References: <CGME20200618133510epcas5p2e9350caceec46069d21174129af4564a@epcas5p2.samsung.com>
+        <20200618133837.127274-1-weiyongjun1@huawei.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> memleak is also not an English word.  Memory leak is only a few more
-> characters, and doesn't require the reader to make the small extra effort
-> to figure out what you mean.
+Hi Wei,
 
-Would you like to achieve similar adjustments at any more places?
+> In case of error, the function devm_ioremap_resource() returns ERR_PTR()
+and
+> never returns NULL. The NULL test in the return value check should be
+replaced
+> with IS_ERR().
+> 
+> Fixes: 55f4b1f73631 ("scsi: ufs: ufs-exynos: Add UFS host support for
+Exynos
+> SoCs")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+Acked-by: Alim Akhtar <alim.akhtar@samsung.com>
 
-How do you think about effects from a corresponding jargon?
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/drivers/gpu/drm/msm/msm_submitqueue.c?id=177d3819633cd520e3f95df541a04644aab4c657
+Thanks!
 
-Regards,
-Markus
+>  drivers/scsi/ufs/ufs-exynos.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/scsi/ufs/ufs-exynos.c b/drivers/scsi/ufs/ufs-exynos.c
+index
+> 440f2af83d9c..c918fbc6ca60 100644
+> --- a/drivers/scsi/ufs/ufs-exynos.c
+> +++ b/drivers/scsi/ufs/ufs-exynos.c
+> @@ -950,25 +950,25 @@ static int exynos_ufs_init(struct ufs_hba *hba)
+>  	/* exynos-specific hci */
+>  	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+> "vs_hci");
+>  	ufs->reg_hci = devm_ioremap_resource(dev, res);
+> -	if (!ufs->reg_hci) {
+> +	if (IS_ERR(ufs->reg_hci)) {
+>  		dev_err(dev, "cannot ioremap for hci vendor register\n");
+> -		return -ENOMEM;
+> +		return PTR_ERR(ufs->reg_hci);
+>  	}
+> 
+>  	/* unipro */
+>  	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+> "unipro");
+>  	ufs->reg_unipro = devm_ioremap_resource(dev, res);
+> -	if (!ufs->reg_unipro) {
+> +	if (IS_ERR(ufs->reg_unipro)) {
+>  		dev_err(dev, "cannot ioremap for unipro register\n");
+> -		return -ENOMEM;
+> +		return PTR_ERR(ufs->reg_unipro);
+>  	}
+> 
+>  	/* ufs protector */
+>  	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+> "ufsp");
+>  	ufs->reg_ufsp = devm_ioremap_resource(dev, res);
+> -	if (!ufs->reg_ufsp) {
+> +	if (IS_ERR(ufs->reg_ufsp)) {
+>  		dev_err(dev, "cannot ioremap for ufs protector register\n");
+> -		return -ENOMEM;
+> +		return PTR_ERR(ufs->reg_ufsp);
+>  	}
+> 
+>  	ret = exynos_ufs_parse_dt(dev, ufs);
+> 
+> 
+
+

@@ -2,30 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E297202983
-	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Jun 2020 10:11:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 302AF20298E
+	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Jun 2020 10:19:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729509AbgFUILT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 21 Jun 2020 04:11:19 -0400
-Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:28007 "EHLO
+        id S1729501AbgFUITA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 21 Jun 2020 04:19:00 -0400
+Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:32171 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729506AbgFUILS (ORCPT
+        with ESMTP id S1729478AbgFUIS7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 21 Jun 2020 04:11:18 -0400
+        Sun, 21 Jun 2020 04:18:59 -0400
 Received: from localhost.localdomain ([93.22.149.109])
         by mwinf5d20 with ME
-        id tkBE220052MrWsD03kBEmz; Sun, 21 Jun 2020 10:11:15 +0200
+        id tkJw2200D2MrWsD03kJxC6; Sun, 21 Jun 2020 10:18:58 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 21 Jun 2020 10:11:15 +0200
+X-ME-Date: Sun, 21 Jun 2020 10:18:58 +0200
 X-ME-IP: 93.22.149.109
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     gregkh@linuxfoundation.org, rafael@kernel.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+To:     rjw@rjwysocki.net, len.brown@intel.com, pavel@ucw.cz,
+        gregkh@linuxfoundation.org
+Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] topology: mark a function as __init to save some memory
-Date:   Sun, 21 Jun 2020 10:11:06 +0200
-Message-Id: <20200621081106.881915-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] drivers: base: power: mark 2 functions as __init to save some memory
+Date:   Sun, 21 Jun 2020 10:18:54 +0200
+Message-Id: <20200621081854.882705-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -34,27 +36,36 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'topology_sysfs_init()' is only called via 'device_initcall'.
-It can be marked as __init to save a few bytes of memory.
+'early_resume_init()' and 'late_resume_init() 'are only called respectively
+via 'early_resume_init' and 'late_resume_init'.
+They can be marked as __init to save a few bytes of memory.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/base/topology.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/power/trace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/topology.c b/drivers/base/topology.c
-index 4e033d4cc0dc..ad8d33c6077b 100644
---- a/drivers/base/topology.c
-+++ b/drivers/base/topology.c
-@@ -133,7 +133,7 @@ static int topology_remove_dev(unsigned int cpu)
+diff --git a/drivers/base/power/trace.c b/drivers/base/power/trace.c
+index 977d27bd1a22..a97f33d0c59f 100644
+--- a/drivers/base/power/trace.c
++++ b/drivers/base/power/trace.c
+@@ -265,14 +265,14 @@ static struct notifier_block pm_trace_nb = {
+ 	.notifier_call = pm_trace_notify,
+ };
+ 
+-static int early_resume_init(void)
++static int __init early_resume_init(void)
+ {
+ 	hash_value_early_read = read_magic_time();
+ 	register_pm_notifier(&pm_trace_nb);
  	return 0;
  }
  
--static int topology_sysfs_init(void)
-+static int __init topology_sysfs_init(void)
+-static int late_resume_init(void)
++static int __init late_resume_init(void)
  {
- 	return cpuhp_setup_state(CPUHP_TOPOLOGY_PREPARE,
- 				 "base/topology:prepare", topology_add_dev,
+ 	unsigned int val = hash_value_early_read;
+ 	unsigned int user, file, dev;
 -- 
 2.25.1
 

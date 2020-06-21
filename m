@@ -2,129 +2,130 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E723202B1E
-	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Jun 2020 16:43:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D90D202B5D
+	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Jun 2020 17:33:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730219AbgFUOlH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 21 Jun 2020 10:41:07 -0400
-Received: from mout.web.de ([212.227.15.14]:35305 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730147AbgFUOlG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 21 Jun 2020 10:41:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592750407;
-        bh=+WvfeXBts5+y/FyPiEhcOJnSZEl8xPKwH4MBAN88wqw=;
-        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=I980mrpcNpQdaQPO90vkmoVpXXYBerxPudnpqpbhcR6QBexh6DULK0r2bFomOtCo6
-         RZj8xR7+R/A8S1ftDjVSCIyWIcPY7y/K6L/0vU7VBbjvd28xtt+3FgD9vJ8pZZZ5sg
-         3eC3mVLbT3rT7qjG38q7cIYK9y5iX+UtScjz7mPQ=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.145.213]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MXHoz-1jPWiY1ZSf-00WIot; Sun, 21
- Jun 2020 16:40:07 +0200
-To:     Bo YU <tsu.yubo@gmail.com>, kernel-janitors@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jann Horn <jannh@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH] arch/x86: Check return value from a notify_die() call
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <ee99271a-6eb5-0dec-87d2-504b3ad4724d@web.de>
-Date:   Sun, 21 Jun 2020 16:40:03 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        id S1730336AbgFUPdK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 21 Jun 2020 11:33:10 -0400
+Received: from mail-dm6nam10on2064.outbound.protection.outlook.com ([40.107.93.64]:6049
+        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729536AbgFUPdK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 21 Jun 2020 11:33:10 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=luIQrljqIJp1J3QUBzFTH4J4TNhVrCTOFMblVqcXmrxuIH0SqeNQ3laA76sC2LY47t5eMCF9IgorBn3Z3XMblGp1zscJfCO4UZUeSy7J2AQbvmPoEDS8fGyoRis0ypZIN4Y7BOGgVZkzOyfNg7d44v9En64nl+HY2rhcU7JFW2yhx3vaGXYMtNYt+gIHVWhYbk7+1uZUhHPMBJM1UrOK2s3TS4eYnyOqCPCuMnoRgxOONVb4pFRKVsiK+sf+w88NJ08bdTX1RqC453Qp/rigSgUZwGdYqNv1O9tdwikxajC0wvVU7WUn5DXftvkMjiZx4QBbNoXE/F6IYYNUd8uexw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Are0p1caBUBUlxBQrGrfy+u4IiwxS09U2BZrsACPTbM=;
+ b=Rvah2a+rKjDWfZQzy775O3z0kDCHaBSRXeyYYrd+0THErxqgnFKKuxp8yYuuFco1qwwPF9Hhnl8K9R7Iy0gi6GbWYmXKvSq9m5eIMUS1Sv1SchBOc9rv0wlmChTDYwCEE4/eQeVv87kfYejiCnverR3U+QJ/Xc8c17LJVUyP7kVjUh5Gt/p7X+kSGV/gYncnmnbSAwtsJZX29kJK14PBgQSDfTX+5eVmoe3RMmsoRMMAV7TKW6T+rlrdbpNxCkP8UGnoG0zeWb4YsuoVWvt5vPyP+T+mMtqJiexO4FP8CSaTp2bYyTW5NcUMHNdikIzRpkHEvLU/a0A2Rv34HxiGNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Are0p1caBUBUlxBQrGrfy+u4IiwxS09U2BZrsACPTbM=;
+ b=HhWGRd9q57mrtEA0Phe88AQx3DUHlwNR0bsH308I9bObNKxbU/6MXkew/aQzT+gEX1QDey259Ps5fieKgBNGvQwNmWS9HN1a0cvsF2H9ujuT7xQS8L0KdyQFwaPCV2FC4S7tj+40/BTcWweekjJTlOCyGNbZJcCLbRe+lXqXIZA=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=amd.com;
+Received: from DM6PR12MB4401.namprd12.prod.outlook.com (2603:10b6:5:2a9::15)
+ by DM6PR12MB2636.namprd12.prod.outlook.com (2603:10b6:5:4a::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.23; Sun, 21 Jun
+ 2020 15:33:07 +0000
+Received: from DM6PR12MB4401.namprd12.prod.outlook.com
+ ([fe80::a045:f8c0:8edb:1ef1]) by DM6PR12MB4401.namprd12.prod.outlook.com
+ ([fe80::a045:f8c0:8edb:1ef1%9]) with mapi id 15.20.3109.023; Sun, 21 Jun 2020
+ 15:33:07 +0000
+Subject: Re: [PATCH][next] drm/mm/selftests: fix unsigned comparison with less
+ than zero
+To:     Colin King <colin.king@canonical.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200617155959.231740-1-colin.king@canonical.com>
+From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
+Message-ID: <feb9dc72-c6e8-b745-ca90-b4ff7021d7bd@amd.com>
+Date:   Sun, 21 Jun 2020 17:33:01 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+In-Reply-To: <20200617155959.231740-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-ClientProxiedBy: AM0PR04CA0039.eurprd04.prod.outlook.com
+ (2603:10a6:208:1::16) To DM6PR12MB4401.namprd12.prod.outlook.com
+ (2603:10b6:5:2a9::15)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:EZ5eCYTNxjOgv5tA/Iq6ob4zRMloWC1ZVwV02D67frXCUdYcp+y
- +nysIjmpkQubK+Ce/uSN9GiaIr/lixAAdKhj5wlqWZXJfscJh8Rox2+y+Hi6rdRV3+QIXKY
- I1KtJ06QFEDV4AJNgV/La39J6S0EkIGVJgrduiEDsttz/2iQltm5NLYVpB/Rrb8jOYGqY9L
- 6+pVJZxJn6STcrk5Yic6w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:x7/Ovx3O154=:LHrOXQvGBOs/yBoCJldAH+
- z0lapFvGiSJ8gEHhM6Ln/CZxoX/kivLdjrREoaSpSZr+n1j2nR97J9TzgZjv8YNIDGA1KH4VP
- 0UcuAqtyNgEji7yRFLdJgv9pfMVmsc88Bng97gH4jszCcCeMYNe4lNnqI2vcbpIWFATNCDz9r
- SmazZyGaGA0e44z+rwM9+Mxw4iVeGfi6VfInBzV3Nrx1R7Tx/2kNzPB79W38HZYt1cUJFvGzX
- PfTmgwtErGAt3C606tB6/KIQdhGC3vhdmywZx7DiqYqHCDgBW+aF3Kur7FWPc+DUrAlSJFMID
- /mdUz8d16uMjtFGstHJSPjFu/ZhNjcnjkIYeG7Z9NdXraEj2yR8JJ6ztye1n3PROVBq5WNOAg
- KMbfezQkbB3ct4b5nUUeXBcygbWlTtVPhN+zmvqaXI2kjx2phhKqh/3doy2mjuohPDszaWbGb
- b+UtYZt2DFCC07qU4aKyPbpOqYuLlpN29yGalJafCVknpAAoOiQ5R8ryLezeHth1C8n7KhKKR
- N0Yeve7reQ2n7Plzlt0W+oLxtkwbYZAvwCZWa5AeHyHttBkXpI4ca0y7AXm2YuEqwF+99izgs
- rgGoZFgckh9K2PIRDu4zJznwswYXgd9Y2f457A29VRnORh9/cwFeYAqOUCvImXp+Dg6vmEZaD
- QhLuKzJp8vbcxc1efZjcFaV3J2e8oAcVa70wTrW96Ek+Qn7ngoozRUiySv2Sg1oDuGUpm+ZBu
- hkgpUf+L2TqG2WX12vYQaVBnUIezYvRuDxZTyBIDfr4xINOc7+dIXUxkNVyLerw1qWCvZ9J6f
- mrIm7hOAfl7raFB+Gk1GsxHXU0K0cuC/770FEHmFznxQd1Aw8iw8jb5p4cj58Z3yBAWpstnXX
- 7korsMqT0J0W+GKdyBgiSZAjEbNicf8EzBntcHTebEWFgMhxXET00mL1ZtMwLooRgKdaKXZuh
- ovm9SvStMI+iP7BeGIepHOqt/0B6dsjtsqVxLeVbgvMv6UCZ4Y/RVvryd4jeLxzZv/t7ifjVe
- 1dN4jYowwoJOcUnuz30+hOrfPN4Qg/fAKo1WCPN4RfNTE/5yulhcU6V0tI3m4WB1dGSFiEw5Q
- AfWD8cNErSKG4NAxKjFaoV0rh2PPQSUwi0zC0EPosQcfx+s9YXTPoIEoqvmqLiaHK9O4iVbRH
- Uj0Cxza/w1VUvs9i1zIgu1Hd1fgHkZLbvNXLPnas2y4JQ1ORUdI130HGRTBJea+LAq33/y+UB
- GOVEynOalkvjBw5ay
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [IPv6:2a02:908:1252:fb60:be8a:bd56:1f94:86e7] (2a02:908:1252:fb60:be8a:bd56:1f94:86e7) by AM0PR04CA0039.eurprd04.prod.outlook.com (2603:10a6:208:1::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.21 via Frontend Transport; Sun, 21 Jun 2020 15:33:06 +0000
+X-Originating-IP: [2a02:908:1252:fb60:be8a:bd56:1f94:86e7]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 231c3103-6f5b-42ce-572a-08d815f86583
+X-MS-TrafficTypeDiagnostic: DM6PR12MB2636:
+X-Microsoft-Antispam-PRVS: <DM6PR12MB26362070163314522C9656EC83960@DM6PR12MB2636.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
+X-Forefront-PRVS: 04410E544A
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: UtsQSZzkXTL7rpW61lR26yC4igpMykH9F1v0wPpVWCLGqSsvNelVa9GcEl3dnK1IFuWI9dxo71kMrSu+IxdUMdcRWAkZD3E+J/SubHnVRhtnfa4izm7dJy1lJqsUObH9Hhfd+aGqQJNDkTwYGP0zAX7tp2go0hRLA0d28iMgxLLa3GoxJGcHNoCdBow0uCgzSfXM0dhm7RjVReTPFj6h7QhmC9LuRYJVA4wkeInMUL/hfTswbKpejuO8HOMLvuNeFlsM0fYXs64WTREg/zS2ArVw7weO+vOELwbSLcSXGCrSeYO3ni/1aaAVtu/BLV0mefK/Dt/S4EeGojGOrEHG0ci2IEHTcrDiQqSsmCLka+T8gPN5MTo7TReM8Vg4N1E4
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4401.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(136003)(396003)(39860400002)(346002)(376002)(366004)(6666004)(5660300002)(31686004)(66476007)(16526019)(86362001)(83380400001)(31696002)(8676002)(110136005)(66946007)(66556008)(478600001)(4326008)(2616005)(316002)(52116002)(36756003)(2906002)(186003)(6486002)(8936002)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: b+Yt8FQsPD4KHLkzqbG96soN5ml7cdsIn66kpeVe7lLppTvpie8mq/oOMbx09SwZlib1JlogYEJbNfeULEdQ3tdmUJcMYuFdve2sLXuBd158pHYSF7JPlyfIL0vwe8MKdyaHESqrZeo3b2KrHlHV+olfyhbb1t6isGAGUUhHnZ8CUoypQ77LSOthilVrhaLxSqEnqrMc3g38yibOUgKAYsv6IsLz+65Ge4LhoCugrOWYMWeGntHr1b4eb3kDpodoHXYtMIgSaYN7pL02pPW2Q4jOo3augXVxT/I2+NMhRQb6BSupo5OWuTr75ALRRYChYkEp5o/17U3/KO6y1r8CEiGq9B9n1N8vO3NzNNTd2bSI2nltxijlcVUxmKmdoDGJt0r/DsCiSPnxMAtGgX5QM1Ctcd42hH4dfjVMuyD/hZxFchLyBwNNmG02F9o5WTRuP0yT/6QziWZSa+VQ52txla1MiviA1rJ72+dcxUKiHFF3Go9cmL4eZRwTmH4UKf+hGmeL1p1oNPlWHshzcHOlQtF6ng940OGIjNLS+YYMpcE=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 231c3103-6f5b-42ce-572a-08d815f86583
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2020 15:33:07.3806
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tgURX4q9ieFkDS5aqDyx5hMe6cCzxNTIAjqGWcJAU7mCG9VE5aFYNQwMY5bWoE7u
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB2636
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-I propose to improve the previous patch subject.
-
-
-> This is detected by Coverity scan: #CID: 1464472(CHECKED_RETURN)
+Am 17.06.20 um 17:59 schrieb Colin King:
+> From: Colin Ian King <colin.king@canonical.com>
 >
-> FIXES: c94082656dac7(x86: Use enum instead of literals for trap values)
+> Function get_insert_time can return error values that are cast
+> to a u64. The checks of insert_time1 and insert_time2 check for
+> the errors but because they are u64 variables the check for less
+> than zero can never be true. Fix this by casting the value to s64
+> to allow of the negative error check to succeed.
+>
+> Addresses-Coverity: ("Unsigned compared against 0, no effect")
+> Fixes: 6e60d5ded06b ("drm/mm: add ig_frag selftest")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Is the following tag specification more appropriate?
+Reviewed-by: Christian König <christian.koenig@amd.com>
 
-Fixes: c94082656dac7 ("x86: Use enum instead of literals for trap values")
+Going to pick that up for drm-misc-fixes tomorrow.
 
-Regards,
-Markus
+> ---
+>   drivers/gpu/drm/selftests/test-drm_mm.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/selftests/test-drm_mm.c b/drivers/gpu/drm/selftests/test-drm_mm.c
+> index 3846b0f5bae3..671a152a6df2 100644
+> --- a/drivers/gpu/drm/selftests/test-drm_mm.c
+> +++ b/drivers/gpu/drm/selftests/test-drm_mm.c
+> @@ -1124,12 +1124,12 @@ static int igt_frag(void *ignored)
+>   
+>   		insert_time1 = get_insert_time(&mm, insert_size,
+>   					       nodes + insert_size, mode);
+> -		if (insert_time1 < 0)
+> +		if ((s64)insert_time1 < 0)
+>   			goto err;
+>   
+>   		insert_time2 = get_insert_time(&mm, (insert_size * 2),
+>   					       nodes + insert_size * 2, mode);
+> -		if (insert_time2 < 0)
+> +		if ((s64)insert_time2 < 0)
+>   			goto err;
+>   
+>   		pr_info("%s fragmented insert of %u and %u insertions took %llu and %llu nsecs\n",
+

@@ -2,99 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C9772039FF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jun 2020 16:51:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F739203AFE
+	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jun 2020 17:36:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729164AbgFVOvY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 22 Jun 2020 10:51:24 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:59463 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728404AbgFVOvX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 22 Jun 2020 10:51:23 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1592837483; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=IOa0t2oIcusYGci2TdyPAuYcm9Jhr9e0dw/UoRzbleY=; b=bWW7txvx9sJ1me7hG6uxpJr0TAkIMWqIJVHv8X4onZx1GrobBYidI7IrmAJByQlbwRGAxrKF
- w8H1GCex81OVX70OjRdPvMF9A46Kj90edikQJrQSWW8dyKifVfl9zkMU+2XsxgL1Y61ciugb
- lDCEn2T3t3UUTl4mVsoKnGboCBc=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5ef0c56ae144dd511553026e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 22 Jun 2020 14:51:22
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6F921C433CA; Mon, 22 Jun 2020 14:51:22 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1F1CEC433C6;
-        Mon, 22 Jun 2020 14:51:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1F1CEC433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Karthikeyan Periyasamy <periyasa@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org
-Subject: Re: [PATCH net-next] ath11k: fix uninitialized return in ath11k_spectral_process_data()
-References: <20200619142922.GA267142@mwanda>
-Date:   Mon, 22 Jun 2020 17:51:16 +0300
-In-Reply-To: <20200619142922.GA267142@mwanda> (Dan Carpenter's message of
-        "Fri, 19 Jun 2020 14:29:22 +0000 (UTC)")
-Message-ID: <87a70vf923.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1729261AbgFVPf6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 22 Jun 2020 11:35:58 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:42931 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729224AbgFVPf6 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 22 Jun 2020 11:35:58 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jnOU6-00034z-Ab; Mon, 22 Jun 2020 15:35:46 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Seth Jennings <sjenning@redhat.com>,
+        Dan Streetman <ddstreet@ieee.org>,
+        Vitaly Wool <vitaly.wool@konsulko.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Barry Song <song.bao.hua@hisilicon.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>, linux-mm@kvack.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] mm/zswap: fix a couple of memory leaks and rework kzalloc failure check
+Date:   Mon, 22 Jun 2020 16:35:46 +0100
+Message-Id: <20200622153546.49880-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> writes:
+From: Colin Ian King <colin.king@canonical.com>
 
-> There is a success path where "ret" isn't initialized where we never
-> have a ATH11K_SPECTRAL_TAG_SCAN_SEARCH and then ret isn't initialized.
->
-> Fixes: 9d11b7bff950 ("ath11k: add support for spectral scan")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/net/wireless/ath/ath11k/spectral.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/ath/ath11k/spectral.c b/drivers/net/wireless/ath/ath11k/spectral.c
-> index 1c5d65bb411f..bfbf905f7507 100644
-> --- a/drivers/net/wireless/ath/ath11k/spectral.c
-> +++ b/drivers/net/wireless/ath/ath11k/spectral.c
-> @@ -677,7 +677,7 @@ static int ath11k_spectral_process_data(struct ath11k *ar,
->  	u32 data_len, i;
->  	u8 sign, tag;
->  	int tlv_len, sample_sz;
-> -	int ret;
-> +	int ret = 0;
->  	bool quit = false;
+kzalloc failures return NULL on out of memory errors, so replace the
+IS_ERR_OR_NULL check with the usual null pointer check.  Fix two memory
+leaks with on acomp and acomp_ctx by ensuring these objects are free'd
+on the error return path.
 
-I try to avoid initialising ret variables so I would like find another
-way. What about doing this (completely untested!) in the end of the
-function:
+Addresses-Coverity: ("Resource leak")
+Fixes: d4f86abd6e35 ("mm/zswap: move to use crypto_acomp API for hardware acceleration")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ mm/zswap.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-        return 0;
-
-err:
-	kfree(fft_sample);
-unlock:
-	spin_unlock_bh(&ar->spectral.lock);
-	return ret;
-
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 0d914ba6b4a0..14839cbac7ff 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -433,23 +433,23 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+ 		return 0;
+ 
+ 	acomp_ctx = kzalloc(sizeof(*acomp_ctx), GFP_KERNEL);
+-	if (IS_ERR_OR_NULL(acomp_ctx)) {
++	if (!acomp_ctx) {
+ 		pr_err("Could not initialize acomp_ctx\n");
+ 		return -ENOMEM;
+ 	}
+ 	acomp = crypto_alloc_acomp(pool->tfm_name, 0, 0);
+-	if (IS_ERR_OR_NULL(acomp)) {
++	if (!acomp) {
+ 		pr_err("could not alloc crypto acomp %s : %ld\n",
+ 				pool->tfm_name, PTR_ERR(acomp));
+-		return -ENOMEM;
++		goto free_acomp_ctx;
+ 	}
+ 	acomp_ctx->acomp = acomp;
+ 
+ 	req = acomp_request_alloc(acomp_ctx->acomp);
+-	if (IS_ERR_OR_NULL(req)) {
++	if (!req) {
+ 		pr_err("could not alloc crypto acomp %s : %ld\n",
+ 		       pool->tfm_name, PTR_ERR(acomp));
+-		return -ENOMEM;
++		goto free_acomp;
+ 	}
+ 	acomp_ctx->req = req;
+ 
+@@ -462,6 +462,12 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+ 	*per_cpu_ptr(pool->acomp_ctx, cpu) = acomp_ctx;
+ 
+ 	return 0;
++
++free_acomp:
++	kfree(acomp);
++free_acomp_ctx:
++	kfree(acomp_ctx);
++	return -ENOMEM;
+ }
+ 
+ static int zswap_cpu_comp_dead(unsigned int cpu, struct hlist_node *node)
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.27.0
+

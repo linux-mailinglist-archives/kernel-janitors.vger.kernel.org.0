@@ -2,147 +2,199 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92D2E203F23
-	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jun 2020 20:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C137203F2C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jun 2020 20:32:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730264AbgFVS2y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 22 Jun 2020 14:28:54 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:51102 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730161AbgFVS2y (ORCPT
+        id S1730168AbgFVScq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 22 Jun 2020 14:32:46 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:22131 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730139AbgFVScq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 22 Jun 2020 14:28:54 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05MILc9B144111;
-        Mon, 22 Jun 2020 18:28:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=sgW/H7+7InoJElD4DUBdt2N3zRFgiP2cpkGrzmHIfyM=;
- b=wFQ7tZQ7zt1gIo71K2Pd18f1G1G4rON3C4PWBUge478EnZpRC4V5FIPMGmwLKmqe3oOF
- pS+1Wuf5QAlr3D6u65cwJuq/jYBkpmuA0Bd1Bqq/Ncc3XmTxVd8l67pD0y/EgvwNe6IA
- fDxlpFLE2BPjfEmfJo3BuGRzgirRYYsS06eyJ+h8eBJR3xDGe9TeIRVLXQgOCVRD5MOs
- ABTH0TfTPg0ozuGmddO3xLGmbp//X6Cuqzd6SSSsTJRVNbI/vKsOSz/3vpIC/C+hJxln
- YmDLbMvQT+zhqBHKlu82/ebTjI1vxhAB6sUTvtTsG3zJ9SNCVvVPymZ2sSjFZEHTj5eP bw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 31sebb9197-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 22 Jun 2020 18:28:30 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05MII5BJ099672;
-        Mon, 22 Jun 2020 18:28:30 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 31sv7qhqkp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 22 Jun 2020 18:28:30 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05MISPIO005978;
-        Mon, 22 Jun 2020 18:28:25 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 22 Jun 2020 18:28:24 +0000
-Date:   Mon, 22 Jun 2020 21:28:17 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Seth Jennings <sjenning@redhat.com>,
-        Dan Streetman <ddstreet@ieee.org>,
-        Vitaly Wool <vitaly.wool@konsulko.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Barry Song <song.bao.hua@hisilicon.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>, linux-mm@kvack.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] mm/zswap: fix a couple of memory leaks and rework
- kzalloc failure check
-Message-ID: <20200622182816.GF4151@kadam>
-References: <20200622153546.49880-1-colin.king@canonical.com>
+        Mon, 22 Jun 2020 14:32:46 -0400
+Received: from [10.0.2.15] ([92.148.198.76])
+        by mwinf5d78 with ME
+        id uJYd2200E1fPLi403JYePN; Mon, 22 Jun 2020 20:32:43 +0200
+X-ME-Helo: [10.0.2.15]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 22 Jun 2020 20:32:43 +0200
+X-ME-IP: 92.148.198.76
+Subject: Re: new TODO list item
+To:     Christoph Hellwig <hch@infradead.org>,
+        kernel-janitors@vger.kernel.org
+References: <20200421081257.GA131897@infradead.org>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <9a92878b-2cf2-7c14-86ce-f1c139f0a9ba@wanadoo.fr>
+Date:   Mon, 22 Jun 2020 20:32:36 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200622153546.49880-1-colin.king@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9660 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 suspectscore=2 mlxlogscore=999
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006220123
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9660 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 cotscore=-2147483648
- lowpriorityscore=0 phishscore=0 bulkscore=0 clxscore=1011 impostorscore=0
- malwarescore=0 priorityscore=1501 spamscore=0 mlxscore=0 adultscore=0
- suspectscore=2 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006220123
+In-Reply-To: <20200421081257.GA131897@infradead.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jun 22, 2020 at 04:35:46PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+Le 21/04/2020 à 10:12, Christoph Hellwig a écrit :
+> Hi Janitors,
 > 
-> kzalloc failures return NULL on out of memory errors, so replace the
-> IS_ERR_OR_NULL check with the usual null pointer check.  Fix two memory
-> leaks with on acomp and acomp_ctx by ensuring these objects are free'd
-> on the error return path.
+> if someone feels like helping with a fairly trivial legacy API, the
+> wrappers in include/linux/pci-dma-compat.h should go away.  This is
+> mostly trivially scriptable, except for dma_alloc_coherent, where
+> the GFP_ATOMIC passed by pci_alloc_consisteny should usually be replaced
+> with GFP_KERNEL when not calling from an atomic context.
 > 
-> Addresses-Coverity: ("Resource leak")
-> Fixes: d4f86abd6e35 ("mm/zswap: move to use crypto_acomp API for hardware acceleration")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  mm/zswap.c | 16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 0d914ba6b4a0..14839cbac7ff 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -433,23 +433,23 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
->  		return 0;
->  
->  	acomp_ctx = kzalloc(sizeof(*acomp_ctx), GFP_KERNEL);
-> -	if (IS_ERR_OR_NULL(acomp_ctx)) {
-> +	if (!acomp_ctx) {
->  		pr_err("Could not initialize acomp_ctx\n");
->  		return -ENOMEM;
->  	}
->  	acomp = crypto_alloc_acomp(pool->tfm_name, 0, 0);
-> -	if (IS_ERR_OR_NULL(acomp)) {
-> +	if (!acomp) {
 
-This should be IS_ERR(acomp).  Please preserve the error code.
+Hi,
+what would be the best approach to work on, it?
 
->  		pr_err("could not alloc crypto acomp %s : %ld\n",
->  				pool->tfm_name, PTR_ERR(acomp));
-> -		return -ENOMEM;
-> +		goto free_acomp_ctx;
->  	}
->  	acomp_ctx->acomp = acomp;
->  
->  	req = acomp_request_alloc(acomp_ctx->acomp);
-> -	if (IS_ERR_OR_NULL(req)) {
-> +	if (!req) {
->  		pr_err("could not alloc crypto acomp %s : %ld\n",
->  		       pool->tfm_name, PTR_ERR(acomp));
-> -		return -ENOMEM;
-> +		goto free_acomp;
->  	}
->  	acomp_ctx->req = req;
->  
-> @@ -462,6 +462,12 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
->  	*per_cpu_ptr(pool->acomp_ctx, cpu) = acomp_ctx;
->  
->  	return 0;
-> +
-> +free_acomp:
-> +	kfree(acomp);
+I've processed the current tree, with the coccinelle script below.
+For 'dma_alloc_coherent' calls, I've left a GFP_ on purpose, so that one 
+need to wonder which flag is the best.
 
-The kfree() isn't correct.  It needs to be:
+'make'ing the files before sending patches should spot the places were a 
+correct flag has not been defined.
 
-	crypto_free_acomp(acomp);
+What puzzles me is that the script below >20k lines file and the 
+diffstat is:
+     288 files changed, 3963 insertions(+), 3857 deletions(-)
 
-> +free_acomp_ctx:
-> +	kfree(acomp_ctx);
-> +	return -ENOMEM;
 
-regards,
-dan carpenter
+1. Does sending patches one file at a time makes sense?
+2. Should the PCI_DMA_ --> DMA_ conversion should be handled first? (the 
+#defined values are the same, it should be straightforward)
+3. Should a huge patch series be sent to fix all at once?
+4. Should we update everything except 'dma_alloc_coherent' all at once, 
+then one file at a time for the allocation with correct GFP_ flag?
 
+
+I could help with 1. or 2nd step of 4. This could go in the right 
+direction, but would require time.
+
+Other tree wide approaches look complex to me.
+
+
+CJ
+
+
+-------------------------------------
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
+
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+----------------------------------------

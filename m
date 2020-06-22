@@ -2,199 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C137203F2C
-	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jun 2020 20:32:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC73A203F69
+	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jun 2020 20:45:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730168AbgFVScq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 22 Jun 2020 14:32:46 -0400
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:22131 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730139AbgFVScq (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 22 Jun 2020 14:32:46 -0400
-Received: from [10.0.2.15] ([92.148.198.76])
-        by mwinf5d78 with ME
-        id uJYd2200E1fPLi403JYePN; Mon, 22 Jun 2020 20:32:43 +0200
-X-ME-Helo: [10.0.2.15]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 22 Jun 2020 20:32:43 +0200
-X-ME-IP: 92.148.198.76
-Subject: Re: new TODO list item
-To:     Christoph Hellwig <hch@infradead.org>,
+        id S1730174AbgFVSpW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 22 Jun 2020 14:45:22 -0400
+Received: from mout.web.de ([212.227.15.14]:50683 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729605AbgFVSpV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 22 Jun 2020 14:45:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1592851513;
+        bh=DhW7PQh3gkHif4l5Q6tkc6PugZQTAw4RtX31b0wSjjY=;
+        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
+        b=XolDfmkkRDaWDOpunbGT3mIOrwPpq91Ozn2bOcEm2JZfED2c6ddI3Wexyy3rTY0WC
+         Vdb4WOBYHosR2K/cFeat4/+s/QIBI/FdiOKev2YSbJw1r2ViEwD8kFRVfHVSu73naf
+         ZknyjvW+jJ59/Jjd4CR5wAkAfNWy+OAO0RcMnTJ8=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.49.69.81]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MeDMR-1jG1y21erP-00bN9W; Mon, 22
+ Jun 2020 20:45:13 +0200
+To:     Gaurav Singh <gaurav1086@gmail.com>,
         kernel-janitors@vger.kernel.org
-References: <20200421081257.GA131897@infradead.org>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <9a92878b-2cf2-7c14-86ce-f1c139f0a9ba@wanadoo.fr>
-Date:   Mon, 22 Jun 2020 20:32:36 +0200
+Cc:     linux-kernel@vger.kernel.org, Josh Poimboeuf <jpoimboe@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH] objtool: Fix memory leak in special_get_alts()
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <87bf795e-a640-4aea-ff30-129905b61fc6@web.de>
+Date:   Mon, 22 Jun 2020 20:45:12 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200421081257.GA131897@infradead.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:8QsdV6P2cV3XGyVPQc+7yFskBMw0EJW5m3AkZkJhz6k1HlAVE74
+ zph2pzEF/33Zq8UIY1OQ5am34Bt7LIMnbdg4jlGPkh1i0dnATgqjNADRzQw8ex7AcnBJAPd
+ 0QRW+OkcUTOAxE1E0ws3ydYkEMM15VoawMx44wRXiNVEG49ht1rM54jaqSZ7AIYLS8eE4kx
+ XfGrUH86hiPBuCKWZusNA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:MXFQzJz4jvQ=:wGmRJHtB3rbNjmnbJHtRec
+ euj0Khe5ffiTnTkjdHYQo7gFia+cJKjHWRe5TsRkYA+zdy5z1hSqdg5j7RyQoxLnJhuM5+3D3
+ KVF0jjlGryO5VZcy6cd8bCd4dN2qFPm89TV14rCaL4CkIQhYb/7DsU1/oH98uRwH2+jWKxI5M
+ fwLO6gRpvQZS/mt/xqL04sfoPTA4eMKRXEl/ZzB1wzQvs0KFujpNq+yUGn+Oqm1zQkhAaLOnG
+ mlYVtvtjsQS8VOSsCvc/i4taSZVhIp/aUUVPc5UP34csPuKOZvZfJMndDvnP0Q3SgLtl5rreu
+ zoBPDT9HO5eu35kxbXMUygl2qZqH7EpH7BP+cK2gTexMsBYTso0ZFCDU+MvARjaBZXGXtuNls
+ gVMdyBBC/BhAEH15psUibArZfreKD+wvQEpd3h/nRqZG4enjDEyZHhfp91mPilI2apvtUndP7
+ pIsKpP/BuLUASnQhGPiCVl97IIxc0trYgQBqVoICeWAozwhMOSHC1fCXw6JdMjji6AojQPuNC
+ c/uRaqMC4cThXrgKS0j01GP2H+cjYLo76yVSNYu5tyr1QQHCwDUprKahV18M0zO1EYSgIO4VB
+ 6rhMejOCsp1hY3NpQ8DNravBrkEK1zjg0KRuHoty5USbqPCjqgDa0TrRlPAqjex+wZzVniiyM
+ CRZv9RtpVuWj3hRSckD4SbyEd2qzCilAhz5KI+PvG55gYVF6Yu+f33E6Gvbxmr+hEqZBeNUc5
+ JR3+pMviKJhx4r3ewUqyPwq1RhA79GQ93oGgQbPUNYwWAx0Hl9GiPwjRD5I5yjT6p2OrHTwAY
+ YQ15xQ2QBrr39mrgxbcqeaBwyjGr+tXARE9XKHgmKSpma21W5humyhlc0XFXdjdZNhVGZvWyW
+ JC8X5oQkbVGvXMeM4Kd6bxsDWlkqHS2IJMxywMSKJNjKmmvU+Yd5G5VlGERiNp5GfSZ9LZTi4
+ mNbqgWLcaNL4xVi9YBPd0hxEBNB5M8QCL0fCP/4LL4wLO/ipmEjZ2LeKeNpMSD5S+/UWjJ7Mf
+ XkZfyObJEECRoZcsuiDUmo2uGwD37wtoih+4O2WvObUPzoWFj4pliCSnaEfwws9V8LQLosbdp
+ wr2G4AusR++ECY6dMAQO2WyKK6H7LlsfrkrkVcbcm0Ww4ZarLR0qxULvqTlfWdaavVbP/htaX
+ BJwAZoSFNzlhfGpHmyrW17yB56DvYqSxILPn3fM0+Odt9QQkSlRKhETslPeGHVzCgq3RJxfFJ
+ MS0wUILBmM1UHYKgK
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 21/04/2020 à 10:12, Christoph Hellwig a écrit :
-> Hi Janitors,
-> 
-> if someone feels like helping with a fairly trivial legacy API, the
-> wrappers in include/linux/pci-dma-compat.h should go away.  This is
-> mostly trivially scriptable, except for dma_alloc_coherent, where
-> the GFP_ATOMIC passed by pci_alloc_consisteny should usually be replaced
-> with GFP_KERNEL when not calling from an atomic context.
-> 
-
-Hi,
-what would be the best approach to work on, it?
-
-I've processed the current tree, with the coccinelle script below.
-For 'dma_alloc_coherent' calls, I've left a GFP_ on purpose, so that one 
-need to wonder which flag is the best.
-
-'make'ing the files before sending patches should spot the places were a 
-correct flag has not been defined.
-
-What puzzles me is that the script below >20k lines file and the 
-diffstat is:
-     288 files changed, 3963 insertions(+), 3857 deletions(-)
+I propose to avoid a typo in the previous patch subject.
 
 
-1. Does sending patches one file at a time makes sense?
-2. Should the PCI_DMA_ --> DMA_ conversion should be handled first? (the 
-#defined values are the same, it should be straightforward)
-3. Should a huge patch series be sent to fix all at once?
-4. Should we update everything except 'dma_alloc_coherent' all at once, 
-then one file at a time for the allocation with correct GFP_ flag?
+> Free alt before returning to avoid memory leak.
 
+Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=
+e?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3D625d3449788f85569096780592=
+549d0340e9c0c7#n183
 
-I could help with 1. or 2nd step of 4. This could go in the right 
-direction, but would require time.
-
-Other tree wide approaches look complex to me.
-
-
-CJ
-
-
--------------------------------------
-@@
-@@
--    PCI_DMA_BIDIRECTIONAL
-+    DMA_BIDIRECTIONAL
-
-@@
-@@
--    PCI_DMA_TODEVICE
-+    DMA_TO_DEVICE
-
-@@
-@@
--    PCI_DMA_FROMDEVICE
-+    DMA_FROM_DEVICE
-
-@@
-@@
--    PCI_DMA_NONE
-+    DMA_NONE
-
-@@
-expression e1, e2, e3;
-@@
--    pci_alloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3;
-@@
--    pci_zalloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_free_consistent(e1, e2, e3, e4)
-+    dma_free_coherent(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_single(e1, e2, e3, e4)
-+    dma_map_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_single(e1, e2, e3, e4)
-+    dma_unmap_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4, e5;
-@@
--    pci_map_page(e1, e2, e3, e4, e5)
-+    dma_map_page(&e1->dev, e2, e3, e4, e5)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_page(e1, e2, e3, e4)
-+    dma_unmap_page(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_sg(e1, e2, e3, e4)
-+    dma_map_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_sg(e1, e2, e3, e4)
-+    dma_unmap_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-+    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-+    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-+    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-+    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2;
-@@
--    pci_dma_mapping_error(e1, e2)
-+    dma_mapping_error(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_dma_mask(e1, e2)
-+    dma_set_mask(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_consistent_dma_mask(e1, e2)
-+    dma_set_coherent_mask(&e1->dev, e2)
-
-----------------------------------------
+Regards,
+Markus

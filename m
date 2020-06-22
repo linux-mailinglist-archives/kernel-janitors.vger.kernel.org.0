@@ -2,40 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 502AE202FF6
-	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jun 2020 08:52:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15ED82030D7
+	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jun 2020 09:53:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731179AbgFVGwJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 22 Jun 2020 02:52:09 -0400
-Received: from mout.web.de ([212.227.15.14]:53021 "EHLO mout.web.de"
+        id S1731453AbgFVHxQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 22 Jun 2020 03:53:16 -0400
+Received: from mout.web.de ([212.227.15.14]:35621 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726759AbgFVGwI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 22 Jun 2020 02:52:08 -0400
+        id S1731310AbgFVHxO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 22 Jun 2020 03:53:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592808670;
-        bh=9iOSO4KLAd/1THwTxg/hUqNUPF6Lv8cPp6yA4is/Ek0=;
+        s=dbaedf251592; t=1592812345;
+        bh=ZVSR5nyORNSx7+DWEx3pNcTs5a4pea2PQFI9qDf1fXs=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=mPJZBVRBPIw/aqyGan+EWfUl85rO33/SQnyTIRJLFdj/PCx4yVP3YcMnjrSqdEVZz
-         CaTnpDxjW7rMEAYfZ58SxWcayOTRl8UuD3mUEBz69KOxuERXWkzpZsImuR9/SSDQiA
-         fMV7H7sZVCkAFm5VNMgyJ4M9FZzMZLbBMFAWK2zY=
+        b=Amvoa3Ll/JqLso9GQr3USpZ0NIZwOM2S/kRwkCbwvqIb61JXY1pEXJpM/BttegjU6
+         /S17XUvq1nGY6eceIuZtDb6hr4Vah4SOh7uQtDnsdw91RwPnWonLG2dtISgWQzKq9r
+         pH9XG1hilFliEkpNz7Fc5nxWFzrl440kUZ50Rg8g=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.69.81]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LlsUC-1jECWk2Cky-00ZLby; Mon, 22
- Jun 2020 08:51:10 +0200
-Subject: Re: [PATCH] arch/x86: Check return value from a notify_die() call
-To:     Bo YU <tsu.yubo@gmail.com>, kernel-janitors@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jann Horn <jannh@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-References: <ee99271a-6eb5-0dec-87d2-504b3ad4724d@web.de>
- <CAKq8=3LaX0tWs0BfdpCYvKRRz5Cqv4cOXo1wcVvpY72cQA8RGA@mail.gmail.com>
+Received: from [192.168.1.2] ([78.49.69.81]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lilcj-1jHnuu1zVV-00cyRO; Mon, 22
+ Jun 2020 09:52:25 +0200
+Subject: Re: [PATCH v2] nbd: Fix memory leak in nbd_add_socket
+To:     Zheng Bin <zhengbin13@huawei.com>, linux-block@vger.kernel.org
+Cc:     nbd@other.debian.org, Aditya Pakki <pakki001@umn.edu>,
+        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Stephen McCamant <mccamant@cs.umn.edu>,
+        Qiushi Wu <wu000273@umn.edu>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+        Josef Bacik <josef@toxicpanda.com>,
+        Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>,
+        Yi Zhang <yi.zhang@huawei.com>
+References: <b55f8af2-b20c-214f-90f0-9b6efcb7273c@web.de>
+ <db17d022-a53a-3781-63d4-c38d5cf5b1e4@huawei.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -80,66 +78,83 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <615f79c5-5ca8-9dad-9ef7-85d8513a3e1b@web.de>
-Date:   Mon, 22 Jun 2020 08:50:59 +0200
+Message-ID: <1a58ab81-3810-0763-7394-10b51add23ee@web.de>
+Date:   Mon, 22 Jun 2020 09:52:22 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <CAKq8=3LaX0tWs0BfdpCYvKRRz5Cqv4cOXo1wcVvpY72cQA8RGA@mail.gmail.com>
+In-Reply-To: <db17d022-a53a-3781-63d4-c38d5cf5b1e4@huawei.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-X-Provags-ID: V03:K1:uZsiGn3jM1fIowQ+wi1x7tZpPlpcw1TAwvp8KTFCsN8Tvtcwzn+
- pcZEKJy9JfwY6hwJ1jJOmbjEx3Z8VSF6uq7ExEvMF+V0Yvsj3QdHOI61cUu6vKgdMvlsXdY
- Y1FlXCCGuOXKZlk0xPh65QJL9gC6KtlhMvcRbx90A+HU1i6msqngYG4iRRMoHKZhEhcpVCY
- HqkHrsHB6iMShNWBkHT4A==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:hCxjAKDqPmcYUqH74KGkP4kXff/2+FeIXCQvsDkz3oLMHfep4CW
+ uFl8gaY4X8sqHgOooegig/rCLs6wkWyQuKFbRCmjNETGto6fQHx6V2UVmZNVlL+h4fpmrgC
+ H2FrV80KSQStVdKN50Y3xwsoHnRbmWLbvcHF1JJGqSJCrLNo+72dYyVIcpIJg1nRYQ71csa
+ G+0CjyKbzRKQbNYe2ZMAw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:H6iL6OPXA+A=:8HB+SajW6BivW0zJIcBvPu
- DWJboVWZq1xtdMuRs9VGZg+E5ToA9jXllnV9MyfYvay7cisy12xavde8/uTaXfTjBGRzr/Ijq
- uGBUc588sZ4+6AZBuZMGFu2U2xSv/o6y6+ZCVxPC3KB5i0XFwRVSHaFqU102Kx+hT3pJNtTjC
- 9NeQHPk7KOTTYTUvCwlSxvtDMxoVjSmJtcr5cB/VML2sb5MTcZnuDkLraUs9mb2L4r+ARF6si
- hlY+jtXDtVs6EkWgBGyEb7Hr0sai+owyIXRGYy1TgwnEA4KyB5N/zXEZiID8KLiDEX3vOD4Ag
- GveMAQPuYOYS7nUY9q+y9uPcVkUz0Tkybnlc114vW5t2prmtlGDCosDWhUjdVZII/rUGXUuJY
- EGpCfkMSTECfA/7XY7DL9c55N8JC8LCzAWxxjtFqmHBD6ed7V8cwfGPFtDn8vbFFAjNw2Z0OW
- SuyRe4W4vO24kvi17Yt7bYcEKH09XgzOY53T/Uft/5oqA/994cQQsf7BtKLg+tIphNCGPtkFl
- yDUafCioFQIvNlm9+rUWkLDwjQPb2dvbdtK7J201gwYmq3x7S2jg1PlvRxEzerNt63siSWLkB
- cANfLN1V9j5cHGq/6URUP8erzW2bUR23w1NNXZDu3npWKCyV+b86IICdLbNEd7Gvnv7HO0wIf
- Ol+D/vvYrk9Z/lk7a44hPHGl74IHFUp1e7GzTv09WE4y/o73OvdIkqzH8mnB+JxX1Bq6QlY7M
- smda6GsTsOpPB+9alVxGKt+R4E8vQigd8985YWYgKoMNA5x/lGVQG0hg9NcxnrH9P3j0gqggm
- lYmwciNb4B0TeMPtofZ2cU88dM80K96Lotz3ugY3FWAM7EQ0kE1iHHShWqxsCHqdQl5NarmEQ
- fAOiaONiQSmZscaeza7sEYjgmR75igcfUam10gr+7V42h7zHO196lNq4tdoA/kzel0RywQYrq
- BRgq6PKXLkLzjEiG7LPnIdPfHx07ztR+pdr4Dz5xBEX+vKGI47vHAKwLiEU2B9IvKKhuxVq0P
- kRZ9zkNzWsrUZkRTTc4gSl0IanCjaexluqryHOpAmycS53bin8fUzZ2SyXPyGNe2ZQq55pzJ6
- Mh/i2bkOJ9BbgB0GyXO1MtB1KNL+1REFYagGaS4HCVYZSMfunfgT4P6qIarLg4xaBS4RmadfX
- nVssrp0XnOV4uCiqJZNcszy5DIIm2TpRD7u1HxE9uBYInsU3CFXJtIBNW4Qv+EpEVSqYdPX34
- ffmHkCsx27/VEd3h/
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Z46aFjNL7eQ=:XsG6hxPZcZsv6a2vZdYROG
+ hu0TAVl2kVzXqqMpuis3so0qCtJUfc3HES4MbTMTw8IJtQd51lVDjmUIPqEmlZXeeLESf5Y8D
+ 037LDQUVSHz99i80/9fggs0cy0dDTzzhAH6JidMvENIzhe1RiEC1/+uinNt2UUls6B1BSlEbV
+ xKr0usuBxZhKlz6qt8S9ujm+jv6zbGntvaz1bXJNYDWSDaRy1RcilmvfqDCBg88JKa5fquoxd
+ VdKBZL8VV7jdX5Fekd9X8HCeWqwF1HJ5GPEQdg06l9rSNCEmFU8aL7pgE23SH5a5KFdItJs11
+ E/7c8+HdwZVd+nCl9Ugp7NbMHUqiIbeGvfnd45al4kFFLK2wzJjWFMfaDoSaBVsmDGAu8c+1a
+ 24JYX3reMh54Y+8KwKLawbKzjXukZi03yl0yq1hQj4z1amhTjEoEAxbi1K8jKDfuQGidkITxE
+ QM092GnYAvWS0C/0YhxmoUAg+k/8V6dxybhoSphWpXWbjNqDWaLAEKgB7KHNGs3fbURPTQy27
+ KZ50XWGScSGGAqQVQLqHwI8CWteOdfV49Sew+2R1jAliDadAn2ve9dhR8ZK3lZA1kZDKypezr
+ EVcXG04jlterazZj1JW2Ae9iztwVty2faEFc/WXhTCNH1oDUzEbwaUud+aFHulvI81oB4nBRk
+ 5bOH/QWzHkcKSR3UQSszk0t2C53AhZMrY+s9lIeV28lQlfzV0RsSys0bPUdR+RMWXhymDOtex
+ SMqMBG9C/vTZDpzvKjyJIi93b70TDsDfSoGOehezkXEbeSGMW7aQu2iDNSQOldTNyMmXrWgnY
+ mA71LhHBu001ObkXA08/N/Hsvi7Wzgxdtc9+ro0WoInL8iNvFV5qDC4qLVPjKQoJWXRlU5Lyw
+ mJd3B+4Rp5BpJHimf/G9y/U6k29QOssVWPkiB5bT3guyh0jtEH8j9FsnnjDV1q4lo1RTu7j8s
+ WncMoRYB7OfMWMi84TBJ9k5rzfOHlvesPHRL7uvvXvEmJLxkEa9j8wHyxmC8FheAvGv4ClJtr
+ Fy71/eBIQ+Ku4CRRjXrhOwSGn4FyJDM5a3bvFHwCsW66E2ctAfN7BENa4K7Bf5YQ+pEsr1lqu
+ 5t2A2t0seVauH5YQd+n911dJbIGAtyDgC4p9PNiElZziN7+FFtkXmfU0YKJGKyWoyjKlGTYRS
+ ybP5B8E5LPVzIma9JWCk8dnseNqshDB6AlbvMw6nAyXCDxOzM4TaTDdCoVyV9xULoXACN4l/I
+ SYmcCDxEePkHjoF1O
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->>> This is detected by Coverity scan: #CID: 1464472(CHECKED_RETURN)
+>> Can an other wording variant be nicer?
+>
+> em, how about this?
+>
+>
+> When adding first socket to nbd,
 
-Can an additional imperative wording be helpful for the change description
-(besides an adjusted patch subject)?
-
-
->>> FIXES: c94082656dac7(x86: Use enum instead of literals for trap values)
->>
->> Is the following tag specification more appropriate?
->>
->> Fixes: c94082656dac7 ("x86: Use enum instead of literals for trap values")
-> Your description looks like more appropriate, thank you.
-
-Thanks for your positive feedback.
+How do you think about to replace abbreviations by terms?
 
 
-> But I want to receive suggestions from other reviewers also. So I will
-> send V2 patch as your point once got confirmed. Sorry.
+> if nsock's allocation fails,
 
-Should the confirmation be sufficient from the available software documentation?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=625d3449788f85569096780592549d0340e9c0c7#n183
+=E2=80=A6 failed,
 
-I am curious if this patch review will clarify more aspects.
+
+> config->socks is malloced
+
+The data structure member =E2=80=9Cconfig->socks=E2=80=9D was reallocated.
+
+
+> but num_connections does not update,
+
+But the data structure member =E2=80=9Cconfig->num_connections=E2=80=9D wa=
+s not updated.
+
+
+> memory leak will occur(Function
+> nbd_config_put will only free config->socks when num_connections is not =
+0).
+
+A memory leak will occur then because the function =E2=80=9Cnbd_config_put=
+=E2=80=9D
+will free =E2=80=9Cconfig->socks=E2=80=9D only when =E2=80=9Cnum_connectio=
+ns=E2=80=9D is not zero.
+
+Would you like to add an imperative wording to the commit message?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3D625d3449788f85569096780592=
+549d0340e9c0c7#n151
 
 Regards,
 Markus

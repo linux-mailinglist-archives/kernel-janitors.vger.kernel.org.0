@@ -2,89 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B8BD202DF8
-	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jun 2020 02:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0387A202EE0
+	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jun 2020 05:26:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730974AbgFVAuX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 21 Jun 2020 20:50:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43988 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726375AbgFVAuX (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 21 Jun 2020 20:50:23 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5DBCC061794;
-        Sun, 21 Jun 2020 17:50:21 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id d21so6510798lfb.6;
-        Sun, 21 Jun 2020 17:50:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=iBt2BmfEHSKv5KEnevExVHyEchus6u1QtT1Ztdm6pos=;
-        b=a1XWiS2PRwgbuoHsY63HsLZYNzxcxAaAke8mNZd3o+6BCpiGyxZMlCj3bIw589Jmoz
-         BkI24ONNmQ1D4ymFJZu0TNajjWPwdMhpz9ngCVktcSGPxTjaFuDYxGng/uXaIyrreBA+
-         l6ORVwivtMAE1u2j2IC1P6GELFWQq0psXXsdd36JNzVTQh+GZWLOG5Qx66vJ964DXj+d
-         xcv21TkADxqNA+SU7Eqm3OCS/EISggyg0rAQIWD0qjW3aqJscHPctStvO7EkiBX1N0Zj
-         Cg/mxHP51w02hLAnhm2sSEpxXqUVR0Tw2D17Nkn1r/RzTmYmWPn42rEQy0Qef11vH1MJ
-         cpfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=iBt2BmfEHSKv5KEnevExVHyEchus6u1QtT1Ztdm6pos=;
-        b=GeM/ojwo/psn1PDx58EoXzS9NaZhX7EJ92ZjOgtb6vW+lefU/bM2EIZHnDyU+D1jGS
-         ofmwQDpTU1dp8r4qGj0E2dtyNlE0reZZ0oUPoKQ8nHYSNxKM/k1upZmhr2ATUXz+HEZx
-         HGhB2O30KCk0chbmKRFleIZxcgDnrSZCiRAuUlika0PWDiW97zwXgCwTqOZ+Fa+9093E
-         weAcFXB7OdvCezYYOs4pLVCE1ZsJ2GhGi8fXMwh9reR5FQKWHRqlMo6YTVzyrtxIWl88
-         8ZH1l1YM5VPvdcmeREdgjb2AZlpBZ5BQ2h4Udvf/1dU0S0ZbILi4db0C+osjscXKZLuN
-         iouA==
-X-Gm-Message-State: AOAM531PT0WptkHZ0wI8Aq5x0iDOIX4s03m82ZXy6H+JdiETHK3gUSbY
-        s4UX8IWvMIP3Dq9whEsWDV8dVNb+ZZ/adH6PrGk=
-X-Google-Smtp-Source: ABdhPJyRrZ4qxLIMj6icfHoTkq0I1TXX8y74Bhmj6/OkOYnU4EV+n3VWY90mmdSrxKJkbwJn8nl4oebKSuJ7QSNsqEY=
-X-Received: by 2002:a19:48d3:: with SMTP id v202mr2744445lfa.202.1592787020211;
- Sun, 21 Jun 2020 17:50:20 -0700 (PDT)
+        id S1726706AbgFVD0F (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 21 Jun 2020 23:26:05 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:40284 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726559AbgFVD0E (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 21 Jun 2020 23:26:04 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 9449AD0E39D143FD9445;
+        Mon, 22 Jun 2020 11:26:01 +0800 (CST)
+Received: from [127.0.0.1] (10.166.215.138) by DGGEMS401-HUB.china.huawei.com
+ (10.3.19.201) with Microsoft SMTP Server id 14.3.487.0; Mon, 22 Jun 2020
+ 11:25:54 +0800
+Subject: Re: [PATCH v2] nbd: Fix memory leak in nbd_add_socket
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        <linux-block@vger.kernel.org>
+CC:     <nbd@other.debian.org>,
+        Navid Emamdoost <navid.emamdoost@gmail.com>,
+        "Navid Emamdoost" <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Stephen McCamant <mccamant@cs.umn.edu>,
+        Qiushi Wu <wu000273@umn.edu>,
+        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Jens Axboe <axboe@kernel.dk>,
+        Josef Bacik <josef@toxicpanda.com>,
+        Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>,
+        Yi Zhang <yi.zhang@huawei.com>
+References: <b55f8af2-b20c-214f-90f0-9b6efcb7273c@web.de>
+From:   "Zhengbin (OSKernel)" <zhengbin13@huawei.com>
+Message-ID: <db17d022-a53a-3781-63d4-c38d5cf5b1e4@huawei.com>
+Date:   Mon, 22 Jun 2020 11:25:52 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.3.0
 MIME-Version: 1.0
-References: <ee99271a-6eb5-0dec-87d2-504b3ad4724d@web.de>
-In-Reply-To: <ee99271a-6eb5-0dec-87d2-504b3ad4724d@web.de>
-From:   Bo YU <tsu.yubo@gmail.com>
-Date:   Mon, 22 Jun 2020 08:50:08 +0800
-Message-ID: <CAKq8=3LaX0tWs0BfdpCYvKRRz5Cqv4cOXo1wcVvpY72cQA8RGA@mail.gmail.com>
-Subject: Re: [PATCH] arch/x86: Check return value from a notify_die() call
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     kernel-janitors@vger.kernel.org,
-        open list <linux-kernel@vger.kernel.org>,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jann Horn <jannh@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <b55f8af2-b20c-214f-90f0-9b6efcb7273c@web.de>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Originating-IP: [10.166.215.138]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Jun 21, 2020 at 10:40 PM Markus Elfring <Markus.Elfring@web.de> wrote:
+
+On 2020/6/20 20:05, Markus Elfring wrote:
+>> If we add first socket to nbd, config->socks is malloced but
+>> num_connections does not update(nsock's allocation fail), the memory
+>> is leaked. Cause in later nbd_config_put(), will only free config->socks
+>> when num_connections is not 0.
+>>
+>> Let nsock's allocation first to avoid this.
+> I suggest to improve this change description.
+> Can an other wording variant be nicer?
+
+em, how about this?
+
+
+When adding first socket to nbd, if nsock's allocation fails, config->socks
+
+is malloced but num_connections does not update, memory leak will 
+occur(Function
+
+nbd_config_put will only free config->socks when num_connections is not 0).
+
 >
-> I propose to improve the previous patch subject.
+>
+> …
+>> +++ b/drivers/block/nbd.c
+>> @@ -1037,21 +1037,22 @@  static int nbd_add_socket(struct nbd_device *nbd, unsigned long arg,
+>>   		return -EBUSY;
+>>   	}
+>>
+>> +	nsock = kzalloc(sizeof(struct nbd_sock), GFP_KERNEL);
+> Please use the following code variant.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?id=4333a9b0b67bb4e8bcd91bdd80da80b0ec151162#n854
+>
+> +	nsock = kzalloc(sizeof(*nsock), GFP_KERNEL);
 >
 >
-> > This is detected by Coverity scan: #CID: 1464472(CHECKED_RETURN)
-> >
-> > FIXES: c94082656dac7(x86: Use enum instead of literals for trap values)
+> …
+>>   	if (!socks) {
+>>   		sockfd_put(sock);
+>> +		kfree(nsock);
+>>   		return -ENOMEM;
+>>   	}
+> Please take another software design possibility into account.
 >
-> Is the following tag specification more appropriate?
+>   	if (!socks) {
+> -		sockfd_put(sock);
+> -		return -ENOMEM;
+> +		kfree(nsock);
+> +		goto put_socket;
+>   	}
 >
-> Fixes: c94082656dac7 ("x86: Use enum instead of literals for trap values")
-Your description looks like more appropriate, thank you.
-But I want to receive suggestions from other reviewers also. So I will
-send V2 patch as your point
-once got confirmed. Sorry.
 >
 > Regards,
 > Markus
+>
+> .
+>
+

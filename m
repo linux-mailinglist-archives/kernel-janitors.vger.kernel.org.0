@@ -2,32 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F739203AFE
-	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jun 2020 17:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C677203B4F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jun 2020 17:44:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729261AbgFVPf6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 22 Jun 2020 11:35:58 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42931 "EHLO
+        id S1729317AbgFVPog (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 22 Jun 2020 11:44:36 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:43090 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729224AbgFVPf6 (ORCPT
+        with ESMTP id S1729247AbgFVPog (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 22 Jun 2020 11:35:58 -0400
+        Mon, 22 Jun 2020 11:44:36 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jnOU6-00034z-Ab; Mon, 22 Jun 2020 15:35:46 +0000
+        id 1jnOca-0003ee-DX; Mon, 22 Jun 2020 15:44:32 +0000
 From:   Colin King <colin.king@canonical.com>
 To:     Seth Jennings <sjenning@redhat.com>,
         Dan Streetman <ddstreet@ieee.org>,
         Vitaly Wool <vitaly.wool@konsulko.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Barry Song <song.bao.hua@hisilicon.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>, linux-mm@kvack.org
+        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] mm/zswap: fix a couple of memory leaks and rework kzalloc failure check
-Date:   Mon, 22 Jun 2020 16:35:46 +0100
-Message-Id: <20200622153546.49880-1-colin.king@canonical.com>
+Subject: [PATCH][next] mm/zswap: remove redundant assignment to variable dlen
+Date:   Mon, 22 Jun 2020 16:44:32 +0100
+Message-Id: <20200622154432.50133-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,64 +37,27 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-kzalloc failures return NULL on out of memory errors, so replace the
-IS_ERR_OR_NULL check with the usual null pointer check.  Fix two memory
-leaks with on acomp and acomp_ctx by ensuring these objects are free'd
-on the error return path.
+The variable dlen is being assigned a value that is never read, the
+assignment is redundant and can be removed.
 
-Addresses-Coverity: ("Resource leak")
-Fixes: d4f86abd6e35 ("mm/zswap: move to use crypto_acomp API for hardware acceleration")
+Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- mm/zswap.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ mm/zswap.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/mm/zswap.c b/mm/zswap.c
-index 0d914ba6b4a0..14839cbac7ff 100644
+index 14839cbac7ff..d63b90edd833 100644
 --- a/mm/zswap.c
 +++ b/mm/zswap.c
-@@ -433,23 +433,23 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
- 		return 0;
+@@ -1249,7 +1249,6 @@ static int zswap_frontswap_load(unsigned type, pgoff_t offset,
+ 	sg_init_one(&output, dst, dlen);
+ 	acomp_request_set_params(acomp_ctx->req, &input, &output, entry->length, dlen);
+ 	ret = crypto_wait_req(crypto_acomp_decompress(acomp_ctx->req), &acomp_ctx->wait);
+-	dlen = acomp_ctx->req->dlen;
+ 	mutex_unlock(&acomp_ctx->mutex);
  
- 	acomp_ctx = kzalloc(sizeof(*acomp_ctx), GFP_KERNEL);
--	if (IS_ERR_OR_NULL(acomp_ctx)) {
-+	if (!acomp_ctx) {
- 		pr_err("Could not initialize acomp_ctx\n");
- 		return -ENOMEM;
- 	}
- 	acomp = crypto_alloc_acomp(pool->tfm_name, 0, 0);
--	if (IS_ERR_OR_NULL(acomp)) {
-+	if (!acomp) {
- 		pr_err("could not alloc crypto acomp %s : %ld\n",
- 				pool->tfm_name, PTR_ERR(acomp));
--		return -ENOMEM;
-+		goto free_acomp_ctx;
- 	}
- 	acomp_ctx->acomp = acomp;
- 
- 	req = acomp_request_alloc(acomp_ctx->acomp);
--	if (IS_ERR_OR_NULL(req)) {
-+	if (!req) {
- 		pr_err("could not alloc crypto acomp %s : %ld\n",
- 		       pool->tfm_name, PTR_ERR(acomp));
--		return -ENOMEM;
-+		goto free_acomp;
- 	}
- 	acomp_ctx->req = req;
- 
-@@ -462,6 +462,12 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
- 	*per_cpu_ptr(pool->acomp_ctx, cpu) = acomp_ctx;
- 
- 	return 0;
-+
-+free_acomp:
-+	kfree(acomp);
-+free_acomp_ctx:
-+	kfree(acomp_ctx);
-+	return -ENOMEM;
- }
- 
- static int zswap_cpu_comp_dead(unsigned int cpu, struct hlist_node *node)
+ 	kunmap(page);
 -- 
 2.27.0
 

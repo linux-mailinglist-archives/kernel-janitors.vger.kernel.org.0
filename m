@@ -2,78 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B90D204E52
-	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jun 2020 11:45:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 249D7204FF4
+	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jun 2020 13:02:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732201AbgFWJpu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Jun 2020 05:45:50 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:25955
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732023AbgFWJpu (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Jun 2020 05:45:50 -0400
-X-IronPort-AV: E=Sophos;i="5.75,270,1589234400"; 
-   d="scan'208";a="352454737"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Jun 2020 11:45:48 +0200
-Date:   Tue, 23 Jun 2020 11:45:48 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-cc:     Joe Perches <joe@perches.com>, trivial@kernel.org,
-        kernel-janitors@vger.kernel.org, corbet@lwn.net,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] trivial: fix kerneldoc comments
-In-Reply-To: <20200623093228.GI4151@kadam>
-Message-ID: <alpine.DEB.2.22.394.2006231145350.2367@hadrien>
-References: <1592854669-20606-1-git-send-email-Julia.Lawall@inria.fr> <6b0649c53e853fd2a35e9996f13e702daa0d7e2f.camel@perches.com> <alpine.DEB.2.22.394.2006230954560.2367@hadrien> <20200623093228.GI4151@kadam>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        id S1732296AbgFWLCa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Jun 2020 07:02:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46642 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732227AbgFWLC3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 23 Jun 2020 07:02:29 -0400
+Received: from dragon (80.251.214.228.16clouds.com [80.251.214.228])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5C49520738;
+        Tue, 23 Jun 2020 11:02:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1592910149;
+        bh=RPNK/pzqOU74G6k8hebrnlpAWV7QilbzH+uEcOtIS3w=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=e7zdTo/GgQBAMTJOkNJ1+nr/EnxggnpFyNnS43WzzjScGNWygXeN4TQyWah4e2BAO
+         WSsqfLjxVLGFrqCx0zdKfBovGUM7Kj/dCyj6r9jR9oSXPLOE0dv9XxTO0fISRqLBQz
+         tOYYpg/oDqF5SAbJGOIJw5+1k5cDjHXRmx9tzWOE=
+Date:   Tue, 23 Jun 2020 19:02:23 +0800
+From:   Shawn Guo <shawnguo@kernel.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
+        linux-imx@nxp.com, Yu Kuai <yukuai3@huawei.com>,
+        Anson Huang <Anson.Huang@nxp.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Yi Zhang <yi.zhang@huawei.com>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: ARM: imx6: add missing put_device() call in imx6q_suspend_init()
+Message-ID: <20200623110222.GX30139@dragon>
+References: <cf810c93-297c-c02c-9bba-8c3d097b8e31@web.de>
+ <2ab2cc9f-c720-75ca-e20c-0e4236ff45fd@huawei.com>
+ <1542979d-f7f6-bcf1-53c3-22b7c076ddc7@web.de>
+ <20200623073220.GV30139@dragon>
+ <5300cb30-2243-9bfe-125c-96e720cd1f29@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5300cb30-2243-9bfe-125c-96e720cd1f29@web.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On Tue, 23 Jun 2020, Dan Carpenter wrote:
-
-> On Tue, Jun 23, 2020 at 09:59:57AM +0200, Julia Lawall wrote:
-> > > > diff --git a/drivers/crypto/bcm/spu.c b/drivers/crypto/bcm/spu.c
-> > > []
-> > > > @@ -519,7 +519,7 @@ u32 spum_assoc_resp_len(enum spu_cipher_mode cipher_mode,
-> > > >   * spu_aead_ivlen() - Calculate the length of the AEAD IV to be included
-> > > >   * in a SPU request after the AAD and before the payload.
-> > > >   * @cipher_mode:  cipher mode
-> > > > - * @iv_ctr_len:   initialization vector length in bytes
-> > > > + * @iv_len:   initialization vector length in bytes
-> > > >   *
-> > > >   * In Linux ~4.2 and later, the assoc_data sg includes the IV. So no need
-> > > >   * to include the IV as a separate field in the SPU request msg.
-> > > > @@ -917,7 +917,7 @@ u16 spum_cipher_req_init(u8 *spu_hdr, struct spu_cipher_parms *cipher_parms)
-> > > >   * setkey() time in spu_cipher_req_init().
-> > > >   * @spu_hdr:         Start of the request message header (MH field)
-> > > >   * @spu_req_hdr_len: Length in bytes of the SPU request header
-> > > > - * @isInbound:       0 encrypt, 1 decrypt
-> > > > + * @is_inbound:       0 encrypt, 1 decrypt
-> > >
-> > > odd alignments
+On Tue, Jun 23, 2020 at 09:48:52AM +0200, Markus Elfring wrote:
+> >>>> Do you find a previous update suggestion useful?
+> >>>>
+> >>>> ARM: imx6: Add missing put_device() call in imx6q_suspend_init()
+> >>>> https://lore.kernel.org/linux-arm-kernel/5acd7308-f6e1-4b1e-c744-bb2e5fdca1be@web.de/
+> >>>> https://lore.kernel.org/patchwork/patch/1151158/
+> >>>> https://lkml.org/lkml/2019/11/9/125
+> >> …
+> >>> It is useful indeed.
+> …
+> >>> Any idea why these pathes didn't get applied ?
+> >>
+> >> I can make assumptions about the reasons for the possibly questionable handling
+> >> of such patches.
 > >
-> > Sorry to have missed these.
+> > Markus,
 > >
-> > > etc...
-> >
-> > Are there a lot of other such problems?  I did look through the whole
-> > patch several times by hand, but perhaps it is just too big to see
-> > everything.
->
-> Probably the comments for spum_assoc_resp_len() could be tweaked.
->
-> I had written an email about this one that Joe mentioned and
-> spum_assoc_resp_len() but then I decided that it wasn't enough to worry
-> about so I deleted the email instead of sending it.
+> > Could you resend it to my kernel.org address?
+> 
+> You can get relevant information from the referenced message archive interfaces,
+> can't you?
 
-OK, thanks.
+Well, I'm asking you to resend to make sure the following:
 
-julia
+ - Use correct maintainer mailbox address.
+ - You still care about the patch.
+ - The patch applies to v5.8-rc.
+
+Shawn

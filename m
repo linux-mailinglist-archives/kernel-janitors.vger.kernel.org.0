@@ -2,98 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BAA7204C6C
-	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jun 2020 10:32:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 787C8204CB9
+	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jun 2020 10:42:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731755AbgFWIcO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Jun 2020 04:32:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55364 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731579AbgFWIcO (ORCPT
+        id S1731899AbgFWImR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Jun 2020 04:42:17 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:41697 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731732AbgFWImR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Jun 2020 04:32:14 -0400
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C697C061573;
-        Tue, 23 Jun 2020 01:32:14 -0700 (PDT)
-Received: by mail-qk1-x743.google.com with SMTP id l188so5025069qkf.10;
-        Tue, 23 Jun 2020 01:32:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WUXkMq3EwcMN7rag+IOzTouUq2jW1leXveyXqam81mE=;
-        b=MfKUA1iM2cNLIQb0gJHMFANrfHxAxLJ7OauUZ2pO/Zib5rQxdceNoygxEhaSDMdHF9
-         oRekPg5JE8wO67W1XXq2VajDG1CD5zGtq6DzJ+Qqzc0xSSHh8EvgNnEnJ7pA67a4qEGf
-         lPl3QQNFvtUUy0Dxt3X/UuNwZ7fbemOh29ZTt497SOrwO3oL3Sey/D/ilE2uGS2PQFbx
-         8eRe/P+4LFzxcDQI8ZY/wsYR0Eaj3Q5c4e3/otG65UcV+dUVpriPExa1pjkoV6FtNKsk
-         eTFyhw3iNwgYihpOJRXlLTx1rYmcfRPPKKxP+HEqKHn704oUg1p1fMwDArGlPS5755W+
-         rRFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WUXkMq3EwcMN7rag+IOzTouUq2jW1leXveyXqam81mE=;
-        b=NPmLEXhIFO7gTqA+k8vpP7MYud0A+r3q8Ubve1H6sA3J2dPviSNkghi+MUw+dnuu0a
-         p/nGw/tlksPlPcUY+5s687gBXqBDTfYS3tyMDjR9GOLnkV7Wtv++ktS6j4qSWEmMXsyF
-         JW+RLftnFWcaXhZfJDKrgbTlHHa1CQuJ3D5C6KTR15j+0Eeje/yqMZjpDd9dPWvQOLMT
-         X1iu0T7//EA4rQLlOhvZH1MOF68twVotefhQlAuOWPct1Qq1vp6rYGv5EVifQf1ospGE
-         iMbNr07eQp/laNfohMNJUPyjNbOVukhZufHBRboMYfmBtSc3BWAxV3BZStyB1jEvhm1x
-         Rhkg==
-X-Gm-Message-State: AOAM531zWSygy4VEtqHmYpcZjZL2Jeu/jjkaM4WfIZspC89Q7sHTlMJy
-        yVAPET9ZrXnaKWqGx93Nb7+VR+LN2xM4pBRbSxE=
-X-Google-Smtp-Source: ABdhPJy8aJP9b/KoDke180z5lb657c5ulXpRf52exbUwqEylh9UUhQV3q7rSAK3MRe5vqIrWMG20D3EDlUJCCfc0XW8=
-X-Received: by 2002:a37:8a43:: with SMTP id m64mr18899695qkd.37.1592901133739;
- Tue, 23 Jun 2020 01:32:13 -0700 (PDT)
+        Tue, 23 Jun 2020 04:42:17 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jneVM-0003CV-5t; Tue, 23 Jun 2020 08:42:08 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@chromium.org>, netdev@vger.kernel.org,
+        bpf@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] libbpf: fix spelling mistake "kallasyms" -> "kallsyms"
+Date:   Tue, 23 Jun 2020 09:42:07 +0100
+Message-Id: <20200623084207.149253-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-References: <39ac8f24-3148-2a3d-3f8d-91567b3c4c9e@web.de>
-In-Reply-To: <39ac8f24-3148-2a3d-3f8d-91567b3c4c9e@web.de>
-From:   Shengjiu Wang <shengjiu.wang@gmail.com>
-Date:   Tue, 23 Jun 2020 16:32:02 +0800
-Message-ID: <CAA+D8APR2NGAn9jRDSZzr1fgj5u0hAvH19VxZS+tj2A7j3PCuw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] ASoC: fsl_mqs: Don't check clock is NULL before
- calling clk API
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Shengjiu Wang <shengjiu.wang@nxp.com>,
-        Linux-ALSA <alsa-devel@alsa-project.org>,
-        linuxppc-dev@lists.ozlabs.org, Timur Tabi <timur@kernel.org>,
-        Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>,
-        kernel-janitors@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Nicolin Chen <nicoleotsuka@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Fabio Estevam <festevam@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jun 23, 2020 at 3:38 PM Markus Elfring <Markus.Elfring@web.de> wrote:
->
-> > In-Reply-To: <cover.1592888591.git.shengjiu.wang@nxp.com>
->
-> I guess that it should be sufficient to specify such a field once
-> for the header information.
+From: Colin Ian King <colin.king@canonical.com>
 
-seems it's caused by my "git format-patch" command, I will update
-it, hope it is better next time.
+There is a spelling mistake in a pr_warn message. Fix it.
 
->
->
-> > Because clk_prepare_enable and clk_disable_unprepare should
-> > check input clock parameter is NULL or not internally,
->
-> I find this change description unclear.
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ tools/lib/bpf/libbpf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-    clk_prepare_enable and clk_disable_unprepare check the input
-    clock parameter in the beginning of the function, if the parameter
-    is NULL, clk_prepare_enable and clk_disable_unprepare will
-    return immediately.
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 18461deb1b19..deea27aadcef 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -5741,7 +5741,7 @@ static int bpf_object__read_kallsyms_file(struct bpf_object *obj)
+ 		if (ret == EOF && feof(f))
+ 			break;
+ 		if (ret != 3) {
+-			pr_warn("failed to read kallasyms entry: %d\n", ret);
++			pr_warn("failed to read kallsyms entry: %d\n", ret);
+ 			err = -EINVAL;
+ 			goto out;
+ 		}
+-- 
+2.27.0
 
-    So Don't need to check input clock parameters before calling clk
-    API.
-
-Do you think this commit message is better?
-
-best regards
-wang shengjiu

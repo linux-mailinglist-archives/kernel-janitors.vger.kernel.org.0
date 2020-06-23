@@ -2,101 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37CD6204BCC
-	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jun 2020 10:00:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9C00204C60
+	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jun 2020 10:28:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731617AbgFWIAE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Jun 2020 04:00:04 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:40347 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731296AbgFWIAE (ORCPT
+        id S1731862AbgFWI2Z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Jun 2020 04:28:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54774 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731675AbgFWI2Z (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Jun 2020 04:00:04 -0400
-X-IronPort-AV: E=Sophos;i="5.75,270,1589234400"; 
-   d="scan'208";a="456171988"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Jun 2020 09:59:58 +0200
-Date:   Tue, 23 Jun 2020 09:59:57 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Joe Perches <joe@perches.com>
-cc:     trivial@kernel.org, kernel-janitors@vger.kernel.org,
-        corbet@lwn.net, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] trivial: fix kerneldoc comments
-In-Reply-To: <6b0649c53e853fd2a35e9996f13e702daa0d7e2f.camel@perches.com>
-Message-ID: <alpine.DEB.2.22.394.2006230954560.2367@hadrien>
-References: <1592854669-20606-1-git-send-email-Julia.Lawall@inria.fr> <6b0649c53e853fd2a35e9996f13e702daa0d7e2f.camel@perches.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        Tue, 23 Jun 2020 04:28:25 -0400
+X-Greylist: delayed 1367 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 23 Jun 2020 01:28:25 PDT
+Received: from casper.infradead.org (unknown [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2744DC061573
+        for <kernel-janitors@vger.kernel.org>; Tue, 23 Jun 2020 01:28:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=VFE1OhRJl1pKmkOHmfPog0qqCiyjbWRGXzumJXTdAn0=; b=EigUWxJt0oNs3LMh2z1ZPVI1PZ
+        PixTn6TDkKt4+N0yYw0zMK+ulcUC12RiMb5JcLzG68ntt38ag0G5JN8qsKX9ZcfhFYojg2vUu7FQe
+        4uPcXG9h9fNKKV0TETav4HRE2gZsuVnyBn+fVjOyuKTSmiGShR1UsXO4pILY3MLcm7BRgqF5g80Tn
+        MLuNunnih4dsrTyEd5fRAfuyY0cTWBD2RJ38TKJvPdqJp836zMEqq2tresWm4GytN84ksBhPt0XBC
+        k4Hy+HCOrmXjZqnMEDbtSFrJ3R+cMNJEOCLGXrqyf1M5f8IAlUAKvSAaKeHiExm6VUyz2dbPpqsaz
+        b/XJO7VA==;
+Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jndvl-0007RM-5Q; Tue, 23 Jun 2020 08:05:21 +0000
+Date:   Tue, 23 Jun 2020 09:05:21 +0100
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Christoph Hellwig <hch@infradead.org>,
+        kernel-janitors@vger.kernel.org
+Subject: Re: new TODO list item
+Message-ID: <20200623080521.GA27583@infradead.org>
+References: <20200421081257.GA131897@infradead.org>
+ <9a92878b-2cf2-7c14-86ce-f1c139f0a9ba@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9a92878b-2cf2-7c14-86ce-f1c139f0a9ba@wanadoo.fr>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Mon, Jun 22, 2020 at 08:32:36PM +0200, Christophe JAILLET wrote:
+> Le 21/04/2020 ?? 10:12, Christoph Hellwig a ??crit??:
+> > Hi Janitors,
+> > 
+> > if someone feels like helping with a fairly trivial legacy API, the
+> > wrappers in include/linux/pci-dma-compat.h should go away.  This is
+> > mostly trivially scriptable, except for dma_alloc_coherent, where
+> > the GFP_ATOMIC passed by pci_alloc_consisteny should usually be replaced
+> > with GFP_KERNEL when not calling from an atomic context.
+> > 
+> 
+> Hi,
+> what would be the best approach to work on, it?
+> 
+> I've processed the current tree, with the coccinelle script below.
+> For 'dma_alloc_coherent' calls, I've left a GFP_ on purpose, so that one
+> need to wonder which flag is the best.
+> 
+> 'make'ing the files before sending patches should spot the places were a
+> correct flag has not been defined.
+> 
+> What puzzles me is that the script below >20k lines file and the diffstat
+> is:
+>     288 files changed, 3963 insertions(+), 3857 deletions(-)
+> 
+> 
+> 1. Does sending patches one file at a time makes sense?
 
+File is a little too small.  Split on a subsystem, or for subsystems
+that have a lot of drivers (e.g. scsi or net) on  per-driver basis.
 
-On Mon, 22 Jun 2020, Joe Perches wrote:
+> 2. Should the PCI_DMA_ --> DMA_ conversion should be handled first? (the
+> #defined values are the same, it should be straightforward)
 
-> On Mon, 2020-06-22 at 21:37 +0200, Julia Lawall wrote:
-> > Fix the parameter names in the comment to correspond to those in the
-> > function header.
-> >
-> > Drop comments about return values when there is no return value.
->
-> Done by hand or script?
+I wouldn't bother.
 
-Found by script but done by hand.  Unfortuntely, I can't figure even a
-hackish way to get Coccinelle to modify comments.  I guess I could have
-used Coccinelle to print out a patch and then run that, but since the
-result has to be checked anyway, I just made the changes by hand.
+> 3. Should a huge patch series be sent to fix all at once?
 
->
-> []
-> > diff --git a/arch/mips/cavium-octeon/executive/cvmx-spi.c b/arch/mips/cavium-octeon/executive/cvmx-spi.c
-> []
-> > @@ -69,9 +69,7 @@ static cvmx_spi_callbacks_t cvmx_spi_callbacks = {
-> >  /**
-> >   * Get current SPI4 initialization callbacks
-> >   *
-> > - * @callbacks:	Pointer to the callbacks structure.to fill
-> > - *
-> > - * Returns Pointer to cvmx_spi_callbacks_t structure.
-> > + * @callbacks:	Pointer to the callbacks structure, to fill.
->
-> If scripted, odd comma after structure
+I don't think that is helpful.  Just one series (or single patch)
+per subsystem.
 
-Hmm, maybe I interpreted the words slightly differently.  t looks like it
-would be fine without the comma.
+> 4. Should we update everything except 'dma_alloc_coherent' all at once, then
+> one file at a time for the allocation with correct GFP_ flag?
 
->
-> > diff --git a/drivers/crypto/bcm/spu.c b/drivers/crypto/bcm/spu.c
-> []
-> > @@ -519,7 +519,7 @@ u32 spum_assoc_resp_len(enum spu_cipher_mode cipher_mode,
-> >   * spu_aead_ivlen() - Calculate the length of the AEAD IV to be included
-> >   * in a SPU request after the AAD and before the payload.
-> >   * @cipher_mode:  cipher mode
-> > - * @iv_ctr_len:   initialization vector length in bytes
-> > + * @iv_len:   initialization vector length in bytes
-> >   *
-> >   * In Linux ~4.2 and later, the assoc_data sg includes the IV. So no need
-> >   * to include the IV as a separate field in the SPU request msg.
-> > @@ -917,7 +917,7 @@ u16 spum_cipher_req_init(u8 *spu_hdr, struct spu_cipher_parms *cipher_parms)
-> >   * setkey() time in spu_cipher_req_init().
-> >   * @spu_hdr:         Start of the request message header (MH field)
-> >   * @spu_req_hdr_len: Length in bytes of the SPU request header
-> > - * @isInbound:       0 encrypt, 1 decrypt
-> > + * @is_inbound:       0 encrypt, 1 decrypt
->
-> odd alignments
+I don't think so.
 
-Sorry to have missed these.
-
-> etc...
-
-Are there a lot of other such problems?  I did look through the whole
-patch several times by hand, but perhaps it is just too big to see
-everything.
-
-julia
+Btw, we have an issue with drivers/message/fusion where the GFP_ATOMIC
+removal would be really useful as in fixing a regression caused by
+another change. Can you do that as a trial ASAP and also Cc
+Robin Murphy <robin.murphy@arm.com>, Guenter Roeck <linux@roeck-us.net>
+and Geert Uytterhoeven <geert@linux-m68k.org>

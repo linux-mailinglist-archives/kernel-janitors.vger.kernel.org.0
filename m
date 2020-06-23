@@ -2,125 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BA5B204E3F
-	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jun 2020 11:43:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B90D204E52
+	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jun 2020 11:45:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732151AbgFWJnS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Jun 2020 05:43:18 -0400
-Received: from mout.web.de ([212.227.15.4]:55107 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731944AbgFWJnS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Jun 2020 05:43:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592905359;
-        bh=xHb59Ik5mAbrqdY1zcG1yB/bqUHWlNrxdtT4MivxF94=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=FYSS/gEYpgENWyDltRdkuIpfv5bECdYKDpWA1AGzry2NJqDphTFpdw61u7dQoC03L
-         ceJvFy1ypF42JgvnlKyCbgyQl6KpNz1ufTyf+ARKkhE6zDVcy8ePDAxLghtVtuTWYw
-         5qiViykkdoC+RPqkyc51o+LtynPlcCbtZiK35kwI=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.105.198]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mw9x2-1ixlBT0uG4-00s8d3; Tue, 23
- Jun 2020 11:42:39 +0200
-Subject: Re: [v4] coccinelle: misc: add array_size_dup script to detect missed
- overflow checks
-To:     Julia Lawall <julia.lawall@inria.fr>,
-        Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>
-Cc:     Gilles Muller <Gilles.Muller@lip6.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        "Gustavo A. R. Silva" <garsilva@embeddedor.com>,
-        Kees Cook <keescook@chromium.org>
-References: <4014118b-90a6-68c5-048f-32485fa3e852@web.de>
- <alpine.DEB.2.22.394.2006230902210.2367@hadrien>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
- +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
- mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
- lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
- YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
- GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
- rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
- 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
- jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
- BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
- cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
- Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
- g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
- OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
- CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
- LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
- sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
- kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
- i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
- g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
- q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
- NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
- nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
- 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
- 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
- wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
- riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
- DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
- fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
- 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
- xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
- qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
- Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
- Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
- +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
- hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
- /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
- tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
- qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
- Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
- x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
- pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <6b9a8459-3b32-8d8d-596e-203a33d2982a@web.de>
-Date:   Tue, 23 Jun 2020 11:42:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        id S1732201AbgFWJpu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Jun 2020 05:45:50 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:25955
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732023AbgFWJpu (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 23 Jun 2020 05:45:50 -0400
+X-IronPort-AV: E=Sophos;i="5.75,270,1589234400"; 
+   d="scan'208";a="352454737"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Jun 2020 11:45:48 +0200
+Date:   Tue, 23 Jun 2020 11:45:48 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+cc:     Joe Perches <joe@perches.com>, trivial@kernel.org,
+        kernel-janitors@vger.kernel.org, corbet@lwn.net,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] trivial: fix kerneldoc comments
+In-Reply-To: <20200623093228.GI4151@kadam>
+Message-ID: <alpine.DEB.2.22.394.2006231145350.2367@hadrien>
+References: <1592854669-20606-1-git-send-email-Julia.Lawall@inria.fr> <6b0649c53e853fd2a35e9996f13e702daa0d7e2f.camel@perches.com> <alpine.DEB.2.22.394.2006230954560.2367@hadrien> <20200623093228.GI4151@kadam>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.22.394.2006230902210.2367@hadrien>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-X-Provags-ID: V03:K1:R1rTZTwCVRzznbsMQsIQbsQdJhxnVNlX5lqnP0G5vzbwXyYYM7k
- gDXdYBz8tTwavjHaaO0lx88s9A8DMolaIyo2Wli6yXP2Y5/eZBdCRSh/p9c15BUf64Co+Ju
- NLtaHp9kC9ld7Cu2AV9tmeBiq46k2PqwIIzWQL7Rew44Gd2vTHALc56MNnLnY/RoObRLtU1
- o4WKC+X1Txh7mDwER0xxw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:aHp7Q9qGsxM=:ZLSOw3ASD5UGnVYR3L85l0
- a/IcjvzbH+35VxIb1giDWq5e+uxMNlh9lT+auuKYRJ5Fx9Ev9OgTDOhIjfgfgCproyOPZlunE
- ItqinalIOUP0FMVg/dik1n/OuXb6ZF5oGC8Ws1uMCpfAGzzwWxKId/9ZCcsEFC1HYbMNqeH90
- GSGDyk7nEiVitrdT6w5pe470H3XRZRGaFJ5rnCFqCPK619RR0A819oitkcEAQEqgZ5pVuJccM
- dKPAF9QEdnW+Lpti/PTSzh4xrqRJOXbtCOkR2vghVoWRKFY2YP6kt+mS3dS+thPG27Afdcc49
- 7+uctYH7njcZ95GXB0oFIbnyUY/p7M7IqmBXgOYtyFxg5PjKv1NpF5w4+UoCawQZXwSlhb4Y8
- rvUQ5WVX9ky/MMsiv+KW+ODrFbap1yKCnXEy1/jZaLVGdtdwKcqfSDK7GzM2ljfxRInWYmT3w
- Vp0WVrYkjAAUIrJ2IZoX28CEJbX8ud0us2A1QdguNJWqczgjPQxTjBRjvr4p+w4Yry80pSMiD
- PCAkDcZHCbdVIFmS6AJYooFqjk6zPk9Ej9LokQXvS6mkxvBGHSIFO9YOzqM1AHfzo1OLFagg2
- b+q3TYjjvqh3X91PNnsnz4pWBbCzI/d1K9ZG2KIjsPYzG90TTNjNdzbAefv/kUxQQWWmuWUzQ
- dbVLz2SfIc0J29R43hRWHLEB5IDwFpG0aLgTaWdJJrLDYV//dZAXg2rbJCsrqEq7mGsesOncw
- i7rBLsajncPjk/IQt0d/hcpAkCWBS8/PfRO/CluAyjxH/sN07bHtg67R4ItIBWKzuR00AV2Aa
- d10f9svYrRK9rvGs/vFSTCU9VfIATLmILVzqZPCBCkUk04lOMGoUq4FRzTAfSi3szwnMNqhM1
- LxoUrZZpNa9lNXwzEXbouLHQInJ6N46xrTQ4P1Pl4uGtqtFDv6HSpYEuij32jco4m6Irs4Oiu
- WDjGRHZ2x6cp3s350YrYiSmKfP8JHm8xmTUR+GeKAVglsS7M2Oty7K9GyM/O2/yJdhwCaCIqR
- CgBDWqm3J5Q5Ti//V48It6AYiyFxbiIw+TLmGo/3kdNi4H6cb7GjuoQajFEIVsxMAwU1sIkvM
- q5OsJ8m/aWz4EmlcxQaUvwKFQkjsXEaTY5s1AWbBn2GrYHoKALHJ+xlOuoWoC6ZoU92MrIWJQ
- Qy7kzpAWRdQLl1KS78eNn79NgUb9ssRjWI5A4X9qfRpnysPk+wD5U2IIjF3Yax3Jq6MjzA6uQ
- XyJ6V7aRAnvdqL33e
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> I don't agree with any of these comments.
 
-Would we like to clarify each of the disagreements in more detail
-for a more constructive patch review?
 
-Regards,
-Markus
+On Tue, 23 Jun 2020, Dan Carpenter wrote:
+
+> On Tue, Jun 23, 2020 at 09:59:57AM +0200, Julia Lawall wrote:
+> > > > diff --git a/drivers/crypto/bcm/spu.c b/drivers/crypto/bcm/spu.c
+> > > []
+> > > > @@ -519,7 +519,7 @@ u32 spum_assoc_resp_len(enum spu_cipher_mode cipher_mode,
+> > > >   * spu_aead_ivlen() - Calculate the length of the AEAD IV to be included
+> > > >   * in a SPU request after the AAD and before the payload.
+> > > >   * @cipher_mode:  cipher mode
+> > > > - * @iv_ctr_len:   initialization vector length in bytes
+> > > > + * @iv_len:   initialization vector length in bytes
+> > > >   *
+> > > >   * In Linux ~4.2 and later, the assoc_data sg includes the IV. So no need
+> > > >   * to include the IV as a separate field in the SPU request msg.
+> > > > @@ -917,7 +917,7 @@ u16 spum_cipher_req_init(u8 *spu_hdr, struct spu_cipher_parms *cipher_parms)
+> > > >   * setkey() time in spu_cipher_req_init().
+> > > >   * @spu_hdr:         Start of the request message header (MH field)
+> > > >   * @spu_req_hdr_len: Length in bytes of the SPU request header
+> > > > - * @isInbound:       0 encrypt, 1 decrypt
+> > > > + * @is_inbound:       0 encrypt, 1 decrypt
+> > >
+> > > odd alignments
+> >
+> > Sorry to have missed these.
+> >
+> > > etc...
+> >
+> > Are there a lot of other such problems?  I did look through the whole
+> > patch several times by hand, but perhaps it is just too big to see
+> > everything.
+>
+> Probably the comments for spum_assoc_resp_len() could be tweaked.
+>
+> I had written an email about this one that Joe mentioned and
+> spum_assoc_resp_len() but then I decided that it wasn't enough to worry
+> about so I deleted the email instead of sending it.
+
+OK, thanks.
+
+julia

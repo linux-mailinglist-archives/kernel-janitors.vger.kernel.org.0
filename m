@@ -2,112 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9029204A6C
-	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jun 2020 09:02:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC56E204B42
+	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jun 2020 09:32:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730977AbgFWHCe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Jun 2020 03:02:34 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:34772 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730830AbgFWHCe (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Jun 2020 03:02:34 -0400
-X-IronPort-AV: E=Sophos;i="5.75,270,1589234400"; 
-   d="scan'208";a="456156865"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Jun 2020 09:02:31 +0200
-Date:   Tue, 23 Jun 2020 09:02:31 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
+        id S1731202AbgFWHc1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Jun 2020 03:32:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49590 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730951AbgFWHc1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 23 Jun 2020 03:32:27 -0400
+Received: from dragon (80.251.214.228.16clouds.com [80.251.214.228])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BC6302072E;
+        Tue, 23 Jun 2020 07:32:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1592897546;
+        bh=+oUvBnNw2wqYcDyCEiyKhDedkPbV15SlmZ8Y8J+muK4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HwCqEyJR/qcFe0/ooT/oJxzTKpNBhytUxS1afF7Ktk/RmjxARz02ReoqygdhnJ0Hi
+         OIfovm1wUpXMpI1v2M9tSbShvMHI9Tx7VdXuZCoM/u9aLu+xItMLaK5+dD7lGYd0Gv
+         ZHdezpHQnpi/lhMCMsm/ipDW36cd2/R1cXhgPANA=
+Date:   Tue, 23 Jun 2020 15:32:21 +0800
+From:   Shawn Guo <shawnguo@kernel.org>
 To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Julia Lawall <julia.lawall@inria.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        "Gustavo A. R. Silva" <garsilva@embeddedor.com>,
-        Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH v4] coccinelle: misc: add array_size_dup script to detect
- missed overflow checks
-In-Reply-To: <4014118b-90a6-68c5-048f-32485fa3e852@web.de>
-Message-ID: <alpine.DEB.2.22.394.2006230902210.2367@hadrien>
-References: <4014118b-90a6-68c5-048f-32485fa3e852@web.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+Cc:     Yu Kuai <yukuai3@huawei.com>, kernel@pengutronix.de,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        Anson Huang <Anson.Huang@nxp.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Yi Zhang <yi.zhang@huawei.com>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: ARM: imx6: add missing put_device() call in imx6q_suspend_init()
+Message-ID: <20200623073220.GV30139@dragon>
+References: <cf810c93-297c-c02c-9bba-8c3d097b8e31@web.de>
+ <2ab2cc9f-c720-75ca-e20c-0e4236ff45fd@huawei.com>
+ <1542979d-f7f6-bcf1-53c3-22b7c076ddc7@web.de>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1108794673-1592895751=:2367"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1542979d-f7f6-bcf1-53c3-22b7c076ddc7@web.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Fri, Jun 05, 2020 at 12:15:32PM +0200, Markus Elfring wrote:
+> >> Do you find a previous update suggestion useful?
+> >>
+> >> ARM: imx6: Add missing put_device() call in imx6q_suspend_init()
+> >> https://lore.kernel.org/linux-arm-kernel/5acd7308-f6e1-4b1e-c744-bb2e5fdca1be@web.de/
+> >> https://lore.kernel.org/patchwork/patch/1151158/
+> >> https://lkml.org/lkml/2019/11/9/125
+> …
+> > It is useful indeed.
+> 
+> Thanks for your positive feedback.
+> 
+> 
+> > Although I didn't run cocci script, since it can produce too many false result
+> > which is hard to filter out.
+> 
+> Would you like to clarify any corresponding software analysis options?
+> 
+> 
+> > BTW, I see you haver done the work already, I guess I won't send any patches
+> > related to 'missing put_device after of_find_device_by_node()'.
+> 
+> You may continue also with contributions in such a direction.
+> I would like to point out that other developers occasionally got into the mood
+> to improve implementation details in similar ways already.
+> 
+> 
+> > Any idea why these pathes didn't get applied ?
+> 
+> I can make assumptions about the reasons for the possibly questionable handling
+> of such patches.
 
---8323329-1108794673-1592895751=:2367
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+Markus,
 
-I don't agree with any of these comments.
+Could you resend it to my kernel.org address?
 
-julia
-
-On Tue, 23 Jun 2020, Markus Elfring wrote:
-
-> > Changes in v2:
-> …
-> > - assignment operator used
->
-> I prefer the distinction for the application of corresponding metavariables.
->
->
-> > Changes in v3:
-> …
-> >  - \(&E1\|&E2\) changed to &\(E1\|E2\)
->
-> Would it be more helpful to mention the movement of the ampersand
-> before SmPL disjunctions?
->
->
-> …
-> >+/// Three types of patterns for these functions:
->
-> Will another adjustment be needed according to your information “duplicates warning removed”?
->
->
-> …
-> > +virtual context
-> > +virtual report
-> > +virtual org
->
-> Can the following SmPL code variant ever become more attractive?
->
-> +virtual context, report, org
->
->
-> …
-> > +expression subE1 <= as.E1;
-> > +expression subE2 <= as.E2;
-> > +expression as.E1, as.E2, E3;
->
-> How do you think about the following SmPL code variant?
->
-> +expression subE1 <= as.E1,
-> +           subE2 <= as.E2,
-> +           as.E1, as.E2, E3;
->
->
-> …
-> > +msg = "WARNING: array_size is used later (line %s) to compute the same size" % (p2[0].line)
-> > +coccilib.report.print_report(p1[0], msg)
->
-> Please omit the extra Python variable “msg” for the passing of such simple message objects.
->
-> What does hinder you to take the proposed script variants better into account?
->
-> Regards,
-> Markus
->
---8323329-1108794673-1592895751=:2367--
+Shawn

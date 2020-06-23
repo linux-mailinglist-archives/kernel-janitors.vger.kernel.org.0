@@ -2,192 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9428F20501D
-	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jun 2020 13:12:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73835205034
+	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jun 2020 13:13:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732424AbgFWLMr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Jun 2020 07:12:47 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:45740 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732364AbgFWLMq (ORCPT
+        id S1732358AbgFWLNf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Jun 2020 07:13:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52164 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732437AbgFWLNc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Jun 2020 07:12:46 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jngr4-0005zx-Gg; Tue, 23 Jun 2020 11:12:42 +0000
-Subject: Re: [PATCH][next] mm/zswap: fix a couple of memory leaks and rework
- kzalloc failure check
-To:     "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Seth Jennings <sjenning@redhat.com>,
-        Dan Streetman <ddstreet@ieee.org>,
-        Vitaly Wool <vitaly.wool@konsulko.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20200622153546.49880-1-colin.king@canonical.com>
- <20200622182816.GF4151@kadam>
- <B926444035E5E2439431908E3842AFD2514C4B@DGGEMI525-MBS.china.huawei.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <baf5a045-40f3-254b-fe0f-ad00cdf4b775@canonical.com>
-Date:   Tue, 23 Jun 2020 12:12:42 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        Tue, 23 Jun 2020 07:13:32 -0400
+Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6C46C061799
+        for <kernel-janitors@vger.kernel.org>; Tue, 23 Jun 2020 04:13:31 -0700 (PDT)
+Received: by mail-il1-x143.google.com with SMTP id e11so18888767ilr.4
+        for <kernel-janitors@vger.kernel.org>; Tue, 23 Jun 2020 04:13:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=JmFWxL8jcgFtJ4lXeAh1tsN1JKedqnhe1aARR5DLLNfnmxbRVdigZWObFQCKHma7V/
+         nXcD5YIWEVXNXCqrytPGgDqMF7LG3AjbXiqLTgzqk1NJVD0/SRZf4OoSI6wnKQxYV3Ks
+         amS6a4QzU5emTI071jmI7+yuVO8cf4VT9H8sEhnpri7+7G+PTXCBUyZqsrxfqxuiwOG4
+         xEIjMamwRMoIta8KsYy3dHkpvW0oyFzbTuaV2CPgDnFo04GeMPe10QjUEXx8wj4RHH8B
+         DHZEqlRnedz4pCoeB0pVzmh4bko7PaIqIxbPCx2izv0Xwb2Gc8VLztOXP6mjnrkcvxdC
+         tn1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=g9iEG5zuHD27CJNkzLeN8G2xKHlAuhdYf1g6A1r3L6uV5ouGj6UVx1EfOvBOvg2dI8
+         Gg0sEZFACvgP3GQ1+Xvnw5yOgT8JNc4r8eWcxxd5W0jr7OqJbWl5DAu7Qxzqg9yeHhT6
+         TLtouMHTHA8JohXvxHBWOaBLl/6kZmZ2QglrWOdPCGD3YGEO2uC2d7cb4EE0UvFChjzf
+         JwbLnJUY55Rm9BKtWwNiSJ9Xu5O22v80AeVs5t+xJN1YMBayqTz3trmkVdHbVWB732Av
+         6B8RZqksOm381Jt96VfmoEvhv0OTP7OkQOPj9WO48VbLkrLEVLUyDRLALnxomEqqf+Ur
+         lNIQ==
+X-Gm-Message-State: AOAM531o+4iwKgkCurzUcywDmQ5LdXh7mAH/1Yg+QdVYs5YFYrJGxQyk
+        vZMa3a9pGacxm6ZaZER+5RKIkoYTlVu8X83H8cw=
+X-Google-Smtp-Source: ABdhPJwK923lg5M3WnkXSapWWzottNhCJnxFSYd3ngrqt2SS9qPX4AJ/vikM4fv3WoLbmggVNNCfvDQtP1sd5XzwhK0=
+X-Received: by 2002:a92:c643:: with SMTP id 3mr23427492ill.229.1592910811076;
+ Tue, 23 Jun 2020 04:13:31 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <B926444035E5E2439431908E3842AFD2514C4B@DGGEMI525-MBS.china.huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:6638:14d3:0:0:0:0 with HTTP; Tue, 23 Jun 2020 04:13:30
+ -0700 (PDT)
+Reply-To: sarahkoffi389@yahoo.co.jp
+From:   Sarah Koffi <elnana194@gmail.com>
+Date:   Tue, 23 Jun 2020 12:13:30 +0100
+Message-ID: <CA+NUCuTpRBCNhzPsUx6VPrOLF5ST46h_JaJQFi9zwqK2yEciSw@mail.gmail.com>
+Subject: Greetings From Mrs. Sarah Koffi
+To:     sarahkoffi389@yahoo.co.jp
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 22/06/2020 20:55, Song Bao Hua (Barry Song) wrote:
-> 
-> 
->> -----Original Message-----
->> From: Dan Carpenter [mailto:dan.carpenter@oracle.com]
->> Sent: Tuesday, June 23, 2020 6:28 AM
->> To: Colin King <colin.king@canonical.com>
->> Cc: Seth Jennings <sjenning@redhat.com>; Dan Streetman
->> <ddstreet@ieee.org>; Vitaly Wool <vitaly.wool@konsulko.com>; Andrew
->> Morton <akpm@linux-foundation.org>; Song Bao Hua (Barry Song)
->> <song.bao.hua@hisilicon.com>; Stephen Rothwell <sfr@canb.auug.org.au>;
->> linux-mm@kvack.org; kernel-janitors@vger.kernel.org;
->> linux-kernel@vger.kernel.org
->> Subject: Re: [PATCH][next] mm/zswap: fix a couple of memory leaks and
->> rework kzalloc failure check
->>
->> On Mon, Jun 22, 2020 at 04:35:46PM +0100, Colin King wrote:
->>> From: Colin Ian King <colin.king@canonical.com>
->>>
->>> kzalloc failures return NULL on out of memory errors, so replace the
->>> IS_ERR_OR_NULL check with the usual null pointer check.  Fix two memory
->>> leaks with on acomp and acomp_ctx by ensuring these objects are free'd
->>> on the error return path.
->>>
->>> Addresses-Coverity: ("Resource leak")
->>> Fixes: d4f86abd6e35 ("mm/zswap: move to use crypto_acomp API for
->> hardware acceleration")
->>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> 
-> 
-> Colin, thanks for your patch. I am sorry I did the same thing with you here:
-> https://lkml.org/lkml/2020/6/22/347
+Greetings From Mrs. Sarah Koffi
 
-Thanks for fixing this correctly, I ran out of time yesterday to re-do
-the fix.
+I'm contacting you based on your good profiles I read and for a good
+reasons, I am in search of a property to buy in your country as I
+intended to come over to your
+country for investment, Though I have not meet with you before but I
+believe that one has to risk confiding in someone to succeed sometimes
+in life.
 
-Colin
+My name is Mrs. Sarah Koffi. My late husband deals on Crude Oil with
+Federal Government of Sudan and he has a personal Oil firm in Bentiu
+Oil zone town and Upper
+Nile city. What I have experience physically, I don't wish to
+experience it again in my life due to the recent civil Ethnic war
+cause by our President Mr. Salva Kiir
+and the rebel leader Mr Riek Machar, I have been Under United Nation
+refuge camp in chad to save my life and that of my little daughter.
 
-> 
-> 
->>> ---
->>>  mm/zswap.c | 16 +++++++++++-----
->>>  1 file changed, 11 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/mm/zswap.c b/mm/zswap.c
->>> index 0d914ba6b4a0..14839cbac7ff 100644
->>> --- a/mm/zswap.c
->>> +++ b/mm/zswap.c
->>> @@ -433,23 +433,23 @@ static int zswap_cpu_comp_prepare(unsigned int
->> cpu, struct hlist_node *node)
->>>  		return 0;
->>>
->>>  	acomp_ctx = kzalloc(sizeof(*acomp_ctx), GFP_KERNEL);
->>> -	if (IS_ERR_OR_NULL(acomp_ctx)) {
->>> +	if (!acomp_ctx) {
->>>  		pr_err("Could not initialize acomp_ctx\n");
->>>  		return -ENOMEM;
->>>  	}
->>>  	acomp = crypto_alloc_acomp(pool->tfm_name, 0, 0);
->>> -	if (IS_ERR_OR_NULL(acomp)) {
->>> +	if (!acomp) {
->>
->> This should be IS_ERR(acomp).  Please preserve the error code.
->>
->>>  		pr_err("could not alloc crypto acomp %s : %ld\n",
->>>  				pool->tfm_name, PTR_ERR(acomp));
->>> -		return -ENOMEM;
->>> +		goto free_acomp_ctx;
->>>  	}
->>>  	acomp_ctx->acomp = acomp;
->>>
->>>  	req = acomp_request_alloc(acomp_ctx->acomp);
->>> -	if (IS_ERR_OR_NULL(req)) {
->>> +	if (!req) {
->>>  		pr_err("could not alloc crypto acomp %s : %ld\n",
->>>  		       pool->tfm_name, PTR_ERR(acomp));
->>> -		return -ENOMEM;
->>> +		goto free_acomp;
->>>  	}
->>>  	acomp_ctx->req = req;
->>>
->>> @@ -462,6 +462,12 @@ static int zswap_cpu_comp_prepare(unsigned int
->> cpu, struct hlist_node *node)
->>>  	*per_cpu_ptr(pool->acomp_ctx, cpu) = acomp_ctx;
->>>
->>>  	return 0;
->>> +
->>> +free_acomp:
->>> +	kfree(acomp);
->>
->> The kfree() isn't correct.  It needs to be:
->>
->> 	crypto_free_acomp(acomp);
->>
->>> +free_acomp_ctx:
->>> +	kfree(acomp_ctx);
->>> +	return -ENOMEM;
->>
->> regards,
->> dan carpenter
-> 
+Though, I do not know how you will feel to my proposal, but the truth
+is that I sneaked into Chad our neighboring country where I am living
+now as a refugee.
+I escaped with my little daughter when the rebels bust into our house
+and killed my husband as one of the big oil dealers in the country,
+ever since then, I have being on the run.
 
+I left my country and move to Chad our neighboring country with the
+little ceasefire we had, due to the face to face peace meeting accord
+coordinated by the US Secretary of State, Mr John Kerry and United
+Nations in Ethiopia (Addis Ababa) between our President Mr Salva Kiir
+and the rebel leader Mr Riek Machar to stop this war.
+
+I want to solicit for your partnership with trust to invest the $8
+million dollars deposited by my late husband in Bank because my life
+is no longer safe in our country, since the rebels are looking for the
+families of all the oil business men in the country to kill, saying
+that they are they one that is milking the country dry.
+
+I will offer you 20% of the total fund for your help while I will
+partner with you for the investment in your country.
+If I get your reply.
+
+I will wait to hear from you so as to give you details.With love from
+
+ i need you to contact me here sarahkoffi389@yahoo.co.jp
+
+Mrs. Sarah Koffi

@@ -2,37 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1074E205669
-	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jun 2020 17:56:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7879205728
+	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jun 2020 18:26:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733044AbgFWP4B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Jun 2020 11:56:01 -0400
-Received: from mout.web.de ([212.227.15.3]:45661 "EHLO mout.web.de"
+        id S1732482AbgFWQ0k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Jun 2020 12:26:40 -0400
+Received: from mout.web.de ([212.227.15.3]:57709 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732781AbgFWP4A (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Jun 2020 11:56:00 -0400
+        id S1732212AbgFWQ0k (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 23 Jun 2020 12:26:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1592927737;
-        bh=NMunOW08e0Ol3CHmW1tqHG6VHtH1UbilsDaEjPlkoSk=;
+        s=dbaedf251592; t=1592929577;
+        bh=8fznmhtFuPVpCCq/4XrpX1hUGJCXy8JOqzHx4+jgntA=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=GJ668M5gZWHjm120FHtr4EyTyfOlZ+CJlWL3oJhlwS8GJwZkszQN/6YDVxJv68D+j
-         dygHmTtSduI52FY26vDQekdLWkuMOGD3SngWpQugcUbEbB0JQdDrzrF6tQ8H6UcPDn
-         dwGIhY/7VJKithPrI/cuDrJGqrO1zQ4072cVvBgE=
+        b=coNsu2+sPODALoDV1Kdo6qSHnneLeSWuL8C7sCfJMdAYZmSdpvFxgof4g7p7cR8nB
+         ebCfyJwg//w8nT9jEG5XlsKLnHSmxXNT91L7uS0StcvNNNTFeRIEu1JUY/1XXqEu0P
+         rSOWTyoBuLP9YeMnYAmTZmjAn2Pa9arqjGwfWozI=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([78.49.105.198]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MMmwZ-1jmPQ61SVr-008cwa; Tue, 23
- Jun 2020 17:55:37 +0200
-To:     Tiezhu Yang <yangtiezhu@loongson.cn>, devicetree@vger.kernel.org,
-        linux-mips@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Huacai Chen <chenhc@lemote.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Xuefeng Li <lixuefeng@loongson.cn>
-Subject: Re: [PATCH 1/7] irqchip: Fix potential resource leaks
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MUWCB-1jN8DD3Z7z-00RKML; Tue, 23
+ Jun 2020 18:26:16 +0200
+To:     Chen Tao <chentao107@huawei.com>, linux-afs@lists.infradead.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        David Howells <dhowells@redhat.com>
+Subject: Re: [PATCH] afs: Fix the memory leak in afs_mkdir
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -77,71 +70,70 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <65e734f7-c43c-f96b-3650-980e15edba60@web.de>
-Date:   Tue, 23 Jun 2020 17:55:33 +0200
+Message-ID: <91acdece-92a1-c23b-f835-34c8e8f3aad0@web.de>
+Date:   Tue, 23 Jun 2020 18:26:15 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:/yG29YMWtAvukhcljyGyAEyr+1Aiee2Us0Je2/uzZcLq8mho4og
- 8vr/IipbtEZ0s7u85lfGnntO3FNjooLQQD+m9xPZNSudbcG7s6v8BZ8c95usrY8Qholu5E6
- hGKiCsDnndDREQqqIY3VwMo1sd/JRll8oFeh/RWri5bMAGup502G/CtJLhjNsptp1Ehv9Ma
- GOdkcdc1n/oKgKnIgoYZA==
+X-Provags-ID: V03:K1:KHUxjgRoNZ1mmP2nP+8HUb/B0jxrrDHaiHhf/9zoXnt87v1zwCc
+ zlWgaV+WqDn6KFfcouHXT+kayRj98rFEltGjR73iOkTJdpqyDoCb2zJcxG1mBXz2P62AZBx
+ ohSyTjON08zkuZZ6FhF/IPpyDknabtXqY/MZlok5gosx4+ckfEliRHfyV2NTKJpYUyl0AA9
+ M/C2QJeVB8gO7i3JxwIbw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:u9rvyksljl4=:8XNBqI30421Z89AyKccswo
- Sy1qK1PFmdwuVQ7zUnCjO/xQ/YQG1FE3MFIKvXbFkuLKHabQ1xs+PjgqXqm5zLhZ1h4gvHbQk
- cas8R0Aw1MyUtdoT4rZ1rIR++5la8gXWATTCCoQ98W0YZDKSNWWyu6xMA6mmP4iyQaMhI/8Ns
- px3jbTb9m8NBFGGiuep2ADVspz+0nhbvupuWTAsogkIYTjzo5wF/eAlqS9jPOO1P8H9yTdbM7
- HOLyynp0+069Y/my4DnJcFXsUPvBZteb1fYnTo9QEC02aHFLXcCVEPAKLshnpv2fmFYOKf4rM
- L4ODTZQlEeVtHv8DeAwznO2av7L1RXdZgDDmZ4PDLpQ0HU0GzV2ITAF13qQAvzsB58GeIZ511
- juOwBMKNK8MFik/Uo7kqUndNHagaU8JEkrH8JxEU2wSLVOXAdBEWWA+FV2HB5PYENjpjrLxCV
- z12xuMVOBcHA8IU/rq8SMriN0o6LGNRdquqyF/+UmifKBzZTtSnaLZSrdFqPoxKC/+RfmEqYm
- /Apjehz7CfFpu0aoCVU3Jul6uR8oYAKSjinqSAQPUjvFz2V3pjboxXBiDVfiBHGSKh09tibm1
- g1J7q8EhCm2UQYQhud00PzZDU/Fzu1ov+BwMSHnooQNCZpyZd5okyekXCtIvVKowx0WKcKzCU
- ghDGIynx5YGwmUD0L5NzoaG2kypQRvp9WFDPosZJas9UR8iuiZEFHyaGH9zquLxz3qXAIL5tq
- 9h0/tbpKMvZBS6ihqbmTm5rGJTZwqO1hGyrF00yMsgFDA+V2rxaRFBFPITcj28X0hCnvNLzzF
- mTx4mGc4/BwFJY76mOajyG1husk2X1JhOqOBqAG/LYICjfy6dgUmcyMSLHw6ylEp9ybYLz8Xh
- WxFukKai4ZFdEhTKoD1bsTOndHWancX35bnBbC0YrXGDMO2LfRRJX1+EXBwyZ30KvLOlUjTDm
- V5xYNP1EYvWXru8xRiOo50JW75YDjjxF1APyaYvKlmusKN+Jc5vTIOh3VTC0YNk7oDWSbu0Np
- jLTYa+yxljXbrueYKAOH8Pfk40z5S3afV1sZ4eVSK6ZmOooRZGj8jvYh1kyutV+W953O+gOSw
- 2nkDygILs2D7AsSgkimyOmKInnuGr+ZoEtKjf7wrmUZ1xr8CK2PYN7U2/V05QowQcp1EFX624
- yWTRryUNrSt7KpiTV8GY7pkCCa/21IDQxzed6iVJKR3nYz+11gY2vzvAgNjnT4wqiROnlVrd2
- KfPCJlzKlIj6ktHLu
+X-UI-Out-Filterresults: notjunk:1;V03:K0:iCYW0Ze/ZdE=:/pQWITtyOIFcWWkhciwoy9
+ De7c89cdZKgSpTm8t0vF5SwC1HBEIqFTrR+gAIr6imOWc2WPvb44JaJ305hrZWwRbfPBHZJmC
+ ILOrUvfxzFQCGaOzI3TIq5NfuPXSuXkdPmlWLF8rB1i0VsTylhjjxh+ttDGTit8Z/mkUaaw5I
+ qL9D+axpmr9wqdzMCpV9+t2gjRmrRPSmwUmaJjKTPNbX3nb51OaHvox50iTs1XBwa/58NhBsn
+ NFmtIWM0vD7X6CemY7f9zSkX8JwiEYw/rLE5c/m1dZPW4l+cW6uneuAm17b5nlTO9M9fDGU4v
+ oNMxZnJ5n4rEtlU7O03hisvVJExEx8LQlJlFmaAx882BFBqUoFOGKAwA9XJLZO01SnbvJrRhf
+ K2weEgX0/SJjDUVqpubkBqz7h8IvOgppsMNaMkY4cXyZG86v7eZNRAWar9Mb8hn0fku5IkWnF
+ lWmGM2IIYoumf3Pdo44IV5XuUUgpQ/7kNfvIWinjh4FlTwB6/g5TIl7ErP6C1K6MZJJiwSVKf
+ sq9etraYDoJzjyDk5C++vKro6qMoc83s6mnuMvoLCJtcBS/z8x9yoOtTpEzUuOSEdwxEXJOF5
+ 3blLMRzCwsm0Yel/2H2vI6P/1v30MN868biBep2RLEVME4i4kCy7qqGbOu8UxagVbSGZzi1Cq
+ 4IY9Hl/ZSqKbjApLJAFAJts7D9PdEo2gjj+pOpobVV/QKqOBgeyMH5/Bt59rTioOGfdbSfx3S
+ ZMFmjWnDABvciQUMfIZZTql/d32cr3hcpJGCgf7xD91llv2JrCwgAIGWZtmOpJaLg4ACELaQX
+ RCvOGehrkGT0zNEt8fBH2eGy9wnBGchq9m7E7E40URTn1MchUbHVtGRYSrjEZCD/safOvbkyL
+ tnBqJb+Rzod1+43xpvTmHbW6L2qCzbM4KX16QfWL3AnFJfQLCazflFFLR5wM52bjpEBs1kFLX
+ YUpyo+vyALPcDw9+ZQKtQzvuy5dXG00dzJnb7rEfTB+rf8qJdXSQ1B4nLzU8rLbuY6a/uZlHm
+ lCqiSBK8CZqAPUXx33sDaXkFauz3OMH5ACAwAw4PcZtyYK+hzb2t/AOzCzlueTQWYn9c4zBEk
+ lTzB8X2ZNxzdSugvW5Z+lAPSlCieWEoBNYw4PtbEjQzXUHnrcgqm2NmjS8vE+d0utfhRDrius
+ BEHCvF0sGIM1u6SsAlhbFbSeY1Yoa9gWD2/cDk+WZuEf120WJQJ+evVhfCa7r/UWYzk+am7BE
+ RCVe7DxNNF+hIPwKF
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> There exists some potential resource leaks in the error path, fix them.
+=E2=80=A6
+> +++ b/fs/afs/dir.c
+> @@ -1599,17 +1599,17 @@ static int afs_create(struct inode *dir, struct =
+dentry *dentry, umode_t mode,
+=E2=80=A6
+>  	scb =3D kcalloc(2, sizeof(struct afs_status_cb), GFP_KERNEL);
+>  	if (!scb)
+>  		goto error_scb;
 
-Will the tag =E2=80=9CFixes=E2=80=9D become relevant for the commit messag=
-e?
+I suggest to adjust also this jump target so that a call of the function =
+=E2=80=9Ckfree=E2=80=9D
+with a null pointer can be avoided.
 
 
 =E2=80=A6
-> +++ b/drivers/irqchip/irq-nvic.c
-> @@ -94,6 +94,7 @@ static int __init nvic_of_init(struct device_node *nod=
-e,
->
->  	if (!nvic_irq_domain) {
->  		pr_warn("Failed to allocate irq domain\n");
-> +		iounmap(nvic_base);
->  		return -ENOMEM;
->  	}
->
-> @@ -103,6 +104,7 @@ static int __init nvic_of_init(struct device_node *n=
-ode,
->  	if (ret) {
->  		pr_warn("Failed to allocate irq chips\n");
->  		irq_domain_remove(nvic_irq_domain);
-> +		iounmap(nvic_base);
->  		return ret;
->  	}
+> @@ -1645,10 +1645,10 @@  static int afs_create(struct inode *dir, struct=
+ dentry *dentry, umode_t mode,
+=E2=80=A6
+>  error_key:
+>  	key_put(key);
+> +error_scb:
+> +	kfree(scb);
+>  error:
+>  	d_drop(dentry);
+=E2=80=A6
 
-Can it helpful to add jump targets so that a bit of exception handling
-can be better reused at the end of this function?
+Can an other label than =E2=80=9Cerror=E2=80=9D be nicer here?
 
 Regards,
 Markus

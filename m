@@ -2,142 +2,285 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9BA1207410
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 15:13:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75777207448
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 15:19:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390944AbgFXNNH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jun 2020 09:13:07 -0400
-Received: from mout.web.de ([217.72.192.78]:37983 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387747AbgFXNNA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jun 2020 09:13:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1593004360;
-        bh=zAuqcv5c3pQC472cThqMqd6o0JE7uGZhrYFFqHnzpD8=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=c+9zBn6OyF/rpjb+YDc5rw+SBM7IvLd5lGQPuoH5DrOICqy5pcwfXOp7+icjc9/Pd
-         8EKEdetSa+AhQeFrYEoQqkr8/9agn2lTlnEVNaqVxhbJy/vk8MNZeq9WUQiKFnJ8Md
-         DMkZ9N05ayEagCWiqaT5YElLlWbHvTegoHcr3S9g=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.175.204]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MJCWU-1jpkA6120A-002oqa; Wed, 24
- Jun 2020 15:12:40 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Xuefeng Li <lixuefeng@loongson.cn>
-Subject: Re: [PATCH v3 04/14] irqchip/davinci-aintc: Fix potential resource
- leaks
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-To:     Tiezhu Yang <yangtiezhu@loongson.cn>, linux-mips@vger.kernel.org
-Message-ID: <0e39761c-4673-d116-fc62-5573c2abae06@web.de>
-Date:   Wed, 24 Jun 2020 15:12:36 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        id S2387915AbgFXNTI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jun 2020 09:19:08 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:39190 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728685AbgFXNTH (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 24 Jun 2020 09:19:07 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05ODHs08083219;
+        Wed, 24 Jun 2020 13:19:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=qe2ui3V9asRZj/Z1ltLDuCg8Q+IaJ6Cvu4m+yGmcKQQ=;
+ b=LcYXEZAzBwAaC3cq0cjXWW3st6noxNXP+92lFxZ+eneuuysDWs2ACjdXqrxu40zcaW9d
+ Oa+4P9T6vCiz/GFqBIeGvVx5MO9ClPmF1nNsvaA+9UFpy1GsU+JdD8DWH4z+jI4FWqEO
+ lorkrtHlGFcCdo+HjxOwtkpWPyppyVm+UTCgXhClcVa7+9sWJqYiUABI0XOkvR998mGE
+ TQXJUzDupkY8/k42uMc2yjxtIADxQjKpefOWyoudnaIpMdAr8ToNTFVyCouxjUfgHZYW
+ YC0xlVR5Jj/LsuPOzVHPTBDpIYK49NwS/9Pvpes/i/hR0QHszHwn3ppJecYuXqtrlhWt 1A== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 31uusttt00-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 24 Jun 2020 13:19:05 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05ODI9qh030581;
+        Wed, 24 Jun 2020 13:19:04 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 31uur6c3gj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 24 Jun 2020 13:19:04 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05ODJ4Qn003977;
+        Wed, 24 Jun 2020 13:19:04 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 24 Jun 2020 13:19:03 +0000
+Date:   Wed, 24 Jun 2020 16:18:58 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     jirislaby@gmail.com
+Cc:     kernel-janitors@vger.kernel.org
+Subject: [bug report] tty: cyclades, cache HW version
+Message-ID: <20200624131858.GA9972@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:iW2saXIEBgXpQgxGEEEAAuU/UAEMLXSGs8QPxotSdz4VN/pt8gG
- bUe+HrEuJe5IJ9frdJFu9HcKU8xsUSsN1pto+heV5fgeXLLrlT255RC/mWyKwUGbPe25/yj
- t7XA5VnqvEK6Psog2HZORolEhl1IBMQhjJ0fKt1XHf0hEqiu0MdOb6pVNI5Oiyl9ZS2waLq
- D0pxe38/f91vHg4dwa+/Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:NoYiJ7pL76Y=:cFgWgkXpeqrUwtzfhxgtW6
- jHGJuVXqtkyzFDumiWeF11aX1y5BiUlxG1wbukz44LL42qBsFv+ybDvx/EU0O0MqlKr5kK2nn
- Y5q86y8m1MugsiNPdGpG0wr/ZMRmaxBO2QxupLeGKQLZis/4RBmJEltkwCGrCE/k9j+37LG7f
- KFsDtMxeLg6Z0qREVLGZZg3d61wMzXNsztW6DigVjH0O/Zl7a1TR+bOrp4IpA1sj2jWORi/5X
- DTbioo15gGkaEsXqee2JXQONRVzqlcYWro1s+OKfy5Ugk2nEojo9lzWXm63wox2C67+RGawKv
- FiFyVDfT1aFsa6Qcgzj5KF/Gd0pcRfDpQ9H+jUIJ43roQlAn0bU0HKs51NeHs/QizXURkEqv9
- lB1m5qvEfv3pF271/qpKA/k0dvJ5t07S52UrnTxrnt3mxbbqTfnLaj3UMl7EcRQ+f2D/ayn+/
- kA+GK/wnVP5PP0H58GBiy0Zo6yWUG+Nppz0TLBK2wovJ3K4ps1xQZ54eBHQg1tstSeWfN+2Gq
- v2DxWNof+WYxcdaKeu5pD7P+W8twApWXPH0u8Ibmio9Ok2+ktJGsD6hsV0c/qbD7YPiPbOaks
- x4wgAonmysZSG+MJKjj2r6VsCdHBuf9NM9CMyv0s8+FxSP8iLOBQ9Jivc4lRDT4hIdRNvObnL
- s/pEeHOKRFyj34fvr9MjvtSzUtJyvUs/fos4TcrhqWqmsFEe+cYv0dl/i7hhOxfm/hRSaBumQ
- ImDMIiU3ECCFDcemPG2oDgRkUUEoHbWXOUvuFT/bDgI42MlhsqSLQLzut3EGLJy96iQujKKjb
- Nq77Gy1SKz+YBcwYkAtm7kSOQ315DgfLn3jotMIapu25RsnRL6NnZYM7MjOOpmTmWl1iV9O1A
- jGsN/D6mzvJgaS7hCjDNcVHPCLhhRs8Ni4/YFFaZfloS5pkpeDQkgmQag9eolpQAEEp124XVy
- n9K1vhAch2iDJeG3lUbbKxVj5i9j3LBhffENGOJToVfvUmLa/HjpFCN5IQqvl+5otxqOvayHN
- W6qVfGS/wYBeKaNqapzEpn11/rv8EZJmtd2MrHbylHj/O3Wd5RjfgxPhlUxgQCS6PSTyt/BO0
- r/qyr+X6+aKgW1kxhox6UehIjCTN7t46pmw12lraXOr+MSW5Lmv6TaiXZav1X3I8SXEp+/5Lo
- H7YDhWhiREKxk+ASQ/PvjbM+QY43jZP3E2qmRdr0yMo4f7E8/4iz0fBP8emkQ2UwTu3hnYZW4
- v+pSpLK9snYD7dESI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9661 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=3 spamscore=0 adultscore=0
+ malwarescore=0 mlxscore=0 mlxlogscore=999 phishscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006240096
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9661 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=3 bulkscore=0
+ cotscore=-2147483648 malwarescore=0 mlxscore=0 clxscore=1011
+ lowpriorityscore=0 mlxlogscore=999 phishscore=0 priorityscore=1501
+ spamscore=0 impostorscore=0 adultscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006240096
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> There exists potential resource leaks in the error path, fix them.
+[ Kees recently removed the uninitialized_var() variable so ancient
+  code has started to print warnings.  GCC doesn't warn about
+  uninitialized variables these days either.  It's been buggy for
+  10 years so it's probably not an emergency.  -dan ]
 
-Would you like to reconsider this change description?
-https://lore.kernel.org/linux-mips/be3acb13-2963-ddf1-a867-7e30fd23a0b4@lo=
-ongson.cn/
-https://lkml.org/lkml/2020/6/24/498
+Hello Jiri Slaby,
 
+The patch 101b81590d8d: "tty: cyclades, cache HW version" from Jun
+11, 2009, leads to the following static checker warning:
 
-=E2=80=A6
-> +++ b/drivers/irqchip/irq-davinci-aintc.c
-=E2=80=A6
-> @@ -160,4 +160,13 @@ void __init davinci_aintc_init(const struct davinci=
-_aintc_config *config)
->  				       irq_base + irq_off, 32);
->
->  	set_handle_irq(davinci_aintc_handle_irq);
-> +
-> +err_domain_remove:
-=E2=80=A6
+	drivers/tty/cyclades.c:3805 cy_pci_probe()
+	error: uninitialized symbol 'mailbox'.
 
-Are you sure that you would to like to release the allocated system resour=
-ces
-always in this function implementation?
+drivers/tty/cyclades.c
+  3640  static int cy_pci_probe(struct pci_dev *pdev,
+  3641                  const struct pci_device_id *ent)
+  3642  {
+  3643          struct cyclades_card *card;
+  3644          void __iomem *addr0 = NULL, *addr2 = NULL;
+  3645          char *card_name = NULL;
+  3646          u32 mailbox;
+                ^^^^^^^^^^^^
 
-Otherwise, I suggest to add a return statement before the source code sect=
-ion
-for the desired exception handling.
+  3647          unsigned int device_id, nchan = 0, card_no, i, j;
+  3648          unsigned char plx_ver;
+  3649          int retval, irq;
+  3650  
+  3651          retval = pci_enable_device(pdev);
+  3652          if (retval) {
+  3653                  dev_err(&pdev->dev, "cannot enable device\n");
+  3654                  goto err;
+  3655          }
+  3656  
+  3657          /* read PCI configuration area */
+  3658          irq = pdev->irq;
+  3659          device_id = pdev->device & ~PCI_DEVICE_ID_MASK;
+  3660  
+  3661  #if defined(__alpha__)
+  3662          if (device_id == PCI_DEVICE_ID_CYCLOM_Y_Lo) {   /* below 1M? */
+  3663                  dev_err(&pdev->dev, "Cyclom-Y/PCI not supported for low "
+  3664                          "addresses on Alpha systems.\n");
+  3665                  retval = -EIO;
+  3666                  goto err_dis;
+  3667          }
+  3668  #endif
+  3669          if (device_id == PCI_DEVICE_ID_CYCLOM_Z_Lo) {
+  3670                  dev_err(&pdev->dev, "Cyclades-Z/PCI not supported for low "
+  3671                          "addresses\n");
+  3672                  retval = -EIO;
+  3673                  goto err_dis;
+  3674          }
+  3675  
+  3676          if (pci_resource_flags(pdev, 2) & IORESOURCE_IO) {
+  3677                  dev_warn(&pdev->dev, "PCI I/O bit incorrectly set. Ignoring "
+  3678                                  "it...\n");
+  3679                  pdev->resource[2].flags &= ~IORESOURCE_IO;
+  3680          }
+  3681  
+  3682          retval = pci_request_regions(pdev, "cyclades");
+  3683          if (retval) {
+  3684                  dev_err(&pdev->dev, "failed to reserve resources\n");
+  3685                  goto err_dis;
+  3686          }
+  3687  
+  3688          retval = -EIO;
+  3689          if (device_id == PCI_DEVICE_ID_CYCLOM_Y_Lo ||
+  3690                          device_id == PCI_DEVICE_ID_CYCLOM_Y_Hi) {
+  3691                  card_name = "Cyclom-Y";
+  3692  
+  3693                  addr0 = ioremap(pci_resource_start(pdev, 0),
+  3694                                  CyPCI_Yctl);
+  3695                  if (addr0 == NULL) {
+  3696                          dev_err(&pdev->dev, "can't remap ctl region\n");
+  3697                          goto err_reg;
+  3698                  }
+  3699                  addr2 = ioremap(pci_resource_start(pdev, 2),
+  3700                                  CyPCI_Ywin);
+  3701                  if (addr2 == NULL) {
+  3702                          dev_err(&pdev->dev, "can't remap base region\n");
+  3703                          goto err_unmap;
+  3704                  }
+  3705  
+  3706                  nchan = CyPORTS_PER_CHIP * cyy_init_card(addr2, 1);
+  3707                  if (nchan == 0) {
+  3708                          dev_err(&pdev->dev, "Cyclom-Y PCI host card with no "
+  3709                                          "Serial-Modules\n");
+  3710                          goto err_unmap;
+  3711                  }
+  3712          } else if (device_id == PCI_DEVICE_ID_CYCLOM_Z_Hi) {
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Regards,
-Markus
+  3713                  struct RUNTIME_9060 __iomem *ctl_addr;
+  3714  
+  3715                  ctl_addr = addr0 = ioremap(pci_resource_start(pdev, 0),
+  3716                                  CyPCI_Zctl);
+  3717                  if (addr0 == NULL) {
+  3718                          dev_err(&pdev->dev, "can't remap ctl region\n");
+  3719                          goto err_reg;
+  3720                  }
+  3721  
+  3722                  /* Disable interrupts on the PLX before resetting it */
+  3723                  cy_writew(&ctl_addr->intr_ctrl_stat,
+  3724                                  readw(&ctl_addr->intr_ctrl_stat) & ~0x0900);
+  3725  
+  3726                  plx_init(pdev, irq, addr0);
+  3727  
+  3728                  mailbox = readl(&ctl_addr->mail_box_0);
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Only initialized for PCI_DEVICE_ID_CYCLOM_Z_Hi.
+
+  3729  
+  3730                  addr2 = ioremap(pci_resource_start(pdev, 2),
+  3731                                  mailbox == ZE_V1 ? CyPCI_Ze_win : CyPCI_Zwin);
+  3732                  if (addr2 == NULL) {
+  3733                          dev_err(&pdev->dev, "can't remap base region\n");
+  3734                          goto err_unmap;
+  3735                  }
+  3736  
+  3737                  if (mailbox == ZE_V1) {
+  3738                          card_name = "Cyclades-Ze";
+  3739                  } else {
+  3740                          card_name = "Cyclades-8Zo";
+  3741  #ifdef CY_PCI_DEBUG
+  3742                          if (mailbox == ZO_V1) {
+  3743                                  cy_writel(&ctl_addr->loc_addr_base, WIN_CREG);
+  3744                                  dev_info(&pdev->dev, "Cyclades-8Zo/PCI: FPGA "
+  3745                                          "id %lx, ver %lx\n", (ulong)(0xff &
+  3746                                          readl(&((struct CUSTOM_REG *)addr2)->
+  3747                                                  fpga_id)), (ulong)(0xff &
+  3748                                          readl(&((struct CUSTOM_REG *)addr2)->
+  3749                                                  fpga_version)));
+  3750                                  cy_writel(&ctl_addr->loc_addr_base, WIN_RAM);
+  3751                          } else {
+  3752                                  dev_info(&pdev->dev, "Cyclades-Z/PCI: New "
+  3753                                          "Cyclades-Z board.  FPGA not loaded\n");
+  3754                          }
+  3755  #endif
+  3756                          /* The following clears the firmware id word.  This
+  3757                             ensures that the driver will not attempt to talk to
+  3758                             the board until it has been properly initialized.
+  3759                           */
+  3760                          if ((mailbox == ZO_V1) || (mailbox == ZO_V2))
+  3761                                  cy_writel(addr2 + ID_ADDRESS, 0L);
+  3762                  }
+  3763  
+  3764                  retval = cyz_load_fw(pdev, addr2, addr0, irq);
+  3765                  if (retval <= 0)
+  3766                          goto err_unmap;
+  3767                  nchan = retval;
+  3768          }
+  3769  
+  3770          if ((cy_next_channel + nchan) > NR_PORTS) {
+  3771                  dev_err(&pdev->dev, "Cyclades-8Zo/PCI found, but no "
+  3772                          "channels are available. Change NR_PORTS in "
+  3773                          "cyclades.c and recompile kernel.\n");
+  3774                  goto err_unmap;
+  3775          }
+  3776          /* fill the next cy_card structure available */
+  3777          for (card_no = 0; card_no < NR_CARDS; card_no++) {
+  3778                  card = &cy_card[card_no];
+  3779                  if (card->base_addr == NULL)
+  3780                          break;
+  3781          }
+  3782          if (card_no == NR_CARDS) {      /* no more cy_cards available */
+  3783                  dev_err(&pdev->dev, "Cyclades-8Zo/PCI found, but no "
+  3784                          "more cards can be used. Change NR_CARDS in "
+  3785                          "cyclades.c and recompile kernel.\n");
+  3786                  goto err_unmap;
+  3787          }
+  3788  
+  3789          if (device_id == PCI_DEVICE_ID_CYCLOM_Y_Lo ||
+  3790                          device_id == PCI_DEVICE_ID_CYCLOM_Y_Hi) {
+  3791                  /* allocate IRQ */
+  3792                  retval = request_irq(irq, cyy_interrupt,
+  3793                                  IRQF_SHARED, "Cyclom-Y", card);
+  3794                  if (retval) {
+  3795                          dev_err(&pdev->dev, "could not allocate IRQ\n");
+  3796                          goto err_unmap;
+  3797                  }
+  3798                  card->num_chips = nchan / CyPORTS_PER_CHIP;
+  3799          } else {
+
+There are several other PCI devices besides PCI_DEVICE_ID_CYCLOM_Z_Hi.
+
+  3800                  struct FIRM_ID __iomem *firm_id = addr2 + ID_ADDRESS;
+  3801                  struct ZFW_CTRL __iomem *zfw_ctrl;
+  3802  
+  3803                  zfw_ctrl = addr2 + (readl(&firm_id->zfwctrl_addr) & 0xfffff);
+  3804  
+  3805                  card->hw_ver = mailbox;
+                                       ^^^^^^^
+Uninitialized.
+
+  3806                  card->num_chips = (unsigned int)-1;
+  3807                  card->board_ctrl = &zfw_ctrl->board_ctrl;
+  3808  #ifdef CONFIG_CYZ_INTR
+  3809                  /* allocate IRQ only if board has an IRQ */
+  3810                  if (irq != 0 && irq != 255) {
+  3811                          retval = request_irq(irq, cyz_interrupt,
+  3812                                          IRQF_SHARED, "Cyclades-Z", card);
+  3813                          if (retval) {
+  3814                                  dev_err(&pdev->dev, "could not allocate IRQ\n");
+  3815                                  goto err_unmap;
+  3816                          }
+  3817                  }
+  3818  #endif                          /* CONFIG_CYZ_INTR */
+  3819          }
+  3820  
+  3821          /* set cy_card */
+  3822          card->base_addr = addr2;
+  3823          card->ctl_addr.p9050 = addr0;
+  3824          card->irq = irq;
+  3825          card->bus_index = 1;
+  3826          card->first_line = cy_next_channel;
+  3827          card->nports = nchan;
+
+regards,
+dan carpenter

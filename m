@@ -2,59 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8B8B207729
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 17:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 130BC20773A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 17:19:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404574AbgFXPQo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jun 2020 11:16:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57922 "EHLO
+        id S2404150AbgFXPT3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jun 2020 11:19:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404564AbgFXPQk (ORCPT
+        with ESMTP id S2404017AbgFXPT3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jun 2020 11:16:40 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55BE6C061573;
-        Wed, 24 Jun 2020 08:16:40 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id 17so2902824wmo.1;
-        Wed, 24 Jun 2020 08:16:40 -0700 (PDT)
+        Wed, 24 Jun 2020 11:19:29 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0B7DC061573;
+        Wed, 24 Jun 2020 08:19:28 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id v3so2703598wrc.1;
+        Wed, 24 Jun 2020 08:19:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=34hmditf+vhlxJcmEFkZgWoC7pJeDEW0sX6340LuRHw=;
-        b=QAVF2FGrKfQudyBRkn3UEh/QzSSNVI0DOwlhIyVt7j4OWP0Q1EKpaZB7h08BZ34SL5
-         xOPUwta5fN7soRtWRKATYZPdLsezxlnLx3C0yP1njOkEOzi5vwQ1wVWsSFYl46UQmRhx
-         zTRbOaYgkfnwfMea/9aKyEZMcMEW3De25mZvgPzrdK5mCyi9yvuFwNz7toArk1ExXQGr
-         vqzqH9txAcCm0C96sFblR42GmoxJWnINnyVmRpWtXXZ0fR2wTjyAkgdvpiYyxX6KbeWp
-         9Y5MzCGn0FT1gQPQ1kvcOhDRGpeAcA5WLfAy9ClOcUCzgBrD76MCrjQM1IcW5VIxPfCx
-         GAbw==
+        bh=Py6R13MD/ALi+lmKz+0wD4Voo520rKERVOmYa94FmgM=;
+        b=WHMmhLBrGsTKq8yguQB2bjx3E8JorBYdumZsxQYbxblYDAb8jiPDC9IByepKx+eccf
+         A5h7Tlqxva0/EkSd32fHC2vvXjDnYlQw4RseSVvOxbp7Juf4pL7awzGRSAf9IzCzGIDM
+         CPee79NMTwFDmyScJR/rHTnO+4ExhnAmEuTlQWu21xxH34an6xtftGYQLJGfuzsCr002
+         MKZ21DNsuBIYBUKHkN0jphHx0ASZun96Ch6VbyQ109D59xnKGMvdJDqX8uVfq/OSqWcl
+         S1rXrgUcmvjggtekDWmBBge8j7P7zTP1+3dUem26Xg5YY488gkAkSSBhNTni+U/DZFRv
+         UWWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=34hmditf+vhlxJcmEFkZgWoC7pJeDEW0sX6340LuRHw=;
-        b=TLvLBEQKDQ+eq9uzxR4g4k0zNNmff9WKShE3uaNIafUYlvswyqnQDyy748fTR3lk0C
-         iGIJnCdYA2lqn+jAnEqvojbcYCbN68L9OWbrTrrxmJFAYrZ9Xm9TdMq/V/D7kf0g+cWY
-         /0C58wij8T9tUbRgDzp96GNly6Iana6WvNopmYznSKPm/mRB3+aIw1utfc0Mb8zv/IDi
-         JkU/8A7AAoFDu1KJUZacykhJJag6l8amOmnZgDFza4aiiP6kkzSxBTe3L75ehl2vjMpm
-         IXPQoBQKOqXYHOVzB89sTePBDgMdVzZYKn1wD5Ryi7U6gtISFGYBHIFl7gqV0CwTvSsO
-         mjFw==
-X-Gm-Message-State: AOAM533g+OnCgh+z7pl/KXPAasg4heBgqj8f8Vq5MI6vyv2B9RrIq9od
-        3E+YJmRY/H1VTfRZ79Eydda22vzPzaC4USUWMpE=
-X-Google-Smtp-Source: ABdhPJy1qPZlkbkex+2mcQ3H0P1rh2BMF6aNpxBKJx6viXiD5LP/TMlDpplYwy2FDejjx7BYrjXNvarY9HUElDbSf5M=
-X-Received: by 2002:a1c:32c4:: with SMTP id y187mr30880941wmy.79.1593011798868;
- Wed, 24 Jun 2020 08:16:38 -0700 (PDT)
+        bh=Py6R13MD/ALi+lmKz+0wD4Voo520rKERVOmYa94FmgM=;
+        b=lnpwesRw6+qt35dkSDM6+JWoUp0NTsm7OG3MzTHwg1SIh3yZwHqSlhb35ugdESwVSj
+         Qq/HPDxBGvvgCyoGjxejuAtTbsrKm2szwyLCbpgfs8m2wtnapkGO2hHGnRnf3GcWWFPL
+         kWR7ps9nnaU17qoXFAbAXx5lHPOsCAKDb07BGTLGUsnh2f0xNZQvUHsvBXnEz5pHORWq
+         WNBYXpqltt6L3uj4V6+FcIia/+YZO4vsOc/ogm6+5qm7Nqjsv3pLbdojnKT8dDRaiEWb
+         cD8KpSbveMoMvaRv32F2ZNnE+qtPaSdcoABZIUtXo/8eoFrMS+ww1ENYB9Ry+rJJo5ce
+         yOaA==
+X-Gm-Message-State: AOAM533R3BJiZJtVtsA8ccjYfvlw7RE3sMMOj22jAHn1k3jC6Cb7kBpV
+        bNEBgSkgHyO2dboRljLcKKsvncH9f4xZSr3dgj0oIQ==
+X-Google-Smtp-Source: ABdhPJzkiAB8rak7/EF7xQt5xkZIsOH0iRZ9o4lt3W5kLDwG6kLpL6P22IQui3lFLPjKWXPAPlyPVqKx8E1Jd9qgHCc=
+X-Received: by 2002:a5d:6a46:: with SMTP id t6mr4633910wrw.374.1593011967560;
+ Wed, 24 Jun 2020 08:19:27 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200624145418.7794-1-colin.king@canonical.com>
-In-Reply-To: <20200624145418.7794-1-colin.king@canonical.com>
+References: <20200624120710.10957-1-colin.king@canonical.com>
+In-Reply-To: <20200624120710.10957-1-colin.king@canonical.com>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Wed, 24 Jun 2020 11:16:27 -0400
-Message-ID: <CADnq5_PySz6YWOMM4kosC_B83i+jsPKmf0puMt3sw2C-hExa3Q@mail.gmail.com>
-Subject: Re: [PATCH][next] drm/amdgpu: ensure 0 is returned for success in jpeg_v2_5_wait_for_idle
+Date:   Wed, 24 Jun 2020 11:19:16 -0400
+Message-ID: <CADnq5_NGQzU6rrrqO4iXTHPSxpAt-w0ayxfrS0jj3K8u38f3hg@mail.gmail.com>
+Subject: Re: [PATCH] drm/radeon: fix array out-of-bounds read and write issues
 To:     Colin King <colin.king@canonical.com>
 Cc:     Alex Deucher <alexander.deucher@amd.com>,
         =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>, Leo Liu <leo.liu@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
         amd-gfx list <amd-gfx@lists.freedesktop.org>,
         Maling list - DRI developers 
         <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
@@ -65,46 +66,39 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jun 24, 2020 at 10:54 AM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> In the cases where adev->jpeg.num_jpeg_inst is zero or the condition
-> adev->jpeg.harvest_config & (1 << i) is always non-zero the variable
-> ret is never set to an error condition and the function returns
-> an uninitialized value in ret.  Since the only exit condition at
-> the end if the function is a success then explicitly return
-> 0 rather than a potentially uninitialized value in ret.
-
-We should actually never hit this condition in practice because the
-driver won't initialize this module if all of the instances are
-harvested, but better safe than sorry.  Applied.
-
-Thanks,
+Applied.  Thanks!
 
 Alex
 
+On Wed, Jun 24, 2020 at 8:07 AM Colin King <colin.king@canonical.com> wrote:
 >
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Fixes: 14f43e8f88c5 ("drm/amdgpu: move JPEG2.5 out from VCN2.5")
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There is an off-by-one bounds check on the index into arrays
+> table->mc_reg_address and table->mc_reg_table_entry[k].mc_data[j] that
+> can lead to reads and writes outside of arrays. Fix the bound checking
+> off-by-one error.
+>
+> Addresses-Coverity: ("Out-of-bounds read/write")
+> Fixes: cc8dbbb4f62a ("drm/radeon: add dpm support for CI dGPUs (v2)")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/gpu/drm/amd/amdgpu/jpeg_v2_5.c | 2 +-
+>  drivers/gpu/drm/radeon/ci_dpm.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v2_5.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v2_5.c
-> index f74262a22a16..7a51c615d22d 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/jpeg_v2_5.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v2_5.c
-> @@ -462,7 +462,7 @@ static int jpeg_v2_5_wait_for_idle(void *handle)
->                         return ret;
->         }
+> diff --git a/drivers/gpu/drm/radeon/ci_dpm.c b/drivers/gpu/drm/radeon/ci_dpm.c
+> index 134aa2b01f90..86ac032275bb 100644
+> --- a/drivers/gpu/drm/radeon/ci_dpm.c
+> +++ b/drivers/gpu/drm/radeon/ci_dpm.c
+> @@ -4351,7 +4351,7 @@ static int ci_set_mc_special_registers(struct radeon_device *rdev,
+>                                         table->mc_reg_table_entry[k].mc_data[j] |= 0x100;
+>                         }
+>                         j++;
+> -                       if (j > SMU7_DISCRETE_MC_REGISTER_ARRAY_SIZE)
+> +                       if (j >= SMU7_DISCRETE_MC_REGISTER_ARRAY_SIZE)
+>                                 return -EINVAL;
 >
-> -       return ret;
-> +       return 0;
->  }
->
->  static int jpeg_v2_5_set_clockgating_state(void *handle,
+>                         if (!pi->mem_gddr5) {
 > --
 > 2.27.0
 >

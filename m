@@ -2,92 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4752206B31
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 06:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEBC6206D58
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 09:13:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388664AbgFXEcy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jun 2020 00:32:54 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:44968 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726131AbgFXEcy (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jun 2020 00:32:54 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05O4Vm6V056465;
-        Wed, 24 Jun 2020 04:32:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=U60Q9wYO24Fci/rjHg9RVDkxJHrlQYSoiIaxIYBt1/c=;
- b=wpUACspt65cGWE27HfpTBArvU4DH636FwnMTPZU44HkREVz5S42J0y0jHmV9E15Us9zq
- IwFxefBAa4808mG2PbdGH4JrlIqye+JgvjRIY+9vV3X//0eO7SOtQAdFE0PJ6rpF+wb9
- XcF8e9EWh9i6zFaeKYEdYcSDgMAwVM9K1NbU/lXgR8evo9LDtaj7GRYpRdi9xe7v2O4c
- gKy8lgkFkqm/d2ofsqkAGcpauUsb30SuwrBRtkxLDXEx1vsohbCeIB/+RT+wk6EFbZhV
- 1U+kx+bx4cYej7NJ6RFPppQhNqxaQZhcsiTvBW9GBm6iV2tRR9US1qxqI7dkWqTD5qeT pQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 31uustgm4u-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 24 Jun 2020 04:32:29 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05O4NmPk086138;
-        Wed, 24 Jun 2020 04:30:28 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 31uuqy7egc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 24 Jun 2020 04:30:28 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05O4UQ7e031513;
-        Wed, 24 Jun 2020 04:30:26 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 24 Jun 2020 04:30:25 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Seungwon Jeon <essuuj@gmail.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Kukjin Kim <kgene@kernel.org>,
-        Kiwoong Kim <kwmad.kim@samsung.com>,
-        Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-samsung-soc@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH -next] scsi: ufs: ufs-exynos: Fix return value check in exynos_ufs_init()
-Date:   Wed, 24 Jun 2020 00:30:22 -0400
-Message-Id: <159297300656.9917.6717865886612566021.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200618133837.127274-1-weiyongjun1@huawei.com>
-References: <20200618133837.127274-1-weiyongjun1@huawei.com>
+        id S2389383AbgFXHN0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jun 2020 03:13:26 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:60222 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2388004AbgFXHNZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 24 Jun 2020 03:13:25 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id EED76DBBF3FC634DF6DF;
+        Wed, 24 Jun 2020 15:13:20 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 24 Jun 2020 15:13:10 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Bryan Whitehead <bryan.whitehead@microchip.com>,
+        "Microchip Linux Driver Support" <UNGLinuxDriver@microchip.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Tim Harvey <tharvey@gateworks.com>,
+        Jakub Kicinski <kuba@kernel.org>
+CC:     YueHaibing <yuehaibing@huawei.com>, <netdev@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] lan743x: Remove duplicated include from lan743x_main.c
+Date:   Wed, 24 Jun 2020 07:18:21 +0000
+Message-ID: <20200624071821.175075-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9661 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
- adultscore=0 mlxscore=0 suspectscore=0 malwarescore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006240031
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9661 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
- cotscore=-2147483648 adultscore=0 bulkscore=0 spamscore=0 phishscore=0
- suspectscore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1015
- impostorscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006240032
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 18 Jun 2020 13:38:37 +0000, Wei Yongjun wrote:
+Remove duplicated include.
 
-> In case of error, the function devm_ioremap_resource() returns ERR_PTR()
-> and never returns NULL. The NULL test in the return value check should
-> be replaced with IS_ERR().
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/net/ethernet/microchip/lan743x_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Applied to 5.9/scsi-queue, thanks!
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index 9585467cf11c..2373e72d2d29 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -15,7 +15,6 @@
+ #include <linux/rtnetlink.h>
+ #include <linux/iopoll.h>
+ #include <linux/crc16.h>
+-#include <linux/of_net.h>
+ #include "lan743x_main.h"
+ #include "lan743x_ethtool.h"
 
-[1/1] scsi: ufs: ufs-exynos: Fix return value check in exynos_ufs_init()
-      https://git.kernel.org/mkp/scsi/c/b2bc2200e89b
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+

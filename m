@@ -2,93 +2,208 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B1A8207084
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 11:56:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DD1320709B
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 12:03:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390130AbgFXJ4T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jun 2020 05:56:19 -0400
-Received: from mail.loongson.cn ([114.242.206.163]:41328 "EHLO loongson.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2389762AbgFXJ4T (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jun 2020 05:56:19 -0400
-Received: from [10.130.0.52] (unknown [113.200.148.30])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dxb2k1I_NeAzVJAA--.10278S3;
-        Wed, 24 Jun 2020 17:56:06 +0800 (CST)
-Subject: Re: [1/7] irqchip: Fix potential resource leaks
-To:     Markus Elfring <Markus.Elfring@web.de>, devicetree@vger.kernel.org,
-        linux-mips@vger.kernel.org
-References: <65e734f7-c43c-f96b-3650-980e15edba60@web.de>
- <d2111f53-ca52-fedf-0257-71f0aa89b093@loongson.cn>
- <9ca22645-8bf3-008f-fe55-d432f962cac3@web.de>
- <bd28aef9-ba70-0539-bdc3-6ce7162cefca@loongson.cn>
- <cc6b95ec-691e-f010-4a04-add39d706c4b@web.de>
+        id S2390066AbgFXKDA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jun 2020 06:03:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37676 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387647AbgFXKDA (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 24 Jun 2020 06:03:00 -0400
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11F5BC061573;
+        Wed, 24 Jun 2020 03:03:00 -0700 (PDT)
+Received: by mail-qt1-x844.google.com with SMTP id d27so1210587qtg.4;
+        Wed, 24 Jun 2020 03:03:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=x476Mn/y0mphbsxJns0lxfmywCKbgB/VcIe+XBugAac=;
+        b=tILHWMKKSrhBr5plwoYJB+nfH0X2040IojID+zPJKHwwHNXR3hDLdUmJ5qQl5gwP4/
+         Lsv5LRj+0TwOM0sQ0+rCiGd8+ROD1/Kban/bWyZzAFVhfbFKHGeEqcjq/ipMfbOsq6jF
+         QiH7uEgSr0+nHeRhmvxNwh748oDoUQbpJDpaS5gSHZZ1ki+p54VHTWXIcIqSEFwWq8hh
+         oxIi9+aRTRpxnMSc7jhtRstsZIaRpykDWxFD2oN31Tgz8iiRqB6ZiB36N7vFDkBN6tte
+         ZpwHlAmr3sBPuY2o0Hu9XzmkOsGpuWzSMPJpMZqbL9+XZBsJxHk/4ArwujkdwIk6VEmL
+         GTwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=x476Mn/y0mphbsxJns0lxfmywCKbgB/VcIe+XBugAac=;
+        b=I6H5SqTdjAK1WJKSuAWftphY7562IzqHl2WiYX8Sa0oVMEGoQjYE01LiRehY0FGOGf
+         gxGZzMr7l9U6n1qXLAAZls0NOqioqModxI2E7xhwYNWiZ8Ov37CsGaKpSQ1Aqzt9/NkS
+         c/R2WGIfyacmK9rxsDNtTOzj0TU0Ax2L2288pm0LBGBkwjn/oVzSb5TiEDv4iQ2zMK25
+         adYzkh4xJHuFAB57SOZsRDDAE5nmdSnVIptmZKYtDYkSDmqYBs4H5KzBnvgKu/lm0cJ7
+         bu15GFvrc93gZAEv2R3FR8oZAPlIsXBUp2n5z93Zxo9NeHn54fKtWxuYyhN0o1aICYcP
+         LmXw==
+X-Gm-Message-State: AOAM533TpiVNLGulliWpHV2MQf1Pc+nzoHcTBwjgsGdKhEca7AjfzrnJ
+        TCX0lTCuiLHL3ThdffSpycI=
+X-Google-Smtp-Source: ABdhPJwPqeM9iy52z0CLO/z/b8R7LjzC44iXeGd8SCklz7kHMj4I+R9PDKFx8TVwACey606Rt8wSzQ==
+X-Received: by 2002:ac8:22e5:: with SMTP id g34mr26540758qta.227.1592992979109;
+        Wed, 24 Jun 2020 03:02:59 -0700 (PDT)
+Received: from ip-172-31-24-31.ec2.internal (ec2-54-234-246-66.compute-1.amazonaws.com. [54.234.246.66])
+        by smtp.gmail.com with ESMTPSA id x26sm3092571qtr.4.2020.06.24.03.02.58
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 24 Jun 2020 03:02:58 -0700 (PDT)
+Date:   Wed, 24 Jun 2020 10:02:56 +0000
+From:   "Rodolfo C. Villordo" <rodolfovillordo@gmail.com>
+To:     Forest Bond <forest@alittletooquiet.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Huacai Chen <chenhc@lemote.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Xuefeng Li <lixuefeng@loongson.cn>
-From:   Tiezhu Yang <yangtiezhu@loongson.cn>
-Message-ID: <423f83e0-c533-c346-ab8b-f2c6ccc828a2@loongson.cn>
-Date:   Wed, 24 Jun 2020 17:56:04 +0800
-User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+        rodolfovillordo@gmail.com
+Subject: [PATCH] drivers: staging: vt6655: replace CamelCase names on
+ function s_uGetRTSCTSRsvTime
+Message-ID: <20200624100256.GA17118@ip-172-31-24-31.ec2.internal>
 MIME-Version: 1.0
-In-Reply-To: <cc6b95ec-691e-f010-4a04-add39d706c4b@web.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf9Dxb2k1I_NeAzVJAA--.10278S3
-X-Coremail-Antispam: 1UD129KBjvdXoW7XryfKw45XFWxGFWrCry7Awb_yoWkWFXEkF
-        4Sk34kW345Ca1UG3ZIqr4UZF4fG3sxG345J398tFyag343Xw47CrZ7WrZ3Cw1xGrZ7Grnx
-        Ar4xt34fXw17ujkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUba8FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-        A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-        Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s
-        1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
-        cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26F4j6r4UJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-        1lF7xvr2IY64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY
-        04v7Mxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
-        v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
-        1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
-        AIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWrJr0_WFyU
-        JwCI42IY6I8E87Iv67AKxVW8Jr0_Cr1UMIIF0xvEx4A2jsIEc7CjxVAFwI0_GcCE3sUvcS
-        sGvfC2KfnxnUUI43ZEXa7VU1fgA7UUUUU==
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 06/24/2020 05:23 PM, Markus Elfring wrote:
->>> [PATCH v3 10/14 RESEND] irqchip/nvic: Fix potential resource leaks
->>> https://lore.kernel.org/linux-mips/1592984711-3130-11-git-send-email-yangtiezhu@loongson.cn/
->>> https://lore.kernel.org/patchwork/patch/1263191/
->>>
->>>
->>> Can it matter to omit the word “potential” from change descriptions
->>> after you detected that specific function calls were missing
->>> in if branches?
->> Oh, I find this issue through code review, I have no test environment
->> to trigger the error path, but I think it is better to release the resource
->> in the error path, so I use "potential" description.
-> Did you determine that special function calls were generally missing
-> in error cases?
+Replace function and variables name from CamelCase style to snake_case style.
+Remove Hungarian notation.
 
-Yes, I read many files in drivers/irqchip,
-the resource is released in the error path.
+Signed-off-by: Rodolfo C. Villordo <rodolfovillordo@gmail.com>
+---
+ drivers/staging/vt6655/rxtx.c | 80 +++++++++++++++++------------------
+ 1 file changed, 38 insertions(+), 42 deletions(-)
 
->
-> Were any known software analysis tools involved for the detection of
-> questionable source code places?
-
-kmemleak can detect memory leak,
-but I do not know how to detect other kind of leaks.
-I think consciously release resource in the error path can avoid leaks.
-
->
-> Regards,
-> Markus
+diff --git a/drivers/staging/vt6655/rxtx.c b/drivers/staging/vt6655/rxtx.c
+index cfab64d2b312..4778439e8757 100644
+--- a/drivers/staging/vt6655/rxtx.c
++++ b/drivers/staging/vt6655/rxtx.c
+@@ -21,7 +21,7 @@
+  *      s_uGetDataDuration - get tx data required duration
+  *      s_uFillDataHead- fulfill tx data duration header
+  *      s_uGetRTSCTSDuration- get rtx/cts required duration
+- *      s_uGetRTSCTSRsvTime- get rts/cts reserved time
++ *      get_rtscts_time- get rts/cts reserved time
+  *      s_uGetTxRsvTime- get frame reserved time
+  *      s_vFillCTSHead- fulfill CTS ctl header
+  *      s_vFillFragParameter- Set fragment ctl parameter.
+@@ -190,45 +190,41 @@ static __le16 vnt_rxtx_rsvtime_le16(struct vnt_private *priv, u8 pkt_type,
+ }
+ 
+ /* byFreqType: 0=>5GHZ 1=>2.4GHZ */
+-static
+-__le16
+-s_uGetRTSCTSRsvTime(
+-	struct vnt_private *pDevice,
+-	unsigned char byRTSRsvType,
+-	unsigned char byPktType,
+-	unsigned int cbFrameLength,
+-	unsigned short wCurrentRate
+-)
++static __le16 get_rtscts_time(struct vnt_private *priv,
++			      unsigned char rts_rsvtype,
++			      unsigned char pkt_type,
++			      unsigned int frame_length,
++			      unsigned short current_rate)
+ {
+-	unsigned int uRrvTime = 0;
+-	unsigned int uRTSTime = 0;
+-	unsigned int uCTSTime = 0;
+-	unsigned int uAckTime = 0;
+-	unsigned int uDataTime = 0;
+-
+-	uDataTime = bb_get_frame_time(pDevice->byPreambleType, byPktType, cbFrameLength, wCurrentRate);
+-	if (byRTSRsvType == 0) { /* RTSTxRrvTime_bb */
+-		uRTSTime = bb_get_frame_time(pDevice->byPreambleType, byPktType, 20, pDevice->byTopCCKBasicRate);
+-		uAckTime = bb_get_frame_time(pDevice->byPreambleType, byPktType, 14, pDevice->byTopCCKBasicRate);
+-		uCTSTime = uAckTime;
+-	} else if (byRTSRsvType == 1) { /* RTSTxRrvTime_ba, only in 2.4GHZ */
+-		uRTSTime = bb_get_frame_time(pDevice->byPreambleType, byPktType, 20, pDevice->byTopCCKBasicRate);
+-		uCTSTime = bb_get_frame_time(pDevice->byPreambleType, byPktType, 14, pDevice->byTopCCKBasicRate);
+-		uAckTime = bb_get_frame_time(pDevice->byPreambleType, byPktType, 14, pDevice->byTopOFDMBasicRate);
+-	} else if (byRTSRsvType == 2) { /* RTSTxRrvTime_aa */
+-		uRTSTime = bb_get_frame_time(pDevice->byPreambleType, byPktType, 20, pDevice->byTopOFDMBasicRate);
+-		uAckTime = bb_get_frame_time(pDevice->byPreambleType, byPktType, 14, pDevice->byTopOFDMBasicRate);
+-		uCTSTime = uAckTime;
+-	} else if (byRTSRsvType == 3) { /* CTSTxRrvTime_ba, only in 2.4GHZ */
+-		uCTSTime = bb_get_frame_time(pDevice->byPreambleType, byPktType, 14, pDevice->byTopCCKBasicRate);
+-		uAckTime = bb_get_frame_time(pDevice->byPreambleType, byPktType, 14, pDevice->byTopOFDMBasicRate);
+-		uRrvTime = uCTSTime + uAckTime + uDataTime + 2 * pDevice->uSIFS;
+-		return cpu_to_le16((u16)uRrvTime);
++	unsigned int rrv_time = 0;
++	unsigned int rts_time = 0;
++	unsigned int cts_time = 0;
++	unsigned int ack_time = 0;
++	unsigned int data_time = 0;
++
++	data_time = bb_get_frame_time(priv->byPreambleType, pkt_type, frame_length, current_rate);
++	if (rts_rsvtype == 0) { /* RTSTxRrvTime_bb */
++		rts_time = bb_get_frame_time(priv->byPreambleType, pkt_type, 20, priv->byTopCCKBasicRate);
++		ack_time = bb_get_frame_time(priv->byPreambleType, pkt_type, 14, priv->byTopCCKBasicRate);
++		cts_time = ack_time;
++	} else if (rts_rsvtype == 1) { /* RTSTxRrvTime_ba, only in 2.4GHZ */
++		rts_time = bb_get_frame_time(priv->byPreambleType, pkt_type, 20, priv->byTopCCKBasicRate);
++		cts_time = bb_get_frame_time(priv->byPreambleType, pkt_type, 14, priv->byTopCCKBasicRate);
++		ack_time = bb_get_frame_time(priv->byPreambleType, pkt_type, 14, priv->byTopOFDMBasicRate);
++	} else if (rts_rsvtype == 2) { /* RTSTxRrvTime_aa */
++		rts_time = bb_get_frame_time(priv->byPreambleType, pkt_type, 20, priv->byTopOFDMBasicRate);
++		ack_time = bb_get_frame_time(priv->byPreambleType, pkt_type, 14, priv->byTopOFDMBasicRate);
++		cts_time = ack_time;
++	} else if (rts_rsvtype == 3) { /* CTSTxRrvTime_ba, only in 2.4GHZ */
++		cts_time = bb_get_frame_time(priv->byPreambleType, pkt_type, 14, priv->byTopCCKBasicRate);
++		ack_time = bb_get_frame_time(priv->byPreambleType, pkt_type, 14, priv->byTopOFDMBasicRate);
++		rrv_time = cts_time + ack_time + data_time + 2 * priv->uSIFS;
++		return cpu_to_le16((u16)rrv_time);
+ 	}
+ 
+ 	/* RTSRrvTime */
+-	uRrvTime = uRTSTime + uCTSTime + uAckTime + uDataTime + 3 * pDevice->uSIFS;
+-	return cpu_to_le16((u16)uRrvTime);
++	rrv_time = rts_time + cts_time + ack_time + data_time + 3 * priv->uSIFS;
++	return cpu_to_le16((u16)rrv_time);
+ }
+ 
+ /* byFreqType 0: 5GHz, 1:2.4Ghz */
+@@ -921,9 +917,9 @@ s_vGenerateTxParameter(
+ 			/* Fill RsvTime */
+ 			struct vnt_rrv_time_rts *buf = pvRrvTime;
+ 
+-			buf->rts_rrv_time_aa = s_uGetRTSCTSRsvTime(pDevice, 2, byPktType, cbFrameSize, wCurrentRate);
+-			buf->rts_rrv_time_ba = s_uGetRTSCTSRsvTime(pDevice, 1, byPktType, cbFrameSize, wCurrentRate);
+-			buf->rts_rrv_time_bb = s_uGetRTSCTSRsvTime(pDevice, 0, byPktType, cbFrameSize, wCurrentRate);
++			buf->rts_rrv_time_aa = get_rtscts_time(pDevice, 2, byPktType, cbFrameSize, wCurrentRate);
++			buf->rts_rrv_time_ba = get_rtscts_time(pDevice, 1, byPktType, cbFrameSize, wCurrentRate);
++			buf->rts_rrv_time_bb = get_rtscts_time(pDevice, 0, byPktType, cbFrameSize, wCurrentRate);
+ 			buf->rrv_time_a = vnt_rxtx_rsvtime_le16(pDevice, byPktType, cbFrameSize, wCurrentRate, bNeedACK);
+ 			buf->rrv_time_b = vnt_rxtx_rsvtime_le16(pDevice, PK_TYPE_11B, cbFrameSize, pDevice->byTopCCKBasicRate, bNeedACK);
+ 
+@@ -933,7 +929,7 @@ s_vGenerateTxParameter(
+ 
+ 			buf->rrv_time_a = vnt_rxtx_rsvtime_le16(pDevice, byPktType, cbFrameSize, wCurrentRate, bNeedACK);
+ 			buf->rrv_time_b = vnt_rxtx_rsvtime_le16(pDevice, PK_TYPE_11B, cbFrameSize, pDevice->byTopCCKBasicRate, bNeedACK);
+-			buf->cts_rrv_time_ba = s_uGetRTSCTSRsvTime(pDevice, 3, byPktType, cbFrameSize, wCurrentRate);
++			buf->cts_rrv_time_ba = get_rtscts_time(pDevice, 3, byPktType, cbFrameSize, wCurrentRate);
+ 
+ 			/* Fill CTS */
+ 			s_vFillCTSHead(pDevice, uDMAIdx, byPktType, pvCTS, cbFrameSize, bNeedACK, bDisCRC, wCurrentRate, byFBOption);
+@@ -942,7 +938,7 @@ s_vGenerateTxParameter(
+ 		if (pvRTS) {/* RTS_need, non PCF mode */
+ 			struct vnt_rrv_time_ab *buf = pvRrvTime;
+ 
+-			buf->rts_rrv_time = s_uGetRTSCTSRsvTime(pDevice, 2, byPktType, cbFrameSize, wCurrentRate);
++			buf->rts_rrv_time = get_rtscts_time(pDevice, 2, byPktType, cbFrameSize, wCurrentRate);
+ 			buf->rrv_time = vnt_rxtx_rsvtime_le16(pDevice, byPktType, cbFrameSize, wCurrentRate, bNeedACK);
+ 
+ 			/* Fill RTS */
+@@ -956,7 +952,7 @@ s_vGenerateTxParameter(
+ 		if (pvRTS) {/* RTS_need, non PCF mode */
+ 			struct vnt_rrv_time_ab *buf = pvRrvTime;
+ 
+-			buf->rts_rrv_time = s_uGetRTSCTSRsvTime(pDevice, 0, byPktType, cbFrameSize, wCurrentRate);
++			buf->rts_rrv_time = get_rtscts_time(pDevice, 0, byPktType, cbFrameSize, wCurrentRate);
+ 			buf->rrv_time = vnt_rxtx_rsvtime_le16(pDevice, PK_TYPE_11B, cbFrameSize, wCurrentRate, bNeedACK);
+ 
+ 			/* Fill RTS */
+-- 
+2.17.1
 

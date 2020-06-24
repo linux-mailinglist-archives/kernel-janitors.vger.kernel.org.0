@@ -2,99 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E45D20747C
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 15:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 685312074BE
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 15:41:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391007AbgFXN2L (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jun 2020 09:28:11 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:47144 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390974AbgFXN2C (ORCPT
+        id S2390964AbgFXNlS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jun 2020 09:41:18 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:36759 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388453AbgFXNlR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jun 2020 09:28:02 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05ODRs5W109583;
-        Wed, 24 Jun 2020 13:27:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=j6/7W4tb/N2hxcHDBOkkKqKNz+kQYnpwjPfAfmGIR+0=;
- b=JUSj3YuQhJoqS24c/nVq29ZA8v8k8nVOEckl+GVYCaFzN9mqvVkb9oN99MBGmmWUmP4k
- hpnkf6cqtbvlW7E+QpK7YvdR7zAEs5PZ5OrYLXCquqR3H4NZiY9gzZi01bpgtyc1bPvk
- unV5heD/2mtauAnY1h06byUVmvyecl6hHAlCEDS4t0X8mPsT6a+QyssaYzd4j0t5+IYs
- WhczVIVRqSHw/K8QZrb8Mem1lG+ouiQhZDGj3HXAvlOxOOGKiKM/mvx32rcFdiCf2Qu1
- qjdMYmdJAMETEOrT5AZmXPLcTwjJP62IJ+VREyls2g9iHUi3AUqQ8us4dd637GXDnlIh 9g== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 31uusttuf6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 24 Jun 2020 13:27:54 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05ODNqvw059673;
-        Wed, 24 Jun 2020 13:27:53 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 31uuqyr5dm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 24 Jun 2020 13:27:53 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05ODRpOX026733;
-        Wed, 24 Jun 2020 13:27:52 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 24 Jun 2020 13:27:51 +0000
-Date:   Wed, 24 Jun 2020 16:27:44 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Andy Gross <agross@kernel.org>,
-        Karthikeyan Ramasubramanian <kramasub@codeaurora.org>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>, linux-arm-msm@vger.kernel.org,
-        linux-serial@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] tty: serial: qcom_geni_serial: Clean up an ARRAY_SIZE() vs
- sizeof()
-Message-ID: <20200624132744.GD9972@mwanda>
+        Wed, 24 Jun 2020 09:41:17 -0400
+Received: by mail-oi1-f193.google.com with SMTP id h17so1855358oie.3;
+        Wed, 24 Jun 2020 06:41:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=UnmvcU92QXrUl04hjn7tGIeeKzAWp4LgoQtWHEM6agY=;
+        b=MrAFHzbI+p/xTvCNrfOEJ40w0bciDtXomOOHbxaekJJcaGhz1/Hj/XLmwmhAunHgo5
+         +U3RRREjBC1s/wG7+Uo3vvinxp9/Ox23Hd8eK/OzhbEM/2hurl8MBC/gpT7GFGuXNQjB
+         rt9hDRquYl+rqY6oo4blIqXqivAjCB4KHE6rPThYa/GwY6j771mTk+IyCklyK+XYpbOK
+         pCWHD9DzS34M6pSgWigif7NiYPdFSxkMEvKj6IHPNfcplTWX2H7Mj+97PFCM/nhnxfCW
+         vgjRfwNoyyO5yzkee/EOKK7A6bScHN7M8qpn1kL5RIGAiH2P/juiMdZIR62Lw9ngP4Rp
+         vb/Q==
+X-Gm-Message-State: AOAM533Y2BuOlEbkkCT3QSjW4UqCdbnufLaHZYytlRU5Ey5f/W/9RiUk
+        Stft8xzArwK5GohL7CDeROsf9l9uWFVcfEjH16k=
+X-Google-Smtp-Source: ABdhPJxSlGoIqKLNW45g583557/XXC3OTh+ABBdRSnLX9Fo43Xbse5OldEuSiS+SD38hqKDFye99r8Tt/2cIOhX8NrU=
+X-Received: by 2002:a05:6808:99b:: with SMTP id a27mr2415646oic.68.1593006076625;
+ Wed, 24 Jun 2020 06:41:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9661 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
- adultscore=0 mlxscore=0 suspectscore=0 malwarescore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006240097
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9661 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 bulkscore=0
- cotscore=-2147483648 malwarescore=0 mlxscore=0 clxscore=1011
- lowpriorityscore=0 mlxlogscore=999 phishscore=0 priorityscore=1501
- spamscore=0 impostorscore=0 adultscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006240097
+References: <20200624131921.GB9972@mwanda>
+In-Reply-To: <20200624131921.GB9972@mwanda>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 24 Jun 2020 15:41:05 +0200
+Message-ID: <CAJZ5v0hG2FL0VSeE+ind9MSMc_c7nA4KjKxFPdMhVOPrMdYJKQ@mail.gmail.com>
+Subject: Re: [PATCH] intel_idle: Fix uninitialized variable bug
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jacob Pan <jacob.jun.pan@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Kees Cook <keescook@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The ARRAY_SIZE() is the number of elements but we want the number of
-bytes so sizeof() is more appropriate.  Fortunately, it's the same
-thing here because this is an array of u8 so this doesn't change
-runtime.
+On Wed, Jun 24, 2020 at 3:19 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> The "tick" variable isn't initialized if "lapic_timer_always_reliable"
+> is true.
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/tty/serial/qcom_geni_serial.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+If lapic_timer_always_reliable is true, then
+static_cpu_has(X86_FEATURE_ARAT) must also be true AFAICS.
 
-diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
-index 457c0bf8cbf8..1ed3d354e16d 100644
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -718,7 +718,7 @@ static void qcom_geni_serial_handle_tx(struct uart_port *uport, bool done,
- 		u8 buf[sizeof(u32)];
- 		int c;
- 
--		memset(buf, 0, ARRAY_SIZE(buf));
-+		memset(buf, 0, sizeof(buf));
- 		tx_bytes = min_t(size_t, remaining, port->tx_bytes_pw);
- 
- 		for (c = 0; c < tx_bytes ; c++) {
--- 
-2.27.0
+So the lapic_timer_always_reliable check in there looks redundant.
 
+> Fixes: 40ab82e08d78 ("intel_idle: Simplify LAPIC timer reliability checks")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/idle/intel_idle.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
+> index aae53e650638..6c9152f303a6 100644
+> --- a/drivers/idle/intel_idle.c
+> +++ b/drivers/idle/intel_idle.c
+> @@ -132,7 +132,7 @@ static __cpuidle int intel_idle(struct cpuidle_device *dev,
+>         struct cpuidle_state *state = &drv->states[index];
+>         unsigned long eax = flg2MWAIT(state->flags);
+>         unsigned long ecx = 1; /* break on interrupt flag */
+> -       bool tick;
+> +       bool tick = false;
+>         int cpu = smp_processor_id();
+>
+>         /*
+> --

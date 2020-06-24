@@ -2,104 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F93B2069A8
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 03:45:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4752206B31
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 06:32:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388356AbgFXBpf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Jun 2020 21:45:35 -0400
-Received: from mail.loongson.cn ([114.242.206.163]:48092 "EHLO loongson.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2387780AbgFXBpf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Jun 2020 21:45:35 -0400
-Received: from [10.130.0.166] (unknown [113.200.148.30])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9DxL94ssPJezAZJAA--.243S3;
-        Wed, 24 Jun 2020 09:45:17 +0800 (CST)
-Subject: Re: [PATCH 1/7] irqchip: Fix potential resource leaks
-To:     Markus Elfring <Markus.Elfring@web.de>, devicetree@vger.kernel.org,
-        linux-mips@vger.kernel.org
-References: <65e734f7-c43c-f96b-3650-980e15edba60@web.de>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Huacai Chen <chenhc@lemote.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Xuefeng Li <lixuefeng@loongson.cn>
-From:   Tiezhu Yang <yangtiezhu@loongson.cn>
-Message-ID: <d2111f53-ca52-fedf-0257-71f0aa89b093@loongson.cn>
-Date:   Wed, 24 Jun 2020 09:44:51 +0800
-User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+        id S2388664AbgFXEcy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jun 2020 00:32:54 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:44968 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726131AbgFXEcy (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 24 Jun 2020 00:32:54 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05O4Vm6V056465;
+        Wed, 24 Jun 2020 04:32:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=U60Q9wYO24Fci/rjHg9RVDkxJHrlQYSoiIaxIYBt1/c=;
+ b=wpUACspt65cGWE27HfpTBArvU4DH636FwnMTPZU44HkREVz5S42J0y0jHmV9E15Us9zq
+ IwFxefBAa4808mG2PbdGH4JrlIqye+JgvjRIY+9vV3X//0eO7SOtQAdFE0PJ6rpF+wb9
+ XcF8e9EWh9i6zFaeKYEdYcSDgMAwVM9K1NbU/lXgR8evo9LDtaj7GRYpRdi9xe7v2O4c
+ gKy8lgkFkqm/d2ofsqkAGcpauUsb30SuwrBRtkxLDXEx1vsohbCeIB/+RT+wk6EFbZhV
+ 1U+kx+bx4cYej7NJ6RFPppQhNqxaQZhcsiTvBW9GBm6iV2tRR9US1qxqI7dkWqTD5qeT pQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 31uustgm4u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 24 Jun 2020 04:32:29 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05O4NmPk086138;
+        Wed, 24 Jun 2020 04:30:28 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 31uuqy7egc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 24 Jun 2020 04:30:28 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05O4UQ7e031513;
+        Wed, 24 Jun 2020 04:30:26 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 24 Jun 2020 04:30:25 +0000
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     Seungwon Jeon <essuuj@gmail.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Kukjin Kim <kgene@kernel.org>,
+        Kiwoong Kim <kwmad.kim@samsung.com>,
+        Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-samsung-soc@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
+Subject: Re: [PATCH -next] scsi: ufs: ufs-exynos: Fix return value check in exynos_ufs_init()
+Date:   Wed, 24 Jun 2020 00:30:22 -0400
+Message-Id: <159297300656.9917.6717865886612566021.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200618133837.127274-1-weiyongjun1@huawei.com>
+References: <20200618133837.127274-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <65e734f7-c43c-f96b-3650-980e15edba60@web.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf9DxL94ssPJezAZJAA--.243S3
-X-Coremail-Antispam: 1UD129KBjvdXoW7Xw17tw18JFy5JrW5Aw47Jwb_yoWkuFc_CF
-        1F9ryDuay8Ar1UGF4xKw17Xr9xKrnrX3sxtFyvya12y34fZa1I9rsagr9aqa4xZr92krn8
-        Gr4jv342yr1I9jkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUbakFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-        A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-        Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
-        1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
-        7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
-        1j6r4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-        n2kIc2xKxwCYjI0SjxkI62AI1cAE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
-        Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
-        x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
-        1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_WFyU
-        JVCq3wCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJb
-        IYCTnIWIevJa73UjIFyTuYvjfUoOJ5UUUUU
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9661 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
+ adultscore=0 mlxscore=0 suspectscore=0 malwarescore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006240031
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9661 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
+ cotscore=-2147483648 adultscore=0 bulkscore=0 spamscore=0 phishscore=0
+ suspectscore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1015
+ impostorscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006240032
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 06/23/2020 11:55 PM, Markus Elfring wrote:
->> There exists some potential resource leaks in the error path, fix them.
-> Will the tag “Fixes” become relevant for the commit message?
+On Thu, 18 Jun 2020 13:38:37 +0000, Wei Yongjun wrote:
 
-Hi Markus,
+> In case of error, the function devm_ioremap_resource() returns ERR_PTR()
+> and never returns NULL. The NULL test in the return value check should
+> be replaced with IS_ERR().
 
-Thanks for your reply and suggestion.
+Applied to 5.9/scsi-queue, thanks!
 
-This patch contains many files in drivers/irqchip,
-maybe I should split it into some small patches if use the tag "Fixes"?
+[1/1] scsi: ufs: ufs-exynos: Fix return value check in exynos_ufs_init()
+      https://git.kernel.org/mkp/scsi/c/b2bc2200e89b
 
->
->
-> …
->> +++ b/drivers/irqchip/irq-nvic.c
->> @@ -94,6 +94,7 @@ static int __init nvic_of_init(struct device_node *node,
->>
->>   	if (!nvic_irq_domain) {
->>   		pr_warn("Failed to allocate irq domain\n");
->> +		iounmap(nvic_base);
->>   		return -ENOMEM;
->>   	}
->>
->> @@ -103,6 +104,7 @@ static int __init nvic_of_init(struct device_node *node,
->>   	if (ret) {
->>   		pr_warn("Failed to allocate irq chips\n");
->>   		irq_domain_remove(nvic_irq_domain);
->> +		iounmap(nvic_base);
->>   		return ret;
->>   	}
-> Can it helpful to add jump targets so that a bit of exception handling
-> can be better reused at the end of this function?
-
-OK, no problem, I will do it in the v2.
-
-By the way, I have resent this patch series due to git send-email failed,
-https://lore.kernel.org/patchwork/cover/1261517/
-
-Thanks,
-Tiezhu
-
->
-> Regards,
-> Markus
-
+-- 
+Martin K. Petersen	Oracle Linux Engineering

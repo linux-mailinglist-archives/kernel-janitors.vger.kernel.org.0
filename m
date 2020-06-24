@@ -2,72 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26D71207C1B
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 21:23:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4125D207EE1
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 23:50:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406188AbgFXTXk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jun 2020 15:23:40 -0400
-Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:28719 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404794AbgFXTXj (ORCPT
+        id S2405108AbgFXVuU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jun 2020 17:50:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34382 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404965AbgFXVuU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jun 2020 15:23:39 -0400
-Received: from localhost.localdomain ([93.23.13.252])
-        by mwinf5d46 with ME
-        id v7PU2200J5SHPSM037PVh4; Wed, 24 Jun 2020 21:23:37 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 24 Jun 2020 21:23:37 +0200
-X-ME-IP: 93.23.13.252
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     stefanr@s5r6.in-berlin.de, krh@bitplanet.net, hch@infradead.org
-Cc:     linux1394-devel@lists.sourceforge.net,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] firewire: nosy: Fix the amount of memory deallocated by some 'pci_free_consistent' calls
-Date:   Wed, 24 Jun 2020 21:23:25 +0200
-Message-Id: <20200624192325.940280-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Wed, 24 Jun 2020 17:50:20 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E65D4C061573;
+        Wed, 24 Jun 2020 14:50:19 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 6D45712737DDD;
+        Wed, 24 Jun 2020 14:50:19 -0700 (PDT)
+Date:   Wed, 24 Jun 2020 14:50:18 -0700 (PDT)
+Message-Id: <20200624.145018.367399335825700289.davem@davemloft.net>
+To:     yuehaibing@huawei.com
+Cc:     bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
+        tharvey@gateworks.com, kuba@kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net-next] lan743x: Remove duplicated include from
+ lan743x_main.c
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200624071821.175075-1-yuehaibing@huawei.com>
+References: <20200624071821.175075-1-yuehaibing@huawei.com>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 24 Jun 2020 14:50:19 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'lynx->pci_device' is allocated with a size of RCV_BUFFER_SIZE. This is to
-say (16 * 1024).
+From: YueHaibing <yuehaibing@huawei.com>
+Date: Wed, 24 Jun 2020 07:18:21 +0000
 
-Pass the same size when it is freed.
+> Remove duplicated include.
+> 
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-Fixes: 286468210d83 ("firewire: new driver: nosy - IEEE 1394 traffic sniffer")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/firewire/nosy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/firewire/nosy.c b/drivers/firewire/nosy.c
-index 5fd6a60b6741..445c37f5251d 100644
---- a/drivers/firewire/nosy.c
-+++ b/drivers/firewire/nosy.c
-@@ -510,7 +510,7 @@ remove_card(struct pci_dev *dev)
- 			    lynx->rcv_start_pcl, lynx->rcv_start_pcl_bus);
- 	pci_free_consistent(lynx->pci_device, sizeof(struct pcl),
- 			    lynx->rcv_pcl, lynx->rcv_pcl_bus);
--	pci_free_consistent(lynx->pci_device, PAGE_SIZE,
-+	pci_free_consistent(lynx->pci_device, RCV_BUFFER_SIZE,
- 			    lynx->rcv_buffer, lynx->rcv_buffer_bus);
- 
- 	iounmap(lynx->registers);
-@@ -668,7 +668,7 @@ add_card(struct pci_dev *dev, const struct pci_device_id *unused)
- 		pci_free_consistent(lynx->pci_device, sizeof(struct pcl),
- 				lynx->rcv_pcl, lynx->rcv_pcl_bus);
- 	if (lynx->rcv_buffer)
--		pci_free_consistent(lynx->pci_device, PAGE_SIZE,
-+		pci_free_consistent(lynx->pci_device, RCV_BUFFER_SIZE,
- 				lynx->rcv_buffer, lynx->rcv_buffer_bus);
- 	iounmap(lynx->registers);
- 
--- 
-2.25.1
-
+Applied.

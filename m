@@ -2,137 +2,131 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6883B2075AA
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 16:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E16A62075C0
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 16:32:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390460AbgFXO1G (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jun 2020 10:27:06 -0400
-Received: from mout.web.de ([212.227.17.12]:44549 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390354AbgFXO1F (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jun 2020 10:27:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1593008806;
-        bh=+397ZodF22IJ1lX0UUU+QUdgNBlkxA27jR0G02LjR8E=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=cYrRGeN4v6RbI1QG/gRvMDNr8rmDVZuXPfD/XOt1n9TD1Y1MBhyj/0UnhfeSemQ3d
-         O2fTgPO7F9WjoGfStJ5N1Kdy2wlmQJZIdfSp3O1BtFgaJ63HkTr9Y6f1h8dN+a+cXD
-         8XujKUvVCEGX+hGQOXWrPaKqqiZ0YV5jCynNPU0M=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.175.204]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MlsKH-1j5Nfp2rvH-00izOm; Wed, 24
- Jun 2020 16:26:46 +0200
-Subject: Re: ARM: imx6: add missing put_device() call in imx6q_suspend_init()
-To:     Shawn Guo <shawnguo@kernel.org>, kernel@pengutronix.de,
-        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com
-Cc:     Yu Kuai <yukuai3@huawei.com>, Anson Huang <Anson.Huang@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Yi Zhang <yi.zhang@huawei.com>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-References: <cf810c93-297c-c02c-9bba-8c3d097b8e31@web.de>
- <2ab2cc9f-c720-75ca-e20c-0e4236ff45fd@huawei.com>
- <1542979d-f7f6-bcf1-53c3-22b7c076ddc7@web.de> <20200623073220.GV30139@dragon>
- <5300cb30-2243-9bfe-125c-96e720cd1f29@web.de> <20200623110222.GX30139@dragon>
- <9f429c51-0fa9-16dc-4d62-d456551c5376@web.de> <20200623120919.GE30139@dragon>
- <66038b6c-6691-eda2-af15-f315270d4bee@web.de>
- <CAJBJ56J9NfYPxnqtLfbeCHkRy2-xPEUJq7r3RvM8yi434AQF2Q@mail.gmail.com>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <770ba40a-920a-19c6-10bf-74c8a9739596@web.de>
-Date:   Wed, 24 Jun 2020 16:26:43 +0200
+        id S2391130AbgFXOcD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jun 2020 10:32:03 -0400
+Received: from mail-bn8nam11on2055.outbound.protection.outlook.com ([40.107.236.55]:63425
+        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2390429AbgFXOcC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 24 Jun 2020 10:32:02 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=I+iRUBFjBL7hH/h11+09npSUx+46aV82eDE4xDIQJ3oJ3HJF14T10r196gTeOFyxVL6DLCillh96CclMNOB0GznNWxxLwrX0WaIAJS4e6/ov1fvsTGBX8omrcie73Hn+LdsNuTH2tIceW2SpcwAAXczHt0VYfIL8ZzkrSfYfzD25u2bPZsq9z0MNxF0Gf/R07AitUW9bmcDLVtn36x1C1wNtSlDfbxvzJD9VCjv5Qf1iXXaJ0j4luWeW7jKk8oQmZIOHf2Uxvx6CvcNaiqmO+xtdJIImMJZJFi/sik2WqFj4R6qEKy7ohMj0Z68Y3Cd+n0G7bYPlC+PX9YNi4fKZxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oU+42DMBP85wxKbs2HxzDVKsC5TIRAu3CabOJW31pTg=;
+ b=UEk7hrtw1PAG7PaOdnDtdkayu1d0jli0zVu3FpC1yDXrtdkYoQBpRkTixFy2mKB9getjevD6n9Kkv+0uA6ILNJjWSATgFcXQU5PWlyjYbDWPeQzazXU6s2CMXDyKHcml4lZMJMjW8fVdvVtsjTrprtoPdzwYQPNP5Z2tT/VCI4+FocXximtVYFHH6nCbDPFW2A6quJrbu82CnEnbY1MTq02mLSSOn9i+m1l+FZUPGZVHoohD0U/4ET55Z0uyIbz0zrDtHy5YhfmhSz7CECUQMObw+ZLpPLYC3ypdCd9S96C1opf37pE2T9rjS4XR+wNsRWP+Oa1KD0qNyEPnoAE+XA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oU+42DMBP85wxKbs2HxzDVKsC5TIRAu3CabOJW31pTg=;
+ b=QpJuc6+WAhcqq+yzv7DXKsiPCmlcgwPs0GbTLyImxSpXpdRMlOLzr3K0wyWmP1dxaY3En3w1wX2m0/UJ+C9BCd13Gw8bhnqGA9XH7QgF10GmW/DKP29YsNqUcjRHoTm1Im+MStfzAB1HWVNML5QT5Skdx5rhs76pA6VrPazmFok=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=amd.com;
+Received: from DM6PR12MB3916.namprd12.prod.outlook.com (2603:10b6:5:1ca::21)
+ by DM5PR12MB1594.namprd12.prod.outlook.com (2603:10b6:4:e::18) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3109.24; Wed, 24 Jun 2020 14:32:00 +0000
+Received: from DM6PR12MB3916.namprd12.prod.outlook.com
+ ([fe80::e14d:37fb:a0ca:aa81]) by DM6PR12MB3916.namprd12.prod.outlook.com
+ ([fe80::e14d:37fb:a0ca:aa81%7]) with mapi id 15.20.3131.020; Wed, 24 Jun 2020
+ 14:31:59 +0000
+Subject: Re: [PATCH][next] drm: amdgpu: fix premature goto because of missing
+ braces
+To:     Colin King <colin.king@canonical.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Nirmoy Das <nirmoy.das@amd.com>,
+        Sonny Jiang <sonny.jiang@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200624141423.6307-1-colin.king@canonical.com>
+From:   Nirmoy <nirmodas@amd.com>
+Message-ID: <f9ceecb4-2679-c0e2-8f64-4dd2a4f5401f@amd.com>
+Date:   Wed, 24 Jun 2020 16:33:30 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
+In-Reply-To: <20200624141423.6307-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-ClientProxiedBy: AM0PR10CA0095.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:208:15::48) To DM6PR12MB3916.namprd12.prod.outlook.com
+ (2603:10b6:5:1ca::21)
 MIME-Version: 1.0
-In-Reply-To: <CAJBJ56J9NfYPxnqtLfbeCHkRy2-xPEUJq7r3RvM8yi434AQF2Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:XOu8O0fpQr9G6QZtu2pezJQOj6uZ6obszTrGI2zNv0rgYzIURgb
- TmVn8SwGiCoX5xd/au2DZqG7m8SlsMjkOQRP1K5kHcTtevUT306zxCg89tujgVp5elDUpZ4
- /pkKu5DDLMJ9cWKrowfAgVUAgMnZX/F+3Sh9DdYjhKaYSmRBBDw8YOwb3RysNn56Eee4gov
- Le9OUUTaSzSyYAD5mGfGg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:2X4ZSdEPDYE=:sIYr4G2hRFc+LVH3NxAqCe
- aEFNnsSem2KWTcDvr2pS800Ks8PGqQQP3yy5JHJ90AtL0STWFtOQiD2WbOT+k5V2/ZQDWHvtB
- LQYGq3D78ktFZwr+g3nreICSixHgoQGqSAcuhLztzRf5NAGjuc95HkO/maOjFuq6shc70o3+5
- Oy7js/Eyy6cGMUuNGJxcv1K0ZIcDIxnALkq58cVnAcFP2wOJrmwYJeMDMsOex0PJ1TBXh7y5I
- gJA0w/fpxJYA08vOT8XNVbMRhFMKkfLXtoJqcwMqSX8GX6jOjHuNF5ygBAEE8WDMptc5jyKE7
- QJlJtmaWwdZyyYIAW17+Puu+oxDBPT9Pa/Zy8yd5ynaqTjilJbw6FgaiXXeMQAn3at8PiCFpw
- 4q+EVIqDp6e7uNzQ6yixv9/F10HjECZzejHKFTDy2z5G4Wub871jJ2mbnoT9LCWALp/OJx2gX
- BCZ15Tg328YK/3y4jmboS4bNEwG/+FPSS/14aNEMNDHaTnedS3txkIJAqVz+NFGcGzXDB3RD3
- 3vmXMF89Yg6wD8i406Jdi/EEceAQsVkqEBNlRLE1EZUY8DxDZFew9QP0A4Gs7QzZIGs0fxEcW
- qCccI5najdPpt2bpFEwTLFvoXvSUayEsSV3Mrau4ahEosIxysUW233HxKWyU3iM6GLxH5uI2U
- /bC+/5PEsn+/Au9Eh0xsR7Xt88YYIwUUxV47OLfbb0b/sGYwBdsZO7sfWh949pXl+voiU3ke4
- wuOqplDLOiOrLWQRXmHlxmeQNqZ4NG2QByeOfzMLrJn1LkUPfwv86W6fMcqB8+O4tCugehxQn
- dDMB5Jl30HBMO2EgbBLbukhaFrPr5H8WEA1Xi7FDlSgVDJgQsoO7oBt0+YSNekSH4AYdwtmQm
- 7VRc2aTFpcUPZbr3UWIHGg54ym0whMAbqbQjJC91IMdnHjNtEWQNCrVf479bH1IS+CDCmW1gL
- gO+nXY3rK/sesNMxF0WNbQ/6Wcn47hs+zeowhAhdtsECOo7MYldirq+X9u40hGkejZrriCa9L
- xS9BBk1qeCsgvg9hLsoI+641PcpPpGWo6ak6AxuriiCvY8sevF8QAtCg9V1gFVPb2ELXk973x
- wN+oQ7jhHoXRHpZb0B2Gp8EbJRsJ+qsIbCvOGfk0viysTPpPYgvEAi79e9v5CjgacQ5XtS7Fq
- 4dHeYHMa4zTV5l7iLdCEX6ATF1xzgvVYPhEvLKWAjOkYGpMJXllIjOp/j/oCb0Gi6ObgLRGer
- 2j36MLn5i4WkFKZcX
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.178.87] (217.86.121.20) by AM0PR10CA0095.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:15::48) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3131.21 via Frontend Transport; Wed, 24 Jun 2020 14:31:57 +0000
+X-Originating-IP: [217.86.121.20]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: d6d5c25d-2097-4653-c056-08d8184b5ab0
+X-MS-TrafficTypeDiagnostic: DM5PR12MB1594:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM5PR12MB15946F9E95C367DB14FB791C8B950@DM5PR12MB1594.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1443;
+X-Forefront-PRVS: 0444EB1997
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: KjMM4UXmVPcWQBeZgLXuYA5RbpevW+VhFCoKA+hOntPDyjc063sToHgAmHoeiipHkjCKG+IdDzDEh6usP+3cdRGGEHInLMsJ/c9jNS5ZIZzTow4XNPwA9SX38mXntYipxaLaVwanXkETgNA0aVxy4pHBZ8YXizvgYVrgwzWC28eKLHGwM7L1KeMW3amF0i+yO3vUqO0gPKgP51CbVKj7nGb2HiTU0HJBXfxw0l0z0mY0zXubRe1N8qnhxlMiLTkFRIpit3F2iImmO76Vo2mxer7/U3lkGgRV75L7e7vyIjyLeY8hzoirl7PMFQj3kgOl9gXvaPASp2qnRjtHeq3JbHWHMXgAp0fKM1csue5yx17ow93fpZhqXCbxK8EO8AGy
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3916.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(366004)(376002)(39860400002)(136003)(396003)(346002)(36756003)(5660300002)(956004)(6666004)(26005)(316002)(16576012)(2616005)(31696002)(2906002)(478600001)(66476007)(66556008)(66946007)(16526019)(53546011)(8936002)(186003)(6486002)(31686004)(110136005)(83380400001)(8676002)(52116002)(4326008)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: K+ir4myYBcp5IK3LAwd7InDc72mCc9LFvg1qOptdr6zhGpyVIyq3vp94NhCU044WSoYO46W+iJXOPZTqhV0c8pdIjhLcMj/sDLLShxlSYYEQogyzXxA29DvtCI7f/0r3D3xYX4DSpyLWUPX5QnU77CKFc3q8aKaG+6l03RSAvzl/v2smvw60r22XaxCyWr+JnODg4OhpAbLLhiPrrEe6TW4u5t9xv5in2i0RSDu5gABNDc9SsAUjRkkVL7fMtihoPXm9Ec6MnEsS5dUjAJUSEagplpXNrikfluESOs32vHnDfDvqiPFdWCsNW4+P5yuHVqvX8n4HEZgv0DFjkecHOX2w8DCrkbBsubkH4FVQOBIrkWZ5OBVWmDhiKagw3/q5U235FqEyV1gJWBjnZPJr/yl57oQDUByt6ENiRRjnIKCYh6SFvHvdFcXdcPxOQ/nfzvtQ6pVq+fndKFjfscMAzmY1KYOS5JzjwA1scj/7AYE=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d6d5c25d-2097-4653-c056-08d8184b5ab0
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2020 14:31:59.8820
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3M4ACoERRWMfJ0qdALRWCGHTjM07ESzrpUu5p3bAMHPO6/N3JPdBowv+mjpL36eb9ToUoCXsr/KxOghg0vpaXw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB1594
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> Are you going to compare the published patches any further?
-=E2=80=A6
->> Which patch variant will be integrated finally?
+Acked-by: Nirmoy Das <nirmoy.das@amd.com>
+
+
+Thanks,
+
+Nirmoy
+
+On 6/24/20 4:14 PM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 >
-> Just picked up Yu Kuai's patch.
-
-Is it interesting anyhow that you committed a change description
-which contained a typo (on 2020-06-23 20:11:30 +0800)?
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit=
-/arch/arm/mach-imx/pm-imx6.c?id=3D0f92519843a05e97b58c6076edb23d747e8be262
-
-Would it have been helpful to add the tag =E2=80=9CFixes=E2=80=9D?
-
-Regards,
-Markus
+> Currently the goto statement is skipping over a lot of setup code
+> because it is outside of an if-block and should be inside it. Fix
+> this by adding missing if statement braces.
+>
+> Addresses-Coverity: ("Structurally dead code")
+> Fixes: fd151ca5396d ("drm amdgpu: SI UVD v3_1")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>   drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
+> index 599719e89c31..7cf4b11a65c5 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
+> @@ -642,9 +642,10 @@ static int uvd_v3_1_hw_init(void *handle)
+>   	uvd_v3_1_start(adev);
+>   
+>   	r = amdgpu_ring_test_helper(ring);
+> -	if (r)
+> +	if (r) {
+>   		DRM_ERROR("amdgpu: UVD ring test fail (%d).\n", r);
+> -	goto done;
+> +		goto done;
+> +	}
+>   
+>   	r = amdgpu_ring_alloc(ring, 10);
+>   	if (r) {

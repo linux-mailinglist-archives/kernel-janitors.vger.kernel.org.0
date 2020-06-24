@@ -2,30 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39CF720753C
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 16:05:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8058E207572
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 16:16:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404091AbgFXOFU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jun 2020 10:05:20 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:36851 "EHLO
+        id S2390127AbgFXOP4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jun 2020 10:15:56 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:37404 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403979AbgFXOFT (ORCPT
+        with ESMTP id S2389682AbgFXOPz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jun 2020 10:05:19 -0400
+        Wed, 24 Jun 2020 10:15:55 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jo61c-0002uM-Mr; Wed, 24 Jun 2020 14:05:16 +0000
+        id 1jo6AS-0003sS-48; Wed, 24 Jun 2020 14:14:24 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        linux-arm-msm@vger.kernel.org
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Nirmoy Das <nirmoy.das@amd.com>,
+        Sonny Jiang <sonny.jiang@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] soc: qcom: fix off-by-one array index bounds check
-Date:   Wed, 24 Jun 2020 15:05:16 +0100
-Message-Id: <20200624140516.5929-1-colin.king@canonical.com>
+Subject: [PATCH][next] drm: amdgpu: fix premature goto because of missing braces
+Date:   Wed, 24 Jun 2020 15:14:23 +0100
+Message-Id: <20200624141423.6307-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,29 +40,34 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The bounds check on model is off-by-one, leading to an array out
-of bounds read when model is 26. Fix this.
+Currently the goto statement is skipping over a lot of setup code
+because it is outside of an if-block and should be inside it. Fix
+this by adding missing if statement braces.
 
-Addresses-Coverity: ("Out-of-bounds read")
-Fixes: e9247e2ce577 ("soc: qcom: socinfo: fix printing of pmic_model")
+Addresses-Coverity: ("Structurally dead code")
+Fixes: fd151ca5396d ("drm amdgpu: SI UVD v3_1")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/soc/qcom/socinfo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/socinfo.c b/drivers/soc/qcom/socinfo.c
-index e19102f46302..4d29ea244e71 100644
---- a/drivers/soc/qcom/socinfo.c
-+++ b/drivers/soc/qcom/socinfo.c
-@@ -275,7 +275,7 @@ static int qcom_show_pmic_model(struct seq_file *seq, void *p)
- 	if (model < 0)
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
+index 599719e89c31..7cf4b11a65c5 100644
+--- a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
+@@ -642,9 +642,10 @@ static int uvd_v3_1_hw_init(void *handle)
+ 	uvd_v3_1_start(adev);
  
--	if (model <= ARRAY_SIZE(pmic_models) && pmic_models[model])
-+	if (model < ARRAY_SIZE(pmic_models) && pmic_models[model])
- 		seq_printf(seq, "%s\n", pmic_models[model]);
- 	else
- 		seq_printf(seq, "unknown (%d)\n", model);
+ 	r = amdgpu_ring_test_helper(ring);
+-	if (r)
++	if (r) {
+ 		DRM_ERROR("amdgpu: UVD ring test fail (%d).\n", r);
+-	goto done;
++		goto done;
++	}
+ 
+ 	r = amdgpu_ring_alloc(ring, 10);
+ 	if (r) {
 -- 
 2.27.0
 

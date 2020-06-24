@@ -2,72 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8058E207572
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 16:16:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBDC8207584
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 16:19:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390127AbgFXOP4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jun 2020 10:15:56 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:37404 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389682AbgFXOPz (ORCPT
+        id S2391062AbgFXOTP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jun 2020 10:19:15 -0400
+Received: from www62.your-server.de ([213.133.104.62]:37450 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388115AbgFXOTP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jun 2020 10:15:55 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jo6AS-0003sS-48; Wed, 24 Jun 2020 14:14:24 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Nirmoy Das <nirmoy.das@amd.com>,
-        Sonny Jiang <sonny.jiang@amd.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+        Wed, 24 Jun 2020 10:19:15 -0400
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1jo6F5-0004Nv-BL; Wed, 24 Jun 2020 16:19:11 +0200
+Received: from [178.196.57.75] (helo=pc-9.home)
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1jo6F4-000Rp3-VY; Wed, 24 Jun 2020 16:19:10 +0200
+Subject: Re: [PATCH][next] libbpf: fix spelling mistake "kallasyms" ->
+ "kallsyms"
+To:     Colin King <colin.king@canonical.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@chromium.org>, netdev@vger.kernel.org,
+        bpf@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm: amdgpu: fix premature goto because of missing braces
-Date:   Wed, 24 Jun 2020 15:14:23 +0100
-Message-Id: <20200624141423.6307-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+References: <20200623084207.149253-1-colin.king@canonical.com>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <8049526c-3b1e-4551-8157-4a5860eee15f@iogearbox.net>
+Date:   Wed, 24 Jun 2020 16:19:10 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200623084207.149253-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.102.3/25853/Wed Jun 24 15:13:27 2020)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 6/23/20 10:42 AM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a spelling mistake in a pr_warn message. Fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Currently the goto statement is skipping over a lot of setup code
-because it is outside of an if-block and should be inside it. Fix
-this by adding missing if statement braces.
-
-Addresses-Coverity: ("Structurally dead code")
-Fixes: fd151ca5396d ("drm amdgpu: SI UVD v3_1")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
-index 599719e89c31..7cf4b11a65c5 100644
---- a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
-@@ -642,9 +642,10 @@ static int uvd_v3_1_hw_init(void *handle)
- 	uvd_v3_1_start(adev);
- 
- 	r = amdgpu_ring_test_helper(ring);
--	if (r)
-+	if (r) {
- 		DRM_ERROR("amdgpu: UVD ring test fail (%d).\n", r);
--	goto done;
-+		goto done;
-+	}
- 
- 	r = amdgpu_ring_alloc(ring, 10);
- 	if (r) {
--- 
-2.27.0
-
+Applied, thanks!

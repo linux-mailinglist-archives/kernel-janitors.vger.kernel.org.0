@@ -2,81 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 685312074BE
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 15:41:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39CF720753C
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jun 2020 16:05:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390964AbgFXNlS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jun 2020 09:41:18 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:36759 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388453AbgFXNlR (ORCPT
+        id S2404091AbgFXOFU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jun 2020 10:05:20 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:36851 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2403979AbgFXOFT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jun 2020 09:41:17 -0400
-Received: by mail-oi1-f193.google.com with SMTP id h17so1855358oie.3;
-        Wed, 24 Jun 2020 06:41:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UnmvcU92QXrUl04hjn7tGIeeKzAWp4LgoQtWHEM6agY=;
-        b=MrAFHzbI+p/xTvCNrfOEJ40w0bciDtXomOOHbxaekJJcaGhz1/Hj/XLmwmhAunHgo5
-         +U3RRREjBC1s/wG7+Uo3vvinxp9/Ox23Hd8eK/OzhbEM/2hurl8MBC/gpT7GFGuXNQjB
-         rt9hDRquYl+rqY6oo4blIqXqivAjCB4KHE6rPThYa/GwY6j771mTk+IyCklyK+XYpbOK
-         pCWHD9DzS34M6pSgWigif7NiYPdFSxkMEvKj6IHPNfcplTWX2H7Mj+97PFCM/nhnxfCW
-         vgjRfwNoyyO5yzkee/EOKK7A6bScHN7M8qpn1kL5RIGAiH2P/juiMdZIR62Lw9ngP4Rp
-         vb/Q==
-X-Gm-Message-State: AOAM533Y2BuOlEbkkCT3QSjW4UqCdbnufLaHZYytlRU5Ey5f/W/9RiUk
-        Stft8xzArwK5GohL7CDeROsf9l9uWFVcfEjH16k=
-X-Google-Smtp-Source: ABdhPJxSlGoIqKLNW45g583557/XXC3OTh+ABBdRSnLX9Fo43Xbse5OldEuSiS+SD38hqKDFye99r8Tt/2cIOhX8NrU=
-X-Received: by 2002:a05:6808:99b:: with SMTP id a27mr2415646oic.68.1593006076625;
- Wed, 24 Jun 2020 06:41:16 -0700 (PDT)
+        Wed, 24 Jun 2020 10:05:19 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jo61c-0002uM-Mr; Wed, 24 Jun 2020 14:05:16 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        linux-arm-msm@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] soc: qcom: fix off-by-one array index bounds check
+Date:   Wed, 24 Jun 2020 15:05:16 +0100
+Message-Id: <20200624140516.5929-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-References: <20200624131921.GB9972@mwanda>
-In-Reply-To: <20200624131921.GB9972@mwanda>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 24 Jun 2020 15:41:05 +0200
-Message-ID: <CAJZ5v0hG2FL0VSeE+ind9MSMc_c7nA4KjKxFPdMhVOPrMdYJKQ@mail.gmail.com>
-Subject: Re: [PATCH] intel_idle: Fix uninitialized variable bug
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, Kees Cook <keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jun 24, 2020 at 3:19 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> The "tick" variable isn't initialized if "lapic_timer_always_reliable"
-> is true.
+From: Colin Ian King <colin.king@canonical.com>
 
-If lapic_timer_always_reliable is true, then
-static_cpu_has(X86_FEATURE_ARAT) must also be true AFAICS.
+The bounds check on model is off-by-one, leading to an array out
+of bounds read when model is 26. Fix this.
 
-So the lapic_timer_always_reliable check in there looks redundant.
+Addresses-Coverity: ("Out-of-bounds read")
+Fixes: e9247e2ce577 ("soc: qcom: socinfo: fix printing of pmic_model")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/soc/qcom/socinfo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Fixes: 40ab82e08d78 ("intel_idle: Simplify LAPIC timer reliability checks")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/idle/intel_idle.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
-> index aae53e650638..6c9152f303a6 100644
-> --- a/drivers/idle/intel_idle.c
-> +++ b/drivers/idle/intel_idle.c
-> @@ -132,7 +132,7 @@ static __cpuidle int intel_idle(struct cpuidle_device *dev,
->         struct cpuidle_state *state = &drv->states[index];
->         unsigned long eax = flg2MWAIT(state->flags);
->         unsigned long ecx = 1; /* break on interrupt flag */
-> -       bool tick;
-> +       bool tick = false;
->         int cpu = smp_processor_id();
->
->         /*
-> --
+diff --git a/drivers/soc/qcom/socinfo.c b/drivers/soc/qcom/socinfo.c
+index e19102f46302..4d29ea244e71 100644
+--- a/drivers/soc/qcom/socinfo.c
++++ b/drivers/soc/qcom/socinfo.c
+@@ -275,7 +275,7 @@ static int qcom_show_pmic_model(struct seq_file *seq, void *p)
+ 	if (model < 0)
+ 		return -EINVAL;
+ 
+-	if (model <= ARRAY_SIZE(pmic_models) && pmic_models[model])
++	if (model < ARRAY_SIZE(pmic_models) && pmic_models[model])
+ 		seq_printf(seq, "%s\n", pmic_models[model]);
+ 	else
+ 		seq_printf(seq, "unknown (%d)\n", model);
+-- 
+2.27.0
+

@@ -2,96 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9736520A583
-	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Jun 2020 21:16:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DF4E20A61A
+	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Jun 2020 21:48:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406159AbgFYTQE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 25 Jun 2020 15:16:04 -0400
-Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:33402 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405815AbgFYTQE (ORCPT
+        id S2406902AbgFYTsg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 25 Jun 2020 15:48:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39938 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406844AbgFYTsf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 25 Jun 2020 15:16:04 -0400
-Received: from localhost.localdomain ([93.22.134.133])
-        by mwinf5d42 with ME
-        id vXFw2200S2sr5ud03XFxJK; Thu, 25 Jun 2020 21:16:00 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 25 Jun 2020 21:16:00 +0200
-X-ME-IP: 93.22.134.133
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     stefanr@s5r6.in-berlin.de, krh@bitplanet.net, hch@infradead.org
-Cc:     linux1394-devel@lists.sourceforge.net,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH V2] firewire: nosy: Fix the amount of memory deallocated by some 'pci_free_consistent' calls
-Date:   Thu, 25 Jun 2020 21:15:54 +0200
-Message-Id: <20200625191554.941614-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200624192325.940280-1-christophe.jaillet@wanadoo.fr>
-References: <20200624192325.940280-1-christophe.jaillet@wanadoo.fr>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Thu, 25 Jun 2020 15:48:35 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E7BDC08C5C1;
+        Thu, 25 Jun 2020 12:48:35 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 87DB913D602DE;
+        Thu, 25 Jun 2020 12:48:34 -0700 (PDT)
+Date:   Thu, 25 Jun 2020 12:48:33 -0700 (PDT)
+Message-Id: <20200625.124833.893666125631041346.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     aelior@marvell.com, GR-everest-linux-l2@marvell.com,
+        kuba@kernel.org, michal.kalderon@marvell.com,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org, irusskikh@marvell.com
+Subject: Re: [PATCH][V2] qed: add missing error test for
+ DBG_STATUS_NO_MATCHING_FRAMING_MODE
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200625164505.115425-1-colin.king@canonical.com>
+References: <20200625164505.115425-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 25 Jun 2020 12:48:34 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'lynx->pci_device' is allocated with a size of RCV_BUFFER_SIZE. This is to
-say (16 * 1024).
+From: Colin King <colin.king@canonical.com>
+Date: Thu, 25 Jun 2020 17:45:05 +0100
 
-Pass the same size when it is freed.
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The error DBG_STATUS_NO_MATCHING_FRAMING_MODE was added to the enum
+> enum dbg_status however there is a missing corresponding entry for
+> this in the array s_status_str. This causes an out-of-bounds read when
+> indexing into the last entry of s_status_str.  Fix this by adding in
+> the missing entry.
+> 
+> Addresses-Coverity: ("Out-of-bounds read").
+> Fixes: 2d22bc8354b1 ("qed: FW 8.42.2.0 debug features")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+> 
+> V2: use the error message as suggested by Igor Russkikh
 
-Fixes: 286468210d83 ("firewire: new driver: nosy - IEEE 1394 traffic sniffer")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-v2: move the #define RCV_BUFFER_SIZE at the top of the file so that it is
-    defined when used in 'remove_card()'
-    Spotted by kernel test robot <lkp@intel.com>
----
- drivers/firewire/nosy.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/firewire/nosy.c b/drivers/firewire/nosy.c
-index 5fd6a60b6741..2fe34a2ce7cc 100644
---- a/drivers/firewire/nosy.c
-+++ b/drivers/firewire/nosy.c
-@@ -36,6 +36,8 @@
- 
- static char driver_name[] = KBUILD_MODNAME;
- 
-+#define RCV_BUFFER_SIZE (16 * 1024)
-+
- /* this is the physical layout of a PCL, its size is 128 bytes */
- struct pcl {
- 	__le32 next;
-@@ -510,7 +512,7 @@ remove_card(struct pci_dev *dev)
- 			    lynx->rcv_start_pcl, lynx->rcv_start_pcl_bus);
- 	pci_free_consistent(lynx->pci_device, sizeof(struct pcl),
- 			    lynx->rcv_pcl, lynx->rcv_pcl_bus);
--	pci_free_consistent(lynx->pci_device, PAGE_SIZE,
-+	pci_free_consistent(lynx->pci_device, RCV_BUFFER_SIZE,
- 			    lynx->rcv_buffer, lynx->rcv_buffer_bus);
- 
- 	iounmap(lynx->registers);
-@@ -518,8 +520,6 @@ remove_card(struct pci_dev *dev)
- 	lynx_put(lynx);
- }
- 
--#define RCV_BUFFER_SIZE (16 * 1024)
--
- static int
- add_card(struct pci_dev *dev, const struct pci_device_id *unused)
- {
-@@ -668,7 +668,7 @@ add_card(struct pci_dev *dev, const struct pci_device_id *unused)
- 		pci_free_consistent(lynx->pci_device, sizeof(struct pcl),
- 				lynx->rcv_pcl, lynx->rcv_pcl_bus);
- 	if (lynx->rcv_buffer)
--		pci_free_consistent(lynx->pci_device, PAGE_SIZE,
-+		pci_free_consistent(lynx->pci_device, RCV_BUFFER_SIZE,
- 				lynx->rcv_buffer, lynx->rcv_buffer_bus);
- 	iounmap(lynx->registers);
- 
--- 
-2.25.1
-
+I already applied your V1 so this patch no longer applies.

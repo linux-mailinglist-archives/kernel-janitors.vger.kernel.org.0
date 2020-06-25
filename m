@@ -2,94 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 653B620A378
-	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Jun 2020 19:00:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9736520A583
+	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Jun 2020 21:16:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406480AbgFYRAX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 25 Jun 2020 13:00:23 -0400
-Received: from mx0a-0016f401.pphosted.com ([67.231.148.174]:33716 "EHLO
-        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2404011AbgFYRAW (ORCPT
+        id S2406159AbgFYTQE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 25 Jun 2020 15:16:04 -0400
+Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:33402 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405815AbgFYTQE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 25 Jun 2020 13:00:22 -0400
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-        by mx0a-0016f401.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05PGssf2029507;
-        Thu, 25 Jun 2020 10:00:19 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pfpt0818;
- bh=ivK+sQOGsmSlVUl6jzV041/Qx8gRzA0fHwoLcoPEd7c=;
- b=R0pfGnRbjsguFF5g4xkkdXe3lGUJrJ9s6Je9qpELsk2AITskt33VdK68Psq1TKikWteC
- 7lz/I89UT6lKEimedALvjLC/3c9bdAYkEmjmrbfOU/KcwzSnn2NZoFYfNIuT3q5X/0ht
- FLDORydhoYVqSB/w+AYmlwUgA8tc4+AmMcaqlwYdRYADZC4cS/z3ECSdAUDd8c3bRoAt
- /aBo2n4A+FFa57Zhh3jxUTvqqdtLVCCPF9d6SBEnFyPoN3BOAcLGFRxziENClkEm4n0K
- u/4Kd5G8yVR1OyCZVL3MO7VMcJF88xNCrYKr5AowyNOB2wG/37+RLjVVjAE0RcT/TjCe qA== 
-Received: from sc-exch03.marvell.com ([199.233.58.183])
-        by mx0a-0016f401.pphosted.com with ESMTP id 31uuqh0pg1-2
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Thu, 25 Jun 2020 10:00:18 -0700
-Received: from DC5-EXCH02.marvell.com (10.69.176.39) by SC-EXCH03.marvell.com
- (10.93.176.83) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 25 Jun
- 2020 10:00:17 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH02.marvell.com
- (10.69.176.39) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 25 Jun 2020 10:00:17 -0700
-Received: from [10.193.39.5] (NN-LT0019.marvell.com [10.193.39.5])
-        by maili.marvell.com (Postfix) with ESMTP id 693F53F7044;
-        Thu, 25 Jun 2020 10:00:14 -0700 (PDT)
-Subject: Re: [EXT] [PATCH][V2] qed: add missing error test for
- DBG_STATUS_NO_MATCHING_FRAMING_MODE
-To:     Colin King <colin.king@canonical.com>,
-        Ariel Elior <aelior@marvell.com>,
-        GR-everest-linux-l2 <GR-everest-linux-l2@marvell.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Michal Kalderon <mkalderon@marvell.com>,
-        <netdev@vger.kernel.org>
-CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20200625164505.115425-1-colin.king@canonical.com>
-From:   Igor Russkikh <irusskikh@marvell.com>
-Message-ID: <e113ec71-64ea-b819-9103-4008d20188c2@marvell.com>
-Date:   Thu, 25 Jun 2020 20:00:13 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.0
+        Thu, 25 Jun 2020 15:16:04 -0400
+Received: from localhost.localdomain ([93.22.134.133])
+        by mwinf5d42 with ME
+        id vXFw2200S2sr5ud03XFxJK; Thu, 25 Jun 2020 21:16:00 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 25 Jun 2020 21:16:00 +0200
+X-ME-IP: 93.22.134.133
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     stefanr@s5r6.in-berlin.de, krh@bitplanet.net, hch@infradead.org
+Cc:     linux1394-devel@lists.sourceforge.net,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH V2] firewire: nosy: Fix the amount of memory deallocated by some 'pci_free_consistent' calls
+Date:   Thu, 25 Jun 2020 21:15:54 +0200
+Message-Id: <20200625191554.941614-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200624192325.940280-1-christophe.jaillet@wanadoo.fr>
+References: <20200624192325.940280-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-In-Reply-To: <20200625164505.115425-1-colin.king@canonical.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-06-25_12:2020-06-25,2020-06-25 signatures=0
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+'lynx->pci_device' is allocated with a size of RCV_BUFFER_SIZE. This is to
+say (16 * 1024).
 
+Pass the same size when it is freed.
 
-On 25/06/2020 7:45 pm, Colin King wrote:
-> External Email
-> 
-> ----------------------------------------------------------------------
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The error DBG_STATUS_NO_MATCHING_FRAMING_MODE was added to the enum
-> enum dbg_status however there is a missing corresponding entry for
-> this in the array s_status_str. This causes an out-of-bounds read when
-> indexing into the last entry of s_status_str.  Fix this by adding in
-> the missing entry.
-> 
-> Addresses-Coverity: ("Out-of-bounds read").
-> Fixes: 2d22bc8354b1 ("qed: FW 8.42.2.0 debug features")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
-> 
-> V2: use the error message as suggested by Igor Russkikh
-> 
-> ---
+Fixes: 286468210d83 ("firewire: new driver: nosy - IEEE 1394 traffic sniffer")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+v2: move the #define RCV_BUFFER_SIZE at the top of the file so that it is
+    defined when used in 'remove_card()'
+    Spotted by kernel test robot <lkp@intel.com>
+---
+ drivers/firewire/nosy.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Thanks!
-
-Acked-by: Igor Russkikh <irusskikh@marvell.com>
-
+diff --git a/drivers/firewire/nosy.c b/drivers/firewire/nosy.c
+index 5fd6a60b6741..2fe34a2ce7cc 100644
+--- a/drivers/firewire/nosy.c
++++ b/drivers/firewire/nosy.c
+@@ -36,6 +36,8 @@
+ 
+ static char driver_name[] = KBUILD_MODNAME;
+ 
++#define RCV_BUFFER_SIZE (16 * 1024)
++
+ /* this is the physical layout of a PCL, its size is 128 bytes */
+ struct pcl {
+ 	__le32 next;
+@@ -510,7 +512,7 @@ remove_card(struct pci_dev *dev)
+ 			    lynx->rcv_start_pcl, lynx->rcv_start_pcl_bus);
+ 	pci_free_consistent(lynx->pci_device, sizeof(struct pcl),
+ 			    lynx->rcv_pcl, lynx->rcv_pcl_bus);
+-	pci_free_consistent(lynx->pci_device, PAGE_SIZE,
++	pci_free_consistent(lynx->pci_device, RCV_BUFFER_SIZE,
+ 			    lynx->rcv_buffer, lynx->rcv_buffer_bus);
+ 
+ 	iounmap(lynx->registers);
+@@ -518,8 +520,6 @@ remove_card(struct pci_dev *dev)
+ 	lynx_put(lynx);
+ }
+ 
+-#define RCV_BUFFER_SIZE (16 * 1024)
+-
+ static int
+ add_card(struct pci_dev *dev, const struct pci_device_id *unused)
+ {
+@@ -668,7 +668,7 @@ add_card(struct pci_dev *dev, const struct pci_device_id *unused)
+ 		pci_free_consistent(lynx->pci_device, sizeof(struct pcl),
+ 				lynx->rcv_pcl, lynx->rcv_pcl_bus);
+ 	if (lynx->rcv_buffer)
+-		pci_free_consistent(lynx->pci_device, PAGE_SIZE,
++		pci_free_consistent(lynx->pci_device, RCV_BUFFER_SIZE,
+ 				lynx->rcv_buffer, lynx->rcv_buffer_bus);
+ 	iounmap(lynx->registers);
+ 
+-- 
+2.25.1
 

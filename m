@@ -2,188 +2,124 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C7B8209FDD
-	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Jun 2020 15:27:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A85A20A09A
+	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Jun 2020 16:12:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405077AbgFYN1k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 25 Jun 2020 09:27:40 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:48403 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404872AbgFYN1k (ORCPT
+        id S2405274AbgFYOL7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 25 Jun 2020 10:11:59 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:48082 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404890AbgFYOL6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 25 Jun 2020 09:27:40 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1joRui-0000Py-C0; Thu, 25 Jun 2020 13:27:36 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Marek Vasut <marek.vasut@gmail.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Adam Ford <aford173@gmail.com>, linux-clk@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] clk: vc5: fix use of memory after it has been kfree'd
-Date:   Thu, 25 Jun 2020 14:27:36 +0100
-Message-Id: <20200625132736.88832-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        Thu, 25 Jun 2020 10:11:58 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05PE81Qn062673;
+        Thu, 25 Jun 2020 14:11:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=mime-version :
+ message-id : date : from : to : cc : subject : references : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=5YtC0rXorsqe6qezeg910C4ASw0yMikhO6NV3vtVAGE=;
+ b=IUNB5pVs5b74nwe6nQoV7rvtAFhSEvScmaZ+U2Tl7/X52UUJsT6snu4tD1oj+eUqzyH0
+ LdjwN/9z7RadgZMAzu2y3mBZj2Fx6p2gzxXsytvu03HAM5xzhBNTmWIpr4Ilak2enVhu
+ is8HXj9zIOfpe0onrDrBLNCt4P8Glo/eAbEVy1DULhJXA+ZREwNbufPy3LOhHnL5MOYx
+ eHfFdLoyO8nd82S6mawFk+e1WrGIlfUCsekl/3EUD7J4sjvjDvygJPjlGh29aKhresyO
+ eE21G6LbdRg8/a7N//VXWCj/EVgda4WXCqcx4UtKMIEHLu4xHGAGKjh22KqXxhmlVXs8 4w== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 31uusu0sah-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 25 Jun 2020 14:11:50 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05PEAN8o151980;
+        Thu, 25 Jun 2020 14:11:50 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 31uur9309b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 25 Jun 2020 14:11:49 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05PEBjEG030550;
+        Thu, 25 Jun 2020 14:11:45 GMT
+Received: from dhcp-10-154-182-3.vpn.oracle.com (/10.154.182.3) by default
+ (Oracle Beehive Gateway v4.0) with ESMTP ; Thu, 25 Jun 2020 14:11:05 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Message-ID: <6B3598A1-4F56-4D63-A672-644242B0A8F2@oracle.com>
+Date:   Thu, 25 Jun 2020 14:11:04 +0000 (UTC)
+From:   Himanshu Madhani <himanshu.madhani@oracle.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Nilesh Javali <njavali@marvell.com>,
+        GR-QLogic-Storage-Upstream@marvell.com,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Hannes Reinecke <hare@suse.com>, linux-scsi@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] scsi: qla2xxx: Fix a condition in
+ qla2x00_find_all_fabric_devs()
+References: <20200619143041.GD267142@mwanda>
+In-Reply-To: <20200619143041.GD267142@mwanda>
+X-Mailer: Apple Mail (2.3608.80.23.2.2)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9663 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 malwarescore=0
+ suspectscore=3 mlxlogscore=999 adultscore=0 phishscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006250091
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9663 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=3 bulkscore=0
+ cotscore=-2147483648 malwarescore=0 mlxscore=0 clxscore=1011
+ lowpriorityscore=0 mlxlogscore=999 phishscore=0 priorityscore=1501
+ spamscore=0 impostorscore=0 adultscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006250091
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
 
-There are a several places where printing an error message of
-init.name occurs after init.name has been kfree'd. Also the failure
-message is duplicated each time in the code. Fix this by adding
-a registration error failure path for these cases, moving the
-duplicated error messages to one common point and kfree'ing init.name
-only after it has been used.
 
-Changes also shrink the object code size by 171 bytes (x86-64, gcc 9.3):
+> On Jun 19, 2020, at 9:30 AM, Dan Carpenter <dan.carpenter@oracle.com> =
+wrote:
+>=20
+> This code doesn't make sense unless the correct "fcport" was found.
+>=20
+> Fixes: 9dd9686b1419 ("scsi: qla2xxx: Add changes for devloss timeout =
+in driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> This is from static analysis and review.  I'm not super familiar with
+> the code and I can't test it.  Please review it extra carefully.
+>=20
+> drivers/scsi/qla2xxx/qla_init.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/scsi/qla2xxx/qla_init.c =
+b/drivers/scsi/qla2xxx/qla_init.c
+> index 4576d3ae9937..2436a17f5cd9 100644
+> --- a/drivers/scsi/qla2xxx/qla_init.c
+> +++ b/drivers/scsi/qla2xxx/qla_init.c
+> @@ -5944,7 +5944,7 @@ qla2x00_find_all_fabric_devs(scsi_qla_host_t =
+*vha)
+> 			break;
+> 		}
+>=20
+> -		if (NVME_TARGET(vha->hw, fcport)) {
+> +		if (found && NVME_TARGET(vha->hw, fcport)) {
+> 			if (fcport->disc_state =3D=3D DSC_DELETE_PEND) {
+> 				qla2x00_set_fcport_disc_state(fcport, =
+DSC_GNL);
+> 				vha->fcport_count--;
+> --=20
+> 2.27.0
+>=20
 
-Before:
-   text	   data	    bss	    dec	    hex	filename
-  21057	   3960	     64	  25081	   61f9	drivers/clk/clk-versaclock5.o
+Looks Good.=20
 
-After:
-   text	   data	    bss	    dec	    hex	filename
-  20886	   3960	     64	  24910	   614e	drivers/clk/clk-versaclock5.o
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
 
-Addresses-Coverity: ("Use after free")
-Fixes: f491276a5168 ("clk: vc5: Allow Versaclock driver to support multiple instances")
+--
+Himanshu Madhani	Oracle Linux Engineering
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/clk/clk-versaclock5.c | 51 +++++++++++++----------------------
- 1 file changed, 19 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/clk/clk-versaclock5.c b/drivers/clk/clk-versaclock5.c
-index 9a5fb3834b9a..1d8ee4b8b1f5 100644
---- a/drivers/clk/clk-versaclock5.c
-+++ b/drivers/clk/clk-versaclock5.c
-@@ -882,11 +882,9 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 	init.parent_names = parent_names;
- 	vc5->clk_mux.init = &init;
- 	ret = devm_clk_hw_register(&client->dev, &vc5->clk_mux);
-+	if (ret)
-+		goto err_clk_register;
- 	kfree(init.name);	/* clock framework made a copy of the name */
--	if (ret) {
--		dev_err(&client->dev, "unable to register %s\n", init.name);
--		goto err_clk;
--	}
- 
- 	if (vc5->chip_info->flags & VC5_HAS_PFD_FREQ_DBL) {
- 		/* Register frequency doubler */
-@@ -900,12 +898,9 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 		init.num_parents = 1;
- 		vc5->clk_mul.init = &init;
- 		ret = devm_clk_hw_register(&client->dev, &vc5->clk_mul);
-+		if (ret)
-+			goto err_clk_register;
- 		kfree(init.name); /* clock framework made a copy of the name */
--		if (ret) {
--			dev_err(&client->dev, "unable to register %s\n",
--				init.name);
--			goto err_clk;
--		}
- 	}
- 
- 	/* Register PFD */
-@@ -921,11 +916,9 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 	init.num_parents = 1;
- 	vc5->clk_pfd.init = &init;
- 	ret = devm_clk_hw_register(&client->dev, &vc5->clk_pfd);
-+	if (ret)
-+		goto err_clk_register;
- 	kfree(init.name);	/* clock framework made a copy of the name */
--	if (ret) {
--		dev_err(&client->dev, "unable to register %s\n", init.name);
--		goto err_clk;
--	}
- 
- 	/* Register PLL */
- 	memset(&init, 0, sizeof(init));
-@@ -939,11 +932,9 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 	vc5->clk_pll.vc5 = vc5;
- 	vc5->clk_pll.hw.init = &init;
- 	ret = devm_clk_hw_register(&client->dev, &vc5->clk_pll.hw);
-+	if (ret)
-+		goto err_clk_register;
- 	kfree(init.name); /* clock framework made a copy of the name */
--	if (ret) {
--		dev_err(&client->dev, "unable to register %s\n", init.name);
--		goto err_clk;
--	}
- 
- 	/* Register FODs */
- 	for (n = 0; n < vc5->chip_info->clk_fod_cnt; n++) {
-@@ -960,12 +951,9 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 		vc5->clk_fod[n].vc5 = vc5;
- 		vc5->clk_fod[n].hw.init = &init;
- 		ret = devm_clk_hw_register(&client->dev, &vc5->clk_fod[n].hw);
-+		if (ret)
-+			goto err_clk_register;
- 		kfree(init.name); /* clock framework made a copy of the name */
--		if (ret) {
--			dev_err(&client->dev, "unable to register %s\n",
--				init.name);
--			goto err_clk;
--		}
- 	}
- 
- 	/* Register MUX-connected OUT0_I2C_SELB output */
-@@ -981,11 +969,9 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 	vc5->clk_out[0].vc5 = vc5;
- 	vc5->clk_out[0].hw.init = &init;
- 	ret = devm_clk_hw_register(&client->dev, &vc5->clk_out[0].hw);
--	kfree(init.name);	/* clock framework made a copy of the name */
--	if (ret) {
--		dev_err(&client->dev, "unable to register %s\n", init.name);
--		goto err_clk;
--	}
-+	if (ret)
-+		goto err_clk_register;
-+	kfree(init.name); /* clock framework made a copy of the name */
- 
- 	/* Register FOD-connected OUTx outputs */
- 	for (n = 1; n < vc5->chip_info->clk_out_cnt; n++) {
-@@ -1008,17 +994,15 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 		vc5->clk_out[n].vc5 = vc5;
- 		vc5->clk_out[n].hw.init = &init;
- 		ret = devm_clk_hw_register(&client->dev, &vc5->clk_out[n].hw);
-+		if (ret)
-+			goto err_clk_register;
- 		kfree(init.name); /* clock framework made a copy of the name */
--		if (ret) {
--			dev_err(&client->dev, "unable to register %s\n",
--				init.name);
--			goto err_clk;
--		}
- 
- 		/* Fetch Clock Output configuration from DT (if specified) */
- 		ret = vc5_get_output_config(client, &vc5->clk_out[n]);
- 		if (ret)
- 			goto err_clk;
-+
- 	}
- 
- 	ret = of_clk_add_hw_provider(client->dev.of_node, vc5_of_clk_get, vc5);
-@@ -1029,6 +1013,9 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 
- 	return 0;
- 
-+err_clk_register:
-+	dev_err(&client->dev, "unable to register %s\n", init.name);
-+	kfree(init.name); /* clock framework made a copy of the name */
- err_clk:
- 	if (vc5->chip_info->flags & VC5_HAS_INTERNAL_XTAL)
- 		clk_unregister_fixed_rate(vc5->pin_xin);
--- 
-2.27.0
+
+
 

@@ -2,59 +2,188 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B84B0209EF6
-	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Jun 2020 14:57:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C7B8209FDD
+	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Jun 2020 15:27:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404803AbgFYM5A (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 25 Jun 2020 08:57:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51076 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404723AbgFYM47 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 25 Jun 2020 08:56:59 -0400
-Received: from localhost (unknown [171.61.66.58])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 057D12063A;
-        Thu, 25 Jun 2020 12:56:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593089819;
-        bh=kzaLKrREKLzRea6TUdWAoSQVtDNNj/8G/ZUDOabAD2I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QJTtzwmwzWA2xKg8Z9TmfLY1vrj+do4O1oqiphD8lH5tUaCRftHhIB1DW5uZkgTVW
-         QSGQMj+jJ2qKJZmBRB/L5QenTsKIDOLBGM7zFyLcL7ShSxbGIn673QHc04vZYebROp
-         W6vxWtumIHBBRMLmNiKzQviCgSYoHz47THh8HGrk=
-Date:   Thu, 25 Jun 2020 18:26:55 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
-        linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] phy: sun4i-usb: fix dereference of pointer phy0 before
- it is null checked
-Message-ID: <20200625125655.GC6228@vkoul-mobl>
-References: <20200625124428.83564-1-colin.king@canonical.com>
+        id S2405077AbgFYN1k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 25 Jun 2020 09:27:40 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:48403 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404872AbgFYN1k (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 25 Jun 2020 09:27:40 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1joRui-0000Py-C0; Thu, 25 Jun 2020 13:27:36 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Marek Vasut <marek.vasut@gmail.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Adam Ford <aford173@gmail.com>, linux-clk@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] clk: vc5: fix use of memory after it has been kfree'd
+Date:   Thu, 25 Jun 2020 14:27:36 +0100
+Message-Id: <20200625132736.88832-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200625124428.83564-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 25-06-20, 13:44, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently pointer phy0 is being dereferenced via the assignment of
-> phy on the call to phy_get_drvdata before phy0 is null checked, this
-> can lead to a null pointer dereference. Fix this by performing the
-> null check on phy0 before the call to phy_get_drvdata. Also replace
-> the phy0 == NULL check with the more usual !phy0 idiom.
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied, thanks
+There are a several places where printing an error message of
+init.name occurs after init.name has been kfree'd. Also the failure
+message is duplicated each time in the code. Fix this by adding
+a registration error failure path for these cases, moving the
+duplicated error messages to one common point and kfree'ing init.name
+only after it has been used.
+
+Changes also shrink the object code size by 171 bytes (x86-64, gcc 9.3):
+
+Before:
+   text	   data	    bss	    dec	    hex	filename
+  21057	   3960	     64	  25081	   61f9	drivers/clk/clk-versaclock5.o
+
+After:
+   text	   data	    bss	    dec	    hex	filename
+  20886	   3960	     64	  24910	   614e	drivers/clk/clk-versaclock5.o
+
+Addresses-Coverity: ("Use after free")
+Fixes: f491276a5168 ("clk: vc5: Allow Versaclock driver to support multiple instances")
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/clk/clk-versaclock5.c | 51 +++++++++++++----------------------
+ 1 file changed, 19 insertions(+), 32 deletions(-)
+
+diff --git a/drivers/clk/clk-versaclock5.c b/drivers/clk/clk-versaclock5.c
+index 9a5fb3834b9a..1d8ee4b8b1f5 100644
+--- a/drivers/clk/clk-versaclock5.c
++++ b/drivers/clk/clk-versaclock5.c
+@@ -882,11 +882,9 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 	init.parent_names = parent_names;
+ 	vc5->clk_mux.init = &init;
+ 	ret = devm_clk_hw_register(&client->dev, &vc5->clk_mux);
++	if (ret)
++		goto err_clk_register;
+ 	kfree(init.name);	/* clock framework made a copy of the name */
+-	if (ret) {
+-		dev_err(&client->dev, "unable to register %s\n", init.name);
+-		goto err_clk;
+-	}
+ 
+ 	if (vc5->chip_info->flags & VC5_HAS_PFD_FREQ_DBL) {
+ 		/* Register frequency doubler */
+@@ -900,12 +898,9 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 		init.num_parents = 1;
+ 		vc5->clk_mul.init = &init;
+ 		ret = devm_clk_hw_register(&client->dev, &vc5->clk_mul);
++		if (ret)
++			goto err_clk_register;
+ 		kfree(init.name); /* clock framework made a copy of the name */
+-		if (ret) {
+-			dev_err(&client->dev, "unable to register %s\n",
+-				init.name);
+-			goto err_clk;
+-		}
+ 	}
+ 
+ 	/* Register PFD */
+@@ -921,11 +916,9 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 	init.num_parents = 1;
+ 	vc5->clk_pfd.init = &init;
+ 	ret = devm_clk_hw_register(&client->dev, &vc5->clk_pfd);
++	if (ret)
++		goto err_clk_register;
+ 	kfree(init.name);	/* clock framework made a copy of the name */
+-	if (ret) {
+-		dev_err(&client->dev, "unable to register %s\n", init.name);
+-		goto err_clk;
+-	}
+ 
+ 	/* Register PLL */
+ 	memset(&init, 0, sizeof(init));
+@@ -939,11 +932,9 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 	vc5->clk_pll.vc5 = vc5;
+ 	vc5->clk_pll.hw.init = &init;
+ 	ret = devm_clk_hw_register(&client->dev, &vc5->clk_pll.hw);
++	if (ret)
++		goto err_clk_register;
+ 	kfree(init.name); /* clock framework made a copy of the name */
+-	if (ret) {
+-		dev_err(&client->dev, "unable to register %s\n", init.name);
+-		goto err_clk;
+-	}
+ 
+ 	/* Register FODs */
+ 	for (n = 0; n < vc5->chip_info->clk_fod_cnt; n++) {
+@@ -960,12 +951,9 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 		vc5->clk_fod[n].vc5 = vc5;
+ 		vc5->clk_fod[n].hw.init = &init;
+ 		ret = devm_clk_hw_register(&client->dev, &vc5->clk_fod[n].hw);
++		if (ret)
++			goto err_clk_register;
+ 		kfree(init.name); /* clock framework made a copy of the name */
+-		if (ret) {
+-			dev_err(&client->dev, "unable to register %s\n",
+-				init.name);
+-			goto err_clk;
+-		}
+ 	}
+ 
+ 	/* Register MUX-connected OUT0_I2C_SELB output */
+@@ -981,11 +969,9 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 	vc5->clk_out[0].vc5 = vc5;
+ 	vc5->clk_out[0].hw.init = &init;
+ 	ret = devm_clk_hw_register(&client->dev, &vc5->clk_out[0].hw);
+-	kfree(init.name);	/* clock framework made a copy of the name */
+-	if (ret) {
+-		dev_err(&client->dev, "unable to register %s\n", init.name);
+-		goto err_clk;
+-	}
++	if (ret)
++		goto err_clk_register;
++	kfree(init.name); /* clock framework made a copy of the name */
+ 
+ 	/* Register FOD-connected OUTx outputs */
+ 	for (n = 1; n < vc5->chip_info->clk_out_cnt; n++) {
+@@ -1008,17 +994,15 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 		vc5->clk_out[n].vc5 = vc5;
+ 		vc5->clk_out[n].hw.init = &init;
+ 		ret = devm_clk_hw_register(&client->dev, &vc5->clk_out[n].hw);
++		if (ret)
++			goto err_clk_register;
+ 		kfree(init.name); /* clock framework made a copy of the name */
+-		if (ret) {
+-			dev_err(&client->dev, "unable to register %s\n",
+-				init.name);
+-			goto err_clk;
+-		}
+ 
+ 		/* Fetch Clock Output configuration from DT (if specified) */
+ 		ret = vc5_get_output_config(client, &vc5->clk_out[n]);
+ 		if (ret)
+ 			goto err_clk;
++
+ 	}
+ 
+ 	ret = of_clk_add_hw_provider(client->dev.of_node, vc5_of_clk_get, vc5);
+@@ -1029,6 +1013,9 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 
+ 	return 0;
+ 
++err_clk_register:
++	dev_err(&client->dev, "unable to register %s\n", init.name);
++	kfree(init.name); /* clock framework made a copy of the name */
+ err_clk:
+ 	if (vc5->chip_info->flags & VC5_HAS_INTERNAL_XTAL)
+ 		clk_unregister_fixed_rate(vc5->pin_xin);
 -- 
-~Vinod
+2.27.0
+

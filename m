@@ -2,101 +2,182 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 332AD20B00C
-	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Jun 2020 12:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 939D320B95F
+	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Jun 2020 21:37:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728151AbgFZKv5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 26 Jun 2020 06:51:57 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:38306 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728083AbgFZKv4 (ORCPT
+        id S1725831AbgFZTha (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 26 Jun 2020 15:37:30 -0400
+Received: from smtp01.smtpout.orange.fr ([80.12.242.123]:30469 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725781AbgFZTh3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 26 Jun 2020 06:51:56 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05QAgC4i046576;
-        Fri, 26 Jun 2020 10:51:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=IyAs4nskBqgPQ4L1AWyl1A5z6DX1rt9lSUquCzoUgko=;
- b=baIy0omKhA2O7y3Dq45ECwGvSdQHWzO2iLfCZyZD4VC74CIoGyU6xyFbPDFrBEYdt6WX
- fzSyFJ0L7iiXy9zsBcMdtdZLRw9g6v2cg9aEEPxlg9fN0OB+4U4SyZGXrpBEOB/xnEdx
- pHJPfEh42HaoVB8blH5prlrsejlJmPtNzLx4o6+Cbl6BgCqWhO1EkoDgKu/d/Xaujkaw
- LGb44Mk51QYR/BUY0UH8kx+5ijR/aC+2FpC5BCGWOVVQpEPDVaCuK2Xou952PtujIzXK
- Z2wc2r9OFpiskkQ39OoEGO/qJ9lvBMNjhnY04wLbFZ/Dhe+ACt3blTvdaWoHL1eOTyaf Eg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 31uustwe1p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 26 Jun 2020 10:51:44 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05QAmK2J106634;
-        Fri, 26 Jun 2020 10:51:43 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 31uurby0ww-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 26 Jun 2020 10:51:43 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05QApfQc003733;
-        Fri, 26 Jun 2020 10:51:41 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 26 Jun 2020 10:51:40 +0000
-Date:   Fri, 26 Jun 2020 13:51:33 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Alim Akhtar <alim.akhtar@samsung.com>
-Cc:     Avri Altman <avri.altman@wdc.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Kiwoong Kim <kwmad.kim@samsung.com>,
-        Wei Yongjun <weiyongjun1@huawei.com>,
-        linux-scsi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] scsi: ufs: ufs-exynos: Remove an unnecessary NULL check
-Message-ID: <20200626105133.GF314359@mwanda>
+        Fri, 26 Jun 2020 15:37:29 -0400
+Received: from localhost.localdomain ([93.22.36.38])
+        by mwinf5d77 with ME
+        id vvdP220040pNVn903vdPdG; Fri, 26 Jun 2020 21:37:25 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 26 Jun 2020 21:37:25 +0200
+X-ME-IP: 93.22.36.38
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     richard.gong@linux.intel.com, atull@kernel.org,
+        gregkh@linuxfoundation.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH V3] firmware: stratix10-svc: Fix some error handling code
+Date:   Fri, 26 Jun 2020 21:37:20 +0200
+Message-Id: <20200626193720.949431-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <0ecc14c7-b4df-1890-fbe7-91307c2db398@wanadoo.fr>
+References: <0ecc14c7-b4df-1890-fbe7-91307c2db398@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9663 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 adultscore=0
- malwarescore=0 mlxscore=0 mlxlogscore=999 phishscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006260079
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9663 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
- cotscore=-2147483648 adultscore=0 bulkscore=0 spamscore=0 phishscore=0
- suspectscore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1011
- impostorscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006260078
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "head" pointer can't be NULL because it points to an address in
-the middle of a ufs_hba struct.  Looking at this code, probably someone
-would wonder if the intent was to check whether "hba" is NULL, but "hba"
-isn't NULL and the check can just be removed.
+Fix several error handling issues:
+   - In 'svc_create_memory_pool()' we memremap some memory. This has to be
+undone in case of error and if the driver is removed.
+The easiest way to do it is to use 'devm_memremap()'.
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+  - 'svc_create_memory_pool()' returns an error pointer on error, not NULL.
+In 'stratix10_svc_drv_probe()', fix the corresponding test and return value
+accordingly.
+
+  - Move the genpool allocation after a few devm_kzalloc in order to ease
+error handling. (some call to 'gen_pool_destroy()' were missing)
+
+   - If an error occurs after calling 'svc_create_memory_pool()', the
+allocated genpool should be destroyed with 'gen_pool_destroy()', as
+already done in the remove function.
+Add an error handling path for that
+
+   - If an error occurs after calling 'kfifo_alloc()', the allocated
+memory should be freed with 'kfifo_free()', as already done in the remove
+function.
+Add an error handling path for that
+
+
+While at it, do some clean-up:
+   - Use 'devm_kcalloc()' instead of 'devm_kmalloc_array(... __GFP_ZERO)'
+
+   - move a 'platform_device_put()' call to the new error handling path.
+
+   - In 'stratix10_svc_drv_remove()', 'ctrl->genpool' can not be NULL, so
+axe a useless test in the remove function.
+
+Fixes: b5dc75c915cd ("firmware: stratix10-svc: extend svc to support new RSU features")
+Fixes: 7ca5ce896524 ("firmware: add Intel Stratix10 service layer driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/scsi/ufs/ufs-exynos.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v2: takes Dan's comment into account and fix another resource leak.
+v3: merge the previous 4 patches in a single one to ease review
+---
+ drivers/firmware/stratix10-svc.c | 42 +++++++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/scsi/ufs/ufs-exynos.c b/drivers/scsi/ufs/ufs-exynos.c
-index 16544b3dad47..802f7de626e8 100644
---- a/drivers/scsi/ufs/ufs-exynos.c
-+++ b/drivers/scsi/ufs/ufs-exynos.c
-@@ -264,7 +264,7 @@ static int exynos_ufs_get_clk_info(struct exynos_ufs *ufs)
- 	u8 div = 0;
- 	int ret = 0;
+diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
+index e0db8dbfc9d1..90f7d68a2473 100644
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -605,7 +605,7 @@ svc_create_memory_pool(struct platform_device *pdev,
+ 	end = rounddown(sh_memory->addr + sh_memory->size, PAGE_SIZE);
+ 	paddr = begin;
+ 	size = end - begin;
+-	va = memremap(paddr, size, MEMREMAP_WC);
++	va = devm_memremap(dev, paddr, size, MEMREMAP_WC);
+ 	if (!va) {
+ 		dev_err(dev, "fail to remap shared memory\n");
+ 		return ERR_PTR(-EINVAL);
+@@ -971,20 +971,19 @@ static int stratix10_svc_drv_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
  
--	if (!head || list_empty(head))
-+	if (list_empty(head))
- 		goto out;
+-	genpool = svc_create_memory_pool(pdev, sh_memory);
+-	if (!genpool)
+-		return -ENOMEM;
+-
+ 	/* allocate service controller and supporting channel */
+ 	controller = devm_kzalloc(dev, sizeof(*controller), GFP_KERNEL);
+ 	if (!controller)
+ 		return -ENOMEM;
  
- 	list_for_each_entry(clki, head, list) {
+-	chans = devm_kmalloc_array(dev, SVC_NUM_CHANNEL,
+-				   sizeof(*chans), GFP_KERNEL | __GFP_ZERO);
++	chans = devm_kcalloc(dev, SVC_NUM_CHANNEL, sizeof(*chans), GFP_KERNEL);
+ 	if (!chans)
+ 		return -ENOMEM;
+ 
++	genpool = svc_create_memory_pool(pdev, sh_memory);
++	if (IS_ERR(genpool))
++		return PTR_ERR(genpool);
++
+ 	controller->dev = dev;
+ 	controller->num_chans = SVC_NUM_CHANNEL;
+ 	controller->num_active_client = 0;
+@@ -998,7 +997,7 @@ static int stratix10_svc_drv_probe(struct platform_device *pdev)
+ 	ret = kfifo_alloc(&controller->svc_fifo, fifo_size, GFP_KERNEL);
+ 	if (ret) {
+ 		dev_err(dev, "failed to allocate FIFO\n");
+-		return ret;
++		goto err_destroy_pool;
+ 	}
+ 	spin_lock_init(&controller->svc_fifo_lock);
+ 
+@@ -1017,24 +1016,34 @@ static int stratix10_svc_drv_probe(struct platform_device *pdev)
+ 
+ 	/* add svc client device(s) */
+ 	svc = devm_kzalloc(dev, sizeof(*svc), GFP_KERNEL);
+-	if (!svc)
+-		return -ENOMEM;
++	if (!svc) {
++		ret = -ENOMEM;
++		goto err_free_kfifo;
++	}
+ 
+ 	svc->stratix10_svc_rsu = platform_device_alloc(STRATIX10_RSU, 0);
+ 	if (!svc->stratix10_svc_rsu) {
+ 		dev_err(dev, "failed to allocate %s device\n", STRATIX10_RSU);
+-		return -ENOMEM;
++		ret = -ENOMEM;
++		goto err_free_kfifo;
+ 	}
+ 
+ 	ret = platform_device_add(svc->stratix10_svc_rsu);
+-	if (ret) {
+-		platform_device_put(svc->stratix10_svc_rsu);
+-		return ret;
+-	}
++	if (ret)
++		goto put_platform;
++
+ 	dev_set_drvdata(dev, svc);
+ 
+ 	pr_info("Intel Service Layer Driver Initialized\n");
+ 
++	return 0;
++
++put_platform:
++	platform_device_put(svc->stratix10_svc_rsu);
++err_free_kfifo:
++	kfifo_free(&controller->svc_fifo);
++err_destroy_pool:
++	gen_pool_destroy(genpool);
+ 	return ret;
+ }
+ 
+@@ -1050,8 +1059,7 @@ static int stratix10_svc_drv_remove(struct platform_device *pdev)
+ 		kthread_stop(ctrl->task);
+ 		ctrl->task = NULL;
+ 	}
+-	if (ctrl->genpool)
+-		gen_pool_destroy(ctrl->genpool);
++	gen_pool_destroy(ctrl->genpool);
+ 	list_del(&ctrl->node);
+ 
+ 	return 0;
 -- 
-2.27.0
+2.25.1
 

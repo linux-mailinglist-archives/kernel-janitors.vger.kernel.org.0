@@ -2,52 +2,48 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11B6120C349
-	for <lists+kernel-janitors@lfdr.de>; Sat, 27 Jun 2020 19:21:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C369B20C367
+	for <lists+kernel-janitors@lfdr.de>; Sat, 27 Jun 2020 19:58:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726618AbgF0RVx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 27 Jun 2020 13:21:53 -0400
-Received: from mailout4.samsung.com ([203.254.224.34]:58589 "EHLO
-        mailout4.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726561AbgF0RVx (ORCPT
+        id S1726489AbgF0R5N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 27 Jun 2020 13:57:13 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:48948 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725932AbgF0R5M (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 27 Jun 2020 13:21:53 -0400
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
-        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20200627172150epoutp0496eeff2941f082cffa97b11f4f0788bd~cdl0yq-ty2558725587epoutp04M
-        for <kernel-janitors@vger.kernel.org>; Sat, 27 Jun 2020 17:21:50 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20200627172150epoutp0496eeff2941f082cffa97b11f4f0788bd~cdl0yq-ty2558725587epoutp04M
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1593278510;
-        bh=Mj1/tnc6RZFnSYd28tvLcQszmXhlaLfSSZ9fxlrTZtc=;
-        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-        b=I5GFXd3uiPmLYiH5lhbU1/zUxComKIqEFYfqqPy9vFjprKPh4C7lcxT3V3+c9TjJV
-         LI/0li5vvpHInW40GouJUo25vAkXHcEOVt9/TMv9xQBpSzcD3KuVILl9/CQ4GSLMA0
-         px/OpAuyDNOXO+BqiQriYkSqHOKmzc3bGCttbNdU=
-Received: from epsmges5p2new.samsung.com (unknown [182.195.42.74]) by
-        epcas5p2.samsung.com (KnoxPortal) with ESMTP id
-        20200627172150epcas5p2e2f7f15adf0a99adf4859de8b5b1cbd8~cdl0ZzVgW0331203312epcas5p2v;
-        Sat, 27 Jun 2020 17:21:50 +0000 (GMT)
-Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
-        epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        85.62.09703.E2087FE5; Sun, 28 Jun 2020 02:21:50 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-        epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
-        20200627172149epcas5p258f6c4e9aaacaae7be3f57ab45284b36~cdlzYjdtB3099630996epcas5p2z;
-        Sat, 27 Jun 2020 17:21:49 +0000 (GMT)
-Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
-        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200627172149epsmtrp16b4a101457857ed0bef3cc6e5ffec1e1~cdlzX1YR_1968219682epsmtrp1S;
-        Sat, 27 Jun 2020 17:21:49 +0000 (GMT)
-X-AuditID: b6c32a4a-4b5ff700000025e7-fa-5ef7802e51f8
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
-        7D.60.08303.D2087FE5; Sun, 28 Jun 2020 02:21:49 +0900 (KST)
-Received: from alimakhtar02 (unknown [107.108.234.165]) by
-        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200627172146epsmtip1f6660a7806fee34e60dcbe3081c3bf6f~cdlwqXWU91592315923epsmtip1G;
-        Sat, 27 Jun 2020 17:21:46 +0000 (GMT)
-From:   "Alim Akhtar" <alim.akhtar@samsung.com>
-To:     "'Dan Carpenter'" <dan.carpenter@oracle.com>
+        Sat, 27 Jun 2020 13:57:12 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05RHo6ln064903;
+        Sat, 27 Jun 2020 17:56:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=HLOz9kDIzLCFVGuef2bWdtwPRWQv/R1O3VG3deV5rYo=;
+ b=aWxjc7xAxaKRoF23k/UL92NwiTbHNf38/b5EdWI4wbgb9X0K+UvPmdLifd18X+sRopce
+ UeIA2I7Z65c6bcm6kdop95ydVT4rdbQwjt3Juo1KSycDb3wEA2Geq87NYQM9neZMVEUS
+ cwP22BzoI+99E1yIvfoIh9kFvCbgAwiKh43HCVLBIFT/m3C/0x9lFs8cQKlui1LgN4Ik
+ PiEogSoQ30/Sy5vF9/vNkE83yeqY/ZO1jd2PG3FUMSA2JCEn1giAKIkY9BKymuM7KayU
+ 1QlDl1FYf0nnfB7ApUqhbNmAWP0sTyebYQbulMOVoP0DMkmy2y9AZaWJgSs42T0r/wE2 +w== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 31wxrmsb72-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 27 Jun 2020 17:56:58 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05RHsOfs026954;
+        Sat, 27 Jun 2020 17:54:57 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 31wwehp5nb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 27 Jun 2020 17:54:57 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05RHstx8019373;
+        Sat, 27 Jun 2020 17:54:55 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 27 Jun 2020 17:54:55 +0000
+Date:   Sat, 27 Jun 2020 20:54:45 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Alim Akhtar <alim.akhtar@samsung.com>
 Cc:     "'Avri Altman'" <avri.altman@wdc.com>,
         "'James E.J. Bottomley'" <jejb@linux.ibm.com>,
         "'Martin K. Petersen'" <martin.petersen@oracle.com>,
@@ -55,98 +51,54 @@ Cc:     "'Avri Altman'" <avri.altman@wdc.com>,
         "'Krzysztof Kozlowski'" <krzk@kernel.org>,
         "'Kiwoong Kim'" <kwmad.kim@samsung.com>,
         "'Wei Yongjun'" <weiyongjun1@huawei.com>,
-        <linux-scsi@vger.kernel.org>, <linux-samsung-soc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-In-Reply-To: <20200626105133.GF314359@mwanda>
-Subject: RE: [PATCH] scsi: ufs: ufs-exynos: Remove an unnecessary NULL check
-Date:   Sat, 27 Jun 2020 22:51:44 +0530
-Message-ID: <041701d64ca7$70bafb80$5230f280$@samsung.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: en-in
-Thread-Index: AQJZTJzG6GPUwl4om2Vud+BKbvKiigG4ppPqp9jvn9A=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrAKsWRmVeSWpSXmKPExsWy7bCmhq5ew/c4g92ThSxe/rzKZvH633QW
-        i0U3tjFZbL0lbdH/+DWzxfnzG9gtbm45ymJxedccNosZ5/cxWXRf38Fmsfz4PyaLw192sTnw
-        eLQcecvqsWlVJ5vHhEUHGD0+Pr3F4tG3ZRWjx+dNch7tB7qZAtijuGxSUnMyy1KL9O0SuDLW
-        XPjFWjCNo+LRqf1MDYyH2boYOTkkBEwkFh2ZyNzFyMUhJLCbUeLfju8sEM4nRokdzzqgnM+M
-        Eg8+XwByOMBavv00g4jvYpT48P8pE4TzhlHi1oM77CBz2QR0JXYsbgPbISJgIHHv5AuwScwC
-        B5glbvY/ZgZJcAIVHZ99kwnEFhbwkWjb/5cFxGYRUJW42nqXEcTmFbCUePp8JSuELShxcuYT
-        sBpmAXmJ7W/nMEM8oSDx8+kyVoi4uMTRnz3MEIutJKZ+XAa2WELgAofEzGNL2CBecJGYe9gL
-        oldY4tXxLewQtpTEy/42doiSbImeXcYQ4RqJpfOOsUDY9hIHrswBBwSzgKbE+l36EFv5JHp/
-        P2GC6OSV6GgTgqhWlWh+dxWqU1piYnc3K4TtIXHj8XvWCYyKs5D8NQvJX7OQ/DILYdkCRpZV
-        jJKpBcW56anFpgVGeanlesWJucWleel6yfm5mxjBiUzLawfjwwcf9A4xMnEwHmKU4GBWEuH9
-        bP0tTog3JbGyKrUoP76oNCe1+BCjNAeLkjiv0o8zcUIC6YklqdmpqQWpRTBZJg5OqQYmsb6o
-        TIUkkZDzx0+rHe9ySj21Z7f2jZcmCQczu5NnX/5YLO7xrnvJN5uQ1wZ2er8u/Lv0JST+zLWD
-        czdNXruyhVOJQ2KaSGO06bP9B0MTtba879swK7Z3/YyPkYJxm/IVdcPsP1//W/Fo26I5DDeu
-        nL6o8rDgs+WBQ89meTUesPXZ+Ge+g4K3/A1xw1nM2W7TNNY2NSckMr+SnX7C2vlQ5xJPmdtJ
-        b1/dCLNcmrP7+aEPJgf/2S/wu+K/T33Nn69CZ8sjP721VzptnbXc7t6FpB39Xzel1fW+XRer
-        qf6kWu7K2tvHuZ6anZwj1vVVf46TSYs+49JCoylNs44wW16JfRqrIVUqnNqszSWZYTrrnRJL
-        cUaioRZzUXEiAE4ddX7TAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrMIsWRmVeSWpSXmKPExsWy7bCSnK5uw/c4g/WfeC1e/rzKZvH633QW
-        i0U3tjFZbL0lbdH/+DWzxfnzG9gtbm45ymJxedccNosZ5/cxWXRf38Fmsfz4PyaLw192sTnw
-        eLQcecvqsWlVJ5vHhEUHGD0+Pr3F4tG3ZRWjx+dNch7tB7qZAtijuGxSUnMyy1KL9O0SuDLW
-        XPjFWjCNo+LRqf1MDYyH2boYOTgkBEwkvv0062Lk4hAS2MEo8WXaBJYuRk6guLTE9Y0T2CFs
-        YYmV/56zQxS9YpT4/Ws2K0iCTUBXYsfiNjYQW0TAQOLeyRcsIEXMAieYJX4+WMYEkhASqJNo
-        bd0KZnMCNRyffRPMFhbwkWjb/xdsG4uAqsTV1ruMIDavgKXE0+crWSFsQYmTM5+wgFzKLKAn
-        0bYRrIRZQF5i+9s5zBDHKUj8fLqMFSIuLnH0Zw8zxD1WElM/LmOZwCg8C8mkWQiTZiGZNAtJ
-        9wJGllWMkqkFxbnpucWGBUZ5qeV6xYm5xaV56XrJ+bmbGMHxqKW1g3HPqg96hxiZOBgPMUpw
-        MCuJ8H62/hYnxJuSWFmVWpQfX1Sak1p8iFGag0VJnPfrrIVxQgLpiSWp2ampBalFMFkmDk6p
-        BqZZ8+ba/1+WENV0SEgsuz1fI31O9eKZlv1yG76zKl81/lg/oTObxf35AR2v13+uT45j/Sd8
-        eZ7H7ca5z27vY5/45cfPm9cf/V5+Ytubi72cixSmWS5T8A7JMWmyd7RREK07+iU8bf/6s3cd
-        3qZO92UwjLeP2ewYfnFB6ORu2cnr7FmcYlInr16yw17y/Z1ogdtn4/YLKd9gZNeP+au++kyx
-        38epsxZr87u9f9N44PjUVRcTfT4c7NihYy945IDrPZVpBpd41u7IzeeZGsGXeEamZ1WvLZsE
-        R85uTvuaYC0h9g3a57byPbjwe62OkOK9P0HLF8wJljefs0ggoHrN0+PcH1w4W/JjH28wXOpw
-        9d9qJZbijERDLeai4kQAf11sgTYDAAA=
-X-CMS-MailID: 20200627172149epcas5p258f6c4e9aaacaae7be3f57ab45284b36
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-X-CMS-RootMailID: 20200626105156epcas5p191d18d66af6bd09a10635559461c0bc0
+        linux-scsi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] scsi: ufs: ufs-exynos: Remove an unnecessary NULL check
+Message-ID: <20200627175445.GG2571@kadam>
 References: <CGME20200626105156epcas5p191d18d66af6bd09a10635559461c0bc0@epcas5p1.samsung.com>
-        <20200626105133.GF314359@mwanda>
+ <20200626105133.GF314359@mwanda>
+ <041701d64ca7$70bafb80$5230f280$@samsung.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <041701d64ca7$70bafb80$5230f280$@samsung.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9665 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0
+ malwarescore=0 adultscore=0 mlxlogscore=999 spamscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006270130
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9665 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
+ priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
+ malwarescore=0 phishscore=0 adultscore=0 cotscore=-2147483648
+ lowpriorityscore=0 suspectscore=0 spamscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006270129
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan
-
-> -----Original Message-----
-> The "head" pointer can't be NULL because it points to an address in the
-middle
-> of a ufs_hba struct.  Looking at this code, probably someone would wonder
-if
-> the intent was to check whether "hba" is NULL, but "hba"
-> isn't NULL and the check can just be removed.
+On Sat, Jun 27, 2020 at 10:51:44PM +0530, Alim Akhtar wrote:
+> Hi Dan
 > 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-Please add Fixes: tag
-With that
-Acked-by: Alim Akhtar <alim.akhtar@samsung.com>
+> > -----Original Message-----
+> > The "head" pointer can't be NULL because it points to an address in the
+> middle
+> > of a ufs_hba struct.  Looking at this code, probably someone would wonder
+> if
+> > the intent was to check whether "hba" is NULL, but "hba"
+> > isn't NULL and the check can just be removed.
+> > 
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> Please add Fixes: tag
+> With that
+> Acked-by: Alim Akhtar <alim.akhtar@samsung.com>
 
-Thanks!
+It's not a bug fix it's just a cleanup.
 
->  drivers/scsi/ufs/ufs-exynos.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/scsi/ufs/ufs-exynos.c b/drivers/scsi/ufs/ufs-exynos.c
-index
-> 16544b3dad47..802f7de626e8 100644
-> --- a/drivers/scsi/ufs/ufs-exynos.c
-> +++ b/drivers/scsi/ufs/ufs-exynos.c
-> @@ -264,7 +264,7 @@ static int exynos_ufs_get_clk_info(struct exynos_ufs
-> *ufs)
->  	u8 div = 0;
->  	int ret = 0;
-> 
-> -	if (!head || list_empty(head))
-> +	if (list_empty(head))
->  		goto out;
-> 
->  	list_for_each_entry(clki, head, list) {
-> --
-> 2.27.0
-
+regards,
+dan carpenter
 

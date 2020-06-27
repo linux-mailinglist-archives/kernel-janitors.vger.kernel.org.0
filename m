@@ -2,51 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E672620BED5
-	for <lists+kernel-janitors@lfdr.de>; Sat, 27 Jun 2020 07:16:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 109A220BF8B
+	for <lists+kernel-janitors@lfdr.de>; Sat, 27 Jun 2020 09:31:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725954AbgF0FQA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 27 Jun 2020 01:16:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39164 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725840AbgF0FP7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 27 Jun 2020 01:15:59 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2133020720;
-        Sat, 27 Jun 2020 05:15:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593234959;
-        bh=lB7QHcwNHl3AMdjVulKKrNrmLEOsHkSLJPONMrO8A2M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gAHDekf/EuAQJsMsJEhjmKyc/6kfNB+GFTubCBoOpQKES/DLHhrdIVFzziiKIX+Jk
-         mUxc8+tSMtYwbzUwTpxiUrSGAdLYfgo26R4NxBpx0eUE7rDLLlAInTM8mMj6bQCnQB
-         pAiGIf+gzr4YYw3jsZUUFhldmIh2QeR4QxC8y2Pk=
-Date:   Sat, 27 Jun 2020 07:15:56 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+        id S1726125AbgF0Hbd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 27 Jun 2020 03:31:33 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:29758 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725926AbgF0Hbd (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 27 Jun 2020 03:31:33 -0400
+Received: from [192.168.42.210] ([93.22.39.58])
+        by mwinf5d41 with ME
+        id w7XV2200A1FGr9H037XViA; Sat, 27 Jun 2020 09:31:31 +0200
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 27 Jun 2020 09:31:31 +0200
+X-ME-IP: 93.22.39.58
+Subject: Re: [PATCH V3] firmware: stratix10-svc: Fix some error handling code
+To:     Greg KH <gregkh@linuxfoundation.org>
 Cc:     richard.gong@linux.intel.com, atull@kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH V3] firmware: stratix10-svc: Fix some error handling code
-Message-ID: <20200627051556.GD233327@kroah.com>
 References: <0ecc14c7-b4df-1890-fbe7-91307c2db398@wanadoo.fr>
  <20200626193720.949431-1-christophe.jaillet@wanadoo.fr>
+ <20200627051556.GD233327@kroah.com>
+From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <eb3ed7ba-902e-8ecf-1246-82ce88efd436@wanadoo.fr>
+Date:   Sat, 27 Jun 2020 09:31:27 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200626193720.949431-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20200627051556.GD233327@kroah.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jun 26, 2020 at 09:37:20PM +0200, Christophe JAILLET wrote:
-> ---
-> v2: takes Dan's comment into account and fix another resource leak.
-> v3: merge the previous 4 patches in a single one to ease review
 
+Le 27/06/2020 à 07:15, Greg KH a écrit :
+> On Fri, Jun 26, 2020 at 09:37:20PM +0200, Christophe JAILLET wrote:
+>> ---
+>> v2: takes Dan's comment into account and fix another resource leak.
+>> v3: merge the previous 4 patches in a single one to ease review
+>
+> No, 4 small patches are _MUCH_ easier to review than one larger one that
+> mixes everything together.  Who told you to put them together?
 
-No, 4 small patches are _MUCH_ easier to review than one larger one that
-mixes everything together.  Who told you to put them together?
+The cover letter of v2 serie can be found at [1].
+The request for merging them in 1 patch is in [2].
 
+V3, should be the same as v2, but all in one.
+
+[1]: https://lkml.org/lkml/2020/4/29/77
+[2]: https://lkml.org/lkml/2020/5/5/541
+
+CJ

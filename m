@@ -2,103 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C369B20C367
-	for <lists+kernel-janitors@lfdr.de>; Sat, 27 Jun 2020 19:58:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A190320C468
+	for <lists+kernel-janitors@lfdr.de>; Sat, 27 Jun 2020 23:54:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726489AbgF0R5N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 27 Jun 2020 13:57:13 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:48948 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725932AbgF0R5M (ORCPT
+        id S1725932AbgF0Vyg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 27 Jun 2020 17:54:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49364 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725934AbgF0Vyf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 27 Jun 2020 13:57:12 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05RHo6ln064903;
-        Sat, 27 Jun 2020 17:56:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=HLOz9kDIzLCFVGuef2bWdtwPRWQv/R1O3VG3deV5rYo=;
- b=aWxjc7xAxaKRoF23k/UL92NwiTbHNf38/b5EdWI4wbgb9X0K+UvPmdLifd18X+sRopce
- UeIA2I7Z65c6bcm6kdop95ydVT4rdbQwjt3Juo1KSycDb3wEA2Geq87NYQM9neZMVEUS
- cwP22BzoI+99E1yIvfoIh9kFvCbgAwiKh43HCVLBIFT/m3C/0x9lFs8cQKlui1LgN4Ik
- PiEogSoQ30/Sy5vF9/vNkE83yeqY/ZO1jd2PG3FUMSA2JCEn1giAKIkY9BKymuM7KayU
- 1QlDl1FYf0nnfB7ApUqhbNmAWP0sTyebYQbulMOVoP0DMkmy2y9AZaWJgSs42T0r/wE2 +w== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 31wxrmsb72-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sat, 27 Jun 2020 17:56:58 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05RHsOfs026954;
-        Sat, 27 Jun 2020 17:54:57 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 31wwehp5nb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 27 Jun 2020 17:54:57 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05RHstx8019373;
-        Sat, 27 Jun 2020 17:54:55 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 27 Jun 2020 17:54:55 +0000
-Date:   Sat, 27 Jun 2020 20:54:45 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Alim Akhtar <alim.akhtar@samsung.com>
-Cc:     "'Avri Altman'" <avri.altman@wdc.com>,
-        "'James E.J. Bottomley'" <jejb@linux.ibm.com>,
-        "'Martin K. Petersen'" <martin.petersen@oracle.com>,
-        "'Kukjin Kim'" <kgene@kernel.org>,
-        "'Krzysztof Kozlowski'" <krzk@kernel.org>,
-        "'Kiwoong Kim'" <kwmad.kim@samsung.com>,
-        "'Wei Yongjun'" <weiyongjun1@huawei.com>,
-        linux-scsi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] scsi: ufs: ufs-exynos: Remove an unnecessary NULL check
-Message-ID: <20200627175445.GG2571@kadam>
-References: <CGME20200626105156epcas5p191d18d66af6bd09a10635559461c0bc0@epcas5p1.samsung.com>
- <20200626105133.GF314359@mwanda>
- <041701d64ca7$70bafb80$5230f280$@samsung.com>
+        Sat, 27 Jun 2020 17:54:35 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B84AC08C5DB
+        for <kernel-janitors@vger.kernel.org>; Sat, 27 Jun 2020 14:54:34 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id s28so9566196edw.11
+        for <kernel-janitors@vger.kernel.org>; Sat, 27 Jun 2020 14:54:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
+        b=PYwOu/B9Zh1rGzZM903Cpprywb83FCHUtNAUuiOO0o6zs6WHjlze2LXOC3hVAaGqcP
+         lg7H4pa9zGY5Ifm/Occ0RSYzXURL4hgFya6cts8HRx910s07nHPIQwuHOvC3CwSKWut7
+         W7lHESSwdkUYp3mu8F/+ONYut3Xpn3qtWv5jbLpGSjBshJ6ekhTBSCO1eoCC+HE4g/pN
+         3Oq9TtTNO3vJkKpqsqb3C/rPMy7fWmWmLKFmTu0RNDEBF2l3QJGtADAOwr4WGY+PWDtj
+         ZF9Zp08l9P41yL3JuvQth6+fpngrtjfi+iLA8IyUin9bEaOUirNwHBVJYrXrLbKq6R8z
+         N31g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
+        b=cU5hJOb/vJvQ8b9N6+6HH4C4wATJT4mFKvNak1u81b46aCpqNnvf3eH++PwO77RzPC
+         v2XOJQRwtKqQSiMZGCSmp+FJ0LNtf9BNxsawGwewktCC5R7Go8YRSo4dfHkjH7obGmQv
+         9kypaiEjeSoWvsCnxdZpfYneZ5tKLKB/AI0AtJBn2BFILscQfG76WuTJg6wgx8P7UlFp
+         S1eTtd3seFLCLfo/SvibD5Ejd58mNIbz1IoDIcZ5v9zP6CKbXFafH1w71Y5r56CtFhVq
+         mW8xc1R1H9eJ3l3L6AhB0LFgaxsqmVh7K3Q+/w3rDg0iPekm8PfqLy1IooSiy/QibtiA
+         8NAA==
+X-Gm-Message-State: AOAM5309G4mK4ybAXAKvrZ/M7QIwm9gMJpM8MX9Y7vQC7S6qzcb2smYg
+        Y1vTVqXm2QtnY/NrqCgusyomSOKL09MnU0gpY7Q=
+X-Google-Smtp-Source: ABdhPJy7OcR58Wulf3SrU9Hht/iHCkUTpvI0mqyV7myFOjn+5WspC4moqDhEDDIlhUbuX6rLtkz2lPM5XKvW/5XrhRs=
+X-Received: by 2002:a50:ee84:: with SMTP id f4mr9900212edr.183.1593294872387;
+ Sat, 27 Jun 2020 14:54:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <041701d64ca7$70bafb80$5230f280$@samsung.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9665 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0
- malwarescore=0 adultscore=0 mlxlogscore=999 spamscore=0 bulkscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006270130
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9665 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
- priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
- malwarescore=0 phishscore=0 adultscore=0 cotscore=-2147483648
- lowpriorityscore=0 suspectscore=0 spamscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006270129
+Received: by 2002:a50:2842:0:0:0:0:0 with HTTP; Sat, 27 Jun 2020 14:54:31
+ -0700 (PDT)
+Reply-To: un.org@i.ua
+From:   helen <info.isaacgeorge@gmail.com>
+Date:   Sat, 27 Jun 2020 22:54:31 +0100
+Message-ID: <CAABX3N8zm7a58jU5g8fzjfpsKNf48aUsUHECRV0m9PDLWU814A@mail.gmail.com>
+Subject: 
+To:     zhang@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Jun 27, 2020 at 10:51:44PM +0530, Alim Akhtar wrote:
-> Hi Dan
-> 
-> > -----Original Message-----
-> > The "head" pointer can't be NULL because it points to an address in the
-> middle
-> > of a ufs_hba struct.  Looking at this code, probably someone would wonder
-> if
-> > the intent was to check whether "hba" is NULL, but "hba"
-> > isn't NULL and the check can just be removed.
-> > 
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> Please add Fixes: tag
-> With that
-> Acked-by: Alim Akhtar <alim.akhtar@samsung.com>
+MONEY-GRAM TRANSFERRED PAYMENT INFO:
 
-It's not a bug fix it's just a cleanup.
+Below is the sender=E2=80=99s information
 
-regards,
-dan carpenter
 
+
+1. MG. REFERENCE NO#: 36360857
+
+2. SENDER'S NAME: Johnson Williams
+
+3. AMOUNT TO PICKUP: US$10,000
+
+
+
+Go to any Money Gram office near you and pick up the payment Track the
+
+Reference Number by visiting and click the link below
+
+(https://secure.moneygram.com/embed/track) and enter the Reference
+
+Number: 36360857 and the Last Name: Williams, you will find the payment
+
+available for pickup instantly.
+
+Yours Sincerely,
+
+Mrs. Helen Marvis
+United Nations Liaison Office
+Directorate for International Payments

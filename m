@@ -2,31 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F02620C814
-	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Jun 2020 14:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41D4620C82D
+	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Jun 2020 15:16:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726374AbgF1Mmm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 28 Jun 2020 08:42:42 -0400
-Received: from mout.web.de ([217.72.192.78]:46909 "EHLO mout.web.de"
+        id S1726469AbgF1NQs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 28 Jun 2020 09:16:48 -0400
+Received: from mout.web.de ([212.227.17.12]:41135 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726316AbgF1Mmk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 28 Jun 2020 08:42:40 -0400
+        id S1726316AbgF1NQs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 28 Jun 2020 09:16:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1593348147;
-        bh=npulf07zoEOS6mrZ7kUQr1zyXg++JzWm5MGqz6djhHI=;
-        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=eWBbOYTxXxQGhJ/A6LAwtJdwE6LGv0kaE7c6GxyPftIRt1lpTrWkedgIhX+Rs+c18
-         Cyo5l/Fo1UN3/yLW/EgkCGXBIxMrMhqFPrV8+ZlzXcQVU0Ao/nB+kA1NZLHgLjHHza
-         HYc1EfMsCiw4z4QcBo1QFNeuJYGaUKj3rkq0Is6o=
+        s=dbaedf251592; t=1593350184;
+        bh=EqxHBeHO+Tcgfao9vs+nIoCPeWasPgn4GNv8r3qLK60=;
+        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
+        b=ZE5jaibu89cSS8qSvhOepM/nqhU7MuuWi1jHl3AkX/HKHk7tMKqBZs2kQmTNGqgIe
+         WZdtUIdj3D7OIGlw1DI4TB/klmN2/noKDqy9cDwslKQJ7R50s4OQkTYkAoJC94oXyE
+         I7WKgYzJ8yBKWAi5NKfNG1ESsRyG6t/ePfbd+aVk=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.244.52.166]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MWj2N-1jJRyy2whv-00XsiD; Sun, 28
- Jun 2020 14:42:27 +0200
-To:     jiangying8582@126.com, linux-ext4@vger.kernel.org
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M7sw0-1iuFiq1hk8-00vMid; Sun, 28
+ Jun 2020 15:16:24 +0200
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Theodore Ts'o <tytso@mit.edu>
-Subject: Re: [PATCH] ext4: fix direct I/O read error
+        Aditya Pakki <pakki001@umn.edu>,
+        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Qiushi Wu <wu000273@umn.edu>, Andy Gross <agross@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Subject: Re: [PATCH v3] media: venus: core: Fix runtime PM imbalance in
+ venus_probe()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -71,53 +75,64 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <f40db056-51de-8332-473a-f020d0976c0a@web.de>
-Date:   Sun, 28 Jun 2020 14:42:26 +0200
+To:     Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org
+Message-ID: <9797fb44-e10e-61b5-b2cc-82d94cc98a3c@web.de>
+Date:   Sun, 28 Jun 2020 15:16:23 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:DWIB516VUkxjxrUPS7ibzg4GoIkmnwlRrNMBdlzcOEWEQXZ6o/Y
- lmtGEu+T2Cok+bFeFjVnZitEm+m2BpIOdB8U9rEAJI3rw5zlIrpVh2gdK8zbfFdJ1PMY7YV
- qNsa1RZ4dlVWctXm7ogAJDri2LbC0tGTkBUSauo78z57adU7syxNXpZQCNQ7qw8a8k4OINE
- R3ynD4fqPKq3A/wyPEvyQ==
+X-Provags-ID: V03:K1:KIRbQCMV/EzqTBbzldYJ/H7U/4NiicXp2MQF5WWl0FcUTjRbaeG
+ in+EjpwuFFhG84F5zsYid4S9dh6lkVe9uUo+xxHEuMFW5eWQBTTR0yapxisTpFf/yW+HsU1
+ sEX6fbwRf7aOY7FQdR9v/udHFt8SVooPNhJwh2RRgYvMeZk6w8Zkq8CVCtsiM8dupOTF2Ui
+ u5QuuylbDJoLGjLyDglKQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+R3qBd12JO0=:ncEQ7ERAS6GjgRYWiUDLPl
- lk4MZ/zNxvzK2XTVDOGUp2djvPIDZwsa0kCqKgDXO7tkM1s8qjZZrJqo3k2/t7hrV2RAIF0rU
- 1hCZnp5aWv1jvd//drEpQ1uddhnXdXjZ6WHSxpS9zx/VSizAb5uslRLhtXOlZSwZYBuOH6iCT
- 7QUW4gdtc1ECgmdXU03olS9nuQFPFpwaRnHWOGJwNJgws+/QDIzj/VOU82BVWdHZTcUk4pukm
- J/NY0N6wr1HQEtePlxstNE5nh/AKui6pJWPvYJoFYSqhe+Zohpn3NNw7NoOePPUNDZSJeMTNN
- ZUip25mH8gFAM/aYIGAh1SLwnEnRsj1r+aFf26TDrAvwkFHAcj5a00sEDhlC5FN0YS2EqCz1Y
- LmUtpx9roO6fphVAjgx9C6kKlxQUrGgUefkTNTMfCC9OASZBchMhAOux7mum7T0jYLGc0Rdn5
- w5aO2/VYW1SpXfW4XQT7d716mojHtPUyWr5+JMQkl6tnsoPY0h7umy2ZQSjMskCAyx6c1rYa8
- mZS3M1P3zKag8EAFSd3c17aO5DgkXcb6VSU2+UuzPss/1VsVjpzq7jydwVsamB5WrNkV/+ECf
- thXIEImlrq+w9WO1pf628alREovv1fbj9iE0i3rRdY+5jdscUXqwld25I3Z7IEYPB9vvh5pMd
- HG6ZPx5z939S8pCAA7FMq5wIZsXCronZLdrzSRQwhKUyWocrdRcY+Pt4mmz/1Mzh/eFe2eNUc
- xiOpuEnPLNMLu/l89gWdAbckplpZvKiHjWQoNSLzsCwuEVghmPmXkhfU3RJDHPm4vE7/vkZ7E
- UjKsi2ZFtXnqCGBW/yJ4VMXvMW/hHAMKqV5GEik6El9Kjx9cBFrpjXUmFZZ8XY7NxMnqRSyK6
- IWegc90WMinZBwzeIICW8i4vQokHeztA8zQFOjYh6JT4ud938JUuCAK0uVHtYFp3BpPpS3eIA
- Wtq4imWj67/bZ8tR1hfAfQg9qXbxstiawg8cpOuaWYqA0bJEecGvudReskdGFzbLrLcmNxBII
- lhSrA9MRnuUNo6gwTOboIM1EjaN5mFuLmt9Op2lJYYJePjoV42JJ01akNB8/j+8kboC+92ylo
- 3QS8VD0DJnj26JWrCy1ntcFW3bMRN5lDr7AWhkv3kiEH8ryCDIphoDR8nIIJVekkr16fXAeWu
- n21gML1G9LIL3gER4dn1lze2pe1IkuTqzmKNopHmhYViifrEZQhtTzdYvmN5cLYvPtk3MuBuk
- /TUeE0BujhFS32tlM
+X-UI-Out-Filterresults: notjunk:1;V03:K0:/xv4OkJ0LB4=:T5ap9vGgddIYtrN5OSJJKU
+ HwHWrXmzvbbay5yMNLqwntMH2Qw38WW8XTeCBmvQoTC+fSst/12OSDUZjR4Tw5iPa1p+6b4+p
+ o0zHWCQ7JZPyPAYy5xfSCRxfybsS71fF2gsMEd8qxDFHGyBEjGSWtf02MPnf2wBzYoGL0JlTU
+ Mv7xSMfuwzeQ2eo4tbbceG8K5EL0A1q0O+igAnX30Buj71pqA7GVt6HGCcp7kzvWBrPU4hcNr
+ jTt9H7RQyFvpbZDbEUrsF9+Q5js9AUIBo9uZbeuKW7eH+rFSXBXh9gsWHprfV8Ke8SpgWWCih
+ Dvhve7in8ejUWveEVhDNhMwLojBMfJnUTyC+DPlR1o6AiE5X8RHGHC0LbvSWFfR0WQalWOqqZ
+ eWrcMsNU50MvlhmZNf8Da/LZu8jqEKzEl5oL1lpvt6vswLYMbrHF0954pJEeSX94YsQe9wPSP
+ 1t+l/wwSZrY46Jw81KhxWtyp4YU39DOF93XFLl+/PG9CwEZZEkxaGiOIxoxXaI7bd/Jc7jHFJ
+ mdnTgTFi2lLT0GnfNGjNwPb5h8WdiLQ/aD4Zqw8QNPTPfFqDOwO2GUszW9qPAwnd8f0sx1ED3
+ ZnpPvtBbMoMopPzho4qK5cTD4onc0Iw5joISkyap4I1BSfTOmrJ13U72kyd3lcYNQ1CsJOo9i
+ NdlWgKg8PJCNmDtR2O3J7rX2YKMJabMRwbQQyJM1l8QyCmnMzeMI5bhcVnMVEmMN/uHyGgrFi
+ lhHKnnQt/LqAH42YUb270gky+BQu9EDtWV47Fwhfp+q9F4TgPiOy3Y7XGuWZSyp6OR3xpuE5s
+ MS/xLXw1K4G/CVhPvv1/Nj0K7KHcXLFOZM7VmmiveU8+iVxHuPLQoZoyMWqdxtnL9jXbfHpcu
+ Eu6WnG/si6hiQ4/Ji4VIsLMRDGhVG4Z2f8xRHIA3OAyJB/8aBHd0uJMolJ9/SsY5ANau/4Pj1
+ 59jBvAUiwBMWneB/Bb9W3u5w+XHS7lQv9SAneE3EpdSrxPpIE8pIaxIAkLVe91009M89nbxNe
+ Cze4Uqsz4OFYWXdkYBJqzbwiLpFUtqyZBgvAKYamkGQ8w3wOYmlaLKUHDmca/8W8a4YFBt8c2
+ MsVMMxNHO+A/VaReydMrpB4QLyGtfCxIlU03acIHroCBMjHI87thcajqtgf/AnZW+YHLcXNqN
+ ldR4ANr2Cd8mCxOPXmD6cYIBvhe32tKnB77Paypzbj4s8U1QVOzhtZilwn0vrl7ydpg0G6kzM
+ SHPsGswyEeBi96ah8
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Signed-off-by: jiangying8582 <jiangying8582@126.com>
+> when it returns an error code. Thus a pairing decrement is needed on
 
-Please use the real name for your contributions.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?id=3D719fdd32921fb7e3208db8832d=
-32ae1c2d68900f#n431
+* I find it more appropriate to use the word =E2=80=9Ccorresponding=E2=80=
+=9D here
+  (if you do still not like previous wording suggestions).
+
+* Will it become helpful to add the tag =E2=80=9CFixes=E2=80=9D to the com=
+mit message?
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+Documentation/process/submitting-patches.rst?id=3D719fdd32921fb7e3208db883=
+2d32ae1c2d68900f#n183
+
+* Would you like to improve the change description any more?
 
 
-Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit messag=
-e?
+> ---
+>  drivers/media/platform/qcom/venus/core.c | 5 ++++-
+
+I suggest replace the triple dashes before this diffstat by a blank line.
 
 Regards,
 Markus

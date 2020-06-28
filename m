@@ -2,70 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E30C20C568
-	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Jun 2020 04:26:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D46020C58A
+	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Jun 2020 05:23:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725928AbgF1C0K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 27 Jun 2020 22:26:10 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:6841 "EHLO huawei.com"
+        id S1725937AbgF1DXY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 27 Jun 2020 23:23:24 -0400
+Received: from mail.loongson.cn ([114.242.206.163]:42902 "EHLO loongson.cn"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725866AbgF1C0K (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 27 Jun 2020 22:26:10 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id D9BCCFCDA9277C50F1BA;
-        Sun, 28 Jun 2020 10:26:07 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
- 14.3.487.0; Sun, 28 Jun 2020 10:25:57 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Sivaprakash Murugesan <sivaprak@codeaurora.org>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] clk: qcom: Fix return value check in apss_ipq6018_probe()
-Date:   Sun, 28 Jun 2020 02:30:55 +0000
-Message-ID: <20200628023055.50608-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1725880AbgF1DXY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 27 Jun 2020 23:23:24 -0400
+Received: from [10.130.0.52] (unknown [113.200.148.30])
+        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dxf98gDfheXHFLAA--.1485S3;
+        Sun, 28 Jun 2020 11:23:12 +0800 (CST)
+Subject: Re: [PATCH v3 04/14] irqchip/davinci-aintc: Fix potential resource
+ leaks
+To:     Markus Elfring <Markus.Elfring@web.de>, linux-mips@vger.kernel.org
+References: <0e39761c-4673-d116-fc62-5573c2abae06@web.de>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Xuefeng Li <lixuefeng@loongson.cn>
+From:   Tiezhu Yang <yangtiezhu@loongson.cn>
+Message-ID: <e98e609b-1074-c57c-3b17-6fb635474762@loongson.cn>
+Date:   Sun, 28 Jun 2020 11:23:12 +0800
+User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
+ Thunderbird/45.4.0
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+In-Reply-To: <0e39761c-4673-d116-fc62-5573c2abae06@web.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf9Dxf98gDfheXHFLAA--.1485S3
+X-Coremail-Antispam: 1UD129KBjvdXoWruw1kKr1kWF4fCrWrtw15twb_yoWfurX_Wr
+        17Grn7Jw1UJr15GayFyrWfXas3C3y7Xa17X345XFWSgry7J39xA397Kry3Gr10gr17Ar1U
+        CFZxZFZ8Zr17ujkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUbsAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+        A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+        Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+        0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+        6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr
+        0_Gr1lF7xvr2IY64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7Mxk0xIA0c2IEe2xFo4CE
+        bIxvr21lc2xSY4AK67AK6r48MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
+        4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
+        67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
+        x0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Zr0_Wr1UMIIF0xvE
+        x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnU
+        UI43ZEXa7VUj5l1PUUUUU==
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, the function dev_get_regmap() returns NULL pointer
-not ERR_PTR(). The IS_ERR() test in the return value check should be
-replaced with NULL test.
+On 06/24/2020 09:12 PM, Markus Elfring wrote:
+>> There exists potential resource leaks in the error path, fix them.
+> Would you like to reconsider this change description?
+> https://lore.kernel.org/linux-mips/be3acb13-2963-ddf1-a867-7e30fd23a0b4@loongson.cn/
+> https://lkml.org/lkml/2020/6/24/498
+>
+>
+> …
+>> +++ b/drivers/irqchip/irq-davinci-aintc.c
+> …
+>> @@ -160,4 +160,13 @@ void __init davinci_aintc_init(const struct davinci_aintc_config *config)
+>>   				       irq_base + irq_off, 32);
+>>
+>>   	set_handle_irq(davinci_aintc_handle_irq);
+>> +
+>> +err_domain_remove:
+> …
+>
+> Are you sure that you would to like to release the allocated system resources
+> always in this function implementation?
+>
+> Otherwise, I suggest to add a return statement before the source code section
+> for the desired exception handling.
 
-Fixes: 5e77b4ef1b19 ("clk: qcom: Add ipq6018 apss clock controller")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/clk/qcom/apss-ipq6018.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thank you! Sorry for the late reply.
+I will add a return statement.
 
-diff --git a/drivers/clk/qcom/apss-ipq6018.c b/drivers/clk/qcom/apss-ipq6018.c
-index 004f7e1ecdc2..d78ff2f310bf 100644
---- a/drivers/clk/qcom/apss-ipq6018.c
-+++ b/drivers/clk/qcom/apss-ipq6018.c
-@@ -87,8 +87,8 @@ static int apss_ipq6018_probe(struct platform_device *pdev)
- 	struct regmap *regmap;
- 
- 	regmap = dev_get_regmap(pdev->dev.parent, NULL);
--	if (IS_ERR(regmap))
--		return PTR_ERR(regmap);
-+	if (!regmap)
-+		return -ENODEV;
- 
- 	return qcom_cc_really_probe(pdev, &apss_ipq6018_desc, regmap);
- }
-
-
+>
+> Regards,
+> Markus
 

@@ -2,35 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41D4620C82D
-	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Jun 2020 15:16:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 107EB20C843
+	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Jun 2020 15:43:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726469AbgF1NQs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 28 Jun 2020 09:16:48 -0400
-Received: from mout.web.de ([212.227.17.12]:41135 "EHLO mout.web.de"
+        id S1726479AbgF1NnY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 28 Jun 2020 09:43:24 -0400
+Received: from mout.web.de ([217.72.192.78]:58559 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726316AbgF1NQs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 28 Jun 2020 09:16:48 -0400
+        id S1726344AbgF1NnY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 28 Jun 2020 09:43:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1593350184;
-        bh=EqxHBeHO+Tcgfao9vs+nIoCPeWasPgn4GNv8r3qLK60=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=ZE5jaibu89cSS8qSvhOepM/nqhU7MuuWi1jHl3AkX/HKHk7tMKqBZs2kQmTNGqgIe
-         WZdtUIdj3D7OIGlw1DI4TB/klmN2/noKDqy9cDwslKQJ7R50s4OQkTYkAoJC94oXyE
-         I7WKgYzJ8yBKWAi5NKfNG1ESsRyG6t/ePfbd+aVk=
+        s=dbaedf251592; t=1593351792;
+        bh=0LadQBb13X/BzAtdiFvRhyr4dZfLGKtUESMf8u5ROZ0=;
+        h=X-UI-Sender-Class:Cc:Subject:To:From:Date;
+        b=qpsbZ/oO/qptFmdyW3lNrHlcFQJHiOSnNH1C3Sc0XgaCrTQTTYMZZ6QJnf2fTfbZa
+         r9vVHTl/2EXJh98ASoNIvGllvyE0hGof8XzU4G3cp7zXJdNwqp278SAdrI8vu0cUDV
+         GAvvkcWk4eAF/we58bYr6Dp2zCkwJ19vPFj23JEA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.244.52.166]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M7sw0-1iuFiq1hk8-00vMid; Sun, 28
- Jun 2020 15:16:24 +0200
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lm4hJ-1jGTx313Mf-00Zh6A; Sun, 28
+ Jun 2020 15:43:12 +0200
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Aditya Pakki <pakki001@umn.edu>,
-        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Qiushi Wu <wu000273@umn.edu>, Andy Gross <agross@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-Subject: Re: [PATCH v3] media: venus: core: Fix runtime PM imbalance in
- venus_probe()
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Felipe Balbi <felipe.balbi@linux.intel.com>
+Subject: Re: [PATCH] usb: gadget: function: printer: The device interface is
+ reset and should return error code
+To:     Zhang Qiang <qiang.zhang@windriver.com>, linux-usb@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,64 +72,59 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-To:     Dinghao Liu <dinghao.liu@zju.edu.cn>,
-        linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org
-Message-ID: <9797fb44-e10e-61b5-b2cc-82d94cc98a3c@web.de>
-Date:   Sun, 28 Jun 2020 15:16:23 +0200
+Message-ID: <37bf94a0-92a0-ca4e-a4e4-5dd44aef2b88@web.de>
+Date:   Sun, 28 Jun 2020 15:43:10 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:KIRbQCMV/EzqTBbzldYJ/H7U/4NiicXp2MQF5WWl0FcUTjRbaeG
- in+EjpwuFFhG84F5zsYid4S9dh6lkVe9uUo+xxHEuMFW5eWQBTTR0yapxisTpFf/yW+HsU1
- sEX6fbwRf7aOY7FQdR9v/udHFt8SVooPNhJwh2RRgYvMeZk6w8Zkq8CVCtsiM8dupOTF2Ui
- u5QuuylbDJoLGjLyDglKQ==
+X-Provags-ID: V03:K1:LI5UJ+zbj0bYeixBvXbqedE20bBiAwlUnEyzNKfPU1yvFHAfqLj
+ 7JrwblEIs8X0biK/YJy6v+4aFboXlkLoIe1kwBwNuIMSUEdfELH2k9hiFsAxCwmhrkA1Cfi
+ XFZ42fMdWPPJXOvpl6D0orgjYxDToNev2MmSqybmtlIZjFmNQyO787XuFSDwGrqKPx+0bIa
+ n5yCibiPgTCR7ZzcTtAwA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:/xv4OkJ0LB4=:T5ap9vGgddIYtrN5OSJJKU
- HwHWrXmzvbbay5yMNLqwntMH2Qw38WW8XTeCBmvQoTC+fSst/12OSDUZjR4Tw5iPa1p+6b4+p
- o0zHWCQ7JZPyPAYy5xfSCRxfybsS71fF2gsMEd8qxDFHGyBEjGSWtf02MPnf2wBzYoGL0JlTU
- Mv7xSMfuwzeQ2eo4tbbceG8K5EL0A1q0O+igAnX30Buj71pqA7GVt6HGCcp7kzvWBrPU4hcNr
- jTt9H7RQyFvpbZDbEUrsF9+Q5js9AUIBo9uZbeuKW7eH+rFSXBXh9gsWHprfV8Ke8SpgWWCih
- Dvhve7in8ejUWveEVhDNhMwLojBMfJnUTyC+DPlR1o6AiE5X8RHGHC0LbvSWFfR0WQalWOqqZ
- eWrcMsNU50MvlhmZNf8Da/LZu8jqEKzEl5oL1lpvt6vswLYMbrHF0954pJEeSX94YsQe9wPSP
- 1t+l/wwSZrY46Jw81KhxWtyp4YU39DOF93XFLl+/PG9CwEZZEkxaGiOIxoxXaI7bd/Jc7jHFJ
- mdnTgTFi2lLT0GnfNGjNwPb5h8WdiLQ/aD4Zqw8QNPTPfFqDOwO2GUszW9qPAwnd8f0sx1ED3
- ZnpPvtBbMoMopPzho4qK5cTD4onc0Iw5joISkyap4I1BSfTOmrJ13U72kyd3lcYNQ1CsJOo9i
- NdlWgKg8PJCNmDtR2O3J7rX2YKMJabMRwbQQyJM1l8QyCmnMzeMI5bhcVnMVEmMN/uHyGgrFi
- lhHKnnQt/LqAH42YUb270gky+BQu9EDtWV47Fwhfp+q9F4TgPiOy3Y7XGuWZSyp6OR3xpuE5s
- MS/xLXw1K4G/CVhPvv1/Nj0K7KHcXLFOZM7VmmiveU8+iVxHuPLQoZoyMWqdxtnL9jXbfHpcu
- Eu6WnG/si6hiQ4/Ji4VIsLMRDGhVG4Z2f8xRHIA3OAyJB/8aBHd0uJMolJ9/SsY5ANau/4Pj1
- 59jBvAUiwBMWneB/Bb9W3u5w+XHS7lQv9SAneE3EpdSrxPpIE8pIaxIAkLVe91009M89nbxNe
- Cze4Uqsz4OFYWXdkYBJqzbwiLpFUtqyZBgvAKYamkGQ8w3wOYmlaLKUHDmca/8W8a4YFBt8c2
- MsVMMxNHO+A/VaReydMrpB4QLyGtfCxIlU03acIHroCBMjHI87thcajqtgf/AnZW+YHLcXNqN
- ldR4ANr2Cd8mCxOPXmD6cYIBvhe32tKnB77Paypzbj4s8U1QVOzhtZilwn0vrl7ydpg0G6kzM
- SHPsGswyEeBi96ah8
+X-UI-Out-Filterresults: notjunk:1;V03:K0:gwTutKXcGzM=:bUsHMNV99XmAt5XnGKYPh5
+ F3dMQoIQAR3Jle55l7tev8pR0A0H0v4stT46YitkO+cNMLTntIr8Kr4bcKEx1xZ/LTB0wdhaV
+ MaDAoaQnxA7ig8P+IvZyY2SF1RSUtI5usmZvtxIX0q/qTv+LhyUEtDHr4X7ZF+gjkaP4F7+/J
+ EU6Cc6mbCcJbgqViQw+uP88cuXrbcYr3JyoWdMs0T1hZ+6OzTd+cyKGp0X7/beKzHWf1NTAc0
+ OjLXMCPYVsgtNAbvCOTmsXpLo2H45HZvPIsj1EXeLSsnRliCmuVzbP76S4hlJtiNl0xV+4a33
+ eG2zbnhJmdwWXfHg0D5TarFNWRN0whArvlBOJJ6s2JmpnNutxlzbIoZ44hof8IyP2TpIW2oW6
+ xKCQL8zCSmhOwTs6FESk/iq7dWwGZzyyfZ6MgKf4IDf70+uomGT3jalTWbZyqVoV77nkn0kTk
+ oyI9ggxqpM+iqf5wOO0ZmlCl0EPgqHbt/JU0sOexzcUZUCbS4NA79/u4I5jm2A2TXlplfJWvu
+ M+Ut6wtMw1HbK/Isqf6DMDIbPMNVz8pIjmR9DXJJxCaUF3eRLcdHSBexASRDyDtzhG3H3jXjO
+ SJownnuXUKu8U5hSmFFXNIg9wQOWvkp7gDCRHOsjfoKCU/t/7wl3PyhG0BGCVjHlJslORfJYN
+ SJjJ9dIcAR2pnApgwCjgtv30vVCgLimRb1ExMGGZCA+ehJev7bBF2fPPdvNBEnPCtL5krE+Am
+ PqSW21/8VV24+FhyNZLF4NE9jUWAdn9QHJgjHcA8PLlm27TVZ8ngO+7CiE/UigsN42DTWe4qc
+ FVR51ypSfZnt8y3zztaOfHnm0RoSlP7Uzo9v7Esn4piqp1q4WvljcfjPnkW4La8607n5610se
+ bZrNT1XT6rmdpXr3uYfQKaLQF0rB4HAh34hJyI30sVaqrRmmbR/yCZFRuU3+8306crzPom5Cd
+ qlrN1NclLRgzysNVsoVI5U8SzhrjZpA+3EA6uvHwNdtZzBNa1J77e4mn2TmYMlyPqE8RQ3Yal
+ 9NL4buHehzLfGGXn2opZJkl2MhPldI3ktSmtILpa7d1EV2JjaXQ8oOE1PIxenhbaHKVLgI4mA
+ +eVrWQ4sS/ZC5qNU0DzwnGzsnsxaHxI78Vjzs+FbFW5H72NU6UxR4FXrLOYmOd1FyPV+60K0w
+ T7eutt+bQJ4vrVQUJIHOUr87QAWu9FmQb4qSxhSBFIyguDmcr3Ssv/Bmcgh+4ds43gC0clNUI
+ JkbYuxzY/eIo64kwt
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> when it returns an error code. Thus a pairing decrement is needed on
-
-* I find it more appropriate to use the word =E2=80=9Ccorresponding=E2=80=
-=9D here
-  (if you do still not like previous wording suggestions).
-
-* Will it become helpful to add the tag =E2=80=9CFixes=E2=80=9D to the com=
-mit message?
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-Documentation/process/submitting-patches.rst?id=3D719fdd32921fb7e3208db883=
-2d32ae1c2d68900f#n183
-
-* Would you like to improve the change description any more?
+I suggest to choose a more succinct patch subject.
 
 
-> ---
->  drivers/media/platform/qcom/venus/core.c | 5 ++++-
+> After the device is disconnected from the host side, the interface of
+> the device is reset. If the userspace operates the device again,
+> an error code should be returned.
 
-I suggest replace the triple dashes before this diffstat by a blank line.
+Please use an imperative wording for the commit message.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3D719fdd32921fb7e3208db8832d=
+32ae1c2d68900f#n151
+
+
+> Signed-off-by: Zqiang <qiang.zhang@windriver.com>
+
+Did you really specify your real name here?
 
 Regards,
 Markus

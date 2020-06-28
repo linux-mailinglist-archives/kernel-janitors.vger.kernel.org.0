@@ -2,34 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04ADE20C79B
-	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Jun 2020 13:18:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC02E20C7D1
+	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Jun 2020 14:18:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726240AbgF1LSY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 28 Jun 2020 07:18:24 -0400
-Received: from mout.web.de ([212.227.17.12]:45943 "EHLO mout.web.de"
+        id S1726351AbgF1MSa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 28 Jun 2020 08:18:30 -0400
+Received: from mout.web.de ([217.72.192.78]:55449 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726231AbgF1LSY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 28 Jun 2020 07:18:24 -0400
+        id S1726250AbgF1MSa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 28 Jun 2020 08:18:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1593343088;
-        bh=XIR7Cag6HTDIlHHI6CyQMvf0xsm67BGOeIQf5XM3pxk=;
+        s=dbaedf251592; t=1593346703;
+        bh=zUPzMZfZvkkDhdKPlTQ5hjBU1MqvHKi9Zqx9vf1H5TM=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=C+ULfEofEvEz/W7wRNGhuLZyc1OttYTllZVyuNxRyn0hCXGLmatm5IijjLVXwzCrZ
-         naZurDbTq/pmgc+2RCze9po93xcfvSNGSe2kNdeSfUDA17ci/eY3mYMyIlT1Ky0/Fv
-         osnO7mxlkS5SqJjqe4j/szwI/cx3T9ibbG5O0tvg=
+        b=L1D9jDfIWSF5iLfpv0pONFmRQudt4iTkmablIrSmXNM3OxRMOZhxPOJOfKwvThGwi
+         TtkVTQ3xrVGc+6c7z9dweErIUEASKtgWYSkvq2sekbJs1JzhQWuZLMbmzLaXEZSTta
+         1keBiQB+mUcNr+NMf9LcGB4aw+wZNDxZ8+FrIZAE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.52.166]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MRUFI-1jMnHs0mJE-00SdZP; Sun, 28
- Jun 2020 13:18:08 +0200
-To:     Long Li <lonuxli.64@gmail.com>, linux-mm@kvack.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Lameter <cl@linux.com>,
-        David Rientjes <rientjes@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        Pekka Enberg <penberg@kernel.org>
-Subject: Re: [PATCH] mm: Free unused pages in kmalloc_order()
+Received: from [192.168.1.2] ([2.244.52.166]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M73WL-1iveSQ0cLd-00wpWv; Sun, 28
+ Jun 2020 14:18:23 +0200
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-kbuild@vger.kernel.org, linux-media@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Maxim Levitsky <mlevitsk@redhat.com>
+Subject: Re: [PATCH] kconfig: qconf: Fix find on split mode
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -74,76 +72,54 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <c5f54ce3-dad6-a2aa-d32a-cc7620676b76@web.de>
-Date:   Sun, 28 Jun 2020 13:17:59 +0200
+Message-ID: <9048b1ca-87aa-dfee-2be3-2f399d2b7fe6@web.de>
+Date:   Sun, 28 Jun 2020 14:18:22 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:xl4o3r1WzSe7g2Lknm/r9EPJYtCQzfDOhmFhsvKnvN3l+03nylC
- ttIgRHINvJWBK7QLtWhR9ZK7uzJMzKcrdsVe8WvqutCQlAvkpK5O2HJV5X+Ha6iMIdlifl3
- s2YBGVkXebCU0Z7J224nqWKjR+XIaaJcQCF9/os3W4ujippAX6MNJfRrVdsshS45hqVRRi5
- OoE5DTRZHUWyoRJiI8Ljg==
+X-Provags-ID: V03:K1:ShA9GLipEFEA+AXkaXlRHcmkJCpRKI7fPGKud4xvipMpWpXR/xv
+ hqb5wbMnAzGQ7QmbMnaI5Z19iivxnbM7lVw/d6p17DTa/m5NUNkQq/N2ZmnTEzaWZ+JDtD9
+ jxP0vvByxwM490WnrumbIImCIvnhtDlVFXH+WKhvQasLA/ChTWckjntKluDaeyugHk8CWK0
+ UJy4cdCbn5YrMT9oIZ9Uw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:pbgjgpo9Epk=:R7ZdCbJCNv+nknFNfI7trm
- EZbyO3MNwmNw1UqH58SeE+tdfyAdq/ThjnfhuoLCo/tOVW9uU8JfG6aGYNaXf4PD8VvdbXxe6
- 9aKCKvmnrGfbj/q/JRrJpOob5j7Voh2D6Si8OcxSQKwqcK2MZXzDdhsDbZwLdiZj0zoNalxF3
- RhpNQ6DufesTOrFL3dWJIoVAm6PQiAtHCwJbbk6B8rNTot6NeyZDufoX52R2JuH5ZwH0syR77
- JmG7P9UXmIGg35DuHwHmwAZhgmFTFqIPLI7rbIuxmPynXbEolHAnRKPnZb6pYTHOu2F05tKD3
- S/jlY9JmFtkjdFtjJzCMT8ZvHe8mYHLGLBIfGWlxAWanAVhfaa/d2/WZF5+lSRVXBPzPlsGZm
- 67s3RG6N4u21QR3JpE9FRrjIki4wAjOPa7R89vpHR1Q+wmDVRwVxmKN8qdix5/ujzzumUU2wg
- YVxWSidMwZgFi5FEU65jy4k8FDaQHuvBwrMd87FSO0YuRxSvqpQ3RAC6it2gF+YEukWYrKOfK
- CKgVVbt0g/fMo9G4882qnkr8QxyQPJd5WBXKCN6Bkgig2yCrUbNnqJaXIph0+fhHkF/t86pAc
- dZWEIkEx+AkSaO8hcc6UQ20ihzSXXFNQ5y0wuaqr1REjusif+2rcO6uaLpWULzJ1UwjpfN2Tt
- eNkKSlHazID6g2ZEwIJ7XDdJqdE4/lJCmL43qAWyMHvi94Ac0Csbwi4wbzHpdYijrecYpy7FT
- 6N5+NRrXMfO51O1lr9LUXoFlfS/Z3r3k+2iTM4FcsKORdMTe7iRrAW44R0FT2dyAr07SVzjtS
- Px04xDlL/IRxeDibGmOcf6dUbi4iOuuq7K4wc+h81QipkmR7kRiu4U0TlHT5v36fCN7FMwJsb
- 38OXitiund55QWdkKP3W8YyQHQQrOgX5kcVhJZpPKCzaVZPLb9U51xUJ7GjvbIMH+o2d90yzs
- SOcqTzhTzrCgltxgOizosThbTahHxEPBSmNGNrXYsIGXq4881AKuFSeJA9T8axTmT4Irh8y9k
- 0kD3ETsD9ZTojpN0Ko4/GC5HkrHv0UxTUYCJ1fNGPMUVI6x3FXcItSczP626RER14xmlyV/i/
- V2lnqxj1BMAsNo2qMrSUthcxS/pwDwWu1OoiNEErtiCJQOQqLksAt0tZfRdA3NT/KR+PNfod0
- ZiGjrhcoZxh/w1a18lM9m3JwckfX8MZVw0ba3wQfPPFWlC86MvksvALPOVXgjMVpQokT07zPo
- mkBksaZr+mF8v8WIk
+X-UI-Out-Filterresults: notjunk:1;V03:K0:yN64QDTkQzA=:37KK6KXl8pWMOoKtBPTdgU
+ jnZXXDFT3pu7TTeAekS6Q4QZ2umE69TOR/xXSS5wvRhrXgu9H6YvuttuoRiW3ZQH/ureyJoO5
+ /OChVluNfd41YkdGFGh2fLIIwsX6ESsGetioNgIc6zKoMn+ygKwACwIPXf/BF1xH1+Nu4dg/o
+ 1r1pXp0PeznxzrjXWcHgNzcYM5XNH0bKYJvEXMKw5CEU4e8nbWKe4PnYiAgJjT0wyd6ysCDxw
+ 9X2GnKypozLk4XCYn+PN2KSG77Gu07QXC81C1PN9khaii/6D5deUe9ESZiax6a6wtnQkwURQj
+ qA5F/vnkeg/gvztKK030IYEXc22quigtSbIHKj1ShqWu2mAZfv+gZsfz0sCQFLiXX8KRMxyKA
+ VLrtq19BKEYBZrPVVQDKNkiYrAn1T551xs0ND30NsruaTlOl0pXLIcLDJ1pfX2xuSZk+LqYU+
+ R2F0+HwXCPVtE05e62djGon0RIrh4z0ducFx3vr+H3Z4wXifERRY6M5Pn3iLP3j5+SQCG8NX2
+ 1vW7Uc3Vvu5xPzF7AafrsXQUDwS3g0f4JkICTqSqMmghnA/cV+FbDltzknbk8vxkAbW8vFvk9
+ BqQGJTgt+NKqfTIqMm/E2cfum/tsIT985qCBQdxVrHrAtZUHuxOZlwy3RPnFjRaUU3pLP0Zac
+ TbeOR+UuGXFJvA8p8ZeUor6dgr3wTc35/MTCTZvlxnhhewe3J2PoIjFJ0M6oxrysggSMlizmD
+ iER9TD2fs/JstmO+0wM7O10REv+WVxfuunky+NaECeoA1id5K/cxWyrfiXm3fUlBuPCXpccI+
+ RhNV4Mg83tR6rEjGH+NLbIQGlc0rLv4x9qEC0jN/8DLG2MbMCXUpZKQfukBcOR7GIYoXofJmw
+ fyIgMtHkzi0HYkG0IEs4NF0PJdB0D0KIAK2aaGBX0BF+DmCYQIlx4k1JiL99XYeBTq1kF1Lp8
+ NT7yzhyYgF1f+noGrL3LYZFpebk7H7cBNJtndESAAsL/Y1nEfdqdG8TUKsfgh1+CyzO4bgqNg
+ m46M6L3WMqYzh8EobWZaA2a31TVjzp7RLoIMZE/J1ZVgl2J/CPuc/7zbr72pfhU/gGcMxRgea
+ 0rsYByuXVvlLLbFia5g26rzYO3tuEcBSlS1slXiom8uPZmqbmSoRXvLIkfj0G0JH15dqhWDES
+ OIr+AA4RRNWpEocu1OoOVOdF2TmQJNRXdXQ/ZcsIrVlzj33QxosZwiXupBmSBtvrTnrDKBYEX
+ lQBVeGEExT20G5NIX
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> kmalloc(1024, GFP_HIGHUSER) can allocate memory normally,
-> kmalloc(64*1024, GFP_HIGHUSER) will cause a memory leak,
+> The logic handling find on split mode is currently broken.
 
-Would you like to explain the influence of the selected allocation size
-in a different way?
+* Is there a word missing in this change description?
 
-
-> because alloc_pages returns highmem physical pages, but it cannot be dir=
-ectly
-> converted into a virtual address and return NULL, the pages has not
-> been released. Usually driver developers will not use the
-> GFP_HIGHUSER flag to allocate memory in kmalloc, but I think this
-> memory leak is not perfect, it is best to be fixed.
-
-I suggest to improve this change description.
-
-* Did you apply any special analysis tools?
-
-* How do you think about to split the text into more sentences?
-
-* Would you like to extend any software documentation?
+* Can any information become clearer another bit?
 
 
-> This is the first time I have posted a patch,
+> Fix it, =E2=80=A6
 
-I find this information irrelevant for the proposed commit message.
-
-
-> there may be something wrong.
-
-There are usual risks to consider also for such software development.
-
-Will it become helpful to add the tag =E2=80=9CFixes=E2=80=9D?
+Please replace the beginning of this sentence with the tag =E2=80=9CFixes=
+=E2=80=9D.
 https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
 cumentation/process/submitting-patches.rst?id=3D719fdd32921fb7e3208db8832d=
 32ae1c2d68900f#n183

@@ -2,58 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DC5220E398
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jun 2020 00:03:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFC2E20E8E0
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jun 2020 01:14:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390581AbgF2VPj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 29 Jun 2020 17:15:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35990 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732303AbgF2VPi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 29 Jun 2020 17:15:38 -0400
-Received: from kernel.org (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1AFD7206F1;
-        Mon, 29 Jun 2020 21:15:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593465337;
-        bh=OdIEw/I6XjRn2q7lfeju3B7URR0/9lhFPMhXLS+TvPs=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=m6NY+7/VerlVfjB2bNmk0y5ULlvTos4ODieZ99Oa6tkik3B29fxbnxNbRBU4rCI1S
-         Sydk5w+jU44A5SluaGzr4H269zwbci7d2lFrrwo/2ZIMMIqlCuT4gaugeRYfnmExgk
-         vtW8JeSzhJEpY6BCB7VBoOz5XpLpMmmqVoV9r8Co=
-Content-Type: text/plain; charset="utf-8"
+        id S1728461AbgF2Wjn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 29 Jun 2020 18:39:43 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50114 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728165AbgF2Wjl (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 29 Jun 2020 18:39:41 -0400
+Received: from mail-il1-f199.google.com ([209.85.166.199])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <seth.forshee@canonical.com>)
+        id 1jpt07-0006Ym-EE
+        for kernel-janitors@vger.kernel.org; Mon, 29 Jun 2020 12:35:07 +0000
+Received: by mail-il1-f199.google.com with SMTP id y13so12204899ila.10
+        for <kernel-janitors@vger.kernel.org>; Mon, 29 Jun 2020 05:35:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=d3wAD+FwY/apCHMWEbeYwrensmYJ31fzvIHVdi3AjOc=;
+        b=UoymgOfXMAywew4LiqH1Hxh6mgiFaAppNQ1tiziHxkHp4MQ8wZX7+vggu3rD+FgGUx
+         ia9Wze3WA1r5WVKp035Um3cyLb+VcoKGS4UFeReJ7IjahpgGD67oaxFdMNBrNLJq4kIH
+         EgxtqBv0kBUCcVZYPHf7xh1AwmSMzlCmBULnBwl5Jwy7CHP3vo+8hv1SICOvBCG+IYdd
+         bzYou8dQaHA3pceoOAXU/fIx/6p0rfLO6BGL72gaLDLv893aSNNVsC8EA+l0atFu9soN
+         H/qcIyaGrjTgQls2WoY0IHRmYktaxBwMI9xvFEzNI60Wq6Ipv5YjCVvtvWW8eyO7TApI
+         zy+Q==
+X-Gm-Message-State: AOAM533OieU9YQgj93VNcoCwpFOmrSwow1yhqGmigp4jvQ1n+0G7sg/8
+        agZ+aKxcndVE1fAV8ax3Rh6/0FNrw2nN5g/ZU2PbBMscDnsocEAs8UCUhZeUHMqsoesnlRNawcp
+        W595hAg8HPKmjClRPxbrFWcDZzAKUozbwLJ/p8Mhil3zQfQ==
+X-Received: by 2002:a05:6602:2584:: with SMTP id p4mr17011700ioo.30.1593434106458;
+        Mon, 29 Jun 2020 05:35:06 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxxO+NSoKtLYJDs5amRG3FY0ewjylJLex5PUDsxJbLwE0b+jaD8LtRlSybHl9IyUxFufDoH9Q==
+X-Received: by 2002:a05:6602:2584:: with SMTP id p4mr17011678ioo.30.1593434106233;
+        Mon, 29 Jun 2020 05:35:06 -0700 (PDT)
+Received: from localhost ([136.37.150.243])
+        by smtp.gmail.com with ESMTPSA id d18sm351778ils.34.2020.06.29.05.35.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2020 05:35:05 -0700 (PDT)
+Date:   Mon, 29 Jun 2020 07:35:04 -0500
+From:   Seth Forshee <seth.forshee@canonical.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Mark Brown <broonie@kernel.org>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: remove obsolete entry after file renaming
+Message-ID: <20200629123504.GA10686@ubuntu-x1>
+References: <20200628180229.5068-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20200628023055.50608-1-weiyongjun1@huawei.com>
-References: <20200628023055.50608-1-weiyongjun1@huawei.com>
-Subject: Re: [PATCH -next] clk: qcom: Fix return value check in apss_ipq6018_probe()
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Sivaprakash Murugesan <sivaprak@codeaurora.org>,
-        Wei Yongjun <weiyongjun1@huawei.com>
-Date:   Mon, 29 Jun 2020 14:15:36 -0700
-Message-ID: <159346533636.62212.17293772427230982378@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200628180229.5068-1-lukas.bulwahn@gmail.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Wei Yongjun (2020-06-27 19:30:55)
-> In case of error, the function dev_get_regmap() returns NULL pointer
-> not ERR_PTR(). The IS_ERR() test in the return value check should be
-> replaced with NULL test.
->=20
-> Fixes: 5e77b4ef1b19 ("clk: qcom: Add ipq6018 apss clock controller")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
+On Sun, Jun 28, 2020 at 08:02:29PM +0200, Lukas Bulwahn wrote:
+> Commit f16861b12fa0 ("regulator: rename da903x to da903x-regulator") missed
+> to adjust the DIALOG SEMICONDUCTOR DRIVERS section in MAINTAINERS.
+> 
+> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
+> 
+>   warning: no file matches    F:    drivers/regulator/da903x.c
+> 
+> The da903x-regulator.c file is already covered by the pattern
+> drivers/regulator/da9???-regulator.[ch] in the section.
+> 
+> So, simply remove the non-matching file entry in MAINTAINERS.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-Applied to clk-next
+I didn't think to check MAINTAINERS when renaming the file. This makes
+sense to me.
+
+Acked-by: Seth Forshee <seth.forshee@canonical.com>
+
+> ---
+> applies cleanly on next-20200626
+> 
+> Seth, please ack.
+> Mark, please pick this minor non-urgent patch into your -next tree.
+> 
+>  MAINTAINERS | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 04fceaee5200..970136e262c2 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -5021,7 +5021,6 @@ F:	drivers/mfd/da91??-*.c
+>  F:	drivers/pinctrl/pinctrl-da90??.c
+>  F:	drivers/power/supply/da9052-battery.c
+>  F:	drivers/power/supply/da91??-*.c
+> -F:	drivers/regulator/da903x.c
+>  F:	drivers/regulator/da9???-regulator.[ch]
+>  F:	drivers/regulator/slg51000-regulator.[ch]
+>  F:	drivers/rtc/rtc-da90??.c
+> -- 
+> 2.17.1
+> 

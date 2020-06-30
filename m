@@ -2,93 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 637CF20EBEF
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jun 2020 05:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6EC120EF52
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jun 2020 09:29:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729053AbgF3DXW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 29 Jun 2020 23:23:22 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:43268 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729035AbgF3DXW (ORCPT
+        id S1730983AbgF3H3Y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 30 Jun 2020 03:29:24 -0400
+Received: from Mailgw01.mediatek.com ([1.203.163.78]:2851 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726943AbgF3H3Y (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 29 Jun 2020 23:23:22 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05U3I9PE093763;
-        Tue, 30 Jun 2020 03:23:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=QkEKs1G4nOwQk9stMmsSiw10VVkVybgTTlbcrUy7lXQ=;
- b=oaiL4G1TDU6/JCSdZLXhY0Ac5oNdSR1qhTJ2ahZ/4aIhnMaD+eZ47Q4kqCkmTZor8T1G
- 1PYoT4hkmPRyiV7d6bai9bBnlgznyyNf7z1fNkPB6Qo29fen3qx8OD02Esczw7KtoFzz
- DwATBV8pUqI9UjJrD44GRtIadkb9pWDeqgnifTz1L9zOwk6qXFkfe2btS26XYxKDcqTS
- GtuWZmv9Kh9voYEzOcNaKMGrLeAboAI4xhK0tNiIYLDwenhbL2n68xGfuMvEy28Rmkyl
- p+fIpjNrtIxmEuY+Jaa39mqgH/SgIBtx5IYTRREHLGRX5yL2CmevbYGv/q0Fyu1q3Xpx ZQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 31wxrn1p9j-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 30 Jun 2020 03:23:09 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05U3IW0v065236;
-        Tue, 30 Jun 2020 03:23:09 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 31xfvrpwgp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 30 Jun 2020 03:23:09 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05U3N7No023576;
-        Tue, 30 Jun 2020 03:23:07 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 30 Jun 2020 03:23:06 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Alim Akhtar <alim.akhtar@samsung.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Kiwoong Kim <kwmad.kim@samsung.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        linux-samsung-soc@vger.kernel.org,
-        Avri Altman <avri.altman@wdc.com>,
-        linux-kernel@vger.kernel.org, Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Wei Yongjun <weiyongjun1@huawei.com>
-Subject: Re: [PATCH] scsi: ufs: ufs-exynos: Remove an unnecessary NULL check
-Date:   Mon, 29 Jun 2020 23:23:04 -0400
-Message-Id: <159348736490.22355.10176976047581563338.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200626105133.GF314359@mwanda>
-References: <20200626105133.GF314359@mwanda>
+        Tue, 30 Jun 2020 03:29:24 -0400
+X-UUID: bdfb1f422f734719ba678fd10bf1da45-20200630
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=HAx+5BTPXfGNqdXAn2CnRwU8idpAgHvW4EJmH0eOK5s=;
+        b=hALw+ltjvCgo8K/x7tJTs59w+VHEF1BeidKYbG+3dl16gCt4nF5/f+X3+aoZYd2nxcqrWle0FDoYIqIDtNXQqCaNLwwJk+SrF8+z4sgg6gB3/qRd+M6ebb8nciyv0bU/mC7oJM/WQ2YD0q6iJIVtLof9BCfu4/HkqN4ogCvrBCM=;
+X-UUID: bdfb1f422f734719ba678fd10bf1da45-20200630
+Received: from mtkcas32.mediatek.inc [(172.27.4.253)] by mailgw01.mediatek.com
+        (envelope-from <chunfeng.yun@mediatek.com>)
+        (mailgw01.mediatek.com ESMTP with TLS)
+        with ESMTP id 762714230; Tue, 30 Jun 2020 15:29:19 +0800
+Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS31DR.mediatek.inc
+ (172.27.6.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 30 Jun
+ 2020 15:29:18 +0800
+Received: from [10.17.3.153] (10.17.3.153) by MTKCAS32.mediatek.inc
+ (172.27.4.170) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 30 Jun 2020 15:29:17 +0800
+Message-ID: <1593502139.23885.5.camel@mhfsdcap03>
+Subject: Re: [PATCH 2/2] usb: mtu3: fix NULL pointer dereference
+From:   Chunfeng Yun <chunfeng.yun@mediatek.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Felipe Balbi <felipe.balbi@linux.intel.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        <linux-usb@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Colin Ian King <colin.king@canonical.com>
+Date:   Tue, 30 Jun 2020 15:28:59 +0800
+In-Reply-To: <99fc1f6e-7907-6723-612a-8b68ffa871e5@web.de>
+References: <1593410434-19406-1-git-send-email-chunfeng.yun@mediatek.com>
+         <1593410434-19406-2-git-send-email-chunfeng.yun@mediatek.com>
+         <99fc1f6e-7907-6723-612a-8b68ffa871e5@web.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4-0ubuntu2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9667 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 spamscore=0
- phishscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006300023
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9667 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
- priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
- malwarescore=0 phishscore=0 adultscore=0 cotscore=-2147483648
- lowpriorityscore=0 suspectscore=0 spamscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006300023
+X-TM-SNTS-SMTP: C01562A8C5541EC7257F9E298FE7512CE55EAEBA0420D98040392F23F24A9DAF2000:8
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 26 Jun 2020 13:51:33 +0300, Dan Carpenter wrote:
+T24gTW9uLCAyMDIwLTA2LTI5IGF0IDEwOjAwICswMjAwLCBNYXJrdXMgRWxmcmluZyB3cm90ZToN
+Cj4gPiBTb21lIHBvaW50ZXJzIGFyZSBkZXJlZmVyZW5jZWQgYmVmb3JlIHN1Y2Nlc3NmdWwgY2hl
+Y2tzLg0KPiANCj4gSSBzdWdnZXN0IHRvIHJlY29uc2lkZXIgYW5kIGltcHJvdmUgdGhlIGNoYW5n
+ZSBkZXNjcmlwdGlvbi4NCj4gDQo+ICogV291bGQgYSBudWxsIHBvaW50ZXIgZGVyZWZlcmVuY2Ug
+YmUgcG9zc2libGUgb25seSB3aXRoIHRoZSB2YXJpYWJsZXMg4oCcbWVw4oCdDQo+ICAgYW5kIOKA
+nG1yZXHigJ0gaW4gdGhlIGltcGxlbWVudGF0aW9uIG9mIHRoZSBmdW5jdGlvbiDigJxtdHUzX2dh
+ZGdldF9kZXF1ZXVl4oCdPw0KPiANCj4gKiBIb3cgZG8geW91IHRoaW5rIGFib3V0IHRvIGFkanVz
+dCBhbnkgbW9yZSB2YXJpYWJsZSBpbml0aWFsaXNhdGlvbnM/DQpZZXMsIEknbGwgZG8gaXQgaWYg
+bmVlZCwgdGhhbmtzDQoNCj4gDQo+ICogV2lsbCBpdCBiZWNvbWUgaGVscGZ1bCB0byBhZGQgdGhl
+IHRhZyDigJxGaXhlc+KAnSB0byB0aGUgY29tbWl0IG1lc3NhZ2U/DQpNYXliZSBuZWVkbid0DQoN
+Cj4gDQo+IFJlZ2FyZHMsDQo+IE1hcmt1cw0KDQo=
 
-> The "head" pointer can't be NULL because it points to an address in
-> the middle of a ufs_hba struct.  Looking at this code, probably someone
-> would wonder if the intent was to check whether "hba" is NULL, but "hba"
-> isn't NULL and the check can just be removed.
-
-Applied to 5.9/scsi-queue, thanks!
-
-[1/1] scsi: ufs: ufs-exynos: Remove an unnecessary NULL check
-      https://git.kernel.org/mkp/scsi/c/b7a80dac0f1f
-
--- 
-Martin K. Petersen	Oracle Linux Engineering

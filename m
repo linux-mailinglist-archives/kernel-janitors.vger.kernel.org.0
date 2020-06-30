@@ -2,76 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB68D20F7B7
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jun 2020 16:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2909D20F7F8
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jun 2020 17:11:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389165AbgF3O4E (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 30 Jun 2020 10:56:04 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:48716 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729260AbgF3O4E (ORCPT
+        id S2389264AbgF3PLe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 30 Jun 2020 11:11:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60148 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389258AbgF3PLe (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 30 Jun 2020 10:56:04 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jqHfz-00020M-4o; Tue, 30 Jun 2020 14:55:59 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        linux-usb@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] thunderbolt: ensure left shift of 512 does not overflow a 32 bit int
-Date:   Tue, 30 Jun 2020 15:55:58 +0100
-Message-Id: <20200630145558.516961-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        Tue, 30 Jun 2020 11:11:34 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C70CC061755;
+        Tue, 30 Jun 2020 08:11:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description;
+        bh=085m+qYdj3d+tEZKWFcDUm8R54zn/OUFEGECmgixYQk=; b=PWHv1Ri4OahOBANGBdgewR1kYX
+        0eV4Y+TiQMLmgJ4d41YcXTM7CKLL9ty0+/e8FIX7uWPhCdNzbZ5lsL4sF0T/6WQ8xW0qEzlA+5B1p
+        vdcK2H8HsqkztCWF79XfBWMwQwb0j//v2LNsh5l/chxeVz4IrMzM9lHs8gFcEisyV8y58rMykPlZX
+        dxwRpK9JUjzqIeAIuu+v4VGJ5Q/nRbeMXY2x+sJhA43J+ySwFVY0pIqkbn3BY35spqryNtnWoGaaO
+        ES3tlzjCAXc5wzqubmWWmKyiagTx0a5NjYpIqlxgoWTF+QWBALMvzD5yIXTfVbMiXudsp2iw8ExDa
+        HOUJEpcA==;
+Received: from [2601:1c0:6280:3f0::19c2]
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jqHus-0005fe-NV; Tue, 30 Jun 2020 15:11:23 +0000
+Subject: Re: [PATCH v2] Documentation: Coccinelle: fix typos and command
+ example
+To:     Markus Elfring <Markus.Elfring@web.de>, linux-doc@vger.kernel.org,
+        Coccinelle <cocci@systeme.lip6.fr>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Jonathan Corbet <corbet@lwn.net>
+References: <0616dd0c-bb86-be2b-3dc6-1c695a92c3ca@infradead.org>
+ <c2c1dec0-2bd1-b0e2-1aa4-38d0e954d5ba@web.de>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <efc8b0c9-db3b-3c9c-d876-897b53a9e278@infradead.org>
+Date:   Tue, 30 Jun 2020 08:11:18 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <c2c1dec0-2bd1-b0e2-1aa4-38d0e954d5ba@web.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 6/30/20 5:23 AM, Markus Elfring wrote:
+> …
+>> +++ linux-next-20200629/Documentation/dev-tools/coccinelle.rst
+> …> @@ -177,13 +177,13 @@ For example, to check drivers/net/wirele
+>>  To apply Coccinelle on a file basis, instead of a directory basis, the
+>>  following command may be used::
+>>
+>> -    make C=1 CHECK="scripts/coccicheck"
+>> +    make C=1 CHECK="scripts/coccicheck" path/to/file.c
+> 
+> I would like to clarify further software design aspects around such make functionality.
+> 
+> We might stumble on different interpretations according to the wording “file basis”.
+> Do you find a message like “make: Nothing to be done for 'path/to/file.c'.” interesting then?
+> 
+> * Would you like to add any links for information around the support for
+>   source code checkers?
+>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Makefile?id=7c30b859a947535f2213277e827d7ac7dcff9c84#n198
+> 
+> * How do you think about to enclose the path for the shown parameter
+>   by single quotes instead of double quotes?
+> 
+> * Can such path specifications become more interesting occasionally
+>   if also an other file extension would be chosen than “.c”?
+>   Would you like to achieve any software extensions around suffix rules?
+> 
+> Regards,
+> Markus
 
-The 32 bit int value 512 is being left shifted and then used in a context
-that expects the expression to be a larger unsigned long. There may be
-a potential integer overflow, so make 512 a UL before shift to avoid
-any such issues.
+Markus:
 
-Addresses-Coverity: ("Uninintentional integer overflow")
-Fixes: 3b1d8d577ca8 ("thunderbolt: Implement USB3 bandwidth negotiation routines")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/thunderbolt/usb4.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Feel free to submit patches.
 
-diff --git a/drivers/thunderbolt/usb4.c b/drivers/thunderbolt/usb4.c
-index d1a554fd09ae..ed609075cf66 100644
---- a/drivers/thunderbolt/usb4.c
-+++ b/drivers/thunderbolt/usb4.c
-@@ -909,7 +909,7 @@ static unsigned int usb3_bw_to_mbps(u32 bw, u8 scale)
- {
- 	unsigned long uframes;
- 
--	uframes = bw * 512 << scale;
-+	uframes = bw * 512UL << scale;
- 	return DIV_ROUND_CLOSEST(uframes * 8000, 1000 * 1000);
- }
- 
-@@ -919,7 +919,7 @@ static u32 mbps_to_usb3_bw(unsigned int mbps, u8 scale)
- 
- 	/* 1 uframe is 1/8 ms (125 us) -> 1 / 8000 s */
- 	uframes = ((unsigned long)mbps * 1000 *  1000) / 8000;
--	return DIV_ROUND_UP(uframes, 512 << scale);
-+	return DIV_ROUND_UP(uframes, 512UL << scale);
- }
- 
- static int usb4_usb3_port_read_allocated_bandwidth(struct tb_port *port,
 -- 
-2.27.0
+~Randy
 

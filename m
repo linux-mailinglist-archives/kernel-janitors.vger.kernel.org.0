@@ -2,108 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFC2E20E8E0
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jun 2020 01:14:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 637CF20EBEF
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jun 2020 05:23:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728461AbgF2Wjn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 29 Jun 2020 18:39:43 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50114 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728165AbgF2Wjl (ORCPT
+        id S1729053AbgF3DXW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 29 Jun 2020 23:23:22 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:43268 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729035AbgF3DXW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 29 Jun 2020 18:39:41 -0400
-Received: from mail-il1-f199.google.com ([209.85.166.199])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <seth.forshee@canonical.com>)
-        id 1jpt07-0006Ym-EE
-        for kernel-janitors@vger.kernel.org; Mon, 29 Jun 2020 12:35:07 +0000
-Received: by mail-il1-f199.google.com with SMTP id y13so12204899ila.10
-        for <kernel-janitors@vger.kernel.org>; Mon, 29 Jun 2020 05:35:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=d3wAD+FwY/apCHMWEbeYwrensmYJ31fzvIHVdi3AjOc=;
-        b=UoymgOfXMAywew4LiqH1Hxh6mgiFaAppNQ1tiziHxkHp4MQ8wZX7+vggu3rD+FgGUx
-         ia9Wze3WA1r5WVKp035Um3cyLb+VcoKGS4UFeReJ7IjahpgGD67oaxFdMNBrNLJq4kIH
-         EgxtqBv0kBUCcVZYPHf7xh1AwmSMzlCmBULnBwl5Jwy7CHP3vo+8hv1SICOvBCG+IYdd
-         bzYou8dQaHA3pceoOAXU/fIx/6p0rfLO6BGL72gaLDLv893aSNNVsC8EA+l0atFu9soN
-         H/qcIyaGrjTgQls2WoY0IHRmYktaxBwMI9xvFEzNI60Wq6Ipv5YjCVvtvWW8eyO7TApI
-         zy+Q==
-X-Gm-Message-State: AOAM533OieU9YQgj93VNcoCwpFOmrSwow1yhqGmigp4jvQ1n+0G7sg/8
-        agZ+aKxcndVE1fAV8ax3Rh6/0FNrw2nN5g/ZU2PbBMscDnsocEAs8UCUhZeUHMqsoesnlRNawcp
-        W595hAg8HPKmjClRPxbrFWcDZzAKUozbwLJ/p8Mhil3zQfQ==
-X-Received: by 2002:a05:6602:2584:: with SMTP id p4mr17011700ioo.30.1593434106458;
-        Mon, 29 Jun 2020 05:35:06 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxxO+NSoKtLYJDs5amRG3FY0ewjylJLex5PUDsxJbLwE0b+jaD8LtRlSybHl9IyUxFufDoH9Q==
-X-Received: by 2002:a05:6602:2584:: with SMTP id p4mr17011678ioo.30.1593434106233;
-        Mon, 29 Jun 2020 05:35:06 -0700 (PDT)
-Received: from localhost ([136.37.150.243])
-        by smtp.gmail.com with ESMTPSA id d18sm351778ils.34.2020.06.29.05.35.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2020 05:35:05 -0700 (PDT)
-Date:   Mon, 29 Jun 2020 07:35:04 -0500
-From:   Seth Forshee <seth.forshee@canonical.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Mark Brown <broonie@kernel.org>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: remove obsolete entry after file renaming
-Message-ID: <20200629123504.GA10686@ubuntu-x1>
-References: <20200628180229.5068-1-lukas.bulwahn@gmail.com>
+        Mon, 29 Jun 2020 23:23:22 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05U3I9PE093763;
+        Tue, 30 Jun 2020 03:23:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=QkEKs1G4nOwQk9stMmsSiw10VVkVybgTTlbcrUy7lXQ=;
+ b=oaiL4G1TDU6/JCSdZLXhY0Ac5oNdSR1qhTJ2ahZ/4aIhnMaD+eZ47Q4kqCkmTZor8T1G
+ 1PYoT4hkmPRyiV7d6bai9bBnlgznyyNf7z1fNkPB6Qo29fen3qx8OD02Esczw7KtoFzz
+ DwATBV8pUqI9UjJrD44GRtIadkb9pWDeqgnifTz1L9zOwk6qXFkfe2btS26XYxKDcqTS
+ GtuWZmv9Kh9voYEzOcNaKMGrLeAboAI4xhK0tNiIYLDwenhbL2n68xGfuMvEy28Rmkyl
+ p+fIpjNrtIxmEuY+Jaa39mqgH/SgIBtx5IYTRREHLGRX5yL2CmevbYGv/q0Fyu1q3Xpx ZQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 31wxrn1p9j-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 30 Jun 2020 03:23:09 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05U3IW0v065236;
+        Tue, 30 Jun 2020 03:23:09 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 31xfvrpwgp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 30 Jun 2020 03:23:09 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05U3N7No023576;
+        Tue, 30 Jun 2020 03:23:07 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 30 Jun 2020 03:23:06 +0000
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     Alim Akhtar <alim.akhtar@samsung.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Kiwoong Kim <kwmad.kim@samsung.com>,
+        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        linux-samsung-soc@vger.kernel.org,
+        Avri Altman <avri.altman@wdc.com>,
+        linux-kernel@vger.kernel.org, Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Wei Yongjun <weiyongjun1@huawei.com>
+Subject: Re: [PATCH] scsi: ufs: ufs-exynos: Remove an unnecessary NULL check
+Date:   Mon, 29 Jun 2020 23:23:04 -0400
+Message-Id: <159348736490.22355.10176976047581563338.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200626105133.GF314359@mwanda>
+References: <20200626105133.GF314359@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200628180229.5068-1-lukas.bulwahn@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9667 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 spamscore=0
+ phishscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006300023
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9667 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
+ priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
+ malwarescore=0 phishscore=0 adultscore=0 cotscore=-2147483648
+ lowpriorityscore=0 suspectscore=0 spamscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006300023
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Jun 28, 2020 at 08:02:29PM +0200, Lukas Bulwahn wrote:
-> Commit f16861b12fa0 ("regulator: rename da903x to da903x-regulator") missed
-> to adjust the DIALOG SEMICONDUCTOR DRIVERS section in MAINTAINERS.
-> 
-> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
-> 
->   warning: no file matches    F:    drivers/regulator/da903x.c
-> 
-> The da903x-regulator.c file is already covered by the pattern
-> drivers/regulator/da9???-regulator.[ch] in the section.
-> 
-> So, simply remove the non-matching file entry in MAINTAINERS.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+On Fri, 26 Jun 2020 13:51:33 +0300, Dan Carpenter wrote:
 
-I didn't think to check MAINTAINERS when renaming the file. This makes
-sense to me.
+> The "head" pointer can't be NULL because it points to an address in
+> the middle of a ufs_hba struct.  Looking at this code, probably someone
+> would wonder if the intent was to check whether "hba" is NULL, but "hba"
+> isn't NULL and the check can just be removed.
 
-Acked-by: Seth Forshee <seth.forshee@canonical.com>
+Applied to 5.9/scsi-queue, thanks!
 
-> ---
-> applies cleanly on next-20200626
-> 
-> Seth, please ack.
-> Mark, please pick this minor non-urgent patch into your -next tree.
-> 
->  MAINTAINERS | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 04fceaee5200..970136e262c2 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -5021,7 +5021,6 @@ F:	drivers/mfd/da91??-*.c
->  F:	drivers/pinctrl/pinctrl-da90??.c
->  F:	drivers/power/supply/da9052-battery.c
->  F:	drivers/power/supply/da91??-*.c
-> -F:	drivers/regulator/da903x.c
->  F:	drivers/regulator/da9???-regulator.[ch]
->  F:	drivers/regulator/slg51000-regulator.[ch]
->  F:	drivers/rtc/rtc-da90??.c
-> -- 
-> 2.17.1
-> 
+[1/1] scsi: ufs: ufs-exynos: Remove an unnecessary NULL check
+      https://git.kernel.org/mkp/scsi/c/b7a80dac0f1f
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

@@ -2,67 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7CC720F59A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jun 2020 15:29:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63D1220F72A
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jun 2020 16:28:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732140AbgF3N36 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 30 Jun 2020 09:29:58 -0400
-Received: from smtp3.sd73.bc.ca ([142.24.50.246]:33268 "EHLO smtp3.sd73.bc.ca"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732108AbgF3N35 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 30 Jun 2020 09:29:57 -0400
-Received: from smtp.sd73.bc.ca (smtp.sd73.bc.ca [10.10.10.14])
-        by smtp3.sd73.bc.ca (Postfix) with ESMTP id 17B4766105;
-        Tue, 30 Jun 2020 01:27:02 -0700 (PDT)
-Received: from zimbra2.sd73.bc.ca (zimbra.sd73.bc.ca [10.10.10.7])
-        by smtp.sd73.bc.ca (Postfix) with ESMTP id 48900E03D4;
-        Tue, 30 Jun 2020 01:27:04 -0700 (PDT)
-Received: from zimbra2.sd73.bc.ca (localhost [127.0.0.1])
-        by zimbra2.sd73.bc.ca (Postfix) with ESMTPS id 35E695C0E09827;
-        Tue, 30 Jun 2020 01:18:50 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra2.sd73.bc.ca (Postfix) with ESMTP id 53CCA5C0E39834;
-        Tue, 30 Jun 2020 01:18:49 -0700 (PDT)
-Received: from zimbra2.sd73.bc.ca ([127.0.0.1])
-        by localhost (zimbra2.sd73.bc.ca [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id KjRoUA-DUK_r; Tue, 30 Jun 2020 01:18:49 -0700 (PDT)
-Received: from zimbra2.sd73.bc.ca (zimbra3.sd73.bc.ca [10.10.10.7])
-        by zimbra2.sd73.bc.ca (Postfix) with ESMTP id 12D495C11D583F;
-        Tue, 30 Jun 2020 01:18:48 -0700 (PDT)
-Date:   Tue, 30 Jun 2020 01:18:47 -0700 (PDT)
-From:   charles jackson <lisa.petel@sd73.bc.ca>
-Reply-To: charles jackson <charlesjacksonjr001@gmail.com>
-Message-ID: <1785089970.67041389.1593505127941.JavaMail.zimbra@zimbra.sd73.bc.ca>
-Subject: =?UTF-8?Q?=5BPossible_Spam=5D_Covid?= =?UTF-8?Q?_19_Wohlt=C3=A4tigkeitsfon?= =?UTF-8?Q?ds?=
+        id S2388934AbgF3O15 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 30 Jun 2020 10:27:57 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:47963 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388137AbgF3O15 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 30 Jun 2020 10:27:57 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jqHEg-0000Ds-8j; Tue, 30 Jun 2020 14:27:46 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Boris Pismenny <borisp@mellanox.com>,
+        Aviad Yehezkel <aviadye@mellanox.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Tariq Toukan <tariqt@mellanox.com>,
+        Saeed Mahameed <saeedm@mellanox.com>, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] net/tls: fix sign extension issue when left shifting u16 value
+Date:   Tue, 30 Jun 2020 15:27:46 +0100
+Message-Id: <20200630142746.516188-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.10.10.90]
-X-Mailer: Zimbra 8.6.0_GA_1242 (zclient/8.6.0_GA_1242)
-Thread-Topic: Covid 19 =?utf-8?Q?Wohlt=C3=A4tigkeitsfonds?=
-Thread-Index: Ev0ZxglF3xLw9GBz+rD342737RRo3w==
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
+Left shifting the u16 value promotes it to a int and then it
+gets sign extended to a u64.  If len << 16 is greater than 0x7fffffff
+then the upper bits get set to 1 because of the implicit sign extension.
+Fix this by casting len to u64 before shifting it.
 
+Addresses-Coverity: ("integer handling issues")
+Fixes: ed9b7646b06a ("net/tls: Add asynchronous resync")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ include/net/tls.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/net/tls.h b/include/net/tls.h
+index c875c0a445a6..e5dac7e74e79 100644
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -637,7 +637,7 @@ tls_offload_rx_resync_async_request_start(struct sock *sk, __be32 seq, u16 len)
+ 	struct tls_offload_context_rx *rx_ctx = tls_offload_ctx_rx(tls_ctx);
+ 
+ 	atomic64_set(&rx_ctx->resync_async->req, ((u64)ntohl(seq) << 32) |
+-		     (len << 16) | RESYNC_REQ | RESYNC_REQ_ASYNC);
++		     ((u64)len << 16) | RESYNC_REQ | RESYNC_REQ_ASYNC);
+ 	rx_ctx->resync_async->loglen = 0;
+ }
+ 
 -- 
-Hallo
- 
- Ich bin Charles W. Jackson aus North Carolina, Vereinigte Staaten von Amerika, und ich bin der Gewinner des Mega-Millionen-Jackpots von 344 Millionen US-Dollar. Ich spende die Summe von 2.000.000 Millionen Euro als Teil der Hilfsgelder f&uuml;r das Corona-Virus.
- 
- Dies ist Ihr Spendencode: [CJ530342019]
- 
- www.youtube.com/watch?v=BSr8myiLPMQ
- 
- Bitte antworten Sie auf diese E-Mail mit dem SPENDERCODE:
- 
- charlesjacksonjr001@gmail.com
- 
- Ich hoffe, dass Sie und Ihre Familie dies durchkommen
- 
- 
- Herr Charles Jackson
+2.27.0
+

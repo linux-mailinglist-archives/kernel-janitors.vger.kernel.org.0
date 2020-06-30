@@ -2,57 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A11D320FDD9
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jun 2020 22:39:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 867C020FFED
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jul 2020 00:13:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729816AbgF3UjA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 30 Jun 2020 16:39:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54160 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729341AbgF3Ui7 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 30 Jun 2020 16:38:59 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3957C061755;
-        Tue, 30 Jun 2020 13:38:59 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 571841277F862;
-        Tue, 30 Jun 2020 13:38:59 -0700 (PDT)
-Date:   Tue, 30 Jun 2020 13:38:58 -0700 (PDT)
-Message-Id: <20200630.133858.836154523537769936.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     borisp@mellanox.com, saeedm@mellanox.com, leon@kernel.org,
-        kuba@kernel.org, tariqt@mellanox.com, netdev@vger.kernel.org,
-        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] net/mlx5e: fix memory leak of tls
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200630151646.517757-1-colin.king@canonical.com>
-References: <20200630151646.517757-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 30 Jun 2020 13:38:59 -0700 (PDT)
+        id S1726135AbgF3WMw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 30 Jun 2020 18:12:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33530 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725862AbgF3WMv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 30 Jun 2020 18:12:51 -0400
+Received: from localhost (mobile-166-175-191-139.mycingular.net [166.175.191.139])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D16072081A;
+        Tue, 30 Jun 2020 22:12:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593555171;
+        bh=h1obBUyTPJ75QgeorGRJK1b9zJ+cbov4c/nHPyLr+yw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=M/84Qq3eKACfAHQjDCkpV3cm4rQfN9fudLtrODHV/aJYn7tGBP4MbNKzLWTc4wcbQ
+         8wxU6ED77IYa/Qy/hiMpWO6dMSUxGVVEE//2L7iGf/0Lt9kZ4iUwcFbIHZrWAum8Iq
+         d1+6PKGsAIhjnkj3qCRYtXN45CyM9IaaV6LCntes=
+Date:   Tue, 30 Jun 2020 17:12:49 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        xen-devel@lists.xenproject.org, linux-pci@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Subject: Re: [PATCH] xen/pci: remove redundant assignment to variable irq
+Message-ID: <20200630221249.GA3491219@bjorn-Precision-5520>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200409114118.249461-1-colin.king@canonical.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Tue, 30 Jun 2020 16:16:46 +0100
+[+cc Juergen, Boris]
 
+On Thu, Apr 09, 2020 at 12:41:18PM +0100, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> The error return path when create_singlethread_workqueue fails currently
-> does not kfree tls and leads to a memory leak. Fix this by kfree'ing
-> tls before returning -ENOMEM.
+> The variable irq is being initialized with a value that is never read
+> and it is being updated later with a new value.  The initialization is
+> redundant and can be removed.
 > 
-> Addresses-Coverity: ("Resource leak")
-> Fixes: 1182f3659357 ("net/mlx5e: kTLS, Add kTLS RX HW offload support")
+> Addresses-Coverity: ("Unused value")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Applied, thanks.
+Applied to pci/virtualization for v5.9, thanks!
+
+I don't see this in linux-next yet, but if anybody else would prefer
+to take it, let me know and I'll drop it.  
+
+> ---
+>  arch/x86/pci/xen.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/pci/xen.c b/arch/x86/pci/xen.c
+> index 91220cc25854..80272eb49230 100644
+> --- a/arch/x86/pci/xen.c
+> +++ b/arch/x86/pci/xen.c
+> @@ -63,7 +63,7 @@ static int xen_pcifront_enable_irq(struct pci_dev *dev)
+>  static int xen_register_pirq(u32 gsi, int gsi_override, int triggering,
+>  			     bool set_pirq)
+>  {
+> -	int rc, pirq = -1, irq = -1;
+> +	int rc, pirq = -1, irq;
+>  	struct physdev_map_pirq map_irq;
+>  	int shareable = 0;
+>  	char *name;
+> -- 
+> 2.25.1
+> 

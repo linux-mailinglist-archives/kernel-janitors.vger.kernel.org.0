@@ -2,94 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2909D20F7F8
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jun 2020 17:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D363B20F812
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jun 2020 17:16:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389264AbgF3PLe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 30 Jun 2020 11:11:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60148 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389258AbgF3PLe (ORCPT
+        id S2388217AbgF3PQu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 30 Jun 2020 11:16:50 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:49534 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730027AbgF3PQu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 30 Jun 2020 11:11:34 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C70CC061755;
-        Tue, 30 Jun 2020 08:11:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=085m+qYdj3d+tEZKWFcDUm8R54zn/OUFEGECmgixYQk=; b=PWHv1Ri4OahOBANGBdgewR1kYX
-        0eV4Y+TiQMLmgJ4d41YcXTM7CKLL9ty0+/e8FIX7uWPhCdNzbZ5lsL4sF0T/6WQ8xW0qEzlA+5B1p
-        vdcK2H8HsqkztCWF79XfBWMwQwb0j//v2LNsh5l/chxeVz4IrMzM9lHs8gFcEisyV8y58rMykPlZX
-        dxwRpK9JUjzqIeAIuu+v4VGJ5Q/nRbeMXY2x+sJhA43J+ySwFVY0pIqkbn3BY35spqryNtnWoGaaO
-        ES3tlzjCAXc5wzqubmWWmKyiagTx0a5NjYpIqlxgoWTF+QWBALMvzD5yIXTfVbMiXudsp2iw8ExDa
-        HOUJEpcA==;
-Received: from [2601:1c0:6280:3f0::19c2]
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jqHus-0005fe-NV; Tue, 30 Jun 2020 15:11:23 +0000
-Subject: Re: [PATCH v2] Documentation: Coccinelle: fix typos and command
- example
-To:     Markus Elfring <Markus.Elfring@web.de>, linux-doc@vger.kernel.org,
-        Coccinelle <cocci@systeme.lip6.fr>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Julia Lawall <julia.lawall@lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Jonathan Corbet <corbet@lwn.net>
-References: <0616dd0c-bb86-be2b-3dc6-1c695a92c3ca@infradead.org>
- <c2c1dec0-2bd1-b0e2-1aa4-38d0e954d5ba@web.de>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <efc8b0c9-db3b-3c9c-d876-897b53a9e278@infradead.org>
-Date:   Tue, 30 Jun 2020 08:11:18 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        Tue, 30 Jun 2020 11:16:50 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jqI06-0003VR-TA; Tue, 30 Jun 2020 15:16:47 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Boris Pismenny <borisp@mellanox.com>,
+        Saeed Mahameed <saeedm@mellanox.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Tariq Toukan <tariqt@mellanox.com>, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] net/mlx5e: fix memory leak of tls
+Date:   Tue, 30 Jun 2020 16:16:46 +0100
+Message-Id: <20200630151646.517757-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <c2c1dec0-2bd1-b0e2-1aa4-38d0e954d5ba@web.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 6/30/20 5:23 AM, Markus Elfring wrote:
-> …
->> +++ linux-next-20200629/Documentation/dev-tools/coccinelle.rst
-> …> @@ -177,13 +177,13 @@ For example, to check drivers/net/wirele
->>  To apply Coccinelle on a file basis, instead of a directory basis, the
->>  following command may be used::
->>
->> -    make C=1 CHECK="scripts/coccicheck"
->> +    make C=1 CHECK="scripts/coccicheck" path/to/file.c
-> 
-> I would like to clarify further software design aspects around such make functionality.
-> 
-> We might stumble on different interpretations according to the wording “file basis”.
-> Do you find a message like “make: Nothing to be done for 'path/to/file.c'.” interesting then?
-> 
-> * Would you like to add any links for information around the support for
->   source code checkers?
->   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Makefile?id=7c30b859a947535f2213277e827d7ac7dcff9c84#n198
-> 
-> * How do you think about to enclose the path for the shown parameter
->   by single quotes instead of double quotes?
-> 
-> * Can such path specifications become more interesting occasionally
->   if also an other file extension would be chosen than “.c”?
->   Would you like to achieve any software extensions around suffix rules?
-> 
-> Regards,
-> Markus
+From: Colin Ian King <colin.king@canonical.com>
 
-Markus:
+The error return path when create_singlethread_workqueue fails currently
+does not kfree tls and leads to a memory leak. Fix this by kfree'ing
+tls before returning -ENOMEM.
 
-Feel free to submit patches.
+Addresses-Coverity: ("Resource leak")
+Fixes: 1182f3659357 ("net/mlx5e: kTLS, Add kTLS RX HW offload support")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/tls.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/tls.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/tls.c
+index 99beb928feff..fee991f5ee7c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/tls.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/tls.c
+@@ -232,8 +232,10 @@ int mlx5e_tls_init(struct mlx5e_priv *priv)
+ 		return -ENOMEM;
+ 
+ 	tls->rx_wq = create_singlethread_workqueue("mlx5e_tls_rx");
+-	if (!tls->rx_wq)
++	if (!tls->rx_wq) {
++		kfree(tls);
+ 		return -ENOMEM;
++	}
+ 
+ 	priv->tls = tls;
+ 	return 0;
 -- 
-~Randy
+2.27.0
 

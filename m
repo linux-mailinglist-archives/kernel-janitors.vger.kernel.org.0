@@ -2,35 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACE172105F0
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jul 2020 10:15:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C154210678
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jul 2020 10:41:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728498AbgGAIPe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Jul 2020 04:15:34 -0400
-Received: from mout.web.de ([217.72.192.78]:38697 "EHLO mout.web.de"
+        id S1728541AbgGAIk5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Jul 2020 04:40:57 -0400
+Received: from mout.web.de ([212.227.17.12]:51527 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728188AbgGAIPd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Jul 2020 04:15:33 -0400
+        id S1726670AbgGAIk4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 1 Jul 2020 04:40:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1593591322;
-        bh=LsbgrN+XbOhH1YYBuyAJlJARrHXNo7sXYiwieN7tSUQ=;
+        s=dbaedf251592; t=1593592836;
+        bh=eoZXVuPwrXpUh4mYMbAjgn9KOvWCEAKdB4s1f+uosGU=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=chq0FyjS2nN4JEFWKftqPr0N1OtdhMvKlJt382LWzxsNLOrLyyPCAumgFEMkcAXbJ
-         2P5gPgJczoOQI4dubwc7530bqbbubKpIL5PPUy/L8HpYkmUWbk4eajM5GDLOmUJuCE
-         0it7CdFwICSgQ+83w+nPyL/Or03EaOJt8Rg3puHY=
+        b=FB17ez+wNxPIXtxU4/smdqehczCinZQgT30B/hfjz0rUde3KurLJDaHkxGHkhUNcu
+         gIIsgvbgDcJfPNK5K58zbdbRc98511Mvvq0uQTesbEUyX/+3W/QnZCUMhzT1wOtjgU
+         mFEMqWp1rrOIOzhIafIbFnIwYfJKH6xaWjBQql+k=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.41.17]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MOm0r-1jS1Yr0pR9-00QEpa; Wed, 01
- Jul 2020 10:15:22 +0200
-Subject: Re: [PATCH v4 04/14] irqchip/davinci-aintc: Fix potential resource
+Received: from [192.168.1.2] ([78.49.41.17]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LxOHm-1il1O22x4c-016wFD; Wed, 01
+ Jul 2020 10:40:36 +0200
+Subject: Re: [PATCH v4 02/14] irqchip/csky-apb-intc: Fix potential resource
  leaks
 To:     Tiezhu Yang <yangtiezhu@loongson.cn>,
         Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>
+        Marc Zyngier <maz@kernel.org>, Guo Ren <guoren@kernel.org>,
+        linux-csky@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 References: <1593569786-11500-1-git-send-email-yangtiezhu@loongson.cn>
- <1593569786-11500-5-git-send-email-yangtiezhu@loongson.cn>
+ <1593569786-11500-3-git-send-email-yangtiezhu@loongson.cn>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,58 +76,66 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <08cad331-0a17-586c-07a7-6e3843cb61a1@web.de>
-Date:   Wed, 1 Jul 2020 10:15:19 +0200
+Message-ID: <564ffff9-6043-7191-2458-f425dd8d0c11@web.de>
+Date:   Wed, 1 Jul 2020 10:40:35 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <1593569786-11500-5-git-send-email-yangtiezhu@loongson.cn>
+In-Reply-To: <1593569786-11500-3-git-send-email-yangtiezhu@loongson.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:8Icnu5aEb3po0rBvNg7cDRQrqF+/3jZzVKct0fb/Ue2DliZMVxX
- a+qCDr2WU+sL9ASuw9NAKciHCDJH0Kv+YMU51lxA9bgeAc3b70mYFbyU3Wwc5YzuMFdbYWn
- S8Ro7fNuuahr5LSi44/Na54nDzSud0uG6EuPRYtVjdxzLTuvCths1YV/1scmfBzqRiCcG9b
- YrYmm+L5DTB93xogL5PDQ==
+X-Provags-ID: V03:K1:S4EgZBj8e7mQDOmZIsBIbSuc5Y2irbiz+K+XRonPv+1h3Cfog3Q
+ QFHSqT13LSf+AtXFFbOPHEjka0k8xKFPUIewayOUKn60RLYGGDWIlbxoPJjQ5ni9DCrA66t
+ liP9yUzT9O9V7IVa7rXI1GoQuQFkV3pT240d/NDo2zUYGsmjdjw2Nw6ZIsHkN4HbKIvV3eh
+ ksgz925KCB0/qUrs+YEjg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+YDvWG6y2lQ=:N5niptZWb7Bb9sbeGe8I/9
- uI/K88dbtyD6x2ehT7wHHcpjHrGn+/nFgFyOmL+ys9i3yUGyu1jfPdxPqYdi9nnYvPCteY7bH
- gy1ZqI/nSzuK1gS24kB4FTKvtC42mGCQrgf74ZIAUyR67hz4OiuGREnjttRVOrTGMUkvb+gZ+
- NPL3UfGptfXk45q96pW8Kjdk8kB4lPMJ+IPnbvjHFhc67c1zYgVKMKJ3lABmq83OTBukHluYx
- DWFi/79A5mRdetYXQISnxdTwo9e2NHy1XelmVccftVgYhIz6veSEXvWw3v9bIc19TjRnw8ct+
- uFyRkRHD6aHzZ0e70DqJHRWY9PxZ4imr+hjkp+c/pSUX9tWUxZLzn9LuhcHM1Obl6d/xx1MyY
- IQ9KmZAE5yxRk/o24yNIXWKF/kNTUHA7Cg+R5fHeVaNuuddIwY+i5U77+ErgeUaG8tCLeWKDH
- joDTUTDsyG0QhfOiteFoQtzDyiFhFRVZgUBcqQZ3ee8JxOdBFjqjrOMGepkl+e2unDpDkVEAt
- kfL04YANjDNaDCC73E9YfpquZryIVskLFwO0yQkowDxE7XYZak5xBd5JAghnoahp7MThIusLB
- vxwPVUu6gn3ns7X+Brw6cLoq9mTBfOfLRqOQ0eTkw26+sBUqztl77R9WnnSwGLb62J8p0S1Ys
- CWfFIfvmN8Y9iHhv7eSqYZ4t+kR37hOskh2t4vJaSRJqfn2A/A+CsRU9GqhBrfTZ++9sgHoR1
- pBMDzOeFERtNNfr5Z6TNzE20m+onbxFSNVzLpqTngYqsvqWP1G5pNYsq/8TiWb6xKp7T79NKe
- DlMuBy9zV+Xeoqwi+V+YDN08CaKKDACUB6rQahrblL6qYsF5Y4BpZ/a0zDJzwwNDzQ5qrcjvR
- mvUCnqcaFFCmZnPR6RZLxz7RaZ260arEzI74LgAKrmuSZQ3pUVOKztVilpqk5dhrK8LrmsJlU
- shKE5g/z/IwPTkoFNfyFyM8jnKhRb1sVM/V4+wTEt3IJqAp3JPoPNXC4gZZI4CoEopyDFFE4k
- 20uk7DPADEXrKH5TQi/w0wf9qyO+v8RJ2RflyUaRGdAbK2QkWBjP0+janrszR15efePsMYHs2
- HYEscfgfSFTsqnRAIabHUzYu6lgkjdf5IMKwKrF1EtnZsRyLi3yQDxTnRwKT3r/H0frouT/HN
- pbYO9daSQgYdSlPI4NgTQd0IMt48dpsAEFp4hP7+1/OY64wqAu61ahjr/leNk4SjtVe4y0Wbg
- 8bUj4UAHjCWcI/YKI
+X-UI-Out-Filterresults: notjunk:1;V03:K0:7GR720Ufx/U=:Tl+QK/ZoMe2Sk/Gtm+ftbW
+ 3kz6OFa3wrQIqirJAHUtiX5V+c9+kd8TwdJnBSRow0qAlRS+Gip5GW1pb+nevicDCRusoeJ3K
+ K3A4aL2Kqd0TEf1evu6n6gDeVJCgPx6CuXCtPb+vA49hA8mg4XkO+2Evcd9/oPle/R3Lm8eWv
+ e+p12oQ1hKY0phXTYEu6x3sJzgWfHRTp2Q/ZsD83q9Rcef964a9Xb0xaaHMW6vWgYjdGyTSCf
+ UYS6LAZyzn22oSfqhTHw9XZDsil73HdzwX4W+p3Gyi8WLnZrUW+dG9c+2gEiO99+g2eDrWL99
+ y3/qJV2+U062QB0zdZ/zpIT9hKRvYVwD1AuCT2RIpnNvLJi7eAiUKqZ8zUtmWvLBwo3xuBLgr
+ FAdtPaAXdV1r7UL9Raojw0NN/PziA80SG3Z+qx+EUt76vDdXCDVxx7hhjcqX3mg0UXAZMkha1
+ 6b5Mw15m0u7nUzGNjP84FldpGWGvYGsmCbR1+8ujiVGNtGfMG1b+eRKH4vBtIuersHe+LTnxO
+ zZIlhVtY54ZrRqFqwAvV4lUtIDa3b7MuxXvyMSDNR9huLwUyxFen/sy0UeXMptDgDxR5NFRuZ
+ /eI7DWZ3bnArHCAZuZMawEfL85MI38QzFqub3HFKw48/HSc1AM9aEdxKk0MNtPJkKxw6OtCfY
+ 1ntpjmAw6n6ryuI57/EFdXwGK3KEPPby4raz0dk9aphZ2CTRZ/WYel/TUstYOP85ot3nOa8Pj
+ qW0RDJSDnWZakT8dTmjUILgr2JlNduDxsl1xGmvEzAjqpw/PYvTDca5e5PrPBa/QHtoUgvYZG
+ MMqWP43YBbgLdomCimJWoiMpywr4lwY0ONJCyptMO5Aw0WaZHfxgOlp53oelF9pEgc62MhrUL
+ A2DeeThxIqSs1SV+qq7UcWn2MYteH/kl6jjTyT4XcQ+ImBE5oKQsKTsR6zcj/o/NGPnI1yAJ8
+ NnhJDH+YZt8ge/C3vHcG8O3qr+pq9o2/evbZQEET8SHkUpylhMUabzBIlRQ4sO3i3Ux5rg0ng
+ kpl2Nre+njUAW9VkCSG1/HA9v5IECkKxlZofgEMZziikc1G6x3tRu6sRV6ENEiq4vGbpc9/0k
+ GbCHuZr8Zgilz0XmYQir34oQ05XecXgxm6q5DcuCo6rLSm0WilA5AX7hIkyqKBMQ5yJosZr+m
+ ccdatjqdc/7/wsdoMz3HvkDz+6QQWqvsSvi0/RpNW2B3zoRUWH1TQ2/OhybdPfI/o1LxS4qQx
+ 5Yao0NM6WKMHF4ykF
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+> =E2=80=A6 were not released in a few error cases. =E2=80=A6
+
+Another small wording adjustment:
+  =E2=80=A6 in two error cases. =E2=80=A6
+
+
 =E2=80=A6
-> +++ b/drivers/irqchip/irq-davinci-aintc.c
-> @@ -96,7 +96,7 @@ void __init davinci_aintc_init(const struct davinci_ai=
-ntc_config *config)
->  				     resource_size(&config->reg));
->  	if (!davinci_aintc_base) {
->  		pr_err("%s: unable to ioremap register range\n", __func__);
-> -		return;
-> +		goto err_release;
->  	}
+> +++ b/drivers/irqchip/irq-csky-apb-intc.c
+=E2=80=A6
+> @@ -126,10 +127,17 @@ ck_intc_init_comm(struct device_node *node, struct=
+ device_node *parent)
+=E2=80=A6
+> +err_iounmap:
+> +	iounmap(reg_base);
+> +	return ret;
+>  }
 =E2=80=A6
 
-Can it help to return any error codes?
-Would you like to reconsider the function return type?
+How do you think about to use the statement =E2=80=9Creturn -ENOMEM;=E2=80=
+=9D?
+Can the local variable =E2=80=9Cret=E2=80=9D be omitted in this function i=
+mplementation?
 
 Regards,
 Markus

@@ -2,90 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E79CC2108C0
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jul 2020 11:58:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45FAE2109AE
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jul 2020 12:51:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729768AbgGAJ6R (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Jul 2020 05:58:17 -0400
-Received: from mail.loongson.cn ([114.242.206.163]:38934 "EHLO loongson.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729332AbgGAJ6Q (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Jul 2020 05:58:16 -0400
-Received: from [10.130.0.52] (unknown [113.200.148.30])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dx_98uXvxecKNNAA--.1551S3;
-        Wed, 01 Jul 2020 17:58:08 +0800 (CST)
-Subject: Re: [PATCH v4 14/14] irqchip/xilinx-intc: Fix potential resource leak
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        linux-arm-kernel@lists.infradead.org
-References: <1593569786-11500-1-git-send-email-yangtiezhu@loongson.cn>
- <1593569786-11500-15-git-send-email-yangtiezhu@loongson.cn>
- <e9aaa867-bb11-a469-a4b9-03fb68a18c56@web.de>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-From:   Tiezhu Yang <yangtiezhu@loongson.cn>
-Message-ID: <9434711b-96c1-8ef5-79b6-510170654df8@loongson.cn>
-Date:   Wed, 1 Jul 2020 17:58:06 +0800
-User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+        id S1730097AbgGAKvB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Jul 2020 06:51:01 -0400
+Received: from mga07.intel.com ([134.134.136.100]:4288 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729791AbgGAKvB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 1 Jul 2020 06:51:01 -0400
+IronPort-SDR: i1r71mXlTJGdL9T6fPgcGdNmgcpoWFaiovfbVayR8sx6yhNLH5nZDvBjPkXKgIrrMXOZw8cG9Q
+ iSVWDdrx0iGg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9668"; a="211589913"
+X-IronPort-AV: E=Sophos;i="5.75,299,1589266800"; 
+   d="scan'208";a="211589913"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2020 03:50:59 -0700
+IronPort-SDR: fqdJjYt0cdpBdhV9T+5fkkEjx1fpdbgRU0STGFzgfVj1c3WKqbZkEadWiXoQVuy7trbiZuO4AU
+ HF4yU22+wEsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,299,1589266800"; 
+   d="scan'208";a="386975562"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by fmsmga001.fm.intel.com with SMTP; 01 Jul 2020 03:50:56 -0700
+Received: by lahna (sSMTP sendmail emulation); Wed, 01 Jul 2020 13:50:55 +0300
+Date:   Wed, 1 Jul 2020 13:50:55 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] thunderbolt: ensure left shift of 512 does not
+ overflow a 32 bit int
+Message-ID: <20200701105055.GQ5180@lahna.fi.intel.com>
+References: <20200630145558.516961-1-colin.king@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <e9aaa867-bb11-a469-a4b9-03fb68a18c56@web.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf9Dx_98uXvxecKNNAA--.1551S3
-X-Coremail-Antispam: 1UD129KBjvdXoWrKFyxWw4DGFyUKw47tw15CFg_yoW3ZFg_Zr
-        1093Z5GFW8Jrn8JayIyrsI9393Wr4kJan7tFWvva47Z34fXws3urWqkw1xX348WF1fCF45
-        Cw4YvrWftrW7ZjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUbcAYjsxI4VWDJwAYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I
-        6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
-        8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0
-        cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
-        8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-        64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJw
-        Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzVAYIcxG8wCF
-        04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r
-        18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vI
-        r41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr
-        1lIxAIcVCF04k26cxKx2IYs7xG6rWUJVWrZr1UMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF
-        0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjxUc9mRUUUUU
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200630145558.516961-1-colin.king@canonical.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 07/01/2020 05:42 PM, Markus Elfring wrote:
->> In the function xilinx_intc_of_init(), system resource "irqc->root_domain"
->> was not released in the error case. Thus add jump target for the completion
->> of the desired exception handling.
-> Another small wording adjustment:
->    … Thus add a jump target …
+On Tue, Jun 30, 2020 at 03:55:58PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The 32 bit int value 512 is being left shifted and then used in a context
+> that expects the expression to be a larger unsigned long. There may be
+> a potential integer overflow, so make 512 a UL before shift to avoid
+> any such issues.
+> 
+> Addresses-Coverity: ("Uninintentional integer overflow")
+> Fixes: 3b1d8d577ca8 ("thunderbolt: Implement USB3 bandwidth negotiation routines")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-OK
-
->
->
-> …
->> +++ b/drivers/irqchip/irq-xilinx-intc.c
-> …
->> @@ -250,6 +250,8 @@ static int __init xilinx_intc_of_init(struct device_node *intc,
->>
->>   	return 0;
->>
->> +error_domain_remove:
->> +	irq_domain_remove(irqc->root_domain);
->>   error:
->>   	iounmap(irqc->base);
-> …
->
-> Can labels like “remove_irq_domain” and “unmap_io” be nicer?
-
-Thank you, I will use "err_domain_remove" and "err_iounmap"
-to keep consistence with other patches.
-
->
-> Regards,
-> Markus
-
+Applied, thanks!

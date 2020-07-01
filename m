@@ -2,36 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62FF8210554
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jul 2020 09:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACE172105F0
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jul 2020 10:15:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728397AbgGAHtx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Jul 2020 03:49:53 -0400
-Received: from mout.web.de ([217.72.192.78]:41715 "EHLO mout.web.de"
+        id S1728498AbgGAIPe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Jul 2020 04:15:34 -0400
+Received: from mout.web.de ([217.72.192.78]:38697 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728217AbgGAHtw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Jul 2020 03:49:52 -0400
+        id S1728188AbgGAIPd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 1 Jul 2020 04:15:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1593589771;
-        bh=AUSAQHdZ185AAIFEsveQlxvM8o94B7vxd0p7U0M505g=;
+        s=dbaedf251592; t=1593591322;
+        bh=LsbgrN+XbOhH1YYBuyAJlJARrHXNo7sXYiwieN7tSUQ=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=LKtqTSVdcvio03D+QGvlFPp/E3FoXOd7dEgeeVAoI2FQ6IMZ4mdim6B8+qunKA1e+
-         SAiEyxd6m0q6q/I2vh7aaaAgJhHtSpuZ7KcUEG2S0IROGCT8k6/EOuwJzHZIr2DACP
-         P4npAd4kYnTFiQre1NJh7TuzbXe2o8bZzNIvy7u8=
+        b=chq0FyjS2nN4JEFWKftqPr0N1OtdhMvKlJt382LWzxsNLOrLyyPCAumgFEMkcAXbJ
+         2P5gPgJczoOQI4dubwc7530bqbbubKpIL5PPUy/L8HpYkmUWbk4eajM5GDLOmUJuCE
+         0it7CdFwICSgQ+83w+nPyL/Or03EaOJt8Rg3puHY=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([78.49.41.17]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MhFhg-1jDeJN20m2-00eK7j; Wed, 01
- Jul 2020 09:49:31 +0200
-Subject: Re: [PATCH v4 03/14] irqchip/csky-mpintc: Fix potential resource
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MOm0r-1jS1Yr0pR9-00QEpa; Wed, 01
+ Jul 2020 10:15:22 +0200
+Subject: Re: [PATCH v4 04/14] irqchip/davinci-aintc: Fix potential resource
  leaks
 To:     Tiezhu Yang <yangtiezhu@loongson.cn>,
         Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org
+        Marc Zyngier <maz@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 References: <1593569786-11500-1-git-send-email-yangtiezhu@loongson.cn>
- <1593569786-11500-4-git-send-email-yangtiezhu@loongson.cn>
+ <1593569786-11500-5-git-send-email-yangtiezhu@loongson.cn>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,73 +75,58 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <35eae701-e6b1-96af-9be4-0993330a17dc@web.de>
-Date:   Wed, 1 Jul 2020 09:49:21 +0200
+Message-ID: <08cad331-0a17-586c-07a7-6e3843cb61a1@web.de>
+Date:   Wed, 1 Jul 2020 10:15:19 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <1593569786-11500-4-git-send-email-yangtiezhu@loongson.cn>
+In-Reply-To: <1593569786-11500-5-git-send-email-yangtiezhu@loongson.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:VK0SXfyvpzWFdJ0AaSP9rc2ghNhPd5/O3GG2Z8MUfriTZ56VE/t
- Ed1/i+KNfFFuIBAlA5a81ablBx7x1pMOWZodjdOxyH3b5FeV8wMBvNYX24cQI/6T2UlBvfP
- +vWKpyouZfyt6eFl9Q5u6IMtPoFM/C7LuThfTZLzt1jR3CjT0Tf3MRIXUOvEMQFh7rBd5rD
- F6GBUR9nZWMwTminvvCeg==
+X-Provags-ID: V03:K1:8Icnu5aEb3po0rBvNg7cDRQrqF+/3jZzVKct0fb/Ue2DliZMVxX
+ a+qCDr2WU+sL9ASuw9NAKciHCDJH0Kv+YMU51lxA9bgeAc3b70mYFbyU3Wwc5YzuMFdbYWn
+ S8Ro7fNuuahr5LSi44/Na54nDzSud0uG6EuPRYtVjdxzLTuvCths1YV/1scmfBzqRiCcG9b
+ YrYmm+L5DTB93xogL5PDQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Gl2/AEw5Jps=:7OhERpI8F6QKhPQ9B0kPwT
- HNCCSdiaS4x01s39GuQgJagg9a9pR5fe4SiGHB3I7Y8Pt0SND2dil5M0MGbGqlLqJAjOJMtsg
- 2mgJti2aXVEjAywRXK+WCXwm++Y2Q6mvuUdyt0a4gXahV10ND1wDqF8PSE17k5AIrmUw96LRz
- VsqCgFd8l1QrSl+oYsUXeujfFUdCJnXO9XPUkWBTw6QaMZialYRhTFduoPrdbXv8O/LfhrMzx
- Qvbjba8s+fOxISMH4Yz60kEF27SzkB7jyk7DbrVneSe1ipJvFjYBRd8Z2Qd595TImqOFWUXQl
- kVkCa1RmvZ3slfpiIp5mA7UQsLao5xrJHAeiqlf/Z4Sdoi6/alVf60iFLwzDix/TUbQIrFMtH
- SBsGO9X8urbTdCw01PVjM3s9XHdt3EPPBfpdbUSn9ESRTivrRzIEpLjtTmTtJ0asVNEZIBf5C
- TvUymg8CHUBN4XtDxODCqfABiFn2eQyzDK7aJUZ2qGrBjz4fxmpC8wzfbmifwOqaurY2x5bsz
- BN/4ZxK2FurWOAH35+c/wTh+BNJOh/FxAMHTjy/fkrbpTcVwHXmwJmBmApwej+ddFNd/GZ4zK
- kIm/aiQhcpI3uTC4oQiWLG4Oc6XfiAl4YsezelsHfsXOmOZpr0Rd7aSzOmX+zogAE9xipweEE
- ziB4OBPa/zerNEXdWW9JUm4VzidPBp6MmcXy9rk24ogSSFNWo+TORoCl3KoWU7WpAINy8NAk7
- 5auqdCWOK6PvM4fK2TS/m43nhn3CQ8ToZ/lykhUCw9l3+kZ0Mk2cnBGKVuq/xmlPV1/uhap7e
- k8uKyLu8sR6EzwpayKlNXFrV9GOWw4se1YsAJtEQo1czJ830PQLJC0cFPCyUaZtNyXjXKZds8
- zycftJKLlH+JsQF2NEE2yl+1ub55D+DeYHAZuzWWBSW9oQSMVpSplQ01ztfiWD92XRXDH1M+W
- Z56C9n1xtNzAOwvaOlt2JpaRGd4VlkjFZsYiC+WbexlD33x0tjvxgpXI6HdDnMMVq2hYwGvsS
- 4jtr6tK4l3fMp/1sn716zABSEOi6jsD5TSSPZiw7XLy7aSJTNy7sXZt20vEDzFJbzH/mvfq5U
- m6HL0CudFGnjr4eSN0u/bztFFEhu7A79CiA/d7t2Ah4nI54AsRahFhYZbsl97JsYbOKP3lDlk
- N2sG60DKipDrb20WKtvoW2ND/3t4ilaXPZreB+th4plDD+7huQz8dsGaDGQA4idzU1l+ETdKz
- qPH+mM+TwbwgDb4Xj
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+YDvWG6y2lQ=:N5niptZWb7Bb9sbeGe8I/9
+ uI/K88dbtyD6x2ehT7wHHcpjHrGn+/nFgFyOmL+ys9i3yUGyu1jfPdxPqYdi9nnYvPCteY7bH
+ gy1ZqI/nSzuK1gS24kB4FTKvtC42mGCQrgf74ZIAUyR67hz4OiuGREnjttRVOrTGMUkvb+gZ+
+ NPL3UfGptfXk45q96pW8Kjdk8kB4lPMJ+IPnbvjHFhc67c1zYgVKMKJ3lABmq83OTBukHluYx
+ DWFi/79A5mRdetYXQISnxdTwo9e2NHy1XelmVccftVgYhIz6veSEXvWw3v9bIc19TjRnw8ct+
+ uFyRkRHD6aHzZ0e70DqJHRWY9PxZ4imr+hjkp+c/pSUX9tWUxZLzn9LuhcHM1Obl6d/xx1MyY
+ IQ9KmZAE5yxRk/o24yNIXWKF/kNTUHA7Cg+R5fHeVaNuuddIwY+i5U77+ErgeUaG8tCLeWKDH
+ joDTUTDsyG0QhfOiteFoQtzDyiFhFRVZgUBcqQZ3ee8JxOdBFjqjrOMGepkl+e2unDpDkVEAt
+ kfL04YANjDNaDCC73E9YfpquZryIVskLFwO0yQkowDxE7XYZak5xBd5JAghnoahp7MThIusLB
+ vxwPVUu6gn3ns7X+Brw6cLoq9mTBfOfLRqOQ0eTkw26+sBUqztl77R9WnnSwGLb62J8p0S1Ys
+ CWfFIfvmN8Y9iHhv7eSqYZ4t+kR37hOskh2t4vJaSRJqfn2A/A+CsRU9GqhBrfTZ++9sgHoR1
+ pBMDzOeFERtNNfr5Z6TNzE20m+onbxFSNVzLpqTngYqsvqWP1G5pNYsq/8TiWb6xKp7T79NKe
+ DlMuBy9zV+Xeoqwi+V+YDN08CaKKDACUB6rQahrblL6qYsF5Y4BpZ/a0zDJzwwNDzQ5qrcjvR
+ mvUCnqcaFFCmZnPR6RZLxz7RaZ260arEzI74LgAKrmuSZQ3pUVOKztVilpqk5dhrK8LrmsJlU
+ shKE5g/z/IwPTkoFNfyFyM8jnKhRb1sVM/V4+wTEt3IJqAp3JPoPNXC4gZZI4CoEopyDFFE4k
+ 20uk7DPADEXrKH5TQi/w0wf9qyO+v8RJ2RflyUaRGdAbK2QkWBjP0+janrszR15efePsMYHs2
+ HYEscfgfSFTsqnRAIabHUzYu6lgkjdf5IMKwKrF1EtnZsRyLi3yQDxTnRwKT3r/H0frouT/HN
+ pbYO9daSQgYdSlPI4NgTQd0IMt48dpsAEFp4hP7+1/OY64wqAu61ahjr/leNk4SjtVe4y0Wbg
+ 8bUj4UAHjCWcI/YKI
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> exception handling. By the way, do some coding-style cleanups
-
-I propose to consider another bit of fine-tuning.
-
-
 =E2=80=A6
-> +++ b/drivers/irqchip/irq-csky-mpintc.c
+> +++ b/drivers/irqchip/irq-davinci-aintc.c
+> @@ -96,7 +96,7 @@ void __init davinci_aintc_init(const struct davinci_ai=
+ntc_config *config)
+>  				     resource_size(&config->reg));
+>  	if (!davinci_aintc_base) {
+>  		pr_err("%s: unable to ioremap register range\n", __func__);
+> -		return;
+> +		goto err_release;
+>  	}
 =E2=80=A6
-> @@ -270,12 +274,24 @@ csky_mpintc_init(struct device_node *node, struct =
-device_node *parent)
->
->  #ifdef CONFIG_SMP
->  	ipi_irq =3D irq_create_mapping(root_domain, IPI_IRQ);
-> -	if (!ipi_irq)
-> -		return -EIO;
-> +	if (!ipi_irq) {
-> +		ret =3D -EIO;
-> +		goto err_domain_remove;
 
-How do you think about to use the following source code variant
-at this place?
-
-+		irq_domain_remove(root_domain);
-+		ret =3D -EIO;
-+		goto err_iounmap;
-
-
-Would you like to avoid the repetition of the check =E2=80=9C#ifdef CONFIG=
-_SMP=E2=80=9D?
+Can it help to return any error codes?
+Would you like to reconsider the function return type?
 
 Regards,
 Markus

@@ -2,62 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC0A2210E54
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jul 2020 17:04:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58828210E6D
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jul 2020 17:07:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731733AbgGAPEi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Jul 2020 11:04:38 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:35060 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731039AbgGAPEi (ORCPT
+        id S1731699AbgGAPHS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Jul 2020 11:07:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57028 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731505AbgGAPHS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Jul 2020 11:04:38 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jqeHp-0008To-Kh; Wed, 01 Jul 2020 15:04:33 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] net/packet: remove redundant initialization of variable err
-Date:   Wed,  1 Jul 2020 16:04:33 +0100
-Message-Id: <20200701150433.551656-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        Wed, 1 Jul 2020 11:07:18 -0400
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC934C08C5C1;
+        Wed,  1 Jul 2020 08:07:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description;
+        bh=L3kKHrtugZdZaaaEA+9AzSKVijtsEP+fouPlZ1lpYfo=; b=M3oGG8PMqN8K4FAu523qeKzcLi
+        tHyOZRIc6eTPCI0K6yfu4vYkiSWAvtg202r3Vgi3ToycReduqU3rLS7McoJ/IuVVNyIO0YkjoZvmR
+        emSVuipiCA9+6KQfBEXqwTm2+at/qnA/R/45dtwZPohMzoqcaxFf34qSWq3PrwTabTLNPIsoaz3Dq
+        Gwuxns2WspMRje0MiJs1H4yQi6N2qMaXJ4Vg3YMN72sbB1cLSEKyIlRBoeeK81tF/aVsC1uPwl18F
+        cY5EIypqviPOAqksyBeYzoWXVA1u0gH2A8tztZHuoQGnHAeTk+cbdWzOJIkkPZeDKm7vDweKRy2XX
+        tRKt7rqg==;
+Received: from [2601:1c0:6280:3f0::19c2]
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jqeKO-00064z-3z; Wed, 01 Jul 2020 15:07:12 +0000
+Subject: Re: [v2] Documentation: Coccinelle: fix typos and command example
+To:     Markus Elfring <Markus.Elfring@web.de>, linux-doc@vger.kernel.org,
+        Coccinelle <cocci@systeme.lip6.fr>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Jonathan Corbet <corbet@lwn.net>
+References: <0616dd0c-bb86-be2b-3dc6-1c695a92c3ca@infradead.org>
+ <c2c1dec0-2bd1-b0e2-1aa4-38d0e954d5ba@web.de>
+ <efc8b0c9-db3b-3c9c-d876-897b53a9e278@infradead.org>
+ <2a3940de-6a81-1aff-8109-53c1c5a6aa1b@web.de>
+ <f2aaa91a-f935-bc2d-26f2-712576c1bbd7@infradead.org>
+ <2f80fb10-dc7f-29be-dc3e-2715f8bafc6d@web.de>
+ <dfa2ed9f-fe68-58d1-c3d0-ac436f9bee09@infradead.org>
+ <648d287e-3636-1858-1439-103d317f8571@web.de>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <34065299-03cf-5b62-db37-0acc9830be72@infradead.org>
+Date:   Wed, 1 Jul 2020 08:07:06 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <648d287e-3636-1858-1439-103d317f8571@web.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 7/1/20 8:02 AM, Markus Elfring wrote:
+>>>>> How do you think about to use the following command variant
+>>>>> for the adjustment of the software documentation?
+>>>>>
+>>>>> +    make C=1 CHECK='scripts/coccicheck' 'path/to/file.o'
+>>>>
+>>>> I don't understand the reason for that change...
+>>
+>> IOW, your "patch" needs justification and/or explanation. It was missing that info.
+> 
+> I hope that the clarification of the presented questions can result into
+> relevant information.
+> 
+> 
+>>> Is our understanding still incomplete for the support of source code checking parameters
+>>> by the make script?
+>>>
+>>> * Will software analysis be performed in addition to the desired compilation
+>>>   of a source file (according to the selected object file)?
+>>>
+>>> * How do you think about to trigger only the generation of analysis results
+>>>   for a single file?
+>>
+>> Do I need to remove that line from the patch?
+> 
+> I propose to adjust it another bit.
+> The desired change agreement might need further communication efforts.
+> 
+> 
+>> Feel free to submit patches, not just comments.
+> 
+> Would you like to integrate any more details from the running patch review?
 
-The variable err is being initialized with a value that is never read
-and it is being updated later with a new value.  The initialization is
-redundant and can be removed.
+I am satisfied with the current patch.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- net/packet/af_packet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+No doubt that any documentation can be improved, almost ad infinitum,
+but I'm not trying to do that. I'm trying not to do that.
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 29bd405adbbd..7b436ebde61d 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -4293,7 +4293,7 @@ static int packet_set_ring(struct sock *sk, union tpacket_req_u *req_u,
- 	struct packet_ring_buffer *rb;
- 	struct sk_buff_head *rb_queue;
- 	__be16 num;
--	int err = -EINVAL;
-+	int err;
- 	/* Added to avoid minimal code churn */
- 	struct tpacket_req *req = &req_u->req;
- 
+
 -- 
-2.27.0
+~Randy
 

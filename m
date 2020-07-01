@@ -2,84 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 867C020FFED
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jul 2020 00:13:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7A4B210479
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jul 2020 09:06:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726135AbgF3WMw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 30 Jun 2020 18:12:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33530 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725862AbgF3WMv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 30 Jun 2020 18:12:51 -0400
-Received: from localhost (mobile-166-175-191-139.mycingular.net [166.175.191.139])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D16072081A;
-        Tue, 30 Jun 2020 22:12:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593555171;
-        bh=h1obBUyTPJ75QgeorGRJK1b9zJ+cbov4c/nHPyLr+yw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=M/84Qq3eKACfAHQjDCkpV3cm4rQfN9fudLtrODHV/aJYn7tGBP4MbNKzLWTc4wcbQ
-         8wxU6ED77IYa/Qy/hiMpWO6dMSUxGVVEE//2L7iGf/0Lt9kZ4iUwcFbIHZrWAum8Iq
-         d1+6PKGsAIhjnkj3qCRYtXN45CyM9IaaV6LCntes=
-Date:   Tue, 30 Jun 2020 17:12:49 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        xen-devel@lists.xenproject.org, linux-pci@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Subject: Re: [PATCH] xen/pci: remove redundant assignment to variable irq
-Message-ID: <20200630221249.GA3491219@bjorn-Precision-5520>
+        id S1728059AbgGAHGo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Jul 2020 03:06:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37988 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727847AbgGAHGn (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 1 Jul 2020 03:06:43 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C60B8C061755
+        for <kernel-janitors@vger.kernel.org>; Wed,  1 Jul 2020 00:06:43 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mtr@pengutronix.de>)
+        id 1jqWpC-00022p-6y; Wed, 01 Jul 2020 09:06:30 +0200
+Received: from mtr by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <mtr@pengutronix.de>)
+        id 1jqWpB-0007vN-7U; Wed, 01 Jul 2020 09:06:29 +0200
+Date:   Wed, 1 Jul 2020 09:06:29 +0200
+From:   Michael Tretter <m.tretter@pengutronix.de>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] media: allegro: Fix some NULL vs IS_ERR() checks in probe
+Message-ID: <20200701070629.GA16164@pengutronix.de>
+Mail-Followup-To: Michael Tretter <m.tretter@pengutronix.de>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
+        kernel-janitors@vger.kernel.org
+References: <20200619143007.GC267142@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200409114118.249461-1-colin.king@canonical.com>
+In-Reply-To: <20200619143007.GC267142@mwanda>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 09:05:04 up 132 days, 14:35, 107 users,  load average: 0.07, 0.20,
+ 0.16
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: mtr@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-[+cc Juergen, Boris]
-
-On Thu, Apr 09, 2020 at 12:41:18PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Fri, 19 Jun 2020 17:30:07 +0300, Dan Carpenter wrote:
+> The devm_ioremap() function doesn't return error pointers, it returns
+> NULL on error.
 > 
-> The variable irq is being initialized with a value that is never read
-> and it is being updated later with a new value.  The initialization is
-> redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Fixes: f20387dfd065 ("media: allegro: add Allegro DVT video IP core driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Applied to pci/virtualization for v5.9, thanks!
-
-I don't see this in linux-next yet, but if anybody else would prefer
-to take it, let me know and I'll drop it.  
+Reviewed-by: Michael Tretter <m.tretter@pengutronix.de>
 
 > ---
->  arch/x86/pci/xen.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/staging/media/allegro-dvt/allegro-core.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/arch/x86/pci/xen.c b/arch/x86/pci/xen.c
-> index 91220cc25854..80272eb49230 100644
-> --- a/arch/x86/pci/xen.c
-> +++ b/arch/x86/pci/xen.c
-> @@ -63,7 +63,7 @@ static int xen_pcifront_enable_irq(struct pci_dev *dev)
->  static int xen_register_pirq(u32 gsi, int gsi_override, int triggering,
->  			     bool set_pirq)
->  {
-> -	int rc, pirq = -1, irq = -1;
-> +	int rc, pirq = -1, irq;
->  	struct physdev_map_pirq map_irq;
->  	int shareable = 0;
->  	char *name;
+> diff --git a/drivers/staging/media/allegro-dvt/allegro-core.c b/drivers/staging/media/allegro-dvt/allegro-core.c
+> index 70f133a842dd..3ed66aae741d 100644
+> --- a/drivers/staging/media/allegro-dvt/allegro-core.c
+> +++ b/drivers/staging/media/allegro-dvt/allegro-core.c
+> @@ -3065,9 +3065,9 @@ static int allegro_probe(struct platform_device *pdev)
+>  		return -EINVAL;
+>  	}
+>  	regs = devm_ioremap(&pdev->dev, res->start, resource_size(res));
+> -	if (IS_ERR(regs)) {
+> +	if (!regs) {
+>  		dev_err(&pdev->dev, "failed to map registers\n");
+> -		return PTR_ERR(regs);
+> +		return -ENOMEM;
+>  	}
+>  	dev->regmap = devm_regmap_init_mmio(&pdev->dev, regs,
+>  					    &allegro_regmap_config);
+> @@ -3085,9 +3085,9 @@ static int allegro_probe(struct platform_device *pdev)
+>  	sram_regs = devm_ioremap(&pdev->dev,
+>  				 sram_res->start,
+>  				 resource_size(sram_res));
+> -	if (IS_ERR(sram_regs)) {
+> +	if (!sram_regs) {
+>  		dev_err(&pdev->dev, "failed to map sram\n");
+> -		return PTR_ERR(sram_regs);
+> +		return -ENOMEM;
+>  	}
+>  	dev->sram = devm_regmap_init_mmio(&pdev->dev, sram_regs,
+>  					  &allegro_sram_config);
 > -- 
-> 2.25.1
+> 2.27.0
+> 
 > 

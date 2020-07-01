@@ -2,36 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C154210678
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jul 2020 10:41:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE6F72107CD
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jul 2020 11:15:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728541AbgGAIk5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Jul 2020 04:40:57 -0400
-Received: from mout.web.de ([212.227.17.12]:51527 "EHLO mout.web.de"
+        id S1728950AbgGAJPM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Jul 2020 05:15:12 -0400
+Received: from mout.web.de ([212.227.17.12]:53451 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726670AbgGAIk4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Jul 2020 04:40:56 -0400
+        id S1725915AbgGAJPM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 1 Jul 2020 05:15:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1593592836;
-        bh=eoZXVuPwrXpUh4mYMbAjgn9KOvWCEAKdB4s1f+uosGU=;
+        s=dbaedf251592; t=1593594900;
+        bh=gBtyVQm8fm2su1FSsiG7tja1aFYHtMY3thDKxgiNcpY=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=FB17ez+wNxPIXtxU4/smdqehczCinZQgT30B/hfjz0rUde3KurLJDaHkxGHkhUNcu
-         gIIsgvbgDcJfPNK5K58zbdbRc98511Mvvq0uQTesbEUyX/+3W/QnZCUMhzT1wOtjgU
-         mFEMqWp1rrOIOzhIafIbFnIwYfJKH6xaWjBQql+k=
+        b=fRzBk9x8hcHUYzzPqnHbdwF894OrbOMrVFfRC69jTmu7WdOyTi6GmU5s7bwtMsrxI
+         TjHvFd91eayF6IkkAZ536GsUDKJtcFd0rTyHZrDLsVUbgGgw17BACeOXa9RFOEWZDF
+         zAiLCorNIgo57mBJxT0pc6k126M0xyYkw1aMPaY8=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.41.17]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LxOHm-1il1O22x4c-016wFD; Wed, 01
- Jul 2020 10:40:36 +0200
-Subject: Re: [PATCH v4 02/14] irqchip/csky-apb-intc: Fix potential resource
- leaks
+Received: from [192.168.1.2] ([78.49.41.17]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lcxxc-1j8jhc1EEC-00i8XE; Wed, 01
+ Jul 2020 11:15:00 +0200
+Subject: Re: [PATCH v4 11/14] irqchip/omap-intc: Fix potential resource leak
 To:     Tiezhu Yang <yangtiezhu@loongson.cn>,
         Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org
+        Marc Zyngier <maz@kernel.org>,
+        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 References: <1593569786-11500-1-git-send-email-yangtiezhu@loongson.cn>
- <1593569786-11500-3-git-send-email-yangtiezhu@loongson.cn>
+ <1593569786-11500-12-git-send-email-yangtiezhu@loongson.cn>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,66 +75,51 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <564ffff9-6043-7191-2458-f425dd8d0c11@web.de>
-Date:   Wed, 1 Jul 2020 10:40:35 +0200
+Message-ID: <fdbd6e18-37d4-cf29-a990-89c1974491cb@web.de>
+Date:   Wed, 1 Jul 2020 11:14:58 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <1593569786-11500-3-git-send-email-yangtiezhu@loongson.cn>
+In-Reply-To: <1593569786-11500-12-git-send-email-yangtiezhu@loongson.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:S4EgZBj8e7mQDOmZIsBIbSuc5Y2irbiz+K+XRonPv+1h3Cfog3Q
- QFHSqT13LSf+AtXFFbOPHEjka0k8xKFPUIewayOUKn60RLYGGDWIlbxoPJjQ5ni9DCrA66t
- liP9yUzT9O9V7IVa7rXI1GoQuQFkV3pT240d/NDo2zUYGsmjdjw2Nw6ZIsHkN4HbKIvV3eh
- ksgz925KCB0/qUrs+YEjg==
+X-Provags-ID: V03:K1:PksGMMULrlfc4sy8f/xMCXiwy7Wxo5ApqOVnjNfeRLx9xmwaZUt
+ fwZneUWs/sMuRhHuolE27gU2PkeqwIvCEFobJlNuYX15D2aIM3D1SDYBZZ7Ps5BL7CmR3Hp
+ wuMTL/RkjHGznDZ296rDyamA3BJw/hXpfLOJ5KrITAEojab6r+rrjLylywNxZvGgupvijDH
+ hDT36j1MCFDULTn/RjAtQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:7GR720Ufx/U=:Tl+QK/ZoMe2Sk/Gtm+ftbW
- 3kz6OFa3wrQIqirJAHUtiX5V+c9+kd8TwdJnBSRow0qAlRS+Gip5GW1pb+nevicDCRusoeJ3K
- K3A4aL2Kqd0TEf1evu6n6gDeVJCgPx6CuXCtPb+vA49hA8mg4XkO+2Evcd9/oPle/R3Lm8eWv
- e+p12oQ1hKY0phXTYEu6x3sJzgWfHRTp2Q/ZsD83q9Rcef964a9Xb0xaaHMW6vWgYjdGyTSCf
- UYS6LAZyzn22oSfqhTHw9XZDsil73HdzwX4W+p3Gyi8WLnZrUW+dG9c+2gEiO99+g2eDrWL99
- y3/qJV2+U062QB0zdZ/zpIT9hKRvYVwD1AuCT2RIpnNvLJi7eAiUKqZ8zUtmWvLBwo3xuBLgr
- FAdtPaAXdV1r7UL9Raojw0NN/PziA80SG3Z+qx+EUt76vDdXCDVxx7hhjcqX3mg0UXAZMkha1
- 6b5Mw15m0u7nUzGNjP84FldpGWGvYGsmCbR1+8ujiVGNtGfMG1b+eRKH4vBtIuersHe+LTnxO
- zZIlhVtY54ZrRqFqwAvV4lUtIDa3b7MuxXvyMSDNR9huLwUyxFen/sy0UeXMptDgDxR5NFRuZ
- /eI7DWZ3bnArHCAZuZMawEfL85MI38QzFqub3HFKw48/HSc1AM9aEdxKk0MNtPJkKxw6OtCfY
- 1ntpjmAw6n6ryuI57/EFdXwGK3KEPPby4raz0dk9aphZ2CTRZ/WYel/TUstYOP85ot3nOa8Pj
- qW0RDJSDnWZakT8dTmjUILgr2JlNduDxsl1xGmvEzAjqpw/PYvTDca5e5PrPBa/QHtoUgvYZG
- MMqWP43YBbgLdomCimJWoiMpywr4lwY0ONJCyptMO5Aw0WaZHfxgOlp53oelF9pEgc62MhrUL
- A2DeeThxIqSs1SV+qq7UcWn2MYteH/kl6jjTyT4XcQ+ImBE5oKQsKTsR6zcj/o/NGPnI1yAJ8
- NnhJDH+YZt8ge/C3vHcG8O3qr+pq9o2/evbZQEET8SHkUpylhMUabzBIlRQ4sO3i3Ux5rg0ng
- kpl2Nre+njUAW9VkCSG1/HA9v5IECkKxlZofgEMZziikc1G6x3tRu6sRV6ENEiq4vGbpc9/0k
- GbCHuZr8Zgilz0XmYQir34oQ05XecXgxm6q5DcuCo6rLSm0WilA5AX7hIkyqKBMQ5yJosZr+m
- ccdatjqdc/7/wsdoMz3HvkDz+6QQWqvsSvi0/RpNW2B3zoRUWH1TQ2/OhybdPfI/o1LxS4qQx
- 5Yao0NM6WKMHF4ykF
+X-UI-Out-Filterresults: notjunk:1;V03:K0:q9HnAGRZstE=:cCCO9QVn3fYCdFzkh8SeS4
+ G4ec8kcqGJIH2hx/ySrpcE3aXIwAT4333eAHMhKbwwoHbNQptO6Bdtn6GLlk2iAqH1DTRo3aM
+ 6LNcmNSK5zO/rq84j12TZ50ph6dNiy9H4EUHhgwBK+sltB/T7uOD9NAhacXtjoW556Xgw7y1B
+ HeMh57znOHRKCqjuFvXN4v1xrf6TRQ53tgobIYMG4yQMZ7IYKf8IwMWFi9502IB2zKVlPvMws
+ Pl8H3ZrPm+7wSlBxVwzkSXkbvCsojbmjCfjOIQPKkD1Gy95E/KKL65WHjp+3n70UuO56Ns+o4
+ bXg4dXGte+zBNzoaEEcnxWwDDgqc0JqrQ1Fg96qg53G392ftsyagi98yndKEG8wD5pbkSjLpd
+ XLXDZNqyXSKRHsDsAg1Fc5Zqz2tGStinIGQ4ytq1A06S7Kkzlc82XcP7l2qqHzZQAK+GQxUV9
+ 1lW2HjiQ/2yqjSdSbc36Vwz0ShgoNCS+VkpmhmkzV4xFqc26hDd9/fK+HXlkUh/Bq4CNdqYSO
+ FVC0XH6xvekLodhEw5GauDXTl6leWG3d+sHveHIj7uBN7uOrLILV1OnLhe/1qCPESwDHDQfL/
+ PhymbiJBriRyfQdYVXhdU5lcJpSY1uSqwnwlGzZy+r1ArO0ankKFKrsUXkzZZcv1l8yARhIpN
+ OBWfAXBYJL0wgFwg7YNRoVokZuA5NvVwwsiMtwZsCvkCHqFuxk4jKyPIeDfrm/EzIbeoU7OlO
+ 6vswqYUYfe4aiN/GJftTHSxyhoIBZb/PLUzxfqzAKopWs02bRPUhswF5Ig9IrvAiXVY/MSdui
+ WVf4UlCFlhhOsWqOxH1GXwTTb1ORTHOHYfTQIrZ4qhKCD5cu5VxIkxZCca3D4oWhS0NIhx3oJ
+ ofnTMX2XnT230dvOR9x6I/Q6LlNIURzNfozmlCdXcAqTEsbTcxCX3tvWgb5wU6tlXmkE2isuS
+ 1CJcyNHSGTmV66yzEZ9FBTpK+Q6sJ5+u81Nfy/EgqLa+ziPzE6uIArxhB4Av1jW6fJdMuX+/2
+ bhVbmlvbKaiFkvhZyECFEQWgs2Ay9sDgi6R8m05QW0VZhvgwd62Ccsmfh3yZxf9wpohwOOQF+
+ m8ET7+2ZSCssVHl9TLym1PiX3Zf9j371okrez04a08Ywd9MQaoyUMuMsyrPYpGHqzsJ4HdFgR
+ gjy8uCGeSG6qkjXbqiSZB+/jZiqtnAFL0KFTL9pBzdKhWtfeQdCyCBuSL8+KAGqK+n0VldEI3
+ Yz0GAqGZuv5OKQ8M2
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> =E2=80=A6 were not released in a few error cases. =E2=80=A6
+> In the function omap_init_irq_of(), system resource "omap_irq_base"
+> was not released in the error case, fix it.
 
 Another small wording adjustment:
-  =E2=80=A6 in two error cases. =E2=80=A6
-
-
-=E2=80=A6
-> +++ b/drivers/irqchip/irq-csky-apb-intc.c
-=E2=80=A6
-> @@ -126,10 +127,17 @@ ck_intc_init_comm(struct device_node *node, struct=
- device_node *parent)
-=E2=80=A6
-> +err_iounmap:
-> +	iounmap(reg_base);
-> +	return ret;
->  }
-=E2=80=A6
-
-How do you think about to use the statement =E2=80=9Creturn -ENOMEM;=E2=80=
-=9D?
-Can the local variable =E2=80=9Cret=E2=80=9D be omitted in this function i=
-mplementation?
+  =E2=80=A6 in an error case. Thus add a call of the function =E2=80=9Ciou=
+nmap=E2=80=9D
+  in the if branch.
 
 Regards,
 Markus

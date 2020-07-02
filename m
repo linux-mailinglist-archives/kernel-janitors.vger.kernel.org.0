@@ -2,121 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A099211F03
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Jul 2020 10:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53086212263
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Jul 2020 13:35:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727916AbgGBIkj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 2 Jul 2020 04:40:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49702 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726442AbgGBIki (ORCPT
+        id S1728684AbgGBLfF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 Jul 2020 07:35:05 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:41054 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726343AbgGBLfF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 2 Jul 2020 04:40:38 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ED39C08C5C1;
-        Thu,  2 Jul 2020 01:40:38 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id x3so6704178pfo.9;
-        Thu, 02 Jul 2020 01:40:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=AeaSQtniWWM8/+wvy+sNNOb5mUXTofHpZfTaKxLBkbQ=;
-        b=kTA4ijKUtPHNOdbN4/HxBECG3ezs51LEBwwhOeipwdFlT36npD9ZKZ2+qmhO1450ps
-         RL/Dem+OAh+3tbDe+BCkAOcuyXCFAninLQcVRea4hlxR8Fe8uo+nCvtfq43NJ4DEWYEU
-         w7kD9FGt7st0z+uIplB/Es5l7RQh+PlaC/kdZYNPFDSFSNi7AkenrrEvglQ5w8OxS4m4
-         3Oc53SufLILp0GEgwJd5+5xHMJ46N+lTccv22o8rFf+ecZLfK1R62Mk33tEai8Uhmphu
-         PRJVK3NE87HKldsnSF6D1Q35G8Pl9eo3VO0GzolZHZhzztTA6xqNcO1wSY1BvfxLxtnL
-         /E/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=AeaSQtniWWM8/+wvy+sNNOb5mUXTofHpZfTaKxLBkbQ=;
-        b=uRaZ9ci+rMRWfys6hSH8Vlcs+vHX4wHlQKwvhvctu9AHQMZk3Mciwk7FmlFf3FLgNo
-         ACDvx4GgaGA3eVOKTajI18okM8IcKNHng7ArJZpJBR/GslSJZBvUaaHflqTLJk9dNqkj
-         2kjijBWHmdXdJREfRQLudPVoig1gg7wB1MyWY4YkikPZ7Gg7Ok6bPcszhyx6iSv5QsOc
-         qYGTTfbMJJat9DY+sgVjbAlib06Op5QeyXhzsPq82NHSEelyyDwI91NisXG2TX4871Hv
-         8y1cQjo+fOLY4JuZI9ehXkV9tTDIZCbmbox/v2qEHpQitjxT6Llg/+t7pCSUJK6ZWvj8
-         h9Gw==
-X-Gm-Message-State: AOAM530y2NIiHTynDlcj+gRvaewyKWvDgkm9TJS2casWpgs+sy2dOtn1
-        7drIx6j4QXwft+uJsZgNWgg=
-X-Google-Smtp-Source: ABdhPJz/MSY1IXTrNWGABV1mCQ83a+iIMGDqFayYtGn8InuPZTa1IJZ+Y39vR35ar8BjH5EGMNm9nA==
-X-Received: by 2002:a62:c584:: with SMTP id j126mr4164201pfg.213.1593679237913;
-        Thu, 02 Jul 2020 01:40:37 -0700 (PDT)
-Received: from blackclown ([103.88.83.142])
-        by smtp.gmail.com with ESMTPSA id ia13sm7153883pjb.42.2020.07.02.01.40.34
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 02 Jul 2020 01:40:37 -0700 (PDT)
-Date:   Thu, 2 Jul 2020 14:10:22 +0530
-From:   Suraj Upadhyay <usuraj35@gmail.com>
-To:     manishc@marvell.com, gregkh@linuxfoundation.org
-Cc:     GR-Linux-NIC-Dev@marvell.com, netdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] staging: qlge: qlge_ethtool.c: Proper indentation.
-Message-ID: <20200702084022.GA1586@blackclown>
+        Thu, 2 Jul 2020 07:35:05 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jqxUc-00059m-Fw; Thu, 02 Jul 2020 11:35:02 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Song Liu <song@kernel.org>, NeilBrown <neilb@suse.de>,
+        "Guilherme G . Piccoli" <gpiccoli@canonical.com>,
+        linux-raid@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] md: raid0/linear: fix dereference before null check on pointer mddev
+Date:   Thu,  2 Jul 2020 12:35:02 +0100
+Message-Id: <20200702113502.37408-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="45Z9DzgjV8m4Oswq"
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
---45Z9DzgjV8m4Oswq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Pointer mddev is being dereferenced with a test_bit call before mddev
+is being null checked, this may cause a null pointer dereference. Fix
+this by moving the null pointer checks to sanity check mddev before
+it is dereferenced.
 
-Remove extra indentations from if-statement.
-
-Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
+Addresses-Coverity: ("Dereference before null check")
+Fixes: 62f7b1989c02 ("md raid0/linear: Mark array as 'broken' and fail BIOs if a member is gone")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/staging/qlge/qlge_ethtool.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/md.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/staging/qlge/qlge_ethtool.c b/drivers/staging/qlge/qlg=
-e_ethtool.c
-index 949abd53a7a9..16fcdefa9687 100644
---- a/drivers/staging/qlge/qlge_ethtool.c
-+++ b/drivers/staging/qlge/qlge_ethtool.c
-@@ -528,8 +528,8 @@ void ql_check_lb_frame(struct ql_adapter *qdev,
- 	if ((*(skb->data + 3) =3D=3D 0xFF) &&
- 	    (*(skb->data + frame_size / 2 + 10) =3D=3D 0xBE) &&
- 	    (*(skb->data + frame_size / 2 + 12) =3D=3D 0xAF)) {
--			atomic_dec(&qdev->lb_count);
--			return;
-+		atomic_dec(&qdev->lb_count);
-+		return;
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 8bb69c61afe0..49452149ac72 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -470,17 +470,18 @@ static blk_qc_t md_submit_bio(struct bio *bio)
+ 	struct mddev *mddev = bio->bi_disk->private_data;
+ 	unsigned int sectors;
+ 
+-	if (unlikely(test_bit(MD_BROKEN, &mddev->flags)) && (rw == WRITE)) {
++	if (mddev == NULL || mddev->pers == NULL) {
+ 		bio_io_error(bio);
+ 		return BLK_QC_T_NONE;
  	}
- }
-=20
---=20
-2.17.1
+ 
+-	blk_queue_split(&bio);
+-
+-	if (mddev == NULL || mddev->pers == NULL) {
++	if (unlikely(test_bit(MD_BROKEN, &mddev->flags)) && (rw == WRITE)) {
+ 		bio_io_error(bio);
+ 		return BLK_QC_T_NONE;
+ 	}
++
++	blk_queue_split(&bio);
++
+ 	if (mddev->ro == 1 && unlikely(rw == WRITE)) {
+ 		if (bio_sectors(bio) != 0)
+ 			bio->bi_status = BLK_STS_IOERR;
+-- 
+2.27.0
 
-
---45Z9DzgjV8m4Oswq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE7AbCa0kOsMJ4cx0j+gRsbIfe744FAl79nW0ACgkQ+gRsbIfe
-746epxAAqhB9h48Tx5kPCpUxqOqszOxrTaar0H8mC+KqZmVXOyjquvNRKpeV6Lg/
-D5ImRvLVMkWzMu7hqxFY0S89Mg/CQznGJJeaBaU8WyVfR7UJJOTk5mlRDMPc5IlW
-E++xnUQtf786os2G7DZBYoBWGompSWFVb8/aI+nef9yBPaUSJVmxcp3HNM+UW3pb
-Sl0h7oiHfHVDSgvV1mWNurUSX9u6sGutK0DXPkeeJEbt33x3GPRNcKbIDTH19mfA
-GHYY+aE+xpLim9Jt9oVFjR2d/Q2YGz7bgxoQaEIBmRpHU4xTPKwph31cTmO/e6PJ
-ebHHsFaeEQVIEWYoSKZI+1fi1FY2NWk8ySnbclCqG/itFLCDlXomV9rhBeEYT0KY
-xEEPZYTtmTuECjPuDAyw5ii7KwTDWE0ja2rqrt515kEr5uV5RCHNucmzUn9kH6+3
-HLsk8JfzQU2y1uCwI8QfXSF5nSJSOFp4QWoScF5vHvhpC3u4TSQELzXv7iyunXNV
-Cy2OBT9HgdK+HF/XvmyQ/dQUHkAH+UB5sif8Pdjod7z+KKnqjTO1vHR7sCqTjrUO
-wB/zIJWiSd4mz4aMoDiLyoHE9HiBLvDFbSwF2ueqGGEEGMQv9nn7EG7FaGN9vQ1P
-cSpXrKQ2zwfG2HrLjZ7SB5bAx26rhnd/cCgvwvzveuQlfhOnUIM=
-=blIl
------END PGP SIGNATURE-----
-
---45Z9DzgjV8m4Oswq--

@@ -2,68 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3D3A212682
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Jul 2020 16:41:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8C43212740
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Jul 2020 17:03:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728179AbgGBOl3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 2 Jul 2020 10:41:29 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:47888 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729551AbgGBOl3 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 2 Jul 2020 10:41:29 -0400
-Received: from mail-ed1-f69.google.com ([209.85.208.69])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <guilherme.piccoli@canonical.com>)
-        id 1jr0P1-0001n7-9C
-        for kernel-janitors@vger.kernel.org; Thu, 02 Jul 2020 14:41:27 +0000
-Received: by mail-ed1-f69.google.com with SMTP id o3so28250987eda.23
-        for <kernel-janitors@vger.kernel.org>; Thu, 02 Jul 2020 07:41:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5T1+UQfX6pEeNwUce2bRhBzSqya6/7UUz7vTij4e9c8=;
-        b=Hxdy4s2j2UBkXtGDRstCizdCUSJ1zc4binfHF0gW2eb9okeRQWQTZm/Dk9W3FfBozy
-         cRRZ+rzlg+NcsinjPv6AQSPj0MSvdWFX71FxzQ1QKK9HELI0WYK7OWa+RJU7n+/LwDP5
-         S/29muUk7/Sp5mU6jKaJwD6x/f4Hh37MKWbtd2dkWrsma+ttFapwDoMkkt1ov1BwW86G
-         iUWRQV93Fwf4T0aKpxuG8aSC9+TKIMzj1mjN8nvxY62U//OLoKsCbyUp9715i1vrQxw3
-         LR+P8fro8SG/a+p+ms6ySE2Enp7B5a1WUzHY+rYreG3OmjranqKPARin8ug9kLhCPALh
-         N5aA==
-X-Gm-Message-State: AOAM532Ev64882p334r8Ha+4sQXcE36zOpz5iFV5+D8HVEA5tcInaEHD
-        D+zOcBqYQGDUBYCWHQnmWGPsmVuPgAuSq4We2wT1cIuZFc2WiefpBkntIxR2ivTaB39hFOJVByo
-        1k7My/212PL3Zi269ynWYcXXkWhcs0gg7v9Az/Crnl1BBZdfRDPa+nLJU0VqjPw==
-X-Received: by 2002:a50:f149:: with SMTP id z9mr35819637edl.167.1593700887012;
-        Thu, 02 Jul 2020 07:41:27 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyQQ7loNtaLR0+jJmnqpDfGBBHzTUDZLonufSCrcfmOD7H0vkh/Hs5ZKvmSNwfyCLMjhvtOQI4yxlNus9E8rmA=
-X-Received: by 2002:a50:f149:: with SMTP id z9mr35819615edl.167.1593700886870;
- Thu, 02 Jul 2020 07:41:26 -0700 (PDT)
+        id S1729993AbgGBPCy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 Jul 2020 11:02:54 -0400
+Received: from mga18.intel.com ([134.134.136.126]:43273 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729912AbgGBPCx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 2 Jul 2020 11:02:53 -0400
+IronPort-SDR: 4S2xJdLjwzVAd0XXrWFKhp95KePCP12VaxeWRUeXq1CgYLLqalEC0/RI31pDqJrBzzA5EpyVwf
+ nlQvAHrn00/g==
+X-IronPort-AV: E=McAfee;i="6000,8403,9670"; a="134384116"
+X-IronPort-AV: E=Sophos;i="5.75,304,1589266800"; 
+   d="scan'208";a="134384116"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2020 08:02:43 -0700
+IronPort-SDR: g9KHZtn+dpB+rln7D4IWEm3Us2IMiwL8/XfFecXINP8MXWWwUKauOb0QsNJMRNpXH3rPFpB9fO
+ yvwINN8+Yj6A==
+X-IronPort-AV: E=Sophos;i="5.75,304,1589266800"; 
+   d="scan'208";a="304275487"
+Received: from nchava-mobl1.amr.corp.intel.com (HELO [10.252.135.144]) ([10.252.135.144])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2020 08:02:42 -0700
+Subject: Re: [PATCH][next] ASoC: Intel: bxt-da7219-max98357a: return -EINVAL
+ on unrecognized speaker amplifier
+To:     Colin King <colin.king@canonical.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Jie Yang <yang.jie@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, Brent Lu <brent.lu@intel.com>,
+        alsa-devel@alsa-project.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200702114835.37889-1-colin.king@canonical.com>
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Message-ID: <d79c5d6b-5bb6-3552-d1a6-bbd40f6c3081@linux.intel.com>
+Date:   Thu, 2 Jul 2020 09:40:49 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-References: <20200702113502.37408-1-colin.king@canonical.com>
-In-Reply-To: <20200702113502.37408-1-colin.king@canonical.com>
-From:   Guilherme Piccoli <gpiccoli@canonical.com>
-Date:   Thu, 2 Jul 2020 11:40:51 -0300
-Message-ID: <CAHD1Q_yy2gbBkd31oOJiJk2TU3K4wTV3gVtjLiQo1FW+e=5ivg@mail.gmail.com>
-Subject: Re: [PATCH] md: raid0/linear: fix dereference before null check on
- pointer mddev
-To:     Colin King <colin.king@canonical.com>
-Cc:     Song Liu <song@kernel.org>, NeilBrown <neilb@suse.de>,
-        linux-raid <linux-raid@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200702114835.37889-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Great catch Colin, thanks!
-Feel free to add my:
-
-Reviewed-by: Guilherme G. Piccoli <gpiccoli@canonical.com>
 
 
-P.S.  Not sure if it's only me, but the diff is soo much easier to
-read when git is set to use patience diff algorithm:
-https://termbin.com/f8ig
+On 7/2/20 6:48 AM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently if the ctx->spkamp is not recognized an error message is
+> reported but the code continues to set up the device with uninitialized
+> variables such as the number of widgets.  Fix this by returning -EINVAL
+> for unrecognized speaker amplifier types.
+> 
+> Addresses-Coverity: ("Uninitialized scalar variable")
+> Fixes: e1435a1feb18 ("ASoC: Intel: bxt-da7219-max98357a: support MAX98390 speaker amp")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
+Sounds good, thanks Colin.
+
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+
+> ---
+>   sound/soc/intel/boards/bxt_da7219_max98357a.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/sound/soc/intel/boards/bxt_da7219_max98357a.c b/sound/soc/intel/boards/bxt_da7219_max98357a.c
+> index 4d39253e796b..0c0a717823c4 100644
+> --- a/sound/soc/intel/boards/bxt_da7219_max98357a.c
+> +++ b/sound/soc/intel/boards/bxt_da7219_max98357a.c
+> @@ -677,7 +677,7 @@ static int bxt_card_late_probe(struct snd_soc_card *card)
+>   		break;
+>   	default:
+>   		dev_err(card->dev, "Invalid speaker amplifier %d\n", ctx->spkamp);
+> -		break;
+> +		return -EINVAL;
+>   	}
+>   
+>   	err = snd_soc_dapm_new_controls(&card->dapm, widgets, num_widgets);
+> 

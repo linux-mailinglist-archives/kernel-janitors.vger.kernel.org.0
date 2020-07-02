@@ -2,29 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53086212263
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Jul 2020 13:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C232221228A
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Jul 2020 13:48:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728684AbgGBLfF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 2 Jul 2020 07:35:05 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:41054 "EHLO
+        id S1728792AbgGBLsr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 Jul 2020 07:48:47 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:41447 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726343AbgGBLfF (ORCPT
+        with ESMTP id S1726443AbgGBLsr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 2 Jul 2020 07:35:05 -0400
+        Thu, 2 Jul 2020 07:48:47 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jqxUc-00059m-Fw; Thu, 02 Jul 2020 11:35:02 +0000
+        id 1jqxhj-00067a-OM; Thu, 02 Jul 2020 11:48:35 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Song Liu <song@kernel.org>, NeilBrown <neilb@suse.de>,
-        "Guilherme G . Piccoli" <gpiccoli@canonical.com>,
-        linux-raid@vger.kernel.org
+To:     Cezary Rojewski <cezary.rojewski@intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Jie Yang <yang.jie@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, Brent Lu <brent.lu@intel.com>,
+        alsa-devel@alsa-project.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] md: raid0/linear: fix dereference before null check on pointer mddev
-Date:   Thu,  2 Jul 2020 12:35:02 +0100
-Message-Id: <20200702113502.37408-1-colin.king@canonical.com>
+Subject: [PATCH][next] ASoC: Intel: bxt-da7219-max98357a: return -EINVAL on unrecognized speaker amplifier
+Date:   Thu,  2 Jul 2020 12:48:35 +0100
+Message-Id: <20200702114835.37889-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,45 +41,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Pointer mddev is being dereferenced with a test_bit call before mddev
-is being null checked, this may cause a null pointer dereference. Fix
-this by moving the null pointer checks to sanity check mddev before
-it is dereferenced.
+Currently if the ctx->spkamp is not recognized an error message is
+reported but the code continues to set up the device with uninitialized
+variables such as the number of widgets.  Fix this by returning -EINVAL
+for unrecognized speaker amplifier types.
 
-Addresses-Coverity: ("Dereference before null check")
-Fixes: 62f7b1989c02 ("md raid0/linear: Mark array as 'broken' and fail BIOs if a member is gone")
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: e1435a1feb18 ("ASoC: Intel: bxt-da7219-max98357a: support MAX98390 speaker amp")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/md/md.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ sound/soc/intel/boards/bxt_da7219_max98357a.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 8bb69c61afe0..49452149ac72 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -470,17 +470,18 @@ static blk_qc_t md_submit_bio(struct bio *bio)
- 	struct mddev *mddev = bio->bi_disk->private_data;
- 	unsigned int sectors;
- 
--	if (unlikely(test_bit(MD_BROKEN, &mddev->flags)) && (rw == WRITE)) {
-+	if (mddev == NULL || mddev->pers == NULL) {
- 		bio_io_error(bio);
- 		return BLK_QC_T_NONE;
+diff --git a/sound/soc/intel/boards/bxt_da7219_max98357a.c b/sound/soc/intel/boards/bxt_da7219_max98357a.c
+index 4d39253e796b..0c0a717823c4 100644
+--- a/sound/soc/intel/boards/bxt_da7219_max98357a.c
++++ b/sound/soc/intel/boards/bxt_da7219_max98357a.c
+@@ -677,7 +677,7 @@ static int bxt_card_late_probe(struct snd_soc_card *card)
+ 		break;
+ 	default:
+ 		dev_err(card->dev, "Invalid speaker amplifier %d\n", ctx->spkamp);
+-		break;
++		return -EINVAL;
  	}
  
--	blk_queue_split(&bio);
--
--	if (mddev == NULL || mddev->pers == NULL) {
-+	if (unlikely(test_bit(MD_BROKEN, &mddev->flags)) && (rw == WRITE)) {
- 		bio_io_error(bio);
- 		return BLK_QC_T_NONE;
- 	}
-+
-+	blk_queue_split(&bio);
-+
- 	if (mddev->ro == 1 && unlikely(rw == WRITE)) {
- 		if (bio_sectors(bio) != 0)
- 			bio->bi_status = BLK_STS_IOERR;
+ 	err = snd_soc_dapm_new_controls(&card->dapm, widgets, num_widgets);
 -- 
 2.27.0
 

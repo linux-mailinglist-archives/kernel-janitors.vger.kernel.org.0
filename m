@@ -2,100 +2,149 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB97621273B
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Jul 2020 17:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21F39212755
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Jul 2020 17:08:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729920AbgGBPBq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 2 Jul 2020 11:01:46 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:52132 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726032AbgGBPBq (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 2 Jul 2020 11:01:46 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 062EvRwS018136;
-        Thu, 2 Jul 2020 15:01:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=EovBjL/VDEJMxYfhQUs2tcfenMAKo6Sk/T/23Jbbdlc=;
- b=YS392JwJ/K+bmWg4R2XF6a0CNZCiwJgA9p8aSAD6auJtb0SaSbKMQBCeqKYZDofftZ/3
- NE7Mvus2/HD90se7QKJYIiJ9QhX/Ob8biOhwHlO6FD28ELUo5EkDMHLFrSQnQNoO3roN
- nkK11EgJebSEomRiILOo2hPmwHB539A0sszif7H4qMk2LWN2bYQ+ns8SJg9Dr2G/aY4N
- VUoZ2kW2KoQuchO1e4UGlLcwTETQ0NyNHPLUCVPGs3zzO02U75COx5S9R2wmfpxPpikx
- BAsOu1HQloDAtl4kNakVCnXFZw98XYQUQ8Vb+aJlPGmk6u4GKfmSpbfvXn9f9QxeqlRI nw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 31ywrby6cd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 02 Jul 2020 15:01:07 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 062Ewpe0090264;
-        Thu, 2 Jul 2020 15:01:06 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 31xg19ggjs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 02 Jul 2020 15:01:04 +0000
-Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 062F0xVD010335;
-        Thu, 2 Jul 2020 15:00:59 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 02 Jul 2020 15:00:58 +0000
-Date:   Thu, 2 Jul 2020 18:00:51 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Tiezhu Yang <yangtiezhu@loongson.cn>
-Cc:     Markus Elfring <Markus.Elfring@web.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org, linux-kernel@vger.kernel.org,
+        id S1729232AbgGBPIN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 Jul 2020 11:08:13 -0400
+Received: from mout.web.de ([212.227.15.3]:40521 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726117AbgGBPIM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 2 Jul 2020 11:08:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1593702449;
+        bh=ZN9Z+dcOH76mDiydr9cvfJYcms6wDCXm7O7t301RXOI=;
+        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
+        b=TAEAY8wy6qa5nd/1qRCCBMM0cn6TexdlrdxIaJdBi4pGWh68UKSC4TSCIO0kwhXxd
+         0B6v+/aH5jTTa1yhNJn9xMUHkktoSFsJrIkCpt48LwJLz4QCk5xShJUHRuHOJIF9rK
+         I+x+uBKcKAo7u5x0K5sfOC5Qj6lvvd9sJj6bT8zI=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.132.138.52]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lx7OL-1ikHDk2i1R-016c7I; Thu, 02
+ Jul 2020 17:07:29 +0200
+To:     tongtiangen <tongtiangen@huawei.com>,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v4 02/14] irqchip/csky-apb-intc: Fix potential resource
- leaks
-Message-ID: <20200702150051.GR2549@kadam>
-References: <1593569786-11500-1-git-send-email-yangtiezhu@loongson.cn>
- <1593569786-11500-3-git-send-email-yangtiezhu@loongson.cn>
- <564ffff9-6043-7191-2458-f425dd8d0c11@web.de>
- <1a0e007a-db94-501b-4ab9-0bb479ec093b@loongson.cn>
+Cc:     linux-kernel@vger.kernel.org,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@redhat.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Wei Yongjun <weiyongjun1@huawei.com>
+Subject: Re: [PATCH] perf header: Fix possible memory leak when using
+ do_read_string
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <de57c10a-1dbf-098a-27da-6f16275e5979@web.de>
+Date:   Thu, 2 Jul 2020 17:07:25 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1a0e007a-db94-501b-4ab9-0bb479ec093b@loongson.cn>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9670 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0
- mlxlogscore=999 suspectscore=1 bulkscore=0 mlxscore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2007020106
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9670 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 mlxlogscore=999
- clxscore=1011 cotscore=-2147483648 priorityscore=1501 lowpriorityscore=0
- malwarescore=0 mlxscore=0 adultscore=0 suspectscore=1 impostorscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2007020106
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:/SOuc7GfRiQJMJtrmFqz1/zIoBMxNwPKAfPPx9UCmpAJeAyoYnE
+ E2Z0zwWikpPilLMcN28gnlHQIeqULPGAFZCkwL/1ZDrCAgBjDU0s4H1f8qPfnZLN3FZZQaT
+ i4cVSltA7EudzgkQcQp7AKClmKQfD1Fk0qKVlZskleJfsgxg3l+Alzs1z6mb8krOydPIhKP
+ 1BUoSMYx2QwDKXqBHYxCA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0Wcpzl6P27k=:SWxtTh+K/vKyPSV171TUVB
+ UsE+s6NC7DtHZZzf7zfVrYTgIzDQPPX4HmwqeW5MK1TK4NFHqPDM5keTZw/W6kbHLr3MJPTTs
+ /NphTN1V321ykW4AUVqXdvdXvGwC0DlDgHcKy4nyR27NLYYX+AE20oV2M2L71P3eeZlJkf3gC
+ UwJQK1QmRvmSWGbNHYzY2ihFx8KwjRVFogG+313/Ia1EGD8hTmfBioXGp4XiI0v9WjomXm7L7
+ 7WjDCQ/6sjhoi6UQ19Vh3Lt194rNvNoNtOwM7jQnLh3d9v3Gxg7e1VX8ccNExcY2OHf6+73rM
+ yyNRHgqvUZ4M99rdJSM+QIE9NK6bxA55phTrvn505qXv3TYh2/H2DgHoISbdQ6b1+gY3V3zs7
+ UCs8LskqlM1CPalqg7m7u8ZXQqtMcN2zHQRxaWl+gWeJEkiyJ0ms/o4O88JZPUPCscW+Hb6MD
+ GkN8SymE8XviIjmKnUXfLo6X6AQ7Ueet0iDVPU7r/M7mVt3q978J7eOvoCs1jmpUYOYSfXr+P
+ f9wBe5LIV6XAFwlnbJunMIF2AW23bSllkwASRAqAPE3d2m3Rnnx1nbVxigwKi9tHIqy6hvcRS
+ 57TQcc2xTmYk8YfC+loBn/j2ppPUpawcEpY83vqW5I4S/9joK5u/h6jFhQP7R679nz2DJobEx
+ EvAnO+MJ0dW8UR4uY/bzVDRxF9KIfiNXyIn8lWD48Ei5iNFLoV4ivD1dbXTh37wwjPtc5EG15
+ 7gegMqDn2lUwKQgL2wftFxTk2f+mVuPEWUoSfhj4QisllH76bq6RLxB1T6rKTLQk+mqM4UWcR
+ DGtg81M9ZftlBCs1kPyQ1aFpkKK/XaqA1fepinFHCJGyK8Y5nezFjVA5aCsefokky5xU9jwMi
+ Xs5kJgt97Eit96Cos7Ki86KojuKiSoBV2ZMqcUO2IQ5AlI0IwGc5hen7LQ1AiHEz2LcxmOkx/
+ fJopWb4ezH4aN79Fix+V18wIeyq6oNBHdh9FkSdGdbTXSiB35v3fyJT3/wXrqKkYy/NPFuH90
+ Pmdx5Ki8goTwJ3Jf5VAL6nO+P/OEGNuLVRQsWIQiktT/8giqHU/DbuXHBAtOJnVGTfBQfY1qI
+ xPcX9FCFiyRbKaVPCUThK+RUYoSweCbkNCz8s15lWgPNP/IKrpBpVsnKlIGcGFbwjWQ9chgKz
+ z2cdfgJ6Xkq1q7uWOv5R+5P0kzIsgVB8HP1urwTZnwAObB58SwwehLSDYpN+lrOgDki/xfuHD
+ HfepaReQxOZSD2WNS
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jul 01, 2020 at 05:35:35PM +0800, Tiezhu Yang wrote:
-> On 07/01/2020 04:40 PM, Markus Elfring wrote:
-> > > … were not released in a few error cases. …
-> > Another small wording adjustment:
-> >    … in two error cases. …
-> 
-> OK
+> In the header.c file, some functions allocate memory after using
+> do_read_string, but the corresponding memory is not released after
+> subsequent processing errors, causing memory leaks.
 
-A lot of people have told Marcus over and over not to comment on commit
-messages.  Greg has an automatic bot to respond to him.
+I suggest to choose an imperative wording for this change description.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3Dcd77006e01b3198c75fb7819b3=
+d0ff89709539bb#n151
 
-https://lkml.org/lkml/2020/6/13/25
 
-Marcus ignores us when we ask him to stop.  Some new developers have
-emailed me privately that they were confused and discouraged with his
-feedback because they assumed he was a senior developer or something.
+=E2=80=A6
+> +++ b/tools/perf/util/header.c
+> @@ -2307,8 +2307,10 @@  static int process_cpu_topology(struct feat_fd *=
+ff, void *data __maybe_unused)
+>  			goto error;
+>
+>  		/* include a NULL character at the end */
+> -		if (strbuf_add(&sb, str, strlen(str) + 1) < 0)
+> +		if (strbuf_add(&sb, str, strlen(str) + 1) < 0) {
+> +			free(str);
+>  			goto error;
+> +		}
+>  		size +=3D string_size(str);
+=E2=80=A6
 
-regards,
-dan carpenter
+I propose to add the jump target =E2=80=9Cfree_str=E2=80=9D for nicer exce=
+ption handling
+in this function implementation.
 
+Regards,
+Markus

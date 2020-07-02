@@ -2,98 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45FBE21179A
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Jul 2020 03:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95C5A2119CE
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Jul 2020 03:51:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727809AbgGBBSi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Jul 2020 21:18:38 -0400
-Received: from mail.loongson.cn ([114.242.206.163]:48038 "EHLO loongson.cn"
+        id S1726838AbgGBBvS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Jul 2020 21:51:18 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:35902 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726985AbgGBBSi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Jul 2020 21:18:38 -0400
-Received: from [10.130.0.52] (unknown [113.200.148.30])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9AxL+jhNf1ezChOAA--.6943S3;
-        Thu, 02 Jul 2020 09:18:26 +0800 (CST)
-Subject: Re: [PATCH v4 02/14] irqchip/csky-apb-intc: Fix potential resource
- leaks
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org
-References: <1593569786-11500-1-git-send-email-yangtiezhu@loongson.cn>
- <1593569786-11500-3-git-send-email-yangtiezhu@loongson.cn>
- <564ffff9-6043-7191-2458-f425dd8d0c11@web.de>
- <1a0e007a-db94-501b-4ab9-0bb479ec093b@loongson.cn>
- <971c649e-fe07-3771-6fea-f5aaeaf090ad@web.de>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-From:   Tiezhu Yang <yangtiezhu@loongson.cn>
-Message-ID: <c7cc848a-1ce0-e877-aa44-ebafe4b5985c@loongson.cn>
-Date:   Thu, 2 Jul 2020 09:18:25 +0800
-User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+        id S1726735AbgGBBvR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 1 Jul 2020 21:51:17 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id C942361FB4DC5C89F11F;
+        Thu,  2 Jul 2020 09:51:15 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.487.0; Thu, 2 Jul 2020 09:51:07 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        <christian.koenig@amd.com>, <airlied@linux.ie>, <daniel@ffwll.ch>,
+        <sumit.semwal@linaro.org>, <tianci.yin@amd.com>,
+        <kraxel@redhat.com>, <Likun.Gao@amd.com>, <Felix.Kuehling@amd.com>,
+        <jgg@ziepe.ca>, <Hawking.Zhang@amd.com>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+        <linux-media@vger.kernel.org>, <linaro-mm-sig@lists.linaro.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] drm/amdgpu: remove set but not used variable 'adev'
+Date:   Thu, 2 Jul 2020 01:55:52 +0000
+Message-ID: <20200702015552.42377-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <971c649e-fe07-3771-6fea-f5aaeaf090ad@web.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf9AxL+jhNf1ezChOAA--.6943S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxJrWDXF1fCrWDCrykXry3XFb_yoW8Gry3pF
-        WUurn8uFZ5Jr18urnruw4kZ345Z3y2grsF93WxGrn7Zr48Wrn8Wr1kXFn0vF4DCrnrXa1r
-        uan3A34rC3W5tFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUvIb7Iv0xC_KF4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
-        jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwV
-        C2z280aVCY1x0267AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-        Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJV
-        W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzVAYIcxG
-        8wCY02Avz4vE14v_KwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s
-        026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_
-        Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20x
-        vEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6Fyj6rWUJwCI42IY6I8E87Iv
-        67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf
-        9x07jUNVgUUUUU=
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 07/01/2020 09:04 PM, Markus Elfring wrote:
->> If remove the local variable "ret",  it will look like this:
-> …
->> +++ b/drivers/irqchip/irq-csky-apb-intc.c
-> …
->> @@ -118,18 +116,23 @@ ck_intc_init_comm(struct device_node *node, struct device_node *parent)
-> …
->> -       ret = irq_alloc_domain_generic_chips(root_domain, 32, 1,
->> +       if (irq_alloc_domain_generic_chips(root_domain, 32, 1,
->>                          "csky_intc", handle_level_irq,
->> -                       IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN, 0, 0);
->> -       if (ret) {
->> +                       IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN, 0, 0)) {
->>                  pr_err("C-SKY Intc irq_alloc_gc failed.\n");
-> …
->
-> I suggest to recheck the parameter alignment for such a function call.
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?id=7c30b859a947535f2213277e827d7ac7dcff9c84#n93
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-OK, thank you, like this:
+drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c: In function 'amdgpu_init_mem_type':
+drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c:81:24: warning:
+ variable 'adev' set but not used [-Wunused-but-set-variable]
+  struct amdgpu_device *adev;
+                        ^
 
--       ret = irq_alloc_domain_generic_chips(root_domain, 32, 1,
--                       "csky_intc", handle_level_irq,
--                       IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN, 0, 0);
--       if (ret) {
-+       if (irq_alloc_domain_generic_chips(root_domain, 32, 1,
-+                                          "csky_intc", handle_level_irq,
-+                                          IRQ_NOREQUEST | IRQ_NOPROBE | 
-IRQ_NOAUTOEN, 0, 0)) {
-                 pr_err("C-SKY Intc irq_alloc_gc failed.\n");
--               return -ENOMEM;
-+               goto err_domain_remove;
-         }
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
->
-> Regards,
-> Markus
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+index bb95627ad2cc..8199702d3354 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -78,10 +78,6 @@
+ static int amdgpu_init_mem_type(struct ttm_bo_device *bdev, uint32_t type,
+ 				struct ttm_mem_type_manager *man)
+ {
+-	struct amdgpu_device *adev;
+-
+-	adev = amdgpu_ttm_adev(bdev);
+-
+ 	switch (type) {
+ 	case TTM_PL_SYSTEM:
+ 		/* System memory */
+
+
+
+
 

@@ -2,75 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95C5A2119CE
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Jul 2020 03:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60AFB211B9D
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Jul 2020 07:40:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726838AbgGBBvS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Jul 2020 21:51:18 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:35902 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726735AbgGBBvR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Jul 2020 21:51:17 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id C942361FB4DC5C89F11F;
-        Thu,  2 Jul 2020 09:51:15 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 2 Jul 2020 09:51:07 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Alex Deucher <alexander.deucher@amd.com>,
-        <christian.koenig@amd.com>, <airlied@linux.ie>, <daniel@ffwll.ch>,
-        <sumit.semwal@linaro.org>, <tianci.yin@amd.com>,
-        <kraxel@redhat.com>, <Likun.Gao@amd.com>, <Felix.Kuehling@amd.com>,
-        <jgg@ziepe.ca>, <Hawking.Zhang@amd.com>
-CC:     YueHaibing <yuehaibing@huawei.com>,
-        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-        <linux-media@vger.kernel.org>, <linaro-mm-sig@lists.linaro.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] drm/amdgpu: remove set but not used variable 'adev'
-Date:   Thu, 2 Jul 2020 01:55:52 +0000
-Message-ID: <20200702015552.42377-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726065AbgGBFkV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 Jul 2020 01:40:21 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:50893 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726015AbgGBFkU (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 2 Jul 2020 01:40:20 -0400
+X-IronPort-AV: E=Sophos;i="5.75,303,1589234400"; 
+   d="scan'208";a="457763334"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Jul 2020 07:40:18 +0200
+Date:   Thu, 2 Jul 2020 07:40:18 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Matthew Wilcox <willy@infradead.org>
+cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        linux-doc@vger.kernel.org, Coccinelle <cocci@systeme.lip6.fr>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [v2] Documentation: Coccinelle: fix typos and command example
+In-Reply-To: <20200702000843.GV25523@casper.infradead.org>
+Message-ID: <alpine.DEB.2.22.394.2007020739270.2478@hadrien>
+References: <0616dd0c-bb86-be2b-3dc6-1c695a92c3ca@infradead.org> <c2c1dec0-2bd1-b0e2-1aa4-38d0e954d5ba@web.de> <efc8b0c9-db3b-3c9c-d876-897b53a9e278@infradead.org> <2a3940de-6a81-1aff-8109-53c1c5a6aa1b@web.de> <f2aaa91a-f935-bc2d-26f2-712576c1bbd7@infradead.org>
+ <2f80fb10-dc7f-29be-dc3e-2715f8bafc6d@web.de> <dfa2ed9f-fe68-58d1-c3d0-ac436f9bee09@infradead.org> <20200702000843.GV25523@casper.infradead.org>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
-
-drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c: In function 'amdgpu_init_mem_type':
-drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c:81:24: warning:
- variable 'adev' set but not used [-Wunused-but-set-variable]
-  struct amdgpu_device *adev;
-                        ^
-
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 4 ----
- 1 file changed, 4 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-index bb95627ad2cc..8199702d3354 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -78,10 +78,6 @@
- static int amdgpu_init_mem_type(struct ttm_bo_device *bdev, uint32_t type,
- 				struct ttm_mem_type_manager *man)
- {
--	struct amdgpu_device *adev;
--
--	adev = amdgpu_ttm_adev(bdev);
--
- 	switch (type) {
- 	case TTM_PL_SYSTEM:
- 		/* System memory */
 
 
+On Thu, 2 Jul 2020, Matthew Wilcox wrote:
 
+> On Wed, Jul 01, 2020 at 07:52:58AM -0700, Randy Dunlap wrote:
+> > On 7/1/20 6:32 AM, Markus Elfring wrote:
+> > >>> How do you think about to use the following command variant
+> > >>> for the adjustment of the software documentation?
+> > >>>
+> > >>> +    make C=1 CHECK='scripts/coccicheck' 'path/to/file.o'
+> > >>
+> > >> I don't understand the reason for that change...
+> >
+> > IOW, your "patch" needs justification and/or explanation. It was missing that info.
+>
+> What Markus is trying so completely ineptly to say is that
+>   make C=1 CHECK=scripts/coccicheck path/to/file.c
+> doesn't work.  You need to use the .o suffix to check the .c file.
 
+Thanks Matthew for this very helpful information.
 
+julia

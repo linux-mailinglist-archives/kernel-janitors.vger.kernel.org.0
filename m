@@ -2,70 +2,131 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C232221228A
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Jul 2020 13:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CAA22122B9
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Jul 2020 13:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728792AbgGBLsr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 2 Jul 2020 07:48:47 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:41447 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726443AbgGBLsr (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 2 Jul 2020 07:48:47 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jqxhj-00067a-OM; Thu, 02 Jul 2020 11:48:35 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Cezary Rojewski <cezary.rojewski@intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Jie Yang <yang.jie@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, Brent Lu <brent.lu@intel.com>,
-        alsa-devel@alsa-project.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ASoC: Intel: bxt-da7219-max98357a: return -EINVAL on unrecognized speaker amplifier
-Date:   Thu,  2 Jul 2020 12:48:35 +0100
-Message-Id: <20200702114835.37889-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        id S1728817AbgGBLx7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 Jul 2020 07:53:59 -0400
+Received: from mail.loongson.cn ([114.242.206.163]:36324 "EHLO loongson.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726475AbgGBLx6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 2 Jul 2020 07:53:58 -0400
+Received: from [10.130.0.52] (unknown [113.200.148.30])
+        by mail.loongson.cn (Coremail) with SMTP id AQAAf9DxX97Lyv1ecIBOAA--.143S3;
+        Thu, 02 Jul 2020 19:53:48 +0800 (CST)
+Subject: Re: [PATCH v4 02/14] irqchip/csky-apb-intc: Fix potential resource
+ leaks
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>, Guo Ren <guoren@kernel.org>,
+        linux-csky@vger.kernel.org
+References: <1593569786-11500-1-git-send-email-yangtiezhu@loongson.cn>
+ <1593569786-11500-3-git-send-email-yangtiezhu@loongson.cn>
+ <564ffff9-6043-7191-2458-f425dd8d0c11@web.de>
+ <1a0e007a-db94-501b-4ab9-0bb479ec093b@loongson.cn>
+ <971c649e-fe07-3771-6fea-f5aaeaf090ad@web.de>
+ <c7cc848a-1ce0-e877-aa44-ebafe4b5985c@loongson.cn>
+ <41b48aa5-e5b2-0257-8b3d-07e1b86634b4@web.de>
+ <0726ddc2-6b01-2ac8-d5bf-74c3df36b6ef@loongson.cn>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+From:   Tiezhu Yang <yangtiezhu@loongson.cn>
+Message-ID: <c0093731-fa42-9d43-ebfc-208ba51a96c5@loongson.cn>
+Date:   Thu, 2 Jul 2020 19:53:47 +0800
+User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
+ Thunderbird/45.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <0726ddc2-6b01-2ac8-d5bf-74c3df36b6ef@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf9DxX97Lyv1ecIBOAA--.143S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7WFy8XryfWFW3tF18XrW8WFg_yoW8ZF47pF
+        Wj9F45Aan5Xry8uFy29w4kXa4Yv3y0grWqv3Z7KrykZrWDWrn5Cr4Dt3WY9F1kCrnrCa1F
+        qa1fZ3yrZ3W5AaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUvab7Iv0xC_KF4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+        jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
+        8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+        64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWxJVW8Jr
+        1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4CEbIxvr21l
+        c2xSY4AK67AK6r4kMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I
+        0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWU
+        tVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcV
+        CY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_WFyUJVCq3wCI42IY6I8E87Iv
+        67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyT
+        uYvjxU7YiiUUUUU
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 07/02/2020 04:05 PM, Tiezhu Yang wrote:
+> On 07/02/2020 03:19 PM, Markus Elfring wrote:
+>>>>> +++ b/drivers/irqchip/irq-csky-apb-intc.c
+>> …
+>>>> I suggest to recheck the parameter alignment for such a function call.
+>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?id=7c30b859a947535f2213277e827d7ac7dcff9c84#n93 
+>>>>
+>>> OK, thank you, like this:
+>>>
+>>> -       ret = irq_alloc_domain_generic_chips(root_domain, 32, 1,
+>>> -                       "csky_intc", handle_level_irq,
+>>> -                       IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN, 
+>>> 0, 0);
+>>> -       if (ret) {
+>>> +       if (irq_alloc_domain_generic_chips(root_domain, 32, 1,
+>>> +                                          "csky_intc", 
+>>> handle_level_irq,
+>>> +                                          IRQ_NOREQUEST | 
+>>> IRQ_NOPROBE | IRQ_NOAUTOEN, 0, 0)) {
+>>>                  pr_err("C-SKY Intc irq_alloc_gc failed.\n");
+>> …
+>>
+>> Would you like to use also horizontal tab characters for the 
+>> corresponding indentation?
+>
+> Sorry, I do not quite understanding what you mean, maybe like this?
+>
+>         if (irq_alloc_domain_generic_chips(root_domain, 32, 1,
+>                 "csky_intc", handle_level_irq,
+>                 IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN, 0, 0)) {
+>                 pr_err("C-SKY Intc irq_alloc_gc failed.\n");
+>                 goto err_domain_remove;
+>         }
+>
 
-Currently if the ctx->spkamp is not recognized an error message is
-reported but the code continues to set up the device with uninitialized
-variables such as the number of widgets.  Fix this by returning -EINVAL
-for unrecognized speaker amplifier types.
+Hi Markus,
 
-Addresses-Coverity: ("Uninitialized scalar variable")
-Fixes: e1435a1feb18 ("ASoC: Intel: bxt-da7219-max98357a: support MAX98390 speaker amp")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- sound/soc/intel/boards/bxt_da7219_max98357a.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thank you very much for your review and suggestion.
 
-diff --git a/sound/soc/intel/boards/bxt_da7219_max98357a.c b/sound/soc/intel/boards/bxt_da7219_max98357a.c
-index 4d39253e796b..0c0a717823c4 100644
---- a/sound/soc/intel/boards/bxt_da7219_max98357a.c
-+++ b/sound/soc/intel/boards/bxt_da7219_max98357a.c
-@@ -677,7 +677,7 @@ static int bxt_card_late_probe(struct snd_soc_card *card)
- 		break;
- 	default:
- 		dev_err(card->dev, "Invalid speaker amplifier %d\n", ctx->spkamp);
--		break;
-+		return -EINVAL;
- 	}
- 
- 	err = snd_soc_dapm_new_controls(&card->dapm, widgets, num_widgets);
--- 
-2.27.0
+Maybe still use "ret" variable is better, the following is another comment
+which is only sent to me:
+
+[I think that if one of the return values comes from a function call, then
+you should use the value from the function call even if it is currently
+always -ENOMEM.  The return value of the function call could perhaps
+change in the future.
+
+In any case, ret = foo(); if (ret) is very common in kernel code, and
+there is no reason not to do it, especially when the function call takes
+up a lot of space.]
+
+Let us keep it as it is to make the code clear and to avoid the 
+alignment issue:
+
+ret = foo();
+if (ret) {
+         ret = -ENOMEM;
+         goto ...
+}
+
+Thanks,
+Tiezhu
+
+>>
+>> Regards,
+>> Markus
+>
 

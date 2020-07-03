@@ -2,86 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22DC121328F
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Jul 2020 06:06:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4B8E21359A
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Jul 2020 09:59:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725786AbgGCEGM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 Jul 2020 00:06:12 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:34924 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725294AbgGCEGM (ORCPT
+        id S1725960AbgGCH7w (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 Jul 2020 03:59:52 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:57510 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725779AbgGCH7w (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 Jul 2020 00:06:12 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0633xR8s097771;
-        Fri, 3 Jul 2020 04:06:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=LeWbrm8TYj4y9U2ldIQcfga2SR1ikeuUSI76X1adpzo=;
- b=WEljvCeFyInkhSxz1wsbIOxncCttsCl6Nj0/8JJErhXpvVop1NCwWfTzPAmxQ15zCKxJ
- sKMW7PTdpAxa4gBwbPZeylJ1mVxUnJ30AINBySi5GGZ4gjIGZ1xJwECTk97L8xS75Dsh
- 4v2Oy9cXQylSRubve2h9StDnWs7VAkvo6VzezRA0rEpLotNyiBLbKCYh8CTkQeZZXL2k
- JRkz7N6nSmxEXyTLh6ipgvT+4Av0TJeNtYV8QLjuTmMZP271Sa/q8EprECG5Y+nlllly
- 0getILNJeo5Fh7q6OhtitNHmpWlZHkeLuPyqH34RgogP9k/5P/v18SWn8FLSFtt14l+8 wQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 31wxrnkp7v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 03 Jul 2020 04:06:03 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0633wiGU162058;
-        Fri, 3 Jul 2020 04:04:02 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 31xfvwnc8n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 Jul 2020 04:04:02 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 063440op002587;
-        Fri, 3 Jul 2020 04:04:00 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 03 Jul 2020 04:04:00 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     linux@armlinux.org.uk,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        jejb@linux.ibm.com
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH V2] scsi: powertec: Fix different dev_id between 'request_irq()' and 'free_irq()'
-Date:   Fri,  3 Jul 2020 00:03:53 -0400
-Message-Id: <159374899165.14731.13358873635382558544.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200626035948.944148-1-christophe.jaillet@wanadoo.fr>
-References: <08f63617-03df-71cf-70c4-00f08a9f51d8@wanadoo.fr> <20200626035948.944148-1-christophe.jaillet@wanadoo.fr>
+        Fri, 3 Jul 2020 03:59:52 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0637wv62049460;
+        Fri, 3 Jul 2020 02:58:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1593763137;
+        bh=hRJk4qExkZmvzEg1cgK9sURYCcpGTnP5CZ1jdi0sLm0=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=RJajxqjaSvfdCZBLLTpNvGjpgM/SJyVwjTHopxbF9qAscEtreGY/BkVdSmtCsaZFm
+         uZXD1wAfnH9GLc/FOS1l0yi0hlp0ilj/Y+BYaUFuOy2a4fT15LJ21bDwVx0DL5NSnD
+         R1lbKGGSLer/UIZRLSZjEHqnBlLq9AdL0p6Fha+w=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0637wvJH090818
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 3 Jul 2020 02:58:57 -0500
+Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 3 Jul
+ 2020 02:58:57 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Fri, 3 Jul 2020 02:58:57 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0637wtXp122879;
+        Fri, 3 Jul 2020 02:58:55 -0500
+Subject: Re: [PATCH -next] ASoC: ti: j721e-evm: Fix missing unlock on error in
+ j721e_audio_hw_params()
+To:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+CC:     <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+References: <20200703030910.75047-1-weiyongjun1@huawei.com>
+From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
+X-Pep-Version: 2.0
+Message-ID: <8ab2ddf8-88db-a5e5-b97a-76b4fe014bdd@ti.com>
+Date:   Fri, 3 Jul 2020 10:59:55 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9670 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 spamscore=0
- phishscore=0 malwarescore=0 mlxlogscore=907 bulkscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2007030027
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9670 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=916
- priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
- malwarescore=0 phishscore=0 adultscore=0 cotscore=-2147483648
- lowpriorityscore=0 suspectscore=0 spamscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2007030027
+In-Reply-To: <20200703030910.75047-1-weiyongjun1@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 26 Jun 2020 05:59:48 +0200, Christophe JAILLET wrote:
 
-> The dev_id used in 'request_irq()' and 'free_irq()' should match.
-> So use 'info' in both cases.
 
-Applied to 5.9/scsi-queue, thanks!
+On 03/07/2020 6.09, Wei Yongjun wrote:
+> Add the missing unlock before return from function j721e_audio_hw_param=
+s()
+> in the error handling case.
 
-[1/1] scsi: powertec: Fix different dev_id between request_irq() and free_irq()
-      https://git.kernel.org/mkp/scsi/c/d179f7c76324
+I'm not sure how that return made it in there in the first place..
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Acked-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+
+> Fixes: 6748d0559059 ("ASoC: ti: Add custom machine driver for j721e EVM=
+ (CPB and IVI)")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  sound/soc/ti/j721e-evm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/sound/soc/ti/j721e-evm.c b/sound/soc/ti/j721e-evm.c
+> index 3a2a8b1f3aa3..174306cf53ad 100644
+> --- a/sound/soc/ti/j721e-evm.c
+> +++ b/sound/soc/ti/j721e-evm.c
+> @@ -330,7 +330,7 @@ static int j721e_audio_hw_params(struct snd_pcm_sub=
+stream *substream,
+>  		ret =3D snd_soc_dai_set_tdm_slot(codec_dai, 0x3, 0x3, 2,
+>  					       slot_width);
+>  		if (ret && ret !=3D -ENOTSUPP)
+> -			return ret;
+> +			goto out;
+>  	}
+> =20
+>  	ret =3D j721e_configure_refclk(priv, domain_id, params_rate(params));=
+
+>=20
+>=20
+>=20
+
+- P=C3=A9ter
+
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+

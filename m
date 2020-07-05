@@ -2,55 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 465D6214AC3
-	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Jul 2020 08:59:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2A8C214C0D
+	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Jul 2020 13:36:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725967AbgGEG7h (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 5 Jul 2020 02:59:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48586 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725873AbgGEG7h (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 5 Jul 2020 02:59:37 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F022C061794;
-        Sat,  4 Jul 2020 23:59:37 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id dm19so25570647edb.13;
-        Sat, 04 Jul 2020 23:59:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Uj7PGXQjA9Qjyx6Apu7BwCYoAwQ6mjWMYaZTjh1xboA=;
-        b=X1tK2P5x1N5NIvZTW+VcJWoJ5K7YshwD/RGTnoclfrQc9rWXzaq6x5lbh3W1VEPG3H
-         GIBj3aYdZwSkmbX30wI0ltTXdk9CnsRitseiZtukzUKEk3FNTlkZwPOXIzWjeP499J/h
-         xCTffMRhoUn1p7NWV3QhPZ1KwiRWnwxwdcgOzZ7IN9IH/TZ7dDyEEoJLo0yjD+zY/jSq
-         U/Mez575j6Gk8PqJLH1jwIIrEPtUwfcKywMt7nrVfB+WPVnPIRMguFf5Uy51Wimot3VA
-         03Tow+PpzzxaVQn7RJASKTh8RPzBXnCFS8m6FGqLmHu/X1hY90wgL2yNY9oyCjHPCC6U
-         vedg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Uj7PGXQjA9Qjyx6Apu7BwCYoAwQ6mjWMYaZTjh1xboA=;
-        b=f/OUuyeIPvO9lr4l1uz5iGCpZ5tU/IKSo8D6GDhbc5yOhMiCtq9mChXUyYQWWpbryd
-         qOCyBTw/p7E7j/Ftkh7sZm66z39q/IzndNOvkThF8zjyrHi5RYzj08lI5LOepKC/b+T+
-         W6EeZ2KVQBToPJHwVwHgkNH+5SOajPOIhhZLh5grcAIalQFRnDLxNy15n9JDLqSt2GXH
-         hSVaxtvazvxKaRkZlPgyo8PJcMOO29/xNYaA4nqhHERINKGcbLUQcTkRf1Wk0QGHNhHW
-         zgXg46duQ2RhIBeq1u04TcK3prE+ApJWOpbFz5QmR2O6bLM0orKRkPhVIe2idGXbWwy5
-         EXGQ==
-X-Gm-Message-State: AOAM531/ueLPLxGrhey043+2Ydc6KMlDKvJqKp2WzuSRvqlBqI2HUaQR
-        FdOdPit8jmRSI94KaYKyrSc=
-X-Google-Smtp-Source: ABdhPJxf8p7neXQpdYnh+iVo38AaVRoy6UlE6QLvO/bQFZ8OMYCoPcBv6DsoAxTNbMTymew/PEyO+w==
-X-Received: by 2002:aa7:d989:: with SMTP id u9mr31469159eds.85.1593932375906;
-        Sat, 04 Jul 2020 23:59:35 -0700 (PDT)
-Received: from felia.fritz.box ([2001:16b8:2db3:e200:60e7:4b3:523f:884c])
-        by smtp.gmail.com with ESMTPSA id q3sm15042052eds.41.2020.07.04.23.59.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Jul 2020 23:59:35 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Ondrej Jirman <megous@megous.com>, Sam Ravnborg <sam@ravnborg.org>
-Cc:     =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
+        id S1726662AbgGELgq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 5 Jul 2020 07:36:46 -0400
+Received: from vps.xff.cz ([195.181.215.36]:49094 "EHLO vps.xff.cz"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726454AbgGELgp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 5 Jul 2020 07:36:45 -0400
+X-Greylist: delayed 386 seconds by postgrey-1.27 at vger.kernel.org; Sun, 05 Jul 2020 07:36:45 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=megous.com; s=mail;
+        t=1593948618; bh=nHfOIwXc+Zz/lwPPI+EBR9cQnyaeOaO4WMoyx4yZ8qc=;
+        h=Date:From:To:Cc:Subject:References:X-My-GPG-KeyId:From;
+        b=TEKWJPO4rNp+Rawce4HThyB16qKwHLkiusLO/vjFr0IN0+E2OSCrL8cSz0eMGQPM3
+         2F4oaHSVqfrsD4+DjXMl0+ALgaVcsiF5pbbqSeSWvCwDoBp8vbMOPyC+LKi1KiAf5f
+         tTZve66RLFVZWTMYZ4G/rWsSRmdZabyyArlxkQYc=
+Date:   Sun, 5 Jul 2020 13:30:17 +0200
+From:   =?utf-8?Q?Ond=C5=99ej?= Jirman <megous@megous.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Sam Ravnborg <sam@ravnborg.org>,
+        Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>,
         Purism Kernel Team <kernel@puri.sm>,
         Rob Herring <robh+dt@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -59,64 +31,89 @@ Cc:     =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
         Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
         Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
         Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: adjust entry to renaming and conversion
-Date:   Sun,  5 Jul 2020 08:59:17 +0200
-Message-Id: <20200705065917.22285-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: adjust entry to renaming and conversion
+Message-ID: <20200705113017.mostxjvatkqkhqf6@core.my.home>
+Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megous@megous.com>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>,
+        Purism Kernel Team <kernel@puri.sm>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-sunxi@googlegroups.com, linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20200705065917.22285-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200705065917.22285-1-lukas.bulwahn@gmail.com>
+X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
+ <https://xff.cz/key.txt>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit a74e81a56405 ("drm/panel: rocktech-jh057n00900: Rename the driver to
-st7703") and commit 7317f4574492 ("dt-bindings: panel: Convert
-rocktech,jh057n00900 to yaml") renamed and converted the files mentioned in
-DRM DRIVER FOR ROCKTECH JH057N00900 PANELS, but did not adjust the entries
-in MAINTAINERS.
+Hello Lukas,
 
-Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
+On Sun, Jul 05, 2020 at 08:59:17AM +0200, Lukas Bulwahn wrote:
+> Commit a74e81a56405 ("drm/panel: rocktech-jh057n00900: Rename the driver to
+> st7703") and commit 7317f4574492 ("dt-bindings: panel: Convert
+> rocktech,jh057n00900 to yaml") renamed and converted the files mentioned in
+> DRM DRIVER FOR ROCKTECH JH057N00900 PANELS, but did not adjust the entries
+> in MAINTAINERS.
 
-  warning: no file matches  F: \
-  Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.txt
-  warning: no file matches  F: \
-  drivers/gpu/drm/panel/panel-rocktech-jh057n00900.c
+A similar patch was already posted:
 
-Adjust entries after this file renaming and devicetree conversion.
+https://lkml.kernel.org/lkml/20200701184640.1674969-1-megous@megous.com/
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-applies cleanly on next-20200703
+thank you and regards,
+	o.
 
-Ondrej, please ack this patch.
-Sam, please pick this minor non-urgent patch into your -next tree.
-
-This is the minimal change to address the warning. You might consider
-changing the name of the section from ROCKTECH to ST7703, change
-maintainers etc.
-
- MAINTAINERS | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9375edaef11f..8a7b92faff99 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -5493,8 +5493,8 @@ DRM DRIVER FOR ROCKTECH JH057N00900 PANELS
- M:	Guido GÃ¼nther <agx@sigxcpu.org>
- R:	Purism Kernel Team <kernel@puri.sm>
- S:	Maintained
--F:	Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.txt
--F:	drivers/gpu/drm/panel/panel-rocktech-jh057n00900.c
-+F:	Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.yaml
-+F:	drivers/gpu/drm/panel/panel-sitronix-st7703.c
- 
- DRM DRIVER FOR SAVAGE VIDEO CARDS
- S:	Orphan / Obsolete
--- 
-2.17.1
-
+> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
+> 
+>   warning: no file matches  F: \
+>   Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.txt
+>   warning: no file matches  F: \
+>   drivers/gpu/drm/panel/panel-rocktech-jh057n00900.c
+> 
+> Adjust entries after this file renaming and devicetree conversion.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+> applies cleanly on next-20200703
+> 
+> Ondrej, please ack this patch.
+> Sam, please pick this minor non-urgent patch into your -next tree.
+> 
+> This is the minimal change to address the warning. You might consider
+> changing the name of the section from ROCKTECH to ST7703, change
+> maintainers etc.
+> 
+>  MAINTAINERS | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 9375edaef11f..8a7b92faff99 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -5493,8 +5493,8 @@ DRM DRIVER FOR ROCKTECH JH057N00900 PANELS
+>  M:	Guido Günther <agx@sigxcpu.org>
+>  R:	Purism Kernel Team <kernel@puri.sm>
+>  S:	Maintained
+> -F:	Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.txt
+> -F:	drivers/gpu/drm/panel/panel-rocktech-jh057n00900.c
+> +F:	Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.yaml
+> +F:	drivers/gpu/drm/panel/panel-sitronix-st7703.c
+>  
+>  DRM DRIVER FOR SAVAGE VIDEO CARDS
+>  S:	Orphan / Obsolete
+> -- 
+> 2.17.1
+> 

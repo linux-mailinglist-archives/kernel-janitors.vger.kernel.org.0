@@ -2,118 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2A8C214C0D
-	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Jul 2020 13:36:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F282214C41
+	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Jul 2020 13:59:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726662AbgGELgq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 5 Jul 2020 07:36:46 -0400
-Received: from vps.xff.cz ([195.181.215.36]:49094 "EHLO vps.xff.cz"
+        id S1726834AbgGEL7k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 5 Jul 2020 07:59:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57852 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726454AbgGELgp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 5 Jul 2020 07:36:45 -0400
-X-Greylist: delayed 386 seconds by postgrey-1.27 at vger.kernel.org; Sun, 05 Jul 2020 07:36:45 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=megous.com; s=mail;
-        t=1593948618; bh=nHfOIwXc+Zz/lwPPI+EBR9cQnyaeOaO4WMoyx4yZ8qc=;
-        h=Date:From:To:Cc:Subject:References:X-My-GPG-KeyId:From;
-        b=TEKWJPO4rNp+Rawce4HThyB16qKwHLkiusLO/vjFr0IN0+E2OSCrL8cSz0eMGQPM3
-         2F4oaHSVqfrsD4+DjXMl0+ALgaVcsiF5pbbqSeSWvCwDoBp8vbMOPyC+LKi1KiAf5f
-         tTZve66RLFVZWTMYZ4G/rWsSRmdZabyyArlxkQYc=
-Date:   Sun, 5 Jul 2020 13:30:17 +0200
-From:   =?utf-8?Q?Ond=C5=99ej?= Jirman <megous@megous.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Sam Ravnborg <sam@ravnborg.org>,
-        Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>,
-        Purism Kernel Team <kernel@puri.sm>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-sunxi@googlegroups.com, linux-arm-kernel@lists.infradead.org,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: adjust entry to renaming and conversion
-Message-ID: <20200705113017.mostxjvatkqkhqf6@core.my.home>
-Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megous@megous.com>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>,
-        Purism Kernel Team <kernel@puri.sm>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-sunxi@googlegroups.com, linux-arm-kernel@lists.infradead.org,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20200705065917.22285-1-lukas.bulwahn@gmail.com>
+        id S1726454AbgGEL7j (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 5 Jul 2020 07:59:39 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B676920708;
+        Sun,  5 Jul 2020 11:59:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593950379;
+        bh=jbRIrixoWn2wn5oaON87KKkPJd5FmrO9b7ka7N4hgrk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ANj26gvSSKhAJ6k+Pnrg6oJP4v0rt8rdFOz/5D7I6wlHQKJeTVj+5OGSsz6xJuOQt
+         5trO/iUy3WPHHsh2DOuSjRBR8XpWJFNIz8JSxaBZ8lRlFTB/HsYm2XGdoSd0UZ6uk/
+         SAO3o8UXeiBHbaO1CgPjfj/S/bqPnn3JhNxTnASM=
+Date:   Sun, 5 Jul 2020 12:59:35 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Renato Lui Geh <renatogeh@gmail.com>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Michael.Hennerich@analog.com, lars@metafoo.de, knaack.h@gmx.de,
+        pmeerw@pmeerw.net, giuliano.belinassi@usp.br,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ad7780: Fix a resource handling path in
+ 'ad7780_probe()'
+Message-ID: <20200705125935.025cfa12@archlinux>
+In-Reply-To: <20200518022129.xkcuw4yxotnll7ym@renatolg>
+References: <20200517095953.278950-1-christophe.jaillet@wanadoo.fr>
+        <20200518022129.xkcuw4yxotnll7ym@renatolg>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200705065917.22285-1-lukas.bulwahn@gmail.com>
-X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
- <https://xff.cz/key.txt>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello Lukas,
+On Sun, 17 May 2020 23:21:29 -0300
+Renato Lui Geh <renatogeh@gmail.com> wrote:
 
-On Sun, Jul 05, 2020 at 08:59:17AM +0200, Lukas Bulwahn wrote:
-> Commit a74e81a56405 ("drm/panel: rocktech-jh057n00900: Rename the driver to
-> st7703") and commit 7317f4574492 ("dt-bindings: panel: Convert
-> rocktech,jh057n00900 to yaml") renamed and converted the files mentioned in
-> DRM DRIVER FOR ROCKTECH JH057N00900 PANELS, but did not adjust the entries
-> in MAINTAINERS.
+> Acked-by: Renato Lui Geh <renatogeh@gmail.com>
+> 
+> On 05/17, Christophe JAILLET wrote:
+> >If 'ad7780_init_gpios()' fails, we must not release some resources that
+> >have not been allocated yet. Return directly instead.
+> >
+> >Fixes: 5bb30e7daf00 ("staging: iio: ad7780: move regulator to after GPIO init")
+> >Fixes: 9085daa4abcc ("staging: iio: ad7780: add gain & filter gpio support")
+> >Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Applied to the fixes-togreg branch of iio.git.
 
-A similar patch was already posted:
+Thanks,
 
-https://lkml.kernel.org/lkml/20200701184640.1674969-1-megous@megous.com/
+Jonathan
 
-thank you and regards,
-	o.
+> >---
+> > drivers/iio/adc/ad7780.c | 2 +-
+> > 1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> >diff --git a/drivers/iio/adc/ad7780.c b/drivers/iio/adc/ad7780.c
+> >index f47606ebbbbe..b33fe6c3907e 100644
+> >--- a/drivers/iio/adc/ad7780.c
+> >+++ b/drivers/iio/adc/ad7780.c
+> >@@ -329,7 +329,7 @@ static int ad7780_probe(struct spi_device *spi)
+> >
+> > 	ret = ad7780_init_gpios(&spi->dev, st);
+> > 	if (ret)
+> >-		goto error_cleanup_buffer_and_trigger;
+> >+		return ret;
+> >
+> > 	st->reg = devm_regulator_get(&spi->dev, "avdd");
+> > 	if (IS_ERR(st->reg))
+> >-- 
+> >2.25.1
+> >  
 
-> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
-> 
->   warning: no file matches  F: \
->   Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.txt
->   warning: no file matches  F: \
->   drivers/gpu/drm/panel/panel-rocktech-jh057n00900.c
-> 
-> Adjust entries after this file renaming and devicetree conversion.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
-> applies cleanly on next-20200703
-> 
-> Ondrej, please ack this patch.
-> Sam, please pick this minor non-urgent patch into your -next tree.
-> 
-> This is the minimal change to address the warning. You might consider
-> changing the name of the section from ROCKTECH to ST7703, change
-> maintainers etc.
-> 
->  MAINTAINERS | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 9375edaef11f..8a7b92faff99 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -5493,8 +5493,8 @@ DRM DRIVER FOR ROCKTECH JH057N00900 PANELS
->  M:	Guido Günther <agx@sigxcpu.org>
->  R:	Purism Kernel Team <kernel@puri.sm>
->  S:	Maintained
-> -F:	Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.txt
-> -F:	drivers/gpu/drm/panel/panel-rocktech-jh057n00900.c
-> +F:	Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.yaml
-> +F:	drivers/gpu/drm/panel/panel-sitronix-st7703.c
->  
->  DRM DRIVER FOR SAVAGE VIDEO CARDS
->  S:	Orphan / Obsolete
-> -- 
-> 2.17.1
-> 

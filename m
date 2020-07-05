@@ -2,86 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F282214C41
-	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Jul 2020 13:59:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 964C6214E98
+	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Jul 2020 20:41:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726834AbgGEL7k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 5 Jul 2020 07:59:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57852 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726454AbgGEL7j (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 5 Jul 2020 07:59:39 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B676920708;
-        Sun,  5 Jul 2020 11:59:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593950379;
-        bh=jbRIrixoWn2wn5oaON87KKkPJd5FmrO9b7ka7N4hgrk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ANj26gvSSKhAJ6k+Pnrg6oJP4v0rt8rdFOz/5D7I6wlHQKJeTVj+5OGSsz6xJuOQt
-         5trO/iUy3WPHHsh2DOuSjRBR8XpWJFNIz8JSxaBZ8lRlFTB/HsYm2XGdoSd0UZ6uk/
-         SAO3o8UXeiBHbaO1CgPjfj/S/bqPnn3JhNxTnASM=
-Date:   Sun, 5 Jul 2020 12:59:35 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Renato Lui Geh <renatogeh@gmail.com>
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Michael.Hennerich@analog.com, lars@metafoo.de, knaack.h@gmx.de,
-        pmeerw@pmeerw.net, giuliano.belinassi@usp.br,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ad7780: Fix a resource handling path in
- 'ad7780_probe()'
-Message-ID: <20200705125935.025cfa12@archlinux>
-In-Reply-To: <20200518022129.xkcuw4yxotnll7ym@renatolg>
-References: <20200517095953.278950-1-christophe.jaillet@wanadoo.fr>
-        <20200518022129.xkcuw4yxotnll7ym@renatolg>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1728030AbgGESlp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 5 Jul 2020 14:41:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43278 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727906AbgGESlo (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 5 Jul 2020 14:41:44 -0400
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB7F7C061794;
+        Sun,  5 Jul 2020 11:41:44 -0700 (PDT)
+Received: by mail-io1-xd44.google.com with SMTP id a12so37159143ion.13;
+        Sun, 05 Jul 2020 11:41:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=WMam9KMN4N8PeAEM40GNpNo2zYpfT1xm+vr06Ee2x14=;
+        b=AxEabW/lzyZ2qlTf+PHt+KOYjnTp/SIT47axfbz/xNCoCqaeVUM3xzTmWeAcfiLKOW
+         jJjegqyiMnpF8BtbFW7UCZm5RajW69M91jc+AUkZfmbju0UwEiLNrwvzGzGn7MkUiORs
+         EVUnHKWbUMYyl0brpJVmufSrpUNtsg5n3E69x7mykxozCy/okobAZ7FObIAt05D2CxB/
+         FROsqXlr7TddUDivxEFn3CDR6NVi78hVhVM/sYQI6xoT2VVTmliYTXrsCYlRIxOx681N
+         HPnMVdz8wcjOw4cehpOuzxOjWNicCwQxlWLOqJtYFFPtup93zarw2kE9POpsdJXATGNn
+         oE3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=WMam9KMN4N8PeAEM40GNpNo2zYpfT1xm+vr06Ee2x14=;
+        b=q+ouYmmRS+iEbnCz9jJr4b6CCm/R2gHYwl3papxt+dlNxVjxt5tFkYJaNP2uDKi4Dz
+         4bbZcXf7UV+QBnxyve7MjeONAbkhYsOAZ7WD10xw2jN9zMGxm5ue4Fm9+cjDA0ChEPQz
+         pado5hGPjIFRjyBWlGwNaknTtnWLmpOIaMUxPGgGAw+VDeaKALYd5P6yEi78ZusRLLlr
+         B6euNL0522SF8ePMGO+Pr4ZD4lbS7Rtft3fin61BWxnoQDPYbu5wAVO+ipBLc+zpbsex
+         nMd+hKBlrbPkmTAQPSUCh1jh4/I6jFGOTJnqmmDV4gPcCbRtGFD+/zG8fZHSDKfqHhs0
+         rVng==
+X-Gm-Message-State: AOAM532mk9WeXf72tHugjbOHewkExgRG9vK2RyJKlkqyw57PZ1jbz6fK
+        apsvsaP7p7xpPHOAUxNhZbTLch47RyS1IM/Owsw=
+X-Google-Smtp-Source: ABdhPJxK/S7BemaC7I1AoTKGocPOpRoy6dfNruNY70JrVKJMhu9vEH11u0LMDqGDvyIyydjnFOGfcx6Z3KHCmPW0okY=
+X-Received: by 2002:a05:6638:252:: with SMTP id w18mr37241264jaq.42.1593974504022;
+ Sun, 05 Jul 2020 11:41:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20200705065917.22285-1-lukas.bulwahn@gmail.com> <20200705113017.mostxjvatkqkhqf6@core.my.home>
+In-Reply-To: <20200705113017.mostxjvatkqkhqf6@core.my.home>
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Date:   Sun, 5 Jul 2020 20:41:33 +0200
+Message-ID: <CAKXUXMz_usPZw5-UPLxSqBRVP4-RFZTLO-tt5pEfiTPrxifFWg@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: adjust entry to renaming and conversion
+To:     =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megous@megous.com>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
+        Purism Kernel Team <kernel@puri.sm>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-sunxi@googlegroups.com, linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 17 May 2020 23:21:29 -0300
-Renato Lui Geh <renatogeh@gmail.com> wrote:
+On Sun, Jul 5, 2020 at 1:30 PM Ond=C5=99ej Jirman <megous@megous.com> wrote=
+:
+>
+> Hello Lukas,
+>
+> On Sun, Jul 05, 2020 at 08:59:17AM +0200, Lukas Bulwahn wrote:
+> > Commit a74e81a56405 ("drm/panel: rocktech-jh057n00900: Rename the drive=
+r to
+> > st7703") and commit 7317f4574492 ("dt-bindings: panel: Convert
+> > rocktech,jh057n00900 to yaml") renamed and converted the files mentione=
+d in
+> > DRM DRIVER FOR ROCKTECH JH057N00900 PANELS, but did not adjust the entr=
+ies
+> > in MAINTAINERS.
+>
+> A similar patch was already posted:
+>
+> https://lkml.kernel.org/lkml/20200701184640.1674969-1-megous@megous.com/
+>
 
-> Acked-by: Renato Lui Geh <renatogeh@gmail.com>
-> 
-> On 05/17, Christophe JAILLET wrote:
-> >If 'ad7780_init_gpios()' fails, we must not release some resources that
-> >have not been allocated yet. Return directly instead.
-> >
-> >Fixes: 5bb30e7daf00 ("staging: iio: ad7780: move regulator to after GPIO init")
-> >Fixes: 9085daa4abcc ("staging: iio: ad7780: add gain & filter gpio support")
-> >Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Applied to the fixes-togreg branch of iio.git.
+Thanks, Ondrej. This patch posted here shall be IGNORED.
 
-Thanks,
-
-Jonathan
-
-> >---
-> > drivers/iio/adc/ad7780.c | 2 +-
-> > 1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> >diff --git a/drivers/iio/adc/ad7780.c b/drivers/iio/adc/ad7780.c
-> >index f47606ebbbbe..b33fe6c3907e 100644
-> >--- a/drivers/iio/adc/ad7780.c
-> >+++ b/drivers/iio/adc/ad7780.c
-> >@@ -329,7 +329,7 @@ static int ad7780_probe(struct spi_device *spi)
-> >
-> > 	ret = ad7780_init_gpios(&spi->dev, st);
-> > 	if (ret)
-> >-		goto error_cleanup_buffer_and_trigger;
-> >+		return ret;
-> >
-> > 	st->reg = devm_regulator_get(&spi->dev, "avdd");
-> > 	if (IS_ERR(st->reg))
-> >-- 
-> >2.25.1
-> >  
-
+Lukas

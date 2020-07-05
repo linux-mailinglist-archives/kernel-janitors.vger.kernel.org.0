@@ -2,84 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B3C5214835
-	for <lists+kernel-janitors@lfdr.de>; Sat,  4 Jul 2020 20:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 465D6214AC3
+	for <lists+kernel-janitors@lfdr.de>; Sun,  5 Jul 2020 08:59:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726895AbgGDS4x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 4 Jul 2020 14:56:53 -0400
-Received: from sonic305-20.consmr.mail.ir2.yahoo.com ([77.238.177.82]:37260
-        "EHLO sonic305-20.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726669AbgGDS4x (ORCPT
+        id S1725967AbgGEG7h (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 5 Jul 2020 02:59:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48586 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725873AbgGEG7h (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 4 Jul 2020 14:56:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1593889010; bh=ZWeDLwf4cGlLDzTwCuOen1zTINlp5j+f2ywobrqBR9o=; h=Date:From:Reply-To:Subject:References:From:Subject; b=G/qOMmPPVuMssamCcRGuGHmd6e5CjgQSoIZJ1ZwMguFjBPM9x7ddyIAceDCDyK+ccgM4xC8AhTbrTDDkvYmY1JdFlX7My86GA9GSxF23vWi9ihBZWBnzIfXAFPJvjRSOtrfk90sitazkl9lnP2bIbbGrxCJXq0rfW3RbQ+zA0SrGqZRXDng/P3r7cuOqXSAER3zwC/zq1CDhIHjz4Z8X9vCVE3rvKml5tX0PcaVuVHlBFF1ngaV6Fg+ulabK+OWBqxvtnN+7mSH1tn1xGEZozKV+qtKLY7uJPDoU7JxHDS4RFatv+VqaIjwnr4v2305umZTXU/FFqacVa5CeqV0V6g==
-X-YMail-OSG: IcnLVBIVM1kh2XmpmjxXzgkVgDDX6O0QNXROTeSps1A21pzmwQ9BeVkdRuPWi6R
- j19Sr_Lj5bqCeIEDC.13N1sVoMD4m19HTljdx0VMzvuNSOYt7ZrplR_hom3xPzSivhI3edN9pMZg
- ZrYQIy9XYXMuXXgrZo4Cz5mUvXqyUb4LV9q.PRQQdwCKmOlamNoktXVaQ7oxzDc5X8oQpl91Ffdy
- XyOTGe98xbDM144R_wE_SzZ06QyMvitSEPN82zcw0LAegPb2bQfon8ak7bm.UMLLeWMe5_zC1B4h
- AAV0lyy.UK.DIE0QxW7lqAwo74fW41UycKv9RIIOlf3r3O_uVfddIdba_M6HolGXr04UX_ZyCrFD
- Hrn3c6UDB5at5FaTGL_JJqzHD4A7sEATvHmAS9JO9PyFoLdhGOXpFSe8yo7pdWxgeG7oRmWOpgJB
- Jjf5Y.3wTuWuH.2HHXfPWyoHA8CvQw2inzKirGoidMBLzzobL4N0HqbXKmzt4h5QJ9jh6Xhn5JFP
- kyRuVW6rXvUXTk.KBlYxyCIVjOew3gzim6PU_xpUWKhELJ3zhCZInOUfYZJ1r78y89B9PZrGCNfA
- cKOf71W54TPaKCM1mIpJ.M_x8eaQfloMITnFaa5htbLpRjjTDCYw.nUyIJYJbO4Ke39tJ1bMtpyx
- kPEce3CqJoIB.kfrKV__9ONjCeR2SM2bPoaI7dOtbuB1F.rmmsBo1ytSOkaz9XqlFdljywDS63Pk
- Z2w3Nny_v.aW9c.Da3jMFtqoY9q3KVrpJFnEevwgEMWn5pnsstRQSgsGogIXNuECnt3X5tDq_qYk
- LRXpeGEdMLjvC53TDmZORcXSRGFsRK_hrCrQqehPBtqQHNtee7fOFHxQ1o_Qa9QX2nT_SQsb62g6
- kBUOaJtUYDjaloSxkkn6ySXU4vCNjmXR0PSBnjIzjUOSd2oKmaqLeYW5cgYRpWnRrGpDZMQif2YC
- cQTI1XEj6KUc676bIBTsbuYlNXf_H40NGeF0iQbPHZ47HqIzkYUJmBTifJejv0E_ffraj1hk7WaS
- jPegcZ_ZxULV8REE8Svdc2EG881rg2.DjsrrILD9GEgyN1zC5Dy2KuTpnCGj1CrZrVnGxdVTlSdQ
- zROv_h2iMsec4PFNNqGg50zv81jfK_euffwZMVZE67svJfULEAmr8luQ7.haEnSR3nBR0dIhSYjL
- STT7akzW0CI_nSQ66IOWoIP3HFbpWpieO4OEGgyfnByylMOD7emLi6VYkDVFvWf7ygxGqY3ka84M
- OKEr8Pnoh0BjYF.MwSaZhUFWPq699wzqD3IVWk4.Fa7WwYKd1Afao4aJpFds3Lh6O3DgvyTc-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.ir2.yahoo.com with HTTP; Sat, 4 Jul 2020 18:56:50 +0000
-Date:   Sat, 4 Jul 2020 18:56:47 +0000 (UTC)
-From:   Theresa Han <serena@lantermo.it>
-Reply-To: han.theresa2017@gmail.com
-Message-ID: <1765726647.4468369.1593889007868@mail.yahoo.com>
-Subject: =?UTF-8?Q?Ich_gr=C3=BC=C3=9Fe_dich_im_Namen_des_Herrn?=
+        Sun, 5 Jul 2020 02:59:37 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F022C061794;
+        Sat,  4 Jul 2020 23:59:37 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id dm19so25570647edb.13;
+        Sat, 04 Jul 2020 23:59:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Uj7PGXQjA9Qjyx6Apu7BwCYoAwQ6mjWMYaZTjh1xboA=;
+        b=X1tK2P5x1N5NIvZTW+VcJWoJ5K7YshwD/RGTnoclfrQc9rWXzaq6x5lbh3W1VEPG3H
+         GIBj3aYdZwSkmbX30wI0ltTXdk9CnsRitseiZtukzUKEk3FNTlkZwPOXIzWjeP499J/h
+         xCTffMRhoUn1p7NWV3QhPZ1KwiRWnwxwdcgOzZ7IN9IH/TZ7dDyEEoJLo0yjD+zY/jSq
+         U/Mez575j6Gk8PqJLH1jwIIrEPtUwfcKywMt7nrVfB+WPVnPIRMguFf5Uy51Wimot3VA
+         03Tow+PpzzxaVQn7RJASKTh8RPzBXnCFS8m6FGqLmHu/X1hY90wgL2yNY9oyCjHPCC6U
+         vedg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Uj7PGXQjA9Qjyx6Apu7BwCYoAwQ6mjWMYaZTjh1xboA=;
+        b=f/OUuyeIPvO9lr4l1uz5iGCpZ5tU/IKSo8D6GDhbc5yOhMiCtq9mChXUyYQWWpbryd
+         qOCyBTw/p7E7j/Ftkh7sZm66z39q/IzndNOvkThF8zjyrHi5RYzj08lI5LOepKC/b+T+
+         W6EeZ2KVQBToPJHwVwHgkNH+5SOajPOIhhZLh5grcAIalQFRnDLxNy15n9JDLqSt2GXH
+         hSVaxtvazvxKaRkZlPgyo8PJcMOO29/xNYaA4nqhHERINKGcbLUQcTkRf1Wk0QGHNhHW
+         zgXg46duQ2RhIBeq1u04TcK3prE+ApJWOpbFz5QmR2O6bLM0orKRkPhVIe2idGXbWwy5
+         EXGQ==
+X-Gm-Message-State: AOAM531/ueLPLxGrhey043+2Ydc6KMlDKvJqKp2WzuSRvqlBqI2HUaQR
+        FdOdPit8jmRSI94KaYKyrSc=
+X-Google-Smtp-Source: ABdhPJxf8p7neXQpdYnh+iVo38AaVRoy6UlE6QLvO/bQFZ8OMYCoPcBv6DsoAxTNbMTymew/PEyO+w==
+X-Received: by 2002:aa7:d989:: with SMTP id u9mr31469159eds.85.1593932375906;
+        Sat, 04 Jul 2020 23:59:35 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2db3:e200:60e7:4b3:523f:884c])
+        by smtp.gmail.com with ESMTPSA id q3sm15042052eds.41.2020.07.04.23.59.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 04 Jul 2020 23:59:35 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Ondrej Jirman <megous@megous.com>, Sam Ravnborg <sam@ravnborg.org>
+Cc:     =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
+        Purism Kernel Team <kernel@puri.sm>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-sunxi@googlegroups.com, linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: adjust entry to renaming and conversion
+Date:   Sun,  5 Jul 2020 08:59:17 +0200
+Message-Id: <20200705065917.22285-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-References: <1765726647.4468369.1593889007868.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16197 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101 Firefox/78.0
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Ich gr=C3=BC=C3=9Fe dich im Namen des Herrn
+Commit a74e81a56405 ("drm/panel: rocktech-jh057n00900: Rename the driver to
+st7703") and commit 7317f4574492 ("dt-bindings: panel: Convert
+rocktech,jh057n00900 to yaml") renamed and converted the files mentioned in
+DRM DRIVER FOR ROCKTECH JH057N00900 PANELS, but did not adjust the entries
+in MAINTAINERS.
 
-Ich kann mir nicht vorstellen wie du dich f=C3=BChlen wirst Sie einen pl=C3=
-=B6tzlichen Brief aus einem abgelegenen Land in der fernen Elfenbeink=C3=BC=
-ste erhalten werden und wahrscheinlich von jemandem, mit dem Sie nicht gut =
-verwandt sind. Ich appelliere an Sie, etwas Geduld zu =C3=BCben und meinen =
-Brief zu lesen Umgang mit Ihnen in dieser wichtigen Transaktion
-=20
-Ich bin Frau Theresa Han, 65 Jahre alt, in der Elfenbeink=C3=BCste, an Kreb=
-sleiden leidend. Ich war mit Herrn Johnson Han verheiratet, der bei der Reg=
-ierung von Elfenbeink=C3=BCste als Auftragnehmer t=C3=A4tig war, bevor er n=
-ach einigen Tagen im Krankenhaus starb
-=20
-Mein verstorbener Ehemann hat die Summe von US$2,5 Millionen (zwei Millione=
-n f=C3=BCnfhunderttausend USD) bei einer Bank in der Elfenbeink=C3=BCste hi=
-nterlegt. Ich habe an Krebs gelitten. K=C3=BCrzlich sagte mir mein Arzt, da=
-ss ich aufgrund der Krebserkrankungen, an denen ich leide, nur noch begrenz=
-te Lebenstage habe. Ich m=C3=B6chte wissen, ob ich Ihnen vertrauen kann, di=
-ese Mittel f=C3=BCr Wohlt=C3=A4tigkeit / Waisenhaus zu verwenden, und 20 Pr=
-ozent werden f=C3=BCr Sie als Entsch=C3=A4digung sein
-=20
-Ich habe diese Entscheidung getroffen, weil ich kein Kind habe, das dieses =
-Geld erben w=C3=BCrde, und mein Ehemann Verwandte sind b=C3=BCrgerliche und=
- sehr wohlhabende Personen und ich m=C3=B6chte nicht, dass mein Ehemann har=
-t verdientes Geld missbraucht wird
-=20
-Bitte nehmen Sie Kontakt mit mir auf, damit ich Ihnen weitere Einzelheiten =
-mitteilen kann und jede Verz=C3=B6gerung Ihrer Antwort mir Raum geben wird,=
- eine weitere gute Person f=C3=BCr diesen Zweck zu gewinnen
-=20
-Warten auf Ihre dringende Antwort Mit Gott sind alle Dinge m=C3=B6glich
-=20
-Deine Schwester in Christus
-=20
-Frau Theresa Han
+Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
+
+  warning: no file matches  F: \
+  Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.txt
+  warning: no file matches  F: \
+  drivers/gpu/drm/panel/panel-rocktech-jh057n00900.c
+
+Adjust entries after this file renaming and devicetree conversion.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on next-20200703
+
+Ondrej, please ack this patch.
+Sam, please pick this minor non-urgent patch into your -next tree.
+
+This is the minimal change to address the warning. You might consider
+changing the name of the section from ROCKTECH to ST7703, change
+maintainers etc.
+
+ MAINTAINERS | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9375edaef11f..8a7b92faff99 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5493,8 +5493,8 @@ DRM DRIVER FOR ROCKTECH JH057N00900 PANELS
+ M:	Guido Günther <agx@sigxcpu.org>
+ R:	Purism Kernel Team <kernel@puri.sm>
+ S:	Maintained
+-F:	Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.txt
+-F:	drivers/gpu/drm/panel/panel-rocktech-jh057n00900.c
++F:	Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.yaml
++F:	drivers/gpu/drm/panel/panel-sitronix-st7703.c
+ 
+ DRM DRIVER FOR SAVAGE VIDEO CARDS
+ S:	Orphan / Obsolete
+-- 
+2.17.1
+

@@ -2,36 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4006E215354
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jul 2020 09:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92E0B215368
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jul 2020 09:43:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728924AbgGFHbX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Jul 2020 03:31:23 -0400
-Received: from mout.web.de ([217.72.192.78]:48521 "EHLO mout.web.de"
+        id S1728849AbgGFHnt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Jul 2020 03:43:49 -0400
+Received: from mout.web.de ([212.227.17.11]:44815 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728079AbgGFHbW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Jul 2020 03:31:22 -0400
+        id S1728248AbgGFHnt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 6 Jul 2020 03:43:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1594020645;
-        bh=QfjCKHMtlZHfoheYLH02gGSuk9Qg+re1L0gY3+r+k70=;
+        s=dbaedf251592; t=1594021417;
+        bh=Wb8Q4StqUqY9E3ubjH8+vLUNmLWdPXf4VOlWVaeJpXY=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=l7oYazhdyR2vohROj1obO28jr4B3yIg00hf4TJaufBJnE97RXjBvVPGxSRD71hImX
-         Fl4Phan9ASwTrjnv910lURBsVP5AIs9BA7Bb0kbFZ0p2eXvvZJiZkqqaywIEcTsv4/
-         zSGMIdJFsKXONn+jmEfxiwsZc0nHjmKoXTfuuGes=
+        b=SbBy9VqE+WXqjt10ZnAPMCmmPkUgVQqaz+UNpYefG1CC650YTERBHLNDf5tRYhkf/
+         YJQ2Ppn7C0pO8PhBOJc+trBZWULZTov2g1SXZvtINVPHKSWXajze3PIxfmaTK3i/QY
+         UBMI4Ujh8mNVrazpqLqf7W7ztjivkif0o+vdk/NI=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.244.113.119]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mw9xG-1kk2hV1WgW-00s9go; Mon, 06
- Jul 2020 09:30:45 +0200
-Subject: Re: [PATCH v5 14/14] irqchip/xilinx-intc: Fix potential resource leak
-To:     Tiezhu Yang <yangtiezhu@loongson.cn>,
-        Thomas Gleixner <tglx@linutronix.de>,
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MZSBQ-1kNdmQ3Qfu-00WWMu; Mon, 06
+ Jul 2020 09:43:36 +0200
+Subject: Re: [PATCH v5 00/14] irqchip: Fix potential resource leaks
+To:     Marc Zyngier <maz@kernel.org>, Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        linux-arm-kernel@lists.infradead.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 References: <1593998365-25910-1-git-send-email-yangtiezhu@loongson.cn>
- <1593998365-25910-15-git-send-email-yangtiezhu@loongson.cn>
+ <ab1cd9280c7892a0230945ef5ff0880c@kernel.org>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,57 +73,58 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <5a2564f9-9280-9223-3e24-439fec81ab75@web.de>
-Date:   Mon, 6 Jul 2020 09:30:42 +0200
+Message-ID: <097e0670-6725-0733-0cf2-3d3c897c4dee@web.de>
+Date:   Mon, 6 Jul 2020 09:43:35 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <1593998365-25910-15-git-send-email-yangtiezhu@loongson.cn>
+In-Reply-To: <ab1cd9280c7892a0230945ef5ff0880c@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:vHXuIF/3iIJjG7wqyPCGTOnE/3/6TtDh8kA409b4YClZxAFDju6
- f33Vv5jQbe65a+Bn/hiFEodf5zpUG8rFrbsja+EKxIdrXNIDpd/crCwsEY1ZsH3w/Ry3KNd
- HWqXLzYbaBfuWe/PaISB/1bqmTsJagNNI60V2QAOH/8zijL7FEbIOpvW4UKDAw3mGRGZvOt
- sC8gf1yL80ax5A/cf26+Q==
+X-Provags-ID: V03:K1:utiFaU44pqh6Tv1V05a1lHs0OmIclr75lAnmKwoDubQ3bmqkEIL
+ Z06BNorJzvQ8S00tN5paGuNRbf+Bki4+ZDmMLB5MgWoRMrEoC+inK7xauB19xd6V33sB86I
+ h8/1H3h0FWF4IftbMuTDsw5e6ELG0/fo7S8qQAIaDLMVe+l+weqnJLIDTJyMw7pce0cqXmk
+ iASJrln0Y+wSjWNB+UAvA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0m87Wpx0wNU=:y/H9uwOLXS/Gt1G97SPeUo
- 8XWNEVjT4CpuVeID2VcwSw7mrvarWtFDLbLA5EerPfsMotKzlZawYGhvzs0FLDNy1+zVmDSif
- i8xBtqycnuatbxOtR9GP6cR1w1kBvznWusWtPm40bnDO+eosHP+iG69kGlHm5aIs5X7rF1AC/
- gZt1X4EE/Y27ylO4JuyXtjOsROyMmugTzRP7t0IBCUtKQO+LbNOqE4MsBpRaeZtTvoQ971XYJ
- ZdpEVcBNZIIG7zaYHjxoX3i/sUE6ZYs5+I4SsGvKvQDJ5U67IvJEiA/94r4ImAyWd8i8I3Ci4
- pP4drL+aOniqMhLvkDwGprF9JQW2xoFROoXNHDQeuymhlpzJ5KUJhPRRuTANc0k3KxCgaYeO2
- E9bVZypO0J5yqnS43T6+hF8cP81Ghz4Hc7y9jINGZfYXGG5p25zqS6XcZW6cWdcgqDTDRKXjc
- DsuzdnsBHIkk0YlKpckrcXh+H5NmMUv4gLXo4eV8tDkElc07A/8Mm/SQ8BLBMGdFR9kSpYRrD
- nhPEgyldjOkNk5gVGWvlqm+JEXx2raTRXKonFm4dKLs8oAOMDC5HbRkm59JPaf2X+Vi/LH4SM
- CraMLW+oG8MQI/rC2URbSl2o5jmkXgME9fpoLH+vkJqtUaI8F9uaPnby4FqSGhOqbsKQ6ddKW
- mJqSrsX8xZigxL92Zkq12n28VuosySurRpeEW4yp9b9y0iquw5eUXth2oj/G/LZTZVUcxFeiV
- nv4zbsx1Ic8dMFA6VrpYbTbgyYNUbG4juWMrnEbuGwnuuuW8xsyJse5HPmRoxXRdF7txjKysN
- Xjjc+6jdwBEvMmKtMjjyGi8Twz01rX52bUDHWTPe3ZXbNA7e2U0OnTlRZVuwYDa0ebLEFS2TF
- BpN4pJBOig/su8XdC4htPlqlwQPqU2if11DxxSuSxp2UxyDThpanNQ7XyHVZPilnkHUtGoOUf
- cAGgGT3jtYhFJmamTVpZBKKkCyy9WUWfbcGl8NdItfQIiLuxLNX5vx9A3Ham/CmPZHx+sIHO9
- CxZXbamznn20WTuiWJAG0bOgwiydgjrm1eJIcYhSKUjHJ0Nf9Srj1Q+L38953BzDQMGT23WpA
- c2u/Ql0SNOEpXNkEEkYHGD8FEtOhl4Z325La15RTGBYVfkPJjYgspxGkFlGcO1p28o/qFyTW6
- LvVaEz/6XiyPW3ZMR+6bKFrpNFXMVnJ5uPqA1dcvPN2bi45sz4GMWH/ANOQ5halfMa7232ZCf
- tF+sU5fOmdlHezRe8
+X-UI-Out-Filterresults: notjunk:1;V03:K0:WmwBejuREvY=:mCk4hRd63LULj0GYVNZkvN
+ V4rjBwUMc07fYdvvsfGZjK8YEgefRx+nnIOz1kROh/GBeiRGsO+I3RJ1ZKtRRAWEOI89N6zbz
+ II+xxhxA/qR+nSV1gOXzuv8cdRLWPYP2kL47/4VEsJSH/ubiLVa22D7ObkzT6AoCnlhl/8pZB
+ kYriRRNY2mbtg0J0QPVwi9YCx21Av46PPUuHyctdQUqNIGxscK5K3Z13A8nm9f+yq5VVwBKqo
+ uGnvl8u3+boR4KSMbRN2T05P3J+iToDs2iZ5PmtNMIrTTC2wVmLZI4aoN4/ORS4ULQwcLYFYs
+ CgUPVI7ZPbLKyLCbIrtg2Uv51mKqg8VLOgArpYoZpW3PvLV4DkLd+s8IjRaXhSDG7wvUpS+AE
+ Xn9TzIT8s3y1tnP5OtHyiBygPEsUR9nJV8H59mrxK97vAXuhckM04m/gXHYKIDQHJwTHPjafU
+ wvL+L0Hu12ct9S0kP/TtPFBDYs/kAZc2yIXyG/+1sz1bq3qlvDkiAXazhCkieb2KzuaZuKm+Y
+ vlN0dN44Qnrx2qkLrHqKWJcLFq/11sciA3i97eN2wwi2suL/i29HZUTzeqR066xQB2YE2Ztn4
+ WJQfJLK5DGceb8TFj4GwVM0voputv2grOSTmZ2SBvy1WN758UieydvODOmiCLuujUSBtgoKyD
+ 0teamgAdrAK5HXZK0vq6uGuAZ1Xz4DBjQoJTt9BiXZ0NEMrOa8YooDIUfRiQ+rcFZzSHdSVCc
+ dawByp1zLlLqDyhJ/lpr0XtW1qwEvmV4coLt1TOVYK1MnhJFlWCMHpx5bbggDKEBu4iZYOGS+
+ QBqySmlU2uj38F1YR1SJxoBFzc3cU43mEzsyqCN3xUtenx2mnsHXymVKZw5jyt854Al1n7oI/
+ LjH2Ge9yMSfW26b1EhKKHDOMwVc5MiTmzidmr0t8fvO3vcI4WRykMOrfZTPCVBWLC1rntls7h
+ vQTg9wdiYd1e6X2fG6pgBdySGr62DIRXYAffbb3P8sM4hMFXeBRL47+V7aUok1yuQOGYizMMY
+ EAy7LQiQF+YVNQBSwPhcXHfqIhnoK69vRAHZSa7qiymFahj0elUHjpm253eUsgrOrmN0maCfw
+ Q0tFLa8lQf+/GLKDCsmv+UmTWLA4gsqzhFTrKZaQxVA8201BZniIhbLaaOCMTisj7ysTFw9Ff
+ ynOERaj1BbgQEbgECXf5xLMfjobHpKhcJs6ZO/7vGtcFxMbdi2imOseujV6d36fuuofPlMNDu
+ OS0iG6WokMqWUCSp9
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> In the function xilinx_intc_of_init(), system resource "irqc->root_domai=
-n"
-> was not released in an error case. Thus add a jump target to call the
-> function "irq_domain_remove" for the completion of the desired exception
-> handling.
+>> v5:
+>> =C2=A0 - Modify the commit messages and do some code cleanups
+>
+> Please stop replying to Markus Elfring, and give people who actually
+> care a chance to review this code.
 
-Do the corresponding diff hunks express also a renaming of the label =E2=
-=80=9Cerror=E2=80=9D?
+You got the usual chances for the desired patch review.
 
-Is there a need to split such an adjustment?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?id=3Ddcb7fd82c75ee2d6e6f9d8cc71=
-c52519ed52e258#n138
+
+>                                    Elfring will keep asking you to make
+> absolutely pointless changes until you are blue in the face
+
+Can the circumstances evolve in ways under which you would admit
+the relevance of (my) suggestions for possible software improvements?
 
 Regards,
 Markus

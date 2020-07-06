@@ -2,65 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FFE5215C15
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jul 2020 18:42:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D9FA216294
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jul 2020 01:52:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729678AbgGFQmq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Jul 2020 12:42:46 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:34641 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729386AbgGFQmq (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Jul 2020 12:42:46 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jsUCX-0001cA-6c; Mon, 06 Jul 2020 16:42:41 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Wolfgang Grandegger <wg@grandegger.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-can@vger.kernel.org,
-        netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] can: mcba_usb: remove redundant initialization of variable err
-Date:   Mon,  6 Jul 2020 17:42:40 +0100
-Message-Id: <20200706164240.518623-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        id S1727905AbgGFXwm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Jul 2020 19:52:42 -0400
+Received: from crapouillou.net ([89.234.176.41]:55458 "EHLO crapouillou.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726805AbgGFXwm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 6 Jul 2020 19:52:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1594079559; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=URFquOorttvpmiJ+lfEVDd1Ropa0DJF6BFwngAVN5HY=;
+        b=GzSZ+Ncoik/RV1tbn1NQ3agvUwXCTL9DJKl7RAqleMSt4WcQ1iQoEoIwKraltvtlXwdjT5
+        PkrD9b1xBa/M3zTUj7NfrnQxGdwdEu/cKr8jGdxhmWBfebYr6cGEbaZ8GZj4gN4AKQgyKR
+        bQlJTTRr6cSm5X73rU1bb+18AKVwuhk=
+Date:   Tue, 07 Jul 2020 01:52:29 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH] i2c: jz4780: remove redundant assignment to variable i
+To:     Wolfram Sang <wsa@kernel.org>
+Cc:     Colin King <colin.king@canonical.com>, linux-i2c@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-Id: <HNN2DQ.3HHBK0781A0A1@crapouillou.net>
+In-Reply-To: <20200704063217.GG1041@kunai>
+References: <20200610125901.1134204-1-colin.king@canonical.com>
+        <20200704063217.GG1041@kunai>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hi,
 
-The variable err is being initialized with a value that is never read
-and it is being updated later with a new value.  The initialization is
-redundant and can be removed.
+Le sam. 4 juil. 2020 =E0 8:32, Wolfram Sang <wsa@kernel.org> a =E9crit :
+> On Wed, Jun 10, 2020 at 01:59:01PM +0100, Colin King wrote:
+>>  From: Colin Ian King <colin.king@canonical.com>
+>>=20
+>>  The variable i is being initialized with a value that is
+>>  never read and it is being updated later with a new value. The
+>>  initialization is redundant and can be removed.
+>>=20
+>>  Addresses-Coverity: ("Unused value")
+>>  Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>=20
+> What about 'ret'? Doesn't the same reasoning apply for it?
+>=20
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/can/usb/mcba_usb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+That's correct.
 
-diff --git a/drivers/net/can/usb/mcba_usb.c b/drivers/net/can/usb/mcba_usb.c
-index 21faa2ec4632..37ab3de43acc 100644
---- a/drivers/net/can/usb/mcba_usb.c
-+++ b/drivers/net/can/usb/mcba_usb.c
-@@ -793,7 +793,7 @@ static int mcba_usb_probe(struct usb_interface *intf,
- {
- 	struct net_device *netdev;
- 	struct mcba_priv *priv;
--	int err = -ENOMEM;
-+	int err;
- 	struct usb_device *usbdev = interface_to_usbdev(intf);
- 
- 	netdev = alloc_candev(sizeof(struct mcba_priv), MCBA_MAX_TX_URBS);
--- 
-2.27.0
+Colin, could you respin the patch and do the same for the 'ret'=20
+variable?
+
+Thanks,
+-Paul
+
 

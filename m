@@ -2,38 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDFD1215274
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jul 2020 08:15:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4006E215354
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jul 2020 09:31:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728852AbgGFGPp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Jul 2020 02:15:45 -0400
-Received: from mout.web.de ([212.227.17.11]:46553 "EHLO mout.web.de"
+        id S1728924AbgGFHbX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Jul 2020 03:31:23 -0400
+Received: from mout.web.de ([217.72.192.78]:48521 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728804AbgGFGPp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Jul 2020 02:15:45 -0400
+        id S1728079AbgGFHbW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 6 Jul 2020 03:31:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1594016110;
-        bh=GnXk+Khqcb9KVAHtOYkeaYBiriaNRUM1boZT8Oubj6w=;
+        s=dbaedf251592; t=1594020645;
+        bh=QfjCKHMtlZHfoheYLH02gGSuk9Qg+re1L0gY3+r+k70=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=RqgFFIuQMN/dCQaIsEGTvHWiO84SAc9QB//7hKQJibFWqsnJ+s0zryg2pFxuOVLpg
-         lB5KwJJEyzOIH4xi40M1a2EVDQtkI4OMhs5lLEDKH/8Mkk3HVJHwgkvFV1RGUO8R4J
-         f+x6hOXsNV2pZ8YnEuS4gk6ip9jjt0Nr8njHxRPc=
+        b=l7oYazhdyR2vohROj1obO28jr4B3yIg00hf4TJaufBJnE97RXjBvVPGxSRD71hImX
+         Fl4Phan9ASwTrjnv910lURBsVP5AIs9BA7Bb0kbFZ0p2eXvvZJiZkqqaywIEcTsv4/
+         zSGMIdJFsKXONn+jmEfxiwsZc0nHjmKoXTfuuGes=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.113.119]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lpezi-1kWMWW2n3e-00fRX7; Mon, 06
- Jul 2020 08:15:10 +0200
-Subject: Re: [PATCH v5 03/14] irqchip/csky-mpintc: Fix potential resource
- leaks
+Received: from [192.168.1.2] ([2.244.113.119]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mw9xG-1kk2hV1WgW-00s9go; Mon, 06
+ Jul 2020 09:30:45 +0200
+Subject: Re: [PATCH v5 14/14] irqchip/xilinx-intc: Fix potential resource leak
 To:     Tiezhu Yang <yangtiezhu@loongson.cn>,
         Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Denis Efremov <efremov@linux.com>,
-        "Gustavo A. R. Silva" <garsilva@embeddedor.com>
+        Marc Zyngier <maz@kernel.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-arm-kernel@lists.infradead.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 References: <1593998365-25910-1-git-send-email-yangtiezhu@loongson.cn>
- <1593998365-25910-4-git-send-email-yangtiezhu@loongson.cn>
+ <1593998365-25910-15-git-send-email-yangtiezhu@loongson.cn>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -78,68 +76,57 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <3cdb3f12-0862-6985-2236-a724267ead81@web.de>
-Date:   Mon, 6 Jul 2020 08:14:58 +0200
+Message-ID: <5a2564f9-9280-9223-3e24-439fec81ab75@web.de>
+Date:   Mon, 6 Jul 2020 09:30:42 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <1593998365-25910-4-git-send-email-yangtiezhu@loongson.cn>
+In-Reply-To: <1593998365-25910-15-git-send-email-yangtiezhu@loongson.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:dWklsLbtcH8+/xjKLRaQjV0eW+fJ88gQ0wL1vmljj+NkrBh7pJ1
- j8LMrpRBwENtVNY5WI4toUq50KXy1sj9PyLEqyIV0ZQpw0Xp+3fHsqKuwo/BvlRH0BZWo4G
- B5lMAMQuYyaEhTtMFmmW1Dr7RTbJkgcvOtuFyx1k+y9UmK4EaTlYpv+dKJRIllU4d/HF+tg
- /d8ThdQnKiqKkqHIhSWxg==
+X-Provags-ID: V03:K1:vHXuIF/3iIJjG7wqyPCGTOnE/3/6TtDh8kA409b4YClZxAFDju6
+ f33Vv5jQbe65a+Bn/hiFEodf5zpUG8rFrbsja+EKxIdrXNIDpd/crCwsEY1ZsH3w/Ry3KNd
+ HWqXLzYbaBfuWe/PaISB/1bqmTsJagNNI60V2QAOH/8zijL7FEbIOpvW4UKDAw3mGRGZvOt
+ sC8gf1yL80ax5A/cf26+Q==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:g4Wi0FAAJtY=:9JZJavhOuhLEeuxGrwJxU6
- Z0YQEIwBGmhf90BA5xrCbefqNRe8uieLj2t36jd/hkSOI4rTK0LX0XOZC8ZfOJCA/3gREUG0K
- 7GU5Dbe0/om3sQQcdJcDL6Jc8GjPQWMgVwSi5LbJblW0fw0tKP6tcbkDi3oawlQeeQBA7/Mw0
- UMq+VH1qjwKvp2PmlfQgG/SnYWiLi706EZrCfxBXq36TGWO3gLmNYiipj1ClS8MBeDol65v3X
- OC3PbcjFQ1guQQUp7XWTR7ZKSl9Cbp//6O+bjuCozQ+VUKkbhNtVsG6YVKSXNkFbxHsw7i0pp
- VdWvO7+/uiOs7vsZmHe3DGcgJ6D0xRE5fTr7vKPizslpKeJ80Creo3W8bU+ryXHmPtnzeCjbp
- EVyhdabnFKBRyI6BR3RWQ2UYe7nGxNOz3eecj0lKGrvwLYuA5nB79awAaElIeZGHF/4maDUDO
- bkLfRW0Bjeq5EuDLLkIpkFywAoxQU3jLiwfHEcQmfI2TKs5lAvT1pUL5pncaD61fDufquNnsF
- voHrLOn2AL9TyXdKSkbEMGtWBPugddOToaDx7iZSkDT3hyOVFjUEBlg5ftuIPqtv1xfe+V4xs
- STz6vgY4X9EsI0IGdZ6SZf/IaVgpwwI7L6pcG99uweum7nkhO/xAj3K6mWk92elRXUQcG5+p8
- 0NB7uHx3Qcq2E1r8dj0Hcs6L1TIGEdeAqRiOAn8hvL83RyAz/FDFlZYilalH5AWP/0kJLI1k9
- TZuyRHM4K7WMh14YwPOPHN6EKryI+bMJgh3Nb7jWN94BX8WMJDs2xZBT4s1A+yjjOLDu7Cg2T
- d1/dv1GQwyetX6R83DXFp5cqQL2WVYujfL6OzCo4JEihL+uZd0cG9+I7Ysf5Gf1b9cKf2GxZM
- TBBvFMDQrTxXbpNaXqrBs0jUmKP99XynWL8y2GU5JfuNXcgd8fbku5gHceDHk5Pqx0D8fHpSl
- JtSZIDkfvmj4YVBTMIARV8wRBditjgJgBAMlHZ4Gpnw3RrSYk4gf06L6A+uW4v+gj1lWMotd0
- +egJQliQF5bhLcqoxGowVCYF9izdRbDGPyCX8PKgwH6rcoR5xdQZVtoASPMN7HOXRsVQCb+8O
- Cnum1hkHh0pIG+u/BhZegDQZrYGWdFqOMgRewChHigpBLnS/Sgx6kG3Kfc2yf7FnKm35/AD+C
- NXbfZmbdX9RsJZWXD+EovA2O5NZW/X7Ogo7j2J0VxeOgLLHGSqTQb7ARD96/T6SvOC0vbf1xE
- Pr/ZWKO+I+5994Iy+
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0m87Wpx0wNU=:y/H9uwOLXS/Gt1G97SPeUo
+ 8XWNEVjT4CpuVeID2VcwSw7mrvarWtFDLbLA5EerPfsMotKzlZawYGhvzs0FLDNy1+zVmDSif
+ i8xBtqycnuatbxOtR9GP6cR1w1kBvznWusWtPm40bnDO+eosHP+iG69kGlHm5aIs5X7rF1AC/
+ gZt1X4EE/Y27ylO4JuyXtjOsROyMmugTzRP7t0IBCUtKQO+LbNOqE4MsBpRaeZtTvoQ971XYJ
+ ZdpEVcBNZIIG7zaYHjxoX3i/sUE6ZYs5+I4SsGvKvQDJ5U67IvJEiA/94r4ImAyWd8i8I3Ci4
+ pP4drL+aOniqMhLvkDwGprF9JQW2xoFROoXNHDQeuymhlpzJ5KUJhPRRuTANc0k3KxCgaYeO2
+ E9bVZypO0J5yqnS43T6+hF8cP81Ghz4Hc7y9jINGZfYXGG5p25zqS6XcZW6cWdcgqDTDRKXjc
+ DsuzdnsBHIkk0YlKpckrcXh+H5NmMUv4gLXo4eV8tDkElc07A/8Mm/SQ8BLBMGdFR9kSpYRrD
+ nhPEgyldjOkNk5gVGWvlqm+JEXx2raTRXKonFm4dKLs8oAOMDC5HbRkm59JPaf2X+Vi/LH4SM
+ CraMLW+oG8MQI/rC2URbSl2o5jmkXgME9fpoLH+vkJqtUaI8F9uaPnby4FqSGhOqbsKQ6ddKW
+ mJqSrsX8xZigxL92Zkq12n28VuosySurRpeEW4yp9b9y0iquw5eUXth2oj/G/LZTZVUcxFeiV
+ nv4zbsx1Ic8dMFA6VrpYbTbgyYNUbG4juWMrnEbuGwnuuuW8xsyJse5HPmRoxXRdF7txjKysN
+ Xjjc+6jdwBEvMmKtMjjyGi8Twz01rX52bUDHWTPe3ZXbNA7e2U0OnTlRZVuwYDa0ebLEFS2TF
+ BpN4pJBOig/su8XdC4htPlqlwQPqU2if11DxxSuSxp2UxyDThpanNQ7XyHVZPilnkHUtGoOUf
+ cAGgGT3jtYhFJmamTVpZBKKkCyy9WUWfbcGl8NdItfQIiLuxLNX5vx9A3Ham/CmPZHx+sIHO9
+ CxZXbamznn20WTuiWJAG0bOgwiydgjrm1eJIcYhSKUjHJ0Nf9Srj1Q+L38953BzDQMGT23WpA
+ c2u/Ql0SNOEpXNkEEkYHGD8FEtOhl4Z325La15RTGBYVfkPJjYgspxGkFlGcO1p28o/qFyTW6
+ LvVaEz/6XiyPW3ZMR+6bKFrpNFXMVnJ5uPqA1dcvPN2bi45sz4GMWH/ANOQ5halfMa7232ZCf
+ tF+sU5fOmdlHezRe8
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> =E2=80=A6 Thus add jump targets for the completion of the desired
-> exception handling. By the way, do some coding-style cleanups
-> suggested by Markus.
+> In the function xilinx_intc_of_init(), system resource "irqc->root_domai=
+n"
+> was not released in an error case. Thus add a jump target to call the
+> function "irq_domain_remove" for the completion of the desired exception
+> handling.
 
-I propose to split these changes.
+Do the corresponding diff hunks express also a renaming of the label =E2=
+=80=9Cerror=E2=80=9D?
+
+Is there a need to split such an adjustment?
 https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
 cumentation/process/submitting-patches.rst?id=3Ddcb7fd82c75ee2d6e6f9d8cc71=
 c52519ed52e258#n138
-
-Would you like to support easier back-porting of a fix
-besides another bit of possible source code beautification?
-
-
-=E2=80=A6
-+++ b/drivers/irqchip/irq-csky-mpintc.c
-@@ -241,14 +241,16 @@ csky_mpintc_init(struct device_node *node, struct de=
-vice_node *parent)
-=E2=80=A6
- 		INTCG_base =3D ioremap(mfcr("cr<31, 14>"),
--				     INTCL_SIZE*nr_cpu_ids + INTCG_SIZE);
-=E2=80=A6
-+				     INTCL_SIZE * nr_cpu_ids + INTCG_SIZE);
-
-Can any macro (or function) be helpful for such a size computation?
 
 Regards,
 Markus

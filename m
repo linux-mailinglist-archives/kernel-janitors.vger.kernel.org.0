@@ -2,106 +2,120 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C71A2159DC
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jul 2020 16:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1F10215B69
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jul 2020 18:06:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729351AbgGFOsW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Jul 2020 10:48:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58870 "EHLO
+        id S1729437AbgGFQGt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Jul 2020 12:06:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729250AbgGFOsW (ORCPT
+        with ESMTP id S1729293AbgGFQGs (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Jul 2020 10:48:22 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED70EC061755
-        for <kernel-janitors@vger.kernel.org>; Mon,  6 Jul 2020 07:48:21 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id j4so38853102wrp.10
-        for <kernel-janitors@vger.kernel.org>; Mon, 06 Jul 2020 07:48:21 -0700 (PDT)
+        Mon, 6 Jul 2020 12:06:48 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57161C061755;
+        Mon,  6 Jul 2020 09:06:48 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id b6so41632453wrs.11;
+        Mon, 06 Jul 2020 09:06:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=cBZ2scPa5H+r50RUQxyW3XJ5xsh/nqsYrlxmo7w/e8w=;
-        b=JrCEisNAfZ3q+hI01mukf0VgotpSmwx/3EA0lVL93a9mhJjLYMKTr+edgUYovIQUWC
-         SOY7omUcDRq5G+Xjm8XrP5dCgnVehYA1I4Buebae7Mn7NzmVwqZI0UKX87V9dTORYxUB
-         a9rlOdz8FbHuOYJutbG76thBXURF+ZbxXGeCc=
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=xCr/E2UfpfNx/3DS3JnlJgbuc+JNeFMMCFYGgSgWR/I=;
+        b=mlqIbKZzvsR8H7X+H3bWpRjyAvsFIRS7m9r+3QwodLOn4YLUv8Iv41WHDpQB5yUkhe
+         rvARNPXNxp2vv0Cui6XM1E9maK1sklAJEpEQYTy72veFM3wieR6hrtR1tUDo2xLwZvjX
+         ApuE7mzTEliYkyWYR1gYrHsrGR552XeqmKHOQ2BT2RvjgrY7m0/LKar0xOLch/1pRJ80
+         j6dqdSzcTHkQR0kQqPfa0K7VP08nUDsNHt18Vm7MnRMcP+GF1884ivyrWt8omJ0XxImN
+         uZIDaAt25iNtHSywPtSpQMhz7fDCIJ+/Of/um4AV0s87aOoofiK5pXTZe/WRl/Sg/6Ck
+         5sXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=cBZ2scPa5H+r50RUQxyW3XJ5xsh/nqsYrlxmo7w/e8w=;
-        b=pDY5bv3GhF3ib3OrteErcBhYiXdtDEmPvkFeQC1AqXimhE+jHL7S20VEd6ahKpVCni
-         cmEL7xiq4CdasAWLBtietQ4bY35uwAwbCAh2QXv/Ov6/2r58BGus6JPbqMggIclMdwW+
-         nX8gWB4lBUxZ1cl1/LegmuxUWbDnW8Ot3JNk69EVkFGx3DdmcjsWCEopHkojg7OgtiCM
-         obULOkqVVY8XRXlJMBS+h6NfCjcQRMickbZg/GR84UcT2282bPeQCQtw0rzPfa6lgQ4R
-         qcXcYN60fwvHKbXyzfvIaVsdVpEwXre8LWJvvQkvCUK6/OSjNcfNSyIoJzsijDlFR76Y
-         EENw==
-X-Gm-Message-State: AOAM532VrNrXj06WtxrTqjH5xhJ8jk9hcoN0OPKztZh/ZED2USZgiuCc
-        AIFR+0B67Sz8lz4w/L2usteMcw==
-X-Google-Smtp-Source: ABdhPJyDCzhSaOmHq049kLL6PXnNNhsPb7sswh46NV21Ro6z1vjnWiqyJZwkoucKnfUQ+ZjY+/JaTA==
-X-Received: by 2002:a5d:55cb:: with SMTP id i11mr46581284wrw.28.1594046900665;
-        Mon, 06 Jul 2020 07:48:20 -0700 (PDT)
-Received: from [10.230.185.151] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id c136sm19604644wmd.10.2020.07.06.07.48.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Jul 2020 07:48:20 -0700 (PDT)
-Subject: Re: [PATCH][next] scsi: lpfc: fix less than zero comparison on
- unsigned int computation
-To:     Colin King <colin.king@canonical.com>,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200706130820.487271-1-colin.king@canonical.com>
-From:   James Smart <james.smart@broadcom.com>
-Message-ID: <44692d32-d522-43ff-de74-a1faa432a911@broadcom.com>
-Date:   Mon, 6 Jul 2020 07:48:16 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=xCr/E2UfpfNx/3DS3JnlJgbuc+JNeFMMCFYGgSgWR/I=;
+        b=JRWtIFt+i9/mhJ09wv5V9gpuci8nPEclJW/Hhm/+rW5FMLxlv7t142IVggbvxvxbTP
+         uhEzN8hy/cHnr8IsOkaOkswhFPyt572sS9nFNvw9qYJMhQA7ycoc3EAxSO+kgeU81CIE
+         5S5yoK2bnIJPgpYnVGHbvV//HvX32NKIiSCxn+8JiKr9ea8AXv2y18E7yo0uzclgLgbh
+         s/QrLBvaq+uWYDGZ1Q1Bn1Gg349jk125vA+vERrCLBKEDGRZzQvQ5fE7Gdrt1V7sxY7n
+         ZhHweyf8JF6x/Is/ODEGg7Nh11zPP+HpMXgmsiicC3YykzCZa8T7kfdRbhI9iZuPqY0H
+         vI9Q==
+X-Gm-Message-State: AOAM5331BX9z8r0LH6B8hHmcge0CQ3Aqbm4itQNh/h8TwwHccUezRXlc
+        R5JX4SuVYuoPZMESd9EIZ76BS1UAMvlF/0OgDCQ=
+X-Google-Smtp-Source: ABdhPJxdm0SXjqdvnZSqVXcNs0zZL+fxT8CbYJGVE6ad2dBa9So/9NH/7pLse8Fajv9YZRRN3Dtr8tqXQjjPfoZIRfs=
+X-Received: by 2002:adf:fa89:: with SMTP id h9mr48658791wrr.120.1594051607057;
+ Mon, 06 Jul 2020 09:06:47 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200706130820.487271-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+References: <20200702015552.42377-1-yuehaibing@huawei.com>
+In-Reply-To: <20200702015552.42377-1-yuehaibing@huawei.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Mon, 6 Jul 2020 12:06:36 -0400
+Message-ID: <CADnq5_M35jhfPDCGaYxYBxMcptVJjcXw5qSy-PLTh0Z8vjSFZA@mail.gmail.com>
+Subject: Re: [PATCH -next] drm/amdgpu: remove set but not used variable 'adev'
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
+        Christian Koenig <christian.koenig@amd.com>,
+        Dave Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        tiancyin <tianci.yin@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
+        Likun Gao <Likun.Gao@amd.com>,
+        "Kuehling, Felix" <Felix.Kuehling@amd.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Hawking Zhang <Hawking.Zhang@amd.com>,
+        kernel-janitors@vger.kernel.org,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>,
+        "moderated list:DMA BUFFER SHARING FRAMEWORK" 
+        <linaro-mm-sig@lists.linaro.org>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        linux-media <linux-media@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Thu, Jul 2, 2020 at 3:25 AM YueHaibing <yuehaibing@huawei.com> wrote:
+>
+> Fixes gcc '-Wunused-but-set-variable' warning:
+>
+> drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c: In function 'amdgpu_init_mem_type':
+> drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c:81:24: warning:
+>  variable 'adev' set but not used [-Wunused-but-set-variable]
+>   struct amdgpu_device *adev;
+>                         ^
+>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-On 7/6/2020 6:08 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->
-> The expressions start_idx - dbg_cnt is evaluated using unsigned int
-> arthithmetic (since these variables are unsigned ints) and hence can
-> never be less than zero, so the less than comparison is never true.
-> Re-write the expression to check for start_idx being less than dbg_cnt.
->
-> Addresses-Coverity: ("Unsigned compared against 0")
-> Fixes: 372c187b8a70 ("scsi: lpfc: Add an internal trace log buffer")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+With our current -next tree, this patch is no longer applicable.
+
+Alex
+
 > ---
->   drivers/scsi/lpfc/lpfc_init.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 4 ----
+>  1 file changed, 4 deletions(-)
 >
-> diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-> index 7285b0114837..ce5afe7b11d0 100644
-> --- a/drivers/scsi/lpfc/lpfc_init.c
-> +++ b/drivers/scsi/lpfc/lpfc_init.c
-> @@ -14152,7 +14152,7 @@ void lpfc_dmp_dbg(struct lpfc_hba *phba)
->   		if ((start_idx + dbg_cnt) > (DBG_LOG_SZ - 1)) {
->   			temp_idx = (start_idx + dbg_cnt) % DBG_LOG_SZ;
->   		} else {
-> -			if ((start_idx - dbg_cnt) < 0) {
-> +			if (start_idx < dbg_cnt) {
->   				start_idx = DBG_LOG_SZ - (dbg_cnt - start_idx);
->   				temp_idx = 0;
->   			} else {
-
-Thanks Colin - I was about to send a patch for this. Has this fix and 
-one a couple of lines further down. I will post it shortly.
-
--- james
-
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+> index bb95627ad2cc..8199702d3354 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+> @@ -78,10 +78,6 @@
+>  static int amdgpu_init_mem_type(struct ttm_bo_device *bdev, uint32_t type,
+>                                 struct ttm_mem_type_manager *man)
+>  {
+> -       struct amdgpu_device *adev;
+> -
+> -       adev = amdgpu_ttm_adev(bdev);
+> -
+>         switch (type) {
+>         case TTM_PL_SYSTEM:
+>                 /* System memory */
+>
+>
+>
+>
+>
+> _______________________________________________
+> amd-gfx mailing list
+> amd-gfx@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/amd-gfx

@@ -2,26 +2,26 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB0CE215877
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jul 2020 15:34:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 372DA215918
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jul 2020 16:05:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729439AbgGFNeo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Jul 2020 09:34:44 -0400
-Received: from mout.web.de ([212.227.17.11]:47009 "EHLO mout.web.de"
+        id S1729177AbgGFOFx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Jul 2020 10:05:53 -0400
+Received: from mout.web.de ([217.72.192.78]:33967 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729382AbgGFNen (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Jul 2020 09:34:43 -0400
+        id S1728940AbgGFOFx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 6 Jul 2020 10:05:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1594042443;
-        bh=zyikPEHRSl6AfWnrIJsptm0zk3698RDADIrgUvP6JL4=;
+        s=dbaedf251592; t=1594044257;
+        bh=txLFHk4sKswUobcyqE5f9RkYwUgc2JM+KiU/kOsvK8E=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=dykUl5Z/jkWGSiBqMz4YjIFMzhj+0rJ2OaWEPiEAI/j5AfTD1SwZFV1ngl4I5f6DO
-         fijeLzd/p3DfhXKJkRQvhkv+isL05Ej0ziAXBthUrNufqYBB/WWo6wwmf1fWJTqATk
-         cYlILoX2ryhGkRtx0jITSpMnqpQpvbZEDDZTmaq0=
+        b=svDu8YJYzpJR794LiTYnvaMqQIuimLitSl84yooBmQ3oC5NT2xtvrmHA4HlZwhW2s
+         XcXuHUsJnWGHcHaKOJ/uv662URyBHVXbm+ShqtDYj37g+Hgdje5lJxboYC9bjr9QNE
+         R2qiqlMq/HfV36U7bjGLC2JTzGdU3P1jTloGBFSs=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.113.119]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MDxCN-1k85vJ4AkJ-00HOMY; Mon, 06
- Jul 2020 15:34:03 +0200
+Received: from [192.168.1.2] ([2.244.113.119]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M6mPA-1koxhl2kLM-00wRIo; Mon, 06
+ Jul 2020 16:04:17 +0200
 Subject: Re: [RFC PATCH] vfio: type1: fix kthread use case
 To:     Hillf Danton <hdanton@sina.com>,
         Alex Williamson <alex.williamson@redhat.com>,
@@ -77,8 +77,8 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <7ed25c44-bb51-2d8d-82d9-f11272f56424@web.de>
-Date:   Mon, 6 Jul 2020 15:33:58 +0200
+Message-ID: <69f9079f-b1b0-3296-4536-8f0a051a96c2@web.de>
+Date:   Mon, 6 Jul 2020 16:04:13 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
@@ -86,73 +86,52 @@ In-Reply-To: <20200706124241.4392-1-hdanton@sina.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:hQRlprojWG/gbX7gfH4IvEPq/yWggqojlOSRndeRHXRFyV6gflb
- 3xWgaDC2zU027iUUZvbgo88UWGbzSIKD1b6S9AvXbVA8CeL2Azt1uZ6fGcKlDfKdy55quTE
- cR+Mt+yHCVh8apr9KJGjIMgZJ81TahgojBeJcPw65TliQU1reY7BHvAV2cKvE9ISZVV9TD3
- mmKhR5yHSmjdIY3H8yxjg==
+X-Provags-ID: V03:K1:S6iuadSuppITYZ9YHAjzGVbigTb8/nLwzmleYDcKmFolGDCGlwt
+ vUVVYSUv69Yrvfko9y5sTRXBzPUy4C0JdxeZyz2JUAGMbu596PvOG2GPjx9HyYBR/h8o9E6
+ MConKpwivqH0INVe95xeFaeoha1CYYwA3PKQIUyqjJeRgZOslWERpmupVtsdH30kDJAoC29
+ b7QLRVlfgxIws8Mb+hxVA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Bc4I7rzFw7Y=:cNVHiMPx6Tz5XJ2v2Fet5L
- WPSOVTbpBAx5uuo8/zhhlc01QKoJzuLXGC5tm7GTsqLsqF6Wt09RES/ga7QxdZFRnPt0aFAIz
- 3zLqiQAp9V7FZSYx6pDzbhdT+j9Wqjr5NY0HvJsmQxaiKNAGvcdT9pSBjmWozz3G3extGph9I
- BGpdf97jPf7BdR/w7t7l8KjaPMm9goumyruTzQAs+kLIUt1jhpxtLcRxOTO9oEZqC0gqDoyfb
- 6s/fiYsSBXIX+8EKmroKYlI+JjAMxQfm5bZ/kcNck7EJuT5TBMT9L3RbBwiaxn5yDg9uXsrRe
- N7/6G6A8QNsw+bbZHejh+b1aAaHA5boGwT1hEMnMj2zi0G1SS/vE55HF/UsIYdynSGdKe+ksL
- +Jq73DwtM/9cbsrDHu/pW9WgI23InPXZqLaSGKBGBefhLOof//8shNiSnBhvmAltY5A06u1Z0
- XuyCoTNig4322Y3ZI/zqNO1tWLlCsDXNjrZSLPvzYrVNMQ5I7XH89ODiYgZBUrfEFOCHaJCS2
- thHyPSx1XF6w+zqUGXAMHJY/vGOh2a89sVrlsXIcvZm0MvEa4BaJ+1A175S51nkcxSdgdpx0s
- IX0lY/CF/mpfQO1DifuCravqMPX6w/NV3nRPGG3dw3jUD9TDKrz2o67R7e7zZTBUOKtfnqvFy
- EBqjodHKBN6PiWihbfekk+kgsu9j9olhWiRTCBC9FHGO004FfnqBcw6I0uUJvZVWP06USeqY/
- d2RNleTGOxan7MtsOJZSeVWA6j8UC26b4Nrwz3Pl970LLoQmhsCkvn7T2GSKw0FhchAwx3FIG
- S01GqDhvvW/c0Gi5GxGCifx75z0MTvpv2kJGda7EgmOnJkdC4Zc8zarKGicsgY8qZniU65+Dh
- aVZUimK5ogOuWpOkaKvBPXb4xJr2f6J51lGDy5PzwqEpD8TDY4nynfvc2GRDTxtwYJazuwXov
- H8qtq2wbzcBeA2k+mta2Wa2Pep6tuBf0SLArTxho3N/XireqaYZAEQUyTrsgj9h5zh6i4yEOg
- sv+n1Em1NRa/BVDBQIrEhrc2UVI/qowXwI7ocjOeEHpklgX7k3fYyZOG2CZHenUJZIgd0qJcx
- Jyl4p+DEu/ZA7y8NwFnSjz+ckFRw9QcyuWSSqQH2EFMhXW0hbHyu9g/GCUCzoLftX9gPHTHW4
- 75ItyfO5X7Egz9+QRliWT6qhP5QXWHNHtS+4AQT/fSrmBNyCBT54B5wQhqNPTZz8eTMol0cLN
- cGWL2wYTGPTO7DVuz8ES+C7IveaDdFdjxiYNqhw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:zTcJAye6cAU=:MgITDtimfovCc5DxsHQxsa
+ 1b5dtbrusuDkN0HGL0HXBawJMGKykNPHkk8HE3Ep+kVhncfhcmDp6UIKN1Yx2rAvzfdM/bMwf
+ M+gGmlrH0IC/bAPzyw/Y5PjjUKDJhz+S6lgfKCbgoA7WKmXBbQnN489X+ATc39E14ii3NYNE0
+ BvLaMD49mrXqHdSJkTNQOw4V8Zg7PPJ0IvhSu25wOucTfY/Vp8VCiJiS3U9E1x0O/xSrB75x7
+ CwmiTi5Y0SXbZdR6WM2kFl5p4tmmQqVbPEwoeD/Ae6d1qLTI1D4iYdzHSQeGaQHOLg2Hi/XyL
+ HlG75+yiSOhoZ88v+iiN+FUEObL/q9z5xWGYN/2vU57YZU+AVG3XqzO2rI9a7I/qkcuiI6gpQ
+ w3TTDFqMd80if2IaG6Txf8JgC8CCMNK9GbgNZvcA4msiG6D580VU+AuY2HtlS/zQEuRzhfutE
+ 1aYPMw+aB8alh7N7HE4OwBzyAaCjPP0/XNXNW4b3xkUV9HQhJpHipd3AkgenbxogifExw1OTV
+ zmt3Emm/PYIuqxonmgvv6+pcc0h8LjsyOOPWBGhb5k26rhE0GybH36TSkYaKwDxOv4zhqWf6O
+ cul4sCiWzkZ3kb40hspUwO32EOSGb9Fz4NtDc/T4MoS85WHhXjTAZkzvvRVNJQNSLUTtpfgNN
+ pYAtudM7PkOmS1h8jnFws4zy4yobwRpRRFF704i0URQAZoZwzxaaEkvj2ESCrO8RFpus/TUZX
+ 37Q/kC0zhsF9x5BeqYlzID/kpQuUa/NjXF5C9/QCvGmLVA/LlIHxrUts3g2InT72Ur/ka8wFd
+ guMgOt8A0cHgVKyqJjq6n6RtG5gkZLMxoJ24j1zJ9MHQ6BtRYWO0+IUepEn02BLgJx9LMWu2S
+ hm3k4qENh8SDDv5O8ILN/iHVDrGXctKf7jktk4W/PhuwamKd3Pvhooh1t3cVoDwX4IhOQEElS
+ ZGy9M2e2YomecOwvnyoObH3p0ShIbdmrzsqAEtuzgD2viDk1AmoyUSlMnUHI7wr8LjDJ4FvpY
+ tj22Nw3CX2Qzr3YUxjTD99nZ1vJjJlwqUJLwC6L7x2Nd++NvC4l6VgoT1VUAEw2KAfUFmyXGV
+ 38ELMJwuT6HKydo7rg81sTlqHakI78YXtKhtl7Mz1466FpCZ+LCcZX8A8ejWZqFmjANYYUnAP
+ IdfR6ibAffMgoJ3G0iV7oDTNYGO6LAd/UYTNg5y1GLpI5PsX/mGKCa58NL2AbFA/p5QXdWAKC
+ Kpxc8olQsz4pRGlrClLF4wMfKkTXV5TFH/R0+lg==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> Can it be helpful to convert initialisations for these variables
->> into later assignments?
->
-> Perhaps. Then it looks like the below.
-
-
 =E2=80=A6
 > +++ b/drivers/vfio/vfio_iommu_type1.c
-> @@ -2798,9 +2798,12 @@ static int vfio_iommu_type1_dma_rw_chunk
 =E2=80=A6
-> -	bool kthread =3D current->mm =3D=3D NULL;
-> +	bool kthread;
-> +	bool use_mm;
-
-I would prefer the following variable declarations then.
-
-+	bool kthread, use_mm;
-
-
->  	size_t offset;
->
-> +	kthread =3D current->flags & PF_KTHREAD;
-> +	use_mm =3D current->mm =3D=3D NULL;
-
-I propose to move such assignments directly before the corresponding check=
-.
-
-
+> @@ -2812,11 +2815,10 @@ static int vfio_iommu_type1_dma_rw_chunk
 =E2=80=A6
 >  	if (!mm)
 >  		return -EPERM;
-
-
-+	kthread =3D current->flags & PF_KTHREAD;
-+	use_mm =3D !current->mm;
-
+>
 > -	if (kthread)
 > +	if (kthread && use_mm)
+
+Can another design approach make sense here?
+
++	bool thread_use_mm =3D ((current->flags & PF_KTHREAD) && !current->mm);
++	if (thread_use_mm)
+
+
 >  		kthread_use_mm(mm);
 =E2=80=A6
 

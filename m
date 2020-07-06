@@ -2,33 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92E0B215368
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jul 2020 09:43:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDA86215671
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jul 2020 13:32:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728849AbgGFHnt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Jul 2020 03:43:49 -0400
-Received: from mout.web.de ([212.227.17.11]:44815 "EHLO mout.web.de"
+        id S1728881AbgGFLcs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Jul 2020 07:32:48 -0400
+Received: from mout.web.de ([212.227.17.12]:47239 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728248AbgGFHnt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Jul 2020 03:43:49 -0400
+        id S1728806AbgGFLcr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 6 Jul 2020 07:32:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1594021417;
-        bh=Wb8Q4StqUqY9E3ubjH8+vLUNmLWdPXf4VOlWVaeJpXY=;
+        s=dbaedf251592; t=1594035149;
+        bh=gRpai35169NN0LWLbN07VQzDnRwm2ItrPh+MTVyFv7Y=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=SbBy9VqE+WXqjt10ZnAPMCmmPkUgVQqaz+UNpYefG1CC650YTERBHLNDf5tRYhkf/
-         YJQ2Ppn7C0pO8PhBOJc+trBZWULZTov2g1SXZvtINVPHKSWXajze3PIxfmaTK3i/QY
-         UBMI4Ujh8mNVrazpqLqf7W7ztjivkif0o+vdk/NI=
+        b=GTrS6hLLgZgRYAh+ONOfLqYIpNsTtiM1Y7BcTCac7M9Rqu2I4ig6KPiepxZoqN2B5
+         AB0JPcEwwARtLqYhlwRCyu5BcABLayhiFmb3JAdTlu4Nju7Qmk1kzmIk5WTKDXtU+P
+         IAj4UZuhWAFlGEM1XM5UgjyiCxANOhDE0EE3i9OA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.113.119]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MZSBQ-1kNdmQ3Qfu-00WWMu; Mon, 06
- Jul 2020 09:43:36 +0200
-Subject: Re: [PATCH v5 00/14] irqchip: Fix potential resource leaks
-To:     Marc Zyngier <maz@kernel.org>, Tiezhu Yang <yangtiezhu@loongson.cn>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <1593998365-25910-1-git-send-email-yangtiezhu@loongson.cn>
- <ab1cd9280c7892a0230945ef5ff0880c@kernel.org>
+Received: from [192.168.1.2] ([2.244.113.119]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MLPRu-1jrr832wsM-000dOw; Mon, 06
+ Jul 2020 13:32:29 +0200
+Subject: Re: [RFC PATCH] vfio: type1: fix kthread use case
+To:     Hillf Danton <hdanton@sina.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        iommu@lists.linux-foundation.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Christoph Hellwig <hch@lst.de>,
+        =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Yan Zhao <yan.y.zhao@intel.com>
+References: <20200706104915.11460-1-hdanton@sina.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -73,58 +76,55 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <097e0670-6725-0733-0cf2-3d3c897c4dee@web.de>
-Date:   Mon, 6 Jul 2020 09:43:35 +0200
+Message-ID: <83a37410-1740-1a50-9d2d-6ad7587b8532@web.de>
+Date:   Mon, 6 Jul 2020 13:32:18 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <ab1cd9280c7892a0230945ef5ff0880c@kernel.org>
+In-Reply-To: <20200706104915.11460-1-hdanton@sina.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:utiFaU44pqh6Tv1V05a1lHs0OmIclr75lAnmKwoDubQ3bmqkEIL
- Z06BNorJzvQ8S00tN5paGuNRbf+Bki4+ZDmMLB5MgWoRMrEoC+inK7xauB19xd6V33sB86I
- h8/1H3h0FWF4IftbMuTDsw5e6ELG0/fo7S8qQAIaDLMVe+l+weqnJLIDTJyMw7pce0cqXmk
- iASJrln0Y+wSjWNB+UAvA==
+X-Provags-ID: V03:K1:82wdwGxFVFkq9HL6vEh1uDc5gfmhrZSMuSqbKOkJjQAbChF8zAB
+ NpHAONVorfBhFLN22r3EziqV1MyAYAQp1UnFO4voh0FG0xMlw8UZiklpjBZQg+oA/U/J9Ub
+ lZhUu0uQvqOB/Pge5WyIFf64HQBCwBgfugSvijbJ6d7iomwvx4Wml2kIoCqdk/Gj7JlYDC7
+ dvrHLLNCkNOguGw3DJG2w==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:WmwBejuREvY=:mCk4hRd63LULj0GYVNZkvN
- V4rjBwUMc07fYdvvsfGZjK8YEgefRx+nnIOz1kROh/GBeiRGsO+I3RJ1ZKtRRAWEOI89N6zbz
- II+xxhxA/qR+nSV1gOXzuv8cdRLWPYP2kL47/4VEsJSH/ubiLVa22D7ObkzT6AoCnlhl/8pZB
- kYriRRNY2mbtg0J0QPVwi9YCx21Av46PPUuHyctdQUqNIGxscK5K3Z13A8nm9f+yq5VVwBKqo
- uGnvl8u3+boR4KSMbRN2T05P3J+iToDs2iZ5PmtNMIrTTC2wVmLZI4aoN4/ORS4ULQwcLYFYs
- CgUPVI7ZPbLKyLCbIrtg2Uv51mKqg8VLOgArpYoZpW3PvLV4DkLd+s8IjRaXhSDG7wvUpS+AE
- Xn9TzIT8s3y1tnP5OtHyiBygPEsUR9nJV8H59mrxK97vAXuhckM04m/gXHYKIDQHJwTHPjafU
- wvL+L0Hu12ct9S0kP/TtPFBDYs/kAZc2yIXyG/+1sz1bq3qlvDkiAXazhCkieb2KzuaZuKm+Y
- vlN0dN44Qnrx2qkLrHqKWJcLFq/11sciA3i97eN2wwi2suL/i29HZUTzeqR066xQB2YE2Ztn4
- WJQfJLK5DGceb8TFj4GwVM0voputv2grOSTmZ2SBvy1WN758UieydvODOmiCLuujUSBtgoKyD
- 0teamgAdrAK5HXZK0vq6uGuAZ1Xz4DBjQoJTt9BiXZ0NEMrOa8YooDIUfRiQ+rcFZzSHdSVCc
- dawByp1zLlLqDyhJ/lpr0XtW1qwEvmV4coLt1TOVYK1MnhJFlWCMHpx5bbggDKEBu4iZYOGS+
- QBqySmlU2uj38F1YR1SJxoBFzc3cU43mEzsyqCN3xUtenx2mnsHXymVKZw5jyt854Al1n7oI/
- LjH2Ge9yMSfW26b1EhKKHDOMwVc5MiTmzidmr0t8fvO3vcI4WRykMOrfZTPCVBWLC1rntls7h
- vQTg9wdiYd1e6X2fG6pgBdySGr62DIRXYAffbb3P8sM4hMFXeBRL47+V7aUok1yuQOGYizMMY
- EAy7LQiQF+YVNQBSwPhcXHfqIhnoK69vRAHZSa7qiymFahj0elUHjpm253eUsgrOrmN0maCfw
- Q0tFLa8lQf+/GLKDCsmv+UmTWLA4gsqzhFTrKZaQxVA8201BZniIhbLaaOCMTisj7ysTFw9Ff
- ynOERaj1BbgQEbgECXf5xLMfjobHpKhcJs6ZO/7vGtcFxMbdi2imOseujV6d36fuuofPlMNDu
- OS0iG6WokMqWUCSp9
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ERWNugBg3AE=:/XqPtwfCrwddDWtUo+0Gjk
+ l8VnKvoPgnjUgRWON5Chcacd44vS5L0g2O89j/gNS3uOxPVA72Cx1C2bkKXHAFntjML3MltgR
+ zwMqDhPZ8KrrS33IPXgFCe9rMFhzDFhhHMsbg8+Nt4sO3INJksKcL5wEI79ZWuoFR7+zXY92z
+ Y8yYbDyaQHME9YFfC5Ab2RWdiO/VE4EYuNcofrI5kTs4dAAW43F0gFdsrFks+1kon+kzKSsbv
+ 5miVus9zVZqc32Uh70QbJ8hGCsrV9gzj5MiF9/CNv0KMrqK4vqwJ4NL5J8ev4Qr5ppgN/6VAo
+ oQgb2wIlyIg8s6p2sgLrzEpMjm+jsddvcc5WR5tsIDyEv/qPpCkpRcoOLhteMKfT+lUHDV9ef
+ CPAP6EIa5H89wBwPqbfrMF3ZpZnonOqVcaIl1+gf4ENCR6uIwGA4QtQIvE4ZuxD8r/t0it8fH
+ 3q27uhuiGvDMHrJBgzT/Is7siJFKlk4/pvmDIkca4d9EjSVanK9rJzLirjans6k81N62dRQS3
+ NCSMRgKzzgz6O6U2jYiQVhb3Bfm30u56dK1w9QjqdfXKkZeB2FULIqEi3ygG3nQ8fwafJ5uSb
+ yTeYDlJ9htk/TDkXLCezGTewEfShq0ZQiQOQt8iFB4TeNueFvDhoBRKTkfICnbFFDenTq4Qo7
+ cTA+lFBws15jvCzMSvoncWC51E4jc4hbqQgiSOlMoDOWHsHLrIjW75zTLLZyfOqHWPrqvIXNd
+ g/tPFpVqHqLyeWCBIXLnyOqFg6d6iX77HpRgGJ0BI/kuNigsUOw06whuIfllDKzsvcL8RDimq
+ 1AZNBPKSJieEPtkf+9iYAE4WWH2ngobllCaq1diouJX7f7nD1Y1vVGiZWW40F6GQoH0CfrAx/
+ UHMi/hsqDW4KQyRIMQy4nuBbfhlEZnrWdp6ODSB34Nxq5S1MejlUYlvzomMVsKGUBFypnSM6t
+ UsY/z/z3SuG53CAQm6424j6ch5Blcr31+Fm+YMV2KCEQbHeS+ICvujAzASWEnFxw8UmDY4zRI
+ qm2Wu/nDEiWTE7gBJLaE5+6Vc489XL85exiCwZd3Fbitrz3J6NhOTaKKZNmzUDZQA2Hi7qUA/
+ cjLyN2W7c6ko953K9xJRZdmkRiDKnduNySa+nmyM2evZykxrbGJwMsYau2wlXuTYVlXkSItWj
+ WHs6wShOpGTMMOLA8QVRCLH8oM8H+/hHtkhLYE516wuF/8jzQgwM9wdczsV94P6hZZz75c1C4
+ 4NHK04XhsmysXuIhs
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> v5:
->> =C2=A0 - Modify the commit messages and do some code cleanups
->
-> Please stop replying to Markus Elfring, and give people who actually
-> care a chance to review this code.
+=E2=80=A6
+> +++ b/drivers/vfio/vfio_iommu_type1.c
+> @@ -2798,7 +2798,8 @@ static int vfio_iommu_type1_dma_rw_chunk
+=E2=80=A6
+> -	bool kthread =3D current->mm =3D=3D NULL;
+> +	bool kthread =3D current->flags & PF_KTHREAD;
+> +	bool use_mm =3D current->mm =3D=3D NULL;
+=E2=80=A6
 
-You got the usual chances for the desired patch review.
-
-
->                                    Elfring will keep asking you to make
-> absolutely pointless changes until you are blue in the face
-
-Can the circumstances evolve in ways under which you would admit
-the relevance of (my) suggestions for possible software improvements?
+Can it be helpful to convert initialisations for these variables
+into later assignments?
 
 Regards,
 Markus

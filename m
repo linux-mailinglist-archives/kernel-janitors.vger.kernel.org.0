@@ -2,52 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A234217742
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jul 2020 20:56:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 356E8217B1C
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jul 2020 00:42:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728249AbgGGS4v (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jul 2020 14:56:51 -0400
-Received: from relay4-d.mail.gandi.net ([217.70.183.196]:36267 "EHLO
-        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728067AbgGGS4v (ORCPT
+        id S1729261AbgGGWmG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jul 2020 18:42:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44472 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727995AbgGGWmG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jul 2020 14:56:51 -0400
-X-Originating-IP: 91.224.148.103
-Received: from localhost.localdomain (unknown [91.224.148.103])
-        (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 1F5BEE0007;
-        Tue,  7 Jul 2020 18:56:47 +0000 (UTC)
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Paul Cercueil <paul@crapouillou.net>
-Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Richard Weinberger <richard@nod.at>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Harvey Hunt <harveyhuntnexus@gmail.com>,
-        linux-mtd@lists.infradead.org
-Subject: Re: [PATCH] mtd: rawnand: ingenic: cleanup ARRAY_SIZE() vs sizeof() use
-Date:   Tue,  7 Jul 2020 20:56:46 +0200
-Message-Id: <20200707185646.24105-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200624132640.GC9972@mwanda>
-References: 
-MIME-Version: 1.0
-X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: d2e639d6ad60fc164b75462bcdf8a43331116fd8
-Content-Transfer-Encoding: 8bit
+        Tue, 7 Jul 2020 18:42:06 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B9B7C061755;
+        Tue,  7 Jul 2020 15:42:06 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id F2229120F19EC;
+        Tue,  7 Jul 2020 15:42:05 -0700 (PDT)
+Date:   Tue, 07 Jul 2020 15:42:05 -0700 (PDT)
+Message-Id: <20200707.154205.2251580524222701764.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     aelior@marvell.com, skalluru@marvell.com,
+        GR-everest-linux-l2@marvell.com, kuba@kernel.org,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] bnx2x: fix spelling mistake "occurd" ->
+ "occurred"
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200706121240.486132-1-colin.king@canonical.com>
+References: <20200706121240.486132-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 07 Jul 2020 15:42:06 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 2020-06-24 at 13:26:40 UTC, Dan Carpenter wrote:
-> The ARRAY_SIZE() is the number of elements but we want to use sizeof()
-> here for the number of bytes.  Fortunately, they are the same thing
-> because it's an array of u8 so this has no effect on runtime.
+From: Colin King <colin.king@canonical.com>
+Date: Mon,  6 Jul 2020 13:12:40 +0100
+
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> There are spelling mistakes in various literal strings. Fix these.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git nand/next, thanks.
-
-Miquel
+Applied, thanks.

@@ -2,36 +2,42 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24D8F216BC5
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jul 2020 13:39:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B34B216E7F
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jul 2020 16:17:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727987AbgGGLix (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jul 2020 07:38:53 -0400
-Received: from mout.web.de ([212.227.17.11]:35625 "EHLO mout.web.de"
+        id S1728100AbgGGORJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jul 2020 10:17:09 -0400
+Received: from mout.web.de ([212.227.17.11]:44609 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726911AbgGGLiw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jul 2020 07:38:52 -0400
+        id S1728029AbgGGORI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 7 Jul 2020 10:17:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1594121907;
-        bh=Ie4d2lH0YCvDtJ40tT+Ij77kgtuu0kKomun9k3ORrD0=;
-        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=jxNYUjF2anZa81+Kz3So4hpuSFcscNqAxgsNHIUjUWC3Han/FkD+GISMSjlrEbTE/
-         mlaFAgcmJ+y9Vy1u7zW/s+1A244/dB9DyE+xh2nGbqFB8vuw3kXRgizjDITJK19skc
-         i7dvrozTAJjLhMwpYX+mDhsaZOcik+OGsSlEcVXw=
+        s=dbaedf251592; t=1594131405;
+        bh=4JdaZyW4XnKhmRNsg/2UnDWvuX7SbPOd4rNp8QOv7MM=;
+        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
+        b=nuY8fGDnKw68SVMA8fn7b1GrnIBAUoLTGb0/0uajhQ+jwbP+WISYze+r4zr/ucSai
+         dv4oCZFEcAZRN+0Stza1F74lyULXxbx6XEj4lbL5YUfUZHohpASigNIz6o0u9zgv1S
+         zM6ADu96X36I6NH9lgcc+FmIdxxrXXlhKbMcbn2U=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.133.121.241]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LcgVn-1kaezE28ZT-00k9YM; Tue, 07
- Jul 2020 13:38:27 +0200
-To:     Jing Xiangfeng <jingxiangfeng@huawei.com>,
-        linux-scsi@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Hannes Reinecke <hare@suse.de>,
-        "James E. J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Neerav Parikh <Neerav.Parikh@intel.com>,
-        Robert Love <robert.w.love@intel.com>
-Subject: Re: [PATCH] scsi: fcoe: add missed kfree() in an error path
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M1X9B-1km1Nl3IN7-00tUL2; Tue, 07
+ Jul 2020 16:16:44 +0200
+Subject: =?UTF-8?Q?Re=3a_kbuild=3a_Improve_descriptions_for_the_make_paramet?=
+ =?UTF-8?B?ZXIg4oCcQ+KAnQ==?=
 From:   Markus Elfring <Markus.Elfring@web.de>
+To:     linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
+Cc:     Coccinelle <cocci@systeme.lip6.fr>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Randy Dunlap <rdunlap@infradead.org>
+References: <e546930c-0022-c0ea-059f-0c5ec782b5ab@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -75,66 +81,61 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <977e2781-99ed-54c0-27ad-82d768a1c1e6@web.de>
-Date:   Tue, 7 Jul 2020 13:38:25 +0200
+Message-ID: <f4012005-ade5-5c2f-c9b2-4c93fbc6b835@web.de>
+Date:   Tue, 7 Jul 2020 16:16:43 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
+In-Reply-To: <e546930c-0022-c0ea-059f-0c5ec782b5ab@web.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:UHqAvi6Jt1lXXUbKU0FLdrLlou9f16SL3QLp4Yh90FLnZg42a4G
- kjx1rVZYaifAYN1Sy7LX+1vHb9HX4zNbxBF58+clurHxRNh4ieozNGU74rsSqee4YDucjpj
- xfBqNNvqUGw0d/QofzU4dJKm3eHezYk44RoNA76/a0gQsqKtfOvDsPe8WhnEH1sx9X6RDo7
- /njjKspgqWfwf+P61A2ag==
+X-Provags-ID: V03:K1:tY/ejK24Vcdya0Z43R2Zj6BHSFGpzO/6RraarHT2XPuKFejLwJr
+ eNRcHsrFfLXpvD+M3NvlAGIa5x7Ute3IKV0ZWjge069FvwEKAOXqydL6KlvGpTgZ6n+32Di
+ YFUavtAO7Ztjb6wvZVncoL+bkaVLDYyLCfCcRSy/3CGbPW6ha/wbrvJCc8RK1A3z1N3/CWG
+ t3C3Mu5IdzKVGgEPp2D/w==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:cgd5aVH3yjs=:VL8t70FJ3LNkpwTzlf25hj
- 6MO2057EOXCwHkMK9GewuU3cH6stLxvvbYA+Zqau4L2VlItK2Vx8G4OzKJmlZEc+ygdAk1Jgv
- DHLLXbaGQOFBS9KRHGI0P0RDx7id6n+TXByFHz87z3doAZ7qlEyYvnw0uu42u9fkse0wNgXQ+
- cyCgXdlc/WCfhVWFuPDB1u0O1ahcIg6IsX7Y6EAXVeAKzVxsPaaQ/idmw0ia3EBDnKD9iwkcB
- wIJdmu8pIqr+Z8VJYXUBmq8eWLca50izoaiPqWueErwPdG0mdujHafBZi5Y4afRjZV7bZl54Q
- 9d9ivhQ0tzINV8rGXaZZ33/LjDrM3eTt8ti8i7Yc/Qx3Q4b+GoWWTlw0ppGOi4jtETcYQo3UO
- AsyXVzte9Whf57nZVKkRtr4Gc7xk140dkSyXdDeNl9VuPnmbX0HnwvBVh4z1Jy0UMUNfqAD3r
- /rMH1qWWBI/GW5NTy2OeAchGUk4H+a2z/i/QbvUS3kF37ejKYyQMro1mCMK5bts+ZayNQsZt4
- vaY9y2EslfFH3F8I7u/gAi6GrZAKQ+pukVB7qa+UHdN0wUaKxwO8kQadf0vNbA63AC5ajLJpL
- TUZ9T8jMdt/QGMXXDuh4PUHUASfxP7Nz31cCrnvYTAeWP+9SJ7tjxBhR0dHXetlK9LJcLrPUE
- A29v0FpVe917bluIjwbpihU7MInL1M2fK1n9DVByn/NrcNGMglX0ymuorJILjS9XEuyvhUvtw
- hjiZj0pA0TOqVa75eKR1Zr3yRknJDoqu/vAbFTdmKUmpdQX1efKMW1tx11Dqmhk814KQrhevq
- tGQy7yWttExHPnOzRbVInYmZta6mihDnIvQ+LQu9Q4UdLwmLEhZBSoz9+O42vtusI3xxcUncR
- NRLFkv6LQTLZanepOPJCfgYKgr1QLWipX74+fgdz21K3rDNj/jLLrmhsj3qLq2qRQKL2w1P63
- YCjQA2TB+UJLkNIgpWzNPd+oV0VGrjzUtjn7uTPWdxrb2tOC8G30fRRSrWBmeTf/245BRVb4l
- ollb//P2ipsa7x5hEcnDRFA0pOcDzU5F4r2oZLrZYma4mPXOAl5RDq37XXIUQgGmDEuIr5UXu
- MoF7DBWEyinLi3x2X19f21mptP0zYZQUkW9gxKx4gBSlnfOhWcNGLrM0rJjjhLjOu1eceU8No
- 57OcEo8DsGPPBo9nXDvXVulihaPqIYO9meciN5eYT2FQNaqG2jMfWeoFkAW9Ij2hHqNodyj3W
- 4jyNGZcMwLN/ownb4g1ikBwktHEydgDm5ct8u1A==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:lT/1zCe3j2Q=:pE2fm4FGM1/hVFLZ3MUrM0
+ 0pBJqBCOoSkSw3+POrdqFkJQDqZnKY4QeofaYLc0RPmjtnt5VlaFlkNHm4bLWyHKQptSgDOOO
+ IimuFCVzoZHi55G5eH7f5OJHNdKzCC8I9QDs9VjlgSgdb33qeB709w3nKwUzcT0QIh4wkr3UP
+ hSRfiFod/mVF+JZ/v6/zlOSVeMmmyaBcG175aEeFNw3xLYQE9RrbEUEjbY4CmRTKvVKTy+Kq4
+ Uk45zI0BibP7oqXylY4aXvSFD27JhVL197eX3/lMbenT5fYcis78O/GsKLnf4bvo3YcrMESO3
+ +49VEcUfc+epxsvdT2KjVoF3ZQwCNMOsr5qLGtN6R/aXbS3MTYzLlHNAHivyaeXn5lQChDb7I
+ a9U8UHCiZx+3fwT82YMUnMltpZyE3oQllhpO+AHfquEG+3p+letc6j1fFSDyqFF4GxK5+JygE
+ 0P/dBYUVN2Mfkwp+4HWWyCJlFo/w+FjBYn4bvDSjwr3n0oujEUSz8ozNEmAdppUlOenatRodZ
+ dSn75GcPsouzqHKRVYtSI811d/XDX/qzon/LWZLwVDX2T4gN0UFakl0CWNeimlEr1DJtTsgQL
+ D5UJom8xQeLCRe/xpOd8oHx21fQtvPKdCppEryhjN2THAHPY3N0uUI+rm2rKmQ4DVbdcXrK8c
+ 7FhZIIaO1vUhCSioLMpR5T4p3pYbZ17uHi1kAp7m/OneeQMBvVWf8TO/6C37FK+mngDBNs9jX
+ 5SyEQfW69mhdOxqLfYBzxQ2sa/0eV0aYsFpM+H2dkB2rC+MshLrKrcQIdAJcN9wfwTra4ky6G
+ 4/4F0Ea2hoewHjsAiobo+qOWcSyTShOSZLfLrODGlQ+Wumg/+ARvWIO6YErQ8FT6Kh+mNtI/r
+ wau8PlYUqw5DTx6zYcZJ97VXD+Z11Y2XWggL1vuc4+cmQ6SUGHTk9k2DIL/wfY+6YixIG10q1
+ XOIcnPPbPNg0AXs3WRUmfitg6CX2eNwrpfiuUgQv624RdJXjEEXl7FeL2lTS9T8R8lEbnnID6
+ kMHfPiqdNU0owHJiANa+F0NrXc1hvXoMGIEmp645GJ4v5FWl9O/vdXSeYItHLli+0MWdmcS3n
+ q6+Uj+YN/mbUtKVi7fLikIZbZZBXrJ7BlcqOeDq8wuU3z8wu/s9K5+yMLULTRxie0RuXA3l7d
+ wPYZZ6PiQmrJQAtQjOT9aoo5nPy/UC2bo56MpQjtHuj23y72G/qBEBkKzkPhmX7fAs23Pnxhu
+ zhAWXU7y8hz+XR+7vh9ibRkna1PzSTdtP1NTueg==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> fcoe_fdmi_info() misses to call kfree() in an error path.
-> Add the missed function call to fix it.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+Makefile?id=3Dcdd3bb54332f82295ed90cd0c09c78cd0c0ee822#n201
+>
+> =E2=80=9C=E2=80=A6
+> # Use 'make C=3D1' to enable checking of only re-compiled files.
+> # Use 'make C=3D2' to enable checking of *all* source files, regardless
+> # of whether they are re-compiled or not.
+> =E2=80=A6=E2=80=9D
 
-I suggest to use an additional jump target for the completion
-of the desired exception handling.
-
-
-=E2=80=A6
-> +++ b/drivers/scsi/fcoe/fcoe.c
-> @@ -830,6 +830,7 @@ static void fcoe_fdmi_info(struct fc_lport *lport, s=
-truct net_device *netdev)
->  		if (rc) {
->  			printk(KERN_INFO "fcoe: Failed to retrieve FDMI "
->  					"information from netdev.\n");
-> +			kfree(fdmi);
->  			return;
->  		}
-
--			return;
-+			goto free_fdmi;
-
-
-How do you think about to apply any further coding style adjustments?
+I got the impression that source files would be checked according to
+such build parameters before a corresponding compilation try.
+How do you think about to adjust descriptions which were added with
+the commit 1c7bafe7206d928eaccbcbd08d868733e0fb7054 ("kbuild: clarify
+"make C=3D" build option")?
+https://lkml.org/lkml/2006/9/24/176
+https://lore.kernel.org/patchwork/patch/65119/
+https://lore.kernel.org/lkml/115913270694-git-send-email-sam@ravnborg.org/
 
 Regards,
 Markus

@@ -2,87 +2,134 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50FB1217F5A
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jul 2020 08:07:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 098EB2185D6
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jul 2020 13:15:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728846AbgGHGHI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Jul 2020 02:07:08 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:59306 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725298AbgGHGHH (ORCPT
+        id S1728803AbgGHLPU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Jul 2020 07:15:20 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:3776 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725972AbgGHLPU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Jul 2020 02:07:07 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06866pLJ045649;
-        Wed, 8 Jul 2020 06:07:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=5ruWp+9PNArsGqnhm9xr7MKSa7IuE7jbRly7UNM0tks=;
- b=qoLV49LCjiG4kLhn09ZK2WoDEpSIurc739haL71rdSnRJ+Rb4e2Ki2socVeK/cjt3Jiz
- sZ1KeVIlXXFIGBAVwdPM2k+5pED3Ga3CEtqR/bD1DnEBnltYrjQ+eckcWWL7hZlxPalh
- HudL28/TrWBUlimOUj9X01qIHGNpIVk+L4NgROmZLW6qnHiVkVkYQZGnNmAI2FowAdKi
- 1tycCyWEPyleUEieK1S7bkfKzYwYPdPSuSh5LhKCw6FlhPZVCmeViT+IMvlXoUUBWkAc
- wto1M0UGPxPjmQDe5rGXeSFNsDdVkKMXsIUsXe1/6lyj0qKOSl607tVO1RZCI1Nnxz8b 2w== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 322kv6g9ff-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 08 Jul 2020 06:07:01 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0685xBr0063833;
-        Wed, 8 Jul 2020 06:07:01 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 3233p4k2du-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 08 Jul 2020 06:07:01 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 068670xY030643;
-        Wed, 8 Jul 2020 06:07:00 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 07 Jul 2020 23:07:00 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        linux-scsi@vger.kernel.org,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        Colin King <colin.king@canonical.com>,
-        James Smart <james.smart@broadcom.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH][next] scsi: lpfc: fix inconsistent indenting
-Date:   Wed,  8 Jul 2020 02:06:47 -0400
-Message-Id: <159418828150.5152.17012831289512414220.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200707150018.823350-1-colin.king@canonical.com>
-References: <20200707150018.823350-1-colin.king@canonical.com>
+        Wed, 8 Jul 2020 07:15:20 -0400
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 068B22S2029825;
+        Wed, 8 Jul 2020 07:15:18 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3255kdmdh6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 08 Jul 2020 07:15:18 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 068B3svd039693;
+        Wed, 8 Jul 2020 07:15:17 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3255kdmdgf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 08 Jul 2020 07:15:17 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+        by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 068BFGN6009783;
+        Wed, 8 Jul 2020 11:15:16 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma04fra.de.ibm.com with ESMTP id 3251dw0af6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 08 Jul 2020 11:15:15 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 068BFDUc63439114
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 8 Jul 2020 11:15:13 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id AD67DA4054;
+        Wed,  8 Jul 2020 11:15:13 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 97DF5A405C;
+        Wed,  8 Jul 2020 11:15:12 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.79.222.188])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed,  8 Jul 2020 11:15:12 +0000 (GMT)
+Subject: Re: [PATCH] ext4: Delete unnecessary checks before brelse()
+To:     Markus Elfring <Markus.Elfring@web.de>, linux-ext4@vger.kernel.org,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        "Theodore Ts'o" <tytso@mit.edu>
+Cc:     kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+References: <0d713702-072f-a89c-20ec-ca70aa83a432@web.de>
+From:   Ritesh Harjani <riteshh@linux.ibm.com>
+Date:   Wed, 8 Jul 2020 16:45:11 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9675 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=883
- mlxscore=0 spamscore=0 bulkscore=0 malwarescore=0 phishscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2007080041
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9675 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 bulkscore=0
- malwarescore=0 suspectscore=0 mlxlogscore=904 phishscore=0 spamscore=0
- priorityscore=1501 clxscore=1015 impostorscore=0 mlxscore=0 adultscore=0
- cotscore=-2147483648 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2007080042
+In-Reply-To: <0d713702-072f-a89c-20ec-ca70aa83a432@web.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Message-Id: <20200708111512.97DF5A405C@b06wcsmtp001.portsmouth.uk.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-07-08_07:2020-07-08,2020-07-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ mlxscore=0 suspectscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ impostorscore=0 clxscore=1011 cotscore=-2147483648 spamscore=0
+ mlxlogscore=999 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2007080075
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 7 Jul 2020 16:00:18 +0100, Colin King wrote:
 
-> Fix smatch warning:
-> drivers/scsi/lpfc/lpfc_sli.c:15156 lpfc_cq_poll_hdler() warn: inconsistent
-> indenting
 
-Applied to 5.9/scsi-queue, thanks!
+On 6/13/20 11:37 PM, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Sat, 13 Jun 2020 19:12:24 +0200
+> 
+> The brelse() function tests whether its argument is NULL
+> and then returns immediately.
+> Thus remove the tests which are not needed around the shown calls.
+> 
+> This issue was detected by using the Coccinelle software.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-[1/1] scsi: lpfc: Fix inconsistent indenting
-      https://git.kernel.org/mkp/scsi/c/26e0b9aa3578
+Sure, LGTM. Feel free to add
+Reviewed-by: Ritesh Harjani <riteshh@linux.ibm.com>
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+
+> ---
+>   fs/ext4/extents.c | 6 ++----
+>   fs/ext4/xattr.c   | 3 +--
+>   2 files changed, 3 insertions(+), 6 deletions(-)
+> 
+> diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+> index 221f240eae60..315276d50aa8 100644
+> --- a/fs/ext4/extents.c
+> +++ b/fs/ext4/extents.c
+> @@ -693,10 +693,8 @@ void ext4_ext_drop_refs(struct ext4_ext_path *path)
+>   		return;
+>   	depth = path->p_depth;
+>   	for (i = 0; i <= depth; i++, path++) {
+> -		if (path->p_bh) {
+> -			brelse(path->p_bh);
+> -			path->p_bh = NULL;
+> -		}
+> +		brelse(path->p_bh);
+> +		path->p_bh = NULL;
+>   	}
+>   }
+> 
+> diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
+> index 9b29a40738ac..eb997ce21be3 100644
+> --- a/fs/ext4/xattr.c
+> +++ b/fs/ext4/xattr.c
+> @@ -1354,8 +1354,7 @@ static int ext4_xattr_inode_write(handle_t *handle, struct inode *ea_inode,
+> 
+>   	block = 0;
+>   	while (wsize < bufsize) {
+> -		if (bh != NULL)
+> -			brelse(bh);
+> +		brelse(bh);
+>   		csize = (bufsize - wsize) > blocksize ? blocksize :
+>   								bufsize - wsize;
+>   		bh = ext4_getblk(handle, ea_inode, block, 0);
+> --
+> 2.27.0
+> 

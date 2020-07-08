@@ -2,134 +2,118 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 098EB2185D6
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jul 2020 13:15:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E89F21865C
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jul 2020 13:46:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728803AbgGHLPU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Jul 2020 07:15:20 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:3776 "EHLO
-        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725972AbgGHLPU (ORCPT
+        id S1728805AbgGHLqE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Jul 2020 07:46:04 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:32960 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728592AbgGHLqE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Jul 2020 07:15:20 -0400
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 068B22S2029825;
-        Wed, 8 Jul 2020 07:15:18 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3255kdmdh6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 08 Jul 2020 07:15:18 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 068B3svd039693;
-        Wed, 8 Jul 2020 07:15:17 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3255kdmdgf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 08 Jul 2020 07:15:17 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-        by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 068BFGN6009783;
-        Wed, 8 Jul 2020 11:15:16 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-        by ppma04fra.de.ibm.com with ESMTP id 3251dw0af6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 08 Jul 2020 11:15:15 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 068BFDUc63439114
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 8 Jul 2020 11:15:13 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id AD67DA4054;
-        Wed,  8 Jul 2020 11:15:13 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 97DF5A405C;
-        Wed,  8 Jul 2020 11:15:12 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.79.222.188])
-        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Wed,  8 Jul 2020 11:15:12 +0000 (GMT)
-Subject: Re: [PATCH] ext4: Delete unnecessary checks before brelse()
-To:     Markus Elfring <Markus.Elfring@web.de>, linux-ext4@vger.kernel.org,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        "Theodore Ts'o" <tytso@mit.edu>
-Cc:     kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-References: <0d713702-072f-a89c-20ec-ca70aa83a432@web.de>
-From:   Ritesh Harjani <riteshh@linux.ibm.com>
-Date:   Wed, 8 Jul 2020 16:45:11 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        Wed, 8 Jul 2020 07:46:04 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 068BfjMD145564;
+        Wed, 8 Jul 2020 11:45:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=5XkFjIgTpJ4155rhjuPZYLfybDjJ6oOIFc7ZBjPRC8U=;
+ b=btEJTTBgcdq0ERahsvg94RTk9AUXZ9MQXCicqo3Jb6Rc0bP7mnRa+KkO6AT3s0Hq2FVJ
+ 1FZLn+xnkLDWzLy24HSHNyRcHZ2T+rym1a6p2TXu0ypfknT3EZNM1dfLa/MmrR6GdUDa
+ /+bsW/lp9uKwJ7GMLy0WjaUi+bdvK81kbShTt4WvOwfTMT1z+skpIw5Yd+8Cy8fB3yKY
+ JIzXuRbG4EayFvT7PeA7SLXPU2eMXyIkU2C7Uog7evSWiymAE+Rs3+DZLeB6DoIkocp7
+ uL+YFuCB5kSr58zLb7JkioJnCDOaQyETKPOw/WhQprvEx66E0Y+82Y+RieGw+4kh2Oq0 tQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 323wacp1av-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 08 Jul 2020 11:45:02 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 068BhD3d007410;
+        Wed, 8 Jul 2020 11:45:01 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 325bgjneb1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 08 Jul 2020 11:45:01 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 068Bj0bM020066;
+        Wed, 8 Jul 2020 11:45:00 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 08 Jul 2020 04:45:00 -0700
+Date:   Wed, 8 Jul 2020 14:44:53 +0300
+From:   <dan.carpenter@oracle.com>
+To:     srinivas.pandruvada@linux.intel.com
+Cc:     kernel-janitors@vger.kernel.org
+Subject: [bug report] cpufreq: intel_pstate: Allow raw energy performance
+ preference value
+Message-ID: <20200708114453.GA11282@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <0d713702-072f-a89c-20ec-ca70aa83a432@web.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Message-Id: <20200708111512.97DF5A405C@b06wcsmtp001.portsmouth.uk.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-07-08_07:2020-07-08,2020-07-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- mlxscore=0 suspectscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- impostorscore=0 clxscore=1011 cotscore=-2147483648 spamscore=0
- mlxlogscore=999 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2007080075
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9675 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 mlxscore=0
+ spamscore=0 phishscore=0 malwarescore=0 suspectscore=3 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2007080085
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9675 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 priorityscore=1501
+ phishscore=0 spamscore=0 mlxlogscore=999 adultscore=0 cotscore=-2147483648
+ suspectscore=3 impostorscore=0 bulkscore=0 mlxscore=0 clxscore=1011
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2007080085
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hello Srinivas Pandruvada,
 
+The patch f473bf398bf1: "cpufreq: intel_pstate: Allow raw energy
+performance preference value" from Jun 26, 2020, leads to the
+following static checker warning:
 
-On 6/13/20 11:37 PM, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Sat, 13 Jun 2020 19:12:24 +0200
-> 
-> The brelse() function tests whether its argument is NULL
-> and then returns immediately.
-> Thus remove the tests which are not needed around the shown calls.
-> 
-> This issue was detected by using the Coccinelle software.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+	drivers/cpufreq/intel_pstate.c:731 store_energy_performance_preference()
+	error: uninitialized symbol 'epp'.
 
-Sure, LGTM. Feel free to add
-Reviewed-by: Ritesh Harjani <riteshh@linux.ibm.com>
+drivers/cpufreq/intel_pstate.c
+   706  static ssize_t store_energy_performance_preference(
+   707                  struct cpufreq_policy *policy, const char *buf, size_t count)
+   708  {
+   709          struct cpudata *cpu_data = all_cpu_data[policy->cpu];
+   710          char str_preference[21];
+   711          bool raw = false;
+   712          u32 epp;
+                    ^^^
+   713          int ret;
+   714  
+   715          ret = sscanf(buf, "%20s", str_preference);
+   716          if (ret != 1)
+   717                  return -EINVAL;
+   718  
+   719          ret = match_string(energy_perf_strings, -1, str_preference);
+   720          if (ret < 0) {
+   721                  if (!boot_cpu_has(X86_FEATURE_HWP_EPP))
+   722                          return ret;
+   723  
+   724                  ret = kstrtouint(buf, 10, &epp);
+                                                  ^^^^
 
+   725                  if (ret)
+   726                          return ret;
+   727  
+   728                  raw = true;
+   729          }
+   730  
+   731          ret = intel_pstate_set_energy_pref_index(cpu_data, ret, raw, epp);
+                                                                             ^^^
+This will cause a KASan warning at runtime as well as a static checker
+warning.
 
-> ---
->   fs/ext4/extents.c | 6 ++----
->   fs/ext4/xattr.c   | 3 +--
->   2 files changed, 3 insertions(+), 6 deletions(-)
-> 
-> diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-> index 221f240eae60..315276d50aa8 100644
-> --- a/fs/ext4/extents.c
-> +++ b/fs/ext4/extents.c
-> @@ -693,10 +693,8 @@ void ext4_ext_drop_refs(struct ext4_ext_path *path)
->   		return;
->   	depth = path->p_depth;
->   	for (i = 0; i <= depth; i++, path++) {
-> -		if (path->p_bh) {
-> -			brelse(path->p_bh);
-> -			path->p_bh = NULL;
-> -		}
-> +		brelse(path->p_bh);
-> +		path->p_bh = NULL;
->   	}
->   }
-> 
-> diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-> index 9b29a40738ac..eb997ce21be3 100644
-> --- a/fs/ext4/xattr.c
-> +++ b/fs/ext4/xattr.c
-> @@ -1354,8 +1354,7 @@ static int ext4_xattr_inode_write(handle_t *handle, struct inode *ea_inode,
-> 
->   	block = 0;
->   	while (wsize < bufsize) {
-> -		if (bh != NULL)
-> -			brelse(bh);
-> +		brelse(bh);
->   		csize = (bufsize - wsize) > blocksize ? blocksize :
->   								bufsize - wsize;
->   		bh = ext4_getblk(handle, ea_inode, block, 0);
-> --
-> 2.27.0
-> 
+   732          if (ret)
+   733                  return ret;
+   734  
+   735          return count;
+   736  }
+
+regards,
+dan carpenter

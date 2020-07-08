@@ -2,54 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 356E8217B1C
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jul 2020 00:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50FB1217F5A
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jul 2020 08:07:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729261AbgGGWmG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jul 2020 18:42:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44472 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727995AbgGGWmG (ORCPT
+        id S1728846AbgGHGHI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Jul 2020 02:07:08 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:59306 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725298AbgGHGHH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jul 2020 18:42:06 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B9B7C061755;
-        Tue,  7 Jul 2020 15:42:06 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id F2229120F19EC;
-        Tue,  7 Jul 2020 15:42:05 -0700 (PDT)
-Date:   Tue, 07 Jul 2020 15:42:05 -0700 (PDT)
-Message-Id: <20200707.154205.2251580524222701764.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     aelior@marvell.com, skalluru@marvell.com,
-        GR-everest-linux-l2@marvell.com, kuba@kernel.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] bnx2x: fix spelling mistake "occurd" ->
- "occurred"
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200706121240.486132-1-colin.king@canonical.com>
-References: <20200706121240.486132-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 07 Jul 2020 15:42:06 -0700 (PDT)
+        Wed, 8 Jul 2020 02:07:07 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06866pLJ045649;
+        Wed, 8 Jul 2020 06:07:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=5ruWp+9PNArsGqnhm9xr7MKSa7IuE7jbRly7UNM0tks=;
+ b=qoLV49LCjiG4kLhn09ZK2WoDEpSIurc739haL71rdSnRJ+Rb4e2Ki2socVeK/cjt3Jiz
+ sZ1KeVIlXXFIGBAVwdPM2k+5pED3Ga3CEtqR/bD1DnEBnltYrjQ+eckcWWL7hZlxPalh
+ HudL28/TrWBUlimOUj9X01qIHGNpIVk+L4NgROmZLW6qnHiVkVkYQZGnNmAI2FowAdKi
+ 1tycCyWEPyleUEieK1S7bkfKzYwYPdPSuSh5LhKCw6FlhPZVCmeViT+IMvlXoUUBWkAc
+ wto1M0UGPxPjmQDe5rGXeSFNsDdVkKMXsIUsXe1/6lyj0qKOSl607tVO1RZCI1Nnxz8b 2w== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 322kv6g9ff-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 08 Jul 2020 06:07:01 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0685xBr0063833;
+        Wed, 8 Jul 2020 06:07:01 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 3233p4k2du-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 08 Jul 2020 06:07:01 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 068670xY030643;
+        Wed, 8 Jul 2020 06:07:00 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 07 Jul 2020 23:07:00 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        linux-scsi@vger.kernel.org,
+        Dick Kennedy <dick.kennedy@broadcom.com>,
+        Colin King <colin.king@canonical.com>,
+        James Smart <james.smart@broadcom.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH][next] scsi: lpfc: fix inconsistent indenting
+Date:   Wed,  8 Jul 2020 02:06:47 -0400
+Message-Id: <159418828150.5152.17012831289512414220.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200707150018.823350-1-colin.king@canonical.com>
+References: <20200707150018.823350-1-colin.king@canonical.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9675 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=883
+ mlxscore=0 spamscore=0 bulkscore=0 malwarescore=0 phishscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2007080041
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9675 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 bulkscore=0
+ malwarescore=0 suspectscore=0 mlxlogscore=904 phishscore=0 spamscore=0
+ priorityscore=1501 clxscore=1015 impostorscore=0 mlxscore=0 adultscore=0
+ cotscore=-2147483648 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2007080042
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Mon,  6 Jul 2020 13:12:40 +0100
+On Tue, 7 Jul 2020 16:00:18 +0100, Colin King wrote:
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There are spelling mistakes in various literal strings. Fix these.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Fix smatch warning:
+> drivers/scsi/lpfc/lpfc_sli.c:15156 lpfc_cq_poll_hdler() warn: inconsistent
+> indenting
 
-Applied, thanks.
+Applied to 5.9/scsi-queue, thanks!
+
+[1/1] scsi: lpfc: Fix inconsistent indenting
+      https://git.kernel.org/mkp/scsi/c/26e0b9aa3578
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

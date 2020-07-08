@@ -2,65 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABA5A21910F
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jul 2020 21:57:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A6EF21918C
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jul 2020 22:32:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726100AbgGHT5N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Jul 2020 15:57:13 -0400
-Received: from casper.infradead.org ([90.155.50.34]:44522 "EHLO
-        casper.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725787AbgGHT5N (ORCPT
+        id S1726184AbgGHUcp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Jul 2020 16:32:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50094 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725915AbgGHUco (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Jul 2020 15:57:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=3QedjCKlFcADfyqXkA7L2+nDdApGhHWck1i1wXm40Mg=; b=Qdcr3C5ZT56PtDpdy2T5LCfv6t
-        ZBeRcQKYcBg6ID+NF8mN32YBZuexEiOMM2xPa1tHcJXGr7CrCrw1yv7Xa/K594m2hH9KYCbg1Iu4u
-        mNCxDtT+ron85F8kSiXC8DCDxw2LC7VMr0GnQmrj4Z/RCWZfEv/7glZLrux3soaVISwcVjrsDJ+Q9
-        r+Om4zbbhFl4aW2+3D3KpzpP+tmLSLkM54srHqqixXkaNSR2I7ICq1CF8UJx/N8VK+BETnXhb0P55
-        +NprhdXFBKSsk53Kkad9r5MOgZ4vH8Tlv2X9VCifPoSUj6n5EozzZpvDRBbW/rdZ7ncnXNkwFjrl7
-        L94iZVdw==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jtGBF-0007Wt-4f; Wed, 08 Jul 2020 19:56:34 +0000
-Date:   Wed, 8 Jul 2020 20:56:32 +0100
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Pavel Begunkov <asml.silence@gmail.com>
-Cc:     Jens Axboe <axboe@kernel.dk>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        linux-fsdevel@vger.kernel.org, io-uring@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] io_uring: fix a use after free in io_async_task_func()
-Message-ID: <20200708195632.GW25523@casper.infradead.org>
-References: <20200708184711.GA31157@mwanda>
- <58b9349b-22fd-e474-c746-2d3b542f5b23@kernel.dk>
- <66d2af76-eee0-e30d-44e5-ed70d9d808a5@gmail.com>
+        Wed, 8 Jul 2020 16:32:44 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C12BC061A0B;
+        Wed,  8 Jul 2020 13:32:44 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id o2so4518907wmh.2;
+        Wed, 08 Jul 2020 13:32:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=BWHchiefPK+XOTzjJQ+4nudfM6T1kJ3R4r+KV6BHsM0=;
+        b=lcODy2Gu+QWAnBnAkIOmzziVbPMqUlV/u08v4JxX6n59setch3cdOg7Hq+L8IoooSh
+         jXaGfkSnRN6t5NwIYkX5gUoz5mrxUsAVHP1nI7u+D4gP/+qvFtVqrFEOyI14nenT6NBt
+         J+fFm6j1eC1x2TPqFEZSJ+6/G/hT48VopmGoQN+vvy/qLeeUGb93iZJ6rxDRfiRQDFjh
+         8f+o8AHY4j2nja/A6o3xHl2SXUyN0YGTXP56b9l0cc9InbsIMRxb22a4K1h4iIs24V/V
+         yLK/QNE0U1lGO6mdD5Dr3642DwlnZ3dAdkFWJwg53Hd3Kw3NnUL9DSanL+RajIvBnf3a
+         QLGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=BWHchiefPK+XOTzjJQ+4nudfM6T1kJ3R4r+KV6BHsM0=;
+        b=VE3OnmbpU50CfDfxEgzUScRTEFvIivor+JwvUQfakTTOXDcOgppbuFKdXjcrjBiOR3
+         8mDZAWJSRtHwgTKNN3D7UnbxfJ9jIJM063j1cjGZi8bbiH/TTkDtZnINSFlivQoOTiAO
+         bn6fOrbdYU1ShVqupp5ThMsnNexUCS3OGZfM4xQsUgED+B/uz0BhmzowutHnD4q5vLhe
+         V7lACPMciqoCBCNWKiCavw04KGDsWlLOZ08SsDLh9WcN9p1OkptLzUcbqdVAg0YeLEG1
+         kAf/9LWRyFrK4z9vCEoG7BBNG4kFy4KtbUMsGMiuW8WCMETnpGIQhV7zIHLpolyffJqq
+         8g2A==
+X-Gm-Message-State: AOAM533hS4BcHT2l6zUHcqVLUwjA6N+7F1rzCSh+5m/U2c/clDhsS4LL
+        Zzowphl+wlOz0NE1RrwACLbdiQGi
+X-Google-Smtp-Source: ABdhPJxvTN6Wu8aBc/hXBxREqaAtUlzZSvk/MJVq7oOYj/XUSs/Kn0NZKzfin8g+fvkp4bQRtUmOiA==
+X-Received: by 2002:a7b:cb92:: with SMTP id m18mr9057074wmi.94.1594240362948;
+        Wed, 08 Jul 2020 13:32:42 -0700 (PDT)
+Received: from [192.168.1.3] (ip68-111-84-250.oc.oc.cox.net. [68.111.84.250])
+        by smtp.gmail.com with ESMTPSA id s10sm1428653wme.31.2020.07.08.13.32.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Jul 2020 13:32:41 -0700 (PDT)
+Subject: Re: [PATCH][next] net: systemport: fix double shift of a vlan_tci by
+ VLAN_PRIO_SHIFT
+To:     Colin King <colin.king@canonical.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200708183723.1212652-1-colin.king@canonical.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <3e581bfd-7447-881f-1e0b-9ab1ccd4496d@gmail.com>
+Date:   Wed, 8 Jul 2020 13:32:38 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Firefox/68.0 Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <66d2af76-eee0-e30d-44e5-ed70d9d808a5@gmail.com>
+In-Reply-To: <20200708183723.1212652-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jul 08, 2020 at 10:28:51PM +0300, Pavel Begunkov wrote:
-> On 08/07/2020 22:15, Jens Axboe wrote:
-> > On 7/8/20 12:47 PM, Dan Carpenter wrote:
-> >> The "apoll" variable is freed and then used on the next line.  We need
-> >> to move the free down a few lines.
-> > 
-> > Thanks for spotting this Dan, applied.
-> 
-> I wonder why gcc can't find it... It shouldn't be hard to do after
-> marking free-like functions with an attribute.
-> 
-> Are there such tools for the kernel?
 
-GCC doesn't have an __attribute__((free)) yet.  Martin Sebor is working on
-it: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87736
-also: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94527
 
-(I just confirmed with him on IRC that he's still working on it; it's
-part of an ongoing larger project)
+On 7/8/2020 11:37 AM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently the u16 skb->vlan_tci is being right  shifted twice by
+> VLAN_PRIO_SHIFT, once in the macro skb_vlan_tag_get_pri and explicitly
+> by VLAN_PRIO_SHIFT afterwards. The combined shift amount is larger than
+> the u16 so the end result is always zero.  Remove the second explicit
+> shift as this is extraneous.
+> 
+> Fixes: 6e9fdb60d362 ("net: systemport: Add support for VLAN transmit acceleration")
+> Addresses-Coverity: ("Operands don't affect result")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+
+The change was forward ported from a 4.9 kernel where the shift is not
+done, I should have checked the helper usage, thanks!
+-- 
+Florian

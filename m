@@ -2,158 +2,143 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B059B2199A2
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Jul 2020 09:23:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10425219C93
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Jul 2020 11:49:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726215AbgGIHXC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Jul 2020 03:23:02 -0400
-Received: from mout.web.de ([212.227.15.14]:39591 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726006AbgGIHXB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Jul 2020 03:23:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1594279361;
-        bh=4xFv8ti/OzBQfVAv9dMHgSddCt57MGCFKZdrZ/W39nY=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=lLQXcIXJaI/RfXgWUNwMgOK2aSON8JpR4Bbv0WZn8XYIInclOzYx3xqQzaXsou58a
-         CgBXWFRozLGiHl1rbLWvL0b7RoqShI+BC3nrm85khh/M/GAFVYg2P9o5JIIHheGa3a
-         hqll19DXiR0SKkXgt/ySAQl36QN2xmj95l4GFuvk=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.81.209]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MUVrX-1kJWSo1i31-00RFQX; Thu, 09
- Jul 2020 09:22:41 +0200
-Subject: Re: [PATCH] scsi: fcoe: add missed kfree() in an error path
-To:     Jing Xiangfeng <jingxiangfeng@huawei.com>,
-        linux-scsi@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Hannes Reinecke <hare@suse.de>,
-        "James E. J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Neerav Parikh <Neerav.Parikh@intel.com>
-References: <977e2781-99ed-54c0-27ad-82d768a1c1e6@web.de>
- <5F067CDA.8010404@huawei.com>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <ec1e1405-7582-0709-f2a5-a8b91e45fa1a@web.de>
-Date:   Thu, 9 Jul 2020 09:22:34 +0200
+        id S1726358AbgGIJtX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Jul 2020 05:49:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59688 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726140AbgGIJtW (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 9 Jul 2020 05:49:22 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 289FBC061A0B;
+        Thu,  9 Jul 2020 02:49:22 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id f18so1679669wrs.0;
+        Thu, 09 Jul 2020 02:49:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=to:cc:references:from:autocrypt:subject:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Q3OfTHS44nA1/IJe34zPMsvaFnQF1KlTjpCyMedeBJ4=;
+        b=bp8zZLEwo0eWVE7r6RnSi9OoKPSUy85aDgxRRs+zC1SfonaHwxt8EK3h9dQEAIid3Q
+         hqSZhiGmomFr1hjF2s4k8poTtutPbxa+5euOyQN+VEwYb7EKy57gqT+SzN6VwE7k3L29
+         IX7YAwhp4+d9FKLw7ly+Bh9knaaIJMJoVWAcT6O+YeLwAe2XDTJWNbJdymxnaJAFgOxX
+         kG2gQ25u4hSCYBJ8N/7qo33dd4KvziH9nlZ6H7Up4ZaTZh+1nx9RAS5+Uxs5nSTwiNEc
+         6nBnAgxX9z/mFkoZZbxCHOZ556P9PLzUZvl2jAhBnHrFvlSd2qxTFnI+anE6i5KfrEQU
+         w/ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:cc:references:from:autocrypt:subject
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=Q3OfTHS44nA1/IJe34zPMsvaFnQF1KlTjpCyMedeBJ4=;
+        b=WNnlc2yQDk162IPH3CwfA+/LPD5QMgPBeFYXiRW7ChTqvmWymAHTDgXNU7pJsO3isD
+         sSAlzzKubDiz7IS4oC4sM7lEzJeeEb5S/9xJH6734d7KqdjE6QIec3thx9dDgm+bMiq4
+         rNwA68Qpf9S2RMrKk9/QkF7HvoQpThWnnpcnfoUGvjJRZ63EUWz8HefJpDs7RjPZVOUU
+         CvMk85yDjHAhuXdc52JQ8kPo5UXsWjgTvNr19Nh/olkvAsJf4G0k6wjhIrZNkpSwLy/Q
+         r3eSx87hmYZaq5fo8i36yTAfqw/ZIErlJgGbWWBgryDQQoGECSQhfG56cy6+qV7KP3Hf
+         B4fA==
+X-Gm-Message-State: AOAM530dEzBr1FNMNYEe8wbojxO9pHRrSQytqyyzPjmDlSdkCNZRhDcN
+        nA81NGw3fV+v4c+Gr9kwfDsfMDNw
+X-Google-Smtp-Source: ABdhPJzfmbIILe+2dk4/1c9GVKX6PRs8nMy1GaMhIqFyr7EDiMoHHIhZXXBzxZlA0BKhbSmAHvpeBw==
+X-Received: by 2002:a5d:6a07:: with SMTP id m7mr63544434wru.324.1594288160429;
+        Thu, 09 Jul 2020 02:49:20 -0700 (PDT)
+Received: from [192.168.43.42] ([5.100.193.69])
+        by smtp.gmail.com with ESMTPSA id c25sm3652845wml.46.2020.07.09.02.49.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Jul 2020 02:49:19 -0700 (PDT)
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Jens Axboe <axboe@kernel.dk>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        linux-fsdevel@vger.kernel.org, io-uring@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200708184711.GA31157@mwanda>
+ <58b9349b-22fd-e474-c746-2d3b542f5b23@kernel.dk>
+ <66d2af76-eee0-e30d-44e5-ed70d9d808a5@gmail.com>
+ <20200708195632.GW25523@casper.infradead.org>
+From:   Pavel Begunkov <asml.silence@gmail.com>
+Autocrypt: addr=asml.silence@gmail.com; prefer-encrypt=mutual; keydata=
+ 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 bA==
+Subject: Re: [PATCH] io_uring: fix a use after free in io_async_task_func()
+Message-ID: <20a7ee28-e08b-23a7-e090-da75e71b64c0@gmail.com>
+Date:   Thu, 9 Jul 2020 12:47:37 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-In-Reply-To: <5F067CDA.8010404@huawei.com>
+In-Reply-To: <20200708195632.GW25523@casper.infradead.org>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:tJ4Ea4WeRgIbK/YfyxkGEjAF7FVqtNiAMnNvYGIx3QWtiQBzR9O
- yOZ6PMyj0ERCqBM7/cuSBsAOQFmQMVRWbWawJVzI5C3muSzWa4eP5VBVkCM8h++chn15IRF
- /R9Mrs/CsfjtXA4r5mX89LknsCvJ6fxJDIcCUY1dBawJ7Js4tjKCuHobrvgeLKr9MdnGyij
- XRao0L31FTJHjRpJstibA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:CbIL8RvE6Kk=:AYUYSEglmSOmihPACDuvmI
- 6XMkcu7ChJSuXb+O/RxD/IM3DP4JSj91ejVeUVDiA5m7CPp5Xw48o94eepzhLK15C/xmTCgOe
- 1qCxYye4rG45Pt33dkR4+T66O6Fp4dVRZL8nghqiuBATrp0P40EymtipK0XNYHVPDVsfyH8bi
- ikovuwtTN57+tbTvjUCILDMYutIp1UovEfkuEWZp1QvFruir8cykZcNQXKUpLfONGRuGjVy4i
- /ObolBKHD6xirhjDuUiYzZPRgYpF4j86BTWSXx47u9GQlGXjrUctGNeivnzOhgAC7o4jbzDT6
- I3lNhSmhD0vsm2BR2GsXMDH3kAfouwQtUsJfSjW9JAdrafkjdw7uadLMFk0T8X2Ygyc7rxad9
- HED2GJWBTr1TsaoxArawGf/Klz0sSe1MYYcodjFWrxySJW7vNwRUCLjcZ1nqn6MtsXGATiRu6
- 5E+hdEQAWYcaG9m3vi+8KhdI1PJ17sbgcTvNjeFqqVcPoSsJmTnB0FOzrbjUREZdWPHl+IBUI
- Il4qZKrwUTZYEmjOw7zZRb+qmKMWhTnNw+Tu8ha+vfcuGPlRrBiyfP7HyHjMc9ItF8Hc0msOr
- f+fwngF9wZubAL9/+mGdx3Djm5wXj/JUhEBca46UmzzbWZIJ/keaH7+u9XTSpsY1sYOs71pDD
- 9mrQV1JU4I4KtNR4yOw8embUEt2RN/fc9H+LZzuem8HdAhn2rLyfU9dp0ooxqBnmeLRcLi59W
- /2SsNfXG7icvpSXEuL09p9KXzPWabufxdrXEwMqY/u/v21zYTFCwMZPybvps8F/3LcQMTf+eC
- iQo3bCWJSooN9WI2CD7pkcE8i/g9z86aZ2S9boQSK/HCvDTxJY/kKCFaF1NVJdceKN3a88lIB
- DytFFqZ8hp2qCLKz/28NSFF8UPyXabqnvPfTovIGQoz3WUM/wDrEC9jL3OVLig9yjCfEk0WNW
- FiCIyg/qj0Lbk1kQuPUeOKn9izh7ShsDBAI6Ahe7I+drhRSVyEpAitk8hQDwkEfGakd+R1VTh
- IjE4uHQsutLYwbVD0CStm4bJ2NlAI7l9tNWigSLGmCohBgJqSbrHMnTZhT68Kn3mKtw/10wnD
- E6Np99TRAtyzO/INd0sZmftzMGDnEC3EAAtRE0bHED6SqOJQHmN67yUpRGr9y5e8nX/OtHphJ
- uoEYH+HmB5Aj9p97xvihWw+eYGQrDobWniT0E/wean5JMm2W8xQCWJ2LdlYqqetTZYz2+OJ/I
- AfgaQ9vZ1aHZk2pGTTiq89Iev8DIjLNgpmKpZnQ==
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->>> fcoe_fdmi_info() misses to call kfree() in an error path.
->>> Add the missed function call to fix it.
+On 08/07/2020 22:56, Matthew Wilcox wrote:
+> On Wed, Jul 08, 2020 at 10:28:51PM +0300, Pavel Begunkov wrote:
+>> On 08/07/2020 22:15, Jens Axboe wrote:
+>>> On 7/8/20 12:47 PM, Dan Carpenter wrote:
+>>>> The "apoll" variable is freed and then used on the next line.  We need
+>>>> to move the free down a few lines.
+>>>
+>>> Thanks for spotting this Dan, applied.
 >>
->> I suggest to use an additional jump target for the completion
->> of the desired exception handling.
+>> I wonder why gcc can't find it... It shouldn't be hard to do after
+>> marking free-like functions with an attribute.
 >>
->>
->> =E2=80=A6
->>> +++ b/drivers/scsi/fcoe/fcoe.c
->>> @@ -830,6 +830,7 @@ static void fcoe_fdmi_info(struct fc_lport *lport,=
- struct net_device *netdev)
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (rc) {
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 printk(KERN_INFO "fcoe: Failed to retrieve FDMI "
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "information fro=
-m netdev.\n");
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kf=
-ree(fdmi);
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 return;
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>
->> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret=
-urn;
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 got=
-o free_fdmi;
->>
->>
->> How do you think about to apply any further coding style adjustments?
->
-> The local variable "fdmi" is invisible to the function.
+>> Are there such tools for the kernel?
+> 
+> GCC doesn't have an __attribute__((free)) yet.  Martin Sebor is working on
+> it: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87736
+> also: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94527
+> 
+> (I just confirmed with him on IRC that he's still working on it; it's
+> part of an ongoing larger project)
 
-I have got understanding difficulties for this information.
-The function call =E2=80=9Ckfree(fdmi)=E2=80=9D is already used at the end=
- of this if branch.
-Thus I propose to add a label there.
+Good to know. It looks broader indeed, hence won't probably be here too soon.
 
-Do you notice any additional improvement possibilities for this software m=
-odule?
-
-Regards,
-Markus
+-- 
+Pavel Begunkov

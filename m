@@ -2,90 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B29EF21A138
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Jul 2020 15:52:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05B3421A229
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Jul 2020 16:32:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727905AbgGINwZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Jul 2020 09:52:25 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:36941 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726358AbgGINwX (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Jul 2020 09:52:23 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jtWyH-0005oE-Gq; Thu, 09 Jul 2020 13:52:17 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Varun Prakash <varun@chelsio.com>, linux-scsi@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] scsi: cxgb4i: fix dereference of pointer tdata before it is null checked
-Date:   Thu,  9 Jul 2020 14:52:17 +0100
-Message-Id: <20200709135217.1408105-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        id S1726772AbgGIOcz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Jul 2020 10:32:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44486 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726353AbgGIOcy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 9 Jul 2020 10:32:54 -0400
+Received: from paulmck-ThinkPad-P72.home (50-39-111-31.bvtn.or.frontiernet.net [50.39.111.31])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5C06E206C3;
+        Thu,  9 Jul 2020 14:32:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1594305174;
+        bh=K7UORDDUXzxbxn41jMUoemMN3Ilh3g8bULl90Q1T5CM=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=u/mI4BYDWSxtKEWTTDNdS1lX1Fnu4EfgXfnSrgXoFpzWHsg4NrFrtHkAjGWxM7MIQ
+         bH+i73O4aTDQYpigzwBWogKU2TDjAMmZmGLFtF+cJrw3vhOIBkaqLWCYjoIu8zs5gB
+         RDDUFlaKegg+6wb77MPdtgQinMeMZNR3LreMEgVs=
+Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
+        id 4360C3522B7F; Thu,  9 Jul 2020 07:32:54 -0700 (PDT)
+Date:   Thu, 9 Jul 2020 07:32:54 -0700
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Kaitao Cheng <pilgrimtao@gmail.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] kernel/smp: Fix an off by one in csd_lock_wait_toolong()
+Message-ID: <20200709143254.GX9247@paulmck-ThinkPad-P72>
+Reply-To: paulmck@kernel.org
+References: <20200709104818.GC20875@mwanda>
+ <20200709105906.GR597537@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200709105906.GR597537@hirez.programming.kicks-ass.net>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Thu, Jul 09, 2020 at 12:59:06PM +0200, Peter Zijlstra wrote:
+> On Thu, Jul 09, 2020 at 01:48:18PM +0300, Dan Carpenter wrote:
+> > The __per_cpu_offset[] array has "nr_cpu_ids" elements so change the >
+> > >= to prevent a read one element beyond the end of the array.
+> > 
+> > Fixes: 0504bc41a62c ("kernel/smp: Provide CSD lock timeout diagnostics")
 
-Currently pointer tdata is being dereferenced on the initialization of
-pointer skb before tdata is null checked. This could lead to a potential
-null pointer dereference.  Fix this by dereferencing tdata after tdata
-has been null pointer sanity checked.
+Good catch, will apply, thank you!
 
-Addresses-Coverity: ("Dereference before null check")
-Fixes: e33c2482289b ("scsi: cxgb4i: Add support for iSCSI segmentation offload")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/scsi/cxgbi/libcxgbi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+> I don't have a copy of that patch in my inbox, even though it says Cc:
+> me.
 
-diff --git a/drivers/scsi/cxgbi/libcxgbi.c b/drivers/scsi/cxgbi/libcxgbi.c
-index 1fb101c616b7..a6119d9daedf 100644
---- a/drivers/scsi/cxgbi/libcxgbi.c
-+++ b/drivers/scsi/cxgbi/libcxgbi.c
-@@ -2147,7 +2147,7 @@ int cxgbi_conn_init_pdu(struct iscsi_task *task, unsigned int offset,
- 	struct iscsi_conn *conn = task->conn;
- 	struct iscsi_tcp_task *tcp_task = task->dd_data;
- 	struct cxgbi_task_data *tdata = iscsi_task_cxgbi_data(task);
--	struct sk_buff *skb = tdata->skb;
-+	struct sk_buff *skb;
- 	struct scsi_cmnd *sc = task->sc;
- 	u32 expected_count, expected_offset;
- 	u32 datalen = count, dlimit = 0;
-@@ -2161,6 +2161,7 @@ int cxgbi_conn_init_pdu(struct iscsi_task *task, unsigned int offset,
- 		       tcp_task ? tcp_task->dd_data : NULL, tdata);
- 		return -EINVAL;
- 	}
-+	skb = tdata->skb;
- 
- 	log_debug(1 << CXGBI_DBG_ISCSI | 1 << CXGBI_DBG_PDU_TX,
- 		  "task 0x%p,0x%p, skb 0x%p, 0x%x,0x%x,0x%x, %u+%u.\n",
-@@ -2365,7 +2366,7 @@ int cxgbi_conn_xmit_pdu(struct iscsi_task *task)
- 	struct iscsi_tcp_task *tcp_task = task->dd_data;
- 	struct cxgbi_task_data *tdata = iscsi_task_cxgbi_data(task);
- 	struct cxgbi_task_tag_info *ttinfo = &tdata->ttinfo;
--	struct sk_buff *skb = tdata->skb;
-+	struct sk_buff *skb;
- 	struct cxgbi_sock *csk = NULL;
- 	u32 pdulen = 0;
- 	u32 datalen;
-@@ -2378,6 +2379,7 @@ int cxgbi_conn_xmit_pdu(struct iscsi_task *task)
- 		return -EINVAL;
- 	}
- 
-+	skb = tdata->skb;
- 	if (!skb) {
- 		log_debug(1 << CXGBI_DBG_ISCSI | 1 << CXGBI_DBG_PDU_TX,
- 			  "task 0x%p, skb NULL.\n", task);
--- 
-2.27.0
+I wasn't going to bother you with it until a bit after v5.9-rc1.
+But it appears that this don't-bother-you strategy failed.
 
+> Paul, where do you expect that patch to go? The version I see from my
+> next tree needs a _lot_ of work.
+
+I expect it to go nowhere until at least the v5.10 merge window.
+
+							Thanx, Paul
+
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> >  kernel/smp.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/kernel/smp.c b/kernel/smp.c
+> > index 78b602cae6c2..f49966713ac3 100644
+> > --- a/kernel/smp.c
+> > +++ b/kernel/smp.c
+> > @@ -171,7 +171,7 @@ static __always_inline bool csd_lock_wait_toolong(call_single_data_t *csd, u64 t
+> >  		*bug_id = atomic_inc_return(&csd_bug_count);
+> >  	cpu = csd_lock_wait_getcpu(csd);
+> >  	smp_mb(); // No stale cur_csd values!
+> > -	if (WARN_ONCE(cpu < 0 || cpu > nr_cpu_ids, "%s: cpu = %d\n", __func__, cpu))
+> > +	if (WARN_ONCE(cpu < 0 || cpu >= nr_cpu_ids, "%s: cpu = %d\n", __func__, cpu))
+> >  		cpu_cur_csd = READ_ONCE(per_cpu(cur_csd, 0));
+> >  	else
+> >  		cpu_cur_csd = READ_ONCE(per_cpu(cur_csd, cpu));
+> > -- 
+> > 2.27.0
+> > 

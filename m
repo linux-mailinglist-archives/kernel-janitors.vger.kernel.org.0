@@ -2,75 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52ADD219F49
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Jul 2020 13:49:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B29EF21A138
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Jul 2020 15:52:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727078AbgGILtD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Jul 2020 07:49:03 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:36726 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726387AbgGILtD (ORCPT
+        id S1727905AbgGINwZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Jul 2020 09:52:25 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:36941 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726358AbgGINwX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Jul 2020 07:49:03 -0400
-Date:   Thu, 9 Jul 2020 13:49:00 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1594295341;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=n/+Hq2OK1EfVodCGmSK8xZprN98olqCNxMqvpIq5Nt4=;
-        b=Em65mrx7Yrr88xoOBeslkETE8DoNLVI3wENFy3bHD2euiEJIWqv7TTKBgPWOSBO/gubik+
-        Hhwp5ZJiYS04MtRaG1yBdkRTMB6/wefsdUsW59qcFA3Ajun+mgVKbvl5NpaKJXMPsacQjb
-        5N40PRxxIPzIvcIsmWjCH7fYLcbTPl4n0J8aljgPrjTgzfPIelvePmOIYMyIEF6r7x+LsF
-        ACVXEyLuR26JWnBniBOKuF8aF7UK6Bjbr3v4+ltiel4vqVI7F0DUydZHt4JXfie0Z/lvLm
-        xq+USivXCdIGDs+OhcR64/F5LL1NUukTV2oqv8nzydo8yyhN+OnShgELim6g+w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1594295341;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=n/+Hq2OK1EfVodCGmSK8xZprN98olqCNxMqvpIq5Nt4=;
-        b=EWQJ2mzY07zbTBYIOt3T01wgtud1AQNbQyHydDQVl9HwMFdA7zi2wN+f1cCyYSHV7xinv6
-        LTXVZ+bIZv0VHKBQ==
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Kaitao Cheng <pilgrimtao@gmail.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] kernel/smp: Fix an off by one in csd_lock_wait_toolong()
-Message-ID: <20200709114900.b475kfqz3447zgfg@linutronix.de>
-References: <20200709104818.GC20875@mwanda>
- <20200709105906.GR597537@hirez.programming.kicks-ass.net>
+        Thu, 9 Jul 2020 09:52:23 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jtWyH-0005oE-Gq; Thu, 09 Jul 2020 13:52:17 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Varun Prakash <varun@chelsio.com>, linux-scsi@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] scsi: cxgb4i: fix dereference of pointer tdata before it is null checked
+Date:   Thu,  9 Jul 2020 14:52:17 +0100
+Message-Id: <20200709135217.1408105-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200709105906.GR597537@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020-07-09 12:59:06 [+0200], Peter Zijlstra wrote:
-> On Thu, Jul 09, 2020 at 01:48:18PM +0300, Dan Carpenter wrote:
-> > The __per_cpu_offset[] array has "nr_cpu_ids" elements so change the >
-> > >= to prevent a read one element beyond the end of the array.
-> > 
-> > Fixes: 0504bc41a62c ("kernel/smp: Provide CSD lock timeout diagnostics")
-> 
-> I don't have a copy of that patch in my inbox, even though it says Cc:
-> me.
-> 
-> Paul, where do you expect that patch to go? The version I see from my
-> next tree needs a _lot_ of work.
+From: Colin Ian King <colin.king@canonical.com>
 
-There is also
+Currently pointer tdata is being dereferenced on the initialization of
+pointer skb before tdata is null checked. This could lead to a potential
+null pointer dereference.  Fix this by dereferencing tdata after tdata
+has been null pointer sanity checked.
+
+Addresses-Coverity: ("Dereference before null check")
+Fixes: e33c2482289b ("scsi: cxgb4i: Add support for iSCSI segmentation offload")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/scsi/cxgbi/libcxgbi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/scsi/cxgbi/libcxgbi.c b/drivers/scsi/cxgbi/libcxgbi.c
+index 1fb101c616b7..a6119d9daedf 100644
+--- a/drivers/scsi/cxgbi/libcxgbi.c
++++ b/drivers/scsi/cxgbi/libcxgbi.c
+@@ -2147,7 +2147,7 @@ int cxgbi_conn_init_pdu(struct iscsi_task *task, unsigned int offset,
+ 	struct iscsi_conn *conn = task->conn;
+ 	struct iscsi_tcp_task *tcp_task = task->dd_data;
+ 	struct cxgbi_task_data *tdata = iscsi_task_cxgbi_data(task);
+-	struct sk_buff *skb = tdata->skb;
++	struct sk_buff *skb;
+ 	struct scsi_cmnd *sc = task->sc;
+ 	u32 expected_count, expected_offset;
+ 	u32 datalen = count, dlimit = 0;
+@@ -2161,6 +2161,7 @@ int cxgbi_conn_init_pdu(struct iscsi_task *task, unsigned int offset,
+ 		       tcp_task ? tcp_task->dd_data : NULL, tdata);
+ 		return -EINVAL;
+ 	}
++	skb = tdata->skb;
  
- https://lkml.kernel.org/r/20200705082603.GX3874@shao2-debian
- https://lkml.kernel.org/r/00000000000042f21905a991ecea@google.com
+ 	log_debug(1 << CXGBI_DBG_ISCSI | 1 << CXGBI_DBG_PDU_TX,
+ 		  "task 0x%p,0x%p, skb 0x%p, 0x%x,0x%x,0x%x, %u+%u.\n",
+@@ -2365,7 +2366,7 @@ int cxgbi_conn_xmit_pdu(struct iscsi_task *task)
+ 	struct iscsi_tcp_task *tcp_task = task->dd_data;
+ 	struct cxgbi_task_data *tdata = iscsi_task_cxgbi_data(task);
+ 	struct cxgbi_task_tag_info *ttinfo = &tdata->ttinfo;
+-	struct sk_buff *skb = tdata->skb;
++	struct sk_buff *skb;
+ 	struct cxgbi_sock *csk = NULL;
+ 	u32 pdulen = 0;
+ 	u32 datalen;
+@@ -2378,6 +2379,7 @@ int cxgbi_conn_xmit_pdu(struct iscsi_task *task)
+ 		return -EINVAL;
+ 	}
+ 
++	skb = tdata->skb;
+ 	if (!skb) {
+ 		log_debug(1 << CXGBI_DBG_ISCSI | 1 << CXGBI_DBG_PDU_TX,
+ 			  "task 0x%p, skb NULL.\n", task);
+-- 
+2.27.0
 
-it might be the same thing.
-
-Sebastian

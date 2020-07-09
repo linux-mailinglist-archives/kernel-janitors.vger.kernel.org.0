@@ -2,55 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9EE8219E2B
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Jul 2020 12:48:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6D59219E34
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Jul 2020 12:49:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726513AbgGIKsq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Jul 2020 06:48:46 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:57876 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726302AbgGIKsq (ORCPT
+        id S1726867AbgGIKtb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Jul 2020 06:49:31 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:52876 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726340AbgGIKtb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Jul 2020 06:48:46 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 069AhASW036413;
-        Thu, 9 Jul 2020 10:48:29 GMT
+        Thu, 9 Jul 2020 06:49:31 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 069Afm4f001099;
+        Thu, 9 Jul 2020 10:49:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=7sknyjhzQrM3Ihcf3HJ+ICn6zVC4BBDBp0IR1uUH0Mk=;
- b=BB43mlIwUowlPq4vKUk233c/HUqjekEIwyqgve4Xd26HMEDnZ/8Iq5S4DebbsiQ177IK
- h0N25EdywmDw+czkC0nayGWQJgSHvD2L/yma6d/kojnp/PLkDD1Aw/16ylvhCYUiYpDd
- yOd4XZkgbGsf/zOfZ0i8bDEwLjcdzXkbLoWKwlgAWEne5KXOE/NaIV5Jp7IkJr86Daqw
- HWf3AECsHO1WIRtuI6ijCEC0seuc40m5Iu8PzResNhCkbJ16TVwGr7pl7yxkgbExjTAv
- AG0nQHSK2JULAIdjbM2oxqFkiKJ6A1iG1PXDAx0WDH0jklAHTL/PgcS/77tmjOzRJ1+r ow== 
+ bh=epbeuiFqfys3Wp6peU1GaxAQr03nxJTlGLw9bZw9BDs=;
+ b=DO08qp3LtmItDMSnhvWnNkSSl5dPfEiPaIhzNcxqIdXY62sHuEv34gYJj4T2dQYbVagk
+ zQqFjdjRToRJjOZsT28nNc4eFdigtl6++TnQJdivLKiLgVqH6dDzYHtkgucSl7FFkEAQ
+ 1IsIXaQKghHpVmYwj0vj5CnUnFxBLOpYKwMkIW2nlESmz87HmWwcizr8LmXkix5rTDKD
+ EgdU2OWNgkDrhv226yumWgMcsaj6zIsL6lAtxEQKDRxxbtx8vZInKAhVkMpp2Xkklau6
+ F8ftUy3j2yTHTrYBlachZboG/URY68+1mb41pTXNfCtxVu48pbrBv/KntSHOl9s/JuGz PQ== 
 Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 325y0agwv2-1
+        by userp2130.oracle.com with ESMTP id 325y0agwy2-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 09 Jul 2020 10:48:29 +0000
+        Thu, 09 Jul 2020 10:49:28 +0000
 Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 069AhJ0u059975;
-        Thu, 9 Jul 2020 10:48:28 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 325k3h03pg-1
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 069AnJpF074496;
+        Thu, 9 Jul 2020 10:49:27 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 325k3h04s0-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 09 Jul 2020 10:48:28 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 069AmPFk023768;
-        Thu, 9 Jul 2020 10:48:25 GMT
+        Thu, 09 Jul 2020 10:49:27 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 069AnQKK014612;
+        Thu, 9 Jul 2020 10:49:27 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 09 Jul 2020 03:48:25 -0700
-Date:   Thu, 9 Jul 2020 13:48:18 +0300
+        with ESMTP ; Thu, 09 Jul 2020 03:49:26 -0700
+Date:   Thu, 9 Jul 2020 13:49:19 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Kaitao Cheng <pilgrimtao@gmail.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] kernel/smp: Fix an off by one in csd_lock_wait_toolong()
-Message-ID: <20200709104818.GC20875@mwanda>
+To:     James Smart <james.smart@broadcom.com>,
+        Dick Kennedy <dick.kennedy@broadcom.com>
+Cc:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] scsi: lpfc: Fix a condition in lpfc_dmp_dbg()
+Message-ID: <20200709104919.GD20875@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -59,40 +57,41 @@ X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9676 signatures=6
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 mlxscore=0
  spamscore=0 malwarescore=0 phishscore=0 mlxlogscore=999 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007090085
+ definitions=main-2007090086
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9676 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0
- priorityscore=1501 spamscore=0 phishscore=0 clxscore=1011 mlxlogscore=999
- lowpriorityscore=0 malwarescore=0 bulkscore=0 suspectscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007090085
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 clxscore=1011
+ lowpriorityscore=0 impostorscore=0 malwarescore=0 bulkscore=0 phishscore=0
+ adultscore=0 suspectscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007090085
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The __per_cpu_offset[] array has "nr_cpu_ids" elements so change the >
->= to prevent a read one element beyond the end of the array.
+These variables are unsigned so the result of the subtraction is also
+unsigned and thus can't be negative.  Change it to a comparison and
+remove the subtraction.
 
-Fixes: 0504bc41a62c ("kernel/smp: Provide CSD lock timeout diagnostics")
+Fixes: 372c187b8a70 ("scsi: lpfc: Add an internal trace log buffer")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- kernel/smp.c | 2 +-
+ drivers/scsi/lpfc/lpfc_init.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/smp.c b/kernel/smp.c
-index 78b602cae6c2..f49966713ac3 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -171,7 +171,7 @@ static __always_inline bool csd_lock_wait_toolong(call_single_data_t *csd, u64 t
- 		*bug_id = atomic_inc_return(&csd_bug_count);
- 	cpu = csd_lock_wait_getcpu(csd);
- 	smp_mb(); // No stale cur_csd values!
--	if (WARN_ONCE(cpu < 0 || cpu > nr_cpu_ids, "%s: cpu = %d\n", __func__, cpu))
-+	if (WARN_ONCE(cpu < 0 || cpu >= nr_cpu_ids, "%s: cpu = %d\n", __func__, cpu))
- 		cpu_cur_csd = READ_ONCE(per_cpu(cur_csd, 0));
- 	else
- 		cpu_cur_csd = READ_ONCE(per_cpu(cur_csd, cpu));
+diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+index 7285b0114837..2bb2c96e7784 100644
+--- a/drivers/scsi/lpfc/lpfc_init.c
++++ b/drivers/scsi/lpfc/lpfc_init.c
+@@ -14152,7 +14152,7 @@ void lpfc_dmp_dbg(struct lpfc_hba *phba)
+ 		if ((start_idx + dbg_cnt) > (DBG_LOG_SZ - 1)) {
+ 			temp_idx = (start_idx + dbg_cnt) % DBG_LOG_SZ;
+ 		} else {
+-			if ((start_idx - dbg_cnt) < 0) {
++			if (start_idx > dbg_cnt) {
+ 				start_idx = DBG_LOG_SZ - (dbg_cnt - start_idx);
+ 				temp_idx = 0;
+ 			} else {
 -- 
 2.27.0
 

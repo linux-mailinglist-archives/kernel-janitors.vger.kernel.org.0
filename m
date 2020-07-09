@@ -2,78 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF77E21A88F
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Jul 2020 22:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E757621A89C
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Jul 2020 22:07:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726289AbgGIUFg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Jul 2020 16:05:36 -0400
-Received: from mga17.intel.com ([192.55.52.151]:60931 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726183AbgGIUFg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Jul 2020 16:05:36 -0400
-IronPort-SDR: 3eOz8SEHUZgz0gjdV4IV/qbAx7vajirNY7N8/tgCURfm9BYS0B1/Pggc6+9vdOCn+4qsgTJ0xf
- U0EHOEVdnxzQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9677"; a="128163456"
-X-IronPort-AV: E=Sophos;i="5.75,332,1589266800"; 
-   d="scan'208";a="128163456"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2020 13:05:34 -0700
-IronPort-SDR: 5gj3bKx/CeHZJos+SOEy+1FMP/mAqE7tvzXQiqtUOIEIrHt6GcUSaLOvhEm+HPB540UMmQeiLk
- QxtdROqf2Ldg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,332,1589266800"; 
-   d="scan'208";a="324330039"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.21])
-  by orsmga007.jf.intel.com with ESMTP; 09 Jul 2020 13:05:34 -0700
-From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     rjw@rjwysocki.net, lenb@kernel.org, viresh.kumar@linaro.org
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dan.carpenter@oracle.com, kernel-janitors@vger.kernel.org,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: [PATCH] cpufreq: intel_pstate: Fix static checker warning for epp variable
-Date:   Thu,  9 Jul 2020 13:05:22 -0700
-Message-Id: <20200709200522.3566181-1-srinivas.pandruvada@linux.intel.com>
-X-Mailer: git-send-email 2.25.4
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1726757AbgGIUHT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Jul 2020 16:07:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42880 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726290AbgGIUHT (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 9 Jul 2020 16:07:19 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57AE2C08C5CE;
+        Thu,  9 Jul 2020 13:07:19 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 9C00F120F19C4;
+        Thu,  9 Jul 2020 13:07:18 -0700 (PDT)
+Date:   Thu, 09 Jul 2020 13:07:17 -0700 (PDT)
+Message-Id: <20200709.130717.943617001507092696.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     f.fainelli@gmail.com, kuba@kernel.org,
+        bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] net: systemport: fix double shift of a vlan_tci
+ by VLAN_PRIO_SHIFT
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200708183723.1212652-1-colin.king@canonical.com>
+References: <20200708183723.1212652-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 09 Jul 2020 13:07:18 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix warning for:
-drivers/cpufreq/intel_pstate.c:731 store_energy_performance_preference()
-error: uninitialized symbol 'epp'.
+From: Colin King <colin.king@canonical.com>
+Date: Wed,  8 Jul 2020 19:37:23 +0100
 
-This warning is for a case, when energy_performance_preference attribute
-matches pre defined strings. In this case the value of raw epp will not
-be used to set EPP bits in MSR_HWP_REQUEST. So initializing with any
-value is fine.
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently the u16 skb->vlan_tci is being right  shifted twice by
+> VLAN_PRIO_SHIFT, once in the macro skb_vlan_tag_get_pri and explicitly
+> by VLAN_PRIO_SHIFT afterwards. The combined shift amount is larger than
+> the u16 so the end result is always zero.  Remove the second explicit
+> shift as this is extraneous.
+> 
+> Fixes: 6e9fdb60d362 ("net: systemport: Add support for VLAN transmit acceleration")
+> Addresses-Coverity: ("Operands don't affect result")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
----
-This patch is on top of bleed-edge branch at
-https://kernel.googlesource.com/pub/scm/linux/kernel/git/rafael/linux-pm
-
- drivers/cpufreq/intel_pstate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 44c7b4677675..94cd07678ee3 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -709,7 +709,7 @@ static ssize_t store_energy_performance_preference(
- 	struct cpudata *cpu_data = all_cpu_data[policy->cpu];
- 	char str_preference[21];
- 	bool raw = false;
--	u32 epp;
-+	u32 epp = 0;
- 	int ret;
- 
- 	ret = sscanf(buf, "%20s", str_preference);
--- 
-2.25.4
-
+Applied to net-next, thanks.

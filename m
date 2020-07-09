@@ -2,110 +2,158 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AD722196C9
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Jul 2020 05:43:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B059B2199A2
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Jul 2020 09:23:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726222AbgGIDnl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Jul 2020 23:43:41 -0400
-Received: from mail-am6eur05on2056.outbound.protection.outlook.com ([40.107.22.56]:1736
-        "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726119AbgGIDnl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Jul 2020 23:43:41 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LoBlPdGze0t2uOJWBzUGexMYDTOwRIofAQALFd8JgKk1PtmKLnDLb7I9QbmJEzDNxyncx2YhzN8C02zHHACk5A9SUO0KzAm24SVs9u1eTluhrBw0cAKn73FB+O5mZ0PPRyVLxrmd6WOa/jQMhQr/YmO7d8WxXE63Ko3GHxCYZo/8N4i0PiuFhxPZ3Lzt5tMcX5fvfT5DB46g+FNfoJzVzftnXZmhLDCYN4NRzuE3e9xMmP9Kyw9Je/Lwi6jW960QLBs+pOGAAH7HS694zqzOo/SXvCuGA2nqLisKQ5MqwTHeag1PshCfuCdt+BoGNnpCPuwTwGcLRK0ynSSuypltHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O2YE3kBW2hp0cS3YhbXAgeF39YU76nZVtngZ310nrQM=;
- b=ZSGqdcEPKlT+2rab22MXpGI5871Kbah2vZ1e2+fiJ1in7CAgt55uDobQT8ejHtjtyHvfK0MKiFCUn37ch9Zo5S32rSEM3paZvyQQkmGy9Kghq7pTsDtJYd0vlWXyK1DAALZnMqbD/wgB/+EuZwt667iwX4qXOzo7U7sRjvPTLk3F+3BZg/5+M6rCntkn+VDdOxg7rDydMXLmyzwTvwyy4+jUlS95rwyJwCkUF65Ge/tNPxQm8tMCmthP3/YWN1k9Q+dp34ZXKN4VIONMmfvs8KU/TYrSgDNVZRLq08SjZ2RUSr840L9pIBvKOc15d+f6j0c3fBnH2tTmtEFFfWx/dw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O2YE3kBW2hp0cS3YhbXAgeF39YU76nZVtngZ310nrQM=;
- b=sCM/gHF4PEnRn/hsxoiBIklbZiHOPfihhcNY3VndVhwZ/wur5jEYau/6cSuT7B1tYbwOGo2exwEq9qspbU8FAc47AJykTs3kNdGezzLWLl27p6q8PIHdveZygjXPj5goXDyMQo5/HTJde/OICjMwQC9dJbZkf5+uGL1FblFTadU=
-Received: from VI1PR04MB4366.eurprd04.prod.outlook.com (2603:10a6:803:3d::27)
- by VI1PR04MB4335.eurprd04.prod.outlook.com (2603:10a6:803:4e::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3153.23; Thu, 9 Jul
- 2020 03:43:37 +0000
-Received: from VI1PR04MB4366.eurprd04.prod.outlook.com
- ([fe80::8102:b59d:36b:4d09]) by VI1PR04MB4366.eurprd04.prod.outlook.com
- ([fe80::8102:b59d:36b:4d09%7]) with mapi id 15.20.3153.031; Thu, 9 Jul 2020
- 03:43:37 +0000
-From:   Ganapathi Bhat <ganapathi.bhat@nxp.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>
-CC:     Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        Bing Zhao <bzhao@marvell.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        Marc Yang <yangyang@marvell.com>,
-        "frankh@marvell.com" <frankh@marvell.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: RE: [EXT] [PATCH net-next] mwifiex: Prevent memory corruption
- handling keys
-Thread-Topic: [EXT] [PATCH net-next] mwifiex: Prevent memory corruption
- handling keys
-Thread-Index: AQHWVR87H4tDoS6U/UG2OCjcvd/Gaqj+m7bA
-Date:   Thu, 9 Jul 2020 03:43:37 +0000
-Message-ID: <VI1PR04MB4366F9D7F65F90569A1ACB308F640@VI1PR04MB4366.eurprd04.prod.outlook.com>
-References: <20200708115857.GA13729@mwanda>
-In-Reply-To: <20200708115857.GA13729@mwanda>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: oracle.com; dkim=none (message not signed)
- header.d=none;oracle.com; dmarc=none action=none header.from=nxp.com;
-x-originating-ip: [103.54.18.180]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 16ffe419-35a5-434d-36ff-08d823ba43a2
-x-ms-traffictypediagnostic: VI1PR04MB4335:
-x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-x-microsoft-antispam-prvs: <VI1PR04MB43359D7AE6DD2102C7265CBE8F640@VI1PR04MB4335.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 04599F3534
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 7gCvRKYANMF4xAbbywArNptyd9VXEs6mIikrVdlJq9WyAcW+NVP6kF4ZveWbRuxpMKB+LyFmp931qW/EZSYr0b0Zpyrl02WqOXzE9smoS4Ks42iS5S6MrWcghXujKELRqeVrujLAkJLcgDKHBUrwvyNlsVOnsk7jE0/xpV83nksT2LA1OFRDbQdy7vDUsbSs7gfgIf1YeFbbfCRe8rF+HEODP/JnqlZaiQJd2bQgijCAhx3vBFu5rpWfes+yhn6oxdfGn/UDrYO9gQBO1+cDWIJ7BBY5RXBZLYqdB57JYdI1OpADmr9ZlWxpiiHlOxCc
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB4366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(366004)(376002)(136003)(346002)(39860400002)(396003)(478600001)(6506007)(52536014)(33656002)(8676002)(26005)(76116006)(7416002)(4326008)(8936002)(86362001)(44832011)(66946007)(2906002)(54906003)(558084003)(64756008)(186003)(66446008)(9686003)(55016002)(7696005)(66476007)(66556008)(71200400001)(316002)(5660300002)(110136005);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: nAjI5eFGhjheoktEZe7v2eLrUh0wvqGbrboJhh/vSkTY/YCTndJlpAvn9GTf98qDp6YtGWvMAx9vbnnfK114PCGanZwRsRZ2HPu78gz1v4XA4t6b+DBm7Xxiusk2+tMGGf8LUOqIVhT9L0LdJL6AMIDbz2DiDOQWmE339jzHjgCDPWHWzt4ElV63/KwRIYJZbOP5hHrfUb51S5d9Foo8QjMActt2F+2Hy8fERbjn39kZQwOh6f1wZwn4DqAzFjzdd+vsmnV6SzhNfDA5H6HrxVwvInCjQK5kQCOiOIzuuHeB6qXNAhJYhUIeUHRPov4XVxc0J6NsR2ldmC3IohkfMQemyITWnCzQtpzAp+Iu6aMTkrQd3wjsi4El4tzUzLWySITDmqsTQNFAj7C8ukbFCbMM3N/SL8lKH8SpLTcO4RBIACLI/10U3k/efqUi24daqF4i7zGNZfRnBLUK3nGTBs3u9aLSsq1eYtGOm+lcgUY=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1726215AbgGIHXC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Jul 2020 03:23:02 -0400
+Received: from mout.web.de ([212.227.15.14]:39591 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726006AbgGIHXB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 9 Jul 2020 03:23:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1594279361;
+        bh=4xFv8ti/OzBQfVAv9dMHgSddCt57MGCFKZdrZ/W39nY=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=lLQXcIXJaI/RfXgWUNwMgOK2aSON8JpR4Bbv0WZn8XYIInclOzYx3xqQzaXsou58a
+         CgBXWFRozLGiHl1rbLWvL0b7RoqShI+BC3nrm85khh/M/GAFVYg2P9o5JIIHheGa3a
+         hqll19DXiR0SKkXgt/ySAQl36QN2xmj95l4GFuvk=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([2.244.81.209]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MUVrX-1kJWSo1i31-00RFQX; Thu, 09
+ Jul 2020 09:22:41 +0200
+Subject: Re: [PATCH] scsi: fcoe: add missed kfree() in an error path
+To:     Jing Xiangfeng <jingxiangfeng@huawei.com>,
+        linux-scsi@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Hannes Reinecke <hare@suse.de>,
+        "James E. J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Neerav Parikh <Neerav.Parikh@intel.com>
+References: <977e2781-99ed-54c0-27ad-82d768a1c1e6@web.de>
+ <5F067CDA.8010404@huawei.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <ec1e1405-7582-0709-f2a5-a8b91e45fa1a@web.de>
+Date:   Thu, 9 Jul 2020 09:22:34 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB4366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 16ffe419-35a5-434d-36ff-08d823ba43a2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jul 2020 03:43:37.7609
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vgoJmdOJpZ1JTZApgfZaFmiGsPeSrI+O9X8eDDrSptoUpX+7fHU/T7fS6kGjOUrlH2/00bvXQ2EZHf84vkc6Tw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB4335
+In-Reply-To: <5F067CDA.8010404@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:tJ4Ea4WeRgIbK/YfyxkGEjAF7FVqtNiAMnNvYGIx3QWtiQBzR9O
+ yOZ6PMyj0ERCqBM7/cuSBsAOQFmQMVRWbWawJVzI5C3muSzWa4eP5VBVkCM8h++chn15IRF
+ /R9Mrs/CsfjtXA4r5mX89LknsCvJ6fxJDIcCUY1dBawJ7Js4tjKCuHobrvgeLKr9MdnGyij
+ XRao0L31FTJHjRpJstibA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:CbIL8RvE6Kk=:AYUYSEglmSOmihPACDuvmI
+ 6XMkcu7ChJSuXb+O/RxD/IM3DP4JSj91ejVeUVDiA5m7CPp5Xw48o94eepzhLK15C/xmTCgOe
+ 1qCxYye4rG45Pt33dkR4+T66O6Fp4dVRZL8nghqiuBATrp0P40EymtipK0XNYHVPDVsfyH8bi
+ ikovuwtTN57+tbTvjUCILDMYutIp1UovEfkuEWZp1QvFruir8cykZcNQXKUpLfONGRuGjVy4i
+ /ObolBKHD6xirhjDuUiYzZPRgYpF4j86BTWSXx47u9GQlGXjrUctGNeivnzOhgAC7o4jbzDT6
+ I3lNhSmhD0vsm2BR2GsXMDH3kAfouwQtUsJfSjW9JAdrafkjdw7uadLMFk0T8X2Ygyc7rxad9
+ HED2GJWBTr1TsaoxArawGf/Klz0sSe1MYYcodjFWrxySJW7vNwRUCLjcZ1nqn6MtsXGATiRu6
+ 5E+hdEQAWYcaG9m3vi+8KhdI1PJ17sbgcTvNjeFqqVcPoSsJmTnB0FOzrbjUREZdWPHl+IBUI
+ Il4qZKrwUTZYEmjOw7zZRb+qmKMWhTnNw+Tu8ha+vfcuGPlRrBiyfP7HyHjMc9ItF8Hc0msOr
+ f+fwngF9wZubAL9/+mGdx3Djm5wXj/JUhEBca46UmzzbWZIJ/keaH7+u9XTSpsY1sYOs71pDD
+ 9mrQV1JU4I4KtNR4yOw8embUEt2RN/fc9H+LZzuem8HdAhn2rLyfU9dp0ooxqBnmeLRcLi59W
+ /2SsNfXG7icvpSXEuL09p9KXzPWabufxdrXEwMqY/u/v21zYTFCwMZPybvps8F/3LcQMTf+eC
+ iQo3bCWJSooN9WI2CD7pkcE8i/g9z86aZ2S9boQSK/HCvDTxJY/kKCFaF1NVJdceKN3a88lIB
+ DytFFqZ8hp2qCLKz/28NSFF8UPyXabqnvPfTovIGQoz3WUM/wDrEC9jL3OVLig9yjCfEk0WNW
+ FiCIyg/qj0Lbk1kQuPUeOKn9izh7ShsDBAI6Ahe7I+drhRSVyEpAitk8hQDwkEfGakd+R1VTh
+ IjE4uHQsutLYwbVD0CStm4bJ2NlAI7l9tNWigSLGmCohBgJqSbrHMnTZhT68Kn3mKtw/10wnD
+ E6Np99TRAtyzO/INd0sZmftzMGDnEC3EAAtRE0bHED6SqOJQHmN67yUpRGr9y5e8nX/OtHphJ
+ uoEYH+HmB5Aj9p97xvihWw+eYGQrDobWniT0E/wean5JMm2W8xQCWJ2LdlYqqetTZYz2+OJ/I
+ AfgaQ9vZ1aHZk2pGTTiq89Iev8DIjLNgpmKpZnQ==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
+>>> fcoe_fdmi_info() misses to call kfree() in an error path.
+>>> Add the missed function call to fix it.
+>>
+>> I suggest to use an additional jump target for the completion
+>> of the desired exception handling.
+>>
+>>
+>> =E2=80=A6
+>>> +++ b/drivers/scsi/fcoe/fcoe.c
+>>> @@ -830,6 +830,7 @@ static void fcoe_fdmi_info(struct fc_lport *lport,=
+ struct net_device *netdev)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (rc) {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 printk(KERN_INFO "fcoe: Failed to retrieve FDMI "
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "information fro=
+m netdev.\n");
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kf=
+ree(fdmi);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 return;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret=
+urn;
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 got=
+o free_fdmi;
+>>
+>>
+>> How do you think about to apply any further coding style adjustments?
+>
+> The local variable "fdmi" is invisible to the function.
 
-> The length of the key comes from the network and it's a 16 bit number.  I=
-t
-> needs to be capped to prevent a buffer overflow.
+I have got understanding difficulties for this information.
+The function call =E2=80=9Ckfree(fdmi)=E2=80=9D is already used at the end=
+ of this if branch.
+Thus I propose to add a label there.
 
-Thank you for this change.
-
-Acked-by: Ganapathi Bhat <ganapathi.bhat@nxp.com>
+Do you notice any additional improvement possibilities for this software m=
+odule?
 
 Regards,
-Ganapathi
+Markus

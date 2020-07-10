@@ -2,106 +2,167 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B49DA21AD8E
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jul 2020 05:32:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7820721AF7B
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jul 2020 08:33:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726996AbgGJDcE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Jul 2020 23:32:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55408 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726495AbgGJDcE (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Jul 2020 23:32:04 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0446CC08C5CE
-        for <kernel-janitors@vger.kernel.org>; Thu,  9 Jul 2020 20:32:04 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id d194so1880941pga.13
-        for <kernel-janitors@vger.kernel.org>; Thu, 09 Jul 2020 20:32:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=6M9I0N+ITvQl9xLS8Krk1EyTKkYlOBKb0aLEeu36Cv8=;
-        b=W/lnnY3WTAA7T9J1NuelxckKknOIoZXKKbX/36nao31ESoCDBAuZ+OW+30GViwVfd8
-         5z+0iEl48c4xcxnb5XJilpOu3XLYs6AWNo8D2ckZNgIU8Xkz/LZICnbM7OmeLdBYAfwE
-         Mu12ew52Bep212m3xFB2cYiLBQpdr8qxuTeoUXi6m9TtnpD/srLkIUnaDdpzgliIupTF
-         6B8WF6wprssPLXrKtgQ4aOTDu+7J6QxZmmpULDLsikCwBGME4BC/HG1W53UVTVCR+kJp
-         b1dERd7Jqf/Gvg/fy6IYHXaVY+ooxDd+15OinfaHrBmqNe1s6P0x74b/Cw3b8nc/naiW
-         4oWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=6M9I0N+ITvQl9xLS8Krk1EyTKkYlOBKb0aLEeu36Cv8=;
-        b=hrSye9Q7iqDBTRvzPHdKxnEF8K1BUkSuJ84IKTPfU+dCcr8FIhp7intfRlJgb/rIsr
-         RKkFNmPF6RbFnSstS/UN//mmt7wfggCzZLrTFAahIrwlvIgOq/CQkWUOD704rj/AUTg+
-         D7eYlVPP4gu4MRh9HqLVZ8ZVRqw3W/eP4ydiUEk9e3ivPmejJUcUtdiX0v47GmkpW6xQ
-         ConmaB6vWGzl9A0dg4mskjFXaCB++gmX/eTRwo3JMPVZk7TLrREFfeAsKLGEEFB/eHTi
-         OOfn6VDLxqr69hfC60zKzIsjrGQqBaIL80ikCT3+Hh+06iUcyq6YD396z3tI9IFD9M8A
-         KWUg==
-X-Gm-Message-State: AOAM532APB3AWF+qlitHlAEsgMMlC81B7H0d7+WHMW1BmCXfyjlUyuot
-        fQNHWsuxAlF+gNym1dqYiwcn5g==
-X-Google-Smtp-Source: ABdhPJxWp7W3tDSKZHDWvomOrjvvu5VENBEUeF62wqgfTC+Phjp6QzIdRtIQ5UxiD+hL8FDDrsZcZg==
-X-Received: by 2002:a62:195:: with SMTP id 143mr52866988pfb.226.1594351923564;
-        Thu, 09 Jul 2020 20:32:03 -0700 (PDT)
-Received: from localhost ([122.172.34.142])
-        by smtp.gmail.com with ESMTPSA id b82sm4212684pfb.215.2020.07.09.20.32.02
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 09 Jul 2020 20:32:02 -0700 (PDT)
-Date:   Fri, 10 Jul 2020 09:02:01 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc:     rjw@rjwysocki.net, lenb@kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dan.carpenter@oracle.com,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] cpufreq: intel_pstate: Fix static checker warning for
- epp variable
-Message-ID: <20200710033201.batyrrr7lgqchw4j@vireshk-i7>
-References: <20200709200522.3566181-1-srinivas.pandruvada@linux.intel.com>
+        id S1727116AbgGJGdC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Jul 2020 02:33:02 -0400
+Received: from mout.web.de ([212.227.17.12]:60185 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727050AbgGJGdB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 10 Jul 2020 02:33:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1594362762;
+        bh=VSjkdBzvkGVrNT496rxp9Bw1WUlP3ENwOMf0SJfm364=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=luB6hwR4i7nRJjgxqtglc/ZyD+mjMLPZp2iT5Cl5HTYC4JxCZ0wrGM6JrxeaPfevU
+         PCka1t6FKs8HhoRGOsgzzoqVrOoRMjDTCbs91FE4vGwN4jscHn8Llq5WIrcRwAFkNS
+         i+Nq9kc8/RVmJoihbj7I4RUcElpGM5+Izv6Gud5I=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.135.129.239]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N1u6d-1krgVX0c5R-012Jmp; Fri, 10
+ Jul 2020 08:32:42 +0200
+Subject: Re: [PATCH] scsi: virtio_scsi: Remove unnecessary condition checks
+To:     Paolo Bonzini <pbonzini@redhat.com>,
+        Xianting Tian <xianting_tian@126.com>,
+        linux-scsi@vger.kernel.org,
+        virtualization@lists.linux-foundation.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "James E. J. Bottomley" <jejb@linux.ibm.com>,
+        Jason Wang <jasowang@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Stefan Hajnoczi <stefanha@redhat.com>
+References: <a197f532-7020-0d8e-21bf-42bb66e8daec@web.de>
+ <e87746e6-813e-7c0e-e21e-5921e759da5d@redhat.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
+ +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
+ mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
+ lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
+ YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
+ GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
+ rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
+ 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
+ jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
+ BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
+ cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
+ Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
+ g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
+ OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
+ CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
+ LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
+ sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
+ kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
+ i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
+ g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
+ q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
+ NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
+ nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
+ 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
+ 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
+ wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
+ riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
+ DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
+ fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
+ 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
+ xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
+ qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
+ Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
+ Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
+ +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
+ hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
+ /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
+ tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
+ qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
+ Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
+ x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
+ pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
+Message-ID: <8eb9a827-45f1-e71c-0cbf-1c29acd8e310@web.de>
+Date:   Fri, 10 Jul 2020 08:32:33 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200709200522.3566181-1-srinivas.pandruvada@linux.intel.com>
-User-Agent: NeoMutt/20180716-391-311a52
+In-Reply-To: <e87746e6-813e-7c0e-e21e-5921e759da5d@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:FX8FryPsmDViqZC962m+4pWDswlnK0V23fb+GXCb9B8DsrzKIVX
+ /Gpa47Lg1rGyg9CeIk40gidvRDCiBv/8l/d89KQtqdM8s1gtegZW2Us4yxQ3+5z9P98S6km
+ 5Ga5Nh5MU6nbh6D3AWdoK6YjbjWz2iVZya5SIBrjxfzh2MotWESRdx2/8ko/HagQjZn46Gv
+ o1Mca4OZXEV8z4JFGZWCA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:GzZE6VK4dOQ=:t83HzhaOTridvOKZEMYg4s
+ 37je6YWVvcLbOOeADbRW293V13Skt9rKaCjupP6EDdG5Yo3fXCvhdsz4QsOaDAhvf2lZJYvLw
+ eABTTxVWPSeQ8+1gNzHIWf/Kh7yHLDjqEynFnX1qc7E6qGm5M255uWQdH6OHn4xeXYYG2lMuL
+ nUKRAENTDtZhssKrwAurgRCABZAn9/B6darxqgvrnJeYWme1ZeFke6xxW3bibQyc1CAAtdG+6
+ KNZqHajoAfIGP2fBzh1Q1UUofwtKjjya+Dyc7FyIwLWT1+JwNQIfFGQnbzs1RXKa7FfzneiVM
+ xMjilyCMNd3aZrIt6GdKTeLyDwFQ3ygVbtjS7xtmyjGk3srowDcF36OPWf+XuawMYGpKJray3
+ hv+D8F9z0FjWCecV7qQGOsuBVTki8FDJXpSVmLnemkngS7MDP5igzBDNCLPLy1TVuiZwnl947
+ OpRbRBGmX6/x3nH5XBAbPZviVQs4XB95HMNCiD5tOQAJxp5Fif3ba3PVmez1v3ez5BBkA35yy
+ ih7ihcLip9xXoHoMsBAjVUOSiygCh2W2wBKuYfk8cE6iQ3F/+EVUURAj8+P2VSNryfgk7zVn7
+ 6DsyS0yhGSbi4/Z78nW5aFCg7cgJnNhbqOY1wP9IQEmYJ1wY/VH4LRCxrO0m1Tf9PIq+HeLNS
+ KQWK/1BXDyvizekBx2AmRE6c5O0R3ySHWtRI8JbnuDxhzzolv9ZrZxVVfI8y1R0qX8+a+jP+A
+ VXXkARNs5US0hCzukvqtXP+OQi7D0e5NsWeoA9dvi6GzS6fEiHjJHILbW1XXueQW5Y1q87NyN
+ i3zce6VY5Mm/QWUSyrNzrhMjdmjjKfja4Gn6MjRWsVsvl5fGOKJFgi+lNFplfDOVsEiuVpIrr
+ aYZmbpwYT+nZQ0qVNi9U+d3K4aV6f5TJ22Gt/FoGgMw8YkY78cARo4ABVGZKFdvvKtEqj8a1y
+ YgOC3+gjjw892t6It2ygotT8skx22qXtbrmBQEr3oz26gj3oIFiJgy4R13lX3k0UzBVptEPXO
+ uSHZsOSA2ElSChxDsgBtVR8pBvKYEGpRkAvaUvHYYs9F7qswVd/GV3e43PlKzLUOF1mkmBJlY
+ V3uV5HJ3pWmC9JmhhL/8fZHLqHJrhGVCqS+v/6FCs4Ad9ZhXYUIYPupcxKG/UpnjjvQeeJzVo
+ lwxUypPvrnrgLsxNM2JsMP6BSThb4CxujB0rB19MChinhdJvINDZ2n/eJ51otPCe2RzszVjkT
+ z3+KgY7HKaOr7Pzx03aSZpVQh0YeVF3ObYPgAQQ==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 09-07-20, 13:05, Srinivas Pandruvada wrote:
-> Fix warning for:
-> drivers/cpufreq/intel_pstate.c:731 store_energy_performance_preference()
-> error: uninitialized symbol 'epp'.
-> 
-> This warning is for a case, when energy_performance_preference attribute
-> matches pre defined strings. In this case the value of raw epp will not
-> be used to set EPP bits in MSR_HWP_REQUEST. So initializing with any
-> value is fine.
-> 
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> ---
-> This patch is on top of bleed-edge branch at
-> https://kernel.googlesource.com/pub/scm/linux/kernel/git/rafael/linux-pm
-> 
->  drivers/cpufreq/intel_pstate.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-> index 44c7b4677675..94cd07678ee3 100644
-> --- a/drivers/cpufreq/intel_pstate.c
-> +++ b/drivers/cpufreq/intel_pstate.c
-> @@ -709,7 +709,7 @@ static ssize_t store_energy_performance_preference(
->  	struct cpudata *cpu_data = all_cpu_data[policy->cpu];
->  	char str_preference[21];
->  	bool raw = false;
-> -	u32 epp;
-> +	u32 epp = 0;
->  	int ret;
->  
->  	ret = sscanf(buf, "%20s", str_preference);
+>>> +	mempool_destroy(virtscsi_cmd_pool);
+>>> +	virtscsi_cmd_pool =3D NULL;
+>>> +	kmem_cache_destroy(virtscsi_cmd_cache);
+>>> +	virtscsi_cmd_cache =3D NULL;
+>>>  	return ret;
+>>>  }
+>>
+>> How do you think about to add a jump target so that the execution
+>> of a few statements can be avoided according to a previous
+>> null pointer check?
+>
+> The point of the patch is precisely to simplify the code,
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+I suggest to reconsider also Linux coding style aspects
+for the implementation of the function =E2=80=9Cinit=E2=80=9D.
+https://elixir.bootlin.com/linux/v5.8-rc4/source/drivers/scsi/virtio_scsi.=
+c#L980
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
+ivers/scsi/virtio_scsi.c?id=3D42f82040ee66db13525dc6f14b8559890b2f4c1c#n98=
+0
 
--- 
-viresh
+ 	if (!virtscsi_cmd_cache) {
+ 		pr_err("kmem_cache_create() for virtscsi_cmd_cache failed\n");
+-		goto error;
++		return -ENOMEM;
+	}
+
+
+See also:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/coding-style.rst?id=3D42f82040ee66db13525dc6f14b855989=
+0b2f4c1c#n461
+
+
+> executing a couple more instruction is not an issue.
+
+With which update steps would like to achieve such a code variant?
+
+destroy_pool:
+	mempool_destroy(virtscsi_cmd_pool);
+	virtscsi_cmd_pool =3D NULL;
+destroy_cache:
+	kmem_cache_destroy(virtscsi_cmd_cache);
+	virtscsi_cmd_cache =3D NULL;
+	return ret;
+
+
+Regards,
+Markus

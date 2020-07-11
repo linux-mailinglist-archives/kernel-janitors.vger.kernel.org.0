@@ -2,33 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70E0321C35D
-	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jul 2020 11:34:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52D9921C381
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jul 2020 12:05:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728187AbgGKJe4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 11 Jul 2020 05:34:56 -0400
-Received: from mout.web.de ([217.72.192.78]:55283 "EHLO mout.web.de"
+        id S1727019AbgGKKFN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 11 Jul 2020 06:05:13 -0400
+Received: from mout.web.de ([217.72.192.78]:48899 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728102AbgGKJez (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 11 Jul 2020 05:34:55 -0400
+        id S1726628AbgGKKFK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 11 Jul 2020 06:05:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1594460078;
-        bh=lkv+WEC3NOxHLpGKrgZaJC4IUNQ3MwNs+ibum94Qa+s=;
+        s=dbaedf251592; t=1594461893;
+        bh=oAB672Lav14N4Vgw/LehsEYrm2ioXvtEboTuKTDs2tM=;
         h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=B3lTnE6oDxgsYgbOrUMr13FXdJJFO3H4xL4dvyWPF1VLY/3BVupG5bEhFbTN40WqT
-         7uOExGCzHAtpzdKjaMa1Dw3a/7/UJLhw8XeCjZTImh/q5KXe+mq1weuLMj5K8GJ+NE
-         Y5LLYzUd56TN2+R/X0RdP4XnVOGqzGvFK+0kfLl0=
+        b=czzoSMMDGlSq5mdNWRWJ+/w0DyqDsEFZ2a3Q+mQycMtXdrnUgSMgB3KgyQ90jJN8y
+         7+YlXeC+ajeBk5zngfucMcy3Qvw1t3QXdXDl5jUU2SouA5Civ4i9IM7s0zN3ITbYRm
+         +ytQCedJRHYiXykzDdniZL0xGDiuverJHFoApNkY=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.101.136]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lb1wz-1kZcJj2Au1-00kjOn; Sat, 11
- Jul 2020 11:34:38 +0200
+Received: from [192.168.1.2] ([93.133.101.136]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LuLt5-1kv84I2p0h-011lbN; Sat, 11
+ Jul 2020 12:04:53 +0200
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Christian Benvenuti <benve@cisco.com>,
         Christoph Hellwig <hch@infradead.org>,
-        Jens Axboe <axboe@kernel.dk>,
-        Josh Morris <josh.h.morris@us.ibm.com>,
-        Philip Kelleher <pjk1939@linux.ibm.com>
-Subject: Re: [PATCH] rsxx: switch from 'pci_free_consistent()' to
- 'dma_free_coherent()'
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Nelson Escobar <neescoba@cisco.com>,
+        Parvi Kaustubhi <pkaustub@cisco.com>
+Subject: Re: [PATCH] RDMA/usnic: switch from 'pci_' to 'dma_' API
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -74,38 +75,39 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
 To:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        linux-block@vger.kernel.org
-Message-ID: <65ed731b-8582-cc1c-5591-13feef1d134d@web.de>
-Date:   Sat, 11 Jul 2020 11:34:29 +0200
+        linux-rdma@vger.kernel.org
+Message-ID: <e0f440ce-7f0d-efbe-5419-763a97aad68a@web.de>
+Date:   Sat, 11 Jul 2020 12:04:52 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-X-Provags-ID: V03:K1:HawYMCXjTpTUSlsevLiCn03QLNDvDwDWEpuFtJ05g0wUNfF4Nth
- EDPajPWdegBzt41eIgndu1DWGZYqsi+hf36T+Edg570KQen+ZqXPcPca+8qHK2sOiPN/crZ
- rAw/50woJRCzZibBVQITR3Em3+Y0b20P6Pj4YiO9MNps9iNhkTLUo2HtmBjmKbgUzCw6p0y
- VMlXlczNL3sqE3a4vtrTA==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:sVp10qkhMXnDk+mYX5gXAe36om9+FDML3yARHw6Fl0eLZuxy0+g
+ iLtSIj1Gc7mByedKQRX/3WAlfQa5oLjlLLveKXc4XnHvlufY7SYxxBDmlMu1THdrk02zBqw
+ qgAEZypM2EUiHb5fBXE24Nvb3L6HPhpOlALssEtLUopUnjSbCxYsEMTPH+SrgApNNOLxeWn
+ DWgsQubyqzJEPeHmRyNKQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:9e+xpc3o4/s=:2n+SMUiWMfpDwJc2smuzM0
- NHoQ3zw9JeBCktqtowR9UXmmgRJavmAC9Pib7eb7wTzu7OfEVXB1FLklOUlzWkAKxjusi4YMX
- odZrwKSOblMvsE2/A2KG0yvivedHz2FB/2rq0aNGn22DZ6Rv8wWw0buxUwOFGorSPPY+UAl1L
- KMiLnnMwYML+IqlCn+TZEjDdUhnN2Co9VqmEuHBWjjLx8RFMZvMCpBgYj73cdrC/kmwFbiFTp
- D0A7rRRUBpMPGRBrHXNkEB69UEOz5bOhrx9wbJwQO29VZ1NOdwISSdxeK6gpp9yckLoa4c8i6
- 0yJ6mcjO8u7R5BJWAqw73MERY1hPPgJv7Wd6EjdEmAkivsME/8g9f3EnAu2ssflg7zDg0Q0di
- tZ2J9m4Aawqq5goLuooCqDtHPvB1qYMvfPOzIV8u3gmolJnLWn/vg6+EkpfMAY+XxdvRu359P
- gbAU4Qi6CiYO0gbg2sWujnYIQ0sYQ+AKzKGRaLH+XolU53n5GE7Zg5zAW6LIOF5JnfQhW3wa2
- qLqEPY4ItYPsX+BSgEAQe2/QqQ+WhBzubGtyVPdw/jeew8H8SS7Ukw+SrMf5DFbwlgwyeHkdL
- j5yMUIhwgYiHU+u1stiCd8V1VE5yg40JmyOWeEIHI8HcsylrNro5KxCJtO7Yu98mo5Ao4UM+G
- HWkVD6oslu+48l7/0FGZH4N1qx3LDfQHtXlZUotpB/weWK4WgZRx5qMTM95Ub10WuiM6sZi7j
- uGNZK2FHC6+vUkftYV3gJ1tQmZ/ScV7Ma6c44ubIFb+Mubh2kK9pN4WLOERF8BtFPnQM7QEki
- eewvzB8ogeeym/BPykWE3boTwCC0EsZ0Dl/wBnyBru/5y0mkDV+/hZMN8b2Cg6j1g+JqqTiIL
- fViHdAPNYOYKCUMo0gnX3FGbMXKl+VzoPGt3tizo8ya6hJCR0J1zdt5AqN0QCODKHRi7wwAv4
- 1NEDUy9aXb+iKxGlmGteOUpK5WPk5BF7xqgSatRAeF6N6hCB8PLjdOKnXaO1J1N6+3U+R/qmW
- 1qKdGI3gqQqTBcvH9A3MnMK9sf/9Mypb13VuTgtfqRO9fNlqkRSVp0Tpicop/M0EjFAQdhW8x
- v6e+kbHKpfuZmgFBosQGL6+CZ+itOmE6rgiHptiUvWB2b+0+jrgzLqL3+31auR0+2KQ9EcJHE
- wjoeA5eOsyZJkhKW53kobaiyHgqGdS1q5NMdly1JG7xn2xFht6q+xLtj7df9KfyxbqrQn7znN
- nOPYImOf66fVm54Arez6ZRZ/Lhtdf9hvDR8xXKA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+p6JbBxeNf0=:F/NqvLvAov8/uUtCXjWJ6h
+ cNxG0HWUPYaf+Asdb+wrbWX7ZishXWX0lE1ml7JwqwGyeRyzZrlqH9TJmKdBsUtfKNe1mlkwR
+ y49pNr9Jupz4/cTYaVdYzN4XZJh3Zou2eOdqSjyyGwC86ftvvnAHAxadhKzGq0vYqW5VAQeQ3
+ 0VNVr9TSfInznz5G2NKWjuws5MxRP7DXxU+ZUqxWQghgoeOCIgoR8HdxopdhEks139UiL6wOe
+ S+UyVegc3KZGlWlPr2bPfVIZefBo3p5YdnusS+YewlxXCguLMdktE15G4Q9qnAT5CmlCI4XcJ
+ nMCBbOCMnhMQSsSKjNV0Cr2X2wuSoePi55+6sJ1b5lCkGDKgpUey2SinoagEmaKjVhWmnaK5s
+ GhrnlIrQKwYco2qHTOwoHe3D5YrOUKVWRQPgw3KX0U6VJRtsjHPwBfYcnWw+W9w7Yg4CXK7ak
+ jjdItP6Yw/YIEwQqhvsxSBV1lF5WUERaGXGTNGYjfin1T/6et0EVRctzOL7BFpqOXOf4nHm0b
+ iT3J0Eblmf79LVdDTqIksP6xaRJTsCmoQcgcXNuyBAd03lW7N7d/IM2sdhMiTSj+Kwrxxp1/6
+ +Y0Fqx42v/GRtq7rK4ap6bqttAtFrHYQdjiW/BSD27syUq5i2L1ylT6GWrN/1krJqFgBnbiLp
+ 5PEj3iLeUhRH6LHQMhJJrou3aQMukOgVL0kegdIUS44zzwzc2tLqTLNF1slBL2PJdxJDI4AXL
+ DSm7uiMNooS6hiUdY7K2Jeben32q9+3NAFkz6AmlEbwsK+BxriX4+48vlTRMTKgdVXjGVhaiB
+ YmW+D+yIcvFQnE9LQDZrJwwKIuZwvaMw7KbRpZSAUbo2i1vmNl/7GR8vgUMeraBhkm74LYvYV
+ 9/MHGWP0VBW5BhVG1Zuaxj4qVKig358wgkO2wHKrRDQQ1sZ3hfC/40KxIPav7lKWtupozkfqB
+ rrsMtfTwN9kq3YEcKTYmZgXMm5w+zlNMtgIRjFat9aeWSwv3SR/RZxnyU7IBRRn5ddZEyGLym
+ wk/UCsD9pb1DXQsRopLM9yEOt0NNXDJ46j/Y5jipb0pBGgg0aLCodRclHUjeJRQKjB7k9vqRC
+ jWQUHLyTJrGN2UDY3A02ZxszLyLdfAlj8/113wSHxVeTQQQ7Bky49X2rEay4JQnahB0cgz7v/
+ 9ZcP6FKor9loWKy7d9BH19pFT7FE8LS0Q8eWM4t9u14Z9ZzCRw2C2iSzeqZ4IVvdAMDBZ4j+a
+ /39PJkZr60y/aDhVf/dUTvrUOAgk//rDjRp3MDA==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -118,8 +120,19 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 * I suggest to avoid a typo in a word at the sentence end.
 
 * The script for the semantic patch language could be a bit nicer
-  by the application of a disjunction instead of separate SmPL rules.
+  by the application of disjunctions instead of separate SmPL rules.
   Would you become interested in any further adjustments?
+
+
+=E2=80=A6
+>@@
+> expression e1, e2, e3;
+> @@
+> -    pci_alloc_consistent(e1, e2, e3)
+> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+I find the last function parameter questionable.
+An other flag was specified in a corresponding diff hunk.
 
 Regards,
 Markus

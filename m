@@ -2,194 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36C9721C311
-	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jul 2020 09:31:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2C5D21C30E
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jul 2020 09:30:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728135AbgGKHb1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 11 Jul 2020 03:31:27 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:32213 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728138AbgGKHb0 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 11 Jul 2020 03:31:26 -0400
-Received: from localhost.localdomain ([93.22.151.150])
-        by mwinf5d86 with ME
-        id 1jXM2300K3Ewh7h03jXMGu; Sat, 11 Jul 2020 09:31:23 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 11 Jul 2020 09:31:23 +0200
-X-ME-IP: 93.22.151.150
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     benve@cisco.com, neescoba@cisco.com, pkaustub@cisco.com,
-        dledford@redhat.com, jgg@ziepe.ca, hch@infradead.org
-Cc:     linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] RDMA/usnic: switch from 'pci_' to 'dma_' API
-Date:   Sat, 11 Jul 2020 09:31:20 +0200
-Message-Id: <20200711073120.249146-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        id S1728052AbgGKHa4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 11 Jul 2020 03:30:56 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:7294 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727984AbgGKHa4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 11 Jul 2020 03:30:56 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 8B7A4AF53CFD87EFBA87;
+        Sat, 11 Jul 2020 15:30:53 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
+ 14.3.487.0; Sat, 11 Jul 2020 15:30:42 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     "Darrick J . Wong" <darrick.wong@oracle.com>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-xfs@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] xfs: remove duplicated include from xfs_buf_item.c
+Date:   Sat, 11 Jul 2020 07:34:58 +0000
+Message-ID: <20200711073458.27029-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The wrappers in include/linux/pci-dma-compat.h should go away.
+Remove duplicated include.
 
-The patch has been generated with the coccinelle script bellow.
-It has been compile tested.
-
-When memory is allocated, GFP_ATOMIC should be used to be consistent with
-the surrounding code.
-
-@@
-@@
--    PCI_DMA_BIDIRECTIONAL
-+    DMA_BIDIRECTIONAL
-
-@@
-@@
--    PCI_DMA_TODEVICE
-+    DMA_TO_DEVICE
-
-@@
-@@
--    PCI_DMA_FROMDEVICE
-+    DMA_FROM_DEVICE
-
-@@
-@@
--    PCI_DMA_NONE
-+    DMA_NONE
-
-@@
-expression e1, e2, e3;
-@@
--    pci_alloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3;
-@@
--    pci_zalloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_free_consistent(e1, e2, e3, e4)
-+    dma_free_coherent(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_single(e1, e2, e3, e4)
-+    dma_map_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_single(e1, e2, e3, e4)
-+    dma_unmap_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4, e5;
-@@
--    pci_map_page(e1, e2, e3, e4, e5)
-+    dma_map_page(&e1->dev, e2, e3, e4, e5)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_page(e1, e2, e3, e4)
-+    dma_unmap_page(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_sg(e1, e2, e3, e4)
-+    dma_map_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_sg(e1, e2, e3, e4)
-+    dma_unmap_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-+    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-+    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-+    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-+    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2;
-@@
--    pci_dma_mapping_error(e1, e2)
-+    dma_mapping_error(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_dma_mask(e1, e2)
-+    dma_set_mask(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_consistent_dma_mask(e1, e2)
-+    dma_set_coherent_mask(&e1->dev, e2)
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
-If needed, see post from Christoph Hellwig on the kernel-janitors ML:
-   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
----
- drivers/infiniband/hw/usnic/usnic_fwd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_buf_item.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/usnic/usnic_fwd.c b/drivers/infiniband/hw/usnic/usnic_fwd.c
-index 7875883621f4..398c4c00b932 100644
---- a/drivers/infiniband/hw/usnic/usnic_fwd.c
-+++ b/drivers/infiniband/hw/usnic/usnic_fwd.c
-@@ -214,7 +214,7 @@ usnic_fwd_alloc_flow(struct usnic_fwd_dev *ufdev, struct filter *filter,
- 	if (!flow)
- 		return ERR_PTR(-ENOMEM);
+diff --git a/fs/xfs/xfs_buf_item.c b/fs/xfs/xfs_buf_item.c
+index e9428c30862a..ed1bf1d99483 100644
+--- a/fs/xfs/xfs_buf_item.c
++++ b/fs/xfs/xfs_buf_item.c
+@@ -19,7 +19,6 @@
+ #include "xfs_quota.h"
+ #include "xfs_dquot_item.h"
+ #include "xfs_dquot.h"
+-#include "xfs_trans_priv.h"
+ #include "xfs_trace.h"
+ #include "xfs_log.h"
  
--	tlv = pci_alloc_consistent(pdev, tlv_size, &tlv_pa);
-+	tlv = dma_alloc_coherent(&pdev->dev, tlv_size, &tlv_pa, GFP_ATOMIC);
- 	if (!tlv) {
- 		usnic_err("Failed to allocate memory\n");
- 		status = -ENOMEM;
-@@ -258,7 +258,7 @@ usnic_fwd_alloc_flow(struct usnic_fwd_dev *ufdev, struct filter *filter,
- 
- out_free_tlv:
- 	spin_unlock(&ufdev->lock);
--	pci_free_consistent(pdev, tlv_size, tlv, tlv_pa);
-+	dma_free_coherent(&pdev->dev, tlv_size, tlv, tlv_pa);
- 	if (!status)
- 		return flow;
- out_free_flow:
--- 
-2.25.1
+
+
+
+
 

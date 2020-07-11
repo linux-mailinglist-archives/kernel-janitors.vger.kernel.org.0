@@ -2,32 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50F3621C295
-	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jul 2020 08:46:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36C9721C311
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jul 2020 09:31:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728084AbgGKGqw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 11 Jul 2020 02:46:52 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:26482 "EHLO
+        id S1728135AbgGKHb1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 11 Jul 2020 03:31:27 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:32213 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728042AbgGKGqw (ORCPT
+        with ESMTP id S1728138AbgGKHb0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 11 Jul 2020 02:46:52 -0400
+        Sat, 11 Jul 2020 03:31:26 -0400
 Received: from localhost.localdomain ([93.22.151.150])
         by mwinf5d86 with ME
-        id 1imp2300E3Ewh7h03impZJ; Sat, 11 Jul 2020 08:46:51 +0200
+        id 1jXM2300K3Ewh7h03jXMGu; Sat, 11 Jul 2020 09:31:23 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 11 Jul 2020 08:46:51 +0200
+X-ME-Date: Sat, 11 Jul 2020 09:31:23 +0200
 X-ME-IP: 93.22.151.150
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     josh.h.morris@us.ibm.com, pjk1939@linux.ibm.com, axboe@kernel.dk,
-        hch@infradead.org
-Cc:     linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     benve@cisco.com, neescoba@cisco.com, pkaustub@cisco.com,
+        dledford@redhat.com, jgg@ziepe.ca, hch@infradead.org
+Cc:     linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] rsxx: switch from 'pci_free_consistent()' to 'dma_free_coherent()'
-Date:   Sat, 11 Jul 2020 08:46:47 +0200
-Message-Id: <20200711064647.247564-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] RDMA/usnic: switch from 'pci_' to 'dma_' API
+Date:   Sat, 11 Jul 2020 09:31:20 +0200
+Message-Id: <20200711073120.249146-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -41,8 +41,8 @@ The wrappers in include/linux/pci-dma-compat.h should go away.
 The patch has been generated with the coccinelle script bellow.
 It has been compile tested.
 
-This also aligns code with what is in use in '/rsxx/dma.c'
-
+When memory is allocated, GFP_ATOMIC should be used to be consistent with
+the surrounding code.
 
 @@
 @@
@@ -164,63 +164,32 @@ Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
 If needed, see post from Christoph Hellwig on the kernel-janitors ML:
    https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
-
-For an example of code used in '/rsxx/dma.c', see:
-   https://elixir.bootlin.com/linux/v5.7.8/source/drivers/block/rsxx/dma.c#L951
 ---
- drivers/block/rsxx/core.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ drivers/infiniband/hw/usnic/usnic_fwd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/rsxx/core.c b/drivers/block/rsxx/core.c
-index 9230f453bb8b..e631749e14ca 100644
---- a/drivers/block/rsxx/core.c
-+++ b/drivers/block/rsxx/core.c
-@@ -562,13 +562,15 @@ static int rsxx_eeh_frozen(struct pci_dev *dev)
+diff --git a/drivers/infiniband/hw/usnic/usnic_fwd.c b/drivers/infiniband/hw/usnic/usnic_fwd.c
+index 7875883621f4..398c4c00b932 100644
+--- a/drivers/infiniband/hw/usnic/usnic_fwd.c
++++ b/drivers/infiniband/hw/usnic/usnic_fwd.c
+@@ -214,7 +214,7 @@ usnic_fwd_alloc_flow(struct usnic_fwd_dev *ufdev, struct filter *filter,
+ 	if (!flow)
+ 		return ERR_PTR(-ENOMEM);
  
- 	for (i = 0; i < card->n_targets; i++) {
- 		if (card->ctrl[i].status.buf)
--			pci_free_consistent(card->dev, STATUS_BUFFER_SIZE8,
--					    card->ctrl[i].status.buf,
--					    card->ctrl[i].status.dma_addr);
-+			dma_free_coherent(&card->dev->dev,
-+					  STATUS_BUFFER_SIZE8,
-+					  card->ctrl[i].status.buf,
-+					  card->ctrl[i].status.dma_addr);
- 		if (card->ctrl[i].cmd.buf)
--			pci_free_consistent(card->dev, COMMAND_BUFFER_SIZE8,
--					    card->ctrl[i].cmd.buf,
--					    card->ctrl[i].cmd.dma_addr);
-+			dma_free_coherent(&card->dev->dev,
-+					  COMMAND_BUFFER_SIZE8,
-+					  card->ctrl[i].cmd.buf,
-+					  card->ctrl[i].cmd.dma_addr);
- 	}
+-	tlv = pci_alloc_consistent(pdev, tlv_size, &tlv_pa);
++	tlv = dma_alloc_coherent(&pdev->dev, tlv_size, &tlv_pa, GFP_ATOMIC);
+ 	if (!tlv) {
+ 		usnic_err("Failed to allocate memory\n");
+ 		status = -ENOMEM;
+@@ -258,7 +258,7 @@ usnic_fwd_alloc_flow(struct usnic_fwd_dev *ufdev, struct filter *filter,
  
- 	return 0;
-@@ -711,15 +713,15 @@ static pci_ers_result_t rsxx_slot_reset(struct pci_dev *dev)
- failed_hw_buffers_init:
- 	for (i = 0; i < card->n_targets; i++) {
- 		if (card->ctrl[i].status.buf)
--			pci_free_consistent(card->dev,
--					STATUS_BUFFER_SIZE8,
--					card->ctrl[i].status.buf,
--					card->ctrl[i].status.dma_addr);
-+			dma_free_coherent(&card->dev->dev,
-+					  STATUS_BUFFER_SIZE8,
-+					  card->ctrl[i].status.buf,
-+					  card->ctrl[i].status.dma_addr);
- 		if (card->ctrl[i].cmd.buf)
--			pci_free_consistent(card->dev,
--					COMMAND_BUFFER_SIZE8,
--					card->ctrl[i].cmd.buf,
--					card->ctrl[i].cmd.dma_addr);
-+			dma_free_coherent(&card->dev->dev,
-+					  COMMAND_BUFFER_SIZE8,
-+					  card->ctrl[i].cmd.buf,
-+					  card->ctrl[i].cmd.dma_addr);
- 	}
- failed_hw_setup:
- 	rsxx_eeh_failure(dev);
+ out_free_tlv:
+ 	spin_unlock(&ufdev->lock);
+-	pci_free_consistent(pdev, tlv_size, tlv, tlv_pa);
++	dma_free_coherent(&pdev->dev, tlv_size, tlv, tlv_pa);
+ 	if (!status)
+ 		return flow;
+ out_free_flow:
 -- 
 2.25.1
 

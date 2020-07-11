@@ -2,31 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B436121C293
-	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jul 2020 08:43:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50F3621C295
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jul 2020 08:46:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727995AbgGKGno (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 11 Jul 2020 02:43:44 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:60097 "EHLO
+        id S1728084AbgGKGqw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 11 Jul 2020 02:46:52 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:26482 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726963AbgGKGno (ORCPT
+        with ESMTP id S1728042AbgGKGqw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 11 Jul 2020 02:43:44 -0400
+        Sat, 11 Jul 2020 02:46:52 -0400
 Received: from localhost.localdomain ([93.22.151.150])
         by mwinf5d86 with ME
-        id 1ije2300L3Ewh7h03ijfPk; Sat, 11 Jul 2020 08:43:40 +0200
+        id 1imp2300E3Ewh7h03impZJ; Sat, 11 Jul 2020 08:46:51 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 11 Jul 2020 08:43:40 +0200
+X-ME-Date: Sat, 11 Jul 2020 08:46:51 +0200
 X-ME-IP: 93.22.151.150
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     xx@mail.com
-Cc:     list@mail.com, linux-kernel@vger.kernel.org,
+To:     josh.h.morris@us.ibm.com, pjk1939@linux.ibm.com, axboe@kernel.dk,
+        hch@infradead.org
+Cc:     linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Subject: [PATCH] rsxx: switch from 'pci_free_consistent()' to 'dma_free_coherent()'
-Date:   Sat, 11 Jul 2020 08:43:36 +0200
-Message-Id: <20200711064336.247502-1-christophe.jaillet@wanadoo.fr>
+Date:   Sat, 11 Jul 2020 08:46:47 +0200
+Message-Id: <20200711064647.247564-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit

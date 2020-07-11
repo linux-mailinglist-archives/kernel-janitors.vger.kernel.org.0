@@ -2,103 +2,224 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA77221BEE9
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jul 2020 23:01:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B436121C293
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jul 2020 08:43:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726336AbgGJVBe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Jul 2020 17:01:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48048 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726321AbgGJVBd (ORCPT
+        id S1727995AbgGKGno (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 11 Jul 2020 02:43:44 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:60097 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726963AbgGKGno (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Jul 2020 17:01:33 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CB3AC08C5DC;
-        Fri, 10 Jul 2020 14:01:33 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id z2so7229210wrp.2;
-        Fri, 10 Jul 2020 14:01:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6+r5bXWhv/RQ5xFOE17P6y/DtE6DdUph31T/6lnjgyI=;
-        b=Xj0O+fppYfdFYtGXu/8QJhYwJ7qRKnFTirnizTXoFo5bZj6n94L2JJj0BdRzJwzAb5
-         xZRyrEv3g4yyg5OvsM4snf2LCqod8codoTvAxrPCUxbIvksvMH1AU8WPvenGlYrpxSQf
-         6BjZ3/b3VUh3+MkQZawapsKpjwcb2Ex6HXUZFheK4SJDgNSlkTZm5VxobjBO1AQ5WX5K
-         aaZGH6qaz17M8SlXpxudD5NTY4oJewCMG4Q6skZFj/xPz2y1jeXWQLe2zCpIrQxxh940
-         SMoOyMYtdW1UeDYAgsdG/e20KOUC8x8x3GL5LKFyb7Zb02f8D42khsD14r13TK76VWQc
-         2R5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6+r5bXWhv/RQ5xFOE17P6y/DtE6DdUph31T/6lnjgyI=;
-        b=BxEhAZZtDDsyBzqANkTnCFRYrLUEhQwx4vuxe0tuyokzdVJAFNsUPr8jnGq0SmTNBa
-         gMALJmNNKIdOmUYg7XYrWx9ETbzA5Z9hBBhBIM1FAmyAMGVEEZpOUhSdxnvPIMrr3TF7
-         dY6LN7ctMpJIeHqeQN0oyHjXTAQ1bcFh8AYmuAY2oLe7XXUKqXBY9gcX6pjxX8A4TfEG
-         gQgxAWekABIPsrRZ7Fh3Nof+EHC0TTVlPhtHU9C2+jUV6CaxzuMSV8Qi+H9xFr3gcoxL
-         Gl1PS8uSBKyxUWjQBKooV2YVCjLVM5G0cLTY3k5P6iaV2qWcfqowjYB2adym9Lhu73xI
-         Z5lQ==
-X-Gm-Message-State: AOAM531W+LW7u+2Q9f6ljlp5rhgejWWpm05QR3EtL2zFzjdDp4IhuCoJ
-        VPMFgdVgFX/JbuFh4+orywzdkQooxAriDsWVlSw=
-X-Google-Smtp-Source: ABdhPJypPwO8Bo/INW0FnA8A7BrNDcU34sqKrdYu805RwMp6HxYo7wINlncuUBXunFISVe1eQrqua5IIzU9mGV+XpdY=
-X-Received: by 2002:adf:dd8d:: with SMTP id x13mr68186470wrl.362.1594414891375;
- Fri, 10 Jul 2020 14:01:31 -0700 (PDT)
+        Sat, 11 Jul 2020 02:43:44 -0400
+Received: from localhost.localdomain ([93.22.151.150])
+        by mwinf5d86 with ME
+        id 1ije2300L3Ewh7h03ijfPk; Sat, 11 Jul 2020 08:43:40 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 11 Jul 2020 08:43:40 +0200
+X-ME-IP: 93.22.151.150
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     xx@mail.com
+Cc:     list@mail.com, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] rsxx: switch from 'pci_free_consistent()' to 'dma_free_coherent()'
+Date:   Sat, 11 Jul 2020 08:43:36 +0200
+Message-Id: <20200711064336.247502-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20200710083758.3304139-1-colin.king@canonical.com>
-In-Reply-To: <20200710083758.3304139-1-colin.king@canonical.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Fri, 10 Jul 2020 17:01:19 -0400
-Message-ID: <CADnq5_MWvu0JDbBMR1_wDqozxMahX6uAJBppTLKwPLOmdtTGSQ@mail.gmail.com>
-Subject: Re: [PATCH][next] drm/amdgpu: fix spelling mistake "Falied" -> "Failed"
-To:     Colin King <colin.king@canonical.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jul 10, 2020 at 4:38 AM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> There is a spelling mistake in a DRM_ERROR error message. Fix it.
->
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-Applied.  Thanks!
+The patch has been generated with the coccinelle script bellow.
+It has been compile tested.
 
-Alex
+This also aligns code with what is in use in '/rsxx/dma.c'
 
-> ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-> index e20695b44dbe..40706334f7a8 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-> @@ -1984,7 +1984,7 @@ static int psp_suspend(void *handle)
->
->         ret = psp_tmr_terminate(psp);
->         if (ret) {
-> -               DRM_ERROR("Falied to terminate tmr\n");
-> +               DRM_ERROR("Failed to terminate tmr\n");
->                 return ret;
->         }
->
-> --
-> 2.27.0
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
+
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+
+For an example of code used in '/rsxx/dma.c', see:
+   https://elixir.bootlin.com/linux/v5.7.8/source/drivers/block/rsxx/dma.c#L951
+---
+ drivers/block/rsxx/core.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/block/rsxx/core.c b/drivers/block/rsxx/core.c
+index 9230f453bb8b..e631749e14ca 100644
+--- a/drivers/block/rsxx/core.c
++++ b/drivers/block/rsxx/core.c
+@@ -562,13 +562,15 @@ static int rsxx_eeh_frozen(struct pci_dev *dev)
+ 
+ 	for (i = 0; i < card->n_targets; i++) {
+ 		if (card->ctrl[i].status.buf)
+-			pci_free_consistent(card->dev, STATUS_BUFFER_SIZE8,
+-					    card->ctrl[i].status.buf,
+-					    card->ctrl[i].status.dma_addr);
++			dma_free_coherent(&card->dev->dev,
++					  STATUS_BUFFER_SIZE8,
++					  card->ctrl[i].status.buf,
++					  card->ctrl[i].status.dma_addr);
+ 		if (card->ctrl[i].cmd.buf)
+-			pci_free_consistent(card->dev, COMMAND_BUFFER_SIZE8,
+-					    card->ctrl[i].cmd.buf,
+-					    card->ctrl[i].cmd.dma_addr);
++			dma_free_coherent(&card->dev->dev,
++					  COMMAND_BUFFER_SIZE8,
++					  card->ctrl[i].cmd.buf,
++					  card->ctrl[i].cmd.dma_addr);
+ 	}
+ 
+ 	return 0;
+@@ -711,15 +713,15 @@ static pci_ers_result_t rsxx_slot_reset(struct pci_dev *dev)
+ failed_hw_buffers_init:
+ 	for (i = 0; i < card->n_targets; i++) {
+ 		if (card->ctrl[i].status.buf)
+-			pci_free_consistent(card->dev,
+-					STATUS_BUFFER_SIZE8,
+-					card->ctrl[i].status.buf,
+-					card->ctrl[i].status.dma_addr);
++			dma_free_coherent(&card->dev->dev,
++					  STATUS_BUFFER_SIZE8,
++					  card->ctrl[i].status.buf,
++					  card->ctrl[i].status.dma_addr);
+ 		if (card->ctrl[i].cmd.buf)
+-			pci_free_consistent(card->dev,
+-					COMMAND_BUFFER_SIZE8,
+-					card->ctrl[i].cmd.buf,
+-					card->ctrl[i].cmd.dma_addr);
++			dma_free_coherent(&card->dev->dev,
++					  COMMAND_BUFFER_SIZE8,
++					  card->ctrl[i].cmd.buf,
++					  card->ctrl[i].cmd.dma_addr);
+ 	}
+ failed_hw_setup:
+ 	rsxx_eeh_failure(dev);
+-- 
+2.25.1
+

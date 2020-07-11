@@ -2,22 +2,22 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 104C021C630
-	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jul 2020 22:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBC9521C63C
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jul 2020 22:49:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727863AbgGKUf1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 11 Jul 2020 16:35:27 -0400
-Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:48333 "EHLO
+        id S1727903AbgGKUtv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 11 Jul 2020 16:49:51 -0400
+Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:46659 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726961AbgGKUf1 (ORCPT
+        with ESMTP id S1727865AbgGKUtu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 11 Jul 2020 16:35:27 -0400
+        Sat, 11 Jul 2020 16:49:50 -0400
 Received: from localhost.localdomain ([93.22.151.150])
         by mwinf5d51 with ME
-        id 1wbK230083Ewh7h03wbLVj; Sat, 11 Jul 2020 22:35:24 +0200
+        id 1wpm2300E3Ewh7h03wpn2a; Sat, 11 Jul 2020 22:49:47 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 11 Jul 2020 22:35:24 +0200
+X-ME-Date: Sat, 11 Jul 2020 22:49:47 +0200
 X-ME-IP: 93.22.151.150
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 To:     mlindner@marvell.com, stephen@networkplumber.org,
@@ -25,9 +25,9 @@ To:     mlindner@marvell.com, stephen@networkplumber.org,
 Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] net: skge: switch from 'pci_' to 'dma_' API
-Date:   Sat, 11 Jul 2020 22:35:18 +0200
-Message-Id: <20200711203518.256545-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] net: sky2: switch from 'pci_' to 'dma_' API
+Date:   Sat, 11 Jul 2020 22:49:44 +0200
+Message-Id: <20200711204944.259152-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -42,9 +42,14 @@ The patch has been generated with the coccinelle script below and has been
 hand modified to replace GPF_ with a correct flag.
 It has been compile tested.
 
-When memory is allocated in 'skge_up()', GFP_KERNEL can be used because
-some other memory allocations done a few lines below in 'skge_ring_alloc()'
-already use this flag.
+When memory is allocated in 'sky2_alloc_buffers()', GFP_KERNEL can be used
+because some other memory allocations in the same function already use this
+flag.
+
+When memory is allocated in 'sky2_probe()', GFP_KERNEL can be used
+because another memory allocations in the same function already uses this
+flag.
+
 
 @@
 @@
@@ -167,182 +172,216 @@ Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 If needed, see post from Christoph Hellwig on the kernel-janitors ML:
    https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
 ---
- drivers/net/ethernet/marvell/skge.c | 76 ++++++++++++++---------------
- 1 file changed, 36 insertions(+), 40 deletions(-)
+ drivers/net/ethernet/marvell/sky2.c | 89 +++++++++++++++--------------
+ 1 file changed, 46 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/skge.c b/drivers/net/ethernet/marvell/skge.c
-index 3c89206f18a7..869392867131 100644
---- a/drivers/net/ethernet/marvell/skge.c
-+++ b/drivers/net/ethernet/marvell/skge.c
-@@ -939,10 +939,10 @@ static int skge_rx_setup(struct skge_port *skge, struct skge_element *e,
- 	struct skge_rx_desc *rd = e->desc;
- 	dma_addr_t map;
+diff --git a/drivers/net/ethernet/marvell/sky2.c b/drivers/net/ethernet/marvell/sky2.c
+index fe54764caea9..adb1a9c19505 100644
+--- a/drivers/net/ethernet/marvell/sky2.c
++++ b/drivers/net/ethernet/marvell/sky2.c
+@@ -1209,8 +1209,9 @@ static int sky2_rx_map_skb(struct pci_dev *pdev, struct rx_ring_info *re,
+ 	struct sk_buff *skb = re->skb;
+ 	int i;
  
--	map = pci_map_single(skge->hw->pdev, skb->data, bufsize,
--			     PCI_DMA_FROMDEVICE);
-+	map = dma_map_single(&skge->hw->pdev->dev, skb->data, bufsize,
-+			     DMA_FROM_DEVICE);
- 
--	if (pci_dma_mapping_error(skge->hw->pdev, map))
-+	if (dma_mapping_error(&skge->hw->pdev->dev, map))
- 		return -1;
- 
- 	rd->dma_lo = lower_32_bits(map);
-@@ -990,10 +990,10 @@ static void skge_rx_clean(struct skge_port *skge)
- 		struct skge_rx_desc *rd = e->desc;
- 		rd->control = 0;
- 		if (e->skb) {
--			pci_unmap_single(hw->pdev,
-+			dma_unmap_single(&hw->pdev->dev,
- 					 dma_unmap_addr(e, mapaddr),
- 					 dma_unmap_len(e, maplen),
--					 PCI_DMA_FROMDEVICE);
-+					 DMA_FROM_DEVICE);
- 			dev_kfree_skb(e->skb);
- 			e->skb = NULL;
- 		}
-@@ -2547,14 +2547,15 @@ static int skge_up(struct net_device *dev)
- 	rx_size = skge->rx_ring.count * sizeof(struct skge_rx_desc);
- 	tx_size = skge->tx_ring.count * sizeof(struct skge_tx_desc);
- 	skge->mem_size = tx_size + rx_size;
--	skge->mem = pci_alloc_consistent(hw->pdev, skge->mem_size, &skge->dma);
-+	skge->mem = dma_alloc_coherent(&hw->pdev->dev, skge->mem_size,
-+				       &skge->dma, GFP_KERNEL);
- 	if (!skge->mem)
- 		return -ENOMEM;
- 
- 	BUG_ON(skge->dma & 7);
- 
- 	if (upper_32_bits(skge->dma) != upper_32_bits(skge->dma + skge->mem_size)) {
--		dev_err(&hw->pdev->dev, "pci_alloc_consistent region crosses 4G boundary\n");
-+		dev_err(&hw->pdev->dev, "dma_alloc_coherent region crosses 4G boundary\n");
- 		err = -EINVAL;
- 		goto free_pci_mem;
- 	}
-@@ -2625,7 +2626,8 @@ static int skge_up(struct net_device *dev)
- 	skge_rx_clean(skge);
- 	kfree(skge->rx_ring.start);
-  free_pci_mem:
--	pci_free_consistent(hw->pdev, skge->mem_size, skge->mem, skge->dma);
-+	dma_free_coherent(&hw->pdev->dev, skge->mem_size, skge->mem,
-+			  skge->dma);
- 	skge->mem = NULL;
- 
- 	return err;
-@@ -2715,7 +2717,8 @@ static int skge_down(struct net_device *dev)
- 
- 	kfree(skge->rx_ring.start);
- 	kfree(skge->tx_ring.start);
--	pci_free_consistent(hw->pdev, skge->mem_size, skge->mem, skge->dma);
-+	dma_free_coherent(&hw->pdev->dev, skge->mem_size, skge->mem,
-+			  skge->dma);
- 	skge->mem = NULL;
- 	return 0;
- }
-@@ -2749,8 +2752,8 @@ static netdev_tx_t skge_xmit_frame(struct sk_buff *skb,
- 	BUG_ON(td->control & BMU_OWN);
- 	e->skb = skb;
- 	len = skb_headlen(skb);
--	map = pci_map_single(hw->pdev, skb->data, len, PCI_DMA_TODEVICE);
--	if (pci_dma_mapping_error(hw->pdev, map))
-+	map = dma_map_single(&hw->pdev->dev, skb->data, len, DMA_TO_DEVICE);
-+	if (dma_mapping_error(&hw->pdev->dev, map))
+-	re->data_addr = pci_map_single(pdev, skb->data, size, PCI_DMA_FROMDEVICE);
+-	if (pci_dma_mapping_error(pdev, re->data_addr))
++	re->data_addr = dma_map_single(&pdev->dev, skb->data, size,
++				       DMA_FROM_DEVICE);
++	if (dma_mapping_error(&pdev->dev, re->data_addr))
  		goto mapping_error;
  
- 	dma_unmap_addr_set(e, mapaddr, map);
-@@ -2830,16 +2833,12 @@ static netdev_tx_t skge_xmit_frame(struct sk_buff *skb,
+ 	dma_unmap_len_set(re, data_size, size);
+@@ -1229,13 +1230,13 @@ static int sky2_rx_map_skb(struct pci_dev *pdev, struct rx_ring_info *re,
  
- mapping_unwind:
- 	e = skge->tx_ring.to_use;
--	pci_unmap_single(hw->pdev,
--			 dma_unmap_addr(e, mapaddr),
--			 dma_unmap_len(e, maplen),
--			 PCI_DMA_TODEVICE);
-+	dma_unmap_single(&hw->pdev->dev, dma_unmap_addr(e, mapaddr),
-+			 dma_unmap_len(e, maplen), DMA_TO_DEVICE);
- 	while (i-- > 0) {
- 		e = e->next;
--		pci_unmap_page(hw->pdev,
--			       dma_unmap_addr(e, mapaddr),
--			       dma_unmap_len(e, maplen),
--			       PCI_DMA_TODEVICE);
-+		dma_unmap_page(&hw->pdev->dev, dma_unmap_addr(e, mapaddr),
-+			       dma_unmap_len(e, maplen), DMA_TO_DEVICE);
+ map_page_error:
+ 	while (--i >= 0) {
+-		pci_unmap_page(pdev, re->frag_addr[i],
++		dma_unmap_page(&pdev->dev, re->frag_addr[i],
+ 			       skb_frag_size(&skb_shinfo(skb)->frags[i]),
+-			       PCI_DMA_FROMDEVICE);
++			       DMA_FROM_DEVICE);
  	}
+ 
+-	pci_unmap_single(pdev, re->data_addr, dma_unmap_len(re, data_size),
+-			 PCI_DMA_FROMDEVICE);
++	dma_unmap_single(&pdev->dev, re->data_addr,
++			 dma_unmap_len(re, data_size), DMA_FROM_DEVICE);
  
  mapping_error:
-@@ -2856,13 +2855,11 @@ static inline void skge_tx_unmap(struct pci_dev *pdev, struct skge_element *e,
- {
- 	/* skb header vs. fragment */
- 	if (control & BMU_STF)
--		pci_unmap_single(pdev, dma_unmap_addr(e, mapaddr),
--				 dma_unmap_len(e, maplen),
--				 PCI_DMA_TODEVICE);
-+		dma_unmap_single(&pdev->dev, dma_unmap_addr(e, mapaddr),
-+				 dma_unmap_len(e, maplen), DMA_TO_DEVICE);
- 	else
--		pci_unmap_page(pdev, dma_unmap_addr(e, mapaddr),
--			       dma_unmap_len(e, maplen),
--			       PCI_DMA_TODEVICE);
-+		dma_unmap_page(&pdev->dev, dma_unmap_addr(e, mapaddr),
-+			       dma_unmap_len(e, maplen), DMA_TO_DEVICE);
+ 	if (net_ratelimit())
+@@ -1249,13 +1250,13 @@ static void sky2_rx_unmap_skb(struct pci_dev *pdev, struct rx_ring_info *re)
+ 	struct sk_buff *skb = re->skb;
+ 	int i;
+ 
+-	pci_unmap_single(pdev, re->data_addr, dma_unmap_len(re, data_size),
+-			 PCI_DMA_FROMDEVICE);
++	dma_unmap_single(&pdev->dev, re->data_addr,
++			 dma_unmap_len(re, data_size), DMA_FROM_DEVICE);
+ 
+ 	for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
+-		pci_unmap_page(pdev, re->frag_addr[i],
+-			       skb_frag_size(&skb_shinfo(skb)->frags[i]),
+-			       PCI_DMA_FROMDEVICE);
++		dma_unmap_page(&pdev->dev, re->frag_addr[i],
++			       skb_frag_size(&skb_shinfo(skb)->frags[i]),
++			       DMA_FROM_DEVICE);
  }
  
- /* Free all buffers in transmit ring */
-@@ -3072,15 +3069,15 @@ static struct sk_buff *skge_rx_get(struct net_device *dev,
- 		if (!skb)
- 			goto resubmit;
+ /* Tell chip where to start receive checksum.
+@@ -1592,10 +1593,9 @@ static int sky2_alloc_buffers(struct sky2_port *sky2)
+ 	struct sky2_hw *hw = sky2->hw;
  
--		pci_dma_sync_single_for_cpu(skge->hw->pdev,
--					    dma_unmap_addr(e, mapaddr),
--					    dma_unmap_len(e, maplen),
--					    PCI_DMA_FROMDEVICE);
-+		dma_sync_single_for_cpu(&skge->hw->pdev->dev,
-+					dma_unmap_addr(e, mapaddr),
-+					dma_unmap_len(e, maplen),
-+					DMA_FROM_DEVICE);
- 		skb_copy_from_linear_data(e->skb, skb->data, len);
--		pci_dma_sync_single_for_device(skge->hw->pdev,
--					       dma_unmap_addr(e, mapaddr),
--					       dma_unmap_len(e, maplen),
--					       PCI_DMA_FROMDEVICE);
-+		dma_sync_single_for_device(&skge->hw->pdev->dev,
-+					   dma_unmap_addr(e, mapaddr),
-+					   dma_unmap_len(e, maplen),
-+					   DMA_FROM_DEVICE);
- 		skge_rx_reuse(e, skge->rx_buf_size);
- 	} else {
- 		struct skge_element ee;
-@@ -3100,10 +3097,9 @@ static struct sk_buff *skge_rx_get(struct net_device *dev,
- 			goto resubmit;
- 		}
+ 	/* must be power of 2 */
+-	sky2->tx_le = pci_alloc_consistent(hw->pdev,
+-					   sky2->tx_ring_size *
+-					   sizeof(struct sky2_tx_le),
+-					   &sky2->tx_le_map);
++	sky2->tx_le = dma_alloc_coherent(&hw->pdev->dev,
++					 sky2->tx_ring_size * sizeof(struct sky2_tx_le),
++					 &sky2->tx_le_map, GFP_KERNEL);
+ 	if (!sky2->tx_le)
+ 		goto nomem;
  
--		pci_unmap_single(skge->hw->pdev,
-+		dma_unmap_single(&skge->hw->pdev->dev,
- 				 dma_unmap_addr(&ee, mapaddr),
--				 dma_unmap_len(&ee, maplen),
--				 PCI_DMA_FROMDEVICE);
-+				 dma_unmap_len(&ee, maplen), DMA_FROM_DEVICE);
+@@ -1604,8 +1604,8 @@ static int sky2_alloc_buffers(struct sky2_port *sky2)
+ 	if (!sky2->tx_ring)
+ 		goto nomem;
+ 
+-	sky2->rx_le = pci_zalloc_consistent(hw->pdev, RX_LE_BYTES,
+-					    &sky2->rx_le_map);
++	sky2->rx_le = dma_alloc_coherent(&hw->pdev->dev, RX_LE_BYTES,
++					 &sky2->rx_le_map, GFP_KERNEL);
+ 	if (!sky2->rx_le)
+ 		goto nomem;
+ 
+@@ -1626,14 +1626,14 @@ static void sky2_free_buffers(struct sky2_port *sky2)
+ 	sky2_rx_clean(sky2);
+ 
+ 	if (sky2->rx_le) {
+-		pci_free_consistent(hw->pdev, RX_LE_BYTES,
+-				    sky2->rx_le, sky2->rx_le_map);
++		dma_free_coherent(&hw->pdev->dev, RX_LE_BYTES, sky2->rx_le,
++				  sky2->rx_le_map);
+ 		sky2->rx_le = NULL;
  	}
+ 	if (sky2->tx_le) {
+-		pci_free_consistent(hw->pdev,
+-				    sky2->tx_ring_size * sizeof(struct sky2_tx_le),
+-				    sky2->tx_le, sky2->tx_le_map);
++		dma_free_coherent(&hw->pdev->dev,
++				  sky2->tx_ring_size * sizeof(struct sky2_tx_le),
++				  sky2->tx_le, sky2->tx_le_map);
+ 		sky2->tx_le = NULL;
+ 	}
+ 	kfree(sky2->tx_ring);
+@@ -1806,13 +1806,11 @@ static unsigned tx_le_req(const struct sk_buff *skb)
+ static void sky2_tx_unmap(struct pci_dev *pdev, struct tx_ring_info *re)
+ {
+ 	if (re->flags & TX_MAP_SINGLE)
+-		pci_unmap_single(pdev, dma_unmap_addr(re, mapaddr),
+-				 dma_unmap_len(re, maplen),
+-				 PCI_DMA_TODEVICE);
++		dma_unmap_single(&pdev->dev, dma_unmap_addr(re, mapaddr),
++				 dma_unmap_len(re, maplen), DMA_TO_DEVICE);
+ 	else if (re->flags & TX_MAP_PAGE)
+-		pci_unmap_page(pdev, dma_unmap_addr(re, mapaddr),
+-			       dma_unmap_len(re, maplen),
+-			       PCI_DMA_TODEVICE);
++		dma_unmap_page(&pdev->dev, dma_unmap_addr(re, mapaddr),
++			       dma_unmap_len(re, maplen), DMA_TO_DEVICE);
+ 	re->flags = 0;
+ }
  
- 	skb_put(skb, len);
-@@ -3895,12 +3891,12 @@ static int skge_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+@@ -1840,9 +1838,10 @@ static netdev_tx_t sky2_xmit_frame(struct sk_buff *skb,
+   		return NETDEV_TX_BUSY;
  
+ 	len = skb_headlen(skb);
+-	mapping = pci_map_single(hw->pdev, skb->data, len, PCI_DMA_TODEVICE);
++	mapping = dma_map_single(&hw->pdev->dev, skb->data, len,
++				 DMA_TO_DEVICE);
+ 
+-	if (pci_dma_mapping_error(hw->pdev, mapping))
++	if (dma_mapping_error(&hw->pdev->dev, mapping))
+ 		goto mapping_error;
+ 
+ 	slot = sky2->tx_prod;
+@@ -2464,16 +2463,17 @@ static struct sk_buff *receive_copy(struct sky2_port *sky2,
+ 
+ 	skb = netdev_alloc_skb_ip_align(sky2->netdev, length);
+ 	if (likely(skb)) {
+-		pci_dma_sync_single_for_cpu(sky2->hw->pdev, re->data_addr,
+-					    length, PCI_DMA_FROMDEVICE);
++		dma_sync_single_for_cpu(&sky2->hw->pdev->dev, re->data_addr,
++					length, DMA_FROM_DEVICE);
+ 		skb_copy_from_linear_data(re->skb, skb->data, length);
+ 		skb->ip_summed = re->skb->ip_summed;
+ 		skb->csum = re->skb->csum;
+ 		skb_copy_hash(skb, re->skb);
+ 		__vlan_hwaccel_copy_tag(skb, re->skb);
+ 
+-		pci_dma_sync_single_for_device(sky2->hw->pdev, re->data_addr,
+-					       length, PCI_DMA_FROMDEVICE);
++		dma_sync_single_for_device(&sky2->hw->pdev->dev,
++					   re->data_addr, length,
++					   DMA_FROM_DEVICE);
+ 		__vlan_hwaccel_clear_tag(re->skb);
+ 		skb_clear_hash(re->skb);
+ 		re->skb->ip_summed = CHECKSUM_NONE;
+@@ -4985,16 +4985,16 @@ static int sky2_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
  	pci_set_master(pdev);
  
--	if (!only_32bit_dma && !pci_set_dma_mask(pdev, DMA_BIT_MASK(64))) {
-+	if (!only_32bit_dma && !dma_set_mask(&pdev->dev, DMA_BIT_MASK(64))) {
+ 	if (sizeof(dma_addr_t) > sizeof(u32) &&
+-	    !(err = pci_set_dma_mask(pdev, DMA_BIT_MASK(64)))) {
++	    !(err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(64)))) {
  		using_dac = 1;
 -		err = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(64));
--	} else if (!(err = pci_set_dma_mask(pdev, DMA_BIT_MASK(32)))) {
 +		err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(64));
-+	} else if (!(err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32)))) {
- 		using_dac = 0;
--		err = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32));
-+		err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
- 	}
+ 		if (err < 0) {
+ 			dev_err(&pdev->dev, "unable to obtain 64 bit DMA "
+ 				"for consistent allocations\n");
+ 			goto err_out_free_regions;
+ 		}
+ 	} else {
+-		err = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
++		err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
+ 		if (err) {
+ 			dev_err(&pdev->dev, "no usable DMA configuration\n");
+ 			goto err_out_free_regions;
+@@ -5038,8 +5038,9 @@ static int sky2_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
  
- 	if (err) {
+ 	/* ring for status responses */
+ 	hw->st_size = hw->ports * roundup_pow_of_two(3*RX_MAX_PENDING + TX_MAX_PENDING);
+-	hw->st_le = pci_alloc_consistent(pdev, hw->st_size * sizeof(struct sky2_status_le),
+-					 &hw->st_dma);
++	hw->st_le = dma_alloc_coherent(&pdev->dev,
++				       hw->st_size * sizeof(struct sky2_status_le),
++				       &hw->st_dma, GFP_KERNEL);
+ 	if (!hw->st_le) {
+ 		err = -ENOMEM;
+ 		goto err_out_reset;
+@@ -5119,8 +5120,9 @@ static int sky2_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		pci_disable_msi(pdev);
+ 	free_netdev(dev);
+ err_out_free_pci:
+-	pci_free_consistent(pdev, hw->st_size * sizeof(struct sky2_status_le),
+-			    hw->st_le, hw->st_dma);
++	dma_free_coherent(&pdev->dev,
++			  hw->st_size * sizeof(struct sky2_status_le),
++			  hw->st_le, hw->st_dma);
+ err_out_reset:
+ 	sky2_write8(hw, B0_CTST, CS_RST_SET);
+ err_out_iounmap:
+@@ -5164,8 +5166,9 @@ static void sky2_remove(struct pci_dev *pdev)
+ 
+ 	if (hw->flags & SKY2_HW_USE_MSI)
+ 		pci_disable_msi(pdev);
+-	pci_free_consistent(pdev, hw->st_size * sizeof(struct sky2_status_le),
+-			    hw->st_le, hw->st_dma);
++	dma_free_coherent(&pdev->dev,
++			  hw->st_size * sizeof(struct sky2_status_le),
++			  hw->st_le, hw->st_dma);
+ 	pci_release_regions(pdev);
+ 	pci_disable_device(pdev);
+ 
 -- 
 2.25.1
 

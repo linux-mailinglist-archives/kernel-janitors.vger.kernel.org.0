@@ -2,137 +2,241 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52D9921C381
-	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jul 2020 12:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 709DA21C430
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jul 2020 14:35:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727019AbgGKKFN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 11 Jul 2020 06:05:13 -0400
-Received: from mout.web.de ([217.72.192.78]:48899 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726628AbgGKKFK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 11 Jul 2020 06:05:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1594461893;
-        bh=oAB672Lav14N4Vgw/LehsEYrm2ioXvtEboTuKTDs2tM=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=czzoSMMDGlSq5mdNWRWJ+/w0DyqDsEFZ2a3Q+mQycMtXdrnUgSMgB3KgyQ90jJN8y
-         7+YlXeC+ajeBk5zngfucMcy3Qvw1t3QXdXDl5jUU2SouA5Civ4i9IM7s0zN3ITbYRm
-         +ytQCedJRHYiXykzDdniZL0xGDiuverJHFoApNkY=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.101.136]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LuLt5-1kv84I2p0h-011lbN; Sat, 11
- Jul 2020 12:04:53 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Christian Benvenuti <benve@cisco.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Nelson Escobar <neescoba@cisco.com>,
-        Parvi Kaustubhi <pkaustub@cisco.com>
-Subject: Re: [PATCH] RDMA/usnic: switch from 'pci_' to 'dma_' API
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-To:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        linux-rdma@vger.kernel.org
-Message-ID: <e0f440ce-7f0d-efbe-5419-763a97aad68a@web.de>
-Date:   Sat, 11 Jul 2020 12:04:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        id S1726867AbgGKMfu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 11 Jul 2020 08:35:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50092 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726502AbgGKMft (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 11 Jul 2020 08:35:49 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE812C08C5DD;
+        Sat, 11 Jul 2020 05:35:49 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id w17so3344630ply.11;
+        Sat, 11 Jul 2020 05:35:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=36WcEQAUH1mKZZkQq7Ag/oNpXtMLgwjbol+RbIVU1ME=;
+        b=szfGIZb/K3Wsqmw1uVWSAPepQUrayVwnAQwtLFRXbVb8sJJ0/TutnVaczxzXRIRgPy
+         7XDb3zLW88nICz7hS1VsY8g2jA2hnEgjzPgvMBmwsWeSGw57NuC/dytPw8HfTFyMAoCk
+         JsoK/vF7UZ1pVLupcJ1zmYH7FbP3JOttpmyZoC8aFF7kHDRiJtI1cxHUcNI/2yUZFuaA
+         45MmS5uahTscYkCzsRYP9DRH+ouuFf9mnZsPSvQZM2eUWwLiYxLDYkPJLDhhne/sdqnX
+         x9TBPn0a3JYBduGG1kLt9W1a/VcBifv2Y8gV2zHHeAp9gmWHosCD7z753TeUR63mUHg1
+         Zg0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=36WcEQAUH1mKZZkQq7Ag/oNpXtMLgwjbol+RbIVU1ME=;
+        b=FKjT86+aV0whqXQjBblnkEQELsNEMJQ76SdcL65AIrFe91ztI5mdbyY+bPYu4G5w3b
+         dUOkltBaT+MHsXZr6K8bcHFonsFMvbY245gdnacGn/9jyhgv+pll+YCXVG3JrZvs11J3
+         9MAXp92TGhTtAVv6cZ7I9z2k+sgC+QScZoNFeuMeQvsuuOL1Pe+1HuKhsIvbQm3wwTD7
+         Lr0vEXPKKPa0aYhqBH3s/pWm/wC0uGb7Ikeo2bdwY02vjqmJcSOcE13sxd6nz2v0dM9+
+         mL14cJI50GwtVW/Sy/u58nqKBPZbH5yT9XSEvmxUAm6pVhEXqbfpgqmidhIvf25+dKnq
+         0mvA==
+X-Gm-Message-State: AOAM530n6+W4ncS4f0/gpVFf9Vkiejk0Prdn/2+QndluzUIxFAgYBCH+
+        ySuqZ8Z7Dmekw9EGQvuSKrU=
+X-Google-Smtp-Source: ABdhPJzcy7LYLPaz+ONUlYoEzAUwBeSvrHUypYHJNfM7aQFTO4/iqIhcXb5yOEYYYZWq/U12uHbWPA==
+X-Received: by 2002:a17:902:6acc:: with SMTP id i12mr58265738plt.75.1594470949240;
+        Sat, 11 Jul 2020 05:35:49 -0700 (PDT)
+Received: from blackclown ([103.88.82.158])
+        by smtp.gmail.com with ESMTPSA id b24sm8601682pgn.8.2020.07.11.05.35.46
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 11 Jul 2020 05:35:48 -0700 (PDT)
+Date:   Sat, 11 Jul 2020 18:05:33 +0530
+From:   Suraj Upadhyay <usuraj35@gmail.com>
+To:     gregkh@linuxfoundation.org, abbotti@mev.co.uk,
+        hsweeten@visionengravers.com
+Cc:     linux-kernel@vger.kernel.org, devel@driverdev.osuosl.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] staging: comedi: s626: Remove pci-dma-compat wrapper APIs.
+Message-ID: <20200711123533.GA15038@blackclown>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:sVp10qkhMXnDk+mYX5gXAe36om9+FDML3yARHw6Fl0eLZuxy0+g
- iLtSIj1Gc7mByedKQRX/3WAlfQa5oLjlLLveKXc4XnHvlufY7SYxxBDmlMu1THdrk02zBqw
- qgAEZypM2EUiHb5fBXE24Nvb3L6HPhpOlALssEtLUopUnjSbCxYsEMTPH+SrgApNNOLxeWn
- DWgsQubyqzJEPeHmRyNKQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+p6JbBxeNf0=:F/NqvLvAov8/uUtCXjWJ6h
- cNxG0HWUPYaf+Asdb+wrbWX7ZishXWX0lE1ml7JwqwGyeRyzZrlqH9TJmKdBsUtfKNe1mlkwR
- y49pNr9Jupz4/cTYaVdYzN4XZJh3Zou2eOdqSjyyGwC86ftvvnAHAxadhKzGq0vYqW5VAQeQ3
- 0VNVr9TSfInznz5G2NKWjuws5MxRP7DXxU+ZUqxWQghgoeOCIgoR8HdxopdhEks139UiL6wOe
- S+UyVegc3KZGlWlPr2bPfVIZefBo3p5YdnusS+YewlxXCguLMdktE15G4Q9qnAT5CmlCI4XcJ
- nMCBbOCMnhMQSsSKjNV0Cr2X2wuSoePi55+6sJ1b5lCkGDKgpUey2SinoagEmaKjVhWmnaK5s
- GhrnlIrQKwYco2qHTOwoHe3D5YrOUKVWRQPgw3KX0U6VJRtsjHPwBfYcnWw+W9w7Yg4CXK7ak
- jjdItP6Yw/YIEwQqhvsxSBV1lF5WUERaGXGTNGYjfin1T/6et0EVRctzOL7BFpqOXOf4nHm0b
- iT3J0Eblmf79LVdDTqIksP6xaRJTsCmoQcgcXNuyBAd03lW7N7d/IM2sdhMiTSj+Kwrxxp1/6
- +Y0Fqx42v/GRtq7rK4ap6bqttAtFrHYQdjiW/BSD27syUq5i2L1ylT6GWrN/1krJqFgBnbiLp
- 5PEj3iLeUhRH6LHQMhJJrou3aQMukOgVL0kegdIUS44zzwzc2tLqTLNF1slBL2PJdxJDI4AXL
- DSm7uiMNooS6hiUdY7K2Jeben32q9+3NAFkz6AmlEbwsK+BxriX4+48vlTRMTKgdVXjGVhaiB
- YmW+D+yIcvFQnE9LQDZrJwwKIuZwvaMw7KbRpZSAUbo2i1vmNl/7GR8vgUMeraBhkm74LYvYV
- 9/MHGWP0VBW5BhVG1Zuaxj4qVKig358wgkO2wHKrRDQQ1sZ3hfC/40KxIPav7lKWtupozkfqB
- rrsMtfTwN9kq3YEcKTYmZgXMm5w+zlNMtgIRjFat9aeWSwv3SR/RZxnyU7IBRRn5ddZEyGLym
- wk/UCsD9pb1DXQsRopLM9yEOt0NNXDJ46j/Y5jipb0pBGgg0aLCodRclHUjeJRQKjB7k9vqRC
- jWQUHLyTJrGN2UDY3A02ZxszLyLdfAlj8/113wSHxVeTQQQ7Bky49X2rEay4JQnahB0cgz7v/
- 9ZcP6FKor9loWKy7d9BH19pFT7FE8LS0Q8eWM4t9u14Z9ZzCRw2C2iSzeqZ4IVvdAMDBZ4j+a
- /39PJkZr60y/aDhVf/dUTvrUOAgk//rDjRp3MDA==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="6c2NcOVqGQ03X4Wi"
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> The wrappers in include/linux/pci-dma-compat.h should go away.
->
-> The patch has been generated with the coccinelle script bellow.
 
-* I suggest to avoid a typo in a word at the sentence end.
+--6c2NcOVqGQ03X4Wi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-* The script for the semantic patch language could be a bit nicer
-  by the application of disjunctions instead of separate SmPL rules.
-  Would you become interested in any further adjustments?
+The legacy API wrappers in include/linux/pci-dma-compat.h
+should go away as it creates unnecessary midlayering
+for include/linux/dma-mapping.h APIs, instead use dma-mapping.h
+APIs directly.
+
+The patch has been generated with the coccinelle script below
+and compile-tested.
+
+@@@@
+- PCI_DMA_BIDIRECTIONAL
++ DMA_BIDIRECTIONAL
+
+@@@@
+- PCI_DMA_TODEVICE
++ DMA_TO_DEVICE
+
+@@@@
+- PCI_DMA_FROMDEVICE
++ DMA_FROM_DEVICE
+
+@@@@
+- PCI_DMA_NONE
++ DMA_NONE
+
+@@ expression E1, E2, E3; @@
+- pci_alloc_consistent(E1, E2, E3)
++ dma_alloc_coherent(&E1->dev, E2, E3, GFP_ATOMIC)
+
+@@ expression E1, E2, E3; @@
+- pci_zalloc_consistent(E1, E2, E3)
++ dma_alloc_coherent(&E1->dev, E2, E3, GFP_ATOMIC)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_free_consistent(E1, E2, E3, E4)
++ dma_free_coherent(&E1->dev, E2, E3, E4)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_map_single(E1, E2, E3, E4)
++ dma_map_single(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_unmap_single(E1, E2, E3, E4)
++ dma_unmap_single(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+
+@@ expression E1, E2, E3, E4, E5; @@
+- pci_map_page(E1, E2, E3, E4, E5)
++ dma_map_page(&E1->dev, E2, E3, E4, (enum dma_data_direction)E5)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_unmap_page(E1, E2, E3, E4)
++ dma_unmap_page(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_map_sg(E1, E2, E3, E4)
++ dma_map_sg(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_unmap_sg(E1, E2, E3, E4)
++ dma_unmap_sg(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_dma_sync_single_for_cpu(E1, E2, E3, E4)
++ dma_sync_single_for_cpu(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_dma_sync_single_for_device(E1, E2, E3, E4)
++ dma_sync_single_for_device(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_dma_sync_sg_for_cpu(E1, E2, E3, E4)
++ dma_sync_sg_for_cpu(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_dma_sync_sg_for_device(E1, E2, E3, E4)
++ dma_sync_sg_for_device(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+
+@@ expression E1, E2; @@
+- pci_dma_mapping_error(E1, E2)
++ dma_mapping_error(&E1->dev, E2)
+
+@@ expression E1, E2; @@
+- pci_set_consistent_dma_mask(E1, E2)
++ dma_set_coherent_mask(&E1->dev, E2)
+
+@@ expression E1, E2; @@
+- pci_set_dma_mask(E1, E2)
++ dma_set_mask(&E1->dev, E2)
+
+Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
+---
+	This change is proposed by Christoph Hellwig <hch@infradead.org>
+	in the post https://marc.info/?l=3Dkernel-janitors&m=3D158745678307186&w=
+=3D4
+	on kernel-janitors Mailing List.
+
+ drivers/staging/comedi/drivers/s626.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/staging/comedi/drivers/s626.c b/drivers/staging/comedi=
+/drivers/s626.c
+index 084a8e7b9fc2..c159416662fd 100644
+--- a/drivers/staging/comedi/drivers/s626.c
++++ b/drivers/staging/comedi/drivers/s626.c
+@@ -2130,13 +2130,15 @@ static int s626_allocate_dma_buffers(struct comedi_=
+device *dev)
+ 	void *addr;
+ 	dma_addr_t appdma;
+=20
+-	addr =3D pci_alloc_consistent(pcidev, S626_DMABUF_SIZE, &appdma);
++	addr =3D dma_alloc_coherent(&pcidev->dev, S626_DMABUF_SIZE, &appdma,
++				  GFP_ATOMIC);
+ 	if (!addr)
+ 		return -ENOMEM;
+ 	devpriv->ana_buf.logical_base =3D addr;
+ 	devpriv->ana_buf.physical_base =3D appdma;
+=20
+-	addr =3D pci_alloc_consistent(pcidev, S626_DMABUF_SIZE, &appdma);
++	addr =3D dma_alloc_coherent(&pcidev->dev, S626_DMABUF_SIZE, &appdma,
++				  GFP_ATOMIC);
+ 	if (!addr)
+ 		return -ENOMEM;
+ 	devpriv->rps_buf.logical_base =3D addr;
+@@ -2154,13 +2156,13 @@ static void s626_free_dma_buffers(struct comedi_dev=
+ice *dev)
+ 		return;
+=20
+ 	if (devpriv->rps_buf.logical_base)
+-		pci_free_consistent(pcidev, S626_DMABUF_SIZE,
+-				    devpriv->rps_buf.logical_base,
+-				    devpriv->rps_buf.physical_base);
++		dma_free_coherent(&pcidev->dev, S626_DMABUF_SIZE,
++				  devpriv->rps_buf.logical_base,
++				  devpriv->rps_buf.physical_base);
+ 	if (devpriv->ana_buf.logical_base)
+-		pci_free_consistent(pcidev, S626_DMABUF_SIZE,
+-				    devpriv->ana_buf.logical_base,
+-				    devpriv->ana_buf.physical_base);
++		dma_free_coherent(&pcidev->dev, S626_DMABUF_SIZE,
++				  devpriv->ana_buf.logical_base,
++				  devpriv->ana_buf.physical_base);
+ }
+=20
+ static int s626_initialize(struct comedi_device *dev)
+--=20
+2.17.1
 
 
-=E2=80=A6
->@@
-> expression e1, e2, e3;
-> @@
-> -    pci_alloc_consistent(e1, e2, e3)
-> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+--6c2NcOVqGQ03X4Wi
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I find the last function parameter questionable.
-An other flag was specified in a corresponding diff hunk.
+-----BEGIN PGP SIGNATURE-----
 
-Regards,
-Markus
+iQIyBAABCgAdFiEE7AbCa0kOsMJ4cx0j+gRsbIfe744FAl8JsgwACgkQ+gRsbIfe
+7474BQ/4kb5fufct1WPXGSk5GazzpLTQpggErwbo+mTWR8xrR0hu0JEkSq3rlcJC
+PlyH5wxUTm6AJM6ub8UbDbrIiFCoGvFW/wPKyBgdVFnkrEf5GbPg4QuGD0eEOegC
+EDJ34j2meK2fPpOhvKh8I7mk/YXVl0uNB3CTul9GLzAC/NQG3GERX1g3JZsDo+Ib
+5sNly1D6mRr2WOxaTOGGLK+JI5PXeQ5jT8x40Q6TwEfZNDFA1A6diStFLOAusNA0
+txdSpArNNXJGjxSITQi7Gw4Ifp0g8MW0WnYjL/f4eYVqbGstVo6JYTjI+iwt1aPe
+pJpQlNYlXmELft+vVFIq++I6/mIbdxuRjzOKI5e5FJ5/GQpU9nnxlCaW00/c3p0A
+8ioeIhy0pI3JekPsDrw5pF5xUZZxXUbHiIxgzrts54g17isyQFwoh0mTnvmANlcz
+LTVV9U0xjeQEc3btQMG3c6JWGQ2gpyFDA89Out1769HJvBpuWBzbytUtFVnTKizp
+FFV+3c8RjyIih39KvNVE89zay2Y+EFSeiEl3oYhFX9digbSP+ErIQcu0YYaV4k+Q
+FjIMZB1j/tBHshL5TwWbU20naZXbrmgReJkvdJwCb292ehp/kFDfV35VFi9qTJD7
+D5TH075SMqXfsPrBMuZha868gzaO4dzfmiqAkZEcJ4QLNQ78Mg==
+=YDlr
+-----END PGP SIGNATURE-----
+
+--6c2NcOVqGQ03X4Wi--

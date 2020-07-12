@@ -2,139 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4EBF21CB8D
-	for <lists+kernel-janitors@lfdr.de>; Sun, 12 Jul 2020 23:14:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5681021CBD1
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jul 2020 00:26:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729497AbgGLVO2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 12 Jul 2020 17:14:28 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:28143 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729489AbgGLVO2 (ORCPT
+        id S1728118AbgGLW0M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 12 Jul 2020 18:26:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49428 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727099AbgGLW0M (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 12 Jul 2020 17:14:28 -0400
-Received: from localhost.localdomain ([93.22.148.52])
-        by mwinf5d61 with ME
-        id 2MER2300i183tQl03MEST8; Sun, 12 Jul 2020 23:14:26 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 12 Jul 2020 23:14:26 +0200
-X-ME-IP: 93.22.148.52
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     ayush.sawal@chelsio.com, vinay.yadav@chelsio.com,
-        rohitm@chelsio.com, herbert@gondor.apana.org.au,
-        davem@davemloft.net
-Cc:     linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH 2/2] Crypto/chcr: Fix some pr_xxx messages
-Date:   Sun, 12 Jul 2020 23:14:24 +0200
-Message-Id: <20200712211424.276263-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Sun, 12 Jul 2020 18:26:12 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7930C061794;
+        Sun, 12 Jul 2020 15:26:11 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 622801284BD42;
+        Sun, 12 Jul 2020 15:26:11 -0700 (PDT)
+Date:   Sun, 12 Jul 2020 15:26:10 -0700 (PDT)
+Message-Id: <20200712.152610.441299757997798699.davem@davemloft.net>
+To:     christophe.jaillet@wanadoo.fr
+Cc:     mlindner@marvell.com, stephen@networkplumber.org, kuba@kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] net: skge: switch from 'pci_' to 'dma_' API
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200711203518.256545-1-christophe.jaillet@wanadoo.fr>
+References: <20200711203518.256545-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 12 Jul 2020 15:26:11 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-At the top this file, we have:
-   #define pr_fmt(fmt) "chcr:" fmt
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Sat, 11 Jul 2020 22:35:18 +0200
 
-So there is no need to repeat "chcr : " in some error message when the
-pr_xxx macro is used.
-This would lead to log "chcr:chcr : blabla"
+> The wrappers in include/linux/pci-dma-compat.h should go away.
+> 
+> The patch has been generated with the coccinelle script below and has been
+> hand modified to replace GPF_ with a correct flag.
+> It has been compile tested.
+> 
+> When memory is allocated in 'skge_up()', GFP_KERNEL can be used because
+> some other memory allocations done a few lines below in 'skge_ring_alloc()'
+> already use this flag.
+ ...
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/crypto/chelsio/chcr_algo.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/crypto/chelsio/chcr_algo.c b/drivers/crypto/chelsio/chcr_algo.c
-index ba2469008dd9..e02b56bd43c6 100644
---- a/drivers/crypto/chelsio/chcr_algo.c
-+++ b/drivers/crypto/chelsio/chcr_algo.c
-@@ -1224,7 +1224,7 @@ static int chcr_handle_cipher_resp(struct skcipher_request *req,
- 	wrparam.bytes = bytes;
- 	skb = create_cipher_wr(&wrparam);
- 	if (IS_ERR(skb)) {
--		pr_err("chcr : %s : Failed to form WR. No memory\n", __func__);
-+		pr_err("%s : Failed to form WR. No memory\n", __func__);
- 		err = PTR_ERR(skb);
- 		goto unmap;
- 	}
-@@ -1556,7 +1556,7 @@ static int get_alg_config(struct algo_param *params,
- 		params->result_size = SHA512_DIGEST_SIZE;
- 		break;
- 	default:
--		pr_err("chcr : ERROR, unsupported digest size\n");
-+		pr_err("ERROR, unsupported digest size\n");
- 		return -EINVAL;
- 	}
- 	return 0;
-@@ -3571,7 +3571,7 @@ static int chcr_authenc_setkey(struct crypto_aead *authenc, const u8 *key,
- 		goto out;
- 
- 	if (get_alg_config(&param, max_authsize)) {
--		pr_err("chcr : Unsupported digest size\n");
-+		pr_err("Unsupported digest size\n");
- 		goto out;
- 	}
- 	subtype = get_aead_subtype(authenc);
-@@ -3590,7 +3590,7 @@ static int chcr_authenc_setkey(struct crypto_aead *authenc, const u8 *key,
- 	} else if (keys.enckeylen == AES_KEYSIZE_256) {
- 		ck_size = CHCR_KEYCTX_CIPHER_KEY_SIZE_256;
- 	} else {
--		pr_err("chcr : Unsupported cipher key\n");
-+		pr_err("Unsupported cipher key\n");
- 		goto out;
- 	}
- 
-@@ -3608,7 +3608,7 @@ static int chcr_authenc_setkey(struct crypto_aead *authenc, const u8 *key,
- 	}
- 	base_hash  = chcr_alloc_shash(max_authsize);
- 	if (IS_ERR(base_hash)) {
--		pr_err("chcr : Base driver cannot be loaded\n");
-+		pr_err("Base driver cannot be loaded\n");
- 		goto out;
- 	}
- 	{
-@@ -3624,7 +3624,7 @@ static int chcr_authenc_setkey(struct crypto_aead *authenc, const u8 *key,
- 						  keys.authkeylen,
- 						  o_ptr);
- 			if (err) {
--				pr_err("chcr : Base driver cannot be loaded\n");
-+				pr_err("Base driver cannot be loaded\n");
- 				goto out;
- 			}
- 			keys.authkeylen = max_authsize;
-@@ -3709,7 +3709,7 @@ static int chcr_aead_digest_null_setkey(struct crypto_aead *authenc,
- 	} else if (keys.enckeylen == AES_KEYSIZE_256) {
- 		ck_size = CHCR_KEYCTX_CIPHER_KEY_SIZE_256;
- 	} else {
--		pr_err("chcr : Unsupported cipher key %d\n", keys.enckeylen);
-+		pr_err("Unsupported cipher key %d\n", keys.enckeylen);
- 		goto out;
- 	}
- 	memcpy(aeadctx->key, keys.enckey, keys.enckeylen);
-@@ -3745,7 +3745,7 @@ static int chcr_aead_op(struct aead_request *req,
- 
- 	cdev = a_ctx(tfm)->dev;
- 	if (!cdev) {
--		pr_err("chcr : %s : No crypto device.\n", __func__);
-+		pr_err("%s : No crypto device.\n", __func__);
- 		return -ENXIO;
- 	}
- 
-@@ -4495,8 +4495,7 @@ static int chcr_register_alg(void)
- 			break;
- 		}
- 		if (err) {
--			pr_err("chcr : %s : Algorithm registration failed\n",
--			       name);
-+			pr_err("%s : Algorithm registration failed\n", name);
- 			goto register_err;
- 		} else {
- 			driver_algs[i].is_registered = 1;
--- 
-2.25.1
-
+Applied.

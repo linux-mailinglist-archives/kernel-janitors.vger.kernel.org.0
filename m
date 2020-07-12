@@ -2,31 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C6A221CAC0
-	for <lists+kernel-janitors@lfdr.de>; Sun, 12 Jul 2020 19:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95AFA21CB8A
+	for <lists+kernel-janitors@lfdr.de>; Sun, 12 Jul 2020 23:14:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729371AbgGLRfy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 12 Jul 2020 13:35:54 -0400
-Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:34543 "EHLO
+        id S1729460AbgGLVOT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 12 Jul 2020 17:14:19 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:37441 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729272AbgGLRfy (ORCPT
+        with ESMTP id S1729339AbgGLVOT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 12 Jul 2020 13:35:54 -0400
+        Sun, 12 Jul 2020 17:14:19 -0400
 Received: from localhost.localdomain ([93.22.148.52])
-        by mwinf5d89 with ME
-        id 2Hbs23007183tQl03Hbsju; Sun, 12 Jul 2020 19:35:53 +0200
+        by mwinf5d61 with ME
+        id 2ME52300f183tQl03ME6PW; Sun, 12 Jul 2020 23:14:16 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 12 Jul 2020 19:35:53 +0200
+X-ME-Date: Sun, 12 Jul 2020 23:14:16 +0200
 X-ME-IP: 93.22.148.52
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+To:     ayush.sawal@chelsio.com, vinay.yadav@chelsio.com,
+        rohitm@chelsio.com, herbert@gondor.apana.org.au,
+        davem@davemloft.net
+Cc:     linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH 2/2] nl80211: Simplify error handling path in 'nl80211_trigger_scan()'
-Date:   Sun, 12 Jul 2020 19:35:51 +0200
-Message-Id: <20200712173551.274448-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH 1/2] Crypto/chcr: Avoid some code duplication
+Date:   Sun, 12 Jul 2020 23:14:04 +0200
+Message-Id: <20200712211404.276211-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -35,45 +37,31 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Re-write the end of 'nl80211_trigger_scan()' with a more standard, easy to
-understand and future proof version.
+The error handling path of 'chcr_authenc_setkey()' is the same as this
+error handling code.
+
+So just 'goto out' as done everywhere in the function to simplify the code.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- net/wireless/nl80211.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/crypto/chelsio/chcr_algo.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index a671ee5f5da7..898e5f53f263 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -7993,15 +7993,18 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
- 	rdev->scan_req = request;
- 	err = rdev_scan(rdev, request);
- 
--	if (!err) {
--		nl80211_send_scan_start(rdev, wdev);
--		if (wdev->netdev)
--			dev_hold(wdev->netdev);
--	} else {
-+	if (err)
-+		goto out_free;
-+
-+	nl80211_send_scan_start(rdev, wdev);
-+	if (wdev->netdev)
-+		dev_hold(wdev->netdev);
-+
-+	return 0;
-+
-  out_free:
--		rdev->scan_req = NULL;
--		kfree(request);
--	}
-+	rdev->scan_req = NULL;
-+	kfree(request);
- 
- 	return err;
- }
+diff --git a/drivers/crypto/chelsio/chcr_algo.c b/drivers/crypto/chelsio/chcr_algo.c
+index 4c2553672b6f..ba2469008dd9 100644
+--- a/drivers/crypto/chelsio/chcr_algo.c
++++ b/drivers/crypto/chelsio/chcr_algo.c
+@@ -3609,9 +3609,7 @@ static int chcr_authenc_setkey(struct crypto_aead *authenc, const u8 *key,
+ 	base_hash  = chcr_alloc_shash(max_authsize);
+ 	if (IS_ERR(base_hash)) {
+ 		pr_err("chcr : Base driver cannot be loaded\n");
+-		aeadctx->enckey_len = 0;
+-		memzero_explicit(&keys, sizeof(keys));
+-		return -EINVAL;
++		goto out;
+ 	}
+ 	{
+ 		SHASH_DESC_ON_STACK(shash, base_hash);
 -- 
 2.25.1
 

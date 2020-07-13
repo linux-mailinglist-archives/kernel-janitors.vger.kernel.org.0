@@ -2,129 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 849D621CFF9
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jul 2020 08:48:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 315BB21D3F8
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jul 2020 12:51:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728887AbgGMGsl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Jul 2020 02:48:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41374 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725804AbgGMGsk (ORCPT
+        id S1729545AbgGMKvo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Jul 2020 06:51:44 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:39692 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728883AbgGMKvn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Jul 2020 02:48:40 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBEC3C061794;
-        Sun, 12 Jul 2020 23:48:40 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id k5so5081534plk.13;
-        Sun, 12 Jul 2020 23:48:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=SAPtRk62vgok+OCp4FDhzKpYNdP7Sd2Zxk67EZLZW4s=;
-        b=JzKhR6162GFC5VhCrC2ZMjPibXyVrn4NpK4CoC4bL8nEOnU8GB4RLXSE9CbyR3q12d
-         DLj9MXIISzjfzQ2Sz2Z1M/ZVzYDgyng/kB7yktmW3FkuA59LOaXJvFNtCbRPQGZw2X8Z
-         2yRY67djD27N56uVmv5yCmUAULIJXGD4phkKg0sVLCiMtzM0QTJJzyJ/iaMrLq0NolEy
-         go1Z9Tqu86OEIDULwaC2THAhlIHMLCsDge5biXgqfHZyvg3g+pRoJOX9ShKV13EooyKC
-         L7n08q2Kw6lVHA26tXwOU8f5FfWFGIsAIX2pWrTAtiEwHBCW/xVmWa/Zwk1BEahMRCLT
-         XIPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=SAPtRk62vgok+OCp4FDhzKpYNdP7Sd2Zxk67EZLZW4s=;
-        b=VQslFvHpCxoX8JaOXBWH+xqXjaxuGrrdDmdGGV7+NM0zgXVZl/Lr2M41e0fY3gioJr
-         djyijKC7UST40dCkf1nTHLa22zdlieK+l74R5cPPqIKJKhQqhSzvYrL1ZEI6t9/GAN5J
-         1RheeLyCxScXsNMU4VgDIre/p+xc6g94TkAsTfltJS4d10VzColznw6nFH6TK549oC6y
-         I1L71gDxLiRi3fq1mL+phA3ySX7BZpaYw8YcMPuYs53mWMGSUr4HNd630JwH50NB0lxm
-         OReti3Y99LpqnWwsa7DO1NFfuOqCUFAI7vMHgsy0pefinhEulyHQOMS3eosEYbJzH7Fb
-         U0uQ==
-X-Gm-Message-State: AOAM530Kco4mJfgsLlMWWmRz4P5N4LHY40ZdXdIzHHjT7VxxMvpLrr42
-        xwBMlHtNU0KsaYaXRJlJmhZ1FGpTGn4=
-X-Google-Smtp-Source: ABdhPJwyBbQTl0SHlr8Oiv1p8vvgdsnUG1JFu3GYsBRjd72qXfgQNtST22obAK9eHquVC2aUN3SABg==
-X-Received: by 2002:a17:90b:1386:: with SMTP id hr6mr18072499pjb.93.1594622920276;
-        Sun, 12 Jul 2020 23:48:40 -0700 (PDT)
-Received: from f3 (ae055068.dynamic.ppp.asahi-net.or.jp. [14.3.55.68])
-        by smtp.gmail.com with ESMTPSA id g5sm13096103pjl.31.2020.07.12.23.48.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jul 2020 23:48:39 -0700 (PDT)
-Date:   Mon, 13 Jul 2020 15:48:35 +0900
-From:   Benjamin Poirier <benjamin.poirier@gmail.com>
-To:     Suraj Upadhyay <usuraj35@gmail.com>
-Cc:     netdev@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] staging: qlge: Remove pci-dma-compat wrapper APIs.
-Message-ID: <20200713064835.GA11354@f3>
-References: <20200711124633.GA16459@blackclown>
- <20200713045959.GA7563@f3>
- <20200713054424.GD12262@blackclown>
+        Mon, 13 Jul 2020 06:51:43 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06DAkpen151425;
+        Mon, 13 Jul 2020 10:51:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=mime-version :
+ message-id : date : from : to : cc : subject : content-type :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=8DgsNCqKYEALDnInlZ5lHD/RVlJxVBfXAfQjAhgOf+s=;
+ b=VAtcTC2G5wNMFPg83SN9gHc+j8PkqqJ4SSE6spR3k/mJ3ULDVYI/pluNSetrsEB4JuO2
+ +rjb61sUDu+XI91wBq9HgZ+8UrfzRuommKe21Ac+FCGfCgzusNfT9cGXPBI3DcZiXx78
+ LCpNU6AUoPglaVuGQrigUq2/IMpty2irsjjVx9gICYtJh/J6c7JQ0G8IRcJJ2fSb7kf2
+ K3nRedpEUsZuvoMR23FjmPrCclkGC/pjO2dyF7uKYmTj6V7KVH43K+XslmhMO6xkF1IT
+ 7OpVux/XVtAHR/1j/LA6ZnmysgOPLgG70EJfvppVQWw1hzYCCfgl2UxFbTPYRjiZFKXu /Q== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 3275ckx9he-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 13 Jul 2020 10:51:35 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06DAbYQf060288;
+        Mon, 13 Jul 2020 10:51:35 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 327qb0agtc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 13 Jul 2020 10:51:35 +0000
+Received: from abhmp0021.oracle.com (abhmp0021.oracle.com [141.146.116.27])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06DApY38019026;
+        Mon, 13 Jul 2020 10:51:34 GMT
+Received: from mwanda (/41.57.98.10) by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Mon, 13 Jul 2020 03:51:06 -0700
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="mYCpIKhGyMATD0i+"
-Content-Disposition: inline
-In-Reply-To: <20200713054424.GD12262@blackclown>
+Message-ID: <20200713105100.GA251988@mwanda>
+Date:   Mon, 13 Jul 2020 10:51:00 +0000 (UTC)
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        Varun Prakash <varun@chelsio.com>
+Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>,
+        Austin Kim <austindh.kim@gmail.com>,
+        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] scsi: cxgb4i: clean up a debug printk
+X-Mailer: git-send-email haha only kidding
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9680 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
+ mlxscore=0 spamscore=0 phishscore=0 suspectscore=0 bulkscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007130080
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9680 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 priorityscore=1501
+ bulkscore=0 adultscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
+ impostorscore=0 malwarescore=0 mlxlogscore=999 clxscore=1011 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007130081
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+The pr_fmt() at the top of the file already includes the __func__ so we
+can remove the duplicative "cxgbi_conn_init_pdu:" from the string here.
+Now it all fits on one  line as well.
 
---mYCpIKhGyMATD0i+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/scsi/cxgbi/libcxgbi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-On 2020-07-13 11:14 +0530, Suraj Upadhyay wrote:
-> On Mon, Jul 13, 2020 at 01:59:59PM +0900, Benjamin Poirier wrote:
-> > On 2020-07-11 18:16 +0530, Suraj Upadhyay wrote:
-> > > The legacy API wrappers in include/linux/pci-dma-compat.h
-> > > should go away as it creates unnecessary midlayering
-> > > for include/linux/dma-mapping.h APIs, instead use dma-mapping.h
-> > > APIs directly.
-> > >=20
-> > > The patch has been generated with the coccinelle script below
-> > > and compile-tested.
-> > >=20
-> > [...]
-> > >=20
-> > > @@ expression E1, E2, E3, E4; @@
-> > > - pci_dma_sync_single_for_device(E1, E2, E3, E4)
-> > > + dma_sync_single_for_device(&E1->dev, E2, E3, (enum dma_data_directi=
-on)E4)
-> >=20
-> > The qlge driver contains more usages of the deprecated pci_dma_* api
-> > than what this diff addresses. In particular, there are some calls to
-> > pci_dma_sync_single_for_cpu() which were not changed despite this
-> > expression being in the semantic patch.
->=20
-> Hii Ben,
->         I couldn't find any instances of pci_dma_sync_single_for_cpu in
-> the drivers/staging/qlge/ driver, I ran a simple `git grep pci_dma_sync_s=
-ingle_for_cpu/device`
-> and got nothing.
-> If I am wrong, please send the line number of the usages.
+diff --git a/drivers/scsi/cxgbi/libcxgbi.c b/drivers/scsi/cxgbi/libcxgbi.c
+index 1fb101c616b7..ba1593be626c 100644
+--- a/drivers/scsi/cxgbi/libcxgbi.c
++++ b/drivers/scsi/cxgbi/libcxgbi.c
+@@ -2182,8 +2182,7 @@ int cxgbi_conn_init_pdu(struct iscsi_task *task, unsigned int offset,
+ 	}
+ 
+ 	log_debug(1 << CXGBI_DBG_ISCSI | 1 << CXGBI_DBG_PDU_TX,
+-		  "cxgbi_conn_init_pdu: tdata->total_count %u, "
+-		  "tdata->total_offset %u\n",
++		  "data->total_count %u, tdata->total_offset %u\n",
+ 		  tdata->total_count, tdata->total_offset);
+ 
+ 	expected_count = tdata->total_count;
+-- 
+2.27.0
 
-You're right, sorry. I was missing commit e955a071b9b3 ("staging: qlge:
-replace deprecated apis pci_dma_*") in my tree.
-
---mYCpIKhGyMATD0i+
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEkvpDtefvZykbqQVOaJBbS33YWS0FAl8MA8MACgkQaJBbS33Y
-WS3Viw/9F4tUPBlh3yVIBpSQ1Ax5GZhlnpGL3XUpFA7Z1aBtZIU+1W9EbDXmZNOo
-KO5Nbqr0CfNDPeKJRpB2K+YVriga9F7B299BVvnqKvEvv5NcxSGfVzpEWpyJL3RL
-tmjpcquRyY6huKBbYVyfa3D0iUkrURoGmPm9QbpA1JNcKGs55qIyHbwqI+3nYrZt
-DZYf5VruMkqQh7gqhW9koHjUyANhWAL4qCLSoQsZAC+HNsY7UsAWLU8sPqD18UaZ
-yE1tSSqOyl4R52tGVzaH5WFMbT8xYhCZ7ZXc862LjoEcPoB4jPeHDdDxxq8w2VhS
-Kt2O3b5HC8VFByaA32sHVRYpG1iFtMY8MEb6VM+N6qTUmZVNkVJkNTDYpEHSfJ/U
-x+j0bunXKUUdnaS14vuzgpfG/L2XAFq9wezZUWvoVg8NWTabHOyeRlNPF1aVYeGr
-eJsJ2wtGPNEVPcDpZMo9nSCZeSevun1/9OyFYEkXKO/OQ1vXORY54jik2rv4pPx6
-vmYS413oRgOru8drLJR5jiRoZuGjk2RsiEVwdrqkj7pdf7FJ7fr6tYbnoHeWJPz4
-h6Wa2prcQ16lPhndAtne+xjc77/O8zqDUmBLShf2ca/5+QgQPuJv6+kC0S9DIK/7
-DcAik0SP5lG9iiOAuRxPgQUCYu+prWCBuRcR+2ITbnDd4s2A5cY=
-=YM6/
------END PGP SIGNATURE-----
-
---mYCpIKhGyMATD0i+--

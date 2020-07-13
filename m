@@ -2,94 +2,126 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AA7321D407
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jul 2020 12:54:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCB9C21D79F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jul 2020 15:56:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729043AbgGMKyb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Jul 2020 06:54:31 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:41602 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728382AbgGMKya (ORCPT
+        id S1729593AbgGMN4n (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Jul 2020 09:56:43 -0400
+Received: from smtp64.iad3b.emailsrvr.com ([146.20.161.64]:53118 "EHLO
+        smtp64.iad3b.emailsrvr.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729457AbgGMN4n (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Jul 2020 06:54:30 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06DAqq0G170356;
-        Mon, 13 Jul 2020 10:53:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=5p1H8Inq6fO6+rbbZ/c2hQS2caboJT505k68LpcR9fQ=;
- b=lxMgaEUSs+HOtpGnJ/klzw93aoEd/f5QeM85ngkYzw2c+cdYz1LnlDpO5TdR4RI1K0N+
- K8Kk/GSV30eCVnyZcYWn23AWr1RkUQzMAVeUUonrMQ6ltnh6MrQgxmXwtJyDLEh4KHlL
- E766IDCvYbfl9Lb49PkwS++JtTRTwqTvcmluLgkwj9RQtN81sh+1WABlMXO3cY/o2ZHK
- Z0iCN06gPP1PWDer6lvtuouNoewLaYi97L56EluD3HJSoSbD36Dp5nQG2XWocYkxviem
- OEyOJFjmR6LaXqWmKi48gV5V/yg1K9/isgBa+gXaHbmb1QuwypR36W93Gba+HjhGSodg ig== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 3275ckx9rt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 13 Jul 2020 10:53:37 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06DArULv111093;
-        Mon, 13 Jul 2020 10:53:37 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 327qb0anau-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 13 Jul 2020 10:53:37 +0000
-Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06DArVkA011340;
-        Mon, 13 Jul 2020 10:53:33 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 13 Jul 2020 03:53:30 -0700
-Date:   Mon, 13 Jul 2020 13:53:24 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jaroslav Kysela <perex@perex.cz>, Mark Hills <mark@xwax.org>
-Cc:     Takashi Iwai <tiwai@suse.com>,
-        Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-        Chuhong Yuan <hslester96@gmail.com>,
-        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] ALSA: echoaudio: re-enable IRQs on failure path
-Message-ID: <20200713105324.GB251988@mwanda>
+        Mon, 13 Jul 2020 09:56:43 -0400
+X-Greylist: delayed 479 seconds by postgrey-1.27 at vger.kernel.org; Mon, 13 Jul 2020 09:56:42 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=g001.emailsrvr.com;
+        s=20190322-9u7zjiwi; t=1594648123;
+        bh=ZL3NTHkoX90gLzQnZ0aZs8xRP/+7qcKArta1NiGzOzo=;
+        h=Subject:To:From:Date:From;
+        b=uZ801dGaFUNVS/zXEtlEWyhPXGSRfDInrDXUbwXoX4cXqyKsAtDBrVIKyl3qImXUA
+         /lDhXbEqIBk/Q2W8Ee4xkJXSXdf94iwJfSiwJZY2QwXLLY2cQDEvjJnGj+9r1gbyfI
+         jeWBtUMrH1kZfdcB6I5AeF7dEFLwYOH8BuzqsUUI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+        s=20190130-41we5z8j; t=1594648123;
+        bh=ZL3NTHkoX90gLzQnZ0aZs8xRP/+7qcKArta1NiGzOzo=;
+        h=Subject:To:From:Date:From;
+        b=biSxwrFSDhUFuZJkjC9mbxXzvogmAU14OkdrrkjOo/BqwnCaIHyRr49wdqjXUO+Ub
+         5Cij1iWBKkpuD9mpA/x0Cay+SLTaiIe1pTrdVKCz/tvacCl2R66g5dgex1Bz05AjHW
+         lWppyN8OlkKj46JYx+4MHk0cWWJdmmn+SpIKCtsw=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp1.relay.iad3b.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 9B295601EA;
+        Mon, 13 Jul 2020 09:48:42 -0400 (EDT)
+Subject: Re: [PATCH] staging: comedi: s626: Remove pci-dma-compat wrapper
+ APIs.
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Suraj Upadhyay <usuraj35@gmail.com>,
+        gregkh@linuxfoundation.org, hsweeten@visionengravers.com
+Cc:     linux-kernel@vger.kernel.org, devel@driverdev.osuosl.org,
+        kernel-janitors@vger.kernel.org
+References: <20200711123533.GA15038@blackclown>
+ <6f701731-d0af-1bd5-5854-42f0ba39ed35@wanadoo.fr>
+From:   Ian Abbott <abbotti@mev.co.uk>
+Organization: MEV Ltd.
+Message-ID: <3747ce02-feb3-359f-c60d-233e412c6062@mev.co.uk>
+Date:   Mon, 13 Jul 2020 14:48:41 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9680 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
- mlxscore=0 spamscore=0 phishscore=0 suspectscore=0 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007130082
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9680 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 priorityscore=1501
- bulkscore=0 adultscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- impostorscore=0 malwarescore=0 mlxlogscore=999 clxscore=1011 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007130082
+In-Reply-To: <6f701731-d0af-1bd5-5854-42f0ba39ed35@wanadoo.fr>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
+X-Classification-ID: 0cf2f086-3d08-420b-90a6-83a28112867a-1-1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This should be spin_unlock_irq() instead of spin_lock().
+On 11/07/2020 14:38, Christophe JAILLET wrote:
+> Le 11/07/2020 à 14:35, Suraj Upadhyay a écrit :
+>> The legacy API wrappers in include/linux/pci-dma-compat.h
+>> should go away as it creates unnecessary midlayering
+>> for include/linux/dma-mapping.h APIs, instead use dma-mapping.h
+>> APIs directly.
+>>
+>> The patch has been generated with the coccinelle script below
+>> and compile-tested.
+>>
+>> [...]
+>> @@ expression E1, E2, E3; @@
+>> - pci_alloc_consistent(E1, E2, E3)
+>> + dma_alloc_coherent(&E1->dev, E2, E3, GFP_ATOMIC)
+>>
+>> @@ expression E1, E2, E3; @@
+>> - pci_zalloc_consistent(E1, E2, E3)
+>> + dma_alloc_coherent(&E1->dev, E2, E3, GFP_ATOMIC)
+> 
+> This is the tricky part of this kind of cleanup, see below.
+> 
+> GFP_ATOMIC can't be wrong because it is was exactly what was done with 
+> the pci_ function.
+> However, most of the time, it can safely be replaced by GFP_KERNEL which 
+> gives more opportunities to the memory allocator.
+> 
+>> [...]
+>> diff --git a/drivers/staging/comedi/drivers/s626.c 
+>> b/drivers/staging/comedi/drivers/s626.c
+>> index 084a8e7b9fc2..c159416662fd 100644
+>> --- a/drivers/staging/comedi/drivers/s626.c
+>> +++ b/drivers/staging/comedi/drivers/s626.c
+>> @@ -2130,13 +2130,15 @@ static int s626_allocate_dma_buffers(struct 
+>> comedi_device *dev)
+>>       void *addr;
+>>       dma_addr_t appdma;
+>> -    addr = pci_alloc_consistent(pcidev, S626_DMABUF_SIZE, &appdma);
+>> +    addr = dma_alloc_coherent(&pcidev->dev, S626_DMABUF_SIZE, &appdma,
+>> +                  GFP_ATOMIC);
+>>       if (!addr)
+>>           return -ENOMEM;
+>>       devpriv->ana_buf.logical_base = addr;
+>>       devpriv->ana_buf.physical_base = appdma;
+>> -    addr = pci_alloc_consistent(pcidev, S626_DMABUF_SIZE, &appdma);
+>> +    addr = dma_alloc_coherent(&pcidev->dev, S626_DMABUF_SIZE, &appdma,
+>> +                  GFP_ATOMIC);
+>>       if (!addr)
+>>           return -ENOMEM;
+>>       devpriv->rps_buf.logical_base = addr;
+> 's626_allocate_dma_buffers()' is only called from 's626_auto_attach()'.
+> In this function, around the call to 's626_allocate_dma_buffers()', you 
+> can see:
+>    - a few lines before, a call to 'comedi_alloc_devpriv()'
+> 
+>    - a few lines after, a call to 'comedi_alloc_subdevices()'
+> 
+> These 2 functions make some memory allocation using GFP_KERNEL.
+> 
+> So it is likely that using GFP_KERNEL in your proposal is also valid.
 
-Fixes: 6c3312544873 ("ALSA: echoaudio: Prevent races in calls to set_audio_format()")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- sound/pci/echoaudio/echoaudio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Indeed, GFP_KERNEL is perfectly fine here.  It could be done as a 
+follow-up patch, or done in a v2 of this patch with a mention in the 
+patch description.
 
-diff --git a/sound/pci/echoaudio/echoaudio.c b/sound/pci/echoaudio/echoaudio.c
-index e81f42811f45..6aeb99aa2414 100644
---- a/sound/pci/echoaudio/echoaudio.c
-+++ b/sound/pci/echoaudio/echoaudio.c
-@@ -721,7 +721,7 @@ static int pcm_prepare(struct snd_pcm_substream *substream)
- 	spin_lock_irq(&chip->lock);
- 
- 	if (snd_BUG_ON(!is_pipe_allocated(chip, pipe_index))) {
--		spin_unlock(&chip->lock);
-+		spin_unlock_irq(&chip->lock);
- 		return -EINVAL;
- 	}
- 
 -- 
-2.27.0
-
+-=( Ian Abbott <abbotti@mev.co.uk> || Web: www.mev.co.uk )=-
+-=( MEV Ltd. is a company registered in England & Wales. )=-
+-=( Registered number: 02862268.  Registered address:    )=-
+-=( 15 West Park Road, Bramhall, STOCKPORT, SK7 3JZ, UK. )=-

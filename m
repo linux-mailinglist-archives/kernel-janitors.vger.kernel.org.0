@@ -2,137 +2,585 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7514821E113
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jul 2020 22:01:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 199A421E14E
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jul 2020 22:18:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726769AbgGMUBF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Jul 2020 16:01:05 -0400
-Received: from mout.web.de ([217.72.192.78]:37451 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726599AbgGMUBE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Jul 2020 16:01:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1594670434;
-        bh=RujGpsAVt1AAWe0k3hAKmDKccNye6ezpvLYitw8/poA=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=sT/erWJm+P1PYhypKOREYCG6UGokcw7C9x66xKHzyV0e9OArJPjsDyXLXTt/R3b7i
-         nqcC7/h8T9m8+/vlRun2+os5SOMyzRoUgRQ01eBMvDGA4v1AZ1UMSEjyc45NTjvyTh
-         7d5RZQGHJ5jqQ/pTaoYD1cEseLCmIlVpG92qGBkw=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.120.168]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LZedc-1kZaRC1wWC-00lWWK; Mon, 13
- Jul 2020 22:00:34 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ayush Sawal <ayush.sawal@chelsio.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Rohit Maheshwari <rohitm@chelsio.com>,
-        Vinay Kumar Yadav <vinay.yadav@chelsio.com>
-Subject: Re: [PATCH 2/2] Crypto/chcr: Fix some pr_xxx messages
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-To:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        linux-crypto@vger.kernel.org
-Message-ID: <bc539dfe-969f-7593-81ef-56b736150e25@web.de>
-Date:   Mon, 13 Jul 2020 22:00:30 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        id S1726834AbgGMUSz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Jul 2020 16:18:55 -0400
+Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:33205 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726599AbgGMUSy (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 13 Jul 2020 16:18:54 -0400
+Received: from localhost.localdomain ([93.22.151.12])
+        by mwinf5d22 with ME
+        id 2kJo230030GHuWt03kJoYs; Mon, 13 Jul 2020 22:18:49 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 13 Jul 2020 22:18:49 +0200
+X-ME-IP: 93.22.151.12
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     davem@davemloft.net, pcnet32@frontier.com, kuba@kernel.org
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] pcnet32: switch from 'pci_' to 'dma_' API
+Date:   Mon, 13 Jul 2020 22:18:45 +0200
+Message-Id: <20200713201846.282847-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:KMLFfuAxtnx2fPMy8OvMaheZYMeyyDHD2Hl5r7sv7PtRSDYfAsO
- QiCh2t7L1xsO2I213HvAoXjYsVzsVx8QENQJBEeAmHs7MSNffeFi0hnh6bBDgCG0PH4UY1c
- WcscvRhKWKYBya+Js762ts1LO4fmVk1SxEoHTMdPW8PY7ArDj4I+5pw5+2Qz7NrpepNQ9qo
- 5v96V/47NHHg+xgZD5dZg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Xgj6ChgEQrA=:mvGTuBywLgYdgrp0CGPt28
- B8xx+IlEIg7q9+6MYynw+D9hNmAeksed/uDMRAaPnKIXrYl1Buskg7ekXz4LuGQo5Uc669pKQ
- Aq4y6Y+7K7gxBnprSDTy7m9BynbO5TLjIoIm/nM9ee8mBOQ5el6xQaBd2RxB39zqBK/wwF9P1
- MhXMiLufO5qTA/aJRE1uGZy2hOu9zP3WFI2pD+lA+T7Ak6icjzMoXjD7N+bkzICUvZ6F5+0Lj
- esLcchE4//0TyUTkzB6X0G4jKvWQ43NIFK4ZMjQqrLZC0FtdalNM8D+Jjn4kfB4FekFMuengP
- HFJX61VFdH06oo3jHD4kNBOnE1/9lCQDEBQCV75wxUxAtsIjA3cbpYQdlatxVoQfRKRDSKZZa
- 9i7M1bG6qG51RSY4g6+aI4bcaZMcciVY+akKdItxgmPA6mMSgYEEVRxwTj7pHQ+lBkusCrqae
- G7PNkf2MIpzLqntQJIUXHMZaJcJcf0ixh4rcb6E/0VxlMjr4O5dZHeh4lY1Qa7d5axYtTQ9RZ
- rESmoNquJFjGv5bQ7c8bsr35o/PfRfeX0+Uy5GoBsLL9n94G7J28s4SlmxWDnpwWQyidLZJ/Z
- p+rlHNp7WhPgJy2z+36pvmEKv5UNmZuLzdBqOjKryRgvS/x2zQJFLlo4SzCrxItZjXZSr9Hta
- hMZu901a1RsFvQ/zUvGbojACQpRZ6SFwaqqlh7QWIEiyDxOLfVvwS1q8StgEmFuTOLVntl7Qb
- my1Cjf5oAFMCgYawC8xPkSo4BeIO4mqCZG2VMXm7MijPDi8wxy+mPELY6Ya7fLvlIljB3CFHO
- EqqGy9PqWcOM5mbN0k/eFyq5IqYiPh4g4JMgbPyVvf4T47vzNWGbwhZrN5uuskqsAtxHd6D6c
- BHNKB4rF07IDTJEw8iOjTOGTYEv8NaDnSmRg/oGVTn4ZyiWwsEf/akdahi1bx1k4Qdez5hzb6
- 6bVmXNk+qx2mmYayubms8UCvPy40QlTqs8TUMy/t+hVkHe9X8ZJC9zc2oG6ua6woXO+O1dLYX
- yO/PvtVSUQzDY9uSTdv0gSNMf39OmzUgJL79Z20sYZtOS3vO2HNFoT4JJaEyZaIUHfG944M9U
- EYly6VJ3JmME4P0CP5e/X4F2iL7yku3nro4bNtpwYuQcfJ7YpW7lT7Bg5ya2KM1OG5330SUEn
- Y4CsCcIvaVMmHqQUHtRVzDRkWL7MlEz3fTkyLqa9tpkpTJ9P0X9boilbyirr1kl4Ng7iOL76k
- Y4aBBtBsHomvoiSGBITFfRPqIteGJZ2cmgpJHTA==
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-=E2=80=A6
-> +++ b/drivers/crypto/chelsio/chcr_algo.c
-> @@ -1224,7 +1224,7 @@ static int chcr_handle_cipher_resp(struct skcipher=
-_request *req,
->  	wrparam.bytes =3D bytes;
->  	skb =3D create_cipher_wr(&wrparam);
->  	if (IS_ERR(skb)) {
-> -		pr_err("chcr : %s : Failed to form WR. No memory\n", __func__);
-> +		pr_err("%s : Failed to form WR. No memory\n", __func__);
->  		err =3D PTR_ERR(skb);
->  		goto unmap;
->  	}
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-I suggest to omit also a space character before the colon in such format s=
-trings.
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GPF_ with a correct flag.
+It has been compile tested.
 
-+		pr_err("%s: Failed to form WR. No memory\n", __func__);
+When memory is allocated in 'pcnet32_realloc_tx_ring()' and
+'pcnet32_realloc_rx_ring()', GFP_ATOMIC must be used because a spin_lock is
+hold.
+The call chain is:
+   pcnet32_set_ringparam
+   ** spin_lock_irqsave(&lp->lock, flags);
+   --> pcnet32_realloc_tx_ring
+   --> pcnet32_realloc_rx_ring
+   ** spin_unlock_irqrestore(&lp->lock, flags);
+
+When memory is in 'pcnet32_probe1()' and 'pcnet32_alloc_ring()', GFP_KERNEL
+can be used.
+
+While at it, update a few comments and pr_err messages to be more in line
+with the new function names.
 
 
-Would you like to apply any further fine-tuning around affected error mess=
-ages?
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
 
-Regards,
-Markus
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+---
+ drivers/net/ethernet/amd/pcnet32.c | 181 +++++++++++++----------------
+ 1 file changed, 84 insertions(+), 97 deletions(-)
+
+diff --git a/drivers/net/ethernet/amd/pcnet32.c b/drivers/net/ethernet/amd/pcnet32.c
+index f47140391f67..187b0b9a6e1d 100644
+--- a/drivers/net/ethernet/amd/pcnet32.c
++++ b/drivers/net/ethernet/amd/pcnet32.c
+@@ -250,7 +250,7 @@ struct pcnet32_access {
+ 
+ /*
+  * The first field of pcnet32_private is read by the ethernet device
+- * so the structure should be allocated using pci_alloc_consistent().
++ * so the structure should be allocated using dma_alloc_coherent().
+  */
+ struct pcnet32_private {
+ 	struct pcnet32_init_block *init_block;
+@@ -258,7 +258,7 @@ struct pcnet32_private {
+ 	struct pcnet32_rx_head	*rx_ring;
+ 	struct pcnet32_tx_head	*tx_ring;
+ 	dma_addr_t		init_dma_addr;/* DMA address of beginning of the init block,
+-				   returned by pci_alloc_consistent */
++				   returned by dma_alloc_coherent */
+ 	struct pci_dev		*pci_dev;
+ 	const char		*name;
+ 	/* The saved address of a sent-in-place packet/buffer, for skfree(). */
+@@ -485,9 +485,9 @@ static void pcnet32_realloc_tx_ring(struct net_device *dev,
+ 	pcnet32_purge_tx_ring(dev);
+ 
+ 	new_tx_ring =
+-		pci_zalloc_consistent(lp->pci_dev,
+-				      sizeof(struct pcnet32_tx_head) * entries,
+-				      &new_ring_dma_addr);
++		dma_alloc_coherent(&lp->pci_dev->dev,
++				   sizeof(struct pcnet32_tx_head) * entries,
++				   &new_ring_dma_addr, GFP_ATOMIC);
+ 	if (new_tx_ring == NULL)
+ 		return;
+ 
+@@ -501,9 +501,9 @@ static void pcnet32_realloc_tx_ring(struct net_device *dev,
+ 
+ 	kfree(lp->tx_skbuff);
+ 	kfree(lp->tx_dma_addr);
+-	pci_free_consistent(lp->pci_dev,
+-			    sizeof(struct pcnet32_tx_head) * lp->tx_ring_size,
+-			    lp->tx_ring, lp->tx_ring_dma_addr);
++	dma_free_coherent(&lp->pci_dev->dev,
++			  sizeof(struct pcnet32_tx_head) * lp->tx_ring_size,
++			  lp->tx_ring, lp->tx_ring_dma_addr);
+ 
+ 	lp->tx_ring_size = entries;
+ 	lp->tx_mod_mask = lp->tx_ring_size - 1;
+@@ -517,10 +517,9 @@ static void pcnet32_realloc_tx_ring(struct net_device *dev,
+ free_new_lists:
+ 	kfree(new_dma_addr_list);
+ free_new_tx_ring:
+-	pci_free_consistent(lp->pci_dev,
+-			    sizeof(struct pcnet32_tx_head) * entries,
+-			    new_tx_ring,
+-			    new_ring_dma_addr);
++	dma_free_coherent(&lp->pci_dev->dev,
++			  sizeof(struct pcnet32_tx_head) * entries,
++			  new_tx_ring, new_ring_dma_addr);
+ }
+ 
+ /*
+@@ -545,9 +544,9 @@ static void pcnet32_realloc_rx_ring(struct net_device *dev,
+ 	unsigned int entries = BIT(size);
+ 
+ 	new_rx_ring =
+-		pci_zalloc_consistent(lp->pci_dev,
+-				      sizeof(struct pcnet32_rx_head) * entries,
+-				      &new_ring_dma_addr);
++		dma_alloc_coherent(&lp->pci_dev->dev,
++				   sizeof(struct pcnet32_rx_head) * entries,
++				   &new_ring_dma_addr, GFP_ATOMIC);
+ 	if (new_rx_ring == NULL)
+ 		return;
+ 
+@@ -580,10 +579,9 @@ static void pcnet32_realloc_rx_ring(struct net_device *dev,
+ 		skb_reserve(rx_skbuff, NET_IP_ALIGN);
+ 
+ 		new_dma_addr_list[new] =
+-			    pci_map_single(lp->pci_dev, rx_skbuff->data,
+-					   PKT_BUF_SIZE, PCI_DMA_FROMDEVICE);
+-		if (pci_dma_mapping_error(lp->pci_dev,
+-					  new_dma_addr_list[new])) {
++			    dma_map_single(&lp->pci_dev->dev, rx_skbuff->data,
++					   PKT_BUF_SIZE, DMA_FROM_DEVICE);
++		if (dma_mapping_error(&lp->pci_dev->dev, new_dma_addr_list[new])) {
+ 			netif_err(lp, drv, dev, "%s dma mapping failed\n",
+ 				  __func__);
+ 			dev_kfree_skb(new_skb_list[new]);
+@@ -596,22 +594,20 @@ static void pcnet32_realloc_rx_ring(struct net_device *dev,
+ 	/* and free any unneeded buffers */
+ 	for (; new < lp->rx_ring_size; new++) {
+ 		if (lp->rx_skbuff[new]) {
+-			if (!pci_dma_mapping_error(lp->pci_dev,
+-						   lp->rx_dma_addr[new]))
+-				pci_unmap_single(lp->pci_dev,
++			if (!dma_mapping_error(&lp->pci_dev->dev, lp->rx_dma_addr[new]))
++				dma_unmap_single(&lp->pci_dev->dev,
+ 						 lp->rx_dma_addr[new],
+ 						 PKT_BUF_SIZE,
+-						 PCI_DMA_FROMDEVICE);
++						 DMA_FROM_DEVICE);
+ 			dev_kfree_skb(lp->rx_skbuff[new]);
+ 		}
+ 	}
+ 
+ 	kfree(lp->rx_skbuff);
+ 	kfree(lp->rx_dma_addr);
+-	pci_free_consistent(lp->pci_dev,
+-			    sizeof(struct pcnet32_rx_head) *
+-			    lp->rx_ring_size, lp->rx_ring,
+-			    lp->rx_ring_dma_addr);
++	dma_free_coherent(&lp->pci_dev->dev,
++			  sizeof(struct pcnet32_rx_head) * lp->rx_ring_size,
++			  lp->rx_ring, lp->rx_ring_dma_addr);
+ 
+ 	lp->rx_ring_size = entries;
+ 	lp->rx_mod_mask = lp->rx_ring_size - 1;
+@@ -625,12 +621,11 @@ static void pcnet32_realloc_rx_ring(struct net_device *dev,
+ free_all_new:
+ 	while (--new >= lp->rx_ring_size) {
+ 		if (new_skb_list[new]) {
+-			if (!pci_dma_mapping_error(lp->pci_dev,
+-						   new_dma_addr_list[new]))
+-				pci_unmap_single(lp->pci_dev,
++			if (!dma_mapping_error(&lp->pci_dev->dev, new_dma_addr_list[new]))
++				dma_unmap_single(&lp->pci_dev->dev,
+ 						 new_dma_addr_list[new],
+ 						 PKT_BUF_SIZE,
+-						 PCI_DMA_FROMDEVICE);
++						 DMA_FROM_DEVICE);
+ 			dev_kfree_skb(new_skb_list[new]);
+ 		}
+ 	}
+@@ -638,10 +633,9 @@ static void pcnet32_realloc_rx_ring(struct net_device *dev,
+ free_new_lists:
+ 	kfree(new_dma_addr_list);
+ free_new_rx_ring:
+-	pci_free_consistent(lp->pci_dev,
+-			    sizeof(struct pcnet32_rx_head) * entries,
+-			    new_rx_ring,
+-			    new_ring_dma_addr);
++	dma_free_coherent(&lp->pci_dev->dev,
++			  sizeof(struct pcnet32_rx_head) * entries,
++			  new_rx_ring, new_ring_dma_addr);
+ }
+ 
+ static void pcnet32_purge_rx_ring(struct net_device *dev)
+@@ -654,12 +648,11 @@ static void pcnet32_purge_rx_ring(struct net_device *dev)
+ 		lp->rx_ring[i].status = 0;	/* CPU owns buffer */
+ 		wmb();		/* Make sure adapter sees owner change */
+ 		if (lp->rx_skbuff[i]) {
+-			if (!pci_dma_mapping_error(lp->pci_dev,
+-						   lp->rx_dma_addr[i]))
+-				pci_unmap_single(lp->pci_dev,
++			if (!dma_mapping_error(&lp->pci_dev->dev, lp->rx_dma_addr[i]))
++				dma_unmap_single(&lp->pci_dev->dev,
+ 						 lp->rx_dma_addr[i],
+ 						 PKT_BUF_SIZE,
+-						 PCI_DMA_FROMDEVICE);
++						 DMA_FROM_DEVICE);
+ 			dev_kfree_skb_any(lp->rx_skbuff[i]);
+ 		}
+ 		lp->rx_skbuff[i] = NULL;
+@@ -1036,9 +1029,9 @@ static int pcnet32_loopback_test(struct net_device *dev, uint64_t * data1)
+ 			*packet++ = i;
+ 
+ 		lp->tx_dma_addr[x] =
+-			pci_map_single(lp->pci_dev, skb->data, skb->len,
+-				       PCI_DMA_TODEVICE);
+-		if (pci_dma_mapping_error(lp->pci_dev, lp->tx_dma_addr[x])) {
++			dma_map_single(&lp->pci_dev->dev, skb->data, skb->len,
++				       DMA_TO_DEVICE);
++		if (dma_mapping_error(&lp->pci_dev->dev, lp->tx_dma_addr[x])) {
+ 			netif_printk(lp, hw, KERN_DEBUG, dev,
+ 				     "DMA mapping error at line: %d!\n",
+ 				     __LINE__);
+@@ -1226,21 +1219,21 @@ static void pcnet32_rx_entry(struct net_device *dev,
+ 		 */
+ 		if (newskb) {
+ 			skb_reserve(newskb, NET_IP_ALIGN);
+-			new_dma_addr = pci_map_single(lp->pci_dev,
++			new_dma_addr = dma_map_single(&lp->pci_dev->dev,
+ 						      newskb->data,
+ 						      PKT_BUF_SIZE,
+-						      PCI_DMA_FROMDEVICE);
+-			if (pci_dma_mapping_error(lp->pci_dev, new_dma_addr)) {
++						      DMA_FROM_DEVICE);
++			if (dma_mapping_error(&lp->pci_dev->dev, new_dma_addr)) {
+ 				netif_err(lp, rx_err, dev,
+ 					  "DMA mapping error.\n");
+ 				dev_kfree_skb(newskb);
+ 				skb = NULL;
+ 			} else {
+ 				skb = lp->rx_skbuff[entry];
+-				pci_unmap_single(lp->pci_dev,
++				dma_unmap_single(&lp->pci_dev->dev,
+ 						 lp->rx_dma_addr[entry],
+ 						 PKT_BUF_SIZE,
+-						 PCI_DMA_FROMDEVICE);
++						 DMA_FROM_DEVICE);
+ 				skb_put(skb, pkt_len);
+ 				lp->rx_skbuff[entry] = newskb;
+ 				lp->rx_dma_addr[entry] = new_dma_addr;
+@@ -1259,17 +1252,15 @@ static void pcnet32_rx_entry(struct net_device *dev,
+ 	if (!rx_in_place) {
+ 		skb_reserve(skb, NET_IP_ALIGN);
+ 		skb_put(skb, pkt_len);	/* Make room */
+-		pci_dma_sync_single_for_cpu(lp->pci_dev,
+-					    lp->rx_dma_addr[entry],
+-					    pkt_len,
+-					    PCI_DMA_FROMDEVICE);
++		dma_sync_single_for_cpu(&lp->pci_dev->dev,
++					lp->rx_dma_addr[entry], pkt_len,
++					DMA_FROM_DEVICE);
+ 		skb_copy_to_linear_data(skb,
+ 				 (unsigned char *)(lp->rx_skbuff[entry]->data),
+ 				 pkt_len);
+-		pci_dma_sync_single_for_device(lp->pci_dev,
+-					       lp->rx_dma_addr[entry],
+-					       pkt_len,
+-					       PCI_DMA_FROMDEVICE);
++		dma_sync_single_for_device(&lp->pci_dev->dev,
++					   lp->rx_dma_addr[entry], pkt_len,
++					   DMA_FROM_DEVICE);
+ 	}
+ 	dev->stats.rx_bytes += skb->len;
+ 	skb->protocol = eth_type_trans(skb, dev);
+@@ -1358,10 +1349,10 @@ static int pcnet32_tx(struct net_device *dev)
+ 
+ 		/* We must free the original skb */
+ 		if (lp->tx_skbuff[entry]) {
+-			pci_unmap_single(lp->pci_dev,
++			dma_unmap_single(&lp->pci_dev->dev,
+ 					 lp->tx_dma_addr[entry],
+-					 lp->tx_skbuff[entry]->
+-					 len, PCI_DMA_TODEVICE);
++					 lp->tx_skbuff[entry]->len,
++					 DMA_TO_DEVICE);
+ 			dev_kfree_skb_any(lp->tx_skbuff[entry]);
+ 			lp->tx_skbuff[entry] = NULL;
+ 			lp->tx_dma_addr[entry] = 0;
+@@ -1551,7 +1542,7 @@ pcnet32_probe_pci(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		goto err_disable_dev;
+ 	}
+ 
+-	err = pci_set_dma_mask(pdev, PCNET32_DMA_MASK);
++	err = dma_set_mask(&pdev->dev, PCNET32_DMA_MASK);
+ 	if (err) {
+ 		if (pcnet32_debug & NETIF_MSG_PROBE)
+ 			pr_err("architecture does not support 32bit PCI busmaster DMA\n");
+@@ -1834,12 +1825,13 @@ pcnet32_probe1(unsigned long ioaddr, int shared, struct pci_dev *pdev)
+ 
+ 	dev->base_addr = ioaddr;
+ 	lp = netdev_priv(dev);
+-	/* pci_alloc_consistent returns page-aligned memory, so we do not have to check the alignment */
+-	lp->init_block = pci_alloc_consistent(pdev, sizeof(*lp->init_block),
+-					      &lp->init_dma_addr);
++	/* dma_alloc_coherent returns page-aligned memory, so we do not have to check the alignment */
++	lp->init_block = dma_alloc_coherent(&pdev->dev,
++					    sizeof(*lp->init_block),
++					    &lp->init_dma_addr, GFP_KERNEL);
+ 	if (!lp->init_block) {
+ 		if (pcnet32_debug & NETIF_MSG_PROBE)
+-			pr_err("Consistent memory allocation failed\n");
++			pr_err("Coherent memory allocation failed\n");
+ 		ret = -ENOMEM;
+ 		goto err_free_netdev;
+ 	}
+@@ -1998,8 +1990,8 @@ pcnet32_probe1(unsigned long ioaddr, int shared, struct pci_dev *pdev)
+ 
+ err_free_ring:
+ 	pcnet32_free_ring(dev);
+-	pci_free_consistent(lp->pci_dev, sizeof(*lp->init_block),
+-			    lp->init_block, lp->init_dma_addr);
++	dma_free_coherent(&lp->pci_dev->dev, sizeof(*lp->init_block),
++			  lp->init_block, lp->init_dma_addr);
+ err_free_netdev:
+ 	free_netdev(dev);
+ err_release_region:
+@@ -2012,21 +2004,19 @@ static int pcnet32_alloc_ring(struct net_device *dev, const char *name)
+ {
+ 	struct pcnet32_private *lp = netdev_priv(dev);
+ 
+-	lp->tx_ring = pci_alloc_consistent(lp->pci_dev,
+-					   sizeof(struct pcnet32_tx_head) *
+-					   lp->tx_ring_size,
+-					   &lp->tx_ring_dma_addr);
++	lp->tx_ring = dma_alloc_coherent(&lp->pci_dev->dev,
++					 sizeof(struct pcnet32_tx_head) * lp->tx_ring_size,
++					 &lp->tx_ring_dma_addr, GFP_KERNEL);
+ 	if (lp->tx_ring == NULL) {
+-		netif_err(lp, drv, dev, "Consistent memory allocation failed\n");
++		netif_err(lp, drv, dev, "Coherent memory allocation failed\n");
+ 		return -ENOMEM;
+ 	}
+ 
+-	lp->rx_ring = pci_alloc_consistent(lp->pci_dev,
+-					   sizeof(struct pcnet32_rx_head) *
+-					   lp->rx_ring_size,
+-					   &lp->rx_ring_dma_addr);
++	lp->rx_ring = dma_alloc_coherent(&lp->pci_dev->dev,
++					 sizeof(struct pcnet32_rx_head) * lp->rx_ring_size,
++					 &lp->rx_ring_dma_addr, GFP_KERNEL);
+ 	if (lp->rx_ring == NULL) {
+-		netif_err(lp, drv, dev, "Consistent memory allocation failed\n");
++		netif_err(lp, drv, dev, "Coherent memory allocation failed\n");
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -2070,18 +2060,16 @@ static void pcnet32_free_ring(struct net_device *dev)
+ 	lp->rx_dma_addr = NULL;
+ 
+ 	if (lp->tx_ring) {
+-		pci_free_consistent(lp->pci_dev,
+-				    sizeof(struct pcnet32_tx_head) *
+-				    lp->tx_ring_size, lp->tx_ring,
+-				    lp->tx_ring_dma_addr);
++		dma_free_coherent(&lp->pci_dev->dev,
++				  sizeof(struct pcnet32_tx_head) * lp->tx_ring_size,
++				  lp->tx_ring, lp->tx_ring_dma_addr);
+ 		lp->tx_ring = NULL;
+ 	}
+ 
+ 	if (lp->rx_ring) {
+-		pci_free_consistent(lp->pci_dev,
+-				    sizeof(struct pcnet32_rx_head) *
+-				    lp->rx_ring_size, lp->rx_ring,
+-				    lp->rx_ring_dma_addr);
++		dma_free_coherent(&lp->pci_dev->dev,
++				  sizeof(struct pcnet32_rx_head) * lp->rx_ring_size,
++				  lp->rx_ring, lp->rx_ring_dma_addr);
+ 		lp->rx_ring = NULL;
+ 	}
+ }
+@@ -2342,12 +2330,11 @@ static void pcnet32_purge_tx_ring(struct net_device *dev)
+ 		lp->tx_ring[i].status = 0;	/* CPU owns buffer */
+ 		wmb();		/* Make sure adapter sees owner change */
+ 		if (lp->tx_skbuff[i]) {
+-			if (!pci_dma_mapping_error(lp->pci_dev,
+-						   lp->tx_dma_addr[i]))
+-				pci_unmap_single(lp->pci_dev,
++			if (!dma_mapping_error(&lp->pci_dev->dev, lp->tx_dma_addr[i]))
++				dma_unmap_single(&lp->pci_dev->dev,
+ 						 lp->tx_dma_addr[i],
+ 						 lp->tx_skbuff[i]->len,
+-						 PCI_DMA_TODEVICE);
++						 DMA_TO_DEVICE);
+ 			dev_kfree_skb_any(lp->tx_skbuff[i]);
+ 		}
+ 		lp->tx_skbuff[i] = NULL;
+@@ -2382,10 +2369,9 @@ static int pcnet32_init_ring(struct net_device *dev)
+ 		rmb();
+ 		if (lp->rx_dma_addr[i] == 0) {
+ 			lp->rx_dma_addr[i] =
+-			    pci_map_single(lp->pci_dev, rx_skbuff->data,
+-					   PKT_BUF_SIZE, PCI_DMA_FROMDEVICE);
+-			if (pci_dma_mapping_error(lp->pci_dev,
+-						  lp->rx_dma_addr[i])) {
++			    dma_map_single(&lp->pci_dev->dev, rx_skbuff->data,
++					   PKT_BUF_SIZE, DMA_FROM_DEVICE);
++			if (dma_mapping_error(&lp->pci_dev->dev, lp->rx_dma_addr[i])) {
+ 				/* there is not much we can do at this point */
+ 				netif_err(lp, drv, dev,
+ 					  "%s pci dma mapping error\n",
+@@ -2523,8 +2509,9 @@ static netdev_tx_t pcnet32_start_xmit(struct sk_buff *skb,
+ 	lp->tx_ring[entry].misc = 0x00000000;
+ 
+ 	lp->tx_dma_addr[entry] =
+-	    pci_map_single(lp->pci_dev, skb->data, skb->len, PCI_DMA_TODEVICE);
+-	if (pci_dma_mapping_error(lp->pci_dev, lp->tx_dma_addr[entry])) {
++	    dma_map_single(&lp->pci_dev->dev, skb->data, skb->len,
++			   DMA_TO_DEVICE);
++	if (dma_mapping_error(&lp->pci_dev->dev, lp->tx_dma_addr[entry])) {
+ 		dev_kfree_skb_any(skb);
+ 		dev->stats.tx_dropped++;
+ 		goto drop_packet;
+@@ -2947,8 +2934,8 @@ static void pcnet32_remove_one(struct pci_dev *pdev)
+ 		unregister_netdev(dev);
+ 		pcnet32_free_ring(dev);
+ 		release_region(dev->base_addr, PCNET32_TOTAL_SIZE);
+-		pci_free_consistent(lp->pci_dev, sizeof(*lp->init_block),
+-				    lp->init_block, lp->init_dma_addr);
++		dma_free_coherent(&lp->pci_dev->dev, sizeof(*lp->init_block),
++				  lp->init_block, lp->init_dma_addr);
+ 		free_netdev(dev);
+ 		pci_disable_device(pdev);
+ 	}
+@@ -3030,8 +3017,8 @@ static void __exit pcnet32_cleanup_module(void)
+ 		unregister_netdev(pcnet32_dev);
+ 		pcnet32_free_ring(pcnet32_dev);
+ 		release_region(pcnet32_dev->base_addr, PCNET32_TOTAL_SIZE);
+-		pci_free_consistent(lp->pci_dev, sizeof(*lp->init_block),
+-				    lp->init_block, lp->init_dma_addr);
++		dma_free_coherent(&lp->pci_dev->dev, sizeof(*lp->init_block),
++				  lp->init_block, lp->init_dma_addr);
+ 		free_netdev(pcnet32_dev);
+ 		pcnet32_dev = next_dev;
+ 	}
+-- 
+2.25.1
+

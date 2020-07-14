@@ -2,65 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46B4421EE8F
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 13:00:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7210621EE85
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 12:59:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727826AbgGNLAP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jul 2020 07:00:15 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:41746 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726534AbgGNLAO (ORCPT
+        id S1727097AbgGNK7s (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jul 2020 06:59:48 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:47952 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727043AbgGNK7r (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jul 2020 07:00:14 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06EAutPp077213;
-        Tue, 14 Jul 2020 10:59:41 GMT
+        Tue, 14 Jul 2020 06:59:47 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06EAw4hA041130;
+        Tue, 14 Jul 2020 10:59:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=1x6qwlrKTPePi024w3X15nL5DpllLeKkUGjkROHYtT8=;
- b=Kw4uvrnzymlb90KBHi07zkkSPrLT4fIr5u1kmOAECAjsi1kvliA62FDGeByGpzUBZmm2
- WUQnIsoiXmDxJQcxuVSKSNEXlG1ntqlw+wY6uyseKegDCd+7eJeudidIkjGVxCgMnfIC
- WVAMSq3k4wyG3KAXvGvvy+L/Zan1P4EgjrNXodtj30mtQaABdYWgJehmkTAe61WK3S4X
- TZD9se17A/OqC7faf80jAVP9Ck3u/AT3FrbB2phUoOcogcnABMqpi47hAkdw0gyPjRdR
- 4J3pmoHJn8w6S8hCidF1sXbaXzMvjvGsTJWvhp9hxetEaX3pquI4OgkJXLO9U3op6PCz RQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 32762ncj23-1
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=FVZzYXiUXmNYZ2rp7CjKtJQ3hhXEWdRzRUoSe6Wbctg=;
+ b=EFM7kEbYM0sjw6aLLBovqJFmAwYcL7/G6ByJwO7JFdfQy5WZmg7kfsnrsijFmq7zqq2k
+ q0sRDC4fekv7O8j9eBzhbSSJS6FvYJJd+j/HwawZADvVoVFY/8RONF+7QboHdmcJmqqR
+ bi8Xto/rHfZDCjOHhDg8u/4uzsTVyWxrIu8G2xsPuW0K0doUHH33KmEu0dlu+zXz51GZ
+ mFinJhbNHCbHWBgGltuZpGAuv2R0vxKkyUsVg/nA4/s1Sc1uMdPuUqqTr6UmeA5Ec7bU
+ Q+LvLFNGmnAfgr+H3FkyrrlerJBGNPmBtXvNPIrazHoSlsPfwp5CLYM5E+WCedKcS9iT Dg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 3274ur4qg3-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 14 Jul 2020 10:59:41 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06EAva5t109870;
-        Tue, 14 Jul 2020 10:57:41 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 327q0p0mcy-1
+        Tue, 14 Jul 2020 10:59:37 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06EAxbLM088296;
+        Tue, 14 Jul 2020 10:59:37 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 327q6s29p1-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 14 Jul 2020 10:57:40 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06EAvdhT023500;
-        Tue, 14 Jul 2020 10:57:39 GMT
-Received: from mwanda (/41.57.98.10)
+        Tue, 14 Jul 2020 10:59:37 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06EAxPic017937;
+        Tue, 14 Jul 2020 10:59:25 GMT
+Received: from kadam (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 14 Jul 2020 03:57:39 -0700
-Date:   Tue, 14 Jul 2020 13:57:32 +0300
+        with ESMTP ; Tue, 14 Jul 2020 03:59:25 -0700
+Date:   Tue, 14 Jul 2020 13:59:18 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Keith Busch <kbusch@kernel.org>
-Cc:     Jens Axboe <axboe@fb.com>, Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        linux-nvme@lists.infradead.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] nvme: remove an unnecessary condition
-Message-ID: <20200714105732.GD294318@mwanda>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>, linux-pm@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
+Subject: Re: [PATCH -next] PM / devfreq: Fix missing unlock on error in
+ devfreq_add_device()
+Message-ID: <20200714105918.GB2571@kadam>
+References: <20200714063025.118829-1-weiyongjun1@huawei.com>
+ <20200714093758.GW2549@kadam>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+In-Reply-To: <20200714093758.GW2549@kadam>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 spamscore=0
- mlxlogscore=999 bulkscore=0 adultscore=0 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007140084
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=2
+ phishscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007140084
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 spamscore=0
- clxscore=1011 priorityscore=1501 mlxlogscore=999 lowpriorityscore=0
- bulkscore=0 suspectscore=0 phishscore=0 adultscore=0 impostorscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 impostorscore=0
+ suspectscore=2 phishscore=0 spamscore=0 mlxlogscore=999 malwarescore=0
+ mlxscore=0 priorityscore=1501 adultscore=0 bulkscore=0 clxscore=1015
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
  definitions=main-2007140084
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -68,29 +74,34 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-"v" is an unsigned int so it can't be more than UINT_MAX.  Removing this
-check makes it easier to preserve the error code as well.
+On Tue, Jul 14, 2020 at 12:37:58PM +0300, Dan Carpenter wrote:
+> On Tue, Jul 14, 2020 at 06:30:25AM +0000, Wei Yongjun wrote:
+> > Add the missing unlock before return from function devfreq_add_device()
+> > in the error handling case.
+> > 
+> > Fixes: d7c46505a7ad ("PM / devfreq: Add support delayed timer for polling mode")
+> > Reported-by: Hulk Robot <hulkci@huawei.com>
+> > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> > ---
+> >  drivers/devfreq/devfreq.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
+> > index 5320c3b37f35..2b54a59bb281 100644
+> > --- a/drivers/devfreq/devfreq.c
+> > +++ b/drivers/devfreq/devfreq.c
+> > @@ -788,6 +788,7 @@ struct devfreq *devfreq_add_device(struct device *dev,
+> >  
+> >  	if (devfreq->profile->timer < 0
+> >  		|| devfreq->profile->timer >= DEVFREQ_TIMER_NUM) {
+> > +		mutex_unlock(&devfreq->lock);
+> >  		goto err_out;
+> 
+> This should be "goto err_dev;" and the unlock is not required because
+> we free "devfreq".
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/nvme/host/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Also the error code needs to be set on this error path.
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 3d00ea4e7146..5fb5e8ba531b 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -3586,8 +3586,8 @@ static ssize_t nvme_ctrl_reconnect_delay_store(struct device *dev,
- 	int err;
- 
- 	err = kstrtou32(buf, 10, &v);
--	if (err || v > UINT_MAX)
--		return -EINVAL;
-+	if (err)
-+		return err;
- 
- 	ctrl->opts->reconnect_delay = v;
- 	return count;
--- 
-2.27.0
+regards,
+dan carpenter
 

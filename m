@@ -2,65 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F70921EE7F
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 12:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C297A21EE72
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 12:56:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727870AbgGNK5l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jul 2020 06:57:41 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:45056 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726252AbgGNK5l (ORCPT
+        id S1727118AbgGNK4p (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jul 2020 06:56:45 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:36518 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726352AbgGNK4p (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jul 2020 06:57:41 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06EAqIgS036809;
-        Tue, 14 Jul 2020 10:57:37 GMT
+        Tue, 14 Jul 2020 06:56:45 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06EArVXd074243;
+        Tue, 14 Jul 2020 10:56:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=OG8hS9cwfSnDOpvANl6+TVQVo1bridrWw7iRZgx0ChM=;
- b=lQ6y9kLpgvVKhYc3GUG5w0lpq7kGlRxuggRWpwtJ/nF/bTWjiXY0NJY6LIuiqld/Yg1t
- svOfA3GLXc6hkInjsiZUtagO4OuC62RQkAExR3vHo52zADdLFu7KSGr6BXq1uV4GlOFm
- qR3SPWjg0HZSdqmn8Kp/3QZGE5Bt74NZ9ciFyyjJ3Lc1Kpcvz7HNFXBVc7VO7oFYvd83
- W/7KegvTJu4rrjOjQmY3n8N9T9iUrTimgxiuZac/D4Kpf7ycpubXsS3FWgHgjgu00lh9
- NgMql5tfsNv7puYORnjgLRLX+/Abdr/Olx28Hk9+x+2a2Rpz7oR62CA3hmPW2HdA6Uda 4Q== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 3274ur4q9f-1
+ bh=ehXGBW7cF2hucskYfoTY5drfHVwNM1dijmT3+mi5klE=;
+ b=Dw1vLfZ7tkpOAnL7cOzD59qqv7/tvTWN1gy+qsOJUZ5ZjTPs1H1H1egszhRZlssUrsS5
+ sExjWZDNybMOxusCBEdBbutdRfzo2Nv3J60aUK2wxmihHkWWLzcNli6Era9u/7tkmYSH
+ Jlj7sjz+AUX+DdTcYvd1rUFDFosSNNos9MNtiKf/MA2BT8kW+fZmt/If2Jr3on1Idw0f
+ tnvWf4E8G6gxsHu6KuZLYLEniXdg2voCND/axcpGa9rkQyg5dIGm7WmTOIpI2GRA2/Ef
+ dYu59D5XyLOEs6FgocPhT2429Y7nyjBSdIRIF29326OJOJowVwbsEd1t3dYFWbZ4JOFW AQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 32762nchnv-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 14 Jul 2020 10:57:37 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06EArY9S049145;
-        Tue, 14 Jul 2020 10:55:36 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 327qb3nsk8-1
+        Tue, 14 Jul 2020 10:56:33 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06EAra7X058555;
+        Tue, 14 Jul 2020 10:56:32 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 327q6s25wn-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 14 Jul 2020 10:55:36 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06EAtZN7012720;
-        Tue, 14 Jul 2020 10:55:35 GMT
+        Tue, 14 Jul 2020 10:56:32 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06EAuU7V015773;
+        Tue, 14 Jul 2020 10:56:30 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 14 Jul 2020 03:55:35 -0700
-Date:   Tue, 14 Jul 2020 13:55:29 +0300
+        with ESMTP ; Tue, 14 Jul 2020 03:56:29 -0700
+Date:   Tue, 14 Jul 2020 13:56:22 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
+To:     Pablo Neira Ayuso <pablo@netfilter.org>
+Cc:     Jozsef Kadlecsik <kadlec@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        Jakub Kicinski <kuba@kernel.org>,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] media: atomisp: Fix error code in ov5693_probe()
-Message-ID: <20200714105529.GA294318@mwanda>
+Subject: [PATCH] netfilter: nf_tables: Fix a use after free in
+ nft_immediate_destroy()
+Message-ID: <20200714105622.GB294318@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
- mlxscore=0 spamscore=0 phishscore=0 suspectscore=2 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0
+ phishscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2007140083
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 impostorscore=0
- suspectscore=2 phishscore=0 spamscore=0 mlxlogscore=999 malwarescore=0
- mlxscore=0 priorityscore=1501 adultscore=0 bulkscore=0 clxscore=1015
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 spamscore=0
+ clxscore=1011 priorityscore=1501 mlxlogscore=999 lowpriorityscore=0
+ bulkscore=0 suspectscore=0 phishscore=0 adultscore=0 impostorscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
  definitions=main-2007140083
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -68,40 +71,39 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If gmin_camera_platform_data() returns NULL then we should return a
-negative error instead of success.
+The nf_tables_rule_release() function frees "rule" so we have to use
+the _safe() version of list_for_each_entry().
 
-Fixes: 90ebe55ab886 ("media: staging: atomisp: Add driver prefix to Kconfig option and module names")
+Fixes: d0e2c7de92c7 ("netfilter: nf_tables: add NFT_CHAIN_BINDING")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/staging/media/atomisp/i2c/ov5693/atomisp-ov5693.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/netfilter/nft_immediate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/media/atomisp/i2c/ov5693/atomisp-ov5693.c b/drivers/staging/media/atomisp/i2c/ov5693/atomisp-ov5693.c
-index 97ab10bc45ca..e698b63d6cb7 100644
---- a/drivers/staging/media/atomisp/i2c/ov5693/atomisp-ov5693.c
-+++ b/drivers/staging/media/atomisp/i2c/ov5693/atomisp-ov5693.c
-@@ -1899,7 +1899,7 @@ static int ov5693_probe(struct i2c_client *client)
+diff --git a/net/netfilter/nft_immediate.c b/net/netfilter/nft_immediate.c
+index 9e556638bb32..c63eb3b17178 100644
+--- a/net/netfilter/nft_immediate.c
++++ b/net/netfilter/nft_immediate.c
+@@ -103,9 +103,9 @@ static void nft_immediate_destroy(const struct nft_ctx *ctx,
  {
- 	struct ov5693_device *dev;
- 	int i2c;
--	int ret = 0;
-+	int ret;
- 	void *pdata;
- 	unsigned int i;
+ 	const struct nft_immediate_expr *priv = nft_expr_priv(expr);
+ 	const struct nft_data *data = &priv->data;
++	struct nft_rule *rule, *n;
+ 	struct nft_ctx chain_ctx;
+ 	struct nft_chain *chain;
+-	struct nft_rule *rule;
  
-@@ -1929,8 +1929,10 @@ static int ov5693_probe(struct i2c_client *client)
- 	pdata = gmin_camera_platform_data(&dev->sd,
- 					  ATOMISP_INPUT_FORMAT_RAW_10,
- 					  atomisp_bayer_order_bggr);
--	if (!pdata)
-+	if (!pdata) {
-+		ret = -EINVAL;
- 		goto out_free;
-+	}
+ 	if (priv->dreg != NFT_REG_VERDICT)
+ 		return;
+@@ -121,7 +121,7 @@ static void nft_immediate_destroy(const struct nft_ctx *ctx,
+ 		chain_ctx = *ctx;
+ 		chain_ctx.chain = chain;
  
- 	ret = ov5693_s_config(&dev->sd, client->irq, pdata);
- 	if (ret)
+-		list_for_each_entry(rule, &chain->rules, list)
++		list_for_each_entry_safe(rule, n, &chain->rules, list)
+ 			nf_tables_rule_release(&chain_ctx, rule);
+ 
+ 		nf_tables_chain_destroy(&chain_ctx);
 -- 
 2.27.0
 

@@ -2,33 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31D3B21EC2F
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 11:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8C2221EC70
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 11:14:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727771AbgGNJGa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jul 2020 05:06:30 -0400
-Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:50261 "EHLO
+        id S1726398AbgGNJOV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jul 2020 05:14:21 -0400
+Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:55156 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725816AbgGNJG2 (ORCPT
+        with ESMTP id S1726252AbgGNJOU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jul 2020 05:06:28 -0400
+        Tue, 14 Jul 2020 05:14:20 -0400
 Received: from localhost.localdomain ([93.22.39.234])
         by mwinf5d69 with ME
-        id 2x6M2300B537AcD03x6NtW; Tue, 14 Jul 2020 11:06:24 +0200
+        id 2xEE23004537AcD03xEEPM; Tue, 14 Jul 2020 11:14:17 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 14 Jul 2020 11:06:24 +0200
+X-ME-Date: Tue, 14 Jul 2020 11:14:17 +0200
 X-ME-IP: 93.22.39.234
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     davem@davemloft.net, jdmason@kudzu.us, ast@kernel.org,
-        kuba@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
-        john.fastabend@gmail.com
+To:     davem@davemloft.net, jdmason@kudzu.us, kuba@kernel.org,
+        mhabets@solarflare.com, snelson@pensando.io, mst@redhat.com,
+        vaibhavgupta40@gmail.com
 Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] net: neterion: s2io: switch from 'pci_' to 'dma_' API
-Date:   Tue, 14 Jul 2020 11:06:20 +0200
-Message-Id: <20200714090620.298884-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] net: neterion: vxge: switch from 'pci_' to 'dma_' API
+Date:   Tue, 14 Jul 2020 11:14:12 +0200
+Message-Id: <20200714091412.300211-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -39,14 +39,9 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 The wrappers in include/linux/pci-dma-compat.h should go away.
 
-The patch has been generated with the coccinelle script below and has been
-hand modified to replace GPF_ with a correct flag.
+The patch has been generated with the coccinelle script below. No GFP_
+flag needs to be corrected.
 It has been compile tested.
-
-When memory is allocated in 'init_shared_mem()' GFP_KERNEL can be used
-because this flag is already used to allocate some memory in this function.
-
-While at it, update some debug message to match the new function names.
 
 
 @@
@@ -170,401 +165,257 @@ Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 If needed, see post from Christoph Hellwig on the kernel-janitors ML:
    https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
 ---
- drivers/net/ethernet/neterion/s2io.c | 191 +++++++++++++--------------
- 1 file changed, 90 insertions(+), 101 deletions(-)
+ .../net/ethernet/neterion/vxge/vxge-config.c  | 42 ++++++------
+ .../net/ethernet/neterion/vxge/vxge-main.c    | 64 +++++++++----------
+ 2 files changed, 52 insertions(+), 54 deletions(-)
 
-diff --git a/drivers/net/ethernet/neterion/s2io.c b/drivers/net/ethernet/neterion/s2io.c
-index 15b8b1bf8163..bc94970bea45 100644
---- a/drivers/net/ethernet/neterion/s2io.c
-+++ b/drivers/net/ethernet/neterion/s2io.c
-@@ -640,11 +640,11 @@ static int init_shared_mem(struct s2io_nic *nic)
- 			int k = 0;
- 			dma_addr_t tmp_p;
- 			void *tmp_v;
--			tmp_v = pci_alloc_consistent(nic->pdev,
--						     PAGE_SIZE, &tmp_p);
-+			tmp_v = dma_alloc_coherent(&nic->pdev->dev, PAGE_SIZE,
-+						   &tmp_p, GFP_KERNEL);
- 			if (!tmp_v) {
- 				DBG_PRINT(INFO_DBG,
--					  "pci_alloc_consistent failed for TxDL\n");
-+					  "dma_alloc_coherent failed for TxDL\n");
- 				return -ENOMEM;
- 			}
- 			/* If we got a zero DMA address(can happen on
-@@ -658,11 +658,12 @@ static int init_shared_mem(struct s2io_nic *nic)
- 					  "%s: Zero DMA address for TxDL. "
- 					  "Virtual address %p\n",
- 					  dev->name, tmp_v);
--				tmp_v = pci_alloc_consistent(nic->pdev,
--							     PAGE_SIZE, &tmp_p);
-+				tmp_v = dma_alloc_coherent(&nic->pdev->dev,
-+							   PAGE_SIZE, &tmp_p,
-+							   GFP_KERNEL);
- 				if (!tmp_v) {
- 					DBG_PRINT(INFO_DBG,
--						  "pci_alloc_consistent failed for TxDL\n");
-+						  "dma_alloc_coherent failed for TxDL\n");
- 					return -ENOMEM;
- 				}
- 				mem_allocated += PAGE_SIZE;
-@@ -734,8 +735,8 @@ static int init_shared_mem(struct s2io_nic *nic)
+diff --git a/drivers/net/ethernet/neterion/vxge/vxge-config.c b/drivers/net/ethernet/neterion/vxge/vxge-config.c
+index 51cd57ab3d95..4f1f90f5e178 100644
+--- a/drivers/net/ethernet/neterion/vxge/vxge-config.c
++++ b/drivers/net/ethernet/neterion/vxge/vxge-config.c
+@@ -1102,10 +1102,10 @@ static void __vxge_hw_blockpool_destroy(struct __vxge_hw_blockpool *blockpool)
+ 	hldev = blockpool->hldev;
  
- 			rx_blocks = &ring->rx_blocks[j];
- 			size = SIZE_OF_BLOCK;	/* size is always page size */
--			tmp_v_addr = pci_alloc_consistent(nic->pdev, size,
--							  &tmp_p_addr);
-+			tmp_v_addr = dma_alloc_coherent(&nic->pdev->dev, size,
-+							&tmp_p_addr, GFP_KERNEL);
- 			if (tmp_v_addr == NULL) {
- 				/*
- 				 * In case of failure, free_shared_mem()
-@@ -835,8 +836,8 @@ static int init_shared_mem(struct s2io_nic *nic)
- 	/* Allocation and initialization of Statistics block */
- 	size = sizeof(struct stat_block);
- 	mac_control->stats_mem =
--		pci_alloc_consistent(nic->pdev, size,
--				     &mac_control->stats_mem_phy);
-+		dma_alloc_coherent(&nic->pdev->dev, size,
-+				   &mac_control->stats_mem_phy, GFP_KERNEL);
+ 	list_for_each_safe(p, n, &blockpool->free_block_list) {
+-		pci_unmap_single(hldev->pdev,
+-			((struct __vxge_hw_blockpool_entry *)p)->dma_addr,
+-			((struct __vxge_hw_blockpool_entry *)p)->length,
+-			PCI_DMA_BIDIRECTIONAL);
++		dma_unmap_single(&hldev->pdev->dev,
++				 ((struct __vxge_hw_blockpool_entry *)p)->dma_addr,
++				 ((struct __vxge_hw_blockpool_entry *)p)->length,
++				 DMA_BIDIRECTIONAL);
  
- 	if (!mac_control->stats_mem) {
- 		/*
-@@ -906,18 +907,18 @@ static void free_shared_mem(struct s2io_nic *nic)
- 			fli = &fifo->list_info[mem_blks];
- 			if (!fli->list_virt_addr)
- 				break;
--			pci_free_consistent(nic->pdev, PAGE_SIZE,
--					    fli->list_virt_addr,
--					    fli->list_phy_addr);
-+			dma_free_coherent(&nic->pdev->dev, PAGE_SIZE,
-+					  fli->list_virt_addr,
-+					  fli->list_phy_addr);
- 			swstats->mem_freed += PAGE_SIZE;
+ 		vxge_os_dma_free(hldev->pdev,
+ 			((struct __vxge_hw_blockpool_entry *)p)->memblock,
+@@ -1178,10 +1178,10 @@ __vxge_hw_blockpool_create(struct __vxge_hw_device *hldev,
+ 			goto blockpool_create_exit;
  		}
- 		/* If we got a zero DMA address during allocation,
- 		 * free the page now
- 		 */
- 		if (mac_control->zerodma_virt_addr) {
--			pci_free_consistent(nic->pdev, PAGE_SIZE,
--					    mac_control->zerodma_virt_addr,
--					    (dma_addr_t)0);
-+			dma_free_coherent(&nic->pdev->dev, PAGE_SIZE,
-+					  mac_control->zerodma_virt_addr,
-+					  (dma_addr_t)0);
- 			DBG_PRINT(INIT_DBG,
- 				  "%s: Freeing TxDL with zero DMA address. "
- 				  "Virtual address %p\n",
-@@ -939,8 +940,8 @@ static void free_shared_mem(struct s2io_nic *nic)
- 			tmp_p_addr = ring->rx_blocks[j].block_dma_addr;
- 			if (tmp_v_addr == NULL)
- 				break;
--			pci_free_consistent(nic->pdev, size,
--					    tmp_v_addr, tmp_p_addr);
-+			dma_free_coherent(&nic->pdev->dev, size, tmp_v_addr,
-+					  tmp_p_addr);
- 			swstats->mem_freed += size;
- 			kfree(ring->rx_blocks[j].rxds);
- 			swstats->mem_freed += sizeof(struct rxd_info) *
-@@ -993,10 +994,9 @@ static void free_shared_mem(struct s2io_nic *nic)
  
- 	if (mac_control->stats_mem) {
- 		swstats->mem_freed += mac_control->stats_mem_sz;
--		pci_free_consistent(nic->pdev,
--				    mac_control->stats_mem_sz,
--				    mac_control->stats_mem,
--				    mac_control->stats_mem_phy);
-+		dma_free_coherent(&nic->pdev->dev, mac_control->stats_mem_sz,
-+				  mac_control->stats_mem,
-+				  mac_control->stats_mem_phy);
- 	}
- }
- 
-@@ -2316,8 +2316,9 @@ static struct sk_buff *s2io_txdl_getskb(struct fifo_info *fifo_data,
- 
- 	txds = txdlp;
- 	if (txds->Host_Control == (u64)(long)fifo_data->ufo_in_band_v) {
--		pci_unmap_single(nic->pdev, (dma_addr_t)txds->Buffer_Pointer,
--				 sizeof(u64), PCI_DMA_TODEVICE);
-+		dma_unmap_single(&nic->pdev->dev,
-+				 (dma_addr_t)txds->Buffer_Pointer,
-+				 sizeof(u64), DMA_TO_DEVICE);
- 		txds++;
+-		dma_addr = pci_map_single(hldev->pdev, memblock,
+-				VXGE_HW_BLOCK_SIZE, PCI_DMA_BIDIRECTIONAL);
+-		if (unlikely(pci_dma_mapping_error(hldev->pdev,
+-				dma_addr))) {
++		dma_addr = dma_map_single(&hldev->pdev->dev, memblock,
++					  VXGE_HW_BLOCK_SIZE,
++					  DMA_BIDIRECTIONAL);
++		if (unlikely(dma_mapping_error(&hldev->pdev->dev, dma_addr))) {
+ 			vxge_os_dma_free(hldev->pdev, memblock, &acc_handle);
+ 			__vxge_hw_blockpool_destroy(blockpool);
+ 			status = VXGE_HW_ERR_OUT_OF_MEMORY;
+@@ -2264,10 +2264,10 @@ static void vxge_hw_blockpool_block_add(struct __vxge_hw_device *devh,
+ 		goto exit;
  	}
  
-@@ -2326,8 +2327,8 @@ static struct sk_buff *s2io_txdl_getskb(struct fifo_info *fifo_data,
- 		memset(txdlp, 0, (sizeof(struct TxD) * fifo_data->max_txds));
- 		return NULL;
+-	dma_addr = pci_map_single(devh->pdev, block_addr, length,
+-				PCI_DMA_BIDIRECTIONAL);
++	dma_addr = dma_map_single(&devh->pdev->dev, block_addr, length,
++				  DMA_BIDIRECTIONAL);
+ 
+-	if (unlikely(pci_dma_mapping_error(devh->pdev, dma_addr))) {
++	if (unlikely(dma_mapping_error(&devh->pdev->dev, dma_addr))) {
+ 		vxge_os_dma_free(devh->pdev, block_addr, &acc_handle);
+ 		blockpool->req_out--;
+ 		goto exit;
+@@ -2359,11 +2359,10 @@ static void *__vxge_hw_blockpool_malloc(struct __vxge_hw_device *devh, u32 size,
+ 		if (!memblock)
+ 			goto exit;
+ 
+-		dma_object->addr = pci_map_single(devh->pdev, memblock, size,
+-					PCI_DMA_BIDIRECTIONAL);
++		dma_object->addr = dma_map_single(&devh->pdev->dev, memblock,
++						  size, DMA_BIDIRECTIONAL);
+ 
+-		if (unlikely(pci_dma_mapping_error(devh->pdev,
+-				dma_object->addr))) {
++		if (unlikely(dma_mapping_error(&devh->pdev->dev, dma_object->addr))) {
+ 			vxge_os_dma_free(devh->pdev, memblock,
+ 				&dma_object->acc_handle);
+ 			memblock = NULL;
+@@ -2410,11 +2409,10 @@ __vxge_hw_blockpool_blocks_remove(struct __vxge_hw_blockpool *blockpool)
+ 		if (blockpool->pool_size < blockpool->pool_max)
+ 			break;
+ 
+-		pci_unmap_single(
+-			(blockpool->hldev)->pdev,
+-			((struct __vxge_hw_blockpool_entry *)p)->dma_addr,
+-			((struct __vxge_hw_blockpool_entry *)p)->length,
+-			PCI_DMA_BIDIRECTIONAL);
++		dma_unmap_single(&(blockpool->hldev)->pdev->dev,
++				 ((struct __vxge_hw_blockpool_entry *)p)->dma_addr,
++				 ((struct __vxge_hw_blockpool_entry *)p)->length,
++				 DMA_BIDIRECTIONAL);
+ 
+ 		vxge_os_dma_free(
+ 			(blockpool->hldev)->pdev,
+@@ -2445,8 +2443,8 @@ static void __vxge_hw_blockpool_free(struct __vxge_hw_device *devh,
+ 	blockpool = &devh->block_pool;
+ 
+ 	if (size != blockpool->block_size) {
+-		pci_unmap_single(devh->pdev, dma_object->addr, size,
+-			PCI_DMA_BIDIRECTIONAL);
++		dma_unmap_single(&devh->pdev->dev, dma_object->addr, size,
++				 DMA_BIDIRECTIONAL);
+ 		vxge_os_dma_free(devh->pdev, memblock, &dma_object->acc_handle);
+ 	} else {
+ 
+diff --git a/drivers/net/ethernet/neterion/vxge/vxge-main.c b/drivers/net/ethernet/neterion/vxge/vxge-main.c
+index 5de85b9e9e35..b0faa737b817 100644
+--- a/drivers/net/ethernet/neterion/vxge/vxge-main.c
++++ b/drivers/net/ethernet/neterion/vxge/vxge-main.c
+@@ -241,10 +241,10 @@ static int vxge_rx_map(void *dtrh, struct vxge_ring *ring)
+ 	rx_priv = vxge_hw_ring_rxd_private_get(dtrh);
+ 
+ 	rx_priv->skb_data = rx_priv->skb->data;
+-	dma_addr = pci_map_single(ring->pdev, rx_priv->skb_data,
+-				rx_priv->data_size, PCI_DMA_FROMDEVICE);
++	dma_addr = dma_map_single(&ring->pdev->dev, rx_priv->skb_data,
++				  rx_priv->data_size, DMA_FROM_DEVICE);
+ 
+-	if (unlikely(pci_dma_mapping_error(ring->pdev, dma_addr))) {
++	if (unlikely(dma_mapping_error(&ring->pdev->dev, dma_addr))) {
+ 		ring->stats.pci_map_fail++;
+ 		return -EIO;
  	}
--	pci_unmap_single(nic->pdev, (dma_addr_t)txds->Buffer_Pointer,
--			 skb_headlen(skb), PCI_DMA_TODEVICE);
-+	dma_unmap_single(&nic->pdev->dev, (dma_addr_t)txds->Buffer_Pointer,
-+			 skb_headlen(skb), DMA_TO_DEVICE);
- 	frg_cnt = skb_shinfo(skb)->nr_frags;
- 	if (frg_cnt) {
- 		txds++;
-@@ -2335,9 +2336,9 @@ static struct sk_buff *s2io_txdl_getskb(struct fifo_info *fifo_data,
- 			const skb_frag_t *frag = &skb_shinfo(skb)->frags[j];
- 			if (!txds->Buffer_Pointer)
- 				break;
--			pci_unmap_page(nic->pdev,
-+			dma_unmap_page(&nic->pdev->dev,
- 				       (dma_addr_t)txds->Buffer_Pointer,
--				       skb_frag_size(frag), PCI_DMA_TODEVICE);
+@@ -323,8 +323,8 @@ vxge_rx_complete(struct vxge_ring *ring, struct sk_buff *skb, u16 vlan,
+ static inline void vxge_re_pre_post(void *dtr, struct vxge_ring *ring,
+ 				    struct vxge_rx_priv *rx_priv)
+ {
+-	pci_dma_sync_single_for_device(ring->pdev,
+-		rx_priv->data_dma, rx_priv->data_size, PCI_DMA_FROMDEVICE);
++	dma_sync_single_for_device(&ring->pdev->dev, rx_priv->data_dma,
++				   rx_priv->data_size, DMA_FROM_DEVICE);
+ 
+ 	vxge_hw_ring_rxd_1b_set(dtr, rx_priv->data_dma, rx_priv->data_size);
+ 	vxge_hw_ring_rxd_pre_post(ring->handle, dtr);
+@@ -425,8 +425,9 @@ vxge_rx_1b_compl(struct __vxge_hw_ring *ringh, void *dtr,
+ 				if (!vxge_rx_map(dtr, ring)) {
+ 					skb_put(skb, pkt_length);
+ 
+-					pci_unmap_single(ring->pdev, data_dma,
+-						data_size, PCI_DMA_FROMDEVICE);
++					dma_unmap_single(&ring->pdev->dev,
++							 data_dma, data_size,
++							 DMA_FROM_DEVICE);
+ 
+ 					vxge_hw_ring_rxd_pre_post(ringh, dtr);
+ 					vxge_post(&dtr_cnt, &first_dtr, dtr,
+@@ -458,9 +459,9 @@ vxge_rx_1b_compl(struct __vxge_hw_ring *ringh, void *dtr,
+ 				skb_reserve(skb_up,
+ 				    VXGE_HW_HEADER_ETHERNET_II_802_3_ALIGN);
+ 
+-				pci_dma_sync_single_for_cpu(ring->pdev,
+-					data_dma, data_size,
+-					PCI_DMA_FROMDEVICE);
++				dma_sync_single_for_cpu(&ring->pdev->dev,
++							data_dma, data_size,
++							DMA_FROM_DEVICE);
+ 
+ 				vxge_debug_mem(VXGE_TRACE,
+ 					"%s: %s:%d  skb_up = %p",
+@@ -585,13 +586,13 @@ vxge_xmit_compl(struct __vxge_hw_fifo *fifo_hw, void *dtr,
+ 		}
+ 
+ 		/*  for unfragmented skb */
+-		pci_unmap_single(fifo->pdev, txd_priv->dma_buffers[i++],
+-				skb_headlen(skb), PCI_DMA_TODEVICE);
++		dma_unmap_single(&fifo->pdev->dev, txd_priv->dma_buffers[i++],
++				 skb_headlen(skb), DMA_TO_DEVICE);
+ 
+ 		for (j = 0; j < frg_cnt; j++) {
+-			pci_unmap_page(fifo->pdev,
+-					txd_priv->dma_buffers[i++],
+-					skb_frag_size(frag), PCI_DMA_TODEVICE);
++			dma_unmap_page(&fifo->pdev->dev,
++				       txd_priv->dma_buffers[i++],
 +				       skb_frag_size(frag), DMA_TO_DEVICE);
+ 			frag += 1;
  		}
- 	}
- 	memset(txdlp, 0, (sizeof(struct TxD) * fifo_data->max_txds));
-@@ -2521,11 +2522,10 @@ static int fill_rx_buffers(struct s2io_nic *nic, struct ring_info *ring,
- 			memset(rxdp, 0, sizeof(struct RxD1));
- 			skb_reserve(skb, NET_IP_ALIGN);
- 			rxdp1->Buffer0_ptr =
--				pci_map_single(ring->pdev, skb->data,
-+				dma_map_single(&ring->pdev->dev, skb->data,
- 					       size - NET_IP_ALIGN,
--					       PCI_DMA_FROMDEVICE);
--			if (pci_dma_mapping_error(nic->pdev,
--						  rxdp1->Buffer0_ptr))
-+					       DMA_FROM_DEVICE);
-+			if (dma_mapping_error(&nic->pdev->dev, rxdp1->Buffer0_ptr))
- 				goto pci_map_failed;
  
- 			rxdp->Control_2 =
-@@ -2557,17 +2557,16 @@ static int fill_rx_buffers(struct s2io_nic *nic, struct ring_info *ring,
+@@ -897,10 +898,10 @@ vxge_xmit(struct sk_buff *skb, struct net_device *dev)
  
- 			if (from_card_up) {
- 				rxdp3->Buffer0_ptr =
--					pci_map_single(ring->pdev, ba->ba_0,
--						       BUF0_LEN,
--						       PCI_DMA_FROMDEVICE);
--				if (pci_dma_mapping_error(nic->pdev,
--							  rxdp3->Buffer0_ptr))
-+					dma_map_single(&ring->pdev->dev,
-+						       ba->ba_0, BUF0_LEN,
-+						       DMA_FROM_DEVICE);
-+				if (dma_mapping_error(&nic->pdev->dev, rxdp3->Buffer0_ptr))
- 					goto pci_map_failed;
- 			} else
--				pci_dma_sync_single_for_device(ring->pdev,
--							       (dma_addr_t)rxdp3->Buffer0_ptr,
--							       BUF0_LEN,
--							       PCI_DMA_FROMDEVICE);
-+				dma_sync_single_for_device(&ring->pdev->dev,
-+							   (dma_addr_t)rxdp3->Buffer0_ptr,
-+							   BUF0_LEN,
-+							   DMA_FROM_DEVICE);
+ 	first_frg_len = skb_headlen(skb);
  
- 			rxdp->Control_2 = SET_BUFFER0_SIZE_3(BUF0_LEN);
- 			if (ring->rxd_mode == RXD_MODE_3B) {
-@@ -2577,29 +2576,28 @@ static int fill_rx_buffers(struct s2io_nic *nic, struct ring_info *ring,
- 				 * Buffer2 will have L3/L4 header plus
- 				 * L4 payload
- 				 */
--				rxdp3->Buffer2_ptr = pci_map_single(ring->pdev,
-+				rxdp3->Buffer2_ptr = dma_map_single(&ring->pdev->dev,
- 								    skb->data,
- 								    ring->mtu + 4,
--								    PCI_DMA_FROMDEVICE);
-+								    DMA_FROM_DEVICE);
+-	dma_pointer = pci_map_single(fifo->pdev, skb->data, first_frg_len,
+-				PCI_DMA_TODEVICE);
++	dma_pointer = dma_map_single(&fifo->pdev->dev, skb->data,
++				     first_frg_len, DMA_TO_DEVICE);
  
--				if (pci_dma_mapping_error(nic->pdev,
--							  rxdp3->Buffer2_ptr))
-+				if (dma_mapping_error(&nic->pdev->dev, rxdp3->Buffer2_ptr))
- 					goto pci_map_failed;
+-	if (unlikely(pci_dma_mapping_error(fifo->pdev, dma_pointer))) {
++	if (unlikely(dma_mapping_error(&fifo->pdev->dev, dma_pointer))) {
+ 		vxge_hw_fifo_txdl_free(fifo_hw, dtr);
+ 		fifo->stats.pci_map_fail++;
+ 		goto _exit0;
+@@ -977,12 +978,12 @@ vxge_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	j = 0;
+ 	frag = &skb_shinfo(skb)->frags[0];
  
- 				if (from_card_up) {
- 					rxdp3->Buffer1_ptr =
--						pci_map_single(ring->pdev,
-+						dma_map_single(&ring->pdev->dev,
- 							       ba->ba_1,
- 							       BUF1_LEN,
--							       PCI_DMA_FROMDEVICE);
-+							       DMA_FROM_DEVICE);
+-	pci_unmap_single(fifo->pdev, txdl_priv->dma_buffers[j++],
+-			skb_headlen(skb), PCI_DMA_TODEVICE);
++	dma_unmap_single(&fifo->pdev->dev, txdl_priv->dma_buffers[j++],
++			 skb_headlen(skb), DMA_TO_DEVICE);
  
--					if (pci_dma_mapping_error(nic->pdev,
--								  rxdp3->Buffer1_ptr)) {
--						pci_unmap_single(ring->pdev,
-+					if (dma_mapping_error(&nic->pdev->dev,
-+							      rxdp3->Buffer1_ptr)) {
-+						dma_unmap_single(&ring->pdev->dev,
- 								 (dma_addr_t)(unsigned long)
- 								 skb->data,
- 								 ring->mtu + 4,
--								 PCI_DMA_FROMDEVICE);
-+								 DMA_FROM_DEVICE);
- 						goto pci_map_failed;
- 					}
- 				}
-@@ -2668,27 +2666,24 @@ static void free_rxd_blk(struct s2io_nic *sp, int ring_no, int blk)
- 			continue;
- 		if (sp->rxd_mode == RXD_MODE_1) {
- 			rxdp1 = (struct RxD1 *)rxdp;
--			pci_unmap_single(sp->pdev,
-+			dma_unmap_single(&sp->pdev->dev,
- 					 (dma_addr_t)rxdp1->Buffer0_ptr,
- 					 dev->mtu +
- 					 HEADER_ETHERNET_II_802_3_SIZE +
- 					 HEADER_802_2_SIZE + HEADER_SNAP_SIZE,
--					 PCI_DMA_FROMDEVICE);
-+					 DMA_FROM_DEVICE);
- 			memset(rxdp, 0, sizeof(struct RxD1));
- 		} else if (sp->rxd_mode == RXD_MODE_3B) {
- 			rxdp3 = (struct RxD3 *)rxdp;
--			pci_unmap_single(sp->pdev,
-+			dma_unmap_single(&sp->pdev->dev,
- 					 (dma_addr_t)rxdp3->Buffer0_ptr,
--					 BUF0_LEN,
--					 PCI_DMA_FROMDEVICE);
--			pci_unmap_single(sp->pdev,
-+					 BUF0_LEN, DMA_FROM_DEVICE);
-+			dma_unmap_single(&sp->pdev->dev,
- 					 (dma_addr_t)rxdp3->Buffer1_ptr,
--					 BUF1_LEN,
--					 PCI_DMA_FROMDEVICE);
--			pci_unmap_single(sp->pdev,
-+					 BUF1_LEN, DMA_FROM_DEVICE);
-+			dma_unmap_single(&sp->pdev->dev,
- 					 (dma_addr_t)rxdp3->Buffer2_ptr,
--					 dev->mtu + 4,
--					 PCI_DMA_FROMDEVICE);
-+					 dev->mtu + 4, DMA_FROM_DEVICE);
- 			memset(rxdp, 0, sizeof(struct RxD3));
- 		}
- 		swstats->mem_freed += skb->truesize;
-@@ -2919,23 +2914,21 @@ static int rx_intr_handler(struct ring_info *ring_data, int budget)
- 		}
- 		if (ring_data->rxd_mode == RXD_MODE_1) {
- 			rxdp1 = (struct RxD1 *)rxdp;
--			pci_unmap_single(ring_data->pdev, (dma_addr_t)
--					 rxdp1->Buffer0_ptr,
-+			dma_unmap_single(&ring_data->pdev->dev,
-+					 (dma_addr_t)rxdp1->Buffer0_ptr,
- 					 ring_data->mtu +
- 					 HEADER_ETHERNET_II_802_3_SIZE +
- 					 HEADER_802_2_SIZE +
- 					 HEADER_SNAP_SIZE,
--					 PCI_DMA_FROMDEVICE);
-+					 DMA_FROM_DEVICE);
- 		} else if (ring_data->rxd_mode == RXD_MODE_3B) {
- 			rxdp3 = (struct RxD3 *)rxdp;
--			pci_dma_sync_single_for_cpu(ring_data->pdev,
--						    (dma_addr_t)rxdp3->Buffer0_ptr,
--						    BUF0_LEN,
--						    PCI_DMA_FROMDEVICE);
--			pci_unmap_single(ring_data->pdev,
-+			dma_sync_single_for_cpu(&ring_data->pdev->dev,
-+						(dma_addr_t)rxdp3->Buffer0_ptr,
-+						BUF0_LEN, DMA_FROM_DEVICE);
-+			dma_unmap_single(&ring_data->pdev->dev,
- 					 (dma_addr_t)rxdp3->Buffer2_ptr,
--					 ring_data->mtu + 4,
--					 PCI_DMA_FROMDEVICE);
-+					 ring_data->mtu + 4, DMA_FROM_DEVICE);
- 		}
- 		prefetch(skb->data);
- 		rx_osm_handler(ring_data, rxdp);
-@@ -4117,9 +4110,9 @@ static netdev_tx_t s2io_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	for (; j < i; j++) {
+-		pci_unmap_page(fifo->pdev, txdl_priv->dma_buffers[j],
+-			skb_frag_size(frag), PCI_DMA_TODEVICE);
++		dma_unmap_page(&fifo->pdev->dev, txdl_priv->dma_buffers[j],
++			       skb_frag_size(frag), DMA_TO_DEVICE);
+ 		frag += 1;
  	}
  
- 	frg_len = skb_headlen(skb);
--	txdp->Buffer_Pointer = pci_map_single(sp->pdev, skb->data,
--					      frg_len, PCI_DMA_TODEVICE);
--	if (pci_dma_mapping_error(sp->pdev, txdp->Buffer_Pointer))
-+	txdp->Buffer_Pointer = dma_map_single(&sp->pdev->dev, skb->data,
-+					      frg_len, DMA_TO_DEVICE);
-+	if (dma_mapping_error(&sp->pdev->dev, txdp->Buffer_Pointer))
- 		goto pci_map_failed;
+@@ -1012,8 +1013,8 @@ vxge_rx_term(void *dtrh, enum vxge_hw_rxd_state state, void *userdata)
+ 	if (state != VXGE_HW_RXD_STATE_POSTED)
+ 		return;
  
- 	txdp->Host_Control = (unsigned long)skb;
-@@ -6772,10 +6765,10 @@ static int set_rxd_buffer_pointer(struct s2io_nic *sp, struct RxD_t *rxdp,
- 			 * Host Control is NULL
- 			 */
- 			rxdp1->Buffer0_ptr = *temp0 =
--				pci_map_single(sp->pdev, (*skb)->data,
-+				dma_map_single(&sp->pdev->dev, (*skb)->data,
- 					       size - NET_IP_ALIGN,
--					       PCI_DMA_FROMDEVICE);
--			if (pci_dma_mapping_error(sp->pdev, rxdp1->Buffer0_ptr))
-+					       DMA_FROM_DEVICE);
-+			if (dma_mapping_error(&sp->pdev->dev, rxdp1->Buffer0_ptr))
- 				goto memalloc_failed;
- 			rxdp->Host_Control = (unsigned long) (*skb);
- 		}
-@@ -6798,37 +6791,34 @@ static int set_rxd_buffer_pointer(struct s2io_nic *sp, struct RxD_t *rxdp,
- 			}
- 			stats->mem_allocated += (*skb)->truesize;
- 			rxdp3->Buffer2_ptr = *temp2 =
--				pci_map_single(sp->pdev, (*skb)->data,
--					       dev->mtu + 4,
--					       PCI_DMA_FROMDEVICE);
--			if (pci_dma_mapping_error(sp->pdev, rxdp3->Buffer2_ptr))
-+				dma_map_single(&sp->pdev->dev, (*skb)->data,
-+					       dev->mtu + 4, DMA_FROM_DEVICE);
-+			if (dma_mapping_error(&sp->pdev->dev, rxdp3->Buffer2_ptr))
- 				goto memalloc_failed;
- 			rxdp3->Buffer0_ptr = *temp0 =
--				pci_map_single(sp->pdev, ba->ba_0, BUF0_LEN,
--					       PCI_DMA_FROMDEVICE);
--			if (pci_dma_mapping_error(sp->pdev,
--						  rxdp3->Buffer0_ptr)) {
--				pci_unmap_single(sp->pdev,
-+				dma_map_single(&sp->pdev->dev, ba->ba_0,
-+					       BUF0_LEN, DMA_FROM_DEVICE);
-+			if (dma_mapping_error(&sp->pdev->dev, rxdp3->Buffer0_ptr)) {
-+				dma_unmap_single(&sp->pdev->dev,
- 						 (dma_addr_t)rxdp3->Buffer2_ptr,
- 						 dev->mtu + 4,
--						 PCI_DMA_FROMDEVICE);
-+						 DMA_FROM_DEVICE);
- 				goto memalloc_failed;
- 			}
- 			rxdp->Host_Control = (unsigned long) (*skb);
+-	pci_unmap_single(ring->pdev, rx_priv->data_dma,
+-		rx_priv->data_size, PCI_DMA_FROMDEVICE);
++	dma_unmap_single(&ring->pdev->dev, rx_priv->data_dma,
++			 rx_priv->data_size, DMA_FROM_DEVICE);
  
- 			/* Buffer-1 will be dummy buffer not used */
- 			rxdp3->Buffer1_ptr = *temp1 =
--				pci_map_single(sp->pdev, ba->ba_1, BUF1_LEN,
--					       PCI_DMA_FROMDEVICE);
--			if (pci_dma_mapping_error(sp->pdev,
--						  rxdp3->Buffer1_ptr)) {
--				pci_unmap_single(sp->pdev,
-+				dma_map_single(&sp->pdev->dev, ba->ba_1,
-+					       BUF1_LEN, DMA_FROM_DEVICE);
-+			if (dma_mapping_error(&sp->pdev->dev, rxdp3->Buffer1_ptr)) {
-+				dma_unmap_single(&sp->pdev->dev,
- 						 (dma_addr_t)rxdp3->Buffer0_ptr,
--						 BUF0_LEN, PCI_DMA_FROMDEVICE);
--				pci_unmap_single(sp->pdev,
-+						 BUF0_LEN, DMA_FROM_DEVICE);
-+				dma_unmap_single(&sp->pdev->dev,
- 						 (dma_addr_t)rxdp3->Buffer2_ptr,
- 						 dev->mtu + 4,
--						 PCI_DMA_FROMDEVICE);
-+						 DMA_FROM_DEVICE);
- 				goto memalloc_failed;
- 			}
- 		}
-@@ -7675,17 +7665,16 @@ s2io_init_nic(struct pci_dev *pdev, const struct pci_device_id *pre)
- 		return ret;
+ 	dev_kfree_skb(rx_priv->skb);
+ 	rx_priv->skb_data = NULL;
+@@ -1048,12 +1049,12 @@ vxge_tx_term(void *dtrh, enum vxge_hw_txdl_state state, void *userdata)
+ 	frag = &skb_shinfo(skb)->frags[0];
+ 
+ 	/*  for unfragmented skb */
+-	pci_unmap_single(fifo->pdev, txd_priv->dma_buffers[i++],
+-		skb_headlen(skb), PCI_DMA_TODEVICE);
++	dma_unmap_single(&fifo->pdev->dev, txd_priv->dma_buffers[i++],
++			 skb_headlen(skb), DMA_TO_DEVICE);
+ 
+ 	for (j = 0; j < frg_cnt; j++) {
+-		pci_unmap_page(fifo->pdev, txd_priv->dma_buffers[i++],
+-			       skb_frag_size(frag), PCI_DMA_TODEVICE);
++		dma_unmap_page(&fifo->pdev->dev, txd_priv->dma_buffers[i++],
++			       skb_frag_size(frag), DMA_TO_DEVICE);
+ 		frag += 1;
+ 	}
+ 
+@@ -4387,21 +4388,20 @@ vxge_probe(struct pci_dev *pdev, const struct pci_device_id *pre)
+ 		goto _exit0;
  	}
  
 -	if (!pci_set_dma_mask(pdev, DMA_BIT_MASK(64))) {
 +	if (!dma_set_mask(&pdev->dev, DMA_BIT_MASK(64))) {
- 		DBG_PRINT(INIT_DBG, "%s: Using 64bit DMA\n", __func__);
- 		dma_flag = true;
--		if (pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(64))) {
+ 		vxge_debug_ll_config(VXGE_TRACE,
+ 			"%s : using 64bit DMA", __func__);
+ 
+ 		high_dma = 1;
+ 
+-		if (pci_set_consistent_dma_mask(pdev,
+-						DMA_BIT_MASK(64))) {
 +		if (dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(64))) {
- 			DBG_PRINT(ERR_DBG,
--				  "Unable to obtain 64bit DMA "
--				  "for consistent allocations\n");
-+				  "Unable to obtain 64bit DMA for coherent allocations\n");
- 			pci_disable_device(pdev);
- 			return -ENOMEM;
+ 			vxge_debug_init(VXGE_ERR,
+ 				"%s : unable to obtain 64bit DMA for "
+ 				"consistent allocations", __func__);
+ 			ret = -ENOMEM;
+ 			goto _exit1;
  		}
 -	} else if (!pci_set_dma_mask(pdev, DMA_BIT_MASK(32))) {
 +	} else if (!dma_set_mask(&pdev->dev, DMA_BIT_MASK(32))) {
- 		DBG_PRINT(INIT_DBG, "%s: Using 32bit DMA\n", __func__);
+ 		vxge_debug_ll_config(VXGE_TRACE,
+ 			"%s : using 32bit DMA", __func__);
  	} else {
- 		pci_disable_device(pdev);
 -- 
 2.25.1
 

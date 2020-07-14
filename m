@@ -2,104 +2,205 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E953821ED0D
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 11:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C250521EDA4
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 12:06:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726545AbgGNJiT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jul 2020 05:38:19 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:40746 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725884AbgGNJiR (ORCPT
+        id S1726761AbgGNKGq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jul 2020 06:06:46 -0400
+Received: from smtp106.ord1d.emailsrvr.com ([184.106.54.106]:46157 "EHLO
+        smtp106.ord1d.emailsrvr.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725952AbgGNKGq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jul 2020 05:38:17 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06E9atMJ178432;
-        Tue, 14 Jul 2020 09:38:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=8wmA0uYOG9OxOF3CVL1wtgfgJV7miu8gCUETPuUCOak=;
- b=IZUTBNLQqKhzm4shvwTB7u1+rTmOLyk/gmUqwbLTNAqavKFNcomDoGPdkubnvn0Yqic0
- XnexXXwiIZ1JRVCymW0ENjFUCDpDKaut9/034sdVyCYKyqGrdwEw7xEf7AZlNUHlUeyw
- GSRcLXRexL4mNOu1eNJLuWo+w6LBrsfqIvEx0Uwz58mD83OyzjLizgNmcVcOnl0YPkq0
- RUT8QCoVdmhTtO95WEFT8uvOtx2+0iIFAcaHNxZV4BQ+d8SQpwvht5v3IobzjW7AbYDi
- JPbHVPr0gXKAvRndl/q0KuEqF5xwoC2hDTkEWF/05TkZUdbNbm+z1otJoL+5Ix2pP7LK aw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 3275cm4bjk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 14 Jul 2020 09:38:08 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06E9XaXF169890;
-        Tue, 14 Jul 2020 09:38:07 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 327q6rxbkv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 14 Jul 2020 09:38:07 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06E9c6rT009307;
-        Tue, 14 Jul 2020 09:38:06 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 14 Jul 2020 02:38:05 -0700
-Date:   Tue, 14 Jul 2020 12:37:58 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>, linux-pm@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH -next] PM / devfreq: Fix missing unlock on error in
- devfreq_add_device()
-Message-ID: <20200714093758.GW2549@kadam>
-References: <20200714063025.118829-1-weiyongjun1@huawei.com>
+        Tue, 14 Jul 2020 06:06:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=g001.emailsrvr.com;
+        s=20190322-9u7zjiwi; t=1594720615;
+        bh=/+UlnFraBXeWBpY49tUc6AX489lG5XkgFdMfCiG/X6c=;
+        h=Subject:To:From:Date:From;
+        b=dauVLxOAZG1A+phbdkYOg78f4/RR5/nEjvVm2wlRgjz3G6kg7G045kmqE2owdHj0D
+         slckOfRMPTz56nwilnPFWlQCUh6ew4CQn5sykceGtxUmMDXgfUc2Cl+ZfkEovFVHtK
+         pH0pOT/+WdqN/hUvCamGKaaP3g+hwL7uFMqgPHsE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+        s=20190130-41we5z8j; t=1594720615;
+        bh=/+UlnFraBXeWBpY49tUc6AX489lG5XkgFdMfCiG/X6c=;
+        h=Subject:To:From:Date:From;
+        b=DVOIyhsoXyiUxlrZ0ClClowuYtkQZjI4sZjyWS1elFPaK+44iN2rrz1hzRV9iCv6H
+         jrLicK3ihpVx1I/9JcS5X46bFa3JlxK6SKUTR+j6k6ynk7VqOVTqk1FfL8x53BNBJV
+         N4y0erHghKrz5+AtYXh2mvl2ace+jLIfgb4Pw0QQ=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp6.relay.ord1d.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id BCC59E00B0;
+        Tue, 14 Jul 2020 05:56:54 -0400 (EDT)
+Subject: Re: [PATCH v2] staging: comedi: s626: Remove pci-dma-compat wrapper
+ APIs.
+To:     Suraj Upadhyay <usuraj35@gmail.com>, gregkh@linuxfoundation.org,
+        hsweeten@visionengravers.com, christophe.jaillet@wanadoo.fr
+Cc:     linux-kernel@vger.kernel.org, devel@driverdev.osuosl.org,
+        kernel-janitors@vger.kernel.org
+References: <20200713143253.GA14953@blackclown>
+From:   Ian Abbott <abbotti@mev.co.uk>
+Organization: MEV Ltd.
+Message-ID: <5c137548-9c64-1aa5-bd31-e84e42fcc5a2@mev.co.uk>
+Date:   Tue, 14 Jul 2020 10:56:53 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200714063025.118829-1-weiyongjun1@huawei.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=2
- phishscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007140072
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 priorityscore=1501
- bulkscore=0 adultscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- impostorscore=0 malwarescore=0 mlxlogscore=999 clxscore=1011 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007140072
+In-Reply-To: <20200713143253.GA14953@blackclown>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Classification-ID: 8a350055-a3ab-4065-96a7-ca23740e4d13-1-1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jul 14, 2020 at 06:30:25AM +0000, Wei Yongjun wrote:
-> Add the missing unlock before return from function devfreq_add_device()
-> in the error handling case.
+On 13/07/2020 15:32, Suraj Upadhyay wrote:
+> The legacy API wrappers in include/linux/pci-dma-compat.h
+> should go away as it creates unnecessary midlayering
+> for include/linux/dma-mapping.h APIs, instead use dma-mapping.h
+> APIs directly.
 > 
-> Fixes: d7c46505a7ad ("PM / devfreq: Add support delayed timer for polling mode")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> The patch has been generated with the coccinelle script below
+> and compile-tested.
+> 
+> @@@@
+> - PCI_DMA_BIDIRECTIONAL
+> + DMA_BIDIRECTIONAL
+> 
+> @@@@
+> - PCI_DMA_TODEVICE
+> + DMA_TO_DEVICE
+> 
+> @@@@
+> - PCI_DMA_FROMDEVICE
+> + DMA_FROM_DEVICE
+> 
+> @@@@
+> - PCI_DMA_NONE
+> + DMA_NONE
+> 
+> @@ expression E1, E2, E3; @@
+> - pci_alloc_consistent(E1, E2, E3)
+> + dma_alloc_coherent(&E1->dev, E2, E3, GFP_ATOMIC)
+> 
+> @@ expression E1, E2, E3; @@
+> - pci_zalloc_consistent(E1, E2, E3)
+> + dma_alloc_coherent(&E1->dev, E2, E3, GFP_ATOMIC)
+> 
+> @@ expression E1, E2, E3, E4; @@
+> - pci_free_consistent(E1, E2, E3, E4)
+> + dma_free_coherent(&E1->dev, E2, E3, E4)
+> 
+> @@ expression E1, E2, E3, E4; @@
+> - pci_map_single(E1, E2, E3, E4)
+> + dma_map_single(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+> 
+> @@ expression E1, E2, E3, E4; @@
+> - pci_unmap_single(E1, E2, E3, E4)
+> + dma_unmap_single(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+> 
+> @@ expression E1, E2, E3, E4, E5; @@
+> - pci_map_page(E1, E2, E3, E4, E5)
+> + dma_map_page(&E1->dev, E2, E3, E4, (enum dma_data_direction)E5)
+> 
+> @@ expression E1, E2, E3, E4; @@
+> - pci_unmap_page(E1, E2, E3, E4)
+> + dma_unmap_page(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+> 
+> @@ expression E1, E2, E3, E4; @@
+> - pci_map_sg(E1, E2, E3, E4)
+> + dma_map_sg(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+> 
+> @@ expression E1, E2, E3, E4; @@
+> - pci_unmap_sg(E1, E2, E3, E4)
+> + dma_unmap_sg(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+> 
+> @@ expression E1, E2, E3, E4; @@
+> - pci_dma_sync_single_for_cpu(E1, E2, E3, E4)
+> + dma_sync_single_for_cpu(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+> 
+> @@ expression E1, E2, E3, E4; @@
+> - pci_dma_sync_single_for_device(E1, E2, E3, E4)
+> + dma_sync_single_for_device(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+> 
+> @@ expression E1, E2, E3, E4; @@
+> - pci_dma_sync_sg_for_cpu(E1, E2, E3, E4)
+> + dma_sync_sg_for_cpu(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+> 
+> @@ expression E1, E2, E3, E4; @@
+> - pci_dma_sync_sg_for_device(E1, E2, E3, E4)
+> + dma_sync_sg_for_device(&E1->dev, E2, E3, (enum dma_data_direction)E4)
+> 
+> @@ expression E1, E2; @@
+> - pci_dma_mapping_error(E1, E2)
+> + dma_mapping_error(&E1->dev, E2)
+> 
+> @@ expression E1, E2; @@
+> - pci_set_consistent_dma_mask(E1, E2)
+> + dma_set_coherent_mask(&E1->dev, E2)
+> 
+> @@ expression E1, E2; @@
+> - pci_set_dma_mask(E1, E2)
+> + dma_set_mask(&E1->dev, E2)
+> 
+> Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
 > ---
->  drivers/devfreq/devfreq.c | 1 +
->  1 file changed, 1 insertion(+)
+> Changes:
+> 	v2: Converted the GFP_ATOMIC flag to GFP_KERNEL to suit for the
+> 	context. On reviewer's advise.
 > 
-> diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
-> index 5320c3b37f35..2b54a59bb281 100644
-> --- a/drivers/devfreq/devfreq.c
-> +++ b/drivers/devfreq/devfreq.c
-> @@ -788,6 +788,7 @@ struct devfreq *devfreq_add_device(struct device *dev,
->  
->  	if (devfreq->profile->timer < 0
->  		|| devfreq->profile->timer >= DEVFREQ_TIMER_NUM) {
-> +		mutex_unlock(&devfreq->lock);
->  		goto err_out;
+>   drivers/staging/comedi/drivers/s626.c | 18 ++++++++++--------
+>   1 file changed, 10 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/staging/comedi/drivers/s626.c b/drivers/staging/comedi/drivers/s626.c
+> index 084a8e7b9fc2..e7aba937d896 100644
+> --- a/drivers/staging/comedi/drivers/s626.c
+> +++ b/drivers/staging/comedi/drivers/s626.c
+> @@ -2130,13 +2130,15 @@ static int s626_allocate_dma_buffers(struct comedi_device *dev)
+>   	void *addr;
+>   	dma_addr_t appdma;
+>   
+> -	addr = pci_alloc_consistent(pcidev, S626_DMABUF_SIZE, &appdma);
+> +	addr = dma_alloc_coherent(&pcidev->dev, S626_DMABUF_SIZE, &appdma,
+> +				  GFP_KERNEL);
+>   	if (!addr)
+>   		return -ENOMEM;
+>   	devpriv->ana_buf.logical_base = addr;
+>   	devpriv->ana_buf.physical_base = appdma;
+>   
+> -	addr = pci_alloc_consistent(pcidev, S626_DMABUF_SIZE, &appdma);
+> +	addr = dma_alloc_coherent(&pcidev->dev, S626_DMABUF_SIZE, &appdma,
+> +				  GFP_KERNEL);
+>   	if (!addr)
+>   		return -ENOMEM;
+>   	devpriv->rps_buf.logical_base = addr;
+> @@ -2154,13 +2156,13 @@ static void s626_free_dma_buffers(struct comedi_device *dev)
+>   		return;
+>   
+>   	if (devpriv->rps_buf.logical_base)
+> -		pci_free_consistent(pcidev, S626_DMABUF_SIZE,
+> -				    devpriv->rps_buf.logical_base,
+> -				    devpriv->rps_buf.physical_base);
+> +		dma_free_coherent(&pcidev->dev, S626_DMABUF_SIZE,
+> +				  devpriv->rps_buf.logical_base,
+> +				  devpriv->rps_buf.physical_base);
+>   	if (devpriv->ana_buf.logical_base)
+> -		pci_free_consistent(pcidev, S626_DMABUF_SIZE,
+> -				    devpriv->ana_buf.logical_base,
+> -				    devpriv->ana_buf.physical_base);
+> +		dma_free_coherent(&pcidev->dev, S626_DMABUF_SIZE,
+> +				  devpriv->ana_buf.logical_base,
+> +				  devpriv->ana_buf.physical_base);
+>   }
+>   
+>   static int s626_initialize(struct comedi_device *dev)
+> 
 
-This should be "goto err_dev;" and the unlock is not required because
-we free "devfreq".
+Looks good to me.
 
-regards,
-dan carpenter
->  	}
-> 
-> 
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+
+-- 
+-=( Ian Abbott <abbotti@mev.co.uk> || Web: www.mev.co.uk )=-
+-=( MEV Ltd. is a company registered in England & Wales. )=-
+-=( Registered number: 02862268.  Registered address:    )=-
+-=( 15 West Park Road, Bramhall, STOCKPORT, SK7 3JZ, UK. )=-

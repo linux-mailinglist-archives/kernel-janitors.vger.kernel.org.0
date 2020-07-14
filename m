@@ -2,111 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA11221E540
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 03:39:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B755421E72E
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 06:59:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726517AbgGNBjU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Jul 2020 21:39:20 -0400
-Received: from ex13-edg-ou-002.vmware.com ([208.91.0.190]:58549 "EHLO
-        EX13-EDG-OU-002.vmware.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726149AbgGNBjT (ORCPT
+        id S1725977AbgGNE7C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jul 2020 00:59:02 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:53922 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725876AbgGNE7C (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Jul 2020 21:39:19 -0400
-Received: from sc9-mailhost3.vmware.com (10.113.161.73) by
- EX13-EDG-OU-002.vmware.com (10.113.208.156) with Microsoft SMTP Server id
- 15.0.1156.6; Mon, 13 Jul 2020 18:39:13 -0700
-Received: from [0.0.0.0] (oddjob.vmware.com [10.253.4.32])
-        by sc9-mailhost3.vmware.com (Postfix) with ESMTP id 0CAC540978;
-        Mon, 13 Jul 2020 18:39:13 -0700 (PDT)
-Subject: Re: [PATCH] drm/vmwgfx: Fix two list_for_each loop exit tests
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        VMware Graphics <linux-graphics-maintainer@vmware.com>
-CC:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        <dri-devel@lists.freedesktop.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <20200626103959.GC314359@mwanda>
-From:   Roland Scheidegger <sroland@vmware.com>
-Message-ID: <77f0761a-11e6-e321-2245-700258d54924@vmware.com>
-Date:   Tue, 14 Jul 2020 03:39:13 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Firefox/68.0 Thunderbird/68.8.0
+        Tue, 14 Jul 2020 00:59:02 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06E4wjnN100227;
+        Tue, 14 Jul 2020 04:58:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=/IZ1YNfpxlLHPkt4HIZERPrzGr+mYFv0E0nW5zjjxg8=;
+ b=HsfWo4XA5gsjakLpL5myGZsSFxsKxHXHNNP1diOyouEyRm/daI5S6bYlz515Uy2vBYSL
+ ISDyhNs0DgzJ4JeFahZBG4+KNnu0lXE+HxMtcY+1SvEMOsKxi76pM381Y6DEnDxUbbkR
+ 7DfRRc3ZOYaAams3IBFI7/jVq2YaFhOlPF0Zypw8qeKXxIhbMwB2oFOoA+eJbQmXTyFc
+ achtSxRBC1X4IYrelcHQ/2WtUk0bUzBO0nLZUOfWBKFtrpZ6qZQwbyly+hD4NDJ4H/Qy
+ MZhSSWDttxooal7BSVFXUucVzJWFg2OhlIkm9gvsLrc+JnfzsYiiVuSzzK0zY27R69+1 SQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 3274ur2ypx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 14 Jul 2020 04:58:51 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06E4vXZ0174075;
+        Tue, 14 Jul 2020 04:58:51 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 327qb2nuf0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 14 Jul 2020 04:58:50 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06E4wmk2025040;
+        Tue, 14 Jul 2020 04:58:49 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 13 Jul 2020 21:58:48 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        Varun Prakash <varun@chelsio.com>, linux-scsi@vger.kernel.org,
+        Colin King <colin.king@canonical.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH][next] scsi: cxgb4i: fix dereference of pointer tdata before it is null checked
+Date:   Tue, 14 Jul 2020 00:58:39 -0400
+Message-Id: <159470266467.11195.3151931908467404359.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200709135217.1408105-1-colin.king@canonical.com>
+References: <20200709135217.1408105-1-colin.king@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <20200626103959.GC314359@mwanda>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: de-DE
-Content-Transfer-Encoding: 7bit
-Received-SPF: None (EX13-EDG-OU-002.vmware.com: sroland@vmware.com does not
- designate permitted sender hosts)
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=938 malwarescore=0
+ mlxscore=0 spamscore=0 phishscore=0 suspectscore=0 bulkscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007140037
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 impostorscore=0
+ suspectscore=0 phishscore=0 spamscore=0 mlxlogscore=953 malwarescore=0
+ mlxscore=0 priorityscore=1501 adultscore=0 bulkscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007140037
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Am 26.06.20 um 12:39 schrieb Dan Carpenter:
-> These if statements are supposed to be true if we ended the
-> list_for_each_entry() loops without hitting a break statement but they
-> don't work.
-> 
-> In the first loop, we increment "i" after the "if (i == unit)" condition
-> so we don't necessarily know that "i" is not equal to unit at the end of
-> the loop.
-So, if I understand this right, this would only really be a problem if
-there's no list entries at all, right? That is i == unit == 0.
-Not sure if that can actually happen, but in any case the fix looks correct.
+On Thu, 9 Jul 2020 14:52:17 +0100, Colin King wrote:
 
+> Currently pointer tdata is being dereferenced on the initialization of
+> pointer skb before tdata is null checked. This could lead to a potential
+> null pointer dereference.  Fix this by dereferencing tdata after tdata
+> has been null pointer sanity checked.
 
-> 
-> In the second loop we exit when mode is not pointing to a valid
-> drm_display_mode struct so it doesn't make sense to check "mode->type".
-Looks good to me too, condition order seems fine to me as well, though I
-wouldn't particularly care.
+Applied to 5.9/scsi-queue, thanks!
 
-Applied to vmwgfx-next as well, thanks.
+[1/1] scsi: cxgb4i: Fix dereference of pointer tdata before it is null checked
+      https://git.kernel.org/mkp/scsi/c/b92a4a9f7be8
 
-Roland
-
-
-> 
-> Fixes: a278724aa23c ("drm/vmwgfx: Implement fbdev on kms v2")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> I reversed the second condition as well, just because I was copy and
-> pasting the exit condition.  Plus I always feel like error handling is
-> better than success handling.  If anyone feel strongly, then I can send
-> a v2.
-> 
->  drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-> index 3c97654b5a43..44168a7d7b44 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-> @@ -2576,7 +2576,7 @@ int vmw_kms_fbdev_init_data(struct vmw_private *dev_priv,
->  		++i;
->  	}
->  
-> -	if (i != unit) {
-> +	if (&con->head == &dev_priv->dev->mode_config.connector_list) {
->  		DRM_ERROR("Could not find initial display unit.\n");
->  		ret = -EINVAL;
->  		goto out_unlock;
-> @@ -2600,13 +2600,13 @@ int vmw_kms_fbdev_init_data(struct vmw_private *dev_priv,
->  			break;
->  	}
->  
-> -	if (mode->type & DRM_MODE_TYPE_PREFERRED)
-> -		*p_mode = mode;
-> -	else {
-> +	if (&mode->head == &con->modes) {
->  		WARN_ONCE(true, "Could not find initial preferred mode.\n");
->  		*p_mode = list_first_entry(&con->modes,
->  					   struct drm_display_mode,
->  					   head);
-> +	} else {
-> +		*p_mode = mode;
->  	}
->  
->   out_unlock:
-> 
-
+-- 
+Martin K. Petersen	Oracle Linux Engineering

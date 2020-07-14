@@ -2,113 +2,333 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D5A421F8D0
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 20:12:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB45821F98D
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 20:36:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729047AbgGNSM2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jul 2020 14:12:28 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:43631 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727772AbgGNSM1 (ORCPT
+        id S1728836AbgGNSff (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jul 2020 14:35:35 -0400
+Received: from smtp01.smtpout.orange.fr ([80.12.242.123]:51201 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729256AbgGNSff (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jul 2020 14:12:27 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jvPPk-0002dU-Io; Tue, 14 Jul 2020 18:12:24 +0000
-Subject: Re: [Intel-gfx] [PATCH v2] drm/i915/selftest: Fix an error code in
- live_noa_gpr()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>
-Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-References: <20200714143652.GA337376@mwanda>
- <29d5e25e-45e1-fca0-7d09-fd5e303b9eea@intel.com>
- <159474692212.3188.5286642208247298191@build.alporthouse.com>
- <20200714180852.GC2571@kadam>
-From:   Colin Ian King <colin.king@canonical.com>
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <d7ad55da-4db0-9861-1882-a52a9646260c@canonical.com>
-Date:   Tue, 14 Jul 2020 19:12:23 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Tue, 14 Jul 2020 14:35:35 -0400
+Received: from localhost.localdomain ([93.23.14.36])
+        by mwinf5d77 with ME
+        id 36bS2300P0mgUh1036bTVi; Tue, 14 Jul 2020 20:35:32 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 14 Jul 2020 20:35:32 +0200
+X-ME-IP: 93.23.14.36
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     sumit.semwal@linaro.org, davem@davemloft.net, kuba@kernel.org,
+        christian.koenig@amd.com, mhabets@solarflare.com,
+        jwi@linux.ibm.com, zhongjiang@huawei.com, weiyongjun1@huawei.com,
+        vaibhavgupta40@gmail.com
+Cc:     linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ksz884x: switch from 'pci_' to 'dma_' API
+Date:   Tue, 14 Jul 2020 20:35:01 +0200
+Message-Id: <20200714183501.310949-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20200714180852.GC2571@kadam>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 14/07/2020 19:08, Dan Carpenter wrote:
-> On Tue, Jul 14, 2020 at 06:15:22PM +0100, Chris Wilson wrote:
->> Quoting Lionel Landwerlin (2020-07-14 15:39:21)
->>> On 14/07/2020 17:36, Dan Carpenter wrote:
->>>> The error code needs to be set on this path.  It currently returns
->>>> success.
->>>>
->>>> Fixes: ed2690a9ca89 ("drm/i915/selftest: Check that GPR are restored across noa_wait")
->>>> Reported-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
->>>> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
->>>> ---
->>>> v2: Fix a different bug instead.  :P  Colin fixed mine already.
->>
->> I was thinking that Colin already sent the patch for this one...
-> 
-> Colin sent a fix for my v1 bug.  commit d2921096e707 ("drm/i915/selftest:
-> fix an error return path where err is not being set") but I don't think
-> he fixed this one.
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-Yep, coverity didn't pick the other issue up for some reason.
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GFP_ with a correct flag.
+It has been compile tested.
 
-> 
-> regards,
-> dan carpenter
-> 
+When memory is allocated in 'ksz_alloc_desc()', GFP_KERNEL can be used
+because a few lines below, GFP_KERNEL is also used in the
+'ksz_alloc_soft_desc()' calls.
+
+
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
+
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+---
+ drivers/net/ethernet/micrel/ksz884x.c | 68 ++++++++++++---------------
+ 1 file changed, 30 insertions(+), 38 deletions(-)
+
+diff --git a/drivers/net/ethernet/micrel/ksz884x.c b/drivers/net/ethernet/micrel/ksz884x.c
+index 2ce7304d3753..bb646b65cc95 100644
+--- a/drivers/net/ethernet/micrel/ksz884x.c
++++ b/drivers/net/ethernet/micrel/ksz884x.c
+@@ -4390,9 +4390,9 @@ static int ksz_alloc_desc(struct dev_info *adapter)
+ 		DESC_ALIGNMENT;
+ 
+ 	adapter->desc_pool.alloc_virt =
+-		pci_zalloc_consistent(adapter->pdev,
+-				      adapter->desc_pool.alloc_size,
+-				      &adapter->desc_pool.dma_addr);
++		dma_alloc_coherent(&adapter->pdev->dev,
++				   adapter->desc_pool.alloc_size,
++				   &adapter->desc_pool.dma_addr, GFP_KERNEL);
+ 	if (adapter->desc_pool.alloc_virt == NULL) {
+ 		adapter->desc_pool.alloc_size = 0;
+ 		return 1;
+@@ -4431,7 +4431,8 @@ static int ksz_alloc_desc(struct dev_info *adapter)
+ static void free_dma_buf(struct dev_info *adapter, struct ksz_dma_buf *dma_buf,
+ 	int direction)
+ {
+-	pci_unmap_single(adapter->pdev, dma_buf->dma, dma_buf->len, direction);
++	dma_unmap_single(&adapter->pdev->dev, dma_buf->dma, dma_buf->len,
++			 direction);
+ 	dev_kfree_skb(dma_buf->skb);
+ 	dma_buf->skb = NULL;
+ 	dma_buf->dma = 0;
+@@ -4456,16 +4457,15 @@ static void ksz_init_rx_buffers(struct dev_info *adapter)
+ 
+ 		dma_buf = DMA_BUFFER(desc);
+ 		if (dma_buf->skb && dma_buf->len != adapter->mtu)
+-			free_dma_buf(adapter, dma_buf, PCI_DMA_FROMDEVICE);
++			free_dma_buf(adapter, dma_buf, DMA_FROM_DEVICE);
+ 		dma_buf->len = adapter->mtu;
+ 		if (!dma_buf->skb)
+ 			dma_buf->skb = alloc_skb(dma_buf->len, GFP_ATOMIC);
+ 		if (dma_buf->skb && !dma_buf->dma)
+-			dma_buf->dma = pci_map_single(
+-				adapter->pdev,
+-				skb_tail_pointer(dma_buf->skb),
+-				dma_buf->len,
+-				PCI_DMA_FROMDEVICE);
++			dma_buf->dma = dma_map_single(&adapter->pdev->dev,
++						skb_tail_pointer(dma_buf->skb),
++						dma_buf->len,
++						DMA_FROM_DEVICE);
+ 
+ 		/* Set descriptor. */
+ 		set_rx_buf(desc, dma_buf->dma);
+@@ -4543,11 +4543,10 @@ static void ksz_free_desc(struct dev_info *adapter)
+ 
+ 	/* Free memory. */
+ 	if (adapter->desc_pool.alloc_virt)
+-		pci_free_consistent(
+-			adapter->pdev,
+-			adapter->desc_pool.alloc_size,
+-			adapter->desc_pool.alloc_virt,
+-			adapter->desc_pool.dma_addr);
++		dma_free_coherent(&adapter->pdev->dev,
++				  adapter->desc_pool.alloc_size,
++				  adapter->desc_pool.alloc_virt,
++				  adapter->desc_pool.dma_addr);
+ 
+ 	/* Reset resource pool. */
+ 	adapter->desc_pool.alloc_size = 0;
+@@ -4590,12 +4589,10 @@ static void ksz_free_buffers(struct dev_info *adapter,
+ static void ksz_free_mem(struct dev_info *adapter)
+ {
+ 	/* Free transmit buffers. */
+-	ksz_free_buffers(adapter, &adapter->hw.tx_desc_info,
+-		PCI_DMA_TODEVICE);
++	ksz_free_buffers(adapter, &adapter->hw.tx_desc_info, DMA_TO_DEVICE);
+ 
+ 	/* Free receive buffers. */
+-	ksz_free_buffers(adapter, &adapter->hw.rx_desc_info,
+-		PCI_DMA_FROMDEVICE);
++	ksz_free_buffers(adapter, &adapter->hw.rx_desc_info, DMA_FROM_DEVICE);
+ 
+ 	/* Free descriptors. */
+ 	ksz_free_desc(adapter);
+@@ -4657,9 +4654,8 @@ static void send_packet(struct sk_buff *skb, struct net_device *dev)
+ 
+ 		dma_buf->len = skb_headlen(skb);
+ 
+-		dma_buf->dma = pci_map_single(
+-			hw_priv->pdev, skb->data, dma_buf->len,
+-			PCI_DMA_TODEVICE);
++		dma_buf->dma = dma_map_single(&hw_priv->pdev->dev, skb->data,
++					      dma_buf->len, DMA_TO_DEVICE);
+ 		set_tx_buf(desc, dma_buf->dma);
+ 		set_tx_len(desc, dma_buf->len);
+ 
+@@ -4676,11 +4672,10 @@ static void send_packet(struct sk_buff *skb, struct net_device *dev)
+ 			dma_buf = DMA_BUFFER(desc);
+ 			dma_buf->len = skb_frag_size(this_frag);
+ 
+-			dma_buf->dma = pci_map_single(
+-				hw_priv->pdev,
+-				skb_frag_address(this_frag),
+-				dma_buf->len,
+-				PCI_DMA_TODEVICE);
++			dma_buf->dma = dma_map_single(&hw_priv->pdev->dev,
++						      skb_frag_address(this_frag),
++						      dma_buf->len,
++						      DMA_TO_DEVICE);
+ 			set_tx_buf(desc, dma_buf->dma);
+ 			set_tx_len(desc, dma_buf->len);
+ 
+@@ -4700,9 +4695,8 @@ static void send_packet(struct sk_buff *skb, struct net_device *dev)
+ 	} else {
+ 		dma_buf->len = len;
+ 
+-		dma_buf->dma = pci_map_single(
+-			hw_priv->pdev, skb->data, dma_buf->len,
+-			PCI_DMA_TODEVICE);
++		dma_buf->dma = dma_map_single(&hw_priv->pdev->dev, skb->data,
++					      dma_buf->len, DMA_TO_DEVICE);
+ 		set_tx_buf(desc, dma_buf->dma);
+ 		set_tx_len(desc, dma_buf->len);
+ 	}
+@@ -4756,9 +4750,8 @@ static void transmit_cleanup(struct dev_info *hw_priv, int normal)
+ 		}
+ 
+ 		dma_buf = DMA_BUFFER(desc);
+-		pci_unmap_single(
+-			hw_priv->pdev, dma_buf->dma, dma_buf->len,
+-			PCI_DMA_TODEVICE);
++		dma_unmap_single(&hw_priv->pdev->dev, dma_buf->dma,
++				 dma_buf->len, DMA_TO_DEVICE);
+ 
+ 		/* This descriptor contains the last buffer in the packet. */
+ 		if (dma_buf->skb) {
+@@ -4991,9 +4984,8 @@ static inline int rx_proc(struct net_device *dev, struct ksz_hw* hw,
+ 	packet_len = status.rx.frame_len - 4;
+ 
+ 	dma_buf = DMA_BUFFER(desc);
+-	pci_dma_sync_single_for_cpu(
+-		hw_priv->pdev, dma_buf->dma, packet_len + 4,
+-		PCI_DMA_FROMDEVICE);
++	dma_sync_single_for_cpu(&hw_priv->pdev->dev, dma_buf->dma,
++				packet_len + 4, DMA_FROM_DEVICE);
+ 
+ 	do {
+ 		/* skb->data != skb->head */
+@@ -6935,8 +6927,8 @@ static int pcidev_init(struct pci_dev *pdev, const struct pci_device_id *id)
+ 
+ 	result = -ENODEV;
+ 
+-	if (pci_set_dma_mask(pdev, DMA_BIT_MASK(32)) ||
+-			pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32)))
++	if (dma_set_mask(&pdev->dev, DMA_BIT_MASK(32)) ||
++	    dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32)))
+ 		return result;
+ 
+ 	reg_base = pci_resource_start(pdev, 0);
+-- 
+2.25.1
 

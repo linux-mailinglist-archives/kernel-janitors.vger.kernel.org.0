@@ -2,34 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6B0D21FB5B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 21:01:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EF5121FD3D
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 21:22:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731347AbgGNTAO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jul 2020 15:00:14 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:44655 "EHLO
+        id S1729383AbgGNTWQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jul 2020 15:22:16 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:45322 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730432AbgGNTAL (ORCPT
+        with ESMTP id S1727930AbgGNTWQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jul 2020 15:00:11 -0400
+        Tue, 14 Jul 2020 15:22:16 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jvQ9r-00081N-Ug; Tue, 14 Jul 2020 19:00:04 +0000
+        id 1jvQVH-00030h-Nb; Tue, 14 Jul 2020 19:22:11 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Sandy Huang <hjc@rock-chips.com>,
-        =?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org
+To:     Joerg Roedel <joro@8bytes.org>, Tony Lindgren <tony@atomide.com>,
+        Hiroshi DOYU <Hiroshi.DOYU@nokia.com>,
+        iommu@lists.linux-foundation.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/rockchip: lvds: ensure ret is assigned before checking for an error
-Date:   Tue, 14 Jul 2020 20:00:03 +0100
-Message-Id: <20200714190003.744069-1-colin.king@canonical.com>
+Subject: [PATCH] OMAP: iommu: check for failure of a call to omap_iommu_dump_ctx
+Date:   Tue, 14 Jul 2020 20:22:11 +0100
+Message-Id: <20200714192211.744776-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -41,35 +36,33 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently there are two places where the return status in ret is being
-checked for an error however the assignment of ret has been omitted
-making the checks redundant.  Fix this by adding in the missing assignments
-of ret.
+It is possible for the call to omap_iommu_dump_ctx to return
+a negative error number, so check for the failure and return
+the error number rather than pass the negative value to
+simple_read_from_buffer.
 
-Addresses-Coverity: ("Logically dead code")
-Fixes: cca1705c3d89 ("drm/rockchip: lvds: Add PX30 support")
+Addresses-Coverity: ("Improper use of negative value")
+Fixes: 14e0e6796a0d ("OMAP: iommu: add initial debugfs support")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/rockchip/rockchip_lvds.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iommu/omap-iommu-debug.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_lvds.c b/drivers/gpu/drm/rockchip/rockchip_lvds.c
-index 63f967902c2d..b45c618b9793 100644
---- a/drivers/gpu/drm/rockchip/rockchip_lvds.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_lvds.c
-@@ -499,11 +499,11 @@ static int px30_lvds_probe(struct platform_device *pdev,
- 	if (IS_ERR(lvds->dphy))
- 		return PTR_ERR(lvds->dphy);
+diff --git a/drivers/iommu/omap-iommu-debug.c b/drivers/iommu/omap-iommu-debug.c
+index 8e19bfa94121..a99afb5d9011 100644
+--- a/drivers/iommu/omap-iommu-debug.c
++++ b/drivers/iommu/omap-iommu-debug.c
+@@ -98,8 +98,11 @@ static ssize_t debug_read_regs(struct file *file, char __user *userbuf,
+ 	mutex_lock(&iommu_debug_lock);
  
--	phy_init(lvds->dphy);
-+	ret = phy_init(lvds->dphy);
- 	if (ret)
- 		return ret;
+ 	bytes = omap_iommu_dump_ctx(obj, p, count);
++	if (bytes < 0)
++		goto err;
+ 	bytes = simple_read_from_buffer(userbuf, count, ppos, buf, bytes);
  
--	phy_set_mode(lvds->dphy, PHY_MODE_LVDS);
-+	ret = phy_set_mode(lvds->dphy, PHY_MODE_LVDS);
- 	if (ret)
- 		return ret;
++err:
+ 	mutex_unlock(&iommu_debug_lock);
+ 	kfree(buf);
  
 -- 
 2.27.0

@@ -2,190 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87AA921ECDA
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 11:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E953821ED0D
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 11:38:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726785AbgGNJ2l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jul 2020 05:28:41 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:58197 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725955AbgGNJ2k (ORCPT
+        id S1726545AbgGNJiT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jul 2020 05:38:19 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:40746 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725884AbgGNJiR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jul 2020 05:28:40 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jvHEr-0003hO-Oe; Tue, 14 Jul 2020 09:28:37 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] scripts/spelling.txt: add more spellings to spelling.txt
-Date:   Tue, 14 Jul 2020 10:28:37 +0100
-Message-Id: <20200714092837.173796-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        Tue, 14 Jul 2020 05:38:17 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06E9atMJ178432;
+        Tue, 14 Jul 2020 09:38:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=8wmA0uYOG9OxOF3CVL1wtgfgJV7miu8gCUETPuUCOak=;
+ b=IZUTBNLQqKhzm4shvwTB7u1+rTmOLyk/gmUqwbLTNAqavKFNcomDoGPdkubnvn0Yqic0
+ XnexXXwiIZ1JRVCymW0ENjFUCDpDKaut9/034sdVyCYKyqGrdwEw7xEf7AZlNUHlUeyw
+ GSRcLXRexL4mNOu1eNJLuWo+w6LBrsfqIvEx0Uwz58mD83OyzjLizgNmcVcOnl0YPkq0
+ RUT8QCoVdmhTtO95WEFT8uvOtx2+0iIFAcaHNxZV4BQ+d8SQpwvht5v3IobzjW7AbYDi
+ JPbHVPr0gXKAvRndl/q0KuEqF5xwoC2hDTkEWF/05TkZUdbNbm+z1otJoL+5Ix2pP7LK aw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 3275cm4bjk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 14 Jul 2020 09:38:08 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06E9XaXF169890;
+        Tue, 14 Jul 2020 09:38:07 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 327q6rxbkv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 14 Jul 2020 09:38:07 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06E9c6rT009307;
+        Tue, 14 Jul 2020 09:38:06 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 14 Jul 2020 02:38:05 -0700
+Date:   Tue, 14 Jul 2020 12:37:58 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>, linux-pm@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
+Subject: Re: [PATCH -next] PM / devfreq: Fix missing unlock on error in
+ devfreq_add_device()
+Message-ID: <20200714093758.GW2549@kadam>
+References: <20200714063025.118829-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200714063025.118829-1-weiyongjun1@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=2
+ phishscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007140072
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 priorityscore=1501
+ bulkscore=0 adultscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
+ impostorscore=0 malwarescore=0 mlxlogscore=999 clxscore=1011 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007140072
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Tue, Jul 14, 2020 at 06:30:25AM +0000, Wei Yongjun wrote:
+> Add the missing unlock before return from function devfreq_add_device()
+> in the error handling case.
+> 
+> Fixes: d7c46505a7ad ("PM / devfreq: Add support delayed timer for polling mode")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  drivers/devfreq/devfreq.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
+> index 5320c3b37f35..2b54a59bb281 100644
+> --- a/drivers/devfreq/devfreq.c
+> +++ b/drivers/devfreq/devfreq.c
+> @@ -788,6 +788,7 @@ struct devfreq *devfreq_add_device(struct device *dev,
+>  
+>  	if (devfreq->profile->timer < 0
+>  		|| devfreq->profile->timer >= DEVFREQ_TIMER_NUM) {
+> +		mutex_unlock(&devfreq->lock);
+>  		goto err_out;
 
-Here are some of the more common spelling mistakes and typos that I've
-found while fixing up spelling mistakes in the kernel since April 2020.
+This should be "goto err_dev;" and the unlock is not required because
+we free "devfreq".
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- scripts/spelling.txt | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
-
-diff --git a/scripts/spelling.txt b/scripts/spelling.txt
-index c45e9afaab2d..f253681e7e2a 100644
---- a/scripts/spelling.txt
-+++ b/scripts/spelling.txt
-@@ -149,6 +149,7 @@ arbitary||arbitrary
- architechture||architecture
- arguement||argument
- arguements||arguments
-+arithmatic||arithmetic
- aritmetic||arithmetic
- arne't||aren't
- arraival||arrival
-@@ -454,6 +455,7 @@ destorys||destroys
- destroied||destroyed
- detabase||database
- deteced||detected
-+detectt||detect
- develope||develop
- developement||development
- developped||developed
-@@ -545,6 +547,7 @@ entires||entries
- entites||entities
- entrys||entries
- enocded||encoded
-+enought||enough
- enterily||entirely
- enviroiment||environment
- enviroment||environment
-@@ -556,11 +559,14 @@ equivelant||equivalent
- equivilant||equivalent
- eror||error
- errorr||error
-+errror||error
- estbalishment||establishment
- etsablishment||establishment
- etsbalishment||establishment
-+evalution||evaluation
- excecutable||executable
- exceded||exceeded
-+exceds||exceeds
- exceeed||exceed
- excellant||excellent
- execeeded||exceeded
-@@ -583,6 +589,7 @@ explictly||explicitly
- expresion||expression
- exprimental||experimental
- extened||extended
-+exteneded||extended||extended
- extensability||extensibility
- extention||extension
- extenstion||extension
-@@ -610,10 +617,12 @@ feautures||features
- fetaure||feature
- fetaures||features
- fileystem||filesystem
-+fimrware||firmware
- fimware||firmware
- firmare||firmware
- firmaware||firmware
- firware||firmware
-+firwmare||firmware
- finanize||finalize
- findn||find
- finilizes||finalizes
-@@ -661,6 +670,7 @@ globel||global
- grabing||grabbing
- grahical||graphical
- grahpical||graphical
-+granularty||granularity
- grapic||graphic
- grranted||granted
- guage||gauge
-@@ -906,6 +916,7 @@ miximum||maximum
- mmnemonic||mnemonic
- mnay||many
- modfiy||modify
-+modifer||modifier
- modulues||modules
- momery||memory
- memomry||memory
-@@ -915,6 +926,7 @@ monochromo||monochrome
- monocrome||monochrome
- mopdule||module
- mroe||more
-+multipler||multiplier
- mulitplied||multiplied
- multidimensionnal||multidimensional
- multipe||multiple
-@@ -952,6 +964,7 @@ occassionally||occasionally
- occationally||occasionally
- occurance||occurrence
- occurances||occurrences
-+occurd||occurred
- occured||occurred
- occurence||occurrence
- occure||occurred
-@@ -1058,6 +1071,7 @@ precission||precision
- preemptable||preemptible
- prefered||preferred
- prefferably||preferably
-+prefitler||prefilter
- premption||preemption
- prepaired||prepared
- preperation||preparation
-@@ -1101,6 +1115,7 @@ pronunce||pronounce
- propery||property
- propigate||propagate
- propigation||propagation
-+propogation||propagation
- propogate||propagate
- prosess||process
- protable||portable
-@@ -1316,6 +1331,7 @@ sturcture||structure
- subdirectoires||subdirectories
- suble||subtle
- substract||subtract
-+submited||submitted
- submition||submission
- suceed||succeed
- succesfully||successfully
-@@ -1324,6 +1340,7 @@ successed||succeeded
- successfull||successful
- successfuly||successfully
- sucessfully||successfully
-+sucessful||successful
- sucess||success
- superflous||superfluous
- superseeded||superseded
-@@ -1409,6 +1426,7 @@ transormed||transformed
- trasfer||transfer
- trasmission||transmission
- treshold||threshold
-+triggerd||triggered
- trigerred||triggered
- trigerring||triggering
- trun||turn
-@@ -1421,6 +1439,7 @@ uknown||unknown
- usccess||success
- usupported||unsupported
- uncommited||uncommitted
-+uncompatible||incompatible
- unconditionaly||unconditionally
- undeflow||underflow
- underun||underrun
--- 
-2.27.0
-
+regards,
+dan carpenter
+>  	}
+> 
+> 

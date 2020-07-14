@@ -2,83 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37AC121F3B1
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 16:16:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 691B421F3B8
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 16:17:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728095AbgGNOQS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jul 2020 10:16:18 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:6915 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725803AbgGNOQR (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jul 2020 10:16:17 -0400
-X-IronPort-AV: E=Sophos;i="5.75,350,1589234400"; 
-   d="scan'208";a="459696777"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Jul 2020 16:16:15 +0200
-Date:   Tue, 14 Jul 2020 16:16:15 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Suraj Upadhyay <usuraj35@gmail.com>
-cc:     davem@davemloft.net, kuba@kernel.org,
-        linux-decnet-user@lists.sourceforge.net, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] decnet: dn_dev: Remove an unnecessary label.
-In-Reply-To: <20200714141309.GA3184@blackclown>
-Message-ID: <alpine.DEB.2.22.394.2007141615490.2355@hadrien>
-References: <20200714141309.GA3184@blackclown>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        id S1728095AbgGNOQ5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jul 2020 10:16:57 -0400
+Received: from mga14.intel.com ([192.55.52.115]:11364 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726062AbgGNOQ5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 14 Jul 2020 10:16:57 -0400
+IronPort-SDR: HBUNFHxYK3s84fuItTfzPgSbu+PEeC+bWLPUBTJOWRm3vYwHFVGWWMkN5cxCypmdeghwMNDPlP
+ mwf/id74NlKw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9681"; a="148035740"
+X-IronPort-AV: E=Sophos;i="5.75,350,1589266800"; 
+   d="scan'208";a="148035740"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2020 07:16:41 -0700
+IronPort-SDR: YU6dLP1DNLMURLAnRyH0/ToXPzukvGtC8bpWPbwcPGhBJaSgyj1GfhPu9Ymdxq/gckaOxafLvR
+ 6xoooXJnMkRg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,350,1589266800"; 
+   d="scan'208";a="325852274"
+Received: from gruberda-mobl2.ger.corp.intel.com (HELO [10.249.32.254]) ([10.249.32.254])
+  by orsmga007.jf.intel.com with ESMTP; 14 Jul 2020 07:16:38 -0700
+Subject: Re: [PATCH] drm/i915/selftest: Fix an error code in live_noa_gpr()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Chris Wilson <chris@chris-wilson.co.uk>
+Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org
+References: <20200714141216.GA314989@mwanda>
+From:   Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Organization: Intel Corporation (UK) Ltd. - Co. Reg. #1134945 - Pipers Way,
+ Swindon SN3 1RJ
+Message-ID: <71508ba9-6cad-45f9-a3b1-b3401ac0a1d5@intel.com>
+Date:   Tue, 14 Jul 2020 17:16:33 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20200714141216.GA314989@mwanda>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On Tue, 14 Jul 2020, Suraj Upadhyay wrote:
-
-> Remove the unnecessary label from dn_dev_ioctl() and make its error
-> handling simpler to read.
+On 14/07/2020 17:12, Dan Carpenter wrote:
+> The error code is not set on this error path.  It's either zero or
+> uninitialized at this point.
 >
-> Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
+> Fixes: ed2690a9ca89 ("drm/i915/selftest: Check that GPR are restored across noa_wait")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  net/decnet/dn_dev.c | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
+>   drivers/gpu/drm/i915/selftests/i915_perf.c | 1 +
+>   1 file changed, 1 insertion(+)
 >
-> diff --git a/net/decnet/dn_dev.c b/net/decnet/dn_dev.c
-> index 65abcf1b3210..64901bb9f314 100644
-> --- a/net/decnet/dn_dev.c
-> +++ b/net/decnet/dn_dev.c
-> @@ -462,7 +462,9 @@ int dn_dev_ioctl(unsigned int cmd, void __user *arg)
->  	switch (cmd) {
->  	case SIOCGIFADDR:
->  		*((__le16 *)sdn->sdn_nodeaddr) = ifa->ifa_local;
-> -		goto rarok;
-> +		if (copy_to_user(arg, ifr, DN_IFREQ_SIZE))
-> +			ret = -EFAULT;
-> +			break;
+> diff --git a/drivers/gpu/drm/i915/selftests/i915_perf.c b/drivers/gpu/drm/i915/selftests/i915_perf.c
+> index deb6dec1b5ab..7aa73bb03381 100644
+> --- a/drivers/gpu/drm/i915/selftests/i915_perf.c
+> +++ b/drivers/gpu/drm/i915/selftests/i915_perf.c
+> @@ -329,6 +329,7 @@ static int live_noa_gpr(void *arg)
+>   	cs = intel_ring_begin(rq, 2 * 32 + 2);
+>   	if (IS_ERR(cs)) {
+>   		i915_request_add(rq);
+> +		err = PTR_ERR(cs);
+>   		goto out_rq;
+>   	}
+>   
 
-The indentation on break does not look correct.
+Looks like there is another below :
 
-julia
+cs = intel_ring_begin(rq, 4);
+if (IS_ERR(cs)) {
+         i915_request_add(rq);
+         goto out_rq;
+}
 
->
->  	case SIOCSIFADDR:
->  		if (!ifa) {
-> @@ -485,10 +487,6 @@ int dn_dev_ioctl(unsigned int cmd, void __user *arg)
->  	rtnl_unlock();
->
->  	return ret;
-> -rarok:
-> -	if (copy_to_user(arg, ifr, DN_IFREQ_SIZE))
-> -		ret = -EFAULT;
-> -	goto done;
->  }
->
->  struct net_device *dn_dev_get_default(void)
-> --
-> 2.17.1
->
->
+-Lionel
+

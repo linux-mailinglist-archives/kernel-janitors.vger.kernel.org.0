@@ -2,131 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC48121F39E
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 16:14:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88ECB21F3A3
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 16:14:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727851AbgGNONY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jul 2020 10:13:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51528 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725821AbgGNONY (ORCPT
+        id S1727858AbgGNOOZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jul 2020 10:14:25 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:55410 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725803AbgGNOOY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jul 2020 10:13:24 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DD84C061755;
-        Tue, 14 Jul 2020 07:13:24 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id t6so7660796pgq.1;
-        Tue, 14 Jul 2020 07:13:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=2fksY6YSojH74C2xoJiIxrJtolcgZN1cTtaHk2DTTcA=;
-        b=OSGsrTb2632Fcb06KxfPBXAvy2ahVjkiHIoalu3EXz8Jh05gZaLw02ZcvXY2CBURWP
-         r+TZO/IkW0wMiHZokIySXuHJgYILrL0APiEgO8KKyaULOlKdgKO0jv4cLCVtXpsCI4JD
-         PSKFPVGpIv2DsEa7Mob5n/n5JABBfK6IdPuE5Rz2+YCk3n2oKjF9GYuphja6OPB5LZE/
-         P86wGOU9PhJfp2QS+SVgtr+2XDrfKbN00XXBKYQsup8/FsSeT5usjsCy6KKwn+oamvwd
-         TGBmQowWgbHn1jSb3gizTJsktRHMtP39sPclGqVYfYZm2PMCXx17LatulItzgI48wwaA
-         F0cA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=2fksY6YSojH74C2xoJiIxrJtolcgZN1cTtaHk2DTTcA=;
-        b=teJOlyijqmUu97Rp0qrKfBXa8DTkMxvY0LGHmQFG8f5lsT9kPmJBnk2mwxLLUcXXy5
-         /2PU0ie5KHLhdKRMr57efMvCfvrQ3I0o20DkY9I6/q17NeqkTpArhFvs1QCuEvhBBRYp
-         uAbeGKJVegZWqchrjV/FPGgKWaad6AJe0rfW7z3ghIXckEXr+EX6/6dHx7Ad7ogPJ8J3
-         2IM4qXkmgHoK5iCPfdaCr1h+QECwLFQVn3lmIySIaz+Pg1kg8c8rGyKTeb/wIPq8eqfd
-         J6f23X8U8waqAcvkkpUONevsphMkEQpZeZ5YwVdmPhTCtlJi+QWcSXjl2z3oEhyoCzs7
-         VZmw==
-X-Gm-Message-State: AOAM532ueho9J27i79dAojpgiRYTycbCCAxtDuENPVlT3LqPp8aFaOmy
-        BPAj/Brl58CyqE7ljbLg7ldlIdEoBajnrg==
-X-Google-Smtp-Source: ABdhPJzSaWl7qUbbV4m+KbTMUpWb70wRXvXlfcWsa+YBJ/N3815XPjGZcCw+oMZE6fVTQWnOHgw5TA==
-X-Received: by 2002:a62:1c9:: with SMTP id 192mr4277995pfb.22.1594736003728;
-        Tue, 14 Jul 2020 07:13:23 -0700 (PDT)
-Received: from blackclown ([103.88.82.145])
-        by smtp.gmail.com with ESMTPSA id c14sm17849929pfj.82.2020.07.14.07.13.20
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 14 Jul 2020 07:13:22 -0700 (PDT)
-Date:   Tue, 14 Jul 2020 19:43:09 +0530
-From:   Suraj Upadhyay <usuraj35@gmail.com>
-To:     davem@davemloft.net, kuba@kernel.org
-Cc:     linux-decnet-user@lists.sourceforge.net, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] decnet: dn_dev: Remove an unnecessary label.
-Message-ID: <20200714141309.GA3184@blackclown>
+        Tue, 14 Jul 2020 10:14:24 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06EECukZ087139;
+        Tue, 14 Jul 2020 14:14:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=J205Te7zf3BALzuMd5lnj+R/wr9ZkhVNyWmEg3xKZQY=;
+ b=FeNvAFNVjuj6sduxD8LOKAGgFCyscWqkSchikKDWCZVxfPHdpAK2CQ1zG1qhzIYt3YAr
+ onQiwBSQAA1ZM9l+i7Zu8SfGkdmWw8cgJsXhZYQv7iOOiACImIo8+WpiB2HejndF+PWd
+ on/kL+3W7r6x124c/JjqGlGEYkOxAyVRnd6WF3v80KTgV1Sh2Xiwx5Se/Kbt+nvxLEzG
+ N5BitZyo2GKn3knA5Y6Nd6BL1rEapvjkpi+glmSoFteKO1paN2WBa/+mqKUM0Z9VXUbd
+ dqcHLmhqT/sXRYbewtuYx7RUyDueBGP7hLj01Oyp86aiti368/8hmszpAJB3IrphaZKV Lw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 3275cm5k7h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 14 Jul 2020 14:14:18 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06EE8d5D016544;
+        Tue, 14 Jul 2020 14:14:17 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 327qbxsctf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 14 Jul 2020 14:14:17 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06EEEGx7016164;
+        Tue, 14 Jul 2020 14:14:16 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 14 Jul 2020 07:14:16 -0700
+Date:   Tue, 14 Jul 2020 17:14:10 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Veerabhadrarao Badiganti <vbadigan@codeaurora.org>,
+        linux-mmc@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] mmc: sdhci: Fix a potential uninitialized variable
+Message-ID: <20200714141410.GB314989@mwanda>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="zYM0uCDKw75PZbzx"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0
+ mlxlogscore=999 bulkscore=0 malwarescore=0 mlxscore=0 phishscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007140109
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 priorityscore=1501
+ bulkscore=0 adultscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
+ impostorscore=0 malwarescore=0 mlxlogscore=999 clxscore=1011 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007140109
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Smatch complains that "ret" can be used without being initialized.
 
---zYM0uCDKw75PZbzx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+drivers/mmc/host/sdhci.c
+  4383          if (!IS_ERR(mmc->supply.vqmmc)) {
+  4384                  if (enable_vqmmc) {
+                            ^^^^^^^^^^^^
+  4385                          ret = regulator_enable(mmc->supply.vqmmc);
+                                ^^^^^
+  4386                          host->sdhci_core_to_disable_vqmmc = !ret;
+  4387                  }
 
-Remove the unnecessary label from dn_dev_ioctl() and make its error
-handling simpler to read.
+"ret" is only initialized when "enable_vqmmc" is true.
 
-Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
+Fixes: b13099a4dea6 ("mmc: sdhci: Fix potential null pointer access while accessing vqmmc")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- net/decnet/dn_dev.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/mmc/host/sdhci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/decnet/dn_dev.c b/net/decnet/dn_dev.c
-index 65abcf1b3210..64901bb9f314 100644
---- a/net/decnet/dn_dev.c
-+++ b/net/decnet/dn_dev.c
-@@ -462,7 +462,9 @@ int dn_dev_ioctl(unsigned int cmd, void __user *arg)
- 	switch (cmd) {
- 	case SIOCGIFADDR:
- 		*((__le16 *)sdn->sdn_nodeaddr) =3D ifa->ifa_local;
--		goto rarok;
-+		if (copy_to_user(arg, ifr, DN_IFREQ_SIZE))
-+			ret =3D -EFAULT;
-+			break;
-=20
- 	case SIOCSIFADDR:
- 		if (!ifa) {
-@@ -485,10 +487,6 @@ int dn_dev_ioctl(unsigned int cmd, void __user *arg)
- 	rtnl_unlock();
-=20
- 	return ret;
--rarok:
--	if (copy_to_user(arg, ifr, DN_IFREQ_SIZE))
--		ret =3D -EFAULT;
--	goto done;
- }
-=20
- struct net_device *dn_dev_get_default(void)
---=20
-2.17.1
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index 8db06da55602..3ad394b40eb1 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -4104,7 +4104,7 @@ int sdhci_setup_host(struct sdhci_host *host)
+ 	unsigned int ocr_avail;
+ 	unsigned int override_timeout_clk;
+ 	u32 max_clk;
+-	int ret;
++	int ret = 0;
+ 	bool enable_vqmmc = false;
+ 
+ 	WARN_ON(host == NULL);
+-- 
+2.27.0
 
-
---zYM0uCDKw75PZbzx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE7AbCa0kOsMJ4cx0j+gRsbIfe744FAl8NvXQACgkQ+gRsbIfe
-744sDA//bLkioTnZkkrrA1VGJtzPqwikbMv98ftgr6GTcZ5/FJcG3ZEq64SeMcY6
-pWUhP5fFnIm4tBcaTsio3K9jQ5eLYi5KSZ36kJToxWihHt8lts2GdY9pQHe1IyOU
-H/pHNMc6Y5Mqugvzn8mZF0DcoWFjyOAicEUGDHEMBEk4rFP3MS60aad1V3JQ152u
-2RJm1rMHc3C8HbGTIA7/vnwNeH7aDmM8Giz7kK0IkeR+3ldRYswCniPKmoJh9Teq
-4kdwAlaYcgiorYhG1ad/wwOoqPB5SeCuMHq/tgNl/y+8dr+MoiuHuoq85LS8Hp9t
-PlcbjgTyUCde+jHqsWLB60OvVD4OgtHQOlrQEjI9BuTsRoApe/pGnsR7T2aLo+3I
-Zv5+6nNImAWqIDvQBDIGyuO/2l+2JtVujZTswYMN/O47dqAs0jRhDWfT4Tgi76pF
-gCMJWOqd1bjEqSjPwX158WEsapaEsdZJbT2ohjksF0DPvgj6lT2HXQvzlf8VYYAd
-bKo4rHMPDUQKhdIR47QTJhucJjo/lH0kF7Mf9PNtksA/0TULiAptCqv+cVK2wsyJ
-7vTqMYvFJow/6Bapjih3QGRaZTPRJ6PKLQNFD9v5qw9sdqEHZ5aPB6TZvV35s31o
-ubHYmiZOrpFcxHFKHJzW75I85l5245X2tJB8MaQyNvG53Sb/WjI=
-=xSF9
------END PGP SIGNATURE-----
-
---zYM0uCDKw75PZbzx--

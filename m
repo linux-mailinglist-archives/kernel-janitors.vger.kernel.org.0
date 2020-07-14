@@ -2,63 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A860021EE97
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 13:00:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8CBD21EF10
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 13:19:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726914AbgGNLAf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jul 2020 07:00:35 -0400
-Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:43436 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726252AbgGNLAe (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jul 2020 07:00:34 -0400
-Received: from localhost.localdomain ([93.22.39.234])
-        by mwinf5d70 with ME
-        id 2z0V23009537AcD03z0W7a; Tue, 14 Jul 2020 13:00:32 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 14 Jul 2020 13:00:32 +0200
-X-ME-IP: 93.22.39.234
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     jes@trained-monkey.org, davem@davemloft.net, kuba@kernel.org
-Cc:     linux-hippi@sunsite.dk, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] hippi: Fix a size used in a 'pci_free_consistent()' in an error handling path
-Date:   Tue, 14 Jul 2020 13:00:27 +0200
-Message-Id: <20200714110027.301728-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        id S1726332AbgGNLTc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jul 2020 07:19:32 -0400
+Received: from verein.lst.de ([213.95.11.211]:53942 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728124AbgGNLRa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 14 Jul 2020 07:17:30 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 8C0D568CFC; Tue, 14 Jul 2020 13:17:27 +0200 (CEST)
+Date:   Tue, 14 Jul 2020 13:17:27 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        linux-nvme@lists.infradead.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] nvme: remove an unnecessary condition
+Message-ID: <20200714111727.GA17866@lst.de>
+References: <20200714105732.GD294318@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200714105732.GD294318@mwanda>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The size used when calling 'pci_alloc_consistent()' and
-'pci_free_consistent()' should match.
+Thanks,
 
-Fix it and have it consistent with the corresponding call in 'rr_close()'.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/net/hippi/rrunner.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/hippi/rrunner.c b/drivers/net/hippi/rrunner.c
-index 2a6ec5394966..d0d5100eeb0c 100644
---- a/drivers/net/hippi/rrunner.c
-+++ b/drivers/net/hippi/rrunner.c
-@@ -1242,7 +1242,7 @@ static int rr_open(struct net_device *dev)
- 		rrpriv->info = NULL;
- 	}
- 	if (rrpriv->rx_ctrl) {
--		pci_free_consistent(pdev, sizeof(struct ring_ctrl),
-+		pci_free_consistent(pdev, 256 * sizeof(struct ring_ctrl),
- 				    rrpriv->rx_ctrl, rrpriv->rx_ctrl_dma);
- 		rrpriv->rx_ctrl = NULL;
- 	}
--- 
-2.25.1
-
+applied to nvme-5.9.

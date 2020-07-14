@@ -2,55 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0067C21FFBC
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 23:12:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1F1F22007B
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Jul 2020 00:14:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728245AbgGNVMB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jul 2020 17:12:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32866 "EHLO
+        id S1728240AbgGNWNZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jul 2020 18:13:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726795AbgGNVMB (ORCPT
+        with ESMTP id S1726361AbgGNWNZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jul 2020 17:12:01 -0400
+        Tue, 14 Jul 2020 18:13:25 -0400
 Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 341ABC061755;
-        Tue, 14 Jul 2020 14:12:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8274C061755;
+        Tue, 14 Jul 2020 15:13:25 -0700 (PDT)
 Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 7B6B915E2E748;
-        Tue, 14 Jul 2020 14:12:00 -0700 (PDT)
-Date:   Tue, 14 Jul 2020 14:11:59 -0700 (PDT)
-Message-Id: <20200714.141159.1780768034773147896.davem@davemloft.net>
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 921AE15E54D20;
+        Tue, 14 Jul 2020 15:13:24 -0700 (PDT)
+Date:   Tue, 14 Jul 2020 15:13:23 -0700 (PDT)
+Message-Id: <20200714.151323.2054538067730186094.davem@davemloft.net>
 To:     christophe.jaillet@wanadoo.fr
-Cc:     jes@trained-monkey.org, kuba@kernel.org, linux-hippi@sunsite.dk,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] hippi: Fix a size used in a 'pci_free_consistent()' in
- an error handling path
+Cc:     sumit.semwal@linaro.org, kuba@kernel.org, christian.koenig@amd.com,
+        mhabets@solarflare.com, jwi@linux.ibm.com, zhongjiang@huawei.com,
+        weiyongjun1@huawei.com, vaibhavgupta40@gmail.com,
+        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] ksz884x: switch from 'pci_' to 'dma_' API
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200714110027.301728-1-christophe.jaillet@wanadoo.fr>
-References: <20200714110027.301728-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20200714183501.310949-1-christophe.jaillet@wanadoo.fr>
+References: <20200714183501.310949-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: Mew version 6.8 on Emacs 26.3
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 14 Jul 2020 14:12:00 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 14 Jul 2020 15:13:25 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Tue, 14 Jul 2020 13:00:27 +0200
+Date: Tue, 14 Jul 2020 20:35:01 +0200
 
-> The size used when calling 'pci_alloc_consistent()' and
-> 'pci_free_consistent()' should match.
+> The wrappers in include/linux/pci-dma-compat.h should go away.
 > 
-> Fix it and have it consistent with the corresponding call in 'rr_close()'.
+> The patch has been generated with the coccinelle script below and has been
+> hand modified to replace GFP_ with a correct flag.
+> It has been compile tested.
 > 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> When memory is allocated in 'ksz_alloc_desc()', GFP_KERNEL can be used
+> because a few lines below, GFP_KERNEL is also used in the
+> 'ksz_alloc_soft_desc()' calls.
+ ...
 > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
 Applied, thank you.

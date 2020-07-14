@@ -2,204 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE17C21EFCA
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 13:53:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D235221F3A0
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jul 2020 16:14:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728006AbgGNLxJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jul 2020 07:53:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57856 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727991AbgGNLxH (ORCPT
+        id S1728456AbgGNONm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jul 2020 10:13:42 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:56284 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728440AbgGNONl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jul 2020 07:53:07 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ECAEC061755;
-        Tue, 14 Jul 2020 04:53:07 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id w2so7485442pgg.10;
-        Tue, 14 Jul 2020 04:53:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=gcGnZKmOcvQR6JjKvFpEHmamTFte6m24wBtwFxccrg0=;
-        b=dW7IjMJ+MmtbcJCvGERY0fKKNbNVEGpkKBt+QKvOfV0raXbPhVTdFJ15c/F3EoMOIP
-         W4MHVxHoT4KPT7wGpNjkaDIQukZDXFi4F0SVN37jGB6Whhkqiwv0n2nBh7pDpwhK7+pz
-         tk+U2ekQl+BcEDcPa2jbD71DoBFYUn2P+BR16yuEjZkMYk/hd8vmnrd14m1iLp4Xehxw
-         Rk8CAED+knH/QWR56T1mqzlzRogmossepTgGXfJ4g9LVg4l5gB9IGbTkggVAamBtuYIa
-         RoVYRy1KiEuE9cACMIHEJy/c1yDRnZpQpukkFab0flTzgQuTfHPgltSfrdgHc3TCv5+7
-         O3pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=gcGnZKmOcvQR6JjKvFpEHmamTFte6m24wBtwFxccrg0=;
-        b=m9gZy51EYxwWAuEuJFR/yo00dfl/HG9d+1HzyTQ3lxszwm7Tqm+qWoIkyM9nIlYe9m
-         OaMwaTNLlYDIWTqXxdPvusfo4Jw+tzVVYJUENyfd/0LATGqbPRLrfjW04TQl9K44gQa4
-         aEov7R9E6LOAIUbGb+xt98ofjIdwJ7aafMmVRdQMpgbyXWSsfiFcv5WjL0EscQFTsF5+
-         pORt0aFX1NhrZBZozqhnVwh0jxx3UAtkJYRRASIIUfPuV5tk75SxbNv33QnbfqeBPIGa
-         WljBpGcZHgTQ6lrgXo/WFi4M3AJcxfD9hOz5kcle9/otzT4QGu8Tk6nrB4qcg8GAfRMR
-         /a+Q==
-X-Gm-Message-State: AOAM532jd0Mxlj+8VAQjtJtph8TKh0rIcx7AVfLWId5ejC18r8VLSmll
-        O771HJxVL6KtD4v+Gp9v9Xs9Ge35rJNGIA==
-X-Google-Smtp-Source: ABdhPJywmZS6ncd1jBuKpSljjO3Vp7b56juxOhpBOrNHard4BbokAUPnYhvuCgxRyl6ffJe4zXo5/g==
-X-Received: by 2002:a62:cd0c:: with SMTP id o12mr3951843pfg.70.1594727586628;
-        Tue, 14 Jul 2020 04:53:06 -0700 (PDT)
-Received: from blackclown ([103.88.82.145])
-        by smtp.gmail.com with ESMTPSA id u8sm2480068pjn.24.2020.07.14.04.53.03
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 14 Jul 2020 04:53:05 -0700 (PDT)
-Date:   Tue, 14 Jul 2020 17:22:49 +0530
-From:   Suraj Upadhyay <usuraj35@gmail.com>
-To:     stern@rowland.harvard.edu, gregkh@linuxfoundation.org
-Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] USB: Remove pci-dma-compat wrapper APIs.
-Message-ID: <20200714115249.GA8563@blackclown>
+        Tue, 14 Jul 2020 10:13:41 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06EE2u3B015787;
+        Tue, 14 Jul 2020 14:12:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=k3qxcqaX7DN4yU9D9CphW0Kj5lkwWimTwaZfF4Cpqjs=;
+ b=SPedCDHON+JNoF5WsJLVicmaUA7aSVL2STe9+tHj6TarwD14pzvuQS56l6lfX4AV46wS
+ 6mYMiQUXTn8Zf8S6piKEWCZ2Gu4G+8IojxINXCC8sNT2kNhBcouxlJBydSCcygs7pev7
+ KGD268WhvJtgnNiJDe+7SDCNt7Xvn8s7IKFTa/Ky1GYRLD1Z9FXA1pApHi84VW8K1IqO
+ ZmzpUbPcGuARZ83GArz5fCjo3YGpmAKQREJswGDy6/uySU7JzZsko4Trget2dwYxhKTm
+ YdLBzWqgCYa6nxzNiTy6tH5qirBXC2UlCSuhj1Yvi2X3823sLOdYLzQTYfNW4YHeJJhB Ag== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 32762ndf16-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 14 Jul 2020 14:12:30 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06EE7ZuK011954;
+        Tue, 14 Jul 2020 14:12:30 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 327qb46n66-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 14 Jul 2020 14:12:30 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06EECO6m016337;
+        Tue, 14 Jul 2020 14:12:25 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 14 Jul 2020 07:12:24 -0700
+Date:   Tue, 14 Jul 2020 17:12:16 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Chris Wilson <chris@chris-wilson.co.uk>
+Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
+        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
+        <ville.syrjala@linux.intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] drm/i915/selftest: Fix an error code in live_noa_gpr()
+Message-ID: <20200714141216.GA314989@mwanda>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="jI8keyz6grp/JLjh"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
+ mlxscore=0 spamscore=0 phishscore=0 suspectscore=0 bulkscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007140109
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 spamscore=0
+ clxscore=1011 priorityscore=1501 mlxlogscore=999 lowpriorityscore=0
+ bulkscore=0 suspectscore=0 phishscore=0 adultscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007140108
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+The error code is not set on this error path.  It's either zero or
+uninitialized at this point.
 
---jI8keyz6grp/JLjh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-The legacy API wrappers in include/linux/pci-dma-compat.h
-should go away as it creates unnecessary midlayering
-for include/linux/dma-mapping.h APIs, instead use dma-mapping.h
-APIs directly.
-
-The patch has been generated with the coccinelle script below
-and compile-tested.
-
-@@@@
-- PCI_DMA_BIDIRECTIONAL
-+ DMA_BIDIRECTIONAL
-
-@@@@
-- PCI_DMA_TODEVICE
-+ DMA_TO_DEVICE
-
-@@@@
-- PCI_DMA_FROMDEVICE
-+ DMA_FROM_DEVICE
-
-@@@@
-- PCI_DMA_NONE
-+ DMA_NONE
-
-@@ expression E1, E2, E3; @@
-- pci_alloc_consistent(E1, E2, E3)
-+ dma_alloc_coherent(&E1->dev, E2, E3, GFP_)
-
-@@ expression E1, E2, E3; @@
-- pci_zalloc_consistent(E1, E2, E3)
-+ dma_alloc_coherent(&E1->dev, E2, E3, GFP_)
-
-@@ expression E1, E2, E3, E4; @@
-- pci_free_consistent(E1, E2, E3, E4)
-+ dma_free_coherent(&E1->dev, E2, E3, E4)
-
-@@ expression E1, E2, E3, E4; @@
-- pci_map_single(E1, E2, E3, E4)
-+ dma_map_single(&E1->dev, E2, E3, E4)
-
-@@ expression E1, E2, E3, E4; @@
-- pci_unmap_single(E1, E2, E3, E4)
-+ dma_unmap_single(&E1->dev, E2, E3, E4)
-
-@@ expression E1, E2, E3, E4, E5; @@
-- pci_map_page(E1, E2, E3, E4, E5)
-+ dma_map_page(&E1->dev, E2, E3, E4, E5)
-
-@@ expression E1, E2, E3, E4; @@
-- pci_unmap_page(E1, E2, E3, E4)
-+ dma_unmap_page(&E1->dev, E2, E3, E4)
-
-@@ expression E1, E2, E3, E4; @@
-- pci_map_sg(E1, E2, E3, E4)
-+ dma_map_sg(&E1->dev, E2, E3, E4)
-
-@@ expression E1, E2, E3, E4; @@
-- pci_unmap_sg(E1, E2, E3, E4)
-+ dma_unmap_sg(&E1->dev, E2, E3, E4)
-
-@@ expression E1, E2, E3, E4; @@
-- pci_dma_sync_single_for_cpu(E1, E2, E3, E4)
-+ dma_sync_single_for_cpu(&E1->dev, E2, E3, E4)
-
-@@ expression E1, E2, E3, E4; @@
-- pci_dma_sync_single_for_device(E1, E2, E3, E4)
-+ dma_sync_single_for_device(&E1->dev, E2, E3, E4)
-
-@@ expression E1, E2, E3, E4; @@
-- pci_dma_sync_sg_for_cpu(E1, E2, E3, E4)
-+ dma_sync_sg_for_cpu(&E1->dev, E2, E3, E4)
-
-@@ expression E1, E2, E3, E4; @@
-- pci_dma_sync_sg_for_device(E1, E2, E3, E4)
-+ dma_sync_sg_for_device(&E1->dev, E2, E3, E4)
-
-@@ expression E1, E2; @@
-- pci_dma_mapping_error(E1, E2)
-+ dma_mapping_error(&E1->dev, E2)
-
-@@ expression E1, E2; @@
-- pci_set_consistent_dma_mask(E1, E2)
-+ dma_set_coherent_mask(&E1->dev, E2)
-
-@@ expression E1, E2; @@
-- pci_set_dma_mask(E1, E2)
-+ dma_set_mask(&E1->dev, E2)
-
-Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
+Fixes: ed2690a9ca89 ("drm/i915/selftest: Check that GPR are restored across noa_wait")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/usb/host/ehci-pci.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/i915/selftests/i915_perf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/host/ehci-pci.c b/drivers/usb/host/ehci-pci.c
-index af3c1b9b38b2..71ec3025686f 100644
---- a/drivers/usb/host/ehci-pci.c
-+++ b/drivers/usb/host/ehci-pci.c
-@@ -124,8 +124,7 @@ static int ehci_pci_setup(struct usb_hcd *hcd)
- 		case 0x005b:	/* CK804 */
- 		case 0x00d8:	/* CK8 */
- 		case 0x00e8:	/* CK8S */
--			if (pci_set_consistent_dma_mask(pdev,
--						DMA_BIT_MASK(31)) < 0)
-+			if (dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(31)) < 0)
- 				ehci_warn(ehci, "can't enable NVidia "
- 					"workaround for >2GB RAM\n");
- 			break;
---=20
-2.17.1
+diff --git a/drivers/gpu/drm/i915/selftests/i915_perf.c b/drivers/gpu/drm/i915/selftests/i915_perf.c
+index deb6dec1b5ab..7aa73bb03381 100644
+--- a/drivers/gpu/drm/i915/selftests/i915_perf.c
++++ b/drivers/gpu/drm/i915/selftests/i915_perf.c
+@@ -329,6 +329,7 @@ static int live_noa_gpr(void *arg)
+ 	cs = intel_ring_begin(rq, 2 * 32 + 2);
+ 	if (IS_ERR(cs)) {
+ 		i915_request_add(rq);
++		err = PTR_ERR(cs);
+ 		goto out_rq;
+ 	}
+ 
+-- 
+2.27.0
 
-
---jI8keyz6grp/JLjh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE7AbCa0kOsMJ4cx0j+gRsbIfe744FAl8NnIYACgkQ+gRsbIfe
-746pMRAAgh0C4G7yswFeFhknFnQoPRapRiqqXFb0kUimI5bl/yqvpdeJjzU37woq
-AXbP5yLLJCYkWsw2aJzuVrsB3Dj4MJ77+nWSx7iLwUp+0ys/9mf/bDoPD7EB/RNG
-EQymoql8dc1aSO3kIJwHzKe3CZ99gW8y0GONMoKuXtmJljbCrNVPOK9yV2YAzDTJ
-HRJ5n0xyKu9q8cZ0+uK2Hj48sDVragz+qmTZPdZCaGRr9dDwKO8hq5kn5yprbRsH
-ctj2UsJcgY+zWEZHbUQhBd91QrFNezMN62STle0HYOXar79dMxuNv5sTaMPgVd09
-30MrjTBm1dgkBKQlaUrAx5BmS6mVlilnYQEByBHlJaeHQe4aGr92z438dPZqDSNS
-SiukbO+R6r5fQY87U0/Qeu6J8rVbNBjQJPzl1BgHV4VWrbgeA9v2r010qTtMNYPY
-emqCyrDJ0lQQaDA3qD8NUCRX/+W+50tDljbvRoxxnjoVpJmo0EZiN84sQ+R119ms
-UZY8fMXcLDbrKf5wTpg3Cf/SnVE8IAr3vXHFquzf5CFoCK/sU9muOiVbpPtxYu6S
-OSDjtLEWvNN7TdB7CL8fq9t1mCoj/YZFjty1N2+poxlRKy6WPUdy0lRqzUBGH3ee
-liYhecVR+SyexL69Vf04oE0DoMPG6M4Y8XIrU3YeDgKpR5COn5Y=
-=DIFZ
------END PGP SIGNATURE-----
-
---jI8keyz6grp/JLjh--

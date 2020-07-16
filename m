@@ -2,129 +2,140 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A79732227FE
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Jul 2020 18:06:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C6B5222B2C
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Jul 2020 20:44:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729151AbgGPQFJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Jul 2020 12:05:09 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:60732 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728374AbgGPQFI (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Jul 2020 12:05:08 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jw6Nd-0007eh-Ef; Thu, 16 Jul 2020 16:05:05 +0000
-Subject: Re: [PATCH] crypto: xts: use memmove to avoid overlapped memory copy
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20200716152900.1709694-1-colin.king@canonical.com>
- <CAMj1kXEWyweZ0E3WHthEG9oiOpOS9UxtTB7xskAsF8FeinNg9w@mail.gmail.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <dfca9007-c553-3724-ea52-ef86b919c9d6@canonical.com>
-Date:   Thu, 16 Jul 2020 17:05:04 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1728479AbgGPSoo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Jul 2020 14:44:44 -0400
+Received: from nat-hk.nvidia.com ([203.18.50.4]:24705 "EHLO nat-hk.nvidia.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726986AbgGPSon (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 16 Jul 2020 14:44:43 -0400
+Received: from hkpgpgate102.nvidia.com (Not Verified[10.18.92.100]) by nat-hk.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+        id <B5f10a0180000>; Fri, 17 Jul 2020 02:44:40 +0800
+Received: from HKMAIL101.nvidia.com ([10.18.16.10])
+  by hkpgpgate102.nvidia.com (PGP Universal service);
+  Thu, 16 Jul 2020 11:44:40 -0700
+X-PGP-Universal: processed;
+        by hkpgpgate102.nvidia.com on Thu, 16 Jul 2020 11:44:40 -0700
+Received: from HKMAIL101.nvidia.com (10.18.16.10) by HKMAIL101.nvidia.com
+ (10.18.16.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 16 Jul
+ 2020 18:44:38 +0000
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
+ by HKMAIL101.nvidia.com (10.18.16.10) with Microsoft SMTP Server (TLS) id
+ 15.0.1473.3 via Frontend Transport; Thu, 16 Jul 2020 18:44:38 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=FWdmpA/bjrG0Qbpjgw3+HEr/M2n1zEphG9lBVNnIUM7Q65Q89x+ZRnaxL0aMOQT5XP6OoevNVK/jWJdyliwIt5Q6vp32zWG2aBUJrIUplMXTL60aU9uYf1+1RW8fqNkRx7olSXuIGi50t3GlQGkkLlioCuDu1pc+U/iAkeGwrveWuqVtbTQsghMya02Xq7gcNo8l/lJdAwIinRYjOvYgSIhOJIrg1X2uBxA9zOSMQwYKvcPJd0tI7JlQDToSng0xz/fyzFLRNJOr5C/uh+8wpVu/qqsg0kk3otgVk2n+mMGGUycgtOFwCyorOzID7odftjGfW/gBTJWeIi/3EPpP4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yKtSQPw9VXl5Jpo31+YX7qMHWzRnOTNgN5DFtGG8vXg=;
+ b=V9rN6GGfp3C4fSYkS6YlazMzfNdGGJTAKIM20ZG7HAt7qyfjsCTzHbJuqgwE/VKZr43uPPHzsyeC1z2oTQC1/MZHZfpUHpCvjVgTD04hlofOdZtpGcJOxk+DQzDW+g3tyNjbGpPhmDyIFGMWR+ZC6T0/KSST5fRitmvK6lFQ5sa9MOzIlite5AZjxCK1GtVxYorSJnWEzH4KqTH6jwa/aqGUxrRe0TtEf+WhANnP48lrs9bSwwyl8sQZH7Wf7xXbXkNNfIiJJLH2HDPCp7c5hybJ5QM9Yb45Ysv9cWOlhFsIxfd0HAPEQtUkTAezzSNFy6iFyOEXQf/kj4qCSGHW4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+Authentication-Results: wanadoo.fr; dkim=none (message not signed)
+ header.d=none;wanadoo.fr; dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
+ by DM6PR12MB4498.namprd12.prod.outlook.com (2603:10b6:5:2a2::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.20; Thu, 16 Jul
+ 2020 18:44:36 +0000
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::1d53:7cb4:c3d7:2b54]) by DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::1d53:7cb4:c3d7:2b54%6]) with mapi id 15.20.3174.026; Thu, 16 Jul 2020
+ 18:44:36 +0000
+Date:   Thu, 16 Jul 2020 15:44:35 -0300
+From:   Jason Gunthorpe <jgg@nvidia.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+CC:     <benve@cisco.com>, <neescoba@cisco.com>, <pkaustub@cisco.com>,
+        <dledford@redhat.com>, <hch@infradead.org>,
+        <linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] RDMA/usnic: switch from 'pci_' to 'dma_' API
+Message-ID: <20200716184435.GA2670424@nvidia.com>
+References: <20200711073120.249146-1-christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20200711073120.249146-1-christophe.jaillet@wanadoo.fr>
+X-ClientProxiedBy: MN2PR15CA0024.namprd15.prod.outlook.com
+ (2603:10b6:208:1b4::37) To DM6PR12MB3834.namprd12.prod.outlook.com
+ (2603:10b6:5:14a::12)
 MIME-Version: 1.0
-In-Reply-To: <CAMj1kXEWyweZ0E3WHthEG9oiOpOS9UxtTB7xskAsF8FeinNg9w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from mlx.ziepe.ca (156.34.48.30) by MN2PR15CA0024.namprd15.prod.outlook.com (2603:10b6:208:1b4::37) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3195.18 via Frontend Transport; Thu, 16 Jul 2020 18:44:36 +0000
+Received: from jgg by mlx with local (Exim 4.93)        (envelope-from <jgg@nvidia.com>)        id 1jw8rz-00BCj5-96; Thu, 16 Jul 2020 15:44:35 -0300
+X-Originating-IP: [156.34.48.30]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: b48ec139-58d4-4fe9-076d-08d829b84a01
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4498:
+X-Microsoft-Antispam-PRVS: <DM6PR12MB44987B630E96C9F607A6FF75C27F0@DM6PR12MB4498.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4502;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ZL/kf+6AKWMnJIsMwgMOO3QYmI7n4P1lJDQYN1O3viDPDUp8JAbnLpsUbPrrDZ6VYYmSxRh1+WtniyLhphr0m4NVwcTi1beyL9EB8ONzlXDSpSIGFFEg7v/MGKhkyM6Xpe+bpLnDhpQLkWNA4Tq5oVI9b6H4e2/1xirk+3tcsEHtgJJ5xzitr6kbKiLzC1dQcFay/srCdfg916UQ7qwaIsi/YDbHAwIvBgAMEoEcWK8cmujzAINCWDfLX4JeXDDRQd4ZCEtvubR6NU4oy398ghw+byIq5aZzc7RAD4reYha5pwGsPSoJZ/DcZlYV4Y4P9fdhKHvKYzWrmdVgpKYjfOUUnw5WfejZkfwLIvg3MsQcp+YhuEacJA8moGvk7w9UvNLw+MeHn5EY8Q5cbEyaGQ3wUzCCo2ml9SIf6eY/7PA0KaZ6RsPYvqdMfm7uW5z+2kArVcuou7V3csRL1PlGhQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3834.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(39860400002)(136003)(376002)(396003)(346002)(366004)(966005)(36756003)(4326008)(5660300002)(478600001)(1076003)(316002)(66476007)(33656002)(186003)(83380400001)(9786002)(26005)(4744005)(6916009)(426003)(66556008)(8936002)(9746002)(86362001)(2906002)(66946007)(2616005)(8676002)(6606295002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: Mkvp9NrBjeuMUZpVKwq3U3FAIZjbw/3ptEsC5BizwISvbHhxu3Q7XzttiBh/TXXpol8SDWUnlXI9xWuLj1nHVPa1pGepHz1G/V4y23d03ffRzVV3tiEHkjwseegKo2NHGXdBCobBx6ZBdmckHjdBFSkzXyzimA311++X/jgNjYE01m9d7IH2d4YJCFupv0rcBP5PINUWidDeYd0mbT1Ud99WPv7Y8JeYHXea8HroLI66nYvwcYGiSFKACXTKkzf3KAN9GpdI7RMY4guZResJGeQZP418tA0v8/PCUReeU/LH62LvOv8Tt3nEieEqdDsbU2g33tRveN5QQ5ZBUX+AXMTgfSD9mS2ZQR6ENEcQ4APyJiF4XlnzEefxf3+RffXC9+iCxpsGmS4QrFiIShXxLLfxysJxVtvZgurIrCqOvsm6GWX2thNVE8OZnr2kZ66BruqLYMDrsct98b2kkh5MGGjMMDxcUP1ehimMfRIOg/g=
+X-MS-Exchange-CrossTenant-Network-Message-Id: b48ec139-58d4-4fe9-076d-08d829b84a01
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3834.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2020 18:44:36.7966
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jEqrVCBP3piwSvhKwpgqUnAH8jT3cD/JyjFQRWclj+n8i8zOQ9X7BptK5py+ARL0
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4498
+X-OriginatorOrg: Nvidia.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1594925080; bh=yKtSQPw9VXl5Jpo31+YX7qMHWzRnOTNgN5DFtGG8vXg=;
+        h=X-PGP-Universal:ARC-Seal:ARC-Message-Signature:
+         ARC-Authentication-Results:Authentication-Results:Date:From:To:CC:
+         Subject:Message-ID:References:Content-Type:Content-Disposition:
+         In-Reply-To:X-ClientProxiedBy:MIME-Version:
+         X-MS-Exchange-MessageSentRepresentingType:X-Originating-IP:
+         X-MS-PublicTrafficType:X-MS-Office365-Filtering-Correlation-Id:
+         X-MS-TrafficTypeDiagnostic:X-Microsoft-Antispam-PRVS:
+         X-MS-Oob-TLC-OOBClassifiers:X-MS-Exchange-SenderADCheck:
+         X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+         X-Forefront-Antispam-Report:X-MS-Exchange-AntiSpam-MessageData:
+         X-MS-Exchange-CrossTenant-Network-Message-Id:
+         X-MS-Exchange-CrossTenant-AuthSource:
+         X-MS-Exchange-CrossTenant-AuthAs:
+         X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+         X-MS-Exchange-CrossTenant-FromEntityHeader:
+         X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+         X-MS-Exchange-CrossTenant-UserPrincipalName:
+         X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+        b=SZtc40uWSmaUff58lqjNahZd9u9nydxXkmkwwBzXRcSfCCzwjg0ynLBDNhTzmTpRV
+         DK3+V2AkO/m+gO8FYfrBjSe0ht+rv17H6Xey6PNaxngJH64sQnn3P9FaCLfsBbCT5G
+         0jaaRcm5tUxcQMlJQjZ5xTIahUYD6gUU9lQzYrTUn6neMqSw+8Y/5hJ9pUA+etZIo0
+         L7xGN9/PM77SeAEqaqJIiwTlYthKygeOI/SWmtS7baaKjIPTcch1/WZrnNdmeSpcrk
+         j+mydAGNJ1wCKbVwlv98O1NvtTZIP0ep+xgs++fiuIa00JvnIGCAv+yd8THu1EbBFF
+         jW3ZnKy9fGIBg==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 16/07/2020 16:56, Ard Biesheuvel wrote:
-> On Thu, 16 Jul 2020 at 18:29, Colin King <colin.king@canonical.com> wrote:
->>
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> There is a memcpy that performs a potential overlapped memory copy
->> from source b to destination b + 1.  Fix this by using the safer
->> memmove instead.
->>
->> Addresses-Coverity: ("Overlapping buffer in memory copy")
->> Fixes: 8083b1bf8163 ("crypto: xts - add support for ciphertext stealing")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>  crypto/xts.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/crypto/xts.c b/crypto/xts.c
->> index 3565f3b863a6..fa3e6e7b7043 100644
->> --- a/crypto/xts.c
->> +++ b/crypto/xts.c
->> @@ -169,7 +169,7 @@ static int cts_final(struct skcipher_request *req,
->>                                       offset - XTS_BLOCK_SIZE);
->>
->>         scatterwalk_map_and_copy(b, rctx->tail, 0, XTS_BLOCK_SIZE, 0);
->> -       memcpy(b + 1, b, tail);
->> +       memmove(b + 1, b, tail);
+On Sat, Jul 11, 2020 at 09:31:20AM +0200, Christophe JAILLET wrote:
+> The wrappers in include/linux/pci-dma-compat.h should go away.
 > 
-> This is a false positive: tail is guaranteed to be smaller than
-> sizeof(*b), so memmove() is unnecessary here.
+> The patch has been generated with the coccinelle script bellow.
+> It has been compile tested.
 > 
-> If changing to memcpy(&b[1], &b[0], tail) makes the warning go away, i
-> am fine with it, but otherwise we should just leave it as is.
+> When memory is allocated, GFP_ATOMIC should be used to be consistent with
+> the surrounding code.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+>    https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+> ---
+>  drivers/infiniband/hw/usnic/usnic_fwd.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-In that case, just leave it as is. Apologies for the noise.
+I checked the GFP and it looks OK to me, thanks.
 
-Colin
-> 
-> 
->>         scatterwalk_map_and_copy(b, req->src, offset, tail, 0);
->>
->>         le128_xor(b, &rctx->t, b);
->> --
->> 2.27.0
->>
+Applied to for-next
 
+Jason

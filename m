@@ -2,29 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFADF2226F8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Jul 2020 17:29:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD9C32227C6
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Jul 2020 17:47:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728937AbgGPP3L (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Jul 2020 11:29:11 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59968 "EHLO
+        id S1729275AbgGPPrZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Jul 2020 11:47:25 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:60362 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728415AbgGPP3K (ORCPT
+        with ESMTP id S1728725AbgGPPrY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Jul 2020 11:29:10 -0400
+        Thu, 16 Jul 2020 11:47:24 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jw5oj-0003p5-5r; Thu, 16 Jul 2020 15:29:01 +0000
+        id 1jw66S-0005wX-RB; Thu, 16 Jul 2020 15:47:20 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-crypto@vger.kernel.org
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] crypto: xts: use memmove to avoid overlapped memory copy
-Date:   Thu, 16 Jul 2020 16:29:00 +0100
-Message-Id: <20200716152900.1709694-1-colin.king@canonical.com>
+Subject: [PATCH] staging: rtl8192u: fix a dubious looking mask before a shift
+Date:   Thu, 16 Jul 2020 16:47:20 +0100
+Message-Id: <20200716154720.1710252-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,30 +36,33 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a memcpy that performs a potential overlapped memory copy
-from source b to destination b + 1.  Fix this by using the safer
-memmove instead.
+Currently the masking of ret with 0xff and followed by a right shift
+of 8 bits always leaves a zero result.  It appears the mask of 0xff
+is incorrect and should be 0xff00, but I don't have the hardware to
+test this. Fix this to mask the upper 8 bits before shifting.
 
-Addresses-Coverity: ("Overlapping buffer in memory copy")
-Fixes: 8083b1bf8163 ("crypto: xts - add support for ciphertext stealing")
+[ Not tested ]
+
+Addresses-Coverity: ("Operands don't affect result")
+Fixes: 8fc8598e61f6 ("Staging: Added Realtek rtl8192u driver to staging")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- crypto/xts.c | 2 +-
+ drivers/staging/rtl8192u/r8192U_core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/crypto/xts.c b/crypto/xts.c
-index 3565f3b863a6..fa3e6e7b7043 100644
---- a/crypto/xts.c
-+++ b/crypto/xts.c
-@@ -169,7 +169,7 @@ static int cts_final(struct skcipher_request *req,
- 				      offset - XTS_BLOCK_SIZE);
- 
- 	scatterwalk_map_and_copy(b, rctx->tail, 0, XTS_BLOCK_SIZE, 0);
--	memcpy(b + 1, b, tail);
-+	memmove(b + 1, b, tail);
- 	scatterwalk_map_and_copy(b, req->src, offset, tail, 0);
- 
- 	le128_xor(b, &rctx->t, b);
+diff --git a/drivers/staging/rtl8192u/r8192U_core.c b/drivers/staging/rtl8192u/r8192U_core.c
+index fcfb9024a83f..6ec65187bef9 100644
+--- a/drivers/staging/rtl8192u/r8192U_core.c
++++ b/drivers/staging/rtl8192u/r8192U_core.c
+@@ -2374,7 +2374,7 @@ static int rtl8192_read_eeprom_info(struct net_device *dev)
+ 				ret = eprom_read(dev, (EEPROM_TX_PW_INDEX_CCK >> 1));
+ 				if (ret < 0)
+ 					return ret;
+-				priv->EEPROMTxPowerLevelCCK = ((u16)ret & 0xff) >> 8;
++				priv->EEPROMTxPowerLevelCCK = ((u16)ret & 0xff00) >> 8;
+ 			} else
+ 				priv->EEPROMTxPowerLevelCCK = 0x10;
+ 			RT_TRACE(COMP_EPROM, "CCK Tx Power Levl: 0x%02x\n", priv->EEPROMTxPowerLevelCCK);
 -- 
 2.27.0
 

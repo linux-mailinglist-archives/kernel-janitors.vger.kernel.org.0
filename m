@@ -2,73 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93994222D46
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Jul 2020 22:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92A5F2232DB
+	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Jul 2020 07:21:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726617AbgGPUwp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Jul 2020 16:52:45 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:32474 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726440AbgGPUwp (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Jul 2020 16:52:45 -0400
-Received: from localhost.localdomain ([93.22.39.121])
-        by mwinf5d12 with ME
-        id 3wsi2300F2cqCS503wsidg; Thu, 16 Jul 2020 22:52:43 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 16 Jul 2020 22:52:43 +0200
-X-ME-IP: 93.22.39.121
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     davem@davemloft.net, kuba@kernel.org, jes@trained-monkey.org
-Cc:     linux-acenic@sunsite.dk, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] net: alteon: Avoid some useless memset
-Date:   Thu, 16 Jul 2020 22:52:42 +0200
-Message-Id: <20200716205242.326486-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        id S1726232AbgGQFVx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 17 Jul 2020 01:21:53 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:42760 "EHLO fornost.hmeau.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725811AbgGQFVx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 17 Jul 2020 01:21:53 -0400
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
+        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
+        id 1jwIoV-0003XX-Rm; Fri, 17 Jul 2020 15:21:40 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 17 Jul 2020 15:21:39 +1000
+Date:   Fri, 17 Jul 2020 15:21:39 +1000
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Colin King <colin.king@canonical.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] crypto: xts: use memmove to avoid overlapped memory copy
+Message-ID: <20200717052139.GB2045@gondor.apana.org.au>
+References: <20200716152900.1709694-1-colin.king@canonical.com>
+ <CAMj1kXEWyweZ0E3WHthEG9oiOpOS9UxtTB7xskAsF8FeinNg9w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXEWyweZ0E3WHthEG9oiOpOS9UxtTB7xskAsF8FeinNg9w@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Avoid a memset after a call to 'dma_alloc_coherent()'.
-This is useless since
-commit 518a2f1925c3 ("dma-mapping: zero memory returned from dma_alloc_*")
+On Thu, Jul 16, 2020 at 06:56:30PM +0300, Ard Biesheuvel wrote:
+> On Thu, 16 Jul 2020 at 18:29, Colin King <colin.king@canonical.com> wrote:
+> >
+> > From: Colin Ian King <colin.king@canonical.com>
+> >
+> > There is a memcpy that performs a potential overlapped memory copy
+> > from source b to destination b + 1.  Fix this by using the safer
+> > memmove instead.
+> >
+> > Addresses-Coverity: ("Overlapping buffer in memory copy")
+> > Fixes: 8083b1bf8163 ("crypto: xts - add support for ciphertext stealing")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > ---
+> >  crypto/xts.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/crypto/xts.c b/crypto/xts.c
+> > index 3565f3b863a6..fa3e6e7b7043 100644
+> > --- a/crypto/xts.c
+> > +++ b/crypto/xts.c
+> > @@ -169,7 +169,7 @@ static int cts_final(struct skcipher_request *req,
+> >                                       offset - XTS_BLOCK_SIZE);
+> >
+> >         scatterwalk_map_and_copy(b, rctx->tail, 0, XTS_BLOCK_SIZE, 0);
+> > -       memcpy(b + 1, b, tail);
+> > +       memmove(b + 1, b, tail);
+> 
+> This is a false positive: tail is guaranteed to be smaller than
+> sizeof(*b), so memmove() is unnecessary here.
+> 
+> If changing to memcpy(&b[1], &b[0], tail) makes the warning go away, i
+> am fine with it, but otherwise we should just leave it as is.
 
-Replace a kmalloc+memset with a corresponding kzalloc.
+How about a comment perhaps?
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/net/ethernet/alteon/acenic.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/alteon/acenic.c b/drivers/net/ethernet/alteon/acenic.c
-index 99431c9a899b..ac86fcae1582 100644
---- a/drivers/net/ethernet/alteon/acenic.c
-+++ b/drivers/net/ethernet/alteon/acenic.c
-@@ -1151,7 +1151,7 @@ static int ace_init(struct net_device *dev)
- 	/*
- 	 * Get the memory for the skb rings.
- 	 */
--	if (!(ap->skb = kmalloc(sizeof(struct ace_skb), GFP_KERNEL))) {
-+	if (!(ap->skb = kzalloc(sizeof(struct ace_skb), GFP_KERNEL))) {
- 		ecode = -EAGAIN;
- 		goto init_error;
- 	}
-@@ -1172,9 +1172,6 @@ static int ace_init(struct net_device *dev)
- 	ap->last_mini_rx = 0;
- #endif
- 
--	memset(ap->info, 0, sizeof(struct ace_info));
--	memset(ap->skb, 0, sizeof(struct ace_skb));
--
- 	ecode = ace_load_firmware(dev);
- 	if (ecode)
- 		goto init_error;
+Cheers,
 -- 
-2.25.1
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

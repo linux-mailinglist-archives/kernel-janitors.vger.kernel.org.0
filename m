@@ -2,35 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F70E224025
-	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Jul 2020 18:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C14592242D1
+	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Jul 2020 20:03:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726381AbgGQQFY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 17 Jul 2020 12:05:24 -0400
-Received: from mout.web.de ([212.227.15.14]:32801 "EHLO mout.web.de"
+        id S1728162AbgGQSDT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 17 Jul 2020 14:03:19 -0400
+Received: from mout.web.de ([212.227.15.4]:60709 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726233AbgGQQFX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 17 Jul 2020 12:05:23 -0400
+        id S1727940AbgGQSDT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 17 Jul 2020 14:03:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1595001915;
-        bh=IXSBqWZE7pE8IG9SsTMiiZ0y4wKidBcIctGlOhcTNuw=;
-        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=i4IFI01yWPkDINO6OoW+03rO9waaBUv18duTjejHxD5Q1z+Sf2hSd3r7sEeZkpOLm
-         09J/ZOcaC2gTEpFDsqCtKjKo+9KUJmAwD1CIwrCrdAiYgyOZJ3h+X186FymMeXmXy5
-         5FJ+j9VYEU5mjsTelC4tkus6lwR/2I6p0GrqqIco=
+        s=dbaedf251592; t=1595008971;
+        bh=BSNq8aZA31B3vbhvCL+iwPYhc8QkoYGsdWQiQLN0cFU=;
+        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
+        b=qXMhP/CXE41bEi9+qN1grpHlGUS4ZPec+zQq0TT5K19QIbz/66INL9EB+ty5VDhOZ
+         C63zWquT4BhGfBfHzn1PiwIgddqxRs1e5RnjtI6H6LxPaL42wNOuDxOBJjk0pJl2jJ
+         dfJdqNyqkF8uiX9kSZos6OvImS8dmTBEF6kYYPiY=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.131.15.38]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MP3CC-1kCtoF0i2m-00PJmV; Fri, 17
- Jul 2020 18:05:15 +0200
-To:     Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Julia Lawall <julia.lawall@inria.fr>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] coccinelle: api: add kzfree script
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MTOlk-1kQ5qB1aiy-00TlIO; Fri, 17
+ Jul 2020 20:02:51 +0200
+Cc:     linux-kernel@vger.kernel.org, Coccinelle <cocci@systeme.lip6.fr>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        =?UTF-8?Q?Heiko_St=c3=bcbner?= <heiko@sntech.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>
+Subject: Re: [PATCH v4 1/2] drivers: provide devm_platform_request_irq()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,140 +77,53 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <dedf7ce9-b0db-735e-f73b-83d0c292eb5d@web.de>
-Date:   Fri, 17 Jul 2020 18:05:13 +0200
+To:     Dejin Zheng <zhengdejin5@gmail.com>,
+        kernel-janitors@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-i2c@vger.kernel.org
+Message-ID: <8c7fd5c5-e877-3cb3-8802-34d1b1eda395@web.de>
+Date:   Fri, 17 Jul 2020 20:02:49 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:pKIFLkCMfXOR3B7TE46iyvM/kz/6zP9oIH2IWKSNZ4WBJo2kqd+
- jGPkIGX2lqp2B9NeaRoAkDrHz2SVrclEXESX7lap4wQ5H5PXUZMoDTTfjOIn2xP0nG0+a3H
- eiCse1vMx+/IdKEUNEX3oa2xjIy8wEyfBsH2JOGbyGU0NOfdEzA/A8uyqcY6zckrnfM3orC
- 7p6wgUeBM+WTbVgKVHg1g==
+X-Provags-ID: V03:K1:361MQuNF1pOheSjx8PwrSlhrJ+6HrxbJFQrtvBUOxumS+Gr5MMk
+ L4vpDjoiUy8yNDbHUFcJaC6OsgBABByFBlfuJ7ZtpRrDS28KHhX9/TddLWEfcrMXTIq4sZV
+ Rpx/sTV7kiSgcHYRCca1ZyilyYyieCePZcjzxtfilo/WkCz8y/LWu8cMg5xAEjL1MkpDSQH
+ lv0b0XFBHDyaCjh0xDeug==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:DF7btZ07Dac=:O2dZaojWPdey47X0drF8Ae
- Nd1Ga62Bx6VSHLQAak+1iUT1sVj/eWoOAry29J1VA07k569X9wWPlFAs8sOK+AbKzPOYQ+2gA
- ILDS4FXYpi4/UkabmPobSeEg3TNtUbweO5GKaDBC6ULDLq6jNIl0cozFjCdsnRa6f5MJtsIZr
- CxJJWCcRQcuQmicrd9XhcKYvf8/TQl5xMUdC0A8gw5PX+jUu+G2cDprYA9TNhMLqMAOmsaRBC
- rBrndjbqmmbY/2lbSxh0IeAcnn3thQdYylgHFwcr0u6Tjgk2kjzWI1tLiB44ncQuxT2UbXozS
- YQgJ9RL8/wLFsTmvfMjdVS5VhiE1JPZuefg6OtUoQK56Xs4t1RI2fLrfkWygTMlqX+6NWghFK
- EvZcXzeKVHPwS3SYPDcePHq8jfQo5iZUFooI36B06zPnkwq8gcDVUA9ld90F1whFY1JOEXq3j
- qfAteP9Au0D+ms/pcZZ1gdI/JCw7WBJ3P4fB47/itH8t4iWg4vkJMa/zL8pwyR015Lgetz1oM
- oY6rTmHcp8cO567i35GvKb2D1MLjZ6mNC/TPQkOUj2iSZToHc/TwVkehnd4dE1GPC092XlTFp
- JWzqp5UclpMngiWqwxTef20U9y6UE0Eyt0+QlpOfe0iJl3qrA4C/JNgQMXwflGuDwNnVHxsS3
- MLzYdaU5MgDq6z8pTyHoujO1MqTA8j7NDMhno+Tb0mWDLRH1od1y+QOCxalGPzgalvBhENn/j
- LT1v+1ENQiIKYhnDhnekcxniO0zweyrrdibvM78iK/qhgmAUUDqrTfrut8cMyCA6+yAhhYgJn
- v0AdSUIYdSENI5QBxhgtahMy9YEAnmy4TtvNB/cUwPvzJRtauVFPvB811Eq9VKD94YJhVTvAD
- CmyRB/t7JV8g1Y5f8jKiCI9GXEqXxgfZOaRgGZPSKds0e72Sk0iUkSRr5+IV5BzMoFre9yTXM
- rFkdOOQzZZOSQqP0GHlP9nOnpIcQyPubxnq/e4SxA7A3VsMjpVKobqdsoYp63yX5AOH/toH/C
- t3NVM2rArUWp/LD9Xplk/xeQCPqhPu68PCR1jtnkrKyBvhORRCM/2vaFNneDCkuuXSwt0/Umu
- THJr20ae3dGPnePbBpqQeuSRKZ/2PDzdkb09vp0HxPmfPrLmxiHAXo0IfPf+z1P4Jl9bh6CYD
- zkQZ1nWotvh6j7U3csMJtuQ3PlH4lHvGZ27zqY1XLPFR5Q9x22TOpneu5AI6yKi4ddu5jmSLz
- KVvp0jCgqQaVMFu7UyHOYQGh3O13d77au1kNLtA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:4naAcjvt9v8=:tmo3Cg2J9kmuJ9M0+RjwTj
+ N5OIH+RqUm1UDFq31dOqVHZ99fQ5pEFc2zrvg7sLpoqO8jScg3RpBDGkPJT36VkEznQIbKkcV
+ 2qroUGux3FKSm3gaKIv4klh08ajkSEIHObLdwZYMQ73IiMhBLXS43tBUNJgmbqdraUOpt8nTj
+ QMdAafcUO93LGVRbko87pz6OpuwzSqppRUBMn3IUqbHlA5u8KXm63JUaBEQlJup+Go0I0eccV
+ FO532BueaYKGr/sIbvKP/e/PZM/5av9dAdDC5xp7i1yklzej1s8fiJMiO1dGPd0UKGPNXqPQh
+ uEdFlUssKYuIrv593ZKFtUo9YWmzeV2mz5O9FE/UMEGpFD8eFxfpWPBUcY8AYTVCg0LPBCTSb
+ 19NtVpAzfc8xU+qRWuz2CqKGuM18TPEmXMeOX0t9NR7IeD7sf4fCyAggtNlBWs5N+uttbXOIm
+ 78Zj3ezZslpL1udF3eUGGj/qbu3WjPF3ONaVY2qLKVJFu4MGTUWb3dKQl971+4yQYIJF2Anfu
+ bAAQem9KMWTSrmBlYNXSKq+EiVOJZF+EhIa1iPl8/13J6UKsfrQ5FiK6P+4xReIlnNmduPsPE
+ 1HqwoPKCvts5okXDDYDkq8PC1ekH0LyakDG6Idhk8amwSg5aDgDbWMfEyCGP8rJcwU+IR/1/l
+ qbwC9O7gRQPlHyiEmAe5BVCn7VGjHe+sBFSsR8WKIzQOx+hqmQwZGDItC81wLIsiCV03UKCxb
+ iIpa75G6uF4tpQmFH981PSrXObEM/Vf6PkL5BrAM3IOejoar3A35tyH5OOX8pt1IIuBS4O8zJ
+ bDat2FNYbh6YOseY9sXhapFbVqOjlCkhS2gdFTbQ3Y8PCioyewX21SagbEoS/h3DPDUapNahX
+ XWPZfYd8jznJVW5+bgWo6748XHpPZUMlm4FQEDRIveic6UKghwxO/dA00D74hxJV8Xi0AUIVJ
+ MnxSOwWVUgCwLuzlBig7s00/91KRHThjZidMXxkct0JBuvbIPTKSLIWxJEN6LCPMhlpK6bOcX
+ p49FanGjLqdNQl0m8zvy8YnGtKort87G846mRADAwzl58+2870re7SJFPuSzQXjCkSHSosxzB
+ LB0QgBTZvbn2hAOAxq/Mmhc89IxXiFjt/fhOfuyFwLw946y+Wk7C+fcVOfR/NUQkFhHXfe/F8
+ O9hUTTy+nZgTZNi2QMis2WHSwEIx9MyJ+ZViAdJCs6NrLwnAVmObdh5oWppMw3L5tiEpKHEqC
+ dH9zxKOwK0hLiJdqBNe98Nil0Wlzsf/EBQqTesw==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-I dare to repeat previous patch review aspects once more.
-https://lore.kernel.org/cocci/a316f076-1686-25d8-18fe-1bbc0cf9a701@web.de/
+> v3 -> v4:
+> 	- The patch v3 sent on May 27 may be lost somewhere in the
+> 	  world, so resend it.
 
-=E2=80=A6
-> +virtual context
-> +virtual patch
-> +virtual org
-> +virtual report
+Can previous patch review aspects get any more attention?
 
-+virtual context, patch, org, report
-
-Is such a SmPL code variant more succinct?
-
-
-=E2=80=A6
-> +if (...)
-> +  \(memset@ok\|memzero_explicit@ok\)(...);
-
-Would you like to tolerate any extra source code around such a function ca=
-ll
-in an if branch?
-
-
-=E2=80=A6
-> +(
-> +* memset@m((T)E, 0, ...);
-> +|
-> +* memzero_explicit@m((T)E, ...);
-> +)
-=E2=80=A6
-
-I suggest to move a semicolon.
-
-+(
-+*memset@m((T)E, 0, ...)
-+|
-+*memzero_explicit@m((T)E, ...)
-+);
-
-
-=E2=80=A6
-> +- \(kfree\|vfree\|kvfree\)(E);
-> ++ kvfree_sensitive(E, size);
-=E2=80=A6
-
-Would you like to increase the precision a bit for the change specificatio=
-n?
-
-+-\(kfree\|vfree\|kvfree\)
-++kvfree_sensitive
-+ (E
-++ , size
-+ );
-
-
-=E2=80=A6
-> +(
-> +- kfree(E);
-> ++ kzfree(E);
-> +|
-> +- \(vfree\|kvfree\)(E);
-> ++ kvfree_sensitive(E, size);
-> +)
-=E2=80=A6
-
-+(
-+-kfree
-++kzfree
-+      (E)
-+|
-+-\(vfree\|kvfree\)
-++kvfree_sensitive
-+ (E
-++ , size
-+ )
-+);
-
-
-=E2=80=A6
-> +// TODO: uncomment when kfree_sensitive will be merged.
-> +// Only this case is commented out because developers
-> +// may not like patches like this since kzfree uses memset
-> +// internally (not memzero_explicit).
-
-Will this information trigger any further clarification?
-
-
-=E2=80=A6
-> +coccilib.org.print_todo(p[0],
-> +  "WARNING: opportunity for kzfree/kvfree_sensitive")
-
-I propose to align the second function parameter.
-
-+coccilib.org.print_todo(p[0],
-+                        "WARNING: opportunity for kzfree/kvfree_sensitive=
-")
-
+https://lore.kernel.org/cocci/5dad9b19-ceb5-1606-9f62-7626e5677971@web.de/
+https://lkml.org/lkml/2020/5/27/1326
 
 Regards,
 Markus

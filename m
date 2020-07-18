@@ -2,200 +2,319 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C455224A11
-	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jul 2020 11:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D741C224A56
+	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jul 2020 11:35:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726411AbgGRJQX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 18 Jul 2020 05:16:23 -0400
-Received: from mout.web.de ([212.227.15.14]:39095 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726066AbgGRJQW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 18 Jul 2020 05:16:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1595063772;
-        bh=G3d+RngEWuIQntAf7cEcSzMBapLG41kym5mlirB0PaA=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=qb5LQbETcvjZva3gUgwVu1LIu0BXV5mX3InI8euedf0XBA1OxICGFRDchWsD2wYCP
-         UcmraxoatY3emTLEqiNqx0J6QLWzq7OTc2CaYWpDmyiZX2/Chlu8fayD+6LO5FvCY3
-         GGwSDMh8r/Zf1hnNgWCRCZ6kiFo8ueGZYrxBdZV0=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.120.168]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MJTHn-1jydpA3S2t-0033Jb; Sat, 18
- Jul 2020 11:16:11 +0200
-Subject: Re: [v2 1/4] coccinelle: api: extend memdup_user transformation with
- GFP_USER
-To:     Julia Lawall <julia.lawall@inria.fr>,
-        Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>
-Cc:     Gilles Muller <Gilles.Muller@lip6.fr>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
+        id S1726346AbgGRJfl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 18 Jul 2020 05:35:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50682 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726179AbgGRJfl (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 18 Jul 2020 05:35:41 -0400
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25D78C0619D2;
+        Sat, 18 Jul 2020 02:35:41 -0700 (PDT)
+Received: by mail-pj1-x1041.google.com with SMTP id k5so7525636pjg.3;
+        Sat, 18 Jul 2020 02:35:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=2NvG5DvW4nGU/Mk4ldCs8dltAByMdSmrH+ohJqnmURI=;
+        b=LSW/TUfDSKF8FNo/3zAnqv5qlR0KZP5tINQtMFl03LJj5QF/h+qIXJeN5W4I1rvpd5
+         9wyK6RLMM6Pg4uxSxWqvSzEuKyEOW0C71bJqA0Mer4jUwAsyHMvk2iiu1YNPhOivahzs
+         SA4sU4OGEKPqhXahTueHdHpF/kVu4pgGchY/TgHjte760jJhB05MLEnh5mHGf7LKzM4N
+         OkMSYeYnTdBkuF+9hxVexelSO8CA4Io6lgpAI2Z3M0LCgHbuNyZJgI2guiFQ6cac8R9a
+         H22eMvCAYZ2xwXnRRaRY/gwVhRqWkgiZ5EIShpY/+B2Paufyh2uv1Vx0FTe51HiFpJr6
+         RjDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=2NvG5DvW4nGU/Mk4ldCs8dltAByMdSmrH+ohJqnmURI=;
+        b=HNURcAU9DptTcCJzltmfpzw04pcz9+pP9mJHJe0pvnDQUpc09ZvXOwSQdCQ6nGKyYk
+         W+DPwrrmDrMOgdbPP2mJ5T58tsVqNNzFDeEcKFL6eSt2jcx2TApYzWYZmzlSiFyTNrTi
+         0tsNcY/GuinB4jS+ubeubMls3UlY2A+2gyV4T7qUh2GouAqIO9ptn7MSs9BRpggeyiZw
+         XG5XxeoVufjhSMHfmIx1JRU8QJfa3NGa19TfomB4/cJJ43k1uRPpnAh+BN1DQKYkVx4v
+         2SlGbQ6GgDgplsZt/yobtXCbkJCuOOUKOYLPk9KmmLi/KVxIPtwdtympv5T85jB9z8FP
+         zyXg==
+X-Gm-Message-State: AOAM530CmgNykpWWqpuEiak8GVYIqYraiTP3HIJRBBq2xgRXKzlQhUQ9
+        1r7YKDRBdQJ/FO6n31Wztow=
+X-Google-Smtp-Source: ABdhPJzDvqdldI4SMN9xDMucnkUYNi0IJcPuKFADkRx2/bdpsZpF3neRj2cCptvKY26ouMp38WD6Ow==
+X-Received: by 2002:a17:902:7441:: with SMTP id e1mr10585693plt.23.1595064940466;
+        Sat, 18 Jul 2020 02:35:40 -0700 (PDT)
+Received: from blackclown ([103.88.82.25])
+        by smtp.gmail.com with ESMTPSA id g12sm10141155pfb.190.2020.07.18.02.35.37
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 18 Jul 2020 02:35:39 -0700 (PDT)
+Date:   Sat, 18 Jul 2020 15:05:26 +0530
+From:   Suraj Upadhyay <usuraj35@gmail.com>
+To:     jejb@linux.ibm.com, martin.peterson@oracle.com
+Cc:     aacraid@microsemi.com, linux-scsi@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <0b9f2c58-e124-22d2-d91d-62a6e831c880@web.de>
- <alpine.DEB.2.22.394.2007180841520.2538@hadrien>
- <fa0ec546-9aee-5c95-428c-a225a3521f6f@web.de>
- <alpine.DEB.2.22.394.2007181034530.2538@hadrien>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <f77f6eb1-9a07-c38d-e6b9-c7cdca119f3b@web.de>
-Date:   Sat, 18 Jul 2020 11:16:04 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+Subject: [PATCH] scsi: aacraid: Remove pci-dma-compat wrapper APIs.
+Message-ID: <20200718093526.GA1628@blackclown>
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.22.394.2007181034530.2538@hadrien>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:zYJyk8NQpn2E/HiuBb26U1nxdi8leQ40ukxxgsEDgwndICZt8M1
- 0VDXOei73XlSwk6wZkR7FnDweA/klEKlACSA3PH90UjHyBDuucLPBI+88Kt3h9NmZxRHoeW
- 9ztNybwpiCg/xrewhnqX3uUsMzb0Xqiy22YMllgSCL2fd3xjYWG46Oyl/xdFNReAxICxpOQ
- /tesiJ7N6GUzmYXF+L5LQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:iqzgbM0mFQg=:MxQCy2q/CJQlxQBrDGuBT5
- fDvnsVFMU67DpQT1ndpPrIQwWrMxyUCBjszNtH21vbjizV/6CCfvHl1c6+ASqpLToCYH0U3ZQ
- lpUZJJBZIl3LMprbXNfd8nhjp9xJg7ZaUk6Rn9E4CukH5MJlWIK872+2cOElY1Rat1VN7hShr
- y+lWwiaxy8zCewmf838MvFn1K4YQljuevdk+n2jBrn+yRa6qywbC+1hENjHJEtvJ9ktIMP1dz
- g06f7+IJ6ru6IO6JgtBVm9xmcwRy+ZBiHVCy8DU+qUzmDilojEmr0WCdGovAKuvYLU0nHeji6
- zwx4lV15z/bsYOL6eEzPAvnOfKRdUa/GKT9xBVL5ZUNqTbVLVnJEYPNouk5Wr2pPtmvY4uTvj
- aSSr+1S3nDmhScPocdf+Z5AnWQw/ipUf2AnTlUbSSFGkEsRfnOpBy4joJSq0JFE4ZZJq33Jza
- wFUe/zUeUmE9s3WKbhY1Sk1sofGW6YeWaSo0znVweUbj4H3xWSEM+vPqWSQvMHhfXIHKbSJqJ
- L/m5YcmpJ2OZ6y/7uTYisADiggH55oCEByVXrTdFukQ/YPNzjP8AIxWMQdvjghqBEzKohrYZJ
- tgxep0pktxufCJzHPYN6M8neWWzXlpnlVOj9gJhfu/cUoq2WL0yAT1RM/vZADEW4afJRNE2C9
- 0qjBLAkU43r1+oLVJXNWv0k7J7YUxMEMUtMvEHti3cz83j3KfAasbw51uPbVvkPdXOkze+d8U
- CLPAUUfcWKKWclxC7nGAdscJnwdpuxZcWB68khEYiUKZtPGp3R2kPj6UFZCyuB0gHSblH2O/p
- KEn1mD6aioPZpw/aACugp8fAsiQo/C3Tu+tkk8h6dwH87zTEjsJNs04LWYERDswEZT1Ogrkq8
- ly+8/c5NZVfTGbFGWJIB+4JxYrWT7Ge8Jhn9TMm0RNm9L27gVUvR/TM48b2mEWYS9CYAIe5xK
- tG6JyXjNTiv1DWn/cFin5Z+5IpV9rD84DzG1ruIPgmWEyuYWwtnh4OaAHmTH33q+WNv2ou/ll
- UIUPECnEPkMbOKxHyIuWkx3KVWkuhJUeAMq1uMptLx+wOl31ToXHvo1vLYNfnuHluAOBdkKrt
- xFtbotWhoKscZnLuWj9lozZie3+8Klb/93MMcRLXSOs5VquxHBiF6IUO80Yer7Fe2qQEjTTkk
- 1w4X7CoWgL6FW9ODHBiNzM+1nzJrcHypONwnJEQSyeZ4uRLYzdpLsp5kznyGvou56cmzKnh4r
- fRyaKw1dxcm77Hv4yW73j93cG59BDNjrIlRvGzg==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="oyUTqETQ0mS9luUI"
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->>>> * https://lore.kernel.org/cocci/5c0dae88-e172-3ba6-f86c-d1a6238bb4c4@=
-web.de/
->>>>   https://lkml.org/lkml/2020/6/9/568
->>>
->>> This one it complete nonsense.
->>
->> I hope that different views can be clarified for such a software situat=
-ion
->> in more constructive ways.
->
-> You proposed essentially  \( A \| B \) \( | C \| \)
 
-I suggested also another adjustment.
+--oyUTqETQ0mS9luUI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Can additional minus characters be avoided if such a source code search pa=
-ttern
-would be specified in a single line?
+The legacy API wrappers in include/linux/pci-dma-compat.h
+should go away as it creates unnecessary midlayering
+for include/linux/dma-mapping.h APIs, instead use dma-mapping.h
+APIs directly.
+
+The patch has been generated with the coccinelle script below
+and compile-tested.
+
+@@@@
+- PCI_DMA_BIDIRECTIONAL
++ DMA_BIDIRECTIONAL
+
+@@@@
+- PCI_DMA_TODEVICE
++ DMA_TO_DEVICE
+
+@@@@
+- PCI_DMA_FROMDEVICE
++ DMA_FROM_DEVICE
+
+@@@@
+- PCI_DMA_NONE
++ DMA_NONE
+
+@@ expression E1, E2, E3; @@
+- pci_alloc_consistent(E1, E2, E3)
++ dma_alloc_coherent(&E1->dev, E2, E3, GFP_)
+
+@@ expression E1, E2, E3; @@
+- pci_zalloc_consistent(E1, E2, E3)
++ dma_alloc_coherent(&E1->dev, E2, E3, GFP_)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_free_consistent(E1, E2, E3, E4)
++ dma_free_coherent(&E1->dev, E2, E3, E4)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_map_single(E1, E2, E3, E4)
++ dma_map_single(&E1->dev, E2, E3, E4)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_unmap_single(E1, E2, E3, E4)
++ dma_unmap_single(&E1->dev, E2, E3, E4)
+
+@@ expression E1, E2, E3, E4, E5; @@
+- pci_map_page(E1, E2, E3, E4, E5)
++ dma_map_page(&E1->dev, E2, E3, E4, E5)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_unmap_page(E1, E2, E3, E4)
++ dma_unmap_page(&E1->dev, E2, E3, E4)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_map_sg(E1, E2, E3, E4)
++ dma_map_sg(&E1->dev, E2, E3, E4)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_unmap_sg(E1, E2, E3, E4)
++ dma_unmap_sg(&E1->dev, E2, E3, E4)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_dma_sync_single_for_cpu(E1, E2, E3, E4)
++ dma_sync_single_for_cpu(&E1->dev, E2, E3, E4)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_dma_sync_single_for_device(E1, E2, E3, E4)
++ dma_sync_single_for_device(&E1->dev, E2, E3, E4)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_dma_sync_sg_for_cpu(E1, E2, E3, E4)
++ dma_sync_sg_for_cpu(&E1->dev, E2, E3, E4)
+
+@@ expression E1, E2, E3, E4; @@
+- pci_dma_sync_sg_for_device(E1, E2, E3, E4)
++ dma_sync_sg_for_device(&E1->dev, E2, E3, E4)
+
+@@ expression E1, E2; @@
+- pci_dma_mapping_error(E1, E2)
++ dma_mapping_error(&E1->dev, E2)
+
+@@ expression E1, E2; @@
+- pci_set_consistent_dma_mask(E1, E2)
++ dma_set_coherent_mask(&E1->dev, E2)
+
+@@ expression E1, E2; @@
+- pci_set_dma_mask(E1, E2)
++ dma_set_mask(&E1->dev, E2)
+
+Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
+---
+ drivers/scsi/aacraid/aachba.c   |  4 ++--
+ drivers/scsi/aacraid/commctrl.c | 15 ++++++---------
+ drivers/scsi/aacraid/commsup.c  |  8 ++++----
+ drivers/scsi/aacraid/linit.c    |  4 ++--
+ 4 files changed, 14 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/scsi/aacraid/aachba.c b/drivers/scsi/aacraid/aachba.c
+index 769af4ca9ca9..959b3ae8a99e 100644
+--- a/drivers/scsi/aacraid/aachba.c
++++ b/drivers/scsi/aacraid/aachba.c
+@@ -2229,10 +2229,10 @@ int aac_get_adapter_info(struct aac_dev* dev)
+ 	}
+=20
+ 	if (dev->dac_support) {
+-		if (!pci_set_dma_mask(dev->pdev, DMA_BIT_MASK(64))) {
++		if (!dma_set_mask(&dev->pdev->dev, DMA_BIT_MASK(64))) {
+ 			if (!dev->in_reset)
+ 				dev_info(&dev->pdev->dev, "64 Bit DAC enabled\n");
+-		} else if (!pci_set_dma_mask(dev->pdev, DMA_BIT_MASK(32))) {
++		} else if (!dma_set_mask(&dev->pdev->dev, DMA_BIT_MASK(32))) {
+ 			dev_info(&dev->pdev->dev, "DMA mask set failed, 64 Bit DAC disabled\n");
+ 			dev->dac_support =3D 0;
+ 		} else {
+diff --git a/drivers/scsi/aacraid/commctrl.c b/drivers/scsi/aacraid/commctr=
+l.c
+index 59e82a832042..a374273da12d 100644
+--- a/drivers/scsi/aacraid/commctrl.c
++++ b/drivers/scsi/aacraid/commctrl.c
+@@ -670,8 +670,7 @@ static int aac_send_raw_srb(struct aac_dev* dev, void _=
+_user * arg)
+ 					goto cleanup;
+ 				}
+ 			}
+-			addr =3D pci_map_single(dev->pdev, p, sg_count[i],
+-						data_dir);
++			addr =3D dma_map_single(&dev->pdev->dev, p, sg_count[i], data_dir);
+ 			hbacmd->sge[i].addr_hi =3D cpu_to_le32((u32)(addr>>32));
+ 			hbacmd->sge[i].addr_lo =3D cpu_to_le32(
+ 						(u32)(addr & 0xffffffff));
+@@ -732,8 +731,7 @@ static int aac_send_raw_srb(struct aac_dev* dev, void _=
+_user * arg)
+ 						goto cleanup;
+ 					}
+ 				}
+-				addr =3D pci_map_single(dev->pdev, p,
+-							sg_count[i], data_dir);
++				addr =3D dma_map_single(&dev->pdev->dev, p, sg_count[i], data_dir);
+=20
+ 				psg->sg[i].addr[0] =3D cpu_to_le32(addr & 0xffffffff);
+ 				psg->sg[i].addr[1] =3D cpu_to_le32(addr>>32);
+@@ -788,8 +786,7 @@ static int aac_send_raw_srb(struct aac_dev* dev, void _=
+_user * arg)
+ 						goto cleanup;
+ 					}
+ 				}
+-				addr =3D pci_map_single(dev->pdev, p,
+-							sg_count[i], data_dir);
++				addr =3D dma_map_single(&dev->pdev->dev, p, sg_count[i], data_dir);
+=20
+ 				psg->sg[i].addr[0] =3D cpu_to_le32(addr & 0xffffffff);
+ 				psg->sg[i].addr[1] =3D cpu_to_le32(addr>>32);
+@@ -844,7 +841,8 @@ static int aac_send_raw_srb(struct aac_dev* dev, void _=
+_user * arg)
+ 						goto cleanup;
+ 					}
+ 				}
+-				addr =3D pci_map_single(dev->pdev, p, usg->sg[i].count, data_dir);
++				addr =3D dma_map_single(&dev->pdev->dev, p,
++						      usg->sg[i].count, data_dir);
+=20
+ 				psg->sg[i].addr =3D cpu_to_le32(addr & 0xffffffff);
+ 				byte_count +=3D usg->sg[i].count;
+@@ -883,8 +881,7 @@ static int aac_send_raw_srb(struct aac_dev* dev, void _=
+_user * arg)
+ 						goto cleanup;
+ 					}
+ 				}
+-				addr =3D pci_map_single(dev->pdev, p,
+-					sg_count[i], data_dir);
++				addr =3D dma_map_single(&dev->pdev->dev, p, sg_count[i], data_dir);
+=20
+ 				psg->sg[i].addr =3D cpu_to_le32(addr);
+ 				byte_count +=3D sg_count[i];
+diff --git a/drivers/scsi/aacraid/commsup.c b/drivers/scsi/aacraid/commsup.c
+index adbdc3b7c7a7..7c0710417d37 100644
+--- a/drivers/scsi/aacraid/commsup.c
++++ b/drivers/scsi/aacraid/commsup.c
+@@ -1561,15 +1561,15 @@ static int _aac_reset_adapter(struct aac_dev *aac, =
+int forced, u8 reset_type)
+ 	dmamask =3D DMA_BIT_MASK(32);
+ 	quirks =3D aac_get_driver_ident(index)->quirks;
+ 	if (quirks & AAC_QUIRK_31BIT)
+-		retval =3D pci_set_dma_mask(aac->pdev, dmamask);
++		retval =3D dma_set_mask(&aac->pdev->dev, dmamask);
+ 	else if (!(quirks & AAC_QUIRK_SRC))
+-		retval =3D pci_set_dma_mask(aac->pdev, dmamask);
++		retval =3D dma_set_mask(&aac->pdev->dev, dmamask);
+ 	else
+-		retval =3D pci_set_consistent_dma_mask(aac->pdev, dmamask);
++		retval =3D dma_set_coherent_mask(&aac->pdev->dev, dmamask);
+=20
+ 	if (quirks & AAC_QUIRK_31BIT && !retval) {
+ 		dmamask =3D DMA_BIT_MASK(31);
+-		retval =3D pci_set_consistent_dma_mask(aac->pdev, dmamask);
++		retval =3D dma_set_coherent_mask(&aac->pdev->dev, dmamask);
+ 	}
+=20
+ 	if (retval)
+diff --git a/drivers/scsi/aacraid/linit.c b/drivers/scsi/aacraid/linit.c
+index 8588da0a0655..7d99f7155a13 100644
+--- a/drivers/scsi/aacraid/linit.c
++++ b/drivers/scsi/aacraid/linit.c
+@@ -1659,7 +1659,7 @@ static int aac_probe_one(struct pci_dev *pdev, const =
+struct pci_device_id *id)
+ 		goto out;
+=20
+ 	if (!(aac_drivers[index].quirks & AAC_QUIRK_SRC)) {
+-		error =3D pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
++		error =3D dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
+ 		if (error) {
+ 			dev_err(&pdev->dev, "PCI 32 BIT dma mask set failed");
+ 			goto out_disable_pdev;
+@@ -1678,7 +1678,7 @@ static int aac_probe_one(struct pci_dev *pdev, const =
+struct pci_device_id *id)
+ 		mask_bits =3D 32;
+ 	}
+=20
+-	error =3D pci_set_consistent_dma_mask(pdev, dmamask);
++	error =3D dma_set_coherent_mask(&pdev->dev, dmamask);
+ 	if (error) {
+ 		dev_err(&pdev->dev, "PCI %d B consistent dma mask set failed\n"
+ 				, mask_bits);
+--=20
+2.17.1
 
 
-> This is not valid syntax in the semantic patch language.
+--oyUTqETQ0mS9luUI
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I hope that a solution can be found by our discussion.
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAABCgAdFiEE7AbCa0kOsMJ4cx0j+gRsbIfe744FAl8Swl4ACgkQ+gRsbIfe
+744DTw/9EyFyGAd8FmA4qRvIIvrPGOowxXn+QLBK6weURjOu2ctBWl0eEd4hj3P8
+6XRUVFKNzUl64hJl6JCWTJUpWK36vDDMSLaLCin7yz5YSyQoDocs8DaOvtcAEmu/
+NmfdVEYYVCCKOiNRWNAgYo89Xn1xD6xBIh0/2mAycjUk8eS0JfuxanBWIC4MNnwC
+u4c6Ck/Ephi2yHUeuChqvxWVZncYLC2y9SFR0TUpSxkd3WolSsosq8PPBc3CHeVP
+QqXv4q0C3svL2civkWkQeq3MoY8BNBgoAaBMNexOzpDoE/K7cfwrMBFEzXR62QZr
+MR4hpEtgeFXAk9ISma0lSXolhJywCMo+TB+52x8ccSjilP4rHxgl7Jf1POH1KQOT
+K/wk4bCiPzXG7DUJCnR0cOCB7pj9wD0FQw8otLHnmqwLU1yWo5MzogWtK5RJ5ySX
+8Biq+s7ytrVihvKVjInuoQICK674wHyTBAh/y4U1tLaG1gGdEeyJ4fY4MpYSBW1M
+gB29ctjHn9paBu1dsQJxqddX3VllNCnN2PCI93VFSV3Y3c6s/G84m3YFR7Ovo+58
+Sq9kW+jB1MEoYXRog93snAfpwa9y9MvghSTbUDAmuFiLW1inp64Dq/2cj3AJS0zs
+RrAE1TZzMpAGjFkZowXwR2C5Zv/I/g/pkIEFKSQg/99C0Olq2do=
+=E6V6
+-----END PGP SIGNATURE-----
 
-> The branches of a \( \| \) have to be a valid expression, statement, typ=
-e, etc,
-
-Such information can become more interesting for safe application of
-SmPL disjunctions.
-
-
-> not some random string of tokens.
-
-I got further imaginations in this software area.
-
-Will the handling of optional transformation parameters be clarified bette=
-r?
-
-
->> Patch reviews contain usual risks that suggestions are presented
->> which can be still questionable.
->
-> These are not "usual risks".  You can easily test out your suggestion by
-> yourself to see if it produces valid code.
-
-Such an expectation can be reasonable in some cases.
-
-
-> If it doesn't, then don't make the suggestion.
-
-Would software limitations hinder any more improvements then?
-
-
->>> like that putting all of the virtual declarations on
->>> the same line would save space (it does, but who cares),
->>
->> It seems that you admit a possibly desirable effect.
->
-> No, I don't consider the effect to be desirable.
-
-I propose to take another look at variations around source code verbosity.
-
-
->> Your change acceptance is varying to your development mood
->> (and other factors), isn't it?
->
-> Not really.  My "change acceptance" increases when the person reporting
-> them raises real problems that is blocking them in some work.
-
-I presented open issues accordingly.
-
-
-> And it decreases rapidly when the changes are almost all related to pres=
-umed
-> "efficiencies" that have no impact in practice.
-
-Change possibilities can get varying attention and corresponding developme=
-nt priorities.
-
-Regards,
-Markus
+--oyUTqETQ0mS9luUI--

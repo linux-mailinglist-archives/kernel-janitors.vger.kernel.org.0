@@ -2,145 +2,127 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86BE4224B20
-	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jul 2020 14:15:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D611A224B6D
+	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jul 2020 15:20:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726619AbgGRMPe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 18 Jul 2020 08:15:34 -0400
-Received: from mout.web.de ([212.227.17.11]:34373 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726481AbgGRMPd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 18 Jul 2020 08:15:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1595074468;
-        bh=U65LMVBBoufD+55SxpSXNUDIDOZN957aglckxFtMk7M=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=pSeRxcIYUW6U1C1hF51L23RJN3Fz1nRdEDoQCT94kgtP4FNL/qEiAOlj7S+1Dqs76
-         8UFXNoRWyN/i7ld/W07Nb6o/Z2K90XEjKq2MKM4Guzbi/zPADwZOOMpPRkDngYG7Is
-         K+qJbkzuoyOttHdj/aHSQkPgoIVg5G3OhFqrNFw8=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.120.168]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MVtxM-1kKtG0021o-00X2EL; Sat, 18
- Jul 2020 14:14:28 +0200
-Subject: Re: [v2 1/4] coccinelle: api: extend memdup_user transformation with
- GFP_USER
-To:     Julia Lawall <julia.lawall@inria.fr>,
-        Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>
-Cc:     Gilles Muller <Gilles.Muller@lip6.fr>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <0b9f2c58-e124-22d2-d91d-62a6e831c880@web.de>
- <alpine.DEB.2.22.394.2007180841520.2538@hadrien>
- <fa0ec546-9aee-5c95-428c-a225a3521f6f@web.de>
- <alpine.DEB.2.22.394.2007181034530.2538@hadrien>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <0a961d1e-6bd2-45fd-113e-9258fe00a16a@web.de>
-Date:   Sat, 18 Jul 2020 14:14:20 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        id S1726828AbgGRNTL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 18 Jul 2020 09:19:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56474 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726566AbgGRNTK (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 18 Jul 2020 09:19:10 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F5CEC0619D2;
+        Sat, 18 Jul 2020 06:19:10 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id a14so6773220pfi.2;
+        Sat, 18 Jul 2020 06:19:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=bW56Dq/EZQ7Q0OxXWw3lSP4NAzICRQndu6/ZLfdw/eU=;
+        b=lJpYIhhryLyntBJ0OGcZIbxju01m3oYcIhETi0dMSh5uePg0c0Q+y+BLuEvQ9ZQowu
+         2dFUjjhy24tQmuib5A/VMpjqurNaRbmiHGbpbt3kPgg0VN2XeNLXVq3tauUsAik4uIMg
+         4BwK7L8XSTIdcyRmoui4tpu9cydMpK8YEU0CLnVIaatENE+Y9kDNfcTxd9sGll45+g8P
+         6YIC1Pol3Eid2XdSikbBdAJMMAEOX/+ja48Z/JSgLjeG+UdoWcqSnm6A0j5OhK70ugZo
+         hMwXxSjYLVFsP1Hc/hHCTs+QzA3BxHPAJRByUTBHwZ2CQsD0sJNRZ7Hg7WlAsEVBBJlZ
+         Prmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=bW56Dq/EZQ7Q0OxXWw3lSP4NAzICRQndu6/ZLfdw/eU=;
+        b=hh32COq+6DbzqPfz8KrWYXIDivtuTs164wMXaM5rRfuc6TO4RNIuYqwCHAKPbitrVk
+         8YMgLMO26uEjZnGw0y9zlBgw/xTjYMMq59CcFMku/7UjpLzliPtCTGEdx8vI24cstLXY
+         oClg/10M7/qAJ1hZr6F3GQ2Hz30rkkB8ng04NpL1hNkcGzz+ysq9JPKyw3b4/EeysYPr
+         IgIg6okhlvkSA5VqrJIttDlfO28dopccW6JNHn12XYPGnipIph0oy93UqyY4swjlHzL7
+         e0wzguJ76PXzY9RZHfo1q/DbdhDK4E4ySc1TLkYMoeEXAPHkStwx5Eryoo/YaSJBZBu7
+         ACWA==
+X-Gm-Message-State: AOAM531FHqTyIounwjkje728saSgjT7DwOUQYRcZhlx4GTmzsDHaD+s8
+        JDKf/6MrTzQLTUHKH0WzZGs=
+X-Google-Smtp-Source: ABdhPJxceziaeE//any/1Ek+Lh/N/UukPxOOP9stjgcSoj2QsLa6Jau86qLHgQMAmF+rFxE81qUTKQ==
+X-Received: by 2002:a63:5619:: with SMTP id k25mr12218506pgb.139.1595078349459;
+        Sat, 18 Jul 2020 06:19:09 -0700 (PDT)
+Received: from blackclown ([103.88.82.25])
+        by smtp.gmail.com with ESMTPSA id 129sm10446524pfv.161.2020.07.18.06.19.07
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 18 Jul 2020 06:19:08 -0700 (PDT)
+Date:   Sat, 18 Jul 2020 18:48:56 +0530
+From:   Suraj Upadhyay <usuraj35@gmail.com>
+To:     gregkh@linuxfoundation.org
+Cc:     devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] staging: rts5208: rtsx: Replace depracated MSI API
+Message-ID: <20200718131856.GA10837@blackclown>
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.22.394.2007181034530.2538@hadrien>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:xRL2D+hWXFUp6yx33y+vyQ1zbck9m34U56qu9vxGBg4dbDNQTh5
- T4shAnnxdLykE39XxSayFgaNXsYwpihRRNly/eWM9S32je5qMD0bw5ZETuKOSm/ucjqYMNk
- I5Y/F1FX0hoLeEOQKA0IxCK6RtExjAQ9qiiogHzntt7JCKpt00ZHi6Wo3GL8Y4E0LZ8s2v0
- 7hCoBAJXBKrOIdocKkQfg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:se6+j1wCtLM=:GeJacnAQ8PPSdFrECjC7Pf
- nDj34N9QqNU/+zU72XoRwVvZ61S/jabptyrFNj9GcoPgTGOj0jx1hMgdiE420QHX+zkzD39jj
- 0sbO3f3zR+R4DH3TubMrIYucH6t6MPb3CAWXbRxgiJsUctKiEka0WBckzPAmXPr0tgHaIFtqx
- FF2Q01ZcOM7zlbZeKWOEu9vlr8AH0aN4L24RrD8lwgTIIKBuEAuW7ElGUqvoVcem54EvlQs2e
- Y8w7KEbuT96gniZPMBRtrOit0mSnH6QPQrwq68y2VYSrzOdbZkDP74r4KfZSxC7hZhNsaMeDm
- r40SSzP8f0nMUP2MD0W8F35loGSQwrp33DxMjEJwrJhrcW/2edZ7Yi2GreBVuQzJxTEl633Vr
- AW/OHss7ZyqYVs4ZuhIEzXAAVIqTTDl6iHfOv84ZZLhKFx04jui7aUunNCFO4wAZgS1I/0TpO
- EAei0iUaVDqRF/F51+2DWNaCuDubqLdwMa71sPcLKKP3geFNq+sV9zRzyBvQPQ8BPphPJ4OJQ
- qjTHTHcUXyH35xSVEWSj7i3VYZU7iYZmy5Zh9D7gFX3w/OcRgMF61bAneGc7oB3d0nempDqzz
- +N+cEmxMoP6ke4ypof3MX8uCG7DkgJnpVjdGlvl60o4MMf7JbcXhCdoXbwwMYCuVFcw6HQqA5
- T/CUXIjATulPC8QaNB5Dto8jH1o99uAhYyWGlqCoUwhtwQaktI0p6a6NO+vl1GBlaAyU/7NmT
- D6PBYJHpPJotn0lqSMQEU+BBqMOnlTTquHI39oPpUuHLn0FgQWGPNRyP51XsZqgzq16TUzG9r
- lNvTvS8Gx9mOrZMo0uNKsR9z84/2kgN85MwFIgjvZSVgCGXDDX+dIM70sWlCu0rHQNamydwBY
- dbKF1h51s5KIdH0jRkS86XPVzgTTlm0RTDv66hdGz/PJpkQLOhu3p0JHImJ3D+vgPOYNJCZbG
- zUq2Y9MyvsqJZ/gntzikt34q8hsLNUZuBKCpOUQSPSx8cAJpWC+SwmjW92VC8uSckIAglXmg3
- m5xx1LMCZiyxNr/0PmWDr4U0B1UTfRLJDjAfovwPfDhQ3+ULAKioo3tud8d6K7ZclShGS5GF0
- MNgeFdT8Mr3madUMDJmZthp7AQlRs9M4GnULnQPhkJotYhgl0VyGgsUAovdncaDkAu5s2r20y
- FGScgTOrESEL9TbEDW5Ce5V6iFPqlwWGkhnUmUW68LKSco46URA/t0g4M63xHPLh/Y4ZPptwO
- 5ly3dGM4Z3cKRTOjFdNpdoCnxsYl6zFzVsci76g==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="a8Wt8u1KmwUX3Y2C"
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> You proposed essentially  \( A \| B \) \( | C \| \)
 
-Will the software development attention grow for a topic
-like =E2=80=9CExtend support for handling of optional source code parts=E2=
-=80=9D?
-https://github.com/coccinelle/coccinelle/issues/53
+--a8Wt8u1KmwUX3Y2C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-How do you think about another tiny example script for the semantic patch =
-language?
+Replace depracated pci_enable_msi with pci_alloc_irq_vectors.
 
-@display@
-constant A, B;
-@@
-*A
-?| B
+Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
+---
+ drivers/staging/rts5208/rtsx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/staging/rts5208/rtsx.c b/drivers/staging/rts5208/rtsx.c
+index e28e162d004e..adc80e766412 100644
+--- a/drivers/staging/rts5208/rtsx.c
++++ b/drivers/staging/rts5208/rtsx.c
+@@ -310,7 +310,7 @@ static int __maybe_unused rtsx_resume(struct device *de=
+v_d)
+ 	pci_set_master(pci);
+=20
+ 	if (chip->msi_en) {
+-		if (pci_enable_msi(pci) < 0)
++		if (pci_alloc_irq_vectors(dev, 1, 1, PCI_IRQ_MSI) < 0)
+ 			chip->msi_en =3D 0;
+ 	}
+=20
+@@ -881,7 +881,7 @@ static int rtsx_probe(struct pci_dev *pci,
+ 	dev_info(&pci->dev, "pci->irq =3D %d\n", pci->irq);
+=20
+ 	if (dev->chip->msi_en) {
+-		if (pci_enable_msi(pci) < 0)
++		if (pci_alloc_irq_vectors(dev, 1, 1, PCI_IRQ_MSI) < 0)
+ 			dev->chip->msi_en =3D 0;
+ 	}
+=20
+--=20
+2.17.1
 
 
-elfring@Sonne:~/Projekte/Coccinelle/Probe> spatch --parse-cocci optional_d=
-isjunction_test3-20200718.cocci
-=E2=80=A6
-warning: incompatible arity found on line 4
-incompatible minus and plus code starting on lines 4 and 4
+--a8Wt8u1KmwUX3Y2C
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-Regards,
-Markus
+iQIzBAABCgAdFiEE7AbCa0kOsMJ4cx0j+gRsbIfe744FAl8S9sAACgkQ+gRsbIfe
+747zJhAAnYwOribTqVdCoKelWsg/J1bRcpu3igKxafUf9i6Jdyk+XmaL4ZtRFsG4
+Gc5EQT8o6bhufzzW+We8doUAjusxMIpEBL4+TzN0vK0YdmNeN/Ebi8Be6JmsGa8U
+BEedBfiYtT6jVuRC2AdquNK3XJ3U4+8FXkSfG0NuGhwViwks0TzQHOAZJCxuS5Cq
++XFhBNXpjK8E+IOXOFKEUB1cngLfwYKOZopITObQO182b7NND2yWLR5U7TLJlBHX
+rE8Nv3Ie7On89qoXSfDUrYNZ7jHok9FRO3K5D2L7v7Uzdcy9JoarwG9cwN3nsWXy
+A1l40jF8ctR+VhukddlrMs6cl/lGoIX3j6oBW/rm7MuW/TgLRnefZLKi9ffAmq5s
+29JyX9k2ZuqyWUcuXkSLxri/hzqGzKv66Zg4QeeKjPVdNWc1Lg15zAtiXnkLT2j9
+coiA8+9d6FfPonwPsYHxwxtMK+BYxUtnAzfbII3uIBHB0av6GVpjjgSIaMvsPcRZ
+R/XnG4XO8zqXyttXxJqzS82BhGvVUvEbtSK/wdqbMeYGrX/4HGjMv6wA4TrCU5wH
+2t0J/yEE+timKORy0b00Q7paKNTrKO4fiYE3yEg48AHFNzjOIOmuPOJDffX/9imb
+4RkGNUBQLqgvUr8fMvzhqmH2yL39UnGW9j50TBnwfXH0GetHv/o=
+=PY3U
+-----END PGP SIGNATURE-----
+
+--a8Wt8u1KmwUX3Y2C--

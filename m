@@ -2,80 +2,197 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F407A224953
-	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jul 2020 08:45:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E29B22498E
+	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jul 2020 09:04:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726551AbgGRGpy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 18 Jul 2020 02:45:54 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:23447 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725983AbgGRGpy (ORCPT
+        id S1728941AbgGRHCk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 18 Jul 2020 03:02:40 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:48305 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725920AbgGRHCk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 18 Jul 2020 02:45:54 -0400
-X-IronPort-AV: E=Sophos;i="5.75,366,1589234400"; 
-   d="scan'208";a="460283661"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Jul 2020 08:45:52 +0200
-Date:   Sat, 18 Jul 2020 08:45:51 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Julia Lawall <julia.lawall@inria.fr>,
-        Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [v2 1/4] coccinelle: api: extend memdup_user transformation with
- GFP_USER
-In-Reply-To: <0b9f2c58-e124-22d2-d91d-62a6e831c880@web.de>
-Message-ID: <alpine.DEB.2.22.394.2007180841520.2538@hadrien>
-References: <0b9f2c58-e124-22d2-d91d-62a6e831c880@web.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        Sat, 18 Jul 2020 03:02:40 -0400
+Received: from localhost.localdomain ([93.22.133.66])
+        by mwinf5d03 with ME
+        id 4X2U230071S6l4V03X2Xv4; Sat, 18 Jul 2020 09:02:35 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 18 Jul 2020 09:02:35 +0200
+X-ME-IP: 93.22.133.66
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     arnd@arndb.de, gregkh@linuxfoundation.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH 1/2] misc: hpilo: switch from 'pci_' to 'dma_' API
+Date:   Sat, 18 Jul 2020 09:02:24 +0200
+Message-Id: <20200718070224.337964-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GFP_ with a correct flag.
+It has been compile tested.
 
-On Sat, 18 Jul 2020, Markus Elfring wrote:
+When memory is allocated in 'ilo_ccb_setup()' GFP_ATOMIC must be used
+because a spin_lock is hold in 'ilo_open()' before calling
+'ilo_ccb_setup()'
 
-> > Applied.
->
-> Do you care for patch review concerns according to this SmPL script adjustment?
->
-> * https://lore.kernel.org/cocci/5c0dae88-e172-3ba6-f86c-d1a6238bb4c4@web.de/
->   https://lkml.org/lkml/2020/6/9/568
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
 
-This one it complete nonsense.
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
 
->
-> * https://lore.kernel.org/cocci/c3464cad-e567-9ef5-b4e3-a01e3b11120b@web.de/
->   https://lkml.org/lkml/2020/6/8/637
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
 
-This on is indeed a problem.  I think it was not detected in testing,
-because in the current kernel the rule never applies.  But Denis, in
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
 
--  to = \(kmalloc\|kzalloc\)
-                (size,\(GFP_KERNEL\|GFP_USER\|
-                      \(GFP_KERNEL\|GFP_USER\)|__GFP_NOWARN\));
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
 
-you do indeed need to put - in front of the second and third lines as
-well.
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
 
-Markus, if you would limit your comments to suggesting SmPL code that is
-actually correct, ie that you have tested, and 2) stop suggesting stupid
-things over and over like that putting all of the virtual declarations on
-the same line would save space (it does, but who cares), then I would take
-your suggestions more seriously.
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
 
-julia
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
 
-> Regards,
-> Markus
->
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+---
+ drivers/misc/hpilo.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/misc/hpilo.c b/drivers/misc/hpilo.c
+index 10c975662f8b..c9539c89a925 100644
+--- a/drivers/misc/hpilo.c
++++ b/drivers/misc/hpilo.c
+@@ -256,7 +256,8 @@ static void ilo_ccb_close(struct pci_dev *pdev, struct ccb_data *data)
+ 	memset_io(device_ccb, 0, sizeof(struct ccb));
+ 
+ 	/* free resources used to back send/recv queues */
+-	pci_free_consistent(pdev, data->dma_size, data->dma_va, data->dma_pa);
++	dma_free_coherent(&pdev->dev, data->dma_size, data->dma_va,
++			  data->dma_pa);
+ }
+ 
+ static int ilo_ccb_setup(struct ilo_hwinfo *hw, struct ccb_data *data, int slot)
+@@ -272,8 +273,8 @@ static int ilo_ccb_setup(struct ilo_hwinfo *hw, struct ccb_data *data, int slot)
+ 			 2 * desc_mem_sz(NR_QENTRY) +
+ 			 ILO_START_ALIGN + ILO_CACHE_SZ;
+ 
+-	data->dma_va = pci_alloc_consistent(hw->ilo_dev, data->dma_size,
+-					    &data->dma_pa);
++	data->dma_va = dma_alloc_coherent(&hw->ilo_dev->dev, data->dma_size,
++					  &data->dma_pa, GFP_ATOMIC);
+ 	if (!data->dma_va)
+ 		return -ENOMEM;
+ 
+-- 
+2.25.1
+

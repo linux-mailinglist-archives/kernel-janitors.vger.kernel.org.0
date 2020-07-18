@@ -2,382 +2,145 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3807D224B11
-	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jul 2020 13:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86BE4224B20
+	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jul 2020 14:15:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726604AbgGRLzy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 18 Jul 2020 07:55:54 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:38332 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726566AbgGRLzy (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 18 Jul 2020 07:55:54 -0400
-Received: from localhost.localdomain ([93.22.37.252])
-        by mwinf5d41 with ME
-        id 4bvo230035SQgGV03bvoVQ; Sat, 18 Jul 2020 13:55:51 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 18 Jul 2020 13:55:51 +0200
-X-ME-IP: 93.22.37.252
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     kuba@kernel.org, davem@davemloft.net, jeffrey.t.kirsher@intel.com
-Cc:     intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] e100: switch from 'pci_' to 'dma_' API
-Date:   Sat, 18 Jul 2020 13:55:46 +0200
-Message-Id: <20200718115546.358240-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        id S1726619AbgGRMPe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 18 Jul 2020 08:15:34 -0400
+Received: from mout.web.de ([212.227.17.11]:34373 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726481AbgGRMPd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 18 Jul 2020 08:15:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1595074468;
+        bh=U65LMVBBoufD+55SxpSXNUDIDOZN957aglckxFtMk7M=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=pSeRxcIYUW6U1C1hF51L23RJN3Fz1nRdEDoQCT94kgtP4FNL/qEiAOlj7S+1Dqs76
+         8UFXNoRWyN/i7ld/W07Nb6o/Z2K90XEjKq2MKM4Guzbi/zPADwZOOMpPRkDngYG7Is
+         K+qJbkzuoyOttHdj/aHSQkPgoIVg5G3OhFqrNFw8=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([2.243.120.168]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MVtxM-1kKtG0021o-00X2EL; Sat, 18
+ Jul 2020 14:14:28 +0200
+Subject: Re: [v2 1/4] coccinelle: api: extend memdup_user transformation with
+ GFP_USER
+To:     Julia Lawall <julia.lawall@inria.fr>,
+        Denis Efremov <efremov@linux.com>,
+        Coccinelle <cocci@systeme.lip6.fr>
+Cc:     Gilles Muller <Gilles.Muller@lip6.fr>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <0b9f2c58-e124-22d2-d91d-62a6e831c880@web.de>
+ <alpine.DEB.2.22.394.2007180841520.2538@hadrien>
+ <fa0ec546-9aee-5c95-428c-a225a3521f6f@web.de>
+ <alpine.DEB.2.22.394.2007181034530.2538@hadrien>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <0a961d1e-6bd2-45fd-113e-9258fe00a16a@web.de>
+Date:   Sat, 18 Jul 2020 14:14:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <alpine.DEB.2.22.394.2007181034530.2538@hadrien>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:xRL2D+hWXFUp6yx33y+vyQ1zbck9m34U56qu9vxGBg4dbDNQTh5
+ T4shAnnxdLykE39XxSayFgaNXsYwpihRRNly/eWM9S32je5qMD0bw5ZETuKOSm/ucjqYMNk
+ I5Y/F1FX0hoLeEOQKA0IxCK6RtExjAQ9qiiogHzntt7JCKpt00ZHi6Wo3GL8Y4E0LZ8s2v0
+ 7hCoBAJXBKrOIdocKkQfg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:se6+j1wCtLM=:GeJacnAQ8PPSdFrECjC7Pf
+ nDj34N9QqNU/+zU72XoRwVvZ61S/jabptyrFNj9GcoPgTGOj0jx1hMgdiE420QHX+zkzD39jj
+ 0sbO3f3zR+R4DH3TubMrIYucH6t6MPb3CAWXbRxgiJsUctKiEka0WBckzPAmXPr0tgHaIFtqx
+ FF2Q01ZcOM7zlbZeKWOEu9vlr8AH0aN4L24RrD8lwgTIIKBuEAuW7ElGUqvoVcem54EvlQs2e
+ Y8w7KEbuT96gniZPMBRtrOit0mSnH6QPQrwq68y2VYSrzOdbZkDP74r4KfZSxC7hZhNsaMeDm
+ r40SSzP8f0nMUP2MD0W8F35loGSQwrp33DxMjEJwrJhrcW/2edZ7Yi2GreBVuQzJxTEl633Vr
+ AW/OHss7ZyqYVs4ZuhIEzXAAVIqTTDl6iHfOv84ZZLhKFx04jui7aUunNCFO4wAZgS1I/0TpO
+ EAei0iUaVDqRF/F51+2DWNaCuDubqLdwMa71sPcLKKP3geFNq+sV9zRzyBvQPQ8BPphPJ4OJQ
+ qjTHTHcUXyH35xSVEWSj7i3VYZU7iYZmy5Zh9D7gFX3w/OcRgMF61bAneGc7oB3d0nempDqzz
+ +N+cEmxMoP6ke4ypof3MX8uCG7DkgJnpVjdGlvl60o4MMf7JbcXhCdoXbwwMYCuVFcw6HQqA5
+ T/CUXIjATulPC8QaNB5Dto8jH1o99uAhYyWGlqCoUwhtwQaktI0p6a6NO+vl1GBlaAyU/7NmT
+ D6PBYJHpPJotn0lqSMQEU+BBqMOnlTTquHI39oPpUuHLn0FgQWGPNRyP51XsZqgzq16TUzG9r
+ lNvTvS8Gx9mOrZMo0uNKsR9z84/2kgN85MwFIgjvZSVgCGXDDX+dIM70sWlCu0rHQNamydwBY
+ dbKF1h51s5KIdH0jRkS86XPVzgTTlm0RTDv66hdGz/PJpkQLOhu3p0JHImJ3D+vgPOYNJCZbG
+ zUq2Y9MyvsqJZ/gntzikt34q8hsLNUZuBKCpOUQSPSx8cAJpWC+SwmjW92VC8uSckIAglXmg3
+ m5xx1LMCZiyxNr/0PmWDr4U0B1UTfRLJDjAfovwPfDhQ3+ULAKioo3tud8d6K7ZclShGS5GF0
+ MNgeFdT8Mr3madUMDJmZthp7AQlRs9M4GnULnQPhkJotYhgl0VyGgsUAovdncaDkAu5s2r20y
+ FGScgTOrESEL9TbEDW5Ce5V6iFPqlwWGkhnUmUW68LKSco46URA/t0g4M63xHPLh/Y4ZPptwO
+ 5ly3dGM4Z3cKRTOjFdNpdoCnxsYl6zFzVsci76g==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The wrappers in include/linux/pci-dma-compat.h should go away.
+> You proposed essentially  \( A \| B \) \( | C \| \)
 
-The patch has been generated with the coccinelle script below and has been
-hand modified to replace GFP_ with a correct flag.
-It has been compile tested.
+Will the software development attention grow for a topic
+like =E2=80=9CExtend support for handling of optional source code parts=E2=
+=80=9D?
+https://github.com/coccinelle/coccinelle/issues/53
 
-When memory is allocated in 'e100_alloc()', GFP_KERNEL can be used because
-it is only called from the probe function and no lock is acquired.
+How do you think about another tiny example script for the semantic patch =
+language?
+
+@display@
+constant A, B;
+@@
+*A
+?| B
 
 
-@@
-@@
--    PCI_DMA_BIDIRECTIONAL
-+    DMA_BIDIRECTIONAL
+elfring@Sonne:~/Projekte/Coccinelle/Probe> spatch --parse-cocci optional_d=
+isjunction_test3-20200718.cocci
+=E2=80=A6
+warning: incompatible arity found on line 4
+incompatible minus and plus code starting on lines 4 and 4
 
-@@
-@@
--    PCI_DMA_TODEVICE
-+    DMA_TO_DEVICE
 
-@@
-@@
--    PCI_DMA_FROMDEVICE
-+    DMA_FROM_DEVICE
-
-@@
-@@
--    PCI_DMA_NONE
-+    DMA_NONE
-
-@@
-expression e1, e2, e3;
-@@
--    pci_alloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3;
-@@
--    pci_zalloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_free_consistent(e1, e2, e3, e4)
-+    dma_free_coherent(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_single(e1, e2, e3, e4)
-+    dma_map_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_single(e1, e2, e3, e4)
-+    dma_unmap_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4, e5;
-@@
--    pci_map_page(e1, e2, e3, e4, e5)
-+    dma_map_page(&e1->dev, e2, e3, e4, e5)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_page(e1, e2, e3, e4)
-+    dma_unmap_page(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_sg(e1, e2, e3, e4)
-+    dma_map_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_sg(e1, e2, e3, e4)
-+    dma_unmap_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-+    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-+    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-+    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-+    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2;
-@@
--    pci_dma_mapping_error(e1, e2)
-+    dma_mapping_error(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_dma_mask(e1, e2)
-+    dma_set_mask(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_consistent_dma_mask(e1, e2)
-+    dma_set_coherent_mask(&e1->dev, e2)
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-If needed, see post from Christoph Hellwig on the kernel-janitors ML:
-   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
----
- drivers/net/ethernet/intel/e100.c | 92 ++++++++++++++++---------------
- 1 file changed, 49 insertions(+), 43 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/e100.c b/drivers/net/ethernet/intel/e100.c
-index 91c64f91a835..ec6b1024cd8a 100644
---- a/drivers/net/ethernet/intel/e100.c
-+++ b/drivers/net/ethernet/intel/e100.c
-@@ -1739,10 +1739,10 @@ static int e100_xmit_prepare(struct nic *nic, struct cb *cb,
- 	dma_addr_t dma_addr;
- 	cb->command = nic->tx_command;
- 
--	dma_addr = pci_map_single(nic->pdev,
--				  skb->data, skb->len, PCI_DMA_TODEVICE);
-+	dma_addr = dma_map_single(&nic->pdev->dev, skb->data, skb->len,
-+				  DMA_TO_DEVICE);
- 	/* If we can't map the skb, have the upper layer try later */
--	if (pci_dma_mapping_error(nic->pdev, dma_addr)) {
-+	if (dma_mapping_error(&nic->pdev->dev, dma_addr)) {
- 		dev_kfree_skb_any(skb);
- 		skb = NULL;
- 		return -ENOMEM;
-@@ -1828,10 +1828,10 @@ static int e100_tx_clean(struct nic *nic)
- 			dev->stats.tx_packets++;
- 			dev->stats.tx_bytes += cb->skb->len;
- 
--			pci_unmap_single(nic->pdev,
--				le32_to_cpu(cb->u.tcb.tbd.buf_addr),
--				le16_to_cpu(cb->u.tcb.tbd.size),
--				PCI_DMA_TODEVICE);
-+			dma_unmap_single(&nic->pdev->dev,
-+					 le32_to_cpu(cb->u.tcb.tbd.buf_addr),
-+					 le16_to_cpu(cb->u.tcb.tbd.size),
-+					 DMA_TO_DEVICE);
- 			dev_kfree_skb_any(cb->skb);
- 			cb->skb = NULL;
- 			tx_cleaned = 1;
-@@ -1855,10 +1855,10 @@ static void e100_clean_cbs(struct nic *nic)
- 		while (nic->cbs_avail != nic->params.cbs.count) {
- 			struct cb *cb = nic->cb_to_clean;
- 			if (cb->skb) {
--				pci_unmap_single(nic->pdev,
--					le32_to_cpu(cb->u.tcb.tbd.buf_addr),
--					le16_to_cpu(cb->u.tcb.tbd.size),
--					PCI_DMA_TODEVICE);
-+				dma_unmap_single(&nic->pdev->dev,
-+						 le32_to_cpu(cb->u.tcb.tbd.buf_addr),
-+						 le16_to_cpu(cb->u.tcb.tbd.size),
-+						 DMA_TO_DEVICE);
- 				dev_kfree_skb(cb->skb);
- 			}
- 			nic->cb_to_clean = nic->cb_to_clean->next;
-@@ -1925,10 +1925,10 @@ static int e100_rx_alloc_skb(struct nic *nic, struct rx *rx)
- 
- 	/* Init, and map the RFD. */
- 	skb_copy_to_linear_data(rx->skb, &nic->blank_rfd, sizeof(struct rfd));
--	rx->dma_addr = pci_map_single(nic->pdev, rx->skb->data,
--		RFD_BUF_LEN, PCI_DMA_BIDIRECTIONAL);
-+	rx->dma_addr = dma_map_single(&nic->pdev->dev, rx->skb->data,
-+				      RFD_BUF_LEN, DMA_BIDIRECTIONAL);
- 
--	if (pci_dma_mapping_error(nic->pdev, rx->dma_addr)) {
-+	if (dma_mapping_error(&nic->pdev->dev, rx->dma_addr)) {
- 		dev_kfree_skb_any(rx->skb);
- 		rx->skb = NULL;
- 		rx->dma_addr = 0;
-@@ -1941,8 +1941,10 @@ static int e100_rx_alloc_skb(struct nic *nic, struct rx *rx)
- 	if (rx->prev->skb) {
- 		struct rfd *prev_rfd = (struct rfd *)rx->prev->skb->data;
- 		put_unaligned_le32(rx->dma_addr, &prev_rfd->link);
--		pci_dma_sync_single_for_device(nic->pdev, rx->prev->dma_addr,
--			sizeof(struct rfd), PCI_DMA_BIDIRECTIONAL);
-+		dma_sync_single_for_device(&nic->pdev->dev,
-+					   rx->prev->dma_addr,
-+					   sizeof(struct rfd),
-+					   DMA_BIDIRECTIONAL);
- 	}
- 
- 	return 0;
-@@ -1961,8 +1963,8 @@ static int e100_rx_indicate(struct nic *nic, struct rx *rx,
- 		return -EAGAIN;
- 
- 	/* Need to sync before taking a peek at cb_complete bit */
--	pci_dma_sync_single_for_cpu(nic->pdev, rx->dma_addr,
--		sizeof(struct rfd), PCI_DMA_BIDIRECTIONAL);
-+	dma_sync_single_for_cpu(&nic->pdev->dev, rx->dma_addr,
-+				sizeof(struct rfd), DMA_BIDIRECTIONAL);
- 	rfd_status = le16_to_cpu(rfd->status);
- 
- 	netif_printk(nic, rx_status, KERN_DEBUG, nic->netdev,
-@@ -1981,9 +1983,9 @@ static int e100_rx_indicate(struct nic *nic, struct rx *rx,
- 
- 			if (ioread8(&nic->csr->scb.status) & rus_no_res)
- 				nic->ru_running = RU_SUSPENDED;
--		pci_dma_sync_single_for_device(nic->pdev, rx->dma_addr,
--					       sizeof(struct rfd),
--					       PCI_DMA_FROMDEVICE);
-+		dma_sync_single_for_device(&nic->pdev->dev, rx->dma_addr,
-+					   sizeof(struct rfd),
-+					   DMA_FROM_DEVICE);
- 		return -ENODATA;
- 	}
- 
-@@ -1995,8 +1997,8 @@ static int e100_rx_indicate(struct nic *nic, struct rx *rx,
- 		actual_size = RFD_BUF_LEN - sizeof(struct rfd);
- 
- 	/* Get data */
--	pci_unmap_single(nic->pdev, rx->dma_addr,
--		RFD_BUF_LEN, PCI_DMA_BIDIRECTIONAL);
-+	dma_unmap_single(&nic->pdev->dev, rx->dma_addr, RFD_BUF_LEN,
-+			 DMA_BIDIRECTIONAL);
- 
- 	/* If this buffer has the el bit, but we think the receiver
- 	 * is still running, check to see if it really stopped while
-@@ -2097,22 +2099,25 @@ static void e100_rx_clean(struct nic *nic, unsigned int *work_done,
- 			(struct rfd *)new_before_last_rx->skb->data;
- 		new_before_last_rfd->size = 0;
- 		new_before_last_rfd->command |= cpu_to_le16(cb_el);
--		pci_dma_sync_single_for_device(nic->pdev,
--			new_before_last_rx->dma_addr, sizeof(struct rfd),
--			PCI_DMA_BIDIRECTIONAL);
-+		dma_sync_single_for_device(&nic->pdev->dev,
-+					   new_before_last_rx->dma_addr,
-+					   sizeof(struct rfd),
-+					   DMA_BIDIRECTIONAL);
- 
- 		/* Now that we have a new stopping point, we can clear the old
- 		 * stopping point.  We must sync twice to get the proper
- 		 * ordering on the hardware side of things. */
- 		old_before_last_rfd->command &= ~cpu_to_le16(cb_el);
--		pci_dma_sync_single_for_device(nic->pdev,
--			old_before_last_rx->dma_addr, sizeof(struct rfd),
--			PCI_DMA_BIDIRECTIONAL);
-+		dma_sync_single_for_device(&nic->pdev->dev,
-+					   old_before_last_rx->dma_addr,
-+					   sizeof(struct rfd),
-+					   DMA_BIDIRECTIONAL);
- 		old_before_last_rfd->size = cpu_to_le16(VLAN_ETH_FRAME_LEN
- 							+ ETH_FCS_LEN);
--		pci_dma_sync_single_for_device(nic->pdev,
--			old_before_last_rx->dma_addr, sizeof(struct rfd),
--			PCI_DMA_BIDIRECTIONAL);
-+		dma_sync_single_for_device(&nic->pdev->dev,
-+					   old_before_last_rx->dma_addr,
-+					   sizeof(struct rfd),
-+					   DMA_BIDIRECTIONAL);
- 	}
- 
- 	if (restart_required) {
-@@ -2134,8 +2139,9 @@ static void e100_rx_clean_list(struct nic *nic)
- 	if (nic->rxs) {
- 		for (rx = nic->rxs, i = 0; i < count; rx++, i++) {
- 			if (rx->skb) {
--				pci_unmap_single(nic->pdev, rx->dma_addr,
--					RFD_BUF_LEN, PCI_DMA_BIDIRECTIONAL);
-+				dma_unmap_single(&nic->pdev->dev,
-+						 rx->dma_addr, RFD_BUF_LEN,
-+						 DMA_BIDIRECTIONAL);
- 				dev_kfree_skb(rx->skb);
- 			}
- 		}
-@@ -2177,8 +2183,8 @@ static int e100_rx_alloc_list(struct nic *nic)
- 	before_last = (struct rfd *)rx->skb->data;
- 	before_last->command |= cpu_to_le16(cb_el);
- 	before_last->size = 0;
--	pci_dma_sync_single_for_device(nic->pdev, rx->dma_addr,
--		sizeof(struct rfd), PCI_DMA_BIDIRECTIONAL);
-+	dma_sync_single_for_device(&nic->pdev->dev, rx->dma_addr,
-+				   sizeof(struct rfd), DMA_BIDIRECTIONAL);
- 
- 	nic->rx_to_use = nic->rx_to_clean = nic->rxs;
- 	nic->ru_running = RU_SUSPENDED;
-@@ -2377,8 +2383,8 @@ static int e100_loopback_test(struct nic *nic, enum loopback loopback_mode)
- 
- 	msleep(10);
- 
--	pci_dma_sync_single_for_cpu(nic->pdev, nic->rx_to_clean->dma_addr,
--			RFD_BUF_LEN, PCI_DMA_BIDIRECTIONAL);
-+	dma_sync_single_for_cpu(&nic->pdev->dev, nic->rx_to_clean->dma_addr,
-+				RFD_BUF_LEN, DMA_BIDIRECTIONAL);
- 
- 	if (memcmp(nic->rx_to_clean->skb->data + sizeof(struct rfd),
- 	   skb->data, ETH_DATA_LEN))
-@@ -2751,16 +2757,16 @@ static int e100_do_ioctl(struct net_device *netdev, struct ifreq *ifr, int cmd)
- 
- static int e100_alloc(struct nic *nic)
- {
--	nic->mem = pci_alloc_consistent(nic->pdev, sizeof(struct mem),
--		&nic->dma_addr);
-+	nic->mem = dma_alloc_coherent(&nic->pdev->dev, sizeof(struct mem),
-+				      &nic->dma_addr, GFP_KERNEL);
- 	return nic->mem ? 0 : -ENOMEM;
- }
- 
- static void e100_free(struct nic *nic)
- {
- 	if (nic->mem) {
--		pci_free_consistent(nic->pdev, sizeof(struct mem),
--			nic->mem, nic->dma_addr);
-+		dma_free_coherent(&nic->pdev->dev, sizeof(struct mem),
-+				  nic->mem, nic->dma_addr);
- 		nic->mem = NULL;
- 	}
- }
-@@ -2853,7 +2859,7 @@ static int e100_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err_out_disable_pdev;
- 	}
- 
--	if ((err = pci_set_dma_mask(pdev, DMA_BIT_MASK(32)))) {
-+	if ((err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32)))) {
- 		netif_err(nic, probe, nic->netdev, "No usable DMA configuration, aborting\n");
- 		goto err_out_free_res;
- 	}
--- 
-2.25.1
-
+Regards,
+Markus

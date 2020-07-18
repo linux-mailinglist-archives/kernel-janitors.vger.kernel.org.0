@@ -2,202 +2,126 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30E5B2249AA
-	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jul 2020 09:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2C4C2249EE
+	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jul 2020 10:42:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727043AbgGRH2d (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 18 Jul 2020 03:28:33 -0400
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:20244 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725983AbgGRH2c (ORCPT
+        id S1726453AbgGRIlu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 18 Jul 2020 04:41:50 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:24658 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726221AbgGRIlt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 18 Jul 2020 03:28:32 -0400
-Received: from localhost.localdomain ([93.22.133.66])
-        by mwinf5d03 with ME
-        id 4XUR2300B1S6l4V03XUSlz; Sat, 18 Jul 2020 09:28:30 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 18 Jul 2020 09:28:30 +0200
-X-ME-IP: 93.22.133.66
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     airlied@linux.ie, daniel@ffwll.ch
-Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] drm/i810: switch from 'pci_' to 'dma_' API
-Date:   Sat, 18 Jul 2020 09:28:22 +0200
-Message-Id: <20200718072822.339064-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Sat, 18 Jul 2020 04:41:49 -0400
+X-IronPort-AV: E=Sophos;i="5.75,366,1589234400"; 
+   d="scan'208";a="460290487"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Jul 2020 10:41:47 +0200
+Date:   Sat, 18 Jul 2020 10:41:47 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Julia Lawall <julia.lawall@inria.fr>,
+        Denis Efremov <efremov@linux.com>,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [v2 1/4] coccinelle: api: extend memdup_user transformation with
+ GFP_USER
+In-Reply-To: <fa0ec546-9aee-5c95-428c-a225a3521f6f@web.de>
+Message-ID: <alpine.DEB.2.22.394.2007181034530.2538@hadrien>
+References: <0b9f2c58-e124-22d2-d91d-62a6e831c880@web.de> <alpine.DEB.2.22.394.2007180841520.2538@hadrien> <fa0ec546-9aee-5c95-428c-a225a3521f6f@web.de>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="8323329-1044091524-1595061708=:2538"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The wrappers in include/linux/pci-dma-compat.h should go away.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-The patch has been generated with the coccinelle script below and has been
-hand modified to replace GFP_ with a correct flag.
-It has been compile tested.
-
-When memory is allocated in 'i810_dma_initialize()' GFP_KERNEL can be used
-because its only caller, 'i810_dma_init()', already use it and no lock is
-taken in the between.
+--8323329-1044091524-1595061708=:2538
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 
 
-@@
-@@
--    PCI_DMA_BIDIRECTIONAL
-+    DMA_BIDIRECTIONAL
 
-@@
-@@
--    PCI_DMA_TODEVICE
-+    DMA_TO_DEVICE
+On Sat, 18 Jul 2020, Markus Elfring wrote:
 
-@@
-@@
--    PCI_DMA_FROMDEVICE
-+    DMA_FROM_DEVICE
+> >>> Applied.
+> >>
+> >> Do you care for patch review concerns according to this SmPL script adjustment?
+> >>
+> >> * https://lore.kernel.org/cocci/5c0dae88-e172-3ba6-f86c-d1a6238bb4c4@web.de/
+> >>   https://lkml.org/lkml/2020/6/9/568
+> >
+> > This one it complete nonsense.
+>
+> I hope that different views can be clarified for such a software situation
+> in more constructive ways.
 
-@@
-@@
--    PCI_DMA_NONE
-+    DMA_NONE
+You proposed essentially  \( A \| B \) \( | C \| \)
 
-@@
-expression e1, e2, e3;
-@@
--    pci_alloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+This is not valid syntax in the semantic patch language.  The branches of
+a \( \| \) have to be a valid expression, statement, type, etc, not some
+random string of tokens.
 
-@@
-expression e1, e2, e3;
-@@
--    pci_zalloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+> >> * https://lore.kernel.org/cocci/c3464cad-e567-9ef5-b4e3-a01e3b11120b@web.de/
+> >>   https://lkml.org/lkml/2020/6/8/637
+> >
+> > This on is indeed a problem.
+>
+> I find this feedback interesting.
+>
+> * How does it fit to your response “Applied”?
+>
+> * Will it trigger any more consequences?
+>
+>
+> > Markus, if you would limit your comments to suggesting SmPL code
+> > that is actually correct, ie that you have tested,
+>
+> Patch reviews contain usual risks that suggestions are presented
+> which can be still questionable.
 
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_free_consistent(e1, e2, e3, e4)
-+    dma_free_coherent(&e1->dev, e2, e3, e4)
+These are not "usual risks".  You can easily test out your suggestion by
+yourself to see if it produces valid code.  If it doesn't, then don't make
+the suggestion.
 
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_single(e1, e2, e3, e4)
-+    dma_map_single(&e1->dev, e2, e3, e4)
+>
+>
+> > and 2) stop suggesting stupid things over and over
+>
+> We come along different development views.
 
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_single(e1, e2, e3, e4)
-+    dma_unmap_single(&e1->dev, e2, e3, e4)
+Whenever you propose the same thing say 10 times or more and it is
+rejected every time, I thikn you should be able to conclude that if you
+propose the same thing again it will be rejected.
 
-@@
-expression e1, e2, e3, e4, e5;
-@@
--    pci_map_page(e1, e2, e3, e4, e5)
-+    dma_map_page(&e1->dev, e2, e3, e4, e5)
+>
+> > like that putting all of the virtual declarations on
+> > the same line would save space (it does, but who cares),
+>
+> It seems that you admit a possibly desirable effect.
 
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_page(e1, e2, e3, e4)
-+    dma_unmap_page(&e1->dev, e2, e3, e4)
+No, I don't consider the effect to be desirable.
 
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_sg(e1, e2, e3, e4)
-+    dma_map_sg(&e1->dev, e2, e3, e4)
+> Will any more developers care also for SmPL coding style aspects?
+>
+>
+> > then I would take your suggestions more seriously.
+>
+> Your change acceptance is varying to your development mood
+> (and other factors), isn't it?
 
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_sg(e1, e2, e3, e4)
-+    dma_unmap_sg(&e1->dev, e2, e3, e4)
+Not really.  My "change acceptance" increases when the person reporting
+them raises real problems that is blocking them in some work.  And it
+decreases rapidly when the changes are almost all related to presumed
+"efficiencies" that have no impact in practice.
 
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-+    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-+    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-+    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-+    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2;
-@@
--    pci_dma_mapping_error(e1, e2)
-+    dma_mapping_error(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_dma_mask(e1, e2)
-+    dma_set_mask(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_consistent_dma_mask(e1, e2)
-+    dma_set_coherent_mask(&e1->dev, e2)
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-If needed, see post from Christoph Hellwig on the kernel-janitors ML:
-   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
----
- drivers/gpu/drm/i810/i810_dma.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/gpu/drm/i810/i810_dma.c b/drivers/gpu/drm/i810/i810_dma.c
-index b88c3d5f92b4..303c2d483c6e 100644
---- a/drivers/gpu/drm/i810/i810_dma.c
-+++ b/drivers/gpu/drm/i810/i810_dma.c
-@@ -220,9 +220,9 @@ static int i810_dma_cleanup(struct drm_device *dev)
- 		if (dev_priv->ring.virtual_start)
- 			drm_legacy_ioremapfree(&dev_priv->ring.map, dev);
- 		if (dev_priv->hw_status_page) {
--			pci_free_consistent(dev->pdev, PAGE_SIZE,
--					    dev_priv->hw_status_page,
--					    dev_priv->dma_status_page);
-+			dma_free_coherent(&dev->pdev->dev, PAGE_SIZE,
-+					  dev_priv->hw_status_page,
-+					  dev_priv->dma_status_page);
- 		}
- 		kfree(dev->dev_private);
- 		dev->dev_private = NULL;
-@@ -398,8 +398,8 @@ static int i810_dma_initialize(struct drm_device *dev,
- 
- 	/* Program Hardware Status Page */
- 	dev_priv->hw_status_page =
--		pci_zalloc_consistent(dev->pdev, PAGE_SIZE,
--				      &dev_priv->dma_status_page);
-+		dma_alloc_coherent(&dev->pdev->dev, PAGE_SIZE,
-+				   &dev_priv->dma_status_page, GFP_KERNEL);
- 	if (!dev_priv->hw_status_page) {
- 		dev->dev_private = (void *)dev_priv;
- 		i810_dma_cleanup(dev);
--- 
-2.25.1
-
+julia
+--8323329-1044091524-1595061708=:2538--

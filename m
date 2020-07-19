@@ -2,107 +2,129 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 432A0224F35
-	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Jul 2020 06:36:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7A272250C2
+	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Jul 2020 10:36:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725875AbgGSEgs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 19 Jul 2020 00:36:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55420 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725272AbgGSEgr (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 19 Jul 2020 00:36:47 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4303C0619D2;
-        Sat, 18 Jul 2020 21:36:47 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id x72so7389808pfc.6;
-        Sat, 18 Jul 2020 21:36:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=QrQwgA++IOo4LAbcYYksL7Rv2htpSKEdPqiaKrOyg+U=;
-        b=D9RLTERalHTdng6E2AnMA0kajdkrfc7hEjZ63ZMEm9vrc4xZuQ3HY/9f9CX2b5MshI
-         Uo4zusEBuz8eHFgu2r+cR/oUjC3h1DBJmYmeYbjDPE3V431OfTDkHGxb7mnsrSjY3dxF
-         wIReA+tze3YtIczU1uNrgwNuLckBg4eWWQbkuCjv4r0NxkhgW0v79HTK4ywpii0Kx9RY
-         jA+FnOZx2vKhz9TLoxhJSl/DX9vvHsRV5I8/CxD4Kt49Op6flhXASSc9L6XkLYHTKRMF
-         n2oP6YxhQmuXzMkzgZLGK+w1IuSVFS7gqV9bynXdbBYwEcuRTthw8BMSDwkfDBQ0QbJ1
-         ddaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=QrQwgA++IOo4LAbcYYksL7Rv2htpSKEdPqiaKrOyg+U=;
-        b=Ew30VEjD77tjLqipQ/bniJ+7pzDHrQX3bTgl2IUe+QHBAozBjCK5M6Ys+8C9kk3dDF
-         a1w/Opn/i+YfrWPr2m7/Xze66lXYqYxdCuFF6ATi2k0g0MrOqKsKwNzQt8HWcw1Z4NcN
-         v2rwerubK+0HTiT+hxVEm0WKuH2Z0nwANDRktM/Urimi4Wm8spO/vQHad1uEWHp6vJk7
-         mF3/JcKf8hX8jUk+IBG+mQjOyQUe46YA5S3XZepV9XO1wv9p25YHIKbmAr35OH711u+H
-         k/UYNP2z11zMP6XMHTeZjoWsxy5py0758LnML8rseIDGosuveKVgjRuUfxCcGGsJiW9H
-         lWLg==
-X-Gm-Message-State: AOAM532EOwtQfLdsWoB0LrdAO8WqYyoN9uISm/8YF/jZfIYSDTfEN8Px
-        O0WcKdVhMdeD6xXaUWbglBY=
-X-Google-Smtp-Source: ABdhPJw22bGnp1N+Em/LFoDNlxfAACLdz2BntWRH2Dp57FTKacaKyq2nroMxWR06hs5KO8UaeZhXNA==
-X-Received: by 2002:a63:b511:: with SMTP id y17mr14136438pge.425.1595133407527;
-        Sat, 18 Jul 2020 21:36:47 -0700 (PDT)
-Received: from blackclown ([2405:204:219:61b6:3945:8436:8c57:56d5])
-        by smtp.gmail.com with ESMTPSA id n18sm12475472pfd.99.2020.07.18.21.36.42
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 18 Jul 2020 21:36:47 -0700 (PDT)
-Date:   Sun, 19 Jul 2020 10:06:38 +0530
-From:   Suraj Upadhyay <usuraj35@gmail.com>
-To:     mchehab@kernel.org, sakari.ailus@linux.intel.com,
-        gregkh@linuxfoundation.org
-Cc:     linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] staging: media: atomisp: Replace depracated MSI API.
-Message-ID: <20200719043638.GC28510@blackclown>
-References: <20200718132632.GA11527@blackclown>
+        id S1726051AbgGSIgm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 19 Jul 2020 04:36:42 -0400
+Received: from mout.web.de ([212.227.15.3]:57945 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725836AbgGSIgl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 19 Jul 2020 04:36:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1595147793;
+        bh=lp69MfIuLfyui//osOAwyy4cyzOx3HEtZdTlkyzoCvs=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=ZoRVr/IzRtqwwRL4ccQFACg13i1pCrWP7mCncLGeqkCHoIMtpcvuWa6XxfHiwZMJm
+         GGQhDZ7Yn5Ysy2wKLjQpvP1aukA5kOI7o4G8tJWnDGrMfYyO8UeW1lp+Ndqie7l2Hy
+         hoyyP16KLeQ6Hi3wolKjteCKx5uPK9Nu2JtPLRQg=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.132.156.176]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Letgd-1kcn9i1ySF-00qk2B; Sun, 19
+ Jul 2020 10:36:33 +0200
+Subject: Re: [v2 1/4] coccinelle: api: extend memdup_user transformation with
+ GFP_USER
+To:     Denis Efremov <efremov@linux.com>,
+        Julia Lawall <julia.lawall@inria.fr>,
+        Coccinelle <cocci@systeme.lip6.fr>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>
+References: <0b9f2c58-e124-22d2-d91d-62a6e831c880@web.de>
+ <alpine.DEB.2.22.394.2007180841520.2538@hadrien>
+ <cf2bd604-3094-f90a-52a8-ff5a44cf3850@linux.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <f97743d2-4840-94a0-8133-b751adcd9e88@web.de>
+Date:   Sun, 19 Jul 2020 10:36:25 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200718132632.GA11527@blackclown>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <cf2bd604-3094-f90a-52a8-ff5a44cf3850@linux.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:wokGH0B3mPGfB7Zo4fP9Nk+pSTuAVt/L+WKjXYbf/gabAeV/5Gv
+ hjeQU3ocrjEqKvLCfzeikDpMuwIM5mlYgFA1YG7NDY3s+q4i3KDkdkZZMJL51ovRmQUE2TU
+ ARJ9w1eWbSUm+4xlCccnjnJZKC0/IKERdfiXQIjJhAWiRJ8N+e3Lf+IAjYFequsDy9VAudw
+ ot5ZgiCpDpSJVkUWm43SA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:FSwW5bnBq0g=:LJWhPc6eBeEvyhf/c/WvKu
+ gg4S9Mnx+i3m+GqQPvWyqBtopIlpyigbhLChhsIqrh3/1lm7zD0jbcwPPMlh1N9Q+uvQH40C/
+ zr7qJOCcVQf0pcQwg/AwdpxAfzyPc4ZOpBlXxvq/6LlRNHGfgqP0tvhefnXIaN5yi/kL4gtBE
+ TQGuS9i4ZKL+3tRtD8EbgEH69JL+IvKcWk+ap2iWGBTKHOB9PWaYoUV/ATLT/N+rCFp+6WOf5
+ ilPxqf5phJmV9y/Ll2jG4xKom52reYVrHvjQF44P8kwDkXmc7KrfcFowbRQYI62ziEX1tD/Bj
+ 6oLr9dAAMtZjTlFYm/YX8cx1a4EEIK6jQJD1oof+T/nd8zR61mJSrZ3Njoc2NJBUH3JcQmPfU
+ wvci7+fiu0jKtD0LOIRQUe4oY77VEwoN3Ck9pg7n086BLzep2AaqNE4Eb+EqOdIY9QYjBH/+M
+ zjSCWMzlFE2xLahjk6iE8w5yOM9l2avFc8gfRydEl0mLpmqOfp9NS/e5h18lhhgrEr8ngWPBH
+ 2sMIwvjVBDU1FSbgGD6YuEOfleH9hfhCl9w7dX2m8gbTqkDFA9GfTRO+0XC+LB+YC2rtfrpcO
+ rZmcmcgz2g5AUjrxhyiKzK0tIxfGEpr01h2v6ELYkUoX70u7ipKeJF6LS/YWIRPNIs7W47aok
+ mXmWZuNazdMeuimz9Pk/3BAqSE88RgyAj0RHj8rgs85BKduEEffzqAstkWPJErDkypx7nyWXL
+ sJT5yq7I/oTAZPaSGjJUmwHdrGiL8DA+VwJc983nAx8/6mfsKcli7/CXpk0c5w0FrHlgMpQdM
+ bVIWieM89cRGk3lrOYCwb/oCFIjk6Vw4xZqjpnnh5wLYJa3TSKGKHIbQ4AUZDMFE0nbbkK6Iv
+ Xc+8ohVVrDhZRR63QLpk/nb8JnLyWWQgwMTfAEACfim6YIMBN6IP/dFsME8L6K+dK4CY6FPFZ
+ rzXrKD7qWNiHFWR6AyNvpdEpAQ57hOLjJAmdLs9OIo8t+v2G0R/Po1dWzloi9EWrQ1wk1xd0y
+ iYwAJr4AX/go4CkDW9zXZl2yZb1IZTPhpoXguPApzeKtjWiAf4sQjMM1obaLyapJrM8Ph1fXx
+ UlYK6vugRynpb1tAZhKf0nhrCGrwDa8a5hwEJ6YV4W8uAZCdsZDcp22inTYadfdHljFLGPOkm
+ s1L8mLwW3o3lk1/oTXa8MriNZYrKcvokGBwpBUowFMlIVG0a9fuUH09iBS11ikbbmsp7J++Cw
+ QEQsRg29tLlwlIEmVImBs3c5ycaBKg3tnhcp3BA==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Jul 18, 2020 at 06:56:32PM +0530, Suraj Upadhyay wrote:
-> Replace depracated pci_enable_msi with pci_alloc_irq_vectors.
-> And as a result modify how the returned value is handled.
-> 
-> Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
-> ---
->  drivers/staging/media/atomisp/pci/atomisp_v4l2.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-Hii,
-Please don't merge this patch.
-It is still incomplete.
-It doesn't replace pci_disable_msi.
-I hope this wasn't an annoyance.
+>> you do indeed need to put - in front of the second and third lines as w=
+ell.
+>
+> Thanks, Markus, Julia. I will send v3.
 
-Thanks,
+How do you think about to discuss any remaining open issues already
+on the current software development version for your transformation approa=
+ch?
 
-Suraj Upadhyay.
-
-> diff --git a/drivers/staging/media/atomisp/pci/atomisp_v4l2.c b/drivers/staging/media/atomisp/pci/atomisp_v4l2.c
-> index d36809a0182c..b824c6f78a9c 100644
-> --- a/drivers/staging/media/atomisp/pci/atomisp_v4l2.c
-> +++ b/drivers/staging/media/atomisp/pci/atomisp_v4l2.c
-> @@ -1735,8 +1735,8 @@ static int atomisp_pci_probe(struct pci_dev *dev,
->  	pci_set_master(dev);
->  	pci_set_drvdata(dev, isp);
->  
-> -	err = pci_enable_msi(dev);
-> -	if (err) {
-> +	err = pci_alloc_irq_vectors(dev, 1, 1, PCI_IRQ_MSI);
-> +	if (err < 0) {
->  		dev_err(&dev->dev, "Failed to enable msi (%d)\n", err);
->  		goto enable_msi_fail;
->  	}
-> -- 
-> 2.17.1
-> 
-
-
+Regards,
+Markus

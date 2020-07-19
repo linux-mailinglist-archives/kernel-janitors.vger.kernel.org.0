@@ -2,129 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7A272250C2
-	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Jul 2020 10:36:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F21132251A5
+	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Jul 2020 13:34:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726051AbgGSIgm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 19 Jul 2020 04:36:42 -0400
-Received: from mout.web.de ([212.227.15.3]:57945 "EHLO mout.web.de"
+        id S1726061AbgGSLex (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 19 Jul 2020 07:34:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45380 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725836AbgGSIgl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 19 Jul 2020 04:36:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1595147793;
-        bh=lp69MfIuLfyui//osOAwyy4cyzOx3HEtZdTlkyzoCvs=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=ZoRVr/IzRtqwwRL4ccQFACg13i1pCrWP7mCncLGeqkCHoIMtpcvuWa6XxfHiwZMJm
-         GGQhDZ7Yn5Ysy2wKLjQpvP1aukA5kOI7o4G8tJWnDGrMfYyO8UeW1lp+Ndqie7l2Hy
-         hoyyP16KLeQ6Hi3wolKjteCKx5uPK9Nu2JtPLRQg=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.156.176]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Letgd-1kcn9i1ySF-00qk2B; Sun, 19
- Jul 2020 10:36:33 +0200
-Subject: Re: [v2 1/4] coccinelle: api: extend memdup_user transformation with
- GFP_USER
-To:     Denis Efremov <efremov@linux.com>,
-        Julia Lawall <julia.lawall@inria.fr>,
-        Coccinelle <cocci@systeme.lip6.fr>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>
-References: <0b9f2c58-e124-22d2-d91d-62a6e831c880@web.de>
- <alpine.DEB.2.22.394.2007180841520.2538@hadrien>
- <cf2bd604-3094-f90a-52a8-ff5a44cf3850@linux.com>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <f97743d2-4840-94a0-8133-b751adcd9e88@web.de>
-Date:   Sun, 19 Jul 2020 10:36:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        id S1725988AbgGSLex (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 19 Jul 2020 07:34:53 -0400
+Received: from coco.lan (ip5f5ad5c5.dynamic.kabel-deutschland.de [95.90.213.197])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E75B920734;
+        Sun, 19 Jul 2020 11:34:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595158492;
+        bh=uVWHh1TqjC+xE6xa1USm9QdMA2OAnJSw/OW+SY+sf7w=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=leDcwIaInJFE/EUWPaKZz04R6jjvPKM03rxtvj7Cfb1MtYX61gSqt4Xk7Z7NcI02c
+         0mcuTuMLTjqyTbbYeKS49HSITMSemNVTaEBlfNPajwJzeqovBPawWCClYbF4nGeym5
+         XQCF86PWCwpNb/7aCIND+boDi6Gi4hmIpAOVZieI=
+Date:   Sun, 19 Jul 2020 13:34:48 +0200
+From:   Mauro Carvalho Chehab <mchehab@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
+        kernel-janitors@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] media: atomisp: fix mask and shift operation on
+ ISPSSPM0
+Message-ID: <20200719133448.481cffc5@coco.lan>
+In-Reply-To: <20200716145138.1708693-1-colin.king@canonical.com>
+References: <20200716145138.1708693-1-colin.king@canonical.com>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <cf2bd604-3094-f90a-52a8-ff5a44cf3850@linux.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:wokGH0B3mPGfB7Zo4fP9Nk+pSTuAVt/L+WKjXYbf/gabAeV/5Gv
- hjeQU3ocrjEqKvLCfzeikDpMuwIM5mlYgFA1YG7NDY3s+q4i3KDkdkZZMJL51ovRmQUE2TU
- ARJ9w1eWbSUm+4xlCccnjnJZKC0/IKERdfiXQIjJhAWiRJ8N+e3Lf+IAjYFequsDy9VAudw
- ot5ZgiCpDpSJVkUWm43SA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:FSwW5bnBq0g=:LJWhPc6eBeEvyhf/c/WvKu
- gg4S9Mnx+i3m+GqQPvWyqBtopIlpyigbhLChhsIqrh3/1lm7zD0jbcwPPMlh1N9Q+uvQH40C/
- zr7qJOCcVQf0pcQwg/AwdpxAfzyPc4ZOpBlXxvq/6LlRNHGfgqP0tvhefnXIaN5yi/kL4gtBE
- TQGuS9i4ZKL+3tRtD8EbgEH69JL+IvKcWk+ap2iWGBTKHOB9PWaYoUV/ATLT/N+rCFp+6WOf5
- ilPxqf5phJmV9y/Ll2jG4xKom52reYVrHvjQF44P8kwDkXmc7KrfcFowbRQYI62ziEX1tD/Bj
- 6oLr9dAAMtZjTlFYm/YX8cx1a4EEIK6jQJD1oof+T/nd8zR61mJSrZ3Njoc2NJBUH3JcQmPfU
- wvci7+fiu0jKtD0LOIRQUe4oY77VEwoN3Ck9pg7n086BLzep2AaqNE4Eb+EqOdIY9QYjBH/+M
- zjSCWMzlFE2xLahjk6iE8w5yOM9l2avFc8gfRydEl0mLpmqOfp9NS/e5h18lhhgrEr8ngWPBH
- 2sMIwvjVBDU1FSbgGD6YuEOfleH9hfhCl9w7dX2m8gbTqkDFA9GfTRO+0XC+LB+YC2rtfrpcO
- rZmcmcgz2g5AUjrxhyiKzK0tIxfGEpr01h2v6ELYkUoX70u7ipKeJF6LS/YWIRPNIs7W47aok
- mXmWZuNazdMeuimz9Pk/3BAqSE88RgyAj0RHj8rgs85BKduEEffzqAstkWPJErDkypx7nyWXL
- sJT5yq7I/oTAZPaSGjJUmwHdrGiL8DA+VwJc983nAx8/6mfsKcli7/CXpk0c5w0FrHlgMpQdM
- bVIWieM89cRGk3lrOYCwb/oCFIjk6Vw4xZqjpnnh5wLYJa3TSKGKHIbQ4AUZDMFE0nbbkK6Iv
- Xc+8ohVVrDhZRR63QLpk/nb8JnLyWWQgwMTfAEACfim6YIMBN6IP/dFsME8L6K+dK4CY6FPFZ
- rzXrKD7qWNiHFWR6AyNvpdEpAQ57hOLjJAmdLs9OIo8t+v2G0R/Po1dWzloi9EWrQ1wk1xd0y
- iYwAJr4AX/go4CkDW9zXZl2yZb1IZTPhpoXguPApzeKtjWiAf4sQjMM1obaLyapJrM8Ph1fXx
- UlYK6vugRynpb1tAZhKf0nhrCGrwDa8a5hwEJ6YV4W8uAZCdsZDcp22inTYadfdHljFLGPOkm
- s1L8mLwW3o3lk1/oTXa8MriNZYrKcvokGBwpBUowFMlIVG0a9fuUH09iBS11ikbbmsp7J++Cw
- QEQsRg29tLlwlIEmVImBs3c5ycaBKg3tnhcp3BA==
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> you do indeed need to put - in front of the second and third lines as w=
-ell.
->
-> Thanks, Markus, Julia. I will send v3.
+Em Thu, 16 Jul 2020 15:51:38 +0100
+Colin King <colin.king@canonical.com> escreveu:
 
-How do you think about to discuss any remaining open issues already
-on the current software development version for your transformation approa=
-ch?
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently the check on bits 25:24 on ISPSSPM0 is always 0 because
+> the mask and shift operations are incorrect. Fix this by shifting
+> by MRFLD_ISPSSPM0_ISPSSS_OFFSET (24 bits right) and then masking
+> with RFLD_ISPSSPM0_ISPSSC_MASK (0x03) to get the appropriate 2 bits
+> to check.
+> 
+> Addresses-Coverity: ("Operands don't affect result")
+> Fixes: 0f441fd70b1e ("media: atomisp: simplify the power down/up code")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Regards,
-Markus
+Thanks!
+
+With this patch, we can revert this one too (patch enclosed):
+
+	d0213061a501 ("media: atomisp: fix mask and shift operation on ISPSSPM0")
+
+I tested it already: the IUNIT power on/off code is working properly
+after both patches.
+
+Thanks,
+Mauro
+
+-
+[PATCH] Revert "media: atomisp: keep the ISP powered on when setting it"
+
+changeset d0213061a501 ("media: atomisp: fix mask and shift operation on ISPSSPM0")
+solved the existing issue with the IUNIT power on code.
+
+So, the driver can now use the right code again.
+
+This reverts commit 95d1f398c4dc3f55e9007c89452ccc16301205fc.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+
+diff --git a/drivers/staging/media/atomisp/pci/atomisp_v4l2.c b/drivers/staging/media/atomisp/pci/atomisp_v4l2.c
+index e31195816b2d..a000a1e316f7 100644
+--- a/drivers/staging/media/atomisp/pci/atomisp_v4l2.c
++++ b/drivers/staging/media/atomisp/pci/atomisp_v4l2.c
+@@ -766,17 +766,13 @@ static int atomisp_mrfld_power(struct atomisp_device *isp, bool enable)
+ /* Workaround for pmu_nc_set_power_state not ready in MRFLD */
+ int atomisp_mrfld_power_down(struct atomisp_device *isp)
+ {
+-	return 0;
+-// FIXME: at least with ISP2401, the code below causes the driver to break
+-//	return atomisp_mrfld_power(isp, false);
++	return atomisp_mrfld_power(isp, false);
+ }
+ 
+ /* Workaround for pmu_nc_set_power_state not ready in MRFLD */
+ int atomisp_mrfld_power_up(struct atomisp_device *isp)
+ {
+-	return 0;
+-// FIXME: at least with ISP2401, the code below causes the driver to break
+-//	return atomisp_mrfld_power(isp, true);
++	return atomisp_mrfld_power(isp, true);
+ }
+ 
+ int atomisp_runtime_suspend(struct device *dev)
+
+

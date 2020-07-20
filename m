@@ -2,84 +2,246 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A567A2255CF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Jul 2020 04:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B6D4225870
+	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Jul 2020 09:27:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726601AbgGTCP1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 19 Jul 2020 22:15:27 -0400
-Received: from mga01.intel.com ([192.55.52.88]:10176 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726312AbgGTCP1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 19 Jul 2020 22:15:27 -0400
-IronPort-SDR: 9mm0DynQ/t2anGi0P1xnSf3wHOX5ISoOxqPIQvdqFGohn1HTm+AG9YhRGBBOVTrfgFz21qADe4
- 5hwP/6xN4oLg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9687"; a="167969291"
-X-IronPort-AV: E=Sophos;i="5.75,373,1589266800"; 
-   d="scan'208";a="167969291"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2020 19:15:26 -0700
-IronPort-SDR: d1WB62cRq5P0pr0r6xP2Hg/eqqZBXqKV6bOHhVI7I8LLvNTj9FgDXdEHA/OLmPSFM51auLff9M
- NsEQ0rn1BaKw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,373,1589266800"; 
-   d="scan'208";a="461513294"
-Received: from ipu5-build.bj.intel.com (HELO [10.238.232.196]) ([10.238.232.196])
-  by orsmga005.jf.intel.com with ESMTP; 19 Jul 2020 19:15:23 -0700
-Subject: Re: [PATCH] staging: media: ipu3: Replace depracated MSI API.
-To:     Suraj Upadhyay <usuraj35@gmail.com>, sakari.ailus@linux.intel.com,
-        bingbu.cao@intel.com, tian.shu.qiu@intel.com, mchehab@kernel.org,
-        gregkh@linuxfoundation.org
-Cc:     linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
+        id S1726601AbgGTH1I (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 20 Jul 2020 03:27:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46786 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726127AbgGTH1I (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 20 Jul 2020 03:27:08 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D073EC0619D2
+        for <kernel-janitors@vger.kernel.org>; Mon, 20 Jul 2020 00:27:07 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id f139so24084387wmf.5
+        for <kernel-janitors@vger.kernel.org>; Mon, 20 Jul 2020 00:27:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Bhwo7XtedxgO680QCApPkufZDGLDVkIrfASA3vSME98=;
+        b=KnQ0XXlGMXIms2qzb4Z98253tPDTM28PDEhkizmnH+dcRJ7NkxEM8fEAY4mnorwZI6
+         ta9yoa2xdBzD8Nqaehbz9uuv2nFZTnnYvLjV+6/DQKjsPrhE5iPGCI/n2+GCl5V5xBRA
+         U+ONURY/664cWghXmUxsVSTWtmdshPqnZIhsw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=Bhwo7XtedxgO680QCApPkufZDGLDVkIrfASA3vSME98=;
+        b=XKm/BpSKWSOiI2EintsIhp6F/nY0PkNdago6u6jriGACYA/UzxVSugROIitkgIBiXZ
+         8ynpoAWnhaUwq9YcpEE2s6rYY+xIhe7fgAMlzugqqi0Kv8m/dJurGTNPtyAqwwcxrERO
+         B6Ncv62FoYAKQS0418tfUz3jpBeE0aTmtC/FtO16MabzqkR24cNAD111mQz8C7YsS+Nm
+         c1a7K3JE7ziyhQuX7KptgMHSd0e1ERtZWOnx4vUnPetT0umhF46Wyfchl0kFB328uX78
+         g/2w+Bsd1pNa8kSOvLpMOwS7mGA4Gpa9LNVuFOQkCN8Yhp6Vw/AnL+sFJFvSWJqOqyM3
+         BXRQ==
+X-Gm-Message-State: AOAM53307vG+mpodhNUhEaELSAMK+dxQunpmdKvh/U1S+y7RjitP+uEb
+        xUZwXq46dn5AP6M2bNd/8e3EIe6idCI=
+X-Google-Smtp-Source: ABdhPJyI4WGGxHQ56OUuIoYvCXVBVwOM6TFIJ1ZhwGAeZ7exEvdOrnkxabsQBl2LMjC/IykBS+3RWQ==
+X-Received: by 2002:a7b:c194:: with SMTP id y20mr21445339wmi.83.1595230026550;
+        Mon, 20 Jul 2020 00:27:06 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id w128sm34493308wmb.19.2020.07.20.00.27.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2020 00:27:05 -0700 (PDT)
+Date:   Mon, 20 Jul 2020 09:27:04 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     airlied@linux.ie, daniel@ffwll.ch, dri-devel@lists.freedesktop.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200718133238.GA11982@blackclown>
-From:   Bingbu Cao <bingbu.cao@linux.intel.com>
-Message-ID: <8dc91dd2-b165-bd97-00f7-16c4cb266163@linux.intel.com>
-Date:   Mon, 20 Jul 2020 10:17:36 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+Subject: Re: [PATCH] drm/i810: switch from 'pci_' to 'dma_' API
+Message-ID: <20200720072704.GT3278063@phenom.ffwll.local>
+Mail-Followup-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        airlied@linux.ie, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20200718072822.339064-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-In-Reply-To: <20200718133238.GA11982@blackclown>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200718072822.339064-1-christophe.jaillet@wanadoo.fr>
+X-Operating-System: Linux phenom 5.6.0-1-amd64 
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Upadhyay,
-
-Thanks for your patch. Please correct the typo in message.
-
-On 7/18/20 9:32 PM, Suraj Upadhyay wrote:
-> Replace depracated psi_enable_msi with pci_alloc_irq_vectors.
-> And as a result modify how the returned value is handled.
+On Sat, Jul 18, 2020 at 09:28:22AM +0200, Christophe JAILLET wrote:
+> The wrappers in include/linux/pci-dma-compat.h should go away.
 > 
-> Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
+> The patch has been generated with the coccinelle script below and has been
+> hand modified to replace GFP_ with a correct flag.
+> It has been compile tested.
+> 
+> When memory is allocated in 'i810_dma_initialize()' GFP_KERNEL can be used
+> because its only caller, 'i810_dma_init()', already use it and no lock is
+> taken in the between.
+> 
+> 
+> @@
+> @@
+> -    PCI_DMA_BIDIRECTIONAL
+> +    DMA_BIDIRECTIONAL
+> 
+> @@
+> @@
+> -    PCI_DMA_TODEVICE
+> +    DMA_TO_DEVICE
+> 
+> @@
+> @@
+> -    PCI_DMA_FROMDEVICE
+> +    DMA_FROM_DEVICE
+> 
+> @@
+> @@
+> -    PCI_DMA_NONE
+> +    DMA_NONE
+> 
+> @@
+> expression e1, e2, e3;
+> @@
+> -    pci_alloc_consistent(e1, e2, e3)
+> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+> 
+> @@
+> expression e1, e2, e3;
+> @@
+> -    pci_zalloc_consistent(e1, e2, e3)
+> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_free_consistent(e1, e2, e3, e4)
+> +    dma_free_coherent(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_map_single(e1, e2, e3, e4)
+> +    dma_map_single(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_single(e1, e2, e3, e4)
+> +    dma_unmap_single(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4, e5;
+> @@
+> -    pci_map_page(e1, e2, e3, e4, e5)
+> +    dma_map_page(&e1->dev, e2, e3, e4, e5)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_page(e1, e2, e3, e4)
+> +    dma_unmap_page(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_map_sg(e1, e2, e3, e4)
+> +    dma_map_sg(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_sg(e1, e2, e3, e4)
+> +    dma_unmap_sg(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
+> +    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_single_for_device(e1, e2, e3, e4)
+> +    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
+> +    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
+> +    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_dma_mapping_error(e1, e2)
+> +    dma_mapping_error(&e1->dev, e2)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_set_dma_mask(e1, e2)
+> +    dma_set_mask(&e1->dev, e2)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_set_consistent_dma_mask(e1, e2)
+> +    dma_set_coherent_mask(&e1->dev, e2)
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+
+Applied to drm-misc-next. Since we're already past -rc6 I think it'll go
+into 5.10.
+
+Thanks, Daniel
+
 > ---
->  drivers/staging/media/ipu3/ipu3.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+>    https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+> ---
+>  drivers/gpu/drm/i810/i810_dma.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
 > 
-> diff --git a/drivers/staging/media/ipu3/ipu3.c b/drivers/staging/media/ipu3/ipu3.c
-> index ee1bba6bdcac..54690e7442be 100644
-> --- a/drivers/staging/media/ipu3/ipu3.c
-> +++ b/drivers/staging/media/ipu3/ipu3.c
-> @@ -602,9 +602,9 @@ static irqreturn_t imgu_isr(int irq, void *imgu_ptr)
->  static int imgu_pci_config_setup(struct pci_dev *dev)
->  {
->  	u16 pci_command;
-> -	int r = pci_enable_msi(dev);
-> +	int r = pci_alloc_irq_vectors(dev, 1, 1, PCI_IRQ_MSI);
+> diff --git a/drivers/gpu/drm/i810/i810_dma.c b/drivers/gpu/drm/i810/i810_dma.c
+> index b88c3d5f92b4..303c2d483c6e 100644
+> --- a/drivers/gpu/drm/i810/i810_dma.c
+> +++ b/drivers/gpu/drm/i810/i810_dma.c
+> @@ -220,9 +220,9 @@ static int i810_dma_cleanup(struct drm_device *dev)
+>  		if (dev_priv->ring.virtual_start)
+>  			drm_legacy_ioremapfree(&dev_priv->ring.map, dev);
+>  		if (dev_priv->hw_status_page) {
+> -			pci_free_consistent(dev->pdev, PAGE_SIZE,
+> -					    dev_priv->hw_status_page,
+> -					    dev_priv->dma_status_page);
+> +			dma_free_coherent(&dev->pdev->dev, PAGE_SIZE,
+> +					  dev_priv->hw_status_page,
+> +					  dev_priv->dma_status_page);
+>  		}
+>  		kfree(dev->dev_private);
+>  		dev->dev_private = NULL;
+> @@ -398,8 +398,8 @@ static int i810_dma_initialize(struct drm_device *dev,
 >  
-> -	if (r) {
-> +	if (r < 0) {
->  		dev_err(&dev->dev, "failed to enable MSI (%d)\n", r);
->  		return r;
->  	}
+>  	/* Program Hardware Status Page */
+>  	dev_priv->hw_status_page =
+> -		pci_zalloc_consistent(dev->pdev, PAGE_SIZE,
+> -				      &dev_priv->dma_status_page);
+> +		dma_alloc_coherent(&dev->pdev->dev, PAGE_SIZE,
+> +				   &dev_priv->dma_status_page, GFP_KERNEL);
+>  	if (!dev_priv->hw_status_page) {
+>  		dev->dev_private = (void *)dev_priv;
+>  		i810_dma_cleanup(dev);
+> -- 
+> 2.25.1
 > 
 
 -- 
-Best regards,
-Bingbu Cao
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch

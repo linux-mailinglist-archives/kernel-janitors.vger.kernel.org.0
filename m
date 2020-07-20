@@ -2,111 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F21132251A5
-	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Jul 2020 13:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A567A2255CF
+	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Jul 2020 04:15:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726061AbgGSLex (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 19 Jul 2020 07:34:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45380 "EHLO mail.kernel.org"
+        id S1726601AbgGTCP1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 19 Jul 2020 22:15:27 -0400
+Received: from mga01.intel.com ([192.55.52.88]:10176 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725988AbgGSLex (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 19 Jul 2020 07:34:53 -0400
-Received: from coco.lan (ip5f5ad5c5.dynamic.kabel-deutschland.de [95.90.213.197])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E75B920734;
-        Sun, 19 Jul 2020 11:34:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595158492;
-        bh=uVWHh1TqjC+xE6xa1USm9QdMA2OAnJSw/OW+SY+sf7w=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=leDcwIaInJFE/EUWPaKZz04R6jjvPKM03rxtvj7Cfb1MtYX61gSqt4Xk7Z7NcI02c
-         0mcuTuMLTjqyTbbYeKS49HSITMSemNVTaEBlfNPajwJzeqovBPawWCClYbF4nGeym5
-         XQCF86PWCwpNb/7aCIND+boDi6Gi4hmIpAOVZieI=
-Date:   Sun, 19 Jul 2020 13:34:48 +0200
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
-        kernel-janitors@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] media: atomisp: fix mask and shift operation on
- ISPSSPM0
-Message-ID: <20200719133448.481cffc5@coco.lan>
-In-Reply-To: <20200716145138.1708693-1-colin.king@canonical.com>
-References: <20200716145138.1708693-1-colin.king@canonical.com>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        id S1726312AbgGTCP1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 19 Jul 2020 22:15:27 -0400
+IronPort-SDR: 9mm0DynQ/t2anGi0P1xnSf3wHOX5ISoOxqPIQvdqFGohn1HTm+AG9YhRGBBOVTrfgFz21qADe4
+ 5hwP/6xN4oLg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9687"; a="167969291"
+X-IronPort-AV: E=Sophos;i="5.75,373,1589266800"; 
+   d="scan'208";a="167969291"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2020 19:15:26 -0700
+IronPort-SDR: d1WB62cRq5P0pr0r6xP2Hg/eqqZBXqKV6bOHhVI7I8LLvNTj9FgDXdEHA/OLmPSFM51auLff9M
+ NsEQ0rn1BaKw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,373,1589266800"; 
+   d="scan'208";a="461513294"
+Received: from ipu5-build.bj.intel.com (HELO [10.238.232.196]) ([10.238.232.196])
+  by orsmga005.jf.intel.com with ESMTP; 19 Jul 2020 19:15:23 -0700
+Subject: Re: [PATCH] staging: media: ipu3: Replace depracated MSI API.
+To:     Suraj Upadhyay <usuraj35@gmail.com>, sakari.ailus@linux.intel.com,
+        bingbu.cao@intel.com, tian.shu.qiu@intel.com, mchehab@kernel.org,
+        gregkh@linuxfoundation.org
+Cc:     linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20200718133238.GA11982@blackclown>
+From:   Bingbu Cao <bingbu.cao@linux.intel.com>
+Message-ID: <8dc91dd2-b165-bd97-00f7-16c4cb266163@linux.intel.com>
+Date:   Mon, 20 Jul 2020 10:17:36 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20200718133238.GA11982@blackclown>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Em Thu, 16 Jul 2020 15:51:38 +0100
-Colin King <colin.king@canonical.com> escreveu:
+Upadhyay,
 
-> From: Colin Ian King <colin.king@canonical.com>
+Thanks for your patch. Please correct the typo in message.
+
+On 7/18/20 9:32 PM, Suraj Upadhyay wrote:
+> Replace depracated psi_enable_msi with pci_alloc_irq_vectors.
+> And as a result modify how the returned value is handled.
 > 
-> Currently the check on bits 25:24 on ISPSSPM0 is always 0 because
-> the mask and shift operations are incorrect. Fix this by shifting
-> by MRFLD_ISPSSPM0_ISPSSS_OFFSET (24 bits right) and then masking
-> with RFLD_ISPSSPM0_ISPSSC_MASK (0x03) to get the appropriate 2 bits
-> to check.
+> Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
+> ---
+>  drivers/staging/media/ipu3/ipu3.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Addresses-Coverity: ("Operands don't affect result")
-> Fixes: 0f441fd70b1e ("media: atomisp: simplify the power down/up code")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> diff --git a/drivers/staging/media/ipu3/ipu3.c b/drivers/staging/media/ipu3/ipu3.c
+> index ee1bba6bdcac..54690e7442be 100644
+> --- a/drivers/staging/media/ipu3/ipu3.c
+> +++ b/drivers/staging/media/ipu3/ipu3.c
+> @@ -602,9 +602,9 @@ static irqreturn_t imgu_isr(int irq, void *imgu_ptr)
+>  static int imgu_pci_config_setup(struct pci_dev *dev)
+>  {
+>  	u16 pci_command;
+> -	int r = pci_enable_msi(dev);
+> +	int r = pci_alloc_irq_vectors(dev, 1, 1, PCI_IRQ_MSI);
+>  
+> -	if (r) {
+> +	if (r < 0) {
+>  		dev_err(&dev->dev, "failed to enable MSI (%d)\n", r);
+>  		return r;
+>  	}
+> 
 
-Thanks!
-
-With this patch, we can revert this one too (patch enclosed):
-
-	d0213061a501 ("media: atomisp: fix mask and shift operation on ISPSSPM0")
-
-I tested it already: the IUNIT power on/off code is working properly
-after both patches.
-
-Thanks,
-Mauro
-
--
-[PATCH] Revert "media: atomisp: keep the ISP powered on when setting it"
-
-changeset d0213061a501 ("media: atomisp: fix mask and shift operation on ISPSSPM0")
-solved the existing issue with the IUNIT power on code.
-
-So, the driver can now use the right code again.
-
-This reverts commit 95d1f398c4dc3f55e9007c89452ccc16301205fc.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-
-diff --git a/drivers/staging/media/atomisp/pci/atomisp_v4l2.c b/drivers/staging/media/atomisp/pci/atomisp_v4l2.c
-index e31195816b2d..a000a1e316f7 100644
---- a/drivers/staging/media/atomisp/pci/atomisp_v4l2.c
-+++ b/drivers/staging/media/atomisp/pci/atomisp_v4l2.c
-@@ -766,17 +766,13 @@ static int atomisp_mrfld_power(struct atomisp_device *isp, bool enable)
- /* Workaround for pmu_nc_set_power_state not ready in MRFLD */
- int atomisp_mrfld_power_down(struct atomisp_device *isp)
- {
--	return 0;
--// FIXME: at least with ISP2401, the code below causes the driver to break
--//	return atomisp_mrfld_power(isp, false);
-+	return atomisp_mrfld_power(isp, false);
- }
- 
- /* Workaround for pmu_nc_set_power_state not ready in MRFLD */
- int atomisp_mrfld_power_up(struct atomisp_device *isp)
- {
--	return 0;
--// FIXME: at least with ISP2401, the code below causes the driver to break
--//	return atomisp_mrfld_power(isp, true);
-+	return atomisp_mrfld_power(isp, true);
- }
- 
- int atomisp_runtime_suspend(struct device *dev)
-
-
+-- 
+Best regards,
+Bingbu Cao

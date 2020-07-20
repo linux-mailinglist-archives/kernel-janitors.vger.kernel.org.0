@@ -2,335 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E735A22605E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Jul 2020 15:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DD8E2260BC
+	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Jul 2020 15:23:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728320AbgGTNCs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 20 Jul 2020 09:02:48 -0400
-Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:22298 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728010AbgGTNCs (ORCPT
+        id S1726930AbgGTNXT convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 20 Jul 2020 09:23:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45996 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726030AbgGTNXR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 20 Jul 2020 09:02:48 -0400
-Received: from localhost.localdomain ([93.22.38.146])
-        by mwinf5d51 with ME
-        id 5R2j2300339BigV03R2jDm; Mon, 20 Jul 2020 15:02:45 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 20 Jul 2020 15:02:45 +0200
-X-ME-IP: 93.22.38.146
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     kuba@kernel.org, davem@davemloft.net, f.fainelli@gmail.com
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mon, 20 Jul 2020 09:23:17 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DD7FC061794
+        for <kernel-janitors@vger.kernel.org>; Mon, 20 Jul 2020 06:23:17 -0700 (PDT)
+Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1jxVl9-0005QS-MN; Mon, 20 Jul 2020 15:23:11 +0200
+Received: from pza by lupine with local (Exim 4.92)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1jxVkn-0006so-TM; Mon, 20 Jul 2020 15:22:49 +0200
+Message-ID: <74fe611ff6e12750b056d18703059787d475eaa1.camel@pengutronix.de>
+Subject: Re: [PATCH] drm/imx: imx-tve: Delete an error message in
+ imx_tve_bind()
+From:   Philipp Zabel <p.zabel@pengutronix.de>
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        kernel@pengutronix.de, Fabio Estevam <festevam@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] r6040: switch from 'pci_' to 'dma_' API
-Date:   Mon, 20 Jul 2020 15:02:42 +0200
-Message-Id: <20200720130242.366855-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Tang Bin <tangbin@cmss.chinamobile.com>
+Date:   Mon, 20 Jul 2020 15:22:49 +0200
+In-Reply-To: <eb87043b-1881-da68-ba28-35406b6594ed@web.de>
+References: <eb87043b-1881-da68-ba28-35406b6594ed@web.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The wrappers in include/linux/pci-dma-compat.h should go away.
+On Sun, 2020-04-05 at 11:16 +0200, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Sun, 5 Apr 2020 11:01:49 +0200
+> 
+> The function “platform_get_irq” can log an error already.
+> Thus omit a redundant message for the exception handling in the
+> calling function.
+> 
+> This issue was detected by using the Coccinelle software.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-The patch has been generated with the coccinelle script below and has been
-hand modified to replace GFP_ with a correct flag.
-It has been compile tested.
+Thank you, applied to imx-drm/next.
 
-When memory is allocated in 'r6040_open()', GFP_KERNEL can be used because
-this is a net_device_ops' 'ndo_open' function. This function is protected
-by the rtnl_lock() semaphore. So only a mutex is used and no spin_lock is
-acquired.
-
-
-@@
-@@
--    PCI_DMA_BIDIRECTIONAL
-+    DMA_BIDIRECTIONAL
-
-@@
-@@
--    PCI_DMA_TODEVICE
-+    DMA_TO_DEVICE
-
-@@
-@@
--    PCI_DMA_FROMDEVICE
-+    DMA_FROM_DEVICE
-
-@@
-@@
--    PCI_DMA_NONE
-+    DMA_NONE
-
-@@
-expression e1, e2, e3;
-@@
--    pci_alloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3;
-@@
--    pci_zalloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_free_consistent(e1, e2, e3, e4)
-+    dma_free_coherent(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_single(e1, e2, e3, e4)
-+    dma_map_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_single(e1, e2, e3, e4)
-+    dma_unmap_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4, e5;
-@@
--    pci_map_page(e1, e2, e3, e4, e5)
-+    dma_map_page(&e1->dev, e2, e3, e4, e5)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_page(e1, e2, e3, e4)
-+    dma_unmap_page(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_sg(e1, e2, e3, e4)
-+    dma_map_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_sg(e1, e2, e3, e4)
-+    dma_unmap_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-+    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-+    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-+    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-+    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2;
-@@
--    pci_dma_mapping_error(e1, e2)
-+    dma_mapping_error(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_dma_mask(e1, e2)
-+    dma_set_mask(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_consistent_dma_mask(e1, e2)
-+    dma_set_coherent_mask(&e1->dev, e2)
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-If needed, see post from Christoph Hellwig on the kernel-janitors ML:
-   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
----
- drivers/net/ethernet/rdc/r6040.c | 64 +++++++++++++++++---------------
- 1 file changed, 34 insertions(+), 30 deletions(-)
-
-diff --git a/drivers/net/ethernet/rdc/r6040.c b/drivers/net/ethernet/rdc/r6040.c
-index f5ecc410ff85..7c74318620b1 100644
---- a/drivers/net/ethernet/rdc/r6040.c
-+++ b/drivers/net/ethernet/rdc/r6040.c
-@@ -262,9 +262,9 @@ static void r6040_free_txbufs(struct net_device *dev)
- 
- 	for (i = 0; i < TX_DCNT; i++) {
- 		if (lp->tx_insert_ptr->skb_ptr) {
--			pci_unmap_single(lp->pdev,
--				le32_to_cpu(lp->tx_insert_ptr->buf),
--				MAX_BUF_SIZE, PCI_DMA_TODEVICE);
-+			dma_unmap_single(&lp->pdev->dev,
-+					 le32_to_cpu(lp->tx_insert_ptr->buf),
-+					 MAX_BUF_SIZE, DMA_TO_DEVICE);
- 			dev_kfree_skb(lp->tx_insert_ptr->skb_ptr);
- 			lp->tx_insert_ptr->skb_ptr = NULL;
- 		}
-@@ -279,9 +279,9 @@ static void r6040_free_rxbufs(struct net_device *dev)
- 
- 	for (i = 0; i < RX_DCNT; i++) {
- 		if (lp->rx_insert_ptr->skb_ptr) {
--			pci_unmap_single(lp->pdev,
--				le32_to_cpu(lp->rx_insert_ptr->buf),
--				MAX_BUF_SIZE, PCI_DMA_FROMDEVICE);
-+			dma_unmap_single(&lp->pdev->dev,
-+					 le32_to_cpu(lp->rx_insert_ptr->buf),
-+					 MAX_BUF_SIZE, DMA_FROM_DEVICE);
- 			dev_kfree_skb(lp->rx_insert_ptr->skb_ptr);
- 			lp->rx_insert_ptr->skb_ptr = NULL;
- 		}
-@@ -335,9 +335,10 @@ static int r6040_alloc_rxbufs(struct net_device *dev)
- 			goto err_exit;
- 		}
- 		desc->skb_ptr = skb;
--		desc->buf = cpu_to_le32(pci_map_single(lp->pdev,
--					desc->skb_ptr->data,
--					MAX_BUF_SIZE, PCI_DMA_FROMDEVICE));
-+		desc->buf = cpu_to_le32(dma_map_single(&lp->pdev->dev,
-+						       desc->skb_ptr->data,
-+						       MAX_BUF_SIZE,
-+						       DMA_FROM_DEVICE));
- 		desc->status = DSC_OWNER_MAC;
- 		desc = desc->vndescp;
- 	} while (desc != lp->rx_ring);
-@@ -484,14 +485,14 @@ static int r6040_close(struct net_device *dev)
- 
- 	/* Free Descriptor memory */
- 	if (lp->rx_ring) {
--		pci_free_consistent(pdev,
--				RX_DESC_SIZE, lp->rx_ring, lp->rx_ring_dma);
-+		dma_free_coherent(&pdev->dev, RX_DESC_SIZE, lp->rx_ring,
-+				  lp->rx_ring_dma);
- 		lp->rx_ring = NULL;
- 	}
- 
- 	if (lp->tx_ring) {
--		pci_free_consistent(pdev,
--				TX_DESC_SIZE, lp->tx_ring, lp->tx_ring_dma);
-+		dma_free_coherent(&pdev->dev, TX_DESC_SIZE, lp->tx_ring,
-+				  lp->tx_ring_dma);
- 		lp->tx_ring = NULL;
- 	}
- 
-@@ -544,8 +545,8 @@ static int r6040_rx(struct net_device *dev, int limit)
- 
- 		/* Do not count the CRC */
- 		skb_put(skb_ptr, descptr->len - 4);
--		pci_unmap_single(priv->pdev, le32_to_cpu(descptr->buf),
--					MAX_BUF_SIZE, PCI_DMA_FROMDEVICE);
-+		dma_unmap_single(&priv->pdev->dev, le32_to_cpu(descptr->buf),
-+				 MAX_BUF_SIZE, DMA_FROM_DEVICE);
- 		skb_ptr->protocol = eth_type_trans(skb_ptr, priv->dev);
- 
- 		/* Send to upper layer */
-@@ -555,9 +556,10 @@ static int r6040_rx(struct net_device *dev, int limit)
- 
- 		/* put new skb into descriptor */
- 		descptr->skb_ptr = new_skb;
--		descptr->buf = cpu_to_le32(pci_map_single(priv->pdev,
--						descptr->skb_ptr->data,
--					MAX_BUF_SIZE, PCI_DMA_FROMDEVICE));
-+		descptr->buf = cpu_to_le32(dma_map_single(&priv->pdev->dev,
-+							  descptr->skb_ptr->data,
-+							  MAX_BUF_SIZE,
-+							  DMA_FROM_DEVICE));
- 
- next_descr:
- 		/* put the descriptor back to the MAC */
-@@ -597,8 +599,8 @@ static void r6040_tx(struct net_device *dev)
- 		dev->stats.tx_packets++;
- 		dev->stats.tx_bytes += skb_ptr->len;
- 
--		pci_unmap_single(priv->pdev, le32_to_cpu(descptr->buf),
--			skb_ptr->len, PCI_DMA_TODEVICE);
-+		dma_unmap_single(&priv->pdev->dev, le32_to_cpu(descptr->buf),
-+				 skb_ptr->len, DMA_TO_DEVICE);
- 		/* Free buffer */
- 		dev_kfree_skb(skb_ptr);
- 		descptr->skb_ptr = NULL;
-@@ -750,14 +752,16 @@ static int r6040_open(struct net_device *dev)
- 
- 	/* Allocate Descriptor memory */
- 	lp->rx_ring =
--		pci_alloc_consistent(lp->pdev, RX_DESC_SIZE, &lp->rx_ring_dma);
-+		dma_alloc_coherent(&lp->pdev->dev, RX_DESC_SIZE,
-+				   &lp->rx_ring_dma, GFP_KERNEL);
- 	if (!lp->rx_ring) {
- 		ret = -ENOMEM;
- 		goto err_free_irq;
- 	}
- 
- 	lp->tx_ring =
--		pci_alloc_consistent(lp->pdev, TX_DESC_SIZE, &lp->tx_ring_dma);
-+		dma_alloc_coherent(&lp->pdev->dev, TX_DESC_SIZE,
-+				   &lp->tx_ring_dma, GFP_KERNEL);
- 	if (!lp->tx_ring) {
- 		ret = -ENOMEM;
- 		goto err_free_rx_ring;
-@@ -773,11 +777,11 @@ static int r6040_open(struct net_device *dev)
- 	return 0;
- 
- err_free_tx_ring:
--	pci_free_consistent(lp->pdev, TX_DESC_SIZE, lp->tx_ring,
--			lp->tx_ring_dma);
-+	dma_free_coherent(&lp->pdev->dev, TX_DESC_SIZE, lp->tx_ring,
-+			  lp->tx_ring_dma);
- err_free_rx_ring:
--	pci_free_consistent(lp->pdev, RX_DESC_SIZE, lp->rx_ring,
--			lp->rx_ring_dma);
-+	dma_free_coherent(&lp->pdev->dev, RX_DESC_SIZE, lp->rx_ring,
-+			  lp->rx_ring_dma);
- err_free_irq:
- 	free_irq(dev->irq, dev);
- out:
-@@ -811,8 +815,8 @@ static netdev_tx_t r6040_start_xmit(struct sk_buff *skb,
- 	descptr = lp->tx_insert_ptr;
- 	descptr->len = skb->len;
- 	descptr->skb_ptr = skb;
--	descptr->buf = cpu_to_le32(pci_map_single(lp->pdev,
--		skb->data, skb->len, PCI_DMA_TODEVICE));
-+	descptr->buf = cpu_to_le32(dma_map_single(&lp->pdev->dev, skb->data,
-+						  skb->len, DMA_TO_DEVICE));
- 	descptr->status = DSC_OWNER_MAC;
- 
- 	skb_tx_timestamp(skb);
-@@ -1029,12 +1033,12 @@ static int r6040_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err_out;
- 
- 	/* this should always be supported */
--	err = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
-+	err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
- 	if (err) {
- 		dev_err(&pdev->dev, "32-bit PCI DMA addresses not supported by the card\n");
- 		goto err_out_disable_dev;
- 	}
--	err = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32));
-+	err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
- 	if (err) {
- 		dev_err(&pdev->dev, "32-bit PCI DMA addresses not supported by the card\n");
- 		goto err_out_disable_dev;
--- 
-2.25.1
-
+regards
+Philipp

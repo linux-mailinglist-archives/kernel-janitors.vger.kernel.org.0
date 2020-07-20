@@ -2,35 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AACC225D1B
-	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Jul 2020 13:10:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4457D225E31
+	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Jul 2020 14:08:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728455AbgGTLIa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 20 Jul 2020 07:08:30 -0400
-Received: from mout.web.de ([212.227.15.14]:48313 "EHLO mout.web.de"
+        id S1728751AbgGTMIm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 20 Jul 2020 08:08:42 -0400
+Received: from mout.web.de ([212.227.15.4]:51383 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728232AbgGTLI3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 20 Jul 2020 07:08:29 -0400
+        id S1728581AbgGTMIm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 20 Jul 2020 08:08:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1595243283;
-        bh=Q071kHn/GTdg5P4ECeuR4fberT8mGKMiw5YflYY/rHQ=;
+        s=dbaedf251592; t=1595246871;
+        bh=IOqgafXOwez7E5wsjZ+GcbCSvOBZDrawUyLZTHhgNss=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=jVNdRU4iAM6Hgho/CfUzsr4g+w3TJgsAXV0TEpkbweQlIMmfokhiKp+2uslhNwJdw
-         p7vFDJePdjQAqhLWStExvqAtaYrnLTXvIH9+hSP5hO7UFlP/U5EVJYyCl5l9z6swhK
-         EtBehPRhVNIxXY2qpB+5THdjEA+B/+RyUe4fhpkg=
+        b=KpIGE90pbXkR90K9vtHJtq3Xb2sDz8hNkyy0zF6zRGuHcludWe3oFY6o2/CdasNOn
+         sjwa1AQ5X91NRK9Ot1P6tS6wMlA0vEBh/nswRKQC+Jf66H5lyoZmqWrUYyR1OnMxIL
+         pymU81++G4+a0kHLyPOjd6l1pH8dKtIrBbkFw/EE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.85.87]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N9cLR-1krJtm04vN-015WDV; Mon, 20
- Jul 2020 13:08:03 +0200
-To:     Wang Yufen <wangyufen@huawei.com>, brcm80211-dev-list@cypress.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Received: from [192.168.1.2] ([93.131.85.87]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MEVQ1-1k3rJO2vcn-00FkaY; Mon, 20
+ Jul 2020 14:07:51 +0200
+To:     Corey Minyard <cminyard@mvista.com>,
+        Jing Xiangfeng <jingxiangfeng@huawei.com>,
+        openipmi-developer@lists.sourceforge.net
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Wright Feng <wright.feng@cypress.com>
-Subject: Re: [PATCH] ath11k: Fix memory leak in ath11k_qmi_init_service()
+        Arnd Bergmann <arnd@arndb.de>, Corey Minyard <minyard@acm.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH] ipmi: Remove duplicate code in __ipmi_bmc_register()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,49 +73,54 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <9379ef46-5931-5542-c424-916bb8476a92@web.de>
-Date:   Mon, 20 Jul 2020 13:07:53 +0200
+Message-ID: <2084072d-e16c-d47c-6eed-f47e8f149c44@web.de>
+Date:   Mon, 20 Jul 2020 14:07:50 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:tHAZkInxJsSb+GbOwGxy2BBe9SNLS7dLnYVRXCXzFDN+p26s0y6
- jEymdAQ/9ZJdBMIPNrskPhte1GwZWTZLuHnHdO99OG6CY22jp1R2xkOLM8OO68ZZokfvKmb
- j/mosDs81s3QQtMxPsEMmCpbhcnG/9eAveG4NDcoeAi6fK8ZS/5pAh1WKj3z7t1nFSG3sDg
- wIMDHkDHPnyIJ4N2xUaog==
+X-Provags-ID: V03:K1:6GyjCIeKwuz6vMp3D5exOGwK29vo62dvK6acUWMG5UHCHvuJVdm
+ Ha8/+slcrH/Nxoim43uNJOM1NCZhiCnEUR00H1TFA/tYFNcbvsjj5a2TqRn/ljgjrMhhAnA
+ fpnyx4pnGlg9vNvmwBhR/oiClf99EZn46Bw78Vjjkve4Z7A+wGOgBjBdsRMCfoxkpnPLzgu
+ ThbdghnuAyWZY8IDTt6RA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:o9t0GH/x8bk=:69QkQAnU2p5BZ9LD/b2qP7
- CsgKogz9DBnbgNpHFXl3iV0jLnlPeQNLnPdSJz51Xegzsv30mrWaKUyauo6x91671x8v/lTaC
- 0ERo8U858Kd6C/KXil3X00UIdCoRc8rKm+zb/TNp8kEAqRxhQnPA1ivJz7Htn6Po6s/m6YCVI
- RYPzodjmBnUcp1EbkOAniAtDd37dMoXuFmLFM6CGAQrRTalAwvSgup4v94q3HGL4WbzN/b97N
- Oo43R6DTMpSE7J27Y5PD4XNr0ZAt44iEB5Gim3WEYf7maVZ4/1LVpcmxbAHkK34sLqnSwaurV
- f0rM+zM0SmRykM+FTe/wnzL5kba36La7sgXOAnX88gdHTQdX+6JTwU2HAx5m5YnqAxdOIEos4
- WoTvCQHi7JHq+5G+iMIFH2M01nkFvRzcnJ8pVijSSkjUj3R7nw8AQpNi87ZEdRX+YasTPiFIT
- kmd9fftYworbDqQcERzWSPWCYMdtmvrGCuRyKD58FVK26SKVScofmCvz0csVhFLDc7jOe4fEe
- ZEijPa1BUltaBG3oOPWY0+TdHpUHTMN+uIuaIVa0b761cTyzLrGZEN0x2Vlf0CyYDk7bolJyg
- JnMKYdAoPAOtrnv2TpkUsi4stEVtb+E/nfYHDsw1WpMZ7GVGe907QAwDWR4DwskzyE8XfoMSX
- 2Z2sxonxPOIzJG14t3ChIc5MXzbMkfO95vOanHTW6iE0YtspM4flLCmPH/VepVbRCvsOmxmAT
- epErrxz7sW6NetwCXH+Z9MEzseOLRM3CPfRs1gSLsAnQEbriXnHTQYEoBMEwVkGYYkcV3LbKb
- jrbFqEXFprdXOZVa4Gbwx271nJ9EYjI5tvP3x7cZo5CpY49XJkZg+tHfQqAvcAf57iBlHeJhj
- W1KSKHeE6Pen3T+bGwHrBOSIB+UDq9UEyORs9TysWM3R8Tekj9MdoMMrzmkWBIkH0XSBXb6sj
- YZA0ZLqA2wlehy3f/9dtpSMPpd1CFIxE1ES+nhCDR6oREtkW/KByVAHk/mySk+l93Vi78zdX+
- KYqdiEreHeIBACmoyMz2EMLcQtNtgxDFVQGe2Yp7tTE9b4RmmrDT9coYTqbNMkPTDbuf+9JUJ
- 8PdEdGSKEmDaZSM2k2WtmhUlL+xCNPBmK3I83pffR+ppt0c8wgr2u4H6F7RWt2jfJokrLGM8V
- /YylMkuNv2KyV78xYH6K8NFg0V+EqnSO/qDpARBXbjL3tS/eUcL+7Wdwbrc8tva/nYnFpPMF1
- ygoQT2D1zAeYP5KOikPz9PbBe7J/oWEe937oAFA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+kOQjfIA9bE=:6xQ9w3iClb8g4AUVJU4SHV
+ CeNW78thBSaMzYzD/RSvzKS44UFKbYltLYo/mrhudTyYeO6/Mvn6WJp1hXZzUp3UTIi5yCbM4
+ kZjoehGcfpgBdCz3p/xEicAJhjqH5c5FjleNv3Q33DI+MXS3g5NvSgS26RmQuPcmNeYmtwWpG
+ kU55yGRxPz0HePeXP6wEXoVVZzt2d9dV4ofh1Hl5emK+G1OQoWvSzr8/GQE/D6Vikt5JrCOlx
+ /MMR9icbIbeQQ7CzzLWFIwkNU2CqLIrduYiw2Tj0nNkxaYQ121NMVYEoCMTsSAmxXzdaKBGXg
+ gZWpPKwzjCLvDdzX0yn6PJmt064DG4eOYqSWbifAgJSpJBvbeHTzFTmkBgQfv8EaEfAHJ9VGG
+ 4gxEUx3BC0H+1VvfedweyNUl0hBuMaNVGNGF9adySUs5Z0L0BhkVLjwDrCi7pYORdgIEJSfmL
+ gwPV3sdohCIfxOupOVYkdNc0EECM77I3N4Oqw5jhGu4hk1LOikYDCkjYFmG2GUVnp8ze4Y3bt
+ cHmEzNPZNYyUl45pCR+USWo5qqOs4yC5eBKKAuAwHk1kAXvilsBdjafZgvtuEhOtsJIxevcsk
+ 7d598PNdWaHhwUtwqhQyyr5P7C//65w4fGTMCgRmYqLvXNKXdu1dNbuGrJJBiPa77Eo8G1wgC
+ QXQfeky6TYcgGZBDjUUKYqqlQXY58P8mDBQXxxbWwTt6VkrmzdYupvpdwOngZgEHsz/H2iITu
+ 6YMT8ane4rnbkZIiKcyRBRcH249AB1DUCcR6r32JJL/kGxzzIrByi8yJPTuCFoLKV9Nyx2Zen
+ No4zCmnOtmpuGCLYR4u5M9glWH6CuT2Bwa5BYGUXDC9tOOwyajQY1bBhKUd8BWDP5RxmAvOvq
+ af5ZVTJbnS9hurelLvBES1IUR7qO5N8AN/B374kWjLcvwhaMeZnjFTkCCAQ2Bz2Xinn7peo5+
+ bWHTu/4eUHux8X7ttqW+nkMmbAAnpt3YScuC3nTALNzXj9rUD8jn6ZnKvWF311Gnn71zPQQJJ
+ h+4QpNCQrFPGdjiNMioEdqpAieS7eRAzA6Mlnv0GP5Aipa+C8kwYdRbeCB1lqsqPk1maKIHIx
+ unmCNVqItw0gjBIJ/Uu1xVc+RjC5wuVcuCmufRULidhG9yYwzXgw+KxhChZydrA3wLwSUXb63
+ SszPgQ9wZ9wveO0NZzVDkh+oA5x52ItOdgn9jnxNw7V6LkicazQGUV550YJwgqXAe7C6/ffSB
+ toETR9N/qZx56wU8bwzFUrb6WNP8w4WguXFRESA==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> When qmi_add_lookup fail, we should destroy the workqueue
+> > __ipmi_bmc_register() jumps to the label 'out_free_my_dev_name' in an
+> > error path. So we can remove duplicate code in the if (rv).
+>
+> Looks correct, queued for next release.
 
-Can the following wording variant be nicer for the change description?
+1. Can an imperative wording be preferred for the change description?
 
-   Destroy the work queue object in an if branch
-   after a call of the function =E2=80=9Cqmi_add_lookup=E2=80=9D failed.
+2. Will the tag =E2=80=9CFixes=E2=80=9D become helpful for the commit mess=
+age?
+
+3. Did you avoid a typo in the patch subject?
 
 Regards,
 Markus

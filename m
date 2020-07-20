@@ -2,505 +2,140 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE2352260FA
-	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Jul 2020 15:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B56C2261CC
+	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Jul 2020 16:19:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726425AbgGTNgT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 20 Jul 2020 09:36:19 -0400
-Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:57473 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726437AbgGTNgT (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 20 Jul 2020 09:36:19 -0400
-Received: from localhost.localdomain ([93.22.38.146])
-        by mwinf5d51 with ME
-        id 5RcC2300C39BigV03RcCZl; Mon, 20 Jul 2020 15:36:15 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 20 Jul 2020 15:36:15 +0200
-X-ME-IP: 93.22.38.146
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     kuba@kernel.org, davem@davemloft.net, romieu@fr.zoreil.com,
-        venza@brownhat.org
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] sis: switch from 'pci_' to 'dma_' API
-Date:   Mon, 20 Jul 2020 15:36:09 +0200
-Message-Id: <20200720133609.370347-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        id S1728195AbgGTOTZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 20 Jul 2020 10:19:25 -0400
+Received: from mout.web.de ([212.227.15.3]:40427 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726759AbgGTOTZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 20 Jul 2020 10:19:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1595254748;
+        bh=OExZunafEjPoP/mn9AZfuMf11tWR5wYwJKvm6Ui+qd8=;
+        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
+        b=nCsQwJeXM3JTRNYoaAgymHldDMNxKi9xNxlf0c68SWP6/7G7Pnu6ENy0vqEydLohv
+         U43dpQR2UEm2etr3HyMzpsrEcGNV1wb4nipviOOC5jkU/SAJbysk6+cWj5b4OSkJZi
+         JGOAHXYTv6ZjdDgPDDCGIPl61Q5lSDUwX8vwnjxk=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.131.85.87]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MIvJx-1jzSRG3BjF-002V31; Mon, 20
+ Jul 2020 16:19:07 +0200
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+        Tero Kristo <t-kristo@ti.com>, Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH] clk: ti: clkctrl: add the missed kfree() for
+ _ti_omap4_clkctrl_setup()
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+To:     Jing Xiangfeng <jingxiangfeng@huawei.com>,
+        linux-clk@vger.kernel.org, linux-omap@vger.kernel.org
+Message-ID: <b7f0dcda-7ec8-b3d8-ba53-c2720799abbc@web.de>
+Date:   Mon, 20 Jul 2020 16:19:06 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:TAFFwBtUf8EMNr/i/7TMnPeNyQcFIJxVsJk/5fTyr7p1J1qk018
+ fz/JckmV8XsByZXh2Zj75KND5waumCuZnw6jtU5rFTvLQN305qpUALa0mZFiCI4eOb/EoNl
+ DD+ouzsHWjJafnwI8H6dMcimm99iCpUu7J9SuisZlNLwVChk1vrA8PJbwbu253X5n4w4A+g
+ 0r3EuC1S7GhGTFcVTOTEQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:xDb4Kd9oyQU=:O6vWZA1wfG47BY4IITt4xR
+ ouJ93vgB9vJl/s6q5eRIy+s3rO2Y/LW1edBHxAw/BgO+cA0dnCL93L6P2USpZeKYmVClhn/+E
+ s/sCnAjR97qxU6tLNc3Ai/sARit1uRBnESuWETBHaXJ4DlpsSmFMXXcBurA1GAwvx7odSDp8Y
+ yfmNb/FFuzZjgwQMVAv3/QHaq+t9Ze3kCRUdtpP/vHYYrww8ylxR5hDE7JKHwEqqRfiXQ1d1J
+ u6DheFOZOcrYVZF0Ko0qtushemPGdlA5SAEMCgPVYIe3O2id74ou3hZMbFbpeCZGD5QLajHgk
+ l0itQfnflsQ6PfItn0cIHfEceSYDGsOzJWhbaNyWN+QjSiQlBKvnSzXWrOxDWroYfYplOBbeI
+ D/AcmSFs3w8G6LAC45rJsu9Or122MWXMl26nfgK7JuPfTiDcLy6uzsfyUeymTUG7vS6E6H9mj
+ kceOcGamm+XLEd58xEMw9yyphAYq9sh0TqCaxCQqHqrJvEtvQ0dYwADzKujkB88LrOmZ3eIr1
+ 15ji6JzkZughAWxsw9dCKJZYPK9yW1+PyU1cfZaAaQU6/3Ov5YJ08bb85kwOb9/HDDx54Ksy4
+ VZpjmDVvhpefb/xOFvuJtSDR2jBcmdIbAA6zrd2YMo0DdeJQ3tzCmVSzexg5J86HrRaGhqpyt
+ H7FafP7tL+pkp0+FksldQpbx9SCtAXHkZxa0KwJAMly1Z1qT9U9g7dTQWyhDfHgxxFDmZFONp
+ B+WTjQEZivGPqq2DeGRztx1XyZZB/dw6p+iMA3715sWYHJrwqRWnE9D6VhecwgxCW1kCV+8ID
+ AViv2PGZ50DvOAU30RKKPZprcKJhBVmPPyGFxmWfQc+++HHRQG3rwTtZDMCdfVLp3Lw+OaD43
+ +oGuVK++r1dabqp2jLXhn6pHuakrz0kYX7V4qnYfteGDCNWF7DambndKLXi6mXk17HKD1dWbB
+ q250ICIuHJDOd+B399zAqav0L0SyTxqDTVCUEd93lDOdPj0bH3Hhcd/z00hSSdaWPJ4fFeojn
+ q5CrczNWwXok2bAiRfmO3EPOeAIgwktjFG/pL9x1cjo2wwEC/FNsAJVj27jO+kfN80lMapdhZ
+ Amu0dS4VJd2Xeb7jLsCJI1iu46PjwmwfdcoNivQCerS9TqzKb/iRkwsrqPZllqToRVpA+SnIO
+ utHjIzwYQQ85xwSHgoIPNaL/Cg680wA6JlBgAOPcWqSO+D4H/lAviYIAmrsqXUo642RdjUNt5
+ tMdAb2R7il3tnIi8A1WeYGjsBqVI3qV3dGwjQww==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The wrappers in include/linux/pci-dma-compat.h should go away.
+=E2=80=A6
+> +++ b/drivers/clk/ti/clkctrl.c
+> @@ -655,8 +655,10 @@ static void __init _ti_omap4_clkctrl_setup(struct d=
+evice_node *node)
+>  		}
+>
+>  		hw =3D kzalloc(sizeof(*hw), GFP_KERNEL);
+> -		if (!hw)
+> +		if (!hw) {
+> +			kfree(clkctrl_name);
+>  			return;
+> +		}
+=E2=80=A6
 
-The patch has been generated with the coccinelle script below and has been
-hand modified to replace GFP_ with a correct flag.
-It has been compile tested.
+I suggest to use an additional label instead.
+
+ 		if (!hw)
+-			return;
++			goto free_control_name;
 
 
-When memory is allocated in 'epic_init_one()' (sis190.c), GFP_KERNEL can be
-used because this is a net_device_ops' 'ndo_open' function. This function
-is protected by the rtnl_lock() semaphore. So only a mutex is used and no
-spin_lock is acquired.
+By the way:
+How do you think about to replace the label =E2=80=9Ccleanup=E2=80=9D by o=
+ther jump targets
+for better exception handling in this function implementation?
 
-When memory is allocated in 'sis900_probe()' (sis900.c), GFP_KERNEL can be
-used because it is a probe function and no spin_lock is acquired.
-
-
-@@
-@@
--    PCI_DMA_BIDIRECTIONAL
-+    DMA_BIDIRECTIONAL
-
-@@
-@@
--    PCI_DMA_TODEVICE
-+    DMA_TO_DEVICE
-
-@@
-@@
--    PCI_DMA_FROMDEVICE
-+    DMA_FROM_DEVICE
-
-@@
-@@
--    PCI_DMA_NONE
-+    DMA_NONE
-
-@@
-expression e1, e2, e3;
-@@
--    pci_alloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3;
-@@
--    pci_zalloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_free_consistent(e1, e2, e3, e4)
-+    dma_free_coherent(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_single(e1, e2, e3, e4)
-+    dma_map_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_single(e1, e2, e3, e4)
-+    dma_unmap_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4, e5;
-@@
--    pci_map_page(e1, e2, e3, e4, e5)
-+    dma_map_page(&e1->dev, e2, e3, e4, e5)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_page(e1, e2, e3, e4)
-+    dma_unmap_page(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_sg(e1, e2, e3, e4)
-+    dma_map_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_sg(e1, e2, e3, e4)
-+    dma_unmap_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-+    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-+    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-+    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-+    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2;
-@@
--    pci_dma_mapping_error(e1, e2)
-+    dma_mapping_error(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_dma_mask(e1, e2)
-+    dma_set_mask(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_consistent_dma_mask(e1, e2)
-+    dma_set_coherent_mask(&e1->dev, e2)
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-If needed, see post from Christoph Hellwig on the kernel-janitors ML:
-   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
----
- drivers/net/ethernet/sis/sis190.c | 52 ++++++++++--------
- drivers/net/ethernet/sis/sis900.c | 89 +++++++++++++++++--------------
- 2 files changed, 80 insertions(+), 61 deletions(-)
-
-diff --git a/drivers/net/ethernet/sis/sis190.c b/drivers/net/ethernet/sis/sis190.c
-index 5a4b6e3ab38f..676b193833c0 100644
---- a/drivers/net/ethernet/sis/sis190.c
-+++ b/drivers/net/ethernet/sis/sis190.c
-@@ -494,9 +494,9 @@ static struct sk_buff *sis190_alloc_rx_skb(struct sis190_private *tp,
- 	skb = netdev_alloc_skb(tp->dev, rx_buf_sz);
- 	if (unlikely(!skb))
- 		goto skb_alloc_failed;
--	mapping = pci_map_single(tp->pci_dev, skb->data, tp->rx_buf_sz,
--			PCI_DMA_FROMDEVICE);
--	if (pci_dma_mapping_error(tp->pci_dev, mapping))
-+	mapping = dma_map_single(&tp->pci_dev->dev, skb->data, tp->rx_buf_sz,
-+				 DMA_FROM_DEVICE);
-+	if (dma_mapping_error(&tp->pci_dev->dev, mapping))
- 		goto out;
- 	sis190_map_to_asic(desc, mapping, rx_buf_sz);
- 
-@@ -542,8 +542,8 @@ static bool sis190_try_rx_copy(struct sis190_private *tp,
- 	if (!skb)
- 		goto out;
- 
--	pci_dma_sync_single_for_cpu(tp->pci_dev, addr, tp->rx_buf_sz,
--				PCI_DMA_FROMDEVICE);
-+	dma_sync_single_for_cpu(&tp->pci_dev->dev, addr, tp->rx_buf_sz,
-+				DMA_FROM_DEVICE);
- 	skb_copy_to_linear_data(skb, sk_buff[0]->data, pkt_size);
- 	*sk_buff = skb;
- 	done = true;
-@@ -612,12 +612,14 @@ static int sis190_rx_interrupt(struct net_device *dev,
- 
- 
- 			if (sis190_try_rx_copy(tp, &skb, pkt_size, addr)) {
--				pci_dma_sync_single_for_device(pdev, addr,
--					tp->rx_buf_sz, PCI_DMA_FROMDEVICE);
-+				dma_sync_single_for_device(&pdev->dev, addr,
-+							   tp->rx_buf_sz,
-+							   DMA_FROM_DEVICE);
- 				sis190_give_to_asic(desc, tp->rx_buf_sz);
- 			} else {
--				pci_unmap_single(pdev, addr, tp->rx_buf_sz,
--						 PCI_DMA_FROMDEVICE);
-+				dma_unmap_single(&pdev->dev, addr,
-+						 tp->rx_buf_sz,
-+						 DMA_FROM_DEVICE);
- 				tp->Rx_skbuff[entry] = NULL;
- 				sis190_make_unusable_by_asic(desc);
- 			}
-@@ -654,7 +656,8 @@ static void sis190_unmap_tx_skb(struct pci_dev *pdev, struct sk_buff *skb,
- 
- 	len = skb->len < ETH_ZLEN ? ETH_ZLEN : skb->len;
- 
--	pci_unmap_single(pdev, le32_to_cpu(desc->addr), len, PCI_DMA_TODEVICE);
-+	dma_unmap_single(&pdev->dev, le32_to_cpu(desc->addr), len,
-+			 DMA_TO_DEVICE);
- 
- 	memset(desc, 0x00, sizeof(*desc));
- }
-@@ -785,8 +788,8 @@ static void sis190_free_rx_skb(struct sis190_private *tp,
- {
- 	struct pci_dev *pdev = tp->pci_dev;
- 
--	pci_unmap_single(pdev, le32_to_cpu(desc->addr), tp->rx_buf_sz,
--			 PCI_DMA_FROMDEVICE);
-+	dma_unmap_single(&pdev->dev, le32_to_cpu(desc->addr), tp->rx_buf_sz,
-+			 DMA_FROM_DEVICE);
- 	dev_kfree_skb(*sk_buff);
- 	*sk_buff = NULL;
- 	sis190_make_unusable_by_asic(desc);
-@@ -1069,11 +1072,13 @@ static int sis190_open(struct net_device *dev)
- 	 * Rx and Tx descriptors need 256 bytes alignment.
- 	 * pci_alloc_consistent() guarantees a stronger alignment.
- 	 */
--	tp->TxDescRing = pci_alloc_consistent(pdev, TX_RING_BYTES, &tp->tx_dma);
-+	tp->TxDescRing = dma_alloc_coherent(&pdev->dev, TX_RING_BYTES,
-+					    &tp->tx_dma, GFP_KERNEL);
- 	if (!tp->TxDescRing)
- 		goto out;
- 
--	tp->RxDescRing = pci_alloc_consistent(pdev, RX_RING_BYTES, &tp->rx_dma);
-+	tp->RxDescRing = dma_alloc_coherent(&pdev->dev, RX_RING_BYTES,
-+					    &tp->rx_dma, GFP_KERNEL);
- 	if (!tp->RxDescRing)
- 		goto err_free_tx_0;
- 
-@@ -1095,9 +1100,11 @@ static int sis190_open(struct net_device *dev)
- 	sis190_delete_timer(dev);
- 	sis190_rx_clear(tp);
- err_free_rx_1:
--	pci_free_consistent(pdev, RX_RING_BYTES, tp->RxDescRing, tp->rx_dma);
-+	dma_free_coherent(&pdev->dev, RX_RING_BYTES, tp->RxDescRing,
-+			  tp->rx_dma);
- err_free_tx_0:
--	pci_free_consistent(pdev, TX_RING_BYTES, tp->TxDescRing, tp->tx_dma);
-+	dma_free_coherent(&pdev->dev, TX_RING_BYTES, tp->TxDescRing,
-+			  tp->tx_dma);
- 	goto out;
- }
- 
-@@ -1159,8 +1166,10 @@ static int sis190_close(struct net_device *dev)
- 
- 	free_irq(pdev->irq, dev);
- 
--	pci_free_consistent(pdev, TX_RING_BYTES, tp->TxDescRing, tp->tx_dma);
--	pci_free_consistent(pdev, RX_RING_BYTES, tp->RxDescRing, tp->rx_dma);
-+	dma_free_coherent(&pdev->dev, TX_RING_BYTES, tp->TxDescRing,
-+			  tp->tx_dma);
-+	dma_free_coherent(&pdev->dev, RX_RING_BYTES, tp->RxDescRing,
-+			  tp->rx_dma);
- 
- 	tp->TxDescRing = NULL;
- 	tp->RxDescRing = NULL;
-@@ -1197,8 +1206,9 @@ static netdev_tx_t sis190_start_xmit(struct sk_buff *skb,
- 		return NETDEV_TX_BUSY;
- 	}
- 
--	mapping = pci_map_single(tp->pci_dev, skb->data, len, PCI_DMA_TODEVICE);
--	if (pci_dma_mapping_error(tp->pci_dev, mapping)) {
-+	mapping = dma_map_single(&tp->pci_dev->dev, skb->data, len,
-+				 DMA_TO_DEVICE);
-+	if (dma_mapping_error(&tp->pci_dev->dev, mapping)) {
- 		netif_err(tp, tx_err, dev,
- 				"PCI mapping failed, dropping packet");
- 		return NETDEV_TX_BUSY;
-@@ -1498,7 +1508,7 @@ static struct net_device *sis190_init_board(struct pci_dev *pdev)
- 		goto err_pci_disable_2;
- 	}
- 
--	rc = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
-+	rc = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
- 	if (rc < 0) {
- 		if (netif_msg_probe(tp))
- 			pr_err("%s: DMA configuration failed\n",
-diff --git a/drivers/net/ethernet/sis/sis900.c b/drivers/net/ethernet/sis/sis900.c
-index 81ed7589e33c..82e020add19f 100644
---- a/drivers/net/ethernet/sis/sis900.c
-+++ b/drivers/net/ethernet/sis/sis900.c
-@@ -446,7 +446,7 @@ static int sis900_probe(struct pci_dev *pci_dev,
- 	ret = pci_enable_device(pci_dev);
- 	if(ret) return ret;
- 
--	i = pci_set_dma_mask(pci_dev, DMA_BIT_MASK(32));
-+	i = dma_set_mask(&pci_dev->dev, DMA_BIT_MASK(32));
- 	if(i){
- 		printk(KERN_ERR "sis900.c: architecture does not support "
- 			"32bit PCI busmaster DMA\n");
-@@ -481,7 +481,8 @@ static int sis900_probe(struct pci_dev *pci_dev,
- 
- 	pci_set_drvdata(pci_dev, net_dev);
- 
--	ring_space = pci_alloc_consistent(pci_dev, TX_TOTAL_SIZE, &ring_dma);
-+	ring_space = dma_alloc_coherent(&pci_dev->dev, TX_TOTAL_SIZE,
-+					&ring_dma, GFP_KERNEL);
- 	if (!ring_space) {
- 		ret = -ENOMEM;
- 		goto err_out_unmap;
-@@ -489,7 +490,8 @@ static int sis900_probe(struct pci_dev *pci_dev,
- 	sis_priv->tx_ring = ring_space;
- 	sis_priv->tx_ring_dma = ring_dma;
- 
--	ring_space = pci_alloc_consistent(pci_dev, RX_TOTAL_SIZE, &ring_dma);
-+	ring_space = dma_alloc_coherent(&pci_dev->dev, RX_TOTAL_SIZE,
-+					&ring_dma, GFP_KERNEL);
- 	if (!ring_space) {
- 		ret = -ENOMEM;
- 		goto err_unmap_tx;
-@@ -572,11 +574,11 @@ static int sis900_probe(struct pci_dev *pci_dev,
- 	return 0;
- 
- err_unmap_rx:
--	pci_free_consistent(pci_dev, RX_TOTAL_SIZE, sis_priv->rx_ring,
--		sis_priv->rx_ring_dma);
-+	dma_free_coherent(&pci_dev->dev, RX_TOTAL_SIZE, sis_priv->rx_ring,
-+			  sis_priv->rx_ring_dma);
- err_unmap_tx:
--	pci_free_consistent(pci_dev, TX_TOTAL_SIZE, sis_priv->tx_ring,
--		sis_priv->tx_ring_dma);
-+	dma_free_coherent(&pci_dev->dev, TX_TOTAL_SIZE, sis_priv->tx_ring,
-+			  sis_priv->tx_ring_dma);
- err_out_unmap:
- 	pci_iounmap(pci_dev, ioaddr);
- err_out_cleardev:
-@@ -1188,10 +1190,12 @@ sis900_init_rx_ring(struct net_device *net_dev)
- 		}
- 		sis_priv->rx_skbuff[i] = skb;
- 		sis_priv->rx_ring[i].cmdsts = RX_BUF_SIZE;
--		sis_priv->rx_ring[i].bufptr = pci_map_single(sis_priv->pci_dev,
--				skb->data, RX_BUF_SIZE, PCI_DMA_FROMDEVICE);
--		if (unlikely(pci_dma_mapping_error(sis_priv->pci_dev,
--				sis_priv->rx_ring[i].bufptr))) {
-+		sis_priv->rx_ring[i].bufptr = dma_map_single(&sis_priv->pci_dev->dev,
-+							     skb->data,
-+							     RX_BUF_SIZE,
-+							     DMA_FROM_DEVICE);
-+		if (unlikely(dma_mapping_error(&sis_priv->pci_dev->dev,
-+					       sis_priv->rx_ring[i].bufptr))) {
- 			dev_kfree_skb(skb);
- 			sis_priv->rx_skbuff[i] = NULL;
- 			break;
-@@ -1561,9 +1565,9 @@ static void sis900_tx_timeout(struct net_device *net_dev, unsigned int txqueue)
- 		struct sk_buff *skb = sis_priv->tx_skbuff[i];
- 
- 		if (skb) {
--			pci_unmap_single(sis_priv->pci_dev,
--				sis_priv->tx_ring[i].bufptr, skb->len,
--				PCI_DMA_TODEVICE);
-+			dma_unmap_single(&sis_priv->pci_dev->dev,
-+					 sis_priv->tx_ring[i].bufptr,
-+					 skb->len, DMA_TO_DEVICE);
- 			dev_kfree_skb_irq(skb);
- 			sis_priv->tx_skbuff[i] = NULL;
- 			sis_priv->tx_ring[i].cmdsts = 0;
-@@ -1612,10 +1616,11 @@ sis900_start_xmit(struct sk_buff *skb, struct net_device *net_dev)
- 	sis_priv->tx_skbuff[entry] = skb;
- 
- 	/* set the transmit buffer descriptor and enable Transmit State Machine */
--	sis_priv->tx_ring[entry].bufptr = pci_map_single(sis_priv->pci_dev,
--		skb->data, skb->len, PCI_DMA_TODEVICE);
--	if (unlikely(pci_dma_mapping_error(sis_priv->pci_dev,
--		sis_priv->tx_ring[entry].bufptr))) {
-+	sis_priv->tx_ring[entry].bufptr = dma_map_single(&sis_priv->pci_dev->dev,
-+							 skb->data, skb->len,
-+							 DMA_TO_DEVICE);
-+	if (unlikely(dma_mapping_error(&sis_priv->pci_dev->dev,
-+				       sis_priv->tx_ring[entry].bufptr))) {
- 			dev_kfree_skb_any(skb);
- 			sis_priv->tx_skbuff[entry] = NULL;
- 			net_dev->stats.tx_dropped++;
-@@ -1778,9 +1783,9 @@ static int sis900_rx(struct net_device *net_dev)
- 			struct sk_buff * skb;
- 			struct sk_buff * rx_skb;
- 
--			pci_unmap_single(sis_priv->pci_dev,
--				sis_priv->rx_ring[entry].bufptr, RX_BUF_SIZE,
--				PCI_DMA_FROMDEVICE);
-+			dma_unmap_single(&sis_priv->pci_dev->dev,
-+					 sis_priv->rx_ring[entry].bufptr,
-+					 RX_BUF_SIZE, DMA_FROM_DEVICE);
- 
- 			/* refill the Rx buffer, what if there is not enough
- 			 * memory for new socket buffer ?? */
-@@ -1826,10 +1831,11 @@ static int sis900_rx(struct net_device *net_dev)
- 			sis_priv->rx_skbuff[entry] = skb;
- 			sis_priv->rx_ring[entry].cmdsts = RX_BUF_SIZE;
- 			sis_priv->rx_ring[entry].bufptr =
--				pci_map_single(sis_priv->pci_dev, skb->data,
--					RX_BUF_SIZE, PCI_DMA_FROMDEVICE);
--			if (unlikely(pci_dma_mapping_error(sis_priv->pci_dev,
--				sis_priv->rx_ring[entry].bufptr))) {
-+				dma_map_single(&sis_priv->pci_dev->dev,
-+					       skb->data, RX_BUF_SIZE,
-+					       DMA_FROM_DEVICE);
-+			if (unlikely(dma_mapping_error(&sis_priv->pci_dev->dev,
-+						       sis_priv->rx_ring[entry].bufptr))) {
- 				dev_kfree_skb_irq(skb);
- 				sis_priv->rx_skbuff[entry] = NULL;
- 				break;
-@@ -1860,10 +1866,11 @@ static int sis900_rx(struct net_device *net_dev)
- 			sis_priv->rx_skbuff[entry] = skb;
- 			sis_priv->rx_ring[entry].cmdsts = RX_BUF_SIZE;
- 			sis_priv->rx_ring[entry].bufptr =
--				pci_map_single(sis_priv->pci_dev, skb->data,
--					RX_BUF_SIZE, PCI_DMA_FROMDEVICE);
--			if (unlikely(pci_dma_mapping_error(sis_priv->pci_dev,
--					sis_priv->rx_ring[entry].bufptr))) {
-+				dma_map_single(&sis_priv->pci_dev->dev,
-+					       skb->data, RX_BUF_SIZE,
-+					       DMA_FROM_DEVICE);
-+			if (unlikely(dma_mapping_error(&sis_priv->pci_dev->dev,
-+						       sis_priv->rx_ring[entry].bufptr))) {
- 				dev_kfree_skb_irq(skb);
- 				sis_priv->rx_skbuff[entry] = NULL;
- 				break;
-@@ -1928,9 +1935,9 @@ static void sis900_finish_xmit (struct net_device *net_dev)
- 		}
- 		/* Free the original skb. */
- 		skb = sis_priv->tx_skbuff[entry];
--		pci_unmap_single(sis_priv->pci_dev,
--			sis_priv->tx_ring[entry].bufptr, skb->len,
--			PCI_DMA_TODEVICE);
-+		dma_unmap_single(&sis_priv->pci_dev->dev,
-+				 sis_priv->tx_ring[entry].bufptr, skb->len,
-+				 DMA_TO_DEVICE);
- 		dev_consume_skb_irq(skb);
- 		sis_priv->tx_skbuff[entry] = NULL;
- 		sis_priv->tx_ring[entry].bufptr = 0;
-@@ -1979,8 +1986,9 @@ static int sis900_close(struct net_device *net_dev)
- 	for (i = 0; i < NUM_RX_DESC; i++) {
- 		skb = sis_priv->rx_skbuff[i];
- 		if (skb) {
--			pci_unmap_single(pdev, sis_priv->rx_ring[i].bufptr,
--					 RX_BUF_SIZE, PCI_DMA_FROMDEVICE);
-+			dma_unmap_single(&pdev->dev,
-+					 sis_priv->rx_ring[i].bufptr,
-+					 RX_BUF_SIZE, DMA_FROM_DEVICE);
- 			dev_kfree_skb(skb);
- 			sis_priv->rx_skbuff[i] = NULL;
- 		}
-@@ -1988,8 +1996,9 @@ static int sis900_close(struct net_device *net_dev)
- 	for (i = 0; i < NUM_TX_DESC; i++) {
- 		skb = sis_priv->tx_skbuff[i];
- 		if (skb) {
--			pci_unmap_single(pdev, sis_priv->tx_ring[i].bufptr,
--					 skb->len, PCI_DMA_TODEVICE);
-+			dma_unmap_single(&pdev->dev,
-+					 sis_priv->tx_ring[i].bufptr,
-+					 skb->len, DMA_TO_DEVICE);
- 			dev_kfree_skb(skb);
- 			sis_priv->tx_skbuff[i] = NULL;
- 		}
-@@ -2484,10 +2493,10 @@ static void sis900_remove(struct pci_dev *pci_dev)
- 		kfree(phy);
- 	}
- 
--	pci_free_consistent(pci_dev, RX_TOTAL_SIZE, sis_priv->rx_ring,
--		sis_priv->rx_ring_dma);
--	pci_free_consistent(pci_dev, TX_TOTAL_SIZE, sis_priv->tx_ring,
--		sis_priv->tx_ring_dma);
-+	dma_free_coherent(&pci_dev->dev, RX_TOTAL_SIZE, sis_priv->rx_ring,
-+			  sis_priv->rx_ring_dma);
-+	dma_free_coherent(&pci_dev->dev, TX_TOTAL_SIZE, sis_priv->tx_ring,
-+			  sis_priv->tx_ring_dma);
- 	pci_iounmap(pci_dev, sis_priv->ioaddr);
- 	free_netdev(net_dev);
- 	pci_release_regions(pci_dev);
--- 
-2.25.1
-
+Regards,
+Markus

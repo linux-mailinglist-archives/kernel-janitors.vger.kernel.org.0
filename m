@@ -2,65 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5A3B22834A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Jul 2020 17:13:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D4F92283B4
+	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Jul 2020 17:26:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729648AbgGUPNf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 21 Jul 2020 11:13:35 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:8349 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726436AbgGUPNf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 21 Jul 2020 11:13:35 -0400
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id B5C1DEAAEC10087F6974;
-        Tue, 21 Jul 2020 23:13:29 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 21 Jul 2020 23:13:18 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Ben Skeggs <bskeggs@redhat.com>, David Airlie <airlied@linux.ie>,
-        "Daniel Vetter" <daniel@ffwll.ch>, Lyude Paul <lyude@redhat.com>,
-        Dave Airlie <airlied@gmail.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <dri-devel@lists.freedesktop.org>, <nouveau@lists.freedesktop.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] drm/nouveau/kms/nvd9-: Fix file release memory leak
-Date:   Tue, 21 Jul 2020 15:17:01 +0000
-Message-ID: <20200721151701.51412-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1729180AbgGUP0M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 21 Jul 2020 11:26:12 -0400
+Received: from mx2.suse.de ([195.135.220.15]:57104 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726436AbgGUP0L (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 21 Jul 2020 11:26:11 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id F240FAE57;
+        Tue, 21 Jul 2020 15:26:16 +0000 (UTC)
+Subject: Re: [PATCH][next] x86/ioperm: initialize pointer bitmap with NULL
+ rather than 0
+To:     Colin King <colin.king@canonical.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
+        xen-devel@lists.xenproject.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200721100217.407975-1-colin.king@canonical.com>
+From:   =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+Message-ID: <46011f9b-a5a6-b91c-f8c0-1c106ff5e60e@suse.com>
+Date:   Tue, 21 Jul 2020 17:26:09 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20200721100217.407975-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-When using single_open() for opening, single_release() should be
-used instead of seq_release(), otherwise there is a memory leak.
+On 21.07.20 12:02, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The pointer bitmap is being initialized with a plain integer 0,
+> fix this by initializing it with a NULL instead.
+> 
+> Cleans up sparse warning:
+> arch/x86/xen/enlighten_pv.c:876:27: warning: Using plain integer
+> as NULL pointer
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Fixes: 12885ecbfe62 ("drm/nouveau/kms/nvd9-: Add CRC support")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/gpu/drm/nouveau/dispnv50/crc.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/gpu/drm/nouveau/dispnv50/crc.c b/drivers/gpu/drm/nouveau/dispnv50/crc.c
-index f17fb6d56757..4971a1042415 100644
---- a/drivers/gpu/drm/nouveau/dispnv50/crc.c
-+++ b/drivers/gpu/drm/nouveau/dispnv50/crc.c
-@@ -706,6 +706,7 @@ static const struct file_operations nv50_crc_flip_threshold_fops = {
- 	.open = nv50_crc_debugfs_flip_threshold_open,
- 	.read = seq_read,
- 	.write = nv50_crc_debugfs_flip_threshold_set,
-+	.release = single_release,
- };
- 
- int nv50_head_crc_late_register(struct nv50_head *head)
+Reviewed-by: Juergen Gross <jgross@suse.com>
 
 
-
+Juergen

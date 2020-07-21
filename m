@@ -2,68 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84A2D228323
-	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Jul 2020 17:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5A3B22834A
+	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Jul 2020 17:13:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729840AbgGUPGR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 21 Jul 2020 11:06:17 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56022 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726436AbgGUPGR (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 21 Jul 2020 11:06:17 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jxtqP-000480-BC; Tue, 21 Jul 2020 15:06:13 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Ansuel Smith <ansuelsmth@gmail.com>,
-        linux-arm-msm@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] phy: qualcomm: fix setting of tx_deamp_3_5db when device property read fails
-Date:   Tue, 21 Jul 2020 16:06:13 +0100
-Message-Id: <20200721150613.416876-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        id S1729648AbgGUPNf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 21 Jul 2020 11:13:35 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:8349 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726436AbgGUPNf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 21 Jul 2020 11:13:35 -0400
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id B5C1DEAAEC10087F6974;
+        Tue, 21 Jul 2020 23:13:29 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 21 Jul 2020 23:13:18 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Ben Skeggs <bskeggs@redhat.com>, David Airlie <airlied@linux.ie>,
+        "Daniel Vetter" <daniel@ffwll.ch>, Lyude Paul <lyude@redhat.com>,
+        Dave Airlie <airlied@gmail.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <dri-devel@lists.freedesktop.org>, <nouveau@lists.freedesktop.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] drm/nouveau/kms/nvd9-: Fix file release memory leak
+Date:   Tue, 21 Jul 2020 15:17:01 +0000
+Message-ID: <20200721151701.51412-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+When using single_open() for opening, single_release() should be
+used instead of seq_release(), otherwise there is a memory leak.
 
-Currently when reading of the device property for "qcom,tx-deamp_3_5db"
-fails the default is being assigned incorrectly to phy_dwc3->rx_eq. This
-looks like a copy-n-paste error and in fact should be assigning the
-default instead to phy_dwc3->tx_deamp_3_5db
-
-Addresses-Coverity: ("Copy-paste error")
-Fixes: ef19b117b834 ("phy: qualcomm: add qcom ipq806x dwc usb phy driver")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Fixes: 12885ecbfe62 ("drm/nouveau/kms/nvd9-: Add CRC support")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/dispnv50/crc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c b/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
-index a7241bf110d7..71f257b4a7f5 100644
---- a/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
-+++ b/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
-@@ -531,7 +531,7 @@ static int qcom_ipq806x_usb_phy_probe(struct platform_device *pdev)
+diff --git a/drivers/gpu/drm/nouveau/dispnv50/crc.c b/drivers/gpu/drm/nouveau/dispnv50/crc.c
+index f17fb6d56757..4971a1042415 100644
+--- a/drivers/gpu/drm/nouveau/dispnv50/crc.c
++++ b/drivers/gpu/drm/nouveau/dispnv50/crc.c
+@@ -706,6 +706,7 @@ static const struct file_operations nv50_crc_flip_threshold_fops = {
+ 	.open = nv50_crc_debugfs_flip_threshold_open,
+ 	.read = seq_read,
+ 	.write = nv50_crc_debugfs_flip_threshold_set,
++	.release = single_release,
+ };
  
- 	if (device_property_read_u32(&pdev->dev, "qcom,tx-deamp_3_5db",
- 				     &phy_dwc3->tx_deamp_3_5db))
--		phy_dwc3->rx_eq = SSPHY_TX_DEEMPH_3_5DB;
-+		phy_dwc3->tx_deamp_3_5db = SSPHY_TX_DEEMPH_3_5DB;
- 
- 	if (device_property_read_u32(&pdev->dev, "qcom,mpll", &phy_dwc3->mpll))
- 		phy_dwc3->mpll = SSPHY_MPLL_VALUE;
--- 
-2.27.0
+ int nv50_head_crc_late_register(struct nv50_head *head)
+
+
 

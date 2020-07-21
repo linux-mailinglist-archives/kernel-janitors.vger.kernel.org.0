@@ -2,90 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77CCA2280B6
-	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Jul 2020 15:14:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84A2D228323
+	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Jul 2020 17:06:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727957AbgGUNN5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 21 Jul 2020 09:13:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42596 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728172AbgGUNN5 (ORCPT
+        id S1729840AbgGUPGR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 21 Jul 2020 11:06:17 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:56022 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726436AbgGUPGR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 21 Jul 2020 09:13:57 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1E8FC0619DC
-        for <kernel-janitors@vger.kernel.org>; Tue, 21 Jul 2020 06:13:56 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id s10so21104404wrw.12
-        for <kernel-janitors@vger.kernel.org>; Tue, 21 Jul 2020 06:13:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=6cyLMOSBZeL+BpGOPZ4KnMd993F4LhWCmpRnBNnGfbE=;
-        b=pLrzDAuE9wXfoBg5tbB9EnQhEkgxhH8oujCWqkPZ7yPs1YY1iIAN3Htmby+FaeSNto
-         I0AsSJQSA14mKVeuZwpaosXjYyNdgjtE5Md2vtVDzF5SPMVyAKGYNQ4PIOHEG3MPgF6A
-         mZOW0+Bb5/X/p5NPn/GLaSwX82VnAeWXT8ZAGshNALVq1M3MvLoGZdddDwhJKJLFl+00
-         +i5Z5m8Zht+mRlzpG/0R25tzgs57MBR3QTMoD3UNlkFRi4PqhEkOMLhM2Mt5uL0O/ne2
-         M8FbFkGM0/NmhmKmCJwLFVHma6/oaFG80Y2XNLp4WcctcPX9+M7x/KrMfslAWLgEGoHR
-         RJ7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=6cyLMOSBZeL+BpGOPZ4KnMd993F4LhWCmpRnBNnGfbE=;
-        b=bIIFr3sg0u6Tx9km+HabPHtfVNpuE22qk04ux8fWfYZl4QCOuaarL/GwUMr17Kgy6H
-         UOzvRjRKilU9wFwKRmlY0pZt7aebFn0hseJMTj4O9zOrpy3zJaLh6QGSjozMX2rDN5e1
-         r7bQwsLDvwt7LLS43Pv3hCIq1G04G0JN+6w06oXeo05lXAPluBoUH3dq2rrwW6/g2V6E
-         u0ixOgOXE9DfpL8CXye16qTv1V0sZlucBigQITFnI38pp8JPXY41jCUVfV8RPH1G4vPW
-         hdTxoYOso/lQzuugv564sS6wA8xU9/BtvgR73vjdHF2Ky3zMWJepmG/aB3GjJnksgoOq
-         Jynw==
-X-Gm-Message-State: AOAM532L+5BXelXK8yUhzUybpfyQi3b3hN2tA7FlIkFc1azIOoTtJqBe
-        mTXQ8nPUp+rroTmec75cTZ+JvLt1DvU=
-X-Google-Smtp-Source: ABdhPJxx0VQc6B7QNxyrz8xAMr6fQIOSIIeCGxhOqrMXIku3RHo9gn7vVbH1A4tXfP0uGL/ot16u8A==
-X-Received: by 2002:a5d:65cd:: with SMTP id e13mr28879567wrw.213.1595337235242;
-        Tue, 21 Jul 2020 06:13:55 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:c144:5385:c824:85ce? ([2a01:e34:ed2f:f020:c144:5385:c824:85ce])
-        by smtp.googlemail.com with ESMTPSA id m2sm3516167wmg.0.2020.07.21.06.13.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Jul 2020 06:13:54 -0700 (PDT)
-Subject: Re: [PATCH] thermal: ti-soc-thermal: Fix reversed condition in
- ti_thermal_expose_sensor()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Cc:     Keerthy <j-keerthy@ti.com>, Zhang Rui <rui.zhang@intel.com>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        linux-pm@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200616091949.GA11940@mwanda>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <145478f0-3db1-4121-ad7c-78bc67a69c66@linaro.org>
-Date:   Tue, 21 Jul 2020 15:13:53 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Tue, 21 Jul 2020 11:06:17 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jxtqP-000480-BC; Tue, 21 Jul 2020 15:06:13 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Ansuel Smith <ansuelsmth@gmail.com>,
+        linux-arm-msm@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] phy: qualcomm: fix setting of tx_deamp_3_5db when device property read fails
+Date:   Tue, 21 Jul 2020 16:06:13 +0100
+Message-Id: <20200721150613.416876-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <20200616091949.GA11940@mwanda>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 16/06/2020 11:19, Dan Carpenter wrote:
-> This condition is reversed and will cause breakage.
-> 
-> Fixes: 7440f518dad9 ("thermal/drivers/ti-soc-thermal: Avoid dereferencing ERR_PTR")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
- Applied.
+From: Colin Ian King <colin.king@canonical.com>
 
+Currently when reading of the device property for "qcom,tx-deamp_3_5db"
+fails the default is being assigned incorrectly to phy_dwc3->rx_eq. This
+looks like a copy-n-paste error and in fact should be assigning the
+default instead to phy_dwc3->tx_deamp_3_5db
 
+Addresses-Coverity: ("Copy-paste error")
+Fixes: ef19b117b834 ("phy: qualcomm: add qcom ipq806x dwc usb phy driver")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c b/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
+index a7241bf110d7..71f257b4a7f5 100644
+--- a/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
++++ b/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
+@@ -531,7 +531,7 @@ static int qcom_ipq806x_usb_phy_probe(struct platform_device *pdev)
+ 
+ 	if (device_property_read_u32(&pdev->dev, "qcom,tx-deamp_3_5db",
+ 				     &phy_dwc3->tx_deamp_3_5db))
+-		phy_dwc3->rx_eq = SSPHY_TX_DEEMPH_3_5DB;
++		phy_dwc3->tx_deamp_3_5db = SSPHY_TX_DEEMPH_3_5DB;
+ 
+ 	if (device_property_read_u32(&pdev->dev, "qcom,mpll", &phy_dwc3->mpll))
+ 		phy_dwc3->mpll = SSPHY_MPLL_VALUE;
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+2.27.0
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog

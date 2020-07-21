@@ -2,55 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0559C227062
-	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Jul 2020 23:34:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 127AC227418
+	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Jul 2020 02:49:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726812AbgGTVcJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 20 Jul 2020 17:32:09 -0400
-Received: from [211.196.21.11] ([211.196.21.11]:53836 "EHLO
-        iscure03.localdomain" rhost-flags-FAIL-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726730AbgGTVcJ (ORCPT
+        id S1726425AbgGUAss (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 20 Jul 2020 20:48:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38718 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726021AbgGUAsr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 20 Jul 2020 17:32:09 -0400
-X-Greylist: delayed 25284 seconds by postgrey-1.27 at vger.kernel.org; Mon, 20 Jul 2020 17:32:09 EDT
-Received: from 127.0.0.1 (unknown [127.0.0.1])
-        by iscure03.localdomain (Postfix) with SMTP id 110F42ADF9D;
-        Mon, 20 Jul 2020 12:14:19 +0900 (KST)
-Received: from [236.232.108.249] by 127.0.0.1 with ESMTP id <375994-84420>; Sun, 19 Jul 2020 22:05:35 +0600
-Message-ID: <87$0p4$18hv2895-w2--65lk0@53h4kawp.2ww6>
-From:   "MOORE GATES LTD" <TEXT@TEXT.COM>
-Reply-To: "MOORE GATES LTD" <TEXT@TEXT.COM>
-To:     kerman.hancock@akerkvaerner.com
-Subject: FROM MR. MOORE
-Date:   Sun, 19 Jul 20 22:05:35 GMT
-X-Mailer: Microsoft Outlook Express 5.00.2615.200
-MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary="CFA3__C0.46A.8EAB"
-X-Priority: 1
-X-MSMail-Priority: High
+        Mon, 20 Jul 2020 20:48:47 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAE4DC061794;
+        Mon, 20 Jul 2020 17:48:47 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 6E70911E8EC22;
+        Mon, 20 Jul 2020 17:32:02 -0700 (PDT)
+Date:   Mon, 20 Jul 2020 17:48:46 -0700 (PDT)
+Message-Id: <20200720.174846.100766669077197890.davem@davemloft.net>
+To:     christophe.jaillet@wanadoo.fr
+Cc:     kuba@kernel.org, mhabets@solarflare.com, hkallweit1@gmail.com,
+        snelson@pensando.io, mst@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] net: packetengines: switch from 'pci_' to 'dma_' API
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200720122912.365571-1-christophe.jaillet@wanadoo.fr>
+References: <20200720122912.365571-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 20 Jul 2020 17:32:02 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Mon, 20 Jul 2020 14:29:12 +0200
 
---CFA3__C0.46A.8EAB
-Content-Type: text/plain;
-Content-Transfer-Encoding: quoted-printable
+> The wrappers in include/linux/pci-dma-compat.h should go away.
+> 
+> The patch has been generated with the coccinelle script below and has been
+> hand modified to replace GFP_ with a correct flag.
+> It has been compile tested.
+> 
+> When memory is allocated in 'hamachi_init_one()' (hamachi.c), GFP_KERNEL
+> can be used because it is a probe function and no lock is acquired.
+> 
+> When memory is allocated in 'yellowfin_init_one()' (yellowfin.c),
+> GFP_KERNEL can be used because it is a probe function and no lock is
+> acquired.
+ ...
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Dear Beloved,
-Peace of the Lord be with you and family, I am Fitzpatrick Moore a
-United Kingdom Citizen, I have ($ 25M) Twenty five Million united
-states dollars with a finance House in United State. I will want you
-to help me collect this deposit and dispatch it to charity
-organizations. You will take out 30% of these funds for your
-assistance to help ME disburse this fund to charities. I will like you
-to acknowledge the receipt of this e-mail as soon as possible and
-treats with absolute confidentiality and sincerity. Please reply to my
-Email: (moorefitzpatrick@gmail.com)
-Yours Sincerely,
-Fitzpatrick Moore
-
---CFA3__C0.46A.8EAB--
-
+Applied, thanks.

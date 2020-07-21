@@ -2,88 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A97C6227C4B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Jul 2020 11:59:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D6E6227C62
+	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Jul 2020 12:02:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729030AbgGUJ66 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 21 Jul 2020 05:58:58 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:25483 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726415AbgGUJ65 (ORCPT
+        id S1729035AbgGUKCb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 21 Jul 2020 06:02:31 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:46285 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726769AbgGUKCb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 21 Jul 2020 05:58:57 -0400
-X-IronPort-AV: E=Sophos;i="5.75,378,1589234400"; 
-   d="scan'208";a="460637932"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Jul 2020 11:58:55 +0200
-Date:   Tue, 21 Jul 2020 11:58:55 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] coccinelle: api: extend memdup_user rule with
- vmemdup_user()
-In-Reply-To: <e3d2ffb9-2a47-3d77-0501-9d48845435bd@web.de>
-Message-ID: <alpine.DEB.2.22.394.2007211158310.2487@hadrien>
-References: <e3d2ffb9-2a47-3d77-0501-9d48845435bd@web.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        Tue, 21 Jul 2020 06:02:31 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jxp6H-0000Kf-Mg; Tue, 21 Jul 2020 10:02:17 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
+        xen-devel@lists.xenproject.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] x86/ioperm: initialize pointer bitmap with NULL rather than 0
+Date:   Tue, 21 Jul 2020 11:02:17 +0100
+Message-Id: <20200721100217.407975-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-577759684-1595325535=:2487"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Colin Ian King <colin.king@canonical.com>
 
---8323329-577759684-1595325535=:2487
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+The pointer bitmap is being initialized with a plain integer 0,
+fix this by initializing it with a NULL instead.
 
+Cleans up sparse warning:
+arch/x86/xen/enlighten_pv.c:876:27: warning: Using plain integer
+as NULL pointer
 
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ arch/x86/xen/enlighten_pv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Tue, 21 Jul 2020, Markus Elfring wrote:
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index c46b9f2e732f..2aab43a13a8c 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -873,7 +873,7 @@ static void xen_load_sp0(unsigned long sp0)
+ static void xen_invalidate_io_bitmap(void)
+ {
+ 	struct physdev_set_iobitmap iobitmap = {
+-		.bitmap = 0,
++		.bitmap = NULL,
+ 		.nr_ports = 0,
+ 	};
+ 
+-- 
+2.27.0
 
-> …
-> > +++ b/scripts/coccinelle/api/memdup_user.cocci
-> > @@ -39,6 +39,28 @@ …
-> …
-> > +@depends on patch@
-> > +expression from,to,size;
-> > +identifier l1,l2;
-> > +@@
-> > +
-> > +-  to = \(kvmalloc\|kvzalloc\)(size,\(GFP_KERNEL\|GFP_USER\));
-> > ++  to = vmemdup_user(from,size);
->
-> I propose to combine the desired adjustment with the previous SmPL rule
-> by using another disjunction.
->
->
-> > +@rv depends on !patch@
-> > +expression from,to,size;
-> > +position p;
-> > +statement S1,S2;
-> > +@@
-> > +
-> > +*  to = \(kvmalloc@p\|kvzalloc@p\)(size,\(GFP_KERNEL\|GFP_USER\));
-> > +   if (to==NULL || ...) S1
-> > +   if (copy_from_user(to, from, size) != 0)
-> > +   S2
->
-> * Can it be helpful to omit the SmPL asterisk functionality from
->   the operation modes “org” and “report”?
->
-> * Should the operation mode “context” work without an extra position metavariable?
-
-This is fine as is in all three aspects.
-
-julia
---8323329-577759684-1595325535=:2487--

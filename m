@@ -2,138 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9540B229866
-	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Jul 2020 14:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C43F2298DA
+	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Jul 2020 15:00:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728642AbgGVMnK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 22 Jul 2020 08:43:10 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:58204 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726161AbgGVMnJ (ORCPT
+        id S1732287AbgGVNAf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 22 Jul 2020 09:00:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37822 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726525AbgGVNAe (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 22 Jul 2020 08:43:09 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06MCVINm015061;
-        Wed, 22 Jul 2020 12:42:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=ARG1RVN/4F6TCixySUe9XAtp/OnPCTzgVMh4TORIM7U=;
- b=gBXojG/JTaneWtO9vyz6ktJc0zIKmUUKGU5OgP+Q06B0u3Nn70f8Vcm372F7SCdjOKyS
- fVokWo4EFHYOkK5OuDIj9FDQid+SA2F34SqfH7ifPTZGpx42VH2LrSEtSGwY+9Ru6I5S
- y1q9smgTPT5JLB+JCA9odVt1wnHnitkzThkfDRZvPbttDm6Dy4EpGfm2tCiZmftkomNB
- Y5fdnwnKTSd/pZjV9Jhp/j840c6xr8kSlD6cSae9e0m5llKBjPWhbCFVN13SniQ5efvd
- 1w0ADOkTebWSyvKdchT/SMPAkBl3JomT3+l5XeGB23Im1OcOZLFBtju90ysQqMKrozI5 WQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 32d6ksq77c-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 22 Jul 2020 12:42:59 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06MCY2T4152577;
-        Wed, 22 Jul 2020 12:42:58 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 32enj60dkf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 22 Jul 2020 12:42:58 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06MCdO4a030269;
-        Wed, 22 Jul 2020 12:39:24 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 22 Jul 2020 12:39:23 +0000
-Date:   Wed, 22 Jul 2020 15:39:14 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Minghsiu Tsai <minghsiu.tsai@mediatek.com>
-Cc:     Houlong Wei <houlong.wei@mediatek.com>,
-        Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+        Wed, 22 Jul 2020 09:00:34 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89504C0619DC
+        for <kernel-janitors@vger.kernel.org>; Wed, 22 Jul 2020 06:00:34 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mtr@pengutronix.de>)
+        id 1jyEMF-0007sw-P8; Wed, 22 Jul 2020 15:00:27 +0200
+Received: from mtr by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <mtr@pengutronix.de>)
+        id 1jyEMD-0002xc-D3; Wed, 22 Jul 2020 15:00:25 +0200
+Date:   Wed, 22 Jul 2020 15:00:25 +0200
+From:   Michael Tretter <m.tretter@pengutronix.de>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Pengutronix Kernel Team <kernel@pengutronix.de>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Hans Verkuil <hans.verkuil@cisco.com>,
-        linux-media@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] media: mtk-mdp: Fix a refcounting bug on error in init
-Message-ID: <20200722123914.GB220681@mwanda>
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] media: allegro: fix potential null dereference on
+ header
+Message-ID: <20200722130025.GA21264@pengutronix.de>
+Mail-Followup-To: Michael Tretter <m.tretter@pengutronix.de>,
+        Colin King <colin.king@canonical.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200720163804.340047-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9689 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 phishscore=0
- adultscore=0 bulkscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007220094
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9689 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
- bulkscore=0 mlxscore=0 mlxlogscore=999 impostorscore=0 priorityscore=1501
- lowpriorityscore=0 phishscore=0 spamscore=0 adultscore=0 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007220094
+In-Reply-To: <20200720163804.340047-1-colin.king@canonical.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 14:53:31 up 153 days, 20:24, 131 users,  load average: 0.03, 0.11,
+ 0.09
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: mtr@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We need to call of_node_put(comp->dev_node); on the error paths in this
-function.
+On Mon, 20 Jul 2020 17:38:04 +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The pointer header is an alias to msg and msg is being null checked.
+> However, if msg is null then header is also null and this can lead to
+> a null pointer dereference on the assignment type = header->type. Fix
+> this by only dereferencing header after the null check on msg.
+> 
+> Addresses-Coverity: ("Dereference before null check")
+> Fixes: 3de16839669f ("media: allegro: add explicit mail encoding and decoding")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/staging/media/allegro-dvt/allegro-mail.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/media/allegro-dvt/allegro-mail.c b/drivers/staging/media/allegro-dvt/allegro-mail.c
+> index 4ac65de12463..4496e2a4da5c 100644
+> --- a/drivers/staging/media/allegro-dvt/allegro-mail.c
+> +++ b/drivers/staging/media/allegro-dvt/allegro-mail.c
+> @@ -462,12 +462,14 @@ allegro_dec_encode_frame(struct mcu_msg_encode_frame_response *msg, u32 *src)
+>  ssize_t allegro_encode_mail(u32 *dst, void *msg)
+>  {
+>  	const struct mcu_msg_header *header = msg;
+> -	enum mcu_msg_type type = header->type;
+> +	enum mcu_msg_type type;
+>  	ssize_t size;
+>  
+>  	if (!msg || !dst)
+>  		return -EINVAL;
+>  
+> +	type = header->type;
 
-Fixes: c8eb2d7e8202 ("[media] media: Add Mediatek MDP Driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/media/platform/mtk-mdp/mtk_mdp_comp.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+type is only used in the switch statement right below the assignment. Thus,
+you could remove the local variable and directly use header->type in the
+switch.
 
-diff --git a/drivers/media/platform/mtk-mdp/mtk_mdp_comp.c b/drivers/media/platform/mtk-mdp/mtk_mdp_comp.c
-index 362fff924aef..478ad034ef2a 100644
---- a/drivers/media/platform/mtk-mdp/mtk_mdp_comp.c
-+++ b/drivers/media/platform/mtk-mdp/mtk_mdp_comp.c
-@@ -57,6 +57,7 @@ int mtk_mdp_comp_init(struct device *dev, struct device_node *node,
- {
- 	struct device_node *larb_node;
- 	struct platform_device *larb_pdev;
-+	int ret;
- 	int i;
- 
- 	comp->dev_node = of_node_get(node);
-@@ -67,8 +68,8 @@ int mtk_mdp_comp_init(struct device *dev, struct device_node *node,
- 		if (IS_ERR(comp->clk[i])) {
- 			if (PTR_ERR(comp->clk[i]) != -EPROBE_DEFER)
- 				dev_err(dev, "Failed to get clock\n");
--
--			return PTR_ERR(comp->clk[i]);
-+			ret = PTR_ERR(comp->clk[i]);
-+			goto put_dev;
- 		}
- 
- 		/* Only RDMA needs two clocks */
-@@ -87,20 +88,27 @@ int mtk_mdp_comp_init(struct device *dev, struct device_node *node,
- 	if (!larb_node) {
- 		dev_err(dev,
- 			"Missing mediadek,larb phandle in %pOF node\n", node);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto put_dev;
- 	}
- 
- 	larb_pdev = of_find_device_by_node(larb_node);
- 	if (!larb_pdev) {
- 		dev_warn(dev, "Waiting for larb device %pOF\n", larb_node);
- 		of_node_put(larb_node);
--		return -EPROBE_DEFER;
-+		ret = -EPROBE_DEFER;
-+		goto put_dev;
- 	}
- 	of_node_put(larb_node);
- 
- 	comp->larb_dev = &larb_pdev->dev;
- 
- 	return 0;
-+
-+put_dev:
-+	of_node_put(comp->dev_node);
-+
-+	return ret;
- }
- 
- void mtk_mdp_comp_deinit(struct device *dev, struct mtk_mdp_comp *comp)
--- 
-2.27.0
+Michael
 
+> +
+>  	switch (type) {
+>  	case MCU_MSG_TYPE_INIT:
+>  		size = allegro_enc_init(&dst[1], msg);
+> -- 
+> 2.27.0
+> 
+> 

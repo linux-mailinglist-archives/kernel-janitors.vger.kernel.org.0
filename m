@@ -2,30 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 981F0229DD3
-	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Jul 2020 19:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C121229EA8
+	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Jul 2020 19:41:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731815AbgGVRGO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 22 Jul 2020 13:06:14 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:45045 "EHLO
+        id S1727818AbgGVRkI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 22 Jul 2020 13:40:08 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:45963 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731736AbgGVRGO (ORCPT
+        with ESMTP id S1726157AbgGVRkH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 22 Jul 2020 13:06:14 -0400
+        Wed, 22 Jul 2020 13:40:07 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jyIC0-0003zI-KM; Wed, 22 Jul 2020 17:06:08 +0000
+        id 1jyIip-000752-QJ; Wed, 22 Jul 2020 17:40:03 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>, linux-acpi@vger.kernel.org
+To:     Shannon Nelson <snelson@pensando.io>,
+        Pensando Drivers <drivers@pensando.io>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ACPI: APEI: remove redundant assignment to variable rc
-Date:   Wed, 22 Jul 2020 18:06:08 +0100
-Message-Id: <20200722170608.960983-1-colin.king@canonical.com>
+Subject: [PATCH][next] ionic: fix memory leak of object 'lid'
+Date:   Wed, 22 Jul 2020 18:40:03 +0100
+Message-Id: <20200722174003.962374-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,29 +37,40 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable rc is being initialized with a value that is
-never read and it is being updated later with a new value. The
-initialization is redundant and can be removed.
+Currently when netdev fails to allocate the error return path
+fails to free the allocated object 'lid'.  Fix this by setting
+err to the return error code and jumping to a new label that
+performs the kfree of lid before returning.
 
-Addresses-Coverity: ("Unused value")
+Addresses-Coverity: ("Resource leak")
+Fixes: 4b03b27349c0 ("ionic: get MTU from lif identity")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/acpi/apei/hest.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
-index 953a2fae8b15..6e980fe16772 100644
---- a/drivers/acpi/apei/hest.c
-+++ b/drivers/acpi/apei/hest.c
-@@ -227,7 +227,7 @@ __setup("hest_disable", setup_hest_disable);
- void __init acpi_hest_init(void)
- {
- 	acpi_status status;
--	int rc = -ENODEV;
-+	int rc;
- 	unsigned int ghes_count = 0;
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index 7ad338a4653c..728dd6429d80 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -2034,7 +2034,8 @@ static struct ionic_lif *ionic_lif_alloc(struct ionic *ionic, unsigned int index
+ 				    ionic->ntxqs_per_lif, ionic->ntxqs_per_lif);
+ 	if (!netdev) {
+ 		dev_err(dev, "Cannot allocate netdev, aborting\n");
+-		return ERR_PTR(-ENOMEM);
++		err = -ENOMEM;
++		goto err_out_free_lid;
+ 	}
  
- 	if (hest_disable) {
+ 	SET_NETDEV_DEV(netdev, dev);
+@@ -2120,6 +2121,7 @@ static struct ionic_lif *ionic_lif_alloc(struct ionic *ionic, unsigned int index
+ err_out_free_netdev:
+ 	free_netdev(lif->netdev);
+ 	lif = NULL;
++err_out_free_lid:
+ 	kfree(lid);
+ 
+ 	return ERR_PTR(err);
 -- 
 2.27.0
 

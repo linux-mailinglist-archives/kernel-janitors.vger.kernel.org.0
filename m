@@ -2,64 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36BF422B341
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jul 2020 18:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1ADA22B34F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jul 2020 18:18:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727052AbgGWQPp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Jul 2020 12:15:45 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:54255 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726621AbgGWQPp (ORCPT
+        id S1729779AbgGWQS0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Jul 2020 12:18:26 -0400
+Received: from mail-ej1-f67.google.com ([209.85.218.67]:39852 "EHLO
+        mail-ej1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727052AbgGWQS0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Jul 2020 12:15:45 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jydsj-0003Zl-Ie; Thu, 23 Jul 2020 16:15:41 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Chanwoo Choi <cw00.choi@samsung.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
+        Thu, 23 Jul 2020 12:18:26 -0400
+Received: by mail-ej1-f67.google.com with SMTP id gg18so3615046ejb.6;
+        Thu, 23 Jul 2020 09:18:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=t4n7avDIfbjejyLahGPAWeDks2RRttB7YWwdukT5JYY=;
+        b=G0xXgUexGCcZy3H4EB/dwoZBBUPFlLkAbjiBev+DZ61/X+Xa0LSVR13fEDtwZ0SH1g
+         GmjtHDfAJTgDCNQMieleV4gqdMliOCU0nKQsEeMYf8epjN4RlxekqRagQKQrHFxbA0Xg
+         gT3VGeHT7KX0j4mpS5d2kEYEpcLONHs6tGVDm2ak8tD4vKs2aT9DRa4z/Lx6tzWNLann
+         +/e8rbDjP3AXhCFSDE3fQ3cR0SxGPstMcehxXuPw8nuRd3iqid4pcBevTheJq7VOQrZ0
+         /0aJYp+RHz6yxli7ZPE9WOUK5fWFsQVRCjLrHW1rdZjF44vUtsLxMGOvTBgzTFk5aZjh
+         nASg==
+X-Gm-Message-State: AOAM5313anM/5ZVVlxGsPP0/ai2x7i4eQfbiVEAD71IMgpa1uu9Juz/+
+        P94aDxaBHx+qycaJngJ0D6xVBlLhyAE=
+X-Google-Smtp-Source: ABdhPJyO0TZdQEK6f6PdYNCQvZRMf5aohvfKrQ/3IWk4FdQ8edZBvGjscctZ+XwSokSaqsS4yxDhGw==
+X-Received: by 2002:a17:906:26c7:: with SMTP id u7mr4924975ejc.13.1595521104506;
+        Thu, 23 Jul 2020 09:18:24 -0700 (PDT)
+Received: from kozik-lap ([194.230.155.213])
+        by smtp.googlemail.com with ESMTPSA id lm22sm2327391ejb.109.2020.07.23.09.18.22
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 23 Jul 2020 09:18:23 -0700 (PDT)
+Date:   Thu, 23 Jul 2020 18:18:21 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Chanwoo Choi <cw00.choi@samsung.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Lee Jones <lee.jones@linaro.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mfd: max14577: remove redundant initialization of variable current_bits
-Date:   Thu, 23 Jul 2020 17:15:41 +0100
-Message-Id: <20200723161541.994669-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        Lee Jones <lee.jones@linaro.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mfd: max14577: remove redundant initialization of
+ variable current_bits
+Message-ID: <20200723161821.GA31365@kozik-lap>
+References: <20200723161541.994669-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200723161541.994669-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Thu, Jul 23, 2020 at 05:15:41PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable current_bits is being initialized with a value that is
+> never read and it is being updated later with a new value. The
+> initialization is redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/mfd/max14577.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-The variable current_bits is being initialized with a value that is
-never read and it is being updated later with a new value. The
-initialization is redundant and can be removed.
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/mfd/max14577.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/mfd/max14577.c b/drivers/mfd/max14577.c
-index fd8864cafd25..be185e9d5f16 100644
---- a/drivers/mfd/max14577.c
-+++ b/drivers/mfd/max14577.c
-@@ -61,7 +61,7 @@ EXPORT_SYMBOL_GPL(maxim_charger_currents);
- int maxim_charger_calc_reg_current(const struct maxim_charger_current *limits,
- 		unsigned int min_ua, unsigned int max_ua, u8 *dst)
- {
--	unsigned int current_bits = 0xf;
-+	unsigned int current_bits;
- 
- 	if (min_ua > max_ua)
- 		return -EINVAL;
--- 
-2.27.0
-
+Best regards,
+Krzysztof

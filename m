@@ -2,30 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9C0422A6EC
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jul 2020 07:33:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6946922A8FA
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jul 2020 08:28:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726417AbgGWFdz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Jul 2020 01:33:55 -0400
-Received: from mout.web.de ([212.227.17.12]:39139 "EHLO mout.web.de"
+        id S1726535AbgGWG2l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Jul 2020 02:28:41 -0400
+Received: from mout.web.de ([212.227.17.12]:57667 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725857AbgGWFdy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Jul 2020 01:33:54 -0400
+        id S1725984AbgGWG2l (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 23 Jul 2020 02:28:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1595482422;
-        bh=QPKOq6BuwyK+vRTc9bGKWfBdj4jWtWo2pzNRnYyaOHw=;
+        s=dbaedf251592; t=1595485707;
+        bh=1hBN9tUEwHZsp75aFn4bQ6JIGaKpS5aggvBr37cGLDw=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=AOStmqqeBmpSYzs8FRu5XAyurUdTX3ALmRhzGj/W7e0p1PemBexdIw6cHdz3m7lsX
-         jPowSqFEI4trKk449rH8F3sfdge/vTAEKELyXNPFFstYIdNGtypJlwJHQKhtBN4693
-         iU9hlGnnyE5eAaBLkrUyT+gZacWvMN8j4FNu8uec=
+        b=SgIHvSNXEVLP1YV2x7E8cn4GGBxFqIYz2e0zJHHUlktp5vNDO275pTTVlbXkD9Z0M
+         WFMjFo8DFazMnV/GcNDrpw1a5c7dj4268JKIeqY4eg38QQa4FHgKQAUBQzuMfoQGtX
+         mH9Qy/SW/hy6Xqi1QdkwGwSDG3GPsRUQvP9BqOtc=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.133.132.31]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MVu1U-1kIL7O2YOm-00X2lv; Thu, 23
- Jul 2020 07:33:42 +0200
-To:     Hanjun Guo <guohanjun@huawei.com>,
-        Jassi Brar <jassisinghbrar@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] mailbox: pcc: Put the PCCT table for error path
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LqDUa-1kTRox2ua8-00doEZ; Thu, 23
+ Jul 2020 08:28:27 +0200
+To:     Li Heng <liheng40@huawei.com>, linux-efi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Rui Xiang <rui.xiang@huawei.com>
+Subject: Re: [PATCH] efi: add missed destroy_workqueue when efisubsys_init
+ fails
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -70,53 +72,73 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <9e4f09a9-d14f-d76c-5318-d25501c0ec66@web.de>
-Date:   Thu, 23 Jul 2020 07:33:41 +0200
+Message-ID: <9255e38a-e5fb-0a41-1b6d-5fe4226e3b42@web.de>
+Date:   Thu, 23 Jul 2020 08:28:26 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:eH392zqk1XFEBEozpn++YUFWJv6gmikomueQN2coP1aKbDj9yzI
- nmHgpAaZv0/xaC3uEoEnsT1WDlsHmlapV626kpeOfgCfFd6QfnXgx01hypHlE45Xc7uBYmr
- Oz3j7PVIZRpJIQdq9U7xCcayu2MsD37EMmQhvMc47/FEcxnKLIwFEQIBAjIEEQIeD7/PpAB
- +20/+aHR2rn/ebacrMHGw==
+X-Provags-ID: V03:K1:+cIvmW+B4FEKJmlRaUsn3P6wwZXOZBSo++wjam41Os7s/c8euNP
+ SkvLdaNfwjEAG+QMwmIca39uOHG0ODw3lZpFSEdGZdH7bns/yufsNIJG5Kw4HKvPQ127PA4
+ FVof1wL0RRh0Uhg3clshBzt3JnpwiqwQCTLWPW4UI8d742kS5ctOMUzQmeHvqJ+esJix2XS
+ 00lXuwEGHYOm7u4Z1vwOw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:O/OFV4naZ6Q=:9zkqLTGyJLeRVsL+7wzduw
- YAOTk18kczr8thneh1jDspHYCvtP73LlG0tAbvSTHBh/kLFoUd2S4sdWrp4d1GT1gWtPz+QtC
- d+rhuRKYlWpw07UG1FgHuwIr/uzQgSdmUgnHtfSALk6g00tjAK9XYrNb06/iIMWLkcJ1H7gIk
- QkwV7r3u7LWBwKT1STP64Nv0ASUATTR6S2Xy0+g7g3kqfXAgAHM0I1E5YyNbwSKO93IyhBI8r
- Q1YczONvz8ZRj9NtYUI1yE9JtWtR1YLSgDHAJ2OtGfk0iOyCnVwc6pDcBGCNeo3j1crxdeeWr
- LdgSqJRyiXnAh8POfjG5MOIWZNAAr4tSKpzH6ENEt/6ByGBvJEg3gcX6bCubopd8Y79rYJbz7
- 0O5L4wjBv59oFaVrlVYie9Zjf9l/DE30G4nHlM3tj0Aq7yMPsC7GRzhNaapkLWUYQIpBee1wo
- vt3OBLZX+IwwBelR8Dt5meCWTPX06yya7oabso04KXa6b0+tEfkfrUANh33ejiXTelt+CS/Ep
- fDLQR9ZghVk43zo+ldbJwy+7+smNGyUZDXs6h0tsT4NAUNIiqoxHRYXhSa91ln+dcIY1nTgd8
- /sIzTvmJQnUTNqH1asOqvHyOBQuq8ltgWsnRheGMIcsXwno/UaE7tAAcd4ua1DubtL2xlyqPp
- R70P/owatSVhw7hXq+5VqjQ1LjOCSjJcQCmK9sT/FahaVcyxBYBkQH5/iBnkseOL7RMkFX6Zn
- XW55Gman8UjPcoJ0ZU8ADMMAScSsoWqS0eCQ1OJ1CUPWAje2U9bGwwk5iPfdvkZaat5he7LOf
- 4Yv2n7aq0hMLoOtJUi4atOaiyf1pFzCBwgboi9Ew0uwqUs2to7YS/zgGdCe1dl9dYtHMDTWPs
- wZIqnMCse337wFNuEmTa+rDFM7NAFQeKAq1we0CvrGcbvhv4yJcvjzrDh/5+ia9rZ45dBHO8J
- 7pavIWFOcipU502NUzUAkizhn7JTL1sNwEq2Oi4vM/aijW99PkpHhUiTuhfmOGEvL6pJv0xSg
- EEm/MASNFaODxY5vNNZOgVlzGXiBQEoHIYF3vnEtvzJ8zoWr18Do8XU2lR4B5fcV0+RMclYtC
- dwyJCr91/nUbi6IKE/cpfDndbvmJu0oHLX1KYO6eui2EJWXaiRaefzN9mXd85XAZvvHDWxhIk
- MWpYzoL09dC5uZ/t11TtqQ/dAKCSn0NkgvQDz9y0HjlXq+yoLNsqr5V9GU0DMoTLbvQd8RUMM
- VkIu+9qnDFHOKiNN2zEre1jHxZ7h2XxIrqDX2KQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:L/021+LXaa4=:Or5roG2IFS8LvDlPWgTW+i
+ PN/jhuE+Gae9QdBPml7nb89H4lVxRZpQSI+Eg+GgTEzyMNYPBVRmJmAzq1kFQjJOiqA21yYj8
+ H9ZPyiB7LyuYn284N/JsrvteAj23f4DM5BAkQZPwLGQPOm6R7yeRmjGlc1wDmEdgBh6Pe34dk
+ 6uxNRz72qTtC+tJg+g2FMO8DjordtRsPrA5sJOIrbwhxPR8WBGATS5wuqknUK3A04Q8C+bWlE
+ rytZ0mFAyXgYe/DTXmkGHSDe/UKY2g6hXqi4M09Tb/V6IXwp3p5Nw/9v4DFiV5syPcWtAGMYd
+ 0Ixburob0qE/QPT4//44bWT8mqxsynBOgP8bJeiFCu9ycQJ7cl+lxH/Myvhi5RSq6waPetsL1
+ 9jcvYHBwUFKoeGqz1EyNTW7ON4iaIJpOWXZvDRvtbWZ8bLrfvfUdUgSbjypnM3qSFzauKFLTw
+ KXuq1ZNcR3LmeDrXtOJ1MTBmcc1CoZZxbfRDuzX1YZYz9I3SVsqZQxFl7yPg2n+O6jLa5V++9
+ GdAFMo8mxVyQ0qpKtuB7bVvOtkLubhuzTUHKmzTypG3Tw3kzC4ImIL3a2E8LF5WMbJUx9M4oC
+ oMkAVt4DutxtSaWodz9AUSKycXcsbyzs9Jklvk6GpRdhx73uKuQJ4jccu61wMUnUIRJPmwH6a
+ QhyoQdOe782jyJudId0LPzCw/3wMX+9l/oCPwczXxrlZSwseaEKSMIEJSo+a4aFBSErXB97G1
+ vckUOShRqMtWsPe+f1S9+ygbA9ucfxBHKJ5LNX+bdR2EgOK8K/GaY/EYvq6NJbG+QQGZHdbCc
+ IW2aGYUXL5giv4VzGPFJjTQk1r20fMBwskpq4/+k5mkfybpA/TAm2xKgL3CiJKwNlJi44uPro
+ U8u6+6PoDllaAPA6y/8A81dbkSavKoCJl4FNjWcEHCJarxKh6HUczLYfV+P8ycIaEm1ZZ5Qc/
+ 3elANUSfI7L/67SNJyPKiV3YyZ7zgfhHA1Nc3UCmnI7Xr2DL1xnUF28c6R66Kr2bnSXiMrXQX
+ ZR314qy5OpaNfgxPg1ootGZ4SjKzYof55WSpYrTjpVoqzaCVCmM4/zOYtNWIz8SEtskU7QHqR
+ WRRzYOBCl+UD5TsAleatAoXyae0NTvCvXkCcKQPhKuUUhLXcsfDveAHGch4eJe8JO5Sowx9lN
+ VgF4tcJG6O/uVAEK81m5Bs4XfWczvTqX4ETz5ch3RELqBh2Mt/KsdrUA8woxLSpel01C7hkgK
+ IgHIv0BcqowWE3pjsZ2rcYlTjD8LmNwZnJemp1w==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-=E2=80=A6
-> In acpi_pcc_probe(), the PCCT table entries will be used as private
-> data for communication chan at runtime, but the table should be put
-> for error path.
+> destroy_workqueue() should be called to destroy efi_rts_wq
+> when efisubsys_init() init resources fails.
 
-* An imperative wording can be preferred for the change description,
-  can't it?
+* Can such exception handling depend on the data structure member =E2=80=
+=9Cefi.runtime_supported_mask=E2=80=9D?
+
+* An imperative wording would be preferred for the change description
+  (besides another bit of fine-tuning), wouldn't it?
 
 * Will the tag =E2=80=9CFixes=E2=80=9D become helpful for the commit messa=
 ge?
+
+
+=E2=80=A6
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -379,6 +379,7 @@ static int __init efisubsys_init(void)
+>  	efi_kobj =3D kobject_create_and_add("efi", firmware_kobj);
+>  	if (!efi_kobj) {
+>  		pr_err("efi: Firmware registration failed.\n");
+> +		destroy_workqueue(efi_rts_wq);
+>  		return -ENOMEM;
+>  	}
+
+How do you think about to use the following statements instead
+in the if branch?
+
+-		return -ENOMEM;
++		error =3D -ENOMEM;
++		goto destroy_workqueue;
+
 
 Regards,
 Markus

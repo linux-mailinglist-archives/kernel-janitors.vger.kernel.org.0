@@ -2,35 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59DB022A6DD
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jul 2020 07:19:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9C0422A6EC
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jul 2020 07:33:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726447AbgGWFTi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Jul 2020 01:19:38 -0400
-Received: from mout.web.de ([217.72.192.78]:35839 "EHLO mout.web.de"
+        id S1726417AbgGWFdz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Jul 2020 01:33:55 -0400
+Received: from mout.web.de ([212.227.17.12]:39139 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725822AbgGWFTh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Jul 2020 01:19:37 -0400
+        id S1725857AbgGWFdy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 23 Jul 2020 01:33:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1595481557;
-        bh=ClTsD8Rcw32+nJqII3CCW0/k3+s5opd4aoG3zPy1pqk=;
+        s=dbaedf251592; t=1595482422;
+        bh=QPKOq6BuwyK+vRTc9bGKWfBdj4jWtWo2pzNRnYyaOHw=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=QijmOulGoQw8EneR8v2g3JImUm4GrjoAqip9x3jMpQmHXlsd0xXTTsRjXFXueUuZq
-         C79KjLsX3zVGGdwtq6NB1yBaAsrLT9mN11JGJLDJ9dIWdImCkyUEwa6n+SKGZapaWT
-         TU7sxK51GiFWFy43cDdRCh2OaiQuMDnzdTSjNhdE=
+        b=AOStmqqeBmpSYzs8FRu5XAyurUdTX3ALmRhzGj/W7e0p1PemBexdIw6cHdz3m7lsX
+         jPowSqFEI4trKk449rH8F3sfdge/vTAEKELyXNPFFstYIdNGtypJlwJHQKhtBN4693
+         iU9hlGnnyE5eAaBLkrUyT+gZacWvMN8j4FNu8uec=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.133.132.31]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M0Qkb-1ko5eg3sT7-00uXZu; Thu, 23
- Jul 2020 07:19:16 +0200
-To:     Hanjun Guo <guohanjun@huawei.com>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        =?UTF-8?Q?Felix_K=c3=bchling?= <Felix.Kuehling@amd.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>
-Subject: Re: [PATCH] drm/amdkfd: Put ACPI table after using it
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MVu1U-1kIL7O2YOm-00X2lv; Thu, 23
+ Jul 2020 07:33:42 +0200
+To:     Hanjun Guo <guohanjun@huawei.com>,
+        Jassi Brar <jassisinghbrar@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] mailbox: pcc: Put the PCCT table for error path
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,54 +70,53 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <00444eb2-4bf4-bbe2-1727-d2f9eff110e2@web.de>
-Date:   Thu, 23 Jul 2020 07:19:04 +0200
+Message-ID: <9e4f09a9-d14f-d76c-5318-d25501c0ec66@web.de>
+Date:   Thu, 23 Jul 2020 07:33:41 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:I4XbwMvpiFRlf2ACj9dnzR8XtpooalMyKDMpRO3kfVl+Rv6BPZQ
- u5GA+7t/h0yvSuc8VQC8DRyCUE3jAKs+YXZjxW8fzvbNvWEUVLcH5eIUrpETcDAyxqD6ghE
- H/+g5ryp9kQeh+NhgAX3d6TfZDnqOk74tCe6hyxlhEO6pJVvVweDEzCXlR/K+y0+UemRfDt
- 5TxbKXJsWi4PUYpui3rTQ==
+X-Provags-ID: V03:K1:eH392zqk1XFEBEozpn++YUFWJv6gmikomueQN2coP1aKbDj9yzI
+ nmHgpAaZv0/xaC3uEoEnsT1WDlsHmlapV626kpeOfgCfFd6QfnXgx01hypHlE45Xc7uBYmr
+ Oz3j7PVIZRpJIQdq9U7xCcayu2MsD37EMmQhvMc47/FEcxnKLIwFEQIBAjIEEQIeD7/PpAB
+ +20/+aHR2rn/ebacrMHGw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ZzSa1J/6KTU=:xjua52co1Fhn5I6c/NqSG1
- v7iHaQT3cDbE/4pN7vN/rbe8jRvU7e6w0ZvALogAfCR6txRK95yotxvVwe4yCYnzXMtjMrbEb
- rHrx5sWrDl3/3qUJ8eOK1wP3n4bJ2el593Tj+F33iU2Pv7Ofhhs+Ep5Mv2YQ6qq8HG+Hyusb0
- PUgqHibWAN/M5hWnTa63VdZZKGyrxWkmxL5See0yCloDRe5EAaJWrm4RJ0+Jbv+hkzuj9tX2f
- zcHhpUGgaeyem1/ba8CjCtYx0zv81onh/zWrTgKNrCHQvWtSxvBhRCiynhMVSrZslMoYxbkNm
- DDlZHySNyfRc+6zmldSwrbSz30mgQNwag7I4RQ20gd76xL6b01JnZCW3VZBo/9T1HLTFaI3Gg
- d2Mb1uHeSQgo6aW4bF/VkO2+ym4bTadxyV3h0JP+zWJEE3wHpQx6cCk+xOx7Pr0TFnNmsGaRj
- TZqzPoElwK44zpnbOjjABl7hwiCJknQi60PKs+H01YXqHPDIShUUowwONu/dqlYXjDpZ5E8Vc
- L0ex6FPFEO4kCHcWxlBkOnTopAgIlcwu+maknN71IQVx1F0/DSxKGWibHPMTJsm7cIWrdmgLI
- x5Q0xM3tuzZR0NVCPoYutDwwnyTo98OfBaTlVZcBSr8okuTs5iSu3bNUaUw7qwXdbdcd/52Vf
- p8tF/5zgje6kDH9U8EMogShTFhFC+94TvPYVRO1iSS0rXv2swvyOL+3cRX9bRNxmC2h7q1pnM
- DLVkJlv5cL7NjEkvd+cfVa1tGj0SuFuBAo/slc5pahT/u+qXdkeVEohUxu6W6btTYilipJcvA
- 4E7qo5P44Bb1Pr0sfdiYRO5sjRXWEWIsHHCANIkBknKmVyPSC8Q5QFm4mz/eVlV/Hmp8V1UZK
- sYLOXPUZQ5pvSmn4lZuJoNCmgxeOPcQSCcf4h4y2+WJCcVrAlkwMNlF+qZdEuzXwYWalrQusm
- 4AQBEu7Rb0nbOSuGRz/DewfbOzXu3dpSBLSvo9vAZu09zBnECh1ZNM8GzKoODZkQhjk7PM7HL
- NNGXgRsPYSWVXlt03LA7JzvhZ43uJs4gTdaWSkTFPF+xSaqEd0izgxFLZT0U9Mov5GtGOc6i3
- qHeKiON7Ohi1O1AnS2lWwke8YGk0kDK7+xttUtm5ym3NiwszQZtaARmj4T7kFsU3vAt2XrETz
- IR7SomnLsFTnUQqv3fT55YEl/Ob0LmeoTadvrlBbYO6iDX/xscixiPx0LQ2WHM1gYKccSncAL
- vBNHAfT097vnunElkDN7Bd9rIVsw79Hom8d3gIw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:O/OFV4naZ6Q=:9zkqLTGyJLeRVsL+7wzduw
+ YAOTk18kczr8thneh1jDspHYCvtP73LlG0tAbvSTHBh/kLFoUd2S4sdWrp4d1GT1gWtPz+QtC
+ d+rhuRKYlWpw07UG1FgHuwIr/uzQgSdmUgnHtfSALk6g00tjAK9XYrNb06/iIMWLkcJ1H7gIk
+ QkwV7r3u7LWBwKT1STP64Nv0ASUATTR6S2Xy0+g7g3kqfXAgAHM0I1E5YyNbwSKO93IyhBI8r
+ Q1YczONvz8ZRj9NtYUI1yE9JtWtR1YLSgDHAJ2OtGfk0iOyCnVwc6pDcBGCNeo3j1crxdeeWr
+ LdgSqJRyiXnAh8POfjG5MOIWZNAAr4tSKpzH6ENEt/6ByGBvJEg3gcX6bCubopd8Y79rYJbz7
+ 0O5L4wjBv59oFaVrlVYie9Zjf9l/DE30G4nHlM3tj0Aq7yMPsC7GRzhNaapkLWUYQIpBee1wo
+ vt3OBLZX+IwwBelR8Dt5meCWTPX06yya7oabso04KXa6b0+tEfkfrUANh33ejiXTelt+CS/Ep
+ fDLQR9ZghVk43zo+ldbJwy+7+smNGyUZDXs6h0tsT4NAUNIiqoxHRYXhSa91ln+dcIY1nTgd8
+ /sIzTvmJQnUTNqH1asOqvHyOBQuq8ltgWsnRheGMIcsXwno/UaE7tAAcd4ua1DubtL2xlyqPp
+ R70P/owatSVhw7hXq+5VqjQ1LjOCSjJcQCmK9sT/FahaVcyxBYBkQH5/iBnkseOL7RMkFX6Zn
+ XW55Gman8UjPcoJ0ZU8ADMMAScSsoWqS0eCQ1OJ1CUPWAje2U9bGwwk5iPfdvkZaat5he7LOf
+ 4Yv2n7aq0hMLoOtJUi4atOaiyf1pFzCBwgboi9Ew0uwqUs2to7YS/zgGdCe1dl9dYtHMDTWPs
+ wZIqnMCse337wFNuEmTa+rDFM7NAFQeKAq1we0CvrGcbvhv4yJcvjzrDh/5+ia9rZ45dBHO8J
+ 7pavIWFOcipU502NUzUAkizhn7JTL1sNwEq2Oi4vM/aijW99PkpHhUiTuhfmOGEvL6pJv0xSg
+ EEm/MASNFaODxY5vNNZOgVlzGXiBQEoHIYF3vnEtvzJ8zoWr18Do8XU2lR4B5fcV0+RMclYtC
+ dwyJCr91/nUbi6IKE/cpfDndbvmJu0oHLX1KYO6eui2EJWXaiRaefzN9mXd85XAZvvHDWxhIk
+ MWpYzoL09dC5uZ/t11TtqQ/dAKCSn0NkgvQDz9y0HjlXq+yoLNsqr5V9GU0DMoTLbvQd8RUMM
+ VkIu+9qnDFHOKiNN2zEre1jHxZ7h2XxIrqDX2KQ==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 =E2=80=A6
-> and in kfd_create_vcrat_image_cpu(), the acpi_table is only used to
-> get the OEM info, so those table mappings need to be release after
-=E2=80=A6
+> In acpi_pcc_probe(), the PCCT table entries will be used as private
+> data for communication chan at runtime, but the table should be put
+> for error path.
 
-1. Please avoid a typo for this change description.
+* An imperative wording can be preferred for the change description,
+  can't it?
 
-2. An imperative wording can be preferred here, can't it?
-
-3. Will the tag =E2=80=9CFixes=E2=80=9D become helpful for the commit mess=
-age?
+* Will the tag =E2=80=9CFixes=E2=80=9D become helpful for the commit messa=
+ge?
 
 Regards,
 Markus

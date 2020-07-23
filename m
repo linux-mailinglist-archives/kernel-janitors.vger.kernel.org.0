@@ -2,71 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE4E422ADCF
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jul 2020 13:33:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A81D22B145
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jul 2020 16:26:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728134AbgGWLc7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Jul 2020 07:32:59 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:8259 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725846AbgGWLc7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Jul 2020 07:32:59 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 3EFC32424FBD2A36A2A6;
-        Thu, 23 Jul 2020 19:32:56 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 23 Jul 2020 19:32:46 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        "Vinod Koul" <vkoul@kernel.org>,
-        Ansuel Smith <ansuelsmth@gmail.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-arm-msm@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] phy: qualcomm: fix return value check in qcom_ipq806x_usb_phy_probe()
-Date:   Thu, 23 Jul 2020 11:36:22 +0000
-Message-ID: <20200723113622.136752-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728797AbgGWO0T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Jul 2020 10:26:19 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50818 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726089AbgGWO0T (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 23 Jul 2020 10:26:19 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jycAo-0000y3-Ez; Thu, 23 Jul 2020 14:26:14 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Intel SCU Linux support <intel-linux-scu@intel.com>,
+        Artur Paszkiewicz <artur.paszkiewicz@intel.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] scsi: isci: remove redundant initialization of variable status
+Date:   Thu, 23 Jul 2020 15:26:14 +0100
+Message-Id: <20200723142614.991416-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, the function devm_ioremap() returns NULL pointer not
-ERR_PTR(). The IS_ERR() test in the return value check should be
-replaced with NULL test.
+From: Colin Ian King <colin.king@canonical.com>
 
-Fixes: ef19b117b834 ("phy: qualcomm: add qcom ipq806x dwc usb phy driver")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+The variable status is being initialized with a value that is never read
+and it is being updated later with a new value.  The initialization is
+redundant and can be removed.
+
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/isci/request.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c b/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
-index 71f257b4a7f5..092fd2d9c3f3 100644
---- a/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
-+++ b/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
-@@ -505,9 +505,9 @@ static int qcom_ipq806x_usb_phy_probe(struct platform_device *pdev)
- 	size = resource_size(res);
- 	phy_dwc3->base = devm_ioremap(phy_dwc3->dev, res->start, size);
- 
--	if (IS_ERR(phy_dwc3->base)) {
-+	if (!phy_dwc3->base) {
- 		dev_err(phy_dwc3->dev, "failed to map reg\n");
--		return PTR_ERR(phy_dwc3->base);
-+		return -ENOMEM;
- 	}
- 
- 	phy_dwc3->ref_clk = devm_clk_get(phy_dwc3->dev, "ref");
-
-
+diff --git a/drivers/scsi/isci/request.c b/drivers/scsi/isci/request.c
+index 343d24c7e788..6561a07db189 100644
+--- a/drivers/scsi/isci/request.c
++++ b/drivers/scsi/isci/request.c
+@@ -3444,7 +3444,7 @@ struct isci_request *isci_tmf_request_from_tag(struct isci_host *ihost,
+ int isci_request_execute(struct isci_host *ihost, struct isci_remote_device *idev,
+ 			 struct sas_task *task, u16 tag)
+ {
+-	enum sci_status status = SCI_FAILURE_UNSUPPORTED_PROTOCOL;
++	enum sci_status status;
+ 	struct isci_request *ireq;
+ 	unsigned long flags;
+ 	int ret = 0;
+-- 
+2.27.0
 

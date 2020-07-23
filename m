@@ -2,28 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC1AD22B26D
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jul 2020 17:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDD9E22B307
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jul 2020 17:54:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729571AbgGWPWn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Jul 2020 11:22:43 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:52560 "EHLO
+        id S1728809AbgGWPyT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Jul 2020 11:54:19 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53406 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728711AbgGWPWn (ORCPT
+        with ESMTP id S1726761AbgGWPyT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Jul 2020 11:22:43 -0400
+        Thu, 23 Jul 2020 11:54:19 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jyd3Q-0006cG-CA; Thu, 23 Jul 2020 15:22:40 +0000
+        id 1jydXz-0001Lg-U7; Thu, 23 Jul 2020 15:54:16 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jeff Layton <jlayton@kernel.org>,
-        Ilya Dryomov <idryomov@gmail.com>, ceph-devel@vger.kernel.org
+To:     David Kershner <david.kershner@unisys.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        sparmaintainer@unisys.com, devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ceph: remove redundant initialization of variable mds
-Date:   Thu, 23 Jul 2020 16:22:40 +0100
-Message-Id: <20200723152240.992946-1-colin.king@canonical.com>
+Subject: [PATCH] staging: unisys: visorhba: remove redundant initialization of variables scsicmd_id and rc
+Date:   Thu, 23 Jul 2020 16:54:15 +0100
+Message-Id: <20200723155415.994036-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,29 +36,38 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable mds is being initialized with a value that is never read
-and it is being updated later with a new value.  The initialization is
-redundant and can be removed.
+The variables scsicmd_id and rc is being initialized with a value
+that is never read and are being updated later with a new value.
+The initializations are redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- fs/ceph/debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/unisys/visorhba/visorhba_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ceph/debugfs.c b/fs/ceph/debugfs.c
-index 070ed8481340..48f5afb56c91 100644
---- a/fs/ceph/debugfs.c
-+++ b/fs/ceph/debugfs.c
-@@ -272,7 +272,7 @@ static int mds_sessions_show(struct seq_file *s, void *ptr)
- 	struct ceph_mds_client *mdsc = fsc->mdsc;
- 	struct ceph_auth_client *ac = fsc->client->monc.auth;
- 	struct ceph_options *opt = fsc->client->options;
--	int mds = -1;
-+	int mds;
+diff --git a/drivers/staging/unisys/visorhba/visorhba_main.c b/drivers/staging/unisys/visorhba/visorhba_main.c
+index 99c57ceeb357..7ae5306b92fe 100644
+--- a/drivers/staging/unisys/visorhba/visorhba_main.c
++++ b/drivers/staging/unisys/visorhba/visorhba_main.c
+@@ -305,7 +305,7 @@ static int forward_taskmgmt_command(enum task_mgmt_types tasktype,
+ 		(struct visorhba_devdata *)scsidev->host->hostdata;
+ 	int notifyresult = 0xffff;
+ 	wait_queue_head_t notifyevent;
+-	int scsicmd_id = 0;
++	int scsicmd_id;
  
- 	mutex_lock(&mdsc->mutex);
+ 	if (devdata->serverdown || devdata->serverchangingstate)
+ 		return FAILED;
+@@ -1186,7 +1186,7 @@ static struct visor_driver visorhba_driver = {
+  */
+ static int visorhba_init(void)
+ {
+-	int rc = -ENOMEM;
++	int rc;
  
+ 	visorhba_debugfs_dir = debugfs_create_dir("visorhba", NULL);
+ 	if (!visorhba_debugfs_dir)
 -- 
 2.27.0
 

@@ -2,31 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8F5F22C412
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Jul 2020 13:10:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01CED22C41B
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Jul 2020 13:13:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726969AbgGXLKN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 Jul 2020 07:10:13 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:33084 "EHLO
+        id S1727819AbgGXLNE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 Jul 2020 07:13:04 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:33166 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726114AbgGXLKM (ORCPT
+        with ESMTP id S1726702AbgGXLNE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 Jul 2020 07:10:12 -0400
+        Fri, 24 Jul 2020 07:13:04 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1jyvaa-0000Z3-Nk; Fri, 24 Jul 2020 11:10:08 +0000
+        id 1jyvdK-0000ta-Rk; Fri, 24 Jul 2020 11:12:58 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+To:     Hyun Kwon <hyun.kwon@xilinx.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
+        Daniel Vetter <daniel@ffwll.ch>,
+        Michal Simek <michal.simek@xilinx.com>,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/amdgpu: fix spelling mistake "Falied" -> "Failed"
-Date:   Fri, 24 Jul 2020 12:10:08 +0100
-Message-Id: <20200724111008.14548-1-colin.king@canonical.com>
+Subject: [PATCH][next] drm: xln: fix spelling mistake "failes" -> "failed"
+Date:   Fri, 24 Jul 2020 12:12:58 +0100
+Message-Id: <20200724111258.14762-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -38,29 +40,25 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in a DRM_ERROR error message. Fix it.
+There is a spelling mistake in a dev_dbg messages. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
-
-Can folk please use checkpatch, it should catch these errors.
-
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 2 +-
+ drivers/gpu/drm/xlnx/zynqmp_dp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-index fe7d39bb975d..8034111acd9a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-@@ -1987,7 +1987,7 @@ static int psp_suspend(void *handle)
- 
- 	ret = psp_tmr_terminate(psp);
- 	if (ret) {
--		DRM_ERROR("Falied to terminate tmr\n");
-+		DRM_ERROR("Failed to terminate tmr\n");
- 		return ret;
- 	}
+diff --git a/drivers/gpu/drm/xlnx/zynqmp_dp.c b/drivers/gpu/drm/xlnx/zynqmp_dp.c
+index 821f7a71e182..0e1c818746eb 100644
+--- a/drivers/gpu/drm/xlnx/zynqmp_dp.c
++++ b/drivers/gpu/drm/xlnx/zynqmp_dp.c
+@@ -1308,7 +1308,7 @@ zynqmp_dp_connector_detect(struct drm_connector *connector, bool force)
+ 		ret = drm_dp_dpcd_read(&dp->aux, 0x0, dp->dpcd,
+ 				       sizeof(dp->dpcd));
+ 		if (ret < 0) {
+-			dev_dbg(dp->dev, "DPCD read failes");
++			dev_dbg(dp->dev, "DPCD read failed");
+ 			goto disconnected;
+ 		}
  
 -- 
 2.27.0

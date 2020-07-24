@@ -2,32 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D46622BDE2
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Jul 2020 08:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96A8D22BEA9
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Jul 2020 09:09:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726543AbgGXGFR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 Jul 2020 02:05:17 -0400
-Received: from mout.web.de ([212.227.15.14]:44053 "EHLO mout.web.de"
+        id S1726727AbgGXHJr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 Jul 2020 03:09:47 -0400
+Received: from mout.web.de ([212.227.15.3]:55149 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726381AbgGXGFQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 Jul 2020 02:05:16 -0400
+        id S1726618AbgGXHJr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 24 Jul 2020 03:09:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1595570685;
-        bh=IZqya46lb9WZbs07Xpn4biD4AoQ4Sq63+0pbH+Tqyuk=;
+        s=dbaedf251592; t=1595574576;
+        bh=f+IFexYtJPwWHzHuhj2w155Xw1h4mmqMLdDNsyAy+Zg=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=Uxi47DSO2n8rhSUqGdX1MaPAryFyj/aN2xSOqPHLCRxio92uSIbQAEysVGydF1TTz
-         u5NWnu5NsXhdbAMpHjkNhaWv3cYv8TRYhLJXg/XR2Jf3+S9NZjaQJONPSXJe9wYyxQ
-         wlvU5qBfskrL1qBk6eteUapnJLN5Kxi36rlkX90Y=
+        b=lWSNfLJkAa7Xc3LTDy14FsliU6zFhc1vz40510rO0zMuQsEAb6DgrAPLd105pVYUb
+         hmLi7VOOLMwWghEHt7lO3yWjQKVujzJYER2T+HTQlTgzhbkdag3iNktjC3krDN8IuS
+         2kGZJySeZSsGV8g1PC5w1dsf5ANym6gQASAXV4bE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.46.40]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MVLsk-1kJ4ok3OgA-00YfDv; Fri, 24
- Jul 2020 08:04:44 +0200
-To:     Li Guifu <bluce.liguifu@huawei.com>, Chao Yu <yuchao0@huawei.com>,
-        linux-f2fs-devel@lists.sourceforge.net
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: Re: [f2fs-dev] [PATCH v2] f2fs: fix use-after-free issue in
- f2fs_put_super()
+Received: from [192.168.1.2] ([93.132.46.40]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MLRYd-1kGGGJ0Sih-00IULU; Fri, 24
+ Jul 2020 09:09:36 +0200
+To:     Vladimir Zapolskiy <vz@mleia.com>, kernel-janitors@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Wen Yang <wenyang@linux.alibaba.com>
+Subject: Re: [PATCH] regulator: fix memory leak on error path of
+ regulator_register()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -72,63 +72,53 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <9236e712-cd98-1f6c-4bcd-4dcabbae6461@web.de>
-Date:   Fri, 24 Jul 2020 08:04:38 +0200
+Message-ID: <1e281322-c589-9c36-0565-98fccf5f0e17@web.de>
+Date:   Fri, 24 Jul 2020 09:09:35 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:fuzp87DJDEQCI6qvpTtr9jdI+2HbuahdBu9BeD36lTkaR5Ahprk
- XZweJZFWJA4q4bCCZGrgMvg1vSbyk/osrT/RKh+yyxsMZDqNqgrqNCpO+rBff3gfCireqor
- I0IoT4w2gylJOOUR4JTetXStW47DbKE4V+5JwYsqkpx1oy8BbFawxK5zoKor5WJ7ZiGp79E
- 54cJgYD3IJwkVdh3TX42Q==
+X-Provags-ID: V03:K1:bbgcSdS5PDU8YLgr0H8Rnt7x3HymkQeQJ+myGNAcEVhaiuAHNva
+ cs1K1G96V/6jl2/SRDOmgJJk33BE+O2BG4rwBqYToj8tmfN06dJojTnQGGk5mWx4EpEN8he
+ hhxvtX2hmo4lNL3+uWvhPrx9wfuLzqChECsMCXxjRGCmq0aMnaNz4f+ExRFKvD6rGS+eqvc
+ J6LgYPSRGRLzywb/InQHg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:/7M/G5g1ptM=:R4yt1ZNic3t7hRP5xF48Bu
- zhnFdY1w+XdFCZsA3ZSNO9zK003NXMEjHM1Y2rgVpln0NjQ6LAMn/IUE9XC1/DKEwggGSyJPb
- EJ67m5KCYWviqw0lU2AJGyiDhkR78weGWhMzYDvyVlysIHuk6Dd8ZK6NOGrMuzxBOyQSVNxkS
- Runiaf6XRArXGFh6IEtzpm14WL068MoSWtWDA2ewvan3gGDl+sOFZvld3H1QgNNbTBaXWr1NL
- StzZ7IBWv+BqVZ6znMRkW5NXc2ixaAM+44jysAMEojJkvs1i6N0TkAZIx+y+CU92l7jhxgDIS
- Btvt6jVpo2hkrVPsdJSvj2dtB2Ywg1mrd6RUloxWEG8HlhpUZL4ANIkoO4mwqB5f0Ikukeki2
- esoGtaTaN9jB5tELehpy06g3qpycbL8F3NXB2nWDpRzE7Ym/AYqSgicZEX9nBI3ZuunzQ6p2j
- /JxtdRWu/2z/zuHuld98qD3fyljTG3su3n0tfPp8UCO3mee2mugZhl4XasgdIaJRmACn/Pt/I
- zLqhvlc5h2mTGaW5Lgn70vWsAxy5MV4lKhtEHWB2AivH1df1Q7W/PGrA97mNhpYyixiRXVJhP
- AkIAmTkX4isz2ElPHcoYG9Q/+4DO7Qg44fWoVxqUGRaebANu+Xf/akQWkoEJ5L+zLmfOve5ZS
- vubJWO/u5J3rVtMCOsO7BljUp3zNz2waIlTb5Sjs+ompzKMvVddpSS4aOfEGeJ1hT3z7ouNBW
- G1W3pDCXjlYrkS/Qf5QciLOpIL6dJ4R76Xpa2zEgBGYOnxJkDLxk9fTy5rPkORXfK0/IM6cSQ
- hpPI9dvNKR9NwquMWSwRV3keJvJ/WTcGXQpcusRgJRKRHx+KCk+is8lO6S0hezXQ7B9o3m+1h
- Bm6aBWf5Ao6Ahi3vGblrto5R2fPP9LmFPHkdtbcf3lpU3LxRqNk86SXcFtiZdBsQLXLjwh3rj
- xLBiOwk2eoDM6VV4R/qjq9LD7Fdwsz/vcr5Am6OTDntJ1reM/u3LqBcdyv909fqwlRDUjTNkl
- v1XXLZAJUyiUaERdR6rQ+fE8Gv0QWh03hpzXlGPpAiiQxajcIwOdiGm77GHPZGXnrQ7r4dq0m
- 3GOe3Y6Zgu72hA9jnxOtKKy8FtUfzQyChFUyj1a1bm5TLOu6h8pAJfCvb5Uej3L3JO1MOmjcK
- 3JBv9KgBQiNIgbNwko0I8KiS3lZH7QFG6xjhsr+iunaF44jok43WOgg8hXHriSrZQonWX6F6k
- 4BuHB9v9b7x+SZKPW9+DPg9B6CHM6dZUN7zxwQA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:O4yPpxT6jfY=:iHWnIX5MNU/0UxTIzzzjCw
+ yvHA4YpP1zESJR9nUDO2eERs31RrE1G8lNxqS43bMdB9BOk6fOuHtY6WKMsyf40bdAq/IjB7+
+ G9Sa0ovkdZ19BHxRA7vQzWL3ekXR37x84MKsS3JFYGJ3pK/Ua6jKiblVs7UWl5xyxnB0KDThF
+ /r2V5I7j5YbLQchAYWvvMI7o7qFkTDVv4HzU0fvaS1oLVO5TsbhL5pnHFe8bTh+EBzjBd0Izo
+ sVcXUkPkibrO6grS03UDxJwwNZm5huVVo4sD25B/ha/O465UxPwopxPCQ9oEfOutNcMvEQvfd
+ TTgE/PEC9yoaZsML2X6tuTiN6INbH4eTDIAQmZWF4zJgk8V3GN4BGPNZN3uQTov9XVqF/rMi/
+ eubRdM4PMur/CHvk9JFsrmhwh6bS/UILyUSv6qqolAO7YpAcpFYGzbms7RZkNY5tq/RokcMI7
+ EAgrCZOBBhImkfgG2DJBxSl55iQOTzASdGz6hFhOwrilWb7T9vOO7/jJiJCAOGG2e3TmXX5nZ
+ rfRBHFIfch8uEw2++dHutiYHgrd3mqeZERht+tIV7z6uzkUm0DKgfwISNZh4XAEmajtHWSash
+ /w46AVqk0fw40qq6WcAhraALEPDXnFs0LruKWXUclxcGxvHfl5t457lCQCDS0UHcz72Zf5CI1
+ ZTv9GRY3erbQh18/PGezAEOniefhIc0OlmNqFVjSpYAu8hs5rXVK5c35oMf04ru2mBbURQb5P
+ mD8xvhopmy1KVYSUkW8wBqToWyz4QvnRf+Q5+MUXU0xo/0QH5Tw5oh8liZQtgBWxNkHmWawol
+ KsSJ+xtytkaGfkMnEkfhql3vVtWxAc4h3f06gvdM7M8ZKDf6FYGDN2qk4m2O6D14OW8uqOI8u
+ bfdxhaicn1SzPsdexnwQkRCb7NyMSdcV06KzuI3YilVB8t3k3m3JUWuHUyn6HdgeZl9SjO6hx
+ iHfPBiTOE6GdlPE9Cc8OAjriOZc+9S+fKhJRRNyt2WBLmRprb0+tqMKa8yQb/MvnjP7n3oyLM
+ 4zVK/+sBMYkdGeVl1uBrF2NGpZ9UjOnKRzFz3Xs8JurU8Ei4Naef5h0B9B1V4wVOcKCBq6Ljm
+ zlPJg8zIAdBVxhNi9fAYP6WdLqs9iZW5EwlT9+4RjivHfpC14B2CAeM9fpxVe2ZNnNMXEXG+q
+ ybdurhxdob6ccUmxNDkZ3CZN8pl3CF8rMixvBS/v8p+hit7nEZUDNBoiwk5ZOEiekTOHI668s
+ UWnk9TaQmVPMbHA79kIc673drx4n6Zval1OjK4Q==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> During umount, =E2=80=A6
+> =E2=80=A6 introduced as a side ef another =E2=80=A6
 
-Do you refer to the action =E2=80=9Cunmount=E2=80=9D here?
+Would the following wording variant be more appropriate?
 
-
-> f2fs_destroy_segment_manager(), it may cause =E2=80=A6
-
-Wording adjustments:
-f2fs_destroy_segment_manager(). It might cause =E2=80=A6
+  =E2=80=A6 introduced as a side effect of another =E2=80=A6
 
 
-> =E2=80=A6 with procfs accessing, =E2=80=A6
-
-Avoid another typo?:
-=E2=80=A6 with procfs accesses, =E2=80=A6
-
-
-> =E2=80=A6, fix it by =E2=80=A6
-
-Please replace this wording by the tag =E2=80=9CFixes=E2=80=9D.
+How do you think about to replace the wording =E2=80=9C=E2=80=A6, I believ=
+e =E2=80=A6=E2=80=9D
+by an imperative description?
 
 Regards,
 Markus

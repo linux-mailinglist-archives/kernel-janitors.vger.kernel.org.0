@@ -2,85 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9952D22D3D5
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Jul 2020 04:51:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14BA022D42D
+	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Jul 2020 05:13:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726783AbgGYCvA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 Jul 2020 22:51:00 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:56342 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726593AbgGYCvA (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 Jul 2020 22:51:00 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06P2m6DT043209;
-        Sat, 25 Jul 2020 02:50:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=2LEmVzP0v4CwHYaFbrCprZ1/Tu1tf4ykG9L6AB5ahF8=;
- b=d/WjhKYhYSxCg0L9wHHC7+sL33vCWwEBbemqv11TbSRigrrbLAcBIxBAwD9pr6oXnXuk
- CTU2ap/5KdxKn5MVEvDcMhNir+VdVbwj7vayNS7bG3n+wW4oVqvfNVZI4dz03BP/XLfY
- kHI3eUnI1uFzKDPDGB5oi0f9wHOGHQZtXiER63NG/12Nv3bPmIBeooiG+tbZCLFucjx+
- HhIz3l5fOrrJbvr9a7gTY/A/EGAon1mtD83rksZxPFTGmRzXY6QeLgijs5wNGijXrzuc
- o+nb/DEa3yPQXDvqvvxdZVsCGAEZUqefdYMuNEpO500Em7Qtgpv1JLfMx9iKtXR/0c90 uQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 32bs1n1ur0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sat, 25 Jul 2020 02:50:51 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06P2mVb1092367;
-        Sat, 25 Jul 2020 02:50:51 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 32gaseas1j-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 25 Jul 2020 02:50:51 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06P2onfK010052;
-        Sat, 25 Jul 2020 02:50:49 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 25 Jul 2020 02:50:48 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        John Garry <john.garry@huawei.com>, linux-scsi@vger.kernel.org,
-        Colin King <colin.king@canonical.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] scsi: libsas: remove redundant assignment to variable res
-Date:   Fri, 24 Jul 2020 22:50:34 -0400
-Message-Id: <159564519422.31464.3717823298731100505.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200722154404.959267-1-colin.king@canonical.com>
-References: <20200722154404.959267-1-colin.king@canonical.com>
+        id S1726904AbgGYDNB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 Jul 2020 23:13:01 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:8276 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726572AbgGYDNA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 24 Jul 2020 23:13:00 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id AF2EB982DC6F24ADC177;
+        Sat, 25 Jul 2020 11:12:58 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.487.0; Sat, 25 Jul 2020 11:12:52 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        "Vinod Koul" <vkoul@kernel.org>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <linux-arm-msm@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] phy: qualcomm: fix platform_no_drv_owner.cocci warnings
+Date:   Sat, 25 Jul 2020 03:16:24 +0000
+Message-ID: <20200725031624.31432-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9692 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0
- mlxlogscore=999 phishscore=0 bulkscore=0 suspectscore=0 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007250020
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9692 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 bulkscore=0 adultscore=0
- lowpriorityscore=0 mlxlogscore=999 malwarescore=0 clxscore=1015
- spamscore=0 mlxscore=0 impostorscore=0 phishscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007250020
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 22 Jul 2020 16:44:04 +0100, Colin King wrote:
+Remove .owner field if calls are used which set it automatically
+Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
 
-> The variable res is being initialized with a value that is
-> never read and it is being updated later with a new value. The
-> initialization is redundant and can be removed.
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Applied to 5.9/scsi-queue, thanks!
+diff --git a/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c b/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
+index a7241bf110d7..98c042c3b88d 100644
+--- a/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
++++ b/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
+@@ -557,7 +557,6 @@ static struct platform_driver qcom_ipq806x_usb_phy_driver = {
+ 	.probe		= qcom_ipq806x_usb_phy_probe,
+ 	.driver		= {
+ 		.name	= "qcom-ipq806x-usb-phy",
+-		.owner	= THIS_MODULE,
+ 		.of_match_table = qcom_ipq806x_usb_phy_table,
+ 	},
+ };
 
-[1/1] scsi: libsas: Remove redundant assignment to variable res
-      https://git.kernel.org/mkp/scsi/c/55eb809f5e1c
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+
+
+

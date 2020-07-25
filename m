@@ -2,33 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02F6022D6E3
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Jul 2020 12:50:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FA0E22D70E
+	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Jul 2020 13:29:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726658AbgGYKur (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 25 Jul 2020 06:50:47 -0400
-Received: from mout.web.de ([212.227.15.14]:56425 "EHLO mout.web.de"
+        id S1726768AbgGYL2o (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 25 Jul 2020 07:28:44 -0400
+Received: from mout.web.de ([212.227.15.3]:59721 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726618AbgGYKuq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 25 Jul 2020 06:50:46 -0400
+        id S1726612AbgGYL2n (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 25 Jul 2020 07:28:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1595674230;
-        bh=AnGv9cWvi54PTE4qUiwmpJgilT77DJk3ggZXrzH/RDI=;
+        s=dbaedf251592; t=1595676481;
+        bh=tL632JoesBjA1nIjOOtilNQQx0JJmdlSdql+Vgh01R0=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=bz0MdmxeS1kJSd8odomdpkrnUukYKsIctkY/wSP36WkKCbOeWBcRtbbpENhIPGLwh
-         Nz9LlWJhPlpJ5NwO992xaIsKzZBsLy7CY67zs7OkH5cpyxxjkLC4qNKvAq9MqdZFXy
-         HhP24PhQOmhRB7+1bTbARk8smEae8XYQeWUk11jU=
+        b=Kwiw857J2bBKYJHL9hwvp6Z/paHUma/WSxf9EGc+2UfXG/IPcRPIF+/BOEwWwsrA8
+         5vqLHZutxZf/lffPP6kUE5BhsWux3O4nltK9r1SzskyRXquyL7VVo1TmoQDg3pQ/5/
+         EoMP7Vp3UBCoKt7+t9WeXIqXEo/GF7XFxzprixdE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.94.55]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1M2xrs-1jvyNG2vgC-003Q9K; Sat, 25
- Jul 2020 12:50:30 +0200
-To:     Li Heng <liheng40@huawei.com>, linux-block@vger.kernel.org,
-        nbd@other.debian.org
+Received: from [192.168.1.2] ([93.135.94.55]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MMFB7-1jrrAL42Pd-0085d8; Sat, 25
+ Jul 2020 13:28:01 +0200
+To:     Yi Wang <wang.yi59@zte.com.cn>,
+        Liao Pingfang <liao.pingfang@zte.com.cn>,
+        linux-sh@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jens Axboe <axboe@kernel.dk>,
-        Josef Bacik <josef@toxicpanda.com>
-Subject: Re: [PATCH] nbd: add missed destroy_workqueue when nbd_start_device
- fails
+        Andrew Morton <akpm@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Rich Felker <dalias@libc.org>,
+        Wang Liang <wang.liang82@zte.com.cn>,
+        Xue Zhihong <xue.zhihong@zte.com.cn>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: Re: [PATCH] sh: sh4: Fix reference count leak in sq_dev_add
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -73,45 +77,46 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <d7b60d29-4a02-ae2a-fa9d-0c4918eba91a@web.de>
-Date:   Sat, 25 Jul 2020 12:50:29 +0200
+Message-ID: <69b70f2a-c4c9-6dd2-95c7-5858873037b8@web.de>
+Date:   Sat, 25 Jul 2020 13:27:56 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:hleuPqUzD+dDoJhRdlhRKzMh/C+nunVKjL7cUSKPetW2aG9Rr8K
- j18eXSTeRevigNyUMsUvQzsQDmC9GT8B5Ty64Y6etr+Tt8Bm5XmEhV7Zh+vOEhttOApmD/2
- nO/OIxqeXhZKX0PtszyFzB6fR6n+f0km9eQF4R2qH0l28YFH5phaKXSZCCU1rhYztbhu41m
- Kr5rrxuJjhycJ/fQxEPEQ==
+X-Provags-ID: V03:K1:sG/y852jU81boQ3F8W/bwzbm1EGUa8mk5sueiIiGGdI2y4Ks1SK
+ UTrgdpVuDNgIRBCu/XPTbD1VizJ6vQPTdmq9Ax+WfZjHtndM0v2t0+0paWR+eSo7FG4c4Lp
+ 3xMvGclh2mJJRuq/r7vExmhlhwWpA5kMvBYDJRTMrUJRSt9j3eQNudJHI1cMGmxNHysJjrz
+ VTMx/LTBeDlEH9vhot0eA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:DKSK7Ph4Tko=:1hWy2Q8K4+yAAcfxEOe358
- ydGMr4ewOgxRWSpOUZxkRY1b41ha1a93p0myi1apD3eRtu6l57bDZ80nJcEqg0I5n2dNHuWxI
- JxBG1TP69j4fnupQWwAZGxnwuZIIAFQ66dW4Lf8IOVkzn6HT+8RtVoCkoYM+Nb+uf5DtPcxol
- MTy9CLD/OF8USvuFjmJq8o0+pdSd1nLV4aDaR9fDjswvdFV/EKLBNgkJ5nYnQSPxQphoRbR+G
- yEWW2xIWWZVG1xx8HmdmIY2OlIKKGDGEo13aPLPhR+/1i5IIm+3jxQojku7qKZMKvPbiluAUR
- K9L+bcPl0GFLcTJgFrswhhyVAFi3lV1HSUfsAxDRcBreFWsHTeepUc6YINkL7IH767sHMl+mP
- Y5+pdZMK08cf1nVKzpUK88s8tXAuOJCMj0t8gEfvT5kMKRObeACexazsngoIXcTdQEDMgGFMG
- F0ew/jItnVcoJ9Cc5Z1wKdXXMn3AwG47JCjrY0zmA7NzwI/1Ch9NwtiHoSqPyn6/NzdXxaZk+
- vsFcPI9OGDKb+c3BgTsT2s3uPjoWmfkuxZLZcwaEt07PFksRJFPMXX8bCRw7fNYba4hRlpwpX
- 0Gg4Dj9/EGXqyX78yRui+IVSaPbUMKmnUO6t1nBjHyW4dhxmOhziqyv0NkP6YGLpqg0E52wu7
- 4ajX2em+UBKOy3ds7pJ8gd/rSXsBv1ZRmehHI/4MwhjkftQeOjJ0ubTT4hK7V4V9ljAemEJOn
- 97dA1poLaVZsRbwMY3Wik078iSSpinSKp+wl728n+L/AhpzuILl/qCsC5kTepFnMiNMle5YPb
- Xehe95Es8CGtyeBCyTwqfm2plj4twffQXubv2bpsJsqYVOozhXvE288aVOf46JVkgsK4SY+g9
- UlSlsH9mPnhlj5T5zrL80t6kSPdlN1xowqcSwjM5lmrxm1xsrxdBg/q1kfu7MhmMazeC0Mwnl
- g/h+LeHboqixIMxAUJ2DliEG8KWBHnPbpkZXuChM5lDFZQe2Zi0Y4RzmW3sFJnrvK5uc36faw
- Txly/8+Z0EQtoVRWqqyj0pxgxkRBkiP4MRj16SgXSUb7UfHG/slsnIPeZq4hIV0sjnv4t0l9f
- xdcB8XkNo07ZXr7bqVYS2l33chRoqwv7FHLTVouLYnDxfqvKtjH1MQz8fEJHHfPuJ/tCVdnhS
- Vpz8vub6KEXe2TyZSaKBS16jyVcwf9QRktMFjAmGTrN5TUsroasNIPRSWKROLTmiwWa0pgAPh
- A7KY94os6iiZJlJSJzSta6dcws6ubBTkn1L/y5g==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:RiqtQUvptJo=:fI+HNEkVYhxGL3dPvZg9yW
+ 8Q4mnC8X6Ku7EUAaXTGPffccTRykxbPvMxwxXQs2sbf3PGMiwAhtCGCOZNxw/bzS/fzx3QPmp
+ C+Ff5cwbnyvB/pbhUqr9NeP2dfTOe4niNNuxIss4Hphy38znaXih0zHwIN+6e5X6QVNL43Yjy
+ xwlnwg2piVqO/mertdKnDokxEaKJ6l7T2j/xMyK0dKpbbGk7yIOEzq+M1D06bMBi4U61ZHvnO
+ 9iLVubibmASJTSyFzPLuRvla5vpXrlawYeuHkBcV3bVDiqcfqKMJQRiJc0w0L6bbVaFVBhORY
+ aCwn/34Xj8+XmRULzZnCaU+YwpARQMT0zYhYwVMmsM0h7VRgDLqfffWZ+7XUIhIg1jhOCqaka
+ w6j+6SojksRmfRrDEclDh10/zZuvcJzieDCS2YISsFeROnFcwRJ7m+TKoC+uKhghpNoXdP6l3
+ 8DkPPonTmqjGbrAGnMDBShoXmbx1hnYaVgjwnEGigwbA7Wo0YiBI0YV6vXh8h+5IBrdAOV7+Q
+ BTTuHWD3Hh0wfb5rY6X3ZiiuoNBJhCOAhcHisHX7wJUKz/S1RP+NmvYxaWGOxPjLFiKLwll3E
+ SBKy3jQcCnnE9YQbsABHrsCIGS5cA4h9YXcRmmyfFVcj8JeAmBX4Twiiw6pc7R0Qpx3FxDkiU
+ Pw9Kslkf1HSVcMQqVLhx0iY9CtAhQnQx5C6DvthFi3CNdb+IWSXQQ1Wb6cIKlBtQA/5QiH0p2
+ ssqFmqbhs77aJzB8GmLqgdHBdNL3zbzoOAGQolPOMtnqJzGILEI7kaRF1QLcM0fOFJYX+5qj+
+ e8noqqSMYRZcbT0v4+VaR55VLhQamqIwaff/ETaPVjeZCfeDt7LcuKo+fhgYPMW0syjVSGCSu
+ Hv05Bh0p1tp1RCI7YO4cyXonFIrFZIV1diu88grv5jjzGf4YDftQuFrXJ/4ZMNGRFcPX1JPmu
+ O6FJLcp8GbZLbvV0Lg0p1lGLFjRUsQQ8vuVQ1eqYS9f4IimNRfiS6vUjb0w9awyrOxv1NSMt8
+ Vk3jiFGMQqLla2D1OE3XHI1aKHz5QwQEJ0MMq1mIYPjfyZHHUgA6KiYUWoQfsq11AuyQOcOIt
+ Rntprd4ZKfdZBCkXetu9m38D2bBjyo1GrWqxhNqu9zGbUxrNTpHIREbLPMM+kXfgIC5r4WZY6
+ LvzYLTfotgwAmFYvDApxiqkekkzIollD+BLLLYtqYIXxropLx/xA7RTueZPa+zScsfYvAJ8cg
+ 9JTI/3ckKrOyFfJY3UhoORWJrY5CPQZlyUo/x7A==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> destroy_workqueue() should be called to destroy ndev->tx_wq
-> when nbd_start_device init resources fails.
+> kobject_init_and_add() takes reference even when it fails. If this
+> function returns an error, kobject_put() must be called to properly
+> clean up the memory associated with the object.
 
 * An imperative wording can be preferred for the change description,
   can't it?

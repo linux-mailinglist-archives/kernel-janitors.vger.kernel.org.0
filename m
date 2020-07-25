@@ -2,34 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7400D22D717
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Jul 2020 13:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAE4C22D758
+	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Jul 2020 14:03:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726639AbgGYLgI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 25 Jul 2020 07:36:08 -0400
-Received: from mout.web.de ([212.227.15.3]:52021 "EHLO mout.web.de"
+        id S1727057AbgGYMDa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 25 Jul 2020 08:03:30 -0400
+Received: from mout.web.de ([212.227.15.4]:58313 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726593AbgGYLgH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 25 Jul 2020 07:36:07 -0400
+        id S1727048AbgGYMD3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 25 Jul 2020 08:03:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1595676956;
-        bh=tL632JoesBjA1nIjOOtilNQQx0JJmdlSdql+Vgh01R0=;
-        h=X-UI-Sender-Class:Cc:Subject:To:From:Date;
-        b=Tmj0rhVYBtMO2v9NcBxUwh20IPVhwePRmDQ2SlW0arpOGmt/QPfvxfqRSXLEmMEYB
-         en3ENpj2301lVsU7k/flndv6r5ZFWtHYEqwbsf24Nq0v5m1t00wpEL6CPOv/wZT1+p
-         LgbIP9Z96eprRoigXcyA6ek4xENWwsazjtZkUHi4=
+        s=dbaedf251592; t=1595678590;
+        bh=wQxlQ/SmWc9RFw9VETtG31ULmFDa4lN0pVNKkYynVio=;
+        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
+        b=TBk4PtVNQdVi0YZCzb9HczeZv7DaB6e0IZlB7mrXiZZ27rowK8J78Q0BVgb9eZLJm
+         Fo1zYvGI696zcI3y7zJiO3z8rzY1CQbym/7ouF6/yWp17A+NDBZZaedMQ1GkKCXEEb
+         CALAfTIHn674hDxhR+HLzJAde1LQatSjfok6dQu4=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.94.55]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LmLK6-1kZBW53gva-00Zu6Q; Sat, 25
- Jul 2020 13:35:56 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jens Axboe <axboe@kernel.dk>,
+Received: from [192.168.1.2] ([93.135.94.55]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M8zRF-1k56Aq3Bnx-00CTsG; Sat, 25
+ Jul 2020 14:03:09 +0200
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Russell King <linux@armlinux.org.uk>,
         Wang Liang <wang.liang82@zte.com.cn>,
         Xue Zhihong <xue.zhihong@zte.com.cn>
-Subject: Re: [PATCH] block: Fix reference count leak in blk_integrity_add
-To:     Yi Wang <wang.yi59@zte.com.cn>,
-        Liao Pingfang <liao.pingfang@zte.com.cn>,
-        linux-block@vger.kernel.org
+Subject: Re: [PATCH v2] ARM: milbeaut: Add missing of_node_put() call in
+ m10v_smp_init()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -74,52 +72,60 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <6301315e-1613-0970-ce9b-019d18458819@web.de>
-Date:   Sat, 25 Jul 2020 13:35:54 +0200
+To:     Yi Wang <wang.yi59@zte.com.cn>,
+        Liao Pingfang <liao.pingfang@zte.com.cn>,
+        linux-arm-kernel@lists.infradead.org
+Message-ID: <e0092582-6fb6-e374-e130-232002c908e7@web.de>
+Date:   Sat, 25 Jul 2020 14:02:55 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:XfHm/7x7X87q7ow25EkeuukmVKR88tw1SDzdqxDdDUzGIDzOEXy
- zQdV32f2j+uMjFN/E7kkeh7D2TASJ4MVIDDWqjjHTU4ry4B2DM+hxB7B7cQij2Ws33nvviH
- vFmMrkEvxYptoQGr7mWUu3aJ4EGJyeoyRReyNQkojWYcZd55quXovnKoGaDCD611u+D5igm
- u5k6A5hmu0VPUTDvIzchg==
+X-Provags-ID: V03:K1:mZISB2jQ0F97zteapPrujC6qzBqE+bj/c5RiJHOJntYQ3Dqx0C1
+ /0L/aLzfTueRVAF3zTff+0BVtrC8W9tvtdL+R2p5y0gdfrDDjjK6MhAJGVP7C2zTt9aZ00v
+ l9MUC45P2rgF13mJcRnc1VpLpi5GoFeZqWWPWmCfAlZDGshUfHJ/QOOYxG8vxUbk92gCIij
+ 7zcpANuqiHm9dK2kzyd+g==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:DyzV1VLVpu4=:Fm6QWsnHUAFGLZmmcBBdO/
- 2T4uTzLG02bzVkUXhSAnWw7toP5bz3RluDB626xSYnhAFu6700ytrmgBFbBxERkbFmQGDiCLl
- 5uxzcIFXVtSd9zpPoMHtlQ1wX0Y/cieSHi2n3Ep1u6alsLF0Bg5+t+kWss8AKT5czF0Rf9Jf2
- ddkgOGfseSERmaJje8mv/IyiXXaUm6nLtZ3IDzsuWjReCWShDwNqJR3kcWpIOocaoO9+LYFbu
- mmSaEMcN6hFMZ61EJoVe5FbilfhEQIqWzVK7O7E7BvHZF4EovcP8s5N3h+iSBI/DYngnFpoO2
- QeM7ZvJLeFVVCjCho+cBNoXUHCbo6WVdrihtkgGwnzPY4ug5lzsGZxXF9NtXEBtr7S44lrA9e
- NaTSgtIYKvYOQI+pX0f3TQO4Ns7PRpGmNXMk/+aj9bN6dcDNvzyXgAzufcBgrqxsJcKxAzbp2
- VopnYbUkiMufyaoYBpHo5MlF7i7s/7OQsW6+lKZkEIHk5zPUbjJ0P3W+AVYPX1BOMkiX1d1Ki
- YRrMbhSv1LzqUVFz3GkjXXn2ITmh3ZBYHFGeTHlAyPVkocNJrtgJrOBsAOcJlINW9pAQtttul
- tJJz6EVIRF2r0gkxmflFKYIHgR1WfPtuUOOPkvlAIXF/8SsxgfXBRVRx1KJgYh5PVHtu9IXfk
- LLzkfIbmtnUnJDcBk9qmU9pwWSRWNZnefNM9yZBPdOIcXcXTEpSuHzVOJ16apdNzJ3IBNDCmZ
- W1tBDpN3xd3U9PgeY8lZ5uK+Jqy8MIzW8eTbksLGYFvwoapDy5dt+my3M88zDoV4GTr2tECNL
- ph+xGa/ZibeVGp5ov0ZWzYNa8x/5lnDN18nevow01hb06qlTIJocOS9AlK8EXceYn8mCOx1H4
- VZiXgXhe3irmFVyNtQZRsu/TQKfZAf7vm4UhY9LONEoBpEEIcC6XO9eUpK+CG/SjrvuDO0MsD
- E5k/S1jW5Yjf1KjPlzEyeXRV0bzCNhVN9oPLB4gp3RNddUBaVOeXKRr8WLB/lljTa804Bah68
- XvIm3cX324iFrtnN4Y1M8d7PoPrfaLhDdVBuSNS20tUC+xiqmNnCVAUioXvSE9SnKmtG7PYl0
- th/USxeOeRewandQjYsm1Jd339FbqrCJU2cTWpIxsp1EVdDzbKnFQ6BOxgcnwlert636FKIm4
- 4raof7AQTIj3Pc5iuGYhvHiG+mQShtF50gqnrTq/KE/Oe+vfuV58nyYbMvXRfF6oLue6lbpOU
- LGXIm5F6KYktApoBfobFOLad6amBrHBJTFqgIww==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:dksXAoVsbKA=:4e925Q/IQIE62cSaBgkGOs
+ omtsQ/p3TFgyViId+wmpTQ7l5p3Phnzjxj3oCzlwbuJQ4pYPwYfgJ7wpf8axdm2fiKqwatxR8
+ CQePo0XoTw9fWDFwS0t6vQypDzZeBg1f0J3lefDlFWXpDagzYq0V8iXKkSl3HnXuxDnnxGNWt
+ 7Gd1irKpZzX6TTnkzNp4NEcTYNs8CH/M21ojFodqOGMdUgEiTvgyfkTFIFMUCbS65gGZp8m/Q
+ MCBUbAvQN7dmRRYcCsIW5af+K99jCSXZhIJveIn298Y+WDyqr8EWLNKXI/Si0VNQ6hRhYCbrS
+ Vk+WlDwU/IlKEQuwqqg1pziihg9BYWfLwvK08Kq7n4jSu4bKJDqxZb+WC+15qxzPTLN0nSN8f
+ /ye1y4rMMhNSZBupTk8xJG17f3Dgr99MCoGwPXTWI+xA/2e3zvQyZ03Z7F/G6LXnPytJH1CWh
+ VgRg68m4liMQg9H2oSOzS1hDLxeekhc4/GqOOcjX7V1gAqPAHZEOj6sGGYYedyWk76a7uEppI
+ ZfXLPHNwxud0eillXCswy9XxT+XmIyJtN/KRH5BBDZio8ZDUjhZW43psbRIE/D8PSoB5FpPKs
+ IBEdt6cKq8NWE03Uo0jCZ+HjFzQtwwCHhthItfCbgj+Rrur+Omo25Kwgp+vlslpCldT39/Aua
+ Eq078JheN9jGrv4mKvns9tjAxpZ96BaWTCktCn/4GVNxKzGKo+4lVdwStfgQSwjnr+2r/QAXx
+ Y5Xm4bbdZlFvG1AU+14FSGJzipg4y0YsO4m1OHdCuREw3LcPNKoscadFGeHThNsYA30TSpt+U
+ /HIEVfMF14WpVCbKs8yjBeyXOHEXLwCgCpwbTQ0icxHqUNILAdpPaWjgXzKSb97EeafBg+si6
+ qOQ3TQOg/a2RNtwWpM8489vxt1RI53IXKCIoY13RYIq8Lvcxz1TEK/NiKacgqiG6nJ4oekIUe
+ n7iERrFSr6redBmVzPIQu2hsFL87KIDUhwGsekSOW0/w6h014LIZnloHLHR969+YOwviES7D2
+ GAWCy4loK4eiy7m8exzB2JzVXilBkW9NXpWNxSHOlf0OIbxAFh0YT23Bvj77DiKBwBXD9q9+g
+ vufnBnp0mh31K+eu4bz4e3cq/74ijdiuxA08aB/6fE1y0JnHSVrNc/5smSmR86XMKNtwyS3Rj
+ CVbPvjDYh+ZgdEcAHwzffSjpzDk5ZD0ylavj0x9re31kxjjlCb+DzRUqhfzAS93HnmDRmrKNj
+ 5skFgNxiRMRD/04GYEkeugy+AaACgHljQiSe5gw==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> kobject_init_and_add() takes reference even when it fails. If this
-> function returns an error, kobject_put() must be called to properly
-> clean up the memory associated with the object.
+> The variable np in function m10v_smp_init takes the return value
+> of of_find_compatible_node, which gets a node but does not put it.
 
-* An imperative wording can be preferred for the change description,
-  can't it?
+Such information is useful.
 
-* Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit mess=
-age?
+
+> If this node is not put it may cause a memory leak.
+
+Is the reference management generally improvable for this function impleme=
+ntation?
+
+
+Will the tag =E2=80=9CFixes=E2=80=9D become helpful for the commit message=
+?
 
 Regards,
 Markus

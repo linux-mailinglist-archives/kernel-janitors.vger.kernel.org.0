@@ -2,62 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 534A522D31D
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Jul 2020 02:10:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6836922D3D3
+	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Jul 2020 04:51:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726747AbgGYAKh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 Jul 2020 20:10:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53454 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726592AbgGYAKh (ORCPT
+        id S1726736AbgGYCuz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 Jul 2020 22:50:55 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:39754 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726572AbgGYCuz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 Jul 2020 20:10:37 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03FA4C0619D3;
-        Fri, 24 Jul 2020 17:10:37 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 2C2E61275D089;
-        Fri, 24 Jul 2020 16:53:51 -0700 (PDT)
-Date:   Fri, 24 Jul 2020 17:10:35 -0700 (PDT)
-Message-Id: <20200724.171035.1263967627297774729.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     vyasevich@gmail.com, nhorman@tuxdriver.com,
-        marcelo.leitner@gmail.com, kuba@kernel.org,
-        linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][V2] sctp: remove redundant initialization of variable
- status
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200724130919.18497-1-colin.king@canonical.com>
-References: <20200724130919.18497-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 24 Jul 2020 16:53:51 -0700 (PDT)
+        Fri, 24 Jul 2020 22:50:55 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06P2lqma077467;
+        Sat, 25 Jul 2020 02:50:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=7ITJjm2fpobkStlRyL+N0QntRph87b3fvjPsqfCvWKQ=;
+ b=p1WKVnkym1SfZ5CRQUYAfnNT5kSJfZ21ZedELMkhm1btMXDHJWDT/h83Zwohb7tbm4SV
+ 6rleCERsYFgRsIys5/kN2UwP0i1KKkrVBSjvvvPL+1t/NIdTHzkb9l81FRUIlwBrQtgo
+ 7PCyiRYB0YGtqu4CDEGzDsAqWfIrZ4D0dil6QWd3M9kPeg63DbXxDe4Hjk/5RKmeGfWf
+ P2C1oxyHs2POLyGuyCtMx9sU5BJt34S7asnPPNa14Ee+jsbcHOBChnBznUF8IepKalo1
+ MNdzbRO+CaRlgqQq3gghmQIenM9YGPMM18Nfkfm36qyiVzjnIIiXqjxrHaPh6NmjPXbj zA== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 32gc5qr0cv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 25 Jul 2020 02:50:49 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06P2nBPm024109;
+        Sat, 25 Jul 2020 02:50:49 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 32g9uu6p3d-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 25 Jul 2020 02:50:49 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06P2olm3014714;
+        Sat, 25 Jul 2020 02:50:47 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 25 Jul 2020 02:50:47 +0000
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     Artur Paszkiewicz <artur.paszkiewicz@intel.com>,
+        linux-scsi@vger.kernel.org,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        Intel SCU Linux support <intel-linux-scu@intel.com>,
+        Colin King <colin.king@canonical.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] scsi: isci: remove redundant initialization of variable status
+Date:   Fri, 24 Jul 2020 22:50:33 -0400
+Message-Id: <159564519423.31464.662630080230658791.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200723142614.991416-1-colin.king@canonical.com>
+References: <20200723142614.991416-1-colin.king@canonical.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9692 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0 mlxscore=0
+ adultscore=0 suspectscore=0 bulkscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007250020
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9692 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 mlxscore=0
+ lowpriorityscore=0 clxscore=1011 impostorscore=0 suspectscore=0
+ phishscore=0 mlxlogscore=999 spamscore=0 priorityscore=1501 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007250020
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Fri, 24 Jul 2020 14:09:19 +0100
+On Thu, 23 Jul 2020 15:26:14 +0100, Colin King wrote:
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
 > The variable status is being initialized with a value that is never read
 > and it is being updated later with a new value.  The initialization is
-> redundant and can be removed.  Also put the variable declarations into
-> reverse christmas tree order.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-> ---
-> 
-> V2: put variable declarations into reverse christmas tree order.
+> redundant and can be removed.
 
-Applied to net-next, thanks.
+Applied to 5.9/scsi-queue, thanks!
+
+[1/1] scsi: isci: Remove redundant initialization of variable 'status'
+      https://git.kernel.org/mkp/scsi/c/584d902eb10e
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

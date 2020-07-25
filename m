@@ -2,64 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13B1322D586
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Jul 2020 08:31:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D5DB22D589
+	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Jul 2020 08:37:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727012AbgGYGbS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 25 Jul 2020 02:31:18 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:51638 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726273AbgGYGbR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 25 Jul 2020 02:31:17 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id C09B570A2098F182DCAB;
-        Sat, 25 Jul 2020 14:31:15 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.487.0; Sat, 25 Jul 2020 14:31:09 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        Keerthy <j-keerthy@ti.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-crypto@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] crypto: sa2ul - fix wrong pointer passed to PTR_ERR()
-Date:   Sat, 25 Jul 2020 06:34:40 +0000
-Message-ID: <20200725063440.172238-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726946AbgGYGhB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 25 Jul 2020 02:37:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41688 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725941AbgGYGhB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 25 Jul 2020 02:37:01 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C2F812070E;
+        Sat, 25 Jul 2020 06:37:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595659021;
+        bh=TqBid881gbTdHYWUqMo1o1X4MNRMshLRJeGzN4al/UU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=itgm4LppO2guNmU4POTZuG0/5SrzYDgkpKnsojwJbWKL13TF4trwhVTzHL4dK4H2t
+         u1VlQ6Ruhosttf2w2vRaksx89173u1V9PZqyhPR9wlYaghf58p6UN/6hc0yJySZsaf
+         PFrQuP4Wn818Gk4flt289c+few8n9VH7cA/WNK1Q=
+Date:   Sat, 25 Jul 2020 08:37:01 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
+Subject: Re: [PATCH -next] mtd: fix missing unlock on error in
+ mtdchar_compat_ioctl()
+Message-ID: <20200725063701.GA1058480@kroah.com>
+References: <20200725063416.172037-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200725063416.172037-1-weiyongjun1@huawei.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-PTR_ERR should access the value just tested by IS_ERR, otherwise
-the wrong error code will be returned.
+On Sat, Jul 25, 2020 at 06:34:16AM +0000, Wei Yongjun wrote:
+> Add the missing unlock before return from function mtdchar_compat_ioctl()
+> in the error handling case.
+> 
+> Fixes: 210bec567936 ("mtd: properly check all write ioctls for permissions")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  drivers/mtd/mtdchar.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/mtd/mtdchar.c b/drivers/mtd/mtdchar.c
+> index 52c120f9fb0d..b40f46a43fc6 100644
+> --- a/drivers/mtd/mtdchar.c
+> +++ b/drivers/mtd/mtdchar.c
+> @@ -1064,8 +1064,10 @@ static long mtdchar_compat_ioctl(struct file *file, unsigned int cmd,
+>  		struct mtd_oob_buf32 buf;
+>  		struct mtd_oob_buf32 __user *buf_user = argp;
+>  
+> -		if (!(file->f_mode & FMODE_WRITE))
+> -			return -EPERM;
+> +		if (!(file->f_mode & FMODE_WRITE)) {
+> +			ret = -EPERM;
+> +			break;
+> +		}
+>  
+>  		if (copy_from_user(&buf, argp, sizeof(buf)))
+>  			ret = -EFAULT;
+> 
+> 
+> 
 
-Fixes: 7694b6ca649f ("crypto: sa2ul - Add crypto driver")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/crypto/sa2ul.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I think Richard already resolved this in his tree, but I could be wrong.
 
-diff --git a/drivers/crypto/sa2ul.c b/drivers/crypto/sa2ul.c
-index ebcdffcdb686..5bc099052bd2 100644
---- a/drivers/crypto/sa2ul.c
-+++ b/drivers/crypto/sa2ul.c
-@@ -2259,7 +2259,7 @@ static int sa_dma_init(struct sa_crypto_data *dd)
- 
- 	dd->dma_tx = dma_request_chan(dd->dev, "tx");
- 	if (IS_ERR(dd->dma_tx)) {
--		if (PTR_ERR(dd->dma_rx1) != -EPROBE_DEFER)
-+		if (PTR_ERR(dd->dma_tx) != -EPROBE_DEFER)
- 			dev_err(dd->dev, "Unable to request tx DMA channel\n");
- 		ret = PTR_ERR(dd->dma_tx);
- 		goto err_dma_tx;
+And nice detection by your bot, that's good to see.
 
+thanks,
 
-
+greg k-h

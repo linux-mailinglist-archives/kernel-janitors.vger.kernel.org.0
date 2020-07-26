@@ -2,130 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DAE4C22D758
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Jul 2020 14:03:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA88422DC3E
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jul 2020 07:59:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727057AbgGYMDa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 25 Jul 2020 08:03:30 -0400
-Received: from mout.web.de ([212.227.15.4]:58313 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727048AbgGYMD3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 25 Jul 2020 08:03:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1595678590;
-        bh=wQxlQ/SmWc9RFw9VETtG31ULmFDa4lN0pVNKkYynVio=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=TBk4PtVNQdVi0YZCzb9HczeZv7DaB6e0IZlB7mrXiZZ27rowK8J78Q0BVgb9eZLJm
-         Fo1zYvGI696zcI3y7zJiO3z8rzY1CQbym/7ouF6/yWp17A+NDBZZaedMQ1GkKCXEEb
-         CALAfTIHn674hDxhR+HLzJAde1LQatSjfok6dQu4=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.94.55]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0M8zRF-1k56Aq3Bnx-00CTsG; Sat, 25
- Jul 2020 14:03:09 +0200
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Russell King <linux@armlinux.org.uk>,
-        Wang Liang <wang.liang82@zte.com.cn>,
-        Xue Zhihong <xue.zhihong@zte.com.cn>
-Subject: Re: [PATCH v2] ARM: milbeaut: Add missing of_node_put() call in
- m10v_smp_init()
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-To:     Yi Wang <wang.yi59@zte.com.cn>,
-        Liao Pingfang <liao.pingfang@zte.com.cn>,
-        linux-arm-kernel@lists.infradead.org
-Message-ID: <e0092582-6fb6-e374-e130-232002c908e7@web.de>
-Date:   Sat, 25 Jul 2020 14:02:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:mZISB2jQ0F97zteapPrujC6qzBqE+bj/c5RiJHOJntYQ3Dqx0C1
- /0L/aLzfTueRVAF3zTff+0BVtrC8W9tvtdL+R2p5y0gdfrDDjjK6MhAJGVP7C2zTt9aZ00v
- l9MUC45P2rgF13mJcRnc1VpLpi5GoFeZqWWPWmCfAlZDGshUfHJ/QOOYxG8vxUbk92gCIij
- 7zcpANuqiHm9dK2kzyd+g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:dksXAoVsbKA=:4e925Q/IQIE62cSaBgkGOs
- omtsQ/p3TFgyViId+wmpTQ7l5p3Phnzjxj3oCzlwbuJQ4pYPwYfgJ7wpf8axdm2fiKqwatxR8
- CQePo0XoTw9fWDFwS0t6vQypDzZeBg1f0J3lefDlFWXpDagzYq0V8iXKkSl3HnXuxDnnxGNWt
- 7Gd1irKpZzX6TTnkzNp4NEcTYNs8CH/M21ojFodqOGMdUgEiTvgyfkTFIFMUCbS65gGZp8m/Q
- MCBUbAvQN7dmRRYcCsIW5af+K99jCSXZhIJveIn298Y+WDyqr8EWLNKXI/Si0VNQ6hRhYCbrS
- Vk+WlDwU/IlKEQuwqqg1pziihg9BYWfLwvK08Kq7n4jSu4bKJDqxZb+WC+15qxzPTLN0nSN8f
- /ye1y4rMMhNSZBupTk8xJG17f3Dgr99MCoGwPXTWI+xA/2e3zvQyZ03Z7F/G6LXnPytJH1CWh
- VgRg68m4liMQg9H2oSOzS1hDLxeekhc4/GqOOcjX7V1gAqPAHZEOj6sGGYYedyWk76a7uEppI
- ZfXLPHNwxud0eillXCswy9XxT+XmIyJtN/KRH5BBDZio8ZDUjhZW43psbRIE/D8PSoB5FpPKs
- IBEdt6cKq8NWE03Uo0jCZ+HjFzQtwwCHhthItfCbgj+Rrur+Omo25Kwgp+vlslpCldT39/Aua
- Eq078JheN9jGrv4mKvns9tjAxpZ96BaWTCktCn/4GVNxKzGKo+4lVdwStfgQSwjnr+2r/QAXx
- Y5Xm4bbdZlFvG1AU+14FSGJzipg4y0YsO4m1OHdCuREw3LcPNKoscadFGeHThNsYA30TSpt+U
- /HIEVfMF14WpVCbKs8yjBeyXOHEXLwCgCpwbTQ0icxHqUNILAdpPaWjgXzKSb97EeafBg+si6
- qOQ3TQOg/a2RNtwWpM8489vxt1RI53IXKCIoY13RYIq8Lvcxz1TEK/NiKacgqiG6nJ4oekIUe
- n7iERrFSr6redBmVzPIQu2hsFL87KIDUhwGsekSOW0/w6h014LIZnloHLHR969+YOwviES7D2
- GAWCy4loK4eiy7m8exzB2JzVXilBkW9NXpWNxSHOlf0OIbxAFh0YT23Bvj77DiKBwBXD9q9+g
- vufnBnp0mh31K+eu4bz4e3cq/74ijdiuxA08aB/6fE1y0JnHSVrNc/5smSmR86XMKNtwyS3Rj
- CVbPvjDYh+ZgdEcAHwzffSjpzDk5ZD0ylavj0x9re31kxjjlCb+DzRUqhfzAS93HnmDRmrKNj
- 5skFgNxiRMRD/04GYEkeugy+AaACgHljQiSe5gw==
+        id S1726726AbgGZF67 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Jul 2020 01:58:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46424 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725789AbgGZF66 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 26 Jul 2020 01:58:58 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75C50C0619D2;
+        Sat, 25 Jul 2020 22:58:58 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id kq25so903791ejb.3;
+        Sat, 25 Jul 2020 22:58:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=I6XqHb7TKjXhnvSm7JahxLKLF4M+094vQnTCeqVNkHk=;
+        b=SbSLNcKWPh/7qYRAnSvGzuWEbZLO0+h4lWXaEWXhD8litGtRAL5ahdgeWCB8Ig6ObI
+         YwDN/HiSHJJWP0blpaimpJAZuhynLX3oyprm/rD1l/TktDVmW5Zo2Z1ulMFxDGiGuJ4c
+         pTrBLjPbELZUTd6hcDItI9tsy1WlHYbnPQBPpospWcZsA9st9ivkHdo+6T3ohIRYeR/u
+         +0hBoAM0ldTuWvO+lD75TEdcIf/mTRAkmpvwqjikqkLnEof+OQZPuZbSrN9SA2IYQr7x
+         nd1XW2vBU75ytINPwFe0dF8kHFZaHWhbJv7nQJ/DKJvogCREKVa8+XDwkKFyQ6LrXULv
+         wg1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=I6XqHb7TKjXhnvSm7JahxLKLF4M+094vQnTCeqVNkHk=;
+        b=Sc3rSq+Nbvwneohl0dpzJCOVZKdLS2kCYkxCuW8GrtHXW2cYthMqmEPQvrwkEJjBTG
+         nvZAJHXQ7KGM4ED5Mghmbn7oBcJ1A0XpYOQcT4IGIWsSjyiZYruVu47V1dgCVK4ahs5G
+         pPMczUEIOixHRq+ictCSu0MbewpYVdJgG+yoflumCPu46gb0M/ZsmrqcsSjEC9w+8ief
+         djb+AA8IWaToUbiUjSGeDSG5rm15SkDF/WrEP3AtXuvIYYiUOCvvmkRKPSS6Qvxd/y+A
+         tIUrby9DYgH5H0Yw1TrpbbniPBVDFfYV4/KrH6uhgCWmy8wbK3aiVJ9y46bz+8W2SUNu
+         rD6w==
+X-Gm-Message-State: AOAM530QyupElmOxgIcVSO1oDSo5S2mTb/45b4UwpcE8GvqmRdyJb0Yq
+        eoBMR6LIKAIPRolcqhRJ4gI=
+X-Google-Smtp-Source: ABdhPJyYrrVsodgMC9gZ4llhHzEPMHbnt08nWJ8IY+E5/yyfN9of4njsydsSLWRk1eKWk0ChImYkbA==
+X-Received: by 2002:a17:906:430a:: with SMTP id j10mr14945339ejm.163.1595743136995;
+        Sat, 25 Jul 2020 22:58:56 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2ddd:7800:e9bf:bff0:c68e:55b7])
+        by smtp.gmail.com with ESMTPSA id r9sm4556620edt.1.2020.07.25.22.58.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Jul 2020 22:58:56 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>
+Cc:     linux-doc@vger.kernel.org,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: adjust kprobes.rst entry to new location
+Date:   Sun, 26 Jul 2020 07:58:43 +0200
+Message-Id: <20200726055843.10783-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> The variable np in function m10v_smp_init takes the return value
-> of of_find_compatible_node, which gets a node but does not put it.
+Commit 2165b82fde82 ("docs: Move kprobes.rst from staging/ to trace/")
+moved kprobes.rst, but missed to adjust the MAINTAINERS entry.
 
-Such information is useful.
+Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
 
+  warning: no file matches    F:    Documentation/staging/kprobes.rst
 
-> If this node is not put it may cause a memory leak.
+Adjust the entry to the new file location.
 
-Is the reference management generally improvable for this function impleme=
-ntation?
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+Naveen, Masami-san, please ack.
+Jonathan, please pick this minor non-urgent patch into docs-next.
 
+applies cleanly on next-20200724
 
-Will the tag =E2=80=9CFixes=E2=80=9D become helpful for the commit message=
-?
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Regards,
-Markus
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 960f7d43f9d7..416fc4555834 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9676,7 +9676,7 @@ M:	Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>
+ M:	"David S. Miller" <davem@davemloft.net>
+ M:	Masami Hiramatsu <mhiramat@kernel.org>
+ S:	Maintained
+-F:	Documentation/staging/kprobes.rst
++F:	Documentation/trace/kprobes.rst
+ F:	include/asm-generic/kprobes.h
+ F:	include/linux/kprobes.h
+ F:	kernel/kprobes.c
+-- 
+2.17.1
+

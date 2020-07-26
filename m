@@ -2,74 +2,173 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 721A822DD79
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jul 2020 11:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60A3F22DEB7
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jul 2020 13:40:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726820AbgGZJGu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 Jul 2020 05:06:50 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:10269 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725794AbgGZJGu (ORCPT
+        id S1726669AbgGZLju (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Jul 2020 07:39:50 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:32814
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725794AbgGZLju (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 Jul 2020 05:06:50 -0400
+        Sun, 26 Jul 2020 07:39:50 -0400
 X-IronPort-AV: E=Sophos;i="5.75,398,1589234400"; 
-   d="scan'208";a="461332981"
+   d="scan'208";a="355309542"
 Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/AES256-SHA256; 26 Jul 2020 11:06:48 +0200
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/AES256-SHA256; 26 Jul 2020 13:39:47 +0200
 From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc:     kernel-janitors@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        sound-open-firmware@alsa-project.org, alsa-devel@alsa-project.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: SOF: imx: use resource_size
-Date:   Sun, 26 Jul 2020 10:25:33 +0200
-Message-Id: <1595751933-4952-1-git-send-email-Julia.Lawall@inria.fr>
+To:     linux-rdma@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: [PATCH 0/7] drop unnecessary list_empty
+Date:   Sun, 26 Jul 2020 12:58:25 +0200
+Message-Id: <1595761112-11003-1-git-send-email-Julia.Lawall@inria.fr>
 X-Mailer: git-send-email 1.9.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Use resource_size rather than a verbose computation on
-the end and start fields.
+The various list iterators are able to handle an empty list.
+The only effect of avoiding the loop is not initializing some
+index variables.
+Drop list_empty tests in cases where these variables are not
+used.
 
-The semantic patch that makes this change is as follows:
+The semantic patch that makes these changes is as follows:
 (http://coccinelle.lip6.fr/)
 
 <smpl>
-@@ struct resource ptr; @@
-- (ptr.end - ptr.start + 1)
-+ resource_size(&ptr)
+@@
+expression x,e;
+iterator name list_for_each_entry;
+statement S;
+identifier i;
+@@
+
+-if (!(list_empty(x))) {
+   list_for_each_entry(i,x,...) S
+- }
+ ... when != i
+? i = e
+
+@@
+expression x,e;
+iterator name list_for_each_entry_safe;
+statement S;
+identifier i,j;
+@@
+
+-if (!(list_empty(x))) {
+   list_for_each_entry_safe(i,j,x,...) S
+- }
+ ... when != i
+     when != j
+(
+  i = e;
+|
+? j = e;
+)
+
+@@
+expression x,e;
+iterator name list_for_each;
+statement S;
+identifier i;
+@@
+
+-if (!(list_empty(x))) {
+   list_for_each(i,x) S
+- }
+ ... when != i
+? i = e
+
+@@
+expression x,e;
+iterator name list_for_each_safe;
+statement S;
+identifier i,j;
+@@
+
+-if (!(list_empty(x))) {
+   list_for_each_safe(i,j,x) S
+- }
+ ... when != i
+     when != j
+(
+  i = e;
+|
+? j = e;
+)
+
+// -------------------
+
+@@
+expression x,e;
+statement S;
+identifier i;
+@@
+
+-if (!(list_empty(x)))
+   list_for_each_entry(i,x,...) S
+ ... when != i
+? i = e
+
+@@
+expression x,e;
+statement S;
+identifier i,j;
+@@
+
+-if (!(list_empty(x)))
+   list_for_each_entry_safe(i,j,x,...) S
+ ... when != i
+     when != j
+(
+  i = e;
+|
+? j = e;
+)
+
+@@
+expression x,e;
+statement S;
+identifier i;
+@@
+
+-if (!(list_empty(x)))
+   list_for_each(i,x) S
+ ... when != i
+? i = e
+
+@@
+expression x,e;
+statement S;
+identifier i,j;
+@@
+
+-if (!(list_empty(x)))
+   list_for_each_safe(i,j,x) S
+ ... when != i
+     when != j
+(
+  i = e;
+|
+? j = e;
+)
 </smpl>
 
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-
 ---
- sound/soc/sof/imx/imx8m.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff -u -p a/sound/soc/sof/imx/imx8m.c b/sound/soc/sof/imx/imx8m.c
---- a/sound/soc/sof/imx/imx8m.c
-+++ b/sound/soc/sof/imx/imx8m.c
-@@ -188,8 +188,7 @@ static int imx8m_probe(struct snd_sof_de
- 	}
- 
- 	sdev->bar[SOF_FW_BLK_TYPE_SRAM] = devm_ioremap_wc(sdev->dev, res.start,
--							  res.end - res.start +
--							  1);
-+							  resource_size(&res));
- 	if (!sdev->bar[SOF_FW_BLK_TYPE_SRAM]) {
- 		dev_err(sdev->dev, "failed to ioremap mem 0x%x size 0x%x\n",
- 			base, size);
-
+ drivers/media/pci/saa7134/saa7134-core.c                      |   14 ++---
+ drivers/media/usb/cx231xx/cx231xx-core.c                      |   16 ++----
+ drivers/media/usb/tm6000/tm6000-core.c                        |   24 +++-------
+ drivers/net/ethernet/mellanox/mlx5/core/steering/dr_matcher.c |   13 ++---
+ drivers/net/ethernet/mellanox/mlx5/core/steering/dr_rule.c    |    5 --
+ drivers/net/ethernet/sfc/ptp.c                                |   20 +++-----
+ drivers/net/wireless/ath/dfs_pattern_detector.c               |   15 ++----
+ sound/soc/intel/atom/sst/sst_loader.c                         |   10 +---
+ sound/soc/intel/skylake/skl-pcm.c                             |    8 +--
+ sound/soc/intel/skylake/skl-topology.c                        |    5 --
+ 10 files changed, 53 insertions(+), 77 deletions(-)

@@ -2,101 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA88422DC3E
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jul 2020 07:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 721A822DD79
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jul 2020 11:06:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726726AbgGZF67 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 Jul 2020 01:58:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46424 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725789AbgGZF66 (ORCPT
+        id S1726820AbgGZJGu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Jul 2020 05:06:50 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:10269 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725794AbgGZJGu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 Jul 2020 01:58:58 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75C50C0619D2;
-        Sat, 25 Jul 2020 22:58:58 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id kq25so903791ejb.3;
-        Sat, 25 Jul 2020 22:58:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=I6XqHb7TKjXhnvSm7JahxLKLF4M+094vQnTCeqVNkHk=;
-        b=SbSLNcKWPh/7qYRAnSvGzuWEbZLO0+h4lWXaEWXhD8litGtRAL5ahdgeWCB8Ig6ObI
-         YwDN/HiSHJJWP0blpaimpJAZuhynLX3oyprm/rD1l/TktDVmW5Zo2Z1ulMFxDGiGuJ4c
-         pTrBLjPbELZUTd6hcDItI9tsy1WlHYbnPQBPpospWcZsA9st9ivkHdo+6T3ohIRYeR/u
-         +0hBoAM0ldTuWvO+lD75TEdcIf/mTRAkmpvwqjikqkLnEof+OQZPuZbSrN9SA2IYQr7x
-         nd1XW2vBU75ytINPwFe0dF8kHFZaHWhbJv7nQJ/DKJvogCREKVa8+XDwkKFyQ6LrXULv
-         wg1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=I6XqHb7TKjXhnvSm7JahxLKLF4M+094vQnTCeqVNkHk=;
-        b=Sc3rSq+Nbvwneohl0dpzJCOVZKdLS2kCYkxCuW8GrtHXW2cYthMqmEPQvrwkEJjBTG
-         nvZAJHXQ7KGM4ED5Mghmbn7oBcJ1A0XpYOQcT4IGIWsSjyiZYruVu47V1dgCVK4ahs5G
-         pPMczUEIOixHRq+ictCSu0MbewpYVdJgG+yoflumCPu46gb0M/ZsmrqcsSjEC9w+8ief
-         djb+AA8IWaToUbiUjSGeDSG5rm15SkDF/WrEP3AtXuvIYYiUOCvvmkRKPSS6Qvxd/y+A
-         tIUrby9DYgH5H0Yw1TrpbbniPBVDFfYV4/KrH6uhgCWmy8wbK3aiVJ9y46bz+8W2SUNu
-         rD6w==
-X-Gm-Message-State: AOAM530QyupElmOxgIcVSO1oDSo5S2mTb/45b4UwpcE8GvqmRdyJb0Yq
-        eoBMR6LIKAIPRolcqhRJ4gI=
-X-Google-Smtp-Source: ABdhPJyYrrVsodgMC9gZ4llhHzEPMHbnt08nWJ8IY+E5/yyfN9of4njsydsSLWRk1eKWk0ChImYkbA==
-X-Received: by 2002:a17:906:430a:: with SMTP id j10mr14945339ejm.163.1595743136995;
-        Sat, 25 Jul 2020 22:58:56 -0700 (PDT)
-Received: from felia.fritz.box ([2001:16b8:2ddd:7800:e9bf:bff0:c68e:55b7])
-        by smtp.gmail.com with ESMTPSA id r9sm4556620edt.1.2020.07.25.22.58.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Jul 2020 22:58:56 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>
-Cc:     linux-doc@vger.kernel.org,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: adjust kprobes.rst entry to new location
-Date:   Sun, 26 Jul 2020 07:58:43 +0200
-Message-Id: <20200726055843.10783-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Sun, 26 Jul 2020 05:06:50 -0400
+X-IronPort-AV: E=Sophos;i="5.75,398,1589234400"; 
+   d="scan'208";a="461332981"
+Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/AES256-SHA256; 26 Jul 2020 11:06:48 +0200
+From:   Julia Lawall <Julia.Lawall@inria.fr>
+To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Cc:     kernel-janitors@vger.kernel.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        sound-open-firmware@alsa-project.org, alsa-devel@alsa-project.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ASoC: SOF: imx: use resource_size
+Date:   Sun, 26 Jul 2020 10:25:33 +0200
+Message-Id: <1595751933-4952-1-git-send-email-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 1.9.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 2165b82fde82 ("docs: Move kprobes.rst from staging/ to trace/")
-moved kprobes.rst, but missed to adjust the MAINTAINERS entry.
+Use resource_size rather than a verbose computation on
+the end and start fields.
 
-Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
+The semantic patch that makes this change is as follows:
+(http://coccinelle.lip6.fr/)
 
-  warning: no file matches    F:    Documentation/staging/kprobes.rst
+<smpl>
+@@ struct resource ptr; @@
+- (ptr.end - ptr.start + 1)
++ resource_size(&ptr)
+</smpl>
 
-Adjust the entry to the new file location.
+Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
-Naveen, Masami-san, please ack.
-Jonathan, please pick this minor non-urgent patch into docs-next.
+ sound/soc/sof/imx/imx8m.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-applies cleanly on next-20200724
-
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 960f7d43f9d7..416fc4555834 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9676,7 +9676,7 @@ M:	Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>
- M:	"David S. Miller" <davem@davemloft.net>
- M:	Masami Hiramatsu <mhiramat@kernel.org>
- S:	Maintained
--F:	Documentation/staging/kprobes.rst
-+F:	Documentation/trace/kprobes.rst
- F:	include/asm-generic/kprobes.h
- F:	include/linux/kprobes.h
- F:	kernel/kprobes.c
--- 
-2.17.1
+diff -u -p a/sound/soc/sof/imx/imx8m.c b/sound/soc/sof/imx/imx8m.c
+--- a/sound/soc/sof/imx/imx8m.c
++++ b/sound/soc/sof/imx/imx8m.c
+@@ -188,8 +188,7 @@ static int imx8m_probe(struct snd_sof_de
+ 	}
+ 
+ 	sdev->bar[SOF_FW_BLK_TYPE_SRAM] = devm_ioremap_wc(sdev->dev, res.start,
+-							  res.end - res.start +
+-							  1);
++							  resource_size(&res));
+ 	if (!sdev->bar[SOF_FW_BLK_TYPE_SRAM]) {
+ 		dev_err(sdev->dev, "failed to ioremap mem 0x%x size 0x%x\n",
+ 			base, size);
 

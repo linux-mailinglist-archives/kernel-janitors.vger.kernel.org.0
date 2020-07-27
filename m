@@ -2,67 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3657322F964
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 21:47:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D379322FACF
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 22:58:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728810AbgG0Tqy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jul 2020 15:46:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59700 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726196AbgG0Tqx (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jul 2020 15:46:53 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2710C061794;
-        Mon, 27 Jul 2020 12:46:53 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id E5FF9127768A9;
-        Mon, 27 Jul 2020 12:30:07 -0700 (PDT)
-Date:   Mon, 27 Jul 2020 12:46:52 -0700 (PDT)
-Message-Id: <20200727.124652.1347094721322555381.davem@davemloft.net>
-To:     jgg@nvidia.com
-Cc:     colin.king@canonical.com, mkalderon@marvell.com,
-        aelior@marvell.com, dledford@redhat.com, irusskikh@marvell.com,
-        alobakin@marvell.com, linux-rdma@vger.kernel.org,
+        id S1726362AbgG0U56 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Jul 2020 16:57:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37432 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726171AbgG0U56 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Jul 2020 16:57:58 -0400
+Received: from localhost.localdomain (pool-96-246-152-186.nycmny.fios.verizon.net [96.246.152.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6C0CB20838;
+        Mon, 27 Jul 2020 20:57:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595883478;
+        bh=AMSN2ecQFesrryvC8lvOnbL7UBWDRobz8cXhfmoQXb4=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=RujnX9ZJola97Aga2AvExn0NHQBjg3drtWr/XHQ6jZ4Bc0og1CnxHQfuWQNuS6ZaG
+         JykataoGGPIl4l3hzdUZ/nqn255YvbgpeBbATvi+1N37QOjEb2XDMSURl2RnFLNU4j
+         eK98wqwZzlZwjr+FlyqNL7dT0Ix0TCYJ6eeykoZ0=
+Message-ID: <1595883476.4841.167.camel@kernel.org>
+Subject: Re: [PATCH] integrity: remove redundant initialization of variable
+ ret
+From:   Mimi Zohar <zohar@kernel.org>
+To:     James Morris <jmorris@namei.org>,
+        Colin King <colin.king@canonical.com>,
+        Mimi Zohar <zohar@linux.ibm.com>
+Cc:     "Serge E . Hallyn" <serge@hallyn.com>,
+        linux-security-module@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] qed: fix assignment of n_rq_elems to incorrect params
- field
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200727161739.GA60250@nvidia.com>
-References: <20200727141712.112906-1-colin.king@canonical.com>
-        <20200727161739.GA60250@nvidia.com>
-X-Mailer: Mew version 6.8 on Emacs 26.3
+Date:   Mon, 27 Jul 2020 16:57:56 -0400
+In-Reply-To: <alpine.LRH.2.21.2007280405340.18670@namei.org>
+References: <20200701134634.549399-1-colin.king@canonical.com>
+         <alpine.LRH.2.21.2007280405340.18670@namei.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 27 Jul 2020 12:30:08 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Jason Gunthorpe <jgg@nvidia.com>
-Date: Mon, 27 Jul 2020 13:17:39 -0300
-
-> On Mon, Jul 27, 2020 at 03:17:12PM +0100, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->> 
->> Currently n_rq_elems is being assigned to params.elem_size instead of the
->> field params.num_elems.  Coverity is detecting this as a double assingment
->> to params.elem_size and reporting this as an usused value on the first
->> assignment.  Fix this.
->> 
->> Addresses-Coverity: ("Unused value")
->> Fixes: b6db3f71c976 ("qed: simplify chain allocation with init params struct")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>  drivers/infiniband/hw/qedr/verbs.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
+On Tue, 2020-07-28 at 04:05 +1000, James Morris wrote:
+> On Wed, 1 Jul 2020, Colin King wrote:
 > 
-> DaveM will need to take this since the Fixed patch is in his tree,
-> thanks.
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > The variable ret is being initialized with a value that is never read
+> > and it is being updated later with a new value.  The initialization is
+> > redundant and can be removed.
+> > 
+> > Addresses-Coverity: ("Unused value")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > ---
+> >  security/integrity/digsig_asymmetric.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/security/integrity/digsig_asymmetric.c b/security/integrity/digsig_asymmetric.c
+> > index 4e0d6778277e..cfa4127d0518 100644
+> > --- a/security/integrity/digsig_asymmetric.c
+> > +++ b/security/integrity/digsig_asymmetric.c
+> > @@ -79,7 +79,7 @@ int asymmetric_verify(struct key *keyring, const char *sig,
+> >  	struct public_key_signature pks;
+> >  	struct signature_v2_hdr *hdr = (struct signature_v2_hdr *)sig;
+> >  	struct key *key;
+> > -	int ret = -ENOMEM;
+> > +	int ret;
+> 
+> Assuming Mimi will grab this.
+> 
+> 
+> Acked-by: James Morris <jamorris@linux.microsoft.com>
 
-Applied to net-next, thanks everyone.
+Yes, thank you for the reminder.
+
+Mimi

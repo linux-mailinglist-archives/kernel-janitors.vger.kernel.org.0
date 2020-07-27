@@ -2,66 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4325122F638
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 19:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FAC622F6DA
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 19:41:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730331AbgG0RLA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jul 2020 13:11:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35432 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728835AbgG0RLA (ORCPT
+        id S1729091AbgG0Rk5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Jul 2020 13:40:57 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:49847 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728935AbgG0Rk4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jul 2020 13:11:00 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01656C061794;
-        Mon, 27 Jul 2020 10:11:00 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 65B1A1286DD39;
-        Mon, 27 Jul 2020 09:54:14 -0700 (PDT)
-Date:   Mon, 27 Jul 2020 10:10:59 -0700 (PDT)
-Message-Id: <20200727.101059.1257161436665415755.davem@davemloft.net>
-To:     Julia.Lawall@inria.fr
-Cc:     saeedm@mellanox.com, kernel-janitors@vger.kernel.org,
-        leon@kernel.org, kuba@kernel.org, netdev@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/7] net/mlx5: drop unnecessary list_empty
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <1595761112-11003-5-git-send-email-Julia.Lawall@inria.fr>
-References: <1595761112-11003-1-git-send-email-Julia.Lawall@inria.fr>
-        <1595761112-11003-5-git-send-email-Julia.Lawall@inria.fr>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 27 Jul 2020 09:54:14 -0700 (PDT)
+        Mon, 27 Jul 2020 13:40:56 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1k077O-0001vZ-V6; Mon, 27 Jul 2020 17:40:55 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        linux-fsdevel@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] binfmt_elf: fix unsigned regset0_size compared to less than zero
+Date:   Mon, 27 Jul 2020 18:40:54 +0100
+Message-Id: <20200727174054.154765-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Julia Lawall <Julia.Lawall@inria.fr>
-Date: Sun, 26 Jul 2020 12:58:29 +0200
+From: Colin Ian King <colin.king@canonical.com>
 
-> list_for_each_entry is able to handle an empty list.
-> The only effect of avoiding the loop is not initializing the
-> index variable.
-> Drop list_empty tests in cases where these variables are not
-> used.
-> 
-> Note that list_for_each_entry is defined in terms of list_first_entry,
-> which indicates that it should not be used on an empty list.  But in
-> list_for_each_entry, the element obtained by list_first_entry is not
-> really accessed, only the address of its list_head field is compared
-> to the address of the list head, so the list_first_entry is safe.
-> 
-> The semantic patch that makes this change is as follows (with another
-> variant for the no brace case): (http://coccinelle.lip6.fr/)
- ...
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+Variable regset0_size is an unsigned int and it is being checked
+for an error by checking if it is less than zero, and hence this
+check is always going to be false.  Fix this by making the variable
+regset0_size signed.
 
-Saeed, please pick this up.
+Addresses-Coverity: ("Unsigned compared against 0")
+Fixes: 0f17865d8847 ("introduction of regset ->get() wrappers, switching ELF coredumps to those")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ fs/binfmt_elf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thank you.
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index 6a171a28bdf7..13d053982dd7 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -1821,7 +1821,7 @@ static int fill_thread_core_info(struct elf_thread_core_info *t,
+ 				 long signr, size_t *total)
+ {
+ 	unsigned int i;
+-	unsigned int regset0_size;
++	int regset0_size;
+ 
+ 	/*
+ 	 * NT_PRSTATUS is the one special case, because the regset data
+-- 
+2.27.0
+

@@ -2,82 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E0F822ED29
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 15:24:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A53B22ED81
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 15:36:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728480AbgG0NYQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jul 2020 09:24:16 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:43802 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726139AbgG0NYQ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jul 2020 09:24:16 -0400
-Received: by mail-oi1-f195.google.com with SMTP id l84so1751593oig.10;
-        Mon, 27 Jul 2020 06:24:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vPijsWsA86ncuQ4YsaqIM+LvW4eENySIZkL8qr7mFnI=;
-        b=ui8f+KUTdFarHw/52QqxxNiqpgJdfqXJPxZfP95AoXINyirlI7aroyaPg7OE1OthuO
-         zs5LwuOZuJb1rk1016pERxHMmuP7yHwBNpcoH+yH8FimzhJOqKP+XVPQqOK+vyLlv1kT
-         1s180zaY1YQiQpFa//RwpgKmq/XUJx4LfpKcEjPFbdBsBIRu3ne+WvdOr9taY3UqCej4
-         h2ZXRioNPNzOP5hRQakte/Y+OzU5eSF/7+xl2hqxVXZ/HzZDpxu3MSVETuU0jCsqk3DN
-         3Dxf2BYMlNcm+sarer0muwIkPGdXxrdHrDQq4EyF/ODIk2vvghnh5Uu3Qp/i5eopj7bE
-         4kqA==
-X-Gm-Message-State: AOAM533hiMKsdDxHuzIQ+WXHTAC8cw+u0CpoXo3mnlnGvR7RONk1rMt6
-        C+KWH3Y8C2hNF/fUVaT7DBgIg9uNis27Fj96AkeI+Q==
-X-Google-Smtp-Source: ABdhPJwxgeTfu25/fNqV/Yp7m4UiuLztNmLGBCv6sgMQ/dSVqrERZH1ePjwzvqq5MtdHN4jGfHFnB4USsnISOTsaoQw=
-X-Received: by 2002:aca:4a89:: with SMTP id x131mr18906467oia.103.1595856255175;
- Mon, 27 Jul 2020 06:24:15 -0700 (PDT)
+        id S1728985AbgG0NgD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Jul 2020 09:36:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38386 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726298AbgG0NgD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Jul 2020 09:36:03 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6E1732073E;
+        Mon, 27 Jul 2020 13:36:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595856963;
+        bh=2Yq+MaLWcEj3edk4hAYe+/GUUNPl7bYKU7VolZjMk8Q=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cOdBxxBt/q+rrdy3v0XAXcFUS9vLPTef2+ciFH6pn48TwW3z9CDqh5QGLeWXVS+bH
+         XVsm7rkGWrJ+1AopPHwnzOS1Uw3vKOllI2CF4R2i0T0l2LyF+0Pnkv3M2Zy8ffsd9r
+         o3wA/ex3iBmweMnlQ6936OrNIRMYqlRTwIuIfOm8=
+Date:   Mon, 27 Jul 2020 15:35:58 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] mtd: unlock on error in ioctl
+Message-ID: <20200727133558.GA28751@kroah.com>
+References: <20200727112050.GF389488@mwanda>
 MIME-Version: 1.0
-References: <20200722170608.960983-1-colin.king@canonical.com>
-In-Reply-To: <20200722170608.960983-1-colin.king@canonical.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 27 Jul 2020 15:24:04 +0200
-Message-ID: <CAJZ5v0gPLp2FdP15-g6G=RksmcqyF4v1a01=2jhoXj0P9ii0Tg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: APEI: remove redundant assignment to variable rc
-To:     Colin King <colin.king@canonical.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200727112050.GF389488@mwanda>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jul 22, 2020 at 7:06 PM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> The variable rc is being initialized with a value that is
-> never read and it is being updated later with a new value. The
-> initialization is redundant and can be removed.
->
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On Mon, Jul 27, 2020 at 02:20:50PM +0300, Dan Carpenter wrote:
+> We need to unlock before returning on this error path.
+> 
+> Fixes: 210bec567936 ("mtd: properly check all write ioctls for permissions")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  drivers/acpi/apei/hest.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
-> index 953a2fae8b15..6e980fe16772 100644
-> --- a/drivers/acpi/apei/hest.c
-> +++ b/drivers/acpi/apei/hest.c
-> @@ -227,7 +227,7 @@ __setup("hest_disable", setup_hest_disable);
->  void __init acpi_hest_init(void)
->  {
->         acpi_status status;
-> -       int rc = -ENODEV;
-> +       int rc;
->         unsigned int ghes_count = 0;
->
->         if (hest_disable) {
-> --
+>  drivers/mtd/mtdchar.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/mtd/mtdchar.c b/drivers/mtd/mtdchar.c
+> index 52c120f9fb0d..05f9218592df 100644
+> --- a/drivers/mtd/mtdchar.c
+> +++ b/drivers/mtd/mtdchar.c
+> @@ -1064,8 +1064,10 @@ static long mtdchar_compat_ioctl(struct file *file, unsigned int cmd,
+>  		struct mtd_oob_buf32 buf;
+>  		struct mtd_oob_buf32 __user *buf_user = argp;
+>  
+> -		if (!(file->f_mode & FMODE_WRITE))
+> -			return -EPERM;
+> +		if (!(file->f_mode & FMODE_WRITE)) {
+> +			ret = -EPERM;
+> +			goto unlock;
+> +		}
+>  
+>  		if (copy_from_user(&buf, argp, sizeof(buf)))
+>  			ret = -EFAULT;
+> @@ -1117,6 +1119,7 @@ static long mtdchar_compat_ioctl(struct file *file, unsigned int cmd,
+>  		ret = mtdchar_ioctl(file, cmd, (unsigned long)argp);
+>  	}
+>  
+> +unlock:
+>  	mutex_unlock(&mtd_mutex);
+>  
+>  	return ret;
+> -- 
+> 2.27.0
+> 
 
-Applied as 5.9 material, thanks!
+I think this is already fixed up in the mtd tree.
+
+thanks,
+
+greg k-h

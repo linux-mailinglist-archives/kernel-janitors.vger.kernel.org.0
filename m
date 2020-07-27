@@ -2,61 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 352DE22EDF0
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 15:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95A6122EE3D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 16:06:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728714AbgG0Nvz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jul 2020 09:51:55 -0400
-Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:44074 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728296AbgG0Nvy (ORCPT
+        id S1728537AbgG0OGD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Jul 2020 10:06:03 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:43076 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726222AbgG0OGD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jul 2020 09:51:54 -0400
-Received: from localhost.localdomain ([93.23.198.229])
-        by mwinf5d90 with ME
-        id 8Drs230084xT3VZ03Drsf6; Mon, 27 Jul 2020 15:51:53 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 27 Jul 2020 15:51:53 +0200
-X-ME-IP: 93.23.198.229
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     mchehab@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
-        hverkuil-cisco@xs4all.nl
-Cc:     linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH 2/2] media: bt8xx: avoid a useless memset
-Date:   Mon, 27 Jul 2020 15:51:51 +0200
-Message-Id: <20200727135151.54757-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Mon, 27 Jul 2020 10:06:03 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1k03lR-0001ev-5a; Mon, 27 Jul 2020 14:06:01 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Kamel Bouhara <kamel.bouhara@bootlin.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        linux-iio@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] counter: microchip-tcb-capture: remove ATMEL_TC_ETRGEDG_NONE bit check
+Date:   Mon, 27 Jul 2020 15:06:00 +0100
+Message-Id: <20200727140600.112562-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Avoid a memset after a call to 'dma_alloc_coherent()'.
-This is useless since
-commit 518a2f1925c3 ("dma-mapping: zero memory returned from dma_alloc_*")
+From: Colin Ian King <colin.king@canonical.com>
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+The macro ATMEL_TC_ETRGEDG_NONE is defined as 0 << 8 which is zero and
+hence the check cmr & ATMEL_TC_ETRGEDG_NONE can never be true. Since
+*action is already assigned MCHP_TC_SYNAPSE_ACTION_NONE then this check
+and set is redundant dead code and can be removed.
+
+Addresses-Coverity: ("Logically dead code")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/media/pci/bt8xx/btcx-risc.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/counter/microchip-tcb-capture.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/media/pci/bt8xx/btcx-risc.c b/drivers/media/pci/bt8xx/btcx-risc.c
-index 13bb1490a568..b3179038b900 100644
---- a/drivers/media/pci/bt8xx/btcx-risc.c
-+++ b/drivers/media/pci/bt8xx/btcx-risc.c
-@@ -73,7 +73,6 @@ int btcx_riscmem_alloc(struct pci_dev *pci,
- 		dprintk("btcx: riscmem alloc [%d] dma=%lx cpu=%p size=%d\n",
- 			memcnt, (unsigned long)dma, cpu, size);
- 	}
--	memset(risc->cpu,0,risc->size);
- 	return 0;
- }
+diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
+index f7b7743ddb94..119640d6d6ab 100644
+--- a/drivers/counter/microchip-tcb-capture.c
++++ b/drivers/counter/microchip-tcb-capture.c
+@@ -185,9 +185,7 @@ static int mchp_tc_count_action_get(struct counter_device *counter,
  
+ 	*action = MCHP_TC_SYNAPSE_ACTION_NONE;
+ 
+-	if (cmr & ATMEL_TC_ETRGEDG_NONE)
+-		*action = MCHP_TC_SYNAPSE_ACTION_NONE;
+-	else if (cmr & ATMEL_TC_ETRGEDG_RISING)
++	if (cmr & ATMEL_TC_ETRGEDG_RISING)
+ 		*action = MCHP_TC_SYNAPSE_ACTION_RISING_EDGE;
+ 	else if (cmr & ATMEL_TC_ETRGEDG_FALLING)
+ 		*action = MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE;
 -- 
-2.25.1
+2.27.0
 

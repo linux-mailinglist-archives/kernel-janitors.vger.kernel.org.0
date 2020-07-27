@@ -2,110 +2,239 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 686B522E725
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 09:59:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00C7522E90A
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 11:30:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727015AbgG0H7M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jul 2020 03:59:12 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:51657 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726122AbgG0H7M (ORCPT
+        id S1728146AbgG0Jai (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Jul 2020 05:30:38 -0400
+Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:47276 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726981AbgG0Jai (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jul 2020 03:59:12 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1595836751; h=Content-Transfer-Encoding: Content-Type:
- In-Reply-To: MIME-Version: Date: Message-ID: References: Cc: To: From:
- Subject: Sender; bh=+PV/mgFmHCpT1iOt87TCKArIUd/iWarn9UzS13Yi6VE=; b=eUnVBcO7/N5WpmSaJi0RoRIICnLK17B4xi+roY5Ix9S+3sb2ByyVtTpqgvXH0Q2dbb2ddOT+
- p3Y25SZhHuMGS0qJee5OLxJsvOpagUzCGSd4WkvNo1SBlVCV/v+GHQ2zwnQnIquam2hqUCSb
- 1vmTntbxgwpwvTKdto9qEKFIfpw=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n08.prod.us-east-1.postgun.com with SMTP id
- 5f1e8947bd0c3f02968c2948 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 27 Jul 2020 07:59:02
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 26DF1C433CA; Mon, 27 Jul 2020 07:59:02 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.8 required=2.0 tests=ALL_TRUSTED,NICE_REPLY_A,
-        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from [192.168.0.13] (unknown [183.83.138.47])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: akashast)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 72632C433C6;
-        Mon, 27 Jul 2020 07:58:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 72632C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=akashast@codeaurora.org
-Subject: Re: [PATCH] i2c: qcom-geni: fix spelling mistake "unepxected" ->
- "unexpected"
-From:   Akash Asthana <akashast@codeaurora.org>
-To:     Colin King <colin.king@canonical.com>,
-        Alok Chauhan <alokc@codeaurora.org>,
-        Andy Gross <agross@kernel.org>, linux-i2c@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191103212204.13606-1-colin.king@canonical.com>
- <74e71d14-9f27-6a44-f253-4756ba124695@codeaurora.org>
-Message-ID: <ee839cf4-6310-aa4e-6ed2-322f20343953@codeaurora.org>
-Date:   Mon, 27 Jul 2020 13:28:56 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Mon, 27 Jul 2020 05:30:38 -0400
+Received: from localhost.localdomain ([93.23.16.147])
+        by mwinf5d31 with ME
+        id 89WV2300A3ANib9039WVhH; Mon, 27 Jul 2020 11:30:35 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 27 Jul 2020 11:30:35 +0200
+X-ME-IP: 93.23.16.147
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     herbert@gondor.apana.org.au, davem@davemloft.net
+Cc:     linux-crypto@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] crypto: hifn_795x - switch from 'pci_' to 'dma_' API
+Date:   Mon, 27 Jul 2020 11:30:27 +0200
+Message-Id: <20200727093027.46331-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <74e71d14-9f27-6a44-f253-4756ba124695@codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-On 7/27/2020 1:25 PM, Akash Asthana wrote:
->
-> On 11/4/2019 2:52 AM, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> There is a spelling mistake in an error message string, fix it.
->>
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>   drivers/i2c/busses/i2c-qcom-geni.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/i2c/busses/i2c-qcom-geni.c 
->> b/drivers/i2c/busses/i2c-qcom-geni.c
->> index 17abf60c94ae..387fb5a83471 100644
->> --- a/drivers/i2c/busses/i2c-qcom-geni.c
->> +++ b/drivers/i2c/busses/i2c-qcom-geni.c
->> @@ -98,7 +98,7 @@ static const struct geni_i2c_err_log gi2c_log[] = {
->>       [GP_IRQ0] = {-EIO, "Unknown I2C err GP_IRQ0"},
->>       [NACK] = {-ENXIO, "NACK: slv unresponsive, check its 
->> power/reset-ln"},
->>       [GP_IRQ2] = {-EIO, "Unknown I2C err GP IRQ2"},
->> -    [BUS_PROTO] = {-EPROTO, "Bus proto err, noisy/unepxected 
->> start/stop"},
->> +    [BUS_PROTO] = {-EPROTO, "Bus proto err, noisy/unexpected 
->> start/stop"},
->>       [ARB_LOST] = {-EAGAIN, "Bus arbitration lost, clock line 
->> undriveable"},
->>       [GP_IRQ5] = {-EIO, "Unknown I2C err GP IRQ5"},
->>       [GENI_OVERRUN] = {-EIO, "Cmd overrun, check GENI cmd-state 
->> machine"},
->
-> The patch is still applying cleanly on tip.
->
-> Reviewed-by: Akash Asthana <akashast@codeauror.org>
-Correct tag
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GFP_ with a correct flag.
+It has been compile tested.
 
-Reviewed-by: Akash Asthana <akashast@codeaurora.org>
+When memory is allocated in 'hifn_probe()' GFP_KERNEL can be used
+because it is a probe function and no spin_lock is taken.
 
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
+
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+---
+ drivers/crypto/hifn_795x.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/crypto/hifn_795x.c b/drivers/crypto/hifn_795x.c
+index 354836468c5d..3363ca4b1a98 100644
+--- a/drivers/crypto/hifn_795x.c
++++ b/drivers/crypto/hifn_795x.c
+@@ -1235,7 +1235,8 @@ static int hifn_setup_src_desc(struct hifn_device *dev, struct page *page,
+ 	int idx;
+ 	dma_addr_t addr;
+ 
+-	addr = pci_map_page(dev->pdev, page, offset, size, PCI_DMA_TODEVICE);
++	addr = dma_map_page(&dev->pdev->dev, page, offset, size,
++			    DMA_TO_DEVICE);
+ 
+ 	idx = dma->srci;
+ 
+@@ -1293,7 +1294,8 @@ static void hifn_setup_dst_desc(struct hifn_device *dev, struct page *page,
+ 	int idx;
+ 	dma_addr_t addr;
+ 
+-	addr = pci_map_page(dev->pdev, page, offset, size, PCI_DMA_FROMDEVICE);
++	addr = dma_map_page(&dev->pdev->dev, page, offset, size,
++			    DMA_FROM_DEVICE);
+ 
+ 	idx = dma->dsti;
+ 	dma->dstr[idx].p = __cpu_to_le32(addr);
+@@ -2470,7 +2472,7 @@ static int hifn_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		return err;
+ 	pci_set_master(pdev);
+ 
+-	err = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
++	err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
+ 	if (err)
+ 		goto err_out_disable_pci_device;
+ 
+@@ -2514,8 +2516,9 @@ static int hifn_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		}
+ 	}
+ 
+-	dev->desc_virt = pci_zalloc_consistent(pdev, sizeof(struct hifn_dma),
+-					       &dev->desc_dma);
++	dev->desc_virt = dma_alloc_coherent(&pdev->dev,
++					    sizeof(struct hifn_dma),
++					    &dev->desc_dma, GFP_KERNEL);
+ 	if (!dev->desc_virt) {
+ 		dev_err(&pdev->dev, "Failed to allocate descriptor rings.\n");
+ 		err = -ENOMEM;
+@@ -2572,8 +2575,8 @@ static int hifn_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	free_irq(dev->irq, dev);
+ 	tasklet_kill(&dev->tasklet);
+ err_out_free_desc:
+-	pci_free_consistent(pdev, sizeof(struct hifn_dma),
+-			dev->desc_virt, dev->desc_dma);
++	dma_free_coherent(&pdev->dev, sizeof(struct hifn_dma), dev->desc_virt,
++			  dev->desc_dma);
+ 
+ err_out_unmap_bars:
+ 	for (i = 0; i < 3; ++i)
+@@ -2610,8 +2613,8 @@ static void hifn_remove(struct pci_dev *pdev)
+ 
+ 		hifn_flush(dev);
+ 
+-		pci_free_consistent(pdev, sizeof(struct hifn_dma),
+-				dev->desc_virt, dev->desc_dma);
++		dma_free_coherent(&pdev->dev, sizeof(struct hifn_dma),
++				  dev->desc_virt, dev->desc_dma);
+ 		for (i = 0; i < 3; ++i)
+ 			if (dev->bar[i])
+ 				iounmap(dev->bar[i]);
 -- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,\na Linux Foundation Collaborative Project
+2.25.1
 

@@ -2,80 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E9E722F713
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 19:54:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE7F022F748
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 20:06:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730810AbgG0RyS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jul 2020 13:54:18 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50162 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726821AbgG0RyS (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jul 2020 13:54:18 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1k07KF-0002zf-KX; Mon, 27 Jul 2020 17:54:11 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>, netdev@vger.kernel.org,
-        bpf@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] bpf: fix swapped arguments in calls to check_buffer_access
-Date:   Mon, 27 Jul 2020 18:54:11 +0100
-Message-Id: <20200727175411.155179-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        id S1730067AbgG0SGH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Jul 2020 14:06:07 -0400
+Received: from namei.org ([65.99.196.166]:55630 "EHLO namei.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728545AbgG0SGH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Jul 2020 14:06:07 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by namei.org (8.14.4/8.14.4) with ESMTP id 06RI5sx8020079;
+        Mon, 27 Jul 2020 18:05:54 GMT
+Date:   Tue, 28 Jul 2020 04:05:54 +1000 (AEST)
+From:   James Morris <jmorris@namei.org>
+To:     Colin King <colin.king@canonical.com>,
+        Mimi Zohar <zohar@linux.vnet.ibm.com>
+cc:     "Serge E . Hallyn" <serge@hallyn.com>,
+        linux-security-module@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] integrity: remove redundant initialization of variable
+ ret
+In-Reply-To: <20200701134634.549399-1-colin.king@canonical.com>
+Message-ID: <alpine.LRH.2.21.2007280405340.18670@namei.org>
+References: <20200701134634.549399-1-colin.king@canonical.com>
+User-Agent: Alpine 2.21 (LRH 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Wed, 1 Jul 2020, Colin King wrote:
 
-There are a couple of arguments of the boolean flag zero_size_allowed
-and the char pointer buf_info when calling to function check_buffer_access
-that are swapped by mistake. Fix these by swapping them to correct
-the argument ordering.
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable ret is being initialized with a value that is never read
+> and it is being updated later with a new value.  The initialization is
+> redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  security/integrity/digsig_asymmetric.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/security/integrity/digsig_asymmetric.c b/security/integrity/digsig_asymmetric.c
+> index 4e0d6778277e..cfa4127d0518 100644
+> --- a/security/integrity/digsig_asymmetric.c
+> +++ b/security/integrity/digsig_asymmetric.c
+> @@ -79,7 +79,7 @@ int asymmetric_verify(struct key *keyring, const char *sig,
+>  	struct public_key_signature pks;
+>  	struct signature_v2_hdr *hdr = (struct signature_v2_hdr *)sig;
+>  	struct key *key;
+> -	int ret = -ENOMEM;
+> +	int ret;
 
-Addresses-Coverity: ("Array compared to 0")
-Fixes: afbf21dce668 ("bpf: Support readonly/readwrite buffers in verifier")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- kernel/bpf/verifier.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Assuming Mimi will grab this.
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index cd14e70f2d07..88bb25d08bf8 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -3477,14 +3477,14 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, u32 regn
- 				regno, reg_type_str[reg->type]);
- 			return -EACCES;
- 		}
--		err = check_buffer_access(env, reg, regno, off, size, "rdonly",
--					  false,
-+		err = check_buffer_access(env, reg, regno, off, size, false,
-+					  "rdonly",
- 					  &env->prog->aux->max_rdonly_access);
- 		if (!err && value_regno >= 0)
- 			mark_reg_unknown(env, regs, value_regno);
- 	} else if (reg->type == PTR_TO_RDWR_BUF) {
--		err = check_buffer_access(env, reg, regno, off, size, "rdwr",
--					  false,
-+		err = check_buffer_access(env, reg, regno, off, size, false,
-+					  "rdwr",
- 					  &env->prog->aux->max_rdwr_access);
- 		if (!err && t == BPF_READ && value_regno >= 0)
- 			mark_reg_unknown(env, regs, value_regno);
+
+Acked-by: James Morris <jamorris@linux.microsoft.com>
+
 -- 
-2.27.0
+James Morris
+<jmorris@namei.org>
 

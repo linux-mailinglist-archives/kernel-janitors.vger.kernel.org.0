@@ -2,134 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 753D722EDB7
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 15:42:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B80C122EDB3
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 15:41:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728375AbgG0NmG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jul 2020 09:42:06 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:57538 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726555AbgG0NmF (ORCPT
+        id S1728287AbgG0NlZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Jul 2020 09:41:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58606 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726555AbgG0NlY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jul 2020 09:42:05 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06RDalhA125037;
-        Mon, 27 Jul 2020 13:42:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=C79hoc+bChITH02F5tCpLD3vLSaoHC5D5jC4/tNpnZQ=;
- b=ru9FHjwY/mUY8HtHss0i08Sck2VlGiFM+JAapqQ/1DaNbh1197LqjRmOhh8DXUDAji9f
- LCqINFEqC4cJdtAbjoA7Lsptjhvb2DMfWnTQ38m6/vt/XKpgMG9nv8pIxX41on97k38o
- oOYS+u9t7hmNpWxnoXKN3mkF2++zm5C8HeGofLx8ZGbpQjNCqJ9BE6enYO+5cUjVb7y1
- nT6EDYRqv646nHqgVIpavh50SqMz7UevJoZOyIXRUD1wKFzrvc60x0tkqULNhjIONw6v
- UwdCb+uk9fNhrODboTuAA/J1X5rNBI+r+PgVvN/PSQWMG+wu0gbvifH3/95ukqBcUa4A 6g== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 32hu1j1ka2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 27 Jul 2020 13:42:00 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06RDcMq5007680;
-        Mon, 27 Jul 2020 13:39:59 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 32hu5qqe7x-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 27 Jul 2020 13:39:59 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06RDdmE1003749;
-        Mon, 27 Jul 2020 13:39:48 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 27 Jul 2020 06:39:47 -0700
-Date:   Mon, 27 Jul 2020 16:39:40 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Evan Quan <evan.quan@amd.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] drm/amd/powerplay: off by one bugs in
- smu_cmn_to_asic_specific_index()
-Message-ID: <20200727133940.GA391897@mwanda>
+        Mon, 27 Jul 2020 09:41:24 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49DBBC0619D2;
+        Mon, 27 Jul 2020 06:41:23 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id o18so17087299eje.7;
+        Mon, 27 Jul 2020 06:41:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=reply-to:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=WRU4i5nuotlpyXHsJ/GhJzUxBSJEh2EwvWzY/0mhtJs=;
+        b=mFD/ySOZnh4it4pc167jVC6Z34oW7cMd8EdI/V69L+eE5UfUVpA0w/wnxhr4dXFW9z
+         LFiExckvP8rfz/TYYUgH+E1vDKzNZsx3rCTKEWxBtycZ6+gMWOCgcjSmg7mom3w2/kwf
+         iQF1Tsv489AjXrDW9JlBgaIs/w1rLl9JtXftS5lwWS1LvgdlXY5xQxDijG5tNDY7jakQ
+         oPJLsDI5NnIb7jqcoZF4iEFQYrfZvu3usWajfcMIEtPYAzF74ds8cFcDFDl/tzCKAllP
+         zDXlxyeVU/+9v45b/WDh8wjgQvKDVX2HfOGwY+4Gx6NeA389zat2buQigFyMFaW0ZVT/
+         65QA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:reply-to:subject:to:cc:references:from
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-transfer-encoding:content-language;
+        bh=WRU4i5nuotlpyXHsJ/GhJzUxBSJEh2EwvWzY/0mhtJs=;
+        b=Ig75W7khuqZB0ZVKabrpSIo1ynhyozQibzI+GrVxJIj92q5hqcfmje7blXkOTuMwUz
+         uRQXhSPvFZ/U+cMbyV64GGnlZQYQgLzAZRcpQlvqKGk3D4zr83/ahOQXEr9f2qDFRACt
+         LEZlXk447hHMpkksLGQ5yS7XwAiMAhvatvaKBKp++icQ9i6SvwnC4Jaaf3ZH2ZY56gD0
+         ta1btdknJtOVVs/zhppcbxle1N2ZA5w5Qsfu9+6GRHInLgoF5XwW2myuMnFskdDXE9zQ
+         xiEGUN3KmbBzfXH1AyTmW9NShRsoN3xbn9zRcgIZOqe7uPEddmFLvoSG9jU5qqsTnuW4
+         dUcw==
+X-Gm-Message-State: AOAM530teN2d6l9t7pol9jyGCBD+SOWrCT/zv7UEe7f3wlxqFAyFdyiT
+        o62n87edtuk/LKNHZF+tTPQqVEHg
+X-Google-Smtp-Source: ABdhPJyBJhGj0hE+6xxGNbOwiNpVx+ZqZqnr6spvxdyioOzNcY9AaM+Mx08+jlrNxnYSY44/BNGa0A==
+X-Received: by 2002:a17:906:a88b:: with SMTP id ha11mr5428219ejb.545.1595857281845;
+        Mon, 27 Jul 2020 06:41:21 -0700 (PDT)
+Received: from ?IPv6:2a02:908:1252:fb60:be8a:bd56:1f94:86e7? ([2a02:908:1252:fb60:be8a:bd56:1f94:86e7])
+        by smtp.gmail.com with ESMTPSA id s2sm754721ejh.95.2020.07.27.06.41.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jul 2020 06:41:21 -0700 (PDT)
+Reply-To: christian.koenig@amd.com
+Subject: Re: [PATCH 2/2] drm/radeon: avoid a useless memset
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        alexander.deucher@amd.com, christian.koenig@amd.com,
+        airlied@linux.ie, daniel@ffwll.ch
+Cc:     kernel-janitors@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org
+References: <20200727103436.50793-1-christophe.jaillet@wanadoo.fr>
+From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>
+Message-ID: <898acaf6-9975-40b1-1104-586b64689ccd@gmail.com>
+Date:   Mon, 27 Jul 2020 15:41:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9694 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 bulkscore=0
- malwarescore=0 mlxscore=0 spamscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007270100
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9694 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 clxscore=1015
- malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0 priorityscore=1501
- phishscore=0 mlxlogscore=999 lowpriorityscore=0 impostorscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007270100
+In-Reply-To: <20200727103436.50793-1-christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-These tables have _COUNT number of elements so the comparisons should be
->= instead of > to prevent reading one element beyond the end of the
-array.
+Am 27.07.20 um 12:34 schrieb Christophe JAILLET:
+> Avoid a memset after a call to 'dma_alloc_coherent()'.
+> This is useless since
+> commit 518a2f1925c3 ("dma-mapping: zero memory returned from dma_alloc_*")
+>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Fixes: 8264ee69f0d8 ("drm/amd/powerplay: drop unused code")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/gpu/drm/amd/powerplay/smu_cmn.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Reviewed-by: Christian König <christian.koenig@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/powerplay/smu_cmn.c b/drivers/gpu/drm/amd/powerplay/smu_cmn.c
-index be4b678d0e60..5c23c44c33bd 100644
---- a/drivers/gpu/drm/amd/powerplay/smu_cmn.c
-+++ b/drivers/gpu/drm/amd/powerplay/smu_cmn.c
-@@ -166,7 +166,7 @@ int smu_cmn_to_asic_specific_index(struct smu_context *smu,
- 
- 	switch (type) {
- 	case CMN2ASIC_MAPPING_MSG:
--		if (index > SMU_MSG_MAX_COUNT ||
-+		if (index >= SMU_MSG_MAX_COUNT ||
- 		    !smu->message_map)
- 			return -EINVAL;
- 
-@@ -181,7 +181,7 @@ int smu_cmn_to_asic_specific_index(struct smu_context *smu,
- 		return msg_mapping.map_to;
- 
- 	case CMN2ASIC_MAPPING_CLK:
--		if (index > SMU_CLK_COUNT ||
-+		if (index >= SMU_CLK_COUNT ||
- 		    !smu->clock_map)
- 			return -EINVAL;
- 
-@@ -192,7 +192,7 @@ int smu_cmn_to_asic_specific_index(struct smu_context *smu,
- 		return mapping.map_to;
- 
- 	case CMN2ASIC_MAPPING_FEATURE:
--		if (index > SMU_FEATURE_COUNT ||
-+		if (index >= SMU_FEATURE_COUNT ||
- 		    !smu->feature_map)
- 			return -EINVAL;
- 
-@@ -203,7 +203,7 @@ int smu_cmn_to_asic_specific_index(struct smu_context *smu,
- 		return mapping.map_to;
- 
- 	case CMN2ASIC_MAPPING_TABLE:
--		if (index > SMU_TABLE_COUNT ||
-+		if (index >= SMU_TABLE_COUNT ||
- 		    !smu->table_map)
- 			return -EINVAL;
- 
-@@ -214,7 +214,7 @@ int smu_cmn_to_asic_specific_index(struct smu_context *smu,
- 		return mapping.map_to;
- 
- 	case CMN2ASIC_MAPPING_PWR:
--		if (index > SMU_POWER_SOURCE_COUNT ||
-+		if (index >= SMU_POWER_SOURCE_COUNT ||
- 		    !smu->pwr_src_map)
- 			return -EINVAL;
- 
--- 
-2.27.0
+> ---
+>   drivers/gpu/drm/radeon/radeon_gart.c | 1 -
+>   1 file changed, 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/radeon/radeon_gart.c b/drivers/gpu/drm/radeon/radeon_gart.c
+> index b7ce254e5663..3808a753127b 100644
+> --- a/drivers/gpu/drm/radeon/radeon_gart.c
+> +++ b/drivers/gpu/drm/radeon/radeon_gart.c
+> @@ -85,7 +85,6 @@ int radeon_gart_table_ram_alloc(struct radeon_device *rdev)
+>   	}
+>   #endif
+>   	rdev->gart.ptr = ptr;
+> -	memset((void *)rdev->gart.ptr, 0, rdev->gart.table_size);
+>   	return 0;
+>   }
+>   
 

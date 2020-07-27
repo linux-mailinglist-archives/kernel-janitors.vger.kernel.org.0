@@ -2,55 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBCF822F767
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 20:12:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83F1422F780
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 20:14:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728920AbgG0SMN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jul 2020 14:12:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44972 "EHLO
+        id S1731336AbgG0SOU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Jul 2020 14:14:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728312AbgG0SMM (ORCPT
+        with ESMTP id S1729356AbgG0SOU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jul 2020 14:12:12 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DB92C061794;
-        Mon, 27 Jul 2020 11:12:12 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id f1so15271761wro.2;
-        Mon, 27 Jul 2020 11:12:12 -0700 (PDT)
+        Mon, 27 Jul 2020 14:14:20 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 055FFC061794;
+        Mon, 27 Jul 2020 11:14:20 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id f18so15701014wml.3;
+        Mon, 27 Jul 2020 11:14:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=n+cjMJexAD4hVslCLfZxYw0xSj4v32Cg73ix8mAo6lQ=;
-        b=rvXZRTq8JQeLezn3Y8PtrvIvpSkDiBHveZhfRmIRsSBeDJZnjKqBGy+QWwELGHHK9h
-         IcMm8HWjNIwnu3YVdbwj7AmtnCfpAhFZ+Rpc4w8N91b/7XRDjPtMUQxHAY+v6x5JU1nS
-         3XcXWMQ8Z6v41HCiM/COJFtN8CNp79O9B+gMY9IdeHjA7WwIXl3acZ7NJYKKF2pW6le1
-         9956/PiAmuH96Npac+3FjCpIR1YH8sTu6ZSf+wTE+16ZZ4Wm2B1q9cjwtZTrnH27vFLU
-         Os2LTJRtUv0ccsrNI3bsAmwtod5CkcmTpMeDKKx+aTuxVAdxyuvYtKYrRed634svN5W2
-         SgpA==
+        bh=oweP9/5P4IwfXq7FRGFpzMEQgr6J1hZ6crzxPuNCiqY=;
+        b=e+vB9jT04h1RqsV7Fy7tiIT+AHPMYl/g2rFgZntMj6RpzHGLDjLAI8bOB/FL+yBNX/
+         9qn331OfOwaU3a8WYOhf3CAAJYYXHhs4KMXgtBWnexxEufuchYEnVKcDBSXzVUispykn
+         PR40AH4VCMOWPdvJgpX6acxF7DBqNP8KyP2q4AIPqMVFUtDLmsCl6VmFgcNrsvst1eG9
+         klrjBAOThyjIG0dioA2ojFxTUJn17xbtsqRdZ6z0B6yZtinAFVZ395Hi2lInjq360Fl9
+         UtHO5WaCd+wmaxPB5DTQj2gwpModMlRNzeqY5m7liEbD/D9B33L3Io0obgG6UCAB3VY/
+         xNiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=n+cjMJexAD4hVslCLfZxYw0xSj4v32Cg73ix8mAo6lQ=;
-        b=qq7G3SgGR7kOnfXrQfxqFwOxK/OuoXzma4U7I3ST2E2L1GlVjes1Uxq4mezZjy7hx5
-         nkAIfhVgdHkKUT+7+MuVM+pMstmdYwl2ND1+U2w11PFB5wuQDGcFZlrkohscb1hjgyoe
-         ZKYiJ8hEUUR8yeVDljolzTebJigAZ4IcgN50fIkNdD9H6HHyZd0tvMR1GuUdfUrbeQZ/
-         3c8+iXDtpoRCZuO0uWDOgsyuQIjoC32rwmrYQonP3H1lCMY2/idVVpmkn+oLs/2FlW9J
-         vGBWaXVlaldkEPhYT9z6cgkIcW+/Q6MwnCmmngqULEIV/aJxU01k/t8e/1LVO3CpuZm1
-         FYSQ==
-X-Gm-Message-State: AOAM533gHrys5Ac8UysKXYDfih6ujTdw/uXgKlq+oXYuTHxT5TOjZb60
-        TQCYAoA4rwHi4RLOvmWTB0u4O7JL714DDl9+BF8=
-X-Google-Smtp-Source: ABdhPJwFtDW1X9++0RKW78h+dwtCDaX++VHQCmLYontPEXnwlgS2w9CTdMWsfkGtAl4r3B+vtG4bXra770bQd6VRpaY=
-X-Received: by 2002:adf:a351:: with SMTP id d17mr21027063wrb.111.1595873530004;
- Mon, 27 Jul 2020 11:12:10 -0700 (PDT)
+        bh=oweP9/5P4IwfXq7FRGFpzMEQgr6J1hZ6crzxPuNCiqY=;
+        b=I89mTvMkn97s6PKfwIBjBwWhnLQAzbWy7fGu9gkQDklSvTknhBmf8P1qJUatpkEHP/
+         Jb2/VmxybEbrsivbV/xv7bGTJi8326zXsIqILyzussSnsZG1OmsmR14CO8cAM2YHm6RP
+         uNTHgJvDsqurZ4fz4yslEtpfhKjWyWlBelBXK/G9OVl4Tto7oN3H6TkuR6LRBoCvjQcx
+         be+ZeVjAxYMoM4kofstRiYlYhPtk0xgUabmFUmaZIlm6zCOSSvm1p0zWPpkqzshqyV4a
+         ZyDB0LHnsNYdEq1wrR0R34sUlVj2qJBVsaAVOXgIdxp5mM+pxW2zxffBQxWi+h7iDgLi
+         QzmQ==
+X-Gm-Message-State: AOAM532KS4IJPCr8NJ60Jk/pvznJbeeQLmxncKp0RpKFoe1vpvKzin5U
+        weHRO7hntHnAiB4BvH6Psq6Puf3eDx2QtaD/fmA=
+X-Google-Smtp-Source: ABdhPJwDf3NQVRSMOOvQ3/gDp3spLrysuALfIbGNUz8NSRkrcu7vnDQpr1MxHquSAobzWw/p7CVeHkm3ribJUJCaGHA=
+X-Received: by 2002:a7b:c941:: with SMTP id i1mr429279wml.73.1595873658666;
+ Mon, 27 Jul 2020 11:14:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200727103436.50793-1-christophe.jaillet@wanadoo.fr> <898acaf6-9975-40b1-1104-586b64689ccd@gmail.com>
-In-Reply-To: <898acaf6-9975-40b1-1104-586b64689ccd@gmail.com>
+References: <20200727103421.50739-1-christophe.jaillet@wanadoo.fr> <224fc7f6-f56b-1dc8-87f2-33ff85d5720d@gmail.com>
+In-Reply-To: <224fc7f6-f56b-1dc8-87f2-33ff85d5720d@gmail.com>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Mon, 27 Jul 2020 14:11:58 -0400
-Message-ID: <CADnq5_OqdUxSKv21pg9o=a_dwyW7-j3URy+BYHrS+ubzuA-7NQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] drm/radeon: avoid a useless memset
+Date:   Mon, 27 Jul 2020 14:14:07 -0400
+Message-ID: <CADnq5_MKR9SC947WCN6Qp4BLhrK03=FtT7hD7b+DwNQ46krmkQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] drm/radeon: switch from 'pci_' to 'dma_' API
 To:     Christian Koenig <christian.koenig@amd.com>
 Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         "Deucher, Alexander" <alexander.deucher@amd.com>,
@@ -72,39 +72,185 @@ Applied.  Thanks!
 
 Alex
 
-On Mon, Jul 27, 2020 at 9:41 AM Christian K=C3=B6nig
+On Mon, Jul 27, 2020 at 9:42 AM Christian K=C3=B6nig
 <ckoenig.leichtzumerken@gmail.com> wrote:
 >
 > Am 27.07.20 um 12:34 schrieb Christophe JAILLET:
-> > Avoid a memset after a call to 'dma_alloc_coherent()'.
-> > This is useless since
-> > commit 518a2f1925c3 ("dma-mapping: zero memory returned from dma_alloc_=
-*")
+> > The wrappers in include/linux/pci-dma-compat.h should go away.
+> >
+> > The patch has been generated with the coccinelle script below and has b=
+een
+> > hand modified to replace GFP_ with a correct flag.
+> > It has been compile tested.
+> >
+> > When memory is allocated in 'radeon_gart_table_ram_alloc()' GFP_KERNEL
+> > can be used because its callers already use this flag.
+> >
+> > Both 'r100_pci_gart_init()' (r100.c) and 'rs400_gart_init()' (rs400.c)
+> > call 'radeon_gart_init()'.
+> > This function uses 'vmalloc'.
+> >
+> >
+> > @@
+> > @@
+> > -    PCI_DMA_BIDIRECTIONAL
+> > +    DMA_BIDIRECTIONAL
+> >
+> > @@
+> > @@
+> > -    PCI_DMA_TODEVICE
+> > +    DMA_TO_DEVICE
+> >
+> > @@
+> > @@
+> > -    PCI_DMA_FROMDEVICE
+> > +    DMA_FROM_DEVICE
+> >
+> > @@
+> > @@
+> > -    PCI_DMA_NONE
+> > +    DMA_NONE
+> >
+> > @@
+> > expression e1, e2, e3;
+> > @@
+> > -    pci_alloc_consistent(e1, e2, e3)
+> > +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+> >
+> > @@
+> > expression e1, e2, e3;
+> > @@
+> > -    pci_zalloc_consistent(e1, e2, e3)
+> > +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+> >
+> > @@
+> > expression e1, e2, e3, e4;
+> > @@
+> > -    pci_free_consistent(e1, e2, e3, e4)
+> > +    dma_free_coherent(&e1->dev, e2, e3, e4)
+> >
+> > @@
+> > expression e1, e2, e3, e4;
+> > @@
+> > -    pci_map_single(e1, e2, e3, e4)
+> > +    dma_map_single(&e1->dev, e2, e3, e4)
+> >
+> > @@
+> > expression e1, e2, e3, e4;
+> > @@
+> > -    pci_unmap_single(e1, e2, e3, e4)
+> > +    dma_unmap_single(&e1->dev, e2, e3, e4)
+> >
+> > @@
+> > expression e1, e2, e3, e4, e5;
+> > @@
+> > -    pci_map_page(e1, e2, e3, e4, e5)
+> > +    dma_map_page(&e1->dev, e2, e3, e4, e5)
+> >
+> > @@
+> > expression e1, e2, e3, e4;
+> > @@
+> > -    pci_unmap_page(e1, e2, e3, e4)
+> > +    dma_unmap_page(&e1->dev, e2, e3, e4)
+> >
+> > @@
+> > expression e1, e2, e3, e4;
+> > @@
+> > -    pci_map_sg(e1, e2, e3, e4)
+> > +    dma_map_sg(&e1->dev, e2, e3, e4)
+> >
+> > @@
+> > expression e1, e2, e3, e4;
+> > @@
+> > -    pci_unmap_sg(e1, e2, e3, e4)
+> > +    dma_unmap_sg(&e1->dev, e2, e3, e4)
+> >
+> > @@
+> > expression e1, e2, e3, e4;
+> > @@
+> > -    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
+> > +    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+> >
+> > @@
+> > expression e1, e2, e3, e4;
+> > @@
+> > -    pci_dma_sync_single_for_device(e1, e2, e3, e4)
+> > +    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+> >
+> > @@
+> > expression e1, e2, e3, e4;
+> > @@
+> > -    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
+> > +    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+> >
+> > @@
+> > expression e1, e2, e3, e4;
+> > @@
+> > -    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
+> > +    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+> >
+> > @@
+> > expression e1, e2;
+> > @@
+> > -    pci_dma_mapping_error(e1, e2)
+> > +    dma_mapping_error(&e1->dev, e2)
+> >
+> > @@
+> > expression e1, e2;
+> > @@
+> > -    pci_set_dma_mask(e1, e2)
+> > +    dma_set_mask(&e1->dev, e2)
+> >
+> > @@
+> > expression e1, e2;
+> > @@
+> > -    pci_set_consistent_dma_mask(e1, e2)
+> > +    dma_set_coherent_mask(&e1->dev, e2)
 > >
 > > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 >
 > Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
 >
 > > ---
-> >   drivers/gpu/drm/radeon/radeon_gart.c | 1 -
-> >   1 file changed, 1 deletion(-)
+> > If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+> >     https://marc.info/?l=3Dkernel-janitors&m=3D158745678307186&w=3D4
+> > ---
+> >   drivers/gpu/drm/radeon/radeon_gart.c | 9 ++++-----
+> >   1 file changed, 4 insertions(+), 5 deletions(-)
 > >
 > > diff --git a/drivers/gpu/drm/radeon/radeon_gart.c b/drivers/gpu/drm/rad=
 eon/radeon_gart.c
-> > index b7ce254e5663..3808a753127b 100644
+> > index f178ba321715..b7ce254e5663 100644
 > > --- a/drivers/gpu/drm/radeon/radeon_gart.c
 > > +++ b/drivers/gpu/drm/radeon/radeon_gart.c
-> > @@ -85,7 +85,6 @@ int radeon_gart_table_ram_alloc(struct radeon_device =
+> > @@ -72,8 +72,8 @@ int radeon_gart_table_ram_alloc(struct radeon_device =
 *rdev)
+> >   {
+> >       void *ptr;
+> >
+> > -     ptr =3D pci_alloc_consistent(rdev->pdev, rdev->gart.table_size,
+> > -                                &rdev->gart.table_addr);
+> > +     ptr =3D dma_alloc_coherent(&rdev->pdev->dev, rdev->gart.table_siz=
+e,
+> > +                              &rdev->gart.table_addr, GFP_KERNEL);
+> >       if (ptr =3D=3D NULL) {
+> >               return -ENOMEM;
+> >       }
+> > @@ -110,9 +110,8 @@ void radeon_gart_table_ram_free(struct radeon_devic=
+e *rdev)
+> >                             rdev->gart.table_size >> PAGE_SHIFT);
 > >       }
 > >   #endif
-> >       rdev->gart.ptr =3D ptr;
-> > -     memset((void *)rdev->gart.ptr, 0, rdev->gart.table_size);
-> >       return 0;
+> > -     pci_free_consistent(rdev->pdev, rdev->gart.table_size,
+> > -                         (void *)rdev->gart.ptr,
+> > -                         rdev->gart.table_addr);
+> > +     dma_free_coherent(&rdev->pdev->dev, rdev->gart.table_size,
+> > +                       (void *)rdev->gart.ptr, rdev->gart.table_addr);
+> >       rdev->gart.ptr =3D NULL;
+> >       rdev->gart.table_addr =3D 0;
 > >   }
-> >
 >
 > _______________________________________________
-> amd-gfx mailing list
-> amd-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/amd-gfx
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

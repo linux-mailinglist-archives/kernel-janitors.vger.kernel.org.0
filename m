@@ -2,97 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E741222EB25
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 13:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3613C22EBD2
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 14:13:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728075AbgG0LYE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jul 2020 07:24:04 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:34192 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726269AbgG0LYE (ORCPT
+        id S1728294AbgG0MNw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Jul 2020 08:13:52 -0400
+Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.52]:50090 "EHLO
+        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726555AbgG0MNv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jul 2020 07:24:04 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06RBM4Ch140691;
-        Mon, 27 Jul 2020 11:23:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=zhOel54M7SOIatcYENSCxB3GX1D0nU6zd3vC3xTJntc=;
- b=IMKQ+SiikUuZ09rRmslCmDsIpn8V9wZdg428KnZfoHmKK6Z0hPhrk5U55nx9a6oSMJ1A
- CGWe7cW2u/rU9IfwiHn9K+fxHNCh8c1GySJ+V4ygZZ+Sz3zXibPQf8lsev+7PzHh/SD2
- nVe3Nph5+f+mioh7fYwJt4zDoVfid/m6x1mh1HOpJPngZXVPKHBXOoxCW5SYrNE7UOIN
- gSdpcfqO04/uqzVUn7SFNbAa3zsxoCHNlchQ+5Cda2pRAfK7kC8MlLtogYrJ5L/CE06M
- YOnoQoEtR8VtxJiD7CGgCmGokPVir+TqR6p9VEwSIOM0ixCP9VVmFjWUMS5wGZqkwCsG uA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 32hu1j8xw4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 27 Jul 2020 11:23:57 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06RBEOdK109079;
-        Mon, 27 Jul 2020 11:23:56 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 32hu5qdt16-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 27 Jul 2020 11:23:56 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06RBNpa1016399;
-        Mon, 27 Jul 2020 11:23:51 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 27 Jul 2020 04:23:51 -0700
-Date:   Mon, 27 Jul 2020 14:23:44 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Frank van der Linden <fllinden@amazon.com>
-Cc:     Anna Schumaker <anna.schumaker@netapp.com>,
-        linux-nfs@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] NFSv4.2: Fix an error code in nfs4_xattr_cache_init()
-Message-ID: <20200727112344.GH389488@mwanda>
+        Mon, 27 Jul 2020 08:13:51 -0400
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.65.60])
+        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 52BE860096;
+        Mon, 27 Jul 2020 12:13:51 +0000 (UTC)
+Received: from us4-mdac16-53.ut7.mdlocal (unknown [10.7.66.24])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 5098E2009A;
+        Mon, 27 Jul 2020 12:13:51 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.66.35])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id D85B91C0051;
+        Mon, 27 Jul 2020 12:13:50 +0000 (UTC)
+Received: from webmail.solarflare.com (uk.solarflare.com [193.34.186.16])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 7B9D048005F;
+        Mon, 27 Jul 2020 12:13:50 +0000 (UTC)
+Received: from [10.17.20.203] (10.17.20.203) by ukex01.SolarFlarecom.com
+ (10.17.10.4) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 27 Jul
+ 2020 13:13:44 +0100
+Subject: Re: [PATCH 2/7] sfc: drop unnecessary list_empty
+To:     Julia Lawall <Julia.Lawall@inria.fr>,
+        Solarflare linux maintainers <linux-net-drivers@solarflare.com>
+CC:     <kernel-janitors@vger.kernel.org>,
+        Martin Habets <mhabets@solarflare.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <1595761112-11003-1-git-send-email-Julia.Lawall@inria.fr>
+ <1595761112-11003-3-git-send-email-Julia.Lawall@inria.fr>
+From:   Edward Cree <ecree@solarflare.com>
+Message-ID: <f8564082-0dad-a1a7-9d2e-198b429b58d4@solarflare.com>
+Date:   Mon, 27 Jul 2020 13:13:40 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9694 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 bulkscore=0
- malwarescore=0 mlxscore=0 spamscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007270083
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9694 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 mlxlogscore=999
- malwarescore=0 impostorscore=0 priorityscore=1501 spamscore=0 phishscore=0
- suspectscore=0 bulkscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007270084
+In-Reply-To: <1595761112-11003-3-git-send-email-Julia.Lawall@inria.fr>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Language: en-GB
+X-Originating-IP: [10.17.20.203]
+X-ClientProxiedBy: ocex03.SolarFlarecom.com (10.20.40.36) To
+ ukex01.SolarFlarecom.com (10.17.10.4)
+X-TM-AS-Product-Ver: SMEX-12.5.0.1300-8.6.1012-25566.005
+X-TM-AS-Result: No-1.399100-8.000000-10
+X-TMASE-MatchedRID: fgYTp5XatxaHYS4ybQtcOvZvT2zYoYOwC/ExpXrHizwumZeX1WIQ8L88
+        DvjRvF4An1Vi+LJeakUDvaj804LnkIwPUiPqp90EngIgpj8eDcC063Wh9WVqgmWCfbzydb0gsFZ
+        /31Unt9AV0D/96nhBQ90H8LFZNFG76sBnwpOylLOFBEdPN6KLPexVt431s/sfUrA4AyYCpjRnnG
+        sVz5KGCUq+D/qldGfLBsRAh8WmTAcG2WAWHb2qekrMHC7kmmSWJy4DmWREnABDDKa3G4nrLQ==
+X-TM-AS-User-Approved-Sender: Yes
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10-1.399100-8.000000
+X-TMASE-Version: SMEX-12.5.0.1300-8.6.1012-25566.005
+X-MDID: 1595852031-PHB02brAlX_u
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This should return -ENOMEM on failure instead of success.
-
-Fixes: 95ad37f90c33 ("NFSv4.2: add client side xattr caching.")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
----
- fs/nfs/nfs42xattr.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/fs/nfs/nfs42xattr.c b/fs/nfs/nfs42xattr.c
-index 23fdab977a2a..e75c4bb70266 100644
---- a/fs/nfs/nfs42xattr.c
-+++ b/fs/nfs/nfs42xattr.c
-@@ -1040,8 +1040,10 @@ int __init nfs4_xattr_cache_init(void)
- 		goto out2;
- 
- 	nfs4_xattr_cache_wq = alloc_workqueue("nfs4_xattr", WQ_MEM_RECLAIM, 0);
--	if (nfs4_xattr_cache_wq == NULL)
-+	if (nfs4_xattr_cache_wq == NULL) {
-+		ret = -ENOMEM;
- 		goto out1;
-+	}
- 
- 	ret = register_shrinker(&nfs4_xattr_cache_shrinker);
- 	if (ret)
--- 
-2.27.0
-
+On 26/07/2020 11:58, Julia Lawall wrote:
+> list_for_each_safe is able to handle an empty list.
+> The only effect of avoiding the loop is not initializing the
+> index variable.
+> Drop list_empty tests in cases where these variables are not
+> used.
+Sure, why not.
+Acked-by: Edward Cree <ecree@solarflare.com>

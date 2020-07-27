@@ -2,239 +2,143 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00C7522E90A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 11:30:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3532122EA1C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 12:34:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728146AbgG0Jai (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jul 2020 05:30:38 -0400
-Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:47276 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726981AbgG0Jai (ORCPT
+        id S1728117AbgG0KeV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Jul 2020 06:34:21 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:56424 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726952AbgG0KeU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jul 2020 05:30:38 -0400
-Received: from localhost.localdomain ([93.23.16.147])
-        by mwinf5d31 with ME
-        id 89WV2300A3ANib9039WVhH; Mon, 27 Jul 2020 11:30:35 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 27 Jul 2020 11:30:35 +0200
-X-ME-IP: 93.23.16.147
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     herbert@gondor.apana.org.au, davem@davemloft.net
-Cc:     linux-crypto@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] crypto: hifn_795x - switch from 'pci_' to 'dma_' API
-Date:   Mon, 27 Jul 2020 11:30:27 +0200
-Message-Id: <20200727093027.46331-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Mon, 27 Jul 2020 06:34:20 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06RAVb9c059965;
+        Mon, 27 Jul 2020 10:34:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=3I7Olt7ZVk3CadTlRULtNisWQsyxrRPqMw8+mT6nKEc=;
+ b=SYUY3JCeom3Ftfrq4bsUJgF91CeJTxU+xpHJzQbAB1lP1323RyB1Qy5H56BKdoIVIava
+ G+gO9PkafDDCihpCGe0FbQFm0IcySW1Rveo+gxu5lE4kmFO7LQrxt9QTKA6Uc323zYUV
+ 8EjuzSIDetnXYXAD6fYsdWTmL4un6ezJJNZriBW77SOpMWhC3rdFdv+3vd4VLb2ThikW
+ iNqlhNVyurhz/2qT7uhX41kIL/brEYroauvZ2TXb/uu9uINqI2GWSqS4S5lOOa8RhAYs
+ fzC5F5T+39xBpjFwwqKvXHeiDQXZMvnNgfn/VAqEsZ1tBygKKSOYmxR4d/xGThJAfXrM pQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 32hu1j8rst-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 27 Jul 2020 10:34:17 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06RAOW6P131089;
+        Mon, 27 Jul 2020 10:32:17 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 32hu5qp9tu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 27 Jul 2020 10:32:17 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06RAWGCp015220;
+        Mon, 27 Jul 2020 10:32:16 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 27 Jul 2020 03:32:16 -0700
+Date:   Mon, 27 Jul 2020 13:32:10 +0300
+From:   <dan.carpenter@oracle.com>
+To:     alobakin@marvell.com
+Cc:     kernel-janitors@vger.kernel.org
+Subject: [bug report] qed: sanitize PBL chains allocation
+Message-ID: <20200727103210.GA375660@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9694 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 bulkscore=0
+ malwarescore=0 suspectscore=3 spamscore=0 mlxlogscore=977 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007270076
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9694 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 mlxlogscore=993
+ malwarescore=0 impostorscore=0 priorityscore=1501 spamscore=0 phishscore=0
+ suspectscore=3 bulkscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007270077
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The wrappers in include/linux/pci-dma-compat.h should go away.
+Hello Alexander Lobakin,
 
-The patch has been generated with the coccinelle script below and has been
-hand modified to replace GFP_ with a correct flag.
-It has been compile tested.
+The patch 9b6ee3cf95d3: "qed: sanitize PBL chains allocation" from
+Jul 23, 2020, leads to the following static checker warning:
 
-When memory is allocated in 'hifn_probe()' GFP_KERNEL can be used
-because it is a probe function and no spin_lock is taken.
+	drivers/net/ethernet/qlogic/qed/qed_chain.c:299 qed_chain_alloc_pbl()
+	error: uninitialized symbol 'pbl_virt'.
 
-@@
-@@
--    PCI_DMA_BIDIRECTIONAL
-+    DMA_BIDIRECTIONAL
+drivers/net/ethernet/qlogic/qed/qed_chain.c
+   249  static int qed_chain_alloc_pbl(struct qed_dev *cdev, struct qed_chain *chain)
+   250  {
+   251          struct device *dev = &cdev->pdev->dev;
+   252          struct addr_tbl_entry *addr_tbl;
+   253          dma_addr_t phys, pbl_phys;
+   254          __le64 *pbl_virt;
+                ^^^^^^^^^^^^^^^^
 
-@@
-@@
--    PCI_DMA_TODEVICE
-+    DMA_TO_DEVICE
+   255          u32 page_cnt, i;
+   256          size_t size;
+   257          void *virt;
+   258  
+   259          page_cnt = chain->page_cnt;
+   260  
+   261          size = array_size(page_cnt, sizeof(*addr_tbl));
+   262          if (unlikely(size == SIZE_MAX))
+   263                  return -EOVERFLOW;
+   264  
+   265          addr_tbl = vzalloc(size);
+   266          if (!addr_tbl)
+   267                  return -ENOMEM;
+   268  
+   269          chain->pbl.pp_addr_tbl = addr_tbl;
+   270  
+   271          if (chain->b_external_pbl)
+   272                  goto alloc_pages;
+                        ^^^^^^^^^^^^^^^^
+uninitialized
 
-@@
-@@
--    PCI_DMA_FROMDEVICE
-+    DMA_FROM_DEVICE
+   273  
+   274          size = array_size(page_cnt, sizeof(*pbl_virt));
+   275          if (unlikely(size == SIZE_MAX))
+   276                  return -EOVERFLOW;
+   277  
+   278          pbl_virt = dma_alloc_coherent(dev, size, &pbl_phys, GFP_KERNEL);
+   279          if (!pbl_virt)
+   280                  return -ENOMEM;
+   281  
+   282          chain->pbl_sp.table_virt = pbl_virt;
+   283          chain->pbl_sp.table_phys = pbl_phys;
+   284          chain->pbl_sp.table_size = size;
+   285  
+   286  alloc_pages:
+   287          for (i = 0; i < page_cnt; i++) {
+   288                  virt = dma_alloc_coherent(dev, chain->page_size, &phys,
+   289                                            GFP_KERNEL);
+   290                  if (!virt)
+   291                          return -ENOMEM;
+   292  
+   293                  if (i == 0) {
+   294                          qed_chain_init_mem(chain, virt, phys);
+   295                          qed_chain_reset(chain);
+   296                  }
+   297  
+   298                  /* Fill the PBL table with the physical address of the page */
+   299                  pbl_virt[i] = cpu_to_le64(phys);
+                        ^^^^^^^^^^^
+   300  
+   301                  /* Keep the virtual address of the page */
+   302                  addr_tbl[i].virt_addr = virt;
+   303                  addr_tbl[i].dma_map = phys;
+   304          }
+   305  
+   306          return 0;
+   307  }
 
-@@
-@@
--    PCI_DMA_NONE
-+    DMA_NONE
-
-@@
-expression e1, e2, e3;
-@@
--    pci_alloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3;
-@@
--    pci_zalloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_free_consistent(e1, e2, e3, e4)
-+    dma_free_coherent(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_single(e1, e2, e3, e4)
-+    dma_map_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_single(e1, e2, e3, e4)
-+    dma_unmap_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4, e5;
-@@
--    pci_map_page(e1, e2, e3, e4, e5)
-+    dma_map_page(&e1->dev, e2, e3, e4, e5)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_page(e1, e2, e3, e4)
-+    dma_unmap_page(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_sg(e1, e2, e3, e4)
-+    dma_map_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_sg(e1, e2, e3, e4)
-+    dma_unmap_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-+    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-+    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-+    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-+    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2;
-@@
--    pci_dma_mapping_error(e1, e2)
-+    dma_mapping_error(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_dma_mask(e1, e2)
-+    dma_set_mask(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_consistent_dma_mask(e1, e2)
-+    dma_set_coherent_mask(&e1->dev, e2)
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-If needed, see post from Christoph Hellwig on the kernel-janitors ML:
-   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
----
- drivers/crypto/hifn_795x.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/crypto/hifn_795x.c b/drivers/crypto/hifn_795x.c
-index 354836468c5d..3363ca4b1a98 100644
---- a/drivers/crypto/hifn_795x.c
-+++ b/drivers/crypto/hifn_795x.c
-@@ -1235,7 +1235,8 @@ static int hifn_setup_src_desc(struct hifn_device *dev, struct page *page,
- 	int idx;
- 	dma_addr_t addr;
- 
--	addr = pci_map_page(dev->pdev, page, offset, size, PCI_DMA_TODEVICE);
-+	addr = dma_map_page(&dev->pdev->dev, page, offset, size,
-+			    DMA_TO_DEVICE);
- 
- 	idx = dma->srci;
- 
-@@ -1293,7 +1294,8 @@ static void hifn_setup_dst_desc(struct hifn_device *dev, struct page *page,
- 	int idx;
- 	dma_addr_t addr;
- 
--	addr = pci_map_page(dev->pdev, page, offset, size, PCI_DMA_FROMDEVICE);
-+	addr = dma_map_page(&dev->pdev->dev, page, offset, size,
-+			    DMA_FROM_DEVICE);
- 
- 	idx = dma->dsti;
- 	dma->dstr[idx].p = __cpu_to_le32(addr);
-@@ -2470,7 +2472,7 @@ static int hifn_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		return err;
- 	pci_set_master(pdev);
- 
--	err = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
-+	err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
- 	if (err)
- 		goto err_out_disable_pci_device;
- 
-@@ -2514,8 +2516,9 @@ static int hifn_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		}
- 	}
- 
--	dev->desc_virt = pci_zalloc_consistent(pdev, sizeof(struct hifn_dma),
--					       &dev->desc_dma);
-+	dev->desc_virt = dma_alloc_coherent(&pdev->dev,
-+					    sizeof(struct hifn_dma),
-+					    &dev->desc_dma, GFP_KERNEL);
- 	if (!dev->desc_virt) {
- 		dev_err(&pdev->dev, "Failed to allocate descriptor rings.\n");
- 		err = -ENOMEM;
-@@ -2572,8 +2575,8 @@ static int hifn_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	free_irq(dev->irq, dev);
- 	tasklet_kill(&dev->tasklet);
- err_out_free_desc:
--	pci_free_consistent(pdev, sizeof(struct hifn_dma),
--			dev->desc_virt, dev->desc_dma);
-+	dma_free_coherent(&pdev->dev, sizeof(struct hifn_dma), dev->desc_virt,
-+			  dev->desc_dma);
- 
- err_out_unmap_bars:
- 	for (i = 0; i < 3; ++i)
-@@ -2610,8 +2613,8 @@ static void hifn_remove(struct pci_dev *pdev)
- 
- 		hifn_flush(dev);
- 
--		pci_free_consistent(pdev, sizeof(struct hifn_dma),
--				dev->desc_virt, dev->desc_dma);
-+		dma_free_coherent(&pdev->dev, sizeof(struct hifn_dma),
-+				  dev->desc_virt, dev->desc_dma);
- 		for (i = 0; i < 3; ++i)
- 			if (dev->bar[i])
- 				iounmap(dev->bar[i]);
--- 
-2.25.1
-
+regards,
+dan carpenter

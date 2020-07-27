@@ -2,255 +2,45 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83F1422F780
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 20:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D661622F7EE
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 20:43:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731336AbgG0SOU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jul 2020 14:14:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45324 "EHLO
+        id S1730658AbgG0SnS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Jul 2020 14:43:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729356AbgG0SOU (ORCPT
+        with ESMTP id S1727880AbgG0SnS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jul 2020 14:14:20 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 055FFC061794;
-        Mon, 27 Jul 2020 11:14:20 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id f18so15701014wml.3;
-        Mon, 27 Jul 2020 11:14:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=oweP9/5P4IwfXq7FRGFpzMEQgr6J1hZ6crzxPuNCiqY=;
-        b=e+vB9jT04h1RqsV7Fy7tiIT+AHPMYl/g2rFgZntMj6RpzHGLDjLAI8bOB/FL+yBNX/
-         9qn331OfOwaU3a8WYOhf3CAAJYYXHhs4KMXgtBWnexxEufuchYEnVKcDBSXzVUispykn
-         PR40AH4VCMOWPdvJgpX6acxF7DBqNP8KyP2q4AIPqMVFUtDLmsCl6VmFgcNrsvst1eG9
-         klrjBAOThyjIG0dioA2ojFxTUJn17xbtsqRdZ6z0B6yZtinAFVZ395Hi2lInjq360Fl9
-         UtHO5WaCd+wmaxPB5DTQj2gwpModMlRNzeqY5m7liEbD/D9B33L3Io0obgG6UCAB3VY/
-         xNiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=oweP9/5P4IwfXq7FRGFpzMEQgr6J1hZ6crzxPuNCiqY=;
-        b=I89mTvMkn97s6PKfwIBjBwWhnLQAzbWy7fGu9gkQDklSvTknhBmf8P1qJUatpkEHP/
-         Jb2/VmxybEbrsivbV/xv7bGTJi8326zXsIqILyzussSnsZG1OmsmR14CO8cAM2YHm6RP
-         uNTHgJvDsqurZ4fz4yslEtpfhKjWyWlBelBXK/G9OVl4Tto7oN3H6TkuR6LRBoCvjQcx
-         be+ZeVjAxYMoM4kofstRiYlYhPtk0xgUabmFUmaZIlm6zCOSSvm1p0zWPpkqzshqyV4a
-         ZyDB0LHnsNYdEq1wrR0R34sUlVj2qJBVsaAVOXgIdxp5mM+pxW2zxffBQxWi+h7iDgLi
-         QzmQ==
-X-Gm-Message-State: AOAM532KS4IJPCr8NJ60Jk/pvznJbeeQLmxncKp0RpKFoe1vpvKzin5U
-        weHRO7hntHnAiB4BvH6Psq6Puf3eDx2QtaD/fmA=
-X-Google-Smtp-Source: ABdhPJwDf3NQVRSMOOvQ3/gDp3spLrysuALfIbGNUz8NSRkrcu7vnDQpr1MxHquSAobzWw/p7CVeHkm3ribJUJCaGHA=
-X-Received: by 2002:a7b:c941:: with SMTP id i1mr429279wml.73.1595873658666;
- Mon, 27 Jul 2020 11:14:18 -0700 (PDT)
+        Mon, 27 Jul 2020 14:43:18 -0400
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95B6CC061794;
+        Mon, 27 Jul 2020 11:43:17 -0700 (PDT)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1k085j-003p8e-WE; Mon, 27 Jul 2020 18:43:16 +0000
+Date:   Mon, 27 Jul 2020 19:43:15 +0100
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Colin King <colin.king@canonical.com>
+Cc:     linux-fsdevel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] binfmt_elf: fix unsigned regset0_size compared to
+ less than zero
+Message-ID: <20200727184315.GK794331@ZenIV.linux.org.uk>
+References: <20200727174054.154765-1-colin.king@canonical.com>
 MIME-Version: 1.0
-References: <20200727103421.50739-1-christophe.jaillet@wanadoo.fr> <224fc7f6-f56b-1dc8-87f2-33ff85d5720d@gmail.com>
-In-Reply-To: <224fc7f6-f56b-1dc8-87f2-33ff85d5720d@gmail.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Mon, 27 Jul 2020 14:14:07 -0400
-Message-ID: <CADnq5_MKR9SC947WCN6Qp4BLhrK03=FtT7hD7b+DwNQ46krmkQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] drm/radeon: switch from 'pci_' to 'dma_' API
-To:     Christian Koenig <christian.koenig@amd.com>
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        "Deucher, Alexander" <alexander.deucher@amd.com>,
-        Dave Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        kernel-janitors@vger.kernel.org,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200727174054.154765-1-colin.king@canonical.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Applied.  Thanks!
+On Mon, Jul 27, 2020 at 06:40:54PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Variable regset0_size is an unsigned int and it is being checked
+> for an error by checking if it is less than zero, and hence this
+> check is always going to be false.  Fix this by making the variable
+> regset0_size signed.
 
-Alex
-
-On Mon, Jul 27, 2020 at 9:42 AM Christian K=C3=B6nig
-<ckoenig.leichtzumerken@gmail.com> wrote:
->
-> Am 27.07.20 um 12:34 schrieb Christophe JAILLET:
-> > The wrappers in include/linux/pci-dma-compat.h should go away.
-> >
-> > The patch has been generated with the coccinelle script below and has b=
-een
-> > hand modified to replace GFP_ with a correct flag.
-> > It has been compile tested.
-> >
-> > When memory is allocated in 'radeon_gart_table_ram_alloc()' GFP_KERNEL
-> > can be used because its callers already use this flag.
-> >
-> > Both 'r100_pci_gart_init()' (r100.c) and 'rs400_gart_init()' (rs400.c)
-> > call 'radeon_gart_init()'.
-> > This function uses 'vmalloc'.
-> >
-> >
-> > @@
-> > @@
-> > -    PCI_DMA_BIDIRECTIONAL
-> > +    DMA_BIDIRECTIONAL
-> >
-> > @@
-> > @@
-> > -    PCI_DMA_TODEVICE
-> > +    DMA_TO_DEVICE
-> >
-> > @@
-> > @@
-> > -    PCI_DMA_FROMDEVICE
-> > +    DMA_FROM_DEVICE
-> >
-> > @@
-> > @@
-> > -    PCI_DMA_NONE
-> > +    DMA_NONE
-> >
-> > @@
-> > expression e1, e2, e3;
-> > @@
-> > -    pci_alloc_consistent(e1, e2, e3)
-> > +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-> >
-> > @@
-> > expression e1, e2, e3;
-> > @@
-> > -    pci_zalloc_consistent(e1, e2, e3)
-> > +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-> >
-> > @@
-> > expression e1, e2, e3, e4;
-> > @@
-> > -    pci_free_consistent(e1, e2, e3, e4)
-> > +    dma_free_coherent(&e1->dev, e2, e3, e4)
-> >
-> > @@
-> > expression e1, e2, e3, e4;
-> > @@
-> > -    pci_map_single(e1, e2, e3, e4)
-> > +    dma_map_single(&e1->dev, e2, e3, e4)
-> >
-> > @@
-> > expression e1, e2, e3, e4;
-> > @@
-> > -    pci_unmap_single(e1, e2, e3, e4)
-> > +    dma_unmap_single(&e1->dev, e2, e3, e4)
-> >
-> > @@
-> > expression e1, e2, e3, e4, e5;
-> > @@
-> > -    pci_map_page(e1, e2, e3, e4, e5)
-> > +    dma_map_page(&e1->dev, e2, e3, e4, e5)
-> >
-> > @@
-> > expression e1, e2, e3, e4;
-> > @@
-> > -    pci_unmap_page(e1, e2, e3, e4)
-> > +    dma_unmap_page(&e1->dev, e2, e3, e4)
-> >
-> > @@
-> > expression e1, e2, e3, e4;
-> > @@
-> > -    pci_map_sg(e1, e2, e3, e4)
-> > +    dma_map_sg(&e1->dev, e2, e3, e4)
-> >
-> > @@
-> > expression e1, e2, e3, e4;
-> > @@
-> > -    pci_unmap_sg(e1, e2, e3, e4)
-> > +    dma_unmap_sg(&e1->dev, e2, e3, e4)
-> >
-> > @@
-> > expression e1, e2, e3, e4;
-> > @@
-> > -    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-> > +    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-> >
-> > @@
-> > expression e1, e2, e3, e4;
-> > @@
-> > -    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-> > +    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-> >
-> > @@
-> > expression e1, e2, e3, e4;
-> > @@
-> > -    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-> > +    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-> >
-> > @@
-> > expression e1, e2, e3, e4;
-> > @@
-> > -    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-> > +    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-> >
-> > @@
-> > expression e1, e2;
-> > @@
-> > -    pci_dma_mapping_error(e1, e2)
-> > +    dma_mapping_error(&e1->dev, e2)
-> >
-> > @@
-> > expression e1, e2;
-> > @@
-> > -    pci_set_dma_mask(e1, e2)
-> > +    dma_set_mask(&e1->dev, e2)
-> >
-> > @@
-> > expression e1, e2;
-> > @@
-> > -    pci_set_consistent_dma_mask(e1, e2)
-> > +    dma_set_coherent_mask(&e1->dev, e2)
-> >
-> > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->
-> Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
->
-> > ---
-> > If needed, see post from Christoph Hellwig on the kernel-janitors ML:
-> >     https://marc.info/?l=3Dkernel-janitors&m=3D158745678307186&w=3D4
-> > ---
-> >   drivers/gpu/drm/radeon/radeon_gart.c | 9 ++++-----
-> >   1 file changed, 4 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/radeon/radeon_gart.c b/drivers/gpu/drm/rad=
-eon/radeon_gart.c
-> > index f178ba321715..b7ce254e5663 100644
-> > --- a/drivers/gpu/drm/radeon/radeon_gart.c
-> > +++ b/drivers/gpu/drm/radeon/radeon_gart.c
-> > @@ -72,8 +72,8 @@ int radeon_gart_table_ram_alloc(struct radeon_device =
-*rdev)
-> >   {
-> >       void *ptr;
-> >
-> > -     ptr =3D pci_alloc_consistent(rdev->pdev, rdev->gart.table_size,
-> > -                                &rdev->gart.table_addr);
-> > +     ptr =3D dma_alloc_coherent(&rdev->pdev->dev, rdev->gart.table_siz=
-e,
-> > +                              &rdev->gart.table_addr, GFP_KERNEL);
-> >       if (ptr =3D=3D NULL) {
-> >               return -ENOMEM;
-> >       }
-> > @@ -110,9 +110,8 @@ void radeon_gart_table_ram_free(struct radeon_devic=
-e *rdev)
-> >                             rdev->gart.table_size >> PAGE_SHIFT);
-> >       }
-> >   #endif
-> > -     pci_free_consistent(rdev->pdev, rdev->gart.table_size,
-> > -                         (void *)rdev->gart.ptr,
-> > -                         rdev->gart.table_addr);
-> > +     dma_free_coherent(&rdev->pdev->dev, rdev->gart.table_size,
-> > +                       (void *)rdev->gart.ptr, rdev->gart.table_addr);
-> >       rdev->gart.ptr =3D NULL;
-> >       rdev->gart.table_addr =3D 0;
-> >   }
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+Folded and pushed...

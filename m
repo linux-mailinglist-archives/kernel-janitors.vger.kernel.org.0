@@ -2,29 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95A6122EE3D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 16:06:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5181422EF91
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 16:17:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728537AbgG0OGD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jul 2020 10:06:03 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:43076 "EHLO
+        id S1731036AbgG0ORV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Jul 2020 10:17:21 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:43625 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726222AbgG0OGD (ORCPT
+        with ESMTP id S1731022AbgG0ORS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jul 2020 10:06:03 -0400
+        Mon, 27 Jul 2020 10:17:18 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1k03lR-0001ev-5a; Mon, 27 Jul 2020 14:06:01 +0000
+        id 1k03wG-0002jX-Uz; Mon, 27 Jul 2020 14:17:13 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Kamel Bouhara <kamel.bouhara@bootlin.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        linux-iio@vger.kernel.org
+To:     Michal Kalderon <mkalderon@marvell.com>,
+        Ariel Elior <aelior@marvell.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Igor Russkikh <irusskikh@marvell.com>,
+        Alexander Lobakin <alobakin@marvell.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-rdma@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] counter: microchip-tcb-capture: remove ATMEL_TC_ETRGEDG_NONE bit check
-Date:   Mon, 27 Jul 2020 15:06:00 +0100
-Message-Id: <20200727140600.112562-1-colin.king@canonical.com>
+Subject: [PATCH] qed: fix assignment of n_rq_elems to incorrect params field
+Date:   Mon, 27 Jul 2020 15:17:12 +0100
+Message-Id: <20200727141712.112906-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,32 +41,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The macro ATMEL_TC_ETRGEDG_NONE is defined as 0 << 8 which is zero and
-hence the check cmr & ATMEL_TC_ETRGEDG_NONE can never be true. Since
-*action is already assigned MCHP_TC_SYNAPSE_ACTION_NONE then this check
-and set is redundant dead code and can be removed.
+Currently n_rq_elems is being assigned to params.elem_size instead of the
+field params.num_elems.  Coverity is detecting this as a double assingment
+to params.elem_size and reporting this as an usused value on the first
+assignment.  Fix this.
 
-Addresses-Coverity: ("Logically dead code")
+Addresses-Coverity: ("Unused value")
+Fixes: b6db3f71c976 ("qed: simplify chain allocation with init params struct")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/counter/microchip-tcb-capture.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/infiniband/hw/qedr/verbs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
-index f7b7743ddb94..119640d6d6ab 100644
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -185,9 +185,7 @@ static int mchp_tc_count_action_get(struct counter_device *counter,
+diff --git a/drivers/infiniband/hw/qedr/verbs.c b/drivers/infiniband/hw/qedr/verbs.c
+index 5a80471577a6..4ce4e2eef6cc 100644
+--- a/drivers/infiniband/hw/qedr/verbs.c
++++ b/drivers/infiniband/hw/qedr/verbs.c
+@@ -1930,7 +1930,7 @@ qedr_roce_create_kernel_qp(struct qedr_dev *dev,
+ 	in_params->sq_pbl_ptr = qed_chain_get_pbl_phys(&qp->sq.pbl);
  
- 	*action = MCHP_TC_SYNAPSE_ACTION_NONE;
+ 	params.intended_use = QED_CHAIN_USE_TO_CONSUME_PRODUCE;
+-	params.elem_size = n_rq_elems;
++	params.num_elems = n_rq_elems;
+ 	params.elem_size = QEDR_RQE_ELEMENT_SIZE;
  
--	if (cmr & ATMEL_TC_ETRGEDG_NONE)
--		*action = MCHP_TC_SYNAPSE_ACTION_NONE;
--	else if (cmr & ATMEL_TC_ETRGEDG_RISING)
-+	if (cmr & ATMEL_TC_ETRGEDG_RISING)
- 		*action = MCHP_TC_SYNAPSE_ACTION_RISING_EDGE;
- 	else if (cmr & ATMEL_TC_ETRGEDG_FALLING)
- 		*action = MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE;
+ 	rc = dev->ops->common->chain_alloc(dev->cdev, &qp->rq.pbl, &params);
 -- 
 2.27.0
 

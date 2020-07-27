@@ -2,29 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C905F22FBF6
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 00:15:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0417522FC05
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 00:20:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726455AbgG0WPv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jul 2020 18:15:51 -0400
-Received: from ms.lwn.net ([45.79.88.28]:57908 "EHLO ms.lwn.net"
+        id S1726970AbgG0WUn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Jul 2020 18:20:43 -0400
+Received: from ms.lwn.net ([45.79.88.28]:57936 "EHLO ms.lwn.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726140AbgG0WPv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jul 2020 18:15:51 -0400
+        id S1726171AbgG0WUn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 Jul 2020 18:20:43 -0400
 Received: from lwn.net (localhost [127.0.0.1])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id AE0DF2E7;
-        Mon, 27 Jul 2020 22:15:50 +0000 (UTC)
-Date:   Mon, 27 Jul 2020 16:15:49 -0600
+        by ms.lwn.net (Postfix) with ESMTPSA id 95CF62E7;
+        Mon, 27 Jul 2020 22:20:42 +0000 (UTC)
+Date:   Mon, 27 Jul 2020 16:20:41 -0600
 From:   Jonathan Corbet <corbet@lwn.net>
 To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     kernel-janitors@vger.kernel.org, linux-doc@vger.kernel.org,
+Cc:     "Darrick J . Wong" <darrick.wong@oracle.com>,
+        kernel-janitors@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs: filesystems: vfs: correct sync_mode flag names
-Message-ID: <20200727161549.1d3e31a0@lwn.net>
-In-Reply-To: <1595791341-13209-1-git-send-email-Julia.Lawall@inria.fr>
-References: <1595791341-13209-1-git-send-email-Julia.Lawall@inria.fr>
+Subject: Re: [PATCH] docs: filesystems: vfs: correct flag name
+Message-ID: <20200727162041.2a154e0a@lwn.net>
+In-Reply-To: <1595789020-12941-1-git-send-email-Julia.Lawall@inria.fr>
+References: <1595789020-12941-1-git-send-email-Julia.Lawall@inria.fr>
 Organization: LWN.net
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,35 +35,30 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 26 Jul 2020 21:22:21 +0200
+On Sun, 26 Jul 2020 20:43:40 +0200
 Julia Lawall <Julia.Lawall@inria.fr> wrote:
 
-> Change the nonexistent flag names WBC_SYNC_ALL and WBC_SYNC_NONE to
-> WB_SYNC_ALL and WB_SYNC_NONE, respectively, as used in the code with
-> wbc->sync_mode.
+> There is no flag REMAP_CAN_SHORTEN.  Commit eca3654e3cc7 ("vfs: enable
+> remap callers that can handle short operations") that introduces this
+> text also introduces the flag REMAP_FILE_CAN_SHORTEN.  Change the name
+> in the documentation accordingly.
 > 
 > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 > 
 > ---
->  Documentation/filesystems/vfs.rst |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  Documentation/filesystems/vfs.rst |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
-> index da4b735..57e9b51 100644
+> index da4b735..d08357d 100644
 > --- a/Documentation/filesystems/vfs.rst
 > +++ b/Documentation/filesystems/vfs.rst
-> @@ -766,9 +766,9 @@ cache in your filesystem.  The following members are defined:
->  
->  ``writepages``
->  	called by the VM to write out pages associated with the
-> -	address_space object.  If wbc->sync_mode is WBC_SYNC_ALL, then
-> +	address_space object.  If wbc->sync_mode is WB_SYNC_ALL, then
->  	the writeback_control will specify a range of pages that must be
-> -	written out.  If it is WBC_SYNC_NONE, then a nr_to_write is
-> +	written out.  If it is WB_SYNC_NONE, then a nr_to_write is
->  	given and that many pages should be written if possible.  If no
->  	->writepages is given, then mpage_writepages is used instead.  
->  	This will choose pages from the address space that are tagged as
+> @@ -1116,7 +1116,7 @@ otherwise noted.
+>  	before any bytes were remapped.  The remap_flags parameter
+>  	accepts REMAP_FILE_* flags.  If REMAP_FILE_DEDUP is set then the
+>  	implementation must only remap if the requested file ranges have
+> -	identical contents.  If REMAP_CAN_SHORTEN is set, the caller is
+> +	identical contents.  If REMAP_FILE_CAN_SHORTEN is set, the caller is
 
 Applied, thanks.
 

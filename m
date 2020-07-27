@@ -2,243 +2,281 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F09CB22EDBF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 15:42:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4898822EDEB
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 15:51:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728446AbgG0Nml (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jul 2020 09:42:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58828 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726555AbgG0Nmk (ORCPT
+        id S1727808AbgG0Nvm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Jul 2020 09:51:42 -0400
+Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:59316 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726590AbgG0Nvm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jul 2020 09:42:40 -0400
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79C4DC061794;
-        Mon, 27 Jul 2020 06:42:40 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id a8so12172581edy.1;
-        Mon, 27 Jul 2020 06:42:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=reply-to:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=r5UgUYmGIu8dXLKxxEsnpe0wyvxQ3PiGThgV1hXOvFQ=;
-        b=ID/e03+HVhMp8vhvRxAWcrJqeQDn0B0elBX4JgzNp19TqdRPpj0JAdi/gB71qgMKDg
-         4zs/nX407YlE6kFur9vBNlLxC7jkSwZtXgiCd8aDcz8Yr+qF09IxcCzXzaxapbhlv3gb
-         3t+nSiqVhTjec8RzhU3Z7PXqxtq1dOGRSkTtaLAjXxNMM/YpEXrG5AXcedxIPgvhHDdZ
-         tQbfJSYoS9+SHbUQ9t2/jdCRXO+H1AuOUMxtgUQ401FmFWdgdoLWulNpKhKFUc2rkVwa
-         w9M6e2dLQEHB2l/6aIqg5U9jaFgiQ58s7ukCDxCIlQGT/k213KvKlieMi2URT44kJ/m2
-         /K1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:reply-to:subject:to:cc:references:from
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-transfer-encoding:content-language;
-        bh=r5UgUYmGIu8dXLKxxEsnpe0wyvxQ3PiGThgV1hXOvFQ=;
-        b=qu5i2qOgQiKU3cuOWZqPxJkMN7Zyt8GwDTIFdoSniBbWdtjjGVRW/jxppEwibSoQjr
-         wuS8eSyFnTPm/d0GwE6vJhnDGXbvL2YPMxbGos0aX7Tb5VBSf5/AW5ivjD58kO7jG6xx
-         zEXGgWOMB0kMKTVymolPAIypUB1ljoucm8HAeH5FAlgsr3uQaa2CekNFNXMdHsgvcCh1
-         ejVZ0vQWVmrabxm5tZXA8WeFMbH0n5MdrL0tp8MrhV431jhl3hJ4/k6ptL+BBbD5IW79
-         tcrD3wx7rvJrZhXatK3HZLdbuoBdyAFX7lt7pyw59A1zuKD9fu+fl3nN/qWTRnwOJrhE
-         vivw==
-X-Gm-Message-State: AOAM531q4JxozX4akgjX9r1WoCWxWo3Fg5/4YO5XssERVzWBkP65yp4+
-        4ypsbzzxn1zKaZOZ8WNF9ozkIn7l
-X-Google-Smtp-Source: ABdhPJwZznYnW4z4lkEFxOLCLYaX5bd+Wte9m7+t5rV8Uu8lPzz5m3GiJZ1jVnXU0ape3kDfG59Mng==
-X-Received: by 2002:a05:6402:1777:: with SMTP id da23mr20990077edb.260.1595857358906;
-        Mon, 27 Jul 2020 06:42:38 -0700 (PDT)
-Received: from ?IPv6:2a02:908:1252:fb60:be8a:bd56:1f94:86e7? ([2a02:908:1252:fb60:be8a:bd56:1f94:86e7])
-        by smtp.gmail.com with ESMTPSA id n5sm6989547eja.70.2020.07.27.06.42.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jul 2020 06:42:38 -0700 (PDT)
-Reply-To: christian.koenig@amd.com
-Subject: Re: [PATCH 1/2] drm/radeon: switch from 'pci_' to 'dma_' API
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        alexander.deucher@amd.com, christian.koenig@amd.com,
-        airlied@linux.ie, daniel@ffwll.ch
-Cc:     kernel-janitors@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <20200727103421.50739-1-christophe.jaillet@wanadoo.fr>
-From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>
-Message-ID: <224fc7f6-f56b-1dc8-87f2-33ff85d5720d@gmail.com>
-Date:   Mon, 27 Jul 2020 15:42:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Mon, 27 Jul 2020 09:51:42 -0400
+Received: from localhost.localdomain ([93.23.198.229])
+        by mwinf5d90 with ME
+        id 8Drf230074xT3VZ03Drfdg; Mon, 27 Jul 2020 15:51:40 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 27 Jul 2020 15:51:40 +0200
+X-ME-IP: 93.23.198.229
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     mchehab@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
+        hverkuil-cisco@xs4all.nl
+Cc:     linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH 1/2] media: bt8xx: switch from 'pci_' to 'dma_' API
+Date:   Mon, 27 Jul 2020 15:51:37 +0200
+Message-Id: <20200727135137.54702-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20200727103421.50739-1-christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Am 27.07.20 um 12:34 schrieb Christophe JAILLET:
-> The wrappers in include/linux/pci-dma-compat.h should go away.
->
-> The patch has been generated with the coccinelle script below and has been
-> hand modified to replace GFP_ with a correct flag.
-> It has been compile tested.
->
-> When memory is allocated in 'radeon_gart_table_ram_alloc()' GFP_KERNEL
-> can be used because its callers already use this flag.
->
-> Both 'r100_pci_gart_init()' (r100.c) and 'rs400_gart_init()' (rs400.c)
-> call 'radeon_gart_init()'.
-> This function uses 'vmalloc'.
->
->
-> @@
-> @@
-> -    PCI_DMA_BIDIRECTIONAL
-> +    DMA_BIDIRECTIONAL
->
-> @@
-> @@
-> -    PCI_DMA_TODEVICE
-> +    DMA_TO_DEVICE
->
-> @@
-> @@
-> -    PCI_DMA_FROMDEVICE
-> +    DMA_FROM_DEVICE
->
-> @@
-> @@
-> -    PCI_DMA_NONE
-> +    DMA_NONE
->
-> @@
-> expression e1, e2, e3;
-> @@
-> -    pci_alloc_consistent(e1, e2, e3)
-> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
->
-> @@
-> expression e1, e2, e3;
-> @@
-> -    pci_zalloc_consistent(e1, e2, e3)
-> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_free_consistent(e1, e2, e3, e4)
-> +    dma_free_coherent(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_map_single(e1, e2, e3, e4)
-> +    dma_map_single(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_single(e1, e2, e3, e4)
-> +    dma_unmap_single(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4, e5;
-> @@
-> -    pci_map_page(e1, e2, e3, e4, e5)
-> +    dma_map_page(&e1->dev, e2, e3, e4, e5)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_page(e1, e2, e3, e4)
-> +    dma_unmap_page(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_map_sg(e1, e2, e3, e4)
-> +    dma_map_sg(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_sg(e1, e2, e3, e4)
-> +    dma_unmap_sg(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-> +    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-> +    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-> +    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-> +    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2;
-> @@
-> -    pci_dma_mapping_error(e1, e2)
-> +    dma_mapping_error(&e1->dev, e2)
->
-> @@
-> expression e1, e2;
-> @@
-> -    pci_set_dma_mask(e1, e2)
-> +    dma_set_mask(&e1->dev, e2)
->
-> @@
-> expression e1, e2;
-> @@
-> -    pci_set_consistent_dma_mask(e1, e2)
-> +    dma_set_coherent_mask(&e1->dev, e2)
->
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GFP_ with a correct flag.
+It has been compile tested.
 
-> ---
-> If needed, see post from Christoph Hellwig on the kernel-janitors ML:
->     https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
-> ---
->   drivers/gpu/drm/radeon/radeon_gart.c | 9 ++++-----
->   1 file changed, 4 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/gpu/drm/radeon/radeon_gart.c b/drivers/gpu/drm/radeon/radeon_gart.c
-> index f178ba321715..b7ce254e5663 100644
-> --- a/drivers/gpu/drm/radeon/radeon_gart.c
-> +++ b/drivers/gpu/drm/radeon/radeon_gart.c
-> @@ -72,8 +72,8 @@ int radeon_gart_table_ram_alloc(struct radeon_device *rdev)
->   {
->   	void *ptr;
->   
-> -	ptr = pci_alloc_consistent(rdev->pdev, rdev->gart.table_size,
-> -				   &rdev->gart.table_addr);
-> +	ptr = dma_alloc_coherent(&rdev->pdev->dev, rdev->gart.table_size,
-> +				 &rdev->gart.table_addr, GFP_KERNEL);
->   	if (ptr == NULL) {
->   		return -ENOMEM;
->   	}
-> @@ -110,9 +110,8 @@ void radeon_gart_table_ram_free(struct radeon_device *rdev)
->   			      rdev->gart.table_size >> PAGE_SHIFT);
->   	}
->   #endif
-> -	pci_free_consistent(rdev->pdev, rdev->gart.table_size,
-> -			    (void *)rdev->gart.ptr,
-> -			    rdev->gart.table_addr);
-> +	dma_free_coherent(&rdev->pdev->dev, rdev->gart.table_size,
-> +			  (void *)rdev->gart.ptr, rdev->gart.table_addr);
->   	rdev->gart.ptr = NULL;
->   	rdev->gart.table_addr = 0;
->   }
+When memory is allocated in 'bt878_mem_alloc()' (bt878.c), GFP_KERNEL can
+be used because it is only called from the probe function (i.e.
+'bt878_probe()') and no lock is taken.
+
+
+When memory is allocated in 'btcx_riscmem_alloc()' (btcx-risc.c),
+GFP_KERNEL can be used because all the callers either already use
+GFP_KERNEL or are called from a probe function or are called from a
+.buf_prepare function.
+
+The 4 callers are all in 'bttv-risc.c'.
+   - bttv_risc_packed() and bttv_risc_planar(): only called from
+        'videobuf_queue_ops''s '.buf_prepare' functions.
+        The call chains are:
+
+        .buf_prepare                     (in 'bttv-driver.c')
+           --> buffer_prepare            (in 'bttv-driver.c')
+              --> bttv_prepare_buffer
+                 --> bttv_buffer_risc
+                    --> bttv_risc_packed (x8 times)
+                    --> bttv_risc_planar (x6 times)
+
+        .buf_prepare                     (in 'bttv-vbi.c')
+           --> vbi_buffer_prepare        (in 'bttv-vbi.c')
+              --> bttv_risc_packed       (x2 times)
+
+   - bttv_risc_overlay(): already uses GFP_KERNEL
+   - bttv_risc_init_main(): only called from the 'bttv_probe()' probe
+        function and no spin_lock is taken in the between
+
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
+
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+---
+ drivers/media/pci/bt8xx/bt878.c       | 16 ++++++++--------
+ drivers/media/pci/bt8xx/btcx-risc.c   |  4 ++--
+ drivers/media/pci/bt8xx/bttv-driver.c |  2 +-
+ 3 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/media/pci/bt8xx/bt878.c b/drivers/media/pci/bt8xx/bt878.c
+index 79ba15a9385a..78dd35c9b65d 100644
+--- a/drivers/media/pci/bt8xx/bt878.c
++++ b/drivers/media/pci/bt8xx/bt878.c
+@@ -67,14 +67,14 @@ EXPORT_SYMBOL(bt878);
+ static void bt878_mem_free(struct bt878 *bt)
+ {
+ 	if (bt->buf_cpu) {
+-		pci_free_consistent(bt->dev, bt->buf_size, bt->buf_cpu,
+-				    bt->buf_dma);
++		dma_free_coherent(&bt->dev->dev, bt->buf_size, bt->buf_cpu,
++				  bt->buf_dma);
+ 		bt->buf_cpu = NULL;
+ 	}
+ 
+ 	if (bt->risc_cpu) {
+-		pci_free_consistent(bt->dev, bt->risc_size, bt->risc_cpu,
+-				    bt->risc_dma);
++		dma_free_coherent(&bt->dev->dev, bt->risc_size, bt->risc_cpu,
++				  bt->risc_dma);
+ 		bt->risc_cpu = NULL;
+ 	}
+ }
+@@ -84,16 +84,16 @@ static int bt878_mem_alloc(struct bt878 *bt)
+ 	if (!bt->buf_cpu) {
+ 		bt->buf_size = 128 * 1024;
+ 
+-		bt->buf_cpu = pci_zalloc_consistent(bt->dev, bt->buf_size,
+-						    &bt->buf_dma);
++		bt->buf_cpu = dma_alloc_coherent(&bt->dev->dev, bt->buf_size,
++						 &bt->buf_dma, GFP_KERNEL);
+ 		if (!bt->buf_cpu)
+ 			return -ENOMEM;
+ 	}
+ 
+ 	if (!bt->risc_cpu) {
+ 		bt->risc_size = PAGE_SIZE;
+-		bt->risc_cpu = pci_zalloc_consistent(bt->dev, bt->risc_size,
+-						     &bt->risc_dma);
++		bt->risc_cpu = dma_alloc_coherent(&bt->dev->dev, bt->risc_size,
++						  &bt->risc_dma, GFP_KERNEL);
+ 		if (!bt->risc_cpu) {
+ 			bt878_mem_free(bt);
+ 			return -ENOMEM;
+diff --git a/drivers/media/pci/bt8xx/btcx-risc.c b/drivers/media/pci/bt8xx/btcx-risc.c
+index 51257980f539..13bb1490a568 100644
+--- a/drivers/media/pci/bt8xx/btcx-risc.c
++++ b/drivers/media/pci/bt8xx/btcx-risc.c
+@@ -48,7 +48,7 @@ void btcx_riscmem_free(struct pci_dev *pci,
+ 	dprintk("btcx: riscmem free [%d] dma=%lx\n",
+ 		memcnt, (unsigned long)risc->dma);
+ 
+-	pci_free_consistent(pci, risc->size, risc->cpu, risc->dma);
++	dma_free_coherent(&pci->dev, risc->size, risc->cpu, risc->dma);
+ 	memset(risc,0,sizeof(*risc));
+ }
+ 
+@@ -62,7 +62,7 @@ int btcx_riscmem_alloc(struct pci_dev *pci,
+ 	if (NULL != risc->cpu && risc->size < size)
+ 		btcx_riscmem_free(pci,risc);
+ 	if (NULL == risc->cpu) {
+-		cpu = pci_alloc_consistent(pci, size, &dma);
++		cpu = dma_alloc_coherent(&pci->dev, size, &dma, GFP_KERNEL);
+ 		if (NULL == cpu)
+ 			return -ENOMEM;
+ 		risc->cpu  = cpu;
+diff --git a/drivers/media/pci/bt8xx/bttv-driver.c b/drivers/media/pci/bt8xx/bttv-driver.c
+index 9144f795fb93..0315fb7458b0 100644
+--- a/drivers/media/pci/bt8xx/bttv-driver.c
++++ b/drivers/media/pci/bt8xx/bttv-driver.c
+@@ -4015,7 +4015,7 @@ static int bttv_probe(struct pci_dev *dev, const struct pci_device_id *pci_id)
+ 		pr_warn("%d: Can't enable device\n", btv->c.nr);
+ 		return -EIO;
+ 	}
+-	if (pci_set_dma_mask(dev, DMA_BIT_MASK(32))) {
++	if (dma_set_mask(&dev->dev, DMA_BIT_MASK(32))) {
+ 		pr_warn("%d: No suitable DMA available\n", btv->c.nr);
+ 		return -EIO;
+ 	}
+-- 
+2.25.1
 

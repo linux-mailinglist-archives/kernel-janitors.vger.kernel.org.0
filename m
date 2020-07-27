@@ -2,66 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE58B22EB21
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 13:23:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E741222EB25
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jul 2020 13:24:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728068AbgG0LXr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jul 2020 07:23:47 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:39742 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726269AbgG0LXr (ORCPT
+        id S1728075AbgG0LYE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Jul 2020 07:24:04 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:34192 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726269AbgG0LYE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jul 2020 07:23:47 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06RBMjtd087912;
-        Mon, 27 Jul 2020 11:23:26 GMT
+        Mon, 27 Jul 2020 07:24:04 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06RBM4Ch140691;
+        Mon, 27 Jul 2020 11:23:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=4g8Mg/f4ko6sYKfDKAQgbqJbY3cbZ2DqaE6bhsDlpnI=;
- b=zmU/y3pV+IRRyZNt1ksr/yXkQURQXKclNX9CmmxhC4KZwyaoF7GKsZLHqZYo9b4wB3ve
- 94A0OGhfYwo64Oo6Z6YrMRnGmjvAgpwsqRiFtdHXCpbSk7a1zU7885AbQIcXm7JEmSP1
- uDX7BbqZJsu3mVVbL/Xh0La52t7++xG4FO4Ckq4Zp1AO4R5P7GpFrS/DwtUT/imcxQhM
- qV0H3DLpfVMDPqbabWeoHHEh8aEg4gqQO+aR3O0I1o2wiLUi6ReJPs/ksQ5XQH31Mj00
- Jl+aLnH/6QOrVRZ3fJgVsVfwTCpmfhJuAKzAX2IPouILg1d61uz7L7iOp61pQC8gM6zv 3w== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 32hu1j0xud-1
+ bh=zhOel54M7SOIatcYENSCxB3GX1D0nU6zd3vC3xTJntc=;
+ b=IMKQ+SiikUuZ09rRmslCmDsIpn8V9wZdg428KnZfoHmKK6Z0hPhrk5U55nx9a6oSMJ1A
+ CGWe7cW2u/rU9IfwiHn9K+fxHNCh8c1GySJ+V4ygZZ+Sz3zXibPQf8lsev+7PzHh/SD2
+ nVe3Nph5+f+mioh7fYwJt4zDoVfid/m6x1mh1HOpJPngZXVPKHBXOoxCW5SYrNE7UOIN
+ gSdpcfqO04/uqzVUn7SFNbAa3zsxoCHNlchQ+5Cda2pRAfK7kC8MlLtogYrJ5L/CE06M
+ YOnoQoEtR8VtxJiD7CGgCmGokPVir+TqR6p9VEwSIOM0ixCP9VVmFjWUMS5wGZqkwCsG uA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 32hu1j8xw4-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 27 Jul 2020 11:23:26 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06RBMdNV001885;
-        Mon, 27 Jul 2020 11:23:26 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 32hu5sf1pj-1
+        Mon, 27 Jul 2020 11:23:57 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06RBEOdK109079;
+        Mon, 27 Jul 2020 11:23:56 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 32hu5qdt16-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 27 Jul 2020 11:23:25 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06RBNNGi004797;
-        Mon, 27 Jul 2020 11:23:23 GMT
+        Mon, 27 Jul 2020 11:23:56 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06RBNpa1016399;
+        Mon, 27 Jul 2020 11:23:51 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 27 Jul 2020 04:23:23 -0700
-Date:   Mon, 27 Jul 2020 14:23:16 +0300
+        with ESMTP ; Mon, 27 Jul 2020 04:23:51 -0700
+Date:   Mon, 27 Jul 2020 14:23:44 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Kamel Bouhara <kamel.bouhara@bootlin.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] counter: microchip-tcb-capture: check the correct variable
-Message-ID: <20200727112316.GG389488@mwanda>
+To:     Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Frank van der Linden <fllinden@amazon.com>
+Cc:     Anna Schumaker <anna.schumaker@netapp.com>,
+        linux-nfs@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] NFSv4.2: Fix an error code in nfs4_xattr_cache_init()
+Message-ID: <20200727112344.GH389488@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9694 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- mlxscore=0 adultscore=0 spamscore=0 phishscore=0 mlxlogscore=999
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007270084
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 bulkscore=0
+ malwarescore=0 mlxscore=0 spamscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007270083
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9694 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 clxscore=1011
- malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0 priorityscore=1501
- phishscore=0 mlxlogscore=999 lowpriorityscore=0 impostorscore=0 mlxscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 mlxlogscore=999
+ malwarescore=0 impostorscore=0 priorityscore=1501 spamscore=0 phishscore=0
+ suspectscore=0 bulkscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
  definitions=main-2007270084
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -69,36 +68,31 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This should be testing "regmap" instead of "priv->regmap".  The
-"priv->regmap" variable is always zero so it's not an error pointer.
+This should return -ENOMEM on failure instead of success.
 
-Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
+Fixes: 95ad37f90c33 ("NFSv4.2: add client side xattr caching.")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-The commit 106b104137fd ("counter: Add microchip TCB capture counter")
-doesn't use the correct patch prefix.  This is a common mistake for the
-the first commit which adds the driver.  There is no kernel wide
-standard for patch prefixes so it's difficult for people sending fixes
-to know the correct prefix should be.
+---
+ fs/nfs/nfs42xattr.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
- drivers/counter/microchip-tcb-capture.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
-index f7b7743ddb94..b7b252c5addf 100644
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -320,8 +320,8 @@ static int mchp_tc_probe(struct platform_device *pdev)
- 	}
+diff --git a/fs/nfs/nfs42xattr.c b/fs/nfs/nfs42xattr.c
+index 23fdab977a2a..e75c4bb70266 100644
+--- a/fs/nfs/nfs42xattr.c
++++ b/fs/nfs/nfs42xattr.c
+@@ -1040,8 +1040,10 @@ int __init nfs4_xattr_cache_init(void)
+ 		goto out2;
  
- 	regmap = syscon_node_to_regmap(np->parent);
--	if (IS_ERR(priv->regmap))
--		return PTR_ERR(priv->regmap);
-+	if (IS_ERR(regmap))
-+		return PTR_ERR(regmap);
+ 	nfs4_xattr_cache_wq = alloc_workqueue("nfs4_xattr", WQ_MEM_RECLAIM, 0);
+-	if (nfs4_xattr_cache_wq == NULL)
++	if (nfs4_xattr_cache_wq == NULL) {
++		ret = -ENOMEM;
+ 		goto out1;
++	}
  
- 	/* max. channels number is 2 when in QDEC mode */
- 	priv->num_channels = of_property_count_u32_elems(np, "reg");
+ 	ret = register_shrinker(&nfs4_xattr_cache_shrinker);
+ 	if (ret)
 -- 
 2.27.0
 

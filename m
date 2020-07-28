@@ -2,34 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF1EE230CB7
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 16:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74731230D4F
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 17:13:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730532AbgG1OuZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Jul 2020 10:50:25 -0400
-Received: from mout.web.de ([212.227.15.4]:51971 "EHLO mout.web.de"
+        id S1730744AbgG1PNx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Jul 2020 11:13:53 -0400
+Received: from mout.web.de ([212.227.15.3]:45731 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730335AbgG1OuY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Jul 2020 10:50:24 -0400
+        id S1730517AbgG1PNw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Jul 2020 11:13:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1595947809;
-        bh=Z3Hak45Jy5qRqJuyduAoDInGrdWB/KFGrw09UzXKMU0=;
+        s=dbaedf251592; t=1595949206;
+        bh=4eS2iDAsbrOdOLLedYtvazSxMT8ynSJcUjaM53JHyJU=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=JMG0GNhqsF2fYLpn7G1t8GfqiSxpgSKcv2zyp3VMQPaW4FLKvXIUMAxHvcG5avH7R
-         ukGabFolVS62YVpHCKaJ5nH27oDSm4mtzPG3dyQfdDDRgf0t4mxliX3CbJZM55YCm9
-         zwooVmRhzQPfzuSBNOuHEy6C6fEI8JVh4ysm9viQ=
+        b=Co88SDhC2gL/zmdY+fbkzv1NAfIlGlgv8OG5TVmg+KxuZLX/exIKgJNw63aIEMbrB
+         R2JfqcG9nk1N/mQG+CNv9LbnBhYrr0Ytbq3WiVjlNMQo6FVRsolJqv3cgZRJcKHy4+
+         sYjA2R1FfK8HW3YS+bmtPyDAfxQOVSmIQ/fEDdmM=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.153.150]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MiMAE-1kfntf2XTS-00fUxd; Tue, 28
- Jul 2020 16:50:09 +0200
+Received: from [192.168.1.2] ([78.49.153.150]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LrYLd-1km80R0Qtp-013QFs; Tue, 28
+ Jul 2020 17:13:26 +0200
 To:     Qinglang Miao <miaoqinglang@huawei.com>,
-        linux-m68k@lists.linux-m68k.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-arm-kernel@lists.infradead.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: [PATCH] m68k/amiga: Add missing platform_device_unregister() call
- in amiga_init_devices()
+        Jun Nie <jun.nie@linaro.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH] ARM: zx: remove redundant dev_err call in
+ zx296702_pd_probe()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -74,69 +75,56 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <1e12105b-aa72-11a2-74f6-c789f8ceaaa3@web.de>
-Date:   Tue, 28 Jul 2020 16:50:06 +0200
+Message-ID: <3b237263-33eb-d7dc-b6cf-d341f35824de@web.de>
+Date:   Tue, 28 Jul 2020 17:13:23 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:c2id3vlAmACwXpzsKMA+ojVKSnbY+G7P2AKC98o7Mc6NqwdwSpQ
- ODY3KgoCxm2K1s+/IdclDkweqUN5I52dDnONRidfGxWIGmnfVSJu3b0Oy5nFk4R+nKJSmWc
- Y9rIzvAf626u0p4/tISrdKC5J4lwbwHUsyShLYYYgLdMcVq6nRBUo8SU/q3bF7VaIErBXKb
- QNMzNNwW9AL/0aALCTjOQ==
+X-Provags-ID: V03:K1:dp+alhTncV94SLwTQ3joEOA5CSU+4wi6zTlpmB2soO0qYoLY7EQ
+ Ei7YHEMRHQSXPBsYYWZRl7w4XoqawrDBfamWITQw4c51hchbTPFiBYa+FBd7m6bwaabahcn
+ 83070brcjHLm/ayy8pq+n+nK0s7q4LMIiZtGAgnUK7B/kjk6N10T13eWZjN7gQ2PG01/EYd
+ zcAp1gpGVaKejKqH33OXw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:cC8XwfV2OFQ=:HnPEZeYKPhGd5Jpk4pL5Bd
- NGW5IiWireeyc80IoTMcHmPJVvSvvt9Emum9BYPBIovuU5dUGspPoRz14c8ng3nnODKakHqOx
- xX1BDHIRtJS0UIZwv3nmwErJm6QljWyCR8MpNNo2P1hLQ2dEyhwmp+9XZUQ8fti+Mq5LADWUv
- GRrHLLW2ojLJqsihtU0mzkVWgyCcyjQkAniHr1GDIAFR/lFZqtJFg4YL1r2ejTQLWx2kVQ/PP
- eA8HobmRwfz23X3JJqyzkFwhJKRqADjpuuqkKMfpDkbwv7U30TPwfNWCxK+4hHr4eKg9RCtQG
- vknrPTkrV6oe2+0XM7oJgu4kyo47mVxCUmAIsCLWLpVfEiilpmYXsWzQhEk7LhrcKFv+NW7FE
- Tx0EmwfZNntcg/ePTvTyhwCNlquIbVcDuAWiHGnnFS8uxpjCjAGD2+cgOHJf8ynZAfNT++K9M
- Aon44kN4USJfjs+lYt5kiaDU4Yxzl8efspswIcOPG2om7M/Fk8nsT2ktCJbBwP2U/HT4/dA0h
- WUPJp83KYWwClF7V3c+112ov6m0z8yKSk/WtVV3uItDOgbq3RoUCWPr55hHjdIKuzgiOdUVbd
- BJBJbZVXSVM9zTrTmOFYkrsHAwKCZTEDD/puNSoc9p+vdEiPMiIgLO6zG9CYu0nSv9I60YfXz
- T4KIE9S+gKmzObZoZxFoFAHuQcSiUTgZenAH/xTvVSAMI8SfCQshKSjnJhU9/Jz54SPW4N19Z
- +gBqGKz2o3NBHgs9qxtHaMPtJPmzH4M4FT49edeUNvzwbLhuiNLmxHM1JQAtPvmjJ+2iEM4Ay
- K2Qks+mbTMREfZCoyD30FIKsDEl9JlfMq+AWcbYjRf3LgRFUipvGjsU5qarWz7dNvdpdU8VPN
- DAmx5KM5sRN1DKSWsORuoEfK6+C5eIjFYbfzVYp9IHKTmMtJfe4Fi679S/mINSrXJJElDATRn
- LivunoP7w6SYPqd0vunokfK9hVIHvFemAJPHz45TRER9u//S50+bgJSSqGApRWDRMgUYtQyIc
- dNR144qPgk66a3EwNcVutPp0NAqfYp/A9igEL9WlZmjPfMfHOgcroK4Iqbuw0PFWjImHu7F63
- kbSy05siJwYml7Paa3Y+vAbtb5vdTCK53HERVM1/rkt/CgWSlQXGcGWiGjiCG46t8xMG3VlWA
- HE8e5U9m1XOCUurD+c8rs2/jiefltN33P/QoVbM6GKraAeIFqDh+JhkgzwmHy+5C7UTjHB/pN
- L5dtcRkQ/7aRLtUgas+mWIGLRE7E+KbRdUvlx9A==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:k6AZQT6+m9k=:XtkfNmNpgqv7oL3BLW+NI5
+ IJpKGKpvKVDvRVvWvXz7xbSeXvJxqbNDQESPx87zCDEMQCZT+y6VoUruBeR5UCKWTwNmbupAm
+ xl2ULYN8ZQihYHkgs6RoGjG86fex81LHnB9fb29UbmpydjRHG/l5Epi+aAjBaNn7eXp59AfPx
+ ysU+wMXfJdnNQdsCjdxmgfVwhxMyOaavrnl4DnPIxzqyBipo/bx509tBjIxFOEUbORi/TeemZ
+ QOluhHrs1eBGDBs+ESQ6rTrsbgi8+7RPKannWqpVIBjIVzC4sJRiWxaFGLALzOiSdOWSrCMMx
+ zjJkEPMVsuBDf1qaD/slMmJhltHTu0KBS0qJxX1XwKCQbBVGM2NjfEoBDxIHMlaa927hUnBJ5
+ B+C6nJK42uq4EvTuSndpRRNPcV4vn7Z5ebXP3vvHMqbr0wnx7dct84vRYm1uW3H5l0sWb2YCB
+ VQ6yOwodhaqBWzVj7+qr3/NmzBI9Krt0UIJqLz75LIfXKNtLX7tnoXdZmHLcev+xB7qHTmFz0
+ s77Locnou4W4rlupb2/ak9ST1TZvms+gusoicUAZ1RNueqOJ7mlcXKDVq3uzVD3xiDT79zsGb
+ 7CLgyQS79ZyaLJwYZI4ZvGQ6FXjpjgGMdIE9e+4TkdqhVC9DGa+qy6KbPNDno/y9e01WKGuyI
+ I9Oz7O3vkZm8aCXkley6B9/V13nASED2HpJfvPQJyUsrIhdX/+RdMTGWiqjqp0zlsTctCRqyK
+ 66Itp8B9mTWiMYxjIN0no9IuWRrszwRCK/wFwYSBjY4JL6mb6Hgyi2M+MIUEYCUrAWYyuVNCj
+ cqtm0D7+ECzgUBWsDsnovHch2k9IeCvtkb+bGIgiJxH7LWW10dC/+gP0THHHcljaX6ulCg/0w
+ QDxFl8UE5miFEZq+iaDxHUR5EO6T4lsooQx1/ojzfeX/B1LwM76NsnVmLay7gQFfeKcPtum7z
+ BFHR4fQ84MZbR1Yr87Q55rWV+bkufI/uybCf92SWjyLJN+e1XwOfAqEGnMC25cQpy3LKqfhzs
+ UNP4aR6gkwYkMFhJgcufdIu/SXoaJMpIbNSeDRr9Qx3UhXWMQmxeNpsmg1x5Ra/kTC7+lRE6V
+ sMSCkIAtVaoxCzCk1So4wPw4tIJelTUvT/h13qZ2jxe8Dc+q++1VKUqcP1atdozHOg6ZzHLJf
+ Np9IJliwtFoDj7XAdgafLbisHvcEYLE8dOM/1iAXuFvQ11s9VXFomgPaZ7bfnINDVOCam0gbB
+ oPI0lu+9IWjPrDYnZGjLqIuftsCCB+Oe8zcSY1A==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Add the missing platform_device_unregister() before return
-> from amiga_init_devices() in the error handling case.
-
-Will the tag =E2=80=9CFixes=E2=80=9D become helpful for the commit message=
-?
-
-
 =E2=80=A6
-> +++ b/arch/m68k/amiga/platform.c
-> @@ -188,8 +188,10 @@  static int __init amiga_init_devices(void)
->  			return PTR_ERR(pdev);
->  		error =3D platform_device_add_data(pdev, &a1200_ide_pdata,
->  						 sizeof(a1200_ide_pdata));
-> -		if (error)
-> +		if (error) {
-> +			platform_device_unregister(pdev);
->  			return error;
-> +		}
+> +++ b/arch/arm/mach-zx/zx296702-pm-domain.c
+> @@ -170,7 +170,6 @@ static int zx296702_pd_probe(struct platform_device =
+*pdev)
+>
+>  	pcubase =3D devm_ioremap_resource(&pdev->dev, res);
+>  	if (IS_ERR(pcubase)) {
+> -		dev_err(&pdev->dev, "ioremap fail.\n");
+>  		return -EIO;
 >  	}
-=E2=80=A6
 
-I suggest to add a jump target for the desired exception handling.
-
- 		if (error)
-+			goto unregister_device;
-
+Would you like to delete also the curly brackets besides the error message=
+?
 
 Regards,
 Markus

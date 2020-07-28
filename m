@@ -2,104 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06C062300E6
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 06:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF6BD230139
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 07:12:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726341AbgG1E7I (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Jul 2020 00:59:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60244 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726290AbgG1E7H (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Jul 2020 00:59:07 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8F12C061794;
-        Mon, 27 Jul 2020 21:59:05 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id di22so6611524edb.12;
-        Mon, 27 Jul 2020 21:59:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=qwT94/2d5vMLNnP3aSonuZ5wA6OYYOi5iOIf8fUcfiE=;
-        b=guXqFEi/Daunmiz5/09ztCjMyaX9nl/DG7fSEBBnCM1H84PwnPC2j3u0XZEDw2I98A
-         INfQLT6kVsJDAuhBqM3uUSeBpZdY0A2w0RQwYEyBth/a90TvLOlklx/OpJ5R+wvWsBWQ
-         +WZ4EQLle8hKzLix2n+ShgAAcNWm0sQvxHjtefkH9PDGKhsKRFPJ1+lw4qLGgZrktrC7
-         9j8aqIZFIu5Nq7mLTmklXXaGr0+FUDdwFVuCz7LfF/XVCq+SXxMA94g15gj2b77r7kB0
-         Q8u7S2V6HKKCxJAWWM4rxGOrJBJNIIskq8rfSGRBqJVYC4EKM6VOg9doyrgaQKo+vYrg
-         WexQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=qwT94/2d5vMLNnP3aSonuZ5wA6OYYOi5iOIf8fUcfiE=;
-        b=P8VW3PmswKj1o1wdU7cW4RJGidY4fFt6FwokNq/VdrqDHvQNB4y8FGjYYFBDwu/rQ6
-         kMwCdMYn3Skq3T7i/I2UmW2HcLnSiuxxiQssH4zl1G167UBaYMrkJljIWeJujJ6iECyM
-         Ea5DWrHUIRCJtRnMVPcUg9VCUBpC7hZjbKWn8UEKIYUkbs9Vs6avvlqAbOdqXUGoF3M9
-         HUKtZ5rA0leMOAmDLaGBmowDVapIWJtpbaCFhPmwJyfnZZUANkoLjO3YUPAJTEPqn0UV
-         QCPNCH1k7kBDTz9UWIXmZoifGclMVlYDrrSTrvlKCP/1nPX4BVXQdEu0xjTTHDhfORoY
-         Q1QA==
-X-Gm-Message-State: AOAM530Ox0MhDOkZprktRKasdKibbce4mgvCpQ/E/abYQOhGKwY+D2Sb
-        pyjb2rW6KYZx4NuotrC1rk2sgHcOMKY=
-X-Google-Smtp-Source: ABdhPJys0wyfvlOiKfT8X3K5UcykXzPKQlSmRCRZ0K5sBjw/kY8acLU8Kux2FLegMUzaBa6q+qyP+Q==
-X-Received: by 2002:aa7:d989:: with SMTP id u9mr24317597eds.85.1595912344289;
-        Mon, 27 Jul 2020 21:59:04 -0700 (PDT)
-Received: from felia.fritz.box ([2001:16b8:2d6c:b00:cd97:e2be:76a3:65a9])
-        by smtp.gmail.com with ESMTPSA id q3sm6840596edc.88.2020.07.27.21.59.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2020 21:59:03 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Amit Kucheria <amit.kucheria@linaro.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        linux-arm-msm@vger.kernel.org
-Cc:     Lukasz Luba <lukasz.luba@arm.com>, linux-pm@vger.kernel.org,
+        id S1726907AbgG1FMo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Jul 2020 01:12:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34416 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726251AbgG1FMn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Jul 2020 01:12:43 -0400
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 24B082070A;
+        Tue, 28 Jul 2020 05:12:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595913163;
+        bh=mMmMOZRqcwbwIAYXJptjnBD0hd+PoJPX2iCLmOcK8eI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=WohhgNcu5yPmT/dSi7ArgVFDeiod6wKcaOO6VOgyuBkdQEvl+qFUFDrZi+0EUMow1
+         nA0dTUTC1C7gW3YPIenikWhTvWf3C4A0VMsCFFNsJLVviMuwZAowZUFwYgyX0fcXpv
+         GSCUrxOomUhLE6TcjG28gaW00SU8qnogYQ3Mst24=
+Date:   Tue, 28 Jul 2020 14:12:38 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
         Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
         Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
         Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: update entry to thermal governors file name prefixing
-Date:   Tue, 28 Jul 2020 06:58:50 +0200
-Message-Id: <20200728045850.22661-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: adjust kprobes.rst entry to new location
+Message-Id: <20200728141238.5fa8056e378fd08b5c1fa3f6@kernel.org>
+In-Reply-To: <20200726055843.10783-1-lukas.bulwahn@gmail.com>
+References: <20200726055843.10783-1-lukas.bulwahn@gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 0015d9a2a727 ("thermal/governors: Prefix all source files with
-gov_") renamed power_allocator.c to gov_power_allocator.c in
-./drivers/thermal amongst some other file renames, but missed to adjust
-the MAINTAINERS entry.
+On Sun, 26 Jul 2020 07:58:43 +0200
+Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
 
-Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
+> Commit 2165b82fde82 ("docs: Move kprobes.rst from staging/ to trace/")
+> moved kprobes.rst, but missed to adjust the MAINTAINERS entry.
+> 
+> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
+> 
+>   warning: no file matches    F:    Documentation/staging/kprobes.rst
+> 
+> Adjust the entry to the new file location.
+> 
 
-  warning: no file matches    F:    drivers/thermal/power_allocator.c
+Good catch!
 
-Update the file entry in MAINTAINERS to the new file name.
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-Amit, please ack.
+Thanks!
 
-Daniel, please pick this non-urgent minor patch for your -next tree.
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+> Naveen, Masami-san, please ack.
+> Jonathan, please pick this minor non-urgent patch into docs-next.
+> 
+> applies cleanly on next-20200724
+> 
+>  MAINTAINERS | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 960f7d43f9d7..416fc4555834 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -9676,7 +9676,7 @@ M:	Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>
+>  M:	"David S. Miller" <davem@davemloft.net>
+>  M:	Masami Hiramatsu <mhiramat@kernel.org>
+>  S:	Maintained
+> -F:	Documentation/staging/kprobes.rst
+> +F:	Documentation/trace/kprobes.rst
+>  F:	include/asm-generic/kprobes.h
+>  F:	include/linux/kprobes.h
+>  F:	kernel/kprobes.c
+> -- 
+> 2.17.1
+> 
 
-applies cleanly on next-20200727
 
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index aad65cc8f35d..aa5a11d71f71 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17164,7 +17164,7 @@ M:	Lukasz Luba <lukasz.luba@arm.com>
- L:	linux-pm@vger.kernel.org
- S:	Maintained
- F:	Documentation/driver-api/thermal/power_allocator.rst
--F:	drivers/thermal/power_allocator.c
-+F:	drivers/thermal/gov_power_allocator.c
- F:	include/trace/events/thermal_power_allocator.h
- 
- THINKPAD ACPI EXTRAS DRIVER
 -- 
-2.17.1
-
+Masami Hiramatsu <mhiramat@kernel.org>

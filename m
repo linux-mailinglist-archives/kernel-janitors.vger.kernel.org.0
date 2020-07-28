@@ -2,43 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F171230681
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 11:25:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECA48230784
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 12:19:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728246AbgG1JZv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Jul 2020 05:25:51 -0400
-Received: from smtprelay0154.hostedemail.com ([216.40.44.154]:43324 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728101AbgG1JZv (ORCPT
+        id S1728708AbgG1KTA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Jul 2020 06:19:00 -0400
+Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:42802 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728694AbgG1KTA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Jul 2020 05:25:51 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 36325180A815F;
-        Tue, 28 Jul 2020 09:25:50 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:69:355:379:599:960:966:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2196:2199:2393:2553:2559:2562:2693:2828:3138:3139:3140:3141:3142:3355:3622:3865:3867:3868:3871:3872:3873:3874:4250:4321:4385:4605:5007:8603:8660:10004:10400:10848:11026:11232:11657:11658:11914:12043:12048:12296:12297:12438:12555:12740:12895:12986:13148:13230:13439:13894:14659:14721:21080:21451:21627:21939:21990:30054:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: bath95_350867a26f68
-X-Filterd-Recvd-Size: 3880
-Received: from XPS-9350.home (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf11.hostedemail.com (Postfix) with ESMTPA;
-        Tue, 28 Jul 2020 09:25:48 +0000 (UTC)
-Message-ID: <2480b12b85f9560060cd155de222d42d40150ae7.camel@perches.com>
-Subject: Re: [PATCH 2/2] media: bt8xx: avoid a useless memset
-From:   Joe Perches <joe@perches.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        mchehab@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
-        hverkuil-cisco@xs4all.nl
+        Tue, 28 Jul 2020 06:19:00 -0400
+Received: from localhost.localdomain ([93.23.107.187])
+        by mwinf5d69 with ME
+        id 8aJw2300442dCi503aJwA2; Tue, 28 Jul 2020 12:18:57 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 28 Jul 2020 12:18:57 +0200
+X-ME-IP: 93.23.107.187
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     mchehab@kernel.org, sean@mess.org
 Cc:     linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Date:   Tue, 28 Jul 2020 02:25:47 -0700
-In-Reply-To: <d5759bd3-5e8a-a557-cd3e-0a2ae4d124e9@wanadoo.fr>
-References: <20200727135151.54757-1-christophe.jaillet@wanadoo.fr>
-         <0897d9bec8865859694c917f3f72ab8fd12321ff.camel@perches.com>
-         <30618c986727e5f8a9806f663b4e6f4aa80065ae.camel@perches.com>
-         <d5759bd3-5e8a-a557-cd3e-0a2ae4d124e9@wanadoo.fr>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.3-0ubuntu1 
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] media: dm1105: switch from 'pci_' to 'dma_' API
+Date:   Tue, 28 Jul 2020 12:18:54 +0200
+Message-Id: <20200728101854.67975-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -46,86 +35,182 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 2020-07-28 at 10:05 +0200, Christophe JAILLET wrote:
-> Le 27/07/2020 à 18:16, Joe Perches a écrit :
-> > On Mon, 2020-07-27 at 09:09 -0700, Joe Perches wrote:
-> > > On Mon, 2020-07-27 at 15:51 +0200, Christophe JAILLET wrote:
-> > > > Avoid a memset after a call to 'dma_alloc_coherent()'.
-> > > > This is useless since
-> > > > commit 518a2f1925c3 ("dma-mapping: zero memory returned from dma_alloc_*")
-> > > []
-> > > > diff --git a/drivers/media/pci/bt8xx/btcx-risc.c b/drivers/media/pci/bt8xx/btcx-risc.c
-> > > []
-> > > > @@ -73,7 +73,6 @@ int btcx_riscmem_alloc(struct pci_dev *pci,
-> > > >   		dprintk("btcx: riscmem alloc [%d] dma=%lx cpu=%p size=%d\n",
-> > > >   			memcnt, (unsigned long)dma, cpu, size);
-> > > >   	}
-> > > > -	memset(risc->cpu,0,risc->size);
-> > > >   	return 0;
-> > > >   }
-> > > 
-> > > Likely NAK.
-> > > 
-> > > This is not useless as risc->cpu may be reused
-> > > and the alloc may not have been done.
-> > 
-> > Perhaps a little rewrite for clarity:
-> > ---
-> >   drivers/media/pci/bt8xx/btcx-risc.c | 24 +++++++++++++-----------
-> >   1 file changed, 13 insertions(+), 11 deletions(-)
-> > 
-> > diff --git a/drivers/media/pci/bt8xx/btcx-risc.c b/drivers/media/pci/bt8xx/btcx-risc.c
-> > index 51257980f539..311f4ca2a108 100644
-> > --- a/drivers/media/pci/bt8xx/btcx-risc.c
-> > +++ b/drivers/media/pci/bt8xx/btcx-risc.c
-> > @@ -56,24 +56,26 @@ int btcx_riscmem_alloc(struct pci_dev *pci,
-> >   		       struct btcx_riscmem *risc,
-> >   		       unsigned int size)
-> >   {
-> > -	__le32 *cpu;
-> > -	dma_addr_t dma = 0;
-> > -
-> > -	if (NULL != risc->cpu && risc->size < size)
-> > -		btcx_riscmem_free(pci,risc);
-> > -	if (NULL == risc->cpu) {
-> > -		cpu = pci_alloc_consistent(pci, size, &dma);
-> > -		if (NULL == cpu)
-> > +	if (risc->cpu && risc->size < size)
-> > +		btcx_riscmem_free(pci, risc);
-> > +
-> > +	if (risc->cpu) {
-> > +		memset(risc->cpu, 0, risc->size);
-> > +	} else {
-> > +		dma_addr_t dma = 0;
-> > +
-> > +		risc->cpu = pci_alloc_consistent(pci, size, &dma);
-> > +		if (!risc->cpu)
-> >   			return -ENOMEM;
-> > -		risc->cpu  = cpu;
-> > +
-> >   		risc->dma  = dma;
-> >   		risc->size = size;
-> >   
-> >   		memcnt++;
-> >   		dprintk("btcx: riscmem alloc [%d] dma=%lx cpu=%p size=%d\n",
-> > -			memcnt, (unsigned long)dma, cpu, size);
-> > +			memcnt, (unsigned long)dma, risc->cpu, size);
-> >   	}
-> > -	memset(risc->cpu,0,risc->size);
-> > +
-> >   	return 0;
-> >   }
-> >   
-> > 
-> > 
-> Looks good to me.
-> 
-> Just note, that this will not apply after patch 1/2 is applied, because 
-> it turns pci_alloc_consistent() into dma_alloc_coherent().
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-Just a suggestion.
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GFP_ with a correct flag.
+It has been compile tested.
 
-As it's dependent on your first patch, perhaps
-you could make the appropriate change.
+When memory is allocated, GFP_KERNEL can be used because it is called from
+the probe function and no lock is taken.
 
+The call chain is:
+   dm1105_probe
+      --> dm1105_hw_init
+         --> dm1105_dma_map
+
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
+
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+---
+ drivers/media/pci/dm1105/dm1105.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/media/pci/dm1105/dm1105.c b/drivers/media/pci/dm1105/dm1105.c
+index 9dce31d2b525..4ac645a56c14 100644
+--- a/drivers/media/pci/dm1105/dm1105.c
++++ b/drivers/media/pci/dm1105/dm1105.c
+@@ -604,19 +604,17 @@ static void dm1105_set_dma_addr(struct dm1105_dev *dev)
+ 
+ static int dm1105_dma_map(struct dm1105_dev *dev)
+ {
+-	dev->ts_buf = pci_alloc_consistent(dev->pdev,
+-					6 * DM1105_DMA_BYTES,
+-					&dev->dma_addr);
++	dev->ts_buf = dma_alloc_coherent(&dev->pdev->dev,
++					 6 * DM1105_DMA_BYTES, &dev->dma_addr,
++					 GFP_KERNEL);
+ 
+ 	return !dev->ts_buf;
+ }
+ 
+ static void dm1105_dma_unmap(struct dm1105_dev *dev)
+ {
+-	pci_free_consistent(dev->pdev,
+-			6 * DM1105_DMA_BYTES,
+-			dev->ts_buf,
+-			dev->dma_addr);
++	dma_free_coherent(&dev->pdev->dev, 6 * DM1105_DMA_BYTES, dev->ts_buf,
++			  dev->dma_addr);
+ }
+ 
+ static void dm1105_enable_irqs(struct dm1105_dev *dev)
+@@ -1010,7 +1008,7 @@ static int dm1105_probe(struct pci_dev *pdev,
+ 	if (ret < 0)
+ 		goto err_kfree;
+ 
+-	ret = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
++	ret = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
+ 	if (ret < 0)
+ 		goto err_pci_disable_device;
+ 
+-- 
+2.25.1
 

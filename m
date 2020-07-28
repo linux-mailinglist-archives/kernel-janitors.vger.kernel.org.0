@@ -2,74 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EE9B230DD7
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 17:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AC66230E89
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 17:55:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730929AbgG1Pai (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Jul 2020 11:30:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44656 "EHLO mail.kernel.org"
+        id S1731176AbgG1Py7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Jul 2020 11:54:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56372 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730637AbgG1Pah (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Jul 2020 11:30:37 -0400
+        id S1730679AbgG1Py6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Jul 2020 11:54:58 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DA9CD206D4;
-        Tue, 28 Jul 2020 15:30:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 988B42065C;
+        Tue, 28 Jul 2020 15:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595950237;
-        bh=zemweQXddKbLvL5Mw6dvsBIj/JO81g5ivJX6E4yPUpU=;
+        s=default; t=1595951697;
+        bh=aVftNjJBgQbHkyV3BbCKhpUmkcMZMJhVZkUAyIMrxes=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=DnVfC0myMfSdBeXXDbjcCaDP3MPxQPLx6vreiLqEX55LqEAo4s+RowIkv1f1UgFnO
-         b2w+KMbaMUefDBT0zeahrXDxINTkGktbxbrYtI00pvVQNhnqrbFBNY3Evw88dc8v3/
-         +q9sEXBmwZIevAUfDBhdAbBk/qkOTF97MoHwjXAQ=
-Date:   Tue, 28 Jul 2020 17:30:30 +0200
+        b=PaJDO+2egn0tExAMjFcINRhEZuduM5y5VyMlpw6CyrlqR2wGK6iE1K9DWnECrkpAO
+         EZvKi8Ha4FjIYRWNHpfIXxo1j5YG2O912Tw04ZRJPsJMR2Lbj5fVGiMze3R2cNBF9M
+         8QF+GF2RmceMPUDeCayAi5Bur+3012P35+dp722U=
+Date:   Tue, 28 Jul 2020 17:54:50 +0200
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Rustam Kovhaev <rkovhaev@gmail.com>, linux-usb@vger.kernel.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+Cc:     Qinglang Miao <miaoqinglang@huawei.com>,
+        linux-m68k@lists.linux-m68k.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        syzbot+67b2bd0e34f952d0321e@syzkaller.appspotmail.com
-Subject: Re: [PATCH] usb: hso: check for return value in
- hso_serial_common_create()
-Message-ID: <20200728153030.GB3656785@kroah.com>
-References: <a42328b6-6d45-577f-f605-337b91c19f1a@web.de>
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [PATCH] m68k/amiga: Add missing platform_device_unregister()
+ call in amiga_init_devices()
+Message-ID: <20200728155450.GC4178776@kroah.com>
+References: <1e12105b-aa72-11a2-74f6-c789f8ceaaa3@web.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a42328b6-6d45-577f-f605-337b91c19f1a@web.de>
+In-Reply-To: <1e12105b-aa72-11a2-74f6-c789f8ceaaa3@web.de>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jul 28, 2020 at 03:19:00PM +0200, Markus Elfring wrote:
-> > in case of an error tty_register_device_attr() returns ERR_PTR(),
-> > add IS_ERR() check
-> 
-> I suggest to improve this change description a bit.
+On Tue, Jul 28, 2020 at 04:50:06PM +0200, Markus Elfring wrote:
+> > Add the missing platform_device_unregister() before return
+> > from amiga_init_devices() in the error handling case.
 > 
 > Will the tag “Fixes” become helpful for the commit message?
 > 
 > 
 > …
-> > +++ b/drivers/net/usb/hso.c
+> > +++ b/arch/m68k/amiga/platform.c
+> > @@ -188,8 +188,10 @@  static int __init amiga_init_devices(void)
+> >  			return PTR_ERR(pdev);
+> >  		error = platform_device_add_data(pdev, &a1200_ide_pdata,
+> >  						 sizeof(a1200_ide_pdata));
+> > -		if (error)
+> > +		if (error) {
+> > +			platform_device_unregister(pdev);
+> >  			return error;
+> > +		}
+> >  	}
 > …
-> > @@ -2311,6 +2313,7 @@  static int hso_serial_common_create(struct hso_serial *serial, int num_urbs,
-> >  	return 0;
-> >  exit:
-> >  	hso_serial_tty_unregister(serial);
-> > +exit2:
-> >  	hso_serial_common_free(serial);
-> >  	return -1;
-> >  }
 > 
-> Can other labels (like “unregister_serial” and “free_serial”) be preferred here?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?id=92ed301919932f777713b9172e525674157e983d#n485
+> I suggest to add a jump target for the desired exception handling.
+> 
+>  		if (error)
+> +			goto unregister_device;
+> 
 > 
 > Regards,
 > Markus

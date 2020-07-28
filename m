@@ -2,215 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ECA48230784
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 12:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C06B62307EB
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 12:44:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728708AbgG1KTA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Jul 2020 06:19:00 -0400
-Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:42802 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728694AbgG1KTA (ORCPT
+        id S1728829AbgG1KoB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Jul 2020 06:44:01 -0400
+Received: from www62.your-server.de ([213.133.104.62]:47752 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728825AbgG1KoA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Jul 2020 06:19:00 -0400
-Received: from localhost.localdomain ([93.23.107.187])
-        by mwinf5d69 with ME
-        id 8aJw2300442dCi503aJwA2; Tue, 28 Jul 2020 12:18:57 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 28 Jul 2020 12:18:57 +0200
-X-ME-IP: 93.23.107.187
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     mchehab@kernel.org, sean@mess.org
-Cc:     linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] media: dm1105: switch from 'pci_' to 'dma_' API
-Date:   Tue, 28 Jul 2020 12:18:54 +0200
-Message-Id: <20200728101854.67975-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Tue, 28 Jul 2020 06:44:00 -0400
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1k0N5P-0003Hy-B5; Tue, 28 Jul 2020 12:43:55 +0200
+Received: from [178.196.57.75] (helo=pc-9.home)
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1k0N5P-000Whq-0j; Tue, 28 Jul 2020 12:43:55 +0200
+Subject: Re: [PATCH][next] bpf: fix swapped arguments in calls to
+ check_buffer_access
+To:     Yonghong Song <yhs@fb.com>, Colin King <colin.king@canonical.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@chromium.org>, netdev@vger.kernel.org,
+        bpf@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200727175411.155179-1-colin.king@canonical.com>
+ <c9ea156a-20fa-5415-0d35-0521e8740ddc@fb.com>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <882cd37d-0af2-3412-6bd7-73aa466df23c@iogearbox.net>
+Date:   Tue, 28 Jul 2020 12:43:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <c9ea156a-20fa-5415-0d35-0521e8740ddc@fb.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.102.3/25886/Mon Jul 27 16:48:28 2020)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The wrappers in include/linux/pci-dma-compat.h should go away.
+On 7/27/20 11:39 PM, Yonghong Song wrote:
+> On 7/27/20 10:54 AM, Colin King wrote:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> There are a couple of arguments of the boolean flag zero_size_allowed
+>> and the char pointer buf_info when calling to function check_buffer_access
+>> that are swapped by mistake. Fix these by swapping them to correct
+>> the argument ordering.
+>>
+>> Addresses-Coverity: ("Array compared to 0")
+>> Fixes: afbf21dce668 ("bpf: Support readonly/readwrite buffers in verifier")
+>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> 
+> Thanks for the fix!
+> Acked-by: Yonghong Song <yhs@fb.com>
 
-The patch has been generated with the coccinelle script below and has been
-hand modified to replace GFP_ with a correct flag.
-It has been compile tested.
-
-When memory is allocated, GFP_KERNEL can be used because it is called from
-the probe function and no lock is taken.
-
-The call chain is:
-   dm1105_probe
-      --> dm1105_hw_init
-         --> dm1105_dma_map
-
-@@
-@@
--    PCI_DMA_BIDIRECTIONAL
-+    DMA_BIDIRECTIONAL
-
-@@
-@@
--    PCI_DMA_TODEVICE
-+    DMA_TO_DEVICE
-
-@@
-@@
--    PCI_DMA_FROMDEVICE
-+    DMA_FROM_DEVICE
-
-@@
-@@
--    PCI_DMA_NONE
-+    DMA_NONE
-
-@@
-expression e1, e2, e3;
-@@
--    pci_alloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3;
-@@
--    pci_zalloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_free_consistent(e1, e2, e3, e4)
-+    dma_free_coherent(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_single(e1, e2, e3, e4)
-+    dma_map_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_single(e1, e2, e3, e4)
-+    dma_unmap_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4, e5;
-@@
--    pci_map_page(e1, e2, e3, e4, e5)
-+    dma_map_page(&e1->dev, e2, e3, e4, e5)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_page(e1, e2, e3, e4)
-+    dma_unmap_page(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_sg(e1, e2, e3, e4)
-+    dma_map_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_sg(e1, e2, e3, e4)
-+    dma_unmap_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-+    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-+    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-+    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-+    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2;
-@@
--    pci_dma_mapping_error(e1, e2)
-+    dma_mapping_error(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_dma_mask(e1, e2)
-+    dma_set_mask(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_consistent_dma_mask(e1, e2)
-+    dma_set_coherent_mask(&e1->dev, e2)
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-If needed, see post from Christoph Hellwig on the kernel-janitors ML:
-   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
----
- drivers/media/pci/dm1105/dm1105.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/media/pci/dm1105/dm1105.c b/drivers/media/pci/dm1105/dm1105.c
-index 9dce31d2b525..4ac645a56c14 100644
---- a/drivers/media/pci/dm1105/dm1105.c
-+++ b/drivers/media/pci/dm1105/dm1105.c
-@@ -604,19 +604,17 @@ static void dm1105_set_dma_addr(struct dm1105_dev *dev)
- 
- static int dm1105_dma_map(struct dm1105_dev *dev)
- {
--	dev->ts_buf = pci_alloc_consistent(dev->pdev,
--					6 * DM1105_DMA_BYTES,
--					&dev->dma_addr);
-+	dev->ts_buf = dma_alloc_coherent(&dev->pdev->dev,
-+					 6 * DM1105_DMA_BYTES, &dev->dma_addr,
-+					 GFP_KERNEL);
- 
- 	return !dev->ts_buf;
- }
- 
- static void dm1105_dma_unmap(struct dm1105_dev *dev)
- {
--	pci_free_consistent(dev->pdev,
--			6 * DM1105_DMA_BYTES,
--			dev->ts_buf,
--			dev->dma_addr);
-+	dma_free_coherent(&dev->pdev->dev, 6 * DM1105_DMA_BYTES, dev->ts_buf,
-+			  dev->dma_addr);
- }
- 
- static void dm1105_enable_irqs(struct dm1105_dev *dev)
-@@ -1010,7 +1008,7 @@ static int dm1105_probe(struct pci_dev *pdev,
- 	if (ret < 0)
- 		goto err_kfree;
- 
--	ret = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
-+	ret = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
- 	if (ret < 0)
- 		goto err_pci_disable_device;
- 
--- 
-2.25.1
-
+Sigh, thanks for the fix Colin, applied! Yonghong, could you follow-up with
+BPF selftest test cases that exercise these paths? Thx

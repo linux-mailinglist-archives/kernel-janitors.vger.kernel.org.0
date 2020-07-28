@@ -2,101 +2,130 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CA2F2305A7
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 10:43:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F171230681
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 11:25:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728263AbgG1InY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Jul 2020 04:43:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38546 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726032AbgG1InX (ORCPT
+        id S1728246AbgG1JZv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Jul 2020 05:25:51 -0400
+Received: from smtprelay0154.hostedemail.com ([216.40.44.154]:43324 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728101AbgG1JZv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Jul 2020 04:43:23 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EF22C061794
-        for <kernel-janitors@vger.kernel.org>; Tue, 28 Jul 2020 01:43:23 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id g8so5342948wmk.3
-        for <kernel-janitors@vger.kernel.org>; Tue, 28 Jul 2020 01:43:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=6s5ORi0rHPtJiGgGsf/ouNzzeGn7KDq9L2gBSCc9Ezc=;
-        b=dnA2DYGICyIMtS9q/uuEQCU7oYl3dh7IssuLenQcpsOLQ4ufUqQLb+HeaRZ/6b7u95
-         cjxbV6DKy7GjHcu/leVmxG2RFPnpuXka8Z8UMQcbJ0aZcESZBIUvBYlxsZCfyOGKjVCS
-         6NJ2N7YtjOFVJ5DDC0qClASK03IHqx8fJ+iktndvYiCxETw31bpfXGuYthPUTvRyy5tC
-         j0BbjlgaZWi9iFzL76njvje8rnPRneK3S1n0P2ZpqoApvRdel/5TM86fklzNCgIZyODi
-         3iqnrw6qpeE/lZHW43EBua5wcbzK5JClgMCn9a+8O5mKDUGjvUDJWArMB++iVluLjYOZ
-         /M/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=6s5ORi0rHPtJiGgGsf/ouNzzeGn7KDq9L2gBSCc9Ezc=;
-        b=W8N9rvefkRiYCeyO6tj8cpZbHrpES12H+lnzXM9bzdbNOC5F5h7mYR6cEagQktfvRQ
-         wbdTfWj6LMXCmuZ21cJwzJnsWsDRlTuaPPhf7cy/wB8PksDDij0kC7etw98HvdcesABb
-         oASyCmNXixNjc8DTYElllrUKRJw81XLAD02ocE7ATaLPAKk2bz02sTaOuETRDCP9ymlJ
-         oFKbnVMA/ZqFQLDNHWEPB6f2H6To5QREX7y3QJbBCxr4Tx/MLehWFnj+lpSjvM+Aerp4
-         BVeFc7lGgySkErSBYeXXM83LEVJV4X5+RPqA1zJrYcrH6RAtsHzE5JjgC1QbKPVFLmBu
-         FJzg==
-X-Gm-Message-State: AOAM533OwqVknIFdRNQWB5/IlqqF13GGUQgq8xHvdo+hFdvPlXOXfkil
-        bOYQRt5PRrsgLWZfB5LPiGlFag==
-X-Google-Smtp-Source: ABdhPJwwu+F18+gwleovwZF0jYfx83SPzzBo/k68WX1LsAIkA5fzwkyv9D+UKxc72HZS9XNXCFWMAw==
-X-Received: by 2002:a7b:c205:: with SMTP id x5mr3146752wmi.161.1595925801819;
-        Tue, 28 Jul 2020 01:43:21 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:19cd:2f7:8a44:adc5? ([2a01:e34:ed2f:f020:19cd:2f7:8a44:adc5])
-        by smtp.googlemail.com with ESMTPSA id 33sm17393234wri.16.2020.07.28.01.43.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jul 2020 01:43:21 -0700 (PDT)
-Subject: Re: [PATCH] MAINTAINERS: update entry to thermal governors file name
- prefixing
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Amit Kucheria <amit.kucheria@linaro.org>,
-        linux-arm-msm@vger.kernel.org
-Cc:     Lukasz Luba <lukasz.luba@arm.com>, linux-pm@vger.kernel.org,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20200728045850.22661-1-lukas.bulwahn@gmail.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <d50f49c2-4d88-74f7-29e9-963b806c602e@linaro.org>
-Date:   Tue, 28 Jul 2020 10:43:20 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Tue, 28 Jul 2020 05:25:51 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 36325180A815F;
+        Tue, 28 Jul 2020 09:25:50 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:69:355:379:599:960:966:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2196:2199:2393:2553:2559:2562:2693:2828:3138:3139:3140:3141:3142:3355:3622:3865:3867:3868:3871:3872:3873:3874:4250:4321:4385:4605:5007:8603:8660:10004:10400:10848:11026:11232:11657:11658:11914:12043:12048:12296:12297:12438:12555:12740:12895:12986:13148:13230:13439:13894:14659:14721:21080:21451:21627:21939:21990:30054:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: bath95_350867a26f68
+X-Filterd-Recvd-Size: 3880
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf11.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 28 Jul 2020 09:25:48 +0000 (UTC)
+Message-ID: <2480b12b85f9560060cd155de222d42d40150ae7.camel@perches.com>
+Subject: Re: [PATCH 2/2] media: bt8xx: avoid a useless memset
+From:   Joe Perches <joe@perches.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        mchehab@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
+        hverkuil-cisco@xs4all.nl
+Cc:     linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Date:   Tue, 28 Jul 2020 02:25:47 -0700
+In-Reply-To: <d5759bd3-5e8a-a557-cd3e-0a2ae4d124e9@wanadoo.fr>
+References: <20200727135151.54757-1-christophe.jaillet@wanadoo.fr>
+         <0897d9bec8865859694c917f3f72ab8fd12321ff.camel@perches.com>
+         <30618c986727e5f8a9806f663b4e6f4aa80065ae.camel@perches.com>
+         <d5759bd3-5e8a-a557-cd3e-0a2ae4d124e9@wanadoo.fr>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.3-0ubuntu1 
 MIME-Version: 1.0
-In-Reply-To: <20200728045850.22661-1-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 28/07/2020 06:58, Lukas Bulwahn wrote:
-> Commit 0015d9a2a727 ("thermal/governors: Prefix all source files with
-> gov_") renamed power_allocator.c to gov_power_allocator.c in
-> ./drivers/thermal amongst some other file renames, but missed to adjust
-> the MAINTAINERS entry.
+On Tue, 2020-07-28 at 10:05 +0200, Christophe JAILLET wrote:
+> Le 27/07/2020 à 18:16, Joe Perches a écrit :
+> > On Mon, 2020-07-27 at 09:09 -0700, Joe Perches wrote:
+> > > On Mon, 2020-07-27 at 15:51 +0200, Christophe JAILLET wrote:
+> > > > Avoid a memset after a call to 'dma_alloc_coherent()'.
+> > > > This is useless since
+> > > > commit 518a2f1925c3 ("dma-mapping: zero memory returned from dma_alloc_*")
+> > > []
+> > > > diff --git a/drivers/media/pci/bt8xx/btcx-risc.c b/drivers/media/pci/bt8xx/btcx-risc.c
+> > > []
+> > > > @@ -73,7 +73,6 @@ int btcx_riscmem_alloc(struct pci_dev *pci,
+> > > >   		dprintk("btcx: riscmem alloc [%d] dma=%lx cpu=%p size=%d\n",
+> > > >   			memcnt, (unsigned long)dma, cpu, size);
+> > > >   	}
+> > > > -	memset(risc->cpu,0,risc->size);
+> > > >   	return 0;
+> > > >   }
+> > > 
+> > > Likely NAK.
+> > > 
+> > > This is not useless as risc->cpu may be reused
+> > > and the alloc may not have been done.
+> > 
+> > Perhaps a little rewrite for clarity:
+> > ---
+> >   drivers/media/pci/bt8xx/btcx-risc.c | 24 +++++++++++++-----------
+> >   1 file changed, 13 insertions(+), 11 deletions(-)
+> > 
+> > diff --git a/drivers/media/pci/bt8xx/btcx-risc.c b/drivers/media/pci/bt8xx/btcx-risc.c
+> > index 51257980f539..311f4ca2a108 100644
+> > --- a/drivers/media/pci/bt8xx/btcx-risc.c
+> > +++ b/drivers/media/pci/bt8xx/btcx-risc.c
+> > @@ -56,24 +56,26 @@ int btcx_riscmem_alloc(struct pci_dev *pci,
+> >   		       struct btcx_riscmem *risc,
+> >   		       unsigned int size)
+> >   {
+> > -	__le32 *cpu;
+> > -	dma_addr_t dma = 0;
+> > -
+> > -	if (NULL != risc->cpu && risc->size < size)
+> > -		btcx_riscmem_free(pci,risc);
+> > -	if (NULL == risc->cpu) {
+> > -		cpu = pci_alloc_consistent(pci, size, &dma);
+> > -		if (NULL == cpu)
+> > +	if (risc->cpu && risc->size < size)
+> > +		btcx_riscmem_free(pci, risc);
+> > +
+> > +	if (risc->cpu) {
+> > +		memset(risc->cpu, 0, risc->size);
+> > +	} else {
+> > +		dma_addr_t dma = 0;
+> > +
+> > +		risc->cpu = pci_alloc_consistent(pci, size, &dma);
+> > +		if (!risc->cpu)
+> >   			return -ENOMEM;
+> > -		risc->cpu  = cpu;
+> > +
+> >   		risc->dma  = dma;
+> >   		risc->size = size;
+> >   
+> >   		memcnt++;
+> >   		dprintk("btcx: riscmem alloc [%d] dma=%lx cpu=%p size=%d\n",
+> > -			memcnt, (unsigned long)dma, cpu, size);
+> > +			memcnt, (unsigned long)dma, risc->cpu, size);
+> >   	}
+> > -	memset(risc->cpu,0,risc->size);
+> > +
+> >   	return 0;
+> >   }
+> >   
+> > 
+> > 
+> Looks good to me.
 > 
-> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
-> 
->   warning: no file matches    F:    drivers/thermal/power_allocator.c
-> 
-> Update the file entry in MAINTAINERS to the new file name.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
+> Just note, that this will not apply after patch 1/2 is applied, because 
+> it turns pci_alloc_consistent() into dma_alloc_coherent().
+
+Just a suggestion.
+
+As it's dependent on your first patch, perhaps
+you could make the appropriate change.
 
 
-Applied, thanks
-
-
--- 
-<http://www.linaro.org/> Linaro.org â”‚ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog

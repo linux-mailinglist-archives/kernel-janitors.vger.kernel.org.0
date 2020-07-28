@@ -2,244 +2,139 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAC2A2313C0
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 22:19:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7E93231428
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 22:45:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728346AbgG1UTC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Jul 2020 16:19:02 -0400
-Received: from smtp-fw-9101.amazon.com ([207.171.184.25]:35160 "EHLO
-        smtp-fw-9101.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728253AbgG1UTC (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Jul 2020 16:19:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1595967541; x=1627503541;
-  h=date:from:to:cc:message-id:references:mime-version:
-   in-reply-to:subject;
-  bh=0cze+HalMMesmjlOUnqhOlmobCWHMFo1lFXE2WRXQy4=;
-  b=gCa0QcL1a2nf0NOQR4H6ZZAX3W0CQ4fqmuuIDkrOxmrqLJFy3n9mZJhr
-   ycHgukrNOAkzT54VXFIDn9KC1yWQKSQjz+S97fykoxYmd3Xx+WIFdGzjB
-   2Ml3P0lGtzcpe+eV3812Q/KAMrkp1qhE4qs+v4Ltee09Lc4UcWDIxfrXr
-   c=;
-IronPort-SDR: IFTkACwcV5GK4yzPnNGox7G6KVD2NOlGMd6XS2J5mfSRZym9Am6+NOx65NpSB0gXXsB3FDtqW3
- WY8vqecZkCtw==
-X-IronPort-AV: E=Sophos;i="5.75,407,1589241600"; 
-   d="scan'208";a="55521430"
-Subject: Re: [PATCH] NFSv4.2: Fix an error code in nfs4_xattr_cache_init()
-Received: from sea32-co-svc-lb4-vlan3.sea.corp.amazon.com (HELO email-inbound-relay-1a-821c648d.us-east-1.amazon.com) ([10.47.23.38])
-  by smtp-border-fw-out-9101.sea19.amazon.com with ESMTP; 28 Jul 2020 20:18:56 +0000
-Received: from EX13MTAUEA002.ant.amazon.com (iad55-ws-svc-p15-lb9-vlan2.iad.amazon.com [10.40.159.162])
-        by email-inbound-relay-1a-821c648d.us-east-1.amazon.com (Postfix) with ESMTPS id 06EBAA04C7;
-        Tue, 28 Jul 2020 20:18:54 +0000 (UTC)
-Received: from EX13D34UEA004.ant.amazon.com (10.43.61.143) by
- EX13MTAUEA002.ant.amazon.com (10.43.61.77) with Microsoft SMTP Server (TLS)
- id 15.0.1497.2; Tue, 28 Jul 2020 20:18:54 +0000
-Received: from EX13MTAUEA002.ant.amazon.com (10.43.61.77) by
- EX13D34UEA004.ant.amazon.com (10.43.61.143) with Microsoft SMTP Server (TLS)
- id 15.0.1497.2; Tue, 28 Jul 2020 20:18:54 +0000
-Received: from dev-dsk-fllinden-2c-c1893d73.us-west-2.amazon.com
- (172.23.141.97) by mail-relay.amazon.com (10.43.61.169) with Microsoft SMTP
- Server id 15.0.1497.2 via Frontend Transport; Tue, 28 Jul 2020 20:18:53 +0000
-Received: by dev-dsk-fllinden-2c-c1893d73.us-west-2.amazon.com (Postfix, from userid 6262777)
-        id CE2B0C3B09; Tue, 28 Jul 2020 20:18:53 +0000 (UTC)
-Date:   Tue, 28 Jul 2020 20:18:53 +0000
-From:   Frank van der Linden <fllinden@amazon.com>
-To:     Trond Myklebust <trondmy@hammerspace.com>
-CC:     "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
-        "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "anna.schumaker@netapp.com" <anna.schumaker@netapp.com>
-Message-ID: <20200728201853.GA27458@dev-dsk-fllinden-2c-c1893d73.us-west-2.amazon.com>
-References: <20200727112344.GH389488@mwanda>
- <20200727163423.GA7563@dev-dsk-fllinden-2c-c1893d73.us-west-2.amazon.com>
- <4bb93c1413151ccbd918cc371c67555042763e11.camel@hammerspace.com>
- <20200728160953.GA1208@dev-dsk-fllinden-2c-c1893d73.us-west-2.amazon.com>
- <61d4e88c18818cd94dfbd14f054e6a2cb8858c8d.camel@hammerspace.com>
- <20200728180051.GA10902@dev-dsk-fllinden-2c-c1893d73.us-west-2.amazon.com>
- <13f86f29cc05944894813632bd537e559859e254.camel@hammerspace.com>
- <20200728181309.GA14661@dev-dsk-fllinden-2c-c1893d73.us-west-2.amazon.com>
- <d006b84e722cbebf9a94b8816bd59e11bc7d5219.camel@hammerspace.com>
-MIME-Version: 1.0
+        id S1729092AbgG1Upj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Jul 2020 16:45:39 -0400
+Received: from mga14.intel.com ([192.55.52.115]:42579 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728830AbgG1Uph (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Jul 2020 16:45:37 -0400
+IronPort-SDR: ms9/2wAv16y3P+B62oti0jjJdlFbgKB/AVJFniwMh9v1PXUojdGScxTGI6DCTB+qN5c+pOUCgR
+ ZoEk12/GxkSg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9696"; a="150480920"
+X-IronPort-AV: E=Sophos;i="5.75,407,1589266800"; 
+   d="scan'208";a="150480920"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2020 13:45:36 -0700
+IronPort-SDR: KM/NH6MMj1w3nAmvnndH95N82qhH7J3rcvWCki2y+a4QYvAEh3dDrjdrKQ9sIBmM4McaStT79M
+ F/IUEeFncZSQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,407,1589266800"; 
+   d="scan'208";a="320525064"
+Received: from orsmsx104.amr.corp.intel.com ([10.22.225.131])
+  by orsmga008.jf.intel.com with ESMTP; 28 Jul 2020 13:45:36 -0700
+Received: from orsmsx116.amr.corp.intel.com (10.22.240.14) by
+ ORSMSX104.amr.corp.intel.com (10.22.225.131) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Tue, 28 Jul 2020 13:45:36 -0700
+Received: from ORSEDG002.ED.cps.intel.com (10.7.248.5) by
+ ORSMSX116.amr.corp.intel.com (10.22.240.14) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Tue, 28 Jul 2020 13:45:36 -0700
+Received: from NAM02-BL2-obe.outbound.protection.outlook.com (104.47.38.57) by
+ edgegateway.intel.com (134.134.137.101) with Microsoft SMTP Server (TLS) id
+ 14.3.439.0; Tue, 28 Jul 2020 13:44:09 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=FPjge/4hm4T0a/Ysl+MaxCddHLxt6ZPhPM59Mk0VRYIudxqts6lznDsKt29H8c/wSa7YoARi6TyRRKNOBvXMrQOt+5aUnet9+rDizyu0c/8yl5dY8yySAvmWqmqLP5jLYbYobFkrtKR21OOpOOWHTAUsFBvHL2et1fYFUIOEWZngXUGtTM5Sk4JqM2aPRtnK1JcZcmJN2/eumSIUy9lbFuKZdUGkqWU/lDW/62APnenWjUZD0qi6LsFVVNYuI4lXpC6xaLgHE+1b1zGwSbY5Ldv6NxgIlq5U43HWG4IbNtmsONR80fEvVM7oOtmDwPV7P5HTb+Zc+64ZG/ScXF8a8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JvPxnY47ZSevdJ3bEqzzDSHbUmnRnPsE+HxAgyDufYE=;
+ b=TI4bSh3q0QKtoWhkXTCVY5v1+MReUv7j5yZaxmEv24g81tdXYhgJ65OVDOLnV7oNcNFsZTP5mBEjcjfjgGXLW8lDGBFzUlkJo1YGMMAnUlTuyWa88+HunyiqP64fwebZsi2H7z03OGhW12PuPK4Tf0JeUJViL9SuGbITS1/6vxWFpXbXEaZNQ2wXnQBCPVSjPCbH7Mmw75Uhju5rCEfqqBjmuIJjgRQG3Wq44RZHmEpqjlGLBlBvHO2uS9i3WPwuyuyQKCHzP+NkB7CDYMv6BZo3xNBUdEhuR/9tz0GrszKaxaE4kxhq9uknbtu/M4EBK2bx2kjjfun7TV85mFtgNw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JvPxnY47ZSevdJ3bEqzzDSHbUmnRnPsE+HxAgyDufYE=;
+ b=V3Ql+yHkjeImsU3fWQeH2DSWyHod8gvI5y8mZ/otyMIhIQEIJnySNT/HPFi+JQ5jXer07FnXplm64/PZO5TfLG98qGC5ZqRwhDFHOfL07Z4KCi+a0Ah8kpgzahMRmPcOJN2B9clQES//AkeNOF+6mLf5b4iiAO9G5YDAePxOXqo=
+Received: from DM6PR11MB2890.namprd11.prod.outlook.com (2603:10b6:5:63::20) by
+ DM6PR11MB3913.namprd11.prod.outlook.com (2603:10b6:5:193::33) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3216.25; Tue, 28 Jul 2020 20:43:36 +0000
+Received: from DM6PR11MB2890.namprd11.prod.outlook.com
+ ([fe80::65c2:9ac9:2c52:82bd]) by DM6PR11MB2890.namprd11.prod.outlook.com
+ ([fe80::65c2:9ac9:2c52:82bd%6]) with mapi id 15.20.3216.033; Tue, 28 Jul 2020
+ 20:43:36 +0000
+From:   "Brown, Aaron F" <aaron.f.brown@intel.com>
+To:     Suraj Upadhyay <usuraj35@gmail.com>,
+        "Kirsher, Jeffrey T" <jeffrey.t.kirsher@intel.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>
+CC:     "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: RE: [PATCH 1/4] e1000/e1000_ethtool.c: Remove unnecessary usages of
+ memset
+Thread-Topic: [PATCH 1/4] e1000/e1000_ethtool.c: Remove unnecessary usages of
+ memset
+Thread-Index: AQHWWhbEk0DPjDT8REuZZOiBC0xNLakdi1kA
+Date:   Tue, 28 Jul 2020 20:43:36 +0000
+Message-ID: <DM6PR11MB2890145ABAA1BA9FEA288F8BBC730@DM6PR11MB2890.namprd11.prod.outlook.com>
+References: <20200714194035.GA21382@blackclown>
+In-Reply-To: <20200714194035.GA21382@blackclown>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-version: 11.5.1.3
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+authentication-results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=intel.com;
+x-originating-ip: [97.120.173.209]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 8ee957ad-8751-46ad-868b-08d83336e6f8
+x-ms-traffictypediagnostic: DM6PR11MB3913:
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <DM6PR11MB3913AF8375FEF68B176AEC44BC730@DM6PR11MB3913.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:439;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 8yGK0gvde7Rqh1fHkjWFn5O/AmcJajHz8BGow23L8vUexIo1p7Ze9VrG84JaftVkLUSn3/eTNS0ph4bFdXy/SqnQSvywdnBwN4qFepIpfpV/FtfP4TiiiLYxykY5u+hu9aNvTKXxjrcDsr1ciN7CTxz5afaFAxUrkJJHd7MDSorMF6GqDFS1xGmyH6F5Fpwo/1QspeG6VBqWBtZF00/nAJqqzGb4RiJ1LqPOEiTjnX1uYYIcsrN6Cw4dPgiiqG5qS+cPVsd9dshlFA4iWQq5Ia/LaIC/akRJApbIuEQGXZQ8dDZ98ZCF/N/mfKhniA+6PZ5uvq3HlBj2DlqPaLb0XQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB2890.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(346002)(376002)(366004)(396003)(136003)(39860400002)(478600001)(66946007)(54906003)(71200400001)(316002)(64756008)(66556008)(66446008)(76116006)(4326008)(86362001)(110136005)(4744005)(2906002)(66476007)(52536014)(186003)(55016002)(6506007)(53546011)(26005)(9686003)(83380400001)(7696005)(8936002)(8676002)(5660300002)(33656002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: sutXMh1ppgq5xBPZOTCzoiAsCadtLSQ8QXbhL3b4StmBLy6KeVzti9u1zdrGO0iTGwnZ5t8rNlW0keTOi7gNv0xb/cAB2OVVSbgvL7q47bgcd2uQuwsEcvpOGtYXmkdCBdH+kXl85M4hlLk39zaz4WhsPkUlXYzbXhEIOXF3IPDuUxKTmt2JKE2f7Ks9gbrTEPwuaPlIUrm98faNOQlFCN+b3qq61oKN6FhXwYZ/Kr3RlDWX9X2yOse3QEjHi294CtuxdQzgsukk4fLsdqkOjhV0tapp8AkI99cgJ5mjgYcW2wtSW3VfNzrzvYYRW6KOsYlfVcSdRviJlP51cT8iv8PbbO0IIMwAUcW+dtXmdv5ePzl8d82OIPiPRBRrTbh7wymyNp0K4hwyDxZoKR2NUlWmHdbAE0QXEM3s9xGJuGtrdpANYTrJcX2o76I2w4OxNpJuTBZMztN0K4AhUv639RuV4vlpe2XgWz78E56z3oLKmN6xdHin6kMjsEkBzehT
 Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <d006b84e722cbebf9a94b8816bd59e11bc7d5219.camel@hammerspace.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB2890.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8ee957ad-8751-46ad-868b-08d83336e6f8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Jul 2020 20:43:36.7713
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: owZNXsaKlBd+oG9Z++nH391X1L5rErGJ7d0SkJdrJLS7fI9GrRF83NGRgVgChWYYQDoFJHgmvr6alWTfpTQ0Xg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB3913
+X-OriginatorOrg: intel.com
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jul 28, 2020 at 06:21:19PM +0000, Trond Myklebust wrote:
-> 
-> On Tue, 2020-07-28 at 18:13 +0000, Frank van der Linden wrote:
-> > On Tue, Jul 28, 2020 at 06:04:21PM +0000, Trond Myklebust wrote:
-> > > On Tue, 2020-07-28 at 18:00 +0000, Frank van der Linden wrote:
-> > > > On Tue, Jul 28, 2020 at 05:10:34PM +0000, Trond Myklebust wrote:
-> > > > > On Tue, 2020-07-28 at 16:09 +0000, Frank van der Linden wrote:
-> > > > > > Hi Trond,
-> > > > > >
-> > > > > > On Tue, Jul 28, 2020 at 03:17:12PM +0000, Trond Myklebust
-> > > > > > wrote:
-> > > > > > > On Mon, 2020-07-27 at 16:34 +0000, Frank van der Linden
-> > > > > > > wrote:
-> > > > > > > > Hi Dan,
-> > > > > > > >
-> > > > > > > > On Mon, Jul 27, 2020 at 02:23:44PM +0300, Dan Carpenter
-> > > > > > > > wrote:
-> > > > > > > > > This should return -ENOMEM on failure instead of
-> > > > > > > > > success.
-> > > > > > > > >
-> > > > > > > > > Fixes: 95ad37f90c33 ("NFSv4.2: add client side xattr
-> > > > > > > > > caching.")
-> > > > > > > > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > > > > > > > > ---
-> > > > > > > > > ---
-> > > > > > > > >  fs/nfs/nfs42xattr.c | 4 +++-
-> > > > > > > > >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > > > > > > > >
-> > > > > > > > > diff --git a/fs/nfs/nfs42xattr.c b/fs/nfs/nfs42xattr.c
-> > > > > > > > > index 23fdab977a2a..e75c4bb70266 100644
-> > > > > > > > > --- a/fs/nfs/nfs42xattr.c
-> > > > > > > > > +++ b/fs/nfs/nfs42xattr.c
-> > > > > > > > > @@ -1040,8 +1040,10 @@ int __init
-> > > > > > > > > nfs4_xattr_cache_init(void)
-> > > > > > > > >                 goto out2;
-> > > > > > > > >
-> > > > > > > > >         nfs4_xattr_cache_wq =
-> > > > > > > > > alloc_workqueue("nfs4_xattr",
-> > > > > > > > > WQ_MEM_RECLAIM, 0);
-> > > > > > > > > -       if (nfs4_xattr_cache_wq == NULL)
-> > > > > > > > > +       if (nfs4_xattr_cache_wq == NULL) {
-> > > > > > > > > +               ret = -ENOMEM;
-> > > > > > > > >                 goto out1;
-> > > > > > > > > +       }
-> > > > > > > > >
-> > > > > > > > >         ret =
-> > > > > > > > > register_shrinker(&nfs4_xattr_cache_shrinker);
-> > > > > > > > >         if (ret)
-> > > > > > > > > --
-> > > > > > > > > 2.27.0
-> > > > > > > > >
-> > > > > > > >
-> > > > > > > > Thanks for catching that one. Since this is against
-> > > > > > > > linux-
-> > > > > > > > next
-> > > > > > > > via
-> > > > > > > > Trond,
-> > > > > > > > I assume Trond will add it to his tree (right?)
-> > > > > > > >
-> > > > > > > > In any case:
-> > > > > > > >
-> > > > > > > >
-> > > > > > > > Reviewed-by: Frank van der Linden <fllinden@amazon.com>
-> > > > > > > >
-> > > > > > > >
-> > > > > > > > - Frank
-> > > > > > >
-> > > > > > > Frank, why do we need a workqueue here at all?
-> > > > > >
-> > > > > > The xattr caches are per-inode, and get created on demand.
-> > > > > > Invalidating
-> > > > > > a cache is done by setting the invalidate flag (as it is for
-> > > > > > other
-> > > > > > cached attribues and data).
-> > > > > >
-> > > > > > When nfs4_xattr_get_cache() sees an invalidated cache, it
-> > > > > > will
-> > > > > > just
-> > > > > > unlink it
-> > > > > > from the inode, and create a new one if needed.
-> > > > > >
-> > > > > > The old cache then still needs to be freed. Theoretically,
-> > > > > > there
-> > > > > > can
-> > > > > > be
-> > > > > > quite a few entries in it, and nfs4_xattr_get_cache() will be
-> > > > > > called
-> > > > > > in
-> > > > > > the get/setxattr systemcall path. So my reasoning here was
-> > > > > > that
-> > > > > > it's
-> > > > > > better
-> > > > > > to use a workqueue to free the old invalidated cache instead
-> > > > > > of
-> > > > > > wasting
-> > > > > > cycles in the I/O path.
-> > > > > >
-> > > > > > - Frank
-> > > > >
-> > > > > I think we might want to explore the reasons for this argument.
-> > > > > We
-> > > > > do
-> > > > > not offload any other cache invalidations, and that includes
-> > > > > the
-> > > > > case
-> > > > > when we have to invalidate the entire inode data cache before
-> > > > > reading.
-> > > > >
-> > > > > So what is special about xattrs that causes invalidation to be
-> > > > > a
-> > > > > problem in the I/O path? Why do we expect them to grow so large
-> > > > > that
-> > > > > they are more unwieldy than the inode data cache?
-> > > >
-> > > > In the case of inode data, so you should probably invalidate it
-> > > > immediately, or accept that you're serving up known-stale data.
-> > > > So
-> > > > offloading it doesn't seem like a good idea, and you'll just have
-> > > > to
-> > > > accept
-> > > > the extra cycles you're using to do it.
-> > > >
-> > > > For this particular case, you're just reaping a cache that is no
-> > > > longer
-> > > > being used. There is no correctness gain in doing it in the I/O
-> > > > path
-> > > > -
-> > > > the cache has already been orphaned and new getxattr/listxattr
-> > > > calls
-> > > > will not see it. So there doesn't seem to be a reason to do it in
-> > > > the
-> > > > I/O path at all.
-> > > >
-> > > > The caches shouldn't become very large, no. In the normal case,
-> > > > there
-> > > > shouldn't be much of a performance difference.
-> > > >
-> > > > Then again, what do you gain by doing the reaping of the cache in
-> > > > the
-> > > > I/O path,
-> > > > instead of using a work queue? I concluded that there wasn't an
-> > > > upside, only
-> > > > a downside, so that's why I implemented it that way.
-> > > >
-> > > > If you think it's better to do it inline, I'm happy to change it,
-> > > > of
-> > > > course.
-> > > > It would just mean getting rid of the work queue and the
-> > > > reap_cache
-> > > > function,
-> > > > and calling discard_cache directly, instead of reap_cache.
-> > > >
-> > > > - Frank
-> > >
-> > > I think we should start with doing the freeing of the old cache
-> > > inline.
-> > > If it turns out to be a real performance problem, then we can later
-> > > revisit using a work queue, however in that case, I'd prefer to use
-> > > nfsiod rather than adding a special workqueue that is reserved for
-> > > xattrs.
-> >
-> > Sure, I can do that.
-> >
-> > Do you want me to send a new version of the patch series, or an
-> > incremental patch?
-> 
-> Please just send as an incremental patch.
-> 
-> Thanks!
+> From: Suraj Upadhyay <usuraj35@gmail.com>
+> Sent: Tuesday, July 14, 2020 12:41 PM
+> To: Kirsher, Jeffrey T <jeffrey.t.kirsher@intel.com>; davem@davemloft.net=
+;
+> kuba@kernel.org
+> Cc: intel-wired-lan@lists.osuosl.org; netdev@vger.kernel.org; linux-
+> kernel@vger.kernel.org; kernel-janitors@vger.kernel.org
+> Subject: [PATCH 1/4] e1000/e1000_ethtool.c: Remove unnecessary usages of
+> memset
+>=20
+> Replace memsets of 1 byte with simple assignments.
+> Issue reported by checkpatch.pl.
+>=20
+> Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
+> ---
+>  drivers/net/ethernet/intel/e1000/e1000_ethtool.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+Tested-by: Aaron Brown <aaron.f.brown@intel.com>
 
-Made the change, re-tested it. Patch sent - thanks!
-
-- Frank

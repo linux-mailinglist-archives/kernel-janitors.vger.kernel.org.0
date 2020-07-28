@@ -2,36 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 237B4230B4C
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 15:19:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF1EE230CB7
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 16:50:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730010AbgG1NTT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Jul 2020 09:19:19 -0400
-Received: from mout.web.de ([212.227.15.14]:37367 "EHLO mout.web.de"
+        id S1730532AbgG1OuZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Jul 2020 10:50:25 -0400
+Received: from mout.web.de ([212.227.15.4]:51971 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729673AbgG1NTS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Jul 2020 09:19:18 -0400
+        id S1730335AbgG1OuY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Jul 2020 10:50:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1595942344;
-        bh=sLoKCnMzfBiSUCaJhj35rQFYoxHqASg6l9Wq5VY0tHo=;
+        s=dbaedf251592; t=1595947809;
+        bh=Z3Hak45Jy5qRqJuyduAoDInGrdWB/KFGrw09UzXKMU0=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=mwR8YHY9XIWKMLwMIo4UQ2pDGS/4WfezIj4BDIJeNeJWTGWrOv7aFuz2Bt5j/HLUL
-         lx3IU6Bb6/Z2KwhAN5BqfJhzjIgAtd339Xq8fXs2AWF/GO72Tel0jriqij22oFuz2K
-         hjnFHwSpF0bTt14SuH+FB4/q9K1aQs6wo0O9FYHA=
+        b=JMG0GNhqsF2fYLpn7G1t8GfqiSxpgSKcv2zyp3VMQPaW4FLKvXIUMAxHvcG5avH7R
+         ukGabFolVS62YVpHCKaJ5nH27oDSm4mtzPG3dyQfdDDRgf0t4mxliX3CbJZM55YCm9
+         zwooVmRhzQPfzuSBNOuHEy6C6fEI8JVh4ysm9viQ=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.153.150]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0M25Bz-1kuRlr0kjj-00txTA; Tue, 28
- Jul 2020 15:19:04 +0200
-To:     Rustam Kovhaev <rkovhaev@gmail.com>, linux-usb@vger.kernel.org,
-        netdev@vger.kernel.org
+Received: from [192.168.1.2] ([78.49.153.150]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MiMAE-1kfntf2XTS-00fUxd; Tue, 28
+ Jul 2020 16:50:09 +0200
+To:     Qinglang Miao <miaoqinglang@huawei.com>,
+        linux-m68k@lists.linux-m68k.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        syzbot+67b2bd0e34f952d0321e@syzkaller.appspotmail.com
-Subject: Re: [PATCH] usb: hso: check for return value in
- hso_serial_common_create()
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [PATCH] m68k/amiga: Add missing platform_device_unregister() call
+ in amiga_init_devices()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,70 +74,69 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <a42328b6-6d45-577f-f605-337b91c19f1a@web.de>
-Date:   Tue, 28 Jul 2020 15:19:00 +0200
+Message-ID: <1e12105b-aa72-11a2-74f6-c789f8ceaaa3@web.de>
+Date:   Tue, 28 Jul 2020 16:50:06 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:YItiF5LwwrvSAlzShuxa2AngDcJMhs6LK6WCv59i3SZFFkUjOl+
- mwql597uc29YtnRAEilWXhgxoIG4Vg5S48MKpiRTcZH8OOLYjeVavBS/nuib1V0qfogY9yj
- RgS3NeIICxDaQ+ZufH2d8Evl6ZhuL5icbdIX98nZ/i7pHz94SzCHn/DjcGH2z4laUijf+qs
- HuAxcbU0MpUDUc6OiOcdQ==
+X-Provags-ID: V03:K1:c2id3vlAmACwXpzsKMA+ojVKSnbY+G7P2AKC98o7Mc6NqwdwSpQ
+ ODY3KgoCxm2K1s+/IdclDkweqUN5I52dDnONRidfGxWIGmnfVSJu3b0Oy5nFk4R+nKJSmWc
+ Y9rIzvAf626u0p4/tISrdKC5J4lwbwHUsyShLYYYgLdMcVq6nRBUo8SU/q3bF7VaIErBXKb
+ QNMzNNwW9AL/0aALCTjOQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ZVOJTKSFzUM=:+6wBv3u6U6bSWPtBNvaOdE
- iDsybS6Swig/u2eXgPgYPQNhWOWVQUlH3E3iW6uWFPkkiaSdKPpXxfbATZLFVLtQ7ibN74dlW
- JQ49tpvdZsTw91pVnL+WellBQgpsPQs+HYYbza1j/QgcWHtzl7bSaOptkyfdFN428Eq6eEQl8
- Y4QoB6MpFJwonUItrx6QlrkeZJSxdvr58EQllpw+Xdw6nu9vi+MLVjaVPETMtK2TWuL4PiW8O
- W1tT0e3f2hkF0Mul8Z2uKkCQI7cr2wm/g6KKT2ToSHm6oUhEKR8X8pFhlNQpQtCIOX9kv/Lcm
- Kju64K+t9VZ6qvHQBvXy/B2NJWKFldCnYFuze+4EdgB7X+0/KOZ2VEoj/TgKjJoN36dfsWoDi
- AeUdbae36Fn6FzAY157y+eGUMc8cgn5x+Zc94Vqp6dnaqhiBHDrO5UNSx5Z28fwGENrDrUVum
- h4WpX6JizXyuqlSlUFRaKyHzy77DZ+2nrc3qhFZ/En+5jmXF43WoFEFbHZhQYGC+iDW/T+Nzt
- wq0t1UpmG41KQwlh/uV3+xrptSlDBNHQICWRUol6IAnl3nBtwDltjBN3sHpGae3G3NgGk2NoF
- PF2cnQV137xAnB95jbZ5APssx9OjlrwdJLWE/PR/qgU9tECNNskPvY3hclBq9+BcXGkPWupsj
- Ca8+cIsE8NKJPlhKBDOrXrcW+Bu9UGkS0+3HDvUyHHhEZoBHYa6JtuiTduT2WJwFsf1j9T9E1
- 7G0TZmortLku6ddJAnOv8x274ESxA6n0ynorWUlm1hlm8aIDqQ0VpcJhLYu3YpTXw+TaK5mSp
- 12M91KGTunGlWy8hIgFO5kxD3anv2OT8sgInYAT61Z1uHp9WZaE0Jjjsqr88Jfj4NRvsdXHCY
- 17G69I+oEUywT2YP1HGpDyNPFoLNHiRjJIs5PTEQ+ppUsHMMJUi01ninOw0Fg1+tbxPZkdXVF
- xrRaLfGjyclQYrd+0j2pDjDzOt89SdW5P7L56JPIFQsj29B9ZXfzgr6gObg5XOsUrmUCU4HPz
- KkQcrEZgGCoOANa5M3yubggnzwIHnIUxSdK7w6iUZgGdOieLN2oJO5yzW5IusTd6V8IRsOX8B
- 4OharPW3x2gfW974tCE50Lyc/7WTQfXcHDNnOSMbIQAYInr+g8Vi6KkOMmMQtAow6Y+5351Tp
- CSXVQ0nqrj+gDjqKDp8SmJWo+6W3kANWva93itxRknCFcdLr6w6laLlj4mLzVJUdZJixT+xR+
- 1lFCYh2f5TBRCYUTHZBYEBPZiZy25ulBGdjdPRQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:cC8XwfV2OFQ=:HnPEZeYKPhGd5Jpk4pL5Bd
+ NGW5IiWireeyc80IoTMcHmPJVvSvvt9Emum9BYPBIovuU5dUGspPoRz14c8ng3nnODKakHqOx
+ xX1BDHIRtJS0UIZwv3nmwErJm6QljWyCR8MpNNo2P1hLQ2dEyhwmp+9XZUQ8fti+Mq5LADWUv
+ GRrHLLW2ojLJqsihtU0mzkVWgyCcyjQkAniHr1GDIAFR/lFZqtJFg4YL1r2ejTQLWx2kVQ/PP
+ eA8HobmRwfz23X3JJqyzkFwhJKRqADjpuuqkKMfpDkbwv7U30TPwfNWCxK+4hHr4eKg9RCtQG
+ vknrPTkrV6oe2+0XM7oJgu4kyo47mVxCUmAIsCLWLpVfEiilpmYXsWzQhEk7LhrcKFv+NW7FE
+ Tx0EmwfZNntcg/ePTvTyhwCNlquIbVcDuAWiHGnnFS8uxpjCjAGD2+cgOHJf8ynZAfNT++K9M
+ Aon44kN4USJfjs+lYt5kiaDU4Yxzl8efspswIcOPG2om7M/Fk8nsT2ktCJbBwP2U/HT4/dA0h
+ WUPJp83KYWwClF7V3c+112ov6m0z8yKSk/WtVV3uItDOgbq3RoUCWPr55hHjdIKuzgiOdUVbd
+ BJBJbZVXSVM9zTrTmOFYkrsHAwKCZTEDD/puNSoc9p+vdEiPMiIgLO6zG9CYu0nSv9I60YfXz
+ T4KIE9S+gKmzObZoZxFoFAHuQcSiUTgZenAH/xTvVSAMI8SfCQshKSjnJhU9/Jz54SPW4N19Z
+ +gBqGKz2o3NBHgs9qxtHaMPtJPmzH4M4FT49edeUNvzwbLhuiNLmxHM1JQAtPvmjJ+2iEM4Ay
+ K2Qks+mbTMREfZCoyD30FIKsDEl9JlfMq+AWcbYjRf3LgRFUipvGjsU5qarWz7dNvdpdU8VPN
+ DAmx5KM5sRN1DKSWsORuoEfK6+C5eIjFYbfzVYp9IHKTmMtJfe4Fi679S/mINSrXJJElDATRn
+ LivunoP7w6SYPqd0vunokfK9hVIHvFemAJPHz45TRER9u//S50+bgJSSqGApRWDRMgUYtQyIc
+ dNR144qPgk66a3EwNcVutPp0NAqfYp/A9igEL9WlZmjPfMfHOgcroK4Iqbuw0PFWjImHu7F63
+ kbSy05siJwYml7Paa3Y+vAbtb5vdTCK53HERVM1/rkt/CgWSlQXGcGWiGjiCG46t8xMG3VlWA
+ HE8e5U9m1XOCUurD+c8rs2/jiefltN33P/QoVbM6GKraAeIFqDh+JhkgzwmHy+5C7UTjHB/pN
+ L5dtcRkQ/7aRLtUgas+mWIGLRE7E+KbRdUvlx9A==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> in case of an error tty_register_device_attr() returns ERR_PTR(),
-> add IS_ERR() check
-
-I suggest to improve this change description a bit.
+> Add the missing platform_device_unregister() before return
+> from amiga_init_devices() in the error handling case.
 
 Will the tag =E2=80=9CFixes=E2=80=9D become helpful for the commit message=
 ?
 
 
 =E2=80=A6
-> +++ b/drivers/net/usb/hso.c
+> +++ b/arch/m68k/amiga/platform.c
+> @@ -188,8 +188,10 @@  static int __init amiga_init_devices(void)
+>  			return PTR_ERR(pdev);
+>  		error =3D platform_device_add_data(pdev, &a1200_ide_pdata,
+>  						 sizeof(a1200_ide_pdata));
+> -		if (error)
+> +		if (error) {
+> +			platform_device_unregister(pdev);
+>  			return error;
+> +		}
+>  	}
 =E2=80=A6
-> @@ -2311,6 +2313,7 @@  static int hso_serial_common_create(struct hso_se=
-rial *serial, int num_urbs,
->  	return 0;
->  exit:
->  	hso_serial_tty_unregister(serial);
-> +exit2:
->  	hso_serial_common_free(serial);
->  	return -1;
->  }
 
-Can other labels (like =E2=80=9Cunregister_serial=E2=80=9D and =E2=80=9Cfr=
-ee_serial=E2=80=9D) be preferred here?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/coding-style.rst?id=3D92ed301919932f777713b9172e525674=
-157e983d#n485
+I suggest to add a jump target for the desired exception handling.
+
+ 		if (error)
++			goto unregister_device;
+
 
 Regards,
 Markus

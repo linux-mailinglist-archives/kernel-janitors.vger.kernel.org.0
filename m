@@ -2,60 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B603423178F
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Jul 2020 04:16:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D10982318D3
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Jul 2020 06:53:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731010AbgG2CQm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Jul 2020 22:16:42 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:59732 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728401AbgG2CQl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Jul 2020 22:16:41 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 7F5089032D8A56E9B84F;
-        Wed, 29 Jul 2020 10:16:39 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 29 Jul 2020 10:16:31 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     "David S . Miller" <davem@davemloft.net>,
-        Edward Cree <ecree@solarflare.com>,
-        Jakub Kicinski <kuba@kernel.org>
-CC:     YueHaibing <yuehaibing@huawei.com>, <netdev@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net-next] sfc_ef100: remove duplicated include from ef100_netdev.c
-Date:   Wed, 29 Jul 2020 02:19:50 +0000
-Message-ID: <20200729021950.179850-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726203AbgG2Exj convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Jul 2020 00:53:39 -0400
+Received: from customer-201-134-139-73.uninet-ide.com.mx ([201.134.139.73]:44330
+        "EHLO correo.tlalpan.gob.mx" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725986AbgG2Exj (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 29 Jul 2020 00:53:39 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by correo.tlalpan.gob.mx (Postfix) with ESMTP id 8FBE03FF3A1;
+        Tue, 28 Jul 2020 11:31:39 -0500 (CDT)
+Received: from correo.tlalpan.gob.mx ([127.0.0.1])
+        by localhost (correo.tlalpan.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id MXQNtIJkSHrm; Tue, 28 Jul 2020 11:31:39 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+        by correo.tlalpan.gob.mx (Postfix) with ESMTP id B4A2A438AA8;
+        Tue, 28 Jul 2020 06:01:30 -0500 (CDT)
+X-Virus-Scanned: amavisd-new at tlalpan.gob.mx
+Received: from correo.tlalpan.gob.mx ([127.0.0.1])
+        by localhost (correo.tlalpan.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id f-qEpcoFpJEx; Tue, 28 Jul 2020 06:01:30 -0500 (CDT)
+Received: from [10.85.108.11] (unknown [105.8.2.12])
+        by correo.tlalpan.gob.mx (Postfix) with ESMTPSA id 85F9E478E28;
+        Tue, 28 Jul 2020 04:04:37 -0500 (CDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
+To:     Recipients <aguayenergia@tlalpan.gob.mx>
+From:   ''Tayeb Souami'' <aguayenergia@tlalpan.gob.mx>
+Date:   Tue, 28 Jul 2020 11:08:54 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20200728090438.85F9E478E28@correo.tlalpan.gob.mx>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove duplicated include.
+Lieber Freund,
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/net/ethernet/sfc/ef100_netdev.c | 1 -
- 1 file changed, 1 deletion(-)
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite unten.
 
-diff --git a/drivers/net/ethernet/sfc/ef100_netdev.c b/drivers/net/ethernet/sfc/ef100_netdev.c
-index 4c3caac2c8cc..ec9ca81fed85 100644
---- a/drivers/net/ethernet/sfc/ef100_netdev.c
-+++ b/drivers/net/ethernet/sfc/ef100_netdev.c
-@@ -16,7 +16,6 @@
- #include "tx_common.h"
- #include "ef100_netdev.h"
- #include "ef100_ethtool.h"
--#include "efx_common.h"
- #include "nic_common.h"
- #include "ef100_nic.h"
- #include "ef100_tx.h"
+UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
 
 
+Das ist dein Spendencode: [TS530342018]
 
+
+Antworten Sie mit dem SPENDE-CODE an diese
+
+E-Mail:Tayebsouam.spende@gmail.com
+
+
+Ich hoffe, Sie und Ihre Familie glücklich zu machen.
+
+Grüße
+Herr Tayeb Souami

@@ -2,139 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5575723143E
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jul 2020 22:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F19323154A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Jul 2020 00:02:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728921AbgG1Uut (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Jul 2020 16:50:49 -0400
-Received: from mga12.intel.com ([192.55.52.136]:25753 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728202AbgG1Uut (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Jul 2020 16:50:49 -0400
-IronPort-SDR: oa2r0GxL1uVjPdUKKWhTPlVWsu8xxUlV1vSZJeKF2gBXU4otpSfEhiR4fpdFDOkH7LqZJ/E+SJ
- a7KCcboZ5BYQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9696"; a="130871779"
-X-IronPort-AV: E=Sophos;i="5.75,407,1589266800"; 
-   d="scan'208";a="130871779"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2020 13:50:48 -0700
-IronPort-SDR: qzhX5Pz0cdVcADAexEAs2usUgT7yPmO3EdXQ8ODJE1nMVAjadyU75KIOzk2JU+hWsH3Pd+IEle
- 7MkFW3ZigoOg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,407,1589266800"; 
-   d="scan'208";a="364633146"
-Received: from orsmsx105.amr.corp.intel.com ([10.22.225.132])
-  by orsmga001.jf.intel.com with ESMTP; 28 Jul 2020 13:50:48 -0700
-Received: from orsmsx161.amr.corp.intel.com (10.22.240.84) by
- ORSMSX105.amr.corp.intel.com (10.22.225.132) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Tue, 28 Jul 2020 13:50:48 -0700
-Received: from ORSEDG002.ED.cps.intel.com (10.7.248.5) by
- ORSMSX161.amr.corp.intel.com (10.22.240.84) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Tue, 28 Jul 2020 13:50:48 -0700
-Received: from NAM02-CY1-obe.outbound.protection.outlook.com (104.47.37.53) by
- edgegateway.intel.com (134.134.137.101) with Microsoft SMTP Server (TLS) id
- 14.3.439.0; Tue, 28 Jul 2020 13:49:19 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dEBW5tCGvGonjAhem1adY3Jpc4SxTcjsmHT3oN0q92X/uT3GfPXclKy70K7wGaMykAWnKS3a35ReMU5kqtmBcopU4MWSa79OQFpX13XmHlH+RcpB6fpbHfKZNEe0HiGRjpj3vW+PXtsUSLmOFCHs9BSpt5KIdCjxp05rBwJyJ0Jndy51k+w9Sh4ker1HsT7jllQIW1iduBTHWUqf5t6YpKZcSH4fGdfs+TrWk7AVUxdYHnluAVPlZiTpduzIlmCPE2iyT9R4FGDOtiWWd7XuKgJ5DRAnkBkXTiIrUzNCPxwbzTwET28H6GnnJU9fgBxRQmNlAA1AmjoIvaNdBcSlmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J7NeWXdpSVJfYt00olRWb1kp2bUbr4a5b66qXv+I3pY=;
- b=aSixTrADgq6XQZhoQ1nxhmugZZO8HRqIXhpMx9FtOG9nFTT1yj1wsiD7c79m2vVzslKG6hYMkP6egCGWl1lOGNgdzckFh8NHSPE7/A1wWOD3A+ERSe/srrcq13F00b2kEjsACa+LUrC0Qal3qMMstEaEpBTg89wQeIjOprpHSvVP9sjeiFpjNkiYmnOJaHQyedOeL5b4KTXJ/HgKQ9KloOP+W52hkc50AswE52C5JGiinGCnHIyrnKXKy6dVHDymSyJIzVYffN0KQeCHnZxBafd7hRaolRfo5UUyx3cdf9VAjepUKMc0HAEJBKfcPu0zxjgZqHJYvTjIYyGbecF7qw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
- s=selector2-intel-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J7NeWXdpSVJfYt00olRWb1kp2bUbr4a5b66qXv+I3pY=;
- b=t9Acm7ePuKyq/w4qSVX5/8ZHeGNGX4dj1XnLCfsMWdE/OrPLfAYJYlCoIxx38xLoD973pb899pXGfDIqNpEjpQAygm7EPCFyRHKJibEdRBDlydi5pZGhLs9QzE43o57/u8+gTzXDGsvadu9WNYwPiHC9ag/u60IK3xc8WEydM70=
-Received: from DM6PR11MB2890.namprd11.prod.outlook.com (2603:10b6:5:63::20) by
- DM5PR11MB1259.namprd11.prod.outlook.com (2603:10b6:3:15::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3216.20; Tue, 28 Jul 2020 20:49:18 +0000
-Received: from DM6PR11MB2890.namprd11.prod.outlook.com
- ([fe80::65c2:9ac9:2c52:82bd]) by DM6PR11MB2890.namprd11.prod.outlook.com
- ([fe80::65c2:9ac9:2c52:82bd%6]) with mapi id 15.20.3216.033; Tue, 28 Jul 2020
- 20:49:18 +0000
-From:   "Brown, Aaron F" <aaron.f.brown@intel.com>
-To:     Suraj Upadhyay <usuraj35@gmail.com>,
-        "Kirsher, Jeffrey T" <jeffrey.t.kirsher@intel.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "kuba@kernel.org" <kuba@kernel.org>
-CC:     "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: RE: [PATCH 3/4] igb/igb_ethtool.c : Remove unnecessary usages of
- memset.
-Thread-Topic: [PATCH 3/4] igb/igb_ethtool.c : Remove unnecessary usages of
- memset.
-Thread-Index: AQHWWhbikUtIhvYSqUqKUmO37o4ufqkdjPGw
-Date:   Tue, 28 Jul 2020 20:49:18 +0000
-Message-ID: <DM6PR11MB28901E92AF05925C1C6488C8BC730@DM6PR11MB2890.namprd11.prod.outlook.com>
-References: <20200714194147.GA21537@blackclown>
-In-Reply-To: <20200714194147.GA21537@blackclown>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-version: 11.5.1.3
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-authentication-results: gmail.com; dkim=none (message not signed)
- header.d=none;gmail.com; dmarc=none action=none header.from=intel.com;
-x-originating-ip: [97.120.173.209]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 6815bed5-1c09-4457-c26c-08d83337b2b0
-x-ms-traffictypediagnostic: DM5PR11MB1259:
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DM5PR11MB12596E118D9E493E6EF0D773BC730@DM5PR11MB1259.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:439;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: rbqLqdU32j+wkOV+3aMmgDq/HNHCEO0HGLqHwB3XGkLFpHp7TBVTnPN4eaS+6t4bzElq+vu/djtawf9345SJvx1RiITTdenpK9wdSp+IWjJBE2CIAVSVs2pR7+fcRDyoKH1LySdDjJNuPGP9P4cheGNsx02aJxlEi9dzA6J7QxuLdTTBonU7BG8/v8F4IoknCJ8EDdCuUFadxjaMtKB3B2aZ+eP0FHvLEYVKojjQ1XKp9/jOgs8787duOtQzsT1TZvgcPwOJBvfQkJ3ZUlueFCnlJhuFgDZluPfuJZ4VtbomK1OeEJ4CjPfEqhFwU8tEtJrUD03rjogsUYM8K8//mg==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB2890.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(396003)(136003)(366004)(376002)(346002)(39860400002)(52536014)(6506007)(53546011)(83380400001)(4744005)(4326008)(8676002)(7696005)(5660300002)(33656002)(86362001)(26005)(478600001)(55016002)(2906002)(76116006)(66946007)(66476007)(64756008)(66556008)(9686003)(66446008)(71200400001)(186003)(8936002)(54906003)(110136005)(316002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: UIpYTrL92BtUoJVHNUXWTrGTurOljoQXSjC9zlroc3CftrDKb9c/wHTXieQeJOkICMgMy1NeNYCw0MdIHIyvrj+qsOBjcG7nhgrQ1K2OqnqyfBELyw4N788MX5XSK7els/yKnx/zlJDbi+3dWwYahEZp7zz+tcxWeEqYsDBSWU2xK1TCbeKwO1FjA+8qGjefnnOCbxHrv9Xo15lzMT3zNQpwRs48kDWMW8fJbiMHNyiZQgrGOU6IrSMuNW5KEMuaiCa5Wm0HOj1MfPob4urqU4M8Mt2VschdGJDGv/nqf3jTKhFrW15hvUQk7aZBnJyMA3FCSH8VfFCLHYPVzLZ8OSvz1v05sxu+IWPZAnYH39F1KYct1akuNx6gE8ZtrZe/0CXIabBYhxI5sodSJo7SOTBd1ZzY8rcGYbJbFmUAth/gQUoolKw7JaCtUBygB/LWlX0hyz6kVT26PGK8U2sugm2AUqkVc1vLCvMgCXE5ndqf4qR3OJf7zVrZe8ejV2s8
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1729650AbgG1WCK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Jul 2020 18:02:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49514 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729484AbgG1WCK (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Jul 2020 18:02:10 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D718FC0619D2
+        for <kernel-janitors@vger.kernel.org>; Tue, 28 Jul 2020 15:02:09 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id f7so19725551wrw.1
+        for <kernel-janitors@vger.kernel.org>; Tue, 28 Jul 2020 15:02:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=vqnKMLXqTkEdIlwdpguJGd/nIpB4YeuwS5l62z63FMw=;
+        b=NDCu7QgcAq7+TW7f+5/b58wRYuFOxNU7md4Tk+HGctDkj+yK8BZE5ZExbD/h1lASPV
+         hFurpdD9fO1Rj8h0Qbz33aWC27fLh7LVJNdqfbAJo6RTpRnc+FDhdre6+7FNB3lCsHjd
+         cdLJ4W2jhZqC3T9bPV1wJPOW01YhcQvP8NgJg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=vqnKMLXqTkEdIlwdpguJGd/nIpB4YeuwS5l62z63FMw=;
+        b=gjcFBaILE33VjS+j3N0WXM/4fg2vvii+sYZ+epl3mrEGKRV75RforpxSN2EnyYLVA1
+         6DKJE/ivdVreWUAOGf5TukpxPQvtNYiD6GJkvRofZKs9+KrQlAUvq/Xlh0J8MOC6BPa3
+         J5+NKkv4ixEBdP5HCkt3npPCAPNQp6iyHl+kHLImQi1EP1/HB668ZgRTNVPrxjmF/tYq
+         UnwXjk+HhnDvuixhQxE0Nyp3N/uBZHmKYdlFcB6rVg7k/EgAHjC51ezuXtLd1d5hohCa
+         +rLPQE+R0oRRtmtU4mtHBqIAEBq65NczP2q5vsR0AJU9DdSb6YtVzYTGot7TOqStY2Yn
+         h7ew==
+X-Gm-Message-State: AOAM533R5JE2xvXowJrcyN9b+ozIsHRQkVwovIgFpPyuankrolovQdZe
+        ZN+PVkM5Refv3Z6XzCtLzeRA1Q==
+X-Google-Smtp-Source: ABdhPJxRQsWjsGbojKh939WX9+AjyfoL6oRNBjWQkv5BgfV9n7qdpTPTlymdET8fHHeG8IvyVPgXZg==
+X-Received: by 2002:adf:de09:: with SMTP id b9mr14191027wrm.409.1595973728531;
+        Tue, 28 Jul 2020 15:02:08 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id u1sm364997wrb.78.2020.07.28.15.02.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jul 2020 15:02:07 -0700 (PDT)
+Date:   Wed, 29 Jul 2020 00:02:05 +0200
+From:   daniel@ffwll.ch
+Cc:     Hyun Kwon <hyun.kwon@xilinx.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        <dri-devel@lists.freedesktop.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: Re: [PATCH -next] drm: xlnx: Fix typo in parameter description
+Message-ID: <20200728220205.GJ6419@phenom.ffwll.local>
+Mail-Followup-To: Wei Yongjun <weiyongjun1@huawei.com>,
+        Hyun Kwon <hyun.kwon@xilinx.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        David Airlie <airlied@linux.ie>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        <dri-devel@lists.freedesktop.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+References: <20200725063429.172139-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB2890.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6815bed5-1c09-4457-c26c-08d83337b2b0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Jul 2020 20:49:18.6022
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: TsPKq2EMjYfLulorcGMHHF3+8Tj9NjMcYD9XTwLq4RGKgIKU6m+mCu4oGnLGSq3CBUStLYrlvTlGm/FAccFRKg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR11MB1259
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200725063429.172139-1-weiyongjun1@huawei.com>
+X-Operating-System: Linux phenom 5.7.0-1-amd64 
+To:     unlisted-recipients:; (no To-header on input)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> From: Suraj Upadhyay <usuraj35@gmail.com>
-> Sent: Tuesday, July 14, 2020 12:42 PM
-> To: Kirsher, Jeffrey T <jeffrey.t.kirsher@intel.com>; davem@davemloft.net=
-;
-> kuba@kernel.org
-> Cc: intel-wired-lan@lists.osuosl.org; netdev@vger.kernel.org; linux-
-> kernel@vger.kernel.org; kernel-janitors@vger.kernel.org
-> Subject: [PATCH 3/4] igb/igb_ethtool.c : Remove unnecessary usages of
-> memset.
->=20
-> Replace memsets of 1 byte with simple assignment.
-> Issue found with checkpatch.pl
->=20
-> Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
-> ---
->  drivers/net/ethernet/intel/igb/igb_ethtool.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-Tested-by: Aaron Brown <aaron.f.brown@intel.com>
+Hi Hyun Kwon,
 
+Are you all sorted with drm-misc commit rights so you can push the 3
+(maybe there's more) xlnx fixup patches to drm-misc-next-fixes?
+
+Cheers, Daniel
+
+On Sat, Jul 25, 2020 at 06:34:29AM +0000, Wei Yongjun wrote:
+> Fix typo in parameter description.
+> 
+> Fixes: d76271d22694 ("drm: xlnx: DRM/KMS driver for Xilinx ZynqMP DisplayPort Subsystem")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  drivers/gpu/drm/xlnx/zynqmp_dp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/xlnx/zynqmp_dp.c b/drivers/gpu/drm/xlnx/zynqmp_dp.c
+> index 821f7a71e182..3d53638ab15e 100644
+> --- a/drivers/gpu/drm/xlnx/zynqmp_dp.c
+> +++ b/drivers/gpu/drm/xlnx/zynqmp_dp.c
+> @@ -44,7 +44,7 @@ MODULE_PARM_DESC(aux_timeout_ms, "DP aux timeout value in msec (default: 50)");
+>   */
+>  static uint zynqmp_dp_power_on_delay_ms = 4;
+>  module_param_named(power_on_delay_ms, zynqmp_dp_power_on_delay_ms, uint, 0444);
+> -MODULE_PARM_DESC(aux_timeout_ms, "DP power on delay in msec (default: 4)");
+> +MODULE_PARM_DESC(power_on_delay_ms, "DP power on delay in msec (default: 4)");
+>  
+>  /* Link configuration registers */
+>  #define ZYNQMP_DP_LINK_BW_SET				0x0
+> 
+> 
+> 
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch

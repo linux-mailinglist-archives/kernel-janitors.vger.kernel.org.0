@@ -2,35 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54811232347
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Jul 2020 19:17:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91A1A23244A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Jul 2020 20:01:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726496AbgG2RRo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Jul 2020 13:17:44 -0400
-Received: from mout.web.de ([212.227.15.3]:37071 "EHLO mout.web.de"
+        id S1727041AbgG2SBK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Jul 2020 14:01:10 -0400
+Received: from mout.web.de ([212.227.15.14]:46365 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726365AbgG2RRn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Jul 2020 13:17:43 -0400
+        id S1726533AbgG2SBK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 29 Jul 2020 14:01:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1596043020;
-        bh=RKOWU4KnTFnmgAVqc36bMgqqFzdhsWbGy0mCh3maaGE=;
+        s=dbaedf251592; t=1596045654;
+        bh=9PUsmeJ/Eu2U/dEfEIqHbVv+xuvUkaqLv2+jYfnT/UU=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=NYB/oLSk3EpyoHBrmXfzACnYCjQDyLql4xaQJSExVErhR+wROKFxMgoMJ8DjP06oE
-         CwWhZ6jZr3Bi4sl5Ogh1bpy5Ztc0DIyGIv+Gob31nLdSXsRORAbph5w4RbOUY8+kxO
-         JzOmDGU5XhCM5LUzp0TQ4Bwb0tjAggxCpzmY061U=
+        b=B2dyOx1yqvPo6hWQExWbPQ4KMDlUC4qGYCDQrifrAg+iMfabZxE5fzzccANXrH29O
+         K0rwz3on/p3eEq4xePqKUKpTIgf4FcRadRmr+FEK53GkVDJsnYW5BcxRYSi2feEhKt
+         snc5TC/4CNTCkdMN0odDKdgTx7u7ho3NOiG0AGe0=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.175.129]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LuMER-1kk5xz0Ptn-011fSy; Wed, 29
- Jul 2020 19:17:00 +0200
-To:     Xin Xiong <xiongx18@fudan.edu.cn>,
-        Xiyu Yang <xiyuyang19@fudan.edu.cn>,
-        Xin Tan <tanxin.ctf@gmail.com>,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org
+Received: from [192.168.1.2] ([2.243.175.129]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MJnvp-1kKQVL30tF-00K85N; Wed, 29
+ Jul 2020 20:00:54 +0200
+To:     Yu Kuai <yukuai3@huawei.com>, dmaengine@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Chas Williams <3chas3@gmail.com>,
-        Yuan Zhang <yuanxzhang@fudan.edu.cn>
-Subject: Re: [PATCH] atm: Fix atm_dev reference count leaks in
- atmtcp_remove_persistent()
+        Anup Patel <anup.patel@broadcom.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Ray Jui <ray.jui@broadcom.com>, Vinod Koul <vkoul@kernel.org>,
+        Yi Zhang <yi.zhang@huawei.com>
+Subject: Re: [PATCH V2] dmaengine: bcm-sba-raid: add missing put_device() call
+ in sba_probe()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,74 +74,49 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <444f9cec-db06-c3b1-eadc-14b11260a4ec@web.de>
-Date:   Wed, 29 Jul 2020 19:16:58 +0200
+Message-ID: <0510b837-cb5f-c8d0-8cd9-1c7c871a4ea0@web.de>
+Date:   Wed, 29 Jul 2020 20:00:52 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:DwWHRbDtrBGH1idtyQUY7BlxMNsJhg58nZahHAbWideycf9caWH
- ww9N+Hgl1F8yvlQL4B/rh+rJJ2Ckb1PihTCpUFrDZ6tfhhuzlcz6WAIchm1ix15TH2HcgG5
- wHG2huel/NW32+rFz2fkwiaJdak1xiLAokXpwTBKw9KkQTyJyUBUdKPG7SnzCKjmfBikHF3
- KTtCjc7+5z+hUuejDqq9g==
+X-Provags-ID: V03:K1:pCl43vM7BT8F70NnD2x7YGLM7GW0DuYAzERvZ77H7pfwiq3Zt4J
+ pqq2uq9c2xy1iqSHWRDY44AMkZYhJw0Xj8VDyBMDp73YEqx0nLrnqJyWw3NQ1FV5ue9NlW8
+ AINQKvvmXR7hxxIJWbd+xfRCO3s4Gk1SVPiK+q7e2IuTx/zHsGHqBddFTAdI8jeQyCZZ7SI
+ pROQ9g6aGOpID4DwXzUiw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:tX5pEz0tZi4=:0yRs8JcDOcmAuFK7pxzMgZ
- 0kMV9V360etoBkV2bWLFoWEZTPYz3u+IhPGPCEugihkxFdV3+PqrjOE7oM/OLWmJGCJubmLSY
- 7OMYiZ2MQvfY8MlJ3dnEU3PARuenT6ngmVrgMGJ2vxYa67tlqAGHS5KhqhtFq3agNIaHhGYRO
- ajG78UDct+rlx7HNK/5WH0WWPJpss2k5GtGz/lZrQO3M1zxufY7Few7/RRZ2pJcDUR8cEidGe
- 6TcSD3RvPI/6pdpcwPfu6B4p3GZJSITSCohiMZFzzhJKE3CNQcOJVhmw2GZ139JkeyHJlXP9M
- kcIqTGW0T9Q+4IUr0XK8DBgvAIvP1im/ctHyV+Mimc2ummJapheFlZpCvFlIuwo5Tmm3xU9Xr
- u9hrdnPqTS2jIK9TcJAG+j/cjRR0Q5xYmA9bltc65xrCbqu1qXFSP3mpuMajeSOqAFKroBPqS
- C3f2lMvkk8h9QhgPtT28v7BtXXiluDiC1K8GCvF4cRsHTTRmw3bdJ0NS+7mpBZIXM1NwJgCV9
- SgVlccfx3X0qJjQKTNyVO4zjH1C8Cso6OrzzzRI1tmUWOgcC2Qe0J1R7OpUow3Cr+Tg7l7Rld
- BiE08lHqCZYFcBYZO00SVIQLCAfG2HzxIZ8qzyWS4i9Mo7vz1euzdDLr2PPWlLryMfIdBzlJy
- T8KpWmi7pkG3cnuhq4n6TVkvKNYypxtwfXyF5UHGPICMu9zwQNZP8e5RclCRyRxSt7gsQsF3i
- g0L1EPR+9BeqYpddk/fra9tC7F4ISqAXE0gBdP6U18t41SwOofSmBlxbUvRHP0n0L4oGwlo+K
- 0chsRv7YXok2EQ70lhVl/vDlDlC5Je1Csq14fMTcif1xqV0jk5+TSUPpXpLkTQuYB80tZG8o5
- bFL7OdGYzHqK0ZUaf7OVLgAcJYsgKnBrns7cbD7EIT7cbTjsv44XYAmgd11Yrm/HHqv/VKw5h
- OonviGHwbhqqfE5unrbs8Ax7NUKv+g+ZpmDHBTjySElQwTHd4fOwgQpMpTF1x4juFeSnxN6Zv
- dKF3Czf63ehsicHtjnuq0OPYbJw+q4THEbYzfuOxjvGQrEAEgfPAJXY3YP5c9kCYjXqLQmYYg
- lCy6m5dIG2CMNF+rh9Ppbbu5VYac7yrcVlfD/haUtIvvTkTLBdjSo8BGT0O3j04wtzZjQwxBk
- jkVlTE9l0EOSE79EsCtrDAoeX6moct9x4TxgZ1rGcm7Q6rnZUWNWIxzD5j6GAttBsp4mFnHkT
- xjCBMYXxu5MI5PFlfXwttKAlDUooSfdRorvHMQQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ygTbAk2qY+s=:7tWJm7IO7CGOJ4SPn6m0YD
+ I1bt5lG4fZlIyIuBwCDkpJJGNvCC0cw6DD/uQ6JkmEg/o0IY7ypVtkzsop8SakhEJD3b04xtQ
+ Oc/e41OH0wuourBPjdKdKDLDkCBaWEgE1F3F5w0ssxe7HY8eVrw/fk0wn0mncsUWLtbga9DYW
+ F/lfodxIS/Sro1GG547T6uufK6fzeO453k704cFl5yfkSPlNUzbGmpmA2UauQScFh3tCEKAcO
+ WJHMtUmbJPRjLeMuoe8tY0g1vFD7wqBHzVBXzUDaHd09GFyckf7tnc4OkCaRVsuix7bsegQ1/
+ 0AzFGDFXaopdco0r0eGdhUDR8LXbC+ptaJIhyacJo8D9qL/bdErHXz53JokDTRMBZnXEBkLOz
+ UkJ9d+ACSe3W4B3eXCt51Pfm3l1N4caostnm+G472cwYJ/h8X5+GIAu1feZBUoPMR9abvUbJD
+ CibOijbMRgBWsGhbiurD3C7KOhBaSJIGgsipkjUMqEWhHYnFkq0wAQXI/y0GDxNvaooowIv5l
+ UcQeZw6EvrVbingD5N7iegGb7Ozh9gnMCLbgwo2FQ8PQJwoL7PtTbM/a5Ikd6ebe1fFfLnsRD
+ OkxPCmuq/fqRoHfvApwogtEocXx7+6vEJ2+Xm4SorXKy1zsxg0oj3Unq0RiaFLDAf+dvIrAbX
+ cWZfwd3J0Lra/9fm3SviyB3L4X5pyx24809UiukqPU+yKkVYnd+xvn8gGhZA4PpfdK0yV5nTc
+ v4cOrnSrQxXrSz5kbrMSXit7UCI9bxQIcUMpe3LTFkwkizfghVGZqQXgoeXiUtwkfw8ph+0BI
+ al+Qcpm2cLvO7+3gW6ZxvQPXN6xwJoBPbnXTTDL7eP23fvasyVy57u+ii0c9r5T1fj6s2/cn/
+ wCG8zCUpO0Q9dp7kiH4SOZpv9hCoxld06leGQWU9O/eGO6IRyteqT+inpqhDvtUufTrZxuKRo
+ 6nt8n1pGxJg2DvZ1ZWZ1kZB1hm+HNqOr+6FW9eSgR7mO9eErGBz7HoTvYZCZwHZu3bSAFEAf3
+ 5PMLL6CLjlmtgPAdlWZEibEMcMIucd3DbsS4BkCObAVPxHd+YmkC5ZqJ3mGgYZQerJtxJg8Dm
+ taWEWAf+lCyu+8HMDNH0nIP5XD4urxLNga+4z9Xf5WY9BMq21c0Syzl4a18aZv8oj0bItvsib
+ GbkpiqMVDTqYLSf1a5CyjzPdhuqeidWyg+pw3Cghh6KN0NBMyTD6fSCMKPJtZ//0AWOxOfuYz
+ 286SOPMh0ufpJg0+FbTJ9UUydd+feFC5Vuo9/lQ==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-=E2=80=A6
-> The refcount leaks issues occur in two error handling paths.
+> if of_find_device_by_node() succeed, sba_probe() doesn't have a
+> corresponding put_device(). =E2=80=A6
 
-Can it be nicer to use the term =E2=80=9Creference count=E2=80=9D for the =
-commit message?
-
-
-> Fix the issue by =E2=80=A6
-
-I suggest to replace this wording by the tag =E2=80=9CFixes=E2=80=9D.
-
-
-=E2=80=A6
-> +++ b/drivers/atm/atmtcp.c
-> @@ -433,9 +433,15 @@  static int atmtcp_remove_persistent(int itf)
->  		return -EMEDIUMTYPE;
->  	}
->  	dev_data =3D PRIV(dev);
-> -	if (!dev_data->persist) return 0;
-> +	if (!dev_data->persist) {
-> +		atm_dev_put(dev);
-> +		return 0;
-> +	}
-=E2=80=A6
-
-I propose to add a jump target for the desired exception handling
-in this function implementation.
-
-+	if (!dev_data->persist)
-+		goto put_device;
-
+Wording adjustment:
+  If a of_find_device_by_node() call succeeded, sba_probe() did not
+  contain a corresponding put_device() call. =E2=80=A6
 
 Regards,
 Markus

@@ -2,164 +2,136 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CD1D2324BA
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Jul 2020 20:34:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C7EB2324C1
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Jul 2020 20:37:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726581AbgG2SeF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Jul 2020 14:34:05 -0400
-Received: from mail-bn7nam10on2073.outbound.protection.outlook.com ([40.107.92.73]:40321
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726336AbgG2SeE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Jul 2020 14:34:04 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XSCHje+w+YD0IXJJ3K4iYfNqhaV8YnOfFUDGVPm1NgWrcWcVDTc7h30UeVnsxrZSO+vWKl8P6xKhPo6RHvGo6R12nxfjVSjs5ArGDaA8iXcQw6dbsu7km6bqH+vqEEB30tXM+9pnLYW6theKeL2/4ulJoCoMqRI9uNdmWxshYlugBo5pEy3MJsd62JZxqIwNtJi1qNcFGJG5ct63PYQSQx6HycPAQ2UDD3Gk8+Pl6MqA2B8Zg+fEDPiFmLf5PXzOVQDPmvR+k2yPrK9+L3qz9CswQ2AcjH2yL0319iptB9iRWWcA7TjDoTB7XRsiP7NVlRRq3XtKURnLX5o6Pj2D7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PN38+2pQd3VyojX34PAU0ZWrNsn5DniqXqI/U2phHgQ=;
- b=Aj4cSoedlrSb8Ie+Ewqh9T7o8bQvyxSL6QKQyKXc39XBKZXzHJKjuXzNbz2HSjA4RRem6uoyRwlV0/3XHwWIjj1R1Rbo6tBB9FvBVau/bXOA1idh5Dn8BPYNOa1moqXq+ygdEViERmdJ4MiiPc9KhabXWakeW1MqixMS3YbBMU41IOZN3I7ac+He8elB1f0nGmxCDM4CH1vVayemwdalFoFWaXeW27eVRsnMxyKKTz2FoN5dzjzCqhsTaSieKlhWy86SNt2Tg63IApDebPdRGxRkm8qkiALuUKEktUqPLO4pPoC/5CRvmDT2TWsztKqjWG0CDNYgjTDzVbgqdk8Oqg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 149.199.60.83) smtp.rcpttodomain=ffwll.ch smtp.mailfrom=xilinx.com;
- dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
- not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PN38+2pQd3VyojX34PAU0ZWrNsn5DniqXqI/U2phHgQ=;
- b=qjM1MEPr+h9MUoajJ9mlsJb0fK9y+Xd7EDOdkEbIduzYtSi0feS3/MmL9HEmBYo9EJNZBXT+T2vwWlnwGO0CxscuRQA9E5a3GpMhhxYC/dEE6eaXKtLLuE1oR2rzK5s6fQ4NyZrAKvJRbVgjCeE8m/dy9gahONpf1kY5eSTGJbI=
-Received: from SN6PR08CA0028.namprd08.prod.outlook.com (2603:10b6:805:66::41)
- by MN2PR02MB6079.namprd02.prod.outlook.com (2603:10b6:208:185::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3216.20; Wed, 29 Jul
- 2020 18:34:01 +0000
-Received: from SN1NAM02FT023.eop-nam02.prod.protection.outlook.com
- (2603:10b6:805:66:cafe::e8) by SN6PR08CA0028.outlook.office365.com
- (2603:10b6:805:66::41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3216.23 via Frontend
- Transport; Wed, 29 Jul 2020 18:34:01 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.60.83)
- smtp.mailfrom=xilinx.com; ffwll.ch; dkim=none (message not signed)
- header.d=none;ffwll.ch; dmarc=bestguesspass action=none
- header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
-Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
- SN1NAM02FT023.mail.protection.outlook.com (10.152.72.156) with Microsoft SMTP
- Server id 15.20.3216.10 via Frontend Transport; Wed, 29 Jul 2020 18:34:01
- +0000
-Received: from [149.199.38.66] (port=56110 helo=smtp.xilinx.com)
-        by xsj-pvapsmtpgw01 with esmtp (Exim 4.90)
-        (envelope-from <hyun.kwon@xilinx.com>)
-        id 1k0qru-0008Nc-IA; Wed, 29 Jul 2020 11:31:58 -0700
-Received: from [127.0.0.1] (helo=localhost)
-        by xsj-pvapsmtp01 with smtp (Exim 4.63)
-        (envelope-from <hyun.kwon@xilinx.com>)
-        id 1k0qtt-0004X5-Ax; Wed, 29 Jul 2020 11:34:01 -0700
-Received: from [172.19.2.244] (helo=xsjhyunkubuntu)
-        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
-        (envelope-from <hyun.kwon@xilinx.com>)
-        id 1k0qtj-0004Vi-SI; Wed, 29 Jul 2020 11:33:51 -0700
-Received: by xsjhyunkubuntu (Postfix, from userid 13638)
-        id A0B5F2C238C; Wed, 29 Jul 2020 11:30:00 -0700 (PDT)
-Date:   Wed, 29 Jul 2020 11:30:00 -0700
-From:   Hyun Kwon <hyun.kwon@xilinx.com>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Michal Simek <michals@xilinx.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH -next] drm: xlnx: Fix typo in parameter description
-Message-ID: <20200729183000.GA30361@xilinx.com>
-References: <20200725063429.172139-1-weiyongjun1@huawei.com>
- <20200728223349.GT13753@pendragon.ideasonboard.com>
+        id S1726560AbgG2ShK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Jul 2020 14:37:10 -0400
+Received: from mout.web.de ([212.227.15.4]:50271 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726336AbgG2ShK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 29 Jul 2020 14:37:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1596047799;
+        bh=MUCJ3cp+dXeXVH8kcCad+QqTN2WS3m9rEsqklOia9Sw=;
+        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
+        b=H9OZGTAUEKwqTLTCHDeuWT323sdp9bbAk9TcDj1wpzVoabKCwU7XerkYh7X9pGNnW
+         qdvHVmaETA0BvK0ga2DwmhDoInmYZnbm8qSjJA6hriWamFOog6fA8TuQgBlHTjD0ge
+         XT2WO6Qi+IyXY5fA4LQD6Ll6vzmcx/dKXsS827g8=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([2.243.175.129]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lvf5Q-1kqPJi3VN6-017Yha; Wed, 29
+ Jul 2020 20:36:39 +0200
+To:     Xin Xiong <xiongx18@fudan.edu.cn>,
+        Xiyu Yang <xiyuyang19@fudan.edu.cn>,
+        Xin Tan <tanxin.ctf@gmail.com>, bpf@vger.kernel.org,
+        linux-rdma@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andrii Nakryiko <andriin@fb.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@chromium.org>,
+        Leon Romanovsky <leon@kernel.org>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Saeed Mahameed <saeedm@mellanox.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Yuan Zhang <yuanxzhang@fudan.edu.cn>
+Subject: Re: [PATCH] net/mlx5e: fix bpf_prog reference count leaks in
+ mlx5e_alloc_rq
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <810e5783-ba95-6d2f-0f89-171dd3b688df@web.de>
+Date:   Wed, 29 Jul 2020 20:36:32 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200728223349.GT13753@pendragon.ideasonboard.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
-X-TM-AS-User-Approved-Sender: Yes;Yes
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: bfd52049-943f-48f0-a6d3-08d833edf6fc
-X-MS-TrafficTypeDiagnostic: MN2PR02MB6079:
-X-Microsoft-Antispam-PRVS: <MN2PR02MB6079896AAE5BF5FB13B902B0D6700@MN2PR02MB6079.namprd02.prod.outlook.com>
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:785;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: oPaeIc5Qos7Gh0/iqTrmijqs9hlJmHCEiJmwpLwT1dz4EDJsEAGpLy1GDkDLpdP3u5TZ/IM7Q3xM8o2tq87SpEvaRztpuuAcAzAUh/Q5bUre52jvFBwVX1iOrpttHtjGVYCsnnDF3jjLDuLEEOP3Uk848tjqFgLJrR/yORR1IsGSmNGAz1b4xSZVWUFYTilDQ83gjW7Nds0/KuqpLhTGoK1gn73xD0Uk49dKqB5QtDrkpQC0jZRDq09m0BnhCM58BMq79B29dTx1lyouMQqsdMfYpEsCaM5o5I4WvZwr2mn6lkxNiLEQxPYVghphCGbL2eUu0AFwIL7g3qui0f8ehsxq74fPoKk6XxO33rNTJAUfGcZNWI0OKustc8kZiiVtkAtYhkBTonMM6XEtp7bumA==
-X-Forefront-Antispam-Report: CIP:149.199.60.83;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:xsj-pvapsmtpgw01;PTR:unknown-60-83.xilinx.com;CAT:NONE;SFTY:;SFS:(396003)(136003)(376002)(39860400002)(346002)(46966005)(186003)(83380400001)(8676002)(54906003)(478600001)(42186006)(47076004)(36756003)(81166007)(6266002)(356005)(316002)(26005)(82740400003)(82310400002)(2616005)(7416002)(70586007)(70206006)(4326008)(6916009)(8936002)(426003)(1076003)(2906002)(5660300002)(336012)(33656002)(44832011);DIR:OUT;SFP:1101;
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2020 18:34:01.6823
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bfd52049-943f-48f0-a6d3-08d833edf6fc
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
-X-MS-Exchange-CrossTenant-AuthSource: SN1NAM02FT023.eop-nam02.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR02MB6079
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:r0zfwJMed2KL5NZGgiS4wFM4dzmNTm1rUzJDCSPBX2vHNdmwOLt
+ UhWmDTXbwzpNDY/J773o/lhmstFXL7brkx2Bescq1b44f7wyyA9yZiQKRMwcZOgT5qrE5Ko
+ NjyStIAK/ThC1oNJlKLuERp8ImMSmUcrYe7R9FlvEC4TVeF7jeSoqL+Zqvn+1QnzU5lwCFC
+ nFn3WmKRBIIWN7wS7d2rA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:TXoNdttfv98=:aw1/2V2I7mCxFvyd0uv9HZ
+ qXVEOGZkCXiZU4HGl8VLjPW3MhcFy4rFRXns3IXpn6xmYYb97cVg8UqL9tfuQss4ueFTsNBvl
+ rED4WW7Svc3dTmApH638VKHTGR+an/4M4ttzpl4CMxShothyTBEh1aDkcNE43TUkBKFxDVQKn
+ FU6h8gB9AbRHrJRddRdgVootBnCPghV/ZjrzF/48x1IbOVoQV32n62l0cvgwtAwgMj7sZA3rr
+ NV2OgXXPXeWfWnmteXfNTJgA7qb75ufyOwMwM/s+Ncn+gjwX/Pa9Z9v9TimZP2ums2GnaHxY0
+ S+uxV4l5I5q2ybjGJmqGBT9AUDxj3CLZhqAfPdfThBLX3wKnk17gxgxrWl2WyppTwHJXEM4VP
+ sSUxJfXxAyKCws5YT494zs6DzC3tJYNkEaKMvnPDWHL6Y82hMgR7dLYqlN2BRigGPbdhqXS6F
+ anmjRpqDCruaFYZHDW3rV8UQ8GhDxLcTn1P3iIO4hG/JkyZYWlMQtzFBl4Du3kD2h7tmi9V5k
+ IUr3g7gJWMT1NOzYdZZ84MserVz880Z7xGV1zrearqVWJQQBgd+a8NYWcT3TTvQXakKdDx1fp
+ dC8U92elDLHry7jG72J/yluMOhMRfMLHlQzcJE1wA9t9vZCJI+y1UcYdt7xnwaN60YLaP2tRd
+ c6xKclgEw8l9oVkwB+sbAdr1DI5ofjfx9Z8wgyzEzmMuIshphePHJixrIUqeWUnxGMKfbg3tQ
+ LGcx21fo+W9+0TCaheJLJcwCivkTH3nOgs9YpnYjCZsyKZgPEyU5PXoBTXXecT9h6Pl9p5gkU
+ e6MrOxBW1OeSyAyj/sFXlFRGhXSd/zEVA5VPof0pNjvjHklRsMPwty1Vau7gIWUg/77he6c0l
+ dIaJ3RJ76R2MLKJo31sl2glVcERNTCGPEZ3GmnKp35vqne0k3WKNaiFpTbVAqIYaP2084lUQN
+ w4nQ7mtAqGOlyL49ui1/FmqmFj8K/fOZ+kdWD4OLF4kPBZfU6SdBP/HMJnJkNaWWaLN/9t/SN
+ DbohVJhIJT4yXDXe8po1rGPy3+lWdW+1PPFnbtB28P3o6PJrePre/h8jsPRoKE9z9rUJUVpF1
+ d7aQDoqh4YH/GZcGz4uC4g+822afBErwCwI7jD/Ag6W9blojH7ydotWRs8vTO8sYLFrVUoN+a
+ klO4yIL37wG42xJDQuL0rkz7dsbqYzncqti7IBmLzMgXV9u4+xU27d9ior5AI6iARecj7W01t
+ 0Anr5W8nicfm57mqHrcUItTkvSUQ/9+Mu5UHbKw==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Wei,
+=E2=80=A6
+> The refcount leak issues take place in two error handling paths.
 
-Thanks for the patch.
+Can an other wording be a bit nicer for the commit message?
 
-On Tue, Jul 28, 2020 at 03:33:49PM -0700, Laurent Pinchart wrote:
-> Hi Wei,
-> 
-> Thank you for the patch.
-> 
-> On Sat, Jul 25, 2020 at 06:34:29AM +0000, Wei Yongjun wrote:
-> > Fix typo in parameter description.
-> > 
-> > Fixes: d76271d22694 ("drm: xlnx: DRM/KMS driver for Xilinx ZynqMP DisplayPort Subsystem")
-> > Reported-by: Hulk Robot <hulkci@huawei.com>
-> > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> 
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> 
 
-Reviewed-by: Hyun Kwon <hyun.kwon@xilinx.com>
+> Fix the issue by =E2=80=A6
 
-I'll commit this to drm-misc-next-fixes soon.
+I suggest to replace this wording by the tag =E2=80=9CFixes=E2=80=9D.
 
-Thanks,
--hyun
-
-> > ---
-> >  drivers/gpu/drm/xlnx/zynqmp_dp.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/gpu/drm/xlnx/zynqmp_dp.c b/drivers/gpu/drm/xlnx/zynqmp_dp.c
-> > index 821f7a71e182..3d53638ab15e 100644
-> > --- a/drivers/gpu/drm/xlnx/zynqmp_dp.c
-> > +++ b/drivers/gpu/drm/xlnx/zynqmp_dp.c
-> > @@ -44,7 +44,7 @@ MODULE_PARM_DESC(aux_timeout_ms, "DP aux timeout value in msec (default: 50)");
-> >   */
-> >  static uint zynqmp_dp_power_on_delay_ms = 4;
-> >  module_param_named(power_on_delay_ms, zynqmp_dp_power_on_delay_ms, uint, 0444);
-> > -MODULE_PARM_DESC(aux_timeout_ms, "DP power on delay in msec (default: 4)");
-> > +MODULE_PARM_DESC(power_on_delay_ms, "DP power on delay in msec (default: 4)");
-> >  
-> >  /* Link configuration registers */
-> >  #define ZYNQMP_DP_LINK_BW_SET				0x0
-> 
-> -- 
-> Regards,
-> 
-> Laurent Pinchart
+Regards,
+Markus

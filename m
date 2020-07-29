@@ -2,36 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC485231A9E
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Jul 2020 09:50:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD757231B5A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Jul 2020 10:39:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727939AbgG2Huj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Jul 2020 03:50:39 -0400
-Received: from mout.web.de ([212.227.15.4]:59753 "EHLO mout.web.de"
+        id S1727844AbgG2IjL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Jul 2020 04:39:11 -0400
+Received: from mout.web.de ([212.227.15.4]:50469 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726710AbgG2Hui (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Jul 2020 03:50:38 -0400
+        id S1727837AbgG2IjK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 29 Jul 2020 04:39:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1596009004;
-        bh=rpT0VSgpWYfz7nGBaDEI1MxINgV+Orr2QxxF7KcolRA=;
+        s=dbaedf251592; t=1596011925;
+        bh=0nHnWyTi1/5z4jViX6/fk8/97w0RRKZVTE+kBJBTFJY=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=HIGssE5WSx7RUPNxR4XJjphY9FBfsFi0fvyw1Y2uT9x9Ky6fz6tzfMLpKKn367dyQ
-         mRtre0rOkhk2rv/3x0YddCbYGtjwycf4qtxoJ+E5BMlYyhjc0iVA0S3IxCoTbl5DwD
-         uDsHa8yNvM9QDtq7cpc6OTNA9uT4XHJn8eW9q0pw=
+        b=dL3EnT1ytm6BHpdkhN5++VEgxre61wCfDjqFXylyB4mrtsksKtyBOd8rcG7T7FgPR
+         jMxqJeDOiJBiuOHm2k9pdQ85MpTioN0pYv/v7C1D7YKY5E6H+RYmwFcHP7pC+qRU6w
+         SOo0LxLQ+WlixKuoS6kbX+e6h8EeiALBZ6A7gfQE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.175.129]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MgzaT-1khSr846RR-00hOlb; Wed, 29
- Jul 2020 09:50:04 +0200
-To:     Lu Wei <luwei32@huawei.com>, netdev@vger.kernel.org
+Received: from [192.168.1.2] ([2.243.175.129]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MVcvn-1kHV0s1LPb-00YwEd; Wed, 29
+ Jul 2020 10:38:45 +0200
+To:     Lu Wei <luwei32@huawei.com>, linux-arm-kernel@lists.infradead.org,
+        netdev@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Alex Williams <alex.williams@ni.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
         "David S. Miller" <davem@davemloft.net>,
+        Hans Ulli Kroll <ulli.kroll@googlemail.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Moritz Fischer <mdf@kernel.org>,
-        Yunjian Wang <wangyunjian@huawei.com>
-Subject: Re: [PATCH] net: nixge: fix potential memory leak in nixge_probe()
+        Linus Walleij <linus.walleij@linaro.org>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
+Subject: Re: [PATCH] ethernet: fix potential memory leak in
+ gemini_ethernet_port_probe()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,49 +76,74 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <81c16524-29f0-4331-5843-9b2e2c0ee22e@web.de>
-Date:   Wed, 29 Jul 2020 09:49:51 +0200
+Message-ID: <c9c7e5a3-4909-e0c9-1c69-0ad3643ca3f5@web.de>
+Date:   Wed, 29 Jul 2020 10:38:37 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-X-Provags-ID: V03:K1:ovIlmPe6AAL6mungSzbZ7Oda/uShWMBBrQuEN6CjW3Nj/EQiBIz
- G5AgL0b/x4MQSoQiYNc50qdvrgU4ka014QVPMQbv9su66dmj7dKbDNU0jcrlQ4ebQ3O/nVh
- uYnZBYZcN2r4hfMNylBFIHWGNouyxyqdprnc3eAcoKGFjoxpXgOkH4rbrk4EQKGTniMGvqK
- 1hyWt6AMMGNvaZ5BpOVyg==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:DIURh6r5a5qyKYK5piPq9bQqL5bdgzfI0Lt5o3pwFgdexj93y0b
+ 9iccCfI87+I2IVXyJYPWYgr2lh9qEQKxMPJnTAUz6GABamYHjFUYjK3x6ZuXthiVqjSWAGQ
+ kAQIAkH+y8cyEFJjznuJCJKdEEbp5Ud9alJglAROU67Th4b2ZK7xUGZUKDXb9cp57ei/QcW
+ GYLe8KFCtWOwj4FGsQWRQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:rs+ZIkAMwPQ=:jgWoxl8ww6VPH8Vf3l/3h6
- ezWSFCf1xM+zRKntRwxzGjiBWGWen7NO8Busirv47m9gqHHB57qIJvat3OrMjQrobP3ILEGCd
- dx0VyN43BVrt4nwl4U8FULGzvJd7ofJCWpSP/RVaJfUbcp/4iLyQIy4D5FFJhGj+RcxkeOE+G
- iVZsb6+P0nn79T+TVQW6iHC5M5o8abRNzbtZozzMa9WH7uaCRIAn+UBl2uDMP/7maH0Wu9kLf
- HhA/fL3XDFVBAztihIv14Dh1CP6jyVVwsotaM46NO/k3qwMIfYuc5LRbOT4B5cyyH/Lhyx5/M
- 2iEjFK6OEJTRhrWnBS/7VZiLTyDL2qmy/jxE68IUT+Ng95fnP8zUuYN1e3I5bE5JL6BbPB2PI
- D+ZN040BybmWA8IH/R/gOTf7mmPovvZ4SHiZLEnwFS53ctNgs4cd5w0n04JnXbReNu15k4K0v
- nzc3zxn8QOb00tWsb0UJIF9vLBfn7NspRt+5ff2Z9/T/pJocZzzk/RsxgyJGSSO3HACR2Ye2W
- onvmL5KTg4XiZ/Ixg+6mJka43JK6bBAc/EPSplWAp9dQwBaaPd2mgYE3cS0D+sqePC4P/l/al
- zUFWx42AAR6Gg0iixIQ+Lk7s+7c3S23pmKtrDDwlNzPdG/f/vwuRAPArNhQTNFe8EI+TKlxQF
- asltKmj9I/e/dCEqUuRevmWlP9hVWXq+7srV0D2wB6vnzLutz12RQH8+x31AjumXrqnZ1kr6s
- S02TlaLh7bz7IERcYdB2uFtPR2n4q3VHZHJabdI8lRCusdTpdq6i2R2VY3cthqTRDPUUZlgAe
- 3SHF25tWaqd43t6p7A+zqHfj+Jx+r1MUbJyXNSbDjZtvhnkd5IW1YYWItHoESTlHdswwdq/hz
- D5hWpSEGNtCBXD4jS9fEUNaVZ6NIwGj+TSnmeIKAXTxTyvBvhik1Ych4Od+xmv6K5oYLnceJg
- iSUJUf0MPJtlZrikkNZSU8xjW/K0XJxmFYN+pVjTFkqWy/gFGuNFR/83G7CzGnF1J2r13E+4Y
- sOFM3y1QUVP9PgrbsVjqXi+jwecGFeL3RoUocqkFiVvt/adyJ7x/vsA7A+s/QvMxrzmQnGQ7H
- KWR288FIlS+qNAKXvfs0G2LthR5eoiTIyeqVVLL4bpXHv6k6dUbE2whUj6Bbyrgwb/m7WeZ+c
- 2pmZ/f8ycfxhy0V1PSDhkAnHafW+1V2qOo0M9NFO+9mFmnsRGOD+DNC+8ItkYc3DPVmyBPm20
- OBA8XmIvL67IEjf0nTlUo166K6MqzGszQJyQzSA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:CvAf/U/2krw=:jnm5GT4alMrsp5cOHacWIm
+ V1iIXBhpPKa4zfqA+WBmO/gCoklqsKNdDsFeuBAH4pIR94mL/IbTGefc9KVqUYqlOMpMwL4nB
+ J+7N1jZvLI8xyaFrcRdnyTOBOVAAic2pMiG9JqnGe7h2pxQevgXwQ6iF1pbm1G/v8Rd05ae/5
+ eZqGNrwID+QaSwVS3OZ3G6OmhOTurYqfu9VdYkNmh1AeHttgsmnTLusY8BOrPAL4kiNAys5Si
+ uTGa2viILDKASi5SDFwI+CDzhQDJXf5lXcGV9yobL96Y84TNU+868PuBp1UkDbsXA3zGiYW5f
+ WzjYp783dwbD9Aebi/RYFEG5UZ3mSDC48qLInfI9OdywZjGIxB7q9GZIowyNHmZpEFvPfRziG
+ jMp6KGUXkSPpnrDY+iL1E7n7xqYt3uouJjJ2iJHl5sPM+1ctMo0ttvauCWGTbYuSJbXccosco
+ 4prBJasX3dNWmGKZfLApAiDmtsd0bVWlQWRuOe0udYB+pqDSLASuEZ3kmfQNlHkTtRbLSDiXZ
+ 1ws2tKX8IeKYtDSNg7k/inyHnB0K2OCSODeNgQ6li1E8pzod+08YSNWdVQ4V8N/yYeR9q321t
+ xmyl3Cj4w+CVwj9c20hNjpSrHg9W4eWDapqpoJcN0nh/vLmHKZwKzrEiBJ0ruEkp/wUMsoOpR
+ dx80wd/bEFMXk9zlpZUJ/dmmyuuHXIdm0KSFI1cwxCe8sGbGjBE8s9XuPqFBuP3GxmkcWgV1d
+ 2/L0Uwu2wnF6H83uZxSHvK2RgL3HWKZSlzM4Sz/Ip1RMqQTE4XXhaOUlEpPNL73cWaMj5O8tr
+ OF46uqsXuDRd1OzkAY2Afzv/J8Wo0u7ZJmbhpM9RtU3RyMDeDoSFwLdg5tw/LxzEJNMGJxd9e
+ JnldnJGjqCpOPZLQ+ZNhiF4ULMM0x/xmyC/Zr5DuYg0p0a+Zv+XX3g6sMURug/sJJZbNKszQi
+ zU09dPiOasEKyHdqfVHCYMWRPsGwZ9Nn5UO96mwsXkfEJusEBOaMXsNLyAWd2gc689hCxdfU+
+ g3bFhMKVDmQ7RRbjPd5uPlnZLYj+FT1ncmTAhR13xBWNyjkwP+P1Z2wpA8RjROltBb+q70FGi
+ osXbCCEr87vpF6YOxlhC8VJRWw1QnjiqHOxdGV07A9aIcCB/EQssmlkSLTbb6kio9e5aVW5su
+ FAp3Wull0KboABBYhMqExz/eamPxrGWV6fBx7bSLzmT2o/EkJv/FOZ8W7HhkrwmI/YiU6M3q9
+ HW6NMhXHgY2OL+Z4l/jjrc7DG3cxK+N68xbp94A==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> If some processes in nixge_probe() fail, free_netdev(dev)
-> needs to be called to aviod a memory leak.
+> If some processes in gemini_ethernet_port_probe() fail,
+> free_netdev(dev) needs to be called to avoid a memory leak.
 
-* Would you like to avoid a typo in this change description?
+Would you like to use an imperative wording for this change description?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3D6ba1b005ffc388c2aeaddae20d=
+a29e4810dea298#n151
 
-* An imperative wording can be preferred here, can't it?
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=6ba1b005ffc388c2aeaddae20da29e4810dea298#n151
+
+=E2=80=A6
+> +++ b/drivers/net/ethernet/cortina/gemini.c
+> @@ -2501,8 +2513,10 @@  static int gemini_ethernet_port_probe(struct pla=
+tform_device *pdev)
+>  					IRQF_SHARED,
+>  					port_names[port->id],
+>  					port);
+> -	if (ret)
+> +	if (ret) {
+> +		free_netdev(netdev);
+>  		return ret;
+> +	}
+>
+>  	ret =3D register_netdev(netdev);
+=E2=80=A6
+
+I suggest to add a jump target for the desired exception handling
+in this function implementation.
+
+ 	if (ret)
+-		return ret;
++		goto free_netdev;
 
 Regards,
 Markus

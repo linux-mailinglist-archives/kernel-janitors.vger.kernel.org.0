@@ -2,65 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EBFC233B4D
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jul 2020 00:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F2ED233B59
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jul 2020 00:29:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730549AbgG3W2O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 Jul 2020 18:28:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40508 "EHLO mail.kernel.org"
+        id S1730652AbgG3W26 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 Jul 2020 18:28:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41070 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730491AbgG3W2O (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 Jul 2020 18:28:14 -0400
+        id S1730641AbgG3W25 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 30 Jul 2020 18:28:57 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 98EF720829;
-        Thu, 30 Jul 2020 22:28:12 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7D06520829;
+        Thu, 30 Jul 2020 22:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596148093;
-        bh=MPDGk6EG3O5H5cWuKSvALlqOwuaO5mBhfBAqbxq8eqQ=;
+        s=default; t=1596148137;
+        bh=YH9+ICW/3hXRtSm64orqu19oSdQuuWKrMUBevTvaXkE=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=S9W1a9FPFTqBbmMqUpWUqbK5rQxWK+p2kPij/XiBGbFjQ8HJPQpsxNtDYoRLdT4Uv
-         KmqISuSiPwRgl9DgD1Axo49Fa00x5Ly55ap6+Nb0vLkkzEEWcFvDo3ibnXkFLrKe/l
-         yzjsZg25Iga9ES/yjs6Peb5luaPlnQifXGHrjvM4=
-Date:   Thu, 30 Jul 2020 23:27:52 +0100
+        b=F+0Ydd/Fgutk16gkyGj2gECpPoXbH4sg6UlFq9catgilRzwkQfA9O7G1w0Kz6j0y8
+         QrQ7gUCMeXm93qiW40R2H2WfV9+NT2PCbOx4GxEs87RdYK42aWEzohK3Bf2m4JuD5e
+         DShs/tsbsdcOdvIawMZxl9W+REGJfO6Zjj0yspI8=
+Date:   Thu, 30 Jul 2020 23:28:36 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Julia Lawall <Julia.Lawall@inria.fr>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        alsa-devel@alsa-project.org, Takashi Iwai <tiwai@suse.com>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        sound-open-firmware@alsa-project.org,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        kernel-janitors@vger.kernel.org,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>
-In-Reply-To: <1595751933-4952-1-git-send-email-Julia.Lawall@inria.fr>
-References: <1595751933-4952-1-git-send-email-Julia.Lawall@inria.fr>
-Subject: Re: [PATCH] ASoC: SOF: imx: use resource_size
-Message-Id: <159614804536.1473.644625044517486054.b4-ty@kernel.org>
+To:     linux-rdma@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <1595761112-11003-1-git-send-email-Julia.Lawall@inria.fr>
+References: <1595761112-11003-1-git-send-email-Julia.Lawall@inria.fr>
+Subject: Re: [PATCH 0/7] drop unnecessary list_empty
+Message-Id: <159614804536.1473.16638498246526574558.b4-ty@kernel.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 26 Jul 2020 10:25:33 +0200, Julia Lawall wrote:
-> Use resource_size rather than a verbose computation on
-> the end and start fields.
+On Sun, 26 Jul 2020 12:58:25 +0200, Julia Lawall wrote:
+> The various list iterators are able to handle an empty list.
+> The only effect of avoiding the loop is not initializing some
+> index variables.
+> Drop list_empty tests in cases where these variables are not
+> used.
 > 
-> The semantic patch that makes this change is as follows:
+> The semantic patch that makes these changes is as follows:
 > (http://coccinelle.lip6.fr/)
 > 
-> <smpl>
-> @@ struct resource ptr; @@
-> - (ptr.end - ptr.start + 1)
-> + resource_size(&ptr)
-> </smpl>
+> [...]
 
 Applied to
 
@@ -68,8 +56,8 @@ Applied to
 
 Thanks!
 
-[1/1] ASoC: SOF: imx: use resource_size
-      commit: afd842c031408f9eaf689ff417071eed15afa05e
+[1/1] ASoC: Intel: drop unnecessary list_empty
+      commit: a383308e50244a28fe927b9c1acbe0a963bf186b
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

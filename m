@@ -2,50 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B241B233903
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Jul 2020 21:28:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EBFC233B4D
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jul 2020 00:28:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730507AbgG3T2I (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 Jul 2020 15:28:08 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:16693 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726581AbgG3T2H (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 Jul 2020 15:28:07 -0400
-X-IronPort-AV: E=Sophos;i="5.75,415,1589234400"; 
-   d="scan'208";a="461952951"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Jul 2020 21:27:32 +0200
-Date:   Thu, 30 Jul 2020 21:27:32 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v4] coccinelle: api: add kvfree script
-In-Reply-To: <75532a99-4498-c64a-de34-c9033782aa9e@web.de>
-Message-ID: <alpine.DEB.2.22.394.2007302125580.2548@hadrien>
-References: <75532a99-4498-c64a-de34-c9033782aa9e@web.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        id S1730549AbgG3W2O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 Jul 2020 18:28:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40508 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730491AbgG3W2O (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 30 Jul 2020 18:28:14 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 98EF720829;
+        Thu, 30 Jul 2020 22:28:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1596148093;
+        bh=MPDGk6EG3O5H5cWuKSvALlqOwuaO5mBhfBAqbxq8eqQ=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=S9W1a9FPFTqBbmMqUpWUqbK5rQxWK+p2kPij/XiBGbFjQ8HJPQpsxNtDYoRLdT4Uv
+         KmqISuSiPwRgl9DgD1Axo49Fa00x5Ly55ap6+Nb0vLkkzEEWcFvDo3ibnXkFLrKe/l
+         yzjsZg25Iga9ES/yjs6Peb5luaPlnQifXGHrjvM4=
+Date:   Thu, 30 Jul 2020 23:27:52 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Julia Lawall <Julia.Lawall@inria.fr>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        alsa-devel@alsa-project.org, Takashi Iwai <tiwai@suse.com>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        sound-open-firmware@alsa-project.org,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        kernel-janitors@vger.kernel.org,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>
+In-Reply-To: <1595751933-4952-1-git-send-email-Julia.Lawall@inria.fr>
+References: <1595751933-4952-1-git-send-email-Julia.Lawall@inria.fr>
+Subject: Re: [PATCH] ASoC: SOF: imx: use resource_size
+Message-Id: <159614804536.1473.644625044517486054.b4-ty@kernel.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> > +msg = "WARNING: kmalloc is used to allocate this memory at line %s" % (k[0].line)
-> > +coccilib.org.print_todo(p[0], msg)
->
-> * I find the diagnostic text insufficient.
+On Sun, 26 Jul 2020 10:25:33 +0200, Julia Lawall wrote:
+> Use resource_size rather than a verbose computation on
+> the end and start fields.
+> 
+> The semantic patch that makes this change is as follows:
+> (http://coccinelle.lip6.fr/)
+> 
+> <smpl>
+> @@ struct resource ptr; @@
+> - (ptr.end - ptr.start + 1)
+> + resource_size(&ptr)
+> </smpl>
 
-I also find the message not very informative.
+Applied to
 
-All of the other comments are not useful, and some are simply incorrect.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-julia
+Thanks!
+
+[1/1] ASoC: SOF: imx: use resource_size
+      commit: afd842c031408f9eaf689ff417071eed15afa05e
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

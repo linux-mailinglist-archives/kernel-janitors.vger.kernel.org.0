@@ -2,67 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FA05232E7F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Jul 2020 10:22:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 524152330A6
+	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Jul 2020 12:58:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730375AbgG3IU2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 Jul 2020 04:20:28 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42752 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730010AbgG3IU0 (ORCPT
+        id S1728932AbgG3K6w (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 Jul 2020 06:58:52 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:42631
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726631AbgG3K6v (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 Jul 2020 04:20:26 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1k13nb-0003Fu-6q; Thu, 30 Jul 2020 08:20:23 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Oded Gabbay <oded.gabbay@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Tomer Tayar <ttayar@habana.ai>,
-        Omer Shpigelman <oshpigelman@habana.ai>,
-        Ofir Bitton <obitton@habana.ai>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] habanalabs: fix incorrect check on failed workqueue create
-Date:   Thu, 30 Jul 2020 09:20:22 +0100
-Message-Id: <20200730082022.5557-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Thu, 30 Jul 2020 06:58:51 -0400
+X-IronPort-AV: E=Sophos;i="5.75,414,1589234400"; 
+   d="scan'208";a="355625807"
+Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/AES256-SHA256; 30 Jul 2020 12:58:49 +0200
+From:   Julia Lawall <Julia.Lawall@inria.fr>
+To:     Tony Luck <tony.luck@intel.com>
+Cc:     kernel-janitors@vger.kernel.org, Fenghua Yu <fenghua.yu@intel.com>,
+        Jonathan Corbet <corbet@lwn.net>, linux-ia64@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] docs: ia64: correct typo
+Date:   Thu, 30 Jul 2020 12:17:30 +0200
+Message-Id: <1596104250-32673-1-git-send-email-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 1.9.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Replace RTC_WKLAM_RD with RTC_WKALM_RD.
 
-The null check on a failed workqueue create is currently null checking
-hdev->cq_wq rather than the pointer hdev->cq_wq[i] and so the test
-will never be true on a failed workqueue create. Fix this by checking
-hdev->cq_wq[i].
+Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
-Addresses-Coverity: ("Dereference before null check")
-Fixes: 5574cb2194b1 ("habanalabs: Assign each CQ with its own work queue")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/misc/habanalabs/common/device.c | 2 +-
+ Documentation/ia64/efirtc.rst |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/misc/habanalabs/common/device.c b/drivers/misc/habanalabs/common/device.c
-index be16b75bdfdb..35214a186913 100644
---- a/drivers/misc/habanalabs/common/device.c
-+++ b/drivers/misc/habanalabs/common/device.c
-@@ -288,7 +288,7 @@ static int device_early_init(struct hl_device *hdev)
- 	for (i = 0 ; i < hdev->asic_prop.completion_queues_count ; i++) {
- 		snprintf(workq_name, 32, "hl-free-jobs-%u", i);
- 		hdev->cq_wq[i] = create_singlethread_workqueue(workq_name);
--		if (hdev->cq_wq == NULL) {
-+		if (hdev->cq_wq[i] == NULL) {
- 			dev_err(hdev->dev, "Failed to allocate CQ workqueue\n");
- 			rc = -ENOMEM;
- 			goto free_cq_wq;
--- 
-2.27.0
+diff --git a/Documentation/ia64/efirtc.rst b/Documentation/ia64/efirtc.rst
+index 2f7ff50..fd83284 100644
+--- a/Documentation/ia64/efirtc.rst
++++ b/Documentation/ia64/efirtc.rst
+@@ -113,7 +113,7 @@ We have added 2 new ioctl()s that are specific to the EFI driver:
+ 
+ 	Read the current state of the alarm::
+ 
+-		ioctl(d, RTC_WKLAM_RD, &wkt)
++		ioctl(d, RTC_WKALM_RD, &wkt)
+ 
+ 	Set the alarm or change its status::
+ 
 

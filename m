@@ -2,53 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76D68233FF7
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jul 2020 09:29:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4C6C234172
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jul 2020 10:45:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731628AbgGaH3A (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 Jul 2020 03:29:00 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:39896 "EHLO fornost.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731601AbgGaH27 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 Jul 2020 03:28:59 -0400
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
-        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
-        id 1k1PTI-0001Jw-Jp; Fri, 31 Jul 2020 17:28:53 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 31 Jul 2020 17:28:52 +1000
-Date:   Fri, 31 Jul 2020 17:28:52 +1000
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Keerthy <j-keerthy@ti.com>, linux-crypto@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH -next] crypto: sa2ul - fix wrong pointer passed to
- PTR_ERR()
-Message-ID: <20200731072852.GA17380@gondor.apana.org.au>
-References: <20200725063440.172238-1-weiyongjun1@huawei.com>
+        id S1731907AbgGaIpI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 31 Jul 2020 04:45:08 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:42864
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730233AbgGaIpI (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 31 Jul 2020 04:45:08 -0400
+X-IronPort-AV: E=Sophos;i="5.75,417,1589234400"; 
+   d="scan'208";a="355689191"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Jul 2020 10:45:05 +0200
+Date:   Fri, 31 Jul 2020 10:45:05 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Denis Efremov <efremov@linux.com>,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v4] coccinelle: api: add kvfree script
+In-Reply-To: <96a71d0e-ae6f-9355-b02a-b1a084376f1e@web.de>
+Message-ID: <alpine.DEB.2.22.394.2007311044340.2439@hadrien>
+References: <75532a99-4498-c64a-de34-c9033782aa9e@web.de> <alpine.DEB.2.22.394.2007302125580.2548@hadrien> <96a71d0e-ae6f-9355-b02a-b1a084376f1e@web.de>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200725063440.172238-1-weiyongjun1@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: multipart/mixed; boundary="8323329-701465646-1596185105=:2439"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Jul 25, 2020 at 06:34:40AM +0000, Wei Yongjun wrote:
-> PTR_ERR should access the value just tested by IS_ERR, otherwise
-> the wrong error code will be returned.
-> 
-> Fixes: 7694b6ca649f ("crypto: sa2ul - Add crypto driver")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->  drivers/crypto/sa2ul.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Someone has sent a similar patch already.
+--8323329-701465646-1596185105=:2439
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 
-Thanks,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+
+
+On Fri, 31 Jul 2020, Markus Elfring wrote:
+
+> >>> +msg = "WARNING: kmalloc is used to allocate this memory at line %s" % (k[0].line)
+> >>> +coccilib.org.print_todo(p[0], msg)
+> >>
+> >> * I find the diagnostic text insufficient.
+> >
+> > I also find the message not very informative.
+>
+> Is it interesting how quick such views can change?
+
+Yes.  If one looks at something in context, one and understand it better
+than the extract that you provided.
+
+julia
+
+> https://lore.kernel.org/cocci/alpine.DEB.2.22.394.2007302214160.2548@hadrien/
+> https://systeme.lip6.fr/pipermail/cocci/2020-July/008041.html
+> https://lkml.org/lkml/2020/7/30/1015
+>
+> “…
+> Actually, the message looks fine.  Sorry for the noise about that.
+> …”
+>
+>
+> Can such notifications become more helpful?
+>
+> Regards,
+> Markus
+>
+--8323329-701465646-1596185105=:2439--

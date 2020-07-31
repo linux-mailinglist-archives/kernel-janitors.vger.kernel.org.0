@@ -2,61 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B1272349E8
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jul 2020 19:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 348892349F0
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jul 2020 19:14:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732912AbgGaRJe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 Jul 2020 13:09:34 -0400
-Received: from ms.lwn.net ([45.79.88.28]:55948 "EHLO ms.lwn.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729269AbgGaRJe (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 Jul 2020 13:09:34 -0400
-Received: from lwn.net (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id 2DFFE6D9;
-        Fri, 31 Jul 2020 17:09:34 +0000 (UTC)
-Date:   Fri, 31 Jul 2020 11:09:33 -0600
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     Tony Luck <tony.luck@intel.com>, kernel-janitors@vger.kernel.org,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs: ia64: correct typo
-Message-ID: <20200731110933.4edfc99c@lwn.net>
-In-Reply-To: <1596104250-32673-1-git-send-email-Julia.Lawall@inria.fr>
-References: <1596104250-32673-1-git-send-email-Julia.Lawall@inria.fr>
-Organization: LWN.net
+        id S1732932AbgGaRNx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 31 Jul 2020 13:13:53 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:39314 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730924AbgGaRNx (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 31 Jul 2020 13:13:53 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1k1YbH-0006cL-66; Fri, 31 Jul 2020 17:13:43 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Steve French <sfrench@samba.org>, Aurelien Aptel <aaptel@suse.com>,
+        Paulo Alcantara <pc@cjr.nz>, linux-cifs@vger.kernel.org,
+        samba-technical@lists.samba.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] cifs: fix double free error on share and prefix
+Date:   Fri, 31 Jul 2020 18:13:42 +0100
+Message-Id: <20200731171342.36636-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 30 Jul 2020 12:17:30 +0200
-Julia Lawall <Julia.Lawall@inria.fr> wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> Replace RTC_WKLAM_RD with RTC_WKALM_RD.
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> 
-> ---
->  Documentation/ia64/efirtc.rst |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/ia64/efirtc.rst b/Documentation/ia64/efirtc.rst
-> index 2f7ff50..fd83284 100644
-> --- a/Documentation/ia64/efirtc.rst
-> +++ b/Documentation/ia64/efirtc.rst
-> @@ -113,7 +113,7 @@ We have added 2 new ioctl()s that are specific to the EFI driver:
->  
->  	Read the current state of the alarm::
->  
-> -		ioctl(d, RTC_WKLAM_RD, &wkt)
-> +		ioctl(d, RTC_WKALM_RD, &wkt)
+Currently if the call dfs_cache_get_tgt_share fails we cannot
+fully guarantee that share and prefix are set to NULL and the
+next iteration of the loop can end up potentially double freeing
+these pointers. Since the semantics of dfs_cache_get_tgt_share
+are ambiguous for failure cases with the setting of share and
+prefix (currently now and the possibly the future), it seems
+prudent to set the pointers to NULL when the objects are
+free'd to avoid any double frees.
 
-Applied to the docs tree, thanks.
+Addresses-Coverity: ("Double free")
+Fixes: 96296c946a2a ("cifs: handle RESP_GET_DFS_REFERRAL.PathConsumed in reconnect")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ fs/cifs/connect.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-jon
+diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
+index 3c4dd4e1b9eb..4b2f5f5b3a8e 100644
+--- a/fs/cifs/connect.c
++++ b/fs/cifs/connect.c
+@@ -5574,6 +5574,8 @@ int cifs_tree_connect(const unsigned int xid, struct cifs_tcon *tcon, const stru
+ 
+ 		kfree(share);
+ 		kfree(prefix);
++		share = NULL;
++		prefix = NULL;
+ 
+ 		rc = dfs_cache_get_tgt_share(tcon->dfs_path + 1, it, &share, &prefix);
+ 		if (rc) {
+-- 
+2.27.0
+

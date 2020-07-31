@@ -2,64 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71C872347EC
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jul 2020 16:38:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B1272349E8
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jul 2020 19:09:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728613AbgGaOip (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 Jul 2020 10:38:45 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:9719 "EHLO
-        mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726353AbgGaOip (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 Jul 2020 10:38:45 -0400
-X-IronPort-AV: E=Sophos;i="5.75,418,1589234400"; 
-   d="scan'208";a="355717043"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Jul 2020 16:38:42 +0200
-Date:   Fri, 31 Jul 2020 16:38:42 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Julia Lawall <julia.lawall@inria.fr>,
-        Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [v4] coccinelle: api: add kvfree script
-In-Reply-To: <06eaa1fe-5047-89f7-3995-a38d80030e7f@web.de>
-Message-ID: <alpine.DEB.2.22.394.2007311637570.2455@hadrien>
-References: <75532a99-4498-c64a-de34-c9033782aa9e@web.de> <alpine.DEB.2.22.394.2007302125580.2548@hadrien> <96a71d0e-ae6f-9355-b02a-b1a084376f1e@web.de> <alpine.DEB.2.22.394.2007311044340.2439@hadrien> <06eaa1fe-5047-89f7-3995-a38d80030e7f@web.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        id S1732912AbgGaRJe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 31 Jul 2020 13:09:34 -0400
+Received: from ms.lwn.net ([45.79.88.28]:55948 "EHLO ms.lwn.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729269AbgGaRJe (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 31 Jul 2020 13:09:34 -0400
+Received: from lwn.net (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ms.lwn.net (Postfix) with ESMTPSA id 2DFFE6D9;
+        Fri, 31 Jul 2020 17:09:34 +0000 (UTC)
+Date:   Fri, 31 Jul 2020 11:09:33 -0600
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     Tony Luck <tony.luck@intel.com>, kernel-janitors@vger.kernel.org,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] docs: ia64: correct typo
+Message-ID: <20200731110933.4edfc99c@lwn.net>
+In-Reply-To: <1596104250-32673-1-git-send-email-Julia.Lawall@inria.fr>
+References: <1596104250-32673-1-git-send-email-Julia.Lawall@inria.fr>
+Organization: LWN.net
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Thu, 30 Jul 2020 12:17:30 +0200
+Julia Lawall <Julia.Lawall@inria.fr> wrote:
 
+> Replace RTC_WKLAM_RD with RTC_WKALM_RD.
+> 
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> 
+> ---
+>  Documentation/ia64/efirtc.rst |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/ia64/efirtc.rst b/Documentation/ia64/efirtc.rst
+> index 2f7ff50..fd83284 100644
+> --- a/Documentation/ia64/efirtc.rst
+> +++ b/Documentation/ia64/efirtc.rst
+> @@ -113,7 +113,7 @@ We have added 2 new ioctl()s that are specific to the EFI driver:
+>  
+>  	Read the current state of the alarm::
+>  
+> -		ioctl(d, RTC_WKLAM_RD, &wkt)
+> +		ioctl(d, RTC_WKALM_RD, &wkt)
 
-On Fri, 31 Jul 2020, Markus Elfring wrote:
+Applied to the docs tree, thanks.
 
-> >>>>> +msg = "WARNING: kmalloc is used to allocate this memory at line %s" % (k[0].line)
-> >>>>> +coccilib.org.print_todo(p[0], msg)
-> >>>>
-> >>>> * I find the diagnostic text insufficient.
-> >>>
-> >>> I also find the message not very informative.
-> >>
-> >> Is it interesting how quick such views can change?
-> >
-> > Yes.  If one looks at something in context, one and understand it better
-> > than the extract that you provided.
->
-> Should the provided information (and its intention) be understandable from
-> the diagnostic message alone already?
-
-It is understandable from the message and from the positions that are
-indicated.  That's good enough.
-
-julia
+jon

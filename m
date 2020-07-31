@@ -2,69 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 348892349F0
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jul 2020 19:14:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F4C4234BF9
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jul 2020 22:09:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732932AbgGaRNx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 Jul 2020 13:13:53 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:39314 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730924AbgGaRNx (ORCPT
+        id S1727809AbgGaUJp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 31 Jul 2020 16:09:45 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:55820 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726257AbgGaUJp (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 Jul 2020 13:13:53 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1k1YbH-0006cL-66; Fri, 31 Jul 2020 17:13:43 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Steve French <sfrench@samba.org>, Aurelien Aptel <aaptel@suse.com>,
-        Paulo Alcantara <pc@cjr.nz>, linux-cifs@vger.kernel.org,
-        samba-technical@lists.samba.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] cifs: fix double free error on share and prefix
-Date:   Fri, 31 Jul 2020 18:13:42 +0100
-Message-Id: <20200731171342.36636-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Fri, 31 Jul 2020 16:09:45 -0400
+X-IronPort-AV: E=Sophos;i="5.75,419,1589234400"; 
+   d="scan'208";a="462075190"
+Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/AES256-SHA256; 31 Jul 2020 22:09:43 +0200
+From:   Julia Lawall <Julia.Lawall@inria.fr>
+To:     Jaroslav Kysela <perex@perex.cz>
+Cc:     kernel-janitors@vger.kernel.org, Takashi Iwai <tiwai@suse.com>,
+        Jonathan Corbet <corbet@lwn.net>, alsa-devel@alsa-project.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ALSA: doc: use correct config variable name
+Date:   Fri, 31 Jul 2020 21:28:21 +0200
+Message-Id: <1596223701-7558-1-git-send-email-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 1.9.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+CONFIG_PCM_XRUN_DEBUG should be CONFIG_SND_PCM_XRUN_DEBUG
 
-Currently if the call dfs_cache_get_tgt_share fails we cannot
-fully guarantee that share and prefix are set to NULL and the
-next iteration of the loop can end up potentially double freeing
-these pointers. Since the semantics of dfs_cache_get_tgt_share
-are ambiguous for failure cases with the setting of share and
-prefix (currently now and the possibly the future), it seems
-prudent to set the pointers to NULL when the objects are
-free'd to avoid any double frees.
+Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
-Addresses-Coverity: ("Double free")
-Fixes: 96296c946a2a ("cifs: handle RESP_GET_DFS_REFERRAL.PathConsumed in reconnect")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- fs/cifs/connect.c | 2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/sound/designs/procfile.rst |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
-index 3c4dd4e1b9eb..4b2f5f5b3a8e 100644
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -5574,6 +5574,8 @@ int cifs_tree_connect(const unsigned int xid, struct cifs_tcon *tcon, const stru
+diff --git a/Documentation/sound/designs/procfile.rst b/Documentation/sound/designs/procfile.rst
+index 29a4668..e9f7e0c 100644
+--- a/Documentation/sound/designs/procfile.rst
++++ b/Documentation/sound/designs/procfile.rst
+@@ -91,7 +91,7 @@ PCM Proc Files
  
- 		kfree(share);
- 		kfree(prefix);
-+		share = NULL;
-+		prefix = NULL;
- 
- 		rc = dfs_cache_get_tgt_share(tcon->dfs_path + 1, it, &share, &prefix);
- 		if (rc) {
--- 
-2.27.0
+ ``card*/pcm*/xrun_debug``
+ 	This file appears when ``CONFIG_SND_DEBUG=y`` and
+-	``CONFIG_PCM_XRUN_DEBUG=y``.
++	``CONFIG_SND_PCM_XRUN_DEBUG=y``.
+ 	This shows the status of xrun (= buffer overrun/xrun) and
+ 	invalid PCM position debug/check of ALSA PCM middle layer.
+ 	It takes an integer value, can be changed by writing to this
 

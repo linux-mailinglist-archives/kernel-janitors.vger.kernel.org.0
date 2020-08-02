@@ -2,34 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EDD823566E
-	for <lists+kernel-janitors@lfdr.de>; Sun,  2 Aug 2020 13:07:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 792DA2356E1
+	for <lists+kernel-janitors@lfdr.de>; Sun,  2 Aug 2020 14:22:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727914AbgHBLH1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 2 Aug 2020 07:07:27 -0400
-Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:52887 "EHLO
+        id S1728225AbgHBMWl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 2 Aug 2020 08:22:41 -0400
+Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:43923 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726578AbgHBLH0 (ORCPT
+        with ESMTP id S1726908AbgHBMWj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 2 Aug 2020 07:07:26 -0400
+        Sun, 2 Aug 2020 08:22:39 -0400
 Received: from localhost.localdomain ([93.22.148.198])
-        by mwinf5d84 with ME
-        id Ab7P230064H42jh03b7PEJ; Sun, 02 Aug 2020 13:07:24 +0200
+        by mwinf5d46 with ME
+        id AcNV230034H42jh03cNV1n; Sun, 02 Aug 2020 14:22:35 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 02 Aug 2020 13:07:24 +0200
+X-ME-Date: Sun, 02 Aug 2020 14:22:35 +0200
 X-ME-IP: 93.22.148.198
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     QLogic-Storage-Upstream@qlogic.com, jejb@linux.ibm.com,
-        martin.petersen@oracle.com, vikas.chaudhary@qlogic.com,
-        lalit.chandivade@qlogic.com, michaelc@cs.wisc.edu,
-        JBottomley@Parallels.com
-Cc:     linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        pillair@codeaurora.org
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] scsi: qla2xxx: Fix the size used in a 'dma_free_coherent()' call
-Date:   Sun,  2 Aug 2020 13:07:21 +0200
-Message-Id: <20200802110721.677707-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ath10k: Fix the size used in a 'dma_free_coherent()' call in an error handling path
+Date:   Sun,  2 Aug 2020 14:22:27 +0200
+Message-Id: <20200802122227.678637-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -41,41 +40,28 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 Update the size used in 'dma_free_coherent()' in order to match the one
 used in the corresponding 'dma_alloc_coherent()'.
 
-While at it, remove a memset after a call to 'dma_alloc_coherent()'.
-This is useless since
-commit 518a2f1925c3 ("dma-mapping: zero memory returned from dma_alloc_*")
-
-Fixes: 4161cee52df8 ("[SCSI] qla4xxx: Add host statistics support")
+Fixes: 1863008369ae ("ath10k: fix shadow register implementation for WCN3990")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
-The memset has been added in the same commit, so I think it is ok to
-remove it in the same path.
+This patch looks obvious to me, but commit 1863008369ae looks also simple.
+So it is surprising that such a "typo" slipped in.
 ---
- drivers/scsi/qla2xxx/qla_mbx.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath10k/ce.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_mbx.c b/drivers/scsi/qla2xxx/qla_mbx.c
-index 73883435ab58..a43d7229f9a1 100644
---- a/drivers/scsi/qla2xxx/qla_mbx.c
-+++ b/drivers/scsi/qla2xxx/qla_mbx.c
-@@ -4933,8 +4933,6 @@ qla25xx_set_els_cmds_supported(scsi_qla_host_t *vha)
- 		return QLA_MEMORY_ALLOC_FAILED;
- 	}
- 
--	memset(els_cmd_map, 0, ELS_CMD_MAP_SIZE);
--
- 	/* List of Purex ELS */
- 	cmd_opcode[0] = ELS_FPIN;
- 	cmd_opcode[1] = ELS_RDP;
-@@ -4966,7 +4964,7 @@ qla25xx_set_els_cmds_supported(scsi_qla_host_t *vha)
- 		    "Done %s.\n", __func__);
- 	}
- 
--	dma_free_coherent(&ha->pdev->dev, DMA_POOL_SIZE,
-+	dma_free_coherent(&ha->pdev->dev, ELS_CMD_MAP_SIZE,
- 	   els_cmd_map, els_cmd_map_dma);
- 
- 	return rval;
+diff --git a/drivers/net/wireless/ath/ath10k/ce.c b/drivers/net/wireless/ath/ath10k/ce.c
+index 294fbc1e89ab..e6e0284e4783 100644
+--- a/drivers/net/wireless/ath/ath10k/ce.c
++++ b/drivers/net/wireless/ath/ath10k/ce.c
+@@ -1555,7 +1555,7 @@ ath10k_ce_alloc_src_ring(struct ath10k *ar, unsigned int ce_id,
+ 		ret = ath10k_ce_alloc_shadow_base(ar, src_ring, nentries);
+ 		if (ret) {
+ 			dma_free_coherent(ar->dev,
+-					  (nentries * sizeof(struct ce_desc_64) +
++					  (nentries * sizeof(struct ce_desc) +
+ 					   CE_DESC_RING_ALIGN),
+ 					  src_ring->base_addr_owner_space_unaligned,
+ 					  base_addr);
 -- 
 2.25.1
 

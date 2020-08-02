@@ -2,88 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0167C2357BB
-	for <lists+kernel-janitors@lfdr.de>; Sun,  2 Aug 2020 16:54:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56A372357C3
+	for <lists+kernel-janitors@lfdr.de>; Sun,  2 Aug 2020 16:57:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726666AbgHBOyW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 2 Aug 2020 10:54:22 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:13629 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726276AbgHBOyV (ORCPT
+        id S1725861AbgHBO45 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 2 Aug 2020 10:56:57 -0400
+Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:42343 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725840AbgHBO45 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 2 Aug 2020 10:54:21 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1596380060; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=0zF08kDdcZxmATNJYLTGsnic9XvBbLnvMG4xP86W4xM=;
- b=RZlZqCrD88TVaU4h+bSB7683p5HZ6Wn+6noaa059AUOgns8mH7EkDvG6lLsAe2BSTH2JWjiD
- eCeZEWetAgHgL56NRIlrGLNU/1xrEoUyLJe2h3XVPQewiJFu6818uuKC4Cp0X64yAz4w3pYi
- gJxUnA5JFDvK7RMnfHq6yA0H8hY=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n18.prod.us-east-1.postgun.com with SMTP id
- 5f26d38aeecfc978d393046e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 02 Aug 2020 14:54:02
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 1BAD0C433C6; Sun,  2 Aug 2020 14:54:02 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 83B7CC433C6;
-        Sun,  2 Aug 2020 14:53:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 83B7CC433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Sun, 2 Aug 2020 10:56:57 -0400
+Received: from localhost.localdomain ([93.22.148.198])
+        by mwinf5d42 with ME
+        id Aewq230024H42jh03ewqx1; Sun, 02 Aug 2020 16:56:55 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 02 Aug 2020 16:56:55 +0200
+X-ME-IP: 93.22.148.198
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     herbert@gondor.apana.org.au, davem@davemloft.net,
+        chohnstaedt@innominate.com
+Cc:     linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] crypto: ixp4xx - Fix the size used in a 'dma_free_coherent()' call
+Date:   Sun,  2 Aug 2020 16:56:48 +0200
+Message-Id: <20200802145648.699335-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtlwifi: btcoex: remove redundant initialization of
- variables
- ant_num and single_ant_path
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200723163214.995226-1-colin.king@canonical.com>
-References: <20200723163214.995226-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200802145402.1BAD0C433C6@smtp.codeaurora.org>
-Date:   Sun,  2 Aug 2020 14:54:02 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+Update the size used in 'dma_free_coherent()' in order to match the one
+used in the corresponding 'dma_alloc_coherent()', in 'setup_crypt_desc()'.
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variables ant_num and single_ant_path are being initialized with a
-> value that is never read and are being updated later with a new value.
-> The initializations are redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Fixes: 81bef0150074 ("crypto: ixp4xx - Hardware crypto support for IXP4xx CPUs")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/crypto/ixp4xx_crypto.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Patch applied to wireless-drivers-next.git, thanks.
-
-56b06d4da812 rtlwifi: btcoex: remove redundant initialization of variables ant_num and single_ant_path
-
+diff --git a/drivers/crypto/ixp4xx_crypto.c b/drivers/crypto/ixp4xx_crypto.c
+index f478bb0a566a..276012e7c482 100644
+--- a/drivers/crypto/ixp4xx_crypto.c
++++ b/drivers/crypto/ixp4xx_crypto.c
+@@ -528,7 +528,7 @@ static void release_ixp_crypto(struct device *dev)
+ 
+ 	if (crypt_virt) {
+ 		dma_free_coherent(dev,
+-			NPE_QLEN_TOTAL * sizeof( struct crypt_ctl),
++			NPE_QLEN * sizeof(struct crypt_ctl),
+ 			crypt_virt, crypt_phys);
+ 	}
+ }
 -- 
-https://patchwork.kernel.org/patch/11681295/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.25.1
 

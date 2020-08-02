@@ -2,64 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11D4C2357EE
-	for <lists+kernel-janitors@lfdr.de>; Sun,  2 Aug 2020 17:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 360EE235815
+	for <lists+kernel-janitors@lfdr.de>; Sun,  2 Aug 2020 17:20:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726282AbgHBPLD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 2 Aug 2020 11:11:03 -0400
-Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:50265 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725859AbgHBPLD (ORCPT
+        id S1726979AbgHBPTi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 2 Aug 2020 11:19:38 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:50639 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726956AbgHBPTh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 2 Aug 2020 11:11:03 -0400
-Received: from localhost.localdomain ([93.22.148.198])
-        by mwinf5d42 with ME
-        id AfB02300F4H42jh03fB1mg; Sun, 02 Aug 2020 17:11:01 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 02 Aug 2020 17:11:01 +0200
-X-ME-IP: 93.22.148.198
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     3chas3@gmail.com
-Cc:     linux-atm-general@lists.sourceforge.net,
+        Sun, 2 Aug 2020 11:19:37 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1596381577; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=1ceprmMKUngVAI6NwlVtOnpRsGz6GuKVyY+WV80AFIs=;
+ b=e9AChbeDLcKMAC+cCeHpQoIRm5s/WhYthI0CfnQITv2fGdd30wZAGAFt+U16Ar0LcKUrcVpE
+ Y7np0Eid7QecW97jP9g/x2kYRsk0BoC23qtRGNRT2ReM6pUv21lY/bjk3lYX4oMkhTtfbdRU
+ sf0SDnClLMGhORtJQ7tLeJOeKXw=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 5f26d97e2c24b37bbe11a8d3 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 02 Aug 2020 15:19:26
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 81F7EC433C9; Sun,  2 Aug 2020 15:19:25 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4B677C433C6;
+        Sun,  2 Aug 2020 15:19:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4B677C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] ipw2100: Use GFP_KERNEL instead of GFP_ATOMIC in some
+ memory allocation
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200722101701.26126-1-christophe.jaillet@wanadoo.fr>
+References: <20200722101701.26126-1-christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     stas.yakovlev@gmail.com, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] atm: idt77252: Fix the size used in a 'dma_alloc_coherent()' call
-Date:   Sun,  2 Aug 2020 17:10:59 +0200
-Message-Id: <20200802151059.699977-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200802151925.81F7EC433C9@smtp.codeaurora.org>
+Date:   Sun,  2 Aug 2020 15:19:25 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This should be TSQSIZE in order to be consistent with the surrounding code
-and the corresponding 'dma_free_coherent()' in 'deinit_tsq()'
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-This is harmless because RSQSIZE and TSQSIZE have the same value (i.e.
-8192)
+> The call chain is:
+>    ipw2100_pci_init_one            (the probe function)
+>      --> ipw2100_queues_allocate
+>        --> ipw2100_tx_allocate
+> 
+> No lock is taken in the between.
+> So it is safe to use GFP_KERNEL in 'ipw2100_tx_allocate()'.
+> 
+> BTW, 'ipw2100_queues_allocate()' also calls 'ipw2100_msg_allocate()' which
+> already allocates some memory using GFP_KERNEL.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Fixes: 	1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/atm/idt77252.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+2 patches applied to wireless-drivers-next.git, thanks.
 
-diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
-index df51680e8931..f459fafa902a 100644
---- a/drivers/atm/idt77252.c
-+++ b/drivers/atm/idt77252.c
-@@ -1373,7 +1373,7 @@ init_tsq(struct idt77252_dev *card)
- {
- 	struct tsq_entry *tsqe;
- 
--	card->tsq.base = dma_alloc_coherent(&card->pcidev->dev, RSQSIZE,
-+	card->tsq.base = dma_alloc_coherent(&card->pcidev->dev, TSQSIZE,
- 					    &card->tsq.paddr, GFP_KERNEL);
- 	if (card->tsq.base == NULL) {
- 		printk("%s: can't allocate TSQ.\n", card->name);
+9130559cf8db ipw2100: Use GFP_KERNEL instead of GFP_ATOMIC in some memory allocation
+e52525c0c320 ipw2x00: switch from 'pci_' to 'dma_' API
+
 -- 
-2.25.1
+https://patchwork.kernel.org/patch/11678101/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

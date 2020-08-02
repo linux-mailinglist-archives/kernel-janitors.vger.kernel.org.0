@@ -2,32 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D15F22357CB
-	for <lists+kernel-janitors@lfdr.de>; Sun,  2 Aug 2020 16:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADE312357DB
+	for <lists+kernel-janitors@lfdr.de>; Sun,  2 Aug 2020 17:01:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726661AbgHBO5v (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 2 Aug 2020 10:57:51 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:20280 "EHLO m43-7.mailgun.net"
+        id S1726807AbgHBPAA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 2 Aug 2020 11:00:00 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:13901 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725859AbgHBO5s (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 2 Aug 2020 10:57:48 -0400
+        id S1726034AbgHBO75 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 2 Aug 2020 10:59:57 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1596380267; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1596380397; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=ZOjqGSoWE+lRt82RoqJBfsGT6yPG06YvQ8FfvPleFkI=;
- b=D3X4ZjhtI6ggRocJVqH3ZdLRdbUdAIqxStV9kDixbGR3yARWu8HXo9Hp0mPskr4ENCK/OWdD
- sXh/FwkfnlKMIye88chNc/h0lCXANagJzaSY7e6s6ZDhtQZesoNM/I3L8B9zLnTOe/DoBha7
- gYQ2adKevPFaAToC8kffGcmz29U=
+ Content-Type: Sender; bh=U6gNUw8AiHtfEQJ6ccQRBNs+Stlh4D0vi0UlY1zrQy4=;
+ b=mRD0S8jtGVUCuiHfBIjRhox381bJqD14fpidImOz6qHzQQn/V2PGJpAnR8Lko/BqFR8kVo3D
+ iyI6qnY7yM38Wic4e1d3bP6W6gr7LXdBtu7CAxa4xXV7vfvOFkEpzF5LtOol+97yOCfBJb8g
+ oOYcvIUzpZqYkPaQEfEOJ/aYEIg=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n20.prod.us-west-2.postgun.com with SMTP id
- 5f26d457710a7a29d511c8a1 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 02 Aug 2020 14:57:27
+ smtp-out-n13.prod.us-west-2.postgun.com with SMTP id
+ 5f26d4ec21feae908b066b8b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 02 Aug 2020 14:59:56
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 04FFEC433CA; Sun,  2 Aug 2020 14:57:27 +0000 (UTC)
+        id 48124C433C6; Sun,  2 Aug 2020 14:59:56 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,26 +37,26 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 60C37C433C9;
-        Sun,  2 Aug 2020 14:57:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 60C37C433C9
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C9A22C433C9;
+        Sun,  2 Aug 2020 14:59:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C9A22C433C9
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] p54: switch from 'pci_' to 'dma_' API
+Subject: Re: [PATCH] prism54: switch from 'pci_' to 'dma_' API
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200722102707.27486-1-christophe.jaillet@wanadoo.fr>
-References: <20200722102707.27486-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20200722104534.30760-1-christophe.jaillet@wanadoo.fr>
+References: <20200722104534.30760-1-christophe.jaillet@wanadoo.fr>
 To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     chunkeey@googlemail.com, davem@davemloft.net, kuba@kernel.org,
+Cc:     mcgrof@kernel.org, davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200802145727.04FFEC433CA@smtp.codeaurora.org>
-Date:   Sun,  2 Aug 2020 14:57:27 +0000 (UTC)
+Message-Id: <20200802145956.48124C433C6@smtp.codeaurora.org>
+Date:   Sun,  2 Aug 2020 14:59:56 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -70,9 +70,14 @@ Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 > hand modified to replace GFP_ with a correct flag.
 > It has been compile tested.
 > 
-> When memory is allocated in 'p54p_probe()', GFP_KERNEL can be used because
-> it is the probe function and no spin_lock is taken in the between.
+> When memory is allocated in 'islpci_alloc_memory()' (islpci_dev.c),
+> GFP_KERNEL can be used because it is only called from a probe function
+> and no spin_lock is taken in the between.
 > 
+> The call chain is:
+>    prism54_probe                   (probe function, in 'islpci_hotplug.c')
+>       --> islpci_setup             (in 'islpci_dev.c')
+>          --> islpci_alloc_memory   (in 'islpci_dev.c')
 > 
 > @@
 > @@
@@ -194,10 +199,10 @@ Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-ba78405ecaac p54: switch from 'pci_' to 'dma_' API
+84d47961a02c prism54: switch from 'pci_' to 'dma_' API
 
 -- 
-https://patchwork.kernel.org/patch/11678115/
+https://patchwork.kernel.org/patch/11678187/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

@@ -2,56 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1235123AE78
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Aug 2020 22:54:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAF7923B097
+	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Aug 2020 01:01:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728748AbgHCUxi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Aug 2020 16:53:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35504 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727003AbgHCUxi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Aug 2020 16:53:38 -0400
-Received: from kernel.org (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 32BDE22BF3;
-        Mon,  3 Aug 2020 20:53:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596488018;
-        bh=63vausDKl51fDul3cYf/wPKP2WMfhfwyaq3HXHq6eDM=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=CL9EukmtgevqRm17QTiuKMh+tUSO32Wcv45FcTnONooSMa1oMhDlN+jaAKRAN6Suv
-         UZYlzJMS+14rthWqFV0B7nwrtkGTykxS2SjIINdR4qwsHemi95QBL8OXEPhCmWeI5n
-         IT8S00vlubSd4B/jEh6zQqJv2LQHq02R7OnHytus=
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <1596272022-14173-1-git-send-email-Julia.Lawall@inria.fr>
-References: <1596272022-14173-1-git-send-email-Julia.Lawall@inria.fr>
-Subject: Re: [PATCH] clk: drop unused function __clk_get_flags
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To:     Julia Lawall <Julia.Lawall@inria.fr>,
-        Michael Turquette <mturquette@baylibre.com>
-Date:   Mon, 03 Aug 2020 13:53:36 -0700
-Message-ID: <159648801691.1360974.3807233534486926682@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+        id S1728962AbgHCXBH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Aug 2020 19:01:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55592 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727991AbgHCXBH (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 3 Aug 2020 19:01:07 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B6F1C06174A;
+        Mon,  3 Aug 2020 16:01:07 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 4CC7612779184;
+        Mon,  3 Aug 2020 15:44:21 -0700 (PDT)
+Date:   Mon, 03 Aug 2020 16:01:06 -0700 (PDT)
+Message-Id: <20200803.160106.2190172984461163076.davem@davemloft.net>
+To:     christophe.jaillet@wanadoo.fr
+Cc:     ralf@linux-mips.org, kuba@kernel.org, tbogendoerfer@suse.de,
+        linux-mips@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] net: sgi: ioc3-eth: Fix the size used in some
+ 'dma_free_coherent()' calls
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200802135204.690832-1-christophe.jaillet@wanadoo.fr>
+References: <20200802135204.690832-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 03 Aug 2020 15:44:21 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Julia Lawall (2020-08-01 01:53:42)
-> The function __clk_get_flags has not been used since the April 2019
-> commit a348f05361c9 ("ARM: omap2+: hwmod: drop CLK_IS_BASIC
-> flag usage").  Other uses were removed in June 2015, eg by
-> commit 98d8a60eccee ("clk: Convert __clk_get_flags() to
-> clk_hw_get_flags()"), which shows how clk_hw_get_flags can easily
-> be used instead.
->=20
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
->=20
-> ---
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Sun,  2 Aug 2020 15:52:04 +0200
 
-Applied to clk-next
+> Update the size used in 'dma_free_coherent()' in order to match the one
+> used in the corresponding 'dma_alloc_coherent()'.
+> 
+> Fixes: 369a782af0f1 ("net: sgi: ioc3-eth: ensure tx ring is 16k aligned.")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+
+Applied.

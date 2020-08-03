@@ -2,79 +2,118 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B878D23A999
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Aug 2020 17:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7BB523ACE0
+	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Aug 2020 21:21:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727830AbgHCPly (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Aug 2020 11:41:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38438 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726478AbgHCPly (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Aug 2020 11:41:54 -0400
-Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4531A20678;
-        Mon,  3 Aug 2020 15:41:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596469313;
-        bh=83m/6Pn2PKOY/u2G126YKwxAO9hcGZRm5Ac0HGFyZTg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GfjoezEIX/M3g6bg8kG5fP+s2UlQ1Fe2HQveVcZO6oRWqgFNsu7MUncqfC3A6KC8P
-         rND8SZ6dM//AvrkkcIcnOWONx/Vcxjrp0DSvd+q3UN2krO3Kpj1nLefgZVkRgqzmeF
-         Bc6UoPqV72aVREeikd1QjwJD/8+lskT8mz9cGu0s=
-Date:   Mon, 3 Aug 2020 10:48:01 -0500
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Saeed Mahameed <saeedm@mellanox.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next] net/mlx5: remove erroneous fallthrough
-Message-ID: <20200803154801.GC1726@embeddedor>
-References: <20200803143448.GA346925@mwanda>
+        id S1727922AbgHCTTc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Aug 2020 15:19:32 -0400
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:26341 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727786AbgHCTTb (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 3 Aug 2020 15:19:31 -0400
+Received: from [10.0.2.15] ([92.140.224.28])
+        by mwinf5d06 with ME
+        id B7KS2300F0dNxE4037KTtX; Mon, 03 Aug 2020 21:19:29 +0200
+X-ME-Helo: [10.0.2.15]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 03 Aug 2020 21:19:29 +0200
+X-ME-IP: 92.140.224.28
+Subject: Re: [PATCH] gve: Fix the size used in a 'dma_free_coherent()' call
+To:     Jakub Kicinski <kuba@kernel.org>, Joe Perches <joe@perches.com>
+Cc:     csully@google.com, sagis@google.com, jonolson@google.com,
+        davem@davemloft.net, lrizzo@google.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20200802141523.691565-1-christophe.jaillet@wanadoo.fr>
+ <20200803084106.050eb7f6@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <3a25ddc6-adaa-d17d-50f4-8f8ab2ed25eb@wanadoo.fr>
+Date:   Mon, 3 Aug 2020 21:19:26 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200803143448.GA346925@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200803084106.050eb7f6@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Aug 03, 2020 at 05:34:48PM +0300, Dan Carpenter wrote:
-> This isn't a fall through because it was after a return statement.  The
-> fall through annotation leads to a Smatch warning:
+Le 03/08/2020 à 17:41, Jakub Kicinski a écrit :
+> On Sun,  2 Aug 2020 16:15:23 +0200 Christophe JAILLET wrote:
+>> Update the size used in 'dma_free_coherent()' in order to match the one
+>> used in the corresponding 'dma_alloc_coherent()'.
+>>
+>> Fixes: 893ce44df5 ("gve: Add basic driver framework for Compute Engine Virtual NIC")
+>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > 
->     drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c:246
->     mlx5e_ethtool_get_sset_count() warn: ignoring unreachable code.
+> Fixes tag: Fixes: 893ce44df5 ("gve: Add basic driver framework for Compute Engine Virtual NIC")
+> Has these problem(s):
+> 	- SHA1 should be at least 12 digits long
+> 	  Can be fixed by setting core.abbrev to 12 (or more) or (for git v2.11
+> 	  or later) just making sure it is not set (or set to "auto").
 > 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Hi,
 
-Thanks
---
-Gustavo
+I have git 2.25.1 and core.abbrev is already 12, both in my global 
+.gitconfig and in the specific .git/gitconfig of my repo.
 
-> ---
->  drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> index 08270987c506..48397a577fcd 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> @@ -243,7 +243,6 @@ int mlx5e_ethtool_get_sset_count(struct mlx5e_priv *priv, int sset)
->  		return MLX5E_NUM_PFLAGS;
->  	case ETH_SS_TEST:
->  		return mlx5e_self_test_num(priv);
-> -		fallthrough;
->  	default:
->  		return -EOPNOTSUPP;
->  	}
-> -- 
-> 2.27.0
-> 
+I would have expected checkpatch to catch this kind of small issue.
+Unless I do something wrong, it doesn't.
+
+Joe, does it make sense to you and would one of the following patch help?
+
+If I understand the regex correctly, I guess that checkpatch should 
+already spot such things. If correct, proposal 1 fix a bug.
+If I'm wrong, proposal 2 adds a new test.
+
+CJ
+
+
+
+Proposal #1 : find what looks like a commit number, with 5+ char 
+(instead of 12+), before looking if it is looks like a standard layout 
+with expected length
+===========
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index cc5542cc234f..f42b6a65f5c1 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -2828,7 +2828,7 @@ sub process {
+                     $line !~ 
+/^\s*(?:Link|Patchwork|http|https|BugLink|base-commit):/i &&
+                     $line !~ /^This reverts commit [0-9a-f]{7,40}/ &&
+                     ($line =~ /\bcommit\s+[0-9a-f]{5,}\b/i ||
+-                    ($line =~ /(?:\s|^)[0-9a-f]{12,40}(?:[\s"'\(\[]|$)/i &&
++                    ($line =~ /(?:\s|^)[0-9a-f]{5,40}(?:[\s"'\(\[]|$)/i &&
+                       $line !~ /[\<\[][0-9a-f]{12,40}[\>\]]/i &&
+                       $line !~ /\bfixes:\s*[0-9a-f]{12,40}/i))) {
+                         my $init_char = "c";
+
+
+
+
+Proposal #2 : add a specific and explicit check
+===========
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index cc5542cc234f..13ecfbd38af3 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -2989,6 +2989,12 @@ sub process {
+                         }
+                 }
+
++# check for too short commit id
++               if ($in_commit_log && $line =~ 
+/(^fixes:|\bcommit)\s+([0-9a-f]{0,11})\b/i) {
++                               WARN("TOO_SHORT_COMMIT_ID",
++                                    "\"$1\" tag should be at least 12 
+chars long. $2 is only " . length($2) . " long\n" . $herecurr);
++               }
++
+  # ignore non-hunk lines and lines being removed
+                 next if (!$hunk_line || $line =~ /^-/);
+

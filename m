@@ -2,128 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AB9E23A8BE
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Aug 2020 16:44:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2963623A991
+	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Aug 2020 17:41:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727044AbgHCOnH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Aug 2020 10:43:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35122 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726789AbgHCOnG (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Aug 2020 10:43:06 -0400
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B187C06174A;
-        Mon,  3 Aug 2020 07:43:06 -0700 (PDT)
-Received: by mail-oi1-x243.google.com with SMTP id b22so7494820oic.8;
-        Mon, 03 Aug 2020 07:43:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=SlJ/pfmkJqMXK+j8msF9RyBAJEzwd8det+Lucq2VVo8=;
-        b=hGB2C7ty6ES3zSVyXgGeGFkqbvL2Hx1gVURFpyocYcNmCI3+k44ab9oR6RTbKwx4Lz
-         464iIE/54PPQC8n8TfZTvFjqTO/oDOEdXvyUdT3/T8SzHZuh7HaYwjHSe6WneC1G511s
-         2uFKSdaxVLlAO0d4f2PoKOjWhjleFN3KqEtpnHHy+iPoS8LD6Cg8deQ9IgB61d0qN8WA
-         7E4Ju9e/8pESpOVQJ+N5+g4DDsvob/BFxRC96NkaF+lIq2J/Vl0oWuUq5qXJdewjlT5z
-         VTDdFIsRXVenkFf5Pgp/vF6JIlB/3jpwR+ouhmWvPHWwlQS3n4jHzp8SIY7q4aSDSiS7
-         GmhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=SlJ/pfmkJqMXK+j8msF9RyBAJEzwd8det+Lucq2VVo8=;
-        b=JV43rs5knKVrQhPrjQKcG+KPpRu1cqrzqCvzgUCrPoqd1yy4nKqa/UkZtG5+LqBRKZ
-         zt4gNCxN/bwognwQqqApYotzJ/D9OxbHJyOLkFuvioG7XYS9trzO9ACRFClaPTII7VFe
-         7C5biP0cF2a+Y7yIBsQh4NsD8NOcCdyHYLIBomHrKPGHVftwRWbBdRqhYHG78btRjEpw
-         PiGHA7csn31JKPyeLV2uOmks6vEruPusCAxFK/8sI/7uFikGaOGW8/fGWggmSJ2qAv3H
-         fCCnkeET0sDnhjphch/Had0ZrK7LScE6l0HR59CIesp9BJ29kjXrTkVBuxOW6HUWKtsn
-         Kcgg==
-X-Gm-Message-State: AOAM530w3QSZ1gV3/MYvKyEnso3ctoZBIOXOQ0Yx49pbtAr221ngfU4N
-        13zJhEl7lOgJn5TF3cxxfN+O+jTmPiYHOBImX6k=
-X-Google-Smtp-Source: ABdhPJw7dcbZ+tupvYShtZ8DuiVRT6dfJ2foCBZwntEo/a4is2r+4S6ARBjSgKQ2hmEiArQzvvOUMvPqMSQTqGRtcI8=
-X-Received: by 2002:aca:5bc6:: with SMTP id p189mr12438996oib.130.1596465785793;
- Mon, 03 Aug 2020 07:43:05 -0700 (PDT)
+        id S1726913AbgHCPlJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Aug 2020 11:41:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38000 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726478AbgHCPlI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 3 Aug 2020 11:41:08 -0400
+Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.6])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3715D20678;
+        Mon,  3 Aug 2020 15:41:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1596469267;
+        bh=vkBCBkF4ZAHZcMpJ+bypEWZ/AlvYl3GE+TSE47hokTU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=V9P5zt4ff0T42yNwHk8wtCra4wrhH7MXPoXCneEMvcRqvTodILCyBxC7DhzLcBvnv
+         Cn3Heov+tA4GCb1UNZZcaO/2yQQ0v2PXksGl/AedOkvO7OTbRGTW2Oqy2vWuxIWAc+
+         oh3VM2tE++tmS+iFM7HQIC0IDlz9l6vw6kfwetxA=
+Date:   Mon, 3 Aug 2020 08:41:06 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     csully@google.com, sagis@google.com, jonolson@google.com,
+        davem@davemloft.net, lrizzo@google.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] gve: Fix the size used in a 'dma_free_coherent()' call
+Message-ID: <20200803084106.050eb7f6@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20200802141523.691565-1-christophe.jaillet@wanadoo.fr>
+References: <20200802141523.691565-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-References: <20200803143636.GD346925@mwanda>
-In-Reply-To: <20200803143636.GD346925@mwanda>
-From:   Oded Gabbay <oded.gabbay@gmail.com>
-Date:   Mon, 3 Aug 2020 17:41:06 +0300
-Message-ID: <CAFCwf13LgaFGeg7NSOL6KqMuFoPovbezdCUSjk3S05ZSm=48mA@mail.gmail.com>
-Subject: Re: [PATCH] habanalabs: Fix memory corruption in debugfs
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Omer Shpigelman <oshpigelman@habana.ai>,
-        Tomer Tayar <ttayar@habana.ai>,
-        Moti Haimovski <mhaimovski@habana.ai>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Linux-Kernel@Vger. Kernel. Org" <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Aug 3, 2020 at 5:36 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> This has to be a long instead of a u32 because we write a long value.
-> On 64 bit systems, this will cause memory corruption.
->
-> Fixes: c216477363a3 ("habanalabs: add debugfs support")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/misc/habanalabs/common/debugfs.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/misc/habanalabs/common/debugfs.c b/drivers/misc/habanalabs/common/debugfs.c
-> index 71cfe1b6fafc..ecd37b427480 100644
-> --- a/drivers/misc/habanalabs/common/debugfs.c
-> +++ b/drivers/misc/habanalabs/common/debugfs.c
-> @@ -19,7 +19,7 @@
->  static struct dentry *hl_debug_root;
->
->  static int hl_debugfs_i2c_read(struct hl_device *hdev, u8 i2c_bus, u8 i2c_addr,
-> -                               u8 i2c_reg, u32 *val)
-> +                               u8 i2c_reg, long *val)
->  {
->         struct armcp_packet pkt;
->         int rc;
-> @@ -36,7 +36,7 @@ static int hl_debugfs_i2c_read(struct hl_device *hdev, u8 i2c_bus, u8 i2c_addr,
->         pkt.i2c_reg = i2c_reg;
->
->         rc = hdev->asic_funcs->send_cpu_message(hdev, (u32 *) &pkt, sizeof(pkt),
-> -                                               0, (long *) val);
-> +                                               0, val);
->
->         if (rc)
->                 dev_err(hdev->dev, "Failed to read from I2C, error %d\n", rc);
-> @@ -827,7 +827,7 @@ static ssize_t hl_i2c_data_read(struct file *f, char __user *buf,
->         struct hl_dbg_device_entry *entry = file_inode(f)->i_private;
->         struct hl_device *hdev = entry->hdev;
->         char tmp_buf[32];
-> -       u32 val;
-> +       long val;
->         ssize_t rc;
->
->         if (*ppos)
-> @@ -842,7 +842,7 @@ static ssize_t hl_i2c_data_read(struct file *f, char __user *buf,
->                 return rc;
->         }
->
-> -       sprintf(tmp_buf, "0x%02x\n", val);
-> +       sprintf(tmp_buf, "0x%02lx\n", val);
->         rc = simple_read_from_buffer(buf, count, ppos, tmp_buf,
->                         strlen(tmp_buf));
->
-> --
-> 2.27.0
->
+On Sun,  2 Aug 2020 16:15:23 +0200 Christophe JAILLET wrote:
+> Update the size used in 'dma_free_coherent()' in order to match the one
+> used in the corresponding 'dma_alloc_coherent()'.
+> 
+> Fixes: 893ce44df5 ("gve: Add basic driver framework for Compute Engine Virtual NIC")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-This patch is:
-Reviewed-by: Oded Gabbay <oded.gabbay@gmail.com>
-
-Applied to -fixes,
-Thanks!
-Oded
+Fixes tag: Fixes: 893ce44df5 ("gve: Add basic driver framework for Compute Engine Virtual NIC")
+Has these problem(s):
+	- SHA1 should be at least 12 digits long
+	  Can be fixed by setting core.abbrev to 12 (or more) or (for git v2.11
+	  or later) just making sure it is not set (or set to "auto").

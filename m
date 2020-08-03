@@ -2,59 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5988823598A
-	for <lists+kernel-janitors@lfdr.de>; Sun,  2 Aug 2020 19:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C573239FBD
+	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Aug 2020 08:46:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727055AbgHBRuS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 2 Aug 2020 13:50:18 -0400
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:32780 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727041AbgHBRuR (ORCPT
+        id S1727087AbgHCGqv convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Aug 2020 02:46:51 -0400
+Received: from relay9-d.mail.gandi.net ([217.70.183.199]:40213 "EHLO
+        relay9-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725840AbgHCGqv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 2 Aug 2020 13:50:17 -0400
-Received: from localhost.localdomain ([93.22.148.198])
-        by mwinf5d37 with ME
-        id AhqE2300J4H42jh03hqFTg; Sun, 02 Aug 2020 19:50:15 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 02 Aug 2020 19:50:15 +0200
-X-ME-IP: 93.22.148.198
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     broonie@kernel.org
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] spi: a3700: Remove a useless memset
-Date:   Sun,  2 Aug 2020 19:50:07 +0200
-Message-Id: <20200802175007.703995-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Mon, 3 Aug 2020 02:46:51 -0400
+X-Originating-IP: 91.224.148.103
+Received: from xps13 (unknown [91.224.148.103])
+        (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id AB251FF804;
+        Mon,  3 Aug 2020 06:46:46 +0000 (UTC)
+Date:   Mon, 3 Aug 2020 08:46:45 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Sandy Huang <hjc@rock-chips.com>,
+        Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] drm/rockchip: lvds: ensure ret is assigned before
+ checking for an error
+Message-ID: <20200803084645.442b5178@xps13>
+In-Reply-To: <20200714190003.744069-1-colin.king@canonical.com>
+References: <20200714190003.744069-1-colin.king@canonical.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Memory allocated by 'spi_alloc_master()' is already zeroed.
-Remove a redundant memset.
+Hello,
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/spi/spi-armada-3700.c | 1 -
- 1 file changed, 1 deletion(-)
+Colin King <colin.king@canonical.com> wrote on Tue, 14 Jul 2020
+20:00:03 +0100:
 
-diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-index fcde419e480c..46feafe4e201 100644
---- a/drivers/spi/spi-armada-3700.c
-+++ b/drivers/spi/spi-armada-3700.c
-@@ -848,7 +848,6 @@ static int a3700_spi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, master);
- 
- 	spi = spi_master_get_devdata(master);
--	memset(spi, 0, sizeof(struct a3700_spi));
- 
- 	spi->master = master;
- 
--- 
-2.25.1
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently there are two places where the return status in ret is being
+> checked for an error however the assignment of ret has been omitted
+> making the checks redundant.  Fix this by adding in the missing assignments
+> of ret.
+> 
+> Addresses-Coverity: ("Logically dead code")
+> Fixes: cca1705c3d89 ("drm/rockchip: lvds: Add PX30 support")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/gpu/drm/rockchip/rockchip_lvds.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/rockchip/rockchip_lvds.c b/drivers/gpu/drm/rockchip/rockchip_lvds.c
+> index 63f967902c2d..b45c618b9793 100644
+> --- a/drivers/gpu/drm/rockchip/rockchip_lvds.c
+> +++ b/drivers/gpu/drm/rockchip/rockchip_lvds.c
+> @@ -499,11 +499,11 @@ static int px30_lvds_probe(struct platform_device *pdev,
+>  	if (IS_ERR(lvds->dphy))
+>  		return PTR_ERR(lvds->dphy);
+>  
+> -	phy_init(lvds->dphy);
+> +	ret = phy_init(lvds->dphy);
+>  	if (ret)
+>  		return ret;
+>  
+> -	phy_set_mode(lvds->dphy, PHY_MODE_LVDS);
+> +	ret = phy_set_mode(lvds->dphy, PHY_MODE_LVDS);
+>  	if (ret)
+>  		return ret;
+>  
 
+I thought I (or Heiko) already sent a patch for that but apparently
+not...
+
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+
+Thanks,
+Miquèl

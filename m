@@ -2,63 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A24323B60C
-	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Aug 2020 09:49:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90F0723B670
+	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Aug 2020 10:09:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729197AbgHDHty (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 4 Aug 2020 03:49:54 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:25031 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725932AbgHDHty (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 4 Aug 2020 03:49:54 -0400
-X-IronPort-AV: E=Sophos;i="5.75,433,1589234400"; 
-   d="scan'208";a="462364097"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Aug 2020 09:49:52 +0200
-Date:   Tue, 4 Aug 2020 09:49:52 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Julia Lawall <julia.lawall@inria.fr>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v3] coccinelle: api: add kvmalloc script
-In-Reply-To: <12b09b8f-7c73-1827-8bf3-63e6041b63fd@web.de>
-Message-ID: <alpine.DEB.2.22.394.2008040949360.2575@hadrien>
-References: <12b09b8f-7c73-1827-8bf3-63e6041b63fd@web.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        id S1729787AbgHDIJE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 4 Aug 2020 04:09:04 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:52740 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729767AbgHDIJD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 4 Aug 2020 04:09:03 -0400
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id C1D1C28AAF784F1D2308;
+        Tue,  4 Aug 2020 16:09:00 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 4 Aug 2020 16:08:54 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     <mpm@selenic.com>, <herbert@gondor.apana.org.au>, <arnd@arndb.de>,
+        <gregkh@linuxfoundation.org>, <zhouyanjie@wanyeetech.com>,
+        <prasannatsmkumar@gmail.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-crypto@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH] crypto: ingenic - Drop kfree for memory allocated with devm_kzalloc
+Date:   Tue, 4 Aug 2020 08:11:53 +0000
+Message-ID: <20200804081153.45342-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+It's not necessary to free memory allocated with devm_kzalloc
+and using kfree leads to a double free.
+
+Fixes: 190873a0ea45 ("crypto: ingenic - Add hardware RNG for Ingenic JZ4780 and X1000")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/char/hw_random/ingenic-rng.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/char/hw_random/ingenic-rng.c b/drivers/char/hw_random/ingenic-rng.c
+index d704cef64b64..055cfe59f519 100644
+--- a/drivers/char/hw_random/ingenic-rng.c
++++ b/drivers/char/hw_random/ingenic-rng.c
+@@ -92,8 +92,7 @@ static int ingenic_rng_probe(struct platform_device *pdev)
+ 	priv->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(priv->base)) {
+ 		pr_err("%s: Failed to map RNG registers\n", __func__);
+-		ret = PTR_ERR(priv->base);
+-		goto err_free_rng;
++		return PTR_ERR(priv->base);
+ 	}
+ 
+ 	priv->version = (enum ingenic_rng_version)of_device_get_match_data(&pdev->dev);
+@@ -106,17 +105,13 @@ static int ingenic_rng_probe(struct platform_device *pdev)
+ 	ret = hwrng_register(&priv->rng);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to register hwrng\n");
+-		goto err_free_rng;
++		return ret;
+ 	}
+ 
+ 	platform_set_drvdata(pdev, priv);
+ 
+ 	dev_info(&pdev->dev, "Ingenic RNG driver registered\n");
+ 	return 0;
+-
+-err_free_rng:
+-	kfree(priv);
+-	return ret;
+ }
+ 
+ static int ingenic_rng_remove(struct platform_device *pdev)
 
 
-On Tue, 4 Aug 2020, Markus Elfring wrote:
 
-> > Changes in v3:
-> > - kvfree rules added
->
-> I find it interesting to you found such an addition needed for this SmPL script.
-> I imagine that it can be helpful to support such a source code search by
-> a separate script for the semantic patch language.
->
-> I am curious if my patch review comments for the second version got also a bit
-> of your software development attention.
->
-> Another implementation detail is relevant for further clarification.
-> The SmPL rules for patch generation differ in search functionality
-> which is provided for other operation modes.
-> Can these deviations influence the confidence level?
-
-I see no useful information in this review, nor in the v2 review.
-
-julia

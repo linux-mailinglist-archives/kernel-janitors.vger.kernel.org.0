@@ -2,31 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90F0723B670
-	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Aug 2020 10:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6EAC23B6B5
+	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Aug 2020 10:21:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729787AbgHDIJE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 4 Aug 2020 04:09:04 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:52740 "EHLO huawei.com"
+        id S1727116AbgHDIVR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 4 Aug 2020 04:21:17 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:39790 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729767AbgHDIJD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 4 Aug 2020 04:09:03 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id C1D1C28AAF784F1D2308;
-        Tue,  4 Aug 2020 16:09:00 +0800 (CST)
+        id S1726276AbgHDIVR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 4 Aug 2020 04:21:17 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id CF172A16A63BE924F049;
+        Tue,  4 Aug 2020 16:21:14 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 4 Aug 2020 16:08:54 +0800
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 4 Aug 2020 16:21:03 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     <mpm@selenic.com>, <herbert@gondor.apana.org.au>, <arnd@arndb.de>,
-        <gregkh@linuxfoundation.org>, <zhouyanjie@wanyeetech.com>,
-        <prasannatsmkumar@gmail.com>
+To:     Paul Cercueil <paul@crapouillou.net>,
+        Krzysztof Kozlowski <krzk@kernel.org>
 CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-crypto@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
         Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH] crypto: ingenic - Drop kfree for memory allocated with devm_kzalloc
-Date:   Tue, 4 Aug 2020 08:11:53 +0000
-Message-ID: <20200804081153.45342-1-weiyongjun1@huawei.com>
+Subject: [PATCH] memory: jz4780-nemc: Fix return value check in jz4780_nemc_probe()
+Date:   Tue, 4 Aug 2020 08:24:03 +0000
+Message-ID: <20200804082403.76297-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -38,49 +37,33 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-It's not necessary to free memory allocated with devm_kzalloc
-and using kfree leads to a double free.
+In case of error, the function devm_ioremap() returns NULL pointer not
+ERR_PTR(). The IS_ERR() test in the return value check should be
+replaced with NULL test.
 
-Fixes: 190873a0ea45 ("crypto: ingenic - Add hardware RNG for Ingenic JZ4780 and X1000")
+Fixes: f046e4a3f0b9 ("memory: jz4780_nemc: Only request IO memory the driver will use")
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/char/hw_random/ingenic-rng.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/memory/jz4780-nemc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/hw_random/ingenic-rng.c b/drivers/char/hw_random/ingenic-rng.c
-index d704cef64b64..055cfe59f519 100644
---- a/drivers/char/hw_random/ingenic-rng.c
-+++ b/drivers/char/hw_random/ingenic-rng.c
-@@ -92,8 +92,7 @@ static int ingenic_rng_probe(struct platform_device *pdev)
- 	priv->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(priv->base)) {
- 		pr_err("%s: Failed to map RNG registers\n", __func__);
--		ret = PTR_ERR(priv->base);
--		goto err_free_rng;
-+		return PTR_ERR(priv->base);
+diff --git a/drivers/memory/jz4780-nemc.c b/drivers/memory/jz4780-nemc.c
+index 3ec5cb0fce1e..608ae925e641 100644
+--- a/drivers/memory/jz4780-nemc.c
++++ b/drivers/memory/jz4780-nemc.c
+@@ -304,9 +304,9 @@ static int jz4780_nemc_probe(struct platform_device *pdev)
  	}
  
- 	priv->version = (enum ingenic_rng_version)of_device_get_match_data(&pdev->dev);
-@@ -106,17 +105,13 @@ static int ingenic_rng_probe(struct platform_device *pdev)
- 	ret = hwrng_register(&priv->rng);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Failed to register hwrng\n");
--		goto err_free_rng;
-+		return ret;
+ 	nemc->base = devm_ioremap(dev, res->start, NEMC_REG_LEN);
+-	if (IS_ERR(nemc->base)) {
++	if (!nemc->base) {
+ 		dev_err(dev, "failed to get I/O memory\n");
+-		return PTR_ERR(nemc->base);
++		return -ENOMEM;
  	}
  
- 	platform_set_drvdata(pdev, priv);
- 
- 	dev_info(&pdev->dev, "Ingenic RNG driver registered\n");
- 	return 0;
--
--err_free_rng:
--	kfree(priv);
--	return ret;
- }
- 
- static int ingenic_rng_remove(struct platform_device *pdev)
+ 	writel(0, nemc->base + NEMC_NFCSR);
 
 
 

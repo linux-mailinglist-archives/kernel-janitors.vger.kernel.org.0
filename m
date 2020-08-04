@@ -2,69 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B45D23C1F5
-	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 00:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE5C723C20A
+	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 01:06:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726946AbgHDWqT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 4 Aug 2020 18:46:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49150 "EHLO
+        id S1727121AbgHDXGl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 4 Aug 2020 19:06:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726222AbgHDWqT (ORCPT
+        with ESMTP id S1726788AbgHDXGl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 4 Aug 2020 18:46:19 -0400
-X-Greylist: delayed 1986 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 04 Aug 2020 15:46:19 PDT
-Received: from dockerbox (unknown [IPv6:2001:4800:7817:101:be76:4eff:fe04:a215])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 60A5DC06174A
-        for <kernel-janitors@vger.kernel.org>; Tue,  4 Aug 2020 15:46:19 -0700 (PDT)
-Received: from 127.0.0.1 (localhost [127.0.0.1])
-        by dockerbox (Postfix) with SMTP id AA7FB5EC0C;
-        Mon,  7 Oct 2019 19:30:00 -0500 (CDT)
-Received: from [36.87.45.86]
-        by 127.0.0.1 with ESMTP id <787317-66254>;
-        Mon, 07 Oct 2019 22:27:04 -0200
-Message-ID: <r4-z7d8$$z0gy$p-o$$d-$$567@zs8iq.0u>
-From:   "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
-Reply-To: "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
-To:     kennith.medrano@yahoo.com
-Subject: RE:PERSONAL LETTER FROM MRS RASHIA AMIRA
-Date:   Mon, 07 Oct 19 22:27:04 GMT
-X-Mailer: Microsoft Outlook Express 5.00.2615.200
-MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary="_.A4476ECDD73A3"
-X-Priority: 3
-X-MSMail-Priority: Normal
+        Tue, 4 Aug 2020 19:06:41 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F8F5C06174A;
+        Tue,  4 Aug 2020 16:06:41 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id C070712896976;
+        Tue,  4 Aug 2020 15:49:55 -0700 (PDT)
+Date:   Tue, 04 Aug 2020 16:06:40 -0700 (PDT)
+Message-Id: <20200804.160640.1136854489642887881.davem@davemloft.net>
+To:     colin.king@canonical.com, willemb@google.com
+Cc:     shuah@kernel.org, netdev@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/net: skip msg_zerocopy test if we have less
+ than 4 CPUs
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200804123012.378750-1-colin.king@canonical.com>
+References: <20200804123012.378750-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 04 Aug 2020 15:49:56 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin King <colin.king@canonical.com>
+Date: Tue,  4 Aug 2020 13:30:12 +0100
 
---_.A4476ECDD73A3
-Content-Type: text/plain;
-Content-Transfer-Encoding: quoted-printable
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The current test will exit with a failure if it cannot set affinity on
+> specific CPUs which is problematic when running this on single CPU
+> systems. Add a check for the number of CPUs and skip the test if
+> the CPU requirement is not met.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Greetings
-
-My name is Barrister Hans Erich.
-
-I have a client who is interested to invest in your country, she is a well=
- known politician in her country and deserve a lucrative investment partne=
-rship with you outside her country without any delay   Please can you mana=
-ge such investment please Kindly reply for further details.
-
-Your full names --------
-
-
-Your urgent response will be appreciated
-
-Thank you and God bless you.
-
-Barrister Hans Erich
-
-Yours sincerely,
-Barrister Hans Erich
-CONTACT: hanserich9helmut@gmail.com
-
---_.A4476ECDD73A3--
-
+Willem, please review.

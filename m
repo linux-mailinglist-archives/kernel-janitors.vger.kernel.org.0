@@ -2,29 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C582D23CDE5
-	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 19:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC57F23CDD6
+	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 19:55:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729061AbgHER5P (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 5 Aug 2020 13:57:15 -0400
+        id S1728841AbgHERzo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 5 Aug 2020 13:55:44 -0400
 Received: from youngberry.canonical.com ([91.189.89.112]:39312 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729005AbgHERzw (ORCPT
+        with ESMTP id S1728936AbgHERyo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 5 Aug 2020 13:55:52 -0400
+        Wed, 5 Aug 2020 13:54:44 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1k3GtV-0004yR-8Y; Wed, 05 Aug 2020 10:43:37 +0000
+        id 1k3HhO-0000Km-E9; Wed, 05 Aug 2020 11:35:10 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Wolfram Sang <wsa@kernel.org>, colin.king@canonical.com,
-        linuxppc-dev@lists.ozlabs.org
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] macintosh: windfarm: fix spelling mistake "detatch" -> "detach"
-Date:   Wed,  5 Aug 2020 11:43:37 +0100
-Message-Id: <20200805104337.16104-1-colin.king@canonical.com>
+Subject: [PATCH] drm/amdgpu: fix spelling mistake "Falied" -> "Failed"
+Date:   Wed,  5 Aug 2020 12:35:10 +0100
+Message-Id: <20200805113510.18277-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,40 +38,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There are spelling mistakes in DBG messages. Fix them.
+There is a spelling mistake in a DRM_ERROR message. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/macintosh/windfarm_lm75_sensor.c | 2 +-
- drivers/macintosh/windfarm_lm87_sensor.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/macintosh/windfarm_lm75_sensor.c b/drivers/macintosh/windfarm_lm75_sensor.c
-index 1e5fa09845e7..a88f73af4d5e 100644
---- a/drivers/macintosh/windfarm_lm75_sensor.c
-+++ b/drivers/macintosh/windfarm_lm75_sensor.c
-@@ -152,7 +152,7 @@ static int wf_lm75_remove(struct i2c_client *client)
- {
- 	struct wf_lm75_sensor *lm = i2c_get_clientdata(client);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index 49d4514aa6ed..c68369731b20 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -2010,7 +2010,7 @@ static int psp_suspend(void *handle)
  
--	DBG("wf_lm75: i2c detatch called for %s\n", lm->sens.name);
-+	DBG("wf_lm75: i2c detach called for %s\n", lm->sens.name);
+ 	ret = psp_tmr_terminate(psp);
+ 	if (ret) {
+-		DRM_ERROR("Falied to terminate tmr\n");
++		DRM_ERROR("Failed to terminate tmr\n");
+ 		return ret;
+ 	}
  
- 	/* Mark client detached */
- 	lm->i2c = NULL;
-diff --git a/drivers/macintosh/windfarm_lm87_sensor.c b/drivers/macintosh/windfarm_lm87_sensor.c
-index d011899c0a8a..de8ef76a0ac8 100644
---- a/drivers/macintosh/windfarm_lm87_sensor.c
-+++ b/drivers/macintosh/windfarm_lm87_sensor.c
-@@ -149,7 +149,7 @@ static int wf_lm87_remove(struct i2c_client *client)
- {
- 	struct wf_lm87_sensor *lm = i2c_get_clientdata(client);
- 
--	DBG("wf_lm87: i2c detatch called for %s\n", lm->sens.name);
-+	DBG("wf_lm87: i2c detach called for %s\n", lm->sens.name);
- 
- 	/* Mark client detached */
- 	lm->i2c = NULL;
 -- 
 2.27.0
 

@@ -2,116 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2CC823D486
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 02:20:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C193E23D53E
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 03:57:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726149AbgHFAUx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 5 Aug 2020 20:20:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41620 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725999AbgHFAUx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 5 Aug 2020 20:20:53 -0400
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4DE3E22B48;
-        Thu,  6 Aug 2020 00:20:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596673252;
-        bh=7dbWXaoz7TdzVkI79oGvyml9jxtjtuRhPuSTLvhDVfo=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=TAHwI6lbO8T6WhwcDc2rrRcZzDjgNv/gKgCT3lPKssSmSHdRZCOkEwBATUTuz7HiA
-         Ex6obY/vO/bYL7JIq2fw20scKMA7HsvgPwM/AGVIVFuG3bTyELSyaFNRet63J7NeiA
-         4rktSimeojR9a76huDRaNuYZ6mFMhTGSQLeXnYsA=
-Received: by mail-lf1-f51.google.com with SMTP id b30so25203656lfj.12;
-        Wed, 05 Aug 2020 17:20:52 -0700 (PDT)
-X-Gm-Message-State: AOAM5316sulzti5Jz+O1l7+buq4rSx9xpiYnHXzre/sNH5n4YuvXnzHE
-        ClIrgELl8yIzn0Uj1lVN3h50tTDGMPxyBdiHWk4=
-X-Google-Smtp-Source: ABdhPJxh+AUaku3oNgM4YDqXv9HP3rtbDipSkW55DfSp+GUUZ1CPjzQ8KA1gzrM2JO6/2nddbtlLNwZr5RlmYMjOlng=
-X-Received: by 2002:a19:7710:: with SMTP id s16mr2698216lfc.162.1596673250381;
- Wed, 05 Aug 2020 17:20:50 -0700 (PDT)
+        id S1727024AbgHFB5I (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 5 Aug 2020 21:57:08 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:56532 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726026AbgHFB5H (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 5 Aug 2020 21:57:07 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 075BjXds061534;
+        Wed, 5 Aug 2020 06:45:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1596627933;
+        bh=oLXOtVGM0XldeErZ7lnDxDWT67udBtkfwHx5aUoMNbM=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=O90REE9dvBBeRL3oeN+FvYeFbekVdTViw1Uo2UfwrOrorIcFFqlRZPLtTde2wOXII
+         ZG//xv3T3axRuyxgvSPsXQHvK0+1uZv++K1ep+BN+8AUbHUxcaRyRHZcC1IvaLw2Ul
+         eDD25IQdOFw2pbsu+nO3H+XdWzY8FVkdcrMEpHW4=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 075BjXW3063923
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 5 Aug 2020 06:45:33 -0500
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 5 Aug
+ 2020 06:45:33 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Wed, 5 Aug 2020 06:45:33 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 075BjViD085971;
+        Wed, 5 Aug 2020 06:45:31 -0500
+Subject: Re: [PATCH] drm/omap: fix spelling mistake "propert" -> "property"
+To:     Colin King <colin.king@canonical.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        <dri-devel@lists.freedesktop.org>
+CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20200805102015.14891-1-colin.king@canonical.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <ad33a2ea-3596-0b4c-35ae-ca8eb76d1a3f@ti.com>
+Date:   Wed, 5 Aug 2020 14:45:31 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20200804101645.GB392148@mwanda> <824849e0-c98d-1f22-817c-7a76d3ee22b1@cloud.ionos.com>
- <20200804111549.GN5493@kadam>
-In-Reply-To: <20200804111549.GN5493@kadam>
-From:   Song Liu <song@kernel.org>
-Date:   Wed, 5 Aug 2020 17:20:39 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW4EKCMhL0T=1iMbVYrh1azZOD-jQ-vXDMmZ5cy2m-oW4g@mail.gmail.com>
-Message-ID: <CAPhsuW4EKCMhL0T=1iMbVYrh1azZOD-jQ-vXDMmZ5cy2m-oW4g@mail.gmail.com>
-Subject: Re: [PATCH] md-cluster: Fix potential error pointer dereference in resize_bitmaps()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Guoqing Jiang <guoqing.jiang@cloud.ionos.com>,
-        Shaohua Li <shli@fb.com>, NeilBrown <neilb@suse.com>,
-        linux-raid <linux-raid@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200805102015.14891-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Aug 4, 2020 at 4:16 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> On Tue, Aug 04, 2020 at 12:40:18PM +0200, Guoqing Jiang wrote:
-> >
-> >
-> > On 8/4/20 12:16 PM, Dan Carpenter wrote:
-> > > The error handling calls md_bitmap_free(bitmap) which checks for NULL
-> > > but will Oops if we pass an error pointer.  Let's set "bitmap" to NULL
-> > > on this error path.
-> > >
-> > > Fixes: afd756286083 ("md-cluster/raid10: resize all the bitmaps before start reshape")
-> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > > ---
-> > >   drivers/md/md-cluster.c | 1 +
-> > >   1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/drivers/md/md-cluster.c b/drivers/md/md-cluster.c
-> > > index 73fd50e77975..d50737ec4039 100644
-> > > --- a/drivers/md/md-cluster.c
-> > > +++ b/drivers/md/md-cluster.c
-> > > @@ -1139,6 +1139,7 @@ static int resize_bitmaps(struct mddev *mddev, sector_t newsize, sector_t oldsiz
-> > >             bitmap = get_bitmap_from_slot(mddev, i);
-> > >             if (IS_ERR(bitmap)) {
-> > >                     pr_err("can't get bitmap from slot %d\n", i);
-> > > +                   bitmap = NULL;
-> > >                     goto out;
-> > >             }
-> > >             counts = &bitmap->counts;
-> >
-> > Thanks for the catch, Reviewed-by: Guoqing Jiang
-> > <guoqing.jiang@cloud.ionos.com>
-> >
-> > BTW, seems there could be memory leak in the function since it keeps
-> > allocate bitmap
-> > in the loop ..., will send a format patch.
-> >
-> >
-> > diff --git a/drivers/md/md-cluster.c b/drivers/md/md-cluster.c
-> > index 73fd50e77975..89d7b32489d8 100644
-> > --- a/drivers/md/md-cluster.c
-> > +++ b/drivers/md/md-cluster.c
-> > @@ -1165,6 +1165,8 @@ static int resize_bitmaps(struct mddev *mddev,
-> > sector_t newsize, sector_t oldsiz
-> >                          * can't resize bitmap
-> >                          */
-> >                         goto out;
-> > +
-> > +               md_bitmap_free(bitmap);
->
-> Hm...  I'm now not at all certain my patch is correct.  Although it's
-> obviously harmless and fixes an Oops.  I had thought that that the call
-> to update_bitmap_size(mddev, oldsize) would free the rest of the loop.
->
-> I really suspect adding a free like you're suggesting will break the
-> success path.
->
-> I'm not familiar with this code at all.
+On 05/08/2020 13:20, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a spelling mistake in a pr_err message. Fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/gpu/drm/omapdrm/dss/venc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/omapdrm/dss/venc.c b/drivers/gpu/drm/omapdrm/dss/venc.c
+> index e0817934ee16..0fa8f677b647 100644
+> --- a/drivers/gpu/drm/omapdrm/dss/venc.c
+> +++ b/drivers/gpu/drm/omapdrm/dss/venc.c
+> @@ -781,7 +781,7 @@ static int venc_probe_of(struct venc_device *venc)
+>  		venc->type = OMAP_DSS_VENC_TYPE_SVIDEO;
+>  		break;
+>  	default:
+> -		dev_err(&venc->pdev->dev, "bad channel propert '%d'\n",
+> +		dev_err(&venc->pdev->dev, "bad channel property '%d'\n",
+>  			channels);
+>  		r = -EINVAL;
+>  		goto err;
+> 
 
-Thanks Dan and Guoqing. I applied Dans' patch to md-next.
+Thanks, I'll pick this up.
 
-I think we are leaking bitmap in resize_bitmaps(). But we gonna need
-more complex fix than the md_bitmap_free() above.
+ Tomi
 
-Thanks,
-Song
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki

@@ -2,30 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B46023CF51
-	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 21:19:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3207823CF2C
+	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 21:16:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728534AbgHETTf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 5 Aug 2020 15:19:35 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:39312 "EHLO
+        id S1728328AbgHETQR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 5 Aug 2020 15:16:17 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:39370 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728952AbgHER5v (ORCPT
+        with ESMTP id S1729149AbgHESBF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 5 Aug 2020 13:57:51 -0400
+        Wed, 5 Aug 2020 14:01:05 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1k3IkV-0004vS-Cw; Wed, 05 Aug 2020 12:42:27 +0000
+        id 1k3JFy-0007PA-SX; Wed, 05 Aug 2020 13:14:58 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org
+To:     Li Yang <leoyang.li@nxp.com>, Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/gma500: fix spelling mistake "pannel" -> "panel"
-Date:   Wed,  5 Aug 2020 13:42:27 +0100
-Message-Id: <20200805124227.20005-1-colin.king@canonical.com>
+Subject: [PATCH] usb: gadget: fix spelling mistake "Dectected" -> "Detected"
+Date:   Wed,  5 Aug 2020 14:14:58 +0100
+Message-Id: <20200805131458.21289-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,49 +36,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There a handful of spelling mistakes. fix them.
+There is a spelling mistake in a literal string. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/gma500/mdfld_dsi_output.c | 4 ++--
- drivers/gpu/drm/gma500/psb_intel_sdvo.c   | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/udc/fsl_udc_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/gma500/mdfld_dsi_output.c b/drivers/gpu/drm/gma500/mdfld_dsi_output.c
-index f350ac1ead18..2f3486f32fed 100644
---- a/drivers/gpu/drm/gma500/mdfld_dsi_output.c
-+++ b/drivers/gpu/drm/gma500/mdfld_dsi_output.c
-@@ -366,7 +366,7 @@ static enum drm_mode_status mdfld_dsi_connector_mode_valid(struct drm_connector
- 	/**
- 	 * FIXME: current DC has no fitting unit, reject any mode setting
- 	 * request
--	 * Will figure out a way to do up-scaling(pannel fitting) later.
-+	 * Will figure out a way to do up-scaling(panel fitting) later.
- 	 **/
- 	if (fixed_mode) {
- 		if (mode->hdisplay != fixed_mode->hdisplay)
-@@ -531,7 +531,7 @@ void mdfld_dsi_output_init(struct drm_device *dev,
- 	dsi_config->connector = dsi_connector;
- 
- 	if (!dsi_config->fixed_mode) {
--		DRM_ERROR("No pannel fixed mode was found\n");
-+		DRM_ERROR("No panel fixed mode was found\n");
- 		goto dsi_init_err0;
- 	}
- 
-diff --git a/drivers/gpu/drm/gma500/psb_intel_sdvo.c b/drivers/gpu/drm/gma500/psb_intel_sdvo.c
-index 06e44f47e73e..907f966d6f22 100644
---- a/drivers/gpu/drm/gma500/psb_intel_sdvo.c
-+++ b/drivers/gpu/drm/gma500/psb_intel_sdvo.c
-@@ -125,7 +125,7 @@ struct psb_intel_sdvo {
- 	bool is_lvds;
- 
- 	/**
--	 * This is sdvo fixed pannel mode pointer
-+	 * This is sdvo fixed panel mode pointer
- 	 */
- 	struct drm_display_mode *sdvo_lvds_fixed_mode;
- 
+diff --git a/drivers/usb/gadget/udc/fsl_udc_core.c b/drivers/usb/gadget/udc/fsl_udc_core.c
+index b2638e83bb49..c79407f2d577 100644
+--- a/drivers/usb/gadget/udc/fsl_udc_core.c
++++ b/drivers/usb/gadget/udc/fsl_udc_core.c
+@@ -2061,7 +2061,7 @@ static int fsl_proc_read(struct seq_file *m, void *v)
+ 			"Sleep Enable: %d SOF Received Enable: %d "
+ 			"Reset Enable: %d\n"
+ 			"System Error Enable: %d "
+-			"Port Change Dectected Enable: %d\n"
++			"Port Change Detected Enable: %d\n"
+ 			"USB Error Intr Enable: %d USB Intr Enable: %d\n\n",
+ 			(tmp_reg & USB_INTR_DEVICE_SUSPEND) ? 1 : 0,
+ 			(tmp_reg & USB_INTR_SOF_EN) ? 1 : 0,
 -- 
 2.27.0
 

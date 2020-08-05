@@ -2,98 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 34B2223C9DC
-	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 12:25:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFA9323C9D9
+	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 12:24:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728036AbgHEKZn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 5 Aug 2020 06:25:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43072 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726294AbgHEKUm (ORCPT
+        id S1728087AbgHEKYC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 5 Aug 2020 06:24:02 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:54720 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727972AbgHEKWI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 5 Aug 2020 06:20:42 -0400
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDA5BC06174A;
-        Wed,  5 Aug 2020 03:20:33 -0700 (PDT)
-Received: by mail-oi1-x243.google.com with SMTP id k4so39132399oik.2;
-        Wed, 05 Aug 2020 03:20:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BJBaD0dmpIwl3OFF62Duu8Al4BAy5YbR6DEHF/xlu64=;
-        b=SfeSwzoCi3tpmcruq5SoKeynBD4KRVlFLiv9wybfEAtfk9c8P0v1zCN5l7MGCqUSip
-         q9oQ/BdFpc9quum9EZuQ+pX2U2kZqoGNfQYTyn9e7gSlh1OMp2RstL9SS6qEKFi5xXtq
-         Uioa3fwSJUl6Rp2jpogbvxltBBg3J1M0ZrbCKxiii45zFf2Fk+ndy9dPdSYTYKGQWVMs
-         fBBnY1AUv1um/0l5Uw9CPA0CDlOaG8LLJ3cF+7o8xtV9mKJhABOSwaOqBc5P3nCbNDsV
-         H8eB83Y9kOkHyrxpaa6zEUxlYLGt0ITvMtFd5kaHyDmBqRoG2SHc1pvg4727NrPkeERC
-         wwXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BJBaD0dmpIwl3OFF62Duu8Al4BAy5YbR6DEHF/xlu64=;
-        b=mGvpZiVEGssmxHCyCzk2UweM9uze7UhZDIxGUGIQ8aCPI4nsoecl6RqLHiiOOpNCS3
-         oSEpqk10n3tUbWrk+vddMIRo/gPrgBBNNcVY6aGojKMAd/42mBS84bPjhGdZDhF88JQP
-         QsC8Lf5yq5P5uXhax2HotEwHH/9oM/xUjoB9YFXfc4GiUHjVSIG9b0ERTCBrMTXGL+BI
-         odED2HXX17UJKwPjWKD3Jqdwkjv3NBHdKe8mwmODoRTB2s9Dzbt/+/ioBAK7VYNYo8Q2
-         yA8FvCSjM659VBE490+qlvlpVEAGpyNJoyG1hEWCVCMMiujepQRK8T4Y506HZ3NBv2ZD
-         f8GQ==
-X-Gm-Message-State: AOAM530itZdQZRmaL9MnVxZphGrJmVpEYsk3u72jChjVo0u7Xr5KiYXr
-        VaIV10pVjQYZ2ZOFCHuouc5TF1VT9+RY51Z84XE=
-X-Google-Smtp-Source: ABdhPJwlVue2/n0mFUlPdZw6GxjzkQ/SxIheaScbZLj4aaM7XovkgSn7XN9So3WKaM+AMmKtEMGADoKPrTrM3xCyk6I=
-X-Received: by 2002:a05:6808:b03:: with SMTP id s3mr2184018oij.154.1596622830271;
- Wed, 05 Aug 2020 03:20:30 -0700 (PDT)
+        Wed, 5 Aug 2020 06:22:08 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1k3GWt-000380-ML; Wed, 05 Aug 2020 10:20:15 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/omap: fix spelling mistake "propert" -> "property"
+Date:   Wed,  5 Aug 2020 11:20:15 +0100
+Message-Id: <20200805102015.14891-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-References: <20200805095105.GA483832@mwanda>
-In-Reply-To: <20200805095105.GA483832@mwanda>
-From:   Oded Gabbay <oded.gabbay@gmail.com>
-Date:   Wed, 5 Aug 2020 13:20:02 +0300
-Message-ID: <CAFCwf12iuz-q8U7_VEJvxKZpzfauKASjMDHOk7HMncuBnAyo4w@mail.gmail.com>
-Subject: Re: [PATCH] habanalabs: Fix a loop in gaudi_extract_ecc_info()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Omer Shpigelman <oshpigelman@habana.ai>,
-        Ofir Bitton <obitton@habana.ai>,
-        Tomer Tayar <ttayar@habana.ai>,
-        "Linux-Kernel@Vger. Kernel. Org" <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Aug 5, 2020 at 12:51 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> The condition was reversed.  It should have been less than instead of
-> greater than.  The result is that we never enter the loop.
->
-> Fixes: fcc6a4e60678 ("habanalabs: Extract ECC information from FW")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/misc/habanalabs/gaudi/gaudi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/misc/habanalabs/gaudi/gaudi.c b/drivers/misc/habanalabs/gaudi/gaudi.c
-> index 00a0a7238d81..de2f81b80ced 100644
-> --- a/drivers/misc/habanalabs/gaudi/gaudi.c
-> +++ b/drivers/misc/habanalabs/gaudi/gaudi.c
-> @@ -5215,7 +5215,7 @@ static int gaudi_extract_ecc_info(struct hl_device *hdev,
->         *memory_wrapper_idx = 0xFF;
->
->         /* Iterate through memory wrappers, a single bit must be set */
-> -       for (i = 0 ; i > num_mem_regs ; i++) {
-> +       for (i = 0 ; i < num_mem_regs ; i++) {
->                 err_addr += i * 4;
->                 err_word = RREG32(err_addr);
->                 if (err_word) {
-> --
-> 2.27.0
->
-This patch is:
-Reviewed-by: Oded Gabbay <oded.gabbay@gmail.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Thanks!
-Applied to -fixes
+There is a spelling mistake in a pr_err message. Fix it.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/omapdrm/dss/venc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/omapdrm/dss/venc.c b/drivers/gpu/drm/omapdrm/dss/venc.c
+index e0817934ee16..0fa8f677b647 100644
+--- a/drivers/gpu/drm/omapdrm/dss/venc.c
++++ b/drivers/gpu/drm/omapdrm/dss/venc.c
+@@ -781,7 +781,7 @@ static int venc_probe_of(struct venc_device *venc)
+ 		venc->type = OMAP_DSS_VENC_TYPE_SVIDEO;
+ 		break;
+ 	default:
+-		dev_err(&venc->pdev->dev, "bad channel propert '%d'\n",
++		dev_err(&venc->pdev->dev, "bad channel property '%d'\n",
+ 			channels);
+ 		r = -EINVAL;
+ 		goto err;
+-- 
+2.27.0
+

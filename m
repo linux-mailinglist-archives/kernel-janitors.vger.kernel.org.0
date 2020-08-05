@@ -2,60 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0B8623C998
-	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 11:54:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D92CC23C9AB
+	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 11:57:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727982AbgHEJy1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 5 Aug 2020 05:54:27 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:37084 "EHLO
+        id S1728129AbgHEJ53 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 5 Aug 2020 05:57:29 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:40024 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726707AbgHEJxD (ORCPT
+        with ESMTP id S1726524AbgHEJ50 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 5 Aug 2020 05:53:03 -0400
+        Wed, 5 Aug 2020 05:57:26 -0400
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0759qKUc058845;
-        Wed, 5 Aug 2020 09:52:20 GMT
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0759q1ue058669;
+        Wed, 5 Aug 2020 09:57:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=gP37RsrMGaMF6BzssPUZ8VhQW8vT8S6L5/66gaCLThs=;
- b=cGr8Cb6VWuOPVIQ5y7FcEXR83vpJFUkHr/91b/E8gbZPo+/LvuXc6fsGM+PXPSB61fgh
- MFZJPAiJQyx/27ZdKdiVUylq+/gP+4KIbS3x/CHAFG9G3e25Bn1g7l4YbKMsm9UG8+YV
- If1FeSCNgRFRaFj7enuqwe1uJYRLZUpv8qinyaP1TchNrlWPMV25WvB4msXOX48e6F5z
- DNXLy0fdcm56vQkMUmmjPHyCKyHm9rfF4mLXR0BEqvYyuNYb6BDn/MSSZcyPEfUyOOdx
- s/AAGDIRSFMNWaDNGmpxG71e2M00cz27Rm/59DmQ1jwX4g5TXy8DISKLStQGFGqKgXYn LA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 32qnd41c9q-1
+ bh=RibtCPkve4j2kefMno2VhgrpqtFMrAYMVvhuiwVWbYc=;
+ b=E9cCPwxjESJrVXUFc11fTCBgS9PCfrdNi/4HLVljoXhbjwytwOZfvJcpryNB67i3KjHi
+ UJ/kojGBOQn9cq6d7riX4ZVFnT92FDzz5r6WY4icYu3A/efjwk4QZrxoDHO+ZuGdNd3m
+ Ne+BezfStsVJcdgGpM/LHju2hzWZkSIwOz2IIgNjcXD2zJmrGOT434kPMiuVoUXLENm5
+ YFqfNMYN/0/z3c+brItkGpDMPFXT/WKc6m9PmNhDODI6hFTCn7L+8HykFf/AoWtGHLn9
+ ftnw1/hAqVfPNQMJshKqyRwTr0aJ9vH7kZMOnbHhWFNfkgf4zt17bvA8EMQLw5LjsytS MQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 32qnd41cxp-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 05 Aug 2020 09:52:20 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0759mtDI068676;
-        Wed, 5 Aug 2020 09:52:20 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 32pdnsv8uu-1
+        Wed, 05 Aug 2020 09:57:10 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0759rkYW129012;
+        Wed, 5 Aug 2020 09:55:09 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 32njayderc-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 05 Aug 2020 09:52:20 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0759qFNj018545;
-        Wed, 5 Aug 2020 09:52:16 GMT
+        Wed, 05 Aug 2020 09:55:09 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0759t8eE028911;
+        Wed, 5 Aug 2020 09:55:08 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 05 Aug 2020 02:52:14 -0700
-Date:   Wed, 5 Aug 2020 12:52:07 +0300
+        with ESMTP ; Wed, 05 Aug 2020 02:55:07 -0700
+Date:   Wed, 5 Aug 2020 12:55:01 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Steve French <sfrench@samba.org>, Paulo Alcantara <pc@cjr.nz>
-Cc:     Aurelien Aptel <aaptel@suse.com>, linux-cifs@vger.kernel.org,
-        samba-technical@lists.samba.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] cifs: Fix an error pointer dereference in cifs_mount()
-Message-ID: <20200805095207.GC483832@mwanda>
+To:     Stefan Achatz <erazor_de@users.sourceforge.net>
+Cc:     Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] HID: roccat: add bounds checking in
+ kone_sysfs_write_settings()
+Message-ID: <20200805095501.GD483832@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9703 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 mlxscore=0
- bulkscore=0 adultscore=0 phishscore=0 malwarescore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008050081
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0
+ mlxlogscore=999 mlxscore=0 spamscore=0 malwarescore=0 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008050082
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9703 signatures=668679
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 clxscore=1011 mlxscore=0
  priorityscore=1501 mlxlogscore=999 malwarescore=0 adultscore=0
@@ -67,28 +70,80 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The error handling calls kfree(full_path) so we can't let it be a NULL
-pointer.  There used to be a NULL assignment here but we accidentally
-deleted it.  Add it back.
+In the original code we didn't check if the new value for
+"settings->startup_profile" was within bounds that could possibly
+result in an out of bounds array acccess.  What we did was we checked if
+we could write the data to the firmware and it's possibly the firmware
+checks these values but there is no way to know.  It's safer and easier
+to read if we check it in the kernel as well.
 
-Fixes: 7efd08158261 ("cifs: document and cleanup dfs mount")
+I also added a check to ensure that "settings->size" was correct.  The
+comments say that the only valid value is 36 which is sizeof(struct
+kone_settings).
+
+Fixes: 14bf62cde794 ("HID: add driver for Roccat Kone gaming mouse")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- fs/cifs/connect.c | 1 +
- 1 file changed, 1 insertion(+)
+This isn't tested.  Checking settings->size seems like a good idea, but
+there is a slight risky because maybe invalid values used to be allowed
+and I don't want to break user space.
 
-diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
-index 0ad1309e88d3..a275ee399dce 100644
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -4886,6 +4886,7 @@ int cifs_mount(struct cifs_sb_info *cifs_sb, struct smb_vol *vol)
- 		full_path = build_unc_path_to_root(vol, cifs_sb, !!count);
- 		if (IS_ERR(full_path)) {
- 			rc = PTR_ERR(full_path);
-+			full_path = NULL;
- 			break;
+ drivers/hid/hid-roccat-kone.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/hid/hid-roccat-kone.c b/drivers/hid/hid-roccat-kone.c
+index 1a6e600197d0..5e8e1517f23c 100644
+--- a/drivers/hid/hid-roccat-kone.c
++++ b/drivers/hid/hid-roccat-kone.c
+@@ -294,31 +294,41 @@ static ssize_t kone_sysfs_write_settings(struct file *fp, struct kobject *kobj,
+ 	struct kone_device *kone = hid_get_drvdata(dev_get_drvdata(dev));
+ 	struct usb_device *usb_dev = interface_to_usbdev(to_usb_interface(dev));
+ 	int retval = 0, difference, old_profile;
++	struct kone_settings *settings = (struct kone_settings *)buf;
+ 
+ 	/* I need to get my data in one piece */
+ 	if (off != 0 || count != sizeof(struct kone_settings))
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&kone->kone_lock);
+-	difference = memcmp(buf, &kone->settings, sizeof(struct kone_settings));
++	difference = memcmp(settings, &kone->settings,
++			    sizeof(struct kone_settings));
+ 	if (difference) {
+-		retval = kone_set_settings(usb_dev,
+-				(struct kone_settings const *)buf);
+-		if (retval) {
+-			mutex_unlock(&kone->kone_lock);
+-			return retval;
++		if (settings->size != sizeof(struct kone_settings) ||
++		    settings->startup_profile < 1 ||
++		    settings->startup_profile > 5) {
++			retval = -EINVAL;
++			goto unlock;
  		}
- 		/* Chase referral */
+ 
++		retval = kone_set_settings(usb_dev, settings);
++		if (retval)
++			goto unlock;
++
+ 		old_profile = kone->settings.startup_profile;
+-		memcpy(&kone->settings, buf, sizeof(struct kone_settings));
++		memcpy(&kone->settings, settings, sizeof(struct kone_settings));
+ 
+ 		kone_profile_activated(kone, kone->settings.startup_profile);
+ 
+ 		if (kone->settings.startup_profile != old_profile)
+ 			kone_profile_report(kone, kone->settings.startup_profile);
+ 	}
++unlock:
+ 	mutex_unlock(&kone->kone_lock);
+ 
++	if (retval)
++		return retval;
++
+ 	return sizeof(struct kone_settings);
+ }
+ static BIN_ATTR(settings, 0660, kone_sysfs_read_settings,
 -- 
 2.27.0
 

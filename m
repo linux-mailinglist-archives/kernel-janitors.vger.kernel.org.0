@@ -2,87 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D15223D3CA
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 00:08:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5787B23D3DE
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 00:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726013AbgHEWIr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 5 Aug 2020 18:08:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43374 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725730AbgHEWIr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 5 Aug 2020 18:08:47 -0400
-Received: from localhost (router.4pisysteme.de [80.79.225.122])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0461E2250E;
-        Wed,  5 Aug 2020 22:08:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596665326;
-        bh=ZsUFr7FgM2XpxfbHCeXrW7JvL+WBNx4Wft3trEEd5RU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UeLnj6w40Jhp8B6cMdZcEEyuXbQtdP0eCmymnX0/SZfKSKd0zowpWbUMFZrSCeBzj
-         Z2skU+VDD/EiTSQAdEUDOXb9o8QCXVMZoUO2remy9zqeQ/WW9LyEDlhxIVZcfwhRnL
-         T0wh1MrA1+dtwZAnYgy5QqYFC/el1me+OQJbf7H8=
-Date:   Thu, 6 Aug 2020 00:08:42 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linuxppc-dev@lists.ozlabs.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] macintosh: windfarm: fix spelling mistake "detatch" ->
- "detach"
-Message-ID: <20200805220842.GC2182@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Colin King <colin.king@canonical.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linuxppc-dev@lists.ozlabs.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20200805104337.16104-1-colin.king@canonical.com>
+        id S1726087AbgHEWTo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 5 Aug 2020 18:19:44 -0400
+Received: from smtprelay0004.hostedemail.com ([216.40.44.4]:55982 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725830AbgHEWTn (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 5 Aug 2020 18:19:43 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay06.hostedemail.com (Postfix) with ESMTP id B1F10182251C0;
+        Wed,  5 Aug 2020 22:19:42 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1431:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3353:3622:3865:3866:3867:3870:3871:3872:4041:4321:4605:5007:7576:10004:10400:10848:11026:11232:11233:11657:11658:11914:12043:12050:12296:12297:12438:12555:12740:12760:12895:12986:13069:13095:13311:13357:13439:14181:14659:14721:21080:21365:21433:21627:21990:30054:30064:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: soup01_4f0d84926fb2
+X-Filterd-Recvd-Size: 3359
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf12.hostedemail.com (Postfix) with ESMTPA;
+        Wed,  5 Aug 2020 22:19:40 +0000 (UTC)
+Message-ID: <d720b466a2b4b7507a963f9a2605c7f81e82e7ba.camel@perches.com>
+Subject: Re: [PATCH] drm/amdgpu: fix spelling mistake "Falied" -> "Failed"
+From:   Joe Perches <joe@perches.com>
+To:     Alex Deucher <alexdeucher@gmail.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     Colin King <colin.king@canonical.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Date:   Wed, 05 Aug 2020 15:19:38 -0700
+In-Reply-To: <CADnq5_P9hfv=Zt9+m47sFC0z202x+q-Otifv7a5z4afJamtQ2Q@mail.gmail.com>
+References: <20200805113510.18277-1-colin.king@canonical.com>
+         <CADnq5_NA9f2N3xkH4WAdDEP+0-5W0LkmTRy3yXqFdnWQmfsVmQ@mail.gmail.com>
+         <a8ab7d75ef9df54bd193fc88e0670b30026e7e67.camel@perches.com>
+         <CADnq5_P9hfv=Zt9+m47sFC0z202x+q-Otifv7a5z4afJamtQ2Q@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.3-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Fig2xvG2VGoz8o/s"
-Content-Disposition: inline
-In-Reply-To: <20200805104337.16104-1-colin.king@canonical.com>
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Wed, 2020-08-05 at 17:27 -0400, Alex Deucher wrote:
+> On Wed, Aug 5, 2020 at 4:53 PM Joe Perches <joe@perches.com> wrote:
+> > On Wed, 2020-08-05 at 16:01 -0400, Alex Deucher wrote:
+> > > On Wed, Aug 5, 2020 at 7:35 AM Colin King <colin.king@canonical.com> wrote:
+> > > > From: Colin Ian King <colin.king@canonical.com>
+> > > > 
+> > > > There is a spelling mistake in a DRM_ERROR message. Fix it.
+> > > > 
+> > > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > > 
+> > > This is already fixed.
+> > 
+> > This fix is not in today's -next.
+> > 
+> > Perhaps whatever tree it's fixed in should be in -next.
+> > 
+> 
+> Weird.  It's in the drm-next tree as:
+> 
+> commit 4afaa61db9cf5250b5734c2531b226e7b3a3d691
+> Author: Colin Ian King <colin.king@canonical.com>
+> Date:   Fri Jul 10 09:37:58 2020 +0100
+> 
+>     drm/amdgpu: fix spelling mistake "Falied" -> "Failed"
+> 
+>     There is a spelling mistake in a DRM_ERROR error message. Fix it.
+> 
+>     Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>     Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> 
+> Alex
+> 
+> > $ git show --oneline -s
+> > d15fe4ec0435 (HEAD, tag: next-20200805, origin/master, origin/HEAD) Add linux-next specific files for 20200805
+> > 
+> > $ git grep -i falied drivers
+> > drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c:                DRM_ERROR("Falied to terminate tmr\n");
+> > 
+> > > > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+> > []
+> > > > @@ -2010,7 +2010,7 @@ static int psp_suspend(void *handle)
+> > > > 
+> > > >         ret = psp_tmr_terminate(psp);
+> > > >         if (ret) {
+> > > > -               DRM_ERROR("Falied to terminate tmr\n");
+> > > > +               DRM_ERROR("Failed to terminate tmr\n");
+> > > >                 return ret;
+> > > >         }
 
---Fig2xvG2VGoz8o/s
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Dunno.
 
-On Wed, Aug 05, 2020 at 11:43:37AM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> There are spelling mistakes in DBG messages. Fix them.
->=20
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-These comments can go entirely. i2c_detach is long history. And for
-remove, we have debugging output in the driver core meanwhile.
+Maybe it's due to some ordering of trees in
+how -next accumulates patches?
 
 
---Fig2xvG2VGoz8o/s
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl8rLeoACgkQFA3kzBSg
-Kbbf3A//dxQuXCMIP+fM3FpsD9xa0D6BvZJ9uye6lcytP3aB4nYwiyQH1Xa2chW4
-DJPf0EYPgesQtRj6/VeAwrjt3I/a4TJcsPrTEPh42f+5lnBtdrjRPWI71ng37Ex8
-PftsLWt0XWcveo/b1dfw3v33xLSGDq/+Ivz3perRsQjbW1+YdMXIy3WnfyxkLJDr
-ZapgqtZAjIuJNGMym3RYIe6JYzHVJHzBXyNOB5IA99IdG5CvCu0IEMsX+35bCMhD
-iCnA9Vnltejf73dv+ELfn5HjBCU2h813GxhZ/Wejl4E5sdgh+a0P+35ML6zOiq2O
-wggmD98tGLXgshqnhJE/zEukOZY5b1rLWGvE9kWT6IMn8Z80pbgUloiF7RvddnP7
-4LsG8z+soDJh0hZxDcWBZOgEg4xb97MF+7+0vS3miv8SYLqS8fwAjsJgOG/slaiC
-aRCd68ndJIC4z25jkkjDIMBbY9yDI2vxUjG4igilXMUJEIEsDFGvf81uuXyZ496I
-RBci3lH9ERyT5KW7xkd8WTfR/JxxHp39kOdD3g4NTh52J47YT5c8Io2StwQj+fxQ
-NdQGiGR9d1oXVOXHcO/k/T8qoTUMctb5uOc8rfSUYycw0v2TgMb+AwgISq4ovw6L
-2t+THEjAWKxIcej9U6b69Bj+DskSo3zoRHZZf4AukUr8awGp1NA=
-=luwO
------END PGP SIGNATURE-----
-
---Fig2xvG2VGoz8o/s--

@@ -2,103 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7FA823D192
-	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 22:02:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E668323D34D
+	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 22:53:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729163AbgHEUCr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 5 Aug 2020 16:02:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49222 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728886AbgHEUCi (ORCPT
+        id S1726155AbgHEUx3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 5 Aug 2020 16:53:29 -0400
+Received: from smtprelay0216.hostedemail.com ([216.40.44.216]:43384 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725730AbgHEUx3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 5 Aug 2020 16:02:38 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25505C061575;
-        Wed,  5 Aug 2020 13:02:38 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id t14so7538410wmi.3;
-        Wed, 05 Aug 2020 13:02:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qqgHHRDh2vam44aFxeq1w53pSFB4MdPrZe7uyWVRU6U=;
-        b=Ob7LksjGa0aZs2m01xbQZdVjIWBzhBxbIOyXY5wpaHYumy35R2/Jv8jZWVZ++3BKf2
-         hbZouCFEhcSFaNgLZEmqKDJiNxTgD46KyhqMEqUalUOcuI/8iBBDsNAv1f9LSypu0+HV
-         O5/kvAwENGSK9+4OBYUEi9pLhLYQ0QVhqVkttLF2wuXk3TwpFIuZ1RFcQmG2dmQChgMB
-         qFhISD8aO0poYqPAWIRk5VRv6b66jvSXJ45koP/z4TFift2V9l8c+AVQB5+565M9vO28
-         9y80Te71+/12ch6t06IdmFVUxwMpFcBb8lsDqFnnOvZ9bRjpwR4fZQ8009W3GfRiK/z6
-         BHyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qqgHHRDh2vam44aFxeq1w53pSFB4MdPrZe7uyWVRU6U=;
-        b=ldd+kUjCRuKEheUhAMmpJpks9VCS2xEnmXkdsA4tkEvgLg1f5EcwHiutoSmnPuCavi
-         t+4EEW0JyDiI3bc9d2WEN6nhvfh6yV6Tp0c9OSR7Qtgd2sNCd7IedBV6ZZD/FDMUQ0xO
-         nzbzTT0mLVB35V6Ya7nwQMQ++vgV+FYQ1s6OFI71SFdxByG0Hdd1d3UfDUX3QuwpRxe/
-         SckRCVK8KAFvlm8LOSHpe55raG2gWeEwl4QjO/wUe8+Sd5gfK25i2LaQVEdiRkWuZW85
-         68IE8GbfjWJLVFksS++Tj4C6bYZosxJhTjiYhexLzB2g4iB7ZQRQI4I5sdc+wBkRCA2R
-         26PA==
-X-Gm-Message-State: AOAM531fcoPiv4bXS8++tHRWgG+/txvbGwnl2MtRkJtt3KiJFKqPHfgj
-        DL10T4+OBRQNH7LnyZ45QtVOSpbTFGSieQu+pVk=
-X-Google-Smtp-Source: ABdhPJz8P1i0SoHVl3LdWEDNvULJHbQrR0s6lAMUuSfOi8apEVNdiVwkn2blV5Qoc4Yy6j5Bas5Un5bqPKqZ9LY5RrY=
-X-Received: by 2002:a1c:f70a:: with SMTP id v10mr4648351wmh.39.1596657756225;
- Wed, 05 Aug 2020 13:02:36 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200805121527.19157-1-colin.king@canonical.com>
-In-Reply-To: <20200805121527.19157-1-colin.king@canonical.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Wed, 5 Aug 2020 16:02:25 -0400
-Message-ID: <CADnq5_OCQGCEwXN8=74AJck=ctAhbRp_0Hvb1B1hyqA_+3N0ZQ@mail.gmail.com>
-Subject: Re: [PATCH][next] drm/amdgpu: fix spelling mistake "paramter" -> "parameter"
-To:     Colin King <colin.king@canonical.com>
+        Wed, 5 Aug 2020 16:53:29 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 5C1FC181D3026;
+        Wed,  5 Aug 2020 20:53:28 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3653:3867:3870:3871:3872:4321:4605:5007:7576:10004:10400:10848:11026:11232:11233:11657:11658:11914:12043:12050:12296:12297:12555:12740:12760:12895:12986:13069:13095:13311:13357:13439:14181:14659:14721:21080:21433:21627:21990:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: farm00_4b167ce26fb2
+X-Filterd-Recvd-Size: 2363
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf16.hostedemail.com (Postfix) with ESMTPA;
+        Wed,  5 Aug 2020 20:53:26 +0000 (UTC)
+Message-ID: <a8ab7d75ef9df54bd193fc88e0670b30026e7e67.camel@perches.com>
+Subject: Re: [PATCH] drm/amdgpu: fix spelling mistake "Falied" -> "Failed"
+From:   Joe Perches <joe@perches.com>
+To:     Alex Deucher <alexdeucher@gmail.com>,
+        Colin King <colin.king@canonical.com>
 Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
         amd-gfx list <amd-gfx@lists.freedesktop.org>,
         Maling list - DRI developers 
         <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Date:   Wed, 05 Aug 2020 13:53:25 -0700
+In-Reply-To: <CADnq5_NA9f2N3xkH4WAdDEP+0-5W0LkmTRy3yXqFdnWQmfsVmQ@mail.gmail.com>
+References: <20200805113510.18277-1-colin.king@canonical.com>
+         <CADnq5_NA9f2N3xkH4WAdDEP+0-5W0LkmTRy3yXqFdnWQmfsVmQ@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.3-0ubuntu1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Aug 5, 2020 at 8:15 AM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> There is a spelling mistake in a dev_warn message. Fix it.
->
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On Wed, 2020-08-05 at 16:01 -0400, Alex Deucher wrote:
+> On Wed, Aug 5, 2020 at 7:35 AM Colin King <colin.king@canonical.com> wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > There is a spelling mistake in a DRM_ERROR message. Fix it.
+> > 
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> 
+> This is already fixed.
 
-Applied.  Thanks!
+This fix is not in today's -next.
 
-Alex
+Perhaps whatever tree it's fixed in should be in -next.
 
-> ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> index b72aeeb0a226..16e23f053361 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> @@ -1201,7 +1201,7 @@ static int amdgpu_device_check_arguments(struct amdgpu_device *adev)
->
->         if (amdgpu_num_kcq > 8 || amdgpu_num_kcq < 0) {
->                 amdgpu_num_kcq = 8;
-> -               dev_warn(adev->dev, "set kernel compute queue number to 8 due to invalid paramter provided by user\n");
-> +               dev_warn(adev->dev, "set kernel compute queue number to 8 due to invalid parameter provided by user\n");
->         }
->
->         return 0;
-> --
-> 2.27.0
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+
+$ git show --oneline -s
+d15fe4ec0435 (HEAD, tag: next-20200805, origin/master, origin/HEAD) Add linux-next specific files for 20200805
+
+$ git grep -i falied drivers
+drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c:                DRM_ERROR("Falied to terminate tmr\n");
+
+> > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+[]
+> > @@ -2010,7 +2010,7 @@ static int psp_suspend(void *handle)
+> > 
+> >         ret = psp_tmr_terminate(psp);
+> >         if (ret) {
+> > -               DRM_ERROR("Falied to terminate tmr\n");
+> > +               DRM_ERROR("Failed to terminate tmr\n");
+> >                 return ret;
+> >         }
+
+

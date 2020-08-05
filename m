@@ -2,64 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA20723CDA6
-	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 19:41:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04DFC23CE06
+	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 20:06:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728905AbgHEReV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 5 Aug 2020 13:34:21 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:49706 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728754AbgHERdJ (ORCPT
+        id S1729085AbgHESGa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 5 Aug 2020 14:06:30 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:39393 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729060AbgHESEG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 5 Aug 2020 13:33:09 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 075BjXds061534;
-        Wed, 5 Aug 2020 06:45:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1596627933;
-        bh=oLXOtVGM0XldeErZ7lnDxDWT67udBtkfwHx5aUoMNbM=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=O90REE9dvBBeRL3oeN+FvYeFbekVdTViw1Uo2UfwrOrorIcFFqlRZPLtTde2wOXII
-         ZG//xv3T3axRuyxgvSPsXQHvK0+1uZv++K1ep+BN+8AUbHUxcaRyRHZcC1IvaLw2Ul
-         eDD25IQdOFw2pbsu+nO3H+XdWzY8FVkdcrMEpHW4=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 075BjXW3063923
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 5 Aug 2020 06:45:33 -0500
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 5 Aug
- 2020 06:45:33 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Wed, 5 Aug 2020 06:45:33 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 075BjViD085971;
-        Wed, 5 Aug 2020 06:45:31 -0500
-Subject: Re: [PATCH] drm/omap: fix spelling mistake "propert" -> "property"
-To:     Colin King <colin.king@canonical.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        <dri-devel@lists.freedesktop.org>
-CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20200805102015.14891-1-colin.king@canonical.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <ad33a2ea-3596-0b4c-35ae-ca8eb76d1a3f@ti.com>
-Date:   Wed, 5 Aug 2020 14:45:31 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Wed, 5 Aug 2020 14:04:06 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1k3HZQ-0008I0-5Z; Wed, 05 Aug 2020 11:26:56 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Laura Abbott <labbott@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+        Todd Kjos <tkjos@android.com>,
+        Martijn Coenen <maco@android.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Christian Brauner <christian@brauner.io>,
+        Hridya Valsaraju <hridya@google.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        devel@driverdev.osuosl.org, dri-devel@lists.freedesktop.org,
+        linaro-mm-sig@lists.linaro.org, linux-media@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] staging: ion: fix spelling mistake in function name "detatch" -> "detach"
+Date:   Wed,  5 Aug 2020 12:26:55 +0100
+Message-Id: <20200805112655.17696-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <20200805102015.14891-1-colin.king@canonical.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
+
+There is a spelling mistake in the function name ion_dma_buf_detatch.
+Fix it by removing the extraneous t.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/staging/android/ion/ion.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/staging/android/ion/ion.c b/drivers/staging/android/ion/ion.c
+index 3c9f09506ffa..e1fe03ceb7f1 100644
+--- a/drivers/staging/android/ion/ion.c
++++ b/drivers/staging/android/ion/ion.c
+@@ -205,8 +205,8 @@ static int ion_dma_buf_attach(struct dma_buf *dmabuf,
+ 	return 0;
+ }
+ 
+-static void ion_dma_buf_detatch(struct dma_buf *dmabuf,
+-				struct dma_buf_attachment *attachment)
++static void ion_dma_buf_detach(struct dma_buf *dmabuf,
++			       struct dma_buf_attachment *attachment)
+ {
+ 	struct ion_dma_buf_attachment *a = attachment->priv;
+ 	struct ion_buffer *buffer = dmabuf->priv;
+@@ -331,7 +331,7 @@ static const struct dma_buf_ops dma_buf_ops = {
+ 	.mmap = ion_mmap,
+ 	.release = ion_dma_buf_release,
+ 	.attach = ion_dma_buf_attach,
+-	.detach = ion_dma_buf_detatch,
++	.detach = ion_dma_buf_detach,
+ 	.begin_cpu_access = ion_dma_buf_begin_cpu_access,
+ 	.end_cpu_access = ion_dma_buf_end_cpu_access,
+ };
+-- 
+2.27.0
 

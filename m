@@ -2,80 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20D5A23C33A
-	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 03:58:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4903123C5C4
+	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 08:28:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726150AbgHEB6R (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 4 Aug 2020 21:58:17 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:50712 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725981AbgHEB6R (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 4 Aug 2020 21:58:17 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 333DC5996704AFF08E50;
-        Wed,  5 Aug 2020 09:58:10 +0800 (CST)
-Received: from [127.0.0.1] (10.74.173.29) by DGGEMS407-HUB.china.huawei.com
- (10.3.19.207) with Microsoft SMTP Server id 14.3.487.0; Wed, 5 Aug 2020
- 09:58:00 +0800
-Subject: Re: [PATCH v4 01/10] crypto: hisilicon/qm - fix wrong release after
- using strsep
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        Sihang Chen <chensihang1@hisilicon.com>,
-        <linux-crypto@vger.kernel.org>
-References: <96ffa633-dda1-7ad1-72da-5563906c1561@web.de>
-CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Zaibo Xu <xuzaibo@huawei.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>
-From:   "shenyang (M)" <shenyang39@huawei.com>
-Message-ID: <425f4bdd-cf55-6537-28bf-0377564b531b@huawei.com>
-Date:   Wed, 5 Aug 2020 09:58:00 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
+        id S1728027AbgHEG2w (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 5 Aug 2020 02:28:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60328 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726627AbgHEG2w (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 5 Aug 2020 02:28:52 -0400
+Received: from localhost (unknown [122.171.202.192])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C497C207FC;
+        Wed,  5 Aug 2020 06:28:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1596608931;
+        bh=7H4nWDeblmEKkyV19nhAZ4kYdJLAUZE1qFOWcPo+iT8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ec3NA66beVkmoxpWmwOp4Hq+OD85ACrxac0sUtHq8LrRVsPGmoXAW35MEmpzxc7FZ
+         aZvCFe5FbyHKVrHbX8NNFOGCxmdjbc4zzO+xI2++5YxJT9qcD6sK3qfJo+Zd2CH4oS
+         tOpdR2LEwpA7umz2epZKTQbr2KG3Mhz8o1/j5CRQ=
+Date:   Wed, 5 Aug 2020 11:58:47 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Ansuel Smith <ansuelsmth@gmail.com>,
+        linux-arm-msm@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Hulk Robot <hulkci@huawei.com>
+Subject: Re: [PATCH -next] phy: qualcomm: fix return value check in
+ qcom_ipq806x_usb_phy_probe()
+Message-ID: <20200805062847.GT12965@vkoul-mobl>
+References: <20200723113622.136752-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <96ffa633-dda1-7ad1-72da-5563906c1561@web.de>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.74.173.29]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200723113622.136752-1-weiyongjun1@huawei.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On 23-07-20, 11:36, Wei Yongjun wrote:
+> In case of error, the function devm_ioremap() returns NULL pointer not
+> ERR_PTR(). The IS_ERR() test in the return value check should be
+> replaced with NULL test.
 
+Applied, thanks
 
-On 2020/8/5 2:34, Markus Elfring wrote:
-> …
->> +++ b/drivers/crypto/hisilicon/qm.c
->> @@ -1420,16 +1420,17 @@ static int qm_dbg_help(struct hisi_qm *qm, char *s)
-> …
->> +	s_tmp = s;
->>  	presult = strsep(&s, " ");
->>  	if (!presult) {
->> -		kfree(s);
->> +		kfree(s_tmp);
->>  		return -EINVAL;
->>  	}
->
-> -		kfree(s);
-> -		return -EINVAL;
-> +		ret = -EINVAL;
-> +		goto free_tmp;
->
-> I suggest to add a jump target for the desired exception handling.
->
-> Regards,
-> Markus
->
-> .
->
-
-Thanks for your review. There is only one error branch need to do
-something uninit. So I think the jump is not necessary and will
-affect code reading.:)
-
-Thanks,
-Yang
-
+-- 
+~Vinod

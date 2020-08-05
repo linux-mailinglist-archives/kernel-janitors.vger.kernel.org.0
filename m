@@ -2,55 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C93E23D17E
-	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 22:01:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7FA823D192
+	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Aug 2020 22:02:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726563AbgHEUBs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 5 Aug 2020 16:01:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49048 "EHLO
+        id S1729163AbgHEUCr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 5 Aug 2020 16:02:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727817AbgHEUBe (ORCPT
+        with ESMTP id S1728886AbgHEUCi (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 5 Aug 2020 16:01:34 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5924EC061575;
-        Wed,  5 Aug 2020 13:01:34 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id y3so41841721wrl.4;
-        Wed, 05 Aug 2020 13:01:34 -0700 (PDT)
+        Wed, 5 Aug 2020 16:02:38 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25505C061575;
+        Wed,  5 Aug 2020 13:02:38 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id t14so7538410wmi.3;
+        Wed, 05 Aug 2020 13:02:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=sFMazUp0MhwJbVuexgj1bxt76f5CLnr6BJ4vAddg9SU=;
-        b=clorqv+GMwdktNqZ6yyQxXrKzFF6/uB+b5UtHOzV5SpjRSNFQ89UimVPAVq4+9+NSo
-         OHRqMlxYcEasQ3TVdW5ps6BHjWd7Y0TElNh/rAhBHZJ9VXFG8ud6KZAiF1Ik40MEn3ux
-         JSH7uR2kmM+6HCKQgIn6onU0fuQqfGIHGZrKkx5raOUaLR3nJCgCUm9y4bsf45vpFb7R
-         GAb5WCzsUSZJ3JhpIul+FGKcCtEklbMpGNS7tuionEjy3dJ/JTOmY2ZUws3eyk7qoPBo
-         UZv5Xc+GIR7hK6+W5zAO0YoeyZJX+f00gcwsw5G1mNngdt/2pMvtz+osrtNJ0cK/KS7a
-         r9Lw==
+        bh=qqgHHRDh2vam44aFxeq1w53pSFB4MdPrZe7uyWVRU6U=;
+        b=Ob7LksjGa0aZs2m01xbQZdVjIWBzhBxbIOyXY5wpaHYumy35R2/Jv8jZWVZ++3BKf2
+         hbZouCFEhcSFaNgLZEmqKDJiNxTgD46KyhqMEqUalUOcuI/8iBBDsNAv1f9LSypu0+HV
+         O5/kvAwENGSK9+4OBYUEi9pLhLYQ0QVhqVkttLF2wuXk3TwpFIuZ1RFcQmG2dmQChgMB
+         qFhISD8aO0poYqPAWIRk5VRv6b66jvSXJ45koP/z4TFift2V9l8c+AVQB5+565M9vO28
+         9y80Te71+/12ch6t06IdmFVUxwMpFcBb8lsDqFnnOvZ9bRjpwR4fZQ8009W3GfRiK/z6
+         BHyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=sFMazUp0MhwJbVuexgj1bxt76f5CLnr6BJ4vAddg9SU=;
-        b=Gxj7OhdhflMYfslkwFpW1OdxXNA5W+7ue8LRItzDr+2ePLcOzMSLAFyLAK0URjaSY1
-         mpcw8BZR0jugra0aByU7JmG75MQkHXAx6sepQdaI0aPkakQL8sn0LtYjKZFzlYxILYO8
-         B+azBSvL0Y3Wd+mz8tMoCBlXa2LsLuHCe25DIuqHGm3ocpuhUMzP0meaYroFwCUJwv9P
-         LnFUzGAQcLbtQQHAMSCEMuJFTJPpK9h90hEWyuPxF0AZTGIm3o1m8KzO89fks4m1KPju
-         HIP0QvqhW3YTN1AdNHc277Auv2GlDGL3XFpYQryYb6X9AaCX0BsFkDMVWcf9Ih+w8Fgc
-         ZrlQ==
-X-Gm-Message-State: AOAM532tc7PusHfT/s/HJB24fmSShfS3xSaHNq5A5nEecSo31lY69w9D
-        ZCNOotoCDS4ieh+vlQZLGx1XHe8s6wLmxhvrGkA=
-X-Google-Smtp-Source: ABdhPJzcEbloQmJvxKNefm95pR63lEvoWfrv/5u8FdjvGjUP4tRNqqhD2adAS9zjFX5NZBZdKixnLqEcd/X7qdyfync=
-X-Received: by 2002:a5d:494b:: with SMTP id r11mr4356598wrs.419.1596657693122;
- Wed, 05 Aug 2020 13:01:33 -0700 (PDT)
+        bh=qqgHHRDh2vam44aFxeq1w53pSFB4MdPrZe7uyWVRU6U=;
+        b=ldd+kUjCRuKEheUhAMmpJpks9VCS2xEnmXkdsA4tkEvgLg1f5EcwHiutoSmnPuCavi
+         t+4EEW0JyDiI3bc9d2WEN6nhvfh6yV6Tp0c9OSR7Qtgd2sNCd7IedBV6ZZD/FDMUQ0xO
+         nzbzTT0mLVB35V6Ya7nwQMQ++vgV+FYQ1s6OFI71SFdxByG0Hdd1d3UfDUX3QuwpRxe/
+         SckRCVK8KAFvlm8LOSHpe55raG2gWeEwl4QjO/wUe8+Sd5gfK25i2LaQVEdiRkWuZW85
+         68IE8GbfjWJLVFksS++Tj4C6bYZosxJhTjiYhexLzB2g4iB7ZQRQI4I5sdc+wBkRCA2R
+         26PA==
+X-Gm-Message-State: AOAM531fcoPiv4bXS8++tHRWgG+/txvbGwnl2MtRkJtt3KiJFKqPHfgj
+        DL10T4+OBRQNH7LnyZ45QtVOSpbTFGSieQu+pVk=
+X-Google-Smtp-Source: ABdhPJz8P1i0SoHVl3LdWEDNvULJHbQrR0s6lAMUuSfOi8apEVNdiVwkn2blV5Qoc4Yy6j5Bas5Un5bqPKqZ9LY5RrY=
+X-Received: by 2002:a1c:f70a:: with SMTP id v10mr4648351wmh.39.1596657756225;
+ Wed, 05 Aug 2020 13:02:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200805113510.18277-1-colin.king@canonical.com>
-In-Reply-To: <20200805113510.18277-1-colin.king@canonical.com>
+References: <20200805121527.19157-1-colin.king@canonical.com>
+In-Reply-To: <20200805121527.19157-1-colin.king@canonical.com>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Wed, 5 Aug 2020 16:01:22 -0400
-Message-ID: <CADnq5_NA9f2N3xkH4WAdDEP+0-5W0LkmTRy3yXqFdnWQmfsVmQ@mail.gmail.com>
-Subject: Re: [PATCH] drm/amdgpu: fix spelling mistake "Falied" -> "Failed"
+Date:   Wed, 5 Aug 2020 16:02:25 -0400
+Message-ID: <CADnq5_OCQGCEwXN8=74AJck=ctAhbRp_0Hvb1B1hyqA_+3N0ZQ@mail.gmail.com>
+Subject: Re: [PATCH][next] drm/amdgpu: fix spelling mistake "paramter" -> "parameter"
 To:     Colin King <colin.king@canonical.com>
 Cc:     Alex Deucher <alexander.deucher@amd.com>,
         =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
@@ -66,35 +66,35 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Aug 5, 2020 at 7:35 AM Colin King <colin.king@canonical.com> wrote:
+On Wed, Aug 5, 2020 at 8:15 AM Colin King <colin.king@canonical.com> wrote:
 >
 > From: Colin Ian King <colin.king@canonical.com>
 >
-> There is a spelling mistake in a DRM_ERROR message. Fix it.
+> There is a spelling mistake in a dev_warn message. Fix it.
 >
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-This is already fixed.
+Applied.  Thanks!
 
 Alex
 
 > ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 2 +-
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-> index 49d4514aa6ed..c68369731b20 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-> @@ -2010,7 +2010,7 @@ static int psp_suspend(void *handle)
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+> index b72aeeb0a226..16e23f053361 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+> @@ -1201,7 +1201,7 @@ static int amdgpu_device_check_arguments(struct amdgpu_device *adev)
 >
->         ret = psp_tmr_terminate(psp);
->         if (ret) {
-> -               DRM_ERROR("Falied to terminate tmr\n");
-> +               DRM_ERROR("Failed to terminate tmr\n");
->                 return ret;
+>         if (amdgpu_num_kcq > 8 || amdgpu_num_kcq < 0) {
+>                 amdgpu_num_kcq = 8;
+> -               dev_warn(adev->dev, "set kernel compute queue number to 8 due to invalid paramter provided by user\n");
+> +               dev_warn(adev->dev, "set kernel compute queue number to 8 due to invalid parameter provided by user\n");
 >         }
 >
+>         return 0;
 > --
 > 2.27.0
 >

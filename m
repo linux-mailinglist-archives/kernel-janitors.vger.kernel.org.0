@@ -2,30 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BC1A23E2ED
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 22:13:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E97DC23E30B
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 22:19:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726240AbgHFUND (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Aug 2020 16:13:03 -0400
-Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:31776 "EHLO
+        id S1726810AbgHFUTu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Aug 2020 16:19:50 -0400
+Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:37040 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725998AbgHFUND (ORCPT
+        with ESMTP id S1726764AbgHFUTt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Aug 2020 16:13:03 -0400
-Received: from localhost.localdomain ([93.22.39.179])
-        by mwinf5d39 with ME
-        id CAzB2300Z3rvC1Z03AzC6E; Thu, 06 Aug 2020 12:59:13 +0200
+        Thu, 6 Aug 2020 16:19:49 -0400
+Received: from localhost.localdomain ([93.22.37.174])
+        by mwinf5d46 with ME
+        id CLKd230023lSDvh03LKdnk; Thu, 06 Aug 2020 22:19:47 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 06 Aug 2020 12:59:13 +0200
-X-ME-IP: 93.22.39.179
+X-ME-Date: Thu, 06 Aug 2020 22:19:47 +0200
+X-ME-IP: 93.22.37.174
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     gregkh@linuxfoundation.org, jirislaby@kernel.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+To:     davem@davemloft.net, kuba@kernel.org, snelson@pensando.io,
+        mhabets@solarflare.com, vaibhavgupta40@gmail.com, mst@redhat.com,
+        mkubecek@suse.cz
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] tty: serial: icom: switch from 'pci_' to 'dma_' API
-Date:   Thu,  6 Aug 2020 08:05:07 +0200
-Message-Id: <20200806060507.730142-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] epic100: switch from 'pci_' to 'dma_' API
+Date:   Thu,  6 Aug 2020 22:19:35 +0200
+Message-Id: <20200806201935.733641-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -40,21 +43,9 @@ The patch has been generated with the coccinelle script below and has been
 hand modified to replace GFP_ with a correct flag.
 It has been compile tested.
 
-When memory is allocated in 'get_port_memory()', GFP_KERNEL can be used
-because it is only called from a probe function and no lock is acquired.
-The call chain is:
-   icom_probe				(the probe function)
-      --> icom_load_ports
-         --> get_port_memory
+When memory is allocated in 'epic_init_one()', GFP_KERNEL can be used
+because it is a probe function and no lock is acquired.
 
-
-When memory is allocated in 'load_code()', GFP_KERNEL can be used because
-it is only called from a .startup function.
-   icom_open				(the .startup function of struct uart_ops)
-      --> startup
-         --> load_code
-.startup functions are protected using a semaphore and no spinlock is
-taken.
 
 @@
 @@
@@ -177,104 +168,163 @@ Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 If needed, see post from Christoph Hellwig on the kernel-janitors ML:
    https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
 ---
- drivers/tty/serial/icom.c | 32 ++++++++++++++++++--------------
- 1 file changed, 18 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/smsc/epic100.c | 71 +++++++++++++++++------------
+ 1 file changed, 42 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/tty/serial/icom.c b/drivers/tty/serial/icom.c
-index 624f3d541c68..94c8281ddb5f 100644
---- a/drivers/tty/serial/icom.c
-+++ b/drivers/tty/serial/icom.c
-@@ -138,24 +138,24 @@ static void free_port_memory(struct icom_port *icom_port)
+diff --git a/drivers/net/ethernet/smsc/epic100.c b/drivers/net/ethernet/smsc/epic100.c
+index d950b312c418..51cd7dca91cd 100644
+--- a/drivers/net/ethernet/smsc/epic100.c
++++ b/drivers/net/ethernet/smsc/epic100.c
+@@ -374,13 +374,15 @@ static int epic_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	ep->mii.phy_id_mask = 0x1f;
+ 	ep->mii.reg_num_mask = 0x1f;
  
- 	trace(icom_port, "RET_PORT_MEM", 0);
- 	if (icom_port->recv_buf) {
--		pci_free_consistent(dev, 4096, icom_port->recv_buf,
--				    icom_port->recv_buf_pci);
-+		dma_free_coherent(&dev->dev, 4096, icom_port->recv_buf,
-+				  icom_port->recv_buf_pci);
- 		icom_port->recv_buf = NULL;
+-	ring_space = pci_alloc_consistent(pdev, TX_TOTAL_SIZE, &ring_dma);
++	ring_space = dma_alloc_coherent(&pdev->dev, TX_TOTAL_SIZE, &ring_dma,
++					GFP_KERNEL);
+ 	if (!ring_space)
+ 		goto err_out_iounmap;
+ 	ep->tx_ring = ring_space;
+ 	ep->tx_ring_dma = ring_dma;
+ 
+-	ring_space = pci_alloc_consistent(pdev, RX_TOTAL_SIZE, &ring_dma);
++	ring_space = dma_alloc_coherent(&pdev->dev, RX_TOTAL_SIZE, &ring_dma,
++					GFP_KERNEL);
+ 	if (!ring_space)
+ 		goto err_out_unmap_tx;
+ 	ep->rx_ring = ring_space;
+@@ -493,9 +495,11 @@ static int epic_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	return ret;
+ 
+ err_out_unmap_rx:
+-	pci_free_consistent(pdev, RX_TOTAL_SIZE, ep->rx_ring, ep->rx_ring_dma);
++	dma_free_coherent(&pdev->dev, RX_TOTAL_SIZE, ep->rx_ring,
++			  ep->rx_ring_dma);
+ err_out_unmap_tx:
+-	pci_free_consistent(pdev, TX_TOTAL_SIZE, ep->tx_ring, ep->tx_ring_dma);
++	dma_free_coherent(&pdev->dev, TX_TOTAL_SIZE, ep->tx_ring,
++			  ep->tx_ring_dma);
+ err_out_iounmap:
+ 	pci_iounmap(pdev, ioaddr);
+ err_out_free_netdev:
+@@ -918,8 +922,10 @@ static void epic_init_ring(struct net_device *dev)
+ 		if (skb == NULL)
+ 			break;
+ 		skb_reserve(skb, 2);	/* 16 byte align the IP header. */
+-		ep->rx_ring[i].bufaddr = pci_map_single(ep->pci_dev,
+-			skb->data, ep->rx_buf_sz, PCI_DMA_FROMDEVICE);
++		ep->rx_ring[i].bufaddr = dma_map_single(&ep->pci_dev->dev,
++							skb->data,
++							ep->rx_buf_sz,
++							DMA_FROM_DEVICE);
+ 		ep->rx_ring[i].rxstatus = DescOwn;
  	}
- 	if (icom_port->xmit_buf) {
--		pci_free_consistent(dev, 4096, icom_port->xmit_buf,
--				    icom_port->xmit_buf_pci);
-+		dma_free_coherent(&dev->dev, 4096, icom_port->xmit_buf,
-+				  icom_port->xmit_buf_pci);
- 		icom_port->xmit_buf = NULL;
+ 	ep->dirty_rx = (unsigned int)(i - RX_RING_SIZE);
+@@ -955,8 +961,9 @@ static netdev_tx_t epic_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	entry = ep->cur_tx % TX_RING_SIZE;
+ 
+ 	ep->tx_skbuff[entry] = skb;
+-	ep->tx_ring[entry].bufaddr = pci_map_single(ep->pci_dev, skb->data,
+-		 			            skb->len, PCI_DMA_TODEVICE);
++	ep->tx_ring[entry].bufaddr = dma_map_single(&ep->pci_dev->dev,
++						    skb->data, skb->len,
++						    DMA_TO_DEVICE);
+ 	if (free_count < TX_QUEUE_LEN/2) {/* Typical path */
+ 		ctrl_word = 0x100000; /* No interrupt */
+ 	} else if (free_count == TX_QUEUE_LEN/2) {
+@@ -1036,8 +1043,9 @@ static void epic_tx(struct net_device *dev, struct epic_private *ep)
+ 
+ 		/* Free the original skb. */
+ 		skb = ep->tx_skbuff[entry];
+-		pci_unmap_single(ep->pci_dev, ep->tx_ring[entry].bufaddr,
+-				 skb->len, PCI_DMA_TODEVICE);
++		dma_unmap_single(&ep->pci_dev->dev,
++				 ep->tx_ring[entry].bufaddr, skb->len,
++				 DMA_TO_DEVICE);
+ 		dev_consume_skb_irq(skb);
+ 		ep->tx_skbuff[entry] = NULL;
  	}
- 	if (icom_port->statStg) {
--		pci_free_consistent(dev, 4096, icom_port->statStg,
--				    icom_port->statStg_pci);
-+		dma_free_coherent(&dev->dev, 4096, icom_port->statStg,
-+				  icom_port->statStg_pci);
- 		icom_port->statStg = NULL;
+@@ -1178,20 +1186,21 @@ static int epic_rx(struct net_device *dev, int budget)
+ 			if (pkt_len < rx_copybreak &&
+ 			    (skb = netdev_alloc_skb(dev, pkt_len + 2)) != NULL) {
+ 				skb_reserve(skb, 2);	/* 16 byte align the IP header */
+-				pci_dma_sync_single_for_cpu(ep->pci_dev,
+-							    ep->rx_ring[entry].bufaddr,
+-							    ep->rx_buf_sz,
+-							    PCI_DMA_FROMDEVICE);
++				dma_sync_single_for_cpu(&ep->pci_dev->dev,
++							ep->rx_ring[entry].bufaddr,
++							ep->rx_buf_sz,
++							DMA_FROM_DEVICE);
+ 				skb_copy_to_linear_data(skb, ep->rx_skbuff[entry]->data, pkt_len);
+ 				skb_put(skb, pkt_len);
+-				pci_dma_sync_single_for_device(ep->pci_dev,
+-							       ep->rx_ring[entry].bufaddr,
+-							       ep->rx_buf_sz,
+-							       PCI_DMA_FROMDEVICE);
++				dma_sync_single_for_device(&ep->pci_dev->dev,
++							   ep->rx_ring[entry].bufaddr,
++							   ep->rx_buf_sz,
++							   DMA_FROM_DEVICE);
+ 			} else {
+-				pci_unmap_single(ep->pci_dev,
+-					ep->rx_ring[entry].bufaddr,
+-					ep->rx_buf_sz, PCI_DMA_FROMDEVICE);
++				dma_unmap_single(&ep->pci_dev->dev,
++						 ep->rx_ring[entry].bufaddr,
++						 ep->rx_buf_sz,
++						 DMA_FROM_DEVICE);
+ 				skb_put(skb = ep->rx_skbuff[entry], pkt_len);
+ 				ep->rx_skbuff[entry] = NULL;
+ 			}
+@@ -1213,8 +1222,10 @@ static int epic_rx(struct net_device *dev, int budget)
+ 			if (skb == NULL)
+ 				break;
+ 			skb_reserve(skb, 2);	/* Align IP on 16 byte boundaries */
+-			ep->rx_ring[entry].bufaddr = pci_map_single(ep->pci_dev,
+-				skb->data, ep->rx_buf_sz, PCI_DMA_FROMDEVICE);
++			ep->rx_ring[entry].bufaddr = dma_map_single(&ep->pci_dev->dev,
++								    skb->data,
++								    ep->rx_buf_sz,
++								    DMA_FROM_DEVICE);
+ 			work_done++;
+ 		}
+ 		/* AV: shouldn't we add a barrier here? */
+@@ -1294,8 +1305,8 @@ static int epic_close(struct net_device *dev)
+ 		ep->rx_ring[i].rxstatus = 0;		/* Not owned by Epic chip. */
+ 		ep->rx_ring[i].buflength = 0;
+ 		if (skb) {
+-			pci_unmap_single(pdev, ep->rx_ring[i].bufaddr,
+-					 ep->rx_buf_sz, PCI_DMA_FROMDEVICE);
++			dma_unmap_single(&pdev->dev, ep->rx_ring[i].bufaddr,
++					 ep->rx_buf_sz, DMA_FROM_DEVICE);
+ 			dev_kfree_skb(skb);
+ 		}
+ 		ep->rx_ring[i].bufaddr = 0xBADF00D0; /* An invalid address. */
+@@ -1305,8 +1316,8 @@ static int epic_close(struct net_device *dev)
+ 		ep->tx_skbuff[i] = NULL;
+ 		if (!skb)
+ 			continue;
+-		pci_unmap_single(pdev, ep->tx_ring[i].bufaddr, skb->len,
+-				 PCI_DMA_TODEVICE);
++		dma_unmap_single(&pdev->dev, ep->tx_ring[i].bufaddr, skb->len,
++				 DMA_TO_DEVICE);
+ 		dev_kfree_skb(skb);
  	}
  
- 	if (icom_port->xmitRestart) {
--		pci_free_consistent(dev, 4096, icom_port->xmitRestart,
--				    icom_port->xmitRestart_pci);
-+		dma_free_coherent(&dev->dev, 4096, icom_port->xmitRestart,
-+				  icom_port->xmitRestart_pci);
- 		icom_port->xmitRestart = NULL;
- 	}
- }
-@@ -169,7 +169,8 @@ static int get_port_memory(struct icom_port *icom_port)
- 	struct pci_dev *dev = icom_port->adapter->pci_dev;
+@@ -1502,8 +1513,10 @@ static void epic_remove_one(struct pci_dev *pdev)
+ 	struct net_device *dev = pci_get_drvdata(pdev);
+ 	struct epic_private *ep = netdev_priv(dev);
  
- 	icom_port->xmit_buf =
--	    pci_alloc_consistent(dev, 4096, &icom_port->xmit_buf_pci);
-+	    dma_alloc_coherent(&dev->dev, 4096, &icom_port->xmit_buf_pci,
-+			       GFP_KERNEL);
- 	if (!icom_port->xmit_buf) {
- 		dev_err(&dev->dev, "Can not allocate Transmit buffer\n");
- 		return -ENOMEM;
-@@ -179,7 +180,8 @@ static int get_port_memory(struct icom_port *icom_port)
- 	      (unsigned long) icom_port->xmit_buf);
- 
- 	icom_port->recv_buf =
--	    pci_alloc_consistent(dev, 4096, &icom_port->recv_buf_pci);
-+	    dma_alloc_coherent(&dev->dev, 4096, &icom_port->recv_buf_pci,
-+			       GFP_KERNEL);
- 	if (!icom_port->recv_buf) {
- 		dev_err(&dev->dev, "Can not allocate Receive buffer\n");
- 		free_port_memory(icom_port);
-@@ -189,7 +191,8 @@ static int get_port_memory(struct icom_port *icom_port)
- 	      (unsigned long) icom_port->recv_buf);
- 
- 	icom_port->statStg =
--	    pci_alloc_consistent(dev, 4096, &icom_port->statStg_pci);
-+	    dma_alloc_coherent(&dev->dev, 4096, &icom_port->statStg_pci,
-+			       GFP_KERNEL);
- 	if (!icom_port->statStg) {
- 		dev_err(&dev->dev, "Can not allocate Status buffer\n");
- 		free_port_memory(icom_port);
-@@ -199,7 +202,8 @@ static int get_port_memory(struct icom_port *icom_port)
- 	      (unsigned long) icom_port->statStg);
- 
- 	icom_port->xmitRestart =
--	    pci_alloc_consistent(dev, 4096, &icom_port->xmitRestart_pci);
-+	    dma_alloc_coherent(&dev->dev, 4096, &icom_port->xmitRestart_pci,
-+			       GFP_KERNEL);
- 	if (!icom_port->xmitRestart) {
- 		dev_err(&dev->dev,
- 			"Can not allocate xmit Restart buffer\n");
-@@ -414,7 +418,7 @@ static void load_code(struct icom_port *icom_port)
- 	/*Set up data in icom DRAM to indicate where personality
- 	 *code is located and its length.
- 	 */
--	new_page = pci_alloc_consistent(dev, 4096, &temp_pci);
-+	new_page = dma_alloc_coherent(&dev->dev, 4096, &temp_pci, GFP_KERNEL);
- 
- 	if (!new_page) {
- 		dev_err(&dev->dev, "Can not allocate DMA buffer\n");
-@@ -494,7 +498,7 @@ static void load_code(struct icom_port *icom_port)
- 	}
- 
- 	if (new_page != NULL)
--		pci_free_consistent(dev, 4096, new_page, temp_pci);
-+		dma_free_coherent(&dev->dev, 4096, new_page, temp_pci);
- }
- 
- static int startup(struct icom_port *icom_port)
+-	pci_free_consistent(pdev, TX_TOTAL_SIZE, ep->tx_ring, ep->tx_ring_dma);
+-	pci_free_consistent(pdev, RX_TOTAL_SIZE, ep->rx_ring, ep->rx_ring_dma);
++	dma_free_coherent(&pdev->dev, TX_TOTAL_SIZE, ep->tx_ring,
++			  ep->tx_ring_dma);
++	dma_free_coherent(&pdev->dev, RX_TOTAL_SIZE, ep->rx_ring,
++			  ep->rx_ring_dma);
+ 	unregister_netdev(dev);
+ 	pci_iounmap(pdev, ep->ioaddr);
+ 	pci_release_regions(pdev);
 -- 
 2.25.1
 

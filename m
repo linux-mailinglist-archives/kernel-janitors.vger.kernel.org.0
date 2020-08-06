@@ -2,116 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 033C523DFCB
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 19:54:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51D5B23E1D8
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 21:06:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730559AbgHFRxq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Aug 2020 13:53:46 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50371 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728328AbgHFQa7 (ORCPT
+        id S1728053AbgHFTGC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Aug 2020 15:06:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36214 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726577AbgHFTGB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Aug 2020 12:30:59 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1k3iRR-0001NL-01; Thu, 06 Aug 2020 16:08:29 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     "Michael S . Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>, Eli Cohen <eli@mellanox.com>,
-        Parav Pandit <parav@mellanox.com>,
-        virtualization@lists.linux-foundation.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] vdpa/mlx5: fix memory allocation failure checks
-Date:   Thu,  6 Aug 2020 17:08:28 +0100
-Message-Id: <20200806160828.90463-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Thu, 6 Aug 2020 15:06:01 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D7D2C061574;
+        Thu,  6 Aug 2020 12:06:01 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 2E3F411DB3163;
+        Thu,  6 Aug 2020 11:49:15 -0700 (PDT)
+Date:   Thu, 06 Aug 2020 12:05:59 -0700 (PDT)
+Message-Id: <20200806.120559.1126479491662284081.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     yisen.zhuang@huawei.com, salil.mehta@huawei.com, kuba@kernel.org,
+        tanhuazhong@huawei.com, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: hns3: fix spelling mistake "could'nt" ->
+ "couldn't"
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200806114256.58845-1-colin.king@canonical.com>
+References: <20200806114256.58845-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 06 Aug 2020 11:49:15 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Colin King <colin.king@canonical.com>
+Date: Thu,  6 Aug 2020 12:42:56 +0100
 
-The memory allocation failure checking for in and out is currently
-checking if the pointers are valid rather than the contents of what
-they point to. Hence the null check on failed memory allocations is
-incorrect.  Fix this by adding the missing indirection in the check.
-Also for the default case, just set the *in and *out to null as
-these don't have any thing allocated to kfree. Finally remove the
-redundant *in and *out check as these have been already done on each
-allocation in the case statement.
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a spelling mistake in a dev_err message. Fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Addresses-Coverity: ("Null pointer dereference")
-Fixes: 1a86b377aa21 ("vdpa/mlx5: Add VDPA driver for supported mlx5 devices")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/vdpa/mlx5/net/mlx5_vnet.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-index 3ec44a4f0e45..55bc58e1dae9 100644
---- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-+++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-@@ -867,7 +867,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
- 		*outlen = MLX5_ST_SZ_BYTES(qp_2rst_out);
- 		*in = kzalloc(*inlen, GFP_KERNEL);
- 		*out = kzalloc(*outlen, GFP_KERNEL);
--		if (!in || !out)
-+		if (!*in || !*out)
- 			goto outerr;
- 
- 		MLX5_SET(qp_2rst_in, *in, opcode, cmd);
-@@ -879,7 +879,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
- 		*outlen = MLX5_ST_SZ_BYTES(rst2init_qp_out);
- 		*in = kzalloc(*inlen, GFP_KERNEL);
- 		*out = kzalloc(MLX5_ST_SZ_BYTES(rst2init_qp_out), GFP_KERNEL);
--		if (!in || !out)
-+		if (!*in || !*out)
- 			goto outerr;
- 
- 		MLX5_SET(rst2init_qp_in, *in, opcode, cmd);
-@@ -896,7 +896,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
- 		*outlen = MLX5_ST_SZ_BYTES(init2rtr_qp_out);
- 		*in = kzalloc(*inlen, GFP_KERNEL);
- 		*out = kzalloc(MLX5_ST_SZ_BYTES(init2rtr_qp_out), GFP_KERNEL);
--		if (!in || !out)
-+		if (!*in || !*out)
- 			goto outerr;
- 
- 		MLX5_SET(init2rtr_qp_in, *in, opcode, cmd);
-@@ -914,7 +914,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
- 		*outlen = MLX5_ST_SZ_BYTES(rtr2rts_qp_out);
- 		*in = kzalloc(*inlen, GFP_KERNEL);
- 		*out = kzalloc(MLX5_ST_SZ_BYTES(rtr2rts_qp_out), GFP_KERNEL);
--		if (!in || !out)
-+		if (!*in || !*out)
- 			goto outerr;
- 
- 		MLX5_SET(rtr2rts_qp_in, *in, opcode, cmd);
-@@ -927,16 +927,15 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
- 		MLX5_SET(qpc, qpc, rnr_retry, 7);
- 		break;
- 	default:
--		goto outerr;
-+		goto outerr_nullify;
- 	}
--	if (!*in || !*out)
--		goto outerr;
- 
- 	return;
- 
- outerr:
- 	kfree(*in);
- 	kfree(*out);
-+outerr_nullify:
- 	*in = NULL;
- 	*out = NULL;
- }
--- 
-2.27.0
-
+Applied, thanks.

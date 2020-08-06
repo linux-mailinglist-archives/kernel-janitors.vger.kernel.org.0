@@ -2,53 +2,279 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51D5B23E1D8
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 21:06:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BC1A23E2ED
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 22:13:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728053AbgHFTGC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Aug 2020 15:06:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36214 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726577AbgHFTGB (ORCPT
+        id S1726240AbgHFUND (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Aug 2020 16:13:03 -0400
+Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:31776 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725998AbgHFUND (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Aug 2020 15:06:01 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D7D2C061574;
-        Thu,  6 Aug 2020 12:06:01 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 2E3F411DB3163;
-        Thu,  6 Aug 2020 11:49:15 -0700 (PDT)
-Date:   Thu, 06 Aug 2020 12:05:59 -0700 (PDT)
-Message-Id: <20200806.120559.1126479491662284081.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     yisen.zhuang@huawei.com, salil.mehta@huawei.com, kuba@kernel.org,
-        tanhuazhong@huawei.com, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: hns3: fix spelling mistake "could'nt" ->
- "couldn't"
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200806114256.58845-1-colin.king@canonical.com>
-References: <20200806114256.58845-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 06 Aug 2020 11:49:15 -0700 (PDT)
+        Thu, 6 Aug 2020 16:13:03 -0400
+Received: from localhost.localdomain ([93.22.39.179])
+        by mwinf5d39 with ME
+        id CAzB2300Z3rvC1Z03AzC6E; Thu, 06 Aug 2020 12:59:13 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 06 Aug 2020 12:59:13 +0200
+X-ME-IP: 93.22.39.179
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     gregkh@linuxfoundation.org, jirislaby@kernel.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] tty: serial: icom: switch from 'pci_' to 'dma_' API
+Date:   Thu,  6 Aug 2020 08:05:07 +0200
+Message-Id: <20200806060507.730142-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Thu,  6 Aug 2020 12:42:56 +0100
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in a dev_err message. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GFP_ with a correct flag.
+It has been compile tested.
 
-Applied, thanks.
+When memory is allocated in 'get_port_memory()', GFP_KERNEL can be used
+because it is only called from a probe function and no lock is acquired.
+The call chain is:
+   icom_probe				(the probe function)
+      --> icom_load_ports
+         --> get_port_memory
+
+
+When memory is allocated in 'load_code()', GFP_KERNEL can be used because
+it is only called from a .startup function.
+   icom_open				(the .startup function of struct uart_ops)
+      --> startup
+         --> load_code
+.startup functions are protected using a semaphore and no spinlock is
+taken.
+
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
+
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+---
+ drivers/tty/serial/icom.c | 32 ++++++++++++++++++--------------
+ 1 file changed, 18 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/tty/serial/icom.c b/drivers/tty/serial/icom.c
+index 624f3d541c68..94c8281ddb5f 100644
+--- a/drivers/tty/serial/icom.c
++++ b/drivers/tty/serial/icom.c
+@@ -138,24 +138,24 @@ static void free_port_memory(struct icom_port *icom_port)
+ 
+ 	trace(icom_port, "RET_PORT_MEM", 0);
+ 	if (icom_port->recv_buf) {
+-		pci_free_consistent(dev, 4096, icom_port->recv_buf,
+-				    icom_port->recv_buf_pci);
++		dma_free_coherent(&dev->dev, 4096, icom_port->recv_buf,
++				  icom_port->recv_buf_pci);
+ 		icom_port->recv_buf = NULL;
+ 	}
+ 	if (icom_port->xmit_buf) {
+-		pci_free_consistent(dev, 4096, icom_port->xmit_buf,
+-				    icom_port->xmit_buf_pci);
++		dma_free_coherent(&dev->dev, 4096, icom_port->xmit_buf,
++				  icom_port->xmit_buf_pci);
+ 		icom_port->xmit_buf = NULL;
+ 	}
+ 	if (icom_port->statStg) {
+-		pci_free_consistent(dev, 4096, icom_port->statStg,
+-				    icom_port->statStg_pci);
++		dma_free_coherent(&dev->dev, 4096, icom_port->statStg,
++				  icom_port->statStg_pci);
+ 		icom_port->statStg = NULL;
+ 	}
+ 
+ 	if (icom_port->xmitRestart) {
+-		pci_free_consistent(dev, 4096, icom_port->xmitRestart,
+-				    icom_port->xmitRestart_pci);
++		dma_free_coherent(&dev->dev, 4096, icom_port->xmitRestart,
++				  icom_port->xmitRestart_pci);
+ 		icom_port->xmitRestart = NULL;
+ 	}
+ }
+@@ -169,7 +169,8 @@ static int get_port_memory(struct icom_port *icom_port)
+ 	struct pci_dev *dev = icom_port->adapter->pci_dev;
+ 
+ 	icom_port->xmit_buf =
+-	    pci_alloc_consistent(dev, 4096, &icom_port->xmit_buf_pci);
++	    dma_alloc_coherent(&dev->dev, 4096, &icom_port->xmit_buf_pci,
++			       GFP_KERNEL);
+ 	if (!icom_port->xmit_buf) {
+ 		dev_err(&dev->dev, "Can not allocate Transmit buffer\n");
+ 		return -ENOMEM;
+@@ -179,7 +180,8 @@ static int get_port_memory(struct icom_port *icom_port)
+ 	      (unsigned long) icom_port->xmit_buf);
+ 
+ 	icom_port->recv_buf =
+-	    pci_alloc_consistent(dev, 4096, &icom_port->recv_buf_pci);
++	    dma_alloc_coherent(&dev->dev, 4096, &icom_port->recv_buf_pci,
++			       GFP_KERNEL);
+ 	if (!icom_port->recv_buf) {
+ 		dev_err(&dev->dev, "Can not allocate Receive buffer\n");
+ 		free_port_memory(icom_port);
+@@ -189,7 +191,8 @@ static int get_port_memory(struct icom_port *icom_port)
+ 	      (unsigned long) icom_port->recv_buf);
+ 
+ 	icom_port->statStg =
+-	    pci_alloc_consistent(dev, 4096, &icom_port->statStg_pci);
++	    dma_alloc_coherent(&dev->dev, 4096, &icom_port->statStg_pci,
++			       GFP_KERNEL);
+ 	if (!icom_port->statStg) {
+ 		dev_err(&dev->dev, "Can not allocate Status buffer\n");
+ 		free_port_memory(icom_port);
+@@ -199,7 +202,8 @@ static int get_port_memory(struct icom_port *icom_port)
+ 	      (unsigned long) icom_port->statStg);
+ 
+ 	icom_port->xmitRestart =
+-	    pci_alloc_consistent(dev, 4096, &icom_port->xmitRestart_pci);
++	    dma_alloc_coherent(&dev->dev, 4096, &icom_port->xmitRestart_pci,
++			       GFP_KERNEL);
+ 	if (!icom_port->xmitRestart) {
+ 		dev_err(&dev->dev,
+ 			"Can not allocate xmit Restart buffer\n");
+@@ -414,7 +418,7 @@ static void load_code(struct icom_port *icom_port)
+ 	/*Set up data in icom DRAM to indicate where personality
+ 	 *code is located and its length.
+ 	 */
+-	new_page = pci_alloc_consistent(dev, 4096, &temp_pci);
++	new_page = dma_alloc_coherent(&dev->dev, 4096, &temp_pci, GFP_KERNEL);
+ 
+ 	if (!new_page) {
+ 		dev_err(&dev->dev, "Can not allocate DMA buffer\n");
+@@ -494,7 +498,7 @@ static void load_code(struct icom_port *icom_port)
+ 	}
+ 
+ 	if (new_page != NULL)
+-		pci_free_consistent(dev, 4096, new_page, temp_pci);
++		dma_free_coherent(&dev->dev, 4096, new_page, temp_pci);
+ }
+ 
+ static int startup(struct icom_port *icom_port)
+-- 
+2.25.1
+

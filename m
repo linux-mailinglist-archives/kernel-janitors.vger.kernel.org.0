@@ -2,30 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7EEC23DFE7
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 19:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D05B823DFD5
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 19:54:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728268AbgHFRzD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Aug 2020 13:55:03 -0400
+        id S1729108AbgHFRx4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Aug 2020 13:53:56 -0400
 Received: from youngberry.canonical.com ([91.189.89.112]:50308 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728126AbgHFQaB (ORCPT
+        with ESMTP id S1728245AbgHFQaz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Aug 2020 12:30:01 -0400
+        Thu, 6 Aug 2020 12:30:55 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1k3e9G-0000ii-Bs; Thu, 06 Aug 2020 11:33:26 +0000
+        id 1k3eQF-00024c-Ms; Thu, 06 Aug 2020 11:50:59 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] wl1251, wlcore: fix spelling mistake "buld" -> "build"
-Date:   Thu,  6 Aug 2020 12:33:26 +0100
-Message-Id: <20200806113326.53779-1-colin.king@canonical.com>
+Subject: [PATCH] mmc: sdhci-pci-o2micro: fix spelling mistake "unsupport" -> "unsupported"
+Date:   Thu,  6 Aug 2020 12:50:59 +0100
+Message-Id: <20200806115059.59241-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,40 +35,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There are spelling mistakes in warning messages. Fix these.
+There is a spelling mistake in a pr_info message. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/wireless/ti/wl1251/main.c | 2 +-
- drivers/net/wireless/ti/wlcore/cmd.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-pci-o2micro.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ti/wl1251/main.c b/drivers/net/wireless/ti/wl1251/main.c
-index 480a8d084878..136a0d3b23c9 100644
---- a/drivers/net/wireless/ti/wl1251/main.c
-+++ b/drivers/net/wireless/ti/wl1251/main.c
-@@ -558,7 +558,7 @@ static int wl1251_build_null_data(struct wl1251 *wl)
- out:
- 	dev_kfree_skb(skb);
- 	if (ret)
--		wl1251_warning("cmd buld null data failed: %d", ret);
-+		wl1251_warning("cmd build null data failed: %d", ret);
+diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-pci-o2micro.c
+index fa76748d8929..4eca8d2d0599 100644
+--- a/drivers/mmc/host/sdhci-pci-o2micro.c
++++ b/drivers/mmc/host/sdhci-pci-o2micro.c
+@@ -469,7 +469,7 @@ static void sdhci_pci_o2_enable_msi(struct sdhci_pci_chip *chip,
  
- 	return ret;
- }
-diff --git a/drivers/net/wireless/ti/wlcore/cmd.c b/drivers/net/wireless/ti/wlcore/cmd.c
-index 6ef8fc9ae627..93424a1dffc9 100644
---- a/drivers/net/wireless/ti/wlcore/cmd.c
-+++ b/drivers/net/wireless/ti/wlcore/cmd.c
-@@ -1080,7 +1080,7 @@ int wl12xx_cmd_build_null_data(struct wl1271 *wl, struct wl12xx_vif *wlvif)
- out:
- 	dev_kfree_skb(skb);
- 	if (ret)
--		wl1271_warning("cmd buld null data failed %d", ret);
-+		wl1271_warning("cmd build null data failed %d", ret);
- 
- 	return ret;
- 
+ 	ret = pci_find_capability(chip->pdev, PCI_CAP_ID_MSI);
+ 	if (!ret) {
+-		pr_info("%s: unsupport msi, use INTx irq\n",
++		pr_info("%s: unsupported msi, use INTx irq\n",
+ 			mmc_hostname(host->mmc));
+ 		return;
+ 	}
 -- 
 2.27.0
 

@@ -2,30 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD55B23DF8F
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 19:49:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 033C523DFCB
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 19:54:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729744AbgHFRt2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Aug 2020 13:49:28 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50454 "EHLO
+        id S1730559AbgHFRxq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Aug 2020 13:53:46 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50371 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728381AbgHFQeJ (ORCPT
+        with ESMTP id S1728328AbgHFQa7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Aug 2020 12:34:09 -0400
+        Thu, 6 Aug 2020 12:30:59 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1k3esI-0004GH-HC; Thu, 06 Aug 2020 12:19:58 +0000
+        id 1k3iRR-0001NL-01; Thu, 06 Aug 2020 16:08:29 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+To:     "Michael S . Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>, Eli Cohen <eli@mellanox.com>,
+        Parav Pandit <parav@mellanox.com>,
+        virtualization@lists.linux-foundation.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ath6kl: fix spelling mistake "initilisation" -> "initialization"
-Date:   Thu,  6 Aug 2020 13:19:58 +0100
-Message-Id: <20200806121958.60700-1-colin.king@canonical.com>
+Subject: [PATCH][next] vdpa/mlx5: fix memory allocation failure checks
+Date:   Thu,  6 Aug 2020 17:08:28 +0100
+Message-Id: <20200806160828.90463-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,26 +37,81 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in an ath6kl_err error message. Fix it.
+The memory allocation failure checking for in and out is currently
+checking if the pointers are valid rather than the contents of what
+they point to. Hence the null check on failed memory allocations is
+incorrect.  Fix this by adding the missing indirection in the check.
+Also for the default case, just set the *in and *out to null as
+these don't have any thing allocated to kfree. Finally remove the
+redundant *in and *out check as these have been already done on each
+allocation in the case statement.
 
+Addresses-Coverity: ("Null pointer dereference")
+Fixes: 1a86b377aa21 ("vdpa/mlx5: Add VDPA driver for supported mlx5 devices")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/wireless/ath/ath6kl/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vdpa/mlx5/net/mlx5_vnet.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/init.c b/drivers/net/wireless/ath/ath6kl/init.c
-index 811fad6d60c0..39bf19686175 100644
---- a/drivers/net/wireless/ath/ath6kl/init.c
-+++ b/drivers/net/wireless/ath/ath6kl/init.c
-@@ -1752,7 +1752,7 @@ static int __ath6kl_init_hw_start(struct ath6kl *ar)
+diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+index 3ec44a4f0e45..55bc58e1dae9 100644
+--- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
++++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+@@ -867,7 +867,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
+ 		*outlen = MLX5_ST_SZ_BYTES(qp_2rst_out);
+ 		*in = kzalloc(*inlen, GFP_KERNEL);
+ 		*out = kzalloc(*outlen, GFP_KERNEL);
+-		if (!in || !out)
++		if (!*in || !*out)
+ 			goto outerr;
  
- 	ret = ath6kl_init_service_ep(ar);
- 	if (ret) {
--		ath6kl_err("Endpoint service initilisation failed: %d\n", ret);
-+		ath6kl_err("Endpoint service initialization failed: %d\n", ret);
- 		goto err_cleanup_scatter;
+ 		MLX5_SET(qp_2rst_in, *in, opcode, cmd);
+@@ -879,7 +879,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
+ 		*outlen = MLX5_ST_SZ_BYTES(rst2init_qp_out);
+ 		*in = kzalloc(*inlen, GFP_KERNEL);
+ 		*out = kzalloc(MLX5_ST_SZ_BYTES(rst2init_qp_out), GFP_KERNEL);
+-		if (!in || !out)
++		if (!*in || !*out)
+ 			goto outerr;
+ 
+ 		MLX5_SET(rst2init_qp_in, *in, opcode, cmd);
+@@ -896,7 +896,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
+ 		*outlen = MLX5_ST_SZ_BYTES(init2rtr_qp_out);
+ 		*in = kzalloc(*inlen, GFP_KERNEL);
+ 		*out = kzalloc(MLX5_ST_SZ_BYTES(init2rtr_qp_out), GFP_KERNEL);
+-		if (!in || !out)
++		if (!*in || !*out)
+ 			goto outerr;
+ 
+ 		MLX5_SET(init2rtr_qp_in, *in, opcode, cmd);
+@@ -914,7 +914,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
+ 		*outlen = MLX5_ST_SZ_BYTES(rtr2rts_qp_out);
+ 		*in = kzalloc(*inlen, GFP_KERNEL);
+ 		*out = kzalloc(MLX5_ST_SZ_BYTES(rtr2rts_qp_out), GFP_KERNEL);
+-		if (!in || !out)
++		if (!*in || !*out)
+ 			goto outerr;
+ 
+ 		MLX5_SET(rtr2rts_qp_in, *in, opcode, cmd);
+@@ -927,16 +927,15 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
+ 		MLX5_SET(qpc, qpc, rnr_retry, 7);
+ 		break;
+ 	default:
+-		goto outerr;
++		goto outerr_nullify;
  	}
+-	if (!*in || !*out)
+-		goto outerr;
  
+ 	return;
+ 
+ outerr:
+ 	kfree(*in);
+ 	kfree(*out);
++outerr_nullify:
+ 	*in = NULL;
+ 	*out = NULL;
+ }
 -- 
 2.27.0
 

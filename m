@@ -2,48 +2,47 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9637C23DDF8
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 19:20:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05C7C23DE4B
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 19:25:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730496AbgHFRUs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Aug 2020 13:20:48 -0400
-Received: from mga03.intel.com ([134.134.136.65]:51384 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729326AbgHFRUX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Aug 2020 13:20:23 -0400
-IronPort-SDR: EAsyGwuC2NO1Jx/bw1A2R6TlAqvNKhAe5IawoL+MsH2VmfVDWPG1sD2ozf1P6N9Ytzgxoh7hJJ
- uqOm2DYihFug==
-X-IronPort-AV: E=McAfee;i="6000,8403,9704"; a="152745828"
-X-IronPort-AV: E=Sophos;i="5.75,441,1589266800"; 
-   d="scan'208";a="152745828"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2020 05:32:45 -0700
-IronPort-SDR: 2aAO8Ggv2nwJsZzTNR+3URxFbkMv5n5zcTn051khE/n9Pk+zyVE+favngvjTASWIVJGr1gBe8P
- Pysl+v0aYB1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,441,1589266800"; 
-   d="scan'208";a="325366356"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.73]) ([10.237.72.73])
-  by fmsmga002.fm.intel.com with ESMTP; 06 Aug 2020 05:32:43 -0700
-Subject: Re: [PATCH] mmc: sdhci-pci-o2micro: fix spelling mistake "unsupport"
- -> "unsupported"
-From:   Adrian Hunter <adrian.hunter@intel.com>
+        id S1729614AbgHFREG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Aug 2020 13:04:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44986 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729308AbgHFRC7 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 6 Aug 2020 13:02:59 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDF2AC0A8887;
+        Thu,  6 Aug 2020 07:16:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description;
+        bh=ZGg2qVzn0hLzJGuPtNgIsWGMBLZdqXuiz8IcBFNPWs4=; b=UaC0GNh60hEnWVu1sJAg3Gl+eM
+        beqy9kN6ieq1fKLRJUJrKSI8XyqLZ9lNo6HEMu/lqWG1m60+vfuLAqw2dHO52pbIBmjgRLyZgrU+F
+        SQpmb8DNXByCxAM/BU8Ts4qO5g1oc73jDBnJmRQLaRLlfuA47MD549OazIOkH6XTKpBR6ePUSnzbn
+        a8JkUNrISBLWNrCnK2AgQzNV03hXcc69OahYgHmhy5PFtaiMCXm4JjZaKdXoqoYY0xFtVCQhZ34G4
+        bwcUprnSLAGl48jdlJN+tRuXdHj2IwnMxQ6dIC40hXIVeBKgyd7JaOnUmpbVGeXx1UnHPOzUbmGMq
+        yIAXkftg==;
+Received: from [2601:1c0:6280:3f0::19c2]
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1k3ggn-0005Iu-0j; Thu, 06 Aug 2020 14:16:13 +0000
+Subject: Re: [PATCH][next][V2] staging: wfx: fix a handful of spelling
+ mistakes
 To:     Colin King <colin.king@canonical.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        shirley her <shirley.her@bayhubtech.com>
-References: <20200806115059.59241-1-colin.king@canonical.com>
- <016404fc-fce8-20f5-da6c-1b7ea936cf5a@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <e472589a-99ed-36d4-1f69-583376a5ceaf@intel.com>
-Date:   Thu, 6 Aug 2020 15:32:18 +0300
+        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200806104701.46123-1-colin.king@canonical.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <1d822037-d8f8-cbac-6df2-fe7296ad4d32@infradead.org>
+Date:   Thu, 6 Aug 2020 07:16:08 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <016404fc-fce8-20f5-da6c-1b7ea936cf5a@intel.com>
+In-Reply-To: <20200806104701.46123-1-colin.king@canonical.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -52,42 +51,47 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 6/08/20 3:21 pm, Adrian Hunter wrote:
-> + code author ernest.zhang <ernest.zhang@bayhubtech.com>
+On 8/6/20 3:47 AM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There are various spelling mistakes in comments and error messages.
+> Fix these.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+> 
+> V2: add in some more fixes as spotted by Randy Dunlap
+> 
+> ---
+>  drivers/staging/wfx/data_rx.c | 2 +-
+>  drivers/staging/wfx/data_tx.c | 2 +-
+>  drivers/staging/wfx/debug.c   | 6 +++---
+>  drivers/staging/wfx/hif_rx.c  | 2 +-
+>  drivers/staging/wfx/hif_tx.c  | 4 ++--
+>  drivers/staging/wfx/main.c    | 2 +-
+>  drivers/staging/wfx/main.h    | 2 +-
+>  drivers/staging/wfx/sta.c     | 2 +-
+>  8 files changed, 11 insertions(+), 11 deletions(-)
 
-That email address bounced, so instead adding
+> diff --git a/drivers/staging/wfx/main.c b/drivers/staging/wfx/main.c
+> index 11dfa088fc86..4263f912760b 100644
+> --- a/drivers/staging/wfx/main.c
+> +++ b/drivers/staging/wfx/main.c
+> @@ -384,7 +384,7 @@ int wfx_probe(struct wfx_dev *wdev)
+>  	err = wfx_sl_init(wdev);
+>  	if (err && wdev->hw_caps.capabilities.link_mode == SEC_LINK_ENFORCED) {
+>  		dev_err(wdev->dev,
+> -			"chip require secure_link, but can't negociate it\n");
+> +			"chip require secure_link, but can't negotiate it\n");
 
-	shirley her <shirley.her@bayhubtech.com>
+			      requires
 
-> 
-> On 6/08/20 2:50 pm, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> There is a spelling mistake in a pr_info message. Fix it.
->>
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>  drivers/mmc/host/sdhci-pci-o2micro.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-pci-o2micro.c
->> index fa76748d8929..4eca8d2d0599 100644
->> --- a/drivers/mmc/host/sdhci-pci-o2micro.c
->> +++ b/drivers/mmc/host/sdhci-pci-o2micro.c
->> @@ -469,7 +469,7 @@ static void sdhci_pci_o2_enable_msi(struct sdhci_pci_chip *chip,
->>  
->>  	ret = pci_find_capability(chip->pdev, PCI_CAP_ID_MSI);
->>  	if (!ret) {
->> -		pr_info("%s: unsupport msi, use INTx irq\n",
->> +		pr_info("%s: unsupported msi, use INTx irq\n",
-> 
-> I think the meaning is more like:
-> 
-> 	MSI is not supported, using INTx IRQ
-> 
->>  			mmc_hostname(host->mmc));
->>  		return;
->>  	}
->>
-> 
+>  		goto err0;
+>  	}
+
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+
+Thanks.
+-- 
+~Randy
 

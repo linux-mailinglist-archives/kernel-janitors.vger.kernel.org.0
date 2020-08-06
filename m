@@ -2,28 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 516ED23DFB5
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 19:52:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EE3E23DF9A
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 19:51:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729434AbgHFRwR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Aug 2020 13:52:17 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50308 "EHLO
+        id S1728710AbgHFRvG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Aug 2020 13:51:06 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50450 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728430AbgHFQbj (ORCPT
+        with ESMTP id S1728802AbgHFQdk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Aug 2020 12:31:39 -0400
+        Thu, 6 Aug 2020 12:33:40 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1k3d8v-0004PQ-IT; Thu, 06 Aug 2020 10:29:01 +0000
+        id 1k3dZI-0006N2-V5; Thu, 06 Aug 2020 10:56:17 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Wolfram Sang <wsa@kernel.org>, linuxppc-dev@lists.ozlabs.org
+To:     Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-can@vger.kernel.org,
+        netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][V2] macintosh: windfarm: remove detatch debug containing spelling mistakes
-Date:   Thu,  6 Aug 2020 11:29:01 +0100
-Message-Id: <20200806102901.44988-1-colin.king@canonical.com>
+Subject: [PATCH] can: grcan: fix spelling mistake "buss" -> "bus"
+Date:   Thu,  6 Aug 2020 11:56:16 +0100
+Message-Id: <20200806105616.46790-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,46 +38,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There are spelling mistakes in two debug messages. As recommended
-by Wolfram Sang, these can be removed as there is plenty of debug
-in the driver core.
+There is a spelling mistake in a netdev_err error message. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
+ drivers/net/can/grcan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-V2: remove the debug rather than fixing the spelling
-
----
- drivers/macintosh/windfarm_lm75_sensor.c | 2 --
- drivers/macintosh/windfarm_lm87_sensor.c | 2 --
- 2 files changed, 4 deletions(-)
-
-diff --git a/drivers/macintosh/windfarm_lm75_sensor.c b/drivers/macintosh/windfarm_lm75_sensor.c
-index 1e5fa09845e7..29f48c2028b6 100644
---- a/drivers/macintosh/windfarm_lm75_sensor.c
-+++ b/drivers/macintosh/windfarm_lm75_sensor.c
-@@ -152,8 +152,6 @@ static int wf_lm75_remove(struct i2c_client *client)
- {
- 	struct wf_lm75_sensor *lm = i2c_get_clientdata(client);
+diff --git a/drivers/net/can/grcan.c b/drivers/net/can/grcan.c
+index 378200b682fa..5d1f15843181 100644
+--- a/drivers/net/can/grcan.c
++++ b/drivers/net/can/grcan.c
+@@ -726,7 +726,7 @@ static void grcan_err(struct net_device *dev, u32 sources, u32 status)
+ 			txrx = "on rx ";
+ 			stats->rx_errors++;
+ 		}
+-		netdev_err(dev, "Fatal AHB buss error %s- halting device\n",
++		netdev_err(dev, "Fatal AHB bus error %s- halting device\n",
+ 			   txrx);
  
--	DBG("wf_lm75: i2c detatch called for %s\n", lm->sens.name);
--
- 	/* Mark client detached */
- 	lm->i2c = NULL;
- 
-diff --git a/drivers/macintosh/windfarm_lm87_sensor.c b/drivers/macintosh/windfarm_lm87_sensor.c
-index d011899c0a8a..9fab0b47cd3d 100644
---- a/drivers/macintosh/windfarm_lm87_sensor.c
-+++ b/drivers/macintosh/windfarm_lm87_sensor.c
-@@ -149,8 +149,6 @@ static int wf_lm87_remove(struct i2c_client *client)
- {
- 	struct wf_lm87_sensor *lm = i2c_get_clientdata(client);
- 
--	DBG("wf_lm87: i2c detatch called for %s\n", lm->sens.name);
--
- 	/* Mark client detached */
- 	lm->i2c = NULL;
- 
+ 		spin_lock_irqsave(&priv->lock, flags);
 -- 
 2.27.0
 

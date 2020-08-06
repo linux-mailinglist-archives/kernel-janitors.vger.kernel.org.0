@@ -2,78 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B8C923DE71
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 19:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5E7823DE08
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Aug 2020 19:21:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730206AbgHFRZl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Aug 2020 13:25:41 -0400
-Received: from sauhun.de ([88.99.104.3]:56338 "EHLO pokefinder.org"
+        id S1729958AbgHFRVV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Aug 2020 13:21:21 -0400
+Received: from mga02.intel.com ([134.134.136.20]:15606 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727971AbgHFRZF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Aug 2020 13:25:05 -0400
-Received: from localhost (router.4pisysteme.de [80.79.225.122])
-        by pokefinder.org (Postfix) with ESMTPSA id 9B29B2C0845;
-        Thu,  6 Aug 2020 13:24:51 +0200 (CEST)
-Date:   Thu, 6 Aug 2020 13:24:51 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Wolfram Sang <wsa@kernel.org>, linuxppc-dev@lists.ozlabs.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][V2] macintosh: windfarm: remove detatch debug containing
- spelling mistakes
-Message-ID: <20200806112451.GA14906@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@the-dreams.de>,
-        Colin King <colin.king@canonical.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Wolfram Sang <wsa@kernel.org>, linuxppc-dev@lists.ozlabs.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200806102901.44988-1-colin.king@canonical.com>
+        id S1730434AbgHFRRF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 6 Aug 2020 13:17:05 -0400
+IronPort-SDR: /slNVu9mYoXyp+zWgpWBcOmMfwLN2bjumDruDhHfEioSXgbgcKwHtfqwHThQmKhIoAdhY72Xjx
+ S3SpCwoDSr7A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9704"; a="140662224"
+X-IronPort-AV: E=Sophos;i="5.75,441,1589266800"; 
+   d="scan'208";a="140662224"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2020 05:21:38 -0700
+IronPort-SDR: Qwvu0VK5iroQvkARLssUhiiV4FgMFwJQ6rsD01xVsy79+MlsNigcuySyBTMRj670mHi4IFu/z+
+ uZm712bkEdSw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,441,1589266800"; 
+   d="scan'208";a="493647059"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.73]) ([10.237.72.73])
+  by fmsmga005.fm.intel.com with ESMTP; 06 Aug 2020 05:21:36 -0700
+Subject: Re: [PATCH] mmc: sdhci-pci-o2micro: fix spelling mistake "unsupport"
+ -> "unsupported"
+To:     Colin King <colin.king@canonical.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "ernest.zhang" <ernest.zhang@bayhubtech.com>
+References: <20200806115059.59241-1-colin.king@canonical.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <016404fc-fce8-20f5-da6c-1b7ea936cf5a@intel.com>
+Date:   Thu, 6 Aug 2020 15:21:11 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="lrZ03NoBR/3+SXJZ"
-Content-Disposition: inline
-In-Reply-To: <20200806102901.44988-1-colin.king@canonical.com>
+In-Reply-To: <20200806115059.59241-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
++ code author ernest.zhang <ernest.zhang@bayhubtech.com>
 
---lrZ03NoBR/3+SXJZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Aug 06, 2020 at 11:29:01AM +0100, Colin King wrote:
+On 6/08/20 2:50 pm, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
->=20
-> There are spelling mistakes in two debug messages. As recommended
-> by Wolfram Sang, these can be removed as there is plenty of debug
-> in the driver core.
->=20
+> 
+> There is a spelling mistake in a pr_info message. Fix it.
+> 
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Reviewed-by: Wolfram Sang <wsa@kernel.org>
+> ---
+>  drivers/mmc/host/sdhci-pci-o2micro.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-pci-o2micro.c
+> index fa76748d8929..4eca8d2d0599 100644
+> --- a/drivers/mmc/host/sdhci-pci-o2micro.c
+> +++ b/drivers/mmc/host/sdhci-pci-o2micro.c
+> @@ -469,7 +469,7 @@ static void sdhci_pci_o2_enable_msi(struct sdhci_pci_chip *chip,
+>  
+>  	ret = pci_find_capability(chip->pdev, PCI_CAP_ID_MSI);
+>  	if (!ret) {
+> -		pr_info("%s: unsupport msi, use INTx irq\n",
+> +		pr_info("%s: unsupported msi, use INTx irq\n",
 
+I think the meaning is more like:
 
---lrZ03NoBR/3+SXJZ
-Content-Type: application/pgp-signature; name="signature.asc"
+	MSI is not supported, using INTx IRQ
 
------BEGIN PGP SIGNATURE-----
+>  			mmc_hostname(host->mmc));
+>  		return;
+>  	}
+> 
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl8r6H8ACgkQFA3kzBSg
-KbZtxg//ZIR7v0tw0KiapTuptJcoisvVibsbZs3xDlTDSfplKnupUcMTPKaOIHo0
-osZmu8pbyB5NQ71RUoH2XWYU1/jnaiq0K65Xq+AuMWPJYHwFE4LNw0i1S/flf9sz
-+i4zUmjRqIfGLN/csp0YJwXqWOrihCbbS051/lsInN6/PsuUFhC3ebIBjqVAreMA
-W1bFKFPBF216CmXYnPvuPEHkrH5Wp/uTP+Y8VJA4zrnZHO3O2+SLL+pQanIPkV4n
-VbUFFht90LlhppLYwb6CphT9lbyp/11gRKGG4ljB0PG6Bi7AIR1akALdFuIW/eCS
-rljR6QUJrFZZgkS4RwcJL12VpvNgFA/jL71jjM74aMywyLp2ClrOmzANNgMZcwLD
-WOZLk0RXM5jtvOEToyftgNHR0m8l2EXw8Q7oG2hoP1gkYL4afGD6NwsLTwSIxa+g
-aK2dFR6htfbBiEVksZBiuT9bVjqTiKgUxpfC9KPG5b0feaAefcSZHeB60DA/Jt2w
-9XK0oFUm2bMeMdeA9KVp7Bm/Ug6Ffc+Qk8qBahBArOIhZFfLAfD7puin+FCt39KR
-/ZO8KLajFoHNtR7ft3XbleProaOCB0ktkX0sRvZTgxLiTK1l9TtwLbg/pNlBpX5W
-DPLH/HHZJTo3FGEmhEPIuh8OlVO4Vk1x3cabp/SGHtLMxPBE+lU=
-=Hjx1
------END PGP SIGNATURE-----
-
---lrZ03NoBR/3+SXJZ--

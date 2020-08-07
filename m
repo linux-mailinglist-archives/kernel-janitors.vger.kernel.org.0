@@ -2,144 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C350423E66D
-	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Aug 2020 05:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C6D523E718
+	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Aug 2020 07:50:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726396AbgHGD6f (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Aug 2020 23:58:35 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:60427 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726038AbgHGD6e (ORCPT
+        id S1726078AbgHGFuo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 7 Aug 2020 01:50:44 -0400
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:22909 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725287AbgHGFuo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Aug 2020 23:58:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1596772712;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=trd6XzNAFWlVlhnF00AGLAJ//+tyUA5NEjUQzobqU08=;
-        b=HxY/+Jcwg7UX6XPmNcboGUAw7Eq4ugVh/O8v8SgplKmCnIWBYgyYvQlbY73z5ViOtM2LkV
-        2QQfg6RP+/LTa5Dy9l4co/5MxvIVzJxmPJOZ5L3tRZ28P4s/vdpX5WSdVNAIu9gXoUNiT7
-        dER94ZOQh2C4JgeCiXgtGv9whaQNWEo=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-170-fVW1eGtFPm-D5zEmWHR_nA-1; Thu, 06 Aug 2020 23:58:30 -0400
-X-MC-Unique: fVW1eGtFPm-D5zEmWHR_nA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 974998017FB;
-        Fri,  7 Aug 2020 03:58:29 +0000 (UTC)
-Received: from [10.72.13.215] (ovpn-13-215.pek2.redhat.com [10.72.13.215])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 12EA15F1EF;
-        Fri,  7 Aug 2020 03:58:23 +0000 (UTC)
-Subject: Re: [PATCH][next] vdpa/mlx5: fix memory allocation failure checks
-To:     Colin King <colin.king@canonical.com>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
-        Eli Cohen <eli@mellanox.com>,
-        Parav Pandit <parav@mellanox.com>,
-        virtualization@lists.linux-foundation.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200806160828.90463-1-colin.king@canonical.com>
-From:   Jason Wang <jasowang@redhat.com>
-Message-ID: <bca8c1ef-1e21-cd05-4a91-ca136de5ae1e@redhat.com>
-Date:   Fri, 7 Aug 2020 11:58:22 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Fri, 7 Aug 2020 01:50:44 -0400
+Received: from [192.168.1.41] ([92.140.224.28])
+        by mwinf5d73 with ME
+        id CVqc2300D0dNxE403Vqd5J; Fri, 07 Aug 2020 07:50:41 +0200
+X-ME-Helo: [192.168.1.41]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 07 Aug 2020 07:50:41 +0200
+X-ME-IP: 92.140.224.28
+Subject: Re: [PATCH] epic100: switch from 'pci_' to 'dma_' API
+To:     David Miller <davem@davemloft.net>
+Cc:     kuba@kernel.org, snelson@pensando.io, mhabets@solarflare.com,
+        vaibhavgupta40@gmail.com, mst@redhat.com, mkubecek@suse.cz,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200806201935.733641-1-christophe.jaillet@wanadoo.fr>
+ <20200806.142311.94169513118353100.davem@davemloft.net>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <bbb337c9-7cb7-0809-2b25-b0c5bd6fd82a@wanadoo.fr>
+Date:   Fri, 7 Aug 2020 07:50:37 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <20200806160828.90463-1-colin.king@canonical.com>
+In-Reply-To: <20200806.142311.94169513118353100.davem@davemloft.net>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-On 2020/8/7 上午12:08, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->
-> The memory allocation failure checking for in and out is currently
-> checking if the pointers are valid rather than the contents of what
-> they point to. Hence the null check on failed memory allocations is
-> incorrect.  Fix this by adding the missing indirection in the check.
-> Also for the default case, just set the *in and *out to null as
-> these don't have any thing allocated to kfree. Finally remove the
-> redundant *in and *out check as these have been already done on each
-> allocation in the case statement.
->
-> Addresses-Coverity: ("Null pointer dereference")
-> Fixes: 1a86b377aa21 ("vdpa/mlx5: Add VDPA driver for supported mlx5 devices")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Le 06/08/2020 à 23:23, David Miller a écrit :
+> From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Date: Thu,  6 Aug 2020 22:19:35 +0200
+> 
+>> The wrappers in include/linux/pci-dma-compat.h should go away.
+> 
+> Christophe, the net-next tree is closed so I'd like to ask that you
+> defer submitting these conversion patches until the net-next
+> tree opens back up again.
+> 
+> Thank you.
+> 
+> 
 
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+Sure, sorry for the inconvenience.
 
-
-> ---
->   drivers/vdpa/mlx5/net/mlx5_vnet.c | 13 ++++++-------
->   1 file changed, 6 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> index 3ec44a4f0e45..55bc58e1dae9 100644
-> --- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> +++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> @@ -867,7 +867,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
->   		*outlen = MLX5_ST_SZ_BYTES(qp_2rst_out);
->   		*in = kzalloc(*inlen, GFP_KERNEL);
->   		*out = kzalloc(*outlen, GFP_KERNEL);
-> -		if (!in || !out)
-> +		if (!*in || !*out)
->   			goto outerr;
->   
->   		MLX5_SET(qp_2rst_in, *in, opcode, cmd);
-> @@ -879,7 +879,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
->   		*outlen = MLX5_ST_SZ_BYTES(rst2init_qp_out);
->   		*in = kzalloc(*inlen, GFP_KERNEL);
->   		*out = kzalloc(MLX5_ST_SZ_BYTES(rst2init_qp_out), GFP_KERNEL);
-> -		if (!in || !out)
-> +		if (!*in || !*out)
->   			goto outerr;
->   
->   		MLX5_SET(rst2init_qp_in, *in, opcode, cmd);
-> @@ -896,7 +896,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
->   		*outlen = MLX5_ST_SZ_BYTES(init2rtr_qp_out);
->   		*in = kzalloc(*inlen, GFP_KERNEL);
->   		*out = kzalloc(MLX5_ST_SZ_BYTES(init2rtr_qp_out), GFP_KERNEL);
-> -		if (!in || !out)
-> +		if (!*in || !*out)
->   			goto outerr;
->   
->   		MLX5_SET(init2rtr_qp_in, *in, opcode, cmd);
-> @@ -914,7 +914,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
->   		*outlen = MLX5_ST_SZ_BYTES(rtr2rts_qp_out);
->   		*in = kzalloc(*inlen, GFP_KERNEL);
->   		*out = kzalloc(MLX5_ST_SZ_BYTES(rtr2rts_qp_out), GFP_KERNEL);
-> -		if (!in || !out)
-> +		if (!*in || !*out)
->   			goto outerr;
->   
->   		MLX5_SET(rtr2rts_qp_in, *in, opcode, cmd);
-> @@ -927,16 +927,15 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
->   		MLX5_SET(qpc, qpc, rnr_retry, 7);
->   		break;
->   	default:
-> -		goto outerr;
-> +		goto outerr_nullify;
->   	}
-> -	if (!*in || !*out)
-> -		goto outerr;
->   
->   	return;
->   
->   outerr:
->   	kfree(*in);
->   	kfree(*out);
-> +outerr_nullify:
->   	*in = NULL;
->   	*out = NULL;
->   }
-
+CJ

@@ -2,82 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB42F23E415
-	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Aug 2020 00:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AAD123E51F
+	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Aug 2020 02:27:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726191AbgHFWgZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Aug 2020 18:36:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40398 "EHLO
+        id S1726149AbgHGA1z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Aug 2020 20:27:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725947AbgHFWgY (ORCPT
+        with ESMTP id S1725947AbgHGA1y (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Aug 2020 18:36:24 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 656D6C061574;
-        Thu,  6 Aug 2020 15:36:24 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id e4so7610437pjd.0;
-        Thu, 06 Aug 2020 15:36:24 -0700 (PDT)
+        Thu, 6 Aug 2020 20:27:54 -0400
+Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A0DCC061574
+        for <kernel-janitors@vger.kernel.org>; Thu,  6 Aug 2020 17:27:54 -0700 (PDT)
+Received: by mail-qk1-x742.google.com with SMTP id p25so307617qkp.2
+        for <kernel-janitors@vger.kernel.org>; Thu, 06 Aug 2020 17:27:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=w4IfUAcAutpmT5dJoKcHzIX9fVgapPrm5OqXG0bL93U=;
-        b=pid4EmHRv7skHhgScFGDMWe8FlLY2ii3rHjKbprTDDLFyEsWJnNniN3NXcpr2AY+Oc
-         j4DmgJ827ZGithgtR5WnXbExi4g4tLA73d6DLBsBj9QqW38Ftg6Er76EKWUCde7nycHi
-         KHJfI/Xf+e4Q0O/9sl5B2mh32Pr6cpByk0R6DkfQ8eGZfrFkeUcyb75UJ6K9s7nf222+
-         uKKTDqieR8MCnZg9cZse3WvCKFeU7otcmyIOZssOmrcKWyTgzlK9X1lQO9psbT1mBvyG
-         VPGuXEd6hNDm025/C8eA8K2TXt7ocux0JKkUswfbrtWgCDsZlMLe6PYiMpzpjlR+v5rb
-         50Ew==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DGA8+gwrB3sAonXBmChAGNY7ZvvzV2hTqZrY8zZK8EE=;
+        b=Xso+VvmrMIUE21k+VszWrrK9Wx9Dkz6fhw6UZwNM31KX0l0YZsv4hPHNk6NsBhrO4/
+         EhySBd8R4ixubMzTBx47NcLptPEQcc9nhOQRSp68KR5MF7H5V+wmK/wQWIIHDavV0fkZ
+         SBKvHvdritZ9w4z/GVNAyhuj5yZkOHVWHB5YiuwjLvq9gihTrGRPhgrFnz6kLD7KFFmc
+         hyuKGOnA8rf9hKzlwP+5JbQlcQvsg8aQEn+cF8l1n95oGqvimoPoe8kUzqyAJdVU/T6M
+         VFIfkNNn2/SGiyNeFabIps/1SCSDV1oMpNeo24un+tlqQ9PIyRVW8Wu29+Ri2l+HBok/
+         n9Jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=w4IfUAcAutpmT5dJoKcHzIX9fVgapPrm5OqXG0bL93U=;
-        b=orCIc9dcJlli/XftBXWeRvE0JGWn/J5Y0rKWpecWxxKN/PmCKlPcp9/s8XeWrWd6YJ
-         OU62rRpZIfUhIppqJuy8YUin0fG5f3eIIpkqrxZaDTQmyp/ejrNQL13uEWLNk7LehybY
-         0GR+eojF0xsb5I7s2tZ7iXgs0EpyWVcrd2a00aoYq6cL031J2h1QBOH9+kO1IqrTdBLp
-         bpGQFUUqkAq16myliFv98o0Ns517BFvl34rTETCIgB+sJx4xqk3h12CJruvbKRxfu8S8
-         tR9IjtX7BXQlydnscl5COjCM+2T7w3bxpuGQg9R0Mp7l0hjmtBKqgTEFNvX4fV2Co8Vj
-         VRrg==
-X-Gm-Message-State: AOAM5311KKosje5kg97GSZfH6nkGOT55qGG2+Dl10MdcZtmmII+3NwjV
-        TajzjLXgCqj4jdodt7M21Jo=
-X-Google-Smtp-Source: ABdhPJwBC8Tn08nTgvrXN3WCkQ1zuXEB5jVrCV24g02LDUW21mitaI+mTyZ0yFPpj4BrowQMhYWIoQ==
-X-Received: by 2002:a17:90b:1106:: with SMTP id gi6mr11068384pjb.2.1596753383816;
-        Thu, 06 Aug 2020 15:36:23 -0700 (PDT)
-Received: from dtor-ws ([2620:15c:202:201:a6ae:11ff:fe11:fcc3])
-        by smtp.gmail.com with ESMTPSA id e3sm8515463pgu.40.2020.08.06.15.36.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2020 15:36:23 -0700 (PDT)
-Date:   Thu, 6 Aug 2020 15:36:21 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Tai-hwa Liang <avatar@sentelic.com>, linux-input@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] input: sentelic: fix error return when fsp_reg_write
- fails
-Message-ID: <20200806223621.GM1665100@dtor-ws>
-References: <20200603141218.131663-1-colin.king@canonical.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DGA8+gwrB3sAonXBmChAGNY7ZvvzV2hTqZrY8zZK8EE=;
+        b=JUqHt0mQmuzTpRJQlEReEO1x5201S8D1Q05fM7hx9u3HCjE1YxTxRU4JKY0ttkMd6g
+         EP3LB8Vv4rPykEBuBQRb1Lob4kQLAhC/HLy6M1rIpH6zXNRMPqMcG7O7IHiWzpFIYe85
+         c8QrvNzG8dSSK2Wy2b3yHt6pQzta5wEGWEDl83ROGcRaPmzyTDWo0vNOidZYSgasXPsQ
+         PhESzuHLX7zOUR9bY4hGaDIxzkv745LWnlvaBS1ta0BG2v9aVMMNKZESfN2E8yY/0xog
+         foWNML+1fRFxJG+haMIKZWkuqGl02GRB1zh4D9Arcpsb6caFAHgcYvTPluTuj+/Y1Uwt
+         o0yQ==
+X-Gm-Message-State: AOAM533Qyq7wUBTusENs4aS1wAAg3t29r/t+U5/csIBYQfZiRF6klDQB
+        btYkx+jy2NhbKY9z93SPyYqAURwWiyaQTdsrZspY+w==
+X-Google-Smtp-Source: ABdhPJxYSpi1BHzeBCHwCIqOzLWVTcTjGnDSiBqngNyrcb+IxPDN8WOHCv0iGeIsP7xXL3Opes7weirBZfL8IM+8VEk=
+X-Received: by 2002:a37:a088:: with SMTP id j130mr11365723qke.147.1596760073565;
+ Thu, 06 Aug 2020 17:27:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200603141218.131663-1-colin.king@canonical.com>
+References: <20200805112655.17696-1-colin.king@canonical.com>
+In-Reply-To: <20200805112655.17696-1-colin.king@canonical.com>
+From:   Hridya Valsaraju <hridya@google.com>
+Date:   Thu, 6 Aug 2020 17:27:17 -0700
+Message-ID: <CA+wgaPPL_sdo+fkQa3pqNmTadg9X6mfJZy5nyR5YTt4L6pHWtg@mail.gmail.com>
+Subject: Re: [PATCH] staging: ion: fix spelling mistake in function name
+ "detatch" -> "detach"
+To:     Colin King <colin.king@canonical.com>
+Cc:     Laura Abbott <labbott@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>,
+        Todd Kjos <tkjos@android.com>,
+        Martijn Coenen <maco@android.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Christian Brauner <christian@brauner.io>,
+        Suren Baghdasaryan <surenb@google.com>,
+        "open list:ANDROID DRIVERS" <devel@driverdev.osuosl.org>,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jun 03, 2020 at 03:12:18PM +0100, Colin King wrote:
+On Wed, Aug 5, 2020 at 4:26 AM Colin King <colin.king@canonical.com> wrote:
+>
 > From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently when the call to fsp_reg_write fails -EIO is not being returned
-> because the count is being returned instead of the return value in retval.
-> Fix this by returning the value in retval instead of count.
-> 
-> Addresses-Coverity: ("Unused value")
-> Fixes: fc69f4a6af49 ("Input: add new driver for Sentelic Finger Sensing Pad")
+>
+> There is a spelling mistake in the function name ion_dma_buf_detatch.
+> Fix it by removing the extraneous t.
+>
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
 
-Applied, thank you.
+Thanks Colin!
+Acked-by: Hridya Valsaraju <hridya@google.com>
 
--- 
-Dmitry
+>  drivers/staging/android/ion/ion.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/staging/android/ion/ion.c b/drivers/staging/android/ion/ion.c
+> index 3c9f09506ffa..e1fe03ceb7f1 100644
+> --- a/drivers/staging/android/ion/ion.c
+> +++ b/drivers/staging/android/ion/ion.c
+> @@ -205,8 +205,8 @@ static int ion_dma_buf_attach(struct dma_buf *dmabuf,
+>         return 0;
+>  }
+>
+> -static void ion_dma_buf_detatch(struct dma_buf *dmabuf,
+> -                               struct dma_buf_attachment *attachment)
+> +static void ion_dma_buf_detach(struct dma_buf *dmabuf,
+> +                              struct dma_buf_attachment *attachment)
+>  {
+>         struct ion_dma_buf_attachment *a = attachment->priv;
+>         struct ion_buffer *buffer = dmabuf->priv;
+> @@ -331,7 +331,7 @@ static const struct dma_buf_ops dma_buf_ops = {
+>         .mmap = ion_mmap,
+>         .release = ion_dma_buf_release,
+>         .attach = ion_dma_buf_attach,
+> -       .detach = ion_dma_buf_detatch,
+> +       .detach = ion_dma_buf_detach,
+>         .begin_cpu_access = ion_dma_buf_begin_cpu_access,
+>         .end_cpu_access = ion_dma_buf_end_cpu_access,
+>  };
+> --
+> 2.27.0
+>

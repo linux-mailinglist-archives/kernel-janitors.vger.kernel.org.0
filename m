@@ -2,131 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 650D623E99B
-	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Aug 2020 10:53:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77BAA23EDA2
+	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Aug 2020 15:02:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727022AbgHGIxN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 7 Aug 2020 04:53:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50404 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726729AbgHGIxM (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 7 Aug 2020 04:53:12 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34A17C061574
-        for <kernel-janitors@vger.kernel.org>; Fri,  7 Aug 2020 01:53:12 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id c15so920404wrs.11
-        for <kernel-janitors@vger.kernel.org>; Fri, 07 Aug 2020 01:53:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=2VcR1BDuGxPd+uco3kzeUdvgveolzvXOgl61y+LceLQ=;
-        b=IQiHh+mOHTWbvSJ5MhHFvhQ9o5IriJWOXtk2hnDr0S0jKb5RBZvqVTQohVUW8zZtTz
-         9+0Lg8yW0nHUrAZqymlHr98qpvrCsG9xBotNaMXmmdAH3qKbXnN4ArZr+MLNdDWFrhJf
-         ixnLqOQ2MZH+OPkAnMBfTa6cMRhlnhZ/YxQRU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to;
-        bh=2VcR1BDuGxPd+uco3kzeUdvgveolzvXOgl61y+LceLQ=;
-        b=iAQC+h/AMIFHiRjTsH4ZqwbLis/tp0Yobv4rX1wWHvQPBxUjQwnKGQwebqQdgc+qse
-         xI9Oycq1JP1Z0JKhxoHXnSOHZHRmn/ec40kdBcQo5v9um3Rsd7NhV59MUHfoYNfb0hFL
-         Ll1Ydk8hgULLPb5GPa9/MxM7aP4lWq6ANsRP9D+icfcIYKz2DEnJJ0MYg3mc9eWYd/m8
-         meFoF8TvQIDYv+/l8+s9MtW1Uw34NIQAUBnDSwo+MfVB386L+xGUdlG20qvSe1C3P9FD
-         gQFlAxecpmbcwDSkoNm+fphCNOkR2vI5z/IrRRbUaOAyguit1IKYKbbqlBSfowgmLZJH
-         3EOA==
-X-Gm-Message-State: AOAM532ua0lGvR8TZzM6yJ/omfgdhYD6q7K6ayQtpsSifUMRWZWGY4ZT
-        bts0sPc5fjX7IBVfK8UQifqvwQ==
-X-Google-Smtp-Source: ABdhPJz3F9pgtvDG875F9ck9GiThy96pkEWsAliV4QS3QkMPwCaukt5ASD6++GHHlV8T7yhBqZwrJw==
-X-Received: by 2002:adf:fa4b:: with SMTP id y11mr10914375wrr.349.1596790390818;
-        Fri, 07 Aug 2020 01:53:10 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id v11sm9571033wrr.10.2020.08.07.01.53.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2020 01:53:10 -0700 (PDT)
-Date:   Fri, 7 Aug 2020 10:53:08 +0200
-From:   daniel@ffwll.ch
-Cc:     Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] drm/gma500: fix spelling mistake "pannel" -> "panel"
-Message-ID: <20200807085308.GQ6419@phenom.ffwll.local>
-Mail-Followup-To: Colin King <colin.king@canonical.com>,
-        Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-        David Airlie <airlied@linux.ie>, dri-devel@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200805124227.20005-1-colin.king@canonical.com>
+        id S1725934AbgHGNCQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 7 Aug 2020 09:02:16 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:41479 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725893AbgHGNCP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 7 Aug 2020 09:02:15 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1596805335; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=mc38/opTEptAuWJc70jptxAnqwYZATU+evTD+ABr2Ms=;
+ b=v/auOkDjwQFX+/oSooyXLuaX3ZJR0UxCuZ7InMn9s/ptwHWGier+jsrcjHAHNI4XpzuMbw19
+ CRR5p36SN3D5hT7XDIul+A6vug8iMTKSagoYkRTfsu9ziZH0bl8YUcILrmGdLcNFqapXvA0S
+ y/x4U4IgtYn7txFv5KX//JNYkU4=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n09.prod.us-east-1.postgun.com with SMTP id
+ 5f2d50bb8567201751ad7bbe (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 07 Aug 2020 13:01:47
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 51D89C433AD; Fri,  7 Aug 2020 13:01:46 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: cang)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 856CCC433C9;
+        Fri,  7 Aug 2020 13:01:45 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200805124227.20005-1-colin.king@canonical.com>
-X-Operating-System: Linux phenom 5.7.0-1-amd64 
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Fri, 07 Aug 2020 21:01:45 +0800
+From:   Can Guo <cang@codeaurora.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Stanley Chu <stanley.chu@mediatek.com>, kernel-team@android.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-scsi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Asutosh Das <asutoshd@codeaurora.org>,
+        Avri Altman <avri.altman@wdc.com>,
+        "Bao D. Nguyen" <nguyenb@codeaurora.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Bean Huo <beanhuo@micron.com>,
+        Hongwu Su <hongwus@codeaurora.org>,
+        "James E. J. Bottomley" <jejb@linux.ibm.com>,
+        Mark Salyzyn <salyzyn@google.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Rajendra Nayak <rnayak@codeaurora.org>,
+        Saravana Kannan <saravanak@google.com>
+Subject: Re: [PATCH 9/9] scsi: ufs: Properly release resources if a task is
+ aborted successfully
+In-Reply-To: <a752927b-dd9b-ebf0-8c77-e2ae0b2aa475@web.de>
+References: <a752927b-dd9b-ebf0-8c77-e2ae0b2aa475@web.de>
+Message-ID: <fc5c328732792aca1dd451d0109f00b5@codeaurora.org>
+X-Sender: cang@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Aug 05, 2020 at 01:42:27PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There a handful of spelling mistakes. fix them.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Hi Markus,
 
-Queued up for 5.10, should show up in linux-next right after the merge
-window closes.
--Daniel
-
-> ---
->  drivers/gpu/drm/gma500/mdfld_dsi_output.c | 4 ++--
->  drivers/gpu/drm/gma500/psb_intel_sdvo.c   | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
+On 2020-08-07 17:33, Markus Elfring wrote:
+>> … To fix it, …
 > 
-> diff --git a/drivers/gpu/drm/gma500/mdfld_dsi_output.c b/drivers/gpu/drm/gma500/mdfld_dsi_output.c
-> index f350ac1ead18..2f3486f32fed 100644
-> --- a/drivers/gpu/drm/gma500/mdfld_dsi_output.c
-> +++ b/drivers/gpu/drm/gma500/mdfld_dsi_output.c
-> @@ -366,7 +366,7 @@ static enum drm_mode_status mdfld_dsi_connector_mode_valid(struct drm_connector
->  	/**
->  	 * FIXME: current DC has no fitting unit, reject any mode setting
->  	 * request
-> -	 * Will figure out a way to do up-scaling(pannel fitting) later.
-> +	 * Will figure out a way to do up-scaling(panel fitting) later.
->  	 **/
->  	if (fixed_mode) {
->  		if (mode->hdisplay != fixed_mode->hdisplay)
-> @@ -531,7 +531,7 @@ void mdfld_dsi_output_init(struct drm_device *dev,
->  	dsi_config->connector = dsi_connector;
->  
->  	if (!dsi_config->fixed_mode) {
-> -		DRM_ERROR("No pannel fixed mode was found\n");
-> +		DRM_ERROR("No panel fixed mode was found\n");
->  		goto dsi_init_err0;
->  	}
->  
-> diff --git a/drivers/gpu/drm/gma500/psb_intel_sdvo.c b/drivers/gpu/drm/gma500/psb_intel_sdvo.c
-> index 06e44f47e73e..907f966d6f22 100644
-> --- a/drivers/gpu/drm/gma500/psb_intel_sdvo.c
-> +++ b/drivers/gpu/drm/gma500/psb_intel_sdvo.c
-> @@ -125,7 +125,7 @@ struct psb_intel_sdvo {
->  	bool is_lvds;
->  
->  	/**
-> -	 * This is sdvo fixed pannel mode pointer
-> +	 * This is sdvo fixed panel mode pointer
->  	 */
->  	struct drm_display_mode *sdvo_lvds_fixed_mode;
->  
-> -- 
-> 2.27.0
+> I propose to replace this wording by the tag “Fixes”.
 > 
+> 
+>> … "mannually", …
+> 
+> Please avoid a typo:
+> … "manually", …
+> 
+> 
+> Regards,
+> Markus
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Thanks, will fix these in next version.
+
+Regards,
+Can Guo.

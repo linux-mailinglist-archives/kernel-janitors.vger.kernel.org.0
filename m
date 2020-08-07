@@ -2,21 +2,21 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06C3023EF5C
-	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Aug 2020 16:50:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C621D23EF9B
+	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Aug 2020 16:52:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726778AbgHGOuk convert rfc822-to-8bit (ORCPT
+        id S1726402AbgHGOwu convert rfc822-to-8bit (ORCPT
         <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 7 Aug 2020 10:50:40 -0400
+        Fri, 7 Aug 2020 10:52:50 -0400
 Received: from mail.furshetcrimea.ru ([193.27.243.220]:51882 "EHLO
         furshetcrimea.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726721AbgHGOuk (ORCPT
+        with ESMTP id S1726964AbgHGOwt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 7 Aug 2020 10:50:40 -0400
-X-Greylist: delayed 5000 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 Aug 2020 10:50:37 EDT
+        Fri, 7 Aug 2020 10:52:49 -0400
+X-Greylist: delayed 5015 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 Aug 2020 10:51:24 EDT
 Received: from [154.118.61.214] (account info@furshetcrimea.ru HELO [192.168.8.100])
   by furshetcrimea.ru (CommuniGate Pro SMTP 6.1.10)
-  with ESMTPA id 11097438; Fri, 07 Aug 2020 16:34:41 +0300
+  with ESMTPA id 11132986; Fri, 07 Aug 2020 17:58:13 +0300
 Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8BIT
@@ -24,11 +24,11 @@ Content-Description: Mail message body
 Subject: Bei Interesse antworten.
 To:     Recipients <info@furshetcrimea.ru>
 From:   info@furshetcrimea.ru
-Date:   Fri, 07 Aug 2020 14:22:04 +0100
+Date:   Fri, 07 Aug 2020 15:45:35 +0100
 Reply-To: mattiassjoborg751@gmail.com
-X-Antivirus: Avast (VPS 200807-0, 08/07/2020), Outbound message
+X-Antivirus: Avast (VPS 200807-2, 08/07/2020), Outbound message
 X-Antivirus-Status: Clean
-Message-ID: <auto-000011097438@furshetcrimea.ru>
+Message-ID: <auto-000011132986@furshetcrimea.ru>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>

@@ -2,115 +2,144 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AAD123E51F
-	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Aug 2020 02:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C350423E66D
+	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Aug 2020 05:58:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726149AbgHGA1z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Aug 2020 20:27:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57494 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725947AbgHGA1y (ORCPT
+        id S1726396AbgHGD6f (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Aug 2020 23:58:35 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:60427 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726038AbgHGD6e (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Aug 2020 20:27:54 -0400
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A0DCC061574
-        for <kernel-janitors@vger.kernel.org>; Thu,  6 Aug 2020 17:27:54 -0700 (PDT)
-Received: by mail-qk1-x742.google.com with SMTP id p25so307617qkp.2
-        for <kernel-janitors@vger.kernel.org>; Thu, 06 Aug 2020 17:27:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DGA8+gwrB3sAonXBmChAGNY7ZvvzV2hTqZrY8zZK8EE=;
-        b=Xso+VvmrMIUE21k+VszWrrK9Wx9Dkz6fhw6UZwNM31KX0l0YZsv4hPHNk6NsBhrO4/
-         EhySBd8R4ixubMzTBx47NcLptPEQcc9nhOQRSp68KR5MF7H5V+wmK/wQWIIHDavV0fkZ
-         SBKvHvdritZ9w4z/GVNAyhuj5yZkOHVWHB5YiuwjLvq9gihTrGRPhgrFnz6kLD7KFFmc
-         hyuKGOnA8rf9hKzlwP+5JbQlcQvsg8aQEn+cF8l1n95oGqvimoPoe8kUzqyAJdVU/T6M
-         VFIfkNNn2/SGiyNeFabIps/1SCSDV1oMpNeo24un+tlqQ9PIyRVW8Wu29+Ri2l+HBok/
-         n9Jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DGA8+gwrB3sAonXBmChAGNY7ZvvzV2hTqZrY8zZK8EE=;
-        b=JUqHt0mQmuzTpRJQlEReEO1x5201S8D1Q05fM7hx9u3HCjE1YxTxRU4JKY0ttkMd6g
-         EP3LB8Vv4rPykEBuBQRb1Lob4kQLAhC/HLy6M1rIpH6zXNRMPqMcG7O7IHiWzpFIYe85
-         c8QrvNzG8dSSK2Wy2b3yHt6pQzta5wEGWEDl83ROGcRaPmzyTDWo0vNOidZYSgasXPsQ
-         PhESzuHLX7zOUR9bY4hGaDIxzkv745LWnlvaBS1ta0BG2v9aVMMNKZESfN2E8yY/0xog
-         foWNML+1fRFxJG+haMIKZWkuqGl02GRB1zh4D9Arcpsb6caFAHgcYvTPluTuj+/Y1Uwt
-         o0yQ==
-X-Gm-Message-State: AOAM533Qyq7wUBTusENs4aS1wAAg3t29r/t+U5/csIBYQfZiRF6klDQB
-        btYkx+jy2NhbKY9z93SPyYqAURwWiyaQTdsrZspY+w==
-X-Google-Smtp-Source: ABdhPJxYSpi1BHzeBCHwCIqOzLWVTcTjGnDSiBqngNyrcb+IxPDN8WOHCv0iGeIsP7xXL3Opes7weirBZfL8IM+8VEk=
-X-Received: by 2002:a37:a088:: with SMTP id j130mr11365723qke.147.1596760073565;
- Thu, 06 Aug 2020 17:27:53 -0700 (PDT)
+        Thu, 6 Aug 2020 23:58:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1596772712;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=trd6XzNAFWlVlhnF00AGLAJ//+tyUA5NEjUQzobqU08=;
+        b=HxY/+Jcwg7UX6XPmNcboGUAw7Eq4ugVh/O8v8SgplKmCnIWBYgyYvQlbY73z5ViOtM2LkV
+        2QQfg6RP+/LTa5Dy9l4co/5MxvIVzJxmPJOZ5L3tRZ28P4s/vdpX5WSdVNAIu9gXoUNiT7
+        dER94ZOQh2C4JgeCiXgtGv9whaQNWEo=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-170-fVW1eGtFPm-D5zEmWHR_nA-1; Thu, 06 Aug 2020 23:58:30 -0400
+X-MC-Unique: fVW1eGtFPm-D5zEmWHR_nA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 974998017FB;
+        Fri,  7 Aug 2020 03:58:29 +0000 (UTC)
+Received: from [10.72.13.215] (ovpn-13-215.pek2.redhat.com [10.72.13.215])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 12EA15F1EF;
+        Fri,  7 Aug 2020 03:58:23 +0000 (UTC)
+Subject: Re: [PATCH][next] vdpa/mlx5: fix memory allocation failure checks
+To:     Colin King <colin.king@canonical.com>,
+        "Michael S . Tsirkin" <mst@redhat.com>,
+        Eli Cohen <eli@mellanox.com>,
+        Parav Pandit <parav@mellanox.com>,
+        virtualization@lists.linux-foundation.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200806160828.90463-1-colin.king@canonical.com>
+From:   Jason Wang <jasowang@redhat.com>
+Message-ID: <bca8c1ef-1e21-cd05-4a91-ca136de5ae1e@redhat.com>
+Date:   Fri, 7 Aug 2020 11:58:22 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20200805112655.17696-1-colin.king@canonical.com>
-In-Reply-To: <20200805112655.17696-1-colin.king@canonical.com>
-From:   Hridya Valsaraju <hridya@google.com>
-Date:   Thu, 6 Aug 2020 17:27:17 -0700
-Message-ID: <CA+wgaPPL_sdo+fkQa3pqNmTadg9X6mfJZy5nyR5YTt4L6pHWtg@mail.gmail.com>
-Subject: Re: [PATCH] staging: ion: fix spelling mistake in function name
- "detatch" -> "detach"
-To:     Colin King <colin.king@canonical.com>
-Cc:     Laura Abbott <labbott@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>,
-        Todd Kjos <tkjos@android.com>,
-        Martijn Coenen <maco@android.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Christian Brauner <christian@brauner.io>,
-        Suren Baghdasaryan <surenb@google.com>,
-        "open list:ANDROID DRIVERS" <devel@driverdev.osuosl.org>,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200806160828.90463-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Aug 5, 2020 at 4:26 AM Colin King <colin.king@canonical.com> wrote:
->
+
+On 2020/8/7 上午12:08, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 >
-> There is a spelling mistake in the function name ion_dma_buf_detatch.
-> Fix it by removing the extraneous t.
+> The memory allocation failure checking for in and out is currently
+> checking if the pointers are valid rather than the contents of what
+> they point to. Hence the null check on failed memory allocations is
+> incorrect.  Fix this by adding the missing indirection in the check.
+> Also for the default case, just set the *in and *out to null as
+> these don't have any thing allocated to kfree. Finally remove the
+> redundant *in and *out check as these have been already done on each
+> allocation in the case statement.
 >
+> Addresses-Coverity: ("Null pointer dereference")
+> Fixes: 1a86b377aa21 ("vdpa/mlx5: Add VDPA driver for supported mlx5 devices")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
+
+Acked-by: Jason Wang <jasowang@redhat.com>
+
+
 > ---
+>   drivers/vdpa/mlx5/net/mlx5_vnet.c | 13 ++++++-------
+>   1 file changed, 6 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+> index 3ec44a4f0e45..55bc58e1dae9 100644
+> --- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
+> +++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+> @@ -867,7 +867,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
+>   		*outlen = MLX5_ST_SZ_BYTES(qp_2rst_out);
+>   		*in = kzalloc(*inlen, GFP_KERNEL);
+>   		*out = kzalloc(*outlen, GFP_KERNEL);
+> -		if (!in || !out)
+> +		if (!*in || !*out)
+>   			goto outerr;
+>   
+>   		MLX5_SET(qp_2rst_in, *in, opcode, cmd);
+> @@ -879,7 +879,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
+>   		*outlen = MLX5_ST_SZ_BYTES(rst2init_qp_out);
+>   		*in = kzalloc(*inlen, GFP_KERNEL);
+>   		*out = kzalloc(MLX5_ST_SZ_BYTES(rst2init_qp_out), GFP_KERNEL);
+> -		if (!in || !out)
+> +		if (!*in || !*out)
+>   			goto outerr;
+>   
+>   		MLX5_SET(rst2init_qp_in, *in, opcode, cmd);
+> @@ -896,7 +896,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
+>   		*outlen = MLX5_ST_SZ_BYTES(init2rtr_qp_out);
+>   		*in = kzalloc(*inlen, GFP_KERNEL);
+>   		*out = kzalloc(MLX5_ST_SZ_BYTES(init2rtr_qp_out), GFP_KERNEL);
+> -		if (!in || !out)
+> +		if (!*in || !*out)
+>   			goto outerr;
+>   
+>   		MLX5_SET(init2rtr_qp_in, *in, opcode, cmd);
+> @@ -914,7 +914,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
+>   		*outlen = MLX5_ST_SZ_BYTES(rtr2rts_qp_out);
+>   		*in = kzalloc(*inlen, GFP_KERNEL);
+>   		*out = kzalloc(MLX5_ST_SZ_BYTES(rtr2rts_qp_out), GFP_KERNEL);
+> -		if (!in || !out)
+> +		if (!*in || !*out)
+>   			goto outerr;
+>   
+>   		MLX5_SET(rtr2rts_qp_in, *in, opcode, cmd);
+> @@ -927,16 +927,15 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
+>   		MLX5_SET(qpc, qpc, rnr_retry, 7);
+>   		break;
+>   	default:
+> -		goto outerr;
+> +		goto outerr_nullify;
+>   	}
+> -	if (!*in || !*out)
+> -		goto outerr;
+>   
+>   	return;
+>   
+>   outerr:
+>   	kfree(*in);
+>   	kfree(*out);
+> +outerr_nullify:
+>   	*in = NULL;
+>   	*out = NULL;
+>   }
 
-Thanks Colin!
-Acked-by: Hridya Valsaraju <hridya@google.com>
-
->  drivers/staging/android/ion/ion.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/staging/android/ion/ion.c b/drivers/staging/android/ion/ion.c
-> index 3c9f09506ffa..e1fe03ceb7f1 100644
-> --- a/drivers/staging/android/ion/ion.c
-> +++ b/drivers/staging/android/ion/ion.c
-> @@ -205,8 +205,8 @@ static int ion_dma_buf_attach(struct dma_buf *dmabuf,
->         return 0;
->  }
->
-> -static void ion_dma_buf_detatch(struct dma_buf *dmabuf,
-> -                               struct dma_buf_attachment *attachment)
-> +static void ion_dma_buf_detach(struct dma_buf *dmabuf,
-> +                              struct dma_buf_attachment *attachment)
->  {
->         struct ion_dma_buf_attachment *a = attachment->priv;
->         struct ion_buffer *buffer = dmabuf->priv;
-> @@ -331,7 +331,7 @@ static const struct dma_buf_ops dma_buf_ops = {
->         .mmap = ion_mmap,
->         .release = ion_dma_buf_release,
->         .attach = ion_dma_buf_attach,
-> -       .detach = ion_dma_buf_detatch,
-> +       .detach = ion_dma_buf_detach,
->         .begin_cpu_access = ion_dma_buf_begin_cpu_access,
->         .end_cpu_access = ion_dma_buf_end_cpu_access,
->  };
-> --
-> 2.27.0
->

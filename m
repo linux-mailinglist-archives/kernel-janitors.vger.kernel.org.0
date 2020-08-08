@@ -2,138 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B552B23F6BD
-	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Aug 2020 09:04:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0475F23F717
+	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Aug 2020 11:32:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726128AbgHHHEF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 8 Aug 2020 03:04:05 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:44261 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725764AbgHHHEE (ORCPT
+        id S1726190AbgHHJcW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 8 Aug 2020 05:32:22 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:57308 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726014AbgHHJcW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 8 Aug 2020 03:04:04 -0400
-Received: by mail-ed1-f66.google.com with SMTP id l23so2779518edv.11;
-        Sat, 08 Aug 2020 00:04:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=cMk/40+I7B5Ro75P2Mo3QJC4dlLCJvnTo1HAcZ4gke4=;
-        b=N3HX55+HpkEfL9PYRnOY05Lc6K+ZM1ZI957MhsgQ57Ff4tqPtHwPIhGq7sMafYCCrA
-         YTRtaKF5ofwouox5gQYkHvnL98sfcVTZf8uKNn4Twvwztsfo4czUfqCQ3q6pXEW8dNHp
-         6OGihnZ+mrBbJeRMca4e//a5egFLa3vDkC7TYNYV9ID+wFV3Do9S8vk36/Ot6oDYKh5y
-         n+Ejah+qPSQyKUdt23az4MXxe0DjzLb6R3CA+2MGiV/RqItS/SKgJQKU1ArkTLkz0PA8
-         5x5jW22ToF3j63hFk5QNA4J8zbjvDvx464qVCE3A/CPsL3Q6JVBVXctcvVuemm61bSRV
-         UfPA==
-X-Gm-Message-State: AOAM530sy9Pfbzs5+mgp//Cx5iRFB0D5Cd61AOMP61t4HvJKUZSLAlFj
-        dlr9JSP6rCA/WiziRKgCnGRVQzf5
-X-Google-Smtp-Source: ABdhPJzIybjM3Jicdsc7Pg082oaQbVqnOkm5+SwcTVx7Qd1LRNBTCnRtWTO3nSngso2Uw1t2OELqcA==
-X-Received: by 2002:a05:6402:1504:: with SMTP id f4mr12517466edw.163.1596870241966;
-        Sat, 08 Aug 2020 00:04:01 -0700 (PDT)
-Received: from ?IPv6:2a0b:e7c0:0:107::49? ([2a0b:e7c0:0:107::49])
-        by smtp.gmail.com with ESMTPSA id q2sm7059145edb.82.2020.08.08.00.04.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 08 Aug 2020 00:04:01 -0700 (PDT)
-Subject: Re: [PATCH] tty: synclink_gt: switch from 'pci_' to 'dma_' API
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        gregkh@linuxfoundation.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200806054404.728854-1-christophe.jaillet@wanadoo.fr>
-From:   Jiri Slaby <jirislaby@kernel.org>
-Message-ID: <56a97781-7312-605a-02a0-37bc03366c94@kernel.org>
-Date:   Sat, 8 Aug 2020 09:03:59 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Sat, 8 Aug 2020 05:32:22 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0789IwhO196333;
+        Sat, 8 Aug 2020 09:32:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=BjxU2hYpE9qnHJRvR45YvDyFi9RxTKJ3dwV9r3j2u5E=;
+ b=SX4hDaAtWjLoSp9bV+lFqb8NzZXc8N95/YVQ3PgsqBU0W8p4TsfrMRYgldIAaKv5Z9T0
+ TYnw4ffDR1k53g7LhyPSxgqgVRmBOs4Bssf2wsVI8+o/h6K6Mret/3n7m6Q/pZjDFBNc
+ MrRK8J8zHD/JHCTuzxEPjB+k4fLNCsJygAQGwvUNLGrq8yH8oWbm0oxIqt/4WkzsRSex
+ /LiQnySmTMgQq/m4oQgbfaqz0USvMLMKT85zR/fwHKcLI8TV3IrTBvfcAYY+0olTvgY2
+ tj6V4Q0GFm6hkC8PnS8aKse2ueDwTE4bojh49nBB/B6Hf+BjSeZJlTUUWQb64MzPoNxA YQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 32smpn0mej-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 08 Aug 2020 09:32:15 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0789JKes005490;
+        Sat, 8 Aug 2020 09:32:15 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 32sj396asa-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 08 Aug 2020 09:32:15 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0789WEYZ013841;
+        Sat, 8 Aug 2020 09:32:14 GMT
+Received: from mwanda (/10.175.188.11)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 08 Aug 2020 02:32:14 -0700
+Date:   Sat, 8 Aug 2020 12:32:07 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     Jason Wang <jasowang@redhat.com>, Eli Cohen <eli@mellanox.com>,
+        Parav Pandit <parav@mellanox.com>,
+        virtualization@lists.linux-foundation.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] vdpa/mlx5: Missing error code on allocation failure
+Message-ID: <20200808093207.GA115053@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20200806054404.728854-1-christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=iso-8859-2
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9706 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 phishscore=0
+ mlxscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008080067
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9706 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 lowpriorityscore=0
+ bulkscore=0 impostorscore=0 phishscore=0 clxscore=1011 spamscore=0
+ malwarescore=0 adultscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008080067
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 06. 08. 20, 7:44, Christophe JAILLET wrote:
-> The wrappers in include/linux/pci-dma-compat.h should go away.
-> 
-> The patch has been generated with the coccinelle script below and has been
-> hand modified to replace GFP_ with a correct flag.
-> It has been compile tested.
-> 
-> When memory is allocated in 'alloc_desc()' and 'alloc_bufs()', GFP_KERNEL
-> can be used because it is only called from a probe function and no lock is
-> acquired.
-> The call chain is:
->    init_one                    (the probe function)
->       --> device_init
->          --> alloc_dma_bufs
->             --> alloc_desc
->             --> alloc_bufs
+This should return -ENOMEM if the allocation fails.  Currently it
+either returns success or an uninitialized value.
 
-Right.
+Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/vdpa/mlx5/core/mr.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-...
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-
-> ---
-> If needed, see post from Christoph Hellwig on the kernel-janitors ML:
->    https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
-> ---
->  drivers/tty/synclink_gt.c | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/tty/synclink_gt.c b/drivers/tty/synclink_gt.c
-> index b794177ccfb9..1edf06653148 100644
-> --- a/drivers/tty/synclink_gt.c
-> +++ b/drivers/tty/synclink_gt.c
-> @@ -3341,8 +3341,8 @@ static int alloc_desc(struct slgt_info *info)
->  	unsigned int pbufs;
->  
->  	/* allocate memory to hold descriptor lists */
-> -	info->bufs = pci_zalloc_consistent(info->pdev, DESC_LIST_SIZE,
-> -					   &info->bufs_dma_addr);
-> +	info->bufs = dma_alloc_coherent(&info->pdev->dev, DESC_LIST_SIZE,
-> +					&info->bufs_dma_addr, GFP_KERNEL);
->  	if (info->bufs == NULL)
->  		return -ENOMEM;
->  
-> @@ -3384,7 +3384,8 @@ static int alloc_desc(struct slgt_info *info)
->  static void free_desc(struct slgt_info *info)
->  {
->  	if (info->bufs != NULL) {
-> -		pci_free_consistent(info->pdev, DESC_LIST_SIZE, info->bufs, info->bufs_dma_addr);
-> +		dma_free_coherent(&info->pdev->dev, DESC_LIST_SIZE,
-> +				  info->bufs, info->bufs_dma_addr);
->  		info->bufs  = NULL;
->  		info->rbufs = NULL;
->  		info->tbufs = NULL;
-> @@ -3395,7 +3396,9 @@ static int alloc_bufs(struct slgt_info *info, struct slgt_desc *bufs, int count)
->  {
->  	int i;
->  	for (i=0; i < count; i++) {
-> -		if ((bufs[i].buf = pci_alloc_consistent(info->pdev, DMABUFSIZE, &bufs[i].buf_dma_addr)) == NULL)
-> +		bufs[i].buf = dma_alloc_coherent(&info->pdev->dev, DMABUFSIZE,
-> +						 &bufs[i].buf_dma_addr, GFP_KERNEL);
-> +		if (!bufs[i].buf)
->  			return -ENOMEM;
->  		bufs[i].pbuf  = cpu_to_le32((unsigned int)bufs[i].buf_dma_addr);
->  	}
-> @@ -3408,7 +3411,8 @@ static void free_bufs(struct slgt_info *info, struct slgt_desc *bufs, int count)
->  	for (i=0; i < count; i++) {
->  		if (bufs[i].buf == NULL)
->  			continue;
-> -		pci_free_consistent(info->pdev, DMABUFSIZE, bufs[i].buf, bufs[i].buf_dma_addr);
-> +		dma_free_coherent(&info->pdev->dev, DMABUFSIZE, bufs[i].buf,
-> +				  bufs[i].buf_dma_addr);
->  		bufs[i].buf = NULL;
->  	}
->  }
-> 
-
-thanks,
+diff --git a/drivers/vdpa/mlx5/core/mr.c b/drivers/vdpa/mlx5/core/mr.c
+index f5dec0274133..ef1c550f8266 100644
+--- a/drivers/vdpa/mlx5/core/mr.c
++++ b/drivers/vdpa/mlx5/core/mr.c
+@@ -319,8 +319,10 @@ static int add_direct_chain(struct mlx5_vdpa_dev *mvdev, u64 start, u64 size, u8
+ 	while (size) {
+ 		sz = (u32)min_t(u64, MAX_KLM_SIZE, size);
+ 		dmr = kzalloc(sizeof(*dmr), GFP_KERNEL);
+-		if (!dmr)
++		if (!dmr) {
++			err = -ENOMEM;
+ 			goto err_alloc;
++		}
+ 
+ 		dmr->start = st;
+ 		dmr->end = st + sz;
 -- 
-js
+2.27.0
+

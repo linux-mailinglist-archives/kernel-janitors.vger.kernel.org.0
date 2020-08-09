@@ -2,61 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36D7A23FD1B
-	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Aug 2020 09:19:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAE9223FD20
+	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Aug 2020 09:24:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726050AbgHIHTT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 9 Aug 2020 03:19:19 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:33613 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725710AbgHIHTS (ORCPT
+        id S1726323AbgHIHYr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 9 Aug 2020 03:24:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53478 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725710AbgHIHYq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 9 Aug 2020 03:19:18 -0400
-Received: from localhost.localdomain ([93.22.150.139])
-        by mwinf5d64 with ME
-        id DKKE2300N30hzCV03KKFvD; Sun, 09 Aug 2020 09:19:16 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 09 Aug 2020 09:19:16 +0200
-X-ME-IP: 93.22.150.139
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     wim@linux-watchdog.org, linux@roeck-us.net
-Cc:     linux-watchdog@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] watchdog: pcwd_usb: Avoid GFP_ATOMIC where it is not needed
-Date:   Sun,  9 Aug 2020 09:19:12 +0200
-Message-Id: <20200809071912.742836-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Sun, 9 Aug 2020 03:24:46 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95869C061756;
+        Sun,  9 Aug 2020 00:24:46 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id w17so3238822ply.11;
+        Sun, 09 Aug 2020 00:24:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=rlCw9bXNz9amSiyruivuB3SKCYjIcaIfTwgEtm92qW4=;
+        b=jUBeK3xAvto7PSUx2HYYsmFHvicywYI+71jRXaFkgIUUbmk9vB/d9Aa95hlzr/lV1K
+         5zvwZehnn0cJx0I0FiLh100a1z3ZNfb+1Z0mcKu8agANAm5CzpLUitLJSP8GuyuaXyxN
+         U4/M8Dtf62WRdfOcmcenjPcQENnXoo1LczVOe+hhE0jhGbTzMcluRRdZpF/E6Pp9frFt
+         YV0Hrx+5GVLWPdIXTNF9RB9I+9uckf/jIOKPz7xANgvwpPAeOUldXMkNvz1PxiYlQQ97
+         /O2YWFFdHP3gkz4dcsKe53OyzUaN1FTUj8QzBEgIHKtOLy7NWhLcc4h/d21qs6J+WBZ1
+         HMrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=rlCw9bXNz9amSiyruivuB3SKCYjIcaIfTwgEtm92qW4=;
+        b=qTUKrpmv01tYAvUs3F/I8ptG+rzTVpmIOpAQerhWLT+aoLtjsjV80EwureuWatS/7k
+         7zVB22vnhUyqzUb5bAoFJHSai1rA9M77bFIppo8dRxrPHYwtTzU8XTAdasFVdocKdpaE
+         B/GZMNNcVOnXfwOc/vBr8wg5UwV6KrCcSU8xtIi0whKJixa0DcLsGl87XgCxOKpJQ4wu
+         aQZCGv8MfhilQojFn0jbizCH3dUdbuz68fboKwD3u18unUoSF/yO53bd0RhIs2+gS8To
+         vqvfM/SbzF5JpdHvcVHrZzks6aHksN1TYgyhC9tkRZlzHNDRgvgLT92kbI4A093evuC2
+         YNdA==
+X-Gm-Message-State: AOAM530WJaXu4sbee6A6EfPODkSDqv3qJZhM3a3wTGXdAe0cBbv7Sc+w
+        OUGK7gd3r0/eTkkV6q/V4/ofxn8OCX4=
+X-Google-Smtp-Source: ABdhPJxuKuH6lag//Z3lCgAfLwYaAPCgKfW1uCamkewUti6WnhVFWc3MOF6OUpwZx60wnjApbHFjXg==
+X-Received: by 2002:a17:90a:202c:: with SMTP id n41mr22176095pjc.126.1596957886122;
+        Sun, 09 Aug 2020 00:24:46 -0700 (PDT)
+Received: from blackclown ([103.88.82.9])
+        by smtp.gmail.com with ESMTPSA id gl9sm565272pjb.41.2020.08.09.00.24.42
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 09 Aug 2020 00:24:45 -0700 (PDT)
+Date:   Sun, 9 Aug 2020 12:54:28 +0530
+From:   Suraj Upadhyay <usuraj35@gmail.com>
+To:     dledford@redhat.com, jgg@ziepe.ca
+Cc:     linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH 0/4] Infiniband Subsystem: Remove pci-dma-compat wrapper APIs.
+Message-ID: <cover.1596957073.git.usuraj35@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is no need to use GFP_ATOMIC here. It is a probe function, no
-spinlock is taken and GFP_KERNEL is used just before and just after this
-'usb_alloc_coherent()' call.
+Hii Developers,
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/watchdog/pcwd_usb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+	This patch series will replace all the legacy pci-dma-compat wrappers
+with the dma-mapping APIs directly in the INFINIBAND Subsystem.
 
-diff --git a/drivers/watchdog/pcwd_usb.c b/drivers/watchdog/pcwd_usb.c
-index 2f44af1831d0..ea67b98ed35d 100644
---- a/drivers/watchdog/pcwd_usb.c
-+++ b/drivers/watchdog/pcwd_usb.c
-@@ -657,7 +657,7 @@ static int usb_pcwd_probe(struct usb_interface *interface,
- 
- 	/* set up the memory buffer's */
- 	usb_pcwd->intr_buffer = usb_alloc_coherent(udev, usb_pcwd->intr_size,
--					GFP_ATOMIC, &usb_pcwd->intr_dma);
-+					GFP_KERNEL, &usb_pcwd->intr_dma);
- 	if (!usb_pcwd->intr_buffer) {
- 		pr_err("Out of memory\n");
- 		goto error;
+This task is done through a coccinelle script which is described in each commit
+message.
+
+The changes are compile tested.
+
+Thanks,
+
+Suraj Upadhyay.
+
+Suraj Upadhyay (4):
+  IB/hfi1: Remove pci-dma-compat wrapper APIs
+  IB/mthca: Remove pci-dma-compat wrapper APIs
+  RDMA/qib: Remove pci-dma-compat wrapper APIs
+  RDMA/pvrdma: Remove pci-dma-compat wrapper APIs
+
+ drivers/infiniband/hw/hfi1/pcie.c             |  8 +++----
+ drivers/infiniband/hw/hfi1/user_exp_rcv.c     | 13 +++++------
+ drivers/infiniband/hw/mthca/mthca_eq.c        | 21 +++++++++--------
+ drivers/infiniband/hw/mthca/mthca_main.c      |  8 +++----
+ drivers/infiniband/hw/mthca/mthca_memfree.c   | 23 +++++++++++--------
+ drivers/infiniband/hw/qib/qib_file_ops.c      | 12 +++++-----
+ drivers/infiniband/hw/qib/qib_init.c          |  4 ++--
+ drivers/infiniband/hw/qib/qib_pcie.c          |  8 +++----
+ drivers/infiniband/hw/qib/qib_user_pages.c    | 12 +++++-----
+ .../infiniband/hw/vmw_pvrdma/pvrdma_main.c    |  6 ++---
+ 10 files changed, 59 insertions(+), 56 deletions(-)
+
 -- 
-2.25.1
+2.17.1
 

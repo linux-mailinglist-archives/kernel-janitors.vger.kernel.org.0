@@ -2,92 +2,118 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 053A823FD90
-	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Aug 2020 11:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFC4723FDC3
+	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Aug 2020 13:02:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726386AbgHIJ3T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 9 Aug 2020 05:29:19 -0400
-Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:27234 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726009AbgHIJ3Q (ORCPT
+        id S1726207AbgHILCt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 9 Aug 2020 07:02:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58418 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726175AbgHILCs (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 9 Aug 2020 05:29:16 -0400
-Received: from localhost.localdomain ([93.22.150.139])
-        by mwinf5d05 with ME
-        id DMV72300G30hzCV03MV8BZ; Sun, 09 Aug 2020 11:29:14 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 09 Aug 2020 11:29:14 +0200
-X-ME-IP: 93.22.150.139
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     amitkarwar@gmail.com, ganapathi.bhat@nxp.com,
-        huxinming820@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, yogeshp@marvell.com, bzhao@marvell.com,
-        linville@tuxdriver.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] mwifiex: Do not use GFP_KERNEL in atomic context
-Date:   Sun,  9 Aug 2020 11:29:06 +0200
-Message-Id: <20200809092906.744621-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Sun, 9 Aug 2020 07:02:48 -0400
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EC0CC061756;
+        Sun,  9 Aug 2020 04:02:48 -0700 (PDT)
+Received: by mail-oi1-x243.google.com with SMTP id o21so6292402oie.12;
+        Sun, 09 Aug 2020 04:02:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WprT/dfsik7SE7E1bU7qAKAxCXB7Ve5h5LFVPNakpU0=;
+        b=LLkUYzU9m3dfZaLVUUZDVuiJiCAVi68LHp6S16MH76XNn7ONANrmokq8af6inqMzTO
+         X/8NMWLFGCaSdbT3f75Se19ukcjw3vFJZVtVpnBjuZZHKtsdBjVE1Sfbcht53I9+bDQ+
+         x1NAhzMjoyGVJQBgzAQr5EfHrp/azboQEVUQox2/Tw3zQMmD1htRtzpkGPhnwK2JNidA
+         0YA3b7ZFgyHAf5QhhUKsKS5lR2kdGrjHCRN/ClJi4Ndcu37r8GbBaswK2fLYWQP4WJya
+         0igjEzyS0MCxygh5dG9dhEEUpHn1dpUS2qSU93hLWFnCp+Ug9pk9LbrvTN5vHvdZRryl
+         S1fA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WprT/dfsik7SE7E1bU7qAKAxCXB7Ve5h5LFVPNakpU0=;
+        b=P1uMnciyOKyDRPTGgK/S1fcO531Way8X4O+xpyj5TmvKKvHnU+GmBlrHPB8h9FMsVa
+         nV/kwTISrWRrStSpnuJstXNyezGFmCZEecBV6Xu5Wi2j51Fp8dUHx2hwv+iaii11zmCw
+         rYFZywWieycYpXLPjI8dOUhyOu7nqg+NsbrinBzGHcPGMD20vyywT8yH6as1B7m/PGBg
+         hdtkc+WdBJ7XTeXmdrhjKQ/+cD3Ss1OtTjjprQah/hD8SpCO6tOw7zF4AKDK+eoG9FIx
+         nQXfUzPPeCViSuDFeQXYHudu36mHoobCW0p+NKuIv6X8abP6+CmmpcjtIaOVLT4+5DD1
+         dKyQ==
+X-Gm-Message-State: AOAM532gUFNZ8X0MQdkETRsi81Bq2xwVgnCGvJ8rbLlY0QUTZKTS8Lgy
+        tGIWPtRPnIZc1LUrqO9h1685HJ4WprhoI37dbbDunk9p
+X-Google-Smtp-Source: ABdhPJyuPFTiwJSL5v5H1oVTK9zSQbmLqMXjHJ14YN+M4iwKa/t127k0u89DKj1VngpHpKU+2rYa+XJB1o6Y5JxCfq0=
+X-Received: by 2002:aca:5bc6:: with SMTP id p189mr17572478oib.130.1596970965656;
+ Sun, 09 Aug 2020 04:02:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200730082022.5557-1-colin.king@canonical.com>
+ <CAFCwf101gsf3GK6f_ggNgPeKTFXEDdCYz-LugNq5mY342zc2Hw@mail.gmail.com> <20200731062057.GC1508201@kroah.com>
+In-Reply-To: <20200731062057.GC1508201@kroah.com>
+From:   Oded Gabbay <oded.gabbay@gmail.com>
+Date:   Sun, 9 Aug 2020 14:02:18 +0300
+Message-ID: <CAFCwf11oAg=mhsqwnSh7vHuUeJEpEtBFKggFaRcbOFY8PhPsPA@mail.gmail.com>
+Subject: Re: [PATCH][next] habanalabs: fix incorrect check on failed workqueue create
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Colin King <colin.king@canonical.com>,
+        Arnd Bergmann <arnd@arndb.de>, Tomer Tayar <ttayar@habana.ai>,
+        Omer Shpigelman <oshpigelman@habana.ai>,
+        Ofir Bitton <obitton@habana.ai>,
+        kernel-janitors@vger.kernel.org,
+        "Linux-Kernel@Vger. Kernel. Org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-A possible call chain is as follow:
-  mwifiex_sdio_interrupt                            (sdio.c)
-    --> mwifiex_main_process                        (main.c)
-      --> mwifiex_process_cmdresp                   (cmdevt.c)
-        --> mwifiex_process_sta_cmdresp             (sta_cmdresp.c)
-          --> mwifiex_ret_802_11_scan               (scan.c)
-            --> mwifiex_parse_single_response_buf   (scan.c)
+On Fri, Jul 31, 2020 at 9:21 AM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Thu, Jul 30, 2020 at 01:51:48PM +0300, Oded Gabbay wrote:
+> > On Thu, Jul 30, 2020 at 11:20 AM Colin King <colin.king@canonical.com> wrote:
+> > >
+> > > From: Colin Ian King <colin.king@canonical.com>
+> > >
+> > > The null check on a failed workqueue create is currently null checking
+> > > hdev->cq_wq rather than the pointer hdev->cq_wq[i] and so the test
+> > > will never be true on a failed workqueue create. Fix this by checking
+> > > hdev->cq_wq[i].
+> > >
+> > > Addresses-Coverity: ("Dereference before null check")
+> > > Fixes: 5574cb2194b1 ("habanalabs: Assign each CQ with its own work queue")
+> > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > > ---
+> > >  drivers/misc/habanalabs/common/device.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/misc/habanalabs/common/device.c b/drivers/misc/habanalabs/common/device.c
+> > > index be16b75bdfdb..35214a186913 100644
+> > > --- a/drivers/misc/habanalabs/common/device.c
+> > > +++ b/drivers/misc/habanalabs/common/device.c
+> > > @@ -288,7 +288,7 @@ static int device_early_init(struct hl_device *hdev)
+> > >         for (i = 0 ; i < hdev->asic_prop.completion_queues_count ; i++) {
+> > >                 snprintf(workq_name, 32, "hl-free-jobs-%u", i);
+> > >                 hdev->cq_wq[i] = create_singlethread_workqueue(workq_name);
+> > > -               if (hdev->cq_wq == NULL) {
+> > > +               if (hdev->cq_wq[i] == NULL) {
+> > >                         dev_err(hdev->dev, "Failed to allocate CQ workqueue\n");
+> > >                         rc = -ENOMEM;
+> > >                         goto free_cq_wq;
+> > > --
+> > > 2.27.0
+> > >
+> >
+> > This patch is:
+> > Reviewed-by: Oded Gabbay <oded.gabbay@gmail.com>
+> >
+> > Greg, can you please apply it directly to the char-misc-next branch ?
+> > I don't want to send a pull request for 1 patch.
+>
+> Already merged :)
 
-'mwifiex_sdio_interrupt()' is an interrupt function.
+Hi Greg,
+I can't find this patch in char-misc-next.
+Can you please check if you applied it ?
+If not, I'll apply it to my fixes tree and send it to you for -rc2
 
-Also note that 'mwifiex_ret_802_11_scan()' already uses GFP_ATOMIC.
-
-So use GFP_ATOMIC instead of GFP_KERNEL when memory is allocated in
-'mwifiex_parse_single_response_buf()'.
-
-Fixes: 7c6fa2a843c5 ("mwifiex: use cfg80211 dynamic scan table and cfg80211_get_bss API")
-or
-Fixes: 601216e12c65e ("mwifiex: process RX packets in SDIO IRQ thread directly")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-This is completely speculative. I don't know if the call chain given above
-if possible in RL application.
-So review carefully :)
-
-I'm not sure of the Fixes tag. If I'm correct:
- - The first one is when the GFP_KERNEL has been introduced.
- - the 2nd one is when some logic has been changed to call interrupt
-   handler directly instead of existing workqueue
-
-Note that if my analysis is completely broken, it is likely that
-'mwifiex_ret_802_11_scan()' could use GFP_KERNEL in order to relax some
-memory allocation constrains.
----
- drivers/net/wireless/marvell/mwifiex/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
-index ff932627a46c..2fb69a590bd8 100644
---- a/drivers/net/wireless/marvell/mwifiex/scan.c
-+++ b/drivers/net/wireless/marvell/mwifiex/scan.c
-@@ -1889,7 +1889,7 @@ mwifiex_parse_single_response_buf(struct mwifiex_private *priv, u8 **bss_info,
- 					    chan, CFG80211_BSS_FTYPE_UNKNOWN,
- 					    bssid, timestamp,
- 					    cap_info_bitmap, beacon_period,
--					    ie_buf, ie_len, rssi, GFP_KERNEL);
-+					    ie_buf, ie_len, rssi, GFP_ATOMIC);
- 			if (bss) {
- 				bss_priv = (struct mwifiex_bss_priv *)bss->priv;
- 				bss_priv->band = band;
--- 
-2.25.1
-
+Thanks,
+Oded

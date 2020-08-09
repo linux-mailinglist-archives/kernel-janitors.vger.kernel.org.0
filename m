@@ -2,95 +2,173 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C01B823F71A
-	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Aug 2020 11:34:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA22923FCF7
+	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Aug 2020 08:04:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726190AbgHHJez (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 8 Aug 2020 05:34:55 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:60538 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726014AbgHHJez (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 8 Aug 2020 05:34:55 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0789Iwqm072107;
-        Sat, 8 Aug 2020 09:34:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=aequKrZ1KJ/UX89lx0SVGQ55fnja0qVj925mD877PtE=;
- b=HWfhjFwZ+icFpDeQLMRFN1v5i9hnwVRzAkGQ0PWNkowGn7Ku6oHA5h9M2kcE5txMRA5u
- VMhZiTKchQh3eEdWig95IYtpOIeWIXdf17LvNnW/ovahgS13jt9yM+Pt6Di5tSnn88qu
- aCkMLCOSMry2R1PDi4WXQEKBJoZ3xXKzz916r9ZONtuoVTqUDAozZUtcQVJF7uu2QYa/
- vUGCK/JOI0zmoyGsJ0PaByRPS+7qXixOwTIowqxpzWm7dOhkPk+e5/355pop4RjkTNj6
- 7HM4hV80lFg5UTPcXDHZ2yKkIeACCCg0mma3FQCTPqIdnEah8JJ8+1/yzVb+gBQRIkN8 BA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 32sm0m8p2j-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sat, 08 Aug 2020 09:34:49 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0789J7lv068917;
-        Sat, 8 Aug 2020 09:32:48 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 32skv0gqjq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 08 Aug 2020 09:32:48 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0789WmoT013985;
-        Sat, 8 Aug 2020 09:32:48 GMT
-Received: from mwanda (/10.175.188.11)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 08 Aug 2020 02:32:47 -0700
-Date:   Sat, 8 Aug 2020 12:32:41 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "Michael S. Tsirkin" <mst@redhat.com>, Eli Cohen <eli@mellanox.com>
-Cc:     Jason Wang <jasowang@redhat.com>,
+        id S1726323AbgHIGD4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 9 Aug 2020 02:03:56 -0400
+Received: from mail-db8eur05on2065.outbound.protection.outlook.com ([40.107.20.65]:32353
+        "EHLO EUR05-DB8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725988AbgHIGDz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 9 Aug 2020 02:03:55 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XuwwJWpQcfWkM7DrpHmZlVLYaj9FGHcPjD/4NaYWlAHdzGnu+Fl5AfIOYjc/Qc+krdwYS4nwUHfU7cO9OT6lsLXBpHXKCkjPQvRP8C3pGUoRLEMYssM8pP93FqLio32NBfN1lPufulJbR4kGt2retX/Tpd22QUw3SayFJs5cxNMGdWhiXG0f+PlyiA2fMxo7TVHNog4uB/55lKIcCkBQTMk66ASLrneVUHU9usN7vdwDI+tdFHn8wNIen2jdtAdtZtoFJeLMb8PDgUQnZqtpQirdca4leWB8FM83Owyg45UcsxO7uQcJE8nVAUUT0BY/bnGq0LFbTO2Z61R6FCzDVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KbyFeOv4XJDOQxp02tYKHwB7XFIsj01MWS0Nn32Zubw=;
+ b=GYI1qaiT8DKy3FYSB2GaFUSVkfq271oAmifpskzESpmohClbImm4bbySt/p+yv3nJCc24RyVZxR0updlmIhVwEDubOC4Wuq067dziL7YQj35iwhK9+QoGiM1t718Smmp7MUyA4EPBLiCm1HYkw0jGfTkdhJI4Ycul4MGe9fqD46fta7jdEXcWfHne2o9BzRVNNPS8PdFFfILwDBaJ9pHby3IuS7epuXAWHkzGDUIkeyLXuAaGNTwlJe+cucSagIpgBNw3TjbhQgWTeaMOFp/C0d2N17w+jxF/NgLi/962mNxvCrHLQf2oiPEeBm8QaL0jH2ygjE/5fwBPgApn5kWlQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
+ dkim=pass header.d=mellanox.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KbyFeOv4XJDOQxp02tYKHwB7XFIsj01MWS0Nn32Zubw=;
+ b=tiX2XONwa7yfU0rUYResZ0g0e169WPcFB/RDRzaszRsIwUz/jy5l2RxvDHXooP4QaeqZCetgeUQu5/kGhGvyph0xavtkBT7t0fnT1wtBkV4X7Y7eoTV0Le6XmE6dl/pbo0SktjMKcg7QDGEQ5bHeAYDiED9cZrrted7HgM4YfwE=
+Authentication-Results: canonical.com; dkim=none (message not signed)
+ header.d=none;canonical.com; dmarc=none action=none header.from=mellanox.com;
+Received: from AM0PR05MB4786.eurprd05.prod.outlook.com (2603:10a6:208:b3::15)
+ by AM0PR05MB6626.eurprd05.prod.outlook.com (2603:10a6:20b:146::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.16; Sun, 9 Aug
+ 2020 06:03:51 +0000
+Received: from AM0PR05MB4786.eurprd05.prod.outlook.com
+ ([fe80::9186:8b7:3cf7:7813]) by AM0PR05MB4786.eurprd05.prod.outlook.com
+ ([fe80::9186:8b7:3cf7:7813%7]) with mapi id 15.20.3261.022; Sun, 9 Aug 2020
+ 06:03:51 +0000
+Date:   Sun, 9 Aug 2020 09:03:47 +0300
+From:   Eli Cohen <eli@mellanox.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "Michael S . Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
         Parav Pandit <parav@mellanox.com>,
         virtualization@lists.linux-foundation.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] vdpa/mlx5: Fix pointer math in mlx5_vdpa_get_config()
-Message-ID: <20200808093241.GB115053@mwanda>
-MIME-Version: 1.0
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] vdpa/mlx5: fix memory allocation failure checks
+Message-ID: <20200809060347.GA48369@mtl-vdi-166.wap.labs.mlnx>
+References: <20200806160828.90463-1-colin.king@canonical.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9706 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0
- mlxlogscore=999 suspectscore=0 mlxscore=0 adultscore=0 bulkscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008080067
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9706 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 clxscore=1015
- suspectscore=0 mlxlogscore=999 priorityscore=1501 adultscore=0
- impostorscore=0 spamscore=0 bulkscore=0 mlxscore=0 lowpriorityscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008080067
+In-Reply-To: <20200806160828.90463-1-colin.king@canonical.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-ClientProxiedBy: AM0PR04CA0020.eurprd04.prod.outlook.com
+ (2603:10a6:208:122::33) To AM0PR05MB4786.eurprd05.prod.outlook.com
+ (2603:10a6:208:b3::15)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from mtl-vdi-166.wap.labs.mlnx (94.188.199.18) by AM0PR04CA0020.eurprd04.prod.outlook.com (2603:10a6:208:122::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.18 via Frontend Transport; Sun, 9 Aug 2020 06:03:51 +0000
+X-Originating-IP: [94.188.199.18]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 7ec00f12-38da-4b89-d036-08d83c29fd74
+X-MS-TrafficTypeDiagnostic: AM0PR05MB6626:
+X-LD-Processed: a652971c-7d2e-4d9b-a6a4-d149256f461b,ExtAddr,ExtFwd
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0PR05MB6626C19213B54B150576F2DEC5470@AM0PR05MB6626.eurprd05.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: vbfnW3AT1UP0GXbODSTqmeriYKF6yBQta70tejl2ba6IsFtU5x2uB3U8j097w6kySOcO3yzPSqqMTbeSH0Ske/yv+03+o0vcUir/F9rhwl7CNIHlpWjw/jHPWpj5RQZ0df9ZpiJMlpfZyu8Ver5av7ugNziY0Kiv/A51YZ43ZpIeqPqm6w0ITyoL7Rjtc6CRd4VzZHab0iXIMcXRdpw5l8oNggiMrhCk36g0tL+QB7//j3gd3/bFUpZnmO0+i+FvvxBRTuowRAQLKk/LpUDqmaQR0aCPqY99J9Vq5pG0gxpK6QFMJiJbpTsn6kUpLrDe8S7d/jsoZmdi9P7jlsXwyw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR05MB4786.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(39860400002)(136003)(346002)(366004)(376002)(396003)(66476007)(66946007)(66556008)(5660300002)(6666004)(956004)(52116002)(1076003)(7696005)(186003)(26005)(54906003)(316002)(6506007)(83380400001)(16526019)(86362001)(2906002)(33656002)(4326008)(8676002)(8936002)(9686003)(508600001)(6916009)(55016002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: c/7fNNenNhaTGP/h7m6PFxW0QTbIRUjwetd39b31yu88cvafynoEqpY/zyC7CDT4PVoPtXT5KWVK+bRSzYjyqIzGasWMxCPdFeSjblfdu1zeycl7CyF1GUMIbpQtKj+ToaDb9vq+CAbBdVVIrDQAwCGTycboUP9zoJEbO8C3m81UDFrvSqxQUFDV8iLkyplq9ewfWuVvNUHJhshr5GXWM3U73rn40/rs9rCe7hx596WPRQP0ijC0ilmAnhrYpgENujotaPIfCvK1/WVxMaV/Q7kUdfqA2rtDvC+mhYdOMmNz66wXQ56D0RCt7trWNziJMBaIu7GH7Hyjp0xVhXSQCQjm83q9NLmbPa+zDbxssPG/9fv1mN1Z8UYFBcteXcAcLEnNlL4abERlPMT3SI2Xvh7rBSdnSd+JZ7u52NkMcLh8DU6/9ctWYpCDG91wz8B2EOK3w7XEVfwezac3cH/Nfvj/TRtxBZl8kfiRsNEw/yWJ//+uOHTWTj6L10b3EzSS78I5UFeHvD/Kq1ojaMtg5RfS4dXej3fny+XcdZaL4rxpjoyUEhAc8t/xMbuPmYCRK9Imhiv0Y/Kd8Cu9z9TVHEL+J/Bl10HAmZNuihWdJGwnvrG5v+W4WsnPgCrsVwqHA8B4bqyuUMHCQo/dZ2Kqtg==
+X-OriginatorOrg: Mellanox.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7ec00f12-38da-4b89-d036-08d83c29fd74
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR05MB4786.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2020 06:03:51.8171
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: a652971c-7d2e-4d9b-a6a4-d149256f461b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uf0u8fHYmZPWx1CA1UUv7EOBpWEXoaSHn06evCjoRIcOZ5rZ77Q6ly2D0bHuCYNpahw3Gv7ijZwFnN6406QeMQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR05MB6626
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is a pointer math bug here so if "offset" is non-zero then this
-will copy memory from beyond the end of the array.
+On Thu, Aug 06, 2020 at 05:08:28PM +0100, Colin King wrote:
+Acked by: Eli Cohen <eli@mellanox.com>
 
-Fixes: 1a86b377aa21 ("vdpa/mlx5: Add VDPA driver for supported mlx5 devices")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/vdpa/mlx5/net/mlx5_vnet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-index 3ec44a4f0e45..9d1637cf772e 100644
---- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-+++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-@@ -1758,7 +1758,7 @@ static void mlx5_vdpa_get_config(struct vdpa_device *vdev, unsigned int offset,
- 	struct mlx5_vdpa_net *ndev = to_mlx5_vdpa_ndev(mvdev);
- 
- 	if (offset + len < sizeof(struct virtio_net_config))
--		memcpy(buf, &ndev->config + offset, len);
-+		memcpy(buf, (u8 *)&ndev->config + offset, len);
- }
- 
- static void mlx5_vdpa_set_config(struct vdpa_device *vdev, unsigned int offset, const void *buf,
--- 
-2.27.0
-
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The memory allocation failure checking for in and out is currently
+> checking if the pointers are valid rather than the contents of what
+> they point to. Hence the null check on failed memory allocations is
+> incorrect.  Fix this by adding the missing indirection in the check.
+> Also for the default case, just set the *in and *out to null as
+> these don't have any thing allocated to kfree. Finally remove the
+> redundant *in and *out check as these have been already done on each
+> allocation in the case statement.
+> 
+> Addresses-Coverity: ("Null pointer dereference")
+> Fixes: 1a86b377aa21 ("vdpa/mlx5: Add VDPA driver for supported mlx5 devices")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/vdpa/mlx5/net/mlx5_vnet.c | 13 ++++++-------
+>  1 file changed, 6 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+> index 3ec44a4f0e45..55bc58e1dae9 100644
+> --- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
+> +++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+> @@ -867,7 +867,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
+>  		*outlen = MLX5_ST_SZ_BYTES(qp_2rst_out);
+>  		*in = kzalloc(*inlen, GFP_KERNEL);
+>  		*out = kzalloc(*outlen, GFP_KERNEL);
+> -		if (!in || !out)
+> +		if (!*in || !*out)
+>  			goto outerr;
+>  
+>  		MLX5_SET(qp_2rst_in, *in, opcode, cmd);
+> @@ -879,7 +879,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
+>  		*outlen = MLX5_ST_SZ_BYTES(rst2init_qp_out);
+>  		*in = kzalloc(*inlen, GFP_KERNEL);
+>  		*out = kzalloc(MLX5_ST_SZ_BYTES(rst2init_qp_out), GFP_KERNEL);
+> -		if (!in || !out)
+> +		if (!*in || !*out)
+>  			goto outerr;
+>  
+>  		MLX5_SET(rst2init_qp_in, *in, opcode, cmd);
+> @@ -896,7 +896,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
+>  		*outlen = MLX5_ST_SZ_BYTES(init2rtr_qp_out);
+>  		*in = kzalloc(*inlen, GFP_KERNEL);
+>  		*out = kzalloc(MLX5_ST_SZ_BYTES(init2rtr_qp_out), GFP_KERNEL);
+> -		if (!in || !out)
+> +		if (!*in || !*out)
+>  			goto outerr;
+>  
+>  		MLX5_SET(init2rtr_qp_in, *in, opcode, cmd);
+> @@ -914,7 +914,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
+>  		*outlen = MLX5_ST_SZ_BYTES(rtr2rts_qp_out);
+>  		*in = kzalloc(*inlen, GFP_KERNEL);
+>  		*out = kzalloc(MLX5_ST_SZ_BYTES(rtr2rts_qp_out), GFP_KERNEL);
+> -		if (!in || !out)
+> +		if (!*in || !*out)
+>  			goto outerr;
+>  
+>  		MLX5_SET(rtr2rts_qp_in, *in, opcode, cmd);
+> @@ -927,16 +927,15 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
+>  		MLX5_SET(qpc, qpc, rnr_retry, 7);
+>  		break;
+>  	default:
+> -		goto outerr;
+> +		goto outerr_nullify;
+>  	}
+> -	if (!*in || !*out)
+> -		goto outerr;
+>  
+>  	return;
+>  
+>  outerr:
+>  	kfree(*in);
+>  	kfree(*out);
+> +outerr_nullify:
+>  	*in = NULL;
+>  	*out = NULL;
+>  }
+> -- 
+> 2.27.0
+> 

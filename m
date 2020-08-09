@@ -2,117 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B28E223FD64
-	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Aug 2020 10:39:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 053A823FD90
+	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Aug 2020 11:29:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726412AbgHIIjH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 9 Aug 2020 04:39:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36526 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726012AbgHIIjE (ORCPT
+        id S1726386AbgHIJ3T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 9 Aug 2020 05:29:19 -0400
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:27234 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726009AbgHIJ3Q (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 9 Aug 2020 04:39:04 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A050AC061756;
-        Sun,  9 Aug 2020 01:39:04 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id d188so3535308pfd.2;
-        Sun, 09 Aug 2020 01:39:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=UUqjBFLSFj07bofmN+lmejWkKSobWy2Q37QPpM9tfM4=;
-        b=DRitf7/xZbhFIbD4BmPyA9TTpOSRlwfq/F3xuOaDUsJO3IzpFeV1oVGTH8+Wi2SwGn
-         My0qxHjKHMVTZ9DvI8QegnU3vp+xPjg26dsp6Ti4mW/lVmRg5Cp3A7CithXfxdgzlOhr
-         qNSN4k+BoYJ25CZOj9PufG1/NM/JGTho6uEgF0BvQDvdKAzH2k302BvV4Eh5WdXRAtF+
-         UUcqBgmwbJO5STQ4bAhV8foXLHWSGrvkM6gHQZ2U4pRJPDhxWmGxBGHqCb0RAdK/bInU
-         it58SLgxoUYtnmLJ6h7limNeaE8Zjp0KuNCNQG8n5lhh1ti0MpH+5RLg2U+5zThs2DRm
-         i/zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=UUqjBFLSFj07bofmN+lmejWkKSobWy2Q37QPpM9tfM4=;
-        b=cv9H+fjZLmNCWIEU/5+HbL40YUnpfugrRiAAcXF1Hgs1PZh79CtYZnDtE6nnSwo8/Y
-         pUw12z+ANmbYADmn/gP32FDvDl3POq5FQ/BFr/bIm2w/hjxiSiL1R1oNaKwZjcaVfKWt
-         yxgmwHB7bpwg9b9X7mXlKM0DSLrY1LkEGbunuT8sovMG2cylfPzq3RE9GbKa3ztKwwDW
-         vf1u79vu3AKQadzGxxDe345fbXrkuU937yR9B7GicnwyAtFVblNHZRnbA5rhLjvhF+ln
-         e0W3rJ+m3UHu51hjXhc7ZuMm2bG3sUhrZBvn3ujD344vLFtupxG+iKOk8/papuGFQbnP
-         6I0A==
-X-Gm-Message-State: AOAM533ed3JjbVZaFIreuLOviL4ybMrfuY8FV8xEkCBCV+SS9S4qdSPI
-        X3EDvdolR8by/MfXXWl8fb4=
-X-Google-Smtp-Source: ABdhPJyvUr21NMad5ZRJfyYb5NwR2zQVU55Q8hb8qn25pFJb7Nomw/QR5LtliW/Q8gDkiMd+7/wHXQ==
-X-Received: by 2002:aa7:8f0d:: with SMTP id x13mr20702677pfr.193.1596962344142;
-        Sun, 09 Aug 2020 01:39:04 -0700 (PDT)
-Received: from blackclown ([103.88.82.9])
-        by smtp.gmail.com with ESMTPSA id s2sm16760513pjb.33.2020.08.09.01.39.01
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 09 Aug 2020 01:39:03 -0700 (PDT)
-Date:   Sun, 9 Aug 2020 14:08:57 +0530
-From:   Suraj Upadhyay <usuraj35@gmail.com>
-To:     Gal Pressman <galpress@amazon.com>
-Cc:     dledford@redhat.com, jgg@ziepe.ca, linux-rdma@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 0/4] Infiniband Subsystem: Remove pci-dma-compat wrapper
- APIs.
-Message-ID: <20200809083857.GB4419@blackclown>
-References: <cover.1596957073.git.usuraj35@gmail.com>
- <9220090e-7340-df50-a998-57a5e7752f90@amazon.com>
+        Sun, 9 Aug 2020 05:29:16 -0400
+Received: from localhost.localdomain ([93.22.150.139])
+        by mwinf5d05 with ME
+        id DMV72300G30hzCV03MV8BZ; Sun, 09 Aug 2020 11:29:14 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 09 Aug 2020 11:29:14 +0200
+X-ME-IP: 93.22.150.139
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     amitkarwar@gmail.com, ganapathi.bhat@nxp.com,
+        huxinming820@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org, yogeshp@marvell.com, bzhao@marvell.com,
+        linville@tuxdriver.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] mwifiex: Do not use GFP_KERNEL in atomic context
+Date:   Sun,  9 Aug 2020 11:29:06 +0200
+Message-Id: <20200809092906.744621-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9220090e-7340-df50-a998-57a5e7752f90@amazon.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Aug 09, 2020 at 11:35:51AM +0300, Gal Pressman wrote:
-> On 09/08/2020 10:24, Suraj Upadhyay wrote:
-> > Hii Developers,
-> > 
-> > 	This patch series will replace all the legacy pci-dma-compat wrappers
-> > with the dma-mapping APIs directly in the INFINIBAND Subsystem.
-> > 
-> > This task is done through a coccinelle script which is described in each commit
-> > message.
-> > 
-> > The changes are compile tested.
-> > 
-> > Thanks,
-> > 
-> > Suraj Upadhyay.
-> > 
-> > Suraj Upadhyay (4):
-> >   IB/hfi1: Remove pci-dma-compat wrapper APIs
-> >   IB/mthca: Remove pci-dma-compat wrapper APIs
-> >   RDMA/qib: Remove pci-dma-compat wrapper APIs
-> >   RDMA/pvrdma: Remove pci-dma-compat wrapper APIs
-> > 
-> >  drivers/infiniband/hw/hfi1/pcie.c             |  8 +++----
-> >  drivers/infiniband/hw/hfi1/user_exp_rcv.c     | 13 +++++------
-> >  drivers/infiniband/hw/mthca/mthca_eq.c        | 21 +++++++++--------
-> >  drivers/infiniband/hw/mthca/mthca_main.c      |  8 +++----
-> >  drivers/infiniband/hw/mthca/mthca_memfree.c   | 23 +++++++++++--------
-> >  drivers/infiniband/hw/qib/qib_file_ops.c      | 12 +++++-----
-> >  drivers/infiniband/hw/qib/qib_init.c          |  4 ++--
-> >  drivers/infiniband/hw/qib/qib_pcie.c          |  8 +++----
-> >  drivers/infiniband/hw/qib/qib_user_pages.c    | 12 +++++-----
-> >  .../infiniband/hw/vmw_pvrdma/pvrdma_main.c    |  6 ++---
-> >  10 files changed, 59 insertions(+), 56 deletions(-)
-> > 
-> 
-> The efa patch isn't listed here, and it shows as patch 5/4?
+A possible call chain is as follow:
+  mwifiex_sdio_interrupt                            (sdio.c)
+    --> mwifiex_main_process                        (main.c)
+      --> mwifiex_process_cmdresp                   (cmdevt.c)
+        --> mwifiex_process_sta_cmdresp             (sta_cmdresp.c)
+          --> mwifiex_ret_802_11_scan               (scan.c)
+            --> mwifiex_parse_single_response_buf   (scan.c)
 
-Yes, I forgot to add it in the queue.
+'mwifiex_sdio_interrupt()' is an interrupt function.
 
-Thought it would be nice if the patch ("efa") would be in the chain.
+Also note that 'mwifiex_ret_802_11_scan()' already uses GFP_ATOMIC.
 
-Though I am sending a v2 for that patch following joe perches suggestion.
+So use GFP_ATOMIC instead of GFP_KERNEL when memory is allocated in
+'mwifiex_parse_single_response_buf()'.
 
-Hope this wasn't an annoyance.
+Fixes: 7c6fa2a843c5 ("mwifiex: use cfg80211 dynamic scan table and cfg80211_get_bss API")
+or
+Fixes: 601216e12c65e ("mwifiex: process RX packets in SDIO IRQ thread directly")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+This is completely speculative. I don't know if the call chain given above
+if possible in RL application.
+So review carefully :)
 
-Thanks,
+I'm not sure of the Fixes tag. If I'm correct:
+ - The first one is when the GFP_KERNEL has been introduced.
+ - the 2nd one is when some logic has been changed to call interrupt
+   handler directly instead of existing workqueue
 
-Suraj Upadhyay.
+Note that if my analysis is completely broken, it is likely that
+'mwifiex_ret_802_11_scan()' could use GFP_KERNEL in order to relax some
+memory allocation constrains.
+---
+ drivers/net/wireless/marvell/mwifiex/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
+index ff932627a46c..2fb69a590bd8 100644
+--- a/drivers/net/wireless/marvell/mwifiex/scan.c
++++ b/drivers/net/wireless/marvell/mwifiex/scan.c
+@@ -1889,7 +1889,7 @@ mwifiex_parse_single_response_buf(struct mwifiex_private *priv, u8 **bss_info,
+ 					    chan, CFG80211_BSS_FTYPE_UNKNOWN,
+ 					    bssid, timestamp,
+ 					    cap_info_bitmap, beacon_period,
+-					    ie_buf, ie_len, rssi, GFP_KERNEL);
++					    ie_buf, ie_len, rssi, GFP_ATOMIC);
+ 			if (bss) {
+ 				bss_priv = (struct mwifiex_bss_priv *)bss->priv;
+ 				bss_priv->band = band;
+-- 
+2.25.1
+

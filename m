@@ -2,32 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EEA7523FECF
-	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Aug 2020 16:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE8D023FFF9
+	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Aug 2020 22:34:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726293AbgHIOuF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 9 Aug 2020 10:50:05 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:49832 "EHLO
+        id S1726344AbgHIUeU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 9 Aug 2020 16:34:20 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:47229 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726199AbgHIOuF (ORCPT
+        with ESMTP id S1726307AbgHIUeU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 9 Aug 2020 10:50:05 -0400
-Received: from localhost.localdomain ([92.140.224.28])
+        Sun, 9 Aug 2020 16:34:20 -0400
+Received: from localhost.localdomain ([93.22.38.137])
         by mwinf5d52 with ME
-        id DSq0230010dNxE403Sq0x6; Sun, 09 Aug 2020 16:50:02 +0200
+        id DYa8230082xYfe503Ya9Dl; Sun, 09 Aug 2020 22:34:17 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 09 Aug 2020 16:50:02 +0200
-X-ME-IP: 92.140.224.28
+X-ME-Date: Sun, 09 Aug 2020 22:34:17 +0200
+X-ME-IP: 93.22.38.137
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     david@lechnology.com, nsekhar@ti.com, mturquette@baylibre.com,
-        sboyd@kernel.org
-Cc:     linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     alexander.deucher@amd.com, christian.koenig@amd.com,
+        airlied@linux.ie, daniel@ffwll.ch, sumit.semwal@linaro.org,
+        colton.w.lewis@protonmail.com, Ori.Messinger@amd.com,
+        m.szyprowski@samsung.com, bernard@vivo.com,
+        dri-devel@lists.freedesktop.org
+Cc:     amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] clk: davinci: Use the correct size when allocating memory
-Date:   Sun,  9 Aug 2020 16:49:59 +0200
-Message-Id: <20200809144959.747986-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] drm: amdgpu: Use the correct size when allocating memory
+Date:   Sun,  9 Aug 2020 22:34:06 +0200
+Message-Id: <20200809203406.751971-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -36,28 +39,29 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'sizeof(*pllen)' should be used in place of 'sizeof(*pllout)' to avoid a
-small over-allocation.
+When '*sgt' is allocated, we must allocated 'sizeof(**sgt)' bytes instead
+of 'sizeof(*sg)'. 'sg' (i.e. struct scatterlist) is smaller than
+'sgt' (i.e struct sg_table), so this could lead to memory corruption.
 
-Fixes: 2d1726915159 ("clk: davinci: New driver for davinci PLL clocks")
+Fixes: f44ffd677fb3 ("drm/amdgpu: add support for exporting VRAM using DMA-buf v3")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/clk/davinci/pll.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/davinci/pll.c b/drivers/clk/davinci/pll.c
-index 6c35e4bb7940..0d750433eb42 100644
---- a/drivers/clk/davinci/pll.c
-+++ b/drivers/clk/davinci/pll.c
-@@ -491,7 +491,7 @@ struct clk *davinci_pll_clk_register(struct device *dev,
- 		parent_name = postdiv_name;
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+index 134cc36e30c5..0739e259bf91 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+@@ -462,7 +462,7 @@ int amdgpu_vram_mgr_alloc_sgt(struct amdgpu_device *adev,
+ 	unsigned int pages;
+ 	int i, r;
  
--	pllen = kzalloc(sizeof(*pllout), GFP_KERNEL);
-+	pllen = kzalloc(sizeof(*pllen), GFP_KERNEL);
- 	if (!pllen) {
- 		ret = -ENOMEM;
- 		goto err_unregister_postdiv;
+-	*sgt = kmalloc(sizeof(*sg), GFP_KERNEL);
++	*sgt = kmalloc(sizeof(**sgt), GFP_KERNEL);
+ 	if (!*sgt)
+ 		return -ENOMEM;
+ 
 -- 
 2.25.1
 

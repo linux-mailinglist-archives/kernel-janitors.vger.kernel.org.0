@@ -2,173 +2,168 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA22923FCF7
-	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Aug 2020 08:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1594623FD07
+	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Aug 2020 08:34:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726323AbgHIGD4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 9 Aug 2020 02:03:56 -0400
-Received: from mail-db8eur05on2065.outbound.protection.outlook.com ([40.107.20.65]:32353
-        "EHLO EUR05-DB8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725988AbgHIGDz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 9 Aug 2020 02:03:55 -0400
+        id S1726097AbgHIGeH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 9 Aug 2020 02:34:07 -0400
+Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:7466 "EHLO
+        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725988AbgHIGeG (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 9 Aug 2020 02:34:06 -0400
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+        id <B5f2f98d10000>; Sat, 08 Aug 2020 23:33:53 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+  by hqpgpgate101.nvidia.com (PGP Universal service);
+  Sat, 08 Aug 2020 23:34:06 -0700
+X-PGP-Universal: processed;
+        by hqpgpgate101.nvidia.com on Sat, 08 Aug 2020 23:34:06 -0700
+Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL111.nvidia.com
+ (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Sun, 9 Aug
+ 2020 06:34:06 +0000
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.168)
+ by HQMAIL109.nvidia.com (172.20.187.15) with Microsoft SMTP Server (TLS) id
+ 15.0.1473.3 via Frontend Transport; Sun, 9 Aug 2020 06:34:06 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XuwwJWpQcfWkM7DrpHmZlVLYaj9FGHcPjD/4NaYWlAHdzGnu+Fl5AfIOYjc/Qc+krdwYS4nwUHfU7cO9OT6lsLXBpHXKCkjPQvRP8C3pGUoRLEMYssM8pP93FqLio32NBfN1lPufulJbR4kGt2retX/Tpd22QUw3SayFJs5cxNMGdWhiXG0f+PlyiA2fMxo7TVHNog4uB/55lKIcCkBQTMk66ASLrneVUHU9usN7vdwDI+tdFHn8wNIen2jdtAdtZtoFJeLMb8PDgUQnZqtpQirdca4leWB8FM83Owyg45UcsxO7uQcJE8nVAUUT0BY/bnGq0LFbTO2Z61R6FCzDVA==
+ b=mMNQYsc177GKXUdhE4zyEkKrt0+W36JqWWeFnNYTJwOHU19+iJRDr2iGsbUr4GRlEUhjTuRtTodbKyJ3HRFdTt85xhy9Iy+MGntJen0cRvfFZt1P+El/z2p95zvWMj26TxkhO9ZM4TwW4TJ87zds87Ecfe9kiHqqMZ1JBqo2C7T2gUnfmbKZFeL0sHsQxOg1OOz5/0YhcqYHeVm7H/M0jcyNBcXS7X8IHpw/SAIalXkxFVAErwvFABoLOSuh1hZmDH7IO6QhZhPRC37n7IkzrUUYcKCFoRqYUwhqmwYvvin6ZctoogEHsLV9Nf6FVPa5bcWOaEQY8DH18f8eyyqm1Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KbyFeOv4XJDOQxp02tYKHwB7XFIsj01MWS0Nn32Zubw=;
- b=GYI1qaiT8DKy3FYSB2GaFUSVkfq271oAmifpskzESpmohClbImm4bbySt/p+yv3nJCc24RyVZxR0updlmIhVwEDubOC4Wuq067dziL7YQj35iwhK9+QoGiM1t718Smmp7MUyA4EPBLiCm1HYkw0jGfTkdhJI4Ycul4MGe9fqD46fta7jdEXcWfHne2o9BzRVNNPS8PdFFfILwDBaJ9pHby3IuS7epuXAWHkzGDUIkeyLXuAaGNTwlJe+cucSagIpgBNw3TjbhQgWTeaMOFp/C0d2N17w+jxF/NgLi/962mNxvCrHLQf2oiPEeBm8QaL0jH2ygjE/5fwBPgApn5kWlQ==
+ bh=JjBF71yuXPGgTlGLNv2OC/udHBQVF+GJ8wR4qNmXefY=;
+ b=ZFRavNyxO5g4TGxxpig7XticcQ2tMVG80/vn4dQtL4EOSvHOWBXc7oYW2ZbeUAhxMunVKABaCSELKl1pzthPCc+Nz6Z1dOQyLqN5Yc1k/prss+q7hRO9oeKgnsBboAnxJYDPLk2hAOg19ar3Casa6l++aS1z6RLZDlqwYC6+a/SJxCzP++tRyKdhgnBCnohHtG7wIuu7fiIstU0rmmNnVy7OU3Jpkb0idfnN0qyUGviRAvrhKuMfMoIcp4bxEXwBEpcPdAZey8vDzTwC74BCbrNIoj1zAKRRm7Hlvw5gdjuTqg9VG/qAw68R9LiuE9XPl2X13zIWS74dqHZiGQjMpw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
- dkim=pass header.d=mellanox.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KbyFeOv4XJDOQxp02tYKHwB7XFIsj01MWS0Nn32Zubw=;
- b=tiX2XONwa7yfU0rUYResZ0g0e169WPcFB/RDRzaszRsIwUz/jy5l2RxvDHXooP4QaeqZCetgeUQu5/kGhGvyph0xavtkBT7t0fnT1wtBkV4X7Y7eoTV0Le6XmE6dl/pbo0SktjMKcg7QDGEQ5bHeAYDiED9cZrrted7HgM4YfwE=
-Authentication-Results: canonical.com; dkim=none (message not signed)
- header.d=none;canonical.com; dmarc=none action=none header.from=mellanox.com;
-Received: from AM0PR05MB4786.eurprd05.prod.outlook.com (2603:10a6:208:b3::15)
- by AM0PR05MB6626.eurprd05.prod.outlook.com (2603:10a6:20b:146::9) with
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+Received: from BN8PR12MB3425.namprd12.prod.outlook.com (2603:10b6:408:61::28)
+ by BN8PR12MB3396.namprd12.prod.outlook.com (2603:10b6:408:45::33) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.16; Sun, 9 Aug
- 2020 06:03:51 +0000
-Received: from AM0PR05MB4786.eurprd05.prod.outlook.com
- ([fe80::9186:8b7:3cf7:7813]) by AM0PR05MB4786.eurprd05.prod.outlook.com
- ([fe80::9186:8b7:3cf7:7813%7]) with mapi id 15.20.3261.022; Sun, 9 Aug 2020
- 06:03:51 +0000
-Date:   Sun, 9 Aug 2020 09:03:47 +0300
-From:   Eli Cohen <eli@mellanox.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "Michael S . Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.20; Sun, 9 Aug
+ 2020 06:34:05 +0000
+Received: from BN8PR12MB3425.namprd12.prod.outlook.com
+ ([fe80::8941:c1aa:1ab4:2e39]) by BN8PR12MB3425.namprd12.prod.outlook.com
+ ([fe80::8941:c1aa:1ab4:2e39%6]) with mapi id 15.20.3261.022; Sun, 9 Aug 2020
+ 06:34:04 +0000
+From:   Eli Cohen <elic@nvidia.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>, Eli Cohen <eli@mellanox.com>
+CC:     Jason Wang <jasowang@redhat.com>,
         Parav Pandit <parav@mellanox.com>,
-        virtualization@lists.linux-foundation.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] vdpa/mlx5: fix memory allocation failure checks
-Message-ID: <20200809060347.GA48369@mtl-vdi-166.wap.labs.mlnx>
-References: <20200806160828.90463-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200806160828.90463-1-colin.king@canonical.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-ClientProxiedBy: AM0PR04CA0020.eurprd04.prod.outlook.com
- (2603:10a6:208:122::33) To AM0PR05MB4786.eurprd05.prod.outlook.com
- (2603:10a6:208:b3::15)
+        "virtualization@lists.linux-foundation.org" 
+        <virtualization@lists.linux-foundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: RE: [PATCH] vdpa/mlx5: Fix pointer math in mlx5_vdpa_get_config()
+Thread-Topic: [PATCH] vdpa/mlx5: Fix pointer math in mlx5_vdpa_get_config()
+Thread-Index: AQHWbWcyWw0bb6Lnek2A2pEcJ9pvpakvUneg
+Date:   Sun, 9 Aug 2020 06:34:04 +0000
+Message-ID: <BN8PR12MB3425E1FCC3E20A04182640D2AB470@BN8PR12MB3425.namprd12.prod.outlook.com>
+References: <20200808093241.GB115053@mwanda>
+In-Reply-To: <20200808093241.GB115053@mwanda>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: oracle.com; dkim=none (message not signed)
+ header.d=none;oracle.com; dmarc=none action=none header.from=nvidia.com;
+x-originating-ip: [37.142.159.249]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: e9b411e5-a3d3-4eb5-1dc9-08d83c2e363c
+x-ms-traffictypediagnostic: BN8PR12MB3396:
+x-microsoft-antispam-prvs: <BN8PR12MB3396B5E6DE29CB1A62CBDCBCAB470@BN8PR12MB3396.namprd12.prod.outlook.com>
+x-ms-exchange-transport-forked: True
+x-ms-oob-tlc-oobclassifiers: OLM:5797;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: y6F93z70qKgoA6CUCLziOlIxf6T7/bgDnDIM4G9Ro7SGJGUAs4fcdCGdRwg3a7qhtX15ydXKIGyQUTc0ZIkuy97KzMBm0XRIrKHIdz9IRkExUihpbdTV0lu7xyqmFjoH6DzLuDJF2X/nDjz6t5idyggJxXyyx17Q+71NaXvnL4+0DR0PIRLxZVebzq7ByQtS2iGJd5MlO/BZFUDTzytWtaz0a6KojyUU1K4tLGbUq20kBB2+rz+Hr/v4tTaCutRXTppfnzL/sDbhiRPrGI+7mJEtxlNQpuuRnOLMRgfP3R7PAUEfzNq4sbaQlKr+aaHc1eIfW+xdCUB9Oup5wWlaCg==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR12MB3425.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(376002)(396003)(366004)(346002)(39850400004)(136003)(186003)(76116006)(66476007)(64756008)(26005)(7696005)(71200400001)(66556008)(53546011)(6506007)(66446008)(316002)(33656002)(52536014)(66946007)(54906003)(110136005)(83380400001)(8936002)(55016002)(5660300002)(9686003)(86362001)(4326008)(8676002)(2906002)(478600001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: Cq2lQoxvcS+hSrK7orxk5uezDNXEwwLnvPa3wq3PSqFNAl/mI09Uv2ZxIpghlmAVgeVkaM2uQaun8b2GXa/XObyFjG81LuisT+H+Rrz4SDM0RJjAT/8/2bYDKaoStrlzMzCYFpfI4TrS710D+zLnuJ5FonbztBkcc2o/YDs7TYC6nOYaRvUEKXTM4umtYsvFZwUS7V0zMle+1J2lvRj5z3CYBbP008iwbr2Bd6xssb8YNwIINT1mLTDCoT0oB56XTu9s/Vw0WZ5792zOfGR9gb4UgtZ5md6D35H5FRLhCq8abtU6sO/q+HaQgX2biXRTJIsyMH5f3FVsUo3/GgyJJbnNpVV7WiZlbZ1b0YFgdUCs6URgIlML3KmTVhN8L864mPIA4K1sUWuNEdJBHjAw+UFLV0hTfCPd6AoitvaBOd0DBFVbi+uV0qpBFnoldd0JqSAPgdkOFz/kyi6rijtR73oaOLeikr8+INkIcPfr1MoPf0qUW1ODZpVKzaImkKtBaTCQHF197YnplQoZPTMTkTmSQM52JDyocJyELP201ZdOX6NhJDSo8Vu7W0HYccm43c6iRStNrXAJQofC6a8uqz7uPvKQP+u+UaoioSCEEZ0Cz/r1BSw2BbT5ytzG3LSOUNimG41Aj3rnUZJ4423Bjg==
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from mtl-vdi-166.wap.labs.mlnx (94.188.199.18) by AM0PR04CA0020.eurprd04.prod.outlook.com (2603:10a6:208:122::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.18 via Frontend Transport; Sun, 9 Aug 2020 06:03:51 +0000
-X-Originating-IP: [94.188.199.18]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 7ec00f12-38da-4b89-d036-08d83c29fd74
-X-MS-TrafficTypeDiagnostic: AM0PR05MB6626:
-X-LD-Processed: a652971c-7d2e-4d9b-a6a4-d149256f461b,ExtAddr,ExtFwd
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0PR05MB6626C19213B54B150576F2DEC5470@AM0PR05MB6626.eurprd05.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vbfnW3AT1UP0GXbODSTqmeriYKF6yBQta70tejl2ba6IsFtU5x2uB3U8j097w6kySOcO3yzPSqqMTbeSH0Ske/yv+03+o0vcUir/F9rhwl7CNIHlpWjw/jHPWpj5RQZ0df9ZpiJMlpfZyu8Ver5av7ugNziY0Kiv/A51YZ43ZpIeqPqm6w0ITyoL7Rjtc6CRd4VzZHab0iXIMcXRdpw5l8oNggiMrhCk36g0tL+QB7//j3gd3/bFUpZnmO0+i+FvvxBRTuowRAQLKk/LpUDqmaQR0aCPqY99J9Vq5pG0gxpK6QFMJiJbpTsn6kUpLrDe8S7d/jsoZmdi9P7jlsXwyw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR05MB4786.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(39860400002)(136003)(346002)(366004)(376002)(396003)(66476007)(66946007)(66556008)(5660300002)(6666004)(956004)(52116002)(1076003)(7696005)(186003)(26005)(54906003)(316002)(6506007)(83380400001)(16526019)(86362001)(2906002)(33656002)(4326008)(8676002)(8936002)(9686003)(508600001)(6916009)(55016002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: c/7fNNenNhaTGP/h7m6PFxW0QTbIRUjwetd39b31yu88cvafynoEqpY/zyC7CDT4PVoPtXT5KWVK+bRSzYjyqIzGasWMxCPdFeSjblfdu1zeycl7CyF1GUMIbpQtKj+ToaDb9vq+CAbBdVVIrDQAwCGTycboUP9zoJEbO8C3m81UDFrvSqxQUFDV8iLkyplq9ewfWuVvNUHJhshr5GXWM3U73rn40/rs9rCe7hx596WPRQP0ijC0ilmAnhrYpgENujotaPIfCvK1/WVxMaV/Q7kUdfqA2rtDvC+mhYdOMmNz66wXQ56D0RCt7trWNziJMBaIu7GH7Hyjp0xVhXSQCQjm83q9NLmbPa+zDbxssPG/9fv1mN1Z8UYFBcteXcAcLEnNlL4abERlPMT3SI2Xvh7rBSdnSd+JZ7u52NkMcLh8DU6/9ctWYpCDG91wz8B2EOK3w7XEVfwezac3cH/Nfvj/TRtxBZl8kfiRsNEw/yWJ//+uOHTWTj6L10b3EzSS78I5UFeHvD/Kq1ojaMtg5RfS4dXej3fny+XcdZaL4rxpjoyUEhAc8t/xMbuPmYCRK9Imhiv0Y/Kd8Cu9z9TVHEL+J/Bl10HAmZNuihWdJGwnvrG5v+W4WsnPgCrsVwqHA8B4bqyuUMHCQo/dZ2Kqtg==
-X-OriginatorOrg: Mellanox.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ec00f12-38da-4b89-d036-08d83c29fd74
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR05MB4786.eurprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2020 06:03:51.8171
+X-MS-Exchange-CrossTenant-AuthSource: BN8PR12MB3425.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9b411e5-a3d3-4eb5-1dc9-08d83c2e363c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Aug 2020 06:34:04.7347
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: a652971c-7d2e-4d9b-a6a4-d149256f461b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uf0u8fHYmZPWx1CA1UUv7EOBpWEXoaSHn06evCjoRIcOZ5rZ77Q6ly2D0bHuCYNpahw3Gv7ijZwFnN6406QeMQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR05MB6626
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: xKtrZLQUyCRpvh4/onRH/KLIqia6rW8EXhlyIB1w7mPbMWrCqWgGiV7on11Ap/Ck
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR12MB3396
+X-OriginatorOrg: Nvidia.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1596954833; bh=JjBF71yuXPGgTlGLNv2OC/udHBQVF+GJ8wR4qNmXefY=;
+        h=X-PGP-Universal:ARC-Seal:ARC-Message-Signature:
+         ARC-Authentication-Results:From:To:CC:Subject:Thread-Topic:
+         Thread-Index:Date:Message-ID:References:In-Reply-To:
+         Accept-Language:Content-Language:X-MS-Has-Attach:
+         X-MS-TNEF-Correlator:authentication-results:x-originating-ip:
+         x-ms-publictraffictype:x-ms-office365-filtering-correlation-id:
+         x-ms-traffictypediagnostic:x-microsoft-antispam-prvs:
+         x-ms-exchange-transport-forked:x-ms-oob-tlc-oobclassifiers:
+         x-ms-exchange-senderadcheck:x-microsoft-antispam:
+         x-microsoft-antispam-message-info:x-forefront-antispam-report:
+         x-ms-exchange-antispam-messagedata:Content-Type:
+         Content-Transfer-Encoding:MIME-Version:
+         X-MS-Exchange-CrossTenant-AuthAs:
+         X-MS-Exchange-CrossTenant-AuthSource:
+         X-MS-Exchange-CrossTenant-Network-Message-Id:
+         X-MS-Exchange-CrossTenant-originalarrivaltime:
+         X-MS-Exchange-CrossTenant-fromentityheader:
+         X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+         X-MS-Exchange-CrossTenant-userprincipalname:
+         X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+        b=J26KKMJKFcDx6r29xLENW2XLcWSK6WzgYiM0svxj/J1SJAMfXXGVTEb6I/j1VDs25
+         lXRQOiQ6+6lycWvKogGOcpiBZedCA10sXv2rwc0lLH9gGIgIRC6EHqUe9wuSih+Agi
+         NgA/OYtpFXK+kwqidSc9MDpN8JDvmsczFLBG7VUDyaZlQF462IjXwqPkJS9v05TXuR
+         3rDqrj0DSKbkqr9o/eqQCp5/wJXvh+s2yNClXpsbumywLh8JOh9v+rfuJ4hGWO4Szr
+         nKgpGUAS4C6T9qpHJEDoYvjtaWH6HNrcbVWVpahGhmEiwrWZ5zXfkz5gU15Qyw4iG3
+         o/6jgnTC0Aamg==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Aug 06, 2020 at 05:08:28PM +0100, Colin King wrote:
-Acked by: Eli Cohen <eli@mellanox.com>
+Acked-by: Eli Cohen <elic@nvidia.com>
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The memory allocation failure checking for in and out is currently
-> checking if the pointers are valid rather than the contents of what
-> they point to. Hence the null check on failed memory allocations is
-> incorrect.  Fix this by adding the missing indirection in the check.
-> Also for the default case, just set the *in and *out to null as
-> these don't have any thing allocated to kfree. Finally remove the
-> redundant *in and *out check as these have been already done on each
-> allocation in the case statement.
-> 
-> Addresses-Coverity: ("Null pointer dereference")
-> Fixes: 1a86b377aa21 ("vdpa/mlx5: Add VDPA driver for supported mlx5 devices")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/vdpa/mlx5/net/mlx5_vnet.c | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> index 3ec44a4f0e45..55bc58e1dae9 100644
-> --- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> +++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> @@ -867,7 +867,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
->  		*outlen = MLX5_ST_SZ_BYTES(qp_2rst_out);
->  		*in = kzalloc(*inlen, GFP_KERNEL);
->  		*out = kzalloc(*outlen, GFP_KERNEL);
-> -		if (!in || !out)
-> +		if (!*in || !*out)
->  			goto outerr;
->  
->  		MLX5_SET(qp_2rst_in, *in, opcode, cmd);
-> @@ -879,7 +879,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
->  		*outlen = MLX5_ST_SZ_BYTES(rst2init_qp_out);
->  		*in = kzalloc(*inlen, GFP_KERNEL);
->  		*out = kzalloc(MLX5_ST_SZ_BYTES(rst2init_qp_out), GFP_KERNEL);
-> -		if (!in || !out)
-> +		if (!*in || !*out)
->  			goto outerr;
->  
->  		MLX5_SET(rst2init_qp_in, *in, opcode, cmd);
-> @@ -896,7 +896,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
->  		*outlen = MLX5_ST_SZ_BYTES(init2rtr_qp_out);
->  		*in = kzalloc(*inlen, GFP_KERNEL);
->  		*out = kzalloc(MLX5_ST_SZ_BYTES(init2rtr_qp_out), GFP_KERNEL);
-> -		if (!in || !out)
-> +		if (!*in || !*out)
->  			goto outerr;
->  
->  		MLX5_SET(init2rtr_qp_in, *in, opcode, cmd);
-> @@ -914,7 +914,7 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
->  		*outlen = MLX5_ST_SZ_BYTES(rtr2rts_qp_out);
->  		*in = kzalloc(*inlen, GFP_KERNEL);
->  		*out = kzalloc(MLX5_ST_SZ_BYTES(rtr2rts_qp_out), GFP_KERNEL);
-> -		if (!in || !out)
-> +		if (!*in || !*out)
->  			goto outerr;
->  
->  		MLX5_SET(rtr2rts_qp_in, *in, opcode, cmd);
-> @@ -927,16 +927,15 @@ static void alloc_inout(struct mlx5_vdpa_net *ndev, int cmd, void **in, int *inl
->  		MLX5_SET(qpc, qpc, rnr_retry, 7);
->  		break;
->  	default:
-> -		goto outerr;
-> +		goto outerr_nullify;
->  	}
-> -	if (!*in || !*out)
-> -		goto outerr;
->  
->  	return;
->  
->  outerr:
->  	kfree(*in);
->  	kfree(*out);
-> +outerr_nullify:
->  	*in = NULL;
->  	*out = NULL;
->  }
-> -- 
-> 2.27.0
-> 
+BTW, vdpa_sim has the same bug.
+
+-----Original Message-----
+From: Dan Carpenter <dan.carpenter@oracle.com>=20
+Sent: Saturday, August 8, 2020 12:33 PM
+To: Michael S. Tsirkin <mst@redhat.com>; Eli Cohen <eli@mellanox.com>
+Cc: Jason Wang <jasowang@redhat.com>; Parav Pandit <parav@mellanox.com>; vi=
+rtualization@lists.linux-foundation.org; linux-kernel@vger.kernel.org; kern=
+el-janitors@vger.kernel.org
+Subject: [PATCH] vdpa/mlx5: Fix pointer math in mlx5_vdpa_get_config()
+
+There is a pointer math bug here so if "offset" is non-zero then this will =
+copy memory from beyond the end of the array.
+
+Fixes: 1a86b377aa21 ("vdpa/mlx5: Add VDPA driver for supported mlx5 devices=
+")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/vdpa/mlx5/net/mlx5_vnet.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5=
+_vnet.c
+index 3ec44a4f0e45..9d1637cf772e 100644
+--- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
++++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+@@ -1758,7 +1758,7 @@ static void mlx5_vdpa_get_config(struct vdpa_device *=
+vdev, unsigned int offset,
+ 	struct mlx5_vdpa_net *ndev =3D to_mlx5_vdpa_ndev(mvdev);
+=20
+ 	if (offset + len < sizeof(struct virtio_net_config))
+-		memcpy(buf, &ndev->config + offset, len);
++		memcpy(buf, (u8 *)&ndev->config + offset, len);
+ }
+=20
+ static void mlx5_vdpa_set_config(struct vdpa_device *vdev, unsigned int of=
+fset, const void *buf,
+--
+2.27.0
+

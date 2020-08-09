@@ -2,129 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EF9923FDE7
-	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Aug 2020 13:25:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B85523FE1C
+	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Aug 2020 14:02:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726210AbgHILZm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 9 Aug 2020 07:25:42 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:50937
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726009AbgHILZi (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 9 Aug 2020 07:25:38 -0400
-X-IronPort-AV: E=Sophos;i="5.75,453,1589234400"; 
-   d="scan'208";a="356217592"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Aug 2020 13:25:35 +0200
-Date:   Sun, 9 Aug 2020 13:25:34 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] Coccinelle: Reduce duplicate code for patch rules of
- memdup_user.cocci
-In-Reply-To: <b5c83a17-e04f-2d10-9506-12c50b3de9b9@web.de>
-Message-ID: <alpine.DEB.2.22.394.2008091324530.2450@hadrien>
-References: <1ae3eefe-fa5a-a497-f00b-5638f4191e90@web.de> <b5c83a17-e04f-2d10-9506-12c50b3de9b9@web.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        id S1726207AbgHIMCa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 9 Aug 2020 08:02:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41214 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726009AbgHIMCZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 9 Aug 2020 08:02:25 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7FB6B206B6;
+        Sun,  9 Aug 2020 12:02:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1596974545;
+        bh=R0J5yufUsoZ7RR4AK9Jav8aRu4/PcqRQbVISdz2gnzI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oepBPitX7d3m+I18DKXA/IgvFMfE8H4sAk8+m7tDLlkSxibss8Gg9QaDJ/7N7TG6O
+         tpgpeGkkFaZdH+QIAf5UcfhFWDGuq5BHmNYGbIM88CENh1RdJji/Ntk6/uU6Iv3XwF
+         IdNrTEwAlOmSv/Tl9vYYuZhrLYLrRu3hods0NP74=
+Date:   Sun, 9 Aug 2020 14:02:38 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Oded Gabbay <oded.gabbay@gmail.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        Arnd Bergmann <arnd@arndb.de>, Tomer Tayar <ttayar@habana.ai>,
+        Omer Shpigelman <oshpigelman@habana.ai>,
+        Ofir Bitton <obitton@habana.ai>,
+        kernel-janitors@vger.kernel.org,
+        "Linux-Kernel@Vger. Kernel. Org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][next] habanalabs: fix incorrect check on failed
+ workqueue create
+Message-ID: <20200809120238.GC385599@kroah.com>
+References: <20200730082022.5557-1-colin.king@canonical.com>
+ <CAFCwf101gsf3GK6f_ggNgPeKTFXEDdCYz-LugNq5mY342zc2Hw@mail.gmail.com>
+ <20200731062057.GC1508201@kroah.com>
+ <CAFCwf11oAg=mhsqwnSh7vHuUeJEpEtBFKggFaRcbOFY8PhPsPA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFCwf11oAg=mhsqwnSh7vHuUeJEpEtBFKggFaRcbOFY8PhPsPA@mail.gmail.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Sun, Aug 09, 2020 at 02:02:18PM +0300, Oded Gabbay wrote:
+> On Fri, Jul 31, 2020 at 9:21 AM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Thu, Jul 30, 2020 at 01:51:48PM +0300, Oded Gabbay wrote:
+> > > On Thu, Jul 30, 2020 at 11:20 AM Colin King <colin.king@canonical.com> wrote:
+> > > >
+> > > > From: Colin Ian King <colin.king@canonical.com>
+> > > >
+> > > > The null check on a failed workqueue create is currently null checking
+> > > > hdev->cq_wq rather than the pointer hdev->cq_wq[i] and so the test
+> > > > will never be true on a failed workqueue create. Fix this by checking
+> > > > hdev->cq_wq[i].
+> > > >
+> > > > Addresses-Coverity: ("Dereference before null check")
+> > > > Fixes: 5574cb2194b1 ("habanalabs: Assign each CQ with its own work queue")
+> > > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > > > ---
+> > > >  drivers/misc/habanalabs/common/device.c | 2 +-
+> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > >
+> > > > diff --git a/drivers/misc/habanalabs/common/device.c b/drivers/misc/habanalabs/common/device.c
+> > > > index be16b75bdfdb..35214a186913 100644
+> > > > --- a/drivers/misc/habanalabs/common/device.c
+> > > > +++ b/drivers/misc/habanalabs/common/device.c
+> > > > @@ -288,7 +288,7 @@ static int device_early_init(struct hl_device *hdev)
+> > > >         for (i = 0 ; i < hdev->asic_prop.completion_queues_count ; i++) {
+> > > >                 snprintf(workq_name, 32, "hl-free-jobs-%u", i);
+> > > >                 hdev->cq_wq[i] = create_singlethread_workqueue(workq_name);
+> > > > -               if (hdev->cq_wq == NULL) {
+> > > > +               if (hdev->cq_wq[i] == NULL) {
+> > > >                         dev_err(hdev->dev, "Failed to allocate CQ workqueue\n");
+> > > >                         rc = -ENOMEM;
+> > > >                         goto free_cq_wq;
+> > > > --
+> > > > 2.27.0
+> > > >
+> > >
+> > > This patch is:
+> > > Reviewed-by: Oded Gabbay <oded.gabbay@gmail.com>
+> > >
+> > > Greg, can you please apply it directly to the char-misc-next branch ?
+> > > I don't want to send a pull request for 1 patch.
+> >
+> > Already merged :)
+> 
+> Hi Greg,
+> I can't find this patch in char-misc-next.
+> Can you please check if you applied it ?
 
+Oops, you are right, I did not take it, my fault, sorry.
 
-On Sun, 9 Aug 2020, Markus Elfring wrote:
+> If not, I'll apply it to my fixes tree and send it to you for -rc2
 
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Sun, 9 Aug 2020 11:11:20 +0200
->
-> Another patch rule was added. A bit of code was copied from a previous
-> SmPL rule for this change specification.
->
-> * Thus reduce duplicate code by using another SmPL disjunction.
+That would be great, thanks for following up on this.
 
-I don't care about this issue.
-
->
-> * Increase the precision a bit for desired source code adjustments.
-
-This gives no information.  If you explain the improvement in an
-understandable way, I will consider whether it is useful to take the
-patch.
-
-julia
-
-> Fixes: 9c568dbd677bcfc975220d3157c89c48669a23e3 ("coccinelle: api: extend memdup_user rule with vmemdup_user()")
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
->  scripts/coccinelle/api/memdup_user.cocci | 44 +++++++++---------------
->  1 file changed, 16 insertions(+), 28 deletions(-)
->
-> diff --git a/scripts/coccinelle/api/memdup_user.cocci b/scripts/coccinelle/api/memdup_user.cocci
-> index e01e95108405..7cf698b4e925 100644
-> --- a/scripts/coccinelle/api/memdup_user.cocci
-> +++ b/scripts/coccinelle/api/memdup_user.cocci
-> @@ -27,34 +27,22 @@ expression from,to,size;
->  identifier l1,l2;
->  position p : script:python() { relevant(p) };
->  @@
-> -
-> --  to = \(kmalloc@p\|kzalloc@p\)
-> --		(size,\(GFP_KERNEL\|GFP_USER\|
-> --		      \(GFP_KERNEL\|GFP_USER\)|__GFP_NOWARN\));
-> -+  to = memdup_user(from,size);
-> -   if (
-> --      to==NULL
-> -+      IS_ERR(to)
-> -                 || ...) {
-> -   <+... when != goto l1;
-> --  -ENOMEM
-> -+  PTR_ERR(to)
-> -   ...+>
-> -   }
-> --  if (copy_from_user(to, from, size) != 0) {
-> --    <+... when != goto l2;
-> --    -EFAULT
-> --    ...+>
-> --  }
-> -
-> -@depends on patch@
-> -expression from,to,size;
-> -identifier l1,l2;
-> -position p : script:python() { relevant(p) };
-> -@@
-> -
-> --  to = \(kvmalloc@p\|kvzalloc@p\)(size,\(GFP_KERNEL\|GFP_USER\));
-> -+  to = vmemdup_user(from,size);
-> + to =
-> +(
-> +-     \(kmalloc@p\|kzalloc@p\)
-> ++     memdup_user
-> +      (
-> +-      size, \( \(GFP_KERNEL\|GFP_USER\) \| \(GFP_KERNEL\|GFP_USER\)|__GFP_NOWARN \)
-> ++      from, size
-> +      )
-> +|
-> +-     \(kvmalloc@p\|kvzalloc@p\)
-> ++     vmemdup_user
-> +      (
-> +-      size, \(GFP_KERNEL\|GFP_USER\)
-> ++      from, size
-> +      )
-> +);
->     if (
->  -      to==NULL
->  +      IS_ERR(to)
-> --
-> 2.28.0
->
->
+greg k-h

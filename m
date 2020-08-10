@@ -2,32 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F40E3240307
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 09:55:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 225C224030F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 09:58:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726428AbgHJHzV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Aug 2020 03:55:21 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:49596 "EHLO
+        id S1726412AbgHJH61 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Aug 2020 03:58:27 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:49646 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725857AbgHJHzV (ORCPT
+        with ESMTP id S1726135AbgHJH60 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Aug 2020 03:55:21 -0400
+        Mon, 10 Aug 2020 03:58:26 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1k52eC-0003WT-RC; Mon, 10 Aug 2020 07:55:08 +0000
+        id 1k52hM-0003jy-IP; Mon, 10 Aug 2020 07:58:24 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Fenghua Yu <fenghua.yu@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
-        linux-kernel@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org
-Subject: [PATCH] x86/resctrl: fix spelling mistake "Could't" -> "Couldn't"
-Date:   Mon, 10 Aug 2020 08:55:08 +0100
-Message-Id: <20200810075508.46490-1-colin.king@canonical.com>
+To:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        linux-rdma@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] RDMA/core: fix spelling mistake "Could't" -> "Couldn't"
+Date:   Mon, 10 Aug 2020 08:58:24 +0100
+Message-Id: <20200810075824.46770-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,33 +35,24 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There are spelling mistakes in pr_warn messages. Fix these.
+There is a spelling mistake in a pr_warn message. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- arch/x86/kernel/cpu/resctrl/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/core/device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
-index 6a9df71c1b9e..98606689f5ca 100644
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -562,7 +562,7 @@ static void domain_add_cpu(int cpu, struct rdt_resource *r)
+diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
+index 82bfee258982..d16d42b3d2ce 100644
+--- a/drivers/infiniband/core/device.c
++++ b/drivers/infiniband/core/device.c
+@@ -2747,7 +2747,7 @@ static int __init ib_core_init(void)
  
- 	d = rdt_find_domain(r, id, &add_pos);
- 	if (IS_ERR(d)) {
--		pr_warn("Could't find cache id for cpu %d\n", cpu);
-+		pr_warn("Couldn't find cache id for cpu %d\n", cpu);
- 		return;
- 	}
- 
-@@ -607,7 +607,7 @@ static void domain_remove_cpu(int cpu, struct rdt_resource *r)
- 
- 	d = rdt_find_domain(r, id, NULL);
- 	if (IS_ERR_OR_NULL(d)) {
--		pr_warn("Could't find cache id for cpu %d\n", cpu);
-+		pr_warn("Couldn't find cache id for cpu %d\n", cpu);
- 		return;
+ 	ret = addr_init();
+ 	if (ret) {
+-		pr_warn("Could't init IB address resolution\n");
++		pr_warn("Couldn't init IB address resolution\n");
+ 		goto err_ibnl;
  	}
  
 -- 

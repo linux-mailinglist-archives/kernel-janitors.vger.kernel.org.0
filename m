@@ -2,30 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CE0F24039B
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 10:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D67F2403D4
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 11:08:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726630AbgHJIvC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Aug 2020 04:51:02 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:52438 "EHLO
+        id S1726473AbgHJJIr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Aug 2020 05:08:47 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:52743 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725857AbgHJIvB (ORCPT
+        with ESMTP id S1726021AbgHJJIr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Aug 2020 04:51:01 -0400
+        Mon, 10 Aug 2020 05:08:47 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1k53WD-0000zR-Q8; Mon, 10 Aug 2020 08:50:57 +0000
+        id 1k53nP-0002Kl-HR; Mon, 10 Aug 2020 09:08:43 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     QLogic-Storage-Upstream@qlogic.com,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
         linux-scsi@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] scsi: bnx2fc: fix spelling mistake "couldnt" -> "couldn't"
-Date:   Mon, 10 Aug 2020 09:50:57 +0100
-Message-Id: <20200810085057.49039-1-colin.king@canonical.com>
+Subject: [PATCH] scsi: csiostor: fix fix spelling mistake "couldnt" -> "couldn't"
+Date:   Mon, 10 Aug 2020 10:08:43 +0100
+Message-Id: <20200810090843.49553-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,44 +37,44 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There are spelling mistakes in various printk messages. Fix these.
+There are spelling mistakes in two comments and a csio_err error
+message. Fix these.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/scsi/bnx2fc/bnx2fc_io.c | 6 +++---
+ drivers/scsi/csiostor/csio_scsi.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/bnx2fc/bnx2fc_io.c b/drivers/scsi/bnx2fc/bnx2fc_io.c
-index 1aba5897ccb0..1a0dc18d6915 100644
---- a/drivers/scsi/bnx2fc/bnx2fc_io.c
-+++ b/drivers/scsi/bnx2fc/bnx2fc_io.c
-@@ -864,7 +864,7 @@ int bnx2fc_initiate_abts(struct bnx2fc_cmd *io_req)
+diff --git a/drivers/scsi/csiostor/csio_scsi.c b/drivers/scsi/csiostor/csio_scsi.c
+index 00cf33573136..55e74da2f3cb 100644
+--- a/drivers/scsi/csiostor/csio_scsi.c
++++ b/drivers/scsi/csiostor/csio_scsi.c
+@@ -933,14 +933,14 @@ csio_scsis_aborting(struct csio_ioreq *req, enum csio_scsi_ev evt)
+ 		 *    abort for that I/O by the FW crossed each other.
+ 		 *    The FW returned FW_EINVAL. The original I/O would have
+ 		 *    returned with FW_SUCCESS or any other SCSI error.
+-		 * 3. The FW couldnt sent the abort out on the wire, as there
++		 * 3. The FW couldn't sent the abort out on the wire, as there
+ 		 *    was an I-T nexus loss (link down, remote device logged
+ 		 *    out etc). FW sent back an appropriate IT nexus loss status
+ 		 *    for the abort.
+ 		 * 4. FW sent an abort, but abort timed out (remote device
+ 		 *    didnt respond). FW replied back with
+ 		 *    FW_SCSI_ABORT_TIMEDOUT.
+-		 * 5. FW couldnt genuinely abort the request for some reason,
++		 * 5. FW couldn't genuinely abort the request for some reason,
+ 		 *    and sent us an error.
+ 		 *
+ 		 * The first 3 scenarios are treated as  succesful abort
+@@ -1859,7 +1859,7 @@ csio_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmnd)
+ 	spin_unlock_irqrestore(&hw->lock, flags);
  
- 	abts_io_req = bnx2fc_elstm_alloc(tgt, BNX2FC_ABTS);
- 	if (!abts_io_req) {
--		printk(KERN_ERR PFX "abts: couldnt allocate cmd\n");
-+		printk(KERN_ERR PFX "abts: couldn't allocate cmd\n");
- 		rc = FAILED;
- 		goto abts_err;
- 	}
-@@ -957,7 +957,7 @@ int bnx2fc_initiate_seq_cleanup(struct bnx2fc_cmd *orig_io_req, u32 offset,
- 
- 	seq_clnp_req = bnx2fc_elstm_alloc(tgt, BNX2FC_SEQ_CLEANUP);
- 	if (!seq_clnp_req) {
--		printk(KERN_ERR PFX "cleanup: couldnt allocate cmd\n");
-+		printk(KERN_ERR PFX "cleanup: couldn't allocate cmd\n");
- 		rc = -ENOMEM;
- 		kfree(cb_arg);
- 		goto cleanup_err;
-@@ -1015,7 +1015,7 @@ int bnx2fc_initiate_cleanup(struct bnx2fc_cmd *io_req)
- 
- 	cleanup_io_req = bnx2fc_elstm_alloc(tgt, BNX2FC_CLEANUP);
- 	if (!cleanup_io_req) {
--		printk(KERN_ERR PFX "cleanup: couldnt allocate cmd\n");
-+		printk(KERN_ERR PFX "cleanup: couldn't allocate cmd\n");
- 		rc = -1;
- 		goto cleanup_err;
- 	}
+ 	if (retval != 0) {
+-		csio_err(hw, "ioreq: %p couldnt be started, status:%d\n",
++		csio_err(hw, "ioreq: %p couldn't be started, status:%d\n",
+ 			 ioreq, retval);
+ 		CSIO_INC_STATS(scsim, n_busy_error);
+ 		goto err_put_req;
 -- 
 2.27.0
 

@@ -2,87 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A697240D15
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 20:41:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1F34240D39
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 20:58:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728174AbgHJSlZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Aug 2020 14:41:25 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:49043 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728071AbgHJSlY (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Aug 2020 14:41:24 -0400
-Received: from [192.168.42.210] ([93.22.133.151])
-        by mwinf5d63 with ME
-        id DuhF2300D3G8tn903uhF7e; Mon, 10 Aug 2020 20:41:22 +0200
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 10 Aug 2020 20:41:22 +0200
-X-ME-IP: 93.22.133.151
-Subject: Re: [PATCH] drm: amdgpu: Use the correct size when allocating memory
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     alexander.deucher@amd.com, christian.koenig@amd.com,
-        airlied@linux.ie, daniel@ffwll.ch, sumit.semwal@linaro.org,
-        colton.w.lewis@protonmail.com, Ori.Messinger@amd.com,
-        m.szyprowski@samsung.com, bernard@vivo.com,
-        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200809203406.751971-1-christophe.jaillet@wanadoo.fr>
- <20200810154213.GM1793@kadam>
-From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <8c414dd7-4a80-6ff2-03de-5340fb0d9c61@wanadoo.fr>
-Date:   Mon, 10 Aug 2020 20:41:14 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
-MIME-Version: 1.0
-In-Reply-To: <20200810154213.GM1793@kadam>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+        id S1728265AbgHJS6U (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Aug 2020 14:58:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53832 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728071AbgHJS6T (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 10 Aug 2020 14:58:19 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B3DD920774;
+        Mon, 10 Aug 2020 18:58:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597085899;
+        bh=u7PuXZEqeKunOaHhKj/3xF6yMMpUtKNV+V4e9KEv7Tk=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=KKnzD8ZWmOJcfG/H5Vbx7+ZyeLnZ7euP6YBDAI4H07NvU9Z3uJyzaaZjhnXdG0ke0
+         Qt/57iuE1sRTs9OEqXCHuuYXF99LrEB+xmYDU1ICxqJZOlq3TJbsLiE0ZD+hqB/Ly5
+         fmhS6Xo5IGW1aH8Vrp4bhZqvIjDZHABKWusbFJuE=
+Date:   Mon, 10 Aug 2020 19:57:52 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Colin King <colin.king@canonical.com>,
+        Liam Girdwood <lgirdwood@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <20200810093931.50624-1-colin.king@canonical.com>
+References: <20200810093931.50624-1-colin.king@canonical.com>
+Subject: Re: [PATCH] regulator: fix spelling mistake "Cant" -> "Can't"
+Message-Id: <159708587290.21583.4925368980262499422.b4-ty@kernel.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Mon, 10 Aug 2020 10:39:31 +0100, Colin King wrote:
+> There is a spelling mistake in a dev_err message. Fix it.
 
-Le 10/08/2020 à 17:42, Dan Carpenter a écrit :
-> On Sun, Aug 09, 2020 at 10:34:06PM +0200, Christophe JAILLET wrote:
->> When '*sgt' is allocated, we must allocated 'sizeof(**sgt)' bytes instead
->> of 'sizeof(*sg)'. 'sg' (i.e. struct scatterlist) is smaller than
->> 'sgt' (i.e struct sg_table), so this could lead to memory corruption.
-> The sizeof(*sg) is bigger than sizeof(**sgt) so this wastes memory but
-> it won't lead to corruption.
->
->      11  struct scatterlist {
->      12          unsigned long   page_link;
->      13          unsigned int    offset;
->      14          unsigned int    length;
->      15          dma_addr_t      dma_address;
->      16  #ifdef CONFIG_NEED_SG_DMA_LENGTH
->      17          unsigned int    dma_length;
->      18  #endif
->      19  };
->
->      42  struct sg_table {
->      43          struct scatterlist *sgl;        /* the list */
->      44          unsigned int nents;             /* number of mapped entries */
->      45          unsigned int orig_nents;        /* original size of list */
->      46  };
->
-> regards,
-> dan carpenter
+Applied to
 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
 
-My bad. I read 'struct scatterlist sgl' (without the *)
-Thanks for the follow-up, Dan.
+Thanks!
 
-Doesn't smatch catch such mismatch?
-(I've not run smatch for a while, so it is maybe reported)
+[1/1] regulator: fix spelling mistake "Cant" -> "Can't"
+      commit: 09dad81e0f1701ea26babe2442a1478d6ad447d3
 
-Well, the proposal is still valid, even if it has less impact as 
-initially thought.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Thx for the review.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-CJ
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

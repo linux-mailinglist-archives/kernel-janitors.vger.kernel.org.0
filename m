@@ -2,79 +2,120 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D67F2403D4
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 11:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC76E240424
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 11:37:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726473AbgHJJIr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Aug 2020 05:08:47 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:52743 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726021AbgHJJIr (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Aug 2020 05:08:47 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1k53nP-0002Kl-HR; Mon, 10 Aug 2020 09:08:43 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        linux-scsi@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] scsi: csiostor: fix fix spelling mistake "couldnt" -> "couldn't"
-Date:   Mon, 10 Aug 2020 10:08:43 +0100
-Message-Id: <20200810090843.49553-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+        id S1726798AbgHJJg5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Aug 2020 05:36:57 -0400
+Received: from mail-dm6nam11on2068.outbound.protection.outlook.com ([40.107.223.68]:60915
+        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725809AbgHJJg4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 10 Aug 2020 05:36:56 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=g0FOrCcnXb7LWzc9zch6FZc3r7sjEtonqw2S6QU+RV1Iph+AEeiPCe5RO6fFGt63H+RBJ6C6EOdZuVpuRbsg5aHt+DCT9YTGZtmwKlxP0A4vMGyvJAsvCwYAUVa8XiTVcw5sB7cWHOsGEpIOnKjudIdH5a2djwx784ZchBGf6jRCKbK48/n3Xfh/+WLmBNpc4XTby7DOPIRvqYjuwh0EdlGWfHMOoAZFGulUdZbDCYxLk3NlGMzUom75tAUZ/lhPnzT2K0QiHsiQGp4KdCfE9glSbWu/fN/S/d8C+Wt0bMUOvLfah2Ddvw8NeJK6VmYqQ2RK46effSvSSgO0v68UkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UdzF692QjAJE8CzhcVJ4khd93yf7raCWP6TUmUFhcFw=;
+ b=KQMoKfe9FS5/G/dRdKPh1utF0UX2nwAjbncg1cu1is7t4IghYW7LDg34v6JqBiRLm/kYDN5JH6GZMGcedG4j8OaGsjcQKGc4ISTiEY32VMMIL2TweZYjqpod8Wnwmzq15TDyTKy7zDUMmAbMUkexysKwJ7ko/8aFc8LB5usd3/Emtx/pyzR2OyRgAkizaDxaO12nttuZRH71NbFrAUPIRLZI/wqjOcb8xaz/9poU++uq4lzJbRe986zr9kH30rkHlqRYKquS/S+K7Z5h1Z5hoSJW+6vdzpQxVdzQqyx1e2efjEJV2cwx4UlfjVRFbK96FYCbCUU2s/O5fMSncZXunQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UdzF692QjAJE8CzhcVJ4khd93yf7raCWP6TUmUFhcFw=;
+ b=sQ1iE28UkItY0ALDS9zuaVBvHK5wwCIGiCDCSWWkxllgA9W5J/eMZhc5jAnoYdc9tQDCaAXhDKcRcvokRBPFeBS/+0F/D+wSWWlDWcXzdiI9ODQJ3m6FidMoT8cKWIIX7zH5/rDLs4eGPa+oRr+FojbNgwJ26x+VzTaP5/z6Q8c=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=amd.com;
+Received: from MN2PR12MB3775.namprd12.prod.outlook.com (2603:10b6:208:159::19)
+ by MN2PR12MB4206.namprd12.prod.outlook.com (2603:10b6:208:1d5::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.19; Mon, 10 Aug
+ 2020 09:36:52 +0000
+Received: from MN2PR12MB3775.namprd12.prod.outlook.com
+ ([fe80::a16e:8812:b4c0:918d]) by MN2PR12MB3775.namprd12.prod.outlook.com
+ ([fe80::a16e:8812:b4c0:918d%6]) with mapi id 15.20.3261.024; Mon, 10 Aug 2020
+ 09:36:52 +0000
+Subject: Re: [PATCH] drm: amdgpu: Use the correct size when allocating memory
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        alexander.deucher@amd.com, airlied@linux.ie, daniel@ffwll.ch,
+        sumit.semwal@linaro.org, colton.w.lewis@protonmail.com,
+        Ori.Messinger@amd.com, m.szyprowski@samsung.com, bernard@vivo.com,
+        dri-devel@lists.freedesktop.org
+Cc:     amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200809203406.751971-1-christophe.jaillet@wanadoo.fr>
+From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
+Message-ID: <b4117d15-d563-5e1e-d8ce-edded2db77a1@amd.com>
+Date:   Mon, 10 Aug 2020 11:36:45 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+In-Reply-To: <20200809203406.751971-1-christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-ClientProxiedBy: AM0PR02CA0090.eurprd02.prod.outlook.com
+ (2603:10a6:208:154::31) To MN2PR12MB3775.namprd12.prod.outlook.com
+ (2603:10b6:208:159::19)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [IPv6:2a02:908:1252:fb60:be8a:bd56:1f94:86e7] (2a02:908:1252:fb60:be8a:bd56:1f94:86e7) by AM0PR02CA0090.eurprd02.prod.outlook.com (2603:10a6:208:154::31) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.19 via Frontend Transport; Mon, 10 Aug 2020 09:36:50 +0000
+X-Originating-IP: [2a02:908:1252:fb60:be8a:bd56:1f94:86e7]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 4cd87d2f-9555-4f28-3839-08d83d10e998
+X-MS-TrafficTypeDiagnostic: MN2PR12MB4206:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <MN2PR12MB4206F8ECA1C1F0E3C0C31CA883440@MN2PR12MB4206.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2657;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 7saBlRA/atspTH7xgEWY6qdqXyLXGPiSsxb3u4qeowIAW04pyivm1kGSB/YgRw+uYy6zcHNgBeeTuhVGjaXvnQNo7bH5Ava0WOoqPGPGzAmphjz5S5m8vcDWPJPuNjKKElUMT95QktYDp8bAkzU8J1L2rP3wvmHQvuTHzfeoNQaJFh8+G2t8G1VlX3Jto8ZhoclqOkS6AQYkxJlPPh/bW9eSz0HXCXUjBX1Oqnvhgz9xmBp6uiOhTl2ZZV/v22ywXUZ4oitF7rnzqWsOhNs6SWWFP4txVbIAyLGjLLu8P3M7Gv0ekGLX6k/c39AeqhVA+VB2sUiJkXABrhYn/KfnAPUfncJm8nJIum4xE7owRCIKhA32w1xznkTqOWVu+CapijYTGhGC3EjYrzSpTyW25Q==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3775.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(366004)(4326008)(2906002)(7416002)(6486002)(498600001)(2616005)(52116002)(186003)(16526019)(5660300002)(31696002)(66574015)(8936002)(66556008)(66946007)(66476007)(86362001)(31686004)(6666004)(83380400001)(36756003)(8676002)(921003)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: INoEiAtUc1us2NsoL8opopsRTE6QF1eLimRZ3CX+CyyfH6+zi/naQAoOh9FOWqtOHFnVhDWLqk6QRSLSNMGcl9t46+D5rAlLg0dgzzSK7+ZzTn77ih/gGbSjIPiJH036qXboRUkJ22V/5WdZ4HkaYBo/0VTiM4lO6rahKnymVo8pUi2fLdGn1Bl1lIFXOUq/N8OyszcFk/9VZVhFoo5aD8wedrqn6EyBe+IQbihVwhEaGpceAnVx+RbCXrvNOp5cMeGz6JTtIn/abqonZZz8rzvXAfEt6zN/2i3zLJtQw8NZGQG0GAtMR5gXvrtrpYJR2Flgli3VFeDS60QQE+2c8c4GDk175H8Pu5ME/2soqxO1Asw/FYXcfhOYRNdkpli/9mgitHqczkn6PnyD5clCDOyjDziXdx953mM6CEBB+qYgAHi3mSADoQ7WgjGYzAZ59KwXTGizUaetAJWwbEgvxLh/3KOV9lYB1+/w3C8MSIumLPDJ/PUcvBumIhxLdWAV/AbG9qGEC6idDlPS0oI/OtnCxJ9fxLJ9OhqFngheypMPoHSdwVZQuj5SLoQaj7Xfk9NRDvBqqIHsyLE2FwM897sRhwYnkhdN80jNW7s3oXE/yKx3grG6tpunKill6VpbNzNxhCRKc/OT4lQITgg1Sdtwo5zKv44rZSsIA9wQEpeQLEMBdXux684XyJ2TPTuyjkJYUGnq2MSQJ23+InuWlw==
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4cd87d2f-9555-4f28-3839-08d83d10e998
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3775.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2020 09:36:52.6450
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QQ5gNwpVLpdGVVz4iOBVFIISTjW4G8gQgalYh/ztu+qHabuWFejfvkWK4gCCF60e
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4206
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Am 09.08.20 um 22:34 schrieb Christophe JAILLET:
+> When '*sgt' is allocated, we must allocated 'sizeof(**sgt)' bytes instead
+> of 'sizeof(*sg)'. 'sg' (i.e. struct scatterlist) is smaller than
+> 'sgt' (i.e struct sg_table), so this could lead to memory corruption.
+>
+> Fixes: f44ffd677fb3 ("drm/amdgpu: add support for exporting VRAM using DMA-buf v3")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-There are spelling mistakes in two comments and a csio_err error
-message. Fix these.
+Good catch, Reviewed-by: Christian König <christian.koenig@amd.com>
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/scsi/csiostor/csio_scsi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/scsi/csiostor/csio_scsi.c b/drivers/scsi/csiostor/csio_scsi.c
-index 00cf33573136..55e74da2f3cb 100644
---- a/drivers/scsi/csiostor/csio_scsi.c
-+++ b/drivers/scsi/csiostor/csio_scsi.c
-@@ -933,14 +933,14 @@ csio_scsis_aborting(struct csio_ioreq *req, enum csio_scsi_ev evt)
- 		 *    abort for that I/O by the FW crossed each other.
- 		 *    The FW returned FW_EINVAL. The original I/O would have
- 		 *    returned with FW_SUCCESS or any other SCSI error.
--		 * 3. The FW couldnt sent the abort out on the wire, as there
-+		 * 3. The FW couldn't sent the abort out on the wire, as there
- 		 *    was an I-T nexus loss (link down, remote device logged
- 		 *    out etc). FW sent back an appropriate IT nexus loss status
- 		 *    for the abort.
- 		 * 4. FW sent an abort, but abort timed out (remote device
- 		 *    didnt respond). FW replied back with
- 		 *    FW_SCSI_ABORT_TIMEDOUT.
--		 * 5. FW couldnt genuinely abort the request for some reason,
-+		 * 5. FW couldn't genuinely abort the request for some reason,
- 		 *    and sent us an error.
- 		 *
- 		 * The first 3 scenarios are treated as  succesful abort
-@@ -1859,7 +1859,7 @@ csio_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmnd)
- 	spin_unlock_irqrestore(&hw->lock, flags);
- 
- 	if (retval != 0) {
--		csio_err(hw, "ioreq: %p couldnt be started, status:%d\n",
-+		csio_err(hw, "ioreq: %p couldn't be started, status:%d\n",
- 			 ioreq, retval);
- 		CSIO_INC_STATS(scsim, n_busy_error);
- 		goto err_put_req;
--- 
-2.27.0
+> ---
+>   drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+> index 134cc36e30c5..0739e259bf91 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+> @@ -462,7 +462,7 @@ int amdgpu_vram_mgr_alloc_sgt(struct amdgpu_device *adev,
+>   	unsigned int pages;
+>   	int i, r;
+>   
+> -	*sgt = kmalloc(sizeof(*sg), GFP_KERNEL);
+> +	*sgt = kmalloc(sizeof(**sgt), GFP_KERNEL);
+>   	if (!*sgt)
+>   		return -ENOMEM;
+>   
 

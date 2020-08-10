@@ -2,102 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A36CE240AB8
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 17:44:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E757D240BBA
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 19:14:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727783AbgHJPos (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Aug 2020 11:44:48 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:51366 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726406AbgHJPos (ORCPT
+        id S1728000AbgHJRON (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Aug 2020 13:14:13 -0400
+Received: from smtprelay0069.hostedemail.com ([216.40.44.69]:40336 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725873AbgHJROM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Aug 2020 11:44:48 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07AFhXtJ153655;
-        Mon, 10 Aug 2020 15:44:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=JvLiuuU3UgGUfrDifIj6lXvZMS7W5udsSPkBUIuvbkM=;
- b=o99keg9qf1qCDxOhoorD6MCLSCgG2oiYfCjODzVYEfkaELoMgwnwZ4iv8hQ9KEaneAda
- iiZsUsiNkXMJfMXxW+3gLZ2PW7raHV/Kq4Z/OpNKyBQH7DNsIOPntyB9k4UjdF00IIa+
- XBwbI6vHtVrPx2WuehFw/AG/dtsTgxnd+H+hjN5w6bXUes3s51e09EgqtC7Yl4MpRAKl
- eQrbhKPWAdiOe9r2eCsf8YkrrOsPemAZdBKucdRfYA5KUkBGCzPkVcV07irNbBwO5Ipb
- YsQG5z8AtbiO1F8Rl4JrhU9vkxqeJcuG/48hNkNhXFzjwZ0HcapCSuNxr7FW8iF/14xa fQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 32smpn79q6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 10 Aug 2020 15:44:35 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07AFJEiH003551;
-        Mon, 10 Aug 2020 15:42:34 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 32t5y16wbq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 10 Aug 2020 15:42:34 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 07AFgNSI016391;
-        Mon, 10 Aug 2020 15:42:23 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 10 Aug 2020 15:42:22 +0000
-Date:   Mon, 10 Aug 2020 18:42:13 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     alexander.deucher@amd.com, christian.koenig@amd.com,
-        airlied@linux.ie, daniel@ffwll.ch, sumit.semwal@linaro.org,
-        colton.w.lewis@protonmail.com, Ori.Messinger@amd.com,
-        m.szyprowski@samsung.com, bernard@vivo.com,
-        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] drm: amdgpu: Use the correct size when allocating memory
-Message-ID: <20200810154213.GM1793@kadam>
-References: <20200809203406.751971-1-christophe.jaillet@wanadoo.fr>
+        Mon, 10 Aug 2020 13:14:12 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 720C2180A68C0;
+        Mon, 10 Aug 2020 17:14:11 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3870:3871:3872:3876:4321:5007:7576:8957:10004:10400:10848:11026:11232:11473:11658:11914:12043:12296:12297:12438:12740:12760:12895:13069:13095:13255:13311:13357:13439:14181:14659:14664:14721:21080:21433:21627:30054:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:7,LUA_SUMMARY:none
+X-HE-Tag: pull72_170428b26fdb
+X-Filterd-Recvd-Size: 1971
+Received: from XPS-9350 (unknown [172.58.78.167])
+        (Authenticated sender: joe@perches.com)
+        by omf14.hostedemail.com (Postfix) with ESMTPA;
+        Mon, 10 Aug 2020 17:14:09 +0000 (UTC)
+Message-ID: <ca88752c86bf8a42f9aa56b69df585542ea26622.camel@perches.com>
+Subject: Re: [PATCH] USB: storage: isd200: fix spelling mistake "removeable"
+ -> "removable"
+From:   Joe Perches <joe@perches.com>
+To:     Alan Stern <stern@rowland.harvard.edu>,
+        Colin King <colin.king@canonical.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 10 Aug 2020 10:14:06 -0700
+In-Reply-To: <20200810142547.GC299045@rowland.harvard.edu>
+References: <20200810083211.48282-1-colin.king@canonical.com>
+         <20200810142547.GC299045@rowland.harvard.edu>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.3-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200809203406.751971-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9709 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0
- suspectscore=0 mlxscore=0 adultscore=0 bulkscore=0 phishscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008100115
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9709 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 lowpriorityscore=0
- bulkscore=0 impostorscore=0 phishscore=0 clxscore=1011 spamscore=0
- malwarescore=0 adultscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008100116
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Aug 09, 2020 at 10:34:06PM +0200, Christophe JAILLET wrote:
-> When '*sgt' is allocated, we must allocated 'sizeof(**sgt)' bytes instead
-> of 'sizeof(*sg)'. 'sg' (i.e. struct scatterlist) is smaller than
-> 'sgt' (i.e struct sg_table), so this could lead to memory corruption.
+On Mon, 2020-08-10 at 10:25 -0400, Alan Stern wrote:
+> On Mon, Aug 10, 2020 at 09:32:11AM +0100, Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > There is a spelling mistake in a usb_stor_dbg debug message. Fix it.
 
-The sizeof(*sg) is bigger than sizeof(**sgt) so this wastes memory but
-it won't lead to corruption.
+This is an alternate spelling in a few dictionaries.
+Is this an acceptable Briticism?
+If so, I suggest no change.
 
-    11  struct scatterlist {
-    12          unsigned long   page_link;
-    13          unsigned int    offset;
-    14          unsigned int    length;
-    15          dma_addr_t      dma_address;
-    16  #ifdef CONFIG_NEED_SG_DMA_LENGTH
-    17          unsigned int    dma_length;
-    18  #endif
-    19  };
-
-    42  struct sg_table {
-    43          struct scatterlist *sgl;        /* the list */
-    44          unsigned int nents;             /* number of mapped entries */
-    45          unsigned int orig_nents;        /* original size of list */
-    46  };
-
-regards,
-dan carpenter
+> > diff --git a/drivers/usb/storage/isd200.c b/drivers/usb/storage/isd200.c
+[]
+> > @@ -1383,7 +1383,7 @@ static int isd200_scsi_to_ata(struct scsi_cmnd *srb, struct us_data *us,
+> >  				ATA_CMD_MEDIA_LOCK : ATA_CMD_MEDIA_UNLOCK;
+> >  			isd200_srb_set_bufflen(srb, 0);
+> >  		} else {
+> > -			usb_stor_dbg(us, "   Not removeable media, just report okay\n");
+> > +			usb_stor_dbg(us, "   Not removable media, just report okay\n");
+> >  			srb->result = SAM_STAT_GOOD;
+> >  			sendToTransport = 0;
+> >  		}
+> > -- 
+> 
+> Acked-by: Alan Stern <stern@rowland.harvard.edu>
 

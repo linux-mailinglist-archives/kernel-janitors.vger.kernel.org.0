@@ -2,28 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14E9124042E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 11:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE7F624046A
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 12:00:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726657AbgHJJjd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Aug 2020 05:39:33 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:53726 "EHLO
+        id S1726439AbgHJKAA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Aug 2020 06:00:00 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:54204 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726473AbgHJJjd (ORCPT
+        with ESMTP id S1725846AbgHJJ77 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Aug 2020 05:39:33 -0400
+        Mon, 10 Aug 2020 05:59:59 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1k54HD-0004Nd-Fa; Mon, 10 Aug 2020 09:39:31 +0000
+        id 1k54au-0005nX-RN; Mon, 10 Aug 2020 09:59:52 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>
+To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] regulator: fix spelling mistake "Cant" -> "Can't"
-Date:   Mon, 10 Aug 2020 10:39:31 +0100
-Message-Id: <20200810093931.50624-1-colin.king@canonical.com>
+Subject: [PATCH] drm/i915/vlv_dsi_pll: fix spelling mistake "Cant" -> "Can't"
+Date:   Mon, 10 Aug 2020 10:59:52 +0100
+Message-Id: <20200810095952.60968-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,26 +40,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in a dev_err message. Fix it.
+There is a spelling mistake in a drm_err message. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/regulator/fixed.c | 2 +-
+ drivers/gpu/drm/i915/display/vlv_dsi_pll.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/fixed.c b/drivers/regulator/fixed.c
-index d54830e48b8d..142a70a89153 100644
---- a/drivers/regulator/fixed.c
-+++ b/drivers/regulator/fixed.c
-@@ -182,7 +182,7 @@ static int reg_fixed_voltage_probe(struct platform_device *pdev)
+diff --git a/drivers/gpu/drm/i915/display/vlv_dsi_pll.c b/drivers/gpu/drm/i915/display/vlv_dsi_pll.c
+index d0a514301575..4070b00c3690 100644
+--- a/drivers/gpu/drm/i915/display/vlv_dsi_pll.c
++++ b/drivers/gpu/drm/i915/display/vlv_dsi_pll.c
+@@ -483,7 +483,7 @@ int bxt_dsi_pll_compute(struct intel_encoder *encoder,
  
- 		drvdata->enable_clock = devm_clk_get(dev, NULL);
- 		if (IS_ERR(drvdata->enable_clock)) {
--			dev_err(dev, "Cant get enable-clock from devicetree\n");
-+			dev_err(dev, "Can't get enable-clock from devicetree\n");
- 			return -ENOENT;
- 		}
- 	} else {
+ 	if (dsi_ratio < dsi_ratio_min || dsi_ratio > dsi_ratio_max) {
+ 		drm_err(&dev_priv->drm,
+-			"Cant get a suitable ratio from DSI PLL ratios\n");
++			"Can't get a suitable ratio from DSI PLL ratios\n");
+ 		return -ECHRNG;
+ 	} else
+ 		drm_dbg_kms(&dev_priv->drm, "DSI PLL calculation is Done!!\n");
 -- 
 2.27.0
 

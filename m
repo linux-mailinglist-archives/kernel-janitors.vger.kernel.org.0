@@ -2,116 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDFD4240BE8
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 19:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A697240D15
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 20:41:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727841AbgHJR0U (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Aug 2020 13:26:20 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:39934 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726720AbgHJR0T (ORCPT
+        id S1728174AbgHJSlZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Aug 2020 14:41:25 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:49043 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728071AbgHJSlY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Aug 2020 13:26:19 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1k5BYu-0006OL-Di; Mon, 10 Aug 2020 17:26:16 +0000
-Subject: Re: [PATCH] USB: storage: isd200: fix spelling mistake "removeable"
- -> "removable"
-To:     Joe Perches <joe@perches.com>,
-        Alan Stern <stern@rowland.harvard.edu>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200810083211.48282-1-colin.king@canonical.com>
- <20200810142547.GC299045@rowland.harvard.edu>
- <ca88752c86bf8a42f9aa56b69df585542ea26622.camel@perches.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <783b3e8a-40b1-379d-ae22-9b1fd9c50684@canonical.com>
-Date:   Mon, 10 Aug 2020 18:26:16 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Mon, 10 Aug 2020 14:41:24 -0400
+Received: from [192.168.42.210] ([93.22.133.151])
+        by mwinf5d63 with ME
+        id DuhF2300D3G8tn903uhF7e; Mon, 10 Aug 2020 20:41:22 +0200
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 10 Aug 2020 20:41:22 +0200
+X-ME-IP: 93.22.133.151
+Subject: Re: [PATCH] drm: amdgpu: Use the correct size when allocating memory
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     alexander.deucher@amd.com, christian.koenig@amd.com,
+        airlied@linux.ie, daniel@ffwll.ch, sumit.semwal@linaro.org,
+        colton.w.lewis@protonmail.com, Ori.Messinger@amd.com,
+        m.szyprowski@samsung.com, bernard@vivo.com,
+        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20200809203406.751971-1-christophe.jaillet@wanadoo.fr>
+ <20200810154213.GM1793@kadam>
+From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <8c414dd7-4a80-6ff2-03de-5340fb0d9c61@wanadoo.fr>
+Date:   Mon, 10 Aug 2020 20:41:14 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <ca88752c86bf8a42f9aa56b69df585542ea26622.camel@perches.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20200810154213.GM1793@kadam>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 10/08/2020 18:14, Joe Perches wrote:
-> On Mon, 2020-08-10 at 10:25 -0400, Alan Stern wrote:
->> On Mon, Aug 10, 2020 at 09:32:11AM +0100, Colin King wrote:
->>> From: Colin Ian King <colin.king@canonical.com>
->>>
->>> There is a spelling mistake in a usb_stor_dbg debug message. Fix it.
-> 
-> This is an alternate spelling in a few dictionaries.
-> Is this an acceptable Briticism?
-> If so, I suggest no change.
 
-I was keeping it consistent with all the other occurrences of this word
-in kernel messages.
+Le 10/08/2020 à 17:42, Dan Carpenter a écrit :
+> On Sun, Aug 09, 2020 at 10:34:06PM +0200, Christophe JAILLET wrote:
+>> When '*sgt' is allocated, we must allocated 'sizeof(**sgt)' bytes instead
+>> of 'sizeof(*sg)'. 'sg' (i.e. struct scatterlist) is smaller than
+>> 'sgt' (i.e struct sg_table), so this could lead to memory corruption.
+> The sizeof(*sg) is bigger than sizeof(**sgt) so this wastes memory but
+> it won't lead to corruption.
+>
+>      11  struct scatterlist {
+>      12          unsigned long   page_link;
+>      13          unsigned int    offset;
+>      14          unsigned int    length;
+>      15          dma_addr_t      dma_address;
+>      16  #ifdef CONFIG_NEED_SG_DMA_LENGTH
+>      17          unsigned int    dma_length;
+>      18  #endif
+>      19  };
+>
+>      42  struct sg_table {
+>      43          struct scatterlist *sgl;        /* the list */
+>      44          unsigned int nents;             /* number of mapped entries */
+>      45          unsigned int orig_nents;        /* original size of list */
+>      46  };
+>
+> regards,
+> dan carpenter
 
-> 
->>> diff --git a/drivers/usb/storage/isd200.c b/drivers/usb/storage/isd200.c
-> []
->>> @@ -1383,7 +1383,7 @@ static int isd200_scsi_to_ata(struct scsi_cmnd *srb, struct us_data *us,
->>>  				ATA_CMD_MEDIA_LOCK : ATA_CMD_MEDIA_UNLOCK;
->>>  			isd200_srb_set_bufflen(srb, 0);
->>>  		} else {
->>> -			usb_stor_dbg(us, "   Not removeable media, just report okay\n");
->>> +			usb_stor_dbg(us, "   Not removable media, just report okay\n");
->>>  			srb->result = SAM_STAT_GOOD;
->>>  			sendToTransport = 0;
->>>  		}
->>> -- 
->>
->> Acked-by: Alan Stern <stern@rowland.harvard.edu>
-> 
+
+My bad. I read 'struct scatterlist sgl' (without the *)
+Thanks for the follow-up, Dan.
+
+Doesn't smatch catch such mismatch?
+(I've not run smatch for a while, so it is maybe reported)
+
+Well, the proposal is still valid, even if it has less impact as 
+initially thought.
+
+Thx for the review.
+
+CJ
 

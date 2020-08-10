@@ -2,28 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 225C224030F
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 09:58:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8054724031B
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 10:02:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726412AbgHJH61 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Aug 2020 03:58:27 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:49646 "EHLO
+        id S1726350AbgHJICv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Aug 2020 04:02:51 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50716 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726135AbgHJH60 (ORCPT
+        with ESMTP id S1725846AbgHJICv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Aug 2020 03:58:26 -0400
+        Mon, 10 Aug 2020 04:02:51 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1k52hM-0003jy-IP; Mon, 10 Aug 2020 07:58:24 +0000
+        id 1k52lc-0004UZ-4m; Mon, 10 Aug 2020 08:02:48 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        linux-rdma@vger.kernel.org
+To:     Maxim Levitsky <maximlevitsky@gmail.com>,
+        Alex Dubov <oakad@yahoo.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] RDMA/core: fix spelling mistake "Could't" -> "Couldn't"
-Date:   Mon, 10 Aug 2020 08:58:24 +0100
-Message-Id: <20200810075824.46770-1-colin.king@canonical.com>
+Subject: [PATCH] ms_block: fix spelling mistake "doesn'" -> "doesn't"
+Date:   Mon, 10 Aug 2020 09:02:47 +0100
+Message-Id: <20200810080247.47024-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,25 +36,25 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in a pr_warn message. Fix it.
+There is a spelling mistake in a debug message. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/infiniband/core/device.c | 2 +-
+ drivers/memstick/core/ms_block.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
-index 82bfee258982..d16d42b3d2ce 100644
---- a/drivers/infiniband/core/device.c
-+++ b/drivers/infiniband/core/device.c
-@@ -2747,7 +2747,7 @@ static int __init ib_core_init(void)
+diff --git a/drivers/memstick/core/ms_block.c b/drivers/memstick/core/ms_block.c
+index d9ee8e3dc72d..ad1c6f2db089 100644
+--- a/drivers/memstick/core/ms_block.c
++++ b/drivers/memstick/core/ms_block.c
+@@ -1223,7 +1223,7 @@ static int msb_read_boot_blocks(struct msb_data *msb)
+ 		}
  
- 	ret = addr_init();
- 	if (ret) {
--		pr_warn("Could't init IB address resolution\n");
-+		pr_warn("Couldn't init IB address resolution\n");
- 		goto err_ibnl;
- 	}
+ 		if (be16_to_cpu(page->header.block_id) != MS_BLOCK_BOOT_ID) {
+-			dbg("the pba at %d doesn' contain boot block ID", pba);
++			dbg("the pba at %d doesn't contain boot block ID", pba);
+ 			continue;
+ 		}
  
 -- 
 2.27.0

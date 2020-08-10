@@ -2,33 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE7F624046A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 12:00:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41335240472
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 12:04:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726439AbgHJKAA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Aug 2020 06:00:00 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:54204 "EHLO
+        id S1726355AbgHJKEF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Aug 2020 06:04:05 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:54309 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725846AbgHJJ77 (ORCPT
+        with ESMTP id S1725809AbgHJKEF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Aug 2020 05:59:59 -0400
+        Mon, 10 Aug 2020 06:04:05 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1k54au-0005nX-RN; Mon, 10 Aug 2020 09:59:52 +0000
+        id 1k54ev-00067X-Dd; Mon, 10 Aug 2020 10:04:01 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+To:     VMware Graphics <linux-graphics-maintainer@vmware.com>,
+        Roland Scheidegger <sroland@vmware.com>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+        dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/i915/vlv_dsi_pll: fix spelling mistake "Cant" -> "Can't"
-Date:   Mon, 10 Aug 2020 10:59:52 +0100
-Message-Id: <20200810095952.60968-1-colin.king@canonical.com>
+Subject: [PATCH] drm/vmwgfx: fix spelling mistake "Cant" -> "Can't"
+Date:   Mon, 10 Aug 2020 11:04:01 +0100
+Message-Id: <20200810100401.61209-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -40,26 +38,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in a drm_err message. Fix it.
+There is a spelling mistake in a DRM_ERROR message. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/i915/display/vlv_dsi_pll.c | 2 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/vlv_dsi_pll.c b/drivers/gpu/drm/i915/display/vlv_dsi_pll.c
-index d0a514301575..4070b00c3690 100644
---- a/drivers/gpu/drm/i915/display/vlv_dsi_pll.c
-+++ b/drivers/gpu/drm/i915/display/vlv_dsi_pll.c
-@@ -483,7 +483,7 @@ int bxt_dsi_pll_compute(struct intel_encoder *encoder,
- 
- 	if (dsi_ratio < dsi_ratio_min || dsi_ratio > dsi_ratio_max) {
- 		drm_err(&dev_priv->drm,
--			"Cant get a suitable ratio from DSI PLL ratios\n");
-+			"Can't get a suitable ratio from DSI PLL ratios\n");
- 		return -ECHRNG;
- 	} else
- 		drm_dbg_kms(&dev_priv->drm, "DSI PLL calculation is Done!!\n");
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index bbce45d142aa..471836672312 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -186,7 +186,7 @@ void vmw_kms_cursor_snoop(struct vmw_surface *srf,
+ 		/* TODO handle none page aligned offsets */
+ 		/* TODO handle more dst & src != 0 */
+ 		/* TODO handle more then one copy */
+-		DRM_ERROR("Cant snoop dma request for cursor!\n");
++		DRM_ERROR("Can't snoop dma request for cursor!\n");
+ 		DRM_ERROR("(%u, %u, %u) (%u, %u, %u) (%ux%ux%u) %u %u\n",
+ 			  box->srcx, box->srcy, box->srcz,
+ 			  box->x, box->y, box->z,
 -- 
 2.27.0
 

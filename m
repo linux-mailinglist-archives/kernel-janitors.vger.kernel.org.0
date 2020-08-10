@@ -2,29 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C064124075D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 16:19:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CFED240775
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 16:25:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726917AbgHJOTR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Aug 2020 10:19:17 -0400
-Received: from ms.lwn.net ([45.79.88.28]:53298 "EHLO ms.lwn.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726845AbgHJOTQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Aug 2020 10:19:16 -0400
-Received: from lwn.net (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id E8E192C1;
-        Mon, 10 Aug 2020 14:19:15 +0000 (UTC)
-Date:   Mon, 10 Aug 2020 08:19:14 -0600
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        id S1727103AbgHJOZA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Aug 2020 10:25:00 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:25596 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726888AbgHJOY5 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 10 Aug 2020 10:24:57 -0400
+X-IronPort-AV: E=Sophos;i="5.75,457,1589234400"; 
+   d="scan'208";a="463038467"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 Aug 2020 16:24:54 +0200
+Date:   Mon, 10 Aug 2020 16:24:54 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Jonathan Corbet <corbet@lwn.net>
+cc:     Markus Elfring <Markus.Elfring@web.de>,
+        Sumera Priyadarsini <sylphrenadin@gmail.com>,
         Coccinelle <cocci@systeme.lip6.fr>, linux-doc@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Gilles Muller <Gilles.Muller@lip6.fr>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
         Masahiro Yamada <masahiroy@kernel.org>,
         Matthew Wilcox <willy@infradead.org>,
         Michal Marek <michal.lkml@markovi.net>,
@@ -34,36 +35,49 @@ Cc:     Sumera Priyadarsini <sylphrenadin@gmail.com>,
         Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
 Subject: Re: [PATCH v2] documentation: coccinelle: Improve command example
  for make C={1, 2}
-Message-ID: <20200810081914.37224551@lwn.net>
-In-Reply-To: <ffe8c50d-0bb5-9477-a20c-96aa7bb45067@web.de>
-References: <ffe8c50d-0bb5-9477-a20c-96aa7bb45067@web.de>
-Organization: LWN.net
+In-Reply-To: <20200810081914.37224551@lwn.net>
+Message-ID: <alpine.DEB.2.22.394.2008101624380.2466@hadrien>
+References: <ffe8c50d-0bb5-9477-a20c-96aa7bb45067@web.de> <20200810081914.37224551@lwn.net>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="8323329-1836737229-1597069495=:2466"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 10 Aug 2020 09:30:18 +0200
-Markus Elfring <Markus.Elfring@web.de> wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-> > Modify coccinelle documentation to further clarify
-> > the usage of the makefile C variable flag by coccicheck.  
-> 
-> How do you think about a wording variant like the following
-> for the change description?
-> 
->    Clarify the usage of the make variable “C” for coccicheck.
-> 
-> 
-> > +C flag is used. The C flag is a variable used by the makefile  
-> 
-> Can such a wording approach trigger understanding difficulties?
-> [...]
+--8323329-1836737229-1597069495=:2466
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
-Markus, please don't harass our contributors.  This patch is an
-improvement and, unless Julia disagrees, I am happy to apply it.
 
-jon
+
+On Mon, 10 Aug 2020, Jonathan Corbet wrote:
+
+> On Mon, 10 Aug 2020 09:30:18 +0200
+> Markus Elfring <Markus.Elfring@web.de> wrote:
+>
+> > > Modify coccinelle documentation to further clarify
+> > > the usage of the makefile C variable flag by coccicheck.
+> >
+> > How do you think about a wording variant like the following
+> > for the change description?
+> >
+> >    Clarify the usage of the make variable “C” for coccicheck.
+> >
+> >
+> > > +C flag is used. The C flag is a variable used by the makefile
+> >
+> > Can such a wording approach trigger understanding difficulties?
+> > [...]
+>
+> Markus, please don't harass our contributors.  This patch is an
+> improvement and, unless Julia disagrees, I am happy to apply it.
+
+There will be a V3.  Thanks.
+
+julia
+--8323329-1836737229-1597069495=:2466--

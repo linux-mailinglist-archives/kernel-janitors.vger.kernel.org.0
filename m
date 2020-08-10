@@ -2,29 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6452B240375
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 10:32:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CE0F24039B
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 10:51:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726398AbgHJIcO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Aug 2020 04:32:14 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:52026 "EHLO
+        id S1726630AbgHJIvC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Aug 2020 04:51:02 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:52438 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725857AbgHJIcN (ORCPT
+        with ESMTP id S1725857AbgHJIvB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Aug 2020 04:32:13 -0400
+        Mon, 10 Aug 2020 04:51:01 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1k53E3-0007V4-Ai; Mon, 10 Aug 2020 08:32:11 +0000
+        id 1k53WD-0000zR-Q8; Mon, 10 Aug 2020 08:50:57 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Alan Stern <stern@rowland.harvard.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net
+To:     QLogic-Storage-Upstream@qlogic.com,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] USB: storage: isd200: fix spelling mistake "removeable" -> "removable"
-Date:   Mon, 10 Aug 2020 09:32:11 +0100
-Message-Id: <20200810083211.48282-1-colin.king@canonical.com>
+Subject: [PATCH] scsi: bnx2fc: fix spelling mistake "couldnt" -> "couldn't"
+Date:   Mon, 10 Aug 2020 09:50:57 +0100
+Message-Id: <20200810085057.49039-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,26 +37,44 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in a usb_stor_dbg debug message. Fix it.
+There are spelling mistakes in various printk messages. Fix these.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/usb/storage/isd200.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/bnx2fc/bnx2fc_io.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/storage/isd200.c b/drivers/usb/storage/isd200.c
-index 89f5e33a6e6d..3c76336e43bb 100644
---- a/drivers/usb/storage/isd200.c
-+++ b/drivers/usb/storage/isd200.c
-@@ -1383,7 +1383,7 @@ static int isd200_scsi_to_ata(struct scsi_cmnd *srb, struct us_data *us,
- 				ATA_CMD_MEDIA_LOCK : ATA_CMD_MEDIA_UNLOCK;
- 			isd200_srb_set_bufflen(srb, 0);
- 		} else {
--			usb_stor_dbg(us, "   Not removeable media, just report okay\n");
-+			usb_stor_dbg(us, "   Not removable media, just report okay\n");
- 			srb->result = SAM_STAT_GOOD;
- 			sendToTransport = 0;
- 		}
+diff --git a/drivers/scsi/bnx2fc/bnx2fc_io.c b/drivers/scsi/bnx2fc/bnx2fc_io.c
+index 1aba5897ccb0..1a0dc18d6915 100644
+--- a/drivers/scsi/bnx2fc/bnx2fc_io.c
++++ b/drivers/scsi/bnx2fc/bnx2fc_io.c
+@@ -864,7 +864,7 @@ int bnx2fc_initiate_abts(struct bnx2fc_cmd *io_req)
+ 
+ 	abts_io_req = bnx2fc_elstm_alloc(tgt, BNX2FC_ABTS);
+ 	if (!abts_io_req) {
+-		printk(KERN_ERR PFX "abts: couldnt allocate cmd\n");
++		printk(KERN_ERR PFX "abts: couldn't allocate cmd\n");
+ 		rc = FAILED;
+ 		goto abts_err;
+ 	}
+@@ -957,7 +957,7 @@ int bnx2fc_initiate_seq_cleanup(struct bnx2fc_cmd *orig_io_req, u32 offset,
+ 
+ 	seq_clnp_req = bnx2fc_elstm_alloc(tgt, BNX2FC_SEQ_CLEANUP);
+ 	if (!seq_clnp_req) {
+-		printk(KERN_ERR PFX "cleanup: couldnt allocate cmd\n");
++		printk(KERN_ERR PFX "cleanup: couldn't allocate cmd\n");
+ 		rc = -ENOMEM;
+ 		kfree(cb_arg);
+ 		goto cleanup_err;
+@@ -1015,7 +1015,7 @@ int bnx2fc_initiate_cleanup(struct bnx2fc_cmd *io_req)
+ 
+ 	cleanup_io_req = bnx2fc_elstm_alloc(tgt, BNX2FC_CLEANUP);
+ 	if (!cleanup_io_req) {
+-		printk(KERN_ERR PFX "cleanup: couldnt allocate cmd\n");
++		printk(KERN_ERR PFX "cleanup: couldn't allocate cmd\n");
+ 		rc = -1;
+ 		goto cleanup_err;
+ 	}
 -- 
 2.27.0
 

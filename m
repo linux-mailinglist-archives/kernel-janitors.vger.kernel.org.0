@@ -2,134 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14752241228
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Aug 2020 23:15:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C5CF24147F
+	for <lists+kernel-janitors@lfdr.de>; Tue, 11 Aug 2020 03:19:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726672AbgHJVP6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Aug 2020 17:15:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33070 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726547AbgHJVP5 (ORCPT
+        id S1727989AbgHKBSp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Aug 2020 21:18:45 -0400
+Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:5773 "EHLO
+        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727088AbgHKBSp (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Aug 2020 17:15:57 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8832C061756;
-        Mon, 10 Aug 2020 14:15:56 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id l2so9498964wrc.7;
-        Mon, 10 Aug 2020 14:15:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=+iG0rPie0hGjlqBkimyNljZ85YQMu0uvsdwoC84m+No=;
-        b=k4HUFyf+BceKxHAdT4A8JrLP35Ktd/vLhR11JAVViOn3b5YEPr+PgGF4NDrE0X0F9g
-         EtK3inRncxd4qoQQ3dca8VQxl194uuWnR4aESyHwGOrzPUF+SGTxZMMBzHK0VgomCBHw
-         BOrG4uelEGMS63t5DCMz2ktzxSS9oTdzbLtFunyu723WtYerYLD8uzXQBqMMreUDOVCd
-         meue7f70Q/12rN3oOYL2WONEZkCVM1Q7VkOjuyYzbVJ3Yf3dQzcVEU5Q8Yzj35KrkWni
-         dj/UQHKDGJ6/Js4Ul4BXGu4INFqr6aUdZBuYSIL0MkJMyKeG0gRBe8wrc3mgwWkI/N5u
-         vg4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=+iG0rPie0hGjlqBkimyNljZ85YQMu0uvsdwoC84m+No=;
-        b=RybTGOh30tmKz2UWWpHC76TTlZ9Rraqxt2loHt2SOhN8hXJkzIZPV4b2j1Lp/ipKTV
-         lSMQzrM9+aHpEZhIY9QOwRwsfB7idPFrNKY3PnaYWWLgCqiLu73u/zBfc69QB9CSvGZh
-         VLOBCr69wAdJH3Wun90Ez0878Wix3Sp7/XPcrexv5o/w3goKwpiewjgicQYDcvna3Cxr
-         xFttx4JgXF7nxh/h6ATcFN/gCNwzbKIvB5GOwSq8jkwTymRCKqdbI081oPWxbeE7K1Y4
-         FGm3Djom/DrHEASCkWKH6QPEzdJ9aD+PvtO/Yp3NXo7nXv+0spJ1vDq1GD8C0T5XiMWY
-         BaJQ==
-X-Gm-Message-State: AOAM530jwP6UjMKhWMJ53sbpnoyljn9+4y1CnMfZtjYXpZNgXA4MtmF8
-        6j+/qA8SrP4PHDtgEEJvolYbXNsaWRLZyyqdYrM=
-X-Google-Smtp-Source: ABdhPJyo9VaZLguZx1FF1wevl9ZhOdjkbjDW75ZekxD0csEl1es3BieqGxzgri3k5dRW/9uzGQhPDjZyl33aMhozIyU=
-X-Received: by 2002:adf:a351:: with SMTP id d17mr26017853wrb.111.1597094155668;
- Mon, 10 Aug 2020 14:15:55 -0700 (PDT)
+        Mon, 10 Aug 2020 21:18:45 -0400
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+        id <B5f31f18c0000>; Mon, 10 Aug 2020 18:17:00 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+  by hqpgpgate101.nvidia.com (PGP Universal service);
+  Mon, 10 Aug 2020 18:18:45 -0700
+X-PGP-Universal: processed;
+        by hqpgpgate101.nvidia.com on Mon, 10 Aug 2020 18:18:45 -0700
+Received: from [10.19.100.79] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 11 Aug
+ 2020 01:18:37 +0000
+Subject: Re: [PATCH] usb: gadget: tegra-xudc: Avoid GFP_ATOMIC where it is not
+ needed
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Nagarjuna Kristam <nkristam@nvidia.com>
+CC:     <balbi@kernel.org>, <gregkh@linuxfoundation.org>,
+        <jonathanh@nvidia.com>, <yuehaibing@huawei.com>,
+        <heikki.krogerus@linux.intel.com>, <linux-usb@vger.kernel.org>,
+        <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <20200809072948.743269-1-christophe.jaillet@wanadoo.fr>
+ <20200810140035.GA808811@ulmo>
+From:   JC Kuo <jckuo@nvidia.com>
+Message-ID: <f29c7d35-72a9-b8d1-98dc-427c6fa3cc31@nvidia.com>
+Date:   Tue, 11 Aug 2020 09:18:35 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20200809203406.751971-1-christophe.jaillet@wanadoo.fr>
- <20200810154213.GM1793@kadam> <8c414dd7-4a80-6ff2-03de-5340fb0d9c61@wanadoo.fr>
-In-Reply-To: <8c414dd7-4a80-6ff2-03de-5340fb0d9c61@wanadoo.fr>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Mon, 10 Aug 2020 17:15:44 -0400
-Message-ID: <CADnq5_NURN9_ONyXoLd5gMK6mTxotRZiP7N27UC1n_RNpQKimA@mail.gmail.com>
-Subject: Re: [PATCH] drm: amdgpu: Use the correct size when allocating memory
-To:     "Marion & Christophe JAILLET" <christophe.jaillet@wanadoo.fr>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        "Messinger, Ori" <Ori.Messinger@amd.com>,
-        Dave Airlie <airlied@linux.ie>,
-        Bernard Zhao <bernard@vivo.com>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Colton Lewis <colton.w.lewis@protonmail.com>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "Deucher, Alexander" <alexander.deucher@amd.com>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200810140035.GA808811@ulmo>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1597108620; bh=oNvf5Jr6+BIXlO9OnHSXX/LgXK2peo1IqhoZRRSw3uw=;
+        h=X-PGP-Universal:Subject:To:CC:References:From:Message-ID:Date:
+         User-Agent:MIME-Version:In-Reply-To:X-Originating-IP:
+         X-ClientProxiedBy:Content-Type:Content-Transfer-Encoding:
+         Content-Language;
+        b=MJIb+yGcZqL5KRNXFTviF0T3MMTcSFWeHLGYCF7gG+1oFfuK4SFV+Re8MWBthmMwp
+         ystfAnCzyrMDes6lCY8J6lKtOkVwph79o5HvjbUbjIP+QDYByA/Yy4imfKncySSW2b
+         9LG156rCoTe+jAE9H5PKazoXadJd3WAd6oPHL8O3p9inHe7m1uOY1lqLEbx6vu1uX9
+         bVylzomZ2eqVe6MqQasDT8y2CaJF+S34NSAtxlJuyLfSwxEhrXS5jliaYftVENy5S9
+         D/2O5oYekoOPWSJITVbdQsPZW7fCi22hg2y0w+sF/CJLSd4vLQQNay1vJFWDJcOTHL
+         5eeCOTpRRjt1w==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Applied and updated the commit message to reflect the sizes.
+Looks good to me.
 
-Thanks!
+Reviewed-by: JC Kuo <jckuo@nvidia.com>
 
-Alex
+On 8/10/20 10:00 PM, Thierry Reding wrote:
+> On Sun, Aug 09, 2020 at 09:29:48AM +0200, Christophe JAILLET wrote:
+>> There is no need to use GFP_ATOMIC here. It is a probe function, no
+>> spinlock is taken.
+>>
+>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>> ---
+>>  drivers/usb/gadget/udc/tegra-xudc.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+> Looks good to me. I can't think of any reason why this would have to be
+> an atomic allocation. Nagarjuna, please shout if this is really needed,
+> otherwise:
+>
+> Acked-by: Thierry Reding <treding@nvidia.com>
 
-On Mon, Aug 10, 2020 at 3:07 PM Marion & Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
->
->
-> Le 10/08/2020 =C3=A0 17:42, Dan Carpenter a =C3=A9crit :
-> > On Sun, Aug 09, 2020 at 10:34:06PM +0200, Christophe JAILLET wrote:
-> >> When '*sgt' is allocated, we must allocated 'sizeof(**sgt)' bytes inst=
-ead
-> >> of 'sizeof(*sg)'. 'sg' (i.e. struct scatterlist) is smaller than
-> >> 'sgt' (i.e struct sg_table), so this could lead to memory corruption.
-> > The sizeof(*sg) is bigger than sizeof(**sgt) so this wastes memory but
-> > it won't lead to corruption.
-> >
-> >      11  struct scatterlist {
-> >      12          unsigned long   page_link;
-> >      13          unsigned int    offset;
-> >      14          unsigned int    length;
-> >      15          dma_addr_t      dma_address;
-> >      16  #ifdef CONFIG_NEED_SG_DMA_LENGTH
-> >      17          unsigned int    dma_length;
-> >      18  #endif
-> >      19  };
-> >
-> >      42  struct sg_table {
-> >      43          struct scatterlist *sgl;        /* the list */
-> >      44          unsigned int nents;             /* number of mapped en=
-tries */
-> >      45          unsigned int orig_nents;        /* original size of li=
-st */
-> >      46  };
-> >
-> > regards,
-> > dan carpenter
->
->
-> My bad. I read 'struct scatterlist sgl' (without the *)
-> Thanks for the follow-up, Dan.
->
-> Doesn't smatch catch such mismatch?
-> (I've not run smatch for a while, so it is maybe reported)
->
-> Well, the proposal is still valid, even if it has less impact as
-> initially thought.
->
-> Thx for the review.
->
-> CJ
->
-> _______________________________________________
-> amd-gfx mailing list
-> amd-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/amd-gfx

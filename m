@@ -2,66 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C999F242795
-	for <lists+kernel-janitors@lfdr.de>; Wed, 12 Aug 2020 11:27:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D52A242921
+	for <lists+kernel-janitors@lfdr.de>; Wed, 12 Aug 2020 14:10:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727896AbgHLJ1r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 12 Aug 2020 05:27:47 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:9533 "EHLO
-        mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726601AbgHLJ1r (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 12 Aug 2020 05:27:47 -0400
-X-IronPort-AV: E=Sophos;i="5.76,303,1592863200"; 
-   d="scan'208";a="356403421"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Aug 2020 11:27:45 +0200
-Date:   Wed, 12 Aug 2020 11:27:45 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kees Cook <keescook@chromium.org>
-Subject: Re: [RFC PATCH] coccinelle: misc: add uninitialized_var.cocci
- script
-In-Reply-To: <1b8537dd-8bf3-d3b6-4c10-af2fa623f1fe@web.de>
-Message-ID: <alpine.DEB.2.22.394.2008121127120.2572@hadrien>
-References: <1b8537dd-8bf3-d3b6-4c10-af2fa623f1fe@web.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        id S1727121AbgHLMKm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 12 Aug 2020 08:10:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37734 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726453AbgHLMKm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 12 Aug 2020 08:10:42 -0400
+Received: from quaco.ghostprotocols.net (179.176.8.134.dynamic.adsl.gvt.net.br [179.176.8.134])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 259B720656;
+        Wed, 12 Aug 2020 12:10:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597234242;
+        bh=av7EL/+gBRzAVCunZ5OvR7yASKD/9geQYpFNRwsu6q8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Txsim/4fE4jW7+lNs5ALhWCLu4XFSHkFaCFS0RSR7EP7tEXoHZLhhzM6ldPmm9KOe
+         Zuvtn50nP6J7ergDRcsF8MrB03Q7yn8EZbKJcjDShHNpJLPqZkx/1EQMvSjd+HlfJR
+         YMl0qgPLghJ1w/nY5AtZ6aaoTkH9g7r2QB/bwmoo=
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+        id 29425403C6; Wed, 12 Aug 2020 09:10:40 -0300 (-03)
+Date:   Wed, 12 Aug 2020 09:10:40 -0300
+From:   Arnaldo Carvalho de Melo <acme@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] perf bench: fix a couple of spelling mistakes in options
+ text
+Message-ID: <20200812121040.GD13995@kernel.org>
+References: <20200812064647.200132-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200812064647.200132-1-colin.king@canonical.com>
+X-Url:  http://acmel.wordpress.com
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Em Wed, Aug 12, 2020 at 07:46:47AM +0100, Colin King escreveu:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There are a couple of spelling mistakes in the text. Fix these.
 
+Thanks, applied.
 
-On Wed, 12 Aug 2020, Markus Elfring wrote:
+- Arnaldo
+ 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  tools/perf/bench/find-bit-bench.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/perf/bench/find-bit-bench.c b/tools/perf/bench/find-bit-bench.c
+> index fa90f3e9d368..73b5bcc5946a 100644
+> --- a/tools/perf/bench/find-bit-bench.c
+> +++ b/tools/perf/bench/find-bit-bench.c
+> @@ -17,9 +17,9 @@ static unsigned int inner_iterations = 100000;
+>  
+>  static const struct option options[] = {
+>  	OPT_UINTEGER('i', "outer-iterations", &outer_iterations,
+> -		"Number of outerer iterations used"),
+> +		"Number of outer iterations used"),
+>  	OPT_UINTEGER('j', "inner-iterations", &inner_iterations,
+> -		"Number of outerer iterations used"),
+> +		"Number of inner iterations used"),
+>  	OPT_END()
+>  };
+>  
+> -- 
+> 2.27.0
+> 
 
-> > +@r@
-> > +identifier var;
-> > +type T;
-> > +position p;
-> > +@@
-> > +
-> > +(
-> > +* T var@p = var;
-> > +|
-> > +* T var@p = *(&(var));
->
-> I suggest to simplify such code for the semantic patch language a bit.
-> Can an other variant be more succinct for the application of a SmPL disjunction?
->
-> +*T var@p = \( var \| *(&(var)) \);
+-- 
 
-It's fine as is.
-
-julia
+- Arnaldo

@@ -2,87 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D52A242921
-	for <lists+kernel-janitors@lfdr.de>; Wed, 12 Aug 2020 14:10:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 440DB242D26
+	for <lists+kernel-janitors@lfdr.de>; Wed, 12 Aug 2020 18:28:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727121AbgHLMKm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 12 Aug 2020 08:10:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37734 "EHLO mail.kernel.org"
+        id S1726521AbgHLQ2Z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 12 Aug 2020 12:28:25 -0400
+Received: from vern.gendns.com ([98.142.107.122]:47422 "EHLO vern.gendns.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726453AbgHLMKm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 12 Aug 2020 08:10:42 -0400
-Received: from quaco.ghostprotocols.net (179.176.8.134.dynamic.adsl.gvt.net.br [179.176.8.134])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 259B720656;
-        Wed, 12 Aug 2020 12:10:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597234242;
-        bh=av7EL/+gBRzAVCunZ5OvR7yASKD/9geQYpFNRwsu6q8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Txsim/4fE4jW7+lNs5ALhWCLu4XFSHkFaCFS0RSR7EP7tEXoHZLhhzM6ldPmm9KOe
-         Zuvtn50nP6J7ergDRcsF8MrB03Q7yn8EZbKJcjDShHNpJLPqZkx/1EQMvSjd+HlfJR
-         YMl0qgPLghJ1w/nY5AtZ6aaoTkH9g7r2QB/bwmoo=
-Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
-        id 29425403C6; Wed, 12 Aug 2020 09:10:40 -0300 (-03)
-Date:   Wed, 12 Aug 2020 09:10:40 -0300
-From:   Arnaldo Carvalho de Melo <acme@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] perf bench: fix a couple of spelling mistakes in options
- text
-Message-ID: <20200812121040.GD13995@kernel.org>
-References: <20200812064647.200132-1-colin.king@canonical.com>
+        id S1726503AbgHLQ2Y (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 12 Aug 2020 12:28:24 -0400
+X-Greylist: delayed 1299 seconds by postgrey-1.27 at vger.kernel.org; Wed, 12 Aug 2020 12:28:24 EDT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=E7W/4qlrWr36rTWtmYlZDWrVvvfKDlYHlV9Dn3Enrm8=; b=nDjgx0tamXa1PABTwLrsO1NWYa
+        BmTCnFvoU1PcRCt0sEP4aA9hPBnpZw7RuH3nOhyLfW+JqHPtV8ABDSvVSpVpISL9732uZceRN3bsx
+        WTT9P+ccgq0RoXjfAdPkMBw+DEkuNhBiswT+GdICGyWCPKQGjLuP7rSel2kyPxqJGQ/cQtoOg4dMV
+        LwfO5SECQGfbj3NyrYuySPWYFKDJKvNmUW0A8kPmEPK/ACFSRWOGx8cB+ipDECaxJtb4aZUdK06GI
+        Hpp1CvC2IplELyGuScZ4/uoMgZBZlI7qdkaFyx200Tksku0LZZ0biAhH2yZnufWImgSLCc1/NO/v9
+        jc0Kat4Q==;
+Received: from [2600:1700:4830:165f::19e] (port=56864)
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <david@lechnology.com>)
+        id 1k5tH1-0001qD-RD; Wed, 12 Aug 2020 12:06:43 -0400
+Subject: Re: [PATCH] clk: davinci: Use the correct size when allocating memory
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>, nsekhar@ti.com,
+        mturquette@baylibre.com, sboyd@kernel.org
+Cc:     linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200809144959.747986-1-christophe.jaillet@wanadoo.fr>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <4327a171-a937-c62e-ebad-9f92c0dea65d@lechnology.com>
+Date:   Wed, 12 Aug 2020 11:06:42 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200812064647.200132-1-colin.king@canonical.com>
-X-Url:  http://acmel.wordpress.com
+In-Reply-To: <20200809144959.747986-1-christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Em Wed, Aug 12, 2020 at 07:46:47AM +0100, Colin King escreveu:
-> From: Colin Ian King <colin.king@canonical.com>
+On 8/9/20 9:49 AM, Christophe JAILLET wrote:
+> 'sizeof(*pllen)' should be used in place of 'sizeof(*pllout)' to avoid a
+> small over-allocation.
 > 
-> There are a couple of spelling mistakes in the text. Fix these.
-
-Thanks, applied.
-
-- Arnaldo
- 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Fixes: 2d1726915159 ("clk: davinci: New driver for davinci PLL clocks")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > ---
->  tools/perf/bench/find-bit-bench.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/perf/bench/find-bit-bench.c b/tools/perf/bench/find-bit-bench.c
-> index fa90f3e9d368..73b5bcc5946a 100644
-> --- a/tools/perf/bench/find-bit-bench.c
-> +++ b/tools/perf/bench/find-bit-bench.c
-> @@ -17,9 +17,9 @@ static unsigned int inner_iterations = 100000;
->  
->  static const struct option options[] = {
->  	OPT_UINTEGER('i', "outer-iterations", &outer_iterations,
-> -		"Number of outerer iterations used"),
-> +		"Number of outer iterations used"),
->  	OPT_UINTEGER('j', "inner-iterations", &inner_iterations,
-> -		"Number of outerer iterations used"),
-> +		"Number of inner iterations used"),
->  	OPT_END()
->  };
->  
-> -- 
-> 2.27.0
-> 
 
--- 
-
-- Arnaldo
+Reviewed-by: David Lechner <david@lechnology.com>

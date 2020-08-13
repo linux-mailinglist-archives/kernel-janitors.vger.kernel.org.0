@@ -2,86 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE9722440D0
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Aug 2020 23:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 000142441DD
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Aug 2020 02:07:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726522AbgHMVke (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 Aug 2020 17:40:34 -0400
-Received: from mga07.intel.com ([134.134.136.100]:21835 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726192AbgHMVke (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 13 Aug 2020 17:40:34 -0400
-IronPort-SDR: gPoFmbQDoB1sDdpDiSZvlAfgi5Z+JycgLiMmEIDJMraSRPKbjrgY/O9iirrap9s8a+IrBwrljE
- w418qxt8/Ggg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9712"; a="218658444"
-X-IronPort-AV: E=Sophos;i="5.76,309,1592895600"; 
-   d="scan'208";a="218658444"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2020 14:40:33 -0700
-IronPort-SDR: bX8ONL1waEA2CrBviOzY+VKb8U80uMrAcyaqIj14Gd/WWboRHPcItAtuddgJCTpYnJBIOOL3yW
- 0yyEl7tzj6cQ==
-X-IronPort-AV: E=Sophos;i="5.76,309,1592895600"; 
-   d="scan'208";a="439920140"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2020 14:40:31 -0700
-Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
-        id 0B7A120699; Fri, 14 Aug 2020 00:40:29 +0300 (EEST)
-Date:   Fri, 14 Aug 2020 00:40:29 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Suraj Upadhyay <usuraj35@gmail.com>
-Cc:     bingbu.cao@intel.com, tian.shu.qiu@intel.com, mchehab@kernel.org,
-        gregkh@linuxfoundation.org, linux-media@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] staging: media: ipu3: Replace depracated MSI API.
-Message-ID: <20200813214028.GB24582@paasikivi.fi.intel.com>
-References: <20200718133238.GA11982@blackclown>
+        id S1726583AbgHNAHC convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 Aug 2020 20:07:02 -0400
+Received: from [186.47.21.114] ([186.47.21.114]:46250 "EHLO mail.hmvi.gob.ec"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726568AbgHNAHC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 13 Aug 2020 20:07:02 -0400
+X-Greylist: delayed 13713 seconds by postgrey-1.27 at vger.kernel.org; Thu, 13 Aug 2020 20:07:01 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mail.hmvi.gob.ec (Postfix) with ESMTP id D711FC037D85F;
+        Thu, 13 Aug 2020 12:57:00 -0500 (-05)
+Received: from mail.hmvi.gob.ec ([127.0.0.1])
+        by localhost (mail.hmvi.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id WV3pF3D0g4qB; Thu, 13 Aug 2020 12:57:00 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.hmvi.gob.ec (Postfix) with ESMTP id 32366C036D7A0;
+        Thu, 13 Aug 2020 12:38:55 -0500 (-05)
+X-Virus-Scanned: amavisd-new at hmvi.gob.ec
+Received: from mail.hmvi.gob.ec ([127.0.0.1])
+        by localhost (mail.hmvi.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id rKCVhfBNF9Hh; Thu, 13 Aug 2020 12:38:54 -0500 (-05)
+Received: from [10.73.80.190] (unknown [105.8.3.183])
+        by mail.hmvi.gob.ec (Postfix) with ESMTPSA id 75C4AC035909E;
+        Thu, 13 Aug 2020 12:32:36 -0500 (-05)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200718133238.GA11982@blackclown>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
+To:     Recipients <danny.puetate@mail.hmvi.gob.ec>
+From:   ''Tayeb Souami'' <danny.puetate@mail.hmvi.gob.ec>
+Date:   Thu, 13 Aug 2020 19:32:14 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20200813173237.75C4AC035909E@mail.hmvi.gob.ec>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Suraj,
+Lieber Freund,
 
-Thanks for the patch.
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika,
+der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich
+an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre
+E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines
+Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und
+Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die
+Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden,
+um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite
+unten.
 
-On Sat, Jul 18, 2020 at 07:02:38PM +0530, Suraj Upadhyay wrote:
-> Replace depracated psi_enable_msi with pci_alloc_irq_vectors.
-> And as a result modify how the returned value is handled.
-> 
-> Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
-> ---
->  drivers/staging/media/ipu3/ipu3.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/staging/media/ipu3/ipu3.c b/drivers/staging/media/ipu3/ipu3.c
-> index ee1bba6bdcac..54690e7442be 100644
-> --- a/drivers/staging/media/ipu3/ipu3.c
-> +++ b/drivers/staging/media/ipu3/ipu3.c
-> @@ -602,9 +602,9 @@ static irqreturn_t imgu_isr(int irq, void *imgu_ptr)
->  static int imgu_pci_config_setup(struct pci_dev *dev)
->  {
->  	u16 pci_command;
-> -	int r = pci_enable_msi(dev);
-> +	int r = pci_alloc_irq_vectors(dev, 1, 1, PCI_IRQ_MSI);
->  
-> -	if (r) {
-> +	if (r < 0) {
->  		dev_err(&dev->dev, "failed to enable MSI (%d)\n", r);
->  		return r;
->  	}
 
-I believe fixing this requires also releasing it, i.e. a call to
-pci_free_irq_vectors(). This seems to have been missing.
+UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
 
--- 
-Kind regards,
 
-Sakari Ailus
+Das ist dein Spendencode: [TS530342018]
+
+
+Antworten Sie mit dem SPENDE-CODE an diese
+
+E-Mail:Tayebsouam.spende@gmail.com
+
+
+Ich hoffe, Sie und Ihre Familie glücklich zu machen.
+
+
+Grüße
+
+Herr Tayeb Souami

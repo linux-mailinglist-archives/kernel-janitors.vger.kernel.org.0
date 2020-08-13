@@ -2,73 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E61E243E61
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Aug 2020 19:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE9722440D0
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Aug 2020 23:40:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726419AbgHMRfH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 Aug 2020 13:35:07 -0400
-Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:44657 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726174AbgHMRfH (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 13 Aug 2020 13:35:07 -0400
-Received: from localhost.localdomain ([93.22.150.113])
-        by mwinf5d58 with ME
-        id F5b1230022T2WRZ035b16U; Thu, 13 Aug 2020 19:35:04 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 13 Aug 2020 19:35:04 +0200
-X-ME-IP: 93.22.150.113
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     gregkh@linuxfoundation.org, stephen@brennan.io,
-        rohitsarkar5398@gmail.com, pterjan@google.com,
-        paulo.miguel.almeida.rodenas@gmail.com, okash.khawaja@gmail.com
-Cc:     devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] staging: rtl8192u: Do not use GFP_KERNEL in atomic context
-Date:   Thu, 13 Aug 2020 19:34:58 +0200
-Message-Id: <20200813173458.758284-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        id S1726522AbgHMVke (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 Aug 2020 17:40:34 -0400
+Received: from mga07.intel.com ([134.134.136.100]:21835 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726192AbgHMVke (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 13 Aug 2020 17:40:34 -0400
+IronPort-SDR: gPoFmbQDoB1sDdpDiSZvlAfgi5Z+JycgLiMmEIDJMraSRPKbjrgY/O9iirrap9s8a+IrBwrljE
+ w418qxt8/Ggg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9712"; a="218658444"
+X-IronPort-AV: E=Sophos;i="5.76,309,1592895600"; 
+   d="scan'208";a="218658444"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2020 14:40:33 -0700
+IronPort-SDR: bX8ONL1waEA2CrBviOzY+VKb8U80uMrAcyaqIj14Gd/WWboRHPcItAtuddgJCTpYnJBIOOL3yW
+ 0yyEl7tzj6cQ==
+X-IronPort-AV: E=Sophos;i="5.76,309,1592895600"; 
+   d="scan'208";a="439920140"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2020 14:40:31 -0700
+Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
+        id 0B7A120699; Fri, 14 Aug 2020 00:40:29 +0300 (EEST)
+Date:   Fri, 14 Aug 2020 00:40:29 +0300
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Suraj Upadhyay <usuraj35@gmail.com>
+Cc:     bingbu.cao@intel.com, tian.shu.qiu@intel.com, mchehab@kernel.org,
+        gregkh@linuxfoundation.org, linux-media@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] staging: media: ipu3: Replace depracated MSI API.
+Message-ID: <20200813214028.GB24582@paasikivi.fi.intel.com>
+References: <20200718133238.GA11982@blackclown>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200718133238.GA11982@blackclown>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'rtl8192_irq_rx_tasklet()' is a tasklet initialized in
-'rtl8192_init_priv_task()'.
-From this function it is possible to allocate some memory with the
-GFP_KERNEL flag, which is not allowed in the atomic context of a tasklet.
+Hi Suraj,
 
-Use GFP_ATOMIC instead.
+Thanks for the patch.
 
-The call chain is:
-  rtl8192_irq_rx_tasklet            (in r8192U_core.c)
-    --> rtl8192_rx_nomal            (in r8192U_core.c)
-      --> ieee80211_rx              (in ieee80211/ieee80211_rx.c)
-        --> RxReorderIndicatePacket (in ieee80211/ieee80211_rx.c)
+On Sat, Jul 18, 2020 at 07:02:38PM +0530, Suraj Upadhyay wrote:
+> Replace depracated psi_enable_msi with pci_alloc_irq_vectors.
+> And as a result modify how the returned value is handled.
+> 
+> Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
+> ---
+>  drivers/staging/media/ipu3/ipu3.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/staging/media/ipu3/ipu3.c b/drivers/staging/media/ipu3/ipu3.c
+> index ee1bba6bdcac..54690e7442be 100644
+> --- a/drivers/staging/media/ipu3/ipu3.c
+> +++ b/drivers/staging/media/ipu3/ipu3.c
+> @@ -602,9 +602,9 @@ static irqreturn_t imgu_isr(int irq, void *imgu_ptr)
+>  static int imgu_pci_config_setup(struct pci_dev *dev)
+>  {
+>  	u16 pci_command;
+> -	int r = pci_enable_msi(dev);
+> +	int r = pci_alloc_irq_vectors(dev, 1, 1, PCI_IRQ_MSI);
+>  
+> -	if (r) {
+> +	if (r < 0) {
+>  		dev_err(&dev->dev, "failed to enable MSI (%d)\n", r);
+>  		return r;
+>  	}
 
-Fixes: 79a5ccd97209 ("staging: rtl8192u: fix large frame size compiler warning")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/staging/rtl8192u/ieee80211/ieee80211_rx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I believe fixing this requires also releasing it, i.e. a call to
+pci_free_irq_vectors(). This seems to have been missing.
 
-diff --git a/drivers/staging/rtl8192u/ieee80211/ieee80211_rx.c b/drivers/staging/rtl8192u/ieee80211/ieee80211_rx.c
-index 195d963c4fbb..b6fee7230ce0 100644
---- a/drivers/staging/rtl8192u/ieee80211/ieee80211_rx.c
-+++ b/drivers/staging/rtl8192u/ieee80211/ieee80211_rx.c
-@@ -597,7 +597,7 @@ static void RxReorderIndicatePacket(struct ieee80211_device *ieee,
- 
- 	prxbIndicateArray = kmalloc_array(REORDER_WIN_SIZE,
- 					  sizeof(struct ieee80211_rxb *),
--					  GFP_KERNEL);
-+					  GFP_ATOMIC);
- 	if (!prxbIndicateArray)
- 		return;
- 
 -- 
-2.25.1
+Kind regards,
 
+Sakari Ailus

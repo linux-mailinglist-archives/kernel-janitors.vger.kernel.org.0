@@ -2,75 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 000142441DD
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Aug 2020 02:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07E88244474
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Aug 2020 07:14:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726583AbgHNAHC convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 Aug 2020 20:07:02 -0400
-Received: from [186.47.21.114] ([186.47.21.114]:46250 "EHLO mail.hmvi.gob.ec"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726568AbgHNAHC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 13 Aug 2020 20:07:02 -0400
-X-Greylist: delayed 13713 seconds by postgrey-1.27 at vger.kernel.org; Thu, 13 Aug 2020 20:07:01 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mail.hmvi.gob.ec (Postfix) with ESMTP id D711FC037D85F;
-        Thu, 13 Aug 2020 12:57:00 -0500 (-05)
-Received: from mail.hmvi.gob.ec ([127.0.0.1])
-        by localhost (mail.hmvi.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id WV3pF3D0g4qB; Thu, 13 Aug 2020 12:57:00 -0500 (-05)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.hmvi.gob.ec (Postfix) with ESMTP id 32366C036D7A0;
-        Thu, 13 Aug 2020 12:38:55 -0500 (-05)
-X-Virus-Scanned: amavisd-new at hmvi.gob.ec
-Received: from mail.hmvi.gob.ec ([127.0.0.1])
-        by localhost (mail.hmvi.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id rKCVhfBNF9Hh; Thu, 13 Aug 2020 12:38:54 -0500 (-05)
-Received: from [10.73.80.190] (unknown [105.8.3.183])
-        by mail.hmvi.gob.ec (Postfix) with ESMTPSA id 75C4AC035909E;
-        Thu, 13 Aug 2020 12:32:36 -0500 (-05)
-Content-Type: text/plain; charset="utf-8"
+        id S1726227AbgHNFN6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Aug 2020 01:13:58 -0400
+Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:42742 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726006AbgHNFN6 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 14 Aug 2020 01:13:58 -0400
+Received: from localhost.localdomain ([93.23.15.18])
+        by mwinf5d35 with ME
+        id FHDt230050PNgoV03HDuGY; Fri, 14 Aug 2020 07:13:56 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 14 Aug 2020 07:13:56 +0200
+X-ME-IP: 93.23.15.18
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     mathias.nyman@intel.com, gregkh@linuxfoundation.org
+Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] xhci: Do not use GFP_KERNEL in (potentially) atomic context
+Date:   Fri, 14 Aug 2020 07:13:48 +0200
+Message-Id: <20200814051348.763199-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
-To:     Recipients <danny.puetate@mail.hmvi.gob.ec>
-From:   ''Tayeb Souami'' <danny.puetate@mail.hmvi.gob.ec>
-Date:   Thu, 13 Aug 2020 19:32:14 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20200813173237.75C4AC035909E@mail.hmvi.gob.ec>
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Lieber Freund,
+'xhci_urb_enqueue()' is passed a 'mem_flags' argument, because "URBs may be
+submitted in interrupt context" (see comment related to 'usb_submit_urb()'
+in 'drivers/usb/core/urb.c')
 
-Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika,
-der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich
-an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre
-E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines
-Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und
-Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die
-Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden,
-um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite
-unten.
+So this flag should be used in all the calling chain.
+Up to now, 'xhci_check_maxpacket()' which is only called from
+'xhci_urb_enqueue()', uses GFP_KERNEL.
 
+Be safe and pass the mem_flags to this function as well.
 
-UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
+Fixes: ddba5cd0aeff ("xhci: Use command structures when queuing commands on the command ring")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+I'm not 100% sure of the Fixes tag. The commit is the only that introduced
+this GFP_KERNEL, but I've not checked what was the behavior before that.
 
+If the patch is correct, I guess that a cc stable should be welcome.
+---
+ drivers/usb/host/xhci.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Das ist dein Spendencode: [TS530342018]
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index 3c41b14ecce7..b536f18e4cfd 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -1382,7 +1382,7 @@ static int xhci_configure_endpoint(struct xhci_hcd *xhci,
+  * we need to issue an evaluate context command and wait on it.
+  */
+ static int xhci_check_maxpacket(struct xhci_hcd *xhci, unsigned int slot_id,
+-		unsigned int ep_index, struct urb *urb)
++		unsigned int ep_index, struct urb *urb, gfp_t mem_flags)
+ {
+ 	struct xhci_container_ctx *out_ctx;
+ 	struct xhci_input_control_ctx *ctrl_ctx;
+@@ -1413,7 +1413,7 @@ static int xhci_check_maxpacket(struct xhci_hcd *xhci, unsigned int slot_id,
+ 		 * changes max packet sizes.
+ 		 */
+ 
+-		command = xhci_alloc_command(xhci, true, GFP_KERNEL);
++		command = xhci_alloc_command(xhci, true, mem_flags);
+ 		if (!command)
+ 			return -ENOMEM;
+ 
+@@ -1509,7 +1509,7 @@ static int xhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
+ 		 */
+ 		if (urb->dev->speed == USB_SPEED_FULL) {
+ 			ret = xhci_check_maxpacket(xhci, slot_id,
+-					ep_index, urb);
++					ep_index, urb, mem_flags);
+ 			if (ret < 0) {
+ 				xhci_urb_free_priv(urb_priv);
+ 				urb->hcpriv = NULL;
+-- 
+2.25.1
 
-
-Antworten Sie mit dem SPENDE-CODE an diese
-
-E-Mail:Tayebsouam.spende@gmail.com
-
-
-Ich hoffe, Sie und Ihre Familie glücklich zu machen.
-
-
-Grüße
-
-Herr Tayeb Souami

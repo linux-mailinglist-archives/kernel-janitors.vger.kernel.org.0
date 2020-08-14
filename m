@@ -2,97 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8809D2447EA
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Aug 2020 12:24:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E37F42447FF
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Aug 2020 12:29:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726883AbgHNKYs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Aug 2020 06:24:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56394 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726269AbgHNKYs (ORCPT
+        id S1727001AbgHNK3f (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Aug 2020 06:29:35 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:55490 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726269AbgHNK3e (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Aug 2020 06:24:48 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B509C061383
-        for <kernel-janitors@vger.kernel.org>; Fri, 14 Aug 2020 03:24:48 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id f1so7897449wro.2
-        for <kernel-janitors@vger.kernel.org>; Fri, 14 Aug 2020 03:24:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
-        b=f5tlQk+OEjlgpzifw3QB6ookIcpSqAfVHCahlAt6OyFBx1XeV1WkZZpDPfIayBbuHL
-         PZ1l9KYJLmLgxaQeezDapFM3DJ7Evui68HsJ0ZTt9B0NjR6E8NKjnfEg+Xg/77ysilRE
-         cxci8yTLZk92Z8Q3NB5/73KvW4Mmvi4hxg9gvleT5YnzvdvtmUhXMdTtGi3Ks+51LnkT
-         lFq/w8YxvVXn1Swnn50W0K14lnt2w3gizJshcP9Nk0qvCxYwcNZK6cipXnd01LkqAWme
-         wo883AuyRg8iRLh3rQybM2APWBOZqOyfqXChEZ2/Pzt240TlCOPlNoNdnlgvXjH6nSQE
-         yt0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
-        b=M31dMN0OaFD9UHA1nzuJHrqf4AHmOYK0Krzm+4SOiDhjV8sm0vP4LBDAaRNOuzmW9p
-         ZjRwbWjjrfnVsAdHoVP2gS6tHnPnxgOTndA+8pUlaRBpD18trEbnk9SE79sUHT4qUqVm
-         eUkmsBXtUa792ToykNe2xiLPfsbLwyWF3md4nMSZhx6c3OoZElkeRNO0EkV/RB8qQBVf
-         KkfxUW/JHgFfSZnA+TgGEfFqnq9fhgarsOwPgP5p5Pj2lts/jImfwYNHIA10E3fdDFSb
-         wJ5+cQEtSavuvXRxSih12PcYGr/XB/WH9c7iGn6Mr0GGE5qNa1US0X/cnUxK9Chnh4+a
-         /6rQ==
-X-Gm-Message-State: AOAM533cOupxVtWJttq/IZL7rGfCI6ubPIE6+DMpJKjUg87+lGLSmc9X
-        zBlljZlmpI7cHO4ZrwgpyqggOGKC7Is2WJtB0zo=
-X-Google-Smtp-Source: ABdhPJzerVeBY+BgenxYXNX3sPOV/WPbE3TiZaYUApzdPfaicDNuxVmtSPcp8YggzT9kjifh9LngYBLQC4TTjv3410s=
-X-Received: by 2002:a5d:484d:: with SMTP id n13mr2094743wrs.297.1597400685770;
- Fri, 14 Aug 2020 03:24:45 -0700 (PDT)
+        Fri, 14 Aug 2020 06:29:34 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1597400974; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=KrpBkM033gIFZ56EzZ3aP2meXijZYyViwP302gCUNBE=; b=SquJTcw/BYsb5gZuio3OFtjk2Mcz5LyVBtNyAn+lrpshtyCVrlUI3Lo3O+o9CekWtc4ujdxj
+ 0kQuHZkv0Rjq+jqu2/nCl5Q54IubR3X9J0PK3v49UHMzxsv5KFtXzkt5fRqwfjx+LdWbQ/b7
+ Htk3qKKXxRkK+fXUVpyGpdF5mwY=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 5f36678d247ccc308cad632c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 14 Aug 2020 10:29:33
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E73F3C433C6; Fri, 14 Aug 2020 10:29:32 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9F74FC433CA;
+        Fri, 14 Aug 2020 10:29:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9F74FC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Walter Harms <wharms@bfs.de>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jouni Malinen <jouni@qca.qualcomm.com>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kernel-janitors\@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: AW: [PATCH] ath6kl: prevent potential array overflow in ath6kl_add_new_sta()
+References: <20200813141315.GB457408@mwanda>
+        <61e34f670a4845f8b1cbf6f6013f8a35@bfs.de>
+Date:   Fri, 14 Aug 2020 13:29:27 +0300
+In-Reply-To: <61e34f670a4845f8b1cbf6f6013f8a35@bfs.de> (Walter Harms's message
+        of "Fri, 14 Aug 2020 08:49:43 +0000")
+Message-ID: <874kp5msfs.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:a5d:6cd3:0:0:0:0:0 with HTTP; Fri, 14 Aug 2020 03:24:44
- -0700 (PDT)
-Reply-To: sctnld11170@tlen.pl
-From:   "Mr. Scott Donald" <confianzayrentabilidad@gmail.com>
-Date:   Fri, 14 Aug 2020 03:24:44 -0700
-Message-ID: <CANrrfX7NgvzMSv0r9BFStYz=A7CYoxkwkRKcVp2mPSHPE6rovw@mail.gmail.com>
-Subject: Hello. Please
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
---=20
-Dear Friend,
+Walter Harms <wharms@bfs.de> writes:
 
-I'm Mr. Scott Donald a Successful businessMan dealing with
-Exportation, I got your mail contact through search to let you know my
-intension and my Ugly Situation Am a dying Man here in Los Angeles
-California Hospital Bed in (USA), I Lost my Wife and my only Daughter
-for Covid-19 and I also have a problem in my Health and I can die
-anytime I Know,
+> the debugtrace will give the impression that the function is 
+> running. perhaps it is more clever to have this after the check.
 
-I have a project that I am about to hand over to you. and I already
-instructed the Bankia S.A. Madrid, Spain(BSA) to transfer my fund sum
-of =C2=A33,7M GBP. Equivalent to =E2=82=AC4,077,033.91 EUR, to you as to en=
-able you
-to give 50% of this fund to Charitable Home in your State and take 50%
-don't think otherwise and why would anybody send someone you barely
-know to help you deliver a message, help me do this for the happiness
-of my soul and for God to mercy me and my Family and give Us a good
-place.
+But it's possible to deduce from the debug message that aid is out of
+limit, so I prefer the way Dan did it.
 
-please, do as I said there was someone from your State that I deeply
-love so very very much and I miss her so badly I have no means to
-reach any Charitable Home there. that is why I go for a personal
-search of the Country and State and I got your mail contact through
-search to let you know my Bitterness and please, help me is getting
-Dark I ask my Doctor to help me keep you notice failure for me to
-reach you in person Your urgent Response, here is my Doctor Whats-app
-Number for urgent notice +13019692737
+Please don't top post. Also your mails are not visible in patchwork and
+are easily missed, most likely due to using "AW:" in the subject.
 
-Hope To Hear From You. I'm sending this email to you for the second
-time yet no response from you.
+https://patchwork.kernel.org/patch/11712551/
 
-My Regards.
-
-Mr. Scott Donald
-CEO
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

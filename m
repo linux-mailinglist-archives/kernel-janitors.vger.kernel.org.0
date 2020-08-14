@@ -2,74 +2,132 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADF8A2444AE
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Aug 2020 07:55:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE98A2446A8
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Aug 2020 10:57:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726320AbgHNFzK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Aug 2020 01:55:10 -0400
-Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:47048 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726185AbgHNFzK (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Aug 2020 01:55:10 -0400
-Received: from localhost.localdomain ([93.23.15.18])
-        by mwinf5d35 with ME
-        id FHv3230030PNgoV03Hv3rb; Fri, 14 Aug 2020 07:55:08 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 14 Aug 2020 07:55:08 +0200
-X-ME-IP: 93.23.15.18
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     balbi@kernel.org, gregkh@linuxfoundation.org,
-        sudhakar.panneerselvam@oracle.com, jpawar@cadence.com,
-        gustavoars@kernel.org, Thinh.Nguyen@synopsys.com,
-        bigeasy@linutronix.de, nab@linux-iscsi.org
-Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] usb: gadget: f_tcm: Fix some resource leaks in some error paths
-Date:   Fri, 14 Aug 2020 07:55:01 +0200
-Message-Id: <20200814055501.763821-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        id S1726641AbgHNI5p (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Aug 2020 04:57:45 -0400
+Received: from mx01-muc.bfs.de ([193.174.230.67]:46296 "EHLO mx01-muc.bfs.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726050AbgHNI5p (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 14 Aug 2020 04:57:45 -0400
+X-Greylist: delayed 477 seconds by postgrey-1.27 at vger.kernel.org; Fri, 14 Aug 2020 04:57:43 EDT
+Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
+        by mx01-muc.bfs.de (Postfix) with ESMTPS id A7F15204EB;
+        Fri, 14 Aug 2020 10:49:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1597394984;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=c4qyJxYn/ovogvflUCd44OAQh57P9+0K5dxbUuNr2sQ=;
+        b=1ESe6Lz4/gAzE4/DqbwUp7INokgmMnvEFL/6i212ILgj7UcW6LGdn5I6DOvmfKpIlrp9lw
+        1D072clfUAGNTt5c6UOiw0lhXxHbE/XDlx1V/Exf6CsGaoQc/mbfeZMEkI1FEnty17dPQC
+        ypjeZcqn069aP6VF3P7CFxkdtd6x/LbPR7tRpww28zxwo5ulQTR0YH8UNoN44/TGoUhNlG
+        aKeWOS9hRT4hoAANS4Ws4bw0CiIjvdp2BTU6DaPgLUDPcdpY6wtAoA6bmotOnq1CTcYlM4
+        sd1Q4tBeb5ahVnYXzY9UYvhYoIPk+wrgPcIup63tDEcIWMzeBM4DppqJ9lJUqQ==
+Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
+ (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2044.4; Fri, 14 Aug
+ 2020 10:49:44 +0200
+Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
+ SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%6]) with mapi id
+ 15.01.2044.004; Fri, 14 Aug 2020 10:49:43 +0200
+From:   Walter Harms <wharms@bfs.de>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+CC:     Jakub Kicinski <kuba@kernel.org>,
+        Jouni Malinen <jouni@qca.qualcomm.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: AW: [PATCH] ath6kl: prevent potential array overflow in
+ ath6kl_add_new_sta()
+Thread-Topic: [PATCH] ath6kl: prevent potential array overflow in
+ ath6kl_add_new_sta()
+Thread-Index: AQHWcXw2vbpoc3kmAEWVoUdybkje7Kk3S5kl
+Date:   Fri, 14 Aug 2020 08:49:43 +0000
+Message-ID: <61e34f670a4845f8b1cbf6f6013f8a35@bfs.de>
+References: <20200813141315.GB457408@mwanda>
+In-Reply-To: <20200813141315.GB457408@mwanda>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.137.16.39]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.02
+Authentication-Results: mx01-muc.bfs.de;
+        none
+X-Spamd-Result: default: False [-0.02 / 7.00];
+         ARC_NA(0.00)[];
+         TO_DN_EQ_ADDR_SOME(0.00)[];
+         HAS_XOIP(0.00)[];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         MIME_GOOD(-0.10)[text/plain];
+         RCPT_COUNT_FIVE(0.00)[6];
+         DKIM_SIGNED(0.00)[];
+         NEURAL_HAM(-0.00)[-1.000];
+         RCVD_NO_TLS_LAST(0.10)[];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         RCVD_COUNT_TWO(0.00)[2];
+         MID_RHS_MATCH_FROM(0.00)[];
+         BAYES_HAM(-0.02)[53.36%]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If a memory allocation fails within a 'usb_ep_alloc_request()' call, the
-already allocated memory must be released.
+nitpicking:
 
-Fix a mix-up in the code and free the correct requests.
+the debugtrace will give the impression that the function is=20
+running. perhaps it is more clever to have this after the check.
 
-Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+jm2c,
+ wh
+________________________________________
+Von: kernel-janitors-owner@vger.kernel.org [kernel-janitors-owner@vger.kern=
+el.org] im Auftrag von Dan Carpenter [dan.carpenter@oracle.com]
+Gesendet: Donnerstag, 13. August 2020 16:13
+An: Kalle Valo
+Cc: Jakub Kicinski; Jouni Malinen; linux-wireless@vger.kernel.org; kernel-j=
+anitors@vger.kernel.org
+Betreff: [PATCH] ath6kl: prevent potential array overflow in ath6kl_add_new=
+_sta()
+
+The value for "aid" comes from skb->data so Smatch marks it as
+untrusted.  If it's invalid then it can result in an out of bounds array
+access in ath6kl_add_new_sta().
+
+Fixes: 572e27c00c9d ("ath6kl: Fix AP mode connect event parsing and TIM upd=
+ates")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/usb/gadget/function/f_tcm.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath6kl/main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/gadget/function/f_tcm.c b/drivers/usb/gadget/function/f_tcm.c
-index d94b814328c8..184165e27908 100644
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -753,12 +753,13 @@ static int uasp_alloc_stream_res(struct f_uas *fu, struct uas_stream *stream)
- 		goto err_sts;
- 
- 	return 0;
+diff --git a/drivers/net/wireless/ath/ath6kl/main.c b/drivers/net/wireless/=
+ath/ath6kl/main.c
+index 5e7ea838a921..814131a0680a 100644
+--- a/drivers/net/wireless/ath/ath6kl/main.c
++++ b/drivers/net/wireless/ath/ath6kl/main.c
+@@ -430,6 +430,9 @@ void ath6kl_connect_ap_mode_sta(struct ath6kl_vif *vif,=
+ u16 aid, u8 *mac_addr,
+
+        ath6kl_dbg(ATH6KL_DBG_TRC, "new station %pM aid=3D%d\n", mac_addr, =
+aid);
+
++       if (aid < 1 || aid > AP_MAX_NUM_STA)
++               return;
 +
- err_sts:
--	usb_ep_free_request(fu->ep_status, stream->req_status);
--	stream->req_status = NULL;
--err_out:
- 	usb_ep_free_request(fu->ep_out, stream->req_out);
- 	stream->req_out = NULL;
-+err_out:
-+	usb_ep_free_request(fu->ep_in, stream->req_in);
-+	stream->req_in = NULL;
- out:
- 	return -ENOMEM;
- }
--- 
-2.25.1
+        if (assoc_req_len > sizeof(struct ieee80211_hdr_3addr)) {
+                struct ieee80211_mgmt *mgmt =3D
+                        (struct ieee80211_mgmt *) assoc_info;
+--
+2.28.0
 

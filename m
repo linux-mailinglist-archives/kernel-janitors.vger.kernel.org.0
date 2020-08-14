@@ -2,132 +2,161 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE98A2446A8
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Aug 2020 10:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2E6D24469A
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Aug 2020 10:50:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726641AbgHNI5p (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Aug 2020 04:57:45 -0400
-Received: from mx01-muc.bfs.de ([193.174.230.67]:46296 "EHLO mx01-muc.bfs.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726050AbgHNI5p (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Aug 2020 04:57:45 -0400
-X-Greylist: delayed 477 seconds by postgrey-1.27 at vger.kernel.org; Fri, 14 Aug 2020 04:57:43 EDT
-Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
-        by mx01-muc.bfs.de (Postfix) with ESMTPS id A7F15204EB;
-        Fri, 14 Aug 2020 10:49:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1597394984;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=c4qyJxYn/ovogvflUCd44OAQh57P9+0K5dxbUuNr2sQ=;
-        b=1ESe6Lz4/gAzE4/DqbwUp7INokgmMnvEFL/6i212ILgj7UcW6LGdn5I6DOvmfKpIlrp9lw
-        1D072clfUAGNTt5c6UOiw0lhXxHbE/XDlx1V/Exf6CsGaoQc/mbfeZMEkI1FEnty17dPQC
-        ypjeZcqn069aP6VF3P7CFxkdtd6x/LbPR7tRpww28zxwo5ulQTR0YH8UNoN44/TGoUhNlG
-        aKeWOS9hRT4hoAANS4Ws4bw0CiIjvdp2BTU6DaPgLUDPcdpY6wtAoA6bmotOnq1CTcYlM4
-        sd1Q4tBeb5ahVnYXzY9UYvhYoIPk+wrgPcIup63tDEcIWMzeBM4DppqJ9lJUqQ==
-Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
- (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2044.4; Fri, 14 Aug
- 2020 10:49:44 +0200
-Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
- SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%6]) with mapi id
- 15.01.2044.004; Fri, 14 Aug 2020 10:49:43 +0200
-From:   Walter Harms <wharms@bfs.de>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-CC:     Jakub Kicinski <kuba@kernel.org>,
-        Jouni Malinen <jouni@qca.qualcomm.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: AW: [PATCH] ath6kl: prevent potential array overflow in
- ath6kl_add_new_sta()
-Thread-Topic: [PATCH] ath6kl: prevent potential array overflow in
- ath6kl_add_new_sta()
-Thread-Index: AQHWcXw2vbpoc3kmAEWVoUdybkje7Kk3S5kl
-Date:   Fri, 14 Aug 2020 08:49:43 +0000
-Message-ID: <61e34f670a4845f8b1cbf6f6013f8a35@bfs.de>
-References: <20200813141315.GB457408@mwanda>
-In-Reply-To: <20200813141315.GB457408@mwanda>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.137.16.39]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1726854AbgHNIuk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Aug 2020 04:50:40 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:40097 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726641AbgHNIuk (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 14 Aug 2020 04:50:40 -0400
+Received: by mail-lj1-f193.google.com with SMTP id 185so9112626ljj.7;
+        Fri, 14 Aug 2020 01:50:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:reply-to:to:cc:references:from:autocrypt:subject
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=EU/l2DgNP5Q3Y33a0vaqppa+eSULahmyXd3lqONrVV8=;
+        b=WnJcHDHJO8X0CDhRYuh9QQVVOu/2AGtPN8Dd3PQonKdfnPkZJyVRMW4X0hqlBNzqs3
+         PdQ1rLZzc7USwM+iBxhBQQcpOBOgFluEGMDMn+3Ng4CTWLGNxjlFLaxQUPZgPs0E6T6v
+         R3MooarLUxW0UFkVT4KbJNK25c7qyUPX7GxGLQE5ewUER4rBEtriwqxdGpfQW0fOHdC8
+         BXSR5VxMhzq7i4cLwq6aIgWOEiw4ZhKRtsT7hBqNtF3+RjU0mfsbKBb2eAgW5BvWoCeS
+         SSCOtDwC2kZB/d/TOMl4ucPuIXQVU4xCDks1neSMMia3X67EMOkFGDkRSE2E272jtK8n
+         oBRw==
+X-Gm-Message-State: AOAM53072no2TX3bICnYviW5MzfT6XGregh/YBaLhZrZigVorKAIy1BF
+        FfRGrSEmBo38aRXau88o0dh67CTTT1M=
+X-Google-Smtp-Source: ABdhPJwSJpFN7geKb23Bu8pumvCmyLFkpxeYjv3mvRyo5OCsnyKTFvV5E3A/G4MROsjszQcv/645pg==
+X-Received: by 2002:a2e:9913:: with SMTP id v19mr844004lji.292.1597395036694;
+        Fri, 14 Aug 2020 01:50:36 -0700 (PDT)
+Received: from [10.68.32.147] (broadband-37-110-38-130.ip.moscow.rt.ru. [37.110.38.130])
+        by smtp.gmail.com with ESMTPSA id z18sm1635838lja.55.2020.08.14.01.50.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Aug 2020 01:50:36 -0700 (PDT)
+Reply-To: efremov@linux.com
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        Julia Lawall <julia.lawall@inria.fr>
+Cc:     Coccinelle <cocci@systeme.lip6.fr>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <ed9a8046-4c21-e849-f68b-9e08991b701d@web.de>
+From:   Denis Efremov <efremov@linux.com>
+Autocrypt: addr=efremov@linux.com; keydata=
+ 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
+Subject: Re: [PATCH] coccinelle: api: add sprintf() support to
+ device_attr_show
+Message-ID: <8e76e81f-970b-b1f7-840d-10506dc3311a@linux.com>
+Date:   Fri, 14 Aug 2020 11:50:35 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-X-Spam-Status: No, score=-0.02
-Authentication-Results: mx01-muc.bfs.de;
-        none
-X-Spamd-Result: default: False [-0.02 / 7.00];
-         ARC_NA(0.00)[];
-         TO_DN_EQ_ADDR_SOME(0.00)[];
-         HAS_XOIP(0.00)[];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         RCPT_COUNT_FIVE(0.00)[6];
-         DKIM_SIGNED(0.00)[];
-         NEURAL_HAM(-0.00)[-1.000];
-         RCVD_NO_TLS_LAST(0.10)[];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         MID_RHS_MATCH_FROM(0.00)[];
-         BAYES_HAM(-0.02)[53.36%]
+In-Reply-To: <ed9a8046-4c21-e849-f68b-9e08991b701d@web.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-nitpicking:
+Hi,
 
-the debugtrace will give the impression that the function is=20
-running. perhaps it is more clever to have this after the check.
+Markus, I think that CCing new people and spam them with mails they
+are obviously not interested in doesn't bring an additional value to
+the discussion. linux-kernel and cocci mailing lists are enough
+in my opinion. This also will allow us to keep "threaded" mail
+order.
 
-jm2c,
- wh
-________________________________________
-Von: kernel-janitors-owner@vger.kernel.org [kernel-janitors-owner@vger.kern=
-el.org] im Auftrag von Dan Carpenter [dan.carpenter@oracle.com]
-Gesendet: Donnerstag, 13. August 2020 16:13
-An: Kalle Valo
-Cc: Jakub Kicinski; Jouni Malinen; linux-wireless@vger.kernel.org; kernel-j=
-anitors@vger.kernel.org
-Betreff: [PATCH] ath6kl: prevent potential array overflow in ath6kl_add_new=
-_sta()
+On 8/14/20 11:30 AM, Markus Elfring wrote:
+>> Interesting enough that with this patch coccinelle starts to skip
+>> patch generation in some cases. For example, it skips patch for
+>> drivers/base/core.c This is an unexpected result for me.
+> 
+> Would you like to point questionable differences for such patch hunks out?
 
-The value for "aid" comes from skb->data so Smatch marks it as
-untrusted.  If it's invalid then it can result in an out of bounds array
-access in ath6kl_add_new_sta().
+Without this patch the script generates:
+$ spatch -D patch --no-includes --include-headers --cocci-file scripts/coccinelle/api/device_attr_show.cocci drivers/base/core.c
+--- drivers/base/core.c
++++ /tmp/cocci-output-63510-2f17ff-core.c
+@@ -1713,7 +1713,7 @@ ssize_t device_show_ulong(struct device
+char *buf)
+{
+struct dev_ext_attribute *ea = to_ext_attr(attr);
+-       return snprintf(buf, PAGE_SIZE, "%lx\n", *(unsigned long *)(ea->var));
++       return scnprintf(buf, PAGE_SIZE, "%lx\n", *(unsigned long *)(ea->var));
+}
+EXPORT_SYMBOL_GPL(device_show_ulong);
 
-Fixes: 572e27c00c9d ("ath6kl: Fix AP mode connect event parsing and TIM upd=
-ates")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/net/wireless/ath/ath6kl/main.c | 3 +++
- 1 file changed, 3 insertions(+)
+@@ -1743,7 +1743,7 @@ ssize_t device_show_int(struct device *d
+{
+struct dev_ext_attribute *ea = to_ext_attr(attr);
 
-diff --git a/drivers/net/wireless/ath/ath6kl/main.c b/drivers/net/wireless/=
-ath/ath6kl/main.c
-index 5e7ea838a921..814131a0680a 100644
---- a/drivers/net/wireless/ath/ath6kl/main.c
-+++ b/drivers/net/wireless/ath/ath6kl/main.c
-@@ -430,6 +430,9 @@ void ath6kl_connect_ap_mode_sta(struct ath6kl_vif *vif,=
- u16 aid, u8 *mac_addr,
+-       return snprintf(buf, PAGE_SIZE, "%d\n", *(int *)(ea->var));
++       return scnprintf(buf, PAGE_SIZE, "%d\n", *(int *)(ea->var));
+}
+EXPORT_SYMBOL_GPL(device_show_int);
 
-        ath6kl_dbg(ATH6KL_DBG_TRC, "new station %pM aid=3D%d\n", mac_addr, =
-aid);
+@@ -1764,7 +1764,7 @@ ssize_t device_show_bool(struct device *
+{
+struct dev_ext_attribute *ea = to_ext_attr(attr);
 
-+       if (aid < 1 || aid > AP_MAX_NUM_STA)
-+               return;
-+
-        if (assoc_req_len > sizeof(struct ieee80211_hdr_3addr)) {
-                struct ieee80211_mgmt *mgmt =3D
-                        (struct ieee80211_mgmt *) assoc_info;
---
-2.28.0
+-       return snprintf(buf, PAGE_SIZE, "%d\n", *(bool *)(ea->var));
++       return scnprintf(buf, PAGE_SIZE, "%d\n", *(bool *)(ea->var));
+}
+EXPORT_SYMBOL_GPL(device_show_bool);
 
+With this patch it generates nothing. I would expect spatch to generate
+a different patch with sprintf instead of scnprintf, because I think 
+... is enough to match "*(int *)(ea->var)". Even if it can't match sprintf
+pattern it should fallback to scnprintf pattern.
+
+> You propose to use a nested SmPL disjunction for desired adjustments.
+> I suggest to start a corresponding case distinction behind
+> the key word “return” instead of repeating it three times.
+
+It doesn't work.
+
+Thanks,
+Denis

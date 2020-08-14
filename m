@@ -2,61 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91AD62448D4
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Aug 2020 13:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C1BD244A65
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Aug 2020 15:29:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728005AbgHNLbA convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Aug 2020 07:31:00 -0400
-Received: from mail.munisurquillo.gob.pe ([190.187.155.157]:50992 "EHLO
-        mail.munisurquillo.gob.pe" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726185AbgHNLbA (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Aug 2020 07:31:00 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.munisurquillo.gob.pe (Postfix) with ESMTP id C9BCF40407F35;
-        Fri, 14 Aug 2020 02:55:36 -0500 (-05)
-Received: from mail.munisurquillo.gob.pe ([127.0.0.1])
-        by localhost (mail.munisurquillo.gob.pe [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id aB9iyAfBIJXf; Fri, 14 Aug 2020 02:55:36 -0500 (-05)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.munisurquillo.gob.pe (Postfix) with ESMTP id 35DC14040EC81;
-        Fri, 14 Aug 2020 02:46:45 -0500 (-05)
-X-Virus-Scanned: amavisd-new at munisurquillo.gob.pe
-Received: from mail.munisurquillo.gob.pe ([127.0.0.1])
-        by localhost (mail.munisurquillo.gob.pe [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id Ls7CyWyELpe4; Fri, 14 Aug 2020 02:46:44 -0500 (-05)
-Received: from [10.54.17.114] (unknown [105.4.7.153])
-        by mail.munisurquillo.gob.pe (Postfix) with ESMTPSA id 007344040E5F6;
-        Fri, 14 Aug 2020 02:39:45 -0500 (-05)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1726690AbgHNN31 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Aug 2020 09:29:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38450 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726139AbgHNN30 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 14 Aug 2020 09:29:26 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A467A20866;
+        Fri, 14 Aug 2020 13:29:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597411766;
+        bh=M8IpowAfT+qBbeI+kIkA0UlQOUYyX+jTYiiQpIPwmw8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=F56Y4rVIhbN+6XtGPSMHwM5TPr7H/j7x7kEXaCkwOgLXodlV7qRVA7/UjhjKwlkUN
+         Le0wU5p/acM1m7zqwOG+LrvENCWLf8vxnftr/3iVMuLat3mnKNV+V0LgVhgEOiBZQl
+         ptu2WfHluw1yb3UfxR2Y/PGPxxVh5lPilnafn3Uw=
+Date:   Fri, 14 Aug 2020 15:29:48 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        Coccinelle <cocci@systeme.lip6.fr>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>
+Subject: Re: [PATCH v2] scripts: coccicheck: Change default value for
+ parallelism
+Message-ID: <20200814132948.GA62819@kroah.com>
+References: <7733e0b3-91f2-0033-75d6-77947253bfeb@web.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
-To:     Recipients <lu.marin@munisurquillo.gob.pe>
-From:   ''charles jackson'' <lu.marin@munisurquillo.gob.pe>
-Date:   Fri, 14 Aug 2020 09:39:36 +0200
-Reply-To: charlesjacksonjr001@gmail.com
-Message-Id: <20200814073947.007344040E5F6@mail.munisurquillo.gob.pe>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7733e0b3-91f2-0033-75d6-77947253bfeb@web.de>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hallo
+On Fri, Aug 14, 2020 at 03:06:06PM +0200, Markus Elfring wrote:
+> > a decrease in performance is noted. The elapsed time is  minimum
+> 
+> Can the following wording variant be more appropriate?
+> 
+>   a decrease was noticed in the software performance. The elapsed time is minimal
+> 
+> 
+> > respectively for two separate runs. â€¦
+> 
+> Can such information trigger further considerations for benchmarking approaches?
+> 
+> Regards,
+> Markus
 
-Ich bin Charles W. Jackson aus North Carolina, Vereinigte Staaten von Amerika, und ich bin der Gewinner des Mega-Millionen-Jackpots von 344 Millionen US-Dollar. Ich spende die Summe von 2.000.000 Millionen Euro als Teil der Hilfsgelder für das Corona-Virus.
 
-Dies ist Ihr Spendencode: [CJ530342019]
+Hi,
 
-www.youtube.com/watch?v=BSr8myiLPMQ
+This is the semi-friendly patch-bot of Greg Kroah-Hartman.
 
-Bitte antworten Sie auf diese E-Mail mit dem SPENDERCODE:
+Markus, you seem to have sent a nonsensical or otherwise pointless
+review comment to a patch submission on a Linux kernel developer mailing
+list.  I strongly suggest that you not do this anymore.  Please do not
+bother developers who are actively working to produce patches and
+features with comments that, in the end, are a waste of time.
 
-charlesjacksonjr001@gmail.com
+Patch submitter, please ignore Markus's suggestion; you do not need to
+follow it at all.  The person/bot/AI that sent it is being ignored by
+almost all Linux kernel maintainers for having a persistent pattern of
+behavior of producing distracting and pointless commentary, and
+inability to adapt to feedback.  Please feel free to also ignore emails
+from them.
 
-Ich hoffe, dass Sie und Ihre Familie dies durchkommen
+thanks,
 
-
-Herr Charles Jackson
+greg k-h's patch email bot

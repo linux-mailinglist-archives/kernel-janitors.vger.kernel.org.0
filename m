@@ -2,88 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28B0D244EF3
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Aug 2020 21:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B049B2452C7
+	for <lists+kernel-janitors@lfdr.de>; Sat, 15 Aug 2020 23:55:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728414AbgHNTsi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Aug 2020 15:48:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39730 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726213AbgHNTsh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Aug 2020 15:48:37 -0400
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2720C20675;
-        Fri, 14 Aug 2020 19:48:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597434517;
-        bh=49/ymVCFq5phy1rc2KbPcsV+yZ5d4kVWmjeUsVuKKwM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Y8/6CtNT/RWvMjmzXMLlevAkc4kqUJrzX5zkk8gjW5JhvpJ1jn74alNArmaoGUwtV
-         BTjZ9v6pwhmIEORFU0lvPU4YQGGPs7aJeMb/EghGAS//amBYgvRyHv4Wog+/ny2Ozf
-         i02tv8PtaXecGpHXvZP0PZMyZYXhfHMrfssd4K1g=
-Received: by mail-ot1-f41.google.com with SMTP id k12so8517192otr.1;
-        Fri, 14 Aug 2020 12:48:37 -0700 (PDT)
-X-Gm-Message-State: AOAM530unYJ5UX9X5Kyz15gs69EIT6ECcpWz6Ykk624Rw2rtQYu0sgma
-        44y1gDkl0ruVMtWOOvsc1x9Ywo/SZaLph3GqCQ==
-X-Google-Smtp-Source: ABdhPJxrQSww6LTRkLkSM1un20zusfbbOrIU5xOzV9SZrRPaqPenXR84qBQ/ArA6cwl1NcJXao8AjghrDjG7SZuEgLo=
-X-Received: by 2002:a05:6830:1d8e:: with SMTP id y14mr3111218oti.129.1597434516538;
- Fri, 14 Aug 2020 12:48:36 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200813114344.67730-1-colin.king@canonical.com>
-In-Reply-To: <20200813114344.67730-1-colin.king@canonical.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Fri, 14 Aug 2020 13:48:25 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+hBnFui6fOoY9jv4YFYX7MdiPhdA_dWHiFrMzLXJOYbw@mail.gmail.com>
-Message-ID: <CAL_Jsq+hBnFui6fOoY9jv4YFYX7MdiPhdA_dWHiFrMzLXJOYbw@mail.gmail.com>
-Subject: Re: [PATCH][V2] of/address: check for invalid range.cpu_addr
-To:     Colin King <colin.king@canonical.com>
-Cc:     Frank Rowand <frowand.list@gmail.com>, devicetree@vger.kernel.org,
+        id S1729090AbgHOVzF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 15 Aug 2020 17:55:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45600 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729075AbgHOVwZ (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 15 Aug 2020 17:52:25 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF150C004582;
+        Sat, 15 Aug 2020 11:23:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=XNnhqa1EUtqytFCfJSuJLhsT+WcSRC9k4ESXyMuhNTU=; b=snPX6e/0YVSp1IEqXQqMvaGXZs
+        690Ej5IRXxO8q+ekbLWln56lZObyenBEZwB9gVI+Rgh/OVCz/ZK6rZ4jpBAcJvUQINLfYnI32NB5p
+        Dl7iwSxgXobIfatecLrHb6exWfppgGaF3SGpXbQLu4fPe87kg12MUrlydN52Wf8nDfpUIrGdaWcm9
+        nEkcMn9QTO9mtJWj80Edzz618rhyeqdm1gr9hKGSjB/YVI0REbzkZAS8LG+QCittA7Tuz1kyguuP9
+        vu2LrGHht4+Mxd4hRkmteFllaPNl3oIQx7ZZSsMHMXUrA9YkY1I9D9vEraTU4PXR5N6qZ9FLEO40B
+        Y0NFTu5w==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1k70pY-0004UB-36; Sat, 15 Aug 2020 18:23:00 +0000
+Date:   Sat, 15 Aug 2020 19:23:00 +0100
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Josef Bacik <josef@toxicpanda.com>, linux-fsdevel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Coccinelle <cocci@systeme.lip6.fr>, linux-kernel@vger.kernel.org,
+        kernel-team@fb.com, Al Viro <viro@zeniv.linux.org.uk>,
+        Christoph Hellwig <hch@lst.de>,
+        Denis Efremov <efremov@linux.com>
+Subject: Re: [PATCH 2/2] tree-wide: rename vmemdup_user to kvmemdup_user
+Message-ID: <20200815182300.GZ17456@casper.infradead.org>
+References: <2e717622-22ba-9947-c8df-520bdbb2e16f@web.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2e717622-22ba-9947-c8df-520bdbb2e16f@web.de>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Aug 13, 2020 at 5:43 AM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Currently invalid CPU addresses are not being sanity checked resulting in
-> SATA setup failure on a SynQuacer SC2A11 development machine. The original
-> check was removed by and earlier commit, so add a sanity check back in
-> to avoid this regression.
->
-> Fixes: 7a8b64d17e35 ("of/address: use range parser for of_dma_get_range")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/of/address.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/drivers/of/address.c b/drivers/of/address.c
-> index 590493e04b01..6ffbf7b99e92 100644
-> --- a/drivers/of/address.c
-> +++ b/drivers/of/address.c
-> @@ -985,6 +985,10 @@ int of_dma_get_range(struct device_node *np, u64 *dma_addr, u64 *paddr, u64 *siz
->                         /* Don't error out as we'd break some existing DTs */
->                         continue;
->                 }
-> +               if (range.cpu_addr == OF_BAD_ADDR) {
-> +                       pr_err("Translation of CPU address failed on node (%pOF)\n", node);
-> +                       continue;
-> +               }
->                 dma_offset = range.cpu_addr - range.bus_addr;
->
->                 /* Take lower and upper limits */
-> --
->
-> V2: print message using pr_err and don't print range.cpu_addr as it's always
->     going to be OF_BAD_ADDR so the information is pointless.
+On Sat, Aug 15, 2020 at 03:10:12PM +0200, Markus Elfring wrote:
+> > This helper uses kvmalloc, not vmalloc, so rename it to kvmemdup_user to
+> > make it clear we're using kvmalloc() and will need to use kvfree().
+> 
+> Can the renaming of this function name trigger software updates
+> for any more source files?
 
-Shouldn't we print the bus_addr like the original message did?
-Otherwise, we don't really know what entry is problematic.
+Why don't you find out, and if there are, submit your own patch?
 
-Rob
+> Example:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/scripts/coccinelle/api/memdup_user.cocci?id=c9c9735c46f589b9877b7fc00c89ef1b61a31e18#n18
+> 
+> Regards,
+> Markus

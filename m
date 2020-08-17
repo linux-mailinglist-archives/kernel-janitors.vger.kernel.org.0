@@ -2,63 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84B9D2454DA
-	for <lists+kernel-janitors@lfdr.de>; Sun, 16 Aug 2020 01:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B52C246242
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Aug 2020 11:16:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726184AbgHOXMo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 15 Aug 2020 19:12:44 -0400
-Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:32653 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726357AbgHOXMo (ORCPT
+        id S1726381AbgHQJQb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 Aug 2020 05:16:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:38985 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726133AbgHQJQb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 15 Aug 2020 19:12:44 -0400
-Received: from localhost.localdomain ([93.22.149.115])
-        by mwinf5d71 with ME
-        id FiCf230082VdYtp03iCf2V; Sat, 15 Aug 2020 08:12:40 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 15 Aug 2020 08:12:40 +0200
-X-ME-IP: 93.22.149.115
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     sean@mess.org, mchehab@kernel.org
-Cc:     linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] media: mceusb: Avoid GFP_ATOMIC where it is not needed
-Date:   Sat, 15 Aug 2020 08:12:37 +0200
-Message-Id: <20200815061237.765171-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Mon, 17 Aug 2020 05:16:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1597655790;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=cgv9syO/q7Axh/n0cL7lfy3BzNsL43MPSSsFNIWnnAc=;
+        b=ShQZ76ZTPAVIEX4TFNE+mT6fKBHiUKQmkLYI2RWBiyahTroAkPLIEFEWiVV2r44yaGS99l
+        oZYQ0PkAJPPUcgI9sFe/vPGf01L2yPgvz5hIFmHhSQLXqvdXkJcBxxJ6iJAwjbKfchxvWu
+        R4cPFbMTk9ZPMgOC3QAqM0XSA9YTKIc=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-527--UbGxcsKOyy6ycGmrHfVAw-1; Mon, 17 Aug 2020 05:16:28 -0400
+X-MC-Unique: -UbGxcsKOyy6ycGmrHfVAw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9A478807332;
+        Mon, 17 Aug 2020 09:16:26 +0000 (UTC)
+Received: from sirius.home.kraxel.org (ovpn-112-195.ams2.redhat.com [10.36.112.195])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 606F11002393;
+        Mon, 17 Aug 2020 09:16:25 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+        id 985429D17; Mon, 17 Aug 2020 11:16:24 +0200 (CEST)
+Date:   Mon, 17 Aug 2020 11:16:24 +0200
+From:   Gerd Hoffmann <kraxel@redhat.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org,
+        virtualization@lists.linux-foundation.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm/virtgpu: remove redundant assignments to width and
+ height
+Message-ID: <20200817091624.wqnfo2vnhyj7q53t@sirius.home.kraxel.org>
+References: <20200701134154.549112-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200701134154.549112-1-colin.king@canonical.com>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is no point in using GFP_ATOMIC here.
-It is a probe function, and GFP_KERNEL is already used the line before
-and the line after.
+On Wed, Jul 01, 2020 at 02:41:54PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Variables width and height are being assigned values that are never
+> read. The assignments are redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Use GFP_KERNEL instead.
+Pused to drm-misc-next.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/media/rc/mceusb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/media/rc/mceusb.c b/drivers/media/rc/mceusb.c
-index f9616158bcf4..98681ba10428 100644
---- a/drivers/media/rc/mceusb.c
-+++ b/drivers/media/rc/mceusb.c
-@@ -1726,7 +1726,7 @@ static int mceusb_dev_probe(struct usb_interface *intf,
- 		goto mem_alloc_fail;
- 
- 	ir->pipe_in = pipe;
--	ir->buf_in = usb_alloc_coherent(dev, maxp, GFP_ATOMIC, &ir->dma_in);
-+	ir->buf_in = usb_alloc_coherent(dev, maxp, GFP_KERNEL, &ir->dma_in);
- 	if (!ir->buf_in)
- 		goto buf_in_alloc_fail;
- 
--- 
-2.25.1
+thanks,
+  Gerd
 

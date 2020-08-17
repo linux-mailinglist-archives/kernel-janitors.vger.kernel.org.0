@@ -2,86 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD594246476
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Aug 2020 12:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A2C1246585
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Aug 2020 13:32:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726727AbgHQKZk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Aug 2020 06:25:40 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:50524 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726369AbgHQKZk (ORCPT
+        id S1728053AbgHQLcN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 Aug 2020 07:32:13 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:55738 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727050AbgHQLcM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Aug 2020 06:25:40 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597659940; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=afrx+GYTeGfAA0L5NcErG+Sw5Rx8q7wQPJGJJR8T2QM=;
- b=eSSFgGhlXpcwsfG7TjvUO4O8M2441J0VezR/8o7MvapmAhs/TUzguAgdKc6D/c+VUEhjC9Hc
- ohnty1ldNZGyuaOw+ejU6P/G99LuYoSyIYLHEeixFXNoWXLieYIW3HRJ92Fg3trKOr0HNn94
- zRj0xzcgPE86qBwN2X3aaKo92J8=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5f3a5b2385672017516cb4a1 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 17 Aug 2020 10:25:39
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B2742C433C6; Mon, 17 Aug 2020 10:25:38 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 04D70C433CA;
-        Mon, 17 Aug 2020 10:25:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 04D70C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Mon, 17 Aug 2020 07:32:12 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1k7dN2-0002Ii-P6; Mon, 17 Aug 2020 11:32:08 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        devicetree@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][V3] of/address: check for invalid range.cpu_addr
+Date:   Mon, 17 Aug 2020 12:32:08 +0100
+Message-Id: <20200817113208.523805-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath10k: Fix the size used in a 'dma_free_coherent()' call
- in
- an error handling path
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200802122227.678637-1-christophe.jaillet@wanadoo.fr>
-References: <20200802122227.678637-1-christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     davem@davemloft.net, kuba@kernel.org, pillair@codeaurora.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200817102538.B2742C433C6@smtp.codeaurora.org>
-Date:   Mon, 17 Aug 2020 10:25:38 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> Update the size used in 'dma_free_coherent()' in order to match the one
-> used in the corresponding 'dma_alloc_coherent()'.
-> 
-> Fixes: 1863008369ae ("ath10k: fix shadow register implementation for WCN3990")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> Reviewed-by: Rakesh Pillai <pillair@codeaurora.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Currently invalid CPU addresses are not being sanity checked resulting in
+SATA setup failure on a SynQuacer SC2A11 development machine. The original
+check was removed by and earlier commit, so add a sanity check back in
+to avoid this regression.
 
-Patch applied to ath-next branch of ath.git, thanks.
+Fixes: 7a8b64d17e35 ("of/address: use range parser for of_dma_get_range")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
 
-454530a9950b ath10k: Fix the size used in a 'dma_free_coherent()' call in an error handling path
+V2: print message using pr_err and don't print range.cpu_addr as it's always
+    going to be OF_BAD_ADDR so the information is pointless.
+V3: print the bus address to help diagnose issues
 
+---
+ drivers/of/address.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/of/address.c b/drivers/of/address.c
+index 590493e04b01..945b3d785f44 100644
+--- a/drivers/of/address.c
++++ b/drivers/of/address.c
+@@ -985,6 +985,11 @@ int of_dma_get_range(struct device_node *np, u64 *dma_addr, u64 *paddr, u64 *siz
+ 			/* Don't error out as we'd break some existing DTs */
+ 			continue;
+ 		}
++		if (range.cpu_addr == OF_BAD_ADDR) {
++			pr_err("translation of DMA address(%llx) to CPU address failed node(%pOF)\n",
++			       range.bus_addr, node);
++			continue;
++		}
+ 		dma_offset = range.cpu_addr - range.bus_addr;
+ 
+ 		/* Take lower and upper limits */
 -- 
-https://patchwork.kernel.org/patch/11696383/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.27.0
 

@@ -2,28 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83C4B247A7E
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Aug 2020 00:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBE65247A88
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Aug 2020 00:37:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729719AbgHQWdg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Aug 2020 18:33:36 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:45456 "EHLO
+        id S1729964AbgHQWhP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 Aug 2020 18:37:15 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:45496 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726778AbgHQWde (ORCPT
+        with ESMTP id S1729191AbgHQWhP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Aug 2020 18:33:34 -0400
+        Mon, 17 Aug 2020 18:37:15 -0400
 Received: from [82.43.126.140] (helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1k7nh4-00080d-5A; Mon, 17 Aug 2020 22:33:30 +0000
+        id 1k7nkf-0008NN-Oo; Mon, 17 Aug 2020 22:37:13 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Russell King <linux@armlinux.org.uk>,
-        linux-arm-kernel@lists.infradead.org
+To:     Jassi Brar <jassisinghbrar@gmail.com>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: Kconfig: remove duplicate "the the" phrase in Kconfig text
-Date:   Mon, 17 Aug 2020 23:33:29 +0100
-Message-Id: <20200817223329.5462-1-colin.king@canonical.com>
+Subject: [PATCH] mailbox: remove duplicate "the the" phrase in Kconfig text
+Date:   Mon, 17 Aug 2020 23:37:13 +0100
+Message-Id: <20200817223713.5659-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,36 +34,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There are a couple of occurrences of "the the" in the Kconfig
-help text. Fix these.
+The Kconfig help text contains the phrase "the the" in the help
+text. Fix this and reformat a couple of lines.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- arch/arm/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mailbox/Kconfig | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index e00d94b16658..9ac1be7390f9 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -1791,7 +1791,7 @@ config ARM_ATAG_DTB_COMPAT_CMDLINE_EXTEND
- 	bool "Extend with bootloader kernel arguments"
+diff --git a/drivers/mailbox/Kconfig b/drivers/mailbox/Kconfig
+index 05b1009e2820..581ad9154a4a 100644
+--- a/drivers/mailbox/Kconfig
++++ b/drivers/mailbox/Kconfig
+@@ -47,9 +47,9 @@ config ARMADA_37XX_RWTM_MBOX
+ 	depends on ARCH_MVEBU || COMPILE_TEST
+ 	depends on OF
  	help
- 	  The command-line arguments provided by the boot loader will be
--	  appended to the the device tree bootargs property.
-+	  appended to the device tree bootargs property.
+-	  Mailbox implementation for communication with the the firmware
+-	  running on the Cortex-M3 rWTM secure processor of the Armada 37xx
+-	  SOC. Say Y here if you are building for such a device (for example
++	  Mailbox implementation for communication with the firmware running
++	  on the Cortex-M3 rWTM secure processor of the Armada 37xx SOC.
++	  Say Y here if you are building for such a device (for example
+ 	  the Turris Mox router).
  
- endchoice
- 
-@@ -1948,7 +1948,7 @@ config DMI
- 	  continue to boot on existing non-UEFI platforms.
- 
- 	  NOTE: This does *NOT* enable or encourage the use of DMI quirks,
--	  i.e., the the practice of identifying the platform via DMI to
-+	  i.e., the practice of identifying the platform via DMI to
- 	  decide whether certain workarounds for buggy hardware and/or
- 	  firmware need to be enabled. This would require the DMI subsystem
- 	  to be enabled much earlier than we do on ARM, which is non-trivial.
+ config OMAP2PLUS_MBOX
 -- 
 2.27.0
 

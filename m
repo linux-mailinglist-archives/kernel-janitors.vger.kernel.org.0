@@ -2,32 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3952E24646A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Aug 2020 12:24:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD594246476
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Aug 2020 12:25:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727900AbgHQKYX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Aug 2020 06:24:23 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:20041 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726888AbgHQKYU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Aug 2020 06:24:20 -0400
+        id S1726727AbgHQKZk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 Aug 2020 06:25:40 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:50524 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726369AbgHQKZk (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 17 Aug 2020 06:25:40 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597659859; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1597659940; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=hNp2oCF8x5e4utKwxAAq7/4bAaBvzDdRhYy4tDswErY=;
- b=U/rTZK6D8+AAFk8CtIwePQbmmPj6howYdKygzm+3ZStBi3QbdBw/0tSnf3YF6WJ4nZ7LLq7o
- G75jfnH0mrURPunLQsbVFElCvx6J14j+LyA4FNb4gEhiSMR4vZEwcitrsT/7EGClPhA/uIFQ
- sT9YqFm2AbelcpXzFpnnl9H4QzA=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ Content-Type: Sender; bh=afrx+GYTeGfAA0L5NcErG+Sw5Rx8q7wQPJGJJR8T2QM=;
+ b=eSSFgGhlXpcwsfG7TjvUO4O8M2441J0VezR/8o7MvapmAhs/TUzguAgdKc6D/c+VUEhjC9Hc
+ ohnty1ldNZGyuaOw+ejU6P/G99LuYoSyIYLHEeixFXNoWXLieYIW3HRJ92Fg3trKOr0HNn94
+ zRj0xzcgPE86qBwN2X3aaKo92J8=
+X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n08.prod.us-west-2.postgun.com with SMTP id
- 5f3a5acf1e4d3989d4d2f005 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 17 Aug 2020 10:24:15
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5f3a5b2385672017516cb4a1 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 17 Aug 2020 10:25:39
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id F1F20C43387; Mon, 17 Aug 2020 10:24:14 +0000 (UTC)
+        id B2742C433C6; Mon, 17 Aug 2020 10:25:38 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,55 +38,50 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 82797C433CA;
-        Mon, 17 Aug 2020 10:24:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 82797C433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 04D70C433CA;
+        Mon, 17 Aug 2020 10:25:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 04D70C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath9k: Fix potential out of bounds in
- ath9k_htc_txcompletion_cb()
+Subject: Re: [PATCH] ath10k: Fix the size used in a 'dma_free_coherent()' call
+ in
+ an error handling path
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200813141253.GA457408@mwanda>
-References: <20200813141253.GA457408@mwanda>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Vasanthakumar Thiagarajan <vasanth@atheros.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        Senthil Balasubramanian <senthilkumar@atheros.com>,
-        Sujith <Sujith.Manoharan@atheros.com>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <20200802122227.678637-1-christophe.jaillet@wanadoo.fr>
+References: <20200802122227.678637-1-christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     davem@davemloft.net, kuba@kernel.org, pillair@codeaurora.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200817102414.F1F20C43387@smtp.codeaurora.org>
-Date:   Mon, 17 Aug 2020 10:24:14 +0000 (UTC)
+Message-Id: <20200817102538.B2742C433C6@smtp.codeaurora.org>
+Date:   Mon, 17 Aug 2020 10:25:38 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-> The value of "htc_hdr->endpoint_id" comes from skb->data so Smatch marks
-> it as untrusted so we have to check it before using it as an array
-> offset.
+> Update the size used in 'dma_free_coherent()' in order to match the one
+> used in the corresponding 'dma_alloc_coherent()'.
 > 
-> This is similar to a bug that syzkaller found in commit e4ff08a4d727
-> ("ath9k: Fix use-after-free Write in ath9k_htc_rx_msg") so it is
-> probably a real issue.
-> 
-> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Fixes: 1863008369ae ("ath10k: fix shadow register implementation for WCN3990")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Reviewed-by: Rakesh Pillai <pillair@codeaurora.org>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-2705cd7558e7 ath9k: Fix potential out of bounds in ath9k_htc_txcompletion_cb()
+454530a9950b ath10k: Fix the size used in a 'dma_free_coherent()' call in an error handling path
 
 -- 
-https://patchwork.kernel.org/patch/11712553/
+https://patchwork.kernel.org/patch/11696383/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

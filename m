@@ -2,71 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B52C246242
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Aug 2020 11:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2935E246415
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Aug 2020 12:07:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726381AbgHQJQb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Aug 2020 05:16:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:38985 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726133AbgHQJQb (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Aug 2020 05:16:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1597655790;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=cgv9syO/q7Axh/n0cL7lfy3BzNsL43MPSSsFNIWnnAc=;
-        b=ShQZ76ZTPAVIEX4TFNE+mT6fKBHiUKQmkLYI2RWBiyahTroAkPLIEFEWiVV2r44yaGS99l
-        oZYQ0PkAJPPUcgI9sFe/vPGf01L2yPgvz5hIFmHhSQLXqvdXkJcBxxJ6iJAwjbKfchxvWu
-        R4cPFbMTk9ZPMgOC3QAqM0XSA9YTKIc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-527--UbGxcsKOyy6ycGmrHfVAw-1; Mon, 17 Aug 2020 05:16:28 -0400
-X-MC-Unique: -UbGxcsKOyy6ycGmrHfVAw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1727083AbgHQKHP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 Aug 2020 06:07:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46468 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726760AbgHQKHO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 17 Aug 2020 06:07:14 -0400
+Received: from pobox.suse.cz (nat1.prg.suse.com [195.250.132.148])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9A478807332;
-        Mon, 17 Aug 2020 09:16:26 +0000 (UTC)
-Received: from sirius.home.kraxel.org (ovpn-112-195.ams2.redhat.com [10.36.112.195])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 606F11002393;
-        Mon, 17 Aug 2020 09:16:25 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-        id 985429D17; Mon, 17 Aug 2020 11:16:24 +0200 (CEST)
-Date:   Mon, 17 Aug 2020 11:16:24 +0200
-From:   Gerd Hoffmann <kraxel@redhat.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org,
-        virtualization@lists.linux-foundation.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] drm/virtgpu: remove redundant assignments to width and
- height
-Message-ID: <20200817091624.wqnfo2vnhyj7q53t@sirius.home.kraxel.org>
-References: <20200701134154.549112-1-colin.king@canonical.com>
+        by mail.kernel.org (Postfix) with ESMTPSA id AEE7D2067C;
+        Mon, 17 Aug 2020 10:07:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597658834;
+        bh=eCw+2/lSjBV7bP7ZhU0BJWsyz5bbYEzAf+VX/NT+hPs=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=iIIPM/3UjTg70NVgUJxOiOTsp3FhTrRIe4qeOMH4R3Pq32ZYAIdcsq4RXZriqMUoS
+         UskIS4j8TH1QhGIw71c0/ypsYfJSrZ22eT6mj0CjMXQBrLP2Cy9V9uiQv5stR+Xfcb
+         tHZ0SJpTD95agWGCKWw5QgN+9IypUs6jEOj/+1E8=
+Date:   Mon, 17 Aug 2020 12:07:10 +0200 (CEST)
+From:   Jiri Kosina <jikos@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+cc:     Stefan Achatz <erazor_de@users.sourceforge.net>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] HID: roccat: add bounds checking in
+ kone_sysfs_write_settings()
+In-Reply-To: <20200805095501.GD483832@mwanda>
+Message-ID: <nycvar.YFH.7.76.2008171206280.27422@cbobk.fhfr.pm>
+References: <20200805095501.GD483832@mwanda>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200701134154.549112-1-colin.king@canonical.com>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jul 01, 2020 at 02:41:54PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Variables width and height are being assigned values that are never
-> read. The assignments are redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On Wed, 5 Aug 2020, Dan Carpenter wrote:
 
-Pused to drm-misc-next.
+> In the original code we didn't check if the new value for
+> "settings->startup_profile" was within bounds that could possibly
+> result in an out of bounds array acccess.  What we did was we checked if
+> we could write the data to the firmware and it's possibly the firmware
+> checks these values but there is no way to know.  It's safer and easier
+> to read if we check it in the kernel as well.
+> 
+> I also added a check to ensure that "settings->size" was correct.  The
+> comments say that the only valid value is 36 which is sizeof(struct
+> kone_settings).
+> 
+> Fixes: 14bf62cde794 ("HID: add driver for Roccat Kone gaming mouse")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-thanks,
-  Gerd
+Stefan, could I please get your Reviewed-by and/or Tested-by, to make sure 
+this doesn't unintentionally somehow break userspace?
+
+Thanks,
+
+-- 
+Jiri Kosina
+SUSE Labs
 

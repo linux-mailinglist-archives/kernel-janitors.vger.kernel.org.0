@@ -2,68 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B54282465FC
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Aug 2020 14:06:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6CAF2475E9
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Aug 2020 21:30:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728089AbgHQMGn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Aug 2020 08:06:43 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:39582 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728053AbgHQMGn (ORCPT
+        id S1732099AbgHQTaa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 Aug 2020 15:30:30 -0400
+Received: from mail-io1-f42.google.com ([209.85.166.42]:32911 "EHLO
+        mail-io1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390306AbgHQTaO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Aug 2020 08:06:43 -0400
-Received: by mail-ed1-f65.google.com with SMTP id c10so12056798edk.6;
-        Mon, 17 Aug 2020 05:06:41 -0700 (PDT)
+        Mon, 17 Aug 2020 15:30:14 -0400
+Received: by mail-io1-f42.google.com with SMTP id g14so18889223iom.0;
+        Mon, 17 Aug 2020 12:30:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=POjo4N2UW/F7P1/0nbB8JMCRtfCFZzWav36q5a69RDA=;
-        b=TJhDssrtTcqP+JMBEW0SX+UgrKVExCMcryGzM6IHvFxTksev1ILph/iIwi0YPAZRXg
-         BPO1aydN841WUcp2uDfUsXBT01GLg7UgMVJAY9DAvgfsY+OtYvbA16RMpBk5pGCtzxvx
-         kona72GRcLoGPrvzODmD9TXvQbJU533OT24qiWNzyQfqcHPvPIep1eutjUkjI8616maX
-         1SNg9/A80y7Cb7fElWOyLRD49MQCO5DXKLpUaxM2/67QBmDsU05HAsO0xp6QX4HLcBmg
-         dKi3M9Ct/oLbDaOrMeSfVMAWmwdzWsEXfpc+zjF7/8PlQ9Eek78hmrbw68Fq3y4uSACg
-         demA==
-X-Gm-Message-State: AOAM533ytMzR8Mrlmie3zws4G94k4+FjKGi9i5I7iXd9oTaOqvPTCIbf
-        Un/P5ToU3TiYvBROohojgFdnsjc+DycJcg==
-X-Google-Smtp-Source: ABdhPJymaBf/U0ztL2RTmFCygw0OMokmDearJJKeNRZeMimIQb6zEmgevVCQjBVqVE1yCVN8TRNY2Q==
-X-Received: by 2002:a05:6402:1e2:: with SMTP id i2mr14330135edy.70.1597666001072;
-        Mon, 17 Aug 2020 05:06:41 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.242])
-        by smtp.googlemail.com with ESMTPSA id u6sm14397329ejf.98.2020.08.17.05.06.39
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 17 Aug 2020 05:06:40 -0700 (PDT)
-Date:   Mon, 17 Aug 2020 14:06:38 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Paul Cercueil <paul@crapouillou.net>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] memory: jz4780_nemc: Fix an error pointer vs NULL check
- in probe()
-Message-ID: <20200817120638.GB2346@kozik-lap>
-References: <20200803143607.GC346925@mwanda>
+         :mime-version:content-disposition:in-reply-to;
+        bh=e1YBnijyooiMmGUl6bQPbkF8jV9bZqxe6/wwsQeLU4Y=;
+        b=duOIGl3tJUPi0LSFzYrw4l6mxc5YGmtukkRRKLvPfmulJfmrv6a/vRtmLQhKmQf9gi
+         90YrKliXC+s0dOGkUqLcdNPvckE8U+DWh3lwH0pZueM/C5zmUbLmHQeoh9F3hdIGjaKY
+         xm4lVVsBoCAlSsBPNeo9i79jjmE8atJyEIbRXKNsPZw6nnBegOLmzrUBeahIm0mNlvgP
+         VHsD+54lhcvhQJI9XvtHHafSoUrkCD4NJSJQ8nULXcB1YaDQdG4BnfgGXI8ZeRDkA4aQ
+         KKqDkAZDpdwze0xLhMPlAMp6MBJeqCo5zWKqYcH37aUwUyunW0AGJ26kOiNLHS9nRhgJ
+         MWvA==
+X-Gm-Message-State: AOAM530QmIReZW4sv9J1BlnnbwTBx5blQyEFaafjVnZl0CJNt8ESLrWh
+        jVtxgl3NzKzrM1ihQVCDbHhLRfp4lw==
+X-Google-Smtp-Source: ABdhPJxdApwU9BTSt+xJsE5ExVFYthMwi7bNqm69vB6HcGf0tBcnBuOqHr+cHTH//FmicQwXhwGSPw==
+X-Received: by 2002:a6b:3f85:: with SMTP id m127mr13653516ioa.108.1597692613398;
+        Mon, 17 Aug 2020 12:30:13 -0700 (PDT)
+Received: from xps15 ([64.188.179.249])
+        by smtp.gmail.com with ESMTPSA id 187sm10347174ile.52.2020.08.17.12.30.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2020 12:30:12 -0700 (PDT)
+Received: (nullmailer pid 1405902 invoked by uid 1000);
+        Mon, 17 Aug 2020 19:30:12 -0000
+Date:   Mon, 17 Aug 2020 13:30:12 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Frank Rowand <frowand.list@gmail.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH][V3] of/address: check for invalid range.cpu_addr
+Message-ID: <20200817193012.GA1405869@bogus>
+References: <20200817113208.523805-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200803143607.GC346925@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200817113208.523805-1-colin.king@canonical.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Aug 03, 2020 at 05:36:07PM +0300, Dan Carpenter wrote:
-> The devm_ioremap() function returns NULL on error, it doesn't return
-> error pointers.  This bug could lead to an Oops during probe.
+On Mon, 17 Aug 2020 12:32:08 +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Fixes: f046e4a3f0b9 ("memory: jz4780_nemc: Only request IO memory the driver will use")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Currently invalid CPU addresses are not being sanity checked resulting in
+> SATA setup failure on a SynQuacer SC2A11 development machine. The original
+> check was removed by and earlier commit, so add a sanity check back in
+> to avoid this regression.
+> 
+> Fixes: 7a8b64d17e35 ("of/address: use range parser for of_dma_get_range")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/memory/jz4780-nemc.c | 4 ++--
+> 
+> V2: print message using pr_err and don't print range.cpu_addr as it's always
+>     going to be OF_BAD_ADDR so the information is pointless.
+> V3: print the bus address to help diagnose issues
+> 
+> ---
+>  drivers/of/address.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
 
-Thanks, applied.
-
-Best regards,
-Krzysztof
-
+Applied, thanks!

@@ -2,69 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2935E246415
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Aug 2020 12:07:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9042C24645D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Aug 2020 12:22:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727083AbgHQKHP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Aug 2020 06:07:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46468 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726760AbgHQKHO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Aug 2020 06:07:14 -0400
-Received: from pobox.suse.cz (nat1.prg.suse.com [195.250.132.148])
+        id S1727990AbgHQKWB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 Aug 2020 06:22:01 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:31569 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727952AbgHQKV7 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 17 Aug 2020 06:21:59 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1597659718; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=HesLtvDCqqMuxbBVhLIM5+4/cz/qmroX/Ohci/Yh1V0=;
+ b=UdDByGoF0SF6NpRx1XgHYqPN2XN77Uq41aDWf1BpLo99XjAJXjJdfWFUqYCCFgKU+0TDm8I6
+ c1XQJ/8GvrF2RFAQ94UuWIouFF4vzMM1nxlwxRKRpzShwsZZoB65nEVJ3D8UyRN3WVZxzepb
+ PGDM2+4nQdBpbD6db8UuLSL53LQ=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 5f3a5a463f2ce11020c5165b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 17 Aug 2020 10:21:58
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 415C2C433CA; Mon, 17 Aug 2020 10:21:58 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AEE7D2067C;
-        Mon, 17 Aug 2020 10:07:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597658834;
-        bh=eCw+2/lSjBV7bP7ZhU0BJWsyz5bbYEzAf+VX/NT+hPs=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=iIIPM/3UjTg70NVgUJxOiOTsp3FhTrRIe4qeOMH4R3Pq32ZYAIdcsq4RXZriqMUoS
-         UskIS4j8TH1QhGIw71c0/ypsYfJSrZ22eT6mj0CjMXQBrLP2Cy9V9uiQv5stR+Xfcb
-         tHZ0SJpTD95agWGCKWw5QgN+9IypUs6jEOj/+1E8=
-Date:   Mon, 17 Aug 2020 12:07:10 +0200 (CEST)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-cc:     Stefan Achatz <erazor_de@users.sourceforge.net>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] HID: roccat: add bounds checking in
- kone_sysfs_write_settings()
-In-Reply-To: <20200805095501.GD483832@mwanda>
-Message-ID: <nycvar.YFH.7.76.2008171206280.27422@cbobk.fhfr.pm>
-References: <20200805095501.GD483832@mwanda>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 31369C433CB;
+        Mon, 17 Aug 2020 10:21:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 31369C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath6kl: fix spelling mistake "initilisation" ->
+ "initialization"
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200806121958.60700-1-colin.king@canonical.com>
+References: <20200806121958.60700-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200817102158.415C2C433CA@smtp.codeaurora.org>
+Date:   Mon, 17 Aug 2020 10:21:58 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 5 Aug 2020, Dan Carpenter wrote:
+Colin King <colin.king@canonical.com> wrote:
 
-> In the original code we didn't check if the new value for
-> "settings->startup_profile" was within bounds that could possibly
-> result in an out of bounds array acccess.  What we did was we checked if
-> we could write the data to the firmware and it's possibly the firmware
-> checks these values but there is no way to know.  It's safer and easier
-> to read if we check it in the kernel as well.
+> There is a spelling mistake in an ath6kl_err error message. Fix it.
 > 
-> I also added a check to ensure that "settings->size" was correct.  The
-> comments say that the only valid value is 36 which is sizeof(struct
-> kone_settings).
-> 
-> Fixes: 14bf62cde794 ("HID: add driver for Roccat Kone gaming mouse")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Stefan, could I please get your Reviewed-by and/or Tested-by, to make sure 
-this doesn't unintentionally somehow break userspace?
+Patch applied to ath-next branch of ath.git, thanks.
 
-Thanks,
+42f5fe34a701 ath6kl: fix spelling mistake "initilisation" -> "initialization"
 
 -- 
-Jiri Kosina
-SUSE Labs
+https://patchwork.kernel.org/patch/11703485/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

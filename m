@@ -2,71 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFCE7248478
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Aug 2020 14:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2D5C24854B
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Aug 2020 14:51:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726740AbgHRMJU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Aug 2020 08:09:20 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:41727 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726357AbgHRMJT (ORCPT
+        id S1726796AbgHRMvK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Aug 2020 08:51:10 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:45009 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726697AbgHRMvI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Aug 2020 08:09:19 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1k80QV-000230-6O; Tue, 18 Aug 2020 12:09:15 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Anthony Koo <Anthony.Koo@amd.com>,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/amd/display: fix potential integer overflow when shifting 32 bit variable bl_pwm
-Date:   Tue, 18 Aug 2020 13:09:14 +0100
-Message-Id: <20200818120914.20280-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
-MIME-Version: 1.0
+        Tue, 18 Aug 2020 08:51:08 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1597755067; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=81nQzH5224zOeesqz/BjUV0s6JghMhAZ7vSntNIZmKo=;
+ b=JjGqYebQ57bq1Co8Nb92iP1VWmY5BgZLWaPbRi0AlO8N9/00j5ztPdLPKOlZSmzs3BwPiDyN
+ p3RSg8kpMRUYhm+y5Sy4kkcXPet8ncAeoTPHSrG4lECdY3TPxDLoKcjinWwKKmNwkZNsWAXH
+ z/T092knRMewqcIMgB/Fl8xcj5I=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 5f3bcea7f2b697637a842a8c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 18 Aug 2020 12:50:47
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E67E2C433CB; Tue, 18 Aug 2020 12:50:46 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EDEB7C433CA;
+        Tue, 18 Aug 2020 12:50:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EDEB7C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wl1251, wlcore: fix spelling mistake "buld" -> "build"
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200806113326.53779-1-colin.king@canonical.com>
+References: <20200806113326.53779-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200818125046.E67E2C433CB@smtp.codeaurora.org>
+Date:   Tue, 18 Aug 2020 12:50:46 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Colin King <colin.king@canonical.com> wrote:
 
-The 32 bit unsigned integer bl_pwm is being shifted using 32 bit arithmetic
-and then being assigned to a 64 bit unsigned integer.  There is a potential
-for a 32 bit overflow so cast bl_pwm to enforce a 64 bit shift operation
-to avoid this.
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There are spelling mistakes in warning messages. Fix these.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Addresses-Coverity: ("unintentional integer overflow")
-Fixes: 3ba01817365c ("drm/amd/display: Move panel_cntl specific register from abm to panel_cntl.")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Patch applied to wireless-drivers-next.git, thanks.
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c b/drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c
-index a6d73d30837c..df7f826eebd8 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c
-@@ -76,7 +76,7 @@ static unsigned int dce_get_16_bit_backlight_from_pwm(struct panel_cntl *panel_c
- 	else
- 		bl_pwm &= 0xFFFF;
- 
--	current_backlight = bl_pwm << (1 + bl_int_count);
-+	current_backlight = (uint64_t)bl_pwm << (1 + bl_int_count);
- 
- 	if (bl_period == 0)
- 		bl_period = 0xFFFF;
+db8655c6299c wl1251, wlcore: fix spelling mistake "buld" -> "build"
+
 -- 
-2.27.0
+https://patchwork.kernel.org/patch/11704077/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

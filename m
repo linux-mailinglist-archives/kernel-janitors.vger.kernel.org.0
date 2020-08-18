@@ -2,97 +2,114 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA359248562
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Aug 2020 14:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C21B24880C
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Aug 2020 16:43:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726634AbgHRMwu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Aug 2020 08:52:50 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:31452 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726829AbgHRMwl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Aug 2020 08:52:41 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597755160; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=AJEe/qRZ45RZeh5yzMAs+NsXlJGYmx+mOLYSkXXDB/A=;
- b=mQ0C/OyvwT7II3Ix1CvQPRijHDPtxG9cOjCO1uoFSI9CjpKyTapgf53kPMK7fvYEnZ1262sX
- H6Co5OCFpYhjubXnlffHlATh84g0s9Tuk9zKUiyCfV0iHjgtljXOw1Yh3283cZt1b6OcZch1
- lbNj40acjAu0wLpmZmIWLgZ2wP4=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 5f3bcf0c2889723bf8b92dd9 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 18 Aug 2020 12:52:28
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4CFD3C433AF; Tue, 18 Aug 2020 12:52:28 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A4268C433C6;
-        Tue, 18 Aug 2020 12:52:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A4268C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1727077AbgHROns (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Aug 2020 10:43:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54238 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726145AbgHROns (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 18 Aug 2020 10:43:48 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B601BC061389;
+        Tue, 18 Aug 2020 07:43:47 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id f1so18546660wro.2;
+        Tue, 18 Aug 2020 07:43:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=nn+dQltSNrTpEOmO/72SIoczPIww+KaSGSIwYHiMyqs=;
+        b=r70f2n6UEVQH/7cm8pp0ownDfW4G5pAIS3odxMw8ievkejBcDlkfTg/gGG8BMNIwdn
+         EXAoAGCT1+2D2HBWjcOgSXDwQKKikB8wZOPpcwckTaiwCVAeojiVlQM74th3Rg03QaK7
+         32/RwSaB2G/cCMyzuIWSgVPA7AhJnfvf6mPkM7LBUR6B8sPtha+R/lHLlx3291PH8ZhV
+         h3tdM6xoaRG8zeyeZlPEW5tXuHZvpo28CuH3oHDyXnHn0hy0etpKS1ksNKWn3CBGZZWT
+         StLicyOr8olMszHL36nXBRFW41wuvRxfqLa9dHrmjfMHTgtiOmRSiVfkA0GNsjSBZsyJ
+         8PNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=nn+dQltSNrTpEOmO/72SIoczPIww+KaSGSIwYHiMyqs=;
+        b=JqAhUm74AwdmVxZqzttYSLCUvaTp2hOX/A6m72tlW/5T6qD7etMm2PhkOq7UqVnEug
+         avsJjTKJ76KS7i2EtAp4m7HMQR/uKVOBha/sqwJCw5AX87AKii6CzVjMldloWjb5Gf+3
+         O26JLKYVthaZgv9r1mdr2C0CYlMgm6eHkCg9pd2GU+gaDJuSKmyu3kQlgxPYOrsSX8K/
+         tqU2/qdhTsDb9rP/dfthrIsy9eQi4TDmEROL+oJLy2gcsCiAe9r8LUx31hdLspGR/Fz5
+         kIhRkAdfTEtwpUqvJLtLAK0ZXJOH6xeJIlkVO246HYVNy9Axtp5ErgMLPCjOHRqZgUH2
+         Eq2w==
+X-Gm-Message-State: AOAM531NbM/BsErXqlCmsSRD80o1i71on24ia+fO0ABy37/J10L5MPRC
+        LqQN82D/6K18AhtFNq4H97ym5Vt7a2NQguYtmlA=
+X-Google-Smtp-Source: ABdhPJy/Kl5SzhrZm43eFQ5CqHvKNB6Ze6VOIYOn4HWeUuJcUR+R2Fdj9tdc6stlUAnpOpwapgVwAkd3wyZfc9ROc+Y=
+X-Received: by 2002:adf:a351:: with SMTP id d17mr20309653wrb.111.1597761826407;
+ Tue, 18 Aug 2020 07:43:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mwifiex: Do not use GFP_KERNEL in atomic context
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200809092906.744621-1-christophe.jaillet@wanadoo.fr>
-References: <20200809092906.744621-1-christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     amitkarwar@gmail.com, ganapathi.bhat@nxp.com,
-        huxinming820@gmail.com, davem@davemloft.net, kuba@kernel.org,
-        yogeshp@marvell.com, bzhao@marvell.com, linville@tuxdriver.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200818125228.4CFD3C433AF@smtp.codeaurora.org>
-Date:   Tue, 18 Aug 2020 12:52:28 +0000 (UTC)
+References: <20200818120914.20280-1-colin.king@canonical.com>
+In-Reply-To: <20200818120914.20280-1-colin.king@canonical.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Tue, 18 Aug 2020 10:43:35 -0400
+Message-ID: <CADnq5_P5ozoOT4H0hrjxM1JwpvJGQ0UCnp00Kf5+Msh2CdBHgg@mail.gmail.com>
+Subject: Re: [PATCH][next] drm/amd/display: fix potential integer overflow
+ when shifting 32 bit variable bl_pwm
+To:     Colin King <colin.king@canonical.com>
+Cc:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Anthony Koo <Anthony.Koo@amd.com>,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+On Tue, Aug 18, 2020 at 8:09 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The 32 bit unsigned integer bl_pwm is being shifted using 32 bit arithmetic
+> and then being assigned to a 64 bit unsigned integer.  There is a potential
+> for a 32 bit overflow so cast bl_pwm to enforce a 64 bit shift operation
+> to avoid this.
+>
+> Addresses-Coverity: ("unintentional integer overflow")
+> Fixes: 3ba01817365c ("drm/amd/display: Move panel_cntl specific register from abm to panel_cntl.")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-> A possible call chain is as follow:
->   mwifiex_sdio_interrupt                            (sdio.c)
->     --> mwifiex_main_process                        (main.c)
->       --> mwifiex_process_cmdresp                   (cmdevt.c)
->         --> mwifiex_process_sta_cmdresp             (sta_cmdresp.c)
->           --> mwifiex_ret_802_11_scan               (scan.c)
->             --> mwifiex_parse_single_response_buf   (scan.c)
-> 
-> 'mwifiex_sdio_interrupt()' is an interrupt function.
-> 
-> Also note that 'mwifiex_ret_802_11_scan()' already uses GFP_ATOMIC.
-> 
-> So use GFP_ATOMIC instead of GFP_KERNEL when memory is allocated in
-> 'mwifiex_parse_single_response_buf()'.
-> 
-> Fixes: 7c6fa2a843c5 ("mwifiex: use cfg80211 dynamic scan table and cfg80211_get_bss API")
-> or
-> Fixes: 601216e12c65e ("mwifiex: process RX packets in SDIO IRQ thread directly")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Applied.  Thanks!
 
-Patch applied to wireless-drivers-next.git, thanks.
+Alex
 
-d2ab7f00f432 mwifiex: Do not use GFP_KERNEL in atomic context
 
--- 
-https://patchwork.kernel.org/patch/11706587/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+> ---
+>  drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c b/drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c
+> index a6d73d30837c..df7f826eebd8 100644
+> --- a/drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c
+> +++ b/drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c
+> @@ -76,7 +76,7 @@ static unsigned int dce_get_16_bit_backlight_from_pwm(struct panel_cntl *panel_c
+>         else
+>                 bl_pwm &= 0xFFFF;
+>
+> -       current_backlight = bl_pwm << (1 + bl_int_count);
+> +       current_backlight = (uint64_t)bl_pwm << (1 + bl_int_count);
+>
+>         if (bl_period == 0)
+>                 bl_period = 0xFFFF;
+> --
+> 2.27.0
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

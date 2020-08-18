@@ -2,57 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 758C3248C4B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Aug 2020 19:00:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 004B2248C2E
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Aug 2020 18:57:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728515AbgHRQ4m (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Aug 2020 12:56:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38734 "EHLO mail.kernel.org"
+        id S1727063AbgHRQ5r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Aug 2020 12:57:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41174 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728494AbgHRQ4X (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Aug 2020 12:56:23 -0400
+        id S1728586AbgHRQ5l (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 18 Aug 2020 12:57:41 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1F76820829;
-        Tue, 18 Aug 2020 16:56:20 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D717020786;
+        Tue, 18 Aug 2020 16:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597769781;
-        bh=zOU4Pdp1V5FeOhpAv/v6/unjQwdDYx6ZaaOnFF7Mnmg=;
+        s=default; t=1597769861;
+        bh=k3QM3tL7QIkWGlgH9bNck/rLCTsVvUQC5OXfv05XMqk=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=FLldg7pSy4wgyeihdoPTQ4O5HGunk6EmATkRuxHotsyw0cABy8TN6Nvk3OJmoMU7p
-         q+KQZAw/MlneDDdhqVMozzxpj+4+fW6gt8XO4T5CHAtuzTRnxmpz3SWOt7xmNzpDJX
-         ymRu3IJMKjyoFaI27eGSJHWbxUBq4v2sYuHZCO6w=
-Date:   Tue, 18 Aug 2020 17:55:50 +0100
+        b=gfRzH3byQqxZ4MK7/S26FIIvrdGEPdegRQLaLMrRdl273my/WhO6pxqHwaxW2YkYo
+         OL/fnbEoiww9U2DR/xJFSoiwpB6XpzXgiZuMuRDlfnUyDbhVj6MJ05Cfclbly/woKL
+         mXcHlEPyB2/2SB3lyTkCd6otIQsNSghuazyuUN9M=
+Date:   Tue, 18 Aug 2020 17:57:10 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Michal Simek <michal.simek@xilinx.com>,
-        Colin King <colin.king@canonical.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Jaroslav Kysela <perex@perex.cz>, alsa-devel@alsa-project.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Takashi Iwai <tiwai@suse.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-In-Reply-To: <20200817224706.6139-1-colin.king@canonical.com>
-References: <20200817224706.6139-1-colin.king@canonical.com>
-Subject: Re: [PATCH] sound: remove duplicate "the the" phrase in Kconfig text
-Message-Id: <159776961933.56094.6016392996060777072.b4-ty@kernel.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20200802175007.703995-1-christophe.jaillet@wanadoo.fr>
+References: <20200802175007.703995-1-christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH] spi: a3700: Remove a useless memset
+Message-Id: <159776983046.56565.184336045961597730.b4-ty@kernel.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 17 Aug 2020 23:47:06 +0100, Colin King wrote:
-> There are a couple of occurrences of "the the" in the Kconfig
-> text. Fix these.
+On Sun, 2 Aug 2020 19:50:07 +0200, Christophe JAILLET wrote:
+> Memory allocated by 'spi_alloc_master()' is already zeroed.
+> Remove a redundant memset.
 
 Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
 Thanks!
 
-[1/1] sound: remove duplicate "the the" phrase in Kconfig text
-      commit: 466a806a7d2beffa6a79d61dbabac8a48685c3e2
+[1/1] spi: a3700: Remove a useless memset
+      commit: 2494174e04e7f4e58d1363adb13c0ae23b64d37c
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

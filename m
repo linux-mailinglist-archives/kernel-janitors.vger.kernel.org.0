@@ -2,32 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C4E1248557
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Aug 2020 14:52:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA359248562
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Aug 2020 14:52:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726731AbgHRMwV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Aug 2020 08:52:21 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:61884 "EHLO m43-7.mailgun.net"
+        id S1726634AbgHRMwu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Aug 2020 08:52:50 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:31452 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726782AbgHRMwO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Aug 2020 08:52:14 -0400
+        id S1726829AbgHRMwl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 18 Aug 2020 08:52:41 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597755134; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1597755160; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=bpJUxt35gN/bDSYR/Rvq379War3qt/Y3F95Ol2n3ltE=;
- b=GT1zZDQCNME0D7aQiaTkmt/AgxqTR0f/itJzudHjX5ywR903WPfrZZD1WTNzrfC3353f92Np
- 7/Ui99Fdu/rqA4J/LAf6xKF1RPKfMHBjH7FEg+Hz6E9/FxxJ7wYDoUbM886SeMvdItvK3GX5
- scbzjYjiMBxh4/8gNvrc0iVKXJQ=
+ Content-Type: Sender; bh=AJEe/qRZ45RZeh5yzMAs+NsXlJGYmx+mOLYSkXXDB/A=;
+ b=mQ0C/OyvwT7II3Ix1CvQPRijHDPtxG9cOjCO1uoFSI9CjpKyTapgf53kPMK7fvYEnZ1262sX
+ H6Co5OCFpYhjubXnlffHlATh84g0s9Tuk9zKUiyCfV0iHjgtljXOw1Yh3283cZt1b6OcZch1
+ lbNj40acjAu0wLpmZmIWLgZ2wP4=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n08.prod.us-west-2.postgun.com with SMTP id
- 5f3bceec46ed9966745885a8 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 18 Aug 2020 12:51:56
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 5f3bcf0c2889723bf8b92dd9 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 18 Aug 2020 12:52:28
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9A1A3C43387; Tue, 18 Aug 2020 12:51:56 +0000 (UTC)
+        id 4CFD3C433AF; Tue, 18 Aug 2020 12:52:28 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,27 +37,29 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C13F7C433CA;
-        Tue, 18 Aug 2020 12:51:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C13F7C433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A4268C433C6;
+        Tue, 18 Aug 2020 12:52:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A4268C433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] adm8211: switch from 'pci_' to 'dma_' API
+Subject: Re: [PATCH] mwifiex: Do not use GFP_KERNEL in atomic context
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200806210431.736050-1-christophe.jaillet@wanadoo.fr>
-References: <20200806210431.736050-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20200809092906.744621-1-christophe.jaillet@wanadoo.fr>
+References: <20200809092906.744621-1-christophe.jaillet@wanadoo.fr>
 To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     davem@davemloft.net, kuba@kernel.org, yuehaibing@huawei.com,
-        vaibhavgupta40@gmail.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+Cc:     amitkarwar@gmail.com, ganapathi.bhat@nxp.com,
+        huxinming820@gmail.com, davem@davemloft.net, kuba@kernel.org,
+        yogeshp@marvell.com, bzhao@marvell.com, linville@tuxdriver.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200818125156.9A1A3C43387@smtp.codeaurora.org>
-Date:   Tue, 18 Aug 2020 12:51:56 +0000 (UTC)
+Message-Id: <20200818125228.4CFD3C433AF@smtp.codeaurora.org>
+Date:   Tue, 18 Aug 2020 12:52:28 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -65,140 +67,32 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-> The wrappers in include/linux/pci-dma-compat.h should go away.
+> A possible call chain is as follow:
+>   mwifiex_sdio_interrupt                            (sdio.c)
+>     --> mwifiex_main_process                        (main.c)
+>       --> mwifiex_process_cmdresp                   (cmdevt.c)
+>         --> mwifiex_process_sta_cmdresp             (sta_cmdresp.c)
+>           --> mwifiex_ret_802_11_scan               (scan.c)
+>             --> mwifiex_parse_single_response_buf   (scan.c)
 > 
-> The patch has been generated with the coccinelle script below and has been
-> hand modified to replace GFP_ with a correct flag.
-> It has been compile tested.
+> 'mwifiex_sdio_interrupt()' is an interrupt function.
 > 
-> When memory is allocated in 'adm8211_alloc_rings()', GFP_KERNEL can be used
-> because it is called only from the probe function and no lock is acquired.
-> Moreover, GFP_KERNEL is already used just a few lines above in a kmalloc.
+> Also note that 'mwifiex_ret_802_11_scan()' already uses GFP_ATOMIC.
 > 
-> @@
-> @@
-> -    PCI_DMA_BIDIRECTIONAL
-> +    DMA_BIDIRECTIONAL
+> So use GFP_ATOMIC instead of GFP_KERNEL when memory is allocated in
+> 'mwifiex_parse_single_response_buf()'.
 > 
-> @@
-> @@
-> -    PCI_DMA_TODEVICE
-> +    DMA_TO_DEVICE
-> 
-> @@
-> @@
-> -    PCI_DMA_FROMDEVICE
-> +    DMA_FROM_DEVICE
-> 
-> @@
-> @@
-> -    PCI_DMA_NONE
-> +    DMA_NONE
-> 
-> @@
-> expression e1, e2, e3;
-> @@
-> -    pci_alloc_consistent(e1, e2, e3)
-> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-> 
-> @@
-> expression e1, e2, e3;
-> @@
-> -    pci_zalloc_consistent(e1, e2, e3)
-> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_free_consistent(e1, e2, e3, e4)
-> +    dma_free_coherent(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_map_single(e1, e2, e3, e4)
-> +    dma_map_single(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_single(e1, e2, e3, e4)
-> +    dma_unmap_single(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4, e5;
-> @@
-> -    pci_map_page(e1, e2, e3, e4, e5)
-> +    dma_map_page(&e1->dev, e2, e3, e4, e5)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_page(e1, e2, e3, e4)
-> +    dma_unmap_page(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_map_sg(e1, e2, e3, e4)
-> +    dma_map_sg(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_sg(e1, e2, e3, e4)
-> +    dma_unmap_sg(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-> +    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-> +    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-> +    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-> +    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2;
-> @@
-> -    pci_dma_mapping_error(e1, e2)
-> +    dma_mapping_error(&e1->dev, e2)
-> 
-> @@
-> expression e1, e2;
-> @@
-> -    pci_set_dma_mask(e1, e2)
-> +    dma_set_mask(&e1->dev, e2)
-> 
-> @@
-> expression e1, e2;
-> @@
-> -    pci_set_consistent_dma_mask(e1, e2)
-> +    dma_set_coherent_mask(&e1->dev, e2)
-> 
+> Fixes: 7c6fa2a843c5 ("mwifiex: use cfg80211 dynamic scan table and cfg80211_get_bss API")
+> or
+> Fixes: 601216e12c65e ("mwifiex: process RX packets in SDIO IRQ thread directly")
 > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-2c762ee51008 adm8211: switch from 'pci_' to 'dma_' API
+d2ab7f00f432 mwifiex: Do not use GFP_KERNEL in atomic context
 
 -- 
-https://patchwork.kernel.org/patch/11704505/
+https://patchwork.kernel.org/patch/11706587/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

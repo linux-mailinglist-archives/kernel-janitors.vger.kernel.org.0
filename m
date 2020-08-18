@@ -2,69 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 504E1248BE6
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Aug 2020 18:47:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 758C3248C4B
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Aug 2020 19:00:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726973AbgHRQq6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Aug 2020 12:46:58 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:51165 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726840AbgHRQq5 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Aug 2020 12:46:57 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1k84lD-0008RW-5A; Tue, 18 Aug 2020 16:46:55 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: kpc2000: kpc_dma: fix spelling mistake "for for" -> "for"
-Date:   Tue, 18 Aug 2020 17:46:54 +0100
-Message-Id: <20200818164654.381588-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        id S1728515AbgHRQ4m (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Aug 2020 12:56:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38734 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728494AbgHRQ4X (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 18 Aug 2020 12:56:23 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1F76820829;
+        Tue, 18 Aug 2020 16:56:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597769781;
+        bh=zOU4Pdp1V5FeOhpAv/v6/unjQwdDYx6ZaaOnFF7Mnmg=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=FLldg7pSy4wgyeihdoPTQ4O5HGunk6EmATkRuxHotsyw0cABy8TN6Nvk3OJmoMU7p
+         q+KQZAw/MlneDDdhqVMozzxpj+4+fW6gt8XO4T5CHAtuzTRnxmpz3SWOt7xmNzpDJX
+         ymRu3IJMKjyoFaI27eGSJHWbxUBq4v2sYuHZCO6w=
+Date:   Tue, 18 Aug 2020 17:55:50 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Michal Simek <michal.simek@xilinx.com>,
+        Colin King <colin.king@canonical.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Jaroslav Kysela <perex@perex.cz>, alsa-devel@alsa-project.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Takashi Iwai <tiwai@suse.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <20200817224706.6139-1-colin.king@canonical.com>
+References: <20200817224706.6139-1-colin.king@canonical.com>
+Subject: Re: [PATCH] sound: remove duplicate "the the" phrase in Kconfig text
+Message-Id: <159776961933.56094.6016392996060777072.b4-ty@kernel.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Mon, 17 Aug 2020 23:47:06 +0100, Colin King wrote:
+> There are a couple of occurrences of "the the" in the Kconfig
+> text. Fix these.
 
-There are a couple of duplicated "for" spelling mistakes in dev_err
-error messages. Fix these.
+Applied to
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/staging/kpc2000/kpc_dma/fileops.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-diff --git a/drivers/staging/kpc2000/kpc_dma/fileops.c b/drivers/staging/kpc2000/kpc_dma/fileops.c
-index dd716edd9b1b..e1c7c04f16fe 100644
---- a/drivers/staging/kpc2000/kpc_dma/fileops.c
-+++ b/drivers/staging/kpc2000/kpc_dma/fileops.c
-@@ -53,7 +53,7 @@ static int kpc_dma_transfer(struct dev_private_data *priv,
- 
- 	acd = kzalloc(sizeof(*acd), GFP_KERNEL);
- 	if (!acd) {
--		dev_err(&priv->ldev->pldev->dev, "Couldn't kmalloc space for for the aio data\n");
-+		dev_err(&priv->ldev->pldev->dev, "Couldn't kmalloc space for the aio data\n");
- 		return -ENOMEM;
- 	}
- 	memset(acd, 0x66, sizeof(struct aio_cb_data));
-@@ -69,7 +69,7 @@ static int kpc_dma_transfer(struct dev_private_data *priv,
- 	acd->user_pages = kcalloc(acd->page_count, sizeof(struct page *),
- 				  GFP_KERNEL);
- 	if (!acd->user_pages) {
--		dev_err(&priv->ldev->pldev->dev, "Couldn't kmalloc space for for the page pointers\n");
-+		dev_err(&priv->ldev->pldev->dev, "Couldn't kmalloc space for the page pointers\n");
- 		rv = -ENOMEM;
- 		goto err_alloc_userpages;
- 	}
--- 
-2.27.0
+Thanks!
 
+[1/1] sound: remove duplicate "the the" phrase in Kconfig text
+      commit: 466a806a7d2beffa6a79d61dbabac8a48685c3e2
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

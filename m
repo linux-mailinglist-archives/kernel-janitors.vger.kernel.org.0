@@ -2,28 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01E2E2497BA
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Aug 2020 09:51:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E88D249AA6
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Aug 2020 12:43:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726815AbgHSHuz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 Aug 2020 03:50:55 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:47923 "EHLO
+        id S1727818AbgHSKnB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 Aug 2020 06:43:01 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53838 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726698AbgHSHuz (ORCPT
+        with ESMTP id S1727828AbgHSKnA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 Aug 2020 03:50:55 -0400
+        Wed, 19 Aug 2020 06:43:00 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1k8Is0-0002uD-C9; Wed, 19 Aug 2020 07:50:52 +0000
+        id 1k8LYX-0005jD-3p; Wed, 19 Aug 2020 10:42:57 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Santosh Shilimkar <ssantosh@kernel.org>,
-        linux-arm-kernel@lists.infradead.org
+To:     Paul Moore <paul@paul-moore.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>,
+        Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] soc: ti: omap-prm: fix spelling mistake "unusupported" -> "unsupported"
-Date:   Wed, 19 Aug 2020 08:50:52 +0100
-Message-Id: <20200819075052.48833-1-colin.king@canonical.com>
+Subject: [PATCH][next] selinux: fix allocation failure check on newpolicy->sidtab
+Date:   Wed, 19 Aug 2020 11:42:56 +0100
+Message-Id: <20200819104256.51499-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,26 +37,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in a dev_warn warning. Fix it.
+The allocation check of newpolicy->sidtab is null checking if
+newpolicy is null and not newpolicy->sidtab. Fix this.
 
+Addresses-Coverity: ("Logically dead code")
+Fixes: c7c556f1e81b ("selinux: refactor changing booleans")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/soc/ti/omap_prm.c | 2 +-
+ security/selinux/ss/services.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
-index 980b04c38fd9..30862fc174ae 100644
---- a/drivers/soc/ti/omap_prm.c
-+++ b/drivers/soc/ti/omap_prm.c
-@@ -343,7 +343,7 @@ static int omap_prm_domain_attach_dev(struct generic_pm_domain *domain,
- 		return ret;
+diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
+index f6f78c65f53f..d310910fb639 100644
+--- a/security/selinux/ss/services.c
++++ b/security/selinux/ss/services.c
+@@ -2224,7 +2224,7 @@ int security_load_policy(struct selinux_state *state, void *data, size_t len,
+ 		return -ENOMEM;
  
- 	if (pd_args.args_count != 0)
--		dev_warn(dev, "%s: unusupported #power-domain-cells: %i\n",
-+		dev_warn(dev, "%s: unsupported #power-domain-cells: %i\n",
- 			 prmd->pd.name, pd_args.args_count);
+ 	newpolicy->sidtab = kzalloc(sizeof(*newpolicy->sidtab), GFP_KERNEL);
+-	if (!newpolicy)
++	if (!newpolicy->sidtab)
+ 		goto err;
  
- 	genpd_data = dev_gpd_data(dev);
+ 	rc = policydb_read(&newpolicy->policydb, fp);
 -- 
 2.27.0
 

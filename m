@@ -2,131 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18DFE249C0C
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Aug 2020 13:46:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B985249DB7
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Aug 2020 14:22:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727926AbgHSLqU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 Aug 2020 07:46:20 -0400
-Received: from hqnvemgate25.nvidia.com ([216.228.121.64]:18018 "EHLO
-        hqnvemgate25.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726820AbgHSLqQ (ORCPT
+        id S1727818AbgHSMV7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 Aug 2020 08:21:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58568 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726961AbgHSMV4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 Aug 2020 07:46:16 -0400
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate25.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5f3d10cd0000>; Wed, 19 Aug 2020 04:45:17 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate101.nvidia.com (PGP Universal service);
-  Wed, 19 Aug 2020 04:46:15 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate101.nvidia.com on Wed, 19 Aug 2020 04:46:15 -0700
-Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL109.nvidia.com
- (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 19 Aug
- 2020 11:46:15 +0000
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.173)
- by HQMAIL109.nvidia.com (172.20.187.15) with Microsoft SMTP Server (TLS) id
- 15.0.1473.3 via Frontend Transport; Wed, 19 Aug 2020 11:46:15 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HfXi0EkJzCzDLzPTsaWNKjFnTtMi44eETwC6C+R/EjGpXqqQR+vu0qd0VzDiAv6CB9hnVoIdY9RCF6fRtNNGnJvaSsU0LJML5+WIJaCPZWOT2FV+VMAjLvJy3MMTXQkTKG6a/OTkBMQr0jBcqtpGHCqfg4CBj0yQRl9GJQthFNOOC0dsXTVJi7sTzb0QIXYJg8M5ZWKXiXszSqSMtWFeHMD+XSq6yZH00HyfWDod6fIPdGULeCBlk8j/2Si0VoLnyUiUq/TPxFAqe7SphtaQk0isX6i7rbFOUozBqXq1xC3AhNbRqC+76TzkF6o8gBmm8vcZJGl0Jwu1RsEJhx4Oeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b5FFuN4irdpCEDQzY7tCRMJD6inKu1lKLQQbsY3v9mU=;
- b=X6mFBNZzU93I7X5cfA+W9a3F/uydOjql+a5a5Zh6UdfRiLYclRWbsQfB2J9jtF36iigjz+GgCQr5nzmQezB1atggTD8bMuIbEE19FlYeGSUG5Uo4ckvfJqv68/yf3h8IToLZOzcPmrcWkBhUY2xG2GRC0AG9nWshG2T/r2k0peLTxgHnSpCHAaCLStx+EuJAV6r/QlSVxRjQZblmKthdLN1eAgEW3owrbArEF0NugtLwKnaH7ur4K7Vl6cNM8GlThABfbP1oA/Q2dBN7rQALRSKR/sw4DTgHQ8WqzH4+NunIwc0EG58JENnCH4AIxbjBjqNwCeOMHsx7vpD452hubQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-Authentication-Results: canonical.com; dkim=none (message not signed)
- header.d=none;canonical.com; dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
- by DM6PR12MB4356.namprd12.prod.outlook.com (2603:10b6:5:2aa::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3283.15; Wed, 19 Aug
- 2020 11:46:14 +0000
-Received: from DM6PR12MB3834.namprd12.prod.outlook.com
- ([fe80::2d79:7f96:6406:6c76]) by DM6PR12MB3834.namprd12.prod.outlook.com
- ([fe80::2d79:7f96:6406:6c76%3]) with mapi id 15.20.3305.025; Wed, 19 Aug 2020
- 11:46:14 +0000
-Date:   Wed, 19 Aug 2020 08:46:12 -0300
-From:   Jason Gunthorpe <jgg@nvidia.com>
-To:     Colin King <colin.king@canonical.com>
-CC:     Doug Ledford <dledford@redhat.com>, <linux-rdma@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] RDMA/core: fix spelling mistake "Could't" -> "Couldn't"
-Message-ID: <20200819114612.GA2127968@nvidia.com>
-References: <20200810075824.46770-1-colin.king@canonical.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20200810075824.46770-1-colin.king@canonical.com>
-X-ClientProxiedBy: BL0PR03CA0027.namprd03.prod.outlook.com
- (2603:10b6:208:2d::40) To DM6PR12MB3834.namprd12.prod.outlook.com
- (2603:10b6:5:14a::12)
+        Wed, 19 Aug 2020 08:21:56 -0400
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C1B2C061757;
+        Wed, 19 Aug 2020 05:21:56 -0700 (PDT)
+Received: by mail-qt1-x844.google.com with SMTP id s16so17544472qtn.7;
+        Wed, 19 Aug 2020 05:21:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=8ilKX+a70jTPPEN//PJ60e7XsFBDrxK1bHnpEzpl1JY=;
+        b=Z2jV8B13DC70Ru2gQFkwcdUpG/4jYcVF3Zt8PiAh/6QCrw3nWLp1arQPSh64AagVww
+         gHMQZ3AUCIJ1Aj/J/XiGEpL956v6X8KJtx3cb2Zf1Q0oS69hv2Usld1HHt+zFk4sqvLo
+         YAuKRaSFvi4plK9CQ1ULQbVhELyotnZ0x8E3+w4Q3ad6A4jx9erikr1O5ZNjsRU5dUsp
+         UUft0A7LtcoX70srXjhjAmgYYXUXBzuA/04OGokFWoBqFZZ4ZVUV0LlPV5f8wmKpioWi
+         U7z9oixRIYE7EKW/cG/QqYcgd990b+Kkhw28R5G+sh10ZjxxlFMbdPljT35aKUKQhjbl
+         9/qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=8ilKX+a70jTPPEN//PJ60e7XsFBDrxK1bHnpEzpl1JY=;
+        b=oRpManZuxzTm7F9xN4tRYTSqpoV/A5OcYPuLhcYWTa52HxypBnkEkpd5ZUTVB90+ZV
+         WW7lLPKRfmenLdhUeAAVYxg5yPK0YR+ddkkMcjns7zYYBOwmNm55lWTI/nARBxH3M2hG
+         d7Vkt1+VcDTb4p19oXK07/b54yHtQRHAM8yO/2BidHWSgMd3bnMCHKoTp4U/4rwDuOlV
+         p8Bqht0iqXtDOC/fcKhBsVXpmW+h040y3dWHjbWSH6LyhaYd7i0kxzqG/S2L5AHkfvAD
+         nqG9emD/rG7YCyvLbe3Sibf9L6tDCQxZ0cpQQDMzFEfroosoY8cPVR8m+aC4SzuOUrsv
+         C01A==
+X-Gm-Message-State: AOAM5319kodOqkM0mJLQtj+XVqBfAVVSIjuAnznUUwSBpaAmAEpkgCzg
+        ExDZvGhfAC6iNMa2Mj3ZWC/yxB9b1NI=
+X-Google-Smtp-Source: ABdhPJzH7q8L+vI8V5vUJfXQoHxH9fOu3E+Z6yC2h55W8qD2RKcMIrp3AR6qs55Re4KR0YJkAVFMIg==
+X-Received: by 2002:aed:38e6:: with SMTP id k93mr21036770qte.90.1597839715641;
+        Wed, 19 Aug 2020 05:21:55 -0700 (PDT)
+Received: from [192.168.1.190] (pool-68-134-6-11.bltmmd.fios.verizon.net. [68.134.6.11])
+        by smtp.gmail.com with ESMTPSA id v28sm29331368qtk.28.2020.08.19.05.21.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Aug 2020 05:21:55 -0700 (PDT)
+Subject: Re: [PATCH][next] selinux: fix allocation failure check on
+ newpolicy->sidtab
+To:     Colin King <colin.king@canonical.com>,
+        Paul Moore <paul@paul-moore.com>,
+        Eric Paris <eparis@parisplace.org>,
+        Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200819104256.51499-1-colin.king@canonical.com>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Message-ID: <20dcb065-7f19-423a-81c2-cb9524a730de@gmail.com>
+Date:   Wed, 19 Aug 2020 08:21:54 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from 255.255.255.255 (255.255.255.255) by BL0PR03CA0027.namprd03.prod.outlook.com (2603:10b6:208:2d::40) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3283.16 via Frontend Transport; Wed, 19 Aug 2020 11:46:14 +0000
-Received: from jgg by mlx with local (Exim 4.94)        (envelope-from <jgg@nvidia.com>)        id 1k8MXk-008vac-KI; Wed, 19 Aug 2020 08:46:12 -0300
-X-Originating-IP: [156.34.48.30]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 57bfcd5f-2c82-433d-379c-08d8443579cb
-X-MS-TrafficTypeDiagnostic: DM6PR12MB4356:
-X-Microsoft-Antispam-PRVS: <DM6PR12MB43562FB24BB69767B52E2B73C25D0@DM6PR12MB4356.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1303;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: h7D2HeNFAovP0TDjwxXNA6Ubein1gSZXYro+9AfHZPnfazG4osndO2KPZjlUSC0mmirSy6CE9Vb6F5gp0jKtfKJoIyEci058rTreoo2CihUoZAF5bHo9QkRydycGMAaRl/+EkhcjptMMub0982AnDO2KfVDKziEOUkQ889raiV8mgFETpHIduqrclOavtFHvAiPpo0Je8+CEPhP353iXv3MNHSVioUASJh0oZTHVvVtdClpvSYRUjFoVfS7B53iv1O+nvPaX9qZJBQfwKU6J8ZXTHLsLQ8Z6xl3oj0C/iFf/jZEciNyX528/HVxvOk85LXu+8x65wVBeTSa8cOZimg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3834.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(346002)(39860400002)(396003)(136003)(376002)(2616005)(8676002)(4744005)(1076003)(2906002)(186003)(66946007)(86362001)(66556008)(8936002)(66476007)(316002)(478600001)(26005)(36756003)(6916009)(33656002)(4326008)(9746002)(5660300002)(83380400001)(9786002)(426003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: WLDEz8pgK8IS+I4f5yg/dar6wPtQ44wcuHYV/VvLcoZPz2CKYXMFyiTjdtx6ez23Q9c9B49COstkPo53nBkXNE581w1/VZxUV0O5SGMgtwm48HHFhYig0BJj3njMknIBF5YkvVb2YcTMOmVACwYD4k0ZKpeofTcdem4ParyeTju3e8YxRDQ7K+dAnoXDp+2lwhlKgMCQDFpth/B48eXH2GcdmwDwwE4ArOrHzZFgrH54CYKcLV4ng/SK6AGQIbmtyvOKnFFPzprpEYgNZOD307Fu4nI1LXPzfJl0/2QXaPmeR8eU2X0Y7nXDBFJ6yg5TRLhpn52qVFa7dtd160CTA/LPta37PMV13E1ljVV8XiUr7ZgX3bVRtjpnAaAgYMscpB2wxTiHmY24TiTDql1AFCQfQ6ZOI+WbwcuCmQtHdT4bhGNHLIb19WUoJzs9nLTv1xq4Xx8Goqx60m+Fa1XJv55GdzQo6guxSzDGS5veoEdZ928k/kdgLykIKxd0cSBWGg0gRj9XwOfVcstUlX9OgBY5VdnpX3jNhiI9p4/oXpgcf7f/CRA8WGSXGcBsdJI/PiMdxcZ69OqR52rzdW8mBCaoB667bsEkGW297QEXEBso2DAPJRBK1SqSAXspMW5yrmS9REaWATzlnXPIYZBWDA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 57bfcd5f-2c82-433d-379c-08d8443579cb
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3834.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2020 11:46:14.2430
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Q/Y24Tkt3OZ1Ws5KWqeMKVKYCynnaxtUDw3IMTCdHAjAdOtPExJlwgLR6nMZeJC0
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4356
-X-OriginatorOrg: Nvidia.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1597837517; bh=b5FFuN4irdpCEDQzY7tCRMJD6inKu1lKLQQbsY3v9mU=;
-        h=X-PGP-Universal:ARC-Seal:ARC-Message-Signature:
-         ARC-Authentication-Results:Authentication-Results:Date:From:To:CC:
-         Subject:Message-ID:References:Content-Type:Content-Disposition:
-         In-Reply-To:X-ClientProxiedBy:MIME-Version:
-         X-MS-Exchange-MessageSentRepresentingType:X-Originating-IP:
-         X-MS-PublicTrafficType:X-MS-Office365-Filtering-Correlation-Id:
-         X-MS-TrafficTypeDiagnostic:X-Microsoft-Antispam-PRVS:
-         X-MS-Oob-TLC-OOBClassifiers:X-MS-Exchange-SenderADCheck:
-         X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-         X-Forefront-Antispam-Report:X-MS-Exchange-AntiSpam-MessageData:
-         X-MS-Exchange-CrossTenant-Network-Message-Id:
-         X-MS-Exchange-CrossTenant-AuthSource:
-         X-MS-Exchange-CrossTenant-AuthAs:
-         X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-         X-MS-Exchange-CrossTenant-FromEntityHeader:
-         X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-         X-MS-Exchange-CrossTenant-UserPrincipalName:
-         X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-        b=V04Czjw7Wwhfe+3Aas8TXqFKX+4KNg7rJOE6xVPkMvGqOI4HNubZN2IOlbzYtLsXp
-         E6ndW5Fkej51/CeztnW2v9XnQyPj7l9lfj/FYtIpL8SwndbZ/RNw69TqCzRRORSH3m
-         3fc2Q/40sleNd80+ccg7eVSORh9tuwUf77nUhYWowX/RShEOiLNuPh4EisHw34igmI
-         0y3pN89mDUlEOQWcuTHifFuCQ+cY3GqyefOrL1f4eKqMqx9DxJCnXooFEXOerpexQq
-         pHBO0HKwmf20CmYVrwvXwBEB5jdGNR3V5YSqxOqy7NI7ZlMuoxMNGtSkJEZuLSWSuN
-         2jAZx1U+I0t4g==
+In-Reply-To: <20200819104256.51499-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Aug 10, 2020 at 08:58:24AM +0100, Colin King wrote:
+On 8/19/20 6:42 AM, Colin King wrote:
+
 > From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in a pr_warn message. Fix it.
-> 
+>
+> The allocation check of newpolicy->sidtab is null checking if
+> newpolicy is null and not newpolicy->sidtab. Fix this.
+>
+> Addresses-Coverity: ("Logically dead code")
+> Fixes: c7c556f1e81b ("selinux: refactor changing booleans")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
 > ---
->  drivers/infiniband/core/device.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Applied to for-next, thanks
-
-Jason
+>   security/selinux/ss/services.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
+> index f6f78c65f53f..d310910fb639 100644
+> --- a/security/selinux/ss/services.c
+> +++ b/security/selinux/ss/services.c
+> @@ -2224,7 +2224,7 @@ int security_load_policy(struct selinux_state *state, void *data, size_t len,
+>   		return -ENOMEM;
+>   
+>   	newpolicy->sidtab = kzalloc(sizeof(*newpolicy->sidtab), GFP_KERNEL);
+> -	if (!newpolicy)
+> +	if (!newpolicy->sidtab)
+>   		goto err;
+>   
+>   	rc = policydb_read(&newpolicy->policydb, fp);

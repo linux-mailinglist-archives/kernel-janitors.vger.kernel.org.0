@@ -2,139 +2,337 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2FCD24A6E8
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Aug 2020 21:29:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E85B24A831
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Aug 2020 23:09:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726884AbgHST34 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 Aug 2020 15:29:56 -0400
-Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:10121 "EHLO
-        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726435AbgHST3y (ORCPT
+        id S1727075AbgHSVJD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 Aug 2020 17:09:03 -0400
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:46526 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726841AbgHSVJC (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 Aug 2020 15:29:54 -0400
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5f3d7da40000>; Wed, 19 Aug 2020 12:29:40 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate101.nvidia.com (PGP Universal service);
-  Wed, 19 Aug 2020 12:29:54 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate101.nvidia.com on Wed, 19 Aug 2020 12:29:54 -0700
-Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 19 Aug
- 2020 19:29:53 +0000
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.49) by
- HQMAIL109.nvidia.com (172.20.187.15) with Microsoft SMTP Server (TLS) id
- 15.0.1473.3 via Frontend Transport; Wed, 19 Aug 2020 19:29:53 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=m4Bf1W0nvKPi9uslhtMX/Jca2/Efm0IL9sDzPXMIdKUmYU0AkDAMpdJJO2a+94GCDQYDT7k7ZRTYlwIOw5taO/C8VSWLfTjH7GikJivFux1R/maEfP0DuStF8XLXMaUNRFvMHvqJlIz7TPigrpIiPMqoFH2kR8u3L9UdV32vcWiVAfFmmCTd3DNUKzYnRCskg3MBwtat62XFn8wWqrh5eMnhpXy4QvQsRc4FnD0pEbOIIrvtcVKUCeX9BQdrcGuC+iVGdmooSAsGwY9X0gjk2IliTNUe1bBvOEiZjdrBuAEq67V3w+nxGoRmtWl1TA9lVRcLUbhZGNCV1EmMmCrhiA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1PasQ6GxcMDeEN11O8QC3pncaurITKXDSyvn8tMkbDw=;
- b=ZXHt9yWJ4or6J2E+vtk9ZLPbMgdZNnTk1lq0TlenpfkYTaPfIDIVAIJjic2dg71bMx8pOc5/dvnIc2YqttV+oeMnuPoGrOsQ78W6VSwptzk4EwzNZ4u5V1ZyxmQM4JatY4hMOMX4/BJAXmMZHYytYdGTOvvUIlZzkJn8OBXJHvhCEZfrLQr3zNX4B9qMaxcnORiVL2Dj7baLi+F3673qN+VqYBzVmAZLVJ/NeDiawogSFtPQy1V9fA4ck3i5I3gi81SoxLowBWyki/yt3rJaUlVe0GLm/U7Wn46HE5h0v5mD389y90OeifPtmcreySYAS4xxeIH5aVlWD+W3SUaI0Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-Received: from BY5PR12MB4209.namprd12.prod.outlook.com (2603:10b6:a03:20d::22)
- by BYAPR12MB2664.namprd12.prod.outlook.com (2603:10b6:a03:69::25) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3283.23; Wed, 19 Aug
- 2020 19:29:52 +0000
-Received: from BY5PR12MB4209.namprd12.prod.outlook.com
- ([fe80::e528:bb9a:b147:94a9]) by BY5PR12MB4209.namprd12.prod.outlook.com
- ([fe80::e528:bb9a:b147:94a9%5]) with mapi id 15.20.3305.024; Wed, 19 Aug 2020
- 19:29:52 +0000
-From:   Saeed Mahameed <saeedm@nvidia.com>
-To:     "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
-        "gustavoars@kernel.org" <gustavoars@kernel.org>
-CC:     "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "leon@kernel.org" <leon@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH net-next] net/mlx5: remove erroneous fallthrough
-Thread-Topic: [PATCH net-next] net/mlx5: remove erroneous fallthrough
-Thread-Index: AQHWbGgclkrvAGzKUkKQzJ7+RKwEoKk/5WUA
-Date:   Wed, 19 Aug 2020 19:29:52 +0000
-Message-ID: <d6eb19690bd2e996d9dfd33361a506af7c53b325.camel@nvidia.com>
-References: <20200803143448.GA346925@mwanda>
-         <20200803154801.GC1726@embeddedor>
-In-Reply-To: <20200803154801.GC1726@embeddedor>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: oracle.com; dkim=none (message not signed)
- header.d=none;oracle.com; dmarc=none action=none header.from=nvidia.com;
-x-originating-ip: [24.6.56.119]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 1eb02a44-f6f9-41c8-885c-08d844763f1a
-x-ms-traffictypediagnostic: BYAPR12MB2664:
-x-microsoft-antispam-prvs: <BYAPR12MB26648E23F35DFD748F5C0525B35D0@BYAPR12MB2664.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:843;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 1QUtvOz/AVCZflI3on4CVv5V0Dfb1fSuvqgcI11M5V6Hmw6bDna5rhDXb6xsn2sEEsh8XH1BY3TkKDquWQYKEBfjxPIfUiw8rgaNxO/mVhZDpFRonPf7tkVMJK8Q/bY2cUuqBXErn3RdfCBx9rTx8SRkTsxb2lyH/2q4iSnKKmiBGlQv/A3U0Y5xhvtITzvuGbRpfFKHfC5qcXFF1pirds3NQLnGWdIVAIWvHG0PK4PzOOv3bWwPyFv4IeX0Qp3ouXkHBRQrGUYqmCpJmG4TeqxBr9vy3cjr/9Bs5R7Zf4dNOvEv92LEhua3BQ71DmDV
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4209.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(136003)(346002)(366004)(396003)(376002)(316002)(478600001)(2616005)(186003)(6506007)(8676002)(8936002)(83380400001)(4326008)(66476007)(2906002)(6486002)(64756008)(66446008)(4744005)(66556008)(110136005)(36756003)(76116006)(71200400001)(26005)(6512007)(66946007)(86362001)(5660300002)(54906003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: fxDzZlwrs24IgR2xJRgjCRqHqZIbRXF6be4K4aLXGdpwZB5siSwazIF3SqBsseqIRORcdHFQAO2PVxOoZHwO8BAvB5PVxHOwXUrYZvvp0hW5SAVagz8uKyWdsd0N2InGo1pML7LyZSJRx4ZTR1XDFm429zkcKtgFApApwP4ekrBl8cUPsIO6JpdX1xR1j/19YZh/S/1S0QoKZP55fpM/vGBmwkXok9NFzQPebPK26gAjlC7coaAy/Fn2FfQ01YjUSlvSYV1mknkAXx2N3JOGRCuzxVzEFHxpuySsy/YxqQgeFqh9I0ecai5SyTBY8HLU5nSCpZeC1r3CGaC97yUEuvuJmOp7/SsKm8VCFtqSAzUhFuGcn6S7VaJo9tbWfEzO+QtMLPf8SHt93uP40tgrLYoCklnGzqNEv3Ym/o95sXuidfFjc6a7qHGDi4kmYr4tRgXIyFULgQj8su5xWqepP+cjqQP4ABOrEo989rvBmEjqYDx9lgWI+8CqXGpD4ZmsPH9G2HyuZjyIh2Cv670vVaVkNA4KXgyq6kOIkTd0SDTujPahyL/4KjlydDjm7/O9pi5b67gTgEmltG3E0ZM8pVXDYtwbJFW7ts8Fs6yLw7LqaMvYUf2Yq2xjUWxHDqWVPt7pCF7rQ53JKVXyhKyQSQ==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9C97AD5E7C9B9041A524DBF546A3DA9F@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        Wed, 19 Aug 2020 17:09:02 -0400
+Received: from localhost.localdomain ([77.205.40.3])
+        by mwinf5d50 with ME
+        id HZ8v23004045PnR03Z8vTs; Wed, 19 Aug 2020 23:08:58 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 19 Aug 2020 23:08:58 +0200
+X-ME-IP: 77.205.40.3
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     -kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        vaibhavgupta40@gmail.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] rtl818x_pci: switch from 'pci_' to 'dma_' API
+Date:   Wed, 19 Aug 2020 23:08:52 +0200
+Message-Id: <20200819210852.120826-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4209.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1eb02a44-f6f9-41c8-885c-08d844763f1a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Aug 2020 19:29:52.6905
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: lOex19YjB/BttcDWDosElHDS2EDq8NF8jsQ/yhtRV2cctZz9sfkTF8BTBw1/OSNvSSzG8X4rgxHZU5jmtTv13g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB2664
-X-OriginatorOrg: Nvidia.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1597865380; bh=1PasQ6GxcMDeEN11O8QC3pncaurITKXDSyvn8tMkbDw=;
-        h=X-PGP-Universal:ARC-Seal:ARC-Message-Signature:
-         ARC-Authentication-Results:From:To:CC:Subject:Thread-Topic:
-         Thread-Index:Date:Message-ID:References:In-Reply-To:
-         Accept-Language:Content-Language:X-MS-Has-Attach:
-         X-MS-TNEF-Correlator:authentication-results:x-originating-ip:
-         x-ms-publictraffictype:x-ms-office365-filtering-correlation-id:
-         x-ms-traffictypediagnostic:x-microsoft-antispam-prvs:
-         x-ms-oob-tlc-oobclassifiers:x-ms-exchange-senderadcheck:
-         x-microsoft-antispam:x-microsoft-antispam-message-info:
-         x-forefront-antispam-report:x-ms-exchange-antispam-messagedata:
-         x-ms-exchange-transport-forked:Content-Type:Content-ID:
-         Content-Transfer-Encoding:MIME-Version:
-         X-MS-Exchange-CrossTenant-AuthAs:
-         X-MS-Exchange-CrossTenant-AuthSource:
-         X-MS-Exchange-CrossTenant-Network-Message-Id:
-         X-MS-Exchange-CrossTenant-originalarrivaltime:
-         X-MS-Exchange-CrossTenant-fromentityheader:
-         X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-         X-MS-Exchange-CrossTenant-userprincipalname:
-         X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-        b=Y5pNyrvJ6zZyr05TMIuc+YqulNnioSnwX9vSttGiBaxOplXgbKeJa0ntUXb6SFcLV
-         PQQ9hAkPiC865fl7/QmdjBHVf4SjnnTH3DHBx+2XNYdt+BzyYTEymrTauYJEKpyJ+Y
-         Xd3g7Sp2fcujKjs/amFyCTD4iGMp+rctQVzSeuvnv274rWuNmg6b3U35X7BTJ5Psi2
-         YgA2sc8xmCmNMO9PRUHse+N5dikJOzN9m14LIwi6DHvgLiFGIQV1INjdpTUIWXM7HA
-         JQ/rmRsHnbalnlxTF7Te7AKWehE5n3uOMWkgnSY8HefEeqKFDmw9RNy7v6sERWZMTX
-         J/YdvQ39pzmKQ==
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-T24gTW9uLCAyMDIwLTA4LTAzIGF0IDEwOjQ4IC0wNTAwLCBHdXN0YXZvIEEuIFIuIFNpbHZhIHdy
-b3RlOg0KPiBPbiBNb24sIEF1ZyAwMywgMjAyMCBhdCAwNTozNDo0OFBNICswMzAwLCBEYW4gQ2Fy
-cGVudGVyIHdyb3RlOg0KPiA+IFRoaXMgaXNuJ3QgYSBmYWxsIHRocm91Z2ggYmVjYXVzZSBpdCB3
-YXMgYWZ0ZXIgYSByZXR1cm4NCj4gPiBzdGF0ZW1lbnQuICBUaGUNCj4gPiBmYWxsIHRocm91Z2gg
-YW5ub3RhdGlvbiBsZWFkcyB0byBhIFNtYXRjaCB3YXJuaW5nOg0KPiA+IA0KPiA+ICAgICBkcml2
-ZXJzL25ldC9ldGhlcm5ldC9tZWxsYW5veC9tbHg1L2NvcmUvZW5fZXRodG9vbC5jOjI0Ng0KPiA+
-ICAgICBtbHg1ZV9ldGh0b29sX2dldF9zc2V0X2NvdW50KCkgd2FybjogaWdub3JpbmcgdW5yZWFj
-aGFibGUgY29kZS4NCj4gPiANCj4gPiBTaWduZWQtb2ZmLWJ5OiBEYW4gQ2FycGVudGVyIDxkYW4u
-Y2FycGVudGVyQG9yYWNsZS5jb20+DQo+IA0KPiBSZXZpZXdlZC1ieTogR3VzdGF2byBBLiBSLiBT
-aWx2YSA8Z3VzdGF2b2Fyc0BrZXJuZWwub3JnPg0KPiANCg0KQXBwbGllZCB0byBuZXQtbmV4dC1t
-bHg1DQoNClRoYW5rcyENCg==
+The wrappers in include/linux/pci-dma-compat.h should go away.
+
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GFP_ with a correct flag.
+It has been compile tested.
+
+When memory is allocated in 'rtl8180_init_rx_ring()' and
+'rtl8180_init_tx_ring()' GFP_KERNEL can be used because both functions are
+called from 'rtl8180_start()', which is a .start function (see struct
+ieee80211_ops)
+.start function can sleep, as explicitly stated in include/net/mac80211.h.
+
+
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
+
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+---
+ .../wireless/realtek/rtl818x/rtl8180/dev.c    | 70 ++++++++++---------
+ 1 file changed, 37 insertions(+), 33 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
+index ba3286f732cc..2477e18c7cae 100644
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
+@@ -260,20 +260,20 @@ static void rtl8180_handle_rx(struct ieee80211_hw *dev)
+ 			if (unlikely(!new_skb))
+ 				goto done;
+ 
+-			mapping = pci_map_single(priv->pdev,
+-					       skb_tail_pointer(new_skb),
+-					       MAX_RX_SIZE, PCI_DMA_FROMDEVICE);
++			mapping = dma_map_single(&priv->pdev->dev,
++						 skb_tail_pointer(new_skb),
++						 MAX_RX_SIZE, DMA_FROM_DEVICE);
+ 
+-			if (pci_dma_mapping_error(priv->pdev, mapping)) {
++			if (dma_mapping_error(&priv->pdev->dev, mapping)) {
+ 				kfree_skb(new_skb);
+ 				dev_err(&priv->pdev->dev, "RX DMA map error\n");
+ 
+ 				goto done;
+ 			}
+ 
+-			pci_unmap_single(priv->pdev,
++			dma_unmap_single(&priv->pdev->dev,
+ 					 *((dma_addr_t *)skb->cb),
+-					 MAX_RX_SIZE, PCI_DMA_FROMDEVICE);
++					 MAX_RX_SIZE, DMA_FROM_DEVICE);
+ 			skb_put(skb, flags & 0xFFF);
+ 
+ 			rx_status.antenna = (flags2 >> 15) & 1;
+@@ -355,8 +355,8 @@ static void rtl8180_handle_tx(struct ieee80211_hw *dev, unsigned int prio)
+ 
+ 		ring->idx = (ring->idx + 1) % ring->entries;
+ 		skb = __skb_dequeue(&ring->queue);
+-		pci_unmap_single(priv->pdev, le32_to_cpu(entry->tx_buf),
+-				 skb->len, PCI_DMA_TODEVICE);
++		dma_unmap_single(&priv->pdev->dev, le32_to_cpu(entry->tx_buf),
++				 skb->len, DMA_TO_DEVICE);
+ 
+ 		info = IEEE80211_SKB_CB(skb);
+ 		ieee80211_tx_info_clear_status(info);
+@@ -473,10 +473,10 @@ static void rtl8180_tx(struct ieee80211_hw *dev,
+ 	prio = skb_get_queue_mapping(skb);
+ 	ring = &priv->tx_ring[prio];
+ 
+-	mapping = pci_map_single(priv->pdev, skb->data,
+-				 skb->len, PCI_DMA_TODEVICE);
++	mapping = dma_map_single(&priv->pdev->dev, skb->data, skb->len,
++				 DMA_TO_DEVICE);
+ 
+-	if (pci_dma_mapping_error(priv->pdev, mapping)) {
++	if (dma_mapping_error(&priv->pdev->dev, mapping)) {
+ 		kfree_skb(skb);
+ 		dev_err(&priv->pdev->dev, "TX DMA mapping error\n");
+ 		return;
+@@ -1004,8 +1004,9 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
+ 	else
+ 		priv->rx_ring_sz = sizeof(struct rtl8180_rx_desc);
+ 
+-	priv->rx_ring = pci_zalloc_consistent(priv->pdev, priv->rx_ring_sz * 32,
+-					      &priv->rx_ring_dma);
++	priv->rx_ring = dma_alloc_coherent(&priv->pdev->dev,
++					   priv->rx_ring_sz * 32,
++					   &priv->rx_ring_dma, GFP_KERNEL);
+ 	if (!priv->rx_ring || (unsigned long)priv->rx_ring & 0xFF) {
+ 		wiphy_err(dev->wiphy, "Cannot allocate RX ring\n");
+ 		return -ENOMEM;
+@@ -1018,20 +1019,23 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
+ 		dma_addr_t *mapping;
+ 		entry = priv->rx_ring + priv->rx_ring_sz*i;
+ 		if (!skb) {
+-			pci_free_consistent(priv->pdev, priv->rx_ring_sz * 32,
+-					priv->rx_ring, priv->rx_ring_dma);
++			dma_free_coherent(&priv->pdev->dev,
++					  priv->rx_ring_sz * 32,
++					  priv->rx_ring, priv->rx_ring_dma);
+ 			wiphy_err(dev->wiphy, "Cannot allocate RX skb\n");
+ 			return -ENOMEM;
+ 		}
+ 		priv->rx_buf[i] = skb;
+ 		mapping = (dma_addr_t *)skb->cb;
+-		*mapping = pci_map_single(priv->pdev, skb_tail_pointer(skb),
+-					  MAX_RX_SIZE, PCI_DMA_FROMDEVICE);
++		*mapping = dma_map_single(&priv->pdev->dev,
++					  skb_tail_pointer(skb), MAX_RX_SIZE,
++					  DMA_FROM_DEVICE);
+ 
+-		if (pci_dma_mapping_error(priv->pdev, *mapping)) {
++		if (dma_mapping_error(&priv->pdev->dev, *mapping)) {
+ 			kfree_skb(skb);
+-			pci_free_consistent(priv->pdev, priv->rx_ring_sz * 32,
+-					priv->rx_ring, priv->rx_ring_dma);
++			dma_free_coherent(&priv->pdev->dev,
++					  priv->rx_ring_sz * 32,
++					  priv->rx_ring, priv->rx_ring_dma);
+ 			wiphy_err(dev->wiphy, "Cannot map DMA for RX skb\n");
+ 			return -ENOMEM;
+ 		}
+@@ -1054,14 +1058,13 @@ static void rtl8180_free_rx_ring(struct ieee80211_hw *dev)
+ 		if (!skb)
+ 			continue;
+ 
+-		pci_unmap_single(priv->pdev,
+-				 *((dma_addr_t *)skb->cb),
+-				 MAX_RX_SIZE, PCI_DMA_FROMDEVICE);
++		dma_unmap_single(&priv->pdev->dev, *((dma_addr_t *)skb->cb),
++				 MAX_RX_SIZE, DMA_FROM_DEVICE);
+ 		kfree_skb(skb);
+ 	}
+ 
+-	pci_free_consistent(priv->pdev, priv->rx_ring_sz * 32,
+-			    priv->rx_ring, priv->rx_ring_dma);
++	dma_free_coherent(&priv->pdev->dev, priv->rx_ring_sz * 32,
++			  priv->rx_ring, priv->rx_ring_dma);
+ 	priv->rx_ring = NULL;
+ }
+ 
+@@ -1073,8 +1076,8 @@ static int rtl8180_init_tx_ring(struct ieee80211_hw *dev,
+ 	dma_addr_t dma;
+ 	int i;
+ 
+-	ring = pci_zalloc_consistent(priv->pdev, sizeof(*ring) * entries,
+-				     &dma);
++	ring = dma_alloc_coherent(&priv->pdev->dev, sizeof(*ring) * entries,
++				  &dma, GFP_KERNEL);
+ 	if (!ring || (unsigned long)ring & 0xFF) {
+ 		wiphy_err(dev->wiphy, "Cannot allocate TX ring (prio = %d)\n",
+ 			  prio);
+@@ -1103,14 +1106,15 @@ static void rtl8180_free_tx_ring(struct ieee80211_hw *dev, unsigned int prio)
+ 		struct rtl8180_tx_desc *entry = &ring->desc[ring->idx];
+ 		struct sk_buff *skb = __skb_dequeue(&ring->queue);
+ 
+-		pci_unmap_single(priv->pdev, le32_to_cpu(entry->tx_buf),
+-				 skb->len, PCI_DMA_TODEVICE);
++		dma_unmap_single(&priv->pdev->dev, le32_to_cpu(entry->tx_buf),
++				 skb->len, DMA_TO_DEVICE);
+ 		kfree_skb(skb);
+ 		ring->idx = (ring->idx + 1) % ring->entries;
+ 	}
+ 
+-	pci_free_consistent(priv->pdev, sizeof(*ring->desc)*ring->entries,
+-			    ring->desc, ring->dma);
++	dma_free_coherent(&priv->pdev->dev,
++			  sizeof(*ring->desc) * ring->entries, ring->desc,
++			  ring->dma);
+ 	ring->desc = NULL;
+ }
+ 
+@@ -1754,8 +1758,8 @@ static int rtl8180_probe(struct pci_dev *pdev,
+ 		goto err_free_reg;
+ 	}
+ 
+-	if ((err = pci_set_dma_mask(pdev, DMA_BIT_MASK(32))) ||
+-	    (err = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32)))) {
++	if ((err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32))) ||
++	    (err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32)))) {
+ 		printk(KERN_ERR "%s (rtl8180): No suitable DMA available\n",
+ 		       pci_name(pdev));
+ 		goto err_free_reg;
+-- 
+2.25.1
+

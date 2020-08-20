@@ -2,59 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33E8824B164
-	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Aug 2020 10:52:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E924524B155
+	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Aug 2020 10:51:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727045AbgHTIwB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 Aug 2020 04:52:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50816 "EHLO
+        id S1726962AbgHTIvW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 20 Aug 2020 04:51:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726347AbgHTIur (ORCPT
+        with ESMTP id S1726956AbgHTIvR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 Aug 2020 04:50:47 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDDFEC061757;
-        Thu, 20 Aug 2020 01:50:47 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id mw10so687909pjb.2;
-        Thu, 20 Aug 2020 01:50:47 -0700 (PDT)
+        Thu, 20 Aug 2020 04:51:17 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C074C061757;
+        Thu, 20 Aug 2020 01:51:17 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id 17so686511pfw.9;
+        Thu, 20 Aug 2020 01:51:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=Xwd8nOeSb0YumtAMd904xAyU3bfTBgRBas9x5F4YwCU=;
-        b=pyZdQ+WycGAAsR6ciDdWCZbdA3betN8OJ1+4K5MqjQUilxaKdYWeb5xjr8Y6fxZrV+
-         XPMoH+1lvlgrhDkSI9rpVwHnSGWDKSNnIX0DO8YW3ZRzFP2mqH+lxKVVdo3Axk0VDsZG
-         Q+DbuJ4e5Z/u7Rx8zm2M4juVhU3wWDeA6Cb8p4TGOnty9BXGy0EvCNRuNWC4l6WZ6c1P
-         W3NdxxD2N5GShe57Mgv2ctJCeQD1b2DQpcb+vl32Y4furb1BEbwP7Ui0mst8ZKvyk3ZI
-         qf7SaDki5SjnwSCU8YowwLIREmwMXdzjaFCF9Bvr56ze8sTr02R6+Mkq6kdr5Ey/24wc
-         Jtng==
+        bh=i64e4Hw6hiFKIw4E9ywmRcqkHQEUxTrspJYDHXsusTk=;
+        b=MfW2LIV48hHDR6/+1vCzQITMjw2E5StyiKIzQTs6Qfx4Xrk8k1zkzaiCsumBJ/k3dc
+         NGUgiVb5BxsTAoz00ypfb5gOo2ePv6zR8n7zdDq6oP8YCcs404Wyx4//PRwdIYjlggOO
+         I3t3t3iK6RsIsz0s4t1NKaeRPgbJ2LKbs2gT8x9enaZ8KQtFjrBJG3CNd6D7viRo0mT0
+         78oVfIrC3V4AwPFVXEfywHk1zjlW8xmtrp6Fb79azoOywQm19gHP+ABCNRrVNEQcOODa
+         SlPvVhG9swIoRNfAA3OV8iLLeXfviFwU6eHNgxUG6gZLePbaBB0bxIuHCIQOg1QVYIHR
+         lSsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Xwd8nOeSb0YumtAMd904xAyU3bfTBgRBas9x5F4YwCU=;
-        b=VaG+DiXNz2AsTeBJA3mQynvvcQZATXTylGfAxFp/zTGWVWWPD9iOMTXgoJv5u4Bdj0
-         pGdwVxdU/reJAXcifCKwnLvb2myVG25SCizhcXLHTkttEzA2Q4EIP5dtdUtAgVRh342Q
-         mNjP2FH8O2hEnoaFKIxFFT65lQR+S+UNNbCNqN4X40m3dKfP4mr5sAr/sL/+JaCvfDWw
-         KgNlqtMAw4r+CqNIUIQc/ezLEDX51n/aeurRXbRJJXcVL1epis+EBX4KejCewE3uzzJd
-         W8JW6/vK7Oe4xoGnuUltUHyc6XyR+f3xLg775blkW/ajpAOXjTbluP0EhIvPt9XDno9o
-         febw==
-X-Gm-Message-State: AOAM530a58yRZcOhzEs1zu3WfsSvA6dJNoDFRneZ5cs97bs8GYfHpvGb
-        NusS8QrGAe8UiMJf/aPeHUo=
-X-Google-Smtp-Source: ABdhPJxu7QsiBFdAy9B2xEBnvtCHJcAdiOoyfB4PTnGuT/Z3ZavblpMFV434HG45UwgjHJrRvpao2g==
-X-Received: by 2002:a17:902:8601:: with SMTP id f1mr1779259plo.272.1597913447264;
-        Thu, 20 Aug 2020 01:50:47 -0700 (PDT)
+        bh=i64e4Hw6hiFKIw4E9ywmRcqkHQEUxTrspJYDHXsusTk=;
+        b=puG+WWmcPndNmesfPggnvsiSeopZ/JXJNTwOhvhyLLhcS9MijtM2UX3NvuuHrYVdgQ
+         hiERq0lL2M/85RiCshaavAtI5Tboxet7ROGPx+18cOs1W9TnsUiDZwb23PpxMtf4X2yg
+         wd9iWh8uJE5BUrOFAAu4X0KVF3/8dJv7cCdFhH2oiraCF54AJDRBQaJZZQhK2H3HJY90
+         bg3UG/MzZXYMcTK5OA12sF+a84wrRYRtwYG9dm8lGI3dfYiOHlEWiUjN6nYzmXY6LUA0
+         IQmdqiNyKKHYyBizRzeKmdtqMlRkcRk0grGTMjHtRArUqyIbU2lf2xBJW4K4WgPJZIRc
+         TO+w==
+X-Gm-Message-State: AOAM531Ex9IG6FmjF7OQPkfcNDaNzoqeW8G+oZ6OJHKrscE8RL/SuKnp
+        bqSKjEdALnqGIS/1kV0QUVQ=
+X-Google-Smtp-Source: ABdhPJz+CWaexcHNvcwJsPC0Jb0gRvkVakVRSXCLCQb4AM3hlGGbwlfItdibD4Enz2OstRn6qJSKNQ==
+X-Received: by 2002:a63:df10:: with SMTP id u16mr1759689pgg.437.1597913477054;
+        Thu, 20 Aug 2020 01:51:17 -0700 (PDT)
 Received: from blackclown ([103.88.82.201])
-        by smtp.gmail.com with ESMTPSA id gl9sm1442254pjb.41.2020.08.20.01.50.45
+        by smtp.gmail.com with ESMTPSA id l22sm1407820pjy.31.2020.08.20.01.51.15
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 20 Aug 2020 01:50:46 -0700 (PDT)
-Date:   Thu, 20 Aug 2020 14:20:35 +0530
+        Thu, 20 Aug 2020 01:51:16 -0700 (PDT)
+Date:   Thu, 20 Aug 2020 14:20:57 +0530
 From:   Suraj Upadhyay <usuraj35@gmail.com>
 To:     jerome.pouiller@silabs.com, gregkh@linuxfoundation.org
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH 3/6] staging: wfx/data_rx.c: Fix spelling mistake
- "negociation" => "negotiation"
-Message-ID: <7e0dab9eb4d976605371f1ba814ce32d62366dd4.1597913333.git.usuraj35@gmail.com>
+Subject: [PATCH 4/6] staging: wfx/debug.c: Fix spelling mistake "carefull" =>
+ "careful"
+Message-ID: <ec3e765875adfe59f1d8d8ef2c610d6423116f55.1597913333.git.usuraj35@gmail.com>
 References: <834139101223e627665c939388cd7c542920c531.1597913333.git.usuraj35@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -68,22 +68,22 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
 ---
- drivers/staging/wfx/data_rx.c | 2 +-
+ drivers/staging/wfx/debug.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/wfx/data_rx.c b/drivers/staging/wfx/data_rx.c
-index 6fb078880742..7fcbbfc53416 100644
---- a/drivers/staging/wfx/data_rx.c
-+++ b/drivers/staging/wfx/data_rx.c
-@@ -73,7 +73,7 @@ void wfx_rx_cb(struct wfx_vif *wvif,
- 	if (arg->rx_flags.encryp)
- 		hdr->flag |= RX_FLAG_DECRYPTED;
- 
--	// Block ack negociation is offloaded by the firmware. However,
-+	// Block ack negotiation is offloaded by the firmware. However,
- 	// re-ordering must be done by the mac80211.
- 	if (ieee80211_is_action(frame->frame_control) &&
- 	    mgmt->u.action.category == WLAN_CATEGORY_BACK &&
+diff --git a/drivers/staging/wfx/debug.c b/drivers/staging/wfx/debug.c
+index 3f1712b7c919..5772e2375370 100644
+--- a/drivers/staging/wfx/debug.c
++++ b/drivers/staging/wfx/debug.c
+@@ -299,7 +299,7 @@ static ssize_t wfx_send_hif_msg_read(struct file *file, char __user *user_buf,
+ 		return ret;
+ 	if (context->ret < 0)
+ 		return context->ret;
+-	// Be carefull, write() is waiting for a full message while read()
++	// Be careful, write() is waiting for a full message while read()
+ 	// only return a payload
+ 	if (copy_to_user(user_buf, context->reply, count))
+ 		return -EFAULT;
 -- 
 2.17.1
 

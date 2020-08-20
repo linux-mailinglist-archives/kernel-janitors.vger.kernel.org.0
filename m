@@ -2,53 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 234C724C70F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Aug 2020 23:15:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C3B724C74D
+	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Aug 2020 23:48:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728687AbgHTVPU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 Aug 2020 17:15:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53126 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726781AbgHTVPT (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 Aug 2020 17:15:19 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA86FC061385;
-        Thu, 20 Aug 2020 14:15:18 -0700 (PDT)
-Received: from localhost (c-76-104-128-192.hsd1.wa.comcast.net [76.104.128.192])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id BD1D8128405DE;
-        Thu, 20 Aug 2020 13:58:28 -0700 (PDT)
-Date:   Thu, 20 Aug 2020 14:15:10 -0700 (PDT)
-Message-Id: <20200820.141510.1395453798289903622.davem@davemloft.net>
-To:     christophe.jaillet@wanadoo.fr
-Cc:     kuba@kernel.org, snelson@pensando.io, mhabets@solarflare.com,
-        vaibhavgupta40@gmail.com, mst@redhat.com, mkubecek@suse.cz,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] epic100: switch from 'pci_' to 'dma_' API
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <9b8ad131-3c2e-37b7-392c-79fab1a2f2bb@wanadoo.fr>
-References: <20200806201935.733641-1-christophe.jaillet@wanadoo.fr>
-        <20200806.142311.94169513118353100.davem@davemloft.net>
-        <9b8ad131-3c2e-37b7-392c-79fab1a2f2bb@wanadoo.fr>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 20 Aug 2020 13:58:29 -0700 (PDT)
+        id S1726873AbgHTVst (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 20 Aug 2020 17:48:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43756 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728085AbgHTVsp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 20 Aug 2020 17:48:45 -0400
+Received: from localhost (cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net [82.37.168.47])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 269C6214F1;
+        Thu, 20 Aug 2020 21:48:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597960125;
+        bh=Bx31esN2mPf7lmCBEMBgqpTqFifE4a0F/RsNqDpOaDA=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=ijTfjR6OsaRfWZCaNUqnmjQfbXkI/pNj2mfXAmnTHt7+p1c31nIWgmezY7zBpgrq4
+         jsl+vrAJnzjtLwvyj3+dpHeObs0YJ1zZZrb6Lwh/TJd1OGQ+Sap6ulXiYeOmbT2etC
+         SaIdajnNskIp53GCoLvacKm8lrrbUJUCaZVI0Rbw=
+Date:   Thu, 20 Aug 2020 22:48:12 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Patrick Lai <plai@codeaurora.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        alsa-devel@alsa-project.org, Colin King <colin.king@canonical.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Banajit Goswami <bgoswami@codeaurora.org>,
+        Takashi Iwai <tiwai@suse.com>,
+        Ajit Pandey <ajitp@codeaurora.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Rohit kumar <rohitkr@codeaurora.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <20200819160103.164893-1-colin.king@canonical.com>
+References: <20200819160103.164893-1-colin.king@canonical.com>
+Subject: Re: [PATCH][next] ASoC: qcom: add missing out of memory check on drvdata->clks allocation
+Message-Id: <159796008815.44152.14467897806901945440.b4-ty@kernel.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Thu, 20 Aug 2020 18:28:25 +0200
+On Wed, 19 Aug 2020 17:01:03 +0100, Colin King wrote:
+> Currently drvdata->clks is not being checked for an allocation failure,
+> leading to potential null pointer dereferencing. Fix this by adding a
+> check and returning -ENOMEM if an error occurred.
 
-> should I resend the few conversion patches sent at the wrong time or
-> are they stored somewhere, and will be processed when some time is
-> available for it?
+Applied to
 
-Please resend, thank you.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: qcom: add missing out of memory check on drvdata->clks allocation
+      commit: a467f2f8ad5f9a21f92b3fa6ad2aac90fa7054fe
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

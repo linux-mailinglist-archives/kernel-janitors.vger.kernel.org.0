@@ -2,94 +2,142 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50E6624AF52
-	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Aug 2020 08:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A09124B05F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Aug 2020 09:49:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726765AbgHTGgw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 Aug 2020 02:36:52 -0400
-Received: from mail.zju.edu.cn ([61.164.42.155]:41552 "EHLO zju.edu.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725778AbgHTGgw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 Aug 2020 02:36:52 -0400
-Received: by ajax-webmail-mail-app3 (Coremail) ; Thu, 20 Aug 2020 14:36:35
- +0800 (GMT+08:00)
-X-Originating-IP: [10.192.85.18]
-Date:   Thu, 20 Aug 2020 14:36:35 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   dinghao.liu@zju.edu.cn
-To:     "Lee Jones" <lee.jones@linaro.org>
-Cc:     "Markus Elfring" <Markus.Elfring@web.de>,
+        id S1725824AbgHTHt2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 20 Aug 2020 03:49:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41410 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725882AbgHTHtY (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 20 Aug 2020 03:49:24 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37F19C061383
+        for <kernel-janitors@vger.kernel.org>; Thu, 20 Aug 2020 00:49:24 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id c15so1026285wrs.11
+        for <kernel-janitors@vger.kernel.org>; Thu, 20 Aug 2020 00:49:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=XgD7oAraMYDOqNsfZffx0IqUVAmFZfcgzGRKvwI8mIc=;
+        b=XlaONjDnEdsYg/6xqFFyWyTH0yWrgNaxkmvE+JWcDVZbLe+f/V7HKdjYROy7dyRpgD
+         0dP7O6uThUl2ocYIR33bisbTsV7PY13WDhwdzpoG+1juP2BKSoKiEUd4Vt3PTFRroRgA
+         CKWIaTIqQLz/3rnEaEMJlfnH2LOTDEFgtejdx0YcZnIibXmUIW8mrTOAvdg1MlPqsu01
+         n4D3DHqkiUh/PUQcvUhn/MDFi/qLIJr1VljuscrpP3WooR3pcPufopgFHfsC1aJqsMPG
+         YS204VOVM7RsVE5k9miArRNcssfkXrf1ORtWY/QTAhKAThyjJpNspv/DCPSgCLSS8wMB
+         aMUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=XgD7oAraMYDOqNsfZffx0IqUVAmFZfcgzGRKvwI8mIc=;
+        b=CY/6sKYZdQhZTQDllhS1iYKOqIpvI2K4QajVKVLroV7/OQtSHXrgIIb2LlTMk+pWLD
+         kR55GePJcmE8G49h2JV8qlHugpc2wGIHU37SGSUupC2iE+WaC1RU2EMxaMkl8kp4dbcS
+         P/htx8OBZxAxcR5kzQgtADGHtSGCZBHJTBIjzfo07yWDGWMiscjQWTzajbQUfD6f4r0N
+         6a8O7+mZpTVCgVK1Q9vZUsVPhQog/RZbmpLMSVd8PWvN6SCWLTMQ+fRs7d9V/bRHjnNX
+         gFaJiu3XHGpg9Tmzx4q4yTn6WVN/F5I0smWviyxusWL9lReXgJKgnyxhkAqE+Sn4fQac
+         rA0w==
+X-Gm-Message-State: AOAM5309CtLoQex5FpkL9USVVdCZQi3P/5d2s+gjFpzu+NAuaffmkPDV
+        NMHp/7kZcJVCMU1bvzPnU0MEYQ==
+X-Google-Smtp-Source: ABdhPJyboEGZAaF6RXm5GpaE/mKR6TYvk3Fye/goK+ikDC5z1N0gxsGJDDrfdepMKqxed6kq885b0w==
+X-Received: by 2002:a5d:60cb:: with SMTP id x11mr1737733wrt.281.1597909761789;
+        Thu, 20 Aug 2020 00:49:21 -0700 (PDT)
+Received: from dell ([95.149.164.62])
+        by smtp.gmail.com with ESMTPSA id s2sm2438068wrr.55.2020.08.20.00.49.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2020 00:49:21 -0700 (PDT)
+Date:   Thu, 20 Aug 2020 08:49:16 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     dinghao.liu@zju.edu.cn
+Cc:     Markus Elfring <Markus.Elfring@web.de>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        "Bartlomiej Zolnierkiewicz" <b.zolnierkie@samsung.com>,
-        "Bryan Wu" <cooloney@gmail.com>,
-        "Daniel Thompson" <daniel.thompson@linaro.org>,
-        "Gyungoh Yoo" <jack.yoo@skyworksinc.com>,
-        "Jingoo Han" <jingoohan1@gmail.com>, "Kangjie Lu" <kjlu@umn.edu>
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Bryan Wu <cooloney@gmail.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Gyungoh Yoo <jack.yoo@skyworksinc.com>,
+        Jingoo Han <jingoohan1@gmail.com>, Kangjie Lu <kjlu@umn.edu>
 Subject: Re: Re: Re: [PATCH] video: backlight: sky81452-backlight: Fix
  reference count imbalance on error
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.12 build 20200616(0f5d8152)
- Copyright (c) 2002-2020 www.mailtech.cn zju.edu.cn
-In-Reply-To: <20200820062301.GD3248864@dell>
+Message-ID: <20200820074916.GE3248864@dell>
 References: <321fb03d-2307-7f60-f437-cfb99184dfd6@web.de>
  <20200819165702.GC3248864@dell>
  <217e3c0c.b58c.17409fd7496.Coremail.dinghao.liu@zju.edu.cn>
  <20200820062301.GD3248864@dell>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+ <3f9fbdb1.bc96.1740a9560d5.Coremail.dinghao.liu@zju.edu.cn>
 MIME-Version: 1.0
-Message-ID: <3f9fbdb1.bc96.1740a9560d5.Coremail.dinghao.liu@zju.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: cC_KCgA3Ut7zGT5fQkbuAg--.44418W
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAgoSBlZdtPnBhAAUsL
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJTRUUUbAvS07vEb7Iv0x
-        C_Cr1lV2xY67kC6x804xWlV2xY67CY07I20VC2zVCF04k26cxKx2IYs7xG6rWj6s0DMIAI
-        bVAFxVCF77xC64kEw24lV2xY67C26IkvcIIF6IxKo4kEV4ylV2xY628lY4IE4IxF12IF4w
-        CS07vE84x0c7CEj48ve4kI8wCS07vE84ACjcxK6xIIjxv20xvE14v26w1j6s0DMIAIbVA2
-        z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIAIbVA2z4x0Y4vEx4A2jsIE14v26r
-        xl6s0DMIAIbVA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1lV2xY62AIxVAIcxkEcVAq
-        07x20xvEncxIr21lV2xY6c02F40EFcxC0VAKzVAqx4xG6I80ewCS07vEYx0E2Ix0cI8IcV
-        AFwI0_Jr0_Jr4lV2xY6cIj6I8E87Iv67AKxVWUJVW8JwCS07vEOx8S6xCaFVCjc4AY6r1j
-        6r4UMIAIbVACI402YVCY1x02628vn2kIc2xKxwCS07vE7I0Y64k_MIAIbVCY0x0Ix7I2Y4
-        AK64vIr41lV2xY6xAIw28IcVCjz48v1sIEY20_GFWkJr1UJwCS07vE4x8a6x804xWlV2xY
-        6xC20s026xCaFVCjc4AY6r1j6r4UMIAIbVC20s026c02F40E14v26r1j6r18MIAIbVC20s
-        026x8GjcxK67AKxVWUGVWUWwCS07vEx4CE17CEb7AF67AKxVWUtVW8ZwCS07vEIxAIcVC0
-        I7IYx2IY67AKxVWUJVWUCwCS07vEIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIAIbV
-        CI42IY6xAIw20EY4v20xvaj40_Wr1j6rW3Jr1lV2xY6IIF0xvEx4A2jsIE14v26r1j6r4U
-        MIAIbVCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73U
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3f9fbdb1.bc96.1740a9560d5.Coremail.dinghao.liu@zju.edu.cn>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-PiBPbiBUaHUsIDIwIEF1ZyAyMDIwLCBkaW5naGFvLmxpdUB6anUuZWR1LmNuIHdyb3RlOgo+IAo+
-ID4gPiBPbiBXZWQsIDE5IEF1ZyAyMDIwLCBNYXJrdXMgRWxmcmluZyB3cm90ZToKPiA+ID4gCj4g
-PiA+ID4gPiBXaGVuIG9mX3Byb3BlcnR5X3JlYWRfdTMyX2FycmF5KCkgcmV0dXJucyBhbiBlcnJv
-ciBjb2RlLAo+ID4gPiA+ID4gYSBwYWlyaW5nIHJlZmNvdW50IGRlY3JlbWVudCBpcyBuZWVkZWQg
-dG8ga2VlcCBucCdzIHJlZmNvdW50IGJhbGFuY2VkLgo+ID4gPiA+IAo+ID4gPiA+IENhbiBhbm90
-aGVyIGltcGVyYXRpdmUgd29yZGluZyBiZSBoZWxwZnVsIGZvciB0aGUgY2hhbmdlIGRlc2NyaXB0
-aW9uPwo+ID4gPiA+IGh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwv
-Z2l0L3RvcnZhbGRzL2xpbnV4LmdpdC90cmVlL0RvY3VtZW50YXRpb24vcHJvY2Vzcy9zdWJtaXR0
-aW5nLXBhdGNoZXMucnN0P2lkPTE4NDQ1YmY0MDVjYjMzMTExN2JjOTg0MjdiMWJhNmYxMjQxOGFk
-MTcjbjE1MQo+ID4gPiA+IAo+ID4gPiA+IFdvdWxkIGFuIG90aGVyIGNvbW1pdCBtZXNzYWdlIGJl
-IGEgYml0IG5pY2VyPwo+ID4gPiA+IAo+ID4gPiA+IAo+ID4gPiA+IOKApgo+ID4gPiA+ID4gKysr
-IGIvZHJpdmVycy92aWRlby9iYWNrbGlnaHQvc2t5ODE0NTItYmFja2xpZ2h0LmMKPiA+ID4gPiA+
-IEBAIC0yMTcsNiArMjE3LDcgQEAgc3RhdGljIHN0cnVjdCBza3k4MTQ1Ml9ibF9wbGF0Zm9ybV9k
-YXRhICpza3k4MTQ1Ml9ibF9wYXJzZV9kdCgKPiA+ID4gPiA+ICAJCQkJCW51bV9lbnRyeSk7Cj4g
-PiA+ID4gPiAgCQlpZiAocmV0IDwgMCkgewo+ID4gPiA+ID4gIAkJCWRldl9lcnIoZGV2LCAibGVk
-LXNvdXJjZXMgbm9kZSBpcyBpbnZhbGlkLlxuIik7Cj4gPiA+ID4gPiArCQkJb2Zfbm9kZV9wdXQo
-bnApOwo+ID4gPiA+ID4gIAkJCXJldHVybiBFUlJfUFRSKC1FSU5WQUwpOwo+ID4gPiA+ID4gIAkJ
-fQo+ID4gPiA+IAo+ID4gPiA+IEkgcHJvcG9zZSB0byBhZGQgdGhlIGp1bXAgdGFyZ2V0IOKAnHB1
-dF9ub2Rl4oCdIHNvIHRoYXQgYSBiaXQgb2YgY29tbW9uIGV4Y2VwdGlvbgo+ID4gPiA+IGhhbmRs
-aW5nIGNvZGUgY2FuIGJlIGJldHRlciByZXVzZWQgYXQgdGhlIGVuZCBvZiB0aGlzIGZ1bmN0aW9u
-IGltcGxlbWVudGF0aW9uLgo+ID4gPiA+IAo+ID4gPiA+IFJlZ2FyZHMsCj4gPiA+ID4gTWFya3Vz
-Cj4gPiA+IAo+ID4gPiBZb3UgY2FuIHNhZmVseSBpZ25vcmUgYW55IHJldmlldyBjb21tZW50cyBm
-cm9tIE1hcmt1cyEKPiA+ID4gCj4gPiA+IEhvd2V2ZXIsIHRoaXMgcGF0Y2ggZG9lc24ndCBhcHBl
-YXIgdG8gYmUgaW4gbXkgaW5ib3guCj4gPiA+IAo+ID4gPiBBbnkgaWRlYXMgYXMgdG8gd2h5Pwo+
-ID4gPiAKPiA+IAo+ID4gVGhhbmsgeW91IGZvciB5b3VyIGFkdmljZS4gTXkgb3V0Ym94IHNob3dz
-IHRoYXQgdGhpcyBwYXRjaAo+ID4gaGFzIHJlYWNoZWQgeW91ciBlbWFpbCBzZXJ2ZXIgc3VjY2Vz
-c2Z1bGx5LiBNYXliZSB0aGlzCj4gPiBlbmRlZCB1cCBpbiB5b3VyIGp1bmsgbWFpbCBmaWxlPwo+
-IAo+IFRoaXMgaGFzIGhhcHBlbmVkIHJlY2VudGx5LCBzbyBJIHdhcyBzdXJlIHRvIGNoZWNrLgo+
-IAo+IE5vdCB0aGVyZSBlaXRoZXIgdW5mb3J0dW5hdGVseS4KPiAKPiBXb3VsZCB5b3UgYmUga2lu
-ZCBlbm91Z2ggdG8gYm91bmNlL3Jlc2VuZCBwbGVhc2U/Cj4gCgpTdXJlLgo=
+On Thu, 20 Aug 2020, dinghao.liu@zju.edu.cn wrote:
+
+> > On Thu, 20 Aug 2020, dinghao.liu@zju.edu.cn wrote:
+> > 
+> > > > On Wed, 19 Aug 2020, Markus Elfring wrote:
+> > > > 
+> > > > > > When of_property_read_u32_array() returns an error code,
+> > > > > > a pairing refcount decrement is needed to keep np's refcount balanced.
+> > > > > 
+> > > > > Can another imperative wording be helpful for the change description?
+> > > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=18445bf405cb331117bc98427b1ba6f12418ad17#n151
+> > > > > 
+> > > > > Would an other commit message be a bit nicer?
+> > > > > 
+> > > > > 
+> > > > > …
+> > > > > > +++ b/drivers/video/backlight/sky81452-backlight.c
+> > > > > > @@ -217,6 +217,7 @@ static struct sky81452_bl_platform_data *sky81452_bl_parse_dt(
+> > > > > >  					num_entry);
+> > > > > >  		if (ret < 0) {
+> > > > > >  			dev_err(dev, "led-sources node is invalid.\n");
+> > > > > > +			of_node_put(np);
+> > > > > >  			return ERR_PTR(-EINVAL);
+> > > > > >  		}
+> > > > > 
+> > > > > I propose to add the jump target “put_node” so that a bit of common exception
+> > > > > handling code can be better reused at the end of this function implementation.
+> > > > > 
+> > > > > Regards,
+> > > > > Markus
+> > > > 
+> > > > You can safely ignore any review comments from Markus!
+> > > > 
+> > > > However, this patch doesn't appear to be in my inbox.
+> > > > 
+> > > > Any ideas as to why?
+> > > > 
+> > > 
+> > > Thank you for your advice. My outbox shows that this patch
+> > > has reached your email server successfully. Maybe this
+> > > ended up in your junk mail file?
+> > 
+> > This has happened recently, so I was sure to check.
+> > 
+> > Not there either unfortunately.
+> > 
+> > Would you be kind enough to bounce/resend please?
+> 
+> Sure.
+
+Looks like you sent it *only* to me.  Please keep everyone else in Cc
+when doing that, or I can't respond to everyone.
+
+Anyway, besides the subject line (which I can fix easily), the patch
+looks good to me, but Daniel T must review.
+
+Reviewed-by: Lee Jones <lee.jones@linaro.org>
+
+--
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog

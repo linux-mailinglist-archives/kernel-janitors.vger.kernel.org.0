@@ -2,151 +2,340 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2511E24B912
-	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Aug 2020 13:39:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A7BF24C05D
+	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Aug 2020 16:15:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729738AbgHTLie (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 Aug 2020 07:38:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48542 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729398AbgHTLiV (ORCPT
+        id S1726968AbgHTOPG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 20 Aug 2020 10:15:06 -0400
+Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:18682 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726215AbgHTOOz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 Aug 2020 07:38:21 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33217C061385
-        for <kernel-janitors@vger.kernel.org>; Thu, 20 Aug 2020 04:38:21 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id o21so1300924wmc.0
-        for <kernel-janitors@vger.kernel.org>; Thu, 20 Aug 2020 04:38:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=PCqH5LYqH1fQoc2ZlhhcJpxej9fx4SNk/neUhLB5CXQ=;
-        b=kWqe/UA4IlH3O+11v3/2px5lEMFfQ31ZebCjBKikx+V66zCdAJ6QLVvHLBkY70i761
-         wF8hZrIdwtgxAuHYBU2TDAMny5PvAVi5kMr3WCKAZ6FdMxZXpNosxy+pu+j16mG/P7uy
-         aQQltE97czfbBK1YLITqKzGzI1/kf/GquhMGxLZo5txY/v3gbLAjlM895Af/QZV/VORd
-         HjIcHMUVyEWjZ6vgziSlnrCppksKhT6SwjVD5f9CprcPFHSI87duwPVtC6dVG6dk7UNB
-         b1haTbJ+tAx0cSoR/WeoIxmT2JA4DwlEF35dQe+BcS0Fq0zF/SId8/OOc6gz3Me5kSnU
-         9zbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=PCqH5LYqH1fQoc2ZlhhcJpxej9fx4SNk/neUhLB5CXQ=;
-        b=IkOemgYF4pfo9nlF4jZAZdWP1Vg1esVRsu60KC+xpgY3oJAU6xZMVCpzWpEFDrmNIr
-         +9q8a4dOPamlauiUYLXkgfgjSywpV/bxcXm1hY/9R2hyJ4GMs8NPnHtC49E9vBkkBK7G
-         9DpqTDzuJCPWz6JrP5lujv3MEvYLIBBPPBkFBJ/oMh9UsVz38mngDnqDF11gL3BzAF1H
-         LFN6SqWjJh7r0zRX4TCkcgWRewVoBkvmr1BCy7q4SH1twK3gpGCyvcQD3+7EhL3fW/Tc
-         JP2DNQGZRtkK3PDU0xkZqHJa1/tj8Twhzjn0L8hznAj703IxzXHDG4caJrC3Ye3tnE0j
-         AtfA==
-X-Gm-Message-State: AOAM533uF2kCjac8YX0U8Gn2SWrZ6Q6FqTbq5enj2cN7DvfuurbDgDWb
-        PUlOX3bZAN2oV5KKpzyVuWfgyg==
-X-Google-Smtp-Source: ABdhPJz1Apj5RkSqr5Zdm+oy3sNRrie8RiOBYxfJ9CWqRIIWRLTwgUwaX0GjKX0vwV4cMAhQPZlwAQ==
-X-Received: by 2002:a05:600c:2157:: with SMTP id v23mr3002981wml.38.1597923499804;
-        Thu, 20 Aug 2020 04:38:19 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id j11sm3792749wrw.79.2020.08.20.04.38.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2020 04:38:19 -0700 (PDT)
-Date:   Thu, 20 Aug 2020 12:38:17 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     dinghao.liu@zju.edu.cn, Markus Elfring <Markus.Elfring@web.de>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Thu, 20 Aug 2020 10:14:55 -0400
+Received: from localhost.localdomain ([93.22.135.164])
+        by mwinf5d87 with ME
+        id HqEm2300M3YzEb903qEn9X; Thu, 20 Aug 2020 16:14:50 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 20 Aug 2020 16:14:50 +0200
+X-ME-IP: 93.22.135.164
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        vaibhavgupta40@gmail.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Bryan Wu <cooloney@gmail.com>,
-        Gyungoh Yoo <jack.yoo@skyworksinc.com>,
-        Jingoo Han <jingoohan1@gmail.com>, Kangjie Lu <kjlu@umn.edu>
-Subject: Re: [PATCH] video: backlight: sky81452-backlight: Fix reference
- count imbalance on error
-Message-ID: <20200820113817.742yvjvdy7a642ew@holly.lan>
-References: <321fb03d-2307-7f60-f437-cfb99184dfd6@web.de>
- <20200819165702.GC3248864@dell>
- <217e3c0c.b58c.17409fd7496.Coremail.dinghao.liu@zju.edu.cn>
- <20200820062301.GD3248864@dell>
- <3f9fbdb1.bc96.1740a9560d5.Coremail.dinghao.liu@zju.edu.cn>
- <20200820074916.GE3248864@dell>
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH RESEND] rtl818x_pci: switch from 'pci_' to 'dma_' API
+Date:   Thu, 20 Aug 2020 16:14:42 +0200
+Message-Id: <20200820141443.130698-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200820074916.GE3248864@dell>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Aug 20, 2020 at 08:49:16AM +0100, Lee Jones wrote:
-> On Thu, 20 Aug 2020, dinghao.liu@zju.edu.cn wrote:
-> 
-> > > On Thu, 20 Aug 2020, dinghao.liu@zju.edu.cn wrote:
-> > > 
-> > > > > On Wed, 19 Aug 2020, Markus Elfring wrote:
-> > > > > 
-> > > > > > > When of_property_read_u32_array() returns an error code,
-> > > > > > > a pairing refcount decrement is needed to keep np's refcount balanced.
-> > > > > > 
-> > > > > > Can another imperative wording be helpful for the change description?
-> > > > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=18445bf405cb331117bc98427b1ba6f12418ad17#n151
-> > > > > > 
-> > > > > > Would an other commit message be a bit nicer?
-> > > > > > 
-> > > > > > 
-> > > > > > …
-> > > > > > > +++ b/drivers/video/backlight/sky81452-backlight.c
-> > > > > > > @@ -217,6 +217,7 @@ static struct sky81452_bl_platform_data *sky81452_bl_parse_dt(
-> > > > > > >  					num_entry);
-> > > > > > >  		if (ret < 0) {
-> > > > > > >  			dev_err(dev, "led-sources node is invalid.\n");
-> > > > > > > +			of_node_put(np);
-> > > > > > >  			return ERR_PTR(-EINVAL);
-> > > > > > >  		}
-> > > > > > 
-> > > > > > I propose to add the jump target “put_node” so that a bit of common exception
-> > > > > > handling code can be better reused at the end of this function implementation.
-> > > > > > 
-> > > > > > Regards,
-> > > > > > Markus
-> > > > > 
-> > > > > You can safely ignore any review comments from Markus!
-> > > > > 
-> > > > > However, this patch doesn't appear to be in my inbox.
-> > > > > 
-> > > > > Any ideas as to why?
-> > > > > 
-> > > > 
-> > > > Thank you for your advice. My outbox shows that this patch
-> > > > has reached your email server successfully. Maybe this
-> > > > ended up in your junk mail file?
-> > > 
-> > > This has happened recently, so I was sure to check.
-> > > 
-> > > Not there either unfortunately.
-> > > 
-> > > Would you be kind enough to bounce/resend please?
-> > 
-> > Sure.
-> 
-> Looks like you sent it *only* to me.  Please keep everyone else in Cc
-> when doing that, or I can't respond to everyone.
-> 
-> Anyway, besides the subject line (which I can fix easily), the patch
-> looks good to me, but Daniel T must review.
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-I've already offered a Reviewed-by for this patch. Perhaps it landed in
-the same place as the original patch...
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GFP_ with a correct flag.
+It has been compile tested.
+
+When memory is allocated in 'rtl8180_init_rx_ring()' and
+'rtl8180_init_tx_ring()' GFP_KERNEL can be used because both functions are
+called from 'rtl8180_start()', which is a .start function (see struct
+ieee80211_ops)
+.start function can sleep, as explicitly stated in include/net/mac80211.h.
 
 
-Daniel.
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
 
-> 
-> Reviewed-by: Lee Jones <lee.jones@linaro.org>
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
 
-> 
-> --
-> Lee Jones [李琼斯]
-> Senior Technical Lead - Developer Services
-> Linaro.org │ Open source software for Arm SoCs
-> Follow Linaro: Facebook | Twitter | Blog
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+
+This patch is a ressend because there was a typo in Kalle Valo
+<kvalo@codeaurora.org> mail address.
+---
+ .../wireless/realtek/rtl818x/rtl8180/dev.c    | 70 ++++++++++---------
+ 1 file changed, 37 insertions(+), 33 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
+index ba3286f732cc..2477e18c7cae 100644
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
+@@ -260,20 +260,20 @@ static void rtl8180_handle_rx(struct ieee80211_hw *dev)
+ 			if (unlikely(!new_skb))
+ 				goto done;
+ 
+-			mapping = pci_map_single(priv->pdev,
+-					       skb_tail_pointer(new_skb),
+-					       MAX_RX_SIZE, PCI_DMA_FROMDEVICE);
++			mapping = dma_map_single(&priv->pdev->dev,
++						 skb_tail_pointer(new_skb),
++						 MAX_RX_SIZE, DMA_FROM_DEVICE);
+ 
+-			if (pci_dma_mapping_error(priv->pdev, mapping)) {
++			if (dma_mapping_error(&priv->pdev->dev, mapping)) {
+ 				kfree_skb(new_skb);
+ 				dev_err(&priv->pdev->dev, "RX DMA map error\n");
+ 
+ 				goto done;
+ 			}
+ 
+-			pci_unmap_single(priv->pdev,
++			dma_unmap_single(&priv->pdev->dev,
+ 					 *((dma_addr_t *)skb->cb),
+-					 MAX_RX_SIZE, PCI_DMA_FROMDEVICE);
++					 MAX_RX_SIZE, DMA_FROM_DEVICE);
+ 			skb_put(skb, flags & 0xFFF);
+ 
+ 			rx_status.antenna = (flags2 >> 15) & 1;
+@@ -355,8 +355,8 @@ static void rtl8180_handle_tx(struct ieee80211_hw *dev, unsigned int prio)
+ 
+ 		ring->idx = (ring->idx + 1) % ring->entries;
+ 		skb = __skb_dequeue(&ring->queue);
+-		pci_unmap_single(priv->pdev, le32_to_cpu(entry->tx_buf),
+-				 skb->len, PCI_DMA_TODEVICE);
++		dma_unmap_single(&priv->pdev->dev, le32_to_cpu(entry->tx_buf),
++				 skb->len, DMA_TO_DEVICE);
+ 
+ 		info = IEEE80211_SKB_CB(skb);
+ 		ieee80211_tx_info_clear_status(info);
+@@ -473,10 +473,10 @@ static void rtl8180_tx(struct ieee80211_hw *dev,
+ 	prio = skb_get_queue_mapping(skb);
+ 	ring = &priv->tx_ring[prio];
+ 
+-	mapping = pci_map_single(priv->pdev, skb->data,
+-				 skb->len, PCI_DMA_TODEVICE);
++	mapping = dma_map_single(&priv->pdev->dev, skb->data, skb->len,
++				 DMA_TO_DEVICE);
+ 
+-	if (pci_dma_mapping_error(priv->pdev, mapping)) {
++	if (dma_mapping_error(&priv->pdev->dev, mapping)) {
+ 		kfree_skb(skb);
+ 		dev_err(&priv->pdev->dev, "TX DMA mapping error\n");
+ 		return;
+@@ -1004,8 +1004,9 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
+ 	else
+ 		priv->rx_ring_sz = sizeof(struct rtl8180_rx_desc);
+ 
+-	priv->rx_ring = pci_zalloc_consistent(priv->pdev, priv->rx_ring_sz * 32,
+-					      &priv->rx_ring_dma);
++	priv->rx_ring = dma_alloc_coherent(&priv->pdev->dev,
++					   priv->rx_ring_sz * 32,
++					   &priv->rx_ring_dma, GFP_KERNEL);
+ 	if (!priv->rx_ring || (unsigned long)priv->rx_ring & 0xFF) {
+ 		wiphy_err(dev->wiphy, "Cannot allocate RX ring\n");
+ 		return -ENOMEM;
+@@ -1018,20 +1019,23 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
+ 		dma_addr_t *mapping;
+ 		entry = priv->rx_ring + priv->rx_ring_sz*i;
+ 		if (!skb) {
+-			pci_free_consistent(priv->pdev, priv->rx_ring_sz * 32,
+-					priv->rx_ring, priv->rx_ring_dma);
++			dma_free_coherent(&priv->pdev->dev,
++					  priv->rx_ring_sz * 32,
++					  priv->rx_ring, priv->rx_ring_dma);
+ 			wiphy_err(dev->wiphy, "Cannot allocate RX skb\n");
+ 			return -ENOMEM;
+ 		}
+ 		priv->rx_buf[i] = skb;
+ 		mapping = (dma_addr_t *)skb->cb;
+-		*mapping = pci_map_single(priv->pdev, skb_tail_pointer(skb),
+-					  MAX_RX_SIZE, PCI_DMA_FROMDEVICE);
++		*mapping = dma_map_single(&priv->pdev->dev,
++					  skb_tail_pointer(skb), MAX_RX_SIZE,
++					  DMA_FROM_DEVICE);
+ 
+-		if (pci_dma_mapping_error(priv->pdev, *mapping)) {
++		if (dma_mapping_error(&priv->pdev->dev, *mapping)) {
+ 			kfree_skb(skb);
+-			pci_free_consistent(priv->pdev, priv->rx_ring_sz * 32,
+-					priv->rx_ring, priv->rx_ring_dma);
++			dma_free_coherent(&priv->pdev->dev,
++					  priv->rx_ring_sz * 32,
++					  priv->rx_ring, priv->rx_ring_dma);
+ 			wiphy_err(dev->wiphy, "Cannot map DMA for RX skb\n");
+ 			return -ENOMEM;
+ 		}
+@@ -1054,14 +1058,13 @@ static void rtl8180_free_rx_ring(struct ieee80211_hw *dev)
+ 		if (!skb)
+ 			continue;
+ 
+-		pci_unmap_single(priv->pdev,
+-				 *((dma_addr_t *)skb->cb),
+-				 MAX_RX_SIZE, PCI_DMA_FROMDEVICE);
++		dma_unmap_single(&priv->pdev->dev, *((dma_addr_t *)skb->cb),
++				 MAX_RX_SIZE, DMA_FROM_DEVICE);
+ 		kfree_skb(skb);
+ 	}
+ 
+-	pci_free_consistent(priv->pdev, priv->rx_ring_sz * 32,
+-			    priv->rx_ring, priv->rx_ring_dma);
++	dma_free_coherent(&priv->pdev->dev, priv->rx_ring_sz * 32,
++			  priv->rx_ring, priv->rx_ring_dma);
+ 	priv->rx_ring = NULL;
+ }
+ 
+@@ -1073,8 +1076,8 @@ static int rtl8180_init_tx_ring(struct ieee80211_hw *dev,
+ 	dma_addr_t dma;
+ 	int i;
+ 
+-	ring = pci_zalloc_consistent(priv->pdev, sizeof(*ring) * entries,
+-				     &dma);
++	ring = dma_alloc_coherent(&priv->pdev->dev, sizeof(*ring) * entries,
++				  &dma, GFP_KERNEL);
+ 	if (!ring || (unsigned long)ring & 0xFF) {
+ 		wiphy_err(dev->wiphy, "Cannot allocate TX ring (prio = %d)\n",
+ 			  prio);
+@@ -1103,14 +1106,15 @@ static void rtl8180_free_tx_ring(struct ieee80211_hw *dev, unsigned int prio)
+ 		struct rtl8180_tx_desc *entry = &ring->desc[ring->idx];
+ 		struct sk_buff *skb = __skb_dequeue(&ring->queue);
+ 
+-		pci_unmap_single(priv->pdev, le32_to_cpu(entry->tx_buf),
+-				 skb->len, PCI_DMA_TODEVICE);
++		dma_unmap_single(&priv->pdev->dev, le32_to_cpu(entry->tx_buf),
++				 skb->len, DMA_TO_DEVICE);
+ 		kfree_skb(skb);
+ 		ring->idx = (ring->idx + 1) % ring->entries;
+ 	}
+ 
+-	pci_free_consistent(priv->pdev, sizeof(*ring->desc)*ring->entries,
+-			    ring->desc, ring->dma);
++	dma_free_coherent(&priv->pdev->dev,
++			  sizeof(*ring->desc) * ring->entries, ring->desc,
++			  ring->dma);
+ 	ring->desc = NULL;
+ }
+ 
+@@ -1754,8 +1758,8 @@ static int rtl8180_probe(struct pci_dev *pdev,
+ 		goto err_free_reg;
+ 	}
+ 
+-	if ((err = pci_set_dma_mask(pdev, DMA_BIT_MASK(32))) ||
+-	    (err = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32)))) {
++	if ((err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32))) ||
++	    (err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32)))) {
+ 		printk(KERN_ERR "%s (rtl8180): No suitable DMA available\n",
+ 		       pci_name(pdev));
+ 		goto err_free_reg;
+-- 
+2.25.1
+

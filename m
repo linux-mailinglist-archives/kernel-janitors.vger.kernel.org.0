@@ -2,88 +2,126 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1464924B168
-	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Aug 2020 10:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BC8224B1C0
+	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Aug 2020 11:11:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726738AbgHTIwS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 Aug 2020 04:52:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51010 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727049AbgHTIwD (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 Aug 2020 04:52:03 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EEF3C061757;
-        Thu, 20 Aug 2020 01:52:03 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id j21so804610pgi.9;
-        Thu, 20 Aug 2020 01:52:03 -0700 (PDT)
+        id S1726716AbgHTJLZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 20 Aug 2020 05:11:25 -0400
+Received: from mail-bn8nam11on2079.outbound.protection.outlook.com ([40.107.236.79]:35904
+        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725819AbgHTJLX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 20 Aug 2020 05:11:23 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Fvqg8p7IDl28T2MjwqrrhwStZeQEPTfsXWBlsX7b0ey9vBeOGxSNzniNGiHFKOfih7NZGwvqK0wGLnlYWQL0ro51nRKjrqKL9J5av4pNgxv8IEiLzh1gRfstCAEMIw0vcisoB0NCMRyTH4KX56ye0TLuQstDqYmoM0+cc+mGYrUcGmynwvnGm19Mn43lnZDPjYmK1BeeYwEy5ac3Q1drx/AkC5WXmHdKvhcGoJtHWJJILoiCesIxJ2gzQH8kd8n6DaF3pIVt4PxuR2MVSqgrT24LX+bUXJxrhRhgso9m3py06CdldPKpe0NPQOGl8UycqrlT7SLHc/kh4814X6qQ0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZBvTnQ/oki3O+HDORedm9zXMjPJjx1JFDiBlSqL0tUs=;
+ b=AcE1FlDklqlFfET8rFPCEFv8Va0hEDSBp9p2iHP86xTiyA6a/LC0JKX5lRjGQW+/2yc6Iwldon0Iw0lia8oFaIRjM6zcioo86hxumr0bH63apjDYfZnC8FaptIneH/meAwQQeysSHgps9ZvCmRpkcJRHRQddqiRT8AyM5wZRJtpNLWIFWqGfi5uSf+1TwpXSmShPUgjjMm11CMi9f8a6l2FB4FCUHJ2Kehdz3tZxvYdWj2QARYGCRiA7T5uiTLuDeOEYRknJERFroq/RsMbuwVAPwqwVb562kKIy1IMbq+YKDkBAJs1193/bRvp8VwXN+rInT0Qq0lZXkMQnce7Ikg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
+ dkim=pass header.d=silabs.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=42LHFfcuO9OCjNNDenDSDBxfXF+eWcdOYM33HnzRkkA=;
-        b=D/AMsDWMmGjqPOmGzc/ZrcVMnXBlKKxevHtTRrXrCFS470G8yvkN2lrQNQxSDd1gPY
-         +cSKVPDhYWEpC8+aQHLvEKU+16Dk/TfVtTHrfYZMqx0clBut1kHlMq6csIOMXhc0TUvE
-         XEKWfa6tdomxl5Xh9HlJQ/EgcAK8VAMpbag97nX0BbhxQ6ef4OaTqo2Tpf+2HGQL+dLR
-         O3NlatgEdA01dTzYREmPl5nnNSKMD1qJpLVa0b+HCw1SKdFxgIkUSsFW+i0ulq7QJt4q
-         Qz+PAYhiiyqrf/cygKg2IeMyXuLWXUE2oSj2WXWe7479y3sW+W8z6FU2WZpeRc3tshTR
-         S/8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=42LHFfcuO9OCjNNDenDSDBxfXF+eWcdOYM33HnzRkkA=;
-        b=kYlhwFLKh4cTnCuuMEvJhL9AQazfYiJnl4LRsCqM/zFmYIWYm/8bES8PJiXvoJGlUH
-         /9V83pb0wOuYhwDewZNfTMGtTPSW+7RFwmUJpwcf4jGkU1FlDSiwNG3hV4LIvt1tekpY
-         6YyZsOqbUKr+2UG9L08HcD7rLkIlk01Uz8gUZFQy0qX14b8p2jnkwBYWRfNHtSa45g5b
-         /Pj4fpsuWHhWs/eaZx6KKUCBFz/9Ze+PMszvDF1rDV7pXjWHMUH/ZYSrZjxl1CnMUzjF
-         0oknAMW8hwkT1kDj6EHu34mVYZ0J7BwvG7y+Fvy1YId+u/emP8wdOPYAJWHZIqZ8SDK1
-         wZVQ==
-X-Gm-Message-State: AOAM533+v2kZiLew+I38QLVNMFIps9pr0x9K64BDnYlEeIuEa7y+RNAm
-        OCB08GX1EDNx+B+roMI2JDeQ+HAWKqylAOoP
-X-Google-Smtp-Source: ABdhPJzNiuiAOv5HpPKi+OcC2h1oicHKgHcdYtsQkbme88/1JmARxKFJgi1V9VMZX+Y1s2FYEdZLKg==
-X-Received: by 2002:a62:158e:: with SMTP id 136mr1639419pfv.36.1597913522755;
-        Thu, 20 Aug 2020 01:52:02 -0700 (PDT)
-Received: from blackclown ([103.88.82.201])
-        by smtp.gmail.com with ESMTPSA id o7sm1025906pjl.48.2020.08.20.01.52.00
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 20 Aug 2020 01:52:02 -0700 (PDT)
-Date:   Thu, 20 Aug 2020 14:21:49 +0530
-From:   Suraj Upadhyay <usuraj35@gmail.com>
-To:     jerome.pouiller@silabs.com, gregkh@linuxfoundation.org
+ d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZBvTnQ/oki3O+HDORedm9zXMjPJjx1JFDiBlSqL0tUs=;
+ b=ho72egb5pwAosxObu81Jd1iIQKicPhFLhmuPxfEnIHjFz+hRZJnaXWwE4VlAh/huohTM8yrK7WFtvHbIaZUcdHNfH7VjryxyI6PBQz8kXv17kcIhSeLT2LjmNIUPiwvIZZD8jhutqbU6IoOSdaaf+LcwFgYdb0yXzqd6HKesabE=
+Authentication-Results: linuxfoundation.org; dkim=none (message not signed)
+ header.d=none;linuxfoundation.org; dmarc=none action=none
+ header.from=silabs.com;
+Received: from SN6PR11MB2718.namprd11.prod.outlook.com (2603:10b6:805:63::18)
+ by SA0PR11MB4544.namprd11.prod.outlook.com (2603:10b6:806:92::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3305.25; Thu, 20 Aug
+ 2020 09:11:21 +0000
+Received: from SN6PR11MB2718.namprd11.prod.outlook.com
+ ([fe80::85c9:1aa9:aeab:3fa6]) by SN6PR11MB2718.namprd11.prod.outlook.com
+ ([fe80::85c9:1aa9:aeab:3fa6%4]) with mapi id 15.20.3305.026; Thu, 20 Aug 2020
+ 09:11:20 +0000
+From:   =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>
+To:     gregkh@linuxfoundation.org, Suraj Upadhyay <usuraj35@gmail.com>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH 6/6] staging: wfx/hif_tx.c: Fix spelling mistake "carefull"
- => "careful"
-Message-ID: <45b7f521c7d4c9ba09786930909414942fcedca8.1597913333.git.usuraj35@gmail.com>
-References: <834139101223e627665c939388cd7c542920c531.1597913333.git.usuraj35@gmail.com>
+Subject: Re: [PATCH 5/6] staging: wfx/hif_rx.c: Fix spelling mistake "negociation" => "negotiation"
+Date:   Thu, 20 Aug 2020 11:11:16 +0200
+Message-ID: <2117465.u6biEVJElo@pc-42>
+Organization: Silicon Labs
+In-Reply-To: <eab6bcb570dcd1407efc8163ff8ff976f623ae9c.1597913333.git.usuraj35@gmail.com>
+References: <834139101223e627665c939388cd7c542920c531.1597913333.git.usuraj35@gmail.com> <eab6bcb570dcd1407efc8163ff8ff976f623ae9c.1597913333.git.usuraj35@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-ClientProxiedBy: PR0P264CA0093.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:100:18::33) To SN6PR11MB2718.namprd11.prod.outlook.com
+ (2603:10b6:805:63::18)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <834139101223e627665c939388cd7c542920c531.1597913333.git.usuraj35@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from 255.255.255.255 (255.255.255.255) by PR0P264CA0093.FRAP264.PROD.OUTLOOK.COM (2603:10a6:100:18::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3305.25 via Frontend Transport; Thu, 20 Aug 2020 09:11:19 +0000
+X-Originating-IP: [37.71.187.125]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: c61c4be1-6ed0-45ed-2d9d-08d844e900e0
+X-MS-TrafficTypeDiagnostic: SA0PR11MB4544:
+X-Microsoft-Antispam-PRVS: <SA0PR11MB454417E341798B77EF1C3653935A0@SA0PR11MB4544.namprd11.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: QFjfj1fMiNbgus8/dS4wWjaLQ6oAvZK8dNepBo3P1jCUf82Ytj+AkGGIwqaLIJksCt5JDP9aZ2cbCQ5S4iPHWYNIuMppfWaG/edUE4hu8kJqRcCmlY7kGZwLrJWmUZ67tb2Wn9/EHMFsi0O9ZgHXUeOFyiXWRAkzguYqMSFAxfPtwFzk8/SGyq2LB1OXnvKAbESGReCOIB/zrvv5Cg2oMkjxvuZjzPw2zEY//iXbyVogeVtR04MYp2TWbL18We23qlYeK74W796uN+CchHfn5USPoQeozchRgzu0yLLoZxJ9KR6kPnDaffLSGCPj671UZhCY4NN/vvmUq3GNxvQpIKEuSRH3UDnWr4E81nsleotljj3uGw5q5FzQKf7sjtqjP2RVVyQDYxutfdQKZanYJg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR11MB2718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(7916004)(136003)(39850400004)(376002)(366004)(346002)(396003)(186003)(6916009)(8936002)(8676002)(956004)(9686003)(478600001)(86362001)(2906002)(5660300002)(66556008)(4326008)(33716001)(66946007)(66476007)(16576012)(6666004)(6486002)(110011004)(83380400001)(316002)(52116002)(36916002)(66574015)(26005)(39026012);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: 1MdqK417BXA37J6p0BIWxddU3usp514uLeQKEXHFPUL9MmkpIEE8bIk0B/VpKmsVMGjP4rObUUPPTyC5Aj89dos+svfqhxmNFgafdFwoAFYZza1xn49cNU0MkfMT0YD3+FGgySEwizMWATFUnHDbt/GqrZCWxKMHuHN/oelslIiIlWNuNTP+l9f34ODeke0YrK0NRID6ccnJN0O+1ZxKG1hw0S2KFCunkJF9UgnO+skiLvAdNGvWSgc5qEyXiZFNrY0RyhyWwZOrKpFhlKzm7KfN7eBnWVW+NRPIFQo9eLJ7y2Ep1+G3SLaW/mYxVLtVxrVgkWupbDQ2AexrWl/MBPSJlfJlNn4fGRuvNiPRf/FMoFWW/1mBc4cWO9XWGlrvw37WR//SJi4I95cwLWn12F61/SqVn6ODh4QS/uEXeiJVjh9nVyU2pn8ol2c0FoJzOm+xZYfg+OpvXLCxqRJ13Qwy3jvHL5yDYLfQqxHQq/WEpm3Umagr4+IQTLq/COUSXYMXtZIe1BTGiUCFckBK9r4E3ZhKD8CtIh//2eYVwNpeC7O0cYkUmDHFD8q5nyfzJf4ZgrUFvS2kqjopG0Bw8tpOnjtDg1Tl0TqNJJmNCwaH1ZGWUpJAOqfwQJxzaxNj92y6Zr6/kafL5kG5s0TVqw==
+X-OriginatorOrg: silabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c61c4be1-6ed0-45ed-2d9d-08d844e900e0
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB2718.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2020 09:11:20.8504
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hDSb6/JCBUiCMSakR7V3BLn8U43kdXQBbIRJ6jBGGldstdtkjs9wcYLVzn1UX3Mij5nhT/pBEkjOtnwpUau5nA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4544
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
----
- drivers/staging/wfx/hif_tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hello Suraj,
 
-diff --git a/drivers/staging/wfx/hif_tx.c b/drivers/staging/wfx/hif_tx.c
-index 5110f9b93762..fc12f9dcefce 100644
---- a/drivers/staging/wfx/hif_tx.c
-+++ b/drivers/staging/wfx/hif_tx.c
-@@ -125,7 +125,7 @@ int wfx_cmd_send(struct wfx_dev *wdev, struct hif_msg *request,
- 
- // This function is special. After HIF_REQ_ID_SHUT_DOWN, chip won't reply to any
- // request anymore. We need to slightly hack struct wfx_hif_cmd for that job. Be
--// carefull to only call this funcion during device unregister.
-+// careful to only call this function during device unregister.
- int hif_shutdown(struct wfx_dev *wdev)
- {
- 	int ret;
--- 
-2.17.1
+Thank you for your contribution.
+
+On Thursday 20 August 2020 10:51:27 CEST Suraj Upadhyay wrote:
+>=20
+> Signed-off-by: Suraj Upadhyay <usuraj35@gmail.com>
+
+Even for a small change, you have to fill the commit log body.
+
+> ---
+>  drivers/staging/wfx/hif_rx.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/staging/wfx/hif_rx.c b/drivers/staging/wfx/hif_rx.c
+> index cc7c0cf226ba..1d32973d8ec1 100644
+> --- a/drivers/staging/wfx/hif_rx.c
+> +++ b/drivers/staging/wfx/hif_rx.c
+> @@ -118,7 +118,7 @@ static int hif_keys_indication(struct wfx_dev *wdev,
+>=20
+>         // SL_PUB_KEY_EXCHANGE_STATUS_SUCCESS is used by legacy secure li=
+nk
+>         if (body->status && body->status !=3D HIF_STATUS_SLK_NEGO_SUCCESS=
+)
+> -               dev_warn(wdev->dev, "secure link negociation error\n");
+> +               dev_warn(wdev->dev, "secure link negotiation error\n");
+
+This change is already in the staging tree. See commit c9638363f02d
+("staging: wfx: fix a handful of spelling mistakes").
+
+Globally, if you post changes for drivers/staging you should rebase your
+work on the staging tree before to send it. You can use the script
+get_maintainer.pl to get this information:
+
+    $ ./scripts/get_maintainer.pl --scm drivers/staging/wfx
+    [...]
+    git git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging.git
+
+--=20
+J=E9r=F4me Pouiller
+
 

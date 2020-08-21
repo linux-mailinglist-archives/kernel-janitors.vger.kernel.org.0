@@ -2,65 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A86F24D5E6
-	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Aug 2020 15:15:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F0D024D974
+	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Aug 2020 18:11:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727926AbgHUNP2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 21 Aug 2020 09:15:28 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:58431 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726345AbgHUNP1 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 21 Aug 2020 09:15:27 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1k96sz-0004WG-7i; Fri, 21 Aug 2020 13:15:13 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        wlanfae <wlanfae@realtek.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Mike McCormack <mikem@ring3k.org>, devel@driverdev.osuosl.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: rtl8192e: fix missing failure check on a call to dev_alloc_name
-Date:   Fri, 21 Aug 2020 14:15:12 +0100
-Message-Id: <20200821131512.348775-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        id S1726057AbgHUQLI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 21 Aug 2020 12:11:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42626 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725828AbgHUQLH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 21 Aug 2020 12:11:07 -0400
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AEF24207BB;
+        Fri, 21 Aug 2020 16:11:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1598026266;
+        bh=KoJWYj9R3egfhrmAUtzdmQ4aHcirpe1luSVDllQR65M=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=yrHjjTtz8bmAAarxqFRyCKp+eUzDy45aPAVgTpRquqvqFnM2Q3B/KMmajkF5M6yRP
+         JyG3hI6KbQmfq//EsQ6UFchVq138yTLtw8f6zx0ArEmlIXMNHfioz5ksl7E4tQk5La
+         UeC/R4IRIiGU3nWuuLWAUqlvju6DQl64nMKyW+is=
+Date:   Fri, 21 Aug 2020 17:11:01 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Joerg Roedel <joro@8bytes.org>, Rob Clark <robdclark@gmail.com>,
+        Robin Murphy <robin.murphy@arm.com>, kernel-team@android.com,
+        iommu@lists.linux-foundation.org, linux-arm-msm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: update QUALCOMM IOMMU after Arm SSMU
+ drivers move
+Message-ID: <20200821161101.GF21517@willie-the-truck>
+References: <20200802065320.7470-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200802065320.7470-1-lukas.bulwahn@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Sun, Aug 02, 2020 at 08:53:20AM +0200, Lukas Bulwahn wrote:
+> Commit e86d1aa8b60f ("iommu/arm-smmu: Move Arm SMMU drivers into their own
+> subdirectory") moved drivers/iommu/qcom_iommu.c to
+> drivers/iommu/arm/arm-smmu/qcom_iommu.c amongst other moves, adjusted some
+> sections in MAINTAINERS, but missed adjusting the QUALCOMM IOMMU section.
+> 
+> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
+> 
+>   warning: no file matches    F:    drivers/iommu/qcom_iommu.c
+> 
+> Update the file entry in MAINTAINERS to the new location.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+> Will, please ack.
 
-Currently the second call to dev_alloc_name is not checking if this
-failed.  Add the check and perform necessary cleanup on an error.
+Typo in subject: s/SSMU/SMMU/
 
-Addresses-Coverity: ("Unchecked return value")
-Fixes: 94a799425eee ("rtl8192e: Import new version of driver from realtek")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/staging/rtl8192e/rtl8192e/rtl_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+With that:
 
-diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-index fac58eebf263..7b15faeefff2 100644
---- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-+++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-@@ -2489,7 +2489,8 @@ static int _rtl92e_pci_probe(struct pci_dev *pdev,
- 	if (dev_alloc_name(dev, ifname) < 0) {
- 		RT_TRACE(COMP_INIT,
- 			 "Oops: devname already taken! Trying wlan%%d...\n");
--		dev_alloc_name(dev, ifname);
-+		if (dev_alloc_name(dev, ifname) < 0)
-+			goto err_unmap;
- 	}
- 
- 	RT_TRACE(COMP_INIT, "Driver probe completed1\n");
--- 
-2.27.0
+Acked-by: Will Deacon <will@kernel.org>
 
+> Joerg, please pick this minor non-urgent patch for your -next branch.
+
+Joerg -- can you queue this as a fix for 5.9-rc, please?
+
+Thanks,
+
+Will

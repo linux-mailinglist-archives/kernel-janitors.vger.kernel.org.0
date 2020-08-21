@@ -2,53 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ADB524D015
-	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Aug 2020 09:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05DBC24D026
+	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Aug 2020 09:58:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728358AbgHUH4Y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 21 Aug 2020 03:56:24 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:49956 "EHLO fornost.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726864AbgHUH4X (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 21 Aug 2020 03:56:23 -0400
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
-        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
-        id 1k91u6-0003wk-JG; Fri, 21 Aug 2020 17:56:03 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 21 Aug 2020 17:56:02 +1000
-Date:   Fri, 21 Aug 2020 17:56:02 +1000
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     mpm@selenic.com, arnd@arndb.de, gregkh@linuxfoundation.org,
-        zhouyanjie@wanyeetech.com, prasannatsmkumar@gmail.com,
-        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH] crypto: ingenic - Drop kfree for memory allocated with
- devm_kzalloc
-Message-ID: <20200821075602.GF25143@gondor.apana.org.au>
-References: <20200804081153.45342-1-weiyongjun1@huawei.com>
+        id S1728424AbgHUH63 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 21 Aug 2020 03:58:29 -0400
+Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:16908 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728147AbgHUH61 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 21 Aug 2020 03:58:27 -0400
+Received: from localhost.localdomain ([93.22.37.159])
+        by mwinf5d23 with ME
+        id J7yN2300H3S18rh037yPUT; Fri, 21 Aug 2020 09:58:25 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 21 Aug 2020 09:58:25 +0200
+X-ME-IP: 93.22.37.159
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     james.smart@broadcom.com, hch@lst.de, sagi@grimberg.me,
+        chaitanya.kulkarni@wdc.com
+Cc:     linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] nvmet-fc: Fix a missed _irqsave version of spin_lock in 'nvmet_fc_fod_op_done()'
+Date:   Fri, 21 Aug 2020 09:58:19 +0200
+Message-Id: <20200821075819.152474-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200804081153.45342-1-weiyongjun1@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Aug 04, 2020 at 08:11:53AM +0000, Wei Yongjun wrote:
-> It's not necessary to free memory allocated with devm_kzalloc
-> and using kfree leads to a double free.
-> 
-> Fixes: 190873a0ea45 ("crypto: ingenic - Add hardware RNG for Ingenic JZ4780 and X1000")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->  drivers/char/hw_random/ingenic-rng.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
+The way 'spin_lock()' and 'spin_lock_irqsave()' are used is not consistent
+in this function.
 
-Patch applied.  Thanks.
+Use 'spin_lock_irqsave()' also here, as there is no guarantee that
+interruptions are disabled at that point, according to surrounding code.
+
+Fixes: a97ec51b37ef ("nvmet_fc: Rework target side abort handling")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Not tested, only based on what looks logical to me according to
+surrounding code
+---
+ drivers/nvme/target/fc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
+index 55bafd56166a..e6861cc10e7d 100644
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -2342,9 +2342,9 @@ nvmet_fc_fod_op_done(struct nvmet_fc_fcp_iod *fod)
+ 			return;
+ 		if (fcpreq->fcp_error ||
+ 		    fcpreq->transferred_length != fcpreq->transfer_length) {
+-			spin_lock(&fod->flock);
++			spin_lock_irqsave(&fod->flock, flags);
+ 			fod->abort = true;
+-			spin_unlock(&fod->flock);
++			spin_unlock_irqrestore(&fod->flock, flags);
+ 
+ 			nvmet_req_complete(&fod->req, NVME_SC_INTERNAL);
+ 			return;
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.25.1
+

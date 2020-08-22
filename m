@@ -2,78 +2,189 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F0D024D974
-	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Aug 2020 18:11:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 325CF24E45E
+	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Aug 2020 03:08:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726057AbgHUQLI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 21 Aug 2020 12:11:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42626 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725828AbgHUQLH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 21 Aug 2020 12:11:07 -0400
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AEF24207BB;
-        Fri, 21 Aug 2020 16:11:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598026266;
-        bh=KoJWYj9R3egfhrmAUtzdmQ4aHcirpe1luSVDllQR65M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=yrHjjTtz8bmAAarxqFRyCKp+eUzDy45aPAVgTpRquqvqFnM2Q3B/KMmajkF5M6yRP
-         JyG3hI6KbQmfq//EsQ6UFchVq138yTLtw8f6zx0ArEmlIXMNHfioz5ksl7E4tQk5La
-         UeC/R4IRIiGU3nWuuLWAUqlvju6DQl64nMKyW+is=
-Date:   Fri, 21 Aug 2020 17:11:01 +0100
-From:   Will Deacon <will@kernel.org>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Joerg Roedel <joro@8bytes.org>, Rob Clark <robdclark@gmail.com>,
-        Robin Murphy <robin.murphy@arm.com>, kernel-team@android.com,
-        iommu@lists.linux-foundation.org, linux-arm-msm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: update QUALCOMM IOMMU after Arm SSMU
- drivers move
-Message-ID: <20200821161101.GF21517@willie-the-truck>
-References: <20200802065320.7470-1-lukas.bulwahn@gmail.com>
+        id S1726909AbgHVBIN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 21 Aug 2020 21:08:13 -0400
+Received: from smtprelay0096.hostedemail.com ([216.40.44.96]:39152 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726817AbgHVBIM (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 21 Aug 2020 21:08:12 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay01.hostedemail.com (Postfix) with ESMTP id 88C7D100E7B45;
+        Sat, 22 Aug 2020 01:08:11 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:960:967:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1535:1543:1593:1594:1605:1711:1730:1747:1777:1792:2393:2525:2560:2563:2682:2685:2693:2828:2859:2902:2903:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3865:3866:3867:3868:3870:3871:3872:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4470:5007:7903:7904:8985:9010:9025:10004:10400:10471:10848:11026:11232:11473:11657:11658:11914:12043:12048:12295:12296:12297:12555:12697:12737:12740:12760:12895:12986:13161:13229:13255:13439:14096:14097:14180:14181:14659:14721:21060:21080:21324:21433:21627:21740:21939:21990:30054:30056:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: wound83_2f0234b2703d
+X-Filterd-Recvd-Size: 5026
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf13.hostedemail.com (Postfix) with ESMTPA;
+        Sat, 22 Aug 2020 01:08:09 +0000 (UTC)
+Message-ID: <744af177c09f8ce22c99d6e1df458bced558518b.camel@perches.com>
+Subject: Re: [Cocci] coccinelle: Convert comma to semicolons (was Re:
+ [PATCH] checkpatch: Add test for comma use that should be semicolon)
+From:   Joe Perches <joe@perches.com>
+To:     Julia Lawall <julia.lawall@inria.fr>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        kernelnewbies <kernelnewbies@kernelnewbies.org>,
+        linux-kernel-mentees@lists.linuxfoundation.org
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        cocci <cocci@systeme.lip6.fr>,
+        Giuseppe Scrivano <gscrivan@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Whitcroft <apw@shadowen.org>
+Date:   Fri, 21 Aug 2020 18:08:08 -0700
+In-Reply-To: <alpine.DEB.2.22.394.2008201856110.2524@hadrien>
+References: <20200818184107.f8af232fb58b17160c570874@linux-foundation.org>
+          <3bf27caf462007dfa75647b040ab3191374a59de.camel@perches.com>
+          <b0fd63e4b379eda69ee85ab098353582b8c054bb.camel@perches.com>
+          <alpine.DEB.2.22.394.2008201021400.2524@hadrien>
+         <a5713d8597065ef986f780499428fcc4cd31c003.camel@perches.com>
+         <alpine.DEB.2.22.394.2008201856110.2524@hadrien>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200802065320.7470-1-lukas.bulwahn@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Aug 02, 2020 at 08:53:20AM +0200, Lukas Bulwahn wrote:
-> Commit e86d1aa8b60f ("iommu/arm-smmu: Move Arm SMMU drivers into their own
-> subdirectory") moved drivers/iommu/qcom_iommu.c to
-> drivers/iommu/arm/arm-smmu/qcom_iommu.c amongst other moves, adjusted some
-> sections in MAINTAINERS, but missed adjusting the QUALCOMM IOMMU section.
+(forwarding on to kernel-janitors/mentees and kernelnewbies)
+
+Just fyi for anyone that cares:
+
+A janitorial task for someone might be to use Julia's coccinelle
+script below to convert the existing instances of commas that
+separate statements into semicolons.
+
+https://lore.kernel.org/lkml/alpine.DEB.2.22.394.2008201856110.2524@hadrien/
+
+On Thu, 2020-08-20 at 19:03 +0200, Julia Lawall wrote:
+> > > I have a bunch of variations of this that are more complicated than I
+> > > would have expected.  One shorter variant that I have is:
+> > > 
+> > > @@
+> > > expression e1,e2;
+> > > statement S;
+> > > @@
+> > > 
+> > >  S
+> > >  e1
+> > > -,
+> > > +;
+> > >   (<+... e2 ...+>);
+> > > 
+> > > This will miss cases where the first statement is the comma thing.  But I
+> > > think it is possible to improve this now.  I will check.
+> > 
+> > Hi Julia.
+> > 
+> > Right, thanks, this adds a dependency on a statement
+> > before the expression.  Any stragglers would be easily
+> > found using slightly different form.
+> > There are not very many of these in linux kernel.
+> > 
+> > Another nicety would be to allow the s/,/;/ conversion to
+> > find both b and c in this sequence:
+> > 	a = 1;
+> > 	b = 2,
+> > 	c = 3,
+> > 	d = 4;
+> > without running the script multiple times.
+> > There are many dozen uses of this style in linux kernel.
+> > 
+> > I tried variants of adding a comma after the e2 expression,
+> > but cocci seems to have parsing problems with:
+> > 
+> > @@
+> > expression e1;
+> > expression e2;
+> > @@
+> > 	e1
+> > -	,
+> > +	;
+> > 	e2,
 > 
-> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
+> This doesn't work because it's not a valid expression.
 > 
->   warning: no file matches    F:    drivers/iommu/qcom_iommu.c
+> The problem is solved by doing:
 > 
-> Update the file entry in MAINTAINERS to the new location.
+>   e1
+> - ,
+> + ;
+>   e2
+>   ... when any
 > 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
-> Will, please ack.
+> But that doesn't work in the current version of Coccinelle.  I have fixed
+> the problem, though and it will work shortly.
+> 
+> > I do appreciate that coccinelle adds braces for multiple
+> > expression comma use after an if.
+> > 
+> > i.e.:
+> > 	if (foo)
+> > 		a = 1, b = 2;
+> > becomes
+> > 	if (foo) {
+> > 		a = 1; b = 2;
+> > 	}
+> 
+> I wasn't sure what was wanted for such things.  Should b = 2 now be on a
+> separate line?
+> 
+> I took the strategy of avoiding the problem and leaving those cases as is.
+> That also solves the LIST_HEAD problem.  But if it is wanted to change
+> these commas under ifs, then that is probably possible too.
+> 
+> My current complete solution is as follows.  The first rule avoids changing
+> commas in macros, where thebody of the macro is just an expression.  The
+> second rule uses position variables to ensure that the two expression are
+> on different lines.
+> 
+> @r@
+> expression e1,e2;
+> statement S;
+> position p;
+> @@
+> 
+> e1 ,@S@p e2;
+> 
+> @@
+> expression e1,e2;
+> position p1;
+> position p2 :
+>     script:ocaml(p1) { not((List.hd p1).line_end = (List.hd p2).line) };
+> statement S;
+> position r.p;
+> @@
+> 
+> e1@p1
+> -,@S@p
+> +;
+> e2@p2
+> ... when any
+> 
+> The generated patch is below.
+> 
+> julia
+> 
+> diff -u -p a/drivers/reset/hisilicon/reset-hi3660.c b/drivers/reset/hisilicon/reset-hi3660.c
+> --- a/drivers/reset/hisilicon/reset-hi3660.c
+> +++ b/drivers/reset/hisilicon/reset-hi3660.c
+> @@ -89,7 +89,7 @@ static int hi3660_reset_probe(struct pla
+>  		return PTR_ERR(rc->map);
+>  	}
+> 
+> -	rc->rst.ops = &hi3660_reset_ops,
+> +	rc->rst.ops = &hi3660_reset_ops;
+>  	rc->rst.of_node = np;
+>  	rc->rst.of_reset_n_cells = 2;
+>  	rc->rst.of_xlate = hi3660_reset_xlate;
 
-Typo in subject: s/SSMU/SMMU/
+The rest of the changes are in the link above...
 
-With that:
 
-Acked-by: Will Deacon <will@kernel.org>
-
-> Joerg, please pick this minor non-urgent patch for your -next branch.
-
-Joerg -- can you queue this as a fix for 5.9-rc, please?
-
-Thanks,
-
-Will

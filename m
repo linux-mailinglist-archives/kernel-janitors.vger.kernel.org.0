@@ -2,89 +2,142 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F15D24F2FF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Aug 2020 09:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ED9224F657
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Aug 2020 10:59:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726218AbgHXHTv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Aug 2020 03:19:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50176 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725946AbgHXHTt (ORCPT
+        id S1730611AbgHXI7F (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Aug 2020 04:59:05 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:51148 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730725AbgHXI56 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Aug 2020 03:19:49 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CC3FC061573
-        for <kernel-janitors@vger.kernel.org>; Mon, 24 Aug 2020 00:19:49 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id b66so4896687wmb.1
-        for <kernel-janitors@vger.kernel.org>; Mon, 24 Aug 2020 00:19:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=A4jrcUKhNyq6Ips6PWENqMHRhy4MlDm4qFkTIUeY6sU=;
-        b=Zh2M+CReCdB2DseDfEg+S/ILDu5sh9phoSgnmyvis+VRzOt3gmJamiBVybr2DBJ0BY
-         cikhFUufbOjs789a2MCxgb3HIjF5D3/xa9DbYXZ0kRAf8tfyA2EUfVcpGdTcK+FZOJ3a
-         rjti/cvJ4St0QbexsEFngNr4lWMcMRkIyU1WhRatyXjQh4bPiTByH5oXVqfnHTU/AiuU
-         gZAwrZL92ny/djvuJ23htyoYiQ7ATW6XAODpulq8J8gGmAaE3lUt49DwuCXZgQiTVgz+
-         vMXraotcCTAvaMM2+fq3QYvAxb/HA0ah5c3QYsx4ZXyMlPXFLS/5OA0QGc7MwEeo0NbG
-         Wi+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=A4jrcUKhNyq6Ips6PWENqMHRhy4MlDm4qFkTIUeY6sU=;
-        b=c/UIEWhUMB6H7fseGbzDQkoVPQcRmk+L4EHtZXmyc/wi8NrYcXuvBw+Uodhda26ir7
-         72O4m4EPhyPrzGxcuO38mH62KapoLbzRO6YcX5KmvCzF6HX4Vky3skZi+OFUzibGWlRG
-         dyrGFT5lHync04v1wJ0hN+k0Gxc6K6tuv6aunOGofvDhsFuHjFQNnIDOtAj9IA/QeBjs
-         o1q8y35FxDsV3YEBGvqsKDDk4rkKdP3CUvHsPlIHFhWnSQCPQQo3RIb8nhpyXF2jsagW
-         JQzcssK8+G0+UYtht6FeV3FkdDQ9AI1lzezJdRXpDjsDagaaw9FS1WHs6AOclocOEsAk
-         q0VA==
-X-Gm-Message-State: AOAM531VRkD1eAGEXoFEVtbMHkaDY5Hmdku7kPjk7K5vYja8bV1RSyel
-        Oo/Y2I+QNOFDTp7ij3O3wcTPTw==
-X-Google-Smtp-Source: ABdhPJxSuUa0KM13DRe5+ateKWf+FPyJpUyDzLii4cr5Vd9MNz3oLrpbagXrGXXemMNa/KjKiddxrQ==
-X-Received: by 2002:a1c:16:: with SMTP id 22mr2436523wma.75.1598253587747;
-        Mon, 24 Aug 2020 00:19:47 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:cd42:2fa4:120f:76b0? ([2a01:e34:ed2f:f020:cd42:2fa4:120f:76b0])
-        by smtp.googlemail.com with ESMTPSA id u13sm7501851wmm.20.2020.08.24.00.19.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Aug 2020 00:19:47 -0700 (PDT)
-Subject: Re: [PATCH] drivers: thermal: Kconfig: fix spelling mistake "acces"
- -> "access"
-To:     Colin King <colin.king@canonical.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Amit Kucheria <amitk@kernel.org>, linux-pm@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200810082739.48007-1-colin.king@canonical.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <c317ce98-c20d-3c24-2f77-1758dc784de9@linaro.org>
-Date:   Mon, 24 Aug 2020 09:19:46 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Mon, 24 Aug 2020 04:57:58 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07O8tULY092460;
+        Mon, 24 Aug 2020 08:57:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2020-01-29; bh=X3DAykUVn3cBni5mmT6BElwNQ4x1lMO6Npp2yRLlpV4=;
+ b=LDc1UPXac3uJKxCNI8StZLNxGMHxFSUOGoKukFVF71GDJT61yrVIGUAom6DFOmn+HYgp
+ ueKRys103jantFgV0cqvy6HnGhg3JNcCKi/tfzoV4l5xz+70UaAm5Iz5oAU/QrWjvUfg
+ GO3RSBEa5ZcEUI/yZ6maL/NZ7h1W8waFa+g0ECgFpeBFOKdmFOTzVUq5TTiRva635t35
+ TKnDGAe98eCdqIIFfEVIenj6qIIBrdNufBUNIG2tn2HOoz68DEBVa+8sSexQcjNvkJAd
+ 89LZV6AQ1WnfAtuPQsndeN4ThIoU/uVQBChkQF2q8Yfn1M71k5sLAjap+2J/jRyjn60z AQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 333w6thvmt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 24 Aug 2020 08:57:44 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07O8pDRa107785;
+        Mon, 24 Aug 2020 08:57:43 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 333r9gwkg1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 24 Aug 2020 08:57:43 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 07O8vgt2005803;
+        Mon, 24 Aug 2020 08:57:42 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 24 Aug 2020 01:57:42 -0700
+Date:   Mon, 24 Aug 2020 11:57:35 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Stefan Achatz <erazor_de@users.sourceforge.net>
+Cc:     Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH v2] HID: roccat: add bounds checking in
+ kone_sysfs_write_settings()
+Message-ID: <20200824085735.GA208317@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20200810082739.48007-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1597819984.4101.16.camel@web.de>
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9722 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0
+ suspectscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008240067
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9722 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
+ mlxlogscore=999 suspectscore=0 phishscore=0 malwarescore=0 spamscore=0
+ priorityscore=1501 clxscore=1015 mlxscore=0 lowpriorityscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008240067
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 10/08/2020 10:27, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in the Kconfig text, fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
+This code doesn't check if "settings->startup_profile" is within bounds
+and that could result in an out of bounds array access.  What the code
+does do is it checks if the settings can be written to the firmware, so
+it's possible that the firmware has a bounds check?  It's safer and
+easier to verify when the bounds checking is done in the kernel.
 
-Applied, thanks
+Fixes: 14bf62cde794 ("HID: add driver for Roccat Kone gaming mouse")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+v2:  In the v1 patch I added a check against settings->size but that's
+potentially too strict so it was removed.
 
+ drivers/hid/hid-roccat-kone.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
+diff --git a/drivers/hid/hid-roccat-kone.c b/drivers/hid/hid-roccat-kone.c
+index 2ff4c8e366ff..1ca64481145e 100644
+--- a/drivers/hid/hid-roccat-kone.c
++++ b/drivers/hid/hid-roccat-kone.c
+@@ -294,31 +294,40 @@ static ssize_t kone_sysfs_write_settings(struct file *fp, struct kobject *kobj,
+ 	struct kone_device *kone = hid_get_drvdata(dev_get_drvdata(dev));
+ 	struct usb_device *usb_dev = interface_to_usbdev(to_usb_interface(dev));
+ 	int retval = 0, difference, old_profile;
++	struct kone_settings *settings = (struct kone_settings *)buf;
+ 
+ 	/* I need to get my data in one piece */
+ 	if (off != 0 || count != sizeof(struct kone_settings))
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&kone->kone_lock);
+-	difference = memcmp(buf, &kone->settings, sizeof(struct kone_settings));
++	difference = memcmp(settings, &kone->settings,
++			    sizeof(struct kone_settings));
+ 	if (difference) {
+-		retval = kone_set_settings(usb_dev,
+-				(struct kone_settings const *)buf);
+-		if (retval) {
+-			mutex_unlock(&kone->kone_lock);
+-			return retval;
++		if (settings->startup_profile < 1 ||
++		    settings->startup_profile > 5) {
++			retval = -EINVAL;
++			goto unlock;
+ 		}
+ 
++		retval = kone_set_settings(usb_dev, settings);
++		if (retval)
++			goto unlock;
++
+ 		old_profile = kone->settings.startup_profile;
+-		memcpy(&kone->settings, buf, sizeof(struct kone_settings));
++		memcpy(&kone->settings, settings, sizeof(struct kone_settings));
+ 
+ 		kone_profile_activated(kone, kone->settings.startup_profile);
+ 
+ 		if (kone->settings.startup_profile != old_profile)
+ 			kone_profile_report(kone, kone->settings.startup_profile);
+ 	}
++unlock:
+ 	mutex_unlock(&kone->kone_lock);
+ 
++	if (retval)
++		return retval;
++
+ 	return sizeof(struct kone_settings);
+ }
+ static BIN_ATTR(settings, 0660, kone_sysfs_read_settings,
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+2.28.0
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog

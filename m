@@ -2,178 +2,204 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A10B524FE77
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Aug 2020 15:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09B22250153
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Aug 2020 17:43:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727792AbgHXNDA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Aug 2020 09:03:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48382 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725601AbgHXNC5 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Aug 2020 09:02:57 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17F58C061573;
-        Mon, 24 Aug 2020 06:02:57 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id bs17so7956475edb.1;
-        Mon, 24 Aug 2020 06:02:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=P1Zncp3mBPUwy/XcJd/Yz/e5wA8bamhjeRbMn86RZ00=;
-        b=XONJDaKtbTenPVd8qxPHXGDxygjmiThWQu9BDEYWfQkNXTReQ/uDZ5EpmkZRn48ejm
-         efOlakAgT3CzeiVj7Mb+Xe3MGYfSkK8ChioK5iaE0FrECZyu1NMbrsagF1MD4zeLbQBR
-         YlcHE6GAiOf6uGdxmW7WV6BtF/nYzbopOxDsPzJW8y7ozmI8qbtwt/W/4c/3cQppu7NS
-         uvR+ZYua5Efzwcpl/UYFTfrd/HHrj+o8hEJgQzJ/lWjW5Q/34xZ6iMphmfkOvs8Kryyf
-         VaQ73biFs1164Ey+UwqI8Z3LwrPXz4xep8H74Fgq2ahk0F8imuGO7V4XUm/TyepKgz3W
-         4d0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=P1Zncp3mBPUwy/XcJd/Yz/e5wA8bamhjeRbMn86RZ00=;
-        b=M8SQLHgl7xxa+fdh8q0il3mOQJPjSrL2tqSl64m8EVjQNaXQIzu1ycMZAtLfSn9fxJ
-         q6uaUYmY+laJ+745Bq5aeZ0pc+ttMWJaKDNRiHIp9/vqF8MgKrNYYZC/h+nGB6MMoh9h
-         dpjvwGu6kNFELwOkli0RCYH+TrBqu5V/INBjeu1FBJByN4g1tOx/6Bl7WtFoa5ap4X1O
-         ERfLw5/rxaqtAUKu4D7BjJINE2YLr6VymnfMXYIw7UBB8wPrwFZVyEOepoypLHOBSzQW
-         kYSEq24U8wT8IN6oZgvdiFHCPNYPmKdbpJ2uEdIsTyPtfvA/lPI12tTCqZiwZ1lNeEJ/
-         xv0Q==
-X-Gm-Message-State: AOAM532jwNz2X0QJKzfv9Cqpi9y7Fcz5xfWjRecWfvKU1I4U8s2O1prT
-        23WzId03hOGStJ4ER1xOXbA=
-X-Google-Smtp-Source: ABdhPJzyf2lmrCIi0SqicxviBRWrSr49744XFzc3aRPrmSNXEykr6WnIHEpJxxogoesnOqE2WhNmSQ==
-X-Received: by 2002:a50:c3c4:: with SMTP id i4mr5236603edf.244.1598274175628;
-        Mon, 24 Aug 2020 06:02:55 -0700 (PDT)
-Received: from felia.fritz.box ([2001:16b8:2d4c:8a00:f0ec:b5d5:8c1c:a145])
-        by smtp.gmail.com with ESMTPSA id g11sm9366898edt.88.2020.08.24.06.02.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2020 06:02:55 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Cc:     Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Ettore Chimenti <ek5.chimenti@gmail.com>,
-        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-tegra@vger.kernel.org, Joe Perches <joe@perches.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH THIRD RESEND] MAINTAINERS: adjust entries to moving CEC platform drivers
-Date:   Mon, 24 Aug 2020 15:02:43 +0200
-Message-Id: <20200824130243.27162-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S1727858AbgHXPna (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Aug 2020 11:43:30 -0400
+Received: from mx01-sz.bfs.de ([194.94.69.67]:56880 "EHLO mx01-sz.bfs.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726473AbgHXPnR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 24 Aug 2020 11:43:17 -0400
+X-Greylist: delayed 465 seconds by postgrey-1.27 at vger.kernel.org; Mon, 24 Aug 2020 11:43:08 EDT
+Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
+        by mx01-sz.bfs.de (Postfix) with ESMTPS id 3A1CF20443;
+        Mon, 24 Aug 2020 17:35:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1598283317;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=eRzgFGh9/BntiqGMWEsiZTSABhsVMBDixd2/cOXtNic=;
+        b=W883IKrtXCl6w24SgX1GtliiAQSPPfxD61Ue1YMCpYT7W9I2Ep5YG1gAV+J1xnilaIf2Ar
+        XJjsMTikvD/ac7kWw89AyKu9Ihm6UNS3gMi6M0Pv1vnd+s552ytTNSzlH16TxEzn2s6gdD
+        z6sXmOhy3LJmpYtIXC55Swei+FHkDkYvv9sODLyj/Ym29ZWRsHla7AXz2Fn2iQ+pvM3etF
+        dHb/QF9G7N983wJcDFtF2EJ4eV0A8ApeoMA58t0nhGfWkLaenozj0wWugs+Hwl6xPzTpsw
+        5yg83Bwcwn8KjZu09fUVTLZ/AYE2tz8UKOEjq5q3985B91cgYqBIADtpemd8iA==
+Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
+ (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2044.4; Mon, 24 Aug
+ 2020 17:35:16 +0200
+Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
+ SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%6]) with mapi id
+ 15.01.2044.004; Mon, 24 Aug 2020 17:35:16 +0200
+From:   Walter Harms <wharms@bfs.de>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Stefan Achatz <erazor_de@users.sourceforge.net>
+CC:     Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: AW: [PATCH v2] HID: roccat: add bounds checking in
+ kone_sysfs_write_settings()
+Thread-Topic: [PATCH v2] HID: roccat: add bounds checking in
+ kone_sysfs_write_settings()
+Thread-Index: AQHWefToEl9avbae1kGQ4FmFDoAFsalHYb09
+Date:   Mon, 24 Aug 2020 15:35:16 +0000
+Message-ID: <ab4625b2b2ea41dd83ff9e192a027f41@bfs.de>
+References: <1597819984.4101.16.camel@web.de>,<20200824085735.GA208317@mwanda>
+In-Reply-To: <20200824085735.GA208317@mwanda>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.137.16.40]
+x-tm-as-product-ver: SMEX-14.0.0.3031-8.6.1012-25624.000
+x-tm-as-result: No-10--8.314400-5.000000
+x-tmase-matchedrid: 7icOwTYiHK3RubRCcrbc5pzEHTUOuMX33dCmvEa6IiG4eDpiBrUciGr4
+        /y/RCSUy0Hoi1fEaP4qN5vNGwyZ1KF1McTGy89+ei82UiskMqcwwQTzTIFJCzoxRWJphhsrcQT3
+        oROdvH1vQftcvF9LRG8ZHJ++jFzpIIjM2rMmDTQPHsv3gEadaxCHxHXwnWAXc13GjbR1NJrEmgo
+        5BSqf/niJoNo9EQ2Zq4zBrQSJZSTkfKML5AJtfLQLiZxZUfodHp2Uv2mII684IFWSswluXgnWCd
+        6QvVzbex2BEc3TqpBiIZm0VEEWEK3J+EgEMl5xOKSfEqVU/Tv8GchEhVwJY30oPLn6eZ90+i836
+        2cmVmYBGjk/QOKmZVVvy4imyA8gdbu8QqMQjwvLC0TXpqtexIkq4gufanRIyzKXGJgSfagbQGFl
+        KOB0iJEqna2uFlro8j0IvV7jlqDhyPzMTUSO1JIph1hAtvKZN7VGXkoWCELlzORjGZHjERrZUKC
+        nFEZZuZx0Cdo1A6e9ftuJwrFEhTY2j49Ftap9EOwBXM346/+wf23iD7YgwEwwq4Etiqzo8+GDOl
+        f6Gop5k2MZOGWKdRA3k+0LX9UYI
+x-tm-as-user-approved-sender: No
+x-tm-as-user-blocked-sender: No
+x-tmase-result: 10--8.314400-5.000000
+x-tmase-version: SMEX-14.0.0.3031-8.6.1012-25624.000
+x-tm-snts-smtp: 2D30FE7C49BE24CBF31F0FC3A7CCC177A453A6351CC867F95BC01E273150AA3A2000:9
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Spam-Status: No, score=-0.00
+Authentication-Results: mx01-sz.bfs.de;
+        none
+X-Spamd-Result: default: False [-0.00 / 7.00];
+         ARC_NA(0.00)[];
+         TO_DN_EQ_ADDR_SOME(0.00)[];
+         HAS_XOIP(0.00)[];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         MIME_GOOD(-0.10)[text/plain];
+         DKIM_SIGNED(0.00)[];
+         RCPT_COUNT_SEVEN(0.00)[7];
+         NEURAL_HAM(-0.00)[-1.033];
+         RCVD_NO_TLS_LAST(0.10)[];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         RCVD_COUNT_TWO(0.00)[2];
+         MID_RHS_MATCH_FROM(0.00)[];
+         BAYES_HAM(-0.00)[19.08%]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 4be5e8648b0c ("media: move CEC platform drivers to a separate
-directory") moved various files into a new directory structure, but did
-not adjust the entries in MAINTAINERS.
+hello Dan,=20
 
-Since then, ./scripts/get_maintainer.pl --self-test=patterns complains:
+i notice that you can shorten the line to:
+(line above checks for count=3D=3Dsizeof(struct kone_settings))
 
-  warning: no file matches F: drivers/media/platform/s5p-cec/
-  warning: no file matches F: drivers/media/platform/tegra-cec/
-  warning: no file matches F: drivers/media/platform/cec-gpio/
-  warning: no file matches F: drivers/media/platform/meson/ao-cec-g12a.c
-  warning: no file matches F: drivers/media/platform/meson/ao-cec.c
-  warning: no file matches F: drivers/media/platform/seco-cec/seco-cec.c
-  warning: no file matches F: drivers/media/platform/seco-cec/seco-cec.h
-  warning: no file matches F: drivers/media/platform/sti/cec/
+difference =3D memcmp(settings, &kone->settings, count);
 
-Update the MAINTAINERS entries to the new file locations.
+nothing special just to shorten the line and make use of count.
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+and just to save one indent level and because its  readabel nicely:
+    if ( ! difference )=20
+          goto unlock;
+
+hope that helps
+
+re,
+ wh
+________________________________________
+Von: kernel-janitors-owner@vger.kernel.org [kernel-janitors-owner@vger.kern=
+el.org] im Auftrag von Dan Carpenter [dan.carpenter@oracle.com]
+Gesendet: Montag, 24. August 2020 10:57
+An: Stefan Achatz
+Cc: Jiri Kosina; Benjamin Tissoires; linux-input@vger.kernel.org; linux-ker=
+nel@vger.kernel.org; kernel-janitors@vger.kernel.org
+Betreff: [PATCH v2] HID: roccat: add bounds checking in kone_sysfs_write_se=
+ttings()
+
+This code doesn't check if "settings->startup_profile" is within bounds
+and that could result in an out of bounds array access.  What the code
+does do is it checks if the settings can be written to the firmware, so
+it's possible that the firmware has a bounds check?  It's safer and
+easier to verify when the bounds checking is done in the kernel.
+
+Fixes: 14bf62cde794 ("HID: add driver for Roccat Kone gaming mouse")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-Mauro, please pick this non-urgent minor clean-up patch.
-  
-applies cleanly on v5.9-rc2 and next-20200824
+v2:  In the v1 patch I added a check against settings->size but that's
+potentially too strict so it was removed.
 
-v1 send here:
-https://lore.kernel.org/lkml/20200418093630.6149-1-lukas.bulwahn@gmail.com/
- 
-v1 first resend here:
-https://lore.kernel.org/lkml/20200506050744.4779-1-lukas.bulwahn@gmail.com/
+ drivers/hid/hid-roccat-kone.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-v2 second resend here:
-https://lore.kernel.org/lkml/20200525142946.8268-1-lukas.bulwahn@gmail.com/
+diff --git a/drivers/hid/hid-roccat-kone.c b/drivers/hid/hid-roccat-kone.c
+index 2ff4c8e366ff..1ca64481145e 100644
+--- a/drivers/hid/hid-roccat-kone.c
++++ b/drivers/hid/hid-roccat-kone.c
+@@ -294,31 +294,40 @@ static ssize_t kone_sysfs_write_settings(struct file =
+*fp, struct kobject *kobj,
+        struct kone_device *kone =3D hid_get_drvdata(dev_get_drvdata(dev));
+        struct usb_device *usb_dev =3D interface_to_usbdev(to_usb_interface=
+(dev));
+        int retval =3D 0, difference, old_profile;
++       struct kone_settings *settings =3D (struct kone_settings *)buf;
 
- MAINTAINERS | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+        /* I need to get my data in one piece */
+        if (off !=3D 0 || count !=3D sizeof(struct kone_settings))
+                return -EINVAL;
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f0068bceeb61..0cdb71b63f4f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2446,7 +2446,7 @@ L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
- L:	linux-media@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/media/s5p-cec.txt
--F:	drivers/media/platform/s5p-cec/
-+F:	drivers/media/cec/platform/s5p/
- 
- ARM/SAMSUNG S5P SERIES JPEG CODEC SUPPORT
- M:	Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>
-@@ -2591,7 +2591,7 @@ L:	linux-tegra@vger.kernel.org
- L:	linux-media@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/media/tegra-cec.txt
--F:	drivers/media/platform/tegra-cec/
-+F:	drivers/media/cec/platform/tegra/
- 
- ARM/TETON BGA MACHINE SUPPORT
- M:	"Mark F. Brown" <mark.brown314@gmail.com>
-@@ -4014,7 +4014,7 @@ S:	Supported
- W:	http://linuxtv.org
- T:	git git://linuxtv.org/media_tree.git
- F:	Documentation/devicetree/bindings/media/cec-gpio.txt
--F:	drivers/media/platform/cec-gpio/
-+F:	drivers/media/cec/platform/cec-gpio/
- 
- CELL BROADBAND ENGINE ARCHITECTURE
- M:	Arnd Bergmann <arnd@arndb.de>
-@@ -11292,8 +11292,7 @@ S:	Supported
- W:	http://linux-meson.com/
- T:	git git://linuxtv.org/media_tree.git
- F:	Documentation/devicetree/bindings/media/amlogic,meson-gx-ao-cec.yaml
--F:	drivers/media/platform/meson/ao-cec-g12a.c
--F:	drivers/media/platform/meson/ao-cec.c
-+F:	drivers/media/cec/platform/meson/
- 
- MESON NAND CONTROLLER DRIVER FOR AMLOGIC SOCS
- M:	Liang Yang <liang.yang@amlogic.com>
-@@ -15476,8 +15475,7 @@ F:	drivers/mmc/host/sdricoh_cs.c
- SECO BOARDS CEC DRIVER
- M:	Ettore Chimenti <ek5.chimenti@gmail.com>
- S:	Maintained
--F:	drivers/media/platform/seco-cec/seco-cec.c
--F:	drivers/media/platform/seco-cec/seco-cec.h
-+F:	drivers/media/cec/platform/seco/
- 
- SECURE COMPUTING
- M:	Kees Cook <keescook@chromium.org>
-@@ -16511,7 +16509,7 @@ STI CEC DRIVER
- M:	Benjamin Gaignard <benjamin.gaignard@linaro.org>
- S:	Maintained
- F:	Documentation/devicetree/bindings/media/stih-cec.txt
--F:	drivers/media/platform/sti/cec/
-+F:	drivers/media/cec/platform/sti/
- 
- STK1160 USB VIDEO CAPTURE DRIVER
- M:	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
--- 
-2.17.1
+        mutex_lock(&kone->kone_lock);
+-       difference =3D memcmp(buf, &kone->settings, sizeof(struct kone_sett=
+ings));
++       difference =3D memcmp(settings, &kone->settings,
++                           sizeof(struct kone_settings));
+        if (difference) {
+-               retval =3D kone_set_settings(usb_dev,
+-                               (struct kone_settings const *)buf);
+-               if (retval) {
+-                       mutex_unlock(&kone->kone_lock);
+-                       return retval;
++               if (settings->startup_profile < 1 ||
++                   settings->startup_profile > 5) {
++                       retval =3D -EINVAL;
++                       goto unlock;
+                }
+
++               retval =3D kone_set_settings(usb_dev, settings);
++               if (retval)
++                       goto unlock;
++
+                old_profile =3D kone->settings.startup_profile;
+-               memcpy(&kone->settings, buf, sizeof(struct kone_settings));
++               memcpy(&kone->settings, settings, sizeof(struct kone_settin=
+gs));
+
+                kone_profile_activated(kone, kone->settings.startup_profile=
+);
+
+                if (kone->settings.startup_profile !=3D old_profile)
+                        kone_profile_report(kone, kone->settings.startup_pr=
+ofile);
+        }
++unlock:
+        mutex_unlock(&kone->kone_lock);
+
++       if (retval)
++               return retval;
++
+        return sizeof(struct kone_settings);
+ }
+ static BIN_ATTR(settings, 0660, kone_sysfs_read_settings,
+--
+2.28.0
 

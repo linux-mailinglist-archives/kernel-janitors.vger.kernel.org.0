@@ -2,204 +2,154 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09B22250153
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Aug 2020 17:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4278250348
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Aug 2020 18:42:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727858AbgHXPna (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Aug 2020 11:43:30 -0400
-Received: from mx01-sz.bfs.de ([194.94.69.67]:56880 "EHLO mx01-sz.bfs.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726473AbgHXPnR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Aug 2020 11:43:17 -0400
-X-Greylist: delayed 465 seconds by postgrey-1.27 at vger.kernel.org; Mon, 24 Aug 2020 11:43:08 EDT
-Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
-        by mx01-sz.bfs.de (Postfix) with ESMTPS id 3A1CF20443;
-        Mon, 24 Aug 2020 17:35:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1598283317;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=eRzgFGh9/BntiqGMWEsiZTSABhsVMBDixd2/cOXtNic=;
-        b=W883IKrtXCl6w24SgX1GtliiAQSPPfxD61Ue1YMCpYT7W9I2Ep5YG1gAV+J1xnilaIf2Ar
-        XJjsMTikvD/ac7kWw89AyKu9Ihm6UNS3gMi6M0Pv1vnd+s552ytTNSzlH16TxEzn2s6gdD
-        z6sXmOhy3LJmpYtIXC55Swei+FHkDkYvv9sODLyj/Ym29ZWRsHla7AXz2Fn2iQ+pvM3etF
-        dHb/QF9G7N983wJcDFtF2EJ4eV0A8ApeoMA58t0nhGfWkLaenozj0wWugs+Hwl6xPzTpsw
-        5yg83Bwcwn8KjZu09fUVTLZ/AYE2tz8UKOEjq5q3985B91cgYqBIADtpemd8iA==
-Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
- (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2044.4; Mon, 24 Aug
- 2020 17:35:16 +0200
-Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
- SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%6]) with mapi id
- 15.01.2044.004; Mon, 24 Aug 2020 17:35:16 +0200
-From:   Walter Harms <wharms@bfs.de>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Stefan Achatz <erazor_de@users.sourceforge.net>
-CC:     Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: AW: [PATCH v2] HID: roccat: add bounds checking in
- kone_sysfs_write_settings()
-Thread-Topic: [PATCH v2] HID: roccat: add bounds checking in
- kone_sysfs_write_settings()
-Thread-Index: AQHWefToEl9avbae1kGQ4FmFDoAFsalHYb09
-Date:   Mon, 24 Aug 2020 15:35:16 +0000
-Message-ID: <ab4625b2b2ea41dd83ff9e192a027f41@bfs.de>
-References: <1597819984.4101.16.camel@web.de>,<20200824085735.GA208317@mwanda>
-In-Reply-To: <20200824085735.GA208317@mwanda>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.137.16.40]
-x-tm-as-product-ver: SMEX-14.0.0.3031-8.6.1012-25624.000
-x-tm-as-result: No-10--8.314400-5.000000
-x-tmase-matchedrid: 7icOwTYiHK3RubRCcrbc5pzEHTUOuMX33dCmvEa6IiG4eDpiBrUciGr4
-        /y/RCSUy0Hoi1fEaP4qN5vNGwyZ1KF1McTGy89+ei82UiskMqcwwQTzTIFJCzoxRWJphhsrcQT3
-        oROdvH1vQftcvF9LRG8ZHJ++jFzpIIjM2rMmDTQPHsv3gEadaxCHxHXwnWAXc13GjbR1NJrEmgo
-        5BSqf/niJoNo9EQ2Zq4zBrQSJZSTkfKML5AJtfLQLiZxZUfodHp2Uv2mII684IFWSswluXgnWCd
-        6QvVzbex2BEc3TqpBiIZm0VEEWEK3J+EgEMl5xOKSfEqVU/Tv8GchEhVwJY30oPLn6eZ90+i836
-        2cmVmYBGjk/QOKmZVVvy4imyA8gdbu8QqMQjwvLC0TXpqtexIkq4gufanRIyzKXGJgSfagbQGFl
-        KOB0iJEqna2uFlro8j0IvV7jlqDhyPzMTUSO1JIph1hAtvKZN7VGXkoWCELlzORjGZHjERrZUKC
-        nFEZZuZx0Cdo1A6e9ftuJwrFEhTY2j49Ftap9EOwBXM346/+wf23iD7YgwEwwq4Etiqzo8+GDOl
-        f6Gop5k2MZOGWKdRA3k+0LX9UYI
-x-tm-as-user-approved-sender: No
-x-tm-as-user-blocked-sender: No
-x-tmase-result: 10--8.314400-5.000000
-x-tmase-version: SMEX-14.0.0.3031-8.6.1012-25624.000
-x-tm-snts-smtp: 2D30FE7C49BE24CBF31F0FC3A7CCC177A453A6351CC867F95BC01E273150AA3A2000:9
+        id S1728619AbgHXQmc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Aug 2020 12:42:32 -0400
+Received: from hqnvemgate25.nvidia.com ([216.228.121.64]:14725 "EHLO
+        hqnvemgate25.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728529AbgHXQm2 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 24 Aug 2020 12:42:28 -0400
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate25.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+        id <B5f43edb60000>; Mon, 24 Aug 2020 09:41:26 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+  by hqpgpgate101.nvidia.com (PGP Universal service);
+  Mon, 24 Aug 2020 09:42:27 -0700
+X-PGP-Universal: processed;
+        by hqpgpgate101.nvidia.com on Mon, 24 Aug 2020 09:42:27 -0700
+Received: from HQMAIL111.nvidia.com (172.20.187.18) by HQMAIL105.nvidia.com
+ (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 24 Aug
+ 2020 16:42:27 +0000
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.108)
+ by HQMAIL111.nvidia.com (172.20.187.18) with Microsoft SMTP Server (TLS) id
+ 15.0.1473.3 via Frontend Transport; Mon, 24 Aug 2020 16:42:27 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZtGXZ08oUdzKecLG3FPmhbscWQP8pmS6UkCuU50qqXIxAWqe+d3jui0LhVHOAi1QwCgt9FEiBzWPc+yc9+Y50aNGXsjTTWEZVeybWBlqomngMYj6XHKW3aC6SWwoNvQyBY6OO1FVoP87tR3OaysBO+3MBKfjmF4Px3WLPcrqcO19dWRX+rr8IbcrCdWp0cfDUgJvgFxtjwdclQd0UQ9h/b7Unp2a38DcGip/UHtip3D14xMRxzZegY8Kg941B+3s9n5JdpEf/ScvMV/xHcKXMYH9Ow+XuZur9Po0n5RFnHdlg5s6YF1vg4HfX4MmoQX1krdCPvhZr+W9b1Y5QJNbJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DHfrGGKyG5ax9nzo/OPklR0sC6C4nw9YAKL8qVYkR30=;
+ b=WYosFNRXWyRyI32Rk0oCF8zr2odb3GJhh3fCVZBHw6RqePYTvnnDKG6DcKZo5xkR0T1+/xgMh/xP8gWMbq5mrC3xjcDzQ3H5hWEasZo6wHPycBh8/lqpNgH8e7CNzOUvtHXVzPpkw7Ji11WAwtwfyWId3q1gRHxEPBOaVpfoq2jdg8SW5Z5B09PUOGdwKc2D5py7LAcuJ4dkrmtQIISXN1RWYijM0nE1KKKIyXMzqSX2fMcFTg70T0vPDXY23vs5cjFZNUw7NARBVF4eFlQMKrQb8ZxiJY1tmnDwLRfXsxgesrKNt+MczesQy6SH3ujkcK5SSk3keqL2TC+GpDX27Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
+ by DM6PR12MB4266.namprd12.prod.outlook.com (2603:10b6:5:21a::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3305.24; Mon, 24 Aug
+ 2020 16:42:26 +0000
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::2d79:7f96:6406:6c76]) by DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::2d79:7f96:6406:6c76%3]) with mapi id 15.20.3305.026; Mon, 24 Aug 2020
+ 16:42:26 +0000
+Date:   Mon, 24 Aug 2020 13:42:24 -0300
+From:   Jason Gunthorpe <jgg@nvidia.com>
+To:     Suraj Upadhyay <usuraj35@gmail.com>
+CC:     <dledford@redhat.com>, <linux-rdma@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH 0/4] Infiniband Subsystem: Remove pci-dma-compat wrapper
+ APIs.
+Message-ID: <20200824164224.GA3180344@nvidia.com>
+References: <cover.1596957073.git.usuraj35@gmail.com>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <cover.1596957073.git.usuraj35@gmail.com>
+X-ClientProxiedBy: MN2PR03CA0020.namprd03.prod.outlook.com
+ (2603:10b6:208:23a::25) To DM6PR12MB3834.namprd12.prod.outlook.com
+ (2603:10b6:5:14a::12)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-0.00
-Authentication-Results: mx01-sz.bfs.de;
-        none
-X-Spamd-Result: default: False [-0.00 / 7.00];
-         ARC_NA(0.00)[];
-         TO_DN_EQ_ADDR_SOME(0.00)[];
-         HAS_XOIP(0.00)[];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         DKIM_SIGNED(0.00)[];
-         RCPT_COUNT_SEVEN(0.00)[7];
-         NEURAL_HAM(-0.00)[-1.033];
-         RCVD_NO_TLS_LAST(0.10)[];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         MID_RHS_MATCH_FROM(0.00)[];
-         BAYES_HAM(-0.00)[19.08%]
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from 255.255.255.255 (255.255.255.255) by MN2PR03CA0020.namprd03.prod.outlook.com (2603:10b6:208:23a::25) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3305.25 via Frontend Transport; Mon, 24 Aug 2020 16:42:25 +0000
+Received: from jgg by mlx with local (Exim 4.94)        (envelope-from <jgg@nvidia.com>)        id 1kAFY8-00DLNV-EL; Mon, 24 Aug 2020 13:42:24 -0300
+X-Originating-IP: [156.34.48.30]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: d058fa5b-89a3-4ce5-112e-08d8484caec2
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4266:
+X-Microsoft-Antispam-PRVS: <DM6PR12MB4266FBA2A7A3B1F322030282C2560@DM6PR12MB4266.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2331;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: VEOLvRUmrGWSQpsnoYRSV1+CD0i8wiMzf8G6yGjRoCSNbpaiJlLTgC1Of9dDsL4yPS1zmTJCdSRB8MMJzK7veM0cjlHAJlfAAYl2TGF49LIHL0Fw5DWODOWbpIdKPYCLolqa4DXEMBAsFCTgduW3vjXXY4ttQiqGHDkQEQ7uNxtk8onKlVQefmafbeNftaisDZQ7Cu3EILOKvPU+6YTND1Q34QY0XxbHG/v6A5FIe27XHPEpbu03BJRXMGXwg8uvTkrfwiaCM2DtGyzVK7Z2zIpuDNhu+ghRVK8hxmWIlUwTwC6QhHWuDICsca1Ezaih
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3834.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(376002)(39860400002)(346002)(366004)(136003)(86362001)(9746002)(478600001)(2906002)(316002)(66556008)(66476007)(2616005)(66946007)(9786002)(4326008)(83380400001)(6916009)(426003)(26005)(1076003)(5660300002)(36756003)(8936002)(8676002)(186003)(33656002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: mteEi6aVTD0Z6jEZ/ciM06y8HwN/2K21UVdE4owAV5r1GM6ajfadlro4KtSKqISz7blaaPAiByVlMa+qu7Xo6Qt1RsncIpD+IILHyyMlOKkb8Xi+T3segxl/K7mHc/elPldesAP9WJzMJyTMh9HWcGWMm1pMM39+lmxiHOVsKuCtzGaDTLqOeMhVWzv8GORTGcCSh/yOCKTSpbpQQPTs4XueMS0mIWdZY+dRtZ9Fqwms5M0fs7mafZDsP6dK9pI0yLmMEAXhAx1giH6CcvDhxuFtjIZlZL8In2008rOusBHBwPBDLddVAq8Hw4rp5RQ+x4mzhB3K98i7UY6lRlKCK7e5fTLro97NtRMZGjV3Z5k0fxWNrRVH6rOJWS1TILuaBD6XqL0F8KDiwjOAiLEcxTgUQwzOMrq2j0o2D3CCMXPgx1MGltfAgPsWmZXDdhptAKUfJdm7XdH9UIP+bQSkMoDx8ZPDnqIxGN/iYb45WtdY81tBBJL05/BjhqRhbFD1+tw9iFuleEciNL6slMpARTN1hS9c//sqmjSNhNSn57/obxOSpiz+eBGNyKI4/LAGcfatm/0wmIXFtBbG0TBG6lrv5L+fVz/6SqO4x0KkqAyVDV0szW0AhzslrJ9mhmwRbPo4We8VfsPjH7xz1v1dLg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: d058fa5b-89a3-4ce5-112e-08d8484caec2
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3834.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2020 16:42:26.1712
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +K8F77UBhZm0eohceQIcBoMoDBbzGcrpvD/5/WOdl5ufkGCgzIZU7xO7ZgOPGjc6
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4266
+X-OriginatorOrg: Nvidia.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1598287286; bh=DHfrGGKyG5ax9nzo/OPklR0sC6C4nw9YAKL8qVYkR30=;
+        h=X-PGP-Universal:ARC-Seal:ARC-Message-Signature:
+         ARC-Authentication-Results:Authentication-Results:Date:From:To:CC:
+         Subject:Message-ID:References:Content-Type:Content-Disposition:
+         In-Reply-To:X-ClientProxiedBy:MIME-Version:
+         X-MS-Exchange-MessageSentRepresentingType:X-Originating-IP:
+         X-MS-PublicTrafficType:X-MS-Office365-Filtering-Correlation-Id:
+         X-MS-TrafficTypeDiagnostic:X-Microsoft-Antispam-PRVS:
+         X-MS-Oob-TLC-OOBClassifiers:X-MS-Exchange-SenderADCheck:
+         X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+         X-Forefront-Antispam-Report:X-MS-Exchange-AntiSpam-MessageData:
+         X-MS-Exchange-CrossTenant-Network-Message-Id:
+         X-MS-Exchange-CrossTenant-AuthSource:
+         X-MS-Exchange-CrossTenant-AuthAs:
+         X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+         X-MS-Exchange-CrossTenant-FromEntityHeader:
+         X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+         X-MS-Exchange-CrossTenant-UserPrincipalName:
+         X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+        b=lxFPqYpjIMtoEAUYcY6UqaeQMbjgSpMa2YiNiwFxquxRvXkMSTHv1HlQSh8c9ASK6
+         hGPMKUfgLhB+qKx4X7zahrgfCFIVuWptv9U5876tV5tzhhZD89j8b3GnFd9BzyvI+3
+         NxOAfZy32Q8C9eY5x8w2VwpHYlTteRGW7rESjpgrh3h52hRT4kjuFeihCSw3JNXTHb
+         L/01PGmaKdXLIAYGaC86FKifuY//TQLkKxoy9AQX1TYLlby8Pvei0ZOFOZNvRfU+4o
+         llg3UUvvwp2QAjI7u33XrJzPJJGHZcVMBdUqc04tY3zbsTlqj0xgOpsCBPX5nWp7c6
+         nvLErkLbYHouA==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-hello Dan,=20
+On Sun, Aug 09, 2020 at 12:54:28PM +0530, Suraj Upadhyay wrote:
+> Hii Developers,
+> 
+> 	This patch series will replace all the legacy pci-dma-compat wrappers
+> with the dma-mapping APIs directly in the INFINIBAND Subsystem.
+> 
+> This task is done through a coccinelle script which is described in each commit
+> message.
+> 
+> The changes are compile tested.
+> 
+> Thanks,
+> 
+> Suraj Upadhyay.
+> 
+> Suraj Upadhyay (4):
+>   IB/hfi1: Remove pci-dma-compat wrapper APIs
+>   IB/mthca: Remove pci-dma-compat wrapper APIs
+>   RDMA/qib: Remove pci-dma-compat wrapper APIs
+>   RDMA/pvrdma: Remove pci-dma-compat wrapper APIs
 
-i notice that you can shorten the line to:
-(line above checks for count=3D=3Dsizeof(struct kone_settings))
+Aside from Joe's notes it doesn't apply either:
 
-difference =3D memcmp(settings, &kone->settings, count);
+ Applying: RDMA/efa : Remove pci-dma-compat wrapper APIs
+ Using index info to reconstruct a base tree...
+ error: patch failed: drivers/infiniband/hw/efa/efa_main.c:405
+ error: drivers/infiniband/hw/efa/efa_main.c: patch does not apply
+ error: Did you hand edit your patch?
+ It does not apply to blobs recorded in its index.
 
-nothing special just to shorten the line and make use of count.
+Try to avoid hand editing patches..
 
-and just to save one indent level and because its  readabel nicely:
-    if ( ! difference )=20
-          goto unlock;
+Please resend
 
-hope that helps
-
-re,
- wh
-________________________________________
-Von: kernel-janitors-owner@vger.kernel.org [kernel-janitors-owner@vger.kern=
-el.org] im Auftrag von Dan Carpenter [dan.carpenter@oracle.com]
-Gesendet: Montag, 24. August 2020 10:57
-An: Stefan Achatz
-Cc: Jiri Kosina; Benjamin Tissoires; linux-input@vger.kernel.org; linux-ker=
-nel@vger.kernel.org; kernel-janitors@vger.kernel.org
-Betreff: [PATCH v2] HID: roccat: add bounds checking in kone_sysfs_write_se=
-ttings()
-
-This code doesn't check if "settings->startup_profile" is within bounds
-and that could result in an out of bounds array access.  What the code
-does do is it checks if the settings can be written to the firmware, so
-it's possible that the firmware has a bounds check?  It's safer and
-easier to verify when the bounds checking is done in the kernel.
-
-Fixes: 14bf62cde794 ("HID: add driver for Roccat Kone gaming mouse")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-v2:  In the v1 patch I added a check against settings->size but that's
-potentially too strict so it was removed.
-
- drivers/hid/hid-roccat-kone.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/hid/hid-roccat-kone.c b/drivers/hid/hid-roccat-kone.c
-index 2ff4c8e366ff..1ca64481145e 100644
---- a/drivers/hid/hid-roccat-kone.c
-+++ b/drivers/hid/hid-roccat-kone.c
-@@ -294,31 +294,40 @@ static ssize_t kone_sysfs_write_settings(struct file =
-*fp, struct kobject *kobj,
-        struct kone_device *kone =3D hid_get_drvdata(dev_get_drvdata(dev));
-        struct usb_device *usb_dev =3D interface_to_usbdev(to_usb_interface=
-(dev));
-        int retval =3D 0, difference, old_profile;
-+       struct kone_settings *settings =3D (struct kone_settings *)buf;
-
-        /* I need to get my data in one piece */
-        if (off !=3D 0 || count !=3D sizeof(struct kone_settings))
-                return -EINVAL;
-
-        mutex_lock(&kone->kone_lock);
--       difference =3D memcmp(buf, &kone->settings, sizeof(struct kone_sett=
-ings));
-+       difference =3D memcmp(settings, &kone->settings,
-+                           sizeof(struct kone_settings));
-        if (difference) {
--               retval =3D kone_set_settings(usb_dev,
--                               (struct kone_settings const *)buf);
--               if (retval) {
--                       mutex_unlock(&kone->kone_lock);
--                       return retval;
-+               if (settings->startup_profile < 1 ||
-+                   settings->startup_profile > 5) {
-+                       retval =3D -EINVAL;
-+                       goto unlock;
-                }
-
-+               retval =3D kone_set_settings(usb_dev, settings);
-+               if (retval)
-+                       goto unlock;
-+
-                old_profile =3D kone->settings.startup_profile;
--               memcpy(&kone->settings, buf, sizeof(struct kone_settings));
-+               memcpy(&kone->settings, settings, sizeof(struct kone_settin=
-gs));
-
-                kone_profile_activated(kone, kone->settings.startup_profile=
-);
-
-                if (kone->settings.startup_profile !=3D old_profile)
-                        kone_profile_report(kone, kone->settings.startup_pr=
-ofile);
-        }
-+unlock:
-        mutex_unlock(&kone->kone_lock);
-
-+       if (retval)
-+               return retval;
-+
-        return sizeof(struct kone_settings);
- }
- static BIN_ATTR(settings, 0660, kone_sysfs_read_settings,
---
-2.28.0
-
+Jason

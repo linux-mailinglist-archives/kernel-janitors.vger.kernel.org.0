@@ -2,123 +2,178 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 844F624FC5D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Aug 2020 13:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A10B524FE77
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Aug 2020 15:03:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726646AbgHXLQi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Aug 2020 07:16:38 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:37252 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726449AbgHXLPo (ORCPT
+        id S1727792AbgHXNDA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Aug 2020 09:03:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48382 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725601AbgHXNC5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Aug 2020 07:15:44 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07OBA7dh152978;
-        Mon, 24 Aug 2020 11:13:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=eFV/tzJHUiWR01wtSAFq5smZdfBTl/8vkC+vijcylE8=;
- b=AwVNv6MgCx7lpxEuBVZFPmQ59fKCLet2Fwl+5Xek03zXt1Vy1ORaw9svz4FaiwJ6bMij
- ozVWLn+5GavB8+gMXrpwWpt9Zra6YIarQY6tfFox9m6wgzkg1dao+X50/Y8c/NfNkfEO
- H1brZcekawqDKpd3YJOS1QpMUOAl3UaGBQg9G62zVryTmqriy4dmnA5qhsVAGXU2NfiR
- lZE6hZanEl78J+JMzJyfdkJ9AGShMQ2BNVBEmX4hfVymLuUxNwYEb//9IxtuhS3X8EU1
- gjL/hHIKFKauB/aXxMxc1ujGKanCIfZGjMjEMgUa4Vv5LXtjf6waO7SlcimbHAvjRbPq 5Q== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 333dbrkxbv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 24 Aug 2020 11:13:11 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07OB6VFg094091;
-        Mon, 24 Aug 2020 11:13:10 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 333rtw9pea-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 24 Aug 2020 11:13:10 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 07OBD7DA018832;
-        Mon, 24 Aug 2020 11:13:07 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 24 Aug 2020 04:13:06 -0700
-Date:   Mon, 24 Aug 2020 14:12:59 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        wlanfae <wlanfae@realtek.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Mike McCormack <mikem@ring3k.org>, devel@driverdev.osuosl.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: rtl8192e: fix missing failure check on a call
- to dev_alloc_name
-Message-ID: <20200824111258.GE1793@kadam>
-References: <20200821131512.348775-1-colin.king@canonical.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200821131512.348775-1-colin.king@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9722 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0
- phishscore=0 spamscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008240088
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9722 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 clxscore=1011
- priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0
- mlxlogscore=999 spamscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008240088
+        Mon, 24 Aug 2020 09:02:57 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17F58C061573;
+        Mon, 24 Aug 2020 06:02:57 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id bs17so7956475edb.1;
+        Mon, 24 Aug 2020 06:02:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=P1Zncp3mBPUwy/XcJd/Yz/e5wA8bamhjeRbMn86RZ00=;
+        b=XONJDaKtbTenPVd8qxPHXGDxygjmiThWQu9BDEYWfQkNXTReQ/uDZ5EpmkZRn48ejm
+         efOlakAgT3CzeiVj7Mb+Xe3MGYfSkK8ChioK5iaE0FrECZyu1NMbrsagF1MD4zeLbQBR
+         YlcHE6GAiOf6uGdxmW7WV6BtF/nYzbopOxDsPzJW8y7ozmI8qbtwt/W/4c/3cQppu7NS
+         uvR+ZYua5Efzwcpl/UYFTfrd/HHrj+o8hEJgQzJ/lWjW5Q/34xZ6iMphmfkOvs8Kryyf
+         VaQ73biFs1164Ey+UwqI8Z3LwrPXz4xep8H74Fgq2ahk0F8imuGO7V4XUm/TyepKgz3W
+         4d0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=P1Zncp3mBPUwy/XcJd/Yz/e5wA8bamhjeRbMn86RZ00=;
+        b=M8SQLHgl7xxa+fdh8q0il3mOQJPjSrL2tqSl64m8EVjQNaXQIzu1ycMZAtLfSn9fxJ
+         q6uaUYmY+laJ+745Bq5aeZ0pc+ttMWJaKDNRiHIp9/vqF8MgKrNYYZC/h+nGB6MMoh9h
+         dpjvwGu6kNFELwOkli0RCYH+TrBqu5V/INBjeu1FBJByN4g1tOx/6Bl7WtFoa5ap4X1O
+         ERfLw5/rxaqtAUKu4D7BjJINE2YLr6VymnfMXYIw7UBB8wPrwFZVyEOepoypLHOBSzQW
+         kYSEq24U8wT8IN6oZgvdiFHCPNYPmKdbpJ2uEdIsTyPtfvA/lPI12tTCqZiwZ1lNeEJ/
+         xv0Q==
+X-Gm-Message-State: AOAM532jwNz2X0QJKzfv9Cqpi9y7Fcz5xfWjRecWfvKU1I4U8s2O1prT
+        23WzId03hOGStJ4ER1xOXbA=
+X-Google-Smtp-Source: ABdhPJzyf2lmrCIi0SqicxviBRWrSr49744XFzc3aRPrmSNXEykr6WnIHEpJxxogoesnOqE2WhNmSQ==
+X-Received: by 2002:a50:c3c4:: with SMTP id i4mr5236603edf.244.1598274175628;
+        Mon, 24 Aug 2020 06:02:55 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2d4c:8a00:f0ec:b5d5:8c1c:a145])
+        by smtp.gmail.com with ESMTPSA id g11sm9366898edt.88.2020.08.24.06.02.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2020 06:02:55 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc:     Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Ettore Chimenti <ek5.chimenti@gmail.com>,
+        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-tegra@vger.kernel.org, Joe Perches <joe@perches.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH THIRD RESEND] MAINTAINERS: adjust entries to moving CEC platform drivers
+Date:   Mon, 24 Aug 2020 15:02:43 +0200
+Message-Id: <20200824130243.27162-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Aug 21, 2020 at 02:15:12PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently the second call to dev_alloc_name is not checking if this
-> failed.  Add the check and perform necessary cleanup on an error.
-> 
-> Addresses-Coverity: ("Unchecked return value")
-> Fixes: 94a799425eee ("rtl8192e: Import new version of driver from realtek")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/staging/rtl8192e/rtl8192e/rtl_core.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-> index fac58eebf263..7b15faeefff2 100644
-> --- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-> +++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-> @@ -2489,7 +2489,8 @@ static int _rtl92e_pci_probe(struct pci_dev *pdev,
->  	if (dev_alloc_name(dev, ifname) < 0) {
-                                ^^^^^^
+Commit 4be5e8648b0c ("media: move CEC platform drivers to a separate
+directory") moved various files into a new directory structure, but did
+not adjust the entries in MAINTAINERS.
 
->  		RT_TRACE(COMP_INIT,
->  			 "Oops: devname already taken! Trying wlan%%d...\n");
-                                                              ^^^^^^^
+Since then, ./scripts/get_maintainer.pl --self-test=patterns complains:
 
-> -		dev_alloc_name(dev, ifname);
-                                    ^^^^^^
-> +		if (dev_alloc_name(dev, ifname) < 0)
+  warning: no file matches F: drivers/media/platform/s5p-cec/
+  warning: no file matches F: drivers/media/platform/tegra-cec/
+  warning: no file matches F: drivers/media/platform/cec-gpio/
+  warning: no file matches F: drivers/media/platform/meson/ao-cec-g12a.c
+  warning: no file matches F: drivers/media/platform/meson/ao-cec.c
+  warning: no file matches F: drivers/media/platform/seco-cec/seco-cec.c
+  warning: no file matches F: drivers/media/platform/seco-cec/seco-cec.h
+  warning: no file matches F: drivers/media/platform/sti/cec/
 
-The "ifname" is wrong.  It was intended to be "wlan%d" or something like
-the comment says.  It will always fail.  One potential is to just delete
-this retest and assume that the user will fix their mistake and try
-again.  That's probably the best solution in fact.
+Update the MAINTAINERS entries to the new file locations.
 
-> +			goto err_unmap;
->  	}
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+Mauro, please pick this non-urgent minor clean-up patch.
+  
+applies cleanly on v5.9-rc2 and next-20200824
 
-	if (dev_alloc_name(dev, ifname) < 0) {
-		RT_TRACE(COMP_INIT, "Oops: devname failed '%s'!\n", ifname);
-		goto err_unmap;
-	}
+v1 send here:
+https://lore.kernel.org/lkml/20200418093630.6149-1-lukas.bulwahn@gmail.com/
+ 
+v1 first resend here:
+https://lore.kernel.org/lkml/20200506050744.4779-1-lukas.bulwahn@gmail.com/
 
->  
->  	RT_TRACE(COMP_INIT, "Driver probe completed1\n");
+v2 second resend here:
+https://lore.kernel.org/lkml/20200525142946.8268-1-lukas.bulwahn@gmail.com/
 
-regards,
-dan carpenter
+ MAINTAINERS | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f0068bceeb61..0cdb71b63f4f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2446,7 +2446,7 @@ L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/media/s5p-cec.txt
+-F:	drivers/media/platform/s5p-cec/
++F:	drivers/media/cec/platform/s5p/
+ 
+ ARM/SAMSUNG S5P SERIES JPEG CODEC SUPPORT
+ M:	Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>
+@@ -2591,7 +2591,7 @@ L:	linux-tegra@vger.kernel.org
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/media/tegra-cec.txt
+-F:	drivers/media/platform/tegra-cec/
++F:	drivers/media/cec/platform/tegra/
+ 
+ ARM/TETON BGA MACHINE SUPPORT
+ M:	"Mark F. Brown" <mark.brown314@gmail.com>
+@@ -4014,7 +4014,7 @@ S:	Supported
+ W:	http://linuxtv.org
+ T:	git git://linuxtv.org/media_tree.git
+ F:	Documentation/devicetree/bindings/media/cec-gpio.txt
+-F:	drivers/media/platform/cec-gpio/
++F:	drivers/media/cec/platform/cec-gpio/
+ 
+ CELL BROADBAND ENGINE ARCHITECTURE
+ M:	Arnd Bergmann <arnd@arndb.de>
+@@ -11292,8 +11292,7 @@ S:	Supported
+ W:	http://linux-meson.com/
+ T:	git git://linuxtv.org/media_tree.git
+ F:	Documentation/devicetree/bindings/media/amlogic,meson-gx-ao-cec.yaml
+-F:	drivers/media/platform/meson/ao-cec-g12a.c
+-F:	drivers/media/platform/meson/ao-cec.c
++F:	drivers/media/cec/platform/meson/
+ 
+ MESON NAND CONTROLLER DRIVER FOR AMLOGIC SOCS
+ M:	Liang Yang <liang.yang@amlogic.com>
+@@ -15476,8 +15475,7 @@ F:	drivers/mmc/host/sdricoh_cs.c
+ SECO BOARDS CEC DRIVER
+ M:	Ettore Chimenti <ek5.chimenti@gmail.com>
+ S:	Maintained
+-F:	drivers/media/platform/seco-cec/seco-cec.c
+-F:	drivers/media/platform/seco-cec/seco-cec.h
++F:	drivers/media/cec/platform/seco/
+ 
+ SECURE COMPUTING
+ M:	Kees Cook <keescook@chromium.org>
+@@ -16511,7 +16509,7 @@ STI CEC DRIVER
+ M:	Benjamin Gaignard <benjamin.gaignard@linaro.org>
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/media/stih-cec.txt
+-F:	drivers/media/platform/sti/cec/
++F:	drivers/media/cec/platform/sti/
+ 
+ STK1160 USB VIDEO CAPTURE DRIVER
+ M:	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+-- 
+2.17.1
 

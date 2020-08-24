@@ -2,83 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F74C24F184
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Aug 2020 05:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F15D24F2FF
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Aug 2020 09:19:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727031AbgHXD1L (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 23 Aug 2020 23:27:11 -0400
-Received: from mga05.intel.com ([192.55.52.43]:54060 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726684AbgHXD1L (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 23 Aug 2020 23:27:11 -0400
-IronPort-SDR: SC9BCE1OJp0/5pzzQ+Prs6+hVwRI5Fa3NG8yKmNWiugxIshY2Kd4th9SHLTVxcSLNBP00sjUHF
- Ag+6NrJmIRBQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9722"; a="240652813"
-X-IronPort-AV: E=Sophos;i="5.76,347,1592895600"; 
-   d="scan'208";a="240652813"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2020 20:27:09 -0700
-IronPort-SDR: K+fZ6JLXSmksjbeNCGf+l7l5S9udUDS7ZP6MfHpEr3qjEgheL81KEtWSpCouTUfT+vCyrPFruo
- DQM/5lLAG3UQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,347,1592895600"; 
-   d="scan'208";a="322006007"
-Received: from ipu5-build.bj.intel.com (HELO [10.238.232.196]) ([10.238.232.196])
-  by fmsmga004.fm.intel.com with ESMTP; 23 Aug 2020 20:27:07 -0700
-Subject: Re: [PATCH] media: staging/intel-ipu3: css: Correctly reset some
- memory
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        sakari.ailus@linux.intel.com, bingbu.cao@intel.com,
-        tian.shu.qiu@intel.com, mchehab@kernel.org,
-        gregkh@linuxfoundation.org, yong.zhi@intel.com
-Cc:     linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200822131124.157917-1-christophe.jaillet@wanadoo.fr>
-From:   Bingbu Cao <bingbu.cao@linux.intel.com>
-Message-ID: <5ae34514-13dc-671f-35a6-75c0343ddd68@linux.intel.com>
-Date:   Mon, 24 Aug 2020 11:26:12 +0800
+        id S1726218AbgHXHTv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Aug 2020 03:19:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50176 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725946AbgHXHTt (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 24 Aug 2020 03:19:49 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CC3FC061573
+        for <kernel-janitors@vger.kernel.org>; Mon, 24 Aug 2020 00:19:49 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id b66so4896687wmb.1
+        for <kernel-janitors@vger.kernel.org>; Mon, 24 Aug 2020 00:19:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=A4jrcUKhNyq6Ips6PWENqMHRhy4MlDm4qFkTIUeY6sU=;
+        b=Zh2M+CReCdB2DseDfEg+S/ILDu5sh9phoSgnmyvis+VRzOt3gmJamiBVybr2DBJ0BY
+         cikhFUufbOjs789a2MCxgb3HIjF5D3/xa9DbYXZ0kRAf8tfyA2EUfVcpGdTcK+FZOJ3a
+         rjti/cvJ4St0QbexsEFngNr4lWMcMRkIyU1WhRatyXjQh4bPiTByH5oXVqfnHTU/AiuU
+         gZAwrZL92ny/djvuJ23htyoYiQ7ATW6XAODpulq8J8gGmAaE3lUt49DwuCXZgQiTVgz+
+         vMXraotcCTAvaMM2+fq3QYvAxb/HA0ah5c3QYsx4ZXyMlPXFLS/5OA0QGc7MwEeo0NbG
+         Wi+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=A4jrcUKhNyq6Ips6PWENqMHRhy4MlDm4qFkTIUeY6sU=;
+        b=c/UIEWhUMB6H7fseGbzDQkoVPQcRmk+L4EHtZXmyc/wi8NrYcXuvBw+Uodhda26ir7
+         72O4m4EPhyPrzGxcuO38mH62KapoLbzRO6YcX5KmvCzF6HX4Vky3skZi+OFUzibGWlRG
+         dyrGFT5lHync04v1wJ0hN+k0Gxc6K6tuv6aunOGofvDhsFuHjFQNnIDOtAj9IA/QeBjs
+         o1q8y35FxDsV3YEBGvqsKDDk4rkKdP3CUvHsPlIHFhWnSQCPQQo3RIb8nhpyXF2jsagW
+         JQzcssK8+G0+UYtht6FeV3FkdDQ9AI1lzezJdRXpDjsDagaaw9FS1WHs6AOclocOEsAk
+         q0VA==
+X-Gm-Message-State: AOAM531VRkD1eAGEXoFEVtbMHkaDY5Hmdku7kPjk7K5vYja8bV1RSyel
+        Oo/Y2I+QNOFDTp7ij3O3wcTPTw==
+X-Google-Smtp-Source: ABdhPJxSuUa0KM13DRe5+ateKWf+FPyJpUyDzLii4cr5Vd9MNz3oLrpbagXrGXXemMNa/KjKiddxrQ==
+X-Received: by 2002:a1c:16:: with SMTP id 22mr2436523wma.75.1598253587747;
+        Mon, 24 Aug 2020 00:19:47 -0700 (PDT)
+Received: from ?IPv6:2a01:e34:ed2f:f020:cd42:2fa4:120f:76b0? ([2a01:e34:ed2f:f020:cd42:2fa4:120f:76b0])
+        by smtp.googlemail.com with ESMTPSA id u13sm7501851wmm.20.2020.08.24.00.19.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Aug 2020 00:19:47 -0700 (PDT)
+Subject: Re: [PATCH] drivers: thermal: Kconfig: fix spelling mistake "acces"
+ -> "access"
+To:     Colin King <colin.king@canonical.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Amit Kucheria <amitk@kernel.org>, linux-pm@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200810082739.48007-1-colin.king@canonical.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <c317ce98-c20d-3c24-2f77-1758dc784de9@linaro.org>
+Date:   Mon, 24 Aug 2020 09:19:46 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200822131124.157917-1-christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=windows-1252
+In-Reply-To: <20200810082739.48007-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Thanks for the patch.
-
-On 8/22/20 9:11 PM, Christophe JAILLET wrote:
-> The intent here is to reset the whole 'scaler_coeffs_luma' array, not just
-> the first element.
+On 10/08/2020 10:27, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Fixes: 	e11110a5b744 ("media: staging/intel-ipu3: css: Compute and program ccs")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> There is a spelling mistake in the Kconfig text, fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/staging/media/ipu3/ipu3-css-params.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/media/ipu3/ipu3-css-params.c b/drivers/staging/media/ipu3/ipu3-css-params.c
-> index fbd53d7c097c..e9d6bd9e9332 100644
-> --- a/drivers/staging/media/ipu3/ipu3-css-params.c
-> +++ b/drivers/staging/media/ipu3/ipu3-css-params.c
-> @@ -159,7 +159,7 @@ imgu_css_scaler_calc(u32 input_width, u32 input_height, u32 target_width,
->  
->  	memset(&cfg->scaler_coeffs_chroma, 0,
->  	       sizeof(cfg->scaler_coeffs_chroma));
-> -	memset(&cfg->scaler_coeffs_luma, 0, sizeof(*cfg->scaler_coeffs_luma));
-> +	memset(&cfg->scaler_coeffs_luma, 0, sizeof(cfg->scaler_coeffs_luma));
->  	do {
->  		phase_step_correction++;
->  
-> 
-Reviewed-by: Bingbu Cao <bingbu.cao@intel.com>
+
+Applied, thanks
+
 
 -- 
-Best regards,
-Bingbu Cao
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog

@@ -2,101 +2,124 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50E7E251338
-	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Aug 2020 09:31:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7853A2514B2
+	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Aug 2020 10:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729445AbgHYHbt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 25 Aug 2020 03:31:49 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:47530 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729194AbgHYHbt (ORCPT
+        id S1729010AbgHYI4F (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 25 Aug 2020 04:56:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36912 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728543AbgHYI4E (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 25 Aug 2020 03:31:49 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07P7U0dS011173;
-        Tue, 25 Aug 2020 07:31:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=PvR618y3occtMaXXpEZj9xY/6rI5rWksmpkzYbPEAEA=;
- b=uExF6f5h2WYO9UTcuF07I5vPP2YUprSKE87WzWl38QJ9qBBILqjzRgQCOu4vY+030tcQ
- f6l6I4KTBSVHVl53SwCoVSCU7bdRB8MD05Dw+L2+57orqkKmzkaC2V4r/QRqHhX8v1E3
- x9KeKsHIw9MjXD2AMaQzAMS/6yZBiXkzjaSJLPOqertrjKIOpTc29uvrf63jlLNP4QjR
- 76vTg7yBCHoQ5E3ZoKYy1SNkvibBcOG/2prxYCn4a6JUY0NugAlHdGZHWTCcaJbopfLu
- aUmrR80J+/h/JJqciYFGUuQ2D6AgsAOiOHGyFwsFDwj3RKq8mLALYsjCsZX9PzqECOUe aw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 333dbrrr4h-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 25 Aug 2020 07:31:15 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07P7QArF030239;
-        Tue, 25 Aug 2020 07:29:15 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 333ru6u2mg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 25 Aug 2020 07:29:14 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 07P7TASV013136;
-        Tue, 25 Aug 2020 07:29:11 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 25 Aug 2020 00:29:10 -0700
-Date:   Tue, 25 Aug 2020 10:29:03 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Walter Harms <wharms@bfs.de>
-Cc:     Stefan Achatz <erazor_de@users.sourceforge.net>,
-        Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH v2] HID: roccat: add bounds checking in
- kone_sysfs_write_settings()
-Message-ID: <20200825072903.GQ1793@kadam>
-References: <1597819984.4101.16.camel@web.de>
- <20200824085735.GA208317@mwanda>
- <ab4625b2b2ea41dd83ff9e192a027f41@bfs.de>
+        Tue, 25 Aug 2020 04:56:04 -0400
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D704C061574;
+        Tue, 25 Aug 2020 01:56:04 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id u126so11631686iod.12;
+        Tue, 25 Aug 2020 01:56:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=1ym7HVRawD2R1wMoufva5doKSTMTU9LB5MWobb2y2g4=;
+        b=fH3Ud9EhGusA1ekRzBqMmNuKHCpE2RcKst87/vEfCAfefjJVQj+IVOjYxTYktKvQuH
+         eMByXfh5Uj40eU0pcSRql5tqE8Oo7Dk3jNtmUZBHcGKbLkZTjlve1OePaHslg1fuIh2/
+         TWejG5jCc+eztSGXfULz1MnPBom4X6G5TaDhTRj7+cZMfV4gDS4wCiOFTt3FpNXt8rLr
+         c4Mx6TwS8b15o25pZGYnZaCtkBIw9ZMA314wE3J56Pip10KJegGUdT6tixHY0fzxAuDz
+         20UCfDsygTNjbOWIJ84HS2H8BoaBf/8H5enwT/uC/m6knNKInZWCutwkqY8tq6usH33Q
+         cRdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=1ym7HVRawD2R1wMoufva5doKSTMTU9LB5MWobb2y2g4=;
+        b=l71giwXWXIk3oPzUrU0btTToAX5dRTobaXXF2BGN2+6d7wozaJKpIclqZ/pX/qWp90
+         JWHTSVHdAxePJWKe+A5yjjwWilcaiIuXY8hJ1bwXZ+z5cLE1eX7VjfQUrN6mJNe9+gg3
+         C4mA244q4ZjAsVRPEM2qbJrfsKC148x2R8i7l3c4qURxnWq700LYhpTjK25kDWG0Bypo
+         elwml2ziUUTJ1v+Mrtl9Fjy2WTCuhn9jnT1cP6hp7obsRf2aU1M7jg9Ny6KVXd6BzmsU
+         fjHLCQ/bFTX4o4Rem3pFPr7iGYcJ3PD68O79TpbEYJFK6/7kjc9Eh9skLnjqMqSnasye
+         OsNw==
+X-Gm-Message-State: AOAM530k2PyKR5pb57Z0AHd1bMlxk4x2PePoWV1NFzcqgzQKpq541M2z
+        urt5jali79QcgfJG1eRfjavf6+ccB7xl4yL9GTQ=
+X-Google-Smtp-Source: ABdhPJy8z2ZviWY02n9MbhlpM36sDmj5wezjv5aqbJ0EsVgzHV2KgTmLE2Ck0BMkppfI3blwHkhWCFw6NAWBWGLcxRo=
+X-Received: by 2002:a05:6638:1685:: with SMTP id f5mr9732373jat.48.1598345763650;
+ Tue, 25 Aug 2020 01:56:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ab4625b2b2ea41dd83ff9e192a027f41@bfs.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9723 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
- bulkscore=0 suspectscore=0 spamscore=0 mlxscore=0 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008250055
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9723 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 clxscore=1015
- priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0
- mlxlogscore=999 spamscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008250056
+References: <74f570e0aab48b86f7a157d87c16715289d457f4.1598323824.git.zhaoqianli@xiaomi.com>
+ <8aef74ea-5b28-07e1-d66b-91ed9e0920e9@web.de>
+In-Reply-To: <8aef74ea-5b28-07e1-d66b-91ed9e0920e9@web.de>
+From:   qianli zhao <zhaoqianligood@gmail.com>
+Date:   Tue, 25 Aug 2020 16:55:52 +0800
+Message-ID: <CAPx_LQEaVq_LFXdhTAkyc_EczurqkLzKcVhb6YKFw6V_0jQbvg@mail.gmail.com>
+Subject: Re: [PATCH v2] workqueue: Warn when work flush own workqueue
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Qianli Zhao <zhaoqianli@xiaomi.com>, Tejun Heo <tj@kernel.org>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Aug 24, 2020 at 03:35:16PM +0000, Walter Harms wrote:
-> hello Dan, 
-> 
-> i notice that you can shorten the line to:
-> (line above checks for count==sizeof(struct kone_settings))
-> 
-> difference = memcmp(settings, &kone->settings, count);
-> 
-> nothing special just to shorten the line and make use of count.
-> 
-> and just to save one indent level and because its  readabel nicely:
->     if ( ! difference ) 
->           goto unlock;
-> 
-> hope that helps
+Markus
 
-Yeah.  I wrote that version and I wanted to send it, but then I decided
-not to change the style too much.  I definitely agree with you, but I
-figured I would keep the patch less intrusive.
+Thanks for your suggestion,and sorry for my poor wording.
 
-regards,
-dan carpenter
+On Tue, Aug 25, 2020 at 4:00 PM Markus Elfring <Markus.Elfring@web.de> wrot=
+e:
+>
+> > Flushing own workqueue or work self in work context will lead to
+> > a deadlock.
+>
+> I imagine that the wording =E2=80=9Cor work self=E2=80=9D can become clea=
+rer another bit.
+>
+>
+> > Catch this incorrect usage and issue a warning when issue happened
+>
+> * Would you like to mark the end of such a sentence with a dot?
+>
+> * How do you think about to adjust the repetition of the word =E2=80=9Cis=
+sue=E2=80=9D?
 
+How about below changelog?
+
+workqueue: Warn when work flush own workqueue
+
+Flushing itself or own workqueue in work context will
+lead to a deadlock.
+Catch this incorrect usage and warning when issue happened.
+
+>
+>
+> =E2=80=A6
+> > - update comment
+> > ---
+> >  kernel/workqueue.c | 10 +++++++---
+>
+> I suggest to replace these triple dashes by a blank line.
+Ok
+>
+>
+> =E2=80=A6
+> > @@ -2585,6 +2585,7 @@ static int rescuer_thread(void *__rescuer)
+> >   * @target_work: work item being flushed (NULL for workqueue flushes)
+> >   *
+> >   * %current is trying to flush the whole @target_wq or @target_work on=
+ it.
+> > + * If a work flushing own workqueue or itself will lead to a deadlock.
+>
+> I stumble on understanding challenges for the wording =E2=80=9Cwork flush=
+ing=E2=80=9D.
+> Can an adjustment help in comparison to the term =E2=80=9Cwork item=E2=80=
+=9D?
+
+How about below comment?
+
+* If a work item flushing own workqueue or itself will lead to a deadlock.
+
+>
+> Regards,
+> Markus

@@ -2,124 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7853A2514B2
-	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Aug 2020 10:56:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C385325152D
+	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Aug 2020 11:17:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729010AbgHYI4F (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 25 Aug 2020 04:56:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36912 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728543AbgHYI4E (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 25 Aug 2020 04:56:04 -0400
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D704C061574;
-        Tue, 25 Aug 2020 01:56:04 -0700 (PDT)
-Received: by mail-io1-xd41.google.com with SMTP id u126so11631686iod.12;
-        Tue, 25 Aug 2020 01:56:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=1ym7HVRawD2R1wMoufva5doKSTMTU9LB5MWobb2y2g4=;
-        b=fH3Ud9EhGusA1ekRzBqMmNuKHCpE2RcKst87/vEfCAfefjJVQj+IVOjYxTYktKvQuH
-         eMByXfh5Uj40eU0pcSRql5tqE8Oo7Dk3jNtmUZBHcGKbLkZTjlve1OePaHslg1fuIh2/
-         TWejG5jCc+eztSGXfULz1MnPBom4X6G5TaDhTRj7+cZMfV4gDS4wCiOFTt3FpNXt8rLr
-         c4Mx6TwS8b15o25pZGYnZaCtkBIw9ZMA314wE3J56Pip10KJegGUdT6tixHY0fzxAuDz
-         20UCfDsygTNjbOWIJ84HS2H8BoaBf/8H5enwT/uC/m6knNKInZWCutwkqY8tq6usH33Q
-         cRdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=1ym7HVRawD2R1wMoufva5doKSTMTU9LB5MWobb2y2g4=;
-        b=l71giwXWXIk3oPzUrU0btTToAX5dRTobaXXF2BGN2+6d7wozaJKpIclqZ/pX/qWp90
-         JWHTSVHdAxePJWKe+A5yjjwWilcaiIuXY8hJ1bwXZ+z5cLE1eX7VjfQUrN6mJNe9+gg3
-         C4mA244q4ZjAsVRPEM2qbJrfsKC148x2R8i7l3c4qURxnWq700LYhpTjK25kDWG0Bypo
-         elwml2ziUUTJ1v+Mrtl9Fjy2WTCuhn9jnT1cP6hp7obsRf2aU1M7jg9Ny6KVXd6BzmsU
-         fjHLCQ/bFTX4o4Rem3pFPr7iGYcJ3PD68O79TpbEYJFK6/7kjc9Eh9skLnjqMqSnasye
-         OsNw==
-X-Gm-Message-State: AOAM530k2PyKR5pb57Z0AHd1bMlxk4x2PePoWV1NFzcqgzQKpq541M2z
-        urt5jali79QcgfJG1eRfjavf6+ccB7xl4yL9GTQ=
-X-Google-Smtp-Source: ABdhPJy8z2ZviWY02n9MbhlpM36sDmj5wezjv5aqbJ0EsVgzHV2KgTmLE2Ck0BMkppfI3blwHkhWCFw6NAWBWGLcxRo=
-X-Received: by 2002:a05:6638:1685:: with SMTP id f5mr9732373jat.48.1598345763650;
- Tue, 25 Aug 2020 01:56:03 -0700 (PDT)
+        id S1729214AbgHYJRj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 25 Aug 2020 05:17:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55066 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729200AbgHYJRi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 25 Aug 2020 05:17:38 -0400
+Received: from coco.lan (ip5f5ad5a4.dynamic.kabel-deutschland.de [95.90.213.164])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C6BD92068F;
+        Tue, 25 Aug 2020 09:17:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1598347058;
+        bh=9QeGB1fXHAQSQh1eR70hPqgCS2Tc/JeiZO9IWAi9qPI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=QG7lkNYwhNzmsuyMt4/05k2/nQtRbBggtJoeFDNh43HKu1cyq/RW+kDL/sSos3BjP
+         10aD46wy0Ay6dlEnwr/KfVlcIXcJCt/eFBMr4imMKhwDAYwvnausAPPsO+CYy7mlV/
+         ZQHB0va3N/VTA1WXmQtBZoSLZIgS74HDyhUHkGwI=
+Date:   Tue, 25 Aug 2020 11:17:34 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] staging: spmi: hisi-spmi-controller: fix spelling
+ mistake "controlller" -> "controller"
+Message-ID: <20200825111734.40c13380@coco.lan>
+In-Reply-To: <20200820075136.186199-1-colin.king@canonical.com>
+References: <20200820075136.186199-1-colin.king@canonical.com>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <74f570e0aab48b86f7a157d87c16715289d457f4.1598323824.git.zhaoqianli@xiaomi.com>
- <8aef74ea-5b28-07e1-d66b-91ed9e0920e9@web.de>
-In-Reply-To: <8aef74ea-5b28-07e1-d66b-91ed9e0920e9@web.de>
-From:   qianli zhao <zhaoqianligood@gmail.com>
-Date:   Tue, 25 Aug 2020 16:55:52 +0800
-Message-ID: <CAPx_LQEaVq_LFXdhTAkyc_EczurqkLzKcVhb6YKFw6V_0jQbvg@mail.gmail.com>
-Subject: Re: [PATCH v2] workqueue: Warn when work flush own workqueue
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Qianli Zhao <zhaoqianli@xiaomi.com>, Tejun Heo <tj@kernel.org>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Markus
+Em Thu, 20 Aug 2020 08:51:36 +0100
+Colin King <colin.king@canonical.com> escreveu:
 
-Thanks for your suggestion,and sorry for my poor wording.
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a spelling mistake in the MODULE_ALIAS, fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-On Tue, Aug 25, 2020 at 4:00 PM Markus Elfring <Markus.Elfring@web.de> wrot=
-e:
->
-> > Flushing own workqueue or work self in work context will lead to
-> > a deadlock.
->
-> I imagine that the wording =E2=80=9Cor work self=E2=80=9D can become clea=
-rer another bit.
->
->
-> > Catch this incorrect usage and issue a warning when issue happened
->
-> * Would you like to mark the end of such a sentence with a dot?
->
-> * How do you think about to adjust the repetition of the word =E2=80=9Cis=
-sue=E2=80=9D?
+> ---
+>  drivers/staging/hikey9xx/hisi-spmi-controller.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/hikey9xx/hisi-spmi-controller.c b/drivers/staging/hikey9xx/hisi-spmi-controller.c
+> index 66a0b296e06f..b132b2a5d939 100644
+> --- a/drivers/staging/hikey9xx/hisi-spmi-controller.c
+> +++ b/drivers/staging/hikey9xx/hisi-spmi-controller.c
+> @@ -354,4 +354,4 @@ module_exit(spmi_controller_exit);
+>  
+>  MODULE_LICENSE("GPL v2");
+>  MODULE_VERSION("1.0");
+> -MODULE_ALIAS("platform:spmi_controlller");
+> +MODULE_ALIAS("platform:spmi_controller");
 
-How about below changelog?
 
-workqueue: Warn when work flush own workqueue
 
-Flushing itself or own workqueue in work context will
-lead to a deadlock.
-Catch this incorrect usage and warning when issue happened.
-
->
->
-> =E2=80=A6
-> > - update comment
-> > ---
-> >  kernel/workqueue.c | 10 +++++++---
->
-> I suggest to replace these triple dashes by a blank line.
-Ok
->
->
-> =E2=80=A6
-> > @@ -2585,6 +2585,7 @@ static int rescuer_thread(void *__rescuer)
-> >   * @target_work: work item being flushed (NULL for workqueue flushes)
-> >   *
-> >   * %current is trying to flush the whole @target_wq or @target_work on=
- it.
-> > + * If a work flushing own workqueue or itself will lead to a deadlock.
->
-> I stumble on understanding challenges for the wording =E2=80=9Cwork flush=
-ing=E2=80=9D.
-> Can an adjustment help in comparison to the term =E2=80=9Cwork item=E2=80=
-=9D?
-
-How about below comment?
-
-* If a work item flushing own workqueue or itself will lead to a deadlock.
-
->
-> Regards,
-> Markus
+Thanks,
+Mauro

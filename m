@@ -2,70 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC1F62516D9
-	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Aug 2020 12:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C71C2516D8
+	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Aug 2020 12:47:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729698AbgHYKra (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 25 Aug 2020 06:47:30 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:41586 "EHLO
+        id S1729877AbgHYKrU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 25 Aug 2020 06:47:20 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:41486 "EHLO
         userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729827AbgHYKr3 (ORCPT
+        with ESMTP id S1729827AbgHYKrU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 25 Aug 2020 06:47:29 -0400
+        Tue, 25 Aug 2020 06:47:20 -0400
 Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07PAjD40136601;
-        Tue, 25 Aug 2020 10:46:38 GMT
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07PAjKVu136657;
+        Tue, 25 Aug 2020 10:47:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=XvFqJGnjaVhEvnjqbb7PvWLcd+LBfxppuO+39ZHs3is=;
- b=eghatQWdA9Fma9m9I0lZH+GKKCrUiRx0N9wgf9XqE9U7BmXK89LZQCZkkrU44HzrxZRr
- hbmyEPC8djWzwNrMjvFSFykz08azhcq3pWe/R3EZf+1Gu8YoHdjpPzkTJTI0y/g7HClB
- T9dHNqMbN/FFseYnkfi0pYo6ND94WKgzXbgfAPAx0Og6Am4eAFcSFpgcsT/SUGxmN1Xt
- trgX0VOF6mjUapyo0X2y8QCjU0oa2M1idx5OWxN5VxQn4EAHkHO3FauGC2JwCwy5uZiS
- gYVeq25xAF97jEPUrBZ9aX9TfmG1fG5peJR6Pu08btRziSEwyZWg8YMLR1cBWbmFDrne 9w== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 333w6tr975-1
+ bh=yn0OmaXlVdIsJwcUdyYW+Kk02+g/l6M7ahIn4FwXthk=;
+ b=RHPEP9kRltu6yfez+jWi1UjXRi3pvfhA636WJj9aN3Uo5IAedNdNi6gzzU/DnXTTBtXS
+ X6s1KKzkKDLNpc0EHlImjWcHYSRHH57wD975Q790BZwBJ6ilAdqazL26isgMex7WvsbP
+ ChTbD/RqjD9N/hSjAmmGCkNgS/WoSu2GAhZESypO4fOuz5dURx5b5VmnzABzIOgu0jlJ
+ tAyVdQcrUpUrfDjzcQoZgwA2jTqggvV6pI7oUs54Ancx6NfVu/felzW2HNbbyNKjRGhg
+ Nd6efXC0QTc5IcRW26lhpPd779j2rLcLnEWLqehcfkmFcUfauG2yF29aLPLjk6SXA8Lq AA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 333w6tr991-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 25 Aug 2020 10:46:38 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07PAilYF036945;
-        Tue, 25 Aug 2020 10:46:37 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 333r9jqurt-1
+        Tue, 25 Aug 2020 10:47:16 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07PAiaA3153129;
+        Tue, 25 Aug 2020 10:47:16 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 333rtxn0n3-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 25 Aug 2020 10:46:37 +0000
-Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 07PAkWSj013893;
-        Tue, 25 Aug 2020 10:46:32 GMT
+        Tue, 25 Aug 2020 10:47:15 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 07PAlEeV008592;
+        Tue, 25 Aug 2020 10:47:15 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 25 Aug 2020 03:46:31 -0700
-Date:   Tue, 25 Aug 2020 13:46:23 +0300
+        with ESMTP ; Tue, 25 Aug 2020 03:47:14 -0700
+Date:   Tue, 25 Aug 2020 13:47:07 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>
-Cc:     Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Brent Lu <brent.lu@intel.com>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>,
-        Amadeusz =?utf-8?B?U8WCYXdpxYRza2k=?= 
-        <amadeuszx.slawinski@linux.intel.com>, alsa-devel@alsa-project.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] ASoC: hdac_hdmi: tidy up a memset()
-Message-ID: <20200825104623.GA278587@mwanda>
+To:     Roger Quadros <rogerq@ti.com>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Jon Hunter <jon-hunter@ti.com>, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] memory: omap-gpmc: Fix a couple off by ones
+Message-ID: <20200825104707.GB278587@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9723 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 bulkscore=0
- adultscore=0 spamscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008250081
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0
+ phishscore=0 spamscore=0 bulkscore=0 mlxlogscore=810 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008250081
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9723 signatures=668679
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
- mlxlogscore=999 suspectscore=0 phishscore=0 malwarescore=0 spamscore=0
+ mlxlogscore=796 suspectscore=0 phishscore=0 malwarescore=0 spamscore=0
  priorityscore=1501 clxscore=1011 mlxscore=0 lowpriorityscore=0 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
  definitions=main-2008250081
@@ -74,28 +69,38 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The ARRAY_SIZE() is the number of the elements but we want to use the
-number of bytes.  Fortunately, in this case the value is the same so it
-doesn't affect runtime.
+These comparisons should be >= instead of > to prevent reading one
+element beyond the end of the gpmc_cs[] array.
 
+Fixes: cdd6928c589a ("ARM: OMAP2+: Add device-tree support for NOR flash")
+Fixes: f37e4580c409 ("ARM: OMAP2: Dynamic allocator for GPMC memory space")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- sound/soc/codecs/hdac_hdmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/memory/omap-gpmc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/hdac_hdmi.c b/sound/soc/codecs/hdac_hdmi.c
-index 869d1547ae5d..c61cce53f513 100644
---- a/sound/soc/codecs/hdac_hdmi.c
-+++ b/sound/soc/codecs/hdac_hdmi.c
-@@ -1474,7 +1474,7 @@ static int hdac_hdmi_eld_ctl_get(struct snd_kcontrol *kcontrol,
- 	struct hdac_hdmi_port *port;
- 	struct hdac_hdmi_eld *eld;
+diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+index cd9e80748591..fd245b82163a 100644
+--- a/drivers/memory/omap-gpmc.c
++++ b/drivers/memory/omap-gpmc.c
+@@ -989,7 +989,7 @@ static int gpmc_cs_remap(int cs, u32 base)
+ 	int ret;
+ 	u32 old_base, size;
  
--	memset(ucontrol->value.bytes.data, 0, ARRAY_SIZE(ucontrol->value.bytes.data));
-+	memset(ucontrol->value.bytes.data, 0, sizeof(ucontrol->value.bytes.data));
+-	if (cs > gpmc_cs_num) {
++	if (cs >= gpmc_cs_num) {
+ 		pr_err("%s: requested chip-select is disabled\n", __func__);
+ 		return -ENODEV;
+ 	}
+@@ -1024,7 +1024,7 @@ int gpmc_cs_request(int cs, unsigned long size, unsigned long *base)
+ 	struct resource *res = &gpmc->mem;
+ 	int r = -1;
  
- 	pcm = get_hdmi_pcm_from_id(hdmi, kcontrol->id.device);
- 	if (!pcm) {
+-	if (cs > gpmc_cs_num) {
++	if (cs >= gpmc_cs_num) {
+ 		pr_err("%s: requested chip-select is disabled\n", __func__);
+ 		return -ENODEV;
+ 	}
 -- 
 2.28.0
 

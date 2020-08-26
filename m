@@ -2,55 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79319252C86
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Aug 2020 13:35:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A9B1252CA0
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Aug 2020 13:41:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728917AbgHZLfX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Aug 2020 07:35:23 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:41520 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728959AbgHZLed (ORCPT
+        id S1729079AbgHZLlL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Aug 2020 07:41:11 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:49526 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729040AbgHZLgi (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Aug 2020 07:34:33 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07QBU3OI079427;
-        Wed, 26 Aug 2020 11:33:39 GMT
+        Wed, 26 Aug 2020 07:36:38 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07QBYwZW136003;
+        Wed, 26 Aug 2020 11:36:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=4d0UEY0MXbhyacpjI1yRuNRF+3MeSwYn+K5Lelz7zok=;
- b=SO5iEERq4BF1tLDEDNrPv4XwotVauqLillq4/v5Mc/+xjDq0Qy1jaGClXXyjs3l40zOc
- gw/Tqyw1+jv+wZxtVypp51J9RU7r6eUKu1I+yXE+K5b1oK7n1FQlvcW6mkK/dC7kFY32
- VLzwdWxDUHN6PC3ZP0i9ep87Et8R0II5dq8DQRSAGgpd/sVZj61jhrP0UN1fJBxj7dLO
- P0X8DDJmqa6tt25759bT2RQuvJphDCgXjcXhHMhl8/5OALJXVRq39UMNpGp5FeBwr/N3
- qGyu3eumDuRE/+u/f3QCsE6L6ceAbCPnHc0MNl00Xil9/8GwfJSwahcPsuLqmzYECf1m wA== 
+ bh=i9IEF04lloPCY2BXKlzUh8baD/0kEGW5us6maMcfgLE=;
+ b=XrQX+cynp0UrQP6cRjccIkFR7WzFtkKUxNmnodPyQL6lGUu7kAEFcV1Q2+ZE/qxwEUxY
+ PRlmSmO5gEYZPcZlvUsFSssPdkY+NTjpZi0c+ueLrfbu7wVGZMxZiGwpnSv7czroVQlk
+ JQYrvS75TQazMRiNCr7c3rFtQYeYa5CPcw1xWVZVazhWoOecKuqcRkK+NbMmdAjg7WL9
+ S7Rc2Tf2vX5KkumwVYk4YUQ2FzOPGCqhvN88/YzQWk8Nuu0pHf0rKNJAAolJ3NZCQtN/
+ iAkARXMz6wcixhQZxD9qKaHCwHpVEHsrqHIJRKDFabaQuxAYRv3w6/bQXoQ/OUOctWxm Hg== 
 Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 333dbrytst-1
+        by userp2130.oracle.com with ESMTP id 335gw81p8v-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 26 Aug 2020 11:33:39 +0000
+        Wed, 26 Aug 2020 11:36:25 +0000
 Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07QBUE92001015;
-        Wed, 26 Aug 2020 11:33:38 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 333rua2a2w-1
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07QBUEMr001026;
+        Wed, 26 Aug 2020 11:34:25 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 333rua2bqs-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 26 Aug 2020 11:33:38 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 07QBXbQi012927;
-        Wed, 26 Aug 2020 11:33:37 GMT
+        Wed, 26 Aug 2020 11:34:25 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 07QBYOLR022202;
+        Wed, 26 Aug 2020 11:34:24 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 26 Aug 2020 04:33:36 -0700
-Date:   Wed, 26 Aug 2020 14:33:30 +0300
+        with ESMTP ; Wed, 26 Aug 2020 04:34:23 -0700
+Date:   Wed, 26 Aug 2020 14:34:17 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Christoph Hellwig <hch@lst.de>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        Govind Singh <govinds@codeaurora.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] dma-pool: Fix an uninitialized variable bug in
- atomic_pool_expand()
-Message-ID: <20200826113330.GD393664@mwanda>
+Subject: [PATCH net-next] ath11k: return -ENOMEM on allocation failure
+Message-ID: <20200826113417.GE393664@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -61,37 +59,37 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 p
  malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2008260093
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9724 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 clxscore=1011
- priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0
- mlxlogscore=999 spamscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008260093
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 lowpriorityscore=0
+ mlxscore=0 phishscore=0 bulkscore=0 impostorscore=0 adultscore=0
+ malwarescore=0 clxscore=1011 spamscore=0 mlxlogscore=999
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008260094
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "page" pointer can be used with out being initialized.
+Returning PTR_ERR(NULL) means success, but we should return -ENOMEM.
 
-Fixes: d7e673ec2c8e ("dma-pool: Only allocate from CMA when in same memory zone")
+Fixes: 1399fb87ea3e ("ath11k: register MHI controller device for QCA6390")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- kernel/dma/pool.c | 2 +-
+ drivers/net/wireless/ath/ath11k/mhi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
-index 06582b488e31..1281c0f0442b 100644
---- a/kernel/dma/pool.c
-+++ b/kernel/dma/pool.c
-@@ -84,7 +84,7 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
- 			      gfp_t gfp)
- {
- 	unsigned int order;
--	struct page *page;
-+	struct page *page = NULL;
- 	void *addr;
- 	int ret = -ENOMEM;
+diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
+index d7e60dc5b300..aded9a719d51 100644
+--- a/drivers/net/wireless/ath/ath11k/mhi.c
++++ b/drivers/net/wireless/ath/ath11k/mhi.c
+@@ -220,7 +220,7 @@ int ath11k_mhi_register(struct ath11k_pci *ab_pci)
  
+ 	mhi_ctrl = kzalloc(sizeof(*mhi_ctrl), GFP_KERNEL);
+ 	if (!mhi_ctrl)
+-		return PTR_ERR(mhi_ctrl);
++		return -ENOMEM;
+ 
+ 	ath11k_core_create_firmware_path(ab, ATH11K_AMSS_FILE,
+ 					 ab_pci->amss_path,
 -- 
 2.28.0
 

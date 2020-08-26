@@ -2,90 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E914253577
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Aug 2020 18:52:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1094F2536B4
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Aug 2020 20:22:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727807AbgHZQwn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Aug 2020 12:52:43 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:48860 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727080AbgHZQwm (ORCPT
+        id S1726802AbgHZSWi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Aug 2020 14:22:38 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:39111 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726241AbgHZSWh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Aug 2020 12:52:42 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07QGnqlQ064879;
-        Wed, 26 Aug 2020 16:52:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=CrsB4hOh/IOUnBY1dl7dcxJi5+3Jl0r1xaa80gDONMo=;
- b=UEnbnMrP8mqj5BsJHIGuOjnCvJvNvGoC+ag0xw9anfWjXhUaUECQhQF2OLCc2JG7Qheg
- HkhT8TLGzCc2QclrFIuCnlauQiMFVJLqb1Dq5Ofy14Wfx8ptWG5GWT238ek+YIUin/pm
- QY1MUFSQRXhO0N8dj3LJkDfLydyYZCk4wJNoEmg1RisTI1AlIHDPMQUbFBjRgYBYYNBl
- 9SyOkSxuTxXUzZKsI0n7pISnAIRnI3RNi0syAGRuTruKvGqfiWVGZXuGeHexGBsL7anW
- agzrUuJFnpeVfCXi0SV/8yzGqo17fiiagCDUqsv5iyWk9+uZq4Xs7692FiCT4I3M6N+p mw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 333dbs1n5q-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 26 Aug 2020 16:52:39 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07QGoqCN123571;
-        Wed, 26 Aug 2020 16:52:39 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 333r9mcwt6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 26 Aug 2020 16:52:39 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 07QGqcr4031493;
-        Wed, 26 Aug 2020 16:52:39 GMT
-Received: from [10.74.108.37] (/10.74.108.37)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 26 Aug 2020 09:52:38 -0700
-Subject: Re: [PATCH] memory: emif: Remove bogus debugfs error handling
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Wed, 26 Aug 2020 14:22:37 -0400
+Received: by mail-ed1-f65.google.com with SMTP id c10so2593751edk.6;
+        Wed, 26 Aug 2020 11:22:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=47B2W9chqSleNpfDGutHaxEQjzT9C3+pWqaOpYKfY50=;
+        b=PbNx2hzX7W/T0GGXa9B88D3soPnMMENlLihfgZ8FzFbjE9b8QQZOZ/1XShjOqbtFdz
+         USxIJNfPzlQwIWXqSw5RU+WmRN7735lcA7obYZgIuBWSGR5KxqXfw//5AasaZiia8deu
+         h4sHGKnUJ4fdY9/Fyu7UPtxku2U5VVkVelpO8xya8G8wfdeI56TezV8cQKoCY5QG/Q4l
+         PMmuUiFVwNj8uVDX1suZLFucTrxIqClbP/lcEstE40JwM7pej5zV6YzYGuhAhK0+3X3d
+         X0w/qD9BjATTRgSo0YQ4OETNoHa2IveuVfgHdMui5WCLk8CSiTf4cAvn6J3OhsrdlG0s
+         4s3A==
+X-Gm-Message-State: AOAM533HbuNE/BulVDMU4U29CvnkwRaZFrqzOQ1PLL4BipCT9V4XgJyE
+        RLPmxomTGP31z89QaUQppt4=
+X-Google-Smtp-Source: ABdhPJyd9xYN9KNF7syF5JCDBo85byE7AJMEAitafvWaoIZ8nSo+RsrNr+IBot47UFGzmZ5z8L8emg==
+X-Received: by 2002:a05:6402:1b02:: with SMTP id by2mr12999107edb.95.1598466155084;
+        Wed, 26 Aug 2020 11:22:35 -0700 (PDT)
+Received: from kozik-lap ([194.230.155.216])
+        by smtp.googlemail.com with ESMTPSA id a23sm2954376eju.43.2020.08.26.11.22.33
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 26 Aug 2020 11:22:34 -0700 (PDT)
+Date:   Wed, 26 Aug 2020 20:22:32 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Roger Quadros <rogerq@ti.com>, Tony Lindgren <tony@atomide.com>,
+        Jon Hunter <jon-hunter@ti.com>, linux-omap@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200826113759.GF393664@mwanda>
-From:   santosh.shilimkar@oracle.com
-Organization: Oracle Corporation
-Message-ID: <10387fe0-579a-de71-44ad-ac585ff604d6@oracle.com>
-Date:   Wed, 26 Aug 2020 09:52:37 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.9.0
+Subject: Re: [PATCH] memory: omap-gpmc: Fix a couple off by ones
+Message-ID: <20200826182232.GA11327@kozik-lap>
+References: <20200825104707.GB278587@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20200826113759.GF393664@mwanda>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9725 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 bulkscore=0
- adultscore=0 spamscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008260125
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9725 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 clxscore=1011
- priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0
- mlxlogscore=999 spamscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008260125
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200825104707.GB278587@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 8/26/20 4:37 AM, Dan Carpenter wrote:
-> Callers are generally not supposed to check the return values from
-> debugfs functions.  Debugfs functions never return NULL so this error
-> handling will never trigger.  (Historically debugfs functions used to
-> return a mix of NULL and error pointers but it was eventually deemed too
-> complicated for something which wasn't intended to be used in normal
-> situations).
+On Tue, Aug 25, 2020 at 01:47:07PM +0300, Dan Carpenter wrote:
+> These comparisons should be >= instead of > to prevent reading one
+> element beyond the end of the gpmc_cs[] array.
 > 
-> Delete all the error handling.
-> 
+> Fixes: cdd6928c589a ("ARM: OMAP2+: Add device-tree support for NOR flash")
+> Fixes: f37e4580c409 ("ARM: OMAP2: Dynamic allocator for GPMC memory space")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
-Looks good to me !!
+>  drivers/memory/omap-gpmc.c | 4 ++--
 
-Acked-by: Santosh Shilimkar <ssantosh@kernel.org>
+Thanks, applied.
+
+Best regards,
+Krzysztof
+

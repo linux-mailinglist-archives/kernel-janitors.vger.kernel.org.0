@@ -2,107 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5993F251F5F
-	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Aug 2020 20:53:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 909A8252502
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Aug 2020 03:21:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726225AbgHYSx5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 25 Aug 2020 14:53:57 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:41944 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726090AbgHYSx4 (ORCPT
+        id S1726635AbgHZBVe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 25 Aug 2020 21:21:34 -0400
+Received: from sonic316-12.consmr.mail.bf2.yahoo.com ([74.6.130.122]:36318
+        "EHLO sonic316-12.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726593AbgHZBVd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 25 Aug 2020 14:53:56 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07PIrjHa028261;
-        Tue, 25 Aug 2020 18:53:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=B6FbhnWnJkHzgO+K3GfU2abE43l4nQTFaiun28/rFCE=;
- b=O+RpyJlVfoVhJNg6eIW5iUhW9p+OHltQ/xqTM+HWmcBCZOW0sRMUz+brYTKvnof9Ty+T
- 7chYJm24euf//eiGPBElkCzkRS9KfQ5RJIuhP2Cx25l/N1xZYgc4jhYO+dNxy0a0xNnZ
- q2ROkfIqETQ2RSsJV5zGNzPwLqMOoGpP8uWP9tID37IVZwP5dNCJkMuxzrC5ceqs4HLZ
- eNVlqKef40mCROQvrWO0MeKfE3apzkoU2pDdEfq7k/lxb6Q9j1mHHWW8ENBEv2jIyINy
- g0mR1berTkTh1vJjP801xRzn5nYzoHnQgINrEXGjpzHKjjrX0NlYl1L39rr+ErjWMg9U VA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 333dbrvan0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 25 Aug 2020 18:53:47 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07PIkc5Q046488;
-        Tue, 25 Aug 2020 18:53:46 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 333rty5yrt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 25 Aug 2020 18:53:46 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 07PIrcmU012013;
-        Tue, 25 Aug 2020 18:53:38 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 25 Aug 2020 11:53:37 -0700
-Date:   Tue, 25 Aug 2020 21:53:24 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Alex Deucher <alexdeucher@gmail.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        Alex Jivin <alex.jivin@amd.com>,
-        Frederick Lawler <fred@fredlawl.com>,
-        David Airlie <airlied@linux.ie>,
-        kernel-janitors@vger.kernel.org,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Sonny Jiang <sonny.jiang@amd.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Monk Liu <Monk.Liu@amd.com>,
-        Hawking Zhang <Hawking.Zhang@amd.com>
-Subject: Re: [PATCH 1/3] drm/amdgpu/si: Fix buffer overflow in
- si_get_register_value()
-Message-ID: <20200825185324.GW5493@kadam>
-References: <20200825111843.GA285523@mwanda>
- <CADnq5_O0f7NdR92PSKFS0zrN4oFb_WJXX1E_HQ9uHzM-4NL2OQ@mail.gmail.com>
+        Tue, 25 Aug 2020 21:21:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1598404892; bh=hvPJp6ctE/5SYCYFIZL9KLCup9r8xj7ZdxzCxEmZiX8=; h=From:To:Cc:Subject:Date:References:From:Subject; b=XAywxWAAwiJGATI6sui9X9kBj+rlfShyigbcIJoaMurmv6oaljLV03MBPdkknVxHX0wx/V3bq1MxI1vhlN3v/mHQmfngeZtvAWaOykRhaCIW1+i8mzfLd2ol9rlcJ2WaWil90wm7PDOCPY1+QMSONna6ohXspg7Lvqb/mA568cDTPiAY/7E2cczQpoBCVMhdEEx0X8Ucyv7gy6SC09Y9F7wbGkQCdU1NsvfE2aKJKg0TUsM4+mjVUI6/Y9ioGG6ebXO2DxRUFYcHVXTP5J/9WYLai/YvZ03ZaXPS3m3TaVCSwlLdJoLF09Wx9VuwZzQwVLh6b4oUjdPTjKJFp6lsOA==
+X-YMail-OSG: HMjB91cVM1milBO8qIi7BOBDUAzF5WrF9y2Yow151YcHNZ6f1y1tZYCFv0Y_EnZ
+ QLLHuo3_AIOzb_K_WZbb87e5XogpPOBD.hj6wlMt9SQmFjPXaDeEe4wB28aa4obQGbaIxX5s8rSh
+ wtoON_m7Jj7ifmg1dsIW.oKaFrKvCXtnW..iFNPxNUMGi1d.xToaCKR_ecuu.sdAff2DLoRrrGT0
+ tBRMnqG2CBWXVajenUIjkUf2QbySx8CqARpQEy9Qr1PSL6umj76sXPXK4LoUHt_H6Y9_eKg21bpF
+ LAMQELrjXipKtizd_PoapDSWGRk60SwJU7NnE1mMpqqxNDVQ0GuR7y1g_O8hTQoNtfHlD13arIgf
+ WBrjCp0qhWsfh6NLlgbMLOTEtcElDsjf2Lx90TaCb8y0JrYCtwhqZiyvMjXeHYoGxbnn.vAJbOsP
+ fWGQ9Ss9uiMSRwmaAHsVrhMsECqKLGWTOf.OELTeABqnvCbV23_.2faeKxJsXdCqH_.rnec3Zt.A
+ iQSYuhe87L9jj4P4EEuZvGNG3vAZqFnRr1wLZ5mh69afPnaUltULDolK5JSSKTKekra2TnmQ8eSH
+ xYH5wo0iw9ckPVArK_uuA58mtgFZEJX5vAdV95lbOC.JVf9.GhA7SWyAMlMvP8QHzeINlNDZ8rMZ
+ 86RRjqJiA.QlGB9bc0dT_0xviiCI_4_WWhWffsDVvTsQYy9c7Xy8jPlEbr4.WiCtgurVZX1XM9Sc
+ 3S_gbypgoRDInbz1DfpYNbzmKzkWsRorCA19jnzewbawN2W5IwCdTKa3UmMPVYMyWNbjrjCQYa9x
+ mG10Djw9omvkaKeSnRuVIg4KeQDS33b_3aFST3MegR34lXrTlAJSgct6nXJf3eX1g1l3Uq8O9BrH
+ H677Zoa.N7_21iRGc5jI_6qt6IcDWRi.jRF_T6W6VAEPjd9XnQn_mHyPW1yG7ByU6WIZrvy3eXCo
+ Ax8ozpgEpH3OT28f_8ZAEkLOhxTNFMVRk.3HjbYwZ9L8hb70jwrK_zsz9tw.gr1icvmqMQb_HreT
+ TD2dwv1AG_buUx6lfCjCnTGEZlCDz729mRV5c1YSJrFYd9WtgTfVzInNoH314WDADvGvIV0OqADw
+ XeJSv4QOuRI7gig2WPVi7QcQSvxzUZs7i8jO69mAXdmzK1IoCsvQTLeez2hILpj71A3Fk9mmxWAM
+ m_vRtuweBGQojL7R0FEUHjmnLe6sOkVYY9nGdSKsRy7aRbcmemWkRFKEZc7j95Q5tmKsqIzgYuRu
+ sYGc_0CfXjksZP3BGlDFCSugtQ9L9muHTwxMqL9qnwE6RS1sPINnnywQ0cBcRdHmm7ZNMruwqR2W
+ Rh9MyI.W5sTDGsocI3w8HVym1avADuWvUOHY9Zt3GHAJWfE3YFjuTW1ZuS6q9dTA6FZM0i6jTZux
+ y.9zoPIBz4ggUREB1EB7V943iBFkqXW.9HVCVjYJQ4UnZQZU4zcXVGSzvB9MCW47ur7ALOsC3NNe
+ rH9VshuZSZTNrfPe8lOJ44SZ_OTMXXgmFqCXL9L2XCb6w
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.bf2.yahoo.com with HTTP; Wed, 26 Aug 2020 01:21:32 +0000
+Received: by smtp409.mail.ne1.yahoo.com (VZM Hermes SMTP Server) with ESMTPA ID 4c062739663d1210c3979176d6dc911c;
+          Wed, 26 Aug 2020 01:21:29 +0000 (UTC)
+From:   "Timo A. Aranjo" <timo.aranjo@aol.com>
+To:     kernel-janitors@vger.kernel.org
+Cc:     sudipm.mukherjee@gmail.com, teddy.wang@siliconmotion.com,
+        gregkh@linuxfoundation.org, linux-fbdev@vger.kernel.org,
+        julia.lawall@inria.fr, dan.carpenter@oracle.com,
+        "Timo A. Aranjo" <timo.aranjo@aol.com>
+Subject: [PATCH] Staging: sm750fb: Fix basic coding style issues
+Date:   Tue, 25 Aug 2020 20:21:01 -0500
+Message-Id: <20200826012101.12162-1-timo.aranjo@aol.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CADnq5_O0f7NdR92PSKFS0zrN4oFb_WJXX1E_HQ9uHzM-4NL2OQ@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9723 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0
- phishscore=0 spamscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008250141
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9723 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 clxscore=1011
- priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0
- mlxlogscore=999 spamscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008250142
+Content-Transfer-Encoding: 8bit
+References: <20200826012101.12162-1-timo.aranjo.ref@aol.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Aug 25, 2020 at 11:53:25AM -0400, Alex Deucher wrote:
-> On Tue, Aug 25, 2020 at 7:21 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> >
-> > The values for "se_num" and "sh_num" come from the user in the ioctl.
-> > They can be in the 0-255 range but if they're more than
-> > AMDGPU_GFX_MAX_SE (4) or AMDGPU_GFX_MAX_SH_PER_SE (2) then it results in
-> > an out of bounds read.
-> >
-> > I split this function into to two to make the error handling simpler.
-> >
-> > Fixes: dd5dfa61b4ff ("drm/amdgpu: refine si_read_register")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> 
-> Good catch.  This is more defensive, but It's a much simpler check to
-> validate these in the caller.  See the attached patch.
-> 
+The word "enought" was changed to read as "enough".
+In addition to this, there was a missing new-line after varaible
+declarations within a function.
 
-That works too.
+Signed-off-by: Timo A. Aranjo <timo.aranjo@aol.com>
+---
+ drivers/staging/sm750fb/sm750.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Acked-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-regards,
-dan carpenter
+diff --git a/drivers/staging/sm750fb/sm750.c b/drivers/staging/sm750fb/sm750.c
+index 84fb585a5739..029f0d09e966 100644
+--- a/drivers/staging/sm750fb/sm750.c
++++ b/drivers/staging/sm750fb/sm750.c
+@@ -411,6 +411,7 @@ static int __maybe_unused lynxfb_suspend(struct device *dev)
+ {
+ 	struct fb_info *info;
+ 	struct sm750_dev *sm750_dev;
++
+ 	sm750_dev = dev_get_drvdata(dev);
+ 
+ 	console_lock();
+@@ -500,7 +501,7 @@ static int lynxfb_ops_check_var(struct fb_var_screeninfo *var,
+ 	var->height = var->width = -1;
+ 	var->accel_flags = 0;/* FB_ACCELF_TEXT; */
+ 
+-	/* check if current fb's video memory big enought to hold the onscreen*/
++	/* check if current fb's video memory big enough to hold the onscreen*/
+ 	request = var->xres_virtual * (var->bits_per_pixel >> 3);
+ 	/* defaulty crtc->channel go with par->index */
+ 
+-- 
+2.25.1
 

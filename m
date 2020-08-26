@@ -2,81 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FF732534BB
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Aug 2020 18:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E914253577
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Aug 2020 18:52:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727986AbgHZQW0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Aug 2020 12:22:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47966 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726862AbgHZQWY (ORCPT
+        id S1727807AbgHZQwn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Aug 2020 12:52:43 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:48860 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727080AbgHZQwm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Aug 2020 12:22:24 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32FD3C061574;
-        Wed, 26 Aug 2020 09:22:21 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id k10so1313615lfm.5;
-        Wed, 26 Aug 2020 09:22:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BtT/4wVpsckCYLZ8n/zzlgxrXxVC3on9xl+ly7YJvbg=;
-        b=tc4j+KoKAigY4Z31jsSv57tW3V+T42yEU2FIfYieeA5dzNcnB8hrMO44XVDwJWxYYD
-         Oqz7xSHf8Mb/estAk8V0sRxEU9sTLpWC5DaqYtInGLTxCD3mEgx7b4xd7oRFKX1sSdRH
-         omt55CPM+Twp0UEVoLgkOSP/TTwX3GjKwEi7TkSWAwNcCJDLnRIUYW0/H8OAbINcNxjf
-         Sa+F6yVzZMkKNCuYpEg4f5Xao+gezUQr50RvfYsHetjUoNkMII9mbq5C3AnCuEct+ZE/
-         3OznTVV7sJg1olYrxpgFo9wY8/PKK7/6/qWnWs/QU9qH450MuY2+bMEmmD4Ve0+yoMR8
-         PbYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BtT/4wVpsckCYLZ8n/zzlgxrXxVC3on9xl+ly7YJvbg=;
-        b=jBbmkjumxy943VqQ0ba0IujkxFOBFWmKuPg19Q6+F1MFg4OunvYgnEdgy9wzKi46Dn
-         IWSrS0hCDJhV7+eBDRcw9gUdE9UTiVv3lQ8s4pEyRjSbIhgEQQC1q7znDqmzWRSfujUT
-         FsxmHb4aOfXVFDACQuuHrDXNqA6xda8le79AIZ1ewwfbCeavWd448rxWlTVGe6ksYL6O
-         5tcVExl0umzi5ZscUALbhbVnBqakpBnUYGlufVvQ0THUfchfhSBYqw4ztL7ffv12r8uu
-         rE4cC3sa8OvJ3/urDi7Hjga/nERJopCfV4xHIZpCgbuOOxaH7sk2zAmmAZev/sda30iq
-         vQYA==
-X-Gm-Message-State: AOAM533thep1bdiegtaGbwMEgVX2Z05YEtmtEdhscNX5LrlCXr+lB2qk
-        mjz0IlHTfjzOzWnPLFViFXJj3ezVIFIp0RE0BAGCPl8V
-X-Google-Smtp-Source: ABdhPJy6WsGLpYT6ef2HZAU1XlNg+2DvK0xpGmvBdrIYxBRMiBqa3AqHN/PqIRkKYIYYI+bsiT7mel1SOnHT5CZmekE=
-X-Received: by 2002:a05:6512:74b:: with SMTP id c11mr7549812lfs.119.1598458938599;
- Wed, 26 Aug 2020 09:22:18 -0700 (PDT)
+        Wed, 26 Aug 2020 12:52:42 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07QGnqlQ064879;
+        Wed, 26 Aug 2020 16:52:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=CrsB4hOh/IOUnBY1dl7dcxJi5+3Jl0r1xaa80gDONMo=;
+ b=UEnbnMrP8mqj5BsJHIGuOjnCvJvNvGoC+ag0xw9anfWjXhUaUECQhQF2OLCc2JG7Qheg
+ HkhT8TLGzCc2QclrFIuCnlauQiMFVJLqb1Dq5Ofy14Wfx8ptWG5GWT238ek+YIUin/pm
+ QY1MUFSQRXhO0N8dj3LJkDfLydyYZCk4wJNoEmg1RisTI1AlIHDPMQUbFBjRgYBYYNBl
+ 9SyOkSxuTxXUzZKsI0n7pISnAIRnI3RNi0syAGRuTruKvGqfiWVGZXuGeHexGBsL7anW
+ agzrUuJFnpeVfCXi0SV/8yzGqo17fiiagCDUqsv5iyWk9+uZq4Xs7692FiCT4I3M6N+p mw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 333dbs1n5q-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 26 Aug 2020 16:52:39 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07QGoqCN123571;
+        Wed, 26 Aug 2020 16:52:39 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 333r9mcwt6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 26 Aug 2020 16:52:39 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 07QGqcr4031493;
+        Wed, 26 Aug 2020 16:52:39 GMT
+Received: from [10.74.108.37] (/10.74.108.37)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 26 Aug 2020 09:52:38 -0700
+Subject: Re: [PATCH] memory: emif: Remove bogus debugfs error handling
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20200826113759.GF393664@mwanda>
+From:   santosh.shilimkar@oracle.com
+Organization: Oracle Corporation
+Message-ID: <10387fe0-579a-de71-44ad-ac585ff604d6@oracle.com>
+Date:   Wed, 26 Aug 2020 09:52:37 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.9.0
 MIME-Version: 1.0
-References: <20200826085907.43095-1-colin.king@canonical.com>
-In-Reply-To: <20200826085907.43095-1-colin.king@canonical.com>
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date:   Wed, 26 Aug 2020 09:22:07 -0700
-Message-ID: <CAADnVQL26-gaPy2yreDj=P00_Z0q6VunsP95goD6GfhhM_DuBA@mail.gmail.com>
-Subject: Re: [PATCH][next] selftests/bpf: fix spelling mistake "scoket" -> "socket"
-To:     Colin King <colin.king@canonical.com>
-Cc:     Shuah Khan <shuah@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jiri Olsa <jolsa@kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        bpf <bpf@vger.kernel.org>, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200826113759.GF393664@mwanda>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9725 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 bulkscore=0
+ adultscore=0 spamscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008260125
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9725 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 clxscore=1011
+ priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0
+ mlxlogscore=999 spamscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008260125
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Aug 26, 2020 at 1:59 AM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> There is a spelling mistake an a check error message. Fix it.
+On 8/26/20 4:37 AM, Dan Carpenter wrote:
+> Callers are generally not supposed to check the return values from
+> debugfs functions.  Debugfs functions never return NULL so this error
+> handling will never trigger.  (Historically debugfs functions used to
+> return a mix of NULL and error pointers but it was eventually deemed too
+> complicated for something which wasn't intended to be used in normal
+> situations).
+> 
+> Delete all the error handling.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+Looks good to me !!
 
-Kinda ironic that you've made a spelling mistake in the commit log
-that fixes spelling in the test.
-Whatever scripts you use to detect spelling errors, please use it
-on your commit messages as well.
-
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Applied with s/an/in/ in the commit log.
+Acked-by: Santosh Shilimkar <ssantosh@kernel.org>

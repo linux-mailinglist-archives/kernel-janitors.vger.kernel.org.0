@@ -2,104 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 96167252EF3
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Aug 2020 14:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6FE3252F4E
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Aug 2020 15:05:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730003AbgHZMuB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Aug 2020 08:50:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42996 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729391AbgHZMt7 (ORCPT
+        id S1730217AbgHZNF3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Aug 2020 09:05:29 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:43950 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730131AbgHZNFX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Aug 2020 08:49:59 -0400
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59725C061574;
-        Wed, 26 Aug 2020 05:49:59 -0700 (PDT)
-Received: by mail-oi1-x241.google.com with SMTP id u24so1380112oic.7;
-        Wed, 26 Aug 2020 05:49:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=T25WQv3ojJsvp0cUA7/bFzow+dOFqG8TcJqudwPS8Ck=;
-        b=M9r2Jt4MOONXPJmGuvp2bXRT5rYmoi/jifgzU/DP+1hL/xMrn0eQbwBxkSrnwxDcyk
-         5vqeBnTSsYKYnMjtxkOxmA6fjvZ2cxr54/rUVbjtvGWmrDnEcfSRxcFjHLN3A78rGPcp
-         DtFfObU6K50X3Z+P09n64wZP8ruDrQL0ZfuMc1at40685Bth/e4My2gZRlff24tzd2+b
-         mPLbYdHr+WOLGkwhso5X8hev6VAN1/WqJah+nLXAYhjX9R/r/twoKfFAZoVl2x98n+Dg
-         s0s6+4hIVqwcgmRD2cC4ov749QBgGBhBPyXXzKEUiNTkreRvxy0vI/33P7csKTp+Bhik
-         L0xA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=T25WQv3ojJsvp0cUA7/bFzow+dOFqG8TcJqudwPS8Ck=;
-        b=QsVFk9G8p519YbbLS2oVpKYvJ0Uq+BMFl9nK44wCkrkqByCsOdR7uO5aU8vNrvC9EV
-         bS1zPvSI8gquObTbaGFhCizYOSk4LLjME57PJKDLEQbx3+C2CJz6YcWFTrHKarg/v240
-         G62bxWqQ2PXb2dGqOVZ1U8caf1C7q7F6VPnEyLBxexCykcNNsrt9oLCFvnlOk2wkOnrX
-         tGjNcSA9MCzDfbhYdmjtoNxutZUBmaSRv3Q4xeVsHV9uDxr38WEOLOsB1Mqfgua8iiXM
-         3Z0mWMiZkc1guxqr+sNCfQ2yo2Ms268EDxTKp0TvboQg3mLSipI+Fr88yWztJnYikCA+
-         BNZA==
-X-Gm-Message-State: AOAM530jqLlOOf7PQBLXVr4b96Mzq2LzqzxiDqXSGd02YBXqOMIIlhBj
-        MeRP4rSx+Xgeio3tsFkcvZG4qeV7snTSI8uARxxZwynZQWU=
-X-Google-Smtp-Source: ABdhPJybYUo1ib0fZd0hbVAde7TS9TC8SAeT3Hi8Qkmqusc201zL7JCl2TYxmJF5UZlccaKgd/MqSubCExC3h/hxT8g=
-X-Received: by 2002:a05:6808:310:: with SMTP id i16mr2879397oie.160.1598446198754;
- Wed, 26 Aug 2020 05:49:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200826113148.GA393664@mwanda>
-In-Reply-To: <20200826113148.GA393664@mwanda>
-From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Date:   Wed, 26 Aug 2020 08:49:47 -0400
-Message-ID: <CAEjxPJ45hfBr6S1jT3iSOcSiccfWWFcqJC-q9R5qbRndT_DNCA@mail.gmail.com>
-Subject: Re: [PATCH] selinux: fix error handling bugs in security_load_policy()
+        Wed, 26 Aug 2020 09:05:23 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 07QD5Fe2031113;
+        Wed, 26 Aug 2020 08:05:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1598447115;
+        bh=S9XBz7cs9fo5vrEmLetovu1R76fFJ8F44+ifbtoIm2Q=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=FBKqznDmJ8HQ9+Z5AG9AJThxuD9sYbVYsPEcOsIq+EQZYjMuIuXF54XgE8+hw5aO8
+         vLVWnhdd+wC60UhId1abi7//L4AMFSFVdFZLxoOerHgDH7GCyTEvaN/97R1s27haXa
+         uXLJi8u9ai53xbLQZdAHA09VHhO0mYkozO4hnz7E=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 07QD5ETO017084
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 26 Aug 2020 08:05:15 -0500
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 26
+ Aug 2020 08:05:14 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Wed, 26 Aug 2020 08:05:14 -0500
+Received: from [192.168.2.14] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 07QD5C5P078714;
+        Wed, 26 Aug 2020 08:05:13 -0500
+Subject: Re: [PATCH] memory: omap-gpmc: Fix a couple off by ones
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Paul Moore <paul@paul-moore.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Ondrej Mosnacek <omosnace@redhat.com>,
-        Jeff Vander Stoep <jeffv@google.com>,
-        SElinux list <selinux@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+CC:     Tony Lindgren <tony@atomide.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <20200825104707.GB278587@mwanda>
+From:   Roger Quadros <rogerq@ti.com>
+Message-ID: <919395fe-8108-94f5-3370-a573da8313f9@ti.com>
+Date:   Wed, 26 Aug 2020 16:05:12 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <20200825104707.GB278587@mwanda>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Aug 26, 2020 at 7:32 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> There are a few bugs in the error handling for security_load_policy().
->
-> 1) If the newpolicy->sidtab allocation fails then it leads to a NULL
->    dereference.  Also the error code was not set to -ENOMEM on that
->    path.
-> 2) If policydb_read() failed then we call policydb_destroy() twice
->    which meands we call kvfree(p->sym_val_to_name[i]) twice.
-> 3) If policydb_load_isids() failed then we call sidtab_destroy() twice
->    and that results in a double free in the sidtab_destroy_tree()
->    function because entry.ptr_inner and entry.ptr_leaf are not set to
->    NULL.
->
-> One thing that makes this code nice to deal with is that none of the
-> functions return partially allocated data.  In other words, the
-> policydb_read() either allocates everything successfully or it frees
-> all the data it allocates.  It never returns a mix of allocated and
-> not allocated data.
->
-> I re-wrote this to only free the successfully allocated data which
-> avoids the double frees.  I also re-ordered selinux_policy_free() so
-> it's in the reverse order of the allocation function.
->
-> Fixes: c7c556f1e81b ("selinux: refactor changing booleans")
+On 25/08/2020 13:47, Dan Carpenter wrote:
+> These comparisons should be >= instead of > to prevent reading one
+> element beyond the end of the gpmc_cs[] array.
+> 
+> Fixes: cdd6928c589a ("ARM: OMAP2+: Add device-tree support for NOR flash")
+> Fixes: f37e4580c409 ("ARM: OMAP2: Dynamic allocator for GPMC memory space")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-I guess this wasn't against current selinux next branch?
+Acked-by: Roger Quadros <rogerq@ti.com>
 
-patching file security/selinux/ss/services.c
-Hunk #1 succeeded at 2145 (offset 18 lines).
-Hunk #2 succeeded at 2263 (offset 39 lines).
-Hunk #3 succeeded at 2303 with fuzz 1 (offset 47 lines).
-Hunk #4 succeeded at 2323 (offset 42 lines).
+> ---
+>   drivers/memory/omap-gpmc.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+> index cd9e80748591..fd245b82163a 100644
+> --- a/drivers/memory/omap-gpmc.c
+> +++ b/drivers/memory/omap-gpmc.c
+> @@ -989,7 +989,7 @@ static int gpmc_cs_remap(int cs, u32 base)
+>   	int ret;
+>   	u32 old_base, size;
+>   
+> -	if (cs > gpmc_cs_num) {
+> +	if (cs >= gpmc_cs_num) {
+>   		pr_err("%s: requested chip-select is disabled\n", __func__);
+>   		return -ENODEV;
+>   	}
+> @@ -1024,7 +1024,7 @@ int gpmc_cs_request(int cs, unsigned long size, unsigned long *base)
+>   	struct resource *res = &gpmc->mem;
+>   	int r = -1;
+>   
+> -	if (cs > gpmc_cs_num) {
+> +	if (cs >= gpmc_cs_num) {
+>   		pr_err("%s: requested chip-select is disabled\n", __func__);
+>   		return -ENODEV;
+>   	}
+> 
 
-But otherwise it looked good to me.
+cheers,
+-roger
 
-Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki

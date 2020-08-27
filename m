@@ -2,90 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77BE525445F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Aug 2020 13:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86357254A0B
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Aug 2020 17:58:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728550AbgH0Lfa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Aug 2020 07:35:30 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:12749 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728425AbgH0LdV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Aug 2020 07:33:21 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1598528000; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=7LDSBdIs9MxK1D0YmJUtozSeAA1LtdaBUbnzb467+QY=;
- b=pp7XMdkkwU4Sy5O4rQbAgw0RPXzoK9oJCq/MCyX+OTtTH65ZT8n+hB2/5g7bI7HAm71Jnaa0
- qeZ7TYCsMLXPJjq6dF+M+evYJ+7wNhmooYjbkT3lBOSkr6UdP43rsVjsIl9sXV4W+5CrtfbU
- ymvijIrXdEWwTETXTXXdS6bw9gk=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5f4799e515988fabe03b0f37 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 11:32:53
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9794EC433A0; Thu, 27 Aug 2020 11:32:53 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 52A9AC433C6;
-        Thu, 27 Aug 2020 11:32:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 52A9AC433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1727991AbgH0P55 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Aug 2020 11:57:57 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53795 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726266AbgH0P5y (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Aug 2020 11:57:54 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kBKHe-0001vw-U6; Thu, 27 Aug 2020 15:57:51 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, Evan Quan <evan.quan@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/amdgpu/swsmu: fix potential uint32_t multiplication overflow
+Date:   Thu, 27 Aug 2020 16:57:50 +0100
+Message-Id: <20200827155750.60938-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] ath11k: fix error check on return from call to
- ath11k_core_firmware_request
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200819105712.51886-1-colin.king@canonical.com>
-References: <20200819105712.51886-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200827113253.9794EC433A0@smtp.codeaurora.org>
-Date:   Thu, 27 Aug 2020 11:32:53 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The call to ath11k_core_firmware_request is returning a pointer that
-> can be set to an error code, however, this is not being checked.
-> Instead ret is being incorrecly checked for the error return. Fix the
-> error checking.
-> 
-> Addresses-Coverity: ("Logically dead code")
-> Fixes: 7b57b2ddec21 ("ath11k: create a common function to request all firmware files")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+The calculation of tmp64 is performed using a 32 bit multiply and then
+is stored in the uint64_t variable tmp64. This indicates that a 64 bit
+result may be expected, so cast crystal_clock_freq to a uint64_t
+to ensure a 64 bit multiplication is being performed to avoid any
+potential 32 bit overflow.
 
-A similar patch has been already applied.
+Addresses-Coverity: ("Unintentional integer overflow)"
+Fixes: 13819ef6453c ("drm/amdgpu/swsmu: add smu11 helpers to get manual fan speeds")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-error: patch failed: drivers/net/wireless/ath/ath11k/qmi.c:1886
-error: drivers/net/wireless/ath/ath11k/qmi.c: patch does not apply
-stg import: Diff does not apply cleanly
-
-Patch set to Rejected.
-
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
+index d2a15e6f48be..0a5161d09722 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
+@@ -1218,7 +1218,7 @@ int smu_v11_0_get_fan_speed_rpm(struct smu_context *smu,
+ 
+ 	crystal_clock_freq = amdgpu_asic_get_xclk(adev);
+ 
+-	tmp64 = 60 * crystal_clock_freq * 10000;
++	tmp64 = (uint64_t)crystal_clock_freq * 60 * 10000;
+ 	do_div(tmp64, (tach_period * 8));
+ 	*speed = (uint32_t)tmp64;
+ 
 -- 
-https://patchwork.kernel.org/patch/11723519/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.27.0
 

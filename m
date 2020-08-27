@@ -2,122 +2,218 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 441A02541E5
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Aug 2020 11:21:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87A5B2542E3
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Aug 2020 11:58:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728053AbgH0JVh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Aug 2020 05:21:37 -0400
-Received: from mx2.suse.de ([195.135.220.15]:35378 "EHLO mx2.suse.de"
+        id S1728538AbgH0J6s (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Aug 2020 05:58:48 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:33927 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726266AbgH0JVh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Aug 2020 05:21:37 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 4B7D7B712;
-        Thu, 27 Aug 2020 09:22:07 +0000 (UTC)
-Subject: Re: [PATCH] drm/mgag200: fix spelling mistake "expeced" -> "expected"
-To:     Colin King <colin.king@canonical.com>,
-        Dave Airlie <airlied@redhat.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200826084727.42703-1-colin.king@canonical.com>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-Message-ID: <63a54e7a-38ce-d32f-f7c0-ca04707ae8de@suse.de>
-Date:   Thu, 27 Aug 2020 11:21:34 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        id S1728577AbgH0J6q (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Aug 2020 05:58:46 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1598522325; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=WP6K/m86m5Agf2av5a4eUUl7nH3ft4KQzbUnpZTtPek=;
+ b=vNAaq8P3uf8uE6G+FHcg/0x2E8StesMQtquxlWW/XUQOhDIC/3HVF6hp6UjHyLQ2VBtX/Xal
+ 7wGRMCspxEtCuwRj+KaWuBI8YMGGeInqzWAwBQ18vd9oKVslrimnNs0KNfs0qPTnC3imRslP
+ XXs3C55U3DSe3/mamtAjkQjbGos=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 5f4783d4c9ede11f5e6f11b5 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 09:58:44
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C1548C4339C; Thu, 27 Aug 2020 09:58:43 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C39D7C433CA;
+        Thu, 27 Aug 2020 09:58:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C39D7C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <20200826084727.42703-1-colin.king@canonical.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="fPWsxPpPJj3E4g7J17m5zELBoVw8eziG9"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] mwifiex: switch from 'pci_' to 'dma_' API
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200819070152.111522-1-christophe.jaillet@wanadoo.fr>
+References: <20200819070152.111522-1-christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     amitkarwar@gmail.com, ganapathi.bhat@nxp.com,
+        huxinming820@gmail.com, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200827095843.C1548C4339C@smtp.codeaurora.org>
+Date:   Thu, 27 Aug 2020 09:58:43 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---fPWsxPpPJj3E4g7J17m5zELBoVw8eziG9
-Content-Type: multipart/mixed; boundary="FoGFcXpSXbDSMaDgetwZhxIi6Q8ObDg3w";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Colin King <colin.king@canonical.com>, Dave Airlie <airlied@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, Sam Ravnborg <sam@ravnborg.org>,
- dri-devel@lists.freedesktop.org
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-ID: <63a54e7a-38ce-d32f-f7c0-ca04707ae8de@suse.de>
-Subject: Re: [PATCH] drm/mgag200: fix spelling mistake "expeced" -> "expected"
-References: <20200826084727.42703-1-colin.king@canonical.com>
-In-Reply-To: <20200826084727.42703-1-colin.king@canonical.com>
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
---FoGFcXpSXbDSMaDgetwZhxIi6Q8ObDg3w
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+> The wrappers in include/linux/pci-dma-compat.h should go away.
+> 
+> The patch has been generated with the coccinelle script below and has been
+> hand modified to replace GFP_ with a correct flag.
+> It has been compile tested.
+> 
+> When memory is allocated in 'mwifiex_pcie_alloc_buffers()' (see details in
+> the call chain below) GFP_KERNEL can be used because both
+> 'mwifiex_register()' and 'mwifiex_reinit_sw()' already use GFP_KERNEL.
+> (for 'mwifiex_reinit_sw()', it is hidden in a call to 'alloc_workqueue()')
+> 
+> The call chain is:
+>   mwifiex_register
+>     --> mwifiex_init_pcie        (.init_if function, see mwifiex_if_ops)
+>    [ or ]
+>   mwifiex_reinit_sw
+>     -->mwifiex_pcie_up_dev       (.up_dev function, see mwifiex_if_ops)
+> 
+>     [ then in both case ]
+>       -->mwifiex_pcie_alloc_buffers
+>         --> mwifiex_pcie_create_txbd_ring
+>         --> mwifiex_pcie_create_rxbd_ring
+>         --> mwifiex_pcie_create_evtbd_ring
+>         --> mwifiex_pcie_alloc_sleep_cookie_buf
+> 
+> @@
+> @@
+> -    PCI_DMA_BIDIRECTIONAL
+> +    DMA_BIDIRECTIONAL
+> 
+> @@
+> @@
+> -    PCI_DMA_TODEVICE
+> +    DMA_TO_DEVICE
+> 
+> @@
+> @@
+> -    PCI_DMA_FROMDEVICE
+> +    DMA_FROM_DEVICE
+> 
+> @@
+> @@
+> -    PCI_DMA_NONE
+> +    DMA_NONE
+> 
+> @@
+> expression e1, e2, e3;
+> @@
+> -    pci_alloc_consistent(e1, e2, e3)
+> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+> 
+> @@
+> expression e1, e2, e3;
+> @@
+> -    pci_zalloc_consistent(e1, e2, e3)
+> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_free_consistent(e1, e2, e3, e4)
+> +    dma_free_coherent(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_map_single(e1, e2, e3, e4)
+> +    dma_map_single(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_single(e1, e2, e3, e4)
+> +    dma_unmap_single(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4, e5;
+> @@
+> -    pci_map_page(e1, e2, e3, e4, e5)
+> +    dma_map_page(&e1->dev, e2, e3, e4, e5)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_page(e1, e2, e3, e4)
+> +    dma_unmap_page(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_map_sg(e1, e2, e3, e4)
+> +    dma_map_sg(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_sg(e1, e2, e3, e4)
+> +    dma_unmap_sg(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
+> +    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_single_for_device(e1, e2, e3, e4)
+> +    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
+> +    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
+> +    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_dma_mapping_error(e1, e2)
+> +    dma_mapping_error(&e1->dev, e2)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_set_dma_mask(e1, e2)
+> +    dma_set_mask(&e1->dev, e2)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_set_consistent_dma_mask(e1, e2)
+> +    dma_set_coherent_mask(&e1->dev, e2)
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Hi
+Patch applied to wireless-drivers-next.git, thanks.
 
-Am 26.08.20 um 10:47 schrieb Colin King:
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> There is a spelling mistake in a drm_warn message. Fix it.
->=20
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+4cf975f640fe mwifiex: switch from 'pci_' to 'dma_' API
 
-Thanks! Applied to drm-misc-next.
+-- 
+https://patchwork.kernel.org/patch/11722857/
 
-Best regards
-Thomas
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-> ---
->  drivers/gpu/drm/mgag200/mgag200_drv.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.c b/drivers/gpu/drm/mg=
-ag200/mgag200_drv.c
-> index b282b0e42c2d..771b26aeee19 100644
-> --- a/drivers/gpu/drm/mgag200/mgag200_drv.c
-> +++ b/drivers/gpu/drm/mgag200/mgag200_drv.c
-> @@ -168,7 +168,7 @@ static void mgag200_g200_interpret_bios(struct mga_=
-device *mdev,
->  		return;
->  	}
->  	if (pins_len !=3D expected_length[version]) {
-> -		drm_warn(dev, "Unexpected BIOS PInS size: %d expeced: %d\n",
-> +		drm_warn(dev, "Unexpected BIOS PInS size: %d expected: %d\n",
->  			 pins_len, expected_length[version]);
->  		return;
->  	}
->=20
-
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-(HRB 36809, AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
-
-
---FoGFcXpSXbDSMaDgetwZhxIi6Q8ObDg3w--
-
---fPWsxPpPJj3E4g7J17m5zELBoVw8eziG9
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQFIBAEBCAAyFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl9Hex4UHHR6aW1tZXJt
-YW5uQHN1c2UuZGUACgkQaA3BHVMLeiOBQAgAiL4kFTimHbHupiRn5WOvA4vbyT6w
-lwXW36ZGshiV84ZvnTQ0/IboK15tbYUBcf/AgfkoVDsG4DTyI40z5W/e/ULzM7EA
-ePIjzJb0dPPyAEzo2GIL6Xxp8zfAwP3U6OXrlYYPlVLaIh53qYVD9+oTHgRln2LZ
-e/hVlpck4I4ZknAWnvSEi3h2dfWSdgUe7BwfJkr6aha0REAO0sZ5KQ7WMQL4a3Xs
-dGti4fST0KPjaNVsj01ism/v0Vso3J7Hn8bNrc0UqHOS/Vy1gwJw1hLr3KU9Tras
-S9MFDhVG7t6EzdjtJ86dBQ6Us+b8XGbiUUGO0ivrbbfsi6pg7y3eNp4SaA==
-=jjLa
------END PGP SIGNATURE-----
-
---fPWsxPpPJj3E4g7J17m5zELBoVw8eziG9--

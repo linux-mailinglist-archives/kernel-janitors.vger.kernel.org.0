@@ -2,71 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51D29254FB5
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Aug 2020 22:05:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DB262550E8
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Aug 2020 00:03:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726845AbgH0UFO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Aug 2020 16:05:14 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:21081
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726120AbgH0UFO (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Aug 2020 16:05:14 -0400
-X-IronPort-AV: E=Sophos;i="5.76,359,1592863200"; 
-   d="scan'208";a="357455363"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Aug 2020 22:05:11 +0200
-Date:   Thu, 27 Aug 2020 22:05:10 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Bernie Thompson <bernie@plugable.com>,
-        Denis Efremov <efremov@linux.com>,
-        kernel test robot <lkp@intel.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] coccinelle: api: fix kobj_to_dev.cocci warnings
-In-Reply-To: <13cd8bf4-06f9-04d7-e923-c397c506e8cc@web.de>
-Message-ID: <alpine.DEB.2.22.394.2008272204050.2482@hadrien>
-References: <13cd8bf4-06f9-04d7-e923-c397c506e8cc@web.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        id S1727906AbgH0WDZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Aug 2020 18:03:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40142 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726234AbgH0WDW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Aug 2020 18:03:22 -0400
+Received: from earth.universe (dyndsl-037-138-189-082.ewe-ip-backbone.de [37.138.189.82])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 32C0620848;
+        Thu, 27 Aug 2020 22:03:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1598565802;
+        bh=yC6+oS9RFVrj0OBPN3ZF3rWZlKGqyG9tt4kU0LcHUD0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=o91fyr/0lApJAHUbF3zB1D+/YLQqIscVtzv3WPOBTcub/sBnLWEJ6mrUVd0kelScG
+         bg7RbXIYIZ8VbsLnmCeKaBuO2WtwZMCdzPS2jmL1J2lY0FDuvySeLbSvxNMSKydfbN
+         POLI42LY4pEsJ+pc1FK8QNlOGYXamjt+C2MbK+I8=
+Received: by earth.universe (Postfix, from userid 1000)
+        id 8F5A93C0C82; Fri, 28 Aug 2020 00:03:20 +0200 (CEST)
+Date:   Fri, 28 Aug 2020 00:03:20 +0200
+From:   Sebastian Reichel <sre@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     linux-pm@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] power: pm2301_charger: fix spelling mistake "chargind"
+ -> "charging"
+Message-ID: <20200827220320.emd326ges4xvmh57@earth.universe>
+References: <20200805103857.15725-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1007646674-1598558711=:2482"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="irgerrldmpxdwxr5"
+Content-Disposition: inline
+In-Reply-To: <20200805103857.15725-1-colin.king@canonical.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323329-1007646674-1598558711=:2482
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+--irgerrldmpxdwxr5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+Hi,
 
+On Wed, Aug 05, 2020 at 11:38:57AM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> There is a spelling mistake in a dev_dbg message. Fix it.
+>=20
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
 
-On Thu, 27 Aug 2020, Markus Elfring wrote:
+Thanks, queued.
 
-> > Generated by: scripts/coccinelle/api/kobj_to_dev.cocci
-> >
-> > Fixes: a2fc3718bc22 ("coccinelle: api: add kobj_to_dev.cocci script")
->
-> I wonder about such a combination of information.
->
-> I find it reasonable that two function implementations should be adjusted
-> according to a generated patch.
-> Thus I imagine that not the mentioned SmPL script is “fixed”
-> but the affected source file “drivers/video/fbdev/udlfb.c” may be improved.
-> Will the subject “[PATCH] video: udlfb: Fix kobj_to_dev.cocci warnings”
-> (or “[PATCH] video: udlfb: Use kobj_to_dev() instead of container_of()”)
-> be more appropriate for the proposed commit message?
+-- Sebastian
 
-It seems that 0-day picks up new semantic patches that are added to trees
-in kernel.org, but that it's strategy for generating the patch is not
-ideal.  I'll just drop these Fixes lines.
+>  drivers/power/supply/pm2301_charger.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/power/supply/pm2301_charger.c b/drivers/power/supply=
+/pm2301_charger.c
+> index 17749fc90e16..787867805944 100644
+> --- a/drivers/power/supply/pm2301_charger.c
+> +++ b/drivers/power/supply/pm2301_charger.c
+> @@ -396,7 +396,7 @@ static int pm2_int_reg3(void *pm2_data, int val)
+> =20
+>  	if (val & (PM2XXX_INT4_ITCHARGINGON)) {
+>  		dev_dbg(pm2->dev ,
+> -			"chargind operation has started\n");
+> +			"charging operation has started\n");
+>  	}
+> =20
+>  	if (val & (PM2XXX_INT4_ITVRESUME)) {
+> --=20
+> 2.27.0
+>=20
 
-julia
---8323329-1007646674-1598558711=:2482--
+--irgerrldmpxdwxr5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl9ILagACgkQ2O7X88g7
++poolg//QUkPRykffzY0baeQLXfefP7obgkkjTBU5f2BsgVEKU4AJFEGKVf30srg
+nJRXNGfdka6mikKDiWDXEzo7BhwxdYs+pyno0EaIQKnI5rbWaoqeLoUKlGOjrAoO
+/3pgc/HU6wmkTRgkcw2KW1DCbIcP+xsaNXZenlLQDMamHDwT7zQJtaW7LsCufVsz
+fFwkJX0WCn0EzEX+OHHo4eyCWM1xib/a8creF7kmohspXlgiBFq1HvMZbH3mLm5R
+ryU+QoXFht1ViJkwOJ2egChd8rDnOMyfj3AgvFpZbPsYK/arbC1jelMYJX+JELUE
+/4VfJLl2WcM/Vx4KeVql7nwIbkn8aGFWZl5ZLFkNaicq6aUTaRdl9YTm7VUWKZkF
+75yHqAoXDSCb+yAvjVkcOiidu/tnI02nIW/ZbJHCWiwI2/uNX7bPQp2sAXKS1t9O
+MQkTv7Lf+6DT0rFrti3xh9/MbsunusIoARKiz5yipNkqAUW284rrH3lq9GRpK2bU
+upC6hfUGo4k++LHc38zscH5SO1QGaQxo7zaHoYm6FzPF6qfIbfWMG0koLi1QSww4
+3xD/xzufgftvo51LU3CkUpiAcpgTweQtattoEcgzsl0NJr4fNI3d9X7VGUrTX1xJ
+GadXsz25HD4pZu1A4H7cPD7nj8jM4TlvRLx4kPS6ga/MjjgOrUI=
+=0Lqn
+-----END PGP SIGNATURE-----
+
+--irgerrldmpxdwxr5--

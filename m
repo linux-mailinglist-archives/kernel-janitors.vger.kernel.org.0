@@ -2,93 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 715CF254AD4
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Aug 2020 18:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EB87254EB7
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Aug 2020 21:35:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727105AbgH0Qi5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Aug 2020 12:38:57 -0400
-Received: from mga06.intel.com ([134.134.136.31]:50528 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727078AbgH0Qi4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Aug 2020 12:38:56 -0400
-IronPort-SDR: CxKpXJ8HWMe2EQ8GRMeBZeFfARBwmIMQXgGYzPXQWLe8Jsb7U7gtHvYoP984Sm5InJm+JfxTri
- B/MDC+yANALw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9726"; a="218073813"
-X-IronPort-AV: E=Sophos;i="5.76,360,1592895600"; 
-   d="scan'208";a="218073813"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2020 09:38:56 -0700
-IronPort-SDR: vts0Vlpjg+ajGomCStZRxxeP3u7ckxpaGtCW836r9BjS0dxN3YSHQJb6EVXC1Jv5a6OncUNQuA
- C40x1lJ5VhcQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,360,1592895600"; 
-   d="scan'208";a="299917319"
-Received: from stinkbox.fi.intel.com (HELO stinkbox) ([10.237.72.174])
-  by orsmga006.jf.intel.com with SMTP; 27 Aug 2020 09:38:52 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Thu, 27 Aug 2020 19:38:51 +0300
-Date:   Thu, 27 Aug 2020 19:38:51 +0300
-From:   Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [Intel-gfx] [PATCH] drm/i915/vlv_dsi_pll: fix spelling mistake
- "Cant" -> "Can't"
-Message-ID: <20200827163851.GU6112@intel.com>
-References: <20200810095952.60968-1-colin.king@canonical.com>
+        id S1727048AbgH0Tfq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Aug 2020 15:35:46 -0400
+Received: from mail-ej1-f66.google.com ([209.85.218.66]:38828 "EHLO
+        mail-ej1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726147AbgH0Tfp (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Aug 2020 15:35:45 -0400
+Received: by mail-ej1-f66.google.com with SMTP id oz20so9247377ejb.5;
+        Thu, 27 Aug 2020 12:35:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=qnywG+k8I2kCIcWT+/GLTPy2owfZtBQFEtrvVg+qN7Y=;
+        b=KtZbFHyLtlICFYtMs26mUSu8E8OmSyXeBjy+eDAdYk7CsF/QzfoWiCC/2xAUauUVGq
+         aSZvmvi+gcb1wa5/EYaV8f2OCfmBuQmCqciqyp4+TCeNOC7JmGEPEmxJF4Vb4ZqOzXL2
+         ZJ7gyP6qHTi3DhpEgD8PWbVOO2V0swVmJt8oB41A7BEx5tFHFyzGO4PJXxzZkxQzNb2P
+         cLjgwr3IbD6v6IbZvAM6ilU+ykBpGJm1/sSLBVaVBbMrO80hM4AD49WKXQjqbjfvgeL9
+         DfgEpPI8dHeUk1AwkaIyyZoc4ETRRYM6BdcEDfF9YI3CnfyR+HVHMttBC6HuBOhk2upu
+         kHXw==
+X-Gm-Message-State: AOAM532L4gwaI6JSNQO59TB60Rx5xpKT08Zs2b8NugVmn/mHCCJzZ04t
+        BAN8lMkTCxEyzzXULdKuIKo=
+X-Google-Smtp-Source: ABdhPJxr2URPYCfPDlIaH3QGdBvjIj2gvpstQH4hgeFZk/KkZJArDUbpg51QiT2pzPdwVQ/CCNywrA==
+X-Received: by 2002:a17:906:36c2:: with SMTP id b2mr21723926ejc.238.1598556942948;
+        Thu, 27 Aug 2020 12:35:42 -0700 (PDT)
+Received: from kozik-lap ([194.230.155.216])
+        by smtp.googlemail.com with ESMTPSA id hh9sm2593987ejb.113.2020.08.27.12.35.42
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 27 Aug 2020 12:35:42 -0700 (PDT)
+Date:   Thu, 27 Aug 2020 21:35:40 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     santosh.shilimkar@oracle.com
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] memory: emif: Remove bogus debugfs error handling
+Message-ID: <20200827193540.GA8837@kozik-lap>
+References: <20200826113759.GF393664@mwanda>
+ <10387fe0-579a-de71-44ad-ac585ff604d6@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200810095952.60968-1-colin.king@canonical.com>
-X-Patchwork-Hint: comment
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <10387fe0-579a-de71-44ad-ac585ff604d6@oracle.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Aug 10, 2020 at 10:59:52AM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Wed, Aug 26, 2020 at 09:52:37AM -0700, santosh.shilimkar@oracle.com wrote:
+> On 8/26/20 4:37 AM, Dan Carpenter wrote:
+> > Callers are generally not supposed to check the return values from
+> > debugfs functions.  Debugfs functions never return NULL so this error
+> > handling will never trigger.  (Historically debugfs functions used to
+> > return a mix of NULL and error pointers but it was eventually deemed too
+> > complicated for something which wasn't intended to be used in normal
+> > situations).
+> > 
+> > Delete all the error handling.
+> > 
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> Looks good to me !!
 > 
-> There is a spelling mistake in a drm_err message. Fix it.
+> Acked-by: Santosh Shilimkar <ssantosh@kernel.org>
 
-Thanks. Applied to dinq.
+Thanks, applied.
 
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/gpu/drm/i915/display/vlv_dsi_pll.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/display/vlv_dsi_pll.c b/drivers/gpu/drm/i915/display/vlv_dsi_pll.c
-> index d0a514301575..4070b00c3690 100644
-> --- a/drivers/gpu/drm/i915/display/vlv_dsi_pll.c
-> +++ b/drivers/gpu/drm/i915/display/vlv_dsi_pll.c
-> @@ -483,7 +483,7 @@ int bxt_dsi_pll_compute(struct intel_encoder *encoder,
->  
->  	if (dsi_ratio < dsi_ratio_min || dsi_ratio > dsi_ratio_max) {
->  		drm_err(&dev_priv->drm,
-> -			"Cant get a suitable ratio from DSI PLL ratios\n");
-> +			"Can't get a suitable ratio from DSI PLL ratios\n");
->  		return -ECHRNG;
->  	} else
->  		drm_dbg_kms(&dev_priv->drm, "DSI PLL calculation is Done!!\n");
-> -- 
-> 2.27.0
-> 
-> _______________________________________________
-> Intel-gfx mailing list
-> Intel-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+Santosh,
+Your email does not match one in ack.  I understand this is just a
+mistake so I put the ack.  However the tool (b4-am) ignores such cases
+so ack could be lost in the future.
 
--- 
-Ville Syrjälä
-Intel
+Best regards,
+Krzysztof
+

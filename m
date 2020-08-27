@@ -2,82 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EB87254EB7
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Aug 2020 21:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51D29254FB5
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Aug 2020 22:05:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727048AbgH0Tfq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Aug 2020 15:35:46 -0400
-Received: from mail-ej1-f66.google.com ([209.85.218.66]:38828 "EHLO
-        mail-ej1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726147AbgH0Tfp (ORCPT
+        id S1726845AbgH0UFO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Aug 2020 16:05:14 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:21081
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726120AbgH0UFO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Aug 2020 15:35:45 -0400
-Received: by mail-ej1-f66.google.com with SMTP id oz20so9247377ejb.5;
-        Thu, 27 Aug 2020 12:35:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=qnywG+k8I2kCIcWT+/GLTPy2owfZtBQFEtrvVg+qN7Y=;
-        b=KtZbFHyLtlICFYtMs26mUSu8E8OmSyXeBjy+eDAdYk7CsF/QzfoWiCC/2xAUauUVGq
-         aSZvmvi+gcb1wa5/EYaV8f2OCfmBuQmCqciqyp4+TCeNOC7JmGEPEmxJF4Vb4ZqOzXL2
-         ZJ7gyP6qHTi3DhpEgD8PWbVOO2V0swVmJt8oB41A7BEx5tFHFyzGO4PJXxzZkxQzNb2P
-         cLjgwr3IbD6v6IbZvAM6ilU+ykBpGJm1/sSLBVaVBbMrO80hM4AD49WKXQjqbjfvgeL9
-         DfgEpPI8dHeUk1AwkaIyyZoc4ETRRYM6BdcEDfF9YI3CnfyR+HVHMttBC6HuBOhk2upu
-         kHXw==
-X-Gm-Message-State: AOAM532L4gwaI6JSNQO59TB60Rx5xpKT08Zs2b8NugVmn/mHCCJzZ04t
-        BAN8lMkTCxEyzzXULdKuIKo=
-X-Google-Smtp-Source: ABdhPJxr2URPYCfPDlIaH3QGdBvjIj2gvpstQH4hgeFZk/KkZJArDUbpg51QiT2pzPdwVQ/CCNywrA==
-X-Received: by 2002:a17:906:36c2:: with SMTP id b2mr21723926ejc.238.1598556942948;
-        Thu, 27 Aug 2020 12:35:42 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.216])
-        by smtp.googlemail.com with ESMTPSA id hh9sm2593987ejb.113.2020.08.27.12.35.42
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 27 Aug 2020 12:35:42 -0700 (PDT)
-Date:   Thu, 27 Aug 2020 21:35:40 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     santosh.shilimkar@oracle.com
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] memory: emif: Remove bogus debugfs error handling
-Message-ID: <20200827193540.GA8837@kozik-lap>
-References: <20200826113759.GF393664@mwanda>
- <10387fe0-579a-de71-44ad-ac585ff604d6@oracle.com>
+        Thu, 27 Aug 2020 16:05:14 -0400
+X-IronPort-AV: E=Sophos;i="5.76,359,1592863200"; 
+   d="scan'208";a="357455363"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Aug 2020 22:05:11 +0200
+Date:   Thu, 27 Aug 2020 22:05:10 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Bernie Thompson <bernie@plugable.com>,
+        Denis Efremov <efremov@linux.com>,
+        kernel test robot <lkp@intel.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] coccinelle: api: fix kobj_to_dev.cocci warnings
+In-Reply-To: <13cd8bf4-06f9-04d7-e923-c397c506e8cc@web.de>
+Message-ID: <alpine.DEB.2.22.394.2008272204050.2482@hadrien>
+References: <13cd8bf4-06f9-04d7-e923-c397c506e8cc@web.de>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <10387fe0-579a-de71-44ad-ac585ff604d6@oracle.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: multipart/mixed; boundary="8323329-1007646674-1598558711=:2482"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Aug 26, 2020 at 09:52:37AM -0700, santosh.shilimkar@oracle.com wrote:
-> On 8/26/20 4:37 AM, Dan Carpenter wrote:
-> > Callers are generally not supposed to check the return values from
-> > debugfs functions.  Debugfs functions never return NULL so this error
-> > handling will never trigger.  (Historically debugfs functions used to
-> > return a mix of NULL and error pointers but it was eventually deemed too
-> > complicated for something which wasn't intended to be used in normal
-> > situations).
-> > 
-> > Delete all the error handling.
-> > 
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> Looks good to me !!
-> 
-> Acked-by: Santosh Shilimkar <ssantosh@kernel.org>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Thanks, applied.
+--8323329-1007646674-1598558711=:2482
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 
-Santosh,
-Your email does not match one in ack.  I understand this is just a
-mistake so I put the ack.  However the tool (b4-am) ignores such cases
-so ack could be lost in the future.
 
-Best regards,
-Krzysztof
 
+On Thu, 27 Aug 2020, Markus Elfring wrote:
+
+> > Generated by: scripts/coccinelle/api/kobj_to_dev.cocci
+> >
+> > Fixes: a2fc3718bc22 ("coccinelle: api: add kobj_to_dev.cocci script")
+>
+> I wonder about such a combination of information.
+>
+> I find it reasonable that two function implementations should be adjusted
+> according to a generated patch.
+> Thus I imagine that not the mentioned SmPL script is “fixed”
+> but the affected source file “drivers/video/fbdev/udlfb.c” may be improved.
+> Will the subject “[PATCH] video: udlfb: Fix kobj_to_dev.cocci warnings”
+> (or “[PATCH] video: udlfb: Use kobj_to_dev() instead of container_of()”)
+> be more appropriate for the proposed commit message?
+
+It seems that 0-day picks up new semantic patches that are added to trees
+in kernel.org, but that it's strategy for generating the patch is not
+ideal.  I'll just drop these Fixes lines.
+
+julia
+--8323329-1007646674-1598558711=:2482--

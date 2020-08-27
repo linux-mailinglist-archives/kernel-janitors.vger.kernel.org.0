@@ -2,33 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 373E02542EB
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Aug 2020 11:59:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CA5E254314
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Aug 2020 12:03:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728605AbgH0J7M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Aug 2020 05:59:12 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:54249 "EHLO
+        id S1728110AbgH0KDM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Aug 2020 06:03:12 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:27346 "EHLO
         mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727823AbgH0J7L (ORCPT
+        by vger.kernel.org with ESMTP id S1728653AbgH0KDB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Aug 2020 05:59:11 -0400
+        Thu, 27 Aug 2020 06:03:01 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1598522351; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1598522580; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=fhMcbUOYh9p7lWF3+leL4Aq7EqLUoprRCTvF3e6oeDw=;
- b=hLZUSCDR/sGt2mIeX7PT6ZNTewmOTMmWTybW6EqmyfI5p6z0QOUMS3A90QRa/gdKzGHjko88
- 6vZwmIDNki+g58ZDTJUpQgOkjt9Oc6+5SugLAx17TE8jpAwuJi3dcvRfQHv4BbWi54HcJejX
- HJDLv2yB2ZkKKOdWD+nIGtHYYAQ=
+ Content-Type: Sender; bh=I63dscgYJSrLMpras0ftM8tf/GYO8Uv6u9iExs3NyTU=;
+ b=bvGrXB2BUdbxYn3ATnSUTT09K/39fZYEUMSKsAF+chL+o+owR9cMfdm6SYQp3MuvIogmclkq
+ ZvhPh6VTTLQuVB3tGOOkj+UWeVYJ9N5ZJmleQkLgv4V7wFgOFPfwrwm4AKO5Hv0ozKo4XVaB
+ /VBstvEHGc3VpMn/3x/RIuACP6c=
 X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 5f4783ed797ad9909bb13614 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 09:59:09
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5f4784a70c264e6b004770f4 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 10:02:15
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 630E9C433A1; Thu, 27 Aug 2020 09:59:08 +0000 (UTC)
+        id 17B8AC433CB; Thu, 27 Aug 2020 10:02:15 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,27 +38,26 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4F49FC433CA;
-        Thu, 27 Aug 2020 09:59:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4F49FC433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C9715C433CA;
+        Thu, 27 Aug 2020 10:02:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C9715C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mwifiex: Clean up some err and dbg messages
+Subject: Re: [PATCH] rtw88: switch from 'pci_' to 'dma_' API
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200819071853.113185-1-christophe.jaillet@wanadoo.fr>
-References: <20200819071853.113185-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20200820150643.148219-1-christophe.jaillet@wanadoo.fr>
+References: <20200820150643.148219-1-christophe.jaillet@wanadoo.fr>
 To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     amitkarwar@gmail.com, ganapathi.bhat@nxp.com,
-        huxinming820@gmail.com, davem@davemloft.net, kuba@kernel.org,
+Cc:     yhchuang@realtek.com, davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200827095908.630E9C433A1@smtp.codeaurora.org>
-Date:   Thu, 27 Aug 2020 09:59:08 +0000 (UTC)
+Message-Id: <20200827100215.17B8AC433CB@smtp.codeaurora.org>
+Date:   Thu, 27 Aug 2020 10:02:15 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -66,31 +65,149 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-> The error message if 'pci_set_consistent_dma_mask()' fails is misleading.
-> The function call uses 32 bits, but the error message reports 64.
+> The wrappers in include/linux/pci-dma-compat.h should go away.
 > 
-> Moreover, according to the comment above 'dma_set_mask_and_coherent()'
-> definition, such an error can never happen.
+> The patch has been generated with the coccinelle script below and has been
+> hand modified to replace GFP_ with a correct flag.
+> It has been compile tested.
 > 
-> So, simplify code, axe the misleading message and use
-> 'dma_set_mask_and_coherent()' instead of 'dma_set_mask()' +
-> 'dma_set_coherent_mask()'
+> When memory is allocated in 'rtw_pci_init_tx_ring()' and
+> 'rtw_pci_init_rx_ring()' GFP_KERNEL can be used because both functions are
+> called from a probe function and no spinlock is taken.
 > 
-> While at it, make some clean-up:
->    - add # when reporting allocated length to be consistent between
->      functions
->    - s/consistent/coherent/
->    - s/unsigned int/u32/ to be consistent between functions
->    - align some code
+> The call chain is:
+>   rtw_pci_probe
+>     --> rtw_pci_setup_resource
+>       --> rtw_pci_init
+>         --> rtw_pci_init_trx_ring
+>           --> rtw_pci_init_tx_ring
+>           --> rtw_pci_init_rx_ring
+> 
+> 
+> @@
+> @@
+> -    PCI_DMA_BIDIRECTIONAL
+> +    DMA_BIDIRECTIONAL
+> 
+> @@
+> @@
+> -    PCI_DMA_TODEVICE
+> +    DMA_TO_DEVICE
+> 
+> @@
+> @@
+> -    PCI_DMA_FROMDEVICE
+> +    DMA_FROM_DEVICE
+> 
+> @@
+> @@
+> -    PCI_DMA_NONE
+> +    DMA_NONE
+> 
+> @@
+> expression e1, e2, e3;
+> @@
+> -    pci_alloc_consistent(e1, e2, e3)
+> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+> 
+> @@
+> expression e1, e2, e3;
+> @@
+> -    pci_zalloc_consistent(e1, e2, e3)
+> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_free_consistent(e1, e2, e3, e4)
+> +    dma_free_coherent(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_map_single(e1, e2, e3, e4)
+> +    dma_map_single(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_single(e1, e2, e3, e4)
+> +    dma_unmap_single(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4, e5;
+> @@
+> -    pci_map_page(e1, e2, e3, e4, e5)
+> +    dma_map_page(&e1->dev, e2, e3, e4, e5)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_page(e1, e2, e3, e4)
+> +    dma_unmap_page(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_map_sg(e1, e2, e3, e4)
+> +    dma_map_sg(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_sg(e1, e2, e3, e4)
+> +    dma_unmap_sg(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
+> +    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_single_for_device(e1, e2, e3, e4)
+> +    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
+> +    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
+> +    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_dma_mapping_error(e1, e2)
+> +    dma_mapping_error(&e1->dev, e2)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_set_dma_mask(e1, e2)
+> +    dma_set_mask(&e1->dev, e2)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_set_consistent_dma_mask(e1, e2)
+> +    dma_set_coherent_mask(&e1->dev, e2)
 > 
 > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-5f8a3ed38bec mwifiex: Clean up some err and dbg messages
+24712ea996d8 rtw88: switch from 'pci_' to 'dma_' API
 
 -- 
-https://patchwork.kernel.org/patch/11723131/
+https://patchwork.kernel.org/patch/11726423/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

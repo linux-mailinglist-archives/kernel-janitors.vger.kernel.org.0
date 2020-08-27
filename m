@@ -2,33 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CA5E254314
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Aug 2020 12:03:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 913EF254393
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Aug 2020 12:20:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728110AbgH0KDM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Aug 2020 06:03:12 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:27346 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728653AbgH0KDB (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Aug 2020 06:03:01 -0400
+        id S1728373AbgH0KUC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Aug 2020 06:20:02 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:26340 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726093AbgH0KUA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Aug 2020 06:20:00 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1598522580; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1598523600; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=I63dscgYJSrLMpras0ftM8tf/GYO8Uv6u9iExs3NyTU=;
- b=bvGrXB2BUdbxYn3ATnSUTT09K/39fZYEUMSKsAF+chL+o+owR9cMfdm6SYQp3MuvIogmclkq
- ZvhPh6VTTLQuVB3tGOOkj+UWeVYJ9N5ZJmleQkLgv4V7wFgOFPfwrwm4AKO5Hv0ozKo4XVaB
- /VBstvEHGc3VpMn/3x/RIuACP6c=
-X-Mailgun-Sending-Ip: 104.130.122.29
+ Content-Type: Sender; bh=Uawuq2NYt+0L1rE6kxLrW9ZoyRhlo6eBolXppPMnzfk=;
+ b=Qu/muh/k4rlP8AQQjTo/zFqT3LuB0SiYqZRU3jVFIniUSxm5brAR/vy20SxWof0oR3sjOox9
+ gDoq9hXKv75aNffEd2f8DG2+P+tkEGqcxrvHH+KwryJwpGbsGmrzxHs13mWObZ2Ag0xyZJjz
+ JjnyFnDoZrNtk8zOsiw2vRVNHeU=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5f4784a70c264e6b004770f4 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 10:02:15
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 5f4788cf8741f54bbd725a4d (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 10:19:59
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 17B8AC433CB; Thu, 27 Aug 2020 10:02:15 +0000 (UTC)
+        id C95A3C433C6; Thu, 27 Aug 2020 10:19:59 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,176 +37,45 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C9715C433CA;
-        Thu, 27 Aug 2020 10:02:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C9715C433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 460FCC433CA;
+        Thu, 27 Aug 2020 10:19:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 460FCC433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtw88: switch from 'pci_' to 'dma_' API
+Subject: Re: [PATCH net-next] ath11k: return -ENOMEM on allocation failure
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200820150643.148219-1-christophe.jaillet@wanadoo.fr>
-References: <20200820150643.148219-1-christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     yhchuang@realtek.com, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20200826113417.GE393664@mwanda>
+References: <20200826113417.GE393664@mwanda>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        Govind Singh <govinds@codeaurora.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200827100215.17B8AC433CB@smtp.codeaurora.org>
-Date:   Thu, 27 Aug 2020 10:02:15 +0000 (UTC)
+Message-Id: <20200827101959.C95A3C433C6@smtp.codeaurora.org>
+Date:   Thu, 27 Aug 2020 10:19:59 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-> The wrappers in include/linux/pci-dma-compat.h should go away.
+> Returning PTR_ERR(NULL) means success, but we should return -ENOMEM.
 > 
-> The patch has been generated with the coccinelle script below and has been
-> hand modified to replace GFP_ with a correct flag.
-> It has been compile tested.
-> 
-> When memory is allocated in 'rtw_pci_init_tx_ring()' and
-> 'rtw_pci_init_rx_ring()' GFP_KERNEL can be used because both functions are
-> called from a probe function and no spinlock is taken.
-> 
-> The call chain is:
->   rtw_pci_probe
->     --> rtw_pci_setup_resource
->       --> rtw_pci_init
->         --> rtw_pci_init_trx_ring
->           --> rtw_pci_init_tx_ring
->           --> rtw_pci_init_rx_ring
-> 
-> 
-> @@
-> @@
-> -    PCI_DMA_BIDIRECTIONAL
-> +    DMA_BIDIRECTIONAL
-> 
-> @@
-> @@
-> -    PCI_DMA_TODEVICE
-> +    DMA_TO_DEVICE
-> 
-> @@
-> @@
-> -    PCI_DMA_FROMDEVICE
-> +    DMA_FROM_DEVICE
-> 
-> @@
-> @@
-> -    PCI_DMA_NONE
-> +    DMA_NONE
-> 
-> @@
-> expression e1, e2, e3;
-> @@
-> -    pci_alloc_consistent(e1, e2, e3)
-> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-> 
-> @@
-> expression e1, e2, e3;
-> @@
-> -    pci_zalloc_consistent(e1, e2, e3)
-> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_free_consistent(e1, e2, e3, e4)
-> +    dma_free_coherent(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_map_single(e1, e2, e3, e4)
-> +    dma_map_single(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_single(e1, e2, e3, e4)
-> +    dma_unmap_single(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4, e5;
-> @@
-> -    pci_map_page(e1, e2, e3, e4, e5)
-> +    dma_map_page(&e1->dev, e2, e3, e4, e5)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_page(e1, e2, e3, e4)
-> +    dma_unmap_page(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_map_sg(e1, e2, e3, e4)
-> +    dma_map_sg(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_sg(e1, e2, e3, e4)
-> +    dma_unmap_sg(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-> +    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-> +    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-> +    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-> +    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2;
-> @@
-> -    pci_dma_mapping_error(e1, e2)
-> +    dma_mapping_error(&e1->dev, e2)
-> 
-> @@
-> expression e1, e2;
-> @@
-> -    pci_set_dma_mask(e1, e2)
-> +    dma_set_mask(&e1->dev, e2)
-> 
-> @@
-> expression e1, e2;
-> @@
-> -    pci_set_consistent_dma_mask(e1, e2)
-> +    dma_set_coherent_mask(&e1->dev, e2)
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Fixes: 1399fb87ea3e ("ath11k: register MHI controller device for QCA6390")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Patch applied to wireless-drivers-next.git, thanks.
+Patch applied to ath-next branch of ath.git, thanks.
 
-24712ea996d8 rtw88: switch from 'pci_' to 'dma_' API
+fd0a09097233 ath11k: return -ENOMEM on allocation failure
 
 -- 
-https://patchwork.kernel.org/patch/11726423/
+https://patchwork.kernel.org/patch/11738005/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

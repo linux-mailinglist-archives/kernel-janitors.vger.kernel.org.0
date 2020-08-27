@@ -2,68 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86357254A0B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Aug 2020 17:58:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 715CF254AD4
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Aug 2020 18:38:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727991AbgH0P55 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Aug 2020 11:57:57 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:53795 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726266AbgH0P5y (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Aug 2020 11:57:54 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kBKHe-0001vw-U6; Thu, 27 Aug 2020 15:57:51 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        id S1727105AbgH0Qi5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Aug 2020 12:38:57 -0400
+Received: from mga06.intel.com ([134.134.136.31]:50528 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727078AbgH0Qi4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Aug 2020 12:38:56 -0400
+IronPort-SDR: CxKpXJ8HWMe2EQ8GRMeBZeFfARBwmIMQXgGYzPXQWLe8Jsb7U7gtHvYoP984Sm5InJm+JfxTri
+ B/MDC+yANALw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9726"; a="218073813"
+X-IronPort-AV: E=Sophos;i="5.76,360,1592895600"; 
+   d="scan'208";a="218073813"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2020 09:38:56 -0700
+IronPort-SDR: vts0Vlpjg+ajGomCStZRxxeP3u7ckxpaGtCW836r9BjS0dxN3YSHQJb6EVXC1Jv5a6OncUNQuA
+ C40x1lJ5VhcQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,360,1592895600"; 
+   d="scan'208";a="299917319"
+Received: from stinkbox.fi.intel.com (HELO stinkbox) ([10.237.72.174])
+  by orsmga006.jf.intel.com with SMTP; 27 Aug 2020 09:38:52 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Thu, 27 Aug 2020 19:38:51 +0300
+Date:   Thu, 27 Aug 2020 19:38:51 +0300
+From:   Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
         David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Evan Quan <evan.quan@amd.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/amdgpu/swsmu: fix potential uint32_t multiplication overflow
-Date:   Thu, 27 Aug 2020 16:57:50 +0100
-Message-Id: <20200827155750.60938-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        Daniel Vetter <daniel@ffwll.ch>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [Intel-gfx] [PATCH] drm/i915/vlv_dsi_pll: fix spelling mistake
+ "Cant" -> "Can't"
+Message-ID: <20200827163851.GU6112@intel.com>
+References: <20200810095952.60968-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200810095952.60968-1-colin.king@canonical.com>
+X-Patchwork-Hint: comment
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Mon, Aug 10, 2020 at 10:59:52AM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a spelling mistake in a drm_err message. Fix it.
 
-The calculation of tmp64 is performed using a 32 bit multiply and then
-is stored in the uint64_t variable tmp64. This indicates that a 64 bit
-result may be expected, so cast crystal_clock_freq to a uint64_t
-to ensure a 64 bit multiplication is being performed to avoid any
-potential 32 bit overflow.
+Thanks. Applied to dinq.
 
-Addresses-Coverity: ("Unintentional integer overflow)"
-Fixes: 13819ef6453c ("drm/amdgpu/swsmu: add smu11 helpers to get manual fan speeds")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/gpu/drm/i915/display/vlv_dsi_pll.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/display/vlv_dsi_pll.c b/drivers/gpu/drm/i915/display/vlv_dsi_pll.c
+> index d0a514301575..4070b00c3690 100644
+> --- a/drivers/gpu/drm/i915/display/vlv_dsi_pll.c
+> +++ b/drivers/gpu/drm/i915/display/vlv_dsi_pll.c
+> @@ -483,7 +483,7 @@ int bxt_dsi_pll_compute(struct intel_encoder *encoder,
+>  
+>  	if (dsi_ratio < dsi_ratio_min || dsi_ratio > dsi_ratio_max) {
+>  		drm_err(&dev_priv->drm,
+> -			"Cant get a suitable ratio from DSI PLL ratios\n");
+> +			"Can't get a suitable ratio from DSI PLL ratios\n");
+>  		return -ECHRNG;
+>  	} else
+>  		drm_dbg_kms(&dev_priv->drm, "DSI PLL calculation is Done!!\n");
+> -- 
+> 2.27.0
+> 
+> _______________________________________________
+> Intel-gfx mailing list
+> Intel-gfx@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/intel-gfx
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
-index d2a15e6f48be..0a5161d09722 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
-@@ -1218,7 +1218,7 @@ int smu_v11_0_get_fan_speed_rpm(struct smu_context *smu,
- 
- 	crystal_clock_freq = amdgpu_asic_get_xclk(adev);
- 
--	tmp64 = 60 * crystal_clock_freq * 10000;
-+	tmp64 = (uint64_t)crystal_clock_freq * 60 * 10000;
- 	do_div(tmp64, (tach_period * 8));
- 	*speed = (uint32_t)tmp64;
- 
 -- 
-2.27.0
-
+Ville Syrjälä
+Intel

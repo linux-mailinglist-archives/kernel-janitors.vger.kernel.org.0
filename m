@@ -2,116 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABF8F257387
-	for <lists+kernel-janitors@lfdr.de>; Mon, 31 Aug 2020 08:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E14D9257890
+	for <lists+kernel-janitors@lfdr.de>; Mon, 31 Aug 2020 13:40:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726692AbgHaGHz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 31 Aug 2020 02:07:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52186 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726668AbgHaGHx (ORCPT
+        id S1726515AbgHaLkf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 31 Aug 2020 07:40:35 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:35278 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726144AbgHaLke (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 31 Aug 2020 02:07:53 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76B1BC061573;
-        Sun, 30 Aug 2020 23:07:53 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id z9so4186696wmk.1;
-        Sun, 30 Aug 2020 23:07:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=Z7mwICOsTSTk8hmlKiJXKOQS+E+K2QedirkvwqkFtog=;
-        b=omh317KQBC6uXvsjwXrrei7AXTavsyNq318sCHmtgXascdVih1L5vxjj78dpNFGu8M
-         jFCxqf7uZAF+6Zb5H8x+BP4FtFcV2bwuaCJ8neNXoPr0oci0NKTVi4blGJK8zmPBfQnq
-         9xcYlm/lP3SYR5e9Idx0ONYQz1/vGcb3DxSqMRCKmUOViOIEbqx5jR3hYCGijFIkhqiM
-         s5LJXvVFqXYAbPhIUFqjZr+lyC7cMnaFHOrs/mCD70TT6N+brJpo8uzcTKSKAYXYaboG
-         FxpGIWvHuAoM1PDAji+BkovX7FFUrFuh3m7viu62mV2pvNSKQSoKw/uEvhlBvrkQJkde
-         nz5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Z7mwICOsTSTk8hmlKiJXKOQS+E+K2QedirkvwqkFtog=;
-        b=bMx9CGy2JwNssX0LGxtwZbLKGZh+yKODg/s54YCKuRY4kKQismudRZIlPpjNQu2VKR
-         tycbhRfHqIpdKp13bzLVw5Gb7w718PoZSWJszIBPAs0Z22FL97J1U6cLEJ7KUfQpuShv
-         yUnDjPK5WHY47M4xlShDiH8ZYbWX/aVXT4cRF6IVD1aUdl7tkw+2KZY3lvPvwTrF2lYb
-         WwI7dPVneAFsLBif75TWZumZeqgF4qSu7u5DAew1P0/J3hYdX0RAhVoT/CjqE3YupC+F
-         eQv8HVEgqwZ94XpmYUOAj4DPCOSp7uBGCps3V90bX4WB7U/8FAPV5nBw2xSyJlheETo4
-         NDkA==
-X-Gm-Message-State: AOAM532B+PpVGYdhz7oyz/l67qzKGzPkkAkBu2uV8j5FUSM2Ph/DCDuA
-        CgBLIqA0MQomObRXF0lIQsajILdatZsA27Ad
-X-Google-Smtp-Source: ABdhPJy2mi09OkLTQzsVzN9ZiIN8rdVkae5wdpKepg598PQtPa4RNqQNFMHIXorspAvqLQuWQ9ZI4w==
-X-Received: by 2002:a7b:c185:: with SMTP id y5mr184801wmi.95.1598854072100;
-        Sun, 30 Aug 2020 23:07:52 -0700 (PDT)
-Received: from felia.fritz.box ([2001:16b8:2de1:2200:9c37:36bb:80e7:91d])
-        by smtp.gmail.com with ESMTPSA id v9sm10387897wru.37.2020.08.30.23.07.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2020 23:07:51 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>
-Cc:     Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: add headers and doc to SCHEDULER
-Date:   Mon, 31 Aug 2020 08:07:30 +0200
-Message-Id: <20200831060730.17461-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 31 Aug 2020 07:40:34 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07VBZGWN067899;
+        Mon, 31 Aug 2020 11:40:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=X9lKjQ+8a4gAtfi/H/5gipuQgmVo/VqVtqjnK5/uRJE=;
+ b=mqq1HCCqWD65r9dOV7XYAosbrOtvmdEZbPAdr6YHKuBI+GPfxf+HXQesnB3p8e43K6nE
+ WcNccQBeGEi70SBJBLlew6gLTP2dI2rsJssu5VmqW5zqiFfvyzIkYGij1N84o/Q9zFJz
+ u3VMcu26yQCm9ibaVn4L2FB0ArSeanTTaTn329ulfhFsHLx1SYv+Ij3lKle3mut/lwBu
+ JgMIWN5AMmAJ1fYK9qDlLRW6Lqen5phq/bfQDmHDAFpXxNY7pSEbNTdAjU4Pk5UbLNNd
+ c7cQ3cI7uwXUduZQiC03ft+R90NA7Wm905NOv7hT+8Z/PUdPC6518SOcX3rNkVoY74uy dg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 337eeqnsrb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 31 Aug 2020 11:40:06 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07VBaXrI030282;
+        Mon, 31 Aug 2020 11:40:06 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 3380x01n4r-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 31 Aug 2020 11:40:06 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 07VBe4pF032421;
+        Mon, 31 Aug 2020 11:40:04 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 31 Aug 2020 04:40:04 -0700
+Date:   Mon, 31 Aug 2020 14:39:58 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jean Delvare <jdelvare@suse.com>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        linux-hwmon@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] hwmon: replace impossible fallthroughs with breaks
+Message-ID: <20200831113958.GB514373@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9729 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 phishscore=0
+ mlxlogscore=999 adultscore=0 suspectscore=0 bulkscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008310066
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9729 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 adultscore=0 spamscore=0 mlxscore=0
+ phishscore=0 impostorscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008310066
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Various files in include/linux/sched/ and include/uapi/linux/sched/ are
-identified as part of THE REST according to MAINTAINERS, but they really
-belong to SCHEDULER.
+It's impossible to reach these fall through statements because all
+the possible values are handled.  In that situation it's cleaner to
+use a break statement instead of a fall through statement.
 
-Add those headers and Documentation to the SCHEDULER section.
-
-This was identified with a small script that finds all files belonging to
-THE REST according to the current MAINTAINERS file, and I investigated
-upon its output.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Fixes: c947e51cf803 ("hwmon: (adt7462) Mark expected switch fall-throughs")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-RFC v1: https://lore.kernel.org/lkml/20200308174931.9118-1-lukas.bulwahn@gmail.com/
-  - no feedback.
+ drivers/hwmon/adt7462.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-RFC v2: https://lore.kernel.org/lkml/20200413112603.5257-1-lukas.bulwahn@gmail.com/
-  - RFC v1 does not apply after reordering MAINTAINERS, i.e., commit 4400b7d68f6e
-    ("MAINTAINERS: sort entries by entry name") and commit 3b50142d8528
-    ("MAINTAINERS: sort field names for all entries").
-  - does not need to reorder entries anymore.
-  - applies cleanly on v5.7-rc1
-  - no feedback.
-
-v1:
-  - rebased to v5.9-rc3
-  - minor wording: s/SCHEDULER entry/SCHEDULER section/
-  - increase recipients to all scheduler maintainers to get some feedback
-
- MAINTAINERS | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e4647c84c987..36c8e7671b70 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15359,10 +15359,13 @@ R:	Mel Gorman <mgorman@suse.de> (CONFIG_NUMA_BALANCING)
- L:	linux-kernel@vger.kernel.org
- S:	Maintained
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git sched/core
-+F:	Documentation/scheduler/
- F:	include/linux/preempt.h
- F:	include/linux/sched.h
-+F:	include/linux/sched/
- F:	include/linux/wait.h
- F:	include/uapi/linux/sched.h
-+F:	include/uapi/linux/sched/
- F:	kernel/sched/
- 
- SCR24X CHIP CARD INTERFACE DRIVER
+diff --git a/drivers/hwmon/adt7462.c b/drivers/hwmon/adt7462.c
+index e75bbd87ad09..634a44591c7f 100644
+--- a/drivers/hwmon/adt7462.c
++++ b/drivers/hwmon/adt7462.c
+@@ -435,7 +435,7 @@ static const char *voltage_label(struct adt7462_data *data, int which)
+ 		case 3:
+ 			return "+1.5V";
+ 		}
+-		fallthrough;
++		break;
+ 	case 2:
+ 		if (!(data->pin_cfg[1] & ADT7462_PIN22_INPUT))
+ 			return "+12V3";
+@@ -493,7 +493,7 @@ static const char *voltage_label(struct adt7462_data *data, int which)
+ 		case 3:
+ 			return "+1.5";
+ 		}
+-		fallthrough;
++		break;
+ 	case 11:
+ 		if (data->pin_cfg[3] >> ADT7462_PIN28_SHIFT ==
+ 					ADT7462_PIN28_VOLT &&
+@@ -531,7 +531,7 @@ static int voltage_multiplier(struct adt7462_data *data, int which)
+ 		case 3:
+ 			return 7800;
+ 		}
+-		fallthrough;
++		break;
+ 	case 2:
+ 		if (!(data->pin_cfg[1] & ADT7462_PIN22_INPUT))
+ 			return 62500;
+@@ -589,7 +589,7 @@ static int voltage_multiplier(struct adt7462_data *data, int which)
+ 		case 3:
+ 			return 7800;
+ 		}
+-		fallthrough;
++		break;
+ 	case 11:
+ 	case 12:
+ 		if (data->pin_cfg[3] >> ADT7462_PIN28_SHIFT ==
 -- 
-2.17.1
+2.28.0
 

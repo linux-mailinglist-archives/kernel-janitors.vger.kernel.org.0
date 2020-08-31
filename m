@@ -2,95 +2,125 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30AE6257A68
-	for <lists+kernel-janitors@lfdr.de>; Mon, 31 Aug 2020 15:29:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2164D257B51
+	for <lists+kernel-janitors@lfdr.de>; Mon, 31 Aug 2020 16:31:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727952AbgHaN3t (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 31 Aug 2020 09:29:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35984 "EHLO
+        id S1727950AbgHaObQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 31 Aug 2020 10:31:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727019AbgHaN1M (ORCPT
+        with ESMTP id S1726144AbgHaObO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 31 Aug 2020 09:27:12 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CFEFC0619E9
-        for <kernel-janitors@vger.kernel.org>; Mon, 31 Aug 2020 06:26:29 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id g6so6636940ljn.11
-        for <kernel-janitors@vger.kernel.org>; Mon, 31 Aug 2020 06:26:29 -0700 (PDT)
+        Mon, 31 Aug 2020 10:31:14 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DADB6C061573;
+        Mon, 31 Aug 2020 07:31:14 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id n3so73013pjq.1;
+        Mon, 31 Aug 2020 07:31:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
-        b=GvS5ONqONS+SkRITeLOYK+nEKqeftr2e4zlw8iOljUdVaT4ei8mXK/eMe5gdebbxul
-         qejaiESAwrQo/TwRSbsV2RgWo1cR2hwlUx3zHZP6xDZHfKXln6WrMjydy1j5UDKStApO
-         83k6OMYB/O4HA/D4ksOUSzU9ZpUpEqmaButNQtqR6C29H3+mAHSKCbPlI067sUdB20EE
-         ixBTW9S1A2kyuIbzfdQN/JSL5cc/RZ+/MNHv7Yis6pX8HuuJNUwic97zwHx5MU4x4PUn
-         9VwFvJUStfi4hRDyGGDy0ijlpU3bNrs4tLAIT0WFfsT49jK8zJO72eI6R18XAB60K+Uk
-         aflg==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=3iYwaau/E02Yl4SUD432ID8c60UPLzH/EAniF7efX00=;
+        b=ZS45UVYS53O8vNWpag80zDeHI2jSC4YBs4R9uUNsXZdplX6y2cIwFk8XBTS14ChK7X
+         GcVJEMtEb3DRjEXKGn4T/67aiH8joKBjlxzTXuftxkYk+M34N/7iVBOEnNGFjE+0mdtv
+         eKXle3G0DMbVR//3Eh9MumsGoH2BIPGr59mFJ9d3P4clR0hiinqPXv+cE8GfEah+SIy/
+         h1uRUmY5umWEK2X1RqtI3Av0JptwXUzUyD2VwPJDQKduL0/PkBqxGUj1k55KuvWdrtav
+         vZ5cR3g/mfxOKObSRbTWaOXhpvVrP4TGnEUnsyMzn65wSNHr65BBYtNMEca9Vqw7dLUm
+         IOyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
-        b=IbqAe0W8m5ukIhpSA906qPWDgMfXeC0mM7xmqOuaHafdruJcQcgSWwgjrE90d6l7f/
-         g44zMGFDuxi0X7ozaeymGKaZUTUO7rJMHglrKm9bEM4zB1fjc2qedgGPbDxFg4Wh2S8u
-         ZBGKT65FQ+kn6dmk3zadOKkOkf47zzmzTn8MKbOzghdg+XCa539VdxAnbhbw0/GXrQ4+
-         S8TPHPSZ0HSLxWE1at5gUloXbAGmHDo588Rrn1FFs1pXDkBcnn3DZtSS7MIDVWDfd/50
-         4ZqM7iRk6pWRcybOGyuuiGGC10P11K2FYnIqENI4EUT5fCp4nlmfgDjPWx8TXky5OvRD
-         wOng==
-X-Gm-Message-State: AOAM532x44e9VA62VHFYAxKuWAl9moS0Z4ICVNxssFd93Of5KAYgOaXM
-        ckeF5vq6Fxi3HqhtbovwLx50eZ7l8Fr4r57EQts=
-X-Google-Smtp-Source: ABdhPJx5h73UdWdmqN0ZXklbmHxhGiANR3jS4fz3EetfufGWkyufJh3oSK0WTBZL+72KPBBqNF1EE+YcTj5isQyt2i4=
-X-Received: by 2002:a2e:5316:: with SMTP id h22mr714236ljb.167.1598880387154;
- Mon, 31 Aug 2020 06:26:27 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=3iYwaau/E02Yl4SUD432ID8c60UPLzH/EAniF7efX00=;
+        b=NZOT7N2UHDmaT0Va1oYqPgkcSSUiu5vyqujy8RTKminGGVZW7AxDj+k7wg9Eo2Tw6x
+         /jPXRFp2tOvnpFtBxgvbNcy6XOB7droaGm2S6P8MuvmCXZBRG+1g/ajgvWhKSgLCCvHr
+         +frnBQrfK/nPGGNaalt8La9eAgIvaqSHgzqkGgoIk9aKiUmxsFdf0vqxcKVbkcusFaZU
+         p0D9gtGrEtVutK+hnVPVxi8tCyw6tS5Y46iUGWhGPTmuSHiR40zCV7VBWtlSBbqE4qtz
+         BqhyQUVHnOzRCKIhbSQiJUa+QClskTQmSSuRIHug3/3u48k4zU4akMkFQPdXYgE4yfmg
+         LMjw==
+X-Gm-Message-State: AOAM533WnYkj0qAEwziOsVdNemvc1GEoxYLrRksVpzaR3dKU59BADJzs
+        jG7ktBmS9k561AOFq4H4f18=
+X-Google-Smtp-Source: ABdhPJxxtULCL3yBX9bnCXc0lDQK99o7ABrSuhgdh5repIVNE/Ffoc2zt2mcE2pOB+Rb3f0iu5ZYUQ==
+X-Received: by 2002:a17:90a:d712:: with SMTP id y18mr1594572pju.79.1598884274057;
+        Mon, 31 Aug 2020 07:31:14 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id kb3sm7183877pjb.41.2020.08.31.07.31.12
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 31 Aug 2020 07:31:13 -0700 (PDT)
+Date:   Mon, 31 Aug 2020 07:31:12 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        linux-hwmon@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] hwmon: replace impossible fallthroughs with breaks
+Message-ID: <20200831143112.GA70762@roeck-us.net>
+References: <20200831113958.GB514373@mwanda>
 MIME-Version: 1.0
-Reply-To: marie_avis12@yahoo.com
-Received: by 2002:a2e:9817:0:0:0:0:0 with HTTP; Mon, 31 Aug 2020 06:26:26
- -0700 (PDT)
-From:   Miss Maris Avis <marie.avis11@gmail.com>
-Date:   Mon, 31 Aug 2020 13:26:26 +0000
-X-Google-Sender-Auth: aulnVZG-1gSOcZsrnz7-vOB6QCo
-Message-ID: <CADTVshPC=1cJsw0xvUiUZDDBg3VVdBcHJ+pk-zuvR4tycntngg@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200831113958.GB514373@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-My Dear,
+On Mon, Aug 31, 2020 at 02:39:58PM +0300, Dan Carpenter wrote:
+> It's impossible to reach these fall through statements because all
+> the possible values are handled.  In that situation it's cleaner to
+> use a break statement instead of a fall through statement.
+> 
 
-My name is Miss Marie Avis the only daughter of Mr. Gabriel Avis, my
-Father was dealing in Cocoa and Timber in this country before his
-death,  It is my pleasure to contact you for a business venture which
-I intend to establish in your country. Though I have not met with you
-before but I believe one has to risk confiding before you can succeed
-sometimes in life.
+Makes sense. Applied.
 
-I can confide in you for my brighter future since you are a human
-being like me. There is this huge amount of Ten Million five hundred
-thousand United States dollars. ($10.500.000.00) which my late Father
-kept for me in a suspense account with one of the bank here in Abidjan
-Cote d'Ivoire before he was assassinated by unknown persons, Now I
-have decided to invest these money in your country or anywhere safe
-enough for me.
+Thanks,
+Guenter
 
-I want you to help me claim this fund from the bank and have it
-transfer into your personal account in your country for investment
-purposes in your country in these areas:
-
-1). Telecommunication
-2). The transport Industry
-3). Five Star Hotel
-4). Tourism
-5). Real Estate
-
-If you can be of assistance to me I will be pleased to offer you 20%
-of the total fund.
-
-I await your soonest response.
-
-Respectfully yours,
-Miss Marie Evis
-Tel: +225597438528
+> Fixes: c947e51cf803 ("hwmon: (adt7462) Mark expected switch fall-throughs")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/hwmon/adt7462.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/hwmon/adt7462.c b/drivers/hwmon/adt7462.c
+> index e75bbd87ad09..634a44591c7f 100644
+> --- a/drivers/hwmon/adt7462.c
+> +++ b/drivers/hwmon/adt7462.c
+> @@ -435,7 +435,7 @@ static const char *voltage_label(struct adt7462_data *data, int which)
+>  		case 3:
+>  			return "+1.5V";
+>  		}
+> -		fallthrough;
+> +		break;
+>  	case 2:
+>  		if (!(data->pin_cfg[1] & ADT7462_PIN22_INPUT))
+>  			return "+12V3";
+> @@ -493,7 +493,7 @@ static const char *voltage_label(struct adt7462_data *data, int which)
+>  		case 3:
+>  			return "+1.5";
+>  		}
+> -		fallthrough;
+> +		break;
+>  	case 11:
+>  		if (data->pin_cfg[3] >> ADT7462_PIN28_SHIFT ==
+>  					ADT7462_PIN28_VOLT &&
+> @@ -531,7 +531,7 @@ static int voltage_multiplier(struct adt7462_data *data, int which)
+>  		case 3:
+>  			return 7800;
+>  		}
+> -		fallthrough;
+> +		break;
+>  	case 2:
+>  		if (!(data->pin_cfg[1] & ADT7462_PIN22_INPUT))
+>  			return 62500;
+> @@ -589,7 +589,7 @@ static int voltage_multiplier(struct adt7462_data *data, int which)
+>  		case 3:
+>  			return 7800;
+>  		}
+> -		fallthrough;
+> +		break;
+>  	case 11:
+>  	case 12:
+>  		if (data->pin_cfg[3] >> ADT7462_PIN28_SHIFT ==

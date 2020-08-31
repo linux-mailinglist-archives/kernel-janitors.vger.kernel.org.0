@@ -2,199 +2,116 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 852962567D2
-	for <lists+kernel-janitors@lfdr.de>; Sat, 29 Aug 2020 15:13:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABF8F257387
+	for <lists+kernel-janitors@lfdr.de>; Mon, 31 Aug 2020 08:07:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728237AbgH2NMo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 29 Aug 2020 09:12:44 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:47697
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728180AbgH2NKf (ORCPT
+        id S1726692AbgHaGHz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 31 Aug 2020 02:07:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52186 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726668AbgHaGHx (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 29 Aug 2020 09:10:35 -0400
-X-IronPort-AV: E=Sophos;i="5.76,359,1592863200"; 
-   d="scan'208";a="357585620"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Aug 2020 15:09:57 +0200
-Date:   Sat, 29 Aug 2020 15:09:57 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Denis Efremov <efremov@linux.com>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Kees Cook <keescook@chromium.org>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        kernel-janitors@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [Cocci] [RFC PATCH] coccinelle: api: add flex_array_size.cocci
- script
-In-Reply-To: <b131add2-f494-d129-f83f-ef2c6de7a849@web.de>
-Message-ID: <alpine.DEB.2.22.394.2008291507400.3629@hadrien>
-References: <b131add2-f494-d129-f83f-ef2c6de7a849@web.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        Mon, 31 Aug 2020 02:07:53 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76B1BC061573;
+        Sun, 30 Aug 2020 23:07:53 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id z9so4186696wmk.1;
+        Sun, 30 Aug 2020 23:07:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=Z7mwICOsTSTk8hmlKiJXKOQS+E+K2QedirkvwqkFtog=;
+        b=omh317KQBC6uXvsjwXrrei7AXTavsyNq318sCHmtgXascdVih1L5vxjj78dpNFGu8M
+         jFCxqf7uZAF+6Zb5H8x+BP4FtFcV2bwuaCJ8neNXoPr0oci0NKTVi4blGJK8zmPBfQnq
+         9xcYlm/lP3SYR5e9Idx0ONYQz1/vGcb3DxSqMRCKmUOViOIEbqx5jR3hYCGijFIkhqiM
+         s5LJXvVFqXYAbPhIUFqjZr+lyC7cMnaFHOrs/mCD70TT6N+brJpo8uzcTKSKAYXYaboG
+         FxpGIWvHuAoM1PDAji+BkovX7FFUrFuh3m7viu62mV2pvNSKQSoKw/uEvhlBvrkQJkde
+         nz5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=Z7mwICOsTSTk8hmlKiJXKOQS+E+K2QedirkvwqkFtog=;
+        b=bMx9CGy2JwNssX0LGxtwZbLKGZh+yKODg/s54YCKuRY4kKQismudRZIlPpjNQu2VKR
+         tycbhRfHqIpdKp13bzLVw5Gb7w718PoZSWJszIBPAs0Z22FL97J1U6cLEJ7KUfQpuShv
+         yUnDjPK5WHY47M4xlShDiH8ZYbWX/aVXT4cRF6IVD1aUdl7tkw+2KZY3lvPvwTrF2lYb
+         WwI7dPVneAFsLBif75TWZumZeqgF4qSu7u5DAew1P0/J3hYdX0RAhVoT/CjqE3YupC+F
+         eQv8HVEgqwZ94XpmYUOAj4DPCOSp7uBGCps3V90bX4WB7U/8FAPV5nBw2xSyJlheETo4
+         NDkA==
+X-Gm-Message-State: AOAM532B+PpVGYdhz7oyz/l67qzKGzPkkAkBu2uV8j5FUSM2Ph/DCDuA
+        CgBLIqA0MQomObRXF0lIQsajILdatZsA27Ad
+X-Google-Smtp-Source: ABdhPJy2mi09OkLTQzsVzN9ZiIN8rdVkae5wdpKepg598PQtPa4RNqQNFMHIXorspAvqLQuWQ9ZI4w==
+X-Received: by 2002:a7b:c185:: with SMTP id y5mr184801wmi.95.1598854072100;
+        Sun, 30 Aug 2020 23:07:52 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2de1:2200:9c37:36bb:80e7:91d])
+        by smtp.gmail.com with ESMTPSA id v9sm10387897wru.37.2020.08.30.23.07.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Aug 2020 23:07:51 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>
+Cc:     Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: add headers and doc to SCHEDULER
+Date:   Mon, 31 Aug 2020 08:07:30 +0200
+Message-Id: <20200831060730.17461-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Various files in include/linux/sched/ and include/uapi/linux/sched/ are
+identified as part of THE REST according to MAINTAINERS, but they really
+belong to SCHEDULER.
 
+Add those headers and Documentation to the SCHEDULER section.
 
-On Sat, 29 Aug 2020, Markus Elfring wrote:
+This was identified with a small script that finds all files belonging to
+THE REST according to the current MAINTAINERS file, and I investigated
+upon its output.
 
-> > Suggest flex_array_size() wrapper to compute the size of a
-> > flexible array member in a structure. The macro additionally
-> > checks for integer overflows.
->
-> Can the following script variant for the semantic patch language help
-> to clarify any software development ideas and remaining open issues?
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+RFC v1: https://lore.kernel.org/lkml/20200308174931.9118-1-lukas.bulwahn@gmail.com/
+  - no feedback.
 
-A patch proposal needs to say what it is doing and why.  You haven't
-provided either information.
+RFC v2: https://lore.kernel.org/lkml/20200413112603.5257-1-lukas.bulwahn@gmail.com/
+  - RFC v1 does not apply after reordering MAINTAINERS, i.e., commit 4400b7d68f6e
+    ("MAINTAINERS: sort entries by entry name") and commit 3b50142d8528
+    ("MAINTAINERS: sort field names for all entries").
+  - does not need to reorder entries anymore.
+  - applies cleanly on v5.7-rc1
+  - no feedback.
 
-What changes have you made as compared to the original proposal, and why
-have you made them?  Removing newlines and adding spaces, as done in
-decl_flex, is not something I am interested in.
+v1:
+  - rebased to v5.9-rc3
+  - minor wording: s/SCHEDULER entry/SCHEDULER section/
+  - increase recipients to all scheduler maintainers to get some feedback
 
-julia
+ MAINTAINERS | 3 +++
+ 1 file changed, 3 insertions(+)
 
->
->
-> virtual context, patch, report, org
->
-> @decl_flex@
-> identifier name, array, size;
-> type TA, TS;
-> @@
->  struct name {
->  ...
->  TS size;
->  ...
-> (TA array[];
-> |TA array[ \( 0 \| 1 \) ];
-> )
->  };
->
-> @ptr_flex@
-> identifier decl_flex.name, instance;
-> @@
->  struct name *instance;
->
-> @struct_flex@
-> identifier decl_flex.name, instance;
-> @@
->  struct name instance;
->
-> @ptr_flex_size depends on !patch@
-> identifier decl_flex.array, decl_flex.size, ptr_flex.instance;
-> type decl_flex.TA;
-> position p;
-> @@
-> *instance->size *@p \( sizeof(TA) \| sizeof(*instance->array) \)
->
-> @depends on patch exists@
-> identifier decl_flex.array, decl_flex.size, ptr_flex.instance;
-> type decl_flex.TA;
-> @@
-> (
-> -sizeof(TA)
-> |
-> -sizeof(*instance->array)
-> )
-> - *
-> +flex_array_size(instance, array,
->  instance->size
-> +)
->
-> @struct_flex_size depends on !patch@
-> identifier decl_flex.array, decl_flex.size, struct_flex.instance;
-> type decl_flex.TA;
-> position p;
-> @@
-> *instance->size *@p \( sizeof(TA) \| sizeof(*instance->array) \)
->
-> @depends on patch exists@
-> identifier decl_flex.array, decl_flex.size, struct_flex.instance;
-> type decl_flex.TA;
-> @@
-> (
-> -sizeof(TA)
-> |
-> -sizeof(*instance->array)
-> )
-> - *
-> +flex_array_size(instance, array,
->  instance->size
-> +)
->
-> @func_arg_flex_size depends on !patch@
-> identifier decl_flex.name, decl_flex.array, decl_flex.size, func, instance;
-> type decl_flex.TA;
-> position p;
-> @@
->  func(..., struct name *instance, ...) {
->  ... when any
-> *instance->size *@p \( sizeof(TA) \| sizeof(*instance->array) \)
->  ...
->  }
->
-> @depends on patch exists@
-> identifier decl_flex.name, decl_flex.array, decl_flex.size, func, instance;
-> type decl_flex.TA;
-> @@
->  func(..., struct name *instance, ...) {
->  ... when any
-> (
-> -sizeof(TA)
-> |
-> -sizeof(*instance->array)
-> )
-> - *
-> +flex_array_size(instance, array,
->  instance->size
-> +)
->  ...
->  }
->
-> @script:python depends on report@
-> p << ptr_flex_size.p;
-> @@
-> coccilib.report.print_report(p[0], "WARNING opportunity for flex_array_size")
->
-> @script:python depends on org@
-> p << ptr_flex_size.p;
-> @@
-> coccilib.org.print_todo(p[0], "WARNING opportunity for flex_array_size")
->
-> @script:python depends on report@
-> p << struct_flex_size.p;
-> @@
-> coccilib.report.print_report(p[0], "WARNING opportunity for flex_array_size")
->
-> @script:python depends on org@
-> p << struct_flex_size.p;
-> @@
-> coccilib.org.print_todo(p[0], "WARNING opportunity for flex_array_size")
->
-> @script:python depends on report@
-> p << func_arg_flex_size.p;
-> @@
-> coccilib.report.print_report(p[0], "WARNING opportunity for flex_array_size")
->
-> @script:python depends on org@
-> p << func_arg_flex_size.p;
-> @@
-> coccilib.org.print_todo(p[0], "WARNING opportunity for flex_array_size")
->
->
-> Regards,
-> Markus
-> _______________________________________________
-> Cocci mailing list
-> Cocci@systeme.lip6.fr
-> https://systeme.lip6.fr/mailman/listinfo/cocci
->
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e4647c84c987..36c8e7671b70 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -15359,10 +15359,13 @@ R:	Mel Gorman <mgorman@suse.de> (CONFIG_NUMA_BALANCING)
+ L:	linux-kernel@vger.kernel.org
+ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git sched/core
++F:	Documentation/scheduler/
+ F:	include/linux/preempt.h
+ F:	include/linux/sched.h
++F:	include/linux/sched/
+ F:	include/linux/wait.h
+ F:	include/uapi/linux/sched.h
++F:	include/uapi/linux/sched/
+ F:	kernel/sched/
+ 
+ SCR24X CHIP CARD INTERFACE DRIVER
+-- 
+2.17.1
+

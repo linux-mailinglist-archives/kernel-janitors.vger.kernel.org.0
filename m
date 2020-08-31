@@ -2,88 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 152D8257C00
-	for <lists+kernel-janitors@lfdr.de>; Mon, 31 Aug 2020 17:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B69A8257FE1
+	for <lists+kernel-janitors@lfdr.de>; Mon, 31 Aug 2020 19:43:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728372AbgHaPQ5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 31 Aug 2020 11:16:57 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:20630 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728312AbgHaPQz (ORCPT
+        id S1728845AbgHaRnf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 31 Aug 2020 13:43:35 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:50348 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726105AbgHaRn0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 31 Aug 2020 11:16:55 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1598887014; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=ysYzo+Er7KVYGGas/Ij6Cr6vjIBlCSJyFLaEx6zU4E4=;
- b=hwoHgINlXy1xEtDsnJpF7IABIyfz78UN34fk5FkA+MFAnwZXxyIHNX2ThE+yDcyy+BIVXSBP
- NkgGPmx6DYSrrEbkRt09pHaVvzZvmA1SUO/OszZ8RJmrE4ShOuIzDTMmD39dm2QP0nLJ56eo
- TRPaV+d7jzkt16y/32sZW8iieJU=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 5f4d1464947f606f7e65d835 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 31 Aug 2020 15:16:52
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4D014C43395; Mon, 31 Aug 2020 15:16:52 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CF877C433CB;
-        Mon, 31 Aug 2020 15:16:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CF877C433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] ath11k: fix missing error check on call to
- ath11k_pci_get_user_msi_assignment
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200819111452.52419-1-colin.king@canonical.com>
-References: <20200819111452.52419-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Carl Huang <cjhuang@codeaurora.org>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Mon, 31 Aug 2020 13:43:26 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07VHSrDR072950;
+        Mon, 31 Aug 2020 17:43:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=LP7KEZhg+XKWxIs/BSczmC1OoPoZUx3aWNFf7jH3Qe0=;
+ b=f7AlhIj3J5T8JIrf1EOms30exoVXSEO8Rp89z0EioZ6Os1wfucGbgafkD55k1jI46liZ
+ iPnYwRp2AM/dNRcWETy6qlzaaacr09THXbQSp2Uuiy9QeowUU2DtZX3W0Wk7/q5piwsu
+ DLesClTUL2hp9fqzYgydCRgD0C4PZ4NS2NG7AFbjew+sbRUbAAokGxmege+vLaroc3/O
+ NtXAF2fDIwY/Ih90dXetEqK0ZmIEOpXH/VhR8lXrerAW9sNzqwEn9w8WGH/Tx62OsNa0
+ 5rYpbdVBf0u0YxwyJIEtajDRr1MfksDqzNdNJiMGsJ2H+/eWZRvjH9ogWbkLnxDJFPFb 1Q== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 337eeqqms1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 31 Aug 2020 17:43:19 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07VHf8G9078432;
+        Mon, 31 Aug 2020 17:41:18 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 3380kkynmf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 31 Aug 2020 17:41:18 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 07VHfGGH005072;
+        Mon, 31 Aug 2020 17:41:17 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 31 Aug 2020 10:41:16 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     QLogic-Storage-Upstream@qlogic.com, jejb@linux.ibm.com,
+        lalit.chandivade@qlogic.com,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        michaelc@cs.wisc.edu, vikas.chaudhary@qlogic.com,
+        JBottomley@Parallels.com
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        kernel-janitors@vger.kernel.org, linux-scsi@vger.kernel.org,
         linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200831151652.4D014C43395@smtp.codeaurora.org>
-Date:   Mon, 31 Aug 2020 15:16:52 +0000 (UTC)
+Subject: Re: [PATCH] scsi: qla2xxx: Fix the size used in a 'dma_free_coherent()' call
+Date:   Mon, 31 Aug 2020 13:41:03 -0400
+Message-Id: <159889566023.22322.17846122781525526855.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200802110721.677707-1-christophe.jaillet@wanadoo.fr>
+References: <20200802110721.677707-1-christophe.jaillet@wanadoo.fr>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9730 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 adultscore=0
+ mlxscore=0 suspectscore=0 malwarescore=0 mlxlogscore=797 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008310105
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9730 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 adultscore=0 spamscore=0 mlxscore=0
+ phishscore=0 impostorscore=0 mlxlogscore=787 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008310104
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+On Sun, 2 Aug 2020 13:07:21 +0200, Christophe JAILLET wrote:
 
-> The return error check on the call to ath11k_pci_get_user_msi_assignment is
-> missing.  If an error does occur, num_vectors is still set to zero and
-> later on a division by zero can occur when variable vector is being
-> calculated.  Fix this by adding an error check after the call.
+> Update the size used in 'dma_free_coherent()' in order to match the one
+> used in the corresponding 'dma_alloc_coherent()'.
 > 
-> Addresses-Coverity: ("Division or modulo by zero")
-> Fixes: d4ecb90b3857 ("ath11k: enable DP interrupt setup for QCA6390")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> While at it, remove a memset after a call to 'dma_alloc_coherent()'.
+> This is useless since
+> commit 518a2f1925c3 ("dma-mapping: zero memory returned from dma_alloc_*")
 
-Patch applied to ath-next branch of ath.git, thanks.
+Applied to 5.10/scsi-queue, thanks!
 
-b2c094582e38 ath11k: fix missing error check on call to ath11k_pci_get_user_msi_assignment
+[1/1] scsi: qla2xxx: Fix the size used in a 'dma_free_coherent()' call
+      https://git.kernel.org/mkp/scsi/c/650b323c8e7c
 
 -- 
-https://patchwork.kernel.org/patch/11723523/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Martin K. Petersen	Oracle Linux Engineering

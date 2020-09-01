@@ -2,85 +2,206 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA3E4257FDC
-	for <lists+kernel-janitors@lfdr.de>; Mon, 31 Aug 2020 19:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8D38258BAD
+	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Sep 2020 11:34:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728873AbgHaRn2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 31 Aug 2020 13:43:28 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:39548 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727963AbgHaRn1 (ORCPT
+        id S1726384AbgIAJeg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 1 Sep 2020 05:34:36 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:52266 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726212AbgIAJef (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 31 Aug 2020 13:43:27 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07VHTf3n185226;
-        Mon, 31 Aug 2020 17:43:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=tEONa2vxtDQteg9PbJKnoPWh6utRvJWO0fqZQKSw8Cc=;
- b=PIWd9ql9stqV2TtEmn2ooyvKw5iBEdf65dRsCau8DuWSjKsSSFEkEaI2NMBk5/RoSayu
- /cwXKQFUxXeJdzYFrLJv+AY7c18G3rMI9CtJMN3ff0GO1X6svLWldVI07MsZQ8hgAOY1
- uuMcO2PjVVR7mB5ENACd7/Ft/ME0PRXMsRW7rxqFHPwSNszGCiptu9yQCXvHLkJYbtSe
- gzjO7LXS1kqVPLrU1RUTCSzMsj1CNW7PDMmiFsfEkARU71lVb6JhiMlfjVsx3aXPv9fd
- SZcmS4rOzWwLqaVj/o7y1ZXCgKRvHMHc3OaGD5G5Dic3Q/24DQCQo1Zjh3Ii2VV4/Ao5 sQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 337qrhene2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 31 Aug 2020 17:43:23 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07VHeus2029436;
-        Mon, 31 Aug 2020 17:41:23 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 3380sqbru2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 31 Aug 2020 17:41:22 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 07VHfM4n012396;
-        Mon, 31 Aug 2020 17:41:22 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 31 Aug 2020 10:41:21 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Colin King <colin.king@canonical.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        linux-scsi@vger.kernel.org, Karan Tilak Kumar <kartilak@cisco.com>,
-        Sesidhar Baddela <sebaddel@cisco.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] scsi: snic: fix spelling mistakes of "Queueing"
-Date:   Mon, 31 Aug 2020 13:41:08 -0400
-Message-Id: <159889566023.22322.15777127928879513502.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200810080745.47314-1-colin.king@canonical.com>
-References: <20200810080745.47314-1-colin.king@canonical.com>
+        Tue, 1 Sep 2020 05:34:35 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1598952875; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=lL/pMIkdmjUouEcq0pHJocEWmjNk1dV/T35zPSebDKo=;
+ b=hoJN0MJTdX4gOT+qLLbzLMwvHqvvU3BxulzRJIAp5Wm0SmhaLzxhTgBHiaxc17gfcAkhTedA
+ HRogpQF7KuZbW0zdXXIXxNgdwvshSBMZGc1RDme144Gwt8YrAerHBCTI0Z8q054tn82K7sr9
+ PgVj0TN7poQAQvLQ40pZk/ISa0Y=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 5f4e15aad7b4e26913a8034b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 01 Sep 2020 09:34:34
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D3E8DC43391; Tue,  1 Sep 2020 09:34:34 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7DB31C433C6;
+        Tue,  1 Sep 2020 09:34:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7DB31C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9730 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=892 adultscore=0
- phishscore=0 malwarescore=0 mlxscore=0 spamscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008310105
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9730 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=905 bulkscore=0
- adultscore=0 mlxscore=0 lowpriorityscore=0 phishscore=0 clxscore=1015
- suspectscore=0 priorityscore=1501 spamscore=0 malwarescore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008310104
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] rtl818x_pci: switch from 'pci_' to 'dma_' API
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200819210852.120826-1-christophe.jaillet@wanadoo.fr>
+References: <20200819210852.120826-1-christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     davem@davemloft.net, kuba@kernel.org, vaibhavgupta40@gmail.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200901093434.D3E8DC43391@smtp.codeaurora.org>
+Date:   Tue,  1 Sep 2020 09:34:34 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 10 Aug 2020 09:07:45 +0100, Colin King wrote:
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-> There are two different spelling mistakes of "Queueing" in
-> error and debug messages. Fix these.
+> The wrappers in include/linux/pci-dma-compat.h should go away.
+> 
+> The patch has been generated with the coccinelle script below and has been
+> hand modified to replace GFP_ with a correct flag.
+> It has been compile tested.
+> 
+> When memory is allocated in 'rtl8180_init_rx_ring()' and
+> 'rtl8180_init_tx_ring()' GFP_KERNEL can be used because both functions are
+> called from 'rtl8180_start()', which is a .start function (see struct
+> ieee80211_ops)
+> .start function can sleep, as explicitly stated in include/net/mac80211.h.
+> 
+> 
+> @@
+> @@
+> -    PCI_DMA_BIDIRECTIONAL
+> +    DMA_BIDIRECTIONAL
+> 
+> @@
+> @@
+> -    PCI_DMA_TODEVICE
+> +    DMA_TO_DEVICE
+> 
+> @@
+> @@
+> -    PCI_DMA_FROMDEVICE
+> +    DMA_FROM_DEVICE
+> 
+> @@
+> @@
+> -    PCI_DMA_NONE
+> +    DMA_NONE
+> 
+> @@
+> expression e1, e2, e3;
+> @@
+> -    pci_alloc_consistent(e1, e2, e3)
+> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+> 
+> @@
+> expression e1, e2, e3;
+> @@
+> -    pci_zalloc_consistent(e1, e2, e3)
+> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_free_consistent(e1, e2, e3, e4)
+> +    dma_free_coherent(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_map_single(e1, e2, e3, e4)
+> +    dma_map_single(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_single(e1, e2, e3, e4)
+> +    dma_unmap_single(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4, e5;
+> @@
+> -    pci_map_page(e1, e2, e3, e4, e5)
+> +    dma_map_page(&e1->dev, e2, e3, e4, e5)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_page(e1, e2, e3, e4)
+> +    dma_unmap_page(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_map_sg(e1, e2, e3, e4)
+> +    dma_map_sg(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_sg(e1, e2, e3, e4)
+> +    dma_unmap_sg(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
+> +    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_single_for_device(e1, e2, e3, e4)
+> +    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
+> +    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
+> +    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_dma_mapping_error(e1, e2)
+> +    dma_mapping_error(&e1->dev, e2)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_set_dma_mask(e1, e2)
+> +    dma_set_mask(&e1->dev, e2)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_set_consistent_dma_mask(e1, e2)
+> +    dma_set_coherent_mask(&e1->dev, e2)
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Applied to 5.10/scsi-queue, thanks!
+Patch applied to wireless-drivers-next.git, thanks.
 
-[1/1] scsi: snic: Fix spelling mistakes of "Queueing"
-      https://git.kernel.org/mkp/scsi/c/cb562b132bf8
+f4ce4bf6687f rtl818x_pci: switch from 'pci_' to 'dma_' API
 
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+https://patchwork.kernel.org/patch/11725047/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+

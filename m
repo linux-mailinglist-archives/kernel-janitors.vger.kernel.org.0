@@ -2,98 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 715D425B01D
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Sep 2020 17:51:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AFB025B13E
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Sep 2020 18:18:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727853AbgIBPvD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Sep 2020 11:51:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53232 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726193AbgIBPvC (ORCPT
+        id S1728536AbgIBQP4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Sep 2020 12:15:56 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59766 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728338AbgIBQNj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Sep 2020 11:51:02 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 448FBC061244;
-        Wed,  2 Sep 2020 08:51:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=Cp8V1GrvtzU2e2MKh6LDdEUvlY5amNpoEKJcdKTXSzM=; b=mn3AxcQK4BhdnyEMYYGtUjMIiY
-        QkMmw9VVvPzaLN9XveOgC0yZOKJa0YqqlmzQvNEiRJ+HoaVZM7FIgF0rdG85CBRszucfKs7h7NDwy
-        LWaqLRVXcqaJkV54gdvBoqXpnRpFDf03qK1yjgntKi1cygvlWn/83nH/Jost0AnUvVCdemcTuaN7H
-        uFb6geM4lcmLy7uIukt/KeaxHHcrgoajRAJr7M/vmz6cxpUT4jo9xX0RMxeVsLwxkxRg1dJSZsvGR
-        CK9sDe2o3wDARuPLkqofQJJsTHnucYU9Yk15ydklpKBkrOi/qZGxcvrEe1IbVQUacSOjPdNnyxyeZ
-        9Vnc/htQ==;
-Received: from [2601:1c0:6280:3f0::19c2]
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kDV2I-0004JD-Ug; Wed, 02 Sep 2020 15:50:59 +0000
-Subject: Re: [PATCH][next] charger-manager: fix incorrect check on
- charging_duration_ms
-To:     Colin King <colin.king@canonical.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Myungjoo Ham <myungjoo.ham@samsung.com>,
-        Anton Vorontsov <anton.vorontsov@linaro.org>,
-        linux-pm@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-References: <20200902133117.108025-1-colin.king@canonical.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <42cb421a-286e-65db-36b1-4fa794758279@infradead.org>
-Date:   Wed, 2 Sep 2020 08:50:55 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        Wed, 2 Sep 2020 12:13:39 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kDVO8-0005jC-I8; Wed, 02 Sep 2020 16:13:32 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn.topel@intel.com>,
+        Magnus Karlsson <magnus.karlsson@intel.com>,
+        Jonathan Lemon <jonathan.lemon@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        netdev@vger.kernel.org, bpf@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] xsk: fix incorrect memory allocation failure check on dma_map->dma_pages
+Date:   Wed,  2 Sep 2020 17:13:32 +0100
+Message-Id: <20200902161332.199961-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <20200902133117.108025-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 9/2/20 6:31 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently the duration check on the discharging duration setting is
-> checking the charging duration rather than the discharging duration
-> due to a cut-n-paste coding error. Fix this by checking the value
-> desc->charging_max_duration_ms.
-> 
-> Addresses-Coverity: ("Copy-paste-error")
-> Fixes: 8fcfe088e21a ("charger-manager: Support limit of maximum possible")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Gustavo has a different patch:
-https://lore.kernel.org/lkml/20200902153846.GA10327@embeddedor/
+The failed memory allocation check for dma_map->dma_pages is incorrect,
+it is null checking dma_map and not dma_map->dma_pages. Fix this.
 
-> ---
->  drivers/power/supply/charger-manager.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/power/supply/charger-manager.c b/drivers/power/supply/charger-manager.c
-> index 07992821e252..44d919954e9e 100644
-> --- a/drivers/power/supply/charger-manager.c
-> +++ b/drivers/power/supply/charger-manager.c
-> @@ -471,7 +471,7 @@ static int check_charging_duration(struct charger_manager *cm)
->  	} else if (cm->battery_status == POWER_SUPPLY_STATUS_NOT_CHARGING) {
->  		duration = curr - cm->charging_end_time;
->  
-> -		if (duration > desc->charging_max_duration_ms) {
-> +		if (duration > desc->discharging_max_duration_ms) {
->  			dev_info(cm->dev, "Discharging duration exceed %ums\n",
+Addresses-Coverity: ("Logicall dead code")
+Fixes: 921b68692abb ("xsk: Enable sharing of dma mappings")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ net/xdp/xsk_buff_pool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-preferably change:	                                        exceeds
-
-
->  				 desc->discharging_max_duration_ms);
->  			ret = true;
-> 
-
-
+diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+index 795d7c81c0ca..5b00bc5707f2 100644
+--- a/net/xdp/xsk_buff_pool.c
++++ b/net/xdp/xsk_buff_pool.c
+@@ -287,7 +287,7 @@ static struct xsk_dma_map *xp_create_dma_map(struct device *dev, struct net_devi
+ 		return NULL;
+ 
+ 	dma_map->dma_pages = kvcalloc(nr_pages, sizeof(*dma_map->dma_pages), GFP_KERNEL);
+-	if (!dma_map) {
++	if (!dma_map->dma_pages) {
+ 		kfree(dma_map);
+ 		return NULL;
+ 	}
 -- 
-~Randy
+2.27.0
 

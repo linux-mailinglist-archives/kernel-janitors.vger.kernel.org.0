@@ -2,36 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AFB025B13E
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Sep 2020 18:18:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B36F25B1A8
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Sep 2020 18:28:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728536AbgIBQP4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Sep 2020 12:15:56 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59766 "EHLO
+        id S1728120AbgIBQ2K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Sep 2020 12:28:10 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:60137 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728338AbgIBQNj (ORCPT
+        with ESMTP id S1726948AbgIBQ2J (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Sep 2020 12:13:39 -0400
+        Wed, 2 Sep 2020 12:28:09 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kDVO8-0005jC-I8; Wed, 02 Sep 2020 16:13:32 +0000
+        id 1kDVcE-0006ln-4D; Wed, 02 Sep 2020 16:28:06 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn.topel@intel.com>,
-        Magnus Karlsson <magnus.karlsson@intel.com>,
-        Jonathan Lemon <jonathan.lemon@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        netdev@vger.kernel.org, bpf@vger.kernel.org
+To:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] xsk: fix incorrect memory allocation failure check on dma_map->dma_pages
-Date:   Wed,  2 Sep 2020 17:13:32 +0100
-Message-Id: <20200902161332.199961-1-colin.king@canonical.com>
+Subject: [PATCH][next] RDMA/ucma: fix memory leak of mc on an xa_alloc failure
+Date:   Wed,  2 Sep 2020 17:28:05 +0100
+Message-Id: <20200902162805.200436-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -43,29 +35,62 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The failed memory allocation check for dma_map->dma_pages is incorrect,
-it is null checking dma_map and not dma_map->dma_pages. Fix this.
+Currently when an xa_alloc failure occurs the error exit path leaks
+the allocated object mc.  Fix this by adding an error return path
+that frees mc and rename error exit paths err3 to err4 and err2 to err3.
 
-Addresses-Coverity: ("Logicall dead code")
-Fixes: 921b68692abb ("xsk: Enable sharing of dma mappings")
+Fixes: 95fe51096b7a ("RDMA/ucma: Remove mc_list and rely on xarray")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- net/xdp/xsk_buff_pool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/core/ucma.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index 795d7c81c0ca..5b00bc5707f2 100644
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -287,7 +287,7 @@ static struct xsk_dma_map *xp_create_dma_map(struct device *dev, struct net_devi
- 		return NULL;
- 
- 	dma_map->dma_pages = kvcalloc(nr_pages, sizeof(*dma_map->dma_pages), GFP_KERNEL);
--	if (!dma_map) {
-+	if (!dma_map->dma_pages) {
- 		kfree(dma_map);
- 		return NULL;
+diff --git a/drivers/infiniband/core/ucma.c b/drivers/infiniband/core/ucma.c
+index f2c9ef6ae481..f081da35e3cf 100644
+--- a/drivers/infiniband/core/ucma.c
++++ b/drivers/infiniband/core/ucma.c
+@@ -1464,7 +1464,7 @@ static ssize_t ucma_process_join(struct ucma_file *file,
+ 	if (xa_alloc(&multicast_table, &mc->id, NULL, xa_limit_32b,
+ 		     GFP_KERNEL)) {
+ 		ret = -ENOMEM;
+-		goto err1;
++		goto err2;
  	}
+ 
+ 	mutex_lock(&ctx->mutex);
+@@ -1472,13 +1472,13 @@ static ssize_t ucma_process_join(struct ucma_file *file,
+ 				  join_state, mc);
+ 	mutex_unlock(&ctx->mutex);
+ 	if (ret)
+-		goto err2;
++		goto err3;
+ 
+ 	resp.id = mc->id;
+ 	if (copy_to_user(u64_to_user_ptr(cmd->response),
+ 			 &resp, sizeof(resp))) {
+ 		ret = -EFAULT;
+-		goto err3;
++		goto err4;
+ 	}
+ 
+ 	xa_store(&multicast_table, mc->id, mc, 0);
+@@ -1486,13 +1486,14 @@ static ssize_t ucma_process_join(struct ucma_file *file,
+ 	ucma_put_ctx(ctx);
+ 	return 0;
+ 
+-err3:
++err4:
+ 	mutex_lock(&ctx->mutex);
+ 	rdma_leave_multicast(ctx->cm_id, (struct sockaddr *) &mc->addr);
+ 	mutex_unlock(&ctx->mutex);
+ 	ucma_cleanup_mc_events(mc);
+-err2:
++err3:
+ 	xa_erase(&multicast_table, mc->id);
++err2:
+ 	kfree(mc);
+ err1:
+ 	ucma_put_ctx(ctx);
 -- 
 2.27.0
 

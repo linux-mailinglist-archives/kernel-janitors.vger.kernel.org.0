@@ -2,110 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC30D25A9F7
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Sep 2020 13:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9629625AA16
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Sep 2020 13:14:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727855AbgIBLEs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Sep 2020 07:04:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37288 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726406AbgIBLEl (ORCPT
+        id S1726526AbgIBLOm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Sep 2020 07:14:42 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:56156 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726323AbgIBLNn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Sep 2020 07:04:41 -0400
-Received: from mail-ua1-x942.google.com (mail-ua1-x942.google.com [IPv6:2607:f8b0:4864:20::942])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6106AC061246
-        for <kernel-janitors@vger.kernel.org>; Wed,  2 Sep 2020 04:04:40 -0700 (PDT)
-Received: by mail-ua1-x942.google.com with SMTP id v24so1429593uaj.7
-        for <kernel-janitors@vger.kernel.org>; Wed, 02 Sep 2020 04:04:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Hf0PIlZBH2f6tZjqIqPKdTSDxg4ey5IHqqV7o7zs3fA=;
-        b=jvktss2wubUFAj/XGva63/p+i21EmUocT+VKMGriS4nO/cV/LZCl8IS0SS4RAI5I1B
-         PGSRGdX07J/2Y9ObU8kQKYXMoS2CyQ51/SiA8HmfDEN9bG6zj5ZUQSltN4eQYx5vC305
-         jUIYB6t85WIce/eXD6+90KH03m60MDMZHE6SI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Hf0PIlZBH2f6tZjqIqPKdTSDxg4ey5IHqqV7o7zs3fA=;
-        b=XYuYhV4zVhg0r9wOzYndpE1CoDNZwn+PPzBcOgjRHv4njYti/bXK0ByJgVrtDSSIyE
-         jHWkmj8ppR/Zdsf4rBanMv/R5Xlt+kdH/00QbLMAsE6dbZe5/9+F1UsIX/I7UfO2D3xm
-         JaP6OE8gas/a5a2TUu7JVbdvddYGjQrn79X6Xc/bG0Ry9bizVd3MVaA+KH65YWq9/K6U
-         Tiuh3kjJ5Kx1dStriu4BDUn7Nb3Mm9CsxZBDx5pXwY6Fh48b+3r+1WJsTGGlVLUUhcXF
-         wLXtYhfeoPHcEkspu36YVDMjGv3AVQ8YZj9fST4XfvbMoobuv+RNJu8MoIChk/Lyrm25
-         01nQ==
-X-Gm-Message-State: AOAM5303MQ+iTeONVvvihs8ZwwATYifi/vMeQtLbE/A/cAE5Lc03tMoG
-        EZ0bdEly80pnLJueDAsLaT1M5wunrzlyq+EODaSBlw==
-X-Google-Smtp-Source: ABdhPJwTAJmdVSE4G5yw+xOM510eJCrk4CeFZ0EVNnIfqJUjO0bPMVj4+uBwlLwieWiC9A5BtacoHnsFLK6H+cR9mhI=
-X-Received: by 2002:ab0:1e84:: with SMTP id o4mr4725479uak.74.1599044678604;
- Wed, 02 Sep 2020 04:04:38 -0700 (PDT)
+        Wed, 2 Sep 2020 07:13:43 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-264-vYAVe1aDPQ2U4EAg7n6GQg-1; Wed, 02 Sep 2020 12:13:39 +0100
+X-MC-Unique: vYAVe1aDPQ2U4EAg7n6GQg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Wed, 2 Sep 2020 12:13:38 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Wed, 2 Sep 2020 12:13:38 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Colin Ian King' <colin.king@canonical.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+CC:     Len Brown <lenb@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
+Subject: RE: [PATCH] ACPI: sysfs: copy ACPI data using io memory copying
+Thread-Topic: [PATCH] ACPI: sysfs: copy ACPI data using io memory copying
+Thread-Index: AQHWgROr7agM3y/cj06L4ZPs9JoiwalVMaYA
+Date:   Wed, 2 Sep 2020 11:13:38 +0000
+Message-ID: <e94b289c3dfb4ac0b05a7134f9ae8bb3@AcuMS.aculab.com>
+References: <20200312111345.1057569-1-colin.king@canonical.com>
+ <2440284.4js2fAD822@kreacher>
+ <65817d75-7272-2ef3-33a5-f390b5b0ec30@canonical.com>
+In-Reply-To: <65817d75-7272-2ef3-33a5-f390b5b0ec30@canonical.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-References: <9f4fb922-4aa3-0b63-6d81-c83daefd13b9@web.de>
-In-Reply-To: <9f4fb922-4aa3-0b63-6d81-c83daefd13b9@web.de>
-From:   Nicolas Boichat <drinkcat@chromium.org>
-Date:   Wed, 2 Sep 2020 19:04:27 +0800
-Message-ID: <CANMq1KBJTpnYG59B1V=y_emqD3dtMZQAPY9bWJOC8FW2fNRgsA@mail.gmail.com>
-Subject: Re: [PATCH] rpmsg: Avoid double-free in mtk_rpmsg_register_device()
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
-        <linux-remoteproc@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Pi-Hsun Shih <pihsun@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0.002
+X-Mimecast-Originator: aculab.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Sep 2, 2020 at 5:33 PM Markus Elfring <Markus.Elfring@web.de> wrote=
-:
->
-> > If rpmsg_register_device fails, it will call
-> > mtk_rpmsg_release_device which already frees mdev.
->
-> Can another imperative wording become helpful for the change description?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/D=
-ocumentation/process/submitting-patches.rst?id=3D9c7d619be5a002ea29c172df5e=
-3c1227c22cbb41#n151
+RnJvbTogQ29saW4gSWFuIEtpbmcNCj4gU2VudDogMDIgU2VwdGVtYmVyIDIwMjAgMTE6MjcNCj4g
+DQo+IE9uIDE0LzAzLzIwMjAgMTA6MjMsIFJhZmFlbCBKLiBXeXNvY2tpIHdyb3RlOg0KPiA+IE9u
+IFRodXJzZGF5LCBNYXJjaCAxMiwgMjAyMCAxMjoxMzo0NSBQTSBDRVQgQ29saW4gS2luZyB3cm90
+ZToNCj4gPj4gRnJvbTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fub25pY2FsLmNvbT4N
+Cj4gPj4NCj4gPj4gUmVhZGluZyBBQ1BJIGRhdGEgb24gQVJNNjQgYXQgYSBub24tYWxpZ25lZCBv
+ZmZzZXQgZnJvbQ0KPiA+PiAvc3lzL2Zpcm13YXJlL2FjcGkvdGFibGVzL2RhdGEvQkVSVCB3aWxs
+IGNhdXNlIGEgc3BsYXQgYmVjYXVzZQ0KPiA+PiB0aGUgZGF0YSBpcyBJL08gbWVtb3J5IG1hcHBl
+ZCBhbmQgYmVpbmcgcmVhZCB3aXRoIGp1c3QgYSBtZW1jcHkuDQo+ID4+IEZpeCB0aGlzIGJ5IGlu
+dHJvZHVjaW5nIGFuIEkvTyB2YXJpYW50IG9mIG1lbW9yeV9yZWFkX2Zyb21fYnVmZmVyDQo+ID4+
+IGFuZCB1c2luZyBJL08gbWVtb3J5IG1hcHBlZCBjb3BpZXMgaW5zdGVhZC4NCi4uDQo+ID4+ICsv
+KioNCj4gPj4gKyAqIG1lbW9yeV9yZWFkX2Zyb21faW9fYnVmZmVyIC0gY29weSBkYXRhIGZyb20g
+YSBpbyBtZW1vcnkgbWFwcGVkIGJ1ZmZlcg0KPiA+PiArICogQHRvOiB0aGUga2VybmVsIHNwYWNl
+IGJ1ZmZlciB0byByZWFkIHRvDQo+ID4+ICsgKiBAY291bnQ6IHRoZSBtYXhpbXVtIG51bWJlciBv
+ZiBieXRlcyB0byByZWFkDQo+ID4+ICsgKiBAcHBvczogdGhlIGN1cnJlbnQgcG9zaXRpb24gaW4g
+dGhlIGJ1ZmZlcg0KPiA+PiArICogQGZyb206IHRoZSBidWZmZXIgdG8gcmVhZCBmcm9tDQo+ID4+
+ICsgKiBAYXZhaWxhYmxlOiB0aGUgc2l6ZSBvZiB0aGUgYnVmZmVyDQo+ID4+ICsgKg0KPiA+PiAr
+ICogVGhlIG1lbW9yeV9yZWFkX2Zyb21fYnVmZmVyKCkgZnVuY3Rpb24gcmVhZHMgdXAgdG8gQGNv
+dW50IGJ5dGVzIGZyb20gdGhlDQo+ID4+ICsgKiBpbyBtZW1vcnkgbWFwcHkgYnVmZmVyIEBmcm9t
+IGF0IG9mZnNldCBAcHBvcyBpbnRvIHRoZSBrZXJuZWwgc3BhY2UgYWRkcmVzcw0KPiA+PiArICog
+c3RhcnRpbmcgYXQgQHRvLg0KPiA+PiArICoNCj4gPj4gKyAqIE9uIHN1Y2Nlc3MsIHRoZSBudW1i
+ZXIgb2YgYnl0ZXMgcmVhZCBpcyByZXR1cm5lZCBhbmQgdGhlIG9mZnNldCBAcHBvcyBpcw0KPiA+
+PiArICogYWR2YW5jZWQgYnkgdGhpcyBudW1iZXIsIG9yIG5lZ2F0aXZlIHZhbHVlIGlzIHJldHVy
+bmVkIG9uIGVycm9yLg0KPiA+PiArICoqLw0KDQpBcGFydCBmcm9tIHRoZSByZXR1cm4gdmFsdWUg
+aG93IGlzIHRoaXMgZGlmZmVyZW50IGZyb20gdGhlIGdlbmVyaWMNCm1lbWNweV9mcm9tX2lvKCkg
+Pw0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJv
+YWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24g
+Tm86IDEzOTczODYgKFdhbGVzKQ0K
 
-Looking at your posting history, I'll leave it up to the maintainer.
-
-> =E2=80=A6
-> > +++ b/drivers/rpmsg/mtk_rpmsg.c
-> > @@ -220,10 +220,8 @@  static int mtk_rpmsg_register_device(struct mtk_r=
-pmsg_rproc_subdev *mtk_subdev,
-> >       rpdev->dev.release =3D mtk_rpmsg_release_device;
-> >
-> >       ret =3D rpmsg_register_device(rpdev);
-> > -     if (ret) {
-> > -             kfree(mdev);
-> > +     if (ret)
-> >               return ret;
-> > -     }
-> >
-> >       return 0;
-> >  }
->
->
-> * How do you think about to use the following code variant instead?
->
->         return rpmsg_register_device(rpdev);
->
-> * Would you like to omit the variable =E2=80=9Cret=E2=80=9D for this func=
-tion implementation?
-
-That's a good suggestion, I'll update and send a v2.
-
->
-> Regards,
-> Markus

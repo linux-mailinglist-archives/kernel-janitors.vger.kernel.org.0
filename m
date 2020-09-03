@@ -2,306 +2,330 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4AAC25C59E
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Sep 2020 17:45:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 366F325C9F2
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Sep 2020 22:05:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728210AbgICPp5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Sep 2020 11:45:57 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:55570 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726368AbgICPp4 (ORCPT
+        id S1729096AbgICUFf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Sep 2020 16:05:35 -0400
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:16942 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728382AbgICUFd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Sep 2020 11:45:56 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 083C4wCw114539;
-        Thu, 3 Sep 2020 12:04:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=kUOK0z/dR2RLJNvbuKgmrFMRH/00rLzLvd4jJintzwk=;
- b=FXzaei6CCp23GboSeEUdmoo0Se9rKd16Gn9wbORMWtf0Kj+dlZF0fhZyGqzFR3bZZG3Z
- C62awQTOzvOHIwpLVJD+E2icDrpnBbGbvm9/OdzUBhTbNcjzgNEXJH//ra3C05hHJa2p
- 1SXRYxtt0cXy/qBskIotbQP+swqxWnz2mwq7IFtZXKqnoKb7RPFHv1h/F0E90ZiRQ3Vu
- HHxoCLkZ0v9CBNxH0u48DqrW3M85hWg00hhYyvNy2crLOYs8ofQYwQH6V/WOyz89hslJ
- Q6Kj3L1czue2FWzqZf3pYuhRaINk82GXgETMQwcHalK3jkqTmapwiJqUNSbhEhPdVtFg 3w== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 337eer8ayu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 03 Sep 2020 12:04:58 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 083C4g1I077397;
-        Thu, 3 Sep 2020 12:04:55 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 3380x9s81u-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 03 Sep 2020 12:04:55 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 083C4qFx005866;
-        Thu, 3 Sep 2020 12:04:53 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 03 Sep 2020 05:04:51 -0700
-Date:   Thu, 3 Sep 2020 15:04:44 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] staging: media: atomisp: fix memory leak of object
- flash
-Message-ID: <20200903120444.GA8299@kadam>
-References: <20200902165852.201155-1-colin.king@canonical.com>
+        Thu, 3 Sep 2020 16:05:33 -0400
+Received: from localhost.localdomain ([93.22.39.180])
+        by mwinf5d73 with ME
+        id PY5Q2300C3tCsMp03Y5Rrf; Thu, 03 Sep 2020 22:05:29 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 03 Sep 2020 22:05:29 +0200
+X-ME-IP: 93.22.39.180
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     davem@davemloft.net, kuba@kernel.org, mst@redhat.com,
+        mkubecek@suse.cz, snelson@pensando.io, vaibhavgupta40@gmail.com
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH RESEND] epic100: switch from 'pci_' to 'dma_' API
+Date:   Thu,  3 Sep 2020 22:05:09 +0200
+Message-Id: <20200903200509.296149-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200902165852.201155-1-colin.king@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9732 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 phishscore=0
- mlxlogscore=999 adultscore=0 suspectscore=2 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009030114
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9732 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 adultscore=0 spamscore=0 mlxscore=0
- phishscore=0 impostorscore=0 mlxlogscore=999 bulkscore=0 suspectscore=2
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009030113
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Sep 02, 2020 at 05:58:52PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> In the case where the call to lm3554_platform_data_func returns an
-> error there is a memory leak on the error return path of object
-> flash.  Fix this by adding an error return path that will free
-> flash and rename labels fail2 to fail3 and fail1 to fail2.
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-Colin, I know you know this and I don't want to explain things which you
-already know but this for the other people in Kernel Janitors.
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GFP_ with a correct flag.
+It has been compile tested.
 
-The error handling in this function is still pretty messed up.  Why
-does it "goto fail2" if media_entity_pads_init() fails?  There is no
-clean up if atomisp_register_i2c_module() fails.
-
-It's just better to re-write it using the "free the most recent
-allocation" system.  The key to the system is if the last allocation
-was "flash" then the goto should be something like "goto free_flash;"
-so that we know it does the right thing.
-
-One of the advantages of the this system is that it basically writes the
-->remove() for you.  All we have to do is add one more line to free the
-final allocation from the probe function.  In this driver the lm3554_remove()
-has a few things which aren't cleaned up in the probe error handling so
-it doesn't seem right.  For example, we need to delete the timer.
-
-   834  static int lm3554_probe(struct i2c_client *client)
-   835  {
-   836          int err = 0;
-   837          struct lm3554 *flash;
-   838          unsigned int i;
-   839          int ret;
-
-We have both "ret" and "err".  It causes bugs where ever "ret" is used
-below.  Let's delete "err".
-
-   840  
-   841          flash = kzalloc(sizeof(*flash), GFP_KERNEL);
-   842          if (!flash)
-   843                  return -ENOMEM;
-
-"flash" is allocated.
-
-   844  
-   845          flash->pdata = lm3554_platform_data_func(client);
-   846          if (IS_ERR(flash->pdata))
-   847                  return PTR_ERR(flash->pdata);
-
-	if (IS_ERR(flash->pdata)) {
-		ret = PTR_ERR(flash->pdata);
-		goto free_flash;
-	}
-
-The lm3554_platform_data_func() function doesn't allocate anything so
-"flash" is still the most recent allocation.
-
-   848  
-   849          v4l2_i2c_subdev_init(&flash->sd, client, &lm3554_ops);
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-I think this needs to be unwound with the v4l2_device_unregister_subdev()
-function.  I'm not totally sure.  But that's how the existing code works
-so let's keep it as-is.  Meaning that "subdev" is the most recent
-allocation.
-
-   850          flash->sd.internal_ops = &lm3554_internal_ops;
-   851          flash->sd.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
-   852          flash->mode = ATOMISP_FLASH_MODE_OFF;
-   853          flash->timeout = LM3554_MAX_TIMEOUT / LM3554_TIMEOUT_STEPSIZE - 1;
-   854          ret =
-   855              v4l2_ctrl_handler_init(&flash->ctrl_handler,
-   856                                     ARRAY_SIZE(lm3554_controls));
-   857          if (ret) {
-   858                  dev_err(&client->dev, "error initialize a ctrl_handler.\n");
-   859                  goto fail2;
-   860          }
-
-This becomes "goto unregister_subdev;".  In the original code the goto
-fail2 freed the handler, which is harmless but unnecessary.
-"flash->ctrl_handler" is now the most recent allocated.
-
-   861  
-   862          for (i = 0; i < ARRAY_SIZE(lm3554_controls); i++)
-   863                  v4l2_ctrl_new_custom(&flash->ctrl_handler, &lm3554_controls[i],
-   864                                       NULL);
-   865  
-   866          if (flash->ctrl_handler.error) {
-   867                  dev_err(&client->dev, "ctrl_handler error.\n");
-   868                  goto fail2;
-
-Missing error code.
-
-	if (flash->ctrl_handler.error) {
-		dev_err(&client->dev, "ctrl_handler error.\n");
-		ret = flash->ctrl_handler.error;
-		goto free_handler;
-	}
-
-I don't think the v4l2_ctrl_new_custom() needs to be unwound so
-"flash->ctrl_handler" is still the most recent allocation.
-
-   869          }
-   870  
-   871          flash->sd.ctrl_handler = &flash->ctrl_handler;
-   872          err = media_entity_pads_init(&flash->sd.entity, 0, NULL);
-   873          if (err) {
-   874                  dev_err(&client->dev, "error initialize a media entity.\n");
-   875                  goto fail1;
-   876          }
-
-This goto leaks handler.  I suspect the reason is that the original
-coder didn't want to call media_entity_cleanup() if media_entity_pads_init()
-failed.  The media_entity_cleanup() function doesn't do anything.  We
-added it as stub function in 2009 but have was never used it.  The
-comments say "It must be called during the cleanup phase after
-unregistering the entity and before freeing it."  We haven't
-unregistered anything here but we are freeing something.  ¯\_(ツ)_/¯
-
-Anyway calling media_entity_cleanup() is harmless:
-
-	goto free_handler;
-
-   877  
-   878          flash->sd.entity.function = MEDIA_ENT_F_FLASH;
-   879  
-   880          mutex_init(&flash->power_lock);
-   881  
-   882          timer_setup(&flash->flash_off_delay, lm3554_flash_off_delay, 0);
-
-The timer will need to be deleted in the cleanup.  It's now the most
-recent allocation.
-
-   883  
-   884          err = lm3554_gpio_init(client);
-   885          if (err) {
-   886                  dev_err(&client->dev, "gpio request/direction_output fail");
-   887                  goto fail2;
-
-goto del_timer;
-
-gpio_init is now the most recent allocation.
-
-   888          }
-   889          return atomisp_register_i2c_module(&flash->sd, NULL, LED_FLASH);
+When memory is allocated in 'epic_init_one()', GFP_KERNEL can be used
+because it is a probe function and no lock is acquired.
 
 
-	ret = atomisp_register_i2c_module(&flash->sd, NULL, LED_FLASH);
-	if (ret)
-		goto gpio_uninit;
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
 
-   890  fail2:
-   891          media_entity_cleanup(&flash->sd.entity);
-   892          v4l2_ctrl_handler_free(&flash->ctrl_handler);
-   893  fail1:
-   894          v4l2_device_unregister_subdev(&flash->sd);
-   895          kfree(flash);
-   896  
-   897          return err;
-   898  }
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
 
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
 
-Now the error handling look like:
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
 
-	return 0;
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
 
-gpio_uninit:
-	lm3554_gpio_uninit(client);
-del_timer:
-	del_timer_sync(&flash->flash_off_delay);
-free_handler:
-	media_entity_cleanup(&flash->sd.entity);
-	v4l2_ctrl_handler_free(&flash->ctrl_handler);
-unregister_subdev:
-	v4l2_device_unregister_subdev(&flash->sd);
-free_flash:
-	kfree(flash);
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
 
-	return ret;
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
 
-Then to generate the remove function we have to cleanup we would
-normally a something like atomisp_unregister_i2c_module() but there is
-no way to unregister that.  So just take the error handling code and
-remove the labels.  Done!
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
 
-static int lm3554_remove(struct i2c_client *client)
-{
-	struct v4l2_subdev *sd = i2c_get_clientdata(client);
-	struct lm3554 *flash = to_lm3554(sd);
-	int ret;
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
 
-	// FIXME: unregister i2c module
-	ret = lm3554_gpio_uninit(client);
-	if (ret)
-		dev_err(&client->dev, "gpio request/direction_output fail");
-	del_timer_sync(&flash->flash_off_delay);
-	media_entity_cleanup(&flash->sd.entity);
-	v4l2_ctrl_handler_free(&flash->ctrl_handler);
-	v4l2_device_unregister_subdev(&flash->sd);
-	kfree(flash);
-}
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
 
-   899  
-   900  static int lm3554_remove(struct i2c_client *client)
-   901  {
-   902          struct v4l2_subdev *sd = i2c_get_clientdata(client);
-   903          struct lm3554 *flash = to_lm3554(sd);
-   904          int ret;
-   905  
-   906          media_entity_cleanup(&flash->sd.entity);
-   907          v4l2_ctrl_handler_free(&flash->ctrl_handler);
-   908          v4l2_device_unregister_subdev(sd);
-   909  
-   910          atomisp_gmin_remove_subdev(sd);
-   911  
-   912          del_timer_sync(&flash->flash_off_delay);
-   913  
-   914          ret = lm3554_gpio_uninit(client);
-   915          if (ret < 0)
-   916                  goto fail;
-   917  
-   918          kfree(flash);
-   919  
-   920          return 0;
-   921  fail:
-   922          dev_err(&client->dev, "gpio request/direction_output fail");
-   923          return ret;
-   924  }
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
 
-regards,
-dan carpenter
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+
+RESEND because it was previously sent when the branch was closed
+---
+ drivers/net/ethernet/smsc/epic100.c | 71 +++++++++++++++++------------
+ 1 file changed, 42 insertions(+), 29 deletions(-)
+
+diff --git a/drivers/net/ethernet/smsc/epic100.c b/drivers/net/ethernet/smsc/epic100.c
+index d950b312c418..51cd7dca91cd 100644
+--- a/drivers/net/ethernet/smsc/epic100.c
++++ b/drivers/net/ethernet/smsc/epic100.c
+@@ -374,13 +374,15 @@ static int epic_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	ep->mii.phy_id_mask = 0x1f;
+ 	ep->mii.reg_num_mask = 0x1f;
+ 
+-	ring_space = pci_alloc_consistent(pdev, TX_TOTAL_SIZE, &ring_dma);
++	ring_space = dma_alloc_coherent(&pdev->dev, TX_TOTAL_SIZE, &ring_dma,
++					GFP_KERNEL);
+ 	if (!ring_space)
+ 		goto err_out_iounmap;
+ 	ep->tx_ring = ring_space;
+ 	ep->tx_ring_dma = ring_dma;
+ 
+-	ring_space = pci_alloc_consistent(pdev, RX_TOTAL_SIZE, &ring_dma);
++	ring_space = dma_alloc_coherent(&pdev->dev, RX_TOTAL_SIZE, &ring_dma,
++					GFP_KERNEL);
+ 	if (!ring_space)
+ 		goto err_out_unmap_tx;
+ 	ep->rx_ring = ring_space;
+@@ -493,9 +495,11 @@ static int epic_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	return ret;
+ 
+ err_out_unmap_rx:
+-	pci_free_consistent(pdev, RX_TOTAL_SIZE, ep->rx_ring, ep->rx_ring_dma);
++	dma_free_coherent(&pdev->dev, RX_TOTAL_SIZE, ep->rx_ring,
++			  ep->rx_ring_dma);
+ err_out_unmap_tx:
+-	pci_free_consistent(pdev, TX_TOTAL_SIZE, ep->tx_ring, ep->tx_ring_dma);
++	dma_free_coherent(&pdev->dev, TX_TOTAL_SIZE, ep->tx_ring,
++			  ep->tx_ring_dma);
+ err_out_iounmap:
+ 	pci_iounmap(pdev, ioaddr);
+ err_out_free_netdev:
+@@ -918,8 +922,10 @@ static void epic_init_ring(struct net_device *dev)
+ 		if (skb == NULL)
+ 			break;
+ 		skb_reserve(skb, 2);	/* 16 byte align the IP header. */
+-		ep->rx_ring[i].bufaddr = pci_map_single(ep->pci_dev,
+-			skb->data, ep->rx_buf_sz, PCI_DMA_FROMDEVICE);
++		ep->rx_ring[i].bufaddr = dma_map_single(&ep->pci_dev->dev,
++							skb->data,
++							ep->rx_buf_sz,
++							DMA_FROM_DEVICE);
+ 		ep->rx_ring[i].rxstatus = DescOwn;
+ 	}
+ 	ep->dirty_rx = (unsigned int)(i - RX_RING_SIZE);
+@@ -955,8 +961,9 @@ static netdev_tx_t epic_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	entry = ep->cur_tx % TX_RING_SIZE;
+ 
+ 	ep->tx_skbuff[entry] = skb;
+-	ep->tx_ring[entry].bufaddr = pci_map_single(ep->pci_dev, skb->data,
+-		 			            skb->len, PCI_DMA_TODEVICE);
++	ep->tx_ring[entry].bufaddr = dma_map_single(&ep->pci_dev->dev,
++						    skb->data, skb->len,
++						    DMA_TO_DEVICE);
+ 	if (free_count < TX_QUEUE_LEN/2) {/* Typical path */
+ 		ctrl_word = 0x100000; /* No interrupt */
+ 	} else if (free_count == TX_QUEUE_LEN/2) {
+@@ -1036,8 +1043,9 @@ static void epic_tx(struct net_device *dev, struct epic_private *ep)
+ 
+ 		/* Free the original skb. */
+ 		skb = ep->tx_skbuff[entry];
+-		pci_unmap_single(ep->pci_dev, ep->tx_ring[entry].bufaddr,
+-				 skb->len, PCI_DMA_TODEVICE);
++		dma_unmap_single(&ep->pci_dev->dev,
++				 ep->tx_ring[entry].bufaddr, skb->len,
++				 DMA_TO_DEVICE);
+ 		dev_consume_skb_irq(skb);
+ 		ep->tx_skbuff[entry] = NULL;
+ 	}
+@@ -1178,20 +1186,21 @@ static int epic_rx(struct net_device *dev, int budget)
+ 			if (pkt_len < rx_copybreak &&
+ 			    (skb = netdev_alloc_skb(dev, pkt_len + 2)) != NULL) {
+ 				skb_reserve(skb, 2);	/* 16 byte align the IP header */
+-				pci_dma_sync_single_for_cpu(ep->pci_dev,
+-							    ep->rx_ring[entry].bufaddr,
+-							    ep->rx_buf_sz,
+-							    PCI_DMA_FROMDEVICE);
++				dma_sync_single_for_cpu(&ep->pci_dev->dev,
++							ep->rx_ring[entry].bufaddr,
++							ep->rx_buf_sz,
++							DMA_FROM_DEVICE);
+ 				skb_copy_to_linear_data(skb, ep->rx_skbuff[entry]->data, pkt_len);
+ 				skb_put(skb, pkt_len);
+-				pci_dma_sync_single_for_device(ep->pci_dev,
+-							       ep->rx_ring[entry].bufaddr,
+-							       ep->rx_buf_sz,
+-							       PCI_DMA_FROMDEVICE);
++				dma_sync_single_for_device(&ep->pci_dev->dev,
++							   ep->rx_ring[entry].bufaddr,
++							   ep->rx_buf_sz,
++							   DMA_FROM_DEVICE);
+ 			} else {
+-				pci_unmap_single(ep->pci_dev,
+-					ep->rx_ring[entry].bufaddr,
+-					ep->rx_buf_sz, PCI_DMA_FROMDEVICE);
++				dma_unmap_single(&ep->pci_dev->dev,
++						 ep->rx_ring[entry].bufaddr,
++						 ep->rx_buf_sz,
++						 DMA_FROM_DEVICE);
+ 				skb_put(skb = ep->rx_skbuff[entry], pkt_len);
+ 				ep->rx_skbuff[entry] = NULL;
+ 			}
+@@ -1213,8 +1222,10 @@ static int epic_rx(struct net_device *dev, int budget)
+ 			if (skb == NULL)
+ 				break;
+ 			skb_reserve(skb, 2);	/* Align IP on 16 byte boundaries */
+-			ep->rx_ring[entry].bufaddr = pci_map_single(ep->pci_dev,
+-				skb->data, ep->rx_buf_sz, PCI_DMA_FROMDEVICE);
++			ep->rx_ring[entry].bufaddr = dma_map_single(&ep->pci_dev->dev,
++								    skb->data,
++								    ep->rx_buf_sz,
++								    DMA_FROM_DEVICE);
+ 			work_done++;
+ 		}
+ 		/* AV: shouldn't we add a barrier here? */
+@@ -1294,8 +1305,8 @@ static int epic_close(struct net_device *dev)
+ 		ep->rx_ring[i].rxstatus = 0;		/* Not owned by Epic chip. */
+ 		ep->rx_ring[i].buflength = 0;
+ 		if (skb) {
+-			pci_unmap_single(pdev, ep->rx_ring[i].bufaddr,
+-					 ep->rx_buf_sz, PCI_DMA_FROMDEVICE);
++			dma_unmap_single(&pdev->dev, ep->rx_ring[i].bufaddr,
++					 ep->rx_buf_sz, DMA_FROM_DEVICE);
+ 			dev_kfree_skb(skb);
+ 		}
+ 		ep->rx_ring[i].bufaddr = 0xBADF00D0; /* An invalid address. */
+@@ -1305,8 +1316,8 @@ static int epic_close(struct net_device *dev)
+ 		ep->tx_skbuff[i] = NULL;
+ 		if (!skb)
+ 			continue;
+-		pci_unmap_single(pdev, ep->tx_ring[i].bufaddr, skb->len,
+-				 PCI_DMA_TODEVICE);
++		dma_unmap_single(&pdev->dev, ep->tx_ring[i].bufaddr, skb->len,
++				 DMA_TO_DEVICE);
+ 		dev_kfree_skb(skb);
+ 	}
+ 
+@@ -1502,8 +1513,10 @@ static void epic_remove_one(struct pci_dev *pdev)
+ 	struct net_device *dev = pci_get_drvdata(pdev);
+ 	struct epic_private *ep = netdev_priv(dev);
+ 
+-	pci_free_consistent(pdev, TX_TOTAL_SIZE, ep->tx_ring, ep->tx_ring_dma);
+-	pci_free_consistent(pdev, RX_TOTAL_SIZE, ep->rx_ring, ep->rx_ring_dma);
++	dma_free_coherent(&pdev->dev, TX_TOTAL_SIZE, ep->tx_ring,
++			  ep->tx_ring_dma);
++	dma_free_coherent(&pdev->dev, RX_TOTAL_SIZE, ep->rx_ring,
++			  ep->rx_ring_dma);
+ 	unregister_netdev(dev);
+ 	pci_iounmap(pdev, ep->ioaddr);
+ 	pci_release_regions(pdev);
+-- 
+2.25.1
+

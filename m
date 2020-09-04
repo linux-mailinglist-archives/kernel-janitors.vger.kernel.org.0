@@ -2,64 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EFA525CE92
-	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Sep 2020 01:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 648FD25D49E
+	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Sep 2020 11:21:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729550AbgICXye (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Sep 2020 19:54:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38776 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725782AbgICXyd (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Sep 2020 19:54:33 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CDDCC061244;
-        Thu,  3 Sep 2020 16:54:33 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 004781288BB0D;
-        Thu,  3 Sep 2020 16:37:45 -0700 (PDT)
-Date:   Thu, 03 Sep 2020 16:54:32 -0700 (PDT)
-Message-Id: <20200903.165432.788429825388438913.davem@davemloft.net>
-To:     christophe.jaillet@wanadoo.fr
-Cc:     kuba@kernel.org, steve.glendinning@shawell.net,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH RESEND] smsc9420: switch from 'pci_' to 'dma_' API
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200903201055.296320-1-christophe.jaillet@wanadoo.fr>
-References: <20200903201055.296320-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [2620:137:e000::1:9]); Thu, 03 Sep 2020 16:37:46 -0700 (PDT)
+        id S1729943AbgIDJVS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 4 Sep 2020 05:21:18 -0400
+Received: from 8bytes.org ([81.169.241.247]:40944 "EHLO theia.8bytes.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728205AbgIDJVR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 4 Sep 2020 05:21:17 -0400
+Received: by theia.8bytes.org (Postfix, from userid 1000)
+        id A1513A8D; Fri,  4 Sep 2020 11:21:15 +0200 (CEST)
+Date:   Fri, 4 Sep 2020 11:21:14 +0200
+From:   Joerg Roedel <joro@8bytes.org>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Will Deacon <will@kernel.org>, Rob Clark <robdclark@gmail.com>,
+        Robin Murphy <robin.murphy@arm.com>, kernel-team@android.com,
+        iommu@lists.linux-foundation.org, linux-arm-msm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] MAINTAINERS: update QUALCOMM IOMMU after Arm SMMU
+ drivers move
+Message-ID: <20200904092114.GJ6714@8bytes.org>
+References: <20200825053828.4166-1-lukas.bulwahn@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200825053828.4166-1-lukas.bulwahn@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Thu,  3 Sep 2020 22:10:55 +0200
+On Tue, Aug 25, 2020 at 07:38:28AM +0200, Lukas Bulwahn wrote:
+> Commit e86d1aa8b60f ("iommu/arm-smmu: Move Arm SMMU drivers into their own
+> subdirectory") moved drivers/iommu/qcom_iommu.c to
+> drivers/iommu/arm/arm-smmu/qcom_iommu.c amongst other moves, adjusted some
+> sections in MAINTAINERS, but missed adjusting the QUALCOMM IOMMU section.
+> 
+> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
+> 
+>   warning: no file matches    F:    drivers/iommu/qcom_iommu.c
+> 
+> Update the file entry in MAINTAINERS to the new location.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> Acked-by: Will Deacon <will@kernel.org>
 
-> The wrappers in include/linux/pci-dma-compat.h should go away.
-> 
-> The patch has been generated with the coccinelle script below and has been
-> hand modified to replace GFP_ with a correct flag.
-> It has been compile tested.
-> 
-> When memory is allocated in 'smsc9420_probe()', GFP_KERNEL can be used
-> because it is a probe function and no lock is acquired.
-> 
-> While at it, rewrite the size passed to 'dma_alloc_coherent()' the same way
-> as the one passed to 'dma_free_coherent()'. This form is less verbose:
->    sizeof(struct smsc9420_dma_desc) * RX_RING_SIZE +
->    sizeof(struct smsc9420_dma_desc) * TX_RING_SIZE,
-> vs
->    sizeof(struct smsc9420_dma_desc) * (RX_RING_SIZE + TX_RING_SIZE)
- ...
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-
-Applied.
+Applied, thanks.

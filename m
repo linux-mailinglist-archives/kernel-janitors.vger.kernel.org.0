@@ -2,160 +2,149 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E1FE25FA13
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Sep 2020 14:02:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3CAA25FB0B
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Sep 2020 15:14:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729188AbgIGMB4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Sep 2020 08:01:56 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:40645
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729194AbgIGMA3 (ORCPT
+        id S1729378AbgIGNL7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Sep 2020 09:11:59 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:59063 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729430AbgIGNLr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Sep 2020 08:00:29 -0400
+        Mon, 7 Sep 2020 09:11:47 -0400
 X-IronPort-AV: E=Sophos;i="5.76,359,1592863200"; 
-   d="scan'208";a="358282836"
+   d="scan'208";a="466412596"
 Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Sep 2020 14:00:19 +0200
-Date:   Mon, 7 Sep 2020 14:00:19 +0200 (CEST)
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Sep 2020 15:11:31 +0200
+Date:   Mon, 7 Sep 2020 15:11:31 +0200 (CEST)
 From:   Julia Lawall <julia.lawall@inria.fr>
 X-X-Sender: jll@hadrien
 To:     Markus Elfring <Markus.Elfring@web.de>
 cc:     Coccinelle <cocci@systeme.lip6.fr>,
         Dejin Zheng <zhengdejin5@gmail.com>,
+        Denis Efremov <efremov@linux.com>,
         Gilles Muller <Gilles.Muller@lip6.fr>,
         Masahiro Yamada <masahiroy@kernel.org>,
         Michal Marek <michal.lkml@markovi.net>,
         Nicolas Palix <nicolas.palix@imag.fr>,
         kernel-janitors@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>
-Subject: =?UTF-8?Q?Re=3A_=5BCocci=5D_=5BPATCH=5D_Coccinelle=3A_api=3A_Ad?=
- =?UTF-8?Q?d_SmPL_script_=E2=80=9Cuse=5Fdevm=5Fplatform=5Fget=5Fand?=
- =?UTF-8?Q?=5Fioremap=5Fresource=2Ecocci=E2=80=9D?=
-In-Reply-To: <5f9fdd59-4b0b-1cb5-c3a2-92efc5bb3841@web.de>
-Message-ID: <alpine.DEB.2.22.394.2009071357140.2476@hadrien>
-References: <25b804fd-0d04-475d-f614-26c03c9fd544@web.de> <5f9fdd59-4b0b-1cb5-c3a2-92efc5bb3841@web.de>
+Subject: =?UTF-8?Q?Re=3A_=5BPATCH=5D_Coccinelle=3A_api=3A_Add_SmPL_scr?=
+ =?UTF-8?Q?ipt_=E2=80=9Cuse=5Fdevm=5Fplatform=5Fget=5Fand=5Fioremap=5Fre?=
+ =?UTF-8?Q?source=2Ecocci=E2=80=9D?=
+In-Reply-To: <477abcea-e008-e509-d03f-f2753ebdfb20@web.de>
+Message-ID: <alpine.DEB.2.22.394.2009071506350.2476@hadrien>
+References: <25b804fd-0d04-475d-f614-26c03c9fd544@web.de> <5f9fdd59-4b0b-1cb5-c3a2-92efc5bb3841@web.de> <alpine.DEB.2.22.394.2009071357140.2476@hadrien> <477abcea-e008-e509-d03f-f2753ebdfb20@web.de>
 User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: multipart/mixed; boundary="8323329-1914540151-1599484292=:2476"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--8323329-1914540151-1599484292=:2476
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+
 
 
 On Mon, 7 Sep 2020, Markus Elfring wrote:
 
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Mon, 7 Sep 2020 13:14:44 +0200
+> >> +@display depends on context@
+> >> +expression base, device1, device2, index, private, resource;
+> >> +@@
+> >> +(
+> >> +*resource = platform_get_resource(device1, IORESOURCE_MEM, index);
+> >> + base =
+> >> +*       devm_ioremap_resource
+> >> +                             (&device1->dev, resource);
+> >
+> > Why do you require these statements to be next to each other?
 >
-> Another wrapper function is available since the commit 890cc39a879906b63912482dfc41944579df2dc6
-> ("drivers: provide devm_platform_get_and_ioremap_resource()").
-> Provide design options for the adjustment of affected source code
-> by the means of the semantic patch language (Coccinelle software).
+> I would appreciate indications for a general change acceptance
+> also according to such a simple transformation approach.
+> I imagine that it will become more challenging to tolerate extra
+> source code between these function calls (by the specification
+> of special SmPL filters).
 >
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
->  ...vm_platform_get_and_ioremap_resource.cocci | 71 +++++++++++++++++++
->  1 file changed, 71 insertions(+)
->  create mode 100644 scripts/coccinelle/api/use_devm_platform_get_and_ioremap_resource.cocci
 >
-> diff --git a/scripts/coccinelle/api/use_devm_platform_get_and_ioremap_resource.cocci b/scripts/coccinelle/api/use_devm_platform_get_and_ioremap_resource.cocci
-> new file mode 100644
-> index 000000000000..8e67359f6b76
-> --- /dev/null
-> +++ b/scripts/coccinelle/api/use_devm_platform_get_and_ioremap_resource.cocci
-> @@ -0,0 +1,71 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/// Simplify a function call combination by using a known wrapper function.
-> +//
-> +// Keywords: wrapper function conversion ioremap resources
-> +// Confidence: High
-> +
-> +virtual context, patch, report, org
-> +
-> +@display depends on context@
-> +expression base, device1, device2, index, private, resource;
-> +@@
-> +(
-> +*resource = platform_get_resource(device1, IORESOURCE_MEM, index);
-> + base =
-> +*       devm_ioremap_resource
-> +                             (&device1->dev, resource);
+> >> +|
+> >> +*private->res = platform_get_resource(device1, IORESOURCE_MEM, index);
+> >> + base =
+> >> +*       devm_ioremap_resource
+> >> +                             (device2, private->res);
+> >
+> > Why do you have this special case?
+>
+> The usage of the data structure member “res” triggers corresponding
+> software design consequences.
 
-Why do you require these statements to be next to each other?
+I don't think this is a reliable rule.  You included two examples below.
+They involve structures of different types. It seems unlikely that there
+is a guarantee that the res field of all structures is used in the same
+way.  Furthermore, this is the context case.  What is the purpose of
+making the distinction?  The user will have to figure out what to do by
+hand in any case.
 
-> +|
-> +*private->res = platform_get_resource(device1, IORESOURCE_MEM, index);
-> + base =
-> +*       devm_ioremap_resource
-> +                             (device2, private->res);
+> The expressions which are passed as the first function call parameters
+> can be different.
+>
+>
+> >> +@replacement depends on patch@
+> >> +expression base, device1, device2, index, private, resource;
+> >> +@@
+> >> +(
+> >> +-resource = platform_get_resource(device1, IORESOURCE_MEM, index);
+> >> + base =
+> >> +-       devm_ioremap_resource
+> >> ++       devm_platform_get_and_ioremap_resource
+> >> +                             (
+> >> +-                             &
+> >> +                               device1
+> >> +-                                     ->dev
+> >> +                              ,
+> >> +-                             resource
+> >> ++                             index, &resource
+> >> +                             );
+> >> +|
+> >> +-private->res = platform_get_resource(device1, IORESOURCE_MEM, index);
+> >> + base =
+> >> +-       devm_ioremap_resource
+> >> ++       devm_platform_get_and_ioremap_resource
+> >> +                             (device2,
+> >
+> > It is very suspicious that in one case you change the first argument of
+> > devm_platform_get_and_ioremap_resource and in one case you don't.
+>
+> I noticed a few special cases during my source code analysis approach.
 
-Why do you have this special case?
+This is not a reasonable answer.  Does the rule work correctly or not?  If
+it doesn't work correctly, it needs to be removed.
 
-> +)
-> +
-> +@replacement depends on patch@
-> +expression base, device1, device2, index, private, resource;
-> +@@
-> +(
-> +-resource = platform_get_resource(device1, IORESOURCE_MEM, index);
-> + base =
-> +-       devm_ioremap_resource
-> ++       devm_platform_get_and_ioremap_resource
-> +                             (
-> +-                             &
-> +                               device1
-> +-                                     ->dev
-> +                              ,
-> +-                             resource
-> ++                             index, &resource
-> +                             );
-> +|
-> +-private->res = platform_get_resource(device1, IORESOURCE_MEM, index);
-> + base =
-> +-       devm_ioremap_resource
-> ++       devm_platform_get_and_ioremap_resource
-> +                             (device2,
+> > If you don't know how to make the change in some cases, it would be better
+> > to do nothing at all.
+>
+> How do you think about to take another look at any update candidates?
+>
+> Examples:
+> * mvebu_sei_probe
+>   https://elixir.bootlin.com/linux/v5.9-rc4/source/drivers/irqchip/irq-mvebu-sei.c#L368
+>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/irqchip/irq-mvebu-sei.c?id=f4d51dffc6c01a9e94650d95ce0104964f8ae822#n368
 
-It is very suspicious that in one case you change the first argument of
-devm_platform_get_and_ioremap_resource and in one case you don't.  If you
-don't know how to make the change in some cases, it would be better to do
-nothing at all.
+I don't see any purpose to providing two links for everything.
 
 julia
 
-> +-                             private->res
-> ++                             index, &private->res
-> +                             );
-> +)
-> +
-> +@or depends on org || report@
-> +expression base, device1, device2, index, private, resource;
-> +position p;
-> +@@
-> +(
-> + resource = platform_get_resource(device1, IORESOURCE_MEM, index);
-> + base = devm_ioremap_resource@p(&device1->dev, resource);
-> +|
-> + private->res = platform_get_resource(device1, IORESOURCE_MEM, index);
-> + base = devm_ioremap_resource@p(device2, private->res);
-> +)
-> +
-> +@script:python to_do depends on org@
-> +p << or.p;
-> +@@
-> +coccilib.org.print_todo(p[0], "WARNING: opportunity for devm_platform_get_and_ioremap_resource()")
-> +
-> +@script:python reporting depends on report@
-> +p << or.p;
-> +@@
-> +coccilib.report.print_report(p[0], "WARNING: opportunity for devm_platform_get_and_ioremap_resource()")
-> --
-> 2.28.0
 >
-> _______________________________________________
-> Cocci mailing list
-> Cocci@systeme.lip6.fr
-> https://systeme.lip6.fr/mailman/listinfo/cocci
+> * hi655x_pmic_probe
+>   https://elixir.bootlin.com/linux/v5.9-rc4/source/drivers/mfd/hi655x-pmic.c#L92
+>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/mfd/hi655x-pmic.c?id=f4d51dffc6c01a9e94650d95ce0104964f8ae822#n92
 >
+> Regards,
+> Markus
+>
+--8323329-1914540151-1599484292=:2476--

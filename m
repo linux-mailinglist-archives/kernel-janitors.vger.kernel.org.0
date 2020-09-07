@@ -2,81 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52FBC25F181
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Sep 2020 03:37:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E34A625F3C9
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Sep 2020 09:20:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726927AbgIGBhS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 6 Sep 2020 21:37:18 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:60238 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726620AbgIGBhS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 6 Sep 2020 21:37:18 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id DB7DE54EDDC5E93ECC73;
-        Mon,  7 Sep 2020 09:37:15 +0800 (CST)
-Received: from [127.0.0.1] (10.174.179.92) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.487.0; Mon, 7 Sep 2020
- 09:37:06 +0800
-Subject: Re: [PATCH] scsi: libsas: Fix error path in
- sas_notify_lldd_dev_found()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Dan Williams <dan.j.williams@intel.com>
-CC:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        John Garry <john.garry@huawei.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        <linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <20200905125836.GF183976@mwanda>
-From:   Jason Yan <yanaijie@huawei.com>
-Message-ID: <c2e1730d-fe83-7c6a-6011-4bc6c4848f57@huawei.com>
-Date:   Mon, 7 Sep 2020 09:37:05 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+        id S1726926AbgIGHUF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Sep 2020 03:20:05 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:48929 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726890AbgIGHUD (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 7 Sep 2020 03:20:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1599463201;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=ZeNko4pESS3Q5hreBnvD+2G1nQFuRZeaG+6VRmgcaOc=;
+        b=M6yJhdksUI1fpvgWZmIaAlYQWRZa1IWgen3NcCx4SU7MSD9ukgBPFZXia4Y0rdVG2hzcup
+        aFDEoM2Bb8WZiyQXCsqRpXaZbyMnrXvrTPjDdCpyy+1OwDMvUuSxUgwdYI8jZ6qgABoDRF
+        dttymMjwG3wGv0v4F8eXw2ZQp/4HaMk=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-396-rwpon1HINYiDXr0VSSIdVw-1; Mon, 07 Sep 2020 03:19:58 -0400
+X-MC-Unique: rwpon1HINYiDXr0VSSIdVw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1F876107465A;
+        Mon,  7 Sep 2020 07:19:57 +0000 (UTC)
+Received: from T590 (ovpn-13-4.pek2.redhat.com [10.72.13.4])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 4CBE778B29;
+        Mon,  7 Sep 2020 07:19:50 +0000 (UTC)
+Date:   Mon, 7 Sep 2020 15:19:46 +0800
+From:   Ming Lei <ming.lei@redhat.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] blk-mq: Fix refcounting leak in __blk_mq_register_dev()
+Message-ID: <20200907071946.GA1058569@T590>
+References: <20200905125206.GE183976@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20200905125836.GF183976@mwanda>
-Content-Type: text/plain; charset="gbk"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.92]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200905125206.GE183976@mwanda>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-ÔÚ 2020/9/5 20:58, Dan Carpenter Ð´µÀ:
-> In sas_notify_lldd_dev_found(), if we can't find a device, then it seems
-> like the wrong thing to mark the device as found and to increment the
-> reference count.  None of the callers ever drop the reference in that
-> situation.
+On Sat, Sep 05, 2020 at 03:52:06PM +0300, Dan Carpenter wrote:
+> There is a kobject_add() hidden in the call to kobject_add().
 > 
-> Fixes: 735f7d2fedf5 ("[SCSI] libsas: fix domain_device leak")
+> 	ret = kobject_add(q->mq_kobj, kobject_get(&dev->kobj), "%s", "mq");
+>                                       ^^^^^^^^^^^^^^^^^^^^^^^
+> 
+> It needs to be release on the error path.
+> 
+> Fixes: 320ae51feed5 ("blk-mq: new multi-queue block IO queueing mechanism")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->   drivers/scsi/libsas/sas_discover.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+>  block/blk-mq-sysfs.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/scsi/libsas/sas_discover.c b/drivers/scsi/libsas/sas_discover.c
-> index cd7c7d269f6f..d0f9e90e3279 100644
-> --- a/drivers/scsi/libsas/sas_discover.c
-> +++ b/drivers/scsi/libsas/sas_discover.c
-> @@ -182,10 +182,11 @@ int sas_notify_lldd_dev_found(struct domain_device *dev)
->   		pr_warn("driver on host %s cannot handle device %016llx, error:%d\n",
->   			dev_name(sas_ha->dev),
->   			SAS_ADDR(dev->sas_addr), res);
-> +		return res;
->   	}
->   	set_bit(SAS_DEV_FOUND, &dev->state);
->   	kref_get(&dev->kref);
-> -	return res;
+> diff --git a/block/blk-mq-sysfs.c b/block/blk-mq-sysfs.c
+> index 062229395a50..5a63659163c1 100644
+> --- a/block/blk-mq-sysfs.c
+> +++ b/block/blk-mq-sysfs.c
+> @@ -321,7 +321,7 @@ int __blk_mq_register_dev(struct device *dev, struct request_queue *q)
+>  
+>  	ret = kobject_add(q->mq_kobj, kobject_get(&dev->kobj), "%s", "mq");
+>  	if (ret < 0)
+> -		goto out;
+> +		goto out_kobj;
+>  
+>  	kobject_uevent(q->mq_kobj, KOBJ_ADD);
+>  
+> @@ -333,8 +333,7 @@ int __blk_mq_register_dev(struct device *dev, struct request_queue *q)
+>  
+>  	q->mq_sysfs_init_done = true;
+>  
+> -out:
+> -	return ret;
 > +	return 0;
->   }
->   
->   
+>  
+>  unreg:
+>  	while (--i >= 0)
+> @@ -342,6 +341,7 @@ int __blk_mq_register_dev(struct device *dev, struct request_queue *q)
+>  
+>  	kobject_uevent(q->mq_kobj, KOBJ_REMOVE);
+>  	kobject_del(q->mq_kobj);
+> +out_kobj:
+>  	kobject_put(&dev->kobj);
+>  	return ret;
+>  }
+> -- 
+> 2.28.0
 > 
 
-Hi Dan, thanks for finding this,
+Looks good fix:
 
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+
+-- 
+Ming
 

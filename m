@@ -2,92 +2,160 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7957125F5CB
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Sep 2020 10:57:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E1FE25FA13
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Sep 2020 14:02:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728237AbgIGI5a (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Sep 2020 04:57:30 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2772 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727953AbgIGI5a (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Sep 2020 04:57:30 -0400
-Received: from lhreml724-chm.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id 2C5D77505446F7B84C87;
-        Mon,  7 Sep 2020 09:57:28 +0100 (IST)
-Received: from [127.0.0.1] (10.47.2.208) by lhreml724-chm.china.huawei.com
- (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 7 Sep 2020
- 09:57:27 +0100
-From:   John Garry <john.garry@huawei.com>
-Subject: Re: [PATCH] scsi: libsas: Fix error path in
- sas_notify_lldd_dev_found()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Dan Williams <dan.j.williams@intel.com>
-CC:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Jason Yan <yanaijie@huawei.com>, <linux-scsi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-References: <20200905125836.GF183976@mwanda>
-Message-ID: <4ef45b15-34fd-80e9-1adb-53044ca9fa84@huawei.com>
-Date:   Mon, 7 Sep 2020 09:54:51 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.2
+        id S1729188AbgIGMB4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Sep 2020 08:01:56 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:40645
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729194AbgIGMA3 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 7 Sep 2020 08:00:29 -0400
+X-IronPort-AV: E=Sophos;i="5.76,359,1592863200"; 
+   d="scan'208";a="358282836"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Sep 2020 14:00:19 +0200
+Date:   Mon, 7 Sep 2020 14:00:19 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Coccinelle <cocci@systeme.lip6.fr>,
+        Dejin Zheng <zhengdejin5@gmail.com>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: =?UTF-8?Q?Re=3A_=5BCocci=5D_=5BPATCH=5D_Coccinelle=3A_api=3A_Ad?=
+ =?UTF-8?Q?d_SmPL_script_=E2=80=9Cuse=5Fdevm=5Fplatform=5Fget=5Fand?=
+ =?UTF-8?Q?=5Fioremap=5Fresource=2Ecocci=E2=80=9D?=
+In-Reply-To: <5f9fdd59-4b0b-1cb5-c3a2-92efc5bb3841@web.de>
+Message-ID: <alpine.DEB.2.22.394.2009071357140.2476@hadrien>
+References: <25b804fd-0d04-475d-f614-26c03c9fd544@web.de> <5f9fdd59-4b0b-1cb5-c3a2-92efc5bb3841@web.de>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-In-Reply-To: <20200905125836.GF183976@mwanda>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.2.208]
-X-ClientProxiedBy: lhreml726-chm.china.huawei.com (10.201.108.77) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 05/09/2020 13:58, Dan Carpenter wrote:
-> In sas_notify_lldd_dev_found(), if we can't find a device, 
 
-nit: the callback is for the LLDD is to allocate resources, device 
-context etc., for that domain_device, and not find the device. The 
-device has been found at this point.
 
- > then it seems
-> like the wrong thing to mark the device as found and to increment the
-> reference count.  None of the callers ever drop the reference in that
-> situation.
-> 
-> Fixes: 735f7d2fedf5 ("[SCSI] libsas: fix domain_device leak")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+On Mon, 7 Sep 2020, Markus Elfring wrote:
+
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Mon, 7 Sep 2020 13:14:44 +0200
+>
+> Another wrapper function is available since the commit 890cc39a879906b63912482dfc41944579df2dc6
+> ("drivers: provide devm_platform_get_and_ioremap_resource()").
+> Provide design options for the adjustment of affected source code
+> by the means of the semantic patch language (Coccinelle software).
+>
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 > ---
->   drivers/scsi/libsas/sas_discover.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/scsi/libsas/sas_discover.c b/drivers/scsi/libsas/sas_discover.c
-> index cd7c7d269f6f..d0f9e90e3279 100644
-> --- a/drivers/scsi/libsas/sas_discover.c
-> +++ b/drivers/scsi/libsas/sas_discover.c
-> @@ -182,10 +182,11 @@ int sas_notify_lldd_dev_found(struct domain_device *dev)
->   		pr_warn("driver on host %s cannot handle device %016llx, error:%d\n",
->   			dev_name(sas_ha->dev),
->   			SAS_ADDR(dev->sas_addr), res);
-> +		return res;
->   	}
->   	set_bit(SAS_DEV_FOUND, &dev->state);
->   	kref_get(&dev->kref);
-> -	return res;
-> +	return 0;
+>  ...vm_platform_get_and_ioremap_resource.cocci | 71 +++++++++++++++++++
+>  1 file changed, 71 insertions(+)
+>  create mode 100644 scripts/coccinelle/api/use_devm_platform_get_and_ioremap_resource.cocci
+>
+> diff --git a/scripts/coccinelle/api/use_devm_platform_get_and_ioremap_resource.cocci b/scripts/coccinelle/api/use_devm_platform_get_and_ioremap_resource.cocci
+> new file mode 100644
+> index 000000000000..8e67359f6b76
+> --- /dev/null
+> +++ b/scripts/coccinelle/api/use_devm_platform_get_and_ioremap_resource.cocci
+> @@ -0,0 +1,71 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/// Simplify a function call combination by using a known wrapper function.
+> +//
+> +// Keywords: wrapper function conversion ioremap resources
+> +// Confidence: High
+> +
+> +virtual context, patch, report, org
+> +
+> +@display depends on context@
+> +expression base, device1, device2, index, private, resource;
+> +@@
+> +(
+> +*resource = platform_get_resource(device1, IORESOURCE_MEM, index);
+> + base =
+> +*       devm_ioremap_resource
+> +                             (&device1->dev, resource);
 
-This looks ok.
+Why do you require these statements to be next to each other?
 
->   }
+> +|
+> +*private->res = platform_get_resource(device1, IORESOURCE_MEM, index);
+> + base =
+> +*       devm_ioremap_resource
+> +                             (device2, private->res);
 
-Thanks,
-John
+Why do you have this special case?
 
->   
->   
-> 
+> +)
+> +
+> +@replacement depends on patch@
+> +expression base, device1, device2, index, private, resource;
+> +@@
+> +(
+> +-resource = platform_get_resource(device1, IORESOURCE_MEM, index);
+> + base =
+> +-       devm_ioremap_resource
+> ++       devm_platform_get_and_ioremap_resource
+> +                             (
+> +-                             &
+> +                               device1
+> +-                                     ->dev
+> +                              ,
+> +-                             resource
+> ++                             index, &resource
+> +                             );
+> +|
+> +-private->res = platform_get_resource(device1, IORESOURCE_MEM, index);
+> + base =
+> +-       devm_ioremap_resource
+> ++       devm_platform_get_and_ioremap_resource
+> +                             (device2,
 
+It is very suspicious that in one case you change the first argument of
+devm_platform_get_and_ioremap_resource and in one case you don't.  If you
+don't know how to make the change in some cases, it would be better to do
+nothing at all.
+
+julia
+
+> +-                             private->res
+> ++                             index, &private->res
+> +                             );
+> +)
+> +
+> +@or depends on org || report@
+> +expression base, device1, device2, index, private, resource;
+> +position p;
+> +@@
+> +(
+> + resource = platform_get_resource(device1, IORESOURCE_MEM, index);
+> + base = devm_ioremap_resource@p(&device1->dev, resource);
+> +|
+> + private->res = platform_get_resource(device1, IORESOURCE_MEM, index);
+> + base = devm_ioremap_resource@p(device2, private->res);
+> +)
+> +
+> +@script:python to_do depends on org@
+> +p << or.p;
+> +@@
+> +coccilib.org.print_todo(p[0], "WARNING: opportunity for devm_platform_get_and_ioremap_resource()")
+> +
+> +@script:python reporting depends on report@
+> +p << or.p;
+> +@@
+> +coccilib.report.print_report(p[0], "WARNING: opportunity for devm_platform_get_and_ioremap_resource()")
+> --
+> 2.28.0
+>
+> _______________________________________________
+> Cocci mailing list
+> Cocci@systeme.lip6.fr
+> https://systeme.lip6.fr/mailman/listinfo/cocci
+>

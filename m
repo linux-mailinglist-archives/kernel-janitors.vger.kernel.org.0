@@ -2,235 +2,168 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14FB7260582
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Sep 2020 22:19:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5C51260BC1
+	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Sep 2020 09:19:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729455AbgIGUTw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Sep 2020 16:19:52 -0400
-Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:21887 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728834AbgIGUTv (ORCPT
+        id S1729389AbgIHHTD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 8 Sep 2020 03:19:03 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:38832 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729463AbgIHHSy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Sep 2020 16:19:51 -0400
-Received: from localhost.localdomain ([93.23.12.185])
-        by mwinf5d87 with ME
-        id R8Kk230023zZ2cD038KkTY; Mon, 07 Sep 2020 22:19:49 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 07 Sep 2020 22:19:49 +0200
-X-ME-IP: 93.23.12.185
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        lee.jones@linaro.org, mpe@ellerman.id.au, adobriyan@gmail.com,
-        dan.carpenter@oracle.com, vulab@iscas.ac.cn
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] airo: switch from 'pci_' to 'dma_' API
-Date:   Mon,  7 Sep 2020 22:19:42 +0200
-Message-Id: <20200907201942.321568-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Tue, 8 Sep 2020 03:18:54 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0887FHNh063121;
+        Tue, 8 Sep 2020 07:18:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=HJabx6dyrtZApOlu8pzful/PRJRHZB+ekJGpE83eeic=;
+ b=qVhAPuDpOElLBMlan9Brd/wyd1jxfyrMgUAq8HB4bCyxLohM9UhCk64rnGYSDoQKPcqO
+ ZGKEtXWIehKPsIMJ0+nFX/pPtdaC4qCPzA9UZmMNFONEucMiwDM3Vd2KSeX8XaH91W0r
+ TEYAQm4dgJgiVL/bhP73Dnm4OhHN1kKT8KKq4PZEwul4N5pqqBxnPjynwu1eqE18Vdfn
+ pg8+myJiCt5cgcMlRjw6aXvFXrodD1cY01dYkEPCdAwQszXMx14D8lWa2CeTRlmhASX7
+ UZSKMCh7yf5i//YFinwFlceOBiYPTryTFpdxlFy3UriM4wS9QilpeGiT63rECbJbCXPv 1A== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 33c23qsk2h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 08 Sep 2020 07:18:50 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0887GGH4082781;
+        Tue, 8 Sep 2020 07:18:49 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 33cmkvf7gf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 08 Sep 2020 07:18:49 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0887Im0K001522;
+        Tue, 8 Sep 2020 07:18:48 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 08 Sep 2020 00:18:47 -0700
+Date:   Tue, 8 Sep 2020 10:18:41 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Ohad Ben-Cohen <ohad@wizery.com>, linux-arm-msm@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] rpmsg: smd: Fix a kobj leak in in qcom_smd_parse_edge()
+Message-ID: <20200908071841.GA294938@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9737 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 suspectscore=0
+ spamscore=0 mlxlogscore=740 adultscore=0 malwarescore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009080067
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9737 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 priorityscore=1501
+ mlxlogscore=747 mlxscore=0 bulkscore=0 suspectscore=0 spamscore=0
+ malwarescore=0 phishscore=0 lowpriorityscore=0 clxscore=1011
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009080067
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The wrappers in include/linux/pci-dma-compat.h should go away.
+We need to call of_node_put(node) on the error paths for this function.
 
-The patch has been generated with the coccinelle script below and has been
-hand modified to replace GFP_ with a correct flag.
-It has been compile tested.
-
-When memory is allocated in 'mpi_map_card()' GFP_KERNEL can be used because
-this function is called from a probe or a module_init() function and no
-spinlock is taken in the between.
-
-The call chains are:
-  airo_init_module				module_init function in 'airo.c'
-or
-  airo_probe				.probe function in 'airo_cs.c'
-    --> airo_config
-
-followed in both cases by:
-      --> init_airo_card
-        --> _init_airo_card
-          --> mpi_map_card
-
-
-@@
-@@
--    PCI_DMA_BIDIRECTIONAL
-+    DMA_BIDIRECTIONAL
-
-@@
-@@
--    PCI_DMA_TODEVICE
-+    DMA_TO_DEVICE
-
-@@
-@@
--    PCI_DMA_FROMDEVICE
-+    DMA_FROM_DEVICE
-
-@@
-@@
--    PCI_DMA_NONE
-+    DMA_NONE
-
-@@
-expression e1, e2, e3;
-@@
--    pci_alloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3;
-@@
--    pci_zalloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_free_consistent(e1, e2, e3, e4)
-+    dma_free_coherent(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_single(e1, e2, e3, e4)
-+    dma_map_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_single(e1, e2, e3, e4)
-+    dma_unmap_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4, e5;
-@@
--    pci_map_page(e1, e2, e3, e4, e5)
-+    dma_map_page(&e1->dev, e2, e3, e4, e5)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_page(e1, e2, e3, e4)
-+    dma_unmap_page(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_sg(e1, e2, e3, e4)
-+    dma_map_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_sg(e1, e2, e3, e4)
-+    dma_unmap_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-+    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-+    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-+    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-+    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2;
-@@
--    pci_dma_mapping_error(e1, e2)
-+    dma_mapping_error(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_dma_mask(e1, e2)
-+    dma_set_mask(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_consistent_dma_mask(e1, e2)
-+    dma_set_coherent_mask(&e1->dev, e2)
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Fixes: 53e2822e56c7 ("rpmsg: Introduce Qualcomm SMD backend")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-If needed, see post from Christoph Hellwig on the kernel-janitors ML:
-   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
----
- drivers/net/wireless/cisco/airo.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/rpmsg/qcom_smd.c | 32 ++++++++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
-index dd78c415d6e7..87b9398b03fd 100644
---- a/drivers/net/wireless/cisco/airo.c
-+++ b/drivers/net/wireless/cisco/airo.c
-@@ -2430,8 +2430,8 @@ void stop_airo_card(struct net_device *dev, int freeres)
- 				iounmap(ai->pcimem);
- 			if (ai->pciaux)
- 				iounmap(ai->pciaux);
--			pci_free_consistent(ai->pci, PCI_SHARED_LEN,
--				ai->shared, ai->shared_dma);
-+			dma_free_coherent(&ai->pci->dev, PCI_SHARED_LEN,
-+					  ai->shared, ai->shared_dma);
- 		}
-         }
- 	crypto_free_sync_skcipher(ai->tfm);
-@@ -2581,9 +2581,10 @@ static int mpi_map_card(struct airo_info *ai, struct pci_dev *pci)
+diff --git a/drivers/rpmsg/qcom_smd.c b/drivers/rpmsg/qcom_smd.c
+index 4abbeea782fa..19903de6268d 100644
+--- a/drivers/rpmsg/qcom_smd.c
++++ b/drivers/rpmsg/qcom_smd.c
+@@ -1338,7 +1338,7 @@ static int qcom_smd_parse_edge(struct device *dev,
+ 	ret = of_property_read_u32(node, key, &edge->edge_id);
+ 	if (ret) {
+ 		dev_err(dev, "edge missing %s property\n", key);
+-		return -EINVAL;
++		goto put_node;
  	}
  
- 	/* Reserve PKTSIZE for each fid and 2K for the Rids */
--	ai->shared = pci_alloc_consistent(pci, PCI_SHARED_LEN, &ai->shared_dma);
-+	ai->shared = dma_alloc_coherent(&pci->dev, PCI_SHARED_LEN,
-+					&ai->shared_dma, GFP_KERNEL);
- 	if (!ai->shared) {
--		airo_print_err("", "Couldn't alloc_consistent %d",
-+		airo_print_err("", "Couldn't alloc_coherent %d",
- 			PCI_SHARED_LEN);
- 		goto free_auxmap;
+ 	edge->remote_pid = QCOM_SMEM_HOST_ANY;
+@@ -1349,32 +1349,37 @@ static int qcom_smd_parse_edge(struct device *dev,
+ 	edge->mbox_client.knows_txdone = true;
+ 	edge->mbox_chan = mbox_request_channel(&edge->mbox_client, 0);
+ 	if (IS_ERR(edge->mbox_chan)) {
+-		if (PTR_ERR(edge->mbox_chan) != -ENODEV)
+-			return PTR_ERR(edge->mbox_chan);
++		if (PTR_ERR(edge->mbox_chan) != -ENODEV) {
++			ret = PTR_ERR(edge->mbox_chan);
++			goto put_node;
++		}
+ 
+ 		edge->mbox_chan = NULL;
+ 
+ 		syscon_np = of_parse_phandle(node, "qcom,ipc", 0);
+ 		if (!syscon_np) {
+ 			dev_err(dev, "no qcom,ipc node\n");
+-			return -ENODEV;
++			ret = -ENODEV;
++			goto put_node;
+ 		}
+ 
+ 		edge->ipc_regmap = syscon_node_to_regmap(syscon_np);
+-		if (IS_ERR(edge->ipc_regmap))
+-			return PTR_ERR(edge->ipc_regmap);
++		if (IS_ERR(edge->ipc_regmap)) {
++			ret = PTR_ERR(edge->ipc_regmap);
++			goto put_node;
++		}
+ 
+ 		key = "qcom,ipc";
+ 		ret = of_property_read_u32_index(node, key, 1, &edge->ipc_offset);
+ 		if (ret < 0) {
+ 			dev_err(dev, "no offset in %s\n", key);
+-			return -EINVAL;
++			goto put_node;
+ 		}
+ 
+ 		ret = of_property_read_u32_index(node, key, 2, &edge->ipc_bit);
+ 		if (ret < 0) {
+ 			dev_err(dev, "no bit in %s\n", key);
+-			return -EINVAL;
++			goto put_node;
+ 		}
  	}
-@@ -2643,7 +2644,8 @@ static int mpi_map_card(struct airo_info *ai, struct pci_dev *pci)
+ 
+@@ -1385,7 +1390,8 @@ static int qcom_smd_parse_edge(struct device *dev,
+ 	irq = irq_of_parse_and_map(node, 0);
+ 	if (irq < 0) {
+ 		dev_err(dev, "required smd interrupt missing\n");
+-		return -EINVAL;
++		ret = irq;
++		goto put_node;
+ 	}
+ 
+ 	ret = devm_request_irq(dev, irq,
+@@ -1393,12 +1399,18 @@ static int qcom_smd_parse_edge(struct device *dev,
+ 			       node->name, edge);
+ 	if (ret) {
+ 		dev_err(dev, "failed to request smd irq\n");
+-		return ret;
++		goto put_node;
+ 	}
+ 
+ 	edge->irq = irq;
  
  	return 0;
-  free_shared:
--	pci_free_consistent(pci, PCI_SHARED_LEN, ai->shared, ai->shared_dma);
-+	dma_free_coherent(&pci->dev, PCI_SHARED_LEN, ai->shared,
-+			  ai->shared_dma);
-  free_auxmap:
- 	iounmap(ai->pciaux);
-  free_memmap:
-@@ -2930,7 +2932,8 @@ static struct net_device *_init_airo_card(unsigned short irq, int port,
- 	unregister_netdev(dev);
- err_out_map:
- 	if (test_bit(FLAG_MPI,&ai->flags) && pci) {
--		pci_free_consistent(pci, PCI_SHARED_LEN, ai->shared, ai->shared_dma);
-+		dma_free_coherent(&pci->dev, PCI_SHARED_LEN, ai->shared,
-+				  ai->shared_dma);
- 		iounmap(ai->pciaux);
- 		iounmap(ai->pcimem);
- 		mpi_unmap_card(ai->pci);
++
++put_node:
++	of_node_put(node);
++	edge->of_node = NULL;
++
++	return ret;
+ }
+ 
+ /*
 -- 
-2.25.1
+2.28.0
 

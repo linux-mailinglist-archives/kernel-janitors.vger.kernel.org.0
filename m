@@ -2,186 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 028732611CF
-	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Sep 2020 15:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5ABC26186D
+	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Sep 2020 19:55:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729655AbgIHNE7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 8 Sep 2020 09:04:59 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:44851 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729548AbgIHLhj (ORCPT
+        id S1732170AbgIHRyK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 8 Sep 2020 13:54:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56708 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731575AbgIHQMs (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 8 Sep 2020 07:37:39 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200908113644euoutp01ca7b500e9bee6d0465f84d55b7150450~yy_WB0T3N0570205702euoutp01J
-        for <kernel-janitors@vger.kernel.org>; Tue,  8 Sep 2020 11:36:44 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200908113644euoutp01ca7b500e9bee6d0465f84d55b7150450~yy_WB0T3N0570205702euoutp01J
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1599565004;
-        bh=m5SiHGtB7aCZeEWY7mux4FUg5x879IROw2zkg7TBLFc=;
-        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
-        b=CzyQpw5K7szWGHITINdvKlIa5UqDlYA1UkJcYk5XZ3M6lvp7gzsyV3DA2PtPuVaG+
-         fqbvwA+53JYkmMyknvJXXV4yktv8+oxkyuw73TtS+RKoLMZIiHDXlTOo95G0AR9vZr
-         rF537hVoOZ/yq2I4oXbFRleIlWRLnzkTKINPEc6Q=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200908113644eucas1p103a7469440b3e66640ad0b64a26ff0aa~yy_V6qfQK0545005450eucas1p1z;
-        Tue,  8 Sep 2020 11:36:44 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges1new.samsung.com (EUCPMTA) with SMTP id C2.3E.06456.BCC675F5; Tue,  8
-        Sep 2020 12:36:44 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200908113643eucas1p17854ce62206401d0fdf33653380a4b46~yy_VfbuY61373613736eucas1p1Q;
-        Tue,  8 Sep 2020 11:36:43 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200908113643eusmtrp13517167108b3686fb356fa7757cb01ac~yy_Ve19p62002320023eusmtrp1Y;
-        Tue,  8 Sep 2020 11:36:43 +0000 (GMT)
-X-AuditID: cbfec7f2-c30869c000001938-5a-5f576ccb4b05
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 09.94.06017.BCC675F5; Tue,  8
-        Sep 2020 12:36:43 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200908113643eusmtip1a0e4ba746f1b94b17a4c1ddcf20074f6~yy_VIg-mD0442104421eusmtip1i;
-        Tue,  8 Sep 2020 11:36:43 +0000 (GMT)
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: Re: [PATCH] video: fbdev: fix setting of pixclock because a
- pass-by-value error
-To:     Colin King <colin.king@canonical.com>
-Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Jani Nikula <jani.nikula@intel.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-ID: <ed082436-9ce3-23fd-679c-9cdf7b1da0cd@samsung.com>
-Date:   Tue, 8 Sep 2020 13:36:43 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.8.0
+        Tue, 8 Sep 2020 12:12:48 -0400
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BDF9C0612A0;
+        Tue,  8 Sep 2020 06:02:31 -0700 (PDT)
+Received: by mail-lf1-x144.google.com with SMTP id x77so9136842lfa.0;
+        Tue, 08 Sep 2020 06:02:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=sXdYuavoSim9Tcuk44WZc9LhOUgtTFe2gPoDBIPVjng=;
+        b=k3aS2dqgVxh8tukyJeMOiUKibIP2o5EK1HbLTyoj1EIHk7TXBXfx91plVBpAbo35qy
+         NaXcni2JH8medKewgjiZU/CwZhuyyzDFlI/Z9xpUeCU0lkCyZD45E5ZPHdBEouYyaXdg
+         xlEfoR8jczhnh9u9zzBkqeqjV3Blq31P2SC6AssPsVcuDQqHqKt7eow30dWh3i1Cr3vV
+         dG7WT7DbQUgb+vMjiIpI8zjM+S5d5DWAK86VF9S+L70rvooQyCzTJanbXzRP6oXzAFbn
+         QrqjtwB0bL4Bj4ik0lsOJeVFZjAvfnQ/X+Qw1d8e+ajyQj5kGEZOGd7OE2CvQF5FS4D5
+         aDeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=sXdYuavoSim9Tcuk44WZc9LhOUgtTFe2gPoDBIPVjng=;
+        b=VmCVc9rfIotMPNgc37q0ACxdPm+ZjfxTFqzUhdwQTVxR0l88OWaUkGIfGgxBUm7Enq
+         ZcsVgLFG5JeQzPSI+jsxGwX1xtfHXH0FljM7Ed57/FDJQ6pK1SIfqLyCylwqNW7wbDsT
+         KOCzGwRgVaHBa3ezLpBmv6z1AaP+39cxt75Z271BL8Z8qPiDfDVi1xfQlMCLwDHJR4eO
+         SGL3zUiFdKKidb29xW/63ls1KZSvyviW26w8eq3pIjy0GoLrdBNzkpxfUKPRmpYDw4rA
+         B7sUcqk7Wn9fJQnPz4vK2AN/GI5Lr1EmCqKvdeo5HQvZEYqCzvJi7locVQnNH9VplIhb
+         zdaA==
+X-Gm-Message-State: AOAM530sOEJdPd6P2q5jg517yPWD6P/f/W8yDBG58AYlChQUwGbBZe3p
+        T1RxsP3TcdF2yi+R60NVoNsynQ/IWh4=
+X-Google-Smtp-Source: ABdhPJyW70T/kdnCb/1pV8W77Azb/IMUM2E4AXoICzEHT0yIVQzTbi8wqv56HWe91+MN1H6JJWYFWw==
+X-Received: by 2002:a19:8446:: with SMTP id g67mr12202070lfd.87.1599570149663;
+        Tue, 08 Sep 2020 06:02:29 -0700 (PDT)
+Received: from [192.168.2.145] (109-252-170-211.dynamic.spd-mgts.ru. [109.252.170.211])
+        by smtp.googlemail.com with ESMTPSA id x11sm10286424ljh.106.2020.09.08.06.02.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Sep 2020 06:02:28 -0700 (PDT)
+Subject: Re: [PATCH] PM / devfreq: tegra30: disable clock on error in probe
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200908072557.GC294938@mwanda>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <0d7fd969-8957-5db0-8c4d-2077e924181b@gmail.com>
+Date:   Tue, 8 Sep 2020 16:02:28 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200723170227.996229-1-colin.king@canonical.com>
+In-Reply-To: <20200908072557.GC294938@mwanda>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrNKsWRmVeSWpSXmKPExsWy7djP87pncsLjDV70Mlr8Xt3LZrHw4V1m
-        iytf37NZ7LnzmtFi6y1pixN9H1gtLu+aw+bA7jGroZfNY++3BSwei/e8ZPK4332cyePzJrkA
-        1igum5TUnMyy1CJ9uwSujC0XO5gKTopVNEw4ztjAeFSwi5GTQ0LARKJ3TQt7FyMXh5DACkaJ
-        n1OusEE4Xxglvr2dzwzhfGaU6D67hQWmZV3vBqiq5YwSa/vOMkI4bxklerZcAqtiE7CSmNi+
-        ihHEFhaIklh85j3QEg4OEQFNifPnikDqmQUuMUpsnbsHrIZXwE7iyrJfbCA2i4CKxK+Tn5lA
-        bFGBCIlPDw6zQtQISpyc+QRsPqeAvcTlw2/BbGYBcYlbT+YzQdjyEtvfzgE7W0JgG7vElnMf
-        oM52kTj85AI7hC0s8er4FihbRuL05B4WiIZ1jBJ/O15AdW9nlFg++R8bRJW1xJ1zIOdxAK3Q
-        lFi/Sx8i7Cixq/kLM0hYQoBP4sZbQYgj+CQmbZsOFeaV6GgTgqhWk9iwbAMbzNqunSuZJzAq
-        zULy2iwk78xC8s4shL0LGFlWMYqnlhbnpqcWG+allusVJ+YWl+al6yXn525iBCah0/+Of9rB
-        +PVS0iFGAQ5GJR7eD15h8UKsiWXFlbmHGCU4mJVEeJ3Ono4T4k1JrKxKLcqPLyrNSS0+xCjN
-        waIkzmu86GWskEB6YklqdmpqQWoRTJaJg1OqgZEzsutJzd+tjyZMqArffPbD0rbj5x0OC6bt
-        5qhb1Sttn55R8++Qy2xzfReOTx4u1eteb4z2LtN8MMVWeply2Le9gT+XHuf9lTt/kqZT3P03
-        GULWOis1xKNfW++zdDoXcsOUvyEnNto42/zQD/5Lu1aFrGNfxp8RxFEvfcC04KD4lzvi8jFz
-        fiqxFGckGmoxFxUnAgCnkfvPPgMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrDIsWRmVeSWpSXmKPExsVy+t/xu7qnc8LjDQ4vUrX4vbqXzWLhw7vM
-        Fle+vmez2HPnNaPF1lvSFif6PrBaXN41h82B3WNWQy+bx95vC1g8Fu95yeRxv/s4k8fnTXIB
-        rFF6NkX5pSWpChn5xSW2StGGFkZ6hpYWekYmlnqGxuaxVkamSvp2NimpOZllqUX6dgl6GVsu
-        djAVnBSraJhwnLGB8ahgFyMnh4SAicS63g1sXYxcHEICSxkllnd/Yuxi5ABKyEgcX18GUSMs
-        8edaF1TNa0aJxUdnsYIk2ASsJCa2r2IEsYUFoiQWn3nPDtIrIqApcf5cEUg9s8AlRokLR26w
-        QzRPAmpe9gWsmVfATuLKsl9sIDaLgIrEr5OfmUBsUYEIicM7ZjFC1AhKnJz5hAXE5hSwl7h8
-        +C2YzSygLvFn3iVmCFtc4taT+UwQtrzE9rdzmCcwCs1C0j4LScssJC2zkLQsYGRZxSiSWlqc
-        m55bbKRXnJhbXJqXrpecn7uJERhz24793LKDsetd8CFGAQ5GJR7eD15h8UKsiWXFlbmHGCU4
-        mJVEeJ3Ono4T4k1JrKxKLcqPLyrNSS0+xGgK9NxEZinR5HxgOsgriTc0NTS3sDQ0NzY3NrNQ
-        EuftEDgYIySQnliSmp2aWpBaBNPHxMEp1cDo+at/9qLNq3j/LRO5nFlSXGZ2qrx4kx/PqYe3
-        ny3jODC3bpF81+lJlp2rgmULtPonb9/88NuDNTO8OvfvbuIMnhj/sabt5sWi4G6hlX4zPnTW
-        u/vaXcj77cxcKmHRM48hUH310zNVPXb9W7fMDJ+7V43Z5+5FR80TMs0LF2tGBrtKcDhIPRJV
-        YinOSDTUYi4qTgQAKPrPVM8CAAA=
-X-CMS-MailID: 20200908113643eucas1p17854ce62206401d0fdf33653380a4b46
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200723170235eucas1p21b1e0f5ff092d550d65057ae2a31a897
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200723170235eucas1p21b1e0f5ff092d550d65057ae2a31a897
-References: <CGME20200723170235eucas1p21b1e0f5ff092d550d65057ae2a31a897@eucas1p2.samsung.com>
-        <20200723170227.996229-1-colin.king@canonical.com>
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-On 7/23/20 7:02 PM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+08.09.2020 10:25, Dan Carpenter пишет:
+> This error path needs to call clk_disable_unprepare().
 > 
-> The pixclock is being set locally because it is being passed as a
-> pass-by-value argument rather than pass-by-reference, so the computed
-> pixclock is never being set in var->pixclock. Fix this by passing
-> by reference.
-> 
-> [This dates back to 2002, I found the offending commit from the git
-> history git://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git ]
-> 
-> Addresses-Coverity: ("Unused value")
-> Fixes: 115f4504a64a ("Removed currcon and other console related code. Very little is now left.")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Applied to drm-misc-next tree, thanks and sorry for the delay.
-
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
-
+> Fixes: 7296443b900e ("PM / devfreq: tegra30: Handle possible round-rate error")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  drivers/video/fbdev/vga16fb.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+> ---
+>  drivers/devfreq/tegra30-devfreq.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/video/fbdev/vga16fb.c b/drivers/video/fbdev/vga16fb.c
-> index a20eeb8308ff..52f273af6cae 100644
-> --- a/drivers/video/fbdev/vga16fb.c
-> +++ b/drivers/video/fbdev/vga16fb.c
-> @@ -243,7 +243,7 @@ static void vga16fb_update_fix(struct fb_info *info)
->  }
->  
->  static void vga16fb_clock_chip(struct vga16fb_par *par,
-> -			       unsigned int pixclock,
-> +			       unsigned int *pixclock,
->  			       const struct fb_info *info,
->  			       int mul, int div)
->  {
-> @@ -259,14 +259,14 @@ static void vga16fb_clock_chip(struct vga16fb_par *par,
->  		{     0 /* bad */,    0x00, 0x00}};
->  	int err;
->  
-> -	pixclock = (pixclock * mul) / div;
-> +	*pixclock = (*pixclock * mul) / div;
->  	best = vgaclocks;
-> -	err = pixclock - best->pixclock;
-> +	err = *pixclock - best->pixclock;
->  	if (err < 0) err = -err;
->  	for (ptr = vgaclocks + 1; ptr->pixclock; ptr++) {
->  		int tmp;
->  
-> -		tmp = pixclock - ptr->pixclock;
-> +		tmp = *pixclock - ptr->pixclock;
->  		if (tmp < 0) tmp = -tmp;
->  		if (tmp < err) {
->  			err = tmp;
-> @@ -275,7 +275,7 @@ static void vga16fb_clock_chip(struct vga16fb_par *par,
+> diff --git a/drivers/devfreq/tegra30-devfreq.c b/drivers/devfreq/tegra30-devfreq.c
+> index e94a27804c20..dedd39de7367 100644
+> --- a/drivers/devfreq/tegra30-devfreq.c
+> +++ b/drivers/devfreq/tegra30-devfreq.c
+> @@ -836,7 +836,8 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
+>  	rate = clk_round_rate(tegra->emc_clock, ULONG_MAX);
+>  	if (rate < 0) {
+>  		dev_err(&pdev->dev, "Failed to round clock rate: %ld\n", rate);
+> -		return rate;
+> +		err = rate;
+> +		goto disable_clk;
 >  	}
->  	par->misc |= best->misc;
->  	par->clkdiv = best->seq_clock_mode;
-> -	pixclock = (best->pixclock * div) / mul;		
-> +	*pixclock = (best->pixclock * div) / mul;
->  }
->  			       
->  #define FAIL(X) return -EINVAL
-> @@ -497,10 +497,10 @@ static int vga16fb_check_var(struct fb_var_screeninfo *var,
 >  
->  	if (mode & MODE_8BPP)
->  		/* pixel clock == vga clock / 2 */
-> -		vga16fb_clock_chip(par, var->pixclock, info, 1, 2);
-> +		vga16fb_clock_chip(par, &var->pixclock, info, 1, 2);
->  	else
->  		/* pixel clock == vga clock */
-> -		vga16fb_clock_chip(par, var->pixclock, info, 1, 1);
-> +		vga16fb_clock_chip(par, &var->pixclock, info, 1, 1);
->  	
->  	var->red.offset = var->green.offset = var->blue.offset = 
->  	var->transp.offset = 0;
+>  	tegra->max_freq = rate / KHZ;
+> @@ -897,6 +898,7 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
+>  	dev_pm_opp_remove_all_dynamic(&pdev->dev);
+>  
+>  	reset_control_reset(tegra->reset);
+> +disable_clk:
+>  	clk_disable_unprepare(tegra->clock);
+>  
+>  	return err;
 > 
+
+Hello, Dan! Thank you for the patch!
+
+Reviewed-by: Dmitry Osipenko <digetx@gmail.com>

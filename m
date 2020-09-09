@@ -2,64 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1609126273A
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Sep 2020 08:36:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87437262758
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Sep 2020 08:49:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727899AbgIIGf4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Sep 2020 02:35:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43346 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725772AbgIIGf4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Sep 2020 02:35:56 -0400
-Received: from pobox.suse.cz (nat1.prg.suse.com [195.250.132.148])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7DC9C21741;
-        Wed,  9 Sep 2020 06:35:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599633355;
-        bh=FTAgov64ac04dst3A94wgkLpWgOSry5DPtPvBH46Xo8=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=Lez1JDQ6EymzGW68pPp9Bu7sdiO3BRpN5RYaj6dzlZIAQ3bbe7PxSpCYfo/FRRbO+
-         bxIF9LtU45tZb/7TLf1LBWrYaumwtCfqvaRf1qr4U9ZQWr6w8R3pIe2Uh+F4NP3CxA
-         KuEf/orKS0DQBZp5GxqGW0Uz7FyC5G/tBCMD3Ezs=
-Date:   Wed, 9 Sep 2020 08:35:52 +0200 (CEST)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-cc:     Stefan Achatz <erazor_de@users.sourceforge.net>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2] HID: roccat: add bounds checking in
- kone_sysfs_write_settings()
-In-Reply-To: <20200824085735.GA208317@mwanda>
-Message-ID: <nycvar.YFH.7.76.2009090835410.4671@cbobk.fhfr.pm>
-References: <20200824085735.GA208317@mwanda>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        id S1725974AbgIIGti (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Sep 2020 02:49:38 -0400
+Received: from a27-11.smtp-out.us-west-2.amazonses.com ([54.240.27.11]:40126
+        "EHLO a27-11.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725840AbgIIGth (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 9 Sep 2020 02:49:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599634176;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
+        bh=p4ypZmhWXG8yORYJ/mTAYIPFxIMn8mkGqNNLuk4db3Y=;
+        b=kTam4RHs9mXYwQIkx/ZAu/9ERnPzsOXPG9WVMAx+i1/D13GL0E/r89IKYXN1Cdsl
+        /jbmR05sSqLPEpZYw/5ueh0zTr5KYdYw76gDhGHKNdn20RlDdjL0eJu1fXsJO9eNXNi
+        A4Mfk/DZD7nAy4RAEaayKY+gujPv5XT7RDBgW1H0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599634176;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
+        bh=p4ypZmhWXG8yORYJ/mTAYIPFxIMn8mkGqNNLuk4db3Y=;
+        b=AlOS+0zfPQeNUaXPIOsDPytCQDdZbOOrY4r2rz/DtfiqedYxworPw5aYi0VhiUZT
+        hGxKEvVRIxPrTrVuwfiwwZqkcePJGUA8FFyXzr4iznImNjrLg0xySl7jUz3ONjhyJ6Z
+        TEb6QCCBcLEHCOAOBtCnPHKZ5w6Hst2lgrWtVBV8=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2928FC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH net-next] ath11k: fix uninitialized return in
+ ath11k_spectral_process_data()
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200619142922.GA267142@mwanda>
+References: <20200619142922.GA267142@mwanda>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Karthikeyan Periyasamy <periyasa@codeaurora.org>,
+        Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-ID: <0101017471a07992-e553dd64-fb73-44d0-bd54-ee6367163e50-000000@us-west-2.amazonses.com>
+Date:   Wed, 9 Sep 2020 06:49:36 +0000
+X-SES-Outgoing: 2020.09.09-54.240.27.11
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 24 Aug 2020, Dan Carpenter wrote:
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-> This code doesn't check if "settings->startup_profile" is within bounds
-> and that could result in an out of bounds array access.  What the code
-> does do is it checks if the settings can be written to the firmware, so
-> it's possible that the firmware has a bounds check?  It's safer and
-> easier to verify when the bounds checking is done in the kernel.
+> There is a success path where "ret" isn't initialized where we never
+> have a ATH11K_SPECTRAL_TAG_SCAN_SEARCH and then ret isn't initialized.
 > 
-> Fixes: 14bf62cde794 ("HID: add driver for Roccat Kone gaming mouse")
+> Fixes: 9d11b7bff950 ("ath11k: add support for spectral scan")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> v2:  In the v1 patch I added a check against settings->size but that's
-> potentially too strict so it was removed.
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Applied, thanks Dan.
+Patch applied to ath-next branch of ath.git, thanks.
+
+c7187acc3cd0 ath11k: fix uninitialized return in ath11k_spectral_process_data()
 
 -- 
-Jiri Kosina
-SUSE Labs
+https://patchwork.kernel.org/patch/11614313/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

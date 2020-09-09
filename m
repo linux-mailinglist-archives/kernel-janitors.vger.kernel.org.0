@@ -2,64 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A6652625CA
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Sep 2020 05:17:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1609126273A
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Sep 2020 08:36:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729413AbgIIDRc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 8 Sep 2020 23:17:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47200 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728197AbgIIDRb (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 8 Sep 2020 23:17:31 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8616AC061755;
-        Tue,  8 Sep 2020 20:17:30 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 0DA3611E3E4C3;
-        Tue,  8 Sep 2020 20:00:43 -0700 (PDT)
-Date:   Tue, 08 Sep 2020 20:17:29 -0700 (PDT)
-Message-Id: <20200908.201729.542237023404934204.davem@davemloft.net>
-To:     christophe.jaillet@wanadoo.fr
-Cc:     hkallweit1@gmail.com, kuba@kernel.org, mhabets@solarflare.com,
-        tony.felice@timesys.com, mst@redhat.com, gustavo@embeddedor.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        id S1727899AbgIIGf4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Sep 2020 02:35:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43346 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725772AbgIIGf4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 9 Sep 2020 02:35:56 -0400
+Received: from pobox.suse.cz (nat1.prg.suse.com [195.250.132.148])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7DC9C21741;
+        Wed,  9 Sep 2020 06:35:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599633355;
+        bh=FTAgov64ac04dst3A94wgkLpWgOSry5DPtPvBH46Xo8=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=Lez1JDQ6EymzGW68pPp9Bu7sdiO3BRpN5RYaj6dzlZIAQ3bbe7PxSpCYfo/FRRbO+
+         bxIF9LtU45tZb/7TLf1LBWrYaumwtCfqvaRf1qr4U9ZQWr6w8R3pIe2Uh+F4NP3CxA
+         KuEf/orKS0DQBZp5GxqGW0Uz7FyC5G/tBCMD3Ezs=
+Date:   Wed, 9 Sep 2020 08:35:52 +0200 (CEST)
+From:   Jiri Kosina <jikos@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+cc:     Stefan Achatz <erazor_de@users.sourceforge.net>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] net: tc35815: switch from 'pci_' to 'dma_' API
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200908202747.330007-1-christophe.jaillet@wanadoo.fr>
-References: <20200908202747.330007-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: Mew version 6.8 on Emacs 27.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [2620:137:e000::1:9]); Tue, 08 Sep 2020 20:00:43 -0700 (PDT)
+Subject: Re: [PATCH v2] HID: roccat: add bounds checking in
+ kone_sysfs_write_settings()
+In-Reply-To: <20200824085735.GA208317@mwanda>
+Message-ID: <nycvar.YFH.7.76.2009090835410.4671@cbobk.fhfr.pm>
+References: <20200824085735.GA208317@mwanda>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Tue,  8 Sep 2020 22:27:47 +0200
+On Mon, 24 Aug 2020, Dan Carpenter wrote:
 
-> The wrappers in include/linux/pci-dma-compat.h should go away.
+> This code doesn't check if "settings->startup_profile" is within bounds
+> and that could result in an out of bounds array access.  What the code
+> does do is it checks if the settings can be written to the firmware, so
+> it's possible that the firmware has a bounds check?  It's safer and
+> easier to verify when the bounds checking is done in the kernel.
 > 
-> The patch has been generated with the coccinelle script below and has been
-> hand modified to replace GFP_ with a correct flag.
-> It has been compile tested.
-> 
-> When memory is allocated in 'tc35815_init_queues()' GFP_ATOMIC must be used
-> because it can be called from 'tc35815_restart()' where some spinlock are
-> taken.
-> The call chain is:
->   tc35815_restart
->     --> tc35815_clear_queues
->       --> tc35815_init_queues
-> 
- ...
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Fixes: 14bf62cde794 ("HID: add driver for Roccat Kone gaming mouse")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> v2:  In the v1 patch I added a check against settings->size but that's
+> potentially too strict so it was removed.
 
-Applied.
+Applied, thanks Dan.
+
+-- 
+Jiri Kosina
+SUSE Labs
+

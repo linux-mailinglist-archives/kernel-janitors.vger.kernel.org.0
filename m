@@ -2,303 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FFCC262114
-	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Sep 2020 22:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0B872624E4
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Sep 2020 04:10:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729808AbgIHU2E (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 8 Sep 2020 16:28:04 -0400
-Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:20451 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728954AbgIHU2B (ORCPT
+        id S1728197AbgIICKe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 8 Sep 2020 22:10:34 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:40324 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726489AbgIICKe (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 8 Sep 2020 16:28:01 -0400
-Received: from localhost.localdomain ([93.22.150.22])
-        by mwinf5d58 with ME
-        id RYTp230040VEKhH03YTpGu; Tue, 08 Sep 2020 22:27:58 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 08 Sep 2020 22:27:58 +0200
-X-ME-IP: 93.22.150.22
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     hkallweit1@gmail.com, davem@davemloft.net, kuba@kernel.org,
-        mhabets@solarflare.com, tony.felice@timesys.com, mst@redhat.com,
-        gustavo@embeddedor.com
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] net: tc35815: switch from 'pci_' to 'dma_' API
-Date:   Tue,  8 Sep 2020 22:27:47 +0200
-Message-Id: <20200908202747.330007-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Tue, 8 Sep 2020 22:10:34 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08929wGo153585;
+        Wed, 9 Sep 2020 02:10:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=RA5KU7hC/4RZDaVvqLweitGeGaEEcpxcs09QIiSSOKw=;
+ b=F99m21MSZRInKB49TaY3cxp1Y/TaHGaKVfrbGNtQ+YsW31l0Q/RWvTH/7lL0HJpu40Yj
+ W3cz2oT+ACPCxuzcLQ1ceculkcyw0ILVaWsvD0l20J/y6nzpQ8OqgMpw0G2PFMiaFosb
+ cWiAVtgmAu64naqtxV2PWtZCV4apOY0ElKGL5nVE0l5f/X21ASHz5MTvf5RUlJw6XCuH
+ qJxKDWL/M22Es+D1CRDy++x0hxO5HQbhtPqXMo7z5XGnIn8PEaQSfoUXRJnA7Iz4KrNZ
+ B/c3tSZjbpX++XmwE2N0G+wNL+vDQYKz7n391nVwJ+M8npn7RYYXCD7lvrVGj8paFWiu /g== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 33c3amxttw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 09 Sep 2020 02:10:24 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08925Zu3069209;
+        Wed, 9 Sep 2020 02:08:23 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 33dacjq2pf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 09 Sep 2020 02:08:23 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08928LlD022247;
+        Wed, 9 Sep 2020 02:08:21 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 08 Sep 2020 19:08:20 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        John Garry <john.garry@huawei.com>,
+        linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        kernel-janitors@vger.kernel.org, Jason Yan <yanaijie@huawei.com>
+Subject: Re: [PATCH] scsi: libsas: Fix error path in sas_notify_lldd_dev_found()
+Date:   Tue,  8 Sep 2020 22:08:19 -0400
+Message-Id: <159961727333.18958.11850401583995372808.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200905125836.GF183976@mwanda>
+References: <20200905125836.GF183976@mwanda>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=781 malwarescore=0
+ bulkscore=0 phishscore=0 adultscore=0 suspectscore=0 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009090018
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 priorityscore=1501
+ clxscore=1015 bulkscore=0 malwarescore=0 lowpriorityscore=0
+ mlxlogscore=795 suspectscore=0 adultscore=0 mlxscore=0 impostorscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009090018
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The wrappers in include/linux/pci-dma-compat.h should go away.
+On Sat, 5 Sep 2020 15:58:36 +0300, Dan Carpenter wrote:
 
-The patch has been generated with the coccinelle script below and has been
-hand modified to replace GFP_ with a correct flag.
-It has been compile tested.
+> In sas_notify_lldd_dev_found(), if we can't find a device, then it seems
+> like the wrong thing to mark the device as found and to increment the
+> reference count.  None of the callers ever drop the reference in that
+> situation.
 
-When memory is allocated in 'tc35815_init_queues()' GFP_ATOMIC must be used
-because it can be called from 'tc35815_restart()' where some spinlock are
-taken.
-The call chain is:
-  tc35815_restart
-    --> tc35815_clear_queues
-      --> tc35815_init_queues
+Applied to 5.9/scsi-fixes, thanks!
 
+[1/1] scsi: libsas: Fix error path in sas_notify_lldd_dev_found()
+      https://git.kernel.org/mkp/scsi/c/fdcb7900d9ab
 
-@@
-@@
--    PCI_DMA_BIDIRECTIONAL
-+    DMA_BIDIRECTIONAL
-
-@@
-@@
--    PCI_DMA_TODEVICE
-+    DMA_TO_DEVICE
-
-@@
-@@
--    PCI_DMA_FROMDEVICE
-+    DMA_FROM_DEVICE
-
-@@
-@@
--    PCI_DMA_NONE
-+    DMA_NONE
-
-@@
-expression e1, e2, e3;
-@@
--    pci_alloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3;
-@@
--    pci_zalloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_free_consistent(e1, e2, e3, e4)
-+    dma_free_coherent(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_single(e1, e2, e3, e4)
-+    dma_map_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_single(e1, e2, e3, e4)
-+    dma_unmap_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4, e5;
-@@
--    pci_map_page(e1, e2, e3, e4, e5)
-+    dma_map_page(&e1->dev, e2, e3, e4, e5)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_page(e1, e2, e3, e4)
-+    dma_unmap_page(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_sg(e1, e2, e3, e4)
-+    dma_map_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_sg(e1, e2, e3, e4)
-+    dma_unmap_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-+    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-+    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-+    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-+    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2;
-@@
--    pci_dma_mapping_error(e1, e2)
-+    dma_mapping_error(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_dma_mask(e1, e2)
-+    dma_set_mask(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_consistent_dma_mask(e1, e2)
-+    dma_set_coherent_mask(&e1->dev, e2)
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-If needed, see post from Christoph Hellwig on the kernel-janitors ML:
-   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
----
- drivers/net/ethernet/toshiba/tc35815.c | 48 +++++++++++++++-----------
- 1 file changed, 28 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/net/ethernet/toshiba/tc35815.c b/drivers/net/ethernet/toshiba/tc35815.c
-index 6bcda20ed7e7..eb82f5483023 100644
---- a/drivers/net/ethernet/toshiba/tc35815.c
-+++ b/drivers/net/ethernet/toshiba/tc35815.c
-@@ -454,9 +454,9 @@ static struct sk_buff *alloc_rxbuf_skb(struct net_device *dev,
- 	skb = netdev_alloc_skb(dev, RX_BUF_SIZE);
- 	if (!skb)
- 		return NULL;
--	*dma_handle = pci_map_single(hwdev, skb->data, RX_BUF_SIZE,
--				     PCI_DMA_FROMDEVICE);
--	if (pci_dma_mapping_error(hwdev, *dma_handle)) {
-+	*dma_handle = dma_map_single(&hwdev->dev, skb->data, RX_BUF_SIZE,
-+				     DMA_FROM_DEVICE);
-+	if (dma_mapping_error(&hwdev->dev, *dma_handle)) {
- 		dev_kfree_skb_any(skb);
- 		return NULL;
- 	}
-@@ -466,8 +466,8 @@ static struct sk_buff *alloc_rxbuf_skb(struct net_device *dev,
- 
- static void free_rxbuf_skb(struct pci_dev *hwdev, struct sk_buff *skb, dma_addr_t dma_handle)
- {
--	pci_unmap_single(hwdev, dma_handle, RX_BUF_SIZE,
--			 PCI_DMA_FROMDEVICE);
-+	dma_unmap_single(&hwdev->dev, dma_handle, RX_BUF_SIZE,
-+			 DMA_FROM_DEVICE);
- 	dev_kfree_skb_any(skb);
- }
- 
-@@ -876,9 +876,9 @@ tc35815_init_queues(struct net_device *dev)
- 		       sizeof(struct TxFD) * TX_FD_NUM >
- 		       PAGE_SIZE * FD_PAGE_NUM);
- 
--		lp->fd_buf = pci_alloc_consistent(lp->pci_dev,
--						  PAGE_SIZE * FD_PAGE_NUM,
--						  &lp->fd_buf_dma);
-+		lp->fd_buf = dma_alloc_coherent(&lp->pci_dev->dev,
-+						PAGE_SIZE * FD_PAGE_NUM,
-+						&lp->fd_buf_dma, GFP_ATOMIC);
- 		if (!lp->fd_buf)
- 			return -ENOMEM;
- 		for (i = 0; i < RX_BUF_NUM; i++) {
-@@ -892,10 +892,9 @@ tc35815_init_queues(struct net_device *dev)
- 						       lp->rx_skbs[i].skb_dma);
- 					lp->rx_skbs[i].skb = NULL;
- 				}
--				pci_free_consistent(lp->pci_dev,
--						    PAGE_SIZE * FD_PAGE_NUM,
--						    lp->fd_buf,
--						    lp->fd_buf_dma);
-+				dma_free_coherent(&lp->pci_dev->dev,
-+						  PAGE_SIZE * FD_PAGE_NUM,
-+						  lp->fd_buf, lp->fd_buf_dma);
- 				lp->fd_buf = NULL;
- 				return -ENOMEM;
- 			}
-@@ -990,7 +989,9 @@ tc35815_clear_queues(struct net_device *dev)
- 		BUG_ON(lp->tx_skbs[i].skb != skb);
- #endif
- 		if (skb) {
--			pci_unmap_single(lp->pci_dev, lp->tx_skbs[i].skb_dma, skb->len, PCI_DMA_TODEVICE);
-+			dma_unmap_single(&lp->pci_dev->dev,
-+					 lp->tx_skbs[i].skb_dma, skb->len,
-+					 DMA_TO_DEVICE);
- 			lp->tx_skbs[i].skb = NULL;
- 			lp->tx_skbs[i].skb_dma = 0;
- 			dev_kfree_skb_any(skb);
-@@ -1022,7 +1023,9 @@ tc35815_free_queues(struct net_device *dev)
- 			BUG_ON(lp->tx_skbs[i].skb != skb);
- #endif
- 			if (skb) {
--				pci_unmap_single(lp->pci_dev, lp->tx_skbs[i].skb_dma, skb->len, PCI_DMA_TODEVICE);
-+				dma_unmap_single(&lp->pci_dev->dev,
-+						 lp->tx_skbs[i].skb_dma,
-+						 skb->len, DMA_TO_DEVICE);
- 				dev_kfree_skb(skb);
- 				lp->tx_skbs[i].skb = NULL;
- 				lp->tx_skbs[i].skb_dma = 0;
-@@ -1044,8 +1047,8 @@ tc35815_free_queues(struct net_device *dev)
- 		}
- 	}
- 	if (lp->fd_buf) {
--		pci_free_consistent(lp->pci_dev, PAGE_SIZE * FD_PAGE_NUM,
--				    lp->fd_buf, lp->fd_buf_dma);
-+		dma_free_coherent(&lp->pci_dev->dev, PAGE_SIZE * FD_PAGE_NUM,
-+				  lp->fd_buf, lp->fd_buf_dma);
- 		lp->fd_buf = NULL;
- 	}
- }
-@@ -1292,7 +1295,10 @@ tc35815_send_packet(struct sk_buff *skb, struct net_device *dev)
- 	BUG_ON(lp->tx_skbs[lp->tfd_start].skb);
- #endif
- 	lp->tx_skbs[lp->tfd_start].skb = skb;
--	lp->tx_skbs[lp->tfd_start].skb_dma = pci_map_single(lp->pci_dev, skb->data, skb->len, PCI_DMA_TODEVICE);
-+	lp->tx_skbs[lp->tfd_start].skb_dma = dma_map_single(&lp->pci_dev->dev,
-+							    skb->data,
-+							    skb->len,
-+							    DMA_TO_DEVICE);
- 
- 	/*add to ring */
- 	txfd = &lp->tfd_base[lp->tfd_start];
-@@ -1500,9 +1506,9 @@ tc35815_rx(struct net_device *dev, int limit)
- 			skb = lp->rx_skbs[cur_bd].skb;
- 			prefetch(skb->data);
- 			lp->rx_skbs[cur_bd].skb = NULL;
--			pci_unmap_single(lp->pci_dev,
-+			dma_unmap_single(&lp->pci_dev->dev,
- 					 lp->rx_skbs[cur_bd].skb_dma,
--					 RX_BUF_SIZE, PCI_DMA_FROMDEVICE);
-+					 RX_BUF_SIZE, DMA_FROM_DEVICE);
- 			if (!HAVE_DMA_RXALIGN(lp) && NET_IP_ALIGN != 0)
- 				memmove(skb->data, skb->data - NET_IP_ALIGN,
- 					pkt_len);
-@@ -1756,7 +1762,9 @@ tc35815_txdone(struct net_device *dev)
- #endif
- 		if (skb) {
- 			dev->stats.tx_bytes += skb->len;
--			pci_unmap_single(lp->pci_dev, lp->tx_skbs[lp->tfd_end].skb_dma, skb->len, PCI_DMA_TODEVICE);
-+			dma_unmap_single(&lp->pci_dev->dev,
-+					 lp->tx_skbs[lp->tfd_end].skb_dma,
-+					 skb->len, DMA_TO_DEVICE);
- 			lp->tx_skbs[lp->tfd_end].skb = NULL;
- 			lp->tx_skbs[lp->tfd_end].skb_dma = 0;
- 			dev_kfree_skb_any(skb);
 -- 
-2.25.1
-
+Martin K. Petersen	Oracle Linux Engineering

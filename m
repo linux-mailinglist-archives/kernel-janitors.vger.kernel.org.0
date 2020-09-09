@@ -2,209 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 96DC92628CD
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Sep 2020 09:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70E8B26290A
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Sep 2020 09:38:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729779AbgIIHdk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Sep 2020 03:33:40 -0400
-Received: from a27-186.smtp-out.us-west-2.amazonses.com ([54.240.27.186]:49974
-        "EHLO a27-186.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726683AbgIIHdj (ORCPT
+        id S1730136AbgIIHis (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Sep 2020 03:38:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58982 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727936AbgIIHio (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Sep 2020 03:33:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599636818;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
-        bh=iTMWE0vsu9593V6w+Pw8rMzq0zE6ykSu8zGoebQFncI=;
-        b=Nmb481MI2nRdVM+jZRC8AZ40D0QB/tvBx2d6A2JDWwS4zznRXYuHqcSP4YdcV9gs
-        qgUR0elVhlgoa8eYyUD6ovHvguJNnrV+wrxQWNTCqI5dpJs5x7mw2TENzAmcK0rFysQ
-        dueUvFV1RhkhyNuyeIKB8ceWFB263oXMvMl8XyjQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599636818;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
-        bh=iTMWE0vsu9593V6w+Pw8rMzq0zE6ykSu8zGoebQFncI=;
-        b=Dy05qWxPrvqGQSqFNNWOsJsGDDVu61kWsq/fuaWQABKd7EuGZ0MPUEKC9RttACZa
-        wS6Ve2JU2kxN5FvnB0vdbTnN9KESsRhuY7RhggxTtq6w17nJsFpXXMKN/v3g+eaHlmt
-        9JsaGqaY9/fB/6FVoFCnG4QUaZOCggDt2sM1yvKw=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 63BB2C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] rtlwifi: switch from 'pci_' to 'dma_' API
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200907193828.318233-1-christophe.jaillet@wanadoo.fr>
-References: <20200907193828.318233-1-christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     pkshih@realtek.com, davem@davemloft.net, kuba@kernel.org,
-        Larry.Finger@lwfinger.net, straube.linux@gmail.com,
-        zhengbin13@huawei.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Wed, 9 Sep 2020 03:38:44 -0400
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72A81C061573;
+        Wed,  9 Sep 2020 00:38:43 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id m8so1467861pgi.3;
+        Wed, 09 Sep 2020 00:38:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=nNv35u1ldXzOEKenltQUlGYnPVKRgGyBIl7aYeHbKY0=;
+        b=Hvk45Jt+K2CExex1KQEe7xijNtxPDH900J+LbezL+idLn6L7Z5GV6Gdp/Qio1t7BBv
+         ZlRWBjJ3NuxH1Als0iszlmnIDTJNynFnbc4XsbMVhOj745QKNUaVGPtbpwMGWEhInqr8
+         9bwLAQUuiQWLJJWPLBA1WvsNALpxUxLGCylKXkXanocyf97PLW7MMfIVFzk3lxFOGYqG
+         BAS79CU0LAc29/hoWg4nF6i8NWLXCttOpMarR01kSp/MmOlm1Z83Ue0EO/PTpaEnH8A1
+         gv8C44sg52k2IKEX8iEo0H3FBm1R7b6+U00SIearqMWLoO6GUAIG0XyKzkj7X7CuEAXt
+         Pouw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=nNv35u1ldXzOEKenltQUlGYnPVKRgGyBIl7aYeHbKY0=;
+        b=W5e+4WowWaCyEX0YUPYSXi+wYR+G6QQD93vXIei6P1Owqb99jZorMIFFwq32f4vGjv
+         Ee6vM27MQ0cQayg6GXx9vFxgWZvPCzfYjLGfu3Appw0cZ6I1Tutvtsy8P61iOC1gZQS2
+         NnffYvL2TdfmPL4xHTyusUzlsGjmiDe9zGTIaruQaZLPY5/QMjV0Y4DFkg3SGgJoPhEo
+         FAhd/VkfQUDR6vdF54KTRj21GteBwAUpYTHPLGA/NKxIexZpSt9ZCvAZU2PHNGIMvmri
+         i/ItsFKY+650f7UNEEox7b815Fs26eWF4F5Q5DhA3UHK0C3NLToreX0XGg071TO8iRxY
+         VIyA==
+X-Gm-Message-State: AOAM531m39CYCBHw7Sdd83wvo31S34WkG30KGH+dCa633tsj+C1mb3P9
+        +EBg4ovaWICiQlYeEqAvl0k=
+X-Google-Smtp-Source: ABdhPJwsjfw30kgxWLkWH0FSYkSjPrI7Numm+JV/jM7fOZPTD7AjKnHY1CCZhtaVU/77wx21QRXW+g==
+X-Received: by 2002:a63:4f26:: with SMTP id d38mr2019642pgb.72.1599637122985;
+        Wed, 09 Sep 2020 00:38:42 -0700 (PDT)
+Received: from adolin ([49.207.200.122])
+        by smtp.gmail.com with ESMTPSA id s8sm1796012pfd.153.2020.09.09.00.38.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2020 00:38:42 -0700 (PDT)
+From:   Sumera Priyadarsini <sylphrenadin@gmail.com>
+X-Google-Original-From: Sumera Priyadarsini <sumera@adolin>
+Date:   Wed, 9 Sep 2020 13:08:36 +0530
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        Coccinelle <cocci@systeme.lip6.fr>, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-ID: <0101017471c8ca79-31863cec-baa0-43f6-96c2-bd34f321a002-000000@us-west-2.amazonses.com>
-Date:   Wed, 9 Sep 2020 07:33:38 +0000
-X-SES-Outgoing: 2020.09.09-54.240.27.186
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>
+Subject: Re: [PATCH] scripts: coccicheck: Do not use shift command when rule
+ is specified
+Message-ID: <20200909073836.yrsqb6o4i3c47xd4@adolin>
+References: <036792a4-0454-732a-8a0e-83123713445c@web.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <036792a4-0454-732a-8a0e-83123713445c@web.de>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+On Wed, Sep 09, 2020 at 08:52:19AM +0200, Markus Elfring wrote:
+> I find it helpful to avoid typos (like the following) in the change description.
+> 
+> 
+> > … Makfeile. …
+> 
+> … Makefile. …
+> 
+> 
+> > … paasing …
+> 
+> … passing …
+> 
+> 
+> > …, resuting …
+> 
+> …, resulting …
+> 
+> 
+> > This patch modifies coccicheck …
+> 
 
-> The wrappers in include/linux/pci-dma-compat.h should go away.
-> 
-> The patch has been generated with the coccinelle script below and has been
-> hand modified to replace GFP_ with a correct flag.
-> It has been compile tested.
-> 
-> The only file where some GFP_ flags are updated is 'pci.c'.
-> 
-> When memory is allocated in '_rtl_pci_init_tx_ring()' and
-> '_rtl_pci_init_rx_ring()' GFP_KERNEL can be used because both functions are
-> called from a probe function and no spinlock is taken.
-> 
-> The call chain is:
->   rtl_pci_probe
->     --> rtl_pci_init
->       --> _rtl_pci_init_trx_ring
->         --> _rtl_pci_init_rx_ring
->         --> _rtl_pci_init_tx_ring
-> 
-> 
-> @@
-> @@
-> -    PCI_DMA_BIDIRECTIONAL
-> +    DMA_BIDIRECTIONAL
-> 
-> @@
-> @@
-> -    PCI_DMA_TODEVICE
-> +    DMA_TO_DEVICE
-> 
-> @@
-> @@
-> -    PCI_DMA_FROMDEVICE
-> +    DMA_FROM_DEVICE
-> 
-> @@
-> @@
-> -    PCI_DMA_NONE
-> +    DMA_NONE
-> 
-> @@
-> expression e1, e2, e3;
-> @@
-> -    pci_alloc_consistent(e1, e2, e3)
-> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-> 
-> @@
-> expression e1, e2, e3;
-> @@
-> -    pci_zalloc_consistent(e1, e2, e3)
-> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_free_consistent(e1, e2, e3, e4)
-> +    dma_free_coherent(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_map_single(e1, e2, e3, e4)
-> +    dma_map_single(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_single(e1, e2, e3, e4)
-> +    dma_unmap_single(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4, e5;
-> @@
-> -    pci_map_page(e1, e2, e3, e4, e5)
-> +    dma_map_page(&e1->dev, e2, e3, e4, e5)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_page(e1, e2, e3, e4)
-> +    dma_unmap_page(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_map_sg(e1, e2, e3, e4)
-> +    dma_map_sg(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_sg(e1, e2, e3, e4)
-> +    dma_unmap_sg(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-> +    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-> +    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-> +    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-> +    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2;
-> @@
-> -    pci_dma_mapping_error(e1, e2)
-> +    dma_mapping_error(&e1->dev, e2)
-> 
-> @@
-> expression e1, e2;
-> @@
-> -    pci_set_dma_mask(e1, e2)
-> +    dma_set_mask(&e1->dev, e2)
-> 
-> @@
-> expression e1, e2;
-> @@
-> -    pci_set_consistent_dma_mask(e1, e2)
-> +    dma_set_coherent_mask(&e1->dev, e2)
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+I did make those errors but I also rectified them. This is strange
+because my commit message shows the rectified version.
+Either way, I will send a v2. Thanks for pointing this out.
 
-Patch applied to wireless-drivers-next.git, thanks.
-
-0dc0b5c29be2 rtlwifi: switch from 'pci_' to 'dma_' API
-
--- 
-https://patchwork.kernel.org/patch/11762141/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+> Would an imperative wording be preferred for the commit message?
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=34d4ddd359dbcdf6c5fb3f85a179243d7a1cb7f8#n151
+> 
+> Regards,
+> Markus

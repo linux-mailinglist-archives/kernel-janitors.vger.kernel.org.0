@@ -2,119 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EFB5262999
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Sep 2020 10:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E9C5262B36
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Sep 2020 11:01:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726169AbgIIIJr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Sep 2020 04:09:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35550 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725917AbgIIIJq (ORCPT
+        id S1726683AbgIIJBV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Sep 2020 05:01:21 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:58385 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725877AbgIIJBV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Sep 2020 04:09:46 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55BB6C061573;
-        Wed,  9 Sep 2020 01:09:46 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id m8so1522278pgi.3;
-        Wed, 09 Sep 2020 01:09:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
-        bh=x1ennYUlzh5ZiE58CNNa6Rmzq+yOs03mH5GcYAaRQyI=;
-        b=Yc1be8SBjWq+KAkLjeHBXNGg8D8viucHr66IFvqr6CPDdnxzpg7V64QlqeP+DThD5B
-         91WRDzyRNWp48mkFkh/Mj+4ZC+xzdtjx4rCB6RvL8bWiZa4nmaJz1C/8T5a3mw0nEpHd
-         NuI1+sKPX3ExoP/YaVhuXeOCKSVudYL8dGLpykiiIRSaGEp1P47q5yVRtEA2R2qiOomN
-         +4E4KscqSXJibUJ8xPCbTXp8UjcEvJMDqvGh2xcaYbOjuOC3owp/S6hDg/+4/NfnuQVk
-         Rvlu9ZGgV0uNmWU0bhkYAwD9kNGkMd4LWAU6Ub1P6S8uiN4t4b1vS1CBYIvA/dPojSns
-         ofdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition;
-        bh=x1ennYUlzh5ZiE58CNNa6Rmzq+yOs03mH5GcYAaRQyI=;
-        b=DGdZbyIxQQmeEOLmrbfWYdzvDwFhX/fZ3+l3MHfPMWqfUE58SpyQbjEBU7Yu6H4wZj
-         tWVKlsFEpcygU6XUQV8abHM3Jn4xfIbD8coakCyvT75Uc9vbfDgwaKTFbG1fVjsDDrBv
-         rRZCVMnUsemkp3cPz1ODQZ4mLeaczyUCq33h7RAKigr9va0pdOB3lxDGXQgU6HL+sxO6
-         v9wftzvv+RrvGOUwkUUf2ix5isrA55Q+HNEJQX1rucwIcHcGuKALWH780AXbv9XyZxjI
-         8/r9cztpajnixIAEZW0nexQxeZYvMe3bs32AEXfRabbHfBgCD+q4dLSYEg+SHmrKOfxF
-         Gizg==
-X-Gm-Message-State: AOAM5304J8j5nIFYU8MjvGki7gp3yHJDbnvCb5JMMhQEf3wjA04FwdkD
-        pc7+8ZrXjfmga71Lq+zsTfU=
-X-Google-Smtp-Source: ABdhPJwLmGAG2A5a2r29KKqQm2O+XLzOCLEkeRfBbqYIWr+0Gl9hJUGEkYlO4HbYh4Z8nRMVyY5bPA==
-X-Received: by 2002:a17:902:ff02:b029:d0:89f3:28d2 with SMTP id f2-20020a170902ff02b02900d089f328d2mr2840803plj.14.1599638985715;
-        Wed, 09 Sep 2020 01:09:45 -0700 (PDT)
-Received: from adolin ([49.207.200.122])
-        by smtp.gmail.com with ESMTPSA id f10sm1790655pfk.195.2020.09.09.01.09.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2020 01:09:44 -0700 (PDT)
-Date:   Wed, 9 Sep 2020 13:39:39 +0530
-From:   Sumera Priyadarsini <sylphrenadin@gmail.com>
-To:     cocci@systeme.lip6.fr
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Julia.Lawall@lip6.fr, Gilles.Muller@lip6.fr, masahiroy@kernel.org,
-        michal.lkml@markovi.net, nicolas.palix@imag.fr
-Subject: [PATCH V2] scripts: coccicheck: Do not use shift command when rule
- is specfified
-Message-ID: <20200909080939.bhkgluvo5zw2kder@adolin>
+        Wed, 9 Sep 2020 05:01:21 -0400
+X-IronPort-AV: E=Sophos;i="5.76,359,1592863200"; 
+   d="scan'208";a="466743560"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Sep 2020 11:01:19 +0200
+Date:   Wed, 9 Sep 2020 11:01:18 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [Cocci] [PATCH v2] scripts: coccicheck: Do not use shift command
+ when rule is specified
+In-Reply-To: <1a2ddefa-59dc-460c-59d5-5c6c1754d20b@web.de>
+Message-ID: <alpine.DEB.2.22.394.2009091059311.2651@hadrien>
+References: <1a2ddefa-59dc-460c-59d5-5c6c1754d20b@web.de>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: multipart/mixed; boundary="8323329-688164862-1599642079=:2651"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The command "make coccicheck C=1 CHECK=scripts/coccicheck" results in the
-error:
-	./scripts/coccicheck: line 65: -1: shift count out of range
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-This happens because every time the C variable is specified,
-the shell arguments need to be "shifted" in order to take only
-the last argument, which is the C file to test. These shell arguments
-mostly comprise flags that have been set in the Makefile. However,
-when coccicheck is specified in the make command as a rule, the
-number of shell arguments is zero, thus passing the invalid value -1
-to the shift command, resulting in an error.
+--8323329-688164862-1599642079=:2651
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 
-Modify coccicheck to use the shift command only when
-number of shell arguments is not zero.
 
-Signed-off-by: Sumera Priyadarsini <sylphrenadin@gmail.com>
 
----
-Changes in V2:
-	- Fix spelling errors as suggested by Markus Elfring
----
- scripts/coccicheck | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+On Wed, 9 Sep 2020, Markus Elfring wrote:
 
-diff --git a/scripts/coccicheck b/scripts/coccicheck
-index e04d328210ac..5c8df337e1e3 100755
---- a/scripts/coccicheck
-+++ b/scripts/coccicheck
-@@ -61,9 +61,19 @@ COCCIINCLUDE=${COCCIINCLUDE// -include/ --include}
- if [ "$C" = "1" -o "$C" = "2" ]; then
-     ONLINE=1
- 
--    # Take only the last argument, which is the C file to test
--    shift $(( $# - 1 ))
--    OPTIONS="$COCCIINCLUDE $1"
-+    # If the rule coccicheck is specified when calling make, number of
-+    # arguments is zero
-+    if [ $# -ne 0 ]; then
-+	    # Take only the last argument, which is the C file to test
-+	    shift $(( $# -1 ))
-+	    OPTIONS="$COCCIINCLUDE $1"
-+    else
-+	if [ "$KBUILD_EXTMOD" = "" ] ; then
-+		OPTIONS="--dir $srctree $COCCIINCLUDE"
-+	else
-+		OPTIONS="--dir $KBUILD_EXTMOD $COCCIINCLUDE"
-+	fi
-+    fi
- 
-     # No need to parallelize Coccinelle since this mode takes one input file.
-     NPROC=1
--- 
-2.25.1
+> > Modify coccicheck to use the shift command only when
+> > number of shell arguments is not zero.
+>
+> I suggest to add the tag “Fixes” to the commit message.
 
+I don't think there is any need for that.  This is not a patch that should
+be backported.  The previous situation did not cause any problem with the
+execution of make coccicheck, only a tiresome warning message.
+
+julia
+
+>
+>
+> > Changes in V2:
+> > 	- Fix spelling errors as suggested by Markus Elfring
+>
+> Would you like to adjust the last word in the previous patch subject accordingly?
+>
+> Regards,
+> Markus
+> _______________________________________________
+> Cocci mailing list
+> Cocci@systeme.lip6.fr
+> https://systeme.lip6.fr/mailman/listinfo/cocci
+>
+--8323329-688164862-1599642079=:2651--

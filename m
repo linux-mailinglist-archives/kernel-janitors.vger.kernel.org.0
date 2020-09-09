@@ -2,88 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CACC262510
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Sep 2020 04:17:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 543592625C7
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Sep 2020 05:17:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726642AbgIICRy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 8 Sep 2020 22:17:54 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:46490 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726002AbgIICRq (ORCPT
+        id S1728631AbgIIDRU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 8 Sep 2020 23:17:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47166 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726694AbgIIDRU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 8 Sep 2020 22:17:46 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0892FFiq110820;
-        Wed, 9 Sep 2020 02:17:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=CVdQHv9EJQ3jnrL5a737Gb9IIaDwPBpkj2Q5APh1M0Q=;
- b=hHp8lfFukehY15Uxzit6VGjSzDRVSS+Ga5HLA1/Vpd+auGZqi0pEkLULd7PcwCipINYn
- 4m8uRIJvU9Myn77F3Nrw2lSYLj2hEFcfU2oztLdoFetvSs477W6AuhVuwE3k/dQ3939o
- QgnDm9nIUHLXjpiSIOaVrzI/OpG5hLjVE7t8Y/FHvrmlzo+npLFlrJ6MT8aWXUp2Wmms
- I260y2Ql78thIUvPB0vs2FPXlOy2SNiFGgsa7h2b8B0AONOQPVScJlwhUJYthobPMSJI
- LxabBwlImYtZMuuIuuxUxsOw3lX2UzwHMd+4JpgbNJcWL28pUaiuTRmek1m6d/0rLFFl Vw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 33c2mkxw9f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 09 Sep 2020 02:17:41 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0892FZQ2109538;
-        Wed, 9 Sep 2020 02:17:41 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 33dacjqc1y-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 09 Sep 2020 02:17:41 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0892HblV009581;
-        Wed, 9 Sep 2020 02:17:37 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 08 Sep 2020 19:17:37 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Adaptec OEM Raid Solutions <aacraid@microsemi.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Raghava Aditya Renukunta 
-        <RaghavaAditya.Renukunta@microsemi.com>,
-        linux-scsi@vger.kernel.org,
-        Johannes Thumshirn <jthumshirn@suse.de>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        kernel-janitors@vger.kernel.org,
-        Dave Carroll <David.Carroll@microsemi.com>
-Subject: Re: [PATCH] scsi: aacraid: remove erroneous fallthrough annotation
-Date:   Tue,  8 Sep 2020 22:17:23 -0400
-Message-Id: <159961781205.6233.7483987254461010117.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200825112003.GD285523@mwanda>
-References: <20200825112003.GD285523@mwanda>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=780 malwarescore=0
- bulkscore=0 phishscore=0 adultscore=0 suspectscore=0 spamscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009090019
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 priorityscore=1501
- phishscore=0 adultscore=0 bulkscore=0 clxscore=1011 mlxlogscore=806
- malwarescore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009090019
+        Tue, 8 Sep 2020 23:17:20 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2F71C061573;
+        Tue,  8 Sep 2020 20:17:17 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 3775D11E3E4C3;
+        Tue,  8 Sep 2020 20:00:30 -0700 (PDT)
+Date:   Tue, 08 Sep 2020 20:17:16 -0700 (PDT)
+Message-Id: <20200908.201716.965139535841943259.davem@davemloft.net>
+To:     christophe.jaillet@wanadoo.fr
+Cc:     jes@trained-monkey.org, kuba@kernel.org, linux-hippi@sunsite.dk,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] hippi: switch from 'pci_' to 'dma_' API
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200908200839.323530-1-christophe.jaillet@wanadoo.fr>
+References: <20200908200839.323530-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: Mew version 6.8 on Emacs 27.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [2620:137:e000::1:9]); Tue, 08 Sep 2020 20:00:30 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 25 Aug 2020 14:20:03 +0300, Dan Carpenter wrote:
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Tue,  8 Sep 2020 22:08:39 +0200
 
-> This fallthrough annotation is unreachable so we can delete it.
+> The wrappers in include/linux/pci-dma-compat.h should go away.
+> 
+> The patch has been generated with the coccinelle script below and has been
+> hand modified to replace GFP_ with a correct flag.
+> It has been compile tested.
+> 
+> When memory is allocated in 'rr_init_one()' GFP_KERNEL can be used because
+> it is a probe function and no spinlock is taken in the between.
+> 
+> When memory is allocated in 'rr_open()' GFP_KERNEL can be used because
+> it is a '.ndo_open' function (see struct net_device_ops) and no spinlock is
+> taken in the between.
+> '.ndo_open' functions are synchronized using the rtnl_lock() semaphore.
+ ...
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Applied to 5.10/scsi-queue, thanks!
-
-[1/1] scsi: aacraid: Remove erroneous fallthrough annotation
-      https://git.kernel.org/mkp/scsi/c/cfd3d2225aa5
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Applied.

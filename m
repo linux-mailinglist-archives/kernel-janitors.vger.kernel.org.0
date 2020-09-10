@@ -2,103 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62703264364
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Sep 2020 12:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 035072643BE
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Sep 2020 12:21:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730525AbgIJKLf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 10 Sep 2020 06:11:35 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:58950 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726738AbgIJKLM (ORCPT
+        id S1730633AbgIJKUp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 10 Sep 2020 06:20:45 -0400
+Received: from out4-smtp.messagingengine.com ([66.111.4.28]:35563 "EHLO
+        out4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726494AbgIJKTz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 10 Sep 2020 06:11:12 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08AA9JUU123440;
-        Thu, 10 Sep 2020 10:11:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=BfDXozEC3Z37JpbDQDopY3y+ljK4/K6pK9ZDao6yPwY=;
- b=QJTqt8d42EgQE8yvtSWg9bmILuSow8M/X7OB067MYZlQHV57FEB5fTa6CfJEJ93LTYfL
- kiqmT5UN5ReoHXU9qurHNWQbSzVgxaJRXDXEGquP0eMjieyGesUFx3jsT6kABcsdCLWx
- mIDwzjHRNgkwHa/+tOWLoKWyx5/1IJBM5JPekwd+Feiw4cW5Ci1lLvNJi2XvAkdruCZW
- UazaKKnqyFJu83nSJ8hsoH5fVrTl+q+M/oVp9DyuqbzJF6SMnrhJmnwadM6e4BWd1GSI
- S9/h5153he4M3xGVDYEUaUQyBmQeSAf6surUI+9NCPbV+yCSzvjDZzvQjpwkBt6Vk1za 7g== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 33c23r76tx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 10 Sep 2020 10:11:01 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08AA6QO7136381;
-        Thu, 10 Sep 2020 10:09:00 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 33cmm0q08p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 10 Sep 2020 10:09:00 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08AA8xOb013350;
-        Thu, 10 Sep 2020 10:08:59 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 10 Sep 2020 03:08:58 -0700
-Date:   Thu, 10 Sep 2020 13:08:50 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Thu, 10 Sep 2020 06:19:55 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id E0CA85C0F69;
+        Thu, 10 Sep 2020 06:19:52 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Thu, 10 Sep 2020 06:19:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm3; bh=Zu7TfKhL4hRCxegB/ETUEZ6yj0z
+        Bu3KgssZEsaTcRXU=; b=KfPdLhmsjCvkceKt/8Y1PpfLB+1yIYJshmmvV96ai58
+        UKH9H3wid62LPof4YKioWOAqFFh/nu6xOzVDfhe4Zu95h+HhIiZ6jzYQpYaQPTiO
+        CeoP4nxNdiMFr/sG+FDsRsiUCxGYZUztykHyoM5d8pHUy+era8JzyilxjLnw3Bg5
+        73NT2qsFXoHq+EYrVcVgbb9gSzCHleHGF3AWovmKuVpuaTeFer9z1GwfC4zHr42h
+        FQ6AMPWGZGYtI+FPosOY01ZfADd3qbrUvoM8yyoePHxdIX8m1x+nXmCT+75S4eP1
+        67ZQaK6lUrABr3bHRMYOw3ByN1wgAju5xoDb4WOGxeQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=Zu7TfK
+        hL4hRCxegB/ETUEZ6yj0zBu3KgssZEsaTcRXU=; b=ZAl/kI6pDXiTg+TokdPU/N
+        js8tYLvb+LCqoSof3IA5gOdex2FvVyZ0HcvC+vClQbRoM+N3TdwU9HoaSLf8WQUz
+        maY/5C8CZ/k0w9TjABvXsZxv4nmSKYAEmOVPDP3lyD50z/Efe8bcU7ShjiwCzBz+
+        +9+lXxInxRVIZ/Ck/wlcc/uxvK3zArhjo+9LDPVeN/HqZcZrukIVzdtGU/F+1Cc+
+        4Y1UGbG999ZcebiJUHM1Jifis/EPnsse0Oh0cdl6/XqPqTjkNYH7fbhlEr0m9crH
+        C8G+28aVFiGjoGeki74Ag1RL5Ik19YguOY09HcF/nURyFFBwD837j5xuA0KQXJGw
+        ==
+X-ME-Sender: <xms:yP1ZXwrEftyLF6DHghocaEss9FiN5x9MXYRO0HcY_YJ48V7cW3-ZbA>
+    <xme:yP1ZX2qQSHOKvwb1x5dJgix-9n0A7MXuMpcFG-hHImCbIs4G-ApeEoi_g-HPiDxGt
+    8BgQNr211yXChGz-3g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduiedrudehjedgvddtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjsehgtderredttddvnecuhfhrohhmpeforgigihhm
+    vgcutfhiphgrrhguuceomhgrgihimhgvsegtvghrnhhordhtvggthheqnecuggftrfgrth
+    htvghrnhepleekgeehhfdutdeljefgleejffehfffgieejhffgueefhfdtveetgeehieeh
+    gedunecukfhppeeltddrkeelrdeikedrjeeinecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepmhgrgihimhgvsegtvghrnhhordhtvggthh
+X-ME-Proxy: <xmx:yP1ZX1MRvUwfxfjQRhmrvmGaQrhjIHf6Tx-lp9vH-ymE8SPbi9_oVA>
+    <xmx:yP1ZX35eeMHUkmvt-W3UT6VStflLvKGvSvAhDzU_HQzVZhhjN4US2A>
+    <xmx:yP1ZX_4zkSF1sZQ0udQKiGl1zSmtIhMZg7zzhDiMMi7QgaRn7hlwEA>
+    <xmx:yP1ZXy0wbhg5dtvmpRT76PJnrXECAadfSYTCckyaWoTpfrmfYvfp2g>
+Received: from localhost (lfbn-tou-1-1502-76.w90-89.abo.wanadoo.fr [90.89.68.76])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 08D99328005E;
+        Thu, 10 Sep 2020 06:19:51 -0400 (EDT)
+Date:   Thu, 10 Sep 2020 12:19:50 +0200
+From:   Maxime Ripard <maxime@cerno.tech>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Eric Anholt <eric@anholt.duckdns.org>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-        Matthew Auld <matthew.auld@intel.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Matt Roper <matthew.d.roper@intel.com>,
-        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] drm/i915: Fix an error code i915_gem_object_copy_blt()
-Message-ID: <20200910100850.GD79916@mwanda>
+        Dave Stevenson <dave.stevenson@raspberrypi.com>,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] drm/vc4: hdmi: Fix off by ones in vc4_hdmi_read/write()
+Message-ID: <20200910101950.vgolpbskn64evnyk@gilmour.lan>
+References: <20200910100748.GA79916@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="tq5daj5t3ijdco2q"
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9739 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 suspectscore=0
- spamscore=0 mlxlogscore=999 adultscore=0 malwarescore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009100094
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9739 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 priorityscore=1501
- mlxlogscore=999 mlxscore=0 bulkscore=0 suspectscore=0 spamscore=0
- malwarescore=0 phishscore=0 lowpriorityscore=0 clxscore=1011
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009100094
+In-Reply-To: <20200910100748.GA79916@mwanda>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This code should use "vma[1]" instead of "vma".  The "vma" is a variable
-is a valid pointer.
 
-Fixes: 6b05030496f7 ("drm/i915: Convert i915_gem_object/client_blt.c to use ww locking as well, v2.")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/gpu/drm/i915/gem/i915_gem_object_blt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--tq5daj5t3ijdco2q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_object_blt.c b/drivers/gpu/drm/i915/gem/i915_gem_object_blt.c
-index d93eb36160c9..aee7ad3cc3c6 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_object_blt.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_object_blt.c
-@@ -364,7 +364,7 @@ int i915_gem_object_copy_blt(struct drm_i915_gem_object *src,
- 
- 	vma[1] = i915_vma_instance(dst, vm, NULL);
- 	if (IS_ERR(vma[1]))
--		return PTR_ERR(vma);
-+		return PTR_ERR(vma[1]);
- 
- 	i915_gem_ww_ctx_init(&ww, true);
- 	intel_engine_pm_get(ce->engine);
--- 
-2.28.0
+On Thu, Sep 10, 2020 at 01:07:48PM +0300, Dan Carpenter wrote:
+> The variant->registers[] has ->num_registers elements so the >
+> comparison needs to be changes to >=3D to prevent an out of bounds
+> access.
+>=20
+> Fixes: 311e305fdb4e ("drm/vc4: hdmi: Implement a register layout abstract=
+ion")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
+Applied, thanks!
+Maxime
+
+--tq5daj5t3ijdco2q
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCX1n9xgAKCRDj7w1vZxhR
+xbQTAQDUfacjuhgX28Cj9vVmIezT6QLQoMhITiWlhN7fLiKYFgD9GTqvCdM3B2Nv
+TfTH7a+W93y4WcNIvcdtGV78EaNejgA=
+=F0K8
+-----END PGP SIGNATURE-----
+
+--tq5daj5t3ijdco2q--

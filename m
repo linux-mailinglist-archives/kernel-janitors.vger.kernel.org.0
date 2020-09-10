@@ -2,98 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCC02264A04
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Sep 2020 18:41:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51FF6264A40
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Sep 2020 18:49:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726511AbgIJQlF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 10 Sep 2020 12:41:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48032 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727026AbgIJQi4 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 10 Sep 2020 12:38:56 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59976C0617A1
-        for <kernel-janitors@vger.kernel.org>; Thu, 10 Sep 2020 09:31:50 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id s12so7394880wrw.11
-        for <kernel-janitors@vger.kernel.org>; Thu, 10 Sep 2020 09:31:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sslab.ics.keio.ac.jp; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=8XrenaZC7x7EEzLKgWnRWWP3kw9ET6fFDlth4Zp/gtY=;
-        b=hS3ujk0SNbO+KKIhwCtkhoaR3D4iaqKNbu5obxXUIkUAIZEavvzLtR/AmkXCcWoApD
-         6qpvZyIpj9MYpkAyH9G8uDL9NSGEi/1lDmYfV7LcqkQ60EBegndDFNwM8JmtO545n85S
-         MOg1C3tt9lgEWQfDFA9RZTtn4r+yEtCoUD0KQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=8XrenaZC7x7EEzLKgWnRWWP3kw9ET6fFDlth4Zp/gtY=;
-        b=rRYNjIgPlDiVgZe+s2OXfjDn6qzWuMp1K+Ie0D+anL2nmyNrfSI4p1ZR3bI/0gli0U
-         1MR2LKSR3JbhM6aQRZeFh0isKJXgsAs49TC7ZH9YxsFK1WacHJmHsDhngWlmoAGVaH0F
-         sjI0WLoiTAXPGhe6G2oxkYR9gN79KoJZPE6jz4IcXqX2JjCFFPR+xZnkJt2ztSJAEcjW
-         IvsEMc7qhkk7m3r3JnBbEPeDBIUVc/aqs4RG12WDB9xHxaxgKF98Efa1SHeXCzALX3Qd
-         m/F+USnjhfwaEtbXsZhBOd+HHRnoBPzDuF2i0Zw0evQ6vlHmaC8IVmbvnglUGMoYzVG+
-         WHBg==
-X-Gm-Message-State: AOAM530Eu5/DjM/LsvJkRrCZLjq7EaY1FGR+6jUMf1silLrmOXTMp1dX
-        BaXIRifX8B9DEEs7B37z32wovfqvqYryqW4r+7h3mw==
-X-Google-Smtp-Source: ABdhPJwcM1WR8tf/ZS8yQwLpBis3MuAq9iXnzyvBX/Zvx2Mb7vIdbYBdQkdSZNftBa2+3D5j79NwEzxaMX89slqGZpY=
-X-Received: by 2002:a05:6000:124d:: with SMTP id j13mr10703282wrx.182.1599755508951;
- Thu, 10 Sep 2020 09:31:48 -0700 (PDT)
+        id S1727001AbgIJQtJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 10 Sep 2020 12:49:09 -0400
+Received: from mga01.intel.com ([192.55.52.88]:61884 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726980AbgIJQmh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 10 Sep 2020 12:42:37 -0400
+IronPort-SDR: K9lxWcW4qOn+WoLF/2hpmokB37jR0S62Lq4tGy0jyKhjqHRTgIYZawO3FKmd/ygAViceL16kzZ
+ 7H1wbIiVoFng==
+X-IronPort-AV: E=McAfee;i="6000,8403,9740"; a="176641204"
+X-IronPort-AV: E=Sophos;i="5.76,413,1592895600"; 
+   d="scan'208";a="176641204"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2020 09:42:25 -0700
+IronPort-SDR: ytMx7cdPDUFmOgbMi9IC7XeUfxZPoBvtg733oVcRGgScZUPVElBlrZr3PN8hS54PLtcrN5jHNE
+ aIKTG5iM54sg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,413,1592895600"; 
+   d="scan'208";a="407811435"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by fmsmga001.fm.intel.com with SMTP; 10 Sep 2020 09:42:21 -0700
+Received: by lahna (sSMTP sendmail emulation); Thu, 10 Sep 2020 19:42:20 +0300
+Date:   Thu, 10 Sep 2020 19:42:20 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        Gil Fine <gil.fine@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] thunderbolt: debugfs: Fix uninitialized return in
+ counters_write()
+Message-ID: <20200910164220.GW2495@lahna.fi.intel.com>
+References: <20200910100805.GB79916@mwanda>
 MIME-Version: 1.0
-References: <f79159af-4408-dc2f-6efa-45c5b45cf2d9@web.de>
-In-Reply-To: <f79159af-4408-dc2f-6efa-45c5b45cf2d9@web.de>
-From:   Keita Suzuki <keitasuzuki.park@sslab.ics.keio.ac.jp>
-Date:   Fri, 11 Sep 2020 01:31:38 +0900
-Message-ID: <CAEYrHj=pfGB7OuHt90t2aaawr31W9XZCHeHJurt3o0rK44jZ+A@mail.gmail.com>
-Subject: Re: [PATCH] qedr: fix resource leak in qedr_create_qp
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-rdma@vger.kernel.org,
-        open list <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, Ariel Elior <aelior@marvell.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Michal Kalderon <mkalderon@marvell.com>,
-        Takafumi Kubota <takafumi@sslab.ics.keio.ac.jp>,
-        Yuval Bason <yuval.bason@cavium.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200910100805.GB79916@mwanda>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
+On Thu, Sep 10, 2020 at 01:08:05PM +0300, Dan Carpenter wrote:
+> If the first line is in an invalid format then the "ret" value is
+> uninitialized.  We should return -EINVAL instead.
+> 
+> Fixes: 54e418106c76 ("thunderbolt: Add debugfs interface")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Thank you for your comment.
-I will re-label the goto statements and post the patch as version 2.
-
-Thanks,
-Keita
-
-2020=E5=B9=B49=E6=9C=8810=E6=97=A5(=E6=9C=A8) 22:24 Markus Elfring <Markus.=
-Elfring@web.de>:
->
-> > Fix this by adding a new goto label that calls qedr_free_qp_resources.
->
-> =E2=80=A6
-> > +++ b/drivers/infiniband/hw/qedr/verbs.c
-> =E2=80=A6
-> > @@ -2165,11 +2187,13 @@ struct ib_qp *qedr_create_qp(struct ib_pd *ibpd=
-,
-> =E2=80=A6
-> >       return &qp->ibqp;
-> >
-> > +err2:
-> > +     qedr_free_qp_resources(dev, qp, udata);
-> >  err:
-> >       kfree(qp);
->
-> I propose to choose further alternatives for numbered labels.
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/D=
-ocumentation/process/coding-style.rst?id=3D7fe10096c1508c7f033d34d0741809f8=
-eecc1ed4#n485
->
-> Regards,
-> Markus
+Applied, thanks!

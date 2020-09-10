@@ -2,35 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 498512648E7
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Sep 2020 17:37:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2213264948
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Sep 2020 18:04:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731374AbgIJPhh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 10 Sep 2020 11:37:37 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:36916 "EHLO
+        id S1731452AbgIJQD6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 10 Sep 2020 12:03:58 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:37712 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731305AbgIJPgt (ORCPT
+        with ESMTP id S1731451AbgIJQDF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 10 Sep 2020 11:36:49 -0400
+        Thu, 10 Sep 2020 12:03:05 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kGOFJ-0006eU-Q1; Thu, 10 Sep 2020 15:12:21 +0000
+        id 1kGOkl-0001w2-7b; Thu, 10 Sep 2020 15:44:51 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-        Todd Kjos <tkjos@android.com>,
-        Martijn Coenen <maco@android.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Christian Brauner <christian@brauner.io>,
-        Hridya Valsaraju <hridya@google.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        devel@driverdev.osuosl.org
+To:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-mtd@lists.infradead.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] binder: remove redundant assignment to pointer n
-Date:   Thu, 10 Sep 2020 16:12:21 +0100
-Message-Id: <20200910151221.751464-1-colin.king@canonical.com>
+Subject: [PATCH] mtd: mtdconcat: map: remove redundant assignment to variable 'size'
+Date:   Thu, 10 Sep 2020 16:44:51 +0100
+Message-Id: <20200910154451.752569-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,29 +37,27 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The pointer n is being initialized with a value that is
-never read and it is being updated later with a new value. The
-initialization is redundant and can be removed.
+Variable 'size' is being assigned the value zero that will never be
+read. The assignment is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/android/binder_alloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/mtdconcat.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
-index 910c53ba2c91..2f846b7ae8b8 100644
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -347,7 +347,7 @@ static void debug_low_async_space_locked(struct binder_alloc *alloc, int pid)
- 	 * and at some point we'll catch them in the act. This is more efficient
- 	 * than keeping a map per pid.
- 	 */
--	struct rb_node *n = alloc->free_buffers.rb_node;
-+	struct rb_node *n;
- 	struct binder_buffer *buffer;
- 	size_t total_alloc_size = 0;
- 	size_t num_buffers = 0;
+diff --git a/drivers/mtd/mtdconcat.c b/drivers/mtd/mtdconcat.c
+index 242c3a660002..6e4d0017c0bd 100644
+--- a/drivers/mtd/mtdconcat.c
++++ b/drivers/mtd/mtdconcat.c
+@@ -114,7 +114,6 @@ concat_panic_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 		size_t size, retsize;
+ 
+ 		if (to >= subdev->size) {
+-			size = 0;
+ 			to -= subdev->size;
+ 			continue;
+ 		}
 -- 
 2.27.0
 

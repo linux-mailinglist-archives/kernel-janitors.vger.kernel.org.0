@@ -2,73 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26FBB265E88
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Sep 2020 13:08:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEE8C265EDB
+	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Sep 2020 13:36:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725776AbgIKLHz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Sep 2020 07:07:55 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:37556 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725710AbgIKLHy (ORCPT
+        id S1725838AbgIKLgW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Sep 2020 07:36:22 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:57504 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725836AbgIKLgJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Sep 2020 07:07:54 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kGgtu-0006tV-Hl; Fri, 11 Sep 2020 11:07:30 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <sean.j.christopherson@intel.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org (maintainer:X86 ARCHITECTURE),
-        "H . Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] KVM: SVM: nested: fix free of uninitialized pointers save and ctl
-Date:   Fri, 11 Sep 2020 12:07:30 +0100
-Message-Id: <20200911110730.24238-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        Fri, 11 Sep 2020 07:36:09 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08BBYxpe013596;
+        Fri, 11 Sep 2020 11:35:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=2gHYQ5Uu4tR0zOg2iVBicKGodqK+c3+W+TJFJxyYkmc=;
+ b=TA36mDE5AHAkP4wkzpqVhpG/SgfaqGB/o4z0cD2XOIvCm3934KCw0uYCjFsBMRDpEix4
+ /vMkBF9C7w0KCPHPgY3nh9Ad1WdA7HrJcgxMHMtd52TAAivHWAJwimN63R6lRrYNjzBd
+ 2Tpt4TooMcOoLm1Amx/etTJ+CtarCv7U7V2umcMKA3Bb98tV9h5n0i/pu2fe4hXQh3MV
+ SMk40vz9YRGKKOEy16erAdn99cLGAkwj7/pNgnwql5Q3m1SU4btiJIvbrjerqZHD/kK3
+ i/GIQv0VEPFyHi1wuW6xwQcXgF7CBazVPHTZhjw2qPEobLIUHmq5OPAedC9iPsiI3K7f Ew== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 33c2mmdnv4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 11 Sep 2020 11:35:35 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08BBVCuP091987;
+        Fri, 11 Sep 2020 11:33:35 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 33cmkcppbg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 11 Sep 2020 11:33:35 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08BBXWQJ013050;
+        Fri, 11 Sep 2020 11:33:32 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 11 Sep 2020 04:33:32 -0700
+Date:   Fri, 11 Sep 2020 14:33:26 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Ben Dooks <ben@fluff.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vincent Sanders <vince@arm.linux.org.uk>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] mfd: sm501: Fix leaks in probe()
+Message-ID: <20200911113326.GB367487@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9740 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 phishscore=0
+ mlxlogscore=999 bulkscore=0 adultscore=0 mlxscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009110094
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9740 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 priorityscore=1501
+ phishscore=0 adultscore=0 bulkscore=0 clxscore=1011 mlxlogscore=999
+ malwarescore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009110095
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+This code should clean up if sm501_init_dev() fails.
 
-Currently the error exit path to outt_set_gif will kfree on uninitialized
-pointers save and ctl.  Fix this by ensuring these pointers are
-inintialized to NULL to avoid garbage pointer freeing.
-
-Addresses-Coverity: ("Uninitialized pointer read")
-Fixes: 6ccbd29ade0d ("KVM: SVM: nested: Don't allocate VMCB structures on stack")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Fixes: b6d6454fdb66 ("[PATCH] mfd: SM501 core driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- arch/x86/kvm/svm/nested.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mfd/sm501.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 28036629abf8..2b15f49f9e5a 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1060,8 +1060,8 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
- 	struct vmcb *hsave = svm->nested.hsave;
- 	struct vmcb __user *user_vmcb = (struct vmcb __user *)
- 		&user_kvm_nested_state->data.svm[0];
--	struct vmcb_control_area *ctl;
--	struct vmcb_save_area *save;
-+	struct vmcb_control_area *ctl = NULL;
-+	struct vmcb_save_area *save = NULL;
- 	int ret;
- 	u32 cr0;
+diff --git a/drivers/mfd/sm501.c b/drivers/mfd/sm501.c
+index ccd62b963952..6d2f4a0a901d 100644
+--- a/drivers/mfd/sm501.c
++++ b/drivers/mfd/sm501.c
+@@ -1415,8 +1415,14 @@ static int sm501_plat_probe(struct platform_device *dev)
+ 		goto err_claim;
+ 	}
  
+-	return sm501_init_dev(sm);
++	ret = sm501_init_dev(sm);
++	if (ret)
++		goto err_unmap;
++
++	return 0;
+ 
++ err_unmap:
++	iounmap(sm->regs);
+  err_claim:
+ 	release_mem_region(sm->io_res->start, 0x100);
+  err_res:
 -- 
-2.27.0
+2.28.0
 

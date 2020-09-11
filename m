@@ -2,53 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BEE8C265EDB
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Sep 2020 13:36:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54648265ED5
+	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Sep 2020 13:35:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725838AbgIKLgW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Sep 2020 07:36:22 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:57504 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725836AbgIKLgJ (ORCPT
+        id S1725816AbgIKLfU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Sep 2020 07:35:20 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:44030 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725803AbgIKLe4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Sep 2020 07:36:09 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08BBYxpe013596;
-        Fri, 11 Sep 2020 11:35:36 GMT
+        Fri, 11 Sep 2020 07:34:56 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08BBYI22163979;
+        Fri, 11 Sep 2020 11:34:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=2gHYQ5Uu4tR0zOg2iVBicKGodqK+c3+W+TJFJxyYkmc=;
- b=TA36mDE5AHAkP4wkzpqVhpG/SgfaqGB/o4z0cD2XOIvCm3934KCw0uYCjFsBMRDpEix4
- /vMkBF9C7w0KCPHPgY3nh9Ad1WdA7HrJcgxMHMtd52TAAivHWAJwimN63R6lRrYNjzBd
- 2Tpt4TooMcOoLm1Amx/etTJ+CtarCv7U7V2umcMKA3Bb98tV9h5n0i/pu2fe4hXQh3MV
- SMk40vz9YRGKKOEy16erAdn99cLGAkwj7/pNgnwql5Q3m1SU4btiJIvbrjerqZHD/kK3
- i/GIQv0VEPFyHi1wuW6xwQcXgF7CBazVPHTZhjw2qPEobLIUHmq5OPAedC9iPsiI3K7f Ew== 
+ bh=TY728FLXsxQLEMj5OXRiFgA39enBUpp2x73f+NEb6vk=;
+ b=M6y3igm6jVeMO14GuByLsMEmmGkGgu+uTunbGWWIkxz92zcrDb/IS81u1Vrx4ciPVZBw
+ 9EEm5sofkM5aRLfZ8HdbmWAv0B2U7OdatpfzaDy9Bmx51tgsqgMgGzRP00V+7XP3pq4n
+ +QZuaVVSqPhgCLTHjn9M3V9/z6QrNBUqeuzD+3qUEMN9noBDPkHnHqZAG7qzeYRSnNwO
+ WdZNsUn1uM+h+BfRi6t4BPDB/Dz1LNyWarx1Osj/b2VsdLjUejIvvWnF4X1e5CFJIX6b
+ YTbHZHVPGkuH+w1gXhVng/fkLdlhetnInOufj4kf0liVAip612L88O6iSkLNbSqUsb1F pw== 
 Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 33c2mmdnv4-1
+        by userp2120.oracle.com with ESMTP id 33c3andju9-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 11 Sep 2020 11:35:35 +0000
+        Fri, 11 Sep 2020 11:34:32 +0000
 Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08BBVCuP091987;
-        Fri, 11 Sep 2020 11:33:35 GMT
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08BBVBmH091790;
+        Fri, 11 Sep 2020 11:34:32 GMT
 Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 33cmkcppbg-1
+        by aserp3020.oracle.com with ESMTP id 33cmkcprt8-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 11 Sep 2020 11:33:35 +0000
-Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08BBXWQJ013050;
-        Fri, 11 Sep 2020 11:33:32 GMT
+        Fri, 11 Sep 2020 11:34:32 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08BBYNmo013580;
+        Fri, 11 Sep 2020 11:34:23 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 11 Sep 2020 04:33:32 -0700
-Date:   Fri, 11 Sep 2020 14:33:26 +0300
+        with ESMTP ; Fri, 11 Sep 2020 04:34:22 -0700
+Date:   Fri, 11 Sep 2020 14:34:14 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Ben Dooks <ben@fluff.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vincent Sanders <vince@arm.linux.org.uk>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] mfd: sm501: Fix leaks in probe()
-Message-ID: <20200911113326.GB367487@mwanda>
+To:     Jani Nikula <jani.nikula@linux.intel.com>
+Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        Andi Shyti <andi.shyti@intel.com>,
+        Matthew Auld <matthew.auld@intel.com>,
+        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@intel.com>,
+        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] drm/i915/selftests: test the correct variable in
+ igt_gem_ww_ctx()
+Message-ID: <20200911113414.GC367487@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -59,44 +68,40 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwa
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
  definitions=main-2009110094
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9740 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 priorityscore=1501
- phishscore=0 adultscore=0 bulkscore=0 clxscore=1011 mlxlogscore=999
- malwarescore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 priorityscore=1501
+ clxscore=1011 bulkscore=0 malwarescore=0 lowpriorityscore=0
+ mlxlogscore=999 suspectscore=0 adultscore=0 mlxscore=0 impostorscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2009110095
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This code should clean up if sm501_init_dev() fails.
+There is a copy and paste error here.  The "obj" should be "obj2".  The
+current code could result in an Oops.
 
-Fixes: b6d6454fdb66 ("[PATCH] mfd: SM501 core driver")
+Fixes: 80f0b679d6f0 ("drm/i915: Add an implementation for i915_gem_ww_ctx locking, v2.")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/mfd/sm501.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/selftests/i915_gem.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/sm501.c b/drivers/mfd/sm501.c
-index ccd62b963952..6d2f4a0a901d 100644
---- a/drivers/mfd/sm501.c
-+++ b/drivers/mfd/sm501.c
-@@ -1415,8 +1415,14 @@ static int sm501_plat_probe(struct platform_device *dev)
- 		goto err_claim;
+diff --git a/drivers/gpu/drm/i915/selftests/i915_gem.c b/drivers/gpu/drm/i915/selftests/i915_gem.c
+index 23a6132c5f4e..412e21604a05 100644
+--- a/drivers/gpu/drm/i915/selftests/i915_gem.c
++++ b/drivers/gpu/drm/i915/selftests/i915_gem.c
+@@ -211,8 +211,8 @@ static int igt_gem_ww_ctx(void *arg)
+ 		return PTR_ERR(obj);
+ 
+ 	obj2 = i915_gem_object_create_internal(i915, PAGE_SIZE);
+-	if (IS_ERR(obj)) {
+-		err = PTR_ERR(obj);
++	if (IS_ERR(obj2)) {
++		err = PTR_ERR(obj2);
+ 		goto put1;
  	}
  
--	return sm501_init_dev(sm);
-+	ret = sm501_init_dev(sm);
-+	if (ret)
-+		goto err_unmap;
-+
-+	return 0;
- 
-+ err_unmap:
-+	iounmap(sm->regs);
-  err_claim:
- 	release_mem_region(sm->io_res->start, 0x100);
-  err_res:
 -- 
 2.28.0
 

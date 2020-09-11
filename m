@@ -2,75 +2,137 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC1772662B1
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Sep 2020 17:57:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19E5A266402
+	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Sep 2020 18:29:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726552AbgIKP5p convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Sep 2020 11:57:45 -0400
-Received: from relay4-d.mail.gandi.net ([217.70.183.196]:45647 "EHLO
-        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726593AbgIKPzW (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Sep 2020 11:55:22 -0400
-X-Originating-IP: 91.224.148.103
-Received: from xps13 (unknown [91.224.148.103])
-        (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 13E07E000F;
-        Fri, 11 Sep 2020 15:55:15 +0000 (UTC)
-Date:   Fri, 11 Sep 2020 17:55:14 +0200
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-mtd@lists.infradead.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mtd: remove redundant assignment to pointer eb
-Message-ID: <20200911175514.766eeaf1@xps13>
-In-Reply-To: <20200911102321.22515-1-colin.king@canonical.com>
-References: <20200911102321.22515-1-colin.king@canonical.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726522AbgIKQ3a (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Sep 2020 12:29:30 -0400
+Received: from mga09.intel.com ([134.134.136.24]:31677 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726306AbgIKQ23 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 11 Sep 2020 12:28:29 -0400
+IronPort-SDR: YREpwWfwOeD0UPOyTTCQF8x61gsF0Jof46jsue7D293q+jsfaPM/ozeCF8rlkTRMWFrxFPUCxl
+ VYJtuD78buLA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9741"; a="159738486"
+X-IronPort-AV: E=Sophos;i="5.76,416,1592895600"; 
+   d="scan'208";a="159738486"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2020 09:28:22 -0700
+IronPort-SDR: MRaDYQOI+Y37b7XzL5ehbRYu0W1Y6xATNgCXz6/+joIgRZb3IlK35VMeSAxF2m26DAwL9nQmAe
+ UHXSMxDELuzQ==
+X-IronPort-AV: E=Sophos;i="5.76,416,1592895600"; 
+   d="scan'208";a="481379882"
+Received: from sjchrist-ice.jf.intel.com (HELO sjchrist-ice) ([10.54.31.34])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2020 09:28:22 -0700
+Date:   Fri, 11 Sep 2020 09:28:20 -0700
+From:   Sean Christopherson <sean.j.christopherson@intel.com>
+To:     Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Joerg Roedel <joro@8bytes.org>
+Cc:     Colin King <colin.king@canonical.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "maintainer:X86 ARCHITECTURE" <x86@kernel.org>,
+        "H . Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH][next] KVM: SVM: nested: fix free of uninitialized
+ pointers save and ctl
+Message-ID: <20200911162814.GC4344@sjchrist-ice>
+References: <20200911110730.24238-1-colin.king@canonical.com>
+ <87o8mclei1.fsf@vitty.brq.redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87o8mclei1.fsf@vitty.brq.redhat.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Colin,
++Joerg
 
-Colin King <colin.king@canonical.com> wrote on Fri, 11 Sep 2020
-11:23:21 +0100:
+On Fri, Sep 11, 2020 at 01:49:42PM +0200, Vitaly Kuznetsov wrote:
+> Colin King <colin.king@canonical.com> writes:
+> 
+> > From: Colin Ian King <colin.king@canonical.com>
+> >
+> > Currently the error exit path to outt_set_gif will kfree on
+> > uninitialized
+> 
+> typo: out_set_gif
+> 
+> > pointers save and ctl.  Fix this by ensuring these pointers are
+> > inintialized to NULL to avoid garbage pointer freeing.
+> >
+> > Addresses-Coverity: ("Uninitialized pointer read")
+> > Fixes: 6ccbd29ade0d ("KVM: SVM: nested: Don't allocate VMCB structures
+> > on stack")
+> 
+> Where is this commit id from? I don't see it in Paolo's kvm tree, if
+> it's not yet merged, maybe we should fix it and avoid introducing the
+> issue in the first place?
 
-> From: Colin Ian King <colin.king@canonical.com>
+Ya, AFAIK the series as not been applied.
+
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > ---
+> >  arch/x86/kvm/svm/nested.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> > index 28036629abf8..2b15f49f9e5a 100644
+> > --- a/arch/x86/kvm/svm/nested.c
+> > +++ b/arch/x86/kvm/svm/nested.c
+> > @@ -1060,8 +1060,8 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+> >  	struct vmcb *hsave = svm->nested.hsave;
+> >  	struct vmcb __user *user_vmcb = (struct vmcb __user *)
+> >  		&user_kvm_nested_state->data.svm[0];
+> > -	struct vmcb_control_area *ctl;
+> > -	struct vmcb_save_area *save;
+> > +	struct vmcb_control_area *ctl = NULL;
+> > +	struct vmcb_save_area *save = NULL;
+> >  	int ret;
+> >  	u32 cr0;
 > 
-> Pointer eb is being assigned a value that is never read, the assignment
-> is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/mtd/mtdswap.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/mtd/mtdswap.c b/drivers/mtd/mtdswap.c
-> index 58eefa43af14..795dec4483c2 100644
-> --- a/drivers/mtd/mtdswap.c
-> +++ b/drivers/mtd/mtdswap.c
-> @@ -1053,7 +1053,6 @@ static int mtdswap_writesect(struct mtd_blktrans_dev *dev,
->  	if (ret < 0)
->  		return ret;
+> I think it would be better if we eliminate 'out_set_gif; completely as
+> the 'error path' we have looks a bit weird anyway. Something like
+> (untested):
+
+Ya, I agree that duplicating the single line for this one-off case is
+preferable to creating a convoluted set of labels.
+
+Joerg, can you fold this change into a prep patch for v4 of your "KVM: SVM:
+SEV-ES groundwork" series?
+
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index 28036629abf8..d1ae94f40907 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -1092,7 +1092,8 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
 >  
-> -	eb = d->eb_data + (newblock / d->pages_per_eblk);
->  	d->page_data[page] = newblock;
+>         if (!(kvm_state->flags & KVM_STATE_NESTED_GUEST_MODE)) {
+>                 svm_leave_nested(svm);
+> -               goto out_set_gif;
+> +               svm_set_gif(svm, !!(kvm_state->flags & KVM_STATE_NESTED_GIF_SET));
+> +               return 0;
+>         }
 >  
->  	return 0;
-
-Yes it looks unused but perhaps it helps to catch the logic here. This
-is not a strong disagreement but I'd keep it this way. Let's see what
-other maintainers think.
-
-Thanks,
-Miquèl
+>         if (!page_address_valid(vcpu, kvm_state->hdr.svm.vmcb_pa))
+> @@ -1145,7 +1146,6 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+>         load_nested_vmcb_control(svm, ctl);
+>         nested_prepare_vmcb_control(svm);
+>  
+> -out_set_gif:
+>         svm_set_gif(svm, !!(kvm_state->flags & KVM_STATE_NESTED_GIF_SET));
+>  
+>         ret = 0;
+> 
+> -- 
+> Vitaly
+> 

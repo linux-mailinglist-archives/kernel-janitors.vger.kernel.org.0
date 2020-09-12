@@ -2,68 +2,308 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20753267A50
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Sep 2020 14:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2399267AC4
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Sep 2020 16:12:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725860AbgILMkY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 12 Sep 2020 08:40:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40934 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725848AbgILMkX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 12 Sep 2020 08:40:23 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CBBA5208E4;
-        Sat, 12 Sep 2020 12:40:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599914422;
-        bh=rHSWa3VSxKeSbN9vwv2HTQH2xcgokPuVAbvIKU/gjIk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rZcKlDNo2dda6HGV9AHcvlk0G7x44sdhn5qF+8etoSvcFAAxzsnqa7HHah+uSMqz8
-         KI8vfm4cLRIloSChABKUhMTtYMhR1ImG7dZtn1U2wi8RTEEIe1nt9jTJ2Y7TidO/5O
-         O2wzIUFLYUvBvsLAfpYPHtMLdHYFLgt576fR/yiA=
-Date:   Sat, 12 Sep 2020 14:40:25 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     linux-usb@vger.kernel.org,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: make linux-usb list remarks consistent
-Message-ID: <20200912124025.GA174230@kroah.com>
-References: <20200912121346.2796-1-lukas.bulwahn@gmail.com>
- <alpine.DEB.2.21.2009121416500.3770@felia>
+        id S1725882AbgILOMq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 12 Sep 2020 10:12:46 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:39108 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725846AbgILOMk (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 12 Sep 2020 10:12:40 -0400
+Received: from localhost.localdomain ([93.22.150.101])
+        by mwinf5d61 with ME
+        id T2Cb230012BWSNM032Cbu9; Sat, 12 Sep 2020 16:12:37 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 12 Sep 2020 16:12:37 +0200
+X-ME-IP: 93.22.150.101
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     davem@davemloft.net, kuba@kernel.org, andy@greyhouse.net
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] net: tehuti: switch from 'pci_' to 'dma_' API
+Date:   Sat, 12 Sep 2020 16:12:32 +0200
+Message-Id: <20200912141232.343630-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.21.2009121416500.3770@felia>
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Sep 12, 2020 at 02:19:02PM +0200, Lukas Bulwahn wrote:
-> 
-> 
-> On Sat, 12 Sep 2020, Lukas Bulwahn wrote:
-> 
-> > This patch submission will also show me if linux-usb is moderated or not.
-> > I have not subscribed to linux-usb and if it shows up quickly in the
-> > archive, the list is probably not moderated, and hence, validating the
-> > patch.
-> > 
-> 
-> The patch showed up in the archives within seconds:
-> 
-> https://lore.kernel.org/linux-usb/20200912121346.2796-1-lukas.bulwahn@gmail.com/
-> 
-> So, the linux-usb list is most likely not moderated. Patch validated.
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-Yes, it is not moderated, and never has been, no idea where that idea came from.
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GFP_ with a correct flag.
+It has been compile tested.
 
-thanks,
+When memory is allocated in 'bdx_fifo_init()' GFP_ATOMIC must be used
+because it can be called from a '.ndo_set_rx_mode' function. Such functions
+hold the 'netif_addr_lock' spinlock.
 
-greg k-h
+  .ndo_set_rx_mode              (see struct net_device_ops)
+    --> bdx_change_mtu
+      --> bdx_open
+        --> bdx_rx_init
+        --> bdx_tx_init
+          --> bdx_fifo_init
+
+
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
+
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+---
+ drivers/net/ethernet/tehuti/tehuti.c | 53 +++++++++++++---------------
+ 1 file changed, 25 insertions(+), 28 deletions(-)
+
+diff --git a/drivers/net/ethernet/tehuti/tehuti.c b/drivers/net/ethernet/tehuti/tehuti.c
+index e28727297563..a142e4c9fc03 100644
+--- a/drivers/net/ethernet/tehuti/tehuti.c
++++ b/drivers/net/ethernet/tehuti/tehuti.c
+@@ -153,11 +153,11 @@ bdx_fifo_init(struct bdx_priv *priv, struct fifo *f, int fsz_type,
+ 	u16 memsz = FIFO_SIZE * (1 << fsz_type);
+ 
+ 	memset(f, 0, sizeof(struct fifo));
+-	/* pci_alloc_consistent gives us 4k-aligned memory */
+-	f->va = pci_alloc_consistent(priv->pdev,
+-				     memsz + FIFO_EXTRA_SPACE, &f->da);
++	/* dma_alloc_coherent gives us 4k-aligned memory */
++	f->va = dma_alloc_coherent(&priv->pdev->dev, memsz + FIFO_EXTRA_SPACE,
++				   &f->da, GFP_ATOMIC);
+ 	if (!f->va) {
+-		pr_err("pci_alloc_consistent failed\n");
++		pr_err("dma_alloc_coherent failed\n");
+ 		RET(-ENOMEM);
+ 	}
+ 	f->reg_CFG0 = reg_CFG0;
+@@ -183,8 +183,8 @@ static void bdx_fifo_free(struct bdx_priv *priv, struct fifo *f)
+ {
+ 	ENTER;
+ 	if (f->va) {
+-		pci_free_consistent(priv->pdev,
+-				    f->memsz + FIFO_EXTRA_SPACE, f->va, f->da);
++		dma_free_coherent(&priv->pdev->dev,
++				  f->memsz + FIFO_EXTRA_SPACE, f->va, f->da);
+ 		f->va = NULL;
+ 	}
+ 	RET();
+@@ -1033,9 +1033,8 @@ static void bdx_rx_free_skbs(struct bdx_priv *priv, struct rxf_fifo *f)
+ 	for (i = 0; i < db->nelem; i++) {
+ 		dm = bdx_rxdb_addr_elem(db, i);
+ 		if (dm->dma) {
+-			pci_unmap_single(priv->pdev,
+-					 dm->dma, f->m.pktsz,
+-					 PCI_DMA_FROMDEVICE);
++			dma_unmap_single(&priv->pdev->dev, dm->dma,
++					 f->m.pktsz, DMA_FROM_DEVICE);
+ 			dev_kfree_skb(dm->skb);
+ 		}
+ 	}
+@@ -1097,9 +1096,8 @@ static void bdx_rx_alloc_skbs(struct bdx_priv *priv, struct rxf_fifo *f)
+ 
+ 		idx = bdx_rxdb_alloc_elem(db);
+ 		dm = bdx_rxdb_addr_elem(db, idx);
+-		dm->dma = pci_map_single(priv->pdev,
+-					 skb->data, f->m.pktsz,
+-					 PCI_DMA_FROMDEVICE);
++		dm->dma = dma_map_single(&priv->pdev->dev, skb->data,
++					 f->m.pktsz, DMA_FROM_DEVICE);
+ 		dm->skb = skb;
+ 		rxfd = (struct rxf_desc *)(f->m.va + f->m.wptr);
+ 		rxfd->info = CPU_CHIP_SWAP32(0x10003);	/* INFO=1 BC=3 */
+@@ -1259,16 +1257,15 @@ static int bdx_rx_receive(struct bdx_priv *priv, struct rxd_fifo *f, int budget)
+ 		    (skb2 = netdev_alloc_skb(priv->ndev, len + NET_IP_ALIGN))) {
+ 			skb_reserve(skb2, NET_IP_ALIGN);
+ 			/*skb_put(skb2, len); */
+-			pci_dma_sync_single_for_cpu(priv->pdev,
+-						    dm->dma, rxf_fifo->m.pktsz,
+-						    PCI_DMA_FROMDEVICE);
++			dma_sync_single_for_cpu(&priv->pdev->dev, dm->dma,
++						rxf_fifo->m.pktsz,
++						DMA_FROM_DEVICE);
+ 			memcpy(skb2->data, skb->data, len);
+ 			bdx_recycle_skb(priv, rxdd);
+ 			skb = skb2;
+ 		} else {
+-			pci_unmap_single(priv->pdev,
+-					 dm->dma, rxf_fifo->m.pktsz,
+-					 PCI_DMA_FROMDEVICE);
++			dma_unmap_single(&priv->pdev->dev, dm->dma,
++					 rxf_fifo->m.pktsz, DMA_FROM_DEVICE);
+ 			bdx_rxdb_free_elem(db, rxdd->va_lo);
+ 		}
+ 
+@@ -1478,8 +1475,8 @@ bdx_tx_map_skb(struct bdx_priv *priv, struct sk_buff *skb,
+ 	int i;
+ 
+ 	db->wptr->len = skb_headlen(skb);
+-	db->wptr->addr.dma = pci_map_single(priv->pdev, skb->data,
+-					    db->wptr->len, PCI_DMA_TODEVICE);
++	db->wptr->addr.dma = dma_map_single(&priv->pdev->dev, skb->data,
++					    db->wptr->len, DMA_TO_DEVICE);
+ 	pbl->len = CPU_CHIP_SWAP32(db->wptr->len);
+ 	pbl->pa_lo = CPU_CHIP_SWAP32(L32_64(db->wptr->addr.dma));
+ 	pbl->pa_hi = CPU_CHIP_SWAP32(H32_64(db->wptr->addr.dma));
+@@ -1716,8 +1713,8 @@ static void bdx_tx_cleanup(struct bdx_priv *priv)
+ 		BDX_ASSERT(db->rptr->len == 0);
+ 		do {
+ 			BDX_ASSERT(db->rptr->addr.dma == 0);
+-			pci_unmap_page(priv->pdev, db->rptr->addr.dma,
+-				       db->rptr->len, PCI_DMA_TODEVICE);
++			dma_unmap_page(&priv->pdev->dev, db->rptr->addr.dma,
++				       db->rptr->len, DMA_TO_DEVICE);
+ 			bdx_tx_db_inc_rptr(db);
+ 		} while (db->rptr->len > 0);
+ 		tx_level -= db->rptr->len;	/* '-' koz len is negative */
+@@ -1765,8 +1762,8 @@ static void bdx_tx_free_skbs(struct bdx_priv *priv)
+ 	ENTER;
+ 	while (db->rptr != db->wptr) {
+ 		if (likely(db->rptr->len))
+-			pci_unmap_page(priv->pdev, db->rptr->addr.dma,
+-				       db->rptr->len, PCI_DMA_TODEVICE);
++			dma_unmap_page(&priv->pdev->dev, db->rptr->addr.dma,
++				       db->rptr->len, DMA_TO_DEVICE);
+ 		else
+ 			dev_kfree_skb(db->rptr->addr.skb);
+ 		bdx_tx_db_inc_rptr(db);
+@@ -1902,12 +1899,12 @@ bdx_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	if (err)			/* it triggers interrupt, dunno why. */
+ 		goto err_pci;		/* it's not a problem though */
+ 
+-	if (!(err = pci_set_dma_mask(pdev, DMA_BIT_MASK(64))) &&
+-	    !(err = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(64)))) {
++	if (!(err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(64))) &&
++	    !(err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(64)))) {
+ 		pci_using_dac = 1;
+ 	} else {
+-		if ((err = pci_set_dma_mask(pdev, DMA_BIT_MASK(32))) ||
+-		    (err = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32)))) {
++		if ((err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32))) ||
++		    (err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32)))) {
+ 			pr_err("No usable DMA configuration, aborting\n");
+ 			goto err_dma;
+ 		}
+-- 
+2.25.1
+

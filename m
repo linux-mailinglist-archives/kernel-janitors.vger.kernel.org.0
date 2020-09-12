@@ -2,31 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7A36267897
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Sep 2020 09:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 994B6267976
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Sep 2020 12:25:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725813AbgILHoI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 12 Sep 2020 03:44:08 -0400
-Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:34796 "EHLO
+        id S1725878AbgILKZ2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 12 Sep 2020 06:25:28 -0400
+Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:20362 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725805AbgILHoH (ORCPT
+        with ESMTP id S1725832AbgILKZ1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 12 Sep 2020 03:44:07 -0400
+        Sat, 12 Sep 2020 06:25:27 -0400
 Received: from localhost.localdomain ([93.22.150.101])
-        by mwinf5d23 with ME
-        id Svk1230032BWSNM03vk1CK; Sat, 12 Sep 2020 09:44:04 +0200
+        by mwinf5d66 with ME
+        id SyRN230082BWSNM03yRNMu; Sat, 12 Sep 2020 12:25:25 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 12 Sep 2020 09:44:04 +0200
+X-ME-Date: Sat, 12 Sep 2020 12:25:25 +0200
 X-ME-IP: 93.22.150.101
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     davem@davemloft.net, kuba@kernel.org, chessman@tux.org
+To:     davem@davemloft.net, kuba@kernel.org, andy@greyhouse.net
 Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Subject: [PATCH] tlan: switch from 'pci_' to 'dma_' API
-Date:   Sat, 12 Sep 2020 09:43:58 +0200
-Message-Id: <20200912074359.334234-1-christophe.jaillet@wanadoo.fr>
+Date:   Sat, 12 Sep 2020 12:25:18 +0200
+Message-Id: <20200912102519.337303-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit

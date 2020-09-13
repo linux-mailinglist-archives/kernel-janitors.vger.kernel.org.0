@@ -2,77 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EBBD267E4B
-	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Sep 2020 09:02:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BB7A267F0D
+	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Sep 2020 11:57:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725933AbgIMHCb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 13 Sep 2020 03:02:31 -0400
-Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:47143 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725972AbgIMHBX (ORCPT
+        id S1725929AbgIMJ5M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 13 Sep 2020 05:57:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57824 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725916AbgIMJ5K (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 13 Sep 2020 03:01:23 -0400
-Received: from localhost.localdomain ([93.23.14.57])
-        by mwinf5d69 with ME
-        id TK1G2300N1Drbmd03K1H9L; Sun, 13 Sep 2020 09:01:18 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 13 Sep 2020 09:01:18 +0200
-X-ME-IP: 93.23.14.57
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     davem@davemloft.net, kuba@kernel.org, hkallweit1@gmail.com,
-        gustavoars@kernel.org, vaibhavgupta40@gmail.com, mst@redhat.com,
-        leon@kernel.org
-Cc:     linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] tulip: windbond-840: Fix a debug message
-Date:   Sun, 13 Sep 2020 09:01:07 +0200
-Message-Id: <20200913070107.352166-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Sun, 13 Sep 2020 05:57:10 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABAEEC061573;
+        Sun, 13 Sep 2020 02:57:09 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id e23so19181970eja.3;
+        Sun, 13 Sep 2020 02:57:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:in-reply-to:message-id:references
+         :user-agent:mime-version;
+        bh=Gbv3T8O0xJ0qCU1qNd8Of6YIK0SU5dp95SQ3PtDWaO0=;
+        b=Wy38gqJUeXaggqjLqI+pGJq8kU7x1t7zpokB4YzSRMZUvWco/F1t5xd0A6p8+/Hg5J
+         kD5XAcuBo3dOejieIZrIzgITWoB0bpTnOPJKAD57voEwXtlgLFTVXG0MgwIh5womWalT
+         PmN5m9gWb5QDscoT/7/9HnGnHUtqOsUHXVpvSfnO7MDrc1SFN4sYjTRPiBEVUti7+r5V
+         fFHvKVyVuqWhZH9CKUIteCsG0cByIERnHKOqxrYjtclMorDRtZ01MVdgUq9bYnH5g5EE
+         eyegwOWnCbZHhxIZzhE7ypQchJhlqVhM7OLjLBT+gP/hbgCQkoI9y2zIGRL4rw+qaMhR
+         cLNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version;
+        bh=Gbv3T8O0xJ0qCU1qNd8Of6YIK0SU5dp95SQ3PtDWaO0=;
+        b=TSgOdrIUGTUbs5SXduFAZvMLS0g2LXw8XuysNT1TeXmd8fGN2+RTQIwdP6zAr2H0cL
+         Sg1V6Tb0GgHo4aUmuHw4wqx03IMjIh9mwJw4aayBUeMdEsjyX0S1SQcw18Dv0oT3BIBC
+         uTYwjeSD1ESKBn+Qu7mhwnWJVjrEAF1QqekAeY5HulDqPcx1zPGQAEuU5BRqQA/AparM
+         eKCbppO6t74t69GFdAtWHghc25oNcQ5rvbkzGjQZOnu3in3m3Uf15LwjA/UJYuLTuBjt
+         7/xIEg95NA9fivdhbd5fhzIgfwouszkKyeMJRnWm7iKx42GbXf+X1AqpTVoEF8e5N/Pc
+         UYSA==
+X-Gm-Message-State: AOAM531ZP9XoR8ftwOgMkivQY392B7BeFRZ3UsUqXA2KkwdgaoXWo9cL
+        /KcfIpfF082tH+Z7sT9kuB68Bu28MF2cm7cS
+X-Google-Smtp-Source: ABdhPJzOcn6Rwbu13exfp1gYWilPlEYFx3hJ/rPNokplQtCfPNYNOKopygMfJTFKWFoYi5bB4a2BHQ==
+X-Received: by 2002:a17:906:facb:: with SMTP id lu11mr10087536ejb.249.1599991028362;
+        Sun, 13 Sep 2020 02:57:08 -0700 (PDT)
+Received: from felia ([2001:16b8:2dcc:7f00:79af:10ed:f757:91c8])
+        by smtp.gmail.com with ESMTPSA id w1sm6408015eds.18.2020.09.13.02.57.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Sep 2020 02:57:07 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
+Date:   Sun, 13 Sep 2020 11:57:01 +0200 (CEST)
+X-X-Sender: lukas@felia
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+cc:     Joel Stanley <joel@jms.id.au>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, linux-aspeed@lists.ozlabs.org,
+        dri-devel@lists.freedesktop.org,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: make linux-aspeed list remarks consistent
+In-Reply-To: <20200912183334.22683-1-lukas.bulwahn@gmail.com>
+Message-ID: <alpine.DEB.2.21.2009131156090.6163@felia>
+References: <20200912183334.22683-1-lukas.bulwahn@gmail.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'w89c840_open()' is incorrectly reported in a debug message. Use __func__
-instead.
 
-While at it, fix some style issue in the same function.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/net/ethernet/dec/tulip/winbond-840.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+On Sat, 12 Sep 2020, Lukas Bulwahn wrote:
 
-diff --git a/drivers/net/ethernet/dec/tulip/winbond-840.c b/drivers/net/ethernet/dec/tulip/winbond-840.c
-index 7388e58486a6..89cbdc1f4857 100644
---- a/drivers/net/ethernet/dec/tulip/winbond-840.c
-+++ b/drivers/net/ethernet/dec/tulip/winbond-840.c
-@@ -630,9 +630,10 @@ static int netdev_open(struct net_device *dev)
- 		goto out_err;
- 
- 	if (debug > 1)
--		netdev_dbg(dev, "w89c840_open() irq %d\n", irq);
-+		netdev_dbg(dev, "%s() irq %d\n", __func__, irq);
- 
--	if((i=alloc_ringdesc(dev)))
-+	i = alloc_ringdesc(dev);
-+	if (i)
- 		goto out_err;
- 
- 	spin_lock_irq(&np->lock);
-@@ -642,7 +643,7 @@ static int netdev_open(struct net_device *dev)
- 
- 	netif_start_queue(dev);
- 	if (debug > 2)
--		netdev_dbg(dev, "Done netdev_open()\n");
-+		netdev_dbg(dev, "Done %s()\n", __func__);
- 
- 	/* Set the timer to check for link beat. */
- 	timer_setup(&np->timer, netdev_timer, 0);
--- 
-2.25.1
+> Commit f15a3ea80391 ("MAINTAINERS: Add ASPEED BMC GFX DRM driver entry")
+> does not mention that linux-aspeed@lists.ozlabs.org is moderated for
+> non-subscribers, but the other three entries for
+> linux-aspeed@lists.ozlabs.org do.
+> 
+> By 'majority vote' among entries, let us assume it was just missed here and
+> adjust it to be consistent with others.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+> applies cleanly on master and next-20200911
+> 
+> Joel, please ack.
+> David, Daniel, please pick this minor non-urgent clean-up patch.
+> 
+> This patch submission will also show me if linux-aspeed is moderated or
+> not. I have not subscribed to linux-aspeed and if it shows up quickly in
+> the archive, the list is probably not moderated; and if it takes longer,
+> it is moderated, and hence, validating the patch.
+>
 
+I did quickly get back an moderation email that my email is being held 
+back. So, that response validates my patch.
+
+Lukas

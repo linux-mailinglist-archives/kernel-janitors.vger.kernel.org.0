@@ -2,102 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BB7A267F0D
-	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Sep 2020 11:57:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8456267F41
+	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Sep 2020 12:45:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725929AbgIMJ5M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 13 Sep 2020 05:57:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57824 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725916AbgIMJ5K (ORCPT
+        id S1725976AbgIMKpf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 13 Sep 2020 06:45:35 -0400
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:35369 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725946AbgIMKp2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 13 Sep 2020 05:57:10 -0400
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABAEEC061573;
-        Sun, 13 Sep 2020 02:57:09 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id e23so19181970eja.3;
-        Sun, 13 Sep 2020 02:57:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=Gbv3T8O0xJ0qCU1qNd8Of6YIK0SU5dp95SQ3PtDWaO0=;
-        b=Wy38gqJUeXaggqjLqI+pGJq8kU7x1t7zpokB4YzSRMZUvWco/F1t5xd0A6p8+/Hg5J
-         kD5XAcuBo3dOejieIZrIzgITWoB0bpTnOPJKAD57voEwXtlgLFTVXG0MgwIh5womWalT
-         PmN5m9gWb5QDscoT/7/9HnGnHUtqOsUHXVpvSfnO7MDrc1SFN4sYjTRPiBEVUti7+r5V
-         fFHvKVyVuqWhZH9CKUIteCsG0cByIERnHKOqxrYjtclMorDRtZ01MVdgUq9bYnH5g5EE
-         eyegwOWnCbZHhxIZzhE7ypQchJhlqVhM7OLjLBT+gP/hbgCQkoI9y2zIGRL4rw+qaMhR
-         cLNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=Gbv3T8O0xJ0qCU1qNd8Of6YIK0SU5dp95SQ3PtDWaO0=;
-        b=TSgOdrIUGTUbs5SXduFAZvMLS0g2LXw8XuysNT1TeXmd8fGN2+RTQIwdP6zAr2H0cL
-         Sg1V6Tb0GgHo4aUmuHw4wqx03IMjIh9mwJw4aayBUeMdEsjyX0S1SQcw18Dv0oT3BIBC
-         uTYwjeSD1ESKBn+Qu7mhwnWJVjrEAF1QqekAeY5HulDqPcx1zPGQAEuU5BRqQA/AparM
-         eKCbppO6t74t69GFdAtWHghc25oNcQ5rvbkzGjQZOnu3in3m3Uf15LwjA/UJYuLTuBjt
-         7/xIEg95NA9fivdhbd5fhzIgfwouszkKyeMJRnWm7iKx42GbXf+X1AqpTVoEF8e5N/Pc
-         UYSA==
-X-Gm-Message-State: AOAM531ZP9XoR8ftwOgMkivQY392B7BeFRZ3UsUqXA2KkwdgaoXWo9cL
-        /KcfIpfF082tH+Z7sT9kuB68Bu28MF2cm7cS
-X-Google-Smtp-Source: ABdhPJzOcn6Rwbu13exfp1gYWilPlEYFx3hJ/rPNokplQtCfPNYNOKopygMfJTFKWFoYi5bB4a2BHQ==
-X-Received: by 2002:a17:906:facb:: with SMTP id lu11mr10087536ejb.249.1599991028362;
-        Sun, 13 Sep 2020 02:57:08 -0700 (PDT)
-Received: from felia ([2001:16b8:2dcc:7f00:79af:10ed:f757:91c8])
-        by smtp.gmail.com with ESMTPSA id w1sm6408015eds.18.2020.09.13.02.57.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2020 02:57:07 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Sun, 13 Sep 2020 11:57:01 +0200 (CEST)
-X-X-Sender: lukas@felia
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-cc:     Joel Stanley <joel@jms.id.au>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, linux-aspeed@lists.ozlabs.org,
-        dri-devel@lists.freedesktop.org,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: make linux-aspeed list remarks consistent
-In-Reply-To: <20200912183334.22683-1-lukas.bulwahn@gmail.com>
-Message-ID: <alpine.DEB.2.21.2009131156090.6163@felia>
-References: <20200912183334.22683-1-lukas.bulwahn@gmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        Sun, 13 Sep 2020 06:45:28 -0400
+Received: from [10.0.2.15] ([93.23.14.57])
+        by mwinf5d57 with ME
+        id TNlM2300B1Drbmd03NlNQC; Sun, 13 Sep 2020 12:45:26 +0200
+X-ME-Helo: [10.0.2.15]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 13 Sep 2020 12:45:26 +0200
+X-ME-IP: 93.23.14.57
+Subject: Re: [PATCH] net: dl2k: switch from 'pci_' to 'dma_' API
+To:     Leon Romanovsky <leon@kernel.org>
+Cc:     davem@davemloft.net, kuba@kernel.org, snelson@pensando.io,
+        jeffrey.t.kirsher@intel.com, mhabets@solarflare.com,
+        yuehaibing@huawei.com, mchehab+huawei@kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200913061417.347682-1-christophe.jaillet@wanadoo.fr>
+ <20200913065559.GB35718@unreal>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <8c2b1241-6b70-0837-3f03-f72e4bbdd165@wanadoo.fr>
+Date:   Sun, 13 Sep 2020 12:45:16 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20200913065559.GB35718@unreal>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On Sat, 12 Sep 2020, Lukas Bulwahn wrote:
-
-> Commit f15a3ea80391 ("MAINTAINERS: Add ASPEED BMC GFX DRM driver entry")
-> does not mention that linux-aspeed@lists.ozlabs.org is moderated for
-> non-subscribers, but the other three entries for
-> linux-aspeed@lists.ozlabs.org do.
+Le 13/09/2020 à 08:55, Leon Romanovsky a écrit :
+> On Sun, Sep 13, 2020 at 08:14:17AM +0200, Christophe JAILLET wrote:
+ > [...]
+>> @@ -504,9 +510,8 @@ static int alloc_list(struct net_device *dev)
+>>   						sizeof(struct netdev_desc));
+>>   		/* Rubicon now supports 40 bits of addressing space. */
+>>   		np->rx_ring[i].fraginfo =
+>> -		    cpu_to_le64(pci_map_single(
+>> -				  np->pdev, skb->data, np->rx_buf_sz,
+>> -				  PCI_DMA_FROMDEVICE));
+>> +		    cpu_to_le64(dma_map_single(&np->pdev->dev, skb->data,
+>> +					       np->rx_buf_sz, DMA_FROM_DEVICE));
 > 
-> By 'majority vote' among entries, let us assume it was just missed here and
-> adjust it to be consistent with others.
+> I'm aware that this was before, but both pci_map_single and
+> dma_map_single return an ERROR and it is wrong to set .fraginfo without
+> checking result.
 > 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
-> applies cleanly on master and next-20200911
+> Thanks
 > 
-> Joel, please ack.
-> David, Daniel, please pick this minor non-urgent clean-up patch.
-> 
-> This patch submission will also show me if linux-aspeed is moderated or
-> not. I have not subscribed to linux-aspeed and if it shows up quickly in
-> the archive, the list is probably not moderated; and if it takes longer,
-> it is moderated, and hence, validating the patch.
->
+Hi,
 
-I did quickly get back an moderation email that my email is being held 
-back. So, that response validates my patch.
+Nice catch.
 
-Lukas
+I'll try to send patches for such patterns as some follow-ups.
+It can be found in several drivers.
+
+But anyone who want to fix it faster than me is welcome ;-)
+
+CJ

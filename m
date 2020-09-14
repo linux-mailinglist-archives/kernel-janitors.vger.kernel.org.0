@@ -2,112 +2,160 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4421B268426
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 07:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C88A726849F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 08:14:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726078AbgINFjf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Sep 2020 01:39:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40630 "EHLO
+        id S1726105AbgINGOK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Sep 2020 02:14:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726003AbgINFjc (ORCPT
+        with ESMTP id S1726027AbgINGOG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Sep 2020 01:39:32 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4520DC06174A;
-        Sun, 13 Sep 2020 22:39:48 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id nw23so21369894ejb.4;
-        Sun, 13 Sep 2020 22:39:48 -0700 (PDT)
+        Mon, 14 Sep 2020 02:14:06 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F280AC06174A;
+        Sun, 13 Sep 2020 23:14:05 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id i26so21440921ejb.12;
+        Sun, 13 Sep 2020 23:14:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=0ftNeFkIdq9io+RywVag+/vyB7FE8lzg55s4F7kUuI0=;
-        b=SnE+7oOa5bqFRiQs4WAusSe6Hmnjw/2MoE3kNjWOVoqjIkYOCaa6soNFn+qIClrrUd
-         CYYchI+hUPm/RH2nBzIwgwXZ3+uS4jicw+FWXAv57JbpBM7qzK9x2taUVABBNHV1HqBZ
-         LCV0jYAFXId2pR3Ycwg3czyks3GOiF6L88Gz86PKRNMbNpdVQ0x6EuRcZ+pSTvFQA1xN
-         qkM8Aa4nMna5conpbmUosbDDaEU9KsBdA+552ockHTd0Ob4eh3b/IuheouFFYvWui9Bi
-         pffDCxDf9wCMPVyNZo0NxEfY2eEY33P67m+2P2l0lralMpdFPv21s9DOPfLcnSHTSMEI
-         1VyA==
+        h=from:to:cc:subject:date:message-id;
+        bh=rIC1oHrjeeueYz0HBFCkUv0ag151JIWmWoXarLnIZ+0=;
+        b=U+xrXrSDw4TAeqmWS5MUGHGG2D46SgGKRCAiPepOWuqpLsn0bLYNR2enUp8NXYi6g3
+         vLiKwgup66PPSTNeN9SJfuqjvdiDxtc2wvUXQJ7PI5UVXMzc4bNndtvu3NVq8Q2LLtGZ
+         jr1zbApXt4OzE3NdcscJPlS/GBKAOtROtHG5RFuke677Gc1VhiFo0nbisXSeBiCzfaO6
+         9dbajD5pPZPDSJVyfTPh5Avn8JRo+zpdsYWmwiXzIxtrDME7xU7ThX6P2tlDC/JIxAdC
+         JQHm21cS7XFAPh0fQp0y5YYzZp/N/h8qDacwzlbtJyPhM2YFcB4XU482n6Hanfc8E2bc
+         fgZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=0ftNeFkIdq9io+RywVag+/vyB7FE8lzg55s4F7kUuI0=;
-        b=m37IYUwxcCpqG/2+gpi7wEPEEcBEgOdp9nmLYUmJOVnGYA1nuud/ZWANan2Sr55AFq
-         DdxUD8N1172n+RTm7kCv4Ll0Xpvrka6TZGsWe5jF45bnPKGhtoX/dup6nb283oLCArtp
-         +N2OaNlVWqlyKmuQGB/GkMhwcUz/Y9vR4Yv/XOHmFEYtBng5uX2mc4C6XHmUnIlDw3Gn
-         3flfo9lSnLrENI9zu3JlUiOXiV6qTMzzSY/3PCLb43p4UhcnF4f0suvNZL3aK8QOMHz3
-         RduB7vvrkJpA2oX/VXBoRk852zxg8xG50XGVhA/cLFbV9/em4O/T2vbBOAs8Wa+IWzXc
-         cy5Q==
-X-Gm-Message-State: AOAM531chb9u+d+7lnB7aiZpx8xamgkiL//zb1nug+pHxCrt2dlKXvwE
-        tFxBvuxPsBVVQeC/Fv2mqo8=
-X-Google-Smtp-Source: ABdhPJwYE0wstxgC6zfi9o0oOP+ME0JkQsXu3OIXAIXkBT3aQiHB87ndT7jRCyc625JJFYlGFM4S4g==
-X-Received: by 2002:a17:906:1185:: with SMTP id n5mr13091694eja.495.1600061986990;
-        Sun, 13 Sep 2020 22:39:46 -0700 (PDT)
-Received: from felia ([2001:16b8:2ddc:3000:7936:d9d0:986e:cca5])
-        by smtp.gmail.com with ESMTPSA id w8sm6899298ejo.117.2020.09.13.22.39.46
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=rIC1oHrjeeueYz0HBFCkUv0ag151JIWmWoXarLnIZ+0=;
+        b=l8ngG3XsCewBTVH+iJNcrHL4hsq2LSB1lAtR6JXro27/J0qBfuzVfxYBuI9ympxPrK
+         d2s1uX++mKshgzkX1fO5KaygK+Kx/+S85XZAiRdDPyR7bpSLrQ27Dzv4YUCNo0hUBrmV
+         M53/6goGbnZIj3UzVVXVje9i6RsZyEatlmowBkeq6l8OXjG0bOz0mW+txgiFtbimQHHD
+         QUFMCTD5bAnmU8CTy/8JW/NxS8lF6HwnZ/7kcNGrhtXbXQJ8FAR7izV+ZVayy6K2/Kqj
+         fW/BJCEmYNR80dSjwJkyRKaatp7kSieB21gdiN5UYokdckXNEO+zHXpfZ9l4S2jSQSzY
+         KcHw==
+X-Gm-Message-State: AOAM530zlU5fJk7INmOz3OtOSVBeyaclMxvRJIblP+u73yKxCIfFJCXz
+        5GEL2hM3zUaG7K5vhbVqlRQ=
+X-Google-Smtp-Source: ABdhPJxhBiboB7fvBSZBflKPyaSYrlFG8klS6slvEQ6v0pbn8KL5pzjo9IHEjVDrbIZLulUhgCKyWw==
+X-Received: by 2002:a17:906:72d2:: with SMTP id m18mr13009569ejl.220.1600064044596;
+        Sun, 13 Sep 2020 23:14:04 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2ddc:3000:7936:d9d0:986e:cca5])
+        by smtp.gmail.com with ESMTPSA id dv6sm6865615ejb.7.2020.09.13.23.14.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2020 22:39:46 -0700 (PDT)
+        Sun, 13 Sep 2020 23:14:04 -0700 (PDT)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Mon, 14 Sep 2020 07:39:40 +0200 (CEST)
-X-X-Sender: lukas@felia
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-cc:     Ryder Lee <ryder.lee@mediatek.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-pci@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+To:     Krzysztof Kozlowski <k.kozlowski.k@gmail.com>,
+        linux-samsung-soc@vger.kernel.org
+Cc:     Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
         Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
         Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: make linux-mediatek list remarks
- consistent
-In-Reply-To: <20200914053110.23286-1-lukas.bulwahn@gmail.com>
-Message-ID: <alpine.DEB.2.21.2009140738570.24617@felia>
-References: <20200914053110.23286-1-lukas.bulwahn@gmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: mark linux-samsung-soc list non-moderated
+Date:   Mon, 14 Sep 2020 08:13:53 +0200
+Message-Id: <20200914061353.17535-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+In fifteen entries mentioning linux-samsung-soc@vger.kernel.org in
+MAINTAINERS, seven entries mention the list being moderated for
+non-subscribers and eight entries do not. Clearly only one can be right,
+though.
 
+Joe Perches suggested that all vger.kernel.org are not moderated for
+non-subscribers.
 
-On Mon, 14 Sep 2020, Lukas Bulwahn wrote:
+Remove all the remarks from the entries following Joe's suggestion.
 
-> Commit 637cfacae96f ("PCI: mediatek: Add MediaTek PCIe host controller
-> support") does not mention that linux-mediatek@lists.infradead.org is
-> moderated for non-subscribers, but the other eight entries for
-> linux-mediatek@lists.infradead.org do.
-> 
-> Adjust this entry to be consistent with all others.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
-> applies cleanly on v5.9-rc5 and next-20200911
-> 
-> Ryder, please ack.
-> 
-> Bjorn, Matthias, please pick this minor non-urgent clean-up patch.
-> 
-> This patch submission will also show me if linux-mediatek is moderated or
-> not. I have not subscribed to linux-mediatek and if it shows up quickly in
-> the archive, the list is probably not moderated; and if it takes longer, it
-> is moderated, and hence, validating the patch.
-> 
+Link: https://lore.kernel.org/lkml/da6f30896a8fd78635b3ca454d77a5292a9aa76d.camel@perches.com/
+Suggested-by: Joe Perches <joe@perches.com>
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on v5.9-rc5 and next-20200911
 
-Okay, my patch showed up within seconds in the archive:
+Krzysztof, please pick this minor non-urgent cleanup patch.
 
-https://lore.kernel.org/linux-mediatek/20200914053110.23286-1-lukas.bulwahn@gmail.com/
+This patch submission will also show me if linux-samsung-soc is moderated
+or not. I have not subscribed to linux-samsung-soc and if it shows up
+quickly in the archive, the list is probably not moderated, and hence,
+validating the patch.
 
+ MAINTAINERS | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-I think the linux-mediatek list is actually NOT _moderated for 
-non-subscribers_.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 0d0862b19ce5..de8741d24cb0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2399,7 +2399,7 @@ ARM/SAMSUNG EXYNOS ARM ARCHITECTURES
+ M:	Kukjin Kim <kgene@kernel.org>
+ M:	Krzysztof Kozlowski <krzk@kernel.org>
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+-L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
++L:	linux-samsung-soc@vger.kernel.org
+ S:	Maintained
+ Q:	https://patchwork.kernel.org/project/linux-samsung-soc/list/
+ F:	Documentation/arm/samsung/
+@@ -2441,7 +2441,7 @@ F:	drivers/media/platform/s5p-g2d/
+ 
+ ARM/SAMSUNG S5P SERIES HDMI CEC SUBSYSTEM SUPPORT
+ M:	Marek Szyprowski <m.szyprowski@samsung.com>
+-L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
++L:	linux-samsung-soc@vger.kernel.org
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/media/s5p-cec.txt
+@@ -13321,7 +13321,7 @@ PCI DRIVER FOR SAMSUNG EXYNOS
+ M:	Jingoo Han <jingoohan1@gmail.com>
+ L:	linux-pci@vger.kernel.org
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+-L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
++L:	linux-samsung-soc@vger.kernel.org
+ S:	Maintained
+ F:	drivers/pci/controller/dwc/pci-exynos.c
+ 
+@@ -13729,7 +13729,7 @@ M:	Tomasz Figa <tomasz.figa@gmail.com>
+ M:	Krzysztof Kozlowski <krzk@kernel.org>
+ M:	Sylwester Nawrocki <s.nawrocki@samsung.com>
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+-L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
++L:	linux-samsung-soc@vger.kernel.org
+ S:	Maintained
+ Q:	https://patchwork.kernel.org/project/linux-samsung-soc/list/
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pinctrl/samsung.git
+@@ -15275,7 +15275,7 @@ F:	include/linux/mfd/samsung/
+ SAMSUNG S3C24XX/S3C64XX SOC SERIES CAMIF DRIVER
+ M:	Sylwester Nawrocki <sylvester.nawrocki@gmail.com>
+ L:	linux-media@vger.kernel.org
+-L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
++L:	linux-samsung-soc@vger.kernel.org
+ S:	Maintained
+ F:	drivers/media/platform/s3c-camif/
+ F:	include/media/drv-intf/s3c_camif.h
+@@ -15324,7 +15324,7 @@ SAMSUNG SOC CLOCK DRIVERS
+ M:	Sylwester Nawrocki <s.nawrocki@samsung.com>
+ M:	Tomasz Figa <tomasz.figa@gmail.com>
+ M:	Chanwoo Choi <cw00.choi@samsung.com>
+-L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
++L:	linux-samsung-soc@vger.kernel.org
+ S:	Supported
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/snawrocki/clk.git
+ F:	Documentation/devicetree/bindings/clock/exynos*.txt
+@@ -15338,7 +15338,7 @@ M:	Kukjin Kim <kgene@kernel.org>
+ M:	Krzysztof Kozlowski <krzk@kernel.org>
+ M:	Andi Shyti <andi@etezian.org>
+ L:	linux-spi@vger.kernel.org
+-L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
++L:	linux-samsung-soc@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/spi/spi-samsung.txt
+ F:	drivers/spi/spi-s3c*
+-- 
+2.17.1
 
-Please IGNORE this patch until someone can confirm if it is moderated or 
-not. I will then send the patch that reflects the actual state.
-
-Thanks, Lukas

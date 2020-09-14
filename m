@@ -2,106 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C25E526938D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 19:35:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D30F426940A
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 19:50:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726301AbgINRfc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Sep 2020 13:35:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46728 "EHLO
+        id S1726020AbgINRuN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Sep 2020 13:50:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726253AbgINM1T (ORCPT
+        with ESMTP id S1726100AbgINRtz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Sep 2020 08:27:19 -0400
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5A2AC061354;
-        Mon, 14 Sep 2020 05:25:55 -0700 (PDT)
-Received: by mail-ed1-x544.google.com with SMTP id b12so17331924edz.11;
-        Mon, 14 Sep 2020 05:25:55 -0700 (PDT)
+        Mon, 14 Sep 2020 13:49:55 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8380EC061788;
+        Mon, 14 Sep 2020 10:49:55 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id t14so372418pgl.10;
+        Mon, 14 Sep 2020 10:49:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jms.id.au; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=7BdFAddq3RL7rFBEGnlqI6CKwA0tfgEjJpCRYq7bxjU=;
-        b=SY+nMVNE8BVVG8ruSR5EiacuhIKxjjgXR9WrOal16ZSF/q8w+hTw0Ovle+QzD6126z
-         7fcMPAlyyrMVpVqQt9fd7pJ+l946ySRRZ9i0JaFdIGyuYAczoOGJ/uxKt6pXehjk4vAX
-         JLgJDFoB5rHn/zw0yh5fFvwqdFgLQz+5h7c+k=
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Map+hm2luK4joxy1or88ltvi/Ll/0Bex60j+geeyBLM=;
+        b=rAL60idqBmAdAU5u8tD/4tuKn2B3trS7TGM6fT2VpIlmDWRfm9Icp5CBSRyaRVSvVt
+         WZN7bldIbq+pgMAY02dYPUvY/ZGrFVjrEz3jFFevhjExL/Eeg3Gw/I2mSUmGbVwKvZZM
+         G5bNhIolqCa+UKKWKY9Di6Zv3TVrVBGtTLhli471I2OjFuIYjQknA9297F3BvgQ1gQHx
+         YSDCtkJCGijtp6mH/fNQs2G0cRxCa8x0D83dhnadcl0X5fSssmhVGZGFpQqMdkrHEHqW
+         N62dlG/uzbqEqoECzJ7HfUFykB/sRHhonE5xs1xcLWaI5wm7cWoqojXnu6SpcP4Ir1Zf
+         yG2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7BdFAddq3RL7rFBEGnlqI6CKwA0tfgEjJpCRYq7bxjU=;
-        b=O+MeZ5SdvKr2bRWV5DPRmJIrfQD8YSTYfsPLuZWtYFgXrAi5CgxhlocIZJpnFbYCOG
-         oIQTEoWl86IqRViCD6C7kA80yuiyx1PhFfC8eyRzDO3RfanIA7Pnyaqhj+2A609LlNR9
-         AqAJFcskIgCQ7KNEIKo3xWclwHm3pA4SYi3URZPEX2IW0rNce56TFzTVd3es3civn+nv
-         uUJgi4z4TTbq6oxhdo+rqOGhZ63Q3BEfl5lmU0amzSnIWCAb6cVtUmr7bcCPn5bq1Rbx
-         wWcAW2gow4ZXc25tSXm4g3Jc+ZYcQXg6llNUxFyWUYpNut2KEnrtm3DDHQmFECI4IYCI
-         HxFg==
-X-Gm-Message-State: AOAM531m5dKwpX2BU0umpkX9V1PIgtvI+PVdkfyNCpPyWJTust9b6oOU
-        1jsQ9++IIUWTLC1F8zrFRaJvUwEKOAQ9g1LZR/M=
-X-Google-Smtp-Source: ABdhPJwSGNnu67PnYtbgAyhVZqnOww0LDfKxxJooWZDtBPLdj0aTdSYJeckD3nPCMOPCHtjf4qb+aGCqyjmZbea0upw=
-X-Received: by 2002:a50:fb0e:: with SMTP id d14mr17550786edq.172.1600086354159;
- Mon, 14 Sep 2020 05:25:54 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Map+hm2luK4joxy1or88ltvi/Ll/0Bex60j+geeyBLM=;
+        b=ZKrK6nlPVgZpiTHDs8Wg1BIttuLt6wiEs2NuDLVTFHLOuHj4byEzyolU7hRCaxckpU
+         NU9jfh71Lz0WOlTZjBw2I2ruJeyhNAcHQkQg7vn57sN92+ivg0IZtpG3KaS+A8pHSq0Y
+         RqSkshizpBUO4ZmrMRYrIS7A0BTp2Fp9EXZHSYpJNeGEOH/wwvQg6Bpytkkt+PV5LCyz
+         /znpyb7LWJfSdUKiVXqdJveW3Ikenim78k8Xb4tyYDVLCZw/q7jcMzV8m/aeKA+m6fib
+         4EPMq8UusmJErOunyOjdylT/8NqAYQJqTa0Kb+CryvPCWRmXZBILHWoR66QX+I4d188k
+         PEaA==
+X-Gm-Message-State: AOAM530JA00sJ0YrWJUsWluewqGqup/cmIp+VKJrmuX4ikcrC8TE1AlX
+        4ofnKdBazQ6lRlEyyCs1FNc=
+X-Google-Smtp-Source: ABdhPJyaSVBbXWUkEKOBMcqJRJ3PpFBWtpe9G2HDyRT0YjNatLpEx9rszU23NeAN/Nl5i6v1lrCLqg==
+X-Received: by 2002:a17:902:8548:b029:d0:cbe1:e70b with SMTP id d8-20020a1709028548b02900d0cbe1e70bmr15473944plo.25.1600105795009;
+        Mon, 14 Sep 2020 10:49:55 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:a6ae:11ff:fe11:fcc3])
+        by smtp.gmail.com with ESMTPSA id c1sm4855788pfj.219.2020.09.14.10.49.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2020 10:49:54 -0700 (PDT)
+Date:   Mon, 14 Sep 2020 10:49:52 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-input@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] Input: imx6ul_tsc - clean up some errors in
+ imx6ul_tsc_resume()
+Message-ID: <20200914174952.GS1665100@dtor-ws>
+References: <20200905124942.GC183976@mwanda>
 MIME-Version: 1.0
-References: <20200912183334.22683-1-lukas.bulwahn@gmail.com> <alpine.DEB.2.21.2009131156090.6163@felia>
-In-Reply-To: <alpine.DEB.2.21.2009131156090.6163@felia>
-From:   Joel Stanley <joel@jms.id.au>
-Date:   Mon, 14 Sep 2020 12:25:41 +0000
-Message-ID: <CACPK8XdvmUN6XsqGEYMwyb1JhWtm9Nyrje8xXx2zBN4N=+gNow@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: make linux-aspeed list remarks consistent
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
-        dri-devel@lists.freedesktop.org,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200905124942.GC183976@mwanda>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 13 Sep 2020 at 09:57, Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
->
->
->
-> On Sat, 12 Sep 2020, Lukas Bulwahn wrote:
->
-> > Commit f15a3ea80391 ("MAINTAINERS: Add ASPEED BMC GFX DRM driver entry")
-> > does not mention that linux-aspeed@lists.ozlabs.org is moderated for
-> > non-subscribers, but the other three entries for
-> > linux-aspeed@lists.ozlabs.org do.
-> >
-> > By 'majority vote' among entries, let us assume it was just missed here and
-> > adjust it to be consistent with others.
-> >
-> > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> > ---
-> > applies cleanly on master and next-20200911
-> >
-> > Joel, please ack.
-> > David, Daniel, please pick this minor non-urgent clean-up patch.
-> >
-> > This patch submission will also show me if linux-aspeed is moderated or
-> > not. I have not subscribed to linux-aspeed and if it shows up quickly in
-> > the archive, the list is probably not moderated; and if it takes longer,
-> > it is moderated, and hence, validating the patch.
-> >
->
-> I did quickly get back an moderation email that my email is being held
-> back. So, that response validates my patch.
+On Sat, Sep 05, 2020 at 03:49:42PM +0300, Dan Carpenter wrote:
+> If imx6ul_tsc_init() fails then we need to clean up the clocks.
+> 
+> I reversed the "if (input_dev->users) {" condition to make the code a
+> bit simpler.
+> 
+> Fixes: 6cc527b05847 ("Input: imx6ul_tsc - propagate the errors")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-The bmc related lists (openbmc@, linux-aspeed@, linux-fsi@) on
-ozlabs.org that I own have a soft-moderation policy. The first time
-you post a patch I add you to a whitelist. Given the low volume on
-these lists this works for me.
+Applied, thank you.
 
-I don't know if this necessitates marking the lists as moderated in
-MAINTINERS, but if you find that helpful then that's fine with me.
+There is also an opportunity to factor out some common code from
+open/close and suspend/resume, I'll send out a patch in a moment.
 
-Acked-by: Joel Stanley <joel@jms.id.au>
+Thanks.
 
-Cheers,
-
-Joel
+-- 
+Dmitry

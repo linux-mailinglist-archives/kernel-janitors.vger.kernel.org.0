@@ -2,160 +2,126 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DC05268531
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 08:57:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5386268580
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 09:08:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726075AbgING5F (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Sep 2020 02:57:05 -0400
-Received: from mailout3.samsung.com ([203.254.224.33]:43300 "EHLO
-        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726120AbgING46 (ORCPT
+        id S1726042AbgINHIn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Sep 2020 03:08:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54246 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726094AbgINHIj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Sep 2020 02:56:58 -0400
-Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
-        by mailout3.samsung.com (KnoxPortal) with ESMTP id 20200914065655epoutp03e6fe3b4c9198dc56315e6a9d2dff81ca~0lBvxP_hm2031420314epoutp03q
-        for <kernel-janitors@vger.kernel.org>; Mon, 14 Sep 2020 06:56:55 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20200914065655epoutp03e6fe3b4c9198dc56315e6a9d2dff81ca~0lBvxP_hm2031420314epoutp03q
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1600066615;
-        bh=C4XSZmER5MiWAkWbGr3v851kfh36ZagoIZlAAYNfoi8=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=dDM5dzCM/tU6Z7wFrOzwgje3QdEWHiwQLjix4eE1MJwZmVlj9/jhBKiOqpL/lmrX2
-         sp8Ao1JvB5GblylEhnHmlSSJ9iVwEo1L9IPslz/8qpFh89wcOAGYh+gu+xeuWkKvZn
-         Y2/weDxpNbcb7IWmaaZTEFpDih59oC8MzrG99Oes=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-        epcas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20200914065654epcas1p203ecdacb14b31928006da737a9880b32~0lBvWwKM40577705777epcas1p2g;
-        Mon, 14 Sep 2020 06:56:54 +0000 (GMT)
-Received: from epsmges1p5.samsung.com (unknown [182.195.40.153]) by
-        epsnrtp4.localdomain (Postfix) with ESMTP id 4Bqcbm37TRzMqYkl; Mon, 14 Sep
-        2020 06:56:52 +0000 (GMT)
-Received: from epcas1p4.samsung.com ( [182.195.41.48]) by
-        epsmges1p5.samsung.com (Symantec Messaging Gateway) with SMTP id
-        D1.F3.20696.3341F5F5; Mon, 14 Sep 2020 15:56:52 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-        epcas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20200914065651epcas1p22e28d708d21874eca2cb84db41c976ac~0lBsKuUlt0084800848epcas1p2H;
-        Mon, 14 Sep 2020 06:56:51 +0000 (GMT)
-Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
-        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200914065651epsmtrp115b6fc19ae0a4c2c4d19ce1d9cfcb7c5~0lBsJSWzS2839628396epsmtrp1g;
-        Mon, 14 Sep 2020 06:56:51 +0000 (GMT)
-X-AuditID: b6c32a39-47198a80000050d8-54-5f5f14331f17
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-        epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
-        CC.B4.08303.3341F5F5; Mon, 14 Sep 2020 15:56:51 +0900 (KST)
-Received: from [10.113.221.102] (unknown [10.113.221.102]) by
-        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200914065651epsmtip2f48e276ad838e02f9bba22738298e477~0lBr2HCLy2271522715epsmtip28;
-        Mon, 14 Sep 2020 06:56:51 +0000 (GMT)
-Subject: Re: [PATCH] PM / devfreq: tegra30: disable clock on error in probe
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Dmitry Osipenko <digetx@gmail.com>
-Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-From:   Chanwoo Choi <cw00.choi@samsung.com>
-Organization: Samsung Electronics
-Message-ID: <2ceb045a-ebac-58d7-0250-4ea39d711ce8@samsung.com>
-Date:   Mon, 14 Sep 2020 16:09:02 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:59.0) Gecko/20100101
-        Thunderbird/59.0
+        Mon, 14 Sep 2020 03:08:39 -0400
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C020C06174A;
+        Mon, 14 Sep 2020 00:08:36 -0700 (PDT)
+Received: by mail-ej1-x643.google.com with SMTP id z23so21604102ejr.13;
+        Mon, 14 Sep 2020 00:08:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:in-reply-to:message-id:references
+         :user-agent:mime-version;
+        bh=3BwV3eqQxR2q+pjhckPY9e2FGa7fDKgyPbhSIosiRac=;
+        b=RWzwor+bVqWYRQlIlKtz9Im9rt+ctVgfNYz/qvojMqE5WP3pVKL8rNSceBnNmu89no
+         ik6VpaY1n6IWLNSGepwca8jQgNv/iEYcNQDqhqpDzaI+EhTCnZ1D0UuMmuXeBc+DoQpb
+         8bBIa/65W8UqBXTVZY1NdjldRuZgRHGMZA1/X9sbY6rk/EakGdDpzBsF0C/iHolVtU3k
+         sTKQ5AJZcaa2a5Li8Ph/FL2Wu/miW5+//3nS6ngwF5oCGk0Gwx/84Q8BwJpkL1xAaFkO
+         RFGl5VKKtXzeDlAB0yTZtR98s8so0zW+DloncaKcdM68bogbLyRExtUomWjT1gwvULzR
+         bilQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version;
+        bh=3BwV3eqQxR2q+pjhckPY9e2FGa7fDKgyPbhSIosiRac=;
+        b=JV3hSPZ4qCgTPPTWGiG6/LI7QQKUbrokyNKFbktR+P4fMyTvzjH9z658P8nPT0ArHj
+         sqZxm0NgHqiWLxr0OihbLjmygsh/RiIYyuMdaH3x/WSYbxZluOP7fjJBAXpX8TYnTnVl
+         HhbSDrNvWfLWjtyZ40YJc70kS3OHaleRetIF/btr7r3KvwcKVUmyiBfWGold9vj2I0Uv
+         DQRldsEGr8O/NlU1O3QWDmEh8NWTTHBHkaS7X6nocI+QKMu+uVclU4krdY4Z8VLPVveK
+         Xbybz2t8O4PF62RmPP6mQsn1TGL5djNwQlTdph56QYACKqkQLRhEiXI+Ue/XozJxljvQ
+         l4SA==
+X-Gm-Message-State: AOAM531OycZz5XcEw4h7Q1vD6JFkK1GexanFgIYR8Z8Ang2LiIUUmMw/
+        gytgfopzjG8F38oRbVDLzJ1qq0jfxmmls7Ef
+X-Google-Smtp-Source: ABdhPJzyF0wH7O+BzLyXZXC7DAnv404JgSq4TUAfNNmUQx2qdz7opyv/dSEdSQhJN0ddtOAWkab1Sg==
+X-Received: by 2002:a17:906:4154:: with SMTP id l20mr14138366ejk.68.1600067314823;
+        Mon, 14 Sep 2020 00:08:34 -0700 (PDT)
+Received: from felia ([2001:16b8:2ddc:3000:7936:d9d0:986e:cca5])
+        by smtp.gmail.com with ESMTPSA id i3sm8745206edn.55.2020.09.14.00.08.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2020 00:08:34 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
+Date:   Mon, 14 Sep 2020 09:08:32 +0200 (CEST)
+X-X-Sender: lukas@felia
+To:     Joe Perches <joe@perches.com>
+cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: make linux-usb list remarks consistent
+In-Reply-To: <da6f30896a8fd78635b3ca454d77a5292a9aa76d.camel@perches.com>
+Message-ID: <alpine.DEB.2.21.2009140834010.17999@felia>
+References: <20200912121346.2796-1-lukas.bulwahn@gmail.com> <alpine.DEB.2.21.2009121416500.3770@felia> <20200912124025.GA174230@kroah.com> <da6f30896a8fd78635b3ca454d77a5292a9aa76d.camel@perches.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-In-Reply-To: <20200908072557.GC294938@mwanda>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrEJsWRmVeSWpSXmKPExsWy7bCmga6JSHy8wfWbjBav/01nsVj98TGj
-        RcusRSwWW29JW5xtesNu8bn3CKNF55dZbBa3G1ewWfzcNY/FgdNj56y77B69ze/YPD4+vcXi
-        0bdlFaPH501yAaxR2TYZqYkpqUUKqXnJ+SmZeem2St7B8c7xpmYGhrqGlhbmSgp5ibmptkou
-        PgG6bpk5QPcoKZQl5pQChQISi4uV9O1sivJLS1IVMvKLS2yVUgtScgosC/SKE3OLS/PS9ZLz
-        c60MDQyMTIEKE7Izju78w1gwg6tiwYzvjA2MKzi6GDk5JARMJG4susDSxcjFISSwg1Hi5db9
-        TBDOJ0aJO5s2QjmfGSWm/5jPBNMy5ddhZojELkaJH+cmsUE47xklbr44CVYlLOAt8fvBL9Yu
-        Rg4OEYEgiYZfgiA1zALtTBLT29+xgtSwCWhJ7H9xgw3E5hdQlLj64zEjiM0rYCfx99o0ZhCb
-        RUBVYtuDT2BxUYEwiZPbWqBqBCVOznzCAmJzCuhKzN9+gh3EZhYQl7j1BOJSZgF5ie1v54Bd
-        KiGwlEPi98H97BAvuEg8uvED6h1hiVfHt0DFpSRe9rdB2dUSK08eYYNo7mCU2LL/AitEwlhi
-        /9LJTCCfMQtoSqzfpQ8RVpTY+XsuI8RiPol3X3vAnpcQ4JXoaBOCKFGWuPzgLtRaSYnF7Z1s
-        ExiVZiF5ZxaSF2YheWEWwrIFjCyrGMVSC4pz01OLDQtMkaN7EyM4sWpZ7mCc/vaD3iFGJg7G
-        Q4wSHMxKIryuKbHxQrwpiZVVqUX58UWlOanFhxhNgQE8kVlKNDkfmNrzSuINTY2MjY0tTAzN
-        TA0NlcR5H95SiBcSSE8sSc1OTS1ILYLpY+LglGpgYt6kfnd2QOOp+J1bZM4rLFm44GNMRDAP
-        0+yVGj/dzewOvf4lOX/b1akPMysmWQROlwnysuXcI/JE+OAkU93FQu4pv3RvstRuW/5sd9OP
-        ffWTYpldMyzsXTeKzNq31/iR5LXNy1RX5dseXK/C1vC6ds7HrIsf2I5dW3mhIY/3u1XAhw9a
-        7+9ONkvcujJUVyx1wdvgkLU/HDMmZ3KsE3YW+f0lstWilkOtVZr3gnC/8fe4tNxXB15fzhK6
-        t4Bvp/0r6+lbVBcJeEfd8kn/cPlM8kWjaDYb7S4p519Ri6blLHz+TEvzzvYyXY0zVZ5Zq47w
-        aGxfsVTnbcXHpSdP8XkslFTdvHpTxbMc0wuuUQWup5RYijMSDbWYi4oTAe+wp741BAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFuphkeLIzCtJLcpLzFFi42LZdlhJXtdYJD7e4PgXMYvX/6azWKz++JjR
-        omXWIhaLrbekLc42vWG3+Nx7hNGi88ssNovbjSvYLH7umsfiwOmxc9Zddo/e5ndsHh+f3mLx
-        6NuyitHj8ya5ANYoLpuU1JzMstQifbsEroyjO/8wFszgqlgw4ztjA+MKji5GTg4JAROJKb8O
-        M3cxcnEICexglHi49SwrREJSYtrFo0AJDiBbWOLw4WKImreMEktWvQKrERbwlvj94BeYLSIQ
-        JPHg2RJmEJtZoJNJ4vgZO4iGBkaJNxuawBJsAloS+1/cYAOx+QUUJa7+eMwIYvMK2En8vTYN
-        rIZFQFVi24NPYHFRgTCJnUseM0HUCEqcnPmEBcTmFNCVmL/9BDvEMnWJP/MuQS0Wl7j1ZD4T
-        hC0vsf3tHOYJjMKzkLTPQtIyC0nLLCQtCxhZVjFKphYU56bnFhsWGOWllusVJ+YWl+al6yXn
-        525iBEeYltYOxj2rPugdYmTiYDzEKMHBrCTC65oSGy/Em5JYWZValB9fVJqTWnyIUZqDRUmc
-        9+ushXFCAumJJanZqakFqUUwWSYOTqkGJu2kOQ6ZiZeiA9xUDsskLmN6336Tx7s19WhrZc/H
-        lxvSZm8N+/Ew67PQ3n1/hPU217SlH8njehEXe7HA6dMFl9P3BFInXrGM5JO7wjJrwublb3sK
-        OULep0TvFNu0PebqUmbHyrLpbjEf2nLnt8zoYZflTM3NKp/7Oz06tcJb+Ijrxl2MK8taKx+H
-        vzlVd3nP7/2dE7+nPuWd53dTiE3pWU9EgIo2d6rbqeln17Bsuf1sxxufltcy/J/vl3Sc3RT0
-        4cmlXn2/Pa+Oq7z5+VN6+o61r87P/p8V6hqUGtdyzlxx9q4m50Ut/C1Ldh4vPfueeVqYOvOE
-        BfdlXoY8/9X19YXcuRU7ep59nXKbN2+XNIcSS3FGoqEWc1FxIgB8r3SxHwMAAA==
-X-CMS-MailID: 20200914065651epcas1p22e28d708d21874eca2cb84db41c976ac
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: SVC_REQ_APPROVE
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20200908072627epcas1p41f2c8c2730d42bd8935a40b0ab8122f7
-References: <CGME20200908072627epcas1p41f2c8c2730d42bd8935a40b0ab8122f7@epcas1p4.samsung.com>
-        <20200908072557.GC294938@mwanda>
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
 
-On 9/8/20 4:25 PM, Dan Carpenter wrote:
-> This error path needs to call clk_disable_unprepare().
+
+On Sat, 12 Sep 2020, Joe Perches wrote:
+
+> On Sat, 2020-09-12 at 14:40 +0200, Greg Kroah-Hartman wrote:
+> > On Sat, Sep 12, 2020 at 02:19:02PM +0200, Lukas Bulwahn wrote:
+> > > 
+> > > On Sat, 12 Sep 2020, Lukas Bulwahn wrote:
+> > > 
+> > > > This patch submission will also show me if linux-usb is moderated or not.
+> > > > I have not subscribed to linux-usb and if it shows up quickly in the
+> > > > archive, the list is probably not moderated, and hence, validating the
+> > > > patch.
+> > > > 
+> > > 
+> > > The patch showed up in the archives within seconds:
+> > > 
+> > > https://lore.kernel.org/linux-usb/20200912121346.2796-1-lukas.bulwahn@gmail.com/
+> > > 
+> > > So, the linux-usb list is most likely not moderated. Patch validated.
+> > 
+> > Yes, it is not moderated, and never has been, no idea where that idea came from.
 > 
-> Fixes: 7296443b900e ("PM / devfreq: tegra30: Handle possible round-rate error")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> ---
->  drivers/devfreq/tegra30-devfreq.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> There's also linux-samsung-soc@vger.kernel.org
+> that is listed as moderated
 > 
-> diff --git a/drivers/devfreq/tegra30-devfreq.c b/drivers/devfreq/tegra30-devfreq.c
-> index e94a27804c20..dedd39de7367 100644
-> --- a/drivers/devfreq/tegra30-devfreq.c
-> +++ b/drivers/devfreq/tegra30-devfreq.c
-> @@ -836,7 +836,8 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
->  	rate = clk_round_rate(tegra->emc_clock, ULONG_MAX);
->  	if (rate < 0) {
->  		dev_err(&pdev->dev, "Failed to round clock rate: %ld\n", rate);
-> -		return rate;
-> +		err = rate;
-> +		goto disable_clk;
->  	}
+> Are any of the vger lists actually moderated?
 >  
->  	tegra->max_freq = rate / KHZ;
-> @@ -897,6 +898,7 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
->  	dev_pm_opp_remove_all_dynamic(&pdev->dev);
->  
->  	reset_control_reset(tegra->reset);
-> +disable_clk:
->  	clk_disable_unprepare(tegra->clock);
-
-Is it doesn't need to reset with reset_contrl_reset()?
-
->  
->  	return err;
-> 
 
 
--- 
-Best Regards,
-Chanwoo Choi
-Samsung Electronics
+Joe, I found these five list entries with inconsistent remarks:
+
+- linux-usb@vger.kernel.org:
+  - Patch: https://lore.kernel.org/lkml/20200912121346.2796-1-lukas.bulwahn@gmail.com/  (the patch here)
+
+- linux-aspeed@lists.ozlabs.org:
+  - Patch: https://lore.kernel.org/lkml/20200912183334.22683-1-lukas.bulwahn@gmail.com/
+
+- linux-mediatek@lists.infradead.org:
+  - Patch: https://lore.kernel.org/lkml/20200914053110.23286-1-lukas.bulwahn@gmail.com/
+    - initial patch here was wrong.
+    - waiting for somebody to confirm that it is not moderated to then 
+send the correct patch.
+
+- linux-samsung-soc@vger.kernel.org:
+  - Patch: https://lore.kernel.org/lkml/20200914061353.17535-1-lukas.bulwahn@gmail.com/
+
+- linux-arm-kernel@lists.infradead.org:
+  - by 'majority vote' (131 vs. 27), it is probably moderated.
+  - no patch sent yet; patch will follow once the others are accepted.
+
+Then, more patches on adding 'exploders for non-subscribers' remarks will 
+follow.
+
+
+Lukas

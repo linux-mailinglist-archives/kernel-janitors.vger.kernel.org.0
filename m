@@ -2,144 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ABA7268BDF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 15:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7121A268CAE
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 16:00:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726667AbgINNMC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Sep 2020 09:12:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54014 "EHLO
+        id S1726823AbgINOAD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Sep 2020 10:00:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726299AbgINNLZ (ORCPT
+        with ESMTP id S1726785AbgINN5o (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Sep 2020 09:11:25 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5810C06174A;
-        Mon, 14 Sep 2020 06:11:24 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id x14so18638390wrl.12;
-        Mon, 14 Sep 2020 06:11:24 -0700 (PDT)
+        Mon, 14 Sep 2020 09:57:44 -0400
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 579FDC06174A;
+        Mon, 14 Sep 2020 06:56:30 -0700 (PDT)
+Received: by mail-lf1-x144.google.com with SMTP id x69so13548583lff.3;
+        Mon, 14 Sep 2020 06:56:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=9w3sxxj8pSXMWFjqFI11OsxhpoFFNgS3AccbtAl9K1M=;
-        b=lBT/TEIoVFDPRE5LwTVY/VpAg2giTJNs4JR7ctTfRE1fCQmUZXODK+A2klNxsJhbwR
-         m9NC+xn8xfAqF4J5rMCWADG08i1mY7wpdcnPMLMKEBuTVZF4dAzSMkG40HYKngprFpSs
-         fDBHbBw4eiddbMeHOZX9207boj7dTc0D5ErsiWBslRM7+JMaFOxmksFe/phZI072dX29
-         2pZZLE1jUyORQkqa6pEfBwjtA2xpfN6ouZqbgA3S9VJlbrcyBvW/YZVLwWcDc0YWZaV9
-         vo8Ox5rSwCDom5JJX69nSnfMH6vNRGWGUheLbCbnyESqoz/rOOyuKmg4xZ4sPULfrWNI
-         ALVQ==
+        bh=uArJZUWJNsNwbNRDiP6iCEIY7hPr+mzob4EFGdtLq2w=;
+        b=qGBffOTgUyz69knXNB8/iJB1YZl+BZ58HcVNg8MtMX9YXAFXu6qAUexC6zRVvWUxlX
+         3MET1EViRmFkbjyw6eVwhWfIfRl3jVzZ81rJB1eoWc6vh6UnNmaaCbUmbRTESjqeqla3
+         +YEBgC8wSBOtMcVpRobXotmz1+YKbhTQrnpnUnSzeB+QYkjxgV8UXGCoebpuVtVv8ZQp
+         WpVXlvzSF8DjWv8jh2nKmNFZe802EzaHyM7YWCkj/q05jsAuGy/dmtcjqOjn9UxZVBiV
+         PH8zkyJtK8QwJsptKYfjjEGYPPXarw9fEya1vRtx5C9V2lallevuYSo+l+uzBYyZZLOS
+         TscA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=9w3sxxj8pSXMWFjqFI11OsxhpoFFNgS3AccbtAl9K1M=;
-        b=DS/sZ/76+RPDC7iEhzZFM2W8RFQvhhyusxYvg8ry6VVlk66N/WfAGiuNIR2xlKE9WV
-         /JLXiMsUvM3GWJcbDSz3xAL2AAxor+zrp/3KPaU60VJBGyr1lPbVVzqV5d08r583oBCv
-         Yz4Wz4lPKeRXaiT0tK68aN8/+ndZ/HJVJzCbXY5imDa0LV5VBLCZd3rmXH1EwXMeoHZx
-         K2PXagMzMfzqHgVx5NsX3Opm/tkJRlt9IUSZMZdRO79iPTYk5xvn4KxzrazU2xGKJ7JR
-         qiLHxTsR2D2olDN0JibYWC3NW0va4rFXBv5tSv3HQiCdr+ZIqXHLuzf4B4tnl4ezcoRD
-         4shw==
-X-Gm-Message-State: AOAM531ZgpcVgNr4LQT1KphqeQ5iX20lcRFAk5bB+bRrOojbwLCLtx/S
-        wF6ySv7DxTNYHj6BeL56Iwj+/l5wcBgVHQ==
-X-Google-Smtp-Source: ABdhPJzSLIDDoxmjCP7UlhRP0PsUbCmacVeAoUB2b/QALbpC2eIxxdOx01zPUhBWyQo8GwEN91CDPA==
-X-Received: by 2002:a05:6000:11cd:: with SMTP id i13mr15276243wrx.140.1600089083213;
-        Mon, 14 Sep 2020 06:11:23 -0700 (PDT)
-Received: from ziggy.stardust ([213.195.113.201])
-        by smtp.gmail.com with ESMTPSA id i16sm20417229wrq.73.2020.09.14.06.11.22
+        bh=uArJZUWJNsNwbNRDiP6iCEIY7hPr+mzob4EFGdtLq2w=;
+        b=JSaUys4JWXuZ25YTC/w+sUhP98udFhAVJ4GMIIvUpR5BAnreSBISigrs01xQgG26ng
+         l/8hDzXgblSUCz8/Do+mz7NNy3lljbDDh8D9q3Yi43MNCekHn1efPm8enzXe4gpmgAd0
+         12xK8I8xT3eg3BIQPn7CTRZ3l1h97X9lvamu7T8EwiHQfUYpEHNSrtIOdcDaOXzRRoge
+         eXEWeUdGEYifP5fKsHwiepS3La4spVmz8jKnFZVPJcpVsuotlWcMOZy3jXf2kXxkfQsU
+         p1tjUrH/7/wd10QxPB56RVIyJ9qjJ9/oFFc0ydNBn8FroYlW+LACNpv9uuq+KDmg76g0
+         o9mQ==
+X-Gm-Message-State: AOAM533BRAf5TNSiu2dRBdXABphjoLNXXuVvzxCmN8kAcQqx1GirjP94
+        E0jvsfYtkCiHqwaiM8E2blQBgsI20sI=
+X-Google-Smtp-Source: ABdhPJzmb13YMA0mRV1PjF97gh4YRC/HLFtjLBFwesZwU8PIw+AtUvcN28KU0zbyBTDqOPL6wcQ0WA==
+X-Received: by 2002:a19:fc02:: with SMTP id a2mr4148916lfi.443.1600091788493;
+        Mon, 14 Sep 2020 06:56:28 -0700 (PDT)
+Received: from [192.168.2.145] (109-252-170-211.dynamic.spd-mgts.ru. [109.252.170.211])
+        by smtp.googlemail.com with ESMTPSA id q7sm3674161lfr.16.2020.09.14.06.56.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Sep 2020 06:11:22 -0700 (PDT)
-Subject: Re: [PATCH] MAINTAINERS: make linux-mediatek list remarks consistent
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Ryder Lee <ryder.lee@mediatek.com>,
-        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20200914053110.23286-1-lukas.bulwahn@gmail.com>
- <f6bc41d3-5ce4-b9ea-e2bb-e0cee4de3179@gmail.com>
- <alpine.DEB.2.21.2009141208200.17999@felia>
-From:   Matthias Brugger <matthias.bgg@gmail.com>
-Message-ID: <9c5aaa15-bdd8-ae4f-0642-092566ab08ba@gmail.com>
-Date:   Mon, 14 Sep 2020 15:11:21 +0200
+        Mon, 14 Sep 2020 06:56:27 -0700 (PDT)
+Subject: Re: [PATCH] PM / devfreq: tegra30: disable clock on error in probe
+To:     Chanwoo Choi <cw00.choi@samsung.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <CGME20200908072627epcas1p41f2c8c2730d42bd8935a40b0ab8122f7@epcas1p4.samsung.com>
+ <20200908072557.GC294938@mwanda>
+ <2ceb045a-ebac-58d7-0250-4ea39d711ce8@samsung.com>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <44560522-f04e-ade5-2e02-9df56a6f79ba@gmail.com>
+Date:   Mon, 14 Sep 2020 16:56:26 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.21.2009141208200.17999@felia>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <2ceb045a-ebac-58d7-0250-4ea39d711ce8@samsung.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+14.09.2020 10:09, Chanwoo Choi пишет:
+> Hi,
+> 
+> On 9/8/20 4:25 PM, Dan Carpenter wrote:
+>> This error path needs to call clk_disable_unprepare().
+>>
+>> Fixes: 7296443b900e ("PM / devfreq: tegra30: Handle possible round-rate error")
+>> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+>> ---
+>> ---
+>>  drivers/devfreq/tegra30-devfreq.c | 4 +++-
+>>  1 file changed, 3 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/devfreq/tegra30-devfreq.c b/drivers/devfreq/tegra30-devfreq.c
+>> index e94a27804c20..dedd39de7367 100644
+>> --- a/drivers/devfreq/tegra30-devfreq.c
+>> +++ b/drivers/devfreq/tegra30-devfreq.c
+>> @@ -836,7 +836,8 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
+>>  	rate = clk_round_rate(tegra->emc_clock, ULONG_MAX);
+>>  	if (rate < 0) {
+>>  		dev_err(&pdev->dev, "Failed to round clock rate: %ld\n", rate);
+>> -		return rate;
+>> +		err = rate;
+>> +		goto disable_clk;
+>>  	}
+>>  
+>>  	tegra->max_freq = rate / KHZ;
+>> @@ -897,6 +898,7 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
+>>  	dev_pm_opp_remove_all_dynamic(&pdev->dev);
+>>  
+>>  	reset_control_reset(tegra->reset);
+>> +disable_clk:
+>>  	clk_disable_unprepare(tegra->clock);
+> 
+> Is it doesn't need to reset with reset_contrl_reset()?
 
+Hello, Chanwoo!
 
-On 14/09/2020 12:20, Lukas Bulwahn wrote:
-> 
-> 
-> On Mon, 14 Sep 2020, Matthias Brugger wrote:
-> 
->>
->>
->> On 14/09/2020 07:31, Lukas Bulwahn wrote:
->>> Commit 637cfacae96f ("PCI: mediatek: Add MediaTek PCIe host controller
->>> support") does not mention that linux-mediatek@lists.infradead.org is
->>> moderated for non-subscribers, but the other eight entries for
->>> linux-mediatek@lists.infradead.org do.
->>>
->>> Adjust this entry to be consistent with all others.
->>>
->>> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
->>
->> Maybe rephrase the commit message to something like:
->> "Mark linux-mediatek@lists.infraded.org as moderated for the MediaTek PCIe
->> host controller entry, as the list actually is moderated."
->>
->> Anyway:
->> Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
->>
->>> ---
->>> applies cleanly on v5.9-rc5 and next-20200911
->>>
->>> Ryder, please ack.
->>>
->>> Bjorn, Matthias, please pick this minor non-urgent clean-up patch.
->>>
->>> This patch submission will also show me if linux-mediatek is moderated or
->>> not. I have not subscribed to linux-mediatek and if it shows up quickly in
->>> the archive, the list is probably not moderated; and if it takes longer, it
->>> is moderated, and hence, validating the patch.
->>
->> I can affirm the list is moderated :)
->>
-> 
-> Hmm, do we mean the same "moderation" here?
-> 
-> I believe a mailing list with the remark "moderated for non-subscribers"
-> means that a mail from an address that has not subscribed to the mailing
-> list is put on hold and needs to be manually permitted to be seen on the
-> mailing list.
-> 
-> Matthias, is that also your understanding of "moderated for
-> non-subscribers" for your Reviewed-by tag?
-
-Yes.
-
-> 
-> I am not subscribed to linux-mediatek. When I sent an email to the list,
-> it showed up really seconds later in the lore.kernel.org of the
-> linux-mediatek public-inbox repository. So, either it was delivered
-> quickly as it is not moderated or my check with lore.kernel.org is wrong,
-> e.g., mails show up in the lore.kernel.org archive, even they were not
-> yet permitted on the actual list.
-> 
-
-I'm the moderator and I get requests to moderate emails. I suppose I added you 
-to the accepted list because of earlier emails you send.
-
-Regards,
-Matthias
+It's reset just before the clk_round_rate() invocation, hence there
+shouldn't be a need to reset it second time.

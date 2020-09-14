@@ -2,66 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5386268580
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 09:08:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7470126858E
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 09:14:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726042AbgINHIn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Sep 2020 03:08:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54246 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726094AbgINHIj (ORCPT
+        id S1726098AbgINHOM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Sep 2020 03:14:12 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:53394
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726063AbgINHOL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Sep 2020 03:08:39 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C020C06174A;
-        Mon, 14 Sep 2020 00:08:36 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id z23so21604102ejr.13;
-        Mon, 14 Sep 2020 00:08:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=3BwV3eqQxR2q+pjhckPY9e2FGa7fDKgyPbhSIosiRac=;
-        b=RWzwor+bVqWYRQlIlKtz9Im9rt+ctVgfNYz/qvojMqE5WP3pVKL8rNSceBnNmu89no
-         ik6VpaY1n6IWLNSGepwca8jQgNv/iEYcNQDqhqpDzaI+EhTCnZ1D0UuMmuXeBc+DoQpb
-         8bBIa/65W8UqBXTVZY1NdjldRuZgRHGMZA1/X9sbY6rk/EakGdDpzBsF0C/iHolVtU3k
-         sTKQ5AJZcaa2a5Li8Ph/FL2Wu/miW5+//3nS6ngwF5oCGk0Gwx/84Q8BwJpkL1xAaFkO
-         RFGl5VKKtXzeDlAB0yTZtR98s8so0zW+DloncaKcdM68bogbLyRExtUomWjT1gwvULzR
-         bilQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=3BwV3eqQxR2q+pjhckPY9e2FGa7fDKgyPbhSIosiRac=;
-        b=JV3hSPZ4qCgTPPTWGiG6/LI7QQKUbrokyNKFbktR+P4fMyTvzjH9z658P8nPT0ArHj
-         sqZxm0NgHqiWLxr0OihbLjmygsh/RiIYyuMdaH3x/WSYbxZluOP7fjJBAXpX8TYnTnVl
-         HhbSDrNvWfLWjtyZ40YJc70kS3OHaleRetIF/btr7r3KvwcKVUmyiBfWGold9vj2I0Uv
-         DQRldsEGr8O/NlU1O3QWDmEh8NWTTHBHkaS7X6nocI+QKMu+uVclU4krdY4Z8VLPVveK
-         Xbybz2t8O4PF62RmPP6mQsn1TGL5djNwQlTdph56QYACKqkQLRhEiXI+Ue/XozJxljvQ
-         l4SA==
-X-Gm-Message-State: AOAM531OycZz5XcEw4h7Q1vD6JFkK1GexanFgIYR8Z8Ang2LiIUUmMw/
-        gytgfopzjG8F38oRbVDLzJ1qq0jfxmmls7Ef
-X-Google-Smtp-Source: ABdhPJzyF0wH7O+BzLyXZXC7DAnv404JgSq4TUAfNNmUQx2qdz7opyv/dSEdSQhJN0ddtOAWkab1Sg==
-X-Received: by 2002:a17:906:4154:: with SMTP id l20mr14138366ejk.68.1600067314823;
-        Mon, 14 Sep 2020 00:08:34 -0700 (PDT)
-Received: from felia ([2001:16b8:2ddc:3000:7936:d9d0:986e:cca5])
-        by smtp.gmail.com with ESMTPSA id i3sm8745206edn.55.2020.09.14.00.08.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2020 00:08:34 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Mon, 14 Sep 2020 09:08:32 +0200 (CEST)
-X-X-Sender: lukas@felia
-To:     Joe Perches <joe@perches.com>
-cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        Mon, 14 Sep 2020 03:14:11 -0400
+X-IronPort-AV: E=Sophos;i="5.76,359,1592863200"; 
+   d="scan'208";a="358868903"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Sep 2020 09:14:10 +0200
+Date:   Mon, 14 Sep 2020 09:14:09 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: make linux-usb list remarks consistent
-In-Reply-To: <da6f30896a8fd78635b3ca454d77a5292a9aa76d.camel@perches.com>
-Message-ID: <alpine.DEB.2.21.2009140834010.17999@felia>
-References: <20200912121346.2796-1-lukas.bulwahn@gmail.com> <alpine.DEB.2.21.2009121416500.3770@felia> <20200912124025.GA174230@kroah.com> <da6f30896a8fd78635b3ca454d77a5292a9aa76d.camel@perches.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+Subject: Re: [Cocci] [RFC PATCH] scripts: coccicheck: Improve error feedback
+ when coccicheck fails
+In-Reply-To: <287a8c82-6359-9a7e-c2ca-d26aa5be9650@web.de>
+Message-ID: <alpine.DEB.2.22.394.2009140913480.2357@hadrien>
+References: <44ab7442-1473-f267-4487-af98631a9338@web.de> <alpine.DEB.2.22.394.2009140821041.2357@hadrien> <287a8c82-6359-9a7e-c2ca-d26aa5be9650@web.de>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -71,57 +42,23 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
 
-On Sat, 12 Sep 2020, Joe Perches wrote:
+On Mon, 14 Sep 2020, Markus Elfring wrote:
 
-> On Sat, 2020-09-12 at 14:40 +0200, Greg Kroah-Hartman wrote:
-> > On Sat, Sep 12, 2020 at 02:19:02PM +0200, Lukas Bulwahn wrote:
-> > > 
-> > > On Sat, 12 Sep 2020, Lukas Bulwahn wrote:
-> > > 
-> > > > This patch submission will also show me if linux-usb is moderated or not.
-> > > > I have not subscribed to linux-usb and if it shows up quickly in the
-> > > > archive, the list is probably not moderated, and hence, validating the
-> > > > patch.
-> > > > 
-> > > 
-> > > The patch showed up in the archives within seconds:
-> > > 
-> > > https://lore.kernel.org/linux-usb/20200912121346.2796-1-lukas.bulwahn@gmail.com/
-> > > 
-> > > So, the linux-usb list is most likely not moderated. Patch validated.
-> > 
-> > Yes, it is not moderated, and never has been, no idea where that idea came from.
-> 
-> There's also linux-samsung-soc@vger.kernel.org
-> that is listed as moderated
-> 
-> Are any of the vger lists actually moderated?
->  
+> >> How do you think about to use the following check variant?
+> >>
+> >> +	if [ "${DEBUG_FILE}" != '/dev/null' -a "${DEBUG_FILE}" != '' ]; then
+> >
+> > What difference does it make?
+>
+> I propose two implementation details for further development considerations.
+>
+> 1. Do you care if any variable names should be enclosed by curly brackets
+>    in such script code?
+>
+> 2. A changeable value should be compared to two string literals here.
+>    Varying contents should be enclosed by double quotes.
+>    Constant values can be enclosed by single quotes, can't they?
 
+I have no idea.  Why can't they be nclosed by double quotes as well?
 
-Joe, I found these five list entries with inconsistent remarks:
-
-- linux-usb@vger.kernel.org:
-  - Patch: https://lore.kernel.org/lkml/20200912121346.2796-1-lukas.bulwahn@gmail.com/  (the patch here)
-
-- linux-aspeed@lists.ozlabs.org:
-  - Patch: https://lore.kernel.org/lkml/20200912183334.22683-1-lukas.bulwahn@gmail.com/
-
-- linux-mediatek@lists.infradead.org:
-  - Patch: https://lore.kernel.org/lkml/20200914053110.23286-1-lukas.bulwahn@gmail.com/
-    - initial patch here was wrong.
-    - waiting for somebody to confirm that it is not moderated to then 
-send the correct patch.
-
-- linux-samsung-soc@vger.kernel.org:
-  - Patch: https://lore.kernel.org/lkml/20200914061353.17535-1-lukas.bulwahn@gmail.com/
-
-- linux-arm-kernel@lists.infradead.org:
-  - by 'majority vote' (131 vs. 27), it is probably moderated.
-  - no patch sent yet; patch will follow once the others are accepted.
-
-Then, more patches on adding 'exploders for non-subscribers' remarks will 
-follow.
-
-
-Lukas
+julia

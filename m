@@ -2,184 +2,160 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A2802684EE
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 08:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DC05268531
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 08:57:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726070AbgINGdG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Sep 2020 02:33:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48782 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726043AbgINGdE (ORCPT
+        id S1726075AbgING5F (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Sep 2020 02:57:05 -0400
+Received: from mailout3.samsung.com ([203.254.224.33]:43300 "EHLO
+        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726120AbgING46 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Sep 2020 02:33:04 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09A57C06174A;
-        Sun, 13 Sep 2020 23:33:04 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id e23so21527372eja.3;
-        Sun, 13 Sep 2020 23:33:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=+zWKNmxOOGJkUHebwsTYQ6mc4spYZ4aje4SzHCAk110=;
-        b=XZ3kcprXlCIeiXQsSMjiNkLiTp/URhZzh806g+QB5c2yj127CT3KA4juOvAPsOw39x
-         fRK1jJMVS0neuIhmvHUPr/7e9++n/jWNMWU3borskvWPMcv2uKJ0S67OPS1YaASKT2Gq
-         aQGB4BO263uw92OclfMGe0VpmkmyGeg6PnK9fHXV9MC8zdMovf3acBwkSr+ewmZb2lZ4
-         gmFQJE2CtzDJr+cEXo/55vBM8PxziyIz1NgsJzAtMkzvRWNb/Ym1LqCCvr9CkSPEvtMq
-         ka2Nf6ZBQPDfWlEBaDkrUrvOr+aB+38ziuJR/IfGoGJTBQr0J425KySK/9bBf6Ty7TpU
-         hwRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=+zWKNmxOOGJkUHebwsTYQ6mc4spYZ4aje4SzHCAk110=;
-        b=JzW6SPeZaciZt1k6SGlRkvlcpIWTzulqPMiUnEHCR5U9yX26fV91CofoFPZKt6mET/
-         O/4Qu5CynEZmUQH5dgCmgqvQSF0Pw7lo3m86srnDBuErPxE56avPZM+p4lLwiLg3MZcI
-         kNEJAYLOYkCWuxpZMEc7+RqUYKhHaPGrqjJIV3wlvevUk4WZso1RZV+ZUDrhLB4KkPVX
-         H5iN7gmi+IS/0skBOhisXsjTDcqtHsTXjlkpoNqUKWzUWLdvnuDxKef5UATTwVwLjA0n
-         n9j7hlO7UOomha+k6mx6Fuuj2lDRrlqiNGipNaCFTZmyXkVD3lIfgZDyWaCGEEnKeqiF
-         nm2Q==
-X-Gm-Message-State: AOAM531evZL916U5TsFouxH8nvzWYCUkufipx4rdyBtdvuBtfCKHtL8K
-        k0GVuV2FCWbQdpfFrWuLohw=
-X-Google-Smtp-Source: ABdhPJzf2Au88TObtH5Ip+6/fozXZbgrbKrqtODjaYoPfyP31mlfnKCZT3U8rBS2fUNxs79TyN2uQw==
-X-Received: by 2002:a17:906:56c2:: with SMTP id an2mr13415924ejc.118.1600065182668;
-        Sun, 13 Sep 2020 23:33:02 -0700 (PDT)
-Received: from felia ([2001:16b8:2ddc:3000:7936:d9d0:986e:cca5])
-        by smtp.gmail.com with ESMTPSA id a26sm6962614ejk.66.2020.09.13.23.33.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2020 23:33:02 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Mon, 14 Sep 2020 08:32:56 +0200 (CEST)
-X-X-Sender: lukas@felia
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-cc:     Krzysztof Kozlowski <k.kozlowski.k@gmail.com>,
-        linux-samsung-soc@vger.kernel.org,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: mark linux-samsung-soc list non-moderated
-In-Reply-To: <20200914061353.17535-1-lukas.bulwahn@gmail.com>
-Message-ID: <alpine.DEB.2.21.2009140819130.17999@felia>
-References: <20200914061353.17535-1-lukas.bulwahn@gmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        Mon, 14 Sep 2020 02:56:58 -0400
+Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
+        by mailout3.samsung.com (KnoxPortal) with ESMTP id 20200914065655epoutp03e6fe3b4c9198dc56315e6a9d2dff81ca~0lBvxP_hm2031420314epoutp03q
+        for <kernel-janitors@vger.kernel.org>; Mon, 14 Sep 2020 06:56:55 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20200914065655epoutp03e6fe3b4c9198dc56315e6a9d2dff81ca~0lBvxP_hm2031420314epoutp03q
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1600066615;
+        bh=C4XSZmER5MiWAkWbGr3v851kfh36ZagoIZlAAYNfoi8=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=dDM5dzCM/tU6Z7wFrOzwgje3QdEWHiwQLjix4eE1MJwZmVlj9/jhBKiOqpL/lmrX2
+         sp8Ao1JvB5GblylEhnHmlSSJ9iVwEo1L9IPslz/8qpFh89wcOAGYh+gu+xeuWkKvZn
+         Y2/weDxpNbcb7IWmaaZTEFpDih59oC8MzrG99Oes=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+        epcas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200914065654epcas1p203ecdacb14b31928006da737a9880b32~0lBvWwKM40577705777epcas1p2g;
+        Mon, 14 Sep 2020 06:56:54 +0000 (GMT)
+Received: from epsmges1p5.samsung.com (unknown [182.195.40.153]) by
+        epsnrtp4.localdomain (Postfix) with ESMTP id 4Bqcbm37TRzMqYkl; Mon, 14 Sep
+        2020 06:56:52 +0000 (GMT)
+Received: from epcas1p4.samsung.com ( [182.195.41.48]) by
+        epsmges1p5.samsung.com (Symantec Messaging Gateway) with SMTP id
+        D1.F3.20696.3341F5F5; Mon, 14 Sep 2020 15:56:52 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200914065651epcas1p22e28d708d21874eca2cb84db41c976ac~0lBsKuUlt0084800848epcas1p2H;
+        Mon, 14 Sep 2020 06:56:51 +0000 (GMT)
+Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200914065651epsmtrp115b6fc19ae0a4c2c4d19ce1d9cfcb7c5~0lBsJSWzS2839628396epsmtrp1g;
+        Mon, 14 Sep 2020 06:56:51 +0000 (GMT)
+X-AuditID: b6c32a39-47198a80000050d8-54-5f5f14331f17
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
+        CC.B4.08303.3341F5F5; Mon, 14 Sep 2020 15:56:51 +0900 (KST)
+Received: from [10.113.221.102] (unknown [10.113.221.102]) by
+        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200914065651epsmtip2f48e276ad838e02f9bba22738298e477~0lBr2HCLy2271522715epsmtip28;
+        Mon, 14 Sep 2020 06:56:51 +0000 (GMT)
+Subject: Re: [PATCH] PM / devfreq: tegra30: disable clock on error in probe
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Dmitry Osipenko <digetx@gmail.com>
+Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+From:   Chanwoo Choi <cw00.choi@samsung.com>
+Organization: Samsung Electronics
+Message-ID: <2ceb045a-ebac-58d7-0250-4ea39d711ce8@samsung.com>
+Date:   Mon, 14 Sep 2020 16:09:02 +0900
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:59.0) Gecko/20100101
+        Thunderbird/59.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20200908072557.GC294938@mwanda>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrEJsWRmVeSWpSXmKPExsWy7bCmga6JSHy8wfWbjBav/01nsVj98TGj
+        RcusRSwWW29JW5xtesNu8bn3CKNF55dZbBa3G1ewWfzcNY/FgdNj56y77B69ze/YPD4+vcXi
+        0bdlFaPH501yAaxR2TYZqYkpqUUKqXnJ+SmZeem2St7B8c7xpmYGhrqGlhbmSgp5ibmptkou
+        PgG6bpk5QPcoKZQl5pQChQISi4uV9O1sivJLS1IVMvKLS2yVUgtScgosC/SKE3OLS/PS9ZLz
+        c60MDQyMTIEKE7Izju78w1gwg6tiwYzvjA2MKzi6GDk5JARMJG4susDSxcjFISSwg1Hi5db9
+        TBDOJ0aJO5s2QjmfGSWm/5jPBNMy5ddhZojELkaJH+cmsUE47xklbr44CVYlLOAt8fvBL9Yu
+        Rg4OEYEgiYZfgiA1zALtTBLT29+xgtSwCWhJ7H9xgw3E5hdQlLj64zEjiM0rYCfx99o0ZhCb
+        RUBVYtuDT2BxUYEwiZPbWqBqBCVOznzCAmJzCuhKzN9+gh3EZhYQl7j1BOJSZgF5ie1v54Bd
+        KiGwlEPi98H97BAvuEg8uvED6h1hiVfHt0DFpSRe9rdB2dUSK08eYYNo7mCU2LL/AitEwlhi
+        /9LJTCCfMQtoSqzfpQ8RVpTY+XsuI8RiPol3X3vAnpcQ4JXoaBOCKFGWuPzgLtRaSYnF7Z1s
+        ExiVZiF5ZxaSF2YheWEWwrIFjCyrGMVSC4pz01OLDQtMkaN7EyM4sWpZ7mCc/vaD3iFGJg7G
+        Q4wSHMxKIryuKbHxQrwpiZVVqUX58UWlOanFhxhNgQE8kVlKNDkfmNrzSuINTY2MjY0tTAzN
+        TA0NlcR5H95SiBcSSE8sSc1OTS1ILYLpY+LglGpgYt6kfnd2QOOp+J1bZM4rLFm44GNMRDAP
+        0+yVGj/dzewOvf4lOX/b1akPMysmWQROlwnysuXcI/JE+OAkU93FQu4pv3RvstRuW/5sd9OP
+        ffWTYpldMyzsXTeKzNq31/iR5LXNy1RX5dseXK/C1vC6ds7HrIsf2I5dW3mhIY/3u1XAhw9a
+        7+9ONkvcujJUVyx1wdvgkLU/HDMmZ3KsE3YW+f0lstWilkOtVZr3gnC/8fe4tNxXB15fzhK6
+        t4Bvp/0r6+lbVBcJeEfd8kn/cPlM8kWjaDYb7S4p519Ri6blLHz+TEvzzvYyXY0zVZ5Zq47w
+        aGxfsVTnbcXHpSdP8XkslFTdvHpTxbMc0wuuUQWup5RYijMSDbWYi4oTAe+wp741BAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFuphkeLIzCtJLcpLzFFi42LZdlhJXtdYJD7e4PgXMYvX/6azWKz++JjR
+        omXWIhaLrbekLc42vWG3+Nx7hNGi88ssNovbjSvYLH7umsfiwOmxc9Zddo/e5ndsHh+f3mLx
+        6NuyitHj8ya5ANYoLpuU1JzMstQifbsEroyjO/8wFszgqlgw4ztjA+MKji5GTg4JAROJKb8O
+        M3cxcnEICexglHi49SwrREJSYtrFo0AJDiBbWOLw4WKImreMEktWvQKrERbwlvj94BeYLSIQ
+        JPHg2RJmEJtZoJNJ4vgZO4iGBkaJNxuawBJsAloS+1/cYAOx+QUUJa7+eMwIYvMK2En8vTYN
+        rIZFQFVi24NPYHFRgTCJnUseM0HUCEqcnPmEBcTmFNCVmL/9BDvEMnWJP/MuQS0Wl7j1ZD4T
+        hC0vsf3tHOYJjMKzkLTPQtIyC0nLLCQtCxhZVjFKphYU56bnFhsWGOWllusVJ+YWl+al6yXn
+        525iBEeYltYOxj2rPugdYmTiYDzEKMHBrCTC65oSGy/Em5JYWZValB9fVJqTWnyIUZqDRUmc
+        9+ushXFCAumJJanZqakFqUUwWSYOTqkGJu2kOQ6ZiZeiA9xUDsskLmN6336Tx7s19WhrZc/H
+        lxvSZm8N+/Ew67PQ3n1/hPU217SlH8njehEXe7HA6dMFl9P3BFInXrGM5JO7wjJrwublb3sK
+        OULep0TvFNu0PebqUmbHyrLpbjEf2nLnt8zoYZflTM3NKp/7Oz06tcJb+Ijrxl2MK8taKx+H
+        vzlVd3nP7/2dE7+nPuWd53dTiE3pWU9EgIo2d6rbqeln17Bsuf1sxxufltcy/J/vl3Sc3RT0
+        4cmlXn2/Pa+Oq7z5+VN6+o61r87P/p8V6hqUGtdyzlxx9q4m50Ut/C1Ldh4vPfueeVqYOvOE
+        BfdlXoY8/9X19YXcuRU7ep59nXKbN2+XNIcSS3FGoqEWc1FxIgB8r3SxHwMAAA==
+X-CMS-MailID: 20200914065651epcas1p22e28d708d21874eca2cb84db41c976ac
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20200908072627epcas1p41f2c8c2730d42bd8935a40b0ab8122f7
+References: <CGME20200908072627epcas1p41f2c8c2730d42bd8935a40b0ab8122f7@epcas1p4.samsung.com>
+        <20200908072557.GC294938@mwanda>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hi,
 
-
-On Mon, 14 Sep 2020, Lukas Bulwahn wrote:
-
-> In fifteen entries mentioning linux-samsung-soc@vger.kernel.org in
-> MAINTAINERS, seven entries mention the list being moderated for
-> non-subscribers and eight entries do not. Clearly only one can be right,
-> though.
+On 9/8/20 4:25 PM, Dan Carpenter wrote:
+> This error path needs to call clk_disable_unprepare().
 > 
-> Joe Perches suggested that all vger.kernel.org are not moderated for
-> non-subscribers.
-> 
-> Remove all the remarks from the entries following Joe's suggestion.
-> 
-> Link: https://lore.kernel.org/lkml/da6f30896a8fd78635b3ca454d77a5292a9aa76d.camel@perches.com/
-> Suggested-by: Joe Perches <joe@perches.com>
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> Fixes: 7296443b900e ("PM / devfreq: tegra30: Handle possible round-rate error")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
-> applies cleanly on v5.9-rc5 and next-20200911
+> ---
+>  drivers/devfreq/tegra30-devfreq.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> Krzysztof, please pick this minor non-urgent cleanup patch.
-> 
-> This patch submission will also show me if linux-samsung-soc is moderated
-> or not. I have not subscribed to linux-samsung-soc and if it shows up
-> quickly in the archive, the list is probably not moderated, and hence,
-> validating the patch.
-> 
-
-The patch showed up within seconds in the archive:
-
-https://lore.kernel.org/linux-samsung-soc/20200914061353.17535-1-lukas.bulwahn@gmail.com/
-
-
-So, linux-samsung-soc seems not be moderated. So, this validates this 
-patch.
-
-Lukas
- 
->  MAINTAINERS | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 0d0862b19ce5..de8741d24cb0 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -2399,7 +2399,7 @@ ARM/SAMSUNG EXYNOS ARM ARCHITECTURES
->  M:	Kukjin Kim <kgene@kernel.org>
->  M:	Krzysztof Kozlowski <krzk@kernel.org>
->  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-> -L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
-> +L:	linux-samsung-soc@vger.kernel.org
->  S:	Maintained
->  Q:	https://patchwork.kernel.org/project/linux-samsung-soc/list/
->  F:	Documentation/arm/samsung/
-> @@ -2441,7 +2441,7 @@ F:	drivers/media/platform/s5p-g2d/
+> diff --git a/drivers/devfreq/tegra30-devfreq.c b/drivers/devfreq/tegra30-devfreq.c
+> index e94a27804c20..dedd39de7367 100644
+> --- a/drivers/devfreq/tegra30-devfreq.c
+> +++ b/drivers/devfreq/tegra30-devfreq.c
+> @@ -836,7 +836,8 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
+>  	rate = clk_round_rate(tegra->emc_clock, ULONG_MAX);
+>  	if (rate < 0) {
+>  		dev_err(&pdev->dev, "Failed to round clock rate: %ld\n", rate);
+> -		return rate;
+> +		err = rate;
+> +		goto disable_clk;
+>  	}
 >  
->  ARM/SAMSUNG S5P SERIES HDMI CEC SUBSYSTEM SUPPORT
->  M:	Marek Szyprowski <m.szyprowski@samsung.com>
-> -L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
-> +L:	linux-samsung-soc@vger.kernel.org
->  L:	linux-media@vger.kernel.org
->  S:	Maintained
->  F:	Documentation/devicetree/bindings/media/s5p-cec.txt
-> @@ -13321,7 +13321,7 @@ PCI DRIVER FOR SAMSUNG EXYNOS
->  M:	Jingoo Han <jingoohan1@gmail.com>
->  L:	linux-pci@vger.kernel.org
->  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-> -L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
-> +L:	linux-samsung-soc@vger.kernel.org
->  S:	Maintained
->  F:	drivers/pci/controller/dwc/pci-exynos.c
+>  	tegra->max_freq = rate / KHZ;
+> @@ -897,6 +898,7 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
+>  	dev_pm_opp_remove_all_dynamic(&pdev->dev);
 >  
-> @@ -13729,7 +13729,7 @@ M:	Tomasz Figa <tomasz.figa@gmail.com>
->  M:	Krzysztof Kozlowski <krzk@kernel.org>
->  M:	Sylwester Nawrocki <s.nawrocki@samsung.com>
->  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-> -L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
-> +L:	linux-samsung-soc@vger.kernel.org
->  S:	Maintained
->  Q:	https://patchwork.kernel.org/project/linux-samsung-soc/list/
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pinctrl/samsung.git
-> @@ -15275,7 +15275,7 @@ F:	include/linux/mfd/samsung/
->  SAMSUNG S3C24XX/S3C64XX SOC SERIES CAMIF DRIVER
->  M:	Sylwester Nawrocki <sylvester.nawrocki@gmail.com>
->  L:	linux-media@vger.kernel.org
-> -L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
-> +L:	linux-samsung-soc@vger.kernel.org
->  S:	Maintained
->  F:	drivers/media/platform/s3c-camif/
->  F:	include/media/drv-intf/s3c_camif.h
-> @@ -15324,7 +15324,7 @@ SAMSUNG SOC CLOCK DRIVERS
->  M:	Sylwester Nawrocki <s.nawrocki@samsung.com>
->  M:	Tomasz Figa <tomasz.figa@gmail.com>
->  M:	Chanwoo Choi <cw00.choi@samsung.com>
-> -L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
-> +L:	linux-samsung-soc@vger.kernel.org
->  S:	Supported
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/snawrocki/clk.git
->  F:	Documentation/devicetree/bindings/clock/exynos*.txt
-> @@ -15338,7 +15338,7 @@ M:	Kukjin Kim <kgene@kernel.org>
->  M:	Krzysztof Kozlowski <krzk@kernel.org>
->  M:	Andi Shyti <andi@etezian.org>
->  L:	linux-spi@vger.kernel.org
-> -L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
-> +L:	linux-samsung-soc@vger.kernel.org
->  S:	Maintained
->  F:	Documentation/devicetree/bindings/spi/spi-samsung.txt
->  F:	drivers/spi/spi-s3c*
-> -- 
-> 2.17.1
+>  	reset_control_reset(tegra->reset);
+> +disable_clk:
+>  	clk_disable_unprepare(tegra->clock);
+
+Is it doesn't need to reset with reset_contrl_reset()?
+
+>  
+>  	return err;
 > 
-> 
+
+
+-- 
+Best Regards,
+Chanwoo Choi
+Samsung Electronics

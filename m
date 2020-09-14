@@ -2,91 +2,154 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 640E6268D1E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 16:15:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8C6A268D4A
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 16:19:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726734AbgINOOx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Sep 2020 10:14:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37530 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726818AbgINOOJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Sep 2020 10:14:09 -0400
-Received: from coco.lan (ip5f5ad5d8.dynamic.kabel-deutschland.de [95.90.213.216])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7E16D20EDD;
-        Mon, 14 Sep 2020 14:13:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600092817;
-        bh=I5Q0Sc0ArcFSWCiqBhVtOYBqBwGBdQJZ2+JxwnWdPu0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=M2yl01g87iv19UGAdn4Upjcxf8rR5Nr9IcAatVzWgXbE3Ey/89Lpw7rAIwUvHyR45
-         l89MvnmNReNQHbVKj0fRb3Y9XDC4sAh836l4AKKyfHMPeqeg10BiXpQYIIWz28T9R4
-         5C1M/k3xtS9udIFl335N2gYZEa82JsfGJJpLMwGk=
-Date:   Mon, 14 Sep 2020 16:13:32 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     John Stultz <john.stultz@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] misc: hisi_hikey_usb: fix return of uninitialized
- ret status variable
-Message-ID: <20200914161332.2796e7b1@coco.lan>
-In-Reply-To: <20200914135646.99334-1-colin.king@canonical.com>
-References: <20200914135646.99334-1-colin.king@canonical.com>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        id S1726779AbgINOTk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Sep 2020 10:19:40 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:37820 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726559AbgINOSn (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 14 Sep 2020 10:18:43 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08EEEG9w157815;
+        Mon, 14 Sep 2020 14:18:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
+ bh=bsxzxxauVuOHcTQxTCVqBJw5rHgiolwtE47OQbVgT34=;
+ b=uZvxoH1hFLXW3YZr+4PJFop/qjEQoukA/tu3txJxRlZL5MTySCP8nNnDiM97D8XwVjWH
+ APqqN/LRsRZHb7M/mpIXyO+d7GZ8Rz/6dwN0ttp5aba2MtCvM1IL4FflD+nMRPt5nbkA
+ Z+yf7+S8q6iG0d9vmOhnczZ+32Iz0JZPWLGeuloZxU3JGBiOZ/F0W/bDPcqkJuPLIald
+ xVL2MldZsS53lt3aiv8C9p3iJMwhPGGe9XUYo3hrQ6y+daLmjnSaa/mfso1Y+GcbGBsc
+ ShSbo41iRm9Lr/o9D9ZrRHLFBuAnUsVQb7vVotLnQsPWA6BwocRt0axo06I95yWjjPMo Mg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 33j91d8f5n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 14 Sep 2020 14:18:04 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08EEFvOe011616;
+        Mon, 14 Sep 2020 14:18:04 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 33h7wm80qk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 14 Sep 2020 14:18:04 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08EEI2tm001838;
+        Mon, 14 Sep 2020 14:18:02 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 14 Sep 2020 14:18:01 +0000
+Date:   Mon, 14 Sep 2020 17:17:54 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Chanwoo Choi <cw00.choi@samsung.com>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] PM / devfreq: tegra30: disable clock on error in probe
+Message-ID: <20200914141754.GB18329@kadam>
+References: <CGME20200908072627epcas1p41f2c8c2730d42bd8935a40b0ab8122f7@epcas1p4.samsung.com>
+ <20200908072557.GC294938@mwanda>
+ <2ceb045a-ebac-58d7-0250-4ea39d711ce8@samsung.com>
+ <44560522-f04e-ade5-2e02-9df56a6f79ba@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <44560522-f04e-ade5-2e02-9df56a6f79ba@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9744 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ adultscore=0 bulkscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009140117
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9743 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 impostorscore=0
+ priorityscore=1501 malwarescore=0 suspectscore=0 mlxlogscore=999
+ clxscore=1015 adultscore=0 lowpriorityscore=0 spamscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009140117
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Em Mon, 14 Sep 2020 14:56:46 +0100
-Colin King <colin.king@canonical.com> escreveu:
-
-> From: Colin Ian King <colin.king@canonical.com>
+On Mon, Sep 14, 2020 at 04:56:26PM +0300, Dmitry Osipenko wrote:
+> 14.09.2020 10:09, Chanwoo Choi пишет:
+> > Hi,
+> > 
+> > On 9/8/20 4:25 PM, Dan Carpenter wrote:
+> >> This error path needs to call clk_disable_unprepare().
+> >>
+> >> Fixes: 7296443b900e ("PM / devfreq: tegra30: Handle possible round-rate error")
+> >> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> >> ---
+> >> ---
+> >>  drivers/devfreq/tegra30-devfreq.c | 4 +++-
+> >>  1 file changed, 3 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/devfreq/tegra30-devfreq.c b/drivers/devfreq/tegra30-devfreq.c
+> >> index e94a27804c20..dedd39de7367 100644
+> >> --- a/drivers/devfreq/tegra30-devfreq.c
+> >> +++ b/drivers/devfreq/tegra30-devfreq.c
+> >> @@ -836,7 +836,8 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
+> >>  	rate = clk_round_rate(tegra->emc_clock, ULONG_MAX);
+> >>  	if (rate < 0) {
+> >>  		dev_err(&pdev->dev, "Failed to round clock rate: %ld\n", rate);
+> >> -		return rate;
+> >> +		err = rate;
+> >> +		goto disable_clk;
+> >>  	}
+> >>  
+> >>  	tegra->max_freq = rate / KHZ;
+> >> @@ -897,6 +898,7 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
+> >>  	dev_pm_opp_remove_all_dynamic(&pdev->dev);
+> >>  
+> >>  	reset_control_reset(tegra->reset);
+> >> +disable_clk:
+> >>  	clk_disable_unprepare(tegra->clock);
+> > 
+> > Is it doesn't need to reset with reset_contrl_reset()?
 > 
-> Currently the return value from ret is uninitialized so the function
-> hisi_hikey_usb_parse_kirin970 is returning a garbage value when
-> succeeding. Since ret is not used anywhere else in the function, remove
-> it and just return 0 success at the end of the function.
+> Hello, Chanwoo!
 > 
-> Addresses-Coverity: ("Uninitialixed scalar variable")
-> Fixes: d210a0023590 ("misc: hisi_hikey_usb: add support for Hikey 970")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> It's reset just before the clk_round_rate() invocation, hence there
+> shouldn't be a need to reset it second time.
 
-Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Ah...  I was looking the wrong code.  Plus I don't really know this code
+very well.
 
-> ---
->  drivers/misc/hisi_hikey_usb.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/misc/hisi_hikey_usb.c b/drivers/misc/hisi_hikey_usb.c
-> index 2ddd4072788d..5759e7209023 100644
-> --- a/drivers/misc/hisi_hikey_usb.c
-> +++ b/drivers/misc/hisi_hikey_usb.c
-> @@ -151,7 +151,6 @@ static int hisi_hikey_usb_parse_kirin970(struct platform_device *pdev,
->  					 struct hisi_hikey_usb *hisi_hikey_usb)
->  {
->  	struct regulator *regulator;
-> -	int ret;
->  
->  	regulator = devm_regulator_get(&pdev->dev, "hub-vdd");
->  	if (IS_ERR(regulator)) {
-> @@ -172,7 +171,7 @@ static int hisi_hikey_usb_parse_kirin970(struct platform_device *pdev,
->  	if (IS_ERR(hisi_hikey_usb->reset))
->  		return PTR_ERR(hisi_hikey_usb->reset);
->  
-> -	return ret;
-> +	return 0;
->  }
->  
->  static int hisi_hikey_usb_probe(struct platform_device *pdev)
+If clk_prepare_enable() fails, then I would have assumed we need to call
+reset_control_deassert().  I would have assumed the
+reset_control_assert() and _deassert() functions were paired.  So what
+I'm suggesting is something like the following:  (I'll resend this if
+it's correct).
 
+[PATCH] PM / devfreq: tegra30: Add missing reset_control_deassert()
 
+If clk_prepare_enable() fails then probe needs to call the
+reset_control_deassert() function.
 
-Thanks,
-Mauro
+Fixes: 6234f38016ad ("PM / devfreq: tegra: add devfreq driver for Tegra Activity Monitor")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/devfreq/tegra30-devfreq.c | 1 +
+ 1 file changed, 1 insertions(+), 0 deletion(-)
+
+diff --git a/drivers/devfreq/tegra30-devfreq.c b/drivers/devfreq/tegra30-devfreq.c
+index e94a27804c20..ce217aba7b9d 100644
+--- a/drivers/devfreq/tegra30-devfreq.c
++++ b/drivers/devfreq/tegra30-devfreq.c
+@@ -828,6 +828,7 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
+ 	if (err) {
+ 		dev_err(&pdev->dev,
+ 			"Failed to prepare and enable ACTMON clock\n");
++		reset_control_deassert(tegra->reset);
+ 		return err;
+ 	}
+ 

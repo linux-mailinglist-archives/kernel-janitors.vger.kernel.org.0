@@ -2,104 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2CB5268D9B
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 16:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58DF6268E65
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 16:53:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726559AbgINO2p (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Sep 2020 10:28:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37620 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726280AbgINO2Q (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Sep 2020 10:28:16 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3D5BC06174A;
-        Mon, 14 Sep 2020 07:28:14 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id w11so13678547lfn.2;
-        Mon, 14 Sep 2020 07:28:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=a9JhPXmtDMQl39tV6r+JtAvNls1OvzKuICOGpS3XJk0=;
-        b=bIfiN/rWDpEnFzhemuaUXSjV+bijsLDTHiMSOGMN/h+y0Ez4DIppYxF+wQ+x32Oov3
-         pZIWpU6P+5RCllnzLruUcaqCNRmPXxJ3hbTvpU+7e6VvcsWorPe63/X4PuPKehXrTJFP
-         HQE7ieCOmHSUTVqjVjvTVRBsE2w753lEcnNfXjS8GT+lzkerC3DGNC1nMsfaOHaTFKJs
-         HNWbgtjmjkd6FZryz4z9rE7T5O4vRRNH25WJxaqu4NaHHY+CY8/qtRtbMwpEG/RhzGM5
-         d9GKeS94UcFvE1vNCHOg+K5ikshr+Mn6HcKVVMuMknThU/gndLzy7yW6KWwHdOihJWsf
-         uAQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=a9JhPXmtDMQl39tV6r+JtAvNls1OvzKuICOGpS3XJk0=;
-        b=B1NH3lgQ0vtw2X44asiDLed6Wya29yvNygCQu7P3m+x1yTWUmiFiB0MnL0AUK/POoA
-         c7m+640nTVQvsh6lXAJktyk7FcwjyNTifsBDITjxG/JRS9cleoaWJHhzlubs5wrCCkKg
-         OL4Ba0q0NV2BCxrmL+xRUnUJBUTR3KcmJM0OYIvJBKRqTNPn7DiS4Kkc5lFHpg5Eqyik
-         uLPTkMPMiSSUom8EgeVrVH1C+ve4En1NqVzIp8d+JnlDln71kF1j6sR9CkSgO8kCCg+Z
-         vRPhSBd2bRbfIVa0QIVAFOS/Q155JEKRhM6oOEwMvM220n00Yp10qGh+c66MJmH8IwCA
-         2iEQ==
-X-Gm-Message-State: AOAM532WclaPIRUXv7Mb1LGp5fKY5oc1DmU6w1aQPiLmYi/Gjn65BjB1
-        9CaQ4iC4x5hDguJwpkrkxAGMFaUtW9k=
-X-Google-Smtp-Source: ABdhPJw473AXuMouDoixI6tu95sUvsTpLM5Scs9mrMq/bmPR/EKAyQ1blmmM3taS/5NyuiMTg+bgXg==
-X-Received: by 2002:a19:650a:: with SMTP id z10mr2479151lfb.9.1600093693097;
-        Mon, 14 Sep 2020 07:28:13 -0700 (PDT)
-Received: from [192.168.2.145] (109-252-170-211.dynamic.spd-mgts.ru. [109.252.170.211])
-        by smtp.googlemail.com with ESMTPSA id z3sm4073281ljm.76.2020.09.14.07.28.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Sep 2020 07:28:12 -0700 (PDT)
-Subject: Re: [PATCH] PM / devfreq: tegra30: disable clock on error in probe
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Chanwoo Choi <cw00.choi@samsung.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <CGME20200908072627epcas1p41f2c8c2730d42bd8935a40b0ab8122f7@epcas1p4.samsung.com>
- <20200908072557.GC294938@mwanda>
- <2ceb045a-ebac-58d7-0250-4ea39d711ce8@samsung.com>
- <44560522-f04e-ade5-2e02-9df56a6f79ba@gmail.com>
- <20200914141754.GB18329@kadam>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <c0621c79-00e4-0fec-c98e-b46e231b30ef@gmail.com>
-Date:   Mon, 14 Sep 2020 17:28:11 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <20200914141754.GB18329@kadam>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        id S1726740AbgINOxG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Sep 2020 10:53:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53288 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726772AbgINOwr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 14 Sep 2020 10:52:47 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4F28D20715;
+        Mon, 14 Sep 2020 14:52:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600095166;
+        bh=M2DIyqZOF1aOYfADXh4hvgjSrHg+ONJQHW16u8xBjA4=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=0d2IhcbTsNq3ez+y+kRsDIEtX9nWSFo8nFYmvPWfwl7rZ/Dt+D9H9A/+CU3+bFfFk
+         a/zyAD4incso7WguvIDi8GCiGuKprme3/qQN79S57e2CJGeQNIBS6kicHaU3gLUdlO
+         eyd4Vg3/HIctzsK49G8UImGV9DWEPrApD0H8q9SM=
+Date:   Mon, 14 Sep 2020 15:51:58 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+        Colin King <colin.king@canonical.com>,
+        Andy Gross <agross@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <20200910150410.750959-1-colin.king@canonical.com>
+References: <20200910150410.750959-1-colin.king@canonical.com>
+Subject: Re: [PATCH] spi: qup: remove redundant assignment to variable ret
+Message-Id: <160009511676.5702.4493764455278443968.b4-ty@kernel.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-14.09.2020 17:17, Dan Carpenter пишет:
-...
->>> Is it doesn't need to reset with reset_contrl_reset()?
->>
->> Hello, Chanwoo!
->>
->> It's reset just before the clk_round_rate() invocation, hence there
->> shouldn't be a need to reset it second time.
-> 
-> Ah...  I was looking the wrong code.  Plus I don't really know this code
-> very well.
-> 
-> If clk_prepare_enable() fails, then I would have assumed we need to call
-> reset_control_deassert().  I would have assumed the
-> reset_control_assert() and _deassert() functions were paired.  So what
-> I'm suggesting is something like the following:  (I'll resend this if
-> it's correct).
+On Thu, 10 Sep 2020 16:04:10 +0100, Colin King wrote:
+> The variable ret is being initialized with a value that is
+> never read and it is being updated later with a new value. The
+> initialization is redundant and can be removed.
 
-The reset shouldn't be deasserted if clk-enable fails.
+Applied to
 
-Reset deassertion should be done only with enabled clock because reset
-happens synchronously with a clock tick, otherwise it makes no much
-sense to deassert the reset.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Yours current v1 variant is already good to me.
+Thanks!
+
+[1/1] spi: qup: remove redundant assignment to variable ret
+      commit: 4a6c7d6f940107d6383291e2cb450039790b752d
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

@@ -2,122 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9E7B268FFC
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 17:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C25E526938D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Sep 2020 19:35:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726397AbgINPcB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Sep 2020 11:32:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47626 "EHLO
+        id S1726301AbgINRfc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Sep 2020 13:35:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726003AbgINPbm (ORCPT
+        with ESMTP id S1726253AbgINM1T (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Sep 2020 11:31:42 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B2BEC06174A;
-        Mon, 14 Sep 2020 08:31:42 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id i1so17503edv.2;
-        Mon, 14 Sep 2020 08:31:41 -0700 (PDT)
+        Mon, 14 Sep 2020 08:27:19 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5A2AC061354;
+        Mon, 14 Sep 2020 05:25:55 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id b12so17331924edz.11;
+        Mon, 14 Sep 2020 05:25:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=fLNb41VIkD/RuPBy33egUq3B1KbchS1GHIy2wAcNoFg=;
-        b=d0tBg5CSotliTfnKU7Ilv5nD9qZmOmvj/sU2Ziv6THacAnNAFTW90Yu2SPIxroUKsV
-         xrmiUPNCSlyl3aS/OnAPZLAxu0/xuDAcixMjklz/Zrg9fu+RzNHWNFCCDDmRV9jPExea
-         EyTMhntUbksZ0nXC2jqaVEeNjXq/LcWt0oZy4H/4LLABUKEBm15YPRUshQarzoAzB4ZO
-         2RUhIwMFPfuM7dHoPvA8v/G6CLw9kdLaWm3xbA+CAXO7WNT4W7Wd4QEF+utG86NZbIbL
-         YurdpOElqlpSsf5ChLfltUGYueNj2XYA+YtnRMEU/+e+jAYqUtR5LXlCJ6NO9gB8c7l7
-         mz7w==
+        d=jms.id.au; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7BdFAddq3RL7rFBEGnlqI6CKwA0tfgEjJpCRYq7bxjU=;
+        b=SY+nMVNE8BVVG8ruSR5EiacuhIKxjjgXR9WrOal16ZSF/q8w+hTw0Ovle+QzD6126z
+         7fcMPAlyyrMVpVqQt9fd7pJ+l946ySRRZ9i0JaFdIGyuYAczoOGJ/uxKt6pXehjk4vAX
+         JLgJDFoB5rHn/zw0yh5fFvwqdFgLQz+5h7c+k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=fLNb41VIkD/RuPBy33egUq3B1KbchS1GHIy2wAcNoFg=;
-        b=ScJYXKki9eyOvICr+OZpYSAY30lrnzbS7YJqxzMwbT+ra38FE8tfAu3ABX3yXmaoLv
-         33V52M8GIVV69btltyorNBjDWwfNeA950e1lzNmKYsmZdPa3Jlfz+bsdyvxp2l5K1CPM
-         d4qnQSOyf/xxPJY1da2nMwICEfyranOoR6PkChPyEINV3pasW3+j30XLyIZScnRLR4ES
-         Om5Lk2pnnKaZyKoW54n98Y3IjW0z6g+rX6Dgu/IRmNvBxRF/KC1Ik8XnAoizEp6G2LTz
-         KupCCP0aQ8DlkeOr4zU2YOzRgbcOD5sn9IVHQccDshLH9haNAkDtaUwdgG1kcxeUAzth
-         OdSQ==
-X-Gm-Message-State: AOAM532aMTGAXY3C5RQH4y1KD9U35/lSzczxCtc5Khv4jvi/Ab4fLCga
-        THXSswbzQZMgNVa/bA7nTvk=
-X-Google-Smtp-Source: ABdhPJwRC+BDZn+93nSISeCmb/4S7FDAVbfdIR/fBXtuiCtf3Xc9d5JcoVVQV7/DqrSLMq3Wh4zs0g==
-X-Received: by 2002:aa7:cd90:: with SMTP id x16mr17354077edv.302.1600097500699;
-        Mon, 14 Sep 2020 08:31:40 -0700 (PDT)
-Received: from felia ([2001:16b8:2ddc:3000:7936:d9d0:986e:cca5])
-        by smtp.gmail.com with ESMTPSA id bo8sm9559422edb.39.2020.09.14.08.31.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2020 08:31:40 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Mon, 14 Sep 2020 17:31:38 +0200 (CEST)
-X-X-Sender: lukas@felia
-To:     David Woodhouse <dwmw2@infradead.org>
-cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7BdFAddq3RL7rFBEGnlqI6CKwA0tfgEjJpCRYq7bxjU=;
+        b=O+MeZ5SdvKr2bRWV5DPRmJIrfQD8YSTYfsPLuZWtYFgXrAi5CgxhlocIZJpnFbYCOG
+         oIQTEoWl86IqRViCD6C7kA80yuiyx1PhFfC8eyRzDO3RfanIA7Pnyaqhj+2A609LlNR9
+         AqAJFcskIgCQ7KNEIKo3xWclwHm3pA4SYi3URZPEX2IW0rNce56TFzTVd3es3civn+nv
+         uUJgi4z4TTbq6oxhdo+rqOGhZ63Q3BEfl5lmU0amzSnIWCAb6cVtUmr7bcCPn5bq1Rbx
+         wWcAW2gow4ZXc25tSXm4g3Jc+ZYcQXg6llNUxFyWUYpNut2KEnrtm3DDHQmFECI4IYCI
+         HxFg==
+X-Gm-Message-State: AOAM531m5dKwpX2BU0umpkX9V1PIgtvI+PVdkfyNCpPyWJTust9b6oOU
+        1jsQ9++IIUWTLC1F8zrFRaJvUwEKOAQ9g1LZR/M=
+X-Google-Smtp-Source: ABdhPJwSGNnu67PnYtbgAyhVZqnOww0LDfKxxJooWZDtBPLdj0aTdSYJeckD3nPCMOPCHtjf4qb+aGCqyjmZbea0upw=
+X-Received: by 2002:a50:fb0e:: with SMTP id d14mr17550786edq.172.1600086354159;
+ Mon, 14 Sep 2020 05:25:54 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200912183334.22683-1-lukas.bulwahn@gmail.com> <alpine.DEB.2.21.2009131156090.6163@felia>
+In-Reply-To: <alpine.DEB.2.21.2009131156090.6163@felia>
+From:   Joel Stanley <joel@jms.id.au>
+Date:   Mon, 14 Sep 2020 12:25:41 +0000
+Message-ID: <CACPK8XdvmUN6XsqGEYMwyb1JhWtm9Nyrje8xXx2zBN4N=+gNow@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: make linux-aspeed list remarks consistent
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
+        dri-devel@lists.freedesktop.org,
         Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
         Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
         Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: make linux-mediatek list remarks
- consistent
-In-Reply-To: <bc5ba52bb0c123d0ed038e5dce9474f27ac2f750.camel@infradead.org>
-Message-ID: <alpine.DEB.2.21.2009141731030.17999@felia>
-References: <20200914053110.23286-1-lukas.bulwahn@gmail.com> <f6bc41d3-5ce4-b9ea-e2bb-e0cee4de3179@gmail.com> <alpine.DEB.2.21.2009141208200.17999@felia> <9c5aaa15-bdd8-ae4f-0642-092566ab08ba@gmail.com> <alpine.DEB.2.21.2009141552570.17999@felia>
- <7da64c0975c345f1f45034410c9ed7d509ba9831.camel@infradead.org> <alpine.DEB.2.21.2009141615020.17999@felia> <f511570405799df421397ff65847e927745dad08.camel@infradead.org> <alpine.DEB.2.21.2009141717470.17999@felia>
- <bc5ba52bb0c123d0ed038e5dce9474f27ac2f750.camel@infradead.org>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On Mon, 14 Sep 2020, David Woodhouse wrote:
-
-> On Mon, 2020-09-14 at 17:23 +0200, Lukas Bulwahn wrote:
-> > >  # /usr/lib/mailman/bin/config_list -o- linux-mediatek | grep -B5 ^generic_nonmember_action
-> > > # legal values are:
-> > > #    0 = "Accept"
-> > > #    1 = "Hold"
-> > > #    2 = "Reject"
-> > > #    3 = "Discard"
-> > > generic_nonmember_action = 0
+On Sun, 13 Sep 2020 at 09:57, Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+>
+>
+>
+> On Sat, 12 Sep 2020, Lukas Bulwahn wrote:
+>
+> > Commit f15a3ea80391 ("MAINTAINERS: Add ASPEED BMC GFX DRM driver entry")
+> > does not mention that linux-aspeed@lists.ozlabs.org is moderated for
+> > non-subscribers, but the other three entries for
+> > linux-aspeed@lists.ozlabs.org do.
 > >
-> > David, I guess if you have access to the ground truth on 
-> > lists.infradead.org, maybe you can dump the actual setting for all those 
-> > lists?
-> 
-> ath10k:generic_nonmember_action = 0
-> ath11k:generic_nonmember_action = 0
-> b43-dev:generic_nonmember_action = 0
-> kexec:generic_nonmember_action = 0
-> libertas-dev:generic_nonmember_action = 0
-> linux-afs:generic_nonmember_action = 0
-> linux-amlogic:generic_nonmember_action = 0
-> linux-arm-kernel:generic_nonmember_action = 0
-> linux-geode:generic_nonmember_action = 1
-> linux-i3c:generic_nonmember_action = 1
-> linux-mediatek:generic_nonmember_action = 0
-> linux-mtd:generic_nonmember_action = 0
-> linux-nvme:generic_nonmember_action = 0
-> linux-parport:generic_nonmember_action = 1
-> linux-realtek-soc:generic_nonmember_action = 1
-> linux-riscv:generic_nonmember_action = 0
-> linux-rockchip:generic_nonmember_action = 0
-> linux-rpi-kernel:generic_nonmember_action = 0
-> linux-snps-arc:generic_nonmember_action = 0
-> linux-um:generic_nonmember_action = 0
-> linux-unisoc:generic_nonmember_action = 1
-> wcn36xx:generic_nonmember_action = 0
-> 
+> > By 'majority vote' among entries, let us assume it was just missed here and
+> > adjust it to be consistent with others.
+> >
+> > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> > ---
+> > applies cleanly on master and next-20200911
+> >
+> > Joel, please ack.
+> > David, Daniel, please pick this minor non-urgent clean-up patch.
+> >
+> > This patch submission will also show me if linux-aspeed is moderated or
+> > not. I have not subscribed to linux-aspeed and if it shows up quickly in
+> > the archive, the list is probably not moderated; and if it takes longer,
+> > it is moderated, and hence, validating the patch.
+> >
+>
+> I did quickly get back an moderation email that my email is being held
+> back. So, that response validates my patch.
 
-Thanks, I will provide a suitable patch for MAINTAINERS.
+The bmc related lists (openbmc@, linux-aspeed@, linux-fsi@) on
+ozlabs.org that I own have a soft-moderation policy. The first time
+you post a patch I add you to a whitelist. Given the low volume on
+these lists this works for me.
 
-Lukas
+I don't know if this necessitates marking the lists as moderated in
+MAINTINERS, but if you find that helpful then that's fine with me.
+
+Acked-by: Joel Stanley <joel@jms.id.au>
+
+Cheers,
+
+Joel

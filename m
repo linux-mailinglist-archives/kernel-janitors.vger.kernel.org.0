@@ -2,75 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6560E26A048
-	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Sep 2020 09:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B87D26A136
+	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Sep 2020 10:44:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726301AbgIOH5T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 15 Sep 2020 03:57:19 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:12285 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726184AbgIOH5N (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 15 Sep 2020 03:57:13 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id E86FA538C5EECBD3BFB2;
-        Tue, 15 Sep 2020 15:56:58 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 15 Sep 2020 15:56:47 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Santosh Shilimkar <ssantosh@kernel.org>,
-        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] soc: ti: pruss: Fix return value check
-Date:   Tue, 15 Sep 2020 07:57:32 +0000
-Message-ID: <20200915075732.100804-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726208AbgIOIoh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 15 Sep 2020 04:44:37 -0400
+Received: from mail-m1271.qiye.163.com ([115.236.127.1]:58121 "EHLO
+        mail-m1271.qiye.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726214AbgIOIof (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 15 Sep 2020 04:44:35 -0400
+X-Greylist: delayed 594 seconds by postgrey-1.27 at vger.kernel.org; Tue, 15 Sep 2020 04:44:34 EDT
+Received: from [127.0.0.1] (unknown [157.0.31.124])
+        by mail-m1271.qiye.163.com (Hmail) with ESMTPA id 78A455822AE;
+        Tue, 15 Sep 2020 16:34:38 +0800 (CST)
+Subject: Re: [PATCH] blk-mq: fix hang issue in blk_queue_enter()
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Jens Axboe <axboe@kernel.dk>, onlyfever@icloud.com,
+        linux-block@vger.kernel.org
+References: <11a3283f-7857-0448-7424-8840fb5f2ea7@web.de>
+From:   Yang Yang <yang.yang@vivo.com>
+Message-ID: <63816f52-4850-f586-ce73-3775ecc38da9@vivo.com>
+Date:   Tue, 15 Sep 2020 16:34:38 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.2.2
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+In-Reply-To: <11a3283f-7857-0448-7424-8840fb5f2ea7@web.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgYFAkeWUFZS1VLWVdZKFlBSE83V1ktWUFJV1kPCR
+        oVCBIfWUFZSxpMHxkZGUlLTh4eVkpNS0tKTkNDTENNT01VEwETFhoSFyQUDg9ZV1kWGg8SFR0UWU
+        FZT0tIVUpKS0hKQ1VKS0tZBg++
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6K1E6Iyo5Hj8sNBYzURgNUSEN
+        LEwKCxBVSlVKTUtLSk5DQ0xCS01LVTMWGhIXVQIaFRxVAhoVHDsNEg0UVRgUFkVZV1kSC1lBWUpO
+        TFVLVUhKVUpJT1lXWQgBWUFKTE9KNwY+
+X-HM-Tid: 0a7490e6cb8398b6kuuu78a455822ae
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, the function of_device_get_match_data() returns NULL
-pointer not ERR_PTR(). The IS_ERR() test in the return value check
-should be replaced with NULL test.
+On 2020/9/14 21:35, Markus Elfring wrote:
+> …
+>> The solution is to wake up the mq_freeze_wq after runtime suspend
+>> completed, make blk_pm_request_resume() reexamine the q->rpm_status flag.
+> 
+> * Would an imperative wording become helpful for the change description?
+> 
+> * How do you think about to add the tag “Fixes” to the commit message?
+> 
 
-Fixes: ba59c9b43c86 ("soc: ti: pruss: support CORECLK_MUX and IEPCLK_MUX")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/soc/ti/pruss.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thank you for your suggestions.
 
-diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
-index cc0b4ad7a3d3..582f48051c30 100644
---- a/drivers/soc/ti/pruss.c
-+++ b/drivers/soc/ti/pruss.c
-@@ -126,7 +126,7 @@ static int pruss_clk_init(struct pruss *pruss, struct device_node *cfg_node)
- 	int ret = 0;
- 
- 	data = of_device_get_match_data(dev);
--	if (IS_ERR(data))
-+	if (!data)
- 		return -ENODEV;
- 
- 	clks_np = of_get_child_by_name(cfg_node, "clocks");
-@@ -175,7 +175,7 @@ static int pruss_probe(struct platform_device *pdev)
- 	const char *mem_names[PRUSS_MEM_MAX] = { "dram0", "dram1", "shrdram2" };
- 
- 	data = of_device_get_match_data(&pdev->dev);
--	if (IS_ERR(data)) {
-+	if (!data) {
- 		dev_err(dev, "missing private data\n");
- 		return -ENODEV;
- 	}
-
-
+--
+Yang Yang
 

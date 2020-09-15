@@ -2,36 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E21326B13B
-	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Sep 2020 00:27:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2F8726B21B
+	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Sep 2020 00:41:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727543AbgIOW1R (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 15 Sep 2020 18:27:17 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:49502 "EHLO
+        id S1727659AbgIOWl1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 15 Sep 2020 18:41:27 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:47965 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727472AbgIOQVC (ORCPT
+        with ESMTP id S1727506AbgIOP5x (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 15 Sep 2020 12:21:02 -0400
+        Tue, 15 Sep 2020 11:57:53 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kIDhJ-0007yl-QR; Tue, 15 Sep 2020 16:20:49 +0000
+        id 1kID05-0004Cu-2K; Tue, 15 Sep 2020 15:36:09 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Sandy Huang <hjc@rock-chips.com>,
-        =?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Chris Zhong <zyw@rock-chips.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Sean Paul <seanpaul@chromium.org>,
-        dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org
+To:     Sean Young <sean@mess.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Maxim Levitsky <maximlevitsky@gmail.com>,
+        linux-media@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/rockchip: cdn-dp: fix sign extension on an int multiply for a u64 result
-Date:   Tue, 15 Sep 2020 17:20:49 +0100
-Message-Id: <20200915162049.36434-1-colin.king@canonical.com>
+Subject: [PATCH] media: rc: fix check on dev->min_timeout for LIRC_GET_MIN_TIMEOUT ioctl
+Date:   Tue, 15 Sep 2020 16:36:08 +0100
+Message-Id: <20200915153608.35154-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -43,32 +37,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable bit_per_pix is a u8 and is promoted in the multiplication
-to an int type and then sign extended to a u64. If the result of the
-int multiplication is greater than 0x7fffffff then the upper 32 bits will
-be set to 1 as a result of the sign extension. Avoid this by casting
-tu_size_reg to u64 to avoid sign extension and also a potential overflow.
+Currently the LIRC_GET_MIN_TIMEOUT is checking for a null dev->max_timeout
+and then accessing dev->min_timeout, hence we may have a potential null
+pointer dereference issue.  This looks like a cut-n-paste typo, fix it
+by checking on dev->min_timeout before accessing it.
 
-Addresses-Coverity: ("Unintended sign extension")
-Fixes: 1a0f7ed3abe2 ("drm/rockchip: cdn-dp: add cdn DP support for rk3399")
+Addresses-Coverity: ("Copy-paste error")
+Fixes: e589333f346b ("V4L/DVB: IR: extend interfaces to support more device settings")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/rockchip/cdn-dp-reg.c | 2 +-
+ drivers/media/rc/lirc_dev.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/rockchip/cdn-dp-reg.c b/drivers/gpu/drm/rockchip/cdn-dp-reg.c
-index 9d2163ef4d6e..33fb4d05c506 100644
---- a/drivers/gpu/drm/rockchip/cdn-dp-reg.c
-+++ b/drivers/gpu/drm/rockchip/cdn-dp-reg.c
-@@ -658,7 +658,7 @@ int cdn_dp_config_video(struct cdn_dp_device *dp)
- 	 */
- 	do {
- 		tu_size_reg += 2;
--		symbol = tu_size_reg * mode->clock * bit_per_pix;
-+		symbol = (u64)tu_size_reg * mode->clock * bit_per_pix;
- 		do_div(symbol, dp->max_lanes * link_rate * 8);
- 		rem = do_div(symbol, 1000);
- 		if (tu_size_reg > 64) {
+diff --git a/drivers/media/rc/lirc_dev.c b/drivers/media/rc/lirc_dev.c
+index 220363b9a868..d230c21e1d31 100644
+--- a/drivers/media/rc/lirc_dev.c
++++ b/drivers/media/rc/lirc_dev.c
+@@ -533,7 +533,7 @@ static long lirc_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 
+ 	/* Generic timeout support */
+ 	case LIRC_GET_MIN_TIMEOUT:
+-		if (!dev->max_timeout)
++		if (!dev->min_timeout)
+ 			ret = -ENOTTY;
+ 		else
+ 			val = dev->min_timeout;
 -- 
 2.27.0
 

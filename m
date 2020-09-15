@@ -2,149 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E142B26AAD0
-	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Sep 2020 19:37:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E03826AAAF
+	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Sep 2020 19:31:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727942AbgIORhC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 15 Sep 2020 13:37:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34762 "EHLO
+        id S1727934AbgIORaK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 15 Sep 2020 13:30:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727901AbgIORdK (ORCPT
+        with ESMTP id S1727926AbgIOR3y (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 15 Sep 2020 13:33:10 -0400
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 051EEC06121D;
-        Tue, 15 Sep 2020 10:01:17 -0700 (PDT)
-Received: by mail-lf1-x144.google.com with SMTP id q8so3875183lfb.6;
-        Tue, 15 Sep 2020 10:01:16 -0700 (PDT)
+        Tue, 15 Sep 2020 13:29:54 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CC8EC06174A
+        for <kernel-janitors@vger.kernel.org>; Tue, 15 Sep 2020 10:29:53 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id k14so3880496edo.1
+        for <kernel-janitors@vger.kernel.org>; Tue, 15 Sep 2020 10:29:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=H0YZs1pPwgJd7Ktmm4myWmRtfPUsH5VHa1+aQx55PSk=;
-        b=RVIyTl6cn7mdnTle5r2TB8rk6Z5oEtnLJ5ScwkQx8hgwsXp9QUmXVRlwB4uojEMlyK
-         ro4ICaJFazaA1mm+EfgVBI9hxAPzmmhJ64lz4e9XRqr/CqvyDMSlTIi0Jq4DCY/1tT26
-         lZ90elCBfhc46rgjopy+NisYGA97eLI+mgA9sV8BwFl4VzDJuGCE8wJmhnAMhcX+cwiK
-         VVsJbNpykSo75U56Bmx3jdegHXN1gwtsHTK88BBJRkMJxUd4BcjpwaHbCwYnGYPU7epw
-         ghh2waPDId+IGm4+zWuFtbnEpr9oY8ZzoiInt5wUgHUlgJNe36Jd/6L2agHbfAUq3+tf
-         QEbA==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=SlyX5qFvMN3KiboyllxLciToK2Eq4o7JzV2O6OwBIsw=;
+        b=jndKH7zPjuT+Yy8CprIBxo1iTRcTUheSW1BJZMKuVBjDMhYq0L3y4DaJALchKU0bWV
+         /DG6HGyrAEcz92/BEzogfoheUq2NoOqWgUDoFeeALWTSjU7t6cmDtPMvcMOFw3IakuWp
+         gTraMfBlRb4r8fMQ5MmQhdTGA8v2635Dv7yTHmUW7c4FifhvFkeow+fmjxnyULOz9cNa
+         h1HY7N4mglhjyAyOCRnfI4Cdt1T65RO98WM5J4PiOI3ffCzhLE0AI3h6weRFWLf3hKMm
+         EKJFo5+5hvJXNo5Y4rFLV8xJX6gMUJcVSH99V+Jsd8X0JKE85PLJ2LMkkl1g2xhe0pJp
+         aGxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=H0YZs1pPwgJd7Ktmm4myWmRtfPUsH5VHa1+aQx55PSk=;
-        b=bG3u3U/NzMoA2SlC2NYfKMb9JR4n9dYN62mECR7PXWeLewrEiHSYmDyFz081Ga7Dwi
-         kYzxc8eAsmhy9oh5IIVH7xUCrJ5XfVyLa5ZxDXPbcQGaLJBgllIIhKyYOgevauOl8czE
-         odjs96X2Fpr7EfCZN/x+IbeWqz22P5u2u56Cm44yy79AI35bWZ+kfwc24ylmW7vu29YU
-         O2GmhrUx/Nlvy2OJTaN2cq6/68H2/sIKhR/br+xlP24ZboDB+iVgZeU2JQScZA1WNso/
-         pPZK9B09XxJ1Y9E1Gr8+ZPa4ETDBwHAiypA+afcYZIym7NAQs/IDvVVs/tudcbj0jGjt
-         Dfiw==
-X-Gm-Message-State: AOAM531h1IaJWGWVbIeK09n92welCNQsoh4XmPGYmQ7crPAXnthwRxXf
-        7CfjdeMWA/xp7BG1HZ0co4maNSpPW1w=
-X-Google-Smtp-Source: ABdhPJwQLpjsE+qFpvuqxasOzAcBnwJF7tP1y9VybOqTsRjgyc1k0GY6l9M7N7DZMzsiWYmMb1c9Zg==
-X-Received: by 2002:ac2:548d:: with SMTP id t13mr6603232lfk.602.1600189274348;
-        Tue, 15 Sep 2020 10:01:14 -0700 (PDT)
-Received: from [192.168.2.145] (109-252-170-211.dynamic.spd-mgts.ru. [109.252.170.211])
-        by smtp.googlemail.com with ESMTPSA id 73sm4011754lff.118.2020.09.15.10.01.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Sep 2020 10:01:13 -0700 (PDT)
-Subject: Re: [PATCH] PM / devfreq: tegra30: disable clock on error in probe
-To:     Chanwoo Choi <cw00.choi@samsung.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <CGME20200908072627epcas1p41f2c8c2730d42bd8935a40b0ab8122f7@epcas1p4.samsung.com>
- <20200908072557.GC294938@mwanda>
- <2ceb045a-ebac-58d7-0250-4ea39d711ce8@samsung.com>
- <44560522-f04e-ade5-2e02-9df56a6f79ba@gmail.com>
- <e45c8ffc-ea24-1178-7bfa-62ca6bedbb3b@samsung.com>
- <2573cd77-1175-d194-7bfc-24d28b276846@samsung.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <5aac4d59-5e06-25a6-3de1-6a5a586b9e34@gmail.com>
-Date:   Tue, 15 Sep 2020 20:01:12 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=SlyX5qFvMN3KiboyllxLciToK2Eq4o7JzV2O6OwBIsw=;
+        b=IcznL18KK30Ry/qp5wlbCUPkQ8x6X0Erc0OjZYQ4h0W7eInx+dINlj9fBKVaLQHvWT
+         6vdriUgPVgU+jG72XWY4KuIxS75wy8Nn+aYzh/9UXSJQ6naUym9JTUR1gFFEhurZ27wR
+         S4C+0rWkgDjhuxnPHsmOxo4xKKJNf8x9dKCgmHKeovnVBef4eL0k7UkyGLwgD3mU/UCw
+         ZcuSmrG98/oX/4PsVNk1CCW9VX18OxLTDwbGlBNmVCaNEzZJsCCPDwCabGPvID8GJsxL
+         afY9Yk2Ecv0OCucky/R8+513HSwi8MXe6m4SmHE0oxipkHCV5/sXcaGpDmaRKLGWhMq6
+         P22A==
+X-Gm-Message-State: AOAM5337RULaMp5BmQmhFQyBSBt0OZF9uJVqQ98to1RUQHLbkVveeleU
+        vOhcuGADHHpfFog0FZJQYc/JTM82P9fGDnNONlj15Q==
+X-Google-Smtp-Source: ABdhPJyTXQP46Cu/TV0meUS7Ki8Jvai2uP0B7f5/avU/VxUKH5b+mSAJAXEN/96XuLNIG/fdWfb7f8IfAIdjG+sZPvs=
+X-Received: by 2002:a50:e78f:: with SMTP id b15mr23870682edn.104.1600190989874;
+ Tue, 15 Sep 2020 10:29:49 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <2573cd77-1175-d194-7bfc-24d28b276846@samsung.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20200915162049.36434-1-colin.king@canonical.com>
+In-Reply-To: <20200915162049.36434-1-colin.king@canonical.com>
+From:   Guenter Roeck <groeck@google.com>
+Date:   Tue, 15 Sep 2020 10:29:39 -0700
+Message-ID: <CABXOdTcnAzFh81GuJ0Niqu6t2pF5AmwgFoXHf766XcXct_F+5g@mail.gmail.com>
+Subject: Re: [PATCH] drm/rockchip: cdn-dp: fix sign extension on an int
+ multiply for a u64 result
+To:     Colin King <colin.king@canonical.com>
+Cc:     Sandy Huang <hjc@rock-chips.com>,
+        =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Chris Zhong <zyw@rock-chips.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Sean Paul <seanpaul@chromium.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        kernel-janitors@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-15.09.2020 05:13, Chanwoo Choi пишет:
-> On 9/15/20 11:00 AM, Chanwoo Choi wrote:
->> Hi Dmitry,
->>
->> On 9/14/20 10:56 PM, Dmitry Osipenko wrote:
->>> 14.09.2020 10:09, Chanwoo Choi пишет:
->>>> Hi,
->>>>
->>>> On 9/8/20 4:25 PM, Dan Carpenter wrote:
->>>>> This error path needs to call clk_disable_unprepare().
->>>>>
->>>>> Fixes: 7296443b900e ("PM / devfreq: tegra30: Handle possible round-rate error")
->>>>> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
->>>>> ---
->>>>> ---
->>>>>  drivers/devfreq/tegra30-devfreq.c | 4 +++-
->>>>>  1 file changed, 3 insertions(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/drivers/devfreq/tegra30-devfreq.c b/drivers/devfreq/tegra30-devfreq.c
->>>>> index e94a27804c20..dedd39de7367 100644
->>>>> --- a/drivers/devfreq/tegra30-devfreq.c
->>>>> +++ b/drivers/devfreq/tegra30-devfreq.c
->>>>> @@ -836,7 +836,8 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
->>>>>  	rate = clk_round_rate(tegra->emc_clock, ULONG_MAX);
->>>>>  	if (rate < 0) {
->>>>>  		dev_err(&pdev->dev, "Failed to round clock rate: %ld\n", rate);
->>>>> -		return rate;
->>>>> +		err = rate;
->>>>> +		goto disable_clk;
->>>>>  	}
->>>>>  
->>>>>  	tegra->max_freq = rate / KHZ;
->>>>> @@ -897,6 +898,7 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
->>>>>  	dev_pm_opp_remove_all_dynamic(&pdev->dev);
->>>>>  
->>>>>  	reset_control_reset(tegra->reset);
->>>>> +disable_clk:
->>>>>  	clk_disable_unprepare(tegra->clock);
->>>>
->>>> Is it doesn't need to reset with reset_contrl_reset()?
->>>
->>> Hello, Chanwoo!
->>>
->>> It's reset just before the clk_round_rate() invocation, hence there
->>> shouldn't be a need to reset it second time.
->>
->> Do you mean that reset is deasserted automatically
->> when invoke clk_round_rate() on tegra?
+On Tue, Sep 15, 2020 at 9:20 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The variable bit_per_pix is a u8 and is promoted in the multiplication
+> to an int type and then sign extended to a u64. If the result of the
+> int multiplication is greater than 0x7fffffff then the upper 32 bits will
+> be set to 1 as a result of the sign extension. Avoid this by casting
+> tu_size_reg to u64 to avoid sign extension and also a potential overflow.
+>
+> Addresses-Coverity: ("Unintended sign extension")
+> Fixes: 1a0f7ed3abe2 ("drm/rockchip: cdn-dp: add cdn DP support for rk3399")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-I only mean that the tegra30-devfreq driver deasserts the reset before
-the clk_round_rate():
+Reviewed-by: Guenter Roeck <groeck@chromium.org>
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/devfreq/tegra30-devfreq.c?h=v5.9-rc5#n834
-
->> If tree, I think that 'reset_control_reset(tegra->reset)' invocation
-> 
-> I'm sorry for my typo. s/tree/true.
-> 
->> is not needed on 'remove_opp:' goto. Because already reset deassertion
->> is invoked by clk_round_rate(), it seems that doesn't need to invoke
->> anymore during exception case.
->>
->> Actually, it is not clear in my case.
-
-The reset_control_reset() in the error path of the driver probe function
-is placed that way to make the tear-down order match the driver removal
-order. Perhaps the reset could be moved before the remove_opp, but this
-change won't make any real difference, hence it already should be good
-as-is.
+> ---
+>  drivers/gpu/drm/rockchip/cdn-dp-reg.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/rockchip/cdn-dp-reg.c b/drivers/gpu/drm/rockchip/cdn-dp-reg.c
+> index 9d2163ef4d6e..33fb4d05c506 100644
+> --- a/drivers/gpu/drm/rockchip/cdn-dp-reg.c
+> +++ b/drivers/gpu/drm/rockchip/cdn-dp-reg.c
+> @@ -658,7 +658,7 @@ int cdn_dp_config_video(struct cdn_dp_device *dp)
+>          */
+>         do {
+>                 tu_size_reg += 2;
+> -               symbol = tu_size_reg * mode->clock * bit_per_pix;
+> +               symbol = (u64)tu_size_reg * mode->clock * bit_per_pix;
+>                 do_div(symbol, dp->max_lanes * link_rate * 8);
+>                 rem = do_div(symbol, 1000);
+>                 if (tu_size_reg > 64) {
+> --
+> 2.27.0
+>

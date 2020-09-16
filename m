@@ -2,127 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D212926CA18
-	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Sep 2020 21:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 881A126CAA4
+	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Sep 2020 22:11:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727591AbgIPTqf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Sep 2020 15:46:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54200 "EHLO
+        id S1727247AbgIPUKw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Sep 2020 16:10:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728132AbgIPTqE (ORCPT
+        with ESMTP id S1728262AbgIPUK3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Sep 2020 15:46:04 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96A32C061756;
-        Wed, 16 Sep 2020 12:46:03 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id c18so8090118wrm.9;
-        Wed, 16 Sep 2020 12:46:03 -0700 (PDT)
+        Wed, 16 Sep 2020 16:10:29 -0400
+Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87ED8C061756
+        for <kernel-janitors@vger.kernel.org>; Wed, 16 Sep 2020 13:10:28 -0700 (PDT)
+Received: by mail-vs1-xe43.google.com with SMTP id b123so4781179vsd.10
+        for <kernel-janitors@vger.kernel.org>; Wed, 16 Sep 2020 13:10:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=mU3cDRgq1g+naNQJ65S1yYLb8Rp53s6t2LxJPp49zWA=;
-        b=Vt6Oq8zeEuG/NWaeBhvUWE2AJ2AKtiKaRMFE8doEFs7OExE43Atoo1dUuG0mdNPjwJ
-         ycmZ70J5ZiMpPu0etB8IbbYNiz5iBq8hgJ7dgZcg+gHwdK24Z5D34Y2FxweWS26c53/M
-         HADWTkMohnHg85pNmyjMr9Szm7+MwMVSotQNViWkU3h4n+srw4RMxXj5W/N48STAWEGb
-         A2KHZQpHAw4aDRF4Ksu+12BShSMRK7PmFdMR5W75t30KOmGkbm2Y++cQJQJrVlNuB+Zz
-         9qhAv5bwBflaWR7x70AKH4lBlDyRe2Bts4ed1rfaROuTVY1SXZq2cJmyfRQ2W1Cx3uCl
-         2MiQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=GcbBDc3F14nB5fItkaCR8bNi/7szL/0DDXdKpHCyoVg=;
+        b=VpzzCAbNPzuuTxgofc1LnFGp7S69GoPCsiDq9/a68Pz4DUjauS7HgLkdfH5jjgDR8e
+         WUk5kDOMDVUlNHB+Nk9Jg/ceY6Pva8tlQvZcrtmHFYSXZ2Ps+pLjPTjLIzylxsZjyas0
+         EJLnHS+Poqjm2HLkPtyM7mkoR4+9M4KZw/+7FQxePKsPjlSgXMNlsKO3j1xsx0+zBkM/
+         2Ma0qG3y9YpKFS999JCcOrI9PKzmUEhkfdqWIHW+PQR8jU359/gZ31t8crO6REm3OYeq
+         lPuLg2tmu6HofEAUDsZ8p1xch3fIgWMnbtb5kpmsC5pcRrmFWSoSDj9ghwA+tf7QLqrm
+         WfHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=mU3cDRgq1g+naNQJ65S1yYLb8Rp53s6t2LxJPp49zWA=;
-        b=oQP+aA38B8A4Qp+ZMh9RMxWyL0loQUcQGoi1f/F5RFcaMGaMDTkro/Spg04oXeAS4a
-         5W4PTFfh/aT7m2eKREAtAKA8K3O1a/lW1uQ3T7fNpx9OAriSo53DOcAzXZRksdtGbR+U
-         kZts9DsrHquDwDvSzmgZWlgCF+f3/kGCich2FYjU4SfGACV3C2vrsIbpnU2Pa+pcx9PI
-         JjilYwZxFct8eBej8t2xP+Joj3V/dum+DqyvtH9iq/i7MaiCcPsoOvEkdoaCADoufM/0
-         B6T8wH39eyGpjMEkzQR4aQ2S0TQpEqhfGIFleruULgrUGcDy8Gqrfubf1bn9BD63kecd
-         Bg0Q==
-X-Gm-Message-State: AOAM533BEoTkCD5vi4uAiP19bOIXx8jf8vHw3y5Y4hgNh0crZ8SD16/9
-        OtPD2abWL0MGgJnY6RO63UjDxEfiYBLNToW3
-X-Google-Smtp-Source: ABdhPJwNaHgbIj6yxFA2Wq4aPyuBf4vwFexHZq931I2pE5PXLB2U27wQ4EaOq4SkTwv8DQ98ZtPjjA==
-X-Received: by 2002:a5d:608f:: with SMTP id w15mr5463281wrt.244.1600285562177;
-        Wed, 16 Sep 2020 12:46:02 -0700 (PDT)
-Received: from felia ([2001:16b8:2dec:c500:3c50:8c2f:cc8a:657a])
-        by smtp.gmail.com with ESMTPSA id 2sm6765364wmf.25.2020.09.16.12.46.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2020 12:46:01 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Wed, 16 Sep 2020 21:45:55 +0200 (CEST)
-X-X-Sender: lukas@felia
-To:     Krzysztof Kozlowski <k.kozlowski.k@gmail.com>
-cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        linux-samsung-soc@vger.kernel.org,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: mark linux-samsung-soc list non-moderated
-In-Reply-To: <20200916165357.GA18287@kozik-lap>
-Message-ID: <alpine.DEB.2.21.2009162140130.14568@felia>
-References: <20200914061353.17535-1-lukas.bulwahn@gmail.com> <20200916165357.GA18287@kozik-lap>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=GcbBDc3F14nB5fItkaCR8bNi/7szL/0DDXdKpHCyoVg=;
+        b=LYzDLDO0GRdSpBswhcdeM4yl7JDS3k2SfqumNbhT2zBTU0fye/xXihCLVI3aFbcJEh
+         Itfh8Sk7Ujgpo8fFiP4PS6UxTYLa/eN1Xx+YjpdgfCJzYx+9uXH2mQwnefzT8t9yM4D7
+         W6fcBEF/JZGzupqD5+0jsUFAqv4+rREbDTNL/fs9rEKDf/VnHdtm3pLliWjDP26JMiks
+         sY+HtKomFRe3yrEeYhPc6MaRJQJmrAOWmlIGP29QUceEiNiFpjMQzBtiTTEwDi0KpO8v
+         zDr02apguirBewYxbOD+9McEK5vL5Tvcw8/vqdqPQxumqJAop3aj4SDKyzEELEuBWSKa
+         wH2g==
+X-Gm-Message-State: AOAM533AHc9+Pd005iy623vao1nAcaxutl/qUv76r7iYLPCP/FX6XGds
+        EhWSXQz90BdzjfdQPn6usXGVFOinRYkkfnM3SFI=
+X-Google-Smtp-Source: ABdhPJwN+DJ4YNHb32HiXAOya+L7YxCTv4f6nRBQ4P+XRgnwwjnuWUKcQ80aSRvevTIhutou8UUZC9cuykDzsNpBr6U=
+X-Received: by 2002:a67:7c14:: with SMTP id x20mr5919324vsc.54.1600287027819;
+ Wed, 16 Sep 2020 13:10:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: by 2002:ab0:3412:0:0:0:0:0 with HTTP; Wed, 16 Sep 2020 13:10:27
+ -0700 (PDT)
+Reply-To: aalihelp5@gmail.com
+From:   "Mr.Hui Ka Yan" <jacobmoore.moores41@gmail.com>
+Date:   Wed, 16 Sep 2020 13:10:27 -0700
+Message-ID: <CAEedSLcXxSAz4rYN3OjmivqNonkEmvGLz0MwYvWrh7pOa=D5Pg@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Bin Herr Hui Ka Yan. Ich spende Ihnen einen Zuschuss von 10.500.000
+USD. Kontaktieren Sie mich (aalihelp5@gmail.com) f=C3=BCr weitere Details.
 
-
-On Wed, 16 Sep 2020, Krzysztof Kozlowski wrote:
-
-> On Mon, Sep 14, 2020 at 08:13:53AM +0200, Lukas Bulwahn wrote:
-> > In fifteen entries mentioning linux-samsung-soc@vger.kernel.org in
-> > MAINTAINERS, seven entries mention the list being moderated for
-> > non-subscribers and eight entries do not. Clearly only one can be right,
-> > though.
-> > 
-> > Joe Perches suggested that all vger.kernel.org are not moderated for
-> > non-subscribers.
-> > 
-> > Remove all the remarks from the entries following Joe's suggestion.
-> > 
-> > Link: https://lore.kernel.org/lkml/da6f30896a8fd78635b3ca454d77a5292a9aa76d.camel@perches.com/
-> > Suggested-by: Joe Perches <joe@perches.com>
-> > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> > ---
-> > applies cleanly on v5.9-rc5 and next-20200911
-> > 
-> > Krzysztof, please pick this minor non-urgent cleanup patch.
-> > 
-> > This patch submission will also show me if linux-samsung-soc is moderated
-> > or not. I have not subscribed to linux-samsung-soc and if it shows up
-> > quickly in the archive, the list is probably not moderated, and hence,
-> > validating the patch.
-> 
-> Please use scripts/get_maintainers.pl (for example on files in modified
-> maintainers section) to get the addresses of people.  This mail missed
-> all my filters and got archived immediately because you sent it to
-> unusual address (how did you get this address, BTW? It does not appear
-> in the sources since few years).
->
-
-Sorry, I usually do use ./scripts/get_maintainers.pl and you are right 
-there is no way one could pick up that email address from the repository.
-
-It was difficult to recall where I got the address from, but then I 
-finally remembered.
-
-I wanted to know who is responsible for the linus-samsung-soc mailing 
-list for this patch. So I went to:
-
-https://patchwork.kernel.org/project/linux-samsung-soc/
-
-And there in 'About this project', it still lists your gmail address. I 
-did not crosscheck that mail address with .mailmap, get_maintainers.pl 
-etc., but just send the patch out.
-
-> Thanks, applied.
-
-I am happy it reached you despite this mess-up on my side.
-
-Lukas
+Danke und Gott segne dich.

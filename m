@@ -2,206 +2,217 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E83E26BA0E
-	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Sep 2020 04:25:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B9E226BC07
+	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Sep 2020 07:57:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726333AbgIPCZ3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 15 Sep 2020 22:25:29 -0400
-Received: from mailout1.samsung.com ([203.254.224.24]:27147 "EHLO
-        mailout1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726269AbgIPCZ0 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 15 Sep 2020 22:25:26 -0400
-Received: from epcas1p1.samsung.com (unknown [182.195.41.45])
-        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20200916022524epoutp016714c3448893e32068373f6bd3a156c4~1InP4kqdx1035810358epoutp010
-        for <kernel-janitors@vger.kernel.org>; Wed, 16 Sep 2020 02:25:24 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20200916022524epoutp016714c3448893e32068373f6bd3a156c4~1InP4kqdx1035810358epoutp010
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1600223124;
-        bh=DgSbnlkhPXweofxhNtRa//REujvuzOp6oxSaxCZxs90=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=Q0u7ccqrSmCt2teaaa3jk6lmHKBpYe6MowF+DuQxAIBsi8V7ZkH6nV5XHIJIexQuC
-         5+2AXlWLDeUt8sQ3c+wIbg0zfA8mT6kWzXDeV6Vl2ZMVMFyJ7bKyy1vk3uV+3eMGzl
-         M3atoCFlscpaAtS4ewmUaLBneW2QYwIUmOR8VlTY=
-Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
-        epcas1p4.samsung.com (KnoxPortal) with ESMTP id
-        20200916022523epcas1p4324233a9576127a6ae282012d45440ab~1InPT_xzw2647326473epcas1p4P;
-        Wed, 16 Sep 2020 02:25:23 +0000 (GMT)
-Received: from epsmges1p1.samsung.com (unknown [182.195.40.154]) by
-        epsnrtp2.localdomain (Postfix) with ESMTP id 4BrkTZ33GyzMqYkb; Wed, 16 Sep
-        2020 02:25:22 +0000 (GMT)
-Received: from epcas1p4.samsung.com ( [182.195.41.48]) by
-        epsmges1p1.samsung.com (Symantec Messaging Gateway) with SMTP id
-        46.DD.18978.E87716F5; Wed, 16 Sep 2020 11:25:18 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-        epcas1p4.samsung.com (KnoxPortal) with ESMTPA id
-        20200916022517epcas1p49afb776853192263d022df4b9e688396~1InJ32iVY1367113671epcas1p4M;
-        Wed, 16 Sep 2020 02:25:17 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20200916022517epsmtrp26544f9005f6422e4b0f96ad3150181d1~1InJ2CB2x2139321393epsmtrp2h;
-        Wed, 16 Sep 2020 02:25:17 +0000 (GMT)
-X-AuditID: b6c32a35-5edff70000004a22-2e-5f61778e38a1
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        39.99.08382.D87716F5; Wed, 16 Sep 2020 11:25:17 +0900 (KST)
-Received: from [10.113.221.102] (unknown [10.113.221.102]) by
-        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200916022517epsmtip22e61fb78cd374e55f9f707a431902a07~1InJczQx70634006340epsmtip2p;
-        Wed, 16 Sep 2020 02:25:17 +0000 (GMT)
-Subject: Re: [PATCH] PM / devfreq: tegra30: disable clock on error in probe
-To:     Dmitry Osipenko <digetx@gmail.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-From:   Chanwoo Choi <cw00.choi@samsung.com>
-Organization: Samsung Electronics
-Message-ID: <bccb08ef-7e48-0cc7-08b5-7177b84a5763@samsung.com>
-Date:   Wed, 16 Sep 2020 11:38:13 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:59.0) Gecko/20100101
-        Thunderbird/59.0
-MIME-Version: 1.0
-In-Reply-To: <5aac4d59-5e06-25a6-3de1-6a5a586b9e34@gmail.com>
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprPJsWRmVeSWpSXmKPExsWy7bCmgW5feWK8wZIZkhav/01nsVj98TGj
-        RcusRSwWW29JW5xtesNu8bn3CKNF55dZbBa3G1ewWfzcNY/FgdNj56y77B69ze/YPD4+vcXi
-        0bdlFaPH501yAaxR2TYZqYkpqUUKqXnJ+SmZeem2St7B8c7xpmYGhrqGlhbmSgp5ibmptkou
-        PgG6bpk5QPcoKZQl5pQChQISi4uV9O1sivJLS1IVMvKLS2yVUgtScgosC/SKE3OLS/PS9ZLz
-        c60MDQyMTIEKE7IzNr5PKuiQrLj5ailLA+MfkS5GTg4JAROJtXs/sXUxcnEICexglDgzu4sJ
-        wvnEKPHy1SxGkCohgW+MEv1Py2A6zv//xw5RtJdR4kf3IyaIoveMEg83cYDYwgLeEr8f/GIF
-        sUUEgiR2fZ7JDNLALNDOJDG9/R1Ygk1AS2L/ixtsIDa/gKLE1R+PwbbxCthJ7F/whx3EZhFQ
-        lfi/dCILiC0qECZxclsLVI2gxMmZT8DinAK2Eo1TP4DNYRYQl7j1ZD4ThC0v0bx1NthiCYGl
-        HBIne94BFXEAOS4SO+amQnwjLPHq+BZ2CFtK4vO7vWwQdrXEypNH2CB6Oxgltuy/wAqRMJbY
-        v3QyE8gcZgFNifW79CHCihI7f89lhNjLJ/Huaw8rxCpeiY42IYgSZYnLD+4yQdiSEovbO9km
-        MCrNQvLNLCQfzELywSyEZQsYWVYxiqUWFOempxYbFhgix/UmRnBK1TLdwTjx7Qe9Q4xMHIyH
-        GCU4mJVEeA80xscL8aYkVlalFuXHF5XmpBYfYjQFhu9EZinR5HxgUs8riTc0NTI2NrYwMTQz
-        NTRUEud9eEshXkggPbEkNTs1tSC1CKaPiYNTqoFJZkOIkom1ic22h2u29wtMf/Lh2zuxm3Lu
-        P6eyfDh5v27D4wlH69c+ydgjl/LMfOHBoK6vMm+ehS6/lDTpbdiUFFvNgsMcS89/vKyxatPn
-        pyl6/G/iuzt2PPq9MPJm/tybHpynj12K1O1b6O7cVBjwYtb8Szb5DYmivGe2i+3WncoqfSbz
-        YaGowodj/Z6vtTfPW/a+QM+vblHDw7c8R5aKnvVc1HX054m21XPsNlW3HmHh7Aien8jTrnmR
-        y2XmbcW9z64/f6/N+UVNv+Xq8xfnFhzZfGdS/+obV85YCExSnCv+uLDf9Me8sxNm3T77Q2bG
-        mvIMZrMHn2OnuU1bVXf7/UdZ2dnJE/6oT1/TOpXT/Z20EktxRqKhFnNRcSIApe4tMDIEAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupmkeLIzCtJLcpLzFFi42LZdlhJXre3PDHeYON9KYvX/6azWKz++JjR
-        omXWIhaLrbekLc42vWG3+Nx7hNGi88ssNovbjSvYLH7umsfiwOmxc9Zddo/e5ndsHh+f3mLx
-        6NuyitHj8ya5ANYoLpuU1JzMstQifbsEroyN75MKOiQrbr5aytLA+Eeki5GTQ0LAROL8/3/s
-        XYxcHEICuxklzs3pYYdISEpMu3iUuYuRA8gWljh8uBii5i2jxPbWtcwgNcIC3hK/H/xiBbFF
-        BIIkTm1+ywhiMwt0MkkcP2MH0dDKLLF08WWwBjYBLYn9L26wgdj8AooSV388BmvgFbCT2L/g
-        D9hiFgFVif9LJ7KA2KICYRI7lzxmgqgRlDg58wlYnFPAVqJx6gc2iGXqEn/mXWKGsMUlbj2Z
-        zwRhy0s0b53NPIFReBaS9llIWmYhaZmFpGUBI8sqRsnUguLc9NxiwwLDvNRyveLE3OLSvHS9
-        5PzcTYzg+NLS3MG4fdUHvUOMTByMhxglOJiVRHgPNMbHC/GmJFZWpRblxxeV5qQWH2KU5mBR
-        Eue9UbgwTkggPbEkNTs1tSC1CCbLxMEp1cDEus92peVvmeqQ24kpAr/frCo1ujwjgUt9yuse
-        o6Nukl+ZOfgLf3Zv3Rm4TLNyl0j28kWv9tjbfMiTuFEZmr1rc4H3sySGc3eNWV5ka010ORmg
-        HZXOrnTTwP5a82l7DcUit0vZone3ZM/gOa4ycesVjYsu55XLN0Que6yj7i5X3DKntvSliVN2
-        oW+MmJ3+xonJClJX3yzSfaP4mG+Zyr277lHKPTqhuacqt1zScbDsKC2bmOF8hDuJY3tX/QFG
-        u4tPqnu0X815/rCA/9vXew+2XZi/nPP3eT0+vQSOnECzSYY3j2o94bm3907kx99FE2fevDmD
-        lV9n2dpF9qpRcR6qU4t/9u0viy7boafX8UCJpTgj0VCLuag4EQBOCKveHgMAAA==
-X-CMS-MailID: 20200916022517epcas1p49afb776853192263d022df4b9e688396
-X-Msg-Generator: CA
+        id S1726199AbgIPF5i (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Sep 2020 01:57:38 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:52923 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726131AbgIPF5c (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 16 Sep 2020 01:57:32 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1600235851; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=EXoqVp08jsm9GqxqzKytogxerwplgTdxqNuyrQFiXP8=;
+ b=N1CPPi8pEwAT+FoNvu9aZePJ1onKKEVuxtIztpytvxVxG7d+KkMgNaN4D04uUXkzGEhi21Vg
+ bm59zFV4lJN7gkTj5DkyEqQD9VbEm1riRrJ7l9mUB2U+tILUAsViKZGFpmJGgyo1Jk+AGyYl
+ bh+lBPwwPzDLc7ZX1D/qXrIuoJs=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 5f61a92ed2819a184642caf6 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 16 Sep 2020 05:57:02
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A09B2C43385; Wed, 16 Sep 2020 05:57:02 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BE2DDC433F0;
+        Wed, 16 Sep 2020 05:56:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BE2DDC433F0
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: SVC_REQ_APPROVE
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20200908072627epcas1p41f2c8c2730d42bd8935a40b0ab8122f7
-References: <CGME20200908072627epcas1p41f2c8c2730d42bd8935a40b0ab8122f7@epcas1p4.samsung.com>
-        <20200908072557.GC294938@mwanda>
-        <2ceb045a-ebac-58d7-0250-4ea39d711ce8@samsung.com>
-        <44560522-f04e-ade5-2e02-9df56a6f79ba@gmail.com>
-        <e45c8ffc-ea24-1178-7bfa-62ca6bedbb3b@samsung.com>
-        <2573cd77-1175-d194-7bfc-24d28b276846@samsung.com>
-        <5aac4d59-5e06-25a6-3de1-6a5a586b9e34@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] airo: switch from 'pci_' to 'dma_' API
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200907201942.321568-1-christophe.jaillet@wanadoo.fr>
+References: <20200907201942.321568-1-christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     davem@davemloft.net, kuba@kernel.org, lee.jones@linaro.org,
+        mpe@ellerman.id.au, adobriyan@gmail.com, dan.carpenter@oracle.com,
+        vulab@iscas.ac.cn, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200916055702.A09B2C43385@smtp.codeaurora.org>
+Date:   Wed, 16 Sep 2020 05:57:02 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 9/16/20 2:01 AM, Dmitry Osipenko wrote:
-> 15.09.2020 05:13, Chanwoo Choi пишет:
->> On 9/15/20 11:00 AM, Chanwoo Choi wrote:
->>> Hi Dmitry,
->>>
->>> On 9/14/20 10:56 PM, Dmitry Osipenko wrote:
->>>> 14.09.2020 10:09, Chanwoo Choi пишет:
->>>>> Hi,
->>>>>
->>>>> On 9/8/20 4:25 PM, Dan Carpenter wrote:
->>>>>> This error path needs to call clk_disable_unprepare().
->>>>>>
->>>>>> Fixes: 7296443b900e ("PM / devfreq: tegra30: Handle possible round-rate error")
->>>>>> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
->>>>>> ---
->>>>>> ---
->>>>>>  drivers/devfreq/tegra30-devfreq.c | 4 +++-
->>>>>>  1 file changed, 3 insertions(+), 1 deletion(-)
->>>>>>
->>>>>> diff --git a/drivers/devfreq/tegra30-devfreq.c b/drivers/devfreq/tegra30-devfreq.c
->>>>>> index e94a27804c20..dedd39de7367 100644
->>>>>> --- a/drivers/devfreq/tegra30-devfreq.c
->>>>>> +++ b/drivers/devfreq/tegra30-devfreq.c
->>>>>> @@ -836,7 +836,8 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
->>>>>>  	rate = clk_round_rate(tegra->emc_clock, ULONG_MAX);
->>>>>>  	if (rate < 0) {
->>>>>>  		dev_err(&pdev->dev, "Failed to round clock rate: %ld\n", rate);
->>>>>> -		return rate;
->>>>>> +		err = rate;
->>>>>> +		goto disable_clk;
->>>>>>  	}
->>>>>>  
->>>>>>  	tegra->max_freq = rate / KHZ;
->>>>>> @@ -897,6 +898,7 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
->>>>>>  	dev_pm_opp_remove_all_dynamic(&pdev->dev);
->>>>>>  
->>>>>>  	reset_control_reset(tegra->reset);
->>>>>> +disable_clk:
->>>>>>  	clk_disable_unprepare(tegra->clock);
->>>>>
->>>>> Is it doesn't need to reset with reset_contrl_reset()?
->>>>
->>>> Hello, Chanwoo!
->>>>
->>>> It's reset just before the clk_round_rate() invocation, hence there
->>>> shouldn't be a need to reset it second time.
->>>
->>> Do you mean that reset is deasserted automatically
->>> when invoke clk_round_rate() on tegra?
-> 
-> I only mean that the tegra30-devfreq driver deasserts the reset before
-> the clk_round_rate():
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/devfreq/tegra30-devfreq.c?h=v5.9-rc5#n834
-> 
->>> If tree, I think that 'reset_control_reset(tegra->reset)' invocation
->>
->> I'm sorry for my typo. s/tree/true.
->>
->>> is not needed on 'remove_opp:' goto. Because already reset deassertion
->>> is invoked by clk_round_rate(), it seems that doesn't need to invoke
->>> anymore during exception case.
->>>
->>> Actually, it is not clear in my case.
-> 
-> The reset_control_reset() in the error path of the driver probe function
-> is placed that way to make the tear-down order match the driver removal
-> order. Perhaps the reset could be moved before the remove_opp, but this
-> change won't make any real difference, hence it already should be good
-> as-is.
-> 
-> 
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-I have one more question.
-When failed to enable clock on line829[1],
-does it need any reset_control invocation?
-In this case on line829, just return without any restoration 
-about reset control.
+> The wrappers in include/linux/pci-dma-compat.h should go away.
+> 
+> The patch has been generated with the coccinelle script below and has been
+> hand modified to replace GFP_ with a correct flag.
+> It has been compile tested.
+> 
+> When memory is allocated in 'mpi_map_card()' GFP_KERNEL can be used because
+> this function is called from a probe or a module_init() function and no
+> spinlock is taken in the between.
+> 
+> The call chains are:
+>   airo_init_module				module_init function in 'airo.c'
+> or
+>   airo_probe				.probe function in 'airo_cs.c'
+>     --> airo_config
+> 
+> followed in both cases by:
+>       --> init_airo_card
+>         --> _init_airo_card
+>           --> mpi_map_card
+> 
+> 
+> @@
+> @@
+> -    PCI_DMA_BIDIRECTIONAL
+> +    DMA_BIDIRECTIONAL
+> 
+> @@
+> @@
+> -    PCI_DMA_TODEVICE
+> +    DMA_TO_DEVICE
+> 
+> @@
+> @@
+> -    PCI_DMA_FROMDEVICE
+> +    DMA_FROM_DEVICE
+> 
+> @@
+> @@
+> -    PCI_DMA_NONE
+> +    DMA_NONE
+> 
+> @@
+> expression e1, e2, e3;
+> @@
+> -    pci_alloc_consistent(e1, e2, e3)
+> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+> 
+> @@
+> expression e1, e2, e3;
+> @@
+> -    pci_zalloc_consistent(e1, e2, e3)
+> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_free_consistent(e1, e2, e3, e4)
+> +    dma_free_coherent(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_map_single(e1, e2, e3, e4)
+> +    dma_map_single(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_single(e1, e2, e3, e4)
+> +    dma_unmap_single(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4, e5;
+> @@
+> -    pci_map_page(e1, e2, e3, e4, e5)
+> +    dma_map_page(&e1->dev, e2, e3, e4, e5)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_page(e1, e2, e3, e4)
+> +    dma_unmap_page(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_map_sg(e1, e2, e3, e4)
+> +    dma_map_sg(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_sg(e1, e2, e3, e4)
+> +    dma_unmap_sg(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
+> +    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_single_for_device(e1, e2, e3, e4)
+> +    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
+> +    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
+> +    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_dma_mapping_error(e1, e2)
+> +    dma_mapping_error(&e1->dev, e2)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_set_dma_mask(e1, e2)
+> +    dma_set_mask(&e1->dev, e2)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_set_consistent_dma_mask(e1, e2)
+> +    dma_set_coherent_mask(&e1->dev, e2)
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/devfreq/tegra30-devfreq.c?h=v5.9-rc5#n829
+Patch applied to wireless-drivers-next.git, thanks.
+
+ac4c323cbb91 airo: switch from 'pci_' to 'dma_' API
 
 -- 
-Best Regards,
-Chanwoo Choi
-Samsung Electronics
+https://patchwork.kernel.org/patch/11762179/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+

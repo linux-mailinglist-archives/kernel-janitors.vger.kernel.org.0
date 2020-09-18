@@ -2,101 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3A8726FFD8
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Sep 2020 16:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6055526FFD4
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Sep 2020 16:29:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726219AbgIRO3u (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 18 Sep 2020 10:29:50 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:37960 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726129AbgIRO3t (ORCPT
+        id S1726219AbgIRO3N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 18 Sep 2020 10:29:13 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:43142 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726129AbgIRO3M (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 18 Sep 2020 10:29:49 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08IESxEi081676;
-        Fri, 18 Sep 2020 14:29:45 GMT
+        Fri, 18 Sep 2020 10:29:12 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08IEOSew007518;
+        Fri, 18 Sep 2020 14:28:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=PoAYMXuVIvbXamrr9aIe7UrkFhAqYvW7rwr9JscQebs=;
- b=TaK5ww+Hbzw1TqOcxxs4RGjnpqLFFDsq/bsaNGizC24DIiFBt66KHG+GpypTfA4Wktte
- V3Ym42rTw+31Gt0BVf+koNIYdIQM3FNuS9RKI243YtCnqRjZEQbWR1xUVBgqEvtKJK7H
- nsCSWrVVHVRHOetngy3kOS6OT9g7dTWQtfCf0xvwAHW6EVjxLuEybDxL0zhRmaO/JAMH
- Anxs25UUNIekajAwctgCxoOAX4wtsMh67MDyiFavI4b7jtEaC/1opqxSO/7mQL2vAr2j
- F0D64xLQX2kDuIoAKKJDl1FLh/bIydCUNGqbSsUYF/SnvnUnlzD3ZbMqG27x2itMW6Bt 7Q== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 33gp9mqfhg-1
+ bh=fEb5Kid1irTc2joYqo9a5JVHMXpytQUPvcPKE8t/MnM=;
+ b=BNqw4zwMMFB1PQEzEAd74kBVu5u8Gym56egxxU7I4b23a4PoLcRmfJRafvy8z9u//Ag1
+ qEBxIR68AB9ZZUp7l/y7bST1qGVO2B/P0shpwLtAxZDuSrTzMG0AU3cn5OCv+yywb9JY
+ ++mYvI1k6hedsJ0gkis9aUa1QulNROkoYfazPDQihoP8VoEd4l7Dm2G61+uKbn4qQwps
+ gnUtzjSwrU3iWqxFe8FK3r6dNQ/QQB1p3NbH4tp86+16O9XuDzvxsrHfMXIXvAcdkHqK
+ J0DLoCcUH/l2uTrYqZ43mdQOZZ1KvRToIAtv7PjUyHXY+mZEFxLNLmD80RU5n0/ksiAh Gw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 33j91e15fv-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 18 Sep 2020 14:29:45 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08IEOwPn088849;
-        Fri, 18 Sep 2020 14:27:45 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 33megbhe7v-1
+        Fri, 18 Sep 2020 14:28:19 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08IEQ8Rr165202;
+        Fri, 18 Sep 2020 14:28:18 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 33khppskbh-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 18 Sep 2020 14:27:44 +0000
+        Fri, 18 Sep 2020 14:28:18 +0000
 Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08IERhRC017551;
-        Fri, 18 Sep 2020 14:27:43 GMT
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08IESB6w029128;
+        Fri, 18 Sep 2020 14:28:11 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 18 Sep 2020 14:27:37 +0000
-Date:   Fri, 18 Sep 2020 17:27:32 +0300
+        with ESMTP ; Fri, 18 Sep 2020 14:28:02 +0000
+Date:   Fri, 18 Sep 2020 17:27:56 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Jakub Kicinski <kuba@kernel.org>, linux-wireless@vger.kernel.org,
+To:     Corey Minyard <minyard@acm.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Xianting Tian <tian.xianting@h3c.com>,
+        openipmi-developer@lists.sourceforge.net,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] ath6kl: wmi: prevent a shift wrapping bug in
- ath6kl_wmi_delete_pstream_cmd()
-Message-ID: <20200918142732.GA909725@mwanda>
+Subject: [PATCH] ipmi: msghandler: Fix a signedness bug
+Message-ID: <20200918142756.GB909725@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9747 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0 spamscore=0
- mlxlogscore=999 adultscore=0 bulkscore=0 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009180117
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
+ mlxlogscore=999 phishscore=0 mlxscore=0 adultscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009180117
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9747 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999
- adultscore=0 malwarescore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- spamscore=0 priorityscore=1501 suspectscore=0 impostorscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009180118
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 impostorscore=0
+ priorityscore=1501 malwarescore=0 suspectscore=0 mlxlogscore=999
+ clxscore=1011 adultscore=0 lowpriorityscore=0 spamscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009180117
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "tsid" is a user controlled u8 which comes from debugfs.  Values
-more than 15 are invalid because "active_tsids" is a 16 bit variable.
-If the value of "tsid" is more than 31 then that leads to a shift
-wrapping bug.
+The type for the completion codes should be unsigned char instead of
+char.  If it is declared as a normal char then the conditions in
+__get_device_id() are impossible because the IPMI_DEVICE_IN_FW_UPDATE_ERR
+error codes are higher than 127.
 
-Fixes: 8fffd9e5ec9e ("ath6kl: Implement support for QOS-enable and QOS-disable from userspace")
+    drivers/char/ipmi/ipmi_msghandler.c:2449 __get_device_id()
+    warn: impossible condition '(bmc->cc == 209) => ((-128)-127 == 209)'
+
+Fixes: f8910ffa81b0 ("ipmi:msghandler: retry to get device id on an error")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-In the current code if the TSID bit isn't set it returns -ENODATA but
-returning -EINVAL here should be fine.
+ drivers/char/ipmi/ipmi_msghandler.c | 2 +-
+ drivers/char/ipmi/ipmi_si_intf.c    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
- drivers/net/wireless/ath/ath6kl/wmi.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath6kl/wmi.c b/drivers/net/wireless/ath/ath6kl/wmi.c
-index a4339cca661f..dbc47702a268 100644
---- a/drivers/net/wireless/ath/ath6kl/wmi.c
-+++ b/drivers/net/wireless/ath/ath6kl/wmi.c
-@@ -2639,6 +2639,11 @@ int ath6kl_wmi_delete_pstream_cmd(struct wmi *wmi, u8 if_idx, u8 traffic_class,
- 		return -EINVAL;
- 	}
+diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
+index 555c3b1e4926..8774a3b8ff95 100644
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -319,7 +319,7 @@ struct bmc_device {
+ 	int                    dyn_guid_set;
+ 	struct kref	       usecount;
+ 	struct work_struct     remove_work;
+-	char		       cc; /* completion code */
++	unsigned char	       cc; /* completion code */
+ };
+ #define to_bmc_device(x) container_of((x), struct bmc_device, pdev.dev)
  
-+	if (tsid >= 16) {
-+		ath6kl_err("invalid tsid: %d\n", tsid);
-+		return -EINVAL;
-+	}
-+
- 	skb = ath6kl_wmi_get_new_buf(sizeof(*cmd));
- 	if (!skb)
- 		return -ENOMEM;
+diff --git a/drivers/char/ipmi/ipmi_si_intf.c b/drivers/char/ipmi/ipmi_si_intf.c
+index 164f85007080..0b3dbc7e39fd 100644
+--- a/drivers/char/ipmi/ipmi_si_intf.c
++++ b/drivers/char/ipmi/ipmi_si_intf.c
+@@ -1344,7 +1344,7 @@ static int try_get_dev_id(struct smi_info *smi_info)
+ 			resp + 2, resp_len - 2, &smi_info->device_id);
+ 	if (rv) {
+ 		/* record completion code */
+-		char cc = *(resp + 2);
++		unsigned char cc = *(resp + 2);
+ 
+ 		if ((cc == IPMI_DEVICE_IN_FW_UPDATE_ERR
+ 		    || cc == IPMI_DEVICE_IN_INIT_ERR
 -- 
 2.28.0
 

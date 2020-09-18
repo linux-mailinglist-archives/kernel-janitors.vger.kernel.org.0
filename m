@@ -2,68 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11DEB26FE72
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Sep 2020 15:27:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B41426FE05
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Sep 2020 15:18:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726893AbgIRN1J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 18 Sep 2020 09:27:09 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:38498 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726683AbgIRN1G (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 18 Sep 2020 09:27:06 -0400
-X-Greylist: delayed 904 seconds by postgrey-1.27 at vger.kernel.org; Fri, 18 Sep 2020 09:27:05 EDT
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kJGBC-0001vI-93; Fri, 18 Sep 2020 13:11:58 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S1726716AbgIRNPZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 18 Sep 2020 09:15:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48964 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726392AbgIRNPZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 18 Sep 2020 09:15:25 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 652CB23719;
+        Fri, 18 Sep 2020 13:15:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600434924;
+        bh=FwUV2XVOFCWTnaBpapY1oJ3Zg02BuffjgARpsBxmqoQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nwvzmWtiFqN0tqhMrt/XquikEhcaZ4PFRdM/zLSzcz4zIfYVEDQ6XBQeLEXaBrgEw
+         6M1CQfPhLjMOBoVEDyB3Mnq0c/0UbwntCb8zlI8hoGcdmFTMr4siSvErwDdbTw3TAg
+         U1CsDpIDU8XtQnWQkBxF8mFpOC37EJqa5B2yRTcc=
+Date:   Fri, 18 Sep 2020 14:14:34 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] regmap: fix return of unintialized value in variable ret
-Date:   Fri, 18 Sep 2020 14:11:58 +0100
-Message-Id: <20200918131158.24083-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] regmap: fix return of unintialized value in
+ variable ret
+Message-ID: <20200918131434.GG5703@sirena.org.uk>
+References: <20200918131158.24083-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="+sHJum3is6Tsg7/J"
+Content-Disposition: inline
+In-Reply-To: <20200918131158.24083-1-colin.king@canonical.com>
+X-Cookie: Beware of geeks bearing graft.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
 
-A recent commit removed the intialization of ret and now the !config
-error return path returns a bogus uninitialized value in ret. Fix
-this by explicitly setting ret to -EINVAL for this error exit path.
+--+sHJum3is6Tsg7/J
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Addresses-Coverity: ("Uninitialized scalar value")
-Fixes: 94cc89eb8fa5 ("regmap: debugfs: Fix handling of name string for debugfs init delays")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/base/regmap/regmap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+On Fri, Sep 18, 2020 at 02:11:58PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> A recent commit removed the intialization of ret and now the !config
+> error return path returns a bogus uninitialized value in ret. Fix
+> this by explicitly setting ret to -EINVAL for this error exit path.
 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index d0f7cc574ff3..bd385b82f30b 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -710,8 +710,10 @@ struct regmap *__regmap_init(struct device *dev,
- 	int i, j;
- 	int ret;
- 
--	if (!config)
-+	if (!config) {
-+		ret = -EINVAL;
- 		goto err;
-+	}
- 
- 	map = kzalloc(sizeof(*map), GFP_KERNEL);
- 	if (map == NULL) {
--- 
-2.27.0
+I already applied a patch for this.
 
+--+sHJum3is6Tsg7/J
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl9ksrkACgkQJNaLcl1U
+h9BZggf/X73CVmpulLjsNipt985pXNKkibPt9bWqQsWTiwbhU9j06StCCD1axGQR
+fZdX2Lk+kb9aVd7BSc7V4Ri5GRAJoi4y/mbypUEQszMuvq63LpLPvjzhbMc36md1
+5aDhaPEQbtQTVpmTPkdtZO0nFnZfrUSQCRk03F+oHVM1iXt3Ua6ftOnWgjzVtlOA
+jCYhkmeLBmD9PdWlfK/H90VHaKDyw2h/d8sCsSFOtWAkUwtLHxU0sqJLh6qVGFLB
+TP7IUipcCOpGxQw3gxFOptLogC8L4G+xHeUulrnT0fxjDxNHVvMRjevc3ZiW4o4w
+7xgoGuso1q5asbs3KKBz940WN6E5ig==
+=ng5Z
+-----END PGP SIGNATURE-----
+
+--+sHJum3is6Tsg7/J--

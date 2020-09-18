@@ -2,77 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B41426FE05
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Sep 2020 15:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3A8726FFD8
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Sep 2020 16:29:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726716AbgIRNPZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 18 Sep 2020 09:15:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48964 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726392AbgIRNPZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 18 Sep 2020 09:15:25 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 652CB23719;
-        Fri, 18 Sep 2020 13:15:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600434924;
-        bh=FwUV2XVOFCWTnaBpapY1oJ3Zg02BuffjgARpsBxmqoQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nwvzmWtiFqN0tqhMrt/XquikEhcaZ4PFRdM/zLSzcz4zIfYVEDQ6XBQeLEXaBrgEw
-         6M1CQfPhLjMOBoVEDyB3Mnq0c/0UbwntCb8zlI8hoGcdmFTMr4siSvErwDdbTw3TAg
-         U1CsDpIDU8XtQnWQkBxF8mFpOC37EJqa5B2yRTcc=
-Date:   Fri, 18 Sep 2020 14:14:34 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] regmap: fix return of unintialized value in
- variable ret
-Message-ID: <20200918131434.GG5703@sirena.org.uk>
-References: <20200918131158.24083-1-colin.king@canonical.com>
+        id S1726219AbgIRO3u (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 18 Sep 2020 10:29:50 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:37960 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726129AbgIRO3t (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 18 Sep 2020 10:29:49 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08IESxEi081676;
+        Fri, 18 Sep 2020 14:29:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=PoAYMXuVIvbXamrr9aIe7UrkFhAqYvW7rwr9JscQebs=;
+ b=TaK5ww+Hbzw1TqOcxxs4RGjnpqLFFDsq/bsaNGizC24DIiFBt66KHG+GpypTfA4Wktte
+ V3Ym42rTw+31Gt0BVf+koNIYdIQM3FNuS9RKI243YtCnqRjZEQbWR1xUVBgqEvtKJK7H
+ nsCSWrVVHVRHOetngy3kOS6OT9g7dTWQtfCf0xvwAHW6EVjxLuEybDxL0zhRmaO/JAMH
+ Anxs25UUNIekajAwctgCxoOAX4wtsMh67MDyiFavI4b7jtEaC/1opqxSO/7mQL2vAr2j
+ F0D64xLQX2kDuIoAKKJDl1FLh/bIydCUNGqbSsUYF/SnvnUnlzD3ZbMqG27x2itMW6Bt 7Q== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 33gp9mqfhg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 18 Sep 2020 14:29:45 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08IEOwPn088849;
+        Fri, 18 Sep 2020 14:27:45 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 33megbhe7v-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 18 Sep 2020 14:27:44 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08IERhRC017551;
+        Fri, 18 Sep 2020 14:27:43 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 18 Sep 2020 14:27:37 +0000
+Date:   Fri, 18 Sep 2020 17:27:32 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Jakub Kicinski <kuba@kernel.org>, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] ath6kl: wmi: prevent a shift wrapping bug in
+ ath6kl_wmi_delete_pstream_cmd()
+Message-ID: <20200918142732.GA909725@mwanda>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="+sHJum3is6Tsg7/J"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200918131158.24083-1-colin.king@canonical.com>
-X-Cookie: Beware of geeks bearing graft.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9747 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0 spamscore=0
+ mlxlogscore=999 adultscore=0 bulkscore=0 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009180117
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9747 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999
+ adultscore=0 malwarescore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
+ spamscore=0 priorityscore=1501 suspectscore=0 impostorscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009180118
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+The "tsid" is a user controlled u8 which comes from debugfs.  Values
+more than 15 are invalid because "active_tsids" is a 16 bit variable.
+If the value of "tsid" is more than 31 then that leads to a shift
+wrapping bug.
 
---+sHJum3is6Tsg7/J
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fixes: 8fffd9e5ec9e ("ath6kl: Implement support for QOS-enable and QOS-disable from userspace")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+In the current code if the TSID bit isn't set it returns -ENODATA but
+returning -EINVAL here should be fine.
 
-On Fri, Sep 18, 2020 at 02:11:58PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> A recent commit removed the intialization of ret and now the !config
-> error return path returns a bogus uninitialized value in ret. Fix
-> this by explicitly setting ret to -EINVAL for this error exit path.
+ drivers/net/wireless/ath/ath6kl/wmi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-I already applied a patch for this.
+diff --git a/drivers/net/wireless/ath/ath6kl/wmi.c b/drivers/net/wireless/ath/ath6kl/wmi.c
+index a4339cca661f..dbc47702a268 100644
+--- a/drivers/net/wireless/ath/ath6kl/wmi.c
++++ b/drivers/net/wireless/ath/ath6kl/wmi.c
+@@ -2639,6 +2639,11 @@ int ath6kl_wmi_delete_pstream_cmd(struct wmi *wmi, u8 if_idx, u8 traffic_class,
+ 		return -EINVAL;
+ 	}
+ 
++	if (tsid >= 16) {
++		ath6kl_err("invalid tsid: %d\n", tsid);
++		return -EINVAL;
++	}
++
+ 	skb = ath6kl_wmi_get_new_buf(sizeof(*cmd));
+ 	if (!skb)
+ 		return -ENOMEM;
+-- 
+2.28.0
 
---+sHJum3is6Tsg7/J
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl9ksrkACgkQJNaLcl1U
-h9BZggf/X73CVmpulLjsNipt985pXNKkibPt9bWqQsWTiwbhU9j06StCCD1axGQR
-fZdX2Lk+kb9aVd7BSc7V4Ri5GRAJoi4y/mbypUEQszMuvq63LpLPvjzhbMc36md1
-5aDhaPEQbtQTVpmTPkdtZO0nFnZfrUSQCRk03F+oHVM1iXt3Ua6ftOnWgjzVtlOA
-jCYhkmeLBmD9PdWlfK/H90VHaKDyw2h/d8sCsSFOtWAkUwtLHxU0sqJLh6qVGFLB
-TP7IUipcCOpGxQw3gxFOptLogC8L4G+xHeUulrnT0fxjDxNHVvMRjevc3ZiW4o4w
-7xgoGuso1q5asbs3KKBz940WN6E5ig==
-=ng5Z
------END PGP SIGNATURE-----
-
---+sHJum3is6Tsg7/J--

@@ -2,27 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E84D526EF28
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Sep 2020 04:33:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C41C26F2F6
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Sep 2020 05:03:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729884AbgIRCdc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 17 Sep 2020 22:33:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41260 "EHLO mail.kernel.org"
+        id S1728011AbgIRDDO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 17 Sep 2020 23:03:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53148 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728998AbgIRCNr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 17 Sep 2020 22:13:47 -0400
+        id S1727412AbgIRCFI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 17 Sep 2020 22:05:08 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 355C62389F;
-        Fri, 18 Sep 2020 02:13:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C4B352344C;
+        Fri, 18 Sep 2020 02:05:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600395226;
-        bh=uKyd+P7uYdEygJarxNMMYG2W0SFX+OF/GFn1NYnMTTc=;
+        s=default; t=1600394708;
+        bh=rWMufWl3bYjWXmiA1ctYATk98OZ2gdOzkhxi01F/kE4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XBYlz8JogGy9MELmt+L3RugIjqQoi/lUJmVIK4h3iIHZEjysvHeE+d1ra3kFwWS3O
-         rPL850GXGGUIakVOTaYqcQ+DufdujIgVtLvJdYtlo1RIAfv5S7njL2ontrJ8FXb9BE
-         5weD6zEY1xPZQ3+wyZqsdjuM6xed0aASA6i3rucs=
+        b=csgEDa0yLxCN5YbX3oaf43jbxgru9SIeF4K6tCSrXlV4d2PY00TbNk1x2TsmmnUhz
+         WkZES0Pd0O5He1KEwYQQjxUTVj6L64eoboyrwOZ685+lORewIgvOZAhmsnDF3rl+t9
+         AfN30WOYTgfbCHYIvaHa9AqRsiuv0dcDsU6Eg+BM=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
@@ -38,12 +38,12 @@ Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         kernel-janitors@vger.kernel.org,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 072/127] perf cpumap: Fix snprintf overflow check
-Date:   Thu, 17 Sep 2020 22:11:25 -0400
-Message-Id: <20200918021220.2066485-72-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 193/330] perf cpumap: Fix snprintf overflow check
+Date:   Thu, 17 Sep 2020 21:58:53 -0400
+Message-Id: <20200918020110.2063155-193-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200918021220.2066485-1-sashal@kernel.org>
-References: <20200918021220.2066485-1-sashal@kernel.org>
+In-Reply-To: <20200918020110.2063155-1-sashal@kernel.org>
+References: <20200918020110.2063155-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -86,10 +86,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/tools/perf/util/cpumap.c b/tools/perf/util/cpumap.c
-index f93846edc1e0d..827d844f4efb1 100644
+index a22c1114e880d..324ec0456c83f 100644
 --- a/tools/perf/util/cpumap.c
 +++ b/tools/perf/util/cpumap.c
-@@ -462,7 +462,7 @@ static void set_max_cpu_num(void)
+@@ -299,7 +299,7 @@ static void set_max_cpu_num(void)
  
  	/* get the highest possible cpu number for a sparse allocation */
  	ret = snprintf(path, PATH_MAX, "%s/devices/system/cpu/possible", mnt);
@@ -98,7 +98,7 @@ index f93846edc1e0d..827d844f4efb1 100644
  		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
  		goto out;
  	}
-@@ -473,7 +473,7 @@ static void set_max_cpu_num(void)
+@@ -310,7 +310,7 @@ static void set_max_cpu_num(void)
  
  	/* get the highest present cpu number for a sparse allocation */
  	ret = snprintf(path, PATH_MAX, "%s/devices/system/cpu/present", mnt);
@@ -107,7 +107,7 @@ index f93846edc1e0d..827d844f4efb1 100644
  		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
  		goto out;
  	}
-@@ -501,7 +501,7 @@ static void set_max_node_num(void)
+@@ -338,7 +338,7 @@ static void set_max_node_num(void)
  
  	/* get the highest possible cpu number for a sparse allocation */
  	ret = snprintf(path, PATH_MAX, "%s/devices/system/node/possible", mnt);
@@ -116,7 +116,7 @@ index f93846edc1e0d..827d844f4efb1 100644
  		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
  		goto out;
  	}
-@@ -586,7 +586,7 @@ int cpu__setup_cpunode_map(void)
+@@ -423,7 +423,7 @@ int cpu__setup_cpunode_map(void)
  		return 0;
  
  	n = snprintf(path, PATH_MAX, "%s/devices/system/node", mnt);
@@ -125,7 +125,7 @@ index f93846edc1e0d..827d844f4efb1 100644
  		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
  		return -1;
  	}
-@@ -601,7 +601,7 @@ int cpu__setup_cpunode_map(void)
+@@ -438,7 +438,7 @@ int cpu__setup_cpunode_map(void)
  			continue;
  
  		n = snprintf(buf, PATH_MAX, "%s/%s", path, dent1->d_name);

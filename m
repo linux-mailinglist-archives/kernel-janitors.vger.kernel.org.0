@@ -2,63 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5292227089E
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Sep 2020 23:57:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F485270F2D
+	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Sep 2020 17:46:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726361AbgIRV5G (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 18 Sep 2020 17:57:06 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50960 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726154AbgIRV5G (ORCPT
+        id S1726593AbgISPqY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 19 Sep 2020 11:46:24 -0400
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:39124 "EHLO
+        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726463AbgISPqY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 18 Sep 2020 17:57:06 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kJONH-00051w-Q8; Fri, 18 Sep 2020 21:56:59 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Ayush Sawal <ayush.sawal@chelsio.com>,
-        Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
-        Rohit Maheshwari <rohitm@chelsio.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-crypto@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] crypto/chcr: fix minor indentation issue
-Date:   Fri, 18 Sep 2020 22:56:59 +0100
-Message-Id: <20200918215659.49825-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        Sat, 19 Sep 2020 11:46:24 -0400
+X-Greylist: delayed 606 seconds by postgrey-1.27 at vger.kernel.org; Sat, 19 Sep 2020 11:46:24 EDT
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 7A3F39E0056;
+        Sat, 19 Sep 2020 16:36:15 +0100 (BST)
+Date:   Sat, 19 Sep 2020 16:36:13 +0100
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Kamel Bouhara <kamel.bouhara@bootlin.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] counter: microchip-tcb-capture: check the correct
+ variable
+Message-ID: <20200919163613.7984587c@archlinux>
+In-Reply-To: <20200727122825.GA5614@shinobu>
+References: <20200727112316.GG389488@mwanda>
+        <20200727122825.GA5614@shinobu>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Mon, 27 Jul 2020 08:28:25 -0400
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
-There is a statement that is indented by one whitespace too deeply,
-fix this by removing the whitespace.
+> On Mon, Jul 27, 2020 at 02:23:16PM +0300, Dan Carpenter wrote:
+> > This should be testing "regmap" instead of "priv->regmap".  The
+> > "priv->regmap" variable is always zero so it's not an error pointer.
+> > 
+> > Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>  
+> 
+> Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+Seems I applied this one a while back but never replied to this thread.
+Sorry about that!
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/crypto/chelsio/chcr_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Jonathan
 
-diff --git a/drivers/crypto/chelsio/chcr_core.c b/drivers/crypto/chelsio/chcr_core.c
-index 40d51d2bd935..f91f9d762a45 100644
---- a/drivers/crypto/chelsio/chcr_core.c
-+++ b/drivers/crypto/chelsio/chcr_core.c
-@@ -127,7 +127,7 @@ static void chcr_dev_init(struct uld_ctx *u_ctx)
- 
- static int chcr_dev_move(struct uld_ctx *u_ctx)
- {
--	 mutex_lock(&drv_data.drv_mutex);
-+	mutex_lock(&drv_data.drv_mutex);
- 	if (drv_data.last_dev == u_ctx) {
- 		if (list_is_last(&drv_data.last_dev->entry, &drv_data.act_dev))
- 			drv_data.last_dev = list_first_entry(&drv_data.act_dev,
--- 
-2.27.0
+> 
+> > ---
+> > The commit 106b104137fd ("counter: Add microchip TCB capture counter")
+> > doesn't use the correct patch prefix.  This is a common mistake for the
+> > the first commit which adds the driver.  There is no kernel wide
+> > standard for patch prefixes so it's difficult for people sending fixes
+> > to know the correct prefix should be.
+> > 
+> >  drivers/counter/microchip-tcb-capture.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
+> > index f7b7743ddb94..b7b252c5addf 100644
+> > --- a/drivers/counter/microchip-tcb-capture.c
+> > +++ b/drivers/counter/microchip-tcb-capture.c
+> > @@ -320,8 +320,8 @@ static int mchp_tc_probe(struct platform_device *pdev)
+> >  	}
+> >  
+> >  	regmap = syscon_node_to_regmap(np->parent);
+> > -	if (IS_ERR(priv->regmap))
+> > -		return PTR_ERR(priv->regmap);
+> > +	if (IS_ERR(regmap))
+> > +		return PTR_ERR(regmap);
+> >  
+> >  	/* max. channels number is 2 when in QDEC mode */
+> >  	priv->num_channels = of_property_count_u32_elems(np, "reg");
+> > -- 
+> > 2.27.0
+> >   
 

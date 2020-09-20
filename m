@@ -2,90 +2,49 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04E6D271457
-	for <lists+kernel-janitors@lfdr.de>; Sun, 20 Sep 2020 14:47:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E8B3271479
+	for <lists+kernel-janitors@lfdr.de>; Sun, 20 Sep 2020 15:23:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726360AbgITMrN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 20 Sep 2020 08:47:13 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:21468 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726321AbgITMrM (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 20 Sep 2020 08:47:12 -0400
-X-IronPort-AV: E=Sophos;i="5.77,282,1596492000"; 
-   d="scan'208";a="468614397"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Sep 2020 14:47:11 +0200
-Date:   Sun, 20 Sep 2020 14:47:11 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-cc:     kernel-janitors@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
-        linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 01/14] pch_uart: drop double zeroing
-In-Reply-To: <20200920121404.GA2830482@kroah.com>
-Message-ID: <alpine.DEB.2.22.394.2009201443590.2966@hadrien>
-References: <1600601186-7420-1-git-send-email-Julia.Lawall@inria.fr> <1600601186-7420-2-git-send-email-Julia.Lawall@inria.fr> <20200920121404.GA2830482@kroah.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        id S1726327AbgITNX3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 20 Sep 2020 09:23:29 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:35930 "EHLO fornost.hmeau.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726306AbgITNX3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 20 Sep 2020 09:23:29 -0400
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
+        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
+        id 1kJzJI-0003uI-DV; Sun, 20 Sep 2020 23:23:21 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Sun, 20 Sep 2020 23:23:20 +1000
+Date:   Sun, 20 Sep 2020 23:23:20 +1000
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Thomas Graf <tgraf@suug.ch>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rhashtable: fix indentation of a continue statement
+Message-ID: <20200920132320.GA769@gondor.apana.org.au>
+References: <20200918215126.49236-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200918215126.49236-1-colin.king@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Fri, Sep 18, 2020 at 10:51:26PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> A continue statement is indented incorrectly, add in the missing
+> tab.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  lib/test_rhashtable.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-On Sun, 20 Sep 2020, Greg Kroah-Hartman wrote:
-
-> On Sun, Sep 20, 2020 at 01:26:13PM +0200, Julia Lawall wrote:
-> > sg_init_table zeroes its first argument, so the allocation of that argument
-> > doesn't have to.
-> >
-> > the semantic patch that makes this change is as follows:
-> > (http://coccinelle.lip6.fr/)
-> >
-> > // <smpl>
-> > @@
-> > expression x,n,flags;
-> > @@
-> >
-> > x =
-> > - kcalloc
-> > + kmalloc_array
-> >   (n,sizeof(struct scatterlist),flags)
-> > ...
-> > sg_init_table(x,n)
-> > // </smpl>
-> >
-> > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
->
-> It inits the first entry in the array, but what about all of the other
-> ones?  Is that "safe" to have uninitialized data in them like your
-> change causes to happen?
-
-Sorry, I don't follow.  The complete code is:
-
-        priv->sg_tx_p = kcalloc(num, sizeof(struct scatterlist), GFP_ATOMIC);
-        if (!priv->sg_tx_p) {
-		dev_err(priv->port.dev, "%s:kzalloc Failed\n", __func__);
-                return 0;
-	}
-
-	sg_init_table(priv->sg_tx_p, num); /* Initialize SG table */
-
-and the definition of sg_init_table is:
-
-void sg_init_table(struct scatterlist *sgl, unsigned int nents)
-{
-	memset(sgl, 0, sizeof(*sgl) * nents);
-	sg_init_marker(sgl, nents);
-}
-
-It looks to me like it zeroes all of the elements?  The same file does
-contain a call:
-
-sg_init_table(&priv->sg_rx, 1);
-
-But that's not the one associated with the patch.
-
-julia
+Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

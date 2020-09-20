@@ -2,85 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F485270F2D
-	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Sep 2020 17:46:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C12072712C1
+	for <lists+kernel-janitors@lfdr.de>; Sun, 20 Sep 2020 09:15:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726593AbgISPqY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 19 Sep 2020 11:46:24 -0400
-Received: from saturn.retrosnub.co.uk ([46.235.226.198]:39124 "EHLO
-        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726463AbgISPqY (ORCPT
+        id S1726255AbgITHPx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 20 Sep 2020 03:15:53 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:59131 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726216AbgITHPx (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 19 Sep 2020 11:46:24 -0400
-X-Greylist: delayed 606 seconds by postgrey-1.27 at vger.kernel.org; Sat, 19 Sep 2020 11:46:24 EDT
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 7A3F39E0056;
-        Sat, 19 Sep 2020 16:36:15 +0100 (BST)
-Date:   Sat, 19 Sep 2020 16:36:13 +0100
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Kamel Bouhara <kamel.bouhara@bootlin.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] counter: microchip-tcb-capture: check the correct
- variable
-Message-ID: <20200919163613.7984587c@archlinux>
-In-Reply-To: <20200727122825.GA5614@shinobu>
-References: <20200727112316.GG389488@mwanda>
-        <20200727122825.GA5614@shinobu>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Sun, 20 Sep 2020 03:15:53 -0400
+Received: from localhost.localdomain ([93.22.151.141])
+        by mwinf5d49 with ME
+        id W7Fo2300633He5H037Fo6F; Sun, 20 Sep 2020 09:15:49 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 20 Sep 2020 09:15:49 +0200
+X-ME-IP: 93.22.151.141
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     akpm@linux-foundation.org, natechancellor@gmail.com,
+        geert+renesas@glider.be
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] lib/scatterlist: Avoid a double memset
+Date:   Sun, 20 Sep 2020 09:15:44 +0200
+Message-Id: <20200920071544.368841-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 27 Jul 2020 08:28:25 -0400
-William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+'sgl' is zeroed a few lines below in 'sg_init_table()'. There is no need to
+clear it twice.
 
-> On Mon, Jul 27, 2020 at 02:23:16PM +0300, Dan Carpenter wrote:
-> > This should be testing "regmap" instead of "priv->regmap".  The
-> > "priv->regmap" variable is always zero so it's not an error pointer.
-> > 
-> > Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>  
-> 
-> Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-Seems I applied this one a while back but never replied to this thread.
-Sorry about that!
+Remove the redundant initialization.
 
-Jonathan
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ lib/scatterlist.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
-> > ---
-> > The commit 106b104137fd ("counter: Add microchip TCB capture counter")
-> > doesn't use the correct patch prefix.  This is a common mistake for the
-> > the first commit which adds the driver.  There is no kernel wide
-> > standard for patch prefixes so it's difficult for people sending fixes
-> > to know the correct prefix should be.
-> > 
-> >  drivers/counter/microchip-tcb-capture.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
-> > index f7b7743ddb94..b7b252c5addf 100644
-> > --- a/drivers/counter/microchip-tcb-capture.c
-> > +++ b/drivers/counter/microchip-tcb-capture.c
-> > @@ -320,8 +320,8 @@ static int mchp_tc_probe(struct platform_device *pdev)
-> >  	}
-> >  
-> >  	regmap = syscon_node_to_regmap(np->parent);
-> > -	if (IS_ERR(priv->regmap))
-> > -		return PTR_ERR(priv->regmap);
-> > +	if (IS_ERR(regmap))
-> > +		return PTR_ERR(regmap);
-> >  
-> >  	/* max. channels number is 2 when in QDEC mode */
-> >  	priv->num_channels = of_property_count_u32_elems(np, "reg");
-> > -- 
-> > 2.27.0
-> >   
+diff --git a/lib/scatterlist.c b/lib/scatterlist.c
+index 5d63a8857f36..d94628fa3349 100644
+--- a/lib/scatterlist.c
++++ b/lib/scatterlist.c
+@@ -504,7 +504,7 @@ struct scatterlist *sgl_alloc_order(unsigned long long length,
+ 		nalloc++;
+ 	}
+ 	sgl = kmalloc_array(nalloc, sizeof(struct scatterlist),
+-			    (gfp & ~GFP_DMA) | __GFP_ZERO);
++			    gfp & ~GFP_DMA);
+ 	if (!sgl)
+ 		return NULL;
+ 
+-- 
+2.25.1
 

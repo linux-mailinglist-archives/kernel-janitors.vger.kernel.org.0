@@ -2,77 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E89522712CC
-	for <lists+kernel-janitors@lfdr.de>; Sun, 20 Sep 2020 09:57:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D1592712F1
+	for <lists+kernel-janitors@lfdr.de>; Sun, 20 Sep 2020 10:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726309AbgITH51 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 20 Sep 2020 03:57:27 -0400
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:35226 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726216AbgITH51 (ORCPT
+        id S1726382AbgITIkE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 20 Sep 2020 04:40:04 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:24862
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726298AbgITIkD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 20 Sep 2020 03:57:27 -0400
-Received: from localhost.localdomain ([93.22.151.141])
-        by mwinf5d49 with ME
-        id W7xP2300C33He5H037xPyx; Sun, 20 Sep 2020 09:57:25 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 20 Sep 2020 09:57:25 +0200
-X-ME-IP: 93.22.151.141
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     jejb@linux.ibm.com, martin.petersen@oracle.com, bvanassche@acm.org,
-        jthumshirn@suse.de, hare@suse.com
-Cc:     linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] scsi: pmcraid: Fix memory allocation in 'pmcraid_alloc_sglist()'
-Date:   Sun, 20 Sep 2020 09:57:22 +0200
-Message-Id: <20200920075722.376644-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Sun, 20 Sep 2020 04:40:03 -0400
+X-Greylist: delayed 427 seconds by postgrey-1.27 at vger.kernel.org; Sun, 20 Sep 2020 04:40:02 EDT
+X-IronPort-AV: E=Sophos;i="5.77,282,1596492000"; 
+   d="scan'208";a="359510816"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Sep 2020 10:32:54 +0200
+Date:   Sun, 20 Sep 2020 10:32:54 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Joe Perches <joe@perches.com>
+cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        akpm@linux-foundation.org, natechancellor@gmail.com,
+        geert+renesas@glider.be, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] lib/scatterlist: Avoid a double memset
+In-Reply-To: <cd22db94ad43f788b158d6633a5b26b9c0aee5ba.camel@perches.com>
+Message-ID: <alpine.DEB.2.22.394.2009201032080.2966@hadrien>
+References: <20200920071544.368841-1-christophe.jaillet@wanadoo.fr> <cd22db94ad43f788b158d6633a5b26b9c0aee5ba.camel@perches.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-When the scatter list is allocated in 'pmcraid_alloc_sglist()', the
-corresponding pointer should be stored in 'scatterlist' within the
-'pmcraid_sglist' structure. Otherwise, 'scatterlist' is NULL.
 
-This leads to a potential memory leak and NULL pointer dereference.
 
-Fixes: ed4414cef2ad ("scsi: pmcraid: Use sgl_alloc_order() and sgl_free_order()")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-This patch is completely speculative and untested.
+On Sun, 20 Sep 2020, Joe Perches wrote:
 
-Should it be correct, I think that their should be some trouble somewhere.
-Either NULL pointer dereference or incorrect behavior.
-The patch that introduced this potential bug is 2 years 1/2 old. This
-should have been spotted earlier.
+> On Sun, 2020-09-20 at 09:15 +0200, Christophe JAILLET wrote:
+> > 'sgl' is zeroed a few lines below in 'sg_init_table()'. There is no need to
+> > clear it twice.
+> >
+> > Remove the redundant initialization.
+>
+> I didn't look very thoroughly, but there are at least
+> a few more of these with kcalloc and kzalloc like
+>
+> block/bsg-lib.c-        size_t sz = (sizeof(struct scatterlist) * req->nr_phys_segments);
+> block/bsg-lib.c-
+> block/bsg-lib.c-        BUG_ON(!req->nr_phys_segments);
+> block/bsg-lib.c-
+> block/bsg-lib.c-        buf->sg_list = kzalloc(sz, GFP_KERNEL);
+> block/bsg-lib.c-        if (!buf->sg_list)
+> block/bsg-lib.c-                return -ENOMEM;
+> block/bsg-lib.c:        sg_init_table(buf->sg_list, req->nr_phys_segments);
+> ---
+> drivers/target/target_core_rd.c-		sg = kcalloc(sg_per_table + chain_entry, sizeof(*sg),
+> drivers/target/target_core_rd.c-				GFP_KERNEL);
+> drivers/target/target_core_rd.c-		if (!sg)
+> drivers/target/target_core_rd.c-			return -ENOMEM;
+> drivers/target/target_core_rd.c-
+> drivers/target/target_core_rd.c:		sg_init_table(sg, sg_per_table + chain_entry);
+> ---
+> net/rds/rdma.c-		sg = kcalloc(nents, sizeof(*sg), GFP_KERNEL);
+> net/rds/rdma.c-		if (!sg) {
+> net/rds/rdma.c-			ret = -ENOMEM;
+> net/rds/rdma.c-			goto out;
+> net/rds/rdma.c-		}
+> net/rds/rdma.c-		WARN_ON(!nents);
+> net/rds/rdma.c:		sg_init_table(sg, nents);
 
-So unless this driver is mostly unused, this looks odd to me.
-Feedback appreciated.
----
- drivers/scsi/pmcraid.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+I found 16 occurrences in the following files:
 
-diff --git a/drivers/scsi/pmcraid.c b/drivers/scsi/pmcraid.c
-index d99568fdf4af..00e155c88f03 100644
---- a/drivers/scsi/pmcraid.c
-+++ b/drivers/scsi/pmcraid.c
-@@ -3230,8 +3230,9 @@ static struct pmcraid_sglist *pmcraid_alloc_sglist(int buflen)
- 		return NULL;
- 
- 	sglist->order = order;
--	sgl_alloc_order(buflen, order, false,
--			GFP_KERNEL | GFP_DMA | __GFP_ZERO, &sglist->num_sg);
-+	sglist->scatterlist = sgl_alloc_order(buflen, order, false,
-+					      GFP_KERNEL | GFP_DMA | __GFP_ZERO,
-+					      &sglist->num_sg);
- 
- 	return sglist;
- }
--- 
-2.25.1
+net/rds/rdma.c
+drivers/infiniband/hw/efa/efa_verbs.c
+drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+drivers/misc/mic/scif/scif_nodeqp.c
+block/bsg-lib.c
+drivers/dma/sh/rcar-dmac.c
+drivers/spi/spi-topcliff-pch.c
+net/sunrpc/xprtrdma/frwr_ops.c
+drivers/dma/imx-dma.c
+drivers/pci/p2pdma.c
+drivers/dma/sh/shdma-base.c
+drivers/target/target_core_rd.c
+drivers/media/common/saa7146/saa7146_core.c
+drivers/tty/serial/pch_uart.c
+drivers/net/wireless/intel/iwlwifi/fw/dbg.c
 
+julia

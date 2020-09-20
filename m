@@ -2,78 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4C1C2717FD
-	for <lists+kernel-janitors@lfdr.de>; Sun, 20 Sep 2020 22:58:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A5A527180E
+	for <lists+kernel-janitors@lfdr.de>; Sun, 20 Sep 2020 23:11:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726151AbgITU60 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 20 Sep 2020 16:58:26 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:43880 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726126AbgITU60 (ORCPT
+        id S1726397AbgITVKx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 20 Sep 2020 17:10:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51170 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726126AbgITVKx (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 20 Sep 2020 16:58:26 -0400
-X-Greylist: delayed 431 seconds by postgrey-1.27 at vger.kernel.org; Sun, 20 Sep 2020 16:58:25 EDT
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 5EF641C0B7A; Sun, 20 Sep 2020 22:51:12 +0200 (CEST)
-Date:   Sun, 20 Sep 2020 22:51:11 +0200
-From:   Pavel Machek <pavel@denx.de>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Pavel Machek <pavel@denx.de>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        syzbot+96414aa0033c363d8458@syzkaller.appspotmail.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Lihong Kou <koulihong@huawei.com>,
-        Marcel Holtmann <marcel@holtmann.org>
-Subject: Re: [PATCH] 6lowpan: Add missing locking
-Message-ID: <20200920205111.GA31185@duo.ucw.cz>
-References: <2325b986-a4ea-9aa3-40ba-702ebe9b519c@web.de>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="EVF5PPMfhYS0aIcm"
-Content-Disposition: inline
-In-Reply-To: <2325b986-a4ea-9aa3-40ba-702ebe9b519c@web.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        Sun, 20 Sep 2020 17:10:53 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C912C061755;
+        Sun, 20 Sep 2020 14:10:53 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 9FFCE13BC86AD;
+        Sun, 20 Sep 2020 13:54:04 -0700 (PDT)
+Date:   Sun, 20 Sep 2020 14:10:23 -0700 (PDT)
+Message-Id: <20200920.141023.66488986181172964.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     tgraf@suug.ch, herbert@gondor.apana.org.au, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rhashtable: fix indentation of a continue statement
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200918215126.49236-1-colin.king@canonical.com>
+References: <20200918215126.49236-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 27.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [2620:137:e000::1:9]); Sun, 20 Sep 2020 13:54:04 -0700 (PDT)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin King <colin.king@canonical.com>
+Date: Fri, 18 Sep 2020 22:51:26 +0100
 
---EVF5PPMfhYS0aIcm
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> A continue statement is indented incorrectly, add in the missing
+> tab.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-On Sun 2020-09-20 16:14:22, Markus Elfring wrote:
-> > I believe set_lock should be taken in exit function, too.
->=20
-> * Would an imperative wording become helpful for the change description?
->=20
-> * How do you think about to add the tag =E2=80=9CFixes=E2=80=9D to the co=
-mmit message?
-
-Hi,
-
-This is the semi-friendly notice stolen from Greg Kroah-Hartman.
-
-Markus, you seem to have sent a nonsensical or otherwise pointless
-review comment to a patch submission on a Linux kernel developer mailing
-list.  I strongly suggest that you not do this anymore.  Please do not
-bother developers who are actively working to produce patches and
-features with comments that, in the end, are a waste of time.
-
-								Pavel
---=20
-DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---EVF5PPMfhYS0aIcm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCX2fAvwAKCRAw5/Bqldv6
-8ojgAJ9etw8H04JUAZoA7SzA9c1syP1y5QCgtou+ksIF2mZDV68WLpZQ5/Chvg4=
-=kOI6
------END PGP SIGNATURE-----
-
---EVF5PPMfhYS0aIcm--
+Applied.

@@ -2,29 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B70AB2714FA
-	for <lists+kernel-janitors@lfdr.de>; Sun, 20 Sep 2020 16:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F351271500
+	for <lists+kernel-janitors@lfdr.de>; Sun, 20 Sep 2020 16:25:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726311AbgITOUs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 20 Sep 2020 10:20:48 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:57238 "EHLO
+        id S1726305AbgITOY4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 20 Sep 2020 10:24:56 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:57300 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726267AbgITOUs (ORCPT
+        with ESMTP id S1726267AbgITOY4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 20 Sep 2020 10:20:48 -0400
+        Sun, 20 Sep 2020 10:24:56 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kK0Cs-0007OB-Eu; Sun, 20 Sep 2020 14:20:46 +0000
+        id 1kK0Gs-0007a9-Cv; Sun, 20 Sep 2020 14:24:54 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     John Stultz <john.stultz@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] misc: hisi_hikey_usb: clean up indentation issue
-Date:   Sun, 20 Sep 2020 15:20:46 +0100
-Message-Id: <20200920142046.33123-1-colin.king@canonical.com>
+Subject: [PATCH] regulator: fix indentation issue
+Date:   Sun, 20 Sep 2020 15:24:54 +0100
+Message-Id: <20200920142454.33352-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,26 +34,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a return statement that is indented too deeply,
-fix this by removing the extraneous tab.
+There is a return statement that is indented with an extra
+space, fix this by removing it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/misc/hisi_hikey_usb.c | 2 +-
+ drivers/regulator/core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/misc/hisi_hikey_usb.c b/drivers/misc/hisi_hikey_usb.c
-index 5759e7209023..cc93569e601c 100644
---- a/drivers/misc/hisi_hikey_usb.c
-+++ b/drivers/misc/hisi_hikey_usb.c
-@@ -162,7 +162,7 @@ static int hisi_hikey_usb_parse_kirin970(struct platform_device *pdev,
- 		dev_err(&pdev->dev,
- 			"get hub-vdd-supply failed with error %ld\n",
- 			PTR_ERR(regulator));
--			return PTR_ERR(regulator);
-+		return PTR_ERR(regulator);
- 	}
- 	hisi_hikey_usb->regulator = regulator;
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 7fed8cd134f8..6aa648019702 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -3070,7 +3070,7 @@ int regulator_get_hardware_vsel_register(struct regulator *regulator,
+ 	*vsel_reg = rdev->desc->vsel_reg;
+ 	*vsel_mask = rdev->desc->vsel_mask;
+ 
+-	 return 0;
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(regulator_get_hardware_vsel_register);
  
 -- 
 2.27.0

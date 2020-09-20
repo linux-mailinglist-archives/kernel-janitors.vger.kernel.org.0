@@ -2,72 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 287FC2717A3
-	for <lists+kernel-janitors@lfdr.de>; Sun, 20 Sep 2020 21:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4C1C2717FD
+	for <lists+kernel-janitors@lfdr.de>; Sun, 20 Sep 2020 22:58:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726151AbgITTk6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 20 Sep 2020 15:40:58 -0400
-Received: from smtp.infotech.no ([82.134.31.41]:44934 "EHLO smtp.infotech.no"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726109AbgITTk6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 20 Sep 2020 15:40:58 -0400
-X-Greylist: delayed 328 seconds by postgrey-1.27 at vger.kernel.org; Sun, 20 Sep 2020 15:40:57 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by smtp.infotech.no (Postfix) with ESMTP id 9DDD020424C;
-        Sun, 20 Sep 2020 21:35:28 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new-2.6.6 (20110518) (Debian) at infotech.no
-Received: from smtp.infotech.no ([127.0.0.1])
-        by localhost (smtp.infotech.no [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id iBvNNGn0a9mC; Sun, 20 Sep 2020 21:35:22 +0200 (CEST)
-Received: from [192.168.48.23] (host-45-78-251-166.dyn.295.ca [45.78.251.166])
-        by smtp.infotech.no (Postfix) with ESMTPA id 38CFD204172;
-        Sun, 20 Sep 2020 21:35:20 +0200 (CEST)
-Reply-To: dgilbert@interlog.com
-Subject: Re: [PATCH] lib/scatterlist: Fix memory leak in sgl_alloc_order()
-To:     Markus Elfring <Markus.Elfring@web.de>, linux-block@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Bart Van Assche <bvanassche@acm.org>,
-        Jens Axboe <axboe@kernel.dk>
-References: <e69e9865-a599-5bd9-95b1-7d57c7e2e90c@web.de>
-From:   Douglas Gilbert <dgilbert@interlog.com>
-Message-ID: <1608a0b7-6960-afce-aa39-6785036b01e0@interlog.com>
-Date:   Sun, 20 Sep 2020 15:35:18 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726151AbgITU60 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 20 Sep 2020 16:58:26 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:43880 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726126AbgITU60 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 20 Sep 2020 16:58:26 -0400
+X-Greylist: delayed 431 seconds by postgrey-1.27 at vger.kernel.org; Sun, 20 Sep 2020 16:58:25 EDT
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 5EF641C0B7A; Sun, 20 Sep 2020 22:51:12 +0200 (CEST)
+Date:   Sun, 20 Sep 2020 22:51:11 +0200
+From:   Pavel Machek <pavel@denx.de>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Pavel Machek <pavel@denx.de>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        syzbot+96414aa0033c363d8458@syzkaller.appspotmail.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Lihong Kou <koulihong@huawei.com>,
+        Marcel Holtmann <marcel@holtmann.org>
+Subject: Re: [PATCH] 6lowpan: Add missing locking
+Message-ID: <20200920205111.GA31185@duo.ucw.cz>
+References: <2325b986-a4ea-9aa3-40ba-702ebe9b519c@web.de>
 MIME-Version: 1.0
-In-Reply-To: <e69e9865-a599-5bd9-95b1-7d57c7e2e90c@web.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-CA
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="EVF5PPMfhYS0aIcm"
+Content-Disposition: inline
+In-Reply-To: <2325b986-a4ea-9aa3-40ba-702ebe9b519c@web.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020-09-20 1:09 p.m., Markus Elfring wrote:
->> Noticed that when sgl_alloc_order() failed with order > 0 that
->> free memory on my machine shrank. That function shouldn't call
->> sgl_free() on its error path since that is only correct when
->> order==0 .
-> 
+
+--EVF5PPMfhYS0aIcm
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sun 2020-09-20 16:14:22, Markus Elfring wrote:
+> > I believe set_lock should be taken in exit function, too.
+>=20
 > * Would an imperative wording become helpful for the change description?
+>=20
+> * How do you think about to add the tag =E2=80=9CFixes=E2=80=9D to the co=
+mmit message?
 
-No passive tense there. Or do you mean usage like: "Go to hell" or
-"Fix memory leak in ..."? I studied French and Latin at school; at a
-guess, my mother tongue got its grammar from the former. My mother
-taught English grammar and the term "imperative wording" rings no
-bells in my grammatical education. Google agrees with me.
-Please define: "imperative wording".
-> * How do you think about to add the tag “Fixes” to the commit message?r
+Hi,
 
-In the workflow I'm used to, others (closer to LT) make that decision.
-Why waste my time?
+This is the semi-friendly notice stolen from Greg Kroah-Hartman.
 
-> * Will an other patch subject be more appropriate?
+Markus, you seem to have sent a nonsensical or otherwise pointless
+review comment to a patch submission on a Linux kernel developer mailing
+list.  I strongly suggest that you not do this anymore.  Please do not
+bother developers who are actively working to produce patches and
+features with comments that, in the end, are a waste of time.
 
-Twas testing a 6 GB allocation with said function on my 8 GB laptop.
-It failed and free told me 5 GB had disappeared (and
-'cat /sys/kernel/debug/kmemleak' told me _nothing_). Umm, it is
-potentially a HUGE f@#$ing memory LEAK! Best to call a spade a spade.
+								Pavel
+--=20
+DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-Doug Gilbert
+--EVF5PPMfhYS0aIcm
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCX2fAvwAKCRAw5/Bqldv6
+8ojgAJ9etw8H04JUAZoA7SzA9c1syP1y5QCgtou+ksIF2mZDV68WLpZQ5/Chvg4=
+=kOI6
+-----END PGP SIGNATURE-----
+
+--EVF5PPMfhYS0aIcm--

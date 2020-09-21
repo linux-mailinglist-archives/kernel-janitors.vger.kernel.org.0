@@ -2,79 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7152D272215
-	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Sep 2020 13:16:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70AF2272437
+	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Sep 2020 14:52:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726457AbgIULQP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 21 Sep 2020 07:16:15 -0400
-Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.52]:60962 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726353AbgIULQP (ORCPT
+        id S1726803AbgIUMwl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 21 Sep 2020 08:52:41 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:36250 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726417AbgIUMwl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 21 Sep 2020 07:16:15 -0400
-X-Greylist: delayed 424 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Sep 2020 07:16:14 EDT
-Received: from dispatch1-us1.ppe-hosted.com (localhost.localdomain [127.0.0.1])
-        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 677082F1B22;
-        Mon, 21 Sep 2020 11:09:10 +0000 (UTC)
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.65.62])
-        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 2462160094;
-        Mon, 21 Sep 2020 11:09:10 +0000 (UTC)
-Received: from us4-mdac16-19.ut7.mdlocal (unknown [10.7.65.243])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 231E98009B;
-        Mon, 21 Sep 2020 11:09:10 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.65.198])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id A534A280050;
-        Mon, 21 Sep 2020 11:09:09 +0000 (UTC)
-Received: from webmail.solarflare.com (uk.solarflare.com [193.34.186.16])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 480D480064;
-        Mon, 21 Sep 2020 11:09:09 +0000 (UTC)
-Received: from [10.17.20.203] (10.17.20.203) by ukex01.SolarFlarecom.com
- (10.17.10.4) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 21 Sep
- 2020 12:09:03 +0100
-Subject: Re: [PATCH net] sfc: Fix error code in probe
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Solarflare linux maintainers <linux-net-drivers@solarflare.com>
-CC:     Martin Habets <mhabets@solarflare.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, <netdev@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <20200918143311.GD909725@mwanda>
-From:   Edward Cree <ecree@solarflare.com>
-Message-ID: <a65bcb6c-a0a0-eb9d-82f0-766cfb3fbc13@solarflare.com>
-Date:   Mon, 21 Sep 2020 12:09:00 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Mon, 21 Sep 2020 08:52:41 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08LCn6IO093467;
+        Mon, 21 Sep 2020 12:52:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=Qef+jF9kIxJP77qktGupJNb5jDIKeVj25Kv/QMU9w7s=;
+ b=a8OgNYDc/L96t0bUCuE/Mjb5A97x2QScU1+rIyDidU16AmuCcvQpY3Afj1EAXuhtFroB
+ myYpxkCo/AolnnGca63bBCrvk6muCegR5PeiB8aHEbLpHPCoHV67egouv6k0RAMlr2YK
+ cnJEzVxDQvVdgTzrIh9Tu4tzuo7jgt9rcFXLDnLWGtubBiBezdprOQclEzyc97klGwp8
+ Oy5M2L2N/sPf+qlawJdGUxszIpGu/3AUg/6Iol0TYo+v7cmC3dVakh2idna4o3QeCxHE
+ fFUgKMUNE1OUF7eQun87rPOVVoSlRUbu/GFqjZq/khi1wC+Y8lufp0yYESgGBfpkiXo6 xA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 33n9xkne5c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 21 Sep 2020 12:52:22 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08LCp3BX133010;
+        Mon, 21 Sep 2020 12:52:22 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 33nurqjskg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 21 Sep 2020 12:52:22 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08LCqIFY021954;
+        Mon, 21 Sep 2020 12:52:20 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 21 Sep 2020 05:52:18 -0700
+Date:   Mon, 21 Sep 2020 15:52:12 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jean Delvare <jdelvare@suse.com>,
+        "Dr. David Alan Gilbert" <linux@treblig.org>
+Cc:     Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] hwmon: (w83627ehf) Fix a resource leak in probe
+Message-ID: <20200921125212.GA1128194@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20200918143311.GD909725@mwanda>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Content-Language: en-GB
-X-Originating-IP: [10.17.20.203]
-X-ClientProxiedBy: ocex03.SolarFlarecom.com (10.20.40.36) To
- ukex01.SolarFlarecom.com (10.17.10.4)
-X-TM-AS-Product-Ver: SMEX-12.5.0.1300-8.6.1012-25674.003
-X-TM-AS-Result: No-1.659200-8.000000-10
-X-TMASE-MatchedRID: lORh06tOiKiVvdyNUeenHvZvT2zYoYOwC/ExpXrHizxWm0JlHAu9AZv8
-        OBKGKGJryV4nwPo8PJ5bCKebpR3kAmohFAYfTz4engIgpj8eDcC063Wh9WVqgmWCfbzydb0giCF
-        ykZQ+I/rkwjHXXC/4I7I7zVffJqTz9MczSNkeYuFdAFp9PR8A620k9DEV75rzWrRC8SNfq4Ie+1
-        Y24ck3WtQ17CngTb9OBKmZVgZCVnezGTWRXUlrx+EijnvekEIH
-X-TM-AS-User-Approved-Sender: Yes
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--1.659200-8.000000
-X-TMASE-Version: SMEX-12.5.0.1300-8.6.1012-25674.003
-X-MDID: 1600686550-7cbZsTNaApI7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9750 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
+ phishscore=0 mlxlogscore=999 bulkscore=0 mlxscore=0 suspectscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009210093
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9750 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 priorityscore=1501 adultscore=0 spamscore=0 clxscore=1015
+ mlxlogscore=999 bulkscore=0 mlxscore=0 phishscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009210093
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 18/09/2020 15:33, Dan Carpenter wrote:
-> This failure path should return a negative error code but it currently
-> returns success.
->
-> Fixes: 51b35a454efd ("sfc: skeleton EF100 PF driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Acked-by: Edward Cree <ecree@solarflare.com>
-Thanks for catching this.
+Smatch has a new check for resource leaks which found a bug in probe:
+
+    drivers/hwmon/w83627ehf.c:2417 w83627ehf_probe()
+    warn: 'res->start' not released on lines: 2412.
+
+We need to clean up if devm_hwmon_device_register_with_info() fails.
+
+Fixes: 266cd5835947 ("hwmon: (w83627ehf) convert to with_info interface")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/hwmon/w83627ehf.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/hwmon/w83627ehf.c b/drivers/hwmon/w83627ehf.c
+index 5a5120121e50..3964ceab2817 100644
+--- a/drivers/hwmon/w83627ehf.c
++++ b/drivers/hwmon/w83627ehf.c
+@@ -1951,8 +1951,12 @@ static int w83627ehf_probe(struct platform_device *pdev)
+ 							 data,
+ 							 &w83627ehf_chip_info,
+ 							 w83627ehf_groups);
++	if (IS_ERR(hwmon_dev)) {
++		err = PTR_ERR(hwmon_dev);
++		goto exit_release;
++	}
+ 
+-	return PTR_ERR_OR_ZERO(hwmon_dev);
++	return 0;
+ 
+ exit_release:
+ 	release_region(res->start, IOREGION_LENGTH);
+-- 
+2.28.0
+

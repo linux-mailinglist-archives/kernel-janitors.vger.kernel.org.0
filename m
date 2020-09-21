@@ -2,76 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBBD8272FB9
-	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Sep 2020 18:59:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30EEA2730D7
+	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Sep 2020 19:29:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730296AbgIUQ7Z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 21 Sep 2020 12:59:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40096 "EHLO mail.kernel.org"
+        id S1727323AbgIUR3G (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 21 Sep 2020 13:29:06 -0400
+Received: from mx.treblig.org ([46.43.15.161]:50148 "EHLO mx.treblig.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730308AbgIUQ7O (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 21 Sep 2020 12:59:14 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4CAA5235FD;
-        Mon, 21 Sep 2020 16:59:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600707553;
-        bh=ilYPXYXOrK02dbgWO785dFtleHl2+7nPjk6K0R/PBvw=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=yyPOpwzx1pKltzf4H+v0LidZoBubumrt/74zHAY5TzeAVoIQ8re/YX4A1pDxLKPo6
-         Vv1/tJnpF8BhoP6or7Ck079oNkAaG4N9D7DU/T8PUoATLp0KQqEJ2DLkYD20jr0P0O
-         GwH9D2LvhnnnkrNBzbXQKA7gy9dil44xEFwmKaEQ=
-Date:   Mon, 21 Sep 2020 17:58:21 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     linux-spi@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     linux-serial@vger.kernel.org, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-block@vger.kernel.org,
-        Yossi Leybovich <sleybo@amazon.com>,
-        linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
-        dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-rdma@vger.kernel.org,
-        Dan Williams <dan.j.williams@intel.com>,
-        rds-devel@oss.oracle.com
-In-Reply-To: <1600601186-7420-1-git-send-email-Julia.Lawall@inria.fr>
-References: <1600601186-7420-1-git-send-email-Julia.Lawall@inria.fr>
-Subject: Re: [PATCH 00/14] drop double zeroing
-Message-Id: <160070750168.56292.17961674601916397869.b4-ty@kernel.org>
+        id S1726419AbgIUR3G (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 21 Sep 2020 13:29:06 -0400
+X-Greylist: delayed 2432 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Sep 2020 13:29:05 EDT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+        ; s=bytemarkmx; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID
+        :Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID
+        :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+        Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
+        :List-Post:List-Owner:List-Archive;
+        bh=HeBqoQgk26sYj7RJEMovUHgkiEJR1lX2CXMJ7423is0=; b=CY8YZCrSiv+u1nB9vf7fXzFh9Y
+        Bp3sfv00CePrSfzHkeJB+i7jKnvPuBczZUla/aJ+wW7OVKBzC1GXYd1qGUPDFLpAc7uWnMR4dfRkw
+        f0yrgOaREk6bYo3r2B8IKSJ9BYcRb5JRVblYqkVOB9SCFkXq2PfR6Xs8BLcSMYS4PKCpXUfcrlB2T
+        gD9Y9f81MjQQ2PCTH5TsEJmTiqpUxSwsc1Kl5Uhy87Tx7NwXQ79OmPIY2tEWW1ML34ykaov4v89E7
+        hRF1PZV4HhuQcemIEjGDjE0TCt9TnmMeX02DznADIKuLbbev+pdCVRjahR0/AeKYnLviFG6QEEU23
+        zd1LrXOg==;
+Received: from dg by mx.treblig.org with local (Exim 4.92)
+        (envelope-from <dg@treblig.org>)
+        id 1kKOzA-0006zy-BC; Mon, 21 Sep 2020 17:48:16 +0100
+Date:   Mon, 21 Sep 2020 17:48:16 +0100
+From:   "Dr. David Alan Gilbert" <linux@treblig.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-hwmon@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] hwmon: (w83627ehf) Fix a resource leak in probe
+Message-ID: <20200921164816.GA15497@gallifrey>
+References: <20200921125212.GA1128194@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200921125212.GA1128194@mwanda>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/4.19.0-5-amd64 (x86_64)
+X-Uptime: 17:47:32 up 386 days, 17:08,  2 users,  load average: 0.10, 0.15,
+ 0.12
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 20 Sep 2020 13:26:12 +0200, Julia Lawall wrote:
-> sg_init_table zeroes its first argument, so the allocation of that argument
-> doesn't have to.
+* Dan Carpenter (dan.carpenter@oracle.com) wrote:
+> Smatch has a new check for resource leaks which found a bug in probe:
+> 
+>     drivers/hwmon/w83627ehf.c:2417 w83627ehf_probe()
+>     warn: 'res->start' not released on lines: 2412.
+> 
+> We need to clean up if devm_hwmon_device_register_with_info() fails.
+> 
+> Fixes: 266cd5835947 ("hwmon: (w83627ehf) convert to with_info interface")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Applied to
+Yeh that looks right to me; thanks!
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Reviewed-by: Dr. David Alan Gilbert <linux@treblig.org>
 
-Thanks!
-
-[1/1] spi/topcliff-pch: drop double zeroing
-      commit: ca03dba30f2b8ff45a2972c6691e4c96d8c52b3b
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+> ---
+>  drivers/hwmon/w83627ehf.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hwmon/w83627ehf.c b/drivers/hwmon/w83627ehf.c
+> index 5a5120121e50..3964ceab2817 100644
+> --- a/drivers/hwmon/w83627ehf.c
+> +++ b/drivers/hwmon/w83627ehf.c
+> @@ -1951,8 +1951,12 @@ static int w83627ehf_probe(struct platform_device *pdev)
+>  							 data,
+>  							 &w83627ehf_chip_info,
+>  							 w83627ehf_groups);
+> +	if (IS_ERR(hwmon_dev)) {
+> +		err = PTR_ERR(hwmon_dev);
+> +		goto exit_release;
+> +	}
+>  
+> -	return PTR_ERR_OR_ZERO(hwmon_dev);
+> +	return 0;
+>  
+>  exit_release:
+>  	release_region(res->start, IOREGION_LENGTH);
+> -- 
+> 2.28.0
+> 
+-- 
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/

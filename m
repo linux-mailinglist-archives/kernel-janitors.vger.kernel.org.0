@@ -2,81 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB771271E0F
-	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Sep 2020 10:37:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7152D272215
+	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Sep 2020 13:16:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726422AbgIUIhS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 21 Sep 2020 04:37:18 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:46370 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726326AbgIUIhS (ORCPT
+        id S1726457AbgIULQP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 21 Sep 2020 07:16:15 -0400
+Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.52]:60962 "EHLO
+        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726353AbgIULQP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 21 Sep 2020 04:37:18 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08L8YQFY033906;
-        Mon, 21 Sep 2020 08:37:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=62a8UL3OAUMDd3tSQYkh5y5Nekyd00f1dKIe/NrNJ5Q=;
- b=fmPpHWXeFJhzH5FLrx97IwbMvH2hyuqAk5akxn+iPQGM/W+4nXfMA2fqQ6ISCgA1CX8X
- Ouyh+9R7onaGD7QfHTEi3vL10CEozciFkU4Xzcv550wJKwk686Ea+MzzdKjf8CCIzEsM
- IXpIX9XTI5eRZiTkqxFYoJ021HNO8gCaJ6eyhJfiug1EOF9ocG2ic6KZW/m5nOerqDsg
- rE7tjPVQ3X9K5LCf4qGLoWYGvjWT/CQObk7yoRQ6Z5Ih+t+gFe6Xl0rdhy8jrhrkr/B8
- 2xmAoJ5vwJrmQhIaRcF/vXHl1mFDxMP4v54QzvnRArcrTf6oreb8CFmJNwTAMGsl6OgD mg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 33n9dqv91t-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 21 Sep 2020 08:37:12 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08L8aHvL049498;
-        Mon, 21 Sep 2020 08:37:11 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 33nujkbysr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 21 Sep 2020 08:37:11 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08L8b7sY002472;
-        Mon, 21 Sep 2020 08:37:09 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 21 Sep 2020 01:37:07 -0700
-Date:   Mon, 21 Sep 2020 11:37:00 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Douglas Gilbert <dgilbert@interlog.com>
-Cc:     Markus Elfring <Markus.Elfring@web.de>,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Bart Van Assche <bvanassche@acm.org>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH] lib/scatterlist: Fix memory leak in sgl_alloc_order()
-Message-ID: <20200921083700.GB4282@kadam>
-References: <e69e9865-a599-5bd9-95b1-7d57c7e2e90c@web.de>
- <1608a0b7-6960-afce-aa39-6785036b01e0@interlog.com>
+        Mon, 21 Sep 2020 07:16:15 -0400
+X-Greylist: delayed 424 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Sep 2020 07:16:14 EDT
+Received: from dispatch1-us1.ppe-hosted.com (localhost.localdomain [127.0.0.1])
+        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 677082F1B22;
+        Mon, 21 Sep 2020 11:09:10 +0000 (UTC)
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.65.62])
+        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 2462160094;
+        Mon, 21 Sep 2020 11:09:10 +0000 (UTC)
+Received: from us4-mdac16-19.ut7.mdlocal (unknown [10.7.65.243])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 231E98009B;
+        Mon, 21 Sep 2020 11:09:10 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.65.198])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id A534A280050;
+        Mon, 21 Sep 2020 11:09:09 +0000 (UTC)
+Received: from webmail.solarflare.com (uk.solarflare.com [193.34.186.16])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 480D480064;
+        Mon, 21 Sep 2020 11:09:09 +0000 (UTC)
+Received: from [10.17.20.203] (10.17.20.203) by ukex01.SolarFlarecom.com
+ (10.17.10.4) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 21 Sep
+ 2020 12:09:03 +0100
+Subject: Re: [PATCH net] sfc: Fix error code in probe
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Solarflare linux maintainers <linux-net-drivers@solarflare.com>
+CC:     Martin Habets <mhabets@solarflare.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, <netdev@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <20200918143311.GD909725@mwanda>
+From:   Edward Cree <ecree@solarflare.com>
+Message-ID: <a65bcb6c-a0a0-eb9d-82f0-766cfb3fbc13@solarflare.com>
+Date:   Mon, 21 Sep 2020 12:09:00 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1608a0b7-6960-afce-aa39-6785036b01e0@interlog.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9750 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0
- mlxlogscore=970 phishscore=0 adultscore=0 spamscore=0 suspectscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009210063
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9750 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999
- phishscore=0 priorityscore=1501 malwarescore=0 mlxscore=0 impostorscore=0
- clxscore=1011 lowpriorityscore=0 suspectscore=0 spamscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009210063
+In-Reply-To: <20200918143311.GD909725@mwanda>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Language: en-GB
+X-Originating-IP: [10.17.20.203]
+X-ClientProxiedBy: ocex03.SolarFlarecom.com (10.20.40.36) To
+ ukex01.SolarFlarecom.com (10.17.10.4)
+X-TM-AS-Product-Ver: SMEX-12.5.0.1300-8.6.1012-25674.003
+X-TM-AS-Result: No-1.659200-8.000000-10
+X-TMASE-MatchedRID: lORh06tOiKiVvdyNUeenHvZvT2zYoYOwC/ExpXrHizxWm0JlHAu9AZv8
+        OBKGKGJryV4nwPo8PJ5bCKebpR3kAmohFAYfTz4engIgpj8eDcC063Wh9WVqgmWCfbzydb0giCF
+        ykZQ+I/rkwjHXXC/4I7I7zVffJqTz9MczSNkeYuFdAFp9PR8A620k9DEV75rzWrRC8SNfq4Ie+1
+        Y24ck3WtQ17CngTb9OBKmZVgZCVnezGTWRXUlrx+EijnvekEIH
+X-TM-AS-User-Approved-Sender: Yes
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--1.659200-8.000000
+X-TMASE-Version: SMEX-12.5.0.1300-8.6.1012-25674.003
+X-MDID: 1600686550-7cbZsTNaApI7
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We asked Markus over and over to stop sending these emails but he
-refused so eventually he had to be banned from vger.  Unless you're
-directly mentioned in the CC list then you can't see his emails.
-
-regards,
-dan carpenter
-
+On 18/09/2020 15:33, Dan Carpenter wrote:
+> This failure path should return a negative error code but it currently
+> returns success.
+>
+> Fixes: 51b35a454efd ("sfc: skeleton EF100 PF driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Acked-by: Edward Cree <ecree@solarflare.com>
+Thanks for catching this.

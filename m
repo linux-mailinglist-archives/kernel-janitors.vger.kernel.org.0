@@ -2,78 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E5412734AF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Sep 2020 23:16:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51450273631
+	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Sep 2020 01:06:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726498AbgIUVQB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 21 Sep 2020 17:16:01 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:47007 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726455AbgIUVQB (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 21 Sep 2020 17:16:01 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kKTAB-0003av-N2; Mon, 21 Sep 2020 21:15:55 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Jim Quinlan <jquinlan@broadcom.com>,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][V2][next] PCI: brcmstb: fix a missing if statement on a return error check
-Date:   Mon, 21 Sep 2020 22:15:55 +0100
-Message-Id: <20200921211555.383458-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        id S1728772AbgIUXGg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 21 Sep 2020 19:06:36 -0400
+Received: from mail.rusoil.net ([188.128.114.25]:52273 "EHLO mail.rusoil.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726457AbgIUXGg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 21 Sep 2020 19:06:36 -0400
+X-Greylist: delayed 528 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Sep 2020 19:06:35 EDT
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.rusoil.net (Postfix) with ESMTP id AE18A40BA5;
+        Tue, 22 Sep 2020 04:00:02 +0500 (YEKT)
+Received: from mail.rusoil.net ([127.0.0.1])
+        by localhost (mail.rusoil.net [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id PNggvUiRJbvh; Tue, 22 Sep 2020 04:00:01 +0500 (YEKT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.rusoil.net (Postfix) with ESMTP id A90CE40C0C;
+        Tue, 22 Sep 2020 04:00:00 +0500 (YEKT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rusoil.net A90CE40C0C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rusoil.net;
+        s=maildkim; t=1600729201;
+        bh=6R3BgBYiA7fkqGiiNDuwPskBnpH9JXyNAW/l3ZEA+wY=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=2PFVC+z+0mYccSTFamQrxdbOS/rK7W3kvIv9wjkEt2ZSqLugLVHCFcpVLje6PTn56
+         fpKEV2xySDu1LgB6Gz/49kiVjE6i2lbMoJFJYz3C22BfzwO6Vzm0A/ZaIKlp7cs8hf
+         ayrUE8rgAthJ/Dn/wEtvcneu6vXCyoErZjnIlzqc=
+X-Virus-Scanned: amavisd-new at mail.rusoil.net
+Received: from mail.rusoil.net ([127.0.0.1])
+        by localhost (mail.rusoil.net [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id pMGeI58l4D2Q; Tue, 22 Sep 2020 04:00:00 +0500 (YEKT)
+Received: from mail.rusoil.net (mail.rusoil.net [172.16.7.34])
+        by mail.rusoil.net (Postfix) with ESMTP id BDFF440B71;
+        Tue, 22 Sep 2020 03:59:57 +0500 (YEKT)
+Date:   Tue, 22 Sep 2020 03:59:57 +0500 (YEKT)
+From:   Blue Oak Mortgage and Loans <em@rusoil.net>
+Reply-To: Blue Oak Mortgage and Loans <info@bluelmtg.net>
+Message-ID: <899667828.906665.1600729197731.JavaMail.zimbra@rusoil.net>
+Subject: Wir finanzieren Projekte und Unternehmen
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [192.210.183.69]
+X-Mailer: Zimbra 8.8.12_GA_3803 (ZimbraWebClient - FF79 (Win)/8.8.12_GA_3794)
+Thread-Index: x21FZoPCaqprHpkU4DoX3w0rNTbL8A==
+Thread-Topic: Wir finanzieren Projekte und Unternehmen
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
 
-The error return ret is not being check with an if statement and
-currently the code always returns leaving the following code as
-dead code. Fix this by adding in the missing if statement and
-clean up with the clk_disable_unprepare call.
 
-Kudos to Florian Fainelli for noting that the clock needed disabling.
+Dies ist ein Newsletter von Blue Oak Mortgage and Loans. Bitte melden Sie s=
+ich ab, wenn Sie keine E-Mail mehr von uns erhalten m=C3=B6chten.
 
-Addresses-Coverity: ("Structurally dead code")
-Fixes: ad3d29c77e1e ("PCI: brcmstb: Add control of rescal reset")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
 
-V2: disable clock as noted by Florian Fainelli and suggested by
-    Jim Quinlan.
----
- drivers/pci/controller/pcie-brcmstb.c | 3 +++
- 1 file changed, 3 insertions(+)
+Eine kurze Einf=C3=BChrung.
 
-diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
-index 7a3ff4632e7c..25f46f87b36f 100644
---- a/drivers/pci/controller/pcie-brcmstb.c
-+++ b/drivers/pci/controller/pcie-brcmstb.c
-@@ -1154,7 +1154,10 @@ static int brcm_pcie_resume(struct device *dev)
- 	clk_prepare_enable(pcie->clk);
- 
- 	ret = brcm_phy_start(pcie);
-+	if (ret) {
-+		clk_disable_unprepare(pcie->clk);
- 		return ret;
-+	}
- 
- 	/* Take bridge out of reset so we can access the SERDES reg */
- 	pcie->bridge_sw_init_set(pcie, 0);
--- 
-2.27.0
+Wir sind ein f=C3=BChrendes Finanzierungsunternehmen in Europa. Wir finanzi=
+eren Startups / etablierte Unternehmen, finanzieren Gro=C3=9Fprojekte (Bau,=
+ Landwirtschaft, Immobilien und dergleichen) zu einem niedrigen Zinssatz vo=
+n 2% pro Jahr.
 
+
+Darlehensverfahren
+
+1. Sie m=C3=BCssen das Online-Bewerbungsformular ausf=C3=BCllen und eine or=
+dnungsgem=C3=A4=C3=9F unterschriebene Kopie an uns zur=C3=BCcksenden.
+
+2. M=C3=B6glicherweise m=C3=BCssen Sie Finanzdokumente als unterst=C3=BCtze=
+nden Nachweis f=C3=BCr die F=C3=A4higkeit zur R=C3=BCckzahlung von Krediten=
+ vorlegen.
+
+3. Wenn Ihr Darlehen genehmigt wurde, m=C3=BCssen Sie eine Versicherungsgar=
+antie f=C3=BCr die Darlehenssicherheit vorlegen. Wir empfehlen eine Versich=
+erungsgesellschaft. Sie sind allein verantwortlich f=C3=BCr die Zahlung und=
+ den Erwerb der Anleihe, die als Sicherheit dienen. Die H=C3=B6he der Anlei=
+he h=C3=A4ngt von Ihrem Darlehensbetrag ab. Die Versicherungsgesellschaft w=
+ird Sie durch den Prozess f=C3=BChren. (F=C3=BCr Gro=C3=9Fprojekte)
+
+4. Ihr =C3=9Cberweisungsprozess wird eingeleitet, sobald die Versicherungsa=
+nleihe =C3=BCberpr=C3=BCft wurde. Ihr Darlehensr=C3=BCckzahlungsplan wird i=
+m NC-Darlehensvertragsformular aufgef=C3=BChrt.
+
+Wenn die Bedingungen Sie beruhigen, k=C3=B6nnen Sie uns =C3=BCber die Whats=
+App-Nummer / E-Mail kontaktieren und auch unsere Website besuchen, um weite=
+re Informationen zu erhalten. Wir freuen uns darauf, von Ihnen zu h=C3=B6re=
+n.
+
+WhatsApp: + 90-552-365-3483
+E-Mail: info@bluelmtg.net

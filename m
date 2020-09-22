@@ -2,72 +2,194 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09502273E69
-	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Sep 2020 11:20:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C23F27424A
+	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Sep 2020 14:43:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726549AbgIVJU0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 22 Sep 2020 05:20:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37320 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726489AbgIVJU0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 22 Sep 2020 05:20:26 -0400
-Received: from pobox.suse.cz (nat1.prg.suse.com [195.250.132.148])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3C6BB2075E;
-        Tue, 22 Sep 2020 09:20:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600766425;
-        bh=0MfcHhXtP8JiNN9/AMI9Jl5Lclh6cKs+ndIWK/DvBLw=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=C51WulBYUHQyklzgLrWfYXJCRFSi2+CwVQOZu4ev9wKB+OOYqxWv2QBnnuAhkj4mk
-         N78COOMMRsiZOl4KM06Q0hqhrpypmA+ImqWKq8z5b/uueDdFKLqpAJbyZRC5W4qeZy
-         pRltxqynA+jAKJk/lU2z6N3UEhPTs6lVVrVNQ6Ts=
-Date:   Tue, 22 Sep 2020 11:20:22 +0200 (CEST)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-cc:     Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] HID: alps: clean up indentation issue
-In-Reply-To: <20200920141716.32919-1-colin.king@canonical.com>
-Message-ID: <nycvar.YFH.7.76.2009221119570.3336@cbobk.fhfr.pm>
-References: <20200920141716.32919-1-colin.king@canonical.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        id S1726666AbgIVMny (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 22 Sep 2020 08:43:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49736 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726566AbgIVMnv (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 22 Sep 2020 08:43:51 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5027FC061755
+        for <kernel-janitors@vger.kernel.org>; Tue, 22 Sep 2020 05:43:51 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id e11so2121333wme.0
+        for <kernel-janitors@vger.kernel.org>; Tue, 22 Sep 2020 05:43:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8GWV+WURLMe+KGQXXneDkvic+QOgoWchqPG98B637Sg=;
+        b=X1gHysonViSBbg0fftsksKqH7xCRvRRXb2y1YEQzdSRAUwPnAaWTP/F7QjVJ+ckZPQ
+         x5f1EINr5UpjghiWqEFd9m6mZgYCnmxPZyZ8FVSjvsIWBv+KjTLMxFPVKMmGpt//8S31
+         KRSlS7i9PfYT5AXz+nO/LcddsODlar4GnqywE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8GWV+WURLMe+KGQXXneDkvic+QOgoWchqPG98B637Sg=;
+        b=npb7gNFhHMLV5Mt2sF7xSnMylk+sX0nRqW4IBHU0vUkRa+ihWUWPf/vondwxJrGkxE
+         SghjArr+5Bv61Ne1A9gPdyyoudAzgsyi8m0yHo/62JsiX0SWdqiJ7vQ0QERbOu3mjGRl
+         wsZLnvH2/YABfTlBf9N4PfZ3wJqMD66e2fALNKVM4bC/YZKutYqDp0C/16TzF4w01rHe
+         +vrL9tynW0wlrrrpVK50yejC26vQ2GfLP9W/bebPlZmYMsM2VDKsXMjpRtozLvwtmq5w
+         37mqOiy6Tc39XCkrvOnS+PNbclwxWsNhuULwFsk95SvPeX3U+TLhCWl4ym2ZdWOYmT55
+         uCFA==
+X-Gm-Message-State: AOAM531GZe7zQZ+gTPeQ+Wng3WW+eGnZqY4JWJEqktzjcwWEim90+HyY
+        sfPKtkf7u0wFvswNfovAdt80gASfHgBYx9tcnRh6XA==
+X-Google-Smtp-Source: ABdhPJxo5MIYoLvFE7jAcezaJZVD7KeM8R6Q6dAzswoe4hTq77uxAGIl/AEL/JhVfKWAlWSBDGElVJjOFlcpVRjpqOQ=
+X-Received: by 2002:a1c:bad5:: with SMTP id k204mr839691wmf.111.1600778629809;
+ Tue, 22 Sep 2020 05:43:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <fe38fa7c-8ff7-8e83-968f-91007c058fcc@web.de>
+In-Reply-To: <fe38fa7c-8ff7-8e83-968f-91007c058fcc@web.de>
+From:   Jim Quinlan <james.quinlan@broadcom.com>
+Date:   Tue, 22 Sep 2020 08:43:38 -0400
+Message-ID: <CA+-6iNyGbL2jn1qUdX=AN17Xy5uX1-P=+Xi2NLSxHX-1FwLOwg@mail.gmail.com>
+Subject: Re: [PATCH v2] PCI: brcmstb: fix a missing if statement on a return
+ error check
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Colin Ian King <colin.king@canonical.com>,
+        "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE" 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "open list:PCI NATIVE HOST BRIDGE AND ENDPOINT DRIVERS" 
+        <linux-pci@vger.kernel.org>,
+        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
+        <linux-rpi-kernel@lists.infradead.org>,
+        kernel-janitors@vger.kernel.org,
+        open list <linux-kernel@vger.kernel.org>,
+        Alex Dewar <alex.dewar90@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jim Quinlan <jquinlan@broadcom.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Rob Herring <robh@kernel.org>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="0000000000009cfc1c05afe6519e"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 20 Sep 2020, Colin King wrote:
+--0000000000009cfc1c05afe6519e
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is an if statement that is indented too deeply, fix
-> this by removing the extraneous tab.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/hid/hid-alps.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hid/hid-alps.c b/drivers/hid/hid-alps.c
-> index a9c2de95c5e2..3feaece13ade 100644
-> --- a/drivers/hid/hid-alps.c
-> +++ b/drivers/hid/hid-alps.c
-> @@ -526,7 +526,7 @@ static int u1_init(struct hid_device *hdev, struct alps_dev *pri_data)
->  
->  	ret = u1_read_write_register(hdev, ADDRESS_U1_NUM_SENS_Y,
->  			&sen_line_num_y, 0, true);
-> -		if (ret < 0) {
-> +	if (ret < 0) {
->  		dev_err(&hdev->dev, "failed U1_NUM_SENS_Y (%d)\n", ret);
+On Tue, Sep 22, 2020 at 7:49 AM Markus Elfring <Markus.Elfring@web.de> wrot=
+e:
+>
+> > The error return ret is not being check with an if statement and
+>
+> Wording alternative:
+> The return value from a call of the function =E2=80=9Cbrcm_phy_start=E2=
+=80=9D was not checked and
+>
+>
+> > V2: disable clock as noted by Florian Fainelli and suggested by
+> >     Jim Quinlan.
+>
+> Alex Dewar contributed another update suggestion.
+>
+> [PATCH v2] PCI: brcmstb: Add missing if statement and error path
+> https://lore.kernel.org/linux-arm-kernel/20200921211623.33908-1-alex.dewa=
+r90@gmail.com/
+> https://lore.kernel.org/patchwork/patch/1309860/
+>
+> The exception handling needs further development considerations
+> for this function implementation.
+Hello,
 
-I am usually not taking whitespace fixes, but this one actually really 
-does improve code readability, so I am taking this one. Thanks,
+I agree with Alex's patch.  I should have suggested this at the
+beginning but as our upstream STB suspend/resume is not yet functional
+and the one-line change would have worked until we fixed
+suspend/resume..  But this is the proper modification.
 
--- 
-Jiri Kosina
-SUSE Labs
+Thanks,
+Jim
+> Regards,
+> Markus
 
+--0000000000009cfc1c05afe6519e
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+mOxPm7sNHsn0TVdPryi9+T2d8fVC/kUmuEdTYP/Hdu4W4b4T9BcW57fInYrmaJ+uotS6X59rAgMB
+AAGjggHRMIIBzTAOBgNVHQ8BAf8EBAMCBaAwgZ4GCCsGAQUFBwEBBIGRMIGOME0GCCsGAQUFBzAC
+hkFodHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc3BlcnNvbmFsc2lnbjJzaGEy
+ZzNvY3NwLmNydDA9BggrBgEFBQcwAYYxaHR0cDovL29jc3AyLmdsb2JhbHNpZ24uY29tL2dzcGVy
+c29uYWxzaWduMnNoYTJnMzBNBgNVHSAERjBEMEIGCisGAQQBoDIBKAowNDAyBggrBgEFBQcCARYm
+aHR0cHM6Ly93d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wCQYDVR0TBAIwADBEBgNVHR8E
+PTA7MDmgN6A1hjNodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzcGVyc29uYWxzaWduMnNoYTJn
+My5jcmwwJQYDVR0RBB4wHIEaamFtZXMucXVpbmxhbkBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYI
+KwYBBQUHAwQwHwYDVR0jBBgwFoAUaXKCYjFnlUSFd5GAxAQ2SZ17C2EwHQYDVR0OBBYEFNYm4GDl
+4WOt3laB3gNKFfYyaM8bMA0GCSqGSIb3DQEBCwUAA4IBAQBD+XYEgpG/OqeRgXAgDF8sa+lQ/00T
+wCP/3nBzwZPblTyThtDE/iaL/YZ5rdwqXwdCnSFh9cMhd/bnA+Eqw89clgTixvz9MdL9Vuo8LACI
+VpHO+sxZ2Cu3bO5lpK+UVCyr21y1zumOICsOuu4MJA5mtkpzBXQiA7b/ogjGxG+5iNjt9FAMX4JP
+V6GuAMmRknrzeTlxPy40UhUcRKk6Nm8mxl3Jh4KB68z7NFVpIx8G5w5I7S5ar1mLGNRjtFZ0RE4O
+lcCwKVGUXRaZMgQGrIhxGVelVgrcBh2vjpndlv733VI2VKE/TvV5MxMGU18RnogYSm66AEFA/Zb+
+5ztz1AtIMYICbzCCAmsCAQEwbTBdMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBu
+di1zYTEzMDEGA1UEAxMqR2xvYmFsU2lnbiBQZXJzb25hbFNpZ24gMiBDQSAtIFNIQTI1NiAtIEcz
+AgwTv2xmtR4KOmK4QvMwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIGlaWA0GKpvj
+XHTt5oPDKefhPH/mCgvxeWlH5PJQYxGXMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZI
+hvcNAQkFMQ8XDTIwMDkyMjEyNDM1MFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJ
+YIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcN
+AQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBHZVv27dP72HwNGHXjR2Pj3J/P2m/Z
+PDA/0+8UDYnP0yMunE9YGC3GhSjYP8PhVd7U6ilJSiSWnx8wiZTXDTpVXt26gChoISdZcTIu0K2n
+Z+DYPNiDugVD9lXZgZKaFEyjiSeNwqoS6Yg9eOiLibFT81ZTKJsKEUlflO1LbLKTWmmKZem3xnR3
+N1yXeqifkbQKUaanH36Huyf5/SXEysKRY6DFGa2ASU62WxWvrTjZUL4SRHJOP4FUHI7HiD2NEa7h
+x1YQjskfciNTDo7GLrZwpYkr43FnDrewEL0xMFbMrs1cOFb1GUzP/xr8njE6Zxb2946tViajGqf1
+ZMqT4vkI
+--0000000000009cfc1c05afe6519e--

@@ -2,68 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D81B327370A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Sep 2020 02:07:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E74273C9D
+	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Sep 2020 09:52:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729051AbgIVAHA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 21 Sep 2020 20:07:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40684 "EHLO mail.kernel.org"
+        id S1726494AbgIVHwJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 22 Sep 2020 03:52:09 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:57978 "EHLO z5.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726537AbgIVAHA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 21 Sep 2020 20:07:00 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        id S1726442AbgIVHwJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 22 Sep 2020 03:52:09 -0400
+X-Greylist: delayed 308 seconds by postgrey-1.27 at vger.kernel.org; Tue, 22 Sep 2020 03:52:07 EDT
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1600761128; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=huUocu8YlFMMHkoln2+m+5XAAWdXHVlAKN6TwwOZarw=;
+ b=JiChsgGzj7f9PE6cLmzJV85Z9ixMv0NdVP9WeFx6lYlYMXm9dMuvuc47oimifxzqxCwMxQCE
+ LoXI57AqCzyWx7V841sCr7DbyyHt9qzNtQMUgMUZZIDARVjG2bKtDNHVdVZyCYv69Xfz7sJJ
+ 15Cr+gSSkeIjgZTqCoIgUEoKWic=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 5f69abf3cb82ff92d18c1167 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 22 Sep 2020 07:46:59
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 67A00C43385; Tue, 22 Sep 2020 07:46:58 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 707A2207C4;
-        Tue, 22 Sep 2020 00:06:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600733220;
-        bh=90gCaWC1kc0PD8Hy2UX++BGa6s7lujDgPwSt6K5iqws=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=ySiwoydH41o8/zzdnIZjAP/A9UcFb7bgGTgTq4bv/WOlfoFLcKBUVMs+aucTL+Qqq
-         HQhhWHER92iJCMhFDyEUmjUBZHL5OGjOmnsDFWT5ZJmaVFUd9M2dSSX3WCSouY9S6g
-         msXlXJkI0/56mY7ZzbyZTjkdWwk3ztd2ye0+XPwI=
-Date:   Tue, 22 Sep 2020 01:06:06 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Colin King <colin.king@canonical.com>,
-        Liam Girdwood <lgirdwood@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-In-Reply-To: <20200920142454.33352-1-colin.king@canonical.com>
-References: <20200920142454.33352-1-colin.king@canonical.com>
-Subject: Re: [PATCH] regulator: fix indentation issue
-Message-Id: <160073316153.6369.11968491435935833807.b4-ty@kernel.org>
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C8748C433CA;
+        Tue, 22 Sep 2020 07:46:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C8748C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath6kl: wmi: prevent a shift wrapping bug in
+ ath6kl_wmi_delete_pstream_cmd()
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200918142732.GA909725@mwanda>
+References: <20200918142732.GA909725@mwanda>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200922074658.67A00C43385@smtp.codeaurora.org>
+Date:   Tue, 22 Sep 2020 07:46:58 +0000 (UTC)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 20 Sep 2020 15:24:54 +0100, Colin King wrote:
-> There is a return statement that is indented with an extra
-> space, fix this by removing it.
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-Applied to
+> The "tsid" is a user controlled u8 which comes from debugfs.  Values
+> more than 15 are invalid because "active_tsids" is a 16 bit variable.
+> If the value of "tsid" is more than 31 then that leads to a shift
+> wrapping bug.
+> 
+> Fixes: 8fffd9e5ec9e ("ath6kl: Implement support for QOS-enable and QOS-disable from userspace")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+Patch applied to ath-next branch of ath.git, thanks.
 
-Thanks!
+6a950755cec1 ath6kl: wmi: prevent a shift wrapping bug in ath6kl_wmi_delete_pstream_cmd()
 
-[1/1] regulator: fix indentation issue
-      commit: be35cc4695aa1b26d00b30bfd1d8408eddd357ec
+-- 
+https://patchwork.kernel.org/patch/11785193/
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

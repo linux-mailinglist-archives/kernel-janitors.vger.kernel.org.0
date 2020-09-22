@@ -2,95 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51450273631
-	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Sep 2020 01:06:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D81B327370A
+	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Sep 2020 02:07:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728772AbgIUXGg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 21 Sep 2020 19:06:36 -0400
-Received: from mail.rusoil.net ([188.128.114.25]:52273 "EHLO mail.rusoil.net"
+        id S1729051AbgIVAHA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 21 Sep 2020 20:07:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40684 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726457AbgIUXGg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 21 Sep 2020 19:06:36 -0400
-X-Greylist: delayed 528 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Sep 2020 19:06:35 EDT
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.rusoil.net (Postfix) with ESMTP id AE18A40BA5;
-        Tue, 22 Sep 2020 04:00:02 +0500 (YEKT)
-Received: from mail.rusoil.net ([127.0.0.1])
-        by localhost (mail.rusoil.net [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id PNggvUiRJbvh; Tue, 22 Sep 2020 04:00:01 +0500 (YEKT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.rusoil.net (Postfix) with ESMTP id A90CE40C0C;
-        Tue, 22 Sep 2020 04:00:00 +0500 (YEKT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rusoil.net A90CE40C0C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rusoil.net;
-        s=maildkim; t=1600729201;
-        bh=6R3BgBYiA7fkqGiiNDuwPskBnpH9JXyNAW/l3ZEA+wY=;
-        h=Date:From:Message-ID:MIME-Version;
-        b=2PFVC+z+0mYccSTFamQrxdbOS/rK7W3kvIv9wjkEt2ZSqLugLVHCFcpVLje6PTn56
-         fpKEV2xySDu1LgB6Gz/49kiVjE6i2lbMoJFJYz3C22BfzwO6Vzm0A/ZaIKlp7cs8hf
-         ayrUE8rgAthJ/Dn/wEtvcneu6vXCyoErZjnIlzqc=
-X-Virus-Scanned: amavisd-new at mail.rusoil.net
-Received: from mail.rusoil.net ([127.0.0.1])
-        by localhost (mail.rusoil.net [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id pMGeI58l4D2Q; Tue, 22 Sep 2020 04:00:00 +0500 (YEKT)
-Received: from mail.rusoil.net (mail.rusoil.net [172.16.7.34])
-        by mail.rusoil.net (Postfix) with ESMTP id BDFF440B71;
-        Tue, 22 Sep 2020 03:59:57 +0500 (YEKT)
-Date:   Tue, 22 Sep 2020 03:59:57 +0500 (YEKT)
-From:   Blue Oak Mortgage and Loans <em@rusoil.net>
-Reply-To: Blue Oak Mortgage and Loans <info@bluelmtg.net>
-Message-ID: <899667828.906665.1600729197731.JavaMail.zimbra@rusoil.net>
-Subject: Wir finanzieren Projekte und Unternehmen
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [192.210.183.69]
-X-Mailer: Zimbra 8.8.12_GA_3803 (ZimbraWebClient - FF79 (Win)/8.8.12_GA_3794)
-Thread-Index: x21FZoPCaqprHpkU4DoX3w0rNTbL8A==
-Thread-Topic: Wir finanzieren Projekte und Unternehmen
-To:     unlisted-recipients:; (no To-header on input)
+        id S1726537AbgIVAHA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 21 Sep 2020 20:07:00 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 707A2207C4;
+        Tue, 22 Sep 2020 00:06:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600733220;
+        bh=90gCaWC1kc0PD8Hy2UX++BGa6s7lujDgPwSt6K5iqws=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=ySiwoydH41o8/zzdnIZjAP/A9UcFb7bgGTgTq4bv/WOlfoFLcKBUVMs+aucTL+Qqq
+         HQhhWHER92iJCMhFDyEUmjUBZHL5OGjOmnsDFWT5ZJmaVFUd9M2dSSX3WCSouY9S6g
+         msXlXJkI0/56mY7ZzbyZTjkdWwk3ztd2ye0+XPwI=
+Date:   Tue, 22 Sep 2020 01:06:06 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Colin King <colin.king@canonical.com>,
+        Liam Girdwood <lgirdwood@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <20200920142454.33352-1-colin.king@canonical.com>
+References: <20200920142454.33352-1-colin.king@canonical.com>
+Subject: Re: [PATCH] regulator: fix indentation issue
+Message-Id: <160073316153.6369.11968491435935833807.b4-ty@kernel.org>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Sun, 20 Sep 2020 15:24:54 +0100, Colin King wrote:
+> There is a return statement that is indented with an extra
+> space, fix this by removing it.
 
+Applied to
 
-Dies ist ein Newsletter von Blue Oak Mortgage and Loans. Bitte melden Sie s=
-ich ab, wenn Sie keine E-Mail mehr von uns erhalten m=C3=B6chten.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
 
+Thanks!
 
-Eine kurze Einf=C3=BChrung.
+[1/1] regulator: fix indentation issue
+      commit: be35cc4695aa1b26d00b30bfd1d8408eddd357ec
 
-Wir sind ein f=C3=BChrendes Finanzierungsunternehmen in Europa. Wir finanzi=
-eren Startups / etablierte Unternehmen, finanzieren Gro=C3=9Fprojekte (Bau,=
- Landwirtschaft, Immobilien und dergleichen) zu einem niedrigen Zinssatz vo=
-n 2% pro Jahr.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Darlehensverfahren
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-1. Sie m=C3=BCssen das Online-Bewerbungsformular ausf=C3=BCllen und eine or=
-dnungsgem=C3=A4=C3=9F unterschriebene Kopie an uns zur=C3=BCcksenden.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-2. M=C3=B6glicherweise m=C3=BCssen Sie Finanzdokumente als unterst=C3=BCtze=
-nden Nachweis f=C3=BCr die F=C3=A4higkeit zur R=C3=BCckzahlung von Krediten=
- vorlegen.
-
-3. Wenn Ihr Darlehen genehmigt wurde, m=C3=BCssen Sie eine Versicherungsgar=
-antie f=C3=BCr die Darlehenssicherheit vorlegen. Wir empfehlen eine Versich=
-erungsgesellschaft. Sie sind allein verantwortlich f=C3=BCr die Zahlung und=
- den Erwerb der Anleihe, die als Sicherheit dienen. Die H=C3=B6he der Anlei=
-he h=C3=A4ngt von Ihrem Darlehensbetrag ab. Die Versicherungsgesellschaft w=
-ird Sie durch den Prozess f=C3=BChren. (F=C3=BCr Gro=C3=9Fprojekte)
-
-4. Ihr =C3=9Cberweisungsprozess wird eingeleitet, sobald die Versicherungsa=
-nleihe =C3=BCberpr=C3=BCft wurde. Ihr Darlehensr=C3=BCckzahlungsplan wird i=
-m NC-Darlehensvertragsformular aufgef=C3=BChrt.
-
-Wenn die Bedingungen Sie beruhigen, k=C3=B6nnen Sie uns =C3=BCber die Whats=
-App-Nummer / E-Mail kontaktieren und auch unsere Website besuchen, um weite=
-re Informationen zu erhalten. Wir freuen uns darauf, von Ihnen zu h=C3=B6re=
-n.
-
-WhatsApp: + 90-552-365-3483
-E-Mail: info@bluelmtg.net
+Thanks,
+Mark

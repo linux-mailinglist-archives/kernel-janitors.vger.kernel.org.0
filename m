@@ -2,117 +2,173 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E1372742CB
-	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Sep 2020 15:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9270274780
+	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Sep 2020 19:31:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726613AbgIVNTV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 22 Sep 2020 09:19:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55144 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726507AbgIVNTV (ORCPT
+        id S1726637AbgIVRbG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 22 Sep 2020 13:31:06 -0400
+Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:11730 "EHLO
+        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726526AbgIVRbG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 22 Sep 2020 09:19:21 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1768C0613CF
-        for <kernel-janitors@vger.kernel.org>; Tue, 22 Sep 2020 06:19:20 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id a17so17016129wrn.6
-        for <kernel-janitors@vger.kernel.org>; Tue, 22 Sep 2020 06:19:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=9GewOd7ipMCxF1aHwWxW4PsJZfwIrEIh8kBMz05Lk/w=;
-        b=PzjE8iv+J3iIp+Oj4o3PfIPMtV8nUR7EAaBbIYDmYOpwjFlmejWWdMfF61ABZKnIML
-         96KhiUwPwUKgo5Qo3t6TfKg5SFqQBL59u7bTjgQQv4SkvNWOxHUNtCDNQK+w8W1FHwKc
-         P9m7bN1PVj3l46dRCfH2kjE28+5MztTu3wmxI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to;
-        bh=9GewOd7ipMCxF1aHwWxW4PsJZfwIrEIh8kBMz05Lk/w=;
-        b=QMSamlZ/BudkJ5/mZE9P0tiAWnx1PwwIBBSsXQdTh64RwaHux9bTesoNpxdSk63Oy8
-         9VCpc02M7fsRwgiOZA5FGUlqybgqyA0H8rBEejO2a7IgkoMYIvnDZUkPIKEH0WqJ9ZKi
-         Pc1reiuuxNN8jOfZ9/o1WcrynH/meCy/wwbyY8Rb6ruYUm0FCfCfV71xeHezgNlgoNIU
-         nKHOF8cXqRX2NVc+B+EnanU18hWTt9b+llfj1y/66IEdB2qWTzD51SGPqraXG4SgcVzF
-         3HjWsDI903S9Yyn0aS1IMTBU6iOoHQs0q96dqice4OkStMQecNbamzFXpgP9tc6S/EJ6
-         sVfg==
-X-Gm-Message-State: AOAM53140gwoNZV1bWeTYlprLkd3F5Ka/B99V48C8cfv1OdSfDNMm7jM
-        iCz/uecOQve4iUaRuVRW9qLOPQ==
-X-Google-Smtp-Source: ABdhPJzk2cI1GO9aUXv3aroOKwskrl9jpqIgCYu3y/tFOrzYAI88vNvGrwji8l2K4v5ufLKV4CXjgA==
-X-Received: by 2002:adf:ec86:: with SMTP id z6mr5457066wrn.109.1600780759566;
-        Tue, 22 Sep 2020 06:19:19 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id y5sm26160278wrh.6.2020.09.22.06.19.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2020 06:19:18 -0700 (PDT)
-Date:   Tue, 22 Sep 2020 15:19:16 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] drm/gma500: clean up indentation issues
-Message-ID: <20200922131916.GM438822@phenom.ffwll.local>
-Mail-Followup-To: Colin King <colin.king@canonical.com>,
-        Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-        David Airlie <airlied@linux.ie>, dri-devel@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200920141407.32672-1-colin.king@canonical.com>
+        Tue, 22 Sep 2020 13:31:06 -0400
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+        id <B5f6a34cd0000>; Tue, 22 Sep 2020 10:30:53 -0700
+Received: from rcampbell-dev.nvidia.com (172.20.13.39) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 22 Sep
+ 2020 17:31:02 +0000
+Subject: Re: [PATCH] mm/hmm/test: use after free in dmirror_allocate_chunk()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>
+CC:     Jason Gunthorpe <jgg@ziepe.ca>,
+        Wei Yongjun <weiyongjun1@huawei.com>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+References: <20200922081234.GA1274646@mwanda>
+X-Nvconfidentiality: public
+From:   Ralph Campbell <rcampbell@nvidia.com>
+Message-ID: <c25729e4-8a53-07e3-ae98-d77919f3ac21@nvidia.com>
+Date:   Tue, 22 Sep 2020 10:31:01 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200920141407.32672-1-colin.king@canonical.com>
-X-Operating-System: Linux phenom 5.7.0-1-amd64 
+In-Reply-To: <20200922081234.GA1274646@mwanda>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [172.20.13.39]
+X-ClientProxiedBy: HQMAIL107.nvidia.com (172.20.187.13) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1600795853; bh=FlTvSkg2VeAuml+QolVZZc+aE27r29315SlOmjxh39E=;
+        h=Subject:To:CC:References:X-Nvconfidentiality:From:Message-ID:Date:
+         User-Agent:MIME-Version:In-Reply-To:Content-Type:Content-Language:
+         Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
+        b=n2rX4xtVEiYQ+FBTCrawg4dcPx1HKTKZZHFu0wsmNM8BaYERwT533PghchwBmk3j8
+         s5yMw/N9YH0s1iYauljogWzTK3X8jTUXNAPy33WzDSN5K1btEOE4hNX5k53kx58ECM
+         ClVIdF7hiCenQf2kBsArGICJ/IlK45S6P8oh719RJxsPpoYc3+kuLDJnsztru8Ln64
+         ievHxAsZuu3L1QDQjmjxs4HymhO5JABI6r7NJcW4L6BSXOqBnR3yr6Mk5xaMHZlfls
+         NppkhtfMRJXOM5ZSAZ5JN/3HUGAAf9ZMeXSf1fTzM1YLnmaCiveLzz+YAwb3FK04q+
+         fpbNBkpGmJlgQ==
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Sep 20, 2020 at 03:14:07PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There are a couple of statements that are indented too deeply,
-> remove the extraneous tabs and also an empty line.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Pushed to drm-misc-next, thanks for your patch.
--Daniel
-
+On 9/22/20 1:12 AM, Dan Carpenter wrote:
+> The error handling code does this:
+> 
+> err_free:
+> 	kfree(devmem);
+>          ^^^^^^^^^^^^^
+> err_release:
+> 	release_mem_region(devmem->pagemap.range.start, range_len(&devmem->pagemap.range));
+>                             ^^^^^^^^
+> The problem is that when we use "devmem->pagemap.range.start" the
+> "devmem" pointer is either NULL or freed.
+> 
+> Neither the allocation nor the call to request_free_mem_region() has to
+> be done under the lock so I moved those to the start of the function.
+> 
+> Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  drivers/gpu/drm/gma500/cdv_intel_dp.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/gma500/cdv_intel_dp.c b/drivers/gpu/drm/gma500/cdv_intel_dp.c
-> index 720a767118c9..50016a754172 100644
-> --- a/drivers/gpu/drm/gma500/cdv_intel_dp.c
-> +++ b/drivers/gpu/drm/gma500/cdv_intel_dp.c
-> @@ -1501,8 +1501,7 @@ cdv_intel_dp_start_link_train(struct gma_encoder *encoder)
->  	clock_recovery = false;
->  
->  	DRM_DEBUG_KMS("Start train\n");
-> -		reg = DP | DP_LINK_TRAIN_PAT_1;
-> -
-> +	reg = DP | DP_LINK_TRAIN_PAT_1;
->  
->  	for (;;) {
->  		/* Use intel_dp->train_set[0] to set the voltage and pre emphasis values */
-> @@ -1575,7 +1574,7 @@ cdv_intel_dp_complete_link_train(struct gma_encoder *encoder)
->  	cr_tries = 0;
->  
->  	DRM_DEBUG_KMS("\n");
-> -		reg = DP | DP_LINK_TRAIN_PAT_2;
-> +	reg = DP | DP_LINK_TRAIN_PAT_2;
->  
->  	for (;;) {
->  
-> -- 
-> 2.27.0
+> It's weird that I didn't catch the use after free when this code was
+> merged in May...  My bad.  Not sure what happened there.  How I found
+> this was that I have been reviewing release_mem_region() leaks and the
+> NULL dereference path is a leak.
 > 
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Thanks for fixing this. I missed it too. :-)
+
+>   lib/test_hmm.c | 47 ++++++++++++++++++++++++-----------------------
+>   1 file changed, 24 insertions(+), 23 deletions(-)
+> 
+> diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+> index c8133f50160b..0503c78cb322 100644
+> --- a/lib/test_hmm.c
+> +++ b/lib/test_hmm.c
+> @@ -459,6 +459,22 @@ static bool dmirror_allocate_chunk(struct dmirror_device *mdevice,
+>   	unsigned long pfn_last;
+>   	void *ptr;
+>   
+> +	devmem = kzalloc(sizeof(*devmem), GFP_KERNEL);
+> +	if (!devmem)
+> +		return -ENOMEM;
+> +
+> +	res = request_free_mem_region(&iomem_resource, DEVMEM_CHUNK_SIZE,
+> +				      "hmm_dmirror");
+> +	if (IS_ERR(res))
+> +		goto err_devmem;
+> +
+> +	devmem->pagemap.type = MEMORY_DEVICE_PRIVATE;
+> +	devmem->pagemap.range.start = res->start;
+> +	devmem->pagemap.range.end = res->end;
+> +	devmem->pagemap.nr_range = 1;
+> +	devmem->pagemap.ops = &dmirror_devmem_ops;
+> +	devmem->pagemap.owner = mdevice;
+> +
+>   	mutex_lock(&mdevice->devmem_lock);
+>   
+>   	if (mdevice->devmem_count == mdevice->devmem_capacity) {
+> @@ -471,30 +487,16 @@ static bool dmirror_allocate_chunk(struct dmirror_device *mdevice,
+>   				sizeof(new_chunks[0]) * new_capacity,
+>   				GFP_KERNEL);
+>   		if (!new_chunks)
+
+Need to call mutex_unlock(&mdevice->devmem_lock).
+In fact, why not make this goto err_unlock and add
+err_unlock: mutex_unlock() before the err_release:.
+
+> -			goto err;
+> +			goto err_release;>   		mdevice->devmem_capacity = new_capacity;
+>   		mdevice->devmem_chunks = new_chunks;
+>   	}
+>   
+> -	res = request_free_mem_region(&iomem_resource, DEVMEM_CHUNK_SIZE,
+> -					"hmm_dmirror");
+> -	if (IS_ERR(res))
+> -		goto err;
+> -
+> -	devmem = kzalloc(sizeof(*devmem), GFP_KERNEL);
+> -	if (!devmem)
+> -		goto err_release;
+> -
+> -	devmem->pagemap.type = MEMORY_DEVICE_PRIVATE;
+> -	devmem->pagemap.range.start = res->start;
+> -	devmem->pagemap.range.end = res->end;
+> -	devmem->pagemap.nr_range = 1;
+> -	devmem->pagemap.ops = &dmirror_devmem_ops;
+> -	devmem->pagemap.owner = mdevice;
+> -
+>   	ptr = memremap_pages(&devmem->pagemap, numa_node_id());
+> -	if (IS_ERR(ptr))
+> -		goto err_free;
+> +	if (IS_ERR(ptr)) {
+> +		mutex_unlock(&mdevice->devmem_lock);
+> +		goto err_release;
+> +	}
+
+This could then be just goto err_unlock.
+
+>   	devmem->mdevice = mdevice;
+>   	pfn_first = devmem->pagemap.range.start >> PAGE_SHIFT;
+> @@ -525,12 +527,11 @@ static bool dmirror_allocate_chunk(struct dmirror_device *mdevice,
+>   
+>   	return true;
+>   
+> -err_free:
+> -	kfree(devmem);
+>   err_release:
+>   	release_mem_region(devmem->pagemap.range.start, range_len(&devmem->pagemap.range));
+> -err:
+> -	mutex_unlock(&mdevice->devmem_lock);
+> +err_devmem:
+> +	kfree(devmem);
+> +
+>   	return false;
+>   }
+>   
+
+With the suggested change, you can add
+Reviewed-by: Ralph Campbell <rcampbell@nvidia.com>
+

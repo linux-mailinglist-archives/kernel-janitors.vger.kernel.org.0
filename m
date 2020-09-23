@@ -2,99 +2,50 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EAB0275413
-	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Sep 2020 11:10:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4B1627550F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Sep 2020 12:05:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726485AbgIWJKa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 23 Sep 2020 05:10:30 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:39738 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726338AbgIWJK3 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 23 Sep 2020 05:10:29 -0400
-Received: by mail-oi1-f195.google.com with SMTP id c13so24291435oiy.6;
-        Wed, 23 Sep 2020 02:10:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0mYSC4kkHIJP+4bMDumjNsLF1GD/gg4zgKaMqe/GqZg=;
-        b=QGlFwqe8/vAFJIohpiljuNN3u2ZftbFBvOn8+JlrLWvVxLYucmgwPrYW6p/RKZ4Fnn
-         nVbT27M3z89pxagAEdNViAoKMNhYkilwEcOLC3qXWVAU4NjGo1u/T+vnEjs7QnF1foPe
-         0EHnnjDDlkRVBQLYOCdNxt2u28YtUKq2N6gdbvMQPYq/4/L4PuF5nC9cnEsMF2br11zQ
-         zrgWC67bBSh34Yftqde1kW8wFNyFBpIILndjay/2zVFbeP8xtxdK/MHt66pPT2c/sILT
-         fu2eXbRs53xNEo6KAM51dkghGhJtjAVuAagUbA8XleDIG+4rJq+PkYe7nSFHl3QY9tGh
-         0ZTQ==
-X-Gm-Message-State: AOAM531nuVjNw+q4rnEAbdL66ho4cpf1dUM1bmDKCPv0dl3Ao3KAWrEr
-        1MqJ1F05NSG00/CD00uY/rCcQi0A8zxHWUDC/jU=
-X-Google-Smtp-Source: ABdhPJwWLwQa9iQWpN4ecqK4IS6c4WBCcTWe3lGPFVtXaRNM9+D+WBiPIKq7kgzN8xVVDKRd8cBcetEenEqxJzwo08o=
-X-Received: by 2002:aca:52d6:: with SMTP id g205mr5131935oib.54.1600852228744;
- Wed, 23 Sep 2020 02:10:28 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200923084458.GD1454948@mwanda>
-In-Reply-To: <20200923084458.GD1454948@mwanda>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 23 Sep 2020 11:10:17 +0200
-Message-ID: <CAMuHMdXyM1dUPJ7ZDAk6-cEjaG_bVBfsE=bqdpf7pA0ChdRLVw@mail.gmail.com>
-Subject: Re: [PATCH] soc: renesas: rmobile-sysc: Fix some leaks in rmobile_init_pm_domains()
+        id S1726548AbgIWKFE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 23 Sep 2020 06:05:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57912 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726130AbgIWKFD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 23 Sep 2020 06:05:03 -0400
+Received: from localhost (unknown [122.171.175.143])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7CF3A2076E;
+        Wed, 23 Sep 2020 10:05:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600855503;
+        bh=DE1HC6bZAXC33BhPSJIUP9LjJZr0AuwIVj0yEXHmm9I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=xmHe9xSMEV5pB89hrTgj1EP5WkwKR+ZiNWJr7T6rKXh2axCnNhkV7Vzbsg1Zea3Ud
+         aRCQiE9luiQszMla+TFhNPH7qaLdHFTTJ2eypuN+UQ4KcNl2iXE2ywDEhJ1aGY/0TH
+         EvSu8QXo1HcDQQcHw+Sh0tdIFw+H0GOmbOMmz6EU=
+Date:   Wed, 23 Sep 2020 15:34:55 +0530
+From:   Vinod Koul <vkoul@kernel.org>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Magnus Damm <magnus.damm@gmail.com>,
-        Simon Horman <horms+renesas@verge.net.au>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Cc:     Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Sanyog Kale <sanyog.r.kale@intel.com>,
+        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] soundwire: remove an unnecessary NULL check
+Message-ID: <20200923100455.GG2968@vkoul-mobl>
+References: <20200923083235.GB1454948@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200923083235.GB1454948@mwanda>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
+On 23-09-20, 11:32, Dan Carpenter wrote:
+> The "bus" pointer isn't NULL so the address to a non-zero offset in
+> middle of "bus" cannot be NULL.  Delete the NULL check.
 
-On Wed, Sep 23, 2020 at 10:47 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> This code needs to call iounmap() on the error paths.
-
-Thanks for your patch!
-
-> Fixes: 2ed29e15e4b2 ("ARM: shmobile: R-Mobile: Move pm-rmobile to drivers/soc/renesas/")
-
-This is not the commit that introduced the issue.
-
-Fixes: 2173fc7cb681c38b ("ARM: shmobile: R-Mobile: Add DT support for
-PM domains")
-
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-> --- a/drivers/soc/renesas/rmobile-sysc.c
-> +++ b/drivers/soc/renesas/rmobile-sysc.c
-> @@ -328,6 +328,7 @@ static int __init rmobile_init_pm_domains(void)
->                 pmd = of_get_child_by_name(np, "pm-domains");
->                 if (!pmd) {
->                         pr_warn("%pOF lacks pm-domains node\n", np);
-> +                       iounmap(base);
-
-This one I can agree with, although that case is a bug in the DTS.
-
->                         continue;
->                 }
->
-> @@ -341,6 +342,7 @@ static int __init rmobile_init_pm_domains(void)
->                 of_node_put(pmd);
->                 if (ret) {
->                         of_node_put(np);
-> +                       iounmap(base);
-
-This one I cannot: in the (unlikely, only if OOM) case
-rmobile_add_pm_domains() returns an error, one or more PM subdomains may
-have been registered already.  Hence if you call iounmap() here, the
-code will try to access unmapped registers later, leading to a crash.
-
-Gr{oetje,eeting}s,
-
-                        Geert
+Applied, thanks
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+~Vinod

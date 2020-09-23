@@ -2,101 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 229DF27539B
-	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Sep 2020 10:47:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EAB0275413
+	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Sep 2020 11:10:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726405AbgIWIrV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 23 Sep 2020 04:47:21 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:44372 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726342AbgIWIrV (ORCPT
+        id S1726485AbgIWJKa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 23 Sep 2020 05:10:30 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:39738 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726338AbgIWJK3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 23 Sep 2020 04:47:21 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08N8jCsD039100;
-        Wed, 23 Sep 2020 08:47:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=/f+a55Jrpg5z5UfOHn1FeTNLOR0tV1R5oqqDEthK3mY=;
- b=FXldwzRsBkugKughA56CsdL+tLdDRxLYXiFf5Y9TcqsMi7NPyGCWIIuPofkPyD1+Otpy
- kq4Q/gzM/6UzQBvgxwq+2rtqHuBd1FQRI9BaJy9TIirFeNly9GD1mlIJnSUWKUc24AWu
- xVoGxncszBButrBPTpxmFtKR+VtN+8Pr02gSVDu1in/bk6Hy7+FerL+xzKPGe7/NBO1g
- Qo8RrQpzOuo5763eZlaTcBPs5jbh1GHVnKwaY/xgjGqTQVaINSPrY7zlQzLyqbXppxKz
- qCUiOOE96zG6nUTRoIWHt3xjjoUT+t+upYDdiA+IlCSufn9MM01hlA0c2SPG9QKfv1BQ EA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 33q5rgfj3p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 23 Sep 2020 08:47:09 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08N8a6o2032690;
-        Wed, 23 Sep 2020 08:45:08 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 33r28uuqs9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 23 Sep 2020 08:45:08 +0000
-Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08N8j5lp006939;
-        Wed, 23 Sep 2020 08:45:07 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 23 Sep 2020 01:45:04 -0700
-Date:   Wed, 23 Sep 2020 11:44:58 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
+        Wed, 23 Sep 2020 05:10:29 -0400
+Received: by mail-oi1-f195.google.com with SMTP id c13so24291435oiy.6;
+        Wed, 23 Sep 2020 02:10:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0mYSC4kkHIJP+4bMDumjNsLF1GD/gg4zgKaMqe/GqZg=;
+        b=QGlFwqe8/vAFJIohpiljuNN3u2ZftbFBvOn8+JlrLWvVxLYucmgwPrYW6p/RKZ4Fnn
+         nVbT27M3z89pxagAEdNViAoKMNhYkilwEcOLC3qXWVAU4NjGo1u/T+vnEjs7QnF1foPe
+         0EHnnjDDlkRVBQLYOCdNxt2u28YtUKq2N6gdbvMQPYq/4/L4PuF5nC9cnEsMF2br11zQ
+         zrgWC67bBSh34Yftqde1kW8wFNyFBpIILndjay/2zVFbeP8xtxdK/MHt66pPT2c/sILT
+         fu2eXbRs53xNEo6KAM51dkghGhJtjAVuAagUbA8XleDIG+4rJq+PkYe7nSFHl3QY9tGh
+         0ZTQ==
+X-Gm-Message-State: AOAM531nuVjNw+q4rnEAbdL66ho4cpf1dUM1bmDKCPv0dl3Ao3KAWrEr
+        1MqJ1F05NSG00/CD00uY/rCcQi0A8zxHWUDC/jU=
+X-Google-Smtp-Source: ABdhPJwWLwQa9iQWpN4ecqK4IS6c4WBCcTWe3lGPFVtXaRNM9+D+WBiPIKq7kgzN8xVVDKRd8cBcetEenEqxJzwo08o=
+X-Received: by 2002:aca:52d6:: with SMTP id g205mr5131935oib.54.1600852228744;
+ Wed, 23 Sep 2020 02:10:28 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200923084458.GD1454948@mwanda>
+In-Reply-To: <20200923084458.GD1454948@mwanda>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 23 Sep 2020 11:10:17 +0200
+Message-ID: <CAMuHMdXyM1dUPJ7ZDAk6-cEjaG_bVBfsE=bqdpf7pA0ChdRLVw@mail.gmail.com>
+Subject: Re: [PATCH] soc: renesas: rmobile-sysc: Fix some leaks in rmobile_init_pm_domains()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
 Cc:     Magnus Damm <magnus.damm@gmail.com>,
         Simon Horman <horms+renesas@verge.net.au>,
-        linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] soc: renesas: rmobile-sysc: Fix some leaks in
- rmobile_init_pm_domains()
-Message-ID: <20200923084458.GD1454948@mwanda>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9752 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
- suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009230070
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9752 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 impostorscore=0
- clxscore=1011 suspectscore=0 phishscore=0 malwarescore=0
- priorityscore=1501 mlxlogscore=999 adultscore=0 bulkscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009230071
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This code needs to call iounmap() on the error paths.
+Hi Dan,
 
-Fixes: 2ed29e15e4b2 ("ARM: shmobile: R-Mobile: Move pm-rmobile to drivers/soc/renesas/")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/soc/renesas/rmobile-sysc.c | 2 ++
- 1 file changed, 2 insertions(+)
+On Wed, Sep 23, 2020 at 10:47 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> This code needs to call iounmap() on the error paths.
 
-diff --git a/drivers/soc/renesas/rmobile-sysc.c b/drivers/soc/renesas/rmobile-sysc.c
-index 54b616ad4a62..d8e6dc650939 100644
---- a/drivers/soc/renesas/rmobile-sysc.c
-+++ b/drivers/soc/renesas/rmobile-sysc.c
-@@ -328,6 +328,7 @@ static int __init rmobile_init_pm_domains(void)
- 		pmd = of_get_child_by_name(np, "pm-domains");
- 		if (!pmd) {
- 			pr_warn("%pOF lacks pm-domains node\n", np);
-+			iounmap(base);
- 			continue;
- 		}
- 
-@@ -341,6 +342,7 @@ static int __init rmobile_init_pm_domains(void)
- 		of_node_put(pmd);
- 		if (ret) {
- 			of_node_put(np);
-+			iounmap(base);
- 			break;
- 		}
- 	}
+Thanks for your patch!
+
+> Fixes: 2ed29e15e4b2 ("ARM: shmobile: R-Mobile: Move pm-rmobile to drivers/soc/renesas/")
+
+This is not the commit that introduced the issue.
+
+Fixes: 2173fc7cb681c38b ("ARM: shmobile: R-Mobile: Add DT support for
+PM domains")
+
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+> --- a/drivers/soc/renesas/rmobile-sysc.c
+> +++ b/drivers/soc/renesas/rmobile-sysc.c
+> @@ -328,6 +328,7 @@ static int __init rmobile_init_pm_domains(void)
+>                 pmd = of_get_child_by_name(np, "pm-domains");
+>                 if (!pmd) {
+>                         pr_warn("%pOF lacks pm-domains node\n", np);
+> +                       iounmap(base);
+
+This one I can agree with, although that case is a bug in the DTS.
+
+>                         continue;
+>                 }
+>
+> @@ -341,6 +342,7 @@ static int __init rmobile_init_pm_domains(void)
+>                 of_node_put(pmd);
+>                 if (ret) {
+>                         of_node_put(np);
+> +                       iounmap(base);
+
+This one I cannot: in the (unlikely, only if OOM) case
+rmobile_add_pm_domains() returns an error, one or more PM subdomains may
+have been registered already.  Hence if you call iounmap() here, the
+code will try to access unmapped registers later, leading to a crash.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.28.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

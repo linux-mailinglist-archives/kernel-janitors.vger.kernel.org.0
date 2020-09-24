@@ -2,76 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADDFF27792F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Sep 2020 21:25:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B441D277A0F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Sep 2020 22:19:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728733AbgIXTZQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 24 Sep 2020 15:25:16 -0400
-Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:9785 "EHLO
-        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727254AbgIXTZO (ORCPT
+        id S1726185AbgIXUTF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 24 Sep 2020 16:19:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55468 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725208AbgIXUTF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 24 Sep 2020 15:25:14 -0400
-Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B5f6cf28d0000>; Thu, 24 Sep 2020 12:25:01 -0700
-Received: from rcampbell-dev.nvidia.com (172.20.13.39) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 24 Sep
- 2020 19:25:12 +0000
-Subject: Re: [PATCH v2] mm/hmm/test: use after free in
- dmirror_allocate_chunk()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-References: <20200924134651.GA1586456@mwanda>
-X-Nvconfidentiality: public
-From:   Ralph Campbell <rcampbell@nvidia.com>
-Message-ID: <eb06e0c8-327e-6677-c393-139dffdf0dbe@nvidia.com>
-Date:   Thu, 24 Sep 2020 12:25:11 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Thu, 24 Sep 2020 16:19:05 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25629C0613CE;
+        Thu, 24 Sep 2020 13:19:05 -0700 (PDT)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1600978743;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=K3Ao4b3S2fuWHiT8hpHEfpFg0aMIND0J6gnDyFzzIBY=;
+        b=GWue+NIuBy3soO1ehVcKQ0rhV7iiszDX+YP1KJTAEHVSQgmEr0exmzz2J4MqZGx4Tot8v8
+        8C99zKaMGY8rEap5ElRRH/06ZSQjK6d6vwbjOJqJfeehwbYfmX7IpWovnqQcgtcbvYgKPg
+        2k6LtR9J88o8a248c1eTOqHQxUs1RZEC6bGhNNrfLzWQ9Kb25k8rCNLH5rZ0/DxA/klLMX
+        dq38wVBZLcSs/SJ60pToFbYt22R/DQI37BaLdTWyJrdrXTUiUf9BTY3WEruM2pFuU4d2D9
+        4MZLzbhGq3AIgEh22Y3zH3CDM0C2rd84Obf+bamKY7UiKUjRnb5PV+TvZ0ZhEg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1600978743;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=K3Ao4b3S2fuWHiT8hpHEfpFg0aMIND0J6gnDyFzzIBY=;
+        b=hlFfk2k9cjx+noi/lmUByUkYc4oJUkZkwXH/rwvb2cEdWBlfBMkm9XXGEhDEwmjZrwUf/E
+        JrImDs46jCfPfLCQ==
+To:     Julia Lawall <julia.lawall@inria.fr>, Joe Perches <joe@perches.com>
+Cc:     Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        kernelnewbies <kernelnewbies@kernelnewbies.org>,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        cocci <cocci@systeme.lip6.fr>,
+        Giuseppe Scrivano <gscrivan@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Whitcroft <apw@shadowen.org>
+Subject: Re: [Cocci] coccinelle: Convert comma to semicolons (was Re: [PATCH] checkpatch: Add test for comma use that should be semicolon)
+In-Reply-To: <alpine.DEB.2.22.394.2008220905460.3150@hadrien>
+References: <20200818184107.f8af232fb58b17160c570874@linux-foundation.org> <3bf27caf462007dfa75647b040ab3191374a59de.camel@perches.com> <b0fd63e4b379eda69ee85ab098353582b8c054bb.camel@perches.com> <alpine.DEB.2.22.394.2008201021400.2524@hadrien> <a5713d8597065ef986f780499428fcc4cd31c003.camel@perches.com> <alpine.DEB.2.22.394.2008201856110.2524@hadrien> <744af177c09f8ce22c99d6e1df458bced558518b.camel@perches.com> <162653.1598067338@turing-police> <3836b482434bd0b9a609959d3696cc6113a93f2f.camel@perches.com> <alpine.DEB.2.22.394.2008220905460.3150@hadrien>
+Date:   Thu, 24 Sep 2020 22:19:03 +0200
+Message-ID: <87tuvn6i88.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200924134651.GA1586456@mwanda>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [172.20.13.39]
-X-ClientProxiedBy: HQMAIL107.nvidia.com (172.20.187.13) To
- HQMAIL107.nvidia.com (172.20.187.13)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1600975501; bh=VxKXOti6LWxDsQHTJ8Vj6sJYvHX2OPdhnAxzokJEpJg=;
-        h=Subject:To:CC:References:X-Nvconfidentiality:From:Message-ID:Date:
-         User-Agent:MIME-Version:In-Reply-To:Content-Type:Content-Language:
-         Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
-        b=VWe62aC/uYbjVEz9Y/oRUv63BSpflwyw97N4YqYQZny3VxkgKrxHPAA2sEsXIvz/h
-         9KL49FsSXjFOWcHW9XBFrqjqS5o3RMX3GEAv2i4YrAXVGyIATZqZt2MENtoJNpfoeg
-         Pb9j1mTx6yZY+Mwa55uGK0YreUWiRnOqUs3dMNOyP2s9t63Ug8O2kC1i8/nDvsx9UD
-         WgExzgVBLmlflvobXN7Y5DCdjjcXeQz7fgGopgKcmclxp+FDCVnFRV0jhJ/BUwx7yW
-         9bjoQH9JPJROAhA42UdEOnmDFbynM5+V47+SVZ71utQpLDVVm7uIbp8QzvN9iRZZEm
-         BSthl/AxF/aUw==
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Sat, Aug 22 2020 at 09:07, Julia Lawall wrote:
+> On Fri, 21 Aug 2020, Joe Perches wrote:
+>> True enough for a general statement, though the coccinelle
+>> script Julia provided does not change a single instance of
+>> for loop expressions with commas.
+>>
+>> As far as I can tell, no logic defect is introduced by the
+>> script at all.
+>
+> The script has a rule to ensure that what is changed is part of a top
+> level statement that has the form e1, e2;.  I put that in to avoid
+> transforming cases where the comma is the body of a macro, but it protects
+> against for loop headers as well.
 
-On 9/24/20 6:46 AM, Dan Carpenter wrote:
-> The error handling code does this:
-> 
-> err_free:
-> 	kfree(devmem);
->          ^^^^^^^^^^^^^
-> err_release:
-> 	release_mem_region(devmem->pagemap.range.start, range_len(&devmem->pagemap.range));
->                             ^^^^^^^^
-> The problem is that when we use "devmem->pagemap.range.start" the
-> "devmem" pointer is either NULL or freed.
-> 
-> Neither the allocation nor the call to request_free_mem_region() has to
-> be done under the lock so I moved those to the start of the function.
-> 
-> Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Right. I went through the lot and did not find something dodgy. Except
+for two hunks this still applies. Can someone please send a proper patch
+with changelog/SOB etc. for this?
 
-Looks good.
-Reviewed-by: Ralph Campbell <rcampbell@nvidia.com>
+And of course that script really wants to be part of the kernel cocci
+checks to catch further instances.
+
+Thanks,
+
+        tglx

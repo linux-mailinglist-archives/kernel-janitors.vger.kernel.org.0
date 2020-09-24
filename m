@@ -2,88 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FAB6277309
-	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Sep 2020 15:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7A062773FF
+	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Sep 2020 16:32:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728024AbgIXNr0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 24 Sep 2020 09:47:26 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:40148 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727685AbgIXNr0 (ORCPT
+        id S1728244AbgIXOcd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 24 Sep 2020 10:32:33 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:60645
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728088AbgIXOcd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 24 Sep 2020 09:47:26 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08ODdGog075670;
-        Thu, 24 Sep 2020 13:47:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=II2vJVmC5zG0R5CMLcfuYnwOeV3MsHQw7NMx8DI8AOg=;
- b=TG0YJydhqajhhsaXLePT8faqf2HXfVXu/PROxzLnkjjT4NpSOtSG5Gc37b1XapP3a6sR
- RNei+W4kzn6XYfTkmc1Szxzew4/WvOcm0ZI8LBxquUQAx00cAdlCQ+TEbXTQVYtHKY96
- Ajd+9OlqXZigdmzV5tN1IgC1IGg9vwlYtU5uPQZmM9Ov92jDSuI5Zsm6B1CXYLDqK06J
- x6lW8CPTtylSHtHodPtpRbhCeXgMoLeLWiOgSvGi/LM2mVsB9hm5qBTrq2XZGBRvRoLE
- 3+Pe5BWrvHpOyawi5uDFxhmVsNwJ7kbT76jHa40sPw3sc1c4N4HWZqXUDhzSdbdM1e41 WA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 33q5rgpphf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 24 Sep 2020 13:47:18 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08ODeBgD013387;
-        Thu, 24 Sep 2020 13:47:18 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 33r28x1cc5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 24 Sep 2020 13:47:18 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08ODlGYu002389;
-        Thu, 24 Sep 2020 13:47:16 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 24 Sep 2020 06:47:16 -0700
-Date:   Thu, 24 Sep 2020 16:47:09 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Ralph Campbell <rcampbell@nvidia.com>
-Cc:     =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Wei Yongjun <weiyongjun1@huawei.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] mm/hmm/test: use after free in dmirror_allocate_chunk()
-Message-ID: <20200924134709.GK4282@kadam>
-References: <20200922081234.GA1274646@mwanda>
- <c25729e4-8a53-07e3-ae98-d77919f3ac21@nvidia.com>
+        Thu, 24 Sep 2020 10:32:33 -0400
+X-IronPort-AV: E=Sophos;i="5.77,298,1596492000"; 
+   d="scan'208";a="359963308"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Sep 2020 16:32:30 +0200
+Date:   Thu, 24 Sep 2020 16:32:30 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [Cocci] [PATCH] coccinelle: iterators: Add for_each_child.cocci
+ script
+In-Reply-To: <67ad40bd-c0c0-8c5c-54b2-c750cfeefd44@web.de>
+Message-ID: <alpine.DEB.2.22.394.2009241631310.2615@hadrien>
+References: <67ad40bd-c0c0-8c5c-54b2-c750cfeefd44@web.de>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c25729e4-8a53-07e3-ae98-d77919f3ac21@nvidia.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9753 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
- suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009240103
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9753 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 impostorscore=0
- clxscore=1015 suspectscore=0 phishscore=0 malwarescore=0
- priorityscore=1501 mlxlogscore=999 adultscore=0 bulkscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009240103
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Sep 22, 2020 at 10:31:01AM -0700, Ralph Campbell wrote:
-> > @@ -471,30 +487,16 @@ static bool dmirror_allocate_chunk(struct dmirror_device *mdevice,
-> >   				sizeof(new_chunks[0]) * new_capacity,
-> >   				GFP_KERNEL);
-> >   		if (!new_chunks)
-> 
-> Need to call mutex_unlock(&mdevice->devmem_lock).
-> In fact, why not make this goto err_unlock and add
-> err_unlock: mutex_unlock() before the err_release:.
 
-Ugh...  Thanks for catching that.
 
-regards,
-dan carpenter
+On Thu, 24 Sep 2020, Markus Elfring wrote:
 
+> > +@ruletwo depends on patch && !context && !org && !report@
+>
+> How do you think about to combine code from two SmPL rules
+> by using another SmPL disjunction like the following?
+
+What is the goal of doing this?
+
+It seems substantially harder to understand than three rules that each
+take care of a specific case.
+
+julia
+
+
+>
+> @addition_rule depends on patch && !context && !org && !report@
+> local idexpression r.n;
+> expression e,e1;
+> expression list [r.n1] es;
+> iterator r.i,i1,i2;
+> statement S,S2;
+> @@
+> (
+>  i(es,n,...) {
+>  ...
+> (of_node_put(n);
+> |e = n
+> |return n;
+> |i1(...,n,...) S
+> |
+> +of_node_put(n);
+> ?return ...;
+> )
+>  ... when any
+>  }
+> |
+>  i(es,n,...) {
+>  ...
+> (of_node_put(n);
+> |e = n
+> |i1(...,n,...) S
+> |
+> +of_node_put(n);
+> ?break;
+> )
+>  ... when any
+>  }
+>  ... when != n
+>      when strict
+> (n = e1;
+> |
+> ?i2(...,n,...) S2
+> )
+> )
+>
+>
+> Regards,
+> Markus
+> _______________________________________________
+> Cocci mailing list
+> Cocci@systeme.lip6.fr
+> https://systeme.lip6.fr/mailman/listinfo/cocci
+>

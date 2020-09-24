@@ -2,105 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7A062773FF
-	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Sep 2020 16:32:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49F98277784
+	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Sep 2020 19:11:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728244AbgIXOcd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 24 Sep 2020 10:32:33 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:60645
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728088AbgIXOcd (ORCPT
+        id S1728539AbgIXRLu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 24 Sep 2020 13:11:50 -0400
+Received: from [125.140.134.231] ([125.140.134.231]:62186 "EHLO
+        WIN-DAONO245HJF" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726477AbgIXRLu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 24 Sep 2020 10:32:33 -0400
-X-IronPort-AV: E=Sophos;i="5.77,298,1596492000"; 
-   d="scan'208";a="359963308"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Sep 2020 16:32:30 +0200
-Date:   Thu, 24 Sep 2020 16:32:30 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Sumera Priyadarsini <sylphrenadin@gmail.com>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [Cocci] [PATCH] coccinelle: iterators: Add for_each_child.cocci
- script
-In-Reply-To: <67ad40bd-c0c0-8c5c-54b2-c750cfeefd44@web.de>
-Message-ID: <alpine.DEB.2.22.394.2009241631310.2615@hadrien>
-References: <67ad40bd-c0c0-8c5c-54b2-c750cfeefd44@web.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        Thu, 24 Sep 2020 13:11:50 -0400
+Received: from User ([185.191.231.247]) by WIN-DAONO245HJF with Microsoft SMTPSVC(8.5.9600.16384);
+         Fri, 25 Sep 2020 02:10:08 +0900
+Reply-To: <samthong5555@yahoo.com>
+From:   "SAM THONG" <samthong5555@gmail.com>
+Subject: Business Acquisition 1
+Date:   Thu, 24 Sep 2020 10:10:09 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <WIN-DAONO245HJFgoRr00e6fb78@WIN-DAONO245HJF>
+X-OriginalArrivalTime: 24 Sep 2020 17:10:09.0200 (UTC) FILETIME=[8E77B300:01D69295]
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
 
-On Thu, 24 Sep 2020, Markus Elfring wrote:
+Dear sir
 
-> > +@ruletwo depends on patch && !context && !org && !report@
->
-> How do you think about to combine code from two SmPL rules
-> by using another SmPL disjunction like the following?
+Our underwriter company is seeking the attention of genuine and reliable persons, companies
 
-What is the goal of doing this?
+who are indeed in need of funds as investment capital or business expansion in form of a
 
-It seems substantially harder to understand than three rules that each
-take care of a specific case.
-
-julia
+direct loan to partner with us and benefit in our new Loan and Project funding programs.
 
 
->
-> @addition_rule depends on patch && !context && !org && !report@
-> local idexpression r.n;
-> expression e,e1;
-> expression list [r.n1] es;
-> iterator r.i,i1,i2;
-> statement S,S2;
-> @@
-> (
->  i(es,n,...) {
->  ...
-> (of_node_put(n);
-> |e = n
-> |return n;
-> |i1(...,n,...) S
-> |
-> +of_node_put(n);
-> ?return ...;
-> )
->  ... when any
->  }
-> |
->  i(es,n,...) {
->  ...
-> (of_node_put(n);
-> |e = n
-> |i1(...,n,...) S
-> |
-> +of_node_put(n);
-> ?break;
-> )
->  ... when any
->  }
->  ... when != n
->      when strict
-> (n = e1;
-> |
-> ?i2(...,n,...) S2
-> )
-> )
->
->
-> Regards,
-> Markus
-> _______________________________________________
-> Cocci mailing list
-> Cocci@systeme.lip6.fr
-> https://systeme.lip6.fr/mailman/listinfo/cocci
->
+
+We offer flexible loans and funding for various projects at very affordable low interest
+
+rate of 3% annually for a period of 1-15 years on Non collateral loan/funding . We offer
+
+loan/funding from a minimum of Euro ? / USD$ 1 Million to Euro ? / USD$ 1 Billion. Max,
+
+depending on the nature of business/project.
+
+We are currently funding for:-
+
+
+
+* Starting up a Franchise
+
+* Business Acquisition
+
+* Business Expansion
+
+* Commercial Real Estate purchase
+
+* Consultancy and Contract Execution, Marine , ETC.
+
+
+
+Kindly get in touch for further details and procedure. samthong5555@yahoo.com 
+
+
+
+Respectfully,
+
+
+SAM THONG
+
+
+
+
+
+
+
+	
+
+
+

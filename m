@@ -2,104 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB1FB27693A
-	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Sep 2020 08:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43EB4276AE1
+	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Sep 2020 09:35:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726973AbgIXGt5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 24 Sep 2020 02:49:57 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:40704 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726119AbgIXGt4 (ORCPT
+        id S1727052AbgIXHfm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 24 Sep 2020 03:35:42 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:41367 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726655AbgIXHfl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 24 Sep 2020 02:49:56 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08O6ikxk142961;
-        Thu, 24 Sep 2020 06:49:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=uIj5VBDqAJ7IDZR0vUNFSWPpB3oh530+Qycp2L91Mbs=;
- b=srp7kE0YCO7QKsB1mhikqhb5vS9YWywczjsEdBFzuWrryx9hXxe0Bq6CHUly4pO3XKl/
- CvG6JggJ+Q693NTgdvOSOEmRiiKfZCYCOVAT3Qla1tZqOSWbSY04o+54OsHpwcCpqQjh
- waRRgXpqZKUeXJRJhJi9ktZjSww0J+8kIevAd0TmUjXqJyt7x98cyaf8muB8ZlpHpzou
- mZdcDenrCdhTiL6Vav0FqOFIss7c+k9QiK9mRAMcln+7/Hxhx4KAmB1KxdwEEP7p2j68
- OWrXBaLo8xWqMnKVleC+UXi2BH5K2T6/1ZxNcebB/zKmLXdjNzsURPjaRVNACP6TVb7X 9A== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 33ndnupdb5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 24 Sep 2020 06:49:42 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08O6jTDP016961;
-        Thu, 24 Sep 2020 06:49:42 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 33nux2ajke-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 24 Sep 2020 06:49:42 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08O6ndko026655;
-        Thu, 24 Sep 2020 06:49:39 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 23 Sep 2020 23:49:39 -0700
-Date:   Thu, 24 Sep 2020 09:49:32 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>, pavel@ucw.cz,
-        dmurphy@ti.com, jacek.anaszewski@gmail.com,
-        linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] leds: lp50xx: Fix an error handling path in
- 'lp50xx_probe_dt()'
-Message-ID: <20200924064932.GP18329@kadam>
-References: <20200922210515.385099-1-christophe.jaillet@wanadoo.fr>
- <20200923133510.GJ4282@kadam>
- <faa49efc-5ba5-b6bd-b486-2f7c4611219b@wanadoo.fr>
+        Thu, 24 Sep 2020 03:35:41 -0400
+Received: by mail-oi1-f195.google.com with SMTP id x69so2691692oia.8;
+        Thu, 24 Sep 2020 00:35:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Xl2EFGQPvuqoLJbUjzAYBTmBWNQ75rGGXOTTdtaKRjo=;
+        b=EtX+R1o8DrgxkFJoOqwHUOyCbkDffDjgUmKOZey98Kfn6JXqsG+JokTB1H15qokvWL
+         PUYTCSWkyv/3ozR5hgmYAgPuKrTqFYlu3vYk8DZB+JYPFPYRpG3YKwUKu80fEQovgJ78
+         IURn9aGSMc73WOEWRQNvISxFstposqv+U3IhZaHiSnWHXpQAe8XoEcAAleP5oHUvj3iT
+         ye0EjdKwiNilVmkovGYD6RVa5iRdmIUkESpUXqWnYaHZmEZxKnke3taUj1HHdzYY8Cg9
+         hhM+xNo1oJ48M74hir4+Taww17JKfYyWKMFUhIhvEGx0KFOtoce008cWAvArd5iC3bJL
+         2Bgg==
+X-Gm-Message-State: AOAM530dNWj985EwwVl0y8PXESFWpIQ3/9K7QL9cYkVgSqey7p1IupyK
+        aNJT4bALPv6+SFaoRoKkUgLYxoKKlnvbiZIhfwc=
+X-Google-Smtp-Source: ABdhPJzqmYNIURPJwfJmYo3J8MZendZ3Uzlq/W5kTwxcKmw67lfhsTT/uOphb9Idz+1OB+4cVXtKh+J0dCZQT1dRyzI=
+X-Received: by 2002:aca:3bc3:: with SMTP id i186mr1689092oia.148.1600932941074;
+ Thu, 24 Sep 2020 00:35:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <faa49efc-5ba5-b6bd-b486-2f7c4611219b@wanadoo.fr>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9753 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 adultscore=0
- bulkscore=0 mlxlogscore=999 phishscore=0 suspectscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009240052
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9753 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- lowpriorityscore=0 phishscore=0 adultscore=0 suspectscore=0 bulkscore=0
- clxscore=1015 impostorscore=0 mlxlogscore=999 mlxscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009240052
+References: <CAMuHMdXyM1dUPJ7ZDAk6-cEjaG_bVBfsE=bqdpf7pA0ChdRLVw@mail.gmail.com>
+ <20200923113142.GC1473821@mwanda>
+In-Reply-To: <20200923113142.GC1473821@mwanda>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 24 Sep 2020 09:35:30 +0200
+Message-ID: <CAMuHMdVgZTLExon1JCDmAZaM+iB_yngTQvoXEuFYw7fRF39aGw@mail.gmail.com>
+Subject: Re: [PATCH v2] soc: renesas: rmobile-sysc: Fix some leaks in rmobile_init_pm_domains()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Magnus Damm <magnus.damm@gmail.com>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Sep 23, 2020 at 08:49:56PM +0200, Christophe JAILLET wrote:
-> Le 23/09/2020 à 15:35, Dan Carpenter a écrit :
-> > I've added Heikki Krogerus to the CC list because my question is mostly
-> > about commit 59abd83672f7 ("drivers: base: Introducing software nodes to
-> > the firmware node framework").
-> > 
-> > I have been trying to teach Smatch to understand reference counting so
-> > it can discover these kinds of bugs automatically.
-> > 
-> > I don't know how software_node_get_next_child() can work when it doesn't
-> > call kobject_get().  This sort of bug would have been caught in testing
-> > because it affects the success path so I must be reading the code wrong.
-> > 
-> 
-> I had the same reading of the code and thought that I was missing something
-> somewhere.
-> 
-> There is the same question about 'acpi_get_next_subnode' which is also a
-> '.get_next_child_node' function, without any ref counting, if I'm correct.
-> 
+On Wed, Sep 23, 2020 at 1:31 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> This code needs to call iounmap() on one error path.
+>
+> Fixes: 2173fc7cb681 ("ARM: shmobile: R-Mobile: Add DT support for PM domains")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> v2:  The v1 patch potentially led to a use after free.
 
-Yeah, but there aren't any ->get/put() ops for the acpi_get_next_subnode()
-stuff so it's not a problem.  (Presumably there is some other sort of
-refcounting policy there).
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+i.e. will queue in renesas-devel for v5.11.
 
-regards,
-dan carpenter
+Gr{oetje,eeting}s,
 
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -2,102 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0633A277C42
-	for <lists+kernel-janitors@lfdr.de>; Fri, 25 Sep 2020 01:15:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6391327827D
+	for <lists+kernel-janitors@lfdr.de>; Fri, 25 Sep 2020 10:17:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726700AbgIXXPk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 24 Sep 2020 19:15:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54336 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726397AbgIXXPk (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 24 Sep 2020 19:15:40 -0400
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15DB3C0613CE;
-        Thu, 24 Sep 2020 16:15:40 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4By9rP4JYtz9sSn;
-        Fri, 25 Sep 2020 09:15:33 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1600989337;
-        bh=FQkZh9voRfe8Vfrt7ZA8RdwH8ayavTb43BU5bg17T/U=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=J4GIM/AMG1WtgoLIJB0wvbQGxzhTb126xHxUZoGvJ+yHGkGxUCNmyUWJStj058Amz
-         44mapp72Miyhf14UVcrVIlS8k5AV6HR4hhCR9/L4epLnnINk+FzIW0N63W22utcg0A
-         5vW8FmMztdlF/YiWhTv7nW6EX1xamd/APIk9cFMdV56NXzIamKWETtHjip9U/ccqbT
-         yiagzfTFW6LSHkH8HNr3m57Y9XMbWNYpIP57vFpJvp7rzguJud8JAR6XcJT6EAkPM6
-         as1JrfCB/W/1HSwInkDjsAUDAuQdwkzCCoNl5AAAxywWG/gkHCg/AjEQFqzky57zis
-         psJKV01MoR/ag==
-Date:   Fri, 25 Sep 2020 09:15:32 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Matthew Auld <matthew.auld@intel.com>,
-        Abdiel Janulgue <abdiel.janulgue@linux.intel.com>,
-        Dave Airlie <airlied@redhat.com>,
-        intel-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] drm/i915: Uninitialized variable in
- i915_gem_object_map_page()
-Message-ID: <20200925091532.71ba87d4@canb.auug.org.au>
-In-Reply-To: <20200924081830.GA1568157@mwanda>
-References: <20200924081830.GA1568157@mwanda>
+        id S1727426AbgIYIRP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 25 Sep 2020 04:17:15 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:53392 "EHLO fornost.hmeau.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727248AbgIYIRM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 25 Sep 2020 04:17:12 -0400
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
+        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
+        id 1kLiue-0007Oe-Nl; Fri, 25 Sep 2020 18:17:05 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 25 Sep 2020 18:17:04 +1000
+Date:   Fri, 25 Sep 2020 18:17:04 +1000
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Ayush Sawal <ayush.sawal@chelsio.com>,
+        Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
+        Rohit Maheshwari <rohitm@chelsio.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] crypto/chcr: fix minor indentation issue
+Message-ID: <20200925081704.GR6381@gondor.apana.org.au>
+References: <20200918215659.49825-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/eQPpKG3fwyzGW7y9XzMq/C9";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200918215659.49825-1-colin.king@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
---Sig_/eQPpKG3fwyzGW7y9XzMq/C9
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-Hi Dan,
-
-On Thu, 24 Sep 2020 11:18:30 +0300 Dan Carpenter <dan.carpenter@oracle.com>=
- wrote:
->
-> The "i" iterator is never set to zero.  This probably doesn't affect
-> testing because GCC sometimes initializes variables and also we have a
-> new pluggin to initialize stack variables to zero.
->=20
-> Fixes: 7edd32a9e614 ("drm/i915: use vmap in i915_gem_object_map")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+On Fri, Sep 18, 2020 at 10:56:59PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a statement that is indented by one whitespace too deeply,
+> fix this by removing the whitespace.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
-> Hi Andrew, this should probably go through the -mm tree and get folded
-> into the original patch.
+>  drivers/crypto/chelsio/chcr_core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Added to linux-next today.
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/eQPpKG3fwyzGW7y9XzMq/C9
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl9tKJQACgkQAVBC80lX
-0GxICwf+O7nALSW2YNzsYpFHHJ6OdT58gcC8y81KGx6ZLHXVkc939hnK58waJe1C
-5hqeYI1asKx5zLWYh6wKqDblPelbRmY8U+oPeaJDzT1fyCzAgZuUWPxZ2Nf7khk7
-ewrQuU2k6ndzE0C3PZDYtfLZ01eGYGrIJqujN79OQX9IDKBuE0f8JtRDkKYbTtte
-n9g6tmzLRp+OLjwmnb6ePJX2sEJLszPiq7iLOWZlR19ZCa8+g0MPwJrdNWqtd6Jz
-SdN1xtF4QyokJBTsXY4LFZ8Kjc9JCEUEmzFLaZIiNgulCUQI86nHnO13KIvdYmi4
-6ghnhUfnW/mQM7apj8wiL7Tcwc6CAA==
-=3vsg
------END PGP SIGNATURE-----
-
---Sig_/eQPpKG3fwyzGW7y9XzMq/C9--
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

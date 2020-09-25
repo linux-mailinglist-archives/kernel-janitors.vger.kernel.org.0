@@ -2,74 +2,120 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22D65278966
-	for <lists+kernel-janitors@lfdr.de>; Fri, 25 Sep 2020 15:22:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE7D8278F56
+	for <lists+kernel-janitors@lfdr.de>; Fri, 25 Sep 2020 19:06:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728629AbgIYNWb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 25 Sep 2020 09:22:31 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:37879 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728121AbgIYNWb (ORCPT
+        id S1728423AbgIYRGa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 25 Sep 2020 13:06:30 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:53315
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727812AbgIYRGa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 25 Sep 2020 09:22:31 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kLng8-0000ek-AJ; Fri, 25 Sep 2020 13:22:24 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Igor Mitsyanko <imitsyanko@quantenna.com>,
-        Sergey Matyukevich <geomatsi@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Avinash Patil <avinashp@quantenna.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] qtnfmac: fix resource leaks on unsupported iftype error return path
-Date:   Fri, 25 Sep 2020 14:22:24 +0100
-Message-Id: <20200925132224.21638-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        Fri, 25 Sep 2020 13:06:30 -0400
+X-IronPort-AV: E=Sophos;i="5.77,302,1596492000"; 
+   d="scan'208";a="360082879"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Sep 2020 19:06:21 +0200
+Date:   Fri, 25 Sep 2020 19:06:20 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Joe Perches <joe@perches.com>
+cc:     Thomas Gleixner <tglx@linutronix.de>,
+        =?UTF-8?Q?Valdis_Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        kernelnewbies <kernelnewbies@kernelnewbies.org>,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        cocci <cocci@systeme.lip6.fr>,
+        Giuseppe Scrivano <gscrivan@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Whitcroft <apw@shadowen.org>
+Subject: Re: [Cocci] coccinelle: Convert comma to semicolons (was Re: [PATCH]
+ checkpatch: Add test for comma use that should be semicolon)
+In-Reply-To: <a53048f738dacc1c58654eb94e229de79d4f94c2.camel@perches.com>
+Message-ID: <alpine.DEB.2.22.394.2009251904540.2772@hadrien>
+References: <87r1qqvo2d.fsf@nanos.tec.linutronix.de> <a53048f738dacc1c58654eb94e229de79d4f94c2.camel@perches.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
 
-Currently if an unsupported iftype is detected the error return path
-does not free the cmd_skb leading to a resource leak. Fix this by
-free'ing cmd_skb.
 
-Addresses-Coverity: ("Resource leak")
-Fixes: 805b28c05c8e ("qtnfmac: prepare for AP_VLAN interface type support")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/quantenna/qtnfmac/commands.c | 2 ++
- 1 file changed, 2 insertions(+)
+On Thu, 24 Sep 2020, Joe Perches wrote:
 
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/commands.c b/drivers/net/wireless/quantenna/qtnfmac/commands.c
-index f40d8c3c3d9e..f3ccbd2b1084 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/commands.c
-+++ b/drivers/net/wireless/quantenna/qtnfmac/commands.c
-@@ -869,6 +869,7 @@ int qtnf_cmd_send_del_intf(struct qtnf_vif *vif)
- 	default:
- 		pr_warn("VIF%u.%u: unsupported iftype %d\n", vif->mac->macid,
- 			vif->vifid, vif->wdev.iftype);
-+		dev_kfree_skb(cmd_skb);
- 		ret = -EINVAL;
- 		goto out;
- 	}
-@@ -1924,6 +1925,7 @@ int qtnf_cmd_send_change_sta(struct qtnf_vif *vif, const u8 *mac,
- 		break;
- 	default:
- 		pr_err("unsupported iftype %d\n", vif->wdev.iftype);
-+		dev_kfree_skb(cmd_skb);
- 		ret = -EINVAL;
- 		goto out;
- 	}
--- 
-2.27.0
+> On Thu, 2020-09-24 at 23:53 +0200, Thomas Gleixner wrote:
+> > On Thu, Sep 24 2020 at 13:33, Joe Perches wrote:
+> > > On Thu, 2020-09-24 at 22:19 +0200, Thomas Gleixner wrote:
+> > > > On Sat, Aug 22 2020 at 09:07, Julia Lawall wrote:
+> > > > > On Fri, 21 Aug 2020, Joe Perches wrote:
+> > > > > > True enough for a general statement, though the coccinelle
+> > > > > > script Julia provided does not change a single instance of
+> > > > > > for loop expressions with commas.
+> > > > > >
+> > > > > > As far as I can tell, no logic defect is introduced by the
+> > > > > > script at all.
+> > > > >
+> > > > > The script has a rule to ensure that what is changed is part of a top
+> > > > > level statement that has the form e1, e2;.  I put that in to avoid
+> > > > > transforming cases where the comma is the body of a macro, but it protects
+> > > > > against for loop headers as well.
+> > > >
+> > > > Right. I went through the lot and did not find something dodgy. Except
+> > > > for two hunks this still applies. Can someone please send a proper patch
+> > > > with changelog/SOB etc. for this?
+> > >
+> > > Treewide?
+> > >
+> > > Somebody no doubt would complain, but there
+> > > _really should_ be some mechanism for these
+> > > trivial and correct treewide changes...
+> >
+> > There are lots of mechanisms:
+>
+> I've tried them all.
+>
+> None of them work particularly well,
+> especially the individual patch route.
+>
+> >  - Andrew picks such changes up
+>
+> Generally not treewide.
+>
+> >  - With a few competent eyeballs on it (reviewers) this can go thorugh
+> >    the trivial tree as well. It's more than obvious after all.
+>
+> Jiri is almost non-existent when it comes to
+> trivial treewide patches.
+>
+> >  - Send the script to Linus with a proper change log attached and ask
+> >    him to run it.
+>
+> Linus has concerns about backports and what he
+> deems trivialities.  Generally overblown IMO.
+>
+> >  - In the worst case if nobody feels responsible, I'll take care.
+>
+> If Julia doesn't send a new patch in the next few
+> days, I will do the apply, fixup and resend of hers.
+>
+> So, you're on-deck, nearly up...
+>
+> > All of the above is better than trying to get the attention of a
+> > gazillion of maintainters.
+>
+> True.
+>
+> And all of the treewide changes depend on some
+> generic acceptance of value in the type of change.
+>
+> Some believe that comma->semicolon conversions
+> aren't useful as there isn't a logical change and
+> the compiler output wouldn't be different.
 
+I have a script that will cut up the patches and send them to the
+appropriate maintainers, so I have no problem with that route.
+
+julia

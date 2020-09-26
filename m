@@ -2,83 +2,141 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9907B279A3A
-	for <lists+kernel-janitors@lfdr.de>; Sat, 26 Sep 2020 16:55:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25CE9279C09
+	for <lists+kernel-janitors@lfdr.de>; Sat, 26 Sep 2020 21:11:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729404AbgIZOz0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 26 Sep 2020 10:55:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44216 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729186AbgIZOz0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 26 Sep 2020 10:55:26 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B26B320882;
-        Sat, 26 Sep 2020 14:55:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601132126;
-        bh=5tMbBNIJtzVNaEG/loFu6mje1p8enh0WBS5iNeCs55k=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qr4QpinhYLaSk7qWaLIGr9oO9V86HUNQag9yGWGGgY/WNln1XzTST+bRp1bEp90W5
-         mEAZJk7HCwxTjk2KfaNzgDIawYUwqfndhcdwFL3nEEL5lwnhc/VFHNTdnB/LlDwQZ1
-         LLah1bytFo+78NGbYdXzQXEJA05+jpl/5qyG6jB4=
-Date:   Sat, 26 Sep 2020 15:55:21 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Tobias Jordan <kernel@cdqe.de>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Nuno Sa <nuno.sa@analog.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH] iio: temperature: ltc2983: fix leak of device node
- iterator
-Message-ID: <20200926155521.3b75342f@archlinux>
-In-Reply-To: <b5eca237-b7ea-e4ca-3936-8c32892e49b5@web.de>
-References: <b5eca237-b7ea-e4ca-3936-8c32892e49b5@web.de>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+        id S1730031AbgIZTLt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 26 Sep 2020 15:11:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37280 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726309AbgIZTLs (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 26 Sep 2020 15:11:48 -0400
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A95BFC0613D3
+        for <kernel-janitors@vger.kernel.org>; Sat, 26 Sep 2020 12:11:48 -0700 (PDT)
+Received: by mail-qt1-x844.google.com with SMTP id k25so5163691qtu.4
+        for <kernel-janitors@vger.kernel.org>; Sat, 26 Sep 2020 12:11:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=vt-edu.20150623.gappssmtp.com; s=20150623;
+        h=sender:from:to:cc:subject:in-reply-to:references:mime-version
+         :content-transfer-encoding:date:message-id;
+        bh=HXHwAmJqtzhy0GaltRSGEDCBQtRzzJDllTi8cJUt2Wo=;
+        b=qvuhbvpu5AO68fMeveIuWfGTN+D0nmcZlJkX1mjHMmoXPPkHmZPS5g/D/RaJ3UJi1t
+         9EyczrTwihu910bMwqhL94H4xZp9d//UhjyTRIFCMDEbx6vKWG2pg6CTW+r9DFOMfRFA
+         JrI9tnamwDhUeSGwOIgIwmg2tK13YK2+lX8OcWcBLZVPDmgOX3HULpBK9ufXJQLNLWVA
+         lOkHZuZvkIM7U5Z2RY3DKa6qZDfBtC+alVW5PlXgULgh+pSo5vkWeVupF9UPKtxmaGnh
+         W7C+FP9o6fS4a8TGvzzgsI1siljTwM0CN5LokWDdHCVq597qzdlgE6zw1OMUfrEAlIzb
+         qTGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:in-reply-to:references
+         :mime-version:content-transfer-encoding:date:message-id;
+        bh=HXHwAmJqtzhy0GaltRSGEDCBQtRzzJDllTi8cJUt2Wo=;
+        b=k6PIgcTU0HxDFnYIXuAlrErWXcL09jeWKWR2xOTVTgBv7ySU7SatZ0vLEdPQ2PezjW
+         zoiKeW21zInHpIVamtEI0Ci2Fn5c4lQ1m+P8JtjKhRlxhj/K/XIA+dKBdU0o4xYrL6Wz
+         HKWfCOUTBERo6U8Yh12jkVmNolXpkhRG3YZ8wJBOhmBzH4N7USSVjFpNBZ3nFJIo6kXn
+         gLVv7vIpUV44YM9shQDEddlASC0sY2hHMNS3Pr2xy5ezE40vQsHZilrsGfyrHDQRH/gm
+         K7CUsDtuilIVENtcI2qOiYd5v75esHUnp5uXyilQOH2pG/UxUOmLgrYBwymKfRLp+w9d
+         OAFw==
+X-Gm-Message-State: AOAM531Vhz0i7JuVqx8QAQniZhS1Safs8s/PyRdopSO4I1UMOPDVfGpG
+        0DpELBtHgn3sfi3n5MrFT2YV2gQgTna+7g==
+X-Google-Smtp-Source: ABdhPJwR2g/ncpm2C/nXgazviM7lxAwgSV7qyq+RWN6LOPygiZjfv1mzPGO8S8L1GCjJk/lx6rhT2g==
+X-Received: by 2002:ac8:6f3b:: with SMTP id i27mr5793438qtv.299.1601147507604;
+        Sat, 26 Sep 2020 12:11:47 -0700 (PDT)
+Received: from turing-police ([2601:5c0:c000:a8c1::359])
+        by smtp.gmail.com with ESMTPSA id b13sm4477025qkl.46.2020.09.26.12.11.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Sep 2020 12:11:46 -0700 (PDT)
+Sender: Valdis Kletnieks <valdis@vt.edu>
+From:   "Valdis Kl=?utf-8?Q?=c4=93?=tnieks" <valdis.kletnieks@vt.edu>
+X-Google-Original-From: "Valdis Kl=?utf-8?Q?=c4=93?=tnieks" <Valdis.Kletnieks@vt.edu>
+X-Mailer: exmh version 2.9.0 11/07/2018 with nmh-1.7+dev
+To:     Joe Perches <joe@perches.com>
+Cc:     Julia Lawall <julia.lawall@inria.fr>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        kernelnewbies <kernelnewbies@kernelnewbies.org>,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        cocci <cocci@systeme.lip6.fr>,
+        Giuseppe Scrivano <gscrivan@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Whitcroft <apw@shadowen.org>
+Subject: Re: [Cocci] coccinelle: Convert comma to semicolons (was Re: [PATCH] checkpatch: Add test for comma use that should be semicolon)
+In-Reply-To: <58673398c6b836ebd7509f787e6f0d10bfd751bc.camel@perches.com>
+References: <87r1qqvo2d.fsf@nanos.tec.linutronix.de> <a53048f738dacc1c58654eb94e229de79d4f94c2.camel@perches.com> <alpine.DEB.2.22.394.2009251904540.2772@hadrien>
+ <58673398c6b836ebd7509f787e6f0d10bfd751bc.camel@perches.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; boundary="==_Exmh_1601147504_3912P";
+         micalg=pgp-sha1; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 7bit
+Date:   Sat, 26 Sep 2020 15:11:44 -0400
+Message-ID: <173999.1601147504@turing-police>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 26 Sep 2020 16:45:56 +0200
-Markus Elfring <Markus.Elfring@web.de> wrote:
+--==_Exmh_1601147504_3912P
+Content-Type: text/plain; charset=us-ascii
 
-> > Thought about adding an "goto err_of_node_put" instead, but as the error
-> > paths are quite divergent, I'm not sure if that wouldn't complicate
-> > things. =20
->=20
-> Please add jump targets like =E2=80=9Ce_inval=E2=80=9D and =E2=80=9Cput_n=
-ode=E2=80=9D so that a bit of
-> common exception handling code can be better reused for this function imp=
-lementation.
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/D=
-ocumentation/process/coding-style.rst?id=3D7c7ec3226f5f33f9c050d85ec20f1841=
-9c622ad6#n475
+On Fri, 25 Sep 2020 10:26:27 -0700, Joe Perches said:
+> And the generic individual maintainer apply rate for
+> each specific patch is always less than 50%.
+>
+> For instance the patches that converted the comma uses
+> in if/do/while statements to use braces and semicolons
+> from a month ago:
 
-On this one I think readability would perhaps be hurt a little by
-doing so, particular as we need to do the of_put_node in some but
-not all non error paths. =20
+> 29 patches, 13 applied.
 
-It is a close run thing between the two options however.
+To be fair, it's *always* been hard to get pure style patches applied, because
+they usually hit one of two types of code, with different results:
 
-I considered another option of suggesting factoring out this whole
-per node block, but to do that we would have to do something a bit
-odd with the return value as we have 3 options.
-* error
-* do not parse any more children.
-* continue to parse children.
+Some of them hit code that's been stable for a long time - and those patches
+don't get applied because of the (admittedly small) risk that a "style" patch
+may actually break something - yes, that *does* happen often enough to worry a
+risk-adverse subtree maintainer.
 
-So I think in this case Tobias' solution is the best one available.
+Some of them hit code that's actively being worked on - and those patches don't
+get applied because they can cause merge conflicts.
 
-Thanks,
+This is a hard problem to fix, because it's difficult to say that either of
+those viewpoints is *totally* wrong. At best, you can make the case that some
+maintainers are a tad over-zealous on their attitude. And since its *hard* to
+find good maintainers, it's not possible to fix the problem by just putting
+somebody else in charge of a subtree. It's theoretically possible to bypass a
+problematic maintainer by sending the patch to the person one level up, or
+directly to Linus - but although that usually works if you have an urgent patch
+and the maintainer is on vacation or stubborn or whatever, that's got
+essentially zero chance of succeeding for a mere style patch.
 
-Jonathan
+Unfortunately, although I understand the problem, I don't have a solution. It's
+easy to tactfully say "this code is wrong, and here is the fix".  It's a lot
+harder to find a tactful way to say "This person is wrong and should do it this
+way", because code doesn't fight back when you offer constructive criticism....
 
->=20
-> Regards,
-> Markus
 
+
+--==_Exmh_1601147504_3912P
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Comment: Exmh version 2.9.0 11/07/2018
+
+iQIVAwUBX2+ScAdmEQWDXROgAQI8Ag//YKel+oxk8JlWyUFEbQz41v44EhWHlykN
+LLlOnRINghANJbunFpoUgD+KW9I9mPy8MmbdF+SeQq8fT+g5qfIwsYNsTeJI/Bu8
+K3ksbdy6qcuqO5ZmfqS9d1VYykaAXbIi1OqTa6gkX60EU+c1zLuCo78gFyO0c27T
+193bWbUG7iCkEXN3261e+a8p1XvQOUtRULuedBbyUQ9GmIEv8oLOMErq4YSBVx5t
+k/FKSrRfu5ZesBbxOOzGpPQXMpq64vwatpcZlNs6fKZjnzgmCYtnSzMCZ13bhkGE
+zPQQs1Ak0c1GmBVTlZVYHUNNLG4SKdHchF9yKZ5gooqLu1eWEg6O5WxeMWAjIQ1d
+qbxKveWY0E8xj0PM//BgyZraCRrAT8KGcpXjFEWtsw07dKD3hnpdXg2PlrX972v2
+BPk+M7pGEe/qZJPdGiptefli6zxtuv+hQI9sVif99+FRQ3RlKx4/xte1O7iKn3/N
+wzXNZ7pFG0UPGIkM5pEzUWv1VmBXoZqDT9qqanHNZDkRjYuv0IouI0QWaZ5v363E
+SOK0YBnHPUHA+bMOek59eof91yAwzgCqUrmAlZ3T/AKKHY1jUIujKbr/zVhAfa9b
+x0mn/NSmOmLc86BSgNKrAhxkbfoOzPnwnMVx1AHMhzZ43mlsaNyDz09SomWDWkzX
+GcnpFZnyRSo=
+=Cdbo
+-----END PGP SIGNATURE-----
+
+--==_Exmh_1601147504_3912P--

@@ -2,141 +2,116 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25CE9279C09
-	for <lists+kernel-janitors@lfdr.de>; Sat, 26 Sep 2020 21:11:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFB8E279CC3
+	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Sep 2020 00:17:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730031AbgIZTLt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 26 Sep 2020 15:11:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37280 "EHLO
+        id S1727614AbgIZWRX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 26 Sep 2020 18:17:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726309AbgIZTLs (ORCPT
+        with ESMTP id S1727364AbgIZWRX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 26 Sep 2020 15:11:48 -0400
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A95BFC0613D3
-        for <kernel-janitors@vger.kernel.org>; Sat, 26 Sep 2020 12:11:48 -0700 (PDT)
-Received: by mail-qt1-x844.google.com with SMTP id k25so5163691qtu.4
-        for <kernel-janitors@vger.kernel.org>; Sat, 26 Sep 2020 12:11:48 -0700 (PDT)
+        Sat, 26 Sep 2020 18:17:23 -0400
+Received: from mail-qv1-xf41.google.com (mail-qv1-xf41.google.com [IPv6:2607:f8b0:4864:20::f41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08C16C0613CE
+        for <kernel-janitors@vger.kernel.org>; Sat, 26 Sep 2020 15:17:23 -0700 (PDT)
+Received: by mail-qv1-xf41.google.com with SMTP id cr8so3446352qvb.10
+        for <kernel-janitors@vger.kernel.org>; Sat, 26 Sep 2020 15:17:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=vt-edu.20150623.gappssmtp.com; s=20150623;
-        h=sender:from:to:cc:subject:in-reply-to:references:mime-version
-         :content-transfer-encoding:date:message-id;
-        bh=HXHwAmJqtzhy0GaltRSGEDCBQtRzzJDllTi8cJUt2Wo=;
-        b=qvuhbvpu5AO68fMeveIuWfGTN+D0nmcZlJkX1mjHMmoXPPkHmZPS5g/D/RaJ3UJi1t
-         9EyczrTwihu910bMwqhL94H4xZp9d//UhjyTRIFCMDEbx6vKWG2pg6CTW+r9DFOMfRFA
-         JrI9tnamwDhUeSGwOIgIwmg2tK13YK2+lX8OcWcBLZVPDmgOX3HULpBK9ufXJQLNLWVA
-         lOkHZuZvkIM7U5Z2RY3DKa6qZDfBtC+alVW5PlXgULgh+pSo5vkWeVupF9UPKtxmaGnh
-         W7C+FP9o6fS4a8TGvzzgsI1siljTwM0CN5LokWDdHCVq597qzdlgE6zw1OMUfrEAlIzb
-         qTGQ==
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=fS1w4x9W5u/SBOvIdM0MH2CcotIY3Vg+sHOvEKvWrnM=;
+        b=ncQk+7I0w0b/kV5aRTi/q9bjG+7SWcGv1opTIuQpMwA05J3Orat6hoBr797TtB1eD7
+         PBqMXU+8SeTgg/Ol8LpEZuTqSnvHF3UXV1XTdpt4ehfCYYSLmwxQVdDMuQ+/+r07rjGa
+         ioM8BqTenCHYD7uWbHbXl8GF1WK772nDyB9k0LDaOCjF1HfZ1pVLzxZjL+b5KEdFRkHT
+         ICgb0/7AJ2wi4exQsX+lNR+xs3R1eEQGTd677ANdRdiy+QKSWikQFafKT4yHb+gTSnDu
+         CBifmwh3qIEi7XXZCLGGW6es9N7R1IoV5nEdQPZJ5PU9352j5Ln5QE9gMtOxxeit0bkF
+         vsAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:in-reply-to:references
-         :mime-version:content-transfer-encoding:date:message-id;
-        bh=HXHwAmJqtzhy0GaltRSGEDCBQtRzzJDllTi8cJUt2Wo=;
-        b=k6PIgcTU0HxDFnYIXuAlrErWXcL09jeWKWR2xOTVTgBv7ySU7SatZ0vLEdPQ2PezjW
-         zoiKeW21zInHpIVamtEI0Ci2Fn5c4lQ1m+P8JtjKhRlxhj/K/XIA+dKBdU0o4xYrL6Wz
-         HKWfCOUTBERo6U8Yh12jkVmNolXpkhRG3YZ8wJBOhmBzH4N7USSVjFpNBZ3nFJIo6kXn
-         gLVv7vIpUV44YM9shQDEddlASC0sY2hHMNS3Pr2xy5ezE40vQsHZilrsGfyrHDQRH/gm
-         K7CUsDtuilIVENtcI2qOiYd5v75esHUnp5uXyilQOH2pG/UxUOmLgrYBwymKfRLp+w9d
-         OAFw==
-X-Gm-Message-State: AOAM531Vhz0i7JuVqx8QAQniZhS1Safs8s/PyRdopSO4I1UMOPDVfGpG
-        0DpELBtHgn3sfi3n5MrFT2YV2gQgTna+7g==
-X-Google-Smtp-Source: ABdhPJwR2g/ncpm2C/nXgazviM7lxAwgSV7qyq+RWN6LOPygiZjfv1mzPGO8S8L1GCjJk/lx6rhT2g==
-X-Received: by 2002:ac8:6f3b:: with SMTP id i27mr5793438qtv.299.1601147507604;
-        Sat, 26 Sep 2020 12:11:47 -0700 (PDT)
-Received: from turing-police ([2601:5c0:c000:a8c1::359])
-        by smtp.gmail.com with ESMTPSA id b13sm4477025qkl.46.2020.09.26.12.11.45
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=fS1w4x9W5u/SBOvIdM0MH2CcotIY3Vg+sHOvEKvWrnM=;
+        b=ZD9SnBvpL+wqhR/9uES/I18OcPCqPyoUf1/Rbq5tfS8wTTuRr+6KbJB61crjCBGbW6
+         pQAtI3K5slN7nbOuk/l1C6zziXQJFLZGKgVwed1PGtBdtp3hDN7J8aMM3AvXGq6lPt3p
+         5J+fUMrJJ9cn5I4IayF309y9xF2wpsttsWro3fhNnqMQ0XYQeA8tuXpyM2G123PRPBF5
+         VBI9eeojiEbauYyRkX17R9HrxBjw4/PKgSul2XqxBclB/3YZrBxiqzx4gOEpXPwCLa1e
+         nHab5v52m0d2gpBL/93hBmWrZ9eq8JZ2uxZ/JR1WJFPIZgZcHfZTnlsCMcK6sWtAkiiw
+         zQWQ==
+X-Gm-Message-State: AOAM533aTkeQXfvmM/7/4W1b4AlgBVNw4bouyZ0d3HbANGk8nNsDPcZZ
+        g4ArcH+olb3QWGVKDnzEN43KPw==
+X-Google-Smtp-Source: ABdhPJzOjN9AkTy4a5cxZoUD5COTuNKTBRR+2yz5oBOt1Hm6GdAFuqlmJuK32i8Vo+ARHWQHh4J04Q==
+X-Received: by 2002:a0c:8d82:: with SMTP id t2mr5349604qvb.62.1601158641732;
+        Sat, 26 Sep 2020 15:17:21 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.48.30])
+        by smtp.gmail.com with ESMTPSA id f8sm4906302qkb.123.2020.09.26.15.17.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2020 12:11:46 -0700 (PDT)
-Sender: Valdis Kletnieks <valdis@vt.edu>
-From:   "Valdis Kl=?utf-8?Q?=c4=93?=tnieks" <valdis.kletnieks@vt.edu>
-X-Google-Original-From: "Valdis Kl=?utf-8?Q?=c4=93?=tnieks" <Valdis.Kletnieks@vt.edu>
-X-Mailer: exmh version 2.9.0 11/07/2018 with nmh-1.7+dev
-To:     Joe Perches <joe@perches.com>
-Cc:     Julia Lawall <julia.lawall@inria.fr>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>,
-        kernelnewbies <kernelnewbies@kernelnewbies.org>,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        cocci <cocci@systeme.lip6.fr>,
-        Giuseppe Scrivano <gscrivan@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andy Whitcroft <apw@shadowen.org>
-Subject: Re: [Cocci] coccinelle: Convert comma to semicolons (was Re: [PATCH] checkpatch: Add test for comma use that should be semicolon)
-In-Reply-To: <58673398c6b836ebd7509f787e6f0d10bfd751bc.camel@perches.com>
-References: <87r1qqvo2d.fsf@nanos.tec.linutronix.de> <a53048f738dacc1c58654eb94e229de79d4f94c2.camel@perches.com> <alpine.DEB.2.22.394.2009251904540.2772@hadrien>
- <58673398c6b836ebd7509f787e6f0d10bfd751bc.camel@perches.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; boundary="==_Exmh_1601147504_3912P";
-         micalg=pgp-sha1; protocol="application/pgp-signature"
-Content-Transfer-Encoding: 7bit
-Date:   Sat, 26 Sep 2020 15:11:44 -0400
-Message-ID: <173999.1601147504@turing-police>
+        Sat, 26 Sep 2020 15:17:21 -0700 (PDT)
+Received: from jgg by mlx with local (Exim 4.94)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1kMIVM-001SWH-Bf; Sat, 26 Sep 2020 19:17:20 -0300
+Date:   Sat, 26 Sep 2020 19:17:20 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Wei Yongjun <weiyongjun1@huawei.com>,
+        Ralph Campbell <rcampbell@nvidia.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v3] mm/hmm/test: use after free in
+ dmirror_allocate_chunk()
+Message-ID: <20200926221720.GK9916@ziepe.ca>
+References: <d1b31586-426a-e0b1-803e-3eff30196c05@web.de>
+ <20200926121402.GA7467@kadam>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200926121402.GA7467@kadam>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
---==_Exmh_1601147504_3912P
-Content-Type: text/plain; charset=us-ascii
+On Sat, Sep 26, 2020 at 03:14:02PM +0300, Dan Carpenter wrote:
+> The error handling code does this:
+> 
+> err_free:
+> 	kfree(devmem);
+>         ^^^^^^^^^^^^^
+> err_release:
+> 	release_mem_region(devmem->pagemap.range.start, range_len(&devmem->pagemap.range));
+>                            ^^^^^^^^
+> The problem is that when we use "devmem->pagemap.range.start" the
+> "devmem" pointer is either NULL or freed.
+> 
+> Neither the allocation nor the call to request_free_mem_region() has to
+> be done under the lock so I moved those to the start of the function.
+> 
+> Fixes: 1f9c4bb986d9 ("mm/memremap_pages: convert to 'struct range'")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Reviewed-by: Ralph Campbell <rcampbell@nvidia.com>
+> ---
+> v2: The first version introduced a locking bug
+> v3: Markus Elfring pointed out that the Fixes tag was wrong.  This bug
+> was in the original commit and then fixed and then re-introduced.  I was
+> quite bothered by how this bug lasted so long in the source code, but
+> now we know.  As soon as it is introduced we fixed it.
+> 
+> One problem with the kernel QC process is that I think everyone marks
+> the bug as "old/dealt with" so it was only because I was added a new
+> check for resource leaks that it was found when it was re-introduced.
+> 
+>  lib/test_hmm.c | 44 ++++++++++++++++++++++----------------------
+>  1 file changed, 22 insertions(+), 22 deletions(-)
 
-On Fri, 25 Sep 2020 10:26:27 -0700, Joe Perches said:
-> And the generic individual maintainer apply rate for
-> each specific patch is always less than 50%.
->
-> For instance the patches that converted the comma uses
-> in if/do/while statements to use braces and semicolons
-> from a month ago:
+Hi Andrew, 
 
-> 29 patches, 13 applied.
+I don't have have any hmm related patches this cycle, can you take
+this into your tree?
 
-To be fair, it's *always* been hard to get pure style patches applied, because
-they usually hit one of two types of code, with different results:
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
-Some of them hit code that's been stable for a long time - and those patches
-don't get applied because of the (admittedly small) risk that a "style" patch
-may actually break something - yes, that *does* happen often enough to worry a
-risk-adverse subtree maintainer.
-
-Some of them hit code that's actively being worked on - and those patches don't
-get applied because they can cause merge conflicts.
-
-This is a hard problem to fix, because it's difficult to say that either of
-those viewpoints is *totally* wrong. At best, you can make the case that some
-maintainers are a tad over-zealous on their attitude. And since its *hard* to
-find good maintainers, it's not possible to fix the problem by just putting
-somebody else in charge of a subtree. It's theoretically possible to bypass a
-problematic maintainer by sending the patch to the person one level up, or
-directly to Linus - but although that usually works if you have an urgent patch
-and the maintainer is on vacation or stubborn or whatever, that's got
-essentially zero chance of succeeding for a mere style patch.
-
-Unfortunately, although I understand the problem, I don't have a solution. It's
-easy to tactfully say "this code is wrong, and here is the fix".  It's a lot
-harder to find a tactful way to say "This person is wrong and should do it this
-way", because code doesn't fight back when you offer constructive criticism....
-
-
-
---==_Exmh_1601147504_3912P
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Comment: Exmh version 2.9.0 11/07/2018
-
-iQIVAwUBX2+ScAdmEQWDXROgAQI8Ag//YKel+oxk8JlWyUFEbQz41v44EhWHlykN
-LLlOnRINghANJbunFpoUgD+KW9I9mPy8MmbdF+SeQq8fT+g5qfIwsYNsTeJI/Bu8
-K3ksbdy6qcuqO5ZmfqS9d1VYykaAXbIi1OqTa6gkX60EU+c1zLuCo78gFyO0c27T
-193bWbUG7iCkEXN3261e+a8p1XvQOUtRULuedBbyUQ9GmIEv8oLOMErq4YSBVx5t
-k/FKSrRfu5ZesBbxOOzGpPQXMpq64vwatpcZlNs6fKZjnzgmCYtnSzMCZ13bhkGE
-zPQQs1Ak0c1GmBVTlZVYHUNNLG4SKdHchF9yKZ5gooqLu1eWEg6O5WxeMWAjIQ1d
-qbxKveWY0E8xj0PM//BgyZraCRrAT8KGcpXjFEWtsw07dKD3hnpdXg2PlrX972v2
-BPk+M7pGEe/qZJPdGiptefli6zxtuv+hQI9sVif99+FRQ3RlKx4/xte1O7iKn3/N
-wzXNZ7pFG0UPGIkM5pEzUWv1VmBXoZqDT9qqanHNZDkRjYuv0IouI0QWaZ5v363E
-SOK0YBnHPUHA+bMOek59eof91yAwzgCqUrmAlZ3T/AKKHY1jUIujKbr/zVhAfa9b
-x0mn/NSmOmLc86BSgNKrAhxkbfoOzPnwnMVx1AHMhzZ43mlsaNyDz09SomWDWkzX
-GcnpFZnyRSo=
-=Cdbo
------END PGP SIGNATURE-----
-
---==_Exmh_1601147504_3912P--
+Thanks,
+Jason

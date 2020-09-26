@@ -2,182 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CE4E2798C7
-	for <lists+kernel-janitors@lfdr.de>; Sat, 26 Sep 2020 14:16:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9907B279A3A
+	for <lists+kernel-janitors@lfdr.de>; Sat, 26 Sep 2020 16:55:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726316AbgIZMQ3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 26 Sep 2020 08:16:29 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:36150 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726183AbgIZMQ3 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 26 Sep 2020 08:16:29 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08QCBBQN046392;
-        Sat, 26 Sep 2020 12:16:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=atEIomq8hYf7tlxHSLLvPfiNgFz6Bihcw8H+gjRKPKo=;
- b=YF3FsYqaNtFhap2zJKSSFNUq+hRUx002Q0I7nNH/vcksgMnscdVeBnT4/5gwcYy3QS31
- Cmdd1IdsHvZwdCvFUZOB3DSU+PWtik/x9Uh+XZiYu0mmXNdWWQwT9O+vTMwvk0nz6jdp
- oflGxvTjeYOMgIEYgr9Xf4TAtUT7R4RQWIYR3HgfZk4ugWj4zwMGSg+zWFzIwkT5lxY3
- ++JNr7Q3QzhSqG6G1div/DTJ1mNttqQrx+Zdhuq4R+wHkJCb+Zr/KJy7C2GWM/7V8phA
- /YPXcncGcb2AknOMwwxDTczzBsb0KHJmanLaPVlttt5eW51zuemiJZP2MN18vspCW/Rt kw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 33swkkgjfs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sat, 26 Sep 2020 12:16:15 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08QCAFCt164221;
-        Sat, 26 Sep 2020 12:14:15 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 33sweydxbd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 26 Sep 2020 12:14:15 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08QCE9LC032097;
-        Sat, 26 Sep 2020 12:14:10 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 26 Sep 2020 05:14:09 -0700
-Date:   Sat, 26 Sep 2020 15:14:02 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-        Markus Elfring <Markus.Elfring@web.de>,
-        Dan Williams <dan.j.williams@intel.com>
-Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Ralph Campbell <rcampbell@nvidia.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH v3] mm/hmm/test: use after free in dmirror_allocate_chunk()
-Message-ID: <20200926121402.GA7467@kadam>
+        id S1729404AbgIZOz0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 26 Sep 2020 10:55:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44216 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729186AbgIZOz0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 26 Sep 2020 10:55:26 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B26B320882;
+        Sat, 26 Sep 2020 14:55:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601132126;
+        bh=5tMbBNIJtzVNaEG/loFu6mje1p8enh0WBS5iNeCs55k=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=qr4QpinhYLaSk7qWaLIGr9oO9V86HUNQag9yGWGGgY/WNln1XzTST+bRp1bEp90W5
+         mEAZJk7HCwxTjk2KfaNzgDIawYUwqfndhcdwFL3nEEL5lwnhc/VFHNTdnB/LlDwQZ1
+         LLah1bytFo+78NGbYdXzQXEJA05+jpl/5qyG6jB4=
+Date:   Sat, 26 Sep 2020 15:55:21 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Tobias Jordan <kernel@cdqe.de>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Nuno Sa <nuno.sa@analog.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: Re: [PATCH] iio: temperature: ltc2983: fix leak of device node
+ iterator
+Message-ID: <20200926155521.3b75342f@archlinux>
+In-Reply-To: <b5eca237-b7ea-e4ca-3936-8c32892e49b5@web.de>
+References: <b5eca237-b7ea-e4ca-3936-8c32892e49b5@web.de>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d1b31586-426a-e0b1-803e-3eff30196c05@web.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9755 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 phishscore=0 bulkscore=0
- mlxscore=0 malwarescore=0 mlxlogscore=999 spamscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009260112
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9755 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 phishscore=0
- suspectscore=2 mlxlogscore=999 clxscore=1015 priorityscore=1501
- impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009260112
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The error handling code does this:
+On Sat, 26 Sep 2020 16:45:56 +0200
+Markus Elfring <Markus.Elfring@web.de> wrote:
 
-err_free:
-	kfree(devmem);
-        ^^^^^^^^^^^^^
-err_release:
-	release_mem_region(devmem->pagemap.range.start, range_len(&devmem->pagemap.range));
-                           ^^^^^^^^
-The problem is that when we use "devmem->pagemap.range.start" the
-"devmem" pointer is either NULL or freed.
+> > Thought about adding an "goto err_of_node_put" instead, but as the error
+> > paths are quite divergent, I'm not sure if that wouldn't complicate
+> > things. =20
+>=20
+> Please add jump targets like =E2=80=9Ce_inval=E2=80=9D and =E2=80=9Cput_n=
+ode=E2=80=9D so that a bit of
+> common exception handling code can be better reused for this function imp=
+lementation.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/D=
+ocumentation/process/coding-style.rst?id=3D7c7ec3226f5f33f9c050d85ec20f1841=
+9c622ad6#n475
 
-Neither the allocation nor the call to request_free_mem_region() has to
-be done under the lock so I moved those to the start of the function.
+On this one I think readability would perhaps be hurt a little by
+doing so, particular as we need to do the of_put_node in some but
+not all non error paths. =20
 
-Fixes: 1f9c4bb986d9 ("mm/memremap_pages: convert to 'struct range'")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Reviewed-by: Ralph Campbell <rcampbell@nvidia.com>
----
-v2: The first version introduced a locking bug
-v3: Markus Elfring pointed out that the Fixes tag was wrong.  This bug
-was in the original commit and then fixed and then re-introduced.  I was
-quite bothered by how this bug lasted so long in the source code, but
-now we know.  As soon as it is introduced we fixed it.
+It is a close run thing between the two options however.
 
-One problem with the kernel QC process is that I think everyone marks
-the bug as "old/dealt with" so it was only because I was added a new
-check for resource leaks that it was found when it was re-introduced.
+I considered another option of suggesting factoring out this whole
+per node block, but to do that we would have to do something a bit
+odd with the return value as we have 3 options.
+* error
+* do not parse any more children.
+* continue to parse children.
 
- lib/test_hmm.c | 44 ++++++++++++++++++++++----------------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+So I think in this case Tobias' solution is the best one available.
 
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index c8133f50160b..e151a7f10519 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -459,6 +459,22 @@ static bool dmirror_allocate_chunk(struct dmirror_device *mdevice,
- 	unsigned long pfn_last;
- 	void *ptr;
- 
-+	devmem = kzalloc(sizeof(*devmem), GFP_KERNEL);
-+	if (!devmem)
-+		return -ENOMEM;
-+
-+	res = request_free_mem_region(&iomem_resource, DEVMEM_CHUNK_SIZE,
-+				      "hmm_dmirror");
-+	if (IS_ERR(res))
-+		goto err_devmem;
-+
-+	devmem->pagemap.type = MEMORY_DEVICE_PRIVATE;
-+	devmem->pagemap.range.start = res->start;
-+	devmem->pagemap.range.end = res->end;
-+	devmem->pagemap.nr_range = 1;
-+	devmem->pagemap.ops = &dmirror_devmem_ops;
-+	devmem->pagemap.owner = mdevice;
-+
- 	mutex_lock(&mdevice->devmem_lock);
- 
- 	if (mdevice->devmem_count == mdevice->devmem_capacity) {
-@@ -471,30 +487,14 @@ static bool dmirror_allocate_chunk(struct dmirror_device *mdevice,
- 				sizeof(new_chunks[0]) * new_capacity,
- 				GFP_KERNEL);
- 		if (!new_chunks)
--			goto err;
-+			goto err_release;
- 		mdevice->devmem_capacity = new_capacity;
- 		mdevice->devmem_chunks = new_chunks;
- 	}
- 
--	res = request_free_mem_region(&iomem_resource, DEVMEM_CHUNK_SIZE,
--					"hmm_dmirror");
--	if (IS_ERR(res))
--		goto err;
--
--	devmem = kzalloc(sizeof(*devmem), GFP_KERNEL);
--	if (!devmem)
--		goto err_release;
--
--	devmem->pagemap.type = MEMORY_DEVICE_PRIVATE;
--	devmem->pagemap.range.start = res->start;
--	devmem->pagemap.range.end = res->end;
--	devmem->pagemap.nr_range = 1;
--	devmem->pagemap.ops = &dmirror_devmem_ops;
--	devmem->pagemap.owner = mdevice;
--
- 	ptr = memremap_pages(&devmem->pagemap, numa_node_id());
- 	if (IS_ERR(ptr))
--		goto err_free;
-+		goto err_release;
- 
- 	devmem->mdevice = mdevice;
- 	pfn_first = devmem->pagemap.range.start >> PAGE_SHIFT;
-@@ -525,12 +525,12 @@ static bool dmirror_allocate_chunk(struct dmirror_device *mdevice,
- 
- 	return true;
- 
--err_free:
--	kfree(devmem);
- err_release:
--	release_mem_region(devmem->pagemap.range.start, range_len(&devmem->pagemap.range));
--err:
- 	mutex_unlock(&mdevice->devmem_lock);
-+	release_mem_region(devmem->pagemap.range.start, range_len(&devmem->pagemap.range));
-+err_devmem:
-+	kfree(devmem);
-+
- 	return false;
- }
- 
--- 
-2.28.0
+Thanks,
+
+Jonathan
+
+>=20
+> Regards,
+> Markus
+

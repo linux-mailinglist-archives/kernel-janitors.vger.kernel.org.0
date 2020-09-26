@@ -2,145 +2,182 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 904BA278F95
-	for <lists+kernel-janitors@lfdr.de>; Fri, 25 Sep 2020 19:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CE4E2798C7
+	for <lists+kernel-janitors@lfdr.de>; Sat, 26 Sep 2020 14:16:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729544AbgIYR0d (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 25 Sep 2020 13:26:33 -0400
-Received: from smtprelay0115.hostedemail.com ([216.40.44.115]:53060 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726401AbgIYR0d (ORCPT
+        id S1726316AbgIZMQ3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 26 Sep 2020 08:16:29 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:36150 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726183AbgIZMQ3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 25 Sep 2020 13:26:33 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay04.hostedemail.com (Postfix) with ESMTP id BCB401800822B;
-        Fri, 25 Sep 2020 17:26:31 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:967:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1543:1593:1594:1605:1711:1730:1747:1777:1792:1981:2194:2199:2393:2525:2553:2560:2563:2682:2685:2691:2693:2828:2859:2893:2903:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3622:3865:3866:3867:3868:3870:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4043:4321:4641:5007:6691:7875:7903:7974:9025:9108:10004:10394:10400:10471:10848:11232:11658:11914:12043:12050:12296:12297:12555:12679:12740:12760:12895:12986:13161:13229:13255:13439:13845:14096:14097:14181:14659:14721:21080:21324:21325:21433:21627:21740:21789:21811:21990:30054:30070:30083:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: songs62_3214a5527169
-X-Filterd-Recvd-Size: 4775
-Received: from XPS-9350.home (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf10.hostedemail.com (Postfix) with ESMTPA;
-        Fri, 25 Sep 2020 17:26:29 +0000 (UTC)
-Message-ID: <58673398c6b836ebd7509f787e6f0d10bfd751bc.camel@perches.com>
-Subject: Re: [Cocci] coccinelle: Convert comma to semicolons (was Re:
- [PATCH] checkpatch: Add test for comma use that should be semicolon)
-From:   Joe Perches <joe@perches.com>
-To:     Julia Lawall <julia.lawall@inria.fr>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Valdis =?UTF-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>,
-        kernelnewbies <kernelnewbies@kernelnewbies.org>,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        cocci <cocci@systeme.lip6.fr>,
-        Giuseppe Scrivano <gscrivan@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andy Whitcroft <apw@shadowen.org>
-Date:   Fri, 25 Sep 2020 10:26:27 -0700
-In-Reply-To: <alpine.DEB.2.22.394.2009251904540.2772@hadrien>
-References: <87r1qqvo2d.fsf@nanos.tec.linutronix.de>
-         <a53048f738dacc1c58654eb94e229de79d4f94c2.camel@perches.com>
-         <alpine.DEB.2.22.394.2009251904540.2772@hadrien>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.4-0ubuntu1 
+        Sat, 26 Sep 2020 08:16:29 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08QCBBQN046392;
+        Sat, 26 Sep 2020 12:16:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2020-01-29; bh=atEIomq8hYf7tlxHSLLvPfiNgFz6Bihcw8H+gjRKPKo=;
+ b=YF3FsYqaNtFhap2zJKSSFNUq+hRUx002Q0I7nNH/vcksgMnscdVeBnT4/5gwcYy3QS31
+ Cmdd1IdsHvZwdCvFUZOB3DSU+PWtik/x9Uh+XZiYu0mmXNdWWQwT9O+vTMwvk0nz6jdp
+ oflGxvTjeYOMgIEYgr9Xf4TAtUT7R4RQWIYR3HgfZk4ugWj4zwMGSg+zWFzIwkT5lxY3
+ ++JNr7Q3QzhSqG6G1div/DTJ1mNttqQrx+Zdhuq4R+wHkJCb+Zr/KJy7C2GWM/7V8phA
+ /YPXcncGcb2AknOMwwxDTczzBsb0KHJmanLaPVlttt5eW51zuemiJZP2MN18vspCW/Rt kw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 33swkkgjfs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 26 Sep 2020 12:16:15 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08QCAFCt164221;
+        Sat, 26 Sep 2020 12:14:15 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 33sweydxbd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 26 Sep 2020 12:14:15 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08QCE9LC032097;
+        Sat, 26 Sep 2020 12:14:10 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 26 Sep 2020 05:14:09 -0700
+Date:   Sat, 26 Sep 2020 15:14:02 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        Dan Williams <dan.j.williams@intel.com>
+Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Ralph Campbell <rcampbell@nvidia.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH v3] mm/hmm/test: use after free in dmirror_allocate_chunk()
+Message-ID: <20200926121402.GA7467@kadam>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d1b31586-426a-e0b1-803e-3eff30196c05@web.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9755 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 phishscore=0 bulkscore=0
+ mlxscore=0 malwarescore=0 mlxlogscore=999 spamscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009260112
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9755 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 phishscore=0
+ suspectscore=2 mlxlogscore=999 clxscore=1015 priorityscore=1501
+ impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009260112
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 2020-09-25 at 19:06 +0200, Julia Lawall wrote:
-> On Thu, 24 Sep 2020, Joe Perches wrote:
-> > On Thu, 2020-09-24 at 23:53 +0200, Thomas Gleixner wrote:
-> > > On Thu, Sep 24 2020 at 13:33, Joe Perches wrote:
-> > > > On Thu, 2020-09-24 at 22:19 +0200, Thomas Gleixner wrote:
-> > > > > On Sat, Aug 22 2020 at 09:07, Julia Lawall wrote:
-> > > > > > On Fri, 21 Aug 2020, Joe Perches wrote:
-> > > > > > > True enough for a general statement, though the coccinelle
-> > > > > > > script Julia provided does not change a single instance of
-> > > > > > > for loop expressions with commas.
-> > > > > > > 
-> > > > > > > As far as I can tell, no logic defect is introduced by the
-> > > > > > > script at all.
-> > > > > > 
-> > > > > > The script has a rule to ensure that what is changed is part of a top
-> > > > > > level statement that has the form e1, e2;.  I put that in to avoid
-> > > > > > transforming cases where the comma is the body of a macro, but it protects
-> > > > > > against for loop headers as well.
-> > > > > 
-> > > > > Right. I went through the lot and did not find something dodgy. Except
-> > > > > for two hunks this still applies. Can someone please send a proper patch
-> > > > > with changelog/SOB etc. for this?
-> > > > 
-> > > > Treewide?
-> > > > 
-> > > > Somebody no doubt would complain, but there
-> > > > _really should_ be some mechanism for these
-> > > > trivial and correct treewide changes...
-> > > 
-> > > There are lots of mechanisms:
-> > 
-> > I've tried them all.
-> > 
-> > None of them work particularly well,
-> > especially the individual patch route.
-> > 
-> > >  - Andrew picks such changes up
-> > 
-> > Generally not treewide.
-> > 
-> > >  - With a few competent eyeballs on it (reviewers) this can go thorugh
-> > >    the trivial tree as well. It's more than obvious after all.
-> > 
-> > Jiri is almost non-existent when it comes to
-> > trivial treewide patches.
-> > 
-> > >  - Send the script to Linus with a proper change log attached and ask
-> > >    him to run it.
-> > 
-> > Linus has concerns about backports and what he
-> > deems trivialities.  Generally overblown IMO.
-> > 
-> > >  - In the worst case if nobody feels responsible, I'll take care.
-> > 
-> > If Julia doesn't send a new patch in the next few
-> > days, I will do the apply, fixup and resend of hers.
-> > 
-> > So, you're on-deck, nearly up...
-> > 
-> > > All of the above is better than trying to get the attention of a
-> > > gazillion of maintainters.
-> > 
-> > True.
-> > 
-> > And all of the treewide changes depend on some
-> > generic acceptance of value in the type of change.
-> > 
-> > Some believe that comma->semicolon conversions
-> > aren't useful as there isn't a logical change and
-> > the compiler output wouldn't be different.
-> 
-> I have a script that will cut up the patches and send them to the
-> appropriate maintainers, so I have no problem with that route.
+The error handling code does this:
 
-I have a script that does that too.
+err_free:
+	kfree(devmem);
+        ^^^^^^^^^^^^^
+err_release:
+	release_mem_region(devmem->pagemap.range.start, range_len(&devmem->pagemap.range));
+                           ^^^^^^^^
+The problem is that when we use "devmem->pagemap.range.start" the
+"devmem" pointer is either NULL or freed.
 
-The complaint I get about its use is
-"OMG: My specific commit header style isn't followed"
+Neither the allocation nor the call to request_free_mem_region() has to
+be done under the lock so I moved those to the start of the function.
 
-And the generic individual maintainer apply rate for
-each specific patch is always less than 50%.
+Fixes: 1f9c4bb986d9 ("mm/memremap_pages: convert to 'struct range'")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Reviewed-by: Ralph Campbell <rcampbell@nvidia.com>
+---
+v2: The first version introduced a locking bug
+v3: Markus Elfring pointed out that the Fixes tag was wrong.  This bug
+was in the original commit and then fixed and then re-introduced.  I was
+quite bothered by how this bug lasted so long in the source code, but
+now we know.  As soon as it is introduced we fixed it.
 
-For instance the patches that converted the comma uses
-in if/do/while statements to use braces and semicolons
-from a month ago:
+One problem with the kernel QC process is that I think everyone marks
+the bug as "old/dealt with" so it was only because I was added a new
+check for resource leaks that it was found when it was re-introduced.
 
-https://lore.kernel.org/lkml/cover.1598331148.git.joe@perches.com/
+ lib/test_hmm.c | 44 ++++++++++++++++++++++----------------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
-29 patches, 13 applied.
-
-Best of luck.
-
-
+diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+index c8133f50160b..e151a7f10519 100644
+--- a/lib/test_hmm.c
++++ b/lib/test_hmm.c
+@@ -459,6 +459,22 @@ static bool dmirror_allocate_chunk(struct dmirror_device *mdevice,
+ 	unsigned long pfn_last;
+ 	void *ptr;
+ 
++	devmem = kzalloc(sizeof(*devmem), GFP_KERNEL);
++	if (!devmem)
++		return -ENOMEM;
++
++	res = request_free_mem_region(&iomem_resource, DEVMEM_CHUNK_SIZE,
++				      "hmm_dmirror");
++	if (IS_ERR(res))
++		goto err_devmem;
++
++	devmem->pagemap.type = MEMORY_DEVICE_PRIVATE;
++	devmem->pagemap.range.start = res->start;
++	devmem->pagemap.range.end = res->end;
++	devmem->pagemap.nr_range = 1;
++	devmem->pagemap.ops = &dmirror_devmem_ops;
++	devmem->pagemap.owner = mdevice;
++
+ 	mutex_lock(&mdevice->devmem_lock);
+ 
+ 	if (mdevice->devmem_count == mdevice->devmem_capacity) {
+@@ -471,30 +487,14 @@ static bool dmirror_allocate_chunk(struct dmirror_device *mdevice,
+ 				sizeof(new_chunks[0]) * new_capacity,
+ 				GFP_KERNEL);
+ 		if (!new_chunks)
+-			goto err;
++			goto err_release;
+ 		mdevice->devmem_capacity = new_capacity;
+ 		mdevice->devmem_chunks = new_chunks;
+ 	}
+ 
+-	res = request_free_mem_region(&iomem_resource, DEVMEM_CHUNK_SIZE,
+-					"hmm_dmirror");
+-	if (IS_ERR(res))
+-		goto err;
+-
+-	devmem = kzalloc(sizeof(*devmem), GFP_KERNEL);
+-	if (!devmem)
+-		goto err_release;
+-
+-	devmem->pagemap.type = MEMORY_DEVICE_PRIVATE;
+-	devmem->pagemap.range.start = res->start;
+-	devmem->pagemap.range.end = res->end;
+-	devmem->pagemap.nr_range = 1;
+-	devmem->pagemap.ops = &dmirror_devmem_ops;
+-	devmem->pagemap.owner = mdevice;
+-
+ 	ptr = memremap_pages(&devmem->pagemap, numa_node_id());
+ 	if (IS_ERR(ptr))
+-		goto err_free;
++		goto err_release;
+ 
+ 	devmem->mdevice = mdevice;
+ 	pfn_first = devmem->pagemap.range.start >> PAGE_SHIFT;
+@@ -525,12 +525,12 @@ static bool dmirror_allocate_chunk(struct dmirror_device *mdevice,
+ 
+ 	return true;
+ 
+-err_free:
+-	kfree(devmem);
+ err_release:
+-	release_mem_region(devmem->pagemap.range.start, range_len(&devmem->pagemap.range));
+-err:
+ 	mutex_unlock(&mdevice->devmem_lock);
++	release_mem_region(devmem->pagemap.range.start, range_len(&devmem->pagemap.range));
++err_devmem:
++	kfree(devmem);
++
+ 	return false;
+ }
+ 
+-- 
+2.28.0

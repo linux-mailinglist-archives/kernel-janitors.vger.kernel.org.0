@@ -2,108 +2,194 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 449F227A221
-	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Sep 2020 19:45:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F6FA27A30A
+	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Sep 2020 21:56:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726316AbgI0Rpu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 27 Sep 2020 13:45:50 -0400
-Received: from smtprelay0221.hostedemail.com ([216.40.44.221]:60032 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726267AbgI0Rpu (ORCPT
+        id S1726774AbgI0T4H (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 27 Sep 2020 15:56:07 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:10039
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726369AbgI0TzS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 27 Sep 2020 13:45:50 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 7921C1730858;
-        Sun, 27 Sep 2020 17:45:48 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:967:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2525:2553:2561:2564:2682:2685:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3353:3622:3743:3865:3866:3867:3868:3870:3871:3872:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4250:4321:5007:6742:7903:7974:8985:9025:9121:10004:10400:10471:10848:11232:11233:11658:11914:12043:12262:12297:12438:12555:12663:12679:12740:12760:12895:12903:12986:13069:13161:13229:13255:13311:13357:13439:13618:14181:14659:14721:14764:21080:21325:21365:21451:21627:21740:30012:30054:30083:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: cry47_3d0f42d2717a
-X-Filterd-Recvd-Size: 3344
-Received: from XPS-9350.home (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf10.hostedemail.com (Postfix) with ESMTPA;
-        Sun, 27 Sep 2020 17:45:46 +0000 (UTC)
-Message-ID: <983c49ebe4bbe0435a73d25cd8525764a4f8adac.camel@perches.com>
-Subject: Re: [Cocci] coccinelle: Convert comma to semicolons (was Re:
- [PATCH] checkpatch: Add test for comma use that should be semicolon)
-From:   Joe Perches <joe@perches.com>
-To:     Julia Lawall <julia.lawall@inria.fr>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Valdis =?UTF-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>,
-        kernelnewbies <kernelnewbies@kernelnewbies.org>,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        cocci <cocci@systeme.lip6.fr>,
-        Giuseppe Scrivano <gscrivan@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andy Whitcroft <apw@shadowen.org>, lkp <lkp@intel.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Date:   Sun, 27 Sep 2020 10:45:45 -0700
-In-Reply-To: <alpine.DEB.2.22.394.2009271907270.2839@hadrien>
-References: <87r1qqvo2d.fsf@nanos.tec.linutronix.de>
-         <a53048f738dacc1c58654eb94e229de79d4f94c2.camel@perches.com>
-         <alpine.DEB.2.22.394.2009271907270.2839@hadrien>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.4-0ubuntu1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        Sun, 27 Sep 2020 15:55:18 -0400
+X-IronPort-AV: E=Sophos;i="5.77,311,1596492000"; 
+   d="scan'208";a="360169486"
+Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/AES256-SHA256; 27 Sep 2020 21:55:11 +0200
+From:   Julia Lawall <Julia.Lawall@inria.fr>
+To:     linux-iio@vger.kernel.org
+Cc:     =?UTF-8?q?Valdis=20Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        Joe Perches <joe@perches.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kernel-janitors@vger.kernel.org,
+        David Lechner <david@lechnology.com>,
+        linux-wireless@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-crypto@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-amlogic@lists.infradead.org, linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>, drbd-dev@lists.linbit.com,
+        linux-block@vger.kernel.org
+Subject: [PATCH 00/18] use semicolons rather than commas to separate statements
+Date:   Sun, 27 Sep 2020 21:12:10 +0200
+Message-Id: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 1.9.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 2020-09-27 at 19:08 +0200, Julia Lawall wrote:
-> I end up with 208 patches.  I'm not sure that sending them all at once
-> would be a good idea...
+These patches replace commas by semicolons.  This was done using the
+Coccinelle semantic patch (http://coccinelle.lip6.fr/) shown below.
 
-Last I looked the diffstat for comma -> semicolon was:
+This semantic patch ensures that commas inside for loop headers will not be
+transformed.  It also doesn't touch macro definitions.
 
-234 files changed, 509 insertions(+), 509 deletions(-)
+Coccinelle ensures that braces are added as needed when a single-statement
+branch turns into a multi-statement one.
 
-So it would be nearly 1 patch per individual file,
+This semantic patch has a few false positives, for variable delcarations
+such as:
 
-Greg KH does send hundreds of patches for -stable at a time.
+LIST_HEAD(x), *y;
 
-So, maybe or maybe not send them all at once.
-Maybe send it in batches of 25 or so.
+The semantic patch could be improved to avoid these, but for the moment
+they have been removed manually (2 occurrences).
 
-There's no single right way to do this.
+// <smpl>
+@initialize:ocaml@
+@@
 
-Maybe put up a git tree somewhere and let the
-kernel-robot test compilation.
+let infunction p =
+  (* avoid macros *)
+  (List.hd p).current_element <> "something_else"
 
-(A nicety might be for the kernel-robot to have some
- option to test pre and post compilation object code
- differences with an optional report)
+let combined p1 p2 =
+  (List.hd p1).line_end = (List.hd p2).line ||
+  (((List.hd p1).line_end < (List.hd p2).line) &&
+   ((List.hd p1).col < (List.hd p2).col))
 
-When I automated 491 patches for /* fallthrough */ to
-fallthrough;, the robot caught a couple problems which
-was great.
+@bad@
+statement S;
+declaration d;
+position p;
+@@
 
-https://repo.or.cz/linux-2.6/trivial-mods.git/shortlog/refs/heads/20200310_fallthrough_2
+S@p
+d
 
-I only posted the first ~30 patches though with
-about 50% acceptance. Gustavo Silva picked up the
-effort and did a great job.  Eventually, a single
-treewide patch was posted and accepted by Linus for
-this though after dozens of individual patches went
-through various maintainer trees:
+// special cases where newlines are needed (hope for no more than 5)
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
 
-$ git log --shortstat -1 df561f6688fe
-commit df561f6688fef775baa341a0f5d960becd248b11
-Author: Gustavo A. R. Silva <gustavoars@kernel.org>
-Date:   Sun Aug 23 17:36:59 2020 -0500
+- e1@p1,@S@p e2@p2;
++ e1; e2;
 
-    treewide: Use fallthrough pseudo-keyword
-    
-    Replace the existing /* fall through */ comments and its variants with
-    the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
-    fall-through markings when it is the case.
-    
-    [1] https://www.kernel.org/doc/html/v5.7/process/deprecated.html?highlight=>
-    
-    Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
 
- 1148 files changed, 2667 insertions(+), 2737 deletions(-)
+- e1@p1,@S@p e2@p2;
++ e1; e2;
 
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
 
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@r@
+expression e1,e2;
+statement S;
+position p != bad.p;
+@@
+
+e1 ,@S@p e2;
+
+@@
+expression e1,e2;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && not(combined p1 p2) };
+statement S;
+position r.p;
+@@
+
+e1@p1
+-,@S@p
++;
+e2@p2
+... when any
+// </smpl>
+
+---
+
+ drivers/acpi/processor_idle.c               |    4 +++-
+ drivers/ata/pata_icside.c                   |   21 +++++++++++++--------
+ drivers/base/regmap/regmap-debugfs.c        |    2 +-
+ drivers/bcma/driver_pci_host.c              |    4 ++--
+ drivers/block/drbd/drbd_receiver.c          |    6 ++++--
+ drivers/char/agp/amd-k7-agp.c               |    2 +-
+ drivers/char/agp/nvidia-agp.c               |    2 +-
+ drivers/char/agp/sworks-agp.c               |    2 +-
+ drivers/char/hw_random/iproc-rng200.c       |    8 ++++----
+ drivers/char/hw_random/mxc-rnga.c           |    6 +++---
+ drivers/char/hw_random/stm32-rng.c          |    8 ++++----
+ drivers/char/ipmi/bt-bmc.c                  |    6 +++---
+ drivers/clk/meson/meson-aoclk.c             |    2 +-
+ drivers/clk/mvebu/ap-cpu-clk.c              |    2 +-
+ drivers/clk/uniphier/clk-uniphier-cpugear.c |    2 +-
+ drivers/clk/uniphier/clk-uniphier-mux.c     |    2 +-
+ drivers/clocksource/mps2-timer.c            |    6 +++---
+ drivers/clocksource/timer-armada-370-xp.c   |    8 ++++----
+ drivers/counter/ti-eqep.c                   |    2 +-
+ drivers/crypto/amcc/crypto4xx_alg.c         |    2 +-
+ drivers/crypto/atmel-tdes.c                 |    2 +-
+ drivers/crypto/hifn_795x.c                  |    4 ++--
+ drivers/crypto/talitos.c                    |    8 ++++----
+ 23 files changed, 60 insertions(+), 51 deletions(-)

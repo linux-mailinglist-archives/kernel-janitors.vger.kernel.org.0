@@ -2,95 +2,47 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A989527A0C2
-	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Sep 2020 14:11:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0CBE27A1F5
+	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Sep 2020 19:08:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726321AbgI0ML1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 27 Sep 2020 08:11:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59590 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726185AbgI0ML0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 27 Sep 2020 08:11:26 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id ABD572389F;
-        Sun, 27 Sep 2020 12:11:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601208686;
-        bh=segKEbXbLQKoyPsw1zVmBiTvE2bpOdGaSwUbj//kNpk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TR4snYG+LeCHuPJnPeV/NE3sixMtY3veYQsu9oJ1po1GZvDF4zwVJC+EyzmPrWOLx
-         hVMTpzuQdkfkrOxdIfZb4gluYxR9AzFIu9IGMC7gegQiSyQcXMwdJa0PgsZcci49G0
-         SNfkzWwkZ+bfzvRrqmxPGErhABqNauV3FLYSEi4I=
-Date:   Sun, 27 Sep 2020 14:11:36 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Julia Lawall <julia.lawall@inria.fr>
-Cc:     kernel-janitors@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
-        linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 01/14] pch_uart: drop double zeroing
-Message-ID: <20200927121136.GA164938@kroah.com>
-References: <1600601186-7420-1-git-send-email-Julia.Lawall@inria.fr>
- <1600601186-7420-2-git-send-email-Julia.Lawall@inria.fr>
- <20200920121404.GA2830482@kroah.com>
- <alpine.DEB.2.22.394.2009201443590.2966@hadrien>
+        id S1726314AbgI0RIJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 27 Sep 2020 13:08:09 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:59261 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726149AbgI0RII (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 27 Sep 2020 13:08:08 -0400
+X-IronPort-AV: E=Sophos;i="5.77,310,1596492000"; 
+   d="scan'208";a="469737112"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Sep 2020 19:08:06 +0200
+Date:   Sun, 27 Sep 2020 19:08:06 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Joe Perches <joe@perches.com>
+cc:     Thomas Gleixner <tglx@linutronix.de>,
+        =?UTF-8?Q?Valdis_Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        kernelnewbies <kernelnewbies@kernelnewbies.org>,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        cocci <cocci@systeme.lip6.fr>,
+        Giuseppe Scrivano <gscrivan@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Whitcroft <apw@shadowen.org>
+Subject: Re: [Cocci] coccinelle: Convert comma to semicolons (was Re: [PATCH]
+ checkpatch: Add test for comma use that should be semicolon)
+In-Reply-To: <a53048f738dacc1c58654eb94e229de79d4f94c2.camel@perches.com>
+Message-ID: <alpine.DEB.2.22.394.2009271907270.2839@hadrien>
+References: <87r1qqvo2d.fsf@nanos.tec.linutronix.de> <a53048f738dacc1c58654eb94e229de79d4f94c2.camel@perches.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.22.394.2009201443590.2966@hadrien>
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Sep 20, 2020 at 02:47:11PM +0200, Julia Lawall wrote:
-> 
-> 
-> On Sun, 20 Sep 2020, Greg Kroah-Hartman wrote:
-> 
-> > On Sun, Sep 20, 2020 at 01:26:13PM +0200, Julia Lawall wrote:
-> > > sg_init_table zeroes its first argument, so the allocation of that argument
-> > > doesn't have to.
-> > >
-> > > the semantic patch that makes this change is as follows:
-> > > (http://coccinelle.lip6.fr/)
-> > >
-> > > // <smpl>
-> > > @@
-> > > expression x,n,flags;
-> > > @@
-> > >
-> > > x =
-> > > - kcalloc
-> > > + kmalloc_array
-> > >   (n,sizeof(struct scatterlist),flags)
-> > > ...
-> > > sg_init_table(x,n)
-> > > // </smpl>
-> > >
-> > > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> >
-> > It inits the first entry in the array, but what about all of the other
-> > ones?  Is that "safe" to have uninitialized data in them like your
-> > change causes to happen?
-> 
-> Sorry, I don't follow.  The complete code is:
-> 
->         priv->sg_tx_p = kcalloc(num, sizeof(struct scatterlist), GFP_ATOMIC);
->         if (!priv->sg_tx_p) {
-> 		dev_err(priv->port.dev, "%s:kzalloc Failed\n", __func__);
->                 return 0;
-> 	}
-> 
-> 	sg_init_table(priv->sg_tx_p, num); /* Initialize SG table */
-> 
-> and the definition of sg_init_table is:
-> 
-> void sg_init_table(struct scatterlist *sgl, unsigned int nents)
-> {
-> 	memset(sgl, 0, sizeof(*sgl) * nents);
-> 	sg_init_marker(sgl, nents);
-> }
+I end up with 208 patches.  I'm not sure that sending them all at once
+would be a good idea...
 
-Ah, missed the "* nents" thing there, sorry, my fault.
-
-greg k-h
+julia

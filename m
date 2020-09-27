@@ -2,114 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B077F27A2CE
-	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Sep 2020 21:35:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DA4E27A3F2
+	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Sep 2020 22:08:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726460AbgI0Tff (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 27 Sep 2020 15:35:35 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:33346 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726358AbgI0Tff (ORCPT
+        id S1726379AbgI0UIb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 27 Sep 2020 16:08:31 -0400
+Received: from smtprelay0172.hostedemail.com ([216.40.44.172]:35896 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726239AbgI0UIb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 27 Sep 2020 15:35:35 -0400
-X-IronPort-AV: E=Sophos;i="5.77,311,1596492000"; 
-   d="scan'208";a="469742917"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Sep 2020 21:35:32 +0200
-Date:   Sun, 27 Sep 2020 21:35:32 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Joe Perches <joe@perches.com>
-cc:     Thomas Gleixner <tglx@linutronix.de>,
-        =?UTF-8?Q?Valdis_Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>,
-        kernelnewbies <kernelnewbies@kernelnewbies.org>,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        cocci <cocci@systeme.lip6.fr>,
-        Giuseppe Scrivano <gscrivan@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andy Whitcroft <apw@shadowen.org>, lkp <lkp@intel.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: Re: [Cocci] coccinelle: Convert comma to semicolons (was Re: [PATCH]
- checkpatch: Add test for comma use that should be semicolon)
-In-Reply-To: <983c49ebe4bbe0435a73d25cd8525764a4f8adac.camel@perches.com>
-Message-ID: <alpine.DEB.2.22.394.2009272132110.2839@hadrien>
-References: <87r1qqvo2d.fsf@nanos.tec.linutronix.de>  <a53048f738dacc1c58654eb94e229de79d4f94c2.camel@perches.com>  <alpine.DEB.2.22.394.2009271907270.2839@hadrien> <983c49ebe4bbe0435a73d25cd8525764a4f8adac.camel@perches.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        Sun, 27 Sep 2020 16:08:31 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 7E77118017FB8;
+        Sun, 27 Sep 2020 20:08:29 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:967:973:988:989:1260:1263:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1538:1568:1593:1594:1711:1714:1730:1747:1777:1792:2393:2525:2560:2563:2682:2685:2693:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3622:3865:3866:3867:3868:3872:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4362:5007:6742:7903:9025:10004:10400:11232:11658:11914:12295:12297:12740:12760:12895:13019:13069:13311:13357:13439:14181:14659:14721:21063:21080:21451:21627:30034:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: toy29_471566e2717b
+X-Filterd-Recvd-Size: 2021
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf19.hostedemail.com (Postfix) with ESMTPA;
+        Sun, 27 Sep 2020 20:08:26 +0000 (UTC)
+Message-ID: <9f6ebf51253bf420c8f6f8974a82283ae3e9e446.camel@perches.com>
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
+ statements
+From:   Joe Perches <joe@perches.com>
+To:     Julia Lawall <Julia.Lawall@inria.fr>, linux-iio@vger.kernel.org
+Cc:     Valdis =?UTF-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kernel-janitors@vger.kernel.org,
+        David Lechner <david@lechnology.com>,
+        linux-wireless@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-crypto@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-amlogic@lists.infradead.org, linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>, drbd-dev@lists.linbit.com,
+        linux-block@vger.kernel.org
+Date:   Sun, 27 Sep 2020 13:08:25 -0700
+In-Reply-To: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Sun, 2020-09-27 at 21:12 +0200, Julia Lawall wrote:
+> These patches replace commas by semicolons.  This was done using the
+> Coccinelle semantic patch (http://coccinelle.lip6.fr/) shown below.
+> 
+> This semantic patch ensures that commas inside for loop headers will not be
+> transformed.  It also doesn't touch macro definitions.
+
+Thanks.
+
+All of these appear to be correct and without effect
+except for __LINE__ number changes where braces are added.
 
 
-On Sun, 27 Sep 2020, Joe Perches wrote:
 
-> On Sun, 2020-09-27 at 19:08 +0200, Julia Lawall wrote:
-> > I end up with 208 patches.  I'm not sure that sending them all at once
-> > would be a good idea...
->
-> Last I looked the diffstat for comma -> semicolon was:
->
-> 234 files changed, 509 insertions(+), 509 deletions(-)
->
-> So it would be nearly 1 patch per individual file,
-
-I have 282 files.
-
->
-> Greg KH does send hundreds of patches for -stable at a time.
->
-> So, maybe or maybe not send them all at once.
-> Maybe send it in batches of 25 or so.
->
-> There's no single right way to do this.
->
-> Maybe put up a git tree somewhere and let the
-> kernel-robot test compilation.
-
-I compiled all but about 15 and checked those 15 an extra time.
-
-I'll try the small batch approach to get started.
-
-thanks,
-julia
-
-> (A nicety might be for the kernel-robot to have some
->  option to test pre and post compilation object code
->  differences with an optional report)
->
-> When I automated 491 patches for /* fallthrough */ to
-> fallthrough;, the robot caught a couple problems which
-> was great.
->
-> https://repo.or.cz/linux-2.6/trivial-mods.git/shortlog/refs/heads/20200310_fallthrough_2
->
-> I only posted the first ~30 patches though with
-> about 50% acceptance. Gustavo Silva picked up the
-> effort and did a great job.  Eventually, a single
-> treewide patch was posted and accepted by Linus for
-> this though after dozens of individual patches went
-> through various maintainer trees:
->
-> $ git log --shortstat -1 df561f6688fe
-> commit df561f6688fef775baa341a0f5d960becd248b11
-> Author: Gustavo A. R. Silva <gustavoars@kernel.org>
-> Date:   Sun Aug 23 17:36:59 2020 -0500
->
->     treewide: Use fallthrough pseudo-keyword
->
->     Replace the existing /* fall through */ comments and its variants with
->     the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
->     fall-through markings when it is the case.
->
->     [1] https://www.kernel.org/doc/html/v5.7/process/deprecated.html?highlight=>
->
->     Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
->
->  1148 files changed, 2667 insertions(+), 2737 deletions(-)
->
->
->

@@ -2,122 +2,130 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB5A227B3C0
-	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 19:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D561727B3D8
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 20:00:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726409AbgI1R51 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Sep 2020 13:57:27 -0400
-Received: from smtprelay0134.hostedemail.com ([216.40.44.134]:48790 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726327AbgI1R50 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Sep 2020 13:57:26 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 387CF182CF665;
-        Mon, 28 Sep 2020 17:57:25 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:421:599:967:973:982:988:989:1260:1263:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2194:2197:2199:2200:2393:2525:2553:2560:2563:2682:2685:2689:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3354:3622:3653:3865:3866:3867:3868:3870:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4384:4605:5007:6119:6121:7903:9025:9388:10004:10400:10848:11026:11232:11658:11914:12295:12296:12297:12740:12760:12895:13255:13439:14180:14181:14659:14721:21060:21080:21221:21324:21451:21627:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: smell94_24172cc27183
-X-Filterd-Recvd-Size: 3389
-Received: from XPS-9350.home (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf06.hostedemail.com (Postfix) with ESMTPA;
-        Mon, 28 Sep 2020 17:57:23 +0000 (UTC)
-Message-ID: <25aa56e1f7943f9ac535fa184465a752aa00a4b4.camel@perches.com>
-Subject: Re: [PATCH 03/18] [ARM] pata_icside: use semicolons rather than
- commas to separate statements
-From:   Joe Perches <joe@perches.com>
-To:     Julia Lawall <julia.lawall@inria.fr>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Valdis =?UTF-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kernel-janitors@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Mon, 28 Sep 2020 10:57:22 -0700
-In-Reply-To: <alpine.DEB.2.22.394.2009281909000.2650@hadrien>
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
-         <1601233948-11629-4-git-send-email-Julia.Lawall@inria.fr>
-         <8cf2fad1659acd756703deb106d55483bd1e1eb9.camel@perches.com>
-         <alpine.DEB.2.22.394.2009281909000.2650@hadrien>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.4-0ubuntu1 
+        id S1726757AbgI1R7z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Sep 2020 13:59:55 -0400
+Received: from mga18.intel.com ([134.134.136.126]:32958 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726713AbgI1R7o (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 28 Sep 2020 13:59:44 -0400
+IronPort-SDR: 5PLRSSsdUUR13qi9Kc5bD1R+l/g+skEmCYIBrVZgtq8vG+B4jMLcqnArhhXQWJad0DkWWZW596
+ 8VmThi+imjWg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9758"; a="149810294"
+X-IronPort-AV: E=Sophos;i="5.77,313,1596524400"; 
+   d="scan'208";a="149810294"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2020 10:59:34 -0700
+IronPort-SDR: HsqcJRes8xgY5EqzyBftcMXTFTGrqAVQ+LPkgzhDcuz/hP/Oy1nzd2sZZhX8+6NRVgtGXIOfa0
+ VGcwmhg/E/SA==
+X-IronPort-AV: E=Sophos;i="5.77,313,1596524400"; 
+   d="scan'208";a="293962707"
+Received: from rcalvo1-mobl1.amr.corp.intel.com (HELO [10.209.56.88]) ([10.209.56.88])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2020 10:59:33 -0700
+Subject: Re: [PATCH] x86/mm: drop superfluous initialization
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech
+References: <20200928100004.25674-1-lukas.bulwahn@gmail.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+ z5cecg==
+Message-ID: <1d376c1f-2f14-5c29-671e-ca59853fa4a4@intel.com>
+Date:   Mon, 28 Sep 2020 10:59:36 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20200928100004.25674-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 2020-09-28 at 19:11 +0200, Julia Lawall wrote:
-> 
-> On Mon, 28 Sep 2020, Joe Perches wrote:
-> 
-> > On Sun, 2020-09-27 at 21:12 +0200, Julia Lawall wrote:
-> > > Replace commas with semicolons.  What is done is essentially described by
-> > > the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
-> > 
-> > Hi Julia.
-> > 
-> > How did you decide on this patch subject header line?
-> > 
-> > It's certainly reasonable, but not what I would expect
-> > from any automation.
-> 
-> Most of the patches on this file touch other files as well.  There are
-> four that only touch this file.  One has no subsystem.  One has dma as the
-> subsystem.  Two have pata_icside, so that was chosen.
+On 9/28/20 3:00 AM, Lukas Bulwahn wrote:
+> diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+> index c7a47603537f..5632f02146ca 100644
+> --- a/arch/x86/mm/init.c
+> +++ b/arch/x86/mm/init.c
+> @@ -609,7 +609,7 @@ static void __init memory_map_top_down(unsigned long map_start,
+>  	step_size = PMD_SIZE;
+>  	max_pfn_mapped = 0; /* will get exact value next */
+>  	min_pfn_mapped = real_end >> PAGE_SHIFT;
+> -	last_start = start = real_end;
+> +	last_start = real_end;
 
-So did you select the patch subject without any automation
-or did you create a tool that looks only at commits for
-individual files?
+Thanks for finding this.
 
-> > $ git log --no-merges --format='%s' drivers/ata/pata_icside.c | \
-> >   cut -f1 -d":" | sort | uniq -c | sort -rn
-> >      10 libata
-> >       5 libata-sff
-> >       2 [ARM] pata_icside
-> >       2 [ARM] ecard
-> >       2 [ARM] dma
+This becomes even more obviously correct if we just move the 'start'
+declaration into the while() loop.  If we do that, it puts the three
+assignment locations right next to the definition, and its trivial to
+spot that the initialization was not missed:
 
-Yeah...
+        while (last_start > map_start) {
+		unsigned long start;
 
-Something like the script below and some examples of its use?
+                if (last_start > step_size) {
+                        start = round_down(last_start - 1, step_size);
+                        if (start < map_start)
+                                start = map_start;
+                } else
+                        start = map_start;
+		...
 
-$ cat find_best_header.sh
-#!/bin/bash
+Either way, your patch looks correct to me:
 
-# Show possible patch subject prefixes for a file in git
-
-# use commits that modify only the single file argument and
-# emit up to the 5 most common commit prefixes
-
-git log --no-merges --format='%h' -- $1 |
-    while read commit ; do
-	if [[ $(git log --format='%h' --name-only -1 $commit | wc -l) == 3 ]] ; then
-	    git log --format='%s' -1 $commit
-	fi
-    done |
-    cut -f1 -d":" | cut -f1-3 -d" " | sort | uniq -c | sort -rn | head -5
-
-$ ./find_best_header.sh drivers/ata/pata_icside.c
-      2 [ARM] pata_icside
-      1 Fix pata_icside build
-      1 [ARM] dma
-
-$ ./find_best_header.sh kernel/fork.c
-     36 fork
-     14 kernel/fork.c
-      6 mm
-      4 pidns
-      4 [PATCH] unshare system
-
-$ ./find_best_header.sh kernel/sched/core.c
-    150 sched
-    110 sched/core
-     12 sched/uclamp
-     12 sched/debug
-     10 sched/deadline
-
-$ ./find_best_header.sh drivers/iio/pressure/mpl115.c
-      3 iio
-
-
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>

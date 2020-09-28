@@ -2,151 +2,125 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D2FE27AA68
-	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 11:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1421227AA71
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 11:13:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726564AbgI1JLk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Sep 2020 05:11:40 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:45174 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726500AbgI1JLk (ORCPT
+        id S1726683AbgI1JNQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Sep 2020 05:13:16 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:47812 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726640AbgI1JNP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Sep 2020 05:11:40 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08S99w2Q004122;
-        Mon, 28 Sep 2020 09:11:18 GMT
+        Mon, 28 Sep 2020 05:13:15 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08S98xjn021122;
+        Mon, 28 Sep 2020 09:13:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=hbTr6kovY/a+edEAKfdDe9ULjV6xcd2JhnJGh27t1UM=;
- b=pAxqGkiJydHDnR6dY5X/RaU/AmRm2N879O0swEh0A/3CcTqWNDRF2pYS/i6HIq/21UN5
- B2LkgOzmF8exKiiY8/ydhwXfYjCCFMBB39sTZmMnS9LS1778ZzKfy09srFmX4DGD+PJW
- aYrbVdiY8hGA6aVjjNS1SHRy+/z+OW0cJagwkmhy7S9JIq36ZB9xelNIPy34m+Ntqkow
- ps22Tkk8mkC3w9RTrSMDTQ8xn9dGhj3KtCjhPIwvnxwWEPYHXXk9Yj4845D/SIiz8nDv
- hrS1Y4aobLRibYaIgjZ7U2bzlzRwCLWTRAZkO8lCBiPKzrFhThuM1PFg2GU3UIih/CF9 fw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2130.oracle.com with ESMTP id 33su5am15a-1
+ bh=onqFxvuNgmSWxb5TyttFFh60aQyyoipjjSNj0YfQXFk=;
+ b=yfIqhgkDTFTf+awz5zS7P76xGfYWPpWuEvoSzoKf4BTDGR+JRR5e2DrXvSPVmJyvJn5f
+ flj8gl2lBcthRxySyQLW6edl37FyZ9IBK5N9QFlaMp+aSoM8XeLS7IrD/o2x2enKp2oU
+ 2SOepugO+XxQVA5sTO0C4tXFnE1F2zr+SvW/pHgVKxPAF/R1PegCK5J1bQhNAJtP3qbQ
+ mFcqFFmBNZ3sOxi3Um/nqpBj1xNEKjvkvFTzB7vUXmKutGsLHndmf93mSReZLrRdXZa9
+ lm6aw7dXnQRhDNlCtWD60ZQFcZ+wA7/k67YANPJPCGFYIJx/jqix41fx1IwQuju+TfWL vA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 33sx9muvuv-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 28 Sep 2020 09:11:18 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08S9AK7v051460;
-        Mon, 28 Sep 2020 09:11:18 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 33tfhw10c9-1
+        Mon, 28 Sep 2020 09:13:10 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08S9AekY176903;
+        Mon, 28 Sep 2020 09:13:09 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 33tfdprgmb-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 28 Sep 2020 09:11:18 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08S9BBGj021271;
-        Mon, 28 Sep 2020 09:11:11 GMT
+        Mon, 28 Sep 2020 09:13:09 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08S9D8n4030911;
+        Mon, 28 Sep 2020 09:13:08 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 28 Sep 2020 02:11:10 -0700
-Date:   Mon, 28 Sep 2020 12:11:03 +0300
+        with ESMTP ; Mon, 28 Sep 2020 02:13:07 -0700
+Date:   Mon, 28 Sep 2020 12:13:00 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Marcelo Diop-Gonzalez <marcgonzalez@google.com>,
-        Jamal Shareef <jamal.k.shareef@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-rpi-kernel@lists.infradead.org, devel@driverdev.osuosl.org,
+To:     Subbu Seetharaman <subbu.seetharaman@broadcom.com>
+Cc:     Ketan Mukadam <ketan.mukadam@broadcom.com>,
+        Jitendra Bhivare <jitendra.bhivare@broadcom.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        James Bottomley <James.Bottomley@suse.de>,
+        Jayamohan Kallickal 
+        <jayamohank@HDRedirect-LB5-1afb6e2973825a56.elb.us-east-1.amazonaws.com>,
+        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] staging: vchiq: Fix list_for_each exit tests
-Message-ID: <20200928091103.GC377727@mwanda>
+Subject: [PATCH] scsi: be2iscsi: Fix a theoretical leak in
+ beiscsi_create_eqs()
+Message-ID: <20200928091300.GD377727@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9757 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999 bulkscore=0
- phishscore=0 malwarescore=0 adultscore=0 suspectscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009280077
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
+ adultscore=0 malwarescore=0 spamscore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009280077
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9757 signatures=668680
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
- lowpriorityscore=0 spamscore=0 clxscore=1011 mlxscore=0 impostorscore=0
- malwarescore=0 phishscore=0 adultscore=0 bulkscore=0 priorityscore=1501
+ phishscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0 clxscore=1011
+ spamscore=0 impostorscore=0 malwarescore=0 bulkscore=0 priorityscore=1501
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
  definitions=main-2009280077
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This code code here used to be list_for_each() and after the loop then
-the "entry" pointer was non-NULL if we found the correct entry or NULL
-if we couldn't find it.  Then we changed the code to use list_for_each_entry()
-and so now the "entry" pointer is always non-NULL when we exit the loop.
+The be_fill_queue() function can only fail when "eq_vaddress" is NULL
+and since it's non-NULL here that means the function call can't fail.
+But imagine if it could, then in that situation we would want to store
+the "paddr" so that dma memory can be released.
 
-I have introduced a new "found" variable to say if we found the correct
-enty or not.  I fixed one test by making it an else statement because
-that was more readable than testing "if (!found)".
-
-Fixes: 46e4b9ec4fa4 ("staging: vchiq_arm: use list_for_each_entry when accessing bulk_waiter_list")
+Fixes: bfead3b2cb46 ("[SCSI] be2iscsi: Adding msix and mcc_rings V3")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- .../vc04_services/interface/vchiq_arm/vchiq_arm.c    | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/scsi/be2iscsi/be_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-index bb0cc9cb96e9..c25fc559cd36 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-@@ -430,6 +430,7 @@ vchiq_blocking_bulk_transfer(unsigned int handle, void *data,
- 	struct vchiq_service *service;
- 	enum vchiq_status status;
- 	struct bulk_waiter_node *waiter = NULL;
-+	bool found = false;
- 
- 	service = find_service_by_handle(handle);
- 	if (!service)
-@@ -443,12 +444,13 @@ vchiq_blocking_bulk_transfer(unsigned int handle, void *data,
- 	list_for_each_entry(waiter, &instance->bulk_waiter_list, list) {
- 		if (waiter->pid == current->pid) {
- 			list_del(&waiter->list);
-+			found = true;
- 			break;
+diff --git a/drivers/scsi/be2iscsi/be_main.c b/drivers/scsi/be2iscsi/be_main.c
+index 5c3513a4b450..202ba925c494 100644
+--- a/drivers/scsi/be2iscsi/be_main.c
++++ b/drivers/scsi/be2iscsi/be_main.c
+@@ -3020,6 +3020,7 @@ static int beiscsi_create_eqs(struct beiscsi_hba *phba,
+ 			goto create_eq_error;
  		}
- 	}
- 	mutex_unlock(&instance->bulk_waiter_list_mutex);
  
--	if (waiter) {
-+	if (found) {
- 		struct vchiq_bulk *bulk = waiter->bulk_waiter.bulk;
- 
- 		if (bulk) {
-@@ -464,9 +466,7 @@ vchiq_blocking_bulk_transfer(unsigned int handle, void *data,
- 				spin_unlock(&bulk_waiter_spinlock);
- 			}
++		mem->dma = paddr;
+ 		mem->va = eq_vaddress;
+ 		ret = be_fill_queue(eq, phba->params.num_eq_entries,
+ 				    sizeof(struct be_eq_entry), eq_vaddress);
+@@ -3029,7 +3030,6 @@ static int beiscsi_create_eqs(struct beiscsi_hba *phba,
+ 			goto create_eq_error;
  		}
--	}
--
--	if (!waiter) {
-+	} else {
- 		waiter = kzalloc(sizeof(struct bulk_waiter_node), GFP_KERNEL);
- 		if (!waiter) {
- 			vchiq_log_error(vchiq_core_log_level,
-@@ -945,6 +945,7 @@ static int vchiq_irq_queue_bulk_tx_rx(struct vchiq_instance *instance,
- {
- 	struct vchiq_service *service;
- 	struct bulk_waiter_node *waiter = NULL;
-+	bool found = false;
- 	int status = 0;
- 	int ret;
  
-@@ -967,11 +968,12 @@ static int vchiq_irq_queue_bulk_tx_rx(struct vchiq_instance *instance,
- 				    list) {
- 			if (waiter->pid == current->pid) {
- 				list_del(&waiter->list);
-+				found = true;
- 				break;
- 			}
+-		mem->dma = paddr;
+ 		ret = beiscsi_cmd_eq_create(&phba->ctrl, eq,
+ 					    BEISCSI_EQ_DELAY_DEF);
+ 		if (ret) {
+@@ -3086,6 +3086,7 @@ static int beiscsi_create_cqs(struct beiscsi_hba *phba,
+ 			goto create_cq_error;
  		}
- 		mutex_unlock(&instance->bulk_waiter_list_mutex);
--		if (!waiter) {
-+		if (!found) {
- 			vchiq_log_error(vchiq_arm_log_level,
- 				"no bulk_waiter found for pid %d",
- 				current->pid);
+ 
++		mem->dma = paddr;
+ 		ret = be_fill_queue(cq, phba->params.num_cq_entries,
+ 				    sizeof(struct sol_cqe), cq_vaddress);
+ 		if (ret) {
+@@ -3095,7 +3096,6 @@ static int beiscsi_create_cqs(struct beiscsi_hba *phba,
+ 			goto create_cq_error;
+ 		}
+ 
+-		mem->dma = paddr;
+ 		ret = beiscsi_cmd_cq_create(&phba->ctrl, cq, eq, false,
+ 					    false, 0);
+ 		if (ret) {
 -- 
 2.28.0
 

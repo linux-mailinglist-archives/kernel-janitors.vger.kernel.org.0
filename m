@@ -2,127 +2,160 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CE2F27ABEB
-	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 12:37:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4985D27AD5F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 13:57:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726694AbgI1KhB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Sep 2020 06:37:01 -0400
-Received: from mail-bn8nam11on2088.outbound.protection.outlook.com ([40.107.236.88]:55616
-        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726601AbgI1Kg6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Sep 2020 06:36:58 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gMTvNQrW/DlFKrgsgTJdxDiIRpQMegaGegAn+zxm+pJyf4cgPGD+WOaGVfxLW+xHg3WuABWeyYIy265JBJyNFrfCbGRDVY2FWj+SxvFLy4brCnMZW3myUx89sF2OPEHBSmgi+MaO3lbMcOKIHfPmFFUJQwZcOj8fvxjbk5VYIELBr9VJwP9ynfQhS4ZY+YjNOoSHJ4VSUePlWrHL/+pQ9Oiv8HEfLj3eegH5cpDWiGeH7TRGCNgJWVYqb9Eji6/iPEEd/+qy1HalqcZgdoxSpm+6pAJufWAgP8TfcJBS2v8ckt6Sf6ZxE2N+9v63LaOM4HKrGxVIJpGpkx+HYTxltQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VrSly3puDlzDvL4VXOgN5Em+aIyhljJrVW1b+SG+WBU=;
- b=Dj+Y6dk5kz0Qoi8rb0Tq2kAzIy2MadLz58ac4So0cLaMjx2Mo8BI1sbn1twA8SxEI/KWkFJAKNQJ6akz/Py+8YcZbWdaRJxdmXAZ1rVf2FT8+4PYQPwIc5yJ+FSvrkywgq9lsmLkdoJm5rX4fb7klOw70DDSq08Gm9mS3GSUIDLD9K6dXLctWY+fFzQcC6PSAARsyZpIsXBKC4KCUWLCPbf06VUrCg+dKBMq6YjIodlBqLqj7oyxQr8aWf9UBmo71UMaHvp++GFOTmgS/0iUrPHTQ9K0noAcDxR4QZtFs+H6t03EOzt3tHUlcOHtwamuhvb1V14nikyGsdf7HzZNNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VrSly3puDlzDvL4VXOgN5Em+aIyhljJrVW1b+SG+WBU=;
- b=WnYOEWtDi/W+fRp6EVD9NPlQ1+vF6YjBVOr3YZl1tlPYOHlLzpnee8f1Y7vxbrFxCpAv0WU3tAVpEHG2mWm0j7w31vLp1B6F+AaDOmk8WM9OZg3H+//xl29xnbYz1V4CrBl8tNSQFoEr91mVzIiuqkDhOBY2qHjcCak335v/S7Q=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=amd.com;
-Received: from MN2PR12MB3775.namprd12.prod.outlook.com (2603:10b6:208:159::19)
- by MN2PR12MB4438.namprd12.prod.outlook.com (2603:10b6:208:267::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.22; Mon, 28 Sep
- 2020 10:36:55 +0000
-Received: from MN2PR12MB3775.namprd12.prod.outlook.com
- ([fe80::f8f7:7403:1c92:3a60]) by MN2PR12MB3775.namprd12.prod.outlook.com
- ([fe80::f8f7:7403:1c92:3a60%6]) with mapi id 15.20.3412.029; Mon, 28 Sep 2020
- 10:36:55 +0000
-Subject: Re: [PATCH] drm: prime: Potential Oops in drm_gem_map_dma_buf()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc:     Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-References: <20200928090726.GB377727@mwanda>
-From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
-Message-ID: <a8ef41fa-9864-6159-5748-98d286ab22a9@amd.com>
-Date:   Mon, 28 Sep 2020 12:36:49 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-In-Reply-To: <20200928090726.GB377727@mwanda>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [2a02:908:1252:fb60:be8a:bd56:1f94:86e7]
-X-ClientProxiedBy: AM0PR08CA0009.eurprd08.prod.outlook.com
- (2603:10a6:208:d2::22) To MN2PR12MB3775.namprd12.prod.outlook.com
- (2603:10b6:208:159::19)
+        id S1726737AbgI1L5O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Sep 2020 07:57:14 -0400
+Received: from mga01.intel.com ([192.55.52.88]:35629 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726559AbgI1L5M (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 28 Sep 2020 07:57:12 -0400
+IronPort-SDR: SEXSGMJ9NfPxqxzlXEnDacL3WBxp/DlEap4G/lLa8IFvNrZ1n1JNEJukQJlVJcDD++6k9YAr4t
+ 9i5fCS1Gvf2Q==
+X-IronPort-AV: E=McAfee;i="6000,8403,9757"; a="180135752"
+X-IronPort-AV: E=Sophos;i="5.77,313,1596524400"; 
+   d="scan'208,223";a="180135752"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2020 04:53:05 -0700
+IronPort-SDR: zzNG14OF8XTMxMxLkG0kTbK7Bo7jmhFqNh1qV0RmKkpcZtihvVj9uT6rFdU/yVl+sugHRrob1E
+ gegvzyejPPHg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,313,1596524400"; 
+   d="scan'208,223";a="414958496"
+Received: from kuha.fi.intel.com ([10.237.72.162])
+  by fmsmga001.fm.intel.com with SMTP; 28 Sep 2020 04:53:02 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 28 Sep 2020 14:53:01 +0300
+Date:   Mon, 28 Sep 2020 14:53:01 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>, pavel@ucw.cz,
+        dmurphy@ti.com, jacek.anaszewski@gmail.com,
+        linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] leds: lp50xx: Fix an error handling path in
+ 'lp50xx_probe_dt()'
+Message-ID: <20200928115301.GB3987353@kuha.fi.intel.com>
+References: <20200922210515.385099-1-christophe.jaillet@wanadoo.fr>
+ <20200923133510.GJ4282@kadam>
+ <faa49efc-5ba5-b6bd-b486-2f7c4611219b@wanadoo.fr>
+ <20200924064932.GP18329@kadam>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [IPv6:2a02:908:1252:fb60:be8a:bd56:1f94:86e7] (2a02:908:1252:fb60:be8a:bd56:1f94:86e7) by AM0PR08CA0009.eurprd08.prod.outlook.com (2603:10a6:208:d2::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.20 via Frontend Transport; Mon, 28 Sep 2020 10:36:53 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 9592596b-56c7-4e20-721d-08d8639a6b1d
-X-MS-TrafficTypeDiagnostic: MN2PR12MB4438:
-X-Microsoft-Antispam-PRVS: <MN2PR12MB443887C7E82FABBE6E651A1083350@MN2PR12MB4438.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2958;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ZOC2CHAkytiYdFqrdiaBwtb24I/TUPXFMxejxJvz9O+MvPwAop9msweTLusSwnk5xRxJhyHikthCuYmPHnmawC22ekwQbKgmcc8CwTfATl0oxICeT5Khpor9cnXShX4NK8HFUHRWyln4ZZxPEdnSYPbe1JsDjMSvwH0fqvhDU9eArjs14ZxLnoZJ1yLOMUgRh0X5t/+VOfRHw9xUvF1gO5cXvv6HSXmLiDA+ACi/4zs2EwX1nFhqG5drvE+3JrapmV3/TRdKpBtYhTCE7tFJaxW+N6NtiquObEntlaYqkJoIPRxfIqmOIhXC5zKRAm0nCGppvGXrZejg7buk6EO7jTiFzCXr2k3/Lz7GuFT7bPRjAyaTb1/PU1bEigyFJyxfQ0fdEdRK+rrtmEDMnyXG9KzM5t7DzY2laz1mcRaCrfs=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3775.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(39860400002)(396003)(366004)(376002)(346002)(2906002)(36756003)(2616005)(54906003)(8936002)(31686004)(6486002)(8676002)(110136005)(316002)(478600001)(6666004)(16526019)(186003)(31696002)(86362001)(5660300002)(66476007)(52116002)(4326008)(66946007)(66556008)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: 7kDvPcXLvo4WfYe8yg30bxL/t131EOQ425BTg273YVphamPvZy7nDslmuf3/Tx4JiEIbY5n2Iyp39Fx5skfcAIbFsQD3OvMMR7pUHXNeSsyqmnPfwZxVDyWG99B+SYC8TRIjaIQxlhKF14Df/haswB9/Z7j1oJTjoF4JTW3zf5Kgu1B+me2PZKZC4hfNiiqWAA86my7QPFE6gBx5s022oFwRxfXkzz28m2tVREyKHE0cK7gfYmXM3L5j9hH8N0I0jBZgmWJpAsR+kM1atY4aoubuwP9IM72o+i+lRsi37apYGZjaAJWCe5+i5TzHZXNHlp3Cmj+kpEPMAcnBKslc4Z1jcHXAToFCgSeU52KAKePaMOIgL1hwAEhNUI11DqFMTZ8KgZ1cWQBYdDGeP3XMu+tUQHJag3OZguhgLlHJhVVNjSlKAwl5K3V0YclxW7o/oKUc+Rhziz0vvRvap/TDXLq8TeffLivBIipAk8bBZdAWclESkKPe/dNsBeXped+EfykilzuiAV6DH9S243KkD/lC+KM7SLh5bPIcJ5fck6HH4hn7pMnc0SgUYKFsU5xE97hIOHz+2CgDzB++xMNdAJY0j13gi1IpBoEFgRiNUxbtZ65Xz1l+WK/dQ/uU2Eo6sqW8vFybHg4kR+VvNdI4wEMbWnWGAsJ7zGfHmIpyLkrABUqgU+3/Q1/KvQDj9/JUkQm0/SQXViprRiIrN+aQ5A==
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9592596b-56c7-4e20-721d-08d8639a6b1d
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3775.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2020 10:36:54.9828
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7zQtrdlxtrFRM5D32y1o1JHlOHJUhEbnWGBIyMZvg9nfa3ip4XTxbGT0OZodRo1e
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4438
+Content-Type: multipart/mixed; boundary="RnlQjJ0d97Da+TV1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200924064932.GP18329@kadam>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
 
-Am 28.09.20 um 11:07 schrieb Dan Carpenter:
-> This code doesn't check if the call to ->get_sg_table() fails so it
-> could dereference an error pointer and Oops.
->
-> Fixes: c614d7e66c6a ("drm: remove prime sg_table caching")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+--RnlQjJ0d97Da+TV1
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-this patch is based on outdated code, please take a look at current 
-drm-misc-next.
+On Thu, Sep 24, 2020 at 09:49:32AM +0300, Dan Carpenter wrote:
+> On Wed, Sep 23, 2020 at 08:49:56PM +0200, Christophe JAILLET wrote:
+> > Le 23/09/2020 à 15:35, Dan Carpenter a écrit :
+> > > I've added Heikki Krogerus to the CC list because my question is mostly
+> > > about commit 59abd83672f7 ("drivers: base: Introducing software nodes to
+> > > the firmware node framework").
+> > > 
+> > > I have been trying to teach Smatch to understand reference counting so
+> > > it can discover these kinds of bugs automatically.
+> > > 
+> > > I don't know how software_node_get_next_child() can work when it doesn't
+> > > call kobject_get().  This sort of bug would have been caught in testing
+> > > because it affects the success path so I must be reading the code wrong.
+> > > 
+> > 
+> > I had the same reading of the code and thought that I was missing something
+> > somewhere.
+> > 
+> > There is the same question about 'acpi_get_next_subnode' which is also a
+> > '.get_next_child_node' function, without any ref counting, if I'm correct.
+> > 
+> 
+> Yeah, but there aren't any ->get/put() ops for the acpi_get_next_subnode()
+> stuff so it's not a problem.  (Presumably there is some other sort of
+> refcounting policy there).
 
-The gem_prime_get_sg_table callback was removed from the driver 
-functions and the missing error check already fixed.
+OK, so I guess we need to make software_node_get_next_child()
+mimic the behaviour of of_get_next_available_child(), and not
+acpi_get_next_subnode(). Does the attached patch work?
 
-Regards,
-Christian.
 
-> ---
->   drivers/gpu/drm/drm_prime.c | 3 +++
->   1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/gpu/drm/drm_prime.c b/drivers/gpu/drm/drm_prime.c
-> index 11fe9ff76fd5..1e2c7ff63f16 100644
-> --- a/drivers/gpu/drm/drm_prime.c
-> +++ b/drivers/gpu/drm/drm_prime.c
-> @@ -627,6 +627,9 @@ struct sg_table *drm_gem_map_dma_buf(struct dma_buf_attachment *attach,
->   	else
->   		sgt = obj->dev->driver->gem_prime_get_sg_table(obj);
->   
-> +	if (IS_ERR(sgt))
-> +		return sgt;
-> +
->   	ret = dma_map_sgtable(attach->dev, sgt, dir,
->   			      DMA_ATTR_SKIP_CPU_SYNC);
->   	if (ret) {
+thanks,
 
+-- 
+heikki
+
+--RnlQjJ0d97Da+TV1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment;
+	filename="0001-software-nodes-Handle-the-refcounting-also-in-softwa.patch"
+
+From 9b5744450d07b1e6e32e441785b9b69d7e54a7b1 Mon Sep 17 00:00:00 2001
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Date: Mon, 28 Sep 2020 14:38:09 +0300
+Subject: [PATCH] software nodes: Handle the refcounting also in
+ software_node_get_next_child()
+
+Incrementing the reference count of the node that is
+returned in software_node_get_next_child(), and decrementing
+the reference count of the previous node.
+
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+---
+ drivers/base/swnode.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index 010828fc785bc..adbaafab3887b 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -439,18 +439,26 @@ static struct fwnode_handle *
+ software_node_get_next_child(const struct fwnode_handle *fwnode,
+ 			     struct fwnode_handle *child)
+ {
+-	struct swnode *p = to_swnode(fwnode);
+-	struct swnode *c = to_swnode(child);
++	struct swnode *parent = to_swnode(fwnode);
++	struct swnode *prev = to_swnode(child);
++	struct swnode *next;
+ 
+-	if (!p || list_empty(&p->children) ||
+-	    (c && list_is_last(&c->entry, &p->children)))
++	if (!parent || list_empty(&parent->children))
+ 		return NULL;
+ 
+-	if (c)
+-		c = list_next_entry(c, entry);
+-	else
+-		c = list_first_entry(&p->children, struct swnode, entry);
+-	return &c->fwnode;
++	if (prev && list_is_last(&prev->entry, &parent->children)) {
++		kobject_put(&prev->kobj);
++		return NULL;
++	}
++
++	if (prev) {
++		next = list_next_entry(prev, entry);
++		kobject_put(&prev->kobj);
++	} else {
++		next = list_first_entry(&parent->children, struct swnode, entry);
++	}
++
++	return fwnode_handle_get(&next->fwnode);
+ }
+ 
+ static struct fwnode_handle *
+-- 
+2.28.0
+
+
+--RnlQjJ0d97Da+TV1--

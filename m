@@ -2,160 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4985D27AD5F
-	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 13:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B13A27AD50
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 13:55:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726737AbgI1L5O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Sep 2020 07:57:14 -0400
-Received: from mga01.intel.com ([192.55.52.88]:35629 "EHLO mga01.intel.com"
+        id S1726526AbgI1Lzs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Sep 2020 07:55:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49500 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726559AbgI1L5M (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Sep 2020 07:57:12 -0400
-IronPort-SDR: SEXSGMJ9NfPxqxzlXEnDacL3WBxp/DlEap4G/lLa8IFvNrZ1n1JNEJukQJlVJcDD++6k9YAr4t
- 9i5fCS1Gvf2Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9757"; a="180135752"
-X-IronPort-AV: E=Sophos;i="5.77,313,1596524400"; 
-   d="scan'208,223";a="180135752"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2020 04:53:05 -0700
-IronPort-SDR: zzNG14OF8XTMxMxLkG0kTbK7Bo7jmhFqNh1qV0RmKkpcZtihvVj9uT6rFdU/yVl+sugHRrob1E
- gegvzyejPPHg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,313,1596524400"; 
-   d="scan'208,223";a="414958496"
-Received: from kuha.fi.intel.com ([10.237.72.162])
-  by fmsmga001.fm.intel.com with SMTP; 28 Sep 2020 04:53:02 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 28 Sep 2020 14:53:01 +0300
-Date:   Mon, 28 Sep 2020 14:53:01 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+        id S1726328AbgI1Lzs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 28 Sep 2020 07:55:48 -0400
+Received: from localhost (unknown [213.57.247.131])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1DAC42073A;
+        Mon, 28 Sep 2020 11:55:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601294147;
+        bh=QcP0SylU3PMDPmJo4BmXYtealXvTH8RsitnO6xIMnkY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HUPaf0LGx9oz2mBF60I+I7q/vy+iVXE3DTT4JiH0E09wyQSBaLDUjfDQQpUwNfAAK
+         qDekmOi3LA8LiU6jfcuLCXTYvaRSSWi3lHFqMpa3Iw64cEpNxbcCNByGnVvy2aK2Ts
+         lOUzTnqwovCu5rT5a1KbMlMhFkdXpWxFTzt1l8q4=
+Date:   Mon, 28 Sep 2020 14:55:43 +0300
+From:   Leon Romanovsky <leon@kernel.org>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>, pavel@ucw.cz,
-        dmurphy@ti.com, jacek.anaszewski@gmail.com,
-        linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] leds: lp50xx: Fix an error handling path in
- 'lp50xx_probe_dt()'
-Message-ID: <20200928115301.GB3987353@kuha.fi.intel.com>
-References: <20200922210515.385099-1-christophe.jaillet@wanadoo.fr>
- <20200923133510.GJ4282@kadam>
- <faa49efc-5ba5-b6bd-b486-2f7c4611219b@wanadoo.fr>
- <20200924064932.GP18329@kadam>
+Cc:     Saeed Mahameed <saeedm@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Roi Dayan <roid@mellanox.com>, Oz Shlomo <ozsh@mellanox.com>,
+        Paul Blakey <paulb@mellanox.com>,
+        Eli Britstein <elibr@mellanox.com>,
+        Ariel Levkovich <lariel@nvidia.com>, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net-next] net/mlx5e: Fix a use after free on error in
+ mlx5_tc_ct_shared_counter_get()
+Message-ID: <20200928115543.GD3094@unreal>
+References: <20200928090556.GA377727@mwanda>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="RnlQjJ0d97Da+TV1"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200924064932.GP18329@kadam>
+In-Reply-To: <20200928090556.GA377727@mwanda>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Mon, Sep 28, 2020 at 12:05:56PM +0300, Dan Carpenter wrote:
+> This code frees "shared_counter" and then dereferences on the next line
+> to get the error code.
+>
+> Fixes: 1edae2335adf ("net/mlx5e: CT: Use the same counter for both directions")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
 
---RnlQjJ0d97Da+TV1
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-
-On Thu, Sep 24, 2020 at 09:49:32AM +0300, Dan Carpenter wrote:
-> On Wed, Sep 23, 2020 at 08:49:56PM +0200, Christophe JAILLET wrote:
-> > Le 23/09/2020 à 15:35, Dan Carpenter a écrit :
-> > > I've added Heikki Krogerus to the CC list because my question is mostly
-> > > about commit 59abd83672f7 ("drivers: base: Introducing software nodes to
-> > > the firmware node framework").
-> > > 
-> > > I have been trying to teach Smatch to understand reference counting so
-> > > it can discover these kinds of bugs automatically.
-> > > 
-> > > I don't know how software_node_get_next_child() can work when it doesn't
-> > > call kobject_get().  This sort of bug would have been caught in testing
-> > > because it affects the success path so I must be reading the code wrong.
-> > > 
-> > 
-> > I had the same reading of the code and thought that I was missing something
-> > somewhere.
-> > 
-> > There is the same question about 'acpi_get_next_subnode' which is also a
-> > '.get_next_child_node' function, without any ref counting, if I'm correct.
-> > 
-> 
-> Yeah, but there aren't any ->get/put() ops for the acpi_get_next_subnode()
-> stuff so it's not a problem.  (Presumably there is some other sort of
-> refcounting policy there).
-
-OK, so I guess we need to make software_node_get_next_child()
-mimic the behaviour of of_get_next_available_child(), and not
-acpi_get_next_subnode(). Does the attached patch work?
-
-
-thanks,
-
--- 
-heikki
-
---RnlQjJ0d97Da+TV1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment;
-	filename="0001-software-nodes-Handle-the-refcounting-also-in-softwa.patch"
-
-From 9b5744450d07b1e6e32e441785b9b69d7e54a7b1 Mon Sep 17 00:00:00 2001
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Date: Mon, 28 Sep 2020 14:38:09 +0300
-Subject: [PATCH] software nodes: Handle the refcounting also in
- software_node_get_next_child()
-
-Incrementing the reference count of the node that is
-returned in software_node_get_next_child(), and decrementing
-the reference count of the previous node.
-
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
----
- drivers/base/swnode.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index 010828fc785bc..adbaafab3887b 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -439,18 +439,26 @@ static struct fwnode_handle *
- software_node_get_next_child(const struct fwnode_handle *fwnode,
- 			     struct fwnode_handle *child)
- {
--	struct swnode *p = to_swnode(fwnode);
--	struct swnode *c = to_swnode(child);
-+	struct swnode *parent = to_swnode(fwnode);
-+	struct swnode *prev = to_swnode(child);
-+	struct swnode *next;
- 
--	if (!p || list_empty(&p->children) ||
--	    (c && list_is_last(&c->entry, &p->children)))
-+	if (!parent || list_empty(&parent->children))
- 		return NULL;
- 
--	if (c)
--		c = list_next_entry(c, entry);
--	else
--		c = list_first_entry(&p->children, struct swnode, entry);
--	return &c->fwnode;
-+	if (prev && list_is_last(&prev->entry, &parent->children)) {
-+		kobject_put(&prev->kobj);
-+		return NULL;
-+	}
-+
-+	if (prev) {
-+		next = list_next_entry(prev, entry);
-+		kobject_put(&prev->kobj);
-+	} else {
-+		next = list_first_entry(&parent->children, struct swnode, entry);
-+	}
-+
-+	return fwnode_handle_get(&next->fwnode);
- }
- 
- static struct fwnode_handle *
--- 
-2.28.0
-
-
---RnlQjJ0d97Da+TV1--
+Thanks,
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>

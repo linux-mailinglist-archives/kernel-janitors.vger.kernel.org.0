@@ -2,99 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8962E27B386
-	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 19:45:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB5A227B3C0
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 19:57:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726424AbgI1Rp0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Sep 2020 13:45:26 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:50694 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726328AbgI1Rp0 (ORCPT
+        id S1726409AbgI1R51 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Sep 2020 13:57:27 -0400
+Received: from smtprelay0134.hostedemail.com ([216.40.44.134]:48790 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726327AbgI1R50 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Sep 2020 13:45:26 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08SHj0xW049170;
-        Mon, 28 Sep 2020 17:45:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=GmJzsQiJa7WMJlXhRWurO8SiOX7Ik2Gbtdmr6BOo0VE=;
- b=pX1j3rbC3eWRHqY7v9JRsKkV8xg2d3dvHiK+7rFY/yxbxfHQAVlhOCdHJ9ooT2QObXIs
- 4TvUAYEo0pxy4YOIDsZOEJnsaz1hRBJWD39LanmcbeLjisHMdgR0/tGy6Uw6js4LV+Gy
- yjmm3cE6cW2uxeG3MeiPNXOszD4S/LMV++T6BqVJP63ocugx9lo+h9jlUTaNO7Jc7k3L
- FtVzoPXCJxIgkn6GrUDqhfxWgciCHxtPwrpZg4QbwzwkkkPCqwQKcFoAUTloU0wxcA/o
- oNkGIw4/rshdBQ+jprjml9ACrVpf75f0Z2OH091tEVkqlJvVTpKizOxhQ6WdE72ABQcx zw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 33sx9mxdda-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 28 Sep 2020 17:45:22 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08SHilDK112434;
-        Mon, 28 Sep 2020 17:45:21 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 33tf7km9v9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 28 Sep 2020 17:45:21 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08SHjL4E010496;
-        Mon, 28 Sep 2020 17:45:21 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 28 Sep 2020 10:45:20 -0700
-Date:   Mon, 28 Sep 2020 20:45:15 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     ioana.ciornei@nxp.com
-Cc:     kernel-janitors@vger.kernel.org
-Subject: [bug report] dpaa2-mac: add PCS support through the Lynx module
-Message-ID: <20200928174515.GB446603@mwanda>
+        Mon, 28 Sep 2020 13:57:26 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 387CF182CF665;
+        Mon, 28 Sep 2020 17:57:25 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:421:599:967:973:982:988:989:1260:1263:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2194:2197:2199:2200:2393:2525:2553:2560:2563:2682:2685:2689:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3354:3622:3653:3865:3866:3867:3868:3870:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4384:4605:5007:6119:6121:7903:9025:9388:10004:10400:10848:11026:11232:11658:11914:12295:12296:12297:12740:12760:12895:13255:13439:14180:14181:14659:14721:21060:21080:21221:21324:21451:21627:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: smell94_24172cc27183
+X-Filterd-Recvd-Size: 3389
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf06.hostedemail.com (Postfix) with ESMTPA;
+        Mon, 28 Sep 2020 17:57:23 +0000 (UTC)
+Message-ID: <25aa56e1f7943f9ac535fa184465a752aa00a4b4.camel@perches.com>
+Subject: Re: [PATCH 03/18] [ARM] pata_icside: use semicolons rather than
+ commas to separate statements
+From:   Joe Perches <joe@perches.com>
+To:     Julia Lawall <julia.lawall@inria.fr>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Valdis =?UTF-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kernel-janitors@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 28 Sep 2020 10:57:22 -0700
+In-Reply-To: <alpine.DEB.2.22.394.2009281909000.2650@hadrien>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+         <1601233948-11629-4-git-send-email-Julia.Lawall@inria.fr>
+         <8cf2fad1659acd756703deb106d55483bd1e1eb9.camel@perches.com>
+         <alpine.DEB.2.22.394.2009281909000.2650@hadrien>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9758 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=866
- suspectscore=3 adultscore=0 malwarescore=0 phishscore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009280138
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9758 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=872 suspectscore=3
- phishscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0 clxscore=1011
- spamscore=0 impostorscore=0 malwarescore=0 bulkscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009280138
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello Ioana Ciornei,
+On Mon, 2020-09-28 at 19:11 +0200, Julia Lawall wrote:
+> 
+> On Mon, 28 Sep 2020, Joe Perches wrote:
+> 
+> > On Sun, 2020-09-27 at 21:12 +0200, Julia Lawall wrote:
+> > > Replace commas with semicolons.  What is done is essentially described by
+> > > the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
+> > 
+> > Hi Julia.
+> > 
+> > How did you decide on this patch subject header line?
+> > 
+> > It's certainly reasonable, but not what I would expect
+> > from any automation.
+> 
+> Most of the patches on this file touch other files as well.  There are
+> four that only touch this file.  One has no subsystem.  One has dma as the
+> subsystem.  Two have pata_icside, so that was chosen.
 
-The patch 94ae899b2096: "dpaa2-mac: add PCS support through the Lynx
-module" from Sep 23, 2020, leads to the following static checker
-warning:
+So did you select the patch subject without any automation
+or did you create a tool that looks only at commits for
+individual files?
 
-	drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c:296 dpaa2_pcs_destroy()
-	warn: variable dereferenced before check 'pcs' (see line 294)
+> > $ git log --no-merges --format='%s' drivers/ata/pata_icside.c | \
+> >   cut -f1 -d":" | sort | uniq -c | sort -rn
+> >      10 libata
+> >       5 libata-sff
+> >       2 [ARM] pata_icside
+> >       2 [ARM] ecard
+> >       2 [ARM] dma
 
-drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c
-   291  static void dpaa2_pcs_destroy(struct dpaa2_mac *mac)
-   292  {
-   293          struct lynx_pcs *pcs = mac->pcs;
-   294          struct device *dev = &pcs->mdio->dev;
-                                      ^^^^^^^^^
-Dereference
+Yeah...
 
-   295  
-   296          if (pcs) {
-                    ^^^
-Checked too late.  It looks like "pcs" can be NULL because I get a
-warning in the caller as well.
+Something like the script below and some examples of its use?
 
-  drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c:389 dpaa2_mac_connect()
-  error: we previously assumed 'mac->pcs' could be null (see line 373)
+$ cat find_best_header.sh
+#!/bin/bash
 
-   297                  lynx_pcs_destroy(pcs);
-   298                  put_device(dev);
-   299                  mac->pcs = NULL;
-   300          }
-   301  }
+# Show possible patch subject prefixes for a file in git
 
-regards,
-dan carpenter
+# use commits that modify only the single file argument and
+# emit up to the 5 most common commit prefixes
+
+git log --no-merges --format='%h' -- $1 |
+    while read commit ; do
+	if [[ $(git log --format='%h' --name-only -1 $commit | wc -l) == 3 ]] ; then
+	    git log --format='%s' -1 $commit
+	fi
+    done |
+    cut -f1 -d":" | cut -f1-3 -d" " | sort | uniq -c | sort -rn | head -5
+
+$ ./find_best_header.sh drivers/ata/pata_icside.c
+      2 [ARM] pata_icside
+      1 Fix pata_icside build
+      1 [ARM] dma
+
+$ ./find_best_header.sh kernel/fork.c
+     36 fork
+     14 kernel/fork.c
+      6 mm
+      4 pidns
+      4 [PATCH] unshare system
+
+$ ./find_best_header.sh kernel/sched/core.c
+    150 sched
+    110 sched/core
+     12 sched/uclamp
+     12 sched/debug
+     10 sched/deadline
+
+$ ./find_best_header.sh drivers/iio/pressure/mpl115.c
+      3 iio
+
+

@@ -2,83 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB00527B13F
-	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 17:54:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0927027B138
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 17:52:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726654AbgI1Pyp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Sep 2020 11:54:45 -0400
-Received: from vern.gendns.com ([98.142.107.122]:35482 "EHLO vern.gendns.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726485AbgI1Pyo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Sep 2020 11:54:44 -0400
-X-Greylist: delayed 1032 seconds by postgrey-1.27 at vger.kernel.org; Mon, 28 Sep 2020 11:54:44 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=qF6W4iDAfeSLlwl5RE77Hf5mYM9UhPw4NQBVnD2n3wQ=; b=DIiL4DBM3baH/FPhozvgjBu/OV
-        SA0s+KPTgIrNXrjA/J12AVD9U/3XEQT42RbXe71Zor5E/CVsyQhqoLb420rYDmRpA46XmYRGT9Viz
-        AkkGL+pmMydqNk3ngo5z/v/OP/7BUU6PO4zvGx7yiAab2e9xfNmibnsNqnWa0roPxhXXg0CdJzawI
-        0RMS4sqkFpd7kW7x+cSeVuVUFsAUc2gd5WCyn4M/MRy6uG3VGG9cjlO1RzHmNPg3psG3zZlOklRnU
-        DGbjh4AomJehHhUs24z/rW6FOy77Xek3SVT8A/oBslRDRZOLJRz/SB213B8it9T2YLzWJZmUtx2t/
-        f3494d5g==;
-Received: from [2600:1700:4830:165f::19e] (port=38396)
-        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <david@lechnology.com>)
-        id 1kMvDV-0003I5-2h; Mon, 28 Sep 2020 11:37:29 -0400
-Subject: Re: [PATCH 15/18] counter: use semicolons rather than commas to
- separate statements
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     =?UTF-8?Q?Valdis_Kl=c4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        Joe Perches <joe@perches.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kernel-janitors@vger.kernel.org,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
- <1601233948-11629-16-git-send-email-Julia.Lawall@inria.fr>
-From:   David Lechner <david@lechnology.com>
-Message-ID: <be1d59c5-fd0c-821e-0357-441c26c3d16c@lechnology.com>
-Date:   Mon, 28 Sep 2020 10:37:28 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726654AbgI1Pwr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Sep 2020 11:52:47 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:60527 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726424AbgI1Pwr (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 28 Sep 2020 11:52:47 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kMvS9-0000Eo-SX; Mon, 28 Sep 2020 15:52:37 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Vlad Buslov <vladbu@nvidia.com>, Roi Dayan <roid@mellanox.com>,
+        Ariel Levkovich <lariel@mellanox.com>, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] net/mlx5: fix dereference on pointer flow before null check
+Date:   Mon, 28 Sep 2020 16:52:37 +0100
+Message-Id: <20200928155237.130739-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <1601233948-11629-16-git-send-email-Julia.Lawall@inria.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 9/27/20 2:12 PM, Julia Lawall wrote:
-> Replace commas with semicolons.  What is done is essentially described by
-> the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
-> 
-> // <smpl>
-> @@ expression e1,e2; @@
-> e1
-> -,
-> +;
-> e2
-> ... when any
-> // </smpl>
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> 
-> ---
-Reviewed-by: David Lechner <david@lechnology.com>
+From: Colin Ian King <colin.king@canonical.com>
+
+Currently pointer flow is being dereferenced before it is being
+null checked. Fix this by adding a null check for flow and parse_attr
+earlier.  Also change the err_free path to explicitly return -ENOMEM
+and remove the need for the err return variable.
+
+Addresses-Coverity: ("Dereference before null")
+Fixes: c620b772152b ("net/mlx5: Refactor tc flow attributes structure")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+index f815b0c60a6c..a2fa2d22d695 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+@@ -4534,20 +4534,20 @@ mlx5e_alloc_flow(struct mlx5e_priv *priv, int attr_size,
+ 	struct mlx5e_tc_flow_parse_attr *parse_attr;
+ 	struct mlx5_flow_attr *attr;
+ 	struct mlx5e_tc_flow *flow;
+-	int out_index, err;
++	int out_index;
+ 
+ 	flow = kzalloc(sizeof(*flow), GFP_KERNEL);
+ 	parse_attr = kvzalloc(sizeof(*parse_attr), GFP_KERNEL);
++	if (!parse_attr || !flow)
++		goto err_free;
+ 
+ 	flow->flags = flow_flags;
+ 	flow->cookie = f->cookie;
+ 	flow->priv = priv;
+ 
+ 	attr = mlx5_alloc_flow_attr(get_flow_name_space(flow));
+-	if (!parse_attr || !flow || !attr) {
+-		err = -ENOMEM;
+-		goto err_free;
+-	}
++	if (!attr)
++		goto err_free_flow;
+ 	flow->attr = attr;
+ 
+ 	for (out_index = 0; out_index < MLX5_MAX_FLOW_FWD_VPORTS; out_index++)
+@@ -4562,11 +4562,12 @@ mlx5e_alloc_flow(struct mlx5e_priv *priv, int attr_size,
+ 
+ 	return 0;
+ 
+-err_free:
++err_free_flow:
+ 	kfree(flow);
++err_free:
+ 	kvfree(parse_attr);
+ 	kfree(attr);
+-	return err;
++	return -ENOMEM;
+ }
+ 
+ static void
+-- 
+2.27.0
 

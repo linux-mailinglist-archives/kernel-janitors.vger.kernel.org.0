@@ -2,119 +2,127 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15A4827AB6D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 12:00:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CE2F27ABEB
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 12:37:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726605AbgI1KAP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Sep 2020 06:00:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54846 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726540AbgI1KAP (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Sep 2020 06:00:15 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2863EC061755;
-        Mon, 28 Sep 2020 03:00:15 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id e22so623345edq.6;
-        Mon, 28 Sep 2020 03:00:15 -0700 (PDT)
+        id S1726694AbgI1KhB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Sep 2020 06:37:01 -0400
+Received: from mail-bn8nam11on2088.outbound.protection.outlook.com ([40.107.236.88]:55616
+        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726601AbgI1Kg6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 28 Sep 2020 06:36:58 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gMTvNQrW/DlFKrgsgTJdxDiIRpQMegaGegAn+zxm+pJyf4cgPGD+WOaGVfxLW+xHg3WuABWeyYIy265JBJyNFrfCbGRDVY2FWj+SxvFLy4brCnMZW3myUx89sF2OPEHBSmgi+MaO3lbMcOKIHfPmFFUJQwZcOj8fvxjbk5VYIELBr9VJwP9ynfQhS4ZY+YjNOoSHJ4VSUePlWrHL/+pQ9Oiv8HEfLj3eegH5cpDWiGeH7TRGCNgJWVYqb9Eji6/iPEEd/+qy1HalqcZgdoxSpm+6pAJufWAgP8TfcJBS2v8ckt6Sf6ZxE2N+9v63LaOM4HKrGxVIJpGpkx+HYTxltQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VrSly3puDlzDvL4VXOgN5Em+aIyhljJrVW1b+SG+WBU=;
+ b=Dj+Y6dk5kz0Qoi8rb0Tq2kAzIy2MadLz58ac4So0cLaMjx2Mo8BI1sbn1twA8SxEI/KWkFJAKNQJ6akz/Py+8YcZbWdaRJxdmXAZ1rVf2FT8+4PYQPwIc5yJ+FSvrkywgq9lsmLkdoJm5rX4fb7klOw70DDSq08Gm9mS3GSUIDLD9K6dXLctWY+fFzQcC6PSAARsyZpIsXBKC4KCUWLCPbf06VUrCg+dKBMq6YjIodlBqLqj7oyxQr8aWf9UBmo71UMaHvp++GFOTmgS/0iUrPHTQ9K0noAcDxR4QZtFs+H6t03EOzt3tHUlcOHtwamuhvb1V14nikyGsdf7HzZNNQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=SDDq2C7QLWNFyYFepbxAMacpxOBVCHMbzny/kHBr8TA=;
-        b=R+pfU0Towmle8RJu/D2uVB6nF3nenvlxVFjiSEvSkMiG2Jlx3yvjSATbQ8+uGNBHHC
-         /hxaVJSDGW/iXOGt0AzwAPlvP3FQWFp7uRePLRzNFXLrjI0cUmxzmB/Yo4f7rU2w/PgF
-         QZZNVcmw/iC5SfxzSz2omZ3VEyF9P6mf8kLWBPl9DmsXVXIn00jKeEf2rX03yd0uCEhx
-         cbYV3TC7vuKlE6QYK63WE8mIThW1ugvgD3GoYFnmga8LP66ybx8Bj4VvIj9Td0U8GFtB
-         Lo3a8nFWXq4UkVdkgbsrgexuhXTY65G8VOE+r0bL/pwSau4c2qfKMF3pZa37/VqccADC
-         1MIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=SDDq2C7QLWNFyYFepbxAMacpxOBVCHMbzny/kHBr8TA=;
-        b=dJSzkyNBWRcTnfFiVDEbtvAQdQfpTaPueibQ03JLXJbV5SPo592vnkF5K/RONPLUS7
-         MQ2fikQYB4X93JzmOt9NI+KNLwQOLt9rqyA/s6GWvLbWdKFKko56uJVrtwPqI5zRtw7r
-         qQ2sqnvEsU9NHsWXyvVgn8MCijSmy+LlHlOLmJ9fbqISNyi6hoOHdeFTcSVGXqionyT3
-         PJj1yU2dTvliGSvEwqo+VaHyNJCZ8W1I8X/FlZjdZqjqqS9e5oQOWcRvQQpfrwt4etqn
-         zAwrgQafwogYfdb83Seq9lxAVMTCxFzNlqcGdlvmwCP4/1BYg4szY8ucKl+7LQf/5ob6
-         WNsg==
-X-Gm-Message-State: AOAM530JMy8DwAjBAn+ry+JRfAmzu7VmHxteMehHg+m5wNyg0H9H0GZM
-        IskSu4cl8AtZJSX9BCmS7yI=
-X-Google-Smtp-Source: ABdhPJzlWRLg1EMg817RKK+Ds6y/qvJKdNZ7zwAaJGbykb2KswiX5HBOGUqqOfFCatcJ6+iB3eFoOQ==
-X-Received: by 2002:a05:6402:1d93:: with SMTP id dk19mr800943edb.198.1601287213821;
-        Mon, 28 Sep 2020 03:00:13 -0700 (PDT)
-Received: from felia.fritz.box ([2001:16b8:2d9d:5000:7872:7299:adfa:b749])
-        by smtp.gmail.com with ESMTPSA id m10sm921048edf.11.2020.09.28.03.00.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2020 03:00:13 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] x86/mm: drop superfluous initialization
-Date:   Mon, 28 Sep 2020 12:00:04 +0200
-Message-Id: <20200928100004.25674-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+ d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VrSly3puDlzDvL4VXOgN5Em+aIyhljJrVW1b+SG+WBU=;
+ b=WnYOEWtDi/W+fRp6EVD9NPlQ1+vF6YjBVOr3YZl1tlPYOHlLzpnee8f1Y7vxbrFxCpAv0WU3tAVpEHG2mWm0j7w31vLp1B6F+AaDOmk8WM9OZg3H+//xl29xnbYz1V4CrBl8tNSQFoEr91mVzIiuqkDhOBY2qHjcCak335v/S7Q=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=amd.com;
+Received: from MN2PR12MB3775.namprd12.prod.outlook.com (2603:10b6:208:159::19)
+ by MN2PR12MB4438.namprd12.prod.outlook.com (2603:10b6:208:267::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.22; Mon, 28 Sep
+ 2020 10:36:55 +0000
+Received: from MN2PR12MB3775.namprd12.prod.outlook.com
+ ([fe80::f8f7:7403:1c92:3a60]) by MN2PR12MB3775.namprd12.prod.outlook.com
+ ([fe80::f8f7:7403:1c92:3a60%6]) with mapi id 15.20.3412.029; Mon, 28 Sep 2020
+ 10:36:55 +0000
+Subject: Re: [PATCH] drm: prime: Potential Oops in drm_gem_map_dma_buf()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc:     Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
+References: <20200928090726.GB377727@mwanda>
+From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
+Message-ID: <a8ef41fa-9864-6159-5748-98d286ab22a9@amd.com>
+Date:   Mon, 28 Sep 2020 12:36:49 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+In-Reply-To: <20200928090726.GB377727@mwanda>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Originating-IP: [2a02:908:1252:fb60:be8a:bd56:1f94:86e7]
+X-ClientProxiedBy: AM0PR08CA0009.eurprd08.prod.outlook.com
+ (2603:10a6:208:d2::22) To MN2PR12MB3775.namprd12.prod.outlook.com
+ (2603:10b6:208:159::19)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [IPv6:2a02:908:1252:fb60:be8a:bd56:1f94:86e7] (2a02:908:1252:fb60:be8a:bd56:1f94:86e7) by AM0PR08CA0009.eurprd08.prod.outlook.com (2603:10a6:208:d2::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.20 via Frontend Transport; Mon, 28 Sep 2020 10:36:53 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 9592596b-56c7-4e20-721d-08d8639a6b1d
+X-MS-TrafficTypeDiagnostic: MN2PR12MB4438:
+X-Microsoft-Antispam-PRVS: <MN2PR12MB443887C7E82FABBE6E651A1083350@MN2PR12MB4438.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2958;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ZOC2CHAkytiYdFqrdiaBwtb24I/TUPXFMxejxJvz9O+MvPwAop9msweTLusSwnk5xRxJhyHikthCuYmPHnmawC22ekwQbKgmcc8CwTfATl0oxICeT5Khpor9cnXShX4NK8HFUHRWyln4ZZxPEdnSYPbe1JsDjMSvwH0fqvhDU9eArjs14ZxLnoZJ1yLOMUgRh0X5t/+VOfRHw9xUvF1gO5cXvv6HSXmLiDA+ACi/4zs2EwX1nFhqG5drvE+3JrapmV3/TRdKpBtYhTCE7tFJaxW+N6NtiquObEntlaYqkJoIPRxfIqmOIhXC5zKRAm0nCGppvGXrZejg7buk6EO7jTiFzCXr2k3/Lz7GuFT7bPRjAyaTb1/PU1bEigyFJyxfQ0fdEdRK+rrtmEDMnyXG9KzM5t7DzY2laz1mcRaCrfs=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3775.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(39860400002)(396003)(366004)(376002)(346002)(2906002)(36756003)(2616005)(54906003)(8936002)(31686004)(6486002)(8676002)(110136005)(316002)(478600001)(6666004)(16526019)(186003)(31696002)(86362001)(5660300002)(66476007)(52116002)(4326008)(66946007)(66556008)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: 7kDvPcXLvo4WfYe8yg30bxL/t131EOQ425BTg273YVphamPvZy7nDslmuf3/Tx4JiEIbY5n2Iyp39Fx5skfcAIbFsQD3OvMMR7pUHXNeSsyqmnPfwZxVDyWG99B+SYC8TRIjaIQxlhKF14Df/haswB9/Z7j1oJTjoF4JTW3zf5Kgu1B+me2PZKZC4hfNiiqWAA86my7QPFE6gBx5s022oFwRxfXkzz28m2tVREyKHE0cK7gfYmXM3L5j9hH8N0I0jBZgmWJpAsR+kM1atY4aoubuwP9IM72o+i+lRsi37apYGZjaAJWCe5+i5TzHZXNHlp3Cmj+kpEPMAcnBKslc4Z1jcHXAToFCgSeU52KAKePaMOIgL1hwAEhNUI11DqFMTZ8KgZ1cWQBYdDGeP3XMu+tUQHJag3OZguhgLlHJhVVNjSlKAwl5K3V0YclxW7o/oKUc+Rhziz0vvRvap/TDXLq8TeffLivBIipAk8bBZdAWclESkKPe/dNsBeXped+EfykilzuiAV6DH9S243KkD/lC+KM7SLh5bPIcJ5fck6HH4hn7pMnc0SgUYKFsU5xE97hIOHz+2CgDzB++xMNdAJY0j13gi1IpBoEFgRiNUxbtZ65Xz1l+WK/dQ/uU2Eo6sqW8vFybHg4kR+VvNdI4wEMbWnWGAsJ7zGfHmIpyLkrABUqgU+3/Q1/KvQDj9/JUkQm0/SQXViprRiIrN+aQ5A==
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9592596b-56c7-4e20-721d-08d8639a6b1d
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3775.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2020 10:36:54.9828
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7zQtrdlxtrFRM5D32y1o1JHlOHJUhEbnWGBIyMZvg9nfa3ip4XTxbGT0OZodRo1e
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4438
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-It is not required to initialize the local variable start in
-memory_map_top_down(), as the variable will be initialized in any path
-before it is used.
+Hi Dan,
 
-make clang-analyzer on x86_64 tinyconfig reports:
+Am 28.09.20 um 11:07 schrieb Dan Carpenter:
+> This code doesn't check if the call to ->get_sg_table() fails so it
+> could dereference an error pointer and Oops.
+>
+> Fixes: c614d7e66c6a ("drm: remove prime sg_table caching")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-  arch/x86/mm/init.c:612:15: warning: Although the value stored to 'start' \
-  is used in the enclosing expression, the value is never actually read \
-  from 'start' [clang-analyzer-deadcode.DeadStores]
+this patch is based on outdated code, please take a look at current 
+drm-misc-next.
 
-Compilers will detect this superfluous assignment and optimize that
-expression anyway. So, the resulting binary is identical before and after
-the change.
+The gem_prime_get_sg_table callback was removed from the driver 
+functions and the missing error check already fixed.
 
-Drop this superfluous assignment to make clang-analyzer happy.
+Regards,
+Christian.
 
-No functional change.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-applies cleanly on v5.9-rc7 and next-20200925
-
-Dave, Andy, Peter, please pick this minor non-urgent clean-up patch.
-
-I quickly confirmed that the binary did not change with this change to the
-source code; the hash of init.o remained the same before and after the change.
-
-So, in my setup:
-  md5sum arch/x86/mm/init.o
-  b26f6380760f32d2ef2c7525301eebd3  init.o
-
-linux-safety, please verify and validate this change.
-
- arch/x86/mm/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index c7a47603537f..5632f02146ca 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -609,7 +609,7 @@ static void __init memory_map_top_down(unsigned long map_start,
- 	step_size = PMD_SIZE;
- 	max_pfn_mapped = 0; /* will get exact value next */
- 	min_pfn_mapped = real_end >> PAGE_SHIFT;
--	last_start = start = real_end;
-+	last_start = real_end;
- 
- 	/*
- 	 * We start from the top (end of memory) and go to the bottom.
--- 
-2.17.1
+> ---
+>   drivers/gpu/drm/drm_prime.c | 3 +++
+>   1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/drm_prime.c b/drivers/gpu/drm/drm_prime.c
+> index 11fe9ff76fd5..1e2c7ff63f16 100644
+> --- a/drivers/gpu/drm/drm_prime.c
+> +++ b/drivers/gpu/drm/drm_prime.c
+> @@ -627,6 +627,9 @@ struct sg_table *drm_gem_map_dma_buf(struct dma_buf_attachment *attach,
+>   	else
+>   		sgt = obj->dev->driver->gem_prime_get_sg_table(obj);
+>   
+> +	if (IS_ERR(sgt))
+> +		return sgt;
+> +
+>   	ret = dma_map_sgtable(attach->dev, sgt, dir,
+>   			      DMA_ATTR_SKIP_CPU_SYNC);
+>   	if (ret) {
 

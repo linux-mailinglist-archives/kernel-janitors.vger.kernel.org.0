@@ -2,121 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 078F127B2CF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 19:11:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A97727B377
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 19:42:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726566AbgI1RLU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Sep 2020 13:11:20 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:53496
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726393AbgI1RLU (ORCPT
+        id S1726547AbgI1RmL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Sep 2020 13:42:11 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:46890 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726325AbgI1RmL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Sep 2020 13:11:20 -0400
-X-IronPort-AV: E=Sophos;i="5.77,313,1596492000"; 
-   d="scan'208";a="360266987"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 Sep 2020 19:11:16 +0200
-Date:   Mon, 28 Sep 2020 19:11:16 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Joe Perches <joe@perches.com>
-cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        =?UTF-8?Q?Valdis_Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kernel-janitors@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 03/18] [ARM] pata_icside: use semicolons rather than
- commas to separate statements
-In-Reply-To: <8cf2fad1659acd756703deb106d55483bd1e1eb9.camel@perches.com>
-Message-ID: <alpine.DEB.2.22.394.2009281909000.2650@hadrien>
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>  <1601233948-11629-4-git-send-email-Julia.Lawall@inria.fr> <8cf2fad1659acd756703deb106d55483bd1e1eb9.camel@perches.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        Mon, 28 Sep 2020 13:42:11 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08SHTB1i018682;
+        Mon, 28 Sep 2020 17:42:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=ft+fh2wKCwo7NRM0MMPHB9K/JVk8KBIzsAQhZCAIlX0=;
+ b=eRdb2ixcmpQets+fDsOfZjoi020DO0gD1ernIDaxMdkSdhFECTV85dQd1XOGmiItCSiu
+ yRbAzVfgPm1cwOxiU6iOsV1reyy4QqI+5mleRuhu2k64WbSSQAH/I4bwPzCwaRembBT9
+ 1WM+gp7Wqbyix6o0gMaM7UIK6lHIePJbtonQqVkh2seNDbwhBnMZJ5rwYrWR00qZhObK
+ DIaArgFSOuCzhAQrQb+5PiYMJcn4OLCd6MSwR1QsE9WXXPYL5d2Qji7WhWguLwToGRZW
+ EK63ElJjmo7pb+VvZbo+jG0Z+Ek6olgMJ8YEaRPQqOWQ9YpLsDsPc34N+/tRAwdPMSj6 SQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 33sx9mxcn9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 28 Sep 2020 17:42:02 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08SHUgwc188074;
+        Mon, 28 Sep 2020 17:42:02 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 33tfdqgyvy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 28 Sep 2020 17:42:02 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08SHg1GF030558;
+        Mon, 28 Sep 2020 17:42:01 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 28 Sep 2020 10:42:00 -0700
+Date:   Mon, 28 Sep 2020 20:41:53 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Saeed Mahameed <saeedm@nvidia.com>
+Cc:     Leon Romanovsky <leon@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Roi Dayan <roid@mellanox.com>,
+        Ariel Levkovich <lariel@mellanox.com>, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH 1/2 net-next] net/mlx5e: TC: Fix IS_ERR() vs NULL checks
+Message-ID: <20200928174153.GA446008@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9758 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
+ adultscore=0 malwarescore=0 spamscore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009280137
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9758 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
+ phishscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015
+ spamscore=0 impostorscore=0 malwarescore=0 bulkscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009280137
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+The mlx5_tc_ct_init() function doesn't return error pointers it returns
+NULL.  Also we need to set the error codes on this path.
 
+Fixes: aedd133d17bc ("net/mlx5e: Support CT offload for tc nic flows")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-On Mon, 28 Sep 2020, Joe Perches wrote:
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+index 104b1c339de0..438fbcf478d1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+@@ -5224,8 +5224,10 @@ int mlx5e_tc_nic_init(struct mlx5e_priv *priv)
+ 
+ 	tc->ct = mlx5_tc_ct_init(priv, tc->chains, &priv->fs.tc.mod_hdr,
+ 				 MLX5_FLOW_NAMESPACE_KERNEL);
+-	if (IS_ERR(tc->ct))
++	if (!tc->ct) {
++		err = -ENOMEM;
+ 		goto err_ct;
++	}
+ 
+ 	tc->netdevice_nb.notifier_call = mlx5e_tc_netdev_event;
+ 	err = register_netdevice_notifier_dev_net(priv->netdev,
+@@ -5300,8 +5300,10 @@ int mlx5e_tc_esw_init(struct rhashtable *tc_ht)
+ 					       esw_chains(esw),
+ 					       &esw->offloads.mod_hdr,
+ 					       MLX5_FLOW_NAMESPACE_FDB);
+-	if (IS_ERR(uplink_priv->ct_priv))
++	if (!uplink_priv->ct_priv) {
++		err = -ENOMEM;
+ 		goto err_ct;
++	}
+ 
+ 	mapping = mapping_create(sizeof(struct tunnel_match_key),
+ 				 TUNNEL_INFO_BITS_MASK, true);
+-- 
+2.28.0
 
-> On Sun, 2020-09-27 at 21:12 +0200, Julia Lawall wrote:
-> > Replace commas with semicolons.  What is done is essentially described by
-> > the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
->
-> Hi Julia.
->
-> How did you decide on this patch subject header line?
->
-> It's certainly reasonable, but not what I would expect
-> from any automation.
-
-Most of the patches on this file touch other files as well.  There are
-four that only touch this file.  One has no subsystem.  One has dma as the
-subsystem.  Two have pata_icside, so that was chosen.
-
-I found that taking the most popular overall could give results that were
-too general.
-
-julia
-
->
-> A somewhat common method of finding the most commonly used
-> "git log" subject line doesn't easily provide a similar heading.
->
-> $ git log --no-merges --format='%s' drivers/ata/pata_icside.c
-> treewide: Add SPDX license identifier for more missed files
-> libata: remove ata_sff_data_xfer_noirq()
-> scsi: rename SCSI_MAX_{SG, SG_CHAIN}_SEGMENTS
-> Drivers: ata: remove __dev* attributes.
-> ata: Convert ata_<foo>_printk(KERN_<LEVEL> to ata_<foo>_<level>
-> libata-sff: separate out BMDMA irq handler
-> libata-sff: separate out BMDMA EH
-> libata-sff: clean up BMDMA initialization
-> libata-sff: clean up inheritance in several drivers
-> include cleanup: Update gfp.h and slab.h includes to prepare for breaking implicit slab.h inclusion from percpu.h
-> [libata] convert drivers to use ata.h mode mask defines
-> [ARM] dma: Use sensible DMA parameters for Acorn drivers
-> [ARM] dma: pata_icside's contiguous sg array is now redundant
-> libata-sff: Fix oops reported in kerneloops.org for pnp devices with no ctl
-> libata: rename SFF port ops
-> libata: rename SFF functions
-> libata: make reset related methods proper port operations
-> libata: implement and use ops inheritance
-> libata: implement and use SHT initializers
-> libata: implement and use ata_noop_irq_clear()
-> libata: eliminate the home grown dma padding in favour of
-> libata: convert to chained sg
-> Fix pata_icside build for recent libata API changes
-> libata: implement and use ata_port_desc() to report port configuration
-> [libata] Remove ->port_disable() hook
-> [libata] Remove ->irq_ack() hook, and ata_dummy_irq_on()
-> [ARM] pata_icside: fix the FIXMEs
-> [libata] PATA drivers: remove ATA_FLAG_SRST
-> [ARM] pata_icside: fix build errors
-> [ARM] ecard: add ecardm_iomap() / ecardm_iounmap()
-> [ARM] ecard: add helper function for setting ecard irq ops
-> [ARM] Add support for ICSIDE interface on RiscPC
->
-> $ git log --no-merges --format='%s' drivers/ata/pata_icside.c | \
->   cut -f1 -d":" | sort | uniq -c | sort -rn
->      10 libata
->       5 libata-sff
->       2 [ARM] pata_icside
->       2 [ARM] ecard
->       2 [ARM] dma
->       1 treewide
->       1 scsi
->       1 [libata] Remove ->port_disable() hook
->       1 [libata] Remove ->irq_ack() hook, and ata_dummy_irq_on()
->       1 [libata] PATA drivers
->       1 [libata] convert drivers to use ata.h mode mask defines
->       1 include cleanup
->       1 Fix pata_icside build for recent libata API changes
->       1 Drivers
->       1 ata
->       1 [ARM] Add support for ICSIDE interface on RiscPC
->
->
->

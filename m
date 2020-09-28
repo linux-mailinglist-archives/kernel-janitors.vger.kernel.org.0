@@ -2,102 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4253027A541
-	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 03:42:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E81A227AA3E
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 11:08:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726465AbgI1Bm2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 27 Sep 2020 21:42:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34802 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726409AbgI1Bm2 (ORCPT
+        id S1726684AbgI1JIR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Sep 2020 05:08:17 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:42102 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726465AbgI1JIR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 27 Sep 2020 21:42:28 -0400
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19038C0613CE;
-        Sun, 27 Sep 2020 18:42:43 -0700 (PDT)
-Received: by mail-pj1-x1043.google.com with SMTP id b17so2638410pji.1;
-        Sun, 27 Sep 2020 18:42:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=8dvvyKbSOAlgek5cc8aTLapz1pd13ZzkOFYmkcPpkd4=;
-        b=h3emFgsM6piZBSbVf/atrjx/QFGhrpigxWKDnEpPikiSAGfjadQfqVz7D8L3eS1dIC
-         Ey2CLiD8B6GZ5sHxpEL1WSHrTIxbPE6FF+kihoC4bFXe9pD0c7/xb81xoNcFQ7JWW43m
-         k4RA027NJeoR4FN/o9aerkgGpOgzFUgLkpZsW9TWOqe/Er/dIfsJ/Bi0fzCzV0u6ITqj
-         oGJGU8CGwncW7ZDruv3kVi7hd1P0n3LnyhvSO2SE2pJnBFgeo/InooYzPva5S7l0HDDU
-         vI2xqbKA7vHhl00a6SHlCBComY5Ra+G2i8Dp4J8xPyo37v/2lOfdzwuqXUi+lbHMmCp/
-         hpdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=8dvvyKbSOAlgek5cc8aTLapz1pd13ZzkOFYmkcPpkd4=;
-        b=hBA37+ddGtNqTJGd6nctGw0M+vtUl/GcjUOzIGV5DfqyPKYBDXKcJrN4ag1Tleoikl
-         X5RfJA52Qh56b0xo1btNQZL6lDJjvQty98cXFe41haPcbHytnsQxHD44Qi9pjpIkeVVq
-         O1WtIethlTa7rJvVYKS8xw9DS4fMuGSh4D2dA/Kj8iSrhEr86agGrztvX19j/vd8y45b
-         sqrqveyI9QL2XmvK9fyDhfzh4KLOLaYBiHuFtMnOILUy4dTBvgJDHLd+TL00QkG3bKlF
-         zaznQ6yDhukI/CJ4+simNSBFbe9z/o6dTe/fg526UsfeNr0WguZQ/DsbqxHt0Few+Oix
-         fVCA==
-X-Gm-Message-State: AOAM533kvl66oVTb3ZBKuuHYk8wigcVC1pGuW5tow/bROrCL6e/yyJGs
-        ipdA7yDElUQSO0FDu8vuj6IealVg7NAFKA==
-X-Google-Smtp-Source: ABdhPJzygoBiYd6Buh+m4UHKonvhgMi2Rfn3a5kRAQQZ789YxIOvdyRD484gZNpKzOR92zhQM9IpKA==
-X-Received: by 2002:a17:90a:ca03:: with SMTP id x3mr7366766pjt.92.1601257362214;
-        Sun, 27 Sep 2020 18:42:42 -0700 (PDT)
-Received: from [192.168.1.3] (ip68-111-84-250.oc.oc.cox.net. [68.111.84.250])
-        by smtp.gmail.com with ESMTPSA id ev19sm4932293pjb.42.2020.09.27.18.42.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Sep 2020 18:42:41 -0700 (PDT)
-Subject: Re: [PATCH 06/18] hwrng: iproc-rng200 - use semicolons rather than
- commas to separate statements
-To:     Julia Lawall <Julia.Lawall@inria.fr>,
-        Matt Mackall <mpm@selenic.com>
-Cc:     =?UTF-8?Q?Valdis_Kl=c4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        Joe Perches <joe@perches.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kernel-janitors@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
- <1601233948-11629-7-git-send-email-Julia.Lawall@inria.fr>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <793939ba-520a-8041-b3c7-20900a21f308@gmail.com>
-Date:   Sun, 27 Sep 2020 18:42:40 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.2.2
+        Mon, 28 Sep 2020 05:08:17 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08S93hJV194769;
+        Mon, 28 Sep 2020 09:08:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=jfgO1O7Ck5C96o5hB9CZqDDeCkVWsRHno5yUPfNdobY=;
+ b=SHrRNC/EYgSqWf4UMZAt3acjFOmY5dZWWBZfeuJeATXT0EwqrgvmSi85QE0GN2g0LF88
+ 1MKsDKM/XrrToIC/1RxJWNPBIdAxSj/M9oUHydCZUCpe4BpK8CwRDOTSu6xcnAEsLU60
+ UsUxkdWFDIWu3CVo3VERK4MqaVy4hmDdnjWQEkTHrIxbJ1baKc18cvqa9eVj03Mhbudi
+ tYbyeLSB4I1H7IkMKrsWj6c5PyN1SnfCPjSDXphucBSWBWEtO48ddbwu+wZ4edZvmV8R
+ gWBlWPbGUNW7rJIFfzXxKDAWdjDmhnLhLv70OxRhVhcZzsR3QzWYzI7OBVq2bWHr/SYo 8A== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 33su5am0uc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 28 Sep 2020 09:08:07 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08S94jHF072788;
+        Mon, 28 Sep 2020 09:06:06 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 33tf7k2mmm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 28 Sep 2020 09:06:06 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08S964Hi006320;
+        Mon, 28 Sep 2020 09:06:04 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 28 Sep 2020 02:06:04 -0700
+Date:   Mon, 28 Sep 2020 12:05:56 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Saeed Mahameed <saeedm@nvidia.com>
+Cc:     Leon Romanovsky <leon@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Roi Dayan <roid@mellanox.com>, Oz Shlomo <ozsh@mellanox.com>,
+        Paul Blakey <paulb@mellanox.com>,
+        Eli Britstein <elibr@mellanox.com>,
+        Ariel Levkovich <lariel@nvidia.com>, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH net-next] net/mlx5e: Fix a use after free on error in
+ mlx5_tc_ct_shared_counter_get()
+Message-ID: <20200928090556.GA377727@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <1601233948-11629-7-git-send-email-Julia.Lawall@inria.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9757 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
+ suspectscore=0 adultscore=0 malwarescore=0 phishscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009280076
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9757 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
+ lowpriorityscore=0 spamscore=0 clxscore=1011 mlxscore=0 impostorscore=0
+ malwarescore=0 phishscore=0 adultscore=0 bulkscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009280076
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+This code frees "shared_counter" and then dereferences on the next line
+to get the error code.
 
+Fixes: 1edae2335adf ("net/mlx5e: CT: Use the same counter for both directions")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-On 9/27/2020 12:12 PM, Julia Lawall wrote:
-> Replace commas with semicolons.  What is done is essentially described by
-> the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
-> 
-> // <smpl>
-> @@ expression e1,e2; @@
-> e1
-> -,
-> +;
-> e2
-> ... when any
-> // </smpl>
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
+index b5f8ed30047b..cea2070af9af 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
+@@ -739,6 +739,7 @@ mlx5_tc_ct_shared_counter_get(struct mlx5_tc_ct_priv *ct_priv,
+ 	struct mlx5_core_dev *dev = ct_priv->dev;
+ 	struct mlx5_ct_entry *rev_entry;
+ 	__be16 tmp_port;
++	int ret;
+ 
+ 	/* get the reversed tuple */
+ 	tmp_port = rev_tuple.port.src;
+@@ -778,8 +779,9 @@ mlx5_tc_ct_shared_counter_get(struct mlx5_tc_ct_priv *ct_priv,
+ 	shared_counter->counter = mlx5_fc_create(dev, true);
+ 	if (IS_ERR(shared_counter->counter)) {
+ 		ct_dbg("Failed to create counter for ct entry");
++		ret = PTR_ERR(shared_counter->counter);
+ 		kfree(shared_counter);
+-		return ERR_PTR(PTR_ERR(shared_counter->counter));
++		return ERR_PTR(ret);
+ 	}
+ 
+ 	refcount_set(&shared_counter->refcount, 1);
 -- 
-Florian
+2.28.0
+

@@ -2,114 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 533A427AB1B
-	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 11:47:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15A4827AB6D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Sep 2020 12:00:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726762AbgI1Jr2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Sep 2020 05:47:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52838 "EHLO
+        id S1726605AbgI1KAP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Sep 2020 06:00:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726654AbgI1Jr1 (ORCPT
+        with ESMTP id S1726540AbgI1KAP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Sep 2020 05:47:27 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59370C061755
-        for <kernel-janitors@vger.kernel.org>; Mon, 28 Sep 2020 02:47:27 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id e16so572658wrm.2
-        for <kernel-janitors@vger.kernel.org>; Mon, 28 Sep 2020 02:47:27 -0700 (PDT)
+        Mon, 28 Sep 2020 06:00:15 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2863EC061755;
+        Mon, 28 Sep 2020 03:00:15 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id e22so623345edq.6;
+        Mon, 28 Sep 2020 03:00:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=references:user-agent:from:to:cc:subject:in-reply-to:date
-         :message-id:mime-version;
-        bh=aBaJ7/GSUfwYoA9TO9qsxTcOvSw2SWgHX/gC4K79Bt4=;
-        b=dVIQN+f+DCKVNjTLbL7o7s6+EZqkCS0G96fLUO9iTFd9PXBVjqxXiHnouor1t8Mlf2
-         yMOMb9HmqQSXMrsWoFSUVZTnP6M6CXNFuLJR1EjLtVfp8dMnaX07gDimkOMEGDL2rdtv
-         Fo67JbRt2cXalKZajjrYmDZiopA30ERhpObv7m3lu/PQ1Rkitodi0Rzk8ya22Xn5tjAj
-         Ku+KbFkDY2DmHQ+O5ggUF0NWJhxIwQDXSgV2KSHyrymQNeOX22Mzt2nRShQtZjLoFWVf
-         wfIm0hHAWKMTWVtGgrO82cvWCTXJv5qZfRORzqkrq/NLCS6vxqvuzVHqXot67aopvpjI
-         YlNg==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=SDDq2C7QLWNFyYFepbxAMacpxOBVCHMbzny/kHBr8TA=;
+        b=R+pfU0Towmle8RJu/D2uVB6nF3nenvlxVFjiSEvSkMiG2Jlx3yvjSATbQ8+uGNBHHC
+         /hxaVJSDGW/iXOGt0AzwAPlvP3FQWFp7uRePLRzNFXLrjI0cUmxzmB/Yo4f7rU2w/PgF
+         QZZNVcmw/iC5SfxzSz2omZ3VEyF9P6mf8kLWBPl9DmsXVXIn00jKeEf2rX03yd0uCEhx
+         cbYV3TC7vuKlE6QYK63WE8mIThW1ugvgD3GoYFnmga8LP66ybx8Bj4VvIj9Td0U8GFtB
+         Lo3a8nFWXq4UkVdkgbsrgexuhXTY65G8VOE+r0bL/pwSau4c2qfKMF3pZa37/VqccADC
+         1MIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:references:user-agent:from:to:cc:subject
-         :in-reply-to:date:message-id:mime-version;
-        bh=aBaJ7/GSUfwYoA9TO9qsxTcOvSw2SWgHX/gC4K79Bt4=;
-        b=KQZmohehjvUNoi9GrjK5O1R+qBVONxRlHfmgPz7DNSbMqMyLjEmJJ/3nks3YuDOaWI
-         swWUWI90zuKTanp+Wf3NWkhvf+Vk39xOzvTyFVxqFvZIFxOdrqJoI83qFwZKz4S0PxcZ
-         5rsyUbo0HixcKSAH1XrBfD+fWZ+fyDCQmxDSknXuS00WckeD+ADsd+KlNZ/11ISt+Dn/
-         Xt/S2nQv4zB0t++2rRZBgWs1iWdnQEnGfex4XGOiA2NQ+bxdGKXuGOEAMw3aqQ/cYnJE
-         Tm7tgHw5nxIqDyPwtZw08H6TL/MLjS1CNEmsP/hUn9xarRjkr/hsjM1Sf9pXxWyOg27h
-         D75A==
-X-Gm-Message-State: AOAM5326egqVlYqiPgnTuy6UBZ83KYbYaq5Kz9DeSlMruv1O1s4cYymj
-        q2swrFmZw3EcIMt4s0bducaJMQ==
-X-Google-Smtp-Source: ABdhPJw5raJ0t+x3PQZ3zFLLcp8nFJ3FIYCEkjcE9P11x12LwaPsW8P5ucUS+pbqywKxXyInI/nWEg==
-X-Received: by 2002:adf:c64e:: with SMTP id u14mr672332wrg.373.1601286446068;
-        Mon, 28 Sep 2020 02:47:26 -0700 (PDT)
-Received: from localhost (cag06-3-82-243-161-21.fbx.proxad.net. [82.243.161.21])
-        by smtp.gmail.com with ESMTPSA id t1sm515386wmi.16.2020.09.28.02.47.25
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=SDDq2C7QLWNFyYFepbxAMacpxOBVCHMbzny/kHBr8TA=;
+        b=dJSzkyNBWRcTnfFiVDEbtvAQdQfpTaPueibQ03JLXJbV5SPo592vnkF5K/RONPLUS7
+         MQ2fikQYB4X93JzmOt9NI+KNLwQOLt9rqyA/s6GWvLbWdKFKko56uJVrtwPqI5zRtw7r
+         qQ2sqnvEsU9NHsWXyvVgn8MCijSmy+LlHlOLmJ9fbqISNyi6hoOHdeFTcSVGXqionyT3
+         PJj1yU2dTvliGSvEwqo+VaHyNJCZ8W1I8X/FlZjdZqjqqS9e5oQOWcRvQQpfrwt4etqn
+         zAwrgQafwogYfdb83Seq9lxAVMTCxFzNlqcGdlvmwCP4/1BYg4szY8ucKl+7LQf/5ob6
+         WNsg==
+X-Gm-Message-State: AOAM530JMy8DwAjBAn+ry+JRfAmzu7VmHxteMehHg+m5wNyg0H9H0GZM
+        IskSu4cl8AtZJSX9BCmS7yI=
+X-Google-Smtp-Source: ABdhPJzlWRLg1EMg817RKK+Ds6y/qvJKdNZ7zwAaJGbykb2KswiX5HBOGUqqOfFCatcJ6+iB3eFoOQ==
+X-Received: by 2002:a05:6402:1d93:: with SMTP id dk19mr800943edb.198.1601287213821;
+        Mon, 28 Sep 2020 03:00:13 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2d9d:5000:7872:7299:adfa:b749])
+        by smtp.gmail.com with ESMTPSA id m10sm921048edf.11.2020.09.28.03.00.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2020 02:47:25 -0700 (PDT)
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr> <1601233948-11629-11-git-send-email-Julia.Lawall@inria.fr>
-User-agent: mu4e 1.3.3; emacs 26.3
-From:   Jerome Brunet <jbrunet@baylibre.com>
-To:     Julia Lawall <Julia.Lawall@inria.fr>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        Joe Perches <joe@perches.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kernel-janitors@vger.kernel.org,
-        Michael Turquette <mturquette@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        linux-amlogic@lists.infradead.org, linux-clk@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 10/18] clk: meson: use semicolons rather than commas to separate statements
-In-reply-to: <1601233948-11629-11-git-send-email-Julia.Lawall@inria.fr>
-Date:   Mon, 28 Sep 2020 11:47:24 +0200
-Message-ID: <1j1rimjkr7.fsf@starbuckisacylon.baylibre.com>
-MIME-Version: 1.0
-Content-Type: text/plain
+        Mon, 28 Sep 2020 03:00:13 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] x86/mm: drop superfluous initialization
+Date:   Mon, 28 Sep 2020 12:00:04 +0200
+Message-Id: <20200928100004.25674-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+It is not required to initialize the local variable start in
+memory_map_top_down(), as the variable will be initialized in any path
+before it is used.
 
-On Sun 27 Sep 2020 at 21:12, Julia Lawall <Julia.Lawall@inria.fr> wrote:
+make clang-analyzer on x86_64 tinyconfig reports:
 
-Hi Stephen,
+  arch/x86/mm/init.c:612:15: warning: Although the value stored to 'start' \
+  is used in the enclosing expression, the value is never actually read \
+  from 'start' [clang-analyzer-deadcode.DeadStores]
 
-Do you want to take all the clock related patches directly ?
+Compilers will detect this superfluous assignment and optimize that
+expression anyway. So, the resulting binary is identical before and after
+the change.
 
+Drop this superfluous assignment to make clang-analyzer happy.
 
-> Replace commas with semicolons.  What is done is essentially described by
-> the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
->
-> // <smpl>
-> @@ expression e1,e2; @@
-> e1
-> -,
-> +;
-> e2
-> ... when any
-> // </smpl>
->
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
->
-> ---
->  drivers/clk/meson/meson-aoclk.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/clk/meson/meson-aoclk.c b/drivers/clk/meson/meson-aoclk.c
-> index bf8bea675d24..3a6d84cd6601 100644
-> --- a/drivers/clk/meson/meson-aoclk.c
-> +++ b/drivers/clk/meson/meson-aoclk.c
-> @@ -57,7 +57,7 @@ int meson_aoclkc_probe(struct platform_device *pdev)
->  	rstc->data = data;
->  	rstc->regmap = regmap;
->  	rstc->reset.ops = &meson_aoclk_reset_ops;
-> -	rstc->reset.nr_resets = data->num_reset,
-> +	rstc->reset.nr_resets = data->num_reset;
->  	rstc->reset.of_node = dev->of_node;
->  	ret = devm_reset_controller_register(dev, &rstc->reset);
->  	if (ret) {
+No functional change.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on v5.9-rc7 and next-20200925
+
+Dave, Andy, Peter, please pick this minor non-urgent clean-up patch.
+
+I quickly confirmed that the binary did not change with this change to the
+source code; the hash of init.o remained the same before and after the change.
+
+So, in my setup:
+  md5sum arch/x86/mm/init.o
+  b26f6380760f32d2ef2c7525301eebd3  init.o
+
+linux-safety, please verify and validate this change.
+
+ arch/x86/mm/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index c7a47603537f..5632f02146ca 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -609,7 +609,7 @@ static void __init memory_map_top_down(unsigned long map_start,
+ 	step_size = PMD_SIZE;
+ 	max_pfn_mapped = 0; /* will get exact value next */
+ 	min_pfn_mapped = real_end >> PAGE_SHIFT;
+-	last_start = start = real_end;
++	last_start = real_end;
+ 
+ 	/*
+ 	 * We start from the top (end of memory) and go to the bottom.
+-- 
+2.17.1
 

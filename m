@@ -2,81 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AA8D27B85E
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 01:40:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6524827B902
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 02:45:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727049AbgI1Xkb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Sep 2020 19:40:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37440 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727004AbgI1Xkb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Sep 2020 19:40:31 -0400
-Received: from localhost (52.sub-72-107-123.myvzw.com [72.107.123.52])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7BDB623976;
-        Mon, 28 Sep 2020 22:24:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601331872;
-        bh=R8n7VfMaVBdjtMmbaj7tuKdOS9ilUGLpUjzTwMwX6xE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=KLkZlirErAXrcSTXBVQYtWk4y6L1U/32iwQINoIJ6TTP5XmKAabP8rX+gQLdmyZqw
-         qh6pHw0/PL6zXxVfH99GVqWrZOnWewmNvE1krsz65wTZJnMhEndo2XgC5JPi+Wu6JG
-         Lp2JvoP2ZqJ2EqesmIFoSBTvW/uTiyTu6QAGvDqk=
-Date:   Mon, 28 Sep 2020 17:24:31 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        kernel-janitors@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 14/14] PCI/P2PDMA: drop double zeroing
-Message-ID: <20200928222431.GA2501991@bjorn-Precision-5520>
+        id S1727151AbgI2Apa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Sep 2020 20:45:30 -0400
+Received: from smtprelay0076.hostedemail.com ([216.40.44.76]:56402 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726698AbgI2Apa (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 28 Sep 2020 20:45:30 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay01.hostedemail.com (Postfix) with ESMTP id 780A9100E7B40;
+        Tue, 29 Sep 2020 00:45:28 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:967:973:988:989:1260:1263:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2525:2553:2561:2564:2682:2685:2693:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3870:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4362:4605:5007:6248:6742:7903:9025:9040:10004:10400:10848:10967:11232:11658:11914:12043:12266:12295:12297:12438:12740:12760:12895:13069:13071:13161:13229:13311:13357:13439:14180:14181:14659:14721:14777:21060:21080:21365:21433:21451:21627:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: self77_011759527186
+X-Filterd-Recvd-Size: 2723
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf03.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 29 Sep 2020 00:45:25 +0000 (UTC)
+Message-ID: <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com>
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
+ statements
+From:   Joe Perches <joe@perches.com>
+To:     Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+        Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     linux-stm32@st-md-mailman.stormreply.com,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        linux-acpi@vger.kernel.org, David Lechner <david@lechnology.com>,
+        Valdis =?UTF-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        kernel-janitors@vger.kernel.org, drbd-dev@lists.linbit.com,
+        openipmi-developer@lists.sourceforge.net,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-ide@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-wireless@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>
+Date:   Mon, 28 Sep 2020 17:45:24 -0700
+In-Reply-To: <160132172369.55460.9237357219623604216.b4-ty@kernel.org>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+         <160132172369.55460.9237357219623604216.b4-ty@kernel.org>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1600601186-7420-15-git-send-email-Julia.Lawall@inria.fr>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Sep 20, 2020 at 01:26:26PM +0200, Julia Lawall wrote:
-> sg_init_table zeroes its first argument, so the allocation of that argument
-> doesn't have to.
+On Mon, 2020-09-28 at 20:35 +0100, Mark Brown wrote:
+> On Sun, 27 Sep 2020 21:12:10 +0200, Julia Lawall wrote:
+> > These patches replace commas by semicolons.  This was done using the
+> > Coccinelle semantic patch (http://coccinelle.lip6.fr/) shown below.
+> > 
+> > This semantic patch ensures that commas inside for loop headers will not be
+> > transformed.  It also doesn't touch macro definitions.
+> > 
+> > Coccinelle ensures that braces are added as needed when a single-statement
+> > branch turns into a multi-statement one.
+> > 
+> > [...]
 > 
-> the semantic patch that makes this change is as follows:
-> (http://coccinelle.lip6.fr/)
+> Applied to
 > 
-> // <smpl>
-> @@
-> expression x;
-> @@
+>    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap.git for-next
 > 
-> x =
-> - kzalloc
-> + kmalloc
->  (...)
-> ...
-> sg_init_table(x,...)
-> // </smpl>
+> Thanks!
 > 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> [1/1] regmap: debugfs: use semicolons rather than commas to separate statements
+>       commit: 7f4a122d0b50b40c64d24a5cf7aafe26dd9487ee
 
-Applied to pci/misc for v5.10, thanks!
+Hi Mark.
 
-> ---
->  drivers/pci/p2pdma.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff -u -p a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-> --- a/drivers/pci/p2pdma.c
-> +++ b/drivers/pci/p2pdma.c
-> @@ -762,7 +762,7 @@ struct scatterlist *pci_p2pmem_alloc_sgl
->  	struct scatterlist *sg;
->  	void *addr;
->  
-> -	sg = kzalloc(sizeof(*sg), GFP_KERNEL);
-> +	sg = kmalloc(sizeof(*sg), GFP_KERNEL);
->  	if (!sg)
->  		return NULL;
->  
-> 
+Rather than replying to the 0/n cover letter to a patch
+series, can you reply to each of the specific patches in
+the patch series you are applying?
+
+Otherwise, it's a bit difficult to figure out which patches
+you are applying.
+
+thanks
+

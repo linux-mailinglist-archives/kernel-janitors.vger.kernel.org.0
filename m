@@ -2,147 +2,127 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C73527BFB0
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 10:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EF8E27BFCE
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 10:42:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727743AbgI2Ih2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Sep 2020 04:37:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38276 "EHLO
+        id S1727416AbgI2ImU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Sep 2020 04:42:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727704AbgI2Ih2 (ORCPT
+        with ESMTP id S1725468AbgI2ImT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Sep 2020 04:37:28 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B99E6C061755;
-        Tue, 29 Sep 2020 01:37:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=v5vnDoRc4ZKtko7VMYgaivypIuJCC2NRDarrflWRAvg=; b=wWOWiQjkvkGZA1s8deLmbxrNC8
-        pTcycx1AeIheWo8YKmtblar3DRLp4W61abEUjEJyP6RQBpMuYfWiHkySwLN/XA6JkCQXmj8t5s5H/
-        oFAZHBivV6j7ACxy+E4raYd9VO8ksiOruct0gnGWydfhvRUM+VdKBDXOamN5yEIv4NLtIiPcVUyMf
-        Lb0luWbwFDoxRIZ9VHp2TQDv7OMm2pYTdkcd9xZcVQn+IPU3jabWtekFvK3qKFJfpyUWhIOP/bGYN
-        spFFSPleU3snhac//usQJYmy4VJla5oUw7Oer4n+RZNQ5R+j5pcykZc+j4KpAHiH0jqHzccHH7L3D
-        gdzi9qwg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kNB8J-00031e-Pr; Tue, 29 Sep 2020 08:37:12 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 60639303F45;
-        Tue, 29 Sep 2020 10:37:09 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 42614211CC1CA; Tue, 29 Sep 2020 10:37:09 +0200 (CEST)
-Date:   Tue, 29 Sep 2020 10:37:09 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Balbir Singh <sblbir@amazon.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        Tue, 29 Sep 2020 04:42:19 -0400
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94716C061755;
+        Tue, 29 Sep 2020 01:42:19 -0700 (PDT)
+Received: by mail-ej1-x643.google.com with SMTP id p9so13822843ejf.6;
+        Tue, 29 Sep 2020 01:42:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:in-reply-to:message-id:references
+         :user-agent:mime-version;
+        bh=lMOqo3ypO/SZ3oHUy6euRnuasGkm67DC6ZbiwUFwB8M=;
+        b=C9E4mLgNTPQm8NqaAoz6itH7ufzLLW2Afp390W5SRJ4Rdbl7etn2wAbpam4yITVwLD
+         F6FwrUs08Nvzo3Mfl42l34qKUnxrHpNoeI4tuU4Rh5fdZSfPxUztwLF3B8mRIf+EFyTV
+         Bw1kXUFQm0WiVqzUhAXpob85WyYHYrBekAyw4cYZeVFKbNMVv3Lb2xSuVqe13M3RxfjP
+         KdrELuR5PtKXB6MbMdbyIvZpTiEB14c8DNlnX3V1U7sPu/om8bscAIW+QwD0756G5JJb
+         3SL0nmILrDsE4MXwsMmLjKYUtJWrj6PUmyZB5LLwrM1DZ4kB+fPrk7jWxb/T3ePyRn8t
+         njcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version;
+        bh=lMOqo3ypO/SZ3oHUy6euRnuasGkm67DC6ZbiwUFwB8M=;
+        b=e0UM7bIITYZ/g+6JKGoZKdz8GJHATTiFn/GuvOovr67E7mEfaY6LAoQAOf6+LECzyK
+         IK8QR8lx7mxCPiBxPxuaKqqEwMExhX0XMVPJHhZ0TKOd/uBbU4QxP4JNxSX85lbCJtgE
+         F5SAkJlVBCFhVVLAAZmtWw02jAlWUP1YMiJXhfAbnM9YNJszqKsaEj1qWRwY7ixTCtxC
+         R15mDY4YiE7mWczbmZ6XsMRHopT89KDNXWzbLPdAp4B0osi2vLklEbrJlecrcjcYCbhY
+         /zyeK2KNe7kepp7bukbepvVwKd9o4JR+NtYqJJLlU0lyf/EDFZfXye9sUacMjNWK1pTL
+         v6wQ==
+X-Gm-Message-State: AOAM531WJWeQpcii1E5gk22yz3M4BmqlTm+FbrJ+ngpmoYe4x8qeiMTq
+        Ukb1n1p+J4SDkoXxSEIiea8=
+X-Google-Smtp-Source: ABdhPJzGWfoP9r1EYK/PGbfUWz5nDplWzfMQE+vmcmMJK3RNsVSeyNcSHA23E0BLUDmcdQqqkuVHYg==
+X-Received: by 2002:a17:906:f755:: with SMTP id jp21mr326002ejb.97.1601368938287;
+        Tue, 29 Sep 2020 01:42:18 -0700 (PDT)
+Received: from felia ([2001:16b8:2d89:9100:6c4a:28e4:c658:86f9])
+        by smtp.gmail.com with ESMTPSA id u9sm4528036eje.119.2020.09.29.01.42.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2020 01:42:17 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
+Date:   Tue, 29 Sep 2020 10:42:15 +0200 (CEST)
+X-X-Sender: lukas@felia
+To:     Dave Hansen <dave.hansen@intel.com>
+cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
         Nathan Chancellor <natechancellor@gmail.com>,
         Nick Desaulniers <ndesaulniers@google.com>,
         linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
         kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech
-Subject: Re: [PATCH -next for tip:x86/pti] x86/tlb: drop unneeded local vars
- in enable_l1d_flush_for_task()
-Message-ID: <20200929083709.GC2651@hirez.programming.kicks-ass.net>
-References: <20200928124457.27289-1-lukas.bulwahn@gmail.com>
- <20200929071211.GJ2628@hirez.programming.kicks-ass.net>
+Subject: Re: [PATCH] x86/mm: drop superfluous initialization
+In-Reply-To: <1d376c1f-2f14-5c29-671e-ca59853fa4a4@intel.com>
+Message-ID: <alpine.DEB.2.21.2009291034160.17656@felia>
+References: <20200928100004.25674-1-lukas.bulwahn@gmail.com> <1d376c1f-2f14-5c29-671e-ca59853fa4a4@intel.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200929071211.GJ2628@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Sep 29, 2020 at 09:12:11AM +0200, Peter Zijlstra wrote:
-> On Mon, Sep 28, 2020 at 02:44:57PM +0200, Lukas Bulwahn wrote:
-> > diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-> > index 6b0f4c88b07c..90515c04d90a 100644
-> > --- a/arch/x86/mm/tlb.c
-> > +++ b/arch/x86/mm/tlb.c
-> > @@ -316,7 +316,7 @@ EXPORT_SYMBOL_GPL(leave_mm);
-> >  
-> >  int enable_l1d_flush_for_task(struct task_struct *tsk)
-> >  {
-> > -	int cpu, ret = 0, i;
-> > +	int i;
-> >  
-> >  	/*
-> >  	 * Do not enable L1D_FLUSH_OUT if
-> > @@ -329,7 +329,7 @@ int enable_l1d_flush_for_task(struct task_struct *tsk)
-> >  			!static_cpu_has(X86_FEATURE_FLUSH_L1D))
-> >  		return -EINVAL;
-> >  
-> > -	cpu = get_cpu();
-> > +	get_cpu();
-> >  
-> >  	for_each_cpu(i, &tsk->cpus_mask) {
-> >  		if (cpu_data(i).smt_active == true) {
-> > @@ -340,7 +340,7 @@ int enable_l1d_flush_for_task(struct task_struct *tsk)
-> >  
-> >  	set_ti_thread_flag(&tsk->thread_info, TIF_SPEC_L1D_FLUSH);
-> >  	put_cpu();
-> > -	return ret;
-> > +	return 0;
-> >  }
-> 
-> If you don't use the return value of get_cpu(), then change it over to
-> preempt_{dis,en}able(), but this got me looking at the function, wtf is
-> that garbage supposed to do in the first place
-> 
-> What do we need to disable preemption for?
-> 
-> Please explain the desired semantics against sched_setaffinity().
 
-Here, I fixed it..
 
----
- arch/x86/mm/tlb.c | 24 +++---------------------
- 1 file changed, 3 insertions(+), 21 deletions(-)
+On Mon, 28 Sep 2020, Dave Hansen wrote:
 
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 6b0f4c88b07c..f02a2f1909da 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -316,31 +316,13 @@ EXPORT_SYMBOL_GPL(leave_mm);
- 
- int enable_l1d_flush_for_task(struct task_struct *tsk)
- {
--	int cpu, ret = 0, i;
--
--	/*
--	 * Do not enable L1D_FLUSH_OUT if
--	 * b. The CPU is not affected by the L1TF bug
--	 * c. The CPU does not have L1D FLUSH feature support
--	 * c. The task's affinity is on cores with SMT on.
--	 */
--
- 	if (!boot_cpu_has_bug(X86_BUG_L1TF) ||
--			!static_cpu_has(X86_FEATURE_FLUSH_L1D))
-+	    !boot_cpu_has(X86_FEATURE_FLUSH_L1D) ||
-+	    sched_smt_active());
- 		return -EINVAL;
- 
--	cpu = get_cpu();
--
--	for_each_cpu(i, &tsk->cpus_mask) {
--		if (cpu_data(i).smt_active == true) {
--			put_cpu();
--			return -EINVAL;
--		}
--	}
--
- 	set_ti_thread_flag(&tsk->thread_info, TIF_SPEC_L1D_FLUSH);
--	put_cpu();
--	return ret;
-+	return 0;
- }
- 
- int disable_l1d_flush_for_task(struct task_struct *tsk)
+> On 9/28/20 3:00 AM, Lukas Bulwahn wrote:
+> > diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+> > index c7a47603537f..5632f02146ca 100644
+> > --- a/arch/x86/mm/init.c
+> > +++ b/arch/x86/mm/init.c
+> > @@ -609,7 +609,7 @@ static void __init memory_map_top_down(unsigned long map_start,
+> >  	step_size = PMD_SIZE;
+> >  	max_pfn_mapped = 0; /* will get exact value next */
+> >  	min_pfn_mapped = real_end >> PAGE_SHIFT;
+> > -	last_start = start = real_end;
+> > +	last_start = real_end;
+> 
+> Thanks for finding this.
+> 
+> This becomes even more obviously correct if we just move the 'start'
+> declaration into the while() loop.  If we do that, it puts the three
+> assignment locations right next to the definition, and its trivial to
+> spot that the initialization was not missed:
+> 
+>         while (last_start > map_start) {
+> 		unsigned long start;
+> 
+>                 if (last_start > step_size) {
+>                         start = round_down(last_start - 1, step_size);
+>                         if (start < map_start)
+>                                 start = map_start;
+>                 } else
+>                         start = map_start;
+> 		...
+>
+
+Agree, this point is simply a question of style:
+
+Shall local variables be defined as "local" as possible or simply 
+consistently at the beginning of each function?
+
+If there are no strong opinions of style, I would just keep this patch 
+as-is.
+
+> Either way, your patch looks correct to me:
+> 
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+> 
+
+Thanks for the Ack.
+
+Lukas

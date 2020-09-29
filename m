@@ -2,95 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F4F027D099
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 16:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 785FC27D2AC
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 17:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728327AbgI2OGu convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Sep 2020 10:06:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33522 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727328AbgI2OGu (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Sep 2020 10:06:50 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3BB9C061755
-        for <kernel-janitors@vger.kernel.org>; Tue, 29 Sep 2020 07:06:49 -0700 (PDT)
-Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1kNGHF-0008Ih-G2; Tue, 29 Sep 2020 16:06:45 +0200
-Received: from pza by lupine with local (Exim 4.92)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1kNGHE-0001LI-Gy; Tue, 29 Sep 2020 16:06:44 +0200
-Message-ID: <71e129112af93a3ba618e8046313cd4b3871a7a8.camel@pengutronix.de>
-Subject: Re: [PATCH 01/20] media: coda: use semicolons rather than commas to
- separate statements
-From:   Philipp Zabel <p.zabel@pengutronix.de>
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     Valdis =?UTF-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        Joe Perches <joe@perches.com>,
+        id S1728570AbgI2P1q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Sep 2020 11:27:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33862 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725497AbgI2P1p (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 29 Sep 2020 11:27:45 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 49F7220773;
+        Tue, 29 Sep 2020 15:27:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601393265;
+        bh=28J5Xqnu8HqFsJcPfiPiJszNONTsRfXlkXep+D/a558=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=d6eQ1opvgx7r1DZYDCYw1sZacOG4Op6OPkt5+GqnHTNy5fJZ7uJiJP2CustpQ3m9i
+         BpyhJuVfKEXR0baNVGfemQUuehjFzMz+KZMdEWLVZ9g23ShiNXNsu2xrDncJuC8/GG
+         a9AqoFp8hi01e3Ma3UKJl+69LMzi7bJAwqLH1/wg=
+Date:   Tue, 29 Sep 2020 16:27:39 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     David Lechner <david@lechnology.com>
+Cc:     Julia Lawall <Julia.Lawall@inria.fr>,
+        Valdis =?UTF-8?B?S2zEk3RuaWVr?= =?UTF-8?B?cw==?= 
+        <valdis.kletnieks@vt.edu>, Joe Perches <joe@perches.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         kernel-janitors@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Tue, 29 Sep 2020 16:06:44 +0200
-In-Reply-To: <1601385283-26144-2-git-send-email-Julia.Lawall@inria.fr>
-References: <1601385283-26144-1-git-send-email-Julia.Lawall@inria.fr>
-         <1601385283-26144-2-git-send-email-Julia.Lawall@inria.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.30.5-1.1 
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 15/18] counter: use semicolons rather than commas to
+ separate statements
+Message-ID: <20200929162739.40c8257e@archlinux>
+In-Reply-To: <be1d59c5-fd0c-821e-0357-441c26c3d16c@lechnology.com>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+        <1601233948-11629-16-git-send-email-Julia.Lawall@inria.fr>
+        <be1d59c5-fd0c-821e-0357-441c26c3d16c@lechnology.com>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 2020-09-29 at 15:14 +0200, Julia Lawall wrote:
-> Replace commas with semicolons.  Commas introduce unnecessary
-> variability in the code structure and are hard to see.  What is done
-> is essentially described by the following Coccinelle semantic patch
-> (http://coccinelle.lip6.fr/):
-> 
-> // <smpl>
-> @@ expression e1,e2; @@
-> e1
-> -,
-> +;
-> e2
-> ... when any
-> // </smpl>
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> 
-> ---
->  drivers/media/platform/coda/coda-common.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/media/platform/coda/coda-common.c b/drivers/media/platform/coda/coda-common.c
-> index eeba6c060981..1bb16cc0a823 100644
-> --- a/drivers/media/platform/coda/coda-common.c
-> +++ b/drivers/media/platform/coda/coda-common.c
-> @@ -2861,7 +2861,7 @@ static int coda_register_device(struct coda_dev *dev, int i)
->  	strscpy(vfd->name, dev->devtype->vdevs[i]->name, sizeof(vfd->name));
->  	vfd->fops	= &coda_fops;
->  	vfd->ioctl_ops	= &coda_ioctl_ops;
-> -	vfd->release	= video_device_release_empty,
-> +	vfd->release	= video_device_release_empty;
->  	vfd->lock	= &dev->dev_mutex;
->  	vfd->v4l2_dev	= &dev->v4l2_dev;
->  	vfd->vfl_dir	= VFL_DIR_M2M;
-> 
+On Mon, 28 Sep 2020 10:37:28 -0500
+David Lechner <david@lechnology.com> wrote:
+
+> On 9/27/20 2:12 PM, Julia Lawall wrote:
+> > Replace commas with semicolons.  What is done is essentially described by
+> > the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
+> > 
+> > // <smpl>
+> > @@ expression e1,e2; @@
+> > e1
+> > -,
+> > +;
+> > e2
+> > ... when any
+> > // </smpl>
+> > 
+> > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> > 
+> > ---  
+> Reviewed-by: David Lechner <david@lechnology.com>
+I've picked this one up.  Applied to the togreg branch of iio.git and
+pushed out as testing for all the normal reasons.
+
+Thanks,
+
+Jonathan
+
 > 
 
-Thank you,
-
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-
-regards
-Philipp

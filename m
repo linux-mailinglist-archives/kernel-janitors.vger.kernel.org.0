@@ -2,90 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6524827B902
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 02:45:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1DF827B90C
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 02:52:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727151AbgI2Apa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Sep 2020 20:45:30 -0400
-Received: from smtprelay0076.hostedemail.com ([216.40.44.76]:56402 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726698AbgI2Apa (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Sep 2020 20:45:30 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay01.hostedemail.com (Postfix) with ESMTP id 780A9100E7B40;
-        Tue, 29 Sep 2020 00:45:28 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:967:973:988:989:1260:1263:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2525:2553:2561:2564:2682:2685:2693:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3870:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4362:4605:5007:6248:6742:7903:9025:9040:10004:10400:10848:10967:11232:11658:11914:12043:12266:12295:12297:12438:12740:12760:12895:13069:13071:13161:13229:13311:13357:13439:14180:14181:14659:14721:14777:21060:21080:21365:21433:21451:21627:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: self77_011759527186
-X-Filterd-Recvd-Size: 2723
-Received: from XPS-9350.home (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf03.hostedemail.com (Postfix) with ESMTPA;
-        Tue, 29 Sep 2020 00:45:25 +0000 (UTC)
-Message-ID: <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com>
-Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
- statements
-From:   Joe Perches <joe@perches.com>
-To:     Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-        Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     linux-stm32@st-md-mailman.stormreply.com,
-        linux-crypto@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        linux-acpi@vger.kernel.org, David Lechner <david@lechnology.com>,
-        Valdis =?UTF-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        kernel-janitors@vger.kernel.org, drbd-dev@lists.linbit.com,
-        openipmi-developer@lists.sourceforge.net,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        linux-ide@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-wireless@vger.kernel.org,
-        Neil Armstrong <narmstrong@baylibre.com>
-Date:   Mon, 28 Sep 2020 17:45:24 -0700
-In-Reply-To: <160132172369.55460.9237357219623604216.b4-ty@kernel.org>
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
-         <160132172369.55460.9237357219623604216.b4-ty@kernel.org>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.4-0ubuntu1 
-MIME-Version: 1.0
+        id S1727035AbgI2Awi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Sep 2020 20:52:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55596 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726419AbgI2Awi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 28 Sep 2020 20:52:38 -0400
+Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net [73.231.172.41])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A171B20773;
+        Tue, 29 Sep 2020 00:52:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601340758;
+        bh=0mD0MAsSQmXLf32VYY8kxZxsnPJYB0TcFxo5l/cuL70=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Efa/bidOdurmZfr9p+9R/k4FZ7AS6e2cwywwVg2KEz3zX8Kk9Ee89Ldc4Zt+Hl2mQ
+         i1lo46/fajIIrxhMyxijl2kIdyCKiH3Mz1xoWdnOYB2Lku5aN3Kk75rii1PbeSHZ4R
+         o5qg6sRE9NF20GUG7peQ7fQkJrWdy2p+fcgTmTDc=
+Date:   Mon, 28 Sep 2020 17:52:37 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Jason Gunthorpe <jgg@ziepe.ca>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        =?ISO-8859-1?Q?J=E9r=F4me?= Glisse <jglisse@redhat.com>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Wei Yongjun <weiyongjun1@huawei.com>,
+        Ralph Campbell <rcampbell@nvidia.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v3] mm/hmm/test: use after free in
+ dmirror_allocate_chunk()
+Message-Id: <20200928175237.6b3024fe6ad96d70c75d5de1@linux-foundation.org>
+In-Reply-To: <20200926221720.GK9916@ziepe.ca>
+References: <d1b31586-426a-e0b1-803e-3eff30196c05@web.de>
+        <20200926121402.GA7467@kadam>
+        <20200926221720.GK9916@ziepe.ca>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 2020-09-28 at 20:35 +0100, Mark Brown wrote:
-> On Sun, 27 Sep 2020 21:12:10 +0200, Julia Lawall wrote:
-> > These patches replace commas by semicolons.  This was done using the
-> > Coccinelle semantic patch (http://coccinelle.lip6.fr/) shown below.
+On Sat, 26 Sep 2020 19:17:20 -0300 Jason Gunthorpe <jgg@ziepe.ca> wrote:
+
+> On Sat, Sep 26, 2020 at 03:14:02PM +0300, Dan Carpenter wrote:
+> > The error handling code does this:
 > > 
-> > This semantic patch ensures that commas inside for loop headers will not be
-> > transformed.  It also doesn't touch macro definitions.
+> > err_free:
+> > 	kfree(devmem);
+> >         ^^^^^^^^^^^^^
+> > err_release:
+> > 	release_mem_region(devmem->pagemap.range.start, range_len(&devmem->pagemap.range));
+> >                            ^^^^^^^^
+> > The problem is that when we use "devmem->pagemap.range.start" the
+> > "devmem" pointer is either NULL or freed.
 > > 
-> > Coccinelle ensures that braces are added as needed when a single-statement
-> > branch turns into a multi-statement one.
+> > Neither the allocation nor the call to request_free_mem_region() has to
+> > be done under the lock so I moved those to the start of the function.
 > > 
-> > [...]
+> > Fixes: 1f9c4bb986d9 ("mm/memremap_pages: convert to 'struct range'")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > Reviewed-by: Ralph Campbell <rcampbell@nvidia.com>
+> > ---
+> > v2: The first version introduced a locking bug
+> > v3: Markus Elfring pointed out that the Fixes tag was wrong.  This bug
+> > was in the original commit and then fixed and then re-introduced.  I was
+> > quite bothered by how this bug lasted so long in the source code, but
+> > now we know.  As soon as it is introduced we fixed it.
+> > 
+> > One problem with the kernel QC process is that I think everyone marks
+> > the bug as "old/dealt with" so it was only because I was added a new
+> > check for resource leaks that it was found when it was re-introduced.
+> > 
+> >  lib/test_hmm.c | 44 ++++++++++++++++++++++----------------------
+> >  1 file changed, 22 insertions(+), 22 deletions(-)
 > 
-> Applied to
+> Hi Andrew, 
 > 
->    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap.git for-next
+> I don't have have any hmm related patches this cycle, can you take
+> this into your tree?
 > 
-> Thanks!
-> 
-> [1/1] regmap: debugfs: use semicolons rather than commas to separate statements
->       commit: 7f4a122d0b50b40c64d24a5cf7aafe26dd9487ee
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
-Hi Mark.
+Thanks.
 
-Rather than replying to the 0/n cover letter to a patch
-series, can you reply to each of the specific patches in
-the patch series you are applying?
-
-Otherwise, it's a bit difficult to figure out which patches
-you are applying.
-
-thanks
-
+It's actually a fix against Dan Williams' -mm patch "mm/memremap_pages:
+convert to 'struct range'"

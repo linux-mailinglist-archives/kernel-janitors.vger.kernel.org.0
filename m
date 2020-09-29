@@ -2,125 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DA1F27CFA2
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 15:43:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F4F027D099
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 16:06:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730907AbgI2Nmx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Sep 2020 09:42:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57984 "EHLO
+        id S1728327AbgI2OGu convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Sep 2020 10:06:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730883AbgI2Nmw (ORCPT
+        with ESMTP id S1727328AbgI2OGu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Sep 2020 09:42:52 -0400
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58C39C0613D7
-        for <kernel-janitors@vger.kernel.org>; Tue, 29 Sep 2020 06:42:52 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id c2so4448354otp.7
-        for <kernel-janitors@vger.kernel.org>; Tue, 29 Sep 2020 06:42:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=7Re7sYUHoP/OO8RJy6m0dCE8FjQyDvN9idLxneZjSGs=;
-        b=Z34rZ/ds72mfUVTwVAO13Bpz4khcxmzLmZRTJ6BeCzZVGwvFQBFtfTqV+Mw0LWRYNM
-         uCrAI5JhrSTo6VZxNGORq4+uDlbuWvNn0BzZwcj+1vO5F++bvuicz0Q+A30JgXV/f7rA
-         Rk9jpCrpw+utP3CvREty99qb9cv8smpJnWoLw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=7Re7sYUHoP/OO8RJy6m0dCE8FjQyDvN9idLxneZjSGs=;
-        b=hTPrY0lE2rUHDdAQcX8PYFoY8muYhB095vNtr5aWArbEzYpfhTzVK0tTA62m6n/g8N
-         KSJYPqww+JuaaC+KjAAE+g7ZHTXO4KP3iVgon86PIcmJKHLRbE/K5C/fYbgeBRD395Rn
-         HaglyKB/xBW5/0Tpr5kKc2SzL7WVxrXYXdsD5pOW9Zu6VfpZjtg9x1cxJ8Y+BykzCPgV
-         UmoGiPnyLT7y4qWZR4EmCCVWorztUnotlo6xnRaap9MIVMW/2mKV4xIWa761w+zGBepM
-         jAJtvNK2Gd5OCy5J9PZabqi/BZG74tqFddGf4zz4Ai8rx+kyj1Xar/7MD4KrQILpzzFY
-         uCeg==
-X-Gm-Message-State: AOAM530bh1x8rosax0xDeiBYdlvwMM/ZpY1zVaOqKxLvwI7NnCdsoPAz
-        RyP/VmBIiihNmwdokONQ8y5Png==
-X-Google-Smtp-Source: ABdhPJxomgEcCkXHcyd2u2LBzXalo3/5KY6BNqNVB1FRlJIPPq8bhwRXFJ9dfNYvva75m6zRbuIoZQ==
-X-Received: by 2002:a05:6830:196:: with SMTP id q22mr2688536ota.221.1601386971432;
-        Tue, 29 Sep 2020 06:42:51 -0700 (PDT)
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id l4sm993642oie.25.2020.09.29.06.42.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Sep 2020 06:42:50 -0700 (PDT)
-Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
- statements
-To:     Joe Perches <joe@perches.com>,
-        Julia Lawall <julia.lawall@inria.fr>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Shuah Khan <shuah@kernel.org>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-iio@vger.kernel.org,
-        drbd-dev@tron.linbit.com,
-        =?UTF-8?Q?Valdis_Kl=c4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        David Lechner <david@lechnology.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        linux-wireless@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-block@vger.kernel.org, linux-ide@vger.kernel.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-amlogic@lists.infradead.org,
+        Tue, 29 Sep 2020 10:06:50 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3BB9C061755
+        for <kernel-janitors@vger.kernel.org>; Tue, 29 Sep 2020 07:06:49 -0700 (PDT)
+Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1kNGHF-0008Ih-G2; Tue, 29 Sep 2020 16:06:45 +0200
+Received: from pza by lupine with local (Exim 4.92)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1kNGHE-0001LI-Gy; Tue, 29 Sep 2020 16:06:44 +0200
+Message-ID: <71e129112af93a3ba618e8046313cd4b3871a7a8.camel@pengutronix.de>
+Subject: Re: [PATCH 01/20] media: coda: use semicolons rather than commas to
+ separate statements
+From:   Philipp Zabel <p.zabel@pengutronix.de>
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     Valdis =?UTF-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        Joe Perches <joe@perches.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        openipmi-developer@lists.sourceforge.net,
-        linux-clk@vger.kernel.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Shuah Khan <skhan@linuxfoundation.org>
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
- <CAMj1kXGh+CzuXkAnqsoMO2A3T1p=D6uFOV347Ym5+VFn5U1gWg@mail.gmail.com>
- <20200929124108.GY4282@kadam>
- <alpine.DEB.2.22.394.2009291445050.2808@hadrien>
- <5f0d2b20f5088281363bb4a35c5652a2c087f159.camel@perches.com>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <cd75e2d1-9923-b725-78cd-fd5611431584@linuxfoundation.org>
-Date:   Tue, 29 Sep 2020 07:42:49 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        kernel-janitors@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Tue, 29 Sep 2020 16:06:44 +0200
+In-Reply-To: <1601385283-26144-2-git-send-email-Julia.Lawall@inria.fr>
+References: <1601385283-26144-1-git-send-email-Julia.Lawall@inria.fr>
+         <1601385283-26144-2-git-send-email-Julia.Lawall@inria.fr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-In-Reply-To: <5f0d2b20f5088281363bb4a35c5652a2c087f159.camel@perches.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 9/29/20 7:34 AM, Joe Perches wrote:
-> On Tue, 2020-09-29 at 14:47 +0200, Julia Lawall wrote:
->> On Tue, 29 Sep 2020, Dan Carpenter wrote:
->>> The times where commas are used deliberately to replace curly braces are
->>> just evil.  Either way the code is cleaner with semi-colons.
->>
->> I also found exaamples like the following to be particularly unforunate:
->>
->>                                  fprintf(stderr,
->>                                          "page_nr %lu wrong count %Lu %Lu\n",
->>                                         page_nr, count,
->>                                         count_verify[page_nr]), exit(1);
->>
->> The exit is very hard to see, unless you know to look for it.
+On Tue, 2020-09-29 at 15:14 +0200, Julia Lawall wrote:
+> Replace commas with semicolons.  Commas introduce unnecessary
+> variability in the code structure and are hard to see.  What is done
+> is essentially described by the following Coccinelle semantic patch
+> (http://coccinelle.lip6.fr/):
 > 
-> I sent that patch last month.
-> https://patchwork.kernel.org/patch/11734877/
+> // <smpl>
+> @@ expression e1,e2; @@
+> e1
+> -,
+> +;
+> e2
+> ... when any
+> // </smpl>
+> 
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> 
+> ---
+>  drivers/media/platform/coda/coda-common.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/media/platform/coda/coda-common.c b/drivers/media/platform/coda/coda-common.c
+> index eeba6c060981..1bb16cc0a823 100644
+> --- a/drivers/media/platform/coda/coda-common.c
+> +++ b/drivers/media/platform/coda/coda-common.c
+> @@ -2861,7 +2861,7 @@ static int coda_register_device(struct coda_dev *dev, int i)
+>  	strscpy(vfd->name, dev->devtype->vdevs[i]->name, sizeof(vfd->name));
+>  	vfd->fops	= &coda_fops;
+>  	vfd->ioctl_ops	= &coda_ioctl_ops;
+> -	vfd->release	= video_device_release_empty,
+> +	vfd->release	= video_device_release_empty;
+>  	vfd->lock	= &dev->dev_mutex;
+>  	vfd->v4l2_dev	= &dev->v4l2_dev;
+>  	vfd->vfl_dir	= VFL_DIR_M2M;
+> 
 > 
 
-I see what happened. This patch touches lib, cpupower, and selftests.
-Guess lost in the limbo of who takes it.
+Thank you,
 
-  tools/lib/subcmd/help.c                    |  10 +-
-  tools/power/cpupower/utils/cpufreq-set.c   |  14 +-
-  tools/testing/selftests/vm/gup_benchmark.c |  18 +-
-  tools/testing/selftests/vm/userfaultfd.c   | 296 +++++++++++++--------
-  4 files changed, 210 insertions(+), 128 deletions(-)
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 
-I can take it through one of my trees.
-
-thanks,
--- Shuah
+regards
+Philipp

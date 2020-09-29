@@ -2,77 +2,142 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B63527C77E
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 13:54:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8567F27C873
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 14:02:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731347AbgI2LyR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Sep 2020 07:54:17 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:32180 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730629AbgI2Lq2 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Sep 2020 07:46:28 -0400
-X-IronPort-AV: E=Sophos;i="5.77,318,1596492000"; 
-   d="scan'208";a="470044784"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Sep 2020 13:46:20 +0200
-Date:   Tue, 29 Sep 2020 13:46:19 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Mark Brown <broonie@kernel.org>
-cc:     Joe Perches <joe@perches.com>, linux-iio@vger.kernel.org,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-crypto@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        linux-acpi@vger.kernel.org, David Lechner <david@lechnology.com>,
-        =?UTF-8?Q?Valdis_Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        kernel-janitors@vger.kernel.org, drbd-dev@lists.linbit.com,
-        openipmi-developer@lists.sourceforge.net,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        linux-ide@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-wireless@vger.kernel.org,
-        Neil Armstrong <narmstrong@baylibre.com>
-Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
- statements
-In-Reply-To: <20200929113745.GB4799@sirena.org.uk>
-Message-ID: <alpine.DEB.2.22.394.2009291344590.2808@hadrien>
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr> <160132172369.55460.9237357219623604216.b4-ty@kernel.org> <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com> <20200929113745.GB4799@sirena.org.uk>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        id S1731471AbgI2MCW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Sep 2020 08:02:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33642 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730460AbgI2LjM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 29 Sep 2020 07:39:12 -0400
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7A3842083B;
+        Tue, 29 Sep 2020 11:39:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601379552;
+        bh=rWMufWl3bYjWXmiA1ctYATk98OZ2gdOzkhxi01F/kE4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=x1mkLpQeN8hTEP+eE9Sex4LZOq2KAptXBchgebWsOx2L5BDxMWApZbQFuWxwlPy97
+         0B+wXH+Zqn7xvsJR8+lckq7Ox27lC4lEvgwZjSQ65435NNVGEqRB0jtjiyDvq8pIcS
+         AUcjqJfA9tyDIHrVNk4wzqjYBKvRoyEYqv4D/+yk=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Don Zickus <dzickus@redhat.com>, He Zhe <zhe.he@windriver.com>,
+        Jan Stancek <jstancek@redhat.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        kernel-janitors@vger.kernel.org,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 187/388] perf cpumap: Fix snprintf overflow check
+Date:   Tue, 29 Sep 2020 12:58:38 +0200
+Message-Id: <20200929110019.529864567@linuxfoundation.org>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200929110010.467764689@linuxfoundation.org>
+References: <20200929110010.467764689@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+
+[ Upstream commit d74b181a028bb5a468f0c609553eff6a8fdf4887 ]
+
+'snprintf' returns the number of characters which would be generated for
+the given input.
+
+If the returned value is *greater than* or equal to the buffer size, it
+means that the output has been truncated.
+
+Fix the overflow test accordingly.
+
+Fixes: 7780c25bae59f ("perf tools: Allow ability to map cpus to nodes easily")
+Fixes: 92a7e1278005b ("perf cpumap: Add cpu__max_present_cpu()")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Suggested-by: David Laight <David.Laight@ACULAB.COM>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Don Zickus <dzickus@redhat.com>
+Cc: He Zhe <zhe.he@windriver.com>
+Cc: Jan Stancek <jstancek@redhat.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: kernel-janitors@vger.kernel.org
+Link: http://lore.kernel.org/lkml/20200324070319.10901-1-christophe.jaillet@wanadoo.fr
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ tools/perf/util/cpumap.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/tools/perf/util/cpumap.c b/tools/perf/util/cpumap.c
+index a22c1114e880d..324ec0456c83f 100644
+--- a/tools/perf/util/cpumap.c
++++ b/tools/perf/util/cpumap.c
+@@ -299,7 +299,7 @@ static void set_max_cpu_num(void)
+ 
+ 	/* get the highest possible cpu number for a sparse allocation */
+ 	ret = snprintf(path, PATH_MAX, "%s/devices/system/cpu/possible", mnt);
+-	if (ret == PATH_MAX) {
++	if (ret >= PATH_MAX) {
+ 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
+ 		goto out;
+ 	}
+@@ -310,7 +310,7 @@ static void set_max_cpu_num(void)
+ 
+ 	/* get the highest present cpu number for a sparse allocation */
+ 	ret = snprintf(path, PATH_MAX, "%s/devices/system/cpu/present", mnt);
+-	if (ret == PATH_MAX) {
++	if (ret >= PATH_MAX) {
+ 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
+ 		goto out;
+ 	}
+@@ -338,7 +338,7 @@ static void set_max_node_num(void)
+ 
+ 	/* get the highest possible cpu number for a sparse allocation */
+ 	ret = snprintf(path, PATH_MAX, "%s/devices/system/node/possible", mnt);
+-	if (ret == PATH_MAX) {
++	if (ret >= PATH_MAX) {
+ 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
+ 		goto out;
+ 	}
+@@ -423,7 +423,7 @@ int cpu__setup_cpunode_map(void)
+ 		return 0;
+ 
+ 	n = snprintf(path, PATH_MAX, "%s/devices/system/node", mnt);
+-	if (n == PATH_MAX) {
++	if (n >= PATH_MAX) {
+ 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
+ 		return -1;
+ 	}
+@@ -438,7 +438,7 @@ int cpu__setup_cpunode_map(void)
+ 			continue;
+ 
+ 		n = snprintf(buf, PATH_MAX, "%s/%s", path, dent1->d_name);
+-		if (n == PATH_MAX) {
++		if (n >= PATH_MAX) {
+ 			pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
+ 			continue;
+ 		}
+-- 
+2.25.1
 
 
-On Tue, 29 Sep 2020, Mark Brown wrote:
 
-> On Mon, Sep 28, 2020 at 05:45:24PM -0700, Joe Perches wrote:
-> > On Mon, 2020-09-28 at 20:35 +0100, Mark Brown wrote:
->
-> > > [1/1] regmap: debugfs: use semicolons rather than commas to separate statements
-> > >       commit: 7f4a122d0b50b40c64d24a5cf7aafe26dd9487ee
->
-> > Rather than replying to the 0/n cover letter to a patch
-> > series, can you reply to each of the specific patches in
-> > the patch series you are applying?
->
-> > Otherwise, it's a bit difficult to figure out which patches
-> > you are applying.
->
-> Feel free to submit patches to b4.  Ideally things like this wouldn't be
-> being sent as serieses in the first place, there's no dependencies or
-> interactions between the patches.
-
-It was suggested (a long time ago, not with respect to this patch in
-particular) that sending such patches in a series is useful because it
-allows people who are not interested in the 18 patches to skip over them
-more easily.  So there are two conflicting needs...
-
-julia

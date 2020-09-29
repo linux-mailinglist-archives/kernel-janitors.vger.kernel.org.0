@@ -2,59 +2,43 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B21E27BF9A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 10:33:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C73527BFB0
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 10:37:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727897AbgI2IdN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Sep 2020 04:33:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37622 "EHLO
+        id S1727743AbgI2Ih2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Sep 2020 04:37:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727893AbgI2IdN (ORCPT
+        with ESMTP id S1727704AbgI2Ih2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Sep 2020 04:33:13 -0400
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED92EC0613D5;
-        Tue, 29 Sep 2020 01:33:11 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id e22so5418560edq.6;
-        Tue, 29 Sep 2020 01:33:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=HK41/qbPxO+SoGRXquqjP/gEh3I+38ZE+z63fzbFSAM=;
-        b=S8yJWuwRM6E6vG99yfmoQMLxY2mnpbYIcvbtstIvuN666T+YtUHi8dh3la0w5Yafct
-         PZ/XVQQn9ZDZjIkn4uGu2dWW1+YOT5H5gGswkiD/F5rQIANePpgPusGcvJ6YplN7IZfP
-         WshdCVcyQ4ipZgpJwuIkCAotuYHX/k7lKN4DNBdxG1vIVH5x0h00kep03tjP3ggBWszA
-         nj8BzeKlG4yfnwmTtrV1GJoGQDLgRRI1iVYvEBI9TD5nYieaMf8Np5G1atY+LEHy8GBo
-         tfAdIRvOSPfaa6A2tJ/HySv258TxNjiCkJvG4IwF6Pn8G83LykzK+q8vWwIbnOcYDMYZ
-         tH6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=HK41/qbPxO+SoGRXquqjP/gEh3I+38ZE+z63fzbFSAM=;
-        b=RBmB2+3xCKjVc9l35kLufYxUL/276DTJufkP+incWKuwnaQttEW/3kSGj+9RHHpusr
-         uW0Ny049s6cTT5jHV3e3pzMskAq4b/N3oiG8jFWE3zsjGvpIiB5TrIcY3Zop8Dx/CIqv
-         UButUDOe8bIDHJx/F+9T5uqqKy6vH8WucaoOOj/GY4dXVMFHwI0Wls5TkRrAwQafu4R/
-         9D2MKj6JnYwWkmH4feNvaDlknujHfNRYtcjjyyERGRTSsmtwQRczR3hnGRGti6VFSzRN
-         67M1drh3P980l53v/DCz5VFuqgwb8iYp+nkH8w+8o+o46p8kZ0XaqWYmfnTB6/Rudaps
-         HDcA==
-X-Gm-Message-State: AOAM532NCrt/OQaI/HcV326JdRWmLQhT6aZEA9rsdaSl0sYaf9OrmB08
-        wdxEqBgm8seE2D6uAePBDf4=
-X-Google-Smtp-Source: ABdhPJyYvViBHNSY5FE7CXdKUdCiD1GV8vYp3T3pZ0xf9ePqRUqG3AW2pTxyVkmCuZ7dASJFxLP47Q==
-X-Received: by 2002:aa7:d4d0:: with SMTP id t16mr2020758edr.83.1601368390650;
-        Tue, 29 Sep 2020 01:33:10 -0700 (PDT)
-Received: from felia ([2001:16b8:2d89:9100:1da1:773b:dbb4:3fc9])
-        by smtp.gmail.com with ESMTPSA id cn21sm5173410edb.14.2020.09.29.01.33.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2020 01:33:09 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Tue, 29 Sep 2020 10:33:08 +0200 (CEST)
-X-X-Sender: lukas@felia
-To:     Peter Zijlstra <peterz@infradead.org>,
-        Balbir Singh <sblbir@amazon.com>
-cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Tue, 29 Sep 2020 04:37:28 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B99E6C061755;
+        Tue, 29 Sep 2020 01:37:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=v5vnDoRc4ZKtko7VMYgaivypIuJCC2NRDarrflWRAvg=; b=wWOWiQjkvkGZA1s8deLmbxrNC8
+        pTcycx1AeIheWo8YKmtblar3DRLp4W61abEUjEJyP6RQBpMuYfWiHkySwLN/XA6JkCQXmj8t5s5H/
+        oFAZHBivV6j7ACxy+E4raYd9VO8ksiOruct0gnGWydfhvRUM+VdKBDXOamN5yEIv4NLtIiPcVUyMf
+        Lb0luWbwFDoxRIZ9VHp2TQDv7OMm2pYTdkcd9xZcVQn+IPU3jabWtekFvK3qKFJfpyUWhIOP/bGYN
+        spFFSPleU3snhac//usQJYmy4VJla5oUw7Oer4n+RZNQ5R+j5pcykZc+j4KpAHiH0jqHzccHH7L3D
+        gdzi9qwg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kNB8J-00031e-Pr; Tue, 29 Sep 2020 08:37:12 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 60639303F45;
+        Tue, 29 Sep 2020 10:37:09 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 42614211CC1CA; Tue, 29 Sep 2020 10:37:09 +0200 (CEST)
+Date:   Tue, 29 Sep 2020 10:37:09 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Balbir Singh <sblbir@amazon.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Andy Lutomirski <luto@kernel.org>,
@@ -66,20 +50,18 @@ cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
         kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech
 Subject: Re: [PATCH -next for tip:x86/pti] x86/tlb: drop unneeded local vars
  in enable_l1d_flush_for_task()
-In-Reply-To: <20200929071211.GJ2628@hirez.programming.kicks-ass.net>
-Message-ID: <alpine.DEB.2.21.2009291022000.17656@felia>
-References: <20200928124457.27289-1-lukas.bulwahn@gmail.com> <20200929071211.GJ2628@hirez.programming.kicks-ass.net>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+Message-ID: <20200929083709.GC2651@hirez.programming.kicks-ass.net>
+References: <20200928124457.27289-1-lukas.bulwahn@gmail.com>
+ <20200929071211.GJ2628@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200929071211.GJ2628@hirez.programming.kicks-ass.net>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On Tue, 29 Sep 2020, Peter Zijlstra wrote:
-
+On Tue, Sep 29, 2020 at 09:12:11AM +0200, Peter Zijlstra wrote:
 > On Mon, Sep 28, 2020 at 02:44:57PM +0200, Lukas Bulwahn wrote:
 > > diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
 > > index 6b0f4c88b07c..90515c04d90a 100644
@@ -114,25 +96,53 @@ On Tue, 29 Sep 2020, Peter Zijlstra wrote:
 > If you don't use the return value of get_cpu(), then change it over to
 > preempt_{dis,en}able(), but this got me looking at the function, wtf is
 > that garbage supposed to do in the first place
-
-I also thought that preempt_{dis,en}able() would do, but thought maybe 
-Balbir just considered {get,put}_cpu stylistically nicer... so I stayed 
-with the functions as-is.
-
 > 
 > What do we need to disable preemption for?
->
-
-I have no clue... not a good premise for touching the code, but I just 
-wanted to make clang-analyzer happy without modifying any semantics.
-
-Balbir, can you help out here? What was your intent?
- 
-> Please explain the desired semantics against sched_setaffinity().
 > 
+> Please explain the desired semantics against sched_setaffinity().
 
-I am happy to send a proper v2 once I understand if disabling preemption 
-is required and the preempt_{dis,en}able() function are preferred to the 
-{get,put}_cpu functions.
+Here, I fixed it..
 
-Lukas
+---
+ arch/x86/mm/tlb.c | 24 +++---------------------
+ 1 file changed, 3 insertions(+), 21 deletions(-)
+
+diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+index 6b0f4c88b07c..f02a2f1909da 100644
+--- a/arch/x86/mm/tlb.c
++++ b/arch/x86/mm/tlb.c
+@@ -316,31 +316,13 @@ EXPORT_SYMBOL_GPL(leave_mm);
+ 
+ int enable_l1d_flush_for_task(struct task_struct *tsk)
+ {
+-	int cpu, ret = 0, i;
+-
+-	/*
+-	 * Do not enable L1D_FLUSH_OUT if
+-	 * b. The CPU is not affected by the L1TF bug
+-	 * c. The CPU does not have L1D FLUSH feature support
+-	 * c. The task's affinity is on cores with SMT on.
+-	 */
+-
+ 	if (!boot_cpu_has_bug(X86_BUG_L1TF) ||
+-			!static_cpu_has(X86_FEATURE_FLUSH_L1D))
++	    !boot_cpu_has(X86_FEATURE_FLUSH_L1D) ||
++	    sched_smt_active());
+ 		return -EINVAL;
+ 
+-	cpu = get_cpu();
+-
+-	for_each_cpu(i, &tsk->cpus_mask) {
+-		if (cpu_data(i).smt_active == true) {
+-			put_cpu();
+-			return -EINVAL;
+-		}
+-	}
+-
+ 	set_ti_thread_flag(&tsk->thread_info, TIF_SPEC_L1D_FLUSH);
+-	put_cpu();
+-	return ret;
++	return 0;
+ }
+ 
+ int disable_l1d_flush_for_task(struct task_struct *tsk)

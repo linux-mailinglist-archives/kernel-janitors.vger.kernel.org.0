@@ -2,119 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 526EA27B957
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 03:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAF6C27BDA5
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 09:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727084AbgI2B0M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Sep 2020 21:26:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56872 "EHLO
+        id S1725554AbgI2HM2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Sep 2020 03:12:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726064AbgI2B0M (ORCPT
+        with ESMTP id S1725372AbgI2HM2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Sep 2020 21:26:12 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4183C0613CE
-        for <kernel-janitors@vger.kernel.org>; Mon, 28 Sep 2020 18:26:11 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id g4so4537379edk.0
-        for <kernel-janitors@vger.kernel.org>; Mon, 28 Sep 2020 18:26:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9+IiWJjSCsa3H211qi8G/I3o2LKKqrVZtYC6QtTBudg=;
-        b=v+cmjGckHAAscgdJCKKcOpkZt5W7kj9wtG0S0i5i8CU6FJQsAKRy0mG7lHaKs9P1Rm
-         FNf09YyuhrUkfXx4LCs0rdVCfFh3rbzyi+htTSkyDUaG/YkwS8GYQKtWsV1awNRb1W0s
-         t//fBVM6GB2s48wH54hOLPGXPZ4cT3IIdMkWlARF50xs3TltKeawp1Ayud3KM/hxDUX5
-         tU86Mqd0N9i21fvekjDYLCyGHQEWMrbyk+RIjUQNURCFlJFqz+QcWU4IYXnECq82TNis
-         rXh05Iqs0TZGI2cm2EqJzQy8SyOTzs5asGQkpXRoUCQntEk2L9nPPkYQ2RttFm2HJV7b
-         Bk4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9+IiWJjSCsa3H211qi8G/I3o2LKKqrVZtYC6QtTBudg=;
-        b=KNl4qVrDMg23i2PqlD9eVwZCMLcu8TH9FVJolJBoQ6Uo2iFFZymoCbnso2YWLCfRpL
-         vrdKEHkp1k3EHn0p428bl2pExGf7oKiwrURLfxp4LgClcBy2AUX+ic8t/a5p5yNhy0JP
-         TLA+J+2AvRkC2wkPJek+BYUmBAt8QeBpthoaQR4FGV+AQLGaNQIjGwgS98z5eKoIXshn
-         KuJBdFdop7h1Qd3yrntjg69wAvjaz9QBOg4lt+aAtf1kWkJDInWRamjdqOG0IQ5nifvi
-         W6yFViad9JFyF4vU3cXR55qND4MsazSbw1Nylx2f3NA3FzQhOqBWm340AA+w3wkRRR0P
-         VHsQ==
-X-Gm-Message-State: AOAM532zeZ6eTmser3gGFxzPpDCRedeNR46wWf1XtoyDbZDVCQ5Gkr0w
-        kwmKPbs3NU7cxFbPPVN5jGjl1EftdrU7HhZXkhbIzIhAF1c=
-X-Google-Smtp-Source: ABdhPJyukjgfeJlTRPeGdPIi9Phg1aw79cup8F0sTHp1XtOitP/5r3JajS/c5S9Voy8qaoMMFVj4pyr1k2fKkYLBhkg=
-X-Received: by 2002:a05:6402:3192:: with SMTP id di18mr783128edb.116.1601342768237;
- Mon, 28 Sep 2020 18:26:08 -0700 (PDT)
+        Tue, 29 Sep 2020 03:12:28 -0400
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F303FC061755;
+        Tue, 29 Sep 2020 00:12:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=6jDtI8jm64OSzhK1U2cD9uXM9ed5eaoeJqgAM+6j+ok=; b=IZFvJYewvYu9tXSIXook/MNVRr
+        E20O80xrcA6KyqhK6v95UgPb+goPdMkjq3tzXvrfB41A1xihxK+5HeToHu1v9S6pEMMY8mh/fc2rZ
+        vZa+MMs86F+ZZk/spf9h3hM9xJjVMWBRZ+k2DbtDqIxAKzR3P2noaY09veQxV8QIvx+hUzMJnQyt2
+        y+aUf310JFZ7WG1XV72pxalOWQ3HLQ+p2ENbq5254v/pIJUHOvUKvmb8AK/vroa6jFx5AXknu+9dR
+        s9Yj+I1V9/TVC4cu+9e1r6SDqGWEFu1IRqyL42zrqz0GQcFzqv08Hz2hTCg9dA3lOr8/bhvNHyp72
+        gRVFZTfQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kN9o5-0008V6-GZ; Tue, 29 Sep 2020 07:12:13 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 3148E300F7A;
+        Tue, 29 Sep 2020 09:12:11 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 1B46A200D4C43; Tue, 29 Sep 2020 09:12:11 +0200 (CEST)
+Date:   Tue, 29 Sep 2020 09:12:11 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Balbir Singh <sblbir@amazon.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech
+Subject: Re: [PATCH -next for tip:x86/pti] x86/tlb: drop unneeded local vars
+ in enable_l1d_flush_for_task()
+Message-ID: <20200929071211.GJ2628@hirez.programming.kicks-ass.net>
+References: <20200928124457.27289-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-References: <d1b31586-426a-e0b1-803e-3eff30196c05@web.de> <20200926121402.GA7467@kadam>
- <20200926221720.GK9916@ziepe.ca> <20200928175237.6b3024fe6ad96d70c75d5de1@linux-foundation.org>
-In-Reply-To: <20200928175237.6b3024fe6ad96d70c75d5de1@linux-foundation.org>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Mon, 28 Sep 2020 18:25:57 -0700
-Message-ID: <CAPcyv4gnUrpGrrk=zq8_OTU6+448AMue+w93vB2dQM-uauR7RQ@mail.gmail.com>
-Subject: Re: [PATCH v3] mm/hmm/test: use after free in dmirror_allocate_chunk()
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
-        Markus Elfring <Markus.Elfring@web.de>,
-        Wei Yongjun <weiyongjun1@huawei.com>,
-        Ralph Campbell <rcampbell@nvidia.com>,
-        Linux MM <linux-mm@kvack.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200928124457.27289-1-lukas.bulwahn@gmail.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Sep 28, 2020 at 5:52 PM Andrew Morton <akpm@linux-foundation.org> wrote:
->
-> On Sat, 26 Sep 2020 19:17:20 -0300 Jason Gunthorpe <jgg@ziepe.ca> wrote:
->
-> > On Sat, Sep 26, 2020 at 03:14:02PM +0300, Dan Carpenter wrote:
-> > > The error handling code does this:
-> > >
-> > > err_free:
-> > >     kfree(devmem);
-> > >         ^^^^^^^^^^^^^
-> > > err_release:
-> > >     release_mem_region(devmem->pagemap.range.start, range_len(&devmem->pagemap.range));
-> > >                            ^^^^^^^^
-> > > The problem is that when we use "devmem->pagemap.range.start" the
-> > > "devmem" pointer is either NULL or freed.
-> > >
-> > > Neither the allocation nor the call to request_free_mem_region() has to
-> > > be done under the lock so I moved those to the start of the function.
-> > >
-> > > Fixes: 1f9c4bb986d9 ("mm/memremap_pages: convert to 'struct range'")
-> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > > Reviewed-by: Ralph Campbell <rcampbell@nvidia.com>
-> > > ---
-> > > v2: The first version introduced a locking bug
-> > > v3: Markus Elfring pointed out that the Fixes tag was wrong.  This bug
-> > > was in the original commit and then fixed and then re-introduced.  I was
-> > > quite bothered by how this bug lasted so long in the source code, but
-> > > now we know.  As soon as it is introduced we fixed it.
-> > >
-> > > One problem with the kernel QC process is that I think everyone marks
-> > > the bug as "old/dealt with" so it was only because I was added a new
-> > > check for resource leaks that it was found when it was re-introduced.
-> > >
-> > >  lib/test_hmm.c | 44 ++++++++++++++++++++++----------------------
-> > >  1 file changed, 22 insertions(+), 22 deletions(-)
-> >
-> > Hi Andrew,
-> >
-> > I don't have have any hmm related patches this cycle, can you take
-> > this into your tree?
-> >
-> > Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
->
-> Thanks.
->
-> It's actually a fix against Dan Williams' -mm patch "mm/memremap_pages:
-> convert to 'struct range'"
+On Mon, Sep 28, 2020 at 02:44:57PM +0200, Lukas Bulwahn wrote:
+> diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+> index 6b0f4c88b07c..90515c04d90a 100644
+> --- a/arch/x86/mm/tlb.c
+> +++ b/arch/x86/mm/tlb.c
+> @@ -316,7 +316,7 @@ EXPORT_SYMBOL_GPL(leave_mm);
+>  
+>  int enable_l1d_flush_for_task(struct task_struct *tsk)
+>  {
+> -	int cpu, ret = 0, i;
+> +	int i;
+>  
+>  	/*
+>  	 * Do not enable L1D_FLUSH_OUT if
+> @@ -329,7 +329,7 @@ int enable_l1d_flush_for_task(struct task_struct *tsk)
+>  			!static_cpu_has(X86_FEATURE_FLUSH_L1D))
+>  		return -EINVAL;
+>  
+> -	cpu = get_cpu();
+> +	get_cpu();
+>  
+>  	for_each_cpu(i, &tsk->cpus_mask) {
+>  		if (cpu_data(i).smt_active == true) {
+> @@ -340,7 +340,7 @@ int enable_l1d_flush_for_task(struct task_struct *tsk)
+>  
+>  	set_ti_thread_flag(&tsk->thread_info, TIF_SPEC_L1D_FLUSH);
+>  	put_cpu();
+> -	return ret;
+> +	return 0;
+>  }
 
-Yes, sorry, for the fix:
+If you don't use the return value of get_cpu(), then change it over to
+preempt_{dis,en}able(), but this got me looking at the function, wtf is
+that garbage supposed to do in the first place
 
-Acked-by: Dan Williams <dan.j.williams@intel.com>
+What do we need to disable preemption for?
+
+Please explain the desired semantics against sched_setaffinity().

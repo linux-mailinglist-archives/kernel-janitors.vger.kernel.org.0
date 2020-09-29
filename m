@@ -2,78 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 785FC27D2AC
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 17:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2304427D336
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 17:57:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728570AbgI2P1q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Sep 2020 11:27:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33862 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725497AbgI2P1p (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Sep 2020 11:27:45 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 49F7220773;
-        Tue, 29 Sep 2020 15:27:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601393265;
-        bh=28J5Xqnu8HqFsJcPfiPiJszNONTsRfXlkXep+D/a558=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=d6eQ1opvgx7r1DZYDCYw1sZacOG4Op6OPkt5+GqnHTNy5fJZ7uJiJP2CustpQ3m9i
-         BpyhJuVfKEXR0baNVGfemQUuehjFzMz+KZMdEWLVZ9g23ShiNXNsu2xrDncJuC8/GG
-         a9AqoFp8hi01e3Ma3UKJl+69LMzi7bJAwqLH1/wg=
-Date:   Tue, 29 Sep 2020 16:27:39 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     David Lechner <david@lechnology.com>
-Cc:     Julia Lawall <Julia.Lawall@inria.fr>,
-        Valdis =?UTF-8?B?S2zEk3RuaWVr?= =?UTF-8?B?cw==?= 
-        <valdis.kletnieks@vt.edu>, Joe Perches <joe@perches.com>,
+        id S1729361AbgI2P5L (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Sep 2020 11:57:11 -0400
+Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:17750 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728401AbgI2P5K (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 29 Sep 2020 11:57:10 -0400
+Received: from [192.168.42.210] ([93.22.37.244])
+        by mwinf5d16 with ME
+        id Zrx32300w5G3HaM03rx48Y; Tue, 29 Sep 2020 17:57:08 +0200
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 29 Sep 2020 17:57:08 +0200
+X-ME-IP: 93.22.37.244
+Subject: Re: [PATCH 04/20] media: saa7134: use semicolons rather than commas
+ to separate statements
+To:     Julia Lawall <Julia.Lawall@inria.fr>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc:     =?UTF-8?Q?Valdis_Kl=c4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        Joe Perches <joe@perches.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        kernel-janitors@vger.kernel.org,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 15/18] counter: use semicolons rather than commas to
- separate statements
-Message-ID: <20200929162739.40c8257e@archlinux>
-In-Reply-To: <be1d59c5-fd0c-821e-0357-441c26c3d16c@lechnology.com>
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
-        <1601233948-11629-16-git-send-email-Julia.Lawall@inria.fr>
-        <be1d59c5-fd0c-821e-0357-441c26c3d16c@lechnology.com>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        kernel-janitors@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <1601385283-26144-1-git-send-email-Julia.Lawall@inria.fr>
+ <1601385283-26144-5-git-send-email-Julia.Lawall@inria.fr>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <8a2e3c47-76d1-f959-fb7c-3a02641a57e2@wanadoo.fr>
+Date:   Tue, 29 Sep 2020 17:57:04 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <1601385283-26144-5-git-send-email-Julia.Lawall@inria.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 28 Sep 2020 10:37:28 -0500
-David Lechner <david@lechnology.com> wrote:
-
-> On 9/27/20 2:12 PM, Julia Lawall wrote:
-> > Replace commas with semicolons.  What is done is essentially described by
-> > the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
-> > 
-> > // <smpl>
-> > @@ expression e1,e2; @@
-> > e1
-> > -,
-> > +;
-> > e2
-> > ... when any
-> > // </smpl>
-> > 
-> > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> > 
-> > ---  
-> Reviewed-by: David Lechner <david@lechnology.com>
-I've picked this one up.  Applied to the togreg branch of iio.git and
-pushed out as testing for all the normal reasons.
-
-Thanks,
-
-Jonathan
-
+Le 29/09/2020 à 15:14, Julia Lawall a écrit :
+> Replace commas with semicolons.  Commas introduce unnecessary
+> variability in the code structure and are hard to see.  What is done
+> is essentially described by the following Coccinelle semantic patch
+> (http://coccinelle.lip6.fr/):
 > 
+> // <smpl>
+> @@ expression e1,e2; @@
+> e1
+> -,
+> +;
+> e2
+> ... when any
+> // </smpl>
+> 
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> 
+> ---
+>   drivers/media/pci/saa7134/saa7134-video.c |    7 +++++--
+>   1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/media/pci/saa7134/saa7134-video.c b/drivers/media/pci/saa7134/saa7134-video.c
+> index 9a6a6b68f8e3..2ca963b04b3f 100644
+> --- a/drivers/media/pci/saa7134/saa7134-video.c
+> +++ b/drivers/media/pci/saa7134/saa7134-video.c
+> @@ -868,8 +868,11 @@ static int buffer_activate(struct saa7134_dev *dev,
+>   		lines_uv = dev->height >> dev->fmt->vshift;
+>   		base2    = base + bpl * dev->height;
+>   		base3    = base2 + bpl_uv * lines_uv;
+> -		if (dev->fmt->uvswap)
+> -			tmp = base2, base2 = base3, base3 = tmp;
+> +		if (dev->fmt->uvswap) {
+> +			tmp = base2;
+> +			base2 = base3;
+> +			base3 = tmp;
+> +		}
+>   		video_dbg("uv: bpl=%ld lines=%ld base2/3=%ld/%ld\n",
+>   			bpl_uv,lines_uv,base2,base3);
+>   		if (V4L2_FIELD_HAS_BOTH(dev->field)) {
+> 
+> 
+Hi,
+this could be turned into a simpler:
+    swap(base2, base3);
 
+CJ

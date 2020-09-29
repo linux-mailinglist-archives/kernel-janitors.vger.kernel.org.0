@@ -2,112 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63C7327C288
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 12:38:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B63527C77E
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 13:54:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725536AbgI2KiN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Sep 2020 06:38:13 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:55334 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725497AbgI2KiM (ORCPT
+        id S1731347AbgI2LyR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Sep 2020 07:54:17 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:32180 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730629AbgI2Lq2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Sep 2020 06:38:12 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08TAY7xf066350;
-        Tue, 29 Sep 2020 10:38:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=5iEiG/S/k6MJ/gza4tpjk/4uBczt9qrY5Q6upheJUk4=;
- b=Iq/gRea1qoLoGU6cnNWVdzTkTU9vLpIV7j3ysOVbeaix2hpLFQFYPUD5u9rvA90tyESz
- 33boqc3aTOXTyTGwuzVsyD7hMqth7wcVQaSqK/IfXTvyMTYonuj7ENtHpNoLcKffxu8h
- cXqHwvNbUBdFPD315BVKeBIBTN2zeEKL9xGyqXpF+hqW7poQu0JZWcs/wkoZE9HxuIDZ
- FVy2Izbxmde9nH+KNVoRwi/TYpfTJTXMELiKdYMfZ15GUoF6KTVqYr9MkzjYUtCyEJsO
- cXnhqt3RqaZMXFWCDVXbTvt9m9oABa1CB2dnFPkdQGCkyZIH6MMVy0i7aCGw4JdiLydi kA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2130.oracle.com with ESMTP id 33su5at1hf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 29 Sep 2020 10:38:02 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08TAZiZ7062718;
-        Tue, 29 Sep 2020 10:36:02 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 33tfjwexsn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 29 Sep 2020 10:36:02 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08TAZwI1000793;
-        Tue, 29 Sep 2020 10:35:58 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 29 Sep 2020 03:35:56 -0700
-Date:   Tue, 29 Sep 2020 13:35:48 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Sebastian Arriola <sebdeveloper6952@gmail.com>
-Cc:     Florian Schilhabel <florian.c.schilhabel@googlemail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Cristiane Naves <cristianenavescardoso09@gmail.com>,
-        Mauro Dreissig <mukadr@gmail.com>,
-        Wambui Karuga <wambui.karugax@gmail.com>,
-        Kees Cook <keescook@chromium.org>,
-        Ivan Safonov <insafonov@gmail.com>,
-        Allen Pais <apais@linux.microsoft.com>,
-        Michael Straube <straube.linux@gmail.com>,
-        Pascal Terjan <pterjan@google.com>, devel@driverdev.osuosl.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] staging: rtl8712: Fix enqueue_reorder_recvframe()
-Message-ID: <20200929103548.GA493135@mwanda>
+        Tue, 29 Sep 2020 07:46:28 -0400
+X-IronPort-AV: E=Sophos;i="5.77,318,1596492000"; 
+   d="scan'208";a="470044784"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Sep 2020 13:46:20 +0200
+Date:   Tue, 29 Sep 2020 13:46:19 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Mark Brown <broonie@kernel.org>
+cc:     Joe Perches <joe@perches.com>, linux-iio@vger.kernel.org,
+        Julia Lawall <Julia.Lawall@inria.fr>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        linux-acpi@vger.kernel.org, David Lechner <david@lechnology.com>,
+        =?UTF-8?Q?Valdis_Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        kernel-janitors@vger.kernel.org, drbd-dev@lists.linbit.com,
+        openipmi-developer@lists.sourceforge.net,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-ide@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-wireless@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
+ statements
+In-Reply-To: <20200929113745.GB4799@sirena.org.uk>
+Message-ID: <alpine.DEB.2.22.394.2009291344590.2808@hadrien>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr> <160132172369.55460.9237357219623604216.b4-ty@kernel.org> <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com> <20200929113745.GB4799@sirena.org.uk>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9758 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0 mlxscore=0
- phishscore=0 adultscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009290093
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9758 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
- lowpriorityscore=0 spamscore=0 clxscore=1011 mlxscore=0 impostorscore=0
- malwarescore=0 phishscore=0 adultscore=0 bulkscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009290093
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The logic of this function was accidentally broken by a checkpatch
-inspired cleanup.  I've modified the code to restore the original
-behavior and also make checkpatch happy.
 
-Fixes: 98fe05e21a6e ("staging: rtl8712: Remove unnecesary else after return statement.")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/staging/rtl8712/rtl8712_recv.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/staging/rtl8712/rtl8712_recv.c b/drivers/staging/rtl8712/rtl8712_recv.c
-index 978594c676eb..db5c7a487ab3 100644
---- a/drivers/staging/rtl8712/rtl8712_recv.c
-+++ b/drivers/staging/rtl8712/rtl8712_recv.c
-@@ -476,11 +476,14 @@ static int enqueue_reorder_recvframe(struct recv_reorder_ctrl *preorder_ctrl,
- 	while (!end_of_queue_search(phead, plist)) {
- 		pnextrframe = container_of(plist, union recv_frame, u.list);
- 		pnextattrib = &pnextrframe->u.hdr.attrib;
-+
-+		if (SN_EQUAL(pnextattrib->seq_num, pattrib->seq_num))
-+			return false;
-+
- 		if (SN_LESS(pnextattrib->seq_num, pattrib->seq_num))
- 			plist = plist->next;
--		else if (SN_EQUAL(pnextattrib->seq_num, pattrib->seq_num))
--			return false;
--		break;
-+		else
-+			break;
- 	}
- 	list_del_init(&(prframe->u.hdr.list));
- 	list_add_tail(&(prframe->u.hdr.list), plist);
--- 
-2.28.0
+On Tue, 29 Sep 2020, Mark Brown wrote:
 
+> On Mon, Sep 28, 2020 at 05:45:24PM -0700, Joe Perches wrote:
+> > On Mon, 2020-09-28 at 20:35 +0100, Mark Brown wrote:
+>
+> > > [1/1] regmap: debugfs: use semicolons rather than commas to separate statements
+> > >       commit: 7f4a122d0b50b40c64d24a5cf7aafe26dd9487ee
+>
+> > Rather than replying to the 0/n cover letter to a patch
+> > series, can you reply to each of the specific patches in
+> > the patch series you are applying?
+>
+> > Otherwise, it's a bit difficult to figure out which patches
+> > you are applying.
+>
+> Feel free to submit patches to b4.  Ideally things like this wouldn't be
+> being sent as serieses in the first place, there's no dependencies or
+> interactions between the patches.
+
+It was suggested (a long time ago, not with respect to this patch in
+particular) that sending such patches in a series is useful because it
+allows people who are not interested in the 18 patches to skip over them
+more easily.  So there are two conflicting needs...
+
+julia

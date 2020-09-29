@@ -2,99 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AAF6C27BDA5
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 09:12:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49A4827BF41
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 10:24:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725554AbgI2HM2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Sep 2020 03:12:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53450 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725372AbgI2HM2 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Sep 2020 03:12:28 -0400
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F303FC061755;
-        Tue, 29 Sep 2020 00:12:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=6jDtI8jm64OSzhK1U2cD9uXM9ed5eaoeJqgAM+6j+ok=; b=IZFvJYewvYu9tXSIXook/MNVRr
-        E20O80xrcA6KyqhK6v95UgPb+goPdMkjq3tzXvrfB41A1xihxK+5HeToHu1v9S6pEMMY8mh/fc2rZ
-        vZa+MMs86F+ZZk/spf9h3hM9xJjVMWBRZ+k2DbtDqIxAKzR3P2noaY09veQxV8QIvx+hUzMJnQyt2
-        y+aUf310JFZ7WG1XV72pxalOWQ3HLQ+p2ENbq5254v/pIJUHOvUKvmb8AK/vroa6jFx5AXknu+9dR
-        s9Yj+I1V9/TVC4cu+9e1r6SDqGWEFu1IRqyL42zrqz0GQcFzqv08Hz2hTCg9dA3lOr8/bhvNHyp72
-        gRVFZTfQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kN9o5-0008V6-GZ; Tue, 29 Sep 2020 07:12:13 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        id S1727679AbgI2IYF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Sep 2020 04:24:05 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:18051 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726431AbgI2IYF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 29 Sep 2020 04:24:05 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1601367844; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=j83bf1MXERUMpHodQZcI3Y2kF+MmoDVPrsU65+sFD38=;
+ b=hYul4nho/esspNXtl3hj8La3be2BHTwgvyuoiyGlsHiQOqc+X5GC0iwi/TwhlfQQ7KoNKVbf
+ E0s0SBsD0ehvkef+uw4fWqt/gyJxKCbiXmMeB3jERiWl+dy6NfRPAMsXWW/PbghtWRlSosBB
+ KZR9ybFc5XoZ6UW5cpAsNjfIn9g=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 5f72ef247e9d6827ec07efeb (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 29 Sep 2020 08:24:04
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 94490C433CA; Tue, 29 Sep 2020 08:24:04 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 3148E300F7A;
-        Tue, 29 Sep 2020 09:12:11 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 1B46A200D4C43; Tue, 29 Sep 2020 09:12:11 +0200 (CEST)
-Date:   Tue, 29 Sep 2020 09:12:11 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Balbir Singh <sblbir@amazon.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech
-Subject: Re: [PATCH -next for tip:x86/pti] x86/tlb: drop unneeded local vars
- in enable_l1d_flush_for_task()
-Message-ID: <20200929071211.GJ2628@hirez.programming.kicks-ass.net>
-References: <20200928124457.27289-1-lukas.bulwahn@gmail.com>
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 05449C433C8;
+        Tue, 29 Sep 2020 08:24:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 05449C433C8
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200928124457.27289-1-lukas.bulwahn@gmail.com>
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] qtnfmac: fix resource leaks on unsupported iftype error
+ return path
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200925132224.21638-1-colin.king@canonical.com>
+References: <20200925132224.21638-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Igor Mitsyanko <imitsyanko@quantenna.com>,
+        Sergey Matyukevich <geomatsi@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Avinash Patil <avinashp@quantenna.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200929082404.94490C433CA@smtp.codeaurora.org>
+Date:   Tue, 29 Sep 2020 08:24:04 +0000 (UTC)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Sep 28, 2020 at 02:44:57PM +0200, Lukas Bulwahn wrote:
-> diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-> index 6b0f4c88b07c..90515c04d90a 100644
-> --- a/arch/x86/mm/tlb.c
-> +++ b/arch/x86/mm/tlb.c
-> @@ -316,7 +316,7 @@ EXPORT_SYMBOL_GPL(leave_mm);
->  
->  int enable_l1d_flush_for_task(struct task_struct *tsk)
->  {
-> -	int cpu, ret = 0, i;
-> +	int i;
->  
->  	/*
->  	 * Do not enable L1D_FLUSH_OUT if
-> @@ -329,7 +329,7 @@ int enable_l1d_flush_for_task(struct task_struct *tsk)
->  			!static_cpu_has(X86_FEATURE_FLUSH_L1D))
->  		return -EINVAL;
->  
-> -	cpu = get_cpu();
-> +	get_cpu();
->  
->  	for_each_cpu(i, &tsk->cpus_mask) {
->  		if (cpu_data(i).smt_active == true) {
-> @@ -340,7 +340,7 @@ int enable_l1d_flush_for_task(struct task_struct *tsk)
->  
->  	set_ti_thread_flag(&tsk->thread_info, TIF_SPEC_L1D_FLUSH);
->  	put_cpu();
-> -	return ret;
-> +	return 0;
->  }
+Colin King <colin.king@canonical.com> wrote:
 
-If you don't use the return value of get_cpu(), then change it over to
-preempt_{dis,en}able(), but this got me looking at the function, wtf is
-that garbage supposed to do in the first place
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently if an unsupported iftype is detected the error return path
+> does not free the cmd_skb leading to a resource leak. Fix this by
+> free'ing cmd_skb.
+> 
+> Addresses-Coverity: ("Resource leak")
+> Fixes: 805b28c05c8e ("qtnfmac: prepare for AP_VLAN interface type support")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-What do we need to disable preemption for?
+Patch applied to wireless-drivers-next.git, thanks.
 
-Please explain the desired semantics against sched_setaffinity().
+63f6982075d8 qtnfmac: fix resource leaks on unsupported iftype error return path
+
+-- 
+https://patchwork.kernel.org/patch/11799775/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+

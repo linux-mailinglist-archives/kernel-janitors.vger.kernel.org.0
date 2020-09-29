@@ -2,142 +2,241 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A75A27CCA3
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 14:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA27527CC83
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 14:37:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732392AbgI2MiD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Sep 2020 08:38:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35518 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729261AbgI2LR5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Sep 2020 07:17:57 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7F084208FE;
-        Tue, 29 Sep 2020 11:17:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601378266;
-        bh=uKyd+P7uYdEygJarxNMMYG2W0SFX+OF/GFn1NYnMTTc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i0KhnUuSjCO3Q0h4zImKLP/w0uf1SjeUBIcXRcqiiDgTozlQnM8If6suTMuXH4DCg
-         zGLMLHGZvmtbmffiIkZAxLDRZeNmANr2LTVcB7cvGHdFKtOolF+md9prIeiLKUyWkn
-         ORC1S0DVAgqqzl38HXxd8A6BQgmBnFn0hTpn/Jk0=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Don Zickus <dzickus@redhat.com>, He Zhe <zhe.he@windriver.com>,
-        Jan Stancek <jstancek@redhat.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
+        id S1732843AbgI2MhM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Sep 2020 08:37:12 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:8965 "EHLO
+        mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728786AbgI2MhF (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 29 Sep 2020 08:37:05 -0400
+X-IronPort-AV: E=Sophos;i="5.77,318,1596492000"; 
+   d="scan'208";a="360346486"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Sep 2020 14:36:52 +0200
+Date:   Tue, 29 Sep 2020 14:36:52 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Ard Biesheuvel <ardb@kernel.org>
+cc:     linux-iio@vger.kernel.org, drbd-dev@lists.linbit.com,
+        =?UTF-8?Q?Valdis_Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        David Lechner <david@lechnology.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-wireless@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         kernel-janitors@vger.kernel.org,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 089/166] perf cpumap: Fix snprintf overflow check
-Date:   Tue, 29 Sep 2020 13:00:01 +0200
-Message-Id: <20200929105939.657828029@linuxfoundation.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200929105935.184737111@linuxfoundation.org>
-References: <20200929105935.184737111@linuxfoundation.org>
-User-Agent: quilt/0.66
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-block@vger.kernel.org, linux-ide@vger.kernel.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Joe Perches <joe@perches.com>,
+        linux-amlogic@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        openipmi-developer@lists.sourceforge.net,
+        linux-clk@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Jerome Brunet <jbrunet@baylibre.com>
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
+ statements
+In-Reply-To: <CAMj1kXGh+CzuXkAnqsoMO2A3T1p=D6uFOV347Ym5+VFn5U1gWg@mail.gmail.com>
+Message-ID: <alpine.DEB.2.22.394.2009291428020.2808@hadrien>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr> <CAMj1kXGh+CzuXkAnqsoMO2A3T1p=D6uFOV347Ym5+VFn5U1gWg@mail.gmail.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-
-[ Upstream commit d74b181a028bb5a468f0c609553eff6a8fdf4887 ]
-
-'snprintf' returns the number of characters which would be generated for
-the given input.
-
-If the returned value is *greater than* or equal to the buffer size, it
-means that the output has been truncated.
-
-Fix the overflow test accordingly.
-
-Fixes: 7780c25bae59f ("perf tools: Allow ability to map cpus to nodes easily")
-Fixes: 92a7e1278005b ("perf cpumap: Add cpu__max_present_cpu()")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Suggested-by: David Laight <David.Laight@ACULAB.COM>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Don Zickus <dzickus@redhat.com>
-Cc: He Zhe <zhe.he@windriver.com>
-Cc: Jan Stancek <jstancek@redhat.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: kernel-janitors@vger.kernel.org
-Link: http://lore.kernel.org/lkml/20200324070319.10901-1-christophe.jaillet@wanadoo.fr
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- tools/perf/util/cpumap.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/tools/perf/util/cpumap.c b/tools/perf/util/cpumap.c
-index f93846edc1e0d..827d844f4efb1 100644
---- a/tools/perf/util/cpumap.c
-+++ b/tools/perf/util/cpumap.c
-@@ -462,7 +462,7 @@ static void set_max_cpu_num(void)
- 
- 	/* get the highest possible cpu number for a sparse allocation */
- 	ret = snprintf(path, PATH_MAX, "%s/devices/system/cpu/possible", mnt);
--	if (ret == PATH_MAX) {
-+	if (ret >= PATH_MAX) {
- 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
- 		goto out;
- 	}
-@@ -473,7 +473,7 @@ static void set_max_cpu_num(void)
- 
- 	/* get the highest present cpu number for a sparse allocation */
- 	ret = snprintf(path, PATH_MAX, "%s/devices/system/cpu/present", mnt);
--	if (ret == PATH_MAX) {
-+	if (ret >= PATH_MAX) {
- 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
- 		goto out;
- 	}
-@@ -501,7 +501,7 @@ static void set_max_node_num(void)
- 
- 	/* get the highest possible cpu number for a sparse allocation */
- 	ret = snprintf(path, PATH_MAX, "%s/devices/system/node/possible", mnt);
--	if (ret == PATH_MAX) {
-+	if (ret >= PATH_MAX) {
- 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
- 		goto out;
- 	}
-@@ -586,7 +586,7 @@ int cpu__setup_cpunode_map(void)
- 		return 0;
- 
- 	n = snprintf(path, PATH_MAX, "%s/devices/system/node", mnt);
--	if (n == PATH_MAX) {
-+	if (n >= PATH_MAX) {
- 		pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
- 		return -1;
- 	}
-@@ -601,7 +601,7 @@ int cpu__setup_cpunode_map(void)
- 			continue;
- 
- 		n = snprintf(buf, PATH_MAX, "%s/%s", path, dent1->d_name);
--		if (n == PATH_MAX) {
-+		if (n >= PATH_MAX) {
- 			pr_err("sysfs path crossed PATH_MAX(%d) size\n", PATH_MAX);
- 			continue;
- 		}
--- 
-2.25.1
 
 
+On Tue, 29 Sep 2020, Ard Biesheuvel wrote:
 
+> On Sun, 27 Sep 2020 at 21:56, Julia Lawall <Julia.Lawall@inria.fr> wrote:
+> >
+> > These patches replace commas by semicolons.
+>
+>
+> Why?
+
+Among the complete 5000 lines of changes there is one probable bug where
+an if branch ends with a comma and thus pulls the subsequent statement
+under the if branch, in contradiction to what is indicated by the
+indentation.
+
+The use of comma often appears to be random, with a sequence of similar
+statements where some have commas and some don't.
+
+From a self-interested point of view, commas are not good for Coccinelle,
+because multiple statements are put into one.  Any problems involving them
+are thus likely to be overlooked unless one thinks of looking for them
+explicitly.  As an example, Christophe Jaillet noticed that one sequence
+of comma assignments would be better written using swap.  If one looked
+for opportunities for using swap in the most obvious way, one wouldn't
+find it.
+
+julia
+
+
+>
+>
+> > This was done using the
+> > Coccinelle semantic patch (http://coccinelle.lip6.fr/) shown below.
+> >
+> > This semantic patch ensures that commas inside for loop headers will not be
+> > transformed.  It also doesn't touch macro definitions.
+> >
+> > Coccinelle ensures that braces are added as needed when a single-statement
+> > branch turns into a multi-statement one.
+> >
+> > This semantic patch has a few false positives, for variable delcarations
+> > such as:
+> >
+> > LIST_HEAD(x), *y;
+> >
+> > The semantic patch could be improved to avoid these, but for the moment
+> > they have been removed manually (2 occurrences).
+> >
+> > // <smpl>
+> > @initialize:ocaml@
+> > @@
+> >
+> > let infunction p =
+> >   (* avoid macros *)
+> >   (List.hd p).current_element <> "something_else"
+> >
+> > let combined p1 p2 =
+> >   (List.hd p1).line_end = (List.hd p2).line ||
+> >   (((List.hd p1).line_end < (List.hd p2).line) &&
+> >    ((List.hd p1).col < (List.hd p2).col))
+> >
+> > @bad@
+> > statement S;
+> > declaration d;
+> > position p;
+> > @@
+> >
+> > S@p
+> > d
+> >
+> > // special cases where newlines are needed (hope for no more than 5)
+> > @@
+> > expression e1,e2;
+> > statement S;
+> > position p != bad.p;
+> > position p1;
+> > position p2 :
+> >     script:ocaml(p1) { infunction p1 && combined p1 p2 };
+> > @@
+> >
+> > - e1@p1,@S@p e2@p2;
+> > + e1; e2;
+> >
+> > @@
+> > expression e1,e2;
+> > statement S;
+> > position p != bad.p;
+> > position p1;
+> > position p2 :
+> >     script:ocaml(p1) { infunction p1 && combined p1 p2 };
+> > @@
+> >
+> > - e1@p1,@S@p e2@p2;
+> > + e1; e2;
+> >
+> > @@
+> > expression e1,e2;
+> > statement S;
+> > position p != bad.p;
+> > position p1;
+> > position p2 :
+> >     script:ocaml(p1) { infunction p1 && combined p1 p2 };
+> > @@
+> >
+> > - e1@p1,@S@p e2@p2;
+> > + e1; e2;
+> >
+> > @@
+> > expression e1,e2;
+> > statement S;
+> > position p != bad.p;
+> > position p1;
+> > position p2 :
+> >     script:ocaml(p1) { infunction p1 && combined p1 p2 };
+> > @@
+> >
+> > - e1@p1,@S@p e2@p2;
+> > + e1; e2;
+> >
+> > @@
+> > expression e1,e2;
+> > statement S;
+> > position p != bad.p;
+> > position p1;
+> > position p2 :
+> >     script:ocaml(p1) { infunction p1 && combined p1 p2 };
+> > @@
+> >
+> > - e1@p1,@S@p e2@p2;
+> > + e1; e2;
+> >
+> > @r@
+> > expression e1,e2;
+> > statement S;
+> > position p != bad.p;
+> > @@
+> >
+> > e1 ,@S@p e2;
+> >
+> > @@
+> > expression e1,e2;
+> > position p1;
+> > position p2 :
+> >     script:ocaml(p1) { infunction p1 && not(combined p1 p2) };
+> > statement S;
+> > position r.p;
+> > @@
+> >
+> > e1@p1
+> > -,@S@p
+> > +;
+> > e2@p2
+> > ... when any
+> > // </smpl>
+> >
+> > ---
+> >
+> >  drivers/acpi/processor_idle.c               |    4 +++-
+> >  drivers/ata/pata_icside.c                   |   21 +++++++++++++--------
+> >  drivers/base/regmap/regmap-debugfs.c        |    2 +-
+> >  drivers/bcma/driver_pci_host.c              |    4 ++--
+> >  drivers/block/drbd/drbd_receiver.c          |    6 ++++--
+> >  drivers/char/agp/amd-k7-agp.c               |    2 +-
+> >  drivers/char/agp/nvidia-agp.c               |    2 +-
+> >  drivers/char/agp/sworks-agp.c               |    2 +-
+> >  drivers/char/hw_random/iproc-rng200.c       |    8 ++++----
+> >  drivers/char/hw_random/mxc-rnga.c           |    6 +++---
+> >  drivers/char/hw_random/stm32-rng.c          |    8 ++++----
+> >  drivers/char/ipmi/bt-bmc.c                  |    6 +++---
+> >  drivers/clk/meson/meson-aoclk.c             |    2 +-
+> >  drivers/clk/mvebu/ap-cpu-clk.c              |    2 +-
+> >  drivers/clk/uniphier/clk-uniphier-cpugear.c |    2 +-
+> >  drivers/clk/uniphier/clk-uniphier-mux.c     |    2 +-
+> >  drivers/clocksource/mps2-timer.c            |    6 +++---
+> >  drivers/clocksource/timer-armada-370-xp.c   |    8 ++++----
+> >  drivers/counter/ti-eqep.c                   |    2 +-
+> >  drivers/crypto/amcc/crypto4xx_alg.c         |    2 +-
+> >  drivers/crypto/atmel-tdes.c                 |    2 +-
+> >  drivers/crypto/hifn_795x.c                  |    4 ++--
+> >  drivers/crypto/talitos.c                    |    8 ++++----
+> >  23 files changed, 60 insertions(+), 51 deletions(-)
+> >
+> > _______________________________________________
+> > linux-arm-kernel mailing list
+> > linux-arm-kernel@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+>

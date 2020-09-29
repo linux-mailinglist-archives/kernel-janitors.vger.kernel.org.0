@@ -2,104 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D353927D3CC
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 18:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B197627D3D2
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Sep 2020 18:46:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729532AbgI2QpA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Sep 2020 12:45:00 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:1717 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728531AbgI2Qo7 (ORCPT
+        id S1730026AbgI2Qp7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Sep 2020 12:45:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58116 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730004AbgI2Qp7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Sep 2020 12:44:59 -0400
-X-IronPort-AV: E=Sophos;i="5.77,319,1596492000"; 
-   d="scan'208";a="470117611"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Sep 2020 18:44:57 +0200
-Date:   Tue, 29 Sep 2020 18:44:57 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Joe Perches <joe@perches.com>
-cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Malcolm Priestley <tvboxspy@gmail.com>,
-        =?UTF-8?Q?Valdis_Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kernel-janitors@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 10/20] media: lmedm04: use semicolons rather than commas
- to separate statements
-In-Reply-To: <c79b36c12c978d38f3ad89b1c659871a@perches.com>
-Message-ID: <alpine.DEB.2.22.394.2009291843560.2808@hadrien>
-References: <1601385283-26144-1-git-send-email-Julia.Lawall@inria.fr> <1601385283-26144-11-git-send-email-Julia.Lawall@inria.fr> <8d73748e-be82-4c30-4550-b5f4eecb3055@wanadoo.fr> <c79b36c12c978d38f3ad89b1c659871a@perches.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        Tue, 29 Sep 2020 12:45:59 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 646A8C061755
+        for <kernel-janitors@vger.kernel.org>; Tue, 29 Sep 2020 09:45:59 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id ml18so128872pjb.2
+        for <kernel-janitors@vger.kernel.org>; Tue, 29 Sep 2020 09:45:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=EWf5uZ4di5a8bNnGNvRQqhhbxpq0Hl6WtrclbjDfsXw=;
+        b=r2s0NQ8gdGhrT7SJySxDldS7VFAtcmTHx5vKYiRUy+0ZAp4+NvTvwthToBtkqprYVf
+         d+bMCK0rfMyutm23Y0K3Nm8L1LICAw6sNlLSIiMUZLFOzZxVHif/g1VhLV+TrEosBcs+
+         fwPjPKN70DWSPouvj76AsxNvqZclVS77xtJ339DtgM1kWG2cGAfyA7YiLFefCCBuuQGC
+         42esvjaRWbVG7faHShOfivgas1R3Vqsw82POc+nQxIagbMrfVdOQbzEaKgreEwZp3pkk
+         SOENjH7BQxfM5fUNAx1+oxsA/wBU8ShNFQnnwdHw5LUf1TwEwdaNJk6y7002Hrv1gMVQ
+         uNqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=EWf5uZ4di5a8bNnGNvRQqhhbxpq0Hl6WtrclbjDfsXw=;
+        b=HvJcInOT0e4OiYgGCNzeP+OeJr5XKzK/DUK3/4kqfAaRZRGwYtoUg/spQj8+xtcQUv
+         9INnzdArpfoT7/vkpmR0DQBbizCD35fD+R8UJj65nbwpU66jBB8gY/Mv2MGTdO+9Oo9L
+         l3LSLJzHgd4jvhF8XGwDuLimy41mTqs94eY4dIbLCFQVF2GbUulFxBvTtyUpPT5JO6bj
+         mCv2sm6HiGxZ5RexJatjOaYQtorewv+XveIiG0zpJknha5nWAE8CeYwvmvtjERNR8G51
+         AuKIM9DujcISgawkuut6Fja4kEaqKFyF2d+GpfUMChAz0Pt284ZiSJpPFpIVEUP+zny4
+         lJkg==
+X-Gm-Message-State: AOAM531nHEusBBtvnL+51Ukl7RgROIByknvxsSOqOMtN9uxk3nUwoKa+
+        UtfQ0R5SoJz1qSaJuiX0/4fC/lzS/wTiPw==
+X-Google-Smtp-Source: ABdhPJyy89558qFqef9U3zx9A9ocvFVt+httDQtJwA4YDnNh3eJMdHvikJSrnm4rp5iUvLrsfhqVFg==
+X-Received: by 2002:a17:90a:297:: with SMTP id w23mr4523805pja.44.1601397958372;
+        Tue, 29 Sep 2020 09:45:58 -0700 (PDT)
+Received: from [10.230.29.112] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id b11sm6154264pfd.33.2020.09.29.09.45.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Sep 2020 09:45:57 -0700 (PDT)
+Subject: Re: [bug report] net: vlan: Avoid using BUG() in vlan_proto_idx()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     kernel-janitors@vger.kernel.org
+References: <20200929092808.GA485919@mwanda>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <46958e70-0236-cc9f-71fa-e71584ec5b1b@gmail.com>
+Date:   Tue, 29 Sep 2020 09:45:57 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Firefox/78.0 Thunderbird/78.2.2
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-647752560-1601397897=:2808"
+In-Reply-To: <20200929092808.GA485919@mwanda>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---8323329-647752560-1601397897=:2808
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
 
 
+On 9/29/2020 2:28 AM, Dan Carpenter wrote:
+> Hello Florian Fainelli,
+> 
+> The patch d0186842ec5f: "net: vlan: Avoid using BUG() in
+> vlan_proto_idx()" from Sep 24, 2020, leads to the following static
+> checker warning:
+> 
+> 	net/8021q/vlan.c:60 vlan_group_prealloc_vid()
+> 	warn: unsigned 'pidx' is never less than zero.
 
-On Tue, 29 Sep 2020, Joe Perches wrote:
+Fixed with:
 
-> On 2020-09-29 09:00, Christophe JAILLET wrote:
-> > Le 29/09/2020 à 15:14, Julia Lawall a écrit :
-> > > Replace commas with semicolons.  Commas introduce unnecessary
-> > > variability in the code structure and are hard to see.  What is done
-> > > is essentially described by the following Coccinelle semantic patch
-> > > (http://coccinelle.lip6.fr/):
-> > >
-> > > // <smpl>
-> > > @@ expression e1,e2; @@
-> > > e1
-> > > -,
-> > > +;
-> > > e2
-> > > ... when any
-> > > // </smpl>
-> > >
-> > > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> > >
-> > > ---
-> > >   drivers/media/usb/dvb-usb-v2/lmedm04.c |    2 +-
-> > >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/media/usb/dvb-usb-v2/lmedm04.c
-> > > b/drivers/media/usb/dvb-usb-v2/lmedm04.c
-> > > index 5a7a9522d46d..9ddda8d68ee0 100644
-> > > --- a/drivers/media/usb/dvb-usb-v2/lmedm04.c
-> > > +++ b/drivers/media/usb/dvb-usb-v2/lmedm04.c
-> > > @@ -391,7 +391,7 @@ static int lme2510_int_read(struct dvb_usb_adapter
-> > > *adap)
-> > >   	ep = usb_pipe_endpoint(d->udev, lme_int->lme_urb->pipe);
-> > >     	if (usb_endpoint_type(&ep->desc) == USB_ENDPOINT_XFER_BULK)
-> > > -		lme_int->lme_urb->pipe = usb_rcvbulkpipe(d->udev, 0xa),
-> > > +		lme_int->lme_urb->pipe = usb_rcvbulkpipe(d->udev, 0xa);
-> > >     	usb_submit_urb(lme_int->lme_urb, GFP_ATOMIC);
-> > >   	info("INT Interrupt Service Started");
-> > >
-> > >
-> > Ouch!
-> >
-> > This one looks like a real issue!
->
->
-> Julia?  Did you do this one by hand?  This actually changes logic which I did
-> not expectthe cocci script to do.
+https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/commit/?id=0675c285ea65540cccae64c87dfc7a00c7ede03a
 
-No, I didn't do it by hand.  Did you already send this one?  Maybe I
-should resend it with a more informative log message.
-
-julia
-
-> > CJ
->
---8323329-647752560-1601397897=:2808--
+Thanks
+-- 
+Florian

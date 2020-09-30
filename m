@@ -2,86 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE17027E693
-	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Sep 2020 12:27:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B91B27E889
+	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Sep 2020 14:28:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729018AbgI3K15 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 30 Sep 2020 06:27:57 -0400
-Received: from mout.kundenserver.de ([212.227.17.13]:50947 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728500AbgI3K15 (ORCPT
+        id S1729205AbgI3M2N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 30 Sep 2020 08:28:13 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:54582 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727997AbgI3M2N (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 30 Sep 2020 06:27:57 -0400
-X-Greylist: delayed 302 seconds by postgrey-1.27 at vger.kernel.org; Wed, 30 Sep 2020 06:27:57 EDT
-Received: from mail-qk1-f171.google.com ([209.85.222.171]) by
- mrelayeu.kundenserver.de (mreue106 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1MeC5x-1kwcxd2EI3-00bNBT for <kernel-janitors@vger.kernel.org>; Wed, 30
- Sep 2020 12:22:54 +0200
-Received: by mail-qk1-f171.google.com with SMTP id w12so823197qki.6
-        for <kernel-janitors@vger.kernel.org>; Wed, 30 Sep 2020 03:22:54 -0700 (PDT)
-X-Gm-Message-State: AOAM530RmGOWNdparW9v0p/HWuK+t+rRCuM7zJHyYcXKtmNIJ42+WC7n
-        fAK2WQnpw5lwQkOMBGLQPKk1MXY/vdR+Yy3H5JA=
-X-Google-Smtp-Source: ABdhPJzbp1ree7OnLK3wvVArvoiDQadBs0pygzava7j+b3qT05utAOWO3J1rLFwcXA64KjCr9Zap1oKqinCzol0q+MY=
-X-Received: by 2002:a37:5d8:: with SMTP id 207mr1859009qkf.352.1601461373212;
- Wed, 30 Sep 2020 03:22:53 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200930090238.GA621698@mwanda>
-In-Reply-To: <20200930090238.GA621698@mwanda>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 30 Sep 2020 12:22:37 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a1m3kaGK17A2ADgA7b9i7GeEYhX=xVoU=Yet8_T93Q2JA@mail.gmail.com>
-Message-ID: <CAK8P3a1m3kaGK17A2ADgA7b9i7GeEYhX=xVoU=Yet8_T93Q2JA@mail.gmail.com>
-Subject: Re: [PATCH] staging: vchiq: silence an uninitialized variable warning
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Wed, 30 Sep 2020 08:28:13 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08UC9YhR028137;
+        Wed, 30 Sep 2020 12:27:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=g14+JbAXNUIDOSumYRcqglsnIcYylhw2m0sA+ZnTuX4=;
+ b=IjdYEN1bVdBp3T8f3BZ+ye19TY732TkCur5PHaCZDHBcMBULxubjiugSeFTrj7lI/nhx
+ ZZ9v1rf5L1X6EnWiPMR1ddHVH2DW+O383apYD7hSuWFPHHRworlst6V0vD9J684Aw8VS
+ g53npCiBTWSoDv6oyWdwUGS4mRoh6BbPdAvZYj0yIG0dz6fYqVT+6IjXZsk2iPFdrNrM
+ Jl59gTbABfWE0GsAQzdpPbVRONwgXbSzhqh1Tc9WfSfdpsIyFL1FuIrpuI5srGnHzwUD
+ pCVq2j0iK1h96UrxEbjILqTGiKCBNU9pAEdy4AaIzZJcT2yd03GhIiNiGt+wottZAK1t aw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 33swkm06mk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 30 Sep 2020 12:27:58 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08UCOl96156864;
+        Wed, 30 Sep 2020 12:27:58 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 33tfdttusg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 30 Sep 2020 12:27:58 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08UCRnFl019263;
+        Wed, 30 Sep 2020 12:27:50 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 30 Sep 2020 05:27:48 -0700
+Date:   Wed, 30 Sep 2020 15:27:41 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        driverdevel <devel@driverdev.osuosl.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Marcelo Diop-Gonzalez <marcgonzalez@google.com>,
-        Jamal Shareef <jamal.k.shareef@gmail.com>,
+        kernel-janitors@vger.kernel.org,
         bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
         "moderated list:BROADCOM BCM2835 ARM ARCHITECTURE" 
         <linux-rpi-kernel@lists.infradead.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        driverdevel <devel@driverdev.osuosl.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:8LwwTIuwrdoI43eqbu8GAFiybBXpseoie4b4KQc9NB8JRvWgq5/
- O+kyUNX59xDmrp7pQ1Mip5QZAezCx11efFKmnYFrTKW1ZsAavGGvpBqysvUP4hCygghoc4p
- d/L3rDKyXlQbSAB/v5m6C/yMPlyY2zw+GaGy180CFcZCAG/ouROFyW5kZcdgapeZAgXCcFe
- fVajZsg7jM3pjT898/jRw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:p0haXGhm7ME=:ygR4u9ZxWlxplFxPAhfVCa
- UmC799sz6dLBjg/G54bju1y6xPxr7t+ZCNL8UFVYZ/ZPu8044hIzyfbyXtZRFCAgsCC3i3B4w
- jjacM1gDWjp9hbXdJc6Urn1jZ6FiTH0LbATe9vnzK48a01KKAnGtO6PVtue/mmDM2MAABmaoi
- 8Ixg/CCNFJ+JJ6ugpz7OlCfHz2VP8srWtKJwQdIAWt617ocaf1KVpj3mBr56Sk0Z2YcuIo/Ol
- cp0Yq2axyDII5prlxMbGQNiy4mjVhhCCC8NrK33MewhB9Dhaz8AN2fy7QOjLv0/VVVgu9FCu6
- lmPedaWmd0zJ2IO00qJp1SNTT/Uu/NrB5TY3Vg7EpELvaAiOLyoNrJs4xoVbklySGwRtMYiAx
- i7sZbC/zb5My/WV6HlOkRQI2b4s6Qy628OBqVh9Qpp3GSMR79GPdNoxk9yg9oTFkgFwK8Bmvs
- 5SftRfHjMRJIIgyRPvxIhIiMe6Q6t5kINqKRgnpdNJmmspfKL8nKovDZS8UnzmydLdv5cntXC
- ptm4um1R7SCLtzFy4xh2lSxpc/DwI7q4KRD0jdJNK3WULw4A77VlRKWbr80NqaaB5fkLIhWK8
- KKK4QFLCtJu6kku3bb2wvWhIVZimCpjGXrHJXWRV2MugWlfCRlfSVAT1FoQ4scC8su5mZ9ZeR
- HGE29x4h+gtLkCeqtjhQUc+6nZ2QGeWzyICu35V5Xh8wnFNVkqHe62Vn2p6zwrKm0DSKDwmE2
- pm8T4pgPB7vdLQhWfMuvGHm7nmdlblFlN2U4gado+vmf7/s2xXKzvWz8bIc9nU2S6BSmXxmbM
- gLS3l8cnWbkn9BmV3g+dA/Toid8QZ17ofUtho/Dgt8DKpqYG9fJr+V0yAIP1oI5eEYzXxSE
+        Jamal Shareef <jamal.k.shareef@gmail.com>,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Subject: Re: [PATCH] staging: vchiq: silence an uninitialized variable warning
+Message-ID: <20200930122741.GB4282@kadam>
+References: <20200930090238.GA621698@mwanda>
+ <CAK8P3a1m3kaGK17A2ADgA7b9i7GeEYhX=xVoU=Yet8_T93Q2JA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a1m3kaGK17A2ADgA7b9i7GeEYhX=xVoU=Yet8_T93Q2JA@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9759 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
+ adultscore=0 malwarescore=0 spamscore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009300102
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9759 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 phishscore=0
+ suspectscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501
+ impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009300101
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Sep 30, 2020 at 11:02 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> Smatch complains that "userdata" can be passed to vchiq_bulk_transfer()
-> without being initialized.  Smatch is correct, however, in that
-> situation the "userdata" is not used so it doesn't cause a problem.
-> Passing an uninitialized variable will trigger a UBSan warning at
-> runtime so this warning is worth silencing by setting "userdata" to
-> NULL.
->
-> Fixes: a4367cd2b231 ("staging: vchiq: convert compat bulk transfer")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+On Wed, Sep 30, 2020 at 12:22:37PM +0200, Arnd Bergmann wrote:
+> On Wed, Sep 30, 2020 at 11:02 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> >
+> > Smatch complains that "userdata" can be passed to vchiq_bulk_transfer()
+> > without being initialized.  Smatch is correct, however, in that
+> > situation the "userdata" is not used so it doesn't cause a problem.
+> > Passing an uninitialized variable will trigger a UBSan warning at
+> > runtime so this warning is worth silencing by setting "userdata" to
+> > NULL.
+> >
+> > Fixes: a4367cd2b231 ("staging: vchiq: convert compat bulk transfer")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> 
+> The change looks fine, but I wonder if it's actually worse and the
+> uninitialized pointer can end up getting copied back to user space
+> in the completion.
 
-The change looks fine, but I wonder if it's actually worse and the
-uninitialized pointer can end up getting copied back to user space
-in the completion.
+Ah... Wow.  You're right.  I think I really need to resend this with a
+more accurate commit message.
 
-In either case, thanks for the fix!
+regards,
+dan carpenter
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+

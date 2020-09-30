@@ -2,114 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E294227EA11
-	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Sep 2020 15:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F46427EB0D
+	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Sep 2020 16:36:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730217AbgI3Niu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 30 Sep 2020 09:38:50 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:50868 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730209AbgI3Niu (ORCPT
+        id S1730410AbgI3OgK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 30 Sep 2020 10:36:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33988 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728149AbgI3OgK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 30 Sep 2020 09:38:50 -0400
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08UDX4PN138798;
-        Wed, 30 Sep 2020 09:38:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=+Gvon2NFXY2HwR64ot4UTKRGlN2iANmBqeR1OTawFXg=;
- b=E04XESnoLwc29JtuF0NuJCVS6gSDafNwcG8G7DFrKZd/ESDA5sEYlCi2cvJnzw8dI7Qx
- sDpiq+Dkd7VTJyYcE2aCbza6e+1oqdUKd2gm+BklZvpolfCmX7y/12c+KkTDcp/XkO61
- 2ws+Tp0PDiQ2YJDQkNdNyEmjMsN1Zl+rw6cgtHb2ABQqAfSnOzkkyzlpjxQzhAOdrc1U
- vMMhUsEuNWcn1WQfDSp1X9TDjSvRfkF8n4ufJyW0PKEyj1qejFxIyu058i3+xAgP9OL+
- d4cuSwIIZ6zHeRXzZaLa11RcFat4tzhSPGavZUD1K5HoUOPNmI9DKCY3B76EOYy2Lw3w tw== 
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 33vry3mj5w-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 30 Sep 2020 09:38:34 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-        by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08UDWLoR028259;
-        Wed, 30 Sep 2020 13:38:33 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
-        by ppma05wdc.us.ibm.com with ESMTP id 33sw99dnyw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 30 Sep 2020 13:38:33 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
-        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 08UDcXZs55247218
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 30 Sep 2020 13:38:33 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 0A670B2066;
-        Wed, 30 Sep 2020 13:38:33 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 61A11B205F;
-        Wed, 30 Sep 2020 13:38:32 +0000 (GMT)
-Received: from [9.163.63.54] (unknown [9.163.63.54])
-        by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
-        Wed, 30 Sep 2020 13:38:32 +0000 (GMT)
-Subject: Re: [PATCH] soc: aspeed: xdma: Return -EFAULT if copy_from_user()
- fails
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
-        linux-aspeed@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-References: <20200930090334.GB621698@mwanda>
-From:   Eddie James <eajames@linux.ibm.com>
-Message-ID: <65b1447e-8f37-69f9-4049-25d130a281f8@linux.ibm.com>
-Date:   Wed, 30 Sep 2020 08:38:31 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        Wed, 30 Sep 2020 10:36:10 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 119DDC061755;
+        Wed, 30 Sep 2020 07:36:10 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id j11so3220891ejk.0;
+        Wed, 30 Sep 2020 07:36:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=UyvBbqPAylsOXzoE7eSfTMTzw/jzRB0rwtJKUUhHdlY=;
+        b=ESEgjt3xCE2u8z2U0erqEZrfTfvAGlF7S8/x471LhukCaWs9cRIi00bpZMzs6OeWJe
+         7qJqyrTv5RIwKbAyEVcQh0QDJT4W2GZoEQiBRXxPnpuddXlufGLTCGYYRITFh8e/AxT0
+         BKMZxrxEnLg7c0055t2//8pR2kYamhnffi5DOgyXXg5tRL/dQm5GoYX3S24ShbgObw7r
+         gX0ercG3yKXn3CYBZwrqr4g5rvTlzlCGPUNnxMqL43bq00qJ8rihIZuP810J4+CS00FR
+         fsQY0zTl3xZvw9HZ+/RxXmnok8GoOl5q+8JtWkF8EbnwB4aV+f6wzxl050kqqC+OzsNH
+         yw4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=UyvBbqPAylsOXzoE7eSfTMTzw/jzRB0rwtJKUUhHdlY=;
+        b=iYG01KugKcVibY7vRiqKZPLYHFgvyoq+m+CYaungIp0ALPm2JPoYQkt8NVeiHKfH0v
+         aVwVMItzPQrDP0C4F+CXaSfE11aM6ORgExGZu3AK4IZ8FG3ZwwLO2iIW/e3jzmqr098+
+         UZ7+aA/0j8YNjTLWmltc6Ah+jtjy0gM38QhKIuoiJ7heeX2UfZRspgaTaldoJzHzwTL3
+         zQRxbnvbDiSeOhjqzb3ECC1AU+UxSEChI8qYQ3lOKbDdH7nZnOd0Y/WLrE0fJJJ3uHt7
+         NHDHm70rO4+VPK34RlB3P8R1cBWwVFUWEmpOLT9uklPsPOeyqP2C2X0nJ+mNIvuxFQF+
+         CLSw==
+X-Gm-Message-State: AOAM531dwnvG+noIgv6j6BMxZmitzweqBtv4ZkVv7cgzisJm36/TQHKO
+        EBXCsx+2M2uw0D6KNAXQio0yGgIXZyFD3bqQtro=
+X-Google-Smtp-Source: ABdhPJwXDa1PhhObSO8t83CkU406nnzd2eJgOeaMVgaJq1IqzqLp9Li9fphF/lHj326arrP17XMs6XeHWwa6FY6D+Ho=
+X-Received: by 2002:a17:906:3aca:: with SMTP id z10mr3057802ejd.419.1601476568734;
+ Wed, 30 Sep 2020 07:36:08 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200930090334.GB621698@mwanda>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-09-30_07:2020-09-30,2020-09-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=999 adultscore=0 phishscore=0 suspectscore=0 impostorscore=0
- spamscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0 clxscore=1011
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009300108
+References: <20200930130123.8064-1-colin.king@canonical.com>
+In-Reply-To: <20200930130123.8064-1-colin.king@canonical.com>
+From:   =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>
+Date:   Wed, 30 Sep 2020 16:35:57 +0200
+Message-ID: <CAAUqJDuDsgLZ_7i=knqFNkqWJn+G3FqE3Yv=RBLr27mBMJk1Cg@mail.gmail.com>
+Subject: Re: [PATCH][next][resend] lib/mpi: fix off-by-one check on index "no"
+To:     Colin King <colin.king@canonical.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+        Waiman Long <longman@redhat.com>,
+        kernel-janitors@vger.kernel.org, linux-crypto@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+st 30. 9. 2020 o 15:04 Colin King <colin.king@canonical.com> nap=C3=ADsal(a=
+):
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There is an off-by-one range check on the upper limit of
+> index "no".  Fix this by changing the > comparison to >=3D
 
-On 9/30/20 4:03 AM, Dan Carpenter wrote:
-> The copy_from_user() function returns the number of bytes remaining
-> which we weren't able to copy.  This should return -EFAULT to the
-> user.
-
-
-Thanks,
-
-Reviewed-by: Eddie James <eajames@linux.ibm.com>
-
+Note that this doesn't completely fix the bug though... (see below)
 
 >
-> Fixes: 86609baa4217 ("soc: aspeed: xdma: Add user interface")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Addresses-Coverity: ("Out-of-bounds read")
+> Fixes: a8ea8bdd9df9 ("lib/mpi: Extend the MPI library")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->   drivers/soc/aspeed/aspeed-xdma.c | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/soc/aspeed/aspeed-xdma.c b/drivers/soc/aspeed/aspeed-xdma.c
-> index 91b51a3de8df..e6b4744bda64 100644
-> --- a/drivers/soc/aspeed/aspeed-xdma.c
-> +++ b/drivers/soc/aspeed/aspeed-xdma.c
-> @@ -569,9 +569,8 @@ static ssize_t aspeed_xdma_write(struct file *file, const char __user *buf,
->   	if (len != sizeof(op))
->   		return -EINVAL;
->   
-> -	rc = copy_from_user(&op, buf, len);
-> -	if (rc)
-> -		return rc;
-> +	if (copy_from_user(&op, buf, len))
-> +		return -EFAULT;
->   
->   	if (!op.len || op.len > client->size ||
->   	    op.direction > ASPEED_XDMA_DIRECTION_UPSTREAM)
+> resend to Cc linux-crypto
+>
+> ---
+>  lib/mpi/mpiutil.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/lib/mpi/mpiutil.c b/lib/mpi/mpiutil.c
+> index 3c63710c20c6..632d0a4bf93f 100644
+> --- a/lib/mpi/mpiutil.c
+> +++ b/lib/mpi/mpiutil.c
+> @@ -69,7 +69,7 @@ postcore_initcall(mpi_init);
+>   */
+>  MPI mpi_const(enum gcry_mpi_constants no)
+>  {
+> -       if ((int)no < 0 || no > MPI_NUMBER_OF_CONSTANTS)
+> +       if ((int)no < 0 || no >=3D MPI_NUMBER_OF_CONSTANTS)
+>                 pr_err("MPI: invalid mpi_const selector %d\n", no);
+
+What the code does is it just logs an error if the value is out of
+range, but then it happily continues dereferencing the array anyway...
+In the original libgcrypt code [1] (which BTW needs this patch, too),
+there is log_bug() instead of pr_err(), which doesn't just log the
+error, but also abort()'s the program. BUG() would be the correct
+kernel equivalent for log_bug(). It seems the whole kernel's MPI
+library clone should be re-audited for other instances of pr_*()'s
+that should in fact be BUG()'s (or even better, WARN_ONCE()'s with
+proper error handling, but that might diverge the code from libgcrypt
+too much...).
+
+[1] https://github.com/gpg/libgcrypt/blob/9cd92ebae21900e54cc3d8b607c8ed1af=
+bf2eb9b/mpi/mpiutil.c#L773
+
+>         if (!constants[no])
+>                 pr_err("MPI: MPI subsystem not initialized\n");
+> --
+> 2.27.0
+>

@@ -2,116 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C38FF27EE33
-	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Sep 2020 18:03:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AE9D27EFB8
+	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Sep 2020 18:53:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728819AbgI3QDq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 30 Sep 2020 12:03:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60702 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725355AbgI3QDq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 30 Sep 2020 12:03:46 -0400
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2A59920B1F;
-        Wed, 30 Sep 2020 16:03:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601481825;
-        bh=d/UjG1nCA1JG1VOl7i+9DvO19UCGEZ9Pdk/X/fb/ck8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=wzDoDL/qM/Yr0keCU1jzREn08ZPYsNisltjAzc3f4vAn4wsl2W7uoUPhxPImmzpst
-         SImiiaeh80Tv1oN/CLEQChq5Iqy+flOvgDHDeU3xdikc55FFlI7tjsYp744z/LiyWi
-         X/k2vJcHsoB3xILrSG+mxNRc7rPsb/SoV4T3acYI=
-Received: by mail-ot1-f42.google.com with SMTP id 60so2339861otw.3;
-        Wed, 30 Sep 2020 09:03:45 -0700 (PDT)
-X-Gm-Message-State: AOAM5305egLXfsphWrFZkEF95gMd4nU/7c2tuT2BOjKuZVExJ4uvkhFj
-        L+hnz/JmUkb9okCaps1UFcipwsSo18IK0JSOWyc=
-X-Google-Smtp-Source: ABdhPJx9uZma2udofiaFu+pMAJ3U7PlPQjF1ps5+9/+UIA10uI7fIWGY7tBvGFRSGepCVP85EfK3bYfKIoTWI8TWRjY=
-X-Received: by 2002:a9d:6193:: with SMTP id g19mr1938806otk.108.1601481824405;
- Wed, 30 Sep 2020 09:03:44 -0700 (PDT)
+        id S1731112AbgI3Qxs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 30 Sep 2020 12:53:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55478 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725355AbgI3Qxr (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 30 Sep 2020 12:53:47 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57982C0613D0;
+        Wed, 30 Sep 2020 09:53:47 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id gr14so3887515ejb.1;
+        Wed, 30 Sep 2020 09:53:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:in-reply-to:message-id:references
+         :user-agent:mime-version;
+        bh=2ux3ZwoOcELXRpM8fj0VwKjV3oJw+0s13Z8VXyw/i0U=;
+        b=eQkWDYHVn+jhaKKWLiGAanMAHe2yi2XmEHp6gMAzQy+ljQx90l2Vw8QyxWdiQPdoPI
+         cO5sUZ2xmVuTzUg6+inIx3JvfpZwIcR41qyoFWJa+emFa3DqmlmHgsjbiQ/hALiEPMrW
+         AC23Zqyv+D34TGyd131IdF+Q1EHLV68gWO9SZGpOCF/uIrk/l0YsmdMxr2moOwkAZgHO
+         MfAj1YTw3jtdkJrIWScgBNiNq4qHczBSFyegN6knyokcK4f/WrJM8ifAIN/MYPZYB9qp
+         AFxf2PX+jl0tT/ZeySpYpTyv2Ux4CB9IN+RnO0dm4aeDtu+LtpL2vd1tERMz05s+ILZ2
+         ljdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version;
+        bh=2ux3ZwoOcELXRpM8fj0VwKjV3oJw+0s13Z8VXyw/i0U=;
+        b=uAPmiHlZKl5yn7Z9tWkP0zRZj/G0WqLS1N1GgwG3ufOPuFVPWCywmm0aXQzhM1iSdA
+         J8RpTgOizAtkTIiqO+2PoV4ojSX9u06uMgacpkqPbixkiQjAD99nThpZMfQJxSjdnME7
+         foW2otSgvIOdihrBAqrX9lhJ3keBuUgJYyQ1A/UJHVp+HmXCOufrHjdq9f1szpEZxoJN
+         +nDyImomP3wo2LWSAEpJG9TcMfy9OqtvRO4i6d10v5w+oqa3ajIPfFnBtBXb4yfS6Ffr
+         cXYeDXtGUPAUCO67F0NIlU84A/wZRt/lTE7Jt3kf2k7eztcEM5swRGwsgQGxaak2CxFJ
+         +bvQ==
+X-Gm-Message-State: AOAM532qiAAImOjuIkJ8nSOZIS4ZJs+dNxD+Hoe9XG6YFH80ulP04dpm
+        +l72EwlJ0j70PHsCzGNoRjE=
+X-Google-Smtp-Source: ABdhPJxq6i2gIPLWPJ7O6Kk/mI1cJIl9yCZ/51WXjg9tgeev7wuOBV30r/25eWcHH73BG1oJRlXIPQ==
+X-Received: by 2002:a17:906:275b:: with SMTP id a27mr3983359ejd.190.1601484825856;
+        Wed, 30 Sep 2020 09:53:45 -0700 (PDT)
+Received: from felia ([2001:16b8:2d6f:5600:7072:b735:b671:fb4f])
+        by smtp.gmail.com with ESMTPSA id pv28sm2021553ejb.120.2020.09.30.09.53.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2020 09:53:45 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
+Date:   Wed, 30 Sep 2020 18:53:37 +0200 (CEST)
+X-X-Sender: lukas@felia
+To:     Thomas Gleixner <tglx@linutronix.de>
+cc:     Peter Zijlstra <peterz@infradead.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Balbir Singh <sblbir@amazon.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech
+Subject: Re: [PATCH -next for tip:x86/pti] x86/tlb: drop unneeded local vars
+ in enable_l1d_flush_for_task()
+In-Reply-To: <87eemji887.fsf@nanos.tec.linutronix.de>
+Message-ID: <alpine.DEB.2.21.2009301848050.21555@felia>
+References: <20200928124457.27289-1-lukas.bulwahn@gmail.com> <20200929071211.GJ2628@hirez.programming.kicks-ass.net> <20200929083709.GC2651@hirez.programming.kicks-ass.net> <87eemji887.fsf@nanos.tec.linutronix.de>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-References: <20200930130123.8064-1-colin.king@canonical.com> <CAAUqJDuDsgLZ_7i=knqFNkqWJn+G3FqE3Yv=RBLr27mBMJk1Cg@mail.gmail.com>
-In-Reply-To: <CAAUqJDuDsgLZ_7i=knqFNkqWJn+G3FqE3Yv=RBLr27mBMJk1Cg@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 30 Sep 2020 18:03:33 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXF2AzFkcyWzUHagq4xD_4BHpiscrPurndmJmJyp2KgXJg@mail.gmail.com>
-Message-ID: <CAMj1kXF2AzFkcyWzUHagq4xD_4BHpiscrPurndmJmJyp2KgXJg@mail.gmail.com>
-Subject: Re: [PATCH][next][resend] lib/mpi: fix off-by-one check on index "no"
-To:     =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
-        Waiman Long <longman@redhat.com>,
-        kernel-janitors@vger.kernel.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 30 Sep 2020 at 16:36, Ondrej Mosn=C3=A1=C4=8Dek <omosnacek@gmail.co=
-m> wrote:
->
-> st 30. 9. 2020 o 15:04 Colin King <colin.king@canonical.com> nap=C3=ADsal=
-(a):
-> >
-> > From: Colin Ian King <colin.king@canonical.com>
-> >
-> > There is an off-by-one range check on the upper limit of
-> > index "no".  Fix this by changing the > comparison to >=3D
->
-> Note that this doesn't completely fix the bug though... (see below)
->
-
-And by the same reasoning, it does not address the coverity issue
-either, since the out of bounds read is still executed.
 
 
-> >
-> > Addresses-Coverity: ("Out-of-bounds read")
-> > Fixes: a8ea8bdd9df9 ("lib/mpi: Extend the MPI library")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > ---
-> >
-> > resend to Cc linux-crypto
-> >
-> > ---
-> >  lib/mpi/mpiutil.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/lib/mpi/mpiutil.c b/lib/mpi/mpiutil.c
-> > index 3c63710c20c6..632d0a4bf93f 100644
-> > --- a/lib/mpi/mpiutil.c
-> > +++ b/lib/mpi/mpiutil.c
-> > @@ -69,7 +69,7 @@ postcore_initcall(mpi_init);
-> >   */
-> >  MPI mpi_const(enum gcry_mpi_constants no)
-> >  {
-> > -       if ((int)no < 0 || no > MPI_NUMBER_OF_CONSTANTS)
-> > +       if ((int)no < 0 || no >=3D MPI_NUMBER_OF_CONSTANTS)
-> >                 pr_err("MPI: invalid mpi_const selector %d\n", no);
+On Wed, 30 Sep 2020, Thomas Gleixner wrote:
+
+> On Tue, Sep 29 2020 at 10:37, Peter Zijlstra wrote:
+> > Here, I fixed it..
+> 
+> Well, no. What Balbir is trying to do here is to establish whether a
+> task runs on a !SMT core. sched_smt_active() is system wide, but their
+> setup is to have a bunch of SMT enabled cores and cores where SMT is off
+> because the sibling is offlined. They affine these processes to non SMT
+> cores and the check there validates that before it enabled that flush
+> thingy.
+> 
+> Of course this is best effort voodoo because if all CPUs in the mask are
+> offlined then the task is moved to a SMT enabled one where L1D flush is
+> useless. Though offlining their workhorse CPUs is probably not the daily
+> business for obvious raisins.
 >
-> What the code does is it just logs an error if the value is out of
-> range, but then it happily continues dereferencing the array anyway...
-> In the original libgcrypt code [1] (which BTW needs this patch, too),
-> there is log_bug() instead of pr_err(), which doesn't just log the
-> error, but also abort()'s the program. BUG() would be the correct
-> kernel equivalent for log_bug(). It seems the whole kernel's MPI
-> library clone should be re-audited for other instances of pr_*()'s
-> that should in fact be BUG()'s (or even better, WARN_ONCE()'s with
-> proper error handling, but that might diverge the code from libgcrypt
-> too much...).
->
-> [1] https://github.com/gpg/libgcrypt/blob/9cd92ebae21900e54cc3d8b607c8ed1=
-afbf2eb9b/mpi/mpiutil.c#L773
->
-> >         if (!constants[no])
-> >                 pr_err("MPI: MPI subsystem not initialized\n");
-> > --
-> > 2.27.0
-> >
+
+Thanks, Thomas.
+
+So, I will keep the semantics as-is, clean up the patch with 
+preempt_{dis,en}able() and send out a v2.
+
+Lukas 

@@ -2,114 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7980827F165
-	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Sep 2020 20:36:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E22F927F2A3
+	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Sep 2020 21:33:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725892AbgI3SgL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 30 Sep 2020 14:36:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43010 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725355AbgI3SgL (ORCPT
+        id S1728721AbgI3Tdr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 30 Sep 2020 15:33:47 -0400
+Received: from smtprelay0007.hostedemail.com ([216.40.44.7]:56070 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725799AbgI3Tdr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 30 Sep 2020 14:36:11 -0400
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4F7EC061755;
-        Wed, 30 Sep 2020 11:36:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=u8cc2kComrEkpimrNXVdUMg+LW293Fw3FtvuzMDNHPI=; b=RGcasAAliX1Wt4AOQfJtYZto1N
-        HBRlXSkKM76ZvUmu7s5c5JIozt6rgUuv/8lzDxAp3ZU84i+Hyx53SdKZk7h0IUPMBx2re9DV14OAa
-        COtHRH4n1YdYFP3dza/XPZ641w4BaUNK/DdRq2z09unSl+6r9pLm9NdnAvaS8nNvumWKemCFmiW/m
-        /pMyjviyYKaP/yN22/OXo9DG5EWRlnMGAzvUFGhhEaSTwSARINIThpw53jBvPPKJeXWL7SBOt1Rpw
-        9Q/TAvzn9mdyNxKn2nLYRGeEKs9+bwetlH2k1bHDIpq4+2QUlfoDjzT6pdu7rDNM22Tpfs4KmGh8A
-        oDEa3apA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kNgxI-0003Vp-Am; Wed, 30 Sep 2020 18:35:56 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 8B5AC301179;
-        Wed, 30 Sep 2020 20:35:52 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 6DC5920244EC3; Wed, 30 Sep 2020 20:35:52 +0200 (CEST)
-Date:   Wed, 30 Sep 2020 20:35:52 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Balbir Singh <sblbir@amazon.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech
-Subject: Re: [PATCH -next for tip:x86/pti] x86/tlb: drop unneeded local vars
- in enable_l1d_flush_for_task()
-Message-ID: <20200930183552.GG2628@hirez.programming.kicks-ass.net>
-References: <20200928124457.27289-1-lukas.bulwahn@gmail.com>
- <20200929071211.GJ2628@hirez.programming.kicks-ass.net>
- <20200929083709.GC2651@hirez.programming.kicks-ass.net>
- <87eemji887.fsf@nanos.tec.linutronix.de>
- <20200930170316.GB2628@hirez.programming.kicks-ass.net>
- <87blhni1pg.fsf@nanos.tec.linutronix.de>
+        Wed, 30 Sep 2020 15:33:47 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 97B421801EC3E;
+        Wed, 30 Sep 2020 19:33:45 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:966:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2196:2199:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3870:3872:3873:4321:4362:4384:4385:4395:4605:5007:6248:6742:6743:7903:10004:10400:10848:11232:11658:11914:12043:12266:12297:12438:12679:12740:12760:12895:13019:13069:13311:13357:13439:14659:14777:21080:21365:21433:21451:21627:30054:30070:30083:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:13,LUA_SUMMARY:none
+X-HE-Tag: bag86_060c7b527195
+X-Filterd-Recvd-Size: 2698
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf17.hostedemail.com (Postfix) with ESMTPA;
+        Wed, 30 Sep 2020 19:33:41 +0000 (UTC)
+Message-ID: <db26d49401dc0bd6b9013a603a155f9827f404a4.camel@perches.com>
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
+ statements
+From:   Joe Perches <joe@perches.com>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     linux-iio@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        linux-acpi@vger.kernel.org, David Lechner <david@lechnology.com>,
+        Valdis =?UTF-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        kernel-janitors@vger.kernel.org, drbd-dev@lists.linbit.com,
+        openipmi-developer@lists.sourceforge.net,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-ide@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-wireless@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>
+Date:   Wed, 30 Sep 2020 12:33:39 -0700
+In-Reply-To: <20200929113745.GB4799@sirena.org.uk>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+         <160132172369.55460.9237357219623604216.b4-ty@kernel.org>
+         <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com>
+         <20200929113745.GB4799@sirena.org.uk>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87blhni1pg.fsf@nanos.tec.linutronix.de>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Sep 30, 2020 at 08:00:59PM +0200, Thomas Gleixner wrote:
-> On Wed, Sep 30 2020 at 19:03, Peter Zijlstra wrote:
-> > On Wed, Sep 30, 2020 at 05:40:08PM +0200, Thomas Gleixner wrote:
-> > Also, that preempt_disable() in there doesn't actually do anything.
-> > Worse, preempt_disable(); for_each_cpu(); is an anti-pattern. It mixes
-> > static_cpu_has() and boot_cpu_has() in the same bloody condition and has
-> > a pointless ret variable.
-
-Also, I forgot to add, it accesses ->cpus_mask without the proper
-locking, so it could be reading intermediate state from whatever cpumask
-operation that's in progress.
-
-> I absolutely agree and I really missed it when looking at it before
-> merging. cpus_read_lock()/unlock() is the right thing to do if at all.
+On Tue, 2020-09-29 at 12:37 +0100, Mark Brown wrote:
+> On Mon, Sep 28, 2020 at 05:45:24PM -0700, Joe Perches wrote:
+> > On Mon, 2020-09-28 at 20:35 +0100, Mark Brown wrote:
+> > > [1/1] regmap: debugfs: use semicolons rather than commas to separate statements
+> > >       commit: 7f4a122d0b50b40c64d24a5cf7aafe26dd9487ee
+> > Rather than replying to the 0/n cover letter to a patch
+> > series, can you reply to each of the specific patches in
+> > the patch series you are applying?
+> > Otherwise, it's a bit difficult to figure out which patches
+> > you are applying.
 > 
-> > It's shoddy code, that only works if you align the planets right. We
-> > really shouldn't provide interfaces that are this bad.
-> >
-> > It's correct operation is only by accident.
-> 
-> True :(
-> 
-> I understand Balbirs problem and it makes some sense to provide a
-> solution. We can:
-> 
->     1) reject set_affinity() if the task has that flush muck enabled
->        and user space tries to move it to a SMT enabled core
-> 
->     2) disable the muck if if detects that it is runs on a SMT enabled
->        core suddenly (hotplug says hello)
-> 
->        This one is nasty because there is no feedback to user space
->        about the wreckage.
+> Feel free to submit patches to b4.
 
-That's and, right, not or. because 1) deals with sched_setffinity()
-and 2) deals wit hotplug.
+Have you tried the existing option to send
+thank you's on a specific ranges of patches?
 
-Now 1) requires an arch hook in sched_setaffinity(), something I'm not
-keen on providing, once we provide it, who knows what strange and
-wonderful things archs will dream up.
+b4 ty
+~~~~~
+usage:
+  b4 ty [-h] [-g GITDIR] [-o OUTDIR] [-l] [-s SEND [SEND ...]] [-d DISCARD [DISCARD ...]] [-a] [-b BRANCH] [--since SINCE]
 
-And 2) also happens on hot-un-plug, when the task's affinity gets
-forced because it became empty. No user feedback there either, and
-information is lost.
+[]
+ -s SEND, --send SEND  Generate thankyous for specific entries from -l (e.g.: 1,3-5,7-; or "all")
 
 
-I suppose we can do 2) but send a signal. That would cover all cases and
-keep it in arch code. But yes, that's pretty terrible too.
+

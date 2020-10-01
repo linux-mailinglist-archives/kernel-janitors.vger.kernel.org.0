@@ -2,91 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C97F7280305
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Oct 2020 17:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3B6628034D
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Oct 2020 17:57:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732591AbgJAPkh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Oct 2020 11:40:37 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50465 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731885AbgJAPkh (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Oct 2020 11:40:37 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kO0h8-0001LN-6U; Thu, 01 Oct 2020 15:40:34 +0000
-Subject: Re: [PATCH] selftests/ftrace: check for do_sys_openat2 in user-memory
- test
-To:     Steven Rostedt <rostedt@goodmis.org>
+        id S1732522AbgJAP5B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Oct 2020 11:57:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59828 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732213AbgJAP5B (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 1 Oct 2020 11:57:01 -0400
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9A48E20759;
+        Thu,  1 Oct 2020 15:57:00 +0000 (UTC)
+Date:   Thu, 1 Oct 2020 11:56:58 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Colin Ian King <colin.king@canonical.com>
 Cc:     Ingo Molnar <mingo@redhat.com>, Shuah Khan <shuah@kernel.org>,
         Masami Hiramatsu <mhiramat@kernel.org>,
         Tom Zanussi <zanussi@kernel.org>,
         linux-kselftest@vger.kernel.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/ftrace: check for do_sys_openat2 in
+ user-memory test
+Message-ID: <20201001115658.164e28b9@gandalf.local.home>
+In-Reply-To: <80cee321-d8ed-31fd-2f53-d9306b1d9545@canonical.com>
 References: <20201001085641.51130-1-colin.king@canonical.com>
- <20201001104448.427a0eaa@gandalf.local.home>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <80cee321-d8ed-31fd-2f53-d9306b1d9545@canonical.com>
-Date:   Thu, 1 Oct 2020 16:40:33 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+        <20201001104448.427a0eaa@gandalf.local.home>
+        <80cee321-d8ed-31fd-2f53-d9306b1d9545@canonical.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20201001104448.427a0eaa@gandalf.local.home>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 01/10/2020 15:44, Steven Rostedt wrote:
-> On Thu,  1 Oct 2020 09:56:41 +0100
-> Colin King <colin.king@canonical.com> wrote:
-> 
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> More recent libc implementations are now using openat/openat2 system
->> calls so also add do_sys_openat2 to the tracing so that the test
->> passes on these systems because do_sys_open may not be called.
->>
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>  .../testing/selftests/ftrace/test.d/kprobe/kprobe_args_user.tc  | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_user.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_user.tc
->> index a30a9c07290d..cf1b4c3e9e6b 100644
->> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_user.tc
->> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_user.tc
->> @@ -9,6 +9,8 @@ grep -A10 "fetcharg:" README | grep -q '\[u\]<offset>' || exit_unsupported
->>  :;: "user-memory access syntax and ustring working on user memory";:
->>  echo 'p:myevent do_sys_open path=+0($arg2):ustring path2=+u0($arg2):string' \
->>  	> kprobe_events  
->> +echo 'p:myevent2 do_sys_openat2 path=+0($arg2):ustring path2=+u0($arg2):string' \
->> +	> kprobe_events
->>
-> 
-> This still wont work, because the rest of the code only enables the myevent
-> event, and not the one you just added.
+On Thu, 1 Oct 2020 16:40:33 +0100
+Colin Ian King <colin.king@canonical.com> wrote:
 
-Yep, I botched this and tested the wrong fix.
-
+> So this test breaks with a recent libc and support tools built against
+> libc.  I believe the do_sys_open is not being detected because
+> do_sys_openat2 is being called instead.
 > 
-> Did you see this broken before, and this patch fixes it?
+> Not sure now of the correct way to fix this.
 
-So this test breaks with a recent libc and support tools built against
-libc.  I believe the do_sys_open is not being detected because
-do_sys_openat2 is being called instead.
+Perhaps by enabling both events?
 
-Not sure now of the correct way to fix this.
-
-> 
-> -- Steve
-> 
->  
->>  grep myevent kprobe_events | \
->>  	grep -q 'path=+0($arg2):ustring path2=+u0($arg2):string'
-> 
-
+-- Steve

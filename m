@@ -2,67 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A71B527FC12
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Oct 2020 10:57:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6122627FDFC
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Oct 2020 13:02:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731895AbgJAI4z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Oct 2020 04:56:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42684 "EHLO mail.kernel.org"
+        id S1731965AbgJALCv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Oct 2020 07:02:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52772 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731885AbgJAI4u (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Oct 2020 04:56:50 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        id S1731131AbgJALCv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 1 Oct 2020 07:02:51 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9F09B20B1F;
-        Thu,  1 Oct 2020 08:56:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D93AE20B1F;
+        Thu,  1 Oct 2020 11:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601542609;
-        bh=+J+qcQm1lylyAZj+XzZr4MSDB+AbjdvfaTxhoz7fEV0=;
+        s=default; t=1601550170;
+        bh=xYiMC3INrKF34oEyrsmUUrqjbwI/zSijaQlQHN9HorA=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=H+R048pzi27LF30Xg+VMXG6eoTkCkZicDUvSYvFPl8Zbvf8S4lTEIidwYFJ6vt6Qz
-         vXyYNfd4p89PTgO32X4jQi+pgznVI/vYqBQRbc38aZrYlrCSUhXdyPRUOXLc06IN/j
-         7G+ehx7ExGqhtI9oyAotdN3IhJR1a4zL9QoMykmA=
-Date:   Thu, 1 Oct 2020 10:56:50 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        devel@driverdev.osuosl.org, Arnd Bergmann <arnd@arndb.de>,
-        Marcelo Diop-Gonzalez <marcgonzalez@google.com>,
-        kernel-janitors@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-rpi-kernel@lists.infradead.org,
-        Jamal Shareef <jamal.k.shareef@gmail.com>
-Subject: Re: [PATCH] staging: vchiq: Fix list_for_each exit tests
-Message-ID: <20201001085650.GA1832570@kroah.com>
-References: <20200928091103.GC377727@mwanda>
+        b=KEei53PbBIIkdzQLDb/7K/52YSbflBQYn3bG/m713eKa8/9nV0fPPDI4yq6H+/fvV
+         xVqht4hR38nzz4Qgnh/AAp0mk+5WyFzIOOYfEFPMoUP75ral06RLc43LxHUnNG4hb1
+         tZZP4hijlYOR/icBsCoZV1jH7RB2VuKegMZKFfws=
+Date:   Thu, 1 Oct 2020 12:01:50 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     linux-iio@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        linux-acpi@vger.kernel.org, David Lechner <david@lechnology.com>,
+        Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        kernel-janitors@vger.kernel.org, drbd-dev@lists.linbit.com,
+        openipmi-developer@lists.sourceforge.net,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-ide@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-wireless@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
+ statements
+Message-ID: <20201001110150.GA6715@sirena.org.uk>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+ <160132172369.55460.9237357219623604216.b4-ty@kernel.org>
+ <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com>
+ <20200929113745.GB4799@sirena.org.uk>
+ <db26d49401dc0bd6b9013a603a155f9827f404a4.camel@perches.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="CE+1k2dSO48ffgeK"
 Content-Disposition: inline
-In-Reply-To: <20200928091103.GC377727@mwanda>
+In-Reply-To: <db26d49401dc0bd6b9013a603a155f9827f404a4.camel@perches.com>
+X-Cookie: Stay away from flying saucers today.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Sep 28, 2020 at 12:11:03PM +0300, Dan Carpenter wrote:
-> This code code here used to be list_for_each() and after the loop then
-> the "entry" pointer was non-NULL if we found the correct entry or NULL
-> if we couldn't find it.  Then we changed the code to use list_for_each_entry()
-> and so now the "entry" pointer is always non-NULL when we exit the loop.
-> 
-> I have introduced a new "found" variable to say if we found the correct
-> enty or not.  I fixed one test by making it an else statement because
-> that was more readable than testing "if (!found)".
-> 
-> Fixes: 46e4b9ec4fa4 ("staging: vchiq_arm: use list_for_each_entry when accessing bulk_waiter_list")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  .../vc04_services/interface/vchiq_arm/vchiq_arm.c    | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
 
-This doesn't apply against my tree, what branch did you make it against?
+--CE+1k2dSO48ffgeK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-thanks,
+On Wed, Sep 30, 2020 at 12:33:39PM -0700, Joe Perches wrote:
+> On Tue, 2020-09-29 at 12:37 +0100, Mark Brown wrote:
 
-greg k-h
+> > Feel free to submit patches to b4.
+
+> Have you tried the existing option to send
+> thank you's on a specific ranges of patches?
+
+I am relying on b4 to identify which patches that I've downloaded are in
+the pushed branches.  Given that it explicitly lists the patches that
+are applied it appears to be doing an OK job here.
+
+--CE+1k2dSO48ffgeK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl91tx4ACgkQJNaLcl1U
+h9D1IAf/a6Dh+mjW+LjpuCd+hkWCJa8iJTLmYSy9suf32mX9fM1T/gbOLQ1RJtu4
+ZQP0A5w52htIbRIWtYHrgtZQGXrq2SIm+peRmnKP0DXly+Fj0/G0zxg4lqxKzXtV
++XpQjLbvcjF6JIV1ok5ScRg5HH8bfLJQvbGBbpmL9pvI+WniF4smB5bQRwd3qWEf
+MrBNI79S+kr1Cvjxnya+/TP7O4TtOQzzpB695ejEGvqxlTJQM5GGaZTLNJlBivOz
+ygXvOFlrffOajvN1K7URe41xznaDG4+c8pfziFXllSoEGp3yzANBNTtCGEvny0SY
+Nx0W3O8/sebfFJPHQ89w2atWG/nVEQ==
+=onQ8
+-----END PGP SIGNATURE-----
+
+--CE+1k2dSO48ffgeK--

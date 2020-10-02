@@ -2,33 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06923281C05
-	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Oct 2020 21:28:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C2D7281C47
+	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Oct 2020 21:47:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388443AbgJBT2J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 2 Oct 2020 15:28:09 -0400
-Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:16516 "EHLO
+        id S1725763AbgJBTrs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 2 Oct 2020 15:47:48 -0400
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:20730 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2387602AbgJBT2I (ORCPT
+        with ESMTP id S1725283AbgJBTrs (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 2 Oct 2020 15:28:08 -0400
+        Fri, 2 Oct 2020 15:47:48 -0400
 Received: from localhost.localdomain ([92.140.225.106])
         by mwinf5d73 with ME
-        id b7U22300E2JMhn8037U3Ne; Fri, 02 Oct 2020 21:28:06 +0200
+        id b7nk230062JMhn8037nklC; Fri, 02 Oct 2020 21:47:46 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 02 Oct 2020 21:28:06 +0200
+X-ME-Date: Fri, 02 Oct 2020 21:47:46 +0200
 X-ME-IP: 92.140.225.106
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
-        tiwai@suse.com, dmurphy@ti.com, robh@kernel.org,
-        grandmaster@al2klimov.de
-Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+To:     dave@thedillows.org, davem@davemloft.net, kuba@kernel.org
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] ASoC: tlv320adcx140: Fix a typo in a comment
-Date:   Fri,  2 Oct 2020 21:28:01 +0200
-Message-Id: <20201002192801.639743-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] net: typhoon: Fix a typo Typoon --> Typhoon
+Date:   Fri,  2 Oct 2020 21:47:43 +0200
+Message-Id: <20201002194743.640440-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -36,32 +34,26 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-It is likely that this header file is about the TLV320ADCX140. (0 and 4
-swapped)
-While at it fix a missing "H" in a comment related to the include guard.
+s/Typoon/Typhoon/
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- sound/soc/codecs/tlv320adcx140.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/3com/typhoon.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/tlv320adcx140.h b/sound/soc/codecs/tlv320adcx140.h
-index eedbc1d7221f..cafcbc0dd5fd 100644
---- a/sound/soc/codecs/tlv320adcx140.h
-+++ b/sound/soc/codecs/tlv320adcx140.h
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
--// TLV320ADCX104 Sound driver
-+// TLV320ADCX140 Sound driver
- // Copyright (C) 2020 Texas Instruments Incorporated - https://www.ti.com/
+diff --git a/drivers/net/ethernet/3com/typhoon.h b/drivers/net/ethernet/3com/typhoon.h
+index 2f634c64d5d1..38e6dcab4e94 100644
+--- a/drivers/net/ethernet/3com/typhoon.h
++++ b/drivers/net/ethernet/3com/typhoon.h
+@@ -33,7 +33,7 @@ struct basic_ring {
+ 	u32 lastWrite;
+ };
  
- #ifndef _TLV320ADCX140_H
-@@ -145,4 +145,4 @@
- #define ADCX140_GPO_CFG_MAX		4
- #define ADCX140_GPO_DRV_MAX		5
- 
--#endif /* _TLV320ADCX140_ */
-+#endif /* _TLV320ADCX140_H */
+-/* The Typoon transmit ring -- same as a basic ring, plus:
++/* The Typhoon transmit ring -- same as a basic ring, plus:
+  * lastRead:      where we're at in regard to cleaning up the ring
+  * writeRegister: register to use for writing (different for Hi & Lo rings)
+  */
 -- 
 2.25.1
 

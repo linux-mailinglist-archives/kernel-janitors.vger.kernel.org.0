@@ -2,73 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3EFC2819C1
-	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Oct 2020 19:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 061B6281B8F
+	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Oct 2020 21:22:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388406AbgJBRjk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 2 Oct 2020 13:39:40 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:40860 "EHLO vps0.lunn.ch"
+        id S2388386AbgJBTWB convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 2 Oct 2020 15:22:01 -0400
+Received: from mx.metalurgs.lv ([81.198.125.103]:64928 "EHLO mx.metalurgs.lv"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388499AbgJBRjf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 2 Oct 2020 13:39:35 -0400
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
-        (envelope-from <andrew@lunn.ch>)
-        id 1kOP1c-00HH4W-SB; Fri, 02 Oct 2020 19:39:20 +0200
-Date:   Fri, 2 Oct 2020 19:39:20 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Dan Murphy <dmurphy@ti.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] net: phy: dp83869: fix unsigned comparisons
- against less than zero values
-Message-ID: <20201002173920.GF3996795@lunn.ch>
-References: <20201002165422.94328-1-colin.king@canonical.com>
- <1ffbf497-cb07-4302-8a79-236338f00383@ti.com>
+        id S2388414AbgJBTWA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 2 Oct 2020 15:22:00 -0400
+X-Greylist: delayed 343 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 15:22:00 EDT
+Received: from mx.metalurgs.lv (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id 7F69062BAD
+        for <kernel-janitors@vger.kernel.org>; Fri,  2 Oct 2020 22:16:16 +0300 (EEST)
+Received: from kas30pipe.localhost (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id 5FECA62B75
+        for <kernel-janitors@vger.kernel.org>; Fri,  2 Oct 2020 22:16:16 +0300 (EEST)
+Received: by mx.metalurgs.lv (Postfix, from userid 1005)
+        id BC89062C4C; Fri,  2 Oct 2020 22:16:15 +0300 (EEST)
+Received: from [100.64.1.74] (unknown [190.15.125.50])
+        (Authenticated sender: admin)
+        by mx.metalurgs.lv (Postfix) with ESMTPA id 3C08962AB7;
+        Fri,  2 Oct 2020 22:16:08 +0300 (EEST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1ffbf497-cb07-4302-8a79-236338f00383@ti.com>
+Content-Description: Mail message body
+To:     Recipients <financialcapability6@gmail.com>
+From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
+Date:   Fri, 02 Oct 2020 16:16:02 -0300
+Reply-To: binmurrah@gmail.com
+X-SpamTest-Envelope-From: financialcapability6@gmail.com
+X-SpamTest-Group-ID: 00000000
+X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
+X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
+X-SpamTest-Info: {DATE: unreal year}
+X-SpamTest-Method: none
+X-SpamTest-Rate: 55
+X-SpamTest-Status: Not detected
+X-SpamTest-Status-Extended: not_detected
+X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
+Message-ID: <20201002191615.BC89062C4C@mx.metalurgs.lv>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: Low Rate Loan.
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
+         bases: 20140401 #7726142, check: 20201002 notchecked
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Oct 02, 2020 at 12:26:49PM -0500, Dan Murphy wrote:
-> Colin
-> 
-> On 10/2/20 11:54 AM, Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> > 
-> > Currently the comparisons of u16 integers value and sopass_val with
-> > less than zero for error checking is always false because the values
-> > are unsigned. Fix this by making these variables int.  This does not
-> > affect the shift and mask operations performed on these variables
-> > 
-> > Addresses-Coverity: ("Unsigned compared against zero")
-> > Fixes: 49fc23018ec6 ("net: phy: dp83869: support Wake on LAN")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > ---
-> >   drivers/net/phy/dp83869.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/phy/dp83869.c b/drivers/net/phy/dp83869.c
-> > index 0aee5f645b71..cf6dec7b7d8e 100644
-> > --- a/drivers/net/phy/dp83869.c
-> > +++ b/drivers/net/phy/dp83869.c
-> > @@ -305,7 +305,7 @@ static int dp83869_set_wol(struct phy_device *phydev,
-> >   static void dp83869_get_wol(struct phy_device *phydev,
-> >   			    struct ethtool_wolinfo *wol)
-> >   {
-> > -	u16 value, sopass_val;
-> > +	int value, sopass_val;
-> >   	wol->supported = (WAKE_UCAST | WAKE_BCAST | WAKE_MAGIC |
-> >   			WAKE_MAGICSECURE);
-> 
-> Wonder why this was not reported before as the previous comparison issue
-> reported by zero day.
+Hello Dear,
 
-I think it needs W=1
+We are Investment Company offering Corporate and Personal
+Loan at 3% Interest Rate for a duration of 10Years.
 
-  Andrew
+We also pay 1% commission to brokers, who introduce project
+owners for finance or other opportunities.
+
+Please get back to me if you are interested for more
+details.
+
+Yours faithfully,
+Hashim Bin 

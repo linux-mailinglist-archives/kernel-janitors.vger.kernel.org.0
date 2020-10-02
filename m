@@ -2,65 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 061B6281B8F
-	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Oct 2020 21:22:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06923281C05
+	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Oct 2020 21:28:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388386AbgJBTWB convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 2 Oct 2020 15:22:01 -0400
-Received: from mx.metalurgs.lv ([81.198.125.103]:64928 "EHLO mx.metalurgs.lv"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388414AbgJBTWA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 2 Oct 2020 15:22:00 -0400
-X-Greylist: delayed 343 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 15:22:00 EDT
-Received: from mx.metalurgs.lv (localhost [127.0.0.1])
-        by mx.metalurgs.lv (Postfix) with ESMTP id 7F69062BAD
-        for <kernel-janitors@vger.kernel.org>; Fri,  2 Oct 2020 22:16:16 +0300 (EEST)
-Received: from kas30pipe.localhost (localhost [127.0.0.1])
-        by mx.metalurgs.lv (Postfix) with ESMTP id 5FECA62B75
-        for <kernel-janitors@vger.kernel.org>; Fri,  2 Oct 2020 22:16:16 +0300 (EEST)
-Received: by mx.metalurgs.lv (Postfix, from userid 1005)
-        id BC89062C4C; Fri,  2 Oct 2020 22:16:15 +0300 (EEST)
-Received: from [100.64.1.74] (unknown [190.15.125.50])
-        (Authenticated sender: admin)
-        by mx.metalurgs.lv (Postfix) with ESMTPA id 3C08962AB7;
-        Fri,  2 Oct 2020 22:16:08 +0300 (EEST)
+        id S2388443AbgJBT2J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 2 Oct 2020 15:28:09 -0400
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:16516 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2387602AbgJBT2I (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 2 Oct 2020 15:28:08 -0400
+Received: from localhost.localdomain ([92.140.225.106])
+        by mwinf5d73 with ME
+        id b7U22300E2JMhn8037U3Ne; Fri, 02 Oct 2020 21:28:06 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 02 Oct 2020 21:28:06 +0200
+X-ME-IP: 92.140.225.106
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
+        tiwai@suse.com, dmurphy@ti.com, robh@kernel.org,
+        grandmaster@al2klimov.de
+Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ASoC: tlv320adcx140: Fix a typo in a comment
+Date:   Fri,  2 Oct 2020 21:28:01 +0200
+Message-Id: <20201002192801.639743-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Description: Mail message body
-To:     Recipients <financialcapability6@gmail.com>
-From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
-Date:   Fri, 02 Oct 2020 16:16:02 -0300
-Reply-To: binmurrah@gmail.com
-X-SpamTest-Envelope-From: financialcapability6@gmail.com
-X-SpamTest-Group-ID: 00000000
-X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
-X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
-X-SpamTest-Info: {DATE: unreal year}
-X-SpamTest-Method: none
-X-SpamTest-Rate: 55
-X-SpamTest-Status: Not detected
-X-SpamTest-Status-Extended: not_detected
-X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
-Message-ID: <20201002191615.BC89062C4C@mx.metalurgs.lv>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: Low Rate Loan.
-X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
-         bases: 20140401 #7726142, check: 20201002 notchecked
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello Dear,
+It is likely that this header file is about the TLV320ADCX140. (0 and 4
+swapped)
+While at it fix a missing "H" in a comment related to the include guard.
 
-We are Investment Company offering Corporate and Personal
-Loan at 3% Interest Rate for a duration of 10Years.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ sound/soc/codecs/tlv320adcx140.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-We also pay 1% commission to brokers, who introduce project
-owners for finance or other opportunities.
+diff --git a/sound/soc/codecs/tlv320adcx140.h b/sound/soc/codecs/tlv320adcx140.h
+index eedbc1d7221f..cafcbc0dd5fd 100644
+--- a/sound/soc/codecs/tlv320adcx140.h
++++ b/sound/soc/codecs/tlv320adcx140.h
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+-// TLV320ADCX104 Sound driver
++// TLV320ADCX140 Sound driver
+ // Copyright (C) 2020 Texas Instruments Incorporated - https://www.ti.com/
+ 
+ #ifndef _TLV320ADCX140_H
+@@ -145,4 +145,4 @@
+ #define ADCX140_GPO_CFG_MAX		4
+ #define ADCX140_GPO_DRV_MAX		5
+ 
+-#endif /* _TLV320ADCX140_ */
++#endif /* _TLV320ADCX140_H */
+-- 
+2.25.1
 
-Please get back to me if you are interested for more
-details.
-
-Yours faithfully,
-Hashim Bin 

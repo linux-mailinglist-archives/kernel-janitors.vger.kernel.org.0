@@ -2,145 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89DDC28183F
-	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Oct 2020 18:47:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7825228185D
+	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Oct 2020 18:54:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388182AbgJBQrS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 2 Oct 2020 12:47:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47624 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388169AbgJBQrR (ORCPT
+        id S2388008AbgJBQy3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 2 Oct 2020 12:54:29 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:56379 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725991AbgJBQy3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 2 Oct 2020 12:47:17 -0400
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D542C0613E8
-        for <kernel-janitors@vger.kernel.org>; Fri,  2 Oct 2020 09:47:17 -0700 (PDT)
-Received: by mail-io1-xd41.google.com with SMTP id z25so2210119iol.10
-        for <kernel-janitors@vger.kernel.org>; Fri, 02 Oct 2020 09:47:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Li4M3GK5y6x0SzTfqjxLLA9AT+ROiUGVRcFqRzm5Djg=;
-        b=a1gXL5toNpXLmacnL7yhtJtYu+HmO+zq2HSfVRcyZ9z5aGYPOUMcOsxSjRxLjTiwhj
-         zJBgESeE1qI3ToOAsK8MZWwKmHt51a3nMoD6FLDGupRKEjHEktpPC4yX8sNz7w/nKYtr
-         hL0t3LhSNNDXOlNOrlInWA796iaMFGVw4FjQQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Li4M3GK5y6x0SzTfqjxLLA9AT+ROiUGVRcFqRzm5Djg=;
-        b=EdrVCRJ6u4kh6FwIfNp1GxrrQALoQnFDnRpkbobHuuLNOb9kZdC692Oi8Drey9ovfx
-         cgp3nAkjF+XjM59NfO+yD1KZO0IolUMwL0+wSp0i+j23QXDoDwfhQxBfnJS1h/Af4iV3
-         m/d5Jtfyl6HlDsKuvdDeOw0aqINxtLkkwWuwJU7JksGkbg0aVFL9pSA0w+SzxLsJJIpl
-         bMmwvFuEGwDxvFd6Oo1mcihRT0R6gU93vHRVAS1Lq8BFIgfN3/K7HW3eKZJOGPwC1X8u
-         +8BXH8U5bFZhoeKZp4ZlfGrGxhPMrBjrNuNbDvn/rxxnPbXElQg026VzyJX6ksPqfRJ3
-         K/yQ==
-X-Gm-Message-State: AOAM530r8fEqrfDpLKgYOiQBzQ8ce3LX+5jxIw1l0ZNDVEKeyowkiKY+
-        9XBveIfkz99TO8k64GiqOa3LjQ==
-X-Google-Smtp-Source: ABdhPJzrfRpNIYzV2uFrhJdCHt/QTSYBKDnpK2pS6zKI5Da6BP91uaqOQt3S2LEYZ+yKmaDKjo66AQ==
-X-Received: by 2002:a05:6638:10e9:: with SMTP id g9mr2960820jae.139.1601657236070;
-        Fri, 02 Oct 2020 09:47:16 -0700 (PDT)
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id h2sm932771ioj.5.2020.10.02.09.47.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Oct 2020 09:47:15 -0700 (PDT)
-Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
- statements
-To:     Joe Perches <joe@perches.com>,
-        Julia Lawall <julia.lawall@inria.fr>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Shuah Khan <shuah@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-iio@vger.kernel.org,
-        drbd-dev@tron.linbit.com,
-        =?UTF-8?Q?Valdis_Kl=c4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        David Lechner <david@lechnology.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-block@vger.kernel.org, linux-ide@vger.kernel.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-amlogic@lists.infradead.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        openipmi-developer@lists.sourceforge.net,
-        linux-clk@vger.kernel.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Jerome Brunet <jbrunet@baylibre.com>
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
- <CAMj1kXGh+CzuXkAnqsoMO2A3T1p=D6uFOV347Ym5+VFn5U1gWg@mail.gmail.com>
- <20200929124108.GY4282@kadam>
- <alpine.DEB.2.22.394.2009291445050.2808@hadrien>
- <5f0d2b20f5088281363bb4a35c5652a2c087f159.camel@perches.com>
- <cd75e2d1-9923-b725-78cd-fd5611431584@linuxfoundation.org>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <81b94c3a-43d6-c9f5-0bc0-43bf65b3d5fc@linuxfoundation.org>
-Date:   Fri, 2 Oct 2020 10:47:13 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Fri, 2 Oct 2020 12:54:29 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kOOK6-0000so-UM; Fri, 02 Oct 2020 16:54:23 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Dan Murphy <dmurphy@ti.com>,
+        netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] net: phy: dp83869: fix unsigned comparisons against less than zero values
+Date:   Fri,  2 Oct 2020 17:54:22 +0100
+Message-Id: <20201002165422.94328-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <cd75e2d1-9923-b725-78cd-fd5611431584@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 9/29/20 7:42 AM, Shuah Khan wrote:
-> On 9/29/20 7:34 AM, Joe Perches wrote:
->> On Tue, 2020-09-29 at 14:47 +0200, Julia Lawall wrote:
->>> On Tue, 29 Sep 2020, Dan Carpenter wrote:
->>>> The times where commas are used deliberately to replace curly braces 
->>>> are
->>>> just evil.  Either way the code is cleaner with semi-colons.
->>>
->>> I also found exaamples like the following to be particularly unforunate:
->>>
->>>                                  fprintf(stderr,
->>>                                          "page_nr %lu wrong count %Lu 
->>> %Lu\n",
->>>                                         page_nr, count,
->>>                                         count_verify[page_nr]), exit(1);
->>>
->>> The exit is very hard to see, unless you know to look for it.
->>
->> I sent that patch last month.
->> https://patchwork.kernel.org/patch/11734877/
->>
-> 
-> I see what happened. This patch touches lib, cpupower, and selftests.
-> Guess lost in the limbo of who takes it.
-> 
->   tools/lib/subcmd/help.c                    |  10 +-
->   tools/power/cpupower/utils/cpufreq-set.c   |  14 +-
->   tools/testing/selftests/vm/gup_benchmark.c |  18 +-
->   tools/testing/selftests/vm/userfaultfd.c   | 296 +++++++++++++--------
->   4 files changed, 210 insertions(+), 128 deletions(-)
-> 
-> I can take it through one of my trees.
-> 
+From: Colin Ian King <colin.king@canonical.com>
 
-Rafael, Andrew,
+Currently the comparisons of u16 integers value and sopass_val with
+less than zero for error checking is always false because the values
+are unsigned. Fix this by making these variables int.  This does not
+affect the shift and mask operations performed on these variables
 
-This patch is now applied to
-https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git 
-fixes branch.
+Addresses-Coverity: ("Unsigned compared against zero")
+Fixes: 49fc23018ec6 ("net: phy: dp83869: support Wake on LAN")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/phy/dp83869.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This spans pm, kselftest-mm tests and tools/lib and has been
-in limbo for a few weeks for that reason.
-
-I decided to take this through kselftest tree to avoid having
-Joe split the patches.
-
-thanks,
--- Shuah
-
-
-
+diff --git a/drivers/net/phy/dp83869.c b/drivers/net/phy/dp83869.c
+index 0aee5f645b71..cf6dec7b7d8e 100644
+--- a/drivers/net/phy/dp83869.c
++++ b/drivers/net/phy/dp83869.c
+@@ -305,7 +305,7 @@ static int dp83869_set_wol(struct phy_device *phydev,
+ static void dp83869_get_wol(struct phy_device *phydev,
+ 			    struct ethtool_wolinfo *wol)
+ {
+-	u16 value, sopass_val;
++	int value, sopass_val;
+ 
+ 	wol->supported = (WAKE_UCAST | WAKE_BCAST | WAKE_MAGIC |
+ 			WAKE_MAGICSECURE);
+-- 
+2.27.0
 

@@ -2,107 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F0592826EF
-	for <lists+kernel-janitors@lfdr.de>; Sat,  3 Oct 2020 23:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10999282717
+	for <lists+kernel-janitors@lfdr.de>; Sun,  4 Oct 2020 00:15:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726024AbgJCVvF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 3 Oct 2020 17:51:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57024 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725913AbgJCVvF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 3 Oct 2020 17:51:05 -0400
-Received: from earth.universe (unknown [185.213.155.232])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 55045206C3;
-        Sat,  3 Oct 2020 21:51:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601761864;
-        bh=r3SEJN9DnMEQVrmQMmce3dw0meOlw+LrQboKNd/rHYI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=1wLxtVAB3DfKsoILNTJAI9O+AAlobR4gFcNdsG02CqC4LI2t0nqTJKhP8XSrBsp/U
-         ztKH4dPChiRAIe4qDFEkRvo74+Mxe9xgDRj8n7mZuW9Lwa6at7bisSlsdn+HfNAW7C
-         WorLzEwRuY6oSlmVxvqxL04VdY3qEWvdNdWqTySE=
-Received: by earth.universe (Postfix, from userid 1000)
-        id 601F53C0C87; Sat,  3 Oct 2020 23:51:02 +0200 (CEST)
-Date:   Sat, 3 Oct 2020 23:51:02 +0200
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Colin King <colin.king@canonical.com>
+        id S1726050AbgJCWPq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 3 Oct 2020 18:15:46 -0400
+Received: from smtprelay0208.hostedemail.com ([216.40.44.208]:57676 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725913AbgJCWPp (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 3 Oct 2020 18:15:45 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay05.hostedemail.com (Postfix) with ESMTP id C13E718029120;
+        Sat,  3 Oct 2020 22:15:44 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2553:2559:2562:2689:2693:2828:3138:3139:3140:3141:3142:3352:3622:3870:3871:3872:3876:4321:5007:7576:7875:10004:10400:10848:11232:11658:11914:12043:12296:12297:12740:12760:12895:13069:13095:13255:13311:13357:13439:14181:14659:14721:21080:21433:21611:21627:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: land70_6101ae7271b0
+X-Filterd-Recvd-Size: 1838
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf13.hostedemail.com (Postfix) with ESMTPA;
+        Sat,  3 Oct 2020 22:15:43 +0000 (UTC)
+Message-ID: <ebafdf9c1647070c45124786e71a0112f86d10b8.camel@perches.com>
+Subject: Re: [PATCH][next] power: supply: fix spelling mistake "unprecise"
+ -> "imprecise"
+From:   Joe Perches <joe@perches.com>
+To:     Sebastian Reichel <sre@kernel.org>,
+        Colin King <colin.king@canonical.com>
 Cc:     linux-pm@vger.kernel.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] power: supply: fix spelling mistake "unprecise" ->
- "imprecise"
-Message-ID: <20201003215102.5hl5lvidyki2xu7b@earth.universe>
+Date:   Sat, 03 Oct 2020 15:15:42 -0700
+In-Reply-To: <20201003215102.5hl5lvidyki2xu7b@earth.universe>
 References: <20200902101656.57676-1-colin.king@canonical.com>
+         <20201003215102.5hl5lvidyki2xu7b@earth.universe>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="uy4xpfjn2exzd2kp"
-Content-Disposition: inline
-In-Reply-To: <20200902101656.57676-1-colin.king@canonical.com>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Sat, 2020-10-03 at 23:51 +0200, Sebastian Reichel wrote:
+> On Wed, Sep 02, 2020 at 11:16:56AM +0100, Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> > There is a spelling mistake in a dev_info message. Fix it.
+> > 
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > ---
+> 
+> Thanks, queued.
+[]
+> > diff --git a/drivers/power/supply/rn5t618_power.c b/drivers/power/supply/rn5t618_power.c
+[]
+> > @@ -487,7 +487,7 @@ static int rn5t618_power_probe(struct platform_device *pdev)
+> >  		 * gauge will get decalibrated.
+> >  		 */
+> >  		dev_info(&pdev->dev, "Fuel gauge not enabled, enabling now\n");
+> > -		dev_info(&pdev->dev, "Expect unprecise results\n");
+> > +		dev_info(&pdev->dev, "Expect imprecise results\n");
 
---uy4xpfjn2exzd2kp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Might as well be a single line too
 
-Hi,
+		dev_info(&pdev->dev, "Fuel gauge not enabled, enabling now - expect imprecise results\n");
 
-On Wed, Sep 02, 2020 at 11:16:56AM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> There is a spelling mistake in a dev_info message. Fix it.
->=20
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
 
-Thanks, queued.
-
--- Sebastian
-
->  drivers/power/supply/rn5t618_power.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/power/supply/rn5t618_power.c b/drivers/power/supply/=
-rn5t618_power.c
-> index 424d2817bee5..dee520f0fdf5 100644
-> --- a/drivers/power/supply/rn5t618_power.c
-> +++ b/drivers/power/supply/rn5t618_power.c
-> @@ -487,7 +487,7 @@ static int rn5t618_power_probe(struct platform_device=
- *pdev)
->  		 * gauge will get decalibrated.
->  		 */
->  		dev_info(&pdev->dev, "Fuel gauge not enabled, enabling now\n");
-> -		dev_info(&pdev->dev, "Expect unprecise results\n");
-> +		dev_info(&pdev->dev, "Expect imprecise results\n");
->  		regmap_update_bits(info->rn5t618->regmap, RN5T618_CONTROL,
->  				   FG_ENABLE, FG_ENABLE);
->  	}
-> --=20
-> 2.27.0
->=20
-
---uy4xpfjn2exzd2kp
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl948kYACgkQ2O7X88g7
-+pqMJxAAiGvBhfmEp5rFXXboapypV5IeBY0hUJZap2U9RBq7Is5ZYAE/LWwK8Gp5
-ukXhlWlZzzUfZ58mTRqwXxV3xxVA98ua2wa3/TmV0GulZo5DcwjJT8PutZL2CTly
-4OjJheAjRdmL2pp+qc6u4sID0hrH3baeOcL9ahuhhQC/QJushuOc4As9Y6ExEALR
-16x99xP/AIKhe1fxY1KKu/NLhjHB2xj/Vov+mJBM6GAQb/6LWox5otbCGQFo9q9D
-KKlqqc1MBwdCa6/vX3ykXrXTfClURVK8yLbuNAoAdUuuPxingIIdTSUxClv50v+E
-9uQN9GI41qFAuE5eYH6RlvfkLeLvint2i2GdhL8CUZ3FopZ31ix6Qzy8EM5plueS
-Ko6UEBAYlf8eWmpnnfxbZNFagKouJnI03908iQCuLNPLHVtKNdEZVLMA90aqgJTd
-PszHiMfTITrEpR7KqHyJ9J/AmCO8ONdAQqCH5jxZmPFYAp63Ybh9JF8G8+olnDS2
-0GrWDNzNh8RiCjZQjizN/JuYxvHEXg6/jkt0NV4FqGEBcUnEmufL3oxzXmHR41kf
-6hOK+nHtQo1EQGKtYijeCgSO/1M6pMX1shD7Mt6Dlu/Wo473Fc0syb2mLoB6rmuB
-l2DmdXJE246VyylrQYjBa4Qobr38yZj1M5Mw0ND5jB7pGI+ICtI=
-=r7CH
------END PGP SIGNATURE-----
-
---uy4xpfjn2exzd2kp--

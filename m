@@ -2,102 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 441F9283435
-	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Oct 2020 12:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0979C283751
+	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Oct 2020 16:06:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726128AbgJEKuq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 5 Oct 2020 06:50:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33738 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725937AbgJEKuq (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 5 Oct 2020 06:50:46 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80BD9C0613A7
-        for <kernel-janitors@vger.kernel.org>; Mon,  5 Oct 2020 03:50:45 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id t10so9010613wrv.1
-        for <kernel-janitors@vger.kernel.org>; Mon, 05 Oct 2020 03:50:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=M2zjVVLnmwFQgT7Kn7CpiF/4Y0RRRZlogY57D59OL1Q=;
-        b=azTf+aCmxMcqsH4Q4OfDxJ0dGV/q88u03C/J+CGqrLXxLnSr1TDFyK7CNHb19lKJBQ
-         zdh/JJy7p5benO94gyyJT53xEev17bUpps4y4pLsUM0aIMQXsK6FQJLPFv5W7TzYRvHu
-         OFW8pRS5yIuyHvkfEY3Pnzy+Fq6iHIGUuZxZRj8D+eKJ9PaDqkhlZxc2oyoEmf/ZvXKY
-         E5lvDFa1vXAlioPuUeqqcLraDukoJYrnCW5ogg44vvIoeY+0vd2hcLBRtxdhkc7ikxky
-         AQA5dBAT7nSQxMVmoVhbGiBeVkjV6s3Xstr3TfpbY5u8dAAP736uCK/nE+PX+wRAYmqA
-         mqEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=M2zjVVLnmwFQgT7Kn7CpiF/4Y0RRRZlogY57D59OL1Q=;
-        b=HwmoN0ArCtSxMmnAS/oOO8gSWMHV2qqKauJxS4eepXvCvvHKY+A0roWFYuABPkpSAp
-         ueZi2S81q4y/vcaJN7TeuLSsQgAwCCOX/I3OelRkLkXHvwVzUKBpKYOBy9kLEqc45Wde
-         x5gyus+XesBYpIQrBhK9O+ymOQSWNhJYSdeSSN4MdU+jtdjBb8e+ZWkbcw8Fj0Gc4FN0
-         FZiMo25/2/jsoNbyN6PI4HzKB4qmuRq8Avo5SJnFSbqSXWHsD5hWdhvwY331xsi2cdbG
-         cmCK3BC095WIdFP485g3YTTJ5VhBW5XOy+PD5Nb4i9IH1S63bSSlZ5XqMc30RHDNdsxs
-         08ig==
-X-Gm-Message-State: AOAM533As7S/DUMHLmAwXlLRLq0SVza4IemdRyLCbm4vERPjQbWilPjY
-        NLkGYLIGhgDmjeEOht51q/CHnQ==
-X-Google-Smtp-Source: ABdhPJyEPRxZd10VmSgHtfqoF+IWeXOoAoyzPP9zyjZ+55dwWBSUiJ1xTTKQhGeCWZvHzXjTlfeNWg==
-X-Received: by 2002:a5d:62d0:: with SMTP id o16mr2426402wrv.388.1601895044152;
-        Mon, 05 Oct 2020 03:50:44 -0700 (PDT)
-Received: from Red ([2a01:cb1d:3d5:a100:264b:feff:fe03:2806])
-        by smtp.googlemail.com with ESMTPSA id m13sm12871557wrr.74.2020.10.05.03.50.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2020 03:50:43 -0700 (PDT)
-Date:   Mon, 5 Oct 2020 12:50:41 +0200
-From:   LABBE Corentin <clabbe@baylibre.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        mjpeg-users@lists.sourceforge.net, linux-media@vger.kernel.org,
-        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org,
+        id S1726147AbgJEOG0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 5 Oct 2020 10:06:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57050 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725911AbgJEOG0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 5 Oct 2020 10:06:26 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6B039205F4;
+        Mon,  5 Oct 2020 14:06:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601906785;
+        bh=dwIWw6fJzGmxGKYpaY7zdG/+D2r5dltoQj5YSmqdnIQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=c9NeXe+ztBp1syWhX1FJIXLwLb4bJJtjcyNA3I5qmXSp6ZuD4vxj0y0eTAPydCdFR
+         Qpb6O2ug/41t24YKOyCWXOPnqCXHq1tZGlinYtHZV72fxRJbM8A94V6G093UCFKGyh
+         A8bmJAtwgdNYVTIPbxaQ8mJCQU3Lo7L1TUoIIWj4=
+Date:   Mon, 5 Oct 2020 15:05:22 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
+        dmurphy@ti.com, robh@kernel.org, grandmaster@al2klimov.de,
+        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] media: zoran: fix spelling mistake and make error
- message more meaningful
-Message-ID: <20201005105041.GB29306@Red>
-References: <20201002101620.86156-1-colin.king@canonical.com>
+Subject: Re: [PATCH] ASoC: tlv320adcx140: Fix a typo in a comment
+Message-ID: <20201005140522.GA41489@sirena.org.uk>
+References: <20201002192801.639743-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="5mCyUwZo2JvN/JJP"
 Content-Disposition: inline
-In-Reply-To: <20201002101620.86156-1-colin.king@canonical.com>
+In-Reply-To: <20201002192801.639743-1-christophe.jaillet@wanadoo.fr>
+X-Cookie: Boy!  Eucalyptus!
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Oct 02, 2020 at 11:16:20AM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in a pci_err error message. Fix this and
-> make the error message a little more meaningful.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/staging/media/zoran/zoran_driver.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/media/zoran/zoran_driver.c b/drivers/staging/media/zoran/zoran_driver.c
-> index 808196ea5b81..d9f8b21edf6a 100644
-> --- a/drivers/staging/media/zoran/zoran_driver.c
-> +++ b/drivers/staging/media/zoran/zoran_driver.c
-> @@ -666,7 +666,7 @@ static int zoran_g_selection(struct file *file, void *__fh, struct v4l2_selectio
->  
->  	if (sel->type != V4L2_BUF_TYPE_VIDEO_OUTPUT &&
->  	    sel->type != V4L2_BUF_TYPE_VIDEO_CAPTURE) {
-> -		pci_err(zr->pci_dev, "%s invalid combinaison\n", __func__);
-> +		pci_err(zr->pci_dev, "%s invalid selection type combination\n", __func__);
->  		return -EINVAL;
->  	}
->  
-> -- 
-> 2.27.0
-> 
 
-Hello
+--5mCyUwZo2JvN/JJP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Acked-by: Corentin Labbe <clabbe@baylibre.com>
+On Fri, Oct 02, 2020 at 09:28:01PM +0200, Christophe JAILLET wrote:
+> It is likely that this header file is about the TLV320ADCX140. (0 and 4
+> swapped)
+> While at it fix a missing "H" in a comment related to the include guard.
 
-Thanks
+This doesn't apply against current code, please check and resend.
+
+--5mCyUwZo2JvN/JJP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl97KCEACgkQJNaLcl1U
+h9CGuwf/bKRzx1tM8jnFK/J44PLpsS60wfI4/IYRkDXuLb7hmOjm2pLHMZfLuuXn
+6nn/D4KVMG7cQ1E1l+UcOcKnL2LhczJeE1Sf6ao9js3GVfcdoqkyRp6T3qNUV5Xd
+UxCDXEsfp+B0YPfwOVJ6qNwmMmHsAQQFZAQLpYeIUh7lMypaNf4iklVJAFezca2f
+EcghVIUqpAbYhdKXfJxBUOb06L8lASeVdaS5SRlSH3W5GdxT46Y1BjgHxMQeLzp+
+Rx1V7zrJisAscleY+Ezik8LvgwxxDrDXiODueB8UXwKE6Obvfogn/g12AWDTOM4A
+Iu+c+zVZu64EA05H6Rhvk8tGsPaAiw==
+=fZhr
+-----END PGP SIGNATURE-----
+
+--5mCyUwZo2JvN/JJP--

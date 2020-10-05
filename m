@@ -2,23 +2,23 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A1D628312A
-	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Oct 2020 09:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 270A728313F
+	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Oct 2020 09:59:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725905AbgJEH4L (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 5 Oct 2020 03:56:11 -0400
-Received: from outbound-smtp02.blacknight.com ([81.17.249.8]:45615 "EHLO
+        id S1725931AbgJEH7K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 5 Oct 2020 03:59:10 -0400
+Received: from outbound-smtp02.blacknight.com ([81.17.249.8]:58799 "EHLO
         outbound-smtp02.blacknight.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725875AbgJEH4K (ORCPT
+        by vger.kernel.org with ESMTP id S1725870AbgJEH7I (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 5 Oct 2020 03:56:10 -0400
-Received: from mail.blacknight.com (pemlinmail04.blacknight.ie [81.17.254.17])
-        by outbound-smtp02.blacknight.com (Postfix) with ESMTPS id 8B300BEF9E
-        for <kernel-janitors@vger.kernel.org>; Mon,  5 Oct 2020 08:56:08 +0100 (IST)
-Received: (qmail 16739 invoked from network); 5 Oct 2020 07:56:08 -0000
+        Mon, 5 Oct 2020 03:59:08 -0400
+Received: from mail.blacknight.com (pemlinmail02.blacknight.ie [81.17.254.11])
+        by outbound-smtp02.blacknight.com (Postfix) with ESMTPS id 710E9BAE10
+        for <kernel-janitors@vger.kernel.org>; Mon,  5 Oct 2020 08:59:06 +0100 (IST)
+Received: (qmail 27315 invoked from network); 5 Oct 2020 07:59:06 -0000
 Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.22.4])
-  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 5 Oct 2020 07:56:08 -0000
-Date:   Mon, 5 Oct 2020 08:56:07 +0100
+  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 5 Oct 2020 07:59:06 -0000
+Date:   Mon, 5 Oct 2020 08:59:03 +0100
 From:   Mel Gorman <mgorman@techsingularity.net>
 To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
 Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
@@ -29,7 +29,7 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
         linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
         kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech
 Subject: Re: [PATCH] mm/vmscan: drop unneeded assignment in kswapd()
-Message-ID: <20201005075606.GG3227@techsingularity.net>
+Message-ID: <20201005075903.GH3227@techsingularity.net>
 References: <20201004125827.17679-1-lukas.bulwahn@gmail.com>
  <20201004192437.GF3227@techsingularity.net>
  <alpine.DEB.2.21.2010050831010.6202@felia>
@@ -89,26 +89,9 @@ On Mon, Oct 05, 2020 at 08:58:53AM +0200, Lukas Bulwahn wrote:
 > before kswap_try_to_sleep(...).
 > 
 
-After your patch, the code is
+Bah, I misread the patch because I'm an idiot.
 
-	unsigned int alloc_order, reclaim_order;
-	...
-
-	for ( ; ; ) {
-                alloc_order = READ_ONCE(pgdat->kswapd_order);
-                highest_zoneidx = kswapd_highest_zoneidx(pgdat,
-                                                        highest_zoneidx);
-
-kswapd_try_sleep:
-                kswapd_try_to_sleep(pgdat, alloc_order, reclaim_order,
-                                        highest_zoneidx);
-	...
-		reclaim_order = balance_pgdat(pgdat, alloc_order,
-                                                highest_zoneidx);
-
-reclaim_order is declared, not initialised at the start of the loop and
-passed into kswapd_try_to_sleep. There is a sequence where it is not used
-so it does not matter but it depends on the compiler figuring that out.
+Acked-by: Mel Gorman <mgorman@techsingularity.net>
 
 -- 
 Mel Gorman

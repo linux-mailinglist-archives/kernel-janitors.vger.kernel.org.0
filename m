@@ -2,74 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CAB8282D4E
-	for <lists+kernel-janitors@lfdr.de>; Sun,  4 Oct 2020 21:34:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D184B282FBF
+	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Oct 2020 06:48:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726330AbgJDTeE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 4 Oct 2020 15:34:04 -0400
-Received: from outbound-smtp31.blacknight.com ([81.17.249.62]:36989 "EHLO
-        outbound-smtp31.blacknight.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726085AbgJDTeE (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 4 Oct 2020 15:34:04 -0400
-X-Greylist: delayed 562 seconds by postgrey-1.27 at vger.kernel.org; Sun, 04 Oct 2020 15:34:03 EDT
-Received: from mail.blacknight.com (pemlinmail03.blacknight.ie [81.17.254.16])
-        by outbound-smtp31.blacknight.com (Postfix) with ESMTPS id 88FB1C0E98
-        for <kernel-janitors@vger.kernel.org>; Sun,  4 Oct 2020 20:24:40 +0100 (IST)
-Received: (qmail 16067 invoked from network); 4 Oct 2020 19:24:40 -0000
-Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.22.4])
-  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 4 Oct 2020 19:24:40 -0000
-Date:   Sun, 4 Oct 2020 20:24:37 +0100
-From:   Mel Gorman <mgorman@techsingularity.net>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Michal Hocko <mhocko@suse.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech
-Subject: Re: [PATCH] mm/vmscan: drop unneeded assignment in kswapd()
-Message-ID: <20201004192437.GF3227@techsingularity.net>
-References: <20201004125827.17679-1-lukas.bulwahn@gmail.com>
+        id S1725865AbgJEEsY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 5 Oct 2020 00:48:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56638 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725267AbgJEEsY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 5 Oct 2020 00:48:24 -0400
+Received: from localhost (unknown [171.61.67.142])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 114E92080C;
+        Mon,  5 Oct 2020 04:48:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601873304;
+        bh=SGOjSWwhGcmogDrwdKkFX5oRYyeI+Y/QRkCspjBS5r0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=woriaVUARbn4mShDeLjKztVNBMpM0EX+hkCG2+gwTWXEbroKOv68TQ3lZ7NUXlALj
+         2QkEnXDC2Sdmo2H/t6fc3g5kuSRFAdPeimPKFEwDRxKA+L+kXmoL3uHIvHF3evlm4v
+         ddUjuDheZnSgxwU0F2XlHl26MNajnQxbaZoH5ZVY=
+Date:   Mon, 5 Oct 2020 10:18:19 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        kernel-janitors@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 04/14] dmaengine: sh: drop double zeroing
+Message-ID: <20201005044819.GJ2968@vkoul-mobl>
+References: <1600601186-7420-1-git-send-email-Julia.Lawall@inria.fr>
+ <1600601186-7420-5-git-send-email-Julia.Lawall@inria.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201004125827.17679-1-lukas.bulwahn@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <1600601186-7420-5-git-send-email-Julia.Lawall@inria.fr>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Oct 04, 2020 at 02:58:27PM +0200, Lukas Bulwahn wrote:
-> The refactoring to kswapd() in commit e716f2eb24de ("mm, vmscan: prevent
-> kswapd sleeping prematurely due to mismatched classzone_idx") turned an
-> assignment to reclaim_order into a dead store, as in all further paths,
-> reclaim_order will be assigned again before it is used.
+On 20-09-20, 13:26, Julia Lawall wrote:
+> sg_init_table zeroes its first argument, so the allocation of that argument
+> doesn't have to.
 > 
-> make clang-analyzer on x86_64 tinyconfig caught my attention with:
-> 
->   mm/vmscan.c: warning: Although the value stored to 'reclaim_order' is
->   used in the enclosing expression, the value is never actually read from
->   'reclaim_order' [clang-analyzer-deadcode.DeadStores]
-> 
-> Compilers will detect this unneeded assignment and optimize this anyway.
-> So, the resulting binary is identical before and after this change.
-> 
-> Simplify the code and remove unneeded assignment to make clang-analyzer
-> happy.
-> 
-> No functional change. No change in binary code.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> the semantic patch that makes this change is as follows:
+> (http://coccinelle.lip6.fr/)
 
-I'm not really keen on this. With the patch, reclaim_order can be passed
-uninitialised to kswapd_try_to_sleep. While a sufficiently smart
-compiler might be able to optimise how reclaim_order is used, it's not
-guaranteed either. Similarly, a change in kswapd_try_to_sleep and its
-called functions could rely on reclaim_order being a valid value and
-then introduce a subtle bug.
+Applied, thanks
 
 -- 
-Mel Gorman
-SUSE Labs
+~Vinod

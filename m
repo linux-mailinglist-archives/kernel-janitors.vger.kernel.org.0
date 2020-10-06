@@ -2,93 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 883F52850B1
-	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Oct 2020 19:23:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F845285110
+	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Oct 2020 19:42:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726364AbgJFRXL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 6 Oct 2020 13:23:11 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:39600 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726128AbgJFRXL (ORCPT
+        id S1726744AbgJFRmc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 6 Oct 2020 13:42:32 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53549 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726197AbgJFRmc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 6 Oct 2020 13:23:11 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 096HN7JF124036;
-        Tue, 6 Oct 2020 12:23:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1602004987;
-        bh=41BcokSKV9gxGfkcOCDo5PCrNWnXiEAbwwDLF96Ay/U=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=qpVabzX8XIS9XB/EhB9bMbTnoeCq8ZLenN1WL2C1yF+5T07iUunabxBBFx+VKM7Rv
-         yFgG1WrxVQ3YIMWKJHo/0MW+K+mCCdm2XExKYp9T4H0sNwGqz4gaUDANBvYKfrR8w/
-         Tr0T7JDQ+3JNoGDRpZK3TUsDKQhRicPJTHo97lMs=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 096HN7wN076746
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 6 Oct 2020 12:23:07 -0500
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 6 Oct
- 2020 12:23:06 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 6 Oct 2020 12:23:06 -0500
-Received: from [10.250.37.2] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 096HN6S2108408;
-        Tue, 6 Oct 2020 12:23:06 -0500
-Subject: Re: [PATCH][next] power: supply: bq25980: remove redundant zero check
- on ret
-To:     Colin King <colin.king@canonical.com>,
-        Sebastian Reichel <sre@kernel.org>, <linux-pm@vger.kernel.org>
-CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20201006170600.545361-1-colin.king@canonical.com>
-From:   Dan Murphy <dmurphy@ti.com>
-Message-ID: <4239fc37-c1d4-23e5-c784-b171eb6173ab@ti.com>
-Date:   Tue, 6 Oct 2020 12:23:06 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Tue, 6 Oct 2020 13:42:32 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kPqyn-0007TZ-M2; Tue, 06 Oct 2020 17:42:25 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] ath11k: fix memory leak of 'combinations'
+Date:   Tue,  6 Oct 2020 18:42:25 +0100
+Message-Id: <20201006174225.545919-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <20201006170600.545361-1-colin.king@canonical.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin
+From: Colin Ian King <colin.king@canonical.com>
 
-On 10/6/20 12:06 PM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Currently ret is assigned to zero and the following statement checks
-> if it is non-zero. This check is redundant and can be removed
->
-> Addresses-Coverity: ("Logically dead code")
-> Fixes: 5069185fc18e ("power: supply: bq25980: Add support for the BQ259xx family")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->   drivers/power/supply/bq25980_charger.c | 3 ---
->   1 file changed, 3 deletions(-)
->
-> diff --git a/drivers/power/supply/bq25980_charger.c b/drivers/power/supply/bq25980_charger.c
-> index 3995fb7cf060..f04f9acdb13b 100644
-> --- a/drivers/power/supply/bq25980_charger.c
-> +++ b/drivers/power/supply/bq25980_charger.c
-> @@ -613,9 +613,6 @@ static int bq25980_set_battery_property(struct power_supply *psy,
->   	struct bq25980_device *bq = power_supply_get_drvdata(psy);
->   	int ret = 0;
->   
-> -	if (ret)
-> -		return ret;
-> -
->   	switch (psp) {
->   	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
->   		ret = bq25980_set_const_charge_curr(bq, val->intval);
+Currently the error return path when 'limits' fails to allocate
+does not free the memory allocated for 'combinations'. Fix this
+by adding a kfree before returning.
 
-Thanks for the patch
+Addresses-Coverity: ("Resource leak")
+Fixes: 2626c269702e ("ath11k: add interface_modes to hw_params")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/ath/ath11k/mac.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Acked-by: Dan Murphy <dmurphy@ti.com>
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 3f63a7bd6b59..7f8dd47d2333 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -6041,8 +6041,10 @@ static int ath11k_mac_setup_iface_combinations(struct ath11k *ar)
+ 	n_limits = 2;
+ 
+ 	limits = kcalloc(n_limits, sizeof(*limits), GFP_KERNEL);
+-	if (!limits)
++	if (!limits) {
++		kfree(combinations);
+ 		return -ENOMEM;
++	}
+ 
+ 	limits[0].max = 1;
+ 	limits[0].types |= BIT(NL80211_IFTYPE_STATION);
+-- 
+2.27.0
 

@@ -2,30 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AFD9284A9D
-	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Oct 2020 13:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CA6E284B16
+	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Oct 2020 13:47:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726433AbgJFLCo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 6 Oct 2020 07:02:44 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:40955 "EHLO
+        id S1726356AbgJFLrE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 6 Oct 2020 07:47:04 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:41999 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725891AbgJFLCn (ORCPT
+        with ESMTP id S1726147AbgJFLrD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 6 Oct 2020 07:02:43 -0400
+        Tue, 6 Oct 2020 07:47:03 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kPkk8-00008a-Tm; Tue, 06 Oct 2020 11:02:53 +0000
+        id 1kPlQq-0003t1-GA; Tue, 06 Oct 2020 11:47:00 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Matthew Wilcox <willy@infradead.org>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org
+To:     Selvin Xavier <selvin.xavier@broadcom.com>,
+        Devesh Sharma <devesh.sharma@broadcom.com>,
+        Somnath Kotur <somnath.kotur@broadcom.com>,
+        Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>,
+        Naresh Kumar PBS <nareshkumar.pbs@broadcom.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Eddie Wai <eddie.wai@broadcom.com>, linux-rdma@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] scsi: sym53c8xx_2: fix sizeof mismatch
-Date:   Tue,  6 Oct 2020 12:02:52 +0100
-Message-Id: <20201006110252.536641-1-colin.king@canonical.com>
+Subject: [PATCH][next] RDMA/bnxt_re: fix sizeof mismatch for allocation of pbl_tbl.
+Date:   Tue,  6 Oct 2020 12:47:00 +0100
+Message-Id: <20201006114700.537916-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,35 +40,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-An incorrect sizeof is being used, struct sym_ccb ** is not correct,
-it should be struct sym_ccb *. Note that since ** is the same size as
-* this is not causing any issues.  Improve this fix by using the
-idiom sizeof(*np->ccbh) as this allows one to not even reference the
-type of the pointer.
-
-[ Note: this is an ancient 2005 buglet, the sha is from the
-  tglx/history repo ]
+An incorrect sizeof is being used, u64 * is not correct, it should be
+just u64 for a table of umem_pgs number of u64 items in the pbl_tbl.
+Use the idiom sizeof(*pbl_tbl) to get the object type without the need
+to explicitly use u64.
 
 Addresses-Coverity: ("Sizeof not portable (SIZEOF_MISMATCH)")
-Fixes: 473c67f96e06 ("[PATCH] sym2 version 2.2.0")
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/scsi/sym53c8xx_2/sym_hipd.c | 2 +-
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/sym53c8xx_2/sym_hipd.c b/drivers/scsi/sym53c8xx_2/sym_hipd.c
-index cc11daa1222b..14118dd70711 100644
---- a/drivers/scsi/sym53c8xx_2/sym_hipd.c
-+++ b/drivers/scsi/sym53c8xx_2/sym_hipd.c
-@@ -5656,7 +5656,7 @@ int sym_hcb_attach(struct Scsi_Host *shost, struct sym_fw *fw, struct sym_nvram
- 	/*
- 	 *  Allocate the array of lists of CCBs hashed by DSA.
- 	 */
--	np->ccbh = kcalloc(CCB_HASH_SIZE, sizeof(struct sym_ccb **), GFP_KERNEL);
-+	np->ccbh = kcalloc(CCB_HASH_SIZE, sizeof(*np->ccbh), GFP_KERNEL);
- 	if (!np->ccbh)
- 		goto attach_failed;
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index a0e8d93595d8..dc7de0863c77 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -3856,7 +3856,7 @@ struct ib_mr *bnxt_re_reg_user_mr(struct ib_pd *ib_pd, u64 start, u64 length,
+ 	}
  
+ 	umem_pgs = ib_umem_num_dma_blocks(umem, page_size);
+-	pbl_tbl = kcalloc(umem_pgs, sizeof(u64 *), GFP_KERNEL);
++	pbl_tbl = kcalloc(umem_pgs, sizeof(*pbl_tbl), GFP_KERNEL);
+ 	if (!pbl_tbl) {
+ 		rc = -ENOMEM;
+ 		goto free_umem;
 -- 
 2.27.0
 

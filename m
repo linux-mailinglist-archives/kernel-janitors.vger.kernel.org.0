@@ -2,32 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6634E285E68
-	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Oct 2020 13:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE1DF285EE2
+	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Oct 2020 14:16:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727664AbgJGLqW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 7 Oct 2020 07:46:22 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:47204 "EHLO
+        id S1728040AbgJGMQb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 7 Oct 2020 08:16:31 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:48128 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726096AbgJGLqW (ORCPT
+        with ESMTP id S1727253AbgJGMQb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 7 Oct 2020 07:46:22 -0400
+        Wed, 7 Oct 2020 08:16:31 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kQ7tf-0002Oh-Kz; Wed, 07 Oct 2020 11:46:15 +0000
+        id 1kQ8Mu-0004w5-Ev; Wed, 07 Oct 2020 12:16:28 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Stephen Bates <sbates@raithlin.com>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org
-Subject: [PATCH] PCI: fix a potential uninitentional integer overflow issue
-Date:   Wed,  7 Oct 2020 12:46:15 +0100
-Message-Id: <20201007114615.19966-1-colin.king@canonical.com>
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        "nibble . max" <nibble.max@gmail.com>, linux-media@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] media: m88rs6000t: avoid potential out-of-bounds reads on arrays
+Date:   Wed,  7 Oct 2020 13:16:28 +0100
+Message-Id: <20201007121628.20676-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -38,32 +34,46 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The shift of 1 by align_order is evaluated using 32 bit arithmetic
-and the result is assigned to a resource_size_t type variable that
-is a 64 bit unsigned integer on 64 bit platforms. Fix an overflow
-before widening issue by using the BIT_ULL macro to perform the
-shift.
+There a 3 array for-loops that don't check the upper bounds of the
+index into arrays and this may lead to potential out-of-bounds
+reads.  Fix this by adding array size upper bounds checks to be
+full safe.
 
-Addresses-Coverity: ("Uninitentional integer overflow")
-Fixes: 07d8d7e57c28 ("PCI: Make specifying PCI devices in kernel parameters reusable")
+Addresses-Coverity: ("Out-of-bounds read")
+Fixes: 333829110f1d ("[media] m88rs6000t: add new dvb-s/s2 tuner for integrated chip M88RS6000")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/pci/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/tuners/m88rs6000t.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 6d4d5a2f923d..1a5844d7af35 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -6209,7 +6209,7 @@ static resource_size_t pci_specified_resource_alignment(struct pci_dev *dev,
- 			if (align_order == -1)
- 				align = PAGE_SIZE;
- 			else
--				align = 1 << align_order;
-+				align = BIT_ULL(align_order);
- 			break;
- 		} else if (ret < 0) {
- 			pr_err("PCI: Can't parse resource_alignment parameter: %s\n",
+diff --git a/drivers/media/tuners/m88rs6000t.c b/drivers/media/tuners/m88rs6000t.c
+index b3505f402476..8647c50b66e5 100644
+--- a/drivers/media/tuners/m88rs6000t.c
++++ b/drivers/media/tuners/m88rs6000t.c
+@@ -525,7 +525,7 @@ static int m88rs6000t_get_rf_strength(struct dvb_frontend *fe, u16 *strength)
+ 	PGA2_cri = PGA2_GC >> 2;
+ 	PGA2_crf = PGA2_GC & 0x03;
+ 
+-	for (i = 0; i <= RF_GC; i++)
++	for (i = 0; i <= RF_GC && i < ARRAY_SIZE(RFGS); i++)
+ 		RFG += RFGS[i];
+ 
+ 	if (RF_GC == 0)
+@@ -537,12 +537,12 @@ static int m88rs6000t_get_rf_strength(struct dvb_frontend *fe, u16 *strength)
+ 	if (RF_GC == 3)
+ 		RFG += 100;
+ 
+-	for (i = 0; i <= IF_GC; i++)
++	for (i = 0; i <= IF_GC && i < ARRAY_SIZE(IFGS); i++)
+ 		IFG += IFGS[i];
+ 
+ 	TIAG = TIA_GC * TIA_GS;
+ 
+-	for (i = 0; i <= BB_GC; i++)
++	for (i = 0; i <= BB_GC && i < ARRAY_SIZE(BBGS); i++)
+ 		BBG += BBGS[i];
+ 
+ 	PGA2G = PGA2_cri * PGA2_cri_GS + PGA2_crf * PGA2_crf_GS;
 -- 
 2.27.0
 

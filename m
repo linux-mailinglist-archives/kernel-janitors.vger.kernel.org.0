@@ -2,68 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92B2E285D78
-	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Oct 2020 12:52:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 462DE285DBC
+	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Oct 2020 13:02:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728255AbgJGKwM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 7 Oct 2020 06:52:12 -0400
-Received: from mx.metalurgs.lv ([81.198.125.103]:61424 "EHLO mx.metalurgs.lv"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728259AbgJGKwL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 7 Oct 2020 06:52:11 -0400
-Received: from mx.metalurgs.lv (localhost [127.0.0.1])
-        by mx.metalurgs.lv (Postfix) with ESMTP id 1D28762AB5
-        for <kernel-janitors@vger.kernel.org>; Wed,  7 Oct 2020 13:51:12 +0300 (EEST)
-Received: from kas30pipe.localhost (localhost [127.0.0.1])
-        by mx.metalurgs.lv (Postfix) with ESMTP id 018A66275E
-        for <kernel-janitors@vger.kernel.org>; Wed,  7 Oct 2020 13:51:12 +0300 (EEST)
-Received: by mx.metalurgs.lv (Postfix, from userid 1005)
-        id BCA4861D82; Wed,  7 Oct 2020 13:51:10 +0300 (EEST)
-Received: from [100.64.1.74] (unknown [190.15.125.55])
-        (Authenticated sender: admin)
-        by mx.metalurgs.lv (Postfix) with ESMTPA id 3816C5E76F;
-        Wed,  7 Oct 2020 13:51:02 +0300 (EEST)
+        id S1727792AbgJGLCu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 7 Oct 2020 07:02:50 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:46048 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726219AbgJGLCu (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 7 Oct 2020 07:02:50 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kQ7DY-0007qH-4x; Wed, 07 Oct 2020 11:02:44 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Mimi Zohar <zohar@linux.ibm.com>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E . Hallyn" <serge@hallyn.com>,
+        Roberto Sassu <roberto.sassu@polito.it>,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ima: Fix sizeof mismatches
+Date:   Wed,  7 Oct 2020 12:02:43 +0100
+Message-Id: <20201007110243.19033-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Description: Mail message body
-To:     Recipients <financialcapability6@gmail.com>
-From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
-Date:   Wed, 07 Oct 2020 07:50:54 -0300
-Reply-To: hmurrah39@gmail.com
-X-SpamTest-Envelope-From: financialcapability6@gmail.com
-X-SpamTest-Group-ID: 00000000
-X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
-X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
-X-SpamTest-Info: {DATE: unreal year}
-X-SpamTest-Method: none
-X-SpamTest-Rate: 55
-X-SpamTest-Status: Not detected
-X-SpamTest-Status-Extended: not_detected
-X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
-Message-ID: <20201007105110.BCA4861D82@mx.metalurgs.lv>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: Low Rate Loan./mmm,
-X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
-         bases: 20140401 #7726142, check: 20201007 notchecked
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello Dear,
+From: Colin Ian King <colin.king@canonical.com>
 
+An incorrect sizeof is being used, sizeof(*fields) is not correct,
+it should be sizeof(**fields). This is not causing a problem since
+the size of these is the same. Fix this in the kmalloc_array and
+memcpy calls.
 
-We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
+Addresses-Coverity: ("Sizeof not portable (SIZEOF_MISMATCH)")
+Fixes: 1bd7face7439 ("ima: allocate field pointers array on demand in template_desc_init_fields()")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ security/integrity/ima/ima_template.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/security/integrity/ima/ima_template.c b/security/integrity/ima/ima_template.c
+index 1e89e2d3851f..8884bbf03b43 100644
+--- a/security/integrity/ima/ima_template.c
++++ b/security/integrity/ima/ima_template.c
+@@ -216,11 +216,11 @@ int template_desc_init_fields(const char *template_fmt,
+ 	}
+ 
+ 	if (fields && num_fields) {
+-		*fields = kmalloc_array(i, sizeof(*fields), GFP_KERNEL);
++		*fields = kmalloc_array(i, sizeof(**fields), GFP_KERNEL);
+ 		if (*fields == NULL)
+ 			return -ENOMEM;
+ 
+-		memcpy(*fields, found_fields, i * sizeof(*fields));
++		memcpy(*fields, found_fields, i * sizeof(**fields));
+ 		*num_fields = i;
+ 	}
+ 
+-- 
+2.27.0
 
-We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
-
-
-Please get back to me if you are interested for more
-
-details.
-
-
-Yours faithfully,
-
-Hashim Murrah

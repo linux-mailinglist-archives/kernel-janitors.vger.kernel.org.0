@@ -2,86 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4150F287D7E
-	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Oct 2020 22:51:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE2ED287D9E
+	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Oct 2020 23:05:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727887AbgJHUvN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 8 Oct 2020 16:51:13 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:55772 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725931AbgJHUvN (ORCPT
+        id S1726361AbgJHVF2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 8 Oct 2020 17:05:28 -0400
+Received: from [58.87.100.240] ([58.87.100.240]:43866 "EHLO
+        mail.hebei-kuixing.com" rhost-flags-FAIL-FAIL-OK-OK)
+        by vger.kernel.org with ESMTP id S1725874AbgJHVF2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 8 Oct 2020 16:51:13 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 098Ko26L178180;
-        Thu, 8 Oct 2020 20:51:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : message-id : references : date : in-reply-to : mime-version :
- content-type; s=corp-2020-01-29;
- bh=YIDcw7NlsalCPVtLAWvtPQQXkYvESSJbyPbOKMFjQWw=;
- b=osB4uMM8fN3Yckym+cLKX8G8k06fEs4gvIfAklYO9/KMPIIzNuoqGFI+WKMurpPdLYSs
- 3no8kS/t+EIYLAzvuz6GPC93H5QpQNZEn5u4C6Hr4H6Pfr+PUCswTeCVInnuTsazGy2m
- nP52XImXTtzvpgvUlpy9sL4P92UwBisYBFZrZhhuKqPgHaYVDpBFa6zOALzKaKh900hg
- YCwQwm/V6g68lahmPuPXDl6hJpRYVKdgCunr4gPGaVcX4CGTxt0Qu5naiVyrw9tF9cxt
- v1a7SerzadqDnLIKmkkV5ITZj/iV0MvsOVpiIxfHGtf3FurSnXTLUVT2gSSjEgcXKWwt OQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 3429jur6xn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 08 Oct 2020 20:51:06 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 098Kitxk117452;
-        Thu, 8 Oct 2020 20:51:06 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 3429kah2bk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 08 Oct 2020 20:51:05 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 098Koxbo014917;
-        Thu, 8 Oct 2020 20:50:59 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 08 Oct 2020 13:50:58 -0700
-To:     Colin King <colin.king@canonical.com>
-Cc:     Nilesh Javali <njavali@marvell.com>,
-        GR-QLogic-Storage-Upstream@marvell.com,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        Pavel Machek <pavel@denx.de>, linux-scsi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] scsi: qla2xxx: fix return of uninitialized value in rval
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <yq1o8lc1lxz.fsf@ca-mkp.ca.oracle.com>
-References: <20201008183239.200358-1-colin.king@canonical.com>
-Date:   Thu, 08 Oct 2020 16:50:56 -0400
-In-Reply-To: <20201008183239.200358-1-colin.king@canonical.com> (Colin King's
-        message of "Thu, 8 Oct 2020 19:32:39 +0100")
+        Thu, 8 Oct 2020 17:05:28 -0400
+X-Greylist: delayed 443 seconds by postgrey-1.27 at vger.kernel.org; Thu, 08 Oct 2020 17:05:27 EDT
+Received: from localhost (unknown [127.0.0.1])
+        by mail.hebei-kuixing.com (Postfix) with ESMTP id CD0C86115A;
+        Thu,  8 Oct 2020 20:57:12 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at hebei-kuixing.com
+Received: from mail.hebei-kuixing.com ([127.0.0.1])
+        by localhost (mail.hebei-kuixing.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id gkNEEJbEQAM2; Fri,  9 Oct 2020 04:57:12 +0800 (CST)
+Received: from User (unknown [185.248.12.71])
+        by mail.hebei-kuixing.com (Postfix) with ESMTPA id 1ABBB610EC;
+        Fri,  9 Oct 2020 04:56:55 +0800 (CST)
+Reply-To: <kim.leang2011@yahoo.com>
+From:   " Kim Leang" <sales@hebei-kuixing.com>
+Subject: Greeting!
+Date:   Thu, 8 Oct 2020 23:57:11 +0300
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9768 signatures=668681
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 adultscore=0
- phishscore=0 spamscore=0 mlxscore=0 malwarescore=0 bulkscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2010080147
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9768 signatures=668681
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999 mlxscore=0
- phishscore=0 bulkscore=0 suspectscore=1 lowpriorityscore=0 spamscore=0
- clxscore=1015 malwarescore=0 priorityscore=1501 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010080147
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20201008205712.CD0C86115A@mail.hebei-kuixing.com>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Greeting!
 
-Colin,
+I am contacting you to receive and share with me an abandoned fund ( $21,537.000.00 ) left in our bank by a deceased customer. I was going through the Internet search when I found your email address. My name is Mr. Kim Leang.
 
-> A previous change removed the initialization of rval and there is now
-> an error where an uninitialized rval is being returned on an error
-> return path. Fix this by returning -ENODEV.
+I want to utilize this opportunity and make use of this fund if I should present your name to the bank to stand as his business associate/ trustee for the fund to be released to you via Visa card for easy withdrawals in any VISA ATM machine anywhere in the World.
 
-Applied to 5.10/scsi-staging, thanks!
+The bank will also give you international online transfer options. With these you can transfer the funds without any risk.
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Should you be interested in working with me in this project? Please reply back and let's benefit from this golden opportunity.You are my first contact. I shall wait a few days and if I do not hear from you, I shall look for another person.
+
+Thanks and have a nice day,
+Mr. Kim Leang.

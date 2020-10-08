@@ -2,115 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A3BE287E0D
-	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Oct 2020 23:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B86A287E71
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Oct 2020 00:02:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729804AbgJHVfs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 8 Oct 2020 17:35:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45654 "EHLO mail.kernel.org"
+        id S1729835AbgJHWB7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 8 Oct 2020 18:01:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54044 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728538AbgJHVfs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 8 Oct 2020 17:35:48 -0400
-Received: from earth.universe (unknown [185.213.155.232])
+        id S1725852AbgJHWB7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 8 Oct 2020 18:01:59 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6FCDA207DE;
-        Thu,  8 Oct 2020 21:35:47 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 707BC22244;
+        Thu,  8 Oct 2020 22:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602192947;
-        bh=R+CjKK/22XYxtDtFw6KG9lgth7PXnH/9hixEGS2jtdA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kKzuIivkqXRLWPkN6NCzQarSDRnEe3Yh4oqRHT0kldkXk+nH0KRbottk7K4GBAJ0L
-         QN/0ONH+JSHnnLy2JpTakF2vu6KgiHb3Ct07x6WBnEzlTH8GDxzm5OPpsInGlEQhOR
-         GjQDUUcBI8jNbZFvxit8iPIA/iZbAg4BirrMIm7A=
-Received: by earth.universe (Postfix, from userid 1000)
-        id 06A383C0C87; Thu,  8 Oct 2020 23:35:45 +0200 (CEST)
-Date:   Thu, 8 Oct 2020 23:35:44 +0200
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Dan Murphy <dmurphy@ti.com>
-Cc:     Colin King <colin.king@canonical.com>, linux-pm@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] power: supply: bq25980: remove redundant zero
- check on ret
-Message-ID: <20201008213544.wakvf3ze2bshopem@earth.universe>
-References: <20201006170600.545361-1-colin.king@canonical.com>
- <4239fc37-c1d4-23e5-c784-b171eb6173ab@ti.com>
+        s=default; t=1602194519;
+        bh=k1V6OrupLcNeNFQfLBLLBhRQBY/eVFlgP8hwmK08lew=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=rGx38ez9zkZljUIwl/ogar/lEdyNl0R92nEog4pJVNEDupOGwLHMSdUOc3/WHy7xV
+         +2O1yg0iUlpjW1vQ2PSqFOrSd/3OB3YSudfKsbdV3W1hV78M/gxICsEBuNbhhKjrM1
+         G8f5PXfQhCeoom9JnaycsnZnxM1lyzQZGRlyvhmo=
+Date:   Thu, 08 Oct 2020 23:01:56 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Colin King <colin.king@canonical.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
+        alsa-devel@alsa-project.org,
+        Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <20201006152024.542418-1-colin.king@canonical.com>
+References: <20201006152024.542418-1-colin.king@canonical.com>
+Subject: Re: [PATCH][next] ASoC: mchp-spdifrx: fix spelling mistake "overrrun" -> "overrun"
+Message-Id: <160219448330.29664.4641489072692300066.b4-ty@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="fjlgoi4mnlire24r"
-Content-Disposition: inline
-In-Reply-To: <4239fc37-c1d4-23e5-c784-b171eb6173ab@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Tue, 6 Oct 2020 16:20:24 +0100, Colin King wrote:
+> There is a spelling mistake in a dev_warn message. Fix it.
 
---fjlgoi4mnlire24r
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-Hi,
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-On Tue, Oct 06, 2020 at 12:23:06PM -0500, Dan Murphy wrote:
-> Colin
->=20
-> On 10/6/20 12:06 PM, Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> >=20
-> > Currently ret is assigned to zero and the following statement checks
-> > if it is non-zero. This check is redundant and can be removed
-> >=20
-> > Addresses-Coverity: ("Logically dead code")
-> > Fixes: 5069185fc18e ("power: supply: bq25980: Add support for the BQ259=
-xx family")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > ---
-> >   drivers/power/supply/bq25980_charger.c | 3 ---
-> >   1 file changed, 3 deletions(-)
-> >=20
-> > diff --git a/drivers/power/supply/bq25980_charger.c b/drivers/power/sup=
-ply/bq25980_charger.c
-> > index 3995fb7cf060..f04f9acdb13b 100644
-> > --- a/drivers/power/supply/bq25980_charger.c
-> > +++ b/drivers/power/supply/bq25980_charger.c
-> > @@ -613,9 +613,6 @@ static int bq25980_set_battery_property(struct powe=
-r_supply *psy,
-> >   	struct bq25980_device *bq =3D power_supply_get_drvdata(psy);
-> >   	int ret =3D 0;
-> > -	if (ret)
-> > -		return ret;
-> > -
-> >   	switch (psp) {
-> >   	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
-> >   		ret =3D bq25980_set_const_charge_curr(bq, val->intval);
->=20
-> Thanks for the patch
->=20
-> Acked-by: Dan Murphy <dmurphy@ti.com>
+Thanks!
 
-Thanks, queued.
+[1/1] ASoC: mchp-spdifrx: fix spelling mistake "overrrun" -> "overrun"
+      commit: 6db282c8a9edcbf84e699e45ec087baf07be2236
 
--- Sebastian
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
---fjlgoi4mnlire24r
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl9/hiwACgkQ2O7X88g7
-+poEdQ/+M18AeoweOM86uVV6sfWR67UYgB1+C4wBV55tCIj4NMSQ8gGdZo3plK1h
-K6ZPaUS/dbpreixvpi8F5bumnAqIYeCepykZs6FFrLbRcZViZhjFvayM7xqBTQr2
-I6nc3RhAsno+h8niIiWRDFANT545Bohao6ImXer6+UtkyYyo2QdbGWXABTP7SqhW
-CD0ZwoUvhWAoR1Vq/gJ5XXJiVQYvH5iCKB+HRzGI9UWCSFbcGJv4DgikxrIxEfEH
-5Yv8LIWBjhW1OnKbmCwT9g0/RT2+XVioWua6EggF7dK11JjpQmF1wyDnZ4LkIyWP
-ZaZoBDnO7iU/Sk6DgsXhYCdrmS940MWxUe0INpYEp3K27vIUAUgj5c635pOWvDrI
-fCk74FHbs49N9ESHD+NTEy59lblVuYRUFoK21GgGzgO9ual7CENc4rOXWnJpXhlo
-VyNl4C4Jvl3olYbVlTZPszZxYOGkzJbjriKnbH95EOzdbMn4gQmrw49uslu1tTk/
-j4e52Enu797dKSUbvZc1uoh2ruPkksvAbsiB5CHuCkyaCB2bVEX6QCQ9fWvFGEc1
-ony2kQcljVyg5kLOS9qEf3FCVrijCU1Ui2kGVAIcPscr1zBonZ+ReQknqKVkHfgF
-tiqzxEe6uam8/INZsnHHcKRmplPDLp5/Y4vsFW0jLpjyAomtd/w=
-=hZwC
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---fjlgoi4mnlire24r--
+Thanks,
+Mark

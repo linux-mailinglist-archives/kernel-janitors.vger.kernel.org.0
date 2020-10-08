@@ -2,77 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B86A287E71
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Oct 2020 00:02:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FA97287EBA
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Oct 2020 00:37:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729835AbgJHWB7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 8 Oct 2020 18:01:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54044 "EHLO mail.kernel.org"
+        id S1730462AbgJHWhU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 8 Oct 2020 18:37:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34096 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725852AbgJHWB7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 8 Oct 2020 18:01:59 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        id S1729017AbgJHWhU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 8 Oct 2020 18:37:20 -0400
+Received: from earth.universe (unknown [185.213.155.232])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 707BC22244;
-        Thu,  8 Oct 2020 22:01:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E6A1422243;
+        Thu,  8 Oct 2020 22:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602194519;
-        bh=k1V6OrupLcNeNFQfLBLLBhRQBY/eVFlgP8hwmK08lew=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=rGx38ez9zkZljUIwl/ogar/lEdyNl0R92nEog4pJVNEDupOGwLHMSdUOc3/WHy7xV
-         +2O1yg0iUlpjW1vQ2PSqFOrSd/3OB3YSudfKsbdV3W1hV78M/gxICsEBuNbhhKjrM1
-         G8f5PXfQhCeoom9JnaycsnZnxM1lyzQZGRlyvhmo=
-Date:   Thu, 08 Oct 2020 23:01:56 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Colin King <colin.king@canonical.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
-        alsa-devel@alsa-project.org,
-        Nicolas Ferre <nicolas.ferre@microchip.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-In-Reply-To: <20201006152024.542418-1-colin.king@canonical.com>
-References: <20201006152024.542418-1-colin.king@canonical.com>
-Subject: Re: [PATCH][next] ASoC: mchp-spdifrx: fix spelling mistake "overrrun" -> "overrun"
-Message-Id: <160219448330.29664.4641489072692300066.b4-ty@kernel.org>
+        s=default; t=1602196639;
+        bh=x1SmoSmcLC3AgO9NSV4YaBZZzQalnejPtKrdLuUbWmw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=fL72wgri135ejMGWb6DK4zUxZo/ZvnKwhwMqX1OjhUVKEayNRWnfouUPzLK6FNuFr
+         kUW4UlC9X/dEL1NvzJuCmnUNPlzySuxXtGNVcvXOnS9k1XcDWReSVJTLTr/6DFtZ/c
+         n6t949BySsNsNRX4J6S25Y9xGa4tXBvD5FKtJ7Uk=
+Received: by earth.universe (Postfix, from userid 1000)
+        id 8B7003C0C87; Fri,  9 Oct 2020 00:37:16 +0200 (CEST)
+Date:   Fri, 9 Oct 2020 00:37:16 +0200
+From:   Sebastian Reichel <sre@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Chanwoo Choi <cw00.choi@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Myungjoo Ham <myungjoo.ham@samsung.com>,
+        linux-pm@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] charger-manager: fix incorrect check on
+ charging_duration_ms
+Message-ID: <20201008223716.353rpnkvte7q3miv@earth.universe>
+References: <20200902133117.108025-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="wyfglm34rtjztloq"
+Content-Disposition: inline
+In-Reply-To: <20200902133117.108025-1-colin.king@canonical.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 6 Oct 2020 16:20:24 +0100, Colin King wrote:
-> There is a spelling mistake in a dev_warn message. Fix it.
 
-Applied to
+--wyfglm34rtjztloq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Hi Colin,
 
-Thanks!
+On Wed, Sep 02, 2020 at 02:31:17PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> Currently the duration check on the discharging duration setting is
+> checking the charging duration rather than the discharging duration
+> due to a cut-n-paste coding error. Fix this by checking the value
+> desc->charging_max_duration_ms.
+>=20
+> Addresses-Coverity: ("Copy-paste-error")
+> Fixes: 8fcfe088e21a ("charger-manager: Support limit of maximum possible")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
 
-[1/1] ASoC: mchp-spdifrx: fix spelling mistake "overrrun" -> "overrun"
-      commit: 6db282c8a9edcbf84e699e45ec087baf07be2236
+Thanks, queued.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-- Sebastian
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+>  drivers/power/supply/charger-manager.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/power/supply/charger-manager.c b/drivers/power/suppl=
+y/charger-manager.c
+> index 07992821e252..44d919954e9e 100644
+> --- a/drivers/power/supply/charger-manager.c
+> +++ b/drivers/power/supply/charger-manager.c
+> @@ -471,7 +471,7 @@ static int check_charging_duration(struct charger_man=
+ager *cm)
+>  	} else if (cm->battery_status =3D=3D POWER_SUPPLY_STATUS_NOT_CHARGING) {
+>  		duration =3D curr - cm->charging_end_time;
+> =20
+> -		if (duration > desc->charging_max_duration_ms) {
+> +		if (duration > desc->discharging_max_duration_ms) {
+>  			dev_info(cm->dev, "Discharging duration exceed %ums\n",
+>  				 desc->discharging_max_duration_ms);
+>  			ret =3D true;
+> --=20
+> 2.27.0
+>=20
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+--wyfglm34rtjztloq
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+-----BEGIN PGP SIGNATURE-----
 
-Thanks,
-Mark
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl9/lJwACgkQ2O7X88g7
++pozdQ//V0Z7wo7rb2YBOxWmUcpp1KjqM12cynFCTDgE7ydMT64gZKFnNjQBk9zg
+Y/WesekfwYIDdqt/7/sXHzNitNZjn/WeyBIaJBx7L9eVpTYsQNHDdwgNEIzQByDP
+9SlzveKeVDdxpGacfsrEsBVnIo70LKunZ0TUb5wZcpWzDWN1xBi6xnYAMPRrWhrp
+HXIst3Jl8tAWQWCVu+kzY5SVUA2TmPAbNrtrJExpUcwX7/sajhgUv2g6qPPkOvaN
+UM9DS+kS3GPPM7raHUmL4Ph1gzuFsXemUCnTuQUq0uQJSQzVWaR82kSUcGTearP9
+lJXbbMFOx2eai6qHGaJnafJRNOsYW2xU8Lxqv/HfD/M0b9KZr71jy2NoQFMYR0Bm
+/ZH2pczf2t70QqzpIo7ScZYXl6pwDmiyxbMLorybAyc9sSIErqa/qeX0vx9t30TK
+uyLv+uqNoKziiQe+D5FfkH1Mc3be2iSZJ2G+z3Z2mGlPGQDDB4ETcCUudL2nVgjD
+3z9Te0FqZ9QaslzTiZqiyd3tIt7gZbKp++DxdBcodwPkagI6D/4ZcVof5YKpLTYx
+zzqa9fKWOdw8sYVQ2cUlcvgFsI9tA3cfE3+l6D2QckdKN5MTcEErHZKm6ISahgd2
+2Y9nMid6NJ2psIG0ancF/o2D1p56G5B3D8lSNYLiyoDWhhOGQms=
+=Cx8z
+-----END PGP SIGNATURE-----
+
+--wyfglm34rtjztloq--

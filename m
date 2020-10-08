@@ -2,87 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 361712872D3
-	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Oct 2020 12:52:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F3762877BF
+	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Oct 2020 17:44:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726432AbgJHKwr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 8 Oct 2020 06:52:47 -0400
-Received: from z5.mailgun.us ([104.130.96.5]:40891 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725802AbgJHKwr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 8 Oct 2020 06:52:47 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1602154366; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=TG7j4a33OXv/9QSBNRmWQ1+MuRmM+sFz0/eucFHIWxo=;
- b=eSM6jdSqID0ghu4P1ckbcpg/WTuU9jKUq8h9yIgLDvE1uYXhssfe57AropC0jpMWKlKKgvEG
- yDbgR9oagT3Xn7Qn8xXPh+DAUVrs6FrpZv92cgw5KdlZusJlUN0A4jiLgt7hetB8v0FK//op
- zWa7sbWO5DLPuSyzw2kOweiBZuU=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 5f7eef7e319d4e9cb5bd3fa8 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 08 Oct 2020 10:52:46
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EB687C43382; Thu,  8 Oct 2020 10:52:45 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3FACFC433CB;
-        Thu,  8 Oct 2020 10:52:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3FACFC433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1731061AbgJHPoM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 8 Oct 2020 11:44:12 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:60819 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730958AbgJHPoM (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 8 Oct 2020 11:44:12 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kQY5Q-0000fq-7C; Thu, 08 Oct 2020 15:44:08 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Sebastian Reichel <sre@kernel.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Rhyland Klein <rklein@nvidia.com>, linux-pm@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] power: supply: Fix sizeof() mismatch
+Date:   Thu,  8 Oct 2020 16:44:07 +0100
+Message-Id: <20201008154407.102824-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] ath11k: fix memory leak of 'combinations'
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201006174225.545919-1-colin.king@canonical.com>
-References: <20201006174225.545919-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201008105245.EB687C43382@smtp.codeaurora.org>
-Date:   Thu,  8 Oct 2020 10:52:45 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently the error return path when 'limits' fails to allocate
-> does not free the memory allocated for 'combinations'. Fix this
-> by adding a kfree before returning.
-> 
-> Addresses-Coverity: ("Resource leak")
-> Fixes: 2626c269702e ("ath11k: add interface_modes to hw_params")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+An incorrect sizeof() is being used, sizeof(psy->supplied_from) is not
+correct, it should be sizeof(*psy->supplied_from).  This bug did not
+cause any issues because it just so happens the sizes are the same.
 
-Alex already sent an identical patch:
+Addresses-Coverity: ("Sizeof not portable (SIZEOF_MISMATCH)")
+Fixes: f6e0b081fb30 ("power_supply: Populate supplied_from hierarchy from the device tree")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/power/supply/power_supply_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?id=8431350eee2e27ae60f5250e0437ab298329070e
-
-Patch set to Superseded.
-
+diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
+index 38e3aa642131..50f323740c74 100644
+--- a/drivers/power/supply/power_supply_core.c
++++ b/drivers/power/supply/power_supply_core.c
+@@ -261,7 +261,8 @@ static int power_supply_check_supplies(struct power_supply *psy)
+ 		return 0;
+ 
+ 	/* All supplies found, allocate char ** array for filling */
+-	psy->supplied_from = devm_kzalloc(&psy->dev, sizeof(psy->supplied_from),
++	psy->supplied_from = devm_kzalloc(&psy->dev,
++					  sizeof(*psy->supplied_from),
+ 					  GFP_KERNEL);
+ 	if (!psy->supplied_from)
+ 		return -ENOMEM;
 -- 
-https://patchwork.kernel.org/patch/11819025/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.27.0
 

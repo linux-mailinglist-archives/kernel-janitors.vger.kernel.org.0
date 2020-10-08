@@ -2,62 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97B80287D6B
-	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Oct 2020 22:48:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4150F287D7E
+	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Oct 2020 22:51:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730693AbgJHUsK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 8 Oct 2020 16:48:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58908 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728766AbgJHUsK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 8 Oct 2020 16:48:10 -0400
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DB5602087D;
-        Thu,  8 Oct 2020 20:48:08 +0000 (UTC)
-Date:   Thu, 8 Oct 2020 16:48:07 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Colin King <colin.king@canonical.com>,
-        Shuah Khan <shuah@kernel.org>
-Cc:     Ingo Molnar <mingo@redhat.com>, Tom Zanussi <zanussi@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        linux-kselftest@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH][V2] selftests/ftrace: check for do_sys_openat2 in
- user-memory test
-Message-ID: <20201008164807.62582e8c@gandalf.local.home>
-In-Reply-To: <20201002132501.88992-1-colin.king@canonical.com>
-References: <20201002132501.88992-1-colin.king@canonical.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1727887AbgJHUvN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 8 Oct 2020 16:51:13 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:55772 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725931AbgJHUvN (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 8 Oct 2020 16:51:13 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 098Ko26L178180;
+        Thu, 8 Oct 2020 20:51:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : mime-version :
+ content-type; s=corp-2020-01-29;
+ bh=YIDcw7NlsalCPVtLAWvtPQQXkYvESSJbyPbOKMFjQWw=;
+ b=osB4uMM8fN3Yckym+cLKX8G8k06fEs4gvIfAklYO9/KMPIIzNuoqGFI+WKMurpPdLYSs
+ 3no8kS/t+EIYLAzvuz6GPC93H5QpQNZEn5u4C6Hr4H6Pfr+PUCswTeCVInnuTsazGy2m
+ nP52XImXTtzvpgvUlpy9sL4P92UwBisYBFZrZhhuKqPgHaYVDpBFa6zOALzKaKh900hg
+ YCwQwm/V6g68lahmPuPXDl6hJpRYVKdgCunr4gPGaVcX4CGTxt0Qu5naiVyrw9tF9cxt
+ v1a7SerzadqDnLIKmkkV5ITZj/iV0MvsOVpiIxfHGtf3FurSnXTLUVT2gSSjEgcXKWwt OQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 3429jur6xn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 08 Oct 2020 20:51:06 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 098Kitxk117452;
+        Thu, 8 Oct 2020 20:51:06 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 3429kah2bk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 08 Oct 2020 20:51:05 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 098Koxbo014917;
+        Thu, 8 Oct 2020 20:50:59 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 08 Oct 2020 13:50:58 -0700
+To:     Colin King <colin.king@canonical.com>
+Cc:     Nilesh Javali <njavali@marvell.com>,
+        GR-QLogic-Storage-Upstream@marvell.com,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        Pavel Machek <pavel@denx.de>, linux-scsi@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] scsi: qla2xxx: fix return of uninitialized value in rval
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1o8lc1lxz.fsf@ca-mkp.ca.oracle.com>
+References: <20201008183239.200358-1-colin.king@canonical.com>
+Date:   Thu, 08 Oct 2020 16:50:56 -0400
+In-Reply-To: <20201008183239.200358-1-colin.king@canonical.com> (Colin King's
+        message of "Thu, 8 Oct 2020 19:32:39 +0100")
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9768 signatures=668681
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 adultscore=0
+ phishscore=0 spamscore=0 mlxscore=0 malwarescore=0 bulkscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010080147
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9768 signatures=668681
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999 mlxscore=0
+ phishscore=0 bulkscore=0 suspectscore=1 lowpriorityscore=0 spamscore=0
+ clxscore=1015 malwarescore=0 priorityscore=1501 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010080147
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri,  2 Oct 2020 14:25:01 +0100
-Colin King <colin.king@canonical.com> wrote:
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> More recent libc implementations are now using openat/openat2 system
-> calls so also add do_sys_openat2 to the tracing so that the test
-> passes on these systems because do_sys_open may not be called.
-> 
-> Thanks to Masami Hiramatsu for the help on getting this fix to work
-> correctly.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->
+Colin,
 
-Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+> A previous change removed the initialization of rval and there is now
+> an error where an uninitialized rval is being returned on an error
+> return path. Fix this by returning -ENODEV.
 
-Shuah,
+Applied to 5.10/scsi-staging, thanks!
 
-Care to take this through your tree?
-
--- Steve
+-- 
+Martin K. Petersen	Oracle Linux Engineering

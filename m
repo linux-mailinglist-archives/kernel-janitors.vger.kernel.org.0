@@ -2,115 +2,125 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FA97287EBA
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Oct 2020 00:37:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 630A928810F
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Oct 2020 06:16:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730462AbgJHWhU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 8 Oct 2020 18:37:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34096 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729017AbgJHWhU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 8 Oct 2020 18:37:20 -0400
-Received: from earth.universe (unknown [185.213.155.232])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E6A1422243;
-        Thu,  8 Oct 2020 22:37:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602196639;
-        bh=x1SmoSmcLC3AgO9NSV4YaBZZzQalnejPtKrdLuUbWmw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fL72wgri135ejMGWb6DK4zUxZo/ZvnKwhwMqX1OjhUVKEayNRWnfouUPzLK6FNuFr
-         kUW4UlC9X/dEL1NvzJuCmnUNPlzySuxXtGNVcvXOnS9k1XcDWReSVJTLTr/6DFtZ/c
-         n6t949BySsNsNRX4J6S25Y9xGa4tXBvD5FKtJ7Uk=
-Received: by earth.universe (Postfix, from userid 1000)
-        id 8B7003C0C87; Fri,  9 Oct 2020 00:37:16 +0200 (CEST)
-Date:   Fri, 9 Oct 2020 00:37:16 +0200
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Chanwoo Choi <cw00.choi@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Myungjoo Ham <myungjoo.ham@samsung.com>,
-        linux-pm@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] charger-manager: fix incorrect check on
- charging_duration_ms
-Message-ID: <20201008223716.353rpnkvte7q3miv@earth.universe>
-References: <20200902133117.108025-1-colin.king@canonical.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="wyfglm34rtjztloq"
-Content-Disposition: inline
-In-Reply-To: <20200902133117.108025-1-colin.king@canonical.com>
+        id S1729278AbgJIEQg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Oct 2020 00:16:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43350 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725900AbgJIEQg (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 9 Oct 2020 00:16:36 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E49FC0613D2;
+        Thu,  8 Oct 2020 21:16:36 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id p13so7971939edi.7;
+        Thu, 08 Oct 2020 21:16:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=AfwAzZgxUctq+B9Xwm5LEy7q5lioBZycU4ewFeC4ZrU=;
+        b=YeuI3ZU/Q95zGksRh/xPkTQuaKMozCNBWHj+oL9M9Y/jIEAET0+TVTnhYDk17L2ESl
+         Po3EAv7LSh0BdfZTBahj4Xy1jjUYO1LgqavXAlxotKM6x+sABn4BgRaGhKgoKq7D/APk
+         FPr4i7RJkARmVt7oApHNvPtTRqrVTzYm6ZfV2QIAjAzQQiaRJdkfQoOGNNAYKyftMofW
+         wb7IZkuTzm4cW9umXnEb5EiXn4h5X6ibsIHURgefnDZfCJ4mTXNZpOmimAKfdGTTTi+a
+         tn/HA+9zLa2CEgg8sWAgZyRejGA8nWgbKoIoEZkA//EKEpMAi/lEmqsvvRmFjDDKi7ro
+         HHuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=AfwAzZgxUctq+B9Xwm5LEy7q5lioBZycU4ewFeC4ZrU=;
+        b=hSXVJQ2Vn7Zzjp8uz50w+J9mXDJwGeNyl0Jb0VScbCzeeWJVVm5Yupf9QRCJcuIRRM
+         fMS24+cTZTMQIZLslA55S36sSGkHFR3bTGeYcYSQDC/cQuwBR8ia0C12m1wASQNC3wlq
+         F5Fog+a2m/UfacKZ9aaTdcnC1Fwt+pDNnNkWg9rEouv3hWPZZF4AMpiG5Mc6Lje/kClS
+         5gaT0YbgWh5dJGLGhCxHJ7xOAn4ztk0pBAqbOH+TSAXkrfK5Gl99XC2b6bl/LW9ARnpv
+         4A+GZoeDXh3lx1kXOXjVrW4n2kgTRtAsmYgPeEuH7TZlp6vjnUKXp6JHBtS8iqUYzytt
+         16WA==
+X-Gm-Message-State: AOAM532KnLQ2AFdsdZL5P2wCaMUT31CvyplKglNuSXEMq2Nsje68ci/M
+        XOtWZqRqPBMceNWCUzNqEyoVeSqJGMPbMg==
+X-Google-Smtp-Source: ABdhPJyANwK4YJx0wVZaHj0CcX+4bLk3AB9hNGwkbJnRsWUmnv9UXC5XoaoqXKNU7nhJfS7T4UP/uw==
+X-Received: by 2002:a05:6402:10d5:: with SMTP id p21mr12751645edu.14.1602216994860;
+        Thu, 08 Oct 2020 21:16:34 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2d6e:f600:80f1:4ea4:2130:b98])
+        by smtp.gmail.com with ESMTPSA id o11sm5415265edw.80.2020.10.08.21.16.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2020 21:16:34 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Corentin Labbe <clabbe@baylibre.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        mjpeg-users@lists.sourceforge.net, linux-media@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org, Joe Perches <joe@perches.com>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: rectify ZR36067 VIDEO FOR LINUX DRIVER section
+Date:   Fri,  9 Oct 2020 06:16:21 +0200
+Message-Id: <20201009041621.17513-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Commit 754f0f1ba8d9 ("media: MAINTAINERS: change maintainer of the zoran
+driver") added a new section in MAINTAINERS with an invalid file entry
+and at the wrong place for alphabetic ordering.
 
---wyfglm34rtjztloq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
 
-Hi Colin,
+  warning: no file matches  F:  Documentation/media/v4l-drivers/zoran.rst
 
-On Wed, Sep 02, 2020 at 02:31:17PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> Currently the duration check on the discharging duration setting is
-> checking the charging duration rather than the discharging duration
-> due to a cut-n-paste coding error. Fix this by checking the value
-> desc->charging_max_duration_ms.
->=20
-> Addresses-Coverity: ("Copy-paste-error")
-> Fixes: 8fcfe088e21a ("charger-manager: Support limit of maximum possible")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
+Point the file entry to the right location and move the section to the
+right place in MAINTAINERS.
 
-Thanks, queued.
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on next-20201008
 
--- Sebastian
+Corentin, please ack.
+Mauro, please pick this minor non-urgent cleanup patch into your -next tree.
 
->  drivers/power/supply/charger-manager.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/power/supply/charger-manager.c b/drivers/power/suppl=
-y/charger-manager.c
-> index 07992821e252..44d919954e9e 100644
-> --- a/drivers/power/supply/charger-manager.c
-> +++ b/drivers/power/supply/charger-manager.c
-> @@ -471,7 +471,7 @@ static int check_charging_duration(struct charger_man=
-ager *cm)
->  	} else if (cm->battery_status =3D=3D POWER_SUPPLY_STATUS_NOT_CHARGING) {
->  		duration =3D curr - cm->charging_end_time;
-> =20
-> -		if (duration > desc->charging_max_duration_ms) {
-> +		if (duration > desc->discharging_max_duration_ms) {
->  			dev_info(cm->dev, "Discharging duration exceed %ums\n",
->  				 desc->discharging_max_duration_ms);
->  			ret =3D true;
-> --=20
-> 2.27.0
->=20
+ MAINTAINERS | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---wyfglm34rtjztloq
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 239ae2425cf8..6879ca545677 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -19412,6 +19412,13 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/zonefs.git
+ F:	Documentation/filesystems/zonefs.rst
+ F:	fs/zonefs/
+ 
++ZPOOL COMPRESSED PAGE STORAGE API
++M:	Dan Streetman <ddstreet@ieee.org>
++L:	linux-mm@kvack.org
++S:	Maintained
++F:	include/linux/zpool.h
++F:	mm/zpool.c
++
+ ZR36067 VIDEO FOR LINUX DRIVER
+ M:	Corentin Labbe <clabbe@baylibre.com>
+ L:	mjpeg-users@lists.sourceforge.net
+@@ -19419,16 +19426,9 @@ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	http://mjpeg.sourceforge.net/driver-zoran/
+ Q:	https://patchwork.linuxtv.org/project/linux-media/list/
+-F:	Documentation/media/v4l-drivers/zoran.rst
++F:	Documentation/driver-api/media/drivers/v4l-drivers/zoran.rst
+ F:	drivers/staging/media/zoran/
+ 
+-ZPOOL COMPRESSED PAGE STORAGE API
+-M:	Dan Streetman <ddstreet@ieee.org>
+-L:	linux-mm@kvack.org
+-S:	Maintained
+-F:	include/linux/zpool.h
+-F:	mm/zpool.c
+-
+ ZRAM COMPRESSED RAM BLOCK DEVICE DRVIER
+ M:	Minchan Kim <minchan@kernel.org>
+ M:	Nitin Gupta <ngupta@vflare.org>
+-- 
+2.17.1
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl9/lJwACgkQ2O7X88g7
-+pozdQ//V0Z7wo7rb2YBOxWmUcpp1KjqM12cynFCTDgE7ydMT64gZKFnNjQBk9zg
-Y/WesekfwYIDdqt/7/sXHzNitNZjn/WeyBIaJBx7L9eVpTYsQNHDdwgNEIzQByDP
-9SlzveKeVDdxpGacfsrEsBVnIo70LKunZ0TUb5wZcpWzDWN1xBi6xnYAMPRrWhrp
-HXIst3Jl8tAWQWCVu+kzY5SVUA2TmPAbNrtrJExpUcwX7/sajhgUv2g6qPPkOvaN
-UM9DS+kS3GPPM7raHUmL4Ph1gzuFsXemUCnTuQUq0uQJSQzVWaR82kSUcGTearP9
-lJXbbMFOx2eai6qHGaJnafJRNOsYW2xU8Lxqv/HfD/M0b9KZr71jy2NoQFMYR0Bm
-/ZH2pczf2t70QqzpIo7ScZYXl6pwDmiyxbMLorybAyc9sSIErqa/qeX0vx9t30TK
-uyLv+uqNoKziiQe+D5FfkH1Mc3be2iSZJ2G+z3Z2mGlPGQDDB4ETcCUudL2nVgjD
-3z9Te0FqZ9QaslzTiZqiyd3tIt7gZbKp++DxdBcodwPkagI6D/4ZcVof5YKpLTYx
-zzqa9fKWOdw8sYVQ2cUlcvgFsI9tA3cfE3+l6D2QckdKN5MTcEErHZKm6ISahgd2
-2Y9nMid6NJ2psIG0ancF/o2D1p56G5B3D8lSNYLiyoDWhhOGQms=
-=Cx8z
------END PGP SIGNATURE-----
-
---wyfglm34rtjztloq--

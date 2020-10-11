@@ -2,68 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13B3228A6C8
-	for <lists+kernel-janitors@lfdr.de>; Sun, 11 Oct 2020 12:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAA4F28A6E7
+	for <lists+kernel-janitors@lfdr.de>; Sun, 11 Oct 2020 12:19:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387555AbgJKKCv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 11 Oct 2020 06:02:51 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:50843 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2387582AbgJKKCu (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 11 Oct 2020 06:02:50 -0400
-X-IronPort-AV: E=Sophos;i="5.77,362,1596492000"; 
-   d="scan'208";a="471981626"
-Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/AES256-SHA256; 11 Oct 2020 12:02:41 +0200
-From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Liam Girdwood <lgirdwood@gmail.com>
-Cc:     =?UTF-8?q?Valdis=20Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        Joe Perches <joe@perches.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kernel-janitors@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 8/8] ASoC: dapm: use semicolons rather than commas to separate statements
-Date:   Sun, 11 Oct 2020 11:19:39 +0200
-Message-Id: <1602407979-29038-9-git-send-email-Julia.Lawall@inria.fr>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1602407979-29038-1-git-send-email-Julia.Lawall@inria.fr>
-References: <1602407979-29038-1-git-send-email-Julia.Lawall@inria.fr>
+        id S1728544AbgJKKTT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 11 Oct 2020 06:19:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47250 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727035AbgJKKTS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 11 Oct 2020 06:19:18 -0400
+Received: from localhost (pop.92-184-102-180.mobile.abo.orange.fr [92.184.102.180])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 95343207F7;
+        Sun, 11 Oct 2020 10:19:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602411558;
+        bh=E80FqfqRXRL4++0Ml+FlpdDwAKsno997KrBJ1rNmCSQ=;
+        h=In-Reply-To:References:Subject:Cc:To:From:Date:From;
+        b=Hmeuo20eDt1ccuObCbtaRLqtUJtZ/RSoYdy9vMnE+wboS/MLVi47ODeEVkxHWZETU
+         PUctPHQxfaGFZ0NDz/W7dy/0QLd34JPyCW+a69WPdzSP1cOKFWf60+gOmaVEw8WrO2
+         isz6sz/KNqijdMoGBVUkBTqUW/hdC03BmtxdHEaw=
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20201010164736.12871-1-colin.king@canonical.com>
+References: <20201010164736.12871-1-colin.king@canonical.com>
+Subject: Re: [PATCH] crypto: inside-secure: Fix sizeof() mismatch
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+To:     "David S . Miller" <davem@davemloft.net>,
+        Colin King <colin.king@canonical.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Ofer Heifetz <oferh@marvell.com>, linux-crypto@vger.kernel.org
+From:   Antoine Tenart <atenart@kernel.org>
+Message-ID: <160241154768.6233.86808650362778908@surface>
+Date:   Sun, 11 Oct 2020 12:19:12 +0200
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Replace commas with semicolons.  What is done is essentially described by
-the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
+Hello,
 
-// <smpl>
-@@ expression e1,e2; @@
-e1
--,
-+;
-e2
-... when any
-// </smpl>
+Quoting Colin King (2020-10-10 18:47:36)
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> An incorrect sizeof() is being used, sizeof(priv->ring[i].rdr_req) is
+> not correct, it should be sizeof(*priv->ring[i].rdr_req). Note that
+> since the size of ** is the same size as * this is not causing any
+> issues.
+>=20
+> Addresses-Coverity: ("Sizeof not portable (SIZEOF_MISMATCH)")
+> Fixes: 9744fec95f06 ("crypto: inside-secure - remove request list to impr=
+ove performance")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+Acked-by: Antoine Tenart <atenart@kernel.org>
 
----
- sound/soc/soc-dapm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks!
+Antoine
 
-diff --git a/sound/soc/soc-dapm.c b/sound/soc/soc-dapm.c
-index 3273161e2787..72c84ee2847f 100644
---- a/sound/soc/soc-dapm.c
-+++ b/sound/soc/soc-dapm.c
-@@ -4764,7 +4764,7 @@ void snd_soc_dapm_init(struct snd_soc_dapm_context *dapm,
- 
- 	if (component) {
- 		dapm->dev		= component->dev;
--		dapm->idle_bias_off	= !component->driver->idle_bias_on,
-+		dapm->idle_bias_off	= !component->driver->idle_bias_on;
- 		dapm->suspend_bias_off	= component->driver->suspend_bias_off;
- 	} else {
- 		dapm->dev		= card->dev;
-
+> ---
+>  drivers/crypto/inside-secure/safexcel.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/crypto/inside-secure/safexcel.c b/drivers/crypto/ins=
+ide-secure/safexcel.c
+> index eb2418450f12..2e1562108a85 100644
+> --- a/drivers/crypto/inside-secure/safexcel.c
+> +++ b/drivers/crypto/inside-secure/safexcel.c
+> @@ -1639,7 +1639,7 @@ static int safexcel_probe_generic(void *pdev,
+> =20
+>                 priv->ring[i].rdr_req =3D devm_kcalloc(dev,
+>                         EIP197_DEFAULT_RING_SIZE,
+> -                       sizeof(priv->ring[i].rdr_req),
+> +                       sizeof(*priv->ring[i].rdr_req),
+>                         GFP_KERNEL);
+>                 if (!priv->ring[i].rdr_req)
+>                         return -ENOMEM;
+> --=20
+> 2.27.0
+>=20

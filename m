@@ -2,96 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12E2928A73B
-	for <lists+kernel-janitors@lfdr.de>; Sun, 11 Oct 2020 13:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2501928AA12
+	for <lists+kernel-janitors@lfdr.de>; Sun, 11 Oct 2020 22:05:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387584AbgJKLc4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 11 Oct 2020 07:32:56 -0400
-Received: from wout4-smtp.messagingengine.com ([64.147.123.20]:45003 "EHLO
-        wout4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2387467AbgJKLc4 (ORCPT
+        id S1728326AbgJKUFx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 11 Oct 2020 16:05:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38174 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726209AbgJKUFr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 11 Oct 2020 07:32:56 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.west.internal (Postfix) with ESMTP id 6916258C;
-        Sun, 11 Oct 2020 07:32:54 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Sun, 11 Oct 2020 07:32:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
-         h=date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm2; bh=+ebymQySiF7n21UOcFO9mizXixa
-        NxwiZj2RVBB0uKW4=; b=IpVVD/o91q9rAPnu5miR6RQPgMLz4TobuQNkmO1/VxB
-        0WAARCx1Qtvv8AvdqUB+Gtr2Kk+uXbGjvcUfTI5d9/xp23c5fiwhQ/63+X9v6X8T
-        k8dNSXF4XllngQBL3Zock6eSJE5TUki34jFY0NhsstdArkAeeW36FbKtjhcbyVKq
-        KUasJeAj9nXrco6fT6ntBZhJQe9eNOyyQk4eocvuxm3drKGpSvPZJdnTYcC4iIos
-        NDMWm55NbgizmGeICFnd25FeDkJTFPgnb+egtVL4rPqT6/ooeRjLXvF/qYs4MS0F
-        vXZ/2Ng3FhOXebraad8sHRv9iBDHcS/IeIbRCpWmmsw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=+ebymQ
-        ySiF7n21UOcFO9mizXixaNxwiZj2RVBB0uKW4=; b=Ceo6vjeG1gvNM+jX+sY8eq
-        fQdktd4m/Z125EdbtnQf2vVHxa/AE/xmMOvwbYTDFmdK7ixvCUQQIjWowVRDvidz
-        AjpCivDnG4LUIhuMpC9aQiY9nRKbTpLPKFr+KxzZUjV85ChjJxa5ktASs7Lb97Hp
-        oNVtABg7mWwsSLeHW4q1a9c2Il3LjtzZXiN5l9HiNxXJ4RrnV1daDFLw3m35G+oD
-        o7mheeO7RerCyovBv3+hmuCa9i48CG5kjKdZPxn4pDC16t+Sh1y04s2C4cfVUWDt
-        5OaT/XPyRpa9o4Mpl+HNf4CxOGk/NCNH2NMWDtHImeyjis+NWhgICAF4XQIfpUdw
-        ==
-X-ME-Sender: <xms:Y-2CX8wYszKA2GLZn5UN7zjMIFxWelt_9Wv-hrmJjRpWO5xs62Lz-g>
-    <xme:Y-2CXwTzjorHYjaGzLbjH2JiL5NuoBDZBBAT6GFQjTT6CvapiDcx0U27IElAc3xId
-    _TWv-yhogEzByMviNs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrheehgdegvdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepvfgrkhgrshhh
-    ihcuufgrkhgrmhhothhouceoohdqthgrkhgrshhhihesshgrkhgrmhhotggthhhirdhjph
-    eqnecuggftrfgrthhtvghrnhepvdetfeevffeftdetuddtudegfeevleettdetiedujefh
-    jefhkedvieeltdehuddunecuffhomhgrihhnpehlihhpiedrfhhrnecukfhppedugedrfe
-    drieegrddvtdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
-    rhhomhepohdqthgrkhgrshhhihesshgrkhgrmhhotggthhhirdhjph
-X-ME-Proxy: <xmx:Y-2CX-VoQ-RdDaC9yqqL_qSVhRNVEjpn0M0G83S9UwK8YoCjEwm1mg>
-    <xmx:Y-2CX6jT8E6jo6lSYjRvKbQFKygIAD44SM9mg2QWz3TtZ-S3oIXutA>
-    <xmx:Y-2CX-DS1gU5vd5TiJ_ApoDd_S_VU_pP_HcfGqYZhsDFCKQ3lqY5uA>
-    <xmx:Zu2CX0BGa9yQUKuV0G0w6HonCm_ZMqJyWSa3fTfo9vFFLh2JrBiOTg>
-Received: from workstation (ae064207.dynamic.ppp.asahi-net.or.jp [14.3.64.207])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 6437A3064610;
-        Sun, 11 Oct 2020 07:32:49 -0400 (EDT)
-Date:   Sun, 11 Oct 2020 20:32:47 +0900
-From:   Takashi Sakamoto <o-takashi@sakamocchi.jp>
+        Sun, 11 Oct 2020 16:05:47 -0400
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EB34C0613CE
+        for <kernel-janitors@vger.kernel.org>; Sun, 11 Oct 2020 13:05:45 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id a3so20310206ejy.11
+        for <kernel-janitors@vger.kernel.org>; Sun, 11 Oct 2020 13:05:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=fn3a2TRSpw4Qw7kTvuDdS1yGeLObpqGFeJkmfCLmfYw=;
+        b=rH4sQc4kiIaL95mmyPCWUBV+W8FLVcv9VPmB76fcwdAwToK82RaPakQwVZaGoBad4m
+         23OMt4Q0VLoTmPtInWeBUCoJCWIj0skXYBoTLnIvsRiquSB+zOsaQLLfb279t6eipWkg
+         D3rf0rhG/LDgpaTZhl/g/w97VfMWnTLecK5f2e4wDNCElehkdW4O44B7LFC95UOswQie
+         sYVKXK99Gj4/eYiT2aE7UC6bODUaFkKXJsqYRvApBXuuhEXfDiVrR5BjmLniRbLxZsn3
+         GXgMD6FkaKTbO8zo805cNPBXND5Wx69VtiC24pIvvjQ72VQjI9HwnMblLk6l94FmcO77
+         ZgeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fn3a2TRSpw4Qw7kTvuDdS1yGeLObpqGFeJkmfCLmfYw=;
+        b=l4M72Kszff7eClitKBMgJ6XDUCSMtlZd7Ual/0vYht7I9eaEQgqkm3p50ax2veKXJW
+         vOKDXKLF2q16h7L2xCigpGWLuihGB5ZdFfp5CPsHRDw6dQpGZyvD451pXits+/n6V7jq
+         RUyWjfN0lGWrdk2HvhP9JD1VxMMNbsVI9XH/c2GA04CwKJKIyukma707WxNj4P9Y//FK
+         Hulz+o9v86GNfeKTfsuiTCYEQEyLPrYgjUqTT8+CFViHUyWubcDBHBQwioA6EKHyYJXr
+         CeP4Ylfa+lrHnGhmqOqP2S8HzA8brqHnS7nsTQA2lTUs17j6+mjPAqSsI9v++JryOWM2
+         k0JQ==
+X-Gm-Message-State: AOAM5302whXVEa60cdJmSXPL8xGtdp86IwtHYtmH3ZvI48uuMGT0A3Dr
+        s9+tTK6hfBebrTyeQ2SVo6xKr/jPgp/c3RbnAt1f
+X-Google-Smtp-Source: ABdhPJyFWEkF1uWg3VFTio+74U0ShC3sxoON2X/ALfSwQEFGN/OFeCXzUCfNwuRvCX3yfsan24m6yO/nqdSoXNYAUAY=
+X-Received: by 2002:a17:906:c444:: with SMTP id ck4mr23598812ejb.398.1602446743879;
+ Sun, 11 Oct 2020 13:05:43 -0700 (PDT)
+MIME-Version: 1.0
+References: <1602412498-32025-1-git-send-email-Julia.Lawall@inria.fr> <1602412498-32025-5-git-send-email-Julia.Lawall@inria.fr>
+In-Reply-To: <1602412498-32025-5-git-send-email-Julia.Lawall@inria.fr>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Sun, 11 Oct 2020 16:05:32 -0400
+Message-ID: <CAHC9VhQfDueBs_nahF2xxP8bof2yH1p4PPXwfxh4xnmQeEF4XA@mail.gmail.com>
+Subject: Re: [PATCH 4/5] net/ipv6: use semicolons rather than commas to
+ separate statements
 To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     Clemens Ladisch <clemens@ladisch.de>,
-        Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+Cc:     =?UTF-8?Q?Valdis_Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
         Joe Perches <joe@perches.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        kernel-janitors@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/8] ALSA: fireworks: use semicolons rather than commas
- to separate statements
-Message-ID: <20201011113247.GA333010@workstation>
-Mail-Followup-To: Julia Lawall <Julia.Lawall@inria.fr>,
-        Clemens Ladisch <clemens@ladisch.de>,
-        Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        Joe Perches <joe@perches.com>, Thomas Gleixner <tglx@linutronix.de>,
-        kernel-janitors@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org
-References: <1602407979-29038-1-git-send-email-Julia.Lawall@inria.fr>
- <1602407979-29038-5-git-send-email-Julia.Lawall@inria.fr>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1602407979-29038-5-git-send-email-Julia.Lawall@inria.fr>
+        kernel-janitors@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
-
-On Sun, Oct 11, 2020 at 11:19:35AM +0200, Julia Lawall wrote:
-> Replace commas with semicolons.  What is done is essentially described by
-> the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
-> 
+On Sun, Oct 11, 2020 at 7:18 AM Julia Lawall <Julia.Lawall@inria.fr> wrote:
+>
+> Replace commas with semicolons.  Commas introduce unnecessary
+> variability in the code structure and are hard to see.  What is done
+> is essentially described by the following Coccinelle semantic patch
+> (http://coccinelle.lip6.fr/):
+>
 > // <smpl>
 > @@ expression e1,e2; @@
 > e1
@@ -100,33 +82,31 @@ On Sun, Oct 11, 2020 at 11:19:35AM +0200, Julia Lawall wrote:
 > e2
 > ... when any
 > // </smpl>
-> 
+>
 > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> 
+>
 > ---
->  sound/firewire/fireworks/fireworks_pcm.c |    2 +-
+>  net/ipv6/calipso.c |    2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/sound/firewire/fireworks/fireworks_pcm.c b/sound/firewire/fireworks/fireworks_pcm.c
-> index 980580dfbb39..a0d5db1d8eb2 100644
-> --- a/sound/firewire/fireworks/fireworks_pcm.c
-> +++ b/sound/firewire/fireworks/fireworks_pcm.c
-> @@ -148,7 +148,7 @@ pcm_init_hw_params(struct snd_efw *efw,
->  	}
->  
->  	/* limit rates */
-> -	runtime->hw.rates = efw->supported_sampling_rate,
-> +	runtime->hw.rates = efw->supported_sampling_rate;
->  	snd_pcm_limit_hw_rates(runtime);
->  
->  	limit_channels(&runtime->hw, pcm_channels);
- 
-Oops. It seems to be my typo added at the commit aa02bb6e6078
-("ALSA: fireworks: Add PCM interface")...
 
-Acked-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Thanks Julia.
 
+Acked-by: Paul Moore <paul@paul-moore.com>
 
-Thanks
+> diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
+> index 8d3f66c310db..78f766019b7e 100644
+> --- a/net/ipv6/calipso.c
+> +++ b/net/ipv6/calipso.c
+> @@ -761,7 +761,7 @@ static int calipso_genopt(unsigned char *buf, u32 start, u32 buf_len,
+>         calipso[1] = len - 2;
+>         *(__be32 *)(calipso + 2) = htonl(doi_def->doi);
+>         calipso[6] = (len - CALIPSO_HDR_LEN) / 4;
+> -       calipso[7] = secattr->attr.mls.lvl,
+> +       calipso[7] = secattr->attr.mls.lvl;
+>         crc = ~crc_ccitt(0xffff, calipso, len);
+>         calipso[8] = crc & 0xff;
+>         calipso[9] = (crc >> 8) & 0xff;
 
-Takashi Sakamoto
+-- 
+paul moore
+www.paul-moore.com

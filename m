@@ -2,83 +2,169 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DAA4F28A6E7
-	for <lists+kernel-janitors@lfdr.de>; Sun, 11 Oct 2020 12:19:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A70128A733
+	for <lists+kernel-janitors@lfdr.de>; Sun, 11 Oct 2020 13:18:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728544AbgJKKTT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 11 Oct 2020 06:19:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47250 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727035AbgJKKTS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 11 Oct 2020 06:19:18 -0400
-Received: from localhost (pop.92-184-102-180.mobile.abo.orange.fr [92.184.102.180])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 95343207F7;
-        Sun, 11 Oct 2020 10:19:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602411558;
-        bh=E80FqfqRXRL4++0Ml+FlpdDwAKsno997KrBJ1rNmCSQ=;
-        h=In-Reply-To:References:Subject:Cc:To:From:Date:From;
-        b=Hmeuo20eDt1ccuObCbtaRLqtUJtZ/RSoYdy9vMnE+wboS/MLVi47ODeEVkxHWZETU
-         PUctPHQxfaGFZ0NDz/W7dy/0QLd34JPyCW+a69WPdzSP1cOKFWf60+gOmaVEw8WrO2
-         isz6sz/KNqijdMoGBVUkBTqUW/hdC03BmtxdHEaw=
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20201010164736.12871-1-colin.king@canonical.com>
-References: <20201010164736.12871-1-colin.king@canonical.com>
-Subject: Re: [PATCH] crypto: inside-secure: Fix sizeof() mismatch
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-To:     "David S . Miller" <davem@davemloft.net>,
-        Colin King <colin.king@canonical.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Ofer Heifetz <oferh@marvell.com>, linux-crypto@vger.kernel.org
-From:   Antoine Tenart <atenart@kernel.org>
-Message-ID: <160241154768.6233.86808650362778908@surface>
-Date:   Sun, 11 Oct 2020 12:19:12 +0200
+        id S1729903AbgJKLSG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 11 Oct 2020 07:18:06 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:24850 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729809AbgJKLSE (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 11 Oct 2020 07:18:04 -0400
+X-IronPort-AV: E=Sophos;i="5.77,362,1596492000"; 
+   d="scan'208";a="471985689"
+Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/AES256-SHA256; 11 Oct 2020 13:18:00 +0200
+From:   Julia Lawall <Julia.Lawall@inria.fr>
+To:     linux-security-module@vger.kernel.org
+Cc:     =?UTF-8?q?Valdis=20Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        Joe Perches <joe@perches.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-afs@lists.infradead.org
+Subject: [PATCH 0/5] net: use semicolons rather than commas to separate statements
+Date:   Sun, 11 Oct 2020 12:34:53 +0200
+Message-Id: <1602412498-32025-1-git-send-email-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 1.9.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
+These patches replace commas by semicolons.  Commas introduce
+unnecessary variability in the code structure and are hard to see.
+This was done using the Coccinelle semantic patch
+(http://coccinelle.lip6.fr/) shown below.
 
-Quoting Colin King (2020-10-10 18:47:36)
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> An incorrect sizeof() is being used, sizeof(priv->ring[i].rdr_req) is
-> not correct, it should be sizeof(*priv->ring[i].rdr_req). Note that
-> since the size of ** is the same size as * this is not causing any
-> issues.
->=20
-> Addresses-Coverity: ("Sizeof not portable (SIZEOF_MISMATCH)")
-> Fixes: 9744fec95f06 ("crypto: inside-secure - remove request list to impr=
-ove performance")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+This semantic patch ensures that commas inside for loop headers will
+not be transformed.  It also doesn't touch macro definitions.
 
-Acked-by: Antoine Tenart <atenart@kernel.org>
+Coccinelle ensures that braces are added as needed when a
+single-statement branch turns into a multi-statement one.
 
-Thanks!
-Antoine
+This semantic patch has a few false positives, for variable
+delcarations such as:
 
-> ---
->  drivers/crypto/inside-secure/safexcel.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/crypto/inside-secure/safexcel.c b/drivers/crypto/ins=
-ide-secure/safexcel.c
-> index eb2418450f12..2e1562108a85 100644
-> --- a/drivers/crypto/inside-secure/safexcel.c
-> +++ b/drivers/crypto/inside-secure/safexcel.c
-> @@ -1639,7 +1639,7 @@ static int safexcel_probe_generic(void *pdev,
-> =20
->                 priv->ring[i].rdr_req =3D devm_kcalloc(dev,
->                         EIP197_DEFAULT_RING_SIZE,
-> -                       sizeof(priv->ring[i].rdr_req),
-> +                       sizeof(*priv->ring[i].rdr_req),
->                         GFP_KERNEL);
->                 if (!priv->ring[i].rdr_req)
->                         return -ENOMEM;
-> --=20
-> 2.27.0
->=20
+LIST_HEAD(x), *y;
+
+The semantic patch could be improved to avoid these, but for the
+moment they have been removed manually (2 occurrences).
+
+// <smpl>
+@initialize:ocaml@
+@@
+
+let infunction p =
+  (* avoid macros *)
+  (List.hd p).current_element <> "something_else"
+
+let combined p1 p2 =
+  (List.hd p1).line_end = (List.hd p2).line ||
+  (((List.hd p1).line_end < (List.hd p2).line) &&
+   ((List.hd p1).col < (List.hd p2).col))
+
+@bad@
+statement S;
+declaration d;
+position p;
+@@
+
+S@p
+d
+
+// special cases where newlines are needed (hope for no more than 5)
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@r@
+expression e1,e2;
+statement S;
+position p != bad.p;
+@@
+
+e1 ,@S@p e2;
+
+@@
+expression e1,e2;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && not(combined p1 p2) };
+statement S;
+position r.p;
+@@
+
+e1@p1
+-,@S@p
++;
+e2@p2
+... when any
+// </smpl>
+
+---
+
+ net/ipv4/tcp_input.c       |    3 ++-
+ net/ipv4/tcp_vegas.c       |    8 ++++----
+ net/ipv6/calipso.c         |    2 +-
+ net/mac80211/debugfs_sta.c |    2 +-
+ net/rxrpc/recvmsg.c        |    2 +-
+ net/tls/tls_main.c         |    2 +-
+ 6 files changed, 10 insertions(+), 9 deletions(-)

@@ -2,79 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACC7928AEDE
-	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Oct 2020 09:15:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D88228B17F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Oct 2020 11:27:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727046AbgJLHPD convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 12 Oct 2020 03:15:03 -0400
-Received: from mga05.intel.com ([192.55.52.43]:19379 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726123AbgJLHPC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 12 Oct 2020 03:15:02 -0400
-IronPort-SDR: XK4sys7FpZJ8GjNyi99V7wB7Ad6LUMNUdaV3+uQbGgIej9I078S5px7mJJW204ocxALMlFMTVG
- wxCSsz16oLxg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9771"; a="250394545"
-X-IronPort-AV: E=Sophos;i="5.77,366,1596524400"; 
-   d="scan'208";a="250394545"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2020 00:14:57 -0700
-IronPort-SDR: 02b3OiT4NsNcwblaPkSL0d50e7vaPF+PjVTxTVYfkcvDdRyjtVQAtZ8N9tcRfZaUZAlUDMYW//
- QeP7Pler8jEQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,366,1596524400"; 
-   d="scan'208";a="344762801"
-Received: from irsmsx602.ger.corp.intel.com ([163.33.146.8])
-  by fmsmga004.fm.intel.com with ESMTP; 12 Oct 2020 00:14:55 -0700
-Received: from irsmsx601.ger.corp.intel.com (163.33.146.7) by
- irsmsx602.ger.corp.intel.com (163.33.146.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 12 Oct 2020 08:14:54 +0100
-Received: from irsmsx601.ger.corp.intel.com ([163.33.146.7]) by
- irsmsx601.ger.corp.intel.com ([163.33.146.7]) with mapi id 15.01.1713.004;
- Mon, 12 Oct 2020 08:14:54 +0100
-From:   "Rojewski, Cezary" <cezary.rojewski@intel.com>
+        id S1728966AbgJLJ1Z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 12 Oct 2020 05:27:25 -0400
+Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:5060 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726104AbgJLJ1Z (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 12 Oct 2020 05:27:25 -0400
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+        by mx0a-001ae601.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 09C9CwDG024527;
+        Mon, 12 Oct 2020 04:26:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=PODMain02222019;
+ bh=npR59MT2okLFRihK1aLaXqrPn+4KISI//u1QyKT9TAc=;
+ b=Fr6ntnT48Ah75d/z1b7ivhuM1K92TlC9Bu2kSu0DF9J+lZivSy/eA6s1ACKD4FipDzIN
+ hisNAfvJq9zRXYfxcRUCftXobLqJZcx/FcpS2TyW7VWBRNzOewpoARHFNkRpuDEnM8Y6
+ BsHShBwQNxE5XrDFkwK4AIIliVmsg5E3RNFM+DX5JoGEVDsmTJJeSbzgIfv3kiFh/QLd
+ XkpsNHhkOpzqvShg9oPADM2NHl8fPqI4MC4z6a/RNOatlNLxFfu2fnvp3TjZqgOGU/Gp
+ FWQEw+onFBm063FTGC32BuSWucIFXfZQVDOttWwpnHV9GCmC5XkD7u6LRUlzp1FQyPhX kw== 
+Received: from ediex02.ad.cirrus.com ([87.246.76.36])
+        by mx0a-001ae601.pphosted.com with ESMTP id 343ac1t3uv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 12 Oct 2020 04:26:20 -0500
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 12 Oct
+ 2020 10:26:18 +0100
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.1913.5 via Frontend
+ Transport; Mon, 12 Oct 2020 10:26:18 +0100
+Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 659A82AA;
+        Mon, 12 Oct 2020 09:26:18 +0000 (UTC)
+Date:   Mon, 12 Oct 2020 09:26:18 +0000
+From:   Charles Keepax <ckeepax@opensource.cirrus.com>
 To:     Julia Lawall <Julia.Lawall@inria.fr>
-CC:     =?windows-1257?Q?Valdis_Kl=E7tnieks?= <valdis.kletnieks@vt.edu>,
-        "Joe Perches" <joe@perches.com>,
+CC:     Liam Girdwood <lgirdwood@gmail.com>,
+        Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        Joe Perches <joe@perches.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Jie Yang <yang.jie@linux.intel.com>,
-        "Mark Brown" <broonie@kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Mark Brown <broonie@kernel.org>,
         Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 3/8] ASoC: Intel: bytcr_rt5651: use semicolons rather than
- commas to separate statements
-Thread-Topic: [PATCH 3/8] ASoC: Intel: bytcr_rt5651: use semicolons rather
- than commas to separate statements
-Thread-Index: AQHWn7WtURzHk5OWlUiMvlX21d63/KmTjtkw
-Date:   Mon, 12 Oct 2020 07:14:54 +0000
-Message-ID: <225ad3480553428bbf50e34322c8688a@intel.com>
+        Takashi Iwai <tiwai@suse.com>, <patches@opensource.cirrus.com>,
+        <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/8] ASoC: wm8350: use semicolons rather than commas to
+ separate statements
+Message-ID: <20201012092618.GY10899@ediswmail.ad.cirrus.com>
 References: <1602407979-29038-1-git-send-email-Julia.Lawall@inria.fr>
- <1602407979-29038-4-git-send-email-Julia.Lawall@inria.fr>
-In-Reply-To: <1602407979-29038-4-git-send-email-Julia.Lawall@inria.fr>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-dlp-version: 11.5.1.3
-x-originating-ip: [163.33.253.164]
-Content-Type: text/plain; charset="windows-1257"
-Content-Transfer-Encoding: 8BIT
+ <1602407979-29038-2-git-send-email-Julia.Lawall@inria.fr>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <1602407979-29038-2-git-send-email-Julia.Lawall@inria.fr>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 lowpriorityscore=0
+ malwarescore=0 priorityscore=1501 suspectscore=0 impostorscore=0
+ mlxscore=0 spamscore=0 bulkscore=0 mlxlogscore=717 clxscore=1011
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010120079
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020-10-11 11:19 AM, Julia Lawall wrote:
+On Sun, Oct 11, 2020 at 11:19:32AM +0200, Julia Lawall wrote:
 > Replace commas with semicolons.  What is done is essentially described by
 > the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
 > 
@@ -89,27 +83,9 @@ On 2020-10-11 11:19 AM, Julia Lawall wrote:
 > 
 > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 > 
+> ---
 
-Acked-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 
 Thanks,
-Czarek
-
-> ---
->   sound/soc/intel/boards/bytcr_rt5651.c |    2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/sound/soc/intel/boards/bytcr_rt5651.c b/sound/soc/intel/boards/bytcr_rt5651.c
-> index 688b5e0a49e3..64d3fc4a3225 100644
-> --- a/sound/soc/intel/boards/bytcr_rt5651.c
-> +++ b/sound/soc/intel/boards/bytcr_rt5651.c
-> @@ -143,7 +143,7 @@ static int byt_rt5651_prepare_and_enable_pll1(struct snd_soc_dai *codec_dai,
->   
->   	/* Configure the PLL before selecting it */
->   	if (!(byt_rt5651_quirk & BYT_RT5651_MCLK_EN)) {
-> -		clk_id = RT5651_PLL1_S_BCLK1,
-> +		clk_id = RT5651_PLL1_S_BCLK1;
->   		clk_freq = rate * bclk_ratio;
->   	} else {
->   		clk_id = RT5651_PLL1_S_MCLK;
->
+Charles

@@ -2,66 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9733028AED4
-	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Oct 2020 09:12:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACC7928AEDE
+	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Oct 2020 09:15:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726810AbgJLHML (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 12 Oct 2020 03:12:11 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:44722 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726205AbgJLHML (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 12 Oct 2020 03:12:11 -0400
-Received: by mail-ed1-f65.google.com with SMTP id t20so9489963edr.11;
-        Mon, 12 Oct 2020 00:12:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Ht7VpNylzjockp9tJz3zTL+kmNFrrXctjwfHcctC64U=;
-        b=evNB5RJPG/++F+iQeoFFpul7jiJqlMWWIEM9A3HXo7IXXLdH4+lbwsTg8jghIY5ot5
-         XAyOC+Njoj3aOjm77UUEWC7s+9+0BZfGHdD9+h9t2BbSgxg6dUz05IsW5keKsaZSggjn
-         vExiWLpg8BHSULCj8+xDILGPa/lVm8T+KtPnv/xZoKl3BAEmYdxnEtLxxpZIT8xyFKTT
-         wb0tUGw7aCenxk+lBb7J5z88IksSlSENxSSw1+4+RgZR1ntLQko2IrFgUeBn7gIeavts
-         8mAY5P6qUPK8vRjxg7+ioSweSIXMBaUaNLeoz21ZlnpHXcG35CRoPVeqZin8EMsbb+T5
-         OlRQ==
-X-Gm-Message-State: AOAM531q3/cR3RkuoVMqsYNHOiYsZFtKXwv8Eo51QQtu/5SLnn6oKBTh
-        GMeasjEWCAmEE+NOCDDP7rN2qM4Imyg=
-X-Google-Smtp-Source: ABdhPJzI62qIebLAAP/M6A/x67uaLeY0i5ld2+CqEZE+bj6EMN+jwsvz8tiFPjMpObSPCipIyIo7Gw==
-X-Received: by 2002:aa7:d1cc:: with SMTP id g12mr12789144edp.195.1602486729006;
-        Mon, 12 Oct 2020 00:12:09 -0700 (PDT)
-Received: from pi3 ([194.230.155.215])
-        by smtp.googlemail.com with ESMTPSA id le12sm10257077ejb.1.2020.10.12.00.12.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2020 00:12:08 -0700 (PDT)
-Date:   Mon, 12 Oct 2020 09:12:05 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
+        id S1727046AbgJLHPD convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 12 Oct 2020 03:15:03 -0400
+Received: from mga05.intel.com ([192.55.52.43]:19379 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726123AbgJLHPC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 12 Oct 2020 03:15:02 -0400
+IronPort-SDR: XK4sys7FpZJ8GjNyi99V7wB7Ad6LUMNUdaV3+uQbGgIej9I078S5px7mJJW204ocxALMlFMTVG
+ wxCSsz16oLxg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9771"; a="250394545"
+X-IronPort-AV: E=Sophos;i="5.77,366,1596524400"; 
+   d="scan'208";a="250394545"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2020 00:14:57 -0700
+IronPort-SDR: 02b3OiT4NsNcwblaPkSL0d50e7vaPF+PjVTxTVYfkcvDdRyjtVQAtZ8N9tcRfZaUZAlUDMYW//
+ QeP7Pler8jEQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,366,1596524400"; 
+   d="scan'208";a="344762801"
+Received: from irsmsx602.ger.corp.intel.com ([163.33.146.8])
+  by fmsmga004.fm.intel.com with ESMTP; 12 Oct 2020 00:14:55 -0700
+Received: from irsmsx601.ger.corp.intel.com (163.33.146.7) by
+ irsmsx602.ger.corp.intel.com (163.33.146.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Mon, 12 Oct 2020 08:14:54 +0100
+Received: from irsmsx601.ger.corp.intel.com ([163.33.146.7]) by
+ irsmsx601.ger.corp.intel.com ([163.33.146.7]) with mapi id 15.01.1713.004;
+ Mon, 12 Oct 2020 08:14:54 +0100
+From:   "Rojewski, Cezary" <cezary.rojewski@intel.com>
 To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        Joe Perches <joe@perches.com>,
+CC:     =?windows-1257?Q?Valdis_Kl=E7tnieks?= <valdis.kletnieks@vt.edu>,
+        "Joe Perches" <joe@perches.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        kernel-janitors@vger.kernel.org,
-        Sangbeom Kim <sbkim73@samsung.com>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Jie Yang <yang.jie@linux.intel.com>,
+        "Mark Brown" <broonie@kernel.org>,
         Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/8] ASoC: samsung: snow: use semicolons rather than
+        Takashi Iwai <tiwai@suse.com>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH 3/8] ASoC: Intel: bytcr_rt5651: use semicolons rather than
  commas to separate statements
-Message-ID: <20201012071205.GA1822@pi3>
+Thread-Topic: [PATCH 3/8] ASoC: Intel: bytcr_rt5651: use semicolons rather
+ than commas to separate statements
+Thread-Index: AQHWn7WtURzHk5OWlUiMvlX21d63/KmTjtkw
+Date:   Mon, 12 Oct 2020 07:14:54 +0000
+Message-ID: <225ad3480553428bbf50e34322c8688a@intel.com>
 References: <1602407979-29038-1-git-send-email-Julia.Lawall@inria.fr>
- <1602407979-29038-7-git-send-email-Julia.Lawall@inria.fr>
+ <1602407979-29038-4-git-send-email-Julia.Lawall@inria.fr>
+In-Reply-To: <1602407979-29038-4-git-send-email-Julia.Lawall@inria.fr>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+dlp-version: 11.5.1.3
+x-originating-ip: [163.33.253.164]
+Content-Type: text/plain; charset="windows-1257"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1602407979-29038-7-git-send-email-Julia.Lawall@inria.fr>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Oct 11, 2020 at 11:19:37AM +0200, Julia Lawall wrote:
+On 2020-10-11 11:19 AM, Julia Lawall wrote:
 > Replace commas with semicolons.  What is done is essentially described by
 > the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
 > 
@@ -76,11 +89,27 @@ On Sun, Oct 11, 2020 at 11:19:37AM +0200, Julia Lawall wrote:
 > 
 > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 > 
+
+Acked-by: Cezary Rojewski <cezary.rojewski@intel.com>
+
+Thanks,
+Czarek
+
 > ---
->  sound/soc/samsung/snow.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-
-Best regards,
-Krzysztof
+>   sound/soc/intel/boards/bytcr_rt5651.c |    2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/sound/soc/intel/boards/bytcr_rt5651.c b/sound/soc/intel/boards/bytcr_rt5651.c
+> index 688b5e0a49e3..64d3fc4a3225 100644
+> --- a/sound/soc/intel/boards/bytcr_rt5651.c
+> +++ b/sound/soc/intel/boards/bytcr_rt5651.c
+> @@ -143,7 +143,7 @@ static int byt_rt5651_prepare_and_enable_pll1(struct snd_soc_dai *codec_dai,
+>   
+>   	/* Configure the PLL before selecting it */
+>   	if (!(byt_rt5651_quirk & BYT_RT5651_MCLK_EN)) {
+> -		clk_id = RT5651_PLL1_S_BCLK1,
+> +		clk_id = RT5651_PLL1_S_BCLK1;
+>   		clk_freq = rate * bclk_ratio;
+>   	} else {
+>   		clk_id = RT5651_PLL1_S_MCLK;
+>

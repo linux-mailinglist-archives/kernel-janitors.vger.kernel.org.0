@@ -2,78 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53A7E28D2A7
-	for <lists+kernel-janitors@lfdr.de>; Tue, 13 Oct 2020 18:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 865BE28D677
+	for <lists+kernel-janitors@lfdr.de>; Wed, 14 Oct 2020 00:43:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387578AbgJMQxX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 13 Oct 2020 12:53:23 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59165 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727696AbgJMQxW (ORCPT
+        id S1728779AbgJMWnM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 13 Oct 2020 18:43:12 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:34206 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725935AbgJMWnM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 13 Oct 2020 12:53:22 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kSNY5-00024v-5D; Tue, 13 Oct 2020 16:53:17 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Mimi Zohar <zohar@linux.ibm.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        Roberto Sassu <roberto.sassu@polito.it>,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][V2] ima: Fix sizeof mismatches
-Date:   Tue, 13 Oct 2020 17:53:16 +0100
-Message-Id: <20201013165316.215897-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        Tue, 13 Oct 2020 18:43:12 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09DMYSSM023476;
+        Tue, 13 Oct 2020 22:43:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=KdJQMGQajIDqhW/r3rbvY/DYw7FYlhalRhhC4/BZ1cE=;
+ b=hKJvHT2+R5RYjJlrBtwNsUJe65OX7RuSH0yDvLvrqZl6uPpEK8SuMjSDJoePFqMquQrJ
+ wjytIuJY5fDEgr0cPuEyYTHqRzusNI727He/dlYCWHnKpC0q6VBe49Oi9ArlnhtnwAeD
+ 8sJ9JPYYPhaiNClGPpOg2xSj3IMoaK89jYTw297CHpp8v6rdIthWquiPt6CXA/OQ++L+
+ odBBQ5s0WD05fWIjPLNvP5kWTTsEyzAAZGLL9H76JHVzUpJDOeQgkqkxhCe1qNUfW/rT
+ h9c61TncrXw94I2gYyGwS0doQSwhOBVIB+F5kWmV2SjRqI94ER8daw0vy7nD5Y/fveAt nw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 3434wkmr75-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 13 Oct 2020 22:43:09 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09DMaWb6049028;
+        Tue, 13 Oct 2020 22:43:08 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 343pvx1skf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 13 Oct 2020 22:43:08 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 09DMh635014503;
+        Tue, 13 Oct 2020 22:43:07 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 13 Oct 2020 15:43:06 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     jejb@linux.ibm.com, intel-linux-scu@intel.com,
+        artur.paszkiewicz@intel.com,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-scsi@vger.kernel.org
+Subject: Re: [PATCH] scsi: isci: Fix a typo in a comment
+Date:   Tue, 13 Oct 2020 18:42:44 -0400
+Message-Id: <160262862435.3018.12705763846359553675.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20201003055709.766119-1-christophe.jaillet@wanadoo.fr>
+References: <20201003055709.766119-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9773 signatures=668681
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 adultscore=0
+ bulkscore=0 mlxlogscore=983 suspectscore=0 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010130158
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9773 signatures=668681
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 mlxscore=0
+ malwarescore=0 phishscore=0 suspectscore=0 impostorscore=0 clxscore=1015
+ spamscore=0 priorityscore=1501 bulkscore=0 adultscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010130158
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Sat, 3 Oct 2020 07:57:09 +0200, Christophe JAILLET wrote:
 
-An incorrect sizeof is being used, sizeof(*fields) is not correct,
-it should be sizeof(**fields). This is not causing a problem since
-the size of these is the same. Fix this. 
+> s/remtoe/remote/
+> and add a missing '.'
 
-Also replace kmalloc_array and memcpy with a kmemdup.
+Applied to 5.10/scsi-queue, thanks!
 
-Addresses-Coverity: ("Sizeof not portable (SIZEOF_MISMATCH)")
-Fixes: 1bd7face7439 ("ima: allocate field pointers array on demand in template_desc_init_fields()")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
+[1/1] scsi: isci: Fix a typo in a comment
+      https://git.kernel.org/mkp/scsi/c/45660591ee8f
 
-V2: Replace kmalloc_array and memcpy with kmemdup as suggested by
-    Joe Perches.
-
----
- security/integrity/ima/ima_template.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/security/integrity/ima/ima_template.c b/security/integrity/ima/ima_template.c
-index 1e89e2d3851f..83886e767678 100644
---- a/security/integrity/ima/ima_template.c
-+++ b/security/integrity/ima/ima_template.c
-@@ -216,11 +216,10 @@ int template_desc_init_fields(const char *template_fmt,
- 	}
- 
- 	if (fields && num_fields) {
--		*fields = kmalloc_array(i, sizeof(*fields), GFP_KERNEL);
-+		*fields = kmemdup(found_fields, i * sizeof(**fields), GFP_KERNEL);
- 		if (*fields == NULL)
- 			return -ENOMEM;
- 
--		memcpy(*fields, found_fields, i * sizeof(*fields));
- 		*num_fields = i;
- 	}
- 
 -- 
-2.27.0
-
+Martin K. Petersen	Oracle Linux Engineering

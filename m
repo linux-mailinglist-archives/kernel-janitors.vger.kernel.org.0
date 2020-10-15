@@ -2,83 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BFBE28F57B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Oct 2020 17:04:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF7B228F59A
+	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Oct 2020 17:13:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388856AbgJOPEt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 15 Oct 2020 11:04:49 -0400
-Received: from mx01-sz.bfs.de ([194.94.69.67]:62755 "EHLO mx02-sz.bfs.de"
+        id S2389592AbgJOPM5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 15 Oct 2020 11:12:57 -0400
+Received: from mx01-sz.bfs.de ([194.94.69.67]:14953 "EHLO mx02-sz.bfs.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2388686AbgJOPEs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 15 Oct 2020 11:04:48 -0400
+        id S2389581AbgJOPM4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 15 Oct 2020 11:12:56 -0400
 Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
-        by mx02-sz.bfs.de (Postfix) with ESMTPS id A058220403;
-        Thu, 15 Oct 2020 17:04:46 +0200 (CEST)
+        by mx02-sz.bfs.de (Postfix) with ESMTPS id 950CC2030E;
+        Thu, 15 Oct 2020 17:12:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1602774286;
+        t=1602774774;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9Xuug+2hVFBm+B5UTc9CM6NcxF57zXPletFCWeaT4gw=;
-        b=cCGN8umA+LSkB9Eby1Bah6kZIRkI2t76DUyaG6XoQp0hAuOROgfwHJfLSCKAH+yBVziGVf
-        95DrTBeCqThRK0lCMby4VqmTF+0qPieg35O7Q3IgNDA1lOUoS7uaFr7NF7+rg3PtHrfU0j
-        S8UWH28pY7QgnMU7qMOAj1xsFj7hJ58ijyswr778PtG80M3uQ5Mo9F+EBAleMKwrx6l+t7
-        s7wwYa0zH92F/xPUc+8iBxmpnCrG3Z2syKYYKcF/BkK/jxq2k9T+wkoGXCrMx72EEm2/Rp
-        MpKfmZ/1+lfenDuJxgsjAMJPKC82GXvzXQSFUTau1yfc0u5tLacUdgPzfQDbaw==
+        bh=vZQQrvKGdb4UoAzECQUIBRrbjwBA/Yk/wUbFWT1b+yo=;
+        b=aVJl7vK9v1B0NbPto1M+ObKh6xDxnOVe7WwRsNbrf3KLGnnaDKFL8SZiIYSTui51vy2DW+
+        OsPeegoNIFtDK2yZq9kGAbRDGig2JqPVz8+Y1wZbuG/1oPTEemVLhvJ4Qy0xmG/AlywQ85
+        yT5hSfYM9a9LCjEiKoQCn1uazYHo/5vCvrqqi9B2YNim5dt6/zpaNzx2HrcgSVPt5wMbh4
+        CbR+NmWCAXHqtLgfo7GRCQn+6ZcodCXjGrz3uUJhrXlIvt4eZrgOb44Pk8WIaMRttKJWWp
+        Ub6UA2619MptATqDSXCWmh9d5deqcZeFMX34Mp2LaSRY9eTXNCm3PGrhGzkArA==
 Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
  (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2106.2; Thu, 15 Oct
- 2020 17:04:46 +0200
+ 2020 17:12:54 +0200
 Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
  SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%6]) with mapi id
- 15.01.2106.002; Thu, 15 Oct 2020 17:04:46 +0200
+ 15.01.2106.002; Thu, 15 Oct 2020 17:12:54 +0200
 From:   Walter Harms <wharms@bfs.de>
 To:     Fedor Tokarev <ftokarev@gmail.com>,
-        "bfields@fieldses.org" <bfields@fieldses.org>,
-        "chuck.lever@oracle.com" <chuck.lever@oracle.com>,
-        "anna.schumaker@netapp.com" <anna.schumaker@netapp.com>,
-        "trond.myklebust@hammerspace.com" <trond.myklebust@hammerspace.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "kuba@kernel.org" <kuba@kernel.org>
-CC:     "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rostedt@goodmis.org" <rostedt@goodmis.org>,
+        "acme@redhat.com" <acme@redhat.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: AW: [PATCH] net: sunrpc: Fix 'snprintf' return value check in
- 'do_xprt_debugfs'
-Thread-Topic: [PATCH] net: sunrpc: Fix 'snprintf' return value check in
- 'do_xprt_debugfs'
-Thread-Index: AQHWovtnyQ5di/wyF0Kmy+Tq/adLsKmYwM+i
-Date:   Thu, 15 Oct 2020 15:04:46 +0000
-Message-ID: <b97379d3bf59487d8d0ca3bbf14ad0df@bfs.de>
-References: <20201015135341.GA16343@laptop>
-In-Reply-To: <20201015135341.GA16343@laptop>
+Subject: AW: [PATCH] tools: net: traceevent: Fix 'snprintf' return value check
+ in 'tep_filter_strerror'
+Thread-Topic: [PATCH] tools: net: traceevent: Fix 'snprintf' return value
+ check in 'tep_filter_strerror'
+Thread-Index: AQHWov+6lIwttP0ONEuHNtmunZ7kSqmYw1zy
+Date:   Thu, 15 Oct 2020 15:12:53 +0000
+Message-ID: <d489b145997147fd961050321b17d85d@bfs.de>
+References: <20201015142959.GA18281@laptop>
+In-Reply-To: <20201015142959.GA18281@laptop>
 Accept-Language: de-DE, en-US
 Content-Language: de-DE
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [10.137.16.40]
 x-tm-as-product-ver: SMEX-14.0.0.3031-8.6.1012-25728.000
-x-tm-as-result: No-10--5.425900-5.000000
-x-tmase-matchedrid: 1w4R1hu8EHXed0Ij9t5iQyEyJ8xFEVolPknazlXMVpV+SLLtNOiBhrLs
-        vs6J0rHdg5UXYAmrRiPQVBnHbDgUs6krm8GLHGyo52zh+cq/0Ju62wuq1giw0x3RY4pGTCyHfjc
-        dX7WMS/BFeoHCZIFQtCKkzMT7+4ooN9rojbjxBkwwwOrFPm3RDUpFpc3bJiMeEt/W/Pt5w8clC4
-        sxsYCYIvc4XRSNAau6vsp8E6m7CmMdrB57CzPAJj8Ckw9b/GFeTJDl9FKHbrl2/QXA1+sfBZ4CI
-        KY/Hg3AcmfM3DjaQLHEQdG7H66TyF82MXkEdQ77PZGkYTzNvZGv1nL/XchjCD2cE0BmbxnjEHAr
-        QLGCQG/e9xXzfruQvg==
+x-tm-as-result: No-10--2.940500-5.000000
+x-tmase-matchedrid: RlE/Xlx8wK/ed0Ij9t5iQyEyJ8xFEVolPknazlXMVpV+SLLtNOiBhrLs
+        vs6J0rHd3IXuAvFAlB6GDu7ShAWPZ3FhLHosE8p6fid4LSHtIAPpVMb1xnESMsz/SxKo9mJ4dFJ
+        6zAdBdpjG1dgLAMwJGpkfj+nUvCzvmZGvWTp76WAPe5gzF3TVt5YaT3cL9WdKG/aKuha2ENxTHu
+        QZZKa8u63aC25avUuaV8GQi9e8vsxYQsNwrAY7bqubsOtSWY2QX7bicKxRIU1UAAMyZMf0qN0H8
+        LFZNFG7MGpgBNI6BaP2L+tdP3oeYM77uiQIfaZzPkZ9E6pW3i5wc05yLPJ6+Qsdn4in6LIf1Idr
+        5UHvrwoNsp9K7wgXbuTOgN3xPECuUcitlY3CEGje4R8pXaDytwntx4SzZN2w0zUHRQIpp96lf7L
+        KrFw+x/ah6OB0lr8gftwZ3X11IV0=
 x-tm-as-user-approved-sender: No
 x-tm-as-user-blocked-sender: No
-x-tmase-result: 10--5.425900-5.000000
+x-tmase-result: 10--2.940500-5.000000
 x-tmase-version: SMEX-14.0.0.3031-8.6.1012-25728.000
-x-tm-snts-smtp: CF9EB13A45BC0FE4DCB7889F4C01F5288A58F5C7E6C89D543D611277CA13CB362000:9
+x-tm-snts-smtp: E45D624503BB04499F1F042A145EC90BF8666B40C86C201AE2585AA617074D162000:9
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Spam-Status: No, score=-0.05
+X-Spam-Status: No, score=-0.00
 Authentication-Results: mx02-sz.bfs.de;
         none
-X-Spamd-Result: default: False [-0.05 / 7.00];
+X-Spamd-Result: default: False [-0.00 / 7.00];
          ARC_NA(0.00)[];
          TO_DN_EQ_ADDR_SOME(0.00)[];
          HAS_XOIP(0.00)[];
@@ -87,68 +82,68 @@ X-Spamd-Result: default: False [-0.05 / 7.00];
          TO_MATCH_ENVRCPT_ALL(0.00)[];
          FREEMAIL_ENVRCPT(0.00)[gmail.com];
          MIME_GOOD(-0.10)[text/plain];
+         RCPT_COUNT_FIVE(0.00)[5];
          DKIM_SIGNED(0.00)[];
-         RCPT_COUNT_SEVEN(0.00)[11];
-         NEURAL_HAM(-0.00)[-1.069];
-         FREEMAIL_TO(0.00)[gmail.com,fieldses.org,oracle.com,netapp.com,hammerspace.com,davemloft.net,kernel.org];
+         NEURAL_HAM(-0.00)[-0.934];
+         FREEMAIL_TO(0.00)[gmail.com,goodmis.org,redhat.com];
          RCVD_NO_TLS_LAST(0.10)[];
          FROM_EQ_ENVFROM(0.00)[];
          MIME_TRACE(0.00)[0:+];
          RCVD_COUNT_TWO(0.00)[2];
          MID_RHS_MATCH_FROM(0.00)[];
-         BAYES_HAM(-0.05)[60.08%]
+         BAYES_HAM(-0.00)[42.98%]
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-if  xprt->debugfs->d_name.name can be what ever long
-it is more clever to use kasprintf()
-the some for link (no idea how many xprt als possible)
+i guess the whole thing can be made more simple=20
 
-jm2c
- wh
+we have len and buflen
+
+len=3Dstrlen(filter->error_buffer);
+if (len >=3D buflen )
+  return -1;
+
+strcpy(buf, filter->error_buffer);
+
+jm2c,
+
 
 ________________________________________
 Von: Fedor Tokarev [ftokarev@gmail.com]
-Gesendet: Donnerstag, 15. Oktober 2020 15:59
-An: bfields@fieldses.org; chuck.lever@oracle.com; anna.schumaker@netapp.com=
-; trond.myklebust@hammerspace.com; davem@davemloft.net; kuba@kernel.org
-Cc: linux-nfs@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.ke=
-rnel.org; kernel-janitors@vger.kernel.org; ftokarev@gmail.com
-Betreff: [PATCH] net: sunrpc: Fix 'snprintf' return value check in 'do_xprt=
-_debugfs'
+Gesendet: Donnerstag, 15. Oktober 2020 16:30
+An: rostedt@goodmis.org; acme@redhat.com
+Cc: linux-kernel@vger.kernel.org; kernel-janitors@vger.kernel.org; ftokarev=
+@gmail.com
+Betreff: [PATCH] tools: net: traceevent: Fix 'snprintf' return value check =
+in 'tep_filter_strerror'
 
 'snprintf' returns the number of characters which would have been written
 if enough space had been available, excluding the terminating null byte.
-Thus, the return value of 'sizeof(buf)' means that the last character
-has been dropped.
+Thus, the return value of 'buflen' means that the last character
+was dropped.
 
 Signed-off-by: Fedor Tokarev <ftokarev@gmail.com>
 ---
- net/sunrpc/debugfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/lib/traceevent/parse-filter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/debugfs.c b/net/sunrpc/debugfs.c
-index fd9bca2..56029e3 100644
---- a/net/sunrpc/debugfs.c
-+++ b/net/sunrpc/debugfs.c
-@@ -128,13 +128,13 @@ static int do_xprt_debugfs(struct rpc_clnt *clnt, str=
-uct rpc_xprt *xprt, void *n
-                return 0;
-        len =3D snprintf(name, sizeof(name), "../../rpc_xprt/%s",
-                       xprt->debugfs->d_name.name);
--       if (len > sizeof(name))
-+       if (len >=3D sizeof(name))
-                return -1;
-        if (*nump =3D=3D 0)
-                strcpy(link, "xprt");
-        else {
-                len =3D snprintf(link, sizeof(link), "xprt%d", *nump);
--               if (len > sizeof(link))
-+               if (len >=3D sizeof(link))
+diff --git a/tools/lib/traceevent/parse-filter.c b/tools/lib/traceevent/par=
+se-filter.c
+index c271aee..dccdbf2 100644
+--- a/tools/lib/traceevent/parse-filter.c
++++ b/tools/lib/traceevent/parse-filter.c
+@@ -1374,7 +1374,7 @@ int tep_filter_strerror(struct tep_event_filter *filt=
+er, enum tep_errno err,
+        if (strlen(filter->error_buffer) > 0) {
+                size_t len =3D snprintf(buf, buflen, "%s", filter->error_bu=
+ffer);
+
+-               if (len > buflen)
++               if (len >=3D buflen)
                         return -1;
+                return 0;
         }
-        debugfs_create_symlink(link, clnt->cl_debugfs, name);
 --
 2.7.4
 

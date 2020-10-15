@@ -2,52 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE82028F64D
-	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Oct 2020 18:02:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DC1628F426
+	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Oct 2020 15:59:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389017AbgJOQCw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 15 Oct 2020 12:02:52 -0400
-Received: from edge.kilargo.pl ([77.252.52.110]:54141 "EHLO edge.kilargo.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388357AbgJOQCw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 15 Oct 2020 12:02:52 -0400
-X-Greylist: delayed 361 seconds by postgrey-1.27 at vger.kernel.org; Thu, 15 Oct 2020 12:02:49 EDT
-Received: from mail.kilargo.pl (77.252.52.107) by edge.kilargo.pl
- (77.252.52.109) with Microsoft SMTP Server (TLS) id 8.3.485.1; Thu, 15 Oct
- 2020 16:06:38 +0200
-Received: from User (185.248.12.71) by MAIL.kilargo.pl (172.22.0.36) with
- Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 15 Oct 2020 15:46:04 +0200
-Reply-To: <kim.leang2011@yahoo.com>
-From:   Kim Leang <mechanik@kilargo.pl>
-Subject: Greeting! !!   
-Date:   Thu, 15 Oct 2020 16:46:07 +0300
+        id S2387807AbgJON7U (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 15 Oct 2020 09:59:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52584 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729930AbgJON7U (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 15 Oct 2020 09:59:20 -0400
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4315FC061755;
+        Thu, 15 Oct 2020 06:59:18 -0700 (PDT)
+Received: by mail-lj1-x243.google.com with SMTP id h20so3239285lji.9;
+        Thu, 15 Oct 2020 06:59:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=NUxjUxK1UOjxJEs0sPUcbM0Q7UmykeuJXNehNgeC4os=;
+        b=SxE4hu0nIW8d9CxZuSSQucGDhpDWAJCqHTQon4nhkHHa1u4sXv8dvr6WicFxvzdJCT
+         OKcKLMqsAWlQqMb6tWnuCr5VfOchxfHssiq0rhHW5Ln/db2PRu7n/Rc+VH9sVItGhwXi
+         bdhipbO+w1OESJcJjePodL00BGokEXQi9b7T+Jbu9bG5GX1FBwVWSXH9JN4X9+++r8+U
+         zU60U0VVB7YmrFHfeDNlTJUtZsRxDcOttUlzw3qalrZ6UgOJcngt320qujsCzGzbPDJl
+         Sm/1z6xwACZ9Jo5dllMeJ0MDC5Xb21crCLj+eocwkHyjzZX1XMq4+S4/19nUol8kHgmg
+         F83A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=NUxjUxK1UOjxJEs0sPUcbM0Q7UmykeuJXNehNgeC4os=;
+        b=Y1mKmFGaSCiFIMg9ngD7CxjVXAcKMnxhiWfaWVXWgRZ9+8tesCk16CoT36Eqpaf4a4
+         9fVLDCkyuikRzDtbFSgAEdvUaeHUylGSSTP7riqNZgesCD0SNBld6Tp3TREOIpDfutW7
+         8AoXcbUE5FUfdTjDU025Z1WKiXkNrzipA5zd2yWfJwVrdMZqgC02VQwuYdmok7vHqY3o
+         qYimY5Ow8nk9LJBXfxopaRiT39McrfSmMdf8kRPLpeOIRUinvupN1gdg0uXjhEDIixNa
+         OrbTvgiPRNNyiyi0TzDgUlSRItwrKenSV9NB24rDPLaakDVSX27qE1L0voe2cH4Lrtm9
+         neow==
+X-Gm-Message-State: AOAM5312sOsTOyZCvA73swIqRX1SlQvLc6bvk3ZkHhkwrEuAx3UApbLn
+        y6j1UtjdfaPbSiKh3+jSzTc=
+X-Google-Smtp-Source: ABdhPJyMRkMWl9yQoCpJe18WPtKYFz7L52PVGN0R7Kqr9KUlwEx2f1pX3XN9kdarM/wBmRxQA96rfA==
+X-Received: by 2002:a2e:9744:: with SMTP id f4mr1250265ljj.71.1602770356732;
+        Thu, 15 Oct 2020 06:59:16 -0700 (PDT)
+Received: from laptop ([156.146.58.201])
+        by smtp.gmail.com with ESMTPSA id s16sm1328855ljj.35.2020.10.15.06.59.12
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 15 Oct 2020 06:59:16 -0700 (PDT)
+Date:   Thu, 15 Oct 2020 16:59:08 +0300
+From:   Fedor Tokarev <ftokarev@gmail.com>
+To:     bfields@fieldses.org, chuck.lever@oracle.com,
+        anna.schumaker@netapp.com, trond.myklebust@hammerspace.com,
+        davem@davemloft.net, kuba@kernel.org
+Cc:     linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        ftokarev@gmail.com
+Subject: [PATCH] net: sunrpc: Fix 'snprintf' return value check in
+ 'do_xprt_debugfs'
+Message-ID: <20201015135341.GA16343@laptop>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <aa98e79bfe4947f3a6b17d26ce381627@mail.kilargo.pl>
-To:     Undisclosed recipients:;
-X-Originating-IP: [185.248.12.71]
-X-ClientProxiedBy: mail.kilargo.pl (172.22.0.36) To MAIL.kilargo.pl
- (172.22.0.36)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A295AAB9B6B647163
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Greeting!
+'snprintf' returns the number of characters which would have been written
+if enough space had been available, excluding the terminating null byte.
+Thus, the return value of 'sizeof(buf)' means that the last character
+has been dropped.
 
-I am contacting you to receive and share with me an abandoned fund ( $21,537.000.00 ) left in our bank by a deceased customer. I was going through the Internet search when I found your email address. My name is Mr. Kim Leang.
+Signed-off-by: Fedor Tokarev <ftokarev@gmail.com>
+---
+ net/sunrpc/debugfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I want to utilize this opportunity and make use of this fund if I should present your name to the bank to stand as his business associate/ trustee for the fund to be released to you via Visa card for easy withdrawals in any VISA ATM machine anywhere in the World.
+diff --git a/net/sunrpc/debugfs.c b/net/sunrpc/debugfs.c
+index fd9bca2..56029e3 100644
+--- a/net/sunrpc/debugfs.c
++++ b/net/sunrpc/debugfs.c
+@@ -128,13 +128,13 @@ static int do_xprt_debugfs(struct rpc_clnt *clnt, struct rpc_xprt *xprt, void *n
+ 		return 0;
+ 	len = snprintf(name, sizeof(name), "../../rpc_xprt/%s",
+ 		       xprt->debugfs->d_name.name);
+-	if (len > sizeof(name))
++	if (len >= sizeof(name))
+ 		return -1;
+ 	if (*nump == 0)
+ 		strcpy(link, "xprt");
+ 	else {
+ 		len = snprintf(link, sizeof(link), "xprt%d", *nump);
+-		if (len > sizeof(link))
++		if (len >= sizeof(link))
+ 			return -1;
+ 	}
+ 	debugfs_create_symlink(link, clnt->cl_debugfs, name);
+-- 
+2.7.4
 
-The bank will also give you international online transfer options. With these you can transfer the funds without any risk.
-
-Should you be interested in working with me in this project? Please reply back and let's benefit from this golden opportunity.You are my first contact. I shall wait a few days and if I do not hear from you, I shall look for another person.
-
-Thanks and have a nice day,
-Mr. Kim Leang.

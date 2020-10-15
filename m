@@ -2,63 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DC1628F426
-	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Oct 2020 15:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18BB028F4BE
+	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Oct 2020 16:30:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387807AbgJON7U (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 15 Oct 2020 09:59:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52584 "EHLO
+        id S2388427AbgJOOaN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 15 Oct 2020 10:30:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729930AbgJON7U (ORCPT
+        with ESMTP id S2388410AbgJOOaN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 15 Oct 2020 09:59:20 -0400
+        Thu, 15 Oct 2020 10:30:13 -0400
 Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4315FC061755;
-        Thu, 15 Oct 2020 06:59:18 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id h20so3239285lji.9;
-        Thu, 15 Oct 2020 06:59:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD13FC061755;
+        Thu, 15 Oct 2020 07:30:12 -0700 (PDT)
+Received: by mail-lj1-x243.google.com with SMTP id m16so3370234ljo.6;
+        Thu, 15 Oct 2020 07:30:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:mime-version:content-disposition
          :user-agent;
-        bh=NUxjUxK1UOjxJEs0sPUcbM0Q7UmykeuJXNehNgeC4os=;
-        b=SxE4hu0nIW8d9CxZuSSQucGDhpDWAJCqHTQon4nhkHHa1u4sXv8dvr6WicFxvzdJCT
-         OKcKLMqsAWlQqMb6tWnuCr5VfOchxfHssiq0rhHW5Ln/db2PRu7n/Rc+VH9sVItGhwXi
-         bdhipbO+w1OESJcJjePodL00BGokEXQi9b7T+Jbu9bG5GX1FBwVWSXH9JN4X9+++r8+U
-         zU60U0VVB7YmrFHfeDNlTJUtZsRxDcOttUlzw3qalrZ6UgOJcngt320qujsCzGzbPDJl
-         Sm/1z6xwACZ9Jo5dllMeJ0MDC5Xb21crCLj+eocwkHyjzZX1XMq4+S4/19nUol8kHgmg
-         F83A==
+        bh=YWj6b+v4A4nDHvFR3J/ATINzPrOIqZfn4UXHHwCDC/4=;
+        b=Byds2iHC/6Lvi5c2pk+8NB/fAEqs4wSyTpHl++pGBQXkDgQg6Lb5R7OK1lJkKyghT1
+         5c3LHhGq1aBOofZSoHUoGD2W6ixDV6BlI56WiK5C0eDwi5HTDHRRuYPvOrobsvsnTKiW
+         Q8Q07UsezAgFkzzAi1fYhttcWoW9zXhetBv9+EHULQjUS17MUYDWvi6CKEkLPjxktg3C
+         0D46923PXeWG/s4dlNUajn1CIkqrs13FkF50aiZO4L3dm+oH4kQvMOysvzHa8VM0Wpc1
+         A58UrW4X7XPwGTAP8B6suaG6u3Dcz/uHN09fhWNyPJm2jWgxze+kioVgBC6Be6KkT97q
+         6Wjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
          :content-disposition:user-agent;
-        bh=NUxjUxK1UOjxJEs0sPUcbM0Q7UmykeuJXNehNgeC4os=;
-        b=Y1mKmFGaSCiFIMg9ngD7CxjVXAcKMnxhiWfaWVXWgRZ9+8tesCk16CoT36Eqpaf4a4
-         9fVLDCkyuikRzDtbFSgAEdvUaeHUylGSSTP7riqNZgesCD0SNBld6Tp3TREOIpDfutW7
-         8AoXcbUE5FUfdTjDU025Z1WKiXkNrzipA5zd2yWfJwVrdMZqgC02VQwuYdmok7vHqY3o
-         qYimY5Ow8nk9LJBXfxopaRiT39McrfSmMdf8kRPLpeOIRUinvupN1gdg0uXjhEDIixNa
-         OrbTvgiPRNNyiyi0TzDgUlSRItwrKenSV9NB24rDPLaakDVSX27qE1L0voe2cH4Lrtm9
-         neow==
-X-Gm-Message-State: AOAM5312sOsTOyZCvA73swIqRX1SlQvLc6bvk3ZkHhkwrEuAx3UApbLn
-        y6j1UtjdfaPbSiKh3+jSzTc=
-X-Google-Smtp-Source: ABdhPJyMRkMWl9yQoCpJe18WPtKYFz7L52PVGN0R7Kqr9KUlwEx2f1pX3XN9kdarM/wBmRxQA96rfA==
-X-Received: by 2002:a2e:9744:: with SMTP id f4mr1250265ljj.71.1602770356732;
-        Thu, 15 Oct 2020 06:59:16 -0700 (PDT)
+        bh=YWj6b+v4A4nDHvFR3J/ATINzPrOIqZfn4UXHHwCDC/4=;
+        b=tyEYIsSjxdjBsonO36QcHmoajuW70iP/ikfwoz9sQsPuc4+x7zIlBliQrCM+CCff+d
+         SkMMjtNtO2K4pSYKrP8MUnjnlURBYDCUU32YgaQDP4E+9n6VEYNc6udVBmfjnmsm3i2F
+         crpjpeKRL3inGlFpFmmqprT2l27lLcub6oaqtFE3jTw2wn/U1Xg2w2iPomi/HaIsF1tT
+         hXcZJfQ+UMjLJbJ+GVUTo/LNjZmErQBUgOLuH8BoVUr/htLcPp6THKwMt3biedQ7U9aS
+         i/b8DWdbhKHvx8LiOlhohalOVegwxzepvEj04Na7NHMXlcuyGiodZslVrZSdPFuKylyQ
+         77PA==
+X-Gm-Message-State: AOAM530cOYmcaJ3V0bRrLQuiSQlEcSy1RiUYBRy/pHnvJA2ETQ/H5GzR
+        88D64zYEhfD1n1NbwffQlTk=
+X-Google-Smtp-Source: ABdhPJyYGmf/5fGb0/i566F0u9IYo1CUHDznvu1JtXqPmwtBaaeroxaW3KuNo+wdl5aREYwHnBx9yQ==
+X-Received: by 2002:a2e:874c:: with SMTP id q12mr1342241ljj.148.1602772211252;
+        Thu, 15 Oct 2020 07:30:11 -0700 (PDT)
 Received: from laptop ([156.146.58.201])
-        by smtp.gmail.com with ESMTPSA id s16sm1328855ljj.35.2020.10.15.06.59.12
+        by smtp.gmail.com with ESMTPSA id s14sm1350043ljp.92.2020.10.15.07.30.08
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 15 Oct 2020 06:59:16 -0700 (PDT)
-Date:   Thu, 15 Oct 2020 16:59:08 +0300
+        Thu, 15 Oct 2020 07:30:10 -0700 (PDT)
+Date:   Thu, 15 Oct 2020 17:30:04 +0300
 From:   Fedor Tokarev <ftokarev@gmail.com>
-To:     bfields@fieldses.org, chuck.lever@oracle.com,
-        anna.schumaker@netapp.com, trond.myklebust@hammerspace.com,
-        davem@davemloft.net, kuba@kernel.org
-Cc:     linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+To:     rostedt@goodmis.org, acme@redhat.com
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         ftokarev@gmail.com
-Subject: [PATCH] net: sunrpc: Fix 'snprintf' return value check in
- 'do_xprt_debugfs'
-Message-ID: <20201015135341.GA16343@laptop>
+Subject: [PATCH] tools: net: traceevent: Fix 'snprintf' return value check in
+ 'tep_filter_strerror'
+Message-ID: <20201015142959.GA18281@laptop>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -69,34 +66,27 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 'snprintf' returns the number of characters which would have been written
 if enough space had been available, excluding the terminating null byte.
-Thus, the return value of 'sizeof(buf)' means that the last character
-has been dropped.
+Thus, the return value of 'buflen' means that the last character
+was dropped.
 
 Signed-off-by: Fedor Tokarev <ftokarev@gmail.com>
 ---
- net/sunrpc/debugfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/lib/traceevent/parse-filter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/debugfs.c b/net/sunrpc/debugfs.c
-index fd9bca2..56029e3 100644
---- a/net/sunrpc/debugfs.c
-+++ b/net/sunrpc/debugfs.c
-@@ -128,13 +128,13 @@ static int do_xprt_debugfs(struct rpc_clnt *clnt, struct rpc_xprt *xprt, void *n
- 		return 0;
- 	len = snprintf(name, sizeof(name), "../../rpc_xprt/%s",
- 		       xprt->debugfs->d_name.name);
--	if (len > sizeof(name))
-+	if (len >= sizeof(name))
- 		return -1;
- 	if (*nump == 0)
- 		strcpy(link, "xprt");
- 	else {
- 		len = snprintf(link, sizeof(link), "xprt%d", *nump);
--		if (len > sizeof(link))
-+		if (len >= sizeof(link))
+diff --git a/tools/lib/traceevent/parse-filter.c b/tools/lib/traceevent/parse-filter.c
+index c271aee..dccdbf2 100644
+--- a/tools/lib/traceevent/parse-filter.c
++++ b/tools/lib/traceevent/parse-filter.c
+@@ -1374,7 +1374,7 @@ int tep_filter_strerror(struct tep_event_filter *filter, enum tep_errno err,
+ 	if (strlen(filter->error_buffer) > 0) {
+ 		size_t len = snprintf(buf, buflen, "%s", filter->error_buffer);
+ 
+-		if (len > buflen)
++		if (len >= buflen)
  			return -1;
+ 		return 0;
  	}
- 	debugfs_create_symlink(link, clnt->cl_debugfs, name);
 -- 
 2.7.4
 

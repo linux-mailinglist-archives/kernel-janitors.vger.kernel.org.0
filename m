@@ -2,58 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6580228F5B5
-	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Oct 2020 17:18:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FE1C28F8E8
+	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Oct 2020 20:52:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389228AbgJOPSz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 15 Oct 2020 11:18:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33098 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388357AbgJOPSz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 15 Oct 2020 11:18:55 -0400
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S2391087AbgJOSwY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 15 Oct 2020 14:52:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:30176 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2391033AbgJOSwV (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 15 Oct 2020 14:52:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1602787940;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=uSej2UjMQRw9PUOU9ztxUjTXF07dstBYT40GdW1tXXg=;
+        b=AMOrRSKs57iK4BkesfpNirEbSkH8Pi34IFYWlrtOA3VFpd3KyyKKHj03olQfr1ObH+Jv3G
+        34tWyZX5O9ufQJ2cgoe1WNoKa5XzzLfGbG8wSswbef0XJAvajquu9fb8f+ZzDJBIrNTngZ
+        4q3jSVFEUqSf5GfEhJMABw0ZL6BZHpg=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-588-UdXtL369OZSRB1ZZs07CXw-1; Thu, 15 Oct 2020 14:52:16 -0400
+X-MC-Unique: UdXtL369OZSRB1ZZs07CXw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 680FE2222E;
-        Thu, 15 Oct 2020 15:18:54 +0000 (UTC)
-Date:   Thu, 15 Oct 2020 11:18:52 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Walter Harms <wharms@bfs.de>
-Cc:     Fedor Tokarev <ftokarev@gmail.com>,
-        "acme@redhat.com" <acme@redhat.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH] tools: net: traceevent: Fix 'snprintf' return value
- check in 'tep_filter_strerror'
-Message-ID: <20201015111852.355049b1@gandalf.local.home>
-In-Reply-To: <d489b145997147fd961050321b17d85d@bfs.de>
-References: <20201015142959.GA18281@laptop>
-        <d489b145997147fd961050321b17d85d@bfs.de>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4CFEA86ABDC;
+        Thu, 15 Oct 2020 18:52:15 +0000 (UTC)
+Received: from w520.home (ovpn-113-35.phx2.redhat.com [10.3.113.35])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 20C351972A;
+        Thu, 15 Oct 2020 18:52:11 +0000 (UTC)
+Date:   Thu, 15 Oct 2020 12:52:11 -0600
+From:   Alex Williamson <alex.williamson@redhat.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Diana Craciun <diana.craciun@oss.nxp.com>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Eric Auger <eric.auger@redhat.com>, kvm@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vfio/fsl-mc: fix the return of the uninitialized
+ variable ret
+Message-ID: <20201015125211.3ff46dc1@w520.home>
+In-Reply-To: <20201015122226.485911-1-colin.king@canonical.com>
+References: <20201015122226.485911-1-colin.king@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 15 Oct 2020 15:12:53 +0000
-Walter Harms <wharms@bfs.de> wrote:
+On Thu, 15 Oct 2020 13:22:26 +0100
+Colin King <colin.king@canonical.com> wrote:
 
-> i guess the whole thing can be made more simple 
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> we have len and buflen
+> Currently the success path in function vfio_fsl_mc_reflck_attach is
+> returning an uninitialized value in variable ret. Fix this by setting
+> this to zero to indicate success.
 > 
-> len=strlen(filter->error_buffer);
-> if (len >= buflen )
->   return -1;
+> Addresses-Coverity: ("Uninitialized scalar variable")
+> Fixes: f2ba7e8c947b ("vfio/fsl-mc: Added lock support in preparation for interrupt handling")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/vfio/fsl-mc/vfio_fsl_mc.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> strcpy(buf, filter->error_buffer);
->
+> diff --git a/drivers/vfio/fsl-mc/vfio_fsl_mc.c b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
+> index 80fc7f4ed343..42a5decb78d1 100644
+> --- a/drivers/vfio/fsl-mc/vfio_fsl_mc.c
+> +++ b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
+> @@ -84,6 +84,7 @@ static int vfio_fsl_mc_reflck_attach(struct vfio_fsl_mc_device *vdev)
+>  		vfio_fsl_mc_reflck_get(cont_vdev->reflck);
+>  		vdev->reflck = cont_vdev->reflck;
+>  		vfio_device_put(device);
+> +		ret = 0;
+>  	}
+>  
+>  unlock:
 
-Either is fine, but we are moving libtraceevent into it's own library,
-which is located here:
+Looks correct to me, unless Diana would rather set the initial value to
+zero instead.  Thanks,
 
-  https://git.kernel.org/pub/scm/libs/libtrace/libtraceevent.git/
+Alex
 
--- Steve

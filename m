@@ -2,230 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB99328E5D7
-	for <lists+kernel-janitors@lfdr.de>; Wed, 14 Oct 2020 20:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 342A628F1BE
+	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Oct 2020 14:00:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728042AbgJNSAs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 14 Oct 2020 14:00:48 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.167]:27153 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727071AbgJNSAr (ORCPT
+        id S2387634AbgJOMAY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 15 Oct 2020 08:00:24 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:34427 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730039AbgJOLzy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 14 Oct 2020 14:00:47 -0400
-X-Greylist: delayed 363 seconds by postgrey-1.27 at vger.kernel.org; Wed, 14 Oct 2020 14:00:44 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1602698444;
-        s=strato-dkim-0002; d=hartkopp.net;
-        h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=f5iyxo7t1ujKBLE40CEtIgbyS3rVButrvoDg1Nwx+Zw=;
-        b=cHFK2Qk/m1vIrsh+E5Mii8BAeQP1+HudX6lbTXZuJ9WnGtUAj+m7897/DZMocdgI4y
-        lfBx4e5NqZrEjNW/u7LJcY56QbV3yilFm99P5HCieiScTg/F+pprZeKajXK54m3aiDJH
-        ZE3h7cign8i5QJkRZVoNgza0iBg1CTfu/a3zXfh9pdJIRrTdLa62Dz418LWxJl/WSZW2
-        RDyKvNuSMncZhQ8lycv6QYM9SbdETr1dLPC75NqDc5LoXLIHwMjabT6hRTHul5dCAVyo
-        NdGPJkRz83qHEIlV/f6z+atef2vw6zrc4VVxNOMdUUlB8VtNcHav7f3Ks+mN1EV0YGGh
-        vu6g==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjG14FZxedJy6qgO1o3PMaViOoLMGXsh6lyA="
-X-RZG-CLASS-ID: mo00
-Received: from [192.168.50.177]
-        by smtp.strato.de (RZmta 47.2.1 DYNA|AUTH)
-        with ESMTPSA id D0b41cw9EHmeX6a
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Wed, 14 Oct 2020 19:48:40 +0200 (CEST)
-Subject: Re: [PATCH net] can: peak_usb: add range checking in decode
- operations
-To:     =?UTF-8?Q?St=c3=a9phane_Grosjean?= <s.grosjean@peak-system.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Marc Kleine-Budde <mkl@pengutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Andri Yngvason <andri.yngvason@marel.com>,
-        "linux-can@vger.kernel.org" <linux-can@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        Wolfgang Grandegger <wg@grandegger.com>
-References: <20200813140604.GA456946@mwanda>
- <VI1PR03MB50536300783DBBEAFC7B0367D6050@VI1PR03MB5053.eurprd03.prod.outlook.com>
-From:   Oliver Hartkopp <socketcan@hartkopp.net>
-Message-ID: <169f62c4-ee2d-6ba2-2a78-640df8edcde0@hartkopp.net>
-Date:   Wed, 14 Oct 2020 19:48:33 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        Thu, 15 Oct 2020 07:55:54 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kT1rK-0004cr-Mt; Thu, 15 Oct 2020 11:55:50 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Jens Axboe <axboe@kernel.dk>,
+        Pavel Begunkov <asml.silence@gmail.com>,
+        linux-fsdevel@vger.kernel.org, io-uring@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] io_uring: fix flags check for the REQ_F_WORK_INITIALIZED setting
+Date:   Thu, 15 Oct 2020 12:55:50 +0100
+Message-Id: <20201015115550.485235-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <VI1PR03MB50536300783DBBEAFC7B0367D6050@VI1PR03MB5053.eurprd03.prod.outlook.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Stephane,
+From: Colin Ian King <colin.king@canonical.com>
 
-On 14.10.20 15:22, Stéphane Grosjean wrote:
-> Hello Dan,
-> 
-> Don't know if this patch is still relevant, but:
-> 
-> - there is absolutely no reason for the device firmware to provide a channel index greater than or equal to 2, because the IP core of these USB devices handles 2 channels only. Anyway, these changes are correct.
-> - considering the verification of the length "cfd->len" on the other hand, this one comes directly from can_send() via dev_queue_xmit() AFAIK and it seems to me that the underlying driver can assume that its value is smaller than 64.
+Currently the check for REQ_F_WORK_INITIALIZED is always true because
+the | operator is being used. I believe this check should be checking
+if the bit is set using the & operator.
 
-In fact there are many inbound checks e.g. with 
-can_dropped_invalid_skb() to make sure the network layer gets proper CAN 
-skbs (with ETH_P_CAN(FD) ethertypes).
+Addresses-Coverity: ("Wrong operator used")
+Fixes: 9c357fed168a ("io_uring: fix REQ_F_COMP_LOCKED by killing it")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ fs/io_uring.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On the outgoing path the CAN driver gets these ETH_P_CAN(FD) CAN skbs an 
-just copies the CAN ID and the up to 64 bytes of data from that skb.
+diff --git a/fs/io_uring.c b/fs/io_uring.c
+index 01d0b35415dc..5ef54df03d7c 100644
+--- a/fs/io_uring.c
++++ b/fs/io_uring.c
+@@ -1813,7 +1813,7 @@ static void __io_fail_links(struct io_kiocb *req)
+ 		 * but avoid REQ_F_WORK_INITIALIZED because it may deadlock on
+ 		 * work.fs->lock.
+ 		 */
+-		if (link->flags | REQ_F_WORK_INITIALIZED)
++		if (link->flags & REQ_F_WORK_INITIALIZED)
+ 			io_put_req_deferred(link, 2);
+ 		else
+ 			io_double_put_req(link);
+-- 
+2.27.0
 
-But remember that you can also generate CAN frames via AF_PACKET sockets 
-which does not perform the sanity checks from can_send():
-https://github.com/linux-can/can-tests/blob/master/netlayer/tst-packet.c
-
-Copying 64 byte from the skb into an I/O attached CAN controller is 
-always a safe operation - but when you send the content through another 
-medium (e.g. USB) the length values should be checked.
-
-Best regards,
-Oliver
-
-> 
-> Regards,
-> ---
-> Stéphane Grosjean
-> PEAK-System France
-> 132, rue André Bisiaux
-> F-54320 MAXEVILLE
-> Tél : +(33) 9.72.54.51.97
-> 
-> 
-> 
-> De : Dan Carpenter <dan.carpenter@oracle.com>
-> Envoyé : jeudi 13 août 2020 16:06
-> À : Wolfgang Grandegger <wg@grandegger.com>; Stéphane Grosjean <s.grosjean@peak-system.com>
-> Cc : Marc Kleine-Budde <mkl@pengutronix.de>; David S. Miller <davem@davemloft.net>; Jakub Kicinski <kuba@kernel.org>; Andri Yngvason <andri.yngvason@marel.com>; Oliver Hartkopp <socketcan@hartkopp.net>; linux-can@vger.kernel.org <linux-can@vger.kernel.org>; netdev@vger.kernel.org <netdev@vger.kernel.org>; kernel-janitors@vger.kernel.org <kernel-janitors@vger.kernel.org>
-> Objet : [PATCH net] can: peak_usb: add range checking in decode operations
-> 
-> These values come from skb->data so Smatch considers them untrusted.  I
-> believe Smatch is correct but I don't have a way to test this.
-> 
-> The usb_if->dev[] array has 2 elements but the index is in the 0-15
-> range without checks.  The cfd->len can be up to 255 but the maximum
-> valid size is CANFD_MAX_DLEN (64) so that could lead to memory
-> corruption.
-> 
-> Fixes: 0a25e1f4f185 ("can: peak_usb: add support for PEAK new CANFD USB adapters")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->   drivers/net/can/usb/peak_usb/pcan_usb_fd.c | 48 +++++++++++++++++-----
->   1 file changed, 37 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
-> index 47cc1ff5b88e..dee3e689b54d 100644
-> --- a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
-> +++ b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
-> @@ -468,12 +468,18 @@ static int pcan_usb_fd_decode_canmsg(struct pcan_usb_fd_if *usb_if,
->                                        struct pucan_msg *rx_msg)
->   {
->           struct pucan_rx_msg *rm = (struct pucan_rx_msg *)rx_msg;
-> -       struct peak_usb_device *dev = usb_if->dev[pucan_msg_get_channel(rm)];
-> -       struct net_device *netdev = dev->netdev;
-> +       struct peak_usb_device *dev;
-> +       struct net_device *netdev;
->           struct canfd_frame *cfd;
->           struct sk_buff *skb;
->           const u16 rx_msg_flags = le16_to_cpu(rm->flags);
-> 
-> +       if (pucan_msg_get_channel(rm) >= ARRAY_SIZE(usb_if->dev))
-> +               return -ENOMEM;
-> +
-> +       dev = usb_if->dev[pucan_msg_get_channel(rm)];
-> +       netdev = dev->netdev;
-> +
->           if (rx_msg_flags & PUCAN_MSG_EXT_DATA_LEN) {
->                   /* CANFD frame case */
->                   skb = alloc_canfd_skb(netdev, &cfd);
-> @@ -519,15 +525,21 @@ static int pcan_usb_fd_decode_status(struct pcan_usb_fd_if *usb_if,
->                                        struct pucan_msg *rx_msg)
->   {
->           struct pucan_status_msg *sm = (struct pucan_status_msg *)rx_msg;
-> -       struct peak_usb_device *dev = usb_if->dev[pucan_stmsg_get_channel(sm)];
-> -       struct pcan_usb_fd_device *pdev =
-> -                       container_of(dev, struct pcan_usb_fd_device, dev);
-> +       struct pcan_usb_fd_device *pdev;
->           enum can_state new_state = CAN_STATE_ERROR_ACTIVE;
->           enum can_state rx_state, tx_state;
-> -       struct net_device *netdev = dev->netdev;
-> +       struct peak_usb_device *dev;
-> +       struct net_device *netdev;
->           struct can_frame *cf;
->           struct sk_buff *skb;
-> 
-> +       if (pucan_stmsg_get_channel(sm) >= ARRAY_SIZE(usb_if->dev))
-> +               return -ENOMEM;
-> +
-> +       dev = usb_if->dev[pucan_stmsg_get_channel(sm)];
-> +       pdev = container_of(dev, struct pcan_usb_fd_device, dev);
-> +       netdev = dev->netdev;
-> +
->           /* nothing should be sent while in BUS_OFF state */
->           if (dev->can.state == CAN_STATE_BUS_OFF)
->                   return 0;
-> @@ -579,9 +591,14 @@ static int pcan_usb_fd_decode_error(struct pcan_usb_fd_if *usb_if,
->                                       struct pucan_msg *rx_msg)
->   {
->           struct pucan_error_msg *er = (struct pucan_error_msg *)rx_msg;
-> -       struct peak_usb_device *dev = usb_if->dev[pucan_ermsg_get_channel(er)];
-> -       struct pcan_usb_fd_device *pdev =
-> -                       container_of(dev, struct pcan_usb_fd_device, dev);
-> +       struct pcan_usb_fd_device *pdev;
-> +       struct peak_usb_device *dev;
-> +
-> +       if (pucan_ermsg_get_channel(er) >= ARRAY_SIZE(usb_if->dev))
-> +               return -EINVAL;
-> +
-> +       dev = usb_if->dev[pucan_ermsg_get_channel(er)];
-> +       pdev = container_of(dev, struct pcan_usb_fd_device, dev);
-> 
->           /* keep a trace of tx and rx error counters for later use */
->           pdev->bec.txerr = er->tx_err_cnt;
-> @@ -595,11 +612,17 @@ static int pcan_usb_fd_decode_overrun(struct pcan_usb_fd_if *usb_if,
->                                         struct pucan_msg *rx_msg)
->   {
->           struct pcan_ufd_ovr_msg *ov = (struct pcan_ufd_ovr_msg *)rx_msg;
-> -       struct peak_usb_device *dev = usb_if->dev[pufd_omsg_get_channel(ov)];
-> -       struct net_device *netdev = dev->netdev;
-> +       struct peak_usb_device *dev;
-> +       struct net_device *netdev;
->           struct can_frame *cf;
->           struct sk_buff *skb;
-> 
-> +       if (pufd_omsg_get_channel(ov) >= ARRAY_SIZE(usb_if->dev))
-> +               return -EINVAL;
-> +
-> +       dev = usb_if->dev[pufd_omsg_get_channel(ov)];
-> +       netdev = dev->netdev;
-> +
->           /* allocate an skb to store the error frame */
->           skb = alloc_can_err_skb(netdev, &cf);
->           if (!skb)
-> @@ -716,6 +739,9 @@ static int pcan_usb_fd_encode_msg(struct peak_usb_device *dev,
->           u16 tx_msg_size, tx_msg_flags;
->           u8 can_dlc;
-> 
-> +       if (cfd->len > CANFD_MAX_DLEN)
-> +               return -EINVAL;
-> +
->           tx_msg_size = ALIGN(sizeof(struct pucan_tx_msg) + cfd->len, 4);
->           tx_msg->size = cpu_to_le16(tx_msg_size);
->           tx_msg->type = cpu_to_le16(PUCAN_MSG_CAN_TX);
-> --
-> 2.28.0
-> 
-> --
-> PEAK-System Technik GmbH
-> Sitz der Gesellschaft Darmstadt - HRB 9183
-> Geschaeftsfuehrung: Alexander Gach / Uwe Wilhelm
-> Unsere Datenschutzerklaerung mit wichtigen Hinweisen
-> zur Behandlung personenbezogener Daten finden Sie unter
-> www.peak-system.com/Datenschutz.483.0.html
-> 

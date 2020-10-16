@@ -2,89 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FE1C28F8E8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Oct 2020 20:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74DA8290412
+	for <lists+kernel-janitors@lfdr.de>; Fri, 16 Oct 2020 13:33:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391087AbgJOSwY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 15 Oct 2020 14:52:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:30176 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2391033AbgJOSwV (ORCPT
+        id S2394609AbgJPLd2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 16 Oct 2020 07:33:28 -0400
+Received: from cpanel.giganet.cl ([190.96.78.139]:56160 "EHLO
+        cpanel.giganet.cl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2394598AbgJPLd1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 15 Oct 2020 14:52:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1602787940;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=uSej2UjMQRw9PUOU9ztxUjTXF07dstBYT40GdW1tXXg=;
-        b=AMOrRSKs57iK4BkesfpNirEbSkH8Pi34IFYWlrtOA3VFpd3KyyKKHj03olQfr1ObH+Jv3G
-        34tWyZX5O9ufQJ2cgoe1WNoKa5XzzLfGbG8wSswbef0XJAvajquu9fb8f+ZzDJBIrNTngZ
-        4q3jSVFEUqSf5GfEhJMABw0ZL6BZHpg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-588-UdXtL369OZSRB1ZZs07CXw-1; Thu, 15 Oct 2020 14:52:16 -0400
-X-MC-Unique: UdXtL369OZSRB1ZZs07CXw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4CFEA86ABDC;
-        Thu, 15 Oct 2020 18:52:15 +0000 (UTC)
-Received: from w520.home (ovpn-113-35.phx2.redhat.com [10.3.113.35])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 20C351972A;
-        Thu, 15 Oct 2020 18:52:11 +0000 (UTC)
-Date:   Thu, 15 Oct 2020 12:52:11 -0600
-From:   Alex Williamson <alex.williamson@redhat.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Diana Craciun <diana.craciun@oss.nxp.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Eric Auger <eric.auger@redhat.com>, kvm@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vfio/fsl-mc: fix the return of the uninitialized
- variable ret
-Message-ID: <20201015125211.3ff46dc1@w520.home>
-In-Reply-To: <20201015122226.485911-1-colin.king@canonical.com>
-References: <20201015122226.485911-1-colin.king@canonical.com>
+        Fri, 16 Oct 2020 07:33:27 -0400
+X-Greylist: delayed 17820 seconds by postgrey-1.27 at vger.kernel.org; Fri, 16 Oct 2020 07:33:26 EDT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dplgrout.cl
+        ; s=default; h=Content-Transfer-Encoding:Content-Type:Message-ID:Reply-To:
+        Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=TrgUs68YRs3neP+PfrvGhLoeMXh3YzKv5z9oCWPJ0m4=; b=E1b8ekWK69j4LylnVEbRJs/Vtk
+        PNNOUtW7squUNKiJAJXnQZInhuQBmt/8VoW6MvhGicnbfZJleMQX7BHgg12WvwiU++XPsjcI+rD9s
+        Pyg+ytELzzGQ+mlLeUIo9p9a6gr+01hd93Z7tXv01N0XbrInb5gOqqnkvl4jrTfy/uqpezyOKt+dg
+        bpaoQ0lWEEtEEPh603GZF0KIzfRxfACc2Es+vuya4zoizPJRYB/BiVWJkDT+cj6Ev9HhwLvI9I64x
+        5t68EVVBVO3P/Z8S5/Bjaxi4HIzBJu9pzN1fMzrQAKkSljC4En1VOBIng3t7X2MM+9JyZeDrlGpPq
+        lTWt7EgQ==;
+Received: from [::1] (port=43412 helo=cpanel.giganet.cl)
+        by cpanel.giganet.cl with esmtpa (Exim 4.93)
+        (envelope-from <info@controlypotencia.com>)
+        id 1kTJ1Y-0008bv-V0; Fri, 16 Oct 2020 03:15:33 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Date:   Fri, 16 Oct 2020 03:15:31 -0300
+From:   Ying Chongan <info@controlypotencia.com>
+To:     undisclosed-recipients:;
+Subject: Investment opportunity
+Reply-To: yingchongan@zohomail.com
+User-Agent: Roundcube Webmail/1.4.8
+Message-ID: <1ed057f44934e8312e38f0dfa044ca97@controlypotencia.com>
+X-Sender: info@controlypotencia.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.giganet.cl
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - controlypotencia.com
+X-Get-Message-Sender-Via: cpanel.giganet.cl: authenticated_id: mariapaz.lopez@dplgrout.cl
+X-Authenticated-Sender: cpanel.giganet.cl: mariapaz.lopez@dplgrout.cl
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 15 Oct 2020 13:22:26 +0100
-Colin King <colin.king@canonical.com> wrote:
+Greetings,
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently the success path in function vfio_fsl_mc_reflck_attach is
-> returning an uninitialized value in variable ret. Fix this by setting
-> this to zero to indicate success.
-> 
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Fixes: f2ba7e8c947b ("vfio/fsl-mc: Added lock support in preparation for interrupt handling")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/vfio/fsl-mc/vfio_fsl_mc.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/vfio/fsl-mc/vfio_fsl_mc.c b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-> index 80fc7f4ed343..42a5decb78d1 100644
-> --- a/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-> +++ b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-> @@ -84,6 +84,7 @@ static int vfio_fsl_mc_reflck_attach(struct vfio_fsl_mc_device *vdev)
->  		vfio_fsl_mc_reflck_get(cont_vdev->reflck);
->  		vdev->reflck = cont_vdev->reflck;
->  		vfio_device_put(device);
-> +		ret = 0;
->  	}
->  
->  unlock:
+This email is for an opportunity to invest in any lucrative business in 
+your country.
 
-Looks correct to me, unless Diana would rather set the initial value to
-zero instead.  Thanks,
+We offer a quick loan at low interest rate, if you are interested, 
+please reply to yingchongan@gmail.com for more details.
 
-Alex
-
+Sincerely: Ying Chongan

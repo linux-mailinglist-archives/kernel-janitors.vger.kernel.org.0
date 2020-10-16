@@ -2,91 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4280290232
-	for <lists+kernel-janitors@lfdr.de>; Fri, 16 Oct 2020 11:49:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B8D4290270
+	for <lists+kernel-janitors@lfdr.de>; Fri, 16 Oct 2020 12:05:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406385AbgJPJtG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 16 Oct 2020 05:49:06 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:39779 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405433AbgJPJtG (ORCPT
+        id S2406522AbgJPKFN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 16 Oct 2020 06:05:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41506 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406500AbgJPKFN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 16 Oct 2020 05:49:06 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kTMMB-00054p-U9; Fri, 16 Oct 2020 09:49:03 +0000
-Subject: Re: [PATCH] vfio/fsl-mc: fix the return of the uninitialized variable
- ret
-To:     Diana Craciun OSS <diana.craciun@oss.nxp.com>,
-        Alex Williamson <alex.williamson@redhat.com>
-Cc:     Cornelia Huck <cohuck@redhat.com>,
-        Eric Auger <eric.auger@redhat.com>, kvm@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20201015122226.485911-1-colin.king@canonical.com>
- <20201015125211.3ff46dc1@w520.home>
- <65c7ffdb-fa92-102d-d7d1-29bb7d39fcb7@oss.nxp.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <556df27a-d4aa-ccbf-7559-52b7c0e05c0f@canonical.com>
-Date:   Fri, 16 Oct 2020 10:49:03 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.2
+        Fri, 16 Oct 2020 06:05:13 -0400
+Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED9C5C061755
+        for <kernel-janitors@vger.kernel.org>; Fri, 16 Oct 2020 03:05:12 -0700 (PDT)
+Received: by mail-il1-x141.google.com with SMTP id y16so1929747ila.7
+        for <kernel-janitors@vger.kernel.org>; Fri, 16 Oct 2020 03:05:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=cvCOy9gmWwEIGoAvKN1wTgWgmqeY7BJZiB7+75Zr3Co=;
+        b=d7ZhqxEJ5C8CTzMmELKKTkbWJ3i3wtjUYje1oDK5cImT4tgf2sCrte3aNmYQzC3pgq
+         JbdE9VFJJQfT3v8YN77woRp7n1mMPT4a8I1NoHXY4fot8p2/LgHoMkTRqpksqpWDiIcp
+         ZXixNRCT5+aYdIPUj5tuXLDNsFxb7FPSa7iIiENbCgp7SDxyL6WzOHFMbiDwtjhY9cSq
+         1318RXaFBZKpPA8Vm6Ks2gl2KOcoPTuYVdsq7gP2l6kn727hpTh4txNR7bXxKFWcAkyS
+         9pglkM5O4/nqilEr4JSJ24qWjWDePente8t7cmQFm9vs8pM0PkoHOP4TrmTGLz/f7JGY
+         QX7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=cvCOy9gmWwEIGoAvKN1wTgWgmqeY7BJZiB7+75Zr3Co=;
+        b=rRjkxXYoFK7djOF03tJDxsjnjMNRslGmEiIaLXxuEyBmI52tNJqiaowo4ZDcsU10mM
+         FlCpbvUpyNwKLEvaQdTZ11JGm8AgmcO2ndG9aJX0VatZXxByZd8pmwYFn/fYhenkLLda
+         Wvdob0oN4sSTJxFqHYwCtrCABox5h8O8T0j2erkNejL/NGR+bh0tNFE8TdUUZaj/PBPb
+         ZLTATzIejEWIJZtg8U55jnCh0lAPPX91GmP7GfXRl2rIRJLOJOHZ/hINESzQUsHDCu81
+         g4JBpcCnltVzJjkPZMl7uWfhoKM7q1OYoWZWiRKVviteT2nUsss7aJ18qOoPv+HCzl6i
+         byvQ==
+X-Gm-Message-State: AOAM532OhLBXIqNh3N+0ftbOGX2XYONC6SxOWs2i1Oded4MLtBygSVNU
+        0yw+w74q31ioQdLBUpIXP4fxbmXNbtVkZgRme28=
+X-Google-Smtp-Source: ABdhPJzPCARMAWUisR5OZVADwQLPcTe1ZWqc7OJLut3S5akYdIvbSRo7z1XhhIaDdCE36tYozA1eJtGqyp6I9qCSVOY=
+X-Received: by 2002:a92:9e94:: with SMTP id s20mr2262901ilk.102.1602842712365;
+ Fri, 16 Oct 2020 03:05:12 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <65c7ffdb-fa92-102d-d7d1-29bb7d39fcb7@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a6b:3b15:0:0:0:0:0 with HTTP; Fri, 16 Oct 2020 03:05:12
+ -0700 (PDT)
+Reply-To: bukarmangora@hotmail.com
+From:   Bukar Mangora <bukarmangora@gmail.com>
+Date:   Fri, 16 Oct 2020 10:05:12 +0000
+Message-ID: <CAJLrak8LJGUrCYCypKMsMSAp+jV6vkrARpbMsOa2PB=_qUmbfw@mail.gmail.com>
+Subject: From Bukar Mangora, Hello Friend Please Treat Urgent
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 16/10/2020 10:26, Diana Craciun OSS wrote:
-> On 10/15/2020 9:52 PM, Alex Williamson wrote:
->> On Thu, 15 Oct 2020 13:22:26 +0100
->> Colin King <colin.king@canonical.com> wrote:
->>
->>> From: Colin Ian King <colin.king@canonical.com>
->>>
->>> Currently the success path in function vfio_fsl_mc_reflck_attach is
->>> returning an uninitialized value in variable ret. Fix this by setting
->>> this to zero to indicate success.
->>>
->>> Addresses-Coverity: ("Uninitialized scalar variable")
->>> Fixes: f2ba7e8c947b ("vfio/fsl-mc: Added lock support in preparation
->>> for interrupt handling")
->>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->>> ---
->>>   drivers/vfio/fsl-mc/vfio_fsl_mc.c | 1 +
->>>   1 file changed, 1 insertion(+)
->>>
->>> diff --git a/drivers/vfio/fsl-mc/vfio_fsl_mc.c
->>> b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
->>> index 80fc7f4ed343..42a5decb78d1 100644
->>> --- a/drivers/vfio/fsl-mc/vfio_fsl_mc.c
->>> +++ b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
->>> @@ -84,6 +84,7 @@ static int vfio_fsl_mc_reflck_attach(struct
->>> vfio_fsl_mc_device *vdev)
->>>           vfio_fsl_mc_reflck_get(cont_vdev->reflck);
->>>           vdev->reflck = cont_vdev->reflck;
->>>           vfio_device_put(device);
->>> +        ret = 0;
->>>       }
->>>     unlock:
->>
->> Looks correct to me, unless Diana would rather set the initial value to
->> zero instead.  Thanks,
->>
->> Alex
->>
-> 
-> 
-> I prefer to initialize the variable to 0 when it's defined. I'll send a
-> patch for it.
+Good day my good friend.
+How are you doing today? It has been long i hear from you, what is
+going on your side? Today i am very much happy to inform you about my
+success in getting those inheritance funds transferred under the
+co-operation of a new partner from India Asia. He is a Canadian but
+based in India, but presently I'm in India for investment projects
+with my own share of the total sum of Millions of dollars. meanwhile,
+i didn't forget your past efforts and attempts to assist me in
+transferring those inheritance funds despite that it failed us
+somehow, i want you to contact my Secretary in Lom=C3=A9 Togo, his name is
+Mr. Paul Agwa, this is his email address (paulagwad@aol.com ), ask him
+to contact Ecobank were i kept the sum of $350,000.00, for your
+compensation, this compensation fund is for all the past efforts and
+attempts to assist me in the past transaction. I appreciated your
+efforts at that time very much.  so, feel free and contact my
+secretary, and instruct him where Ecobank will transfer the total sum
+of $350,000.00.
 
-Yep, works for me.
+Please do let me know immediately Ecobank transfer the fund
+$350.000.00 into your own bank account, in the moment, I am too busy
+here because of the investment projects which i am having with my new
+partner at hand, so get in touch with Mr. Paul Agwa on his email
+address, he will contact Ecobank on your behalf without any delay.
+Stay safe of Covid 19.
 
-> 
-> Thanks,
-> Diana
-
+Best regards,
+Bukar Mangora.

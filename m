@@ -2,28 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5393A290DAA
-	for <lists+kernel-janitors@lfdr.de>; Sat, 17 Oct 2020 00:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ABA2290DC5
+	for <lists+kernel-janitors@lfdr.de>; Sat, 17 Oct 2020 00:33:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403814AbgJPWWh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 16 Oct 2020 18:22:37 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59833 "EHLO
+        id S2408449AbgJPWdI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 16 Oct 2020 18:33:08 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59966 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390822AbgJPWWh (ORCPT
+        with ESMTP id S2404934AbgJPWdI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 16 Oct 2020 18:22:37 -0400
+        Fri, 16 Oct 2020 18:33:08 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kTY7P-0008VX-98; Fri, 16 Oct 2020 22:22:35 +0000
+        id 1kTYHY-0000dH-34; Fri, 16 Oct 2020 22:33:04 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>
+To:     =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
+        <jerome.pouiller@silabs.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] regulator: lp872x: make a const array static, makes object smaller
-Date:   Fri, 16 Oct 2020 23:22:35 +0100
-Message-Id: <20201016222235.686981-1-colin.king@canonical.com>
+Subject: [PATCH] staging: wfx: make a const array static, makes object smaller
+Date:   Fri, 16 Oct 2020 23:33:03 +0100
+Message-Id: <20201016223303.687278-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -34,37 +36,37 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Don't populate const array lp872x_num_regulators  on the stack but
-instead make it static. Makes the object code smaller by 29 bytes.
+Don't populate const array filter_ies on the stack but instead
+make it static. Makes the object code smaller by 261 bytes.
 
 Before:
    text	   data	    bss	    dec	    hex	filename
-  18441	   4624	     64	  23129	   5a59	drivers/regulator/lp872x.o
+  21674	   3166	    448	  25288	   62c8	drivers/staging/wfx/sta.o
 
 After:
    text	   data	    bss	    dec	    hex	filename
-  18316	   4720	     64	  23100	   5a3c	drivers/regulator/lp872x.o
+  21349	   3230	    448	  25027	   61c3	drivers/staging/wfx/sta.o
 
 (gcc version 10.2.0)
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/regulator/lp872x.c | 2 +-
+ drivers/staging/wfx/sta.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/lp872x.c b/drivers/regulator/lp872x.c
-index 303d7e2dc838..e84be29533f4 100644
---- a/drivers/regulator/lp872x.c
-+++ b/drivers/regulator/lp872x.c
-@@ -892,7 +892,7 @@ static int lp872x_probe(struct i2c_client *cl, const struct i2c_device_id *id)
- 	struct lp872x *lp;
- 	struct lp872x_platform_data *pdata;
- 	int ret;
--	const int lp872x_num_regulators[] = {
-+	static const int lp872x_num_regulators[] = {
- 		[LP8720] = LP8720_NUM_REGULATORS,
- 		[LP8725] = LP8725_NUM_REGULATORS,
- 	};
+diff --git a/drivers/staging/wfx/sta.c b/drivers/staging/wfx/sta.c
+index 2320a81eae0b..196779a1b89a 100644
+--- a/drivers/staging/wfx/sta.c
++++ b/drivers/staging/wfx/sta.c
+@@ -63,7 +63,7 @@ void wfx_suspend_hot_dev(struct wfx_dev *wdev, enum sta_notify_cmd cmd)
+ 
+ static void wfx_filter_beacon(struct wfx_vif *wvif, bool filter_beacon)
+ {
+-	const struct hif_ie_table_entry filter_ies[] = {
++	static const struct hif_ie_table_entry filter_ies[] = {
+ 		{
+ 			.ie_id        = WLAN_EID_VENDOR_SPECIFIC,
+ 			.has_changed  = 1,
 -- 
 2.27.0
 

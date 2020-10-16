@@ -2,189 +2,134 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D337C28FF74
-	for <lists+kernel-janitors@lfdr.de>; Fri, 16 Oct 2020 09:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1D5D2901D3
+	for <lists+kernel-janitors@lfdr.de>; Fri, 16 Oct 2020 11:27:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404800AbgJPHv6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 16 Oct 2020 03:51:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49006 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404771AbgJPHv6 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 16 Oct 2020 03:51:58 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43E2AC061755
-        for <kernel-janitors@vger.kernel.org>; Fri, 16 Oct 2020 00:51:58 -0700 (PDT)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=bjornoya.blackshift.org)
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1kTKWj-0008TN-Bz; Fri, 16 Oct 2020 09:51:49 +0200
-Received: from [IPv6:2a03:f580:87bc:d400:c4e8:c8ff:a41:29c1] (unknown [IPv6:2a03:f580:87bc:d400:c4e8:c8ff:a41:29c1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits)
-         client-signature RSA-PSS (4096 bits))
-        (Client CN "mkl@blackshift.org", Issuer "StartCom Class 1 Client CA" (not verified))
-        (Authenticated sender: mkl@blackshift.org)
-        by smtp.blackshift.org (Postfix) with ESMTPSA id A61BB57A747;
-        Fri, 16 Oct 2020 07:51:46 +0000 (UTC)
-Subject: Re: [PATCH net] can: peak_usb: add range checking in decode
- operations
-To:     =?UTF-8?Q?St=c3=a9phane_Grosjean?= <s.grosjean@peak-system.com>,
-        Oliver Hartkopp <socketcan@hartkopp.net>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Andri Yngvason <andri.yngvason@marel.com>,
-        "linux-can@vger.kernel.org" <linux-can@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        Wolfgang Grandegger <wg@grandegger.com>
-References: <20200813140604.GA456946@mwanda>
- <VI1PR03MB50536300783DBBEAFC7B0367D6050@VI1PR03MB5053.eurprd03.prod.outlook.com>
- <169f62c4-ee2d-6ba2-2a78-640df8edcde0@hartkopp.net>
- <VI1PR03MB5053CAE3ED35D8E9C23063F8D6030@VI1PR03MB5053.eurprd03.prod.outlook.com>
-From:   Marc Kleine-Budde <mkl@pengutronix.de>
-Autocrypt: addr=mkl@pengutronix.de; prefer-encrypt=mutual; keydata=
- mQINBFFVq30BEACtnSvtXHoeHJxG6nRULcvlkW6RuNwHKmrqoksispp43X8+nwqIFYgb8UaX
- zu8T6kZP2wEIpM9RjEL3jdBjZNCsjSS6x1qzpc2+2ivjdiJsqeaagIgvy2JWy7vUa4/PyGfx
- QyUeXOxdj59DvLwAx8I6hOgeHx2X/ntKAMUxwawYfPZpP3gwTNKc27dJWSomOLgp+gbmOmgc
- 6U5KwhAxPTEb3CsT5RicsC+uQQFumdl5I6XS+pbeXZndXwnj5t84M+HEj7RN6bUfV2WZO/AB
- Xt5+qFkC/AVUcj/dcHvZwQJlGeZxoi4veCoOT2MYqfR0ax1MmN+LVRvKm29oSyD4Ts/97cbs
- XsZDRxnEG3z/7Winiv0ZanclA7v7CQwrzsbpCv+oj+zokGuKasofzKdpywkjAfSE1zTyF+8K
- nxBAmzwEqeQ3iKqBc3AcCseqSPX53mPqmwvNVS2GqBpnOfY7Mxr1AEmxdEcRYbhG6Xdn+ACq
- Dq0Db3A++3PhMSaOu125uIAIwMXRJIzCXYSqXo8NIeo9tobk0C/9w3fUfMTrBDtSviLHqlp8
- eQEP8+TDSmRP/CwmFHv36jd+XGmBHzW5I7qw0OORRwNFYBeEuiOIgxAfjjbLGHh9SRwEqXAL
- kw+WVTwh0MN1k7I9/CDVlGvc3yIKS0sA+wudYiselXzgLuP5cQARAQABtCZNYXJjIEtsZWlu
- ZS1CdWRkZSA8bWtsQHBlbmd1dHJvbml4LmRlPokCVAQTAQoAPgIbAwIeAQIXgAULCQgHAwUV
- CgkICwUWAgMBABYhBMFAC6CzmJ5vvH1bXCte4hHFiupUBQJfEWX4BQkQo2czAAoJECte4hHF
- iupUvfMP/iNtiysSr5yU4tbMBzRkGov1/FjurfH1kPweLVHDwiQJOGBz9HgM5+n8boduRv36
- 0lU32g3PehN0UHZdHWhygUd6J09YUi2mJo1l2Fz1fQ8elUGUOXpT/xoxNQjslZjJGItCjza8
- +D1DO+0cNFgElcNPa7DFBnglatOCZRiMjo4Wx0i8njEVRU+4ySRU7rCI36KPts+uVmZAMD7V
- 3qiR1buYklJaPCJsnXURXYsilBIE9mZRmQjTDVqjLWAit++flqUVmDjaD/pj2AQe2Jcmd2gm
- sYW5P1moz7ACA1GzMjLDmeFtpJOIB7lnDX0F/vvsG3V713/701aOzrXqBcEZ0E4aWeZJzaXw
- n1zVIrl/F3RKrWDhMKTkjYy7HA8hQ9SJApFXsgP334Vo0ea82H3dOU755P89+Eoj0y44MbQX
- 7xUy4UTRAFydPl4pJskveHfg4dO6Yf0PGIvVWOY1K04T1C5dpnHAEMvVNBrfTA8qcahRN82V
- /iIGB+KSC2xR79q1kv1oYn0GOnWkvZmMhqGLhxIqHYitwH4Jn5uRfanKYWBk12LicsjRiTyW
- Z9cJf2RgAtQgvMPvmaOL8vB3U4ava48qsRdgxhXMagU618EszVdYRNxGLCqsKVYIDySTrVzu
- ZGs2ibcRhN4TiSZjztWBAe1MaaGk05Ce4h5IdDLbOOxhuQENBF8SDLABCADohJLQ5yffd8Sq
- 8Lo9ymzgaLcWboyZ46pY4CCCcAFDRh++QNOJ8l4mEJMNdEa/yrW4lDQDhBWV75VdBuapYoal
- LFrSzDzrqlHGG4Rt4/XOqMo6eSeSLipYBu4Xhg59S9wZOWbHVT/6vZNmiTa3d40+gBg68dQ8
- iqWSU5NhBJCJeLYdG6xxeUEtsq/25N1erxmhs/9TD0sIeX36rFgWldMwKmZPe8pgZEv39Sdd
- B+ykOlRuHag+ySJxwovfdVoWT0o0LrGlHzAYo6/ZSi/Iraa9R/7A1isWOBhw087BMNkRYx36
- B77E4KbyBPx9h3wVyD/R6T0Q3ZNPu6SQLnsWojMzABEBAAGJAjwEGAEKACYWIQTBQAugs5ie
- b7x9W1wrXuIRxYrqVAUCXxIMsAIbDAUJAucGAAAKCRArXuIRxYrqVOu0D/48xSLyVZ5NN2Bb
- yqo3zxdv/PMGJSzM3JqSv7hnMZPQGy9XJaTc5Iz/hyXaNRwpH5X0UNKqhQhlztChuAKZ7iu+
- 2VKzq4JJe9qmydRUwylluc4HmGwlIrDNvE0N66pRvC3h8tOVIsippAQlt5ciH74bJYXr0PYw
- Aksw1jugRxMbNRzgGECg4O6EBNaHwDzsVPX1tDj0d9t/7ClzJUy20gg8r9Wm/I/0rcNkQOpV
- RJLDtSbGSusKxor2XYmVtHGauag4YO6Vdq+2RjArB3oNLgSOGlYVpeqlut+YYHjWpaX/cTf8
- /BHtIQuSAEu/WnycpM3Z9aaLocYhbp5lQKL6/bcWQ3udd0RfFR/Gv7eR7rn3evfqNTtQdo4/
- YNmd7P8TS7ALQV/5bNRe+ROLquoAZvhaaa6SOvArcmFccnPeyluX8+o9K3BCdXPwONhsrxGO
- wrPI+7XKMlwWI3O076NqNshh6mm8NIC0mDUr7zBUITa67P3Q2VoPoiPkCL9RtsXdQx5BI9iI
- h/6QlzDxcBdw2TVWyGkVTCdeCBpuRndOMVmfjSWdCXXJCLXO6sYeculJyPkuNvumxgwUiK/H
- AqqdUfy1HqtzP2FVhG5Ce0TeMJepagR2CHPXNg88Xw3PDjzdo+zNpqPHOZVKpLUkCvRv1p1q
- m1qwQVWtAwMML/cuPga78rkBDQRfEXGWAQgAt0Cq8SRiLhWyTqkf16Zv/GLkUgN95RO5ntYM
- fnc2Tr3UlRq2Cqt+TAvB928lN3WHBZx6DkuxRM/Y/iSyMuhzL5FfhsICuyiBs5f3QG70eZx+
- Bdj4I7LpnIAzmBdNWxMHpt0m7UnkNVofA0yH6rcpCsPrdPRJNOLFI6ZqXDQk9VF+AB4HVAJY
- BDU3NAHoyVGdMlcxev0+gEXfBQswEcysAyvzcPVTAqmrDsupnIB2f0SDMROQCLO6F+/cLG4L
- Stbz+S6YFjESyXblhLckTiPURvDLTywyTOxJ7Mafz6ZCene9uEOqyd/h81nZOvRd1HrXjiTE
- 1CBw+Dbvbch1ZwGOTQARAQABiQNyBBgBCgAmFiEEwUALoLOYnm+8fVtcK17iEcWK6lQFAl8R
- cZYCGwIFCQLnoRoBQAkQK17iEcWK6lTAdCAEGQEKAB0WIQQreQhYm33JNgw/d6GpyVqK+u3v
- qQUCXxFxlgAKCRCpyVqK+u3vqatQCAC3QIk2Y0g/07xNLJwhWcD7JhIqfe7Qc5Vz9kf8ZpWr
- +6w4xwRfjUSmrXz3s6e/vrQsfdxjVMDFOkyG8c6DWJo0TVm6Ucrf9G06fsjjE/6cbE/gpBkk
- /hOVz/a7UIELT+HUf0zxhhu+C9hTSl8Nb0bwtm6JuoY5AW0LP2KoQ6LHXF9KNeiJZrSzG6WE
- h7nf3KRFS8cPKe+trbujXZRb36iIYUfXKiUqv5xamhohy1hw+7Sy8nLmw8rZPa40bDxX0/Gi
- 98eVyT4/vi+nUy1gF1jXgNBSkbTpbVwNuldBsGJsMEa8lXnYuLzn9frLdtufUjjCymdcV/iT
- sFKziU9AX7TLZ5AP/i1QMP9OlShRqERH34ufA8zTukNSBPIBfmSGUe6G2KEWjzzNPPgcPSZx
- Do4jfQ/m/CiiibM6YCa51Io72oq43vMeBwG9/vLdyev47bhSfMLTpxdlDJ7oXU9e8J61iAF7
- vBwerBZL94I3QuPLAHptgG8zPGVzNKoAzxjlaxI1MfqAD9XUM80MYBVjunIQlkU/AubdvmMY
- X7hY1oMkTkC5hZNHLgIsDvWUG0g3sACfqF6gtMHY2lhQ0RxgxAEx+ULrk/svF6XGDe6iveyc
- z5Mg5SUggw3rMotqgjMHHRtB3nct6XqgPXVDGYR7nAkXitG+nyG5zWhbhRDglVZ0mLlW9hij
- z3Emwa94FaDhN2+1VqLFNZXhLwrNC5mlA6LUjCwOL+zb9a07HyjekLyVAdA6bZJ5BkSXJ1CO
- 5YeYolFjr4YU7GXcSVfUR6fpxrb8N+yH+kJhY3LmS9vb2IXxneE/ESkXM6a2YAZWfW8sgwTm
- 0yCEJ41rW/p3UpTV9wwE2VbGD1XjzVKl8SuAUfjjcGGys3yk5XQ5cccWTCwsVdo2uAcY1MVM
- HhN6YJjnMqbFoHQq0H+2YenTlTBn2Wsp8TIytE1GL6EbaPWbMh3VLRcihlMj28OUWGSERxat
- xlygDG5cBiY3snN3xJyBroh5xk/sHRgOdHpmujnFyu77y4RTZ2W8
-Message-ID: <9d961074-5e51-4e90-191e-791f5de8da9f@pengutronix.de>
-Date:   Fri, 16 Oct 2020 09:51:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        id S2404901AbgJPJ1H (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 16 Oct 2020 05:27:07 -0400
+Received: from mail-eopbgr60084.outbound.protection.outlook.com ([40.107.6.84]:29595
+        "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2395065AbgJPJ1H (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 16 Oct 2020 05:27:07 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fGOgt/3yXyEaJxlwGR/8KLEPnaKAahYHoVHHjvSj28kbaf8Sd8lKZ9kdf4yJ/iTz7tzgONZVq2DYiT1z4IJJ9dFnrXPyEcPNHDdR3IrH//XSrws0fAJp8nnH2SyyCKw9f2FFrsytQvgZMTUyYkOYDpmXQkIpoM/YsR7369rgjzfz5miYYHsCoQOa9/QQrE2X6JUygKn8f47TRsF3/AsBiDw70NlB1//Q1T1VUMHGFeRKtuXB6RDZFpgVWQIveJAnz4SHwmhe3zkMu4yVD6b9mDum8hSMhOhaUuc8zQFHqaR5tfJrQHFrSHVOEZU1vR4VvG4nVnXxny2xuAHsdB+NAQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i5WXxGMWfzdGX8GWWIRXUqQBgQnZjM5Z7GNJYs5QsMw=;
+ b=ZU2TAPZzutNVtGC8DagWScDhN0LQBPZL/mify+Cg8lCutEhVf17z9GLjH3CxWq4ncc5/uSe8KsClOw/Es2pKhJDSLjE/08TYpuJ9y22ZRpvmQnS95Uc36XUwdbY4O8YWqCzncijc0KSSLp0pY8jem/PYf9zvdAuZQk5k4Me+wVNuWRK2FRbeg2pluCqUzPFWotNAkKVLmt9qjGXamJBvtXtAJalewkTGvJR/ZT1Pt1INureyJiCXM6KZ1++NCgNkHlIQ7Qp+rgSvb7JlTrJRpMnQuqK0e9G2dBFcogNV8zwR+xZNj6KzW8KnnYaWWmvG/p6BYG5/NFxTyMJhSiSygQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i5WXxGMWfzdGX8GWWIRXUqQBgQnZjM5Z7GNJYs5QsMw=;
+ b=IjUekSPfBGJqoDkIGzRSlhyHHgSOCLCyRb4cvZUT8Jd+61mGxLxSqXb3c1wBOqrycdH7c28fZDoXsR5mwPLsl89d2fjiMAMk9UQ/jVkY4AKDi3Vdxt8T8TtHsHnnfMfVVxtV/72BNA5i/90rdUTPt/iBEUj6oR+Al0bfr9KhrY8=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none
+ header.from=oss.nxp.com;
+Received: from VI1PR0402MB2815.eurprd04.prod.outlook.com
+ (2603:10a6:800:ae::16) by VI1PR0402MB3583.eurprd04.prod.outlook.com
+ (2603:10a6:803:e::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.25; Fri, 16 Oct
+ 2020 09:27:03 +0000
+Received: from VI1PR0402MB2815.eurprd04.prod.outlook.com
+ ([fe80::6cf3:a10a:8242:602f]) by VI1PR0402MB2815.eurprd04.prod.outlook.com
+ ([fe80::6cf3:a10a:8242:602f%11]) with mapi id 15.20.3455.032; Fri, 16 Oct
+ 2020 09:27:03 +0000
+Subject: Re: [PATCH] vfio/fsl-mc: fix the return of the uninitialized variable
+ ret
+To:     Alex Williamson <alex.williamson@redhat.com>,
+        Colin King <colin.king@canonical.com>
+Cc:     Cornelia Huck <cohuck@redhat.com>,
+        Eric Auger <eric.auger@redhat.com>, kvm@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20201015122226.485911-1-colin.king@canonical.com>
+ <20201015125211.3ff46dc1@w520.home>
+From:   Diana Craciun OSS <diana.craciun@oss.nxp.com>
+Message-ID: <65c7ffdb-fa92-102d-d7d1-29bb7d39fcb7@oss.nxp.com>
+Date:   Fri, 16 Oct 2020 12:26:52 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.2
+In-Reply-To: <20201015125211.3ff46dc1@w520.home>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [188.27.189.94]
+X-ClientProxiedBy: AM3PR05CA0149.eurprd05.prod.outlook.com
+ (2603:10a6:207:3::27) To VI1PR0402MB2815.eurprd04.prod.outlook.com
+ (2603:10a6:800:ae::16)
 MIME-Version: 1.0
-In-Reply-To: <VI1PR03MB5053CAE3ED35D8E9C23063F8D6030@VI1PR03MB5053.eurprd03.prod.outlook.com>
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="PoV6K5uvyOleD7r5AvPcILSeLJJ1VrlDR"
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.1.122] (188.27.189.94) by AM3PR05CA0149.eurprd05.prod.outlook.com (2603:10a6:207:3::27) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.21 via Frontend Transport; Fri, 16 Oct 2020 09:27:01 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: c212ac43-92f6-4ee4-3335-08d871b5a3b2
+X-MS-TrafficTypeDiagnostic: VI1PR0402MB3583:
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-Microsoft-Antispam-PRVS: <VI1PR0402MB35834F817E0E9CE33F72592EBE030@VI1PR0402MB3583.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: o8LsS5EP8rgLa7sj6rpb+C2HNsA6ZRHXREey+UxXw0puH/9m1IC32GP2SK5hHBjoQdMihaMKejhtuCCCqfDwfRW/mopK0huQrodjDn7apKuoRLFxW6f+sMV8myZ99EhSSXDpWzMvYoNmxMDqhXQYrFbDiTSjIumEoJ1UL9QD/yPjTPrmWTTCMbFZHv36F2T8n+VM97g+S7Tq4GhyBCKQ9UYcWhc7geVAjqZKRSsEtlWVoN5UmdgvtJgprhYwgPOteYLlLfVmHUE4cgYD4nANKzQt63wOmWvZrPLaxTsyrKwKj8uFC6CUVSck3s5qcmQjh7EHmli6zC9eNzM2BZq+6tkXlBzRS9C8WJAmwv4v3yUl9Qde+7Ml9qLT7VFcJLHEYjM2a7uhiflMTZNT0MGAyQ0lvf3itoZgsMNmXctl9xA=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR0402MB2815.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(39860400002)(136003)(376002)(366004)(346002)(31686004)(52116002)(478600001)(6666004)(34490700002)(53546011)(83380400001)(8936002)(2906002)(86362001)(8676002)(2616005)(956004)(4326008)(5660300002)(316002)(110136005)(6486002)(54906003)(66476007)(66556008)(186003)(66946007)(16526019)(16576012)(31696002)(26005)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: 3mKLoDK3+UG5lOiBueH/cBq0N/NbKzQykocEci32iTRNkK/RPrkJzdhTTUfWveIEDxlXAj6UCbdGcMZmzG7zl4p/R8FLQpB4cAHYHP0SU6ovdo0XP9t1pMFusmYiDGM8ufX3/VGmRNW0h2B+tb9a08MiKz/7VcF8IX/2V79EZNAq4ugUqA+8wpjapsArLvmINWO14DTKMXvDdVMZW57sqlO2qPha3fubGVRGtuYPWyO+oyWcrxQJbxztc9ANQTc6YnwRwoRu6qaL9mD4LLShf/SWxTJacEhQmh0uOunNmMIpCYr7lZoOMbC+CNllaHKedw6+IVRj7ywkSWIUSi8Dyc1B3JrG5NoqxWMKZKi5OeAXXzHhw72WAvwwnhKC9il5s7cwPLu6MnmEiik8/MOaWmtH9h31JtlFxEIHI5vQacRUWwXg2nnfNjh9+ObJ8paZyLtI7jkDyoZhMwWuhXPBAYoqwwUhGwo5QXlihTxqkCwOfhJ/WyecWQlf0c2Y4uiJjFnp+q5Or+lTsvj0/cF4i/Q7oIzNi0VLWp+dNYpqTcE5BWGcAT1ozZa63Vjs65c1YKxXHi+zf5rL3HJrmoVjJzCu22nFf3C55w4zCEoB5GBcNzeJPeuVljzU2ulmU5HphqD9jINL4K+VBQabYBJRVQ==
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c212ac43-92f6-4ee4-3335-08d871b5a3b2
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR0402MB2815.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2020 09:27:02.9515
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KSbHUemUSSFcMIjcDwrEGXLt9oNzCKaVl0JGjVrGHrQ+vw3FLyHb6MWxdnogm0lm3MqyF4jPcXF8AFVhLToACg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0402MB3583
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---PoV6K5uvyOleD7r5AvPcILSeLJJ1VrlDR
-Content-Type: multipart/mixed; boundary="iei3976M3SaOGH3LKPh2BdJySyGItjbZM";
- protected-headers="v1"
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: =?UTF-8?Q?St=c3=a9phane_Grosjean?= <s.grosjean@peak-system.com>,
- Oliver Hartkopp <socketcan@hartkopp.net>,
- Dan Carpenter <dan.carpenter@oracle.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski
- <kuba@kernel.org>, Andri Yngvason <andri.yngvason@marel.com>,
- "linux-can@vger.kernel.org" <linux-can@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
- Wolfgang Grandegger <wg@grandegger.com>
-Message-ID: <9d961074-5e51-4e90-191e-791f5de8da9f@pengutronix.de>
-Subject: Re: [PATCH net] can: peak_usb: add range checking in decode
- operations
-References: <20200813140604.GA456946@mwanda>
- <VI1PR03MB50536300783DBBEAFC7B0367D6050@VI1PR03MB5053.eurprd03.prod.outlook.com>
- <169f62c4-ee2d-6ba2-2a78-640df8edcde0@hartkopp.net>
- <VI1PR03MB5053CAE3ED35D8E9C23063F8D6030@VI1PR03MB5053.eurprd03.prod.outlook.com>
-In-Reply-To: <VI1PR03MB5053CAE3ED35D8E9C23063F8D6030@VI1PR03MB5053.eurprd03.prod.outlook.com>
-
---iei3976M3SaOGH3LKPh2BdJySyGItjbZM
-Content-Type: text/plain; charset=utf-8
-Content-Language: de-DE
-Content-Transfer-Encoding: quoted-printable
-
-On 10/16/20 9:43 AM, St=C3=A9phane Grosjean wrote:
-> Thank you for your detailed answer. And so? AFAIK I saw that this patch=
- is still
-> not in mainline. What needs to be done for it to be there? Should I bri=
-ng an
-> Ack, for example?
-
-If you have reviewed the patch, give an Ack or Reviewed-by.
-
-regards,
-Marc
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde           |
-Embedded Linux                   | https://www.pengutronix.de  |
-Vertretung West/Dortmund         | Phone: +49-231-2826-924     |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-5555 |
+On 10/15/2020 9:52 PM, Alex Williamson wrote:
+> On Thu, 15 Oct 2020 13:22:26 +0100
+> Colin King <colin.king@canonical.com> wrote:
+> 
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> Currently the success path in function vfio_fsl_mc_reflck_attach is
+>> returning an uninitialized value in variable ret. Fix this by setting
+>> this to zero to indicate success.
+>>
+>> Addresses-Coverity: ("Uninitialized scalar variable")
+>> Fixes: f2ba7e8c947b ("vfio/fsl-mc: Added lock support in preparation for interrupt handling")
+>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>> ---
+>>   drivers/vfio/fsl-mc/vfio_fsl_mc.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/vfio/fsl-mc/vfio_fsl_mc.c b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
+>> index 80fc7f4ed343..42a5decb78d1 100644
+>> --- a/drivers/vfio/fsl-mc/vfio_fsl_mc.c
+>> +++ b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
+>> @@ -84,6 +84,7 @@ static int vfio_fsl_mc_reflck_attach(struct vfio_fsl_mc_device *vdev)
+>>   		vfio_fsl_mc_reflck_get(cont_vdev->reflck);
+>>   		vdev->reflck = cont_vdev->reflck;
+>>   		vfio_device_put(device);
+>> +		ret = 0;
+>>   	}
+>>   
+>>   unlock:
+> 
+> Looks correct to me, unless Diana would rather set the initial value to
+> zero instead.  Thanks,
+> 
+> Alex
+> 
 
 
---iei3976M3SaOGH3LKPh2BdJySyGItjbZM--
+I prefer to initialize the variable to 0 when it's defined. I'll send a 
+patch for it.
 
---PoV6K5uvyOleD7r5AvPcILSeLJJ1VrlDR
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEK3kIWJt9yTYMP3ehqclaivrt76kFAl+JUQ0ACgkQqclaivrt
-76lIgQgArEg6AHJWyInC9Eadqt26bkjdEjmbjThdeMSM4/lh7veZGqwljt+0NpdG
-R7ER/nuhkeZ6FRaxyEti60tEvtdvxMHmXjsdoXJcXpZOlxAL21iFftCEsChf0ncT
-7j1+3OL36JkLO0ug71pS9xGpxgw8XjMBjX7W7tZPqHc/s5MmVWPhkQDaYiop58TL
-7DVmqz1vB/Jnv6sX9nShqMDURTIeyOjtsat86s0Ze4qIq2/q5BrOsuuj3bxbhO1S
-C16mLtivf4b3qVLEWQGltGf0+J/cTmuP3NtQOoLAvcXxHvbUO9pH/AzIf7QLXK1R
-JmOndByYYczI2S43fO8LKurzHasVxQ==
-=v+oh
------END PGP SIGNATURE-----
-
---PoV6K5uvyOleD7r5AvPcILSeLJJ1VrlDR--
+Thanks,
+Diana

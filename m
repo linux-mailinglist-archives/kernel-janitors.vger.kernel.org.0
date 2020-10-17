@@ -2,93 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 903D2290DDB
-	for <lists+kernel-janitors@lfdr.de>; Sat, 17 Oct 2020 00:49:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 342C2291009
+	for <lists+kernel-janitors@lfdr.de>; Sat, 17 Oct 2020 08:13:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391055AbgJPWtU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 16 Oct 2020 18:49:20 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:60185 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388093AbgJPWtU (ORCPT
+        id S2437013AbgJQGNA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 17 Oct 2020 02:13:00 -0400
+Received: from smtprelay0076.hostedemail.com ([216.40.44.76]:54918 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2436889AbgJQGM7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 16 Oct 2020 18:49:20 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kTYXB-0001gz-A3; Fri, 16 Oct 2020 22:49:13 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        Connor McAdams <conmanx360@gmail.com>,
-        alsa-devel@alsa-project.org
+        Sat, 17 Oct 2020 02:12:59 -0400
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave01.hostedemail.com (Postfix) with ESMTP id A74F018014A05;
+        Sat, 17 Oct 2020 00:13:25 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay05.hostedemail.com (Postfix) with ESMTP id C580C1802926E;
+        Sat, 17 Oct 2020 00:11:46 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1539:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3870:3872:4321:4362:5007:6119:7576:7903:10004:10400:10848:11026:11232:11658:11914:12043:12048:12296:12297:12438:12555:12740:12760:12895:12986:13069:13311:13357:13439:14096:14097:14181:14659:14721:21080:21433:21451:21627:21939:30012:30054:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: act27_2117f0927221
+X-Filterd-Recvd-Size: 1735
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf19.hostedemail.com (Postfix) with ESMTPA;
+        Sat, 17 Oct 2020 00:11:45 +0000 (UTC)
+Message-ID: <09cd7e609324d460afdf14829baf3c2f1a9cb9cd.camel@perches.com>
+Subject: Re: [PATCH] staging: wfx: make a const array static, makes object
+ smaller
+From:   Joe Perches <joe@perches.com>
+To:     Colin King <colin.king@canonical.com>,
+        =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ALSA: hda/ca0132: make some const arrays static, makes object smaller
-Date:   Fri, 16 Oct 2020 23:49:13 +0100
-Message-Id: <20201016224913.687724-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+Date:   Fri, 16 Oct 2020 17:11:44 -0700
+In-Reply-To: <20201016223303.687278-1-colin.king@canonical.com>
+References: <20201016223303.687278-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Fri, 2020-10-16 at 23:33 +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Don't populate const array filter_ies on the stack but instead
+> make it static. Makes the object code smaller by 261 bytes.
+> 
+> Before:
+>    text	   data	    bss	    dec	    hex	filename
+>   21674	   3166	    448	  25288	   62c8	drivers/staging/wfx/sta.o
+> 
+> After:
+>    text	   data	    bss	    dec	    hex	filename
+>   21349	   3230	    448	  25027	   61c3	drivers/staging/wfx/sta.o
 
-Don't populate const arrays on the stack but instead make them
-static. Makes the object code smaller by 57 bytes.
+Thanks.
 
-Before:
-   text	   data	    bss	    dec	    hex	filename
- 173256	  38016	    192	 211464	  33a08	sound/pci/hda/patch_ca0132.o
+It's odd to me it's so large a change as it's only
+24 bytes of initialization. (3 entries, each 8 bytes)
 
-After:
-   text	   data	    bss	    dec	    hex	filename
- 172879	  38336	    192	 211407	  339cf	sound/pci/hda/patch_ca0132.o
+This line in the same function:
 
-(gcc version 10.2.0)
+		hif_set_beacon_filter_table(wvif, 3, filter_ies);
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- sound/pci/hda/patch_ca0132.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+might as well use ARRAY_SIZE(filter_ies) instead of 3
 
-diff --git a/sound/pci/hda/patch_ca0132.c b/sound/pci/hda/patch_ca0132.c
-index 2b38b2a716a1..e0c38f2735c6 100644
---- a/sound/pci/hda/patch_ca0132.c
-+++ b/sound/pci/hda/patch_ca0132.c
-@@ -7910,8 +7910,12 @@ static void ae7_post_dsp_asi_stream_setup(struct hda_codec *codec)
- 
- static void ae7_post_dsp_pll_setup(struct hda_codec *codec)
- {
--	const unsigned int addr[] = { 0x41, 0x45, 0x40, 0x43, 0x51 };
--	const unsigned int data[] = { 0xc8, 0xcc, 0xcb, 0xc7, 0x8d };
-+	static const unsigned int addr[] = {
-+		0x41, 0x45, 0x40, 0x43, 0x51
-+	};
-+	static const unsigned int data[] = {
-+		0xc8, 0xcc, 0xcb, 0xc7, 0x8d
-+	};
- 	unsigned int i;
- 
- 	for (i = 0; i < ARRAY_SIZE(addr); i++) {
-@@ -7925,10 +7929,12 @@ static void ae7_post_dsp_pll_setup(struct hda_codec *codec)
- static void ae7_post_dsp_asi_setup_ports(struct hda_codec *codec)
- {
- 	struct ca0132_spec *spec = codec->spec;
--	const unsigned int target[] = { 0x0b, 0x04, 0x06, 0x0a, 0x0c, 0x11,
--					0x12, 0x13, 0x14 };
--	const unsigned int data[]   = { 0x12, 0x00, 0x48, 0x05, 0x5f, 0xff,
--					0xff, 0xff, 0x7f };
-+	static const unsigned int target[] = {
-+		0x0b, 0x04, 0x06, 0x0a, 0x0c, 0x11, 0x12, 0x13, 0x14
-+	};
-+	static const unsigned int data[] = {
-+		0x12, 0x00, 0x48, 0x05, 0x5f, 0xff, 0xff, 0xff, 0x7f
-+	};
- 	unsigned int i;
- 
- 	mutex_lock(&spec->chipio_mutex);
--- 
-2.27.0
 

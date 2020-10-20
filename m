@@ -2,101 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31A9F29414B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Oct 2020 19:21:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C2F42940D1
+	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Oct 2020 18:50:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390801AbgJTRVT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 20 Oct 2020 13:21:19 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:16622
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2390715AbgJTRVT (ORCPT
+        id S2388728AbgJTQuj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 20 Oct 2020 12:50:39 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53011 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726492AbgJTQuj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 20 Oct 2020 13:21:19 -0400
-X-IronPort-AV: E=Sophos;i="5.77,398,1596492000"; 
-   d="scan'208";a="362325547"
-Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/AES256-SHA256; 20 Oct 2020 19:21:16 +0200
-From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Ingo Molnar <mingo@redhat.com>
-Cc:     kernel-janitors@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        linux-kernel@vger.kernel.org,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Gilles.Muller@inria.fr
-Subject: [PATCH] sched/fair: check for idle core
-Date:   Tue, 20 Oct 2020 18:37:59 +0200
-Message-Id: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr>
-X-Mailer: git-send-email 1.9.1
+        Tue, 20 Oct 2020 12:50:39 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kUuqE-000611-CC; Tue, 20 Oct 2020 16:50:30 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] net: dsa: bcm_sf2: make const array static, makes object smaller
+Date:   Tue, 20 Oct 2020 17:50:29 +0100
+Message-Id: <20201020165029.56383-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On a thread wakeup, the change [1] from runnable load average to load
-average for comparing candidate cores means that recent short-running
-daemons on the core where a thread ran previously can be considered to
-have a higher load than the core performing the wakeup, even when the
-core where the thread ran previously is currently idle.  This can
-cause a thread to migrate, taking the place of some other thread that
-is about to wake up, and so on.  To avoid unnecessary migrations,
-extend wake_affine_idle to check whether the core where the thread
-previously ran is currently idle, and if so return that core as the
-target.
+From: Colin Ian King <colin.king@canonical.com>
 
-[1] commit 11f10e5420f6ce ("sched/fair: Use load instead of runnable
-load in wakeup path")
+Don't populate the const array rate_table on the stack but instead it
+static. Makes the object code smaller by 46 bytes.
 
-This particularly has an impact when using passive (intel_cpufreq)
-power management, where kworkers run every 0.004 seconds on all cores,
-increasing the likelihood that an idle core will be considered to have
-a load.
+Before:
+   text	   data	    bss	    dec	    hex	filename
+  29812	   3824	    192	  33828	   8424	drivers/net/dsa/bcm_sf2.o
 
-The following numbers were obtained with the benchmarking tool
-hyperfine (https://github.com/sharkdp/hyperfine) on the NAS parallel
-benchmarks (https://www.nas.nasa.gov/publications/npb.html).  The
-tests were run on an 80-core Intel(R) Xeon(R) CPU E7-8870 v4 @
-2.10GHz.  Active (intel_pstate) and passive (intel_cpufreq) power
-management were used.  Times are in seconds.  All experiments use all
-160 hardware threads.
+After:
+   text	   data	    bss	    dec	    hex	filename
+  29670	   3920	    192	  33782	   83f6	drivers/net/dsa/bcm_sf2.o
 
-	v5.9/active		v5.9+patch/active
-bt.C.c	24.725724+-0.962340	23.349608+-1.607214
-lu.C.x	29.105952+-4.804203	25.249052+-5.561617
-sp.C.x	31.220696+-1.831335	30.227760+-2.429792
-ua.C.x	26.606118+-1.767384	25.778367+-1.263850
+(gcc version 10.2.0)
 
-	v5.9/passive		v5.9+patch/passive
-bt.C.c	25.330360+-1.028316	23.544036+-1.020189
-lu.C.x	35.872659+-4.872090	23.719295+-3.883848
-sp.C.x	32.141310+-2.289541	29.125363+-0.872300
-ua.C.x	29.024597+-1.667049	25.728888+-1.539772
-
-On the smaller data sets (A and B) and on the other NAS benchmarks
-there is no impact on performance.
-
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- kernel/sched/fair.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/dsa/bcm_sf2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index aa4c6227cd6d..9b23dad883ee 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -5804,6 +5804,9 @@ wake_affine_idle(int this_cpu, int prev_cpu, int sync)
- 	if (sync && cpu_rq(this_cpu)->nr_running == 1)
- 		return this_cpu;
- 
-+	if (available_idle_cpu(prev_cpu))
-+		return prev_cpu;
-+
- 	return nr_cpumask_bits;
- }
- 
+diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
+index 0b5b2b33b3b6..1e9a0adda2d6 100644
+--- a/drivers/net/dsa/bcm_sf2.c
++++ b/drivers/net/dsa/bcm_sf2.c
+@@ -54,7 +54,7 @@ static void bcm_sf2_recalc_clock(struct dsa_switch *ds)
+ 	unsigned long new_rate;
+ 	unsigned int ports_active;
+ 	/* Frequenty in Mhz */
+-	const unsigned long rate_table[] = {
++	static const unsigned long rate_table[] = {
+ 		59220000,
+ 		60820000,
+ 		62500000,
+-- 
+2.27.0
 

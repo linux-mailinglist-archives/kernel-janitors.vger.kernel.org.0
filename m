@@ -2,79 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32CE6292D21
-	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Oct 2020 19:52:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 108CD293500
+	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Oct 2020 08:30:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729083AbgJSRwS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 19 Oct 2020 13:52:18 -0400
-Received: from smtp01.smtpout.orange.fr ([80.12.242.123]:57139 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727153AbgJSRwR (ORCPT
+        id S2404324AbgJTGah (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 20 Oct 2020 02:30:37 -0400
+Received: from mx.fm.ukrtelecom.ua ([82.207.79.108]:50468 "EHLO
+        mx.fm.ukrtelecom.ua" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404322AbgJTGah (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 19 Oct 2020 13:52:17 -0400
-Received: from [192.168.42.210] ([81.185.173.144])
-        by mwinf5d19 with ME
-        id htsA2300T37HXBD03tsBYd; Mon, 19 Oct 2020 19:52:14 +0200
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 19 Oct 2020 19:52:14 +0200
-X-ME-IP: 81.185.173.144
-Subject: Re: [PATCH] staging: wfx: make a const array static, makes object
- smaller
-To:     Joe Perches <joe@perches.com>,
-        Colin King <colin.king@canonical.com>,
-        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20201016223303.687278-1-colin.king@canonical.com>
- <09cd7e609324d460afdf14829baf3c2f1a9cb9cd.camel@perches.com>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <18f2f9d4-5199-d6d0-f4f5-c17d609a44a7@wanadoo.fr>
-Date:   Mon, 19 Oct 2020 19:52:09 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.1
+        Tue, 20 Oct 2020 02:30:37 -0400
+X-Greylist: delayed 1027 seconds by postgrey-1.27 at vger.kernel.org; Tue, 20 Oct 2020 02:30:35 EDT
+Received: from mail5.ukrpost.ua (mail5.ukrpost.ua [82.207.79.5])
+        by mx.fm.ukrtelecom.ua  with ESMTP id 09K6Chfv016653-09K6Chfx016653
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Tue, 20 Oct 2020 09:12:43 +0300
+Message-Id: <202010200612.09K6Chfv016653-09K6Chfx016653@mx.fm.ukrtelecom.ua>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ukrpost.ua;
+         s=ukrpost; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Subject:From:Reply-To:Sender:Message-ID:To:Cc:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=QG/BVf2RH20OUwlVf2lfkIeS8s/lODNMgfhorcX688I=; b=FleU1gssEJON2sBDvNWuPqjTWv
+        AZvkcQfwl9Pq4v2a7wQzaXQ4XKYa/KlRElZUDXA2lsEJ6seYKL+ro0gA78JWkhDMEY8WNbJ2MaX/V
+        M/9z1cfxS0sGFUANZnISSNRkBx7AHQlthQXMOXQ72xVD9jofWknDIHz0BKfPSCMyfvl8=;
+Received: from [197.234.221.138] (helo=User)
+        by mail5.ukrpost.ua with esmtpa (Exim 4.92)
+        (envelope-from <msek2008@ukrpost.ua>)
+        id 1kUkt1-0008U8-1V; Tue, 20 Oct 2020 09:12:43 +0300
+Reply-To: <mrarmand.agbo@gmail.com>
+From:   "Mr Armand AGBO" <msek2008@ukrpost.ua>
+Subject: De Mr Armand AGBO(Demande de Partenariat / Partnership Request)
+Date:   Tue, 20 Oct 2020 07:12:43 +0100
 MIME-Version: 1.0
-In-Reply-To: <09cd7e609324d460afdf14829baf3c2f1a9cb9cd.camel@perches.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+        charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Antivirus: Avast (VPS 201019-10, 19/10/2020), Outbound message
+X-Antivirus-Status: Clean
+X-FEAS-DKIM: Invalid Public Key
+Authentication-Results: mx.fm.ukrtelecom.ua;
+        dkim=neutral (Could not retrieve key) header.i=@ukrpost.ua
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 17/10/2020 à 02:11, Joe Perches a écrit :
-> On Fri, 2020-10-16 at 23:33 +0100, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> Don't populate const array filter_ies on the stack but instead
->> make it static. Makes the object code smaller by 261 bytes.
->>
->> Before:
->>     text	   data	    bss	    dec	    hex	filename
->>    21674	   3166	    448	  25288	   62c8	drivers/staging/wfx/sta.o
->>
->> After:
->>     text	   data	    bss	    dec	    hex	filename
->>    21349	   3230	    448	  25027	   61c3	drivers/staging/wfx/sta.o
-> 
-> Thanks.
-> 
-> It's odd to me it's so large a change as it's only
-> 24 bytes of initialization. (3 entries, each 8 bytes)
-> 
+De Mr Armand AGBO
 
-The function looks small.
-Maybe it is inlined by gcc in each of the 3 callers?
+Je suis Mr Armand AGBO de nationalit=D0=B9 b=D0=B9ninoise, gestionnaire de =
+compte dans une institution bancaire. Je vous prie de m'excuser pour cette =
+intrusion inattendue de ma part car c'est suite =D0=B0 une recherche via in=
+ternet que j'ai trouv=D0=B9 votre contact et apr=D0=B8s avoir parcouru votr=
+e profil, je suis convaincu que vous serez mieux plac=D0=B9 pour ex=D0=B9cu=
+ter cette transaction commerciale avec moi.
+En effet, ceci concerne l=E2=80=99un de nos clients qui est d=D0=B9c=D0=B9d=
+=D0=B9 depuis pr=D0=B8s de 5 ans et qui dispose un compte sans successeur n=
+i mandataire mentionn=D0=B9 dans les fichiers ni dans les archives. Je vien=
+s donc par ce message vous solliciter pour un partenariat comme suit : Ce c=
+ompte est actuellement inactif et est bloqu=D0=B9 mais c=E2=80=99est un com=
+pte physique li=D0=B9 =D0=B0 un compte en ligne. Je tiens =D0=B0 avoir votr=
+e accord de collaboration afin d=E2=80=99inscrire votre nom en tant que b=
+=D0=B9n=D0=B9ficiaire de succession au codicille et dernier testament de ce=
+ dernier dans nos fichiers et archives.
+Cette transaction est 100% sans risque seulement une confiance mutuelle car=
+ tous les documents juridiques qui seront utilis=D0=B9s pour traiter ce dos=
+sier seront trait=D0=B9s par moi, dans votre acceptation de coop=D0=B9rer a=
+vec moi sur cette affaire. 
+Veuillez me faire parvenir votre lettre d'acceptation pour me permettre de =
+commencer =D0=B0 vous procurer tous les documents juridiques pour la lib=D0=
+=B9ration de ses fonds. Voici mon adresse e-mail personnelle: mrarmand.agbo=
+@gmail.com
+Cordialement =E2=80=A6
+Mr AGBO A
+=2E........................................................................=
+=2E........................................................................=
 
-CJ
 
-> This line in the same function:
-> 
-> 		hif_set_beacon_filter_table(wvif, 3, filter_ies);
-> 
-> might as well use ARRAY_SIZE(filter_ies) instead of 3
-> 
-> 
-> 
+By Mr Armand AGBO
+I am Mr Armand AGBO of Beninese nationality, account manager in a banking i=
+nstitution. I apologize for this unexpected intrusion on my part because it=
+ is following an internet search that I found your contact and after having=
+ browsed your profile, I am convinced that you will be in a better position=
+ to execute this transaction. commercial with me.
+Indeed, this concerns one of our clients who has been deceased for almost 5=
+ years and who has an account without a successor or representative mention=
+ed in the files or in the archives. So I come by this message to solicit yo=
+u for a partnership as follows: This account is currently inactive and is b=
+locked but it is a physical account linked to an online account. I would li=
+ke to have your collaboration agreement in order to register your name as b=
+eneficiary of the estate in the codicil and last will of the latter in our =
+files and archives.
+This transaction is 100% risk free only mutual trust as all legal documents=
+ that will be used to process this case will be handled by me, in your agre=
+ement to cooperate with me on this matter.
+Please send me your letter of acceptance to allow me to start getting all t=
+he legal documents for the release of its funds. Here is my personal email =
+address: mrarmand.agbo@gmail.com
+Cordially =E2=80=A6
+Mr AGBO A
+
+-- 
+L'absence de virus dans ce courrier =C3=A9lectronique a =C3=A9t=C3=A9 v=C3=
+=A9rifi=C3=A9e par le logiciel antivirus Avast.
+https://www.avast.com/antivirus
 

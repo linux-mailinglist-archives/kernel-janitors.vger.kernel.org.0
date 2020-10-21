@@ -2,26 +2,22 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F270129531B
-	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Oct 2020 21:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31894295372
+	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Oct 2020 22:26:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2410825AbgJUTry (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 21 Oct 2020 15:47:54 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:38802
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2409957AbgJUTry (ORCPT
+        id S2505180AbgJUU0E (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 21 Oct 2020 16:26:04 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:43714 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2504936AbgJUU0D (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 21 Oct 2020 15:47:54 -0400
-X-IronPort-AV: E=Sophos;i="5.77,402,1596492000"; 
-   d="scan'208";a="362429807"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Oct 2020 21:47:51 +0200
-Date:   Wed, 21 Oct 2020 21:47:51 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-cc:     Julia Lawall <julia.lawall@inria.fr>,
-        Peter Zijlstra <peterz@infradead.org>,
+        Wed, 21 Oct 2020 16:26:03 -0400
+Received: from 89-77-60-66.dynamic.chello.pl (89.77.60.66) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.491)
+ id 209d3efdcc2be77e; Wed, 21 Oct 2020 22:26:00 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Julia Lawall <julia.lawall@inria.fr>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
         Mel Gorman <mgorman@suse.de>, Ingo Molnar <mingo@redhat.com>,
         kernel-janitors@vger.kernel.org,
         Juri Lelli <juri.lelli@redhat.com>,
@@ -35,45 +31,68 @@ cc:     Julia Lawall <julia.lawall@inria.fr>,
         Gilles Muller <Gilles.Muller@inria.fr>,
         viresh.kumar@linaro.org, srinivas.pandruvada@linux.intel.com
 Subject: Re: [PATCH] sched/fair: check for idle core
-In-Reply-To: <20581608.8Dxr8OdOFj@kreacher>
-Message-ID: <alpine.DEB.2.22.394.2010212147230.8475@hadrien>
-References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr> <20201021121950.GF2628@hirez.programming.kicks-ass.net> <alpine.DEB.2.22.394.2010211422230.8475@hadrien> <20581608.8Dxr8OdOFj@kreacher>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+Date:   Wed, 21 Oct 2020 22:25:59 +0200
+Message-ID: <2376963.UiH3HBYXtl@kreacher>
+In-Reply-To: <alpine.DEB.2.22.394.2010212147230.8475@hadrien>
+References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr> <20581608.8Dxr8OdOFj@kreacher> <alpine.DEB.2.22.394.2010212147230.8475@hadrien>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On Wed, 21 Oct 2020, Rafael J. Wysocki wrote:
-
-> On Wednesday, October 21, 2020 2:42:20 PM CEST Julia Lawall wrote:
-> >
-> > On Wed, 21 Oct 2020, Peter Zijlstra wrote:
-> >
-> > > On Wed, Oct 21, 2020 at 01:56:55PM +0200, Julia Lawall wrote:
-> > > > Prior to 5.8, my machine was using intel_pstate and had few background
-> > > > tasks.  Thus the problem wasn't visible in practice.  Starting with 5.8
-> > > > the kernel decided that intel_cpufreq would be more appropriate, which
-> > > > introduced kworkers every 0.004 seconds on all cores.
+On Wednesday, October 21, 2020 9:47:51 PM CEST Julia Lawall wrote:
+> 
+> On Wed, 21 Oct 2020, Rafael J. Wysocki wrote:
+> 
+> > On Wednesday, October 21, 2020 2:42:20 PM CEST Julia Lawall wrote:
 > > >
-> > > That still doesn't make any sense. Are you running the legacy on-demand
-> > > thing or something?
+> > > On Wed, 21 Oct 2020, Peter Zijlstra wrote:
 > > >
-> > > Rafael, Srinivas, Viresh, how come it defaults to that?
+> > > > On Wed, Oct 21, 2020 at 01:56:55PM +0200, Julia Lawall wrote:
+> > > > > Prior to 5.8, my machine was using intel_pstate and had few background
+> > > > > tasks.  Thus the problem wasn't visible in practice.  Starting with 5.8
+> > > > > the kernel decided that intel_cpufreq would be more appropriate, which
+> > > > > introduced kworkers every 0.004 seconds on all cores.
+> > > >
+> > > > That still doesn't make any sense. Are you running the legacy on-demand
+> > > > thing or something?
+> > > >
+> > > > Rafael, Srinivas, Viresh, how come it defaults to that?
+> > >
+> > > The relevant commits are 33aa46f252c7, and 39a188b88332 that fixes a small
+> > > bug.  I have a Intel(R) Xeon(R) CPU E7-8870 v4 @ 2.10GHz that does not
+> > > have the HWP feature, even though the cores seemed to be able to change
+> > > their frequencies at the hardware level.
 > >
-> > The relevant commits are 33aa46f252c7, and 39a188b88332 that fixes a small
-> > bug.  I have a Intel(R) Xeon(R) CPU E7-8870 v4 @ 2.10GHz that does not
-> > have the HWP feature, even though the cores seemed to be able to change
-> > their frequencies at the hardware level.
->
-> That's in the range of "turbo" P-states (if a P-state above a certain threshold
-> is requested by the governor, the processor has a license to choose P-states
-> in the range above this threshold by itself).
+> > That's in the range of "turbo" P-states (if a P-state above a certain threshold
+> > is requested by the governor, the processor has a license to choose P-states
+> > in the range above this threshold by itself).
+> 
+> Sorry, but I don't understand this answer at all.
 
-Sorry, but I don't understand this answer at all.
+Well, sorry about that and let me rephrase then.
 
-thanks,
-julia
+Contemporary CPUs have two ranges of P-states, the so called "guaranteed
+performance" range and the "turbo" range.
+
+In the "guaranteed performance" range the CPU runs in the P-state requested
+by the governor, unless a higher P-state has been requested for another CPU in
+its frequency domain (usually covering the entire processor package) , in which
+case that higher P-state will be used (the effective P-state for all CPUs in the
+frequency domain is the maximum of all P-states requested for individual CPUs).
+
+However, if the governor requests a P-state from the "turbo" range, the
+processor is not required to take that request literally and the PM unit in it may
+override the governor's choice and cause the CPU to run in a different P-state
+(also from the "turbo" range), even if lower P-states have been requested for
+the other CPUs in the processor package.
+
+This is also explained in Documentation/admin-guide/pm/intel_pstate.rst (in the
+Turbo P-states Support section), in more detail and hopefully more clearly.
+
+Cheers!
+
+
+

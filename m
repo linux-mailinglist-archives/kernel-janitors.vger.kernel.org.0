@@ -2,21 +2,21 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 843F2294D73
-	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Oct 2020 15:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00B68294DEE
+	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Oct 2020 15:49:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2441520AbgJUNYv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 21 Oct 2020 09:24:51 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:50411 "EHLO
+        id S2443059AbgJUNtC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 21 Oct 2020 09:49:02 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:52344 "EHLO
         mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2409401AbgJUNYu (ORCPT
+        by vger.kernel.org with ESMTP id S2439375AbgJUNtC (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 21 Oct 2020 09:24:50 -0400
+        Wed, 21 Oct 2020 09:49:02 -0400
 X-IronPort-AV: E=Sophos;i="5.77,401,1596492000"; 
-   d="scan'208";a="473688826"
+   d="scan'208";a="473693564"
 Received: from 173.121.68.85.rev.sfr.net (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Oct 2020 15:24:49 +0200
-Date:   Wed, 21 Oct 2020 15:24:48 +0200 (CEST)
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Oct 2020 15:48:59 +0200
+Date:   Wed, 21 Oct 2020 15:48:59 +0200 (CEST)
 From:   Julia Lawall <julia.lawall@inria.fr>
 X-X-Sender: jll@hadrien
 To:     Mel Gorman <mgorman@suse.de>
@@ -32,14 +32,14 @@ cc:     Julia Lawall <julia.lawall@inria.fr>,
         Daniel Bristot de Oliveira <bristot@redhat.com>,
         linux-kernel@vger.kernel.org,
         Valentin Schneider <valentin.schneider@arm.com>,
-        Gilles Muller <Gilles.Muller@inria.fr>
+        Gilles.Muller@inria.fr
 Subject: Re: [PATCH] sched/fair: check for idle core
 In-Reply-To: <20201021131827.GF32041@suse.de>
-Message-ID: <alpine.DEB.2.22.394.2010211522340.57356@hadrien>
+Message-ID: <alpine.DEB.2.22.394.2010211547190.57356@hadrien>
 References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr> <20201021112038.GC32041@suse.de> <20201021122532.GA30733@vingu-book> <20201021124700.GE32041@suse.de> <alpine.DEB.2.22.394.2010211452100.8475@hadrien> <20201021131827.GF32041@suse.de>
 User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-389467810-1603286689=:57356"
+Content-Type: multipart/mixed; boundary="8323329-484522562-1603288140=:57356"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -47,7 +47,7 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
   This message is in MIME format.  The first part should be readable text,
   while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323329-389467810-1603286689=:57356
+--8323329-484522562-1603288140=:57356
 Content-Type: text/plain; charset=iso-8859-15
 Content-Transfer-Encoding: 8BIT
 
@@ -96,12 +96,9 @@ On Wed, 21 Oct 2020, Mel Gorman wrote:
 > wakee moving to a CPU local to the waker which is not equivalent to the
 > original behaviour.
 
-But it is equal to the original behavior in the idle prev case if you go
-back to the runnable load average days...
-
-The problem seems impossible to solve, because there is no way to know by
-looking only at prev and this whether the thread would prefer to stay
-where it was or go to the waker.
+Could it be possible to check p->recent_used_cpu?  If that is prev (or on
+the same socket?), then prev could be a good choice.  If that is on the
+same socket as the waker, then maybe the waker would be better.
 
 julia
---8323329-389467810-1603286689=:57356--
+--8323329-484522562-1603288140=:57356--

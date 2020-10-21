@@ -2,68 +2,138 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0EA2294719
-	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Oct 2020 06:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DBA52948E8
+	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Oct 2020 09:30:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725710AbgJUEAI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 21 Oct 2020 00:00:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56372 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725446AbgJUEAH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 21 Oct 2020 00:00:07 -0400
-Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.5])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AF68121D6C;
-        Wed, 21 Oct 2020 04:00:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603252807;
-        bh=U3C1dRUEOXaw854OlDNkuD1V3QaQr/gEZ7O/9uscTFE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=M9ZYfvhByjtwDWRTflH//ypwtk7ek7hB3gq8GffdPJ5mEsiNgt2NyjFOKwq4GiFqj
-         AetrPKBr7ISMq+K3ncvznRw+YT69GXjDFZxDnKnu7X3wisBXJzFQWH8Lb4NwBP5h/9
-         ue6zPIBm6nhpYGg8R7N33e6DCp7V6i12U+DXgFr4=
-Date:   Tue, 20 Oct 2020 21:00:05 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: dsa: bcm_sf2: make const array static, makes
- object smaller
-Message-ID: <20201020210005.7871ff74@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <0cdc86a4-66a0-2f1f-ba23-03b54ccacd69@gmail.com>
-References: <20201020165029.56383-1-colin.king@canonical.com>
-        <0cdc86a4-66a0-2f1f-ba23-03b54ccacd69@gmail.com>
+        id S2440966AbgJUHaB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 21 Oct 2020 03:30:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56278 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2440965AbgJUHaB (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 21 Oct 2020 03:30:01 -0400
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4983C0613CE
+        for <kernel-janitors@vger.kernel.org>; Wed, 21 Oct 2020 00:29:59 -0700 (PDT)
+Received: by mail-lf1-x144.google.com with SMTP id l2so1880585lfk.0
+        for <kernel-janitors@vger.kernel.org>; Wed, 21 Oct 2020 00:29:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=b4/I+nUkpd8aiLL/7Bk57Oeqd7wJz8LYc62JJnA1ZR4=;
+        b=xhJXXga76rwDz1EEm8aXKo5AmlQ4at+1BklAz0WL2j9ZvKLfhZbYZ4IhuHrnZZKyqm
+         rw8lDoxCDSuMVuitJ+iktm4/ujRyQl1soYKdmw6KFKGeUQF8UsmD023CfQH3gx6VtIuZ
+         PAUttnVDId/I+jKBJ4VpIsVl4NbqU6Sez2n3kw4IZIMa4s16m0g1YQFTgD7Nl438GH2C
+         HFZih0ZXak9vbwD7eyHk7rR3bznCCIqbqurSY9zFMQPHJEWd2zI7QzG+9IIzktkEVuiv
+         HnmH3gJQ3hemAAp9nsaT1rROwSOTj60Uzbn1cXseaSttyYdEYKUCmmp+sYQkpsUrmoBB
+         107w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=b4/I+nUkpd8aiLL/7Bk57Oeqd7wJz8LYc62JJnA1ZR4=;
+        b=SYoTd8Zmrlz1R0Xu8avghwBFx+MOduSF0r5LCMxmSsjuvPuJQ60ugkJwvMJx56hnmO
+         RIpfoAWNLSV7tSgsqZsENhmYUSPvrncR0i2+mUmMcO9ihS/LeZHjLtEgNv8KjkuLq262
+         BJ2B34gHnBTmJQNN5Gbw3d74wLkNAD6dwpr/EDHp/hljOjplUst50rBGdoTle7Ixckav
+         1dopBFr8saCxJw+IA8qPfjOgjQg5Nhn4bHy575EFNJeqhS5OHn5ZIAHguig8ngHmz18Z
+         CEJC+xkeuDdn+RZDtQfJFn3ylVwy/Y8OphzjEIOHPLCU1fUJOLhJqguZGF3LVMkNCx2r
+         2ejg==
+X-Gm-Message-State: AOAM531tQDrxx9GTK0SBGJqQM8AdojpZozIm7BSizo3WlqXzUHF7HwMZ
+        tMY3jSUcRbRq+6AuWaPqAzUL1LO7I7llZbBpIhJyuQ==
+X-Google-Smtp-Source: ABdhPJwXWd4wsHdDJkFYzbt6LBUhiADRG/pB6O4X11PD74be3EVcFM2GkICwtNKKHM8AGX6sxX7L3A7c5Y9ETsF8L+M=
+X-Received: by 2002:a19:4a88:: with SMTP id x130mr658503lfa.31.1603265398035;
+ Wed, 21 Oct 2020 00:29:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr>
+In-Reply-To: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr>
+From:   Vincent Guittot <vincent.guittot@linaro.org>
+Date:   Wed, 21 Oct 2020 09:29:46 +0200
+Message-ID: <CAKfTPtB41JopBq0CZVvo16N1u+2Smmc1TamJXkbTVj-pRJeHzA@mail.gmail.com>
+Subject: Re: [PATCH] sched/fair: check for idle core
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     Ingo Molnar <mingo@redhat.com>, kernel-janitors@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        Gilles Muller <Gilles.Muller@inria.fr>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 20 Oct 2020 09:51:39 -0700 Florian Fainelli wrote:
-> On 10/20/20 9:50 AM, Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> > 
-> > Don't populate the const array rate_table on the stack but instead it
-> > static. Makes the object code smaller by 46 bytes.
-> > 
-> > Before:
-> >    text	   data	    bss	    dec	    hex	filename
-> >   29812	   3824	    192	  33828	   8424	drivers/net/dsa/bcm_sf2.o
-> > 
-> > After:
-> >    text	   data	    bss	    dec	    hex	filename
-> >   29670	   3920	    192	  33782	   83f6	drivers/net/dsa/bcm_sf2.o
-> > 
-> > (gcc version 10.2.0)
-> > 
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>  
-> 
-> Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Hi Julia,
 
-Applied, thanks!
+On Tue, 20 Oct 2020 at 19:21, Julia Lawall <Julia.Lawall@inria.fr> wrote:
+>
+> On a thread wakeup, the change [1] from runnable load average to load
+> average for comparing candidate cores means that recent short-running
+> daemons on the core where a thread ran previously can be considered to
+> have a higher load than the core performing the wakeup, even when the
+> core where the thread ran previously is currently idle.  This can
+> cause a thread to migrate, taking the place of some other thread that
+> is about to wake up, and so on.  To avoid unnecessary migrations,
+> extend wake_affine_idle to check whether the core where the thread
+> previously ran is currently idle, and if so return that core as the
+> target.
+>
+> [1] commit 11f10e5420f6ce ("sched/fair: Use load instead of runnable
+> load in wakeup path")
+>
+> This particularly has an impact when using passive (intel_cpufreq)
+> power management, where kworkers run every 0.004 seconds on all cores,
+> increasing the likelihood that an idle core will be considered to have
+> a load.
+>
+> The following numbers were obtained with the benchmarking tool
+> hyperfine (https://github.com/sharkdp/hyperfine) on the NAS parallel
+> benchmarks (https://www.nas.nasa.gov/publications/npb.html).  The
+> tests were run on an 80-core Intel(R) Xeon(R) CPU E7-8870 v4 @
+> 2.10GHz.  Active (intel_pstate) and passive (intel_cpufreq) power
+> management were used.  Times are in seconds.  All experiments use all
+> 160 hardware threads.
+>
+>         v5.9/active             v5.9+patch/active
+> bt.C.c  24.725724+-0.962340     23.349608+-1.607214
+> lu.C.x  29.105952+-4.804203     25.249052+-5.561617
+> sp.C.x  31.220696+-1.831335     30.227760+-2.429792
+> ua.C.x  26.606118+-1.767384     25.778367+-1.263850
+>
+>         v5.9/passive            v5.9+patch/passive
+> bt.C.c  25.330360+-1.028316     23.544036+-1.020189
+> lu.C.x  35.872659+-4.872090     23.719295+-3.883848
+> sp.C.x  32.141310+-2.289541     29.125363+-0.872300
+> ua.C.x  29.024597+-1.667049     25.728888+-1.539772
+>
+> On the smaller data sets (A and B) and on the other NAS benchmarks
+> there is no impact on performance.
+>
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+
+Reviewed-by Vincent Guittot <vincent.guittot@linaro.org>
+
+>
+> ---
+>  kernel/sched/fair.c |    3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> index aa4c6227cd6d..9b23dad883ee 100644
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
+> @@ -5804,6 +5804,9 @@ wake_affine_idle(int this_cpu, int prev_cpu, int sync)
+>         if (sync && cpu_rq(this_cpu)->nr_running == 1)
+>                 return this_cpu;
+>
+> +       if (available_idle_cpu(prev_cpu))
+> +               return prev_cpu;
+> +
+>         return nr_cpumask_bits;
+>  }
+>
+>

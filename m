@@ -2,67 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 601EA294CF3
-	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Oct 2020 14:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 128AD294CFE
+	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Oct 2020 14:47:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2395254AbgJUMmt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 21 Oct 2020 08:42:49 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:46320 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2390624AbgJUMmt (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 21 Oct 2020 08:42:49 -0400
-X-IronPort-AV: E=Sophos;i="5.77,401,1596492000"; 
-   d="scan'208";a="473679023"
-Received: from 173.121.68.85.rev.sfr.net (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Oct 2020 14:42:21 +0200
-Date:   Wed, 21 Oct 2020 14:42:20 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Peter Zijlstra <peterz@infradead.org>
-cc:     Julia Lawall <julia.lawall@inria.fr>, Mel Gorman <mgorman@suse.de>,
+        id S2440894AbgJUMrF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 21 Oct 2020 08:47:05 -0400
+Received: from mx2.suse.de ([195.135.220.15]:59176 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2407717AbgJUMrF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 21 Oct 2020 08:47:05 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 1E7F1AC1F;
+        Wed, 21 Oct 2020 12:47:03 +0000 (UTC)
+Date:   Wed, 21 Oct 2020 13:47:00 +0100
+From:   Mel Gorman <mgorman@suse.de>
+To:     Vincent Guittot <vincent.guittot@linaro.org>
+Cc:     Julia Lawall <Julia.Lawall@inria.fr>,
         Ingo Molnar <mingo@redhat.com>,
         kernel-janitors@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
         Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
         Dietmar Eggemann <dietmar.eggemann@arm.com>,
         Steven Rostedt <rostedt@goodmis.org>,
         Ben Segall <bsegall@google.com>,
         Daniel Bristot de Oliveira <bristot@redhat.com>,
         linux-kernel@vger.kernel.org,
         Valentin Schneider <valentin.schneider@arm.com>,
-        Gilles Muller <Gilles.Muller@inria.fr>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>, viresh.kumar@linaro.org,
-        srinivas.pandruvada@linux.intel.com
+        Gilles.Muller@inria.fr
 Subject: Re: [PATCH] sched/fair: check for idle core
-In-Reply-To: <20201021121950.GF2628@hirez.programming.kicks-ass.net>
-Message-ID: <alpine.DEB.2.22.394.2010211422230.8475@hadrien>
-References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr> <20201021112038.GC32041@suse.de> <alpine.DEB.2.22.394.2010211336410.8475@hadrien> <20201021121950.GF2628@hirez.programming.kicks-ass.net>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+Message-ID: <20201021124700.GE32041@suse.de>
+References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr>
+ <20201021112038.GC32041@suse.de>
+ <20201021122532.GA30733@vingu-book>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201021122532.GA30733@vingu-book>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Wed, Oct 21, 2020 at 02:25:32PM +0200, Vincent Guittot wrote:
+> > I see Vincent already agreed with the patch so I could be wrong.  Vincent,
+> > did I miss something stupid?
+> 
+> This patch fixes the problem that we don't favor anymore the prev_cpu when it is idle since
+> commit 11f10e5420f6ce because load is not null when cpu is idle whereas runnable_load was
+> And this is important because this will then decide in which LLC we will looks for a cpu
+> 
 
+Ok, that is understandable but I'm still concerned that the fix simply
+trades one problem for another by leaving related tasks remote to each
+other and increasing cache misses and remote data accesses.
 
-On Wed, 21 Oct 2020, Peter Zijlstra wrote:
+wake_affine_weight is a giant pain because really we don't care about the
+load on the waker CPU or its available, we care about whether it has idle
+siblings that can be found quickly. As tempting as ripping it out is,
+it never happened because sometimes it makes the right decision.
 
-> On Wed, Oct 21, 2020 at 01:56:55PM +0200, Julia Lawall wrote:
-> > Prior to 5.8, my machine was using intel_pstate and had few background
-> > tasks.  Thus the problem wasn't visible in practice.  Starting with 5.8
-> > the kernel decided that intel_cpufreq would be more appropriate, which
-> > introduced kworkers every 0.004 seconds on all cores.
->
-> That still doesn't make any sense. Are you running the legacy on-demand
-> thing or something?
->
-> Rafael, Srinivas, Viresh, how come it defaults to that?
-
-The relevant commits are 33aa46f252c7, and 39a188b88332 that fixes a small
-bug.  I have a Intel(R) Xeon(R) CPU E7-8870 v4 @ 2.10GHz that does not
-have the HWP feature, even though the cores seemed to be able to change
-their frequencies at the hardware level.
-
-julia
+-- 
+Mel Gorman
+SUSE Labs

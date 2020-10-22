@@ -2,22 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31894295372
-	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Oct 2020 22:26:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02F3829575E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Oct 2020 06:41:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2505180AbgJUU0E (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 21 Oct 2020 16:26:04 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:43714 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2504936AbgJUU0D (ORCPT
+        id S2507593AbgJVElx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Oct 2020 00:41:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55552 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2502458AbgJVElw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 21 Oct 2020 16:26:03 -0400
-Received: from 89-77-60-66.dynamic.chello.pl (89.77.60.66) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.491)
- id 209d3efdcc2be77e; Wed, 21 Oct 2020 22:26:00 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Julia Lawall <julia.lawall@inria.fr>
+        Thu, 22 Oct 2020 00:41:52 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2719C0613CF
+        for <kernel-janitors@vger.kernel.org>; Wed, 21 Oct 2020 21:41:52 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id k8so280049pjd.0
+        for <kernel-janitors@vger.kernel.org>; Wed, 21 Oct 2020 21:41:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=7cJzNVPTTZFNbgG47IvnfLgtVfjxwapjyKuc8PcpjN4=;
+        b=xZGB1UcW7HN6Va9qQ5hUDPjWcLDkfHdquLwX9mzPkfbp7sqA4ieXHrOO8Xv9UExSlB
+         kg54dI+rO/lxFGuS9tynSpcn88hn/CKZxYcKENgSuoM0rrmCBM2frmv+DgxMi8+fX2/S
+         50ck3oFdYYFz0Yw4EriYJFi417ikDO8yXpiNUQbkAopYoQlQONi5TuBI/9qK/o1/zXfW
+         xVKNG9Cuwuhjtwf9h6a5WNbA6m+Y1a82X5gh93CgF/i7KGlbOiwtYBApGm43fS3rKZWe
+         GcEHDp1lYOGf9mt2CelCqCo2wspbHTiuWjk1i+4mxGpOX0WWtx5tKZMT0m+qpHWnti8k
+         TwKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=7cJzNVPTTZFNbgG47IvnfLgtVfjxwapjyKuc8PcpjN4=;
+        b=HczGTWu0w8ddQoifgBjRu7GrSNTFf0rb1H271XNJSQptl0HH2cHE765c/6ro+Vi0/y
+         DMJ2mklFLamk2apFFug2nNA2rdzb48rRFoq+j2q/3YBzDYvk6DrDthSndu+SqbO4Hd8p
+         LCAADkIIZd8iUQR3AE9OWd2tkcBuKERn2jZ/wfEBHFgrc5fF2DtvMRg+QP/mdW4AL+W1
+         d2LlrPsn0cuGlqxo7AUcb7K+UaCxjy5Rp39YvET1dLY58VC7Rsk0aDMgDd/b/u0nAsFK
+         qM8dJjkG9BNZf9YIPZMljEri78oJB8CMYxovS+8K1LMeNmHAhSbJgawXBh9zNU8pacSK
+         bjbA==
+X-Gm-Message-State: AOAM533Qe4FqF2fsb+WhklGEpUuN7bLom8Rex2Es+UEheviDtSLtbkUY
+        SkcuhrP71OZBOzICr2+dMZ0nwg==
+X-Google-Smtp-Source: ABdhPJy7Kz2kXU/0CPE+lAJ2lEmZJm3/kX8MrWizdVmhljhiSlm0s7h+wYVIwi15OCd/hOgvbZMRKA==
+X-Received: by 2002:a17:902:b111:b029:d4:cf7c:2ff1 with SMTP id q17-20020a170902b111b02900d4cf7c2ff1mr736017plr.59.1603341712084;
+        Wed, 21 Oct 2020 21:41:52 -0700 (PDT)
+Received: from localhost ([122.181.54.133])
+        by smtp.gmail.com with ESMTPSA id w6sm478127pgw.28.2020.10.21.21.41.49
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 21 Oct 2020 21:41:51 -0700 (PDT)
+Date:   Thu, 22 Oct 2020 10:11:46 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Julia Lawall <julia.lawall@inria.fr>,
         Mel Gorman <mgorman@suse.de>, Ingo Molnar <mingo@redhat.com>,
         kernel-janitors@vger.kernel.org,
         Juri Lelli <juri.lelli@redhat.com>,
@@ -29,70 +64,130 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         linux-kernel@vger.kernel.org,
         Valentin Schneider <valentin.schneider@arm.com>,
         Gilles Muller <Gilles.Muller@inria.fr>,
-        viresh.kumar@linaro.org, srinivas.pandruvada@linux.intel.com
+        srinivas.pandruvada@linux.intel.com
 Subject: Re: [PATCH] sched/fair: check for idle core
-Date:   Wed, 21 Oct 2020 22:25:59 +0200
-Message-ID: <2376963.UiH3HBYXtl@kreacher>
-In-Reply-To: <alpine.DEB.2.22.394.2010212147230.8475@hadrien>
-References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr> <20581608.8Dxr8OdOFj@kreacher> <alpine.DEB.2.22.394.2010212147230.8475@hadrien>
+Message-ID: <20201022044146.4n2jl6jzyycfhfzg@vireshk-i7>
+References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr>
+ <20201021121950.GF2628@hirez.programming.kicks-ass.net>
+ <20201021131026.GY2651@hirez.programming.kicks-ass.net>
+ <6145907.dAfbsivgMF@kreacher>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6145907.dAfbsivgMF@kreacher>
+User-Agent: NeoMutt/20180716-391-311a52
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wednesday, October 21, 2020 9:47:51 PM CEST Julia Lawall wrote:
+On 21-10-20, 20:11, Rafael J. Wysocki wrote:
+> On Wednesday, October 21, 2020 3:10:26 PM CEST Peter Zijlstra wrote:
+> > On Wed, Oct 21, 2020 at 02:19:50PM +0200, Peter Zijlstra wrote:
+> > > On Wed, Oct 21, 2020 at 01:56:55PM +0200, Julia Lawall wrote:
+> > > > Prior to 5.8, my machine was using intel_pstate and had few background
+> > > > tasks.  Thus the problem wasn't visible in practice.  Starting with 5.8
+> > > > the kernel decided that intel_cpufreq would be more appropriate, which
+> > > > introduced kworkers every 0.004 seconds on all cores.
+> > > 
+> > > That still doesn't make any sense. Are you running the legacy on-demand
+> > > thing or something?
+> > > 
+> > > Rafael, Srinivas, Viresh, how come it defaults to that?
+> > 
+> > Does we want something like this?
+> > 
+> > ---
+> >  arch/x86/configs/i386_defconfig   | 3 +--
+> >  arch/x86/configs/x86_64_defconfig | 3 +--
+> >  drivers/cpufreq/Kconfig           | 7 +++++--
+> >  3 files changed, 7 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/arch/x86/configs/i386_defconfig b/arch/x86/configs/i386_defconfig
+> > index 78210793d357..c343ad459737 100644
+> > --- a/arch/x86/configs/i386_defconfig
+> > +++ b/arch/x86/configs/i386_defconfig
+> > @@ -41,8 +41,7 @@ CONFIG_PM_DEBUG=y
+> >  CONFIG_PM_TRACE_RTC=y
+> >  CONFIG_ACPI_DOCK=y
+> >  CONFIG_ACPI_BGRT=y
+> > -CONFIG_CPU_FREQ_DEFAULT_GOV_USERSPACE=y
+> > -CONFIG_CPU_FREQ_GOV_ONDEMAND=y
+> > +CONFIG_CPU_FREQ_DEFAULT_GOV_SCHEDUTIL=y
+> >  CONFIG_X86_ACPI_CPUFREQ=y
+> >  CONFIG_EFI_VARS=y
+> >  CONFIG_KPROBES=y
+> > diff --git a/arch/x86/configs/x86_64_defconfig b/arch/x86/configs/x86_64_defconfig
+> > index 9936528e1939..23e1ea85c1ec 100644
+> > --- a/arch/x86/configs/x86_64_defconfig
+> > +++ b/arch/x86/configs/x86_64_defconfig
+> > @@ -38,8 +38,7 @@ CONFIG_PM_DEBUG=y
+> >  CONFIG_PM_TRACE_RTC=y
+> >  CONFIG_ACPI_DOCK=y
+> >  CONFIG_ACPI_BGRT=y
+> > -CONFIG_CPU_FREQ_DEFAULT_GOV_USERSPACE=y
+> > -CONFIG_CPU_FREQ_GOV_ONDEMAND=y
+> > +CONFIG_CPU_FREQ_DEFAULT_GOV_SCHEDUTIL=y
+> >  CONFIG_X86_ACPI_CPUFREQ=y
+> >  CONFIG_IA32_EMULATION=y
+> >  CONFIG_EFI_VARS=y
+> > diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
+> > index 2c7171e0b001..8dfca6e9b836 100644
+> > --- a/drivers/cpufreq/Kconfig
+> > +++ b/drivers/cpufreq/Kconfig
+> > @@ -37,8 +37,7 @@ config CPU_FREQ_STAT
+> >  choice
+> >  	prompt "Default CPUFreq governor"
+> >  	default CPU_FREQ_DEFAULT_GOV_USERSPACE if ARM_SA1100_CPUFREQ || ARM_SA1110_CPUFREQ
+> > -	default CPU_FREQ_DEFAULT_GOV_SCHEDUTIL if ARM64 || ARM
+> > -	default CPU_FREQ_DEFAULT_GOV_SCHEDUTIL if X86_INTEL_PSTATE && SMP
+> > +	default CPU_FREQ_DEFAULT_GOV_SCHEDUTIL if SMP
+> >  	default CPU_FREQ_DEFAULT_GOV_PERFORMANCE
+> >  	help
+> >  	  This option sets which CPUFreq governor shall be loaded at
+> > @@ -71,6 +70,7 @@ config CPU_FREQ_DEFAULT_GOV_USERSPACE
+> >  
+> >  config CPU_FREQ_DEFAULT_GOV_ONDEMAND
+> >  	bool "ondemand"
+> > +	depends on !SMP
+> >  	select CPU_FREQ_GOV_ONDEMAND
+> >  	select CPU_FREQ_GOV_PERFORMANCE
+> >  	help
+> > @@ -83,6 +83,7 @@ config CPU_FREQ_DEFAULT_GOV_ONDEMAND
+> >  
+> >  config CPU_FREQ_DEFAULT_GOV_CONSERVATIVE
+> >  	bool "conservative"
+> > +	depends on !SMP
+> >  	select CPU_FREQ_GOV_CONSERVATIVE
+> >  	select CPU_FREQ_GOV_PERFORMANCE
+> >  	help
 > 
-> On Wed, 21 Oct 2020, Rafael J. Wysocki wrote:
+> The changes above should work.
 > 
-> > On Wednesday, October 21, 2020 2:42:20 PM CEST Julia Lawall wrote:
-> > >
-> > > On Wed, 21 Oct 2020, Peter Zijlstra wrote:
-> > >
-> > > > On Wed, Oct 21, 2020 at 01:56:55PM +0200, Julia Lawall wrote:
-> > > > > Prior to 5.8, my machine was using intel_pstate and had few background
-> > > > > tasks.  Thus the problem wasn't visible in practice.  Starting with 5.8
-> > > > > the kernel decided that intel_cpufreq would be more appropriate, which
-> > > > > introduced kworkers every 0.004 seconds on all cores.
-> > > >
-> > > > That still doesn't make any sense. Are you running the legacy on-demand
-> > > > thing or something?
-> > > >
-> > > > Rafael, Srinivas, Viresh, how come it defaults to that?
-> > >
-> > > The relevant commits are 33aa46f252c7, and 39a188b88332 that fixes a small
-> > > bug.  I have a Intel(R) Xeon(R) CPU E7-8870 v4 @ 2.10GHz that does not
-> > > have the HWP feature, even though the cores seemed to be able to change
-> > > their frequencies at the hardware level.
-> >
-> > That's in the range of "turbo" P-states (if a P-state above a certain threshold
-> > is requested by the governor, the processor has a license to choose P-states
-> > in the range above this threshold by itself).
+> > @@ -144,6 +145,7 @@ config CPU_FREQ_GOV_USERSPACE
+> >  
+> >  config CPU_FREQ_GOV_ONDEMAND
+> >  	tristate "'ondemand' cpufreq policy governor"
+> > +	depends on !SMP
 > 
-> Sorry, but I don't understand this answer at all.
+> But I don't think that we can do this and the one below.
 
-Well, sorry about that and let me rephrase then.
+I have exactly the same comments.
 
-Contemporary CPUs have two ranges of P-states, the so called "guaranteed
-performance" range and the "turbo" range.
+> >  	select CPU_FREQ_GOV_COMMON
+> >  	help
+> >  	  'ondemand' - This driver adds a dynamic cpufreq policy governor.
+> > @@ -163,6 +165,7 @@ config CPU_FREQ_GOV_ONDEMAND
+> >  config CPU_FREQ_GOV_CONSERVATIVE
+> >  	tristate "'conservative' cpufreq governor"
+> >  	depends on CPU_FREQ
+> > +	depends on !SMP
+> >  	select CPU_FREQ_GOV_COMMON
+> >  	help
+> >  	  'conservative' - this driver is rather similar to the 'ondemand'
+> > 
+> 
+> 
+> 
 
-In the "guaranteed performance" range the CPU runs in the P-state requested
-by the governor, unless a higher P-state has been requested for another CPU in
-its frequency domain (usually covering the entire processor package) , in which
-case that higher P-state will be used (the effective P-state for all CPUs in the
-frequency domain is the maximum of all P-states requested for individual CPUs).
-
-However, if the governor requests a P-state from the "turbo" range, the
-processor is not required to take that request literally and the PM unit in it may
-override the governor's choice and cause the CPU to run in a different P-state
-(also from the "turbo" range), even if lower P-states have been requested for
-the other CPUs in the processor package.
-
-This is also explained in Documentation/admin-guide/pm/intel_pstate.rst (in the
-Turbo P-states Support section), in more detail and hopefully more clearly.
-
-Cheers!
-
-
-
+-- 
+viresh

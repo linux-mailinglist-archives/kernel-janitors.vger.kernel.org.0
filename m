@@ -2,43 +2,43 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4195D29617F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Oct 2020 17:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD21F2961A5
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Oct 2020 17:25:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S368475AbgJVPMT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Oct 2020 11:12:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:21925 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S368423AbgJVPMS (ORCPT
+        id S368637AbgJVPZs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Oct 2020 11:25:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42094 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2901438AbgJVPZm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Oct 2020 11:12:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1603379536;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=uDlJvVtWMlPWw+lQx90tQ7kEfUNHvkpfYYWbomFbvhA=;
-        b=QacrUXZGTFkmWMLriwhtv9Xp3reNIXmA+Mip6T76HeNKWBRbZfG+SGSKdSp6nrNda1wAkk
-        O3XDu4ag9sqoxBgaXo1dtn70S20a5IvDLdGfJDEDit+Yk88ODhMbcWkDz5btxz0dOU0EYN
-        /D2eyG0Hf158yRdDwRGW2Y4IsV7awHM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-584-nYS15yLeNbO5z0Blf0cGTA-1; Thu, 22 Oct 2020 11:12:13 -0400
-X-MC-Unique: nYS15yLeNbO5z0Blf0cGTA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 108C41882FA1;
-        Thu, 22 Oct 2020 15:12:11 +0000 (UTC)
-Received: from lorien.usersys.redhat.com (ovpn-113-70.phx2.redhat.com [10.3.113.70])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 4253C55776;
-        Thu, 22 Oct 2020 15:12:02 +0000 (UTC)
-Date:   Thu, 22 Oct 2020 11:12:00 -0400
-From:   Phil Auld <pauld@redhat.com>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     Mel Gorman <mgorman@suse.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Thu, 22 Oct 2020 11:25:42 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E34FCC0613CE;
+        Thu, 22 Oct 2020 08:25:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=uNiU3efnTwPeAKOY4UJUGM46GfdX/X2ngekQQHB4va8=; b=SR5PUoAVNy8wU0ea/eyb0/kUYU
+        53hX/8NiDEWA0ZcRxmxtqRpgpbNnip2BBnOrXY8+9D7Q8oIpeDgt4npEjXf+5wVqGyqFySUkSERco
+        6x7Vc5LmIzk5Us32wJWXaYLn+n7D79f9u5o/K9QPn0IB9dBAUNeawLiJoH7nCGoS7IYkCN46k3q5e
+        Xf09A4bKmOQxGUw89OpsbvyTa1O3FSlcXxEvdaJZrek5lRBKG+ywveYoL6iQ3yu9uwjAEVRMzTk4c
+        tSdHzC1BRqBjPk2hEZZAlbtX2TubM8HeFx7vhQR43uVLFRney+3dZXlI9m18+FQQNPxhiU1EHyJQi
+        4YvhkQvw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kVcSq-0006or-2N; Thu, 22 Oct 2020 15:25:16 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 86DE03010D2;
+        Thu, 22 Oct 2020 17:25:14 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 6DA02203D0835; Thu, 22 Oct 2020 17:25:14 +0200 (CEST)
+Date:   Thu, 22 Oct 2020 17:25:14 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Mel Gorman <mgorman@suse.de>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Giovanni Gherdovich <ggherdovich@suse.com>,
         Viresh Kumar <viresh.kumar@linaro.org>,
         Julia Lawall <julia.lawall@inria.fr>,
@@ -57,85 +57,57 @@ Cc:     Mel Gorman <mgorman@suse.de>,
         Linux PM <linux-pm@vger.kernel.org>,
         Len Brown <len.brown@intel.com>
 Subject: Re: default cpufreq gov, was: [PATCH] sched/fair: check for idle core
-Message-ID: <20201022151200.GC92942@lorien.usersys.redhat.com>
+Message-ID: <20201022152514.GJ2611@hirez.programming.kicks-ass.net>
 References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr>
  <34115486.YmRjPRKJaA@kreacher>
  <20201022120213.GG2611@hirez.programming.kicks-ass.net>
  <1790766.jaFeG3T87Z@kreacher>
  <20201022122949.GW2628@hirez.programming.kicks-ass.net>
  <20201022145250.GK32041@suse.de>
- <6606e5f4-3f66-5844-da02-5b11e1464be6@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6606e5f4-3f66-5844-da02-5b11e1464be6@canonical.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+In-Reply-To: <20201022145250.GK32041@suse.de>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Oct 22, 2020 at 03:58:13PM +0100 Colin Ian King wrote:
-> On 22/10/2020 15:52, Mel Gorman wrote:
-> > On Thu, Oct 22, 2020 at 02:29:49PM +0200, Peter Zijlstra wrote:
-> >> On Thu, Oct 22, 2020 at 02:19:29PM +0200, Rafael J. Wysocki wrote:
-> >>>> However I do want to retire ondemand, conservative and also very much
-> >>>> intel_pstate/active mode.
-> >>>
-> >>> I agree in general, but IMO it would not be prudent to do that without making
-> >>> schedutil provide the same level of performance in all of the relevant use
-> >>> cases.
-> >>
-> >> Agreed; I though to have understood we were there already.
-> > 
-> > AFAIK, not quite (added Giovanni as he has been paying more attention).
-> > Schedutil has improved since it was merged but not to the extent where
-> > it is a drop-in replacement. The standard it needs to meet is that
-> > it is at least equivalent to powersave (in intel_pstate language)
-> > or ondemand (acpi_cpufreq) and within a reasonable percentage of the
-> > performance governor. Defaulting to performance is a) giving up and b)
-> > the performance governor is not a universal win. There are some questions
-> > currently on whether schedutil is good enough when HWP is not available.
-> > There was some evidence (I don't have the data, Giovanni was looking into
-> > it) that HWP was a requirement to make schedutil work well. That is a
-> > hazard in itself because someone could test on the latest gen Intel CPU
-> > and conclude everything is fine and miss that Intel-specific technology
-> > is needed to make it work well while throwing everyone else under a bus.
-> > Giovanni knows a lot more than I do about this, I could be wrong or
-> > forgetting things.
-> > 
-> > For distros, switching to schedutil by default would be nice because
-> > frequency selection state would follow the task instead of being per-cpu
-> > and we could stop worrying about different HWP implementations but it's
-> > not at the point where the switch is advisable. I would expect hard data
-> > before switching the default and still would strongly advise having a
-> > period of time where we can fall back when someone inevitably finds a
-> > new corner case or exception.
-> 
-> ..and it would be really useful for distros to know when the hard data
-> is available so that they can make an informed decision when to move to
-> schedutil.
->
+On Thu, Oct 22, 2020 at 03:52:50PM +0100, Mel Gorman wrote:
 
-I think distros are on the hook to generate that hard data themselves
-with which to make such a decision.  I don't expect it to be done by
-someone else. 
+> There are some questions
+> currently on whether schedutil is good enough when HWP is not available.
 
-> > 
-> > For reference, SLUB had the same problem for years. It was switched
-> > on by default in the kernel config but it was a long time before
-> > SLUB was generally equivalent to SLAB in terms of performance. Block
-> > multiqueue also had vaguely similar issues before the default changes
-> > and a period of time before it was removed removed (example whinging mail
-> > https://lore.kernel.org/lkml/20170803085115.r2jfz2lofy5spfdb@techsingularity.net/)
-> > It's schedutil's turn :P
-> > 
-> 
+Srinivas and Rafael will know better, but Intel does run a lot of tests
+and IIRC it was found that schedutil was on-par for !HWP. That was the
+basis for commit:
 
-Agreed. I'd like the option to switch back if we make the default change.
-It's on the table and I'd like to be able to go that way. 
+  33aa46f252c7 ("cpufreq: intel_pstate: Use passive mode by default without HWP")
 
-Cheers,
-Phil
+But now it turns out that commit results in running intel_pstate-passive
+on ondemand, which is quite horrible.
 
--- 
+> There was some evidence (I don't have the data, Giovanni was looking into
+> it) that HWP was a requirement to make schedutil work well.
+
+That seems to be the question; Rafael just said the opposite.
+
+> For distros, switching to schedutil by default would be nice because
+> frequency selection state would follow the task instead of being per-cpu
+> and we could stop worrying about different HWP implementations but it's
+
+s/HWP/cpufreq-governors/ ? But yes.
+
+> not at the point where the switch is advisable. I would expect hard data
+> before switching the default and still would strongly advise having a
+> period of time where we can fall back when someone inevitably finds a
+> new corner case or exception.
+
+Which is why I advocated to make it 'difficult' to use the old ones and
+only later remove them.
+
+> For reference, SLUB had the same problem for years. It was switched
+> on by default in the kernel config but it was a long time before
+> SLUB was generally equivalent to SLAB in terms of performance.
+
+I remember :-)
 

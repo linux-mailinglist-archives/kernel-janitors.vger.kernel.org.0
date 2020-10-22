@@ -2,78 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCCC5295E66
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Oct 2020 14:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3270E295E6F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Oct 2020 14:35:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2898237AbgJVMaU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Oct 2020 08:30:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43060 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2898192AbgJVMaT (ORCPT
+        id S2504802AbgJVMfH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Oct 2020 08:35:07 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:35310 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2503967AbgJVMfG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Oct 2020 08:30:19 -0400
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97213C0613CE;
-        Thu, 22 Oct 2020 05:30:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=EedHvqVCCjLDevVL9HqqLGGu/5dwmfqkwiCkYnXrnOA=; b=g+h2ebbhZ35yKxhx72G5WLe0iJ
-        3rYFno3qrByA6M6lsokAgw7OrLS3xFU85vASl4h1DEqQl+pzuAfwt4F3VuiRzSXvt3kN2Yba1LJeT
-        R4CjyU1YtwTUbROFR4U5+7rTnS6MS6pKpUaeQ/zXmgJ2V0sc2upTt4v2zLsnZX1eegkeRU9kmfa76
-        WElyrTsC25oKVo6e9kbGnO2Pm4y/b5VFJORsyej7cDtfrEhYV5f5Mk79reBSabhg58Tr8Mm6HxnNg
-        J8nlexO5gNUGekaDJPKVbKbTyae7LBzx1quCNZAN0M4f6R5I3NY4S4jnAGZL7fKAzZc2uBZeivhom
-        fxPJ9h6A==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kVZj7-000463-HD; Thu, 22 Oct 2020 12:29:53 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 5A0DF306099;
-        Thu, 22 Oct 2020 14:29:49 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 27418203CC4B3; Thu, 22 Oct 2020 14:29:49 +0200 (CEST)
-Date:   Thu, 22 Oct 2020 14:29:49 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
-        Julia Lawall <julia.lawall@inria.fr>,
-        Mel Gorman <mgorman@suse.de>, Ingo Molnar <mingo@redhat.com>,
-        kernel-janitors@vger.kernel.org,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        linux-kernel@vger.kernel.org,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Gilles Muller <Gilles.Muller@inria.fr>,
-        srinivas.pandruvada@linux.intel.com,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Len Brown <len.brown@intel.com>
-Subject: Re: default cpufreq gov, was: [PATCH] sched/fair: check for idle core
-Message-ID: <20201022122949.GW2628@hirez.programming.kicks-ass.net>
-References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr>
- <34115486.YmRjPRKJaA@kreacher>
- <20201022120213.GG2611@hirez.programming.kicks-ass.net>
- <1790766.jaFeG3T87Z@kreacher>
+        Thu, 22 Oct 2020 08:35:06 -0400
+X-IronPort-AV: E=Sophos;i="5.77,404,1596492000"; 
+   d="scan'208";a="473857495"
+Received: from 173.121.68.85.rev.sfr.net (HELO hadrien) ([85.68.121.173])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 Oct 2020 14:35:03 +0200
+Date:   Thu, 22 Oct 2020 14:35:03 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Coccinelle <cocci@systeme.lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Denis Efremov <efremov@linux.com>
+Subject: =?UTF-8?Q?Re=3A_Coccinelle=3A_Checking_the_influence_of_=E2?=
+ =?UTF-8?Q?=80=9CGrep_query=E2=80=9D?=
+In-Reply-To: <acaed49b9195d47e252a0b67551f87e96324d004.camel@web.de>
+Message-ID: <alpine.DEB.2.22.394.2010221434210.5113@hadrien>
+References: <78f8b08754dde286adf7e11e1eeb3bb8ad500d8b.camel@web.de> <acaed49b9195d47e252a0b67551f87e96324d004.camel@web.de>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1790766.jaFeG3T87Z@kreacher>
+Content-Type: multipart/mixed; boundary="8323329-24693990-1603370104=:5113"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Oct 22, 2020 at 02:19:29PM +0200, Rafael J. Wysocki wrote:
-> > However I do want to retire ondemand, conservative and also very much
-> > intel_pstate/active mode.
-> 
-> I agree in general, but IMO it would not be prudent to do that without making
-> schedutil provide the same level of performance in all of the relevant use
-> cases.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Agreed; I though to have understood we were there already.
+--8323329-24693990-1603370104=:5113
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+
+
+
+On Thu, 22 Oct 2020, Markus Elfring wrote:
+
+> > A disjunction is applied by this script for the semantic patch language.
+> > This construct uses short-circuit evaluation. It has got the consequence
+> > that the last element of the specified condition will only be checked
+> > if all previous parts did not match. Such a technical detail leads to
+> > a recommended ordering of condition parts if you would like to care for
+> > optimal run time characteristics of SmPL code.
+>
+> I imagine that such information can trigger further software evolution
+> at more places.
+>
+>
+> > +++ b/scripts/coccinelle/iterators/for_each_child.cocci
+>
+> The software “Coccinelle 1.0.8-00177-g28737419” displays the following data.
+>
+> elfring@Sonne:~/Projekte/Linux/next-patched> spatch -D patch --parse-cocci
+> scripts/coccinelle/iterators/for_each_child.cocci
+> …
+> Grep query
+> for_each_node_with_property || for_each_node_by_type || for_each_node_by_name ||
+> for_each_matching_node_and_match || for_each_matching_node ||
+> for_each_compatible_node || for_each_child_of_node ||
+> for_each_available_child_of_node
+>
+>
+> I suggest to take another closer look at the presented ordering for
+> these identifiers.
+> It deviates from the proposed listing for the SmPL disjunction.
+> Now I am curious if this difference can be meaningful.
+>
+> If the exact “grep” is performed, it might happen that short-circuit evaluation
+> would be applied also by the corresponding software component (or known tool).
+> Will any adjustments become relevant then accordingly?
+
+It doesn't matter.  The purpose is just to select files that are relevent
+for consideration.  If a file is selected for two reasons instead of one
+reason, it doesn't matter; it's still selected.
+
+julia
+--8323329-24693990-1603370104=:5113--

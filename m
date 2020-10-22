@@ -2,192 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02F3829575E
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Oct 2020 06:41:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D56C22958C8
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Oct 2020 09:05:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2507593AbgJVElx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Oct 2020 00:41:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55552 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2502458AbgJVElw (ORCPT
+        id S2505092AbgJVHFY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Oct 2020 03:05:24 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:57186 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2439993AbgJVHFY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Oct 2020 00:41:52 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2719C0613CF
-        for <kernel-janitors@vger.kernel.org>; Wed, 21 Oct 2020 21:41:52 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id k8so280049pjd.0
-        for <kernel-janitors@vger.kernel.org>; Wed, 21 Oct 2020 21:41:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=7cJzNVPTTZFNbgG47IvnfLgtVfjxwapjyKuc8PcpjN4=;
-        b=xZGB1UcW7HN6Va9qQ5hUDPjWcLDkfHdquLwX9mzPkfbp7sqA4ieXHrOO8Xv9UExSlB
-         kg54dI+rO/lxFGuS9tynSpcn88hn/CKZxYcKENgSuoM0rrmCBM2frmv+DgxMi8+fX2/S
-         50ck3oFdYYFz0Yw4EriYJFi417ikDO8yXpiNUQbkAopYoQlQONi5TuBI/9qK/o1/zXfW
-         xVKNG9Cuwuhjtwf9h6a5WNbA6m+Y1a82X5gh93CgF/i7KGlbOiwtYBApGm43fS3rKZWe
-         GcEHDp1lYOGf9mt2CelCqCo2wspbHTiuWjk1i+4mxGpOX0WWtx5tKZMT0m+qpHWnti8k
-         TwKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=7cJzNVPTTZFNbgG47IvnfLgtVfjxwapjyKuc8PcpjN4=;
-        b=HczGTWu0w8ddQoifgBjRu7GrSNTFf0rb1H271XNJSQptl0HH2cHE765c/6ro+Vi0/y
-         DMJ2mklFLamk2apFFug2nNA2rdzb48rRFoq+j2q/3YBzDYvk6DrDthSndu+SqbO4Hd8p
-         LCAADkIIZd8iUQR3AE9OWd2tkcBuKERn2jZ/wfEBHFgrc5fF2DtvMRg+QP/mdW4AL+W1
-         d2LlrPsn0cuGlqxo7AUcb7K+UaCxjy5Rp39YvET1dLY58VC7Rsk0aDMgDd/b/u0nAsFK
-         qM8dJjkG9BNZf9YIPZMljEri78oJB8CMYxovS+8K1LMeNmHAhSbJgawXBh9zNU8pacSK
-         bjbA==
-X-Gm-Message-State: AOAM533Qe4FqF2fsb+WhklGEpUuN7bLom8Rex2Es+UEheviDtSLtbkUY
-        SkcuhrP71OZBOzICr2+dMZ0nwg==
-X-Google-Smtp-Source: ABdhPJy7Kz2kXU/0CPE+lAJ2lEmZJm3/kX8MrWizdVmhljhiSlm0s7h+wYVIwi15OCd/hOgvbZMRKA==
-X-Received: by 2002:a17:902:b111:b029:d4:cf7c:2ff1 with SMTP id q17-20020a170902b111b02900d4cf7c2ff1mr736017plr.59.1603341712084;
-        Wed, 21 Oct 2020 21:41:52 -0700 (PDT)
-Received: from localhost ([122.181.54.133])
-        by smtp.gmail.com with ESMTPSA id w6sm478127pgw.28.2020.10.21.21.41.49
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 21 Oct 2020 21:41:51 -0700 (PDT)
-Date:   Thu, 22 Oct 2020 10:11:46 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Julia Lawall <julia.lawall@inria.fr>,
-        Mel Gorman <mgorman@suse.de>, Ingo Molnar <mingo@redhat.com>,
-        kernel-janitors@vger.kernel.org,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        linux-kernel@vger.kernel.org,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Gilles Muller <Gilles.Muller@inria.fr>,
-        srinivas.pandruvada@linux.intel.com
-Subject: Re: [PATCH] sched/fair: check for idle core
-Message-ID: <20201022044146.4n2jl6jzyycfhfzg@vireshk-i7>
-References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr>
- <20201021121950.GF2628@hirez.programming.kicks-ass.net>
- <20201021131026.GY2651@hirez.programming.kicks-ass.net>
- <6145907.dAfbsivgMF@kreacher>
+        Thu, 22 Oct 2020 03:05:24 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09M6mwVP131191;
+        Thu, 22 Oct 2020 07:04:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=RXOU3zvWfW6xab1fti7HmRR297bFjvzAB5qDkslhVPI=;
+ b=OG4pbvYSs5DMUqABM1KJiLmgSTbHyI6ZojLAoFFhk041T3p5SzIep2RN9JD38o+JvglV
+ OwOnmnqttq6vQtAyHWIevV8/trnd387Em7gDuNO2dNjGKDUKuzspT2BjiZAGi6mSKypM
+ WUQhcEkhdaTKiCFn76XsYCJLVEo9oyhAvrBvuIf2nKXcT4OdEmpzrGF3ihyAJgzI+vUE
+ egBMcUz4N1KsaUcPFhn0hiPEQIn94r8Xj02b8M6HZ/+sbLfe0OfWdVF9gXh109bLVpMz
+ tMXXz3AN/F1spDes45urvMf1rHiYss9mf5rTnpT5E1+Uz3zDuDaBryj/cU7ayuNgszG5 Xg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 347p4b4ae9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 22 Oct 2020 07:04:59 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09M6o8Zg047205;
+        Thu, 22 Oct 2020 07:04:59 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 348a6q985k-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 22 Oct 2020 07:04:59 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09M74wYk009204;
+        Thu, 22 Oct 2020 07:04:58 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 22 Oct 2020 00:04:57 -0700
+Date:   Thu, 22 Oct 2020 10:04:51 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Alessandro Zummo <a.zummo@towertech.it>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        linux-rtc@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] rtc: pcf2127: fix pcf2127_nvmem_read/write() returns
+Message-ID: <20201022070451.GA2817669@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6145907.dAfbsivgMF@kreacher>
-User-Agent: NeoMutt/20180716-391-311a52
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9781 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ bulkscore=0 spamscore=0 adultscore=0 suspectscore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010220044
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9781 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 priorityscore=1501
+ clxscore=1011 malwarescore=0 mlxscore=0 bulkscore=0 lowpriorityscore=0
+ phishscore=0 adultscore=0 mlxlogscore=999 impostorscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010220044
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 21-10-20, 20:11, Rafael J. Wysocki wrote:
-> On Wednesday, October 21, 2020 3:10:26 PM CEST Peter Zijlstra wrote:
-> > On Wed, Oct 21, 2020 at 02:19:50PM +0200, Peter Zijlstra wrote:
-> > > On Wed, Oct 21, 2020 at 01:56:55PM +0200, Julia Lawall wrote:
-> > > > Prior to 5.8, my machine was using intel_pstate and had few background
-> > > > tasks.  Thus the problem wasn't visible in practice.  Starting with 5.8
-> > > > the kernel decided that intel_cpufreq would be more appropriate, which
-> > > > introduced kworkers every 0.004 seconds on all cores.
-> > > 
-> > > That still doesn't make any sense. Are you running the legacy on-demand
-> > > thing or something?
-> > > 
-> > > Rafael, Srinivas, Viresh, how come it defaults to that?
-> > 
-> > Does we want something like this?
-> > 
-> > ---
-> >  arch/x86/configs/i386_defconfig   | 3 +--
-> >  arch/x86/configs/x86_64_defconfig | 3 +--
-> >  drivers/cpufreq/Kconfig           | 7 +++++--
-> >  3 files changed, 7 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/arch/x86/configs/i386_defconfig b/arch/x86/configs/i386_defconfig
-> > index 78210793d357..c343ad459737 100644
-> > --- a/arch/x86/configs/i386_defconfig
-> > +++ b/arch/x86/configs/i386_defconfig
-> > @@ -41,8 +41,7 @@ CONFIG_PM_DEBUG=y
-> >  CONFIG_PM_TRACE_RTC=y
-> >  CONFIG_ACPI_DOCK=y
-> >  CONFIG_ACPI_BGRT=y
-> > -CONFIG_CPU_FREQ_DEFAULT_GOV_USERSPACE=y
-> > -CONFIG_CPU_FREQ_GOV_ONDEMAND=y
-> > +CONFIG_CPU_FREQ_DEFAULT_GOV_SCHEDUTIL=y
-> >  CONFIG_X86_ACPI_CPUFREQ=y
-> >  CONFIG_EFI_VARS=y
-> >  CONFIG_KPROBES=y
-> > diff --git a/arch/x86/configs/x86_64_defconfig b/arch/x86/configs/x86_64_defconfig
-> > index 9936528e1939..23e1ea85c1ec 100644
-> > --- a/arch/x86/configs/x86_64_defconfig
-> > +++ b/arch/x86/configs/x86_64_defconfig
-> > @@ -38,8 +38,7 @@ CONFIG_PM_DEBUG=y
-> >  CONFIG_PM_TRACE_RTC=y
-> >  CONFIG_ACPI_DOCK=y
-> >  CONFIG_ACPI_BGRT=y
-> > -CONFIG_CPU_FREQ_DEFAULT_GOV_USERSPACE=y
-> > -CONFIG_CPU_FREQ_GOV_ONDEMAND=y
-> > +CONFIG_CPU_FREQ_DEFAULT_GOV_SCHEDUTIL=y
-> >  CONFIG_X86_ACPI_CPUFREQ=y
-> >  CONFIG_IA32_EMULATION=y
-> >  CONFIG_EFI_VARS=y
-> > diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
-> > index 2c7171e0b001..8dfca6e9b836 100644
-> > --- a/drivers/cpufreq/Kconfig
-> > +++ b/drivers/cpufreq/Kconfig
-> > @@ -37,8 +37,7 @@ config CPU_FREQ_STAT
-> >  choice
-> >  	prompt "Default CPUFreq governor"
-> >  	default CPU_FREQ_DEFAULT_GOV_USERSPACE if ARM_SA1100_CPUFREQ || ARM_SA1110_CPUFREQ
-> > -	default CPU_FREQ_DEFAULT_GOV_SCHEDUTIL if ARM64 || ARM
-> > -	default CPU_FREQ_DEFAULT_GOV_SCHEDUTIL if X86_INTEL_PSTATE && SMP
-> > +	default CPU_FREQ_DEFAULT_GOV_SCHEDUTIL if SMP
-> >  	default CPU_FREQ_DEFAULT_GOV_PERFORMANCE
-> >  	help
-> >  	  This option sets which CPUFreq governor shall be loaded at
-> > @@ -71,6 +70,7 @@ config CPU_FREQ_DEFAULT_GOV_USERSPACE
-> >  
-> >  config CPU_FREQ_DEFAULT_GOV_ONDEMAND
-> >  	bool "ondemand"
-> > +	depends on !SMP
-> >  	select CPU_FREQ_GOV_ONDEMAND
-> >  	select CPU_FREQ_GOV_PERFORMANCE
-> >  	help
-> > @@ -83,6 +83,7 @@ config CPU_FREQ_DEFAULT_GOV_ONDEMAND
-> >  
-> >  config CPU_FREQ_DEFAULT_GOV_CONSERVATIVE
-> >  	bool "conservative"
-> > +	depends on !SMP
-> >  	select CPU_FREQ_GOV_CONSERVATIVE
-> >  	select CPU_FREQ_GOV_PERFORMANCE
-> >  	help
-> 
-> The changes above should work.
-> 
-> > @@ -144,6 +145,7 @@ config CPU_FREQ_GOV_USERSPACE
-> >  
-> >  config CPU_FREQ_GOV_ONDEMAND
-> >  	tristate "'ondemand' cpufreq policy governor"
-> > +	depends on !SMP
-> 
-> But I don't think that we can do this and the one below.
+These functions should return zero on success.  Non-zero returns are
+treated as error.  On some paths, this doesn't matter but in
+nvmem_cell_read() a non-zero return would be passed to ERR_PTR() and
+lead to an Oops.
 
-I have exactly the same comments.
+Fixes: d6c3029f32f7 ("rtc: pcf2127: add support for accessing internal static RAM")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/rtc/rtc-pcf2127.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-> >  	select CPU_FREQ_GOV_COMMON
-> >  	help
-> >  	  'ondemand' - This driver adds a dynamic cpufreq policy governor.
-> > @@ -163,6 +165,7 @@ config CPU_FREQ_GOV_ONDEMAND
-> >  config CPU_FREQ_GOV_CONSERVATIVE
-> >  	tristate "'conservative' cpufreq governor"
-> >  	depends on CPU_FREQ
-> > +	depends on !SMP
-> >  	select CPU_FREQ_GOV_COMMON
-> >  	help
-> >  	  'conservative' - this driver is rather similar to the 'ondemand'
-> > 
-> 
-> 
-> 
-
+diff --git a/drivers/rtc/rtc-pcf2127.c b/drivers/rtc/rtc-pcf2127.c
+index 07a5630ec841..4d9711d51f8f 100644
+--- a/drivers/rtc/rtc-pcf2127.c
++++ b/drivers/rtc/rtc-pcf2127.c
+@@ -243,10 +243,8 @@ static int pcf2127_nvmem_read(void *priv, unsigned int offset,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = regmap_bulk_read(pcf2127->regmap, PCF2127_REG_RAM_RD_CMD,
+-			       val, bytes);
+-
+-	return ret ?: bytes;
++	return regmap_bulk_read(pcf2127->regmap, PCF2127_REG_RAM_RD_CMD,
++				val, bytes);
+ }
+ 
+ static int pcf2127_nvmem_write(void *priv, unsigned int offset,
+@@ -261,10 +259,8 @@ static int pcf2127_nvmem_write(void *priv, unsigned int offset,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = regmap_bulk_write(pcf2127->regmap, PCF2127_REG_RAM_WRT_CMD,
+-				val, bytes);
+-
+-	return ret ?: bytes;
++	return regmap_bulk_write(pcf2127->regmap, PCF2127_REG_RAM_WRT_CMD,
++				 val, bytes);
+ }
+ 
+ /* watchdog driver */
 -- 
-viresh
+2.28.0
+

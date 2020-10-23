@@ -2,52 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D00E3296D86
-	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 13:22:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 848E2296D92
+	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 13:24:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S462896AbgJWLWr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 23 Oct 2020 07:22:47 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:34102 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S462867AbgJWLWq (ORCPT
+        id S462920AbgJWLYC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 23 Oct 2020 07:24:02 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:35074 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S462871AbgJWLYB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 23 Oct 2020 07:22:46 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09NBIx4p008635;
-        Fri, 23 Oct 2020 11:22:41 GMT
+        Fri, 23 Oct 2020 07:24:01 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09NBKHRg019538;
+        Fri, 23 Oct 2020 11:23:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=+sblqvGd80WfgejjfdQ8nRmFdnwwzyKpFdZ6XX17bls=;
- b=of21bWOg4thSPkzXrWViq3pBU2ygFKB4kOYgA9/lAQ/p/W8VJd7OCCDpBxTZ4tnQj8UA
- LZ19M3LaZosk8mxZt0itZ7C81lbLmMM8/zQ/nL8kWwZHOURP9PYgeKUbAp4MMJiaUdVc
- d+tb1ROAPLrPPoKwMVvlViceZjtXvzz9yy3OKxHO0vy3pCoD/WzYPI5KgSyTu+WEEgMh
- 7ztX1m+QGsIcT1uuMhFyJ1499eFBtks1u4KOSSStpW2xz6oBSuCG1s9UHjpxUkLG40L/
- P93lhb+3ocrR9ywy1xPpJ9iNKAn1hwV5gLZ2FlfRIXvAvnKQtCLdcM5EjwQfjsYbzdVd tg== 
+ bh=tLJo7Te/+UGecvdayfXa3Pq3Xl699Ew8dl17GGtE0Nw=;
+ b=ONBLXtqpIyJviAFplWicnWahKkHCfpybvMtVGUusxYNqQZVHXl3xcxz0Jg9Lxb5rd2lF
+ PN93tbPreoYmbWzS3Ywne0jQnoZV+Yob6KIKeNienRgLxVVIrQWrpT2HPHWbTXtOnNJV
+ m8gfi/RZZPm9XjLQ59G09hMXDAEUjghWEVyi8GnjQ3pSo8i0QDWXLHLTdqzZkWl1/VnT
+ JmSCeqz0B0d5ORqEU9t4HXjWLF+ElrgzVjoSrCp1PT5nPZaIJCt6+xJQcwS2ry2QdWBz
+ xM1fBZGsN0w7Uxjj5hffaQ5k7Ah42awfrOLte2rnEyDaPQ2QcIhN1kbQ9Hxc7bYFwKGr dg== 
 Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2130.oracle.com with ESMTP id 347p4baqs7-1
+        by userp2120.oracle.com with ESMTP id 34ak16tyna-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 23 Oct 2020 11:22:41 +0000
+        Fri, 23 Oct 2020 11:23:55 +0000
 Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09NBKC3E099035;
-        Fri, 23 Oct 2020 11:22:41 GMT
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09NBKDb4099179;
+        Fri, 23 Oct 2020 11:23:55 GMT
 Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 348a6rne6u-1
+        by aserp3030.oracle.com with ESMTP id 348a6rnev7-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 23 Oct 2020 11:22:40 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09NBMcBe006059;
-        Fri, 23 Oct 2020 11:22:38 GMT
+        Fri, 23 Oct 2020 11:23:55 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09NBNrCq006441;
+        Fri, 23 Oct 2020 11:23:53 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 23 Oct 2020 04:22:38 -0700
-Date:   Fri, 23 Oct 2020 14:22:32 +0300
+        with ESMTP ; Fri, 23 Oct 2020 04:23:52 -0700
+Date:   Fri, 23 Oct 2020 14:23:47 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "Theodore Ts'o" <tytso@mit.edu>,
-        Harshad Shirwadkar <harshadshirwadkar@gmail.com>
-Cc:     Andreas Dilger <adilger.kernel@dilger.ca>,
-        linux-ext4@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] ext4: Fix an IS_ERR() vs NULL check
-Message-ID: <20201023112232.GB282278@mwanda>
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Amelie Delaunay <amelie.delaunay@st.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH 1/2] usb: typec: stusb160x: fix an IS_ERR() vs NULL check in
+ probe
+Message-ID: <20201023112347.GC282278@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -58,39 +59,39 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 ml
  phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2009150000 definitions=main-2010230080
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9782 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 priorityscore=1501
- clxscore=1011 malwarescore=0 mlxscore=0 bulkscore=0 lowpriorityscore=0
- phishscore=0 adultscore=0 mlxlogscore=999 impostorscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010230080
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0
+ priorityscore=1501 clxscore=1011 malwarescore=0 mlxscore=0 adultscore=0
+ lowpriorityscore=0 impostorscore=0 spamscore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010230080
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The ext4_find_extent() function never returns NULL, it returns error
-pointers.
+The typec_register_port() function doesn't return error pointers, it
+returns error pointers.
 
-Fixes: 44059e503b03 ("ext4: fast commit recovery path")
+Fixes: da0cb6310094 ("usb: typec: add support for STUSB160x Type-C controller family")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- fs/ext4/extents.c | 4 ++--
+ drivers/usb/typec/stusb160x.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 6b33b9c86b00..a19d0e3a4126 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -5820,8 +5820,8 @@ int ext4_ext_replay_update_ex(struct inode *inode, ext4_lblk_t start,
- 	int ret;
+diff --git a/drivers/usb/typec/stusb160x.c b/drivers/usb/typec/stusb160x.c
+index ce0bd7b3ad88..f7369e371dd4 100644
+--- a/drivers/usb/typec/stusb160x.c
++++ b/drivers/usb/typec/stusb160x.c
+@@ -729,8 +729,8 @@ static int stusb160x_probe(struct i2c_client *client)
+ 	}
  
- 	path = ext4_find_extent(inode, start, NULL, 0);
--	if (!path)
--		return -EINVAL;
-+	if (IS_ERR(path))
-+		return PTR_ERR(path);
- 	ex = path[path->p_depth].p_ext;
- 	if (!ex) {
- 		ret = -EFSCORRUPTED;
+ 	chip->port = typec_register_port(chip->dev, &chip->capability);
+-	if (!chip->port) {
+-		ret = -ENODEV;
++	if (IS_ERR(chip->port)) {
++		ret = PTR_ERR(chip->port);
+ 		goto all_reg_disable;
+ 	}
+ 
 -- 
 2.28.0
 

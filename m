@@ -2,75 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13B10297834
-	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 22:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C89DB2978B6
+	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 23:14:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1756073AbgJWUZo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 23 Oct 2020 16:25:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53142 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S465903AbgJWUZo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 23 Oct 2020 16:25:44 -0400
-Received: from kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net (unknown [163.114.132.6])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F283A20882;
-        Fri, 23 Oct 2020 20:25:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603484743;
-        bh=T14EamLujZdgpnJfLA1IJCQtYmY4KwmusF+w79AgWXU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dsqLLj6sZXoXhtkM/DAig175muzlTNsauY2Vhn92mDHwSpwhH2hzlElvH86eqSkPi
-         /v7DSHmDGVeysqX2zmB10KdSkZuvgcHvkXpiNBmZFFiZf4AD2AOncGA21FJna8IKc8
-         SahR7K+nUdLNrac7FkAkQT828UCAyr0orqYn1N8M=
-Date:   Fri, 23 Oct 2020 13:25:42 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Stefano Garzarella <sgarzare@redhat.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vsock: ratelimit unknown ioctl error message
-Message-ID: <20201023132542.4f151318@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
-In-Reply-To: <20201023140947.kurglnklaqteovkp@steredhat>
-References: <20201023122113.35517-1-colin.king@canonical.com>
-        <20201023140947.kurglnklaqteovkp@steredhat>
+        id S1755383AbgJWVOP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 23 Oct 2020 17:14:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36240 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1752910AbgJWVOP (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 23 Oct 2020 17:14:15 -0400
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8D61C0613CE;
+        Fri, 23 Oct 2020 14:14:13 -0700 (PDT)
+Received: by mail-oi1-x242.google.com with SMTP id w191so3341909oif.2;
+        Fri, 23 Oct 2020 14:14:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=s0NHPR/nJgg775J0R2R73WYg6RL14uedubm92HfyUys=;
+        b=bKJCfCHQpFJyASF00DP/bz4ZXftPm0IeAn8l9nTQbQAjOPtG1LJXpIMx4m42XJqGFA
+         f8wvVwz0sg/hEtOsoZoCxKJI4z0SYxL6WmrjQDZsK7ioI8C3yUZeDlwbDm8WlSNnssap
+         GJ0kA31M57rrGvjPRYEdTwCzo75iPwB1g5pa575xLAza1vZKbqfY/oF/116WcMyKKvw/
+         v2mLA9nhhm4niAokF1nIvskuUFNZcLGwadw6osrqmalgTMw71GwLUkuuyVEuQuIRQOCc
+         a+1xtbFStMHH3SAAqACjQ31rK+v9O+hO2jSmZTWtBo3MfSJ3DL9PPDYnDWWsyD0rbrFM
+         lQ3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=s0NHPR/nJgg775J0R2R73WYg6RL14uedubm92HfyUys=;
+        b=CVFQSuv/tbNqOGHmBWRRJ3ZHDavurEwDtGZVjO/gJNc+42oz2Msjf8E1C48cDB4pmV
+         77xLzADA6H20cfmgboN27LrFHx4TivulU5YoD4GjqmesSeHer0i69gDUHGlrm32xDq7n
+         28Zh5Kga7tF9z9kRlZB0TOOd3+OHF8rjRty39udS5VQdVgj/rlce9g1oWHDmCTydfjXL
+         3ocGcaAmi/6OKFgDLaf01rOo3kt9G4rF1WFUSfqXmlRY+GBdFdQ1uxB/W7VJI5hrmG1v
+         0IN1cjruUuDODJhccTaqpan1som/LBxM3kIdjYntpDV+8mL0TdchODRyUc5gBauuapwg
+         6PuA==
+X-Gm-Message-State: AOAM531aWrKiRo0oKpTx/0NIsXwNA6Vl4j2FB8fu6koxGxc1rJIuigIH
+        ub8aHexDEQcQdxidpkVIPxz1A7D6QF8=
+X-Google-Smtp-Source: ABdhPJxyeAyKSN6Vf5nKPoaMZTwffvMBQX+Rxsmsq5ssE2aVeAIF9CQ/eLhdB1zm+a1XQG/FZTmZ+A==
+X-Received: by 2002:aca:e0c3:: with SMTP id x186mr3045215oig.140.1603487653139;
+        Fri, 23 Oct 2020 14:14:13 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id b139sm772065oii.19.2020.10.23.14.14.11
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 23 Oct 2020 14:14:12 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Fri, 23 Oct 2020 14:14:10 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Ugur Usug <Ugur.Usug@maximintegrated.com>,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] hwmon: (pmbus/max20730) delete some dead code
+Message-ID: <20201023211410.GA28103@roeck-us.net>
+References: <20201022070659.GA2817762@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201022070659.GA2817762@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 23 Oct 2020 16:09:47 +0200 Stefano Garzarella wrote:
-> On Fri, Oct 23, 2020 at 01:21:13PM +0100, Colin King wrote:
-> >From: Colin Ian King <colin.king@canonical.com>
-> >
-> >When exercising the kernel with stress-ng with some ioctl tests the
-> >"Unknown ioctl" error message is spamming the kernel log at a high
-> >rate. Rate limit this message to reduce the noise.
-> >
-> >Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> >---
-> > net/vmw_vsock/af_vsock.c | 2 +-
-> > 1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> >diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-> >index 9e93bc201cc0..b8feb9223454 100644
-> >--- a/net/vmw_vsock/af_vsock.c
-> >+++ b/net/vmw_vsock/af_vsock.c
-> >@@ -2072,7 +2072,7 @@ static long vsock_dev_do_ioctl(struct file *filp,
-> > 		break;
-> >
-> > 	default:
-> >-		pr_err("Unknown ioctl %d\n", cmd);
-> >+		pr_err_ratelimited("Unknown ioctl %d\n", cmd);  
+On Thu, Oct 22, 2020 at 10:06:59AM +0300, Dan Carpenter wrote:
+> The debugfs_create_dir() function never returns NULL.  Normal users are
+> not supposed to check the return value so the correct fix is just to
+> delete this check.
 > 
-> Make sense, or maybe can we remove the error message returning only the
-> -EINVAL?
+> In the case where the debugfs_create_dir() fails, the function returns
+> NULL.  The other debugfs function check for NULL directory and handle
+> it.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-+1
+Applied.
 
-> Both cases are fine for me:
-> Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Thanks,
+Guenter
 
-
+> ---
+>  drivers/hwmon/pmbus/max20730.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/hwmon/pmbus/max20730.c b/drivers/hwmon/pmbus/max20730.c
+> index be83b98411c7..00fea16acab4 100644
+> --- a/drivers/hwmon/pmbus/max20730.c
+> +++ b/drivers/hwmon/pmbus/max20730.c
+> @@ -328,8 +328,6 @@ static int max20730_init_debugfs(struct i2c_client *client,
+>  		return -ENOENT;
+>  
+>  	max20730_dir = debugfs_create_dir(client->name, debugfs);
+> -	if (!max20730_dir)
+> -		return -ENOENT;
+>  
+>  	for (i = 0; i < MAX20730_DEBUGFS_NUM_ENTRIES; ++i)
+>  		psu->debugfs_entries[i] = i;

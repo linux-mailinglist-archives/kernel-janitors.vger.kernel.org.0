@@ -2,102 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD3CC297217
-	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 17:16:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E94C297261
+	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 17:34:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S465674AbgJWPQA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 23 Oct 2020 11:16:00 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:46646 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S461811AbgJWPP7 (ORCPT
+        id S465910AbgJWPei (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 23 Oct 2020 11:34:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:58920 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S462631AbgJWPeh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 23 Oct 2020 11:15:59 -0400
-Received: from 89-64-88-190.dynamic.chello.pl (89.64.88.190) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.491)
- id a4d8527cdf27f5d6; Fri, 23 Oct 2020 17:15:57 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Peter Zijlstra <peterz@infradead.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Julia Lawall <julia.lawall@inria.fr>
-Cc:     Mel Gorman <mgorman@suse.de>, Ingo Molnar <mingo@redhat.com>,
-        kernel-janitors@vger.kernel.org,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        linux-kernel@vger.kernel.org,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Gilles Muller <Gilles.Muller@inria.fr>,
-        srinivas.pandruvada@linux.intel.com,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Len Brown <len.brown@intel.com>
-Subject: [PATCH v2] cpufreq: Avoid configuring old governors as default with intel_pstate
-Date:   Fri, 23 Oct 2020 17:15:56 +0200
-Message-ID: <9382251.a2nkXps1mP@kreacher>
-In-Reply-To: <8312288.dAKoTdFk2S@kreacher>
-References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr> <20201022120213.GG2611@hirez.programming.kicks-ass.net> <8312288.dAKoTdFk2S@kreacher>
+        Fri, 23 Oct 2020 11:34:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1603467276;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=ADAkD04qBn0B56sR0AT6lBpOwDqugN8IZrafwTxz76g=;
+        b=eG88lGXGygBi0iqfHOorbRDDY27yfRke7h7SuhIx5J+3s3D7Sj9XcAYe5KWu3lZexvsPg1
+        gjI+61y10+4t4AVLL0rHMU/bK572E41XqhIcZC+N0oDWmlKPs2JEBNVHLFbJpdhTu1oxx+
+        kF9kabttyc4w2LA//lLWoFi5h1FAl4M=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-234-6fLU9xqyN5Wrrt4Zl_bywg-1; Fri, 23 Oct 2020 11:34:33 -0400
+X-MC-Unique: 6fLU9xqyN5Wrrt4Zl_bywg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CB22818B9F09;
+        Fri, 23 Oct 2020 15:34:31 +0000 (UTC)
+Received: from redhat.com (ovpn-113-117.ams2.redhat.com [10.36.113.117])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 3C41070597;
+        Fri, 23 Oct 2020 15:34:28 +0000 (UTC)
+Date:   Fri, 23 Oct 2020 11:34:25 -0400
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jason Wang <jasowang@redhat.com>, kvm@vger.kernel.org,
+        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, kuba@kernel.org
+Subject: Re: [PATCH net] vhost_vdpa: Return -EFUALT if copy_from_user() fails
+Message-ID: <20201023113326-mutt-send-email-mst@kernel.org>
+References: <20201023120853.GI282278@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201023120853.GI282278@mwanda>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Fri, Oct 23, 2020 at 03:08:53PM +0300, Dan Carpenter wrote:
+> The copy_to/from_user() functions return the number of bytes which we
+> weren't able to copy but the ioctl should return -EFAULT if they fail.
+> 
+> Fixes: a127c5bbb6a8 ("vhost-vdpa: fix backend feature ioctls")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Commit 33aa46f252c7 ("cpufreq: intel_pstate: Use passive mode by
-default without HWP") was meant to cause intel_pstate to be used
-in the passive mode with the schedutil governor on top of it, but
-it missed the case in which either "ondemand" or "conservative"
-was selected as the default governor in the existing kernel config,
-in which case the previous old governor configuration would be used,
-causing the default legacy governor to be used on top of intel_pstate
-instead of schedutil.
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Needed for stable I guess.
 
-Address this by preventing "ondemand" and "conservative" from being
-configured as the default cpufreq governor in the case when schedutil
-is the default choice for the default governor setting.
-
-[Note that the default cpufreq governor can still be set via the
- kernel command line if need be and that choice is not limited,
- so if anyone really wants to use one of the legacy governors by
- default, it can be achieved this way.]
-
-Fixes: 33aa46f252c7 ("cpufreq: intel_pstate: Use passive mode by default without HWP")
-Reported-by: Julia Lawall <julia.lawall@inria.fr>
-Cc: 5.8+ <stable@vger.kernel.org> # 5.8+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
-
-The v2 addresses a review comment from Viresh regarding of the expression format
-and adds a missing Reported-by for Julia.
-
----
- drivers/cpufreq/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
-
-Index: linux-pm/drivers/cpufreq/Kconfig
-===================================================================
---- linux-pm.orig/drivers/cpufreq/Kconfig
-+++ linux-pm/drivers/cpufreq/Kconfig
-@@ -71,6 +71,7 @@ config CPU_FREQ_DEFAULT_GOV_USERSPACE
- 
- config CPU_FREQ_DEFAULT_GOV_ONDEMAND
- 	bool "ondemand"
-+	depends on !(X86_INTEL_PSTATE && SMP)
- 	select CPU_FREQ_GOV_ONDEMAND
- 	select CPU_FREQ_GOV_PERFORMANCE
- 	help
-@@ -83,6 +84,7 @@ config CPU_FREQ_DEFAULT_GOV_ONDEMAND
- 
- config CPU_FREQ_DEFAULT_GOV_CONSERVATIVE
- 	bool "conservative"
-+	depends on !(X86_INTEL_PSTATE && SMP)
- 	select CPU_FREQ_GOV_CONSERVATIVE
- 	select CPU_FREQ_GOV_PERFORMANCE
- 	help
-
-
+> ---
+>  drivers/vhost/vdpa.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+> index 62a9bb0efc55..c94a97b6bd6d 100644
+> --- a/drivers/vhost/vdpa.c
+> +++ b/drivers/vhost/vdpa.c
+> @@ -428,12 +428,11 @@ static long vhost_vdpa_unlocked_ioctl(struct file *filep,
+>  	void __user *argp = (void __user *)arg;
+>  	u64 __user *featurep = argp;
+>  	u64 features;
+> -	long r;
+> +	long r = 0;
+>  
+>  	if (cmd == VHOST_SET_BACKEND_FEATURES) {
+> -		r = copy_from_user(&features, featurep, sizeof(features));
+> -		if (r)
+> -			return r;
+> +		if (copy_from_user(&features, featurep, sizeof(features)))
+> +			return -EFAULT;
+>  		if (features & ~VHOST_VDPA_BACKEND_FEATURES)
+>  			return -EOPNOTSUPP;
+>  		vhost_set_backend_features(&v->vdev, features);
+> @@ -476,7 +475,8 @@ static long vhost_vdpa_unlocked_ioctl(struct file *filep,
+>  		break;
+>  	case VHOST_GET_BACKEND_FEATURES:
+>  		features = VHOST_VDPA_BACKEND_FEATURES;
+> -		r = copy_to_user(featurep, &features, sizeof(features));
+> +		if (copy_to_user(featurep, &features, sizeof(features)))
+> +			r = -EFAULT;
+>  		break;
+>  	default:
+>  		r = vhost_dev_ioctl(&v->vdev, cmd, argp);
 
